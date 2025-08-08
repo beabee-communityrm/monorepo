@@ -9,6 +9,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
 import { extname } from 'path';
+import { HttpError } from 'routing-controllers';
 import sharp from 'sharp';
 import { Readable } from 'stream';
 import { optimize } from 'svgo';
@@ -97,7 +98,7 @@ export class ImageService {
         });
       }
     } catch (error) {
-      if (error instanceof BadRequestError) {
+      if (error instanceof HttpError) {
         throw error;
       }
       throw new BadRequestError({ message: 'Invalid image file' });
@@ -285,16 +286,14 @@ export class ImageService {
         hash,
       };
     } catch (error) {
-      if (error instanceof BadRequestError) {
+      if (error instanceof HttpError) {
         throw error;
       }
-      log.error('Failed to upload image:', error);
 
-      const errorMessage =
-        error instanceof Error ? error.message : 'Unknown error';
-
+      const errorMessage = `Failed to upload image (${originalFilename})`;
+      log.error(errorMessage, error);
       throw new BadRequestError({
-        message: 'Failed to upload image: ' + errorMessage,
+        message: errorMessage,
       });
     }
   }
@@ -310,8 +309,10 @@ export class ImageService {
     width?: number
   ): Promise<{ stream: Readable; contentType: string }> {
     try {
-      // Check if image exists
-      await this.imageExists(id);
+      // Check if image exists first
+      if (!(await this.imageExists(id))) {
+        throw new NotFoundError();
+      }
 
       // Get image metadata to check format
       const metadata = await this.getImageMetadata(id);
@@ -323,8 +324,15 @@ export class ImageService {
         try {
           return await getFileStream(this.s3Client, this.config.s3.bucket, key);
         } catch (error) {
-          log.error(`Failed to get SVG image (${id})`, error);
-          throw new NotFoundError();
+          if (error instanceof HttpError) {
+            // Don't log HttpError like NotFoundError as error since it's expected behavior
+            throw error;
+          }
+          const errorMessage = `Failed to get SVG image (${id})`;
+          log.error(errorMessage, error);
+          throw new BadRequestError({
+            message: errorMessage,
+          });
         }
       }
 
@@ -374,15 +382,22 @@ export class ImageService {
           finalKey
         );
       } catch (error) {
-        log.error(`Failed to get image (${id})`, error);
-        throw new NotFoundError();
+        if (error instanceof HttpError) {
+          // Don't log HttpError like NotFoundError as error since it's expected behavior
+          throw error;
+        }
+        throw new BadRequestError({
+          message: `Failed to get image stream (${id})`,
+        });
       }
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      if (error instanceof HttpError) {
+        // Don't log HttpError like NotFoundError as error since it's expected behavior
         throw error;
       }
-      log.error('Failed to get image stream:', error);
-      throw new BadRequestError({ message: 'Failed to get image stream' });
+      const errorMessage = `Failed to get image stream (${id})`;
+      log.error(errorMessage, error);
+      throw new BadRequestError({ message: errorMessage });
     }
   }
 
@@ -408,7 +423,8 @@ export class ImageService {
 
       return { buffer, contentType };
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      if (error instanceof HttpError) {
+        // Don't log HttpError like NotFoundError as error since it's expected behavior
         throw error;
       }
       log.error('Failed to get image buffer:', error);
@@ -459,11 +475,12 @@ export class ImageService {
 
       return true;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      if (error instanceof HttpError) {
         throw error;
       }
-      log.error('Failed to delete image:', error);
-      throw new BadRequestError({ message: 'Failed to delete image' });
+      const errorMessage = `Failed to delete image (${id})`;
+      log.error(errorMessage, error);
+      throw new BadRequestError({ message: errorMessage });
     }
   }
 
@@ -527,8 +544,13 @@ export class ImageService {
         hash,
       };
     } catch (error) {
-      log.error('Failed to get image metadata:', error);
-      throw new NotFoundError();
+      if (error instanceof HttpError) {
+        // Don't log HttpError like NotFoundError as error since it's expected behavior
+        throw error;
+      }
+      const errorMessage = `Failed to get image metadata (${id})`;
+      log.error(errorMessage, error);
+      throw new BadRequestError({ message: errorMessage });
     }
   }
 
@@ -542,8 +564,13 @@ export class ImageService {
       const key = `originals/${id}`;
       return await getFileHash(this.s3Client, this.config.s3.bucket, key);
     } catch (error) {
-      log.error('Failed to get image hash:', error);
-      throw new NotFoundError();
+      if (error instanceof HttpError) {
+        // Don't log HttpError like NotFoundError as error since it's expected behavior
+        throw error;
+      }
+      const errorMessage = `Failed to get image hash (${id})`;
+      log.error(errorMessage, error);
+      throw new BadRequestError({ message: errorMessage });
     }
   }
 
@@ -652,9 +679,13 @@ export class ImageService {
         })
       );
     } catch (error) {
-      log.error('Failed to generate resized image:', error);
+      if (error instanceof HttpError) {
+        throw error;
+      }
+      const errorMessage = `Failed to generate resized image (${id}, ${width})`;
+      log.error(errorMessage, error);
       throw new BadRequestError({
-        message: 'Failed to generate resized image',
+        message: errorMessage,
       });
     }
   }

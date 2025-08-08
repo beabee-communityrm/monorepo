@@ -98,11 +98,12 @@ export class ImageController {
     @Param('id') id: string,
     @QueryParam('w', { required: false }) width?: number
   ): Promise<Buffer> {
+    // First get image metadata to check if it exists and get filename
+    // This avoids duplicate existence checks in getImageBuffer
+    const metadata = await imageService.getImageMetadata(id);
+
     // Get image as buffer
     const imageData = await imageService.getImageBuffer(id, width);
-
-    // Get image metadata to check permissions if needed in the future
-    const metadata = await imageService.getImageMetadata(id);
 
     // Set appropriate security headers
     res.set({
