@@ -1,5 +1,5 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
-import { type Locale } from '@beabee/locale';
+import type { Locale } from '@beabee/locale';
 
 export default {
   organisation: 'UK Makerspace',
