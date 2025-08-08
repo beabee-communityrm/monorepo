@@ -53,4 +53,7 @@ export class CalloutVariant {
 
   @Column({ type: 'jsonb', default: '{}' })
   componentText!: Record<string, string>;
+
+  @Column({ type: 'jsonb', default: '{}' })
+  responseLinkText!: Record<string, string>;
 }
