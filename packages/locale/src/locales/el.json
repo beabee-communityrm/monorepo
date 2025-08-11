@@ -524,6 +524,7 @@
               "label": ""
             },
             "responseLinks": {
+              "add": "",
               "description": "",
               "label": "",
               "opts": {
@@ -533,6 +534,12 @@
               "placeholder": {
                 "label": "",
                 "url": ""
+              },
+              "text": {
+                "label": ""
+              },
+              "url": {
+                "label": ""
               }
             },
             "responseSettings": {
@@ -654,7 +661,8 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "untitledCallout": ""
     },
     "confirmHuman": "Παρακαλώ επιβεβαιώστε ότι είστε άνθρωπος.",
     "contactDetails": "",
@@ -806,13 +814,12 @@
   },
   "calloutReviewerManager": {
     "add": "",
+    "canEdit": "",
     "confirmDelete": {
       "text": "",
       "title": ""
     },
     "contact": "",
-    "title": "",
-    "canEdit": "",
     "editorTag": "",
     "search": {
       "error": {
@@ -821,7 +828,8 @@
       },
       "placeholder": "",
       "successMessage": ""
-    }
+    },
+    "title": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -1186,8 +1194,8 @@
       }
     },
     "errorsFormio": {
-      "minLength": "",
-      "maxLength": ""
+      "maxLength": "",
+      "minLength": ""
     },
     "firstName": "",
     "lastName": "",
@@ -1379,7 +1387,7 @@
     "account": "",
     "admin": "",
     "adminSettings": "",
-    "callouts": "Ένδειξη",
+    "callouts": "CrowdNewsroom",
     "contacts": "",
     "contribution": "",
     "dashboard": "",
