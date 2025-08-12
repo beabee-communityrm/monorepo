@@ -475,6 +475,20 @@
               "initialZoom": {
                 "label": "Niveau de zoom initial"
               },
+              "mapIconProp": {
+                "label": "Sélectionner une question pour afficher les icônes sur la carte",
+                "none": "– Utiliser les icônes par défaut pour toutes les réponses –"
+              },
+              "mapIconQuestions": {
+                "label": ""
+              },
+              "mapIconStylingProp": {
+                "label": "Catégorie"
+              },
+              "mapIconStylingSetting": {
+                "label": "Sélectionner une couleur et une icône pour la réponse : ",
+                "title": "Style d’icône sur la carte"
+              },
               "maxZoom": {
                 "label": "Niveau de zoom maximal"
               },
@@ -485,21 +499,7 @@
                 "help": "<p>La visualisation sous forme de carte <strong>nécessite un outil tiers</strong> tel que <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> ou <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Ces outils vous sont fournis avec l'URL du style de carte que vous devez coller ici.</p>",
                 "label": "URL du style de carte"
               },
-              "title": "Paramètres de carte",
-              "mapIconQuestions": {
-                "label": ""
-              },
-              "mapIconStylingSetting": {
-                "label": "",
-                "title": ""
-              },
-              "mapIconProp": {
-                "label": "",
-                "none": ""
-              },
-              "mapIconStylingProp": {
-                "label": ""
-              }
+              "title": "Paramètres de carte"
             },
             "newsletterSettings": {
               "disabled": "Vous ne pouvez pas demander d'inscription à la lettre d'information si vous ne collectez pas les informations de contact",
