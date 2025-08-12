@@ -535,6 +535,7 @@
               "label": ""
             },
             "responseLinks": {
+              "add": "",
               "description": "",
               "label": "",
               "opts": {
@@ -544,6 +545,12 @@
               "placeholder": {
                 "label": "",
                 "url": ""
+              },
+              "text": {
+                "label": ""
+              },
+              "url": {
+                "label": ""
               }
             },
             "responseSettings": {
@@ -665,7 +672,8 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "untitledCallout": ""
     },
     "confirmHuman": "",
     "contactDetails": "",

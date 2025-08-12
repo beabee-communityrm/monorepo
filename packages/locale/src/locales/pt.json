@@ -130,14 +130,14 @@
     "title": ""
   },
   "adminDashboard": {
-    "hint1": "<p>Sabias que as chamadas podem ser criadas sem data de conclusão, e assim continuarem indefinidamente? Há mais pormenores na nossa <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">demonstração de funcionalidades</a></p>\n",
+    "hint1": "",
     "hint2": "<p>Sabe mais sobre a <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">visão beabee</a> no que toca ao envolvimento da comunidade e formar relações com o seu público.</p>\n",
     "hint3": "<p>O nosso <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> abordamos questões frequentes sobre como começar e casos de estudo. Se a resposta que procuras não estiver lá, contacta-nos.</p>\n",
     "joinSlack": "Junta-te à comunidade beabee no Slack!",
     "latestCallout": {
       "createNew": "Criar nova?",
-      "empty": "Não há chamadas ativas neste momento.",
-      "title": "Última chamada"
+      "empty": "Não há CrowdNewsrooms ativas neste momento.",
+      "title": "Última CrowdNewsroom"
     },
     "mostRecentMembers": {
       "title": "Membros mais recentes"
@@ -535,6 +535,7 @@
               "label": ""
             },
             "responseLinks": {
+              "add": "",
               "description": "",
               "label": "",
               "opts": {
@@ -544,6 +545,12 @@
               "placeholder": {
                 "label": "",
                 "url": ""
+              },
+              "text": {
+                "label": ""
+              },
+              "url": {
+                "label": ""
               }
             },
             "responseSettings": {
@@ -665,7 +672,8 @@
         "label": "",
         "option": "",
         "placeholder": ""
-      }
+      },
+      "untitledCallout": ""
     },
     "confirmHuman": "",
     "contactDetails": "Detalhes de contacto",
@@ -680,7 +688,7 @@
     "getStarted": "Começar",
     "joinNow": "Inscreve-te agora",
     "loginToYourAccount": "Entra na tua conta",
-    "membersOnly": "Esta chamada está aberta apenas a membros. Para participar",
+    "membersOnly": "Esta CrowdNewsroom está aberta apenas a membros. Para participar",
     "responseSubmitted": "Resposta submetida",
     "share": {
       "address": "Podes partilhar esta chamada com este endereço:",
@@ -701,7 +709,7 @@
       "gallery": "Galeria",
       "map": "Mapa"
     },
-    "youResponded": "Já respondeste a esta chamada ♥",
+    "youResponded": "Já respondeste a esta CrowdNewsroom ♥",
     "yourResponse": "A tua resposta"
   },
   "calloutAdmin": {
@@ -755,7 +763,7 @@
       "answers": "Respostas",
       "assignee": "Atribuído a",
       "bucket": "Balde",
-      "callout": "Chamada",
+      "callout": "CrowdNewsroom",
       "contact": "Contacto",
       "createdAt": "Data de envio",
       "tags": "Etiquetas",
@@ -840,7 +848,7 @@
   "callouts": {
     "archive": "Arquivo",
     "data": {
-      "callout": "Chamada",
+      "callout": "CrowdNewsroom",
       "endDate": "Data de conclusão"
     },
     "noArchivedCallouts": "Não há chamadas",
@@ -1022,7 +1030,7 @@
       "tags": "Etiquetas"
     },
     "dataGroup": {
-      "callout": "Chamada",
+      "callout": "CrowdNewsroom",
       "contact": "Informação de contacto",
       "contribution": "Contribuição",
       "role": "Cargo"
@@ -1244,12 +1252,12 @@
   "homePage": {
     "editProfile": "Editar o teu perfil de comunidade",
     "manageContribution": "Gerir o teu contributo",
-    "newCallout": "Nova chamada!",
-    "openCallouts": "Chamadas abertas",
+    "newCallout": "Nova CrowdNewsroom!",
+    "openCallouts": "CrowdNewsrooms abertas",
     "quickActions": "Ações rápidas",
     "title": "Página inicial",
-    "viewAllCallouts": "Ver todas as chamadas",
-    "viewOpenCallouts": "Ver chamadas abertas",
+    "viewAllCallouts": "Ver todas as CrowdNewsrooms",
+    "viewOpenCallouts": "Ver CrowdNewsrooms abertas",
     "welcome": "Damos-te as boas-vindas, {firstName}!",
     "yourProfile": "O teu perfil"
   },
@@ -1390,7 +1398,7 @@
     "account": "Conta",
     "admin": "Administração",
     "adminSettings": "Definições",
-    "callouts": "Chamadas",
+    "callouts": "CrowdNewsrooms",
     "contacts": "Contactos",
     "contribution": "Contribuição",
     "dashboard": "Painel",

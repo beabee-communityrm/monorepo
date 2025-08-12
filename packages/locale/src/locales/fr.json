@@ -130,14 +130,14 @@
     "title": "Ajouter un avis"
   },
   "adminDashboard": {
-    "hint1": "<p>Saviez-vous que les campagnes peuvent être créées sans date de fin, et ne jamais s'arrêter ? Consultez nos <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">fonctionnalités</a> pour plus d'information.</p>\n",
+    "hint1": "",
     "hint2": "<p>Découvrez-en plus sur <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">la vision de beabee</a> à propos de l'engagement envers la communauté et les relations censées avec votre audience.</p>\n",
     "hint3": "<p>Notre <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> répond aux questions courantes concernant le démarrage et certains cas d'usage. Si vous n'y trouvez pas la réponse que vous cherchez, contactez-nous.</p>\n",
     "joinSlack": "Rejoignez la communauté beabee sur Slack !",
     "latestCallout": {
       "createNew": "En créer un nouveau ?",
-      "empty": "Aucune campagne n'est actuellement active.",
-      "title": "Dernière campagne"
+      "empty": "Aucune CrowdNewsrooms n'est actuellement active.",
+      "title": "Dernière CrowdNewsrooms"
     },
     "mostRecentMembers": {
       "title": "Membres les plus récents"
@@ -381,7 +381,7 @@
               "placeholder": "Ajoutez plus de détails sur l'importance de leur contribution…"
             },
             "title": {
-              "help": "<p>Vos lecteurs verront le <strong>Titre de remerciement</strong> lorsqu'ils termineront la campagne.</p>",
+              "help": "<p>Vos lecteurs verront le <strong>Titre de remerciement</strong> lorsqu'ils termineront la CrowdNewsrooms.</p>",
               "label": "Titre de remerciement",
               "placeholder": "Merci !"
             },
@@ -434,8 +434,8 @@
               "description": "Définir une date de fin",
               "label": "Définir une date de fin",
               "opts": {
-                "never": "La campagne durera jusqu'à ce qu'elle soit manuellement fermée",
-                "schedule": "La campagne sera fermée automatiquement à une date spécifique."
+                "never": "La CrowdNewsrooms durera jusqu'à ce qu'elle soit manuellement fermée",
+                "schedule": "La CrowdNewsrooms sera fermée automatiquement à une date spécifique."
               }
             },
             "mapAndGallery": {
@@ -510,15 +510,15 @@
               }
             },
             "openToEveryone": {
-              "help": "<p>Les campagnes peuvent être présentées à <strong>Tout le monde</strong> ou restreintes aux <strong>Membres uniquement</strong></p>",
+              "help": "<p>Les CrowdNewsrooms peuvent être présentées à <strong>Tout le monde</strong> ou restreintes aux <strong>Membres uniquement</strong></p>",
               "label": "Ouvrir à tout le monde",
               "opts": {
-                "disabled": "Seuls les membres seront autorisés à accéder et participer à cette campagne",
-                "enabled": "Tout le monde sera autorisé à accéder et participer à cette campagne"
+                "disabled": "Seuls les membres seront autorisés à accéder et participer à cette CrowdNewsrooms",
+                "enabled": "Tout le monde sera autorisé à accéder et participer à cette CrowdNewsrooms"
               }
             },
             "requireCaptcha": {
-              "help": "<p>Si vous activez <strong>la protection contre les robots et le spam</strong> les utilisateurs devront compléter un CAPTCHA pour confirmer qu'ils sont humains. C'est utile pour empêcher votre campagne d'être ciblée par des robots</p>",
+              "help": "<p>Si vous activez <strong>la protection contre les robots et le spam</strong> les utilisateurs devront compléter un CAPTCHA pour confirmer qu'ils sont humains. C'est utile pour empêcher votre CrowdNewsrooms d'être ciblée par des robots</p>",
               "label": "Activer la protection contre les robots et le spam",
               "members": {
                 "label": "Activer également pour les membres",
@@ -538,6 +538,7 @@
               "label": "Image de réponse"
             },
             "responseLinks": {
+              "add": "",
               "description": "Par exemple, utilisez le pied de page de réponse pour inclure un lien permettant de signaler une erreur ou un e-mail de contact. Pour lier une adresse e-mail, tapez mailto: suivi de l'adresse e-mail dans le champ URL.",
               "label": "Inclure un pied de page en bas des réponses",
               "opts": {
@@ -547,13 +548,19 @@
               "placeholder": {
                 "label": "Exemple : Signaler une erreur",
                 "url": "mailto:error{'@'}mail.com"
+              },
+              "text": {
+                "label": ""
+              },
+              "url": {
+                "label": ""
               }
             },
             "responseSettings": {
               "label": "Comportement de réponse",
               "opts": {
                 "multiple": "Réponses multiples, non modifiable",
-                "singleEditable": "Réponse simple mais modifiable tant que la campagne est active",
+                "singleEditable": "Réponse simple mais modifiable tant que la CrowdNewsrooms est active",
                 "singleNonEditable": "Réponse simple, non modifiable"
               },
               "title": "Paramètres de réponse"
@@ -572,16 +579,16 @@
             "starts": {
               "label": "Définir une date de début",
               "opts": {
-                "now": "La campagne sera disponible immédiatement.",
-                "schedule": "La campagne sera disponible à une date spécifique."
+                "now": "La CrowdNewsrooms sera disponible immédiatement.",
+                "schedule": "La CrowdNewsrooms sera disponible à une date spécifique."
               }
             },
             "visible": {
-              "help": "<p>Vous pouvez <strong>ne pas faire apparaître</strong> la campagne auprès des utilisateurs si vous souhaitez que seules les personnes avec qui vous partagez le lien puissent répondre.</p>",
-              "label": "Afficher la campagne dans le tableau de bord des membres",
+              "help": "<p>Vous pouvez <strong>ne pas faire apparaître</strong> la CrowdNewsrooms auprès des utilisateurs si vous souhaitez que seules les personnes avec qui vous partagez le lien puissent répondre.</p>",
+              "label": "Afficher la CrowdNewsrooms dans le tableau de bord des membres",
               "opts": {
-                "disabled": "La campagne n'apparaîtra pas dans le tableau de bord des membres",
-                "enabled": "La campagne apparaîtra dans le tableau de bord des membres"
+                "disabled": "La CrowdNewsrooms n'apparaîtra pas dans le tableau de bord des membres",
+                "enabled": "La CrowdNewsrooms apparaîtra dans le tableau de bord des membres"
               }
             },
             "whichResponseBuckets": {
@@ -621,26 +628,26 @@
             "shareTitle": {
               "help": "<p>Le champ <strong>Titre partagé</strong> définit le titre tel qu'il doit apparaître sur les réseaux sociaux.</p>",
               "label": "Titre partagé",
-              "placeholder": "Le nom de votre campagne"
+              "placeholder": "Le nom de votre CrowdNewsrooms"
             },
             "sharing": {
               "title": "Options de partage"
             },
             "slug": {
               "boxTitle": "Lien permanent",
-              "help": "<p>Vous pouvez partager <strong>le lien permanent</strong> avec des utilisateurs afin qu'ils puissent accéder directement à la campagne</p>",
+              "help": "<p>Vous pouvez partager <strong>le lien permanent</strong> avec des utilisateurs afin qu'ils puissent accéder directement à la CrowdNewsrooms</p>",
               "label": "Générer automatiquement l'identifiant à partir du titre",
               "locked": {
-                "title": "Le lien permanent est verrouillé car la campagne a déjà été publiée."
+                "title": "Le lien permanent est verrouillé car la CrowdNewsrooms a déjà été publiée."
               },
               "opts": {
-                "auto": "Le lien permanent est généré à partir du titre de la campagne et automatiquement mis à jour une fois la campagne publiée.",
+                "auto": "Le lien permanent est généré à partir du titre de la CrowdNewsrooms et automatiquement mis à jour une fois la CrowdNewsrooms publiée.",
                 "manual": "Le lien permanent est défini manuellement"
               }
             },
             "title": {
               "label": "Titre",
-              "placeholder": "Le nom de votre campagne."
+              "placeholder": "Le nom de votre CrowdNewsrooms."
             }
           },
           "title": "Titre et image",
@@ -648,7 +655,7 @@
         },
         "translations": {
           "language": {
-            "description": "Vous pouvez traduire la campagne dans plusieurs langues. Si une traduction est manquante nous l'afficheront dans la langue d'origine.",
+            "description": "Vous pouvez traduire la CrowdNewsrooms dans plusieurs langues. Si une traduction est manquante nous l'afficheront dans la langue d'origine.",
             "enableLanguages": "Activer la traduction",
             "title": "Langue"
           },
@@ -668,11 +675,12 @@
         "label": "Intitulé",
         "option": "Option {n}",
         "placeholder": "Texte indicatif"
-      }
+      },
+      "untitledCallout": ""
     },
     "confirmHuman": "Veuillez confirmer que vous êtes humain",
     "contactDetails": "Informations de contact",
-    "ended": "Cette campagne s'est terminée le {date}",
+    "ended": "Cette CrowdNewsrooms s'est terminée le {date}",
     "entryOf": "Entrée {no} sur {total}",
     "form": {
       "email": "Votre e-mail",
@@ -683,7 +691,7 @@
     "getStarted": "Commencer",
     "joinNow": "S'inscrire maintenant",
     "loginToYourAccount": "Connectez-vous à votre compte",
-    "membersOnly": "Cette campagne est ouverte aux membres uniquement. Pour participer",
+    "membersOnly": "Cette CrowdNewsrooms est ouverte aux membres uniquement. Pour participer",
     "responseSubmitted": "Réponse envoyée",
     "share": {
       "address": "Partagez cette campagne avec l'adresse suivante :",
@@ -704,24 +712,24 @@
       "gallery": "Galerie",
       "map": "Carte"
     },
-    "youResponded": "Vous avez répondu à cette campagne ♥",
+    "youResponded": "Vous avez répondu à cette CrowdNewsrooms ♥",
     "yourResponse": "Votre réponse"
   },
   "calloutAdmin": {
-    "deleted": "Campagne supprimée.",
-    "ended": "Campagne terminée. Vous pouvez la réouvrir en la modifiant.",
+    "deleted": "CrowdNewsrooms supprimée.",
+    "ended": "CrowdNewsrooms terminée. Vous pouvez la réouvrir en la modifiant.",
     "overview": "Vue d'ensemble",
-    "reopened": "Campagne réactivée. Modifiez la campagne si vous devez définir une autre date de fin.",
+    "reopened": "CrowdNewsrooms réactivée. Modifiez la CrowdNewsrooms si vous devez définir une autre date de fin.",
     "responses": "Réponses"
   },
   "calloutAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "Voulez-vous vraiment supprimer cette campagne ?",
-        "title": "Supprimer la campagne ?"
+        "text": "Voulez-vous vraiment supprimer cette CrowdNewsrooms ?",
+        "title": "Supprimer la CrowdNewsrooms ?"
       }
     },
-    "created": "Votre nouvelle campagne a bien été créée.",
+    "created": "Votre nouvelle CrowdNewsrooms a bien été créée.",
     "dates": {
       "ends": "Se termine",
       "label": "Dates",
@@ -751,14 +759,14 @@
       }
     },
     "summary": "Résumé",
-    "updated": "Votre campagne a bien été mise à jour."
+    "updated": "Votre CrowdNewsrooms a bien été mise à jour."
   },
   "calloutResponse": {
     "data": {
       "answers": "Réponses",
       "assignee": "Assigné à",
       "bucket": "",
-      "callout": "Campagne",
+      "callout": "CrowdNewsrooms",
       "contact": "Contact",
       "createdAt": "Date d'envoi",
       "tags": "Libellés",
@@ -822,7 +830,7 @@
     "add": "Ajouter un vérificateur",
     "canEdit": "Le vérificateur peut également modifier le CrowdNewsroom",
     "confirmDelete": {
-      "text": "Êtes-vous sûr de vouloir retirer {reviewerName} ? Cette personne ne pourra plus vérifier cet appel.",
+      "text": "Êtes-vous sûr de vouloir retirer {reviewerName} ? Cette personne ne pourra plus vérifier cette CrowdNewsroom.",
       "title": "Supprimer le vérificateur"
     },
     "contact": "Identifiant de contact",
@@ -843,7 +851,7 @@
   "callouts": {
     "archive": "Archiver",
     "data": {
-      "callout": "Campagne",
+      "callout": "CrowdNewsrooms",
       "endDate": "Date de fin"
     },
     "noArchivedCallouts": "Aucune campagne",
@@ -958,7 +966,7 @@
     "annotation": {
       "copy": "<p>Toutes les informations ajoutées dans cette section seront <strong>uniquement visibles par les administrateurs</strong>. Les membres ne verront jamais ceci sur leur profil ou dans l'espace membre.</p>\n"
     },
-    "callouts": "Campagnes",
+    "callouts": "CrowdNewsrooms",
     "cancellationDate": "Annulé le",
     "contribution": "Cotisation",
     "contributionType": "Type",
@@ -1025,7 +1033,7 @@
       "tags": "Libellés"
     },
     "dataGroup": {
-      "callout": "Campagne",
+      "callout": "CrowdNewsrooms",
       "contact": "Informations de contact",
       "contribution": "Cotisation",
       "role": "Rôle"
@@ -1082,9 +1090,9 @@
     "willRenewWithNewAmount": "Votre cotisation sera automatiquement renouvelée le {renewalDate} et sera modifiée pour le montant choisi de {nextAmount}."
   },
   "editCallout": {
-    "replicated": "Votre campagne a bien été répliquée et vous modifiez désormais la copie. Assurez-vous de modifier le titre dans l'onglet « Titre et image ».",
+    "replicated": "Votre CrowdNewsrooms a bien été répliquée et vous modifiez désormais la copie. Assurez-vous de modifier le titre dans l'onglet « Titre et image ».",
     "title": "Modifier : {title}",
-    "warning": "Attention ! Vous modifiez une campagne en cours. Modifier les propriétés du formulaire risque de rendre les réponses précédentes inutilisables."
+    "warning": "Attention ! Vous modifiez une CrowdNewsrooms en cours. Modifier les propriétés du formulaire risque de rendre les réponses précédentes inutilisables."
   },
   "editNotice": {
     "title": "Modifier : {title}"
@@ -1247,12 +1255,12 @@
   "homePage": {
     "editProfile": "Modifiez votre profil communautaire",
     "manageContribution": "Gérer votre cotisation",
-    "newCallout": "Nouvelle campagne !",
-    "openCallouts": "Campagnes actives",
+    "newCallout": "Nouvelle CrowdNewsrooms !",
+    "openCallouts": "CrowdNewsrooms actives",
     "quickActions": "Actions rapides",
     "title": "Accueil",
-    "viewAllCallouts": "Voir toutes les campagnes",
-    "viewOpenCallouts": "Voir les campagnes actives",
+    "viewAllCallouts": "Voir toutes les CrowdNewsrooms",
+    "viewOpenCallouts": "Voir les CrowdNewsrooms actives",
     "welcome": "Bienvenue à bord {firstName} !",
     "yourProfile": "Votre profil"
   },
@@ -1342,9 +1350,9 @@
         "description": "Composez votre écran de confirmation",
         "joinSurvey": {
           "required": "Les utilisateurs doivent compléter le sondage avant de continuer",
-          "slug": "Campagne",
-          "slugHelp": "Vous pouvez utiliser n'importe quelle campagne active n'ayant pas de date d'expiration.",
-          "text": "Vous pouvez demander à vos nouveaux utilisateurs de compléter une campagne dans le processus d'inscription. C'est un bon moyen de leur demander pourquoi ils se sont inscrits ou si vous souhaitez obtenir d'autres informations.",
+          "slug": "CrowdNewsrooms",
+          "slugHelp": "Vous pouvez utiliser n'importe quelle CrowdNewsrooms active n'ayant pas de date d'expiration.",
+          "text": "Vous pouvez demander à vos nouveaux utilisateurs de compléter une CrowdNewsrooms dans le processus d'inscription. C'est un bon moyen de leur demander pourquoi ils se sont inscrits ou si vous souhaitez obtenir d'autres informations.",
           "textIntro": "Indiquez à vos utilisateurs pourquoi vous leur demandez cette information",
           "title": "Rejoindre le sondage"
         },
@@ -1393,7 +1401,7 @@
     "account": "Compte",
     "admin": "Administration",
     "adminSettings": "Paramètres",
-    "callouts": "Campagnes",
+    "callouts": "CrowdNewsrooms",
     "contacts": "Contacts",
     "contribution": "Cotisation",
     "dashboard": "Tableau de bord",
