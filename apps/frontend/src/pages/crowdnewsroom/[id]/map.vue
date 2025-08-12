@@ -735,6 +735,11 @@ async function handleLoad({ map: mapInstance }: { map: Map }) {
       (key) => mapIconStyling.value?.[key]?.color || 'black'
     )
   );
+
+  // Add default icon and color
+  iconNames.add('circle');
+  iconColors.add('black');
+
   for (const iconName of iconNames) {
     for (const color of iconColors) {
       const svgString = getImageString(iconName, color);

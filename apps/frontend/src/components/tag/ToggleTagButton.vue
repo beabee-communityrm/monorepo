@@ -36,13 +36,14 @@ import { useI18n } from 'vue-i18n';
 const emit = defineEmits<{
   (event: 'toggle', id: string, successText: string): void;
 }>();
-defineProps<{
+interface Props {
   tagItems: { id: string; label: string }[];
   selectedTags: string[];
   manageUrl: string;
   withText?: boolean;
   selectable?: boolean;
-}>();
+}
+withDefaults(defineProps<Props>(), { selectable: true });
 
 const { t } = useI18n();
 

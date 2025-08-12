@@ -120,23 +120,23 @@ addBreadcrumb(
           {
             title: t('menu.callouts'),
             icon: faBullhorn,
-            to: '/admin/callouts',
+            to: '/admin/crowdnewsroom',
           },
           ...(props.id
             ? [
                 {
                   title: tabs.value?.titleAndImage.title.default,
-                  to: '/admin/callouts/view/' + props.id,
+                  to: '/admin/crowdnewsroom/view/' + props.id,
                 },
                 {
                   title: t('actions.edit'),
-                  to: '/admin/callouts/edit/' + props.id,
+                  to: '/admin/crowdnewsroom/edit/' + props.id,
                 },
               ]
             : [
                 {
                   title: t('calloutsAdmin.addCallout'),
-                  to: '/admin/callouts/new',
+                  to: '/admin/crowdnewsroom/new',
                 },
               ]),
         ]
@@ -177,7 +177,7 @@ async function handleUpdate() {
   });
 
   if (!isUpdateAction.value) {
-    router.push({ path: '/admin/callouts/view/' + callout.slug });
+    router.push({ path: '/admin/crowdnewsroom/view/' + callout.slug });
   }
 }
 
@@ -188,7 +188,7 @@ async function handleSaveDraft() {
     variant: 'success',
   });
 
-  router.push({ path: '/admin/callouts/edit/' + callout.slug });
+  router.push({ path: '/admin/crowdnewsroom/edit/' + callout.slug });
 
   // If reverting from other status then reset form
   if (!isNewOrDraft.value) {
@@ -202,7 +202,7 @@ async function handlePreview() {
   const callout = await saveCallout(status.value === ItemStatus.Draft);
 
   if (previewWindow) {
-    previewWindow.location.href = `/callouts/${callout.slug}?preview`;
+    previewWindow.location.href = `/crowdnewsroom/${callout.slug}?preview`;
   }
 }
 

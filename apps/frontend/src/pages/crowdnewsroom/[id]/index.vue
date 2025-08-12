@@ -26,7 +26,7 @@ meta:
     <div class="w-full md:max-w-2xl">
       <template v-if="!isRespondPage">
         <div v-if="callout.status === ItemStatus.Open" class="mb-6">
-          <AppShareBox :url="`${env.appUrl}/callouts/${callout.slug}`" />
+          <AppShareBox :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`" />
         </div>
         <img class="mb-6 w-full" :src="imageUrl" />
         <div class="content-message mb-6 text-lg" v-html="callout.intro" />
@@ -39,7 +39,7 @@ meta:
           v-if="canRespond && !isRespondPage"
           class="w-full"
           :to="{
-            path: '/callouts/' + callout.slug + '/respond',
+            path: '/crowdnewsroom/' + callout.slug + '/respond',
             query: route.query,
           }"
         >
@@ -130,24 +130,24 @@ addBreadcrumb(
         ? [
             {
               title: t('menu.callouts'),
-              to: '/admin/callouts',
+              to: '/admin/crowdnewsroom',
               icon: faBullhorn,
             },
             {
               title: props.callout.title,
-              to: '/admin/callouts/view/' + props.callout.slug,
+              to: '/admin/crowdnewsroom/view/' + props.callout.slug,
             },
             { title: t('actions.preview') },
           ]
         : [
             {
               title: t('menu.callouts'),
-              to: '/callouts',
+              to: '/crowdnewsroom',
               icon: faBullhorn,
             },
             {
               title: props.callout.title,
-              to: '/callouts/' + props.callout.slug,
+              to: '/crowdnewsroom/' + props.callout.slug,
             },
             ...(props.respond ? [{ title: t('actions.respond') }] : []),
           ]
@@ -198,7 +198,7 @@ function handleSubmitResponse() {
     window.location.href = props.callout.thanksRedirect;
   } else {
     router.push({
-      path: `/callouts/${props.callout.slug}/thanks`,
+      path: `/crowdnewsroom/${props.callout.slug}/thanks`,
       query: route.query,
     });
   }
