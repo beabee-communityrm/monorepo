@@ -18,7 +18,7 @@ import { toRef } from 'vue';
 import { useCalloutVariants } from './use-callout';
 
 const props = defineProps<{
-  callout: GetCalloutDataWith<'variants'>;
+  callout: GetCalloutDataWith<'variantNames'>;
 }>();
 
 const { variantItems, currentVariant } = useCalloutVariants(

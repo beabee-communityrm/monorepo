@@ -16,7 +16,7 @@ import { useRoute } from 'vue-router';
 
 const props = defineProps<{ id: string }>();
 const callout =
-  ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>>();
+  ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>>();
 
 const route = useRoute();
 
