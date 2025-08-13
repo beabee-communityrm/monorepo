@@ -246,6 +246,39 @@
                   :label="inputT('mapSchema.geocodeCountries.label')"
                 />
               </AppFormField>
+              <AppFormField>
+                <AppSelect
+                  v-model="localData.mapSchema.mapIconProp"
+                  :label="inputT('mapSchema.mapIconProp.label')"
+                  :items="[
+                    {
+                      id: '',
+                      label: inputT('mapSchema.mapIconProp.none'),
+                    },
+                    ...mapIconQuestions,
+                  ]"
+                />
+              </AppFormField>
+              <div
+                v-if="
+                  localData.mapSchema.mapIconStyling &&
+                  localData.mapSchema.mapIconProp
+                "
+              >
+                <AppLabel
+                  :label="inputT('mapSchema.mapIconStylingProp.label')"
+                />
+                <MapIconPicker
+                  v-for="(answer, i) in mapIconAnswers"
+                  :key="i"
+                  v-model="
+                    localData.mapSchema.mapIconStyling[
+                      localData.mapSchema.mapIconProp
+                    ][answer.value]
+                  "
+                  :answer="answer"
+                />
+              </div>
             </AppFormBox>
           </AppScrollSection>
         </template>
@@ -267,6 +300,7 @@ import {
   AppFormBox,
   AppFormField,
   AppInput,
+  AppLabel,
   AppLinkList,
   AppScrollNavigation,
   AppScrollSection,
@@ -275,6 +309,7 @@ import {
   type ScrollSection,
 } from '@beabee/vue';
 
+import MapIconPicker from '@components/pages/admin/callouts/MapIconPicker.vue';
 import { buckets } from '@utils/callouts';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, watch } from 'vue';
@@ -368,6 +403,13 @@ const formComponentItems = computed(() =>
       id: c.fullKey,
       label: c.label || c.fullKey,
       type: c.type,
+      multiple: c.multiple || false,
+      values:
+        c.type === 'select'
+          ? c.data.values
+          : c.type === 'radio'
+            ? c.values || []
+            : [],
     }))
 );
 
@@ -383,6 +425,50 @@ const textComponentItems = computed(() =>
   formComponentItems.value.filter(
     (c) => c.type === 'textfield' || c.type === 'textarea'
   )
+);
+
+const mapIconQuestions = computed(() =>
+  formComponentItems.value.filter(
+    (c) => (c.type === 'select' && !c.multiple) || c.type === 'radio'
+  )
+);
+
+const mapIconAnswers = computed(() => {
+  const question = mapIconQuestions.value.find(
+    (q) => q.id === localData.value.mapSchema.mapIconProp
+  );
+  return question ? question.values : [];
+});
+
+function initializeMapSchema() {
+  const mapSchema = localData.value.mapSchema;
+
+  if (!mapSchema.mapIconProp) return;
+
+  if (!mapSchema.mapIconStyling) {
+    mapSchema.mapIconStyling = {};
+  }
+
+  if (!mapSchema.mapIconStyling?.[mapSchema.mapIconProp]) {
+    mapSchema.mapIconStyling[mapSchema.mapIconProp] = {};
+  }
+
+  for (const { value } of mapIconAnswers.value) {
+    if (!mapSchema.mapIconStyling[mapSchema.mapIconProp][value]) {
+      mapSchema.mapIconStyling[mapSchema.mapIconProp][value] = {
+        color: '#262453',
+        icon: { prefix: 'fas', name: 'circle' },
+      };
+    }
+  }
+}
+
+watch(
+  () => mapIconAnswers.value,
+  () => {
+    initializeMapSchema();
+  },
+  { immediate: true }
 );
 
 const mapCenter = computed({

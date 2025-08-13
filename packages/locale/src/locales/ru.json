@@ -485,7 +485,18 @@
                 "help": "",
                 "label": ""
               },
-              "title": ""
+              "title": "",
+              "mapIconStylingSetting": {
+                "label": "",
+                "title": ""
+              },
+              "mapIconProp": {
+                "label": "",
+                "none": ""
+              },
+              "mapIconStylingProp": {
+                "label": ""
+              }
             },
             "newsletterSettings": {
               "disabled": "",
