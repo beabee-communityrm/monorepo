@@ -1,8 +1,8 @@
 <template>
   <AppRepeatable
-    v-model="links"
+    :model-value="modelValue"
     :new-item="() => ({ text: '', url: '' })"
-    :add-label="resolvedAddLabel"
+    :add-label="t('actions.add')"
   >
     <template #default="{ item }">
       <div class="flex-1">
@@ -31,7 +31,6 @@
  *
  * Uses internal i18n for add button: actions.add
  */
-import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppInput from './AppInput.vue';
@@ -43,6 +42,8 @@ const { t } = useI18n();
  * Props for the AppLinkList component
  */
 export interface AppLinkListProps {
+  /** The model value of the link list */
+  modelValue: { text: string; url: string }[];
   /** The placeholder for the link text field */
   placeholderLabel?: string;
   /** The placeholder for the URL field */
@@ -51,15 +52,7 @@ export interface AppLinkListProps {
   textLabel?: string;
   /** The label for the URL field */
   urlLabel?: string;
-  /** Optional override for the add button label */
-  addLabel?: string;
 }
 
-const props = defineProps<AppLinkListProps>();
-
-// v-model support for the link list
-const links = defineModel<{ text: string; url: string }[]>({ default: [] });
-
-// Resolve add label: prefer provided prop, fallback to i18n default
-const resolvedAddLabel = computed(() => props.addLabel ?? t('actions.add'));
+defineProps<AppLinkListProps>();
 </script>
