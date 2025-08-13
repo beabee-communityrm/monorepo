@@ -47,7 +47,6 @@ onBeforeMount(async () => {
     'form',
     'responseCount',
     'responseViewSchema',
-    'variants',
   ]);
 });
 </script>
