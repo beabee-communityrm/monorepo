@@ -56,7 +56,7 @@ import { useCallout } from './use-callout';
 
 defineEmits<(e: 'close') => void>();
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'variants'>;
+  callout: GetCalloutDataWith<'form' | 'variantNames'>;
   answers?: CalloutResponseAnswersSlide;
 }>();
 

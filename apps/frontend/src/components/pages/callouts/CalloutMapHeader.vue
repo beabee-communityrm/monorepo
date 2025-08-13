@@ -72,7 +72,7 @@ import { useCalloutVariants } from './use-callout';
 
 defineEmits<{ (e: 'addnew'): void }>();
 const props = defineProps<{
-  callout: GetCalloutDataWith<'responseViewSchema' | 'variants'>;
+  callout: GetCalloutDataWith<'responseViewSchema' | 'variantNames'>;
   map?: boolean;
 }>();
 

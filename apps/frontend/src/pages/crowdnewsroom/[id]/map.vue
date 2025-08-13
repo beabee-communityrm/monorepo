@@ -276,7 +276,7 @@ const SOURCE_IDS = {
 } as const;
 
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>;
+  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>;
   // Suppress the warning about the ID prop being passed by the router
   id: string;
 }>();

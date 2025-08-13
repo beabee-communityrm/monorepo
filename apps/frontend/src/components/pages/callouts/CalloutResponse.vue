@@ -87,31 +87,20 @@ import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
-import { generalContent } from '@store';
-import { generateResponseLinksWithFallbacks } from '@utils/callouts';
 import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import CalloutForm from './CalloutForm.vue';
 
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>;
+  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>;
   response: GetCalloutResponseMapData;
 }>();
 
-const { locale } = useI18n();
 const currentPhotoIndex = ref(0);
 
-// Generate localized response links with fallback support
+// Use response links directly - fallback logic is already applied by parent component
 const localizedResponseLinks = computed(() => {
-  if (!props.callout.responseViewSchema?.links) return [];
-
-  return generateResponseLinksWithFallbacks(
-    props.callout.responseViewSchema.links,
-    props.callout.variants,
-    locale.value,
-    generalContent.value.locale || 'en'
-  );
+  return props.callout.responseViewSchema?.links || [];
 });
 
 // Don't show admin-only fields (they would always be empty as the API doesn't return their answers)
