@@ -72,6 +72,52 @@ BEABEE_MAPTILER_KEY=your_maptiler_api_key
 
 > ⚠️ **Important**: Use test keys for development, never production keys in local environment.
 
+### Stripe setup (development)
+
+Follow these exact steps to obtain the Stripe values and make the local webhook work:
+
+1. Get API keys in Stripe Dashboard (Test mode):
+
+   - Go to Developers → API keys and copy the Publishable key (`pk_test_…`) and Secret key (`sk_test_…`).
+   - Screenshot for reference:
+
+     ![Stripe API keys](./assets/stripe-keys.png)
+
+2. Set the keys in your `.env` before starting Docker:
+
+   ```bash
+   BEABEE_STRIPE_PUBLICKEY=pk_test_...
+   BEABEE_STRIPE_SECRETKEY=sk_test_...
+   ```
+
+3. Get the Membership Product ID:
+
+   - Go to Product catalogue → open your “Membership” product → copy the Product ID (`prod_…`).
+   - Screenshot for reference:
+
+     ![Stripe product ID](./assets/stripe-membership.png)
+
+   - Add it to `.env`:
+
+   ```bash
+   BEABEE_STRIPE_MEMBERSHIPPRODUCTID=prod_...
+   ```
+
+4. Start Docker and retrieve the Webhook Signing Secret via Stripe CLI:
+   - Start the stack (the Stripe CLI service uses your `BEABEE_STRIPE_SECRETKEY`):
+   ```bash
+   docker compose up -d
+   ```
+   - Read the webhook secret from the Stripe CLI logs and set it in `.env`:
+   ```bash
+   docker compose logs -f stripe_cli | grep -i "webhook signing secret"
+   # Example output: Your webhook signing secret is whsec_XXXX
+   # Then set:
+   BEABEE_STRIPE_WEBHOOKSECRET=whsec_...
+   ```
+
+Once all four variables are set, restart the stack if needed.
+
 ## Environment File Details
 
 ### `.env` - Main Development Environment
