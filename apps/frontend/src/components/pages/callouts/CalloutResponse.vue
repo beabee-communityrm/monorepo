@@ -87,11 +87,11 @@ import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
+import { generalContent } from '@store';
+import { generateResponseLinksWithFallbacks } from '@utils/callouts';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { generalContent } from '@store';
-import { generateResponseLinksWithFallbacks } from '@utils/callouts';
 import CalloutForm from './CalloutForm.vue';
 
 const props = defineProps<{
@@ -105,7 +105,7 @@ const currentPhotoIndex = ref(0);
 // Generate localized response links with fallback support
 const localizedResponseLinks = computed(() => {
   if (!props.callout.responseViewSchema?.links) return [];
-  
+
   return generateResponseLinksWithFallbacks(
     props.callout.responseViewSchema.links,
     props.callout.variants,

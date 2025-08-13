@@ -149,7 +149,6 @@ class CalloutTransformer extends BaseTransformer<
       componentText: variant.componentText,
     };
 
-    // Keep response view schema unchanged - let frontend handle fallback logic like componentText
     const resolvedResponseViewSchema = callout.responseViewSchema;
 
     return {

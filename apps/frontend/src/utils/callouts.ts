@@ -263,12 +263,12 @@ export function convertCalloutToTabs(
 
   // Build responseLinkText from variants like componentText
   const responseLinkText: Record<string, LocaleProp> = {};
-  
+
   // Initialize with response link labels as defaults
   for (const link of callout?.responseViewSchema?.links || []) {
     responseLinkText[link.text] = { default: link.text };
   }
-  
+
   // Load existing translations from variants
   if (callout?.variants) {
     for (const variant in callout.variants) {
@@ -985,7 +985,8 @@ export function generateResponseLinksWithFallbacks(
     }
 
     // Apply fallback logic
-    const translatedText = getLocalizedValue(textProp, currentLocale, defaultLocale) || link.text;
+    const translatedText =
+      getLocalizedValue(textProp, currentLocale, defaultLocale) || link.text;
 
     return {
       ...link,
