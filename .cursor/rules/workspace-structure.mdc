@@ -13,7 +13,6 @@ alwaysApply: false
 - `@beabee/core` - Backend core with models, services, providers
 - `@beabee/vue` - Vue components library for frontend
 - `@beabee/locale` - Internationalization and translations
-- `@beabee/fontawesome` - Complete FontAwesome integration with search, filtering, and icon picker functionality
 - `@beabee/prettier-config` - Code formatting configuration
 - `@beabee/tsconfig` - TypeScript configurations (frontend, server, vanilla)
 - `@beabee/test-utils` - Testing utilities and helpers
