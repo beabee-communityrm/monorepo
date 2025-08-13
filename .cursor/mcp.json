@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "beabee-dev-cli": {
+      "command": "node",
+      "args": [
+        "--experimental-specifier-resolution=node",
+        "--experimental-strip-types",
+        "--experimental-transform-types",
+        "--no-warnings",
+        "./apps/dev-cli/src/index.ts",
+        "mcp"
+      ]
+    }
+  }
+}
