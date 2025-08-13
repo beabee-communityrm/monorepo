@@ -475,17 +475,6 @@
               "initialZoom": {
                 "label": ""
               },
-              "mapIconProp": {
-                "label": "",
-                "none": ""
-              },
-              "mapIconStylingProp": {
-                "label": ""
-              },
-              "mapIconStylingSetting": {
-                "label": "",
-                "title": ""
-              },
               "maxZoom": {
                 "label": ""
               },
