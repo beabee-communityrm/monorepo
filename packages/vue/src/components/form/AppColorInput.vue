@@ -23,6 +23,7 @@
     alpha-channel="hide"
     :color="modelValue"
     @color-change="changeColor($event.colors.hex)"
+    :class="rightAligned ? 'ml-8' : ''"
   >
     <template #format-switch-button>
       <font-awesome-icon :icon="faSort" />
@@ -43,6 +44,8 @@ export interface AppColorInputProps {
   id: string;
   /** The model value of the color input */
   modelValue: string;
+  /** The name of the color input */
+  rightAligned?: boolean;
 }
 
 const emit = defineEmits(['update:modelValue']);

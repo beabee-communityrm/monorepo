@@ -485,7 +485,21 @@
                 "help": "<p>La visualisation sous forme de carte <strong>nécessite un outil tiers</strong> tel que <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> ou <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Ces outils vous sont fournis avec l'URL du style de carte que vous devez coller ici.</p>",
                 "label": "URL du style de carte"
               },
-              "title": "Paramètres de carte"
+              "title": "Paramètres de carte",
+              "mapIconQuestions": {
+                "label": ""
+              },
+              "mapIconStylingSetting": {
+                "label": "",
+                "title": ""
+              },
+              "mapIconProp": {
+                "label": "",
+                "none": ""
+              },
+              "mapIconStylingProp": {
+                "label": ""
+              }
             },
             "newsletterSettings": {
               "disabled": "Vous ne pouvez pas demander d'inscription à la lettre d'information si vous ne collectez pas les informations de contact",
