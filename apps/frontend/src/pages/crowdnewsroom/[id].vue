@@ -14,7 +14,7 @@ import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const callout =
-  ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>>();
+  ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>>();
 
 const route = useRoute('/crowdnewsroom/[id]');
 

@@ -40,13 +40,18 @@ addBreadcrumb(
 );
 
 const callout =
-  ref<GetCalloutDataWith<'form' | 'responseCount' | 'responseViewSchema'>>();
+  ref<
+    GetCalloutDataWith<
+      'form' | 'responseCount' | 'responseViewSchema' | 'variants'
+    >
+  >();
 
 onBeforeMount(async () => {
   callout.value = await client.callout.get(route.params.id, [
     'form',
     'responseCount',
     'responseViewSchema',
+    'variants',
   ]);
 });
 </script>
