@@ -92,7 +92,7 @@ import { computed, ref, watch } from 'vue';
 import CalloutForm from './CalloutForm.vue';
 
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>;
+  callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;
   response: GetCalloutResponseMapData;
 }>();
 

@@ -40,11 +40,7 @@ addBreadcrumb(
 );
 
 const callout =
-  ref<
-    GetCalloutDataWith<
-      'form' | 'responseCount' | 'responseViewSchema' | 'variants'
-    >
-  >();
+  ref<GetCalloutDataWith<'form' | 'responseCount' | 'responseViewSchema'>>();
 
 onBeforeMount(async () => {
   callout.value = await client.callout.get(props.id, [
