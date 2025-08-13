@@ -1,5 +1,3 @@
-import { CalloutMapSchemaIconStyling } from './callout-map-schema-icon-styling';
-
 export interface CalloutMapSchema {
   style: string;
   center: [number, number];
@@ -11,6 +9,4 @@ export interface CalloutMapSchema {
   addressPattern: string;
   addressPatternProp: string;
   geocodeCountries?: string;
-  mapIconProp?: string;
-  mapIconStyling?: CalloutMapSchemaIconStyling;
 }

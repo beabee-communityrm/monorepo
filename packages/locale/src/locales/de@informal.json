@@ -485,18 +485,7 @@
                 "help": "<p>Die Kartenansicht <strong>erfordert ein Drittanbieter-Kartentool</strong> wie <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> oder <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Diese Tools stellen dir die Karten-Style-URL zur Verfügung, die du hier einfügen musst.</p>",
                 "label": "Karten-Style-URL"
               },
-              "title": "Karteneinstellungen",
-              "mapIconProp": {
-                "label": "Sollen Antworten mit speziellen Symbolen auf der Karte angezeigt werden?",
-                "none": "– Standard-Symbole für alle Antworten verwenden –"
-              },
-              "mapIconStylingProp": {
-                "label": "Bezeichnung"
-              },
-              "mapIconStylingSetting": {
-                "title": "Symbolstil auf der Karte",
-                "label": "Bitte wähle eine Farbe und ein Symbol für die Antwort aus:"
-              }
+              "title": "Karteneinstellungen"
             },
             "newsletterSettings": {
               "disabled": "Du kannst keine Newsletter-Anmeldungen anfordern, wenn du keine Kontaktinformationen sammelst",
