@@ -149,20 +149,8 @@ class CalloutTransformer extends BaseTransformer<
       componentText: variant.componentText,
     };
 
-    // If variant-specific response link translations are present, resolve their labels here
-    // so consumers can render localized footer links without extra client logic.
-    const resolvedResponseViewSchema = callout.responseViewSchema
-      ? {
-          ...callout.responseViewSchema,
-          links: callout.responseViewSchema.links.map((l) => ({
-            ...l,
-            text:
-              variant.responseLinkText?.[l.text] !== undefined
-                ? variant.responseLinkText[l.text]
-                : l.text,
-          })),
-        }
-      : null;
+    // Keep response view schema unchanged - let frontend handle fallback logic like componentText
+    const resolvedResponseViewSchema = callout.responseViewSchema;
 
     return {
       id: callout.id,

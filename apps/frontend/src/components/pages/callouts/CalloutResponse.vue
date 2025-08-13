@@ -57,11 +57,11 @@
     />
 
     <ul
-      v-if="callout.responseViewSchema.links.length > 0"
+      v-if="localizedResponseLinks.length > 0"
       class="mt-8 columns-2 gap-4 border-t border-t-primary pt-8"
     >
       <li
-        v-for="link in callout.responseViewSchema.links"
+        v-for="link in localizedResponseLinks"
         :key="link.url"
         class="break-inside-avoid"
       >
@@ -88,15 +88,31 @@ import {
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
+import { generalContent } from '@store';
+import { generateResponseLinksWithFallbacks } from '@utils/callouts';
 import CalloutForm from './CalloutForm.vue';
 
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;
+  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>;
   response: GetCalloutResponseMapData;
 }>();
 
+const { locale } = useI18n();
 const currentPhotoIndex = ref(0);
+
+// Generate localized response links with fallback support
+const localizedResponseLinks = computed(() => {
+  if (!props.callout.responseViewSchema?.links) return [];
+  
+  return generateResponseLinksWithFallbacks(
+    props.callout.responseViewSchema.links,
+    props.callout.variants,
+    locale.value,
+    generalContent.value.locale || 'en'
+  );
+});
 
 // Don't show admin-only fields (they would always be empty as the API doesn't return their answers)
 const viewOnlyCallout = computed(() => ({

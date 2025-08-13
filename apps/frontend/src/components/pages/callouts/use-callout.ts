@@ -7,7 +7,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 export const HASH_PREFIX = '#response-' as const;
 
-export function useCallout(callout: Ref<GetCalloutDataWith<'variantNames'>>) {
+export function useCallout(callout: Ref<GetCalloutDataWith<'variants'>>) {
   const isOpen = computed(() => callout.value.status === ItemStatus.Open);
 
   // Callout is only for members and current user isn't logged in
@@ -31,13 +31,13 @@ export function useCallout(callout: Ref<GetCalloutDataWith<'variantNames'>>) {
 }
 
 export function useCalloutVariants(
-  callout: Ref<GetCalloutDataWith<'variantNames'>>
+  callout: Ref<GetCalloutDataWith<'variants'>>
 ) {
   const route = useRoute();
   const router = useRouter();
 
   const variantItems = computed(() =>
-    callout.value.variantNames.map((variantName) => {
+    Object.keys(callout.value.variants).map((variantName) => {
       const localeName =
         variantName === 'default' ? generalContent.value.locale : variantName;
 

@@ -261,17 +261,36 @@ export function convertCalloutToTabs(
     shareDescription: variants.shareDescription,
   };
 
+  // Build responseLinkText from variants like componentText
+  const responseLinkText: Record<string, LocaleProp> = {};
+  
+  // Initialize with response link labels as defaults
+  for (const link of callout?.responseViewSchema?.links || []) {
+    responseLinkText[link.text] = { default: link.text };
+  }
+  
+  // Load existing translations from variants
+  if (callout?.variants) {
+    for (const variant in callout.variants) {
+      for (const ref in callout.variants[variant].responseLinkText) {
+        responseLinkText[ref] ||= { default: ref };
+        const text = callout.variants[variant].responseLinkText[ref];
+        if (text) {
+          if (variant === 'default') {
+            responseLinkText[ref].default = text;
+          } else {
+            responseLinkText[ref][variant] = text;
+          }
+        }
+      }
+    }
+  }
+
   // Translations tab data
   const translations: TranslationsTabData = {
     locales,
     componentText,
-    // Initialize editor-side LocaleProp map for response link labels using ref keys as default
-    responseLinkText: Object.fromEntries(
-      (callout?.responseViewSchema?.links || []).map((l) => [
-        l.text,
-        { default: l.text },
-      ])
-    ),
+    responseLinkText,
   };
 
   return {
@@ -925,6 +944,52 @@ export function generateSlidesWithNavigationFallbacks(
     return {
       ...slide,
       navigation,
+    };
+  });
+}
+
+/**
+ * Generate response links with fallback support from callout variant data
+ *
+ * This function applies the same fallback logic to response link labels
+ * as the component text function, ensuring proper localization.
+ *
+ * @param links - The response links from the callout
+ * @param variants - The callout variant data
+ * @param currentLocale - The current locale (e.g., 'de@easy', 'de', 'en')
+ * @param defaultLocale - The default locale (usually 'en')
+ * @returns Response links with label fallbacks applied
+ */
+export function generateResponseLinksWithFallbacks(
+  links: { text: string; url: string }[],
+  variants: Record<string, CalloutVariantData> | undefined,
+  currentLocale: string,
+  defaultLocale: string
+): { text: string; url: string }[] {
+  if (!variants || !links.length) return links;
+
+  return links.map((link) => {
+    // Create LocaleProp structure for this link's text
+    const textProp: LocaleProp = { default: link.text };
+
+    // Collect translations from all variants
+    for (const variant in variants) {
+      const text = variants[variant].responseLinkText?.[link.text];
+      if (text) {
+        if (variant === 'default') {
+          textProp.default = text;
+        } else {
+          textProp[variant] = text;
+        }
+      }
+    }
+
+    // Apply fallback logic
+    const translatedText = getLocalizedValue(textProp, currentLocale, defaultLocale) || link.text;
+
+    return {
+      ...link,
+      text: translatedText,
     };
   });
 }
