@@ -7,7 +7,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 export const HASH_PREFIX = '#response-' as const;
 
-export function useCallout(callout: Ref<GetCalloutDataWith<'variantNames'>>) {
+export function useCallout(callout: Ref<GetCalloutDataWith<'form'>>) {
   const isOpen = computed(() => callout.value.status === ItemStatus.Open);
 
   // Callout is only for members and current user isn't logged in
