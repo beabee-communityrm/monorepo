@@ -9,19 +9,23 @@ This guide explains how to work with environment variables in the Beabee project
 Environment variable documentation is organized by location and purpose:
 
 ### Primary Documentation (TypeScript Files)
+
 - **Backend Variables**: `packages/core/src/config/config.ts` - Comprehensive JSDoc comments with types, defaults, and validation
 - **Frontend Variables**: `apps/frontend/src/env.ts` - Frontend-specific variables with detailed documentation
 - **Test Variables**: `packages/test-utils/vitest/env.ts` - Test environment configuration
 
 ### Quick Reference (Example Files)
+
 - **`.env.example`** - Simplified overview with required/optional indicators
 - **`.env.test.example`** - Test environment overrides
 - **`.env.remote.example`** - Remote CLI configuration
 
 ### This Guide
+
 Focuses on workflows, setup procedures, and best practices.
 
 When adding or updating environment variables:
+
 1. Update the relevant TypeScript file with full documentation
 2. Update the corresponding `.env.example` file with a brief description
 3. Update this guide only if workflows change
@@ -49,6 +53,7 @@ yarn bootstrap
 ```
 
 This command copies:
+
 - `.env.example` → `.env`
 - `.env.remote.example` → `.env.remote`
 - `.env.test.example` → `.env.test`
@@ -62,6 +67,7 @@ BEABEE_STRIPE_PUBLICKEY=pk_test_...
 BEABEE_STRIPE_SECRETKEY=sk_test_...
 BEABEE_STRIPE_WEBHOOKSECRET=whsec_...
 BEABEE_STRIPE_MEMBERSHIPPRODUCTID=prod_...
+BEABEE_MAPTILER_KEY=your_maptiler_api_key
 ```
 
 > ⚠️ **Important**: Use test keys for development, never production keys in local environment.
@@ -73,6 +79,7 @@ BEABEE_STRIPE_MEMBERSHIPPRODUCTID=prod_...
 **Purpose**: Primary configuration for local development with Docker Compose.
 
 **Key Features**:
+
 - Core application settings
 - Database configuration
 - Payment provider credentials
@@ -83,6 +90,7 @@ BEABEE_STRIPE_MEMBERSHIPPRODUCTID=prod_...
 **Usage**: Automatically loaded by Docker Compose and development tools.
 
 **Port Configuration**:
+
 ```bash
 # Development Ports
 VITE_DEV_SERVER_PORT=3000    # Frontend dev server
@@ -92,6 +100,7 @@ DB_PORT=6543                # PostgreSQL database
 ```
 
 **Access Points**:
+
 - Frontend (Vite): http://localhost:3000 (uses BEABEE_AUDIENCE for API proxy)
 - Router (Docker): http://localhost:3002 (configured via BEABEE_AUDIENCE)
 - MailDev: http://localhost:3025
@@ -101,17 +110,20 @@ DB_PORT=6543                # PostgreSQL database
 **Purpose**: Enables running the backend CLI locally while connecting to a remote server.
 
 **Key Features**:
+
 - Remote database connection
 - Minimal configuration override
 - CLI-specific settings
 
 **Usage**:
+
 ```bash
 # Run CLI commands against remote server
 yarn backend-cli [command]
 ```
 
 **Configuration Example**:
+
 ```bash
 # Connect to remote production database
 BEABEE_DATABASE_URL=postgres://user:pass@your-server.com:5432/beabee_production
@@ -120,6 +132,7 @@ BEABEE_AUDIENCE=https://your-beabee-instance.com
 ```
 
 **Environment Loading Order** (when CLI runs outside Docker):
+
 1. `.env.remote` (highest priority)
 2. `.env` (root environment file)
 3. `.env.test` (if NODE_ENV=test)
@@ -129,17 +142,20 @@ BEABEE_AUDIENCE=https://your-beabee-instance.com
 **Purpose**: Configuration for local test execution and test environment setup.
 
 **Key Features**:
+
 - Test-specific ports to avoid conflicts
 - Test user credentials
 - Simplified provider configuration
 - Docker Compose test overrides
 
 **Usage**: Automatically loaded during test execution:
+
 ```bash
 yarn test
 ```
 
 **Test Ports**:
+
 ```bash
 # Test Environment Ports
 VITE_DEV_SERVER_PORT=4000    # Frontend test server
@@ -149,6 +165,7 @@ DB_PORT=5432                # Test database (container port)
 ```
 
 **Test User Configuration**:
+
 ```bash
 # Primary test user for API testing
 TEST_USER_EMAIL=test@beabee.io
@@ -169,11 +186,13 @@ TEST_RATE_LIMIT_USER_EMAIL=rate-limit-test@beabee.io
 Environment variables are comprehensively documented in the TypeScript source files:
 
 1. **Backend Variables**: [`packages/core/src/config/config.ts`](../packages/core/src/config/config.ts)
+
    - Complete JSDoc documentation for each variable
    - Type definitions and validation rules
    - Default values and allowed options
 
 2. **Frontend Variables**: [`apps/frontend/src/env.ts`](../apps/frontend/src/env.ts)
+
    - Frontend-specific environment variables
    - Usage examples and legacy fallbacks
    - Integration with build tools
@@ -213,11 +232,13 @@ Environment variables are organized into these main categories:
 ### Local Development Setup
 
 1. **Bootstrap environment files**:
+
    ```bash
    yarn bootstrap
    ```
 
 2. **Configure payment credentials** in `.env`:
+
    ```bash
    BEABEE_STRIPE_PUBLICKEY=pk_test_...
    BEABEE_STRIPE_SECRETKEY=sk_test_...
@@ -230,9 +251,41 @@ Environment variables are organized into these main categories:
    yarn dev
    ```
 
+### MapTiler maps setup
+
+Use MapTiler to power the public map in CrowdNewsroom.
+
+1. **Create a MapTiler API key**
+
+   - Sign up and create a key (limit to `localhost` for local dev if you want).
+   - ![New dev key](./assets/maptiler-new-key.png)
+   - ![MapTiler API keys](./assets/maptiler-keys.png)
+
+2. **Add the key to `.env` and restart**
+
+   - Set `BEABEE_MAPTILER_KEY=...` and apply changes:
+     ```bash
+     docker compose up -d
+     ```
+
+3. **Copy a vector style URL**
+
+   - In MapTiler → Maps, pick a style and copy the “Use vector style” JSON URL (contains `style.json?key=...`).
+   - ![Vector style URL](./assets/maptiler-map-url.png)
+
+4. **Configure your CrowdNewsroom**
+
+   - Edit or create a CrowdNewsroom → tab `Response display` → set to public → enable “Enable map view of public responses”. Paste the URL into “Map style URL”.
+   - ![CrowdNewsroom map settings](./assets/crowdnewsroom-maptiler-url.png)
+
+5. **Verify**
+   - Open `/map` on the public URL, e.g. `http://localhost:3000/crowdnewsroom/<slug>/map`.
+   - ![Map rendering in CrowdNewsroom](./assets/crowdnewsroom-maptiler-map.png)
+
 ### Remote Server Management
 
 1. **Configure remote access** in `.env.remote`:
+
    ```bash
    BEABEE_DATABASE_URL=postgres://user:pass@remote-host:5432/beabee
    BEABEE_AUDIENCE=https://your-instance.com
@@ -259,6 +312,7 @@ Environment variables are organized into these main categories:
 ### Sensitive Data
 
 Never commit the following to version control:
+
 - API keys and secrets
 - Database credentials
 - Webhook secrets
@@ -332,4 +386,4 @@ docker compose exec api_app env | grep BEABEE_
 - Keep `.env.example` files updated
 - Document required vs. optional variables
 - Provide setup instructions for new team members
-- Use clear variable names and descriptions 
+- Use clear variable names and descriptions
