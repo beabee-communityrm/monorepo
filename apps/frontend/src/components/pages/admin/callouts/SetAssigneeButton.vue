@@ -36,13 +36,18 @@ import { useI18n } from 'vue-i18n';
 const emit = defineEmits<{
   (event: 'assign', id: string | null, successText: string): void;
 }>();
-defineProps<{
+interface Props {
   reviewerItems: SelectItem<string>[];
   manageUrl?: string;
   currentAssigneeId?: string;
   withText?: boolean;
   selectable?: boolean;
-}>();
+}
+withDefaults(defineProps<Props>(), {
+  selectable: true,
+  manageUrl: undefined,
+  currentAssigneeId: undefined,
+});
 
 const { t } = useI18n();
 

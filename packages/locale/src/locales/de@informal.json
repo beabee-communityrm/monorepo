@@ -130,7 +130,7 @@
     "title": "Hinweis hinzufügen"
   },
   "adminDashboard": {
-    "hint1": "<p>Das beabee-Handbuch für Community-Journalismus <a href=\"https://beabee.io/neu-handbuch-community-journalismus/\" target=\"_blank\" rel=\"noopener noreferrer\">„Lust auf Lokal” ist erschienen</a>. Es enthält nicht nur unser gesammeltes Wissen zum Aufbau unabhängiger Lokalredaktionen, sondern auch viele Beispiele aus der Praxis.</p>\n",
+    "hint1": "<p>„Callouts“ heißen jetzt „CrowdNewsrooms“. Im <a href=\"https://wiki.beabee.io/beabee-help-center/engagement/crowdnewsroom\" target=\"_blank\" rel=\"noopener noreferrer\"> Help Center </a> findest du Anleitungen und Fallstudien, um deine Community besser einzubinden.</p>",
     "hint2": "<p>Im <a href=\"https://beabee.io/#blog\" target=\"_blank\" rel=\"noopener noreferrer\">Blog</a> auf unserer Website findest du viele Best-Practice-Beispiele anderer Redaktionen, von denen du dich inspierieren lassen kannst.</p>\n",
     "hint3": "<p>Unsere Community-Meetups finden jeden dritten Donnerstag im Monat statt. Du willst dein Best-Practice-Beispiel mit anderen teilen? Schreib eine E-Mail an <a href=\"mailto:tobias.hauswurz{'@'}correctiv.org\">tobias.hauswurz{'@'}correctiv.org</a></p>\n",
     "joinSlack": "Tritt der beabee-Community auf Slack bei!",
@@ -485,7 +485,18 @@
                 "help": "<p>Die Kartenansicht <strong>erfordert ein Drittanbieter-Kartentool</strong> wie <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> oder <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Diese Tools stellen dir die Karten-Style-URL zur Verfügung, die du hier einfügen musst.</p>",
                 "label": "Karten-Style-URL"
               },
-              "title": "Karteneinstellungen"
+              "title": "Karteneinstellungen",
+              "mapIconProp": {
+                "label": "Sollen Antworten mit speziellen Symbolen auf der Karte angezeigt werden?",
+                "none": "– Standard-Symbole für alle Antworten verwenden –"
+              },
+              "mapIconStylingProp": {
+                "label": "Bezeichnung"
+              },
+              "mapIconStylingSetting": {
+                "title": "Symbolstil auf der Karte",
+                "label": "Bitte wähle eine Farbe und ein Symbol für die Antwort aus:"
+              }
             },
             "newsletterSettings": {
               "disabled": "Du kannst keine Newsletter-Anmeldungen anfordern, wenn du keine Kontaktinformationen sammelst",
@@ -524,6 +535,7 @@
               "label": "Antwortbild"
             },
             "responseLinks": {
+              "add": "Hinzufügen",
               "description": "Verwende beispielsweise den Antwort-Fußbereich, um einen Link zum Melden eines Fehlers oder eine Kontakt-E-Mail einzufügen. Um auf eine E-Mail-Adresse zu verlinken, gib mailto: gefolgt von der E-Mail-Adresse im URL-Feld ein.",
               "label": "Einen Fußbereich am Ende der Antworten einfügen",
               "opts": {
@@ -537,7 +549,6 @@
               "text": {
                 "label": "Text"
               },
-              "add": "Hinzufügen",
               "url": {
                 "label": "Url"
               }
@@ -654,7 +665,7 @@
           "title": "Übersetzungen"
         }
       },
-      "title": "Callout-Builder",
+      "title": "CrowdNewsroom-Builder",
       "translationFields": {
         "description": "Beschreibung",
         "html": "Inhalt",
@@ -662,7 +673,7 @@
         "option": "Option {n}",
         "placeholder": "Platzhalter"
       },
-      "untitledCallout": ""
+      "untitledCallout": "Unbennater CrowdNewsroom"
     },
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",

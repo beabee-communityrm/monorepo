@@ -485,7 +485,18 @@
                 "help": "",
                 "label": ""
               },
-              "title": ""
+              "title": "",
+              "mapIconStylingSetting": {
+                "label": "",
+                "title": ""
+              },
+              "mapIconProp": {
+                "label": "",
+                "none": ""
+              },
+              "mapIconStylingProp": {
+                "label": ""
+              }
             },
             "newsletterSettings": {
               "disabled": "",
@@ -524,6 +535,7 @@
               "label": ""
             },
             "responseLinks": {
+              "add": "",
               "description": "",
               "label": "",
               "opts": {
@@ -537,7 +549,6 @@
               "text": {
                 "label": ""
               },
-              "add": "",
               "url": {
                 "label": ""
               }
@@ -814,13 +825,12 @@
   },
   "calloutReviewerManager": {
     "add": "",
+    "canEdit": "",
     "confirmDelete": {
       "text": "",
       "title": ""
     },
     "contact": "",
-    "title": "",
-    "canEdit": "",
     "editorTag": "",
     "search": {
       "error": {
@@ -829,7 +839,8 @@
       },
       "placeholder": "",
       "successMessage": ""
-    }
+    },
+    "title": ""
   },
   "calloutThanksPage": {
     "oneResponseWarning": ""
@@ -1194,8 +1205,8 @@
       }
     },
     "errorsFormio": {
-      "minLength": "",
-      "maxLength": ""
+      "maxLength": "",
+      "minLength": ""
     },
     "firstName": "Vorname",
     "lastName": "Nachname",
@@ -1559,6 +1570,16 @@
     "pleaseWait": "",
     "usuallyTakesSeconds": ""
   },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
+  },
   "tagEditor": {
     "add": "",
     "confirmDelete": {
@@ -1581,15 +1602,5 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
-  },
-  "stepper": {
-    "navigation": {
-      "label": ""
-    },
-    "screen": {
-      "hasError": "",
-      "completed": "",
-      "currentStep": ""
-    }
   }
 }

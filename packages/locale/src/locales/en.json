@@ -130,7 +130,7 @@
     "title": "Add a notice"
   },
   "adminDashboard": {
-    "hint1": "<p>Did you know CrowdNewsrooms can be created without an end date, and just keep running? See our <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">feature showcase</a> for more information.</p>\n",
+    "hint1": "<p>\"Callouts\" are now called \"CrowdNewsrooms\". Check out our <a href=\"https://wiki.beabee.io/help-center-english/engagement/crowdnewsroom\" target=\"_blank\" rel=\"noopener noreferrer\">Help Center</a> for guides and case studies to engage your community.</p>",
     "hint2": "<p>Find out more about <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">the beabee vision</a> around community engagement and meaningful relationships with your audience.</p>\n",
     "hint3": "<p>Our <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> addresses common questions about getting started and use cases. If the answer you're looking for isn't there, get in touch.</p>\n",
     "joinSlack": "Join the beabee community on Slack!",
@@ -475,6 +475,17 @@
               "initialZoom": {
                 "label": "Initial zoom level"
               },
+              "mapIconProp": {
+                "label": "Display question replies with special icons on the map?",
+                "none": "– Use default icons for all replies –"
+              },
+              "mapIconStylingProp": {
+                "label": "Label"
+              },
+              "mapIconStylingSetting": {
+                "title": "Style of Icon on Map",
+                "label": "Please select a color and icon for the answer: "
+              },
               "maxZoom": {
                 "label": "Maximum zoom level"
               },
@@ -524,6 +535,7 @@
               "label": "Response image"
             },
             "responseLinks": {
+              "add": "Add",
               "description": "For example, use the response footer to include a link to report an error or a contact email. To link to an email address, type mailto: followed by the email address in the URL field.",
               "label": "Include a footer at the bottom of responses",
               "opts": {
@@ -537,7 +549,6 @@
               "text": {
                 "label": "Text"
               },
-              "add": "Add",
               "url": {
                 "label": "Url"
               }
@@ -654,7 +665,7 @@
           "title": "Translations"
         }
       },
-      "title": "Callout builder",
+      "title": "CrowdNewsroom builder",
       "translationFields": {
         "description": "Description",
         "html": "Content",
@@ -662,7 +673,7 @@
         "option": "Option {n}",
         "placeholder": "Placeholder"
       },
-      "untitledCallout": "Untitled callout"
+      "untitledCallout": "Untitled CrowdNewsroom"
     },
     "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",

@@ -130,7 +130,7 @@
     "title": "Ajouter un avis"
   },
   "adminDashboard": {
-    "hint1": "<p>Saviez-vous que les CrowdNewsrooms peuvent être créées sans date de fin, et ne jamais s'arrêter ? Consultez nos <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">fonctionnalités</a> pour plus d'information.</p>\n",
+    "hint1": "",
     "hint2": "<p>Découvrez-en plus sur <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">la vision de beabee</a> à propos de l'engagement envers la communauté et les relations censées avec votre audience.</p>\n",
     "hint3": "<p>Notre <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> répond aux questions courantes concernant le démarrage et certains cas d'usage. Si vous n'y trouvez pas la réponse que vous cherchez, contactez-nous.</p>\n",
     "joinSlack": "Rejoignez la communauté beabee sur Slack !",
@@ -485,7 +485,21 @@
                 "help": "<p>La visualisation sous forme de carte <strong>nécessite un outil tiers</strong> tel que <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> ou <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Ces outils vous sont fournis avec l'URL du style de carte que vous devez coller ici.</p>",
                 "label": "URL du style de carte"
               },
-              "title": "Paramètres de carte"
+              "title": "Paramètres de carte",
+              "mapIconQuestions": {
+                "label": ""
+              },
+              "mapIconStylingSetting": {
+                "label": "",
+                "title": ""
+              },
+              "mapIconProp": {
+                "label": "",
+                "none": ""
+              },
+              "mapIconStylingProp": {
+                "label": ""
+              }
             },
             "newsletterSettings": {
               "disabled": "Vous ne pouvez pas demander d'inscription à la lettre d'information si vous ne collectez pas les informations de contact",
@@ -524,6 +538,7 @@
               "label": "Image de réponse"
             },
             "responseLinks": {
+              "add": "",
               "description": "Par exemple, utilisez le pied de page de réponse pour inclure un lien permettant de signaler une erreur ou un e-mail de contact. Pour lier une adresse e-mail, tapez mailto: suivi de l'adresse e-mail dans le champ URL.",
               "label": "Inclure un pied de page en bas des réponses",
               "opts": {
@@ -537,7 +552,6 @@
               "text": {
                 "label": ""
               },
-              "add": "",
               "url": {
                 "label": ""
               }
