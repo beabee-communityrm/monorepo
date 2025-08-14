@@ -475,6 +475,17 @@
               "initialZoom": {
                 "label": ""
               },
+              "mapIconProp": {
+                "label": "Selezionare una domanda per visualizzare le icone sulla mappa",
+                "none": "– Utilizzare le icone predefinite per tutte le risposte –"
+              },
+              "mapIconStylingProp": {
+                "label": "Categoria"
+              },
+              "mapIconStylingSetting": {
+                "label": "Selezionare un colore e un’icona per la risposta: ",
+                "title": "Stile dell’icona sulla mappa"
+              },
               "maxZoom": {
                 "label": ""
               },
@@ -485,18 +496,7 @@
                 "help": "",
                 "label": ""
               },
-              "title": "",
-              "mapIconStylingSetting": {
-                "label": "",
-                "title": ""
-              },
-              "mapIconProp": {
-                "label": "",
-                "none": ""
-              },
-              "mapIconStylingProp": {
-                "label": ""
-              }
+              "title": ""
             },
             "newsletterSettings": {
               "disabled": "",
