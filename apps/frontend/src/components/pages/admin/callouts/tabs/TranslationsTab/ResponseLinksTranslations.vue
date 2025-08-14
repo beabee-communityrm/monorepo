@@ -1,7 +1,7 @@
 <template>
   <AppFormBox
     v-if="responseLinks.length > 0"
-    :title="t('callout.builder.tabs.settings.inputs.responseLinks.label')"
+    :title="t('callout.builder.tabs.translations.responseLinks.title')"
   >
     <div
       v-for="(link, i) in responseLinks"
