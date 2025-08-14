@@ -76,7 +76,7 @@ meta:
       </template>
     </AppForm>
 
-    <div v-if="mode === 'reset'" class="mt-4 text-center">
+    <div v-if="props.mode === 'reset'" class="mt-4 text-center">
       <router-link
         variant="link"
         to="/auth/login"
@@ -95,7 +95,7 @@ import AuthBox from '@components/AuthBox.vue';
 import { updateCurrentUser } from '@store/index';
 import { client, isApiError } from '@utils/api';
 import { isInternalUrl } from '@utils/index';
-import { computed, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -110,8 +110,6 @@ const { t } = useI18n();
 
 const route = useRoute('reset_password');
 const router = useRouter();
-
-const mode = computed(() => props.mode);
 
 const redirectTo = route.query.next as string | undefined;
 
