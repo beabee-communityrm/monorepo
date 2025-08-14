@@ -1,7 +1,7 @@
 import type {
-  ResolvedTabItem,
-  TabItem,
-  TabNavigationOptions,
+  NavigationOptions,
+  NavigationResolvedTabItem,
+  NavigationTabItem,
 } from '@type/navigation';
 import type { Router } from 'vue-router';
 
@@ -32,9 +32,9 @@ import type { Router } from 'vue-router';
  */
 export function resolveTabNavigation(
   router: Router,
-  items: TabItem[],
-  options: TabNavigationOptions = {}
-): ResolvedTabItem[] {
+  items: NavigationTabItem[],
+  options: NavigationOptions = {}
+): NavigationResolvedTabItem[] {
   return items.map((item) => ({
     ...item,
     to: router.resolve({

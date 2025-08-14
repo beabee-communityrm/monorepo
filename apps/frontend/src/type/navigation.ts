@@ -3,7 +3,7 @@ import type { RouteNamedMap } from 'vue-router/auto-routes';
 /**
  * Tab item configuration for navigation
  */
-export interface TabItem {
+export interface NavigationTabItem {
   /** Route name - must be a valid route from RouteNamedMap */
   id: keyof RouteNamedMap;
   /** Display label for the tab */
@@ -13,7 +13,7 @@ export interface TabItem {
 /**
  * Resolved tab item with navigation URL
  */
-export interface ResolvedTabItem extends TabItem {
+export interface NavigationResolvedTabItem extends NavigationTabItem {
   /** Resolved URL for navigation */
   to: string;
 }
@@ -21,7 +21,7 @@ export interface ResolvedTabItem extends TabItem {
 /**
  * Options for tab navigation resolution
  */
-export interface TabNavigationOptions {
+export interface NavigationOptions {
   /** Route parameters to pass to all routes */
   params?: Record<string, string | number>;
   /** Query parameters to pass to all routes */
