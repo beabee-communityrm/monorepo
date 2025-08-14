@@ -665,7 +665,8 @@
           "navigationButtons": {
             "title": "Boutons"
           },
-          "title": "Traductions"
+          "title": "Traductions",
+          "responseLinks": {}
         }
       },
       "title": "",

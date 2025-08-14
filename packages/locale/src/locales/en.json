@@ -662,6 +662,9 @@
           "navigationButtons": {
             "title": "Buttons"
           },
+          "responseLinks": {
+            "title": "Response link labels"
+          },
           "title": "Translations"
         }
       },

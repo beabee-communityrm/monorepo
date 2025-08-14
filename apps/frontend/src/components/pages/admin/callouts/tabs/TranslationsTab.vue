@@ -266,9 +266,7 @@ const sections = computed<ScrollSection[]>(() => {
           { id: 'introduction', label: t('callout.builder.tabs.intro.label') },
           {
             id: 'response-links',
-            label: t(
-              'callout.builder.tabs.settings.inputs.responseLinks.label'
-            ),
+            label: t('callout.builder.tabs.translations.responseLinks.title'),
           },
         ]
       : []),
