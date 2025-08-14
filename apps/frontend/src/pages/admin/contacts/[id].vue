@@ -38,28 +38,26 @@ const { t } = useI18n();
 
 const contact = ref<GetContactData | undefined>();
 
+const contributionTab = {
+  id: 'adminContactsViewContribution',
+  label: t('contactOverview.contribution'),
+} as const;
+
 const tabs = computed(() =>
   resolveTabNavigation(
     router,
     [
       {
-        id: 'adminContactsViewOverview' as const,
+        id: 'adminContactsViewOverview',
         label: t('contactOverview.overview'),
       },
       {
-        id: 'adminContactsViewAccount' as const,
+        id: 'adminContactsViewAccount',
         label: t('contactOverview.account'),
       },
-      ...(env.cnrMode
-        ? []
-        : [
-            {
-              id: 'adminContactsViewContribution' as const,
-              label: t('contactOverview.contribution'),
-            },
-          ]),
+      ...(env.cnrMode ? [] : [contributionTab]),
       {
-        id: 'adminContactsViewCallouts' as const,
+        id: 'adminContactsViewCallouts',
         label: t('contactOverview.callouts'),
       },
     ],
