@@ -55,11 +55,9 @@ import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-const props = defineProps<{ id: string }>();
-
 const { t } = useI18n();
 
-const route = useRoute();
+const route = useRoute('reset_device');
 const router = useRouter();
 
 const redirectTo = route.query.next as string | undefined;
@@ -67,7 +65,10 @@ const redirectTo = route.query.next as string | undefined;
 const data = reactive({ password: '' });
 
 async function handleSubmit() {
-  await client.resetSecurity.resetDeviceComplete(props.id, data.password);
+  await client.resetSecurity.resetDeviceComplete(
+    route.params.id,
+    data.password
+  );
   await updateCurrentUser();
   if (isInternalUrl(redirectTo)) {
     // TODO: use router when legacy app is gone
