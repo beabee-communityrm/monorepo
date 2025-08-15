@@ -27,11 +27,7 @@
 import { AppFormBox, AppInput } from '@beabee/vue';
 
 import type { LocaleProp } from '@type/locale-prop';
-import {
-  getComponentTextFallback,
-  getComponentTextValueNoFallback,
-  updateComponentTextValue,
-} from '@utils/callouts';
+import { getComponentText, updateComponentText } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
@@ -48,16 +44,17 @@ const props = defineProps<{
 const { t } = useI18n();
 
 function getValue(ref: string, locale: string): string {
-  return getComponentTextValueNoFallback(
+  return getComponentText(
     props.responseLinkText,
     ref,
     locale,
-    props.defaultLocale
+    props.defaultLocale,
+    false // useFallback: false
   );
 }
 
 function getPlaceholder(ref: string): string {
-  return getComponentTextFallback(
+  return getComponentText(
     props.responseLinkText,
     ref,
     props.selectedLocale,
@@ -66,7 +63,7 @@ function getPlaceholder(ref: string): string {
 }
 
 function updateValue(ref: string, locale: string, value: string): void {
-  updateComponentTextValue(
+  updateComponentText(
     props.responseLinkText,
     ref,
     locale,

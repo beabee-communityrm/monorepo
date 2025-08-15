@@ -7,9 +7,9 @@ import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { generalContent } from '@store';
 import { client } from '@utils/api';
 import {
-  generateComponentTextWithFallbacks,
-  generateResponseLinksWithFallbacks,
-  generateSlidesWithNavigationFallbacks,
+  generateComponentText,
+  generateResponseLinks,
+  generateSlides,
 } from '@utils/callouts';
 import { ref } from 'vue';
 import { watch } from 'vue';
@@ -40,14 +40,14 @@ watch(
     const defaultLocale = generalContent.value.locale || 'en';
 
     // Generate component text with fallback support
-    const componentTextWithFallbacks = generateComponentTextWithFallbacks(
+    const componentTextWithFallbacks = generateComponentText(
       calloutWithVariants.variants,
       currentLocale,
       defaultLocale
     );
 
     // Generate slides with navigation fallbacks
-    const slidesWithNavigationFallbacks = generateSlidesWithNavigationFallbacks(
+    const slidesWithNavigationFallbacks = generateSlides(
       calloutWithVariants.formSchema.slides,
       calloutWithVariants.variants,
       currentLocale,
@@ -55,7 +55,7 @@ watch(
     );
 
     // Generate response links with fallback support
-    const responseLinksWithFallbacks = generateResponseLinksWithFallbacks(
+    const responseLinksWithFallbacks = generateResponseLinks(
       calloutWithVariants.responseViewSchema?.links || [],
       calloutWithVariants.variants,
       currentLocale,

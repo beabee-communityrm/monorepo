@@ -113,9 +113,6 @@ function convertVariantsForSteps(
 /**
  * Converts slide data and variants into a format suitable for the form builder
  *
- * This function transforms the callout slides and their variants into a structure
- * that can be used by the form builder, including localized navigation text and component text.
- *
  * @param slidesIn - The slides from the callout
  * @param variants - The variant data from the callout
  * @returns An object containing the transformed slides and component text
@@ -159,10 +156,6 @@ function convertSlidesForSteps(
 
 /**
  * Converts a callout object to the tab-based format used in the editor
- *
- * This function transforms a callout from the API format into the structure
- * used by the editor tabs, including content, title and image, settings,
- * dates, and translations.
  *
  * @param callout - The callout data from the API
  * @returns The callout data structured for the editor tabs
@@ -438,9 +431,6 @@ function convertSlidesForCallout(
 /**
  * Converts the tab-based editor data to the format expected by the API for creating or updating a callout
  *
- * This function transforms the complete editor tab data into the structure
- * required by the API, including slides, variants, settings, and dates.
- *
  * @param tabs - The callout data from the editor tabs
  * @returns The callout data in the format expected by the API
  */
@@ -581,19 +571,27 @@ export function getDecisionComponent(
 }
 
 /**
- * Get a localized value with fallback chain support based on locale configuration
+ * Core fallback logic for locale resolution following localeConfig fallback chains
  *
  * @param prop - The LocaleProp object containing translations
  * @param locale - The requested locale
  * @param defaultLocale - The default locale
- * @returns The localized value with fallbacks applied, or empty string if not found
+ * @param options - Configuration options for fallback behavior
+ * @returns The localized value with fallbacks applied
  */
 export function getLocalizedValue(
   prop: LocaleProp | undefined,
   locale: string,
-  defaultLocale: string
+  defaultLocale: string,
+  options: {
+    useFallback: boolean;
+    fallbackToDefault?: boolean;
+    placeholderValue?: string;
+  } = { useFallback: true, fallbackToDefault: true }
 ): string {
-  if (!prop) return '';
+  if (!prop) return options.placeholderValue || '';
+
+  const { useFallback, fallbackToDefault } = options;
 
   // If requesting default locale, return default value
   if (locale === defaultLocale) {
@@ -605,18 +603,111 @@ export function getLocalizedValue(
     return prop[locale];
   }
 
-  // Try fallback chain
+  // If fallback is disabled, return empty or placeholder
+  if (!useFallback) {
+    return options.placeholderValue || '';
+  }
+
+  // Try fallback chain from localeConfig
   let currentLocale: keyof LocaleOptions = locale as keyof LocaleOptions;
   const config = localeConfig as LocaleOptions;
+
+  // Follow the fallback chain as defined in localeConfig
   while (currentLocale && config[currentLocale]?.fallbackLocale) {
     currentLocale = config[currentLocale].fallbackLocale!;
+
+    // Try the fallback locale
     if (prop[currentLocale]) {
       return prop[currentLocale] || '';
     }
   }
 
-  // If no fallback found, try default locale
-  return prop.default || '';
+  // If no fallback found and we should fallback to default
+  if (fallbackToDefault) {
+    return prop.default || '';
+  }
+
+  return options.placeholderValue || '';
+}
+
+/**
+ * Builds LocaleProp objects from variant data, prioritizing default locale
+ *
+ * @param variants - The callout variant data
+ * @param extractor - Function to extract text from a variant
+ * @param defaultFallback - Default fallback value for missing translations
+ * @returns LocaleProp structure for the extracted text
+ */
+function createLocalePropFromVariants<T>(
+  variants: Record<string, CalloutVariantData> | undefined,
+  extractor: (variant: CalloutVariantData) => T | undefined,
+  defaultFallback: string
+): Record<string, LocaleProp> {
+  if (!variants) return {};
+
+  const result: Record<string, LocaleProp> = {};
+  const allKeys = new Set<string>();
+
+  // Collect all keys from all variants
+  for (const variant in variants) {
+    const extracted = extractor(variants[variant]);
+    if (extracted) {
+      if (typeof extracted === 'string') {
+        allKeys.add(extracted);
+      } else if (typeof extracted === 'object' && extracted !== null) {
+        Object.keys(extracted as Record<string, unknown>).forEach((key) =>
+          allKeys.add(key)
+        );
+      }
+    }
+  }
+
+  // Build LocaleProp structure for each key
+  for (const key of allKeys) {
+    result[key] = { default: defaultFallback };
+
+    // First, set the default value from the 'default' variant
+    if (variants.default) {
+      const extracted = extractor(variants.default);
+      if (extracted) {
+        let text: string | undefined;
+
+        if (typeof extracted === 'string') {
+          text = extracted === key ? key : undefined;
+        } else if (typeof extracted === 'object' && extracted !== null) {
+          const extractedObj = extracted as Record<string, unknown>;
+          text = extractedObj[key] as string | undefined;
+        }
+
+        if (text) {
+          result[key].default = text;
+        }
+      }
+    }
+
+    // Then add other locale variants
+    for (const variant in variants) {
+      if (variant === 'default') continue; // Skip default, already handled
+
+      const extracted = extractor(variants[variant]);
+      if (extracted) {
+        let text: string | undefined;
+
+        if (typeof extracted === 'string') {
+          text = extracted === key ? key : undefined;
+        } else if (typeof extracted === 'object' && extracted !== null) {
+          const extractedObj = extracted as Record<string, unknown>;
+          text = extractedObj[key] as string | undefined;
+        }
+
+        if (text) {
+          result[key][variant] = text;
+        }
+      }
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -649,7 +740,7 @@ export function updateLocalizedValue(
  * @param value - The new value
  * @param defaultLocale - The default locale
  */
-export function updateComponentTextValue(
+export function updateComponentText(
   componentText: Record<string, LocaleProp>,
   ref: string | undefined,
   locale: string,
@@ -667,201 +758,65 @@ export function updateComponentTextValue(
 }
 
 /**
- * Get only the specific translation for a locale without fallback (for translation UI)
+ * Get component text value with optional fallback support
  *
  * @param componentText - The component text object containing all translations
  * @param ref - The reference key for the text
  * @param locale - The locale to get the value for
  * @param defaultLocale - The default locale
- * @returns The specific translation for the locale or empty string if not found
+ * @param useFallback - Whether to use fallback logic (default: true)
+ * @returns The translation for the locale or fallback value
  */
-export function getComponentTextValueNoFallback(
+export function getComponentText(
   componentText: Record<string, LocaleProp>,
   ref: string | undefined,
   locale: string,
-  defaultLocale: string
+  defaultLocale: string,
+  useFallback: boolean = true
 ): string {
   if (!ref) return '';
 
   const prop = componentText[ref];
-  if (!prop) return '';
+  if (!prop) return useFallback ? ref : '';
 
-  // For default locale, return the default value
-  if (locale === defaultLocale) {
-    return prop.default || '';
-  }
-
-  // For other locales, return only the specific translation (no fallback)
-  return prop[locale] || '';
+  return getLocalizedValue(prop, locale, defaultLocale, {
+    useFallback,
+    fallbackToDefault: useFallback,
+    placeholderValue: useFallback ? ref : '',
+  });
 }
 
 /**
- * Get the fallback text for placeholder in translation UI
- *
- * @param componentText - The component text object containing all translations
- * @param ref - The reference key for the text
- * @param locale - The current locale
- * @param defaultLocale - The default locale
- * @returns The fallback text to show as placeholder
- */
-export function getComponentTextFallback(
-  componentText: Record<string, LocaleProp>,
-  ref: string | undefined,
-  locale: string,
-  defaultLocale: string
-): string {
-  if (!ref) return '';
-
-  const prop = componentText[ref];
-  if (!prop) return ref;
-
-  // For default locale, just return the reference as placeholder
-  if (locale === defaultLocale) {
-    return ref;
-  }
-
-  // For other locales, try fallback chain, then default
-  let currentLocale: keyof LocaleOptions = locale as keyof LocaleOptions;
-  const config = localeConfig as LocaleOptions;
-
-  while (currentLocale && config[currentLocale]?.fallbackLocale) {
-    currentLocale = config[currentLocale].fallbackLocale!;
-    if (prop[currentLocale]) {
-      return prop[currentLocale] || '';
-    }
-  }
-
-  // If no fallback found, use default
-  return prop.default || ref;
-}
-
-/**
- * Get only the specific translation for a locale without fallback (for translation UI with LocaleProp)
- *
- * @param prop - The LocaleProp object containing translations
- * @param locale - The locale to get the value for
- * @param defaultLocale - The default locale
- * @returns The specific translation for the locale or empty string if not found
- */
-export function getLocalizedValueNoFallback(
-  prop: LocaleProp | undefined,
-  locale: string,
-  defaultLocale: string
-): string {
-  if (!prop) return '';
-
-  // For default locale, return the default value
-  if (locale === defaultLocale) {
-    return prop.default || '';
-  }
-
-  // For other locales, return only the specific translation (no fallback)
-  return prop[locale] || '';
-}
-
-/**
- * Get the fallback text for placeholder in translation UI with LocaleProp
- *
- * @param prop - The LocaleProp object containing translations
- * @param locale - The current locale
- * @param defaultLocale - The default locale
- * @returns The fallback text to show as placeholder
- */
-export function getLocalizedValueFallback(
-  prop: LocaleProp | undefined,
-  locale: string,
-  defaultLocale: string
-): string {
-  if (!prop) return '';
-
-  // For default locale, just return empty (no placeholder needed)
-  if (locale === defaultLocale) {
-    return '';
-  }
-
-  // For other locales, try fallback chain, then default
-  let currentLocale: keyof LocaleOptions = locale as keyof LocaleOptions;
-  const config = localeConfig as LocaleOptions;
-
-  while (currentLocale && config[currentLocale]?.fallbackLocale) {
-    currentLocale = config[currentLocale].fallbackLocale!;
-    if (prop[currentLocale]) {
-      return prop[currentLocale] || '';
-    }
-  }
-
-  // If no fallback found, use default
-  return prop.default || '';
-}
-
-/**
- * Generate component text with fallback support from callout variant data
- *
- * This function creates a flattened translation object with proper fallback
- * chain support based on the locale configuration. If a translation is not
- * available in the requested locale, it will try fallback locales before
- * using the default value.
- *
- * Example:
- * ```typescript
- * const variants = {
- *   'default': { componentText: { 'welcome': 'Welcome' } },
- *   'de': { componentText: { 'welcome': 'Willkommen' } },
- *   'de@easy': { componentText: {} } // No translation for welcome
- * };
- *
- * // Requesting 'de@easy' will fallback to 'de', then to 'default'
- * const result = generateComponentTextWithFallbacks(variants, 'de@easy', 'en');
- * // result['welcome'] === 'Willkommen' (from 'de' fallback)
- * ```
+ * Generate component text with optional fallback support from callout variant data
  *
  * @param variants - The callout variant data
  * @param currentLocale - The current locale (e.g., 'de@easy', 'de', 'en')
  * @param defaultLocale - The default locale (usually 'en')
- * @returns Component text with fallback translations applied
+ * @param useFallback - Whether to use fallback logic (default: true)
+ * @returns Component text with optional fallback translations applied
  */
-export function generateComponentTextWithFallbacks(
+export function generateComponentText(
   variants: Record<string, CalloutVariantData> | undefined,
   currentLocale: string,
-  defaultLocale: string
+  defaultLocale: string,
+  useFallback: boolean = true
 ): Record<string, string> {
   if (!variants) return {};
 
-  // Create LocaleProp structure for all component texts
-  const componentTextProps: Record<string, LocaleProp> = {};
-
-  // Collect all component text keys from all variants
-  const allKeys = new Set<string>();
-  for (const variant in variants) {
-    for (const key in variants[variant].componentText) {
-      allKeys.add(key);
-    }
-  }
-
-  // Build LocaleProp structure for each key
-  for (const key of allKeys) {
-    componentTextProps[key] = { default: key }; // Use key as default fallback
-
-    // Add translations from all variants
-    for (const variant in variants) {
-      const text = variants[variant].componentText[key];
-      if (text) {
-        if (variant === 'default') {
-          componentTextProps[key].default = text;
-        } else {
-          componentTextProps[key][variant] = text;
-        }
-      }
-    }
-  }
+  const componentTextProps = createLocalePropFromVariants(
+    variants,
+    (variant) => variant.componentText,
+    ''
+  );
 
   // Apply fallback logic for each key
   const result: Record<string, string> = {};
-  for (const key of allKeys) {
+  for (const key in componentTextProps) {
     const translatedValue = getLocalizedValue(
       componentTextProps[key],
       currentLocale,
-      defaultLocale
+      defaultLocale,
+      { useFallback }
     );
     if (translatedValue) {
       result[key] = translatedValue;
@@ -872,50 +827,36 @@ export function generateComponentTextWithFallbacks(
 }
 
 /**
- * Generate slide navigation with fallback support from callout variant data
- *
- * This function applies the same fallback logic to slide navigation texts
- * (nextText, prevText, submitText) as the component text function.
+ * Generate slide navigation with optional fallback support from callout variant data
  *
  * @param slides - The slides from the callout
  * @param variants - The callout variant data
  * @param currentLocale - The current locale (e.g., 'de@easy', 'de', 'en')
  * @param defaultLocale - The default locale (usually 'en')
- * @returns Slides with navigation text fallbacks applied
+ * @param useFallback - Whether to use fallback logic (default: true)
+ * @returns Slides with optional navigation text fallbacks applied
  */
-export function generateSlidesWithNavigationFallbacks(
+export function generateSlides(
   slides: GetCalloutSlideSchema[],
   variants: Record<string, CalloutVariantData> | undefined,
   currentLocale: string,
-  defaultLocale: string
+  defaultLocale: string,
+  useFallback: boolean = true
 ): GetCalloutSlideSchema[] {
   if (!variants || !slides.length) return slides;
 
   return slides.map((slide) => {
-    // Create LocaleProp objects for each navigation field
+    // Create LocaleProp objects for each navigation field using the utility function
     const navigationFields = ['nextText', 'prevText', 'submitText'] as const;
     const navigationProps: Record<string, LocaleProp> = {};
 
-    // Initialize with empty defaults
+    // Build LocaleProp structure for each navigation field
     for (const field of navigationFields) {
-      navigationProps[field] = { default: '' };
-    }
-
-    // Collect navigation texts from all variants
-    for (const variant in variants) {
-      const slideNav = variants[variant].slideNavigation[slide.id];
-      if (slideNav) {
-        for (const field of navigationFields) {
-          const text = slideNav[field];
-          if (text) {
-            if (variant === 'default') {
-              navigationProps[field].default = text;
-            } else {
-              navigationProps[field][variant] = text;
-            }
-          }
-        }
-      }
+      navigationProps[field] = createLocalePropFromVariants(
+        variants,
+        (variant) => variant.slideNavigation[slide.id]?.[field],
+        ''
+      )[field] || { default: '' };
     }
 
     // Apply fallback logic and create navigation object
@@ -925,19 +866,22 @@ export function generateSlidesWithNavigationFallbacks(
         getLocalizedValue(
           navigationProps.nextText,
           currentLocale,
-          defaultLocale
+          defaultLocale,
+          { useFallback }
         ) || slide.navigation.nextText,
       prevText:
         getLocalizedValue(
           navigationProps.prevText,
           currentLocale,
-          defaultLocale
+          defaultLocale,
+          { useFallback }
         ) || slide.navigation.prevText,
       submitText:
         getLocalizedValue(
           navigationProps.submitText,
           currentLocale,
-          defaultLocale
+          defaultLocale,
+          { useFallback }
         ) || slide.navigation.submitText,
     };
 
@@ -949,44 +893,40 @@ export function generateSlidesWithNavigationFallbacks(
 }
 
 /**
- * Generate response links with fallback support from callout variant data
- *
- * This function applies the same fallback logic to response link labels
- * as the component text function, ensuring proper localization.
+ * Generate response links with optional fallback support from callout variant data
  *
  * @param links - The response links from the callout
  * @param variants - The callout variant data
  * @param currentLocale - The current locale (e.g., 'de@easy', 'de', 'en')
  * @param defaultLocale - The default locale (usually 'en')
- * @returns Response links with label fallbacks applied
+ * @param useFallback - Whether to use fallback logic (default: true)
+ * @returns Response links with optional label fallbacks applied
  */
-export function generateResponseLinksWithFallbacks(
+export function generateResponseLinks(
   links: { text: string; url: string }[],
   variants: Record<string, CalloutVariantData> | undefined,
   currentLocale: string,
-  defaultLocale: string
+  defaultLocale: string,
+  useFallback: boolean = true
 ): { text: string; url: string }[] {
   if (!variants || !links.length) return links;
 
-  return links.map((link) => {
-    // Create LocaleProp structure for this link's text
-    const textProp: LocaleProp = { default: link.text };
+  // Create LocaleProp structure for all response link texts
+  const responseLinkProps = createLocalePropFromVariants(
+    variants,
+    (variant) => variant.responseLinkText,
+    ''
+  );
 
-    // Collect translations from all variants
-    for (const variant in variants) {
-      const text = variants[variant].responseLinkText?.[link.text];
-      if (text) {
-        if (variant === 'default') {
-          textProp.default = text;
-        } else {
-          textProp[variant] = text;
-        }
-      }
-    }
+  return links.map((link) => {
+    // Get the LocaleProp for this link's text
+    const textProp = responseLinkProps[link.text] || { default: link.text };
 
     // Apply fallback logic
     const translatedText =
-      getLocalizedValue(textProp, currentLocale, defaultLocale) || link.text;
+      getLocalizedValue(textProp, currentLocale, defaultLocale, {
+        useFallback,
+      }) || link.text;
 
     return {
       ...link,
