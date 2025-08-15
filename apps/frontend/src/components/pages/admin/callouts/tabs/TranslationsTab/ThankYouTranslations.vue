@@ -63,11 +63,7 @@
 import { AppFormBox, AppInput, AppRichTextEditor } from '@beabee/vue';
 
 import type { LocaleProp } from '@type';
-import {
-  getLocalizedValueFallback,
-  getLocalizedValueNoFallback,
-  updateLocalizedValue,
-} from '@utils/callouts';
+import { getLocalizedValue, updateLocalizedValue } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
 
 import type { EndMessageTabData } from '../ContentTab/SidebarTabContent/EndMessageTab.vue';
@@ -82,16 +78,14 @@ const { t } = useI18n();
 
 // Get end message value for a specific locale using utility function (no fallback)
 function getValue(prop: LocaleProp | undefined, locale: string): string {
-  return getLocalizedValueNoFallback(prop, locale, props.defaultLocale);
+  return getLocalizedValue(prop, locale, props.defaultLocale, {
+    useFallback: false,
+  });
 }
 
 // Get fallback text for placeholder
 function getPlaceholder(prop: LocaleProp | undefined): string {
-  return getLocalizedValueFallback(
-    prop,
-    props.selectedLocale,
-    props.defaultLocale
-  );
+  return getLocalizedValue(prop, props.selectedLocale, props.defaultLocale);
 }
 
 // Update end message value using utility function
