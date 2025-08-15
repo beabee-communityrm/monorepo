@@ -92,13 +92,13 @@ import { computed, ref, watch } from 'vue';
 import CalloutForm from './CalloutForm.vue';
 
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;
+  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>;
   response: GetCalloutResponseMapData;
 }>();
 
 const currentPhotoIndex = ref(0);
 
-// Use response links directly - fallback logic is already applied by parent component
+// Response links are already translated at the parent level
 const localizedResponseLinks = computed(() => {
   return props.callout.responseViewSchema?.links || [];
 });
