@@ -8,13 +8,18 @@ import { generalContent } from '@store';
 import { client } from '@utils/api';
 import {
   generateComponentTextWithFallbacks,
+  generateResponseLinksWithFallbacks,
   generateSlidesWithNavigationFallbacks,
 } from '@utils/callouts';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const callout =
-  ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>>();
+  ref<
+    GetCalloutDataWith<
+      'form' | 'responseViewSchema' | 'variantNames' | 'variants'
+    >
+  >();
 
 const route = useRoute('/crowdnewsroom/[id]');
 
@@ -47,7 +52,15 @@ watch(
       defaultLocale
     );
 
-    // Create the callout object with enhanced componentText and slide navigation
+    // Generate response links with fallback support
+    const responseLinksWithFallbacks = generateResponseLinksWithFallbacks(
+      calloutWithVariants.responseViewSchema?.links || [],
+      calloutWithVariants.variants,
+      currentLocale,
+      defaultLocale
+    );
+
+    // Create the callout object with enhanced componentText, slide navigation, and response links
     callout.value = {
       ...calloutWithVariants,
       formSchema: {
@@ -55,6 +68,12 @@ watch(
         componentText: componentTextWithFallbacks,
         slides: slidesWithNavigationFallbacks,
       },
+      responseViewSchema: calloutWithVariants.responseViewSchema
+        ? {
+            ...calloutWithVariants.responseViewSchema,
+            links: responseLinksWithFallbacks,
+          }
+        : null,
     };
   },
   { immediate: true }

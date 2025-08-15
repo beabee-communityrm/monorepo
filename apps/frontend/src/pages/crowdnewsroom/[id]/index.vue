@@ -115,7 +115,9 @@ import { useRoute, useRouter } from 'vue-router';
 
 // Props: Receive the already processed callout from parent route
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>;
+  callout: GetCalloutDataWith<
+    'form' | 'responseViewSchema' | 'variantNames' | 'variants'
+  >;
   respond?: boolean; // Flag for /respond route
 }>();
 
