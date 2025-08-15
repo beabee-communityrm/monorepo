@@ -149,6 +149,8 @@ class CalloutTransformer extends BaseTransformer<
       componentText: variant.componentText,
     };
 
+    const resolvedResponseViewSchema = callout.responseViewSchema;
+
     return {
       id: callout.id,
       slug: callout.slug,
@@ -185,7 +187,7 @@ class CalloutTransformer extends BaseTransformer<
         newsletterSchema: callout.newsletterSchema,
       }),
       ...(opts?.with?.includes(GetCalloutWith.ResponseViewSchema) && {
-        responseViewSchema: callout.responseViewSchema,
+        responseViewSchema: resolvedResponseViewSchema,
       }),
       ...(opts?.with?.includes(GetCalloutWith.VariantNames) && {
         variantNames: callout.variantNames,

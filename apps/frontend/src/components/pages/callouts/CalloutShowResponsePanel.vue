@@ -50,7 +50,7 @@ import CalloutSidePanel from './CalloutSidePanel.vue';
 
 defineEmits<{ (e: 'close'): void }>();
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;
+  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>;
   responses: GetCalloutResponseMapData[];
 }>();
 
