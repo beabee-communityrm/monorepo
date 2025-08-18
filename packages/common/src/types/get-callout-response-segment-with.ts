@@ -1,0 +1,1 @@
+export type GetCalloutResponseSegmentWith = 'calloutResponseCount' | void;
