@@ -5,6 +5,7 @@ export * from './BaseDto.js';
 export * from './CalloutDto.js';
 export * from './CalloutFormDto.js';
 export * from './CalloutResponseCommentDto.js';
+export * from './CalloutResponseSegmentDto.js';
 export * from './CalloutResponseDto.js';
 export * from './CalloutReviewerDto.js';
 export * from './CalloutTagDto.js';
