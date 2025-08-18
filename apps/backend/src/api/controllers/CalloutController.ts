@@ -1,7 +1,7 @@
 import { CalloutCaptcha } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { InvalidCalloutResponse, UnauthorizedError } from '@beabee/core/errors';
-import { Callout, Contact } from '@beabee/core/models';
+import { Callout, CalloutResponseSegment, Contact } from '@beabee/core/models';
 import { calloutsService } from '@beabee/core/services/CalloutsService';
 import { AuthInfo } from '@beabee/core/type';
 
@@ -24,6 +24,11 @@ import {
   ListCalloutResponsesDto,
 } from '@api/dto/CalloutResponseDto';
 import {
+  CreateCalloutResponseSegmentDto,
+  GetCalloutResponseSegmentDto,
+  ListCalloutResponseSegmentsDto,
+} from '@api/dto/CalloutResponseSegmentDto';
+import {
   CreateCalloutReviewerDto,
   GetCalloutReviewerDto,
   UpdateCalloutReviewerDto,
@@ -32,6 +37,7 @@ import { CreateCalloutTagDto, GetCalloutTagDto } from '@api/dto/CalloutTagDto';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
 import CalloutResponseExporter from '@api/transformers/CalloutResponseExporter';
 import CalloutResponseMapTransformer from '@api/transformers/CalloutResponseMapTransformer';
+import CalloutResponseSegmentTransformer from '@api/transformers/CalloutResponseSegmentTransformer';
 import CalloutResponseTransformer from '@api/transformers/CalloutResponseTransformer';
 import CalloutReviewerTransformer from '@api/transformers/CalloutReviewerTransformer';
 import calloutTagTransformer from '@api/transformers/CalloutTagTransformer';
@@ -378,6 +384,60 @@ export class CalloutController {
     @Param('reviewerId') reviewerId: string
   ): Promise<void> {
     if (!(await CalloutReviewerTransformer.deleteById(auth, reviewerId))) {
+      throw new NotFoundError();
+    }
+  }
+
+  @Get('/:id/segments')
+  async getCalloutResponseSegments(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
+    @QueryParams() query: ListCalloutResponseSegmentsDto
+  ): Promise<GetCalloutResponseSegmentDto[]> {
+    const result = await CalloutResponseSegmentTransformer.fetch(auth, {
+      ...query,
+      calloutId: id,
+      rules: {
+        condition: 'AND',
+        rules: [...(query.rules ? [query.rules] : [])],
+      },
+    });
+    return result.items; 
+  }
+
+  @Post('/:id/segments')
+  async createCalloutResponseSegment(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
+    @Body() data: CreateCalloutResponseSegmentDto
+  ): Promise<GetCalloutResponseSegmentDto> {
+    return CalloutResponseSegmentTransformer.createOne(auth, {
+      calloutId: id,
+      ...data,
+    });
+  }
+
+  @Patch('/:id/segments/:segmentId')
+  async updateCalloutResponseSegment(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Param('segmentId') segmentId: string,
+    @Body() data: CreateCalloutResponseSegmentDto
+  ): Promise<GetCalloutResponseSegmentDto | undefined> {
+    await CalloutResponseSegmentTransformer.updateById(auth, segmentId, data);
+    return CalloutResponseSegmentTransformer.fetchOneById(auth, segmentId);
+  }
+
+  @Delete('/:id/segments/:segmentId')
+  @OnUndefined(204)
+  async deleteCalloutResponseSegment(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Param('segmentId') segmentId: string
+  ): Promise<void> {
+    const result = await CalloutResponseSegmentTransformer.deleteById(
+      auth,
+      segmentId
+    );
+    if (!result) {
       throw new NotFoundError();
     }
   }
