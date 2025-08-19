@@ -1,7 +1,7 @@
 import { CalloutCaptcha } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { InvalidCalloutResponse, UnauthorizedError } from '@beabee/core/errors';
-import { Callout, CalloutResponseSegment, Contact } from '@beabee/core/models';
+import { Callout, Contact } from '@beabee/core/models';
 import { calloutsService } from '@beabee/core/services/CalloutsService';
 import { AuthInfo } from '@beabee/core/type';
 
@@ -402,7 +402,7 @@ export class CalloutController {
         rules: [...(query.rules ? [query.rules] : [])],
       },
     });
-    return result.items; 
+    return result.items;
   }
 
   @Post('/:id/segments')
