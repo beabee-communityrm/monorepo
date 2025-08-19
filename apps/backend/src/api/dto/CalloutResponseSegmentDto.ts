@@ -40,6 +40,10 @@ export class GetCalloutResponseSegmentOptsDto {
   @IsOptional()
   @IsEnum(GetCalloutResponseSegmentWith, { each: true })
   with?: GetCalloutResponseSegmentWith[];
+
+  @IsOptional()
+  @IsString()
+  calloutId!: string;
 }
 
 export class ListCalloutResponseSegmentsDto extends GetPaginatedQuery {
