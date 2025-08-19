@@ -51,12 +51,16 @@ class CalloutResponseSegmentTransformer extends BaseTransformer<
     auth: AuthInfo,
     operation: TransformerOperation
   ): void {
+    // we only want this to run on fetch multiple
+    // we want global filters and filter matching the current callout
     if (operation === 'read') {
       const calloutId = query.calloutId;
-      qb.where(
-        `(${fieldPrefix}calloutId = :calloutId OR ${fieldPrefix}isGlobal = true)`,
-        { calloutId }
-      );
+      if (calloutId) {
+        qb.where(
+          `(${fieldPrefix}calloutId = :calloutId OR ${fieldPrefix}isGlobal = true)`,
+          { calloutId }
+        );
+      }
     }
   }
 
@@ -69,20 +73,17 @@ class CalloutResponseSegmentTransformer extends BaseTransformer<
       query.with?.includes(GetCalloutResponseSegmentWith.calloutResponseCount)
     ) {
       for (const segment of segments) {
-        const result = await CalloutResponseTransformer.fetch(auth, {
-          limit: 0,
-          rules: {
-            condition: 'AND',
-            rules: [
-              {
-                field: 'calloutId',
-                operator: 'equal',
-                value: [query.calloutId], // we need the query calloutId in order to also fetch the correct total for global segments
-              },
-              segment.ruleGroup,
-            ],
-          },
-        });
+        const result = await CalloutResponseTransformer.fetchForCallout(
+          auth,
+          query.calloutId,
+          {
+            limit: 0,
+            rules: {
+              condition: 'AND',
+              rules: [segment.ruleGroup],
+            },
+          }
+        );
         segment.calloutResponseCount = result.total;
       }
     }
