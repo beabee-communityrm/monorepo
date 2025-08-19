@@ -5,203 +5,205 @@ meta:
 </route>
 
 <template>
-  <div class="md:flex">
-    <div class="hidden flex-none basis-[220px] md:block">
-      <AppVTabs v-model="currentBucket" :items="bucketItems" />
-    </div>
-    <div class="flex-1">
-      <AppSearch
-        v-model="currentRules"
-        :filter-groups="filterGroups"
-        @reset="currentRules = undefined"
-      >
-        <AppSelect
-          v-model="currentTag"
-          :placeholder="t('tags.searchTag')"
-          :items="tagItems"
-        />
-        <AppSelect
-          v-model="currentAssignee"
-          :placeholder="t('calloutResponsesPage.searchAssignee')"
-          :items="reviewerItems"
-        />
-      </AppSearch>
-      <p class="text-sm font-semibold text-body-80">{{ t('common.show') }}</p>
-      <div class="mb-4 flex items-center gap-6 text-sm">
+  <AppFilterGrid v-model="currentSegmentId" :items="segmentItems">
+    <AppSearch
+      v-model="currentRules"
+      :filter-groups="filterGroups"
+      @reset="currentRules = undefined"
+    >
+      <AppSelect
+        v-model="currentTag"
+        :placeholder="t('tags.searchTag')"
+        :items="tagItems"
+      />
+      <AppSelect
+        v-model="currentAssignee"
+        :placeholder="t('calloutResponsesPage.searchAssignee')"
+        :items="reviewerItems"
+      />
+    </AppSearch>
+    <SaveSegment
+      v-if="hasUnsavedSegment && currentRules"
+      :callout-id="props.callout.slug"
+      :segment="currentSegment"
+      :rules="currentRules"
+      @saved="handleSavedSegment"
+    />
+    <p class="text-sm font-semibold text-body-80">{{ t('common.show') }}</p>
+    <div class="mb-4 flex items-center gap-6 text-sm">
+      <AppCheckbox
+        v-model="showLatestComment"
+        :label="t('calloutResponsesPage.showLatestComment')"
+        :icon="faComment"
+      />
+      <div class="flex items-center gap-2">
         <AppCheckbox
-          v-model="showLatestComment"
-          :label="t('calloutResponsesPage.showLatestComment')"
-          :icon="faComment"
+          v-model="showInlineAnswer"
+          :label="t('calloutResponsesPage.showAnswer')"
+          :icon="faUserPen"
         />
-        <div class="flex items-center gap-2">
-          <AppCheckbox
-            v-model="showInlineAnswer"
-            :label="t('calloutResponsesPage.showAnswer')"
-            :icon="faUserPen"
-          />
-          <AppSelect
-            v-model="currentInlineAnswer"
-            class="max-w-xs"
-            :class="!showInlineAnswer && 'invisible'"
-            :placeholder="t('common.selectOne')"
-            :items="answerItems"
-            required
-          />
-        </div>
+        <AppSelect
+          v-model="currentInlineAnswer"
+          class="max-w-xs"
+          :class="!showInlineAnswer && 'invisible'"
+          :placeholder="t('common.selectOne')"
+          :items="answerItems"
+          required
+        />
       </div>
-      <AppPaginatedTable
-        v-model:query="currentPaginatedQuery"
-        keypath="calloutResponsesPage.showingOf"
-        :headers="headers"
-        :result="responses"
-        selectable
-      >
-        <template #actions>
-          <AppButtonGroup>
-            <AppButton
-              :icon="faDownload"
-              variant="primaryOutlined"
-              :title="t('actions.export')"
-              @click="handleExport"
-            />
-            <MoveBucketButton
-              :current-bucket="currentBucket"
-              :disabled="selectedCount === 0"
-              :loading="doingAction"
-              @move="
-                (bucket, successText) =>
-                  handleUpdateAction({ bucket }, successText)
-              "
-            />
-            <ToggleTagButton
-              :tag-items="tagItems"
-              :selected-tags="selectedTags"
-              :manage-url="`/admin/crowdnewsroom/view/${callout.slug}/responses/tags`"
-              :loading="doingAction"
-              :selectable="selectedCount > 0"
-              @toggle="
-                (tagId, successText) =>
-                  handleUpdateAction({ tags: [tagId] }, successText)
-              "
-            />
-            <SetAssigneeButton
-              :reviewer-items="reviewerItems"
-              :manage-url="
-                canAdmin
-                  ? `/admin/crowdnewsroom/view/${callout.slug}/responses/tags`
-                  : undefined
-              "
-              :selectable="selectedCount > 0"
-              :loading="doingAction"
-              :current-assignee-id="selectedAssigneeId"
-              @assign="
-                (assigneeId, successText) =>
-                  handleUpdateAction({ assigneeId }, successText)
-              "
-            />
-          </AppButtonGroup>
-          <p v-if="selectedCount > 0" class="self-center text-sm">
-            <i18n-t
-              keypath="calloutResponsePage.selectedCount"
-              :plural="selectedCount"
-            >
-              <template #n>
-                <b>{{ selectedCount }}</b>
-              </template>
-            </i18n-t>
-          </p>
-        </template>
-
-        <template #value-number="{ value, item }">
-          <router-link
-            :to="`${route.path}/${item.id}`"
-            class="text-base font-bold text-link"
-          >
-            {{ t('calloutResponsesPage.responseNo', { no: n(value) }) }}
-          </router-link>
-        </template>
-        <template #value-assignee="{ value }">
-          <router-link
-            v-if="value"
-            :to="`/admin/contacts/${value.id}`"
-            class="text-link"
-          >
-            {{ value.displayName }}
-          </router-link>
-          <span v-else>-</span>
-        </template>
-        <template #value-contact="{ value, item }">
-          <router-link
-            v-if="value"
-            :to="`/admin/contacts/${value.id}`"
-            class="text-link"
-          >
-            <font-awesome-icon :icon="faUser" class="mr-2" />{{
-              value.displayName
-            }}
-          </router-link>
-          <span v-else-if="item.guestName">
-            {{ item.guestName }} ({{ item.guestEmail }})
-          </span>
-          <span v-else>-</span>
-        </template>
-        <template #value-createdAt="{ value }">
-          <AppTime :datetime="value" />
-        </template>
-
-        <template
-          #after="{
-            item,
-          }: {
-            item: GetCalloutResponseDataWith<
-              | GetCalloutResponseWith.Answers
-              | GetCalloutResponseWith.Assignee
-              | GetCalloutResponseWith.Contact
-              | GetCalloutResponseWith.LatestComment
-              | GetCalloutResponseWith.Tags
-            >;
-          }"
-        >
-          <div
-            v-if="
-              item.tags.length > 0 ||
-              (currentInlineComponent && item.answers) ||
-              (showLatestComment && item.latestComment)
-            "
-            class="flex flex-col gap-2"
-          >
-            <TagList :tags="item.tags" @select="currentTag = $event" />
-            <p v-if="currentInlineComponent && item.answers">
-              <font-awesome-icon :icon="faUserPen" class="mr-2" />
-              <b>{{ t('calloutResponsesPage.showAnswer') }}:{{ ' ' }}</b>
-              <span class="italic">
-                {{
-                  stringifyAnswer(
-                    currentInlineComponent,
-                    item.answers[currentInlineComponent.slideId]?.[
-                      currentInlineComponent.key
-                    ]
-                  )
-                }}
-              </span>
-            </p>
-            <div v-if="showLatestComment && item.latestComment">
-              <font-awesome-icon :icon="faComment" class="mr-2" />
-              <AppTime
-                class="font-semibold text-body-60"
-                :datetime="item.latestComment.createdAt"
-              />
-              <b> • {{ item.latestComment.contact.displayName }}:{{ ' ' }}</b>
-              <span
-                class="inline-block italic"
-                v-html="item.latestComment.text"
-              ></span>
-            </div>
-          </div>
-        </template>
-      </AppPaginatedTable>
     </div>
-  </div>
+    <AppPaginatedTable
+      v-model:query="currentPaginatedQuery"
+      keypath="calloutResponsesPage.showingOf"
+      :headers="headers"
+      :result="responses"
+      selectable
+    >
+      <template #actions>
+        <AppButtonGroup>
+          <AppButton
+            :icon="faDownload"
+            variant="primaryOutlined"
+            :title="t('actions.export')"
+            @click="handleExport"
+          />
+          <MoveBucketButton
+            :current-bucket="currentBucket"
+            :disabled="selectedCount === 0"
+            :loading="doingAction"
+            @move="
+              (bucket, successText) =>
+                handleUpdateAction({ bucket }, successText)
+            "
+          />
+          <ToggleTagButton
+            :tag-items="tagItems"
+            :selected-tags="selectedTags"
+            :manage-url="`/admin/crowdnewsroom/view/${callout.slug}/responses/tags`"
+            :loading="doingAction"
+            :selectable="selectedCount > 0"
+            @toggle="
+              (tagId, successText) =>
+                handleUpdateAction({ tags: [tagId] }, successText)
+            "
+          />
+          <SetAssigneeButton
+            :reviewer-items="reviewerItems"
+            :manage-url="
+              canAdmin
+                ? `/admin/crowdnewsroom/view/${callout.slug}/responses/tags`
+                : undefined
+            "
+            :selectable="selectedCount > 0"
+            :loading="doingAction"
+            :current-assignee-id="selectedAssigneeId"
+            @assign="
+              (assigneeId, successText) =>
+                handleUpdateAction({ assigneeId }, successText)
+            "
+          />
+        </AppButtonGroup>
+        <p v-if="selectedCount > 0" class="self-center text-sm">
+          <i18n-t
+            keypath="calloutResponsePage.selectedCount"
+            :plural="selectedCount"
+          >
+            <template #n>
+              <b>{{ selectedCount }}</b>
+            </template>
+          </i18n-t>
+        </p>
+      </template>
+
+      <template #value-number="{ value, item }">
+        <router-link
+          :to="`${route.path}/${item.id}`"
+          class="text-base font-bold text-link"
+        >
+          {{ t('calloutResponsesPage.responseNo', { no: n(value) }) }}
+        </router-link>
+      </template>
+      <template #value-assignee="{ value }">
+        <router-link
+          v-if="value"
+          :to="`/admin/contacts/${value.id}`"
+          class="text-link"
+        >
+          {{ value.displayName }}
+        </router-link>
+        <span v-else>-</span>
+      </template>
+      <template #value-contact="{ value, item }">
+        <router-link
+          v-if="value"
+          :to="`/admin/contacts/${value.id}`"
+          class="text-link"
+        >
+          <font-awesome-icon :icon="faUser" class="mr-2" />{{
+            value.displayName
+          }}
+        </router-link>
+        <span v-else-if="item.guestName">
+          {{ item.guestName }} ({{ item.guestEmail }})
+        </span>
+        <span v-else>-</span>
+      </template>
+      <template #value-createdAt="{ value }">
+        <AppTime :datetime="value" />
+      </template>
+
+      <template
+        #after="{
+          item,
+        }: {
+          item: GetCalloutResponseDataWith<
+            | GetCalloutResponseWith.Answers
+            | GetCalloutResponseWith.Assignee
+            | GetCalloutResponseWith.Contact
+            | GetCalloutResponseWith.LatestComment
+            | GetCalloutResponseWith.Tags
+          >;
+        }"
+      >
+        <div
+          v-if="
+            item.tags.length > 0 ||
+            (currentInlineComponent && item.answers) ||
+            (showLatestComment && item.latestComment)
+          "
+          class="flex flex-col gap-2"
+        >
+          <TagList :tags="item.tags" @select="currentTag = $event" />
+          <p v-if="currentInlineComponent && item.answers">
+            <font-awesome-icon :icon="faUserPen" class="mr-2" />
+            <b>{{ t('calloutResponsesPage.showAnswer') }}:{{ ' ' }}</b>
+            <span class="italic">
+              {{
+                stringifyAnswer(
+                  currentInlineComponent,
+                  item.answers[currentInlineComponent.slideId]?.[
+                    currentInlineComponent.key
+                  ]
+                )
+              }}
+            </span>
+          </p>
+          <div v-if="showLatestComment && item.latestComment">
+            <font-awesome-icon :icon="faComment" class="mr-2" />
+            <AppTime
+              class="font-semibold text-body-60"
+              :datetime="item.latestComment.createdAt"
+            />
+            <b> • {{ item.latestComment.contact.displayName }}:{{ ' ' }}</b>
+            <span
+              class="inline-block italic"
+              v-html="item.latestComment.text"
+            ></span>
+          </div>
+        </div>
+      </template>
+    </AppPaginatedTable>
+  </AppFilterGrid>
 </template>
 <script lang="ts" setup>
 import {
@@ -209,7 +211,6 @@ import {
   type GetCalloutResponseDataWith,
   GetCalloutResponseWith,
   type Paginated,
-  type Rule,
   type RuleGroup,
   type UpdateCalloutResponseData,
   stringifyAnswer,
@@ -218,9 +219,9 @@ import {
   AppButton,
   AppButtonGroup,
   AppCheckbox,
+  AppFilterGrid,
   AppSelect,
   AppTime,
-  AppVTabs,
   addNotification,
 } from '@beabee/vue';
 
@@ -230,6 +231,7 @@ import {
 } from '@components/pages/admin/callout-responses.interface';
 import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
 import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
+import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';
 import AppSearch from '@components/search/AppSearch.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import TagList from '@components/tag/TagList.vue';
@@ -253,6 +255,7 @@ import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
+import { useSegmentManagement } from '../../../../../../composables/useSegmentManagement';
 import { useTagFilter } from '../../../../../../composables/useTagFilter';
 
 /**
@@ -365,12 +368,30 @@ const currentInlineComponent = computed(
  */
 const showLatestComment = ref(false);
 
+const currentRules = defineRulesParam(
+  computed(() => currentSegment.value?.ruleGroup)
+);
+
+/**
+ * Segment Management
+ * @description Handles segment filtering and saving
+ */
+const {
+  currentSegmentId,
+  hasUnsavedSegment,
+  segmentItems,
+  handleSavedSegment,
+  currentSegment,
+} = useSegmentManagement(
+  `/admin/crowdnewsroom/view/${props.callout.slug}/responses`,
+  props.callout.slug
+);
+
 /**
  * Search & Filter State
  * @description Manages search and filter parameters
  */
 const currentPaginatedQuery = definePaginatedQuery('createdAt');
-const currentRules = defineRulesParam();
 const { formComponents, answerItems, filterGroups, reviewerItems, tagItems } =
   useCalloutResponseFilters(toRef(props, 'callout'));
 
@@ -405,12 +426,6 @@ addBreadcrumb(
  */
 function getSearchRules(): RuleGroup {
   const rules: RuleGroup[] = [];
-
-  const bucketRule: Rule = currentBucket.value
-    ? { field: 'bucket', operator: 'equal', value: [currentBucket.value] }
-    : { field: 'bucket', operator: 'is_empty', value: [] };
-
-  rules.push({ condition: 'AND', rules: [bucketRule] });
 
   if (currentRules.value) {
     rules.push(currentRules.value);

@@ -26,6 +26,7 @@ import {
 import {
   CreateCalloutResponseSegmentDto,
   GetCalloutResponseSegmentDto,
+  GetCalloutResponseSegmentWith,
   ListCalloutResponseSegmentsDto,
 } from '@api/dto/CalloutResponseSegmentDto';
 import {
@@ -420,11 +421,15 @@ export class CalloutController {
   @Patch('/:id/segments/:segmentId')
   async updateCalloutResponseSegment(
     @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
     @Param('segmentId') segmentId: string,
     @Body() data: CreateCalloutResponseSegmentDto
   ): Promise<GetCalloutResponseSegmentDto | undefined> {
     await CalloutResponseSegmentTransformer.updateById(auth, segmentId, data);
-    return CalloutResponseSegmentTransformer.fetchOneById(auth, segmentId);
+    return CalloutResponseSegmentTransformer.fetchOneById(auth, segmentId, {
+      calloutId: id,
+      with: [GetCalloutResponseSegmentWith.calloutResponseCount],
+    });
   }
 
   @Delete('/:id/segments/:segmentId')

@@ -158,7 +158,6 @@ import {
   ContributionPeriod,
   type GetContactDataWith,
   GetContactWith,
-  type GetSegmentDataWith,
   type Paginated,
   type RuleGroup,
   type UpdateContactData,
@@ -190,16 +189,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import {
-  definePaginatedQuery,
-  defineParam,
-  defineRulesParam,
-} from '@utils/pagination';
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { definePaginatedQuery, defineParam } from '@utils/pagination';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
+import { useSegmentManagement } from '../../../composables/useSegmentManagement';
 import { useTagFilter } from '../../../composables/useTagFilter';
 
 /**
@@ -261,37 +257,14 @@ const selectedTags = computed(() => {
  * Segment Management
  * @description Handles segment filtering and saving
  */
-const currentSegmentId = defineParam('segment', (v) => v || '', 'replace');
-const segments = ref<GetSegmentDataWith<'contactCount'>[]>([]);
-const contactsTotal = ref<number | null>(null);
-
-const currentSegment = computed(() =>
-  currentSegmentId.value
-    ? segments.value.find((s) => s.id === currentSegmentId.value)
-    : undefined
-);
-
-const hasUnsavedSegment = computed(
-  () =>
-    !!route.query.r &&
-    !!currentRules.value &&
-    currentRules.value.rules.length > 0
-);
-
-const segmentItems = computed(() => [
-  {
-    id: '',
-    label: t('contacts.allContacts'),
-    ...(contactsTotal.value !== null && { count: contactsTotal.value }),
-    to: '/admin/contacts',
-  },
-  ...segments.value.map((segment) => ({
-    id: segment.id,
-    label: segment.name,
-    count: segment.contactCount,
-    to: '/admin/contacts?segment=' + segment.id,
-  })),
-]);
+const {
+  currentSegmentId,
+  currentSegment,
+  currentRules,
+  hasUnsavedSegment,
+  segmentItems,
+  handleSavedSegment,
+} = useSegmentManagement('/admin/contacts', undefined);
 
 /**
  * Search & Filter state
@@ -299,9 +272,6 @@ const segmentItems = computed(() => [
  */
 const currentPaginatedQuery = definePaginatedQuery('joined');
 const currentSearch = defineParam('s', (v) => v || '');
-const currentRules = defineRulesParam(
-  computed(() => currentSegment.value?.ruleGroup)
-);
 
 const { filterGroups, tagItems } = useContactFilters();
 
@@ -313,13 +283,6 @@ const doingAction = ref(false);
 /**
  * Lifecycle hooks
  */
-onBeforeMount(async () => {
-  contactsTotal.value = (await client.contact.list({ limit: 1 })).total;
-  segments.value = await client.segments.list({ sort: 'order' }, [
-    'contactCount',
-  ]);
-});
-
 addBreadcrumb(
   computed(() => [
     { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
@@ -434,19 +397,6 @@ function handleExport() {
   const rules = getSearchRules();
   const rulesQuery = encodeURIComponent(JSON.stringify(rules));
   window.open(`/api/1.0/contact.csv?rules=${rulesQuery}`, '_blank');
-}
-
-/**
- * Handles segment save events
- */
-function handleSavedSegment(segment: GetSegmentDataWith<'contactCount'>) {
-  const segmentIndex = segments.value.findIndex((s) => s.id === segment.id);
-  if (segmentIndex > -1) {
-    segments.value[segmentIndex] = segment;
-  } else {
-    segments.value.push(segment);
-  }
-  currentSegmentId.value = segment.id;
 }
 
 /**

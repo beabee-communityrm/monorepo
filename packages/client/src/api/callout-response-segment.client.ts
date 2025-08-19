@@ -1,7 +1,7 @@
 import type {
   CreateCalloutResponseSegmentData,
   GetCalloutResponseSegmentDataWith,
-  GetCalloutResponseSegmentWith,
+  GetSegmentWith,
   PaginatedQuery,
   Serial,
   UpdateCalloutResponseSegmentData,
@@ -34,9 +34,9 @@ export class CalloutResponseSegmentClient extends BaseClient {
   /**
    * Deserialize a segment response
    */
-  protected deserialize<
-    With extends GetCalloutResponseSegmentWith | void = void,
-  >(data: any): GetCalloutResponseSegmentDataWith<With> {
+  protected deserialize<With extends GetSegmentWith | void = void>(
+    data: any
+  ): GetCalloutResponseSegmentDataWith<With> {
     return {
       ...data,
     };
@@ -47,7 +47,7 @@ export class CalloutResponseSegmentClient extends BaseClient {
    * @param calloutId The slug of the callout
    * @returns List of segments
    */
-  async list<With extends GetCalloutResponseSegmentWith = void>(
+  async list<With extends GetSegmentWith = void>(
     calloutId: string,
     query?: PaginatedQuery,
     _with?: readonly With[]

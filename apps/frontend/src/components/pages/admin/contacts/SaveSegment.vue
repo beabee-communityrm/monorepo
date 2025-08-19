@@ -52,11 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import type {
-  GetSegmentData,
-  GetSegmentDataWith,
-  RuleGroup,
-} from '@beabee/beabee-common';
+import type { GetSegmentData, RuleGroup } from '@beabee/beabee-common';
 import { AppButton, AppInput, AppModal, AppRadioGroup } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -70,6 +66,7 @@ const emit = defineEmits(['saved']);
 const props = defineProps<{
   segment: GetSegmentData | undefined;
   rules: RuleGroup;
+  calloutId?: string;
 }>();
 
 const { t } = useI18n();
@@ -88,31 +85,56 @@ async function handleOpen() {
 }
 
 async function handleSubmit() {
-  let segment: GetSegmentDataWith<'contactCount'>;
+  let segment;
 
   isSaving.value = true;
-  if (shouldUpdate.value) {
-    if (!props.segment) return; // Not possible, can't choose to update without a segment
+  try {
+    if (shouldUpdate.value) {
+      if (!props.segment) return; // Not possible, can't choose to update without a segment
 
-    segment = await client.segments.update(props.segment.id, {
-      ruleGroup: props.rules,
-    });
-    addNotification({
-      variant: 'success',
-      title: t('advancedSearch.updatedSegment', { segment: segment.name }),
-    });
-  } else {
-    segment = await client.segments.create({
-      name: newSegmentName.value,
-      ruleGroup: props.rules,
-    });
-    addNotification({
-      variant: 'success',
-      title: t('advancedSearch.createdSegment', { segment: segment.name }),
-    });
+      if (!props.calloutId) {
+        segment = await client.segments.update(props.segment.id, {
+          name: props.segment.name,
+          ruleGroup: props.rules,
+        });
+      } else {
+        segment = await client.callout.segments.update(
+          props.calloutId!,
+          props.segment.id,
+          {
+            name: props.segment.name,
+            ruleGroup: props.rules,
+          }
+        );
+      }
+
+      addNotification({
+        variant: 'success',
+        title: t('advancedSearch.updatedSegment', { segment: segment.name }),
+      });
+    } else {
+      if (!props.calloutId) {
+        segment = await client.segments.create({
+          name: newSegmentName.value,
+          ruleGroup: props.rules,
+        });
+      } else {
+        segment = await client.callout.segments.create(props.calloutId!, {
+          calloutId: props.calloutId!, // Included 'calloutId' in the payload
+          name: newSegmentName.value,
+          ruleGroup: props.rules,
+        });
+      }
+
+      addNotification({
+        variant: 'success',
+        title: t('advancedSearch.createdSegment', { segment: segment.name }),
+      });
+    }
+
+    emit('saved', segment);
+  } finally {
+    isSaving.value = false;
   }
-
-  emit('saved', segment);
-  isSaving.value = false;
 }
 </script>
