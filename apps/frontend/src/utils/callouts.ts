@@ -625,86 +625,6 @@ export function getLocalizedValue(
 }
 
 /**
- * Builds LocaleProp objects from variant data, prioritizing default locale
- *
- * @param variants - The callout variant data
- * @param extractor - Function to extract text from a variant
- * @param defaultFallback - Default fallback value for missing translations
- * @returns LocaleProp structure for the extracted text
- */
-function createLocalePropFromVariants<T>(
-  variants: Record<string, CalloutVariantData> | undefined,
-  extractor: (variant: CalloutVariantData) => T | undefined,
-  defaultFallback: string
-): Record<string, LocaleProp> {
-  if (!variants) return {};
-
-  const result: Record<string, LocaleProp> = {};
-  const allKeys = new Set<string>();
-
-  // Collect all keys from all variants
-  for (const variant in variants) {
-    const extracted = extractor(variants[variant]);
-    if (extracted) {
-      if (typeof extracted === 'string') {
-        allKeys.add(extracted);
-      } else if (typeof extracted === 'object' && extracted !== null) {
-        Object.keys(extracted as Record<string, unknown>).forEach((key) =>
-          allKeys.add(key)
-        );
-      }
-    }
-  }
-
-  // Build LocaleProp structure for each key
-  for (const key of allKeys) {
-    result[key] = { default: defaultFallback };
-
-    // First, set the default value from the 'default' variant
-    if (variants.default) {
-      const extracted = extractor(variants.default);
-      if (extracted) {
-        let text: string | undefined;
-
-        if (typeof extracted === 'string') {
-          text = extracted === key ? key : undefined;
-        } else if (typeof extracted === 'object' && extracted !== null) {
-          const extractedObj = extracted as Record<string, unknown>;
-          text = extractedObj[key] as string | undefined;
-        }
-
-        if (text) {
-          result[key].default = text;
-        }
-      }
-    }
-
-    // Then add other locale variants
-    for (const variant in variants) {
-      if (variant === 'default') continue; // Skip default, already handled
-
-      const extracted = extractor(variants[variant]);
-      if (extracted) {
-        let text: string | undefined;
-
-        if (typeof extracted === 'string') {
-          text = extracted === key ? key : undefined;
-        } else if (typeof extracted === 'object' && extracted !== null) {
-          const extractedObj = extracted as Record<string, unknown>;
-          text = extractedObj[key] as string | undefined;
-        }
-
-        if (text) {
-          result[key][variant] = text;
-        }
-      }
-    }
-  }
-
-  return result;
-}
-
-/**
  * Update a localized value in a LocaleProp object
  *
  * @param prop - The LocaleProp object to update
@@ -797,11 +717,36 @@ export function generateComponentText(
 ): Record<string, string> {
   if (!variants) return {};
 
-  const componentTextProps = createLocalePropFromVariants(
-    variants,
-    (variant) => variant.componentText,
-    ''
-  );
+  // Build LocaleProp structure for component text
+  const componentTextProps: Record<string, LocaleProp> = {};
+  const allKeys = new Set<string>();
+
+  // Collect all keys from all variants
+  for (const variant in variants) {
+    for (const key in variants[variant].componentText) {
+      allKeys.add(key);
+    }
+  }
+
+  // Build LocaleProp structure for each key
+  for (const key of allKeys) {
+    componentTextProps[key] = { default: '' };
+
+    // Set default value from default variant
+    if (variants.default?.componentText[key]) {
+      componentTextProps[key].default = variants.default.componentText[key];
+    }
+
+    // Add other locale variants
+    for (const variant in variants) {
+      if (variant === 'default') continue;
+
+      const text = variants[variant].componentText[key];
+      if (text) {
+        componentTextProps[key][variant] = text;
+      }
+    }
+  }
 
   // Apply fallback logic for each key
   const result: Record<string, string> = {};
@@ -846,11 +791,23 @@ export function generateSlides(
 
     // Build LocaleProp structure for each navigation field
     for (const field of navigationFields) {
-      navigationProps[field] = createLocalePropFromVariants(
-        variants,
-        (variant) => variant.slideNavigation[slide.id]?.[field],
-        ''
-      )[field] || { default: '' };
+      navigationProps[field] = { default: '' };
+
+      // Set default value from default variant
+      if (variants.default?.slideNavigation[slide.id]?.[field]) {
+        navigationProps[field].default =
+          variants.default.slideNavigation[slide.id][field];
+      }
+
+      // Add other locale variants
+      for (const variant in variants) {
+        if (variant === 'default') continue;
+
+        const text = variants[variant].slideNavigation[slide.id]?.[field];
+        if (text) {
+          navigationProps[field][variant] = text;
+        }
+      }
     }
 
     // Apply fallback logic and create navigation object
@@ -905,12 +862,36 @@ export function generateResponseLinks(
 ): { text: string; url: string }[] {
   if (!variants || !links.length) return links;
 
-  // Create LocaleProp structure for all response link texts
-  const responseLinkProps = createLocalePropFromVariants(
-    variants,
-    (variant) => variant.responseLinkText,
-    ''
-  );
+  // Build LocaleProp structure for response link texts
+  const responseLinkProps: Record<string, LocaleProp> = {};
+  const allKeys = new Set<string>();
+
+  // Collect all keys from all variants
+  for (const variant in variants) {
+    for (const key in variants[variant].responseLinkText) {
+      allKeys.add(key);
+    }
+  }
+
+  // Build LocaleProp structure for each key
+  for (const key of allKeys) {
+    responseLinkProps[key] = { default: key };
+
+    // Set default value from default variant
+    if (variants.default?.responseLinkText[key]) {
+      responseLinkProps[key].default = variants.default.responseLinkText[key];
+    }
+
+    // Add other locale variants
+    for (const variant in variants) {
+      if (variant === 'default') continue;
+
+      const text = variants[variant].responseLinkText[key];
+      if (text) {
+        responseLinkProps[key][variant] = text;
+      }
+    }
+  }
 
   return links.map((link) => {
     // Get the LocaleProp for this link's text
