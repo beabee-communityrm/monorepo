@@ -732,15 +732,8 @@ export function generateComponentText(
   for (const key of allKeys) {
     componentTextProps[key] = { default: '' };
 
-    // Set default value from default variant
-    if (variants.default?.componentText[key]) {
-      componentTextProps[key].default = variants.default.componentText[key];
-    }
-
-    // Add other locale variants
+    // Add all locale variants including default
     for (const variant in variants) {
-      if (variant === 'default') continue;
-
       const text = variants[variant].componentText[key];
       if (text) {
         componentTextProps[key][variant] = text;
@@ -793,16 +786,8 @@ export function generateSlides(
     for (const field of navigationFields) {
       navigationProps[field] = { default: '' };
 
-      // Set default value from default variant
-      if (variants.default?.slideNavigation[slide.id]?.[field]) {
-        navigationProps[field].default =
-          variants.default.slideNavigation[slide.id][field];
-      }
-
-      // Add other locale variants
+      // Add all locale variants including default
       for (const variant in variants) {
-        if (variant === 'default') continue;
-
         const text = variants[variant].slideNavigation[slide.id]?.[field];
         if (text) {
           navigationProps[field][variant] = text;
@@ -877,15 +862,8 @@ export function generateResponseLinks(
   for (const key of allKeys) {
     responseLinkProps[key] = { default: key };
 
-    // Set default value from default variant
-    if (variants.default?.responseLinkText[key]) {
-      responseLinkProps[key].default = variants.default.responseLinkText[key];
-    }
-
-    // Add other locale variants
+    // Add all locale variants including default
     for (const variant in variants) {
-      if (variant === 'default') continue;
-
       const text = variants[variant].responseLinkText[key];
       if (text) {
         responseLinkProps[key][variant] = text;
