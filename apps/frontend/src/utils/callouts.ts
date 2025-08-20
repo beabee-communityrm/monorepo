@@ -268,13 +268,7 @@ export function convertCalloutToTabs(
       for (const ref in callout.variants[variant].responseLinkText) {
         responseLinkText[ref] ||= { default: ref };
         const text = callout.variants[variant].responseLinkText[ref];
-        if (text) {
-          if (variant === 'default') {
-            responseLinkText[ref].default = text;
-          } else {
-            responseLinkText[ref][variant] = text;
-          }
-        }
+        responseLinkText[ref][variant] = text;
       }
     }
   }
