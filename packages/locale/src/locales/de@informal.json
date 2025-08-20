@@ -663,7 +663,9 @@
             "title": "Schaltflächen"
           },
           "title": "Übersetzungen",
-          "responseLinks": {}
+          "responseLinks": {
+            "title": ""
+          }
         }
       },
       "title": "CrowdNewsroom-Builder",
