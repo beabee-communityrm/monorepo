@@ -666,7 +666,9 @@
             "title": "Boutons"
           },
           "title": "Traductions",
-          "responseLinks": {}
+          "responseLinks": {
+            "title": ""
+          }
         }
       },
       "title": "",
