@@ -57,11 +57,11 @@
     />
 
     <ul
-      v-if="localizedResponseLinks.length > 0"
+      v-if="callout.responseViewSchema.links.length > 0"
       class="mt-8 columns-2 gap-4 border-t border-t-primary pt-8"
     >
       <li
-        v-for="link in localizedResponseLinks"
+        v-for="link in callout.responseViewSchema.links"
         :key="link.url"
         class="break-inside-avoid"
       >
@@ -92,16 +92,11 @@ import { computed, ref, watch } from 'vue';
 import CalloutForm from './CalloutForm.vue';
 
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variants'>;
+  callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;
   response: GetCalloutResponseMapData;
 }>();
 
 const currentPhotoIndex = ref(0);
-
-// Response links are already translated at the parent level
-const localizedResponseLinks = computed(() => {
-  return props.callout.responseViewSchema?.links || [];
-});
 
 // Don't show admin-only fields (they would always be empty as the API doesn't return their answers)
 const viewOnlyCallout = computed(() => ({
