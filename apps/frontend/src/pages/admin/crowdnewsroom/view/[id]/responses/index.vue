@@ -24,7 +24,7 @@ meta:
     </AppSearch>
     <SaveSegment
       v-if="hasUnsavedSegment && currentRules"
-      :callout-id="props.callout.slug"
+      :callout-slug="props.callout.slug"
       :segment="currentSegment"
       :rules="currentRules"
       @saved="handleSavedSegment"

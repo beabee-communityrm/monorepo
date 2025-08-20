@@ -57,16 +57,17 @@ import { AppButton, AppInput, AppModal, AppRadioGroup } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { useSegmentManagement } from '../../../../composables/useSegmentManagement';
 
 const emit = defineEmits(['saved']);
 const props = defineProps<{
   segment: GetSegmentData | undefined;
   rules: RuleGroup;
-  calloutId?: string;
+  calloutSlug?: string;
 }>();
 
 const { t } = useI18n();
@@ -84,54 +85,33 @@ async function handleOpen() {
   isSaving.value = false;
 }
 
-async function handleSubmit() {
-  let segment;
+const { saveSegment, updateSegment } = useSegmentManagement(
+  '',
+  props.calloutSlug
+);
 
+async function handleSubmit() {
   isSaving.value = true;
   try {
+    let segment;
     if (shouldUpdate.value) {
-      if (!props.segment) return; // Not possible, can't choose to update without a segment
-
-      if (!props.calloutId) {
-        segment = await client.segments.update(props.segment.id, {
-          name: props.segment.name,
-          ruleGroup: props.rules,
-        });
-      } else {
-        segment = await client.callout.segments.update(
-          props.calloutId!,
-          props.segment.id,
-          {
-            name: props.segment.name,
-            ruleGroup: props.rules,
-          }
-        );
-      }
-
+      if (!props.segment) return;
+      segment = await updateSegment(
+        props.segment.id,
+        props.segment.name,
+        props.rules
+      );
       addNotification({
         variant: 'success',
         title: t('advancedSearch.updatedSegment', { segment: segment.name }),
       });
     } else {
-      if (!props.calloutId) {
-        segment = await client.segments.create({
-          name: newSegmentName.value,
-          ruleGroup: props.rules,
-        });
-      } else {
-        segment = await client.callout.segments.create(props.calloutId!, {
-          calloutId: props.calloutId!, // Included 'calloutId' in the payload
-          name: newSegmentName.value,
-          ruleGroup: props.rules,
-        });
-      }
-
+      segment = await saveSegment(newSegmentName.value, props.rules);
       addNotification({
         variant: 'success',
         title: t('advancedSearch.createdSegment', { segment: segment.name }),
       });
     }
-
     emit('saved', segment);
   } finally {
     isSaving.value = false;
