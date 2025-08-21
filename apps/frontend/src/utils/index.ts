@@ -1,5 +1,6 @@
 export * from './callouts';
 export * from './geocode';
+export * from './navigation';
 export * from './objects';
 export * from './pagination';
 export * from './search';
