@@ -158,13 +158,10 @@ async function handleResync(
       );
 
       for (const [contact, nlContact] of mismatchedContacts) {
-        await ContactsService.updateContactProfile(
+        await ContactsService.updateContactNLNoSync(
           contact,
-          {
-            newsletterStatus: nlContact.status,
-            newsletterGroups: nlContact.groups,
-          },
-          { sync: false }
+          nlContact.status,
+          nlContact.groups
         );
       }
     }

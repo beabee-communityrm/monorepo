@@ -278,7 +278,7 @@ class CalloutsService {
           newsletterStatus: NewsletterStatus.Subscribed,
           newsletterGroups: newsletter.groups,
         },
-        { sync: true, mergeGroups: true }
+        { mergeGroups: true }
       );
     }
 
