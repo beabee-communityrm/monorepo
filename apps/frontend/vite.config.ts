@@ -5,8 +5,8 @@ import replace from '@rollup/plugin-replace';
 import vue from '@vitejs/plugin-vue';
 import { createRequire } from 'node:module';
 import { dirname, resolve } from 'node:path';
+import VueRouter from 'unplugin-vue-router/vite';
 import { type Plugin, defineConfig, loadEnv } from 'vite';
-import pages from 'vite-plugin-pages';
 
 const require = createRequire(import.meta.url);
 const LOCALE_PATH = resolve(
@@ -17,14 +17,22 @@ const LOCALE_PATH = resolve(
 export default ({ command, mode }) => {
   const env = loadEnv(mode, resolve(process.cwd(), '../../'), '');
 
-  const plugins: Plugin[] = [
+  const plugins = [
+    // VueRouter must be placed before Vue plugin
+    VueRouter({
+      // Specify the pages directory
+      routesFolder: 'src/pages',
+      // Enable typed routes - generate in src/typings directory
+      dts: 'src/typings/typed-router.d.ts',
+      // Configure route block lang (same as vite-plugin-pages default)
+      routeBlockLang: 'yaml',
+    }),
     vue(),
     vueI18n({
       include: LOCALE_PATH,
       strictMessage: false,
-    }) as Plugin,
+    }),
     theme(),
-    pages(),
   ];
 
   // Keep this in sync with tsconfig.json -> compilerOptions.paths
