@@ -275,7 +275,7 @@ class CalloutsService {
       await ContactsService.updateContactProfile(
         contact,
         {
-          newsletterStatus: NewsletterStatus.Subscribed,
+          newsletterStatus: NewsletterStatus.Pending, // We need to send this to Pending first in order to trigger the Double OptIn.
           newsletterGroups: newsletter.groups,
         },
         { mergeGroups: true }
