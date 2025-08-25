@@ -273,9 +273,7 @@ class CalloutsService {
 
     if (newsletter?.optIn) {
       log.info(`Opting contact ${contact.id} into newsletter`, { newsletter });
-      const profile = await getRepository(ContactProfile).findOneByOrFail({
-        contactId: contact.id,
-      });
+      const profile = await ContactsService.loadContactProfile(contact.id);
       let newsletterStatus = profile.newsletterStatus;
       if (newsletterStatus !== NewsletterStatus.Subscribed) {
         // Ask non subscribed users to confirm their subscription
