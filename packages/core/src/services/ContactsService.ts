@@ -281,17 +281,6 @@ class ContactsService {
     return ret.affected !== 0;
   }
 
-  /**
-   * Load a contact's profile by contact ID
-   * @param contactId The contact's ID
-   * @returns The contact's profile or undefined if not found
-   */
-  async loadContactProfile(contactId: string): Promise<ContactProfile> {
-    return getRepository(ContactProfile).findOneByOrFail({
-      contactId: contactId,
-    });
-  }
-
   async updateContactProfile(
     contact: Contact,
     updates: Partial<ContactProfile>,
