@@ -61,13 +61,16 @@ import useVuelidate from '@vuelidate/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useSegmentManagement } from '../../../../composables/useSegmentManagement';
-
 const emit = defineEmits(['saved']);
 const props = defineProps<{
   segment: GetSegmentData | undefined;
   rules: RuleGroup;
-  calloutSlug?: string;
+  saveSegment: (name: string, rules: RuleGroup) => Promise<GetSegmentData>;
+  updateSegment: (
+    segmentId: string,
+    name: string,
+    rules: RuleGroup
+  ) => Promise<GetSegmentData>;
 }>();
 
 const { t } = useI18n();
@@ -85,18 +88,13 @@ async function handleOpen() {
   isSaving.value = false;
 }
 
-const { saveSegment, updateSegment } = useSegmentManagement(
-  '',
-  props.calloutSlug
-);
-
 async function handleSubmit() {
   isSaving.value = true;
   try {
     let segment;
     if (shouldUpdate.value) {
       if (!props.segment) return;
-      segment = await updateSegment(
+      segment = await props.updateSegment(
         props.segment.id,
         props.segment.name,
         props.rules
@@ -106,7 +104,7 @@ async function handleSubmit() {
         title: t('advancedSearch.updatedSegment', { segment: segment.name }),
       });
     } else {
-      segment = await saveSegment(newSegmentName.value, props.rules);
+      segment = await props.saveSegment(newSegmentName.value, props.rules);
       addNotification({
         variant: 'success',
         title: t('advancedSearch.createdSegment', { segment: segment.name }),
