@@ -75,11 +75,7 @@ class CalloutResponseSegmentTransformer extends BaseTransformer<
           auth,
           query.calloutId,
           {
-            limit: 0,
-            rules: {
-              condition: 'AND',
-              rules: [segment.ruleGroup],
-            },
+            rules: segment.ruleGroup,
           }
         );
         segment.calloutResponseCount = result.total;
