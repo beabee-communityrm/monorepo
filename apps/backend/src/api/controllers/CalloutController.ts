@@ -398,10 +398,6 @@ export class CalloutController {
     const result = await CalloutResponseSegmentTransformer.fetch(auth, {
       ...query,
       calloutId: id,
-      rules: {
-        condition: 'AND',
-        rules: [...(query.rules ? [query.rules] : [])],
-      },
     });
     return result.items;
   }
