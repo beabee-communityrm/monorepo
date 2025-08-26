@@ -32,7 +32,6 @@ import {
   CalloutTag,
   CalloutVariant,
   Contact,
-  ContactProfile,
 } from '#models/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
@@ -273,16 +272,10 @@ class CalloutsService {
 
     if (newsletter?.optIn) {
       log.info(`Opting contact ${contact.id} into newsletter`, { newsletter });
-      const profile = await ContactsService.loadContactProfile(contact.id);
-      let newsletterStatus = profile.newsletterStatus;
-      if (newsletterStatus !== NewsletterStatus.Subscribed) {
-        // Ask non subscribed users to confirm their subscription
-        newsletterStatus = NewsletterStatus.Pending; // Pending status triggers double opt in mail from mailchimp
-      }
       await ContactsService.updateContactProfile(
         contact,
         {
-          newsletterStatus: newsletterStatus,
+          newsletterStatus: NewsletterStatus.Pending,
           newsletterGroups: newsletter.groups,
         },
         { mergeGroups: true }
