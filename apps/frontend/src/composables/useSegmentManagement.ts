@@ -1,20 +1,31 @@
 import type { GetSegmentData } from '@beabee/beabee-common';
 
-import { client } from '@utils/api';
 import { defineParam, defineRulesParam } from '@utils/pagination';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-export function useSegmentManagement(basePath: string, calloutSlug?: string) {
+export function useSegmentManagement(
+  basePath: string,
+  totalSegmentsLabel: string,
+  listSegments: () => Promise<
+    (GetSegmentData & {
+      contactCount?: number;
+      calloutResponseCount?: number;
+    })[]
+  >,
+  listTotalSegmentItems: () => Promise<number>
+) {
   const route = useRoute();
 
   const currentSegmentId = defineParam('segment', (v) => v || '', 'replace');
+
   const segments = ref<
     (GetSegmentData & {
       contactCount?: number;
       calloutResponseCount?: number;
     })[]
   >([]);
+
   const totalItems = ref<number | null>(null);
 
   const currentRules = defineRulesParam(
@@ -37,7 +48,7 @@ export function useSegmentManagement(basePath: string, calloutSlug?: string) {
   const segmentItems = computed(() => [
     {
       id: '',
-      label: calloutSlug ? 'All Responses' : 'All Contacts',
+      label: totalSegmentsLabel,
       ...(totalItems.value !== null && { count: totalItems.value }),
       to: basePath,
     },
@@ -48,14 +59,6 @@ export function useSegmentManagement(basePath: string, calloutSlug?: string) {
       to: `${basePath}?segment=${segment.id}`,
     })),
   ]);
-
-  onBeforeMount(async () => {
-    if (calloutSlug) {
-      await handleListCalloutSegments(calloutSlug);
-    } else {
-      await handleListContactSegments();
-    }
-  });
 
   function handleSavedSegment(
     segment: GetSegmentData & {
@@ -72,23 +75,14 @@ export function useSegmentManagement(basePath: string, calloutSlug?: string) {
     currentSegmentId.value = segment.id;
   }
 
-  async function handleListCalloutSegments(calloutSlug: string) {
-    segments.value = await client.callout.segments.list(
-      calloutSlug,
-      { sort: 'order' },
-      ['calloutResponseCount']
-    );
-    totalItems.value = (
-      await client.callout.listResponses(calloutSlug, { limit: 1 })
-    ).total;
+  async function handleListSegments() {
+    segments.value = await listSegments();
+    totalItems.value = await listTotalSegmentItems();
   }
 
-  async function handleListContactSegments() {
-    segments.value = await client.segments.list({ sort: 'order' }, [
-      'contactCount',
-    ]);
-    totalItems.value = (await client.contact.list({ limit: 1 })).total;
-  }
+  onBeforeMount(async () => {
+    await handleListSegments();
+  });
 
   return {
     currentSegmentId,

@@ -384,7 +384,9 @@ const {
   currentSegment,
 } = useSegmentManagement(
   `/admin/crowdnewsroom/view/${props.callout.slug}/responses`,
-  props.callout.slug
+  'All Responses',
+  listSegments,
+  listTotalSegmentItems
 );
 
 async function saveSegment(name: string, rules: RuleGroup) {
@@ -412,6 +414,19 @@ async function updateSegment(
   );
   handleSavedSegment(segment);
   return segment;
+}
+
+async function listSegments() {
+  return await client.callout.segments.list(
+    props.callout.slug,
+    { sort: 'order' },
+    ['calloutResponseCount']
+  );
+}
+
+async function listTotalSegmentItems() {
+  return (await client.callout.listResponses(props.callout.slug, { limit: 1 }))
+    .total;
 }
 
 /**
