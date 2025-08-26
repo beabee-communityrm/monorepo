@@ -43,7 +43,8 @@ meta:
       v-if="hasUnsavedSegment && currentRules"
       :segment="currentSegment"
       :rules="currentRules"
-      @saved="handleSavedSegment"
+      :save-segment="saveSegment"
+      :update-segment="updateSegment"
     />
     <AppPaginatedTable
       v-model:query="currentPaginatedQuery"
@@ -265,6 +266,28 @@ const {
   segmentItems,
   handleSavedSegment,
 } = useSegmentManagement('/admin/contacts', undefined);
+
+async function saveSegment(name: string, rules: RuleGroup) {
+  const segment = await client.segments.create({
+    name,
+    ruleGroup: rules,
+  });
+  handleSavedSegment(segment);
+  return segment;
+}
+
+async function updateSegment(
+  segmentId: string,
+  name: string,
+  rules: RuleGroup
+) {
+  const segment = await client.segments.update(segmentId, {
+    name,
+    ruleGroup: rules,
+  });
+  handleSavedSegment(segment);
+  return segment;
+}
 
 /**
  * Search & Filter state

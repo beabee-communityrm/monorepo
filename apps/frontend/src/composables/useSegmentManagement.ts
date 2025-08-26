@@ -1,4 +1,4 @@
-import type { GetSegmentData, RuleGroup } from '@beabee/beabee-common';
+import type { GetSegmentData } from '@beabee/beabee-common';
 
 import { client } from '@utils/api';
 import { defineParam, defineRulesParam } from '@utils/pagination';
@@ -90,47 +90,6 @@ export function useSegmentManagement(basePath: string, calloutSlug?: string) {
     totalItems.value = (await client.contact.list({ limit: 1 })).total;
   }
 
-  // Save a new segment (contacts or callouts)
-  async function saveSegment(name: string, rules: RuleGroup) {
-    let segment;
-    if (calloutSlug) {
-      segment = await client.callout.segments.create(calloutSlug, {
-        calloutId: calloutSlug,
-        name,
-        ruleGroup: rules,
-      });
-    } else {
-      segment = await client.segments.create({
-        name,
-        ruleGroup: rules,
-      });
-    }
-    handleSavedSegment(segment);
-    return segment;
-  }
-
-  // Update an existing segment (contacts or callouts)
-  async function updateSegment(
-    segmentId: string,
-    name: string,
-    rules: RuleGroup
-  ) {
-    let segment;
-    if (calloutSlug) {
-      segment = await client.callout.segments.update(calloutSlug, segmentId, {
-        name,
-        ruleGroup: rules,
-      });
-    } else {
-      segment = await client.segments.update(segmentId, {
-        name,
-        ruleGroup: rules,
-      });
-    }
-    handleSavedSegment(segment);
-    return segment;
-  }
-
   return {
     currentSegmentId,
     currentSegment,
@@ -139,7 +98,5 @@ export function useSegmentManagement(basePath: string, calloutSlug?: string) {
     hasUnsavedSegment,
     segmentItems,
     handleSavedSegment,
-    saveSegment,
-    updateSegment,
   };
 }
