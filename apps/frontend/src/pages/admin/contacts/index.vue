@@ -265,7 +265,12 @@ const {
   hasUnsavedSegment,
   segmentItems,
   handleSavedSegment,
-} = useSegmentManagement('/admin/contacts', undefined);
+} = useSegmentManagement(
+  '/admin/contacts',
+  'All Contacts',
+  listSegments,
+  listTotalSegmentItems
+);
 
 async function saveSegment(name: string, rules: RuleGroup) {
   const segment = await client.segments.create({
@@ -289,6 +294,13 @@ async function updateSegment(
   return segment;
 }
 
+async function listSegments() {
+  return await client.segments.list({ sort: 'order' }, ['contactCount']);
+}
+
+async function listTotalSegmentItems() {
+  return (await client.contact.list({ limit: 1 })).total;
+}
 /**
  * Search & Filter state
  * @description Manages search and filter parameters
