@@ -24,10 +24,10 @@ meta:
     </AppSearch>
     <SaveSegment
       v-if="hasUnsavedSegment && currentRules"
-      :callout-slug="props.callout.slug"
       :segment="currentSegment"
       :rules="currentRules"
-      @saved="handleSavedSegment"
+      :save-segment="saveSegment"
+      :update-segment="updateSegment"
     />
     <p class="text-sm font-semibold text-body-80">{{ t('common.show') }}</p>
     <div class="mb-4 flex items-center gap-6 text-sm">
@@ -386,6 +386,33 @@ const {
   `/admin/crowdnewsroom/view/${props.callout.slug}/responses`,
   props.callout.slug
 );
+
+async function saveSegment(name: string, rules: RuleGroup) {
+  const segment = await client.callout.segments.create(props.callout.slug, {
+    calloutId: props.callout.slug,
+    name,
+    ruleGroup: rules,
+  });
+  handleSavedSegment(segment);
+  return segment;
+}
+
+async function updateSegment(
+  segmentId: string,
+  name: string,
+  rules: RuleGroup
+) {
+  const segment = await client.callout.segments.update(
+    props.callout.slug,
+    segmentId,
+    {
+      name,
+      ruleGroup: rules,
+    }
+  );
+  handleSavedSegment(segment);
+  return segment;
+}
 
 /**
  * Search & Filter State
