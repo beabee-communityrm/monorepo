@@ -40,10 +40,11 @@ export class GetCalloutResponseSegmentOptsDto {
   @IsOptional()
   @IsEnum(GetCalloutResponseSegmentWith, { each: true })
   with?: GetCalloutResponseSegmentWith[];
+}
 
-  @IsOptional()
-  @IsString()
-  calloutId!: string;
+// class-validator won't accept a `calloutId`, but the controller can still add it
+export interface GetCalloutResponseSegmentOptsDto {
+  calloutId: string;
 }
 
 export class ListCalloutResponseSegmentsDto extends GetPaginatedQuery {
