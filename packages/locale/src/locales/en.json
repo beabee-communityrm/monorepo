@@ -475,6 +475,17 @@
               "initialZoom": {
                 "label": "Initial zoom level"
               },
+              "mapIconProp": {
+                "label": "Select a question to display category icons on the map",
+                "none": "– Use default icons for all replies –"
+              },
+              "mapIconStylingProp": {
+                "label": "Category"
+              },
+              "mapIconStylingSetting": {
+                "label": "Please select a color and icon for the answer: ",
+                "title": "Icon style on the map"
+              },
               "maxZoom": {
                 "label": "Maximum zoom level"
               },

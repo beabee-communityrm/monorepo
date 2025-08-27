@@ -475,6 +475,20 @@
               "initialZoom": {
                 "label": "Niveau de zoom initial"
               },
+              "mapIconProp": {
+                "label": "Sélectionner une question pour afficher les icônes sur la carte",
+                "none": "– Utiliser les icônes par défaut pour toutes les réponses –"
+              },
+              "mapIconQuestions": {
+                "label": ""
+              },
+              "mapIconStylingProp": {
+                "label": "Catégorie"
+              },
+              "mapIconStylingSetting": {
+                "label": "Sélectionner une couleur et une icône pour la réponse : ",
+                "title": "Style d’icône sur la carte"
+              },
               "maxZoom": {
                 "label": "Niveau de zoom maximal"
               },

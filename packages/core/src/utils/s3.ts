@@ -1,4 +1,4 @@
-import { NotFoundError } from '@beabee/core/errors';
+import { BadRequestError, NotFoundError } from '@beabee/core/errors';
 import { log as mainLogger } from '@beabee/core/logging';
 
 import {
@@ -52,31 +52,26 @@ export async function getFileMetadata(
   createdAt: Date;
   size: number;
 }> {
-  try {
-    const response = await s3Client.send(
-      new HeadObjectCommand({
-        Bucket: bucket,
-        Key: key,
-      })
-    );
+  const response = await s3Client.send(
+    new HeadObjectCommand({
+      Bucket: bucket,
+      Key: key,
+    })
+  );
 
-    if (!response.ContentType || !response.LastModified) {
-      throw new NotFoundError();
-    }
-
-    // Extract the ID from the key (removing the prefix)
-    const id = key.split('/').pop() || '';
-
-    return {
-      id,
-      mimetype: response.ContentType,
-      createdAt: response.LastModified,
-      size: response.ContentLength || 0,
-    };
-  } catch (error) {
-    log.error(`Failed to get file metadata for ${key}:`, error);
+  if (!response.ContentType || !response.LastModified) {
     throw new NotFoundError();
   }
+
+  // Extract the ID from the key (removing the prefix)
+  const id = key.split('/').pop() || '';
+
+  return {
+    id,
+    mimetype: response.ContentType,
+    createdAt: response.LastModified,
+    size: response.ContentLength || 0,
+  };
 }
 
 /**
@@ -116,31 +111,26 @@ export async function getFileBuffer(
   bucket: string,
   key: string
 ): Promise<{ buffer: Buffer; contentType: string }> {
-  try {
-    const { Body, ContentType } = await s3Client.send(
-      new GetObjectCommand({
-        Bucket: bucket,
-        Key: key,
-      })
-    );
+  const { Body, ContentType } = await s3Client.send(
+    new GetObjectCommand({
+      Bucket: bucket,
+      Key: key,
+    })
+  );
 
-    if (!Body || !ContentType) {
-      throw new NotFoundError();
-    }
-
-    // Read the stream into a buffer
-    const chunks: Buffer[] = [];
-    // @ts-ignore - Body is a stream
-    for await (const chunk of Body) {
-      chunks.push(Buffer.from(chunk));
-    }
-    const buffer = Buffer.concat(chunks);
-
-    return { buffer, contentType: ContentType };
-  } catch (error) {
-    log.error(`Failed to get file buffer for ${key}:`, error);
+  if (!Body || !ContentType) {
     throw new NotFoundError();
   }
+
+  // Read the stream into a buffer
+  const chunks: Buffer[] = [];
+  // @ts-ignore - Body is a stream
+  for await (const chunk of Body) {
+    chunks.push(Buffer.from(chunk));
+  }
+  const buffer = Buffer.concat(chunks);
+
+  return { buffer, contentType: ContentType };
 }
 
 /**
@@ -155,26 +145,21 @@ export async function getFileStream(
   bucket: string,
   key: string
 ): Promise<{ stream: Readable; contentType: string }> {
-  try {
-    const { Body, ContentType } = await s3Client.send(
-      new GetObjectCommand({
-        Bucket: bucket,
-        Key: key,
-      })
-    );
+  const { Body, ContentType } = await s3Client.send(
+    new GetObjectCommand({
+      Bucket: bucket,
+      Key: key,
+    })
+  );
 
-    if (!Body || !ContentType) {
-      throw new NotFoundError();
-    }
-
-    return {
-      stream: Body as Readable,
-      contentType: ContentType,
-    };
-  } catch (error) {
-    log.error(`Failed to get file stream for ${key}:`, error);
+  if (!Body || !ContentType) {
     throw new NotFoundError();
   }
+
+  return {
+    stream: Body as Readable,
+    contentType: ContentType,
+  };
 }
 
 /**
@@ -189,22 +174,17 @@ export async function getFileHash(
   bucket: string,
   key: string
 ): Promise<string> {
-  try {
-    const response = await s3Client.send(
-      new HeadObjectCommand({
-        Bucket: bucket,
-        Key: key,
-      })
-    );
+  const response = await s3Client.send(
+    new HeadObjectCommand({
+      Bucket: bucket,
+      Key: key,
+    })
+  );
 
-    if (!response.ETag) {
-      throw new NotFoundError();
-    }
-
-    // Remove quotes from ETag
-    return response.ETag.replace(/"/g, '');
-  } catch (error) {
-    log.error(`Failed to get file hash for ${key}:`, error);
+  if (!response.ETag) {
     throw new NotFoundError();
   }
+
+  // Remove quotes from ETag
+  return response.ETag.replace(/"/g, '');
 }

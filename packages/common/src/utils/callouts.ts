@@ -14,6 +14,7 @@ import type {
   CalloutResponseAnswer,
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
+  CalloutResponseAnswersSlide,
   FilterArgs,
   FormioFile,
   SetCalloutFormSchema,
@@ -255,4 +256,36 @@ export function stringifyAnswer(
   } else {
     return answer.toString();
   }
+}
+
+/**
+ * Retrieves the value at a given path of a nested object, similar to lodash's `get` function.
+ *
+ * @param {object} obj - The object to query.
+ * @param {string} path - The path of the property to get, using dot notation (e.g., "a.b.c").
+ * @returns {unknown} - Returns the resolved value, or `undefined` if the path does not exist.
+ *
+ * @example
+ * // Example with a generic object:
+ * const data = { a: { b: { c: 42 } } };
+ * const value = getByPath(data, 'a.b.c');
+ * // value === 42
+ *
+ * // Example with a callout response object:
+ * const calloutResponse = {
+ *   answers: {
+ *     'slide1.input1': 'some answer',
+ *     'slide2.input2': 123
+ *   }
+ * };
+ * const answer = getByPath(calloutResponse, 'answers.slide1.input1');
+ * // answer === 'some answer'
+ */
+export function getByPath<T = unknown, R = unknown>(
+  obj: T,
+  path: string
+): R | undefined {
+  return path
+    .split('.')
+    .reduce<any>((acc, key) => (acc && key in acc ? acc[key] : undefined), obj);
 }

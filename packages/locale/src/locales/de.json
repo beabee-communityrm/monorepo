@@ -475,6 +475,17 @@
               "initialZoom": {
                 "label": "Anfängliche Zoomstufe"
               },
+              "mapIconProp": {
+                "label": "Wählen Sie eine Frage aus, um speziellen Symbolen auf der Karte anzuzeigen",
+                "none": "– Standard-Symbole für alle Antworten verwenden –"
+              },
+              "mapIconStylingProp": {
+                "label": "Bezeichnung"
+              },
+              "mapIconStylingSetting": {
+                "label": "Bitte wählen Sie eine Farbe und ein Symbol für die Antwort aus: ",
+                "title": "Symbolstil auf der Karte"
+              },
               "maxZoom": {
                 "label": "Maximale Zoomstufe"
               },

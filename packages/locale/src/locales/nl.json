@@ -475,6 +475,17 @@
               "initialZoom": {
                 "label": ""
               },
+              "mapIconProp": {
+                "label": "Een vraag selecteren om de pictogrammen op de kaart weer te geven",
+                "none": "– Standaardpictogrammen gebruiken voor alle antwoorden –"
+              },
+              "mapIconStylingProp": {
+                "label": "Categorie"
+              },
+              "mapIconStylingSetting": {
+                "label": "Een kleur en pictogram selecteren voor het antwoord: ",
+                "title": "Pictogramstijl op de kaart"
+              },
               "maxZoom": {
                 "label": ""
               },

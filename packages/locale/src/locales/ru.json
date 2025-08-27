@@ -475,6 +475,17 @@
               "initialZoom": {
                 "label": ""
               },
+              "mapIconProp": {
+                "label": "Выбрать вопрос для отображения значков на карте",
+                "none": "– Использовать значки по умолчанию для всех ответов –"
+              },
+              "mapIconStylingProp": {
+                "label": "Категория"
+              },
+              "mapIconStylingSetting": {
+                "label": "Выбрать цвет и значок для ответа: ",
+                "title": "Стиль значка на карте"
+              },
               "maxZoom": {
                 "label": ""
               },

@@ -3,6 +3,7 @@ import {
   ContributionPeriod,
   ContributionType,
   LOGIN_CODES,
+  NewsletterStatus,
   PaymentForm,
   RESET_SECURITY_FLOW_ERROR_CODE,
   RESET_SECURITY_FLOW_TYPE,
@@ -283,10 +284,7 @@ class ContactsService {
   async updateContactProfile(
     contact: Contact,
     updates: Partial<ContactProfile>,
-    opts: { sync?: boolean; mergeGroups?: boolean } = {
-      sync: true,
-      mergeGroups: false,
-    }
+    opts: { mergeGroups?: boolean } = { mergeGroups: false }
   ): Promise<void> {
     const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
 
@@ -299,12 +297,37 @@ class ContactsService {
       }
     }
 
-    if (opts.sync && (newsletterStatus || newsletterGroups)) {
+    if (newsletterStatus || newsletterGroups) {
       await NewsletterService.upsertContact(
         contact,
         { newsletterStatus, newsletterGroups },
         opts
       );
+    }
+  }
+
+  /**
+   * Update a contact's newsletter status and groups, without syncing to the
+   * newsletter provider
+   *
+   * @param contact The contact to update
+   * @param newsletterStatus The new newsletter status
+   * @param newsletterGroups The new newsletter groups
+
+   * @deprecated Only used by legacy app newsletter sync, do not use.
+   */
+  async updateContactNLNoSync(
+    contact: Contact,
+    newsletterStatus: NewsletterStatus,
+    newsletterGroups: string[]
+  ): Promise<void> {
+    await getRepository(ContactProfile).update(contact.id, {
+      newsletterStatus,
+      newsletterGroups,
+    });
+    if (contact.profile) {
+      contact.profile.newsletterStatus = newsletterStatus;
+      contact.profile.newsletterGroups = newsletterGroups;
     }
   }
 

@@ -475,6 +475,17 @@
               "initialZoom": {
                 "label": ""
               },
+              "mapIconProp": {
+                "label": "Selecionar uma pergunta para exibir os ícones no mapa",
+                "none": "– Usar ícones padrão para todas as respostas –"
+              },
+              "mapIconStylingProp": {
+                "label": "Categoria"
+              },
+              "mapIconStylingSetting": {
+                "label": "Selecionar uma cor e um ícone para a resposta: ",
+                "title": "Estilo de ícone no mapa"
+              },
               "maxZoom": {
                 "label": ""
               },
