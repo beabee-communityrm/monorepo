@@ -408,6 +408,14 @@ export class CalloutController {
     @CalloutId() id: string,
     @Body() data: CreateCalloutResponseSegmentDto
   ): Promise<GetCalloutResponseSegmentDto> {
+    if (data.order === undefined) {
+      const segment = await CalloutResponseSegmentTransformer.fetchOne(auth, {
+        calloutId: id,
+        sort: 'order',
+        order: 'DESC',
+      });
+      data.order = segment ? (segment.order ?? -1) + 1 : 0;
+    }
     return CalloutResponseSegmentTransformer.createOne(auth, {
       calloutId: id,
       ...data,
