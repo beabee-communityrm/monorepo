@@ -1,5 +1,11 @@
 <template>
-  <AppButton variant="link" size="sm" :icon="faFloppyDisk" @click="handleOpen">
+  <AppButton
+    class="mb-3"
+    variant="link"
+    size="sm"
+    :icon="faFloppyDisk"
+    @click="handleOpen"
+  >
     {{ t('advancedSearch.saveSegment.title') }}
   </AppButton>
   <AppModal
