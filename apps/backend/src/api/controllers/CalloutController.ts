@@ -424,7 +424,7 @@ export class CalloutController {
     await CalloutResponseSegmentTransformer.updateById(auth, segmentId, data);
     return CalloutResponseSegmentTransformer.fetchOneById(auth, segmentId, {
       calloutId: id,
-      with: [GetCalloutResponseSegmentWith.calloutResponseCount],
+      with: [GetCalloutResponseSegmentWith.itemCount],
     });
   }
 

@@ -83,9 +83,9 @@ export class SegmentsClient extends BaseClient {
    */
   async create(
     input: CreateSegmentData
-  ): Promise<GetSegmentDataWith<'contactCount'>> {
+  ): Promise<GetSegmentDataWith<'itemCount'>> {
     const { data } = await this.fetch.post<
-      Serial<GetSegmentDataWith<'contactCount'>>
+      Serial<GetSegmentDataWith<'itemCount'>>
     >('', {
       name: input.name,
       order: input.order,
@@ -114,9 +114,9 @@ export class SegmentsClient extends BaseClient {
   async update(
     id: string,
     input: UpdateSegmentData
-  ): Promise<GetSegmentDataWith<'contactCount'>> {
+  ): Promise<GetSegmentDataWith<'itemCount'>> {
     const { data } = await this.fetch.patch<
-      Serial<GetSegmentDataWith<'contactCount'>>
+      Serial<GetSegmentDataWith<'itemCount'>>
     >(`/${id}`, {
       name: input.name,
       order: input.order,

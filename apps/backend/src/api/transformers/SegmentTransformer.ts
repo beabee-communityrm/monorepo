@@ -33,8 +33,8 @@ class SegmentTransformer extends BaseTransformer<
       description: segment.description,
       ruleGroup: segment.ruleGroup,
       order: segment.order,
-      ...(opts.with?.includes(GetSegmentWith.contactCount) && {
-        contactCount: segment.contactCount,
+      ...(opts.with?.includes(GetSegmentWith.itemCount) && {
+        itemCount: segment.itemCount,
       }),
     };
   }
@@ -44,13 +44,13 @@ class SegmentTransformer extends BaseTransformer<
     query: ListSegmentsDto,
     auth: AuthInfo
   ): Promise<void> {
-    if (query.with?.includes(GetSegmentWith.contactCount)) {
+    if (query.with?.includes(GetSegmentWith.itemCount)) {
       for (const segment of segments) {
         const result = await ContactTransformer.fetch(auth, {
           limit: 0,
           rules: segment.ruleGroup,
         });
-        segment.contactCount = result.total;
+        segment.itemCount = result.total;
       }
     }
   }

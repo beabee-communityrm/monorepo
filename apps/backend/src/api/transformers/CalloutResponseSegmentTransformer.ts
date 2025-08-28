@@ -36,10 +36,8 @@ class CalloutResponseSegmentTransformer extends BaseTransformer<
       name: calloutSegment.name,
       ruleGroup: calloutSegment.ruleGroup,
       order: calloutSegment.order,
-      ...(opts.with?.includes(
-        GetCalloutResponseSegmentWith.calloutResponseCount
-      ) && {
-        calloutResponseCount: calloutSegment.calloutResponseCount,
+      ...(opts.with?.includes(GetCalloutResponseSegmentWith.itemCount) && {
+        itemCount: calloutSegment.itemCount,
       }),
     };
   }
@@ -67,9 +65,7 @@ class CalloutResponseSegmentTransformer extends BaseTransformer<
     query: ListCalloutResponseSegmentsDto,
     auth: AuthInfo
   ): Promise<void> {
-    if (
-      query.with?.includes(GetCalloutResponseSegmentWith.calloutResponseCount)
-    ) {
+    if (query.with?.includes(GetCalloutResponseSegmentWith.itemCount)) {
       for (const segment of segments) {
         const result = await CalloutResponseTransformer.fetchForCallout(
           auth,
@@ -78,7 +74,7 @@ class CalloutResponseSegmentTransformer extends BaseTransformer<
             rules: segment.ruleGroup,
           }
         );
-        segment.calloutResponseCount = result.total;
+        segment.itemCount = result.total;
       }
     }
   }
