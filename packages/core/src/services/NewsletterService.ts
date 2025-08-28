@@ -35,13 +35,20 @@ async function contactToNlUpdate(
     });
   }
 
-  const newStatus =
-    updates?.newsletterStatus || contact.profile.newsletterStatus;
+  let newStatus = updates?.newsletterStatus || contact.profile.newsletterStatus;
   if (
     newStatus === NewsletterStatus.None &&
     contact.profile.newsletterStatus === NewsletterStatus.None
   ) {
     return undefined;
+  }
+
+  // Prevent newsletter status of subscribed users being set back to pending
+  if (
+    contact.profile.newsletterStatus === NewsletterStatus.Subscribed &&
+    newStatus === NewsletterStatus.Pending
+  ) {
+    newStatus = NewsletterStatus.Subscribed;
   }
 
   const groups = updates?.newsletterGroups

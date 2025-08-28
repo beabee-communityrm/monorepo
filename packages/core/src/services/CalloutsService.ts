@@ -275,7 +275,7 @@ class CalloutsService {
       await ContactsService.updateContactProfile(
         contact,
         {
-          newsletterStatus: NewsletterStatus.Subscribed,
+          newsletterStatus: NewsletterStatus.Pending,
           newsletterGroups: newsletter.groups,
         },
         { mergeGroups: true }
