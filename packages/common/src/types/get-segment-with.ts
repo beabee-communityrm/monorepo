@@ -1,1 +1,1 @@
-export type GetSegmentWith = 'calloutResponseCount' | 'contactCount' | void;
+export type GetSegmentWith = 'itemCount' | void;

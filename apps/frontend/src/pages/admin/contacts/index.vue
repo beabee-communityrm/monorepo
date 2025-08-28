@@ -295,7 +295,7 @@ async function updateSegment(
 }
 
 async function listSegments() {
-  return await client.segments.list({ sort: 'order' }, ['contactCount']);
+  return await client.segments.list({ sort: 'order' }, ['itemCount']);
 }
 
 async function listTotalSegmentItems() {

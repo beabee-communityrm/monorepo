@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 
 export enum GetSegmentWith {
-  contactCount = 'contactCount',
+  itemCount = 'itemCount',
 }
 
 export class CreateSegmentDto {
@@ -35,7 +35,7 @@ export class GetSegmentDto extends CreateSegmentDto {
 
   @IsOptional()
   @IsNumber()
-  contactCount?: number;
+  itemCount?: number;
 }
 
 export class GetSegmentOptsDto {
