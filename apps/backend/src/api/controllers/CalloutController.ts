@@ -416,10 +416,18 @@ export class CalloutController {
       });
       data.order = segment ? (segment.order ?? -1) + 1 : 0;
     }
-    return CalloutResponseSegmentTransformer.createOne(auth, {
+    const segment = await CalloutResponseSegmentTransformer.createOne(auth, {
       calloutId: id,
       ...data,
     });
+    return await CalloutResponseSegmentTransformer.fetchOneByIdOrFail(
+      auth,
+      segment.id,
+      {
+        calloutId: id,
+        with: [GetCalloutResponseSegmentWith.itemCount],
+      }
+    );
   }
 
   @Patch('/:id/segments/:segmentId')
