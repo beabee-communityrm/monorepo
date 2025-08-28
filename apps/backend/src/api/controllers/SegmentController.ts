@@ -62,9 +62,9 @@ export class SegmentController {
     }
     const segment = await getRepository(Segment).save(data);
 
-    // Use fetchOne to ensure that the segment has a contactCount
+    // Use fetchOne to ensure that the segment has a itemCount
     return await SegmentTransformer.fetchOneByIdOrFail(auth, segment.id, {
-      with: [GetSegmentWith.contactCount],
+      with: [GetSegmentWith.itemCount],
     });
   }
 
@@ -85,7 +85,7 @@ export class SegmentController {
   ): Promise<GetSegmentDto | undefined> {
     await getRepository(Segment).update(id, data);
     return await SegmentTransformer.fetchOneById(auth, id, {
-      with: [GetSegmentWith.contactCount],
+      with: [GetSegmentWith.itemCount],
     });
   }
 

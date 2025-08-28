@@ -219,3 +219,5 @@ export type * from './validated-rule.js';
 export type * from './validated-string-rule.js';
 export type * from './validator-callout-component.js';
 export type * from './validator.js';
+export type * from './create-callout-response-segment-data.js';
+export type * from './update-callout-response-segment-data.js';

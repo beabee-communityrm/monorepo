@@ -1,5 +1,11 @@
 <template>
-  <AppButton variant="link" size="sm" :icon="faFloppyDisk" @click="handleOpen">
+  <AppButton
+    class="mb-3"
+    variant="link"
+    size="sm"
+    :icon="faFloppyDisk"
+    @click="handleOpen"
+  >
     {{ t('advancedSearch.saveSegment.title') }}
   </AppButton>
   <AppModal
@@ -52,16 +58,11 @@
 </template>
 
 <script lang="ts" setup>
-import type {
-  GetSegmentData,
-  GetSegmentDataWith,
-  RuleGroup,
-} from '@beabee/beabee-common';
+import type { GetSegmentData, RuleGroup } from '@beabee/beabee-common';
 import { AppButton, AppInput, AppModal, AppRadioGroup } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -70,6 +71,12 @@ const emit = defineEmits(['saved']);
 const props = defineProps<{
   segment: GetSegmentData | undefined;
   rules: RuleGroup;
+  saveSegment: (name: string, rules: RuleGroup) => Promise<GetSegmentData>;
+  updateSegment: (
+    segmentId: string,
+    name: string,
+    rules: RuleGroup
+  ) => Promise<GetSegmentData>;
 }>();
 
 const { t } = useI18n();
@@ -88,31 +95,30 @@ async function handleOpen() {
 }
 
 async function handleSubmit() {
-  let segment: GetSegmentDataWith<'contactCount'>;
-
   isSaving.value = true;
-  if (shouldUpdate.value) {
-    if (!props.segment) return; // Not possible, can't choose to update without a segment
-
-    segment = await client.segments.update(props.segment.id, {
-      ruleGroup: props.rules,
-    });
-    addNotification({
-      variant: 'success',
-      title: t('advancedSearch.updatedSegment', { segment: segment.name }),
-    });
-  } else {
-    segment = await client.segments.create({
-      name: newSegmentName.value,
-      ruleGroup: props.rules,
-    });
-    addNotification({
-      variant: 'success',
-      title: t('advancedSearch.createdSegment', { segment: segment.name }),
-    });
+  try {
+    let segment;
+    if (shouldUpdate.value) {
+      if (!props.segment) return;
+      segment = await props.updateSegment(
+        props.segment.id,
+        props.segment.name,
+        props.rules
+      );
+      addNotification({
+        variant: 'success',
+        title: t('advancedSearch.updatedSegment', { segment: segment.name }),
+      });
+    } else {
+      segment = await props.saveSegment(newSegmentName.value, props.rules);
+      addNotification({
+        variant: 'success',
+        title: t('advancedSearch.createdSegment', { segment: segment.name }),
+      });
+    }
+    emit('saved', segment);
+  } finally {
+    isSaving.value = false;
   }
-
-  emit('saved', segment);
-  isSaving.value = false;
 }
 </script>
