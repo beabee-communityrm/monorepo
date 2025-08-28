@@ -95,7 +95,7 @@ app.get(
   '/',
   wrapAsync(async (req, res) => {
     const projects = await createQueryBuilder(Project, 'p')
-      .loadRelationCountAndMap('p.contactCount', 'p.contacts')
+      .loadRelationCountAndMap('p.itemCount', 'p.contacts')
       .getMany();
 
     res.render('index', { projects });

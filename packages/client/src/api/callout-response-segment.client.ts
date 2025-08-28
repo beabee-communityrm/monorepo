@@ -1,6 +1,6 @@
 import type {
   CreateCalloutResponseSegmentData,
-  GetCalloutResponseSegmentDataWith,
+  GetSegmentDataWith,
   GetSegmentWith,
   PaginatedQuery,
   Serial,
@@ -36,7 +36,7 @@ export class CalloutResponseSegmentClient extends BaseClient {
    */
   protected deserialize<With extends GetSegmentWith | void = void>(
     data: any
-  ): GetCalloutResponseSegmentDataWith<With> {
+  ): GetSegmentDataWith<With> {
     return {
       ...data,
     };
@@ -51,10 +51,11 @@ export class CalloutResponseSegmentClient extends BaseClient {
     calloutId: string,
     query?: PaginatedQuery,
     _with?: readonly With[]
-  ): Promise<GetCalloutResponseSegmentDataWith<With>[]> {
-    const { data } = await this.fetch.get<
-      Serial<GetCalloutResponseSegmentDataWith<With>>[]
-    >(this.getBasePath(calloutId), { with: _with, ...query });
+  ): Promise<GetSegmentDataWith<With>[]> {
+    const { data } = await this.fetch.get<Serial<GetSegmentDataWith<With>>[]>(
+      this.getBasePath(calloutId),
+      { with: _with, ...query }
+    );
     return data.map((segment) => this.deserialize(segment));
   }
 
@@ -67,9 +68,9 @@ export class CalloutResponseSegmentClient extends BaseClient {
   async create(
     calloutId: string,
     input: CreateCalloutResponseSegmentData
-  ): Promise<GetCalloutResponseSegmentDataWith<'calloutResponseCount'>> {
+  ): Promise<GetSegmentDataWith<'itemCount'>> {
     const { data } = await this.fetch.post<
-      Serial<GetCalloutResponseSegmentDataWith<'calloutResponseCount'>>
+      Serial<GetSegmentDataWith<'itemCount'>>
     >(this.getBasePath(calloutId), {
       name: input.name,
       order: input.order,
@@ -99,9 +100,9 @@ export class CalloutResponseSegmentClient extends BaseClient {
     calloutId: string,
     segmentId: string,
     input: UpdateCalloutResponseSegmentData
-  ): Promise<GetCalloutResponseSegmentDataWith<'calloutResponseCount'>> {
+  ): Promise<GetSegmentDataWith<'itemCount'>> {
     const { data } = await this.fetch.patch<
-      Serial<GetCalloutResponseSegmentDataWith<'calloutResponseCount'>>
+      Serial<GetSegmentDataWith<'itemCount'>>
     >(this.getBasePath(calloutId) + `/${segmentId}`, {
       name: input.name,
       ruleGroup: input.ruleGroup,

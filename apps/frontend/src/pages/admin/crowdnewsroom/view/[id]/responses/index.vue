@@ -420,7 +420,7 @@ async function listSegments() {
   return await client.callout.segments.list(
     props.callout.slug,
     { sort: 'order' },
-    ['calloutResponseCount']
+    ['itemCount']
   );
 }
 

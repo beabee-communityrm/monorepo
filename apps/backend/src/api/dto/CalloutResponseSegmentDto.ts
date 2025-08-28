@@ -11,7 +11,7 @@ import {
 import { GetPaginatedQuery, GetPaginatedRuleGroup } from './BaseDto';
 
 export enum GetCalloutResponseSegmentWith {
-  calloutResponseCount = 'calloutResponseCount',
+  itemCount = 'itemCount',
 }
 
 export class CreateCalloutResponseSegmentDto {
@@ -33,7 +33,7 @@ export class GetCalloutResponseSegmentDto extends CreateCalloutResponseSegmentDt
 
   @IsOptional()
   @IsNumber()
-  calloutResponseCount?: number;
+  itemCount?: number;
 }
 
 export class GetCalloutResponseSegmentOptsDto {
