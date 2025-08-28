@@ -15,9 +15,6 @@ export class CalloutResponseSegment {
   @Column({ type: 'jsonb' })
   ruleGroup!: RuleGroup;
 
-  @Column({ default: 'false' })
-  isGlobal!: boolean;
-
   @Column({ nullable: true })
   calloutId?: string;
   @ManyToOne(() => Callout, { nullable: true })

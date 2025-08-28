@@ -56,7 +56,7 @@ class CalloutResponseSegmentTransformer extends BaseTransformer<
     if (operation === 'read' && !(query.limit === 1)) {
       const calloutId = query.calloutId;
       qb.where(
-        `(${fieldPrefix}calloutId = :calloutId OR ${fieldPrefix}isGlobal = true)`,
+        `(${fieldPrefix}calloutId = :calloutId OR ${fieldPrefix}calloutId IS NULL)`,
         { calloutId }
       );
     }
