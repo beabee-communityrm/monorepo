@@ -2,14 +2,13 @@
 
 ## Overview
 
-This section contains documentation for the Beabee frontend application's MapTiler integration and related components.
+Documentation for the Beabee frontend application's MapTiler integration and form builder.
 
 ## MapTiler Integration
 
-### Core Components
-
 - **[MapTiler Integration](./maptiler-integration.md)**: Interactive mapping and geocoding functionality
 - **[MapTiler Address Provider](./maptiler-provider.md)**: Form.io address provider for address lookup and autocomplete
+- **[Form Builder](./form-builder.md)**: Dynamic form creation with automatic MapTiler integration
 
 ## Key Technologies
 
@@ -25,8 +24,6 @@ This section contains documentation for the Beabee frontend application's MapTil
 - MapTiler API key (required for mapping features)
 
 ### Environment Configuration
-
-Configure the MapTiler API key in your environment:
 
 ```bash
 BEABEE_MAPTILER_KEY=your_maptiler_api_key_here
