@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { FormioAddressProviderOptions } from '@type';
 
 /**
  * Abstract base class for address providers in Form.io
@@ -7,7 +8,9 @@
  * for address lookup and geocoding functionality. Extend this class
  * to create custom address providers for different geocoding services.
  */
-export abstract class BaseAddressProvider<T = any> {
+export abstract class BaseAddressProvider<
+  T extends FormioAddressProviderOptions,
+> {
   /**
    * Unique identifier for the provider
    * Used internally by Form.io to identify and register the provider
@@ -31,16 +34,31 @@ export abstract class BaseAddressProvider<T = any> {
    * Creates a new address provider instance
    * @param options - Configuration options, merged with defaultOptions
    */
-  constructor(options: T = {} as T) {
-    this.options = { ...this.defaultOptions, ...options };
+  constructor(options: Partial<T> = {}) {
+    this.options = {
+      ...this.defaultOptions,
+      ...options,
+      params: {
+        ...this.defaultOptions.params,
+        ...options.params,
+      },
+    };
+  }
+
+  /**
+   * Hook called before merging options
+   * Override in subclasses to modify options before merging
+   */
+  protected beforeMergeOptions(): void {
+    // Default implementation does nothing
   }
 
   /**
    * Default configuration options
    * Override in subclasses to provide service-specific defaults
    */
-  protected get defaultOptions(): any {
-    return {};
+  protected get defaultOptions(): T {
+    return {} as T;
   }
 
   /**
@@ -86,7 +104,7 @@ export abstract class BaseAddressProvider<T = any> {
    * @param options - Request-specific options to merge
    * @returns Merged options object
    */
-  protected getRequestOptions(options: any = {}): any {
+  protected getRequestOptions(options: Partial<T>): T {
     return { ...this.options, ...options };
   }
 
@@ -118,10 +136,9 @@ export abstract class BaseAddressProvider<T = any> {
    * @param options - Additional search options
    * @returns Promise resolving to an array of address results
    */
-  async search(query: string, options: any = {}): Promise<any[]> {
+  async search(query: string, options: Partial<T> = {}): Promise<any[]> {
     const requestOptions = this.getRequestOptions(options);
-    const params = (requestOptions.params = requestOptions.params || {});
-    params[this.queryProperty] = query;
+    requestOptions.params.query = query;
 
     const result = await this.makeRequest(requestOptions);
     return this.responseProperty ? result[this.responseProperty] || [] : result;

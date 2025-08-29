@@ -5,11 +5,7 @@ import {
   type GeocodingFeature,
   type GeocodingSearchResult,
 } from '@maptiler/client';
-import type {
-  FormioAddressResult,
-  MapTilerProviderOptions,
-  MapTilerSearchOptions,
-} from '@type/maptiler';
+import type { MapTilerAddressResult, MapTilerProviderOptions } from '@type';
 
 import { BaseAddressProvider } from './BaseAddressProvider';
 
@@ -22,9 +18,7 @@ import { BaseAddressProvider } from './BaseAddressProvider';
  *
  * @see https://docs.maptiler.com/geocoding-api/
  */
-export class MapTilerAddressProvider extends BaseAddressProvider<
-  Partial<MapTilerProviderOptions>
-> {
+export class MapTilerAddressProvider extends BaseAddressProvider<MapTilerProviderOptions> {
   /**
    * Unique identifier for the MapTiler provider
    * Used by Form.io to register and identify this provider
@@ -55,7 +49,6 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
     return {
       params: {
         language: currentLocaleConfig.value.baseLocale, // Current frontend language
-        country: this.options.callout?.geocodeCountries || [], // Callout-specific country restrictions
         limit: 10, // Maximum number of results
         types: ['address', 'poi', 'neighbourhood', 'locality'], // Result types
       },
@@ -84,9 +77,28 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
    * @param options - Request options
    * @returns Empty string as we don't use direct URL requests
    */
-  protected getRequestUrl(options?: Partial<MapTilerSearchOptions>): string {
+  protected getRequestUrl(): string {
     // Not used - we use the MapTiler client directly in makeRequest
-    return options?.query || '';
+    throw new Error('Not implemented');
+  }
+
+  /**
+   * Merges provider options with request-specific options
+   * @param options - Request-specific options to merge
+   * @returns Merged options object
+   */
+  protected getRequestOptions(
+    options: Partial<MapTilerProviderOptions>
+  ): MapTilerProviderOptions {
+    return {
+      ...super.getRequestOptions(options),
+      params: {
+        ...this.options.params,
+        ...options.params,
+        // Always use current language from reactive locale config
+        language: currentLocaleConfig.value.baseLocale,
+      },
+    };
   }
 
   /**
@@ -95,21 +107,15 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
    * @returns Promise resolving to the API response
    */
   protected async makeRequest(
-    options: Partial<MapTilerSearchOptions> = {}
+    options: Partial<MapTilerProviderOptions> = {}
   ): Promise<GeocodingSearchResult> {
-    const requestOptions = this.getRequestOptions(options);
-    const params = requestOptions.params;
+    const reqOptions = this.getRequestOptions(options);
 
-    const geocodingOptions = {
-      // Always use current language from reactive locale config
-      language: params.language || currentLocaleConfig.value.baseLocale,
-      limit: params.limit || 10,
-      types: params.types || ['address', 'poi', 'neighbourhood', 'locality'],
-      ...(params.country &&
-        params.country.length > 0 && { country: params.country }),
-    };
+    if (!reqOptions.params.query) {
+      throw new Error('Query is required');
+    }
 
-    return await geocoding.forward(params.query || '', geocodingOptions);
+    return await geocoding.forward(reqOptions.params.query, reqOptions.params);
   }
 
   /**
@@ -120,11 +126,10 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
    */
   async search(
     query: string,
-    options: Partial<MapTilerSearchOptions> = {}
-  ): Promise<FormioAddressResult[]> {
+    options: Partial<MapTilerProviderOptions> = {}
+  ): Promise<MapTilerAddressResult[]> {
     const requestOptions = this.getRequestOptions(options);
-    const params = (requestOptions.params = requestOptions.params || {});
-    params.query = query;
+    requestOptions.params.query = query;
 
     const result = await this.makeRequest(requestOptions);
     const features = result.features || [];
@@ -142,7 +147,7 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
    */
   private transformMapTilerResult(
     feature: GeocodingFeature
-  ): FormioAddressResult {
+  ): MapTilerAddressResult {
     const context = feature.context || [];
 
     // Extract address components from MapTiler's context array
@@ -162,7 +167,7 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
       context.find((ctx: FeatureHierarchy) => ctx.id.startsWith('locality'))
         ?.text || '';
 
-    const result: FormioAddressResult = {
+    const result: MapTilerAddressResult = {
       // Standard Form.io address properties
       place_id: feature.id,
       place_name: feature.place_name, // MapTiler's native property
@@ -198,31 +203,9 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
       types: feature.place_type,
 
       // Preserve MapTiler-specific properties for advanced usage
-      maptiler: {
-        id: feature.id,
-        type: feature.place_type[0],
-        relevance: feature.relevance,
-        bbox: feature.bbox,
-        center: feature.center,
-      },
+      maptiler: feature,
     };
 
     return result;
-  }
-
-  /**
-   * Extracts the display value from an address result
-   * Used by Form.io to show the selected address in the form
-   *
-   * @param address - Address result object (transformed from MapTiler format)
-   * @returns String representation of the address for display
-   */
-  getDisplayValue(address: FormioAddressResult | string): string {
-    if (typeof address === 'string') {
-      return address;
-    }
-
-    // MapTiler always provides place_name
-    return address.place_name || '';
   }
 }

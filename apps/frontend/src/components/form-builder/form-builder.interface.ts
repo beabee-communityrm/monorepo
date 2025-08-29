@@ -132,6 +132,8 @@ export const formOpts = {
           icon: 'home',
           schema: {
             type: 'address',
+            // We only support maptiler for now
+            provider: 'maptiler',
           },
         },
         phoneNumber: {
