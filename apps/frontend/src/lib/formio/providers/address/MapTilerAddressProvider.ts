@@ -57,7 +57,7 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
         language: currentLocaleConfig.value.baseLocale, // Current frontend language
         country: this.options.callout?.geocodeCountries || [], // Callout-specific country restrictions
         limit: 10, // Maximum number of results
-        types: ['address', 'poi', 'neighbourhood', 'city'], // Result types
+        types: ['address', 'poi', 'neighbourhood', 'locality'], // Result types
       },
     };
   }
@@ -76,14 +76,6 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
    */
   protected get displayValueProperty(): string {
     return 'place_name';
-  }
-
-  /**
-   * Alternative display value property
-   * Fallback to 'formatted_address' for compatibility
-   */
-  protected get alternativeDisplayValueProperty(): string {
-    return 'formatted_address';
   }
 
   /**
@@ -111,7 +103,7 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
     const geocodingOptions = {
       language: params.language || 'en',
       limit: params.limit || 10,
-      types: params.types || ['address', 'poi', 'neighbourhood', 'city'],
+      types: params.types || ['address', 'poi', 'neighbourhood', 'locality'],
       ...(params.country &&
         params.country.length > 0 && { country: params.country }),
     };
@@ -227,57 +219,7 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
       return address;
     }
 
-    const displayedProperty = this.hasOwnProperty.call(
-      address,
-      this.displayValueProperty
-    )
-      ? this.displayValueProperty
-      : this.alternativeDisplayValueProperty;
-
-    return (
-      (address as unknown as Record<string, string>)[displayedProperty] || ''
-    );
-  }
-
-  /**
-   * Attaches autocomplete functionality to an input element
-   * This method would be called by Form.io to enable address autocomplete
-   *
-   * @param elem - HTML input element to attach autocomplete to
-   * @param index - Index of the form field
-   * @param onSelectAddress - Callback function when address is selected
-   */
-  attachAutocomplete(
-    elem: HTMLInputElement,
-    index: number,
-    onSelectAddress: (
-      place: FormioAddressResult,
-      elem: HTMLInputElement,
-      index: number
-    ) => void
-  ) {
-    // Simple autocomplete implementation using MapTiler search
-    let searchTimeout: ReturnType<typeof setTimeout>;
-
-    elem.addEventListener('input', async (event) => {
-      const target = event.target as HTMLInputElement;
-      const query = target.value.trim();
-
-      if (query.length < 3) return;
-
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(async () => {
-        try {
-          const results = await this.search(query);
-          if (results.length > 0) {
-            // Use the first result for autocomplete
-            onSelectAddress(results[0], elem, index);
-          }
-        } catch {
-          // Handle autocomplete errors silently
-          // Could be logged to monitoring service in production
-        }
-      }, 300);
-    });
+    // MapTiler always provides place_name
+    return address.place_name || '';
   }
 }
