@@ -21,10 +21,9 @@ We chose to integrate MapTiler as the primary mapping and geocoding service, usi
 
 ### MapTiler Selection
 
-- **Open Source Friendly**: MapTiler provides generous free tiers and open-source licensing
-- **Performance**: Fast geocoding API with good global coverage
-- **Integration**: Excellent Vue.js and MapLibre GL JS support
-- **Cost Effective**: Competitive pricing compared to alternatives like Google Maps
+- **Open Source Friendly**: MapTiler provides free tiers and open-source licensing
+- **Integration**: Vue.js and MapLibre GL JS support available
+- **Cost Effective**: Lower pricing compared to Google Maps Platform
 
 ### MapLibre GL JS
 

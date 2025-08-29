@@ -251,28 +251,6 @@ private setMapTilerOptions() {
 - **Type Filtering**: Reduces irrelevant results and response size
 - **Geographic Filtering**: Country restrictions reduce search scope
 
-### Caching Strategy
-
-Currently no caching is implemented. Consider adding:
-
-```typescript
-// Potential caching implementation
-private resultCache = new Map<string, FormioAddressResult[]>();
-
-async search(query: string, options = {}): Promise<FormioAddressResult[]> {
-  const cacheKey = `${query}-${JSON.stringify(options)}`;
-
-  if (this.resultCache.has(cacheKey)) {
-    return this.resultCache.get(cacheKey)!;
-  }
-
-  const results = await this.makeRequest({ ...options, query });
-  this.resultCache.set(cacheKey, results);
-
-  return results;
-}
-```
-
 ## Security Considerations
 
 ### API Key Exposure
@@ -310,22 +288,11 @@ async search(query: string, options = {}): Promise<FormioAddressResult[]> {
 
 ### Debug Information
 
-Enable browser developer tools to see:
+Enable browser developer tools to monitor:
 
-```typescript
-// Add debugging to search method
-async search(query: string, options = {}): Promise<FormioAddressResult[]> {
-  console.log('MapTiler search:', { query, options });
-
-  const result = await this.makeRequest({ ...options, query });
-  console.log('MapTiler response:', result);
-
-  const transformed = result.features?.map(f => this.transformMapTilerResult(f)) || [];
-  console.log('Transformed results:', transformed);
-
-  return transformed;
-}
-```
+- Network requests to MapTiler API
+- Console errors from provider methods
+- Form.io component initialization
 
 ## Comparison with Map Integration
 

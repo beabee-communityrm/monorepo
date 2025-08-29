@@ -317,14 +317,8 @@ Callout administrators can configure various map settings:
 ```typescript
 mapSchema: {
   addressProp: 'slide1.address',
-  addressPatternProp: 'slide1.formattedAddress',
   addressPattern: '{street_number} {route}, {locality}',
-  geocodeCountries: ['DE', 'AT', 'CH'],
-  style: 'https://api.maptiler.com/maps/streets/style.json?key=...',
-  center: [13.4050, 52.5200], // Berlin
-  initialZoom: 10,
-  minZoom: 5,
-  maxZoom: 18
+  geocodeCountries: ['DE', 'AT', 'CH']
 }
 ```
 
@@ -350,15 +344,13 @@ When reverse geocoding fails:
 
 ### API Rate Limits
 
-- MapTiler has rate limits based on plan type
-- Consider implementing caching for frequently requested coordinates
-- Batch geocoding requests when possible
+MapTiler enforces rate limits based on your plan. Monitor usage in the MapTiler dashboard.
 
 ### Map Loading
 
-- Map tiles are loaded on-demand
-- Geocoding control is only initialized when API key is available
-- Address data is fetched asynchronously to prevent UI blocking
+- Map tiles load on-demand
+- Geocoding control requires valid API key
+- Address requests are asynchronous
 
 ## Security Considerations
 
@@ -390,20 +382,3 @@ Enable browser developer tools to see:
 - Network requests to MapTiler API
 - Console errors from geocoding functions
 - MapLibre GL JS debug information
-
-## Future Enhancements
-
-### Potential Improvements
-
-- **Caching**: Implement local storage for geocoding results
-- **Batch Processing**: Group multiple coordinate requests
-- **Fallback Providers**: Support multiple geocoding services
-- **Offline Support**: Cache map tiles for offline use
-- **Custom Styling**: Allow per-callout map customization
-
-### Integration Opportunities
-
-- **Form Validation**: Real-time address validation
-- **Autocomplete**: Address input with suggestions
-- **Routing**: Calculate distances between locations
-- **Analytics**: Track map usage and popular locations
