@@ -101,7 +101,8 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
     const params = requestOptions.params;
 
     const geocodingOptions = {
-      language: params.language || 'en',
+      // Always use current language from reactive locale config
+      language: params.language || currentLocaleConfig.value.baseLocale,
       limit: params.limit || 10,
       types: params.types || ['address', 'poi', 'neighbourhood', 'locality'],
       ...(params.country &&
@@ -161,7 +162,7 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
       context.find((ctx: FeatureHierarchy) => ctx.id.startsWith('locality'))
         ?.text || '';
 
-    return {
+    const result: FormioAddressResult = {
       // Standard Form.io address properties
       place_id: feature.id,
       place_name: feature.place_name, // MapTiler's native property
@@ -205,6 +206,8 @@ export class MapTilerAddressProvider extends BaseAddressProvider<
         center: feature.center,
       },
     };
+
+    return result;
   }
 
   /**

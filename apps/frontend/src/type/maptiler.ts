@@ -54,5 +54,4 @@ export interface FormioAddressResult {
  */
 export interface MapTilerSearchOptions extends GeocodingOptions {
   query: string;
-  apiKey?: string;
 }
