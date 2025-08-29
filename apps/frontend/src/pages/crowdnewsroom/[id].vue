@@ -10,22 +10,20 @@ import {
   generateComponentTextWithFallbacks,
   generateSlidesWithNavigationFallbacks,
 } from '@utils/callouts';
-import { ref } from 'vue';
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
-const props = defineProps<{ id: string }>();
 const callout =
   ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>>();
 
-const route = useRoute();
+const route = useRoute('/crowdnewsroom/[id]');
 
 watch(
-  [() => props.id, () => route.query.lang],
+  [() => route.params.id, () => route.query.lang],
   async () => {
     // Load callout with variants to get structured translation data
     const calloutWithVariants = await client.callout.get(
-      props.id,
+      route.params.id,
       ['form', 'responseViewSchema', 'variantNames', 'variants'],
       route.query.lang ? route.query.lang.toString() : undefined
     );

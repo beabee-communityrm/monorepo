@@ -76,7 +76,7 @@ meta:
       </template>
     </AppForm>
 
-    <div v-if="mode === 'reset'" class="mt-4 text-center">
+    <div v-if="props.mode === 'reset'" class="mt-4 text-center">
       <router-link
         variant="link"
         to="/auth/login"
@@ -101,7 +101,6 @@ import { useRoute, useRouter } from 'vue-router';
 
 const props = withDefaults(
   defineProps<{
-    id: string;
     mode?: 'set' | 'reset';
   }>(),
   { mode: 'reset' }
@@ -109,7 +108,7 @@ const props = withDefaults(
 
 const { t } = useI18n();
 
-const route = useRoute();
+const route = useRoute('reset_password');
 const router = useRouter();
 
 const redirectTo = route.query.next as string | undefined;
@@ -120,7 +119,7 @@ const data = reactive({ password: '', repeatPassword: '', token: '' });
 async function handleSubmit() {
   try {
     await client.resetSecurity.resetPasswordComplete(
-      props.id,
+      route.params.id,
       data.password,
       data.token || undefined
     );

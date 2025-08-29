@@ -277,8 +277,6 @@ const SOURCE_IDS = {
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>;
-  // Suppress the warning about the ID prop being passed by the router
-  id: string;
 }>();
 
 const map = ref<Map>();
