@@ -40,7 +40,7 @@ const providerOptions: MapTilerProviderOptions = {
     language: "en", // Response language (ISO 639-1)
     country: ["DE", "AT", "CH"], // Country restrictions (optional)
     limit: 10, // Maximum results (1-50)
-    types: ["address", "poi", "city"], // Result types to include
+    types: ["address", "poi", "locality"], // Result types to include
   },
 };
 ```
@@ -50,9 +50,11 @@ const providerOptions: MapTilerProviderOptions = {
 - **address**: Street addresses with house numbers
 - **poi**: Points of interest (businesses, landmarks)
 - **neighbourhood**: Neighborhood or district names
-- **city**: Cities, towns, and villages
+- **locality**: Cities, towns, and villages (replaces deprecated 'city')
 - **region**: Administrative regions and states
 - **country**: Country names
+
+> **Note**: The `city` type has been replaced with `locality` in accordance with MapTiler API specifications. Using `city` will result in 400 API errors.
 
 ## API Integration
 
@@ -127,31 +129,17 @@ MapTiler's feature-based response is transformed to Google Maps-compatible forma
 
 ### Implementation
 
-The provider includes a simple autocomplete implementation with debouncing:
+The provider uses Form.io's built-in autocomplete functionality. The `attachAutocomplete` method is implemented as a stub since Form.io handles the UI and calls the `search` method directly:
 
 ```typescript
-attachAutocomplete(
-  elem: HTMLInputElement,
-  index: number,
-  onSelectAddress: (place: FormioAddressResult, elem: HTMLInputElement, index: number) => void
-) {
-  let searchTimeout: ReturnType<typeof setTimeout>;
-
-  elem.addEventListener('input', async (event) => {
-    const query = (event.target as HTMLInputElement).value.trim();
-
-    if (query.length < 3) return;
-
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(async () => {
-      const results = await this.search(query);
-      if (results.length > 0) {
-        onSelectAddress(results[0], elem, index);
-      }
-    }, 300);
-  });
+attachAutocomplete() {
+  // Form.io handles the actual autocomplete UI and dropdown
+  // This method is mainly for providers that need special initialization
+  // For MapTiler, the search method is sufficient as Form.io calls it directly
 }
 ```
+
+The core functionality is provided by the `search` method which Form.io calls automatically during user input.
 
 ### Features
 
@@ -308,3 +296,28 @@ Both components work together to provide comprehensive address functionality:
 
 - **Address Provider**: Handles form input with search suggestions
 - **Map Integration**: Provides visual location selection and confirmation
+
+## Migration Notes
+
+### v2.0.0 (Current)
+
+**Breaking Changes:**
+
+- **API Types**: Replace `city` with `locality` in configuration
+- **Simplified Implementation**: Removed complex `attachAutocomplete` implementation
+- **Display Value**: Simplified to use only `place_name` property
+
+**Migration Steps:**
+
+```typescript
+// Before (will cause 400 errors):
+types: ["address", "poi", "city"];
+
+// After (correct):
+types: ["address", "poi", "locality"];
+```
+
+**Removed Features:**
+
+- `alternativeDisplayValueProperty` - no longer needed
+- Complex `attachAutocomplete` implementation - Form.io handles this automatically
