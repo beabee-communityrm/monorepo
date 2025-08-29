@@ -5,7 +5,10 @@ import { Formio } from 'formiojs';
 import { MapTilerAddressProvider } from './formio/providers/address/MapTilerAddressProvider';
 import BeabeeStorage from './formio/providers/storage/beabee';
 
+// Override all default providers
 Formio.Providers.providers.storage = { beabee: BeabeeStorage };
-Formio.Providers.providers.address = { maptiler: MapTilerAddressProvider };
+
+// Add maptiler provider but keep the default providers for backwards compatibility
+Formio.Providers.addProviders('address', { maptiler: MapTilerAddressProvider });
 
 export { Form, FormBuilder };
