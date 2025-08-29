@@ -214,9 +214,6 @@ const provider = new MapTilerAddressProvider({
 
 // Search for addresses
 const results = await provider.search("München Hauptbahnhof");
-
-// Form.io handles autocomplete automatically
-// No manual attachAutocomplete needed - Form.io calls search method directly
 ```
 
 The provider automatically transforms MapTiler responses to Google Maps format for compatibility with existing Form.io components.

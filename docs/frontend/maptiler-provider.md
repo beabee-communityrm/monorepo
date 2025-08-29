@@ -127,19 +127,7 @@ MapTiler's feature-based response is transformed to Google Maps-compatible forma
 
 ## Autocomplete Functionality
 
-### Implementation
-
-The provider uses Form.io's built-in autocomplete functionality. The `attachAutocomplete` method is implemented as a stub since Form.io handles the UI and calls the `search` method directly:
-
-```typescript
-attachAutocomplete() {
-  // Form.io handles the actual autocomplete UI and dropdown
-  // This method is mainly for providers that need special initialization
-  // For MapTiler, the search method is sufficient as Form.io calls it directly
-}
-```
-
-The core functionality is provided by the `search` method which Form.io calls automatically during user input.
+Form.io handles all autocomplete functionality automatically by calling the provider's `search` method during user input. No additional setup or methods are required.
 
 ### Features
 
@@ -296,28 +284,3 @@ Both components work together to provide comprehensive address functionality:
 
 - **Address Provider**: Handles form input with search suggestions
 - **Map Integration**: Provides visual location selection and confirmation
-
-## Migration Notes
-
-### v2.0.0 (Current)
-
-**Breaking Changes:**
-
-- **API Types**: Replace `city` with `locality` in configuration
-- **Simplified Implementation**: Removed complex `attachAutocomplete` implementation
-- **Display Value**: Simplified to use only `place_name` property
-
-**Migration Steps:**
-
-```typescript
-// Before (will cause 400 errors):
-types: ["address", "poi", "city"];
-
-// After (correct):
-types: ["address", "poi", "locality"];
-```
-
-**Removed Features:**
-
-- `alternativeDisplayValueProperty` - no longer needed
-- Complex `attachAutocomplete` implementation - Form.io handles this automatically
