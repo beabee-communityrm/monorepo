@@ -662,7 +662,10 @@
           "navigationButtons": {
             "title": ""
           },
-          "title": ""
+          "title": "",
+          "responseLinks": {
+            "title": ""
+          }
         }
       },
       "title": "",

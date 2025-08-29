@@ -107,11 +107,7 @@ import {
 
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type/locale-prop';
-import {
-  getComponentTextFallback,
-  getComponentTextValueNoFallback,
-  updateComponentTextValue,
-} from '@utils/callouts';
+import { getComponentText, updateComponentText } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
@@ -134,7 +130,7 @@ const fields = [
 
 // Get the fallback text for placeholder in translation UI
 function getDefaultText(ref: string | undefined = ''): string {
-  return getComponentTextFallback(
+  return getComponentText(
     props.componentText,
     ref,
     props.selectedLocale,
@@ -147,11 +143,12 @@ function getLocalizedValue(
   ref: string | undefined = '',
   locale: string
 ): string {
-  return getComponentTextValueNoFallback(
+  return getComponentText(
     props.componentText,
     ref,
     locale,
-    props.defaultLocale
+    props.defaultLocale,
+    false // useFallback: false
   );
 }
 
@@ -161,7 +158,7 @@ function updateValue(
   locale: string,
   value: string
 ): void {
-  updateComponentTextValue(
+  updateComponentText(
     props.componentText,
     ref,
     locale,
