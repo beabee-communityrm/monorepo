@@ -18,28 +18,4 @@ Documentation for the Beabee project's MapTiler integration and frontend compone
 
 ### [Environment Configuration](./environment-variables.md)
 
-- Environment configuration and setup
-
-## Getting Started
-
-### MapTiler Setup
-
-1. **Get MapTiler API Key**
-
-   - Sign up at [MapTiler](https://www.maptiler.com/)
-   - Create an API key for your domain
-
-2. **Configure Environment**
-
-   ```bash
-   BEABEE_MAPTILER_KEY=your_maptiler_api_key_here
-   ```
-
-3. **Restart Services**
-   ```bash
-   docker compose up -d
-   ```
-
-### Prerequisites
-
-- MapTiler API key (required for mapping features)
+- See [Environment Configuration](./environment-variables.md)

@@ -26,8 +26,6 @@ export { geocoding };
 
 ### 1. Add Mode Activation
 
-Users activate add mode by clicking the "Add Location" button:
-
 ```typescript
 function handleStartAddMode() {
   router.push({ ...route, hash: "#add" });
@@ -72,18 +70,14 @@ export async function reverseGeocode(
   lat: number,
   lng: number
 ): Promise<GeocodeResult | undefined> {
-  if (!env.maptilerKey) {
-    return undefined;
-  }
+  if (!env.maptilerKey) return undefined;
 
   const data = await geocoding.reverse([lng, lat], {
     language: currentLocaleConfig.value.baseLocale,
     types: ['address', 'postal_code', 'municipality', 'county', 'region'],
   });
 
-  if (!data.features.length) {
-    return undefined;
-  }
+  if (!data.features.length) return undefined;
 
   const result: GeocodeResult = {
     ...featureToAddress(data.features[0]),
@@ -97,7 +91,7 @@ export async function reverseGeocode(
     f.place_type.includes('address')
   );
 
-  if (addressFeature && addressFeature.address) {
+  if (addressFeature?.address) {
     result.features.push({
       text: addressFeature.address,
       types: ['street_number'],
@@ -110,12 +104,7 @@ export async function reverseGeocode(
 
 ## Address Provider Integration
 
-The MapTiler integration includes a Form.io address provider that is automatically configured:
-
-```typescript
-// The provider is automatically registered and configured
-// No manual setup required - just use address components in forms
-```
+The MapTiler integration includes a Form.io address provider that is automatically configured - no manual setup required.
 
 ## Geocoding Control
 

@@ -31,47 +31,6 @@ address: {
 },
 ```
 
-### API Configuration
-
-The provider automatically uses the MapTiler API key from environment variables:
-
-```typescript
-const providerOptions: MapTilerProviderOptions = {
-  params: {
-    language: "de",
-    country: ["DE", "AT", "CH"],
-    limit: 10,
-    types: ["address", "poi", "locality"],
-  },
-};
-```
-
-## Form.io Integration
-
-Address components automatically use MapTiler. No additional configuration required:
-
-```json
-{
-  "type": "address",
-  "key": "customerAddress",
-  "label": "Customer Address"
-}
-```
-
-Custom search parameters can be configured:
-
-```json
-{
-  "type": "address",
-  "providerOptions": {
-    "params": {
-      "country": ["DE"],
-      "types": ["address"]
-    }
-  }
-}
-```
-
 ## Key Files
 
 - `apps/frontend/src/lib/formio/providers/address/MapTilerAddressProvider.ts`
