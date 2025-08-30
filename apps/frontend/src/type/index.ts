@@ -13,6 +13,7 @@ export * from './item-with-status';
 export * from './locale-prop';
 export * from './map';
 export * from './maptiler';
+export * from './navigation';
 export * from './notification';
 export * from './paginated';
 export * from './search';
