@@ -245,7 +245,6 @@ import {
 import { addBreadcrumb } from '@store/breadcrumb';
 import { canAdmin } from '@store/currentUser';
 import { client } from '@utils/api';
-import { buckets } from '@utils/callouts';
 import {
   definePaginatedQuery,
   defineParam,
@@ -342,12 +341,6 @@ const selectedAssigneeId = computed(() => {
  * @description Handles bucket filtering and navigation
  */
 const currentBucket = defineParam('bucket', (v) => v || '', 'replace');
-const bucketItems = computed(() =>
-  buckets.value.map((bucket) => ({
-    ...bucket,
-    to: `${route.path}?bucket=${bucket.id}`,
-  }))
-);
 
 /**
  * Answer Display Configuration
@@ -453,8 +446,8 @@ addBreadcrumb(
     },
     {
       title:
-        bucketItems.value.find((b) => b.id === currentBucket.value)?.label ||
-        '',
+        segmentItems.value.find((e) => e.id === currentSegmentId.value)
+          ?.label || '',
     },
   ])
 );
