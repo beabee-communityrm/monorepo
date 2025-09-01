@@ -41,7 +41,7 @@ meta:
 
         <MglGeoJsonSource
           :source-id="SOURCE_IDS.RESPONSES"
-          :data="responsesCollecton"
+          :data="responsesCollection"
           cluster
           :cluster-properties="{
             all_responses: ['concat', ['get', 'all_responses']],
@@ -387,7 +387,7 @@ function getIconStyling(
 }
 
 // A GeoJSON FeatureCollection of all the responses
-const responsesCollecton = computed<MapPointFeatureCollection>(() => {
+const responsesCollection = computed<MapPointFeatureCollection>(() => {
   return {
     type: 'FeatureCollection',
     features: responses.value.map((response) => {
