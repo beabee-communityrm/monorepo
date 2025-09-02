@@ -663,7 +663,7 @@
             "title": "Schaltflächen"
           },
           "responseLinks": {
-            "title": "Antwort-Link-Bezeichnungen"
+            "title": "Fußzeilentext"
           },
           "title": "Übersetzungen"
         }
