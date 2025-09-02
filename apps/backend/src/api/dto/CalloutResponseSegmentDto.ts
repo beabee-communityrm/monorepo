@@ -45,8 +45,6 @@ export class GetCalloutResponseSegmentOptsDto {
 // class-validator won't accept a `calloutId`, but the controller can still add it
 export interface GetCalloutResponseSegmentOptsDto {
   calloutId: string;
-
-  withGlobalSegments?: boolean;
 }
 
 export class ListCalloutResponseSegmentsDto extends GetPaginatedQuery {
@@ -57,12 +55,11 @@ export class ListCalloutResponseSegmentsDto extends GetPaginatedQuery {
   @IsOptional()
   @IsIn(['name', 'order'])
   sort?: string;
+}
 
-  @IsOptional()
-  @IsString()
-  calloutId!: string;
+// class-validator won't accept a `calloutId`, but the controller can still add it
+export interface ListCalloutResponseSegmentsDto {
+  calloutId: string;
 
-  @IsOptional()
-  @IsString()
-  withGlobalSegments?: boolean;
+  includeGlobalSegments?: boolean;
 }

@@ -51,7 +51,7 @@ class CalloutResponseSegmentTransformer extends BaseTransformer<
   ): void {
     // we only want this to run on fetch multiple
     // we want global filters and filter matching the current callout
-    if (query.withGlobalSegments) {
+    if (query.includeGlobalSegments) {
       const calloutId = query.calloutId;
       qb.where(
         `(${fieldPrefix}calloutId = :calloutId OR ${fieldPrefix}calloutId IS NULL)`,

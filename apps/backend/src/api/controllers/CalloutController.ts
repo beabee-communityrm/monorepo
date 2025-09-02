@@ -398,7 +398,7 @@ export class CalloutController {
     const result = await CalloutResponseSegmentTransformer.fetch(auth, {
       ...query,
       calloutId: id,
-      withGlobalSegments: true,
+      includeGlobalSegments: true,
     });
     return result.items;
   }
