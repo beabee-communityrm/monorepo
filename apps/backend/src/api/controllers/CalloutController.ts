@@ -24,6 +24,12 @@ import {
   ListCalloutResponsesDto,
 } from '@api/dto/CalloutResponseDto';
 import {
+  CreateCalloutResponseSegmentDto,
+  GetCalloutResponseSegmentDto,
+  GetCalloutResponseSegmentWith,
+  ListCalloutResponseSegmentsDto,
+} from '@api/dto/CalloutResponseSegmentDto';
+import {
   CreateCalloutReviewerDto,
   GetCalloutReviewerDto,
   UpdateCalloutReviewerDto,
@@ -32,6 +38,7 @@ import { CreateCalloutTagDto, GetCalloutTagDto } from '@api/dto/CalloutTagDto';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
 import CalloutResponseExporter from '@api/transformers/CalloutResponseExporter';
 import CalloutResponseMapTransformer from '@api/transformers/CalloutResponseMapTransformer';
+import CalloutResponseSegmentTransformer from '@api/transformers/CalloutResponseSegmentTransformer';
 import CalloutResponseTransformer from '@api/transformers/CalloutResponseTransformer';
 import CalloutReviewerTransformer from '@api/transformers/CalloutReviewerTransformer';
 import calloutTagTransformer from '@api/transformers/CalloutTagTransformer';
@@ -378,6 +385,77 @@ export class CalloutController {
     @Param('reviewerId') reviewerId: string
   ): Promise<void> {
     if (!(await CalloutReviewerTransformer.deleteById(auth, reviewerId))) {
+      throw new NotFoundError();
+    }
+  }
+
+  @Get('/:id/segments')
+  async getCalloutResponseSegments(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
+    @QueryParams() query: ListCalloutResponseSegmentsDto
+  ): Promise<GetCalloutResponseSegmentDto[]> {
+    const result = await CalloutResponseSegmentTransformer.fetch(auth, {
+      ...query,
+      calloutId: id,
+      includeGlobalSegments: true,
+    });
+    return result.items;
+  }
+
+  @Post('/:id/segments')
+  async createCalloutResponseSegment(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
+    @Body() data: CreateCalloutResponseSegmentDto
+  ): Promise<GetCalloutResponseSegmentDto> {
+    if (data.order === undefined) {
+      const segment = await CalloutResponseSegmentTransformer.fetchOne(auth, {
+        calloutId: id,
+        sort: 'order',
+        order: 'DESC',
+      });
+      data.order = segment ? (segment.order ?? -1) + 1 : 0;
+    }
+    const segment = await CalloutResponseSegmentTransformer.createOne(auth, {
+      calloutId: id,
+      ...data,
+    });
+    return await CalloutResponseSegmentTransformer.fetchOneByIdOrFail(
+      auth,
+      segment.id,
+      {
+        calloutId: id,
+        with: [GetCalloutResponseSegmentWith.itemCount],
+      }
+    );
+  }
+
+  @Patch('/:id/segments/:segmentId')
+  async updateCalloutResponseSegment(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
+    @Param('segmentId') segmentId: string,
+    @Body() data: CreateCalloutResponseSegmentDto
+  ): Promise<GetCalloutResponseSegmentDto | undefined> {
+    await CalloutResponseSegmentTransformer.updateById(auth, segmentId, data);
+    return CalloutResponseSegmentTransformer.fetchOneById(auth, segmentId, {
+      calloutId: id,
+      with: [GetCalloutResponseSegmentWith.itemCount],
+    });
+  }
+
+  @Delete('/:id/segments/:segmentId')
+  @OnUndefined(204)
+  async deleteCalloutResponseSegment(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Param('segmentId') segmentId: string
+  ): Promise<void> {
+    const result = await CalloutResponseSegmentTransformer.deleteById(
+      auth,
+      segmentId
+    );
+    if (!result) {
       throw new NotFoundError();
     }
   }
