@@ -57,7 +57,7 @@ export class ListCalloutResponseSegmentsDto extends GetPaginatedQuery {
   sort?: string;
 }
 
-// class-validator won't accept a `calloutId`, but the controller can still add it
+// class-validator won't accept a `calloutId` and `includeGlobalSegments`, but the controller can still add it
 export interface ListCalloutResponseSegmentsDto {
   calloutId: string;
 
