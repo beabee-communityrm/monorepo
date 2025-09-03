@@ -662,6 +662,9 @@
           "navigationButtons": {
             "title": "Buttons"
           },
+          "responseLinks": {
+            "title": "Footer text"
+          },
           "title": "Translations"
         }
       },

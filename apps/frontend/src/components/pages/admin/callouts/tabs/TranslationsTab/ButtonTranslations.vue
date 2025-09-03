@@ -85,11 +85,7 @@ import { AppFormBox, AppInput } from '@beabee/vue';
 
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { LocaleProp } from '@type/locale-prop';
-import {
-  getLocalizedValueFallback,
-  getLocalizedValueNoFallback,
-  updateLocalizedValue,
-} from '@utils/callouts';
+import { getLocalizedValue, updateLocalizedValue } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
@@ -102,12 +98,14 @@ const { t } = useI18n();
 
 // Get navigation value for a specific locale using utility function (no fallback)
 function getValue(navProp: LocaleProp, locale: string): string {
-  return getLocalizedValueNoFallback(navProp, locale, props.defaultLocale);
+  return getLocalizedValue(navProp, locale, props.defaultLocale, {
+    useFallback: false,
+  });
 }
 
 // Get fallback text for placeholder
 function getPlaceholder(navProp: LocaleProp, locale: string): string {
-  return getLocalizedValueFallback(navProp, locale, props.defaultLocale);
+  return getLocalizedValue(navProp, locale, props.defaultLocale);
 }
 
 // Update navigation value using utility function
