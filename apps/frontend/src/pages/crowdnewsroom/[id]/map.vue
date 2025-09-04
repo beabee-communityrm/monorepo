@@ -390,21 +390,24 @@ function getIconStyling(
 const responsesCollecton = computed<MapPointFeatureCollection>(() => {
   return {
     type: 'FeatureCollection',
-    features: responses.value.map((response) => {
-      const { lat, lng } = response.address.geometry.location;
-      const iconName = getIconStyling(response.answers)?.icon.name || 'circle';
-      const color = getIconStyling(response.answers)?.color || 'black';
+    features: responses.value
+      .filter((response) => response.address?.geometry?.location)
+      .map((response) => {
+        const { lat, lng } = response.address.geometry.location;
+        const iconName =
+          getIconStyling(response.answers)?.icon.name || 'circle';
+        const color = getIconStyling(response.answers)?.color || 'black';
 
-      return {
-        type: 'Feature',
-        geometry: { type: 'Point', coordinates: [lng, lat] },
-        properties: {
-          all_responses: `<${response.number}>`,
-          first_response: response.number,
-          icon: generateImageId(iconName, color),
-        },
-      };
-    }),
+        return {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [lng, lat] },
+          properties: {
+            all_responses: `<${response.number}>`,
+            first_response: response.number,
+            icon: generateImageId(iconName, color),
+          },
+        };
+      }),
   };
 });
 

@@ -74,3 +74,15 @@ export const ALLOWED_DOCUMENT_EXTENSIONS: string[] = ['pdf'];
  * @summary Allowed MIME types
  */
 export const ALLOWED_DOCUMENT_MIME_TYPES: string[] = ['application/pdf'];
+
+/**
+ * Address component types for standardized parsing
+ */
+export enum ADDRESS_COMPONENT_TYPE {
+  STREET_NUMBER = 'street_number',
+  STREET = 'street',
+  LOCALITY = 'locality',
+  REGION = 'region',
+  POSTAL_CODE = 'postal_code',
+  COUNTRY = 'country',
+}

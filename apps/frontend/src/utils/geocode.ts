@@ -1,5 +1,6 @@
 import { type CalloutResponseAnswerAddress } from '@beabee/beabee-common';
 
+import { AddressFormatter } from '@lib/address/AddressFormatter';
 import { currentLocaleConfig } from '@lib/i18n';
 import { type GeocodingFeature } from '@maptiler/client';
 
@@ -23,12 +24,9 @@ export interface GeocodeResult {
 export function featureToAddress(
   feature: GeocodingFeature
 ): CalloutResponseAnswerAddress {
-  return {
-    formatted_address: feature.place_name,
-    geometry: {
-      location: { lat: feature.center[1], lng: feature.center[0] },
-    },
-  };
+  // Use new AddressFormatter to transform MapTiler feature to unified address format
+  const unifiedAddress = AddressFormatter.fromMapTiler(feature);
+  return AddressFormatter.toCalloutResponse(unifiedAddress);
 }
 
 export async function reverseGeocode(
