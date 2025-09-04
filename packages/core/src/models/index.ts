@@ -37,3 +37,4 @@ export * from './ResetSecurityFlow';
 export * from './Segment';
 export * from './SegmentContact';
 export * from './SegmentOngoingEmail';
+export * from './CalloutResponseSegment';

@@ -1,13 +1,19 @@
 <template>
-  <div class="flex-none md:hidden md:basis-menu">
-    <AppTabsCompact v-model="currentItem" :items="items" />
-  </div>
-  <div class="flex flex-col gap-6 md:flex-row">
-    <div class="flex-none md:basis-menu">
-      <AppVTabs v-model="currentItem" :items="items" class="hidden md:block" />
+  <div>
+    <div class="flex-none md:hidden md:basis-menu">
+      <AppTabsCompact v-model="currentItem" :items="items" />
     </div>
-    <div class="flex-auto">
-      <slot />
+    <div class="flex flex-col gap-6 md:flex-row">
+      <div class="flex-none md:basis-menu">
+        <AppVTabs
+          v-model="currentItem"
+          :items="items"
+          class="hidden md:block"
+        />
+      </div>
+      <div class="flex-auto">
+        <slot />
+      </div>
     </div>
   </div>
 </template>

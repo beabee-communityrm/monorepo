@@ -18,6 +18,7 @@ import type {
 import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
 import { BaseClient } from './base.client.js';
+import { CalloutResponseSegmentClient } from './callout-response-segment.client.js';
 import { CalloutResponseClient } from './callout-response.client.js';
 import { CalloutReviewerClient } from './callout-reviewer.client.js';
 import { CalloutTagClient } from './callout-tag.client.js';
@@ -32,6 +33,9 @@ export class CalloutClient extends BaseClient {
   /** Client for managing callout reviewers */
   reviewer: CalloutReviewerClient;
 
+  /** Client for managing callout segments */
+  segments: CalloutResponseSegmentClient;
+
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
@@ -40,6 +44,7 @@ export class CalloutClient extends BaseClient {
     this.response = new CalloutResponseClient(options);
     this.tag = new CalloutTagClient(options);
     this.reviewer = new CalloutReviewerClient(options);
+    this.segments = new CalloutResponseSegmentClient(options);
   }
 
   static deserialize<With extends GetCalloutWith = void>(

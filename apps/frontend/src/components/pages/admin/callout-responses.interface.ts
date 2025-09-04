@@ -10,7 +10,7 @@ import type { SelectItem } from '@beabee/vue/types';
 import env from '@env';
 import { i18n } from '@lib/i18n';
 import { client } from '@utils/api';
-import { convertComponentsToFilters } from '@utils/callouts';
+import { buckets, convertComponentsToFilters } from '@utils/callouts';
 import { type Ref, computed, ref, watchEffect } from 'vue';
 
 import { type FilterGroups, type FilterItems } from '../../../type/search';
@@ -178,6 +178,11 @@ export function useCalloutResponseFilters(
           ...filterItems.value.assignee,
           type: 'enum',
           options: reviewerItems.value,
+        },
+        [prefix.value + 'bucket']: {
+          ...filterItems.value.bucket,
+          type: 'enum',
+          options: buckets.value,
         },
         [prefix.value + 'tags']: {
           ...filterItems.value.tags,

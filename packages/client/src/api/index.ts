@@ -4,6 +4,7 @@ export * from './base.client.js';
 export * from './beabee.client.js';
 export * from './callout-response-comment.client.js';
 export * from './callout-response.client.js';
+export * from './callout-response-segment.client.js';
 export * from './callout-reviewer.client.js';
 export * from './callout-tag.client.js';
 export * from './callout.client.js';
