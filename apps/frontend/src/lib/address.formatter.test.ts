@@ -1,4 +1,3 @@
-// src/lib/__tests__/address.formatter.test.ts
 import {
   ADDRESS_COMPONENT_TYPE,
   type UnifiedAddress,
