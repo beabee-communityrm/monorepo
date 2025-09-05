@@ -7,7 +7,7 @@
 import { Form, FormBuilder } from '@formio/vue';
 import { Formio } from 'formiojs';
 
-import { MapTilerAddressProvider } from './formio/providers/address/MapTilerAddressProvider';
+import { MapTilerAddressProvider } from './formio/providers/address/map-tiler';
 import BeabeeStorage from './formio/providers/storage/beabee';
 
 // Override all default storage providers

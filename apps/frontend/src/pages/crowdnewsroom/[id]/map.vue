@@ -190,6 +190,7 @@ import {
   type CalloutResponseAnswerAddress,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
+  type UnifiedAddress,
   getByPath,
   isLngLat,
 } from '@beabee/beabee-common';
@@ -206,6 +207,7 @@ import {
   useCallout,
 } from '@components/pages/callouts/use-callout';
 import { faInfoCircle, faPlus, fas } from '@fortawesome/free-solid-svg-icons';
+import { AddressFormatter } from '@lib/address.formatter';
 import { currentLocaleConfig } from '@lib/i18n';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
 import '@maptiler/geocoding-control/style.css';
@@ -225,12 +227,7 @@ import {
   svgToDataURL,
 } from '@utils';
 import { client } from '@utils/api';
-import {
-  type GeocodeResult,
-  featureToAddress,
-  formatGeocodeResult,
-  reverseGeocode,
-} from '@utils/geocode';
+import { reverseGeocode } from '@utils/geocode';
 import {
   type GeoJSONSource,
   type LngLatLike,
@@ -390,21 +387,24 @@ function getIconStyling(
 const responsesCollecton = computed<MapPointFeatureCollection>(() => {
   return {
     type: 'FeatureCollection',
-    features: responses.value.map((response) => {
-      const { lat, lng } = response.address.geometry.location;
-      const iconName = getIconStyling(response.answers)?.icon.name || 'circle';
-      const color = getIconStyling(response.answers)?.color || 'black';
+    features: responses.value
+      .filter((response) => response.address?.geometry?.location)
+      .map((response) => {
+        const { lat, lng } = response.address.geometry.location;
+        const iconName =
+          getIconStyling(response.answers)?.icon.name || 'circle';
+        const color = getIconStyling(response.answers)?.color || 'black';
 
-      return {
-        type: 'Feature',
-        geometry: { type: 'Point', coordinates: [lng, lat] },
-        properties: {
-          all_responses: `<${response.number}>`,
-          first_response: response.number,
-          icon: generateImageId(iconName, color),
-        },
-      };
-    }),
+        return {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [lng, lat] },
+          properties: {
+            all_responses: `<${response.number}>`,
+            first_response: response.number,
+            icon: generateImageId(iconName, color),
+          },
+        };
+      }),
   };
 });
 
@@ -567,21 +567,27 @@ async function handleAddClick(event: MapMouseEvent) {
 
   const geocodeResult = await reverseGeocode(coords.lat, coords.lng);
 
-  const address: GeocodeResult = {
-    formatted_address: geocodeResult?.formatted_address || '???',
-    features: geocodeResult?.features || [],
-    geometry: {
-      // Use click location rather than geocode result
-      location: coords,
-    },
+  if (!geocodeResult) {
+    throw new Error('Failed to geocode address');
+  }
+
+  // Create address with click coordinates instead of geocode result coordinates
+  const unifiedAddressWithClickCoords: UnifiedAddress = {
+    ...geocodeResult,
+    // Use click location rather than geocode result
+    geometry: coords,
   };
+
+  const address = AddressFormatter.toCalloutResponse(
+    unifiedAddressWithClickCoords
+  );
 
   const responseAnswers: CalloutResponseAnswersSlide = {};
   setKey(responseAnswers, mapSchema.addressProp, address);
 
-  if (mapSchema.addressPatternProp && geocodeResult) {
-    const formattedAddress = formatGeocodeResult(
-      geocodeResult,
+  if (mapSchema.addressPatternProp) {
+    const formattedAddress = AddressFormatter.format(
+      unifiedAddressWithClickCoords,
       mapSchema.addressPattern
     );
     setKey(responseAnswers, mapSchema.addressPatternProp, formattedAddress);
@@ -711,11 +717,19 @@ async function handleLoad({ map: mapInstance }: { map: Map }) {
       }
     );
 
+    /**
+     * Handle the pick event from the geocoding control
+     * The pick event is triggered when the user clicks on a address in the search results
+     */
     geocodeControl.addEventListener('pick', (e: Event) => {
       const event = e as GeocodePickEvent;
-      geocodeAddress.value = event.detail
-        ? featureToAddress(event.detail)
-        : undefined;
+      if (event.detail) {
+        geocodeAddress.value = AddressFormatter.toCalloutResponse(
+          AddressFormatter.fromMapTiler(event.detail)
+        );
+      } else {
+        geocodeAddress.value = undefined;
+      }
     });
 
     mapInstance.addControl(geocodeControl, 'top-left');

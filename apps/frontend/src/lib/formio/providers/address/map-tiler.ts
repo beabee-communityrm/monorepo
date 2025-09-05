@@ -1,13 +1,16 @@
+import { AddressFormatter } from '@lib/address.formatter';
 import { currentLocaleConfig } from '@lib/i18n';
 import { geocoding } from '@lib/maptiler';
 import {
-  type FeatureHierarchy,
   type GeocodingFeature,
   type GeocodingSearchResult,
 } from '@maptiler/client';
-import type { MapTilerAddressResult, MapTilerProviderOptions } from '@type';
+import type {
+  FormioMapTilerAddressResult,
+  FormioMapTilerProviderOptions,
+} from '@type';
 
-import { BaseAddressProvider } from './BaseAddressProvider';
+import { BaseAddressProvider } from './base';
 
 /**
  * Address provider for MapTiler Geocoding API
@@ -18,7 +21,7 @@ import { BaseAddressProvider } from './BaseAddressProvider';
  *
  * @see https://docs.maptiler.com/geocoding-api/
  */
-export class MapTilerAddressProvider extends BaseAddressProvider<MapTilerProviderOptions> {
+export class MapTilerAddressProvider extends BaseAddressProvider<FormioMapTilerProviderOptions> {
   /**
    * Unique identifier for the MapTiler provider
    * Used by Form.io to register and identify this provider
@@ -38,14 +41,14 @@ export class MapTilerAddressProvider extends BaseAddressProvider<MapTilerProvide
    * Creates a new MapTiler address provider instance
    * @param options - Configuration options including search parameters
    */
-  constructor(options: Partial<MapTilerProviderOptions> = {}) {
+  constructor(options: Partial<FormioMapTilerProviderOptions> = {}) {
     super(options);
   }
 
   /**
    * Default configuration options for MapTiler API
    */
-  protected get defaultOptions(): MapTilerProviderOptions {
+  protected get defaultOptions(): FormioMapTilerProviderOptions {
     return {
       params: {
         language: currentLocaleConfig.value.baseLocale, // Current frontend language
@@ -88,8 +91,8 @@ export class MapTilerAddressProvider extends BaseAddressProvider<MapTilerProvide
    * @returns Merged options object
    */
   protected getRequestOptions(
-    options: Partial<MapTilerProviderOptions>
-  ): MapTilerProviderOptions {
+    options: Partial<FormioMapTilerProviderOptions>
+  ): FormioMapTilerProviderOptions {
     return {
       ...super.getRequestOptions(options),
       params: {
@@ -107,7 +110,7 @@ export class MapTilerAddressProvider extends BaseAddressProvider<MapTilerProvide
    * @returns Promise resolving to the API response
    */
   protected async makeRequest(
-    options: Partial<MapTilerProviderOptions> = {}
+    options: Partial<FormioMapTilerProviderOptions> = {}
   ): Promise<GeocodingSearchResult> {
     const reqOptions = this.getRequestOptions(options);
 
@@ -126,8 +129,8 @@ export class MapTilerAddressProvider extends BaseAddressProvider<MapTilerProvide
    */
   async search(
     query: string,
-    options: Partial<MapTilerProviderOptions> = {}
-  ): Promise<MapTilerAddressResult[]> {
+    options: Partial<FormioMapTilerProviderOptions> = {}
+  ): Promise<FormioMapTilerAddressResult[]> {
     const requestOptions = this.getRequestOptions(options);
     requestOptions.params.query = query;
 
@@ -139,70 +142,21 @@ export class MapTilerAddressProvider extends BaseAddressProvider<MapTilerProvide
 
   /**
    * Transforms MapTiler API response format to Form.io-compatible format
-   * Converts MapTiler's feature-based structure to Google Maps-like format
-   * for compatibility with existing Form.io address components
+   * Uses the centralized AddressFormatter for consistent transformations
    *
    * @param feature - Raw feature object from MapTiler API
    * @returns Transformed address object compatible with Form.io
    */
   private transformMapTilerResult(
     feature: GeocodingFeature
-  ): MapTilerAddressResult {
-    const context = feature.context || [];
+  ): FormioMapTilerAddressResult {
+    // Use centralized AddressFormatter for consistent transformation
+    const unifiedAddress = AddressFormatter.fromMapTiler(feature);
+    const formioAddress = AddressFormatter.toFormio(unifiedAddress);
 
-    // Extract address components from MapTiler's context array
-    const country =
-      context.find((ctx: FeatureHierarchy) => ctx.id.startsWith('country'))
-        ?.text || '';
-    const region =
-      context.find((ctx: FeatureHierarchy) => ctx.id.startsWith('region'))
-        ?.text || '';
-    const postcode =
-      context.find((ctx: FeatureHierarchy) => ctx.id.startsWith('postcode'))
-        ?.text || '';
-    const place =
-      context.find((ctx: FeatureHierarchy) => ctx.id.startsWith('place'))
-        ?.text || '';
-    const locality =
-      context.find((ctx: FeatureHierarchy) => ctx.id.startsWith('locality'))
-        ?.text || '';
-
-    const result: MapTilerAddressResult = {
-      // Standard Form.io address properties
-      place_id: feature.id,
-      place_name: feature.place_name, // MapTiler's native property
-      formatted_address: feature.place_name, // For compatibility
-
-      // Geographic coordinates
-      geometry: {
-        location: {
-          lat: feature.center[1], // MapTiler uses [lng, lat] order
-          lng: feature.center[0],
-        },
-      },
-
-      // Structured address components (Google Maps compatible)
-      address_components: [
-        {
-          long_name: feature.text,
-          short_name: feature.text,
-          types: ['street_number'],
-        },
-        { long_name: place, short_name: place, types: ['route'] },
-        { long_name: locality, short_name: locality, types: ['locality'] },
-        {
-          long_name: region,
-          short_name: region,
-          types: ['administrative_area_level_1'],
-        },
-        { long_name: postcode, short_name: postcode, types: ['postal_code'] },
-        { long_name: country, short_name: country, types: ['country'] },
-      ].filter((comp) => comp.long_name), // Remove empty components
-
-      // Address types for categorization
-      types: feature.place_type,
-
-      // Preserve MapTiler-specific properties for advanced usage
+    // Preserve MapTiler-specific properties and add to result
+    const result: FormioMapTilerAddressResult = {
+      ...formioAddress,
       maptiler: feature,
     };
 
