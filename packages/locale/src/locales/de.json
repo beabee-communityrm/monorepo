@@ -662,6 +662,9 @@
           "navigationButtons": {
             "title": "Schaltflächen"
           },
+          "responseLinks": {
+            "title": "Fußzeilentext"
+          },
           "title": "Übersetzungen"
         }
       },

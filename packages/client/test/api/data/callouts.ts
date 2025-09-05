@@ -31,6 +31,7 @@ export const createTestCallout = (
       shareDescription: null,
       slideNavigation: {},
       componentText: {},
+      responseLinkText: {},
     },
   },
   formSchema: {
@@ -141,6 +142,7 @@ export const createMinimalTestCallout = (
       shareDescription: null,
       slideNavigation: {},
       componentText: {},
+      responseLinkText: {},
     },
   },
   formSchema: {

@@ -33,6 +33,7 @@ class CalloutVariantTransformer extends BaseTransformer<
       shareDescription: variant.shareDescription,
       slideNavigation: variant.slideNavigation,
       componentText: variant.componentText,
+      responseLinkText: variant.responseLinkText,
     };
   }
 

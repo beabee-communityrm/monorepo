@@ -27,5 +27,5 @@ export class Segment {
   @Column({ type: String, nullable: true })
   newsletterTag!: string | null;
 
-  contactCount?: number;
+  itemCount?: number;
 }
