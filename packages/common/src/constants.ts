@@ -74,3 +74,36 @@ export const ALLOWED_DOCUMENT_EXTENSIONS: string[] = ['pdf'];
  * @summary Allowed MIME types
  */
 export const ALLOWED_DOCUMENT_MIME_TYPES: string[] = ['application/pdf'];
+
+/**
+ * Address component types for standardized parsing and placeholder replacement / formatting
+ * Based on the MapTiler types, check `GeocodingPlaceType` in `@maptiler/client` for more possible types
+ */
+export enum ADDRESS_COMPONENT_TYPE {
+  /** Street number, e.g. "90" */
+  STREET_NUMBER = 'street_number',
+  /** Street name, e.g. "Hermannstraße" */
+  ADDRESS = 'address',
+  /** Municipality, e.g. "Berlin" */
+  MUNICIPALITY = 'municipality',
+  /** Locality, e.g. "Mitte" in Berlin */
+  LOCALITY = 'locality',
+  /** Region, e.g. "Berlin" */
+  REGION = 'region',
+  /** Postal code, e.g. "12051" */
+  POSTAL_CODE = 'postal_code',
+  /** Country, e.g. "Germany" */
+  COUNTRY = 'country',
+  /** Subregion, e.g. "Nordrhein" in Nordrhein-Westfalen */
+  SUBREGION = 'subregion',
+  /** County, e.g. "Cuxhaven" */
+  COUNTY = 'county',
+  /** Joint municipality, e.g. "Samtgemeinde" */
+  JOINT_MUNICIPALITY = 'joint_municipality',
+  /** Municipal district, e.g. "Mitte" in Berlin */
+  MUNICIPAL_DISTRICT = 'municipal_district',
+  /** Neighbourhood, e.g. "Kreuzberg" in Berlin */
+  NEIGHBOURHOOD = 'neighbourhood',
+  /** Named place, e.g. "Brandenburger Tor" */
+  PLACE = 'place',
+}

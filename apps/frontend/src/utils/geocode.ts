@@ -1,40 +1,15 @@
-import { type CalloutResponseAnswerAddress } from '@beabee/beabee-common';
+import { type UnifiedAddress } from '@beabee/beabee-common';
 
+import { AddressFormatter } from '@lib/address.formatter';
 import { currentLocaleConfig } from '@lib/i18n';
-import { type GeocodingFeature } from '@maptiler/client';
 
 import env from '../env';
 import { geocoding } from '../lib/maptiler';
 
-export interface GeocodeResult {
-  formatted_address: string;
-  geometry: {
-    location: {
-      lat: number;
-      lng: number;
-    };
-  };
-  features: {
-    text: string;
-    types: string[];
-  }[];
-}
-
-export function featureToAddress(
-  feature: GeocodingFeature
-): CalloutResponseAnswerAddress {
-  return {
-    formatted_address: feature.place_name,
-    geometry: {
-      location: { lat: feature.center[1], lng: feature.center[0] },
-    },
-  };
-}
-
 export async function reverseGeocode(
   lat: number,
   lng: number
-): Promise<GeocodeResult | undefined> {
+): Promise<UnifiedAddress | undefined> {
   if (!env.maptilerKey) {
     return undefined;
   }
@@ -48,40 +23,5 @@ export async function reverseGeocode(
     return undefined;
   }
 
-  const result: GeocodeResult = {
-    ...featureToAddress(data.features[0]),
-    features: data.features.map((feature) => ({
-      text: feature.text,
-      types: feature.place_type,
-    })),
-  };
-
-  const addressFeature = data.features.find((f) =>
-    f.place_type.includes('address')
-  );
-
-  // Add street address number if available as a separate feature for formatting
-  if (addressFeature && addressFeature.address) {
-    result.features.push({
-      text: addressFeature.address,
-      types: ['street_number'],
-    });
-  }
-
-  return result;
-}
-
-export function formatGeocodeResult(
-  result: GeocodeResult,
-  pattern: string
-): string {
-  return pattern.replace(/{([\w|]+)}/g, (_m, keys) => {
-    for (const key of keys.split('|')) {
-      const text = result.features.find((a) => a.types.includes(key))?.text;
-      if (text) {
-        return text;
-      }
-    }
-    return '???';
-  });
+  return AddressFormatter.fromMapTiler(data.features[0]);
 }

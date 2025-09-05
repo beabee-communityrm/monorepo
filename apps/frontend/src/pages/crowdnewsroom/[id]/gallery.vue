@@ -1,5 +1,5 @@
 <route lang="yaml">
-name: calloutGallery
+name: /crowdnewsroom/[id]/gallery
 meta:
   pageTitle: menu.callouts
   noAuth: true
@@ -14,7 +14,11 @@ meta:
       :callout="callout"
       class="flex-0"
       @addnew="
-        router.push({ name: 'calloutMap', query: route.query, hash: '#add' })
+        router.push({
+          name: '/crowdnewsroom/[id]/map',
+          query: route.query,
+          hash: '#add',
+        })
       "
     />
     <div class="overflow-scroll">
