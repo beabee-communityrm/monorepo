@@ -662,7 +662,10 @@
           "navigationButtons": {
             "title": "Schaltflächen"
           },
-          "title": "Übersetzungen"
+          "title": "Übersetzungen",
+          "responseLinks": {
+            "title": ""
+          }
         }
       },
       "title": "CrowdNewsroom-Builder",

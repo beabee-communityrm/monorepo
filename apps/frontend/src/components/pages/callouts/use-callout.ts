@@ -1,4 +1,8 @@
-import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
+import {
+  type GetCalloutData,
+  type GetCalloutDataWith,
+  ItemStatus,
+} from '@beabee/beabee-common';
 import { isLocale, config as localeConfig } from '@beabee/locale';
 
 import { currentUser, generalContent } from '@store';
@@ -7,7 +11,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 export const HASH_PREFIX = '#response-' as const;
 
-export function useCallout(callout: Ref<GetCalloutDataWith<'variantNames'>>) {
+export function useCallout(callout: Ref<GetCalloutData>) {
   const isOpen = computed(() => callout.value.status === ItemStatus.Open);
 
   // Callout is only for members and current user isn't logged in

@@ -37,5 +37,5 @@ export class Project {
   @OneToMany('ProjectContact', 'project')
   contacts!: ProjectContact[];
 
-  contactCount?: number;
+  itemCount?: number;
 }

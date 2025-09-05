@@ -11,4 +11,8 @@ export interface CalloutVariantData {
   shareDescription: string | null;
   slideNavigation: Record<string, CalloutVariantNavigationData>;
   componentText: Record<string, string>;
+  /**
+   * Map of response footer link label references to their translated value for this variant.
+   */
+  responseLinkText: Record<string, string>;
 }

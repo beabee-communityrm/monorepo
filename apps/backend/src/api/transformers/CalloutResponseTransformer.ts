@@ -26,7 +26,6 @@ import ContactTransformer, {
   loadContactRoles,
 } from '@api/transformers/ContactTransformer';
 import { getReviewerRules } from '@api/utils';
-import { TransformerOperation } from '@type/transformer-operation';
 import { TransformPlainToInstance } from 'class-transformer';
 import { SelectQueryBuilder } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';

@@ -662,6 +662,9 @@
           "navigationButtons": {
             "title": ""
           },
+          "responseLinks": {
+            "title": ""
+          },
           "title": ""
         }
       },
