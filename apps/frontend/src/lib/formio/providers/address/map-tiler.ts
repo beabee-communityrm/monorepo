@@ -1,4 +1,4 @@
-import { AddressFormatter } from '@lib/address/AddressFormatter';
+import { AddressFormatter } from '@lib/address.formatter';
 import { currentLocaleConfig } from '@lib/i18n';
 import { geocoding } from '@lib/maptiler';
 import {
@@ -10,7 +10,7 @@ import type {
   FormioMapTilerProviderOptions,
 } from '@type';
 
-import { BaseAddressProvider } from './BaseAddressProvider';
+import { BaseAddressProvider } from './base';
 
 /**
  * Address provider for MapTiler Geocoding API

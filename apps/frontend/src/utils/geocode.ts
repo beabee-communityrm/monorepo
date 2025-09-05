@@ -1,6 +1,6 @@
 import { type UnifiedAddress } from '@beabee/beabee-common';
 
-import { AddressFormatter } from '@lib/address/AddressFormatter';
+import { AddressFormatter } from '@lib/address.formatter';
 import { currentLocaleConfig } from '@lib/i18n';
 
 import env from '../env';

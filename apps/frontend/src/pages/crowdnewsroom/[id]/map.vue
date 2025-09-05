@@ -207,7 +207,7 @@ import {
   useCallout,
 } from '@components/pages/callouts/use-callout';
 import { faInfoCircle, faPlus, fas } from '@fortawesome/free-solid-svg-icons';
-import { AddressFormatter } from '@lib/address/AddressFormatter';
+import { AddressFormatter } from '@lib/address.formatter';
 import { currentLocaleConfig } from '@lib/i18n';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
 import '@maptiler/geocoding-control/style.css';
