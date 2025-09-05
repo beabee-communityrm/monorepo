@@ -94,7 +94,7 @@ const viewLink = computed(() =>
   props.callout.responseViewSchema?.gallery && props.map
     ? {
         to: <RouteLocationRaw>{
-          name: 'calloutGallery',
+          name: '/crowdnewsroom/[id]/gallery',
           query: { ...route.query, noIntro: 1 },
         },
         label: t('callout.views.gallery'),
@@ -103,7 +103,7 @@ const viewLink = computed(() =>
     : props.callout.responseViewSchema?.map && !props.map
       ? {
           to: <RouteLocationRaw>{
-            name: 'calloutMap',
+            name: '/crowdnewsroom/[id]/map',
             query: { ...route.query, noIntro: 1 },
           },
           label: t('callout.views.map'),

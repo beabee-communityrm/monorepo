@@ -61,10 +61,10 @@ declare module 'vue-router/auto-routes' {
     'reset_password': RouteRecordInfo<'reset_password', '/auth/reset-password/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'set_password': RouteRecordInfo<'set_password', '/auth/set-password/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'callouts': RouteRecordInfo<'callouts', '/crowdnewsroom', Record<never, never>, Record<never, never>>,
-    '/crowdnewsroom/[id]': RouteRecordInfo<'/crowdnewsroom/[id]', '/crowdnewsroom/:id', { id: ParamValue<true> }, { id: ParamValue<false> }, 'callout' | 'calloutGallery' | 'calloutMap' | 'calloutRespond' | 'calloutThanks'>,
+    '/crowdnewsroom/[id]': RouteRecordInfo<'/crowdnewsroom/[id]', '/crowdnewsroom/:id', { id: ParamValue<true> }, { id: ParamValue<false> }, '/crowdnewsroom/[id]/gallery' | '/crowdnewsroom/[id]/map' | 'callout' | 'calloutRespond' | 'calloutThanks'>,
     'callout': RouteRecordInfo<'callout', '/crowdnewsroom/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'calloutGallery': RouteRecordInfo<'calloutGallery', '/crowdnewsroom/:id/gallery', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'calloutMap': RouteRecordInfo<'calloutMap', '/crowdnewsroom/:id/map', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    '/crowdnewsroom/[id]/gallery': RouteRecordInfo<'/crowdnewsroom/[id]/gallery', '/crowdnewsroom/:id/gallery', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    '/crowdnewsroom/[id]/map': RouteRecordInfo<'/crowdnewsroom/[id]/map', '/crowdnewsroom/:id/map', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'calloutRespond': RouteRecordInfo<'calloutRespond', '/crowdnewsroom/:id/respond', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'calloutThanks': RouteRecordInfo<'calloutThanks', '/crowdnewsroom/:id/thanks', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'join': RouteRecordInfo<'join', '/join', Record<never, never>, Record<never, never>>,
@@ -266,7 +266,7 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/crowdnewsroom/[id].vue': {
-      routes: '/crowdnewsroom/[id]' | 'callout' | 'calloutGallery' | 'calloutMap' | 'calloutRespond' | 'calloutThanks'
+      routes: '/crowdnewsroom/[id]' | 'callout' | '/crowdnewsroom/[id]/gallery' | '/crowdnewsroom/[id]/map' | 'calloutRespond' | 'calloutThanks'
       views: 'default'
     }
     'src/pages/crowdnewsroom/[id]/index.vue': {
@@ -274,11 +274,11 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/crowdnewsroom/[id]/gallery.vue': {
-      routes: 'calloutGallery'
+      routes: '/crowdnewsroom/[id]/gallery'
       views: never
     }
     'src/pages/crowdnewsroom/[id]/map.vue': {
-      routes: 'calloutMap'
+      routes: '/crowdnewsroom/[id]/map'
       views: never
     }
     'src/pages/crowdnewsroom/[id]/respond.vue': {
