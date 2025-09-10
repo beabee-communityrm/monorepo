@@ -1311,7 +1311,7 @@
       "description": "Membership",
       "recurringLabel": "Donazione ricorrente"
     },
-    "genericError": "Ops! Qualcosa è andato storto",
+    "genericError": "Ops! Qualcosa è andato storto ({type})",
     "goBack": "Ti sei perso qualcosa? {back}",
     "goBackButton": "Torna alla schermata precedente",
     "note": "Potrai modificare l'ammontare del tuo contributo e accedere allo storico delle tue donazioni in qualsiasi momento tramite il tuo account.",

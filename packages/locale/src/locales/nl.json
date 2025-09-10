@@ -1311,7 +1311,7 @@
       "description": "Lidmaatschap",
       "recurringLabel": "Periodieke bijdrage"
     },
-    "genericError": "Oeps, er is iets misgegaan! Neem contact op met support als dit weer gebeurt.",
+    "genericError": "Oeps, er is iets misgegaan ({type})! Neem contact op met support als dit weer gebeurt.",
     "goBack": "Heb je iets gemist? {back}",
     "goBackButton": "Terug naar het vorige scherm",
     "note": "Je kunt je bijdrage op elk moment wijzigen en je betalingsgeschiedenis bekijken in je ledenaccount.",
