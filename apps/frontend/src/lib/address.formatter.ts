@@ -6,6 +6,8 @@ import {
 
 import type { GeocodingFeature } from '@maptiler/client';
 
+import { featureIdToType } from './maptiler';
+
 /**
  * Central address formatter for unified address data handling
  *
@@ -39,125 +41,28 @@ export class AddressFormatter {
   }
 
   /**
-   * Transforms MapTiler GeocodingFeature to UnifiedAddress
+   * Transforms MapTiler GeocodingFeature to CalloutResponseAnswerAddress
    *
    * @param feature - MapTiler geocoding feature
    * @returns Unified address
    */
   static fromMapTiler(feature: GeocodingFeature): CalloutResponseAnswerAddress {
-    const context = feature.context || [];
-    const components: CalloutResponseAnswerAddressComponent[] = [];
+    const components: CalloutResponseAnswerAddressComponent[] = [
+      feature,
+      ...(feature.context || []),
+    ]
+      .map((component) => {
+        const type = featureIdToType(component.id);
+        return type && { type, value: component.text };
+      })
+      .filter((c) => !!c);
 
-    // Extract components from MapTiler context
-    const country = context.find((ctx) => ctx.id.startsWith('country'));
-    const region = context.find((ctx) => ctx.id.startsWith('region'));
-    const locality = context.find((ctx) => ctx.id.startsWith('locality'));
-    const subregion = context.find((ctx) => ctx.id.startsWith('subregion'));
-    const county = context.find((ctx) => ctx.id.startsWith('county'));
-    const jointMunicipality = context.find((ctx) =>
-      ctx.id.startsWith('joint_municipality')
-    );
-    const municipalDistrict = context.find((ctx) =>
-      ctx.id.startsWith('municipal_district')
-    );
-    const neighbourhood = context.find((ctx) =>
-      ctx.id.startsWith('neighbourhood')
-    );
-    const place = context.find((ctx) => ctx.id.startsWith('place'));
-    const municipality = context.find((ctx) =>
-      ctx.id.startsWith('municipality')
-    );
-    const postalCode = context.find((ctx) => ctx.id.startsWith('postal_code'));
-
-    // Build components array
     if (feature.address) {
-      components.push({
+      // Components are usually more specific to less specific, so street
+      // number should go first
+      components.unshift({
         type: ADDRESS_COMPONENT_TYPE.STREET_NUMBER,
         value: feature.address,
-      });
-    }
-
-    if (feature.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.ADDRESS,
-        value: feature.text,
-      });
-    }
-
-    if (locality?.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.LOCALITY,
-        value: locality.text,
-      });
-    }
-
-    if (municipality?.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.MUNICIPALITY,
-        value: municipality.text,
-      });
-    }
-
-    if (region?.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.REGION,
-        value: region.text,
-      });
-    }
-
-    if (subregion?.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.SUBREGION,
-        value: subregion.text,
-      });
-    }
-
-    if (county?.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.COUNTY,
-        value: county.text,
-      });
-    }
-
-    if (jointMunicipality?.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.JOINT_MUNICIPALITY,
-        value: jointMunicipality.text,
-      });
-    }
-
-    if (municipalDistrict?.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.MUNICIPAL_DISTRICT,
-        value: municipalDistrict.text,
-      });
-    }
-
-    if (neighbourhood?.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.NEIGHBOURHOOD,
-        value: neighbourhood.text,
-      });
-    }
-
-    if (place?.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.PLACE,
-        value: place.text,
-      });
-    }
-
-    if (postalCode?.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.POSTAL_CODE,
-        value: postalCode.text,
-      });
-    }
-
-    if (country?.text) {
-      components.push({
-        type: ADDRESS_COMPONENT_TYPE.COUNTRY,
-        value: country.text,
       });
     }
 

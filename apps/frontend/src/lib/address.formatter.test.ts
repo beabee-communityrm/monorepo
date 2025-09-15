@@ -6,7 +6,12 @@ import {
 import { describe, expect, it } from 'vitest';
 
 import { AddressFormatter } from './address.formatter';
-import { CERN, NASA, STONEHENGE } from './address.formatter.test-data';
+import {
+  CERN,
+  GERMANY_15936,
+  NASA,
+  STONEHENGE,
+} from './address.formatter.test-data';
 
 describe('AddressFormatter.format', () => {
   it('should format address with basic pattern', () => {
@@ -298,5 +303,29 @@ describe('AddressFormatter.fromMapTiler', () => {
     expect(
       components.find((c) => c.type === ADDRESS_COMPONENT_TYPE.COUNTRY)?.value
     ).toBe('United Kingdom');
+  });
+
+  it('should convert address with no street feature', () => {
+    const postCodeOnlyFeature = AddressFormatter.fromMapTiler(
+      GERMANY_15936.features[0]
+    );
+
+    expect(postCodeOnlyFeature.formatted_address).toBe('15936, Deutschland');
+
+    const components = postCodeOnlyFeature.components;
+    expect(
+      components.find((c) => c.type === ADDRESS_COMPONENT_TYPE.ADDRESS)?.value
+    ).toBeUndefined();
+    expect(
+      components.find((c) => c.type === ADDRESS_COMPONENT_TYPE.POSTAL_CODE)
+        ?.value
+    ).toBe('15936');
+    expect(
+      components.find((c) => c.type === ADDRESS_COMPONENT_TYPE.MUNICIPALITY)
+        ?.value
+    ).toBe('Dahme/Mark');
+    expect(
+      components.find((c) => c.type === ADDRESS_COMPONENT_TYPE.COUNTRY)?.value
+    ).toBe('Deutschland');
   });
 });
