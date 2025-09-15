@@ -104,10 +104,7 @@ meta:
           :coordinates="newResponseAddress.geometry.location"
           color="black"
         />
-        <MglMarker
-          v-if="geocodeAddress"
-          :coordinates="geocodeAddress.geometry.location"
-        />
+        <MglMarker v-if="geocodeLocation" :coordinates="geocodeLocation" />
       </MglMap>
 
       <transition name="add-notice">
@@ -338,8 +335,8 @@ const showAddButton = computed(
 
 const newResponseAnswers = ref<CalloutResponseAnswersSlide>();
 
-// Use the geocoding address to show a marker on the map
-const geocodeAddress = ref<CalloutResponseAnswerAddress>();
+// Use the geocoding location to show a marker on the map
+const geocodeLocation = ref<LngLatLike>();
 
 // Use the address from the new response to show a marker on the map
 const newResponseAddress = computed(() => {
@@ -720,13 +717,9 @@ async function handleLoad({ map: mapInstance }: { map: Map }) {
      */
     geocodeControl.addEventListener('pick', (e: Event) => {
       const event = e as GeocodePickEvent;
-      if (event.detail) {
-        geocodeAddress.value = AddressFormatter.toCalloutResponse(
-          AddressFormatter.fromMapTiler(event.detail)
-        );
-      } else {
-        geocodeAddress.value = undefined;
-      }
+      geocodeLocation.value = event.detail
+        ? [event.detail.center[0], event.detail.center[1]]
+        : undefined;
     });
 
     mapInstance.addControl(geocodeControl, 'top-left');
