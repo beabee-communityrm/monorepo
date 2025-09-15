@@ -190,7 +190,6 @@ import {
   type CalloutResponseAnswerAddress,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
-  type UnifiedAddress,
   getByPath,
   isLngLat,
 } from '@beabee/beabee-common';
@@ -572,22 +571,20 @@ async function handleAddClick(event: MapMouseEvent) {
   }
 
   // Create address with click coordinates instead of geocode result coordinates
-  const unifiedAddressWithClickCoords: UnifiedAddress = {
+  const resultWithClickCoords: CalloutResponseAnswerAddress = {
     ...geocodeResult,
     // Use click location rather than geocode result
-    geometry: coords,
+    geometry: {
+      location: coords,
+    },
   };
 
-  const address = AddressFormatter.toCalloutResponse(
-    unifiedAddressWithClickCoords
-  );
-
   const responseAnswers: CalloutResponseAnswersSlide = {};
-  setKey(responseAnswers, mapSchema.addressProp, address);
+  setKey(responseAnswers, mapSchema.addressProp, resultWithClickCoords);
 
   if (mapSchema.addressPatternProp) {
     const formattedAddress = AddressFormatter.format(
-      unifiedAddressWithClickCoords,
+      resultWithClickCoords,
       mapSchema.addressPattern
     );
     setKey(responseAnswers, mapSchema.addressPatternProp, formattedAddress);

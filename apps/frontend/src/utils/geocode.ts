@@ -1,4 +1,4 @@
-import { type UnifiedAddress } from '@beabee/beabee-common';
+import type { CalloutResponseAnswerAddress } from '@beabee/beabee-common';
 
 import { AddressFormatter } from '@lib/address.formatter';
 import { currentLocaleConfig } from '@lib/i18n';
@@ -9,7 +9,7 @@ import { geocoding } from '../lib/maptiler';
 export async function reverseGeocode(
   lat: number,
   lng: number
-): Promise<UnifiedAddress | undefined> {
+): Promise<CalloutResponseAnswerAddress | undefined> {
   if (!env.maptilerKey) {
     return undefined;
   }

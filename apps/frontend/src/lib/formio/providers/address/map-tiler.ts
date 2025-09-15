@@ -1,14 +1,10 @@
+import type { CalloutResponseAnswerAddress } from '@beabee/beabee-common';
+
 import { AddressFormatter } from '@lib/address.formatter';
 import { currentLocaleConfig } from '@lib/i18n';
 import { geocoding } from '@lib/maptiler';
-import {
-  type GeocodingFeature,
-  type GeocodingSearchResult,
-} from '@maptiler/client';
-import type {
-  FormioMapTilerAddressResult,
-  FormioMapTilerProviderOptions,
-} from '@type';
+import { type GeocodingSearchResult } from '@maptiler/client';
+import type { FormioMapTilerProviderOptions } from '@type';
 
 import { BaseAddressProvider } from './base';
 
@@ -130,36 +126,13 @@ export class MapTilerAddressProvider extends BaseAddressProvider<FormioMapTilerP
   async search(
     query: string,
     options: Partial<FormioMapTilerProviderOptions> = {}
-  ): Promise<FormioMapTilerAddressResult[]> {
+  ): Promise<CalloutResponseAnswerAddress[]> {
     const requestOptions = this.getRequestOptions(options);
     requestOptions.params.query = query;
 
     const result = await this.makeRequest(requestOptions);
     const features = result.features || [];
 
-    return features.map((feature) => this.transformMapTilerResult(feature));
-  }
-
-  /**
-   * Transforms MapTiler API response format to Form.io-compatible format
-   * Uses the centralized AddressFormatter for consistent transformations
-   *
-   * @param feature - Raw feature object from MapTiler API
-   * @returns Transformed address object compatible with Form.io
-   */
-  private transformMapTilerResult(
-    feature: GeocodingFeature
-  ): FormioMapTilerAddressResult {
-    // Use centralized AddressFormatter for consistent transformation
-    const unifiedAddress = AddressFormatter.fromMapTiler(feature);
-    const formioAddress = AddressFormatter.toFormio(unifiedAddress);
-
-    // Preserve MapTiler-specific properties and add to result
-    const result: FormioMapTilerAddressResult = {
-      ...formioAddress,
-      maptiler: feature,
-    };
-
-    return result;
+    return features.map((feature) => AddressFormatter.fromMapTiler(feature));
   }
 }

@@ -1,6 +1,6 @@
 import {
   ADDRESS_COMPONENT_TYPE,
-  type UnifiedAddress,
+  type CalloutResponseAnswerAddress,
 } from '@beabee/beabee-common';
 
 import { describe, expect, it } from 'vitest';
@@ -10,7 +10,7 @@ import { CERN, NASA, STONEHENGE } from './address.formatter.test-data';
 
 describe('AddressFormatter.format', () => {
   it('should format address with basic pattern', () => {
-    const address: UnifiedAddress = {
+    const address: CalloutResponseAnswerAddress = {
       id: 'test-id',
       formatted_address: 'Test Address',
       components: [
@@ -18,7 +18,7 @@ describe('AddressFormatter.format', () => {
         { type: ADDRESS_COMPONENT_TYPE.POSTAL_CODE, value: '10115' },
         { type: ADDRESS_COMPONENT_TYPE.MUNICIPALITY, value: 'Berlin' },
       ],
-      geometry: { lat: 52.52, lng: 13.405 },
+      geometry: { location: { lat: 52.52, lng: 13.405 } },
       source: 'maptiler',
     };
 
@@ -30,14 +30,14 @@ describe('AddressFormatter.format', () => {
   });
 
   it('should handle fallback patterns with | separator', () => {
-    const address: UnifiedAddress = {
+    const address: CalloutResponseAnswerAddress = {
       id: 'test-id',
       formatted_address: 'Test Address',
       components: [
         { type: ADDRESS_COMPONENT_TYPE.MUNICIPALITY, value: 'Berlin' },
         { type: ADDRESS_COMPONENT_TYPE.REGION, value: 'Berlin' },
       ],
-      geometry: { lat: 52.52, lng: 13.405 },
+      geometry: { location: { lat: 52.52, lng: 13.405 } },
       source: 'maptiler',
     };
 
@@ -46,7 +46,7 @@ describe('AddressFormatter.format', () => {
     expect(result1).toBe('Berlin');
 
     // Test with missing municipality - should fallback to region
-    const addressWithoutMunicipality: UnifiedAddress = {
+    const addressWithoutMunicipality: CalloutResponseAnswerAddress = {
       ...address,
       components: [{ type: ADDRESS_COMPONENT_TYPE.REGION, value: 'Berlin' }],
     };
@@ -58,11 +58,11 @@ describe('AddressFormatter.format', () => {
   });
 
   it('should return empty string for missing components', () => {
-    const address: UnifiedAddress = {
+    const address: CalloutResponseAnswerAddress = {
       id: 'test-id',
       formatted_address: 'Test Address',
       components: [],
-      geometry: { lat: 52.52, lng: 13.405 },
+      geometry: { location: { lat: 52.52, lng: 13.405 } },
       source: 'maptiler',
     };
 
@@ -145,7 +145,7 @@ describe('AddressFormatter.format', () => {
       expect(result1).toBe('Meyrin');
 
       // Test with address that has region but no municipality
-      const regionOnlyAddress: UnifiedAddress = {
+      const regionOnlyAddress: CalloutResponseAnswerAddress = {
         ...cernAddress,
         components: cernAddress.components.filter(
           (comp) => comp.type !== ADDRESS_COMPONENT_TYPE.MUNICIPALITY
@@ -185,13 +185,13 @@ describe('AddressFormatter.format', () => {
     });
 
     it('should handle missing components gracefully', () => {
-      const minimalAddress: UnifiedAddress = {
+      const minimalAddress: CalloutResponseAnswerAddress = {
         id: 'minimal',
         formatted_address: 'Test',
         components: [
           { type: ADDRESS_COMPONENT_TYPE.MUNICIPALITY, value: 'Berlin' },
         ],
-        geometry: { lat: 52.52, lng: 13.405 },
+        geometry: { location: { lat: 52.52, lng: 13.405 } },
         source: 'maptiler',
       };
 
@@ -205,7 +205,7 @@ describe('AddressFormatter.format', () => {
 });
 
 describe('AddressFormatter.fromMapTiler', () => {
-  it('should convert CERN MapTiler feature to UnifiedAddress', () => {
+  it('should convert CERN MapTiler feature to CalloutResponseAnswerAddress', () => {
     const cernAddress = AddressFormatter.fromMapTiler(CERN.features[0]);
 
     expect(cernAddress.formatted_address).toBe(
@@ -237,7 +237,7 @@ describe('AddressFormatter.fromMapTiler', () => {
     ).toBe('Switzerland');
   });
 
-  it('should convert NASA MapTiler feature to UnifiedAddress', () => {
+  it('should convert NASA MapTiler feature to CalloutResponseAnswerAddress', () => {
     const nasaAddress = AddressFormatter.fromMapTiler(NASA.features[0]);
 
     expect(nasaAddress.id).toBe('address.23742203');
@@ -267,7 +267,7 @@ describe('AddressFormatter.fromMapTiler', () => {
     ).toBe('United States');
   });
 
-  it('should convert Stonehenge MapTiler feature to UnifiedAddress', () => {
+  it('should convert Stonehenge MapTiler feature to CalloutResponseAnswerAddress', () => {
     const stonehengeAddress = AddressFormatter.fromMapTiler(
       STONEHENGE.features[0]
     );

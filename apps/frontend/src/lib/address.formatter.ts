@@ -1,12 +1,10 @@
 import {
   ADDRESS_COMPONENT_TYPE,
-  type AddressComponent,
   type CalloutResponseAnswerAddress,
-  type UnifiedAddress,
+  type CalloutResponseAnswerAddressComponent,
 } from '@beabee/beabee-common';
 
 import type { GeocodingFeature } from '@maptiler/client';
-import type { FormioAddressResult } from '@type/formio';
 
 /**
  * Central address formatter for unified address data handling
@@ -25,7 +23,10 @@ export class AddressFormatter {
    * @param pattern - Pattern string with placeholders
    * @returns Formatted address string
    */
-  static format(address: UnifiedAddress, pattern: string): string {
+  static format(
+    address: CalloutResponseAnswerAddress,
+    pattern: string
+  ): string {
     return pattern.replace(/{([\w|]+)}/g, (_match, keys) => {
       for (const key of keys.split('|')) {
         const component = address.components.find((comp) => comp.type === key);
@@ -43,9 +44,9 @@ export class AddressFormatter {
    * @param feature - MapTiler geocoding feature
    * @returns Unified address
    */
-  static fromMapTiler(feature: GeocodingFeature): UnifiedAddress {
+  static fromMapTiler(feature: GeocodingFeature): CalloutResponseAnswerAddress {
     const context = feature.context || [];
-    const components: AddressComponent[] = [];
+    const components: CalloutResponseAnswerAddressComponent[] = [];
 
     // Extract components from MapTiler context
     const country = context.find((ctx) => ctx.id.startsWith('country'));
@@ -165,91 +166,12 @@ export class AddressFormatter {
       formatted_address: feature.place_name,
       components,
       geometry: {
-        lat: feature.center[1],
-        lng: feature.center[0],
+        location: {
+          lat: feature.center[1],
+          lng: feature.center[0],
+        },
       },
       source: 'maptiler',
-      metadata: {
-        maptiler: feature,
-      },
-    };
-  }
-
-  /**
-   * Transforms Form.io address result to UnifiedAddress
-   *
-   * @param result - Form.io address result
-   * @returns Unified address
-   */
-  static fromFormio(result: FormioAddressResult): UnifiedAddress {
-    const components: AddressComponent[] = [];
-
-    // Extract components from Form.io address_components
-    for (const component of result.address_components) {
-      const type: ADDRESS_COMPONENT_TYPE = Object.values(
-        ADDRESS_COMPONENT_TYPE
-      ).find((type) => type === component.types[0]) as ADDRESS_COMPONENT_TYPE;
-      if (type) {
-        components.push({
-          type,
-          value: component.long_name,
-        });
-      }
-    }
-
-    return {
-      id: result.place_id,
-      formatted_address: result.formatted_address,
-      components,
-      geometry: result.geometry.location,
-      source: 'formio',
-      metadata: {
-        formio: result,
-      },
-    };
-  }
-
-  /**
-   * Transforms UnifiedAddress to Form.io address result format
-   *
-   * @param address - Unified address
-   * @returns Form.io compatible address result
-   */
-  static toFormio(address: UnifiedAddress): FormioAddressResult {
-    const addressComponents = address.components.map((comp) => {
-      return {
-        long_name: comp.value,
-        short_name: comp.value,
-        types: [comp.type],
-      };
-    });
-
-    return {
-      place_id: address.id,
-      place_name: address.formatted_address,
-      formatted_address: address.formatted_address,
-      geometry: {
-        location: address.geometry,
-      },
-      address_components: addressComponents,
-      types: ['geocode'], // Default type for Form.io compatibility
-    };
-  }
-
-  /**
-   * Transforms UnifiedAddress to CalloutResponseAnswerAddress format
-   *
-   * @param address - Unified address
-   * @returns Callout response address
-   */
-  static toCalloutResponse(
-    address: UnifiedAddress
-  ): CalloutResponseAnswerAddress {
-    return {
-      formatted_address: address.formatted_address,
-      geometry: {
-        location: address.geometry,
-      },
     };
   }
 }
