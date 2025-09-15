@@ -242,7 +242,7 @@ export function stringifyAnswer(
   } else if (!answer) {
     return '';
   } else if (isAddressAnswer(answer)) {
-    return answer.geometry.location.lat + ', ' + answer.geometry.location.lng;
+    return JSON.stringify(answer);
   } else if (isFileUploadAnswer(answer)) {
     return answer.url;
   } else if (typeof answer === 'object') {
