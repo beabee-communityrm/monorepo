@@ -49,7 +49,6 @@ export class MapTilerAddressProvider extends BaseAddressProvider<FormioMapTilerP
       params: {
         language: currentLocaleConfig.value.baseLocale, // Current frontend language
         limit: 10, // Maximum number of results
-        types: ['address', 'poi', 'neighbourhood', 'locality'], // Result types
       },
     };
   }

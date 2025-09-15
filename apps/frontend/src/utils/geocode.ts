@@ -16,12 +16,9 @@ export async function reverseGeocode(
 
   const data = await geocoding.reverse([lng, lat], {
     language: currentLocaleConfig.value.baseLocale,
-    types: ['address', 'postal_code', 'municipality', 'county', 'region'],
   });
 
-  if (!data.features.length) {
-    return undefined;
-  }
-
-  return AddressFormatter.fromMapTiler(data.features[0]);
+  return data.features.length > 0
+    ? AddressFormatter.fromMapTiler(data.features[0])
+    : undefined;
 }
