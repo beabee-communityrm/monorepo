@@ -8,10 +8,11 @@ import {
   createMinimalTestCalloutResponseAnswers,
   createTestCallout,
   createTestCalloutResponseAnswers,
-} from '../../fixtures/callouts';
+} from './fixtures/callouts';
 
 describe('CalloutResponseSegment API', () => {
   let client: BeabeeClient;
+  let userClient: BeabeeClient;
   let testCalloutSlug: string;
   let testResponseId: string;
 
