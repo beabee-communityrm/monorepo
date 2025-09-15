@@ -4,7 +4,11 @@ import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
+<<<<<<< HEAD
 import { testNotice, testNoticeUpdate } from '../../fixtures/notices.js';
+=======
+import { testNotice, testNoticeUpdate } from './fixtures/notices.js';
+>>>>>>> d9dce52b2 (refactor: rename data folder to fixtures)
 
 describe('Notice API', () => {
   let client: BeabeeClient;
