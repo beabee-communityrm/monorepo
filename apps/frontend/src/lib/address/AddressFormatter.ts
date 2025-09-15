@@ -19,7 +19,7 @@ import type { FormioAddressResult } from '@type/formio';
 export class AddressFormatter {
   /**
    * Formats a unified address using a pattern string
-   * Supports placeholder replacement like: "{street_number} {street}, {locality}, {postal_code} {country}"
+   * Supports placeholder replacement like: "{address} {street_number}, {postal_code} {municipality|county|region}"
    *
    * @param address - Unified address to format
    * @param pattern - Pattern string with placeholders
@@ -33,7 +33,7 @@ export class AddressFormatter {
           return component.value;
         }
       }
-      return '???';
+      return '';
     });
   }
 
@@ -50,8 +50,23 @@ export class AddressFormatter {
     // Extract components from MapTiler context
     const country = context.find((ctx) => ctx.id.startsWith('country'));
     const region = context.find((ctx) => ctx.id.startsWith('region'));
-    const postcode = context.find((ctx) => ctx.id.startsWith('postcode'));
     const locality = context.find((ctx) => ctx.id.startsWith('locality'));
+    const subregion = context.find((ctx) => ctx.id.startsWith('subregion'));
+    const county = context.find((ctx) => ctx.id.startsWith('county'));
+    const jointMunicipality = context.find((ctx) =>
+      ctx.id.startsWith('joint_municipality')
+    );
+    const municipalDistrict = context.find((ctx) =>
+      ctx.id.startsWith('municipal_district')
+    );
+    const neighbourhood = context.find((ctx) =>
+      ctx.id.startsWith('neighbourhood')
+    );
+    const place = context.find((ctx) => ctx.id.startsWith('place'));
+    const municipality = context.find((ctx) =>
+      ctx.id.startsWith('municipality')
+    );
+    const postalCode = context.find((ctx) => ctx.id.startsWith('postal_code'));
 
     // Build components array
     if (feature.address) {
@@ -63,7 +78,7 @@ export class AddressFormatter {
 
     if (feature.text) {
       components.push({
-        type: ADDRESS_COMPONENT_TYPE.STREET,
+        type: ADDRESS_COMPONENT_TYPE.ADDRESS,
         value: feature.text,
       });
     }
@@ -75,6 +90,13 @@ export class AddressFormatter {
       });
     }
 
+    if (municipality?.text) {
+      components.push({
+        type: ADDRESS_COMPONENT_TYPE.MUNICIPALITY,
+        value: municipality.text,
+      });
+    }
+
     if (region?.text) {
       components.push({
         type: ADDRESS_COMPONENT_TYPE.REGION,
@@ -82,10 +104,52 @@ export class AddressFormatter {
       });
     }
 
-    if (postcode?.text) {
+    if (subregion?.text) {
+      components.push({
+        type: ADDRESS_COMPONENT_TYPE.SUBREGION,
+        value: subregion.text,
+      });
+    }
+
+    if (county?.text) {
+      components.push({
+        type: ADDRESS_COMPONENT_TYPE.COUNTY,
+        value: county.text,
+      });
+    }
+
+    if (jointMunicipality?.text) {
+      components.push({
+        type: ADDRESS_COMPONENT_TYPE.JOINT_MUNICIPALITY,
+        value: jointMunicipality.text,
+      });
+    }
+
+    if (municipalDistrict?.text) {
+      components.push({
+        type: ADDRESS_COMPONENT_TYPE.MUNICIPAL_DISTRICT,
+        value: municipalDistrict.text,
+      });
+    }
+
+    if (neighbourhood?.text) {
+      components.push({
+        type: ADDRESS_COMPONENT_TYPE.NEIGHBOURHOOD,
+        value: neighbourhood.text,
+      });
+    }
+
+    if (place?.text) {
+      components.push({
+        type: ADDRESS_COMPONENT_TYPE.PLACE,
+        value: place.text,
+      });
+    }
+
+    if (postalCode?.text) {
       components.push({
         type: ADDRESS_COMPONENT_TYPE.POSTAL_CODE,
-        value: postcode.text,
+        value: postalCode.text,
       });
     }
 
@@ -122,37 +186,14 @@ export class AddressFormatter {
 
     // Extract components from Form.io address_components
     for (const component of result.address_components) {
-      for (const type of component.types) {
-        let addressType: ADDRESS_COMPONENT_TYPE | undefined;
-
-        switch (type) {
-          case 'street_number':
-            addressType = ADDRESS_COMPONENT_TYPE.STREET_NUMBER;
-            break;
-          case 'route':
-            addressType = ADDRESS_COMPONENT_TYPE.STREET;
-            break;
-          case 'locality':
-            addressType = ADDRESS_COMPONENT_TYPE.LOCALITY;
-            break;
-          case 'administrative_area_level_1':
-            addressType = ADDRESS_COMPONENT_TYPE.REGION;
-            break;
-          case 'postal_code':
-            addressType = ADDRESS_COMPONENT_TYPE.POSTAL_CODE;
-            break;
-          case 'country':
-            addressType = ADDRESS_COMPONENT_TYPE.COUNTRY;
-            break;
-        }
-
-        if (addressType) {
-          components.push({
-            type: addressType,
-            value: component.long_name,
-          });
-          break; // Only add first matching type
-        }
+      const type: ADDRESS_COMPONENT_TYPE = Object.values(
+        ADDRESS_COMPONENT_TYPE
+      ).find((type) => type === component.types[0]) as ADDRESS_COMPONENT_TYPE;
+      if (type) {
+        components.push({
+          type,
+          value: component.long_name,
+        });
       }
     }
 
@@ -176,33 +217,10 @@ export class AddressFormatter {
    */
   static toFormio(address: UnifiedAddress): FormioAddressResult {
     const addressComponents = address.components.map((comp) => {
-      let types: string[] = [];
-
-      switch (comp.type) {
-        case ADDRESS_COMPONENT_TYPE.STREET_NUMBER:
-          types = ['street_number'];
-          break;
-        case ADDRESS_COMPONENT_TYPE.STREET:
-          types = ['route'];
-          break;
-        case ADDRESS_COMPONENT_TYPE.LOCALITY:
-          types = ['locality'];
-          break;
-        case ADDRESS_COMPONENT_TYPE.REGION:
-          types = ['administrative_area_level_1'];
-          break;
-        case ADDRESS_COMPONENT_TYPE.POSTAL_CODE:
-          types = ['postal_code'];
-          break;
-        case ADDRESS_COMPONENT_TYPE.COUNTRY:
-          types = ['country'];
-          break;
-      }
-
       return {
         long_name: comp.value,
         short_name: comp.value,
-        types,
+        types: [comp.type],
       };
     });
 
