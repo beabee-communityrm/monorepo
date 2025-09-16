@@ -15,11 +15,11 @@ import {
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-import { createTestCallout } from './fixtures/callouts';
+import { createTestCallout } from '../../fixtures/callouts';
 import {
   createMinimalTestCalloutResponseAnswers,
   createTestCalloutResponseAnswers,
-} from './fixtures/callouts';
+} from '../../fixtures/callouts';
 
 describe('Callout API', () => {
   let client: BeabeeClient;
