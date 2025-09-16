@@ -10,6 +10,8 @@ import {
 import { resolve } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
+import { FIXTURE_PATH } from '../../env';
+
 describe('Upload API', () => {
   describe('Rate Limits', () => {
     let client: BeabeeClient;
@@ -33,7 +35,7 @@ describe('Upload API', () => {
 
     describe('Rate Limit Tests', () => {
       it('should enforce rate limits for guest users uploading images', async () => {
-        const svgPath = resolve(__dirname, 'data/400x600.svg');
+        const svgPath = resolve(FIXTURE_PATH, '400x600.svg');
         const svgFile = createTestFile(svgPath, 'image/svg+xml');
 
         // Guest users are limited to 5 requests per hour
@@ -69,7 +71,7 @@ describe('Upload API', () => {
           password: TEST_RATE_LIMIT_USER_PASSWORD,
         });
 
-        const pdfPath = resolve(__dirname, 'data/Lorem-Ipsum.pdf');
+        const pdfPath = resolve(FIXTURE_PATH, 'Lorem-Ipsum.pdf');
         const pdfFile = createTestFile(pdfPath, 'application/pdf');
 
         // Authenticated users should be able to make more requests (up to 50/hour)
