@@ -14,20 +14,10 @@ import {
 } from '@beabee/test-utils/vitest/env';
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { createMinimalTestCalloutResponseAnswers, createTestCallout, createTestCalloutResponseAnswers } from '../../fixtures/callouts';
 
-<<<<<<< HEAD
-import { createTestCallout } from '../../fixtures/callouts';
-import {
-  createMinimalTestCalloutResponseAnswers,
-  createTestCalloutResponseAnswers,
-} from '../../fixtures/callouts';
-=======
-import { createTestCallout } from './fixtures/callouts';
-import {
-  createMinimalTestCalloutResponseAnswers,
-  createTestCalloutResponseAnswers,
-} from './fixtures/callouts';
->>>>>>> d9dce52b2 (refactor: rename data folder to fixtures)
+
+
 
 describe('Callout API', () => {
   let client: BeabeeClient;

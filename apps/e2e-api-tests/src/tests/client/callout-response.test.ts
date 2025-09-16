@@ -9,12 +9,8 @@ import {
 import { CalloutResponseClient } from '@beabee/client';
 
 import { describe, expect, it } from 'vitest';
+import { createTestCalloutResponseAnswers } from '../../fixtures/callouts';
 
-<<<<<<< HEAD
-import { createTestCalloutResponseAnswers } from '../../fixtures/callouts.js';
-=======
-import { createTestCalloutResponseAnswers } from './fixtures/callouts.js';
->>>>>>> d9dce52b2 (refactor: rename data folder to fixtures)
 
 describe('CalloutResponse API', () => {
   describe('deserialize', () => {
