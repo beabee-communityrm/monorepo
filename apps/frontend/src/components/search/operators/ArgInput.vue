@@ -14,7 +14,7 @@
     v-else-if="item.type === 'enum' || (item.type === 'array' && item.options)"
     v-model="value"
     :items="item.options || []"
-    required
+    :required="'required' in item ? item.required : true"
   />
   <DateInput
     v-else-if="item.type === 'date'"
