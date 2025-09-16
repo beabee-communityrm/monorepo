@@ -78,20 +78,16 @@ function showStatusPage() {
     },
     render() {
       return h(AppStatusPage, {
-        title: 'Starting Beabee',
-        message: 'Please wait while we connect to our services...',
-        loadingText: 'Performing health checks',
         showProgress: false,
         showRetry: this.showRetry,
-        retryText: 'Try Again',
         showInfo: !this.showRetry,
-        infoText: 'This usually takes just a few seconds.',
         onRetry: this.handleRetry,
       });
     },
   });
 
   // Mount the status app
+  statusApp.use(i18n);
   statusApp.use(icons);
   statusApp.mount('#app');
 }
