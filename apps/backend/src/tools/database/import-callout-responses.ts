@@ -136,11 +136,7 @@ function parseValue(
       );
 
     case CalloutComponentType.INPUT_ADDRESS:
-      const [lat, lng, ...rest] = value.split(',');
-      return {
-        geometry: { location: { lat: Number(lat), lng: Number(lng) } },
-        formatted_address: rest.join(','),
-      } satisfies CalloutResponseAnswerAddress;
+      return JSON.parse(value);
 
     // TODO: We need to upload the image or document
     case CalloutComponentType.INPUT_FILE:
