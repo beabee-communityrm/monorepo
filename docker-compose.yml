@@ -27,12 +27,12 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - ${DB_PORT}:5432
+      - ${DB_PORT:?}:5432
 
   mail:
     image: maildev/maildev:2.1.0
     ports:
-      - ${MAIL_PORT}:1080
+      - ${MAIL_PORT:?}:1080
 
   # Legacy app
   app:
@@ -100,12 +100,12 @@ services:
       - minio_data:/data
     environment:
       # Map our BEABEE_ prefixed vars to what MinIO expects
-      MINIO_ROOT_USER: ${BEABEE_MINIO_ROOT_USER:-minioadmin}
-      MINIO_ROOT_PASSWORD: ${BEABEE_MINIO_ROOT_PASSWORD:-minioadmin}
-      MINIO_REGION: ${BEABEE_MINIO_REGION:-us-east-1}
+      MINIO_ROOT_USER: ${BEABEE_MINIO_ROOT_USER:?}
+      MINIO_ROOT_PASSWORD: ${BEABEE_MINIO_ROOT_PASSWORD:?}
+      MINIO_REGION: ${BEABEE_MINIO_REGION:?}
       # Pass BEABEE_ variables for our own use
-      BEABEE_MINIO_BUCKET: ${BEABEE_MINIO_BUCKET:-uploads}
-      BEABEE_MINIO_ENDPOINT: ${BEABEE_MINIO_ENDPOINT:-http://minio:9000}
+      BEABEE_MINIO_BUCKET: ${BEABEE_MINIO_BUCKET:?}
+      BEABEE_MINIO_ENDPOINT: ${BEABEE_MINIO_ENDPOINT:?}
 
   # The new frontend
   frontend:
@@ -116,13 +116,13 @@ services:
         - VERSION=${VERSION}
         - REVISION=${REVISION}
     environment:
-      APP_BASE_URL: ${BEABEE_AUDIENCE}
+      APP_BASE_URL: ${BEABEE_AUDIENCE:?}
       API_BASE_URL: /api/1.0/
-      CNR_MODE: ${BEABEE_CNR_MODE:-false}
-      EXPERIMENTAL_FEATURES: ${BEABEE_EXPERIMENTAL_FEATURES:-false}
-      APPSIGNAL_KEY: ${BEABEE_APPSIGNAL_KEY:-""}
-      CAPTCHAFOX_KEY: ${BEABEE_CAPTCHAFOX_KEY:-""}
-      MAPTILER_KEY: ${BEABEE_MAPTILER_KEY:-""}
+      CNR_MODE: ${BEABEE_CNR_MODE-}
+      EXPERIMENTAL_FEATURES: ${BEABEE_EXPERIMENTAL_FEATURES-}
+      APPSIGNAL_KEY: ${BEABEE_APPSIGNAL_KEY-}
+      CAPTCHAFOX_KEY: ${BEABEE_CAPTCHAFOX_KEY-}
+      MAPTILER_KEY: ${BEABEE_MAPTILER_KEY-}
 
   # Application router
   app_router:
@@ -130,10 +130,10 @@ services:
       context: .
       dockerfile: ./apps/router/Dockerfile
     environment:
-      LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
+      LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN:?}
       TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
     ports:
-      - ${ROUTER_PORT}:80
+      - ${ROUTER_PORT:?}:80
     volumes:
       # Temporary storage for old uploads
       - upload_data:/old_data
@@ -163,11 +163,11 @@ services:
   # Only used in local development
   stripe_cli:
     image: stripe/stripe-cli:latest
-    command: "listen --api-key ${BEABEE_STRIPE_SECRETKEY} --forward-to webhook_app:3000/stripe"
+    command: "listen --api-key ${BEABEE_STRIPE_SECRETKEY:?} --forward-to webhook_app:3000/stripe"
     depends_on:
       - webhook_app
     environment:
-      - STRIPE_API_KEY=${BEABEE_STRIPE_SECRETKEY}
+      - STRIPE_API_KEY=${BEABEE_STRIPE_SECRETKEY:?}
       - STRIPE_DEVICE_NAME=beabee-dev-docker-container
 
 volumes:
