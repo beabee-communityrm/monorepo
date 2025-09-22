@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isEmbed" class="flex h-screen w-full flex-col md:flex-row">
+  <div v-if="isEmbed" class="w-full">
     <router-view />
   </div>
   <div v-else class="relative flex h-screen w-full flex-col md:flex-row">
