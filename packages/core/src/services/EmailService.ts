@@ -140,7 +140,7 @@ type ContactEmailParams<T extends ContactEmailTemplateId> = Parameters<
   ContactEmailTemplates[T]
 >[1];
 
-type EmailTemplateId =
+export type EmailTemplateId =
   | GeneralEmailTemplateId
   | AdminEmailTemplateId
   | ContactEmailTemplateId;
