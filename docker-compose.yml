@@ -94,8 +94,8 @@ services:
       context: .
       dockerfile: ./apps/minio/Dockerfile
     ports:
-      - "${BEABEE_MINIO_PORT_ADMIN:-9000}:9000" # Admin port for debugging, not for production
-      - "${BEABEE_MINIO_PORT_CONSOLE:-9001}:9001" # Console port (Admin UI), not for production
+      - "${MINIO_PORT_ADMIN:?}:9000" # Admin port for debugging, not for production
+      - "${MINIO_PORT_CONSOLE:?}:9001" # Console port (Admin UI), not for production
     volumes:
       - minio_data:/data
     environment:
