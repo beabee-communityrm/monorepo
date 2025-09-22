@@ -48,7 +48,7 @@ export interface SendGridEmailConfig {
   provider: 'sendgrid';
   settings: {
     apiKey: string; // BEABEE_EMAIL_SETTINGS_APIKEY - SendGrid API key
-    testMode: boolean; // BEABEE_EMAIL_SETTIGS_TESTMODE - Enable test mode (default: false)
+    testMode: boolean; // BEABEE_EMAIL_SETTINGS_TESTMODE - Enable test mode (default: false)
   };
 }
 
@@ -209,7 +209,7 @@ export const config = {
             }
           : {
               apiKey: env.s('BEABEE_EMAIL_SETTINGS_APIKEY'), // SendGrid API key
-              testMode: env.b('BEABEE_EMAIL_SETTIGS_TESTMODE', false), // SendGrid test mode (default: false)
+              testMode: env.b('BEABEE_EMAIL_SETTINGS_TESTMODE', false), // SendGrid test mode (default: false)
             },
   } as EmailConfig,
 
