@@ -1,5 +1,6 @@
 export * from './ApiKeyController.js';
 export * from './AuthController.js';
+export * from './DevController.js';
 export * from './CalloutController.js';
 export * from './CalloutResponseCommentController.js';
 export * from './CalloutResponseController.js';
