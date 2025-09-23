@@ -24,6 +24,7 @@ app.get('/', function (req: Request, res: Response) {
   }
 });
 
+// Legacy version of login/as/:id
 if (config.dev) {
   app.get(
     '/as/:id',

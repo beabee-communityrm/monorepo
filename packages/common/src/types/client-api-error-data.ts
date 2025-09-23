@@ -4,4 +4,6 @@ export interface ClientApiErrorData {
     [key: string]: unknown;
   };
   httpCode?: number;
+  /** Seconds until the client may retry (from Retry-After header) */
+  retryAfterSeconds?: number;
 }

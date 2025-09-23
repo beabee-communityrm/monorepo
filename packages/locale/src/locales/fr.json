@@ -1457,7 +1457,11 @@
       "success": "Copié dans le presse-papiers"
     },
     "error": "Une erreur s'est produite. Essayez de recharger la page.",
-    "remove": "Fermer la notification"
+    "remove": "Fermer la notification",
+    "rateLimit": {
+      "generic": "",
+      "withWait": ""
+    }
   },
   "pageTitle": {
     "confirmEmail": "Confirmer l'e-mail",

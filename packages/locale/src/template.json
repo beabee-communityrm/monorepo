@@ -1454,6 +1454,10 @@
       "success": ""
     },
     "error": "",
+    "rateLimit": {
+      "generic": "",
+      "withWait": ""
+    },
     "remove": ""
   },
   "pageTitle": {

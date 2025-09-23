@@ -1454,7 +1454,11 @@
       "success": ""
     },
     "error": "Houve aqui um erro. Experimenta recarregar a página.",
-    "remove": ""
+    "remove": "",
+    "rateLimit": {
+      "generic": "",
+      "withWait": ""
+    }
   },
   "pageTitle": {
     "confirmEmail": "Confirma o email",

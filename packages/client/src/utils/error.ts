@@ -35,6 +35,7 @@ export class ClientApiError extends Error implements ClientApiErrorData {
     [key: string]: unknown;
   };
   httpCode?: number;
+  retryAfterSeconds?: number;
   name: string;
 
   constructor(message: string, data: ClientApiErrorData = {}) {
@@ -42,6 +43,7 @@ export class ClientApiError extends Error implements ClientApiErrorData {
     this.code = data.code;
     this.errors = data.errors;
     this.httpCode = data.httpCode;
+    this.retryAfterSeconds = data.retryAfterSeconds;
     this.name =
       data.name ||
       (this.httpCode ? getErrorNameFromStatus(this.httpCode) : 'UnknownError');

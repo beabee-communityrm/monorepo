@@ -1454,7 +1454,11 @@
       "success": "In die Zwischenablage kopiert"
     },
     "error": "Da ist etwas schiefgelaufen!",
-    "remove": "Benachrichtigung schließen"
+    "remove": "Benachrichtigung schließen",
+    "rateLimit": {
+      "generic": "",
+      "withWait": ""
+    }
   },
   "pageTitle": {
     "confirmEmail": "E-Mail-Adresse bestätigen",
