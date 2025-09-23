@@ -27,6 +27,23 @@ const limiterCache = new Map<
   { guest: RateLimiterMemory; user: RateLimiterMemory }
 >();
 
+// Version suffix for keys to allow instant logical reset for tests
+let limiterKeyVersion = 0;
+
+/**
+ * Logically resets rate limiting for all in-memory limiters.
+ *
+ * Increments an internal version that is appended to each consume key.
+ * This effectively starts using a new key namespace (akin to changing
+ * the `keyPrefix` in rate-limiter-flexible), so previously consumed
+ * keys no longer apply without recreating limiter instances.
+ *
+ * Intended for test isolation via the dev endpoint.
+ */
+export function clearRateLimiterCache() {
+  limiterKeyVersion += 1;
+}
+
 function getLimiters(options: RateLimitOptions): {
   guest: RateLimiterMemory;
   user: RateLimiterMemory;
@@ -46,7 +63,6 @@ function getLimiters(options: RateLimitOptions): {
   const cacheKey = JSON.stringify({ guest: guestConfig, user: userConfig });
 
   if (!limiterCache.has(cacheKey)) {
-    console.log(`Creating rate limiters for key: ${cacheKey}`); // Debug log
     limiterCache.set(cacheKey, {
       guest: new RateLimiterMemory(guestConfig),
       user: new RateLimiterMemory(userConfig),
@@ -73,16 +89,18 @@ export function RateLimit(options: RateLimitOptions) {
     next: NextFunction
   ) {
     const currentUser = req.user;
-    let key: string;
+    let keyBase: string;
     let limiter: RateLimiterMemory;
 
     if (currentUser) {
-      key = currentUser.id.toString();
+      keyBase = currentUser.id.toString();
       limiter = limiters.user;
     } else {
-      key = req.ip || 'unknown_ip';
+      keyBase = req.ip || 'unknown_ip';
       limiter = limiters.guest;
     }
+
+    const key = `${limiterKeyVersion}:${keyBase}`;
 
     limiter
       .consume(key)
