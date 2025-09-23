@@ -76,6 +76,7 @@ export class AuthController {
     await login(req, user); // Why do we have to login after authenticate?
   }
 
+  // TODO: Move to DevController
   @OnUndefined(204)
   @Get('/login/as/:id')
   async loginAs(@Req() req: Request, @Param('id') id: string): Promise<void> {
