@@ -1,3 +1,4 @@
+import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
 import { BeabeeClient, ClientApiError } from '@beabee/client';
 import { createTestFile } from '@beabee/test-utils/node';
 import {
@@ -81,6 +82,67 @@ describe('Upload API', () => {
           expect(response).toBeDefined();
           expect(response.id).toBeDefined();
         }
+      });
+    });
+
+    describe('Signup API Rate Limits', () => {
+      beforeEach(async () => {
+        // Ensure clean state for signup limiter before each test
+        await client.fetch.post('/dev/clear-rate-limiter-cache');
+      });
+
+      it('should enforce rate limits for guest users starting signup (3 allowed, 4th blocked)', async () => {
+        const signupData = {
+          email: 'rate-limit-test@signup-example.com',
+          amount: 10,
+          period: ContributionPeriod.Monthly,
+          payFee: false,
+          prorate: false,
+          paymentMethod: PaymentMethod.StripeCard,
+          noContribution: true,
+        };
+
+        // First 3 requests should succeed
+        for (let i = 0; i < 3; i++) {
+          const response = await client.signup.start({
+            ...signupData,
+            email: `rate-limit-precise-${i}@signup-example.com`,
+          });
+          expect(response).toBeDefined();
+        }
+
+        // 4th request should be rate limited (HTTP 429)
+        try {
+          await client.signup.start({
+            ...signupData,
+            email: 'rate-limit-precise-3@signup-example.com',
+          });
+          // If we reach this point, the test should fail
+          expect(true).toBe(false);
+        } catch (error) {
+          expect(error).toBeInstanceOf(ClientApiError);
+          if (error instanceof ClientApiError) {
+            expect(error.httpCode).toBe(429);
+            expect(error.code).toBe('TOO_MANY_REQUESTS');
+          }
+        }
+      });
+
+      it('should allow to have separate rate limits for a new user (normally identified by different IP address)', async () => {
+        const signupData = {
+          email: 'rate-limit-test@signup-example.com',
+          amount: 10,
+          period: ContributionPeriod.Monthly,
+          payFee: false,
+          prorate: false,
+          paymentMethod: PaymentMethod.StripeCard,
+          noContribution: true,
+        };
+
+        // This should succeed as we cleared the rate limiter cache before the test,
+        // but it would be better to use a real different IP address here
+        const response = await client.signup.start(signupData);
+        expect(response).toBeDefined();
       });
     });
   });
