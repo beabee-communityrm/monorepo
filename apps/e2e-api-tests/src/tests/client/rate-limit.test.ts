@@ -23,6 +23,9 @@ describe('Upload API', () => {
         host: HOST,
         path: PATH,
       });
+
+      // Ensure clean state for all rate limiter tests in this file
+      await client.fetch.post('/dev/clear-rate-limiter-cache');
     });
 
     // Add afterEach to logout after every test in this suite
@@ -86,11 +89,6 @@ describe('Upload API', () => {
     });
 
     describe('Signup API Rate Limits', () => {
-      beforeEach(async () => {
-        // Ensure clean state for signup limiter before each test
-        await client.fetch.post('/dev/clear-rate-limiter-cache');
-      });
-
       it('should enforce rate limits for guest users starting signup (3 allowed, 4th blocked)', async () => {
         const signupData = {
           email: 'rate-limit-test@signup-example.com',
