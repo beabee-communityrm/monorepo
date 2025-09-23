@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="fixed bottom-16 left-16 z-50 w-96"
-    role="region"
-    aria-label="Notifications"
-  >
+  <div role="region" aria-label="Notifications">
     <div class="flex flex-col gap-4">
       <transition-group name="notification">
         <AppNotification
