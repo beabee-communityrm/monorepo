@@ -1454,7 +1454,11 @@
       "success": ""
     },
     "error": "Das war nicht richtig. Probiere es noch mal.",
-    "remove": ""
+    "remove": "",
+    "rateLimit": {
+      "generic": "",
+      "withWait": ""
+    }
   },
   "pageTitle": {
     "confirmEmail": "",

@@ -350,9 +350,16 @@ export class Fetch {
             console.error(JSON.stringify(error, null, 2));
           }
         }
+        // Extract Retry-After header (seconds) if present
+        const retryAfterHeader = response.headers.get('Retry-After');
+        const retryAfterSeconds = retryAfterHeader
+          ? Number.parseInt(retryAfterHeader, 10)
+          : undefined;
+
         throw new ClientApiError(data.message || 'Unknown error', {
           ...data,
-          status: response.status,
+          httpCode: response.status,
+          retryAfterSeconds,
         });
       }
       throw result;
