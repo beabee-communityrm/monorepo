@@ -23,7 +23,8 @@ export const testCommand: CommandModule = {
       })
       .command({
         command: 'anonymise',
-        describe: 'Create anonymized copy of database and export data to SQL dump',
+        describe:
+          'Create anonymized copy of database and export data to SQL dump',
         builder: (yargs) =>
           yargs.option('dryRun', {
             type: 'boolean',
