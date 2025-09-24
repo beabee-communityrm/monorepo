@@ -1,3 +1,7 @@
-import { Body } from 'routing-controllers';
+import { Body, BodyOptions } from 'routing-controllers';
 
-export default () => Body({ validate: { skipMissingProperties: true } });
+export default (options?: BodyOptions) =>
+  Body({
+    validate: { skipMissingProperties: true },
+    ...options,
+  });

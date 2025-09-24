@@ -1500,7 +1500,6 @@ __metadata:
     otpauth: "npm:^9.3.6"
     prettier: "npm:^3.5.2"
     typescript: "npm:~5.8.3"
-    vitest: "npm:^3.2.1"
   languageName: unknown
   linkType: soft
 

@@ -1314,7 +1314,7 @@
       "description": "Adhésion",
       "recurringLabel": "Cotisation récurrente"
     },
-    "genericError": "Oups, une erreur s'est produite ! Contactez l'assistance si cela se produit à nouveau.",
+    "genericError": "Oups, une erreur s'est produite ({type}) ! Contactez l'assistance si cela se produit à nouveau.",
     "goBack": "Avez-vous oublié quelque chose ? {back}",
     "goBackButton": "Revenir à l'écran précédent",
     "note": "Vous pourrez modifier votre cotisation et accéder à votre historique de paiement à tout moment depuis votre compte membre",
