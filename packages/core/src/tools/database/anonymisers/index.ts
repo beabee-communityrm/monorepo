@@ -67,7 +67,7 @@ async function anonymiseCalloutResponses(
       answers: anonymiseItem(response.answers, answersMap, undefined, false),
     }));
 
-    writeItems(CalloutResponse, newResponses);
+    writeItemsSqlDump(CalloutResponse, newResponses);
   }
 }
 
@@ -117,7 +117,7 @@ function anonymiseItem<T>(
  * @param model The target database model
  * @param items The items to write for export
  */
-function writeItems<T extends ObjectLiteral>(
+function writeItemsSqlDump<T extends ObjectLiteral>(
   model: EntityTarget<T>,
   items: T[]
 ) {
@@ -129,6 +129,22 @@ function writeItems<T extends ObjectLiteral>(
 
   console.log(query + ';');
   console.log(stringify(params));
+}
+
+/**
+ * Write items to JSON dump
+ *
+ * @param model The target database model
+ * @param items The items to write for export
+ */
+function writeItemsJsonDump<T extends ObjectLiteral>(
+  model: EntityTarget<T>,
+  items: T[]
+) {
+  const tableName = getRepository(model).metadata.tableName;
+  console.log(`-- ${tableName}`);
+  console.log(stringify(items));
+  console.log();
 }
 
 /**
@@ -172,7 +188,7 @@ export async function anonymiseModel<T extends ObjectLiteral>(
       anonymiseItem(item, anonymiser.objectMap, valueMap)
     );
 
-    writeItems(anonymiser.model, newItems);
+    writeItemsSqlDump(anonymiser.model, newItems);
   }
 }
 
