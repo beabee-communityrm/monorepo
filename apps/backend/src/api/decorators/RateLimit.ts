@@ -1,3 +1,4 @@
+import { config } from '@beabee/core/config';
 import { TooManyRequestsError } from '@beabee/core/errors';
 
 import type { NextFunction, Request, Response } from 'express';
@@ -41,6 +42,9 @@ let limiterKeyVersion = 0;
  * Intended for test isolation via the dev endpoint.
  */
 export function clearRateLimiterCache() {
+  if (!config.dev) {
+    throw new Error('Clear rate limiter cache is not allowed');
+  }
   limiterKeyVersion += 1;
 }
 
