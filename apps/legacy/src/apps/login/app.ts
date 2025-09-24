@@ -24,33 +24,6 @@ app.get('/', function (req: Request, res: Response) {
   }
 });
 
-// Legacy version of login/as/:id
-if (config.dev) {
-  app.get(
-    '/as/:id',
-    wrapAsync(async (req, res) => {
-      let contact;
-      if (RoleTypes.indexOf(req.params.id as RoleType) > -1) {
-        const role = await getRepository(ContactRole).findOne({
-          where: {
-            type: req.params.id as RoleType,
-          },
-          relations: { contact: true },
-        });
-        contact = role?.contact;
-      } else {
-        contact = await ContactsService.findOneBy({ id: req.params.id });
-      }
-
-      if (contact) {
-        loginAndRedirect(req, res, contact);
-      } else {
-        res.redirect('/login');
-      }
-    })
-  );
-}
-
 app.get(
   '/:code',
   wrapAsync(async function (req, res) {
