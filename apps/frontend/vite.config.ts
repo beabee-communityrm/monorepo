@@ -98,7 +98,7 @@ export default ({ command, mode }) => {
     plugins,
     server: {
       port: Number(env.VITE_DEV_SERVER_PORT || 3000),
-      // Proxy API requests to the backend
+      // Proxy API requests to the backend via router service (nginx)
       proxy: {
         '^/(api|login|favicon.png)': {
           target: env.BEABEE_AUDIENCE || 'http://localhost:3002',
