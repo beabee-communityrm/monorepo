@@ -4,7 +4,7 @@ import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-import { testNotice, testNoticeUpdate } from './data/notices.js';
+import { testNotice, testNoticeUpdate } from '../../fixtures/notices.js';
 
 describe('Notice API', () => {
   let client: BeabeeClient;
