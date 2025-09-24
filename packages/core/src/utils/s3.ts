@@ -1,4 +1,4 @@
-import { BadRequestError, NotFoundError } from '@beabee/core/errors';
+import { NotFoundError } from '@beabee/core/errors';
 import { log as mainLogger } from '@beabee/core/logging';
 
 import {
