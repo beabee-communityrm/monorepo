@@ -118,7 +118,6 @@ export function RateLimit(options: RateLimitOptions) {
             })
           );
         } else {
-          console.error('Rate limiting error:', rejRes);
           next(new Error('Internal server error during rate limiting.'));
         }
       });
