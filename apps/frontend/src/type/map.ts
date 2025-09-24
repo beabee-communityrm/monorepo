@@ -1,19 +1,6 @@
-import type GeoJSON from 'geojson';
+import type { Feature, FeatureCollection, Point } from 'geojson';
 
-interface MapPointProps {
-  all_responses: string;
-  first_response: number;
-  icon: string;
-}
+export type MapPointFeature = Feature<Point>;
+export type MapClusterFeature = Feature<Point>;
 
-interface MapClusterProps extends MapPointProps {
-  cluster_id: number;
-}
-
-export type MapPointFeatureCollection = GeoJSON.FeatureCollection<
-  GeoJSON.Point,
-  MapPointProps
->;
-
-export type MapPointFeature = GeoJSON.Feature<GeoJSON.Point, MapPointProps>;
-export type MapClusterFeature = GeoJSON.Feature<GeoJSON.Point, MapClusterProps>;
+export type MapPointFeatureCollection = FeatureCollection<Point>;

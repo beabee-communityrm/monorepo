@@ -56,13 +56,7 @@ export function loadImageFromDataURLToMap(
   mapInstance: Map,
   pngDataUrl: string
 ) {
-  return new Promise<HTMLImageElement | ImageBitmap | null | undefined>(
-    (resolve, reject) => {
-      mapInstance.loadImage(pngDataUrl, (error, image) =>
-        error ? reject(error) : resolve(image)
-      );
-    }
-  );
+  return mapInstance.loadImage(pngDataUrl).then((response) => response.data);
 }
 
 /**

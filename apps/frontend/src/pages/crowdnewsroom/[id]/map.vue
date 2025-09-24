@@ -104,7 +104,13 @@ meta:
           :coordinates="newResponseAddress.geometry.location"
           color="black"
         />
-        <MglMarker v-if="geocodeLocation" :coordinates="geocodeLocation" />
+        <MglMarker
+          v-if="geocodeLocation"
+          ref="geocodeMarkerRef"
+          :coordinates="geocodeLocation"
+          :click-tolerance="10"
+          color="gray"
+        />
       </MglMap>
 
       <transition name="add-notice">
@@ -234,6 +240,7 @@ import {
 import 'maplibre-gl/dist/maplibre-gl.css';
 import {
   computed,
+  nextTick,
   onBeforeMount,
   onMounted,
   ref,
@@ -324,6 +331,8 @@ const responsesByNumber = computed(() =>
 
 // Used to adjust map view based on the side panel width
 const sidePanelRef = ref<HTMLElement>();
+// Reference to the geocoding marker for adding click events
+const geocodeMarkerRef = ref();
 
 const showIntroPanel = ref(false);
 const { isOpen } = useCallout(toRef(props, 'callout'));
@@ -337,6 +346,8 @@ const newResponseAnswers = ref<CalloutResponseAnswersSlide>();
 
 // Use the geocoding location to show a marker on the map
 const geocodeLocation = ref<LngLatLike>();
+// Store the full geocoding result for use when creating new responses
+const geocodeResult = ref<CalloutResponseAnswerAddress>();
 
 // Use the address from the new response to show a marker on the map
 const newResponseAddress = computed(() => {
@@ -383,21 +394,24 @@ function getIconStyling(
 const responsesCollecton = computed<MapPointFeatureCollection>(() => {
   return {
     type: 'FeatureCollection',
-    features: responses.value.map((response) => {
-      const { lat, lng } = response.address.geometry.location;
-      const iconName = getIconStyling(response.answers)?.icon.name || 'circle';
-      const color = getIconStyling(response.answers)?.color || 'black';
+    features: responses.value
+      .filter((response) => response.address?.geometry?.location)
+      .map((response) => {
+        const { lat, lng } = response.address.geometry.location;
+        const iconName =
+          getIconStyling(response.answers)?.icon.name || 'circle';
+        const color = getIconStyling(response.answers)?.color || 'black';
 
-      return {
-        type: 'Feature',
-        geometry: { type: 'Point', coordinates: [lng, lat] },
-        properties: {
-          all_responses: `<${response.number}>`,
-          first_response: response.number,
-          icon: generateImageId(iconName, color),
-        },
-      };
-    }),
+        return {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [lng, lat] },
+          properties: {
+            all_responses: `<${response.number}>`,
+            first_response: response.number,
+            icon: generateImageId(iconName, color),
+          },
+        };
+      }),
   };
 });
 
@@ -415,7 +429,7 @@ const selectedResponses = computed(() => {
 
   if (!selectedFeatureResponses) return [];
 
-  const responseNumbers = selectedFeatureResponses
+  const responseNumbers: number[] = selectedFeatureResponses
     // Remove first < and last >
     .substring(1, selectedFeatureResponses.length - 1)
     // Split each response number
@@ -432,7 +446,7 @@ const selectedResponses = computed(() => {
  * @param responseNo The response number
  */
 function findSelectedFeature(responseNo: number) {
-  if (!map.value) return;
+  if (!map.value || !mapLoaded.value) return;
 
   const feature = map.value.queryRenderedFeatures({
     layers: [LAYER_IDS.UNCLUSTERED_POINTS, LAYER_IDS.CLUSTERS],
@@ -495,7 +509,7 @@ watch(selectedResponseNumber, (responseNo) => {
     // found by queryRenderedFeatures. If this is the case then move to
     // where the response is, then look again for the response once it's in view
     const response = responsesByNumber.value[responseNo];
-    if (response) {
+    if (response?.address?.geometry?.location) {
       center = [
         response.address.geometry.location.lng,
         response.address.geometry.location.lat,
@@ -532,7 +546,7 @@ function handlePositionChange() {
  * https://stackoverflow.com/questions/58768283/detect-when-map-reclusters-features
  */
 function handleZoom() {
-  if (!map.value) return;
+  if (!map.value || !mapLoaded.value) return;
 
   const clusters = map.value.queryRenderedFeatures({
     layers: [LAYER_IDS.CLUSTERS],
@@ -593,17 +607,15 @@ async function handleAddClick(event: MapMouseEvent) {
  * @param cluster The cluster
  * @param map The map object
  */
-function handleClusterClick(cluster: MapClusterFeature) {
+async function handleClusterClick(cluster: MapClusterFeature) {
   const mapSchema = props.callout.responseViewSchema?.map;
   if (!map.value || !mapSchema) return; // Can't actually happen
 
   const source = map.value.getSource(SOURCE_IDS.RESPONSES) as GeoJSONSource;
-  source.getClusterExpansionZoom(cluster.properties.cluster_id, (err, zoom) => {
-    if (err || zoom == null) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to get cluster expansion zoom:', err);
-      return;
-    }
+  try {
+    const zoom = await source.getClusterExpansionZoom(
+      cluster.properties.cluster_id
+    );
 
     // Maximum zoom level, open first response
     if (zoom >= mapSchema.maxZoom) {
@@ -618,7 +630,10 @@ function handleClusterClick(cluster: MapClusterFeature) {
         zoom: zoom + 1,
       });
     }
-  });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error('Failed to get cluster expansion zoom:', err);
+  }
 }
 
 /**
@@ -635,6 +650,9 @@ function handleClick(e: { event: MapMouseEvent }) {
       handleAddClick(e.event);
     }
   } else {
+    // Only query features if map is loaded and layers exist
+    if (!mapLoaded.value) return;
+
     const [point] = map.value.queryRenderedFeatures(e.event.point, {
       layers: [LAYER_IDS.CLUSTERS, LAYER_IDS.UNCLUSTERED_POINTS],
     });
@@ -656,7 +674,7 @@ function handleClick(e: { event: MapMouseEvent }) {
  * @param e The mouse over event
  */
 function handleMouseOver(e: { event: MapMouseEvent }) {
-  if (!map.value || isAddMode.value) return;
+  if (!map.value || isAddMode.value || !mapLoaded.value) return;
 
   const features = map.value.queryRenderedFeatures(e.event.point, {
     layers: [LAYER_IDS.CLUSTERS, LAYER_IDS.UNCLUSTERED_POINTS],
@@ -712,11 +730,24 @@ async function handleLoad({ map: mapInstance }: { map: Map }) {
      * Handle the pick event from the geocoding control
      * The pick event is triggered when the user clicks on a address in the search results
      */
-    geocodeControl.addEventListener('pick', (e: Event) => {
+    geocodeControl.addEventListener('pick', async (e: Event) => {
       const event = e as GeocodePickEvent;
-      geocodeLocation.value = event.detail
-        ? [event.detail.center[0], event.detail.center[1]]
-        : undefined;
+      if (event.detail) {
+        geocodeLocation.value = [
+          event.detail.center[0],
+          event.detail.center[1],
+        ];
+
+        // Get the full address details for the selected location
+        const fullAddress = await reverseGeocode(
+          event.detail.center[1],
+          event.detail.center[0]
+        );
+        geocodeResult.value = fullAddress;
+      } else {
+        geocodeLocation.value = undefined;
+        geocodeResult.value = undefined;
+      }
     });
 
     mapInstance.addControl(geocodeControl, 'top-left');
@@ -770,6 +801,41 @@ function handleCancelAddMode() {
 }
 
 /**
+ * Handle clicking on the geocoding marker to start adding a new response
+ * This allows users to click on a searched address marker to create a new entry
+ */
+function handleGeocodeMarkerClick() {
+  if (!geocodeLocation.value || !geocodeResult.value) return;
+
+  // Start add mode
+  handleStartAddMode();
+
+  const mapSchema = props.callout.responseViewSchema?.map;
+  if (!mapSchema) return;
+
+  const responseAnswers: CalloutResponseAnswersSlide = {};
+  setKey(responseAnswers, mapSchema.addressProp, geocodeResult.value);
+
+  if (mapSchema.addressPatternProp) {
+    const formattedAddress = AddressFormatter.format(
+      geocodeResult.value,
+      mapSchema.addressPattern
+    );
+    setKey(responseAnswers, mapSchema.addressPatternProp, formattedAddress);
+  }
+
+  newResponseAnswers.value = responseAnswers;
+
+  // Center map on the selected location
+  if (map.value) {
+    map.value.easeTo({
+      center: geocodeLocation.value,
+      padding: { left: sidePanelRef.value?.offsetWidth || 0 },
+    });
+  }
+}
+
+/**
  * Toggle the cursor when entering add mode
  */
 watch(isAddMode, (v) => {
@@ -781,6 +847,40 @@ watch(isAddMode, (v) => {
     newResponseAnswers.value = undefined;
     map.value.getCanvas().style.cursor = '';
   }
+});
+
+/**
+ * Watch for geocoding marker creation and add click event listener
+ */
+watch(
+  geocodeMarkerRef,
+  (markerRef) => {
+    if (markerRef?.marker) {
+      // Add click event listener to the marker element
+      const markerElement = markerRef.marker.getElement();
+      if (markerElement) {
+        markerElement.addEventListener('click', handleGeocodeMarkerClick);
+        markerElement.style.cursor = 'pointer';
+      }
+    }
+  },
+  { immediate: true }
+);
+
+/**
+ * Watch for geocode location changes and ensure click event is attached
+ */
+watch(geocodeLocation, () => {
+  // Use nextTick to ensure the marker is rendered
+  nextTick(() => {
+    if (geocodeMarkerRef.value?.marker) {
+      const markerElement = geocodeMarkerRef.value.marker.getElement();
+      if (markerElement) {
+        markerElement.addEventListener('click', handleGeocodeMarkerClick);
+        markerElement.style.cursor = 'pointer';
+      }
+    }
+  });
 });
 
 /**
