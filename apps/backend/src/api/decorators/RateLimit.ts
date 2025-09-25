@@ -1,78 +1,19 @@
 import { config } from '@beabee/core/config';
 import { TooManyRequestsError } from '@beabee/core/errors';
+import { RateLimiterService } from '@beabee/core/services';
+import type { RateLimitOptions } from '@beabee/core/type';
 
 import type { NextFunction, Request, Response } from 'express';
-import {
-  IRateLimiterOptions,
-  RateLimiterMemory,
-  RateLimiterRes,
-} from 'rate-limiter-flexible';
-
-import type { RateLimitOptions } from '../../type';
-
-// Defaults merged with provided options
-const defaultGuestLimit: IRateLimiterOptions = {
-  points: 10,
-  duration: 60 * 60,
-  keyPrefix: 'rate_limit_guest_default',
-};
-const defaultUserLimit: IRateLimiterOptions = {
-  points: 100,
-  duration: 60 * 60,
-  keyPrefix: 'rate_limit_user_default',
-};
-
-// Cache limiter instances based on final config string
-const limiterCache = new Map<
-  string,
-  { guest: RateLimiterMemory; user: RateLimiterMemory }
->();
-
-// Version suffix for keys to allow instant logical reset for tests
-let limiterKeyVersion = 0;
+import { RateLimiterRes } from 'rate-limiter-flexible';
 
 /**
  * Logically resets rate limiting for all in-memory limiters.
+ * Delegates to the core RateLimiterService.
  *
- * Increments an internal version that is appended to each consume key.
- * This effectively starts using a new key namespace (akin to changing
- * the `keyPrefix` in rate-limiter-flexible), so previously consumed
- * keys no longer apply without recreating limiter instances.
- *
- * Intended for test isolation via the dev endpoint.
+ * @param options.force - If true, the cache will be cleared even if not in dev mode.
  */
-export function clearRateLimiterCache() {
-  if (!config.dev) {
-    throw new Error('Clear rate limiter cache is not allowed');
-  }
-  limiterKeyVersion += 1;
-}
-
-function getLimiters(options: RateLimitOptions): {
-  guest: RateLimiterMemory;
-  user: RateLimiterMemory;
-} {
-  // Merge defaults with provided options
-  const guestConfig = { ...defaultGuestLimit, ...(options.guest || {}) };
-  const userConfig = { ...defaultUserLimit, ...(options.user || {}) };
-
-  // Use unique prefixes if provided in options, otherwise use defaults
-  guestConfig.keyPrefix =
-    options.guest?.keyPrefix ||
-    `rate_limit_guest_${guestConfig.points}_${guestConfig.duration}`;
-  userConfig.keyPrefix =
-    options.user?.keyPrefix ||
-    `rate_limit_user_${userConfig.points}_${userConfig.duration}`;
-
-  const cacheKey = JSON.stringify({ guest: guestConfig, user: userConfig });
-
-  if (!limiterCache.has(cacheKey)) {
-    limiterCache.set(cacheKey, {
-      guest: new RateLimiterMemory(guestConfig),
-      user: new RateLimiterMemory(userConfig),
-    });
-  }
-  return limiterCache.get(cacheKey)!;
+export function clearRateLimiterCache(options: { force?: boolean } = {}) {
+  RateLimiterService.clearCache({ ...options, dev: config.dev });
 }
 
 /**
@@ -84,7 +25,7 @@ function getLimiters(options: RateLimitOptions): {
  */
 export function RateLimit(options: RateLimitOptions) {
   // Get or create the specific limiter instances for these options
-  const limiters = getLimiters(options);
+  const limiters = RateLimiterService.getLimiters(options);
 
   // Return the actual middleware function
   return function rateLimitMiddleware(
@@ -94,7 +35,7 @@ export function RateLimit(options: RateLimitOptions) {
   ) {
     const currentUser = req.user;
     let keyBase: string;
-    let limiter: RateLimiterMemory;
+    let limiter;
 
     if (currentUser) {
       keyBase = currentUser.id.toString();
@@ -104,7 +45,7 @@ export function RateLimit(options: RateLimitOptions) {
       limiter = limiters.guest;
     }
 
-    const key = `${limiterKeyVersion}:${keyBase}`;
+    const key = RateLimiterService.generateKey(keyBase);
 
     limiter
       .consume(key)
