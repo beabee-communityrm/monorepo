@@ -31,6 +31,7 @@ Options:
 ## Available Commands
 
 ### API Key Management
+
 ```bash
 yarn backend-cli api-key list         List all API keys
 yarn backend-cli api-key create       Create a new API key
@@ -38,6 +39,7 @@ yarn backend-cli api-key delete <id>  Delete an API key
 ```
 
 ### User Management
+
 ```bash
 yarn backend-cli user list [email]    List users
 yarn backend-cli user create          Create a new user
@@ -45,6 +47,7 @@ yarn backend-cli user delete <email>  Permanently delete a user
 ```
 
 ### System Setup
+
 ```bash
 yarn backend-cli setup support-email    Set up support email configuration
 yarn backend-cli setup payment-methods  Set up payment methods configuration
@@ -53,22 +56,26 @@ yarn backend-cli setup all              Complete system setup (all steps in sequ
 ```
 
 ### Payment Management
+
 ```bash
 yarn backend-cli payment create        Create a new payment
 yarn backend-cli payment list [email]  List payments
 ```
 
 ### Processing Commands
+
 ```bash
 yarn backend-cli process gifts  Process pending gifts
 ```
 
 ### Rate Limiter Management
+
 ```bash
 yarn backend-cli rate-limiter clear  Clear the rate limiter cache
 ```
 
 ### Synchronization Commands
+
 ```bash
 yarn backend-cli sync mailchimp  Sync newsletter status with Mailchimp
 yarn backend-cli sync segments   Process segment memberships
@@ -76,11 +83,13 @@ yarn backend-cli sync stripe     Sync Stripe subscriptions and payments
 ```
 
 ### Test Environment Commands
+
 ```bash
 yarn backend-cli test list-users  List test users with various contribution scenarios
 ```
 
 ### Migration Commands
+
 ```bash
 yarn backend-cli migrate-uploads  Migrate uploads from local storage to MinIO using ImageService and DocumentService
 ```
