@@ -31,7 +31,7 @@ const limiterCache = new Map<
  * Rate Limiter utility functions for managing in-memory rate limiting.
  * Provides core functionality that can be used by both backend and CLI.
  */
-export const RateLimiterUtils = {
+export const rateLimiter = {
   /**
    * Logically resets rate limiting for all in-memory limiters.
    *
@@ -44,12 +44,9 @@ export const RateLimiterUtils = {
    * allowing cache clearing to work across different processes (backend, CLI).
    *
    * @param options.force - If true, the cache will be cleared even if not in dev mode.
-   * @param options.dev - Whether we're in development mode (defaults to NODE_ENV !== 'production').
    */
-  async clearCache(
-    options: { force?: boolean; dev?: boolean } = {}
-  ): Promise<void> {
-    const isDev = options.dev ?? process.env.NODE_ENV !== 'production';
+  async clearCache(options: { force?: boolean } = {}): Promise<void> {
+    const isDev = process.env.NODE_ENV !== 'production';
 
     if (!isDev && !options.force) {
       throw new Error('Clear rate limiter cache is not allowed');
@@ -63,7 +60,7 @@ export const RateLimiterUtils = {
 
     // Increment version, reset to 0 if it exceeds MAX_VERSION
     const newVersion = currentVersion >= MAX_VERSION ? 0 : currentVersion + 1;
-    
+
     // Save to database
     await optionsService.set('rate-limiter-version', newVersion);
   },
