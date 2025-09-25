@@ -35,6 +35,7 @@ export * from './payment-flow-data';
 export * from './payment-flow-params';
 export * from './payment-flow';
 export * from './pg-error';
+export * from './rate-limiter';
 export * from './referral-gift-form';
 export * from './s3-config';
 export * from './select-result';

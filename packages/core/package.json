@@ -79,6 +79,7 @@
     "otpauth": "^9.3.6",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
+    "rate-limiter-flexible": "^7.4.0",
     "reflect-metadata": "^0.2.2",
     "routing-controllers": "^0.10.4",
     "sharp": "^0.33.3",
