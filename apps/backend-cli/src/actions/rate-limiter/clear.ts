@@ -1,4 +1,4 @@
-import { RateLimiterService } from '@beabee/core/services';
+import { RateLimiterUtils } from '@beabee/core/utils';
 
 /**
  * Clear the rate limiter cache.
@@ -10,9 +10,9 @@ export async function clearRateLimiterCache(
   try {
     // Use NODE_ENV to determine dev mode instead of loading full config
     const isDev = process.env.NODE_ENV !== 'production';
-    RateLimiterService.clearCache({ force, dev: isDev });
+    RateLimiterUtils.clearCache({ force, dev: isDev });
     console.log('✅ Rate limiter cache cleared successfully');
-    console.log(`📊 Current version: ${RateLimiterService.getVersion()}`);
+    console.log(`📊 Current version: ${RateLimiterUtils.getVersion()}`);
   } catch (error) {
     if (error instanceof Error) {
       console.error('❌ Failed to clear rate limiter cache:', error.message);
