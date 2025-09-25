@@ -10,7 +10,7 @@ export async function clearRateLimiterCache(
   try {
     // Use NODE_ENV to determine dev mode instead of loading full config
     const isDev = process.env.NODE_ENV !== 'production';
-    RateLimiterUtils.clearCache({ force, dev: isDev });
+    await RateLimiterUtils.clearCache({ force, dev: isDev });
     console.log('✅ Rate limiter cache cleared successfully');
     console.log(`📊 Current version: ${RateLimiterUtils.getVersion()}`);
   } catch (error) {
