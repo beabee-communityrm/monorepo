@@ -14,6 +14,5 @@ export * from './PageSettingsService';
 export * from './PaymentFlowService';
 export * from './PaymentService';
 export * from './ReferralsService';
-export * from './RateLimiterService';
 export * from './ResetSecurityFlowService';
 export * from './SegmentService';
