@@ -1,4 +1,3 @@
-import { config } from '@beabee/core/config';
 import { TooManyRequestsError } from '@beabee/core/errors';
 import type { RateLimitOptions } from '@beabee/core/type';
 import { RateLimiterRes, rateLimiter } from '@beabee/core/utils';
