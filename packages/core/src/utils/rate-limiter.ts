@@ -1,7 +1,8 @@
 import { IRateLimiterOptions, RateLimiterMemory } from 'rate-limiter-flexible';
 
-import { optionsService } from '../services/OptionsService';
-import type { RateLimitOptions } from '../type';
+import config from '#config/config';
+import { optionsService } from '#services/OptionsService';
+import type { RateLimitOptions } from '#type';
 
 export { RateLimiterRes } from 'rate-limiter-flexible';
 
@@ -46,9 +47,7 @@ export const rateLimiter = {
    * @param options.force - If true, the cache will be cleared even if not in dev mode.
    */
   async clearCache(options: { force?: boolean } = {}): Promise<void> {
-    const isDev = process.env.NODE_ENV !== 'production';
-
-    if (!isDev && !options.force) {
+    if (!config.dev && !options.force) {
       throw new Error('Clear rate limiter cache is not allowed');
     }
 
