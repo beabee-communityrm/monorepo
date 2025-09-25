@@ -1,19 +1,18 @@
 import { config } from '@beabee/core/config';
 import { TooManyRequestsError } from '@beabee/core/errors';
-import { RateLimiterService } from '@beabee/core/services';
 import type { RateLimitOptions } from '@beabee/core/type';
+import { RateLimiterRes, RateLimiterUtils } from '@beabee/core/utils';
 
 import type { NextFunction, Request, Response } from 'express';
-import { RateLimiterRes } from 'rate-limiter-flexible';
 
 /**
  * Logically resets rate limiting for all in-memory limiters.
- * Delegates to the core RateLimiterService.
+ * Delegates to the core RateLimiterUtils.
  *
  * @param options.force - If true, the cache will be cleared even if not in dev mode.
  */
 export function clearRateLimiterCache(options: { force?: boolean } = {}) {
-  RateLimiterService.clearCache({ ...options, dev: config.dev });
+  RateLimiterUtils.clearCache({ ...options, dev: config.dev });
 }
 
 /**
@@ -25,7 +24,7 @@ export function clearRateLimiterCache(options: { force?: boolean } = {}) {
  */
 export function RateLimit(options: RateLimitOptions) {
   // Get or create the specific limiter instances for these options
-  const limiters = RateLimiterService.getLimiters(options);
+  const limiters = RateLimiterUtils.getLimiters(options);
 
   // Return the actual middleware function
   return function rateLimitMiddleware(
@@ -45,7 +44,7 @@ export function RateLimit(options: RateLimitOptions) {
       limiter = limiters.guest;
     }
 
-    const key = RateLimiterService.generateKey(keyBase);
+    const key = RateLimiterUtils.generateKey(keyBase);
 
     limiter
       .consume(key)
