@@ -1,9 +1,12 @@
 import { IRateLimiterOptions, RateLimiterMemory } from 'rate-limiter-flexible';
 
-import type { RateLimitOptions } from '../type';
 import { optionsService } from '../services/OptionsService';
+import type { RateLimitOptions } from '../type';
 
 export { RateLimiterRes } from 'rate-limiter-flexible';
+
+// Maximum version before resetting to 0 to prevent unbounded growth
+const MAX_VERSION = 1000000;
 
 // Defaults merged with provided options
 const defaultGuestLimit: IRateLimiterOptions = {
@@ -43,7 +46,9 @@ export const RateLimiterUtils = {
    * @param options.force - If true, the cache will be cleared even if not in dev mode.
    * @param options.dev - Whether we're in development mode (defaults to NODE_ENV !== 'production').
    */
-  async clearCache(options: { force?: boolean; dev?: boolean } = {}): Promise<void> {
+  async clearCache(
+    options: { force?: boolean; dev?: boolean } = {}
+  ): Promise<void> {
     const isDev = options.dev ?? process.env.NODE_ENV !== 'production';
 
     if (!isDev && !options.force) {
@@ -51,10 +56,16 @@ export const RateLimiterUtils = {
     }
 
     // Get current version from database
-    const currentVersion = parseInt(optionsService.get('rate-limiter-version').value, 10);
+    const currentVersion = parseInt(
+      optionsService.get('rate-limiter-version').value,
+      10
+    );
+
+    // Increment version, reset to 0 if it exceeds MAX_VERSION
+    const newVersion = currentVersion >= MAX_VERSION ? 0 : currentVersion + 1;
     
-    // Increment and save to database
-    await optionsService.set('rate-limiter-version', currentVersion + 1);
+    // Save to database
+    await optionsService.set('rate-limiter-version', newVersion);
   },
 
   /**
@@ -93,7 +104,10 @@ export const RateLimiterUtils = {
    * This allows for logical cache resets without recreating limiter instances.
    */
   generateKey(baseKey: string): string {
-    const version = parseInt(optionsService.get('rate-limiter-version').value, 10);
+    const version = parseInt(
+      optionsService.get('rate-limiter-version').value,
+      10
+    );
     return `${version}:${baseKey}`;
   },
 
@@ -102,5 +116,20 @@ export const RateLimiterUtils = {
    */
   getVersion(): number {
     return parseInt(optionsService.get('rate-limiter-version').value, 10);
+  },
+
+  /**
+   * Get the maximum version before reset.
+   */
+  getMaxVersion(): number {
+    return MAX_VERSION;
+  },
+
+  /**
+   * Check if the version is close to reset threshold.
+   */
+  isNearReset(): boolean {
+    const currentVersion = this.getVersion();
+    return currentVersion >= MAX_VERSION * 0.9; // 90% of max
   },
 };
