@@ -11,8 +11,8 @@ import type { NextFunction, Request, Response } from 'express';
  *
  * @param options.force - If true, the cache will be cleared even if not in dev mode.
  */
-export function clearRateLimiterCache(options: { force?: boolean } = {}) {
-  RateLimiterUtils.clearCache({ ...options, dev: config.dev });
+export async function clearRateLimiterCache(options: { force?: boolean } = {}) {
+  await RateLimiterUtils.clearCache({ ...options, dev: config.dev });
 }
 
 /**

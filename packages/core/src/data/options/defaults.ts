@@ -198,4 +198,5 @@ export default {
   'flash-validation-error.url-format': 'URL was invalid',
   'flash-validation-error.candidates-maxItems':
     'You can only choose at most three candidates',
+  'rate-limiter-version': '0',
 } as const;

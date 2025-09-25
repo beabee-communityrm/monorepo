@@ -1,6 +1,7 @@
 import { IRateLimiterOptions, RateLimiterMemory } from 'rate-limiter-flexible';
 
 import type { RateLimitOptions } from '../type';
+import { optionsService } from '../services/OptionsService';
 
 export { RateLimiterRes } from 'rate-limiter-flexible';
 
@@ -23,9 +24,6 @@ const limiterCache = new Map<
   { guest: RateLimiterMemory; user: RateLimiterMemory }
 >();
 
-// Version suffix for keys to allow instant logical reset for tests
-let limiterKeyVersion = 0;
-
 /**
  * Rate Limiter utility functions for managing in-memory rate limiting.
  * Provides core functionality that can be used by both backend and CLI.
@@ -34,23 +32,29 @@ export const RateLimiterUtils = {
   /**
    * Logically resets rate limiting for all in-memory limiters.
    *
-   * Increments an internal version that is appended to each consume key.
+   * Increments a persistent version that is appended to each consume key.
    * This effectively starts using a new key namespace (akin to changing
    * the `keyPrefix` in rate-limiter-flexible), so previously consumed
    * keys no longer apply without recreating limiter instances.
    *
-   * Intended for test isolation and development purposes.
+   * The version is stored persistently in the database via OptionsService,
+   * allowing cache clearing to work across different processes (backend, CLI).
    *
    * @param options.force - If true, the cache will be cleared even if not in dev mode.
    * @param options.dev - Whether we're in development mode (defaults to NODE_ENV !== 'production').
    */
-  clearCache(options: { force?: boolean; dev?: boolean } = {}): void {
+  async clearCache(options: { force?: boolean; dev?: boolean } = {}): Promise<void> {
     const isDev = options.dev ?? process.env.NODE_ENV !== 'production';
 
     if (!isDev && !options.force) {
       throw new Error('Clear rate limiter cache is not allowed');
     }
-    limiterKeyVersion += 1;
+
+    // Get current version from database
+    const currentVersion = parseInt(optionsService.get('rate-limiter-version').value, 10);
+    
+    // Increment and save to database
+    await optionsService.set('rate-limiter-version', currentVersion + 1);
   },
 
   /**
@@ -89,13 +93,14 @@ export const RateLimiterUtils = {
    * This allows for logical cache resets without recreating limiter instances.
    */
   generateKey(baseKey: string): string {
-    return `${limiterKeyVersion}:${baseKey}`;
+    const version = parseInt(optionsService.get('rate-limiter-version').value, 10);
+    return `${version}:${baseKey}`;
   },
 
   /**
    * Get the current version number for debugging purposes.
    */
   getVersion(): number {
-    return limiterKeyVersion;
+    return parseInt(optionsService.get('rate-limiter-version').value, 10);
   },
 };

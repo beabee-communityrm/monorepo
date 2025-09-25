@@ -37,7 +37,7 @@ export class DevController {
       throw new NotFoundError();
     }
 
-    clearRateLimiterCache();
+    await clearRateLimiterCache();
     return { message: 'Rate limiter cache cleared successfully' };
   }
 
