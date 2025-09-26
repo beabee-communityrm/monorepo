@@ -304,6 +304,8 @@
 .formio-component-refreshOnChange,
 .formio-component-labelPosition,
 .formio-component-storage,
-.formio-component-provider {
+.formio-component-provider,
+.formio-component-enableManualMode,
+.formio-component-manualModeViewString {
   @apply !hidden;
 }

@@ -66,7 +66,7 @@ export class MapTilerAddressProvider extends BaseAddressProvider<FormioMapTilerP
    * MapTiler uses 'place_name' for the formatted address
    */
   protected get displayValueProperty(): string {
-    return 'place_name';
+    return 'formatted_address';
   }
 
   /**
