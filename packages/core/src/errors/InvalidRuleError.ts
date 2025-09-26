@@ -1,8 +1,12 @@
+import { ClientApiErrorData } from '@beabee/beabee-common';
 import { Rule } from '@beabee/beabee-common';
 
-import { BadRequestError } from 'routing-controllers';
+import { BadRequestError } from './BadRequestError';
 
-export class InvalidRuleError extends BadRequestError {
+export class InvalidRuleError
+  extends BadRequestError
+  implements ClientApiErrorData
+{
   readonly code = 'invalid-rule';
 
   constructor(

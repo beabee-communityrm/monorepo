@@ -1,6 +1,11 @@
-import { BadRequestError } from 'routing-controllers';
+import { ClientApiErrorData } from '@beabee/beabee-common';
 
-export class ExternalEmailTemplate extends BadRequestError {
+import { BadRequestError } from './BadRequestError';
+
+export class ExternalEmailTemplate
+  extends BadRequestError
+  implements ClientApiErrorData
+{
   readonly code = 'external-email-template';
   constructor() {
     super();

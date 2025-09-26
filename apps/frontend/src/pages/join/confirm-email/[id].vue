@@ -8,7 +8,10 @@ meta:
 <template><div /></template>
 
 <script lang="ts" setup>
+import { isApiError } from '@beabee/client';
+
 import { client } from '@utils/api';
+import { notifyRateLimited } from '@utils/api-error';
 import { onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -22,7 +25,11 @@ onBeforeMount(() => {
     .confirmEmail(route.params.id)
     .then(() => updateCurrentUser())
     .then(() => router.replace('/join/setup'))
-    .catch(() => {
+    .catch((err) => {
+      if (isApiError(err, undefined, [429])) {
+        notifyRateLimited(err);
+        return;
+      }
       router.replace('/join/failed');
     });
 });

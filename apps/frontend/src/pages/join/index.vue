@@ -70,6 +70,7 @@ import {
   type ContentPaymentData,
   ContributionPeriod,
 } from '@beabee/beabee-common';
+import { isApiError } from '@beabee/client';
 import { AppNotification } from '@beabee/vue';
 
 import AuthBox from '@components/AuthBox.vue';
@@ -79,6 +80,7 @@ import { useJoin } from '@components/pages/join/use-join';
 import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
 import { generalContent, isEmbed } from '@store';
 import { client } from '@utils/api';
+import { notifyRateLimited } from '@utils/api-error';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -115,18 +117,26 @@ const paymentContent = ref<ContentPaymentData>({
 const { signUpData, signUpDescription } = useJoin(paymentContent);
 
 async function submitSignUp() {
-  const data = await client.signup.start(signUpData);
-  const topWindow = window.top || window;
-  if (data?.redirectUrl) {
-    topWindow.location.href = data.redirectUrl;
-  } else if (data?.clientSecret) {
-    stripeClientSecret.value = data.clientSecret;
-  } else {
-    if (isEmbed) {
-      topWindow.location.href = '/join/confirm-email';
+  try {
+    const data = await client.signup.start(signUpData);
+    const topWindow = window.top || window;
+    if (data?.redirectUrl) {
+      topWindow.location.href = data.redirectUrl;
+    } else if (data?.clientSecret) {
+      stripeClientSecret.value = data.clientSecret;
     } else {
-      router.push({ path: '/join/confirm-email' });
+      if (isEmbed) {
+        topWindow.location.href = '/join/confirm-email';
+      } else {
+        router.push({ path: '/join/confirm-email' });
+      }
     }
+  } catch (err) {
+    if (isApiError(err, undefined, [429])) {
+      notifyRateLimited(err);
+      return;
+    }
+    throw err;
   }
 }
 

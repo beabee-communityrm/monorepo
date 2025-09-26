@@ -1,9 +1,18 @@
+import { ClientApiErrorData } from '@beabee/beabee-common';
+
 import { HttpError } from 'routing-controllers';
 
 /**
  * Custom error for HTTP 429 Too Many Requests responses.
  */
-export class TooManyRequestsError extends HttpError {
+export class TooManyRequestsError
+  extends HttpError
+  implements ClientApiErrorData
+{
+  httpCode = 429;
+  code = 'TOO_MANY_REQUESTS';
+  errors?: Record<string, any>;
+
   constructor(
     options: {
       message?: string;
@@ -15,7 +24,7 @@ export class TooManyRequestsError extends HttpError {
     this.name = 'TooManyRequestsError';
 
     if (options.errors) {
-      (this as any).errors = options.errors;
+      this.errors = options.errors;
     }
   }
 }

@@ -11,6 +11,8 @@ import {
 import { resolve } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
+import { FIXTURE_PATH } from '../../env';
+
 describe('Upload API', () => {
   let client: BeabeeClient;
 
@@ -39,7 +41,7 @@ describe('Upload API', () => {
 
   describe('uploadFile', () => {
     it('should upload a PDF document', async () => {
-      const pdfPath = resolve(__dirname, 'data/Lorem-Ipsum.pdf');
+      const pdfPath = resolve(FIXTURE_PATH, 'Lorem-Ipsum.pdf');
       const pdfFile = createTestFile(pdfPath, 'application/pdf');
 
       const response = await client.upload.uploadFile(pdfFile);
@@ -54,7 +56,7 @@ describe('Upload API', () => {
     });
 
     it('should upload a PNG image', async () => {
-      const pngPath = resolve(__dirname, 'data/600x400.png');
+      const pngPath = resolve(FIXTURE_PATH, '600x400.png');
       const pngFile = createTestFile(pngPath, 'image/png');
 
       const response = await client.upload.uploadFile(pngFile);
@@ -69,7 +71,7 @@ describe('Upload API', () => {
     });
 
     it('should upload an SVG image', async () => {
-      const svgPath = resolve(__dirname, 'data/400x600.svg');
+      const svgPath = resolve(FIXTURE_PATH, '400x600.svg');
       const svgFile = createTestFile(svgPath, 'image/svg+xml');
 
       const response = await client.upload.uploadFile(svgFile);
@@ -105,7 +107,7 @@ describe('Upload API', () => {
 
   describe('Specialized upload clients', () => {
     it('should use image client for image uploads', async () => {
-      const svgPath = resolve(__dirname, 'data/400x600.svg');
+      const svgPath = resolve(FIXTURE_PATH, '400x600.svg');
       const svgFile = createTestFile(svgPath, 'image/svg+xml');
 
       const response = await client.upload.image.uploadFile(svgFile);
@@ -120,7 +122,7 @@ describe('Upload API', () => {
     });
 
     it('should use document client for document uploads', async () => {
-      const pdfPath = resolve(__dirname, 'data/Lorem-Ipsum.pdf');
+      const pdfPath = resolve(FIXTURE_PATH, 'Lorem-Ipsum.pdf');
       const pdfFile = createTestFile(pdfPath, 'application/pdf');
 
       const response = await client.upload.document.uploadFile(pdfFile);

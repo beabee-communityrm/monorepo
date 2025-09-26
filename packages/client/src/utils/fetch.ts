@@ -8,6 +8,7 @@ import {
   CookiePolyfill,
   cleanUrl,
   hasProtocol,
+  isApiErrorResponse,
   isJson,
   queryStringify,
 } from './index.js';
@@ -340,25 +341,57 @@ export class Fetch {
       ok: response.status >= 200 && response.status < 400,
     };
 
-    // Makes it sense to throw an error if the response is not ok
+    // Throw an error if the response is not ok
     if (!result.ok) {
-      if (result.data) {
-        const data = result.data as any;
-        console.error('Error response', data);
-        if (Array.isArray(data.errors)) {
-          for (const error of data.errors) {
-            console.error(JSON.stringify(error, null, 2));
-          }
-        }
-        throw new ClientApiError(data.message || 'Unknown error', {
-          ...data,
-          status: response.status,
-        });
-      }
-      throw result;
+      this.handleErrorResponse(result, response);
     }
 
     return result;
+  }
+
+  /**
+   * Handle error responses by throwing appropriate ClientApiError instances
+   * @param result The fetch response result
+   * @param response The original response object
+   */
+  protected handleErrorResponse<T>(
+    result: FetchResponse<T>,
+    response: Response
+  ): never {
+    if (result.data) {
+      if (isApiErrorResponse(result.data)) {
+        // Extract Retry-After header (seconds) if present
+        const retryAfterHeader = response.headers.get('Retry-After');
+        const retryAfterSeconds = retryAfterHeader
+          ? Number.parseInt(retryAfterHeader, 10)
+          : undefined;
+
+        // Ensure we have all required properties
+        const errorData = {
+          code: result.data.code,
+          httpCode: response.status,
+          errors: result.data.errors,
+          retryAfterSeconds,
+        };
+
+        throw new ClientApiError(
+          result.data.message || 'Unknown error',
+          errorData
+        );
+      } else {
+        // Handle non-API error responses
+        const errorData = {
+          code: 'UNKNOWN_ERROR',
+          httpCode: response.status,
+          errors: result.data,
+        };
+
+        throw new ClientApiError('Unknown error', errorData);
+      }
+    }
+
+    // If no data, throw the raw response
+    throw result;
   }
 
   /**

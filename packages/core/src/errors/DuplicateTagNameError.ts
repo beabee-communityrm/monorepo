@@ -1,12 +1,16 @@
-import { BadRequestError } from 'routing-controllers';
+import { ClientApiErrorData } from '@beabee/beabee-common';
 
 import { isDuplicateIndex } from '../utils/db';
+import { BadRequestError } from './BadRequestError';
 
-export class DuplicateTagNameError extends BadRequestError {
+export class DuplicateTagNameError
+  extends BadRequestError
+  implements ClientApiErrorData
+{
   readonly code = 'duplicate-tag-name';
 
   constructor(tagName: string) {
-    super(`Tag with name "${tagName}" already exists`);
+    super({ message: `Tag with name "${tagName}" already exists` });
     Object.setPrototypeOf(this, DuplicateTagNameError.prototype);
   }
 

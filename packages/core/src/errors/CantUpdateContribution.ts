@@ -1,6 +1,11 @@
-import { BadRequestError } from 'routing-controllers';
+import { ClientApiErrorData } from '@beabee/beabee-common';
 
-export class CantUpdateContribution extends BadRequestError {
+import { BadRequestError } from './BadRequestError';
+
+export class CantUpdateContribution
+  extends BadRequestError
+  implements ClientApiErrorData
+{
   readonly code = 'cant-update-contribution';
 
   constructor() {
