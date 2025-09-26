@@ -14,6 +14,7 @@ import {
   OnUndefined,
   Param,
   Post,
+  Redirect,
   Req,
   Res,
 } from 'routing-controllers';
@@ -50,11 +51,8 @@ export class DevController {
    * - Login as user: /dev/login/as/{uuid}
    */
   @Get('/login/as/:id')
-  async loginAs(
-    @Req() req: Request,
-    @Res() res: Response,
-    @Param('id') id: string
-  ): Promise<void> {
+  @Redirect(`/`)
+  async loginAs(@Req() req: Request, @Param('id') id: string): Promise<void> {
     // IMPORTANT: This is only available in dev mode
     if (!config.dev) {
       throw new NotFoundError();
@@ -73,11 +71,6 @@ export class DevController {
 
     if (contact) {
       await login(req, contact);
-      // Redirect to home page after successful login (like legacy implementation)
-      res.redirect(`${config.audience}/`);
-    } else {
-      // Redirect to login page if contact not found (like legacy implementation)
-      res.redirect(`${config.audience}/login`);
     }
   }
 }
