@@ -74,10 +74,10 @@ export class DevController {
     if (contact) {
       await login(req, contact);
       // Redirect to home page after successful login (like legacy implementation)
-      res.redirect('/');
+      res.redirect(`${config.audience}/`);
     } else {
       // Redirect to login page if contact not found (like legacy implementation)
-      res.redirect('/login');
+      res.redirect(`${config.audience}/login`);
     }
   }
 }
