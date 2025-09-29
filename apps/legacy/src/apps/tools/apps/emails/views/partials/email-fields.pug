@@ -1,5 +1,20 @@
 - email = email || {}
 - systemEmails = systemEmails || []
+- segmentEmails = segmentEmails || []
+
+mixin contactFields
+  tr
+    td *|EMAIL|*
+    td Contact email address
+  tr
+    td *|NAME|*
+    td Contact full name
+  tr
+    td *|FNAME|*
+    td Contact first name
+  tr
+    td *|LNAME|*
+    td Contact last name
 
 .form-group
   label(for='fromEmail').control-label.col-md-3 From email
@@ -26,24 +41,19 @@
           th Tag
           th Description
       tbody
+        if segmentEmails.length > 0
+          tr(class='active')
+            td(colspan='2')
+              small Merge tags for segment emails
+          +contactFields
+
         for email in systemEmails
           if assignableSystemEmails[email]
             tr(class='active')
               td(colspan='2')
                 small Merge tags for the #{assignableSystemEmails[email].name} email
             if assignableSystemEmails[email].showContactFields
-              tr
-                td *|EMAIL|*
-                td Contact email address
-              tr
-                td *|NAME|*
-                td Contact full name
-              tr
-                td *|FNAME|*
-                td Contact first name
-              tr
-                td *|LNAME|*
-                td Contact last name
+              +contactFields
             for field in assignableSystemEmails[email].mergeFields
               tr
                 td *|#{field[0]}|*
