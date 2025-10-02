@@ -9,6 +9,7 @@ import {
   SetCalloutSlideSchema,
 } from '@beabee/beabee-common';
 import {
+  ApiKey,
   Callout,
   CalloutResponse,
   CalloutResponseComment,
@@ -408,3 +409,12 @@ export const segmentContactsAnonymiser = createModelAnonymiser(SegmentContact, {
 
 export const segmentOngoingEmailsAnonymiser =
   createModelAnonymiser(SegmentOngoingEmail);
+
+export const apiKeysAnonymiser = createModelAnonymiser(ApiKey, {
+  id: () => uuidv4(),
+  createdAt: () => new Date(),
+  secretHash: () => crypto.randomBytes(20).toString('hex'),
+  description: () => 'Anonymised API Key',
+  creatorId: () => uuidv4(),
+  expires: () => null,
+});
