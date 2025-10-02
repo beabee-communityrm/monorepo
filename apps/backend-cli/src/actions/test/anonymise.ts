@@ -36,6 +36,7 @@ const anonymisers = [
   models.segmentContactsAnonymiser,
   models.segmentOngoingEmailsAnonymiser,
   models.exportItemsAnonymiser, // Must be after all exportable items
+  models.apiKeysAnonymiser,
 ] as models.ModelAnonymiser[];
 
 /**
