@@ -1,7 +1,8 @@
 import { runApp } from '@beabee/core/server';
 import {
   anonymiseModel,
-  clearModels,
+  initializeJsonDump,
+  saveJsonDump,
 } from '@beabee/core/tools/database/anonymisers/index';
 import * as models from '@beabee/core/tools/database/anonymisers/models';
 
@@ -36,7 +37,6 @@ const anonymisers = [
   models.segmentContactsAnonymiser,
   models.segmentOngoingEmailsAnonymiser,
   models.exportItemsAnonymiser, // Must be after all exportable items
-  models.apiKeysAnonymiser,
 ] as models.ModelAnonymiser[];
 
 /**
@@ -48,10 +48,14 @@ export const runAnonymisers = async (dryRun = false): Promise<void> => {
   await runApp(async () => {
     const valueMap = new Map<string, unknown>();
 
-    clearModels(anonymisers);
+    // Initialize the JSON dump structure
+    initializeJsonDump(anonymisers);
 
     for (const anonymiser of anonymisers) {
       await anonymiseModel(anonymiser, (qb) => qb, valueMap);
     }
+
+    // Save the completed JSON dump to file
+    saveJsonDump();
   });
 };

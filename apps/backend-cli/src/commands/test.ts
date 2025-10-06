@@ -31,11 +31,31 @@ export const testCommand: CommandModule = {
             description: 'Run without making changes',
             default: false,
           }),
-        handler: async () => {
+        handler: async (argv) => {
           const { runAnonymisers } = await import(
             '../actions/test/anonymise.js'
           );
-          return runAnonymisers();
+          return runAnonymisers(argv.dryRun);
+        },
+      })
+      .command({
+        command: 'seed',
+        describe: 'Seed the database with test data from a Json dump file',
+        builder: (yargs) =>
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes',
+              default: false,
+            })
+            .option('fileName', {
+              type: 'string',
+              description: 'JSON dump file name',
+              default: undefined,
+            }),
+        handler: async (argv) => {
+          const { seed } = await import('../actions/test/seed.js');
+          return seed(argv.dryRun, argv.fileName);
         },
       }),
   handler: () => {},

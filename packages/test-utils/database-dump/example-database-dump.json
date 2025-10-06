@@ -1,0 +1,74 @@
+{
+  "contact": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "email": "admin@example.com",
+      "firstname": "Admin",
+      "lastname": "User",
+      "joined": "2024-01-01T00:00:00.000Z",
+      "lastSeen": null,
+      "loginOverride": null,
+      "contributionType": "Manual",
+      "contributionPeriod": "monthly",
+      "contributionMonthlyAmount": 5.0,
+      "referralCode": "ADMIN001",
+      "pollsCode": "POLL001",
+      "passwordHash": "$2b$10$example.hash.here",
+      "passwordSalt": "examplesalt",
+      "passwordIterations": 10,
+      "passwordTries": 0
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "email": "member@example.com",
+      "firstname": "Test",
+      "lastname": "Member",
+      "joined": "2024-01-02T00:00:00.000Z",
+      "lastSeen": "2024-01-15T10:30:00.000Z",
+      "loginOverride": null,
+      "contributionType": "GoCardless",
+      "contributionPeriod": "monthly",
+      "contributionMonthlyAmount": 10.0,
+      "referralCode": "MEMBER001",
+      "pollsCode": "POLL002",
+      "passwordHash": "$2b$10$another.example.hash",
+      "passwordSalt": "anothersalt",
+      "passwordIterations": 10,
+      "passwordTries": 0
+    }
+  ],
+  "contact_role": [
+    {
+      "contactId": "550e8400-e29b-41d4-a716-446655440000",
+      "type": "superadmin",
+      "dateAdded": "2024-01-01T00:00:00.000Z",
+      "dateExpires": null
+    },
+    {
+      "contactId": "550e8400-e29b-41d4-a716-446655440000",
+      "type": "member",
+      "dateAdded": "2024-01-01T00:00:00.000Z",
+      "dateExpires": "2025-01-01T00:00:00.000Z"
+    },
+    {
+      "contactId": "550e8400-e29b-41d4-a716-446655440001",
+      "type": "member",
+      "dateAdded": "2024-01-02T00:00:00.000Z",
+      "dateExpires": "2025-01-02T00:00:00.000Z"
+    }
+  ],
+  "options": [
+    {
+      "key": "general.organisationName",
+      "value": "Test Organization"
+    },
+    {
+      "key": "general.supportEmail",
+      "value": "support@example.com"
+    },
+    {
+      "key": "general.theme",
+      "value": "default"
+    }
+  ]
+}
