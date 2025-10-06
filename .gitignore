@@ -18,3 +18,5 @@ node_modules/
 dist/
 
 .DS_Store
+
+packages/test-utils/database-dump/created
