@@ -1,0 +1,70 @@
+{
+  "contact": [
+    {
+      "id": "07720167-d4e3-4b4c-b561-35ea2613f9c3",
+      "email": "test@beabee.io",
+      "firstname": "Test",
+      "lastname": "Test",
+      "joined": "2025-10-06T06:46:53.330Z",
+      "lastSeen": null,
+      "loginOverride": null,
+      "contributionType": "None",
+      "contributionPeriod": null,
+      "contributionMonthlyAmount": null,
+      "referralCode": "TT308",
+      "pollsCode": "TT929",
+      "password": {
+        "hash": "0aa4501848c6e98351acda9b8bf9e8a3be9fea82fae6656d4a2ff1aa3a72e644d7da08e9b9b365f857b2cd047456d2abba7726de79d7fcefbffb923f45f318bafb79140f4ecbeb20616c9874740fddd462e979a89c419a48cb6a87dea9e8de4c7f3f74674b286cafabbbd3690c240856e39d6dc0e1cc9f29b415fecccd21fb4951ae72f875160b0b6e71b5c7ec5d2283c1946a1dddd01e8f888e368883314a1eeff420daa046a7c5d986d61b33aa446a5cfb7212a42aeb049d579a85255e30c1b73f644fde5abc7b9605a55503f44c84e033d701a7f1cb33fefd5650c123afe986065f8a64bfa64c29a3e85b0a7673f7a85af3ec622ddb14cd90f611e9ee45e88b8d71540a0c77e77434b317c12d99bf611b7f93f035fe9b45a6e4c93fea263f506d19a69c05ff1159d293a2f5b95d947cea30fed7c80f13500fad7d92123f8d7dadd41aaeed20e704be44d2dc9b0dab8fd799c8c88d55a1f2e145a4dac317872a15077a787fa25e3fd45b29d045594fcc1b06a93beea63448b427bff28c45a15a30c316dbb5abde0b254e0ad046e048b7e7a25a17b6759671458288900ec81870a3e5969ce5786df2de61da1c4556df5abfb7451524f6dd4f130284ace8636ba6440c344cfe5fcef1f56f7d77a7735692ed0f50450efe960b199b9ae17176d393a242f86c83bec5532e97f412bcb4459b1d42eaa35a6ba63e138f2aa5c6fd3f",
+        "salt": "126308c3a366b1ca65e879e646b536975ebb38b5ca0b0fa8268107456353eb25fbe9e7b7c56df81d9ac53e61173d7e4b1764eafc580d0777a9633d0824e5812a114484c9a9194875eae62616ad3f2ad6c0bcafc104dd10c92027858435a5e13caea819dbb78d793593a26e0d132a3369f7b1bcddd68856f2d7f3176d55c17b0ef86afdf75328e0340b70e6ec0162fe5c6f0b5ddd3557aca8aa4b64957524147965bbc06a6f07d1fe87e0e1d7af26ec3ef42c8cbd858a1c2d4c49bc18c0b63fa8e0fcbb2a2d4204f1748a01f6cf9edc357b7e8592c064d56fd7bb42294ea24f6bdc7b1bebbd12eac7f9297d5f5ef3789abdaf7fcd98776c12aa5653c7ce88b254",
+        "iterations": 50000,
+        "tries": 0
+      }
+    },
+    {
+      "id": "640c5464-a416-4c35-8440-71e249ae5880",
+      "email": "rate-limit-test@beabee.io",
+      "firstname": "Rate",
+      "lastname": "Limit",
+      "joined": "2025-10-06T06:46:55.606Z",
+      "lastSeen": null,
+      "loginOverride": null,
+      "contributionType": "None",
+      "contributionPeriod": null,
+      "contributionMonthlyAmount": null,
+      "referralCode": "RL294",
+      "pollsCode": "RL156",
+      "password": {
+        "hash": "d8f8831553908ee10684b729a49adedf49af6c4dbc29c27ddb92522a5ec9978bbbb09e9e7485377d02b880346a3452e9fcebd8596905a3131d5e681664b95f94eb6e28a7a7de21c53956e6e022cc97177b56c1c3c30adb67ddb03bd1a2eb1cc068b6782cffb9d1060b529b981d7be628158c695e468ee276f8390ef9e3c6b759a3ad277501740bda97dd845b42106466843644cb8c651e2f62b97f0737ac8c135a3cd51e92af69a43cf931ad9a0b37609fdda85b03f2df17a27b4426ed2069c685969e1dd42f1d31673b53f4cf6b7627a3df88c752baf92f53090560d0690c62b9c2e3af828bb1c1b6c77723fe5b2e3e41cfe494d8ff1f31125b8e2197aca905ccbfbe77e28e5f0e5aa955af0152594c2209a5512e1ca4bd9f53018761af44e47ab256947b0cfe233f725f17ac706760e49e0f47dfa58c742bee9411ab3089746874048de0eacabf7853322ea346fd8bb6f878d46ce28245c305f03f88566ab952a6b2a70f6ab197f2219735eb1faca04c768b5a5083666a9b93871a79f1867292a82c9916ae89b43bfc2c1e326736cc7c8a377c004f2a517e24d5f49b01d57673ff4d2e836cfaefe9f6ef8bf14a3e5dfd6ab9b52ac18ae6e8e40df0314d32f03f0cc4c99d0f21de1c1dc940b0e5d29bb95397b1e5641b7bf26222e903f71c9c52df9847468a226775e40cc3b59d36f360c644541a53c8caa326170121768584",
+        "salt": "83534003edea010317e51cd57120bc64f856bb226e649df64d9e473907cc685b98087e43a64b93db424d6e88cda4fafa10c9512d69448e06238ceed2bf792c6f7cefbbcfd8adc47f78deece2254658c396364ec4d48aea4178189fe7d9f6593dc76ceb35b396a8dd14bf58d147ac92433e3aaf35e0ba309a7e2f7441dfe77a5558ae0477d7f152867720aaff15cdc37c9c5b6592fd3e0f33e48a448770b7234bc9ea0b5e139344523f33fc52d95dd04900edbf40970fb6a0abb35ea4fef90c50b9f068508d2dde5ba6f8ce9aafab9c392bd5ae86533a3d95805bb29fb4699632defc23367ac13a92e1ed46fd7945b1b6d99d32129b4c8fffc58b538ee8e02c93",
+        "iterations": 50000,
+        "tries": 0
+      }
+    }
+  ],
+  "contact_role": [
+    {
+      "type": "member",
+      "dateAdded": "2025-10-06T06:46:53.330Z",
+      "dateExpires": null,
+      "contactId": "07720167-d4e3-4b4c-b561-35ea2613f9c3"
+    },
+    {
+      "type": "superadmin",
+      "dateAdded": "2025-10-06T06:46:53.330Z",
+      "dateExpires": null,
+      "contactId": "07720167-d4e3-4b4c-b561-35ea2613f9c3"
+    },
+    {
+      "type": "member",
+      "dateAdded": "2025-10-06T06:46:55.606Z",
+      "dateExpires": null,
+      "contactId": "640c5464-a416-4c35-8440-71e249ae5880"
+    },
+    {
+      "type": "superadmin",
+      "dateAdded": "2025-10-06T06:46:55.606Z",
+      "dateExpires": null,
+      "contactId": "640c5464-a416-4c35-8440-71e249ae5880"
+    }
+  ]
+}
