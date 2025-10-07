@@ -1,4 +1,5 @@
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
+import { dataSource } from '@beabee/core/database';
 import { log as mainLogger } from '@beabee/core/logging';
 import { Callout, CalloutResponse } from '@beabee/core/models';
 
@@ -10,6 +11,7 @@ import {
   OrderByCondition,
   SelectQueryBuilder,
 } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
 
 import {
   ModelAnonymiser,
@@ -25,11 +27,12 @@ interface DatabaseDump {
 
 const log = mainLogger.child({ app: 'anonymisers' });
 
-// Ensure the database-dump directory exists and generate a timestamped file name
-const dumpDir = path.resolve(
+const fileDirectory = path.resolve(
   process.cwd(),
-  '../../packages/test-utils/database-dump/created'
+  '../../packages/test-utils/database-dump'
 );
+
+const dumpDir = path.join('created');
 if (!fs.existsSync(dumpDir)) {
   fs.mkdirSync(dumpDir, { recursive: true });
 }
@@ -58,7 +61,8 @@ async function anonymiseCalloutResponses(
   prepareQuery: (
     qb: SelectQueryBuilder<CalloutResponse>
   ) => SelectQueryBuilder<CalloutResponse>,
-  valueMap: Map<string, unknown>
+  valueMap: Map<string, unknown>,
+  type: 'json' | 'sql' = 'sql'
 ): Promise<void> {
   const callouts = await createQueryBuilder(Callout, 'callout').getMany();
   for (const callout of callouts) {
@@ -86,7 +90,9 @@ async function anonymiseCalloutResponses(
       answers: anonymiseItem(response.answers, answersMap, undefined, false),
     }));
 
-    writeItemsJsonDump(CalloutResponse, newResponses);
+    type === 'json'
+      ? writeItemsJsonDump(CalloutResponse, newResponses)
+      : writeItemsToSQLDump(CalloutResponse, newResponses);
   }
 }
 
@@ -162,6 +168,29 @@ function writeItemsJsonDump<T extends ObjectLiteral>(
 }
 
 /**
+ * Write items to the console for export
+ * The output is in the format:
+ * INSERT INTO "table" ("column1", "column2") VALUES ($1, $2), ($3, $4);
+ * ["value1", "value2", "value3", "value4"]
+ *
+ * @param model The target database model
+ * @param items The items to write for export
+ */
+function writeItemsToSQLDump<T extends ObjectLiteral>(
+  model: EntityTarget<T>,
+  items: T[]
+) {
+  const [query, params] = createQueryBuilder()
+    .insert()
+    .into(model)
+    .values(items as QueryDeepPartialEntity<T>)
+    .getQueryAndParameters();
+
+  console.log(query + ';');
+  console.log(stringify(params));
+}
+
+/**
  * Anonymise the items for a model returned by a query builder
  * @param anonymiser The anonymiser for the model
  * @param prepareQuery A function which can modify the query builder before fetching the items
@@ -227,10 +256,72 @@ export function initializeJsonDump(
 /**
  * Save the JSON dump to file
  */
-export function saveJsonDump(): void {
+export function saveJsonDump(dryRun = false): void {
   const jsonString = JSON.stringify(jsonDump, null, 2);
-  fs.writeFileSync(filePath, jsonString);
-  log.info(`JSON dump saved to: ${filePath}`);
+  if (!dryRun) {
+    fs.writeFileSync(filePath, jsonString);
+    log.info(`JSON dump saved to: ${filePath}`);
+  } else {
+    log.info(`[Dry run] JSON dump would be saved to: ${filePath}`);
+  }
+}
+
+/**
+ * Write a JSON dump to the database
+ */
+export async function writeJsonToDB(
+  dryRun = false,
+  fileName = 'database-dump.json'
+): Promise<void> {
+  const filePath = path.join(fileDirectory, fileName);
+  log.info('Start seeding...');
+  log.info(`Reading from file: ${filePath}`);
+  const dump = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+
+  // Get entity metadata from the dataSource
+  const entityMetas = dataSource.entityMetadatas;
+  const tableToEntity = Object.fromEntries(
+    entityMetas.map((meta) => [meta.tableName, meta.target])
+  );
+
+  // Get tables that exist in the dump and have corresponding entities
+  const tablesToProcess: Array<{
+    table: string;
+    records: any[];
+    entity: any;
+  }> = [];
+
+  for (const [table, records] of Object.entries(dump)) {
+    if (!Array.isArray(records) || records.length === 0) continue;
+    const entity = tableToEntity[table];
+    if (!entity) {
+      log.warn(`No entity found for table: ${table}, skipping.`);
+      continue;
+    }
+    tablesToProcess.push({ table, records, entity });
+  }
+
+  if (!dryRun) {
+    // Clear tables in reverse order to respect foreign key constraints
+    log.info('Clearing existing data...');
+    for (let i = tablesToProcess.length - 1; i >= 0; i--) {
+      const { table, entity } = tablesToProcess[i];
+      const repo = dataSource.getRepository(entity);
+      await repo.delete({});
+      log.info(`Cleared table: ${table}`);
+    }
+  }
+
+  // Insert data in forward order
+  log.info('Inserting new data...');
+  for (const { table, records, entity } of tablesToProcess) {
+    const repo = dataSource.getRepository(entity);
+    if (!dryRun) {
+      await repo.save(records);
+    }
+    log.info(`Seeded table: ${table} with ${records.length} records`);
+  }
+  log.info('Database seeding complete.');
 }
 
 /**
@@ -239,5 +330,24 @@ export function saveJsonDump(): void {
 export function clearFile(): void {
   if (fs.existsSync(filePath)) {
     fs.unlinkSync(filePath);
+  }
+}
+
+/**
+ * Output SQL to clear models
+ * The ouput is in the format:
+ * DELETE FROM "table";
+ * -- Empty params line
+ *
+ * The empty line is important to ensure the same format as writeItems
+ * @param anonymisers
+ */
+export function clearModels(anonymisers: ModelAnonymiser<ObjectLiteral>[]) {
+  // Reverse order to clear foreign keys correctly
+  for (let i = anonymisers.length - 1; i >= 0; i--) {
+    console.log(
+      `DELETE FROM "${getRepository(anonymisers[i].model).metadata.tableName}";`
+    );
+    console.log(); // Empty params line
   }
 }
