@@ -88,7 +88,7 @@ describe('Rate Limits', () => {
   });
 
   describe('Signup API Rate Limits', () => {
-    it('should enforce rate limits for guest users starting signup (3 allowed, 4th blocked)', async () => {
+    it('should enforce rate limits for guest users starting signup (5 allowed, 6th blocked)', async () => {
       const signupData = {
         email: 'rate-limit-test@signup-example.com',
         amount: 10,
@@ -99,8 +99,8 @@ describe('Rate Limits', () => {
         noContribution: true,
       };
 
-      // First 3 requests should succeed
-      for (let i = 0; i < 3; i++) {
+      // First 5 requests should succeed
+      for (let i = 0; i < 5; i++) {
         const response = await client.signup.start({
           ...signupData,
           email: `rate-limit-precise-${i}@signup-example.com`,
@@ -108,11 +108,11 @@ describe('Rate Limits', () => {
         expect(response).toBeDefined();
       }
 
-      // 4th request should be rate limited (HTTP 429)
+      // 6th request should be rate limited (HTTP 429)
       try {
         await client.signup.start({
           ...signupData,
-          email: 'rate-limit-precise-3@signup-example.com',
+          email: 'rate-limit-precise-5@signup-example.com',
         });
         // If we reach this point, the test should fail
         expect(true).toBe(false);
