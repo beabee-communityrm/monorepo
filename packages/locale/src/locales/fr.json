@@ -1459,8 +1459,8 @@
     "error": "Une erreur s'est produite. Essayez de recharger la page.",
     "remove": "Fermer la notification",
     "rateLimit": {
-      "generic": "",
-      "withWait": ""
+      "generic": "Trop de demandes. Veuillez patienter un peu et réessayer.",
+      "withWait": "Trop de demandes. Veuillez attendre {time} et réessayer."
     }
   },
   "pageTitle": {

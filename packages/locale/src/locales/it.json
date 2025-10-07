@@ -1456,8 +1456,8 @@
     "error": "",
     "remove": "",
     "rateLimit": {
-      "generic": "",
-      "withWait": ""
+      "generic": "Troppe richieste. Attendi un momento e riprova.",
+      "withWait": "Troppe richieste. Attendi {time} e riprova."
     }
   },
   "pageTitle": {

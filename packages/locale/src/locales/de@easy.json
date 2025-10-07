@@ -1456,8 +1456,8 @@
     "error": "Das war nicht richtig. Probiere es noch mal.",
     "remove": "",
     "rateLimit": {
-      "generic": "",
-      "withWait": ""
+      "generic": "Zu viele Versuche. Warte kurz und versuche es nochmal.",
+      "withWait": "Zu viele Versuche. Warte {time} und versuche es nochmal."
     }
   },
   "pageTitle": {

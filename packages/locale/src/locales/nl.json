@@ -1456,8 +1456,8 @@
     "error": "Er is iets misgegaan. Probeer de pagina opnieuw te laden.",
     "remove": "",
     "rateLimit": {
-      "generic": "",
-      "withWait": ""
+      "generic": "Te veel verzoeken. Wacht even en probeer het opnieuw.",
+      "withWait": "Te veel verzoeken. Wacht {time} en probeer het opnieuw."
     }
   },
   "pageTitle": {
