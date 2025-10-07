@@ -56,6 +56,6 @@ export const runAnonymisers = async (dryRun = false): Promise<void> => {
     }
 
     // Save the completed JSON dump to file
-    saveJsonDump();
+    saveJsonDump(dryRun);
   });
 };
