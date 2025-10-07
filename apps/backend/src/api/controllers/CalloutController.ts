@@ -81,7 +81,7 @@ export class CalloutController {
   async createCallout(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParam('fromId', { required: false }) fromId: string,
-    @Body({ validate: false, required: false, options: { limit: '300kb' } })
+    @Body({ validate: false, required: false, options: { limit: '900kb' } })
     data: CreateCalloutDto
   ): Promise<GetCalloutDto> {
     // Allow partial body if duplicating
@@ -129,7 +129,7 @@ export class CalloutController {
   async updateCallout(
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @CalloutId() id: string,
-    @PartialBody({ options: { limit: '300kb' } }) data: CreateCalloutDto // Actually Partial<CreateCalloutDto>
+    @PartialBody({ options: { limit: '900kb' } }) data: CreateCalloutDto // Actually Partial<CreateCalloutDto>
   ): Promise<GetCalloutDto | undefined> {
     const { variants, ...calloutData } = data;
 
