@@ -14,7 +14,6 @@ export const config: LocaleOptions = {
     name: "Deutsch (formal)",
     displayName: "Deutsch",
     adminLocale: "de",
-    fallbackLocale: "en",
     availableIn: [LocaleContext.Callout, LocaleContext.System],
   },
   "de@informal": {
@@ -37,8 +36,7 @@ export const config: LocaleOptions = {
     baseLocale: "nl",
     name: "Nederlands",
     displayName: "Nederlands",
-    adminLocale: "nl",
-    fallbackLocale: "en",
+    adminLocale: "en",
     availableIn: [LocaleContext.Callout, LocaleContext.System],
   },
   pt: {
@@ -46,7 +44,6 @@ export const config: LocaleOptions = {
     name: "Português",
     displayName: "Português",
     adminLocale: "en",
-    fallbackLocale: "en",
     availableIn: [LocaleContext.Callout, LocaleContext.System],
   },
   it: {
@@ -54,7 +51,6 @@ export const config: LocaleOptions = {
     name: "Italiano",
     displayName: "Italiano",
     adminLocale: "en",
-    fallbackLocale: "en",
     availableIn: [LocaleContext.Callout, LocaleContext.System],
   },
   ru: {
@@ -62,7 +58,6 @@ export const config: LocaleOptions = {
     name: "Русский",
     displayName: "Русский",
     adminLocale: "en",
-    fallbackLocale: "en",
     availableIn: [LocaleContext.Callout, LocaleContext.System],
   },
   fr: {
@@ -70,7 +65,6 @@ export const config: LocaleOptions = {
     name: "Français",
     displayName: "Français",
     adminLocale: "fr",
-    fallbackLocale: "en",
     availableIn: [LocaleContext.Callout, LocaleContext.System],
   },
   el: {
@@ -78,7 +72,6 @@ export const config: LocaleOptions = {
     name: "Ελληνικά",
     displayName: "Ελληνικά",
     adminLocale: "en",
-    fallbackLocale: "en",
     availableIn: [LocaleContext.Callout],
   },
 };
