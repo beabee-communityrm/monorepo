@@ -1456,8 +1456,8 @@
     "error": "Houve aqui um erro. Experimenta recarregar a página.",
     "remove": "",
     "rateLimit": {
-      "generic": "",
-      "withWait": ""
+      "generic": "Demasiados pedidos. Aguarde um pouco e tente novamente.",
+      "withWait": "Demasiados pedidos. Aguarde {time} e tente novamente."
     }
   },
   "pageTitle": {

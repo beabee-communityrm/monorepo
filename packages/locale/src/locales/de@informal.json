@@ -1456,8 +1456,8 @@
     "error": "Da ist etwas schiefgelaufen!",
     "remove": "Benachrichtigung schließen",
     "rateLimit": {
-      "generic": "",
-      "withWait": ""
+      "generic": "Zu viele Anfragen. Warte kurz und probier's nochmal.",
+      "withWait": "Zu viele Anfragen. Warte {time} und probier's nochmal."
     }
   },
   "pageTitle": {
