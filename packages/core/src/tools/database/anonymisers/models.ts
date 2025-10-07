@@ -13,7 +13,9 @@ import {
   Callout,
   CalloutResponse,
   CalloutResponseComment,
+  CalloutResponseSegment,
   CalloutResponseTag,
+  CalloutReviewer,
   CalloutTag,
   CalloutVariant,
   Contact,
@@ -27,6 +29,7 @@ import {
   Export,
   ExportItem,
   GiftFlow,
+  JoinFlow,
   Notice,
   Option,
   PageSettings,
@@ -47,6 +50,21 @@ import { Chance } from 'chance';
 import crypto from 'crypto';
 import { EntityTarget, ObjectLiteral } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+
+import { n } from '#config/env';
+
+/**
+ * Note: Following models are not added to the anonymiser
+ * - ApiKey: Not necessary for testing
+ * - Migrations: Not necessary for testing
+*  - Sessions: Not necessary for testing
+ * - Content: Pre-filled by migration
+ * - ContactMfa: Not necessary for testing
+ * 
+ * Todo: Do Callouts need to be anonymised?
+ * Todo: Do we need to anonymise RuleGroups?
+ * 
+ */
 
 /**
  * Generic types for object maps
@@ -277,6 +295,7 @@ export const contactAnonymiser = createModelAnonymiser(Contact, {
   firstname: () => chance.first(),
   lastname: () => chance.last(),
   password: () => Password.none,
+  loginOverride: () => null,
   pollsCode: uniqueCode,
   referralCode: uniqueCode,
 });
@@ -361,6 +380,7 @@ export const paymentsAnonymiser = createModelAnonymiser(Payment, {
   id: () => uuidv4(),
   subscriptionId: randomId(12, 'SB'),
   contactId: () => uuidv4(),
+  description: () => 'Anonymised Payment',
 });
 
 export const projectsAnonymiser = createModelAnonymiser(Project, {
@@ -410,11 +430,35 @@ export const segmentContactsAnonymiser = createModelAnonymiser(SegmentContact, {
 export const segmentOngoingEmailsAnonymiser =
   createModelAnonymiser(SegmentOngoingEmail);
 
-export const apiKeysAnonymiser = createModelAnonymiser(ApiKey, {
+export const calloutResponseSegmentsAnonymiser = createModelAnonymiser(
+  CalloutResponseSegment
+);
+
+export const calloutReviewerAnonymiser = createModelAnonymiser(
+  CalloutReviewer,
+  {
+    id: () => uuidv4(),
+    contactId: () => uuidv4(),
+    calloutId: () => uuidv4(),
+  }
+);
+
+//Ignore Content as pre-filled by migration
+
+export const joinFlowAnonymiser = createModelAnonymiser(JoinFlow, {
   id: () => uuidv4(),
-  createdAt: () => new Date(),
-  secretHash: () => crypto.randomBytes(20).toString('hex'),
-  description: () => 'Anonymised API Key',
-  creatorId: () => uuidv4(),
-  expires: () => null,
+  paymentFlowId: () => uuidv4(),
+  loginUrl: () => 'https://fake.beabee.io/login',
+  setPasswordUrl: () => 'https://fake.beabee.io/set-password',
+  confirmUrl: () => 'https://fake.beabee.io/confirm',
+  joinForm: {
+    email: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
+    password: () => Password.none,
+    firstname: () => chance.first(),
+    lastname: () => chance.last(),
+    vatNumber: () => null,
+    referralCode: () => null,
+    referralGift: () => null,
+    referralGiftOptions: () => null,
+  },
 });
