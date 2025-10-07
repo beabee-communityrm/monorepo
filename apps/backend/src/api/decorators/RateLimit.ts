@@ -1,8 +1,11 @@
 import { TooManyRequestsError } from '@beabee/core/errors';
+import { log as mainLogger } from '@beabee/core/logging';
 import type { RateLimitOptions } from '@beabee/core/type';
 import { RateLimiterRes, rateLimiter } from '@beabee/core/utils';
 
 import type { NextFunction, Request, Response } from 'express';
+
+const log = mainLogger.child({ app: 'rate-limit-decorator' });
 
 /**
  * Logically resets rate limiting for all in-memory limiters.
@@ -54,6 +57,14 @@ export function RateLimit(options: RateLimitOptions) {
         if (rejRes instanceof RateLimiterRes) {
           const retryAfter = Math.ceil(rejRes.msBeforeNext / 1000);
           res.set('Retry-After', String(retryAfter));
+
+          log.warning('Rate limit exceeded', {
+            key: keyBase,
+            retryAfter,
+            msBeforeNext: rejRes.msBeforeNext,
+            limiter: limiter === limiters.user ? 'user' : 'guest',
+          });
+
           // Use routing-controllers error handling by throwing the error
           next(
             new TooManyRequestsError({
