@@ -28,6 +28,7 @@ import {
   faRemove,
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import { activeUploadsCount } from '@lib/formio/providers/storage/beabee';
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
 import { computed, onBeforeMount, ref, watch } from 'vue';
@@ -50,7 +51,18 @@ const { t } = useI18n();
 
 const isValid = ref(false);
 
-useVuelidate({ isValid: { yes: sameAs(true) } }, { isValid });
+// Custom validator to ensure no files are uploading
+const notUploading = () => activeUploadsCount.value === 0;
+
+useVuelidate(
+  {
+    isValid: {
+      yes: sameAs(true),
+      notUploading,
+    },
+  },
+  { isValid }
+);
 
 function handleChange(evt: FormChangeEvent, changes?: { noValidate: boolean }) {
   // This handler gets lots of different change events. Use the second argument to
