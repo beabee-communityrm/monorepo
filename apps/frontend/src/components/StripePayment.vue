@@ -178,7 +178,7 @@ onBeforeMount(async () => {
           (result.error.type === 'card_error' ||
             result.error.type === 'validation_error')
             ? (error.value = result.error.message)
-            : t('joinPayment.genericError');
+            : t('joinPayment.genericError', { type: result.error.type });
       }
     };
   }

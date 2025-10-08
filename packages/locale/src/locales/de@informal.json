@@ -1311,7 +1311,7 @@
       "description": "Mitgliedschaft",
       "recurringLabel": "Regelmäßiger Beitrag"
     },
-    "genericError": "Upps! Etwas ist schiefgelaufen. Bitte wende dich an den Support, sollte das erneut passieren.",
+    "genericError": "Upps! Etwas ist schiefgelaufen ({type}). Bitte wende dich an den Support, sollte das erneut passieren.",
     "goBack": "Möchtest du etwas ändern? {back}",
     "goBackButton": "Zurück zum letzten Schritt",
     "note": "Du kannst deine Zahlungsdaten jederzeit in deinem Nutzer-Account ändern und dort auch sehen, wie viel du in der Vergangenheit bereits gezahlt hast. ",
