@@ -36,7 +36,7 @@ export const config: LocaleOptions = {
     baseLocale: "nl",
     name: "Nederlands",
     displayName: "Nederlands",
-    adminLocale: "nl",
+    adminLocale: "en",
     availableIn: [LocaleContext.Callout, LocaleContext.System],
   },
   pt: {

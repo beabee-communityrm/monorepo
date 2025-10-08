@@ -82,20 +82,29 @@
         @click="setLink"
       />
     </div>
-    <div class="relative">
+    <div class="grid w-full">
+      <div
+        v-if="isEditorEmpty && placeholder"
+        class="pointer-events-none invisible col-start-1 row-start-1 w-full self-start p-2"
+        v-html="placeholder"
+        aria-hidden="true"
+      />
       <EditorContent
         :editor="editor"
-        class="content-message"
+        class="content-message z-0 col-start-1 row-start-1"
         :class="disabled && 'ProseMirror-disabled'"
         :aria-label="t('form.richtext.editor')"
       />
       <div
         v-if="isEditorEmpty && placeholder"
-        class="pointer-events-none absolute inset-2 text-grey-dark"
+        class="pointer-events-none z-10 col-start-1 row-start-1 w-full self-start p-2 text-grey-dark"
         v-html="placeholder"
         aria-hidden="true"
       />
-      <div v-if="copyable" class="absolute right-1 top-1">
+      <div
+        v-if="copyable"
+        class="z-20 col-start-1 row-start-1 self-start justify-self-end pr-1 pt-1"
+      >
         <AppCopyButton variant="float" :text="editor?.getHTML() || ''" />
       </div>
     </div>
@@ -273,7 +282,7 @@ const isEditorEmpty = computed(() => editor.value?.isEmpty || false);
 
 <style lang="postcss">
 .ProseMirror {
-  @apply h-auto min-h-[5rem] w-full rounded border border-primary-40 bg-white p-2 focus:shadow-input focus:outline-none;
+  @apply h-full min-h-[5rem] w-full rounded border border-primary-40 bg-white p-2 focus:shadow-input focus:outline-none;
 
   .ProseMirror-hasError & {
     @apply border-danger-70 bg-danger-10;

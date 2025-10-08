@@ -24,34 +24,39 @@
       thead
         tr
           th Tag
-          th(width='100%') Description
+          th Description
       tbody
-        tr
-          td *|EMAIL|*
-          td Contact email address
-        tr
-          td *|NAME|*
-          td Contact full name
-        tr
-          td *|FNAME|*
-          td Contact first name
-        tr
-          td *|LNAME|*
-          td Contact last name
+        for email in systemEmails
+          if assignableSystemEmails[email]
+            tr(class='active')
+              td(colspan='2')
+                small Merge tags for the #{assignableSystemEmails[email].name} email
+            if assignableSystemEmails[email].showContactFields
+              tr
+                td *|EMAIL|*
+                td Contact email address
+              tr
+                td *|NAME|*
+                td Contact full name
+              tr
+                td *|FNAME|*
+                td Contact first name
+              tr
+                td *|LNAME|*
+                td Contact last name
+            for field in assignableSystemEmails[email].mergeFields
+              tr
+                td *|#{field[0]}|*
+                td= field[1]
+        tr(class='active')
+          td(colspan='2')
+            small Magic links for email addresses that match a contact
         tr
           td *|RPLINK|*
-          td Reset password link
+          td A reset password link
         tr
           td *|LOGINLINK|*
-          td Login link
+          td A login link
         tr
           td *|SPLINK|*
-          td Set password link
-        if systemEmails.indexOf('confirm-email') > -1
-          tr
-            td *|CONFIRMLINK|*
-            td Confirm email address link
-        if systemEmails.indexOf('manual-to-automatic') > -1
-          tr
-            td *|CONVERTLINK|*
-            td Convert payment link
+          td A set password link
