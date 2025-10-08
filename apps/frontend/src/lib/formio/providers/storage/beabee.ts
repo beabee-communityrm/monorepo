@@ -11,8 +11,15 @@ import { ClientApiError } from '@beabee/client';
 
 import { i18n } from '@lib/i18n';
 import { client } from '@utils/api';
+import { ref } from 'vue';
 
 const { t } = i18n.global;
+
+/**
+ * Global reactive counter for tracking active file uploads
+ * This is used by FormRenderer to disable form submission during uploads
+ */
+export const activeUploadsCount = ref(0);
 
 export default class BeabeeStorage {
   static get title() {
@@ -31,30 +38,33 @@ export default class BeabeeStorage {
     groupId: any,
     abortCallback: any
   ): Promise<FormioFile> {
-    // Check file size
-    if (file.size >= MAX_FILE_SIZE_IN_BYTES) {
-      throw new Error(t('form.errors.file.tooBig'));
-    }
-
-    // Check file type and extension - must be either a supported document or image
-    const fileExtension = file.name.split('.').pop()?.toLowerCase();
-    const isValidDocument =
-      isSupportedDocumentType(file.type) ||
-      (fileExtension && isSupportedDocumentExtension(fileExtension));
-    const isValidImage =
-      isSupportedImageType(file.type) ||
-      (fileExtension && isSupportedImageExtension(fileExtension));
-
-    if (!isValidDocument && !isValidImage) {
-      throw new Error(t('form.errors.file.unsupportedType'));
-    }
-
-    const controller = new AbortController();
-    if (typeof abortCallback === 'function') {
-      abortCallback(() => controller.abort());
-    }
+    // Increment upload counter at the start
+    activeUploadsCount.value++;
 
     try {
+      // Check file size
+      if (file.size >= MAX_FILE_SIZE_IN_BYTES) {
+        throw new Error(t('form.errors.file.tooBig'));
+      }
+
+      // Check file type and extension - must be either a supported document or image
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      const isValidDocument =
+        isSupportedDocumentType(file.type) ||
+        (fileExtension && isSupportedDocumentExtension(fileExtension));
+      const isValidImage =
+        isSupportedImageType(file.type) ||
+        (fileExtension && isSupportedImageExtension(fileExtension));
+
+      if (!isValidDocument && !isValidImage) {
+        throw new Error(t('form.errors.file.unsupportedType'));
+      }
+
+      const controller = new AbortController();
+      if (typeof abortCallback === 'function') {
+        abortCallback(() => controller.abort());
+      }
+
       // Direct upload with the new ImageService
       const response = await client.upload.uploadFile(file);
 
@@ -81,6 +91,9 @@ export default class BeabeeStorage {
         }
       }
       throw new Error(t('form.errorMessages.generic'));
+    } finally {
+      // Always decrement counter when upload completes (success or failure)
+      activeUploadsCount.value--;
     }
   }
 
