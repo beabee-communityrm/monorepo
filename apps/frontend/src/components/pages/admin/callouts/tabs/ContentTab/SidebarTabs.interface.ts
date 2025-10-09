@@ -4,6 +4,7 @@ import type { AppStepperStep } from '@beabee/vue';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { Component, Raw } from 'vue';
 
+import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.interface';
 import type {
   ContentFormTabData,
   EmailTabData,
@@ -29,6 +30,8 @@ export interface SidebarTabProps<T> extends SidebarTab<T> {
   /** Slide information */
   slides: FormBuilderSlide[];
   currentSlide: FormBuilderSlide;
+  /** All horizontal tabs data for cross-tab access */
+  tabs: CalloutHorizontalTabs;
 }
 
 /**
@@ -53,8 +56,9 @@ export interface SidebarTabsData {
 }
 
 export interface SidebarTabContentProps {
+  currentTab: SidebarTab<SidebarTabsData[keyof SidebarTabsData]>;
   slides: FormBuilderSlide[];
   currentSlide: FormBuilderSlide;
-  currentTab: SidebarTab<SidebarTabsData[keyof SidebarTabsData]>;
   status: ItemStatus | undefined;
+  tabs: CalloutHorizontalTabs;
 }

@@ -367,6 +367,25 @@
           "title": ""
         },
         "email": {
+          "body": {
+            "label": "E-mailtekst"
+          },
+          "collectInfoWarning": {
+            "description": "Om een e-mail naar alle deelnemers te sturen, moet je \"Contactgegevens verzamelen\" inschakelen in het tabblad Instellingen",
+            "title": "Contactgegevens niet verzameld"
+          },
+          "preview": {
+            "body": "Tekst",
+            "label": "Voorbeeld",
+            "subject": "Onderwerp"
+          },
+          "sendEmail": {
+            "description": "E-mail wordt verzonden naar alle deelnemers die hun contactgegevens indienen",
+            "label": "Stuur een e-mail naar alle deelnemers na indiening"
+          },
+          "subject": {
+            "label": "E-mailonderwerp"
+          },
           "title": "Email"
         },
         "endMessage": {

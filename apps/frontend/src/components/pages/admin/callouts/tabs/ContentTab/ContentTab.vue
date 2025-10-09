@@ -79,6 +79,7 @@
         :current-slide="currentSlide"
         :current-tab="currentSidebarTab"
         :status="status"
+        :tabs="tabs"
       />
     </div>
   </div>

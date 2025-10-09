@@ -366,6 +366,28 @@
         "content": {
           "title": ""
         },
+        "email": {
+          "body": {
+            "label": ""
+          },
+          "collectInfoWarning": {
+            "description": "",
+            "title": ""
+          },
+          "preview": {
+            "body": "",
+            "label": "",
+            "subject": ""
+          },
+          "sendEmail": {
+            "description": "",
+            "label": ""
+          },
+          "subject": {
+            "label": ""
+          },
+          "title": ""
+        },
         "endMessage": {
           "inputs": {
             "action": {
