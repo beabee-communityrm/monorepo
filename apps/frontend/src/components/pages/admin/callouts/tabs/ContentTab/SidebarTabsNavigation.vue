@@ -68,6 +68,11 @@ const allTabItems = computed<TabItem[]>(() => [
     label: props.sidebarTabs.endMessage.name,
     to: '',
   },
+  {
+    id: props.sidebarTabs.email.name,
+    label: props.sidebarTabs.email.name,
+    to: '',
+  },
 ]);
 
 /**

@@ -366,6 +366,9 @@
         "content": {
           "title": "Inhalt"
         },
+        "email": {
+          "title": "E-Mail"
+        },
         "endMessage": {
           "inputs": {
             "action": {

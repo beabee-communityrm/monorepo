@@ -233,6 +233,7 @@ export function convertCalloutToTabs(
       intro: {
         introText: variants.intro,
       },
+      email: {},
       endMessage: {
         whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
         thankYouTitle: variants.thanksTitle,

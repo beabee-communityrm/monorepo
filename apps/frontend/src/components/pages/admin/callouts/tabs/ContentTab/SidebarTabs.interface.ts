@@ -4,9 +4,12 @@ import type { AppStepperStep } from '@beabee/vue';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { Component, Raw } from 'vue';
 
-import type { ContentFormTabData } from './SidebarTabContent/ContentFormTab.vue';
-import type { EndMessageTabData } from './SidebarTabContent/EndMessageTab.vue';
-import type { IntroMessageTabData } from './SidebarTabContent/IntroMessageTab.vue';
+import type {
+  ContentFormTabData,
+  EmailTabData,
+  EndMessageTabData,
+  IntroMessageTabData,
+} from './SidebarTabContent/';
 
 /**
  * Base interface for a sidebar tab component
@@ -43,6 +46,8 @@ export interface SidebarTabsData {
   content: ContentFormTabData;
   /** The intro message tab */
   intro: IntroMessageTabData;
+  /** The email tab */
+  email: EmailTabData;
   /** The end message tab */
   endMessage: EndMessageTabData;
 }
