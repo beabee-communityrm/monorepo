@@ -367,7 +367,21 @@
           "title": ""
         },
         "email": {
-          "title": "E-Mail"
+          "title": "E-Mail",
+          "body": {
+            "label": ""
+          },
+          "collectInfoWarning": {
+            "description": "",
+            "title": ""
+          },
+          "sendEmail": {
+            "description": "",
+            "label": ""
+          },
+          "subject": {
+            "label": ""
+          }
         },
         "endMessage": {
           "inputs": {

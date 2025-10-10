@@ -374,11 +374,6 @@
             "description": "Per inviare un'email a tutti i partecipanti è necessario abilitare \"Raccogli informazioni di contatto\" nella scheda Impostazioni",
             "title": "Informazioni di contatto non raccolte"
           },
-          "preview": {
-            "body": "Corpo",
-            "label": "Anteprima",
-            "subject": "Oggetto"
-          },
           "sendEmail": {
             "description": "L'email verrà inviata a tutti i partecipanti che inviano le loro informazioni di contatto",
             "label": "Invia un'email a tutti i partecipanti dopo l'invio"

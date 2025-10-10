@@ -374,11 +374,6 @@
             "description": "To send an email to all participants you must enable \"Collect contact information\" in the Settings tab",
             "title": "Contact information not collected"
           },
-          "preview": {
-            "body": "Body",
-            "label": "Preview",
-            "subject": "Subject"
-          },
           "sendEmail": {
             "description": "Email will be sent to all participants who submit their contact information",
             "label": "Send an email to all participants after submission"

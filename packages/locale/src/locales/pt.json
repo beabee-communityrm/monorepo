@@ -374,11 +374,6 @@
             "description": "Para enviar um e-mail a todos os participantes, você deve ativar \"Coletar informações de contato\" na aba Configurações",
             "title": "Informações de contato não coletadas"
           },
-          "preview": {
-            "body": "Corpo",
-            "label": "Visualizar",
-            "subject": "Assunto"
-          },
           "sendEmail": {
             "description": "O e-mail será enviado a todos os participantes que enviarem suas informações de contato",
             "label": "Enviar um e-mail a todos os participantes após o envio"

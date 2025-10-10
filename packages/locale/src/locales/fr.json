@@ -374,11 +374,6 @@
             "description": "Pour envoyer un e-mail à tous les participants, vous devez activer « Collecter les informations de contact » dans l'onglet Paramètres",
             "title": "Informations de contact non collectées"
           },
-          "preview": {
-            "body": "Corps",
-            "label": "Aperçu",
-            "subject": "Objet"
-          },
           "sendEmail": {
             "description": "L'e-mail sera envoyé à tous les participants qui soumettent leurs informations de contact",
             "label": "Envoyer un e-mail à tous les participants après la soumission"

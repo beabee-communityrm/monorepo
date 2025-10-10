@@ -368,11 +368,20 @@
         },
         "email": {
           "title": "E-Mail",
-          "body": {},
-          "collectInfoWarning": {},
-          "preview": {},
-          "sendEmail": {},
-          "subject": {}
+          "body": {
+            "label": ""
+          },
+          "collectInfoWarning": {
+            "description": "",
+            "title": ""
+          },
+          "sendEmail": {
+            "description": "",
+            "label": ""
+          },
+          "subject": {
+            "label": ""
+          }
         },
         "endMessage": {
           "inputs": {
