@@ -371,7 +371,7 @@
             "label": "E-Mail-Text"
           },
           "collectInfoWarning": {
-            "description": "Um eine E-Mail an alle Teilnehmer zu senden, müssen Sie \"Kontaktinformationen sammeln\" in der Registerkarte Einstellungen aktivieren",
+            "description": "Um eine E-Mail an alle Teilnehmer zu senden, müssen Sie \"Kontaktinformationen erfassen\" in der Registerkarte Einstellungen aktivieren",
             "title": "Kontaktinformationen werden nicht erfasst"
           },
           "preview": {
@@ -521,7 +521,7 @@
               "title": "Karteneinstellungen"
             },
             "newsletterSettings": {
-              "disabled": "Sie können keine Newsletter-Anmeldungen anfordern, wenn Sie keine Kontaktinformationen sammeln",
+              "disabled": "Sie können keine Newsletter-Anmeldungen anfordern, wenn Sie keine Kontaktinformationen erfassen",
               "label": "Fügen Sie dem Kontaktformular eine Newsletter-Anmeldung hinzu",
               "opts": {
                 "disabled": "Teilnehmer werden nicht gefragt, ob sie sich für den Newsletter anmelden möchten",

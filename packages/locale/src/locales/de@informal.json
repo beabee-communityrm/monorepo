@@ -367,7 +367,12 @@
           "title": "Inhalt"
         },
         "email": {
-          "title": "E-Mail"
+          "title": "E-Mail",
+          "body": {},
+          "collectInfoWarning": {},
+          "preview": {},
+          "sendEmail": {},
+          "subject": {}
         },
         "endMessage": {
           "inputs": {
@@ -502,7 +507,7 @@
               "title": "Karteneinstellungen"
             },
             "newsletterSettings": {
-              "disabled": "Du kannst keine Newsletter-Anmeldungen anfordern, wenn du keine Kontaktinformationen sammelst",
+              "disabled": "Du kannst keine Newsletter-Anmeldungen anfordern, wenn du keine Kontaktinformationen erfassen",
               "label": "Füge dem Kontaktformular eine Newsletter-Anmeldung hinzu",
               "opts": {
                 "disabled": "Teilnehmer werden nicht gefragt, ob sie sich für den Newsletter anmelden möchten",
