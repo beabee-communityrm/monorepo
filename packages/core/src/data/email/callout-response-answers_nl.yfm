@@ -1,0 +1,9 @@
+---
+subject: Bedankt voor je reactie
+---
+
+<p>Hallo *|FNAME|*,</p>
+<p><br /></p>
+*|MESSAGE|*
+<p><br /></p>
+<p>Met vriendelijke groet</p>

@@ -335,13 +335,8 @@ class CalloutsService {
           newsletter
         );
 
-        // Let the contact know in case it wasn't them
-        const title = await this.getCalloutTitle(callout);
-        await EmailService.sendTemplateToContact(
-          'confirm-callout-response',
-          contact,
-          { calloutTitle: title, calloutSlug: callout.slug }
-        );
+        // Send confirmation email to the contact
+        await this.sendResponseEmail(callout, contact);
         return response.id;
       } catch (err) {
         // Suppress errors from creating a response for a contact, this prevents
@@ -493,6 +488,16 @@ class CalloutsService {
    * @returns Callout title
    */
   private async getCalloutTitle(callout: Callout): Promise<string> {
+    const defaultVariant = await this.getDefaultVariant(callout);
+    return defaultVariant.title;
+  }
+
+  /**
+   * Get the default variant for a callout, fetching it if it's not already available
+   * @param callout The callout
+   * @returns Default variant
+   */
+  private async getDefaultVariant(callout: Callout): Promise<CalloutVariant> {
     const defaultVariant =
       callout.variants?.find((v) => v.name === 'default') ||
       (await getRepository(CalloutVariant).findOneByOrFail({
@@ -501,9 +506,51 @@ class CalloutsService {
       }));
 
     // Store for future use
-    callout.variants = [...(callout.variants || []), defaultVariant];
+    if (!callout.variants?.some((v) => v.name === 'default')) {
+      callout.variants = [...(callout.variants || []), defaultVariant];
+    }
 
-    return defaultVariant.title;
+    return defaultVariant;
+  }
+
+  /**
+   * Send a response confirmation email to a contact
+   * Only sends email if custom email is enabled and configured
+   * @param callout The callout
+   * @param contact The contact to send the email to
+   */
+  private async sendResponseEmail(
+    callout: Callout,
+    contact: Contact
+  ): Promise<void> {
+    // Only send email if custom email is enabled and configured
+    if (!callout.sendResponseEmail) {
+      return;
+    }
+
+    const variant = await this.getDefaultVariant(callout);
+
+    // Check if custom subject and body are configured
+    if (!variant.responseEmailSubject || !variant.responseEmailBody) {
+      log.warn(
+        `Callout ${callout.id} has sendResponseEmail enabled but no email content configured`
+      );
+      return;
+    }
+
+    // Send custom email using the callout-response-answers template
+    // The template includes proper email structure (header, footer, etc.)
+    // Merge fields like *|FNAME|*, *|EMAIL|* etc. will be replaced
+    await EmailService.sendTemplateToContact(
+      'callout-response-answers',
+      contact,
+      {
+        message: variant.responseEmailBody,
+      },
+      {
+        customSubject: variant.responseEmailSubject,
+      }
+    );
   }
 
   /**

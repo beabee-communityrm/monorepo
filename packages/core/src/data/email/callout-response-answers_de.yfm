@@ -1,0 +1,9 @@
+---
+subject: Danke für Ihre Teilnahme
+---
+
+<p>Hallo *|FNAME|* *|LNAME|*,</p>
+<p><br /></p>
+*|MESSAGE|*
+<p><br /></p>
+<p>Mit freundlichen Grüßen</p>

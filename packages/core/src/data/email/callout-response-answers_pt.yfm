@@ -1,0 +1,9 @@
+---
+subject: Obrigado pela sua resposta
+---
+
+<p>Olá *|FNAME|*,</p>
+<p><br /></p>
+*|MESSAGE|*
+<p><br /></p>
+<p>Atenciosamente</p>

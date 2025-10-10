@@ -123,6 +123,9 @@ const contactEmailTemplates = {
     CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
     SUPPORTEMAIL: OptionsService.getText('support-email'),
   }),
+  'callout-response-answers': (_: Contact, params: { message: string }) => ({
+    MESSAGE: params.message,
+  }),
   'contribution-didnt-start': (_: Contact) => ({
     ORGNAME: OptionsService.getText('organisation'),
     SUPPORTEMAIL: OptionsService.getText('support-email'),
@@ -223,7 +226,7 @@ class EmailService {
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions
+    opts?: EmailOptions & { customSubject?: string }
   ): Promise<void>;
   async sendTemplateToContact<
     T extends ContactEmailParams<T> extends undefined
@@ -233,13 +236,13 @@ class EmailService {
     template: T,
     contact: Contact,
     params?: undefined,
-    opts?: EmailOptions
+    opts?: EmailOptions & { customSubject?: string }
   ): Promise<void>;
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions
+    opts?: EmailOptions & { customSubject?: string }
   ): Promise<void> {
     log.info('Sending template to contact ' + contact.id);
 
@@ -267,7 +270,7 @@ class EmailService {
   private async sendTemplate(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
-    opts: EmailOptions | undefined,
+    opts: (EmailOptions & { customSubject?: string }) | undefined,
     required: boolean
   ): Promise<void> {
     const providerTemplate = this.getProviderTemplate(template);
@@ -288,7 +291,11 @@ class EmailService {
     } else {
       const defaultEmail = this.getDefaultEmail(template);
       if (defaultEmail) {
-        this.sendEmail(defaultEmail, recipients, opts);
+        // Allow custom subject override
+        const email = opts?.customSubject
+          ? { ...defaultEmail, subject: opts.customSubject }
+          : defaultEmail;
+        this.sendEmail(email, recipients, opts);
       } else if (required) {
         log.error(
           `Tried to send ${template} that has no provider template or default`
