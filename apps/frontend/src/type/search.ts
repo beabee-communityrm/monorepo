@@ -25,7 +25,6 @@ export interface FilterItemEnum<T extends readonly string[]> {
   label: string;
   nullable?: boolean;
   options: { id: T[number]; label: string }[];
-  required?: boolean;
 }
 
 export type FilterItem =

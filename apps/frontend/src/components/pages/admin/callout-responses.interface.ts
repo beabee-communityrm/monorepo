@@ -183,7 +183,6 @@ export function useCalloutResponseFilters(
           ...filterItems.value.bucket,
           type: 'enum',
           options: buckets.value,
-          required: false,
         },
         [prefix.value + 'tags']: {
           ...filterItems.value.tags,
