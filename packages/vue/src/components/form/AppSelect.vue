@@ -24,7 +24,6 @@
 
 <script lang="ts" setup generic="T extends string | number">
 import useVuelidate from '@vuelidate/core';
-import { requiredIf } from '@vuelidate/validators';
 import { computed, toRef } from 'vue';
 import VueMultiselect from 'vue-multiselect';
 
@@ -60,8 +59,14 @@ export interface AppSelectProps<T extends string | number> {
 const emit = defineEmits<(e: 'update:modelValue', value: T) => void>();
 const props = defineProps<AppSelectProps<T>>();
 
+const requiredAllowingEmptyString = (value: string) => {
+  if (!props.required) return true;
+  if (value === '') return true;
+  return !!value && value.trim().length > 0;
+};
+
 const rules = computed(() => ({
-  v: { required: requiredIf(!!props.required) },
+  v: { requiredAllowingEmptyString },
 }));
 
 const validation = useVuelidate(rules, { v: toRef(props, 'modelValue') });
