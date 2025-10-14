@@ -20,6 +20,104 @@ import {
 
 const log = mainLogger.child({ app: 'email-service' });
 
+/**
+ * Email Merge Fields Documentation
+ *
+ * All email templates support these merge fields:
+ *
+ * ## Contact Fields (available for all contact emails)
+ * - *|EMAIL|* - Contact's email address
+ * - *|NAME|* - Contact's full name (first + last)
+ * - *|FNAME|* - Contact's first name
+ * - *|LNAME|* - Contact's last name
+ *
+ * ## Magic Links (generated automatically)
+ * - *|RPLINK|* - Reset password link
+ * - *|LOGINLINK|* - Login link
+ * - *|SPLINK|* - Set password link
+ *
+ * ## Template-Specific Fields
+ *
+ * ### General Email Templates
+ * **purchased-gift:**
+ * - *|PURCHASER|* - Name of the gift purchaser
+ * - *|GIFTEE|* - First name of the gift recipient
+ * - *|GIFTDATE|* - Gift start date (formatted as "Month Day")
+ *
+ * **confirm-email:**
+ * - *|FNAME|* - First name
+ * - *|LNAME|* - Last name
+ * - *|CONFIRMLINK|* - Email confirmation link
+ *
+ * **expired-special-url-resend:**
+ * - *|FNAME|* - First name
+ * - *|URL|* - New special URL
+ *
+ * ### Admin Email Templates
+ * **new-member:**
+ * - *|MEMBERID|* - Contact ID of the new member
+ * - *|MEMBERNAME|* - Full name of the new member
+ *
+ * **cancelled-member:**
+ * - *|MEMBERID|* - Contact ID of the cancelled member
+ * - *|MEMBERNAME|* - Full name of the cancelled member
+ *
+ * **new-callout-response:**
+ * - *|CALLOUTSLUG|* - Slug of the callout
+ * - *|CALLOUTTITLE|* - Title of the callout
+ * - *|RESPNAME|* - Name of the responder
+ *
+ * ### Contact Email Templates
+ * **welcome:**
+ * - *|REFCODE|* - Contact's referral code
+ *
+ * **reset-password:**
+ * - *|RPLINK|* - Reset password link
+ *
+ * **reset-device:**
+ * - *|RPLINK|* - Reset device link
+ *
+ * **cancelled-contribution:**
+ * - *|EXPIRES|* - Membership expiration date (formatted as "Day Date Month")
+ * - *|MEMBERSHIPID|* - Contact/membership ID
+ *
+ * **cancelled-contribution-no-survey:**
+ * - *|EXPIRES|* - Membership expiration date (formatted as "Day Date Month")
+ *
+ * **successful-referral:**
+ * - *|REFCODE|* - Contact's referral code
+ * - *|REFEREENAME|* - Name of the referred person
+ * - *|ISELIGIBLE|* - Whether the referral is eligible
+ *
+ * **giftee-success:**
+ * - *|PURCHASER|* - Name of the gift purchaser
+ * - *|MESSAGE|* - Personal message from the purchaser (supports nested merge fields)
+ * - *|ACTIVATELINK|* - Link to activate the gift
+ *
+ * **email-exists-login:**
+ * - *|LOGINLINK|* - Login link
+ *
+ * **email-exists-set-password:**
+ * - *|SPLINK|* - Set password link
+ *
+ * **callout-response-answers:**
+ * - *|MESSAGE|* - Custom message (supports nested merge fields)
+ * - *|CALLOUTTITLE|* - Title of the callout
+ * - *|CALLOUTLINK|* - Link to the callout
+ * - *|SUPPORTEMAIL|* - Support email address
+ *
+ * **contribution-didnt-start:**
+ * - *|ORGNAME|* - Organization name
+ * - *|SUPPORTEMAIL|* - Support email address
+ *
+ * ## Nested Merge Fields
+ * The MESSAGE field supports nested merge fields. For example:
+ * - MESSAGE: "Hello *|FNAME|*, thank you for your response to *|CALLOUTTITLE|*!"
+ * - This will expand to: "Hello John, thank you for your response to Survey 2024!"
+ *
+ * All merge fields within MESSAGE content are automatically expanded before rendering.
+ */
+
 const generalEmailTemplates = {
   'purchased-gift': (params: {
     fromName: string;
