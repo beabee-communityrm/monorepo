@@ -366,6 +366,23 @@
         "content": {
           "title": "Contenu"
         },
+        "email": {
+          "body": {
+            "label": "Corps de l'e-mail"
+          },
+          "collectInfoWarning": {
+            "description": "Pour envoyer un e-mail à tous les participants, vous devez activer « Collecter les informations de contact » dans l'onglet Paramètres",
+            "title": "Informations de contact non collectées"
+          },
+          "sendEmail": {
+            "description": "L'e-mail sera envoyé à tous les participants qui soumettent leurs informations de contact",
+            "label": "Envoyer un e-mail à tous les participants après la soumission"
+          },
+          "subject": {
+            "label": "Objet de l'e-mail"
+          },
+          "title": "E-mail"
+        },
         "endMessage": {
           "inputs": {
             "action": {

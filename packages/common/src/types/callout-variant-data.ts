@@ -15,4 +15,6 @@ export interface CalloutVariantData {
    * Map of response footer link label references to their translated value for this variant.
    */
   responseLinkText: Record<string, string>;
+  responseEmailSubject: string | null;
+  responseEmailBody: string | null;
 }

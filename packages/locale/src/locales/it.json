@@ -366,6 +366,23 @@
         "content": {
           "title": ""
         },
+        "email": {
+          "body": {
+            "label": "Corpo dell'email"
+          },
+          "collectInfoWarning": {
+            "description": "Per inviare un'email a tutti i partecipanti è necessario abilitare \"Raccogli informazioni di contatto\" nella scheda Impostazioni",
+            "title": "Informazioni di contatto non raccolte"
+          },
+          "sendEmail": {
+            "description": "L'email verrà inviata a tutti i partecipanti che inviano le loro informazioni di contatto",
+            "label": "Invia un'email a tutti i partecipanti dopo l'invio"
+          },
+          "subject": {
+            "label": "Oggetto dell'email"
+          },
+          "title": "Email"
+        },
         "endMessage": {
           "inputs": {
             "action": {
