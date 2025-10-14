@@ -32,7 +32,7 @@ const fileDirectory = path.resolve(
   '../../packages/test-utils/database-dump'
 );
 
-const dumpDir = path.join('created');
+const dumpDir = path.join('generated-dumps');
 if (!fs.existsSync(dumpDir)) {
   fs.mkdirSync(dumpDir, { recursive: true });
 }
@@ -42,7 +42,6 @@ const filePathAnonymise = path.join(
   dumpDir,
   `database-dump-${timestamp}.json`
 );
-const filePathSeed = path.join(fileDirectory, `database-dump.json`);
 
 // Global JSON dump object to collect all data
 let jsonDump: DatabaseDump = {};
@@ -52,6 +51,63 @@ function stringify(value: any): string {
   return JSON.stringify(value, (key: string, value: any): any => {
     return value instanceof Map ? [...value] : value;
   });
+}
+
+/**
+ * Write items to JSON dump
+ *
+ * @param model The target database model
+ * @param items The items to write for export
+ */
+function addItemsToJsonDump<T extends ObjectLiteral>(
+  model: EntityTarget<T>,
+  items: T[]
+) {
+  const tableName = getRepository(model).metadata.tableName;
+
+  if (!jsonDump[tableName]) {
+    jsonDump[tableName] = [];
+  }
+
+  jsonDump[tableName].push(...items);
+
+  log.info(`Added ${items.length} items to ${tableName}`);
+}
+
+/**
+ * Write items to JSON dump
+ *
+ * @param model The target database model
+ * @param items The items to write for export
+ */
+function writeItemsJsonDump<T extends ObjectLiteral>(
+  model: EntityTarget<T>,
+  items: T[]
+) {
+  addItemsToJsonDump(model, items);
+}
+
+/**
+ * Write items to the console for export
+ * The output is in the format:
+ * INSERT INTO "table" ("column1", "column2") VALUES ($1, $2), ($3, $4);
+ * ["value1", "value2", "value3", "value4"]
+ *
+ * @param model The target database model
+ * @param items The items to write for export
+ */
+function writeItemsToSQLDump<T extends ObjectLiteral>(
+  model: EntityTarget<T>,
+  items: T[]
+) {
+  const [query, params] = createQueryBuilder()
+    .insert()
+    .into(model)
+    .values(items as QueryDeepPartialEntity<T>)
+    .getQueryAndParameters();
+
+  console.log(query + ';');
+  console.log(stringify(params));
 }
 
 /**
@@ -136,63 +192,6 @@ function anonymiseItem<T>(
   }
 
   return newItem;
-}
-
-/**
- * Write items to JSON dump
- *
- * @param model The target database model
- * @param items The items to write for export
- */
-function addItemsToJsonDump<T extends ObjectLiteral>(
-  model: EntityTarget<T>,
-  items: T[]
-) {
-  const tableName = getRepository(model).metadata.tableName;
-
-  if (!jsonDump[tableName]) {
-    jsonDump[tableName] = [];
-  }
-
-  jsonDump[tableName].push(...items);
-
-  log.info(`Added ${items.length} items to ${tableName}`);
-}
-
-/**
- * Write items to JSON dump
- *
- * @param model The target database model
- * @param items The items to write for export
- */
-function writeItemsJsonDump<T extends ObjectLiteral>(
-  model: EntityTarget<T>,
-  items: T[]
-) {
-  addItemsToJsonDump(model, items);
-}
-
-/**
- * Write items to the console for export
- * The output is in the format:
- * INSERT INTO "table" ("column1", "column2") VALUES ($1, $2), ($3, $4);
- * ["value1", "value2", "value3", "value4"]
- *
- * @param model The target database model
- * @param items The items to write for export
- */
-function writeItemsToSQLDump<T extends ObjectLiteral>(
-  model: EntityTarget<T>,
-  items: T[]
-) {
-  const [query, params] = createQueryBuilder()
-    .insert()
-    .into(model)
-    .values(items as QueryDeepPartialEntity<T>)
-    .getQueryAndParameters();
-
-  console.log(query + ';');
-  console.log(stringify(params));
 }
 
 /**
@@ -285,6 +284,8 @@ export async function writeJsonToDB(
   dryRun = false,
   fileName = 'database-dump.json'
 ): Promise<void> {
+  const filePathSeed = path.join(fileDirectory, fileName);
+
   log.info('Start seeding...');
   log.info(`Reading from file: ${filePathSeed}`);
   const dump = JSON.parse(fs.readFileSync(filePathSeed, 'utf-8'));
