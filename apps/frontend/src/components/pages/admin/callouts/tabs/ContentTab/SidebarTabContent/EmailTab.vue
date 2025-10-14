@@ -27,7 +27,8 @@
         </AppFormField>
 
         <!-- Email editor - always visible -->
-        <EmailEditor :email="emailData" footer="" />
+        <!-- TODO: Use EmailController to get real preview instead of static footer -->
+        <EmailEditor :email="emailData" :footer="emailFooter" />
       </div>
     </div>
 
@@ -43,7 +44,8 @@ import { AppFormField, AppNotification, AppToggleField } from '@beabee/vue';
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
 import type { LocaleProp } from '@type';
-import { computed, reactive, watch } from 'vue';
+import { client } from '@utils/api';
+import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { SidebarTabProps } from '../SidebarTabs.interface';
@@ -71,6 +73,9 @@ const { t } = useI18n();
 // Check if "Collect contact information" is enabled in the settings tab
 const collectInfoEnabled = computed(() => props.tabs.settings.data.collectInfo);
 
+// Email footer for preview
+const emailFooter = ref('');
+
 // Create reactive email data that syncs with props.data
 const emailData = reactive({
   subject: props.data.emailSubject.default,
@@ -97,4 +102,9 @@ watch(
     emailData.body = body;
   }
 );
+
+// Load email footer on component mount
+onBeforeMount(async () => {
+  emailFooter.value = (await client.content.get('email')).footer;
+});
 </script>
