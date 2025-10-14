@@ -289,6 +289,9 @@ class CalloutsService {
       });
     }
 
+    // Send confirmation email to the contact
+    await this.sendResponseEmail(callout, contact);
+
     return savedResponse;
   }
 
