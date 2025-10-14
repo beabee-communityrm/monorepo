@@ -24,18 +24,24 @@ export const testCommand: CommandModule = {
       .command({
         command: 'anonymise',
         describe:
-          'Create anonymized copy of database and export data to SQL dump',
+          'Create anonymized copy of database and export data to Json or SQL dump',
         builder: (yargs) =>
-          yargs.option('dryRun', {
-            type: 'boolean',
-            description: 'Run without making changes',
-            default: false,
-          }),
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes',
+              default: false,
+            })
+            .option('type', {
+              type: 'string',
+              description: 'Export type: json or sql. Default is json.',
+              default: 'json',
+            }),
         handler: async (argv) => {
           const { runAnonymisers } = await import(
             '../actions/test/anonymise.js'
           );
-          return runAnonymisers(argv.dryRun);
+          return runAnonymisers(argv.dryRun, argv.type);
         },
       })
       .command({

@@ -44,7 +44,10 @@ const anonymisers = [
  *
  * @param dryRun If true, only logs what would be done (not used here, for API consistency)
  */
-export const runAnonymisers = async (dryRun = false): Promise<void> => {
+export const runAnonymisers = async (
+  dryRun = false,
+  type = 'json'
+): Promise<void> => {
   await runApp(async () => {
     const valueMap = new Map<string, unknown>();
 
@@ -52,7 +55,7 @@ export const runAnonymisers = async (dryRun = false): Promise<void> => {
     initializeJsonDump(anonymisers);
 
     for (const anonymiser of anonymisers) {
-      await anonymiseModel(anonymiser, (qb) => qb, valueMap);
+      await anonymiseModel(anonymiser, (qb) => qb, valueMap, (type = 'json'));
     }
 
     // Save the completed JSON dump to file

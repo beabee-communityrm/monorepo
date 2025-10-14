@@ -37,7 +37,12 @@ if (!fs.existsSync(dumpDir)) {
   fs.mkdirSync(dumpDir, { recursive: true });
 }
 const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-const filePath = path.join(dumpDir, `database-dump-${timestamp}.json`);
+const filePathAnonymise = path.join(
+  fileDirectory,
+  dumpDir,
+  `database-dump-${timestamp}.json`
+);
+const filePathSeed = path.join(fileDirectory, `database-dump.json`);
 
 // Global JSON dump object to collect all data
 let jsonDump: DatabaseDump = {};
@@ -62,7 +67,7 @@ async function anonymiseCalloutResponses(
     qb: SelectQueryBuilder<CalloutResponse>
   ) => SelectQueryBuilder<CalloutResponse>,
   valueMap: Map<string, unknown>,
-  type: 'json' | 'sql' = 'sql'
+  type: 'json' | 'sql' = 'json'
 ): Promise<void> {
   const callouts = await createQueryBuilder(Callout, 'callout').getMany();
   for (const callout of callouts) {
@@ -199,15 +204,20 @@ function writeItemsToSQLDump<T extends ObjectLiteral>(
 export async function anonymiseModel<T extends ObjectLiteral>(
   anonymiser: ModelAnonymiser<T>,
   prepareQuery: (qb: SelectQueryBuilder<T>) => SelectQueryBuilder<T>,
-  valueMap: Map<string, unknown>
+  valueMap: Map<string, unknown>,
+  type: 'json' | 'sql' = 'json'
 ): Promise<void> {
   const metadata = getRepository(anonymiser.model).metadata;
   log.info(`Anonymising ${metadata.tableName}`);
-  log.info(filePath);
+  log.info(filePathAnonymise);
 
   // Callout responses are handled separately
   if (anonymiser === calloutResponsesAnonymiser) {
-    return await anonymiseCalloutResponses(prepareQuery as any, valueMap);
+    return await anonymiseCalloutResponses(
+      prepareQuery as any,
+      valueMap,
+      (type = type)
+    );
   }
 
   // Order by primary keys for predictable pagination
@@ -232,7 +242,9 @@ export async function anonymiseModel<T extends ObjectLiteral>(
       anonymiseItem(item, anonymiser.objectMap, valueMap)
     );
 
-    addItemsToJsonDump(anonymiser.model, newItems);
+    type === 'json'
+      ? writeItemsJsonDump(anonymiser.model, newItems)
+      : writeItemsToSQLDump(anonymiser.model, newItems);
   }
 }
 
@@ -259,10 +271,10 @@ export function initializeJsonDump(
 export function saveJsonDump(dryRun = false): void {
   const jsonString = JSON.stringify(jsonDump, null, 2);
   if (!dryRun) {
-    fs.writeFileSync(filePath, jsonString);
-    log.info(`JSON dump saved to: ${filePath}`);
+    fs.writeFileSync(filePathAnonymise, jsonString);
+    log.info(`JSON dump saved to: ${filePathAnonymise}`);
   } else {
-    log.info(`[Dry run] JSON dump would be saved to: ${filePath}`);
+    log.info(`[Dry run] JSON dump would be saved to: ${filePathAnonymise}`);
   }
 }
 
@@ -273,10 +285,9 @@ export async function writeJsonToDB(
   dryRun = false,
   fileName = 'database-dump.json'
 ): Promise<void> {
-  const filePath = path.join(fileDirectory, fileName);
   log.info('Start seeding...');
-  log.info(`Reading from file: ${filePath}`);
-  const dump = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  log.info(`Reading from file: ${filePathSeed}`);
+  const dump = JSON.parse(fs.readFileSync(filePathSeed, 'utf-8'));
 
   // Get entity metadata from the dataSource
   const entityMetas = dataSource.entityMetadatas;
@@ -294,10 +305,6 @@ export async function writeJsonToDB(
   for (const [table, records] of Object.entries(dump)) {
     if (!Array.isArray(records) || records.length === 0) continue;
     const entity = tableToEntity[table];
-    if (!entity) {
-      log.warn(`No entity found for table: ${table}, skipping.`);
-      continue;
-    }
     tablesToProcess.push({ table, records, entity });
   }
 
@@ -328,8 +335,8 @@ export async function writeJsonToDB(
  * Clear the JSON dump file if it exists
  */
 export function clearFile(): void {
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath);
+  if (fs.existsSync(filePathAnonymise)) {
+    fs.unlinkSync(filePathAnonymise);
   }
 }
 
