@@ -57,13 +57,13 @@ import { n } from '#config/env';
  * Note: Following models are not added to the anonymiser
  * - ApiKey: Not necessary for testing
  * - Migrations: Not necessary for testing
-*  - Sessions: Not necessary for testing
+ *  - Sessions: Not necessary for testing
  * - Content: Pre-filled by migration
  * - ContactMfa: Not necessary for testing
- * 
+ *
  * Todo: Do Callouts need to be anonymised?
  * Todo: Do we need to anonymise RuleGroups?
- * 
+ *
  */
 
 /**
