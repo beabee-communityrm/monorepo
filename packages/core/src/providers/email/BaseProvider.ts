@@ -14,6 +14,7 @@ import type {
   EmailTemplate,
   PreparedEmail,
 } from '#type/index';
+import { expandNestedMergeFields } from '#utils/email';
 
 const log = mainLogger.child({ app: 'base-email-provider' });
 
@@ -111,6 +112,7 @@ export abstract class BaseProvider implements EmailProvider {
         (email.fromEmail ? '' : OptionsService.getText('support-email-from')),
     };
 
+    // Process magic merge fields (e.g., SPLINK, RPLINK, LOGINLINK)
     let preparedRecipients = recipients;
     for (const mergeField of magicMergeFields) {
       if (email.body.includes(`*|${mergeField}|*`)) {
@@ -118,6 +120,17 @@ export abstract class BaseProvider implements EmailProvider {
           await magicMergeFieldsProcessors[mergeField](preparedRecipients);
       }
     }
+
+    // Expand nested merge fields to handle cases where a merge field value
+    // itself contains other merge fields (e.g., MESSAGE containing *|FNAME|*)
+    preparedRecipients = preparedRecipients.map((recipient) => {
+      if (!recipient.mergeFields) return recipient;
+
+      return {
+        ...recipient,
+        mergeFields: expandNestedMergeFields(recipient.mergeFields),
+      };
+    });
 
     await this.doSendEmail(preparedEmail, preparedRecipients, opts);
   }
