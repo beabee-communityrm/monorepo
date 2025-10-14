@@ -367,6 +367,7 @@
           "title": ""
         },
         "email": {
+          "title": "Email",
           "body": {
             "label": "Corpo dell'email"
           },
@@ -380,8 +381,7 @@
           },
           "subject": {
             "label": "Oggetto dell'email"
-          },
-          "title": "Email"
+          }
         },
         "endMessage": {
           "inputs": {
