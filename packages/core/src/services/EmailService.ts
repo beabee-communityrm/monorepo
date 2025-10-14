@@ -226,7 +226,7 @@ class EmailService {
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions & { customSubject?: string }
+    opts?: EmailOptions
   ): Promise<void>;
   async sendTemplateToContact<
     T extends ContactEmailParams<T> extends undefined
@@ -236,13 +236,13 @@ class EmailService {
     template: T,
     contact: Contact,
     params?: undefined,
-    opts?: EmailOptions & { customSubject?: string }
+    opts?: EmailOptions
   ): Promise<void>;
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions & { customSubject?: string }
+    opts?: EmailOptions
   ): Promise<void> {
     log.info('Sending template to contact ' + contact.id);
 
@@ -270,7 +270,7 @@ class EmailService {
   private async sendTemplate(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
-    opts: (EmailOptions & { customSubject?: string }) | undefined,
+    opts: EmailOptions | undefined,
     required: boolean
   ): Promise<void> {
     const providerTemplate = this.getProviderTemplate(template);

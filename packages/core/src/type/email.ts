@@ -26,6 +26,7 @@ export interface EmailAttachment {
 export interface EmailOptions {
   attachments?: EmailAttachment[];
   sendAt?: Date | undefined;
+  customSubject?: string;
 }
 
 export interface PreparedEmail extends Email {
