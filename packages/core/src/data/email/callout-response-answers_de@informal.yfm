@@ -7,7 +7,8 @@ subject: Danke für deine Teilnahme
 *|MESSAGE|*
 <p><br /></p>
 <p>
-  Diese E-Mail bestätigt deine Antwort auf <a href="*|CALLOUTLINK|*">"*|CALLOUTTITLE|*"</a>
+  Diese E-Mail bestätigt deine Antwort auf
+  <a href="*|CALLOUTLINK|*">"*|CALLOUTTITLE|*"</a>
   unter Verwendung deiner E-Mail-Adresse *|EMAIL|*.
 </p>
 <p><br /></p>
