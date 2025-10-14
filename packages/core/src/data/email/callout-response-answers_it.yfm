@@ -6,4 +6,15 @@ subject: Grazie per la tua risposta
 <p><br /></p>
 *|MESSAGE|*
 <p><br /></p>
+<p>
+  Questa e-mail conferma la sua risposta al callout
+  <a href="*|CALLOUTLINK|*">"*|CALLOUTTITLE|*"</a>
+  utilizzando il suo indirizzo e-mail *|EMAIL|*.
+</p>
+<p><br /></p>
+<p>
+  Per qualsiasi domanda, contattare il nostro team di supporto all'indirizzo
+  <a href="mailto:*|SUPPORTEMAIL|*">*|SUPPORTEMAIL|*</a>.
+</p>
+<p><br /></p>
 <p>Cordiali saluti</p>

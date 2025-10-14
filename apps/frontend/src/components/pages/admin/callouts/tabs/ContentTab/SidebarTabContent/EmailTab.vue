@@ -26,7 +26,6 @@
           />
         </AppFormField>
 
-        <!-- Email editor - always visible -->
         <EmailEditor :email="emailData" footer="" />
       </div>
     </div>

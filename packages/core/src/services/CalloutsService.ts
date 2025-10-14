@@ -549,6 +549,8 @@ class CalloutsService {
       contact,
       {
         message: variant.responseEmailBody,
+        calloutSlug: callout.slug,
+        calloutTitle: variant.title,
       },
       {
         customSubject: variant.responseEmailSubject,

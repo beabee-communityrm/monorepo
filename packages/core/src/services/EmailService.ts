@@ -115,16 +115,14 @@ const contactEmailTemplates = {
   'email-exists-set-password': (_: Contact, params: { spLink: string }) => ({
     SPLINK: params.spLink,
   }),
-  'confirm-callout-response': (
+  'callout-response-answers': (
     _: Contact,
-    params: { calloutSlug: string; calloutTitle: string }
+    params: { message: string; calloutSlug: string; calloutTitle: string }
   ) => ({
+    MESSAGE: params.message,
     CALLOUTTITLE: params.calloutTitle,
     CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
     SUPPORTEMAIL: OptionsService.getText('support-email'),
-  }),
-  'callout-response-answers': (_: Contact, params: { message: string }) => ({
-    MESSAGE: params.message,
   }),
   'contribution-didnt-start': (_: Contact) => ({
     ORGNAME: OptionsService.getText('organisation'),
