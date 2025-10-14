@@ -63,7 +63,7 @@ services:
       # Allow migrations to be written out from the container
       - ./packages/core/src/migrations:/opt/packages/core/src/migrations
       # Allow SQL dump to be written out of the container
-      - ./packages/test-utils/database-dump:/opt/packages/test-utils/database-dump
+      - ./packages/test-utils/database-dump/created:/opt/packages/test-utils/database-dump/created
     # TODO: Use standard dist folder
     command: ["node", "--watch", "--watch-preserve-output", "./dist/api/app.js"]
 

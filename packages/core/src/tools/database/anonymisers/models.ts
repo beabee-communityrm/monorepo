@@ -9,7 +9,6 @@ import {
   SetCalloutSlideSchema,
 } from '@beabee/beabee-common';
 import {
-  ApiKey,
   Callout,
   CalloutResponse,
   CalloutResponseComment,
