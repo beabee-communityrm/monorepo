@@ -1,11 +1,12 @@
 import { getRepository } from '@beabee/core/database';
-import { ExternalEmailTemplate } from '@beabee/core/errors';
 import { Email } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
+import { AuthInfo } from '@beabee/core/type';
 
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import { GetEmailDto, UpdateEmailDto } from '@api/dto/EmailDto';
-import { plainToInstance } from 'class-transformer';
-import { isUUID } from 'class-validator';
+import EmailTransformer from '@api/transformers/EmailTransformer';
+import { findEmail } from '@api/utils/email';
 import {
   Authorized,
   Body,
@@ -15,39 +16,21 @@ import {
   Put,
 } from 'routing-controllers';
 
-async function findEmail(id: string): Promise<Email | null> {
-  if (isUUID(id, '4')) {
-    return await getRepository(Email).findOneBy({ id });
-  } else if (EmailService.isTemplateId(id)) {
-    const maybeEmail = await EmailService.getTemplateEmail(id);
-    if (maybeEmail) {
-      return maybeEmail;
-    } else if (maybeEmail === false) {
-      throw new ExternalEmailTemplate();
-    }
-  }
-  return null;
-}
-
-// TODO: move to transformer
-function emailToData(email: Email): GetEmailDto {
-  return plainToInstance(GetEmailDto, {
-    subject: email.subject,
-    body: email.body,
-  });
-}
-
 @Authorized('admin')
 @JsonController('/email')
 export class EmailController {
   @Get('/:id')
-  async getEmail(@Param('id') id: string): Promise<GetEmailDto | undefined> {
+  async getEmail(
+    @CurrentAuth() auth: AuthInfo,
+    @Param('id') id: string
+  ): Promise<GetEmailDto | undefined> {
     const email = await findEmail(id);
-    return email ? emailToData(email) : undefined;
+    return email ? EmailTransformer.convert(email, auth) : undefined;
   }
 
   @Put('/:id')
   async updateEmail(
+    @CurrentAuth() auth: AuthInfo,
     @Param('id') id: string,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto | undefined> {
@@ -61,7 +44,7 @@ export class EmailController {
         ...data,
       });
       await EmailService.setTemplateEmail(id, email);
-      return emailToData(email);
+      return EmailTransformer.convert(email, auth);
     }
   }
 }
