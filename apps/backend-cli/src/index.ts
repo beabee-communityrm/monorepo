@@ -6,6 +6,7 @@ import { hideBin } from 'yargs/helpers';
 
 import {
   apiKeyCommand,
+  databaseCommand,
   migrateUploadsCommand,
   paymentCommand,
   processCommand,
@@ -22,6 +23,7 @@ const pkg = JSON.parse(
 
 yargs(hideBin(process.argv))
   .command(apiKeyCommand)
+  .command(databaseCommand)
   .command(userCommand)
   .command(setupCommand)
   .command(paymentCommand)

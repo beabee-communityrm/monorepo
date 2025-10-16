@@ -1,5 +1,3 @@
-import 'module-alias/register';
-
 import {
   CalloutComponentSchema,
   CalloutComponentType,
@@ -16,6 +14,7 @@ import { runApp } from '@beabee/core/server';
 
 import { isURL } from 'class-validator';
 import { parse } from 'csv-parse';
+import * as fs from 'fs';
 import { In } from 'typeorm';
 
 interface ResponseRow {
@@ -47,16 +46,21 @@ const metadataHeaders = [
 ];
 
 /**
- * Load rows from stdin and filter out invalid rows
+ * Load rows from CSV file and filter out invalid rows
  *
+ * @param filePath Path to CSV file
  * @param headers Allowed headers
  * @returns Valid rows
  */
-async function loadRows(headers: string[]): Promise<ResponseRow[]> {
-  return new Promise((resolve) => {
+async function loadRows(
+  filePath: string,
+  headers: string[]
+): Promise<ResponseRow[]> {
+  return new Promise((resolve, reject) => {
     const rows: ResponseRow[] = [];
+    const fileStream = fs.createReadStream(filePath);
 
-    process.stdin
+    fileStream
       .pipe(parse({ columns: true, skipEmptyLines: true }))
       .on('data', (row) => {
         if (Object.keys(row).every((key) => headers.includes(key))) {
@@ -67,6 +71,9 @@ async function loadRows(headers: string[]): Promise<ResponseRow[]> {
       })
       .on('end', () => {
         resolve(rows);
+      })
+      .on('error', (error) => {
+        reject(error);
       });
   });
 }
@@ -96,7 +103,7 @@ async function loadContactIds(
 }
 
 /**
- * Parse the value pased on the component type
+ * Parse the value based on the component type
  *
  * @param component The component
  * @param value The value
@@ -221,54 +228,67 @@ function createResponse(
   });
 }
 
-runApp(async () => {
-  if (!process.argv[2]) {
-    console.error('Usage: import-callout-responses <callout-slug>');
-    process.exit(1);
-  }
+/**
+ * Import callout responses from CSV file
+ *
+ * @param calloutSlug The slug of the callout to import responses for
+ * @param filePath Path to the CSV file
+ */
+export const importCalloutResponses = async (
+  calloutSlug: string,
+  filePath: string
+): Promise<void> => {
+  await runApp(async () => {
+    if (!fs.existsSync(filePath)) {
+      console.error(`File not found: ${filePath}`);
+      process.exit(1);
+    }
 
-  const callout = await getRepository(Callout).findOneByOrFail({
-    slug: process.argv[2],
+    const callout = await getRepository(Callout).findOneByOrFail({
+      slug: calloutSlug,
+    });
+
+    console.error(`Importing responses for callout ${callout.slug}`);
+
+    const calloutComponents = getCalloutComponents(callout.formSchema);
+    const headers = [
+      ...calloutComponents.map((c) => c.fullKey),
+      ...metadataHeaders,
+    ];
+
+    console.error(`Possible headers: ${headers.join(', ')}`);
+
+    const rows = await loadRows(filePath, headers);
+
+    console.error(`Processing ${rows.length} rows`);
+
+    const contactIdByEmail = await loadContactIds(rows);
+    const calloutComponentsByKey: Record<string, CalloutComponentSchema> =
+      calloutComponents.reduce((acc, c) => ({ ...acc, [c.fullKey]: c }), {});
+
+    const lastResponseByNumber = await getRepository(CalloutResponse).findOne({
+      where: { calloutId: callout.id },
+      order: { number: 'DESC' },
+      select: { number: true },
+    });
+    const nextNumber = (lastResponseByNumber?.number || 0) + 1;
+
+    console.error(`Next response number: ${nextNumber}`);
+
+    const calloutResponses: CalloutResponse[] = rows.map((row, i) =>
+      createResponse(
+        row,
+        callout.id,
+        nextNumber + i,
+        contactIdByEmail,
+        calloutComponentsByKey
+      )
+    );
+
+    await runTransaction(async (manager) => {
+      await manager.save(calloutResponses);
+    });
+
+    console.log('Import completed successfully');
   });
-
-  console.error(`Importing responses for callout ${callout.slug}`);
-
-  const calloutComponents = getCalloutComponents(callout.formSchema);
-  const headers = [
-    ...calloutComponents.map((c) => c.fullKey),
-    ...metadataHeaders,
-  ];
-
-  console.error(`Possible headers: ${headers.join(', ')}`);
-
-  const rows = await loadRows(headers);
-
-  console.error(`Processing ${rows.length} rows`);
-
-  const contactIdByEmail = await loadContactIds(rows);
-  const calloutComponentsByKey: Record<string, CalloutComponentSchema> =
-    calloutComponents.reduce((acc, c) => ({ ...acc, [c.fullKey]: c }), {});
-
-  const lastResponseByNumber = await getRepository(CalloutResponse).findOne({
-    where: { calloutId: callout.id },
-    order: { number: 'DESC' },
-    select: { number: true },
-  });
-  const nextNumber = (lastResponseByNumber?.number || 0) + 1;
-
-  console.error(`Next response number: ${nextNumber}`);
-
-  const calloutResponses: CalloutResponse[] = rows.map((row, i) =>
-    createResponse(
-      row,
-      callout.id,
-      nextNumber + i,
-      contactIdByEmail,
-      calloutComponentsByKey
-    )
-  );
-
-  await runTransaction(async (manager) => {
-    await manager.save(calloutResponses);
-  });
-});
+};

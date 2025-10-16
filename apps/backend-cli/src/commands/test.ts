@@ -24,7 +24,7 @@ export const testCommand: CommandModule = {
       .command({
         command: 'anonymise',
         describe:
-          'Create anonymized copy of database and export data to Json or SQL dump.',
+          'Create fully anonymized copy of database and export data to Json or SQL dump.',
         builder: (yargs) =>
           yargs
             .option('dryRun', {
@@ -38,10 +38,10 @@ export const testCommand: CommandModule = {
               default: 'json',
             }),
         handler: async (argv) => {
-          const { runAnonymisers } = await import(
-            '../actions/test/anonymise.js'
+          const { exportDatabase } = await import(
+            '../actions/database/export.js'
           );
-          return runAnonymisers(argv.dryRun, argv.type);
+          return exportDatabase(argv.dryRun, argv.type as 'json' | 'sql', true);
         },
       })
       .command({
@@ -62,6 +62,28 @@ export const testCommand: CommandModule = {
         handler: async (argv) => {
           const { seed } = await import('../actions/test/seed.js');
           return seed(argv.dryRun, argv.fileName);
+        },
+      })
+      .command({
+        command: 'export-demo',
+        describe:
+          'Export demo database with subset of data (400 contacts, 20 latest callouts)',
+        builder: (yargs) =>
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes',
+              default: false,
+            })
+            .option('type', {
+              type: 'string',
+              description: 'Export type: json or sql',
+              default: 'json',
+              choices: ['json', 'sql'],
+            }),
+        handler: async (argv) => {
+          const { exportDemo } = await import('../actions/test/export-demo.js');
+          return exportDemo(argv.dryRun, argv.type as 'json' | 'sql');
         },
       }),
   handler: () => {},
