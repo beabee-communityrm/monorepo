@@ -28,7 +28,10 @@ import {
   faRemove,
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { activeUploadsCount } from '@lib/formio/providers/storage/beabee';
+import {
+  activeUploadsCount,
+  resetActiveUploadsCount,
+} from '@lib/formio/providers/storage/beabee';
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
 import { computed, onBeforeMount, ref, watch } from 'vue';
@@ -215,6 +218,9 @@ const formOpts = computed(() => {
 });
 
 onBeforeMount(() => {
+  // Reset upload counter to ensure no stale counts from previous forms
+  resetActiveUploadsCount();
+
   library.add(
     faCalendar,
     faCamera,

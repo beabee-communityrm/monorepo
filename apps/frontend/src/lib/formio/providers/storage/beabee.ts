@@ -21,6 +21,14 @@ const { t } = i18n.global;
  */
 export const activeUploadsCount = ref(0);
 
+/**
+ * Reset the active uploads counter to 0
+ * This should be called when navigating to a new form to ensure no stale counts
+ */
+export const resetActiveUploadsCount = () => {
+  activeUploadsCount.value = 0;
+};
+
 export default class BeabeeStorage {
   static get title() {
     return 'beabee';
