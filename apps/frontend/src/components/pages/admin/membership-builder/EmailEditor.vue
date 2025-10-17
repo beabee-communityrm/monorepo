@@ -34,20 +34,20 @@ import {
 
 import { computed, ref } from 'vue';
 
-import { currentUser } from '../../../../store';
-
 const props = withDefaults(
   defineProps<{
     label?: string;
     // Should be GetEmailData | false but compiler doesn't correctly convert type to Vue props
     email: { body: string; subject: string } | false;
     footer?: string;
+    previewBody?: string;
     subjectLabel?: string;
     bodyLabel?: string;
   }>(),
   {
     label: '',
     footer: '',
+    previewBody: '',
     subjectLabel: 'Subject',
     bodyLabel: 'Message',
   }
@@ -59,8 +59,6 @@ const email = ref(props.email);
 const emailBody = computed(
   () =>
     props.email &&
-    props.email.body
-      .replace('*|FNAME|*', currentUser.value?.firstname || '')
-      .replace('*|LNAME|*', currentUser.value?.lastname || '') + props.footer
+    (props.previewBody || props.email.body) + (props.footer || '')
 );
 </script>

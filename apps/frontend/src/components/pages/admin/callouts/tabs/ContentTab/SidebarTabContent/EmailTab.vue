@@ -26,9 +26,12 @@
           />
         </AppFormField>
 
-        <!-- Email editor - always visible -->
-        <!-- TODO: Use EmailController to get real preview instead of static footer -->
-        <EmailEditor :email="emailData" :footer="emailFooter" />
+        <!-- Email editor with real-time preview -->
+        <EmailEditor
+          :email="emailData"
+          :preview-body="emailPreview.body"
+          :footer="emailFooter"
+        />
       </div>
     </div>
 
@@ -58,8 +61,8 @@ export interface EmailTabData {
   sendEmail: boolean;
   /** Email subject line */
   emailSubject: LocaleProp;
-  /** Email body content */
-  emailBody: LocaleProp;
+  /** Email message content (MESSAGE merge field) */
+  emailMessage: LocaleProp;
 }
 
 /**
@@ -79,8 +82,32 @@ const emailFooter = ref('');
 // Create reactive email data that syncs with props.data
 const emailData = reactive({
   subject: props.data.emailSubject.default,
-  body: props.data.emailBody.default,
+  body: props.data.emailMessage.default,
 });
+
+// Create reactive email preview data with merge fields replaced
+const emailPreview = reactive({
+  subject: '',
+  body: '',
+});
+
+// Function to load email preview with merge fields replaced
+async function loadEmailPreview() {
+  const preview = await client.email.preview(
+    'contact',
+    'callout-response-answers',
+    {
+      mergeFields: {
+        MESSAGE: emailData.body,
+        CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
+        CALLOUTLINK: `${window.location.origin}/crowdnewsroom/example-callout`,
+      },
+      customSubject: emailData.subject,
+    }
+  );
+  emailPreview.subject = preview.subject;
+  emailPreview.body = preview.body;
+}
 
 // Watch emailData changes and sync to props.data
 watch(
@@ -89,22 +116,27 @@ watch(
     // eslint-disable-next-line vue/no-mutating-props
     props.data.emailSubject.default = newValue.subject;
     // eslint-disable-next-line vue/no-mutating-props
-    props.data.emailBody.default = newValue.body;
+    props.data.emailMessage.default = newValue.body;
+    // Load preview with new data
+    loadEmailPreview();
   },
   { deep: true }
 );
 
 // Watch props.data changes and sync to emailData
 watch(
-  () => [props.data.emailSubject.default, props.data.emailBody.default],
+  () => [props.data.emailSubject.default, props.data.emailMessage.default],
   ([subject, body]) => {
     emailData.subject = subject;
     emailData.body = body;
+    // Load preview with new data
+    loadEmailPreview();
   }
 );
 
-// Load email footer on component mount
+// Load email footer and initial preview on component mount
 onBeforeMount(async () => {
   emailFooter.value = (await client.content.get('email')).footer;
+  await loadEmailPreview();
 });
 </script>

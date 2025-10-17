@@ -1,6 +1,6 @@
 import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
 
-import type { BaseClientOptions } from '../types/index.js';
+import type { BaseClientOptions, PreviewEmailOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
 import { BaseClient } from './base.client.js';
 
@@ -43,5 +43,45 @@ export class EmailClient extends BaseClient {
       data
     );
     return responseData;
+  }
+
+  /**
+   * Preview an email template with custom merge fields
+   * Supports all template types (general, contact, admin)
+   *
+   * @param type - The template type ('general', 'contact', or 'admin')
+   * @param templateId - The template ID (e.g., 'callout-response-answers', 'welcome', 'new-member')
+   * @param options - Preview options including merge fields, custom subject, and locale
+   * @returns The preview with merge fields replaced
+   *
+   * @example
+   * // Preview a contact template
+   * await client.email.preview('contact', 'callout-response-answers', {
+   *   mergeFields: { MESSAGE: 'Custom message', CALLOUTTITLE: 'My Callout' },
+   *   customSubject: 'Thank you for your response'
+   * });
+   *
+   * @example
+   * // Preview a general template
+   * await client.email.preview('general', 'confirm-email', {
+   *   mergeFields: { CONFIRMLINK: 'https://example.com/confirm' }
+   * });
+   *
+   * @example
+   * // Preview an admin template (requires admin role)
+   * await client.email.preview('admin', 'new-member', {
+   *   mergeFields: { MEMBERID: '123', MEMBERNAME: 'John Doe' }
+   * });
+   */
+  async preview(
+    type: 'general' | 'contact' | 'admin',
+    templateId: string,
+    options: PreviewEmailOptions = {}
+  ): Promise<GetEmailData> {
+    const { data } = await this.fetch.post<GetEmailData>(
+      `/preview/${type}/${templateId}`,
+      options
+    );
+    return data;
   }
 }

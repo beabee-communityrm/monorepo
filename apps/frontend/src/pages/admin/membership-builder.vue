@@ -43,7 +43,7 @@ const tabs = computed(() =>
       label: t('membershipBuilder.steps.intro.title'),
     },
     {
-      id: 'adminMembershipBuilderEmail',
+      id: '/admin/membership-builder/email',
       label: t('membershipBuilder.steps.emails.title'),
     },
   ])

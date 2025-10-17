@@ -240,7 +240,7 @@ export function convertCalloutToTabs(
       email: {
         sendEmail: callout?.sendResponseEmail || false,
         emailSubject: variants.responseEmailSubject,
-        emailBody: variants.responseEmailBody,
+        emailMessage: variants.responseEmailBody,
       },
       endMessage: {
         whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
@@ -390,7 +390,8 @@ function convertVariantForCallout(
     responseLinkText,
     responseEmailSubject:
       tabs.content.sidebarTabs.email.emailSubject[variant] || '',
-    responseEmailBody: tabs.content.sidebarTabs.email.emailBody[variant] || '',
+    responseEmailBody:
+      tabs.content.sidebarTabs.email.emailMessage[variant] || '',
   };
 }
 

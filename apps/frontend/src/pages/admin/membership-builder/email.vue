@@ -1,10 +1,3 @@
-<route lang="yaml">
-name: adminMembershipBuilderEmail
-meta:
-  pageTitle: membershipBuilder.title
-  role: admin
-</route>
-
 <template>
   <App2ColGrid class="mb-8">
     <template #col1>
@@ -18,14 +11,14 @@ meta:
     @submit="handleUpdate"
   >
     <EmailEditor
-      v-if="welcomeEmail !== undefined"
+      v-if="welcomeEmail"
       :label="stepT('welcomeEmail')"
       :email="welcomeEmail"
       :footer="emailFooter"
     />
 
     <EmailEditor
-      v-if="cancellationEmail !== undefined"
+      v-if="cancellationEmail"
       :label="stepT('cancellationEmail')"
       :email="cancellationEmail"
       :footer="emailFooter"
