@@ -10,17 +10,19 @@
     :success-text="t('form.saved')"
     @submit="handleUpdate"
   >
+    <!-- Transform GetEmailData (body) to EmailEditor format (content) -->
+    <!-- Use reactive wrapper objects to enable bidirectional sync -->
     <EmailEditor
       v-if="welcomeEmail"
       :label="stepT('welcomeEmail')"
-      :email="welcomeEmail"
+      :email="welcomeEmailData"
       :footer="emailFooter"
     />
 
     <EmailEditor
       v-if="cancellationEmail"
       :label="stepT('cancellationEmail')"
-      :email="cancellationEmail"
+      :email="cancellationEmailData"
       :footer="emailFooter"
     />
   </AppForm>
@@ -31,7 +33,7 @@ import { App2ColGrid, AppForm } from '@beabee/vue';
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
 import { client, isApiError } from '@utils/api';
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -40,6 +42,66 @@ const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);
 const welcomeEmail = ref<GetEmailData | false>();
 const cancellationEmail = ref<GetEmailData | false>();
 const emailFooter = ref('');
+
+// Reactive wrapper objects that transform GetEmailData (body) to EmailEditor format (content)
+// These enable bidirectional synchronization between the API format and component format
+const welcomeEmailData = reactive({
+  subject: '',
+  content: '',
+});
+
+const cancellationEmailData = reactive({
+  subject: '',
+  content: '',
+});
+
+// Sync welcomeEmail -> welcomeEmailData (API to component)
+watch(
+  () => welcomeEmail.value,
+  (email) => {
+    if (email) {
+      welcomeEmailData.subject = email.subject;
+      welcomeEmailData.content = email.body;
+    }
+  },
+  { immediate: true }
+);
+
+// Sync welcomeEmailData -> welcomeEmail (component to API)
+watch(
+  welcomeEmailData,
+  (data) => {
+    if (welcomeEmail.value) {
+      welcomeEmail.value.subject = data.subject;
+      welcomeEmail.value.body = data.content;
+    }
+  },
+  { deep: true }
+);
+
+// Sync cancellationEmail -> cancellationEmailData (API to component)
+watch(
+  () => cancellationEmail.value,
+  (email) => {
+    if (email) {
+      cancellationEmailData.subject = email.subject;
+      cancellationEmailData.content = email.body;
+    }
+  },
+  { immediate: true }
+);
+
+// Sync cancellationEmailData -> cancellationEmail (component to API)
+watch(
+  cancellationEmailData,
+  (data) => {
+    if (cancellationEmail.value) {
+      cancellationEmail.value.subject = data.subject;
+      cancellationEmail.value.body = data.content;
+    }
+  },
+  { deep: true }
+);
 
 async function loadEmail(id: string): Promise<GetEmailData | false> {
   try {

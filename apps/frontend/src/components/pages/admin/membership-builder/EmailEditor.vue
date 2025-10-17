@@ -8,7 +8,11 @@
           <div class="mb-4">
             <AppInput v-model="email.subject" :label="subjectLabel" required />
           </div>
-          <AppRichTextEditor v-model="email.body" :label="bodyLabel" required />
+          <AppRichTextEditor
+            v-model="email.content"
+            :label="contentLabel"
+            required
+          />
         </div>
 
         <!-- Right column: Preview (responsive width, vertically centered) -->
@@ -32,33 +36,79 @@ import {
   AppSubHeading,
 } from '@beabee/vue';
 
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+
+/**
+ * EmailEditor component for editing email templates
+ *
+ * This component supports two different usage patterns:
+ *
+ * 1. Direct content editing (e.g., membership emails):
+ *    - The `content` field contains the complete email body
+ *    - Preview is rendered client-side from `content`
+ *    - No `previewContent` prop needed
+ *
+ * 2. Template with merge fields (e.g., callout response emails):
+ *    - The `content` field contains a merge field value (e.g., MESSAGE)
+ *    - Preview is fetched from server with merge fields resolved
+ *    - `previewContent` prop provides the server-rendered preview
+ */
 
 const props = withDefaults(
   defineProps<{
+    /** Optional heading label */
     label?: string;
-    // Should be GetEmailData | false but compiler doesn't correctly convert type to Vue props
-    email: { body: string; subject: string } | false;
+    /**
+     * Email data to edit
+     * - content: The editable content (full body or merge field value)
+     * - subject: The email subject line
+     * Set to false when email is managed externally
+     */
+    email: { content: string; subject: string } | false;
+    /** Optional footer to append to preview */
     footer?: string;
-    previewBody?: string;
+    /**
+     * Optional server-rendered preview content
+     * When provided, this will be used instead of the raw content for preview.
+     * This is useful when the content contains merge fields that need to be
+     * resolved server-side.
+     */
+    previewContent?: string;
+    /** Label for subject input field */
     subjectLabel?: string;
-    bodyLabel?: string;
+    /** Label for content editor field */
+    contentLabel?: string;
   }>(),
   {
     label: '',
     footer: '',
-    previewBody: '',
+    previewContent: '',
     subjectLabel: 'Subject',
-    bodyLabel: 'Message',
+    contentLabel: 'Message',
   }
 );
 
-// Allows us to mutate the props directly
+// Local ref to allow mutation of email data
 const email = ref(props.email);
 
+// Sync local ref with props when props change
+watch(
+  () => props.email,
+  (newEmail) => {
+    email.value = newEmail;
+  }
+);
+
+/**
+ * Computed property for email body preview
+ * Uses previewContent if available (server-rendered with merge fields),
+ * otherwise falls back to the raw content (direct body editing)
+ */
 const emailBody = computed(
   () =>
     props.email &&
-    (props.previewBody || props.email.body) + (props.footer || '')
+    (props.previewContent !== undefined && props.previewContent !== ''
+      ? props.previewContent
+      : props.email.content) + (props.footer || '')
 );
 </script>

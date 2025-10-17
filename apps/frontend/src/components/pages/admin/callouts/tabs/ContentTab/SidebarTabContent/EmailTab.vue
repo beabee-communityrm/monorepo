@@ -26,10 +26,10 @@
           />
         </AppFormField>
 
-        <!-- Email editor with real-time preview -->
+        <!-- Email editor with server-rendered preview (merge fields resolved) -->
         <EmailEditor
           :email="emailData"
-          :preview-body="emailPreview.body"
+          :preview-content="emailPreview.content"
           :footer="emailFooter"
         />
       </div>
@@ -61,7 +61,7 @@ export interface EmailTabData {
   sendEmail: boolean;
   /** Email subject line */
   emailSubject: LocaleProp;
-  /** Email message content (MESSAGE merge field) */
+  /** Email message content (used as MESSAGE merge field value) */
   emailMessage: LocaleProp;
 }
 
@@ -80,15 +80,18 @@ const collectInfoEnabled = computed(() => props.tabs.settings.data.collectInfo);
 const emailFooter = ref('');
 
 // Create reactive email data that syncs with props.data
+// Note: 'content' here represents the MESSAGE merge field value,
+// not the complete rendered email body
 const emailData = reactive({
   subject: props.data.emailSubject.default,
-  body: props.data.emailMessage.default,
+  content: props.data.emailMessage.default,
 });
 
 // Create reactive email preview data with merge fields replaced
+// The server renders the template with all merge fields resolved
 const emailPreview = reactive({
   subject: '',
-  body: '',
+  content: '',
 });
 
 // Function to load email preview with merge fields replaced
@@ -98,7 +101,7 @@ async function loadEmailPreview() {
     'callout-response-answers',
     {
       mergeFields: {
-        MESSAGE: emailData.body,
+        MESSAGE: emailData.content,
         CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
         CALLOUTLINK: `${window.location.origin}/crowdnewsroom/example-callout`,
       },
@@ -106,7 +109,7 @@ async function loadEmailPreview() {
     }
   );
   emailPreview.subject = preview.subject;
-  emailPreview.body = preview.body;
+  emailPreview.content = preview.body;
 }
 
 // Watch emailData changes and sync to props.data
@@ -116,7 +119,7 @@ watch(
     // eslint-disable-next-line vue/no-mutating-props
     props.data.emailSubject.default = newValue.subject;
     // eslint-disable-next-line vue/no-mutating-props
-    props.data.emailMessage.default = newValue.body;
+    props.data.emailMessage.default = newValue.content;
     // Load preview with new data
     loadEmailPreview();
   },
@@ -126,9 +129,9 @@ watch(
 // Watch props.data changes and sync to emailData
 watch(
   () => [props.data.emailSubject.default, props.data.emailMessage.default],
-  ([subject, body]) => {
+  ([subject, message]) => {
     emailData.subject = subject;
-    emailData.body = body;
+    emailData.content = message;
     // Load preview with new data
     loadEmailPreview();
   }
