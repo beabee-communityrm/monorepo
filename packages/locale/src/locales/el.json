@@ -1112,7 +1112,15 @@
     "warning": ""
   },
   "editNotice": {
-    "title": ""
+    "title": "Επεξεργασία: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Θέμα"
+    },
+    "body": {
+      "label": "Μήνυμα"
+    }
   },
   "footer": {
     "contactUs": "",

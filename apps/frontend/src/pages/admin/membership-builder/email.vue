@@ -17,6 +17,8 @@
       :label="stepT('welcomeEmail')"
       :email="welcomeEmailData"
       :footer="emailFooter"
+      :subject-label="t('emailEditor.subject.label')"
+      :content-label="t('emailEditor.body.label')"
     />
 
     <EmailEditor
@@ -24,6 +26,8 @@
       :label="stepT('cancellationEmail')"
       :email="cancellationEmailData"
       :footer="emailFooter"
+      :subject-label="t('emailEditor.subject.label')"
+      :content-label="t('emailEditor.body.label')"
     />
   </AppForm>
 </template>

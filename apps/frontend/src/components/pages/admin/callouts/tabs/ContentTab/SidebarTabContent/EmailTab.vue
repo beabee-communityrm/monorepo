@@ -31,6 +31,8 @@
           :email="emailData"
           :preview-content="emailPreview.content"
           :footer="emailFooter"
+          :subject-label="t('callout.builder.tabs.email.subject.label')"
+          :content-label="t('callout.builder.tabs.email.body.label')"
         />
       </div>
     </div>

@@ -10,7 +10,7 @@
         "label": "Code"
       },
       "confirmDelete": {
-        "desc": "Möchtest du die Multi-Faktor-Authentifizierung wirklich deaktivieren? \nDanach brauchst du nur noch dein Passwort zum Anmelden. Bitte vergiss \nnicht, den Eintrag in deiner Authenticator-App zu löschen. Du kannst \ndiese Funktion jederzeit wieder einschalten.",
+        "desc": "Möchtest du die Multi-Faktor-Authentifizierung wirklich deaktivieren? \nDanach brauchst du nur noch dein Passwort zum Anmelden. Bitte vergiss \nnicht, den Eintrag in deiner Authenticator-App zu löschen. Du kannst \ndiese Funktion jederzeit wider einschalten.",
         "descToken": "Um 2FA zu deaktivieren, gib bitte deinen aktuellen 2FA-Code ein:",
         "title": "2FA deaktivieren"
       },
@@ -949,7 +949,7 @@
       "draft": "Entwurf",
       "ended": "Beendet",
       "open": "Aktiv",
-      "scheduled": "Geplant"
+      "scheduled": "Geplante"
     },
     "statusLabel": "Status: {status}",
     "thankYou": "Vielen Dank!",
@@ -1091,7 +1091,7 @@
     "prorateDecreaseMessageWillStart": "Der neue Beitrag wird am {renewalDate} zum ersten Mal eingezogen.",
     "prorateIncreaseMessage": "Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch 1 Monat. | Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch {n} Monaten.",
     "prorateIncreaseMessageOneOff": "Du kannst aber eine Einmalzahlung in Höhe von {oneOffPayment} leisten um deine Mitgliedschaft sofort zu verlängern und den Beitrag zu erhöhen.",
-    "prorateNoText": "Wählst Du diese Option, bleibt dein Beitrag bis zum neuen Abrechnungszeitrarum gleich.",
+    "prorateNoText": "Wählst Du diese Option, bleibt mein Beitrag bis zum neuen Abrechnungszeitrarum gleich.",
     "prorateNoTitle": "Ändern Sie meinen Beitrag ab dem {renewalDate}.",
     "prorateYesText": "Wählst Du diese Option, buchen wir eine Einmalzahlung in Höhe von {oneOffPayment} ab und deine Mitgliedschaft wird mit deinem neuen Beitrag sofort verlängert.",
     "prorateYesTitle": "Meinen Beitrag jetzt erhöhen",
@@ -1099,12 +1099,12 @@
     "startContribution": "Mitgliedschaft beginnen",
     "startedContribution": "Deine Mitgliedschaft hat begonnen.",
     "updateContribution": "Beitrag aktualisieren",
-    "updatePaymentType": "Neue Zahlungsmethode einrichten",
     "updatedContribution": "Dein Beitrag wurde geändert.",
     "updatedPaymentSource": "Deine Zahlungsart wurde aktualisiert. ",
     "willExpire": "Deine Mitgliedschaft läuft in {expires} ab.",
     "willRenew": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
-    "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}."
+    "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}.",
+    "updatePaymentType": ""
   },
   "editCallout": {
     "replicated": "Dein CrowdNewsroom wurde kopiert! Du bearbeitest jetzt die Kopie. Denk bitte unbedingt daran, den Titel zu bearbeiten.",
@@ -1113,6 +1113,14 @@
   },
   "editNotice": {
     "title": "Bearbeiten: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Betreff"
+    },
+    "body": {
+      "label": "Nachricht"
+    }
   },
   "footer": {
     "contactUs": "Kontaktiere uns unter",
@@ -1209,7 +1217,7 @@
       "unknown": {
         "email": "Ungültige E-Mail-Adresse",
         "max": "Dieses Feld darf höchstens {max} sein",
-        "maxLength": "Du hast die maximale Länge von {max} Zeichen überschritten",
+        "maxLength": "Dieses Feld darf höchstens {max} sein",
         "min": "Dieses Feld muss mindestens {min}",
         "required": "Dieses Feld wird benötigt",
         "url": "Ungültige URL"
@@ -1225,8 +1233,8 @@
       }
     },
     "errorsFormio": {
-      "maxLength": "Du hast die maximale Länge von {'{{length}}'} Zeichen überschritten",
-      "minLength": "Dieses Feld muss mindestens {'{{length}}'} Zeichen haben"
+      "maxLength": "Du hast die maximale Länge von {'{{length}}'} überschritten",
+      "minLength": "Dieses Feld muss mindestens {'{{length}}'}  Zeichen haben"
     },
     "firstName": "Vorname",
     "lastName": "Nachname",
@@ -1299,7 +1307,7 @@
     "contribute": "Mit {contribution} unterstützen.",
     "errors": {
       "confirmEmail": {
-        "message": "Fast geschafft! Wir müssen nur noch deine E-Mail-Adresse bestätigen, um fortzufahren.",
+        "message": "Fast geschafft! Wir müssen noch deine E-Mail-Adresse bestätigen, um fortzufahren.",
         "proceed": "Wir haben dir eine E-Mail geschickt. Bitte klicke auf den Bestätigungslink, um fortzufahren.",
         "title": "E-Mail-Adresse bestätigen"
       },
@@ -1404,7 +1412,7 @@
         "formTitle": "Titel",
         "minAmount": "Mindestbeitrag",
         "noticeText": "Hinweistext unter dem Zahlungsbutton",
-        "noticeTextHelp": "Verwende dieses Feld, um einen Hinweis unter dem Zahlungsbutton hinzuzufügen, zum Beispiel zur Erklärung von Zahlungsperioden oder Bankeinzugsermächtigungen. Du kannst dieses Feld auch leer lassen.",
+        "noticeTextHelp": "Verwende dieses Feld, um einen Hinweis unter dem Zahlungsbutton hinzufügen, zum Beispiel zur Erklärung von Zahlungsperioden oder Bankeinzugsermächtigungen. Du kannst dieses Feld auch leer lassen.",
         "showAbsorbFee": "Nutzer um Ausgleich der Gebühren bitten",
         "showNoContribution": "Registrierung ohne Zahlung erlauben",
         "suggestedAmounts": "Beiträge vorschlagen",
@@ -1480,7 +1488,7 @@
     "forgotPassword": "Passwort vergessen",
     "join": "Mitglied werden",
     "login": "Login",
-    "lostDevice": "Du hast dein 2FA-Gerät verloren?",
+    "lostDevice": "2FA-Gerät verloren? Bitte an den Support wenden.",
     "notFound": "Seite nicht gefunden",
     "resetDevice": "Zweitgerät zurücksetzen",
     "resetPassword": "Passwort zurücksetzen",
@@ -1558,7 +1566,7 @@
   "roleEditor": {
     "add": "Rolle hinzufügen",
     "confirmDelete": {
-      "text": "Bist Du sicher, dass Du diese Rolle entfernen willst?",
+      "text": "Bist du sicher, dass du diese Rolle entfernen willst?",
       "title": "Rolle entfernen"
     },
     "expires": {
@@ -1588,7 +1596,7 @@
     "initializing": "Wird initialisiert...",
     "loadingApplication": "Anwendung wird geladen",
     "pleaseWait": "Bitte warten...",
-    "usuallyTakesSeconds": "Das dauert normalerweise ein paar Sekunden"
+    "usuallyTakesSeconds": " Das dauert normalerweise ein paar Sekunden"
   },
   "stepper": {
     "navigation": {

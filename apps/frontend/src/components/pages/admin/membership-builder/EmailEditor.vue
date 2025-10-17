@@ -83,8 +83,8 @@ const props = withDefaults(
     label: '',
     footer: '',
     previewContent: '',
-    subjectLabel: 'Subject',
-    contentLabel: 'Message',
+    subjectLabel: '',
+    contentLabel: '',
   }
 );
 
