@@ -46,7 +46,8 @@ const anonymisers = [
  */
 export const runAnonymisers = async (
   dryRun = false,
-  type = 'json'
+  type = 'json',
+  outputDir = '/opt/packages/test-utils/database-dump'
 ): Promise<void> => {
   await runApp(async () => {
     const valueMap = new Map<string, unknown>();
@@ -59,6 +60,6 @@ export const runAnonymisers = async (
     }
 
     // Save the completed JSON dump to file
-    saveJsonDump(dryRun);
+    saveJsonDump(dryRun, outputDir);
   });
 };

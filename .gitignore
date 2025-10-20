@@ -19,4 +19,4 @@ dist/
 
 .DS_Store
 
-packages/test-utils/database-dump/created
+packages/test-utils/database-dump/generated-dumps/
