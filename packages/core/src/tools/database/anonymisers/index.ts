@@ -32,16 +32,18 @@ const fileDirectory = path.resolve(
   '../../packages/test-utils/database-dump'
 );
 
-const dumpDir = path.join('generated-dumps');
-if (!fs.existsSync(dumpDir)) {
-  fs.mkdirSync(dumpDir, { recursive: true });
+function createFilePathAnonymise(outputDir: string) {
+  const dumpDir = path.join(outputDir, 'generated-dumps');
+  //check if output dir exists, if not throw error
+  if (!fs.existsSync(outputDir)) {
+    throw new Error(`Output directory does not exist: ${outputDir}`);
+  }
+  if (!fs.existsSync(dumpDir)) {
+    fs.mkdirSync(dumpDir, { recursive: true });
+  }
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  return path.join(dumpDir, `database-dump-${timestamp}.json`);
 }
-const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-const filePathAnonymise = path.join(
-  fileDirectory,
-  dumpDir,
-  `database-dump-${timestamp}.json`
-);
 
 // Global JSON dump object to collect all data
 let jsonDump: DatabaseDump = {};
@@ -208,7 +210,6 @@ export async function anonymiseModel<T extends ObjectLiteral>(
 ): Promise<void> {
   const metadata = getRepository(anonymiser.model).metadata;
   log.info(`Anonymising ${metadata.tableName}`);
-  log.info(filePathAnonymise);
 
   // Callout responses are handled separately
   if (anonymiser === calloutResponsesAnonymiser) {
@@ -267,10 +268,15 @@ export function initializeJsonDump(
 /**
  * Save the JSON dump to file
  */
-export function saveJsonDump(dryRun = false): void {
+export function saveJsonDump(
+  dryRun = false,
+  outputDir = '/opt/packages/test-utils/database-dump'
+): void {
   const jsonString = JSON.stringify(jsonDump, null, 2);
+  const filePathAnonymise = createFilePathAnonymise(outputDir);
   if (!dryRun) {
     fs.writeFileSync(filePathAnonymise, jsonString);
+    log.info(outputDir);
     log.info(`JSON dump saved to: ${filePathAnonymise}`);
   } else {
     log.info(`[Dry run] JSON dump would be saved to: ${filePathAnonymise}`);
@@ -330,15 +336,6 @@ export async function writeJsonToDB(
     log.info(`Seeded table: ${table} with ${records.length} records`);
   }
   log.info('Database seeding complete.');
-}
-
-/**
- * Clear the JSON dump file if it exists
- */
-export function clearFile(): void {
-  if (fs.existsSync(filePathAnonymise)) {
-    fs.unlinkSync(filePathAnonymise);
-  }
 }
 
 /**

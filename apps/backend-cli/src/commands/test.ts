@@ -36,12 +36,18 @@ export const testCommand: CommandModule = {
               type: 'string',
               description: 'Export type: json or sql. Default is json.',
               default: 'json',
+            })
+            .option('outputDir', {
+              type: 'string',
+              description:
+                'Path where the file will be dumped. A sub folder will be created called generated-dumps.',
+              default: '/opt/packages/test-utils/database-dump',
             }),
         handler: async (argv) => {
           const { runAnonymisers } = await import(
             '../actions/test/anonymise.js'
           );
-          return runAnonymisers(argv.dryRun, argv.type);
+          return runAnonymisers(argv.dryRun, argv.type, argv.outputDir);
         },
       })
       .command({
