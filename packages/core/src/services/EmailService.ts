@@ -420,6 +420,14 @@ class EmailService {
     });
   }
 
+  async deleteTemplateEmail(template: EmailTemplateId): Promise<void> {
+    const currentTemplates = OptionsService.getJSON('email-templates') || {};
+    if (currentTemplates[template]) {
+      delete currentTemplates[template];
+      await OptionsService.setJSON('email-templates', currentTemplates);
+    }
+  }
+
   isTemplateId(template: string): template is EmailTemplateId {
     return (
       template in generalEmailTemplates ||
