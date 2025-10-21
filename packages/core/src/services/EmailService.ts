@@ -16,6 +16,7 @@ import {
   EmailPerson,
   EmailProvider,
   EmailRecipient,
+  TemplateEmailOptions,
 } from '#type/index';
 
 const log = mainLogger.child({ app: 'email-service' });
@@ -312,7 +313,7 @@ class EmailService {
     template: T,
     to: EmailPerson,
     params: Parameters<GeneralEmailTemplates[T]>[0],
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     const mergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
     await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
@@ -322,7 +323,7 @@ class EmailService {
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void>;
   async sendTemplateToContact<
     T extends ContactEmailParams<T> extends undefined
@@ -332,13 +333,13 @@ class EmailService {
     template: T,
     contact: Contact,
     params?: undefined,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void>;
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     log.info('Sending template to contact ' + contact.id);
 
@@ -353,7 +354,7 @@ class EmailService {
   async sendTemplateToAdmin<T extends AdminEmailTemplateId>(
     template: T,
     params: Parameters<AdminEmailTemplates[T]>[0],
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     const recipient = {
       to: { email: OptionsService.getText('support-email') },
@@ -366,7 +367,7 @@ class EmailService {
   private async sendTemplate(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
-    opts: EmailOptions | undefined,
+    opts: TemplateEmailOptions | undefined,
     required: boolean
   ): Promise<void> {
     const providerTemplate = this.getProviderTemplate(template);

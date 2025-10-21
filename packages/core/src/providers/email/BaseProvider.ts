@@ -13,6 +13,7 @@ import type {
   EmailRecipient,
   EmailTemplate,
   PreparedEmail,
+  TemplateEmailOptions,
 } from '#type/index';
 import { expandNestedMergeFields } from '#utils/email';
 
@@ -138,7 +139,7 @@ export abstract class BaseProvider implements EmailProvider {
   async sendTemplate(
     templateId: string,
     recipients: EmailRecipient[],
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     const email = await getRepository(Email).findOneBy({ id: templateId });
     if (email) {

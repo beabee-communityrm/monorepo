@@ -26,6 +26,9 @@ export interface EmailAttachment {
 export interface EmailOptions {
   attachments?: EmailAttachment[];
   sendAt?: Date | undefined;
+}
+
+export interface TemplateEmailOptions extends EmailOptions {
   customSubject?: string;
 }
 
@@ -43,7 +46,7 @@ export interface EmailProvider {
   sendTemplate(
     templateId: string,
     recipients: EmailRecipient[],
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void>;
   getTemplateEmail(templateId: string): Promise<false | Email | null>;
   getTemplates(): Promise<EmailTemplate[]>;
