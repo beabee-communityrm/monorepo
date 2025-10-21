@@ -1,7 +1,6 @@
 import { Locale, isLocale } from '@beabee/locale';
 
 import fs from 'fs';
-import moment from 'moment';
 import path from 'path';
 import { loadFront } from 'yaml-front-matter';
 
@@ -29,6 +28,7 @@ import {
   EmailTemplateType,
   GeneralEmailTemplateId,
   GeneralEmailTemplates,
+  TemplateEmailOptions,
 } from '#type/index';
 import { expandNestedMergeFields, replaceMergeFields } from '#utils/email';
 
@@ -102,7 +102,7 @@ class EmailService {
     template: T,
     to: EmailPerson,
     params: Parameters<GeneralEmailTemplates[T]>[0],
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     const mergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
     await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
@@ -112,7 +112,7 @@ class EmailService {
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void>;
   async sendTemplateToContact<
     T extends ContactEmailParams<T> extends undefined
@@ -122,13 +122,13 @@ class EmailService {
     template: T,
     contact: Contact,
     params?: undefined,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void>;
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     log.info('Sending template to contact ' + contact.id);
 
@@ -143,7 +143,7 @@ class EmailService {
   async sendTemplateToAdmin<T extends AdminEmailTemplateId>(
     template: T,
     params: Parameters<AdminEmailTemplates[T]>[0],
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     const recipient = {
       to: { email: OptionsService.getText('support-email') },
@@ -156,7 +156,7 @@ class EmailService {
   private async sendTemplate(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
-    opts: EmailOptions | undefined,
+    opts: TemplateEmailOptions | undefined,
     required: boolean
   ): Promise<void> {
     const providerTemplate = this.getProviderTemplate(template);
@@ -212,7 +212,7 @@ class EmailService {
     template: EmailTemplateId,
     email: Email
   ): Promise<void> {
-    OptionsService.setJSON('email-templates', {
+    await OptionsService.setJSON('email-templates', {
       ...OptionsService.getJSON('email-templates'),
       [template]: email.id,
     });
@@ -235,7 +235,7 @@ class EmailService {
     type: EmailTemplateType,
     contact: Contact,
     customMergeFields: Record<string, string> = {},
-    opts?: EmailOptions & { locale?: Locale }
+    opts?: TemplateEmailOptions & { locale?: Locale }
   ): Promise<{ subject: string; body: string }> {
     // 1. Get the email template (from provider or default templates)
     const emailTemplate = await this.getTemplateEmail(template);
@@ -310,6 +310,19 @@ class EmailService {
       return 'contact';
     }
     return null;
+  }
+
+  /**
+   * Delete a template email override
+   * @param template The template ID
+   * @returns void
+   */
+  async deleteTemplateEmail(template: EmailTemplateId): Promise<void> {
+    const currentTemplates = OptionsService.getJSON('email-templates') || {};
+    if (currentTemplates[template]) {
+      delete currentTemplates[template];
+      await OptionsService.setJSON('email-templates', currentTemplates);
+    }
   }
 
   isTemplateId(template: string): template is EmailTemplateId {

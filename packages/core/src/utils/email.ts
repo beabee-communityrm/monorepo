@@ -39,12 +39,32 @@ export function expandNestedMergeFields(
 ): Record<string, string> {
   const expandedFields = { ...mergeFields };
 
-  // Iterate over each field and replace any nested merge fields
+  // Process each field individually to avoid circular reference issues
   Object.keys(expandedFields).forEach((field) => {
-    expandedFields[field] = replaceMergeFields(
-      expandedFields[field],
-      expandedFields
+    // Extract all merge field names from the current field value
+    const mergeFieldPattern = /\*\|([^|]+)\|\*/g;
+    const referencedFields = new Set<string>();
+    let match;
+
+    while ((match = mergeFieldPattern.exec(expandedFields[field])) !== null) {
+      referencedFields.add(match[1]);
+    }
+
+    // Only expand if the field doesn't reference itself or create circular dependencies
+    const otherFields = Object.keys(expandedFields).filter((f) => f !== field);
+    const safeReferences = Array.from(referencedFields).filter(
+      (ref) =>
+        !otherFields.includes(ref) ||
+        !expandedFields[ref]?.includes(`*|${field}|*`)
     );
+
+    if (safeReferences.length === referencedFields.size) {
+      // Safe to expand - no circular references detected
+      expandedFields[field] = replaceMergeFields(
+        expandedFields[field],
+        expandedFields
+      );
+    }
   });
 
   return expandedFields;
