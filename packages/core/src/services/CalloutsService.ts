@@ -10,6 +10,7 @@ import {
   UpdateCalloutData,
   isFileUploadAnswer,
 } from '@beabee/beabee-common';
+import { normalizeEmailAddress } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
 import slugify from 'slugify';
@@ -38,7 +39,6 @@ import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
 import { isDuplicateIndex } from '#utils/db';
-import { normalizeEmailAddress } from '#utils/email';
 
 const log = mainLogger.child({ app: 'callouts-service' });
 
