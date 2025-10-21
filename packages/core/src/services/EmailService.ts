@@ -414,7 +414,7 @@ class EmailService {
     template: EmailTemplateId,
     email: Email
   ): Promise<void> {
-    OptionsService.setJSON('email-templates', {
+    await OptionsService.setJSON('email-templates', {
       ...OptionsService.getJSON('email-templates'),
       [template]: email.id,
     });
