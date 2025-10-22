@@ -891,7 +891,7 @@
       "draft": "Entwürfe",
       "ended": "Beendete",
       "open": "Aktive",
-      "scheduled": "Geplante"
+      "scheduled": "Geplant"
     }
   },
   "common": {
@@ -1091,7 +1091,7 @@
     "prorateDecreaseMessageWillStart": "Der neue Beitrag wird am {renewalDate} zum ersten Mal eingezogen.",
     "prorateIncreaseMessage": "Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch 1 Monat. | Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch {n} Monaten.",
     "prorateIncreaseMessageOneOff": "Du kannst aber eine Einmalzahlung in Höhe von {oneOffPayment} leisten um deine Mitgliedschaft sofort zu verlängern und den Beitrag zu erhöhen.",
-    "prorateNoText": "Wählst Du diese Option, bleibt mein Beitrag bis zum neuen Abrechnungszeitrarum gleich.",
+    "prorateNoText": "Wählst Du diese Option, bleibt dein Beitrag bis zum neuen Abrechnungszeitrarum gleich.",
     "prorateNoTitle": "Ändern Sie meinen Beitrag ab dem {renewalDate}.",
     "prorateYesText": "Wählst Du diese Option, buchen wir eine Einmalzahlung in Höhe von {oneOffPayment} ab und deine Mitgliedschaft wird mit deinem neuen Beitrag sofort verlängert.",
     "prorateYesTitle": "Meinen Beitrag jetzt erhöhen",
@@ -1104,7 +1104,7 @@
     "willExpire": "Deine Mitgliedschaft läuft in {expires} ab.",
     "willRenew": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
     "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}.",
-    "updatePaymentType": ""
+    "updatePaymentType": "Neue Zahlungsmethode einrichten"
   },
   "editCallout": {
     "replicated": "Dein CrowdNewsroom wurde kopiert! Du bearbeitest jetzt die Kopie. Denk bitte unbedingt daran, den Titel zu bearbeiten.",
