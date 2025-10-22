@@ -26,10 +26,20 @@
           />
         </AppFormField>
 
-        <!-- Email editor with server-rendered preview (merge fields resolved) -->
+        <!-- Email editor with API-based preview (merge fields resolved server-side) -->
         <EmailEditor
           :email="emailData"
-          :preview-content="emailPreview.content"
+          :merge-fields="{
+            CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
+            CALLOUTLINK: generateCalloutLink(
+              props.tabs.titleAndImage.data.slug,
+              true
+            ),
+          }"
+          :api-preview="{
+            type: 'contact',
+            templateId: 'callout-response-answers',
+          }"
           :footer="emailFooter"
           :subject-label="t('callout.builder.tabs.email.subject.label')"
           :content-label="t('callout.builder.tabs.email.body.label')"
@@ -50,6 +60,7 @@ import { AppFormField, AppNotification, AppToggleField } from '@beabee/vue';
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
 import type { LocaleProp } from '@type';
 import { client } from '@utils/api';
+import { generateCalloutLink } from '@utils/callouts';
 import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -89,31 +100,6 @@ const emailData = reactive({
   content: props.data.emailMessage.default,
 });
 
-// Create reactive email preview data with merge fields replaced
-// The server renders the template with all merge fields resolved
-const emailPreview = reactive({
-  subject: '',
-  content: '',
-});
-
-// Function to load email preview with merge fields replaced
-async function loadEmailPreview() {
-  const preview = await client.email.preview(
-    'contact',
-    'callout-response-answers',
-    {
-      mergeFields: {
-        MESSAGE: emailData.content,
-        CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
-        CALLOUTLINK: `${window.location.origin}/crowdnewsroom/example-callout`,
-      },
-      customSubject: emailData.subject,
-    }
-  );
-  emailPreview.subject = preview.subject;
-  emailPreview.content = preview.body;
-}
-
 // Watch emailData changes and sync to props.data
 watch(
   emailData,
@@ -122,8 +108,6 @@ watch(
     props.data.emailSubject.default = newValue.subject;
     // eslint-disable-next-line vue/no-mutating-props
     props.data.emailMessage.default = newValue.content;
-    // Load preview with new data
-    loadEmailPreview();
   },
   { deep: true }
 );
@@ -134,14 +118,11 @@ watch(
   ([subject, message]) => {
     emailData.subject = subject;
     emailData.content = message;
-    // Load preview with new data
-    loadEmailPreview();
   }
 );
 
-// Load email footer and initial preview on component mount
+// Load email footer on component mount
 onBeforeMount(async () => {
   emailFooter.value = (await client.content.get('email')).footer;
-  await loadEmailPreview();
 });
 </script>
