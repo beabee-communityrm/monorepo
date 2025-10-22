@@ -14,8 +14,8 @@
     <!-- Use reactive wrapper objects to enable bidirectional sync -->
     <EmailEditor
       v-if="welcomeEmail"
-      :label="stepT('welcomeEmail')"
-      :email="welcomeEmailData"
+      :heading="stepT('welcomeEmail')"
+      :template="welcomeEmailData"
       :footer="emailFooter"
       :contact="currentUser"
       :subject-label="t('emailEditor.subject.label')"
@@ -24,8 +24,8 @@
 
     <EmailEditor
       v-if="cancellationEmail"
-      :label="stepT('cancellationEmail')"
-      :email="cancellationEmailData"
+      :heading="stepT('cancellationEmail')"
+      :template="cancellationEmailData"
       :footer="emailFooter"
       :contact="currentUser"
       :subject-label="t('emailEditor.subject.label')"

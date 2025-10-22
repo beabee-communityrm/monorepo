@@ -1,51 +1,111 @@
 <template>
   <div>
-    <AppSubHeading v-if="label">{{ label }}</AppSubHeading>
-    <template v-if="email">
+    <AppSubHeading v-if="heading">{{ heading }}</AppSubHeading>
+    <template v-if="template">
       <div class="mb-6 flex gap-6">
-        <!-- Left column: Email editor (takes available space, max width) -->
+        <!-- Editor panel -->
         <div class="min-w-0 max-w-xl flex-1">
           <div class="mb-4">
-            <AppInput v-model="email.subject" :label="subjectLabel" required />
+            <AppInput
+              v-model="template.subject"
+              :label="subjectLabel || t('emailEditor.subject.label')"
+              required
+            />
           </div>
           <AppRichTextEditor
-            v-model="email.content"
-            :label="contentLabel"
+            v-model="template.content"
+            :label="contentLabel || t('emailEditor.body.label')"
             required
           />
         </div>
 
-        <!-- Right column: Preview (responsive width, vertically centered) -->
+        <!-- Preview panel -->
         <div class="w-80 flex-none self-center lg:w-96">
           <div class="content-message bg-white p-4 shadow">
+            <!-- Server preview loading state -->
             <div
-              v-if="apiPreview && isLoadingPreview"
+              v-if="isServerPreview && isLoadingPreview"
               class="text-gray-500 flex items-center justify-center p-8"
             >
               <div
                 class="border-gray-900 mr-2 h-6 w-6 animate-spin rounded-full border-b-2"
               ></div>
-              Loading preview...
+              {{ t('common.loading') }}
             </div>
+
+            <!-- Server preview error state -->
             <div
-              v-else-if="apiPreview && !apiPreviewResult"
+              v-else-if="isServerPreview && !serverPreviewResult"
               class="text-gray-500 flex items-center justify-center p-8"
             >
-              Preview unavailable
+              {{ t('emailEditor.preview.unavailable') }}
             </div>
-            <div v-else v-html="emailBody" />
+
+            <!-- Preview content -->
+            <div v-else v-html="previewContent" />
           </div>
         </div>
       </div>
     </template>
-    <AppNotification v-else variant="warning" title="Can't edit email">
-      <p>
-        This email is managed by your email provider, you can't edit it here
-      </p>
+
+    <!-- Warning for managed emails -->
+    <AppNotification
+      v-else
+      variant="warning"
+      :title="t('emailEditor.managed.title')"
+    >
+      <p>{{ t('emailEditor.managed.description') }}</p>
     </AppNotification>
   </div>
 </template>
 <script lang="ts" setup>
+/**
+ * EmailEditor component for editing and previewing email templates
+ *
+ * This component supports three preview modes with priority order:
+ *
+ * 1. Server-side rendering (highest priority):
+ *    - Renders email preview through API with server-side merge field resolution
+ *    - Requires the `serverRender` prop to configure API endpoints
+ *    - All merge fields (mergeFields + contact) are sent to server
+ *    - Perfect for complex email templates requiring server-side processing
+ *
+ * 2. Client-side merge field expansion:
+ *    - Supports merge tags like *|FNAME|*, *|EMAIL|* in content
+ *    - Uses `mergeFields` prop for custom field values
+ *    - Uses `contact` prop for contact-specific tags
+ *    - Updates preview instantly without server calls
+ *
+ * 3. Direct content editing (lowest priority):
+ *    - Displays content directly with no transformations
+ *    - Used when no merge fields or server rendering is configured
+ *
+ * @example Server-side rendering
+ * ```vue
+ * <EmailEditor
+ *   :template="{ subject: 'Welcome', content: 'Hello *|FNAME|*' }"
+ *   :serverRender="{ type: 'contact', templateId: 'welcome' }"
+ *   :mergeFields="{ CUSTOM_FIELD: 'Custom Value' }"
+ *   :contact="currentUser"
+ * />
+ * ```
+ *
+ * @example Client-side merge field expansion
+ * ```vue
+ * <EmailEditor
+ *   :template="{ subject: 'Newsletter', content: 'Hello *|FNAME|*' }"
+ *   :mergeFields="{ CONTENT: 'Newsletter content' }"
+ *   :contact="currentUser"
+ * />
+ * ```
+ *
+ * @example Direct content editing
+ * ```vue
+ * <EmailEditor
+ *   :template="{ subject: 'Simple Email', content: '<p>Static content</p>' }"
+ * />
+ * ```
+ */
 import {
   expandNestedMergeFields,
   replaceMergeFields,
@@ -59,176 +119,178 @@ import {
 } from '@beabee/vue';
 
 import { client } from '@utils/api';
-import { computed, ref, watch } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 /**
- * EmailEditor component for editing email templates
- *
- * This component supports three different usage patterns with priority order:
- *
- * 0. API-based server preview (HIGHEST PRIORITY):
- *    - The `content` field contains a merge field value (e.g., MESSAGE)
- *    - `apiPreview` prop configures server-side preview with merge field resolution
- *    - `mergeFields` prop provides custom merge fields sent to the server API
- *    - Preview is fetched from API with full template rendering
- *    - Perfect for complex email templates requiring server processing
- *    - All merge fields (mergeFields + contact data) are sent to server
- *
- * 1. Client-side merge field expansion:
- *    - The `content` field contains merge tags like *|FNAME|*, *|EMAIL|*
- *    - `mergeFields` prop provides custom field values for live preview
- *    - `contact` prop enables automatic generation of contact-specific merge tags
- *    - Enables instant preview updates without server calls
- *    - Supports all standard contact merge tags: *|FNAME|*, *|LNAME|*, *|EMAIL|*, *|NAME|*, etc.
- *
- * 2. Direct content editing (LOWEST PRIORITY):
- *    - The `content` field contains the complete email body
- *    - Preview is rendered client-side from `content`
- *    - No `mergeFields`, `contact`, or `apiPreview` props needed
- *
- * UNIFIED MERGE FIELDS:
- * The `mergeFields` prop provides a unified interface for both client-side and server-side rendering.
- * When `apiPreview` is enabled, mergeFields are sent to the server API.
- * When `apiPreview` is disabled, mergeFields are used for client-side expansion.
- * Contact data (via `contact` prop) is automatically merged with custom mergeFields.
+ * EmailTemplate interface defines the structure of an editable email template
+ * - subject: The email subject line
+ * - content: The editable content (could be full body or just a merge field)
  */
+interface EmailTemplate {
+  subject: string;
+  content: string;
+}
 
+/**
+ * ServerRenderConfig interface defines the configuration for server-side email preview
+ */
+interface ServerRenderConfig {
+  /** Email type identifier (e.g., 'contact', 'general', 'admin') */
+  type: string;
+  /** Optional template identifier (e.g., 'callout-response-answers') */
+  templateId?: string;
+}
+
+/**
+ * ServerPreviewResult interface defines the structure of server-rendered preview result
+ */
+interface ServerPreviewResult {
+  subject: string;
+  body: string;
+}
+
+// Props definition with clearer naming and organization
 const props = withDefaults(
   defineProps<{
-    /** Optional heading label */
-    label?: string;
     /**
-     * Email data to edit
-     * - content: The editable content (full body or merge field value)
+     * Email template data to edit
+     * - content: The editable content (body or merge field value)
      * - subject: The email subject line
-     * Set to false when email is managed externally
+     * Set to false when email is managed externally and can't be edited
      */
-    email: { content: string; subject: string } | false;
-    /** Optional footer to append to preview */
-    footer?: string;
+    template: EmailTemplate | false;
+
     /**
-     * @deprecated Use apiPreview prop instead for server-side preview
-     * Optional server-rendered preview content for legacy compatibility
+     * Optional heading text for the editor
      */
-    previewContent?: string;
+    heading?: string;
+
+    /**
+     * Optional HTML footer to append to the preview
+     */
+    footer?: string;
+
+    /**
+     * Server-side rendering configuration
+     * When provided, enables server-side preview with merge field resolution
+     */
+    serverRender?: ServerRenderConfig;
+
     /**
      * Merge fields for both client-side and server-side preview
-     * When `apiPreview` is enabled, these are sent to the server API.
-     * When `apiPreview` is disabled, these are used for client-side expansion.
-     * Contact data (via `contact` prop) is automatically merged with these fields.
      * Format: { FIELD_NAME: 'value' }
      */
     mergeFields?: Record<string, string>;
+
     /**
      * Contact data for generating contact-specific merge tags
-     * When provided, enables preview of contact-specific merge tags like *|FNAME|*, *|LNAME|*, *|EMAIL|*
+     * Enables preview of contact merge tags like *|FNAME|*, *|LNAME|*, *|EMAIL|*
      */
     contact?: GetContactData | null;
+
     /**
-     * API-based preview configuration
-     * When provided, enables server-side preview with merge field resolution.
-     * Use `mergeFields` prop to provide custom merge fields sent to the server.
+     * Label for subject input field
+     * If not provided, uses default i18n key
      */
-    apiPreview?: {
-      /** Email type identifier (e.g., 'contact', 'welcome') */
-      type: string;
-      /** Template identifier for the email (e.g., 'callout-response-answers') */
-      templateId?: string;
-    };
-    /** Label for subject input field */
     subjectLabel?: string;
-    /** Label for content editor field */
+
+    /**
+     * Label for content editor field
+     * If not provided, uses default i18n key
+     */
     contentLabel?: string;
   }>(),
   {
-    label: '',
+    heading: '',
     footer: '',
-    previewContent: '',
     mergeFields: () => ({}),
-    contact: undefined,
-    apiPreview: undefined,
+    contact: null,
+    serverRender: undefined,
     subjectLabel: '',
     contentLabel: '',
   }
 );
 
-// Local ref to allow mutation of email data
-const email = ref(props.email);
+const { t } = useI18n();
 
-// API preview result cache
-const apiPreviewResult = ref<{ subject: string; body: string } | null>(null);
-const isLoadingPreview = ref(false);
-
-// Sync local ref with props when props change
-watch(
-  () => props.email,
-  (newEmail) => {
-    email.value = newEmail;
-  }
+// Use reactive reference to the template for two-way binding
+const template = reactive<EmailTemplate>(
+  props.template || { subject: '', content: '' }
 );
 
-// Watch for API preview configuration changes
+// Computed flag to determine if using server-side preview
+const isServerPreview = computed(() => !!props.serverRender);
+
+// Server preview state
+const serverPreviewResult = ref<ServerPreviewResult | null>(null);
+const isLoadingPreview = ref(false);
+
+// Watch for server render config changes
 watch(
-  () => props.apiPreview,
-  () => {
-    if (props.apiPreview) {
-      loadApiPreview();
+  () => props.serverRender,
+  (newConfig) => {
+    if (newConfig) {
+      fetchServerPreview();
     } else {
-      apiPreviewResult.value = null;
+      serverPreviewResult.value = null;
     }
   },
   { immediate: true }
 );
 
-// Watch for email content changes when API preview is enabled
+// Watch for content changes to update server preview
 watch(
-  [() => email.value, () => props.mergeFields, () => props.contact],
+  [
+    () => template.subject,
+    () => template.content,
+    () => props.mergeFields,
+    () => props.contact,
+  ],
   () => {
-    if (props.apiPreview && email.value) {
-      loadApiPreview();
+    if (props.serverRender) {
+      fetchServerPreview();
     }
   },
   { deep: true }
 );
 
 /**
- * Load email preview from API with merge fields resolved
+ * Fetches preview from server using the API
  */
-async function loadApiPreview() {
-  if (!props.apiPreview || !email.value) return;
+async function fetchServerPreview() {
+  if (!props.serverRender || !template) return;
 
-  const emailData = email.value as { content: string; subject: string };
   const allMergeFields = generateAllMergeFields();
   isLoadingPreview.value = true;
 
   try {
     const preview = await client.email.preview(
-      props.apiPreview.type as 'contact' | 'general' | 'admin',
-      props.apiPreview.templateId || props.apiPreview.type,
+      props.serverRender.type as 'contact' | 'general' | 'admin',
+      props.serverRender.templateId || props.serverRender.type,
       {
         mergeFields: {
-          MESSAGE: emailData.content,
+          MESSAGE: template.content,
           ...allMergeFields,
         },
-        customSubject: emailData.subject,
+        customSubject: template.subject,
       }
     );
 
-    apiPreviewResult.value = {
+    serverPreviewResult.value = {
       subject: preview.subject,
       body: preview.body,
     };
   } catch {
     // Failed to load preview, component will show fallback content
-    apiPreviewResult.value = null;
+    serverPreviewResult.value = null;
   } finally {
     isLoadingPreview.value = false;
   }
 }
 
 /**
- * Generate all available contact merge tags based on contact data
- * This includes basic contact fields and computed fields
+ * Generates contact-specific merge tags
  */
 function generateContactMergeTags(
   contact?: GetContactData | null
@@ -240,6 +302,7 @@ function generateContactMergeTags(
     EMAIL: contact.email,
     FNAME: contact.firstname,
     LNAME: contact.lastname,
+    NAME: `${contact.firstname} ${contact.lastname}`.trim(),
 
     // Contact ID
     ...(contact.id && { MEMBERSHIPID: contact.id }),
@@ -247,49 +310,42 @@ function generateContactMergeTags(
 }
 
 /**
- * Generate all available merge fields by combining custom mergeFields with contact data
- * This provides a unified interface for both client-side and server-side merge field handling
+ * Combines all merge fields from different sources
  */
 function generateAllMergeFields(): Record<string, string> {
-  // Start with custom merge fields from props
   const customMergeFields = { ...props.mergeFields };
-  // Add contact merge tags
-  const contactMergeTags = generateContactMergeTags(props.contact);
+  const contactMergeFields = generateContactMergeTags(props.contact);
 
-  // Merge all fields together (custom fields override contact fields if they conflict)
-  return { ...contactMergeTags, ...customMergeFields };
+  // Custom fields override contact fields if they conflict
+  return { ...contactMergeFields, ...customMergeFields };
 }
 
 /**
- * Computed property for email body preview
- * Supports three different usage patterns with priority order:
- *
- * 0. API-based preview (apiPreview provided) - HIGHEST PRIORITY
- * 1. Client-side merge field expansion (mergeFields provided)
- * 2. Direct content editing (no merge fields) - LOWEST PRIORITY
+ * Computes the final preview content based on mode priority:
+ * 1. Server-rendered preview (highest priority)
+ * 2. Client-side merge field expansion
+ * 3. Direct content (lowest priority)
  */
-const emailBody = computed(() => {
-  if (!props.email) return '';
+const previewContent = computed(() => {
+  if (!props.template) return '';
 
-  // Priority 0: Use API-based preview if available and loaded
-  if (props.apiPreview && apiPreviewResult.value) {
-    return apiPreviewResult.value.body + (props.footer || '');
+  // Priority 1: Server-rendered preview
+  if (isServerPreview.value && serverPreviewResult.value) {
+    return serverPreviewResult.value.body + (props.footer || '');
   }
 
-  // Priority 1: Use client-side merge field expansion if merge fields or contact provided
+  // Priority 2: Client-side merge field expansion
   const allMergeFields = generateAllMergeFields();
   if (Object.keys(allMergeFields).length > 0) {
-    // First expand any nested merge fields within the merge field values
     const expandedFields = expandNestedMergeFields(allMergeFields);
-    // Then replace merge fields in the content
     const expandedContent = replaceMergeFields(
-      props.email.content,
+      template.content,
       expandedFields
     );
     return expandedContent + (props.footer || '');
   }
 
-  // Priority 2: Fall back to raw content for direct editing
-  return props.email.content + (props.footer || '');
+  // Priority 3: Direct content
+  return template.content + (props.footer || '');
 });
 </script>

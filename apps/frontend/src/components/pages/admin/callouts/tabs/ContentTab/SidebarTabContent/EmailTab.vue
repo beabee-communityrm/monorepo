@@ -26,9 +26,9 @@
           />
         </AppFormField>
 
-        <!-- Email editor with API-based preview (merge fields resolved server-side) -->
+        <!-- Email editor with server-side preview (merge fields resolved server-side) -->
         <EmailEditor
-          :email="emailData"
+          :template="emailData"
           :merge-fields="{
             CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
             CALLOUTLINK: generateCalloutLink(
@@ -36,7 +36,7 @@
               true
             ),
           }"
-          :api-preview="{
+          :server-render="{
             type: 'contact',
             templateId: 'callout-response-answers',
           }"
