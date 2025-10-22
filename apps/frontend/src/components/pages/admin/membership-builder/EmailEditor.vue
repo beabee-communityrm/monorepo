@@ -121,34 +121,11 @@ import {
 import { client } from '@utils/api';
 import { computed, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-/**
- * EmailTemplate interface defines the structure of an editable email template
- * - subject: The email subject line
- * - content: The editable content (could be full body or just a merge field)
- */
-interface EmailTemplate {
-  subject: string;
-  content: string;
-}
-
-/**
- * ServerRenderConfig interface defines the configuration for server-side email preview
- */
-interface ServerRenderConfig {
-  /** Email type identifier (e.g., 'contact', 'general', 'admin') */
-  type: string;
-  /** Optional template identifier (e.g., 'callout-response-answers') */
-  templateId?: string;
-}
-
-/**
- * ServerPreviewResult interface defines the structure of server-rendered preview result
- */
-interface ServerPreviewResult {
-  subject: string;
-  body: string;
-}
+import type {
+  EditableEmailTemplate,
+  EmailServerRenderConfig,
+  EmailPreviewResult,
+} from '@type/email-editor';
 
 // Props definition with clearer naming and organization
 const props = withDefaults(
@@ -159,7 +136,7 @@ const props = withDefaults(
      * - subject: The email subject line
      * Set to false when email is managed externally and can't be edited
      */
-    template: EmailTemplate | false;
+    template: EditableEmailTemplate | false;
 
     /**
      * Optional heading text for the editor
@@ -175,7 +152,7 @@ const props = withDefaults(
      * Server-side rendering configuration
      * When provided, enables server-side preview with merge field resolution
      */
-    serverRender?: ServerRenderConfig;
+    serverRender?: EmailServerRenderConfig;
 
     /**
      * Merge fields for both client-side and server-side preview
@@ -215,7 +192,7 @@ const props = withDefaults(
 const { t } = useI18n();
 
 // Use reactive reference to the template for two-way binding
-const template = reactive<EmailTemplate>(
+const template = reactive<EditableEmailTemplate>(
   props.template || { subject: '', content: '' }
 );
 
@@ -223,7 +200,7 @@ const template = reactive<EmailTemplate>(
 const isServerPreview = computed(() => !!props.serverRender);
 
 // Server preview state
-const serverPreviewResult = ref<ServerPreviewResult | null>(null);
+const serverPreviewResult = ref<EmailPreviewResult | null>(null);
 const isLoadingPreview = ref(false);
 
 // Watch for server render config changes
