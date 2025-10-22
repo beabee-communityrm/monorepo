@@ -30,6 +30,11 @@
 </template>
 <script lang="ts" setup>
 import {
+  expandNestedMergeFields,
+  replaceMergeFields,
+} from '@beabee/beabee-common';
+import type { GetContactData } from '@beabee/beabee-common';
+import {
   AppInput,
   AppNotification,
   AppRichTextEditor,
@@ -41,17 +46,26 @@ import { computed, ref, watch } from 'vue';
 /**
  * EmailEditor component for editing email templates
  *
- * This component supports two different usage patterns:
+ * This component supports three different usage patterns:
  *
  * 1. Direct content editing (e.g., membership emails):
  *    - The `content` field contains the complete email body
  *    - Preview is rendered client-side from `content`
- *    - No `previewContent` prop needed
+ *    - No `previewContent` or `mergeFields` props needed
  *
- * 2. Template with merge fields (e.g., callout response emails):
+ * 2. Server-side merge field resolution (e.g., callout response emails):
  *    - The `content` field contains a merge field value (e.g., MESSAGE)
  *    - Preview is fetched from server with merge fields resolved
  *    - `previewContent` prop provides the server-rendered preview
+ *    - `mergeFields` prop not needed in this mode
+ *
+ * 3. Client-side merge field expansion (NEW - no server request needed):
+ *    - The `content` field contains merge tags like *|FNAME|*, *|EMAIL|*
+ *    - `mergeFields` prop provides custom field values for live preview
+ *    - `contact` prop enables automatic generation of contact-specific merge tags
+ *    - `previewContent` prop not needed in this mode
+ *    - Enables instant preview updates without server calls
+ *    - Supports all standard contact merge tags: *|FNAME|*, *|LNAME|*, *|EMAIL|*, *|NAME|*, etc.
  */
 
 const props = withDefaults(
@@ -74,6 +88,18 @@ const props = withDefaults(
      * resolved server-side.
      */
     previewContent?: string;
+    /**
+     * Merge fields for client-side preview expansion
+     * When provided along with email content containing merge tags,
+     * enables live preview without server requests.
+     * Format: { FIELD_NAME: 'value' }
+     */
+    mergeFields?: Record<string, string>;
+    /**
+     * Contact data for generating contact-specific merge tags
+     * When provided, enables preview of contact-specific merge tags like *|FNAME|*, *|LNAME|*, *|EMAIL|*
+     */
+    contact?: GetContactData | null;
     /** Label for subject input field */
     subjectLabel?: string;
     /** Label for content editor field */
@@ -83,6 +109,8 @@ const props = withDefaults(
     label: '',
     footer: '',
     previewContent: '',
+    mergeFields: () => ({}),
+    contact: undefined,
     subjectLabel: '',
     contentLabel: '',
   }
@@ -100,15 +128,61 @@ watch(
 );
 
 /**
- * Computed property for email body preview
- * Uses previewContent if available (server-rendered with merge fields),
- * otherwise falls back to the raw content (direct body editing)
+ * Generate all available contact merge tags based on contact data
+ * This includes basic contact fields and computed fields
  */
-const emailBody = computed(
-  () =>
-    props.email &&
-    (props.previewContent !== undefined && props.previewContent !== ''
-      ? props.previewContent
-      : props.email.content) + (props.footer || '')
-);
+function generateContactMergeTags(
+  contact?: GetContactData | null
+): Record<string, string> {
+  if (!contact) return {};
+
+  return {
+    // Basic contact fields
+    EMAIL: contact.email,
+    FNAME: contact.firstname,
+    LNAME: contact.lastname,
+
+    // Contact ID
+    ...(contact.id && { MEMBERSHIPID: contact.id }),
+  };
+}
+
+/**
+ * Computed property for email body preview
+ * Supports three different usage patterns:
+ *
+ * 1. Server-rendered preview (previewContent provided)
+ * 2. Client-side merge field expansion (mergeFields provided)
+ * 3. Direct content editing (no merge fields)
+ */
+const emailBody = computed(() => {
+  if (!props.email) return '';
+
+  // Priority 1: Use server-rendered preview if available
+  if (props.previewContent !== undefined && props.previewContent !== '') {
+    return props.previewContent + (props.footer || '');
+  }
+
+  // Priority 2: Use client-side merge field expansion if merge fields or contact provided
+  if (Object.keys(props.mergeFields).length > 0 || props.contact) {
+    // Combine custom merge fields with contact merge tags
+    const customMergeFields = { ...props.mergeFields };
+    const contactMergeTags = generateContactMergeTags(props.contact);
+
+    // Merge all fields together
+    const allMergeFields = { ...contactMergeTags, ...customMergeFields };
+
+    // First expand any nested merge fields within the merge field values
+    const expandedFields = expandNestedMergeFields(allMergeFields);
+    // Then replace merge fields in the content
+    const expandedContent = replaceMergeFields(
+      props.email.content,
+      expandedFields
+    );
+    return expandedContent + (props.footer || '');
+  }
+
+  // Priority 3: Fall back to raw content for direct editing
+  return props.email.content + (props.footer || '');
+});
 </script>

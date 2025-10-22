@@ -17,6 +17,7 @@
       :label="stepT('welcomeEmail')"
       :email="welcomeEmailData"
       :footer="emailFooter"
+      :contact="currentUser"
       :subject-label="t('emailEditor.subject.label')"
       :content-label="t('emailEditor.body.label')"
     />
@@ -26,6 +27,7 @@
       :label="stepT('cancellationEmail')"
       :email="cancellationEmailData"
       :footer="emailFooter"
+      :contact="currentUser"
       :subject-label="t('emailEditor.subject.label')"
       :content-label="t('emailEditor.body.label')"
     />
@@ -36,6 +38,8 @@ import type { GetEmailData } from '@beabee/beabee-common';
 import { App2ColGrid, AppForm } from '@beabee/vue';
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+// Import current user store
+import { currentUser } from '@store/currentUser';
 import { client, isApiError } from '@utils/api';
 import { onBeforeMount, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
