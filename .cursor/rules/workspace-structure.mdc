@@ -1,13 +1,13 @@
 ---
-description: Information about the node / npm / yarn packages / modules in this workspace
-globs: 
-alwaysApply: false
+alwaysApply: true
 ---
+
 **Beabee Monorepo Package Structure:**
 
 **Yarn Workspaces:** Packages in `packages/` (importable) and `apps/` (standalone applications).
 
 **Importable Packages (`packages/`):**
+
 - `@beabee/client` - API client for backend communication
 - `@beabee/beabee-common` - Shared types and utilities across projects
 - `@beabee/core` - Backend core with models, services, providers
@@ -23,6 +23,7 @@ alwaysApply: false
 - `@beabee/weblate-client` - Translation management API client
 
 **Applications (`apps/`):**
+
 - `@beabee/backend` - Main API server (community engagement system)
 - `@beabee/frontend` - Modern Vue 3 frontend with form builder
 - `@beabee/webhooks` - External service integrations (Stripe, GoCardless)
@@ -33,4 +34,4 @@ alwaysApply: false
 - `@beabee/router` - Nginx routing configuration
 - `@beabee/minio` - Object storage configuration
 
-**Import Rule:** Only packages from `packages/` can be imported. Use package names for cross-package imports. Apps cannot be imported by other packages. 
+**Import Rule:** Only packages from `packages/` can be imported. Use package names for cross-package imports. Apps cannot be imported by other packages.

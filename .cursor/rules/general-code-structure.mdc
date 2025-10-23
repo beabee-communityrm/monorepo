@@ -3,7 +3,9 @@ description:
 globs: *.ts,*.js,*.vue
 alwaysApply: false
 ---
+
 Whenever you write code, make sure to
+
 - Write complete code blocks
 - Provide concise answers assuming programming knowledge
 - Read missing source code yourself to give quality answers
@@ -18,3 +20,4 @@ Whenever you write code, make sure to
 - Use common and understandable variable, method and component names
 - Use the latest versions of the source code so that you do not overwrite manual adjustments
 - Always store types and interfaces in `src/types/`, utility methods in `src/utils/`
+- We do not require backward compatibility; we have full control over every package. Do not leave any technical debt marked with `@deprecated`.
