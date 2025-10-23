@@ -17,6 +17,10 @@ import {
 import { log as mainLogger } from '#logging';
 import { Contact, Email } from '#models/index';
 import { MandrillProvider, SMTPProvider, SendGridProvider } from '#providers';
+import {
+  magicMergeFields,
+  magicMergeFieldsProcessors,
+} from '#providers/email/BaseProvider';
 import OptionsService from '#services/OptionsService';
 import {
   AdminEmailTemplateId,
@@ -34,6 +38,13 @@ import {
   GeneralEmailTemplates,
   TemplateEmailOptions,
 } from '#type/index';
+import {
+  extractTemplateParams,
+  isAdminEmailTemplateId,
+  isContactEmailTemplateId,
+  isEmailTemplateId,
+  isGeneralEmailTemplateId,
+} from '#utils/email';
 
 const log = mainLogger.child({ app: 'email-service' });
 
@@ -254,25 +265,111 @@ class EmailService {
     }
 
     // 2. Generate base merge fields from contact
+
     const baseMergeFields: EmailMergeFields = {
-      EMAIL: contact.email,
-      NAME: contact.fullname,
-      FNAME: contact.firstname,
-      LNAME: contact.lastname,
+      EMAIL: contact.email || '',
+      NAME: contact.fullname || '',
+      FNAME: contact.firstname || '',
+      LNAME: contact.lastname || '',
     };
 
     // 3. Generate template-specific merge fields
     let templateMergeFields: EmailMergeFields = {};
-    if (type === 'contact' && template in contactEmailTemplates) {
-      templateMergeFields = contactEmailTemplates[
-        template as ContactEmailTemplateId
-      ](contact, {} as any);
-    } else if (type === 'admin' && template in adminEmailTemplates) {
-      // Admin templates need specific params, use empty object as fallback
-      templateMergeFields = {};
-    } else if (type === 'general' && template in generalEmailTemplates) {
-      // General templates need specific params, use empty object as fallback
-      templateMergeFields = {};
+    if (type === 'contact' && isContactEmailTemplateId(template)) {
+      const templateFn = contactEmailTemplates[template];
+
+      // Check if template function expects parameters by checking its length
+      if (templateFn.length > 1) {
+        // Template expects parameters - extract them using the mapping system
+        const templateParams = extractTemplateParams(
+          template,
+          customMergeFields
+        );
+
+        try {
+          const templateResult = templateFn(contact, templateParams as any);
+
+          // Ensure all merge field values are strings (required by EmailMergeFields type)
+          templateMergeFields = {};
+          for (const [key, value] of Object.entries(templateResult)) {
+            if (typeof value !== 'string') {
+              templateMergeFields[key] = String(value);
+            } else {
+              templateMergeFields[key] = value;
+            }
+          }
+        } catch (error) {
+          log.error(`Error calling template function for ${template}:`, {
+            template,
+            templateParams,
+            error: error instanceof Error ? error.message : String(error),
+          });
+          throw error;
+        }
+      } else {
+        // Template doesn't expect parameters
+        templateMergeFields = templateFn(contact, {} as any);
+      }
+    } else if (type === 'admin' && isAdminEmailTemplateId(template)) {
+      // Admin templates - extract parameters using the mapping system
+      const templateFn = adminEmailTemplates[template];
+      if (templateFn.length > 1) {
+        const templateParams = extractTemplateParams(
+          template,
+          customMergeFields
+        );
+        const templateResult = templateFn(templateParams as any);
+
+        // Ensure all merge field values are strings
+        templateMergeFields = {};
+        for (const [key, value] of Object.entries(templateResult)) {
+          if (typeof value !== 'string') {
+            templateMergeFields[key] = String(value);
+          } else {
+            templateMergeFields[key] = value;
+          }
+        }
+      } else {
+        const templateResult = templateFn({} as any);
+        templateMergeFields = {};
+        for (const [key, value] of Object.entries(templateResult)) {
+          if (typeof value !== 'string') {
+            templateMergeFields[key] = String(value);
+          } else {
+            templateMergeFields[key] = value;
+          }
+        }
+      }
+    } else if (type === 'general' && isGeneralEmailTemplateId(template)) {
+      // General templates - extract parameters using the mapping system
+      const templateFn = generalEmailTemplates[template];
+      if (templateFn.length > 1) {
+        const templateParams = extractTemplateParams(
+          template,
+          customMergeFields
+        );
+        const templateResult = templateFn(templateParams as any);
+
+        // Ensure all merge field values are strings
+        templateMergeFields = {};
+        for (const [key, value] of Object.entries(templateResult)) {
+          if (typeof value !== 'string') {
+            templateMergeFields[key] = String(value);
+          } else {
+            templateMergeFields[key] = value;
+          }
+        }
+      } else {
+        const templateResult = templateFn({} as any);
+        templateMergeFields = {};
+        for (const [key, value] of Object.entries(templateResult)) {
+          if (typeof value !== 'string') {
+            templateMergeFields[key] = String(value);
+          } else {
+            templateMergeFields[key] = value;
+          }
+        }
+      }
     }
 
     // 4. Merge all fields (custom fields override template fields)
@@ -282,8 +379,60 @@ class EmailService {
       ...customMergeFields,
     };
 
-    // 5. Expand nested merge fields (handles MESSAGE with nested fields)
-    const expandedFields = expandNestedMergeFields(allMergeFields);
+    // 5. Process magic merge fields (e.g., ANSWERS, SPLINK, RPLINK)
+    let processedMergeFields = allMergeFields;
+    const emailBody = (emailTemplate as Email).body || '';
+
+    // Check if any magic merge fields are needed
+    const needsMagicProcessing = magicMergeFields.some(
+      (mergeField) =>
+        emailBody.includes(`*|${mergeField}|*`) ||
+        Object.values(allMergeFields).some(
+          (value) =>
+            typeof value === 'string' && value.includes(`*|${mergeField}|*`)
+        )
+    );
+
+    if (needsMagicProcessing) {
+      // Create a temporary recipient to process magic merge fields
+      const tempRecipient: EmailRecipient = {
+        to: { email: contact.email || '', name: contact.fullname || '' },
+        mergeFields: allMergeFields,
+      };
+
+      // Process each magic merge field
+      let processedRecipients = [tempRecipient];
+      for (const mergeField of magicMergeFields) {
+        const appearsInBody = emailBody.includes(`*|${mergeField}|*`);
+        const appearsInMergeFields = Object.values(allMergeFields).some(
+          (value) =>
+            typeof value === 'string' && value.includes(`*|${mergeField}|*`)
+        );
+
+        if (appearsInBody || appearsInMergeFields) {
+          processedRecipients =
+            await magicMergeFieldsProcessors[mergeField](processedRecipients);
+        }
+      }
+
+      // Extract the processed merge fields
+      if (processedRecipients[0]?.mergeFields) {
+        processedMergeFields = processedRecipients[0].mergeFields;
+      }
+    }
+
+    // 6. Expand nested merge fields (handles MESSAGE with nested fields)
+    let expandedFields: EmailMergeFields;
+    try {
+      expandedFields = expandNestedMergeFields(processedMergeFields);
+    } catch (error) {
+      log.error(`Error expanding nested merge fields for ${template}:`, {
+        template,
+        processedMergeFields,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      throw error;
+    }
 
     // 6. Replace merge fields in subject and body
     const subject = opts?.customSubject || (emailTemplate as Email).subject;
@@ -329,11 +478,7 @@ class EmailService {
   }
 
   isTemplateId(template: string): template is EmailTemplateId {
-    return (
-      template in generalEmailTemplates ||
-      template in adminEmailTemplates ||
-      template in contactEmailTemplates
-    );
+    return isEmailTemplateId(template);
   }
 
   private getProviderTemplate(template: EmailTemplateId): string | undefined {

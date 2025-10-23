@@ -35,6 +35,7 @@
               props.tabs.titleAndImage.data.slug,
               true
             ),
+            CALLOUTSLUG: props.tabs.titleAndImage.data.slug,
           }"
           :server-render="{
             type: 'contact',

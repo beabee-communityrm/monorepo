@@ -38,6 +38,7 @@ import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
+import { formatCalloutResponseAnswersToHtml } from '#utils/callout';
 import { isDuplicateIndex } from '#utils/db';
 
 const log = mainLogger.child({ app: 'callouts-service' });
@@ -290,7 +291,7 @@ class CalloutsService {
     }
 
     // Send confirmation email to the contact
-    await this.sendResponseEmail(callout, contact);
+    await this.sendResponseEmail(callout, contact, savedResponse);
 
     return savedResponse;
   }
@@ -339,7 +340,7 @@ class CalloutsService {
         );
 
         // Send confirmation email to the contact
-        await this.sendResponseEmail(callout, contact);
+        await this.sendResponseEmail(callout, contact, response);
         return response.id;
       } catch (err) {
         // Suppress errors from creating a response for a contact, this prevents
@@ -517,14 +518,49 @@ class CalloutsService {
   }
 
   /**
+   * Format callout response answers as HTML for email templates
+   * @param callout The callout with form schema
+   * @param response Optional response with answers
+   * @returns HTML string with formatted answers
+   */
+  async formatResponseAnswersHtml(
+    callout: Callout,
+    response?: CalloutResponse
+  ): Promise<string> {
+    // Ensure callout has formSchema loaded
+    if (!callout.formSchema) {
+      const calloutWithSchema = await getRepository(Callout).findOne({
+        where: { id: callout.id },
+        relations: { formSchema: true },
+      });
+      if (!calloutWithSchema) {
+        throw new NotFoundError();
+      }
+      callout.formSchema = calloutWithSchema.formSchema;
+    }
+
+    // Get default variant for component text translations
+    const variant = await this.getDefaultVariant(callout);
+
+    // Format answers using the utility function
+    return formatCalloutResponseAnswersToHtml(
+      response?.answers || {},
+      callout.formSchema,
+      variant.componentText
+    );
+  }
+
+  /**
    * Send a response confirmation email to a contact
    * Only sends email if custom email is enabled and configured
    * @param callout The callout
    * @param contact The contact to send the email to
+   * @param response The callout response with answers
    */
   private async sendResponseEmail(
     callout: Callout,
-    contact: Contact
+    contact: Contact,
+    response: CalloutResponse
   ): Promise<void> {
     // Only send email if custom email is enabled and configured
     if (!callout.sendResponseEmail) {
@@ -541,9 +577,12 @@ class CalloutsService {
       return;
     }
 
+    // Format response answers as HTML
+    const answersHtml = await this.formatResponseAnswersHtml(callout, response);
+
     // Send custom email using the callout-response-answers template
     // The template includes proper email structure (header, footer, etc.)
-    // Merge fields like *|FNAME|*, *|EMAIL|* etc. will be replaced
+    // Merge fields like *|FNAME|*, *|EMAIL|*, *|ANSWERS|* etc. will be replaced
     await EmailService.sendTemplateToContact(
       'callout-response-answers',
       contact,
@@ -551,6 +590,7 @@ class CalloutsService {
         message: variant.responseEmailBody,
         calloutSlug: callout.slug,
         calloutTitle: variant.title,
+        answers: answersHtml,
       },
       {
         customSubject: variant.responseEmailSubject,
