@@ -1,12 +1,20 @@
 import type {
   CalloutComponentContentSchema,
+  CalloutComponentInputAddressSchema,
+  CalloutComponentInputCheckboxSchema,
+  CalloutComponentInputCurrencySchema,
+  CalloutComponentInputDateTimeSchema,
+  CalloutComponentInputEmailSchema,
   CalloutComponentInputFileSchema,
+  CalloutComponentInputNumberSchema,
+  CalloutComponentInputPhoneNumberSchema,
   CalloutComponentInputSelectSchema,
   CalloutComponentInputSelectableRadioSchema,
   CalloutComponentInputSelectableSchema,
   CalloutComponentInputSignatureSchema,
   CalloutComponentInputTextAreaSchema,
   CalloutComponentInputTextFieldSchema,
+  CalloutComponentInputTimeSchema,
   CalloutComponentInputUrlSchema,
   CalloutResponseAnswersSlide,
   SetCalloutFormSchema,
@@ -17,7 +25,10 @@ import { CalloutComponentType } from '@beabee/beabee-common';
 
 import { describe, expect, it } from 'vitest';
 
-import { formatCalloutResponseAnswersToHtml } from './callout';
+import {
+  formatCalloutResponseAnswersPreview,
+  formatCalloutResponseAnswersToHtml,
+} from './callout';
 
 const textComponent: CalloutComponentInputTextFieldSchema = {
   id: 'textField1',
@@ -98,7 +109,7 @@ const signatureComponent: CalloutComponentInputSignatureSchema = {
   id: 'signature1',
   type: CalloutComponentType.INPUT_SIGNATURE,
   key: 'signature1',
-  label: 'Signature',
+  label: 'Signature Field',
   input: true,
   adminOnly: false,
 };
@@ -144,6 +155,93 @@ const urlComponent: CalloutComponentInputUrlSchema = {
   adminOnly: false,
 };
 
+const emailComponent: CalloutComponentInputEmailSchema = {
+  id: 'email1',
+  type: CalloutComponentType.INPUT_EMAIL,
+  key: 'email1',
+  label: 'Email Field',
+  input: true,
+  adminOnly: false,
+};
+
+const phoneComponent: CalloutComponentInputPhoneNumberSchema = {
+  id: 'phone1',
+  type: CalloutComponentType.INPUT_PHONE_NUMBER,
+  key: 'phone1',
+  label: 'Phone Field',
+  input: true,
+  adminOnly: false,
+};
+
+const numberComponent: CalloutComponentInputNumberSchema = {
+  id: 'number1',
+  type: CalloutComponentType.INPUT_NUMBER,
+  key: 'number1',
+  label: 'Number Field',
+  input: true,
+  adminOnly: false,
+};
+
+const currencyComponent: CalloutComponentInputCurrencySchema = {
+  id: 'currency1',
+  type: CalloutComponentType.INPUT_CURRENCY,
+  key: 'currency1',
+  label: 'Currency Field',
+  input: true,
+  adminOnly: false,
+  case: 'mixed',
+  currency: 'EUR',
+};
+
+const addressComponent: CalloutComponentInputAddressSchema = {
+  id: 'address1',
+  type: CalloutComponentType.INPUT_ADDRESS,
+  key: 'address1',
+  label: 'Address Field',
+  input: true,
+  adminOnly: false,
+};
+
+const dateTimeComponent: CalloutComponentInputDateTimeSchema = {
+  id: 'datetime1',
+  type: CalloutComponentType.INPUT_DATE_TIME,
+  key: 'datetime1',
+  label: 'Date Time Field',
+  input: true,
+  adminOnly: false,
+  widget: {
+    mode: 'single',
+    enableTime: true,
+    format: 'yyyy-MM-dd HH:mm',
+    locale: 'en',
+    minDate: null,
+    maxDate: null,
+    disableWeekends: false,
+    disableWeekdays: false,
+  },
+  enableMinDateInput: false,
+  enableMaxDateInput: false,
+};
+
+const timeComponent: CalloutComponentInputTimeSchema = {
+  id: 'time1',
+  type: CalloutComponentType.INPUT_TIME,
+  key: 'time1',
+  label: 'Time Field',
+  input: true,
+  adminOnly: false,
+  inputMask: '99:99',
+};
+
+const checkboxComponent: CalloutComponentInputCheckboxSchema = {
+  id: 'checkbox1',
+  type: CalloutComponentType.INPUT_CHECKBOX,
+  key: 'checkbox1',
+  label: 'Checkbox Field',
+  input: true,
+  adminOnly: false,
+};
+
 const formSchema: SetCalloutFormSchema = {
   slides: [
     {
@@ -152,6 +250,14 @@ const formSchema: SetCalloutFormSchema = {
       components: [
         textComponent,
         textAreaComponent,
+        emailComponent,
+        phoneComponent,
+        numberComponent,
+        currencyComponent,
+        addressComponent,
+        dateTimeComponent,
+        timeComponent,
+        checkboxComponent,
         radioComponent,
         selectComponent,
         selectBoxComponent,
@@ -163,17 +269,11 @@ const formSchema: SetCalloutFormSchema = {
         formioFileArrayComponent,
         urlComponent,
       ],
-      navigation: {
-        nextSlideId: '',
-      } as SetCalloutNavigationSchema,
     } as SetCalloutSlideSchema,
     {
       id: 'slide2',
       title: 'Slide 2',
       components: [textComponent],
-      navigation: {
-        nextSlideId: '',
-      } as SetCalloutNavigationSchema,
     } as SetCalloutSlideSchema,
   ],
 };
@@ -182,6 +282,17 @@ const answers: CalloutResponseAnswersSlide = {
   slide1: {
     textField1: 'Sample text answer',
     textArea1: 'Sample textarea answer',
+    email1: 'test@example.com',
+    phone1: '+1234567890',
+    number1: 42,
+    currency1: 100.5,
+    address1: {
+      formatted_address: 'Berlin, Germany',
+      geometry: { location: { lat: 52.52, lng: 13.405 } },
+    },
+    datetime1: '2023-12-25T10:30:00Z',
+    time1: '14:30:00',
+    checkbox1: true,
     radio1: 'opt2',
     select1: 'opt3',
     selectBox1: {
@@ -283,7 +394,7 @@ describe('formatCalloutResponseAnswersToHtml', () => {
     const result = formatCalloutResponseAnswersToHtml(answers, formSchema);
 
     expect(result).toContain(
-      '<strong>Signature:</strong> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" alt="Signature" style="max-width: 300px; height: auto; border: 1px solid #ccc;" />'
+      '<strong>Signature Field:</strong> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" alt="Signature Field" style="max-width: 300px; height: auto; border: 1px solid #ccc;" />'
     );
   });
 
@@ -661,5 +772,110 @@ describe('formatCalloutResponseAnswersToHtml', () => {
 
     // Should be properly closed
     expect(result).toMatch(/<\/p>$/);
+  });
+});
+
+describe('formatCalloutResponseAnswersPreview', () => {
+  it('generates preview HTML with empty answer placeholders', () => {
+    const result = formatCalloutResponseAnswersPreview(formSchema);
+
+    // Should contain all input components
+    expect(result).toContain('<strong>Text Field:</strong> ');
+    expect(result).toContain('<strong>Text Area:</strong> ');
+    expect(result).toContain('<strong>Email Field:</strong> ');
+    expect(result).toContain('<strong>Phone Field:</strong> ');
+    expect(result).toContain('<strong>Number Field:</strong> ');
+    expect(result).toContain('<strong>Currency Field:</strong> ');
+    expect(result).toContain('<strong>Website URL:</strong> ');
+    expect(result).toContain('<strong>Upload Document:</strong> ');
+    expect(result).toContain('<strong>Signature Field:</strong> ');
+    expect(result).toContain('<strong>Address Field:</strong> ');
+    expect(result).toContain('<strong>Date Time Field:</strong> ');
+    expect(result).toContain('<strong>Time Field:</strong> ');
+    expect(result).toContain('<strong>Checkbox Field:</strong> ');
+  });
+
+  it('shows available options for select components', () => {
+    const result = formatCalloutResponseAnswersPreview(formSchema);
+
+    // Should show first 3 options for radio component
+    expect(result).toContain('<strong>Radio Component:</strong> ');
+  });
+
+  it('uses component translations when available', () => {
+    const componentText = {
+      'Text Field': 'Translated Text Field',
+      'Email Field': 'Translated Email Field',
+    };
+
+    const result = formatCalloutResponseAnswersPreview(
+      formSchema,
+      componentText
+    );
+
+    expect(result).toContain('<strong>Translated Text Field:</strong>');
+    expect(result).toContain('<strong>Translated Email Field:</strong>');
+    expect(result).toContain('<strong>Phone Field:</strong>'); // Not translated
+  });
+
+  it('skips non-input components', () => {
+    const result = formatCalloutResponseAnswersPreview(formSchema);
+
+    // Should not contain content component
+    expect(result).not.toContain('Content Component');
+  });
+
+  it('skips admin-only components', () => {
+    const result = formatCalloutResponseAnswersPreview(formSchema);
+
+    // Should not contain admin-only component
+    expect(result).not.toContain('Admin Only Field');
+  });
+
+  it('generates correct HTML structure with multiple paragraphs', () => {
+    const result = formatCalloutResponseAnswersPreview(formSchema);
+
+    // Should contain multiple <p> tags
+    const paragraphCount = (result.match(/<p>/g) || []).length;
+    expect(paragraphCount).toBeGreaterThan(1);
+
+    // Should be properly closed
+    expect(result).toMatch(/<\/p>$/);
+  });
+
+  it('handles empty form schema', () => {
+    const emptySchema: SetCalloutFormSchema = {
+      slides: [],
+    };
+
+    const result = formatCalloutResponseAnswersPreview(emptySchema);
+    expect(result).toBe('');
+  });
+
+  it('handles form schema with no input components', () => {
+    const noInputSchema: SetCalloutFormSchema = {
+      slides: [
+        {
+          id: 'slide1',
+          title: 'Content Only Slide',
+          components: [
+            {
+              id: 'content1',
+              type: CalloutComponentType.CONTENT,
+              key: 'content1',
+              label: 'Content Only',
+              input: false,
+              html: '<p>Some content</p>',
+            } as CalloutComponentContentSchema,
+          ],
+          navigation: {
+            nextSlideId: '',
+          },
+        },
+      ],
+    };
+
+    const result = formatCalloutResponseAnswersPreview(noInputSchema);
+    expect(result).toBe('');
   });
 });

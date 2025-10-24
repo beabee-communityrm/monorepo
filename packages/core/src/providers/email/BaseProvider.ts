@@ -22,7 +22,7 @@ import type {
   PreparedEmail,
   TemplateEmailOptions,
 } from '#type/index';
-import { formatCalloutResponseAnswersToHtml } from '#utils/callout';
+import { formatCalloutResponseAnswersPreview } from '#utils/callout';
 
 const log = mainLogger.child({ app: 'base-email-provider' });
 
@@ -122,13 +122,6 @@ export const magicMergeFieldsProcessors = {
         });
 
         if (callout) {
-          // Fetch first response for preview
-          const response = await getRepository(CalloutResponse).findOne({
-            where: { calloutId: callout.id },
-            order: { createdAt: 'DESC' },
-            select: ['id', 'answers'],
-          });
-
           // Get default variant for component text translations
           const defaultVariant =
             callout.variants?.find((v) => v.name === 'default') ||
@@ -137,9 +130,8 @@ export const magicMergeFieldsProcessors = {
               name: 'default',
             }));
 
-          // Format answers HTML using utility function
-          const answersHtml = formatCalloutResponseAnswersToHtml(
-            response?.answers || {},
+          // Generate preview HTML with empty answer placeholders instead of real responses
+          const answersHtml = formatCalloutResponseAnswersPreview(
             callout.formSchema,
             defaultVariant.componentText
           );

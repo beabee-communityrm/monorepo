@@ -38,7 +38,10 @@ import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
-import { formatCalloutResponseAnswersToHtml } from '#utils/callout';
+import {
+  formatCalloutResponseAnswersPreview,
+  formatCalloutResponseAnswersToHtml,
+} from '#utils/callout';
 import { isDuplicateIndex } from '#utils/db';
 
 const log = mainLogger.child({ app: 'callouts-service' });
@@ -545,6 +548,34 @@ class CalloutsService {
     // Format answers using the utility function
     return formatCalloutResponseAnswersToHtml(
       response?.answers || {},
+      callout.formSchema,
+      variant.componentText
+    );
+  }
+
+  /**
+   * Format callout questions with empty answers for email template preview
+   * @param callout The callout with form schema
+   * @returns HTML string with formatted questions and empty answer placeholders
+   */
+  async formatResponseAnswersPreview(callout: Callout): Promise<string> {
+    // Ensure callout has formSchema loaded
+    if (!callout.formSchema) {
+      const calloutWithSchema = await getRepository(Callout).findOne({
+        where: { id: callout.id },
+        relations: { formSchema: true },
+      });
+      if (!calloutWithSchema) {
+        throw new NotFoundError();
+      }
+      callout.formSchema = calloutWithSchema.formSchema;
+    }
+
+    // Get default variant for component text translations
+    const variant = await this.getDefaultVariant(callout);
+
+    // Format preview using the utility function
+    return formatCalloutResponseAnswersPreview(
       callout.formSchema,
       variant.componentText
     );

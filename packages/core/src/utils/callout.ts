@@ -1,15 +1,42 @@
-import type {
-  CalloutComponentSchema,
-  CalloutResponseAnswersSlide,
-  SetCalloutFormSchema,
-} from '@beabee/beabee-common';
 import {
+  type CalloutComponentInputSchema,
+  CalloutComponentType,
+  type CalloutResponseAnswersSlide,
+  type SetCalloutFormSchema,
   isAbsoluteUrl,
   isFileUploadAnswer,
   isFormioFileAnswer,
   stringifyAnswer,
 } from '@beabee/beabee-common';
-import { CalloutComponentType } from '@beabee/beabee-common';
+
+/**
+ * Generates empty answer placeholders for email template preview
+ *
+ * @param component The callout component schema
+ * @returns Placeholder string for empty answer based on component type
+ */
+function generateEmptyAnswerPlaceholder(
+  component: CalloutComponentInputSchema
+): string {
+  // You can use this method for generating empty answer placeholders for email template preview like this:
+  // ```
+  // switch (component.type) {
+  //   case CalloutComponentType.INPUT_SIGNATURE:
+  //     return '[Signature]';
+
+  //   case CalloutComponentType.INPUT_URL:
+  //     return '[URL]';
+
+  //   case CalloutComponentType.INPUT_FILE:
+  //     return '[File attachment]';
+  //   default:
+  //     return '[Answer]';
+  // }
+  // ```
+
+  // but we only return an empty string for now
+  return '';
+}
 
 /**
  * Formats callout response answers as simple HTML for email templates
@@ -113,6 +140,44 @@ export function formatCalloutResponseAnswersToHtml(
 
       // Create simple HTML paragraph
       htmlParts.push(`<p><strong>${label}:</strong> ${formattedAnswer}</p>`);
+    }
+  }
+
+  return htmlParts.join('');
+}
+
+/**
+ * Formats callout questions with empty answers for email template preview
+ * Shows all input components with placeholder answers to demonstrate email structure
+ *
+ * @param formSchema The callout form schema containing components
+ * @param componentText Optional translations for component labels
+ * @returns HTML string with formatted questions and empty answer placeholders
+ */
+export function formatCalloutResponseAnswersPreview(
+  formSchema: SetCalloutFormSchema,
+  componentText?: Record<string, string>
+): string {
+  const htmlParts: string[] = [];
+
+  // Iterate through slides
+  for (const slide of formSchema.slides) {
+    // Iterate through components in the slide
+    for (const component of slide.components) {
+      // Skip non-input components and admin-only fields
+      if (!component.input || component.adminOnly) continue;
+
+      // Get the component label (use translation if available)
+      const label =
+        componentText?.[component.label || ''] ||
+        component.label ||
+        component.key;
+
+      // Generate empty answer placeholder based on component type
+      const placeholder = generateEmptyAnswerPlaceholder(component);
+
+      // Create simple HTML paragraph
+      htmlParts.push(`<p><strong>${label}:</strong> ${placeholder}</p>`);
     }
   }
 
