@@ -570,11 +570,10 @@ class CalloutsService {
     const variant = await this.getDefaultVariant(callout);
 
     // Check if custom subject and body are configured
-    if (!variant.responseEmailSubject || !variant.responseEmailBody) {
+    if (!variant.responseEmailBody) {
       log.warning(
         `Callout ${callout.id} has sendResponseEmail enabled but no email content configured`
       );
-      return;
     }
 
     // Format response answers as HTML
@@ -587,13 +586,13 @@ class CalloutsService {
       'callout-response-answers',
       contact,
       {
-        message: variant.responseEmailBody,
+        message: variant.responseEmailBody || '',
         calloutSlug: callout.slug,
         calloutTitle: variant.title,
         answers: answersHtml,
       },
       {
-        customSubject: variant.responseEmailSubject,
+        customSubject: variant.responseEmailSubject || '',
       }
     );
   }
