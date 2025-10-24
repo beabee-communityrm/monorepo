@@ -1,13 +1,30 @@
 export interface FormioFile {
+  /**
+   * Storage type of the uploaded file
+   */
   storage: 'beabee';
+  /**
+   * Name of the uploaded file
+   */
   name: string;
   /**
    * URL of the uploaded file
-   * @deprecated Use `path` instead in the future to be more flexible as soon as we do not require on form.io.
    */
   url: string;
+  /**
+   * Path of the uploaded file
+   */
   path: string;
+  /**
+   * Size of the uploaded file
+   */
   size: number;
+  /**
+   * Hash of the uploaded file
+   */
   hash: string;
+  /**
+   * Original name of the uploaded file
+   */
   originalName: string;
 }

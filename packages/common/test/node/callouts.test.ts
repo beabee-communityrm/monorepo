@@ -8,6 +8,8 @@ import {
   CalloutResponseAnswersSlide,
   GetCalloutFormSchema,
   getCalloutComponents,
+  isFileUploadAnswer,
+  isFormioFileAnswer,
   stringifyAnswer,
 } from '@beabee/beabee-common';
 
@@ -94,6 +96,21 @@ const answers: CalloutResponseAnswersSlide = {
   },
 };
 
+// Test data for file upload functions
+const fileUploadAnswer = {
+  url: 'http://localhost:3002/api/1.0/images/606b5b37-76f2-4796-9531-2ab832ba6a05.avif',
+  path: '/uploads/image.avif',
+};
+
+const formioFileAnswer = {
+  url: 'http://localhost:3002/api/1.0/images/606b5b37-76f2-4796-9531-2ab832ba6a05.avif',
+  path: '/uploads/image.avif',
+  storage: 'url',
+  name: 'image.avif',
+  size: 12345,
+  originalName: 'uploaded-image.avif',
+};
+
 const formSchema: GetCalloutFormSchema = {
   slides: [
     {
@@ -152,5 +169,85 @@ describe('getCalloutFilters', () => {
         fullKey: `slide1.${c.key}`,
       }))
     );
+  });
+});
+
+describe('isFileUploadAnswer', () => {
+  test('valid file upload answer', () => {
+    expect(isFileUploadAnswer(fileUploadAnswer)).toBe(true);
+  });
+
+  test('file upload answer with all required properties', () => {
+    expect(isFileUploadAnswer(fileUploadAnswer)).toBe(true);
+    if (isFileUploadAnswer(fileUploadAnswer)) {
+      expect(fileUploadAnswer.url).toBe(
+        'http://localhost:3002/api/1.0/images/606b5b37-76f2-4796-9531-2ab832ba6a05.avif'
+      );
+      expect(fileUploadAnswer.path).toBe('/uploads/image.avif');
+    }
+  });
+
+  test('invalid file upload answer - null', () => {
+    expect(isFileUploadAnswer(null)).toBe(false);
+  });
+
+  test('invalid file upload answer - undefined', () => {
+    expect(isFileUploadAnswer(undefined)).toBe(false);
+  });
+
+  test('invalid file upload answer - string', () => {
+    expect(isFileUploadAnswer('not an object')).toBe(false);
+  });
+
+  test('invalid file upload answer - number', () => {
+    expect(isFileUploadAnswer(123)).toBe(false);
+  });
+
+  test('invalid file upload answer - object without url', () => {
+    expect(isFileUploadAnswer({ path: '/some/path' })).toBe(false);
+  });
+
+  test('invalid file upload answer - object with url but wrong type', () => {
+    expect(isFileUploadAnswer({ url: 123, path: '/some/path' })).toBe(false);
+  });
+});
+
+describe('isFormioFileAnswer', () => {
+  test('valid formio file upload answer', () => {
+    expect(isFormioFileAnswer(formioFileAnswer)).toBe(true);
+  });
+
+  test('formio file answer with all required properties', () => {
+    expect(isFormioFileAnswer(formioFileAnswer)).toBe(true);
+    if (isFormioFileAnswer(formioFileAnswer)) {
+      expect(formioFileAnswer.url).toBe(
+        'http://localhost:3002/api/1.0/images/606b5b37-76f2-4796-9531-2ab832ba6a05.avif'
+      );
+      expect(formioFileAnswer.storage).toBe('url');
+      expect(formioFileAnswer.name).toBe('image.avif');
+      expect(formioFileAnswer.size).toBe(12345);
+    }
+  });
+
+  test('invalid formio file answer - missing storage', () => {
+    const incompleteFile = { ...formioFileAnswer };
+    delete incompleteFile.storage;
+    expect(isFormioFileAnswer(incompleteFile)).toBe(false);
+  });
+
+  test('invalid formio file answer - missing name', () => {
+    const incompleteFile = { ...formioFileAnswer };
+    delete incompleteFile.name;
+    expect(isFormioFileAnswer(incompleteFile)).toBe(false);
+  });
+
+  test('invalid formio file answer - missing size', () => {
+    const incompleteFile = { ...formioFileAnswer };
+    delete incompleteFile.size;
+    expect(isFormioFileAnswer(incompleteFile)).toBe(false);
+  });
+
+  test('basic file upload is not formio file upload', () => {
+    expect(isFormioFileAnswer(fileUploadAnswer)).toBe(false);
   });
 });

@@ -3,7 +3,13 @@ import type {
   CalloutResponseAnswersSlide,
   SetCalloutFormSchema,
 } from '@beabee/beabee-common';
-import { stringifyAnswer } from '@beabee/beabee-common';
+import {
+  isAbsoluteUrl,
+  isFileUploadAnswer,
+  isFormioFileAnswer,
+  stringifyAnswer,
+} from '@beabee/beabee-common';
+import { CalloutComponentType } from '@beabee/beabee-common';
 
 /**
  * Formats callout response answers as simple HTML for email templates
@@ -39,8 +45,68 @@ export function formatCalloutResponseAnswersToHtml(
         component.label ||
         component.key;
 
-      // Format the answer using existing utility
-      const formattedAnswer = stringifyAnswer(component, answer);
+      // Check if this is a signature component with base64 image data
+      const isSignatureComponent =
+        component.type === CalloutComponentType.INPUT_SIGNATURE;
+      const isBase64Image =
+        !Array.isArray(answer) &&
+        typeof answer === 'string' &&
+        answer.startsWith('data:image/');
+
+      // Check if this is a URL component
+      const isUrlComponent = component.type === CalloutComponentType.INPUT_URL;
+      const isValidUrl =
+        !Array.isArray(answer) &&
+        typeof answer === 'string' &&
+        isAbsoluteUrl(answer);
+
+      // Check if this is a file upload component
+      const isFileComponent =
+        component.type === CalloutComponentType.INPUT_FILE;
+
+      // Check if answer is a file upload (single or array)
+      const isFileUpload = !Array.isArray(answer) && isFileUploadAnswer(answer);
+      const isFormioFileUpload =
+        !Array.isArray(answer) && isFormioFileAnswer(answer);
+      const isFileUploadArray =
+        Array.isArray(answer) &&
+        answer.every(
+          (item) => isFileUploadAnswer(item) || isFormioFileAnswer(item)
+        );
+
+      const isValidFileUrl = isFileUpload && isAbsoluteUrl(answer.url);
+      const isValidFormioFileUrl =
+        isFormioFileUpload && isAbsoluteUrl(answer.url);
+      const isValidFileArrayUrls =
+        isFileUploadArray && answer.every((item) => isAbsoluteUrl(item.url));
+
+      let formattedAnswer: string;
+
+      if (isSignatureComponent && isBase64Image) {
+        // Render signature as an image element
+        formattedAnswer = `<img src="${answer}" alt="${label}" style="max-width: 300px; height: auto; border: 1px solid #ccc;" />`;
+      } else if (isUrlComponent && isValidUrl) {
+        // Render URL as an external link
+        formattedAnswer = `<a href="${answer}" target="_blank" rel="noopener noreferrer">${answer}</a>`;
+      } else if (isFileComponent && isValidFileUrl) {
+        // Render single file upload as an external link
+        formattedAnswer = `<a href="${answer.url}" target="_blank" rel="noopener noreferrer">${answer.url}</a>`;
+      } else if (isFileComponent && isValidFormioFileUrl) {
+        // Render single formio file upload as an external link
+        formattedAnswer = `<a href="${answer.url}" target="_blank" rel="noopener noreferrer">${answer.url}</a>`;
+      } else if (isFileComponent && isValidFileArrayUrls) {
+        // Render array of file uploads as multiple external links
+        const links = answer
+          .map(
+            (item) =>
+              `<a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.url}</a>`
+          )
+          .join('<br />');
+        formattedAnswer = links;
+      } else {
+        // Format the answer using existing utility for other components
+        formattedAnswer = stringifyAnswer(component, answer);
+      }
 
       // Skip if answer is empty after formatting
       if (!formattedAnswer.trim()) continue;
