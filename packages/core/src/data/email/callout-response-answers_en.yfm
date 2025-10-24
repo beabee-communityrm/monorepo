@@ -7,6 +7,11 @@ subject: Thank you for your response
 *|MESSAGE|*
 <p><br /></p>
 <p>
+  Here is an overview of your submitted answers:<br />
+  *|ANSWERS|*
+</p>
+<p><br /></p>
+<p>
   This email confirms your response to the callout
   <a href="*|CALLOUTLINK|*">"*|CALLOUTTITLE|*"</a> using your email address
   *|EMAIL|*.

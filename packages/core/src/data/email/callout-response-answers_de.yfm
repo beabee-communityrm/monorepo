@@ -7,6 +7,11 @@ subject: Danke für Ihre Teilnahme
 *|MESSAGE|*
 <p><br /></p>
 <p>
+  Hier ist eine Übersicht über Ihre eingereichten Antworten:<br />
+  *|ANSWERS|*
+</p>
+<p><br /></p>
+<p>
   Diese E-Mail bestätigt Ihre Antwort auf
   <a href="*|CALLOUTLINK|*">"*|CALLOUTTITLE|*"</a>
   unter Verwendung Ihrer E-Mail-Adresse *|EMAIL|*.

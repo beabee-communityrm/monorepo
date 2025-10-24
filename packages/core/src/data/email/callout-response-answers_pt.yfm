@@ -7,6 +7,11 @@ subject: Obrigado pela sua resposta
 *|MESSAGE|*
 <p><br /></p>
 <p>
+  Aqui está um resumo das suas respostas submetidas:<br />
+  *|ANSWERS|*
+</p>
+<p><br /></p>
+<p>
   Este e-mail confirma a sua resposta à chamada
   <a href="*|CALLOUTLINK|*">"*|CALLOUTTITLE|*"</a>
   utilizando o seu endereço de correio eletrónico *|EMAIL|*.
