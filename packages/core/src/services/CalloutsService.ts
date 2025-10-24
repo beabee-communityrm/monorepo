@@ -571,7 +571,7 @@ class CalloutsService {
 
     // Check if custom subject and body are configured
     if (!variant.responseEmailSubject || !variant.responseEmailBody) {
-      log.warn(
+      log.warning(
         `Callout ${callout.id} has sendResponseEmail enabled but no email content configured`
       );
       return;
@@ -672,19 +672,19 @@ class CalloutsService {
     });
 
     if (!response) {
-      log.warn(`Response ${responseId} not found`);
+      log.warning(`Response ${responseId} not found`);
       return false;
     }
 
     const slideAnswers = response.answers[slideId];
     if (!slideAnswers) {
-      log.warn(`Slide ${slideId} not found in response ${responseId}`);
+      log.warning(`Slide ${slideId} not found in response ${responseId}`);
       return false;
     }
 
     const answer = slideAnswers[componentKey];
     if (!answer) {
-      log.warn(`Component ${componentKey} not found in slide ${slideId}`);
+      log.warning(`Component ${componentKey} not found in slide ${slideId}`);
       return false;
     }
 
@@ -692,13 +692,13 @@ class CalloutsService {
     if (arrayIndex !== null && Array.isArray(answer)) {
       // Update an item in an array
       if (arrayIndex < 0 || arrayIndex >= answer.length) {
-        log.warn(`Array index ${arrayIndex} out of bounds`);
+        log.warning(`Array index ${arrayIndex} out of bounds`);
         return false;
       }
 
       const item = answer[arrayIndex];
       if (!isFileUploadAnswer(item)) {
-        log.warn(`Item at index ${arrayIndex} is not a file upload`);
+        log.warning(`Item at index ${arrayIndex} is not a file upload`);
         return false;
       }
 
@@ -707,7 +707,7 @@ class CalloutsService {
       // Update a direct answer
       slideAnswers[componentKey] = newFileUpload;
     } else {
-      log.warn(`Answer is not a file upload`);
+      log.warning(`Answer is not a file upload`);
       return false;
     }
 
