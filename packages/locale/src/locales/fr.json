@@ -368,7 +368,7 @@
         },
         "email": {
           "body": {
-            "default": "<p>Bonjour *|FNAME|*,</p><p>Voici un aperçu de vos réponses soumises :<br />*|ANSWERS|*</p><p><br /></p><p>Cet e-mail confirme votre réponse à l'appel <a href=\"*|CALLOUTLINK|*\">\"*|CALLOUTTITLE|*\"</a> en utilisant votre adresse e-mail *|EMAIL|*.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:*|SUPPORTEMAIL|*\">*|SUPPORTEMAIL|*</a>.</p><p><br /></p><p>Cordialement</p>",
+            "default": "<p>Bonjour {FNAME},</p><p>voici un aperçu de vos réponses soumises :<br />{ANSWERS}</p><p><br /></p><p>Cet e-mail confirme votre réponse à l'appel <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> en utilisant votre adresse e-mail {EMAIL}.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Cordialement</p>",
             "label": "Corps de l'e-mail"
           },
           "collectInfoWarning": {

@@ -97,8 +97,21 @@ const emailFooter = ref('');
 // Note: 'content' here represents the MESSAGE merge field value,
 // not the complete rendered email body
 const emailData = reactive({
-  subject: props.data.emailSubject.default,
-  content: props.data.emailMessage.default,
+  subject:
+    props.data.emailSubject.default ||
+    t('callout.builder.tabs.email.subject.default'),
+  content:
+    props.data.emailMessage.default ||
+    t('callout.builder.tabs.email.body.default', {
+      FNAME: '*|FNAME|*',
+      LNAME: '*|LNAME|*',
+      NAME: '*|NAME|*',
+      ANSWERS: '*|ANSWERS|*',
+      CALLOUTTITLE: '*|CALLOUTTITLE|*',
+      CALLOUTLINK: '*|CALLOUTLINK|*',
+      EMAIL: '*|EMAIL|*',
+      SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
+    }),
 });
 
 // Watch emailData changes and sync to props.data
@@ -117,9 +130,36 @@ watch(
 watch(
   () => [props.data.emailSubject.default, props.data.emailMessage.default],
   ([subject, message]) => {
-    emailData.subject = subject;
-    emailData.content = message;
-  }
+    // Use default translations if values are empty
+    const defaultSubject =
+      subject || t('callout.builder.tabs.email.subject.default');
+    const defaultMessage =
+      message ||
+      t('callout.builder.tabs.email.body.default', {
+        FNAME: '*|FNAME|*',
+        LNAME: '*|LNAME|*',
+        NAME: '*|NAME|*',
+        ANSWERS: '*|ANSWERS|*',
+        CALLOUTTITLE: '*|CALLOUTTITLE|*',
+        CALLOUTLINK: '*|CALLOUTLINK|*',
+        EMAIL: '*|EMAIL|*',
+        SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
+      });
+
+    emailData.subject = defaultSubject;
+    emailData.content = defaultMessage;
+
+    // Update props with default values if they were empty
+    if (!subject) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.emailSubject.default = defaultSubject;
+    }
+    if (!message) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.emailMessage.default = defaultMessage;
+    }
+  },
+  { immediate: true }
 );
 
 // Load email footer on component mount

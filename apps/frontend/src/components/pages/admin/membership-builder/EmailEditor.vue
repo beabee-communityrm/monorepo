@@ -196,6 +196,18 @@ const template = reactive<EditableEmailTemplate>(
   props.template || { subject: '', content: '' }
 );
 
+// Watch for template prop changes to sync with parent component
+watch(
+  () => props.template,
+  (newTemplate) => {
+    if (newTemplate) {
+      template.subject = newTemplate.subject;
+      template.content = newTemplate.content;
+    }
+  },
+  { deep: true, immediate: true }
+);
+
 // Computed flag to determine if using server-side preview
 const isServerPreview = computed(() => !!props.serverRender);
 
