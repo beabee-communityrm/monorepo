@@ -368,6 +368,7 @@
         },
         "email": {
           "body": {
+            "default": "<p>Hallo *|FNAME|* *|LNAME|*,</p><p>Hier ist eine Übersicht über Ihre eingereichten Antworten:<br />*|ANSWERS|*</p><p><br /></p><p>Diese E-Mail bestätigt Ihre Antwort auf <a href=\"*|CALLOUTLINK|*\">\"*|CALLOUTTITLE|*\"</a> unter Verwendung Ihrer E-Mail-Adresse *|EMAIL|*.</p><p><br /></p><p>Wenn Sie Fragen haben, wenden Sie sich bitte an unser Support-Team unter <a href=\"mailto:*|SUPPORTEMAIL|*\">*|SUPPORTEMAIL|*</a>.</p><p><br /></p><p>Mit freundlichen Grüßen</p>",
             "label": "E-Mail-Text"
           },
           "collectInfoWarning": {
@@ -379,6 +380,7 @@
             "label": "Nach der Übermittlung eine E-Mail an alle Teilnehmer senden"
           },
           "subject": {
+            "default": "Danke für Ihre Teilnahme",
             "label": "E-Mail-Betreff"
           },
           "title": "E-Mail"

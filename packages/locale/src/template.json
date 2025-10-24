@@ -368,6 +368,7 @@
         },
         "email": {
           "body": {
+            "default": "",
             "label": ""
           },
           "collectInfoWarning": {
@@ -379,6 +380,7 @@
             "label": ""
           },
           "subject": {
+            "default": "",
             "label": ""
           },
           "title": ""

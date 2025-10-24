@@ -368,6 +368,7 @@
         },
         "email": {
           "body": {
+            "default": "<p>Hello *|FNAME|*,</p><p>Here is an overview of your submitted answers:<br />*|ANSWERS|*</p><p><br /></p><p>This email confirms your response to the callout <a href=\"*|CALLOUTLINK|*\">\"*|CALLOUTTITLE|*\"</a> using your email address *|EMAIL|*.</p><p><br /></p><p>If you have any questions, please contact our support team at <a href=\"mailto:*|SUPPORTEMAIL|*\">*|SUPPORTEMAIL|*</a>.</p><p><br /></p><p>Best wishes</p>",
             "label": "Email body"
           },
           "collectInfoWarning": {
@@ -379,6 +380,7 @@
             "label": "Send an email to all participants after submission"
           },
           "subject": {
+            "default": "Thank you for your response",
             "label": "Email subject"
           },
           "title": "Email"

@@ -369,6 +369,7 @@
         "email": {
           "title": "E-Mail",
           "body": {
+            "default": "<p>Hallo *|FNAME|*,</p><p>Hier sind deine Antworten:<br />*|ANSWERS|*</p><p><br /></p><p>Du hast mitgemacht.<br />Bei der Befragung:<br /><a href=\"*|CALLOUTLINK|*\">\"*|CALLOUTTITLE|*\"</a>.</p><p><br /></p><p>Hast du Fragen?<br />Schreib uns.<br />Unsere Adresse ist:<br /><a href=\"mailto:*|SUPPORTEMAIL|*\">*|SUPPORTEMAIL|*</a>.<br />Das ist unser Hilfe-Team.</p><p><br /></p><p>Viele Grüße</p>",
             "label": "E-Mail-Text"
           },
           "collectInfoWarning": {
@@ -380,6 +381,7 @@
             "label": "Nach der Übermittlung eine E-Mail an alle Teilnehmer senden"
           },
           "subject": {
+            "default": "Danke für Antwort",
             "label": "E-Mail-Betreff"
           }
         },
