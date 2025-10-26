@@ -60,6 +60,6 @@ export const runAnonymisers = async (
     }
 
     // Save the completed JSON dump to file
-    saveJsonDump(dryRun, outputDir);
+    await saveJsonDump(dryRun, outputDir);
   });
 };
