@@ -20,6 +20,7 @@ import {
   calloutResponsesAnonymiser,
   createAnswersAnonymiser,
 } from './models';
+import { isJSON } from 'class-validator';
 
 interface DatabaseDump {
   [tableName: string]: any[];
@@ -294,7 +295,13 @@ export async function writeJsonToDB(
 
   log.info('Start seeding...');
   log.info(`Reading from file: ${filePathSeed}`);
-  const dump = JSON.parse(fs.readFileSync(filePathSeed, 'utf-8'));
+  
+  const fileContent = fs.readFileSync(filePathSeed, 'utf-8');
+  if (!isJSON(fileContent)) {
+    throw new Error(`Invalid JSON format in file: ${filePathSeed}`);
+  }
+  
+  const dump = JSON.parse(fileContent);
 
   // Get entity metadata from the dataSource
   const entityMetas = dataSource.entityMetadatas;
