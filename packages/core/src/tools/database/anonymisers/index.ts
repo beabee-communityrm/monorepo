@@ -337,6 +337,10 @@ export async function writeJsonToDB(
 
   const dump = JSON.parse(fileContent);
 
+  if (!validateDumpStructure(dump)) {
+    throw new Error(`Invalid dump structure in file: ${fileName}`);
+  }
+
   // Get entity metadata from the dataSource
   const entityMetas = dataSource.entityMetadatas;
   const tableToEntity = Object.fromEntries(
