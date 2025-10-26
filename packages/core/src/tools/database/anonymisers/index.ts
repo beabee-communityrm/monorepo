@@ -3,6 +3,7 @@ import { dataSource } from '@beabee/core/database';
 import { log as mainLogger } from '@beabee/core/logging';
 import { Callout, CalloutResponse } from '@beabee/core/models';
 
+import { isJSON } from 'class-validator';
 import * as fs from 'fs';
 import * as path from 'path';
 import {
@@ -20,7 +21,6 @@ import {
   calloutResponsesAnonymiser,
   createAnswersAnonymiser,
 } from './models';
-import { isJSON } from 'class-validator';
 
 interface DatabaseDump {
   [tableName: string]: any[];
@@ -267,16 +267,50 @@ export function initializeJsonDump(
 }
 
 /**
+ * Validates the structure of a database dump
+ * @param dump The dump object to validate
+ * @returns true if the structure is valid
+ */
+function validateDumpStructure(dump: any): dump is DatabaseDump {
+  if (typeof dump !== 'object' || dump === null) {
+    return false;
+  }
+
+  // Check that all values are arrays
+  for (const [tableName, records] of Object.entries(dump)) {
+    if (!Array.isArray(records)) {
+      log.error(`Table ${tableName} is not an array`);
+      return false;
+    }
+
+    // Optional: Check that records are objects
+    for (const record of records) {
+      if (typeof record !== 'object' || record === null) {
+        log.error(`Invalid record in table ${tableName}`);
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+/**
  * Save the JSON dump to file
  */
-export function saveJsonDump(
+export async function saveJsonDump(
   dryRun = false,
   outputDir = '/opt/packages/test-utils/database-dump'
-): void {
+): Promise<void> {
+  if (!validateDumpStructure(jsonDump)) {
+    throw new Error('Invalid dump structure before saving');
+  }
+
   const jsonString = JSON.stringify(jsonDump, null, 2);
   const filePathAnonymise = createFilePathAnonymise(outputDir);
+
   if (!dryRun) {
-    fs.writeFileSync(filePathAnonymise, jsonString);
+    await fs.promises.writeFile(filePathAnonymise, jsonString);
     log.info(outputDir);
     log.info(`JSON dump saved to: ${filePathAnonymise}`);
   } else {
@@ -295,12 +329,12 @@ export async function writeJsonToDB(
 
   log.info('Start seeding...');
   log.info(`Reading from file: ${filePathSeed}`);
-  
+
   const fileContent = fs.readFileSync(filePathSeed, 'utf-8');
   if (!isJSON(fileContent)) {
     throw new Error(`Invalid JSON format in file: ${filePathSeed}`);
   }
-  
+
   const dump = JSON.parse(fileContent);
 
   // Get entity metadata from the dataSource
