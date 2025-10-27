@@ -62,8 +62,8 @@ services:
       - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
       # Allow migrations to be written out from the container
       - ./packages/core/src/migrations:/opt/packages/core/src/migrations
-      # Allow SQL dump to be written out of the container
-      - ./packages/test-utils/database-dump/generated-dumps:/opt/packages/test-utils/database-dump/generated-dumps
+      # Allow database dumps to be written out of the container
+      - ./packages/test-utils/database-dumps:/opt/packages/test-utils/database-dumps
     # TODO: Use standard dist folder
     command: ["node", "--watch", "--watch-preserve-output", "./dist/api/app.js"]
 

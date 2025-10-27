@@ -2,96 +2,21 @@ import type { CommandModule } from 'yargs';
 
 export const testCommand: CommandModule = {
   command: 'test <action>',
-  describe: 'Test environment commands',
+  describe: 'Test environment utilities',
   builder: (yargs) =>
-    yargs
-      .command({
-        command: 'list-users',
-        describe: 'List test users with various contribution scenarios',
-        builder: (yargs) =>
-          yargs.option('dryRun', {
-            type: 'boolean',
-            description: 'Run without making changes',
-            default: false,
-          }),
-        handler: async (argv) => {
-          const { listTestUsers } = await import(
-            '../actions/test/list-users.js'
-          );
-          return listTestUsers(argv.dryRun);
-        },
-      })
-      .command({
-        command: 'anonymise',
-        describe:
-          'Create fully anonymized copy of database and export data to Json or SQL dump.',
-        builder: (yargs) =>
-          yargs
-            .option('dryRun', {
-              type: 'boolean',
-              description: 'Run without making changes.',
-              default: false,
-            })
-            .option('type', {
-              type: 'string',
-              description: 'Export type: json or sql. Default is json.',
-              default: 'json',
-            })
-            .option('outputDir', {
-              type: 'string',
-              description:
-                'Path where the file will be dumped. A sub folder will be created called generated-dumps.',
-              default: '/opt/packages/test-utils/database-dump',
-            }),
-        handler: async (argv) => {
-          const { exportDatabase } = await import(
-            '../actions/database/export.js'
-          );
-          return exportDatabase(argv.dryRun, argv.type as 'json' | 'sql', true, argv.outputDir);
-        },
-      })
-      .command({
-        command: 'seed',
-        describe: 'Seed the database with test data from a Json dump file',
-        builder: (yargs) =>
-          yargs
-            .option('dryRun', {
-              type: 'boolean',
-              description: 'Run without making changes',
-              default: false,
-            })
-            .option('filePath', {
-              type: 'string',
-              description: 'Full path to the JSON dump file',
-              default:
-                '/opt/packages/test-utils/database-dump/database-dump.json',
-            }),
-        handler: async (argv) => {
-          const { seed } = await import('../actions/test/seed.js');
-          return seed(argv.dryRun, argv.filePath);
-        },
-      })
-      .command({
-        command: 'export-demo',
-        describe:
-          'Export demo database with subset of data (400 contacts, 20 latest callouts)',
-        builder: (yargs) =>
-          yargs
-            .option('dryRun', {
-              type: 'boolean',
-              description: 'Run without making changes',
-              default: false,
-            })
-            .option('type', {
-              type: 'string',
-              description: 'Export type: json or sql',
-              default: 'json',
-              choices: ['json', 'sql'],
-            }),
-        handler: async (argv) => {
-          const { exportDemo } = await import('../actions/test/export-demo.js');
-          return exportDemo(argv.dryRun, argv.type as 'json' | 'sql');
-        },
-      }),
+    yargs.command({
+      command: 'list-users',
+      describe: 'List test users with various contribution scenarios',
+      builder: (yargs) =>
+        yargs.option('dryRun', {
+          type: 'boolean',
+          description: 'Run without making changes',
+          default: false,
+        }),
+      handler: async (argv) => {
+        const { listTestUsers } = await import('../actions/test/list-users.js');
+        return listTestUsers(argv.dryRun);
+      },
+    }),
   handler: () => {},
 };

@@ -27,16 +27,22 @@ export const databaseCommand: CommandModule = {
               description:
                 'Anonymize all data (contacts are always anonymized)',
               default: true,
+            })
+            .option('outputDir', {
+              type: 'string',
+              description:
+                'Path where the file will be dumped. A sub folder will be created called generated-dumps.',
+              default: '../../packages/test-utils/database-dumps',
             }),
         handler: async (argv) => {
           const { exportDatabase } = await import(
             '../actions/database/export.js'
           );
-          return exportDatabase(
-            argv.dryRun,
-            argv.type as 'json' | 'sql',
-            argv.anonymize
-          );
+          return exportDatabase(argv.dryRun, argv.type as 'json' | 'sql', {
+            anonymize: argv.anonymize,
+            subset: 'full',
+            outputDir: argv.outputDir,
+          });
         },
       })
       .command({
@@ -95,6 +101,49 @@ export const databaseCommand: CommandModule = {
             argv.calloutSlug as string,
             argv.filePath as string
           );
+        },
+      })
+      .command({
+        command: 'seed',
+        describe: 'Seed the database with test data from a JSON dump file',
+        builder: (yargs) =>
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes',
+              default: false,
+            })
+            .option('filePath', {
+              type: 'string',
+              description: 'Full path to the JSON dump file',
+              default:
+                '../../packages/test-utils/database-dumps/database-dump.json',
+            }),
+        handler: async (argv) => {
+          const { seed } = await import('../actions/database/seed.js');
+          return seed(argv.dryRun, argv.filePath);
+        },
+      })
+      .command({
+        command: 'export-demo',
+        describe:
+          'Export demo database with subset of data (400 contacts, 20 latest callouts)',
+        builder: (yargs) =>
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes',
+              default: false,
+            })
+            .option('type', {
+              type: 'string',
+              description: 'Export type: json or sql',
+              default: 'json',
+              choices: ['json', 'sql'],
+            }),
+        handler: async (argv) => {
+          const { exportDemo } = await import('../actions/database/demo.js');
+          return exportDemo(argv.dryRun, argv.type as 'json' | 'sql');
         },
       }),
   handler: () => {},

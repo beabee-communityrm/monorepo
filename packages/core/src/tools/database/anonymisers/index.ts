@@ -30,7 +30,7 @@ const log = mainLogger.child({ app: 'anonymisers' });
 
 const fileDirectory = path.resolve(
   process.cwd(),
-  '../../packages/test-utils/database-dump'
+  '../../packages/test-utils/database-dumps'
 );
 
 function createFilePathAnonymise(outputDir: string) {
@@ -300,7 +300,7 @@ function validateDumpStructure(dump: any): dump is DatabaseDump {
  */
 export async function saveJsonDump(
   dryRun = false,
-  outputDir = '/opt/packages/test-utils/database-dump'
+  outputDir = '/opt/packages/test-utils/database-dumps'
 ): Promise<void> {
   if (!validateDumpStructure(jsonDump)) {
     throw new Error('Invalid dump structure before saving');

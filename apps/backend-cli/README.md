@@ -20,7 +20,7 @@ Commands:
   backend-cli payment <action>       Manage payments
   backend-cli process <action>       Process background tasks
   backend-cli sync <action>          Sync with external services
-  backend-cli test <action>          Test environment commands
+  backend-cli test <action>          Test environment utilities
   backend-cli migrate-uploads        Migrate uploads to S3
 
 Options:
@@ -41,6 +41,8 @@ Commands:
   backend-cli database import <filePath>              Import database from JSON or SQL dump file
   backend-cli database import-callout-responses       Import callout responses from CSV file
     <calloutSlug> <filePath>
+  backend-cli database seed                           Seed the database with test data from JSON dump
+  backend-cli database export-demo                    Export demo database with subset of data
 
 Options:
   --version  Show version number                                       [boolean]
@@ -54,16 +56,21 @@ The `database` command provides tools for exporting and importing data:
 #### Export Database
 
 ```bash
-backend-cli database export [--anonymize] [--type json|sql] [--dryRun]
+backend-cli database export [--anonymize] [--type json|sql] [--outputDir <path>] [--dryRun]
 ```
 
-Exports the database with optional anonymization. Contact data is **always anonymized** for security.
+Exports the database with configurable anonymization and output options. Contact data is **always anonymized** for security.
 
 Options:
 
 - `--anonymize`: Anonymize all data (default: true). When false, only contacts are anonymized.
 - `--type`: Export format - `json` or `sql` (default: json)
+- `--outputDir`: Output directory for dump files (default: environment-specific)
 - `--dryRun`: Preview export without creating files (default: false)
+
+**Default Output Directory:**
+
+- `packages/test-utils/database-dumps/`
 
 Examples:
 
@@ -73,6 +80,9 @@ backend-cli database export
 
 # Export as SQL with only contacts anonymized
 backend-cli database export --anonymize=false --type=sql
+
+# Export to custom directory
+backend-cli database export --outputDir /custom/path
 
 # Preview export without creating files
 backend-cli database export --dryRun
@@ -134,26 +144,40 @@ Examples:
 backend-cli database import-callout-responses my-survey /path/to/responses.csv
 ```
 
-### Test Commands
-
-The `test` command provides tools for testing and demo environments:
+#### Seed Database
 
 ```bash
-backend-cli test <action>
+backend-cli database seed [--filePath <path>] [--dryRun]
+```
 
-Test environment commands
+Seeds the database with test data from a JSON dump file.
 
-Commands:
-  backend-cli test list-users      List test users with various contribution scenarios
-  backend-cli test anonymise       Create fully anonymized copy of database
-  backend-cli test seed            Seed the database with test data from JSON dump
-  backend-cli test export-demo     Export demo database with subset of data
+Options:
+
+- `--filePath`: Full path to the JSON dump file (default: environment-specific)
+- `--dryRun`: Preview seeding without making changes (default: false)
+
+**Default File Path:**
+
+- `packages/test-utils/database-dumps/database-dump.json`
+
+Examples:
+
+```bash
+# Seed from default file
+backend-cli database seed
+
+# Seed from specific file
+backend-cli database seed --filePath /path/to/test-data.json
+
+# Preview seeding without making changes
+backend-cli database seed --dryRun
 ```
 
 #### Export Demo Database
 
 ```bash
-backend-cli test export-demo [--type json|sql] [--dryRun]
+backend-cli database export-demo [--type json|sql] [--dryRun]
 ```
 
 Exports a subset of the database for demo purposes:
@@ -168,32 +192,78 @@ Examples:
 
 ```bash
 # Export demo database as JSON
-backend-cli test export-demo
+backend-cli database export-demo
 
 # Export demo database as SQL
-backend-cli test export-demo --type=sql
+backend-cli database export-demo --type=sql
 ```
 
-#### Seed Database
+### Test Commands
+
+The `test` command provides test-specific utilities:
 
 ```bash
-backend-cli test seed [--fileName <path>] [--dryRun]
+backend-cli test <action>
+
+Test environment utilities
+
+Commands:
+  backend-cli test list-users      List test users with various contribution scenarios
 ```
 
-Seeds the database with test data from a JSON dump file.
+#### List Test Users
+
+```bash
+backend-cli test list-users [--dryRun]
+```
+
+Lists test users with various contribution scenarios for testing purposes.
+
+Options:
+
+- `--dryRun`: Preview without making changes (default: false)
 
 Examples:
 
 ```bash
-# Seed from default file (database-dump.json)
-backend-cli test seed
+# List test users
+backend-cli test list-users
 
-# Seed from specific file
-backend-cli test seed --fileName /path/to/test-data.json
-
-# Preview seeding without making changes
-backend-cli test seed --dryRun
+# Preview listing
+backend-cli test list-users --dryRun
 ```
+
+## Database Operations
+
+The CLI provides comprehensive database management capabilities with a focus on security and flexibility:
+
+### Key Features
+
+- **🔒 Security First**: Contact data is always anonymized in exports
+- **🎯 Flexible Anonymization**: Choose between full anonymization or contact-only anonymization
+- **📁 Environment-Aware**: Automatic path resolution for development vs production
+- **🔄 Multiple Formats**: Support for both JSON and SQL export formats
+- **🎭 Demo Exports**: Create subset exports for demo purposes
+- **🌱 Easy Seeding**: Simple database seeding from JSON dumps
+
+### Output Directory Structure
+
+```
+packages/test-utils/database-dumps/              # Database dumps location
+├── database-dump.json                 # Default seed file
+├── example-database-dump.json         # Example format
+├── README.md                          # Documentation
+└── generated-dumps/                   # Timestamped exports
+    ├── database-dump-2024-01-15T10-30-00-000Z.json
+    └── ...
+```
+
+### Command Relationships
+
+- `database export` - General purpose database export with configurable anonymization
+- `database seed` - Seeds database from JSON dump files
+- `database export-demo` - Creates subset exports for demo purposes
+- `test list-users` - Lists test users for testing scenarios
 
 ## Development
 
@@ -203,12 +273,12 @@ backend-cli test seed --dryRun
 src/
 ├── actions/       # Command implementation logic
 │   ├── api-key/
-│   ├── database/  # Database import/export actions
+│   ├── database/  # Database operations (export, import, seed, demo)
 │   ├── payment/
 │   ├── process/
 │   ├── setup/
 │   ├── sync/
-│   ├── test/      # Testing and demo actions
+│   ├── test/      # Test-specific utilities
 │   └── user/
 ├── commands/      # Command definitions
 ├── types/         # TypeScript type definitions
