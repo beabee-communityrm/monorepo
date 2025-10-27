@@ -1,10 +1,10 @@
-import { GetNoticesQuery, UpdateNoticeData } from '@beabee/beabee-common';
+import { GetNoticesQuery } from '@beabee/beabee-common';
 import { BeabeeClient, NoticeClient } from '@beabee/client';
 import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import {  beforeAll, describe, expect, it } from 'vitest';
+import { testNotice, testNoticeUpdate } from '../../fixtures/notices';
 
-import { testNotice, testNoticeUpdate } from '../../fixtures/notices.js';
 
 describe('Notice API', () => {
   let client: BeabeeClient;

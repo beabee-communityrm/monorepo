@@ -1,4 +1,5 @@
 import { config } from 'dotenv';
+import { execSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { DockerComposeEnvironment, Wait } from 'testcontainers';
 import type { StartedDockerComposeEnvironment } from 'testcontainers';
@@ -12,12 +13,15 @@ const envTest = config({
 const env = { ...envDev.parsed, ...envTest.parsed };
 
 const testUserEmail = env.TEST_USER_EMAIL;
+// todo move to database dump?
 const createTestUserCommand = `yarn backend-cli user create --firstname ${env.TEST_USER_FIRSTNAME} --lastname ${env.TEST_USER_LASTNAME} --email ${testUserEmail} --password ${env.TEST_USER_PASSWORD} --role ${env.TEST_USER_ROLE}`;
+// todo move to database dump?
 const createRateLimitTestUserCommand = `yarn backend-cli user create --firstname ${env.TEST_RATE_LIMIT_USER_FIRSTNAME} --lastname ${env.TEST_RATE_LIMIT_USER_LASTNAME} --email ${env.TEST_RATE_LIMIT_USER_EMAIL} --password ${env.TEST_RATE_LIMIT_USER_PASSWORD} --role ${env.TEST_RATE_LIMIT_USER_ROLE}`;
+// todo could be replaced by database dump?
 const createTestApiKeyCommand = `yarn backend-cli api-key create --description ${env.TEST_API_KEY_DESCRIPTION} --email ${testUserEmail}`;
 
 // Create test payments with different amounts and periods (at least 10 for pagination)
-const createTestPaymentsCommands = [
+export const createTestPaymentsCommands = [
   // Create payments with different amounts and periods
   `yarn backend-cli payment create --email ${testUserEmail} --amount 10 --period monthly`,
   `yarn backend-cli payment create --email ${testUserEmail} --amount 20 --period monthly`,
@@ -30,6 +34,12 @@ const createTestPaymentsCommands = [
   `yarn backend-cli payment create --email ${testUserEmail} --amount 90 --period annually`,
   `yarn backend-cli payment create --email ${testUserEmail} --amount 100 --period annually`,
 ];
+
+const seedCommand = `yarn backend-cli test seed --dry-run false`;
+
+const anonymisedCommand = `yarn backend-cli test anonymise --dry-run false`;
+
+const uploadTestUserDataCommand = `yarn backend-cli test seed --dry-run false --fileName test-user-data.json`;
 
 const apiAppLogs = {
   data: [] as string[],
@@ -91,6 +101,9 @@ export async function setup() {
     console.log('Creating rate limit test user...');
     await apiApp.exec(createRateLimitTestUserCommand.split(' '));
 
+    // console.log('Loading test user, rate limit user and test api key...');
+    // await apiApp.exec(uploadTestUserDataCommand);
+
     // Create test API key
     console.log('Creating test API key...');
     const apiKeyOutput = await apiApp.exec(createTestApiKeyCommand.split(' '));
@@ -103,15 +116,6 @@ export async function setup() {
       throw new Error('Failed to create test API key: ' + apiKeyOutput.output);
     }
 
-    // Create test payments
-    console.log(
-      `Creating ${createTestPaymentsCommands.length} test payments...`
-    );
-    for (const command of createTestPaymentsCommands) {
-      await apiApp.exec(command.split(' '));
-    }
-    console.log('✅ Test payments created');
-
     console.log('✅ Setup completed successfully');
   } catch (error) {
     console.log('❌ Setup failed');
@@ -120,6 +124,18 @@ export async function setup() {
     );
     throw error;
   }
+}
+
+export async function setupPayments() {
+  // Create test payments
+  console.log(`Creating ${createTestPaymentsCommands.length} test payments...`);
+
+  // TODO: is there a better way of doing this? How can I call the backend-cli in the tests?
+  // At the moment startedDockerComposeEnvironment is not available in beforeAll hooks
+  for (const command of createTestPaymentsCommands) {
+    execSync('docker exec beabee-test-api_app-1 ' + command);
+  }
+  console.log('✅ Test payments created');
 }
 
 export async function teardown() {

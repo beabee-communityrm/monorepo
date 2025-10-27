@@ -9,8 +9,8 @@ import {
 import { CalloutResponseClient } from '@beabee/client';
 
 import { describe, expect, it } from 'vitest';
+import { createTestCalloutResponseAnswers } from '../../fixtures/callouts';
 
-import { createTestCalloutResponseAnswers } from '../../fixtures/callouts.js';
 
 describe('CalloutResponse API', () => {
   describe('deserialize', () => {

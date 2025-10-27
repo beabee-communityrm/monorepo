@@ -1,5 +1,6 @@
 import type { GetPaymentsQuery } from '@beabee/beabee-common';
 import { PaymentClient } from '@beabee/client';
+import { setupPayments } from '@beabee/test-utils/vitest/docker-compose-setup';
 import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
 import { beforeAll, describe, expect, it } from 'vitest';
@@ -7,12 +8,14 @@ import { beforeAll, describe, expect, it } from 'vitest';
 describe('PaymentClient', () => {
   let paymentClient: PaymentClient;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     paymentClient = new PaymentClient({
       host: HOST,
       path: PATH,
       token: API_KEY,
     });
+
+    await setupPayments();
   });
 
   describe('list', () => {
