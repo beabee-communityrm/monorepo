@@ -59,7 +59,8 @@ const optionallyAnonymisedModels = [
 export const exportDatabase = async (
   dryRun = false,
   type: 'json' | 'sql' = 'json',
-  anonymize = true
+  anonymize = true,
+  outputDir = '/opt/packages/test-utils/database-dump'
 ): Promise<void> => {
   await runApp(async () => {
     const valueMap = new Map<string, unknown>();
@@ -93,7 +94,7 @@ export const exportDatabase = async (
     }
 
     if (type === 'json') {
-      saveJsonDump(dryRun);
+      await saveJsonDump(dryRun, outputDir);
     }
   });
 };

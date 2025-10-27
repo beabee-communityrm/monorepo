@@ -36,12 +36,18 @@ export const testCommand: CommandModule = {
               type: 'string',
               description: 'Export type: json or sql. Default is json.',
               default: 'json',
+            })
+            .option('outputDir', {
+              type: 'string',
+              description:
+                'Path where the file will be dumped. A sub folder will be created called generated-dumps.',
+              default: '/opt/packages/test-utils/database-dump',
             }),
         handler: async (argv) => {
           const { exportDatabase } = await import(
             '../actions/database/export.js'
           );
-          return exportDatabase(argv.dryRun, argv.type as 'json' | 'sql', true);
+          return exportDatabase(argv.dryRun, argv.type as 'json' | 'sql', true, argv.outputDir);
         },
       })
       .command({
@@ -54,14 +60,15 @@ export const testCommand: CommandModule = {
               description: 'Run without making changes',
               default: false,
             })
-            .option('fileName', {
+            .option('filePath', {
               type: 'string',
-              description: 'JSON dump file name',
-              default: undefined,
+              description: 'Full path to the JSON dump file',
+              default:
+                '/opt/packages/test-utils/database-dump/database-dump.json',
             }),
         handler: async (argv) => {
           const { seed } = await import('../actions/test/seed.js');
-          return seed(argv.dryRun, argv.fileName);
+          return seed(argv.dryRun, argv.filePath);
         },
       })
       .command({

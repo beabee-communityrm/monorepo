@@ -342,10 +342,34 @@ export const contactTagAssignmentAnonymiser = createModelAnonymiser(
   }
 );
 
-export const emailAnonymiser = createModelAnonymiser(Email);
+export const emailAnonymiser = createModelAnonymiser(Email, {
+  id: () => uuidv4(),
+  date: () => new Date(),
+  name: () => chance.sentence({ words: 3 }),
+  fromName: () => chance.name(),
+  fromEmail: () => chance.email({ domain: 'fake.beabee.io' }),
+  subject: () => chance.sentence({ words: 5 }),
+  body: () => chance.paragraph({ sentences: 3 }),
+});
 
 export const emailMailingAnonymiser = createModelAnonymiser(EmailMailing, {
-  recipients: () => [],
+  id: () => uuidv4(),
+  emailId: () => uuidv4(), // Wird durch valueMap konsistent gehalten
+  createdDate: () => new Date(),
+  sentDate: () => new Date(),
+  recipients: () => [
+    {
+      email: chance.email({ domain: 'fake.beabee.io' }),
+      name: chance.name(),
+      id: uuidv4(),
+    },
+  ],
+  emailField: () => 'email', // Standard-Feldname
+  nameField: () => 'firstname', // Standard-Feldname
+  mergeFields: () => ({
+    firstname: chance.first(),
+    lastname: chance.last(),
+  }),
 });
 
 export const exportsAnonymiser = createModelAnonymiser(Export);
