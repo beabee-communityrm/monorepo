@@ -60,14 +60,15 @@ export const testCommand: CommandModule = {
               description: 'Run without making changes',
               default: false,
             })
-            .option('fileName', {
+            .option('filePath', {
               type: 'string',
-              description: 'JSON dump file name',
-              default: undefined,
+              description: 'Full path to the JSON dump file',
+              default:
+                '/opt/packages/test-utils/database-dump/database-dump.json',
             }),
         handler: async (argv) => {
           const { seed } = await import('../actions/test/seed.js');
-          return seed(argv.dryRun, argv.fileName);
+          return seed(argv.dryRun, argv.filePath);
         },
       }),
   handler: () => {},

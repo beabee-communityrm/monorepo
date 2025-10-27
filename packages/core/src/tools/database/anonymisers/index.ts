@@ -323,9 +323,9 @@ export async function saveJsonDump(
  */
 export async function writeJsonToDB(
   dryRun = false,
-  fileName = 'database-dump.json'
+  filePath = path.join(fileDirectory, 'database-dump.json')
 ): Promise<void> {
-  const filePathSeed = path.join(fileDirectory, fileName);
+  const filePathSeed = filePath;
 
   log.info('Start seeding...');
   log.info(`Reading from file: ${filePathSeed}`);
@@ -338,7 +338,7 @@ export async function writeJsonToDB(
   const dump = JSON.parse(fileContent);
 
   if (!validateDumpStructure(dump)) {
-    throw new Error(`Invalid dump structure in file: ${fileName}`);
+    throw new Error(`Invalid dump structure in file: ${filePath}`);
   }
 
   // Get entity metadata from the dataSource
