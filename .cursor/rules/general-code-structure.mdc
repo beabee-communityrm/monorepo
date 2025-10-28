@@ -18,3 +18,4 @@ Whenever you write code, make sure to
 - Use common and understandable variable, method and component names
 - Use the latest versions of the source code so that you do not overwrite manual adjustments
 - Always store types and interfaces in `src/types/`, utility methods in `src/utils/`
+- Always program files in the most human readable way and keep things simple
