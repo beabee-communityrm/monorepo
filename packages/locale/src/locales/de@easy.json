@@ -1266,7 +1266,7 @@
       "strikethrough": "",
       "toolbar": "",
       "underline": "",
-      "mergeFields": "Merge-Feld einfügen"
+      "mergeFields": "Platzhalter einfügen"
     },
     "saveChanges": "",
     "saved": "",
@@ -1643,12 +1643,12 @@
     "invoiceName": "MwSt"
   },
   "mergeFields": {
-    "title": "Merge-Felder",
+    "title": "Platzhalter",
     "expand": "Ausklappen",
-    "expandAll": "Alle Merge-Felder ausklappen",
+    "expandAll": "Alle Platzhalter ausklappen",
     "collapse": "Einklappen",
-    "collapseAll": "Alle Merge-Felder einklappen",
-    "clickToExpand": "Klicken Sie zum Ausklappen der Merge-Felder",
+    "collapseAll": "Alle Platzhalter einklappen",
+    "clickToExpand": "Klicken Sie zum Ausklappen der Platzhalter",
     "copy": "Kopieren",
     "copyTag": "{tag} kopieren",
     "copied": "Kopiert!",

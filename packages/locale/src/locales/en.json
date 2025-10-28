@@ -1133,12 +1133,12 @@
     }
   },
   "mergeFields": {
-    "title": "Merge Fields",
+    "title": "Placeholders",
     "expand": "Expand",
-    "expandAll": "Expand all merge fields",
+    "expandAll": "Expand all placeholders",
     "collapse": "Collapse",
-    "collapseAll": "Collapse all merge fields",
-    "clickToExpand": "Click to expand merge fields",
+    "collapseAll": "Collapse all placeholders",
+    "clickToExpand": "Click to expand placeholders",
     "copy": "Copy",
     "copyTag": "Copy {tag}",
     "copied": "Copied!",
