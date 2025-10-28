@@ -1,248 +1,56 @@
+import {
+  expandNestedMergeFields,
+  replaceMergeFields,
+} from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
 import fs from 'fs';
-import moment from 'moment';
 import path from 'path';
 import { loadFront } from 'yaml-front-matter';
 
 import config from '#config/config';
+import {
+  adminEmailTemplates,
+  contactEmailTemplates,
+  generalEmailTemplates,
+} from '#data/email-templates';
 import { log as mainLogger } from '#logging';
 import { Contact, Email } from '#models/index';
 import { MandrillProvider, SMTPProvider, SendGridProvider } from '#providers';
+import {
+  magicMergeFields,
+  magicMergeFieldsProcessors,
+} from '#providers/email/BaseProvider';
 import OptionsService from '#services/OptionsService';
 import {
+  AdminEmailTemplateId,
+  AdminEmailTemplates,
+  AdminTemplateFunction,
+  ContactEmailParams,
+  ContactEmailTemplateId,
+  ContactTemplateFunction,
   EmailMergeFields,
   EmailOptions,
   EmailPerson,
   EmailProvider,
   EmailRecipient,
+  EmailTemplateId,
+  EmailTemplateType,
+  GeneralEmailTemplateId,
+  GeneralEmailTemplates,
+  GeneralTemplateFunction,
+  TemplateEmailOptions,
+  TemplateMergeFieldResult,
 } from '#type/index';
+import {
+  extractTemplateParams,
+  isAdminEmailTemplateId,
+  isContactEmailTemplateId,
+  isEmailTemplateId,
+  isGeneralEmailTemplateId,
+} from '#utils/email';
 
 const log = mainLogger.child({ app: 'email-service' });
-
-/**
- * Email Merge Fields Documentation
- *
- * All email templates support these merge fields:
- *
- * ## Contact Fields (available for all contact emails)
- * - *|EMAIL|* - Contact's email address
- * - *|NAME|* - Contact's full name (first + last)
- * - *|FNAME|* - Contact's first name
- * - *|LNAME|* - Contact's last name
- *
- * ## Magic Links (generated automatically)
- * - *|RPLINK|* - Reset password link
- * - *|LOGINLINK|* - Login link
- * - *|SPLINK|* - Set password link
- *
- * ## Template-Specific Fields
- *
- * ### General Email Templates
- * **purchased-gift:**
- * - *|PURCHASER|* - Name of the gift purchaser
- * - *|GIFTEE|* - First name of the gift recipient
- * - *|GIFTDATE|* - Gift start date (formatted as "Month Day")
- *
- * **confirm-email:**
- * - *|FNAME|* - First name
- * - *|LNAME|* - Last name
- * - *|CONFIRMLINK|* - Email confirmation link
- *
- * **expired-special-url-resend:**
- * - *|FNAME|* - First name
- * - *|URL|* - New special URL
- *
- * ### Admin Email Templates
- * **new-member:**
- * - *|MEMBERID|* - Contact ID of the new member
- * - *|MEMBERNAME|* - Full name of the new member
- *
- * **cancelled-member:**
- * - *|MEMBERID|* - Contact ID of the cancelled member
- * - *|MEMBERNAME|* - Full name of the cancelled member
- *
- * **new-callout-response:**
- * - *|CALLOUTSLUG|* - Slug of the callout
- * - *|CALLOUTTITLE|* - Title of the callout
- * - *|RESPNAME|* - Name of the responder
- *
- * ### Contact Email Templates
- * **welcome:**
- * - *|REFCODE|* - Contact's referral code
- *
- * **reset-password:**
- * - *|RPLINK|* - Reset password link
- *
- * **reset-device:**
- * - *|RPLINK|* - Reset device link
- *
- * **cancelled-contribution:**
- * - *|EXPIRES|* - Membership expiration date (formatted as "Day Date Month")
- * - *|MEMBERSHIPID|* - Contact/membership ID
- *
- * **cancelled-contribution-no-survey:**
- * - *|EXPIRES|* - Membership expiration date (formatted as "Day Date Month")
- *
- * **successful-referral:**
- * - *|REFCODE|* - Contact's referral code
- * - *|REFEREENAME|* - Name of the referred person
- * - *|ISELIGIBLE|* - Whether the referral is eligible
- *
- * **giftee-success:**
- * - *|PURCHASER|* - Name of the gift purchaser
- * - *|MESSAGE|* - Personal message from the purchaser (supports nested merge fields)
- * - *|ACTIVATELINK|* - Link to activate the gift
- *
- * **email-exists-login:**
- * - *|LOGINLINK|* - Login link
- *
- * **email-exists-set-password:**
- * - *|SPLINK|* - Set password link
- *
- * **callout-response-answers:**
- * - *|MESSAGE|* - Custom message (supports nested merge fields)
- * - *|CALLOUTTITLE|* - Title of the callout
- * - *|CALLOUTLINK|* - Link to the callout
- * - *|SUPPORTEMAIL|* - Support email address
- *
- * **contribution-didnt-start:**
- * - *|ORGNAME|* - Organization name
- * - *|SUPPORTEMAIL|* - Support email address
- *
- * ## Nested Merge Fields
- * The MESSAGE field supports nested merge fields. For example:
- * - MESSAGE: "Hello *|FNAME|*, thank you for your response to *|CALLOUTTITLE|*!"
- * - This will expand to: "Hello John, thank you for your response to Survey 2024!"
- *
- * All merge fields within MESSAGE content are automatically expanded before rendering.
- */
-
-const generalEmailTemplates = {
-  'purchased-gift': (params: {
-    fromName: string;
-    gifteeFirstName: string;
-    giftStartDate: Date;
-  }) => ({
-    PURCHASER: params.fromName,
-    GIFTEE: params.gifteeFirstName,
-    GIFTDATE: moment.utc(params.giftStartDate).format('MMMM Do'),
-  }),
-  'confirm-email': (params: {
-    firstName: string;
-    lastName: string;
-    confirmLink: string;
-  }) => ({
-    FNAME: params.firstName,
-    LNAME: params.lastName,
-    CONFIRMLINK: params.confirmLink,
-  }),
-  'expired-special-url-resend': (params: {
-    firstName: string;
-    newUrl: string;
-  }) => ({
-    FNAME: params.firstName,
-    URL: params.newUrl,
-  }),
-} as const;
-
-const adminEmailTemplates = {
-  'new-member': (params: { contact: Contact }) => ({
-    MEMBERID: params.contact.id,
-    MEMBERNAME: params.contact.fullname,
-  }),
-  'cancelled-member': (params: { contact: Contact }) => ({
-    MEMBERID: params.contact.id,
-    MEMBERNAME: params.contact.fullname,
-  }),
-  'new-callout-response': (params: {
-    calloutSlug: string;
-    calloutTitle: string;
-    responderName: string;
-  }) => ({
-    CALLOUTSLUG: params.calloutSlug,
-    CALLOUTTITLE: params.calloutTitle,
-    RESPNAME: params.responderName,
-  }),
-} as const;
-
-const contactEmailTemplates = {
-  welcome: (contact: Contact) => ({
-    REFCODE: contact.referralCode,
-  }),
-  'welcome-post-gift': () => ({}),
-  'reset-password': (_: Contact, params: { rpLink: string }) => ({
-    RPLINK: params.rpLink,
-  }),
-  'reset-device': (_: Contact, params: { rpLink: string }) => ({
-    RPLINK: params.rpLink,
-  }),
-  'cancelled-contribution': (contact: Contact) => ({
-    EXPIRES: contact.membership?.dateExpires
-      ? moment.utc(contact.membership.dateExpires).format('dddd Do MMMM')
-      : '-',
-    MEMBERSHIPID: contact.id,
-  }),
-  'cancelled-contribution-no-survey': (contact: Contact) => {
-    return {
-      EXPIRES: contact.membership?.dateExpires
-        ? moment.utc(contact.membership.dateExpires).format('dddd Do MMMM')
-        : '-',
-    };
-  },
-  'successful-referral': (
-    contact: Contact,
-    params: { refereeName: string; isEligible: boolean }
-  ) => ({
-    REFCODE: contact.referralCode,
-    REFEREENAME: params.refereeName,
-    ISELIGIBLE: params.isEligible,
-  }),
-  'giftee-success': (
-    _: Contact,
-    params: { fromName: string; message: string; giftCode: string }
-  ) => ({
-    PURCHASER: params.fromName,
-    MESSAGE: params.message,
-    ACTIVATELINK: config.audience + '/gift/' + params.giftCode,
-  }),
-  'manual-to-automatic': () => ({}),
-  'email-exists-login': (_: Contact, params: { loginLink: string }) => ({
-    LOGINLINK: params.loginLink,
-  }),
-  'email-exists-set-password': (_: Contact, params: { spLink: string }) => ({
-    SPLINK: params.spLink,
-  }),
-  'callout-response-answers': (
-    _: Contact,
-    params: { message: string; calloutSlug: string; calloutTitle: string }
-  ) => ({
-    MESSAGE: params.message,
-    CALLOUTTITLE: params.calloutTitle,
-    CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
-    SUPPORTEMAIL: OptionsService.getText('support-email'),
-  }),
-  'contribution-didnt-start': (_: Contact) => ({
-    ORGNAME: OptionsService.getText('organisation'),
-    SUPPORTEMAIL: OptionsService.getText('support-email'),
-  }),
-} as const;
-
-type GeneralEmailTemplates = typeof generalEmailTemplates;
-type GeneralEmailTemplateId = keyof GeneralEmailTemplates;
-type AdminEmailTemplates = typeof adminEmailTemplates;
-type AdminEmailTemplateId = keyof AdminEmailTemplates;
-type ContactEmailTemplates = typeof contactEmailTemplates;
-type ContactEmailTemplateId = keyof ContactEmailTemplates;
-
-type ContactEmailParams<T extends ContactEmailTemplateId> = Parameters<
-  ContactEmailTemplates[T]
->[1];
-
-export type EmailTemplateId =
-  | GeneralEmailTemplateId
-  | AdminEmailTemplateId
-  | ContactEmailTemplateId;
 
 class EmailService {
   private readonly provider: EmailProvider =
@@ -312,7 +120,7 @@ class EmailService {
     template: T,
     to: EmailPerson,
     params: Parameters<GeneralEmailTemplates[T]>[0],
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     const mergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
     await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
@@ -322,7 +130,7 @@ class EmailService {
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void>;
   async sendTemplateToContact<
     T extends ContactEmailParams<T> extends undefined
@@ -332,13 +140,13 @@ class EmailService {
     template: T,
     contact: Contact,
     params?: undefined,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void>;
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     log.info('Sending template to contact ' + contact.id);
 
@@ -353,7 +161,7 @@ class EmailService {
   async sendTemplateToAdmin<T extends AdminEmailTemplateId>(
     template: T,
     params: Parameters<AdminEmailTemplates[T]>[0],
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     const recipient = {
       to: { email: OptionsService.getText('support-email') },
@@ -366,7 +174,7 @@ class EmailService {
   private async sendTemplate(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
-    opts: EmailOptions | undefined,
+    opts: TemplateEmailOptions | undefined,
     required: boolean
   ): Promise<void> {
     const providerTemplate = this.getProviderTemplate(template);
@@ -400,6 +208,15 @@ class EmailService {
     }
   }
 
+  /**
+   * Get an email template
+   *
+   * @param template The template ID
+   * @returns The email template, or:
+   *   - `false` if the template is managed by an external email provider (not editable)
+   *   - `null` if the template was not found (no provider template and no default template)
+   *   - `Email` object if the template was found (either from provider or as default template)
+   */
   async getTemplateEmail(
     template: EmailTemplateId
   ): Promise<false | Email | null> {
@@ -413,18 +230,350 @@ class EmailService {
     template: EmailTemplateId,
     email: Email
   ): Promise<void> {
-    OptionsService.setJSON('email-templates', {
+    await OptionsService.setJSON('email-templates', {
       ...OptionsService.getJSON('email-templates'),
       [template]: email.id,
     });
   }
 
-  isTemplateId(template: string): template is EmailTemplateId {
-    return (
-      template in generalEmailTemplates ||
-      template in adminEmailTemplates ||
-      template in contactEmailTemplates
+  /**
+   * Generate base merge fields from contact information
+   */
+  private generateBaseMergeFields(contact: Contact): EmailMergeFields {
+    return {
+      EMAIL: contact.email || '',
+      NAME: contact.fullname || '',
+      FNAME: contact.firstname || '',
+      LNAME: contact.lastname || '',
+    };
+  }
+
+  /**
+   * Convert template merge field result to EmailMergeFields with proper string conversion
+   */
+  private convertToEmailMergeFields(
+    result: TemplateMergeFieldResult
+  ): EmailMergeFields {
+    const mergeFields: EmailMergeFields = {};
+
+    for (const [key, value] of Object.entries(result)) {
+      // Handle undefined/null values gracefully
+      if (value == null) {
+        mergeFields[key] = '';
+      } else {
+        mergeFields[key] = typeof value === 'string' ? value : String(value);
+      }
+    }
+
+    return mergeFields;
+  }
+
+  /**
+   * Generate merge fields for contact templates
+   */
+  private generateContactTemplateMergeFields<T extends ContactEmailTemplateId>(
+    template: T,
+    contact: Contact,
+    customMergeFields: Record<string, string>
+  ): EmailMergeFields {
+    const templateFn = contactEmailTemplates[
+      template
+    ] as ContactTemplateFunction<T>;
+
+    if (templateFn.length > 1) {
+      // Template expects parameters - extract them using the mapping system
+      const templateParams = extractTemplateParams(template, customMergeFields);
+
+      try {
+        const templateResult = templateFn(
+          contact,
+          templateParams as ContactEmailParams<T>
+        );
+        return this.convertToEmailMergeFields(templateResult);
+      } catch (error) {
+        log.error(`Error calling contact template function for ${template}:`, {
+          template,
+          templateParams,
+          error: error instanceof Error ? error.message : String(error),
+        });
+        throw error;
+      }
+    } else {
+      // Template doesn't expect parameters - use empty params
+      const templateResult = templateFn(contact, {} as ContactEmailParams<T>);
+      return this.convertToEmailMergeFields(templateResult);
+    }
+  }
+
+  /**
+   * Generate merge fields for admin templates
+   */
+  private generateAdminTemplateMergeFields<T extends AdminEmailTemplateId>(
+    template: T,
+    customMergeFields: Record<string, string>
+  ): EmailMergeFields {
+    const templateFn = adminEmailTemplates[
+      template
+    ] as AdminTemplateFunction<T>;
+
+    if (templateFn.length > 1) {
+      // Template expects parameters - extract them using the mapping system
+      const templateParams = extractTemplateParams(template, customMergeFields);
+      const templateResult = templateFn(
+        templateParams as Parameters<AdminEmailTemplates[T]>[0]
+      );
+      return this.convertToEmailMergeFields(templateResult);
+    } else {
+      const templateResult = templateFn(
+        {} as Parameters<AdminEmailTemplates[T]>[0]
+      );
+      return this.convertToEmailMergeFields(templateResult);
+    }
+  }
+
+  /**
+   * Generate merge fields for general templates
+   */
+  private generateGeneralTemplateMergeFields<T extends GeneralEmailTemplateId>(
+    template: T,
+    customMergeFields: Record<string, string>
+  ): EmailMergeFields {
+    const templateFn = generalEmailTemplates[
+      template
+    ] as GeneralTemplateFunction<T>;
+
+    if (templateFn.length > 1) {
+      // Template expects parameters - extract them using the mapping system
+      const templateParams = extractTemplateParams(template, customMergeFields);
+      const templateResult = templateFn(
+        templateParams as Parameters<GeneralEmailTemplates[T]>[0]
+      );
+      return this.convertToEmailMergeFields(templateResult);
+    } else {
+      const templateResult = templateFn(
+        {} as Parameters<GeneralEmailTemplates[T]>[0]
+      );
+      return this.convertToEmailMergeFields(templateResult);
+    }
+  }
+
+  /**
+   * Generate template-specific merge fields based on template type
+   */
+  private generateTemplateMergeFields(
+    template: EmailTemplateId,
+    type: EmailTemplateType,
+    contact: Contact,
+    customMergeFields: Record<string, string>
+  ): EmailMergeFields {
+    switch (type) {
+      case 'contact':
+        if (isContactEmailTemplateId(template)) {
+          return this.generateContactTemplateMergeFields(
+            template,
+            contact,
+            customMergeFields
+          );
+        }
+        break;
+
+      case 'admin':
+        if (isAdminEmailTemplateId(template)) {
+          return this.generateAdminTemplateMergeFields(
+            template,
+            customMergeFields
+          );
+        }
+        break;
+
+      case 'general':
+        if (isGeneralEmailTemplateId(template)) {
+          return this.generateGeneralTemplateMergeFields(
+            template,
+            customMergeFields
+          );
+        }
+        break;
+    }
+
+    return {};
+  }
+
+  /**
+   * Process magic merge fields for email preview
+   */
+  private async processMagicMergeFields(
+    mergeFields: EmailMergeFields,
+    emailBody: string,
+    contact: Contact
+  ): Promise<EmailMergeFields> {
+    // Check if any magic merge fields are needed
+    const needsMagicProcessing = magicMergeFields.some(
+      (mergeField) =>
+        emailBody.includes(`*|${mergeField}|*`) ||
+        Object.values(mergeFields).some(
+          (value) =>
+            typeof value === 'string' && value.includes(`*|${mergeField}|*`)
+        )
     );
+
+    if (!needsMagicProcessing) {
+      return mergeFields;
+    }
+
+    // Create a temporary recipient to process magic merge fields
+    const tempRecipient: EmailRecipient = {
+      to: { email: contact.email || '', name: contact.fullname || '' },
+      mergeFields,
+    };
+
+    // Process each magic merge field
+    let processedRecipients = [tempRecipient];
+    for (const mergeField of magicMergeFields) {
+      const appearsInBody = emailBody.includes(`*|${mergeField}|*`);
+      const appearsInMergeFields = Object.values(mergeFields).some(
+        (value) =>
+          typeof value === 'string' && value.includes(`*|${mergeField}|*`)
+      );
+
+      if (appearsInBody || appearsInMergeFields) {
+        processedRecipients =
+          await magicMergeFieldsProcessors[mergeField](processedRecipients);
+      }
+    }
+
+    // Extract the processed merge fields
+    return processedRecipients[0]?.mergeFields || mergeFields;
+  }
+
+  /**
+   * Replace and expand merge fields in email content
+   */
+  private processMergeFields(
+    mergeFields: EmailMergeFields,
+    emailBody: string,
+    emailSubject: string
+  ): { subject: string; body: string } {
+    // Expand nested merge fields (handles MESSAGE with nested fields)
+    let expandedFields: EmailMergeFields;
+    try {
+      expandedFields = expandNestedMergeFields(mergeFields);
+    } catch (error) {
+      log.error(`Error expanding nested merge fields:`, {
+        processedMergeFields: mergeFields,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      throw error;
+    }
+
+    // Replace merge fields in subject and body
+    const subject = replaceMergeFields(emailSubject, expandedFields);
+    const body = replaceMergeFields(emailBody, expandedFields);
+
+    return { subject, body };
+  }
+
+  /**
+   * Get a preview of an email template with merge fields replaced
+   * This method supports all template types (general, admin, contact) and provides
+   * a flexible way to preview emails with custom merge fields and locale support
+   *
+   * @param template The template ID
+   * @param type The template type (general, admin, contact)
+   * @param contact Contact for contact-specific fields (required, uses authenticated user)
+   * @param customMergeFields Custom merge fields to override/extend default fields
+   * @param opts Email options including customSubject and locale
+   * @returns Preview with subject and body with merge fields replaced
+   */
+  async getTemplatePreview(
+    template: EmailTemplateId,
+    type: EmailTemplateType,
+    contact: Contact,
+    customMergeFields: Record<string, string> = {},
+    opts?: TemplateEmailOptions & { locale?: Locale }
+  ): Promise<{ subject: string; body: string }> {
+    // 1. Get the email template (from provider or default templates)
+    const emailTemplate = await this.getTemplateEmail(template);
+
+    if (emailTemplate === false) {
+      throw new Error(
+        `Template ${template} is managed by external provider and cannot be previewed`
+      );
+    }
+
+    if (!emailTemplate) {
+      throw new Error(`Template ${template} not found`);
+    }
+
+    // 2. Generate base merge fields from contact
+    const baseMergeFields = this.generateBaseMergeFields(contact);
+
+    // 3. Generate template-specific merge fields
+    const templateMergeFields = this.generateTemplateMergeFields(
+      template,
+      type,
+      contact,
+      customMergeFields
+    );
+
+    // 4. Merge all fields (custom fields override template fields)
+    const allMergeFields = {
+      ...baseMergeFields,
+      ...templateMergeFields,
+      ...customMergeFields,
+    };
+
+    // 5. Process magic merge fields (e.g., ANSWERS, SPLINK, RPLINK)
+    const emailBody = (emailTemplate as Email).body || '';
+    const processedMergeFields = await this.processMagicMergeFields(
+      allMergeFields,
+      emailBody,
+      contact
+    );
+
+    // 6. Replace and expand merge fields in subject and body
+    const emailSubject =
+      opts?.customSubject || (emailTemplate as Email).subject || '';
+    const result = this.processMergeFields(
+      processedMergeFields,
+      emailBody,
+      emailSubject
+    );
+
+    return result;
+  }
+
+  /**
+   * Determine the template type from a template ID
+   * @param template The template ID
+   * @returns The template type (general, admin, or contact)
+   */
+  getTemplateType(template: string): EmailTemplateType | null {
+    if (template in generalEmailTemplates) {
+      return 'general';
+    } else if (template in adminEmailTemplates) {
+      return 'admin';
+    } else if (template in contactEmailTemplates) {
+      return 'contact';
+    }
+    return null;
+  }
+
+  /**
+   * Delete a template email override
+   * @param template The template ID
+   * @returns void
+   */
+  async deleteTemplateEmail(template: EmailTemplateId): Promise<void> {
+    const currentTemplates = OptionsService.getJSON('email-templates') || {};
+    if (currentTemplates[template]) {
+      delete currentTemplates[template];
+      await OptionsService.setJSON('email-templates', currentTemplates);
+    }
+  }
+
+  isTemplateId(template: string): template is EmailTemplateId {
+    return isEmailTemplateId(template);
   }
 
   private getProviderTemplate(template: EmailTemplateId): string | undefined {

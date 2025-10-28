@@ -1,9 +1,16 @@
 import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
+import { expandNestedMergeFields } from '@beabee/beabee-common';
 
 import config from '#config/config';
 import { createQueryBuilder, getRepository } from '#database';
 import { log as mainLogger } from '#logging';
-import { Contact, Email } from '#models/index';
+import {
+  Callout,
+  CalloutResponse,
+  CalloutVariant,
+  Contact,
+  Email,
+} from '#models/index';
 import OptionsService from '#services/OptionsService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
 import { formatEmailBody } from '#templates/email';
@@ -13,8 +20,9 @@ import type {
   EmailRecipient,
   EmailTemplate,
   PreparedEmail,
+  TemplateEmailOptions,
 } from '#type/index';
-import { expandNestedMergeFields } from '#utils/email';
+import { formatCalloutResponseAnswersPreview } from '#utils/callout';
 
 const log = mainLogger.child({ app: 'base-email-provider' });
 
@@ -70,9 +78,14 @@ function generateResetPasswordLinks(type: 'set' | 'reset') {
   };
 }
 
-const magicMergeFields = ['SPLINK', 'LOGINLINK', 'RPLINK'] as const;
+export const magicMergeFields = [
+  'SPLINK',
+  'LOGINLINK',
+  'RPLINK',
+  'ANSWERS',
+] as const;
 
-const magicMergeFieldsProcessors = {
+export const magicMergeFieldsProcessors = {
   SPLINK: generateResetPasswordLinks('set'),
   RPLINK: generateResetPasswordLinks('reset'),
   LOGINLINK: async (recipients: EmailRecipient[]) => {
@@ -87,6 +100,53 @@ const magicMergeFieldsProcessors = {
               LOGINLINK: `${config.audience}/auth/login`,
             },
           }
+    );
+  },
+  ANSWERS: async (recipients: EmailRecipient[]) => {
+    // Process ANSWERS merge field for callout-response-answers template
+    return Promise.all(
+      recipients.map(async (recipient) => {
+        // Only process if ANSWERS is not already provided and CALLOUTSLUG is available
+        if (
+          recipient.mergeFields?.ANSWERS ||
+          !recipient.mergeFields?.CALLOUTSLUG
+        ) {
+          return recipient;
+        }
+
+        const calloutSlug = recipient.mergeFields.CALLOUTSLUG;
+
+        // Fetch callout by slug
+        const callout = await getRepository(Callout).findOne({
+          where: { slug: calloutSlug },
+        });
+
+        if (callout) {
+          // Get default variant for component text translations
+          const defaultVariant =
+            callout.variants?.find((v) => v.name === 'default') ||
+            (await getRepository(CalloutVariant).findOneByOrFail({
+              calloutId: callout.id,
+              name: 'default',
+            }));
+
+          // Generate preview HTML with empty answer placeholders instead of real responses
+          const answersHtml = formatCalloutResponseAnswersPreview(
+            callout.formSchema,
+            defaultVariant.componentText
+          );
+
+          return {
+            ...recipient,
+            mergeFields: {
+              ...recipient.mergeFields,
+              ANSWERS: answersHtml,
+            },
+          };
+        }
+
+        return recipient;
+      })
     );
   },
 } as const;
@@ -112,10 +172,23 @@ export abstract class BaseProvider implements EmailProvider {
         (email.fromEmail ? '' : OptionsService.getText('support-email-from')),
     };
 
-    // Process magic merge fields (e.g., SPLINK, RPLINK, LOGINLINK)
+    // Process magic merge fields (e.g., SPLINK, RPLINK, LOGINLINK, ANSWERS)
     let preparedRecipients = recipients;
     for (const mergeField of magicMergeFields) {
-      if (email.body.includes(`*|${mergeField}|*`)) {
+      // Check if merge field appears directly in email body
+      const appearsInBody = email.body.includes(`*|${mergeField}|*`);
+
+      // Check if merge field appears in any recipient's merge fields (for nested usage)
+      const appearsInMergeFields = recipients.some(
+        (recipient) =>
+          recipient.mergeFields &&
+          Object.values(recipient.mergeFields).some(
+            (value) =>
+              typeof value === 'string' && value.includes(`*|${mergeField}|*`)
+          )
+      );
+
+      if (appearsInBody || appearsInMergeFields) {
         preparedRecipients =
           await magicMergeFieldsProcessors[mergeField](preparedRecipients);
       }
@@ -138,7 +211,7 @@ export abstract class BaseProvider implements EmailProvider {
   async sendTemplate(
     templateId: string,
     recipients: EmailRecipient[],
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     const email = await getRepository(Email).findOneBy({ id: templateId });
     if (email) {

@@ -1,4 +1,5 @@
 import { CONTACT_MFA_TYPE, LOGIN_CODES } from '@beabee/beabee-common';
+import { normalizeEmailAddress } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { UnauthorizedError } from '@beabee/core/errors';
@@ -8,7 +9,6 @@ import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
 import type { ContactMfaSecure } from '@beabee/core/type';
 import { generatePassword, isValidPassword } from '@beabee/core/utils/auth';
-import { normalizeEmailAddress } from '@beabee/core/utils/email';
 
 import passport from 'passport';
 import passportLocal from 'passport-local';

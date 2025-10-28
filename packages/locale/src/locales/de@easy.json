@@ -7,7 +7,7 @@
     "mfa": {
       "codeInput": {
         "info": "",
-        "label": ""
+        "label": "Betreff"
       },
       "confirmDelete": {
         "desc": "",
@@ -34,11 +34,11 @@
       },
       "secretInput": {
         "desc": "",
-        "label": ""
+        "label": "Betreff"
       },
       "title": "",
       "validateButton": {
-        "label": ""
+        "label": "Betreff"
       }
     },
     "newsletter": {
@@ -171,13 +171,13 @@
       },
       "expiresHelp": "",
       "expiresNeverWarning": "",
-      "label": "",
+      "label": "Betreff",
       "showingOf": ""
     },
     "email": {
       "fromEmail": "",
       "fromName": "",
-      "label": "",
+      "label": "Betreff",
       "text": "",
       "title": ""
     },
@@ -199,7 +199,7 @@
         "text": "",
         "title": ""
       },
-      "label": "",
+      "label": "Betreff",
       "language": "",
       "logo": "",
       "organisationName": "",
@@ -231,7 +231,7 @@
       "customColors": "",
       "fontNotListed": "",
       "fonts": "",
-      "label": "",
+      "label": "Betreff",
       "presetColors": {
         "default": ""
       },
@@ -309,7 +309,7 @@
     "saveSegment": {
       "createOrUpdate": {
         "create": "",
-        "label": "",
+        "label": "Betreff",
         "update": ""
       },
       "createSegment": "",
@@ -353,7 +353,7 @@
         "nextButton": "",
         "nextSlide": {
           "default": "",
-          "label": ""
+          "label": "Betreff"
         },
         "prevButton": "",
         "slideNo": "",
@@ -369,6 +369,7 @@
         "email": {
           "title": "E-Mail",
           "body": {
+            "default": "<p>Hallo {FNAME},</p><p>hier sind deine Antworten:<br />{ANSWERS}</p><p><br /></p><p>Du hast mitgemacht.<br />Bei der Befragung:<br /><a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a>.</p><p><br /></p><p>Hast du Fragen?<br />Schreib uns.<br />Unsere Adresse ist:<br /><a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.<br />Das ist unser Hilfe-Team.</p><p><br /></p><p>Viele Grüße</p>",
             "label": "E-Mail-Text"
           },
           "collectInfoWarning": {
@@ -380,13 +381,14 @@
             "label": "Nach der Übermittlung eine E-Mail an alle Teilnehmer senden"
           },
           "subject": {
+            "default": "Danke für Antwort",
             "label": "E-Mail-Betreff"
           }
         },
         "endMessage": {
           "inputs": {
             "action": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "redirect": "",
                 "showMessage": ""
@@ -394,17 +396,17 @@
             },
             "text": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             },
             "title": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             },
             "url": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             }
           },
@@ -412,7 +414,7 @@
         },
         "intro": {
           "help": "",
-          "label": "",
+          "label": "Betreff",
           "title": ""
         },
         "mailchimp": {
@@ -434,14 +436,14 @@
           },
           "inputs": {
             "collectGuestInfo": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
               }
             },
             "collectMemberInfo": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
@@ -449,7 +451,7 @@
             },
             "expires": {
               "description": "",
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "never": "",
                 "schedule": ""
@@ -460,64 +462,64 @@
               "gallery": {
                 "disabledDescription": "",
                 "enabledDescription": "",
-                "label": ""
+                "label": "Betreff"
               },
               "map": {
                 "disabledDescription": "",
                 "enabledDescription": "",
-                "label": ""
+                "label": "Betreff"
               },
               "title": ""
             },
             "mapSchema": {
               "addressPattern": {
-                "label": ""
+                "label": "Betreff"
               },
               "addressPatternProp": {
-                "label": "",
+                "label": "Betreff",
                 "none": ""
               },
               "addressProp": {
-                "label": ""
+                "label": "Betreff"
               },
               "bounds": {
-                "label": ""
+                "label": "Betreff"
               },
               "center": {
-                "label": ""
+                "label": "Betreff"
               },
               "geocodeCountries": {
-                "label": ""
+                "label": "Betreff"
               },
               "initialZoom": {
-                "label": ""
+                "label": "Betreff"
               },
               "maxZoom": {
-                "label": ""
+                "label": "Betreff"
               },
               "minZoom": {
-                "label": ""
+                "label": "Betreff"
               },
               "style": {
                 "help": "",
-                "label": ""
+                "label": "Betreff"
               },
               "title": "",
               "mapIconStylingSetting": {
-                "label": "",
+                "label": "Betreff",
                 "title": ""
               },
               "mapIconProp": {
-                "label": "",
+                "label": "Betreff",
                 "none": ""
               },
               "mapIconStylingProp": {
-                "label": ""
+                "label": "Betreff"
               }
             },
             "newsletterSettings": {
               "disabled": "",
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
@@ -525,7 +527,7 @@
             },
             "openToEveryone": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
@@ -533,9 +535,9 @@
             },
             "requireCaptcha": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "members": {
-                "label": "",
+                "label": "Betreff",
                 "opts": {
                   "disabled": "",
                   "enabled": ""
@@ -549,29 +551,29 @@
             },
             "responseImageProp": {
               "description": "",
-              "label": ""
+              "label": "Betreff"
             },
             "responseLinks": {
               "add": "",
               "description": "",
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
               },
               "placeholder": {
-                "label": "",
+                "label": "Betreff",
                 "url": ""
               },
               "text": {
-                "label": ""
+                "label": "Betreff"
               },
               "url": {
-                "label": ""
+                "label": "Betreff"
               }
             },
             "responseSettings": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "multiple": "",
                 "singleEditable": "",
@@ -581,17 +583,17 @@
             },
             "responseTitleProp": {
               "description": "",
-              "label": ""
+              "label": "Betreff"
             },
             "showResponses": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "no": "",
                 "yes": ""
               }
             },
             "starts": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "now": "",
                 "schedule": ""
@@ -599,7 +601,7 @@
             },
             "visible": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
@@ -607,7 +609,7 @@
             },
             "whichResponseBuckets": {
               "description": "",
-              "label": ""
+              "label": "Betreff"
             }
           },
           "title": ""
@@ -616,7 +618,7 @@
           "inputs": {
             "description": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             },
             "general": {
@@ -625,10 +627,10 @@
             "image": {
               "description": "",
               "help": "",
-              "label": ""
+              "label": "Betreff"
             },
             "overrideShare": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
@@ -636,12 +638,12 @@
             },
             "shareDescription": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             },
             "shareTitle": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             },
             "sharing": {
@@ -650,7 +652,7 @@
             "slug": {
               "boxTitle": "",
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "locked": {
                 "title": ""
               },
@@ -660,7 +662,7 @@
               }
             },
             "title": {
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             }
           },
@@ -689,7 +691,7 @@
       "translationFields": {
         "description": "",
         "html": "",
-        "label": "",
+        "label": "Betreff",
         "option": "",
         "placeholder": ""
       },
@@ -749,29 +751,29 @@
     "created": "",
     "dates": {
       "ends": "",
-      "label": "",
+      "label": "Betreff",
       "starts": ""
     },
     "settings": {
       "answers": {
         "editable": "",
         "final": "",
-        "label": ""
+        "label": "Betreff"
       },
       "contactInfo": {
-        "label": "",
+        "label": "Betreff",
         "optional": "",
         "required": ""
       },
       "endsWith": {
-        "label": "",
+        "label": "Betreff",
         "message": "",
         "redirect": ""
       },
-      "label": "",
+      "label": "Betreff",
       "openTo": {
         "everyone": "",
-        "label": "",
+        "label": "Betreff",
         "membersOnly": ""
       }
     },
@@ -912,7 +914,7 @@
     "id": "",
     "itemsPerPage": "",
     "joined": "",
-    "label": "",
+    "label": "Betreff",
     "loading": "Der Computer arbeitet.",
     "login": "",
     "newsletterStatus": {
@@ -1112,7 +1114,23 @@
     "warning": ""
   },
   "editNotice": {
-    "title": ""
+    "title": "Bearbeiten: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Betreff"
+    },
+    "body": {
+      "label": "Betreff"
+    },
+    "managed": {
+      "title": "E-Mail wird extern verwaltet",
+      "description": "Diese E-Mail-Vorlage wird extern verwaltet und kann hier nicht bearbeitet werden."
+    },
+    "preview": {
+      "unavailable": "Vorschau nicht verfügbar",
+      "label": "Vorschau"
+    }
   },
   "footer": {
     "contactUs": "Schreibe uns. Nutze diese Adresse:",
@@ -1247,7 +1265,8 @@
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
-      "underline": ""
+      "underline": "",
+      "mergeFields": "Platzhalter einfügen"
     },
     "saveChanges": "",
     "saved": "",
@@ -1494,32 +1513,32 @@
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     },
     "s_bacs": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     },
     "s_card": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     },
     "s_ideal": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     },
     "s_paypal": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     },
     "s_sepa": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     }
   },
@@ -1566,7 +1585,7 @@
       "title": ""
     },
     "expires": {
-      "label": "",
+      "label": "Betreff",
       "opts": {
         "never": "",
         "schedule": ""
@@ -1574,7 +1593,7 @@
     },
     "new": "",
     "starts": {
-      "label": "",
+      "label": "Betreff",
       "opts": {
         "now": "",
         "schedule": ""
@@ -1596,7 +1615,7 @@
   },
   "stepper": {
     "navigation": {
-      "label": ""
+      "label": "Betreff"
     },
     "screen": {
       "completed": "",
@@ -1626,5 +1645,54 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "mergeFields": {
+    "title": "Platzhalter",
+    "expand": "Ausklappen",
+    "expandAll": "Alle Platzhalter ausklappen",
+    "collapse": "Einklappen",
+    "collapseAll": "Alle Platzhalter einklappen",
+    "clickToExpand": "Klicken Sie zum Ausklappen der Platzhalter",
+    "copy": "Kopieren",
+    "copyTag": "{tag} kopieren",
+    "copied": "Kopiert!",
+    "insert": "Einfügen",
+    "insertTag": "{tag} einfügen",
+    "example": "Beispiel",
+    "groups": {
+      "contact": "Kontakt-Felder",
+      "magic": "Magic Links",
+      "template": "Template-Felder"
+    },
+    "tags": {
+      "EMAIL": "E-Mail-Adresse des Kontakts",
+      "NAME": "Vollständiger Name",
+      "FNAME": "Vorname",
+      "LNAME": "Nachname",
+      "MEMBERSHIPID": "Mitgliedschafts-ID",
+      "RPLINK": "Passwort zurücksetzen Link",
+      "LOGINLINK": "Login-Link",
+      "SPLINK": "Passwort setzen Link",
+      "MESSAGE": "Benutzerdefinierte Nachricht",
+      "CALLOUTTITLE": "Titel der Befragung",
+      "CALLOUTLINK": "Link zur Befragung",
+      "SUPPORTEMAIL": "Support E-Mail-Adresse",
+      "ANSWERS": "Formatierte Antwort-Zusammenfassung",
+      "REFCODE": "Empfehlungs-Code des Kontakts",
+      "EXPIRES": "Ablaufdatum der Mitgliedschaft",
+      "REFEREENAME": "Name der geworbenen Person",
+      "ISELIGIBLE": "Ob die Empfehlung berechtigt ist",
+      "PURCHASER": "Name des Geschenkkäufers",
+      "GIFTEE": "Name des Geschenkempfängers",
+      "GIFTDATE": "Startdatum des Geschenks",
+      "ACTIVATELINK": "Geschenk-Aktivierungslink",
+      "CONFIRMLINK": "E-Mail-Bestätigungslink",
+      "URL": "Spezielle URL",
+      "MEMBERID": "Mitglieds-ID",
+      "MEMBERNAME": "Mitgliedsname",
+      "CALLOUTSLUG": "Befragungs-Slug",
+      "RESPNAME": "Name des Antwortenden",
+      "ORGNAME": "Name der Organisation"
+    }
   }
 }

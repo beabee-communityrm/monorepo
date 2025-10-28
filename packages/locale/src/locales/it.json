@@ -369,6 +369,7 @@
         "email": {
           "title": "Email",
           "body": {
+            "default": "<p>Ciao {FNAME},</p><p>ecco una panoramica delle tue risposte inviate:<br />{ANSWERS}</p><p><br /></p><p>Questa e-mail conferma la sua risposta al callout <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> utilizzando il suo indirizzo e-mail {EMAIL}.</p><p><br /></p><p>Per qualsiasi domanda, contattare il nostro team di supporto all'indirizzo <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Cordiali saluti</p>",
             "label": "Corpo dell'email"
           },
           "collectInfoWarning": {
@@ -380,6 +381,7 @@
             "label": "Invia un'email a tutti i partecipanti dopo l'invio"
           },
           "subject": {
+            "default": "Grazie per la tua risposta",
             "label": "Oggetto dell'email"
           }
         },
@@ -1112,7 +1114,23 @@
     "warning": "Attenzione! Stai modificando una CrowdNewsroom attiva. Modificare le proprietà del modulo può rendere inutilizzabili le risposte precedenti."
   },
   "editNotice": {
-    "title": ""
+    "title": "Modifica: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Oggetto"
+    },
+    "body": {
+      "label": "Messaggio"
+    },
+    "managed": {
+      "title": "Email gestita esternamente",
+      "description": "Questo modello di email è gestito esternamente e non può essere modificato qui."
+    },
+    "preview": {
+      "unavailable": "Anteprima non disponibile",
+      "label": "Anteprima"
+    }
   },
   "footer": {
     "contactUs": "Contattaci a",
@@ -1247,7 +1265,8 @@
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
-      "underline": ""
+      "underline": "",
+      "mergeFields": "Inserisci campo di unione"
     },
     "saveChanges": "",
     "saved": "Salvato!",
@@ -1626,5 +1645,54 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
+  },
+  "mergeFields": {
+    "title": "Campi di unione",
+    "expand": "Espandi",
+    "expandAll": "Espandi tutti i campi di unione",
+    "collapse": "Comprimi",
+    "collapseAll": "Comprimi tutti i campi di unione",
+    "clickToExpand": "Clicca per espandere i campi di unione",
+    "copy": "Copia",
+    "copyTag": "Copia {tag}",
+    "copied": "Copiato!",
+    "insert": "Inserisci",
+    "insertTag": "Inserisci {tag}",
+    "example": "Esempio",
+    "groups": {
+      "contact": "Campi contatto",
+      "magic": "Link magici",
+      "template": "Campi template"
+    },
+    "tags": {
+      "EMAIL": "Indirizzo email del contatto",
+      "NAME": "Nome completo del contatto",
+      "FNAME": "Nome del contatto",
+      "LNAME": "Cognome del contatto",
+      "MEMBERSHIPID": "ID iscrizione del contatto",
+      "RPLINK": "Link reset password",
+      "LOGINLINK": "Link di accesso",
+      "SPLINK": "Link impostazione password",
+      "MESSAGE": "Contenuto messaggio personalizzato",
+      "CALLOUTTITLE": "Titolo callout",
+      "CALLOUTLINK": "Link al callout",
+      "SUPPORTEMAIL": "Indirizzo email supporto",
+      "ANSWERS": "Risposte formattate",
+      "REFCODE": "Codice referral del contatto",
+      "EXPIRES": "Data scadenza iscrizione",
+      "REFEREENAME": "Nome della persona indicata",
+      "ISELIGIBLE": "Se il referral è idoneo",
+      "PURCHASER": "Nome acquirente regalo",
+      "GIFTEE": "Nome destinatario regalo",
+      "GIFTDATE": "Data inizio regalo",
+      "ACTIVATELINK": "Link attivazione regalo",
+      "CONFIRMLINK": "Link conferma email",
+      "URL": "URL speciale",
+      "MEMBERID": "ID membro",
+      "MEMBERNAME": "Nome membro",
+      "CALLOUTSLUG": "Slug callout",
+      "RESPNAME": "Nome rispondente",
+      "ORGNAME": "Nome organizzazione"
+    }
   }
 }

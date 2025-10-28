@@ -1,51 +1,139 @@
+import {
+  adminEmailTemplates,
+  contactEmailTemplates,
+  generalEmailTemplates,
+} from '#data/email-templates';
+import type {
+  AdminEmailTemplateId,
+  ContactEmailTemplateId,
+  EmailTemplateId,
+  GeneralEmailTemplateId,
+} from '#type/email';
+
 /**
- * Normalize an email address to ensure emails are compared in a
- * case-insensitive way
- *
- * @param email
- * @returns Normalized email address
+ * Type guard to check if a string is a valid contact email template ID
+ * @param templateId The template ID to check
+ * @returns True if the template ID is a valid contact email template
  */
-export function normalizeEmailAddress(email: string): string {
-  return email.trim().toLowerCase();
+export function isContactEmailTemplateId(
+  templateId: string
+): templateId is ContactEmailTemplateId {
+  return templateId in contactEmailTemplates;
 }
 
 /**
- * Replace merge fields in a text string with their corresponding values.
- * Merge fields are in the format *|FIELD_NAME|*.
- *
- * @param text The text containing merge field placeholders
- * @param mergeFields The merge field values to replace
- * @returns The text with merge fields replaced
+ * Type guard to check if a string is a valid admin email template ID
+ * @param templateId The template ID to check
+ * @returns True if the template ID is a valid admin email template
  */
-export function replaceMergeFields(
-  text: string,
-  mergeFields: Record<string, string>
-): string {
-  return Object.entries(mergeFields).reduce((result, [field, value]) => {
-    return result.replace(new RegExp(`\\*\\|${field}\\|\\*`, 'g'), value);
-  }, text);
+export function isAdminEmailTemplateId(
+  templateId: string
+): templateId is AdminEmailTemplateId {
+  return templateId in adminEmailTemplates;
 }
 
 /**
- * Expand nested merge fields in merge field values.
- * This handles cases where a merge field value itself contains other merge fields.
- * For example, a MESSAGE field containing *|FNAME|* will have FNAME expanded.
- *
- * @param mergeFields The merge fields to expand
- * @returns The merge fields with nested merge fields expanded
+ * Type guard to check if a string is a valid general email template ID
+ * @param templateId The template ID to check
+ * @returns True if the template ID is a valid general email template
  */
-export function expandNestedMergeFields(
-  mergeFields: Record<string, string>
-): Record<string, string> {
-  const expandedFields = { ...mergeFields };
+export function isGeneralEmailTemplateId(
+  templateId: string
+): templateId is GeneralEmailTemplateId {
+  return templateId in generalEmailTemplates;
+}
 
-  // Iterate over each field and replace any nested merge fields
-  Object.keys(expandedFields).forEach((field) => {
-    expandedFields[field] = replaceMergeFields(
-      expandedFields[field],
-      expandedFields
-    );
-  });
+/**
+ * Type guard to check if a string is a valid email template ID
+ * @param templateId The template ID to check
+ * @returns True if the template ID is a valid email template
+ */
+export function isEmailTemplateId(
+  templateId: string
+): templateId is EmailTemplateId {
+  return (
+    isContactEmailTemplateId(templateId) ||
+    isAdminEmailTemplateId(templateId) ||
+    isGeneralEmailTemplateId(templateId)
+  );
+}
 
-  return expandedFields;
+/**
+ * Standard mapping from merge field names to parameter names for common templates
+ * This provides a clean, maintainable way to map merge fields to the expected parameter names
+ */
+const TEMPLATE_PARAM_MAPPINGS: Record<string, Record<string, string>> = {
+  'callout-response-answers': {
+    MESSAGE: 'message',
+    CALLOUTSLUG: 'calloutSlug',
+    CALLOUTTITLE: 'calloutTitle',
+    ANSWERS: 'answers',
+  },
+  'reset-password': {
+    RPLINK: 'rpLink',
+  },
+  'reset-device': {
+    RPLINK: 'rpLink',
+  },
+  'successful-referral': {
+    REFEREENAME: 'refereeName',
+    ISELIGIBLE: 'isEligible',
+  },
+  'giftee-success': {
+    FROMNAME: 'fromName',
+    MESSAGE: 'message',
+    GIFTCODE: 'giftCode',
+  },
+  'email-exists-login': {
+    LOGINLINK: 'loginLink',
+  },
+  'email-exists-set-password': {
+    SPLINK: 'spLink',
+  },
+  'new-callout-response': {
+    CALLOUTSLUG: 'calloutSlug',
+    CALLOUTTITLE: 'calloutTitle',
+    RESPNAME: 'responderName',
+  },
+  'purchased-gift': {
+    FROMNAME: 'fromName',
+    GIFTEEFIRSTNAME: 'gifteeFirstName',
+    GIFTSTARTDATE: 'giftStartDate',
+  },
+  'confirm-email': {
+    FIRSTNAME: 'firstName',
+    LASTNAME: 'lastName',
+    CONFIRMLINK: 'confirmLink',
+  },
+  'expired-special-url-resend': {
+    FIRSTNAME: 'firstName',
+    NEWURL: 'newUrl',
+  },
+};
+
+/**
+ * Extracts template parameters from custom merge fields using predefined mappings
+ * @param templateId The template ID
+ * @param customMergeFields The custom merge fields from the request
+ * @returns Template parameters object
+ */
+export function extractTemplateParams(
+  templateId: string,
+  customMergeFields: Record<string, string>
+): Record<string, any> {
+  const mapping = TEMPLATE_PARAM_MAPPINGS[templateId];
+
+  if (!mapping) {
+    return {};
+  }
+
+  const params: Record<string, any> = {};
+
+  for (const [mergeField, paramName] of Object.entries(mapping)) {
+    if (customMergeFields[mergeField] !== undefined) {
+      params[paramName] = customMergeFields[mergeField];
+    }
+  }
+
+  return params;
 }
