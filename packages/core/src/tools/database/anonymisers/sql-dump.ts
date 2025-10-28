@@ -10,7 +10,8 @@ import { EntityTarget, ObjectLiteral } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
 
 import { ModelAnonymiser } from './models.js';
-import { createDumpFilePath, stringify } from './utils.js';
+import { createDumpFilePath } from './utils/dump-file-path.js';
+import { stringify } from './utils/stringify.js';
 
 const log = mainLogger.child({ app: 'anonymisers' });
 

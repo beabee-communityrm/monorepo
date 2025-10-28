@@ -21,7 +21,7 @@ import {
   createAnswersAnonymiser,
 } from './models';
 import { writeItemsToSqlDump } from './sql-dump.js';
-import { stringify } from './utils.js';
+import { stringify } from './utils/stringify.js';
 
 const log = mainLogger.child({ app: 'anonymisers' });
 

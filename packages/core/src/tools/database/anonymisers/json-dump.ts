@@ -9,8 +9,8 @@ import * as fs from 'fs';
 import { EntityTarget, ObjectLiteral } from 'typeorm';
 
 import { ModelAnonymiser } from './models.js';
-import { DatabaseDump } from './types.js';
-import { createDumpFilePath } from './utils.js';
+import { DatabaseDump } from './types/database-dump.js';
+import { createDumpFilePath } from './utils/dump-file-path.js';
 
 const log = mainLogger.child({ app: 'anonymisers' });
 

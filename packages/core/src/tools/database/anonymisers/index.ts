@@ -9,14 +9,14 @@
  */
 
 // Export types
-export type { DatabaseDump } from './types.js';
+export type { DatabaseDump } from './types/database-dump.js';
 
 // Export utilities
 export {
   createDumpFilePath,
-  stringify,
   DEFAULT_DUMP_DIRECTORY,
-} from './utils.js';
+} from './utils/dump-file-path.js';
+export { stringify } from './utils/stringify.js';
 
 // Export anonymization functions
 export { anonymiseModel, exportModelAsIs } from './anonymizer.js';

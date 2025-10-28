@@ -10,7 +10,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { validateDumpStructure } from './json-dump.js';
-import { DEFAULT_DUMP_DIRECTORY } from './utils.js';
+import { DEFAULT_DUMP_DIRECTORY } from './utils/dump-file-path.js';
 
 const log = mainLogger.child({ app: 'anonymisers' });
 

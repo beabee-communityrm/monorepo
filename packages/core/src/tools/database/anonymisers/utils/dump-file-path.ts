@@ -1,5 +1,5 @@
 /**
- * Utility functions for database dump operations
+ * Utility functions for creating and managing dump file paths
  */
 import * as fs from 'fs';
 import * as path from 'path';
@@ -29,16 +29,6 @@ export function createDumpFilePath(
 
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   return path.join(dumpDir, `database-dump-${timestamp}.${extension}`);
-}
-
-/**
- * Stringify helper that handles Map objects
- * Maps don't stringify well by default, so convert them to arrays
- */
-export function stringify(value: any): string {
-  return JSON.stringify(value, (key: string, value: any): any => {
-    return value instanceof Map ? [...value] : value;
-  });
 }
 
 /**
