@@ -159,6 +159,12 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
         { tag: 'ANSWERS' },
       ],
     },
+    {
+      key: 'magic',
+      tags: [
+        { tag: 'LOGINLINK', example: window.location.origin + '/auth/login' },
+      ],
+    },
   ];
 });
 

@@ -24,7 +24,7 @@
         </div>
 
         <!-- Preview panel -->
-        <div class="w-full" :class="alwaysStacked ? '' : 'md:w-[500px]'">
+        <div class="w-full" :class="alwaysStacked ? '' : 'md:w-[600px]'">
           <AppLabel :label="t('emailEditor.preview.label')" class="mb-0.5" />
           <div
             class="content-message rounded border border-primary-40 bg-white p-4"
@@ -321,14 +321,35 @@ function generateContactMergeTags(
 }
 
 /**
+ * Generates merge fields from merge field groups (for client-side preview)
+ */
+function generateMergeFieldsFromGroups(): Record<string, string> {
+  if (!props.mergeFieldGroups) return {};
+
+  const mergeFields: Record<string, string> = {};
+
+  for (const group of props.mergeFieldGroups) {
+    for (const tag of group.tags) {
+      // Only include example values for preview
+      if (tag.example !== undefined) {
+        mergeFields[tag.tag] = tag.example;
+      }
+    }
+  }
+
+  return mergeFields;
+}
+
+/**
  * Combines all merge fields from different sources
  */
 function generateAllMergeFields(): Record<string, string> {
   const customMergeFields = { ...props.mergeFields };
   const contactMergeFields = generateContactMergeTags(props.contact);
+  const groupMergeFields = generateMergeFieldsFromGroups();
 
-  // Custom fields override contact fields if they conflict
-  return { ...contactMergeFields, ...customMergeFields };
+  // Priority: customMergeFields > contactMergeFields > groupMergeFields
+  return { ...groupMergeFields, ...contactMergeFields, ...customMergeFields };
 }
 
 /**

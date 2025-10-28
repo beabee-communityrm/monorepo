@@ -17,6 +17,7 @@
       :template="welcomeEmailData"
       :footer="emailFooter"
       :contact="currentUser"
+      :merge-field-groups="welcomeMergeFieldGroups"
       :subject-label="t('emailEditor.subject.label')"
       :content-label="t('emailEditor.body.label')"
     />
@@ -27,6 +28,7 @@
       :template="cancellationEmailData"
       :footer="emailFooter"
       :contact="currentUser"
+      :merge-field-groups="cancellationMergeFieldGroups"
       :subject-label="t('emailEditor.subject.label')"
       :content-label="t('emailEditor.body.label')"
     />
@@ -34,13 +36,13 @@
 </template>
 <script lang="ts" setup>
 import type { GetEmailData } from '@beabee/beabee-common';
-import { App2ColGrid, AppForm } from '@beabee/vue';
+import { App2ColGrid, AppForm, type MergeTagGroup } from '@beabee/vue';
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
 // Import current user store
 import { currentUser } from '@store/currentUser';
 import { client, isApiError } from '@utils/api';
-import { onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -49,6 +51,72 @@ const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);
 const welcomeEmail = ref<GetEmailData | false>();
 const cancellationEmail = ref<GetEmailData | false>();
 const emailFooter = ref('');
+
+// Merge field groups for the rich text editor dropdown
+const welcomeMergeFieldGroups = computed<MergeTagGroup[]>(() => {
+  const user = currentUser.value;
+
+  return [
+    {
+      key: 'contact',
+      tags: [
+        { tag: 'EMAIL', example: user?.email },
+        {
+          tag: 'NAME',
+          example: user
+            ? `${user.firstname} ${user.lastname}`.trim()
+            : undefined,
+        },
+        { tag: 'FNAME', example: user?.firstname },
+        { tag: 'LNAME', example: user?.lastname },
+      ],
+    },
+    {
+      key: 'template',
+      tags: [{ tag: 'REFCODE', example: 'ABC123' }],
+    },
+    {
+      key: 'magic',
+      tags: [
+        { tag: 'LOGINLINK', example: window.location.origin + '/auth/login' },
+      ],
+    },
+  ];
+});
+
+const cancellationMergeFieldGroups = computed<MergeTagGroup[]>(() => {
+  const user = currentUser.value;
+
+  return [
+    {
+      key: 'contact',
+      tags: [
+        { tag: 'EMAIL', example: user?.email },
+        {
+          tag: 'NAME',
+          example: user
+            ? `${user.firstname} ${user.lastname}`.trim()
+            : undefined,
+        },
+        { tag: 'FNAME', example: user?.firstname },
+        { tag: 'LNAME', example: user?.lastname },
+      ],
+    },
+    {
+      key: 'template',
+      tags: [
+        { tag: 'EXPIRES', example: 'Friday 15th March' },
+        { tag: 'MEMBERSHIPID', example: user?.id || 'abc123' },
+      ],
+    },
+    {
+      key: 'magic',
+      tags: [
+        { tag: 'LOGINLINK', example: window.location.origin + '/auth/login' },
+      ],
+    },
+  ];
+});
 
 // Reactive objects that transform GetEmailData (body) to EmailEditor format (content)
 // Using getter/setter for clean bidirectional sync without manual watch functions
