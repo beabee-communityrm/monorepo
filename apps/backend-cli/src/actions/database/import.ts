@@ -49,12 +49,12 @@ async function importFromSqlFile(filePath: string): Promise<void> {
 /**
  * Import database from JSON or SQL dump file
  *
- * @param filePath Path to the dump file
+ * @param filePath Path to the dump file (optional, defaults to test data dump)
  * @param type Import type: json or sql (auto-detected from extension if not specified)
  * @param dryRun If true, only logs what would be done (JSON only)
  */
 export const importDatabase = async (
-  filePath: string,
+  filePath: string = '../../packages/test-utils/database-dumps/database-dump.json',
   type?: 'json' | 'sql',
   dryRun = false
 ): Promise<void> => {

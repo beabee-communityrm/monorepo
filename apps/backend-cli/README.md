@@ -38,11 +38,9 @@ Database management commands
 
 Commands:
   backend-cli database export                         Export database to JSON or SQL dump (contacts always anonymized)
-  backend-cli database import <filePath>              Import database from JSON or SQL dump file
+  backend-cli database import [filePath]              Import database from JSON or SQL dump file (defaults to test data)
   backend-cli database import-callout-responses       Import callout responses from CSV file
     <calloutSlug> <filePath>
-  backend-cli database seed                           Seed the database with test data from JSON dump
-  backend-cli database export-demo                    Export demo database with subset of data
 
 Options:
   --version  Show version number                                       [boolean]
@@ -56,21 +54,20 @@ The `database` command provides tools for exporting and importing data:
 #### Export Database
 
 ```bash
-backend-cli database export [--anonymize] [--type json|sql] [--outputDir <path>] [--dryRun]
+backend-cli database export [--subset full|demo] [--anonymize] [--type json|sql] [--outputDir <path>] [--dryRun]
 ```
 
 Exports the database with configurable anonymization and output options. Contact data is **always anonymized** for security.
 
 Options:
 
-- `--anonymize`: Anonymize all data (default: true). When false, only contacts are anonymized.
+- `--subset`: Export subset - `full` for all data, `demo` for subset (400 contacts, 20 latest callouts) (default: full)
+- `--anonymize`: Anonymize all data (default: true). When false, only contacts are anonymized, but **foreign key references are automatically remapped** to maintain referential integrity.
 - `--type`: Export format - `json` or `sql` (default: json)
-- `--outputDir`: Output directory for dump files (default: environment-specific)
+- `--outputDir`: Output directory for dump files (default: `../../packages/test-utils/database-dumps`)
 - `--dryRun`: Preview export without creating files (default: false)
 
-**Default Output Directory:**
-
-- `packages/test-utils/database-dumps/`
+**Important:** When using `--anonymize=false`, contact IDs are always anonymized for privacy, and all foreign key references (like `contactId`, `assigneeId`) in other tables are automatically updated to match the new anonymized IDs. This ensures referential integrity is maintained.
 
 Examples:
 
@@ -78,8 +75,14 @@ Examples:
 # Export fully anonymized database as JSON (default)
 backend-cli database export
 
+# Export demo subset (400 contacts, 20 latest callouts)
+backend-cli database export --subset=demo
+
 # Export as SQL with only contacts anonymized
 backend-cli database export --anonymize=false --type=sql
+
+# Export demo subset as SQL
+backend-cli database export --subset=demo --type=sql
 
 # Export to custom directory
 backend-cli database export --outputDir /custom/path
@@ -91,10 +94,12 @@ backend-cli database export --dryRun
 #### Import Database
 
 ```bash
-backend-cli database import <filePath> [--type json|sql] [--dryRun]
+backend-cli database import [filePath] [--type json|sql] [--dryRun]
 ```
 
 Imports database from JSON or SQL dump file. The format is auto-detected from the file extension (.json or .sql) if not specified.
+
+**Seeding**: When no file path is provided, automatically imports from the default test data dump (`../../packages/test-utils/database-dumps/database-dump.json`).
 
 **JSON Format:** Standard JSON dump created by the export command
 
@@ -107,14 +112,17 @@ INSERT INTO "table" ("col1", "col2") VALUES ($1, $2);
 
 Options:
 
-- `filePath`: Path to the dump file (required)
+- `filePath`: Path to the dump file (optional, defaults to test data dump)
 - `--type`: Import type - `json` or `sql` (auto-detected if not specified)
 - `--dryRun`: Preview import without making changes (JSON only, default: false)
 
 Examples:
 
 ```bash
-# Import from JSON file (format auto-detected)
+# Seed database from default test data dump
+backend-cli database import
+
+# Import from specific JSON file (format auto-detected)
 backend-cli database import /path/to/dump.json
 
 # Import from SQL file with explicit type
@@ -130,72 +138,27 @@ backend-cli database import /path/to/dump.json --dryRun
 backend-cli database import-callout-responses <calloutSlug> <filePath>
 ```
 
-Imports callout responses from CSV file.
+Imports callout responses from CSV file. This is a specialized import for human-readable CSV data (e.g., from surveys, spreadsheets).
+
+**Note**: This is different from the regular `import` command which handles database dumps. Use this command when importing CSV data from external sources.
 
 **CSV Format:**
 
 - Response data columns matching callout form components (format: `slideId.componentKey`)
 - Optional metadata columns: `contact_email`, `guest_name`, `guest_email`, `bucket`, `created_at`
 
+The importer will:
+
+- Parse different field types (numbers, checkboxes, addresses, file uploads, etc.)
+- Link responses to existing contacts via email
+- Handle guest responses
+- Auto-increment response numbers
+
 Examples:
 
 ```bash
 # Import responses from CSV file
 backend-cli database import-callout-responses my-survey /path/to/responses.csv
-```
-
-#### Seed Database
-
-```bash
-backend-cli database seed [--filePath <path>] [--dryRun]
-```
-
-Seeds the database with test data from a JSON dump file.
-
-Options:
-
-- `--filePath`: Full path to the JSON dump file (default: environment-specific)
-- `--dryRun`: Preview seeding without making changes (default: false)
-
-**Default File Path:**
-
-- `packages/test-utils/database-dumps/database-dump.json`
-
-Examples:
-
-```bash
-# Seed from default file
-backend-cli database seed
-
-# Seed from specific file
-backend-cli database seed --filePath /path/to/test-data.json
-
-# Preview seeding without making changes
-backend-cli database seed --dryRun
-```
-
-#### Export Demo Database
-
-```bash
-backend-cli database export-demo [--type json|sql] [--dryRun]
-```
-
-Exports a subset of the database for demo purposes:
-
-- 400 random contacts
-- 20 latest callouts
-- Related responses and data
-
-All data is anonymized.
-
-Examples:
-
-```bash
-# Export demo database as JSON
-backend-cli database export-demo
-
-# Export demo database as SQL
-backend-cli database export-demo --type=sql
 ```
 
 ### Test Commands
@@ -243,8 +206,9 @@ The CLI provides comprehensive database management capabilities with a focus on 
 - **🎯 Flexible Anonymization**: Choose between full anonymization or contact-only anonymization
 - **📁 Environment-Aware**: Automatic path resolution for development vs production
 - **🔄 Multiple Formats**: Support for both JSON and SQL export formats
-- **🎭 Demo Exports**: Create subset exports for demo purposes
-- **🌱 Easy Seeding**: Simple database seeding from JSON dumps
+- **🎭 Demo Exports**: Create subset exports for demo purposes (400 contacts, 20 latest callouts)
+- **🌱 Easy Seeding**: Simple database seeding with `database import` (no file path needed)
+- **📊 CSV Import**: Import callout responses from human-readable CSV files
 
 ### Output Directory Structure
 
@@ -260,9 +224,13 @@ packages/test-utils/database-dumps/              # Database dumps location
 
 ### Command Relationships
 
-- `database export` - General purpose database export with configurable anonymization
-- `database seed` - Seeds database from JSON dump files
-- `database export-demo` - Creates subset exports for demo purposes
+- `database export` - General purpose database export with configurable anonymization and subset options
+  - Use `--subset=demo` for smaller demo exports (400 contacts, 20 latest callouts)
+  - Use `--anonymize=false` to export non-sensitive data as-is (contacts still anonymized)
+- `database import` - Import database dumps or seed from default test data
+  - When called without arguments, seeds from default test data dump
+  - When called with file path, imports from specific dump file
+- `database import-callout-responses` - Import callout responses from CSV files (different from database dumps)
 - `test list-users` - Lists test users for testing scenarios
 
 ## Development
@@ -271,20 +239,24 @@ packages/test-utils/database-dumps/              # Database dumps location
 
 ```
 src/
-├── actions/       # Command implementation logic
+├── actions/                  # Command implementation logic
 │   ├── api-key/
-│   ├── database/  # Database operations (export, import, seed, demo)
+│   ├── database/
+│   │   ├── export.ts         # Export with full/demo subsets
+│   │   ├── import.ts         # Import/seed from dumps
+│   │   ├── import-callout-responses.ts  # CSV import
+│   │   └── anonymization.ts  # Anonymization configuration
 │   ├── payment/
 │   ├── process/
 │   ├── setup/
 │   ├── sync/
-│   ├── test/      # Test-specific utilities
+│   ├── test/                 # Test-specific utilities
 │   └── user/
-├── commands/      # Command definitions
-├── types/         # TypeScript type definitions
-├── utils/         # Utility functions
-├── env.ts         # Environment configuration
-└── index.ts       # CLI entry point
+├── commands/                 # Command definitions
+├── types/                    # TypeScript type definitions
+├── utils/                    # Utility functions
+├── env.ts                    # Environment configuration
+└── index.ts                  # CLI entry point
 ```
 
 ## License

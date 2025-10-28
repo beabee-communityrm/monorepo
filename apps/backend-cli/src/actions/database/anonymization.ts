@@ -9,6 +9,10 @@ export const ALWAYS_ANONYMIZED_MODELS = [
   models.contactRoleAnonymiser,
   models.contactProfileAnonymiser,
   models.contactContributionAnonymiser,
+  models.contactTagAnonymiser,
+  models.contactTagAssignmentAnonymiser,
+  models.emailAnonymiser,
+  models.emailMailingAnonymiser,
 ] as models.ModelAnonymiser[];
 
 /**
@@ -16,10 +20,6 @@ export const ALWAYS_ANONYMIZED_MODELS = [
  * These contain less sensitive data that can optionally be exported as-is
  */
 export const OPTIONALLY_ANONYMIZED_MODELS = [
-  models.contactTagAnonymiser,
-  models.contactTagAssignmentAnonymiser,
-  models.emailAnonymiser,
-  models.emailMailingAnonymiser,
   models.exportsAnonymiser,
   models.giftFlowAnonymiser,
   models.noticesAnonymiser,

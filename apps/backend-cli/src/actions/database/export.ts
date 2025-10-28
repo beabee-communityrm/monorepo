@@ -1,11 +1,22 @@
+/**
+ * Database Export Module
+ *
+ * This module provides functionality to export database data to JSON or SQL dumps.
+ * It supports:
+ * - Full or demo subset exports
+ * - Configurable anonymization (contacts always anonymized for privacy)
+ * - JSON and SQL output formats
+ */
 import { createQueryBuilder } from '@beabee/core/database';
 import { Callout, CalloutResponse, Contact } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import {
   anonymiseModel,
-  clearModels,
+  exportModelAsIs,
   initializeJsonDump,
+  initializeSqlDump,
   saveJsonDump,
+  saveSqlDump,
 } from '@beabee/core/tools/database/anonymisers/index';
 
 import { Brackets } from 'typeorm';
@@ -18,6 +29,10 @@ import {
   getAnonymizers,
 } from './anonymization.js';
 
+// ============================================================================
+// Types
+// ============================================================================
+
 export interface ExportOptions {
   /** If true, anonymize all data. If false, only anonymize contacts */
   anonymize?: boolean;
@@ -26,6 +41,10 @@ export interface ExportOptions {
   /** Output directory for the dump file */
   outputDir?: string | undefined;
 }
+
+// ============================================================================
+// Public API
+// ============================================================================
 
 /**
  * Export database to JSON or SQL dump with configurable anonymization and subset options
@@ -49,44 +68,75 @@ export const exportDatabase = async (
     const valueMap = new Map<string, unknown>();
     const anonymisers = getAnonymizers(anonymize);
 
+    // Initialize dump based on export type
     if (type === 'json') {
       initializeJsonDump(getAllModels());
     } else {
-      clearModels(anonymisers);
+      initializeSqlDump(anonymisers, outputDir);
     }
 
+    // Export data based on subset selection
     if (subset === 'demo') {
       await exportDemoSubset(anonymisers, valueMap, type);
     } else {
-      // Export all data
-      for (const anonymiser of anonymisers) {
-        await anonymiseModel(anonymiser, (qb) => qb, valueMap, type);
-      }
+      await exportFullDatabase(anonymisers, valueMap, type);
     }
 
-    // If not anonymizing everything and using JSON, we need to export the remaining models as-is
-    if (!anonymize && type === 'json') {
-      // TODO: Export non-anonymised models directly
-      // This would require a separate function to export models without anonymisation
-      console.warn('Non-anonymised JSON export is not fully implemented yet');
+    // Export non-anonymized models if requested
+    // Pass valueMap to remap foreign keys to anonymized models
+    if (!anonymize) {
+      await exportNonAnonymizedModels(anonymisers, type, valueMap);
     }
 
+    // Save the dump
     if (type === 'json') {
       await saveJsonDump(dryRun, outputDir);
+    } else {
+      await saveSqlDump(dryRun);
     }
   });
+};
+
+// ============================================================================
+// Export Strategies
+// ============================================================================
+
+/**
+ * Export the full database
+ * Processes all models with their respective anonymizers
+ *
+ * @param anonymisers List of model anonymizers to use
+ * @param valueMap Map to track anonymized values for consistency
+ * @param type Export format (json or sql)
+ */
+const exportFullDatabase = async (
+  anonymisers: any[],
+  valueMap: Map<string, unknown>,
+  type: 'json' | 'sql'
+): Promise<void> => {
+  for (const anonymiser of anonymisers) {
+    await anonymiseModel(anonymiser, (qb) => qb, valueMap, type);
+  }
 };
 
 /**
  * Export a demo subset of the database
  * Includes 400 random contacts, 20 latest callouts, and related data
+ *
+ * @param anonymisers List of model anonymizers to use
+ * @param valueMap Map to track anonymized values for consistency
+ * @param type Export format (json or sql)
  */
 const exportDemoSubset = async (
   anonymisers: any[],
   valueMap: Map<string, unknown>,
   type: 'json' | 'sql'
 ): Promise<void> => {
-  // Get demo subset of contacts
+  // ========================================
+  // Step 1: Select demo subset IDs
+  // ========================================
+
+  // Get random contacts
   const contacts = await createQueryBuilder(Contact, 'item')
     .select('item.id')
     .orderBy('random()')
@@ -94,7 +144,7 @@ const exportDemoSubset = async (
     .getMany();
   const contactIds = contacts.map((m) => m.id);
 
-  // Get demo subset of callouts
+  // Get latest callouts
   const callouts = await createQueryBuilder(Callout, 'item')
     .select('item.id')
     .orderBy('item.date', 'DESC')
@@ -124,7 +174,10 @@ const exportDemoSubset = async (
     .getMany();
   const responseIds = responses.map((r) => r.id);
 
-  // Process contact-related anonymizers
+  // ========================================
+  // Step 2: Export contact-related data
+  // ========================================
+
   const contactAnonymisers = [
     ...ALWAYS_ANONYMIZED_MODELS.filter(
       (a: any) =>
@@ -146,7 +199,10 @@ const exportDemoSubset = async (
     );
   }
 
-  // Process callout-related anonymizers
+  // ========================================
+  // Step 3: Export callout-related data
+  // ========================================
+
   const calloutAnonymisers = anonymisers.filter(
     (a: any) =>
       a.model === Callout ||
@@ -163,7 +219,10 @@ const exportDemoSubset = async (
     );
   }
 
-  // Process callout response-related anonymizers
+  // ========================================
+  // Step 4: Export callout response data
+  // ========================================
+
   const responseAnonymisers = anonymisers.filter(
     (a: any) =>
       a.model === CalloutResponse ||
@@ -181,12 +240,42 @@ const exportDemoSubset = async (
     );
   }
 
-  // Clear other models that link to contacts
+  // ========================================
+  // Step 5: Clear unused models
+  // ========================================
+
   const clearAnonymisers: any[] = [
     // Add other models that should be cleared in demo exports
   ];
 
   for (const anonymiser of clearAnonymisers) {
     await anonymiseModel(anonymiser, (qb) => qb.where('1=0'), valueMap, type);
+  }
+};
+
+/**
+ * Export models without anonymization, but remap foreign keys
+ * Used when anonymize=false to export OPTIONALLY_ANONYMIZED_MODELS as-is
+ * but with foreign key references updated to match anonymized contact IDs
+ *
+ * @param excludedAnonymisers Anonymisers that are already exported (with anonymization)
+ * @param type Export format (json or sql)
+ * @param valueMap Map of old values to new values for FK remapping
+ */
+const exportNonAnonymizedModels = async (
+  excludedAnonymisers: any[],
+  type: 'json' | 'sql' = 'json',
+  valueMap?: Map<string, unknown>
+): Promise<void> => {
+  const excludedModels = new Set(excludedAnonymisers.map((a: any) => a.model));
+
+  // Get models that should be exported as-is (not already anonymized)
+  const modelsToExport = OPTIONALLY_ANONYMIZED_MODELS.filter(
+    (anonymiser) => !excludedModels.has(anonymiser.model)
+  );
+
+  for (const anonymiser of modelsToExport) {
+    // Pass the anonymiser and valueMap to remap FK fields
+    await exportModelAsIs(anonymiser.model, type, anonymiser, valueMap);
   }
 };
