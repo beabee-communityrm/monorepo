@@ -2,9 +2,9 @@
   <div>
     <AppSubHeading v-if="heading">{{ heading }}</AppSubHeading>
     <template v-if="template">
-      <div class="mb-6 flex gap-6">
+      <div class="relative mb-6 flex gap-6">
         <!-- Editor panel -->
-        <div class="min-w-0 max-w-xl flex-1">
+        <div class="relative min-w-0 max-w-xl flex-1">
           <div class="mb-4">
             <AppInput
               v-model="template.subject"
@@ -15,6 +15,7 @@
           <AppRichTextEditor
             v-model="template.content"
             :label="contentLabel || t('emailEditor.body.label')"
+            :merge-fields="mergeFieldGroups"
             required
           />
         </div>
@@ -116,6 +117,7 @@ import {
   AppNotification,
   AppRichTextEditor,
   AppSubHeading,
+  type MergeTagGroup,
 } from '@beabee/vue';
 
 import type {
@@ -167,6 +169,12 @@ const props = withDefaults(
     contact?: GetContactData | null;
 
     /**
+     * Merge field groups for the rich text editor dropdown
+     * Enables insertion of merge fields via dropdown button in the editor
+     */
+    mergeFieldGroups?: MergeTagGroup[];
+
+    /**
      * Label for subject input field
      * If not provided, uses default i18n key
      */
@@ -184,6 +192,7 @@ const props = withDefaults(
     mergeFields: () => ({}),
     contact: null,
     serverRender: undefined,
+    mergeFieldGroups: undefined,
     subjectLabel: '',
     contentLabel: '',
   }

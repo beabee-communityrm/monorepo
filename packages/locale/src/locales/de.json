@@ -1122,6 +1122,62 @@
     },
     "body": {
       "label": "Nachricht"
+    },
+    "managed": {
+      "title": "E-Mail wird extern verwaltet",
+      "description": "Diese E-Mail-Vorlage wird extern verwaltet und kann hier nicht bearbeitet werden."
+    },
+    "preview": {
+      "unavailable": "Vorschau nicht verfügbar"
+    }
+  },
+  "mergeFields": {
+    "title": "Merge-Felder",
+    "expand": "Ausklappen",
+    "expandAll": "Alle Merge-Felder ausklappen",
+    "collapse": "Einklappen",
+    "collapseAll": "Alle Merge-Felder einklappen",
+    "clickToExpand": "Klicken Sie zum Ausklappen der Merge-Felder",
+    "copy": "Kopieren",
+    "copyTag": "{tag} kopieren",
+    "copied": "Kopiert!",
+    "insert": "Einfügen",
+    "insertTag": "{tag} einfügen",
+    "example": "Beispiel",
+    "groups": {
+      "contact": "Kontakt-Felder",
+      "magic": "Magic Links",
+      "template": "Template-Felder"
+    },
+    "tags": {
+      "EMAIL": "E-Mail-Adresse des Kontakts",
+      "NAME": "Vollständiger Name",
+      "FNAME": "Vorname",
+      "LNAME": "Nachname",
+      "MEMBERSHIPID": "Mitgliedschafts-ID",
+      "RPLINK": "Passwort zurücksetzen Link",
+      "LOGINLINK": "Login-Link",
+      "SPLINK": "Passwort setzen Link",
+      "MESSAGE": "Benutzerdefinierte Nachricht",
+      "CALLOUTTITLE": "Titel des Callouts",
+      "CALLOUTLINK": "Link zum Callout",
+      "SUPPORTEMAIL": "Support E-Mail-Adresse",
+      "ANSWERS": "Formatierte Antwort-Zusammenfassung",
+      "REFCODE": "Empfehlungs-Code des Kontakts",
+      "EXPIRES": "Ablaufdatum der Mitgliedschaft",
+      "REFEREENAME": "Name der geworbenen Person",
+      "ISELIGIBLE": "Ob die Empfehlung berechtigt ist",
+      "PURCHASER": "Name des Geschenkkäufers",
+      "GIFTEE": "Name des Geschenkempfängers",
+      "GIFTDATE": "Startdatum des Geschenks",
+      "ACTIVATELINK": "Geschenk-Aktivierungslink",
+      "CONFIRMLINK": "E-Mail-Bestätigungslink",
+      "URL": "Spezielle URL",
+      "MEMBERID": "Mitglieds-ID",
+      "MEMBERNAME": "Mitgliedsname",
+      "CALLOUTSLUG": "Callout-Slug",
+      "RESPNAME": "Name des Antwortenden",
+      "ORGNAME": "Name der Organisation"
     }
   },
   "footer": {
@@ -1254,6 +1310,7 @@
       "heading": "Überschrift",
       "italic": "Kursiv",
       "link": "Link",
+      "mergeFields": "Merge-Feld einfügen",
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
       "toolbar": "Rich-Text-Formatierung Symbolleiste",

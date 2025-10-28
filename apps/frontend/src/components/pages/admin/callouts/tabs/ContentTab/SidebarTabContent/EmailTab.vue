@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="flex max-h-full min-h-0 flex-1">
-    <div class="flex-1 overflow-y-auto bg-white p-6 shadow-md">
-      <div class="mx-auto max-w-3xl">
+    <div class="relative flex-1 bg-white p-6 shadow-md">
+      <div class="mx-auto max-h-full max-w-3xl overflow-y-auto">
         <!-- Info box when contact settings are not enabled -->
         <AppNotification
           v-if="!collectInfoEnabled"
@@ -27,24 +27,28 @@
         </AppFormField>
 
         <!-- Email editor with server-side preview (merge fields resolved server-side) -->
-        <EmailEditor
-          :template="emailData"
-          :merge-fields="{
-            CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
-            CALLOUTLINK: generateCalloutLink(
-              props.tabs.titleAndImage.data.slug,
-              true
-            ),
-            CALLOUTSLUG: props.tabs.titleAndImage.data.slug,
-          }"
-          :server-render="{
-            type: 'contact',
-            templateId: 'callout-response-answers',
-          }"
-          :footer="emailFooter"
-          :subject-label="t('callout.builder.tabs.email.subject.label')"
-          :content-label="t('callout.builder.tabs.email.body.label')"
-        />
+        <!-- Note: The editor needs overflow-visible for the merge fields dropdown -->
+        <div class="relative overflow-visible">
+          <EmailEditor
+            :template="emailData"
+            :merge-fields="{
+              CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
+              CALLOUTLINK: generateCalloutLink(
+                props.tabs.titleAndImage.data.slug,
+                true
+              ),
+              CALLOUTSLUG: props.tabs.titleAndImage.data.slug,
+            }"
+            :merge-field-groups="mergeFieldGroups"
+            :server-render="{
+              type: 'contact',
+              templateId: 'callout-response-answers',
+            }"
+            :footer="emailFooter"
+            :subject-label="t('callout.builder.tabs.email.subject.label')"
+            :content-label="t('callout.builder.tabs.email.body.label')"
+          />
+        </div>
       </div>
     </div>
 
@@ -56,9 +60,15 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormField, AppNotification, AppToggleField } from '@beabee/vue';
+import {
+  AppFormField,
+  AppNotification,
+  AppToggleField,
+  type MergeTagGroup,
+} from '@beabee/vue';
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+import { currentUser } from '@store/currentUser';
 import type { LocaleProp } from '@type';
 import { client } from '@utils/api';
 import { generateCalloutLink } from '@utils/callouts';
@@ -93,7 +103,7 @@ const collectInfoEnabled = computed(() => props.tabs.settings.data.collectInfo);
 // Email footer for preview
 const emailFooter = ref('');
 
-// Available merge tags for callout-response-answers template
+// Available merge tags for callout-response-answers template (for i18n)
 const defaultMergeTags = computed(() => ({
   // Contact fields (available in all contact emails)
   EMAIL: '*|EMAIL|*',
@@ -111,6 +121,45 @@ const defaultMergeTags = computed(() => ({
   SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
   ANSWERS: '*|ANSWERS|*',
 }));
+
+// Merge field groups for the rich text editor dropdown
+const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
+  const user = currentUser.value;
+  const fullName = user
+    ? `${user.firstname} ${user.lastname}`.trim()
+    : undefined;
+
+  return [
+    {
+      key: 'contact',
+      tags: [
+        { tag: 'EMAIL', example: user?.email },
+        { tag: 'NAME', example: fullName },
+        { tag: 'FNAME', example: user?.firstname },
+        { tag: 'LNAME', example: user?.lastname },
+      ],
+    },
+    {
+      key: 'template',
+      tags: [
+        { tag: 'MESSAGE' },
+        {
+          tag: 'CALLOUTTITLE',
+          example: props.tabs.titleAndImage.data.title.default,
+        },
+        {
+          tag: 'CALLOUTLINK',
+          example: generateCalloutLink(
+            props.tabs.titleAndImage.data.slug,
+            true
+          ),
+        },
+        { tag: 'SUPPORTEMAIL' },
+        { tag: 'ANSWERS' },
+      ],
+    },
+  ];
+});
 
 // Create reactive email data that syncs with props.data
 // Note: 'content' here represents the MESSAGE merge field value,

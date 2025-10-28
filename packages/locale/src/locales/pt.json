@@ -1122,6 +1122,13 @@
     },
     "body": {
       "label": "Mensagem"
+    },
+    "managed": {
+      "title": "Email gerido externamente",
+      "description": "Este modelo de email é gerido externamente e não pode ser editado aqui."
+    },
+    "preview": {
+      "unavailable": "Pré-visualização não disponível"
     }
   },
   "footer": {
@@ -1257,7 +1264,8 @@
       "numberedlist": "Lista numerada",
       "strikethrough": "Rasurado",
       "toolbar": "",
-      "underline": "Sublinhado"
+      "underline": "Sublinhado",
+      "mergeFields": "Inserir campo de mesclagem"
     },
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",
@@ -1632,5 +1640,54 @@
   },
   "taxRate": {
     "invoiceName": "???"
+  },
+  "mergeFields": {
+    "title": "Campos de mesclagem",
+    "expand": "Expandir",
+    "expandAll": "Expandir todos os campos de mesclagem",
+    "collapse": "Recolher",
+    "collapseAll": "Recolher todos os campos de mesclagem",
+    "clickToExpand": "Clicar para expandir os campos de mesclagem",
+    "copy": "Copiar",
+    "copyTag": "Copiar {tag}",
+    "copied": "Copiado!",
+    "insert": "Inserir",
+    "insertTag": "Inserir {tag}",
+    "example": "Exemplo",
+    "groups": {
+      "contact": "Campos de contacto",
+      "magic": "Links mágicos",
+      "template": "Campos de modelo"
+    },
+    "tags": {
+      "EMAIL": "Endereço de email do contacto",
+      "NAME": "Nome completo do contacto",
+      "FNAME": "Primeiro nome do contacto",
+      "LNAME": "Apelido do contacto",
+      "MEMBERSHIPID": "ID de membro do contacto",
+      "RPLINK": "Link de redefinição de palavra-passe",
+      "LOGINLINK": "Link de login",
+      "SPLINK": "Link de definição de palavra-passe",
+      "MESSAGE": "Conteúdo de mensagem personalizado",
+      "CALLOUTTITLE": "Título do callout",
+      "CALLOUTLINK": "Link para o callout",
+      "SUPPORTEMAIL": "Endereço de email de suporte",
+      "ANSWERS": "Respostas formatadas",
+      "REFCODE": "Código de referência do contacto",
+      "EXPIRES": "Data de expiração da adesão",
+      "REFEREENAME": "Nome da pessoa referida",
+      "ISELIGIBLE": "Se a referência é elegível",
+      "PURCHASER": "Nome do comprador do presente",
+      "GIFTEE": "Nome do destinatário do presente",
+      "GIFTDATE": "Data de início do presente",
+      "ACTIVATELINK": "Link de ativação do presente",
+      "CONFIRMLINK": "Link de confirmação de email",
+      "URL": "URL especial",
+      "MEMBERID": "ID de membro",
+      "MEMBERNAME": "Nome do membro",
+      "CALLOUTSLUG": "Slug do callout",
+      "RESPNAME": "Nome do respondente",
+      "ORGNAME": "Nome da organização"
+    }
   }
 }
