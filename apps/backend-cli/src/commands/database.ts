@@ -111,6 +111,28 @@ export const databaseCommand: CommandModule = {
             argv.filePath as string
           );
         },
+      })
+      .command({
+        command: 'import-steady <filePath>',
+        describe: 'Import contacts from Steady CSV export',
+        builder: (yargs) =>
+          yargs
+            .positional('filePath', {
+              type: 'string',
+              description: 'Path to the Steady CSV export file',
+              demandOption: true,
+            })
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Preview import without making changes',
+              default: false,
+            }),
+        handler: async (argv) => {
+          const { importSteady } = await import(
+            '../actions/database/import-steady.js'
+          );
+          return importSteady(argv.filePath as string, argv.dryRun);
+        },
       }),
   handler: () => {},
 };
