@@ -13,6 +13,8 @@ export const ALWAYS_ANONYMIZED_MODELS = [
   models.contactTagAssignmentAnonymiser,
   models.emailAnonymiser,
   models.emailMailingAnonymiser,
+  models.segmentContactsAnonymiser,
+  models.segmentOngoingEmailsAnonymiser,
 ] as models.ModelAnonymiser[];
 
 /**
@@ -39,8 +41,6 @@ export const OPTIONALLY_ANONYMIZED_MODELS = [
   models.referralsAnonymiser,
   models.resetSecurityFlowAnonymiser,
   models.segmentsAnonymiser,
-  models.segmentContactsAnonymiser,
-  models.segmentOngoingEmailsAnonymiser,
   models.exportItemsAnonymiser,
 ] as models.ModelAnonymiser[];
 
