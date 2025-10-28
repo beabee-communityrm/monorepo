@@ -2,9 +2,12 @@
   <div>
     <AppSubHeading v-if="heading">{{ heading }}</AppSubHeading>
     <template v-if="template">
-      <div class="relative mb-6 flex gap-6">
+      <div
+        class="relative mb-6 flex flex-col gap-6"
+        :class="alwaysStacked ? '' : 'md:flex-row'"
+      >
         <!-- Editor panel -->
-        <div class="relative min-w-0 max-w-xl flex-1">
+        <div class="relative min-w-0 flex-1">
           <div class="mb-4">
             <AppInput
               v-model="template.subject"
@@ -21,8 +24,11 @@
         </div>
 
         <!-- Preview panel -->
-        <div class="w-80 flex-none self-center lg:w-96">
-          <div class="content-message bg-white p-4 shadow">
+        <div class="w-full" :class="alwaysStacked ? '' : 'md:w-[500px]'">
+          <AppLabel :label="t('emailEditor.preview.label')" class="mb-0.5" />
+          <div
+            class="content-message rounded border border-primary-40 bg-white p-4"
+          >
             <!-- Server preview loading state -->
             <div
               v-if="isServerPreview && isLoadingPreview"
@@ -114,6 +120,7 @@ import {
 import type { GetContactData } from '@beabee/beabee-common';
 import {
   AppInput,
+  AppLabel,
   AppNotification,
   AppRichTextEditor,
   AppSubHeading,
@@ -185,6 +192,11 @@ const props = withDefaults(
      * If not provided, uses default i18n key
      */
     contentLabel?: string;
+
+    /**
+     * Whether to always stack the preview below the editor (ignores responsive breakpoints)
+     */
+    alwaysStacked?: boolean;
   }>(),
   {
     heading: '',
@@ -195,6 +207,7 @@ const props = withDefaults(
     mergeFieldGroups: undefined,
     subjectLabel: '',
     contentLabel: '',
+    alwaysStacked: false,
   }
 );
 
