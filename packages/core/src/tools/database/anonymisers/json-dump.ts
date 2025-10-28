@@ -17,6 +17,9 @@ const log = mainLogger.child({ app: 'anonymisers' });
 // Global JSON dump object to collect all data during export
 let jsonDump: DatabaseDump = {};
 
+// Store outputDir for use in saveJsonDump
+let jsonDumpOutputDir: string = '/opt/packages/test-utils/database-dumps';
+
 /**
  * Add items to the in-memory JSON dump
  *
@@ -56,11 +59,14 @@ export function writeItemsToJsonDump<T extends ObjectLiteral>(
  * Creates empty arrays for each model's table in the dump structure.
  *
  * @param anonymisers The model anonymizers to initialize tables for
+ * @param outputDir Base directory for the dump file (stored for later use in saveJsonDump)
  */
 export function initializeJsonDump(
-  anonymisers: ModelAnonymiser<ObjectLiteral>[]
+  anonymisers: ModelAnonymiser<ObjectLiteral>[],
+  outputDir = '/opt/packages/test-utils/database-dumps'
 ): void {
   jsonDump = {};
+  jsonDumpOutputDir = outputDir;
 
   // Initialize empty arrays for each table
   for (const anonymiser of anonymisers) {
@@ -68,6 +74,8 @@ export function initializeJsonDump(
     jsonDump[tableName] = [];
     log.info(`Initialized table: ${tableName}`);
   }
+
+  log.info(`JSON dump initialized (output: ${outputDir})`);
 }
 
 /**
@@ -109,20 +117,17 @@ export function validateDumpStructure(dump: any): dump is DatabaseDump {
  * Save the in-memory JSON dump to a file
  *
  * Creates a timestamped file in the output directory's generated-dumps subfolder.
+ * Uses the outputDir that was set during initializeJsonDump.
  *
  * @param dryRun If true, only log what would be done
- * @param outputDir Base directory for the dump file
  */
-export async function saveJsonDump(
-  dryRun = false,
-  outputDir = '/opt/packages/test-utils/database-dumps'
-): Promise<void> {
+export async function saveJsonDump(dryRun = false): Promise<void> {
   if (!validateDumpStructure(jsonDump)) {
     throw new Error('Invalid dump structure before saving');
   }
 
   const jsonString = JSON.stringify(jsonDump, null, 2);
-  const filePath = createDumpFilePath(outputDir, 'json');
+  const filePath = createDumpFilePath(jsonDumpOutputDir, 'json');
 
   if (!dryRun) {
     await fs.promises.writeFile(filePath, jsonString);

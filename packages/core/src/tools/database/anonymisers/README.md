@@ -24,16 +24,16 @@ The module has been refactored into focused, single-responsibility files:
 
 - **`json-dump.ts`** - JSON dump management
 
-  - `initializeJsonDump()` - Initialize JSON export
+  - `initializeJsonDump(anonymisers, outputDir)` - Initialize JSON export with output directory
   - `writeItemsToJsonDump()` - Write records to JSON dump
-  - `saveJsonDump()` - Save JSON dump to file
+  - `saveJsonDump(dryRun)` - Save JSON dump to file
   - `validateDumpStructure()` - Validate dump integrity
 
 - **`sql-dump.ts`** - SQL dump management
 
-  - `initializeSqlDump()` - Initialize SQL export with DELETE statements
+  - `initializeSqlDump(anonymisers, outputDir)` - Initialize SQL export with DELETE statements
   - `writeItemsToSqlDump()` - Write records as SQL INSERT statements
-  - `saveSqlDump()` - Finalize and close SQL dump file
+  - `saveSqlDump(dryRun)` - Finalize and close SQL dump file
   - `clearModels()` - Generate DELETE statements
 
 - **`importer.ts`** - Database import/seeding
@@ -67,15 +67,15 @@ import {
 
 ### JSON Export Flow
 
-1. `initializeJsonDump()` - Create in-memory structure
+1. `initializeJsonDump(anonymisers, outputDir)` - Create in-memory structure and store output directory
 2. `anonymiseModel()` → `writeItemsToJsonDump()` - Anonymize and collect data
-3. `saveJsonDump()` - Write to timestamped file
+3. `saveJsonDump(dryRun)` - Write to timestamped file in stored output directory
 
 ### SQL Export Flow
 
-1. `initializeSqlDump()` - Create file stream and write DELETE statements
+1. `initializeSqlDump(anonymisers, outputDir)` - Create file stream and write DELETE statements
 2. `anonymiseModel()` → `writeItemsToSqlDump()` - Anonymize and write INSERT statements
-3. `saveSqlDump()` - Close file stream
+3. `saveSqlDump(dryRun)` - Close file stream
 
 ### Import Flow
 

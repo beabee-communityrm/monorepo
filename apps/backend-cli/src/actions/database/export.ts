@@ -68,12 +68,14 @@ export const exportDatabase = async (
   await runApp(async () => {
     const valueMap = new Map<string, unknown>();
     const anonymisers = getAnonymizers(anonymize);
+    const allModels = getAllModels();
 
     // Initialize dump based on export type
+    // Both need all models to ensure complete table initialization/clearing
     if (type === 'json') {
-      initializeJsonDump(getAllModels());
+      initializeJsonDump(allModels, outputDir);
     } else {
-      initializeSqlDump(anonymisers, outputDir);
+      initializeSqlDump(allModels, outputDir);
     }
 
     // Export data based on subset selection
@@ -90,11 +92,7 @@ export const exportDatabase = async (
     }
 
     // Save the dump
-    if (type === 'json') {
-      await saveJsonDump(dryRun, outputDir);
-    } else {
-      await saveSqlDump(dryRun);
-    }
+    await type === 'json' ? saveJsonDump(dryRun) : saveSqlDump(dryRun);
   });
 };
 
