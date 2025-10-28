@@ -93,6 +93,25 @@ const collectInfoEnabled = computed(() => props.tabs.settings.data.collectInfo);
 // Email footer for preview
 const emailFooter = ref('');
 
+// Available merge tags for callout-response-answers template
+const defaultMergeTags = computed(() => ({
+  // Contact fields (available in all contact emails)
+  EMAIL: '*|EMAIL|*',
+  NAME: '*|NAME|*',
+  FNAME: '*|FNAME|*',
+  LNAME: '*|LNAME|*',
+  // Magic merge fields (automatically generated)
+  RPLINK: '*|RPLINK|*',
+  LOGINLINK: '*|LOGINLINK|*',
+  SPLINK: '*|SPLINK|*',
+  // Template-specific fields
+  MESSAGE: '*|MESSAGE|*',
+  CALLOUTTITLE: '*|CALLOUTTITLE|*',
+  CALLOUTLINK: '*|CALLOUTLINK|*',
+  SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
+  ANSWERS: '*|ANSWERS|*',
+}));
+
 // Create reactive email data that syncs with props.data
 // Note: 'content' here represents the MESSAGE merge field value,
 // not the complete rendered email body
@@ -102,16 +121,7 @@ const emailData = reactive({
     t('callout.builder.tabs.email.subject.default'),
   content:
     props.data.emailMessage.default ||
-    t('callout.builder.tabs.email.body.default', {
-      FNAME: '*|FNAME|*',
-      LNAME: '*|LNAME|*',
-      NAME: '*|NAME|*',
-      ANSWERS: '*|ANSWERS|*',
-      CALLOUTTITLE: '*|CALLOUTTITLE|*',
-      CALLOUTLINK: '*|CALLOUTLINK|*',
-      EMAIL: '*|EMAIL|*',
-      SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
-    }),
+    t('callout.builder.tabs.email.body.default', defaultMergeTags.value),
 });
 
 // Watch emailData changes and sync to props.data
@@ -135,16 +145,7 @@ watch(
       subject || t('callout.builder.tabs.email.subject.default');
     const defaultMessage =
       message ||
-      t('callout.builder.tabs.email.body.default', {
-        FNAME: '*|FNAME|*',
-        LNAME: '*|LNAME|*',
-        NAME: '*|NAME|*',
-        ANSWERS: '*|ANSWERS|*',
-        CALLOUTTITLE: '*|CALLOUTTITLE|*',
-        CALLOUTLINK: '*|CALLOUTLINK|*',
-        EMAIL: '*|EMAIL|*',
-        SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
-      });
+      t('callout.builder.tabs.email.body.default', defaultMergeTags.value);
 
     emailData.subject = defaultSubject;
     emailData.content = defaultMessage;
