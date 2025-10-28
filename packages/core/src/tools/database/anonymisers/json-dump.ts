@@ -126,7 +126,6 @@ export async function saveJsonDump(
 
   if (!dryRun) {
     await fs.promises.writeFile(filePath, jsonString);
-    log.info(outputDir);
     log.info(`JSON dump saved to: ${filePath}`);
   } else {
     log.info(`[Dry run] JSON dump would be saved to: ${filePath}`);

@@ -11,6 +11,7 @@ import { createQueryBuilder } from '@beabee/core/database';
 import { Callout, CalloutResponse, Contact } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import {
+  ModelAnonymiser,
   anonymiseModel,
   exportModelAsIs,
   initializeJsonDump,
@@ -19,7 +20,7 @@ import {
   saveSqlDump,
 } from '@beabee/core/tools/database/anonymisers/index';
 
-import { Brackets } from 'typeorm';
+import { Brackets, ObjectLiteral } from 'typeorm';
 
 import {
   ALWAYS_ANONYMIZED_MODELS,
@@ -110,7 +111,7 @@ export const exportDatabase = async (
  * @param type Export format (json or sql)
  */
 const exportFullDatabase = async (
-  anonymisers: any[],
+  anonymisers: ModelAnonymiser<ObjectLiteral>[],
   valueMap: Map<string, unknown>,
   type: 'json' | 'sql'
 ): Promise<void> => {
@@ -128,7 +129,7 @@ const exportFullDatabase = async (
  * @param type Export format (json or sql)
  */
 const exportDemoSubset = async (
-  anonymisers: any[],
+  anonymisers: ModelAnonymiser<ObjectLiteral>[],
   valueMap: Map<string, unknown>,
   type: 'json' | 'sql'
 ): Promise<void> => {
@@ -180,11 +181,12 @@ const exportDemoSubset = async (
 
   const contactAnonymisers = [
     ...ALWAYS_ANONYMIZED_MODELS.filter(
-      (a: any) =>
+      (a) =>
         a.model === Contact ||
-        ['contactRole', 'contactProfile', 'contactContribution'].includes(
-          a.model.name
-        )
+        (typeof a.model === 'function' &&
+          ['contactRole', 'contactProfile', 'contactContribution'].includes(
+            a.model.name
+          ))
     ),
   ];
 
@@ -204,9 +206,10 @@ const exportDemoSubset = async (
   // ========================================
 
   const calloutAnonymisers = anonymisers.filter(
-    (a: any) =>
+    (a) =>
       a.model === Callout ||
-      ['calloutTags', 'calloutVariant'].includes(a.model.name)
+      (typeof a.model === 'function' &&
+        ['calloutTags', 'calloutVariant'].includes(a.model.name))
   );
 
   for (const anonymiser of calloutAnonymisers) {
@@ -224,9 +227,10 @@ const exportDemoSubset = async (
   // ========================================
 
   const responseAnonymisers = anonymisers.filter(
-    (a: any) =>
+    (a) =>
       a.model === CalloutResponse ||
-      ['calloutResponseTags'].includes(a.model.name)
+      (typeof a.model === 'function' &&
+        ['calloutResponseTags'].includes(a.model.name))
   );
 
   for (const anonymiser of responseAnonymisers) {
@@ -244,7 +248,7 @@ const exportDemoSubset = async (
   // Step 5: Clear unused models
   // ========================================
 
-  const clearAnonymisers: any[] = [
+  const clearAnonymisers: ModelAnonymiser<ObjectLiteral>[] = [
     // Add other models that should be cleared in demo exports
   ];
 
@@ -263,11 +267,11 @@ const exportDemoSubset = async (
  * @param valueMap Map of old values to new values for FK remapping
  */
 const exportNonAnonymizedModels = async (
-  excludedAnonymisers: any[],
+  excludedAnonymisers: ModelAnonymiser<ObjectLiteral>[],
   type: 'json' | 'sql' = 'json',
   valueMap?: Map<string, unknown>
 ): Promise<void> => {
-  const excludedModels = new Set(excludedAnonymisers.map((a: any) => a.model));
+  const excludedModels = new Set(excludedAnonymisers.map((a) => a.model));
 
   // Get models that should be exported as-is (not already anonymized)
   const modelsToExport = OPTIONALLY_ANONYMIZED_MODELS.filter(
