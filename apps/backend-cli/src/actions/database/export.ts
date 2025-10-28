@@ -92,7 +92,7 @@ export const exportDatabase = async (
     }
 
     // Save the dump
-    (await type) === 'json' ? saveJsonDump(dryRun) : saveSqlDump(dryRun);
+    await (type === 'json' ? saveJsonDump(dryRun) : saveSqlDump(dryRun));
   });
 };
 
