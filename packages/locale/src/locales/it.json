@@ -1128,7 +1128,8 @@
       "description": "Questo modello di email è gestito esternamente e non può essere modificato qui."
     },
     "preview": {
-      "unavailable": "Anteprima non disponibile"
+      "unavailable": "Anteprima non disponibile",
+      "label": "Anteprima"
     }
   },
   "footer": {

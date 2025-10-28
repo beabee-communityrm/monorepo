@@ -1128,7 +1128,8 @@
       "description": "Diese E-Mail-Vorlage wird extern verwaltet und kann hier nicht bearbeitet werden."
     },
     "preview": {
-      "unavailable": "Vorschau nicht verfügbar"
+      "unavailable": "Vorschau nicht verfügbar",
+      "label": "Vorschau"
     }
   },
   "footer": {

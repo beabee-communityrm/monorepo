@@ -1128,6 +1128,7 @@
       "description": "This email template is managed externally and cannot be edited here."
     },
     "preview": {
+      "label": "Preview",
       "unavailable": "Preview unavailable"
     }
   },

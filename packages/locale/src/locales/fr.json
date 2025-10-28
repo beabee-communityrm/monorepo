@@ -1132,7 +1132,8 @@
       "description": "Ce modèle d'e-mail est géré en externe et ne peut pas être modifié ici."
     },
     "preview": {
-      "unavailable": "Aperçu indisponible"
+      "unavailable": "Aperçu indisponible",
+      "label": "Aperçu"
     }
   },
   "footer": {

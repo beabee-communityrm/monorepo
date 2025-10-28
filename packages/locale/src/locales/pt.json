@@ -1128,7 +1128,8 @@
       "description": "Este modelo de email é gerido externamente e não pode ser editado aqui."
     },
     "preview": {
-      "unavailable": "Pré-visualização não disponível"
+      "unavailable": "Pré-visualização não disponível",
+      "label": "Pré-visualização"
     }
   },
   "footer": {

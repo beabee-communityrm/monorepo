@@ -1128,7 +1128,8 @@
       "description": "Deze e-mailsjabloon wordt extern beheerd en kan hier niet worden bewerkt."
     },
     "preview": {
-      "unavailable": "Voorbeeld niet beschikbaar"
+      "unavailable": "Voorbeeld niet beschikbaar",
+      "label": "Voorbeeld"
     }
   },
   "footer": {
