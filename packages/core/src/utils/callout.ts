@@ -10,35 +10,6 @@ import {
 } from '@beabee/beabee-common';
 
 /**
- * Generates empty answer placeholders for email template preview
- *
- * @param component The callout component schema
- * @returns Placeholder string for empty answer based on component type
- */
-function generateEmptyAnswerPlaceholder(
-  component: CalloutComponentInputSchema
-): string {
-  // You can use this method for generating empty answer placeholders for email template preview like this:
-  // ```
-  // switch (component.type) {
-  //   case CalloutComponentType.INPUT_SIGNATURE:
-  //     return '[Signature]';
-
-  //   case CalloutComponentType.INPUT_URL:
-  //     return '[URL]';
-
-  //   case CalloutComponentType.INPUT_FILE:
-  //     return '[File attachment]';
-  //   default:
-  //     return '[Answer]';
-  // }
-  // ```
-
-  // but we only return an empty string for now
-  return '';
-}
-
-/**
  * Formats callout response answers as simple HTML for email templates
  *
  * @param answers The response answers grouped by slide
@@ -173,8 +144,9 @@ export function formatCalloutResponseAnswersPreview(
         component.label ||
         component.key;
 
-      // Generate empty answer placeholder based on component type
-      const placeholder = generateEmptyAnswerPlaceholder(component);
+      // If real placeholders are desired, we could implement a method
+      // `generateEmptyAnswerPlaceholder(component)` here
+      const placeholder = '';
 
       // Create simple HTML paragraph
       htmlParts.push(`<p><strong>${label}:</strong> ${placeholder}</p>`);
