@@ -59,14 +59,11 @@ export interface AppSelectProps<T extends string | number> {
 const emit = defineEmits<(e: 'update:modelValue', value: T) => void>();
 const props = defineProps<AppSelectProps<T>>();
 
-const requiredAllowingEmptyString = (value: string) => {
-  if (!props.required) return true;
-  if (value === '') return true;
-  return !!value && value.trim().length > 0;
+const isValidOption = (value: T) => {
+  return props.items.some((i) => i.id === value) || !(props.required && !value);
 };
-
 const rules = computed(() => ({
-  v: { requiredAllowingEmptyString },
+  v: { isValidOption },
 }));
 
 const validation = useVuelidate(rules, { v: toRef(props, 'modelValue') });
