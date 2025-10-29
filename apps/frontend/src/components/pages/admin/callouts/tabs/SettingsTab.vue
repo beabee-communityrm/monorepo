@@ -178,7 +178,6 @@
             class="mb-3 px-4"
           />
           <AppFormBox
-            v-if="env.experimentalFeatures"
             :notification="
               !canAddNewsletterOptIn
                 ? {
