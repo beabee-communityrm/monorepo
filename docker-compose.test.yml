@@ -49,9 +49,6 @@ services:
     extends:
       file: docker-compose.yml
       service: minio
-    ports:
-      - "${BEABEE_MINIO_PORT_ADMIN:-9002}:9000" # Admin port for debugging, not for production
-      - "${BEABEE_MINIO_PORT_CONSOLE:-9003}:9001" # Console port (Admin UI), not for production
 
   frontend:
     extends:
