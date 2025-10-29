@@ -11,6 +11,7 @@ import * as path from 'path';
 
 import { validateDumpStructure } from './json-dump.js';
 import { DEFAULT_DUMP_DIRECTORY } from './utils/dump-file-path.js';
+import { topologicalSortTables } from './utils/table-ordering.js';
 
 const log = mainLogger.child({ app: 'anonymisers' });
 
@@ -50,32 +51,62 @@ export async function writeJsonToDB(
     entityMetas.map((meta) => [meta.tableName, meta.target])
   );
 
-  // Get tables that exist in the dump and have corresponding entities
+  // Get tables that exist in the dump
+  const dumpTables = Object.keys(dump).filter(
+    (table) => Array.isArray(dump[table]) && dump[table].length > 0
+  );
+
+  // Get ALL table names from entity metadata
+  const allTableNames = entityMetas.map((meta) => meta.tableName);
+
+  // Sort ALL tables by foreign key dependencies for proper deletion order
+  // We need to sort all tables, not just dump tables, to ensure proper clearing
+  const sortedAllTableNames = topologicalSortTables(
+    Array.from(entityMetas),
+    allTableNames
+  );
+
+  // Sort only dump tables for insertion
+  const sortedDumpTableNames = topologicalSortTables(
+    Array.from(entityMetas),
+    dumpTables
+  );
+
+  log.info(`Processing tables in order: ${sortedDumpTableNames.join(', ')}`);
+
+  // Build array of tables to process in dependency order
   const tablesToProcess: Array<{
     table: string;
     records: any[];
     entity: any;
-  }> = [];
-
-  for (const [table, records] of Object.entries(dump)) {
-    if (!Array.isArray(records) || records.length === 0) continue;
-    const entity = tableToEntity[table];
-    tablesToProcess.push({ table, records, entity });
-  }
+  }> = sortedDumpTableNames.map((table) => ({
+    table,
+    records: dump[table],
+    entity: tableToEntity[table],
+  }));
 
   if (!dryRun) {
-    // Clear tables in reverse order to respect foreign key constraints
-    log.info('Clearing existing data...');
-    for (let i = tablesToProcess.length - 1; i >= 0; i--) {
-      const { table, entity } = tablesToProcess[i];
-      const repo = dataSource.getRepository(entity);
-      await repo.delete({});
-      log.info(`Cleared table: ${table}`);
+    // Clear ALL tables in REVERSE order to respect foreign key constraints
+    // (child tables with FKs must be deleted before parent tables)
+    // We clear ALL tables, not just dump tables, to avoid FK constraint violations
+    log.info('Clearing existing data from all tables (reverse order)...');
+    for (let i = sortedAllTableNames.length - 1; i >= 0; i--) {
+      const tableName = sortedAllTableNames[i];
+      const entity = tableToEntity[tableName];
+      if (entity) {
+        const repo = dataSource.getRepository(entity);
+        const count = await repo.count();
+        if (count > 0) {
+          await repo.delete({});
+          log.info(`Cleared table: ${tableName} (${count} records)`);
+        }
+      }
     }
   }
 
-  // Insert data in forward order
-  log.info('Inserting new data...');
+  // Insert data in FORWARD order to respect foreign key constraints
+  // (parent tables must be inserted before child tables with FKs)
+  log.info('Inserting new data (forward order)...');
   for (const { table, records, entity } of tablesToProcess) {
     const repo = dataSource.getRepository(entity);
     if (!dryRun) {

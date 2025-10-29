@@ -54,7 +54,7 @@ async function importFromSqlFile(filePath: string): Promise<void> {
  * @param dryRun If true, only logs what would be done (JSON only)
  */
 export const importDatabase = async (
-  filePath: string = '../../packages/test-utils/database-dumps/database-dump.json',
+  filePath?: string,
   type?: 'json' | 'sql',
   dryRun = false
 ): Promise<void> => {
@@ -63,19 +63,37 @@ export const importDatabase = async (
     process.exit(1);
   }
 
-  if (!fs.existsSync(filePath)) {
-    console.error(`File not found: ${filePath}`);
+  // Auto-detect type from file extension if not specified
+  // If filePath is provided, detect from extension
+  // If not provided, use type to determine default path
+  let detectedType: 'json' | 'sql';
+  let resolvedFilePath: string;
+
+  if (filePath && filePath.trim() !== '') {
+    // File path was explicitly provided
+    detectedType = type || (filePath.endsWith('.json') ? 'json' : 'sql');
+    resolvedFilePath = filePath;
+    console.log(`Using provided file path: ${resolvedFilePath}`);
+  } else {
+    // No file path provided, use default based on type
+    detectedType = type || 'json';
+    const extension = detectedType === 'json' ? 'json' : 'sql';
+    resolvedFilePath = `../../packages/test-utils/database-dumps/database-dump.${extension}`;
+    console.log(
+      `Using default file path for type '${detectedType}': ${resolvedFilePath}`
+    );
+  }
+
+  if (!fs.existsSync(resolvedFilePath)) {
+    console.error(`File not found: ${resolvedFilePath}`);
     process.exit(1);
   }
 
-  // Auto-detect type from file extension if not specified
-  const detectedType = type || (filePath.endsWith('.json') ? 'json' : 'sql');
-
   await runApp(async () => {
     if (detectedType === 'json') {
-      await importFromJson(filePath, dryRun);
+      await importFromJson(resolvedFilePath, dryRun);
     } else {
-      await importFromSqlFile(filePath);
+      await importFromSqlFile(resolvedFilePath);
     }
     console.log('Import completed successfully');
   });

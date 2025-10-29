@@ -61,9 +61,7 @@ export const databaseCommand: CommandModule = {
             .positional('filePath', {
               type: 'string',
               description:
-                'Path to the dump file (.json or .sql). Defaults to test data dump if not provided',
-              default:
-                '../../packages/test-utils/database-dumps/database-dump.json',
+                'Path to the dump file (.json or .sql). Defaults to database-dump.json or database-dump.sql based on --type',
             })
             .option('type', {
               type: 'string',
@@ -81,7 +79,7 @@ export const databaseCommand: CommandModule = {
             '../actions/database/import.js'
           );
           return importDatabase(
-            argv.filePath as string,
+            argv.filePath as string | undefined,
             argv.type as 'json' | 'sql' | undefined,
             argv.dryRun
           );
