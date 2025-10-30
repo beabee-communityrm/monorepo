@@ -1112,7 +1112,15 @@
     "warning": ""
   },
   "editNotice": {
-    "title": ""
+    "title": "Editar: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Assunto"
+    },
+    "body": {
+      "label": "Mensagem"
+    }
   },
   "footer": {
     "contactUs": "Entra em contacto connosco em",

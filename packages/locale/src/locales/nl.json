@@ -863,7 +863,7 @@
     "title": "Recensenten"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, worden extra reacties niet geregistreerd."
+    "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, wordt extra reacties niet geregistreerd."
   },
   "callouts": {
     "archive": "Archief",
@@ -1113,6 +1113,14 @@
   },
   "editNotice": {
     "title": "Bewerken: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Onderwerp"
+    },
+    "body": {
+      "label": "Bericht"
+    }
   },
   "footer": {
     "contactUs": "Neem contact met ons op",

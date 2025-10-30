@@ -1,11 +1,9 @@
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { Email, EmailMailing, SegmentOngoingEmail } from '@beabee/core/models';
-import EmailService, {
-  type EmailTemplateId,
-} from '@beabee/core/services/EmailService';
+import { emailService } from '@beabee/core/services/EmailService';
 import OptionsService from '@beabee/core/services/OptionsService';
 import { formatEmailBody } from '@beabee/core/templates/email';
-import { EmailMailingRecipient } from '@beabee/core/type';
+import { EmailMailingRecipient, EmailTemplateId } from '@beabee/core/type';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import busboy from 'connect-busboy';
@@ -313,7 +311,7 @@ app.post(
       ),
     }));
 
-    await EmailService.sendEmail(email, recipients);
+    await emailService.sendEmail(email, recipients);
 
     await getRepository(EmailMailing).update(mailing.id, {
       sentDate: new Date(),

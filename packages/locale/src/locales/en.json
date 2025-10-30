@@ -1114,6 +1114,14 @@
   "editNotice": {
     "title": "Edit: {title}"
   },
+  "emailEditor": {
+    "subject": {
+      "label": "Subject"
+    },
+    "body": {
+      "label": "Message"
+    }
+  },
   "footer": {
     "contactUs": "Contact us at",
     "handbookResources": "Handbook & Resources",

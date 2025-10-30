@@ -1,10 +1,8 @@
 import { getRepository } from '@beabee/core/database';
 import { Email } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
-import {
-  EmailTemplateId,
-  emailService,
-} from '@beabee/core/services/EmailService';
+import { emailService } from '@beabee/core/services/EmailService';
+import type { EmailTemplateId } from '@beabee/core/type';
 
 import type { CreateEmailOverrideArgs } from '../../types/email.js';
 

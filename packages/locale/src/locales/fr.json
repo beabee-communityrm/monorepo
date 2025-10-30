@@ -379,7 +379,8 @@
             "label": "Envoyer un e-mail à tous les participants après la soumission"
           },
           "subject": {
-            "label": "Objet de l'e-mail"
+            "label": "Objet de l'e-mail",
+            "placeholder": ""
           },
           "title": "E-mail"
         },
@@ -672,7 +673,7 @@
         },
         "translations": {
           "language": {
-            "description": "Vous pouvez traduire la CrowdNewsrooms dans plusieurs langues. Si une traduction est manquante nous l'afficheront dans la langue d'origine.",
+            "description": "Vous pouvez traduire la CrowdNewsrooms dans plusieurs langues. Si une traduction est manquante nous l'afficherons dans la langue d'origine.",
             "enableLanguages": "Activer la traduction",
             "title": "Langue"
           },
@@ -1115,7 +1116,15 @@
     "warning": "Attention ! Vous modifiez une CrowdNewsrooms en cours. Modifier les propriétés du formulaire risque de rendre les réponses précédentes inutilisables."
   },
   "editNotice": {
-    "title": "Modifier : {title}"
+    "title": "Modifier: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Objet"
+    },
+    "body": {
+      "label": "Message"
+    }
   },
   "footer": {
     "contactUs": "Contactez-nous à",

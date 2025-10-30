@@ -703,7 +703,7 @@
       "email": "Ihre E-Mail-Adresse",
       "guestFieldsMissing": "Bitte geben Sie uns Ihre Kontaktdaten.",
       "name": "Ihr Name",
-      "submittingResponseError": "Es gab ein Problem bei der Übermittlung ihrer Antworten. Bitte versuchen Sie es erneut."
+      "submittingResponseError": "Es gab ein Problem bei der Übermittlung Ihrer Antworten. Bitte versuchen Sie es erneut."
     },
     "getStarted": "Starten",
     "joinNow": "Mitglied werden",
@@ -996,7 +996,7 @@
     "overview": "Überblick",
     "pickTag": "Tag aus der Liste wählen",
     "profile": "Profil",
-    "roles": "Rolle",
+    "roles": "Rollen",
     "security": {
       "instructions": "Link kopieren und teilen:",
       "loginOverride": "Automatischer Login",
@@ -1038,7 +1038,7 @@
       "membershipExpires": "Mitglied bis",
       "membershipStarts": "Mitglied seit",
       "name": "Name",
-      "newsletterGroups": "Newsletter groups",
+      "newsletterGroups": "Newsletter Gruppen",
       "newsletterStatus": "Newsletter-Status",
       "notes": "Notizen",
       "payingFee": "Übernimmt Transaktionskosten?",
@@ -1099,12 +1099,12 @@
     "startContribution": "Mitgliedschaft beginnen",
     "startedContribution": "Ihre Mitgliedschaft hat begonnen.",
     "updateContribution": "Beitrag aktualisieren",
-    "updatePaymentType": "Neue Zahlungsmethode einrichten",
     "updatedContribution": "Ihr Beitrag wurde geändert.",
     "updatedPaymentSource": "Ihre Zahlungsart wurde aktualisiert.",
     "willExpire": "Ihre Mitgliedschaft läuft in {expires} ab.",
     "willRenew": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
-    "willRenewWithNewAmount": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch. Ihr Beitrag ist dann {nextAmount}."
+    "willRenewWithNewAmount": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch. Ihr Beitrag ist dann {nextAmount}.",
+    "updatePaymentType": ""
   },
   "editCallout": {
     "replicated": "Ihr CrowdNewsroom wurde kopiert! Sie bearbeiten jetzt die Kopie. Bitte denken Sie unbedingt daran, den Titel zu bearbeiten.",
@@ -1113,6 +1113,14 @@
   },
   "editNotice": {
     "title": "Bearbeiten: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Betreff"
+    },
+    "body": {
+      "label": "Nachricht"
+    }
   },
   "footer": {
     "contactUs": "Kontaktieren Sie uns unter",
@@ -1349,7 +1357,7 @@
   },
   "lostDevice": {
     "description": "Bitte geben Sie Ihre E-Mail-Adresse ein, und wir senden Ihnen Anweisungen zum Zurücksetzen Ihres 2FA.",
-    "message": "Gibt es einen Account mit der E-Mail-Adresse {email}, bekommen Sie in Kürze eine Nachricht. Bitte schauen Sie in Ihren Posteingang und befolgen Sie die Anleitung in der E-Mail. Sollte die E-Mail nicht auftauchen, schauen Sie auch in ihrem Spamordner nach.",
+    "message": "Gibt es einen Account mit der E-Mail-Adresse {email}, bekommen Sie in Kürze eine Nachricht. Bitte schauen Sie in Ihren Posteingang und befolgen Sie die Anleitung in der E-Mail. Sollte die E-Mail nicht auftauchen, schauen Sie auch in Ihrem Spamordner nach.",
     "title": "Haben Sie Ihr 2FA-Gerät verloren?"
   },
   "mailOptIn": {
@@ -1385,7 +1393,7 @@
         "bigTitle": "Willkommens- & Kündigungs-E-Mail",
         "cancellationEmail": "Kündigungs-E-Mail",
         "description": "Passe deine Willkommens- und Kündigungs-E-Mail an",
-        "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mai-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
+        "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mail-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
         "welcomeEmail": "Willkommens-E-Mail"
       },

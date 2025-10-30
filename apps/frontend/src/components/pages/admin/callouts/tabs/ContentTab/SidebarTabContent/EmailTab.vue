@@ -26,9 +26,24 @@
           />
         </AppFormField>
 
-        <!-- Email editor - always visible -->
-        <!-- TODO: Use EmailController to get real preview instead of static footer -->
-        <EmailEditor :email="emailData" :footer="emailFooter" />
+        <!-- Email editor with server-side preview (merge fields resolved server-side) -->
+        <EmailEditor
+          :template="emailData"
+          :merge-fields="{
+            CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
+            CALLOUTLINK: generateCalloutLink(
+              props.tabs.titleAndImage.data.slug,
+              true
+            ),
+          }"
+          :server-render="{
+            type: 'contact',
+            templateId: 'callout-response-answers',
+          }"
+          :footer="emailFooter"
+          :subject-label="t('callout.builder.tabs.email.subject.label')"
+          :content-label="t('callout.builder.tabs.email.body.label')"
+        />
       </div>
     </div>
 
@@ -45,6 +60,7 @@ import { AppFormField, AppNotification, AppToggleField } from '@beabee/vue';
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
 import type { LocaleProp } from '@type';
 import { client } from '@utils/api';
+import { generateCalloutLink } from '@utils/callouts';
 import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -58,8 +74,8 @@ export interface EmailTabData {
   sendEmail: boolean;
   /** Email subject line */
   emailSubject: LocaleProp;
-  /** Email body content */
-  emailBody: LocaleProp;
+  /** Email message content (used as MESSAGE merge field value) */
+  emailMessage: LocaleProp;
 }
 
 /**
@@ -77,9 +93,11 @@ const collectInfoEnabled = computed(() => props.tabs.settings.data.collectInfo);
 const emailFooter = ref('');
 
 // Create reactive email data that syncs with props.data
+// Note: 'content' here represents the MESSAGE merge field value,
+// not the complete rendered email body
 const emailData = reactive({
   subject: props.data.emailSubject.default,
-  body: props.data.emailBody.default,
+  content: props.data.emailMessage.default,
 });
 
 // Watch emailData changes and sync to props.data
@@ -89,17 +107,17 @@ watch(
     // eslint-disable-next-line vue/no-mutating-props
     props.data.emailSubject.default = newValue.subject;
     // eslint-disable-next-line vue/no-mutating-props
-    props.data.emailBody.default = newValue.body;
+    props.data.emailMessage.default = newValue.content;
   },
   { deep: true }
 );
 
 // Watch props.data changes and sync to emailData
 watch(
-  () => [props.data.emailSubject.default, props.data.emailBody.default],
-  ([subject, body]) => {
+  () => [props.data.emailSubject.default, props.data.emailMessage.default],
+  ([subject, message]) => {
     emailData.subject = subject;
-    emailData.body = body;
+    emailData.content = message;
   }
 );
 
