@@ -6,6 +6,7 @@
   </App2ColGrid>
 
   <AppForm
+    class="max-w-[1400px]"
     :button-text="t('form.saveChanges')"
     :success-text="t('form.saved')"
     @submit="handleUpdate"
