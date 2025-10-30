@@ -16,9 +16,108 @@ import {
   EmailPerson,
   EmailProvider,
   EmailRecipient,
+  TemplateEmailOptions,
 } from '#type/index';
 
 const log = mainLogger.child({ app: 'email-service' });
+
+/**
+ * Email Merge Fields Documentation
+ *
+ * All email templates support these merge fields:
+ *
+ * ## Contact Fields (available for all contact emails)
+ * - *|EMAIL|* - Contact's email address
+ * - *|NAME|* - Contact's full name (first + last)
+ * - *|FNAME|* - Contact's first name
+ * - *|LNAME|* - Contact's last name
+ *
+ * ## Magic Links (generated automatically)
+ * - *|RPLINK|* - Reset password link
+ * - *|LOGINLINK|* - Login link
+ * - *|SPLINK|* - Set password link
+ *
+ * ## Template-Specific Fields
+ *
+ * ### General Email Templates
+ * **purchased-gift:**
+ * - *|PURCHASER|* - Name of the gift purchaser
+ * - *|GIFTEE|* - First name of the gift recipient
+ * - *|GIFTDATE|* - Gift start date (formatted as "Month Day")
+ *
+ * **confirm-email:**
+ * - *|FNAME|* - First name
+ * - *|LNAME|* - Last name
+ * - *|CONFIRMLINK|* - Email confirmation link
+ *
+ * **expired-special-url-resend:**
+ * - *|FNAME|* - First name
+ * - *|URL|* - New special URL
+ *
+ * ### Admin Email Templates
+ * **new-member:**
+ * - *|MEMBERID|* - Contact ID of the new member
+ * - *|MEMBERNAME|* - Full name of the new member
+ *
+ * **cancelled-member:**
+ * - *|MEMBERID|* - Contact ID of the cancelled member
+ * - *|MEMBERNAME|* - Full name of the cancelled member
+ *
+ * **new-callout-response:**
+ * - *|CALLOUTSLUG|* - Slug of the callout
+ * - *|CALLOUTTITLE|* - Title of the callout
+ * - *|RESPNAME|* - Name of the responder
+ *
+ * ### Contact Email Templates
+ * **welcome:**
+ * - *|REFCODE|* - Contact's referral code
+ *
+ * **reset-password:**
+ * - *|RPLINK|* - Reset password link
+ *
+ * **reset-device:**
+ * - *|RPLINK|* - Reset device link
+ *
+ * **cancelled-contribution:**
+ * - *|EXPIRES|* - Membership expiration date (formatted as "Day Date Month")
+ * - *|MEMBERSHIPID|* - Contact/membership ID
+ *
+ * **cancelled-contribution-no-survey:**
+ * - *|EXPIRES|* - Membership expiration date (formatted as "Day Date Month")
+ *
+ * **successful-referral:**
+ * - *|REFCODE|* - Contact's referral code
+ * - *|REFEREENAME|* - Name of the referred person
+ * - *|ISELIGIBLE|* - Whether the referral is eligible
+ *
+ * **giftee-success:**
+ * - *|PURCHASER|* - Name of the gift purchaser
+ * - *|MESSAGE|* - Personal message from the purchaser (supports nested merge fields)
+ * - *|ACTIVATELINK|* - Link to activate the gift
+ *
+ * **email-exists-login:**
+ * - *|LOGINLINK|* - Login link
+ *
+ * **email-exists-set-password:**
+ * - *|SPLINK|* - Set password link
+ *
+ * **callout-response-answers:**
+ * - *|MESSAGE|* - Custom message (supports nested merge fields)
+ * - *|CALLOUTTITLE|* - Title of the callout
+ * - *|CALLOUTLINK|* - Link to the callout
+ * - *|SUPPORTEMAIL|* - Support email address
+ *
+ * **contribution-didnt-start:**
+ * - *|ORGNAME|* - Organization name
+ * - *|SUPPORTEMAIL|* - Support email address
+ *
+ * ## Nested Merge Fields
+ * The MESSAGE field supports nested merge fields. For example:
+ * - MESSAGE: "Hello *|FNAME|*, thank you for your response to *|CALLOUTTITLE|*!"
+ * - This will expand to: "Hello John, thank you for your response to Survey 2024!"
+ *
+ * All merge fields within MESSAGE content are automatically expanded before rendering.
+ */
 
 const generalEmailTemplates = {
   'purchased-gift': (params: {
@@ -115,10 +214,11 @@ const contactEmailTemplates = {
   'email-exists-set-password': (_: Contact, params: { spLink: string }) => ({
     SPLINK: params.spLink,
   }),
-  'confirm-callout-response': (
+  'callout-response-answers': (
     _: Contact,
-    params: { calloutSlug: string; calloutTitle: string }
+    params: { message: string; calloutSlug: string; calloutTitle: string }
   ) => ({
+    MESSAGE: params.message,
     CALLOUTTITLE: params.calloutTitle,
     CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
     SUPPORTEMAIL: OptionsService.getText('support-email'),
@@ -213,7 +313,7 @@ class EmailService {
     template: T,
     to: EmailPerson,
     params: Parameters<GeneralEmailTemplates[T]>[0],
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     const mergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
     await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
@@ -223,7 +323,7 @@ class EmailService {
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void>;
   async sendTemplateToContact<
     T extends ContactEmailParams<T> extends undefined
@@ -233,13 +333,13 @@ class EmailService {
     template: T,
     contact: Contact,
     params?: undefined,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void>;
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
     params: ContactEmailParams<T>,
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     log.info('Sending template to contact ' + contact.id);
 
@@ -254,7 +354,7 @@ class EmailService {
   async sendTemplateToAdmin<T extends AdminEmailTemplateId>(
     template: T,
     params: Parameters<AdminEmailTemplates[T]>[0],
-    opts?: EmailOptions
+    opts?: TemplateEmailOptions
   ): Promise<void> {
     const recipient = {
       to: { email: OptionsService.getText('support-email') },
@@ -267,7 +367,7 @@ class EmailService {
   private async sendTemplate(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
-    opts: EmailOptions | undefined,
+    opts: TemplateEmailOptions | undefined,
     required: boolean
   ): Promise<void> {
     const providerTemplate = this.getProviderTemplate(template);
@@ -288,7 +388,11 @@ class EmailService {
     } else {
       const defaultEmail = this.getDefaultEmail(template);
       if (defaultEmail) {
-        this.sendEmail(defaultEmail, recipients, opts);
+        // Allow custom subject override
+        const email = opts?.customSubject
+          ? { ...defaultEmail, subject: opts.customSubject }
+          : defaultEmail;
+        this.sendEmail(email, recipients, opts);
       } else if (required) {
         log.error(
           `Tried to send ${template} that has no provider template or default`
@@ -310,10 +414,18 @@ class EmailService {
     template: EmailTemplateId,
     email: Email
   ): Promise<void> {
-    OptionsService.setJSON('email-templates', {
+    await OptionsService.setJSON('email-templates', {
       ...OptionsService.getJSON('email-templates'),
       [template]: email.id,
     });
+  }
+
+  async deleteTemplateEmail(template: EmailTemplateId): Promise<void> {
+    const currentTemplates = OptionsService.getJSON('email-templates') || {};
+    if (currentTemplates[template]) {
+      delete currentTemplates[template];
+      await OptionsService.setJSON('email-templates', currentTemplates);
+    }
   }
 
   isTemplateId(template: string): template is EmailTemplateId {
