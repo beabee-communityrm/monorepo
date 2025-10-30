@@ -368,6 +368,7 @@
         },
         "email": {
           "body": {
+            "default": "",
             "label": ""
           },
           "collectInfoWarning": {
@@ -379,6 +380,7 @@
             "label": ""
           },
           "subject": {
+            "default": "",
             "label": ""
           },
           "title": ""
@@ -1118,6 +1120,14 @@
     "body": {
       "label": ""
     },
+    "managed": {
+      "description": "",
+      "title": ""
+    },
+    "preview": {
+      "label": "",
+      "unavailable": ""
+    },
     "subject": {
       "label": ""
     }
@@ -1252,6 +1262,7 @@
       "heading": "",
       "italic": "",
       "link": "",
+      "mergeFields": "",
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
@@ -1438,6 +1449,55 @@
     "payments": "",
     "settings": "",
     "yourProfile": ""
+  },
+  "mergeFields": {
+    "clickToExpand": "",
+    "collapse": "",
+    "collapseAll": "",
+    "copied": "",
+    "copy": "",
+    "copyTag": "",
+    "example": "",
+    "expand": "",
+    "expandAll": "",
+    "groups": {
+      "contact": "",
+      "magic": "",
+      "template": ""
+    },
+    "insert": "",
+    "insertTag": "",
+    "tags": {
+      "ACTIVATELINK": "",
+      "ANSWERS": "",
+      "CALLOUTLINK": "",
+      "CALLOUTSLUG": "",
+      "CALLOUTTITLE": "",
+      "CONFIRMLINK": "",
+      "EMAIL": "",
+      "EXPIRES": "",
+      "FNAME": "",
+      "GIFTDATE": "",
+      "GIFTEE": "",
+      "ISELIGIBLE": "",
+      "LNAME": "",
+      "LOGINLINK": "",
+      "MEMBERID": "",
+      "MEMBERNAME": "",
+      "MEMBERSHIPID": "",
+      "MESSAGE": "",
+      "NAME": "",
+      "ORGNAME": "",
+      "PURCHASER": "",
+      "REFCODE": "",
+      "REFEREENAME": "",
+      "RESPNAME": "",
+      "RPLINK": "",
+      "SPLINK": "",
+      "SUPPORTEMAIL": "",
+      "URL": ""
+    },
+    "title": ""
   },
   "newsletterOptIn": {
     "groups": {

@@ -369,6 +369,7 @@
         "email": {
           "title": "E-Mail",
           "body": {
+            "default": "<p>Hallo {FNAME},</p><p>hier eine Übersicht über deine getätigten Antworten:<br />{ANSWERS}</p><p><br /></p><p>Diese E-Mail bestätigt deine Antwort auf <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> unter Verwendung deiner E-Mail-Adresse {EMAIL}.</p><p><br /></p><p>Wenn du Fragen hast, wende dich bitte an unser Support-Team unter <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Viele Grüße</p>",
             "label": "E-Mail-Text"
           },
           "collectInfoWarning": {
@@ -380,6 +381,7 @@
             "label": "Nach der Übermittlung eine E-Mail an alle Teilnehmer senden"
           },
           "subject": {
+            "default": "Danke für deine Teilnahme",
             "label": "E-Mail-Betreff"
           }
         },
@@ -1120,6 +1122,63 @@
     },
     "body": {
       "label": "Nachricht"
+    },
+    "managed": {
+      "title": "E-Mail wird extern verwaltet",
+      "description": "Diese E-Mail-Vorlage wird extern verwaltet und kann hier nicht bearbeitet werden."
+    },
+    "preview": {
+      "label": "Vorschau",
+      "unavailable": "Vorschau nicht verfügbar"
+    }
+  },
+  "mergeFields": {
+    "title": "Platzhalter",
+    "expand": "Ausklappen",
+    "expandAll": "Alle Platzhalter ausklappen",
+    "collapse": "Einklappen",
+    "collapseAll": "Alle Platzhalter einklappen",
+    "clickToExpand": "Klicke zum Ausklappen der Platzhalter",
+    "copy": "Kopieren",
+    "copyTag": "{tag} kopieren",
+    "copied": "Kopiert!",
+    "insert": "Einfügen",
+    "insertTag": "{tag} einfügen",
+    "example": "Beispiel",
+    "groups": {
+      "contact": "Kontakt-Felder",
+      "magic": "Magic Links",
+      "template": "Template-Felder"
+    },
+    "tags": {
+      "EMAIL": "E-Mail-Adresse des Kontakts",
+      "NAME": "Vollständiger Name",
+      "FNAME": "Vorname",
+      "LNAME": "Nachname",
+      "MEMBERSHIPID": "Mitgliedschafts-ID",
+      "RPLINK": "Passwort zurücksetzen Link",
+      "LOGINLINK": "Login-Link",
+      "SPLINK": "Passwort setzen Link",
+      "MESSAGE": "Benutzerdefinierte Nachricht",
+      "CALLOUTTITLE": "Titel des Callouts",
+      "CALLOUTLINK": "Link zum Callout",
+      "SUPPORTEMAIL": "Support E-Mail-Adresse",
+      "ANSWERS": "Formatierte Antwort-Zusammenfassung",
+      "REFCODE": "Empfehlungs-Code des Kontakts",
+      "EXPIRES": "Ablaufdatum der Mitgliedschaft",
+      "REFEREENAME": "Name der geworbenen Person",
+      "ISELIGIBLE": "Ob die Empfehlung berechtigt ist",
+      "PURCHASER": "Name des Geschenkkäufers",
+      "GIFTEE": "Name des Geschenkempfängers",
+      "GIFTDATE": "Startdatum des Geschenks",
+      "ACTIVATELINK": "Geschenk-Aktivierungslink",
+      "CONFIRMLINK": "E-Mail-Bestätigungslink",
+      "URL": "Spezielle URL",
+      "MEMBERID": "Mitglieds-ID",
+      "MEMBERNAME": "Mitgliedsname",
+      "CALLOUTSLUG": "Callout-Slug",
+      "RESPNAME": "Name des Antwortenden",
+      "ORGNAME": "Name der Organisation"
     }
   },
   "footer": {
@@ -1252,6 +1311,7 @@
       "heading": "Überschrift",
       "italic": "Kursiv",
       "link": "Link",
+      "mergeFields": "Platzhalter einfügen",
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
       "toolbar": "Rich-Text-Formatierung Symbolleiste",

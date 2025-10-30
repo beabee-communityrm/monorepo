@@ -3,7 +3,7 @@ import type {
   contactEmailTemplates,
   generalEmailTemplates,
 } from '#data/email-templates';
-import type { Email } from '#models/index';
+import type { Contact, Email } from '#models/index';
 
 export interface EmailTemplate {
   id: string;
@@ -109,3 +109,36 @@ export type EmailTemplateId =
 export type ContactEmailParams<T extends ContactEmailTemplateId> = Parameters<
   ContactEmailTemplates[T]
 >[1];
+
+/**
+ * Template merge field generation result
+ */
+export type TemplateMergeFieldResult = Record<string, unknown>;
+
+/**
+ * Template function signature for different template types
+ */
+export type ContactTemplateFunction<T extends ContactEmailTemplateId> = (
+  contact: Contact,
+  params: ContactEmailParams<T>
+) => TemplateMergeFieldResult;
+
+export type AdminTemplateFunction<T extends AdminEmailTemplateId> = (
+  params: Parameters<AdminEmailTemplates[T]>[0]
+) => TemplateMergeFieldResult;
+
+export type GeneralTemplateFunction<T extends GeneralEmailTemplateId> = (
+  params: Parameters<GeneralEmailTemplates[T]>[0]
+) => TemplateMergeFieldResult;
+
+/**
+ * Template parameter extraction result
+ */
+export type TemplateParameters<T extends EmailTemplateId> =
+  T extends ContactEmailTemplateId
+    ? ContactEmailParams<T>
+    : T extends AdminEmailTemplateId
+      ? Parameters<AdminEmailTemplates[T]>[0]
+      : T extends GeneralEmailTemplateId
+        ? Parameters<GeneralEmailTemplates[T]>[0]
+        : never;

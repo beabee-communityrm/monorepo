@@ -2,9 +2,12 @@
   <div>
     <AppSubHeading v-if="heading">{{ heading }}</AppSubHeading>
     <template v-if="template">
-      <div class="mb-6 flex gap-6">
+      <div
+        class="relative mb-6 flex flex-col gap-6"
+        :class="alwaysStacked ? '' : 'md:flex-row'"
+      >
         <!-- Editor panel -->
-        <div class="min-w-0 max-w-xl flex-1">
+        <div class="relative min-w-0 flex-1">
           <div class="mb-4">
             <AppInput
               v-model="template.subject"
@@ -15,13 +18,17 @@
           <AppRichTextEditor
             v-model="template.content"
             :label="contentLabel || t('emailEditor.body.label')"
+            :merge-fields="mergeFieldGroups"
             required
           />
         </div>
 
         <!-- Preview panel -->
-        <div class="w-80 flex-none self-center lg:w-96">
-          <div class="content-message bg-white p-4 shadow">
+        <div class="w-full" :class="alwaysStacked ? '' : 'md:w-[600px]'">
+          <AppLabel :label="t('emailEditor.preview.label')" class="mb-0.5" />
+          <div
+            class="content-message rounded border border-primary-40 bg-white p-4"
+          >
             <!-- Server preview loading state -->
             <div
               v-if="isServerPreview && isLoadingPreview"
@@ -107,15 +114,18 @@
  * ```
  */
 import {
+  debounce,
   expandNestedMergeFields,
   replaceMergeFields,
 } from '@beabee/beabee-common';
 import type { GetContactData } from '@beabee/beabee-common';
 import {
   AppInput,
+  AppLabel,
   AppNotification,
   AppRichTextEditor,
   AppSubHeading,
+  type MergeTagGroup,
 } from '@beabee/vue';
 
 import type {
@@ -167,6 +177,12 @@ const props = withDefaults(
     contact?: GetContactData | null;
 
     /**
+     * Merge field groups for the rich text editor dropdown
+     * Enables insertion of merge fields via dropdown button in the editor
+     */
+    mergeFieldGroups?: MergeTagGroup[];
+
+    /**
      * Label for subject input field
      * If not provided, uses default i18n key
      */
@@ -177,6 +193,11 @@ const props = withDefaults(
      * If not provided, uses default i18n key
      */
     contentLabel?: string;
+
+    /**
+     * Whether to always stack the preview below the editor (ignores responsive breakpoints)
+     */
+    alwaysStacked?: boolean;
   }>(),
   {
     heading: '',
@@ -184,8 +205,10 @@ const props = withDefaults(
     mergeFields: () => ({}),
     contact: null,
     serverRender: undefined,
+    mergeFieldGroups: undefined,
     subjectLabel: '',
     contentLabel: '',
+    alwaysStacked: false,
   }
 );
 
@@ -196,41 +219,24 @@ const template = reactive<EditableEmailTemplate>(
   props.template || { subject: '', content: '' }
 );
 
+// Watch for template prop changes to sync with parent component
+watch(
+  () => props.template,
+  (newTemplate) => {
+    if (newTemplate) {
+      template.subject = newTemplate.subject;
+      template.content = newTemplate.content;
+    }
+  },
+  { deep: true, immediate: true }
+);
+
 // Computed flag to determine if using server-side preview
 const isServerPreview = computed(() => !!props.serverRender);
 
 // Server preview state
 const serverPreviewResult = ref<EmailPreviewResult | null>(null);
 const isLoadingPreview = ref(false);
-
-// Watch for server render config changes
-watch(
-  () => props.serverRender,
-  (newConfig) => {
-    if (newConfig) {
-      fetchServerPreview();
-    } else {
-      serverPreviewResult.value = null;
-    }
-  },
-  { immediate: true }
-);
-
-// Watch for content changes to update server preview
-watch(
-  [
-    () => template.subject,
-    () => template.content,
-    () => props.mergeFields,
-    () => props.contact,
-  ],
-  () => {
-    if (props.serverRender) {
-      fetchServerPreview();
-    }
-  },
-  { deep: true }
-);
 
 /**
  * Fetches preview from server using the API
@@ -266,6 +272,39 @@ async function fetchServerPreview() {
   }
 }
 
+// Debounced version of fetchServerPreview to prevent excessive API calls
+// Wait 500ms after user stops typing before fetching preview
+const debouncedFetchServerPreview = debounce(fetchServerPreview, 500);
+
+// Watch for server render config changes
+watch(
+  () => props.serverRender,
+  (newConfig) => {
+    if (newConfig) {
+      debouncedFetchServerPreview();
+    } else {
+      serverPreviewResult.value = null;
+    }
+  },
+  { immediate: true }
+);
+
+// Watch for content changes to update server preview
+watch(
+  [
+    () => template.subject,
+    () => template.content,
+    () => props.mergeFields,
+    () => props.contact,
+  ],
+  () => {
+    if (props.serverRender) {
+      debouncedFetchServerPreview();
+    }
+  },
+  { deep: true }
+);
+
 /**
  * Generates contact-specific merge tags
  */
@@ -287,14 +326,35 @@ function generateContactMergeTags(
 }
 
 /**
+ * Generates merge fields from merge field groups (for client-side preview)
+ */
+function generateMergeFieldsFromGroups(): Record<string, string> {
+  if (!props.mergeFieldGroups) return {};
+
+  const mergeFields: Record<string, string> = {};
+
+  for (const group of props.mergeFieldGroups) {
+    for (const tag of group.tags) {
+      // Only include example values for preview
+      if (tag.example !== undefined) {
+        mergeFields[tag.tag] = tag.example;
+      }
+    }
+  }
+
+  return mergeFields;
+}
+
+/**
  * Combines all merge fields from different sources
  */
 function generateAllMergeFields(): Record<string, string> {
   const customMergeFields = { ...props.mergeFields };
   const contactMergeFields = generateContactMergeTags(props.contact);
+  const groupMergeFields = generateMergeFieldsFromGroups();
 
-  // Custom fields override contact fields if they conflict
-  return { ...contactMergeFields, ...customMergeFields };
+  // Priority: customMergeFields > contactMergeFields > groupMergeFields
+  return { ...groupMergeFields, ...contactMergeFields, ...customMergeFields };
 }
 
 /**

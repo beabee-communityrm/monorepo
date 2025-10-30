@@ -369,6 +369,7 @@
         "email": {
           "title": "Email",
           "body": {
+            "default": "<p>Γεια σας {FNAME},</p><p>aκολουθεί μια επισκόπηση των απαντήσεών σας:<br />{ANSWERS}</p><p><br /></p><p>Αυτό το email επιβεβαιώνει την απάντησή σας στο callout <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> χρησιμοποιώντας τη διεύθυνση email σας {EMAIL}.</p><p><br /></p><p>Εάν έχετε ερωτήσεις, παρακαλούμε επικοινωνήστε με την ομάδα υποστήριξής μας στο <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Με εκτίμηση</p>",
             "label": "Κείμενο email"
           },
           "collectInfoWarning": {
@@ -380,6 +381,7 @@
             "label": "Στείλτε email σε όλους τους συμμετέχοντες μετά την υποβολή"
           },
           "subject": {
+            "default": "Ευχαριστούμε για την απάντησή σας",
             "label": "Θέμα email"
           }
         },
@@ -1120,6 +1122,14 @@
     },
     "body": {
       "label": "Μήνυμα"
+    },
+    "managed": {
+      "title": "Το email διαχειρίζεται εξωτερικά",
+      "description": "Αυτό το πρότυπο email διαχειρίζεται εξωτερικά και δεν μπορεί να επεξεργαστεί εδώ."
+    },
+    "preview": {
+      "unavailable": "Η προεπισκόπηση δεν είναι διαθέσιμη",
+      "label": "Προεπισκόπηση"
     }
   },
   "footer": {
@@ -1255,7 +1265,8 @@
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
-      "underline": ""
+      "underline": "",
+      "mergeFields": "Εισαγωγή πεδίου συγχώνευσης"
     },
     "saveChanges": "",
     "saved": "",
@@ -1634,5 +1645,54 @@
   },
   "taxRate": {
     "invoiceName": ""
+  },
+  "mergeFields": {
+    "title": "Πεδία συγχώνευσης",
+    "expand": "Επέκταση",
+    "expandAll": "Επέκταση όλων των πεδίων συγχώνευσης",
+    "collapse": "Σύμπτυξη",
+    "collapseAll": "Σύμπτυξη όλων των πεδίων συγχώνευσης",
+    "clickToExpand": "Κάντε κλικ για επέκταση των πεδίων συγχώνευσης",
+    "copy": "Αντιγραφή",
+    "copyTag": "Αντιγραφή {tag}",
+    "copied": "Αντιγράφηκε!",
+    "insert": "Εισαγωγή",
+    "insertTag": "Εισαγωγή {tag}",
+    "example": "Παράδειγμα",
+    "groups": {
+      "contact": "Πεδία επαφής",
+      "magic": "Magic Links",
+      "template": "Πεδία προτύπου"
+    },
+    "tags": {
+      "EMAIL": "Διεύθυνση email επαφής",
+      "NAME": "Πλήρες όνομα",
+      "FNAME": "Μικρό όνομα",
+      "LNAME": "Επώνυμο",
+      "MEMBERSHIPID": "ID συμμετοχής επαφής",
+      "RPLINK": "Σύνδεσμος επαναφοράς κωδικού",
+      "LOGINLINK": "Σύνδεσμος σύνδεσης",
+      "SPLINK": "Σύνδεσμος ορισμού κωδικού",
+      "MESSAGE": "Προσαρμοσμένο περιεχόμενο μηνύματος",
+      "CALLOUTTITLE": "Τίτλος callout",
+      "CALLOUTLINK": "Σύνδεσμος στο callout",
+      "SUPPORTEMAIL": "Διεύθυνση email υποστήριξης",
+      "ANSWERS": "Μορφοποιημένες απαντήσεις",
+      "REFCODE": "Κωδικός παραπομπής επαφής",
+      "EXPIRES": "Ημερομηνία λήξης συμμετοχής",
+      "REFEREENAME": "Όνομα προσελκυόμενου ατόμου",
+      "ISELIGIBLE": "Εάν η παραπομπή είναι επιλέξιμη",
+      "PURCHASER": "Όνομα αγοραστή δώρου",
+      "GIFTEE": "Όνομα αποδέκτη δώρου",
+      "GIFTDATE": "Ημερομηνία έναρξης δώρου",
+      "ACTIVATELINK": "Σύνδεσμος ενεργοποίησης δώρου",
+      "CONFIRMLINK": "Σύνδεσμος επιβεβαίωσης email",
+      "URL": "Ειδικό URL",
+      "MEMBERID": "ID μέλους",
+      "MEMBERNAME": "Όνομα μέλους",
+      "CALLOUTSLUG": "Slug callout",
+      "RESPNAME": "Όνομα απαντούμενου",
+      "ORGNAME": "Όνομα οργανισμού"
+    }
   }
 }
