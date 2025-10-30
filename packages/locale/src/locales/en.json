@@ -1471,7 +1471,11 @@
       "success": "Copied to clipboard"
     },
     "error": "Something went wrong. Try reloading the page.",
-    "remove": "Close notification"
+    "remove": "Close notification",
+    "rateLimit": {
+      "generic": "Too many requests. Please wait a bit and try again.",
+      "withWait": "Too many requests. Please wait {time} and try again."
+    }
   },
   "pageTitle": {
     "confirmEmail": "Confirm email",
