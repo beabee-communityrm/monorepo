@@ -21,12 +21,21 @@ import {
   OnUndefined,
   Post,
   Req,
+  UseBefore,
 } from 'routing-controllers';
+
+import { RateLimit } from '../decorators';
 
 @JsonController('/signup')
 export class SignupController {
   @OnUndefined(204)
   @Post('/')
+  @UseBefore(
+    RateLimit({
+      guest: { points: 5, duration: 60 }, // 5 sign-ups per minute per IP
+      user: { points: 5, duration: 60 }, // Same limit for consistency (though authenticated users don't use this endpoint)
+    })
+  )
   async startSignup(
     @Body() data: StartSignupFlowDto
   ): Promise<GetPaymentFlowDto | undefined> {
@@ -58,6 +67,12 @@ export class SignupController {
 
   @OnUndefined(204)
   @Post('/complete')
+  @UseBefore(
+    RateLimit({
+      guest: { points: 5, duration: 60 }, // 5 completions per minute per IP
+      user: { points: 5, duration: 60 }, // Same limit for consistency (though authenticated users don't use this endpoint)
+    })
+  )
   async completeSignup(@Body() data: CompleteSignupFlowDto): Promise<void> {
     const joinFlow = await PaymentFlowService.getJoinFlowByPaymentId(
       data.paymentFlowId
@@ -76,6 +91,12 @@ export class SignupController {
   }
 
   @Post('/confirm-email')
+  @UseBefore(
+    RateLimit({
+      guest: { points: 5, duration: 60 }, // 5 confirmations per minute per IP
+      user: { points: 5, duration: 60 }, // Same limit for consistency (though authenticated users don't use this endpoint)
+    })
+  )
   async confirmEmail(
     @Req() req: Request,
     @Body() { joinFlowId }: SignupConfirmEmailParams

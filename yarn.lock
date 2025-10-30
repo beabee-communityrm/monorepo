@@ -1460,7 +1460,6 @@ __metadata:
     passport: "npm:^0.7.0"
     passport-local: "npm:^1.0.0"
     prettier: "npm:^3.5.2"
-    rate-limiter-flexible: "npm:^7.1.0"
     reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^6.0.1"
     routing-controllers: "npm:^0.10.4"
@@ -1540,6 +1539,7 @@ __metadata:
     passport: "npm:^0.7.0"
     passport-local: "npm:^1.0.0"
     prettier: "npm:^3.5.2"
+    rate-limiter-flexible: "npm:^7.4.0"
     reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^6.0.1"
     routing-controllers: "npm:^0.10.4"
@@ -16819,10 +16819,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rate-limiter-flexible@npm:^7.1.0":
-  version: 7.1.0
-  resolution: "rate-limiter-flexible@npm:7.1.0"
-  checksum: 10c0/0638fb8038a6359f222fce84ff861083c92d8eeed81e7414df962583e925412d610bbe1e6b94aa34ead0cc130d503c4b754d532d93225e5c3b32a5f632958903
+"rate-limiter-flexible@npm:^7.4.0":
+  version: 7.4.0
+  resolution: "rate-limiter-flexible@npm:7.4.0"
+  checksum: 10c0/abda366a8449384911241d4abd404ba341115cec003c64fc96ea3210080fb473f34a4d8ae955e979e1f485d8d6a0126243f8b00f362aa74e7bb781783881ba58
   languageName: node
   linkType: hard
 

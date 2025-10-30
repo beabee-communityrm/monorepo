@@ -1490,7 +1490,11 @@
       "success": ""
     },
     "error": "Houve aqui um erro. Experimenta recarregar a página.",
-    "remove": ""
+    "remove": "",
+    "rateLimit": {
+      "generic": "Demasiados pedidos. Aguarde um pouco e tente novamente.",
+      "withWait": "Demasiados pedidos. Aguarde {time} e tente novamente."
+    }
   },
   "pageTitle": {
     "confirmEmail": "Confirma o email",

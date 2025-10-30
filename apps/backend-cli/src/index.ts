@@ -10,6 +10,7 @@ import {
   migrateUploadsCommand,
   paymentCommand,
   processCommand,
+  rateLimiterCommand,
   setupCommand,
   syncCommand,
   testCommand,
@@ -28,6 +29,7 @@ yargs(hideBin(process.argv))
   .command(setupCommand)
   .command(paymentCommand)
   .command(processCommand)
+  .command(rateLimiterCommand)
   .command(syncCommand)
   .command(testCommand)
   .command(migrateUploadsCommand)
