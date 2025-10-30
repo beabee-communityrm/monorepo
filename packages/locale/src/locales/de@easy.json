@@ -1479,7 +1479,11 @@
       "success": ""
     },
     "error": "Das war nicht richtig. Probiere es noch mal.",
-    "remove": ""
+    "remove": "",
+    "rateLimit": {
+      "generic": "Zu viele Versuche. Warte kurz und versuche es nochmal.",
+      "withWait": "Zu viele Versuche. Warte {time} und versuche es nochmal."
+    }
   },
   "pageTitle": {
     "confirmEmail": "",

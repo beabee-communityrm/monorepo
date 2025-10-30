@@ -1479,7 +1479,11 @@
       "success": ""
     },
     "error": "",
-    "remove": ""
+    "remove": "",
+    "rateLimit": {
+      "generic": "Troppe richieste. Attendi un momento e riprova.",
+      "withWait": "Troppe richieste. Attendi {time} e riprova."
+    }
   },
   "pageTitle": {
     "confirmEmail": "",

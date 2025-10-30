@@ -1,6 +1,11 @@
-import { BadRequestError } from 'routing-controllers';
+import { ClientApiErrorData } from '@beabee/beabee-common';
 
-export class NoPaymentMethod extends BadRequestError {
+import { BadRequestError } from './BadRequestError';
+
+export class NoPaymentMethod
+  extends BadRequestError
+  implements ClientApiErrorData
+{
   readonly code = 'no-payment-method';
 
   constructor() {
