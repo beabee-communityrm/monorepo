@@ -450,13 +450,19 @@ export function convertStepsToCallout(
   const slides = convertSlidesForCallout(tabs);
   const variants = convertVariantsForCallout(tabs);
 
-  const access = tabs.settings.openToEveryone
-    ? tabs.settings.collectInfo
-      ? tabs.settings.collectGuestInfo
-        ? CalloutAccess.Guest
-        : CalloutAccess.Anonymous
-      : CalloutAccess.OnlyAnonymous
-    : CalloutAccess.Member;
+  let access: CalloutAccess;
+
+  if (env.cnrMode) {
+    access = CalloutAccess.OnlyAnonymous;
+  } else {
+    access = tabs.settings.openToEveryone
+      ? tabs.settings.collectInfo
+        ? tabs.settings.collectGuestInfo
+          ? CalloutAccess.Guest
+          : CalloutAccess.Anonymous
+        : CalloutAccess.OnlyAnonymous
+      : CalloutAccess.Member;
+  }
 
   return {
     slug: slug || undefined,

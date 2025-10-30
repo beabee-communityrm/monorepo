@@ -1,6 +1,11 @@
-import { BadRequestError } from 'routing-controllers';
+import { ClientApiErrorData } from '@beabee/beabee-common';
 
-export class DuplicateEmailError extends BadRequestError {
+import { BadRequestError } from './BadRequestError';
+
+export class DuplicateEmailError
+  extends BadRequestError
+  implements ClientApiErrorData
+{
   readonly code = 'duplicate-email';
 
   constructor() {
