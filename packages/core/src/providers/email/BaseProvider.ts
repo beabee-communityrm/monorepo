@@ -175,10 +175,8 @@ export abstract class BaseProvider implements EmailProvider {
     // Process magic merge fields (e.g., SPLINK, RPLINK, LOGINLINK, ANSWERS)
     let preparedRecipients = recipients;
     for (const mergeField of magicMergeFields) {
-      // Check if merge field appears directly in email body
       const appearsInBody = email.body.includes(`*|${mergeField}|*`);
-
-      // Check if merge field appears in any recipient's merge fields (for nested usage)
+      const appearsInSubject = email.subject.includes(`*|${mergeField}|*`);
       const appearsInMergeFields = recipients.some(
         (recipient) =>
           recipient.mergeFields &&
@@ -188,7 +186,7 @@ export abstract class BaseProvider implements EmailProvider {
           )
       );
 
-      if (appearsInBody || appearsInMergeFields) {
+      if (appearsInBody || appearsInSubject || appearsInMergeFields) {
         preparedRecipients =
           await magicMergeFieldsProcessors[mergeField](preparedRecipients);
       }
