@@ -114,6 +114,7 @@
  * ```
  */
 import {
+  debounce,
   expandNestedMergeFields,
   replaceMergeFields,
 } from '@beabee/beabee-common';
@@ -237,35 +238,6 @@ const isServerPreview = computed(() => !!props.serverRender);
 const serverPreviewResult = ref<EmailPreviewResult | null>(null);
 const isLoadingPreview = ref(false);
 
-// Watch for server render config changes
-watch(
-  () => props.serverRender,
-  (newConfig) => {
-    if (newConfig) {
-      fetchServerPreview();
-    } else {
-      serverPreviewResult.value = null;
-    }
-  },
-  { immediate: true }
-);
-
-// Watch for content changes to update server preview
-watch(
-  [
-    () => template.subject,
-    () => template.content,
-    () => props.mergeFields,
-    () => props.contact,
-  ],
-  () => {
-    if (props.serverRender) {
-      fetchServerPreview();
-    }
-  },
-  { deep: true }
-);
-
 /**
  * Fetches preview from server using the API
  */
@@ -299,6 +271,39 @@ async function fetchServerPreview() {
     isLoadingPreview.value = false;
   }
 }
+
+// Debounced version of fetchServerPreview to prevent excessive API calls
+// Wait 500ms after user stops typing before fetching preview
+const debouncedFetchServerPreview = debounce(fetchServerPreview, 500);
+
+// Watch for server render config changes
+watch(
+  () => props.serverRender,
+  (newConfig) => {
+    if (newConfig) {
+      debouncedFetchServerPreview();
+    } else {
+      serverPreviewResult.value = null;
+    }
+  },
+  { immediate: true }
+);
+
+// Watch for content changes to update server preview
+watch(
+  [
+    () => template.subject,
+    () => template.content,
+    () => props.mergeFields,
+    () => props.contact,
+  ],
+  () => {
+    if (props.serverRender) {
+      debouncedFetchServerPreview();
+    }
+  },
+  { deep: true }
+);
 
 /**
  * Generates contact-specific merge tags
