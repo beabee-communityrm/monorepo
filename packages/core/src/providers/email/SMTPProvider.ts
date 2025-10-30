@@ -1,3 +1,5 @@
+import { replaceMergeFields } from '@beabee/beabee-common';
+
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 
@@ -30,15 +32,9 @@ export class SMTPProvider extends BaseProvider {
     log.info('Sending email ' + email.id);
 
     for (const recipient of recipients) {
-      const mergedBody = Object.keys(recipient.mergeFields || {}).reduce(
-        (body, field) => {
-          return body.replace(
-            new RegExp(`\\*\\|${field}\\|\\*`, 'g'),
-            '' + recipient.mergeFields![field]
-          );
-        },
-        email.body
-      );
+      const mergeFields = recipient.mergeFields || {};
+      const mergedBody = replaceMergeFields(email.body, mergeFields);
+      const mergedSubject = replaceMergeFields(email.subject, mergeFields);
 
       await this.client.sendMail({
         from: {
@@ -48,7 +44,7 @@ export class SMTPProvider extends BaseProvider {
         to: recipient.to.name
           ? { name: recipient.to.name, address: recipient.to.email }
           : recipient.to.email,
-        subject: email.subject,
+        subject: mergedSubject,
         html: mergedBody,
         ...(opts?.attachments && {
           attachments: opts.attachments.map((a) => ({
