@@ -13,11 +13,11 @@
   - Touch-friendly interface
 -->
 <template>
-  <div class="rounded-lg border border-grey-light bg-white">
+  <div class="rounded-lg border border-grey-light bg-white overflow-hidden">
     <!-- Header -->
     <header
       :class="[
-        'flex items-center border-b border-grey-light px-4 py-3',
+        'sticky top-0 z-10 flex items-center border-b border-grey-light px-4 py-3 bg-white',
         hideToggle ? 'justify-center' : 'justify-between',
       ]"
     >
@@ -48,7 +48,7 @@
     <!-- Content -->
     <div
       v-if="isExpanded"
-      class="divide-y divide-grey-light"
+      class="divide-y divide-grey-light max-h-80 overflow-y-auto"
       role="region"
       :aria-label="t('mergeFields.title')"
     >
