@@ -1,3 +1,8 @@
+const cnrModeRaw = '__cnrMode__' as unknown as boolean | string;
+const experimentalFeaturesRaw = '__experimentalFeatures__' as unknown as
+  | boolean
+  | string;
+
 export default {
   /**
    * Application base URL
@@ -83,7 +88,7 @@ export default {
    * Enables CrowdNewsroom specific features and UI elements
    * Set to 'true' or any non-empty value to enable
    */
-  cnrMode: '__cnrMode__',
+  cnrMode: cnrModeRaw === 'true' || cnrModeRaw === true,
 
   /**
    * Comma-separated list of experimental features to enable
@@ -94,5 +99,6 @@ export default {
    * Example: 'feature1,feature2,feature3'
    * Shows features that are still in development
    */
-  experimentalFeatures: '__experimentalFeatures__',
+  experimentalFeatures:
+    experimentalFeaturesRaw === 'true' || experimentalFeaturesRaw === true,
 };

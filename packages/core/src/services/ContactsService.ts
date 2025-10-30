@@ -460,22 +460,24 @@ class ContactsService {
   /**
    * Increment the number of password tries for a contact.
    * @param contact The contact to increment the password tries for
-   * @returns The new number of tries
    */
   async incrementPasswordTries(contact: Contact) {
-    contact.password.tries ||= 0;
-    contact.password.tries++;
-    await this.updateContact(contact, {
-      password: { ...contact.password },
-    });
-    return contact.password.tries;
+    await this.resetPasswordTries(contact, contact.password.tries + 1);
   }
 
-  async resetPasswordTries(contact: Contact) {
-    contact.password.tries = 0;
-    await this.updateContact(contact, {
-      password: { ...contact.password },
-    });
+  /**
+   * Reset the number of password tries for a contact.
+   * @param contact The contact to reset the password tries for
+   * @param tries The new number of password tries
+   */
+  async resetPasswordTries(contact: Contact, tries = 0): Promise<void> {
+    if (contact.password.tries !== tries) {
+      contact.password.tries = tries;
+      // Update directly on database to avoid syncing with external services (e.g. newsletter)
+      await getRepository(Contact).update(contact.id, {
+        password: { tries },
+      });
+    }
   }
 
   /**
