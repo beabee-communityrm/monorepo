@@ -118,6 +118,9 @@
     "subscribeToNewsletter": "",
     "title": ""
   },
+  "addEmail": {
+    "title": ""
+  },
   "addNotice": {
     "form": {
       "buttonText": "",
@@ -1113,6 +1116,12 @@
     "title": "",
     "warning": ""
   },
+  "editCustomEmail": {
+    "title": ""
+  },
+  "editEmail": {
+    "title": ""
+  },
   "editNotice": {
     "title": ""
   },
@@ -1131,6 +1140,51 @@
     "subject": {
       "label": ""
     }
+  },
+  "emails": {
+    "addEmail": "",
+    "createNotImplemented": "",
+    "created": "",
+    "data": {
+      "createdAt": "",
+      "flags": "",
+      "mailingCount": "",
+      "name": ""
+    },
+    "errors": {
+      "notSystemTemplate": ""
+    },
+    "flags": {
+      "segment": "",
+      "system": ""
+    },
+    "form": {
+      "addSystemOverride": "",
+      "emailContent": "",
+      "name": "",
+      "nameHelp": "",
+      "selectSystemEmail": "",
+      "systemOverrides": "",
+      "systemOverridesHelp": ""
+    },
+    "saved": "",
+    "showingOf": "",
+    "systemTemplates": {
+      "calloutResponseAnswers": "",
+      "cancelledContribution": "",
+      "cancelledContributionNoSurvey": "",
+      "cancelledMember": "",
+      "confirmEmail": "",
+      "emailExistsLogin": "",
+      "emailExistsSetPassword": "",
+      "manualToAutomatic": "",
+      "newCalloutResponse": "",
+      "newMember": "",
+      "resetDevice": "",
+      "resetPassword": "",
+      "welcome": ""
+    },
+    "updated": ""
   },
   "footer": {
     "contactUs": "",
@@ -1441,6 +1495,7 @@
     "contacts": "",
     "contribution": "",
     "dashboard": "",
+    "emails": "",
     "home": "",
     "legacyApp": "",
     "logout": "",

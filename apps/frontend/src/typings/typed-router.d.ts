@@ -38,6 +38,10 @@ declare module 'vue-router/auto-routes' {
     'adminCalloutViewResponsesTable': RouteRecordInfo<'adminCalloutViewResponsesTable', '/admin/crowdnewsroom/view/:id/responses', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminCalloutViewResponsesItem': RouteRecordInfo<'adminCalloutViewResponsesItem', '/admin/crowdnewsroom/view/:id/responses/:rid', { id: ParamValue<true>, rid: ParamValue<true> }, { id: ParamValue<false>, rid: ParamValue<false> }>,
     'adminCalloutViewResponsesTags': RouteRecordInfo<'adminCalloutViewResponsesTags', '/admin/crowdnewsroom/view/:id/responses/tags', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'adminEmails': RouteRecordInfo<'adminEmails', '/admin/emails', Record<never, never>, Record<never, never>>,
+    'adminEmailsAdd': RouteRecordInfo<'adminEmailsAdd', '/admin/emails/add', Record<never, never>, Record<never, never>>,
+    'adminEmailsCustomEdit': RouteRecordInfo<'adminEmailsCustomEdit', '/admin/emails/custom/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'adminEmailsEdit': RouteRecordInfo<'adminEmailsEdit', '/admin/emails/edit/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminMembershipBuilder': RouteRecordInfo<'adminMembershipBuilder', '/admin/membership-builder', Record<never, never>, Record<never, never>, '/admin/membership-builder/email' | 'adminMembershipBuilderAccountConfirmation' | 'adminMembershipBuilderIntroMessages' | 'adminMembershipBuilderJoinForm'>,
     'adminMembershipBuilderJoinForm': RouteRecordInfo<'adminMembershipBuilderJoinForm', '/admin/membership-builder', Record<never, never>, Record<never, never>>,
     'adminMembershipBuilderAccountConfirmation': RouteRecordInfo<'adminMembershipBuilderAccountConfirmation', '/admin/membership-builder/confirmation', Record<never, never>, Record<never, never>>,
@@ -171,6 +175,22 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/admin/crowdnewsroom/view/[id]/responses/tags.vue': {
       routes: 'adminCalloutViewResponsesTags'
+      views: never
+    }
+    'src/pages/admin/emails/index.vue': {
+      routes: 'adminEmails'
+      views: never
+    }
+    'src/pages/admin/emails/add.vue': {
+      routes: 'adminEmailsAdd'
+      views: never
+    }
+    'src/pages/admin/emails/custom/[id].vue': {
+      routes: 'adminEmailsCustomEdit'
+      views: never
+    }
+    'src/pages/admin/emails/edit/[id].vue': {
+      routes: 'adminEmailsEdit'
       views: never
     }
     'src/pages/admin/membership-builder.vue': {

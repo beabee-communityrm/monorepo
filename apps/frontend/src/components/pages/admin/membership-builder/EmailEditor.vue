@@ -214,6 +214,11 @@ const props = withDefaults(
 
 const { t } = useI18n();
 
+// Define emits for two-way binding
+const emit = defineEmits<{
+  'update:template': [value: EditableEmailTemplate];
+}>();
+
 // Use reactive reference to the template for two-way binding
 const template = reactive<EditableEmailTemplate>(
   props.template || { subject: '', content: '' }
@@ -229,6 +234,15 @@ watch(
     }
   },
   { deep: true, immediate: true }
+);
+
+// Emit updates to parent component
+watch(
+  template,
+  (newValue) => {
+    emit('update:template', { ...newValue });
+  },
+  { deep: true }
 );
 
 // Computed flag to determine if using server-side preview

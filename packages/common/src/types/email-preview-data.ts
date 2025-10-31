@@ -1,4 +1,4 @@
-export interface UpdateEmailData {
+export interface EmailPreviewData {
   subject: string;
   body: string;
 }

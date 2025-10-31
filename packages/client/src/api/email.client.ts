@@ -1,4 +1,12 @@
-import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
+import type {
+  EmailPreviewData,
+  GetEmailData,
+  GetEmailListItemData,
+  GetEmailTemplatesMetadataData,
+  GetEmailsQuery,
+  Paginated,
+  UpdateEmailData,
+} from '@beabee/beabee-common';
 
 import type { BaseClientOptions, PreviewEmailOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
@@ -19,6 +27,34 @@ export class EmailClient extends BaseClient {
       ...options,
       path: cleanUrl(options.path + '/email'),
     });
+  }
+
+  /**
+   * Lists all email templates with pagination
+   * @param query - Optional query parameters for filtering and pagination
+   * @returns A paginated list of emails with metadata
+   *
+   * @example
+   * // List all emails with default pagination
+   * await client.email.list();
+   *
+   * @example
+   * // List emails with custom pagination and sorting
+   * await client.email.list({
+   *   limit: 20,
+   *   offset: 0,
+   *   sort: 'name',
+   *   order: 'ASC'
+   * });
+   */
+  async list(
+    query: GetEmailsQuery = {}
+  ): Promise<Paginated<GetEmailListItemData>> {
+    const { data } = await this.fetch.get<Paginated<GetEmailListItemData>>(
+      '',
+      query
+    );
+    return data;
   }
 
   /**
@@ -43,6 +79,23 @@ export class EmailClient extends BaseClient {
       data
     );
     return responseData;
+  }
+
+  /**
+   * Get metadata for all email templates
+   * Returns information about available merge fields and template purposes
+   *
+   * @returns Template metadata including IDs, types, names, descriptions, and merge fields
+   *
+   * @example
+   * const { templates } = await client.email.getTemplatesMetadata();
+   * console.log(templates); // Array of all template metadata
+   */
+  async getTemplatesMetadata(): Promise<GetEmailTemplatesMetadataData> {
+    const { data } = await this.fetch.get<GetEmailTemplatesMetadataData>(
+      '/templates/metadata'
+    );
+    return data;
   }
 
   /**
@@ -77,8 +130,8 @@ export class EmailClient extends BaseClient {
     type: 'general' | 'contact' | 'admin',
     templateId: string,
     options: PreviewEmailOptions = {}
-  ): Promise<GetEmailData> {
-    const { data } = await this.fetch.post<GetEmailData>(
+  ): Promise<EmailPreviewData> {
+    const { data } = await this.fetch.post<EmailPreviewData>(
       `/preview/${type}/${templateId}`,
       options
     );

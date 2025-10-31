@@ -5,6 +5,7 @@ import {
   faChartLine,
   faCog,
   faCreditCard,
+  faEnvelope,
   faHandsHelping,
   faHouse,
   faSignHanging,
@@ -90,6 +91,13 @@ export const adminMenu = computed<MenuSection[]>(() => [
   },
   {
     items: [
+      {
+        title: 'menu.emails',
+        href: '/admin/emails',
+        icon: faEnvelope,
+        isActive: /^\/admin\/emails.*/,
+        visible: canAdmin.value,
+      },
       {
         title: 'menu.membershipBuilder',
         href: '/admin/membership-builder',
