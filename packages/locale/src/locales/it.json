@@ -1448,7 +1448,8 @@
     "notices": "Notifiche",
     "payments": "Pagamenti",
     "settings": "Impostazioni",
-    "yourProfile": "Il tuo profilo"
+    "yourProfile": "Il tuo profilo",
+    "emails": "Email"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1694,5 +1695,59 @@
       "RESPNAME": "Nome rispondente",
       "ORGNAME": "Nome organizzazione"
     }
+  },
+  "addEmail": {
+    "title": "Aggiungi email"
+  },
+  "editEmail": {
+    "title": "Modifica: {title}"
+  },
+  "emails": {
+    "addEmail": "Aggiungi email",
+    "created": "Email creata con successo",
+    "createNotImplemented": "La creazione dell'email non è ancora completamente implementata",
+    "data": {
+      "createdAt": "Creato",
+      "flags": "Tipo",
+      "mailingCount": "Invii",
+      "name": "Nome"
+    },
+    "flags": {
+      "segment": "Segmento",
+      "system": "Sistema"
+    },
+    "form": {
+      "addSystemOverride": "Aggiungi override di sistema",
+      "emailContent": "Contenuto email",
+      "name": "Nome",
+      "nameHelp": "Un nome descrittivo per questo modello di email",
+      "selectSystemEmail": "Seleziona un'email di sistema",
+      "systemOverrides": "Override email di sistema",
+      "systemOverridesHelp": "Scegli quali email di sistema devono usare questo modello invece di quello predefinito"
+    },
+    "saved": "Email salvata con successo",
+    "showingOf": "Visualizzazione {from}-{to} di {total} modelli email",
+    "systemTemplates": {
+      "calloutResponseAnswers": "Conferma risposta callout",
+      "cancelledContribution": "Contributo annullato",
+      "cancelledContributionNoSurvey": "Contributo annullato (nessun sondaggio)",
+      "cancelledMember": "Admin: Notifica membro annullato",
+      "confirmEmail": "Conferma email",
+      "emailExistsLogin": "Email esistente - Accesso",
+      "emailExistsSetPassword": "Email esistente - Imposta password",
+      "manualToAutomatic": "Manuale a contributore automatico",
+      "newCalloutResponse": "Admin: Notifica nuova risposta callout",
+      "newMember": "Admin: Notifica nuovo membro",
+      "resetDevice": "Reimposta dispositivo",
+      "resetPassword": "Reimposta password",
+      "welcome": "Benvenuto"
+    },
+    "updated": "Email aggiornata con successo",
+    "errors": {
+      "notSystemTemplate": "Questo non è un modello di sistema. Solo i modelli di sistema possono essere modificati su questa pagina."
+    }
+  },
+  "editCustomEmail": {
+    "title": "Modifica email personalizzato: {title}"
   }
 }

@@ -1497,7 +1497,8 @@
     "notices": "Hinweise",
     "payments": "Zahlungen",
     "settings": "Einstellungen",
-    "yourProfile": "Dein Profil"
+    "yourProfile": "Dein Profil",
+    "emails": "E-Mails"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1694,5 +1695,59 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "addEmail": {
+    "title": "E-Mail hinzufügen"
+  },
+  "editCustomEmail": {
+    "title": "Benutzerdefinierte E-Mail bearbeiten: {title}"
+  },
+  "editEmail": {
+    "title": "System-Vorlage bearbeiten: {title}"
+  },
+  "emails": {
+    "addEmail": "E-Mail hinzufügen",
+    "created": "E-Mail erfolgreich erstellt",
+    "createNotImplemented": "E-Mail-Erstellung funktioniert noch nicht",
+    "data": {
+      "createdAt": "Erstellt",
+      "flags": "Typ",
+      "mailingCount": "Mailings",
+      "name": "Name"
+    },
+    "errors": {
+      "notSystemTemplate": "Dies ist keine System-Vorlage. Nur System-Vorlagen können auf dieser Seite geändert werden."
+    },
+    "flags": {
+      "segment": "Segment",
+      "system": "System"
+    },
+    "form": {
+      "addSystemOverride": "System-Überschreibung hinzufügen",
+      "emailContent": "E-Mail-Inhalt",
+      "name": "Name",
+      "nameHelp": "Ein beschreibender Name für diese E-Mail-Vorlage",
+      "selectSystemEmail": "System-E-Mail auswählen",
+      "systemOverrides": "System-E-Mail-Überschreibungen",
+      "systemOverridesHelp": "Wähle aus, welche System-E-Mails diese Vorlage statt der Standardvorlage verwenden sollen"
+    },
+    "saved": "E-Mail erfolgreich gespeichert",
+    "showingOf": "Zeige {from}-{to} von {total} E-Mail-Vorlagen",
+    "systemTemplates": {
+      "calloutResponseAnswers": "Callout-Antwortbestätigung",
+      "cancelledContribution": "Gekündigter Beitrag",
+      "cancelledContributionNoSurvey": "Gekündigter Beitrag (ohne Umfrage)",
+      "cancelledMember": "Admin: Benachrichtigung über gekündigtes Mitglied",
+      "confirmEmail": "E-Mail bestätigen",
+      "emailExistsLogin": "E-Mail existiert - Anmelden",
+      "emailExistsSetPassword": "E-Mail existiert - Passwort setzen",
+      "manualToAutomatic": "Manueller zu automatischem Beitragszahler",
+      "newCalloutResponse": "Admin: Benachrichtigung über neue Callout-Antwort",
+      "newMember": "Admin: Benachrichtigung über neues Mitglied",
+      "resetDevice": "Gerät zurücksetzen",
+      "resetPassword": "Passwort zurücksetzen",
+      "welcome": "Willkommen"
+    },
+    "updated": "E-Mail erfolgreich aktualisiert"
   }
 }

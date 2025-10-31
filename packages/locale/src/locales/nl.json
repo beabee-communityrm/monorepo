@@ -1448,7 +1448,8 @@
     "notices": "Mededelingen",
     "payments": "Betalingen",
     "settings": "Instellingen",
-    "yourProfile": "Jouw profiel"
+    "yourProfile": "Jouw profiel",
+    "emails": "E-mails"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1694,5 +1695,59 @@
       "RESPNAME": "Naam van respondent",
       "ORGNAME": "Organisatienaam"
     }
+  },
+  "addEmail": {
+    "title": "E-mail toevoegen"
+  },
+  "editEmail": {
+    "title": "Bewerken: {title}"
+  },
+  "emails": {
+    "addEmail": "E-mail toevoegen",
+    "created": "E-mail succesvol aangemaakt",
+    "createNotImplemented": "E-mail aanmaken is nog niet volledig geïmplementeerd",
+    "data": {
+      "createdAt": "Aangemaakt",
+      "flags": "Type",
+      "mailingCount": "Verzendingen",
+      "name": "Naam"
+    },
+    "flags": {
+      "segment": "Segment",
+      "system": "Systeem"
+    },
+    "form": {
+      "addSystemOverride": "Systeemoverschrijving toevoegen",
+      "emailContent": "E-mailinhoud",
+      "name": "Naam",
+      "nameHelp": "Een beschrijvende naam voor deze e-mailtemplate",
+      "selectSystemEmail": "Selecteer een systeem-e-mail",
+      "systemOverrides": "Systeem-e-mail overschrijvingen",
+      "systemOverridesHelp": "Kies welke systeem-e-mails deze template moeten gebruiken in plaats van de standaard"
+    },
+    "saved": "E-mail succesvol opgeslagen",
+    "showingOf": "Weergave {from}-{to} van {total} e-mailtemplates",
+    "systemTemplates": {
+      "calloutResponseAnswers": "Callout antwoordbevestiging",
+      "cancelledContribution": "Geannuleerde bijdrage",
+      "cancelledContributionNoSurvey": "Geannuleerde bijdrage (geen enquête)",
+      "cancelledMember": "Admin: Geannuleerd lid melding",
+      "confirmEmail": "E-mail bevestigen",
+      "emailExistsLogin": "E-mail bestaat - Inloggen",
+      "emailExistsSetPassword": "E-mail bestaat - Wachtwoord instellen",
+      "manualToAutomatic": "Handmatig naar automatische bijdrager",
+      "newCalloutResponse": "Admin: Nieuwe callout antwoord melding",
+      "newMember": "Admin: Nieuw lid melding",
+      "resetDevice": "Apparaat resetten",
+      "resetPassword": "Wachtwoord resetten",
+      "welcome": "Welkom"
+    },
+    "updated": "E-mail succesvol bijgewerkt",
+    "errors": {
+      "notSystemTemplate": "Dit is geen systeemsjabloon. Alleen systeemsjablonen kunnen op deze pagina worden bewerkt."
+    }
+  },
+  "editCustomEmail": {
+    "title": "Aangepaste e-mail bewerken: {title}"
   }
 }

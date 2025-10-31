@@ -1448,7 +1448,8 @@
     "notices": "",
     "payments": "",
     "settings": "",
-    "yourProfile": ""
+    "yourProfile": "",
+    "emails": "Ηλεκτρονικά μηνύματα"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1694,5 +1695,59 @@
       "RESPNAME": "Όνομα απαντούμενου",
       "ORGNAME": "Όνομα οργανισμού"
     }
+  },
+  "addEmail": {
+    "title": "Προσθήκη email"
+  },
+  "editEmail": {
+    "title": "Επεξεργασία: {title}"
+  },
+  "emails": {
+    "addEmail": "Προσθήκη email",
+    "created": "Το email δημιουργήθηκε επιτυχώς",
+    "createNotImplemented": "Η δημιουργία email δεν έχει ακόμη πλήρως υλοποιηθεί",
+    "data": {
+      "createdAt": "Δημιουργήθηκε",
+      "flags": "Τύπος",
+      "mailingCount": "Αποστολές",
+      "name": "Όνομα"
+    },
+    "flags": {
+      "segment": "Τμήμα",
+      "system": "Σύστημα"
+    },
+    "form": {
+      "addSystemOverride": "Προσθήκη παράκαμψης συστήματος",
+      "emailContent": "Περιεχόμενο email",
+      "name": "Όνομα",
+      "nameHelp": "Ένα περιγραφικό όνομα για αυτό το πρότυπο email",
+      "selectSystemEmail": "Επιλέξτε ένα email συστήματος",
+      "systemOverrides": "Παρακάμψεις email συστήματος",
+      "systemOverridesHelp": "Επιλέξτε ποια email συστήματος θα χρησιμοποιούν αυτό το πρότυπο αντί για το προεπιλεγμένο"
+    },
+    "saved": "Το email αποθηκεύτηκε επιτυχώς",
+    "showingOf": "Εμφάνιση {from}-{to} από {total} πρότυπα email",
+    "systemTemplates": {
+      "calloutResponseAnswers": "Επιβεβαίωση απάντησης callout",
+      "cancelledContribution": "Ακυρωμένη συνεισφορά",
+      "cancelledContributionNoSurvey": "Ακυρωμένη συνεισφορά (χωρίς έρευνα)",
+      "cancelledMember": "Admin: Ειδοποίηση ακυρωμένου μέλους",
+      "confirmEmail": "Επιβεβαίωση email",
+      "emailExistsLogin": "Το email υπάρχει - Σύνδεση",
+      "emailExistsSetPassword": "Το email υπάρχει - Ορισμός κωδικού",
+      "manualToAutomatic": "Χειροκίνητη σε αυτόματη συνεισφορά",
+      "newCalloutResponse": "Admin: Ειδοποίηση νέας απάντησης callout",
+      "newMember": "Admin: Ειδοποίηση νέου μέλους",
+      "resetDevice": "Επαναφορά συσκευής",
+      "resetPassword": "Επαναφορά κωδικού",
+      "welcome": "Καλώς ήρθατε"
+    },
+    "updated": "Το email ενημερώθηκε επιτυχώς",
+    "errors": {
+      "notSystemTemplate": "Δεν πρόκειται για πρότυπο συστήματος. Μόνο πρότυπα συστήματος μπορούν να επεξεργαστούν σε αυτή τη σελίδα."
+    }
+  },
+  "editCustomEmail": {
+    "title": "Επεξεργασία προσαρμοσμένου email: {title}"
   }
 }

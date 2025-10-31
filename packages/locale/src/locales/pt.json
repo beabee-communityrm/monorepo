@@ -1448,7 +1448,8 @@
     "notices": "Avisos",
     "payments": "",
     "settings": "Definições",
-    "yourProfile": "Perfil"
+    "yourProfile": "Perfil",
+    "emails": "E-mails"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1694,5 +1695,59 @@
       "RESPNAME": "Nome do respondente",
       "ORGNAME": "Nome da organização"
     }
+  },
+  "addEmail": {
+    "title": "Adicionar e-mail"
+  },
+  "editEmail": {
+    "title": "Editar: {title}"
+  },
+  "emails": {
+    "addEmail": "Adicionar e-mail",
+    "created": "E-mail criado com sucesso",
+    "createNotImplemented": "A criação de e-mail ainda não está totalmente implementada",
+    "data": {
+      "createdAt": "Criado",
+      "flags": "Tipo",
+      "mailingCount": "Envios",
+      "name": "Nome"
+    },
+    "flags": {
+      "segment": "Segmento",
+      "system": "Sistema"
+    },
+    "form": {
+      "addSystemOverride": "Adicionar substituição do sistema",
+      "emailContent": "Conteúdo do e-mail",
+      "name": "Nome",
+      "nameHelp": "Um nome descritivo para este modelo de e-mail",
+      "selectSystemEmail": "Selecionar um e-mail do sistema",
+      "systemOverrides": "Substituições de e-mail do sistema",
+      "systemOverridesHelp": "Escolha quais e-mails do sistema devem usar este modelo em vez do padrão"
+    },
+    "saved": "E-mail guardado com sucesso",
+    "showingOf": "A mostrar {from}-{to} de {total} modelos de e-mail",
+    "systemTemplates": {
+      "calloutResponseAnswers": "Confirmação de resposta ao callout",
+      "cancelledContribution": "Contribuição cancelada",
+      "cancelledContributionNoSurvey": "Contribuição cancelada (sem inquérito)",
+      "cancelledMember": "Admin: Notificação de membro cancelado",
+      "confirmEmail": "Confirmar e-mail",
+      "emailExistsLogin": "E-mail existe - Iniciar sessão",
+      "emailExistsSetPassword": "E-mail existe - Definir palavra-passe",
+      "manualToAutomatic": "Manual para contribuidor automático",
+      "newCalloutResponse": "Admin: Notificação de nova resposta ao callout",
+      "newMember": "Admin: Notificação de novo membro",
+      "resetDevice": "Repor dispositivo",
+      "resetPassword": "Repor palavra-passe",
+      "welcome": "Bem-vindo"
+    },
+    "updated": "E-mail atualizado com sucesso",
+    "errors": {
+      "notSystemTemplate": "Este não é um modelo do sistema. Apenas modelos do sistema podem ser editados nesta página."
+    }
+  },
+  "editCustomEmail": {
+    "title": "Editar e-mail personalizado: {title}"
   }
 }

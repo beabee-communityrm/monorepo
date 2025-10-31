@@ -1449,7 +1449,8 @@
     "notices": "Уведомления",
     "payments": "Платежи",
     "settings": "Настройки",
-    "yourProfile": "Ваш профиль"
+    "yourProfile": "Ваш профиль",
+    "emails": "Почта"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1695,5 +1696,59 @@
       "RESPNAME": "Имя респондента",
       "ORGNAME": "Название организации"
     }
+  },
+  "addEmail": {
+    "title": "Добавить письмо"
+  },
+  "editEmail": {
+    "title": "Редактировать: {title}"
+  },
+  "emails": {
+    "addEmail": "Добавить письмо",
+    "created": "Письмо успешно создано",
+    "createNotImplemented": "Создание писем пока не полностью реализовано",
+    "data": {
+      "createdAt": "Создано",
+      "flags": "Тип",
+      "mailingCount": "Рассылки",
+      "name": "Название"
+    },
+    "flags": {
+      "segment": "Сегмент",
+      "system": "Система"
+    },
+    "form": {
+      "addSystemOverride": "Добавить системное переопределение",
+      "emailContent": "Содержимое письма",
+      "name": "Название",
+      "nameHelp": "Описательное название для этого шаблона письма",
+      "selectSystemEmail": "Выберите системное письмо",
+      "systemOverrides": "Системные переопределения писем",
+      "systemOverridesHelp": "Выберите, какие системные письма должны использовать этот шаблон вместо стандартного"
+    },
+    "saved": "Письмо успешно сохранено",
+    "showingOf": "Показано {from}-{to} из {total} шаблонов писем",
+    "systemTemplates": {
+      "calloutResponseAnswers": "Подтверждение ответа на призыв",
+      "cancelledContribution": "Отменённый взнос",
+      "cancelledContributionNoSurvey": "Отменённый взнос (без опроса)",
+      "cancelledMember": "Админ: Уведомление об отменённом участнике",
+      "confirmEmail": "Подтвердить почту",
+      "emailExistsLogin": "Почта существует - Вход",
+      "emailExistsSetPassword": "Почта существует - Установить пароль",
+      "manualToAutomatic": "Ручной на автоматический плательщик",
+      "newCalloutResponse": "Админ: Уведомление о новом ответе на призыв",
+      "newMember": "Админ: Уведомление о новом участнике",
+      "resetDevice": "Сбросить устройство",
+      "resetPassword": "Сбросить пароль",
+      "welcome": "Добро пожаловать"
+    },
+    "updated": "Письмо успешно обновлено",
+    "errors": {
+      "notSystemTemplate": "Это не шаблон системы. Только шаблоны системы могут быть отредактированы на этой странице."
+    }
+  },
+  "editCustomEmail": {
+    "title": "Редактировать пользовательское письмо: {title}"
   }
 }

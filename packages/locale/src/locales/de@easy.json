@@ -1448,7 +1448,8 @@
     "notices": "",
     "payments": "",
     "settings": "",
-    "yourProfile": ""
+    "yourProfile": "",
+    "emails": ""
   },
   "newsletterOptIn": {
     "groups": {
@@ -1694,5 +1695,59 @@
       "RESPNAME": "Name des Antwortenden",
       "ORGNAME": "Name der Organisation"
     }
+  },
+  "addEmail": {
+    "title": "E-Mail hinzufügen"
+  },
+  "editCustomEmail": {
+    "title": "E-Mail ändern: {title}"
+  },
+  "editEmail": {
+    "title": "System-E-Mail ändern: {title}"
+  },
+  "emails": {
+    "addEmail": "E-Mail hinzufügen",
+    "created": "E-Mail wurde erstellt",
+    "createNotImplemented": "E-Mail erstellen ist noch nicht möglich",
+    "data": {
+      "createdAt": "Erstellt",
+      "flags": "Art",
+      "mailingCount": "Mailings",
+      "name": "Name"
+    },
+    "errors": {
+      "notSystemTemplate": "Das ist keine System-E-Mail. Hier kannst du nur System-E-Mails ändern."
+    },
+    "flags": {
+      "segment": "Segment",
+      "system": "System"
+    },
+    "form": {
+      "addSystemOverride": "System-E-Mail hinzufügen",
+      "emailContent": "E-Mail-Text",
+      "name": "Name",
+      "nameHelp": "Name für diese E-Mail-Vorlage",
+      "selectSystemEmail": "System-E-Mail auswählen",
+      "systemOverrides": "System-E-Mails",
+      "systemOverridesHelp": "Welche System-E-Mails sollen diese Vorlage nutzen?"
+    },
+    "saved": "E-Mail wurde gespeichert",
+    "showingOf": "E-Mail-Vorlagen {from} bis {to} von {total}",
+    "systemTemplates": {
+      "calloutResponseAnswers": "Bestätigung",
+      "cancelledContribution": "Beitrag beendet",
+      "cancelledContributionNoSurvey": "Beitrag beendet ohne Umfrage",
+      "cancelledMember": "Mitglied beendet",
+      "confirmEmail": "E-Mail bestätigen",
+      "emailExistsLogin": "E-Mail vorhanden - Anmelden",
+      "emailExistsSetPassword": "E-Mail vorhanden - Passwort setzen",
+      "manualToAutomatic": "Manuell zu automatisch",
+      "newCalloutResponse": "Neue Antwort",
+      "newMember": "Neues Mitglied",
+      "resetDevice": "Gerät zurücksetzen",
+      "resetPassword": "Passwort zurücksetzen",
+      "welcome": "Willkommen"
+    },
+    "updated": "E-Mail wurde geändert"
   }
 }
