@@ -1,4 +1,5 @@
 import {
+  EmailTemplateType,
   expandNestedMergeFields,
   replaceMergeFields,
 } from '@beabee/beabee-common';
@@ -35,7 +36,6 @@ import {
   EmailProvider,
   EmailRecipient,
   EmailTemplateId,
-  EmailTemplateType,
   GeneralEmailTemplateId,
   GeneralEmailTemplates,
   GeneralTemplateFunction,
@@ -119,10 +119,12 @@ class EmailService {
   async sendTemplateTo<T extends GeneralEmailTemplateId>(
     template: T,
     to: EmailPerson,
-    params: Parameters<GeneralEmailTemplates[T]>[0],
+    params: Parameters<GeneralEmailTemplates[T]['generator']>[0],
     opts?: TemplateEmailOptions
   ): Promise<void> {
-    const mergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
+    const mergeFields = generalEmailTemplates[template].generator(
+      params as any
+    ); // https://github.com/microsoft/TypeScript/issues/30581
     await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
   }
 
@@ -152,7 +154,7 @@ class EmailService {
 
     const recipient = this.convertContactToRecipient(
       contact,
-      contactEmailTemplates[template](contact, params as any) // https://github.com/microsoft/TypeScript/issues/30581
+      contactEmailTemplates[template].generator(contact, params as any) // https://github.com/microsoft/TypeScript/issues/30581
     );
 
     await this.sendTemplate(template, [recipient], opts, true);
@@ -160,12 +162,12 @@ class EmailService {
 
   async sendTemplateToAdmin<T extends AdminEmailTemplateId>(
     template: T,
-    params: Parameters<AdminEmailTemplates[T]>[0],
+    params: Parameters<AdminEmailTemplates[T]['generator']>[0],
     opts?: TemplateEmailOptions
   ): Promise<void> {
     const recipient = {
       to: { email: OptionsService.getText('support-email') },
-      mergeFields: adminEmailTemplates[template](params as any),
+      mergeFields: adminEmailTemplates[template].generator(params as any),
     };
 
     await this.sendTemplate(template, [recipient], opts, false);
@@ -276,9 +278,8 @@ class EmailService {
     contact: Contact,
     customMergeFields: Record<string, string>
   ): EmailMergeFields {
-    const templateFn = contactEmailTemplates[
-      template
-    ] as ContactTemplateFunction<T>;
+    const templateDef = contactEmailTemplates[template];
+    const templateFn = templateDef.generator as ContactTemplateFunction<T>;
 
     if (templateFn.length > 1) {
       // Template expects parameters - extract them using the mapping system
@@ -312,20 +313,19 @@ class EmailService {
     template: T,
     customMergeFields: Record<string, string>
   ): EmailMergeFields {
-    const templateFn = adminEmailTemplates[
-      template
-    ] as AdminTemplateFunction<T>;
+    const templateDef = adminEmailTemplates[template];
+    const templateFn = templateDef.generator as AdminTemplateFunction<T>;
 
     if (templateFn.length > 1) {
       // Template expects parameters - extract them using the mapping system
       const templateParams = extractTemplateParams(template, customMergeFields);
       const templateResult = templateFn(
-        templateParams as Parameters<AdminEmailTemplates[T]>[0]
+        templateParams as Parameters<AdminEmailTemplates[T]['generator']>[0]
       );
       return this.convertToEmailMergeFields(templateResult);
     } else {
       const templateResult = templateFn(
-        {} as Parameters<AdminEmailTemplates[T]>[0]
+        {} as Parameters<AdminEmailTemplates[T]['generator']>[0]
       );
       return this.convertToEmailMergeFields(templateResult);
     }
@@ -338,20 +338,19 @@ class EmailService {
     template: T,
     customMergeFields: Record<string, string>
   ): EmailMergeFields {
-    const templateFn = generalEmailTemplates[
-      template
-    ] as GeneralTemplateFunction<T>;
+    const templateDef = generalEmailTemplates[template];
+    const templateFn = templateDef.generator as GeneralTemplateFunction<T>;
 
     if (templateFn.length > 1) {
       // Template expects parameters - extract them using the mapping system
       const templateParams = extractTemplateParams(template, customMergeFields);
       const templateResult = templateFn(
-        templateParams as Parameters<GeneralEmailTemplates[T]>[0]
+        templateParams as Parameters<GeneralEmailTemplates[T]['generator']>[0]
       );
       return this.convertToEmailMergeFields(templateResult);
     } else {
       const templateResult = templateFn(
-        {} as Parameters<GeneralEmailTemplates[T]>[0]
+        {} as Parameters<GeneralEmailTemplates[T]['generator']>[0]
       );
       return this.convertToEmailMergeFields(templateResult);
     }
@@ -367,7 +366,7 @@ class EmailService {
     customMergeFields: Record<string, string>
   ): EmailMergeFields {
     switch (type) {
-      case 'contact':
+      case EmailTemplateType.Contact:
         if (isContactEmailTemplateId(template)) {
           return this.generateContactTemplateMergeFields(
             template,
@@ -377,7 +376,7 @@ class EmailService {
         }
         break;
 
-      case 'admin':
+      case EmailTemplateType.Admin:
         if (isAdminEmailTemplateId(template)) {
           return this.generateAdminTemplateMergeFields(
             template,
@@ -386,7 +385,7 @@ class EmailService {
         }
         break;
 
-      case 'general':
+      case EmailTemplateType.General:
         if (isGeneralEmailTemplateId(template)) {
           return this.generateGeneralTemplateMergeFields(
             template,
@@ -550,13 +549,69 @@ class EmailService {
    */
   getTemplateType(template: string): EmailTemplateType | null {
     if (template in generalEmailTemplates) {
-      return 'general';
+      return EmailTemplateType.General;
     } else if (template in adminEmailTemplates) {
-      return 'admin';
+      return EmailTemplateType.Admin;
     } else if (template in contactEmailTemplates) {
-      return 'contact';
+      return EmailTemplateType.Contact;
     }
     return null;
+  }
+
+  /**
+   * Get metadata for all email templates
+   * Returns information about available merge fields and template purposes
+   */
+  getTemplatesMetadata(): Array<{
+    id: string;
+    type: EmailTemplateType;
+    name: string;
+    description: string;
+    mergeFields: string[];
+  }> {
+    const metadata: Array<{
+      id: string;
+      type: EmailTemplateType;
+      name: string;
+      description: string;
+      mergeFields: string[];
+    }> = [];
+
+    // General templates
+    for (const [id, template] of Object.entries(generalEmailTemplates)) {
+      metadata.push({
+        id,
+        type: EmailTemplateType.General,
+        name: template.name,
+        description: template.description,
+        mergeFields: template.mergeFields,
+      });
+    }
+
+    // Admin templates
+    for (const [id, template] of Object.entries(adminEmailTemplates)) {
+      metadata.push({
+        id,
+        type: EmailTemplateType.Admin,
+        name: template.name,
+        description: template.description,
+        mergeFields: template.mergeFields,
+      });
+    }
+
+    // Contact templates (include base contact fields)
+    const baseContactFields = ['EMAIL', 'NAME', 'FNAME', 'LNAME'];
+    for (const [id, template] of Object.entries(contactEmailTemplates)) {
+      metadata.push({
+        id,
+        type: EmailTemplateType.Contact,
+        name: template.name,
+        description: template.description,
+        mergeFields: [...baseContactFields, ...template.mergeFields],
+      });
+    }
+
+    return metadata;
   }
 
   /**

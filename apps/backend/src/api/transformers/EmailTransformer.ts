@@ -36,8 +36,11 @@ class EmailTransformer extends BaseTransformer<
   @TransformPlainToInstance(GetEmailDto)
   convert(email: Email, auth: AuthInfo, opts?: ListEmailsDto): GetEmailDto {
     return {
+      id: email.id,
+      name: email.name,
       subject: email.subject,
       body: email.body,
+      date: email.date.toISOString(),
     };
   }
 

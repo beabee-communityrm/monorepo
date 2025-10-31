@@ -1,3 +1,4 @@
+import { EmailTemplateType } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { Contact, Email } from '@beabee/core/models';
@@ -6,12 +7,14 @@ import { AuthInfo } from '@beabee/core/type';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import {
+  EmailPreviewDto,
   GetEmailDto,
   GetEmailListItemDto,
   ListEmailsDto,
   PreviewEmailDto,
   UpdateEmailDto,
 } from '@api/dto/EmailDto';
+import { GetEmailTemplatesMetadataDto } from '@api/dto/EmailTemplateMetadataDto';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
 import EmailTransformer from '@api/transformers/EmailTransformer';
 import { findEmail } from '@api/utils/email';
@@ -60,15 +63,33 @@ export class EmailController {
     const email = await findEmail(id);
     if (email) {
       await getRepository(Email).update(email.id, data);
-      return data;
+      const updatedEmail = await findEmail(id);
+      return updatedEmail
+        ? EmailTransformer.convert(updatedEmail, auth)
+        : undefined;
     } else if (EmailService.isTemplateId(id)) {
-      const email = await getRepository(Email).save({
+      const newEmail = await getRepository(Email).save({
         name: 'Email for ' + id,
         ...data,
       });
-      await EmailService.setTemplateEmail(id, email);
-      return EmailTransformer.convert(email, auth);
+      await EmailService.setTemplateEmail(id, newEmail);
+      return EmailTransformer.convert(newEmail, auth);
     }
+  }
+
+  /**
+   * Get metadata for all email templates
+   * Returns information about available merge fields and template purposes
+   * Available to all authenticated users
+   */
+  @Authorized()
+  @Get('/templates/metadata')
+  async getTemplatesMetadata(): Promise<GetEmailTemplatesMetadataDto> {
+    const templates = EmailService.getTemplatesMetadata().map((template) => ({
+      ...template,
+      type: template.type,
+    }));
+    return { templates };
   }
 
   /**
@@ -81,13 +102,13 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Param('templateId') templateId: string,
     @Body() data: PreviewEmailDto
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     if (!EmailService.isTemplateId(templateId)) {
       throw new BadRequestError(`Invalid template ID: ${templateId}`);
     }
 
     const templateType = EmailService.getTemplateType(templateId);
-    if (templateType !== 'general') {
+    if (templateType !== EmailTemplateType.General) {
       throw new BadRequestError(
         `Template ${templateId} is not a general template`
       );
@@ -97,7 +118,7 @@ export class EmailController {
 
     const preview = await EmailService.getTemplatePreview(
       templateId,
-      'general',
+      EmailTemplateType.General,
       contact,
       data.mergeFields || {},
       {
@@ -120,13 +141,13 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Param('templateId') templateId: string,
     @Body() data: PreviewEmailDto
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     if (!EmailService.isTemplateId(templateId)) {
       throw new BadRequestError(`Invalid template ID: ${templateId}`);
     }
 
     const templateType = EmailService.getTemplateType(templateId);
-    if (templateType !== 'contact') {
+    if (templateType !== EmailTemplateType.Contact) {
       throw new BadRequestError(
         `Template ${templateId} is not a contact template`
       );
@@ -136,7 +157,7 @@ export class EmailController {
 
     const preview = await EmailService.getTemplatePreview(
       templateId,
-      'contact',
+      EmailTemplateType.Contact,
       contact,
       data.mergeFields || {},
       {
@@ -158,13 +179,13 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Param('templateId') templateId: string,
     @Body() data: PreviewEmailDto
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     if (!EmailService.isTemplateId(templateId)) {
       throw new BadRequestError(`Invalid template ID: ${templateId}`);
     }
 
     const templateType = EmailService.getTemplateType(templateId);
-    if (templateType !== 'admin') {
+    if (templateType !== EmailTemplateType.Admin) {
       throw new BadRequestError(
         `Template ${templateId} is not an admin template`
       );
@@ -175,7 +196,7 @@ export class EmailController {
 
     const preview = await EmailService.getTemplatePreview(
       templateId,
-      'admin',
+      EmailTemplateType.Admin,
       contact,
       data.mergeFields || {},
       {

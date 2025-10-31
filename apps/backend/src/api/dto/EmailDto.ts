@@ -19,7 +19,16 @@ export class UpdateEmailDto {
   body!: string;
 }
 
-export class GetEmailDto extends UpdateEmailDto {}
+export class GetEmailDto extends UpdateEmailDto {
+  @IsString()
+  id!: string;
+
+  @IsString()
+  name!: string;
+
+  @IsString()
+  date!: string;
+}
 
 /**
  * DTO for email list items
@@ -73,4 +82,16 @@ export class PreviewEmailDto {
   @IsOptional()
   @IsString()
   locale?: Locale;
+}
+
+/**
+ * DTO for email preview response
+ * Contains only subject and body for preview purposes
+ */
+export class EmailPreviewDto {
+  @IsString()
+  subject!: string;
+
+  @IsString()
+  body!: string;
 }

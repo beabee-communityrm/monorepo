@@ -12,6 +12,7 @@ export * from './contact-mfa-type.js';
 export * from './content-ids.js';
 export * from './contribution-period.js';
 export * from './contribution-type.js';
+export * from './email-template-type.js';
 export * from './get-callout-response-with.js';
 export * from './get-contact-with.js';
 export * from './item-status.js';
