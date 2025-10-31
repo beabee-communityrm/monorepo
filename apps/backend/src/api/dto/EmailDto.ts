@@ -28,6 +28,14 @@ export class GetEmailDto extends UpdateEmailDto {
 
   @IsString()
   date!: string;
+
+  @IsBoolean()
+  @IsOptional()
+  isSystem?: boolean;
+
+  @IsString()
+  @IsOptional()
+  systemTemplateId?: string;
 }
 
 /**

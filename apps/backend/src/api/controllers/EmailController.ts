@@ -1,5 +1,4 @@
 import { EmailTemplateType } from '@beabee/beabee-common';
-import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { Contact, Email } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
@@ -14,10 +13,14 @@ import {
   PreviewEmailDto,
   UpdateEmailDto,
 } from '@api/dto/EmailDto';
-import { GetEmailTemplatesMetadataDto } from '@api/dto/EmailTemplateMetadataDto';
+import {
+  EmailTemplateMetadataDto,
+  GetEmailTemplatesMetadataDto,
+} from '@api/dto/EmailTemplateMetadataDto';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
 import EmailTransformer from '@api/transformers/EmailTransformer';
 import { findEmail } from '@api/utils/email';
+import { plainToInstance } from 'class-transformer';
 import {
   Authorized,
   BadRequestError,
@@ -85,11 +88,11 @@ export class EmailController {
   @Authorized()
   @Get('/templates/metadata')
   async getTemplatesMetadata(): Promise<GetEmailTemplatesMetadataDto> {
-    const templates = EmailService.getTemplatesMetadata().map((template) => ({
-      ...template,
-      type: template.type,
-    }));
-    return { templates };
+    const templatesData = EmailService.getTemplatesMetadata();
+    const templates = templatesData.map((template) =>
+      plainToInstance(EmailTemplateMetadataDto, template)
+    );
+    return plainToInstance(GetEmailTemplatesMetadataDto, { templates });
   }
 
   /**

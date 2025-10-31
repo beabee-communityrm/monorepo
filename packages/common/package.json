@@ -20,6 +20,16 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./data": {
+      "import": {
+        "types": "./dist/types/data/index.d.ts",
+        "default": "./dist/esm/data/index.js"
+      },
+      "require": {
+        "types": "./dist/types/data/index.d.ts",
+        "default": "./dist/cjs/data/index.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "scripts": {

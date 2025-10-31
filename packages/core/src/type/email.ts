@@ -1,5 +1,3 @@
-import { EmailTemplateType } from '@beabee/beabee-common';
-
 import type {
   adminEmailTemplates,
   contactEmailTemplates,
@@ -58,9 +56,6 @@ export interface EmailProvider {
   getTemplateEmail(templateId: string): Promise<false | Email | null>;
   getTemplates(): Promise<EmailTemplate[]>;
 }
-
-// Re-export for convenience
-export { EmailTemplateType };
 
 /**
  * Type helper for general email templates

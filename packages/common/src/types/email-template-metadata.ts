@@ -1,8 +1,5 @@
 import { EmailTemplateType } from '../data/email-template-type.js';
 
-// Re-export for convenience
-export { EmailTemplateType };
-
 /**
  * Metadata for a single email template
  * This provides information about available merge fields and template purpose

@@ -33,15 +33,30 @@ class EmailTransformer extends BaseTransformer<
    * Convert Email entity to DTO
    * Returns GetEmailDto for detailed view or GetEmailListItemDto for list view
    */
-  @TransformPlainToInstance(GetEmailDto)
   convert(email: Email, auth: AuthInfo, opts?: ListEmailsDto): GetEmailDto {
-    return {
+    // Check if this email is a system template override
+    const systemEmailMappings = OptionsService.getJSON('email-templates') || {};
+    const systemEmailIds = Object.values(systemEmailMappings) as string[];
+    const isSystem = systemEmailIds.includes(email.id);
+
+    // Find the system template ID for this email (reverse lookup)
+    const systemTemplateId = isSystem
+      ? Object.keys(systemEmailMappings).find(
+          (templateId) => systemEmailMappings[templateId] === email.id
+        )
+      : undefined;
+
+    const dto = plainToInstance(GetEmailDto, {
       id: email.id,
       name: email.name,
       subject: email.subject,
       body: email.body,
       date: email.date.toISOString(),
-    };
+      isSystem,
+      systemTemplateId,
+    });
+
+    return dto;
   }
 
   /**
@@ -49,7 +64,7 @@ class EmailTransformer extends BaseTransformer<
    * Includes additional metadata like mailing count and system/segment flags
    */
   convertToListItem(email: Email): GetEmailListItemDto {
-    return {
+    return plainToInstance(GetEmailListItemDto, {
       id: email.id,
       name: email.name,
       subject: email.subject,
@@ -57,7 +72,7 @@ class EmailTransformer extends BaseTransformer<
       mailingCount: (email.mailingCount as number) || 0,
       isSystem: (email as any).isSystem || false,
       isSegment: (email as any).isSegment || false,
-    };
+    });
   }
 
   /**

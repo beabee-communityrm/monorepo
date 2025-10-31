@@ -4,4 +4,6 @@ export interface GetEmailData {
   subject: string;
   body: string;
   date: string;
+  isSystem?: boolean;
+  systemTemplateId?: string;
 }
