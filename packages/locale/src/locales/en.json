@@ -118,6 +118,9 @@
     "subscribeToNewsletter": "Synchronise with newsletter tool",
     "title": "Add a contact"
   },
+  "addEmail": {
+    "title": "Add email"
+  },
   "addNotice": {
     "form": {
       "buttonText": "Button text",
@@ -1113,8 +1116,59 @@
     "title": "Edit: {title}",
     "warning": "Careful! You are editing a live CrowdNewsroom. Changing form properties carries the risk of rendering previous answers unusable."
   },
+  "editCustomEmail": {
+    "title": "Edit custom email: {title}"
+  },
+  "editEmail": {
+    "title": "Edit system template: {title}"
+  },
   "editNotice": {
     "title": "Edit: {title}"
+  },
+  "emails": {
+    "addEmail": "Add email",
+    "created": "Email created successfully",
+    "createNotImplemented": "Email creation is not yet fully implemented",
+    "data": {
+      "createdAt": "Created",
+      "flags": "Type",
+      "mailingCount": "Mailings",
+      "name": "Name"
+    },
+    "errors": {
+      "notSystemTemplate": "This is not a system template. Only system templates can be edited on this page."
+    },
+    "flags": {
+      "segment": "Segment",
+      "system": "System"
+    },
+    "form": {
+      "addSystemOverride": "Add system override",
+      "emailContent": "Email content",
+      "name": "Name",
+      "nameHelp": "A descriptive name for this email template",
+      "selectSystemEmail": "Select a system email",
+      "systemOverrides": "System email overrides",
+      "systemOverridesHelp": "Choose which system emails should use this template instead of the default"
+    },
+    "saved": "Email saved successfully",
+    "showingOf": "Showing {from}-{to} of {total} email templates | Showing {from}-{to} of {total} email template | Showing {from}-{to} of {total} email templates",
+    "systemTemplates": {
+      "calloutResponseAnswers": "Callout response confirmation",
+      "cancelledContribution": "Cancelled contribution",
+      "cancelledContributionNoSurvey": "Cancelled contribution (no survey)",
+      "cancelledMember": "Admin: Cancelled member notification",
+      "confirmEmail": "Confirm email",
+      "emailExistsLogin": "Email exists - login",
+      "emailExistsSetPassword": "Email exists - set password",
+      "manualToAutomatic": "Manual to automatic contributor",
+      "newCalloutResponse": "Admin: New callout response notification",
+      "newMember": "Admin: New member notification",
+      "resetDevice": "Reset device",
+      "resetPassword": "Reset password",
+      "welcome": "Welcome"
+    },
+    "updated": "Email updated successfully"
   },
   "emailEditor": {
     "subject": {
@@ -1490,6 +1544,7 @@
     "contacts": "Contacts",
     "contribution": "Contribution",
     "dashboard": "Dashboard",
+    "emails": "Emails",
     "home": "Home",
     "legacyApp": "Old dashboard",
     "logout": "Log out",

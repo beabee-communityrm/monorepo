@@ -182,7 +182,13 @@ async function loadEmail(id: string): Promise<GetEmailData | false> {
     if (isApiError(err, ['external-email-template'])) {
       return false;
     }
-    return { body: '', subject: '' };
+    return {
+      id: '',
+      name: '',
+      subject: '',
+      body: '',
+      date: new Date().toISOString(),
+    };
   }
 }
 
