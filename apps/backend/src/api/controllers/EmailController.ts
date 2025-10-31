@@ -1,15 +1,19 @@
 import config from '@beabee/core/config';
-import { getRepository } from '@beabee/core/database';
-import { Contact, Email } from '@beabee/core/models';
+import { createQueryBuilder, getRepository } from '@beabee/core/database';
+import { Contact, Email, SegmentOngoingEmail } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
+import OptionsService from '@beabee/core/services/OptionsService';
 import { AuthInfo } from '@beabee/core/type';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import {
   GetEmailDto,
+  GetEmailListItemDto,
+  ListEmailsDto,
   PreviewEmailDto,
   UpdateEmailDto,
 } from '@api/dto/EmailDto';
+import { PaginatedDto } from '@api/dto/PaginatedDto';
 import EmailTransformer from '@api/transformers/EmailTransformer';
 import { findEmail } from '@api/utils/email';
 import {
@@ -21,11 +25,69 @@ import {
   Param,
   Post,
   Put,
+  QueryParams,
 } from 'routing-controllers';
 
 @Authorized('admin')
 @JsonController('/email')
 export class EmailController {
+  /**
+   * List all email templates with pagination
+   * Returns both custom emails and metadata about system email overrides
+   */
+  @Get('/')
+  async listEmails(
+    @CurrentAuth() auth: AuthInfo,
+    @QueryParams() query: ListEmailsDto
+  ): Promise<PaginatedDto<GetEmailListItemDto>> {
+    // Get all emails from database with mailing count
+    const queryBuilder = createQueryBuilder(Email, 'e').loadRelationCountAndMap(
+      'e.mailingCount',
+      'e.mailings'
+    );
+
+    // Apply sorting
+    const sortField = query.sort || 'name';
+    const order = query.order || 'ASC';
+    queryBuilder.orderBy(`e.${sortField}`, order);
+
+    // Apply pagination
+    const limit = query.limit || 50;
+    const offset = query.offset || 0;
+    queryBuilder.limit(limit).offset(offset);
+
+    const emails = await queryBuilder.getMany();
+
+    // Get system email template mappings
+    const systemEmailMappings = OptionsService.getJSON('email-templates') || {};
+    const systemEmailIds = Object.values(systemEmailMappings) as string[];
+
+    // Get segment email mappings
+    const segmentEmails = await getRepository(SegmentOngoingEmail).find();
+    const segmentEmailIds = segmentEmails.map((se) => se.emailId);
+
+    // Transform emails to list DTOs with flags
+    const items: GetEmailListItemDto[] = emails.map((email) => ({
+      id: email.id,
+      name: email.name,
+      subject: email.subject,
+      date: email.date.toISOString(),
+      mailingCount: (email.mailingCount as number) || 0,
+      isSystem: systemEmailIds.includes(email.id),
+      isSegment: segmentEmailIds.includes(email.id),
+    }));
+
+    // Get total count for pagination
+    const total = await getRepository(Email).count();
+
+    return {
+      items,
+      total,
+      offset,
+      count: items.length,
+    };
+  }
+
   @Get('/:id')
   async getEmail(
     @CurrentAuth() auth: AuthInfo,
