@@ -11,6 +11,7 @@ import Stripe from 'stripe';
 import config from '#config/config';
 import { NoPaymentMethod } from '#errors/index';
 import {
+  chargeOneTimePayment,
   createSubscription,
   deleteSubscription,
   manadateToSource,
@@ -231,14 +232,7 @@ export class StripeProvider extends PaymentProvider {
 
     log.info('Create one-time payment of amount ' + form.monthlyAmount);
 
-    await stripe.paymentIntents.create({
-      amount: getChargeableAmount(form, this.method),
-      currency: 'eur',
-      customer: this.data.customerId,
-      payment_method: this.data.mandateId,
-      off_session: true,
-      confirm: true,
-    });
+    await chargeOneTimePayment(this.data.customerId, form, this.method);
   }
 
   async permanentlyDeleteContact(): Promise<void> {

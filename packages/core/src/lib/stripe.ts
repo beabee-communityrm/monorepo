@@ -1,6 +1,7 @@
 import {
   ContributionForm,
   ContributionPeriod,
+  PaymentForm,
   PaymentMethod,
   PaymentSource,
   PaymentStatus,
@@ -284,6 +285,35 @@ export async function deleteSubscription(
       throw error;
     }
   }
+}
+
+/**
+ * Create a one-time payment
+ *
+ * @param customerId The ID of the customer
+ * @param form The payment form
+ * @param paymentMethod The payment method
+ */
+export async function chargeOneTimePayment(
+  customerId: string,
+  form: PaymentForm,
+  paymentMethod: PaymentMethod
+): Promise<void> {
+  const invoice = await stripe.invoices.create({
+    customer: customerId,
+    collection_method: 'charge_automatically',
+    auto_advance: true,
+  });
+
+  await stripe.invoiceItems.create({
+    customer: customerId,
+    invoice: invoice.id,
+    amount: getChargeableAmount(form, paymentMethod),
+    currency: config.currencyCode,
+    description: 'One-time payment',
+  });
+
+  await stripe.invoices.pay(invoice.id);
 }
 
 /**
