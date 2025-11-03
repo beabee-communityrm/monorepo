@@ -225,7 +225,20 @@ export class StripeProvider extends PaymentProvider {
    * @param form The payment form
    */
   async createOneTimePayment(form: PaymentForm): Promise<void> {
-    throw new Error('Method not implemented.');
+    if (!this.data.customerId || !this.data.mandateId) {
+      throw new NoPaymentMethod();
+    }
+
+    log.info('Create one-time payment of amount ' + form.monthlyAmount);
+
+    await stripe.paymentIntents.create({
+      amount: getChargeableAmount(form, this.method),
+      currency: 'eur',
+      customer: this.data.customerId,
+      payment_method: this.data.mandateId,
+      off_session: true,
+      confirm: true,
+    });
   }
 
   async permanentlyDeleteContact(): Promise<void> {
