@@ -112,6 +112,7 @@
 </template>
 
 <script lang="ts" setup>
+import { ContributionPeriod, type PaymentPeriod } from '@beabee/beabee-common';
 import { AppChoice } from '@beabee/vue';
 
 import { generalContent } from '@store/generalContent';
@@ -128,8 +129,8 @@ const { t, n } = useI18n();
 export interface ContributionAmountProps {
   /** The current amount value */
   modelValue: number;
-  /** Whether the contribution is monthly */
-  isMonthly: boolean;
+  /** Current payment period */
+  period: PaymentPeriod;
   /** Minimum allowed amount */
   minAmount: number;
   /** Preset amounts to display as quick choices */
@@ -145,7 +146,11 @@ const props = defineProps<ContributionAmountProps>();
  * Per period text based on contribution type
  */
 const perPeriodText = computed(() => {
-  return props.isMonthly ? t('common.perMonth') : t('common.perYear');
+  return props.period === ContributionPeriod.Monthly
+    ? t('common.perMonth')
+    : props.period === ContributionPeriod.Annually
+      ? t('common.perYear')
+      : '';
 });
 
 const amount = computed({

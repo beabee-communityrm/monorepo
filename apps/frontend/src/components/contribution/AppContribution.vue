@@ -42,7 +42,7 @@
 
     <ContributionAmount
       v-model.number="amountProxy"
-      :is-monthly="isMonthly"
+      :period="periodProxy"
       :min-amount="minAmount"
       :defined-amounts="definedAmounts"
       :disabled="disabled"
@@ -61,7 +61,7 @@
     />
 
     <ContributionFee
-      v-if="isMonthly && content.showAbsorbFee"
+      v-if="isNotAnnually && content.showAbsorbFee"
       v-model="payFeeProxy"
       :amount="amountProxy"
       :fee="fee"
@@ -76,6 +76,7 @@ import {
   type ContentPaymentData,
   ContributionPeriod,
   PaymentMethod,
+  type PaymentPeriod,
   calcPaymentFee,
 } from '@beabee/beabee-common';
 import { AppChoice } from '@beabee/vue';
@@ -97,7 +98,7 @@ export interface ContributionProps {
   /** Current contribution amount */
   amount: number;
   /** Current contribution period */
-  period: ContributionPeriod;
+  period: PaymentPeriod;
   /** Whether to pay processing fee */
   payFee: boolean;
   /** Selected payment method */
@@ -138,7 +139,7 @@ const amountProxy = computed({
 
 const periodProxy = computed({
   get: () => props.period,
-  set: (period: ContributionPeriod) => emit('update:period', period),
+  set: (period) => emit('update:period', period),
 });
 
 const payFeeProxy = computed({
@@ -151,13 +152,13 @@ const paymentMethodProxy = computed({
   set: (paymentMethod) => emit('update:paymentMethod', paymentMethod),
 });
 
-const isMonthly = computed(
-  () => periodProxy.value === ContributionPeriod.Monthly
+const isNotAnnually = computed(
+  () => periodProxy.value !== ContributionPeriod.Annually
 );
 
 const minAmount = computed(() => {
   const { minMonthlyAmount } = props.content;
-  return isMonthly.value ? minMonthlyAmount : minMonthlyAmount * 12;
+  return isNotAnnually.value ? minMonthlyAmount : minMonthlyAmount * 12;
 });
 
 const definedAmounts = computed(() => {
@@ -169,12 +170,12 @@ const definedAmounts = computed(() => {
 
 const periodItems = computed(() =>
   props.content.periods.map((period) => ({
-    label: t(`common.contributionPeriod.${period.name}`),
+    label: t(`common.paymentPeriod.${period.name}`),
     value: period.name,
   }))
 );
 
-watch(isMonthly, (value) => {
+watch(isNotAnnually, (value) => {
   amountProxy.value = value
     ? Math.floor(amountProxy.value / 12)
     : amountProxy.value * 12;
@@ -182,7 +183,9 @@ watch(isMonthly, (value) => {
 
 const shouldForceFee = computed(() => {
   return (
-    props.content.showAbsorbFee && amountProxy.value === 1 && isMonthly.value
+    props.content.showAbsorbFee &&
+    amountProxy.value === 1 &&
+    isNotAnnually.value
   );
 });
 

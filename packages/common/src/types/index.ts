@@ -108,6 +108,7 @@ export type * from './create-callout-variant-data.js';
 export type * from './create-contact-data.js';
 export type * from './create-contact-mfa-data.js';
 export type * from './create-notice-data.js';
+export type * from './create-one-time-payment-data.js';
 export type * from './create-reset-device-data.js';
 export type * from './create-reset-password-data.js';
 export type * from './create-segment-data.js';

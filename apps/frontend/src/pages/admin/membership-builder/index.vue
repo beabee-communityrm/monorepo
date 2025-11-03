@@ -163,7 +163,9 @@ const defaultAmounts = computed(() => {
           label: `${n(amount, 'currency')} ${
             period.name === ContributionPeriod.Monthly
               ? t('common.perMonth')
-              : t('common.perYear')
+              : period.name === ContributionPeriod.Annually
+                ? t('common.perYear')
+                : t('common.perOneTime')
           }`,
         }))
       )

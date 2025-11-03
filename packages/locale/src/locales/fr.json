@@ -942,7 +942,10 @@
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "Oui"
+    "yes": "Oui",
+    "paymentPeriod": {},
+    "perOneTime": "",
+    "perOneTimeText": ""
   },
   "contactAccount": {
     "confirmDelete": {
