@@ -14,7 +14,8 @@ export const syncCommand: CommandModule = {
     yargs
       .command({
         command: 'mailchimp',
-        describe: 'Remove active member tag from MailChimp contacts whose membership has expired',
+        describe:
+          'Remove active member tag from MailChimp contacts whose membership has expired',
         builder: (yargs) =>
           yargs
             .option('startDate', {
