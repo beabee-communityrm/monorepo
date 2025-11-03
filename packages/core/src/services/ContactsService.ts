@@ -347,6 +347,7 @@ class ContactsService {
     } else {
       await this.updateContactContribution(contact, {
         ...paymentForm,
+        // Pass on narrowed period type
         period: paymentForm.period,
       });
     }

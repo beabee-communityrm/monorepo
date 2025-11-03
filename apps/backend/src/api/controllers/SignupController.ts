@@ -2,6 +2,7 @@ import { getRepository } from '@beabee/core/database';
 import { JoinFlow, Password } from '@beabee/core/models';
 import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import { generatePassword } from '@beabee/core/utils/auth';
+import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
 import { GetContactDto } from '@api/dto/ContactDto';
 import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
@@ -51,7 +52,10 @@ export class SignupController {
         {
           ...baseForm,
           ...data.contribution,
-          monthlyAmount: data.contribution.monthlyAmount,
+          monthlyAmount: getMonthlyAmount(
+            data.contribution.amount,
+            data.contribution.period
+          ),
         },
         data,
         data.contribution.completeUrl,

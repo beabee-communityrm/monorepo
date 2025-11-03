@@ -12,6 +12,27 @@ import { addMonths, getYear, setYear, sub } from 'date-fns';
 import config from '#config/config';
 import { Contact } from '#models/index';
 
+/**
+ * Calculate the equivalent monthly amount from a given amount and period
+ *
+ * @param amount The amount
+ * @param period The period
+ * @returns The equivalent monthly amount
+ */
+export function getMonthlyAmount(
+  amount: number,
+  period: PaymentPeriod
+): number {
+  return period === ContributionPeriod.Annually ? amount / 12 : amount;
+}
+
+/**
+ * Calculate the actual amount to charge based on the monthly amount and period
+ *
+ * @param monthlyAmount The monthly amount
+ * @param period The period
+ * @returns The actual amount
+ */
 export function getActualAmount(
   monthlyAmount: number,
   period: PaymentPeriod
