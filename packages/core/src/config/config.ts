@@ -178,6 +178,9 @@ export const config = {
   // Database connection
   databaseUrl: env.s('BEABEE_DATABASE_URL'), // PostgreSQL connection URL
 
+  // Redis connection
+  redisUrl: env.s('BEABEE_REDIS_URL'), // Redis connection URL
+
   // CaptchaFox integration for bot protection
   captchaFox: {
     secret: env.s('BEABEE_CAPTCHAFOX_SECRET', ''), // CaptchaFox secret key (default: empty)
