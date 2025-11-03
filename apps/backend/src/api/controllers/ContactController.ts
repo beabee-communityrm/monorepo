@@ -1,4 +1,8 @@
-import { ContributionPeriod, GetContactWith } from '@beabee/beabee-common';
+import {
+  ContributionPeriod,
+  GetContactWith,
+  isContributionForm,
+} from '@beabee/beabee-common';
 import {
   CantUpdateContribution,
   NoPaymentMethod,
@@ -231,7 +235,7 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    await ContactsService.processPaymentForm(target, form);
+    await ContactsService.updateContactContribution(target, form);
     return await this.getContribution(target);
   }
 
@@ -304,10 +308,15 @@ export class ContactController {
   async completeStartContribution(
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
-  ): Promise<GetContributionInfoDto> {
+  ): Promise<GetContributionInfoDto | undefined> {
     const joinFlow = await this.handleCompleteUpdatePaymentMethod(target, data);
-    await ContactsService.processPaymentForm(target, joinFlow.joinForm);
-    return await this.getContribution(target);
+    if (isContributionForm(joinFlow.joinForm)) {
+      await ContactsService.updateContactContribution(
+        target,
+        joinFlow.joinForm
+      );
+      return await this.getContribution(target);
+    }
   }
 
   /**
@@ -416,15 +425,14 @@ export class ContactController {
     const joinFlow = await PaymentFlowService.getJoinFlowByPaymentId(
       data.paymentFlowId
     );
-    if (!joinFlow || joinFlow.joinForm.period === 'one-time') {
+    if (!joinFlow || !isContributionForm(joinFlow.joinForm)) {
       throw new NotFoundError();
     }
 
     const canChange = await PaymentService.canChangeContribution(
       target,
       false,
-      // Pass on period type narrowing
-      { ...joinFlow.joinForm, period: joinFlow.joinForm.period }
+      joinFlow.joinForm
     );
 
     if (!canChange) {

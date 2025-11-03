@@ -5,7 +5,6 @@ import {
   ContributionType,
   LOGIN_CODES,
   NewsletterStatus,
-  PaymentForm,
   RESET_SECURITY_FLOW_ERROR_CODE,
   RESET_SECURITY_FLOW_TYPE,
   RoleType,
@@ -333,33 +332,12 @@ class ContactsService {
   }
 
   /**
-   * Process a payment form for a contact.
-   *
-   * @param contact The contact
-   * @param paymentForm The payment form to process
-   */
-  async processPaymentForm(
-    contact: Contact,
-    paymentForm: PaymentForm
-  ): Promise<void> {
-    if (paymentForm.period === 'one-time') {
-      await PaymentService.createOneTimePayment(contact, paymentForm);
-    } else {
-      await this.updateContactContribution(contact, {
-        ...paymentForm,
-        // Pass on narrowed period type
-        period: paymentForm.period,
-      });
-    }
-  }
-
-  /**
    * Updates a contact's contribution and adjusts their role accordingly.
    *
    * @param contact  The contact
    * @param form The new contribution
    */
-  private async updateContactContribution(
+  async updateContactContribution(
     contact: Contact,
     form: ContributionForm
   ): Promise<void> {
