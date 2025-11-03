@@ -211,6 +211,14 @@ class PaymentService {
     );
   }
 
+  async createOneTimePayment(
+    contact: Contact,
+    form: PaymentForm
+  ): Promise<void> {
+    log.info('Create one-time payment for contact ' + contact.id);
+    await this.provider(contact, (p) => p.createOneTimePayment(form));
+  }
+
   /**
    * Permanently delete or disassociate all payment related data for a contact.
    * This will also cancel any active contributions

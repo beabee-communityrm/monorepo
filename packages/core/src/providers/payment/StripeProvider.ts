@@ -1,6 +1,7 @@
 import {
   ContributionForm,
   ContributionType,
+  PaymentForm,
   PaymentSource,
 } from '@beabee/beabee-common';
 
@@ -216,6 +217,15 @@ export class StripeProvider extends PaymentProvider {
         }),
       });
     }
+  }
+
+  /**
+   * Create a one-time payment
+   *
+   * @param form The payment form
+   */
+  async createOneTimePayment(form: PaymentForm): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 
   async permanentlyDeleteContact(): Promise<void> {

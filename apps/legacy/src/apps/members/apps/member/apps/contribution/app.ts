@@ -51,7 +51,7 @@ app.post(
 
     switch (req.body.action) {
       case 'update-subscription':
-        await ContactsService.updateContactContribution(contact, {
+        await ContactsService.processPaymentForm(contact, {
           monthlyAmount: Number(req.body.amount),
           period: req.body.period,
           prorate: req.body.prorate === 'true',

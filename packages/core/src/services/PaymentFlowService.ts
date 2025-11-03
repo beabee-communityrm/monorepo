@@ -219,10 +219,7 @@ class PaymentFlowService implements PaymentFlowProvider {
 
     if (completedPaymentFlow) {
       await PaymentService.updatePaymentMethod(contact, completedPaymentFlow);
-      await ContactsService.updateContactContribution(
-        contact,
-        joinFlow.joinForm
-      );
+      await ContactsService.processPaymentForm(contact, joinFlow.joinForm);
     }
 
     await EmailService.sendTemplateToContact('welcome', contact);

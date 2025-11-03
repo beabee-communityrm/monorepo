@@ -225,7 +225,7 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    await ContactsService.updateContactContribution(target, data);
+    await ContactsService.processPaymentForm(target, data);
     return await this.getContribution(target);
   }
 
@@ -300,7 +300,7 @@ export class ContactController {
     @Body() data: CompleteJoinFlowDto
   ): Promise<GetContributionInfoDto> {
     const joinFlow = await this.handleCompleteUpdatePaymentMethod(target, data);
-    await ContactsService.updateContactContribution(target, joinFlow.joinForm);
+    await ContactsService.processPaymentForm(target, joinFlow.joinForm);
     return await this.getContribution(target);
   }
 

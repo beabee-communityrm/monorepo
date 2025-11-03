@@ -1,5 +1,6 @@
 import {
   ContributionForm,
+  PaymentForm,
   PaymentMethod,
   PaymentSource,
 } from '@beabee/beabee-common';
@@ -261,6 +262,15 @@ export class GCProvider extends PaymentProvider {
         ...(updates.lastname && { family_name: updates.lastname }),
       });
     }
+  }
+
+  /**
+   * Create a one-time payment
+   *
+   * @param form The payment form
+   */
+  async createOneTimePayment(form: PaymentForm): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 
   /**
