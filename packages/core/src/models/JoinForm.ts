@@ -1,7 +1,7 @@
 import {
-  ContributionPeriod,
   PaymentForm,
   PaymentMethod,
+  PaymentPeriod,
 } from '@beabee/beabee-common';
 
 import { Column } from 'typeorm';
@@ -20,8 +20,8 @@ export class JoinForm implements PaymentForm, ReferralGiftForm {
   @Column({ type: 'real' })
   monthlyAmount!: number;
 
-  @Column()
-  period!: ContributionPeriod | 'one-time';
+  @Column({ type: String })
+  period!: PaymentPeriod;
 
   @Column()
   payFee!: boolean;

@@ -3,6 +3,7 @@ import {
   ContributionType,
   PaymentForm,
   PaymentMethod,
+  PaymentPeriod,
   calcPaymentFee,
 } from '@beabee/beabee-common';
 
@@ -13,7 +14,7 @@ import { Contact } from '#models/index';
 
 export function getActualAmount(
   monthlyAmount: number,
-  period: ContributionPeriod | 'one-time'
+  period: PaymentPeriod
 ): number {
   // TODO: fix this properly
   return Math.round(

@@ -170,6 +170,7 @@ export type * from './parse-iso-options.js';
 export type * from './payment-filter-name.js';
 export type * from './payment-flow-params.js';
 export type * from './payment-form.js';
+export type * from './payment-period.js';
 export type * from './payment-source-base.js';
 export type * from './payment-source-go-cardless-direct-debit.js';
 export type * from './payment-source-manual.js';
