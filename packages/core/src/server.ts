@@ -2,7 +2,7 @@ import { Express } from 'express';
 
 import * as db from '#database';
 import { log as mainLogger } from '#logging';
-import { networkCommunicatorService } from '#services/NetworkCommunicatorService';
+import * as mq from '#message-queue';
 import OptionsService from '#services/OptionsService';
 
 const log = mainLogger.child({ app: 'server' });
@@ -11,6 +11,7 @@ const PORT = 3000;
 export async function initApp() {
   log.info('Initializing app...');
   await db.connect();
+  await mq.connect();
   await OptionsService.reload();
 }
 
@@ -22,8 +23,6 @@ export function startServer(app: Express) {
   const server = app.listen(PORT, () => {
     log.info(`Server is ready and listening on port ${PORT}`);
   });
-
-  networkCommunicatorService.startServer();
 
   process.on('SIGTERM', () => {
     log.debug('Waiting for server to shutdown');
@@ -45,4 +44,5 @@ export async function runApp(fn: () => Promise<void>) {
     log.error('Uncaught error', err);
   }
   await db.close();
+  await mq.close();
 }
