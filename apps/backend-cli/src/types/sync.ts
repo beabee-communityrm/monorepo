@@ -12,3 +12,7 @@ export interface SyncSegmentsArgs {
 export interface SyncStripeArgs {
   dryRun: boolean;
 }
+
+export interface SyncNewsletterStatusArgs {
+  dryRun: boolean;
+}
