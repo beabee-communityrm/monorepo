@@ -409,17 +409,18 @@ export class ContactController {
     const joinFlow = await PaymentFlowService.getJoinFlowByPaymentId(
       data.paymentFlowId
     );
-    if (!joinFlow) {
+    if (!joinFlow || joinFlow.joinForm.period === 'one-time') {
       throw new NotFoundError();
     }
 
-    if (
-      !(await PaymentService.canChangeContribution(
-        target,
-        false,
-        joinFlow.joinForm
-      ))
-    ) {
+    const canChange = await PaymentService.canChangeContribution(
+      target,
+      false,
+      // Pass on period type narrowing
+      { ...joinFlow.joinForm, period: joinFlow.joinForm.period }
+    );
+
+    if (!canChange) {
       throw new CantUpdateContribution();
     }
 

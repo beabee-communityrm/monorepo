@@ -13,7 +13,7 @@ import { Contact } from '#models/index';
 
 export function getActualAmount(
   monthlyAmount: number,
-  period: ContributionPeriod
+  period: ContributionPeriod | 'one-time'
 ): number {
   // TODO: fix this properly
   return Math.round(

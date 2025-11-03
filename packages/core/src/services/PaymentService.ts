@@ -1,4 +1,5 @@
 import {
+  ContributionForm,
   MembershipStatus,
   PaymentForm,
   PaymentMethod,
@@ -90,10 +91,10 @@ class PaymentService {
   async canChangeContribution(
     contact: Contact,
     useExistingPaymentSource: boolean,
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<boolean> {
     const ret = await this.provider(contact, (p) =>
-      p.canChangeContribution(useExistingPaymentSource, paymentForm)
+      p.canChangeContribution(useExistingPaymentSource, form)
     );
     log.info(
       `Contact ${contact.id} ${ret ? 'can' : 'cannot'} change contribution`
@@ -155,12 +156,10 @@ class PaymentService {
 
   async updateContribution(
     contact: Contact,
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<UpdateContributionResult> {
     log.info('Update contribution for contact ' + contact.id);
-    const ret = await this.provider(contact, (p) =>
-      p.updateContribution(paymentForm)
-    );
+    const ret = await this.provider(contact, (p) => p.updateContribution(form));
     await getRepository(ContactContribution).update(
       { contactId: contact.id },
       { cancelledAt: null }

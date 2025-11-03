@@ -21,7 +21,7 @@ export class JoinForm implements PaymentForm, ReferralGiftForm {
   monthlyAmount!: number;
 
   @Column()
-  period!: ContributionPeriod;
+  period!: ContributionPeriod | 'one-time';
 
   @Column()
   payFee!: boolean;

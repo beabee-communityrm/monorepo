@@ -1,6 +1,6 @@
 import {
+  ContributionForm,
   ContributionType,
-  PaymentForm,
   PaymentSource,
 } from '@beabee/beabee-common';
 
@@ -129,7 +129,7 @@ export class StripeProvider extends PaymentProvider {
   }
 
   async updateContribution(
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<UpdateContributionResult> {
     if (!this.data.customerId || !this.data.mandateId) {
       throw new NoPaymentMethod();
@@ -145,7 +145,7 @@ export class StripeProvider extends PaymentProvider {
       const newSubscription = await createSubscription(
         this.data.customerId,
         {
-          ...paymentForm,
+          ...form,
           monthlyAmount: this.contact.contributionMonthlyAmount || 0,
         },
         this.method,
@@ -156,15 +156,15 @@ export class StripeProvider extends PaymentProvider {
     }
 
     const { subscription, startNow } =
-      await this.updateOrCreateContribution(paymentForm);
+      await this.updateOrCreateContribution(form);
 
     this.data.subscriptionId = subscription.id;
-    this.data.payFee = paymentForm.payFee;
+    this.data.payFee = form.payFee;
     this.data.nextAmount = startNow
       ? null
       : {
-          chargeable: getChargeableAmount(paymentForm, this.method),
-          monthly: paymentForm.monthlyAmount,
+          chargeable: getChargeableAmount(form, this.method),
+          monthly: form.monthlyAmount,
         };
 
     await this.updateData();
@@ -179,13 +179,13 @@ export class StripeProvider extends PaymentProvider {
   }
 
   private async updateOrCreateContribution(
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
     if (this.data.subscriptionId && this.contact.membership?.isActive) {
       log.info('Update subscription ' + this.data.subscriptionId);
       return await updateSubscription(
         this.data.subscriptionId,
-        paymentForm,
+        form,
         this.method
       );
     } else {
@@ -195,7 +195,7 @@ export class StripeProvider extends PaymentProvider {
       log.info('Create subscription');
       const subscription = await createSubscription(
         this.data.customerId!, // customerId is asserted in updateContribution
-        paymentForm,
+        form,
         this.method,
         calcRenewalDate(this.contact)
       );

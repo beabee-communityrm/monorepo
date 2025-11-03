@@ -1,4 +1,4 @@
-import { PaymentForm } from '@beabee/beabee-common';
+import { ContributionForm } from '@beabee/beabee-common';
 
 import { Contact } from '#models/index';
 import {
@@ -55,10 +55,10 @@ export class ManualProvider extends PaymentProvider {
 
   /**
    * Updates contribution details
-   * @param paymentForm - New payment form data
+   * @param form - New contribution form data
    */
   async updateContribution(
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<UpdateContributionResult> {
     throw new Error('Method not implemented.');
   }
