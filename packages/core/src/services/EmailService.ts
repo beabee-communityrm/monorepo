@@ -191,7 +191,12 @@ class EmailService {
       }
       // Fallback to cancelled contribution email if no no-survey variant
     } else if (template === 'cancelled-contribution-no-survey') {
-      this.sendTemplate('cancelled-contribution', recipients, opts, required);
+      await this.sendTemplate(
+        'cancelled-contribution',
+        recipients,
+        opts,
+        required
+      );
     } else {
       const defaultEmail = this.getDefaultEmail(template);
       if (defaultEmail) {
@@ -199,7 +204,7 @@ class EmailService {
         const email = opts?.customSubject
           ? { ...defaultEmail, subject: opts.customSubject }
           : defaultEmail;
-        this.sendEmail(email, recipients, opts);
+        await this.sendEmail(email, recipients, opts);
       } else if (required) {
         log.error(
           `Tried to send ${template} that has no provider template or default`
