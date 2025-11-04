@@ -1,3 +1,10 @@
+<route lang="yaml">
+name: adminMembershipBuilderEmail
+meta:
+  pageTitle: membershipBuilder.title
+  role: admin
+</route>
+
 <template>
   <App2ColGrid class="mb-8">
     <template #col1>

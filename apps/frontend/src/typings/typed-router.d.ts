@@ -38,10 +38,10 @@ declare module 'vue-router/auto-routes' {
     'adminCalloutViewResponsesTable': RouteRecordInfo<'adminCalloutViewResponsesTable', '/admin/crowdnewsroom/view/:id/responses', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminCalloutViewResponsesItem': RouteRecordInfo<'adminCalloutViewResponsesItem', '/admin/crowdnewsroom/view/:id/responses/:rid', { id: ParamValue<true>, rid: ParamValue<true> }, { id: ParamValue<false>, rid: ParamValue<false> }>,
     'adminCalloutViewResponsesTags': RouteRecordInfo<'adminCalloutViewResponsesTags', '/admin/crowdnewsroom/view/:id/responses/tags', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'adminMembershipBuilder': RouteRecordInfo<'adminMembershipBuilder', '/admin/membership-builder', Record<never, never>, Record<never, never>, '/admin/membership-builder/email' | 'adminMembershipBuilderAccountConfirmation' | 'adminMembershipBuilderIntroMessages' | 'adminMembershipBuilderJoinForm'>,
+    'adminMembershipBuilder': RouteRecordInfo<'adminMembershipBuilder', '/admin/membership-builder', Record<never, never>, Record<never, never>, 'adminMembershipBuilderAccountConfirmation' | 'adminMembershipBuilderEmail' | 'adminMembershipBuilderIntroMessages' | 'adminMembershipBuilderJoinForm'>,
     'adminMembershipBuilderJoinForm': RouteRecordInfo<'adminMembershipBuilderJoinForm', '/admin/membership-builder', Record<never, never>, Record<never, never>>,
     'adminMembershipBuilderAccountConfirmation': RouteRecordInfo<'adminMembershipBuilderAccountConfirmation', '/admin/membership-builder/confirmation', Record<never, never>, Record<never, never>>,
-    '/admin/membership-builder/email': RouteRecordInfo<'/admin/membership-builder/email', '/admin/membership-builder/email', Record<never, never>, Record<never, never>>,
+    'adminMembershipBuilderEmail': RouteRecordInfo<'adminMembershipBuilderEmail', '/admin/membership-builder/email', Record<never, never>, Record<never, never>>,
     'adminMembershipBuilderIntroMessages': RouteRecordInfo<'adminMembershipBuilderIntroMessages', '/admin/membership-builder/intro', Record<never, never>, Record<never, never>>,
     'adminNotices': RouteRecordInfo<'adminNotices', '/admin/notices', Record<never, never>, Record<never, never>>,
     'adminNoticesAdd': RouteRecordInfo<'adminNoticesAdd', '/admin/notices/add', Record<never, never>, Record<never, never>>,
@@ -174,7 +174,7 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/admin/membership-builder.vue': {
-      routes: 'adminMembershipBuilder' | 'adminMembershipBuilderJoinForm' | 'adminMembershipBuilderAccountConfirmation' | '/admin/membership-builder/email' | 'adminMembershipBuilderIntroMessages'
+      routes: 'adminMembershipBuilder' | 'adminMembershipBuilderJoinForm' | 'adminMembershipBuilderAccountConfirmation' | 'adminMembershipBuilderEmail' | 'adminMembershipBuilderIntroMessages'
       views: 'default'
     }
     'src/pages/admin/membership-builder/index.vue': {
@@ -186,7 +186,7 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/admin/membership-builder/email.vue': {
-      routes: '/admin/membership-builder/email'
+      routes: 'adminMembershipBuilderEmail'
       views: never
     }
     'src/pages/admin/membership-builder/intro.vue': {
