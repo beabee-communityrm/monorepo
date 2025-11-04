@@ -10,11 +10,12 @@
     :success-text="t('form.saved')"
     @submit="handleUpdate"
   >
-    <!-- Email editors with automatic API to UI format transformation -->
+    <!-- Email editors with direct v-model binding -->
     <EmailEditor
       v-if="welcomeEmail"
+      v-model:subject="welcomeEmail.subject"
+      v-model:content="welcomeEmail.body"
       :heading="stepT('welcomeEmail')"
-      :template="welcomeEmailData"
       :footer="emailFooter"
       :contact="currentUser"
       :subject-label="t('emailEditor.subject.label')"
@@ -23,8 +24,9 @@
 
     <EmailEditor
       v-if="cancellationEmail"
+      v-model:subject="cancellationEmail.subject"
+      v-model:content="cancellationEmail.body"
       :heading="stepT('cancellationEmail')"
-      :template="cancellationEmailData"
       :footer="emailFooter"
       :contact="currentUser"
       :subject-label="t('emailEditor.subject.label')"
@@ -40,7 +42,7 @@ import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.
 // Import current user store
 import { currentUser } from '@store/currentUser';
 import { client, isApiError } from '@utils/api';
-import { onBeforeMount, reactive, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -49,46 +51,6 @@ const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);
 const welcomeEmail = ref<GetEmailData | false>();
 const cancellationEmail = ref<GetEmailData | false>();
 const emailFooter = ref('');
-
-// Reactive objects that transform GetEmailData (body) to EmailEditor format (content)
-// Using getter/setter for clean bidirectional sync without manual watch functions
-const welcomeEmailData = reactive({
-  get subject() {
-    return welcomeEmail.value ? welcomeEmail.value.subject : '';
-  },
-  set subject(value: string) {
-    if (welcomeEmail.value) {
-      welcomeEmail.value.subject = value;
-    }
-  },
-  get content() {
-    return welcomeEmail.value ? welcomeEmail.value.body : '';
-  },
-  set content(value: string) {
-    if (welcomeEmail.value) {
-      welcomeEmail.value.body = value;
-    }
-  },
-});
-
-const cancellationEmailData = reactive({
-  get subject() {
-    return cancellationEmail.value ? cancellationEmail.value.subject : '';
-  },
-  set subject(value: string) {
-    if (cancellationEmail.value) {
-      cancellationEmail.value.subject = value;
-    }
-  },
-  get content() {
-    return cancellationEmail.value ? cancellationEmail.value.body : '';
-  },
-  set content(value: string) {
-    if (cancellationEmail.value) {
-      cancellationEmail.value.body = value;
-    }
-  },
-});
 
 async function loadEmail(id: string): Promise<GetEmailData | false> {
   try {

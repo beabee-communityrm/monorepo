@@ -1,14 +1,4 @@
 /**
- * EditableEmailTemplate interface defines the structure of an editable email template
- * - subject: The email subject line
- * - content: The editable content (could be full body or just a merge field)
- */
-export interface EditableEmailTemplate {
-  subject: string;
-  content: string;
-}
-
-/**
  * EmailServerRenderConfig interface defines the configuration for server-side email preview
  */
 export interface EmailServerRenderConfig {

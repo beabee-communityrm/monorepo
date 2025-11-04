@@ -1,61 +1,50 @@
 <template>
   <div>
     <AppSubHeading v-if="heading">{{ heading }}</AppSubHeading>
-    <template v-if="template">
-      <div class="mb-6 flex gap-6">
-        <!-- Editor panel -->
-        <div class="min-w-0 max-w-xl flex-1">
-          <div class="mb-4">
-            <AppInput
-              v-model="template.subject"
-              :label="subjectLabel || t('emailEditor.subject.label')"
-              required
-            />
-          </div>
-          <AppRichTextEditor
-            v-model="template.content"
-            :label="contentLabel || t('emailEditor.body.label')"
+    <div class="mb-6 flex gap-6">
+      <!-- Editor panel -->
+      <div class="min-w-0 max-w-xl flex-1">
+        <div class="mb-4">
+          <AppInput
+            v-model="subject"
+            :label="subjectLabel || t('emailEditor.subject.label')"
             required
           />
         </div>
+        <AppRichTextEditor
+          v-model="content"
+          :label="contentLabel || t('emailEditor.body.label')"
+          required
+        />
+      </div>
 
-        <!-- Preview panel -->
-        <div class="w-80 flex-none self-center lg:w-96">
-          <div class="content-message bg-white p-4 shadow">
-            <!-- Server preview loading state -->
+      <!-- Preview panel -->
+      <div class="w-80 flex-none self-center lg:w-96">
+        <div class="content-message bg-white p-4 shadow">
+          <!-- Server preview loading state -->
+          <div
+            v-if="isServerPreview && isLoadingPreview"
+            class="text-gray-500 flex items-center justify-center p-8"
+          >
             <div
-              v-if="isServerPreview && isLoadingPreview"
-              class="text-gray-500 flex items-center justify-center p-8"
-            >
-              <div
-                class="border-gray-900 mr-2 h-6 w-6 animate-spin rounded-full border-b-2"
-              ></div>
-              {{ t('common.loading') }}
-            </div>
-
-            <!-- Server preview error state -->
-            <div
-              v-else-if="isServerPreview && !serverPreviewResult"
-              class="text-gray-500 flex items-center justify-center p-8"
-            >
-              {{ t('emailEditor.preview.unavailable') }}
-            </div>
-
-            <!-- Preview content -->
-            <div v-else v-html="previewContent" />
+              class="border-gray-900 mr-2 h-6 w-6 animate-spin rounded-full border-b-2"
+            ></div>
+            {{ t('common.loading') }}
           </div>
+
+          <!-- Server preview error state -->
+          <div
+            v-else-if="isServerPreview && !serverPreviewResult"
+            class="text-gray-500 flex items-center justify-center p-8"
+          >
+            {{ t('emailEditor.preview.unavailable') }}
+          </div>
+
+          <!-- Preview content -->
+          <div v-else v-html="previewContent" />
         </div>
       </div>
-    </template>
-
-    <!-- Warning for managed emails -->
-    <AppNotification
-      v-else
-      variant="warning"
-      :title="t('emailEditor.managed.title')"
-    >
-      <p>{{ t('emailEditor.managed.description') }}</p>
-    </AppNotification>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -83,7 +72,8 @@
  * @example Server-side rendering
  * ```vue
  * <EmailEditor
- *   :template="{ subject: 'Welcome', content: 'Hello *|FNAME|*' }"
+ *   v-model:subject="emailSubject"
+ *   v-model:content="emailContent"
  *   :serverRender="{ type: 'contact', templateId: 'welcome' }"
  *   :mergeFields="{ CUSTOM_FIELD: 'Custom Value' }"
  *   :contact="currentUser"
@@ -93,7 +83,8 @@
  * @example Client-side merge field expansion
  * ```vue
  * <EmailEditor
- *   :template="{ subject: 'Newsletter', content: 'Hello *|FNAME|*' }"
+ *   v-model:subject="emailSubject"
+ *   v-model:content="emailContent"
  *   :mergeFields="{ CONTENT: 'Newsletter content' }"
  *   :contact="currentUser"
  * />
@@ -102,7 +93,8 @@
  * @example Direct content editing
  * ```vue
  * <EmailEditor
- *   :template="{ subject: 'Simple Email', content: '<p>Static content</p>' }"
+ *   v-model:subject="emailSubject"
+ *   v-model:content="emailContent"
  * />
  * ```
  */
@@ -111,33 +103,23 @@ import {
   replaceMergeFields,
 } from '@beabee/beabee-common';
 import type { GetContactData } from '@beabee/beabee-common';
-import {
-  AppInput,
-  AppNotification,
-  AppRichTextEditor,
-  AppSubHeading,
-} from '@beabee/vue';
+import { AppInput, AppRichTextEditor, AppSubHeading } from '@beabee/vue';
 
 import type {
-  EditableEmailTemplate,
   EmailPreviewResult,
   EmailServerRenderConfig,
 } from '@type/email-editor';
 import { client } from '@utils/api';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// Two-way binding models for subject and content
+const subject = defineModel<string>('subject', { default: '' });
+const content = defineModel<string>('content', { default: '' });
 
 // Props definition with clearer naming and organization
 const props = withDefaults(
   defineProps<{
-    /**
-     * Email template data to edit
-     * - content: The editable content (body or merge field value)
-     * - subject: The email subject line
-     * Set to false when email is managed externally and can't be edited
-     */
-    template: EditableEmailTemplate | false;
-
     /**
      * Optional heading text for the editor
      */
@@ -191,11 +173,6 @@ const props = withDefaults(
 
 const { t } = useI18n();
 
-// Use reactive reference to the template for two-way binding
-const template = reactive<EditableEmailTemplate>(
-  props.template || { subject: '', content: '' }
-);
-
 // Computed flag to determine if using server-side preview
 const isServerPreview = computed(() => !!props.serverRender);
 
@@ -219,8 +196,8 @@ watch(
 // Watch for content changes to update server preview
 watch(
   [
-    () => template.subject,
-    () => template.content,
+    () => subject.value,
+    () => content.value,
     () => props.mergeFields,
     () => props.contact,
   ],
@@ -236,7 +213,7 @@ watch(
  * Fetches preview from server using the API
  */
 async function fetchServerPreview() {
-  if (!props.serverRender || !template) return;
+  if (!props.serverRender) return;
 
   const allMergeFields = generateAllMergeFields();
   isLoadingPreview.value = true;
@@ -247,10 +224,10 @@ async function fetchServerPreview() {
       props.serverRender.templateId || props.serverRender.type,
       {
         mergeFields: {
-          MESSAGE: template.content,
+          MESSAGE: content.value,
           ...allMergeFields,
         },
-        customSubject: template.subject,
+        customSubject: subject.value,
       }
     );
 
@@ -304,8 +281,6 @@ function generateAllMergeFields(): Record<string, string> {
  * 3. Direct content (lowest priority)
  */
 const previewContent = computed(() => {
-  if (!props.template) return '';
-
   // Priority 1: Server-rendered preview
   if (isServerPreview.value && serverPreviewResult.value) {
     return serverPreviewResult.value.body + (props.footer || '');
@@ -315,14 +290,11 @@ const previewContent = computed(() => {
   const allMergeFields = generateAllMergeFields();
   if (Object.keys(allMergeFields).length > 0) {
     const expandedFields = expandNestedMergeFields(allMergeFields);
-    const expandedContent = replaceMergeFields(
-      template.content,
-      expandedFields
-    );
+    const expandedContent = replaceMergeFields(content.value, expandedFields);
     return expandedContent + (props.footer || '');
   }
 
   // Priority 3: Direct content
-  return template.content + (props.footer || '');
+  return content.value + (props.footer || '');
 });
 </script>
