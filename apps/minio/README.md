@@ -19,8 +19,6 @@ The service uses the following environment variables:
 | `BEABEE_MINIO_BUCKET`        | MinIO bucket name for file uploads   | `uploads`           |
 | `BEABEE_MINIO_REGION`        | MinIO region (S3 compatibility)      | `us-east-1`         |
 | `BEABEE_MINIO_ENDPOINT`      | MinIO server endpoint URL            | `http://minio:9000` |
-| `BEABEE_MINIO_PORT_ADMIN`    | MinIO Admin port                     | `9000`              |
-| `BEABEE_MINIO_PORT_CONSOLE`  | MinIO Console port (Admin UI)        | `9001`              |
 
 ## Implementation
 
