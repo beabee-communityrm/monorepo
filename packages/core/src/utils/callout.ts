@@ -1,13 +1,48 @@
 import {
   type CalloutComponentInputSchema,
   CalloutComponentType,
+  type CalloutResponseAnswer,
   type CalloutResponseAnswersSlide,
   type SetCalloutFormSchema,
+  escapeHtml,
   isAbsoluteUrl,
   isFileUploadAnswer,
   isFormioFileAnswer,
   stringifyAnswer,
 } from '@beabee/beabee-common';
+
+/**
+ * Check if answer is a file upload and URL is valid
+ */
+function isValidFileUpload(
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined,
+  isFileComponent: boolean
+): boolean {
+  return (
+    isFileComponent &&
+    !Array.isArray(answer) &&
+    (isFileUploadAnswer(answer) || isFormioFileAnswer(answer)) &&
+    isAbsoluteUrl(answer.url)
+  );
+}
+
+/**
+ * Check if answer is an array of file uploads with valid URLs
+ */
+function isValidFileUploadArray(
+  answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined,
+  isFileComponent: boolean
+): boolean {
+  return (
+    isFileComponent &&
+    Array.isArray(answer) &&
+    answer.every(
+      (item) =>
+        (isFileUploadAnswer(item) || isFormioFileAnswer(item)) &&
+        isAbsoluteUrl(item.url)
+    )
+  );
+}
 
 /**
  * Formats callout response answers as simple HTML for email templates
@@ -37,13 +72,14 @@ export function formatCalloutResponseAnswersToHtml(
       const answer = slideAnswers[component.key];
       if (!answer) continue; // Skip empty answers
 
-      // Get the component label (use translation if available)
-      const label =
+      // Get the component label (use translation if available) and escape it
+      const rawLabel =
         componentText?.[component.label || ''] ||
         component.label ||
         component.key;
+      const label = escapeHtml(rawLabel);
 
-      // Check if this is a signature component with base64 image data
+      // Check component type and answer format
       const isSignatureComponent =
         component.type === CalloutComponentType.INPUT_SIGNATURE;
       const isBase64Image =
@@ -51,59 +87,42 @@ export function formatCalloutResponseAnswersToHtml(
         typeof answer === 'string' &&
         answer.startsWith('data:image/');
 
-      // Check if this is a URL component
       const isUrlComponent = component.type === CalloutComponentType.INPUT_URL;
       const isValidUrl =
         !Array.isArray(answer) &&
         typeof answer === 'string' &&
         isAbsoluteUrl(answer);
 
-      // Check if this is a file upload component
       const isFileComponent =
         component.type === CalloutComponentType.INPUT_FILE;
-
-      // Check if answer is a file upload (single or array)
-      const isFileUpload = !Array.isArray(answer) && isFileUploadAnswer(answer);
-      const isFormioFileUpload =
-        !Array.isArray(answer) && isFormioFileAnswer(answer);
-      const isFileUploadArray =
-        Array.isArray(answer) &&
-        answer.every(
-          (item) => isFileUploadAnswer(item) || isFormioFileAnswer(item)
-        );
-
-      const isValidFileUrl = isFileUpload && isAbsoluteUrl(answer.url);
-      const isValidFormioFileUrl =
-        isFormioFileUpload && isAbsoluteUrl(answer.url);
-      const isValidFileArrayUrls =
-        isFileUploadArray && answer.every((item) => isAbsoluteUrl(item.url));
 
       let formattedAnswer: string;
 
       if (isSignatureComponent && isBase64Image) {
-        // Render signature as an image element
+        // Render signature as an image element (data URLs are safe)
         formattedAnswer = `<img src="${answer}" alt="${label}" style="max-width: 300px; height: auto; border: 1px solid #ccc;" />`;
       } else if (isUrlComponent && isValidUrl) {
-        // Render URL as an external link
-        formattedAnswer = `<a href="${answer}" target="_blank" rel="noopener noreferrer">${answer}</a>`;
-      } else if (isFileComponent && isValidFileUrl) {
+        // Render URL as an external link (escape the URL for display)
+        const escapedUrl = escapeHtml(answer);
+        formattedAnswer = `<a href="${escapedUrl}" target="_blank" rel="noopener noreferrer">${escapedUrl}</a>`;
+      } else if (isValidFileUpload(answer, isFileComponent)) {
         // Render single file upload as an external link
-        formattedAnswer = `<a href="${answer.url}" target="_blank" rel="noopener noreferrer">${answer.url}</a>`;
-      } else if (isFileComponent && isValidFormioFileUrl) {
-        // Render single formio file upload as an external link
-        formattedAnswer = `<a href="${answer.url}" target="_blank" rel="noopener noreferrer">${answer.url}</a>`;
-      } else if (isFileComponent && isValidFileArrayUrls) {
+        const fileAnswer = answer as { url: string };
+        const escapedUrl = escapeHtml(fileAnswer.url);
+        formattedAnswer = `<a href="${escapedUrl}" target="_blank" rel="noopener noreferrer">${escapedUrl}</a>`;
+      } else if (isValidFileUploadArray(answer, isFileComponent)) {
         // Render array of file uploads as multiple external links
-        const links = answer
-          .map(
-            (item) =>
-              `<a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.url}</a>`
-          )
+        const fileAnswers = answer as Array<{ url: string }>;
+        const links = fileAnswers
+          .map((item) => {
+            const escapedUrl = escapeHtml(item.url);
+            return `<a href="${escapedUrl}" target="_blank" rel="noopener noreferrer">${escapedUrl}</a>`;
+          })
           .join('<br />');
         formattedAnswer = links;
       } else {
-        // Format the answer using existing utility for other components
-        formattedAnswer = stringifyAnswer(component, answer);
+        // Format the answer using existing utility and escape result
+        formattedAnswer = escapeHtml(stringifyAnswer(component, answer));
       }
 
       // Skip if answer is empty after formatting
@@ -138,14 +157,14 @@ export function formatCalloutResponseAnswersPreview(
       // Skip non-input components and admin-only fields
       if (!component.input || component.adminOnly) continue;
 
-      // Get the component label (use translation if available)
-      const label =
+      // Get the component label (use translation if available) and escape it
+      const rawLabel =
         componentText?.[component.label || ''] ||
         component.label ||
         component.key;
+      const label = escapeHtml(rawLabel);
 
-      // If real placeholders are desired, we could implement a method
-      // `generateEmptyAnswerPlaceholder(component)` here
+      // Empty placeholder for preview
       const placeholder = '';
 
       // Create simple HTML paragraph

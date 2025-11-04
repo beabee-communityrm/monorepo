@@ -7,5 +7,6 @@ export * from './file.js';
 export * from './payments.js';
 export * from './rules.js';
 export * from './slug.js';
+export * from './string.js';
 export * from './url.js';
 export * from './validations.js';
