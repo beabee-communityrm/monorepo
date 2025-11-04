@@ -54,22 +54,18 @@ const emailFooter = ref('');
 // Using getter/setter for clean bidirectional sync without manual watch functions
 const welcomeEmailData = reactive({
   get subject() {
-    return welcomeEmail.value && typeof welcomeEmail.value === 'object'
-      ? welcomeEmail.value.subject
-      : '';
+    return welcomeEmail.value ? welcomeEmail.value.subject : '';
   },
   set subject(value: string) {
-    if (welcomeEmail.value && typeof welcomeEmail.value === 'object') {
+    if (welcomeEmail.value) {
       welcomeEmail.value.subject = value;
     }
   },
   get content() {
-    return welcomeEmail.value && typeof welcomeEmail.value === 'object'
-      ? welcomeEmail.value.body
-      : '';
+    return welcomeEmail.value ? welcomeEmail.value.body : '';
   },
   set content(value: string) {
-    if (welcomeEmail.value && typeof welcomeEmail.value === 'object') {
+    if (welcomeEmail.value) {
       welcomeEmail.value.body = value;
     }
   },
@@ -77,30 +73,18 @@ const welcomeEmailData = reactive({
 
 const cancellationEmailData = reactive({
   get subject() {
-    return cancellationEmail.value &&
-      typeof cancellationEmail.value === 'object'
-      ? cancellationEmail.value.subject
-      : '';
+    return cancellationEmail.value ? cancellationEmail.value.subject : '';
   },
   set subject(value: string) {
-    if (
-      cancellationEmail.value &&
-      typeof cancellationEmail.value === 'object'
-    ) {
+    if (cancellationEmail.value) {
       cancellationEmail.value.subject = value;
     }
   },
   get content() {
-    return cancellationEmail.value &&
-      typeof cancellationEmail.value === 'object'
-      ? cancellationEmail.value.body
-      : '';
+    return cancellationEmail.value ? cancellationEmail.value.body : '';
   },
   set content(value: string) {
-    if (
-      cancellationEmail.value &&
-      typeof cancellationEmail.value === 'object'
-    ) {
+    if (cancellationEmail.value) {
       cancellationEmail.value.body = value;
     }
   },
