@@ -110,7 +110,7 @@ import type {
   EmailServerRenderConfig,
 } from '@type/email-editor';
 import { client } from '@utils/api';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Two-way binding models for subject and content
@@ -194,20 +194,15 @@ watch(
 );
 
 // Watch for content changes to update server preview
-watch(
-  [
-    () => subject.value,
-    () => content.value,
-    () => props.mergeFields,
-    () => props.contact,
-  ],
-  () => {
-    if (props.serverRender) {
-      fetchServerPreview();
-    }
-  },
-  { deep: true }
-);
+// watchEffect automatically tracks reactive dependencies when they're accessed
+watchEffect(() => {
+  // Only fetch if server rendering is enabled
+  if (props.serverRender) {
+    // Access reactive values (subject, content, mergeFields, contact) are tracked automatically
+    // when used inside fetchServerPreview(), which calls generateAllMergeFields()
+    void fetchServerPreview();
+  }
+});
 
 /**
  * Fetches preview from server using the API
