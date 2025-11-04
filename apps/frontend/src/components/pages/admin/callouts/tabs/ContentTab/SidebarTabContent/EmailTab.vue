@@ -30,7 +30,8 @@
         <!-- Note: The editor needs overflow-visible for the merge fields dropdown -->
         <div class="relative overflow-visible">
           <EmailEditor
-            :template="emailData"
+            v-model:subject="emailData.subject"
+            v-model:content="emailData.content"
             :merge-fields="{
               CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
               CALLOUTLINK: generateCalloutLink(

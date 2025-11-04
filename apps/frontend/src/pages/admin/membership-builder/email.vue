@@ -1,3 +1,10 @@
+<route lang="yaml">
+name: adminMembershipBuilderEmail
+meta:
+  pageTitle: membershipBuilder.title
+  role: admin
+</route>
+
 <template>
   <App2ColGrid class="mb-8">
     <template #col1>
@@ -11,11 +18,12 @@
     :success-text="t('form.saved')"
     @submit="handleUpdate"
   >
-    <!-- Email editors with automatic API to UI format transformation -->
+    <!-- Email editors with direct v-model binding -->
     <EmailEditor
       v-if="welcomeEmail"
+      v-model:subject="welcomeEmail.subject"
+      v-model:content="welcomeEmail.body"
       :heading="stepT('welcomeEmail')"
-      :template="welcomeEmailData"
       :footer="emailFooter"
       :contact="currentUser"
       :merge-field-groups="welcomeMergeFieldGroups"
@@ -25,8 +33,9 @@
 
     <EmailEditor
       v-if="cancellationEmail"
+      v-model:subject="cancellationEmail.subject"
+      v-model:content="cancellationEmail.body"
       :heading="stepT('cancellationEmail')"
-      :template="cancellationEmailData"
       :footer="emailFooter"
       :contact="currentUser"
       :merge-field-groups="cancellationMergeFieldGroups"
@@ -43,7 +52,7 @@ import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.
 // Import current user store
 import { currentUser } from '@store/currentUser';
 import { client, isApiError } from '@utils/api';
-import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -117,62 +126,6 @@ const cancellationMergeFieldGroups = computed<MergeTagGroup[]>(() => {
       ],
     },
   ];
-});
-
-// Reactive objects that transform GetEmailData (body) to EmailEditor format (content)
-// Using getter/setter for clean bidirectional sync without manual watch functions
-const welcomeEmailData = reactive({
-  get subject() {
-    return welcomeEmail.value && typeof welcomeEmail.value === 'object'
-      ? welcomeEmail.value.subject
-      : '';
-  },
-  set subject(value: string) {
-    if (welcomeEmail.value && typeof welcomeEmail.value === 'object') {
-      welcomeEmail.value.subject = value;
-    }
-  },
-  get content() {
-    return welcomeEmail.value && typeof welcomeEmail.value === 'object'
-      ? welcomeEmail.value.body
-      : '';
-  },
-  set content(value: string) {
-    if (welcomeEmail.value && typeof welcomeEmail.value === 'object') {
-      welcomeEmail.value.body = value;
-    }
-  },
-});
-
-const cancellationEmailData = reactive({
-  get subject() {
-    return cancellationEmail.value &&
-      typeof cancellationEmail.value === 'object'
-      ? cancellationEmail.value.subject
-      : '';
-  },
-  set subject(value: string) {
-    if (
-      cancellationEmail.value &&
-      typeof cancellationEmail.value === 'object'
-    ) {
-      cancellationEmail.value.subject = value;
-    }
-  },
-  get content() {
-    return cancellationEmail.value &&
-      typeof cancellationEmail.value === 'object'
-      ? cancellationEmail.value.body
-      : '';
-  },
-  set content(value: string) {
-    if (
-      cancellationEmail.value &&
-      typeof cancellationEmail.value === 'object'
-    ) {
-      cancellationEmail.value.body = value;
-    }
-  },
 });
 
 async function loadEmail(id: string): Promise<GetEmailData | false> {
