@@ -99,6 +99,7 @@
  * ```
  */
 import {
+  debounce,
   expandNestedMergeFields,
   replaceMergeFields,
 } from '@beabee/beabee-common';
@@ -110,7 +111,7 @@ import type {
   EmailServerRenderConfig,
 } from '@type/email-editor';
 import { client } from '@utils/api';
-import { computed, ref, watch, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Two-way binding models for subject and content
@@ -180,30 +181,6 @@ const isServerPreview = computed(() => !!props.serverRender);
 const serverPreviewResult = ref<EmailPreviewResult | null>(null);
 const isLoadingPreview = ref(false);
 
-// Watch for server render config changes
-watch(
-  () => props.serverRender,
-  (newConfig) => {
-    if (newConfig) {
-      fetchServerPreview();
-    } else {
-      serverPreviewResult.value = null;
-    }
-  },
-  { immediate: true }
-);
-
-// Watch for content changes to update server preview
-// watchEffect automatically tracks reactive dependencies when they're accessed
-watchEffect(() => {
-  // Only fetch if server rendering is enabled
-  if (props.serverRender) {
-    // Access reactive values (subject, content, mergeFields, contact) are tracked automatically
-    // when used inside fetchServerPreview(), which calls generateAllMergeFields()
-    void fetchServerPreview();
-  }
-});
-
 /**
  * Fetches preview from server using the API
  */
@@ -237,6 +214,24 @@ async function fetchServerPreview() {
     isLoadingPreview.value = false;
   }
 }
+
+// Debounced version of fetchServerPreview to prevent excessive API calls
+// Wait 500ms after user stops typing before fetching preview
+const debouncedFetchServerPreview = debounce(fetchServerPreview, 500);
+
+// Watch for server render config and content changes
+// watchEffect automatically tracks reactive dependencies when they're accessed
+watchEffect(() => {
+  if (props.serverRender) {
+    // Access reactive values (subject, content, mergeFields, contact) are tracked automatically
+    // when used inside fetchServerPreview(), which calls generateAllMergeFields()
+    // The async fetchServerPreview() call is safely handled via debounce since it manages its own loading states
+    void debouncedFetchServerPreview();
+  } else {
+    // Cleanup when server rendering is disabled
+    serverPreviewResult.value = null;
+  }
+});
 
 /**
  * Generates contact-specific merge tags
