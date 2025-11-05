@@ -198,7 +198,7 @@ export const contactEmailTemplates = {
    * **Available Merge Fields:**
    * - *|REFCODE|* - Contact's referral code
    * - *|REFEREENAME|* - Name of the referred person
-   * - *|ISELIGIBLE|* - Whether the referral is eligible
+   * - *|ISELIGIBLE|* - Whether the referral is eligible ('true' or 'false')
    */
   'successful-referral': (
     contact: Contact,
@@ -206,7 +206,7 @@ export const contactEmailTemplates = {
   ) => ({
     REFCODE: contact.referralCode,
     REFEREENAME: params.refereeName,
-    ISELIGIBLE: params.isEligible,
+    ISELIGIBLE: String(params.isEligible),
   }),
   /**
    * Email for successful gift activation (to recipient)

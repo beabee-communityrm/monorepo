@@ -228,21 +228,13 @@ export function isFormioFileAnswer(
   answer: CalloutResponseAnswer | undefined
 ): answer is CalloutResponseAnswerFileUpload & FormioFile {
   return (
-    !!answer &&
-    typeof answer === 'object' &&
-    'url' in answer &&
-    'path' in answer &&
+    isFileUploadAnswer(answer) &&
     'storage' in answer &&
     'name' in answer &&
     'size' in answer &&
-    typeof answer.url === 'string' &&
-    typeof answer.path === 'string' &&
     typeof answer.name === 'string' &&
     typeof answer.size === 'number' &&
     typeof answer.storage === 'string'
-    // Not defined on old files
-    // "hash" in answer &&
-    // "originalName" in answer
   );
 }
 

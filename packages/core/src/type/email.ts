@@ -113,7 +113,7 @@ export type ContactEmailParams<T extends ContactEmailTemplateId> = Parameters<
 /**
  * Template merge field generation result
  */
-export type TemplateMergeFieldResult = Record<string, unknown>;
+export type TemplateMergeFieldResult = Record<string, string>;
 
 /**
  * Template function signature for different template types

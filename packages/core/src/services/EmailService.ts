@@ -254,26 +254,6 @@ class EmailService {
   }
 
   /**
-   * Convert template merge field result to EmailMergeFields with proper string conversion
-   */
-  private convertToEmailMergeFields(
-    result: TemplateMergeFieldResult
-  ): EmailMergeFields {
-    const mergeFields: EmailMergeFields = {};
-
-    for (const [key, value] of Object.entries(result)) {
-      // Handle undefined/null values gracefully
-      if (value == null) {
-        mergeFields[key] = '';
-      } else {
-        mergeFields[key] = typeof value === 'string' ? value : String(value);
-      }
-    }
-
-    return mergeFields;
-  }
-
-  /**
    * Generate merge fields for contact templates
    */
   private generateContactTemplateMergeFields<T extends ContactEmailTemplateId>(
@@ -290,11 +270,7 @@ class EmailService {
       const templateParams = extractTemplateParams(template, customMergeFields);
 
       try {
-        const templateResult = templateFn(
-          contact,
-          templateParams as ContactEmailParams<T>
-        );
-        return this.convertToEmailMergeFields(templateResult);
+        return templateFn(contact, templateParams as ContactEmailParams<T>);
       } catch (error) {
         log.error(`Error calling contact template function for ${template}:`, {
           template,
@@ -305,8 +281,7 @@ class EmailService {
       }
     } else {
       // Template doesn't expect parameters - use empty params
-      const templateResult = templateFn(contact, {} as ContactEmailParams<T>);
-      return this.convertToEmailMergeFields(templateResult);
+      return templateFn(contact, {} as ContactEmailParams<T>);
     }
   }
 
@@ -324,15 +299,11 @@ class EmailService {
     if (templateFn.length > 1) {
       // Template expects parameters - extract them using the mapping system
       const templateParams = extractTemplateParams(template, customMergeFields);
-      const templateResult = templateFn(
+      return templateFn(
         templateParams as Parameters<AdminEmailTemplates[T]>[0]
       );
-      return this.convertToEmailMergeFields(templateResult);
     } else {
-      const templateResult = templateFn(
-        {} as Parameters<AdminEmailTemplates[T]>[0]
-      );
-      return this.convertToEmailMergeFields(templateResult);
+      return templateFn({} as Parameters<AdminEmailTemplates[T]>[0]);
     }
   }
 
@@ -350,15 +321,11 @@ class EmailService {
     if (templateFn.length > 1) {
       // Template expects parameters - extract them using the mapping system
       const templateParams = extractTemplateParams(template, customMergeFields);
-      const templateResult = templateFn(
+      return templateFn(
         templateParams as Parameters<GeneralEmailTemplates[T]>[0]
       );
-      return this.convertToEmailMergeFields(templateResult);
     } else {
-      const templateResult = templateFn(
-        {} as Parameters<GeneralEmailTemplates[T]>[0]
-      );
-      return this.convertToEmailMergeFields(templateResult);
+      return templateFn({} as Parameters<GeneralEmailTemplates[T]>[0]);
     }
   }
 
