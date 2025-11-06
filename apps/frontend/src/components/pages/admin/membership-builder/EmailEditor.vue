@@ -182,12 +182,41 @@ const serverPreviewResult = ref<EmailPreviewResult | null>(null);
 const isLoadingPreview = ref(false);
 
 /**
+ * Generates contact-specific merge tags
+ */
+const contactMergeTags = computed<Record<string, string>>(() => {
+  const contact = props.contact;
+  if (!contact) return {};
+
+  return {
+    // Basic contact fields
+    EMAIL: contact.email,
+    FNAME: contact.firstname,
+    LNAME: contact.lastname,
+    NAME: `${contact.firstname} ${contact.lastname}`.trim(),
+
+    // Contact ID
+    ...(contact.id && { MEMBERSHIPID: contact.id }),
+  };
+});
+
+/**
+ * Combines all merge fields from different sources
+ */
+const allMergeFields = computed<Record<string, string>>(() => {
+  const customMergeFields = { ...props.mergeFields };
+  const contactMergeFields = contactMergeTags.value;
+
+  // Custom fields override contact fields if they conflict
+  return { ...contactMergeFields, ...customMergeFields };
+});
+
+/**
  * Fetches preview from server using the API
  */
 async function fetchServerPreview() {
   if (!props.serverRender) return;
 
-  const allMergeFields = generateAllMergeFields();
   isLoadingPreview.value = true;
 
   try {
@@ -197,7 +226,7 @@ async function fetchServerPreview() {
       {
         mergeFields: {
           MESSAGE: content.value,
-          ...allMergeFields,
+          ...allMergeFields.value,
         },
         customSubject: subject.value,
       }
@@ -224,7 +253,7 @@ const debouncedFetchServerPreview = debounce(fetchServerPreview, 500);
 watchEffect(() => {
   if (props.serverRender) {
     // Access reactive values (subject, content, mergeFields, contact) are tracked automatically
-    // when used inside fetchServerPreview(), which calls generateAllMergeFields()
+    // when used inside fetchServerPreview(), which uses allMergeFields computed
     // The async fetchServerPreview() call is safely handled via debounce since it manages its own loading states
     void debouncedFetchServerPreview();
   } else {
@@ -232,37 +261,6 @@ watchEffect(() => {
     serverPreviewResult.value = null;
   }
 });
-
-/**
- * Generates contact-specific merge tags
- */
-function generateContactMergeTags(
-  contact?: GetContactData | null
-): Record<string, string> {
-  if (!contact) return {};
-
-  return {
-    // Basic contact fields
-    EMAIL: contact.email,
-    FNAME: contact.firstname,
-    LNAME: contact.lastname,
-    NAME: `${contact.firstname} ${contact.lastname}`.trim(),
-
-    // Contact ID
-    ...(contact.id && { MEMBERSHIPID: contact.id }),
-  };
-}
-
-/**
- * Combines all merge fields from different sources
- */
-function generateAllMergeFields(): Record<string, string> {
-  const customMergeFields = { ...props.mergeFields };
-  const contactMergeFields = generateContactMergeTags(props.contact);
-
-  // Custom fields override contact fields if they conflict
-  return { ...contactMergeFields, ...customMergeFields };
-}
 
 /**
  * Computes the final preview content based on mode priority:
@@ -277,9 +275,8 @@ const previewContent = computed(() => {
   }
 
   // Priority 2: Client-side merge field expansion
-  const allMergeFields = generateAllMergeFields();
-  if (Object.keys(allMergeFields).length > 0) {
-    const expandedFields = expandNestedMergeFields(allMergeFields);
+  if (Object.keys(allMergeFields.value).length > 0) {
+    const expandedFields = expandNestedMergeFields(allMergeFields.value);
     const expandedContent = replaceMergeFields(content.value, expandedFields);
     return expandedContent + (props.footer || '');
   }
