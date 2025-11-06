@@ -1120,6 +1120,10 @@
     },
     "body": {
       "label": "Mensagem"
+    },
+    "preview": {
+      "label": "Pré-visualização",
+      "unavailable": "Pré-visualização indisponível"
     }
   },
   "footer": {

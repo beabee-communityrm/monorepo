@@ -1120,6 +1120,10 @@
     },
     "body": {
       "label": "Betreff"
+    },
+    "preview": {
+      "label": "Vorschau",
+      "unavailable": "Vorschau nicht verfügbar"
     }
   },
   "footer": {

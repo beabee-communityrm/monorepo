@@ -1120,6 +1120,10 @@
     },
     "body": {
       "label": "Messaggio"
+    },
+    "preview": {
+      "label": "Anteprima",
+      "unavailable": "Anteprima non disponibile"
     }
   },
   "footer": {

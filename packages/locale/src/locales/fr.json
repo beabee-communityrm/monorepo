@@ -1124,6 +1124,10 @@
     },
     "body": {
       "label": "Message"
+    },
+    "preview": {
+      "label": "Aperçu",
+      "unavailable": "Aperçu non disponible"
     }
   },
   "footer": {
