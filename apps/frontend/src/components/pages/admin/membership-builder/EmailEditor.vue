@@ -21,9 +21,9 @@
       <!-- Preview panel -->
       <div class="w-80 flex-none self-center lg:w-96">
         <div class="content-message bg-white p-4 shadow">
-          <!-- Server preview loading state -->
+          <!-- Loading state -->
           <div
-            v-if="isServerPreview && isLoadingPreview"
+            v-if="isLoadingPreview"
             class="text-gray-500 flex items-center justify-center p-8"
           >
             <div
@@ -32,16 +32,16 @@
             {{ t('common.loading') }}
           </div>
 
-          <!-- Server preview error state -->
+          <!-- Error state -->
           <div
-            v-else-if="isServerPreview && !serverPreviewResult"
+            v-else-if="!serverPreviewResult"
             class="text-gray-500 flex items-center justify-center p-8"
           >
             {{ t('emailEditor.preview.unavailable') }}
           </div>
 
-          <!-- Preview content -->
-          <div v-else v-html="previewContent" />
+          <!-- Preview content (server-rendered with footer and CSS) -->
+          <div v-else v-html="serverPreviewResult.body" />
         </div>
       </div>
     </div>
@@ -51,59 +51,37 @@
 /**
  * EmailEditor component for editing and previewing email templates
  *
- * This component supports three preview modes with priority order:
+ * This component provides server-side email preview that matches exactly
+ * what will be sent via email, including:
+ * - Merge field replacement (contact fields, template-specific fields, custom fields)
+ * - Email footer with organization info, logo, and links
+ * - Inline CSS styles for consistent email client rendering
  *
- * 1. Server-side rendering (highest priority):
- *    - Renders email preview through API with server-side merge field resolution
- *    - Requires the `serverRender` prop to configure API endpoints
- *    - All merge fields (mergeFields + contact) are sent to server
- *    - Perfect for complex email templates requiring server-side processing
+ * The preview is fetched from the server API and debounced to prevent
+ * excessive API calls during editing.
  *
- * 2. Client-side merge field expansion:
- *    - Supports merge tags like *|FNAME|*, *|EMAIL|* in content
- *    - Uses `mergeFields` prop for custom field values
- *    - Uses `contact` prop for contact-specific tags
- *    - Updates preview instantly without server calls
- *
- * 3. Direct content editing (lowest priority):
- *    - Displays content directly with no transformations
- *    - Used when no merge fields or server rendering is configured
- *
- * @example Server-side rendering
+ * @example Basic usage for contact email template
  * ```vue
  * <EmailEditor
  *   v-model:subject="emailSubject"
  *   v-model:content="emailContent"
  *   :serverRender="{ type: 'contact', templateId: 'welcome' }"
- *   :mergeFields="{ CUSTOM_FIELD: 'Custom Value' }"
  *   :contact="currentUser"
  * />
  * ```
  *
- * @example Client-side merge field expansion
+ * @example With custom merge fields
  * ```vue
  * <EmailEditor
  *   v-model:subject="emailSubject"
  *   v-model:content="emailContent"
- *   :mergeFields="{ CONTENT: 'Newsletter content' }"
+ *   :serverRender="{ type: 'contact', templateId: 'callout-response-answers' }"
+ *   :mergeFields="{ MESSAGE: customMessage, CALLOUTTITLE: calloutTitle }"
  *   :contact="currentUser"
- * />
- * ```
- *
- * @example Direct content editing
- * ```vue
- * <EmailEditor
- *   v-model:subject="emailSubject"
- *   v-model:content="emailContent"
  * />
  * ```
  */
-import {
-  debounce,
-  expandNestedMergeFields,
-  replaceMergeFields,
-} from '@beabee/beabee-common';
-import type { GetContactData } from '@beabee/beabee-common';
+import { debounce } from '@beabee/beabee-common';
 import { AppInput, AppRichTextEditor, AppSubHeading } from '@beabee/vue';
 
 import type {
@@ -111,14 +89,14 @@ import type {
   EmailServerRenderConfig,
 } from '@type/email-editor';
 import { client } from '@utils/api';
-import { computed, ref, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Two-way binding models for subject and content
 const subject = defineModel<string>('subject', { default: '' });
 const content = defineModel<string>('content', { default: '' });
 
-// Props definition with clearer naming and organization
+// Props definition
 const props = withDefaults(
   defineProps<{
     /**
@@ -127,27 +105,17 @@ const props = withDefaults(
     heading?: string;
 
     /**
-     * Optional HTML footer to append to the preview
+     * Server-side rendering configuration (required)
+     * Configures the email template type and ID for preview generation
      */
-    footer?: string;
+    serverRender: EmailServerRenderConfig;
 
     /**
-     * Server-side rendering configuration
-     * When provided, enables server-side preview with merge field resolution
-     */
-    serverRender?: EmailServerRenderConfig;
-
-    /**
-     * Merge fields for both client-side and server-side preview
+     * Custom merge fields to send to the server for preview
+     * These override template-specific fields
      * Format: { FIELD_NAME: 'value' }
      */
     mergeFields?: Record<string, string>;
-
-    /**
-     * Contact data for generating contact-specific merge tags
-     * Enables preview of contact merge tags like *|FNAME|*, *|LNAME|*, *|EMAIL|*
-     */
-    contact?: GetContactData | null;
 
     /**
      * Label for subject input field
@@ -163,10 +131,7 @@ const props = withDefaults(
   }>(),
   {
     heading: '',
-    footer: '',
     mergeFields: () => ({}),
-    contact: null,
-    serverRender: undefined,
     subjectLabel: '',
     contentLabel: '',
   }
@@ -174,49 +139,16 @@ const props = withDefaults(
 
 const { t } = useI18n();
 
-// Computed flag to determine if using server-side preview
-const isServerPreview = computed(() => !!props.serverRender);
-
 // Server preview state
 const serverPreviewResult = ref<EmailPreviewResult | null>(null);
 const isLoadingPreview = ref(false);
 
 /**
- * Generates contact-specific merge tags
- */
-const contactMergeTags = computed<Record<string, string>>(() => {
-  const contact = props.contact;
-  if (!contact) return {};
-
-  return {
-    // Basic contact fields
-    EMAIL: contact.email,
-    FNAME: contact.firstname,
-    LNAME: contact.lastname,
-    NAME: `${contact.firstname} ${contact.lastname}`.trim(),
-
-    // Contact ID
-    ...(contact.id && { MEMBERSHIPID: contact.id }),
-  };
-});
-
-/**
- * Combines all merge fields from different sources
- */
-const allMergeFields = computed<Record<string, string>>(() => {
-  const customMergeFields = { ...props.mergeFields };
-  const contactMergeFields = contactMergeTags.value;
-
-  // Custom fields override contact fields if they conflict
-  return { ...contactMergeFields, ...customMergeFields };
-});
-
-/**
  * Fetches preview from server using the API
+ * Sends subject, content, and merge fields to the server
+ * Server handles all merge field resolution and formatting
  */
 async function fetchServerPreview() {
-  if (!props.serverRender) return;
-
   isLoadingPreview.value = true;
 
   try {
@@ -226,7 +158,7 @@ async function fetchServerPreview() {
       {
         mergeFields: {
           MESSAGE: content.value,
-          ...allMergeFields.value,
+          ...props.mergeFields,
         },
         customSubject: subject.value,
       }
@@ -237,7 +169,7 @@ async function fetchServerPreview() {
       body: preview.body,
     };
   } catch {
-    // Failed to load preview, component will show fallback content
+    // Failed to load preview, component will show error state
     serverPreviewResult.value = null;
   } finally {
     isLoadingPreview.value = false;
@@ -248,40 +180,15 @@ async function fetchServerPreview() {
 // Wait 500ms after user stops typing before fetching preview
 const debouncedFetchServerPreview = debounce(fetchServerPreview, 500);
 
-// Watch for server render config and content changes
-// watchEffect automatically tracks reactive dependencies when they're accessed
+// Watch for content changes and fetch preview
+// watchEffect automatically tracks reactive dependencies (subject, content, mergeFields)
 watchEffect(() => {
-  if (props.serverRender) {
-    // Access reactive values (subject, content, mergeFields, contact) are tracked automatically
-    // when used inside fetchServerPreview(), which uses allMergeFields computed
-    // The async fetchServerPreview() call is safely handled via debounce since it manages its own loading states
-    void debouncedFetchServerPreview();
-  } else {
-    // Cleanup when server rendering is disabled
-    serverPreviewResult.value = null;
-  }
-});
+  // Trigger re-fetch when any reactive value changes
+  // Access these values to establish reactive dependencies
+  void subject.value;
+  void content.value;
+  void props.mergeFields;
 
-/**
- * Computes the final preview content based on mode priority:
- * 1. Server-rendered preview (highest priority)
- * 2. Client-side merge field expansion
- * 3. Direct content (lowest priority)
- */
-const previewContent = computed(() => {
-  // Priority 1: Server-rendered preview
-  if (isServerPreview.value && serverPreviewResult.value) {
-    return serverPreviewResult.value.body + (props.footer || '');
-  }
-
-  // Priority 2: Client-side merge field expansion
-  if (Object.keys(allMergeFields.value).length > 0) {
-    const expandedFields = expandNestedMergeFields(allMergeFields.value);
-    const expandedContent = replaceMergeFields(content.value, expandedFields);
-    return expandedContent + (props.footer || '');
-  }
-
-  // Priority 3: Direct content
-  return content.value + (props.footer || '');
+  void debouncedFetchServerPreview();
 });
 </script>

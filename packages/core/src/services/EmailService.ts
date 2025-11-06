@@ -18,6 +18,7 @@ import { log as mainLogger } from '#logging';
 import { Contact, Email } from '#models/index';
 import { MandrillProvider, SMTPProvider, SendGridProvider } from '#providers';
 import OptionsService from '#services/OptionsService';
+import { formatEmailBody } from '#templates/email';
 import {
   AdminEmailTemplateId,
   AdminEmailTemplates,
@@ -224,14 +225,19 @@ class EmailService {
   /**
    * Get a preview of an email template with merge fields replaced
    * This method supports all template types (general, admin, contact) and provides
-   * a flexible way to preview emails with custom merge fields and locale support
+   * a server-side preview that matches exactly what will be sent via email
+   *
+   * The preview includes:
+   * - Merge field replacement (contact fields, template-specific fields, custom fields)
+   * - Email footer with organization info, logo, and links
+   * - Inline CSS styles via juice for consistent email client rendering
    *
    * @param template The template ID
    * @param type The template type (general, admin, contact)
    * @param contact Contact for contact-specific fields (required, uses authenticated user)
    * @param customMergeFields Custom merge fields to override/extend default fields
    * @param opts Email options including customSubject and locale
-   * @returns Preview with subject and body with merge fields replaced
+   * @returns Preview with subject and body formatted exactly as it will be sent
    */
   async getTemplatePreview(
     template: EmailTemplateId,
@@ -285,13 +291,17 @@ class EmailService {
     // 5. Expand nested merge fields (handles MESSAGE with nested fields)
     const expandedFields = expandNestedMergeFields(allMergeFields);
 
-    // 6. Replace merge fields in subject and body
+    // 6. Replace merge fields in subject
     const subject = opts?.customSubject || (emailTemplate as Email).subject;
     const previewSubject = replaceMergeFields(subject, expandedFields);
-    const previewBody = replaceMergeFields(
+
+    // 7. Replace merge fields in body and apply email formatting
+    // This includes adding the footer and inline CSS styles, exactly as in actual emails
+    const bodyWithMergeFields = replaceMergeFields(
       (emailTemplate as Email).body,
       expandedFields
     );
+    const previewBody = formatEmailBody(bodyWithMergeFields);
 
     return {
       subject: previewSubject,

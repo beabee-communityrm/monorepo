@@ -41,7 +41,6 @@
             type: 'contact',
             templateId: 'callout-response-answers',
           }"
-          :footer="emailFooter"
           :subject-label="t('callout.builder.tabs.email.subject.label')"
           :content-label="t('callout.builder.tabs.email.body.label')"
         />
@@ -60,9 +59,8 @@ import { AppFormField, AppNotification, AppToggleField } from '@beabee/vue';
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
 import type { LocaleProp } from '@type';
-import { client } from '@utils/api';
 import { generateCalloutLink } from '@utils/callouts';
-import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
+import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { SidebarTabProps } from '../SidebarTabs.interface';
@@ -90,12 +88,9 @@ const { t } = useI18n();
 // Check if "Collect contact information" is enabled in the settings tab
 const collectInfoEnabled = computed(() => props.tabs.settings.data.collectInfo);
 
-// Email footer for preview
-const emailFooter = ref('');
-
 // Create reactive email data that syncs with props.data
 // Note: 'content' here represents the MESSAGE merge field value,
-// not the complete rendered email body
+// not the complete rendered email body (server handles that)
 const emailData = reactive({
   subject: props.data.emailSubject.default,
   content: props.data.emailMessage.default,
@@ -121,9 +116,4 @@ watch(
     emailData.content = message;
   }
 );
-
-// Load email footer on component mount
-onBeforeMount(async () => {
-  emailFooter.value = (await client.content.get('email')).footer;
-});
 </script>
