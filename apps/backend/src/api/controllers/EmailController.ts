@@ -16,6 +16,7 @@ import {
   Authorized,
   BadRequestError,
   Body,
+  CurrentUser,
   Get,
   JsonController,
   Param,
@@ -62,35 +63,11 @@ export class EmailController {
   @Authorized()
   @Post('/preview/general/:templateId')
   async previewGeneralEmail(
-    @CurrentAuth() auth: AuthInfo,
+    @CurrentUser({ required: true }) contact: Contact,
     @Param('templateId') templateId: string,
     @Body() data: PreviewEmailDto
   ): Promise<GetEmailDto> {
-    if (!EmailService.isTemplateId(templateId)) {
-      throw new BadRequestError(`Invalid template ID: ${templateId}`);
-    }
-
-    const templateType = EmailService.getTemplateType(templateId);
-    if (templateType !== 'general') {
-      throw new BadRequestError(
-        `Template ${templateId} is not a general template`
-      );
-    }
-
-    const contact = auth.contact || (await this.getDefaultContact());
-
-    const preview = await EmailService.getTemplatePreview(
-      templateId,
-      'general',
-      contact,
-      data.mergeFields || {},
-      {
-        ...(data.customSubject && { customSubject: data.customSubject }),
-        ...(data.locale && { locale: data.locale }),
-      }
-    );
-
-    return preview;
+    return this.previewEmailTemplate(contact, templateId, data, 'general');
   }
 
   /**
@@ -101,35 +78,11 @@ export class EmailController {
   @Authorized()
   @Post('/preview/contact/:templateId')
   async previewContactEmail(
-    @CurrentAuth() auth: AuthInfo,
+    @CurrentUser({ required: true }) contact: Contact,
     @Param('templateId') templateId: string,
     @Body() data: PreviewEmailDto
   ): Promise<GetEmailDto> {
-    if (!EmailService.isTemplateId(templateId)) {
-      throw new BadRequestError(`Invalid template ID: ${templateId}`);
-    }
-
-    const templateType = EmailService.getTemplateType(templateId);
-    if (templateType !== 'contact') {
-      throw new BadRequestError(
-        `Template ${templateId} is not a contact template`
-      );
-    }
-
-    const contact = auth.contact || (await this.getDefaultContact());
-
-    const preview = await EmailService.getTemplatePreview(
-      templateId,
-      'contact',
-      contact,
-      data.mergeFields || {},
-      {
-        ...(data.customSubject && { customSubject: data.customSubject }),
-        ...(data.locale && { locale: data.locale }),
-      }
-    );
-
-    return preview;
+    return this.previewEmailTemplate(contact, templateId, data, 'contact');
   }
 
   /**
@@ -139,27 +92,37 @@ export class EmailController {
   @Authorized('admin')
   @Post('/preview/admin/:templateId')
   async previewAdminEmail(
-    @CurrentAuth() auth: AuthInfo,
+    @CurrentUser({ required: true }) contact: Contact,
     @Param('templateId') templateId: string,
     @Body() data: PreviewEmailDto
+  ): Promise<GetEmailDto> {
+    return this.previewEmailTemplate(contact, templateId, data, 'admin');
+  }
+
+  /**
+   * Shared logic for previewing email templates
+   * Validates template ID and type, then generates preview with merge fields
+   */
+  private async previewEmailTemplate(
+    contact: Contact,
+    templateId: string,
+    data: PreviewEmailDto,
+    expectedType: 'general' | 'contact' | 'admin'
   ): Promise<GetEmailDto> {
     if (!EmailService.isTemplateId(templateId)) {
       throw new BadRequestError(`Invalid template ID: ${templateId}`);
     }
 
     const templateType = EmailService.getTemplateType(templateId);
-    if (templateType !== 'admin') {
+    if (templateType !== expectedType) {
       throw new BadRequestError(
-        `Template ${templateId} is not an admin template`
+        `Template ${templateId} is not an ${expectedType} template`
       );
     }
 
-    // Admin templates use contact data for merge fields
-    const contact = auth.contact || (await this.getDefaultContact());
-
     const preview = await EmailService.getTemplatePreview(
       templateId,
-      'admin',
+      expectedType,
       contact,
       data.mergeFields || {},
       {
@@ -169,18 +132,5 @@ export class EmailController {
     );
 
     return preview;
-  }
-
-  /**
-   * Get a default contact for preview purposes when auth.contact is not available
-   * This should rarely happen since endpoints are @Authorized()
-   */
-  private async getDefaultContact(): Promise<Contact> {
-    // Create a sample contact with default values for preview
-    const contact = new Contact();
-    contact.email = 'beispiel@example.com';
-    contact.firstname = 'Max';
-    contact.lastname = 'Mustermann';
-    return contact;
   }
 }
