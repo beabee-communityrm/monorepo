@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="flex max-h-full min-h-0 flex-1">
-    <div class="flex-1 overflow-y-auto bg-white p-6 shadow-md">
-      <div class="mx-auto max-w-3xl">
+    <div class="relative flex-1 bg-white p-6 shadow-md">
+      <div class="mx-auto max-h-full max-w-3xl overflow-y-auto">
         <!-- Info box when contact settings are not enabled -->
         <AppNotification
           v-if="!collectInfoEnabled"
@@ -27,23 +27,26 @@
         </AppFormField>
 
         <!-- Email editor with server-side preview (merge fields resolved server-side) -->
-        <EmailEditor
-          v-model:subject="emailData.subject"
-          v-model:content="emailData.content"
-          :merge-fields="{
-            CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
-            CALLOUTLINK: generateCalloutLink(
-              props.tabs.titleAndImage.data.slug,
-              true
-            ),
-          }"
-          :server-render="{
-            type: 'contact',
-            templateId: 'callout-response-answers',
-          }"
-          :subject-label="t('callout.builder.tabs.email.subject.label')"
-          :content-label="t('callout.builder.tabs.email.body.label')"
-        />
+        <div class="relative overflow-visible">
+          <EmailEditor
+            v-model:subject="emailData.subject"
+            v-model:content="emailData.content"
+            :merge-fields="{
+              CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
+              CALLOUTLINK: generateCalloutLink(
+                props.tabs.titleAndImage.data.slug,
+                true
+              ),
+            }"
+            :server-render="{
+              type: 'contact',
+              templateId: 'callout-response-answers',
+            }"
+            :subject-label="t('callout.builder.tabs.email.subject.label')"
+            :content-label="t('callout.builder.tabs.email.body.label')"
+            :always-stacked="true"
+          />
+        </div>
       </div>
     </div>
 

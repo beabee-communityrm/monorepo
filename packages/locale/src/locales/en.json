@@ -1120,6 +1120,10 @@
     },
     "body": {
       "label": "Message"
+    },
+    "preview": {
+      "label": "Preview",
+      "unavailable": "Preview unavailable"
     }
   },
   "footer": {

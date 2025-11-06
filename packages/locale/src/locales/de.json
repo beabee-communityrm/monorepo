@@ -1120,6 +1120,10 @@
     },
     "body": {
       "label": "Nachricht"
+    },
+    "preview": {
+      "label": "Vorschau",
+      "unavailable": "Vorschau nicht verfügbar"
     }
   },
   "footer": {
