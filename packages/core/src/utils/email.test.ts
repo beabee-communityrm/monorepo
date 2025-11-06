@@ -1,11 +1,12 @@
-import {
-  expandNestedMergeFields,
-  isEmail,
-  normalizeEmailAddress,
-  replaceMergeFields,
-} from '@beabee/beabee-common';
+import { isEmail } from '@beabee/beabee-common';
 
 import { describe, expect, it, test } from 'vitest';
+
+import {
+  expandNestedMergeFields,
+  normalizeEmailAddress,
+  replaceMergeFields,
+} from './email';
 
 describe('email validation', () => {
   test('valid email', () => {

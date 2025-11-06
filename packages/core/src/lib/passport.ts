@@ -1,5 +1,4 @@
 import { CONTACT_MFA_TYPE, LOGIN_CODES } from '@beabee/beabee-common';
-import { normalizeEmailAddress } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { UnauthorizedError } from '@beabee/core/errors';
@@ -14,6 +13,7 @@ import passport from 'passport';
 import passportLocal from 'passport-local';
 
 import type { LoginData, PassportLocalDoneCallback } from '#type';
+import { normalizeEmailAddress } from '#utils/email';
 
 // Add support for local authentication in Passport.js
 passport.use(

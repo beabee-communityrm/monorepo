@@ -8,7 +8,6 @@ import {
   RESET_SECURITY_FLOW_ERROR_CODE,
   RESET_SECURITY_FLOW_TYPE,
   RoleType,
-  normalizeEmailAddress,
 } from '@beabee/beabee-common';
 
 import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from 'typeorm';
@@ -40,6 +39,7 @@ import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
 import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
 import { isDuplicateIndex } from '#utils/db';
+import { normalizeEmailAddress } from '#utils/email';
 
 export type PartialContact = Pick<Contact, 'email' | 'contributionType'> &
   Partial<Contact>;

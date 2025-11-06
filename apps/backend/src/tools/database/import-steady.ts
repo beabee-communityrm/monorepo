@@ -5,13 +5,13 @@ import {
   ContributionPeriod,
   ContributionType,
   NewsletterStatus,
-  normalizeEmailAddress,
 } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { Contact, ContactRole } from '@beabee/core/models';
 import { ContactTagAssignment } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import ContactsService from '@beabee/core/services/ContactsService';
+import { normalizeEmailAddress } from '@beabee/core/utils/email';
 
 import contactTagTransformer from '@api/transformers/ContactTagTransformer';
 import { parse } from 'csv-parse';

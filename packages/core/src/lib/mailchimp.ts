@@ -1,4 +1,4 @@
-import { NewsletterStatus, normalizeEmailAddress } from '@beabee/beabee-common';
+import { NewsletterStatus } from '@beabee/beabee-common';
 
 import JSONStream from 'JSONStream';
 import axios from 'axios';
@@ -18,6 +18,7 @@ import {
   NewsletterContact,
   UpdateNewsletterContact,
 } from '#type/index';
+import { normalizeEmailAddress } from '#utils/email';
 
 const log = mainLogger.child({ app: 'mailchimp' });
 

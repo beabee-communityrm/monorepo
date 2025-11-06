@@ -1,12 +1,9 @@
-import {
-  ContributionType,
-  NewsletterStatus,
-  normalizeEmailAddress,
-} from '@beabee/beabee-common';
+import { ContributionType, NewsletterStatus } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { log as mainLogger } from '@beabee/core/logging';
 import ContactsService from '@beabee/core/services/ContactsService';
 import NewsletterService from '@beabee/core/services/NewsletterService';
+import { normalizeEmailAddress } from '@beabee/core/utils/email';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import bodyParser from 'body-parser';

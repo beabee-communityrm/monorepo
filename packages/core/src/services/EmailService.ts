@@ -1,7 +1,3 @@
-import {
-  expandNestedMergeFields,
-  replaceMergeFields,
-} from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
 import fs from 'fs';
@@ -35,6 +31,7 @@ import {
   GeneralEmailTemplates,
   TemplateEmailOptions,
 } from '#type/index';
+import { expandNestedMergeFields, replaceMergeFields } from '#utils/email';
 
 const log = mainLogger.child({ app: 'email-service' });
 

@@ -1,5 +1,4 @@
 import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
-import { expandNestedMergeFields } from '@beabee/beabee-common';
 
 import config from '#config/config';
 import { createQueryBuilder, getRepository } from '#database';
@@ -16,6 +15,7 @@ import type {
   PreparedEmail,
   TemplateEmailOptions,
 } from '#type/index';
+import { expandNestedMergeFields } from '#utils/email';
 
 const log = mainLogger.child({ app: 'base-email-provider' });
 
