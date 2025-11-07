@@ -369,7 +369,7 @@
         "email": {
           "body": {
             "label": "Email body",
-            "default": "<p>Hello {FNAME},</p><p>This email confirms your response to the callout <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> using your email address {EMAIL}.</p><p><br /></p><p>If you have any questions, please contact our support team at <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Best wishes</p>"
+            "default": "<p>Hello {FNAME},</p><p>here is an overview of your submitted answers:<br />{ANSWERS}</p><p><br /></p><p>This email confirms your response to the callout <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> using your email address {EMAIL}.</p><p><br /></p><p>If you have any questions, please contact our support team at <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Best wishes</p>"
           },
           "collectInfoWarning": {
             "description": "To send an email to all participants you must enable \"Collect contact information\" in the Settings tab",
