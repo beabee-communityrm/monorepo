@@ -38,6 +38,7 @@
                 true
               ),
             }"
+            :merge-field-groups="mergeFieldGroups"
             :server-render="{
               type: 'contact',
               templateId: 'callout-response-answers',
@@ -58,9 +59,15 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormField, AppNotification, AppToggleField } from '@beabee/vue';
+import {
+  AppFormField,
+  AppNotification,
+  AppToggleField,
+  type MergeTagGroup,
+} from '@beabee/vue';
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+import { currentUser } from '@store/currentUser';
 import type { LocaleProp } from '@type';
 import { generateCalloutLink } from '@utils/callouts';
 import { computed, reactive, watch } from 'vue';
@@ -90,6 +97,48 @@ const { t } = useI18n();
 
 // Check if "Collect contact information" is enabled in the settings tab
 const collectInfoEnabled = computed(() => props.tabs.settings.data.collectInfo);
+
+// Merge field groups for the rich text editor dropdown
+const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
+  const user = currentUser.value;
+  const fullName = user
+    ? `${user.firstname} ${user.lastname}`.trim()
+    : undefined;
+
+  return [
+    {
+      key: 'contact',
+      tags: [
+        { tag: 'EMAIL', example: user?.email },
+        { tag: 'NAME', example: fullName },
+        { tag: 'FNAME', example: user?.firstname },
+        { tag: 'LNAME', example: user?.lastname },
+      ],
+    },
+    {
+      key: 'magic',
+      tags: [{ tag: 'RPLINK' }, { tag: 'LOGINLINK' }, { tag: 'SPLINK' }],
+    },
+    {
+      key: 'template',
+      tags: [
+        {
+          tag: 'CALLOUTTITLE',
+          example: props.tabs.titleAndImage.data.title.default,
+        },
+        {
+          tag: 'CALLOUTLINK',
+          example: generateCalloutLink(
+            props.tabs.titleAndImage.data.slug,
+            true
+          ),
+        },
+        { tag: 'CALLOUTSLUG', example: props.tabs.titleAndImage.data.slug },
+        { tag: 'SUPPORTEMAIL' },
+      ],
+    },
+  ];
+});
 
 // Available merge tags for default email template translations
 // This is necessary because `vue-i18n` otherwise tries to interpret the syntax `*|MERGE_TAG|*` itself.

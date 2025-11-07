@@ -1640,5 +1640,21 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "mergeFields": {
+    "title": "",
+    "expand": "",
+    "expandAll": "",
+    "collapse": "",
+    "collapseAll": "",
+    "clickToExpand": "",
+    "copy": "",
+    "copyTag": "",
+    "copied": "",
+    "insert": "",
+    "insertTag": "",
+    "example": "",
+    "groups": {},
+    "tags": {}
   }
 }

@@ -17,6 +17,7 @@
         <AppRichTextEditor
           v-model="content"
           :label="contentLabel || t('emailEditor.body.label')"
+          :merge-fields="mergeFieldGroups"
           required
         />
       </div>
@@ -93,6 +94,7 @@ import {
   AppLabel,
   AppRichTextEditor,
   AppSubHeading,
+  type MergeTagGroup,
 } from '@beabee/vue';
 
 import type {
@@ -129,6 +131,12 @@ const props = withDefaults(
     mergeFields?: Record<string, string>;
 
     /**
+     * Merge field groups for the rich text editor dropdown
+     * Enables insertion of merge fields via dropdown button in the editor
+     */
+    mergeFieldGroups?: MergeTagGroup[];
+
+    /**
      * Label for subject input field
      * If not provided, uses default i18n key
      */
@@ -148,6 +156,7 @@ const props = withDefaults(
   {
     heading: '',
     mergeFields: () => ({}),
+    mergeFieldGroups: undefined,
     subjectLabel: '',
     contentLabel: '',
     alwaysStacked: false,
