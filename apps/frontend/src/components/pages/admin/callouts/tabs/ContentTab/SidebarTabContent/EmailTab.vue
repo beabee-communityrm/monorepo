@@ -114,16 +114,10 @@ const mergeTagPlaceholders = computed(() => ({
 const emailData = reactive({
   subject:
     props.data.emailSubject.default ||
-    t(
-      'callout.builder.tabs.email.subject.default',
-      mergeTagPlaceholders.value
-    ),
+    t('callout.builder.tabs.email.subject.default', mergeTagPlaceholders.value),
   content:
     props.data.emailMessage.default ||
-    t(
-      'callout.builder.tabs.email.body.default',
-      mergeTagPlaceholders.value
-    ),
+    t('callout.builder.tabs.email.body.default', mergeTagPlaceholders.value),
 });
 
 // Watch emailData changes and sync to props.data
@@ -147,10 +141,7 @@ watch(
       subject || t('callout.builder.tabs.email.subject.default');
     const defaultMessage =
       message ||
-      t(
-        'callout.builder.tabs.email.body.default',
-        mergeTagPlaceholders.value
-      );
+      t('callout.builder.tabs.email.body.default', mergeTagPlaceholders.value);
 
     emailData.subject = defaultSubject;
     emailData.content = defaultMessage;

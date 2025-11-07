@@ -1,20 +1,5 @@
 ---
-subject: Thank you for your response
+subject:
 ---
 
-<p>Hello *|FNAME|*,</p>
-<p><br /></p>
 *|MESSAGE|*
-<p><br /></p>
-<p>
-  This email confirms your response to the callout
-  <a href="*|CALLOUTLINK|*">"*|CALLOUTTITLE|*"</a> using your email address
-  *|EMAIL|*.
-</p>
-<p><br /></p>
-<p>
-  If you have any questions, please contact our support team at
-  <a href="mailto:*|SUPPORTEMAIL|*">*|SUPPORTEMAIL|*</a>.
-</p>
-<p><br /></p>
-<p>Best wishes</p>
