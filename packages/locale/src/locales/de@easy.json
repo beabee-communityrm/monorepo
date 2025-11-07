@@ -369,7 +369,8 @@
         "email": {
           "title": "E-Mail",
           "body": {
-            "label": "E-Mail-Text"
+            "label": "E-Mail-Text",
+            "default": ""
           },
           "collectInfoWarning": {
             "description": "Um eine E-Mail an alle Teilnehmer zu senden, müssen Sie \"Kontaktinformationen erfassen\" in der Registerkarte Einstellungen aktivieren",
@@ -380,7 +381,8 @@
             "label": "Nach der Übermittlung eine E-Mail an alle Teilnehmer senden"
           },
           "subject": {
-            "label": "E-Mail-Betreff"
+            "label": "E-Mail-Betreff",
+            "default": ""
           }
         },
         "endMessage": {

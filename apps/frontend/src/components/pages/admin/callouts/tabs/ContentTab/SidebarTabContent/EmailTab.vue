@@ -91,12 +91,39 @@ const { t } = useI18n();
 // Check if "Collect contact information" is enabled in the settings tab
 const collectInfoEnabled = computed(() => props.tabs.settings.data.collectInfo);
 
+// Available merge tags for default email template translations
+// This is necessary because `vue-i18n` otherwise tries to interpret the syntax `*|MERGE_TAG|*` itself.
+const mergeTagPlaceholders = computed(() => ({
+  // Contact fields (available in all contact emails)
+  EMAIL: '*|EMAIL|*',
+  NAME: '*|NAME|*',
+  FNAME: '*|FNAME|*',
+  LNAME: '*|LNAME|*',
+  // Magic merge fields (automatically generated)
+  RPLINK: '*|RPLINK|*',
+  LOGINLINK: '*|LOGINLINK|*',
+  SPLINK: '*|SPLINK|*',
+  // Template-specific fields
+  MESSAGE: '*|MESSAGE|*',
+  CALLOUTTITLE: '*|CALLOUTTITLE|*',
+  CALLOUTLINK: '*|CALLOUTLINK|*',
+  SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
+}));
+
 // Create reactive email data that syncs with props.data
-// Note: 'content' here represents the MESSAGE merge field value,
-// not the complete rendered email body (server handles that)
 const emailData = reactive({
-  subject: props.data.emailSubject.default,
-  content: props.data.emailMessage.default,
+  subject:
+    props.data.emailSubject.default ||
+    t(
+      'callout.builder.tabs.email.subject.default',
+      mergeTagPlaceholders.value
+    ),
+  content:
+    props.data.emailMessage.default ||
+    t(
+      'callout.builder.tabs.email.body.default',
+      mergeTagPlaceholders.value
+    ),
 });
 
 // Watch emailData changes and sync to props.data
@@ -115,8 +142,29 @@ watch(
 watch(
   () => [props.data.emailSubject.default, props.data.emailMessage.default],
   ([subject, message]) => {
-    emailData.subject = subject;
-    emailData.content = message;
-  }
+    // Use default translations if values are empty
+    const defaultSubject =
+      subject || t('callout.builder.tabs.email.subject.default');
+    const defaultMessage =
+      message ||
+      t(
+        'callout.builder.tabs.email.body.default',
+        mergeTagPlaceholders.value
+      );
+
+    emailData.subject = defaultSubject;
+    emailData.content = defaultMessage;
+
+    // Update props with default values if they were empty
+    if (!subject) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.emailSubject.default = defaultSubject;
+    }
+    if (!message) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.emailMessage.default = defaultMessage;
+    }
+  },
+  { immediate: true }
 );
 </script>
