@@ -37,12 +37,16 @@ import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
+import {
+  formatCalloutResponseAnswersPreview,
+  formatCalloutResponseAnswersToHtml,
+} from '#utils/callout';
 import { isDuplicateIndex } from '#utils/db';
 import { normalizeEmailAddress } from '#utils/email';
 
 const log = mainLogger.child({ app: 'callouts-service' });
 
-class CalloutsService {
+export class CalloutsService {
   /**
    * Create a new callout
    * @param data The callout data
@@ -290,7 +294,7 @@ class CalloutsService {
     }
 
     // Send confirmation email to the contact
-    await this.sendResponseEmail(callout, contact);
+    await this.sendResponseEmail(callout, contact, savedResponse);
 
     return savedResponse;
   }
@@ -339,7 +343,7 @@ class CalloutsService {
         );
 
         // Send confirmation email to the contact
-        await this.sendResponseEmail(callout, contact);
+        await this.sendResponseEmail(callout, contact, response);
         return response.id;
       } catch (err) {
         // Suppress errors from creating a response for a contact, this prevents
@@ -517,14 +521,79 @@ class CalloutsService {
   }
 
   /**
+   * Shared logic to load callout with form schema
+   * @param callout The callout to ensure has form schema loaded
+   * @returns The callout with form schema guaranteed to be loaded
+   */
+  private async ensureCalloutWithFormSchema(
+    callout: Callout
+  ): Promise<Callout> {
+    if (!callout.formSchema) {
+      const calloutWithSchema = await getRepository(Callout).findOne({
+        where: { id: callout.id },
+      });
+      if (!calloutWithSchema || !calloutWithSchema.formSchema) {
+        throw new NotFoundError();
+      }
+      callout.formSchema = calloutWithSchema.formSchema;
+    }
+    return callout;
+  }
+
+  /**
+   * Format callout response answers as HTML for email templates
+   * @param callout The callout with form schema
+   * @param response Optional callout response with answers
+   * @returns HTML string with formatted answers
+   */
+  async formatResponseAnswersHtml(
+    callout: Callout,
+    response?: CalloutResponse
+  ): Promise<string> {
+    // Ensure callout has formSchema loaded
+    callout = await this.ensureCalloutWithFormSchema(callout);
+
+    // Get default variant for component text translations
+    const variant = await this.getDefaultVariant(callout);
+
+    // Format answers using the utility function
+    return formatCalloutResponseAnswersToHtml(
+      response?.answers || {},
+      callout.formSchema,
+      variant.componentText
+    );
+  }
+
+  /**
+   * Format callout questions with empty answers for email template preview
+   * @param callout The callout with form schema
+   * @returns HTML string with formatted questions and empty answer placeholders
+   */
+  async formatResponseAnswersPreview(callout: Callout): Promise<string> {
+    // Ensure callout has formSchema loaded
+    callout = await this.ensureCalloutWithFormSchema(callout);
+
+    // Get default variant for component text translations
+    const variant = await this.getDefaultVariant(callout);
+
+    // Format preview using the utility function
+    return formatCalloutResponseAnswersPreview(
+      callout.formSchema,
+      variant.componentText
+    );
+  }
+
+  /**
    * Send a response confirmation email to a contact
    * Only sends email if custom email is enabled and configured
    * @param callout The callout
    * @param contact The contact to send the email to
+   * @param response The callout response with answers
    */
   private async sendResponseEmail(
     callout: Callout,
-    contact: Contact
+    contact: Contact,
+    response: CalloutResponse
   ): Promise<void> {
     // Only send email if custom email is enabled and configured
     if (!callout.sendResponseEmail) {
@@ -534,26 +603,29 @@ class CalloutsService {
     const variant = await this.getDefaultVariant(callout);
 
     // Check if custom subject and body are configured
-    if (!variant.responseEmailSubject || !variant.responseEmailBody) {
-      log.warn(
+    if (!variant.responseEmailBody) {
+      log.warning(
         `Callout ${callout.id} has sendResponseEmail enabled but no email content configured`
       );
-      return;
     }
+
+    // Format response answers as HTML
+    const answersHtml = await this.formatResponseAnswersHtml(callout, response);
 
     // Send custom email using the callout-response-answers template
     // The template includes proper email structure (header, footer, etc.)
-    // Merge fields like *|FNAME|*, *|EMAIL|* etc. will be replaced
+    // Merge fields like *|FNAME|*, *|EMAIL|*, *|ANSWERS|* etc. will be replaced
     await EmailService.sendTemplateToContact(
       'callout-response-answers',
       contact,
       {
-        message: variant.responseEmailBody,
+        message: variant.responseEmailBody || '',
         calloutSlug: callout.slug,
         calloutTitle: variant.title,
+        answers: answersHtml,
       },
       {
-        customSubject: variant.responseEmailSubject,
+        customSubject: variant.responseEmailSubject || '',
       }
     );
   }
@@ -632,19 +704,19 @@ class CalloutsService {
     });
 
     if (!response) {
-      log.warn(`Response ${responseId} not found`);
+      log.warning(`Response ${responseId} not found`);
       return false;
     }
 
     const slideAnswers = response.answers[slideId];
     if (!slideAnswers) {
-      log.warn(`Slide ${slideId} not found in response ${responseId}`);
+      log.warning(`Slide ${slideId} not found in response ${responseId}`);
       return false;
     }
 
     const answer = slideAnswers[componentKey];
     if (!answer) {
-      log.warn(`Component ${componentKey} not found in slide ${slideId}`);
+      log.warning(`Component ${componentKey} not found in slide ${slideId}`);
       return false;
     }
 
@@ -652,13 +724,13 @@ class CalloutsService {
     if (arrayIndex !== null && Array.isArray(answer)) {
       // Update an item in an array
       if (arrayIndex < 0 || arrayIndex >= answer.length) {
-        log.warn(`Array index ${arrayIndex} out of bounds`);
+        log.warning(`Array index ${arrayIndex} out of bounds`);
         return false;
       }
 
       const item = answer[arrayIndex];
       if (!isFileUploadAnswer(item)) {
-        log.warn(`Item at index ${arrayIndex} is not a file upload`);
+        log.warning(`Item at index ${arrayIndex} is not a file upload`);
         return false;
       }
 
@@ -667,7 +739,7 @@ class CalloutsService {
       // Update a direct answer
       slideAnswers[componentKey] = newFileUpload;
     } else {
-      log.warn(`Answer is not a file upload`);
+      log.warning(`Answer is not a file upload`);
       return false;
     }
 
@@ -682,4 +754,3 @@ class CalloutsService {
 }
 
 export const calloutsService = new CalloutsService();
-export default calloutsService;

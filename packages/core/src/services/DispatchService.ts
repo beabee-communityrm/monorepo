@@ -1,7 +1,7 @@
 import { log as mainLogger } from '#logging';
 import { Contact } from '#models';
 import ApiKeyService from '#services/ApiKeyService';
-import CalloutsService from '#services/CalloutsService';
+import { calloutsService } from '#services/CalloutsService';
 import ContactMfaService from '#services/ContactMfaService';
 import ContactsService from '#services/ContactsService';
 import NewsletterService from '#services/NewsletterService';
@@ -29,7 +29,7 @@ class DispatchService {
     await ApiKeyService.permanentlyDeleteContact(contact);
     await ReferralsService.permanentlyDeleteContact(contact);
     await SegmentService.permanentlyDeleteContact(contact);
-    await CalloutsService.permanentlyDeleteContact(contact);
+    await calloutsService.permanentlyDeleteContact(contact);
     await ContactMfaService.permanentlyDeleteContact(contact);
 
     // Finally delete the contact itself

@@ -31,6 +31,7 @@ import {
   GeneralEmailTemplates,
   TemplateEmailOptions,
 } from '#type/index';
+import { formatCalloutResponseAnswersPreviewBySlug } from '#utils/callout';
 import { expandNestedMergeFields, replaceMergeFields } from '#utils/email';
 
 const log = mainLogger.child({ app: 'email-service' });
@@ -270,6 +271,15 @@ class EmailService {
       templateMergeFields = contactEmailTemplates[
         template as ContactEmailTemplateId
       ](contact, {} as any);
+
+      // Special handling for callout-response-answers template
+      // If ANSWERS is not provided, format empty answers for preview
+      if (
+        template === 'callout-response-answers' &&
+        !customMergeFields.ANSWERS
+      ) {
+        await this.formatCalloutAnswersForPreview(customMergeFields);
+      }
     } else if (type === 'admin' && template in adminEmailTemplates) {
       // Admin templates need specific params, use empty object as fallback
       templateMergeFields = {};
@@ -304,6 +314,33 @@ class EmailService {
       subject: previewSubject,
       body: previewBody,
     };
+  }
+
+  /**
+   * Format empty callout answers for email preview
+   * Uses utility function to keep answer formatting logic centralized
+   *
+   * @param customMergeFields The merge fields object to update with formatted answers
+   */
+  private async formatCalloutAnswersForPreview(
+    customMergeFields: Record<string, string>
+  ): Promise<void> {
+    const calloutSlug = customMergeFields.CALLOUTSLUG;
+    if (!calloutSlug) {
+      return;
+    }
+
+    try {
+      const emptyAnswersHtml =
+        await formatCalloutResponseAnswersPreviewBySlug(calloutSlug);
+      customMergeFields.ANSWERS = emptyAnswersHtml;
+    } catch (error) {
+      // If callout not found or error, leave ANSWERS empty
+      log.warning(
+        `Failed to format empty answers for callout ${calloutSlug}:`,
+        error
+      );
+    }
   }
 
   /**

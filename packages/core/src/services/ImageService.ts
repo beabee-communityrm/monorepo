@@ -162,7 +162,7 @@ export class ImageService {
       if (outputFormat === 'original') {
         extension = '.' + metadata.format;
         if (originalExtension !== extension) {
-          log.warn(
+          log.warning(
             `Original image extension (${originalExtension}) does not match detected format (${metadata.format}).`
           );
         }
