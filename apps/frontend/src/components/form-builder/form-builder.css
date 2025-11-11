@@ -302,6 +302,10 @@
 .formio-component-enableMinDateInput,
 .formio-component-enableMaxDateInput,
 .formio-component-refreshOnChange,
-.formio-component-labelPosition {
+.formio-component-labelPosition,
+.formio-component-storage,
+.formio-component-provider,
+.formio-component-enableManualMode,
+.formio-component-manualModeViewString {
   @apply !hidden;
 }
