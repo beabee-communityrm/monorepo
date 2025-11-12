@@ -4,19 +4,72 @@ export const testCommand: CommandModule = {
   command: 'test <action>',
   describe: 'Test environment commands',
   builder: (yargs) =>
-    yargs.command({
-      command: 'list-users',
-      describe: 'List test users with various contribution scenarios',
-      builder: (yargs) =>
-        yargs.option('dryRun', {
-          type: 'boolean',
-          description: 'Run without making changes',
-          default: false,
-        }),
-      handler: async (argv) => {
-        const { listTestUsers } = await import('../actions/test/list-users.js');
-        return listTestUsers(argv.dryRun);
-      },
-    }),
+    yargs
+      .command({
+        command: 'list-users',
+        describe: 'List test users with various contribution scenarios',
+        builder: (yargs) =>
+          yargs.option('dryRun', {
+            type: 'boolean',
+            description: 'Run without making changes',
+            default: false,
+          }),
+        handler: async (argv) => {
+          const { listTestUsers } = await import(
+            '../actions/test/list-users.js'
+          );
+          return listTestUsers(argv.dryRun);
+        },
+      })
+      .command({
+        command: 'anonymise',
+        describe:
+          'Create anonymized copy of database and export data to Json or SQL dump.',
+        builder: (yargs) =>
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes.',
+              default: false,
+            })
+            .option('type', {
+              type: 'string',
+              description: 'Export type: json or sql. Default is json.',
+              default: 'json',
+            })
+            .option('outputDir', {
+              type: 'string',
+              description:
+                'Path where the file will be dumped. A sub folder will be created called generated-dumps.',
+              default: '/opt/packages/test-utils/database-dump',
+            }),
+        handler: async (argv) => {
+          const { runAnonymisers } = await import(
+            '../actions/test/anonymise.js'
+          );
+          return runAnonymisers(argv.dryRun, argv.type, argv.outputDir);
+        },
+      })
+      .command({
+        command: 'seed',
+        describe: 'Seed the database with test data from a Json dump file',
+        builder: (yargs) =>
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes',
+              default: false,
+            })
+            .option('filePath', {
+              type: 'string',
+              description: 'Full path to the JSON dump file',
+              default:
+                '/opt/packages/test-utils/database-dump/database-dump.json',
+            }),
+        handler: async (argv) => {
+          const { seed } = await import('../actions/test/seed.js');
+          return seed(argv.dryRun, argv.filePath);
+        },
+      }),
   handler: () => {},
 };
