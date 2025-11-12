@@ -100,6 +100,8 @@ import {
   ContributionType,
   MembershipStatus,
   PaymentMethod,
+  type PaymentPeriod,
+  type StartContributionData,
 } from '@beabee/beabee-common';
 import {
   AppButton,
@@ -135,7 +137,7 @@ const props = defineProps<{
 
 const newContribution = reactive({
   amount: 5,
-  period: ContributionPeriod.Monthly,
+  period: ContributionPeriod.Monthly as PaymentPeriod,
   payFee: true,
   prorate: true,
   paymentMethod: PaymentMethod.StripeCard,
@@ -195,7 +197,24 @@ const buttonText = computed(() =>
 );
 
 async function handleCreate() {
-  const data = await client.contact.contribution.start(newContribution);
+  if (newContribution.period === 'one-time') {
+    // TODO: handle separately
+    return;
+  }
+
+  const clientData: StartContributionData = {
+    amount: newContribution.amount,
+    period: newContribution.period,
+    payFee:
+      newContribution.payFee &&
+      newContribution.period === ContributionPeriod.Monthly,
+    prorate:
+      newContribution.prorate &&
+      newContribution.period === ContributionPeriod.Annually,
+    paymentMethod: newContribution.paymentMethod,
+    completeUrl: client.contact.contribution.completeUrl,
+  };
+  const data = await client.contact.contribution.start(clientData);
   if (data.redirectUrl) {
     window.location.href = data.redirectUrl;
   } else if (data.clientSecret) {
@@ -204,8 +223,18 @@ async function handleCreate() {
 }
 
 async function handleUpdate() {
+  // Can't update a one-time contribution
+  if (newContribution.period === 'one-time') {
+    return;
+  }
+
   try {
-    const data = await client.contact.contribution.update(newContribution);
+    const data = await client.contact.contribution.update({
+      amount: newContribution.amount,
+      period: newContribution.period,
+      payFee: newContribution.payFee,
+      prorate: newContribution.prorate,
+    });
     emit('update:modelValue', data);
 
     addNotification({

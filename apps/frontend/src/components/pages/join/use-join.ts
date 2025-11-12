@@ -2,6 +2,7 @@ import {
   type ContentPaymentData,
   ContributionPeriod,
   PaymentMethod,
+  type PaymentPeriod,
   calcPaymentFee,
 } from '@beabee/beabee-common';
 
@@ -13,7 +14,7 @@ const { n, t } = i18n.global;
 const signUpData = reactive({
   email: '',
   amount: 5,
-  period: ContributionPeriod.Monthly,
+  period: ContributionPeriod.Monthly as PaymentPeriod,
   payFee: true,
   noContribution: false,
   prorate: false,
@@ -34,7 +35,9 @@ export function useJoin(content: Ref<ContentPaymentData>) {
         ' ' +
         (signUpData.period === ContributionPeriod.Monthly
           ? t('common.perMonthText')
-          : t('common.perYearText')),
+          : signUpData.period === ContributionPeriod.Annually
+            ? t('common.perYearText')
+            : t('common.perOneTimeText')),
     };
   });
 

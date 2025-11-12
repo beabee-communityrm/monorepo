@@ -939,7 +939,10 @@
     "timeAgo": "vor",
     "timeIn": "in",
     "until": "",
-    "yes": ""
+    "yes": "",
+    "paymentPeriod": {},
+    "perOneTime": "",
+    "perOneTimeText": ""
   },
   "contactAccount": {
     "confirmDelete": {

@@ -69,6 +69,7 @@ import {
   type ContentJoinData,
   type ContentPaymentData,
   ContributionPeriod,
+  type SignupData,
 } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
 import { AppNotification } from '@beabee/vue';
@@ -118,7 +119,34 @@ const { signUpData, signUpDescription } = useJoin(paymentContent);
 
 async function submitSignUp() {
   try {
-    const data = await client.signup.start(signUpData);
+    const clientData: SignupData = {
+      email: signUpData.email,
+      ...(signUpData.noContribution
+        ? {}
+        : signUpData.period === 'one-time'
+          ? {
+              oneTimePayment: {
+                amount: signUpData.amount,
+                paymentMethod: signUpData.paymentMethod,
+                payFee: signUpData.payFee,
+                completeUrl: client.signup.completeUrl,
+              },
+            }
+          : {
+              contribution: {
+                amount: signUpData.amount,
+                period: signUpData.period,
+                paymentMethod: signUpData.paymentMethod,
+                payFee:
+                  signUpData.period === ContributionPeriod.Monthly &&
+                  signUpData.payFee,
+                prorate: false,
+                completeUrl: client.signup.completeUrl,
+              },
+            }),
+    };
+
+    const data = await client.signup.start(clientData);
     const topWindow = window.top || window;
     if (data?.redirectUrl) {
       topWindow.location.href = data.redirectUrl;
