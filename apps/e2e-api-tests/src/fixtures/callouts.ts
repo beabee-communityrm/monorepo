@@ -19,6 +19,7 @@ export const createTestCallout = (
   allowUpdate: true,
   allowMultiple: false,
   hidden: false,
+  sendResponseEmail: false,
   variants: {
     default: {
       title: 'Default',
@@ -32,6 +33,8 @@ export const createTestCallout = (
       slideNavigation: {},
       componentText: {},
       responseLinkText: {},
+      responseEmailSubject: null,
+      responseEmailBody: null,
     },
   },
   formSchema: {
@@ -130,6 +133,7 @@ export const createMinimalTestCallout = (
   allowUpdate: false,
   allowMultiple: false,
   hidden: false,
+  sendResponseEmail: false,
   variants: {
     default: {
       title: 'Minimal Variant',
@@ -143,6 +147,8 @@ export const createMinimalTestCallout = (
       slideNavigation: {},
       componentText: {},
       responseLinkText: {},
+      responseEmailSubject: null,
+      responseEmailBody: null,
     },
   },
   formSchema: {
