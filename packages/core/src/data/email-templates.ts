@@ -257,15 +257,22 @@ export const contactEmailTemplates = {
    * - *|CALLOUTTITLE|* - Title of the callout
    * - *|CALLOUTLINK|* - Link to the callout
    * - *|SUPPORTEMAIL|* - Support email address
+   * - *|ANSWERS|* - Formatted response answers (HTML)
    */
   'callout-response-answers': (
     _: Contact,
-    params: { message: string; calloutSlug: string; calloutTitle: string }
+    params: {
+      message: string;
+      calloutSlug: string;
+      calloutTitle: string;
+      answers?: string;
+    }
   ) => ({
     MESSAGE: params.message,
     CALLOUTTITLE: params.calloutTitle,
     CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
     SUPPORTEMAIL: OptionsService.getText('support-email'),
+    ANSWERS: params.answers || '',
   }),
   /**
    * Email when contribution didn't start

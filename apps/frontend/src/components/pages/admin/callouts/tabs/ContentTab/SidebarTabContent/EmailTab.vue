@@ -36,6 +36,7 @@
                 props.tabs.titleAndImage.data.slug,
                 true
               ),
+              CALLOUTSLUG: props.tabs.titleAndImage.data.slug,
             }"
             :merge-field-groups="mergeFieldGroups"
             :server-render="{
@@ -134,6 +135,7 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
         },
         { tag: 'CALLOUTSLUG', example: props.tabs.titleAndImage.data.slug },
         { tag: 'SUPPORTEMAIL' },
+        { tag: 'ANSWERS' },
       ],
     },
   ];
@@ -156,6 +158,7 @@ const mergeTagPlaceholders = computed(() => ({
   CALLOUTTITLE: '*|CALLOUTTITLE|*',
   CALLOUTLINK: '*|CALLOUTLINK|*',
   SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
+  ANSWERS: '*|ANSWERS|*',
 }));
 
 // Create reactive email data that syncs with props.data
