@@ -4,15 +4,15 @@
  *
  * @param fn - The function to debounce
  * @param wait - The number of milliseconds to delay
- * @returns A debounced version of the function
+ * @returns A debounced version of the function with a cancel method
  */
 export function debounce<T extends (...args: any[]) => any>(
   fn: T,
   wait: number
-): (...args: Parameters<T>) => void {
+): ((...args: Parameters<T>) => void) & { cancel: () => void } {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-  return function debounced(...args: Parameters<T>) {
+  const debounced = function (...args: Parameters<T>) {
     if (timeoutId !== null) {
       clearTimeout(timeoutId);
     }
@@ -21,6 +21,15 @@ export function debounce<T extends (...args: any[]) => any>(
       fn(...args);
     }, wait);
   };
+
+  debounced.cancel = () => {
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
+
+  return debounced;
 }
 
 /**
@@ -29,16 +38,16 @@ export function debounce<T extends (...args: any[]) => any>(
  *
  * @param fn - The function to throttle
  * @param wait - The number of milliseconds to wait between invocations
- * @returns A throttled version of the function
+ * @returns A throttled version of the function with a cancel method
  */
 export function throttle<T extends (...args: any[]) => any>(
   fn: T,
   wait: number
-): (...args: Parameters<T>) => void {
+): ((...args: Parameters<T>) => void) & { cancel: () => void } {
   let lastCallTime = 0;
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-  return function throttled(...args: Parameters<T>) {
+  const throttled = function (...args: Parameters<T>) {
     const now = Date.now();
     const timeSinceLastCall = now - lastCallTime;
 
@@ -56,4 +65,13 @@ export function throttle<T extends (...args: any[]) => any>(
       }, wait - timeSinceLastCall);
     }
   };
+
+  throttled.cancel = () => {
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
+
+  return throttled;
 }
