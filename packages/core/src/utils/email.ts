@@ -1,3 +1,5 @@
+import { escapeRegExp } from './string';
+
 /**
  * Normalize an email address to ensure emails are compared in a
  * case-insensitive way
@@ -22,7 +24,11 @@ export function replaceMergeFields(
   mergeFields: Record<string, string>
 ): string {
   return Object.entries(mergeFields).reduce((result, [field, value]) => {
-    return result.replace(new RegExp(`\\*\\|${field}\\|\\*`, 'g'), value);
+    const escapedField = escapeRegExp(field);
+    return result.replace(
+      new RegExp(`\\*\\|${escapedField}\\|\\*`, 'g'),
+      value
+    );
   }, text);
 }
 
