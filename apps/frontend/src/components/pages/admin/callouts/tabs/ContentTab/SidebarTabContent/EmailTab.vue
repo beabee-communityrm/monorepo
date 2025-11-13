@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="flex max-h-full min-h-0 flex-1">
     <div class="relative flex-1 bg-white p-6 shadow-md">
@@ -169,7 +168,14 @@ const emailData = reactive({
     t('callout.builder.tabs.email.body.default', mergeTagPlaceholders.value),
 });
 
-// Watch emailData changes and sync to props.data
+/**
+ * Bi-directional sync between local emailData and parent's reactive props.data
+ *
+ * Props mutation is intentionally used here because:
+ * - Component is rendered dynamically via <component :is> with v-bind
+ * - Parent passes reactive objects and expects these mutations
+ * - Alternative solutions (defineModel, emit) don't work with dynamic components
+ */
 watch(
   emailData,
   (newValue) => {

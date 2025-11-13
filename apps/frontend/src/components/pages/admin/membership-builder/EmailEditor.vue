@@ -48,7 +48,7 @@
           </div>
 
           <!-- Preview content (server-rendered with footer and CSS) -->
-          <div v-else v-html="serverPreviewResult.body" />
+          <div v-else v-html="sanitizedPreviewBody" />
         </div>
       </div>
     </div>
@@ -94,7 +94,9 @@ import {
   AppLabel,
   AppRichTextEditor,
   AppSubHeading,
+  DEFAULT_ALLOWED_HTML_TAGS,
   type MergeTagGroup,
+  sanitizeHtml,
 } from '@beabee/vue';
 
 import type {
@@ -102,7 +104,7 @@ import type {
   EmailServerRenderConfig,
 } from '@type/email-editor';
 import { client } from '@utils/api';
-import { ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Two-way binding models for subject and content
@@ -168,6 +170,18 @@ const { t } = useI18n();
 // Server preview state
 const serverPreviewResult = ref<EmailPreviewResult | null>(null);
 const isLoadingPreview = ref(false);
+
+/**
+ * Sanitized preview body HTML
+ * Sanitizes server-rendered HTML to prevent XSS attacks while preserving
+ * email-safe HTML elements (styles, links, images, etc.)
+ */
+const sanitizedPreviewBody = computed(() => {
+  return sanitizeHtml(serverPreviewResult.value?.body, {
+    allowedTags: [...DEFAULT_ALLOWED_HTML_TAGS, 'style'],
+    allowDataAttr: true,
+  });
+});
 
 /**
  * Fetches preview from server using the API

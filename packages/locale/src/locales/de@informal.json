@@ -1654,7 +1654,40 @@
     "insert": "",
     "insertTag": "",
     "example": "",
-    "groups": {},
-    "tags": {}
+    "groups": {
+      "contact": "",
+      "magic": "",
+      "template": ""
+    },
+    "tags": {
+      "EMAIL": "",
+      "NAME": "",
+      "FNAME": "",
+      "LNAME": "",
+      "MEMBERSHIPID": "",
+      "RPLINK": "",
+      "LOGINLINK": "",
+      "SPLINK": "",
+      "MESSAGE": "",
+      "CALLOUTTITLE": "",
+      "CALLOUTLINK": "",
+      "SUPPORTEMAIL": "",
+      "ANSWERS": "",
+      "REFCODE": "",
+      "EXPIRES": "",
+      "REFEREENAME": "",
+      "ISELIGIBLE": "",
+      "PURCHASER": "",
+      "GIFTEE": "",
+      "GIFTDATE": "",
+      "ACTIVATELINK": "",
+      "CONFIRMLINK": "",
+      "URL": "",
+      "MEMBERID": "",
+      "MEMBERNAME": "",
+      "CALLOUTSLUG": "",
+      "RESPNAME": "",
+      "ORGNAME": ""
+    }
   }
 }
