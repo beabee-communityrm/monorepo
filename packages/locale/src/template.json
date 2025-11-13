@@ -366,6 +366,25 @@
         "content": {
           "title": ""
         },
+        "email": {
+          "body": {
+            "default": "",
+            "label": ""
+          },
+          "collectInfoWarning": {
+            "description": "",
+            "title": ""
+          },
+          "sendEmail": {
+            "description": "",
+            "label": ""
+          },
+          "subject": {
+            "default": "",
+            "label": ""
+          },
+          "title": ""
+        },
         "endMessage": {
           "inputs": {
             "action": {
@@ -1096,6 +1115,18 @@
   },
   "editNotice": {
     "title": ""
+  },
+  "emailEditor": {
+    "body": {
+      "label": ""
+    },
+    "preview": {
+      "label": "",
+      "unavailable": ""
+    },
+    "subject": {
+      "label": ""
+    }
   },
   "footer": {
     "contactUs": "",

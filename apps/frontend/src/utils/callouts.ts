@@ -45,6 +45,25 @@ export const buckets = computed(() => [
 ]);
 
 /**
+ * Generates a callout URL for use in links and emails
+ *
+ * @param slug - The callout slug
+ * @param absolute - Whether to return an absolute URL (for emails) or relative URL (for router links)
+ * @returns The callout URL
+ */
+export function generateCalloutLink(slug: string, absolute = false): string {
+  const relativePath = `/crowdnewsroom/${slug}`;
+
+  if (absolute) {
+    // For emails and external links, we need an absolute URL
+    return `${typeof window !== 'undefined' ? window.location.origin : ''}${relativePath}`;
+  }
+
+  // For router links, return relative path
+  return relativePath;
+}
+
+/**
  * Creates a new slide schema with a unique ID and default navigation
  *
  * @param no - The slide number to use in the title
@@ -74,6 +93,8 @@ const textFields = [
   'thanksRedirect',
   'shareTitle',
   'shareDescription',
+  'responseEmailSubject',
+  'responseEmailBody',
 ] as const;
 
 /**
@@ -97,6 +118,8 @@ function convertVariantsForSteps(
     thanksRedirect: { default: '' },
     shareTitle: { default: '' },
     shareDescription: { default: '' },
+    responseEmailSubject: { default: '' },
+    responseEmailBody: { default: '' },
   };
 
   if (!variants) return result;
@@ -232,6 +255,11 @@ export function convertCalloutToTabs(
       content: undefined,
       intro: {
         introText: variants.intro,
+      },
+      email: {
+        sendEmail: callout?.sendResponseEmail || false,
+        emailSubject: variants.responseEmailSubject,
+        emailMessage: variants.responseEmailBody,
       },
       endMessage: {
         whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
@@ -379,6 +407,10 @@ function convertVariantForCallout(
     slideNavigation,
     componentText,
     responseLinkText,
+    responseEmailSubject:
+      tabs.content.sidebarTabs.email.emailSubject[variant] || '',
+    responseEmailBody:
+      tabs.content.sidebarTabs.email.emailMessage[variant] || '',
   };
 }
 
@@ -498,6 +530,7 @@ export function convertStepsToCallout(
       tabs.settings.showNewsletterOptIn
         ? tabs.settings.newsletterSettings
         : null,
+    sendResponseEmail: tabs.content.sidebarTabs.email.sendEmail,
   };
 }
 

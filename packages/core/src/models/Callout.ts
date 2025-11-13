@@ -78,4 +78,7 @@ export class Callout extends ItemWithStatus implements CalloutData {
 
   @Column({ type: 'jsonb', nullable: true })
   channels!: CalloutChannel[] | null;
+
+  @Column({ default: false })
+  sendResponseEmail!: boolean;
 }

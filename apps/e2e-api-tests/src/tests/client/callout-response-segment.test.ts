@@ -12,7 +12,6 @@ import {
 
 describe('CalloutResponseSegment API', () => {
   let client: BeabeeClient;
-  let userClient: BeabeeClient;
   let testCalloutSlug: string;
   let testResponseId: string;
 
