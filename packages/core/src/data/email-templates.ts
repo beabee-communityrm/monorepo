@@ -27,255 +27,292 @@ import OptionsService from '#services/OptionsService';
  */
 
 /**
- * General email templates
- * These are emails sent for general purposes not specific to a contact
+ * Type for email template metadata
+ * Names and merge field descriptions are handled in the frontend via translations
  */
-export const generalEmailTemplates = {
-  /**
-   * Email template for purchased gift memberships
-   *
-   * **Available Merge Fields:**
-   * - *|PURCHASER|* - Name of the gift purchaser
-   * - *|GIFTEE|* - First name of the gift recipient
-   * - *|GIFTDATE|* - Gift start date (formatted as "Month Day")
-   */
-  'purchased-gift': (params: {
-    fromName: string;
-    gifteeFirstName: string;
-    giftStartDate: Date;
-  }) => ({
-    PURCHASER: params.fromName,
-    GIFTEE: params.gifteeFirstName,
-    GIFTDATE: moment.utc(params.giftStartDate).format('MMMM Do'),
-  }),
-  /**
-   * Email template for email confirmation
-   *
-   * **Available Merge Fields:**
-   * - *|FNAME|* - First name
-   * - *|LNAME|* - Last name
-   * - *|CONFIRMLINK|* - Email confirmation link
-   */
-  'confirm-email': (params: {
-    firstName: string;
-    lastName: string;
-    confirmLink: string;
-  }) => ({
-    FNAME: params.firstName,
-    LNAME: params.lastName,
-    CONFIRMLINK: params.confirmLink,
-  }),
-  /**
-   * Email template for expired special URLs (resend)
-   *
-   * **Available Merge Fields:**
-   * - *|FNAME|* - First name
-   * - *|URL|* - New special URL
-   */
-  'expired-special-url-resend': (params: {
-    firstName: string;
-    newUrl: string;
-  }) => ({
-    FNAME: params.firstName,
-    URL: params.newUrl,
-  }),
-} as const;
+type EmailTemplateMetadata = {
+  type: 'general' | 'admin' | 'contact';
+  showContactFields?: boolean;
+  mergeFields: string[];
+};
 
 /**
- * Admin email templates
- * These are emails sent to administrators
+ * Unified email template definitions
+ * Contains both the template function and metadata in a single structure
+ * This ensures consistency and single source of truth
  */
-export const adminEmailTemplates = {
-  /**
-   * Email template for new members (to admins)
-   *
-   * **Available Merge Fields:**
-   * - *|MEMBERID|* - Contact ID of the new member
-   * - *|MEMBERNAME|* - Full name of the new member
-   */
-  'new-member': (params: { contact: Contact }) => ({
-    MEMBERID: params.contact.id,
-    MEMBERNAME: params.contact.fullname,
-  }),
-  /**
-   * Email template for cancelled members (to admins)
-   *
-   * **Available Merge Fields:**
-   * - *|MEMBERID|* - Contact ID of the cancelled member
-   * - *|MEMBERNAME|* - Full name of the cancelled member
-   */
-  'cancelled-member': (params: { contact: Contact }) => ({
-    MEMBERID: params.contact.id,
-    MEMBERNAME: params.contact.fullname,
-  }),
-  /**
-   * Email template for new callout responses (to admins)
-   *
-   * **Available Merge Fields:**
-   * - *|CALLOUTSLUG|* - Slug of the callout
-   * - *|CALLOUTTITLE|* - Title of the callout
-   * - *|RESPNAME|* - Name of the responder
-   */
-  'new-callout-response': (params: {
-    calloutSlug: string;
-    calloutTitle: string;
-    responderName: string;
-  }) => ({
-    CALLOUTSLUG: params.calloutSlug,
-    CALLOUTTITLE: params.calloutTitle,
-    RESPNAME: params.responderName,
-  }),
-} as const;
-
-/**
- * Contact email templates
- * These are emails sent to contacts/members
- */
-export const contactEmailTemplates = {
-  /**
-   * Welcome email for new members
-   *
-   * **Available Merge Fields:**
-   * - *|REFCODE|* - Contact's referral code
-   */
-  welcome: (contact: Contact) => ({
-    REFCODE: contact.referralCode,
-  }),
-  /**
-   * Welcome email after gift membership
-   *
-   * **Available Merge Fields:**
-   * - Only the general contact merge fields
-   */
-  'welcome-post-gift': () => ({}),
-  /**
-   * Email for password reset
-   *
-   * **Available Merge Fields:**
-   * - *|RPLINK|* - Reset password link
-   */
-  'reset-password': (_: Contact, params: { rpLink: string }) => ({
-    RPLINK: params.rpLink,
-  }),
-  /**
-   * Email for device reset
-   *
-   * **Available Merge Fields:**
-   * - *|RPLINK|* - Reset device link
-   */
-  'reset-device': (_: Contact, params: { rpLink: string }) => ({
-    RPLINK: params.rpLink,
-  }),
-  /**
-   * Email for contribution cancellation
-   *
-   * **Available Merge Fields:**
-   * - *|EXPIRES|* - Membership expiration date (formatted as "Day Date Month")
-   * - *|MEMBERSHIPID|* - Contact/membership ID
-   */
-  'cancelled-contribution': (contact: Contact) => ({
-    EXPIRES: contact.membership?.dateExpires
-      ? moment.utc(contact.membership.dateExpires).format('dddd Do MMMM')
-      : '-',
-    MEMBERSHIPID: contact.id,
-  }),
-  /**
-   * Email for contribution cancellation without survey
-   *
-   * **Available Merge Fields:**
-   * - *|EXPIRES|* - Membership expiration date (formatted as "Day Date Month")
-   */
-  'cancelled-contribution-no-survey': (contact: Contact) => {
-    return {
-      EXPIRES: contact.membership?.dateExpires
-        ? moment.utc(contact.membership.dateExpires).format('dddd Do MMMM')
-        : '-',
-    };
+export const emailTemplateDefinitions = {
+  // Contact email templates
+  contact: {
+    welcome: {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: ['REFCODE'],
+      },
+      fn: (contact: Contact) => ({
+        REFCODE: contact.referralCode,
+      }),
+    },
+    'welcome-post-gift': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: [],
+      },
+      fn: () => ({}),
+    },
+    'reset-password': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: ['RPLINK'],
+      },
+      fn: (_: Contact, params: { rpLink: string }) => ({
+        RPLINK: params.rpLink,
+      }),
+    },
+    'reset-device': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: ['RPLINK'],
+      },
+      fn: (_: Contact, params: { rpLink: string }) => ({
+        RPLINK: params.rpLink,
+      }),
+    },
+    'cancelled-contribution': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: ['EXPIRES', 'MEMBERSHIPID'],
+      },
+      fn: (contact: Contact) => ({
+        EXPIRES: contact.membership?.dateExpires
+          ? moment.utc(contact.membership.dateExpires).format('dddd Do MMMM')
+          : '-',
+        MEMBERSHIPID: contact.id,
+      }),
+    },
+    'cancelled-contribution-no-survey': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: ['EXPIRES'],
+      },
+      fn: (contact: Contact) => {
+        return {
+          EXPIRES: contact.membership?.dateExpires
+            ? moment.utc(contact.membership.dateExpires).format('dddd Do MMMM')
+            : '-',
+        };
+      },
+    },
+    'manual-to-automatic': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: [],
+      },
+      fn: () => ({}),
+    },
+    'email-exists-login': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: ['LOGINLINK'],
+      },
+      fn: (_: Contact, params: { loginLink: string }) => ({
+        LOGINLINK: params.loginLink,
+      }),
+    },
+    'email-exists-set-password': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: ['SPLINK'],
+      },
+      fn: (_: Contact, params: { spLink: string }) => ({
+        SPLINK: params.spLink,
+      }),
+    },
+    'callout-response-answers': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: ['MESSAGE', 'CALLOUTTITLE', 'CALLOUTLINK', 'SUPPORTEMAIL'],
+      },
+      fn: (
+        _: Contact,
+        params: { message: string; calloutSlug: string; calloutTitle: string }
+      ) => ({
+        MESSAGE: params.message,
+        CALLOUTTITLE: params.calloutTitle,
+        CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
+        SUPPORTEMAIL: OptionsService.getText('support-email'),
+      }),
+    },
+    'successful-referral': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: ['REFCODE', 'REFEREENAME', 'ISELIGIBLE'],
+      },
+      fn: (
+        contact: Contact,
+        params: { refereeName: string; isEligible: boolean }
+      ) => ({
+        REFCODE: contact.referralCode,
+        REFEREENAME: params.refereeName,
+        ISELIGIBLE: params.isEligible,
+      }),
+    },
+    'giftee-success': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: ['PURCHASER', 'MESSAGE', 'ACTIVATELINK'],
+      },
+      fn: (
+        _: Contact,
+        params: { fromName: string; message: string; giftCode: string }
+      ) => ({
+        PURCHASER: params.fromName,
+        MESSAGE: params.message,
+        ACTIVATELINK: config.audience + '/gift/' + params.giftCode,
+      }),
+    },
+    'contribution-didnt-start': {
+      metadata: {
+        type: 'contact' as const,
+        showContactFields: true,
+        mergeFields: ['ORGNAME', 'SUPPORTEMAIL'],
+      },
+      fn: (_: Contact) => ({
+        ORGNAME: OptionsService.getText('organisation'),
+        SUPPORTEMAIL: OptionsService.getText('support-email'),
+      }),
+    },
   },
-  /**
-   * Email for successful referral
-   *
-   * **Available Merge Fields:**
-   * - *|REFCODE|* - Contact's referral code
-   * - *|REFEREENAME|* - Name of the referred person
-   * - *|ISELIGIBLE|* - Whether the referral is eligible
-   */
-  'successful-referral': (
-    contact: Contact,
-    params: { refereeName: string; isEligible: boolean }
-  ) => ({
-    REFCODE: contact.referralCode,
-    REFEREENAME: params.refereeName,
-    ISELIGIBLE: params.isEligible,
-  }),
-  /**
-   * Email for successful gift activation (to recipient)
-   *
-   * **Available Merge Fields:**
-   * - *|PURCHASER|* - Name of the gift purchaser
-   * - *|MESSAGE|* - Personal message from the purchaser (supports nested merge fields)
-   * - *|ACTIVATELINK|* - Link to activate the gift
-   */
-  'giftee-success': (
-    _: Contact,
-    params: { fromName: string; message: string; giftCode: string }
-  ) => ({
-    PURCHASER: params.fromName,
-    MESSAGE: params.message,
-    ACTIVATELINK: config.audience + '/gift/' + params.giftCode,
-  }),
-  /**
-   * Email for conversion from manual to automatic
-   *
-   * **Available Merge Fields:**
-   * - Only the general contact merge fields
-   */
-  'manual-to-automatic': () => ({}),
-  /**
-   * Email when email already exists (login)
-   *
-   * **Available Merge Fields:**
-   * - *|LOGINLINK|* - Login link
-   */
-  'email-exists-login': (_: Contact, params: { loginLink: string }) => ({
-    LOGINLINK: params.loginLink,
-  }),
-  /**
-   * Email when email already exists (set password)
-   *
-   * **Available Merge Fields:**
-   * - *|SPLINK|* - Set password link
-   */
-  'email-exists-set-password': (_: Contact, params: { spLink: string }) => ({
-    SPLINK: params.spLink,
-  }),
-  /**
-   * Email with callout response answers
-   *
-   * **Available Merge Fields:**
-   * - *|MESSAGE|* - Custom message (supports nested merge fields)
-   * - *|CALLOUTTITLE|* - Title of the callout
-   * - *|CALLOUTLINK|* - Link to the callout
-   * - *|SUPPORTEMAIL|* - Support email address
-   */
-  'callout-response-answers': (
-    _: Contact,
-    params: { message: string; calloutSlug: string; calloutTitle: string }
-  ) => ({
-    MESSAGE: params.message,
-    CALLOUTTITLE: params.calloutTitle,
-    CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
-    SUPPORTEMAIL: OptionsService.getText('support-email'),
-  }),
-  /**
-   * Email when contribution didn't start
-   *
-   * **Available Merge Fields:**
-   * - *|ORGNAME|* - Organization name
-   * - *|SUPPORTEMAIL|* - Support email address
-   */
-  'contribution-didnt-start': (_: Contact) => ({
-    ORGNAME: OptionsService.getText('organisation'),
-    SUPPORTEMAIL: OptionsService.getText('support-email'),
-  }),
+
+  // General email templates
+  general: {
+    'purchased-gift': {
+      metadata: {
+        type: 'general' as const,
+        showContactFields: false,
+        mergeFields: ['PURCHASER', 'GIFTEE', 'GIFTDATE'],
+      },
+      fn: (params: {
+        fromName: string;
+        gifteeFirstName: string;
+        giftStartDate: Date;
+      }) => ({
+        PURCHASER: params.fromName,
+        GIFTEE: params.gifteeFirstName,
+        GIFTDATE: moment.utc(params.giftStartDate).format('MMMM Do'),
+      }),
+    },
+    'confirm-email': {
+      metadata: {
+        type: 'general' as const,
+        showContactFields: false,
+        mergeFields: ['FNAME', 'LNAME', 'CONFIRMLINK'],
+      },
+      fn: (params: {
+        firstName: string;
+        lastName: string;
+        confirmLink: string;
+      }) => ({
+        FNAME: params.firstName,
+        LNAME: params.lastName,
+        CONFIRMLINK: params.confirmLink,
+      }),
+    },
+    'expired-special-url-resend': {
+      metadata: {
+        type: 'general' as const,
+        showContactFields: false,
+        mergeFields: ['FNAME', 'URL'],
+      },
+      fn: (params: { firstName: string; newUrl: string }) => ({
+        FNAME: params.firstName,
+        URL: params.newUrl,
+      }),
+    },
+  },
+
+  // Admin email templates
+  admin: {
+    'new-member': {
+      metadata: {
+        type: 'admin' as const,
+        showContactFields: false,
+        mergeFields: ['MEMBERID', 'MEMBERNAME'],
+      },
+      fn: (params: { contact: Contact }) => ({
+        MEMBERID: params.contact.id,
+        MEMBERNAME: params.contact.fullname,
+      }),
+    },
+    'cancelled-member': {
+      metadata: {
+        type: 'admin' as const,
+        showContactFields: false,
+        mergeFields: ['MEMBERID', 'MEMBERNAME'],
+      },
+      fn: (params: { contact: Contact }) => ({
+        MEMBERID: params.contact.id,
+        MEMBERNAME: params.contact.fullname,
+      }),
+    },
+    'new-callout-response': {
+      metadata: {
+        type: 'admin' as const,
+        showContactFields: false,
+        mergeFields: ['CALLOUTSLUG', 'CALLOUTTITLE', 'RESPNAME'],
+      },
+      fn: (params: {
+        calloutSlug: string;
+        calloutTitle: string;
+        responderName: string;
+      }) => ({
+        CALLOUTSLUG: params.calloutSlug,
+        CALLOUTTITLE: params.calloutTitle,
+        RESPNAME: params.responderName,
+      }),
+    },
+  },
 } as const;
+
+/**
+ * Extract template functions for backward compatibility
+ * These are the original exports used throughout the codebase
+ */
+export const contactEmailTemplates = Object.fromEntries(
+  Object.entries(emailTemplateDefinitions.contact).map(([key, value]) => [
+    key,
+    value.fn,
+  ])
+) as {
+  [K in keyof typeof emailTemplateDefinitions.contact]: (typeof emailTemplateDefinitions.contact)[K]['fn'];
+};
+
+export const generalEmailTemplates = Object.fromEntries(
+  Object.entries(emailTemplateDefinitions.general).map(([key, value]) => [
+    key,
+    value.fn,
+  ])
+) as {
+  [K in keyof typeof emailTemplateDefinitions.general]: (typeof emailTemplateDefinitions.general)[K]['fn'];
+};
+
+export const adminEmailTemplates = Object.fromEntries(
+  Object.entries(emailTemplateDefinitions.admin).map(([key, value]) => [
+    key,
+    value.fn,
+  ])
+) as {
+  [K in keyof typeof emailTemplateDefinitions.admin]: (typeof emailTemplateDefinitions.admin)[K]['fn'];
+};
