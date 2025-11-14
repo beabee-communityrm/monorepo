@@ -11,7 +11,6 @@ import { wrapAsync } from '@beabee/core/utils/express';
 import express, { type Express, type Request, type Response } from 'express';
 
 import { cleanRuleGroup } from '#apps/members/app';
-import { EmailSchema, schemaToEmail } from '#apps/tools/apps/emails/app';
 import { hasNewModel } from '#core/middleware';
 import { getSegmentContacts } from '#core/utils/segments';
 
@@ -103,8 +102,12 @@ app.get(
   })
 );
 
-interface CreateBaseEmail extends Omit<EmailSchema, 'name'> {
+interface CreateBaseEmail {
   email: string;
+  subject: string;
+  body: string;
+  fromName?: string;
+  fromEmail?: string;
 }
 
 interface CreateOneOffEmail extends CreateBaseEmail {
@@ -128,12 +131,13 @@ app.post(
 
     const email =
       data.email === '__new__'
-        ? await getRepository(Email).save(
-            schemaToEmail({
-              ...data,
-              name: 'Email to segment ' + segment.name,
-            })
-          )
+        ? await getRepository(Email).save({
+            name: 'Email to segment ' + segment.name,
+            subject: data.subject,
+            body: data.body,
+            fromName: data.fromName || null,
+            fromEmail: data.fromEmail || null,
+          })
         : await getRepository(Email).findOneByOrFail({ id: data.email });
 
     if (data.type === 'ongoing') {
