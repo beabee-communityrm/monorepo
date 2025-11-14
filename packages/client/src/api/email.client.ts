@@ -1,4 +1,13 @@
-import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
+import type {
+  AssignTemplateData,
+  CreateEmailData,
+  GetEmailData,
+  GetEmailTemplateInfoData,
+  GetEmailWithMetadataData,
+  ListEmailsQuery,
+  Paginated,
+  UpdateEmailData,
+} from '@beabee/beabee-common';
 
 import type { BaseClientOptions, PreviewEmailOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
@@ -22,27 +31,88 @@ export class EmailClient extends BaseClient {
   }
 
   /**
-   * Retrieves email data by ID
-   * @param id - The email ID to fetch
-   * @returns The email data
+   * List all emails with pagination
+   * @param query - Pagination query parameters
+   * @returns Paginated list of emails with metadata
    */
-  async get(id: string): Promise<GetEmailData> {
-    const { data } = await this.fetch.get<GetEmailData>(`/${id}`);
+  async list(
+    query?: ListEmailsQuery
+  ): Promise<Paginated<GetEmailWithMetadataData>> {
+    const { data } = await this.fetch.get<Paginated<GetEmailWithMetadataData>>(
+      '/',
+      query || {}
+    );
     return data;
   }
 
   /**
-   * Updates an existing email
-   * @param id - The email ID to update
-   * @param data - The update data for the email
-   * @returns The updated email data
+   * Get available email templates with metadata
+   * @returns Array of available email templates
    */
-  async update(id: string, data: UpdateEmailData): Promise<GetEmailData> {
-    const { data: responseData } = await this.fetch.put<GetEmailData>(
-      `/${id}`,
-      data
+  async getTemplates(): Promise<GetEmailTemplateInfoData[]> {
+    const { data } =
+      await this.fetch.get<GetEmailTemplateInfoData[]>('/templates');
+    return data;
+  }
+
+  /**
+   * Create a new custom email
+   * @param emailData - The email data to create
+   * @returns The created email with metadata
+   */
+  async create(emailData: CreateEmailData): Promise<GetEmailWithMetadataData> {
+    const { data } = await this.fetch.post<GetEmailWithMetadataData>(
+      '/',
+      emailData
     );
+    return data;
+  }
+
+  /**
+   * Retrieves email data by ID
+   * @param id - The email ID to fetch
+   * @returns The email data with metadata
+   */
+  async get(id: string): Promise<GetEmailWithMetadataData> {
+    const { data } = await this.fetch.get<GetEmailWithMetadataData>(`/${id}`);
+    return data;
+  }
+
+  /**
+   * Updates an existing email or creates a template override
+   * @param id - The email ID or template ID to update
+   * @param data - The update data for the email
+   * @returns The updated email data with metadata
+   */
+  async update(
+    id: string,
+    data: UpdateEmailData
+  ): Promise<GetEmailWithMetadataData> {
+    const { data: responseData } =
+      await this.fetch.put<GetEmailWithMetadataData>(`/${id}`, data);
     return responseData;
+  }
+
+  /**
+   * Delete an email or remove a template override
+   * @param id - The email ID or template ID to delete
+   */
+  async delete(id: string): Promise<void> {
+    await this.fetch.delete(`/${id}`);
+  }
+
+  /**
+   * Assign a template to an email (or unassign by passing null)
+   * @param templateId - The template ID
+   * @param emailId - The email ID to assign, or null to unassign
+   */
+  async assignTemplate(
+    templateId: string,
+    emailId: string | null
+  ): Promise<void> {
+    await this.fetch.put(`/templates/${templateId}`, {
+      emailId,
+    } as AssignTemplateData);
   }
 
   /**

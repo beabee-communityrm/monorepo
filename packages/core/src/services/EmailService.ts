@@ -8,6 +8,7 @@ import config from '#config/config';
 import {
   adminEmailTemplates,
   contactEmailTemplates,
+  emailTemplateDefinitions,
   generalEmailTemplates,
 } from '#data/email-templates';
 import { log as mainLogger } from '#logging';
@@ -333,6 +334,40 @@ class EmailService {
       delete currentTemplates[template];
       await OptionsService.setJSON('email-templates', currentTemplates);
     }
+  }
+
+  /**
+   * Get metadata for all assignable email templates
+   * @returns Array of template metadata with type, merge fields, and override status
+   * Note: Template names are handled in the frontend via translations
+   */
+  getAssignableTemplates(): Array<{
+    id: string;
+    type: 'general' | 'admin' | 'contact';
+    mergeFields: string[];
+    showContactFields?: boolean;
+    overrideEmailId?: string;
+  }> {
+    const emailTemplates = OptionsService.getJSON('email-templates') || {};
+
+    // Iterate over all template types and their templates in a single loop
+    const allTemplates = Object.entries(emailTemplateDefinitions).flatMap(
+      ([type, templates]) =>
+        Object.entries(templates).map(([id, def]) => ({
+          id,
+          metadata: def.metadata,
+        }))
+    );
+
+    return allTemplates.map(({ id, metadata }) => ({
+      id,
+      type: metadata.type,
+      mergeFields: metadata.mergeFields,
+      ...(metadata.showContactFields !== undefined && {
+        showContactFields: metadata.showContactFields,
+      }),
+      ...(emailTemplates[id] && { overrideEmailId: emailTemplates[id] }),
+    }));
   }
 
   isTemplateId(template: string): template is EmailTemplateId {
