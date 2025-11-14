@@ -1,7 +1,11 @@
 import moment from 'moment';
 import type { ArgumentsCamelCase, CommandModule } from 'yargs';
 
-import type { SyncMailchimpArgs, SyncSegmentsArgs } from '../types/sync.js';
+import type {
+  SyncMailchimpArgs,
+  SyncNewsletterStatusArgs,
+  SyncSegmentsArgs,
+} from '../types/sync.js';
 
 export const syncCommand: CommandModule = {
   command: 'sync <action>',
@@ -10,7 +14,8 @@ export const syncCommand: CommandModule = {
     yargs
       .command({
         command: 'mailchimp',
-        describe: 'Sync newsletter status with Mailchimp',
+        describe:
+          'Remove active member tag from MailChimp contacts whose membership has expired',
         builder: (yargs) =>
           yargs
             .option('startDate', {
@@ -67,6 +72,25 @@ export const syncCommand: CommandModule = {
         handler: async (argv) => {
           const { syncStripe } = await import('../actions/sync/stripe.js');
           return syncStripe(argv.dryRun);
+        },
+      })
+      .command({
+        command: 'newsletter-status',
+        describe:
+          'Sync all newsletter subscription statuses from MailChimp to Beabee database',
+        builder: (yargs) =>
+          yargs.option('dryRun', {
+            type: 'boolean',
+            description: 'Run without making changes',
+            default: false,
+          }),
+        handler: async (argv) => {
+          const { syncNewsletterStatus } = await import(
+            '../actions/sync/newsletter-status.js'
+          );
+          return syncNewsletterStatus({
+            dryRun: argv.dryRun,
+          });
         },
       }),
   handler: () => {},
