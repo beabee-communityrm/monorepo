@@ -1128,6 +1128,89 @@
       "label": ""
     }
   },
+  "emails": {
+    "actions": {
+      "addCustom": "",
+      "assignTemplates": "",
+      "editEmail": "",
+      "resetToDefault": ""
+    },
+    "add": {
+      "title": ""
+    },
+    "assignedTemplates": "",
+    "assignedTo": "",
+    "confirmDelete": {
+      "message": "",
+      "messageWithMailings": "",
+      "title": ""
+    },
+    "confirmResetToDefault": {
+      "message": "",
+      "title": ""
+    },
+    "custom": "",
+    "edit": {
+      "title": "",
+      "titleCustom": "",
+      "titleSystemOverride": ""
+    },
+    "fromEmail": "",
+    "fromName": "",
+    "list": {
+      "noEmails": "",
+      "showingOf": "",
+      "title": ""
+    },
+    "mailingCount": "",
+    "name": "",
+    "noAssignedTemplates": "",
+    "notifications": {
+      "created": "",
+      "deleted": "",
+      "resetToDefault": "",
+      "templateAssigned": "",
+      "templatesAssigned": "",
+      "updated": ""
+    },
+    "systemOverride": "",
+    "tabs": {
+      "custom": "",
+      "templates": ""
+    },
+    "templates": {
+      "names": {
+        "callout-response-answers": "",
+        "cancelled-contribution": "",
+        "cancelled-contribution-no-survey": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "expired-special-url-resend": "",
+        "giftee-success": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "purchased-gift": "",
+        "reset-device": "",
+        "reset-password": "",
+        "successful-referral": "",
+        "welcome": "",
+        "welcome-post-gift": ""
+      },
+      "select": "",
+      "title": "",
+      "type": {
+        "admin": "",
+        "contact": "",
+        "general": ""
+      },
+      "useDefault": ""
+    },
+    "title": ""
+  },
   "footer": {
     "contactUs": "",
     "handbookResources": "",
@@ -1436,6 +1519,7 @@
     "contacts": "",
     "contribution": "",
     "dashboard": "",
+    "emails": "",
     "home": "",
     "legacyApp": "",
     "logout": "",
