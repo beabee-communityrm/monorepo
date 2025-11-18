@@ -21,7 +21,7 @@ import { Contact } from '#models/index';
  */
 export function getMonthlyAmount(
   amount: number,
-  period: PaymentPeriod
+  period: ContributionPeriod
 ): number {
   return period === ContributionPeriod.Annually ? amount / 12 : amount;
 }

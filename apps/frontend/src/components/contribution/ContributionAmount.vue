@@ -146,11 +146,16 @@ const props = defineProps<ContributionAmountProps>();
  * Per period text based on contribution type
  */
 const perPeriodText = computed(() => {
-  return props.period === ContributionPeriod.Monthly
-    ? t('common.perMonth')
-    : props.period === ContributionPeriod.Annually
-      ? t('common.perYear')
-      : '';
+  switch (props.period) {
+    case ContributionPeriod.Monthly:
+      return t('common.perMonth');
+    case ContributionPeriod.Annually:
+      return t('common.perYear');
+    case 'one-time':
+      return '';
+    default: // suppresses vue/return-in-computed-property-warning
+      return '';
+  }
 });
 
 const amount = computed({
