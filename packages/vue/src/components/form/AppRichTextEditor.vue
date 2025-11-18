@@ -96,14 +96,7 @@
           class="absolute right-0 top-full z-[100] mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
           @click.stop
         >
-          <AppMergeFields
-            :groups="mergeFields"
-            :show-insert="true"
-            :show-copy="false"
-            :default-expanded="true"
-            :hide-toggle="true"
-            @insert="insertMergeField"
-          />
+          <AppMergeFields :groups="mergeFields" @insert="insertMergeField" />
         </div>
       </div>
     </div>
