@@ -45,6 +45,7 @@
             :subject-label="t('callout.builder.tabs.email.subject.label')"
             :content-label="t('callout.builder.tabs.email.body.label')"
             :always-stacked="true"
+            :use-message-merge-field="true"
           />
         </div>
       </div>
