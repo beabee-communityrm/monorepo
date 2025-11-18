@@ -940,7 +940,11 @@
     "timeIn": "σε {time}",
     "until": "",
     "yes": "",
-    "paymentPeriod": {},
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "perOneTime": "",
     "perOneTimeText": ""
   },

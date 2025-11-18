@@ -940,7 +940,11 @@
     "timeIn": "в {time}",
     "until": "до",
     "yes": "Да",
-    "paymentPeriod": {},
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "perOneTime": "",
     "perOneTimeText": ""
   },

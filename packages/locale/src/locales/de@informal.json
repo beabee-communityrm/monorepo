@@ -940,9 +940,13 @@
     "timeIn": "in {time}",
     "until": "bis",
     "yes": "Ja",
-    "paymentPeriod": {},
-    "perOneTime": "",
-    "perOneTimeText": ""
+    "paymentPeriod": {
+      "annually": "Jährlich",
+      "monthly": "Monatlich",
+      "one-time": "Einmalig"
+    },
+    "perOneTime": "einmalig",
+    "perOneTimeText": "einmalig"
   },
   "contactAccount": {
     "confirmDelete": {

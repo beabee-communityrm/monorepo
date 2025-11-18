@@ -943,7 +943,11 @@
     "timeIn": "dans {time}",
     "until": "jusqu'à",
     "yes": "Oui",
-    "paymentPeriod": {},
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "perOneTime": "",
     "perOneTimeText": ""
   },

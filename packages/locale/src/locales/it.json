@@ -940,7 +940,11 @@
     "timeIn": "in {time}",
     "until": "fino",
     "yes": "Sì",
-    "paymentPeriod": {},
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "perOneTime": "",
     "perOneTimeText": ""
   },

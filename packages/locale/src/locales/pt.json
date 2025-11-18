@@ -940,7 +940,11 @@
     "timeIn": "em {time}",
     "until": "até",
     "yes": "Sim",
-    "paymentPeriod": {},
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "perOneTime": "",
     "perOneTimeText": ""
   },
