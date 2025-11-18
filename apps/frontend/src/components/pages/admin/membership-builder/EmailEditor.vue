@@ -187,6 +187,7 @@ async function fetchServerPreview() {
       props.serverRender.type as 'contact' | 'general' | 'admin',
       props.serverRender.templateId || props.serverRender.type,
       {
+        body: content.value,
         mergeFields: {
           MESSAGE: content.value,
           ...props.mergeFields,
