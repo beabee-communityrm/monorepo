@@ -369,7 +369,8 @@
         "email": {
           "title": "Email",
           "body": {
-            "label": "Κείμενο email"
+            "label": "Κείμενο email",
+            "default": "<p>Γεια σας {FNAME},</p><p>Αυτό το email επιβεβαιώνει την απάντησή σας στο callout <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> χρησιμοποιώντας τη διεύθυνση email σας {EMAIL}.</p><p><br /></p><p>Εάν έχετε ερωτήσεις, παρακαλούμε επικοινωνήστε με την ομάδα υποστήριξής μας στο <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Με εκτίμηση</p>"
           },
           "collectInfoWarning": {
             "description": "Για να στείλετε email σε όλους τους συμμετέχοντες, πρέπει να ενεργοποιήσετε \"Συλλογή πληροφοριών επαφής\" στην καρτέλα Ρυθμίσεις",
@@ -380,7 +381,8 @@
             "label": "Στείλτε email σε όλους τους συμμετέχοντες μετά την υποβολή"
           },
           "subject": {
-            "label": "Θέμα email"
+            "label": "Θέμα email",
+            "default": "Ευχαριστούμε για την απάντησή σας"
           }
         },
         "endMessage": {
@@ -1112,7 +1114,19 @@
     "warning": ""
   },
   "editNotice": {
-    "title": ""
+    "title": "Επεξεργασία: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Θέμα"
+    },
+    "body": {
+      "label": "Μήνυμα"
+    },
+    "preview": {
+      "label": "Προεπισκόπηση",
+      "unavailable": "Προεπισκόπηση μη διαθέσιμη"
+    }
   },
   "footer": {
     "contactUs": "",

@@ -55,6 +55,8 @@ const config = {
       },
       screens: {
         xs: '475px',
+        sm: '768px',
+        md: '1024px',
         lg: '1264px' /* Offset by 240px for menu */,
         xl: '1640px',
       },

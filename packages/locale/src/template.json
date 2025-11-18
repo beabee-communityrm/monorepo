@@ -368,6 +368,7 @@
         },
         "email": {
           "body": {
+            "default": "",
             "label": ""
           },
           "collectInfoWarning": {
@@ -379,6 +380,7 @@
             "label": ""
           },
           "subject": {
+            "default": "",
             "label": ""
           },
           "title": ""
@@ -1113,6 +1115,18 @@
   },
   "editNotice": {
     "title": ""
+  },
+  "emailEditor": {
+    "body": {
+      "label": ""
+    },
+    "preview": {
+      "label": "",
+      "unavailable": ""
+    },
+    "subject": {
+      "label": ""
+    }
   },
   "footer": {
     "contactUs": "",
