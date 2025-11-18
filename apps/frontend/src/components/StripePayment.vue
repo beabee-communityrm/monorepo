@@ -37,7 +37,7 @@ import { loadStripe } from '@stripe/stripe-js/pure';
 import type { StripePaymentData } from '@type';
 import useVuelidate from '@vuelidate/core';
 import theme from 'virtual:theme';
-import { onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const emit = defineEmits(['loaded']);
@@ -110,7 +110,7 @@ const appearance: Appearance = {
   },
 };
 
-function getApplePayValue(): ApplePayOption | undefined {
+const applePayOption = computed<ApplePayOption | undefined>(() => {
   return props.paymentData.period !== 'one-time'
     ? {
         recurringPaymentRequest: {
@@ -128,7 +128,7 @@ function getApplePayValue(): ApplePayOption | undefined {
         },
       }
     : undefined;
-}
+});
 
 onBeforeMount(async () => {
   const stripe = await loadStripe(props.publicKey);
@@ -144,7 +144,7 @@ onBeforeMount(async () => {
           ...(props.showNameFields && { name: 'never' }),
         },
       },
-      applePay: getApplePayValue(),
+      applePay: applePayOption.value,
     });
     paymentElement.mount(divRef.value);
     paymentElement.on('ready', () => emit('loaded'));
