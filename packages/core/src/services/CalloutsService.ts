@@ -342,8 +342,6 @@ export class CalloutsService {
           newsletter
         );
 
-        // Send confirmation email to the contact
-        await this.sendResponseEmail(callout, contact, response);
         return response.id;
       } catch (err) {
         // Suppress errors from creating a response for a contact, this prevents

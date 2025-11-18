@@ -242,7 +242,7 @@ class EmailService {
     type: EmailTemplateType,
     contact: Contact,
     customMergeFields: Record<string, string> = {},
-    opts?: TemplateEmailOptions & { locale?: Locale }
+    opts?: TemplateEmailOptions & { locale?: Locale; body?: string }
   ): Promise<{ subject: string; body: string }> {
     // 1. Get the email template (from provider or default templates)
     const emailTemplate = await this.getTemplateEmail(template);
@@ -304,8 +304,10 @@ class EmailService {
 
     // 7. Replace merge fields in body and apply email formatting
     // This includes adding the footer and inline CSS styles, exactly as in actual emails
+    // Use provided body override if available, otherwise use template body
+    const templateBody = opts?.body || (emailTemplate as Email).body;
     const bodyWithMergeFields = replaceMergeFields(
-      (emailTemplate as Email).body,
+      templateBody,
       expandedFields
     );
     const previewBody = formatEmailBody(bodyWithMergeFields);
