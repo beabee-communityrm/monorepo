@@ -6,6 +6,12 @@ export interface PreviewEmailOptions {
   mergeFields?: Record<string, string>;
   /** Optional custom subject to override the template's default subject */
   customSubject?: string;
+  /**
+   * Optional body to override the template's body for preview
+   * When provided, this body will be used instead of the saved template body,
+   * allowing preview of unsaved changes. Merge fields will still be replaced.
+   */
+  body?: string;
   /** Optional locale for the preview (defaults to system locale) */
   locale?: string;
 }
