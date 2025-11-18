@@ -128,6 +128,7 @@ export class EmailController {
       {
         ...(data.customSubject && { customSubject: data.customSubject }),
         ...(data.locale && { locale: data.locale }),
+        ...(data.body && { body: data.body }),
       }
     );
 
