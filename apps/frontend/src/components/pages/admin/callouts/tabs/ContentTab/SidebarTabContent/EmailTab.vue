@@ -32,10 +32,7 @@
             v-model:content="emailData.content"
             :merge-fields="{
               CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
-              CALLOUTLINK: generateCalloutLink(
-                props.tabs.titleAndImage.data.slug,
-                true
-              ),
+              CALLOUTLINK: `${env.appUrl}/crowdnewsroom/${props.tabs.titleAndImage.data.slug}`,
             }"
             :server-render="{
               type: 'contact',
@@ -61,8 +58,8 @@
 import { AppFormField, AppNotification, AppToggleField } from '@beabee/vue';
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+import env from '@env';
 import type { LocaleProp } from '@type';
-import { generateCalloutLink } from '@utils/callouts';
 import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
