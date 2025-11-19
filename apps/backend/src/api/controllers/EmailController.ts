@@ -11,7 +11,6 @@ import {
   UpdateEmailDto,
 } from '@api/dto/EmailDto';
 import EmailTransformer from '@api/transformers/EmailTransformer';
-import { findEmail } from '@api/utils/email';
 import {
   Authorized,
   BadRequestError,
@@ -32,7 +31,7 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Param('id') id: string
   ): Promise<GetEmailDto | undefined> {
-    const email = await findEmail(id);
+    const email = await EmailService.findEmail(id);
     return email ? EmailTransformer.convert(email, auth) : undefined;
   }
 
@@ -42,7 +41,7 @@ export class EmailController {
     @Param('id') id: string,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto | undefined> {
-    const email = await findEmail(id);
+    const email = await EmailService.findEmail(id);
     if (email) {
       await getRepository(Email).update(email.id, data);
       return data;

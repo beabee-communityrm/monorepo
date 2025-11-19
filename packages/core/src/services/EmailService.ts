@@ -1,5 +1,6 @@
 import { Locale, isLocale } from '@beabee/locale';
 
+import { isUUID } from 'class-validator';
 import fs from 'fs';
 import path from 'path';
 import { loadFront } from 'yaml-front-matter';
@@ -10,6 +11,8 @@ import {
   contactEmailTemplates,
   generalEmailTemplates,
 } from '#data/email-templates';
+import { getRepository } from '#database';
+import { ExternalEmailTemplate } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Contact, Email } from '#models/index';
 import { MandrillProvider, SMTPProvider, SendGridProvider } from '#providers';
@@ -343,6 +346,28 @@ class EmailService {
       template in adminEmailTemplates ||
       template in contactEmailTemplates
     );
+  }
+
+  /**
+   * Find an email by ID (UUID) or template ID
+   *
+   * @param id The email ID (UUID) or template ID
+   * @returns The email if found, or:
+   *   - `null` if not found
+   *   - Throws `ExternalEmailTemplate` if the template is managed by an external email provider
+   */
+  async findEmail(id: string): Promise<Email | null> {
+    if (isUUID(id, '4')) {
+      return await getRepository(Email).findOneBy({ id });
+    } else if (this.isTemplateId(id)) {
+      const maybeEmail = await this.getTemplateEmail(id);
+      if (maybeEmail) {
+        return maybeEmail;
+      } else if (maybeEmail === false) {
+        throw new ExternalEmailTemplate();
+      }
+    }
+    return null;
   }
 
   private getProviderTemplate(template: EmailTemplateId): string | undefined {
