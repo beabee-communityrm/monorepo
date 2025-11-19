@@ -539,9 +539,6 @@ class CalloutsService {
       return;
     }
 
-    // Send custom email using the callout-response-answers template
-    // The template includes proper email structure (header, footer, etc.)
-    // Merge fields like *|FNAME|*, *|EMAIL|* etc. will be replaced
     await EmailService.sendTemplateToContact(
       'callout-response-answers',
       contact,

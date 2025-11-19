@@ -112,6 +112,18 @@ class EmailService {
     await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
   }
 
+  /**
+   * Send an email template to a contact
+   *
+   * The template includes proper email structure (header, footer, etc.) and merge fields
+   * like *|FNAME|*, *|EMAIL|*, etc. will be automatically replaced with contact data and
+   * template-specific parameters.
+   *
+   * @param template The contact email template ID
+   * @param contact The contact to send the email to
+   * @param params Template-specific parameters
+   * @param opts Optional email options including customSubject
+   */
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
