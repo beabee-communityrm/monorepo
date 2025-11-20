@@ -361,34 +361,24 @@ class EmailService {
     };
 
     // Get template-specific merge fields using typed params
-    let templateMergeFields: EmailMergeFields = {};
-    if (emailTemplateService.isContact(template)) {
-      // Ensure contact is included in params
-      const contactParams = {
-        ...(params ?? {}),
-        contact,
-      } as ContactEmailParams<ContactEmailTemplateId>;
-      templateMergeFields = emailTemplateService.getMergeFields(
-        template,
-        contactParams
-      );
-    } else if (emailTemplateService.isAdmin(template)) {
-      templateMergeFields = emailTemplateService.getMergeFields(
-        template,
-        params as AdminEmailParams<AdminEmailTemplateId>
-      );
-    } else if (emailTemplateService.isGeneral(template)) {
-      templateMergeFields = emailTemplateService.getMergeFields(
-        template,
-        params as GeneralEmailParams<GeneralEmailTemplateId>
-      );
-    }
+    // getMergeFields handles all template types generically and ensures contact is included for contact templates
+    const templateMergeFields = (
+      emailTemplateService.getMergeFields as (
+        template: EmailTemplateId,
+        params?: unknown
+      ) => EmailMergeFields
+    )(
+      template,
+      emailTemplateService.isContact(template)
+        ? { ...(params ?? {}), contact }
+        : params
+    );
 
     // Merge all fields: base fields, template-generated fields, and custom merge fields from opts
     // Custom merge fields from opts.mergeFields override template-generated fields
     const allMergeFields = {
       ...baseMergeFields,
-      ...templateMergeFields,
+      ...templateMergeFields, // TODO: Check if this is needed. Perhaps we could simply do without it and save a lot of code, or instead use the same logic that we use when sending emails?
       ...opts?.mergeFields,
     };
 
