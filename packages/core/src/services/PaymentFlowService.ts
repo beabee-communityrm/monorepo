@@ -225,12 +225,16 @@ class PaymentFlowService implements PaymentFlowProvider {
           contact,
           joinFlow.joinForm
         );
+        await EmailService.sendTemplateToContact('welcome', contact);
       } else {
         await PaymentService.createOneTimePayment(contact, joinFlow.joinForm);
+        await EmailService.sendTemplateToContact('one-time-donation', contact, {
+          amount: joinFlow.joinForm.monthlyAmount,
+        });
       }
+    } else {
+      await EmailService.sendTemplateToContact('welcome', contact);
     }
-
-    await EmailService.sendTemplateToContact('welcome', contact);
 
     return contact;
   }
