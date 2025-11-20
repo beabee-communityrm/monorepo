@@ -111,6 +111,12 @@ class PaymentFlowService implements PaymentFlowProvider {
     return paymentFlow.params;
   }
 
+  /**
+   * Retrieves a join flow by its associated payment flow ID
+   *
+   * @param paymentFlowId The payment flow ID
+   * @returns The join flow or null if not found
+   */
   async getJoinFlowByPaymentId(
     paymentFlowId: string
   ): Promise<JoinFlow | null> {
@@ -118,9 +124,11 @@ class PaymentFlowService implements PaymentFlowProvider {
   }
 
   /**
-   * Completes a join flow after provider setup
+   * Completes a join flow after provider setup and deletes it. If there is an
+   * associated payment flow it will also be completed and returned
+   *
    * @param joinFlow - The join flow to complete
-   * @returns Promise resolving to completed payment flow or undefined
+   * @returns Promise resolving to completed payment flow or undefined.
    */
   async completeJoinFlow(
     joinFlow: JoinFlow
@@ -133,6 +141,14 @@ class PaymentFlowService implements PaymentFlowProvider {
     return paymentFlow;
   }
 
+  /**
+   * Sends the appropriate email for the given join flow. If the email given in
+   * the join flow belongs to a contact with an active contribution the user
+   * will instead exists in the database the user will instead be given a link
+   * to access their account.
+   *
+   * @param joinFlow The join flow
+   */
   async sendConfirmEmail(joinFlow: JoinFlow): Promise<void> {
     log.info('Send confirm email for join flow ' + joinFlow.id);
 
@@ -142,6 +158,7 @@ class PaymentFlowService implements PaymentFlowProvider {
 
     if (contact?.membership?.isActive) {
       if (contact.password.hash) {
+        // Active membership and already has a password set, just send them a login link
         await EmailService.sendTemplateToContact(
           'email-exists-login',
           contact,
@@ -150,6 +167,7 @@ class PaymentFlowService implements PaymentFlowProvider {
           }
         );
       } else {
+        // Active membership but has no password set, give them a link to set a new password
         const rpFlow = await ResetSecurityFlowService.create(
           contact,
           RESET_SECURITY_FLOW_TYPE.PASSWORD
@@ -163,6 +181,8 @@ class PaymentFlowService implements PaymentFlowProvider {
         );
       }
     } else {
+      // User doesn't exist or their membership is inactive, ask them to confirm
+      // their email address so they can continue the join flow
       await EmailService.sendTemplateTo(
         'confirm-email',
         { email: joinFlow.joinForm.email },
@@ -175,6 +195,15 @@ class PaymentFlowService implements PaymentFlowProvider {
     }
   }
 
+  /**
+   * Completes the confirm email step of the join flow, creating or updating
+   * the contact based on the join flow data. If there is an associated
+   * payment flow it will also be completed and the contact's payment method set
+   * appropriately.
+   *
+   * @param joinFlow The join flow to complete the confirm email for
+   * @returns The created or updated contact
+   */
   async completeConfirmEmail(joinFlow: JoinFlow): Promise<Contact> {
     // Check for an existing active member first to avoid completing the join
     // flow unnecessarily. This should never really happen as the user won't
@@ -219,7 +248,10 @@ class PaymentFlowService implements PaymentFlowProvider {
     }
 
     if (completedPaymentFlow) {
+      // Set the user's payment method and create their contribution or one-time donation
+
       await PaymentService.updatePaymentMethod(contact, completedPaymentFlow);
+
       if (isContributionForm(joinFlow.joinForm)) {
         await ContactsService.updateContactContribution(
           contact,
@@ -239,6 +271,15 @@ class PaymentFlowService implements PaymentFlowProvider {
     return contact;
   }
 
+  /**
+   * Create a new payment flow for the given join flow, dispatching to the
+   * appropriate provider and returning the created payment flow.
+   *
+   * @param joinFlow The join flow
+   * @param completeUrl The completion URL for the payment flow
+   * @param data The payment flow data
+   * @returns The created payment flow
+   */
   async createPaymentFlow(
     joinFlow: JoinFlow,
     completeUrl: string,
@@ -252,6 +293,13 @@ class PaymentFlowService implements PaymentFlowProvider {
     );
   }
 
+  /**
+   * Complete the payment flow for the given join flow, dispatching to the
+   * appropriate provider and returning the completed payment flow
+   *
+   * @param joinFlow  The join flow
+   * @returns The completed payment flow
+   */
   async completePaymentFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow> {
     log.info('Complete payment flow for join flow ' + joinFlow.id);
     return paymentProviders[
