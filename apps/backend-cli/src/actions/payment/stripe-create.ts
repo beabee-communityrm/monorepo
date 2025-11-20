@@ -1,4 +1,4 @@
-import { PaymentForm, PaymentMethod } from '@beabee/beabee-common';
+import { ContributionForm, PaymentMethod } from '@beabee/beabee-common';
 import {
   getPriceData,
   getSalesTaxRateObject,
@@ -12,7 +12,7 @@ import Stripe from 'stripe';
 import type { CreatePaymentArgs } from '../../types/index.js';
 
 // Step 2: Create join flow data
-function createPaymentFormData(argv: CreatePaymentArgs): PaymentForm {
+function createFormData(argv: CreatePaymentArgs): ContributionForm {
   return {
     monthlyAmount: argv.amount,
     period: argv.period,
@@ -62,12 +62,12 @@ async function setupTestPaymentMethod(
 // Step 5 & 6: Complete payment flow and create initial invoice
 async function createAndActivateSubscription(
   customerId: string,
-  paymentForm: PaymentForm,
+  form: ContributionForm,
   paymentMethod: PaymentMethod
 ): Promise<Stripe.Subscription> {
   const subscription = await stripe.subscriptions.create({
     customer: customerId,
-    items: [{ price_data: getPriceData(paymentForm, paymentMethod) }],
+    items: [{ price_data: getPriceData(form, paymentMethod) }],
     payment_behavior: 'error_if_incomplete',
     expand: ['latest_invoice.payment_intent'],
     default_tax_rates: getSalesTaxRateObject(),
@@ -101,7 +101,7 @@ export async function createStripePayment(
 ): Promise<void> {
   try {
     // Step 2: Create join flow data
-    const paymentForm = createPaymentFormData(argv);
+    const paymentForm = createFormData(argv);
 
     // Step 3: Create payment flow with SetupIntent
     const customer = await createStripeCustomer(contact);

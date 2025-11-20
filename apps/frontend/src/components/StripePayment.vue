@@ -32,7 +32,7 @@ import { AppButton, AppLabel, AppNotification } from '@beabee/vue';
 
 import env from '@env';
 import type { Appearance } from '@stripe/stripe-js';
-import type { ApplePayRecurringPaymentRequest } from '@stripe/stripe-js/dist/stripe-js/elements/apple-pay';
+import type { ApplePayOption } from '@stripe/stripe-js/dist/stripe-js/elements/apple-pay';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import type { StripePaymentData } from '@type';
 import useVuelidate from '@vuelidate/core';
@@ -110,21 +110,25 @@ const appearance: Appearance = {
   },
 };
 
-const appleRecurringPaymentRequest = computed<ApplePayRecurringPaymentRequest>(
-  () => ({
-    paymentDescription: t('joinPayment.applePay.description'),
-    managementURL: env.appUrl + '/profile/contribution',
-    regularBilling: {
-      label: t('joinPayment.applePay.recurringLabel'),
-      amount: props.paymentData.amount * 100,
-      recurringPaymentIntervalUnit:
-        props.paymentData.period === ContributionPeriod.Monthly
-          ? 'month'
-          : 'year',
-      recurringPaymentIntervalCount: 1,
-    },
-  })
-);
+const applePayOption = computed<ApplePayOption | undefined>(() => {
+  return props.paymentData.period !== 'one-time'
+    ? {
+        recurringPaymentRequest: {
+          paymentDescription: t('joinPayment.applePay.description'),
+          managementURL: env.appUrl + '/profile/contribution',
+          regularBilling: {
+            label: t('joinPayment.applePay.recurringLabel'),
+            amount: props.paymentData.amount * 100,
+            recurringPaymentIntervalUnit:
+              props.paymentData.period === ContributionPeriod.Monthly
+                ? 'month'
+                : 'year',
+            recurringPaymentIntervalCount: 1,
+          },
+        },
+      }
+    : undefined;
+});
 
 onBeforeMount(async () => {
   const stripe = await loadStripe(props.publicKey);
@@ -140,7 +144,7 @@ onBeforeMount(async () => {
           ...(props.showNameFields && { name: 'never' }),
         },
       },
-      applePay: { recurringPaymentRequest: appleRecurringPaymentRequest.value },
+      applePay: applePayOption.value,
     });
     paymentElement.mount(divRef.value);
     paymentElement.on('ready', () => emit('loaded'));

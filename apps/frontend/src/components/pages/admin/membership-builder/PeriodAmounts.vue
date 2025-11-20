@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppLabel :label="t('common.contributionPeriod.' + period)" />
+    <AppLabel :label="t('common.paymentPeriod.' + period)" />
     <PeriodAmountValue
       v-for="(amount, i) in modelValue"
       :key="i"
@@ -11,7 +11,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ContributionPeriod } from '@beabee/beabee-common';
+import { ContributionPeriod, type PaymentPeriod } from '@beabee/beabee-common';
 import { AppLabel } from '@beabee/vue';
 
 import { computed } from 'vue';
@@ -21,7 +21,7 @@ import PeriodAmountValue from './PeriodAmountValue.vue';
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps<{
-  period: ContributionPeriod;
+  period: PaymentPeriod;
   modelValue: number[];
   minMonthlyAmount: number;
 }>();
