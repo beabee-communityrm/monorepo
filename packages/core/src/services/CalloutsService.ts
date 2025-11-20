@@ -34,7 +34,7 @@ import {
   Contact,
 } from '#models/index';
 import ContactsService from '#services/ContactsService';
-import EmailService from '#services/EmailService';
+import { emailService } from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
 import { isDuplicateIndex } from '#utils/db';
@@ -465,7 +465,7 @@ class CalloutsService {
         `Saved callout response ${response.number} for callout ${response.callout.id}`
       );
 
-      await EmailService.sendTemplateToAdmin('new-callout-response', {
+      await emailService.sendTemplate('new-callout-response', {
         calloutSlug: response.callout.slug,
         calloutTitle: await this.getCalloutTitle(response.callout),
         responderName:
@@ -539,10 +539,10 @@ class CalloutsService {
       return;
     }
 
-    await EmailService.sendTemplateToContact(
+    await emailService.sendTemplate(
       'callout-response-answers',
-      contact,
       {
+        contact,
         message: variant.responseEmailBody,
         calloutSlug: callout.slug,
         calloutTitle: variant.title,

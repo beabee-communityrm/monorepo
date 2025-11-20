@@ -8,7 +8,7 @@ import { getRepository } from '../database';
 import { log as mainLogger } from '../logging';
 import { ContactContribution, Payment } from '../models';
 import ContactsService from '../services/ContactsService';
-import EmailService from '../services/EmailService';
+import { emailService } from '../services/EmailService';
 import GiftService from '../services/GiftService';
 import PaymentService from '../services/PaymentService';
 import { convertStatus, getSalesTaxRateObject, stripe } from './stripe';
@@ -110,10 +110,9 @@ export class StripeWebhookEventHandler {
         await PaymentService.updateData(contribution.contact, {
           subscriptionId: null,
         });
-        await EmailService.sendTemplateToContact(
-          'contribution-didnt-start',
-          contribution.contact
-        );
+        await emailService.sendTemplate('contribution-didnt-start', {
+          contact: contribution.contact,
+        });
       }
     }
   }

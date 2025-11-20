@@ -126,18 +126,15 @@ export type EmailTemplateId =
 
 /**
  * Extract parameters from a function type
- * For contact templates: extracts the second parameter (params) if it exists
- * For admin/general templates: extracts the first parameter (params)
+ * For all template types: extracts the first parameter (params)
+ * Contact templates now include contact in params, making them consistent with admin/general templates
  */
 type ExtractTemplateParams<
   T extends EmailTemplateId,
   Type extends EmailTemplateType,
 > = Type extends 'contact'
   ? T extends ContactEmailTemplateId
-    ? // Check if function has 2 parameters by checking if second param exists
-      Parameters<ContactEmailTemplates[T]>['length'] extends 2
-      ? Parameters<ContactEmailTemplates[T]>[1]
-      : undefined
+    ? Parameters<ContactEmailTemplates[T]>[0]
     : never
   : Type extends 'admin'
     ? T extends AdminEmailTemplateId
@@ -160,7 +157,7 @@ export type EmailTemplateParams<
 
 /**
  * Helper type to extract parameters for contact email templates
- * Returns undefined if the template doesn't require parameters
+ * All contact templates now require params with at least { contact: Contact }
  */
 export type ContactEmailParams<T extends ContactEmailTemplateId> =
   ExtractTemplateParams<T, 'contact'>;

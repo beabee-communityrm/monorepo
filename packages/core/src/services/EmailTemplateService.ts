@@ -151,8 +151,8 @@ class EmailTemplateService {
      * **Available Merge Fields:**
      * - *|REFCODE|* - Contact's referral code
      */
-    welcome: (contact: Contact) => ({
-      REFCODE: contact.referralCode,
+    welcome: (params: { contact: Contact }) => ({
+      REFCODE: params.contact.referralCode,
     }),
     /**
      * Welcome email after gift membership
@@ -160,14 +160,14 @@ class EmailTemplateService {
      * **Available Merge Fields:**
      * - Only the general contact merge fields
      */
-    'welcome-post-gift': () => ({}),
+    'welcome-post-gift': (params: { contact: Contact }) => ({}),
     /**
      * Email for password reset
      *
      * **Available Merge Fields:**
      * - *|RPLINK|* - Reset password link
      */
-    'reset-password': (_: Contact, params: { rpLink: string }) => ({
+    'reset-password': (params: { contact: Contact; rpLink: string }) => ({
       RPLINK: params.rpLink,
     }),
     /**
@@ -176,7 +176,7 @@ class EmailTemplateService {
      * **Available Merge Fields:**
      * - *|RPLINK|* - Reset device link
      */
-    'reset-device': (_: Contact, params: { rpLink: string }) => ({
+    'reset-device': (params: { contact: Contact; rpLink: string }) => ({
       RPLINK: params.rpLink,
     }),
     /**
@@ -186,11 +186,13 @@ class EmailTemplateService {
      * - *|EXPIRES|* - Membership expiration date (formatted as "Day Date Month")
      * - *|MEMBERSHIPID|* - Contact/membership ID
      */
-    'cancelled-contribution': (contact: Contact) => ({
-      EXPIRES: contact.membership?.dateExpires
-        ? moment.utc(contact.membership.dateExpires).format('dddd Do MMMM')
+    'cancelled-contribution': (params: { contact: Contact }) => ({
+      EXPIRES: params.contact.membership?.dateExpires
+        ? moment
+            .utc(params.contact.membership.dateExpires)
+            .format('dddd Do MMMM')
         : '-',
-      MEMBERSHIPID: contact.id,
+      MEMBERSHIPID: params.contact.id,
     }),
     /**
      * Email for contribution cancellation without survey
@@ -198,10 +200,12 @@ class EmailTemplateService {
      * **Available Merge Fields:**
      * - *|EXPIRES|* - Membership expiration date (formatted as "Day Date Month")
      */
-    'cancelled-contribution-no-survey': (contact: Contact) => {
+    'cancelled-contribution-no-survey': (params: { contact: Contact }) => {
       return {
-        EXPIRES: contact.membership?.dateExpires
-          ? moment.utc(contact.membership.dateExpires).format('dddd Do MMMM')
+        EXPIRES: params.contact.membership?.dateExpires
+          ? moment
+              .utc(params.contact.membership.dateExpires)
+              .format('dddd Do MMMM')
           : '-',
       };
     },
@@ -213,11 +217,12 @@ class EmailTemplateService {
      * - *|REFEREENAME|* - Name of the referred person
      * - *|ISELIGIBLE|* - Whether the referral is eligible
      */
-    'successful-referral': (
-      contact: Contact,
-      params: { refereeName: string; isEligible: boolean }
-    ) => ({
-      REFCODE: contact.referralCode,
+    'successful-referral': (params: {
+      contact: Contact;
+      refereeName: string;
+      isEligible: boolean;
+    }) => ({
+      REFCODE: params.contact.referralCode,
       REFEREENAME: params.refereeName,
       ISELIGIBLE: params.isEligible,
     }),
@@ -229,10 +234,12 @@ class EmailTemplateService {
      * - *|MESSAGE|* - Personal message from the purchaser (supports nested merge fields)
      * - *|ACTIVATELINK|* - Link to activate the gift
      */
-    'giftee-success': (
-      _: Contact,
-      params: { fromName: string; message: string; giftCode: string }
-    ) => ({
+    'giftee-success': (params: {
+      contact: Contact;
+      fromName: string;
+      message: string;
+      giftCode: string;
+    }) => ({
       PURCHASER: params.fromName,
       MESSAGE: params.message,
       ACTIVATELINK: config.audience + '/gift/' + params.giftCode,
@@ -243,14 +250,17 @@ class EmailTemplateService {
      * **Available Merge Fields:**
      * - Only the general contact merge fields
      */
-    'manual-to-automatic': () => ({}),
+    'manual-to-automatic': (params: { contact: Contact }) => ({}),
     /**
      * Email when email already exists (login)
      *
      * **Available Merge Fields:**
      * - *|LOGINLINK|* - Login link
      */
-    'email-exists-login': (_: Contact, params: { loginLink: string }) => ({
+    'email-exists-login': (params: {
+      contact: Contact;
+      loginLink: string;
+    }) => ({
       LOGINLINK: params.loginLink,
     }),
     /**
@@ -259,7 +269,10 @@ class EmailTemplateService {
      * **Available Merge Fields:**
      * - *|SPLINK|* - Set password link
      */
-    'email-exists-set-password': (_: Contact, params: { spLink: string }) => ({
+    'email-exists-set-password': (params: {
+      contact: Contact;
+      spLink: string;
+    }) => ({
       SPLINK: params.spLink,
     }),
     /**
@@ -271,10 +284,12 @@ class EmailTemplateService {
      * - *|CALLOUTLINK|* - Link to the callout
      * - *|SUPPORTEMAIL|* - Support email address
      */
-    'callout-response-answers': (
-      _: Contact,
-      params: { message: string; calloutSlug: string; calloutTitle: string }
-    ) => ({
+    'callout-response-answers': (params: {
+      contact: Contact;
+      message: string;
+      calloutSlug: string;
+      calloutTitle: string;
+    }) => ({
       MESSAGE: params.message,
       CALLOUTTITLE: params.calloutTitle,
       CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
@@ -287,7 +302,7 @@ class EmailTemplateService {
      * - *|ORGNAME|* - Organization name
      * - *|SUPPORTEMAIL|* - Support email address
      */
-    'contribution-didnt-start': (_: Contact) => ({
+    'contribution-didnt-start': (params: { contact: Contact }) => ({
       ORGNAME: OptionsService.getText('organisation'),
       SUPPORTEMAIL: OptionsService.getText('support-email'),
     }),
@@ -372,35 +387,52 @@ class EmailTemplateService {
   }
 
   /**
-   * Extract template-specific merge fields from a template function
-   * Handles all template types (contact, admin, general) generically
-   * For preview purposes, uses empty/default params when actual params are not available
-   *
-   * @param template The template ID
-   * @param contact Contact for contact templates (required for contact templates)
-   * @param params Optional template-specific parameters (if not provided, uses empty object)
+   * Get merge fields for an email template
+   * Generic method with overloads for type safety
+   * For preview purposes, params can be optional (will use empty object as fallback)
    */
-  getMergeFields(
-    template: EmailTemplateId,
-    contact: Contact,
-    params?: EmailTemplateParams<EmailTemplateId, EmailTemplateType>
+  getMergeFields<T extends ContactEmailTemplateId>(
+    template: T,
+    params?: ContactEmailParams<T>
+  ): EmailMergeFields;
+  getMergeFields<T extends AdminEmailTemplateId>(
+    template: T,
+    params?: AdminEmailParams<T>
+  ): EmailMergeFields;
+  getMergeFields<T extends GeneralEmailTemplateId>(
+    template: T,
+    params?: GeneralEmailParams<T>
+  ): EmailMergeFields;
+  getMergeFields<T extends EmailTemplateId>(
+    template: T,
+    params?:
+      | ContactEmailParams<T & ContactEmailTemplateId>
+      | AdminEmailParams<T & AdminEmailTemplateId>
+      | GeneralEmailParams<T & GeneralEmailTemplateId>
   ): EmailMergeFields {
     try {
+      let templateFn: (params: unknown) => EmailMergeFields;
+
       if (this.isContact(template)) {
-        return this.getContactMergeFieldsForPreview(
-          template as ContactEmailTemplateId,
-          contact,
-          params as ContactEmailParams<ContactEmailTemplateId> | undefined
+        templateFn = this.contactEmailTemplates[template] as (
+          params: unknown
+        ) => EmailMergeFields;
+        return templateFn(
+          (params ?? {}) as ContactEmailParams<T & ContactEmailTemplateId>
         );
       } else if (this.isAdmin(template)) {
-        return this.getAdminMergeFieldsForPreview(
-          template as AdminEmailTemplateId,
-          params as AdminEmailParams<AdminEmailTemplateId> | undefined
+        templateFn = this.adminEmailTemplates[template] as (
+          params: unknown
+        ) => EmailMergeFields;
+        return templateFn(
+          (params ?? {}) as AdminEmailParams<T & AdminEmailTemplateId>
         );
       } else if (this.isGeneral(template)) {
-        return this.getGeneralMergeFieldsForPreview(
-          template as GeneralEmailTemplateId,
-          params as GeneralEmailParams<GeneralEmailTemplateId> | undefined
+        templateFn = this.generalEmailTemplates[template] as (
+          params: unknown
+        ) => EmailMergeFields;
+        return templateFn(
+          (params ?? {}) as GeneralEmailParams<T & GeneralEmailTemplateId>
         );
       }
     } catch (error) {
@@ -410,105 +442,6 @@ class EmailTemplateService {
     }
 
     return {};
-  }
-
-  /**
-   * Get merge fields for contact template (for preview, params may be undefined)
-   */
-  private getContactMergeFieldsForPreview<T extends ContactEmailTemplateId>(
-    template: T,
-    contact: Contact,
-    params?: ContactEmailParams<T>
-  ): EmailMergeFields {
-    const templateFn = this.contactEmailTemplates[template];
-    if (templateFn.length === 1) {
-      return (templateFn as (contact: Contact) => EmailMergeFields)(contact);
-    }
-    // For templates that require params, use provided params or empty object
-    // TypeScript can't narrow union types here, so we need a type assertion
-    return (
-      templateFn as (
-        contact: Contact,
-        params: ContactEmailParams<T>
-      ) => EmailMergeFields
-    )(contact, (params ?? {}) as ContactEmailParams<T>);
-  }
-
-  /**
-   * Get merge fields for admin template (for preview, params may be undefined)
-   */
-  private getAdminMergeFieldsForPreview<T extends AdminEmailTemplateId>(
-    template: T,
-    params?: AdminEmailParams<T>
-  ): EmailMergeFields {
-    const templateFn = this.adminEmailTemplates[template];
-    // TypeScript can't narrow union types here, so we need a type assertion
-    return (templateFn as (params: AdminEmailParams<T>) => EmailMergeFields)(
-      (params ?? {}) as AdminEmailParams<T>
-    );
-  }
-
-  /**
-   * Get merge fields for general template (for preview, params may be undefined)
-   */
-  private getGeneralMergeFieldsForPreview<T extends GeneralEmailTemplateId>(
-    template: T,
-    params?: GeneralEmailParams<T>
-  ): EmailMergeFields {
-    const templateFn = this.generalEmailTemplates[template];
-    // TypeScript can't narrow union types here, so we need a type assertion
-    return (templateFn as (params: GeneralEmailParams<T>) => EmailMergeFields)(
-      (params ?? {}) as GeneralEmailParams<T>
-    );
-  }
-
-  /**
-   * Get merge fields for a contact email template
-   */
-  getContactMergeFields<T extends ContactEmailTemplateId>(
-    template: T,
-    contact: Contact,
-    params: ContactEmailParams<T>
-  ): EmailMergeFields {
-    const templateFn = this.contactEmailTemplates[template];
-    if (templateFn.length === 1) {
-      return (templateFn as (contact: Contact) => EmailMergeFields)(contact);
-    }
-    // TypeScript can't narrow union types here, so we need a type assertion
-    return (
-      templateFn as (
-        contact: Contact,
-        params: ContactEmailParams<T>
-      ) => EmailMergeFields
-    )(contact, params);
-  }
-
-  /**
-   * Get merge fields for an admin email template
-   */
-  getAdminMergeFields<T extends AdminEmailTemplateId>(
-    template: T,
-    params: AdminEmailParams<T>
-  ): EmailMergeFields {
-    const templateFn = this.adminEmailTemplates[template];
-    // TypeScript can't narrow union types here, so we need a type assertion
-    return (templateFn as (params: AdminEmailParams<T>) => EmailMergeFields)(
-      params
-    );
-  }
-
-  /**
-   * Get merge fields for a general email template
-   */
-  getGeneralMergeFields<T extends GeneralEmailTemplateId>(
-    template: T,
-    params: GeneralEmailParams<T>
-  ): EmailMergeFields {
-    const templateFn = this.generalEmailTemplates[template];
-    // TypeScript can't narrow union types here, so we need a type assertion
-    return (templateFn as (params: GeneralEmailParams<T>) => EmailMergeFields)(
-      params
-    );
   }
 }
 

@@ -15,7 +15,7 @@ import {
   stripeFlowProvider,
 } from '#providers';
 import ContactsService from '#services/ContactsService';
-import EmailService from '#services/EmailService';
+import { emailService } from '#services/EmailService';
 import OptionsService from '#services/OptionsService';
 import PaymentService from '#services/PaymentService';
 import {
@@ -141,28 +141,22 @@ class PaymentFlowService implements PaymentFlowProvider {
 
     if (contact?.membership?.isActive) {
       if (contact.password.hash) {
-        await EmailService.sendTemplateToContact(
-          'email-exists-login',
+        await emailService.sendTemplate('email-exists-login', {
           contact,
-          {
-            loginLink: joinFlow.loginUrl,
-          }
-        );
+          loginLink: joinFlow.loginUrl,
+        });
       } else {
         const rpFlow = await ResetSecurityFlowService.create(
           contact,
           RESET_SECURITY_FLOW_TYPE.PASSWORD
         );
-        await EmailService.sendTemplateToContact(
-          'email-exists-set-password',
+        await emailService.sendTemplate('email-exists-set-password', {
           contact,
-          {
-            spLink: joinFlow.setPasswordUrl + '/' + rpFlow.id,
-          }
-        );
+          spLink: joinFlow.setPasswordUrl + '/' + rpFlow.id,
+        });
       }
     } else {
-      await EmailService.sendTemplateTo(
+      await emailService.sendTemplateTo(
         'confirm-email',
         { email: joinFlow.joinForm.email },
         {
@@ -225,7 +219,7 @@ class PaymentFlowService implements PaymentFlowProvider {
       );
     }
 
-    await EmailService.sendTemplateToContact('welcome', contact);
+    await emailService.sendTemplate('welcome', { contact });
 
     return contact;
   }

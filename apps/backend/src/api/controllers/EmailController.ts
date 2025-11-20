@@ -6,6 +6,7 @@ import {
   AdminEmailParams,
   AdminEmailTemplateId,
   AuthInfo,
+  ContactEmailParams,
   ContactEmailTemplateId,
   EmailTemplateId,
   EmailTemplateType,
@@ -135,33 +136,30 @@ export class EmailController {
       ...(data.mergeFields && { mergeFields: data.mergeFields }),
     };
 
-    // Pass typed params based on template type
     // For preview, mergeFields are passed via opts.mergeFields
-    // We pass empty params objects since mergeFields will override template-generated fields anyway
-    let preview: { subject: string; body: string };
+    // We pass minimal params objects since mergeFields will override template-generated fields anyway
+    // getTemplatePreview handles all template types generically
     if (emailTemplateService.isContact(templateId)) {
-      preview = await emailService.getTemplatePreview(
+      return await emailService.getTemplatePreview(
         templateId,
         contact,
-        undefined,
+        { contact } as ContactEmailParams<typeof templateId>,
         opts
       );
     } else if (emailTemplateService.isAdmin(templateId)) {
-      preview = await emailService.getTemplatePreview(
+      return await emailService.getTemplatePreview(
         templateId,
         contact,
         {} as AdminEmailParams<typeof templateId>,
         opts
       );
     } else {
-      preview = await emailService.getTemplatePreview(
+      return await emailService.getTemplatePreview(
         templateId,
         contact,
         {} as GeneralEmailParams<typeof templateId>,
         opts
       );
     }
-
-    return preview;
   }
 }

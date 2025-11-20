@@ -32,7 +32,7 @@ import {
   ProjectEngagement,
 } from '#models/index';
 import ContactMfaService from '#services/ContactMfaService';
-import EmailService from '#services/EmailService';
+import { emailService } from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
@@ -126,7 +126,7 @@ class ContactsService {
         await NewsletterService.upsertContact(contact);
       }
 
-      await EmailService.sendTemplateToAdmin('new-member', { contact });
+      await emailService.sendTemplate('new-member', { contact });
 
       return contact;
     } catch (error) {
@@ -373,7 +373,9 @@ class ContactsService {
     await this.extendContactRole(contact, 'member', expiryDate);
 
     if (wasManual) {
-      await EmailService.sendTemplateToContact('manual-to-automatic', contact);
+      await emailService.sendTemplate('manual-to-automatic', {
+        contact,
+      });
     }
   }
 
@@ -384,8 +386,8 @@ class ContactsService {
     log.info('Cancel contribution for ' + contact.id);
     await PaymentService.cancelContribution(contact);
 
-    await EmailService.sendTemplateToContact(email, contact);
-    await EmailService.sendTemplateToAdmin('cancelled-member', {
+    await emailService.sendTemplate(email, { contact });
+    await emailService.sendTemplate('cancelled-member', {
       contact: contact,
     });
   }
@@ -501,7 +503,8 @@ class ContactsService {
       RESET_SECURITY_FLOW_TYPE.PASSWORD
     );
 
-    await EmailService.sendTemplateToContact('reset-password', contact, {
+    await emailService.sendTemplate('reset-password', {
+      contact,
       rpLink: resetUrl + '/' + rpFlow.id,
     });
   }
@@ -601,7 +604,8 @@ class ContactsService {
 
     const rdFlow = await ResetSecurityFlowService.create(contact, type);
 
-    await EmailService.sendTemplateToContact('reset-device', contact, {
+    await emailService.sendTemplate('reset-device', {
+      contact,
       rpLink: resetUrl + '/' + rdFlow.id,
     });
   }

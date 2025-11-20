@@ -1,7 +1,7 @@
 import { getRepository } from '#database';
 import { log as mainLogger } from '#logging';
 import { Contact, Referral, ReferralGift } from '#models/index';
-import EmailService from '#services/EmailService';
+import { emailService } from '#services/EmailService';
 import { ReferralGiftForm } from '#type/index';
 
 const log = mainLogger.child({ app: 'referrals-service' });
@@ -82,16 +82,13 @@ export class ReferralsService {
     await ReferralsService.updateGiftStock(giftForm);
 
     if (referrer) {
-      await EmailService.sendTemplateToContact(
-        'successful-referral',
-        referrer,
-        {
-          refereeName: referee.firstname,
-          isEligible:
-            !!referee.contributionMonthlyAmount &&
-            referee.contributionMonthlyAmount >= 3,
-        }
-      );
+      await emailService.sendTemplate('successful-referral', {
+        contact: referrer,
+        refereeName: referee.firstname,
+        isEligible:
+          !!referee.contributionMonthlyAmount &&
+          referee.contributionMonthlyAmount >= 3,
+      });
     }
   }
 

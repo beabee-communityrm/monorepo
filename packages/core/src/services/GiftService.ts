@@ -12,7 +12,7 @@ import { Stripe, stripe } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
 import { ContactRole, GiftFlow, GiftForm } from '#models/index';
 import ContactsService from '#services/ContactsService';
-import EmailService from '#services/EmailService';
+import { emailService } from '#services/EmailService';
 import OptionsService from '#services/OptionsService';
 import { generateContactCode } from '#utils/contact';
 import { isDuplicateIndex } from '#utils/db';
@@ -74,7 +74,7 @@ export class GiftService {
       const { fromName, fromEmail, firstname, startDate } = giftFlow.giftForm;
       const now = moment.utc();
 
-      await EmailService.sendTemplateTo(
+      await emailService.sendTemplateTo(
         'purchased-gift',
         { email: fromEmail, name: fromName },
         { fromName, gifteeFirstName: firstname, giftStartDate: startDate }
@@ -141,10 +141,14 @@ export class GiftService {
     const sendAt = sendImmediately
       ? undefined
       : now.clone().startOf('day').add({ h: 9 }).toDate();
-    await EmailService.sendTemplateToContact(
+    await emailService.sendTemplate(
       'giftee-success',
-      contact,
-      { fromName, message: message || '', giftCode: giftFlow.setupCode },
+      {
+        contact,
+        fromName,
+        message: message || '',
+        giftCode: giftFlow.setupCode,
+      },
       { sendAt }
     );
   }

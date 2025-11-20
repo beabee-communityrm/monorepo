@@ -98,77 +98,131 @@ class EmailService {
     await this.sendEmail(email, recipients, opts);
   }
 
+  /**
+   * Send an email template
+   * Generic method with overloads for type safety
+   */
+  async sendTemplate<T extends ContactEmailTemplateId>(
+    template: T,
+    params: ContactEmailParams<T>,
+    opts?: TemplateEmailOptions
+  ): Promise<void>;
+  async sendTemplate<T extends AdminEmailTemplateId>(
+    template: T,
+    params: AdminEmailParams<T>,
+    opts?: TemplateEmailOptions
+  ): Promise<void>;
+  async sendTemplate<T extends GeneralEmailTemplateId>(
+    template: T,
+    to: EmailPerson,
+    params: GeneralEmailParams<T>,
+    opts?: TemplateEmailOptions
+  ): Promise<void>;
+  async sendTemplate<T extends ContactEmailTemplateId | AdminEmailTemplateId>(
+    template: T,
+    params:
+      | ContactEmailParams<T & ContactEmailTemplateId>
+      | AdminEmailParams<T & AdminEmailTemplateId>,
+    opts?: TemplateEmailOptions
+  ): Promise<void>;
+  async sendTemplate<T extends GeneralEmailTemplateId>(
+    template: T,
+    to: EmailPerson,
+    params: GeneralEmailParams<T>,
+    opts?: TemplateEmailOptions
+  ): Promise<void>;
+  async sendTemplate<
+    T extends
+      | ContactEmailTemplateId
+      | AdminEmailTemplateId
+      | GeneralEmailTemplateId,
+  >(
+    template: T,
+    toOrParams:
+      | ContactEmailParams<T & ContactEmailTemplateId>
+      | AdminEmailParams<T & AdminEmailTemplateId>
+      | EmailPerson,
+    paramsOrOpts?:
+      | GeneralEmailParams<T & GeneralEmailTemplateId>
+      | TemplateEmailOptions,
+    opts?: TemplateEmailOptions
+  ): Promise<void> {
+    let recipient: EmailRecipient;
+    let required: boolean;
+    let finalOpts: TemplateEmailOptions | undefined;
+
+    if (emailTemplateService.isGeneral(template)) {
+      // General template: second param is 'to', third is 'params'
+      const to = toOrParams as EmailPerson;
+      const generalParams = paramsOrOpts as GeneralEmailParams<
+        T & GeneralEmailTemplateId
+      >;
+      const mergeFields = emailTemplateService.getMergeFields(
+        template as GeneralEmailTemplateId,
+        generalParams
+      );
+
+      recipient = {
+        to,
+        mergeFields,
+      };
+      required = false;
+      finalOpts = opts;
+    } else if (emailTemplateService.isContact(template)) {
+      // Contact template: second param is 'params'
+      const contactParams = toOrParams as ContactEmailParams<
+        T & ContactEmailTemplateId
+      >;
+      const contact = contactParams.contact;
+      log.info('Sending template to contact ' + contact.id);
+
+      const mergeFields = emailTemplateService.getMergeFields(
+        template as ContactEmailTemplateId,
+        contactParams
+      );
+
+      recipient = this.convertContactToRecipient(contact, mergeFields);
+      required = true;
+      finalOpts = paramsOrOpts as TemplateEmailOptions;
+    } else {
+      // Admin template: second param is 'params'
+      const adminParams = toOrParams as AdminEmailParams<
+        T & AdminEmailTemplateId
+      >;
+      const mergeFields = emailTemplateService.getMergeFields(
+        template as AdminEmailTemplateId,
+        adminParams
+      );
+
+      recipient = {
+        to: { email: OptionsService.getText('support-email') },
+        mergeFields,
+      };
+      required = false;
+      finalOpts = paramsOrOpts as TemplateEmailOptions;
+    }
+
+    await this.sendTemplateInternal(template, [recipient], finalOpts, required);
+  }
+
+  /**
+   * Send a general email template to a specific recipient
+   *
+   * @param template The general email template ID
+   * @param to The recipient's email address and name
+   * @param params Template-specific parameters
+   * @param opts Optional email options including customSubject
+   */
   async sendTemplateTo<T extends GeneralEmailTemplateId>(
     template: T,
     to: EmailPerson,
     params: GeneralEmailParams<T>,
     opts?: TemplateEmailOptions
   ): Promise<void> {
-    const mergeFields = emailTemplateService.getGeneralMergeFields(
-      template,
-      params
-    );
-    await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
+    return this.sendTemplate(template, to, params, opts);
   }
 
-  /**
-   * Send an email template to a contact
-   *
-   * The template includes proper email structure (header, footer, etc.) and merge fields
-   * like *|FNAME|*, *|EMAIL|*, etc. will be automatically replaced with contact data and
-   * template-specific parameters.
-   *
-   * @param template The contact email template ID
-   * @param contact The contact to send the email to
-   * @param params Template-specific parameters
-   * @param opts Optional email options including customSubject
-   */
-  async sendTemplateToContact<T extends ContactEmailTemplateId>(
-    template: T,
-    contact: Contact,
-    params: ContactEmailParams<T>,
-    opts?: TemplateEmailOptions
-  ): Promise<void>;
-  async sendTemplateToContact<
-    T extends ContactEmailParams<T> extends undefined
-      ? ContactEmailTemplateId
-      : never,
-  >(
-    template: T,
-    contact: Contact,
-    params?: undefined,
-    opts?: TemplateEmailOptions
-  ): Promise<void>;
-  async sendTemplateToContact<T extends ContactEmailTemplateId>(
-    template: T,
-    contact: Contact,
-    params: ContactEmailParams<T>,
-    opts?: TemplateEmailOptions
-  ): Promise<void> {
-    log.info('Sending template to contact ' + contact.id);
-
-    const recipient = this.convertContactToRecipient(
-      contact,
-      emailTemplateService.getContactMergeFields(template, contact, params)
-    );
-
-    await this.sendTemplate(template, [recipient], opts, true);
-  }
-
-  async sendTemplateToAdmin<T extends AdminEmailTemplateId>(
-    template: T,
-    params: AdminEmailParams<T>,
-    opts?: TemplateEmailOptions
-  ): Promise<void> {
-    const recipient = {
-      to: { email: OptionsService.getText('support-email') },
-      mergeFields: emailTemplateService.getAdminMergeFields(template, params),
-    };
-
-    await this.sendTemplate(template, [recipient], opts, false);
-  }
-
-  private async sendTemplate(
+  private async sendTemplateInternal(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
     opts: TemplateEmailOptions | undefined,
@@ -188,7 +242,12 @@ class EmailService {
       }
       // Fallback to cancelled contribution email if no no-survey variant
     } else if (template === 'cancelled-contribution-no-survey') {
-      this.sendTemplate('cancelled-contribution', recipients, opts, required);
+      this.sendTemplateInternal(
+        'cancelled-contribution',
+        recipients,
+        opts,
+        required
+      );
     } else {
       const defaultEmail = this.getDefaultEmail(template);
       if (defaultEmail) {
@@ -304,18 +363,22 @@ class EmailService {
     // Get template-specific merge fields using typed params
     let templateMergeFields: EmailMergeFields = {};
     if (emailTemplateService.isContact(template)) {
-      templateMergeFields = emailTemplateService.getContactMergeFields(
-        template,
+      // Ensure contact is included in params
+      const contactParams = {
+        ...(params ?? {}),
         contact,
-        (params ?? {}) as ContactEmailParams<ContactEmailTemplateId>
+      } as ContactEmailParams<ContactEmailTemplateId>;
+      templateMergeFields = emailTemplateService.getMergeFields(
+        template,
+        contactParams
       );
     } else if (emailTemplateService.isAdmin(template)) {
-      templateMergeFields = emailTemplateService.getAdminMergeFields(
+      templateMergeFields = emailTemplateService.getMergeFields(
         template,
         params as AdminEmailParams<AdminEmailTemplateId>
       );
     } else if (emailTemplateService.isGeneral(template)) {
-      templateMergeFields = emailTemplateService.getGeneralMergeFields(
+      templateMergeFields = emailTemplateService.getMergeFields(
         template,
         params as GeneralEmailParams<GeneralEmailTemplateId>
       );
