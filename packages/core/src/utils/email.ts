@@ -47,12 +47,19 @@ export function expandNestedMergeFields(
 
   // Process each field individually to avoid circular reference issues
   Object.keys(expandedFields).forEach((field) => {
+    const fieldValue = expandedFields[field];
+
+    // Skip if field value is undefined or not a string
+    if (fieldValue === undefined || typeof fieldValue !== 'string') {
+      return;
+    }
+
     // Extract all merge field names from the current field value
     const mergeFieldPattern = /\*\|([^|]+)\|\*/g;
     const referencedFields = new Set<string>();
     let match;
 
-    while ((match = mergeFieldPattern.exec(expandedFields[field])) !== null) {
+    while ((match = mergeFieldPattern.exec(fieldValue)) !== null) {
       referencedFields.add(match[1]);
     }
 
@@ -66,10 +73,7 @@ export function expandNestedMergeFields(
 
     if (safeReferences.length === referencedFields.size) {
       // Safe to expand - no circular references detected
-      expandedFields[field] = replaceMergeFields(
-        expandedFields[field],
-        expandedFields
-      );
+      expandedFields[field] = replaceMergeFields(fieldValue, expandedFields);
     }
   });
 

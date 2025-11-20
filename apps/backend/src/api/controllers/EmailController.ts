@@ -3,11 +3,13 @@ import { Contact, Email } from '@beabee/core/models';
 import { emailService } from '@beabee/core/services/EmailService';
 import { emailTemplateService } from '@beabee/core/services/EmailTemplateService';
 import {
+  AdminEmailParams,
   AdminEmailTemplateId,
   AuthInfo,
   ContactEmailTemplateId,
   EmailTemplateId,
   EmailTemplateType,
+  GeneralEmailParams,
   GeneralEmailTemplateId,
 } from '@beabee/core/type';
 
@@ -126,16 +128,39 @@ export class EmailController {
       );
     }
 
-    const preview = await emailService.getTemplatePreview(
-      templateId,
-      contact,
-      data.mergeFields || {},
-      {
-        ...(data.customSubject && { customSubject: data.customSubject }),
-        ...(data.locale && { locale: data.locale }),
-        ...(data.body && { body: data.body }),
-      }
-    );
+    const opts = {
+      ...(data.customSubject && { customSubject: data.customSubject }),
+      ...(data.locale && { locale: data.locale }),
+      ...(data.body && { body: data.body }),
+      ...(data.mergeFields && { mergeFields: data.mergeFields }),
+    };
+
+    // Pass typed params based on template type
+    // For preview, mergeFields are passed via opts.mergeFields
+    // We pass empty params objects since mergeFields will override template-generated fields anyway
+    let preview: { subject: string; body: string };
+    if (emailTemplateService.isContact(templateId)) {
+      preview = await emailService.getTemplatePreview(
+        templateId,
+        contact,
+        undefined,
+        opts
+      );
+    } else if (emailTemplateService.isAdmin(templateId)) {
+      preview = await emailService.getTemplatePreview(
+        templateId,
+        contact,
+        {} as AdminEmailParams<typeof templateId>,
+        opts
+      );
+    } else {
+      preview = await emailService.getTemplatePreview(
+        templateId,
+        contact,
+        {} as GeneralEmailParams<typeof templateId>,
+        opts
+      );
+    }
 
     return preview;
   }

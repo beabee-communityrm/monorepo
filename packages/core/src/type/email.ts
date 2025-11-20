@@ -1,3 +1,5 @@
+import type { Locale } from '@beabee/locale';
+
 import type { Email } from '#models/index';
 import type { emailTemplateService } from '#services/EmailTemplateService';
 
@@ -31,6 +33,17 @@ export interface EmailOptions {
 
 export interface TemplateEmailOptions extends EmailOptions {
   customSubject?: string;
+}
+
+export interface TemplatePreviewOptions extends TemplateEmailOptions {
+  locale?: Locale;
+  body?: string;
+  /**
+   * Additional merge fields to override or extend template-generated merge fields.
+   * These are the final merge field values (e.g., { MESSAGE: "...", CALLOUTTITLE: "..." }).
+   * Use this for preview when you want to provide custom merge field values directly.
+   */
+  mergeFields?: EmailMergeFields;
 }
 
 export interface PreparedEmail extends Email {
