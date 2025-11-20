@@ -5,6 +5,7 @@ export * from './ContactsService';
 export * from './DispatchService';
 export * from './DocumentService';
 export * from './EmailService';
+export * from './EmailTemplateService';
 export * from './GiftService';
 export * from './ImageService';
 export * from './NetworkCommunicatorService';

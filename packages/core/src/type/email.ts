@@ -1,9 +1,5 @@
-import type {
-  adminEmailTemplates,
-  contactEmailTemplates,
-  generalEmailTemplates,
-} from '#data/email-templates';
 import type { Email } from '#models/index';
+import type { emailTemplateService } from '#services/EmailTemplateService';
 
 export interface EmailTemplate {
   id: string;
@@ -65,35 +61,47 @@ export type EmailTemplateType = 'general' | 'admin' | 'contact';
 /**
  * Type helper for general email templates
  */
-export type GeneralEmailTemplates = typeof generalEmailTemplates;
+export type GeneralEmailTemplates =
+  (typeof emailTemplateService)['generalEmailTemplates'];
 
 /**
  * General email template IDs
  * Derived from generalEmailTemplates
  */
-export type GeneralEmailTemplateId = keyof typeof generalEmailTemplates;
+export type GeneralEmailTemplateId = Extract<
+  keyof (typeof emailTemplateService)['generalEmailTemplates'],
+  string
+>;
 
 /**
  * Type helper for admin email templates
  */
-export type AdminEmailTemplates = typeof adminEmailTemplates;
+export type AdminEmailTemplates =
+  (typeof emailTemplateService)['adminEmailTemplates'];
 
 /**
  * Admin email template IDs
  * Derived from adminEmailTemplates
  */
-export type AdminEmailTemplateId = keyof typeof adminEmailTemplates;
+export type AdminEmailTemplateId = Extract<
+  keyof (typeof emailTemplateService)['adminEmailTemplates'],
+  string
+>;
 
 /**
  * Type helper for contact email templates
  */
-export type ContactEmailTemplates = typeof contactEmailTemplates;
+export type ContactEmailTemplates =
+  (typeof emailTemplateService)['contactEmailTemplates'];
 
 /**
  * Contact email template IDs
  * Derived from contactEmailTemplates
  */
-export type ContactEmailTemplateId = keyof typeof contactEmailTemplates;
+export type ContactEmailTemplateId = Extract<
+  keyof (typeof emailTemplateService)['contactEmailTemplates'],
+  string
+>;
 
 /**
  * All available email template IDs
@@ -104,8 +112,54 @@ export type EmailTemplateId =
   | ContactEmailTemplateId;
 
 /**
- * Helper type to extract parameters for contact email templates
+ * Extract parameters from a function type
+ * For contact templates: extracts the second parameter (params) if it exists
+ * For admin/general templates: extracts the first parameter (params)
  */
-export type ContactEmailParams<T extends ContactEmailTemplateId> = Parameters<
-  ContactEmailTemplates[T]
->[1];
+type ExtractTemplateParams<
+  T extends EmailTemplateId,
+  Type extends EmailTemplateType,
+> = Type extends 'contact'
+  ? T extends ContactEmailTemplateId
+    ? // Check if function has 2 parameters by checking if second param exists
+      Parameters<ContactEmailTemplates[T]>['length'] extends 2
+      ? Parameters<ContactEmailTemplates[T]>[1]
+      : undefined
+    : never
+  : Type extends 'admin'
+    ? T extends AdminEmailTemplateId
+      ? Parameters<AdminEmailTemplates[T]>[0]
+      : never
+    : Type extends 'general'
+      ? T extends GeneralEmailTemplateId
+        ? Parameters<GeneralEmailTemplates[T]>[0]
+        : never
+      : never;
+
+/**
+ * Generic helper type to extract parameters for email templates
+ * Works for all template types (contact, admin, general)
+ */
+export type EmailTemplateParams<
+  T extends EmailTemplateId,
+  Type extends EmailTemplateType,
+> = ExtractTemplateParams<T, Type>;
+
+/**
+ * Helper type to extract parameters for contact email templates
+ * Returns undefined if the template doesn't require parameters
+ */
+export type ContactEmailParams<T extends ContactEmailTemplateId> =
+  ExtractTemplateParams<T, 'contact'>;
+
+/**
+ * Helper type to extract parameters for admin email templates
+ */
+export type AdminEmailParams<T extends AdminEmailTemplateId> =
+  ExtractTemplateParams<T, 'admin'>;
+
+/**
+ * Helper type to extract parameters for general email templates
+ */
+export type GeneralEmailParams<T extends GeneralEmailTemplateId> =
+  ExtractTemplateParams<T, 'general'>;

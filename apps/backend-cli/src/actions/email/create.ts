@@ -2,6 +2,7 @@ import { getRepository } from '@beabee/core/database';
 import { Email } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import { emailService } from '@beabee/core/services/EmailService';
+import { emailTemplateService } from '@beabee/core/services/EmailTemplateService';
 import type { EmailTemplateId } from '@beabee/core/type';
 
 import type { CreateEmailOverrideArgs } from '../../types/email.js';
@@ -11,7 +12,7 @@ export const createEmailOverride = async (
 ): Promise<void> => {
   await runApp(async () => {
     // Validate that the template exists (unless force is specified)
-    if (!argv.force && !emailService.isTemplateId(argv.template)) {
+    if (!argv.force && !emailTemplateService.isTemplate(argv.template)) {
       throw new Error(`Unknown email template: ${argv.template}`);
     }
 
