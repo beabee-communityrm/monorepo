@@ -916,9 +916,7 @@
       "successful": "Riuscito"
     },
     "perMonth": "/ mese",
-    "perMonthText": "al mese",
     "perYear": "/ anno",
-    "perYearText": "all'anno",
     "role": {
       "admin": "",
       "member": "",
@@ -1077,6 +1075,8 @@
     },
     "paymentMethod": "Metodo di pagamento",
     "paymentSourceUpdateError": "",
+    "perMonthText": "al mese",
+    "perYearText": "all'anno",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
     "prorateIncreaseMessage": "",
@@ -1311,7 +1311,8 @@
     "privacy": "Privacy",
     "tax": {
       "included": ""
-    }
+    },
+    "contribution": {}
   },
   "joinPayment": {
     "applePay": {
@@ -1322,7 +1323,8 @@
     "goBack": "Ti sei perso qualcosa? {back}",
     "goBackButton": "Torna alla schermata precedente",
     "note": "Potrai modificare l'ammontare del tuo contributo e accedere allo storico delle tue donazioni in qualsiasi momento tramite il tuo account.",
-    "willBeContributing": "Contribuirai con {contribution}"
+    "willBeContributing": "Contribuirai con {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Per favore, conferma i tuoi dettagli.",
