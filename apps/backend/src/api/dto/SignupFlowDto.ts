@@ -1,20 +1,39 @@
+import { PaymentMethod } from '@beabee/beabee-common';
 import type { JoinForm } from '@beabee/core/models';
 import { CompleteUrls } from '@beabee/core/type';
 
 import { StartContributionDto } from '@api/dto/ContributionDto';
-import { CompleteJoinFlowDto } from '@api/dto/JoinFlowDto';
-import { CreateOneTimePaymentDto } from '@api/dto/OneTimePaymentDto';
+import { CompleteJoinFlowDto, StartJoinFlowDto } from '@api/dto/JoinFlowDto';
 import IsPassword from '@api/validators/IsPassword';
 import IsUrl from '@api/validators/IsUrl';
 import IsVatNumber from '@api/validators/IsVatNumber';
 import { Type } from 'class-transformer';
 import {
+  IsBoolean,
   IsEmail,
+  IsEnum,
   IsOptional,
   IsString,
+  Min,
   Validate,
   ValidateNested,
 } from 'class-validator';
+
+class StartSignupFlowContributionDto extends StartContributionDto {
+  @IsEnum(PaymentMethod)
+  paymentMethod!: PaymentMethod;
+}
+
+class StartSignupFlowOneTimePaymentDto extends StartJoinFlowDto {
+  @Min(1)
+  amount!: number;
+
+  @IsBoolean()
+  payFee!: boolean;
+
+  @IsEnum(PaymentMethod)
+  paymentMethod!: PaymentMethod;
+}
 
 export class StartSignupFlowDto implements CompleteUrls {
   @IsUrl()
@@ -33,15 +52,15 @@ export class StartSignupFlowDto implements CompleteUrls {
   @IsOptional()
   password?: string;
 
-  @Type(() => StartContributionDto)
+  @Type(() => StartSignupFlowContributionDto)
   @ValidateNested()
   @IsOptional()
-  contribution?: StartContributionDto;
+  contribution?: StartSignupFlowContributionDto;
 
-  @Type(() => CreateOneTimePaymentDto)
+  @Type(() => StartSignupFlowOneTimePaymentDto)
   @ValidateNested()
   @IsOptional()
-  oneTimePayment?: CreateOneTimePaymentDto;
+  oneTimePayment?: StartSignupFlowOneTimePaymentDto;
 }
 
 export class CompleteSignupFlowDto
