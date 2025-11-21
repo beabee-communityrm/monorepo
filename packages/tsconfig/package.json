@@ -3,8 +3,8 @@
   "version": "0.28.1",
   "private": true,
   "files": [
+    "tsconfig.dev.json",
     "tsconfig.frontend.json",
-    "tsconfig.options.json",
     "tsconfig.server.json"
   ],
   "peerDependencies": {

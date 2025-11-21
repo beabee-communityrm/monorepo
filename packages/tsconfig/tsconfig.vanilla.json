@@ -1,6 +1,6 @@
 {
   "extends": [
-    "./tsconfig.options.json"
+    "./tsconfig.dev.json"
   ],
   "compilerOptions": {
     "module": "NodeNext",
