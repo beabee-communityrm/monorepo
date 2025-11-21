@@ -1568,7 +1568,7 @@ __metadata:
     "@types/node": "npm:^22.15.28"
     "@types/yargs": "npm:^17.0.33"
     prettier: "npm:^3.5.3"
-    typescript: "npm:^5.8.3"
+    typescript: "npm:~5.8.3"
     yargs: "npm:^17.7.2"
   bin:
     dev-cli: ./bin/dev-cli.js
@@ -1606,7 +1606,7 @@ __metadata:
     "@types/node": "npm:^22.15.28"
     esbuild: "npm:^0.25.5"
     prettier: "npm:^3.5.3"
-    typescript: "npm:^5.8.3"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1620,7 +1620,7 @@ __metadata:
     "@types/node": "npm:^22.15.28"
     minisearch: "npm:^7.1.2"
     prettier: "npm:^3.5.3"
-    typescript: "npm:^5.8.3"
+    typescript: "npm:~5.8.3"
     vitest: "npm:^3.2.3"
     yaml: "npm:^2.8.0"
   languageName: unknown
@@ -1808,7 +1808,7 @@ __metadata:
     "@beabee/tsconfig": "workspace:^"
     "@types/node": "npm:^22.15.28"
     prettier: "npm:^3.5.3"
-    typescript: "npm:^5.8.3"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -19532,7 +19532,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.8.3, typescript@npm:~5.8.3":
+"typescript@npm:~5.8.3":
   version: 5.8.3
   resolution: "typescript@npm:5.8.3"
   bin:
@@ -19552,7 +19552,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A~5.8.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A~5.8.3#optional!builtin<compat/typescript>":
   version: 5.8.3
   resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"
   bin:
