@@ -57,7 +57,7 @@ export class EmailClient extends BaseClient {
    * @example
    * // Preview a contact template
    * await client.email.preview('contact', 'callout-response-answers', {
-   *   mergeFields: { MESSAGE: 'Custom message', CALLOUTTITLE: 'My Callout' },
+   *   mergeFields: { CALLOUTTITLE: 'My Callout' },
    *   customSubject: 'Thank you for your response'
    * });
    *

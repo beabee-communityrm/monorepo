@@ -16,6 +16,8 @@ import slugify from 'slugify';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { v4 as uuidv4 } from 'uuid';
 
+import config from '#config/config';
+import { contactEmailTemplates } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import {
   DuplicateId,
@@ -539,16 +541,18 @@ class CalloutsService {
       return;
     }
 
-    await EmailService.sendTemplateToContact(
-      'callout-response-answers',
+    await EmailService.sendCustomEmailToContact(
       contact,
+      variant.responseEmailSubject,
+      variant.responseEmailBody,
       {
-        message: variant.responseEmailBody,
-        calloutSlug: callout.slug,
-        calloutTitle: variant.title,
-      },
-      {
-        customSubject: variant.responseEmailSubject,
+        mergeFields: contactEmailTemplates['callout-response-answers'](
+          contact,
+          {
+            calloutSlug: callout.slug,
+            calloutTitle: variant.title,
+          }
+        ),
       }
     );
   }

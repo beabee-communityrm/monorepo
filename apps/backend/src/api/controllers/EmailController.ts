@@ -121,7 +121,6 @@ export class EmailController {
 
     const preview = await EmailService.getTemplatePreview(
       templateId,
-      expectedType,
       contact,
       data.mergeFields || {},
       {

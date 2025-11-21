@@ -109,3 +109,17 @@ export type EmailTemplateId =
 export type ContactEmailParams<T extends ContactEmailTemplateId> = Parameters<
   ContactEmailTemplates[T]
 >[1];
+
+/**
+ * Helper type to extract parameters for general email templates
+ */
+export type GeneralEmailParams<T extends GeneralEmailTemplateId> = Parameters<
+  GeneralEmailTemplates[T]
+>[0];
+
+/**
+ * Helper type to extract parameters for admin email templates
+ */
+export type AdminEmailParams<T extends AdminEmailTemplateId> = Parameters<
+  AdminEmailTemplates[T]
+>[0];

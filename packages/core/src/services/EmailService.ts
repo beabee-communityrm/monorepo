@@ -10,6 +10,7 @@ import {
   adminEmailTemplates,
   contactEmailTemplates,
   generalEmailTemplates,
+  getContactEmailMergeFields,
 } from '#data/email-templates';
 import { getRepository } from '#database';
 import { ExternalEmailTemplate } from '#errors/index';
@@ -34,7 +35,7 @@ import {
   GeneralEmailTemplates,
   TemplateEmailOptions,
 } from '#type/index';
-import { expandNestedMergeFields, replaceMergeFields } from '#utils/email';
+import { replaceMergeFields } from '#utils/email';
 
 const log = mainLogger.child({ app: 'email-service' });
 
@@ -100,6 +101,32 @@ class EmailService {
       this.convertContactToRecipient(contact)
     );
     await this.sendEmail(email, recipients, opts);
+  }
+
+  /**
+   * Send a custom email to a contact with custom subject and body
+   * Merge fields in the subject and body will be automatically replaced by the email provider
+   *
+   * @param contact The contact to send the email to
+   * @param subject Email subject (supports merge fields like *|FNAME|*, *|EMAIL|*, etc.)
+   * @param body Email body (supports merge fields like *|FNAME|*, *|EMAIL|*, etc.)
+   * @param opts Optional email options including mergeFields for additional custom fields
+   * @returns Promise that resolves when the email is sent
+   */
+  async sendCustomEmailToContact(
+    contact: Contact,
+    subject: string,
+    body: string,
+    opts?: EmailOptions & { mergeFields?: EmailMergeFields }
+  ): Promise<void> {
+    const email = new Email();
+    email.subject = subject;
+    email.body = body;
+    const recipient = this.convertContactToRecipient(
+      contact,
+      opts?.mergeFields
+    );
+    await this.sendEmail(email, [recipient], opts);
   }
 
   async sendTemplateTo<T extends GeneralEmailTemplateId>(
@@ -240,20 +267,18 @@ class EmailService {
    * a server-side preview that matches exactly what will be sent via email
    *
    * The preview includes:
-   * - Merge field replacement (contact fields, template-specific fields, custom fields)
+   * - Merge field replacement (contact fields and custom merge fields)
    * - Email footer with organization info, logo, and links
    * - Inline CSS styles via juice for consistent email client rendering
    *
    * @param template The template ID
-   * @param type The template type (general, admin, contact)
    * @param contact Contact for contact-specific fields (required, uses authenticated user)
    * @param customMergeFields Custom merge fields to override/extend default fields
-   * @param opts Email options including customSubject and locale
+   * @param opts Email options including customSubject, locale, and body override
    * @returns Preview with subject and body formatted exactly as it will be sent
    */
   async getTemplatePreview(
     template: EmailTemplateId,
-    type: EmailTemplateType,
     contact: Contact,
     customMergeFields: Record<string, string> = {},
     opts?: TemplateEmailOptions & { locale?: Locale; body?: string }
@@ -273,47 +298,22 @@ class EmailService {
 
     // 2. Generate base merge fields from contact
     const baseMergeFields: EmailMergeFields = {
-      EMAIL: contact.email,
-      NAME: contact.fullname,
-      FNAME: contact.firstname,
-      LNAME: contact.lastname,
-    };
-
-    // 3. Generate template-specific merge fields
-    let templateMergeFields: EmailMergeFields = {};
-    if (type === 'contact' && template in contactEmailTemplates) {
-      templateMergeFields = contactEmailTemplates[
-        template as ContactEmailTemplateId
-      ](contact, {} as any);
-    } else if (type === 'admin' && template in adminEmailTemplates) {
-      // Admin templates need specific params, use empty object as fallback
-      templateMergeFields = {};
-    } else if (type === 'general' && template in generalEmailTemplates) {
-      // General templates need specific params, use empty object as fallback
-      templateMergeFields = {};
-    }
-
-    // 4. Merge all fields (custom fields override template fields)
-    const allMergeFields = {
-      ...baseMergeFields,
-      ...templateMergeFields,
+      ...getContactEmailMergeFields(contact),
+      // TODO: Add more base merge fields here
       ...customMergeFields,
     };
 
-    // 5. Expand nested merge fields (handles MESSAGE with nested fields)
-    const expandedFields = expandNestedMergeFields(allMergeFields);
+    // 3. Replace merge fields in subject
+    const subject = opts?.customSubject || emailTemplate.subject;
+    const previewSubject = replaceMergeFields(subject, baseMergeFields);
 
-    // 6. Replace merge fields in subject
-    const subject = opts?.customSubject || (emailTemplate as Email).subject;
-    const previewSubject = replaceMergeFields(subject, expandedFields);
-
-    // 7. Replace merge fields in body and apply email formatting
+    // 4. Replace merge fields in body and apply email formatting
     // This includes adding the footer and inline CSS styles, exactly as in actual emails
     // Use provided body override if available, otherwise use template body
-    const templateBody = opts?.body || (emailTemplate as Email).body;
+    const templateBody = opts?.body || emailTemplate.body;
     const bodyWithMergeFields = replaceMergeFields(
       templateBody,
-      expandedFields
+      baseMergeFields
     );
     const previewBody = formatEmailBody(bodyWithMergeFields);
 
@@ -401,10 +401,7 @@ class EmailService {
     return {
       to: { email: contact.email, name: contact.fullname },
       mergeFields: {
-        EMAIL: contact.email,
-        NAME: contact.fullname,
-        FNAME: contact.firstname,
-        LNAME: contact.lastname,
+        ...getContactEmailMergeFields(contact),
         ...additionalMergeFields,
       },
     };
