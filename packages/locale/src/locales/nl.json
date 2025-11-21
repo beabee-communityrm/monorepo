@@ -916,9 +916,7 @@
       "successful": "Succesvol"
     },
     "perMonth": "/ maand",
-    "perMonthText": "per maand",
     "perYear": "/ jaar",
-    "perYearText": "een jaar",
     "role": {
       "admin": "Beheerder",
       "member": "Lid",
@@ -1077,6 +1075,8 @@
     },
     "paymentMethod": "Betaalmethode",
     "paymentSourceUpdateError": "Je kunt je bankrekening momenteel niet bijwerken omdat je nog een betaling tegoed hebt.",
+    "perMonthText": "per maand",
+    "perYearText": "een jaar",
     "prorateDecreaseMessage": "Uw huidige bijdrage is nog één maand geldig. | Uw huidige bijdrage duurt nog {n} maanden.",
     "prorateDecreaseMessageWillStart": "Uw nieuwe bijdrage start op {renewalDate}.",
     "prorateIncreaseMessage": "Uw huidige bijdrage is nog één maand geldig. | Uw huidige bijdrage duurt nog {n} maanden.",
@@ -1311,7 +1311,8 @@
     "privacy": "Privacybeleid",
     "tax": {
       "included": "Bijdrage is inclusief {taxRate}% BTW."
-    }
+    },
+    "contribution": {}
   },
   "joinPayment": {
     "applePay": {
@@ -1322,7 +1323,8 @@
     "goBack": "Heb je iets gemist? {back}",
     "goBackButton": "Terug naar het vorige scherm",
     "note": "Je kunt je bijdrage op elk moment wijzigen en je betalingsgeschiedenis bekijken in je ledenaccount.",
-    "willBeContributing": "Je draagt {contribution} bij"
+    "willBeContributing": "Je draagt {contribution} bij",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Bevestig uw gegevens",

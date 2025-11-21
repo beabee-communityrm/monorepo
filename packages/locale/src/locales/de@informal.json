@@ -916,9 +916,7 @@
       "successful": "Erfolgreich"
     },
     "perMonth": "/ Monat",
-    "perMonthText": "pro Monat",
     "perYear": "/ Jahr",
-    "perYearText": "pro Jahr",
     "role": {
       "admin": "Admin",
       "member": "Mitglied",
@@ -1077,6 +1075,8 @@
     },
     "paymentMethod": "Zahlungsart",
     "paymentSourceUpdateError": "Du kannst deine Bankverbindung aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
+    "perMonthText": "pro Monat",
+    "perYearText": "pro Jahr",
     "prorateDecreaseMessage": "Dein Beitrag bleibt noch für 1 Monat gleich. | Dein Beitrag bleibt noch für {n} Monaten gleich.",
     "prorateDecreaseMessageWillStart": "Der neue Beitrag wird am {renewalDate} zum ersten Mal eingezogen.",
     "prorateIncreaseMessage": "Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch 1 Monat. | Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch {n} Monaten.",
@@ -1311,7 +1311,8 @@
     "privacy": "Datenschutzerklärung",
     "tax": {
       "included": "Beitrag inklusive {taxRate}% MwSt."
-    }
+    },
+    "contribution": {}
   },
   "joinPayment": {
     "applePay": {
@@ -1322,7 +1323,8 @@
     "goBack": "Möchtest du etwas ändern? {back}",
     "goBackButton": "Zurück zum letzten Schritt",
     "note": "Du kannst deine Zahlungsdaten jederzeit in deinem Nutzer-Account ändern und dort auch sehen, wie viel du in der Vergangenheit bereits gezahlt hast. ",
-    "willBeContributing": "Du zahlst {contribution}"
+    "willBeContributing": "Du zahlst {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Bitte bestätige deine Angaben:",
