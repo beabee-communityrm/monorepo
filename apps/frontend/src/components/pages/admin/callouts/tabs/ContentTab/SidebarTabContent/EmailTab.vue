@@ -95,14 +95,16 @@ const mergeTagPlaceholders = computed(() => ({
   NAME: '*|NAME|*',
   FNAME: '*|FNAME|*',
   LNAME: '*|LNAME|*',
-  // Magic merge fields (automatically generated)
+  // Standard fields (available for all emails)
+  SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
+  ORGNAME: '*|ORGNAME|*',
+  // Magic links (generated automatically)
   RPLINK: '*|RPLINK|*',
   LOGINLINK: '*|LOGINLINK|*',
   SPLINK: '*|SPLINK|*',
   // Template-specific fields
   CALLOUTTITLE: '*|CALLOUTTITLE|*',
   CALLOUTLINK: '*|CALLOUTLINK|*',
-  SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
 }));
 
 // Create reactive email data that syncs with props.data

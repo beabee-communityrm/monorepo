@@ -3,6 +3,7 @@ import moment from 'moment';
 import config from '#config/config';
 import type { Contact } from '#models/index';
 import OptionsService from '#services/OptionsService';
+import type { EmailMergeFields } from '#type/index';
 
 export const getContactEmailMergeFields = (contact: {
   email: string;
@@ -17,6 +18,17 @@ export const getContactEmailMergeFields = (contact: {
 });
 
 /**
+ * Get standard merge fields that are available for all emails
+ * These include organization-related fields that are commonly used
+ *
+ * @returns Standard merge fields (SUPPORTEMAIL, ORGNAME)
+ */
+export const getBaseEmailMergeFields = (): EmailMergeFields => ({
+  SUPPORTEMAIL: OptionsService.getText('support-email'),
+  ORGNAME: OptionsService.getText('organisation'),
+});
+
+/**
  * Email Merge Fields Documentation
  *
  * ## General Merge Fields (available for all contact emails)
@@ -24,6 +36,10 @@ export const getContactEmailMergeFields = (contact: {
  * - *|NAME|* - Contact's full name (first + last)
  * - *|FNAME|* - Contact's first name
  * - *|LNAME|* - Contact's last name
+ *
+ * ## Standard Merge Fields (available for all emails)
+ * - *|SUPPORTEMAIL|* - Support email address
+ * - *|ORGNAME|* - Organization name
  *
  * ## Magic Links (generated automatically)
  * - *|RPLINK|* - Reset password link
@@ -261,7 +277,6 @@ export const contactEmailTemplates = {
    * **Available Merge Fields:**
    * - *|CALLOUTTITLE|* - Title of the callout
    * - *|CALLOUTLINK|* - Link to the callout
-   * - *|SUPPORTEMAIL|* - Support email address
    */
   'callout-response-answers': (
     _: Contact,
@@ -273,10 +288,6 @@ export const contactEmailTemplates = {
   }),
   /**
    * Email when contribution didn't start
-   *
-   * **Available Merge Fields:**
-   * - *|ORGNAME|* - Organization name
-   * - *|SUPPORTEMAIL|* - Support email address
    */
   'contribution-didnt-start': (_: Contact) => ({
     ORGNAME: OptionsService.getText('organisation'),
