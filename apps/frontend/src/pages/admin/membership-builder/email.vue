@@ -75,10 +75,6 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
         { tag: 'LNAME', example: user?.lastname },
       ],
     },
-    {
-      key: 'magic',
-      tags: [{ tag: 'RPLINK' }, { tag: 'LOGINLINK' }, { tag: 'SPLINK' }],
-    },
   ];
 });
 

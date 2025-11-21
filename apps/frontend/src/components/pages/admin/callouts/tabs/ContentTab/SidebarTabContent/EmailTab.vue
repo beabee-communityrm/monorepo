@@ -112,10 +112,6 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
       ],
     },
     {
-      key: 'magic',
-      tags: [{ tag: 'RPLINK' }, { tag: 'LOGINLINK' }, { tag: 'SPLINK' }],
-    },
-    {
       key: 'template',
       tags: [
         {
