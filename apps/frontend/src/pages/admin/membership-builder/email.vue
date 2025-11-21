@@ -13,22 +13,30 @@ meta:
   </App2ColGrid>
 
   <AppForm
+    class="max-w-[1400px]"
     :button-text="t('form.saveChanges')"
     :success-text="t('form.saved')"
     @submit="handleUpdate"
   >
+    <!-- Email editors with server-side preview -->
     <EmailEditor
-      v-if="welcomeEmail !== undefined"
-      :label="stepT('welcomeEmail')"
-      :email="welcomeEmail"
-      :footer="emailFooter"
+      v-if="welcomeEmail"
+      v-model:subject="welcomeEmail.subject"
+      v-model:content="welcomeEmail.body"
+      :heading="stepT('welcomeEmail')"
+      :server-render="{ type: 'contact', templateId: 'welcome' }"
+      :subject-label="t('emailEditor.subject.label')"
+      :content-label="t('emailEditor.body.label')"
     />
 
     <EmailEditor
-      v-if="cancellationEmail !== undefined"
-      :label="stepT('cancellationEmail')"
-      :email="cancellationEmail"
-      :footer="emailFooter"
+      v-if="cancellationEmail"
+      v-model:subject="cancellationEmail.subject"
+      v-model:content="cancellationEmail.body"
+      :heading="stepT('cancellationEmail')"
+      :server-render="{ type: 'contact', templateId: 'cancelled-contribution' }"
+      :subject-label="t('emailEditor.subject.label')"
+      :content-label="t('emailEditor.body.label')"
     />
   </AppForm>
 </template>
@@ -46,7 +54,6 @@ const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);
 
 const welcomeEmail = ref<GetEmailData | false>();
 const cancellationEmail = ref<GetEmailData | false>();
-const emailFooter = ref('');
 
 async function loadEmail(id: string): Promise<GetEmailData | false> {
   try {
@@ -74,6 +81,5 @@ async function handleUpdate() {
 onBeforeMount(async () => {
   welcomeEmail.value = await loadEmail('welcome');
   cancellationEmail.value = await loadEmail('cancelled-contribution');
-  emailFooter.value = (await client.content.get('email')).footer;
 });
 </script>

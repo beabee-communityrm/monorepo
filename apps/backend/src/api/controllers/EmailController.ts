@@ -1,57 +1,55 @@
+import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
-import { ExternalEmailTemplate } from '@beabee/core/errors';
-import { Email } from '@beabee/core/models';
+import { Contact, Email } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
+import {
+  AdminEmailTemplateId,
+  AuthInfo,
+  ContactEmailTemplateId,
+  EmailTemplateId,
+  GeneralEmailTemplateId,
+  PreviewEmailOptions,
+} from '@beabee/core/type';
+import { Locale } from '@beabee/locale';
 
-import { GetEmailDto, UpdateEmailDto } from '@api/dto/EmailDto';
-import { plainToInstance } from 'class-transformer';
-import { isUUID } from 'class-validator';
+import { CurrentAuth } from '@api/decorators/CurrentAuth';
+import {
+  GetEmailDto,
+  PreviewEmailDto,
+  UpdateEmailDto,
+} from '@api/dto/EmailDto';
+import EmailTransformer from '@api/transformers/EmailTransformer';
 import {
   Authorized,
+  BadRequestError,
   Body,
+  CurrentUser,
   Get,
   JsonController,
   Param,
+  Post,
   Put,
 } from 'routing-controllers';
-
-async function findEmail(id: string): Promise<Email | null> {
-  if (isUUID(id, '4')) {
-    return await getRepository(Email).findOneBy({ id });
-  } else if (EmailService.isTemplateId(id)) {
-    const maybeEmail = await EmailService.getTemplateEmail(id);
-    if (maybeEmail) {
-      return maybeEmail;
-    } else if (maybeEmail === false) {
-      throw new ExternalEmailTemplate();
-    }
-  }
-  return null;
-}
-
-// TODO: move to transformer
-function emailToData(email: Email): GetEmailDto {
-  return plainToInstance(GetEmailDto, {
-    subject: email.subject,
-    body: email.body,
-  });
-}
 
 @Authorized('admin')
 @JsonController('/email')
 export class EmailController {
   @Get('/:id')
-  async getEmail(@Param('id') id: string): Promise<GetEmailDto | undefined> {
-    const email = await findEmail(id);
-    return email ? emailToData(email) : undefined;
+  async getEmail(
+    @CurrentAuth() auth: AuthInfo,
+    @Param('id') id: EmailTemplateId | string
+  ): Promise<GetEmailDto | undefined> {
+    const email = await EmailService.findEmail(id);
+    return email ? EmailTransformer.convert(email, auth) : undefined;
   }
 
   @Put('/:id')
   async updateEmail(
-    @Param('id') id: string,
+    @CurrentAuth() auth: AuthInfo,
+    @Param('id') id: EmailTemplateId | string,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto | undefined> {
-    const email = await findEmail(id);
+    const email = await EmailService.findEmail(id);
     if (email) {
       await getRepository(Email).update(email.id, data);
       return data;
@@ -61,7 +59,94 @@ export class EmailController {
         ...data,
       });
       await EmailService.setTemplateEmail(id, email);
-      return emailToData(email);
+      return EmailTransformer.convert(email, auth);
     }
+  }
+
+  /**
+   * Preview a general email template
+   * Available to all authenticated users
+   */
+  @Authorized()
+  @Post('/preview/general/:templateId')
+  async previewGeneralEmail(
+    @CurrentUser({ required: true }) contact: Contact,
+    @Param('templateId') templateId: GeneralEmailTemplateId,
+    @Body() data: PreviewEmailDto
+  ): Promise<GetEmailDto> {
+    return this.previewEmailTemplate(contact, templateId, data, 'general');
+  }
+
+  /**
+   * Preview a contact email template
+   * Available to all authenticated users
+   * Uses the current user's data for contact-specific fields
+   */
+  @Authorized()
+  @Post('/preview/contact/:templateId')
+  async previewContactEmail(
+    @CurrentUser({ required: true }) contact: Contact,
+    @Param('templateId') templateId: ContactEmailTemplateId,
+    @Body() data: PreviewEmailDto
+  ): Promise<GetEmailDto> {
+    return this.previewEmailTemplate(contact, templateId, data, 'contact');
+  }
+
+  /**
+   * Preview an admin email template
+   * Only available to administrators
+   */
+  @Authorized('admin')
+  @Post('/preview/admin/:templateId')
+  async previewAdminEmail(
+    @CurrentUser({ required: true }) contact: Contact,
+    @Param('templateId') templateId: AdminEmailTemplateId,
+    @Body() data: PreviewEmailDto
+  ): Promise<GetEmailDto> {
+    return this.previewEmailTemplate(contact, templateId, data, 'admin');
+  }
+
+  /**
+   * Shared logic for previewing email templates
+   * Validates template ID and type, then generates preview with merge fields
+   */
+  private async previewEmailTemplate(
+    contact: Contact,
+    templateId: EmailTemplateId,
+    data: PreviewEmailDto,
+    expectedType: 'general' | 'contact' | 'admin'
+  ): Promise<GetEmailDto> {
+    if (!EmailService.isTemplateId(templateId)) {
+      throw new BadRequestError(`Invalid template ID: ${templateId}`);
+    }
+
+    const templateType = EmailService.getTemplateType(templateId);
+    if (templateType !== expectedType) {
+      throw new BadRequestError(
+        `Template ${templateId} is not an ${expectedType} template`
+      );
+    }
+
+    const opts: PreviewEmailOptions = {
+      mergeFields: data.mergeFields || {},
+    };
+
+    if (data.customSubject) {
+      opts.customSubject = data.customSubject;
+    }
+    if (data.locale) {
+      opts.locale = data.locale;
+    }
+    if (data.body) {
+      opts.body = data.body;
+    }
+
+    const preview = await EmailService.getTemplatePreview(
+      templateId,
+      contact,
+      opts
+    );
+
+    return preview;
   }
 }

@@ -1,8 +1,7 @@
-<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="flex max-h-full min-h-0 flex-1">
-    <div class="flex-1 overflow-y-auto bg-white p-6 shadow-md">
-      <div class="mx-auto max-w-3xl">
+    <div class="relative flex-1 bg-white p-6 shadow-md">
+      <div class="mx-auto max-h-full max-w-3xl overflow-y-auto">
         <!-- Info box when contact settings are not enabled -->
         <AppNotification
           v-if="!collectInfoEnabled"
@@ -26,9 +25,24 @@
           />
         </AppFormField>
 
-        <!-- Email editor - always visible -->
-        <!-- TODO: Use EmailController to get real preview instead of static footer -->
-        <EmailEditor :email="emailData" :footer="emailFooter" />
+        <!-- Email editor with server-side preview (merge fields resolved server-side) -->
+        <div class="relative overflow-visible">
+          <EmailEditor
+            v-model:subject="emailData.subject"
+            v-model:content="emailData.content"
+            :merge-fields="{
+              CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
+              CALLOUTLINK: `${env.appUrl}/crowdnewsroom/${props.tabs.titleAndImage.data.slug}`,
+            }"
+            :server-render="{
+              type: 'contact',
+              templateId: 'callout-response-answers',
+            }"
+            :subject-label="t('callout.builder.tabs.email.subject.label')"
+            :content-label="t('callout.builder.tabs.email.body.label')"
+            :always-stacked="true"
+          />
+        </div>
       </div>
     </div>
 
@@ -43,9 +57,9 @@
 import { AppFormField, AppNotification, AppToggleField } from '@beabee/vue';
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+import env from '@env';
 import type { LocaleProp } from '@type';
-import { client } from '@utils/api';
-import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
+import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { SidebarTabProps } from '../SidebarTabs.interface';
@@ -58,8 +72,8 @@ export interface EmailTabData {
   sendEmail: boolean;
   /** Email subject line */
   emailSubject: LocaleProp;
-  /** Email body content */
-  emailBody: LocaleProp;
+  /** Email main body content */
+  emailContent: LocaleProp;
 }
 
 /**
@@ -73,38 +87,58 @@ const { t } = useI18n();
 // Check if "Collect contact information" is enabled in the settings tab
 const collectInfoEnabled = computed(() => props.tabs.settings.data.collectInfo);
 
-// Email footer for preview
-const emailFooter = ref('');
-
 // Create reactive email data that syncs with props.data
 const emailData = reactive({
-  subject: props.data.emailSubject.default,
-  body: props.data.emailBody.default,
+  subject:
+    props.data.emailSubject.default ||
+    t('callout.builder.tabs.email.subject.default'),
+  content:
+    props.data.emailContent.default ||
+    t('callout.builder.tabs.email.body.default'),
 });
 
-// Watch emailData changes and sync to props.data
+/**
+ * Bi-directional sync between local emailData and parent's reactive props.data
+ *
+ * Props mutation is intentionally used here because:
+ * - Component is rendered dynamically via <component :is> with v-bind
+ * - Parent passes reactive objects and expects these mutations
+ * - Alternative solutions (defineModel, emit) don't work with dynamic components
+ */
 watch(
   emailData,
   (newValue) => {
     // eslint-disable-next-line vue/no-mutating-props
     props.data.emailSubject.default = newValue.subject;
     // eslint-disable-next-line vue/no-mutating-props
-    props.data.emailBody.default = newValue.body;
+    props.data.emailContent.default = newValue.content;
   },
   { deep: true }
 );
 
 // Watch props.data changes and sync to emailData
 watch(
-  () => [props.data.emailSubject.default, props.data.emailBody.default],
-  ([subject, body]) => {
-    emailData.subject = subject;
-    emailData.body = body;
-  }
-);
+  () => [props.data.emailSubject.default, props.data.emailContent.default],
+  ([subject, message]) => {
+    // Use default translations if values are empty
+    const defaultSubject =
+      subject || t('callout.builder.tabs.email.subject.default');
+    const defaultContent =
+      message || t('callout.builder.tabs.email.body.default');
 
-// Load email footer on component mount
-onBeforeMount(async () => {
-  emailFooter.value = (await client.content.get('email')).footer;
-});
+    emailData.subject = defaultSubject;
+    emailData.content = defaultContent;
+
+    // Update props with default values if they were empty
+    if (!subject) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.emailSubject.default = defaultSubject;
+    }
+    if (!message) {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.data.emailContent.default = defaultContent;
+    }
+  },
+  { immediate: true }
+);
 </script>

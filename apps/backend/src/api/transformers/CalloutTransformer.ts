@@ -164,6 +164,7 @@ class CalloutTransformer extends BaseTransformer<
       starts: callout.starts,
       expires: callout.expires,
       channels: callout.channels,
+      sendResponseEmail: callout.sendResponseEmail,
       ...(callout.hasAnswered !== undefined && {
         hasAnswered: callout.hasAnswered,
       }),

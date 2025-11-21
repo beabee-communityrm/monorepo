@@ -74,6 +74,8 @@ const textFields = [
   'thanksRedirect',
   'shareTitle',
   'shareDescription',
+  'responseEmailSubject',
+  'responseEmailBody',
 ] as const;
 
 /**
@@ -97,6 +99,8 @@ function convertVariantsForSteps(
     thanksRedirect: { default: '' },
     shareTitle: { default: '' },
     shareDescription: { default: '' },
+    responseEmailSubject: { default: '' },
+    responseEmailBody: { default: '' },
   };
 
   if (!variants) return result;
@@ -234,9 +238,9 @@ export function convertCalloutToTabs(
         introText: variants.intro,
       },
       email: {
-        sendEmail: false,
-        emailSubject: { default: '' },
-        emailBody: { default: '' },
+        sendEmail: callout?.sendResponseEmail || false,
+        emailSubject: variants.responseEmailSubject,
+        emailContent: variants.responseEmailBody,
       },
       endMessage: {
         whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
@@ -384,6 +388,10 @@ function convertVariantForCallout(
     slideNavigation,
     componentText,
     responseLinkText,
+    responseEmailSubject:
+      tabs.content.sidebarTabs.email.emailSubject[variant] || '',
+    responseEmailBody:
+      tabs.content.sidebarTabs.email.emailContent[variant] || '',
   };
 }
 
@@ -503,6 +511,7 @@ export function convertStepsToCallout(
       tabs.settings.showNewsletterOptIn
         ? tabs.settings.newsletterSettings
         : null,
+    sendResponseEmail: tabs.content.sidebarTabs.email.sendEmail,
   };
 }
 
