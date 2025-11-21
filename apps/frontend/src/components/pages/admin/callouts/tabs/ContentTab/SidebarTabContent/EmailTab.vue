@@ -33,6 +33,7 @@
             :merge-fields="{
               CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
               CALLOUTLINK: `${env.appUrl}/crowdnewsroom/${props.tabs.titleAndImage.data.slug}`,
+              CALLOUTSLUG: props.tabs.titleAndImage.data.slug,
             }"
             :merge-field-groups="mergeFieldGroups"
             :server-render="{
@@ -130,6 +131,7 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
           example: `${env.appUrl}/crowdnewsroom/${props.tabs.titleAndImage.data.slug}`,
         },
         { tag: 'CALLOUTSLUG', example: props.tabs.titleAndImage.data.slug },
+        { tag: 'ANSWERS' },
       ],
     },
   ];

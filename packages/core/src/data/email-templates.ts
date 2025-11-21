@@ -277,14 +277,19 @@ export const contactEmailTemplates = {
    * **Available Merge Fields:**
    * - *|CALLOUTTITLE|* - Title of the callout
    * - *|CALLOUTLINK|* - Link to the callout
+   * - *|ANSWERS|* - Formatted response answers (HTML)
    */
   'callout-response-answers': (
     _: Contact,
-    params: { calloutSlug: string; calloutTitle: string }
+    params: {
+      calloutSlug: string;
+      calloutTitle: string;
+      answers?: string;
+    }
   ) => ({
     CALLOUTTITLE: params.calloutTitle,
     CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
-    SUPPORTEMAIL: OptionsService.getText('support-email'),
+    ANSWERS: params.answers || '',
   }),
   /**
    * Email when contribution didn't start
