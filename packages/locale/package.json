@@ -12,9 +12,9 @@
   "scripts": {
     "clear": "rm -rf dist/ tsconfig.build.tsbuildinfo",
     "build": "yarn build:types && yarn build:esbuild",
-    "build:types": "rm -f tsconfig.build.tsbuildinfo && tsc -p tsconfig.build.json",
+    "build:types": "rm -f tsconfig.build.tsbuildinfo && tsc",
     "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings esbuild.ts",
-    "check": "tsc --noEmit -p tsconfig.build.json",
+    "check": "tsc --noEmit",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch",
     "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $(pwd) --extension js -p ./src/types"
