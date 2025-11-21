@@ -1,12 +1,13 @@
 {
   "extends": [
-    "./tsconfig.options.json"
+    "./tsconfig.dev.json"
   ],
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "noEmit": true,
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "preserveWatchOutput": true
   }
 }
