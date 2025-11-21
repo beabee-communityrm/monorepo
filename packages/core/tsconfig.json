@@ -1,5 +1,4 @@
 {
   "extends": ["./tsconfig.build.json", "@beabee/tsconfig/tsconfig.dev.json"],
-  "exclude": [], // Override tsconfig.build.json exclude
-  "references": [{ "path": "../common" }, { "path": "../locale" }]
+  "exclude": [] // Override tsconfig.build.json exclude
 }
