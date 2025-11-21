@@ -32,10 +32,7 @@
             v-model:content="emailData.content"
             :merge-fields="{
               CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
-              CALLOUTLINK: generateCalloutLink(
-                props.tabs.titleAndImage.data.slug,
-                true
-              ),
+              CALLOUTLINK: `${env.appUrl}/crowdnewsroom/${props.tabs.titleAndImage.data.slug}`,
             }"
             :merge-field-groups="mergeFieldGroups"
             :server-render="{
@@ -45,7 +42,6 @@
             :subject-label="t('callout.builder.tabs.email.subject.label')"
             :content-label="t('callout.builder.tabs.email.body.label')"
             :always-stacked="true"
-            :use-message-merge-field="true"
           />
         </div>
       </div>
@@ -67,9 +63,9 @@ import {
 } from '@beabee/vue';
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+import env from '@env';
 import { currentUser } from '@store/currentUser';
 import type { LocaleProp } from '@type';
-import { generateCalloutLink } from '@utils/callouts';
 import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -83,8 +79,8 @@ export interface EmailTabData {
   sendEmail: boolean;
   /** Email subject line */
   emailSubject: LocaleProp;
-  /** Email message content (used as MESSAGE merge field value) */
-  emailMessage: LocaleProp;
+  /** Email main body content */
+  emailContent: LocaleProp;
 }
 
 /**
@@ -128,10 +124,7 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
         },
         {
           tag: 'CALLOUTLINK',
-          example: generateCalloutLink(
-            props.tabs.titleAndImage.data.slug,
-            true
-          ),
+          example: `${env.appUrl}/crowdnewsroom/${props.tabs.titleAndImage.data.slug}`,
         },
         { tag: 'CALLOUTSLUG', example: props.tabs.titleAndImage.data.slug },
         { tag: 'SUPPORTEMAIL' },
@@ -140,33 +133,14 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
   ];
 });
 
-// Available merge tags for default email template translations
-// This is necessary because `vue-i18n` otherwise tries to interpret the syntax `*|MERGE_TAG|*` itself.
-const mergeTagPlaceholders = computed(() => ({
-  // Contact fields (available in all contact emails)
-  EMAIL: '*|EMAIL|*',
-  NAME: '*|NAME|*',
-  FNAME: '*|FNAME|*',
-  LNAME: '*|LNAME|*',
-  // Magic merge fields (automatically generated)
-  RPLINK: '*|RPLINK|*',
-  LOGINLINK: '*|LOGINLINK|*',
-  SPLINK: '*|SPLINK|*',
-  // Template-specific fields
-  MESSAGE: '*|MESSAGE|*',
-  CALLOUTTITLE: '*|CALLOUTTITLE|*',
-  CALLOUTLINK: '*|CALLOUTLINK|*',
-  SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
-}));
-
 // Create reactive email data that syncs with props.data
 const emailData = reactive({
   subject:
     props.data.emailSubject.default ||
-    t('callout.builder.tabs.email.subject.default', mergeTagPlaceholders.value),
+    t('callout.builder.tabs.email.subject.default'),
   content:
-    props.data.emailMessage.default ||
-    t('callout.builder.tabs.email.body.default', mergeTagPlaceholders.value),
+    props.data.emailContent.default ||
+    t('callout.builder.tabs.email.body.default'),
 });
 
 /**
@@ -183,24 +157,23 @@ watch(
     // eslint-disable-next-line vue/no-mutating-props
     props.data.emailSubject.default = newValue.subject;
     // eslint-disable-next-line vue/no-mutating-props
-    props.data.emailMessage.default = newValue.content;
+    props.data.emailContent.default = newValue.content;
   },
   { deep: true }
 );
 
 // Watch props.data changes and sync to emailData
 watch(
-  () => [props.data.emailSubject.default, props.data.emailMessage.default],
+  () => [props.data.emailSubject.default, props.data.emailContent.default],
   ([subject, message]) => {
     // Use default translations if values are empty
     const defaultSubject =
       subject || t('callout.builder.tabs.email.subject.default');
-    const defaultMessage =
-      message ||
-      t('callout.builder.tabs.email.body.default', mergeTagPlaceholders.value);
+    const defaultContent =
+      message || t('callout.builder.tabs.email.body.default');
 
     emailData.subject = defaultSubject;
-    emailData.content = defaultMessage;
+    emailData.content = defaultContent;
 
     // Update props with default values if they were empty
     if (!subject) {
@@ -209,7 +182,7 @@ watch(
     }
     if (!message) {
       // eslint-disable-next-line vue/no-mutating-props
-      props.data.emailMessage.default = defaultMessage;
+      props.data.emailContent.default = defaultContent;
     }
   },
   { immediate: true }

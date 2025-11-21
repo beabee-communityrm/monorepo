@@ -50,7 +50,6 @@ import { AppButton, AppSubHeading, ItemDateRange } from '@beabee/vue';
 
 import env from '@env';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
-import { generateCalloutLink } from '@utils/callouts';
 import { resolveImageUrl } from '@utils/url';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -70,5 +69,5 @@ const imageUrl = computed(() => {
     : noImage;
 });
 
-const calloutLink = computed(() => generateCalloutLink(props.callout.slug));
+const calloutLink = computed(() => `/crowdnewsroom/${props.callout.slug}`);
 </script>

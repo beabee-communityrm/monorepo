@@ -83,7 +83,7 @@
  *   v-model:subject="emailSubject"
  *   v-model:content="emailContent"
  *   :serverRender="{ type: 'contact', templateId: 'callout-response-answers' }"
- *   :mergeFields="{ MESSAGE: customMessage, CALLOUTTITLE: calloutTitle }"
+ *   :mergeFields="{ CALLOUTTITLE: calloutTitle }"
  *   :contact="currentUser"
  * />
  * ```
@@ -155,13 +155,6 @@ const props = withDefaults(
      * Whether to always stack the preview below the editor (ignores responsive breakpoints)
      */
     alwaysStacked?: boolean;
-
-    /**
-     * Whether to use MESSAGE merge field instead of body parameter
-     * When true, content is sent as MESSAGE in mergeFields (for callout-response-answers template)
-     * When false, content is sent as body parameter (default for all other templates)
-     */
-    useMessageMergeField?: boolean;
   }>(),
   {
     heading: '',
@@ -170,7 +163,6 @@ const props = withDefaults(
     subjectLabel: '',
     contentLabel: '',
     alwaysStacked: false,
-    useMessageMergeField: false,
   }
 );
 
@@ -203,22 +195,11 @@ async function fetchServerPreview() {
   try {
     const previewOptions: PreviewEmailOptions = {
       customSubject: subject.value,
+      body: content.value,
     };
 
-    if (props.useMessageMergeField) {
-      // Use MESSAGE merge field instead of body parameter
-      // This is needed for callout-response-answers template where content
-      // should be passed as MESSAGE merge field
-      previewOptions.mergeFields = {
-        MESSAGE: content.value,
-        ...props.mergeFields,
-      };
-    } else {
-      // Use body parameter for all other templates
-      previewOptions.body = content.value;
-      if (Object.keys(props.mergeFields).length > 0) {
-        previewOptions.mergeFields = props.mergeFields;
-      }
+    if (Object.keys(props.mergeFields).length > 0) {
+      previewOptions.mergeFields = props.mergeFields;
     }
 
     const preview = await client.email.preview(

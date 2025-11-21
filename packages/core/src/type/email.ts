@@ -1,3 +1,5 @@
+import type { Locale } from '@beabee/locale';
+
 import type {
   adminEmailTemplates,
   contactEmailTemplates,
@@ -37,6 +39,11 @@ export interface TemplateEmailOptions extends EmailOptions {
   customSubject?: string;
 }
 
+export interface PreviewEmailOptions extends TemplateEmailOptions {
+  mergeFields?: Record<string, string>;
+  locale?: Locale;
+  body?: string;
+}
 export interface PreparedEmail extends Email {
   fromEmail: string;
   fromName: string;
@@ -109,3 +116,17 @@ export type EmailTemplateId =
 export type ContactEmailParams<T extends ContactEmailTemplateId> = Parameters<
   ContactEmailTemplates[T]
 >[1];
+
+/**
+ * Helper type to extract parameters for general email templates
+ */
+export type GeneralEmailParams<T extends GeneralEmailTemplateId> = Parameters<
+  GeneralEmailTemplates[T]
+>[0];
+
+/**
+ * Helper type to extract parameters for admin email templates
+ */
+export type AdminEmailParams<T extends AdminEmailTemplateId> = Parameters<
+  AdminEmailTemplates[T]
+>[0];

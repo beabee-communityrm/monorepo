@@ -3,6 +3,30 @@ import moment from 'moment';
 import config from '#config/config';
 import type { Contact } from '#models/index';
 import OptionsService from '#services/OptionsService';
+import type { EmailMergeFields } from '#type/index';
+
+export const getContactEmailMergeFields = (contact: {
+  email: string;
+  fullname: string;
+  firstname: string;
+  lastname: string;
+}) => ({
+  EMAIL: contact.email,
+  NAME: contact.fullname,
+  FNAME: contact.firstname,
+  LNAME: contact.lastname,
+});
+
+/**
+ * Get standard merge fields that are available for all emails
+ * These include organization-related fields that are commonly used
+ *
+ * @returns Standard merge fields (SUPPORTEMAIL, ORGNAME)
+ */
+export const getBaseEmailMergeFields = (): EmailMergeFields => ({
+  SUPPORTEMAIL: OptionsService.getText('support-email'),
+  ORGNAME: OptionsService.getText('organisation'),
+});
 
 /**
  * Email Merge Fields Documentation
@@ -13,17 +37,15 @@ import OptionsService from '#services/OptionsService';
  * - *|FNAME|* - Contact's first name
  * - *|LNAME|* - Contact's last name
  *
+ * ## Standard Merge Fields (available for all emails)
+ * - *|SUPPORTEMAIL|* - Support email address
+ * - *|ORGNAME|* - Organization name
+ *
  * ## Magic Links (generated automatically)
  * - *|RPLINK|* - Reset password link
  * - *|LOGINLINK|* - Login link
  * - *|SPLINK|* - Set password link
  *
- * ## Nested Merge Fields
- * The MESSAGE field supports nested merge fields. For example:
- * - MESSAGE: "Hello *|FNAME|*, thank you for your response to *|CALLOUTTITLE|*!"
- * - This will expand to: "Hello John, thank you for your response to Survey 2024!"
- *
- * All merge fields within MESSAGE content are automatically expanded before rendering.
  */
 
 /**
@@ -213,7 +235,7 @@ export const contactEmailTemplates = {
    *
    * **Available Merge Fields:**
    * - *|PURCHASER|* - Name of the gift purchaser
-   * - *|MESSAGE|* - Personal message from the purchaser (supports nested merge fields)
+   * - *|MESSAGE|* - Personal message from the purchaser
    * - *|ACTIVATELINK|* - Link to activate the gift
    */
   'giftee-success': (
@@ -253,26 +275,19 @@ export const contactEmailTemplates = {
    * Email with callout response answers
    *
    * **Available Merge Fields:**
-   * - *|MESSAGE|* - Custom message (supports nested merge fields)
    * - *|CALLOUTTITLE|* - Title of the callout
    * - *|CALLOUTLINK|* - Link to the callout
-   * - *|SUPPORTEMAIL|* - Support email address
    */
   'callout-response-answers': (
     _: Contact,
-    params: { message: string; calloutSlug: string; calloutTitle: string }
+    params: { calloutSlug: string; calloutTitle: string }
   ) => ({
-    MESSAGE: params.message,
     CALLOUTTITLE: params.calloutTitle,
     CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
     SUPPORTEMAIL: OptionsService.getText('support-email'),
   }),
   /**
    * Email when contribution didn't start
-   *
-   * **Available Merge Fields:**
-   * - *|ORGNAME|* - Organization name
-   * - *|SUPPORTEMAIL|* - Support email address
    */
   'contribution-didnt-start': (_: Contact) => ({
     ORGNAME: OptionsService.getText('organisation'),
