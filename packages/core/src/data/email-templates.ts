@@ -277,7 +277,6 @@ export const contactEmailTemplates = {
    * **Available Merge Fields:**
    * - *|CALLOUTTITLE|* - Title of the callout
    * - *|CALLOUTLINK|* - Link to the callout
-   * - *|SUPPORTEMAIL|* - Support email address
    * - *|ANSWERS|* - Formatted response answers (HTML)
    */
   'callout-response-answers': (
@@ -290,7 +289,6 @@ export const contactEmailTemplates = {
   ) => ({
     CALLOUTTITLE: params.calloutTitle,
     CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
-    SUPPORTEMAIL: OptionsService.getText('support-email'),
     ANSWERS: params.answers || '',
   }),
   /**
