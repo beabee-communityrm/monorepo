@@ -1,3 +1,5 @@
+import type { Locale } from '@beabee/locale';
+
 import type {
   adminEmailTemplates,
   contactEmailTemplates,
@@ -37,6 +39,11 @@ export interface TemplateEmailOptions extends EmailOptions {
   customSubject?: string;
 }
 
+export interface PreviewEmailOptions extends TemplateEmailOptions {
+  mergeFields?: Record<string, string>;
+  locale?: Locale;
+  body?: string;
+}
 export interface PreparedEmail extends Email {
   fromEmail: string;
   fromName: string;

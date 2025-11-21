@@ -34,6 +34,7 @@ import {
   EmailTemplateType,
   GeneralEmailTemplateId,
   GeneralEmailTemplates,
+  PreviewEmailOptions,
   TemplateEmailOptions,
 } from '#type/index';
 import { replaceMergeFields } from '#utils/email';
@@ -221,7 +222,7 @@ class EmailService {
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
-    params: ContactEmailParams<T>,
+    params?: ContactEmailParams<T>,
     opts?: TemplateEmailOptions
   ): Promise<void> {
     log.info('Sending template to contact ' + contact.id);
@@ -364,8 +365,7 @@ class EmailService {
   async getTemplatePreview(
     template: EmailTemplateId,
     contact: Contact,
-    customMergeFields: Record<string, string> = {},
-    opts?: TemplateEmailOptions & { locale?: Locale; body?: string }
+    opts?: PreviewEmailOptions
   ): Promise<{ subject: string; body: string }> {
     // 1. Get the email template (from provider or default templates)
     const emailTemplate = await this.getTemplateEmail(template);
@@ -381,24 +381,21 @@ class EmailService {
     }
 
     // 2. Generate base merge fields from contact and standard fields
-    const baseMergeFields: EmailMergeFields = {
+    const mergeFields: EmailMergeFields = {
       ...getContactEmailMergeFields(contact),
       ...getBaseEmailMergeFields(),
-      ...customMergeFields,
+      ...opts?.mergeFields,
     };
 
     // 3. Replace merge fields in subject
     const subject = opts?.customSubject || emailTemplate.subject;
-    const previewSubject = replaceMergeFields(subject, baseMergeFields);
+    const previewSubject = replaceMergeFields(subject, mergeFields);
 
     // 4. Replace merge fields in body and apply email formatting
     // This includes adding the footer and inline CSS styles, exactly as in actual emails
     // Use provided body override if available, otherwise use template body
     const templateBody = opts?.body || emailTemplate.body;
-    const bodyWithMergeFields = replaceMergeFields(
-      templateBody,
-      baseMergeFields
-    );
+    const bodyWithMergeFields = replaceMergeFields(templateBody, mergeFields);
     const previewBody = formatEmailBody(bodyWithMergeFields);
 
     return {
@@ -452,7 +449,7 @@ class EmailService {
    *   - `null` if not found
    *   - Throws `ExternalEmailTemplate` if the template is managed by an external email provider
    */
-  async findEmail(id: string): Promise<Email | null> {
+  async findEmail(id: EmailTemplateId | string): Promise<Email | null> {
     if (isUUID(id, '4')) {
       return await getRepository(Email).findOneBy({ id });
     } else if (this.isTemplateId(id)) {

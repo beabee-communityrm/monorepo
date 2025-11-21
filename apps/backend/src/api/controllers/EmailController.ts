@@ -2,7 +2,15 @@ import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { Contact, Email } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
-import { AuthInfo } from '@beabee/core/type';
+import {
+  AdminEmailTemplateId,
+  AuthInfo,
+  ContactEmailTemplateId,
+  EmailTemplateId,
+  GeneralEmailTemplateId,
+  PreviewEmailOptions,
+} from '@beabee/core/type';
+import { Locale } from '@beabee/locale';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import {
@@ -29,7 +37,7 @@ export class EmailController {
   @Get('/:id')
   async getEmail(
     @CurrentAuth() auth: AuthInfo,
-    @Param('id') id: string
+    @Param('id') id: EmailTemplateId | string
   ): Promise<GetEmailDto | undefined> {
     const email = await EmailService.findEmail(id);
     return email ? EmailTransformer.convert(email, auth) : undefined;
@@ -38,7 +46,7 @@ export class EmailController {
   @Put('/:id')
   async updateEmail(
     @CurrentAuth() auth: AuthInfo,
-    @Param('id') id: string,
+    @Param('id') id: EmailTemplateId | string,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto | undefined> {
     const email = await EmailService.findEmail(id);
@@ -63,7 +71,7 @@ export class EmailController {
   @Post('/preview/general/:templateId')
   async previewGeneralEmail(
     @CurrentUser({ required: true }) contact: Contact,
-    @Param('templateId') templateId: string,
+    @Param('templateId') templateId: GeneralEmailTemplateId,
     @Body() data: PreviewEmailDto
   ): Promise<GetEmailDto> {
     return this.previewEmailTemplate(contact, templateId, data, 'general');
@@ -78,7 +86,7 @@ export class EmailController {
   @Post('/preview/contact/:templateId')
   async previewContactEmail(
     @CurrentUser({ required: true }) contact: Contact,
-    @Param('templateId') templateId: string,
+    @Param('templateId') templateId: ContactEmailTemplateId,
     @Body() data: PreviewEmailDto
   ): Promise<GetEmailDto> {
     return this.previewEmailTemplate(contact, templateId, data, 'contact');
@@ -92,7 +100,7 @@ export class EmailController {
   @Post('/preview/admin/:templateId')
   async previewAdminEmail(
     @CurrentUser({ required: true }) contact: Contact,
-    @Param('templateId') templateId: string,
+    @Param('templateId') templateId: AdminEmailTemplateId,
     @Body() data: PreviewEmailDto
   ): Promise<GetEmailDto> {
     return this.previewEmailTemplate(contact, templateId, data, 'admin');
@@ -104,7 +112,7 @@ export class EmailController {
    */
   private async previewEmailTemplate(
     contact: Contact,
-    templateId: string,
+    templateId: EmailTemplateId,
     data: PreviewEmailDto,
     expectedType: 'general' | 'contact' | 'admin'
   ): Promise<GetEmailDto> {
@@ -119,15 +127,24 @@ export class EmailController {
       );
     }
 
+    const opts: PreviewEmailOptions = {
+      mergeFields: data.mergeFields || {},
+    };
+
+    if (data.customSubject) {
+      opts.customSubject = data.customSubject;
+    }
+    if (data.locale) {
+      opts.locale = data.locale;
+    }
+    if (data.body) {
+      opts.body = data.body;
+    }
+
     const preview = await EmailService.getTemplatePreview(
       templateId,
       contact,
-      data.mergeFields || {},
-      {
-        ...(data.customSubject && { customSubject: data.customSubject }),
-        ...(data.locale && { locale: data.locale }),
-        ...(data.body && { body: data.body }),
-      }
+      opts
     );
 
     return preview;
