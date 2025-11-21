@@ -370,7 +370,7 @@
           "title": "Email",
           "body": {
             "label": "Corpo dell'email",
-            "default": "<p>Ciao {FNAME},</p><p>ecco una panoramica delle tue risposte inviate:<br />{ANSWERS}</p><p><br /></p><p>Questa e-mail conferma la sua risposta al callout <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> utilizzando il suo indirizzo e-mail {EMAIL}.</p><p><br /></p><p>Per qualsiasi domanda, contattare il nostro team di supporto all'indirizzo <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Cordiali saluti</p>"
+            "default": "<p>Ciao {'*|FNAME|*'},</p><p>ecco una panoramica delle tue risposte inviate:<br />{'*|ANSWERS|*'}</p><p><br /></p><p>Questa e-mail conferma la sua risposta al callout <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> utilizzando il suo indirizzo e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Per qualsiasi domanda, contattare il nostro team di supporto all'indirizzo <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Cordiali saluti</p>"
           },
           "collectInfoWarning": {
             "description": "Per inviare un'email a tutti i partecipanti è necessario abilitare \"Raccogli informazioni di contatto\" nella scheda Impostazioni",
@@ -1460,6 +1460,7 @@
     "example": "Esempio",
     "groups": {
       "contact": "Campi contatto",
+      "standard": "Campi standard",
       "magic": "Link magici",
       "template": "Campi template"
     },

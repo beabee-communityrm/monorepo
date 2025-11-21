@@ -16,6 +16,8 @@ import slugify from 'slugify';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { v4 as uuidv4 } from 'uuid';
 
+import config from '#config/config';
+import { contactEmailTemplates } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import {
   DuplicateId,
@@ -617,7 +619,6 @@ export class CalloutsService {
       'callout-response-answers',
       contact,
       {
-        message: variant.responseEmailBody || '',
         calloutSlug: callout.slug,
         calloutTitle: variant.title,
         answers: answersHtml,

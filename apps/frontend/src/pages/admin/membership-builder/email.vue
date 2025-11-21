@@ -47,7 +47,7 @@ import type { GetEmailData } from '@beabee/beabee-common';
 import { App2ColGrid, AppForm, type MergeTagGroup } from '@beabee/vue';
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
-import { currentUser } from '@store/currentUser';
+import { currentUser, generalContent } from '@store';
 import { client, isApiError } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -76,8 +76,11 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
       ],
     },
     {
-      key: 'magic',
-      tags: [{ tag: 'RPLINK' }, { tag: 'LOGINLINK' }, { tag: 'SPLINK' }],
+      key: 'standard',
+      tags: [
+        { tag: 'SUPPORTEMAIL', example: generalContent.value.supportEmail },
+        { tag: 'ORGNAME', example: generalContent.value.organisationName },
+      ],
     },
   ];
 });
