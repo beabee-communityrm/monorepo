@@ -1261,7 +1261,8 @@
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
       "toolbar": "Rich-Text-Formatierung Symbolleiste",
-      "underline": "Unterstreichen"
+      "underline": "Unterstreichen",
+      "mergeFields": "Platzhalter"
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",

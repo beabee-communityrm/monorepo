@@ -1261,7 +1261,8 @@
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
-      "underline": ""
+      "underline": "",
+      "mergeFields": "Segnaposto"
     },
     "saveChanges": "",
     "saved": "Salvato!",

@@ -1265,7 +1265,8 @@
       "numberedlist": "Liste ordonnée",
       "strikethrough": "Barré",
       "toolbar": "",
-      "underline": "Souligné"
+      "underline": "Souligné",
+      "mergeFields": "Espace réservé"
     },
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",

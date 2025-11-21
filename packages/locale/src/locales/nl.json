@@ -1261,7 +1261,8 @@
       "numberedlist": "Genummerde lijst",
       "strikethrough": "Doorhalen",
       "toolbar": "",
-      "underline": "Onderstrepen"
+      "underline": "Onderstrepen",
+      "mergeFields": "Plaatshouder"
     },
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",

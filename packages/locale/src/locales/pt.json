@@ -1261,7 +1261,8 @@
       "numberedlist": "Lista numerada",
       "strikethrough": "Rasurado",
       "toolbar": "",
-      "underline": "Sublinhado"
+      "underline": "Sublinhado",
+      "mergeFields": "Marcador de posição"
     },
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",
