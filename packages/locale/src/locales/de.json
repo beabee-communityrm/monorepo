@@ -1460,6 +1460,7 @@
     "example": "Beispiel",
     "groups": {
       "contact": "Kontakt-Felder",
+      "standard": "Standard-Felder",
       "magic": "Magic Links",
       "template": "Template-Felder"
     },

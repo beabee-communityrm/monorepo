@@ -1460,6 +1460,7 @@
     "example": "Example",
     "groups": {
       "contact": "Contact Fields",
+      "standard": "Standard Fields",
       "magic": "Magic Links",
       "template": "Template Fields"
     },

@@ -1460,6 +1460,7 @@
     "example": "Exemplo",
     "groups": {
       "contact": "Campos de contacto",
+      "standard": "Campos padrão",
       "magic": "Links mágicos",
       "template": "Campos de modelo"
     },

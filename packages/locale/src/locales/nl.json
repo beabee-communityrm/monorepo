@@ -1460,6 +1460,7 @@
     "example": "Voorbeeld",
     "groups": {
       "contact": "Contactvelden",
+      "standard": "Standaardvelden",
       "magic": "Magische links",
       "template": "Sjabloonvelden"
     },

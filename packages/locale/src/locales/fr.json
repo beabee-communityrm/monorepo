@@ -1464,6 +1464,7 @@
     "example": "Exemple",
     "groups": {
       "contact": "Champs de contact",
+      "standard": "Champs standards",
       "magic": "Liens magiques",
       "template": "Champs de modèle"
     },

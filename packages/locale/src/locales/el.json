@@ -1460,6 +1460,7 @@
     "example": "Παράδειγμα",
     "groups": {
       "contact": "Πεδία επαφής",
+      "standard": "Τυπικά πεδία",
       "magic": "Magic Links",
       "template": "Πεδία προτύπου"
     },

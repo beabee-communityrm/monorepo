@@ -64,7 +64,7 @@ import {
 
 import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
 import env from '@env';
-import { currentUser } from '@store/currentUser';
+import { currentUser, generalContent } from '@store';
 import type { LocaleProp } from '@type';
 import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -112,6 +112,13 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
       ],
     },
     {
+      key: 'standard',
+      tags: [
+        { tag: 'SUPPORTEMAIL', example: generalContent.value.supportEmail },
+        { tag: 'ORGNAME', example: generalContent.value.organisationName },
+      ],
+    },
+    {
       key: 'template',
       tags: [
         {
@@ -123,7 +130,6 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
           example: `${env.appUrl}/crowdnewsroom/${props.tabs.titleAndImage.data.slug}`,
         },
         { tag: 'CALLOUTSLUG', example: props.tabs.titleAndImage.data.slug },
-        { tag: 'SUPPORTEMAIL' },
       ],
     },
   ];
