@@ -4,7 +4,6 @@
     "@beabee/tsconfig/tsconfig.options.json"
   ],
   "exclude": [], // Override tsconfig.build.json exclude
-  "references": [{ "path": "../common" }, { "path": "../locale" }],
   "compilerOptions": {
     "emitDeclarationOnly": true
   }
