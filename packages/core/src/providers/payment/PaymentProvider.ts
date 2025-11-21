@@ -1,4 +1,8 @@
-import { PaymentForm, PaymentMethod } from '@beabee/beabee-common';
+import {
+  ContributionForm,
+  PaymentForm,
+  PaymentMethod,
+} from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { Contact, ContactContribution } from '#models/index';
@@ -33,12 +37,12 @@ export abstract class PaymentProvider {
   /**
    * Checks if contribution changes are allowed
    * @param useExistingMandate - Whether to use existing payment mandate
-   * @param paymentForm - New payment details
+   * @param form - New contribution details
    * @returns Promise resolving to boolean indicating if changes are allowed
    */
   abstract canChangeContribution(
     useExistingMandate: boolean,
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<boolean>;
 
   /**
@@ -61,11 +65,11 @@ export abstract class PaymentProvider {
 
   /**
    * Updates contribution details
-   * @param paymentForm - New payment form data
+   * @param form - New contribution form data
    * @returns Promise resolving to update result
    */
   abstract updateContribution(
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<UpdateContributionResult>;
 
   /**
@@ -75,6 +79,12 @@ export abstract class PaymentProvider {
   abstract updatePaymentMethod(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<void>;
+
+  /**
+   * Creates a one-time payment
+   * @param form - One-time payment form data
+   */
+  abstract createOneTimePayment(form: PaymentForm): Promise<void>;
 
   /**
    * Permanently deletes contact data from payment provider

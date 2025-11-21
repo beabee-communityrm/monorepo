@@ -1,8 +1,8 @@
-import { ContributionPeriod } from '../data/index.js';
+import { PaymentPeriod } from './payment-period.js';
 
 export interface PaymentForm {
   monthlyAmount: number;
-  period: ContributionPeriod;
+  period: PaymentPeriod;
   payFee: boolean;
   prorate: boolean;
 }

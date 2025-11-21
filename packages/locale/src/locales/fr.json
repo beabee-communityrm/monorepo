@@ -942,7 +942,14 @@
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "Oui"
+    "yes": "Oui",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
+    "perOneTime": "",
+    "perOneTimeText": ""
   },
   "contactAccount": {
     "confirmDelete": {

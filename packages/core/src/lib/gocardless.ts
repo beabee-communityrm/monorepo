@@ -1,4 +1,5 @@
 import {
+  ContributionForm,
   ContributionPeriod,
   PaymentForm,
   PaymentMethod,
@@ -268,13 +269,13 @@ export async function getSubscriptionNextChargeDate(
 
 export async function createSubscription(
   mandateId: string,
-  paymentForm: PaymentForm,
+  form: ContributionForm,
   _startDate?: Date
 ): Promise<Subscription> {
   let startDate = _startDate && format(_startDate, 'yyyy-MM-dd');
-  const chargeableAmount = getGCChargeableAmount(paymentForm);
+  const chargeableAmount = getGCChargeableAmount(form);
   log.info('Create subscription for ' + mandateId, {
-    paymentForm,
+    form,
     startDate,
     chargeableAmount,
   });
@@ -291,7 +292,7 @@ export async function createSubscription(
     amount: chargeableAmount,
     currency: config.currencyCode.toUpperCase(),
     interval_unit:
-      paymentForm.period === ContributionPeriod.Annually
+      form.period === ContributionPeriod.Annually
         ? SubscriptionIntervalUnit.Yearly
         : SubscriptionIntervalUnit.Monthly,
     name: 'Membership',
@@ -306,9 +307,9 @@ export async function createSubscription(
 
 export async function updateSubscription(
   subscriptionId: string,
-  paymentForm: PaymentForm
+  form: ContributionForm
 ): Promise<Subscription> {
-  const chargeableAmount = getGCChargeableAmount(paymentForm);
+  const chargeableAmount = getGCChargeableAmount(form);
   const subscription = await gocardless.subscriptions.get(subscriptionId);
 
   log.info(
@@ -329,16 +330,15 @@ export async function updateSubscription(
 export async function prorateSubscription(
   mandateId: string,
   renewalDate: Date,
-  paymentForm: PaymentForm,
+  form: ContributionForm,
   lastMonthlyAmount: number
 ): Promise<boolean> {
   const monthsLeft = Math.max(0, differenceInMonths(renewalDate, new Date()));
-  const prorateAmount =
-    (paymentForm.monthlyAmount - lastMonthlyAmount) * monthsLeft;
+  const prorateAmount = (form.monthlyAmount - lastMonthlyAmount) * monthsLeft;
 
   log.info('Prorate subscription for ' + mandateId, {
     lastMonthlyAmount,
-    paymentForm,
+    form,
     monthsLeft,
     prorateAmount,
   });
@@ -347,7 +347,7 @@ export async function prorateSubscription(
     // Amounts of less than 1 can't be charged, just ignore them
     if (prorateAmount < 1) {
       return true;
-    } else if (paymentForm.prorate) {
+    } else if (form.prorate) {
       await gocardless.payments.create({
         amount: Math.floor(prorateAmount * 100).toFixed(0),
         currency: config.currencyCode.toUpperCase() as PaymentCurrency,
