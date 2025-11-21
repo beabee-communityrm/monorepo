@@ -87,34 +87,14 @@ const { t } = useI18n();
 // Check if "Collect contact information" is enabled in the settings tab
 const collectInfoEnabled = computed(() => props.tabs.settings.data.collectInfo);
 
-// Available merge tags for default email template translations
-// This is necessary because `vue-i18n` otherwise tries to interpret the syntax `*|MERGE_TAG|*` itself.
-const mergeTagPlaceholders = computed(() => ({
-  // Contact fields (available in all contact emails)
-  EMAIL: '*|EMAIL|*',
-  NAME: '*|NAME|*',
-  FNAME: '*|FNAME|*',
-  LNAME: '*|LNAME|*',
-  // Standard fields (available for all emails)
-  SUPPORTEMAIL: '*|SUPPORTEMAIL|*',
-  ORGNAME: '*|ORGNAME|*',
-  // Magic links (generated automatically)
-  RPLINK: '*|RPLINK|*',
-  LOGINLINK: '*|LOGINLINK|*',
-  SPLINK: '*|SPLINK|*',
-  // Template-specific fields
-  CALLOUTTITLE: '*|CALLOUTTITLE|*',
-  CALLOUTLINK: '*|CALLOUTLINK|*',
-}));
-
 // Create reactive email data that syncs with props.data
 const emailData = reactive({
   subject:
     props.data.emailSubject.default ||
-    t('callout.builder.tabs.email.subject.default', mergeTagPlaceholders.value),
+    t('callout.builder.tabs.email.subject.default'),
   content:
     props.data.emailContent.default ||
-    t('callout.builder.tabs.email.body.default', mergeTagPlaceholders.value),
+    t('callout.builder.tabs.email.body.default'),
 });
 
 /**
@@ -144,8 +124,7 @@ watch(
     const defaultSubject =
       subject || t('callout.builder.tabs.email.subject.default');
     const defaultContent =
-      message ||
-      t('callout.builder.tabs.email.body.default', mergeTagPlaceholders.value);
+      message || t('callout.builder.tabs.email.body.default');
 
     emailData.subject = defaultSubject;
     emailData.content = defaultContent;
