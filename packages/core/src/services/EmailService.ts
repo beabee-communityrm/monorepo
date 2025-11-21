@@ -223,22 +223,6 @@ class EmailService {
     contact: Contact,
     params: ContactEmailParams<T>,
     opts?: TemplateEmailOptions
-  ): Promise<void>;
-  async sendTemplateToContact<
-    T extends ContactEmailParams<T> extends undefined
-      ? ContactEmailTemplateId
-      : never,
-  >(
-    template: T,
-    contact: Contact,
-    params?: undefined,
-    opts?: TemplateEmailOptions
-  ): Promise<void>;
-  async sendTemplateToContact<T extends ContactEmailTemplateId>(
-    template: T,
-    contact: Contact,
-    params: ContactEmailParams<T>,
-    opts?: TemplateEmailOptions
   ): Promise<void> {
     log.info('Sending template to contact ' + contact.id);
 
