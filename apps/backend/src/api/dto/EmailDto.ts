@@ -1,10 +1,8 @@
 import {
   AdminEmailTemplateId,
   ContactEmailTemplateId,
-  EmailTemplateId,
   GeneralEmailTemplateId,
 } from '@beabee/core/type';
-import { Locale } from '@beabee/locale';
 
 import IsEmailTemplateId from '@api/validators/IsEmailTemplateId';
 import { IsObject, IsOptional, IsString } from 'class-validator';
@@ -41,7 +39,7 @@ export class PreviewGeneralEmailParams {
 export class PreviewEmailDto {
   @IsOptional()
   @IsString()
-  customSubject?: string;
+  subject?: string;
 
   /**
    * Optional body to override the template's body for preview
@@ -55,8 +53,4 @@ export class PreviewEmailDto {
   @IsOptional()
   @IsObject()
   mergeFields?: Record<string, string>;
-
-  @IsOptional()
-  @IsString()
-  locale?: Locale;
 }

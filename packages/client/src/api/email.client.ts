@@ -46,12 +46,23 @@ export class EmailClient extends BaseClient {
   }
 
   /**
+   * Preview an email with custom merge fields
+   *
+   * @param options Preview options including merge fields, custom subject and body
+   * @returns The preview with merge fields replaced
+   */
+  async preview(options: PreviewEmailOptions): Promise<GetEmailData> {
+    const { data } = await this.fetch.post<GetEmailData>(`/preview`, options);
+    return data;
+  }
+
+  /**
    * Preview an email template with custom merge fields
    * Supports all template types (general, contact, admin)
    *
    * @param type - The template type ('general', 'contact', or 'admin')
    * @param templateId - The template ID (e.g., 'welcome', 'new-member')
-   * @param options - Preview options including merge fields, custom subject, and locale
+   * @param options - Preview options including merge fields and custom subject
    * @returns The preview with merge fields replaced
    *
    * @example
@@ -72,7 +83,7 @@ export class EmailClient extends BaseClient {
    *   mergeFields: { MEMBERID: '123', MEMBERNAME: 'John Doe' }
    * });
    */
-  async preview(
+  async previewTemplate(
     type: 'general' | 'contact' | 'admin',
     templateId: string,
     options: PreviewEmailOptions = {}

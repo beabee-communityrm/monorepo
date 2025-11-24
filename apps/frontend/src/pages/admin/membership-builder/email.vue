@@ -18,13 +18,12 @@ meta:
     :success-text="t('form.saved')"
     @submit="handleUpdate"
   >
-    <!-- Email editors with server-side preview -->
     <EmailEditor
       v-if="welcomeEmail"
       v-model:subject="welcomeEmail.subject"
       v-model:content="welcomeEmail.body"
       :heading="stepT('welcomeEmail')"
-      :server-render="{ type: 'contact', templateId: 'welcome' }"
+      :template="{ type: 'contact', id: 'welcome' }"
       :subject-label="t('emailEditor.subject.label')"
       :content-label="t('emailEditor.body.label')"
     />
@@ -34,7 +33,7 @@ meta:
       v-model:subject="cancellationEmail.subject"
       v-model:content="cancellationEmail.body"
       :heading="stepT('cancellationEmail')"
-      :server-render="{ type: 'contact', templateId: 'cancelled-contribution' }"
+      :template="{ type: 'contact', id: 'cancelled-contribution' }"
       :subject-label="t('emailEditor.subject.label')"
       :content-label="t('emailEditor.body.label')"
     />

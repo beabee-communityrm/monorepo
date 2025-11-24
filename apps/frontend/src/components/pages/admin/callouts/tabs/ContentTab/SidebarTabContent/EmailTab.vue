@@ -34,10 +34,6 @@
               CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
               CALLOUTLINK: `${env.appUrl}/crowdnewsroom/${props.tabs.titleAndImage.data.slug}`,
             }"
-            :server-render="{
-              type: 'contact',
-              templateId: 'callout-response-answers',
-            }"
             :subject-label="t('callout.builder.tabs.email.subject.label')"
             :content-label="t('callout.builder.tabs.email.body.label')"
             :always-stacked="true"

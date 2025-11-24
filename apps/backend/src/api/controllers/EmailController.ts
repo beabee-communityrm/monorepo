@@ -5,6 +5,7 @@ import {
   AuthInfo,
   ContactEmailTemplateId,
   EmailTemplateId,
+  PreviewEmailOptions,
 } from '@beabee/core/type';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
@@ -61,6 +62,14 @@ export class EmailController {
     }
   }
 
+  @Post('/preview')
+  async previewEmail(
+    @CurrentUser({ required: true }) contact: Contact,
+    @Body() data: PreviewEmailDto
+  ): Promise<GetEmailDto> {
+    return await this.getPreview(contact, data);
+  }
+
   /**
    * Preview a general email template
    * Available to all authenticated users
@@ -72,7 +81,7 @@ export class EmailController {
     @Params() { templateId }: PreviewGeneralEmailParams,
     @Body() data: PreviewEmailDto
   ): Promise<GetEmailDto> {
-    return await this.getTemplatePreview(templateId, contact, data);
+    return await this.getPreview(contact, { ...data, templateId });
   }
 
   /**
@@ -87,7 +96,7 @@ export class EmailController {
     @Param('templateId') templateId: ContactEmailTemplateId,
     @Body() data: PreviewEmailDto
   ): Promise<GetEmailDto> {
-    return await this.getTemplatePreview(templateId, contact, data);
+    return await this.getPreview(contact, { ...data, templateId });
   }
 
   /**
@@ -101,22 +110,17 @@ export class EmailController {
     @Params() { templateId }: PreviewAdminEmailParams,
     @Body() data: PreviewEmailDto
   ): Promise<GetEmailDto> {
-    return await this.getTemplatePreview(templateId, contact, data);
+    return await this.getPreview(contact, { ...data, templateId });
   }
 
   /**
    * Helper method to get email template preview and convert to DTO
    */
-  private async getTemplatePreview(
-    templateId: EmailTemplateId,
+  private async getPreview(
     contact: Contact,
-    data: PreviewEmailDto
+    data: PreviewEmailOptions
   ): Promise<GetEmailDto> {
-    const ret = await EmailService.getTemplatePreview(
-      templateId,
-      contact,
-      data
-    );
+    const ret = await EmailService.getPreview(contact, data);
     return plainToInstance(GetEmailDto, ret);
   }
 }

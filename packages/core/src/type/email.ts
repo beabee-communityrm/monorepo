@@ -35,9 +35,10 @@ export interface EmailOptions {
   sendAt?: Date | undefined;
 }
 
-export interface PreviewEmailOptions extends TemplateEmailOptions {
+export interface PreviewEmailOptions {
+  templateId?: EmailTemplateId;
   mergeFields?: Record<string, string>;
-  locale?: Locale;
+  subject?: string;
   body?: string;
 }
 export interface PreparedEmail extends Email {
@@ -59,11 +60,6 @@ export interface EmailProvider {
   getTemplateEmail(templateId: string): Promise<false | Email | null>;
   getTemplates(): Promise<EmailTemplate[]>;
 }
-
-/**
- * Email template types categorizing different email purposes
- */
-export type EmailTemplateType = 'general' | 'admin' | 'contact';
 
 /**
  * Type helper for general email templates

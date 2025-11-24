@@ -71,7 +71,7 @@
  * <EmailEditor
  *   v-model:subject="emailSubject"
  *   v-model:content="emailContent"
- *   :serverRender="{ type: 'contact', templateId: 'welcome' }"
+ *   :template="{ type: 'contact', id: 'welcome' }"
  *   :contact="currentUser"
  * />
  * ```
@@ -81,7 +81,7 @@
  * <EmailEditor
  *   v-model:subject="emailSubject"
  *   v-model:content="emailContent"
- *   :serverRender="{ type: 'contact', templateId: 'callout-response-answers' }"
+ *   :template="{ type: 'contact', id: 'callout-response-answers' }"
  *   :mergeFields="{ CALLOUTTITLE: calloutTitle }"
  *   :contact="currentUser"
  * />
@@ -100,7 +100,7 @@ import {
 
 import type {
   EmailPreviewResult,
-  EmailServerRenderConfig,
+  EmailTemplateConfig,
 } from '@type/email-editor';
 import { client } from '@utils/api';
 import { computed, ref, watchEffect } from 'vue';
@@ -119,10 +119,10 @@ const props = withDefaults(
     heading?: string;
 
     /**
-     * Server-side rendering configuration (required)
+     * Email template configuration
      * Configures the email template type and ID for preview generation
      */
-    serverRender: EmailServerRenderConfig;
+    template?: EmailTemplateConfig;
 
     /**
      * Custom merge fields to send to the server for preview
@@ -150,6 +150,7 @@ const props = withDefaults(
   }>(),
   {
     heading: '',
+    template: undefined,
     mergeFields: () => ({}),
     subjectLabel: '',
     contentLabel: '',
@@ -185,7 +186,7 @@ async function fetchServerPreview() {
 
   try {
     const previewOptions: PreviewEmailOptions = {
-      customSubject: subject.value,
+      subject: subject.value,
       body: content.value,
     };
 
@@ -193,11 +194,13 @@ async function fetchServerPreview() {
       previewOptions.mergeFields = props.mergeFields;
     }
 
-    const preview = await client.email.preview(
-      props.serverRender.type as 'contact' | 'general' | 'admin',
-      props.serverRender.templateId || props.serverRender.type,
-      previewOptions
-    );
+    const preview = props.template
+      ? await client.email.previewTemplate(
+          props.template.type,
+          props.template.id,
+          previewOptions
+        )
+      : await client.email.preview(previewOptions);
 
     serverPreviewResult.value = {
       subject: preview.subject,

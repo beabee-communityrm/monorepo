@@ -1,5 +1,5 @@
+import { EmailTemplateType } from '@beabee/beabee-common';
 import EmailService from '@beabee/core/services/EmailService';
-import { EmailTemplateType } from '@beabee/core/type';
 
 import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
 

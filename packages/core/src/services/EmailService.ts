@@ -1,3 +1,4 @@
+import { EmailTemplateType } from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
 import { isUUID } from 'class-validator';
@@ -31,7 +32,6 @@ import {
   EmailProvider,
   EmailRecipient,
   EmailTemplateId,
-  EmailTemplateType,
   GeneralEmailTemplateId,
   GeneralEmailTemplates,
   PreviewEmailOptions,
@@ -342,8 +342,8 @@ class EmailService {
   }
 
   /**
-   * Get a preview of an email template with merge fields replaced
-   * This method supports all template types (general, admin, contact) and provides
+   * Get a preview of an email with merge fields replaced
+   * This method supports using a template as a base and provides
    * a server-side preview that matches exactly what will be sent via email
    *
    * The preview includes:
@@ -351,28 +351,21 @@ class EmailService {
    * - Email footer with organization info, logo, and links
    * - Inline CSS styles via juice for consistent email client rendering
    *
-   * @param template The template ID
    * @param contact Contact for contact-specific fields (required, uses authenticated user)
-   * @param customMergeFields Custom merge fields to override/extend default fields
-   * @param opts Email options including customSubject, locale, and body override
+   * @param opts Email options including locale, and body override
    * @returns Preview with subject and body formatted exactly as it will be sent
    */
-  async getTemplatePreview(
-    template: EmailTemplateId,
+  async getPreview(
     contact: Contact,
     opts?: PreviewEmailOptions
   ): Promise<{ subject: string; body: string }> {
     // 1. Get the email template (from provider or default templates)
-    const emailTemplate = await this.getTemplateEmail(template);
+    const emailTemplate = opts?.templateId
+      ? await this.getTemplateEmail(opts.templateId)
+      : null;
 
     if (emailTemplate === false) {
-      throw new Error(
-        `Template ${template} is managed by external provider and cannot be previewed`
-      );
-    }
-
-    if (!emailTemplate) {
-      throw new Error(`Template ${template} not found`);
+      throw new ExternalEmailTemplate();
     }
 
     // 2. Generate base merge fields from contact and standard fields
@@ -382,19 +375,15 @@ class EmailService {
       ...opts?.mergeFields,
     };
 
-    // 3. Replace merge fields in subject
-    const subject = opts?.customSubject || emailTemplate.subject;
-    const previewSubject = replaceMergeFields(subject, mergeFields);
-
-    // 4. Replace merge fields in body and apply email formatting
+    // 3. Replace merge fields in body and apply email formatting
     // This includes adding the footer and inline CSS styles, exactly as in actual emails
     // Use provided body override if available, otherwise use template body
-    const templateBody = opts?.body || emailTemplate.body;
+    const templateBody = opts?.body || emailTemplate?.body || '';
     const bodyWithMergeFields = replaceMergeFields(templateBody, mergeFields);
     const previewBody = formatEmailBody(bodyWithMergeFields);
 
     return {
-      subject: previewSubject,
+      subject: opts?.subject || emailTemplate?.subject || '',
       body: previewBody,
     };
   }
@@ -412,6 +401,12 @@ class EmailService {
     }
   }
 
+  /**
+   * Check if a template ID is valid
+   * @param template The template ID to check
+   * @param type The type of template ('general', 'admin', 'contact') to narrow the check
+   * @returns True if the template ID is valid for the given type (or any type if not specified)
+   */
   isTemplateId(
     template: string,
     type?: EmailTemplateType
