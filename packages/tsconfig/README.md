@@ -34,7 +34,7 @@ TypeScript references establish dependencies between packages and enable:
 ```typescript
 // Example tsconfig.json with references
 {
-  "extends": ["./tsconfig.build.json", "@beabee/tsconfig/tsconfig.options.json"],
+  "extends": ["./tsconfig.build.json", "@beabee/tsconfig/tsconfig.dev.json"],
   "exclude": [],
   "references": [
     { "path": "../../packages/common" },
@@ -118,9 +118,9 @@ Packages using this configuration can be run directly with:
 node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings your-file.ts
 ```
 
-### tsconfig.options.json
+### tsconfig.dev.json
 
-General TypeScript options that can be extended by any configuration for additional customization.
+Options used to enable TS composite build mode, currently included in most `tsconfig.json` files to improve type and module resolution in the IDE
 
 ## Guidelines for New Packages
 
@@ -188,7 +188,7 @@ Choose the appropriate base configuration:
 ```json
 // tsconfig.json
 {
-  "extends": ["./tsconfig.build.json", "@beabee/tsconfig/tsconfig.options.json"],
+  "extends": ["./tsconfig.build.json", "@beabee/tsconfig/tsconfig.dev.json"],
   "exclude": [],
   "references": [
     { "path": "../../packages/common" }

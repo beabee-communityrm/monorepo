@@ -23,6 +23,6 @@
     "openapi-typescript": "^7.8.0",
     "prettier": "^3.5.2",
     "testcontainers": "^11.0.0",
-    "typescript": "~5.8.3"
+    "typescript": "~5.9.3"
   }
 }

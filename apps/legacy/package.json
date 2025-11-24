@@ -99,7 +99,7 @@
     "rimraf": "^6.0.1",
     "sass": "^1.77.4",
     "tsconfig": "^7.0.0",
-    "typescript": "~5.8.3"
+    "typescript": "~5.9.3"
   },
   "overrides": {
     "gulp-sourcemaps": {

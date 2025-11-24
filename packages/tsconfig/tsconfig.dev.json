@@ -4,8 +4,8 @@
     "declaration": true,
     "declarationMap": true,
     "incremental": true,
+    "emitDeclarationOnly": true,
     "noEmitOnError": true,
-    "skipLibCheck": true,
-    "preserveWatchOutput": true
+    "skipLibCheck": true
   }
 }
