@@ -405,22 +405,6 @@ class EmailService {
   }
 
   /**
-   * Determine the template type from a template ID
-   * @param template The template ID
-   * @returns The template type (general, admin, or contact)
-   */
-  getTemplateType(template: string): EmailTemplateType | null {
-    if (template in generalEmailTemplates) {
-      return 'general';
-    } else if (template in adminEmailTemplates) {
-      return 'admin';
-    } else if (template in contactEmailTemplates) {
-      return 'contact';
-    }
-    return null;
-  }
-
-  /**
    * Delete a template email override
    * @param template The template ID
    * @returns void
@@ -433,11 +417,14 @@ class EmailService {
     }
   }
 
-  isTemplateId(template: string): template is EmailTemplateId {
+  isTemplateId(
+    template: string,
+    type?: EmailTemplateType
+  ): template is EmailTemplateId {
     return (
-      template in generalEmailTemplates ||
-      template in adminEmailTemplates ||
-      template in contactEmailTemplates
+      (template in generalEmailTemplates && (!type || type === 'general')) ||
+      (template in adminEmailTemplates && (!type || type === 'admin')) ||
+      (template in contactEmailTemplates && (!type || type === 'contact'))
     );
   }
 

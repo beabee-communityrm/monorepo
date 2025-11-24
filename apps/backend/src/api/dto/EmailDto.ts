@@ -1,5 +1,12 @@
+import {
+  AdminEmailTemplateId,
+  ContactEmailTemplateId,
+  EmailTemplateId,
+  GeneralEmailTemplateId,
+} from '@beabee/core/type';
 import { Locale } from '@beabee/locale';
 
+import IsEmailTemplateId from '@api/validators/IsEmailTemplateId';
 import { IsObject, IsOptional, IsString } from 'class-validator';
 
 export class UpdateEmailDto {
@@ -11,6 +18,21 @@ export class UpdateEmailDto {
 }
 
 export class GetEmailDto extends UpdateEmailDto {}
+
+export class PreviewAdminEmailParams {
+  @IsEmailTemplateId('admin')
+  templateId!: AdminEmailTemplateId;
+}
+
+export class PreviewContactEmailParams {
+  @IsEmailTemplateId('contact')
+  templateId!: ContactEmailTemplateId;
+}
+
+export class PreviewGeneralEmailParams {
+  @IsEmailTemplateId('general')
+  templateId!: GeneralEmailTemplateId;
+}
 
 /**
  * DTO for previewing email templates
