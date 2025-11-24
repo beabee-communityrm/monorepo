@@ -956,7 +956,14 @@
     "timeAgo": "vor",
     "timeIn": "in",
     "until": "",
-    "yes": ""
+    "yes": "",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
+    "perOneTime": "",
+    "perOneTimeText": ""
   },
   "contactAccount": {
     "confirmDelete": {

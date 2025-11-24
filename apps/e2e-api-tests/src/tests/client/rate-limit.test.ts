@@ -91,12 +91,14 @@ describe('Rate Limits', () => {
     it('should enforce rate limits for guest users starting signup (5 allowed, 6th blocked)', async () => {
       const signupData = {
         email: 'rate-limit-test@signup-example.com',
-        amount: 10,
-        period: ContributionPeriod.Monthly,
-        payFee: false,
-        prorate: false,
-        paymentMethod: PaymentMethod.StripeCard,
-        noContribution: true,
+        contribution: {
+          amount: 10,
+          period: ContributionPeriod.Monthly,
+          payFee: false,
+          prorate: false,
+          paymentMethod: PaymentMethod.StripeCard,
+          completeUrl: client.signup.completeUrl,
+        },
       };
 
       // First 5 requests should succeed
@@ -128,12 +130,14 @@ describe('Rate Limits', () => {
     it('should allow to have separate rate limits for a new user (normally identified by different IP address)', async () => {
       const signupData = {
         email: 'rate-limit-test@signup-example.com',
-        amount: 10,
-        period: ContributionPeriod.Monthly,
-        payFee: false,
-        prorate: false,
-        paymentMethod: PaymentMethod.StripeCard,
-        noContribution: true,
+        contribution: {
+          amount: 10,
+          period: ContributionPeriod.Monthly,
+          payFee: false,
+          prorate: false,
+          paymentMethod: PaymentMethod.StripeCard,
+          completeUrl: client.signup.completeUrl,
+        },
       };
 
       // This should succeed as we cleared the rate limiter cache before the test,

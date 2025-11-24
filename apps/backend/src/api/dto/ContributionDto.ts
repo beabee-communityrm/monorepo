@@ -30,12 +30,6 @@ export class UpdateContributionDto {
 
   @IsBoolean()
   prorate!: boolean;
-
-  get monthlyAmount(): number {
-    return this.period === ContributionPeriod.Annually
-      ? this.amount / 12
-      : this.amount;
-  }
 }
 
 export class StartContributionDto
