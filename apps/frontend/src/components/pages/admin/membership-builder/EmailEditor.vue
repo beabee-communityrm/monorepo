@@ -94,7 +94,6 @@ import {
   AppLabel,
   AppRichTextEditor,
   AppSubHeading,
-  DEFAULT_ALLOWED_HTML_TAGS,
   sanitizeHtml,
 } from '@beabee/vue';
 
@@ -170,10 +169,7 @@ const isLoadingPreview = ref(false);
  * email-safe HTML elements (styles, links, images, etc.)
  */
 const sanitizedPreviewBody = computed(() => {
-  return sanitizeHtml(serverPreviewResult.value?.body, {
-    allowedTags: [...DEFAULT_ALLOWED_HTML_TAGS, 'style'],
-    allowDataAttr: true,
-  });
+  return sanitizeHtml(serverPreviewResult.value?.body);
 });
 
 /**
