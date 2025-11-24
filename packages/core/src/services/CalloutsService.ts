@@ -548,7 +548,6 @@ class CalloutsService {
         mergeFields: {
           CALLOUTTITLE: variant.title,
           CALLOUTLINK: `${config.audience}/crowdnewsroom/${callout.slug}`,
-          SUPPORTEMAIL: OptionsService.getText('support-email'),
         },
       }
     );

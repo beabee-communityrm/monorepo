@@ -196,7 +196,10 @@ class EmailService {
     opts?: EmailOptions
   ): Promise<void> {
     const templateMergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
-    const mergeFields = this.enrichMergeFields(templateMergeFields);
+    const mergeFields = {
+      ...getBaseEmailMergeFields(),
+      ...templateMergeFields,
+    };
     await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
   }
 
@@ -257,7 +260,10 @@ class EmailService {
     const templateMergeFields = adminEmailTemplates[template](params as any);
     const recipient = {
       to: { email: OptionsService.getText('support-email') },
-      mergeFields: this.enrichMergeFields(templateMergeFields),
+      mergeFields: {
+        ...getBaseEmailMergeFields(),
+        ...templateMergeFields,
+      },
     };
 
     await this.sendTemplate(template, [recipient], opts, false);
@@ -453,20 +459,6 @@ class EmailService {
   }
 
   /**
-   * Enrich merge fields with standard fields (SUPPORTEMAIL, ORGNAME)
-   * This ensures all templates have access to standard merge fields
-   *
-   * @param mergeFields Template-specific or custom merge fields
-   * @returns Merge fields enriched with standard fields
-   */
-  private enrichMergeFields(mergeFields: EmailMergeFields): EmailMergeFields {
-    return {
-      ...getBaseEmailMergeFields(),
-      ...mergeFields,
-    };
-  }
-
-  /**
    * Convert a contact to an email recipient
    * This ensures all recipients have access to standard merge fields and contact merge fields
    *
@@ -480,10 +472,11 @@ class EmailService {
   ): EmailRecipient {
     return {
       to: { email: contact.email, name: contact.fullname },
-      mergeFields: this.enrichMergeFields({
+      mergeFields: {
+        ...getBaseEmailMergeFields(),
         ...getContactEmailMergeFields(contact),
         ...additionalMergeFields,
-      }),
+      },
     };
   }
 }
