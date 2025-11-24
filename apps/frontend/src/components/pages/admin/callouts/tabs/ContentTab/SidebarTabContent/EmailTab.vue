@@ -34,8 +34,6 @@
               CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
               CALLOUTLINK: `${env.appUrl}/crowdnewsroom/${props.tabs.titleAndImage.data.slug}`,
             }"
-            :subject-label="t('callout.builder.tabs.email.subject.label')"
-            :content-label="t('callout.builder.tabs.email.body.label')"
             :always-stacked="true"
           />
         </div>
@@ -52,7 +50,7 @@
 <script lang="ts" setup>
 import { AppFormField, AppNotification, AppToggleField } from '@beabee/vue';
 
-import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+import EmailEditor from '@components/EmailEditor.vue';
 import env from '@env';
 import type { LocaleProp } from '@type';
 import { computed, reactive, watch } from 'vue';

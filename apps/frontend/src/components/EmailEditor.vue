@@ -10,13 +10,13 @@
         <div class="mb-4">
           <AppInput
             v-model="subject"
-            :label="subjectLabel || t('emailEditor.subject.label')"
+            :label="t('emailEditor.subject.label')"
             required
           />
         </div>
         <AppRichTextEditor
           v-model="content"
-          :label="contentLabel || t('emailEditor.body.label')"
+          :label="t('emailEditor.body.label')"
           required
         />
       </div>
@@ -131,18 +131,6 @@ const props = withDefaults(
     mergeFields?: Record<string, string>;
 
     /**
-     * Label for subject input field
-     * If not provided, uses default i18n key
-     */
-    subjectLabel?: string;
-
-    /**
-     * Label for content editor field
-     * If not provided, uses default i18n key
-     */
-    contentLabel?: string;
-
-    /**
      * Whether to always stack the preview below the editor (ignores responsive breakpoints)
      */
     alwaysStacked?: boolean;
@@ -151,8 +139,6 @@ const props = withDefaults(
     heading: '',
     template: undefined,
     mergeFields: () => ({}),
-    subjectLabel: '',
-    contentLabel: '',
     alwaysStacked: false,
   }
 );

@@ -24,8 +24,6 @@ meta:
       v-model:content="welcomeEmail.body"
       :heading="stepT('welcomeEmail')"
       :template="{ type: 'contact', id: 'welcome' }"
-      :subject-label="t('emailEditor.subject.label')"
-      :content-label="t('emailEditor.body.label')"
     />
 
     <EmailEditor
@@ -34,8 +32,6 @@ meta:
       v-model:content="cancellationEmail.body"
       :heading="stepT('cancellationEmail')"
       :template="{ type: 'contact', id: 'cancelled-contribution' }"
-      :subject-label="t('emailEditor.subject.label')"
-      :content-label="t('emailEditor.body.label')"
     />
   </AppForm>
 </template>
@@ -43,7 +39,7 @@ meta:
 import type { GetEmailData } from '@beabee/beabee-common';
 import { App2ColGrid, AppForm } from '@beabee/vue';
 
-import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+import EmailEditor from '@components/EmailEditor.vue';
 import { client, isApiError } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
