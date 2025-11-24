@@ -35,7 +35,6 @@ import {
   GeneralEmailTemplateId,
   GeneralEmailTemplates,
   PreviewEmailOptions,
-  TemplateEmailOptions,
 } from '#type/index';
 import { replaceMergeFields } from '#utils/email';
 
@@ -188,13 +187,13 @@ class EmailService {
    * @param template The general email template ID
    * @param to The recipient email address and name
    * @param params Template-specific parameters required by the template
-   * @param opts Optional email options (customSubject, locale, etc.)
+   * @param opts Optional email options (locale, etc.)
    */
   async sendTemplateTo<T extends GeneralEmailTemplateId>(
     template: T,
     to: EmailPerson,
     params: Parameters<GeneralEmailTemplates[T]>[0],
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void> {
     const templateMergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
     const mergeFields = this.enrichMergeFields(templateMergeFields);
@@ -217,13 +216,13 @@ class EmailService {
    * @param template The contact email template ID
    * @param contact The contact to send the email to
    * @param params Template-specific parameters (varies by template)
-   * @param opts Optional email options including customSubject
+   * @param opts Optional email options
    */
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
     params?: ContactEmailParams<T>,
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void> {
     log.info('Sending template to contact ' + contact.id);
 
@@ -248,12 +247,12 @@ class EmailService {
    *
    * @param template The admin email template ID
    * @param params Template-specific parameters required by the template
-   * @param opts Optional email options (customSubject, locale, etc.)
+   * @param opts Optional email options (locale, etc.)
    */
   async sendTemplateToAdmin<T extends AdminEmailTemplateId>(
     template: T,
     params: Parameters<AdminEmailTemplates[T]>[0],
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void> {
     const templateMergeFields = adminEmailTemplates[template](params as any);
     const recipient = {
@@ -284,7 +283,7 @@ class EmailService {
   private async sendTemplate(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
-    opts: TemplateEmailOptions | undefined,
+    opts: EmailOptions | undefined,
     required: boolean
   ): Promise<void> {
     const providerTemplate = this.getProviderTemplate(template);
@@ -305,11 +304,7 @@ class EmailService {
     } else {
       const defaultEmail = this.getDefaultEmail(template);
       if (defaultEmail) {
-        // Allow custom subject override
-        const email = opts?.customSubject
-          ? { ...defaultEmail, subject: opts.customSubject }
-          : defaultEmail;
-        this.sendEmail(email, recipients, opts);
+        this.sendEmail(defaultEmail, recipients, opts);
       } else if (required) {
         log.error(
           `Tried to send ${template} that has no provider template or default`

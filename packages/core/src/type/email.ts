@@ -35,10 +35,6 @@ export interface EmailOptions {
   sendAt?: Date | undefined;
 }
 
-export interface TemplateEmailOptions extends EmailOptions {
-  customSubject?: string;
-}
-
 export interface PreviewEmailOptions extends TemplateEmailOptions {
   mergeFields?: Record<string, string>;
   locale?: Locale;
@@ -58,7 +54,7 @@ export interface EmailProvider {
   sendTemplate(
     templateId: string,
     recipients: EmailRecipient[],
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void>;
   getTemplateEmail(templateId: string): Promise<false | Email | null>;
   getTemplates(): Promise<EmailTemplate[]>;

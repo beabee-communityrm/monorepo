@@ -8,7 +8,6 @@ import type {
   EmailRecipient,
   EmailTemplate,
   PreparedEmail,
-  TemplateEmailOptions,
 } from '#type/index';
 
 import { BaseProvider } from './BaseProvider';
@@ -71,7 +70,7 @@ export class MandrillProvider extends BaseProvider {
   async sendTemplate(
     templateId: string,
     recipients: EmailRecipient[],
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void> {
     log.info(`Sending template ${templateId}`);
 

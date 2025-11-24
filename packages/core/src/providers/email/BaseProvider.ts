@@ -13,7 +13,6 @@ import type {
   EmailRecipient,
   EmailTemplate,
   PreparedEmail,
-  TemplateEmailOptions,
 } from '#type/index';
 
 const log = mainLogger.child({ app: 'base-email-provider' });
@@ -127,7 +126,7 @@ export abstract class BaseProvider implements EmailProvider {
   async sendTemplate(
     templateId: string,
     recipients: EmailRecipient[],
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void> {
     const email = await getRepository(Email).findOneBy({ id: templateId });
     if (email) {
