@@ -1,3 +1,4 @@
+import { EmailTemplateType } from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
 import { isUUID } from 'class-validator';
@@ -31,11 +32,9 @@ import {
   EmailProvider,
   EmailRecipient,
   EmailTemplateId,
-  EmailTemplateType,
   GeneralEmailTemplateId,
   GeneralEmailTemplates,
   PreviewEmailOptions,
-  TemplateEmailOptions,
 } from '#type/index';
 import { formatCalloutResponseAnswersPreviewBySlug } from '#utils/callout';
 import { replaceMergeFields } from '#utils/email';
@@ -189,16 +188,19 @@ class EmailService {
    * @param template The general email template ID
    * @param to The recipient email address and name
    * @param params Template-specific parameters required by the template
-   * @param opts Optional email options (customSubject, locale, etc.)
+   * @param opts Optional email options (locale, etc.)
    */
   async sendTemplateTo<T extends GeneralEmailTemplateId>(
     template: T,
     to: EmailPerson,
     params: Parameters<GeneralEmailTemplates[T]>[0],
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void> {
     const templateMergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
-    const mergeFields = this.enrichMergeFields(templateMergeFields);
+    const mergeFields = {
+      ...getBaseEmailMergeFields(),
+      ...templateMergeFields,
+    };
     await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
   }
 
@@ -218,13 +220,13 @@ class EmailService {
    * @param template The contact email template ID
    * @param contact The contact to send the email to
    * @param params Template-specific parameters (varies by template)
-   * @param opts Optional email options including customSubject
+   * @param opts Optional email options
    */
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
     params?: ContactEmailParams<T>,
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void> {
     log.info('Sending template to contact ' + contact.id);
 
@@ -249,17 +251,20 @@ class EmailService {
    *
    * @param template The admin email template ID
    * @param params Template-specific parameters required by the template
-   * @param opts Optional email options (customSubject, locale, etc.)
+   * @param opts Optional email options (locale, etc.)
    */
   async sendTemplateToAdmin<T extends AdminEmailTemplateId>(
     template: T,
     params: Parameters<AdminEmailTemplates[T]>[0],
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void> {
     const templateMergeFields = adminEmailTemplates[template](params as any);
     const recipient = {
       to: { email: OptionsService.getText('support-email') },
-      mergeFields: this.enrichMergeFields(templateMergeFields),
+      mergeFields: {
+        ...getBaseEmailMergeFields(),
+        ...templateMergeFields,
+      },
     };
 
     await this.sendTemplate(template, [recipient], opts, false);
@@ -285,7 +290,7 @@ class EmailService {
   private async sendTemplate(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
-    opts: TemplateEmailOptions | undefined,
+    opts: EmailOptions | undefined,
     required: boolean
   ): Promise<void> {
     const providerTemplate = this.getProviderTemplate(template);
@@ -306,11 +311,7 @@ class EmailService {
     } else {
       const defaultEmail = this.getDefaultEmail(template);
       if (defaultEmail) {
-        // Allow custom subject override
-        const email = opts?.customSubject
-          ? { ...defaultEmail, subject: opts.customSubject }
-          : defaultEmail;
-        this.sendEmail(email, recipients, opts);
+        this.sendEmail(defaultEmail, recipients, opts);
       } else if (required) {
         log.error(
           `Tried to send ${template} that has no provider template or default`
@@ -348,8 +349,8 @@ class EmailService {
   }
 
   /**
-   * Get a preview of an email template with merge fields replaced
-   * This method supports all template types (general, admin, contact) and provides
+   * Get a preview of an email with merge fields replaced
+   * This method supports using a template as a base and provides
    * a server-side preview that matches exactly what will be sent via email
    *
    * The preview includes:
@@ -357,28 +358,21 @@ class EmailService {
    * - Email footer with organization info, logo, and links
    * - Inline CSS styles via juice for consistent email client rendering
    *
-   * @param template The template ID
    * @param contact Contact for contact-specific fields (required, uses authenticated user)
-   * @param customMergeFields Custom merge fields to override/extend default fields
-   * @param opts Email options including customSubject, locale, and body override
+   * @param opts Email options including locale, and body override
    * @returns Preview with subject and body formatted exactly as it will be sent
    */
-  async getTemplatePreview(
-    template: EmailTemplateId,
+  async getPreview(
     contact: Contact,
     opts?: PreviewEmailOptions
   ): Promise<{ subject: string; body: string }> {
     // 1. Get the email template (from provider or default templates)
-    const emailTemplate = await this.getTemplateEmail(template);
+    const emailTemplate = opts?.templateId
+      ? await this.getTemplateEmail(opts.templateId)
+      : null;
 
     if (emailTemplate === false) {
-      throw new Error(
-        `Template ${template} is managed by external provider and cannot be previewed`
-      );
-    }
-
-    if (!emailTemplate) {
-      throw new Error(`Template ${template} not found`);
+      throw new ExternalEmailTemplate();
     }
 
     // 2. Generate base merge fields from contact and standard fields
@@ -390,23 +384,22 @@ class EmailService {
 
     // 3. Special handling for callout-response-answers template
     // If ANSWERS is not provided in merge fields, format empty answers for preview
-    if (template === 'callout-response-answers' && !mergeFields.ANSWERS) {
+    if (
+      opts?.templateId === 'callout-response-answers' ||
+      !mergeFields.ANSWERS
+    ) {
       await this.formatCalloutAnswersForPreview(mergeFields);
     }
 
-    // 4. Replace merge fields in subject
-    const subject = opts?.customSubject || emailTemplate.subject;
-    const previewSubject = replaceMergeFields(subject, mergeFields);
-
-    // 5. Replace merge fields in body and apply email formatting
+    // 4. Replace merge fields in body and apply email formatting
     // This includes adding the footer and inline CSS styles, exactly as in actual emails
     // Use provided body override if available, otherwise use template body
-    const templateBody = opts?.body || emailTemplate.body;
+    const templateBody = opts?.body || emailTemplate?.body || '';
     const bodyWithMergeFields = replaceMergeFields(templateBody, mergeFields);
     const previewBody = formatEmailBody(bodyWithMergeFields);
 
     return {
-      subject: previewSubject,
+      subject: opts?.subject || emailTemplate?.subject || '',
       body: previewBody,
     };
   }
@@ -439,22 +432,6 @@ class EmailService {
   }
 
   /**
-   * Determine the template type from a template ID
-   * @param template The template ID
-   * @returns The template type (general, admin, or contact)
-   */
-  getTemplateType(template: string): EmailTemplateType | null {
-    if (template in generalEmailTemplates) {
-      return 'general';
-    } else if (template in adminEmailTemplates) {
-      return 'admin';
-    } else if (template in contactEmailTemplates) {
-      return 'contact';
-    }
-    return null;
-  }
-
-  /**
    * Delete a template email override
    * @param template The template ID
    * @returns void
@@ -467,11 +444,20 @@ class EmailService {
     }
   }
 
-  isTemplateId(template: string): template is EmailTemplateId {
+  /**
+   * Check if a template ID is valid
+   * @param template The template ID to check
+   * @param type The type of template ('general', 'admin', 'contact') to narrow the check
+   * @returns True if the template ID is valid for the given type (or any type if not specified)
+   */
+  isTemplateId(
+    template: string,
+    type?: EmailTemplateType
+  ): template is EmailTemplateId {
     return (
-      template in generalEmailTemplates ||
-      template in adminEmailTemplates ||
-      template in contactEmailTemplates
+      (template in generalEmailTemplates && (!type || type === 'general')) ||
+      (template in adminEmailTemplates && (!type || type === 'admin')) ||
+      (template in contactEmailTemplates && (!type || type === 'contact'))
     );
   }
 
@@ -510,20 +496,6 @@ class EmailService {
   }
 
   /**
-   * Enrich merge fields with standard fields (SUPPORTEMAIL, ORGNAME)
-   * This ensures all templates have access to standard merge fields
-   *
-   * @param mergeFields Template-specific or custom merge fields
-   * @returns Merge fields enriched with standard fields
-   */
-  private enrichMergeFields(mergeFields: EmailMergeFields): EmailMergeFields {
-    return {
-      ...getBaseEmailMergeFields(),
-      ...mergeFields,
-    };
-  }
-
-  /**
    * Convert a contact to an email recipient
    * This ensures all recipients have access to standard merge fields and contact merge fields
    *
@@ -537,10 +509,11 @@ class EmailService {
   ): EmailRecipient {
     return {
       to: { email: contact.email, name: contact.fullname },
-      mergeFields: this.enrichMergeFields({
+      mergeFields: {
+        ...getBaseEmailMergeFields(),
         ...getContactEmailMergeFields(contact),
         ...additionalMergeFields,
-      }),
+      },
     };
   }
 }

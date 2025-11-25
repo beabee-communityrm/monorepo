@@ -91,7 +91,8 @@ const assignableSystemEmails: Partial<Record<EmailTemplateId, EmailType>> = {
     mergeFields: [
       ['CALLOUTTITLE', 'Callout title'],
       ['CALLOUTLINK', 'Callout link'],
-      ['SUPPORTEMAIL', 'Support email address'],
+      ['ANSWERS', 'Callout response answers'],
+      ['CALLOUTSLUG', 'Callout slug'],
     ],
   },
   // General emails

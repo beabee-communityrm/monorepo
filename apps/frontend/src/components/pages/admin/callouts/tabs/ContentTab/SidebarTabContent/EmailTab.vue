@@ -36,12 +36,10 @@
               CALLOUTSLUG: props.tabs.titleAndImage.data.slug,
             }"
             :merge-field-groups="mergeFieldGroups"
-            :server-render="{
+            :template="{
               type: 'contact',
-              templateId: 'callout-response-answers',
+              id: 'callout-response-answers',
             }"
-            :subject-label="t('callout.builder.tabs.email.subject.label')"
-            :content-label="t('callout.builder.tabs.email.body.label')"
             :always-stacked="true"
           />
         </div>
@@ -63,7 +61,7 @@ import {
   type MergeTagGroup,
 } from '@beabee/vue';
 
-import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+import EmailEditor from '@components/EmailEditor.vue';
 import env from '@env';
 import { currentUser, generalContent } from '@store';
 import type { LocaleProp } from '@type';

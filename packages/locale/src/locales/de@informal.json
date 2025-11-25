@@ -369,8 +369,7 @@
         "email": {
           "title": "E-Mail",
           "body": {
-            "default": "<p>Hallo {'*|FNAME|*'},</p><p>hier eine Übersicht über deine getätigten Antworten:<br />{'*|ANSWERS|*'}</p><p><br /></p><p>Diese E-Mail bestätigt deine Antwort auf <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung deiner E-Mail-Adresse {'*|EMAIL|*'}.</p><p><br /></p><p>Wenn du Fragen hast, wende dich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Viele Grüße</p>",
-            "label": "E-Mail-Text"
+            "default": "<p>Hallo {'*|FNAME|*'},</p><p>hier eine Übersicht über deine getätigten Antworten:<br />{'*|ANSWERS|*'}</p><p><br /></p><p>Diese E-Mail bestätigt deine Antwort auf <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung deiner E-Mail-Adresse {'*|EMAIL|*'}.</p><p><br /></p><p>Wenn du Fragen hast, wende dich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Viele Grüße</p>"
           },
           "collectInfoWarning": {
             "description": "Um eine E-Mail an alle Teilnehmer zu senden, musst du \"Kontaktinformationen erfassen\" in der Registerkarte Einstellungen aktivieren",
@@ -381,8 +380,7 @@
             "label": "Nach der Übermittlung eine E-Mail an alle Teilnehmer senden"
           },
           "subject": {
-            "default": "Danke für deine Teilnahme",
-            "label": "E-Mail-Betreff"
+            "default": "Danke für deine Teilnahme"
           }
         },
         "endMessage": {

@@ -16,7 +16,7 @@
     "@beabee/test-utils": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
     "prettier": "^3.5.2",
-    "typescript": "~5.8.3",
+    "typescript": "~5.9.3",
     "vitest": "^3.2.1"
   }
 }

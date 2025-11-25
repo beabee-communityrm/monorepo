@@ -612,19 +612,25 @@ export class CalloutsService {
     // Format response answers as HTML
     const answersHtml = await this.formatResponseAnswersHtml(callout, response);
 
-    // Send custom email using the callout-response-answers template
-    // The template includes proper email structure (header, footer, etc.)
-    // Merge fields like *|FNAME|*, *|EMAIL|*, *|ANSWERS|* etc. will be replaced
-    await EmailService.sendTemplateToContact(
-      'callout-response-answers',
+    // `callout-response-answers` is a pseudo template, so we need to resolve the merge fields manually
+    const mergeFields = contactEmailTemplates['callout-response-answers'](
       contact,
       {
         calloutSlug: callout.slug,
         calloutTitle: variant.title,
         answers: answersHtml,
-      },
+      }
+    );
+
+    // Send custom email using the callout-response-answers template
+    // The template includes proper email structure (header, footer, etc.)
+    // Merge fields like *|FNAME|*, *|EMAIL|*, *|ANSWERS|* etc. will be replaced
+    await EmailService.sendCustomEmailToContact(
+      contact,
+      variant.responseEmailSubject || '',
+      variant.responseEmailBody || '',
       {
-        customSubject: variant.responseEmailSubject || '',
+        mergeFields,
       }
     );
   }
