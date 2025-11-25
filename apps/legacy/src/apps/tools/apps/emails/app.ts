@@ -85,6 +85,15 @@ const assignableSystemEmails: Partial<Record<EmailTemplateId, EmailType>> = {
     showContactFields: true,
     mergeFields: [],
   },
+  'callout-response-answers': {
+    name: 'Callout response confirmation',
+    showContactFields: true,
+    mergeFields: [
+      ['CALLOUTTITLE', 'Callout title'],
+      ['CALLOUTLINK', 'Callout link'],
+      ['SUPPORTEMAIL', 'Support email address'],
+    ],
+  },
   // General emails
   'confirm-email': {
     name: 'Confirm email',
