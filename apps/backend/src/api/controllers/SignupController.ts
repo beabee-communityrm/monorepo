@@ -2,6 +2,7 @@ import { getRepository } from '@beabee/core/database';
 import { JoinFlow, Password } from '@beabee/core/models';
 import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import { generatePassword } from '@beabee/core/utils/auth';
+import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
 import { GetContactDto } from '@api/dto/ContactDto';
 import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
@@ -15,6 +16,7 @@ import { login } from '@api/utils/auth';
 import { plainToInstance } from 'class-transformer';
 import { Request } from 'express';
 import {
+  BadRequestError,
   Body,
   JsonController,
   NotFoundError,
@@ -39,6 +41,12 @@ export class SignupController {
   async startSignup(
     @Body() data: StartSignupFlowDto
   ): Promise<GetPaymentFlowDto | undefined> {
+    if (data.contribution && data.oneTimePayment) {
+      throw new BadRequestError(
+        'Cannot start signup with both contribution and one-time payment'
+      );
+    }
+
     const baseForm = {
       email: data.email,
       password: data.password
@@ -47,19 +55,38 @@ export class SignupController {
     };
 
     if (data.contribution) {
+      // Handle a recurring contribution sign up
       const joinFlowParams = await PaymentFlowService.createPaymentJoinFlow(
         {
           ...baseForm,
           ...data.contribution,
-          monthlyAmount: data.contribution.monthlyAmount,
+          monthlyAmount: getMonthlyAmount(
+            data.contribution.amount,
+            data.contribution.period
+          ),
         },
         data,
         data.contribution.completeUrl,
         { email: data.email }
       );
-
+      return plainToInstance(GetPaymentFlowDto, joinFlowParams);
+    } else if (data.oneTimePayment) {
+      // Handle a one-time payment sign up
+      const joinFlowParams = await PaymentFlowService.createPaymentJoinFlow(
+        {
+          ...baseForm,
+          ...data.oneTimePayment,
+          monthlyAmount: data.oneTimePayment.amount,
+          period: 'one-time',
+          prorate: false,
+        },
+        data,
+        data.oneTimePayment.completeUrl,
+        { email: data.email }
+      );
       return plainToInstance(GetPaymentFlowDto, joinFlowParams);
     } else {
+      // Handle a no-payment sign up
       const joinFlow = await PaymentFlowService.createJoinFlow(baseForm, data);
       await PaymentFlowService.sendConfirmEmail(joinFlow);
     }

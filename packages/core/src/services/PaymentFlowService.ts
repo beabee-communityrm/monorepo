@@ -3,6 +3,7 @@ import {
   ContributionPeriod,
   PaymentMethod,
   RESET_SECURITY_FLOW_TYPE,
+  isContributionForm,
 } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
@@ -219,10 +220,14 @@ class PaymentFlowService implements PaymentFlowProvider {
 
     if (completedPaymentFlow) {
       await PaymentService.updatePaymentMethod(contact, completedPaymentFlow);
-      await ContactsService.updateContactContribution(
-        contact,
-        joinFlow.joinForm
-      );
+      if (isContributionForm(joinFlow.joinForm)) {
+        await ContactsService.updateContactContribution(
+          contact,
+          joinFlow.joinForm
+        );
+      } else {
+        await PaymentService.createOneTimePayment(contact, joinFlow.joinForm);
+      }
     }
 
     await EmailService.sendTemplateToContact('welcome', contact);

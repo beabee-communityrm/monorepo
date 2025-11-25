@@ -956,7 +956,14 @@
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja"
+    "yes": "Ja",
+    "paymentPeriod": {
+      "annually": "Jährlich",
+      "monthly": "Monatlich",
+      "one-time": "Einmalig"
+    },
+    "perOneTime": "einmalig",
+    "perOneTimeText": "einmalig"
   },
   "contactAccount": {
     "confirmDelete": {

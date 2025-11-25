@@ -11,6 +11,7 @@ import {
   ContentShareData,
   ContributionPeriod,
   PaymentMethod,
+  PaymentPeriod,
   StripeFeeCountry,
 } from '@beabee/beabee-common';
 import { Locale } from '@beabee/locale';
@@ -94,8 +95,8 @@ export class GetContentGeneralDto implements ContentGeneralData<Locale> {
 }
 
 class GetContentJoinPeriodDto implements ContentJoinPeriodData {
-  @IsEnum(ContributionPeriod)
-  name!: ContributionPeriod;
+  @IsIn([ContributionPeriod.Monthly, ContributionPeriod.Annually, 'one-time'])
+  name!: PaymentPeriod;
 
   @IsNumber({}, { each: true })
   presetAmounts!: number[];
@@ -111,8 +112,8 @@ export class GetContentJoinDto implements ContentJoinData {
   @IsNumber()
   initialAmount!: number;
 
-  @IsEnum(ContributionPeriod)
-  initialPeriod!: ContributionPeriod;
+  @IsIn([ContributionPeriod.Monthly, ContributionPeriod.Annually, 'one-time'])
+  initialPeriod!: PaymentPeriod;
 
   @ValidateNested({ each: true })
   @Type(() => GetContentJoinPeriodDto)

@@ -1,7 +1,7 @@
-import type { ContributionPeriod } from '@beabee/beabee-common';
+import type { PaymentPeriod } from '@beabee/beabee-common';
 
 export interface StripePaymentData {
   email: string;
   amount: number;
-  period: ContributionPeriod;
+  period: PaymentPeriod;
 }
