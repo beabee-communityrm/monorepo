@@ -8,12 +8,16 @@
       <!-- Editor panel -->
       <div class="relative min-w-0 flex-1">
         <div class="mb-4">
-          <AppInput v-model="subject" :label="subjectLabel" required />
+          <AppInput
+            v-model="subject"
+            :label="subjectLabel || t('emailEditor.subject.label')"
+            required
+          />
         </div>
         <AppRichTextEditor
           v-model="content"
           :merge-fields="mergeFieldGroups"
-          :label="contentLabel"
+          :label="contentLabel || t('emailEditor.body.label')"
           required
         />
       </div>
@@ -162,14 +166,6 @@ const props = withDefaults(
     contentLabel: undefined,
     alwaysStacked: false,
   }
-);
-
-// Computed defaults for labels using i18n
-const subjectLabel = computed(
-  () => props.subjectLabel ?? t('emailEditor.subject.label')
-);
-const contentLabel = computed(
-  () => props.contentLabel ?? t('emailEditor.body.label')
 );
 
 // Server preview state
