@@ -916,9 +916,7 @@
       "successful": "Успех"
     },
     "perMonth": "/ месяц",
-    "perMonthText": "в месяц",
     "perYear": "/ год",
-    "perYearText": "в год",
     "role": {
       "admin": "Администратор",
       "member": "Участник",
@@ -1077,6 +1075,8 @@
     },
     "paymentMethod": "Способ оплаты",
     "paymentSourceUpdateError": "Вы не можете обновить ваши банковские реквизиты, так как сейчас мы обрабатываем ваш платёж",
+    "perMonthText": "в месяц",
+    "perYearText": "в год",
     "prorateDecreaseMessage": "Подписка на пожертвования с выбранной вами суммой будет действовать ещё 1 месяц. | Подписка на пожертвования с выбранной вами суммой будет действовать ещё {n} месяцев.",
     "prorateDecreaseMessageWillStart": "Сумма пожертвования обновится {renewalDate}.",
     "prorateIncreaseMessage": "Подписка на пожертвования с этой суммой будет действовать ещё 1 месяц. | Подписка на пожертвования с этой суммой будет действовать ещё {n} месяцев. ",
@@ -1311,7 +1311,8 @@
     "privacy": "Политика конфиденциальности",
     "tax": {
       "included": ""
-    }
+    },
+    "contribution": {}
   },
   "joinPayment": {
     "applePay": {
@@ -1322,7 +1323,8 @@
     "goBack": "Что-то пропустили? {back}",
     "goBackButton": "Назад",
     "note": "Вы сможете в любое время поменять сумму взноса и посмотреть историю платежей в вашем личном профиле.",
-    "willBeContributing": "Вы будете платить {contribution}"
+    "willBeContributing": "Вы будете платить {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Пожалуйста, подтвердите ваши данные",
