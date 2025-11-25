@@ -1,4 +1,3 @@
-const cnrModeRaw = '__cnrMode__' as unknown as boolean | string;
 export default {
   /**
    * Application base URL
@@ -84,5 +83,5 @@ export default {
    * Enables CrowdNewsroom specific features and UI elements
    * Set to 'true' or any non-empty value to enable
    */
-  cnrMode: cnrModeRaw === 'true' || cnrModeRaw === true,
+  cnrMode: '__cnrMode__',
 };
