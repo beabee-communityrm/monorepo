@@ -18,16 +18,13 @@ meta:
     :success-text="t('form.saved')"
     @submit="handleUpdate"
   >
-    <!-- Email editors with server-side preview -->
     <EmailEditor
       v-if="welcomeEmail"
       v-model:subject="welcomeEmail.subject"
       v-model:content="welcomeEmail.body"
       :heading="stepT('welcomeEmail')"
       :merge-field-groups="mergeFieldGroups"
-      :server-render="{ type: 'contact', templateId: 'welcome' }"
-      :subject-label="t('emailEditor.subject.label')"
-      :content-label="t('emailEditor.body.label')"
+      :template="{ type: 'contact', id: 'welcome' }"
     />
 
     <EmailEditor
@@ -36,9 +33,7 @@ meta:
       v-model:content="cancellationEmail.body"
       :heading="stepT('cancellationEmail')"
       :merge-field-groups="mergeFieldGroups"
-      :server-render="{ type: 'contact', templateId: 'cancelled-contribution' }"
-      :subject-label="t('emailEditor.subject.label')"
-      :content-label="t('emailEditor.body.label')"
+      :template="{ type: 'contact', id: 'cancelled-contribution' }"
     />
   </AppForm>
 </template>
@@ -46,7 +41,7 @@ meta:
 import type { GetEmailData } from '@beabee/beabee-common';
 import { App2ColGrid, AppForm, type MergeTagGroup } from '@beabee/vue';
 
-import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+import EmailEditor from '@components/EmailEditor.vue';
 import { currentUser, generalContent } from '@store';
 import { client, isApiError } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';

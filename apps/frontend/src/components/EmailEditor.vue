@@ -8,16 +8,12 @@
       <!-- Editor panel -->
       <div class="relative min-w-0 flex-1">
         <div class="mb-4">
-          <AppInput
-            v-model="subject"
-            :label="subjectLabel || t('emailEditor.subject.label')"
-            required
-          />
+          <AppInput v-model="subject" :label="subjectLabel" required />
         </div>
         <AppRichTextEditor
           v-model="content"
-          :label="contentLabel || t('emailEditor.body.label')"
           :merge-fields="mergeFieldGroups"
+          :label="contentLabel"
           required
         />
       </div>
@@ -72,7 +68,7 @@
  * <EmailEditor
  *   v-model:subject="emailSubject"
  *   v-model:content="emailContent"
- *   :serverRender="{ type: 'contact', templateId: 'welcome' }"
+ *   :template="{ type: 'contact', id: 'welcome' }"
  *   :contact="currentUser"
  * />
  * ```
@@ -82,7 +78,7 @@
  * <EmailEditor
  *   v-model:subject="emailSubject"
  *   v-model:content="emailContent"
- *   :serverRender="{ type: 'contact', templateId: 'callout-response-answers' }"
+ *   :template="{ type: 'contact', id: 'callout-response-answers' }"
  *   :mergeFields="{ CALLOUTTITLE: calloutTitle }"
  *   :contact="currentUser"
  * />
@@ -95,18 +91,19 @@ import {
   AppLabel,
   AppRichTextEditor,
   AppSubHeading,
-  DEFAULT_ALLOWED_HTML_TAGS,
   type MergeTagGroup,
   sanitizeHtml,
 } from '@beabee/vue';
 
 import type {
   EmailPreviewResult,
-  EmailServerRenderConfig,
+  EmailTemplateConfig,
 } from '@type/email-editor';
 import { client } from '@utils/api';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // Two-way binding models for subject and content
 const subject = defineModel<string>('subject', { default: '' });
@@ -121,10 +118,10 @@ const props = withDefaults(
     heading?: string;
 
     /**
-     * Server-side rendering configuration (required)
+     * Email template configuration
      * Configures the email template type and ID for preview generation
      */
-    serverRender: EmailServerRenderConfig;
+    template?: EmailTemplateConfig;
 
     /**
      * Custom merge fields to send to the server for preview
@@ -158,15 +155,22 @@ const props = withDefaults(
   }>(),
   {
     heading: '',
+    template: undefined,
     mergeFields: () => ({}),
     mergeFieldGroups: undefined,
-    subjectLabel: '',
-    contentLabel: '',
+    subjectLabel: undefined,
+    contentLabel: undefined,
     alwaysStacked: false,
   }
 );
 
-const { t } = useI18n();
+// Computed defaults for labels using i18n
+const subjectLabel = computed(
+  () => props.subjectLabel ?? t('emailEditor.subject.label')
+);
+const contentLabel = computed(
+  () => props.contentLabel ?? t('emailEditor.body.label')
+);
 
 // Server preview state
 const serverPreviewResult = ref<EmailPreviewResult | null>(null);
@@ -178,10 +182,7 @@ const isLoadingPreview = ref(false);
  * email-safe HTML elements (styles, links, images, etc.)
  */
 const sanitizedPreviewBody = computed(() => {
-  return sanitizeHtml(serverPreviewResult.value?.body, {
-    allowedTags: [...DEFAULT_ALLOWED_HTML_TAGS, 'style'],
-    allowDataAttr: true,
-  });
+  return sanitizeHtml(serverPreviewResult.value?.body);
 });
 
 /**
@@ -194,7 +195,7 @@ async function fetchServerPreview() {
 
   try {
     const previewOptions: PreviewEmailOptions = {
-      customSubject: subject.value,
+      subject: subject.value,
       body: content.value,
     };
 
@@ -202,11 +203,13 @@ async function fetchServerPreview() {
       previewOptions.mergeFields = props.mergeFields;
     }
 
-    const preview = await client.email.preview(
-      props.serverRender.type as 'contact' | 'general' | 'admin',
-      props.serverRender.templateId || props.serverRender.type,
-      previewOptions
-    );
+    const preview = props.template
+      ? await client.email.previewTemplate(
+          props.template.type,
+          props.template.id,
+          previewOptions
+        )
+      : await client.email.preview(previewOptions);
 
     serverPreviewResult.value = {
       subject: preview.subject,

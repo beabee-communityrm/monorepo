@@ -272,21 +272,6 @@ export const contactEmailTemplates = {
     SPLINK: params.spLink,
   }),
   /**
-   * Email with callout response answers
-   *
-   * **Available Merge Fields:**
-   * - *|CALLOUTTITLE|* - Title of the callout
-   * - *|CALLOUTLINK|* - Link to the callout
-   */
-  'callout-response-answers': (
-    _: Contact,
-    params: { calloutSlug: string; calloutTitle: string }
-  ) => ({
-    CALLOUTTITLE: params.calloutTitle,
-    CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
-    SUPPORTEMAIL: OptionsService.getText('support-email'),
-  }),
-  /**
    * Email when contribution didn't start
    */
   'contribution-didnt-start': (_: Contact) => ({
