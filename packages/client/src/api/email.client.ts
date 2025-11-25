@@ -61,14 +61,15 @@ export class EmailClient extends BaseClient {
    * Supports all template types (general, contact, admin)
    *
    * @param type - The template type ('general', 'contact', or 'admin')
-   * @param templateId - The template ID (e.g., 'welcome', 'new-member')
-   * @param options - Preview options including merge fields and custom subject
+   * @param templateId - The template ID (e.g., 'callout-response-answers', 'welcome', 'new-member')
+   * @param options - Preview options including merge fields, custom subject, and locale
    * @returns The preview with merge fields replaced
    *
    * @example
    * // Preview a contact template
-   * await client.email.preview('contact', 'welcome', {
-   *   mergeFields: { REFCODE: 'AB123' }
+   * await client.email.preview('contact', 'callout-response-answers', {
+   *   mergeFields: { CALLOUTTITLE: 'My Callout' },
+   *   customSubject: 'Thank you for your response'
    * });
    *
    * @example

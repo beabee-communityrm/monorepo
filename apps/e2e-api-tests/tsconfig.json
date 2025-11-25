@@ -1,7 +1,7 @@
 {
   "extends": [
     "@beabee/tsconfig/tsconfig.server.json",
-    "@beabee/tsconfig/tsconfig.options.json"
+    "@beabee/tsconfig/tsconfig.dev.json"
   ],
   "exclude": [], // Override tsconfig.build.json exclude
   "include": ["src/**/*.ts"],
