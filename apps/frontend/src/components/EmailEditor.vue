@@ -10,14 +10,14 @@
         <div class="mb-4">
           <AppInput
             v-model="subject"
-            :label="subjectLabel || t('emailEditor.subject.label')"
+            :label="t('emailEditor.subject.label')"
             required
           />
         </div>
         <AppRichTextEditor
           v-model="content"
           :merge-fields="mergeFieldGroups"
-          :label="contentLabel || t('emailEditor.body.label')"
+          :label="t('emailEditor.body.label')"
           required
         />
       </div>
@@ -139,18 +139,6 @@ const props = withDefaults(
      * Enables insertion of merge fields via dropdown button in the editor
      */
     mergeFieldGroups?: MergeTagGroup[];
-
-    /**
-     * Label for subject input field
-     * If not provided, uses default i18n key
-     */
-    subjectLabel?: string;
-
-    /**
-     * Label for content editor field
-     * If not provided, uses default i18n key
-     */
-    contentLabel?: string;
 
     /**
      * Whether to always stack the preview below the editor (ignores responsive breakpoints)
