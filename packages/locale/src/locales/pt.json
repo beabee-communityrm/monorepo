@@ -939,7 +939,14 @@
     "timeAgo": "há {time}",
     "timeIn": "em {time}",
     "until": "até",
-    "yes": "Sim"
+    "yes": "Sim",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
+    "perOneTime": "",
+    "perOneTimeText": ""
   },
   "contactAccount": {
     "confirmDelete": {

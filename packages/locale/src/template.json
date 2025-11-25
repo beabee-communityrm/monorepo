@@ -908,6 +908,11 @@
     "no": "",
     "noResults": "",
     "pageCount": "",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "",
       "draft": "",
@@ -917,6 +922,8 @@
     },
     "perMonth": "",
     "perMonthText": "",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "",
     "perYearText": "",
     "role": {

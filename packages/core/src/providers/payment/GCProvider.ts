@@ -1,4 +1,5 @@
 import {
+  ContributionForm,
   PaymentForm,
   PaymentMethod,
   PaymentSource,
@@ -72,12 +73,12 @@ export class GCProvider extends PaymentProvider {
   /**
    * Checks if contribution changes are allowed based on mandate status
    * @param useExistingMandate - Whether to use existing mandate
-   * @param paymentForm - New payment details
+   * @param form - New payment details
    * @returns Promise resolving to boolean indicating if changes are allowed
    */
   async canChangeContribution(
     useExistingMandate: boolean,
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<boolean> {
     // No payment method available
     if (useExistingMandate && !this.data.mandateId) {
@@ -95,22 +96,22 @@ export class GCProvider extends PaymentProvider {
     return (
       (useExistingMandate &&
         this.contact.contributionPeriod === 'monthly' &&
-        paymentForm.period === 'monthly') ||
+        form.period === 'monthly') ||
       !(this.data.mandateId && (await hasPendingPayment(this.data.mandateId)))
     );
   }
 
   /**
    * Updates contribution amount and schedule
-   * @param paymentForm - New payment form data
+   * @param form - New payment form data
    * @returns Promise resolving to update result
    */
   async updateContribution(
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<UpdateContributionResult> {
     log.info('Update contribution for ' + this.contact.id, {
       userId: this.contact.id,
-      paymentForm,
+      form,
     });
 
     if (!this.data.mandateId) {
@@ -122,12 +123,9 @@ export class GCProvider extends PaymentProvider {
     if (this.data.subscriptionId) {
       if (
         this.contact.membership?.isActive &&
-        this.contact.contributionPeriod === paymentForm.period
+        this.contact.contributionPeriod === form.period
       ) {
-        subscription = await updateSubscription(
-          this.data.subscriptionId,
-          paymentForm
-        );
+        subscription = await updateSubscription(this.data.subscriptionId, form);
       } else {
         // Cancel failed subscriptions or when period is changing
         await this.cancelContribution(true);
@@ -143,7 +141,7 @@ export class GCProvider extends PaymentProvider {
       log.info('Creating new subscription');
       subscription = await createSubscription(
         this.data.mandateId,
-        paymentForm,
+        form,
         renewalDate
       );
       // The second payment is the first renewal payment when you first create a subscription
@@ -155,23 +153,23 @@ export class GCProvider extends PaymentProvider {
       (await prorateSubscription(
         this.data.mandateId,
         renewalDate,
-        paymentForm,
+        form,
         this.contact.contributionMonthlyAmount || 0
       ));
 
     log.info('Activate contribution for ' + this.contact.id, {
       userId: this.contact.id,
-      paymentForm,
+      form,
       startNow,
       expiryDate,
     });
 
     this.data.subscriptionId = subscription.id!;
-    this.data.payFee = paymentForm.payFee;
+    this.data.payFee = form.payFee;
     this.data.nextAmount = startNow
       ? null
       : {
-          monthly: paymentForm.monthlyAmount,
+          monthly: form.monthlyAmount,
           chargeable: Number(subscription.amount),
         };
 
@@ -264,6 +262,15 @@ export class GCProvider extends PaymentProvider {
         ...(updates.lastname && { family_name: updates.lastname }),
       });
     }
+  }
+
+  /**
+   * Create a one-time payment
+   *
+   * @param form The payment form
+   */
+  async createOneTimePayment(form: PaymentForm): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 
   /**

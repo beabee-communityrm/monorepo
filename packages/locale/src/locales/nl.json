@@ -939,7 +939,14 @@
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
     "until": "tot",
-    "yes": "Ja"
+    "yes": "Ja",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
+    "perOneTime": "",
+    "perOneTimeText": ""
   },
   "contactAccount": {
     "confirmDelete": {

@@ -1,4 +1,5 @@
 import {
+  ContributionForm,
   ContributionPeriod,
   PaymentForm,
   PaymentMethod,
@@ -70,22 +71,21 @@ export async function disableSalesTaxRate(): Promise<void> {
 /**
  * Convert a payment form and method into a Stripe price data object.
  *
- * @param paymentForm The payment form
+ * @param form The contribution form
  * @param paymentMethod The payment method
  * @returns A Stripe price data object
  */
 export function getPriceData(
-  paymentForm: PaymentForm,
+  form: ContributionForm,
   paymentMethod: PaymentMethod
 ): Stripe.SubscriptionCreateParams.Item.PriceData {
   return {
     currency: config.currencyCode,
     product: config.stripe.membershipProductId,
     recurring: {
-      interval:
-        paymentForm.period === ContributionPeriod.Monthly ? 'month' : 'year',
+      interval: form.period === ContributionPeriod.Monthly ? 'month' : 'year',
     },
-    unit_amount: getChargeableAmount(paymentForm, paymentMethod),
+    unit_amount: getChargeableAmount(form, paymentMethod),
   };
 }
 
@@ -134,13 +134,13 @@ async function calculateProrationParams(
 
 export const getCreateSubscriptionParams = (
   customerId: string,
-  paymentForm: PaymentForm,
+  form: ContributionForm,
   paymentMethod: PaymentMethod,
   renewalDate?: Date
 ): Stripe.SubscriptionCreateParams => {
   return {
     customer: customerId,
-    items: [{ price_data: getPriceData(paymentForm, paymentMethod) }],
+    items: [{ price_data: getPriceData(form, paymentMethod) }],
     off_session: true,
     ...(renewalDate &&
       renewalDate > new Date() && {
@@ -162,21 +162,16 @@ export const getCreateSubscriptionParams = (
  */
 export async function createSubscription(
   customerId: string,
-  paymentForm: PaymentForm,
+  form: ContributionForm,
   paymentMethod: PaymentMethod,
   renewalDate?: Date
 ): Promise<Stripe.Subscription> {
   log.info('Creating subscription on ' + customerId, {
-    paymentForm,
+    form,
     renewalDate,
   });
   return await stripe.subscriptions.create(
-    getCreateSubscriptionParams(
-      customerId,
-      paymentForm,
-      paymentMethod,
-      renewalDate
-    )
+    getCreateSubscriptionParams(customerId, form, paymentMethod, renewalDate)
   );
 }
 
@@ -190,7 +185,7 @@ export async function createSubscription(
  */
 export async function updateSubscription(
   subscriptionId: string,
-  paymentForm: PaymentForm,
+  form: ContributionForm,
   paymentMethod: PaymentMethod
 ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
@@ -198,7 +193,7 @@ export async function updateSubscription(
   });
   const newSubscriptionItem = {
     id: subscription.items.data[0].id,
-    price_data: getPriceData(paymentForm, paymentMethod),
+    price_data: getPriceData(form, paymentMethod),
   };
 
   const { prorationAmount, prorationTime } = await calculateProrationParams(
@@ -210,7 +205,7 @@ export async function updateSubscription(
     renewalDate: new Date(subscription.current_period_end * 1000),
     prorationDate: new Date(prorationTime * 1000),
     prorationAmount,
-    paymentForm,
+    form,
   });
 
   // Clear any previous schedule
@@ -224,7 +219,7 @@ export async function updateSubscription(
     await stripe.subscriptionSchedules.release(oldSchedule.id);
   }
 
-  const startNow = prorationAmount === 0 || paymentForm.prorate;
+  const startNow = prorationAmount === 0 || form.prorate;
 
   if (startNow) {
     const params: Stripe.SubscriptionUpdateParams = {
@@ -290,6 +285,35 @@ export async function deleteSubscription(
       throw error;
     }
   }
+}
+
+/**
+ * Create a one-time payment
+ *
+ * @param customerId The ID of the customer
+ * @param form The payment form
+ * @param paymentMethod The payment method
+ */
+export async function chargeOneTimePayment(
+  customerId: string,
+  form: PaymentForm,
+  paymentMethod: PaymentMethod
+): Promise<void> {
+  const invoice = await stripe.invoices.create({
+    customer: customerId,
+    collection_method: 'charge_automatically',
+    auto_advance: true,
+  });
+
+  await stripe.invoiceItems.create({
+    customer: customerId,
+    invoice: invoice.id,
+    amount: getChargeableAmount(form, paymentMethod),
+    currency: config.currencyCode,
+    description: 'One-time payment',
+  });
+
+  await stripe.invoices.pay(invoice.id);
 }
 
 /**

@@ -939,7 +939,14 @@
     "timeAgo": "πριν το {time}",
     "timeIn": "σε {time}",
     "until": "",
-    "yes": ""
+    "yes": "",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
+    "perOneTime": "",
+    "perOneTimeText": ""
   },
   "contactAccount": {
     "confirmDelete": {

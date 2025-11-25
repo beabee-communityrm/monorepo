@@ -1,4 +1,4 @@
-import { PaymentForm } from '@beabee/beabee-common';
+import { ContributionForm, PaymentForm } from '@beabee/beabee-common';
 
 import { Contact } from '#models/index';
 import {
@@ -55,10 +55,10 @@ export class ManualProvider extends PaymentProvider {
 
   /**
    * Updates contribution details
-   * @param paymentForm - New payment form data
+   * @param form - New contribution form data
    */
   async updateContribution(
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<UpdateContributionResult> {
     throw new Error('Method not implemented.');
   }
@@ -70,6 +70,13 @@ export class ManualProvider extends PaymentProvider {
   async updatePaymentMethod(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  /**
+   * No-op as manual payments don't support one-time payments
+   * @param form The payment form
+   */
+  async createOneTimePayment(form: PaymentForm): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
