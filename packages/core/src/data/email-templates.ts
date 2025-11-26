@@ -49,16 +49,6 @@ export const getBaseEmailMergeFields = (): EmailMergeFields => ({
  */
 
 /**
- * Type for email template metadata
- * Names and merge field descriptions are handled in the frontend via translations
- */
-type EmailTemplateMetadata = {
-  type: 'general' | 'admin' | 'contact';
-  showContactFields?: boolean;
-  mergeFields: string[];
-};
-
-/**
  * Unified email template definitions
  * Contains both the template function and metadata in a single structure
  * This ensures consistency and single source of truth
@@ -69,7 +59,6 @@ export const emailTemplateDefinitions = {
     welcome: {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: ['REFCODE'],
       },
       fn: (contact: Contact) => ({
@@ -79,7 +68,6 @@ export const emailTemplateDefinitions = {
     'welcome-post-gift': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: [],
       },
       fn: () => ({}),
@@ -87,7 +75,6 @@ export const emailTemplateDefinitions = {
     'reset-password': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: ['RPLINK'],
       },
       fn: (_: Contact, params: { rpLink: string }) => ({
@@ -97,7 +84,6 @@ export const emailTemplateDefinitions = {
     'reset-device': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: ['RPLINK'],
       },
       fn: (_: Contact, params: { rpLink: string }) => ({
@@ -107,7 +93,6 @@ export const emailTemplateDefinitions = {
     'cancelled-contribution': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: ['EXPIRES', 'MEMBERSHIPID'],
       },
       fn: (contact: Contact) => ({
@@ -120,7 +105,6 @@ export const emailTemplateDefinitions = {
     'cancelled-contribution-no-survey': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: ['EXPIRES'],
       },
       fn: (contact: Contact) => {
@@ -134,7 +118,6 @@ export const emailTemplateDefinitions = {
     'manual-to-automatic': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: [],
       },
       fn: () => ({}),
@@ -142,7 +125,6 @@ export const emailTemplateDefinitions = {
     'email-exists-login': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: ['LOGINLINK'],
       },
       fn: (_: Contact, params: { loginLink: string }) => ({
@@ -152,7 +134,6 @@ export const emailTemplateDefinitions = {
     'email-exists-set-password': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: ['SPLINK'],
       },
       fn: (_: Contact, params: { spLink: string }) => ({
@@ -162,7 +143,6 @@ export const emailTemplateDefinitions = {
     'callout-response-answers': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: ['MESSAGE', 'CALLOUTTITLE', 'CALLOUTLINK', 'SUPPORTEMAIL'],
       },
       fn: (
@@ -176,7 +156,6 @@ export const emailTemplateDefinitions = {
     'successful-referral': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: ['REFCODE', 'REFEREENAME', 'ISELIGIBLE'],
       },
       fn: (
@@ -191,7 +170,6 @@ export const emailTemplateDefinitions = {
     'giftee-success': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: ['PURCHASER', 'MESSAGE', 'ACTIVATELINK'],
       },
       fn: (
@@ -206,7 +184,6 @@ export const emailTemplateDefinitions = {
     'contribution-didnt-start': {
       metadata: {
         type: 'contact' as const,
-        showContactFields: true,
         mergeFields: [],
       },
       fn: (_: Contact) => ({}),
@@ -218,7 +195,6 @@ export const emailTemplateDefinitions = {
     'purchased-gift': {
       metadata: {
         type: 'general' as const,
-        showContactFields: false,
         mergeFields: ['PURCHASER', 'GIFTEE', 'GIFTDATE'],
       },
       fn: (params: {
@@ -234,7 +210,6 @@ export const emailTemplateDefinitions = {
     'confirm-email': {
       metadata: {
         type: 'general' as const,
-        showContactFields: false,
         mergeFields: ['FNAME', 'LNAME', 'CONFIRMLINK'],
       },
       fn: (params: {
@@ -250,7 +225,6 @@ export const emailTemplateDefinitions = {
     'expired-special-url-resend': {
       metadata: {
         type: 'general' as const,
-        showContactFields: false,
         mergeFields: ['FNAME', 'URL'],
       },
       fn: (params: { firstName: string; newUrl: string }) => ({
@@ -265,7 +239,6 @@ export const emailTemplateDefinitions = {
     'new-member': {
       metadata: {
         type: 'admin' as const,
-        showContactFields: false,
         mergeFields: ['MEMBERID', 'MEMBERNAME'],
       },
       fn: (params: { contact: Contact }) => ({
@@ -276,7 +249,6 @@ export const emailTemplateDefinitions = {
     'cancelled-member': {
       metadata: {
         type: 'admin' as const,
-        showContactFields: false,
         mergeFields: ['MEMBERID', 'MEMBERNAME'],
       },
       fn: (params: { contact: Contact }) => ({
@@ -287,7 +259,6 @@ export const emailTemplateDefinitions = {
     'new-callout-response': {
       metadata: {
         type: 'admin' as const,
-        showContactFields: false,
         mergeFields: ['CALLOUTSLUG', 'CALLOUTTITLE', 'RESPNAME'],
       },
       fn: (params: {

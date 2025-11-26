@@ -417,7 +417,6 @@ class EmailService {
     id: string;
     type: 'general' | 'admin' | 'contact';
     mergeFields: string[];
-    showContactFields?: boolean;
     overrideEmailId?: string;
   }> {
     const emailTemplates = OptionsService.getJSON('email-templates') || {};
@@ -435,9 +434,6 @@ class EmailService {
       id,
       type: metadata.type,
       mergeFields: metadata.mergeFields,
-      ...(metadata.showContactFields !== undefined && {
-        showContactFields: metadata.showContactFields,
-      }),
       ...(emailTemplates[id] && { overrideEmailId: emailTemplates[id] }),
     }));
   }
