@@ -1184,6 +1184,7 @@
       "templates": ""
     },
     "templates": {
+      "availableFields": "",
       "names": {
         "callout-response-answers": "",
         "cancelled-contribution": "",
@@ -1206,6 +1207,7 @@
         "welcome-post-gift": ""
       },
       "select": "",
+      "selectOverride": "",
       "title": "",
       "type": {
         "admin": "",

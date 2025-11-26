@@ -167,12 +167,10 @@ export const emailTemplateDefinitions = {
       },
       fn: (
         _: Contact,
-        params: { message: string; calloutSlug: string; calloutTitle: string }
+        params: { calloutSlug: string; calloutTitle: string }
       ) => ({
-        MESSAGE: params.message,
         CALLOUTTITLE: params.calloutTitle,
         CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
-        SUPPORTEMAIL: OptionsService.getText('support-email'),
       }),
     },
     'successful-referral': {
@@ -209,12 +207,9 @@ export const emailTemplateDefinitions = {
       metadata: {
         type: 'contact' as const,
         showContactFields: true,
-        mergeFields: ['ORGNAME', 'SUPPORTEMAIL'],
+        mergeFields: [],
       },
-      fn: (_: Contact) => ({
-        ORGNAME: OptionsService.getText('organisation'),
-        SUPPORTEMAIL: OptionsService.getText('support-email'),
-      }),
+      fn: (_: Contact) => ({}),
     },
   },
 
