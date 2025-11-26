@@ -22,14 +22,25 @@ import {
 } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import {
+  ApiKey,
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutReviewer,
   Contact,
+  ContactContribution,
+  ContactMfa,
   ContactProfile,
   ContactRole,
   ContactTagAssignment,
   GiftFlow,
   Password,
+  Payment,
   Project,
+  ProjectContact,
   ProjectEngagement,
+  Referral,
+  ResetSecurityFlow,
+  SegmentContact,
 } from '#models/index';
 import ContactMfaService from '#services/ContactMfaService';
 import EmailService from '#services/EmailService';
@@ -392,35 +403,94 @@ class ContactsService {
 
   /**
    * Permanently delete a contact and all associated data.
+   * This method cleans up all foreign key references before deleting the contact.
    *
-   * @param contact The contact
+   * @param contact The contact to delete
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
     log.info('Permanently delete contact ' + contact.id);
     await runTransaction(async (em) => {
-      // Projects are only in the legacy app, so really no one should have any, but we'll delete them just in case
-      // TODO: Remove this when we've reworked projects
+      // 1. Reset security flows (password reset, MFA reset)
+      await em
+        .getRepository(ResetSecurityFlow)
+        .delete({ contactId: contact.id });
+
+      // 2. MFA settings
+      await em.getRepository(ContactMfa).delete({ contactId: contact.id });
+
+      // 3. API keys: set creator to NULL
+      await em
+        .getRepository(ApiKey)
+        .update({ creatorId: contact.id }, { creatorId: null });
+
+      // 4. Callout reviewers
+      await em.getRepository(CalloutReviewer).delete({ contactId: contact.id });
+
+      // 5. Callout response comments: set contact to NULL
+      await em
+        .getRepository(CalloutResponseComment)
+        .update(
+          { contactId: contact.id },
+          { contactId: null as unknown as string }
+        );
+
+      // 6. Callout responses: set contact and assignee to NULL
+      await em
+        .getRepository(CalloutResponse)
+        .update({ contactId: contact.id }, { contactId: null });
+      await em
+        .getRepository(CalloutResponse)
+        .update({ assigneeId: contact.id }, { assigneeId: null });
+
+      // 7. Payments: set contact to NULL
+      await em
+        .getRepository(Payment)
+        .update({ contactId: contact.id }, { contactId: null });
+
+      // 8. Contact contribution
+      await em
+        .getRepository(ContactContribution)
+        .delete({ contactId: contact.id });
+
+      // 9. Segment contacts
+      await em.getRepository(SegmentContact).delete({ contactId: contact.id });
+
+      // 10. Project engagements (legacy app)
       await em
         .getRepository(ProjectEngagement)
         .delete({ byContactId: contact.id });
       await em
         .getRepository(ProjectEngagement)
         .delete({ toContactId: contact.id });
+
+      // 11. Project contacts (legacy app)
+      await em.getRepository(ProjectContact).delete({ contactId: contact.id });
+
+      // 12. Projects: set owner to NULL (legacy app)
       await em
         .getRepository(Project)
         .update({ ownerId: contact.id }, { ownerId: null });
 
-      // Gifts are only in the legacy app, so really no one should have any, but we'll delete them just in case
-      // TODO: Remove this when we've reworked gifts
+      // 13. Gift flows: set giftee to NULL (legacy app)
       await em
         .getRepository(GiftFlow)
         .update({ gifteeId: contact.id }, { gifteeId: null });
 
+      // 14. Referrals: delete where contact is referee (legacy feature)
+      await em.getRepository(Referral).delete({ refereeId: contact.id });
+
+      // 15. Contact tag assignments (has CASCADE but explicit for safety)
       await em
         .getRepository(ContactTagAssignment)
         .delete({ contactId: contact.id });
+
+      // 16. Contact roles
       await em.getRepository(ContactRole).delete({ contactId: contact.id });
+
+      // 17. Contact profile
       await em.getRepository(ContactProfile).delete({ contactId: contact.id });
+
+      // 18. Finally delete the contact
       await em.getRepository(Contact).delete(contact.id);
     });
   }
