@@ -897,6 +897,11 @@
   "common": {
     "backToHome": "Back to home",
     "contributing": "Contributing",
+    "paymentPeriod": {
+      "annually": "Annually",
+      "monthly": "Monthly",
+      "one-time": "One-time"
+    },
     "contributionPeriod": {
       "annually": "Annually",
       "monthly": "Monthly"
@@ -934,6 +939,8 @@
     },
     "perMonth": "/ month",
     "perMonthText": "a month",
+    "perOneTime": " one-time",
+    "perOneTimeText": "one-time",
     "perYear": "/ year",
     "perYearText": "a year",
     "role": {
