@@ -1,4 +1,8 @@
-import { ContributionPeriod, GetContactWith } from '@beabee/beabee-common';
+import {
+  ContributionPeriod,
+  GetContactWith,
+  isContributionForm,
+} from '@beabee/beabee-common';
 import {
   CantUpdateContribution,
   NoPaymentMethod,
@@ -12,6 +16,7 @@ import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
 import { generatePassword } from '@beabee/core/utils/auth';
+import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import PartialBody from '@api/decorators/PartialBody';
@@ -221,11 +226,16 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: UpdateContributionDto
   ): Promise<GetContributionInfoDto> {
-    if (!(await PaymentService.canChangeContribution(target, true, data))) {
+    const form = {
+      ...data,
+      monthlyAmount: getMonthlyAmount(data.amount, data.period),
+    };
+
+    if (!(await PaymentService.canChangeContribution(target, true, form))) {
       throw new CantUpdateContribution();
     }
 
-    await ContactsService.updateContactContribution(target, data);
+    await ContactsService.updateContactContribution(target, form);
     return await this.getContribution(target);
   }
 
@@ -298,10 +308,15 @@ export class ContactController {
   async completeStartContribution(
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
-  ): Promise<GetContributionInfoDto> {
+  ): Promise<GetContributionInfoDto | undefined> {
     const joinFlow = await this.handleCompleteUpdatePaymentMethod(target, data);
-    await ContactsService.updateContactContribution(target, joinFlow.joinForm);
-    return await this.getContribution(target);
+    if (isContributionForm(joinFlow.joinForm)) {
+      await ContactsService.updateContactContribution(
+        target,
+        joinFlow.joinForm
+      );
+      return await this.getContribution(target);
+    }
   }
 
   /**
@@ -357,7 +372,6 @@ export class ContactController {
       // TODO: not needed, should be optional
       amount: 0,
       period: ContributionPeriod.Annually,
-      monthlyAmount: 0,
       payFee: false,
       prorate: false,
     });
@@ -377,18 +391,20 @@ export class ContactController {
     target: Contact,
     data: StartContributionDto
   ): Promise<GetPaymentFlowDto> {
-    if (!(await PaymentService.canChangeContribution(target, false, data))) {
+    const form = {
+      ...data,
+      monthlyAmount: getMonthlyAmount(data.amount, data.period),
+      // TODO: unnecessary, should be optional
+      password: await generatePassword(''),
+      email: '',
+    };
+
+    if (!(await PaymentService.canChangeContribution(target, false, form))) {
       throw new CantUpdateContribution();
     }
 
     const joinFlowParams = await PaymentFlowService.createPaymentJoinFlow(
-      {
-        ...data,
-        monthlyAmount: data.monthlyAmount,
-        // TODO: unnecessary, should be optional
-        password: await generatePassword(''),
-        email: '',
-      },
+      form,
       {
         confirmUrl: '',
         loginUrl: '',
@@ -409,17 +425,17 @@ export class ContactController {
     const joinFlow = await PaymentFlowService.getJoinFlowByPaymentId(
       data.paymentFlowId
     );
-    if (!joinFlow) {
+    if (!joinFlow || !isContributionForm(joinFlow.joinForm)) {
       throw new NotFoundError();
     }
 
-    if (
-      !(await PaymentService.canChangeContribution(
-        target,
-        false,
-        joinFlow.joinForm
-      ))
-    ) {
+    const canChange = await PaymentService.canChangeContribution(
+      target,
+      false,
+      joinFlow.joinForm
+    );
+
+    if (!canChange) {
       throw new CantUpdateContribution();
     }
 

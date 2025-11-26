@@ -84,16 +84,10 @@ export class ContactContributionClient extends BaseClient {
    * Start a new contribution
    */
   async start(startData: StartContributionData): Promise<PaymentFlowParams> {
-    const { data } = await this.fetch.post('/me/contribution', {
-      amount: startData.amount,
-      period: startData.period,
-      payFee:
-        startData.payFee && startData.period === ContributionPeriod.Monthly,
-      prorate:
-        startData.prorate && startData.period === ContributionPeriod.Annually,
-      paymentMethod: startData.paymentMethod,
-      completeUrl: this.completeUrl,
-    });
+    const { data } = await this.fetch.post<Serial<PaymentFlowParams>>(
+      '/me/contribution',
+      startData
+    );
     return data;
   }
 
