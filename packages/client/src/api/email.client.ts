@@ -116,6 +116,17 @@ export class EmailClient extends BaseClient {
   }
 
   /**
+   * Preview an email with custom merge fields
+   *
+   * @param options Preview options including merge fields, custom subject and body
+   * @returns The preview with merge fields replaced
+   */
+  async preview(options: PreviewEmailOptions): Promise<GetEmailData> {
+    const { data } = await this.fetch.post<GetEmailData>(`/preview`, options);
+    return data;
+  }
+
+  /**
    * Preview an email template with custom merge fields
    * Supports all template types (general, contact, admin)
    *
@@ -127,7 +138,7 @@ export class EmailClient extends BaseClient {
    * @example
    * // Preview a contact template
    * await client.email.preview('contact', 'callout-response-answers', {
-   *   mergeFields: { MESSAGE: 'Custom message', CALLOUTTITLE: 'My Callout' },
+   *   mergeFields: { CALLOUTTITLE: 'My Callout' },
    *   customSubject: 'Thank you for your response'
    * });
    *
@@ -143,7 +154,7 @@ export class EmailClient extends BaseClient {
    *   mergeFields: { MEMBERID: '123', MEMBERNAME: 'John Doe' }
    * });
    */
-  async preview(
+  async previewTemplate(
     type: 'general' | 'contact' | 'admin',
     templateId: string,
     options: PreviewEmailOptions = {}

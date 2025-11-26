@@ -1,6 +1,11 @@
-import { Locale } from '@beabee/locale';
+import {
+  AdminEmailTemplateId,
+  ContactEmailTemplateId,
+  GeneralEmailTemplateId,
+} from '@beabee/core/type';
 
 import { GetPaginatedQuery } from '@api/dto/BaseDto';
+import IsEmailTemplateId from '@api/validators/IsEmailTemplateId';
 import { IsArray, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class UpdateEmailDto {
@@ -12,6 +17,21 @@ export class UpdateEmailDto {
 }
 
 export class GetEmailDto extends UpdateEmailDto {}
+
+export class PreviewAdminEmailParams {
+  @IsEmailTemplateId('admin')
+  templateId!: AdminEmailTemplateId;
+}
+
+export class PreviewContactEmailParams {
+  @IsEmailTemplateId('contact')
+  templateId!: ContactEmailTemplateId;
+}
+
+export class PreviewGeneralEmailParams {
+  @IsEmailTemplateId('general')
+  templateId!: GeneralEmailTemplateId;
+}
 
 /**
  * DTO for creating custom emails
@@ -114,7 +134,7 @@ export class AssignTemplateDto {
 export class PreviewEmailDto {
   @IsOptional()
   @IsString()
-  customSubject?: string;
+  subject?: string;
 
   /**
    * Optional body to override the template's body for preview
@@ -128,8 +148,4 @@ export class PreviewEmailDto {
   @IsOptional()
   @IsObject()
   mergeFields?: Record<string, string>;
-
-  @IsOptional()
-  @IsString()
-  locale?: Locale;
 }

@@ -13,9 +13,7 @@ import type {
   EmailRecipient,
   EmailTemplate,
   PreparedEmail,
-  TemplateEmailOptions,
 } from '#type/index';
-import { expandNestedMergeFields } from '#utils/email';
 
 const log = mainLogger.child({ app: 'base-email-provider' });
 
@@ -122,24 +120,13 @@ export abstract class BaseProvider implements EmailProvider {
       }
     }
 
-    // Expand nested merge fields to handle cases where a merge field value
-    // itself contains other merge fields (e.g., MESSAGE containing *|FNAME|*)
-    preparedRecipients = preparedRecipients.map((recipient) => {
-      if (!recipient.mergeFields) return recipient;
-
-      return {
-        ...recipient,
-        mergeFields: expandNestedMergeFields(recipient.mergeFields),
-      };
-    });
-
     await this.doSendEmail(preparedEmail, preparedRecipients, opts);
   }
 
   async sendTemplate(
     templateId: string,
     recipients: EmailRecipient[],
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void> {
     const email = await getRepository(Email).findOneBy({ id: templateId });
     if (email) {

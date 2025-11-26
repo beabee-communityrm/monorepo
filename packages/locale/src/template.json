@@ -368,8 +368,7 @@
         },
         "email": {
           "body": {
-            "default": "",
-            "label": ""
+            "default": ""
           },
           "collectInfoWarning": {
             "description": "",
@@ -380,8 +379,7 @@
             "label": ""
           },
           "subject": {
-            "default": "",
-            "label": ""
+            "default": ""
           },
           "title": ""
         },
@@ -927,6 +925,11 @@
     "no": "",
     "noResults": "",
     "pageCount": "",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "",
       "draft": "",
@@ -936,6 +939,8 @@
     },
     "perMonth": "",
     "perMonthText": "",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "",
     "perYearText": "",
     "role": {

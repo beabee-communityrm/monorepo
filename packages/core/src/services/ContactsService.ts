@@ -1,10 +1,10 @@
 import {
   CONTACT_MFA_TYPE,
+  ContributionForm,
   ContributionPeriod,
   ContributionType,
   LOGIN_CODES,
   NewsletterStatus,
-  PaymentForm,
   RESET_SECURITY_FLOW_ERROR_CODE,
   RESET_SECURITY_FLOW_TYPE,
   RoleType,
@@ -331,11 +331,17 @@ class ContactsService {
     }
   }
 
+  /**
+   * Updates a contact's contribution and adjusts their role accordingly.
+   *
+   * @param contact  The contact
+   * @param form The new contribution
+   */
   async updateContactContribution(
     contact: Contact,
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<void> {
-    log.info('Update contribution for ' + contact.id, { paymentForm });
+    log.info('Update contribution for ' + contact.id, { form });
     // At the moment the only possibility is to go from whatever contribution
     // type the user was before to an automatic contribution
     const wasManual = contact.contributionType === ContributionType.Manual;
@@ -346,7 +352,7 @@ class ContactsService {
       contact.membership?.isActive &&
       // Annual contributors can't change their period
       contact.contributionPeriod === ContributionPeriod.Annually &&
-      paymentForm.period !== ContributionPeriod.Annually
+      form.period !== ContributionPeriod.Annually
     ) {
       log.info("Can't update contribution for " + contact.id);
       throw new CantUpdateContribution();
@@ -354,7 +360,7 @@ class ContactsService {
 
     const { startNow, expiryDate } = await PaymentService.updateContribution(
       contact,
-      paymentForm
+      form
     );
 
     log.info('Updated contribution for ' + contact.id, {
@@ -364,9 +370,9 @@ class ContactsService {
 
     await this.updateContact(contact, {
       contributionType: ContributionType.Automatic,
-      contributionPeriod: paymentForm.period,
+      contributionPeriod: form.period,
       ...(startNow && {
-        contributionMonthlyAmount: paymentForm.monthlyAmount,
+        contributionMonthlyAmount: form.monthlyAmount,
       }),
     });
 
@@ -377,6 +383,12 @@ class ContactsService {
     }
   }
 
+  /**
+   * Cancel a contact's contribution and send the cancellation email.
+   *
+   * @param contact The contact
+   * @param email The email template to send
+   */
   async cancelContactContribution(
     contact: Contact,
     email: 'cancelled-contribution' | 'cancelled-contribution-no-survey'

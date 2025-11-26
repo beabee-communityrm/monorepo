@@ -18,15 +18,12 @@ meta:
     :success-text="t('form.saved')"
     @submit="handleUpdate"
   >
-    <!-- Email editors with server-side preview -->
     <EmailEditor
       v-if="welcomeEmail"
       v-model:subject="welcomeEmail.subject"
       v-model:content="welcomeEmail.body"
       :heading="stepT('welcomeEmail')"
-      :server-render="{ type: 'contact', templateId: 'welcome' }"
-      :subject-label="t('emailEditor.subject.label')"
-      :content-label="t('emailEditor.body.label')"
+      :template="{ type: 'contact', id: 'welcome' }"
     />
 
     <EmailEditor
@@ -34,9 +31,7 @@ meta:
       v-model:subject="cancellationEmail.subject"
       v-model:content="cancellationEmail.body"
       :heading="stepT('cancellationEmail')"
-      :server-render="{ type: 'contact', templateId: 'cancelled-contribution' }"
-      :subject-label="t('emailEditor.subject.label')"
-      :content-label="t('emailEditor.body.label')"
+      :template="{ type: 'contact', id: 'cancelled-contribution' }"
     />
   </AppForm>
 </template>
@@ -44,7 +39,7 @@ meta:
 import type { GetEmailData } from '@beabee/beabee-common';
 import { App2ColGrid, AppForm } from '@beabee/vue';
 
-import EmailEditor from '@components/pages/admin/membership-builder/EmailEditor.vue';
+import EmailEditor from '@components/EmailEditor.vue';
 import { client, isApiError } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

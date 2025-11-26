@@ -10,13 +10,13 @@
         <div class="mb-4">
           <AppInput
             v-model="subject"
-            :label="subjectLabel || t('emailEditor.subject.label')"
+            :label="t('emailEditor.subject.label')"
             required
           />
         </div>
         <AppRichTextEditor
           v-model="content"
-          :label="contentLabel || t('emailEditor.body.label')"
+          :label="t('emailEditor.body.label')"
           required
         />
       </div>
@@ -71,7 +71,7 @@
  * <EmailEditor
  *   v-model:subject="emailSubject"
  *   v-model:content="emailContent"
- *   :serverRender="{ type: 'contact', templateId: 'welcome' }"
+ *   :template="{ type: 'contact', id: 'welcome' }"
  *   :contact="currentUser"
  * />
  * ```
@@ -81,8 +81,8 @@
  * <EmailEditor
  *   v-model:subject="emailSubject"
  *   v-model:content="emailContent"
- *   :serverRender="{ type: 'contact', templateId: 'callout-response-answers' }"
- *   :mergeFields="{ MESSAGE: customMessage, CALLOUTTITLE: calloutTitle }"
+ *   :template="{ type: 'contact', id: 'callout-response-answers' }"
+ *   :mergeFields="{ CALLOUTTITLE: calloutTitle }"
  *   :contact="currentUser"
  * />
  * ```
@@ -94,13 +94,12 @@ import {
   AppLabel,
   AppRichTextEditor,
   AppSubHeading,
-  DEFAULT_ALLOWED_HTML_TAGS,
   sanitizeHtml,
 } from '@beabee/vue';
 
 import type {
   EmailPreviewResult,
-  EmailServerRenderConfig,
+  EmailTemplateConfig,
 } from '@type/email-editor';
 import { client } from '@utils/api';
 import { computed, ref, watchEffect } from 'vue';
@@ -119,10 +118,10 @@ const props = withDefaults(
     heading?: string;
 
     /**
-     * Server-side rendering configuration (required)
+     * Email template configuration
      * Configures the email template type and ID for preview generation
      */
-    serverRender: EmailServerRenderConfig;
+    template?: EmailTemplateConfig;
 
     /**
      * Custom merge fields to send to the server for preview
@@ -132,36 +131,15 @@ const props = withDefaults(
     mergeFields?: Record<string, string>;
 
     /**
-     * Label for subject input field
-     * If not provided, uses default i18n key
-     */
-    subjectLabel?: string;
-
-    /**
-     * Label for content editor field
-     * If not provided, uses default i18n key
-     */
-    contentLabel?: string;
-
-    /**
      * Whether to always stack the preview below the editor (ignores responsive breakpoints)
      */
     alwaysStacked?: boolean;
-
-    /**
-     * Whether to use MESSAGE merge field instead of body parameter
-     * When true, content is sent as MESSAGE in mergeFields (for callout-response-answers template)
-     * When false, content is sent as body parameter (default for all other templates)
-     */
-    useMessageMergeField?: boolean;
   }>(),
   {
     heading: '',
+    template: undefined,
     mergeFields: () => ({}),
-    subjectLabel: '',
-    contentLabel: '',
     alwaysStacked: false,
-    useMessageMergeField: false,
   }
 );
 
@@ -177,10 +155,7 @@ const isLoadingPreview = ref(false);
  * email-safe HTML elements (styles, links, images, etc.)
  */
 const sanitizedPreviewBody = computed(() => {
-  return sanitizeHtml(serverPreviewResult.value?.body, {
-    allowedTags: [...DEFAULT_ALLOWED_HTML_TAGS, 'style'],
-    allowDataAttr: true,
-  });
+  return sanitizeHtml(serverPreviewResult.value?.body);
 });
 
 /**
@@ -193,30 +168,21 @@ async function fetchServerPreview() {
 
   try {
     const previewOptions: PreviewEmailOptions = {
-      customSubject: subject.value,
+      subject: subject.value,
+      body: content.value,
     };
 
-    if (props.useMessageMergeField) {
-      // Use MESSAGE merge field instead of body parameter
-      // This is needed for callout-response-answers template where content
-      // should be passed as MESSAGE merge field
-      previewOptions.mergeFields = {
-        MESSAGE: content.value,
-        ...props.mergeFields,
-      };
-    } else {
-      // Use body parameter for all other templates
-      previewOptions.body = content.value;
-      if (Object.keys(props.mergeFields).length > 0) {
-        previewOptions.mergeFields = props.mergeFields;
-      }
+    if (Object.keys(props.mergeFields).length > 0) {
+      previewOptions.mergeFields = props.mergeFields;
     }
 
-    const preview = await client.email.preview(
-      props.serverRender.type as 'contact' | 'general' | 'admin',
-      props.serverRender.templateId || props.serverRender.type,
-      previewOptions
-    );
+    const preview = props.template
+      ? await client.email.previewTemplate(
+          props.template.type,
+          props.template.id,
+          previewOptions
+        )
+      : await client.email.preview(previewOptions);
 
     serverPreviewResult.value = {
       subject: preview.subject,

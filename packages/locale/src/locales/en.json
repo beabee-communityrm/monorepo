@@ -368,8 +368,7 @@
         },
         "email": {
           "body": {
-            "label": "Email body",
-            "default": "<p>Hello {FNAME},</p><p>This email confirms your response to the callout <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> using your email address {EMAIL}.</p><p><br /></p><p>If you have any questions, please contact our support team at <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Best wishes</p>"
+            "default": "<p>Hello {'*|FNAME|*'},</p><p>This email confirms your response to the callout <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> using your email address {'*|EMAIL|*'}.</p><p><br /></p><p>If you have any questions, please contact our support team at <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Best wishes</p>"
           },
           "collectInfoWarning": {
             "description": "To send an email to all participants you must enable \"Collect contact information\" in the Settings tab",
@@ -380,7 +379,6 @@
             "label": "Send an email to all participants after submission"
           },
           "subject": {
-            "label": "Email subject",
             "default": "Thank you for your response"
           },
           "title": "Email"
@@ -899,6 +897,11 @@
   "common": {
     "backToHome": "Back to home",
     "contributing": "Contributing",
+    "paymentPeriod": {
+      "annually": "Annually",
+      "monthly": "Monthly",
+      "one-time": "One-time"
+    },
     "contributionPeriod": {
       "annually": "Annually",
       "monthly": "Monthly"
@@ -936,6 +939,8 @@
     },
     "perMonth": "/ month",
     "perMonthText": "a month",
+    "perOneTime": " one-time",
+    "perOneTimeText": "one-time",
     "perYear": "/ year",
     "perYearText": "a year",
     "role": {

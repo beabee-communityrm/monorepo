@@ -3,6 +3,30 @@ import moment from 'moment';
 import config from '#config/config';
 import type { Contact } from '#models/index';
 import OptionsService from '#services/OptionsService';
+import type { EmailMergeFields } from '#type/index';
+
+export const getContactEmailMergeFields = (contact: {
+  email: string;
+  fullname: string;
+  firstname: string;
+  lastname: string;
+}) => ({
+  EMAIL: contact.email,
+  NAME: contact.fullname,
+  FNAME: contact.firstname,
+  LNAME: contact.lastname,
+});
+
+/**
+ * Get standard merge fields that are available for all emails
+ * These include organization-related fields that are commonly used
+ *
+ * @returns Standard merge fields (SUPPORTEMAIL, ORGNAME)
+ */
+export const getBaseEmailMergeFields = (): EmailMergeFields => ({
+  SUPPORTEMAIL: OptionsService.getText('support-email'),
+  ORGNAME: OptionsService.getText('organisation'),
+});
 
 /**
  * Email Merge Fields Documentation
@@ -13,17 +37,15 @@ import OptionsService from '#services/OptionsService';
  * - *|FNAME|* - Contact's first name
  * - *|LNAME|* - Contact's last name
  *
+ * ## Standard Merge Fields (available for all emails)
+ * - *|SUPPORTEMAIL|* - Support email address
+ * - *|ORGNAME|* - Organization name
+ *
  * ## Magic Links (generated automatically)
  * - *|RPLINK|* - Reset password link
  * - *|LOGINLINK|* - Login link
  * - *|SPLINK|* - Set password link
  *
- * ## Nested Merge Fields
- * The MESSAGE field supports nested merge fields. For example:
- * - MESSAGE: "Hello *|FNAME|*, thank you for your response to *|CALLOUTTITLE|*!"
- * - This will expand to: "Hello John, thank you for your response to Survey 2024!"
- *
- * All merge fields within MESSAGE content are automatically expanded before rendering.
  */
 
 /**

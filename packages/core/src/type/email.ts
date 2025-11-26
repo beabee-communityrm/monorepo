@@ -1,3 +1,5 @@
+import type { Locale } from '@beabee/locale';
+
 import type {
   adminEmailTemplates,
   contactEmailTemplates,
@@ -33,10 +35,12 @@ export interface EmailOptions {
   sendAt?: Date | undefined;
 }
 
-export interface TemplateEmailOptions extends EmailOptions {
-  customSubject?: string;
+export interface PreviewEmailOptions {
+  templateId?: EmailTemplateId;
+  mergeFields?: Record<string, string>;
+  subject?: string;
+  body?: string;
 }
-
 export interface PreparedEmail extends Email {
   fromEmail: string;
   fromName: string;
@@ -51,16 +55,11 @@ export interface EmailProvider {
   sendTemplate(
     templateId: string,
     recipients: EmailRecipient[],
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void>;
   getTemplateEmail(templateId: string): Promise<false | Email | null>;
   getTemplates(): Promise<EmailTemplate[]>;
 }
-
-/**
- * Email template types categorizing different email purposes
- */
-export type EmailTemplateType = 'general' | 'admin' | 'contact';
 
 /**
  * Type helper for general email templates
@@ -109,3 +108,17 @@ export type EmailTemplateId =
 export type ContactEmailParams<T extends ContactEmailTemplateId> = Parameters<
   ContactEmailTemplates[T]
 >[1];
+
+/**
+ * Helper type to extract parameters for general email templates
+ */
+export type GeneralEmailParams<T extends GeneralEmailTemplateId> = Parameters<
+  GeneralEmailTemplates[T]
+>[0];
+
+/**
+ * Helper type to extract parameters for admin email templates
+ */
+export type AdminEmailParams<T extends AdminEmailTemplateId> = Parameters<
+  AdminEmailTemplates[T]
+>[0];

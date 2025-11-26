@@ -369,8 +369,7 @@
         },
         "email": {
           "body": {
-            "label": "Текст письма",
-            "default": "<p>Здравствуйте {FNAME},</p><p>Это письмо подтверждает ваш ответ на призыв <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> с использованием вашего email адреса {EMAIL}.</p><p><br /></p><p>Если у вас есть вопросы, пожалуйста, свяжитесь с нашей службой поддержки по адресу <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>С наилучшими пожеланиями</p>"
+            "default": "<p>Здравствуйте {'*|FNAME|*'},</p><p>Это письмо подтверждает ваш ответ на призыв <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> с использованием вашего email адреса {'*|EMAIL|*'}.</p><p><br /></p><p>Если у вас есть вопросы, пожалуйста, свяжитесь с нашей службой поддержки по адресу <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>С наилучшими пожеланиями</p>"
           },
           "collectInfoWarning": {
             "description": "Чтобы отправить письмо всем участникам, вы должны включить «Собирать контактную информацию» на вкладке Настройки",
@@ -381,7 +380,6 @@
             "label": "Отправить письмо всем участникам после отправки"
           },
           "subject": {
-            "label": "Тема письма",
             "default": "Спасибо за ваш ответ"
           },
           "title": "Email"
@@ -959,7 +957,14 @@
     "timeAgo": "до {time}",
     "timeIn": "в {time}",
     "until": "до",
-    "yes": "Да"
+    "yes": "Да",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
+    "perOneTime": "",
+    "perOneTimeText": ""
   },
   "contactAccount": {
     "confirmDelete": {

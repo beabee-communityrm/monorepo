@@ -1,6 +1,10 @@
-import type { StartContributionData } from '@beabee/beabee-common';
+import type {
+  CreateOneTimePaymentData,
+  StartContributionData,
+} from '@beabee/beabee-common';
 
-export interface SignupData extends StartContributionData {
+export interface SignupData {
   email: string;
-  noContribution: boolean;
+  contribution?: StartContributionData;
+  oneTimePayment?: CreateOneTimePaymentData;
 }

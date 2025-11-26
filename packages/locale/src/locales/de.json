@@ -368,8 +368,7 @@
         },
         "email": {
           "body": {
-            "default": "<p>Hallo {FNAME} {LNAME},</p><p>Diese E-Mail bestätigt Ihre Antwort auf <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> unter Verwendung Ihrer E-Mail-Adresse {EMAIL}.</p><p><br /></p><p>Wenn Sie Fragen haben, wenden Sie sich bitte an unser Support-Team unter <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Mit freundlichen Grüßen</p>",
-            "label": "E-Mail-Text"
+            "default": "<p>Hallo {'*|FNAME|*'} {'*|LNAME|*'},</p><p>Diese E-Mail bestätigt Ihre Antwort auf <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung Ihrer E-Mail-Adresse {'*|EMAIL|*'}.</p><p><br /></p><p>Wenn Sie Fragen haben, wenden Sie sich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Mit freundlichen Grüßen</p>"
           },
           "collectInfoWarning": {
             "description": "Um eine E-Mail an alle Teilnehmer zu senden, müssen Sie \"Kontaktinformationen erfassen\" in der Registerkarte Einstellungen aktivieren",
@@ -380,8 +379,7 @@
             "label": "Nach der Übermittlung eine E-Mail an alle Teilnehmer senden"
           },
           "subject": {
-            "default": "Danke für Ihre Teilnahme",
-            "label": "E-Mail-Betreff"
+            "default": "Danke für Ihre Teilnahme"
           },
           "title": "E-Mail"
         },
@@ -958,7 +956,14 @@
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja"
+    "yes": "Ja",
+    "paymentPeriod": {
+      "annually": "Jährlich",
+      "monthly": "Monatlich",
+      "one-time": "Einmalig"
+    },
+    "perOneTime": "einmalig",
+    "perOneTimeText": "einmalig"
   },
   "contactAccount": {
     "confirmDelete": {

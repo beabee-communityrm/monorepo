@@ -1,5 +1,7 @@
+import { EmailTemplateType } from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
+import { isUUID } from 'class-validator';
 import fs from 'fs';
 import path from 'path';
 import { loadFront } from 'yaml-front-matter';
@@ -10,7 +12,11 @@ import {
   contactEmailTemplates,
   emailTemplateDefinitions,
   generalEmailTemplates,
+  getBaseEmailMergeFields,
+  getContactEmailMergeFields,
 } from '#data/email-templates';
+import { getRepository } from '#database';
+import { ExternalEmailTemplate } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Contact, Email } from '#models/index';
 import { MandrillProvider, SMTPProvider, SendGridProvider } from '#providers';
@@ -27,12 +33,11 @@ import {
   EmailProvider,
   EmailRecipient,
   EmailTemplateId,
-  EmailTemplateType,
   GeneralEmailTemplateId,
   GeneralEmailTemplates,
-  TemplateEmailOptions,
+  PreviewEmailOptions,
 } from '#type/index';
-import { expandNestedMergeFields, replaceMergeFields } from '#utils/email';
+import { replaceMergeFields } from '#utils/email';
 
 const log = mainLogger.child({ app: 'email-service' });
 
@@ -76,6 +81,22 @@ class EmailService {
     }
   }
 
+  /**
+   * Send a raw email directly to recipients
+   *
+   * Base method for sending emails. Sends an Email entity directly without template
+   * processing or automatic merge field enrichment. Only merge fields explicitly
+   * provided in recipients are available.
+   *
+   * **When to use:**
+   * - Sending pre-configured Email entities from the database
+   * - When you already have EmailRecipient objects ready
+   * - For low-level email sending without template logic
+   *
+   * @param email The Email entity to send
+   * @param recipients List of email recipients with merge fields
+   * @param opts Optional email options (attachments, sendAt, etc.)
+   */
   async sendEmail(
     email: Email,
     recipients: EmailRecipient[],
@@ -89,6 +110,21 @@ class EmailService {
     }
   }
 
+  /**
+   * Send an email to one or more contacts
+   *
+   * Convenience wrapper that automatically converts Contact objects to EmailRecipient
+   * objects with contact and base merge fields. See email-templates.ts for available
+   * merge fields.
+   *
+   * **When to use:**
+   * - Sending a pre-configured Email entity to contacts
+   * - Bulk sending the same email to multiple contacts
+   *
+   * @param email The Email entity to send
+   * @param contacts List of contacts to send the email to
+   * @param opts Optional email options (attachments, sendAt, etc.)
+   */
   async sendEmailToContact(
     email: Email,
     contacts: Contact[],
@@ -100,37 +136,97 @@ class EmailService {
     await this.sendEmail(email, recipients, opts);
   }
 
+  /**
+   * Send a custom email to a contact with custom subject and body
+   *
+   * Creates a new Email entity on-the-fly with custom subject and body content.
+   * Useful for user-generated email content (e.g., callout response emails with
+   * custom messages configured by admins). Merge fields are automatically replaced
+   * by the email provider. See email-templates.ts for available merge fields.
+   *
+   * **When to use:**
+   * - Sending emails with user-defined subject and body content
+   * - Callout response confirmation emails with custom messages
+   * - Dynamically generated email content (not from templates)
+   *
+   * @param contact The contact to send the email to
+   * @param subject Email subject (supports merge fields)
+   * @param body Email body (supports merge fields)
+   * @param opts Optional email options including mergeFields for additional custom fields
+   * @returns Promise that resolves when the email is sent
+   */
+  async sendCustomEmailToContact(
+    contact: Contact,
+    subject: string,
+    body: string,
+    opts?: EmailOptions & { mergeFields?: EmailMergeFields }
+  ): Promise<void> {
+    const email = new Email();
+    email.subject = subject;
+    email.body = body;
+    const recipient = this.convertContactToRecipient(
+      contact,
+      opts?.mergeFields
+    );
+    await this.sendEmail(email, [recipient], opts);
+  }
+
+  /**
+   * Send a general email template
+   *
+   * Sends emails from general templates that are not specific to contacts or admins.
+   * Used for system-wide notifications (e.g., email confirmation, gift purchases).
+   * Can be sent to any email address. See email-templates.ts for template parameters
+   * and available merge fields.
+   *
+   * **When to use:**
+   * - Email confirmation links (confirm-email)
+   * - Gift purchase notifications (purchased-gift)
+   * - Expired special URL resends (expired-special-url-resend)
+   * - Any email that doesn't require a Contact entity
+   *
+   * @param template The general email template ID
+   * @param to The recipient email address and name
+   * @param params Template-specific parameters required by the template
+   * @param opts Optional email options (locale, etc.)
+   */
   async sendTemplateTo<T extends GeneralEmailTemplateId>(
     template: T,
     to: EmailPerson,
     params: Parameters<GeneralEmailTemplates[T]>[0],
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void> {
-    const mergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
+    const templateMergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
+    const mergeFields = {
+      ...getBaseEmailMergeFields(),
+      ...templateMergeFields,
+    };
     await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
   }
 
+  /**
+   * Send a contact email template to a contact
+   *
+   * Sends emails from contact-specific templates for member/contact communications.
+   * Templates can be managed via external providers (Mandrill, SendGrid) or use
+   * default templates from the database. Automatically includes contact and base
+   * merge fields. See email-templates.ts for template parameters and merge fields.
+   *
+   * **When to use:**
+   * - Welcome emails, password resets, contribution cancellations
+   * - Referral success, gift activation, and other member-facing emails
+   * - Any predefined template for contacts
+   *
+   * @param template The contact email template ID
+   * @param contact The contact to send the email to
+   * @param params Template-specific parameters (varies by template)
+   * @param opts Optional email options
+   */
   async sendTemplateToContact<T extends ContactEmailTemplateId>(
     template: T,
     contact: Contact,
-    params: ContactEmailParams<T>,
-    opts?: TemplateEmailOptions
-  ): Promise<void>;
-  async sendTemplateToContact<
-    T extends ContactEmailParams<T> extends undefined
-      ? ContactEmailTemplateId
-      : never,
-  >(
-    template: T,
-    contact: Contact,
-    params?: undefined,
-    opts?: TemplateEmailOptions
-  ): Promise<void>;
-  async sendTemplateToContact<T extends ContactEmailTemplateId>(
-    template: T,
-    contact: Contact,
-    params: ContactEmailParams<T>,
-    opts?: TemplateEmailOptions
+    params?: ContactEmailParams<T>,
+    opts?: EmailOptions
   ): Promise<void> {
     log.info('Sending template to contact ' + contact.id);
 
@@ -142,23 +238,59 @@ class EmailService {
     await this.sendTemplate(template, [recipient], opts, true);
   }
 
+  /**
+   * Send an admin email template
+   *
+   * Sends notification emails to administrators. Always sent to the support email
+   * address configured in the system. Used for system notifications about member
+   * activities. See email-templates.ts for template parameters and merge fields.
+   *
+   * **When to use:**
+   * - Notifying admins about new members, cancellations, callout responses
+   * - Any admin-facing notification email
+   *
+   * @param template The admin email template ID
+   * @param params Template-specific parameters required by the template
+   * @param opts Optional email options (locale, etc.)
+   */
   async sendTemplateToAdmin<T extends AdminEmailTemplateId>(
     template: T,
     params: Parameters<AdminEmailTemplates[T]>[0],
-    opts?: TemplateEmailOptions
+    opts?: EmailOptions
   ): Promise<void> {
+    const templateMergeFields = adminEmailTemplates[template](params as any);
     const recipient = {
       to: { email: OptionsService.getText('support-email') },
-      mergeFields: adminEmailTemplates[template](params as any),
+      mergeFields: {
+        ...getBaseEmailMergeFields(),
+        ...templateMergeFields,
+      },
     };
 
     await this.sendTemplate(template, [recipient], opts, false);
   }
 
+  /**
+   * Internal method to send email templates
+   *
+   * Handles template resolution: external provider templates (Mandrill, SendGrid) or
+   * default templates from database. Called by sendTemplateTo, sendTemplateToContact,
+   * and sendTemplateToAdmin.
+   *
+   * **Template resolution:**
+   * 1. External provider template (if configured)
+   * 2. Default template from database
+   * 3. Special fallback: cancelled-contribution-no-survey → cancelled-contribution
+   *
+   * @param template The template ID to send
+   * @param recipients List of recipients with merge fields
+   * @param opts Optional email options
+   * @param required Whether the template is required (logs error if missing)
+   */
   private async sendTemplate(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
-    opts: TemplateEmailOptions | undefined,
+    opts: EmailOptions | undefined,
     required: boolean
   ): Promise<void> {
     const providerTemplate = this.getProviderTemplate(template);
@@ -179,11 +311,7 @@ class EmailService {
     } else {
       const defaultEmail = this.getDefaultEmail(template);
       if (defaultEmail) {
-        // Allow custom subject override
-        const email = opts?.customSubject
-          ? { ...defaultEmail, subject: opts.customSubject }
-          : defaultEmail;
-        this.sendEmail(email, recipients, opts);
+        this.sendEmail(defaultEmail, recipients, opts);
       } else if (required) {
         log.error(
           `Tried to send ${template} that has no provider template or default`
@@ -221,108 +349,50 @@ class EmailService {
   }
 
   /**
-   * Get a preview of an email template with merge fields replaced
-   * This method supports all template types (general, admin, contact) and provides
+   * Get a preview of an email with merge fields replaced
+   * This method supports using a template as a base and provides
    * a server-side preview that matches exactly what will be sent via email
    *
    * The preview includes:
-   * - Merge field replacement (contact fields, template-specific fields, custom fields)
+   * - Merge field replacement (contact fields and custom merge fields)
    * - Email footer with organization info, logo, and links
    * - Inline CSS styles via juice for consistent email client rendering
    *
-   * @param template The template ID
-   * @param type The template type (general, admin, contact)
    * @param contact Contact for contact-specific fields (required, uses authenticated user)
-   * @param customMergeFields Custom merge fields to override/extend default fields
-   * @param opts Email options including customSubject and locale
+   * @param opts Email options including locale, and body override
    * @returns Preview with subject and body formatted exactly as it will be sent
    */
-  async getTemplatePreview(
-    template: EmailTemplateId,
-    type: EmailTemplateType,
+  async getPreview(
     contact: Contact,
-    customMergeFields: Record<string, string> = {},
-    opts?: TemplateEmailOptions & { locale?: Locale; body?: string }
+    opts?: PreviewEmailOptions
   ): Promise<{ subject: string; body: string }> {
     // 1. Get the email template (from provider or default templates)
-    const emailTemplate = await this.getTemplateEmail(template);
+    const emailTemplate = opts?.templateId
+      ? await this.getTemplateEmail(opts.templateId)
+      : null;
 
     if (emailTemplate === false) {
-      throw new Error(
-        `Template ${template} is managed by external provider and cannot be previewed`
-      );
+      throw new ExternalEmailTemplate();
     }
 
-    if (!emailTemplate) {
-      throw new Error(`Template ${template} not found`);
-    }
-
-    // 2. Generate base merge fields from contact
-    const baseMergeFields: EmailMergeFields = {
-      EMAIL: contact.email,
-      NAME: contact.fullname,
-      FNAME: contact.firstname,
-      LNAME: contact.lastname,
+    // 2. Generate base merge fields from contact and standard fields
+    const mergeFields: EmailMergeFields = {
+      ...getContactEmailMergeFields(contact),
+      ...getBaseEmailMergeFields(),
+      ...opts?.mergeFields,
     };
 
-    // 3. Generate template-specific merge fields
-    let templateMergeFields: EmailMergeFields = {};
-    if (type === 'contact' && template in contactEmailTemplates) {
-      templateMergeFields = contactEmailTemplates[
-        template as ContactEmailTemplateId
-      ](contact, {} as any);
-    } else if (type === 'admin' && template in adminEmailTemplates) {
-      // Admin templates need specific params, use empty object as fallback
-      templateMergeFields = {};
-    } else if (type === 'general' && template in generalEmailTemplates) {
-      // General templates need specific params, use empty object as fallback
-      templateMergeFields = {};
-    }
-
-    // 4. Merge all fields (custom fields override template fields)
-    const allMergeFields = {
-      ...baseMergeFields,
-      ...templateMergeFields,
-      ...customMergeFields,
-    };
-
-    // 5. Expand nested merge fields (handles MESSAGE with nested fields)
-    const expandedFields = expandNestedMergeFields(allMergeFields);
-
-    // 6. Replace merge fields in subject
-    const subject = opts?.customSubject || (emailTemplate as Email).subject;
-    const previewSubject = replaceMergeFields(subject, expandedFields);
-
-    // 7. Replace merge fields in body and apply email formatting
+    // 3. Replace merge fields in body and apply email formatting
     // This includes adding the footer and inline CSS styles, exactly as in actual emails
     // Use provided body override if available, otherwise use template body
-    const templateBody = opts?.body || (emailTemplate as Email).body;
-    const bodyWithMergeFields = replaceMergeFields(
-      templateBody,
-      expandedFields
-    );
+    const templateBody = opts?.body || emailTemplate?.body || '';
+    const bodyWithMergeFields = replaceMergeFields(templateBody, mergeFields);
     const previewBody = formatEmailBody(bodyWithMergeFields);
 
     return {
-      subject: previewSubject,
+      subject: opts?.subject || emailTemplate?.subject || '',
       body: previewBody,
     };
-  }
-
-  /**
-   * Determine the template type from a template ID
-   * @param template The template ID
-   * @returns The template type (general, admin, or contact)
-   */
-  getTemplateType(template: string): EmailTemplateType | null {
-    if (template in generalEmailTemplates) {
-      return 'general';
-    } else if (template in adminEmailTemplates) {
-      return 'admin';
-    } else if (template in contactEmailTemplates) {
-      return 'contact';
-    }
-    return null;
   }
 
   /**
@@ -372,12 +442,43 @@ class EmailService {
     }));
   }
 
-  isTemplateId(template: string): template is EmailTemplateId {
+  /**
+   * Check if a template ID is valid
+   * @param template The template ID to check
+   * @param type The type of template ('general', 'admin', 'contact') to narrow the check
+   * @returns True if the template ID is valid for the given type (or any type if not specified)
+   */
+  isTemplateId(
+    template: string,
+    type?: EmailTemplateType
+  ): template is EmailTemplateId {
     return (
-      template in generalEmailTemplates ||
-      template in adminEmailTemplates ||
-      template in contactEmailTemplates
+      (template in generalEmailTemplates && (!type || type === 'general')) ||
+      (template in adminEmailTemplates && (!type || type === 'admin')) ||
+      (template in contactEmailTemplates && (!type || type === 'contact'))
     );
+  }
+
+  /**
+   * Find an email by ID (UUID) or template ID
+   *
+   * @param id The email ID (UUID) or template ID
+   * @returns The email if found, or:
+   *   - `null` if not found
+   *   - Throws `ExternalEmailTemplate` if the template is managed by an external email provider
+   */
+  async findEmail(id: string): Promise<Email | null> {
+    if (isUUID(id, '4')) {
+      return await getRepository(Email).findOneBy({ id });
+    } else if (this.isTemplateId(id)) {
+      const maybeEmail = await this.getTemplateEmail(id);
+      if (maybeEmail) {
+        return maybeEmail;
+      } else if (maybeEmail === false) {
+        throw new ExternalEmailTemplate();
+      }
+    }
+    return null;
   }
 
   private getProviderTemplate(template: EmailTemplateId): string | undefined {
@@ -392,6 +493,14 @@ class EmailService {
     );
   }
 
+  /**
+   * Convert a contact to an email recipient
+   * This ensures all recipients have access to standard merge fields and contact merge fields
+   *
+   * @param contact The contact to convert
+   * @param additionalMergeFields Additional merge fields to add to the contact
+   * @returns Email recipient with standard merge fields and additional merge fields
+   */
   private convertContactToRecipient(
     contact: Contact,
     additionalMergeFields?: EmailMergeFields
@@ -399,10 +508,8 @@ class EmailService {
     return {
       to: { email: contact.email, name: contact.fullname },
       mergeFields: {
-        EMAIL: contact.email,
-        NAME: contact.fullname,
-        FNAME: contact.firstname,
-        LNAME: contact.lastname,
+        ...getBaseEmailMergeFields(),
+        ...getContactEmailMergeFields(contact),
         ...additionalMergeFields,
       },
     };

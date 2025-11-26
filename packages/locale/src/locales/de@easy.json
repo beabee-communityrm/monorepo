@@ -369,7 +369,6 @@
         "email": {
           "title": "E-Mail",
           "body": {
-            "label": "E-Mail-Text",
             "default": ""
           },
           "collectInfoWarning": {
@@ -381,7 +380,6 @@
             "label": "Nach der Übermittlung eine E-Mail an alle Teilnehmer senden"
           },
           "subject": {
-            "label": "E-Mail-Betreff",
             "default": ""
           }
         },
@@ -958,7 +956,14 @@
     "timeAgo": "vor",
     "timeIn": "in",
     "until": "",
-    "yes": ""
+    "yes": "",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
+    "perOneTime": "",
+    "perOneTimeText": ""
   },
   "contactAccount": {
     "confirmDelete": {

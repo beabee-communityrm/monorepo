@@ -40,20 +40,10 @@ export class SignupClient extends BaseClient {
     const { data: responseData } = await this.fetch.post<
       Serial<PaymentFlowParams> | undefined
     >('', {
-      email: data.email,
+      ...data,
       loginUrl: this.options.host + '/auth/login',
       setPasswordUrl: this.options.host + '/auth/set-password',
       confirmUrl: this.options.host + '/join/confirm-email',
-      ...(!data.noContribution && {
-        contribution: {
-          amount: data.amount,
-          period: data.period,
-          payFee: data.payFee && data.period === ContributionPeriod.Monthly,
-          prorate: false,
-          paymentMethod: data.paymentMethod,
-          completeUrl: this.completeUrl,
-        },
-      }),
     });
     return responseData;
   }

@@ -369,8 +369,7 @@
         "email": {
           "title": "Email",
           "body": {
-            "label": "E-mailtekst",
-            "default": "<p>Hallo {FNAME},</p><p>Deze e-mail bevestigt je reactie op de oproep <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> met je e-mailadres {EMAIL}.</p><p><br /></p><p>Als je vragen hebt, neem dan contact op met ons ondersteuningsteam via <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Met vriendelijke groet</p>"
+            "default": "<p>Hallo {'*|FNAME|*'},</p><p>Deze e-mail bevestigt je reactie op de oproep <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> met je e-mailadres {'*|EMAIL|*'}.</p><p><br /></p><p>Als je vragen hebt, neem dan contact op met ons ondersteuningsteam via <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Met vriendelijke groet</p>"
           },
           "collectInfoWarning": {
             "description": "Om een e-mail naar alle deelnemers te sturen, moet je \"Contactgegevens verzamelen\" inschakelen in het tabblad Instellingen",
@@ -381,7 +380,6 @@
             "label": "Stuur een e-mail naar alle deelnemers na indiening"
           },
           "subject": {
-            "label": "E-mailonderwerp",
             "default": "Bedankt voor je reactie"
           }
         },
@@ -958,7 +956,14 @@
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
     "until": "tot",
-    "yes": "Ja"
+    "yes": "Ja",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
+    "perOneTime": "",
+    "perOneTimeText": ""
   },
   "contactAccount": {
     "confirmDelete": {

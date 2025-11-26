@@ -369,8 +369,7 @@
         "email": {
           "title": "Email",
           "body": {
-            "label": "Corpo dell'email",
-            "default": "<p>Ciao {FNAME},</p><p>Questa e-mail conferma la sua risposta al callout <a href=\"{CALLOUTLINK}\">\"{CALLOUTTITLE}\"</a> utilizzando il suo indirizzo e-mail {EMAIL}.</p><p><br /></p><p>Per qualsiasi domanda, contattare il nostro team di supporto all'indirizzo <a href=\"mailto:{SUPPORTEMAIL}\">{SUPPORTEMAIL}</a>.</p><p><br /></p><p>Cordiali saluti</p>"
+            "default": "<p>Ciao {'*|FNAME|*'},</p><p>Questa e-mail conferma la sua risposta al callout <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> utilizzando il suo indirizzo e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Per qualsiasi domanda, contattare il nostro team di supporto all'indirizzo <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Cordiali saluti</p>"
           },
           "collectInfoWarning": {
             "description": "Per inviare un'email a tutti i partecipanti è necessario abilitare \"Raccogli informazioni di contatto\" nella scheda Impostazioni",
@@ -381,7 +380,6 @@
             "label": "Invia un'email a tutti i partecipanti dopo l'invio"
           },
           "subject": {
-            "label": "Oggetto dell'email",
             "default": "Grazie per la tua risposta"
           }
         },
@@ -958,7 +956,14 @@
     "timeAgo": "{time} fa",
     "timeIn": "in {time}",
     "until": "fino",
-    "yes": "Sì"
+    "yes": "Sì",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
+    "perOneTime": "",
+    "perOneTimeText": ""
   },
   "contactAccount": {
     "confirmDelete": {
