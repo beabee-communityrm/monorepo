@@ -941,8 +941,8 @@
     "until": "até",
     "yes": "Sim",
     "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
+      "annually": "Anualmente",
+      "monthly": "Mensalmente",
       "one-time": ""
     },
     "perOneTime": "",

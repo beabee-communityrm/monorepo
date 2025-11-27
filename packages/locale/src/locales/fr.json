@@ -944,8 +944,8 @@
     "until": "jusqu'à",
     "yes": "Oui",
     "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
+      "annually": "Annuellement",
+      "monthly": "Mensuellement",
       "one-time": ""
     },
     "perOneTime": "",
