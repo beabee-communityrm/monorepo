@@ -1,0 +1,1609 @@
+{
+    "accountPage": {
+        "contactInformation": "",
+        "deliveryAddress": "",
+        "deliveryOptIn": "",
+        "loginDetail": "",
+        "mfa": {
+            "codeInput": {
+                "info": "",
+                "label": ""
+            },
+            "confirmDelete": {
+                "desc": "",
+                "descToken": "",
+                "title": ""
+            },
+            "createUnknownErrorNotification": "",
+            "deleteUnknownErrorNotification": "",
+            "disabledNotification": "",
+            "enabledNotification": "",
+            "enterCode": {
+                "desc": "",
+                "title": ""
+            },
+            "modalTitle": "",
+            "result": {
+                "invalidCode": "",
+                "successful": "",
+                "title": ""
+            },
+            "scan": {
+                "desc": "",
+                "title": ""
+            },
+            "secretInput": {
+                "desc": "",
+                "label": ""
+            },
+            "title": "",
+            "validateButton": {
+                "label": ""
+            }
+        },
+        "newsletter": {
+            "cantUpdate": "",
+            "currentStatus": {
+                "cleaned": "",
+                "none": "",
+                "pending": "",
+                "subscribed": "",
+                "unsubscribed": ""
+            },
+            "subscribe": "",
+            "title": "",
+            "unsubscribe": ""
+        },
+        "phoneInfo": "",
+        "phoneInfoAdmin": "",
+        "savedPassword": "",
+        "subTitle": "",
+        "title": ""
+    },
+    "actions": {
+        "add": "",
+        "back": "",
+        "backToLogin": "",
+        "cancel": "",
+        "changePassword": "",
+        "chooseFile": "",
+        "close": "",
+        "continue": "",
+        "copy": "",
+        "create": "",
+        "decrease": "",
+        "delete": "",
+        "disable": "",
+        "edit": "",
+        "enable": "",
+        "endnow": "",
+        "export": "",
+        "getStarted": "",
+        "goBack": "",
+        "increase": "",
+        "next": "",
+        "noBack": "",
+        "participate": "",
+        "preview": "",
+        "publish": "",
+        "reopen": "",
+        "replicate": "",
+        "reset": "",
+        "reset2FA": "",
+        "resetPassword": "",
+        "respond": "",
+        "revertToDraft": "",
+        "save": "",
+        "saveAndAnother": "",
+        "saveDraft": "",
+        "schedule": "",
+        "search": "",
+        "sendEmails": "",
+        "share": "",
+        "skip": "",
+        "submit": "",
+        "tryAgain": "",
+        "unpublish": "",
+        "update": "",
+        "view": "",
+        "yesDelete": "",
+        "yesDisable": "",
+        "yesRemove": ""
+    },
+    "addContact": {
+        "contactSaved": "",
+        "errors": {
+            "duplicateEmail": ""
+        },
+        "subscribeToNewsletter": "",
+        "title": ""
+    },
+    "addNotice": {
+        "form": {
+            "buttonText": "",
+            "expirationDateAndTime": "",
+            "name": "",
+            "startDateAndTime": "",
+            "text": "",
+            "url": ""
+        },
+        "title": ""
+    },
+    "adminDashboard": {
+        "hint1": "",
+        "hint2": "",
+        "hint3": "",
+        "joinSlack": "",
+        "latestCallout": {
+            "createNew": "",
+            "empty": "",
+            "title": ""
+        },
+        "mostRecentMembers": {
+            "title": ""
+        },
+        "numbers": {
+            "averageContribution": "",
+            "newMembers": "",
+            "revenue": "",
+            "title": ""
+        },
+        "responsesSoFar": "",
+        "seeAllResponses": "",
+        "supportInbox": "",
+        "welcomeBack": ""
+    },
+    "adminSettings": {
+        "apikey": {
+            "confirmCreate": {
+                "text": "",
+                "title": ""
+            },
+            "confirmDelete": {
+                "text": "",
+                "title": ""
+            },
+            "copied": "",
+            "create": "",
+            "expires": {
+                "days": "",
+                "never": ""
+            },
+            "expiresHelp": "",
+            "expiresNeverWarning": "",
+            "label": "",
+            "showingOf": ""
+        },
+        "email": {
+            "fromEmail": "",
+            "fromName": "",
+            "label": "",
+            "text": "",
+            "title": ""
+        },
+        "general": {
+            "footer": {
+                "dataPrivacy": {
+                    "impressumUrl": "",
+                    "privacyUrl": "",
+                    "termsUrl": "",
+                    "title": ""
+                },
+                "otherLinks": {
+                    "add": "",
+                    "linkText": "",
+                    "title": "",
+                    "url": ""
+                },
+                "siteUrl": "",
+                "text": "",
+                "title": ""
+            },
+            "label": "",
+            "language": "",
+            "logo": "",
+            "organisationName": "",
+            "socialSharing": {
+                "description": "",
+                "image": "",
+                "shareTitle": "",
+                "text": "",
+                "title": "",
+                "twitterHandle": ""
+            }
+        },
+        "payment": {
+            "paymentTitle": "",
+            "taxRate": "",
+            "taxRateEnabled": ""
+        },
+        "theme": {
+            "bodyFont": "",
+            "colorNames": {
+                "body": "",
+                "danger": "",
+                "link": "",
+                "primary": "",
+                "success": "",
+                "warning": ""
+            },
+            "colors": "",
+            "customColors": "",
+            "fontNotListed": "",
+            "fonts": "",
+            "label": "",
+            "presetColors": {
+                "default": ""
+            },
+            "titleFont": ""
+        },
+        "title": ""
+    },
+    "advancedSearch": {
+        "addRule": "",
+        "button": "",
+        "createFiltersAfter": "",
+        "createFiltersBefore": "",
+        "createFiltersType": {
+            "all": "",
+            "any": ""
+        },
+        "createdSegment": "",
+        "matchWord": {
+            "AND": "",
+            "OR": ""
+        },
+        "nestedRules": "",
+        "noNestedRules": "",
+        "operators": {
+            "all": {
+                "is_empty": "",
+                "is_not_empty": ""
+            },
+            "array": {
+                "contains": "",
+                "not_contains": ""
+            },
+            "blob": {
+                "contains": "",
+                "not_contains": ""
+            },
+            "boolean": {
+                "equal": ""
+            },
+            "date": {
+                "between": "",
+                "equal": "",
+                "greater": "",
+                "greater_or_equal": "",
+                "less": "",
+                "less_or_equal": "",
+                "not_between": "",
+                "not_equal": ""
+            },
+            "enum": {
+                "equal": "",
+                "not_equal": ""
+            },
+            "number": {
+                "between": "",
+                "equal": "",
+                "greater": "",
+                "greater_or_equal": "",
+                "less": "",
+                "less_or_equal": "",
+                "not_between": "",
+                "not_equal": ""
+            },
+            "text": {
+                "begins_with": "",
+                "contains": "",
+                "ends_with": "",
+                "equal": "",
+                "not_begins_with": "",
+                "not_contains": "",
+                "not_ends_with": "",
+                "not_equal": ""
+            }
+        },
+        "saveSegment": {
+            "createOrUpdate": {
+                "create": "",
+                "label": "",
+                "update": ""
+            },
+            "createSegment": "",
+            "segmentName": "",
+            "text": "",
+            "title": "",
+            "updateSegment": ""
+        },
+        "selectFilter": "",
+        "updatedSegment": ""
+    },
+    "apiKey": {
+        "data": {
+            "createdAt": "",
+            "description": "",
+            "expires": "",
+            "token": ""
+        }
+    },
+    "callout": {
+        "actions": {
+            "updateResponse": ""
+        },
+        "addAPoint": "",
+        "addLocation": "",
+        "builder": {
+            "actions": {
+                "addSlide": ""
+            },
+            "common": {
+                "actions": {
+                    "add": "",
+                    "remove": ""
+                },
+                "internalTitle": "",
+                "showAdvancedOptions": "",
+                "slides": "",
+                "startEndScreens": ""
+            },
+            "navigation": {
+                "nextButton": "",
+                "nextSlide": {
+                    "default": "",
+                    "label": ""
+                },
+                "prevButton": "",
+                "slideNo": "",
+                "submitButton": ""
+            },
+            "showAdvancedOptions": "",
+            "slidesTitle": "",
+            "startEndScreenTitle": "",
+            "tabs": {
+                "content": {
+                    "title": ""
+                },
+                "endMessage": {
+                    "inputs": {
+                        "action": {
+                            "label": "",
+                            "opts": {
+                                "redirect": "",
+                                "showMessage": ""
+                            }
+                        },
+                        "text": {
+                            "help": "",
+                            "label": "",
+                            "placeholder": ""
+                        },
+                        "title": {
+                            "help": "",
+                            "label": "",
+                            "placeholder": ""
+                        },
+                        "url": {
+                            "help": "",
+                            "label": "",
+                            "placeholder": ""
+                        }
+                    },
+                    "title": ""
+                },
+                "intro": {
+                    "help": "",
+                    "label": "",
+                    "title": ""
+                },
+                "mailchimp": {
+                    "title": ""
+                },
+                "responseDisplay": {
+                    "title": ""
+                },
+                "settings": {
+                    "access": {
+                        "title": ""
+                    },
+                    "dates": {
+                        "title": ""
+                    },
+                    "displayOptions": {
+                        "description": "",
+                        "title": ""
+                    },
+                    "inputs": {
+                        "collectGuestInfo": {
+                            "label": "",
+                            "opts": {
+                                "disabled": "",
+                                "enabled": ""
+                            }
+                        },
+                        "collectMemberInfo": {
+                            "label": "",
+                            "opts": {
+                                "disabled": "",
+                                "enabled": ""
+                            }
+                        },
+                        "expires": {
+                            "description": "",
+                            "label": "",
+                            "opts": {
+                                "never": "",
+                                "schedule": ""
+                            }
+                        },
+                        "mapAndGallery": {
+                            "description": "",
+                            "gallery": {
+                                "disabledDescription": "",
+                                "enabledDescription": "",
+                                "label": ""
+                            },
+                            "map": {
+                                "disabledDescription": "",
+                                "enabledDescription": "",
+                                "label": ""
+                            },
+                            "title": ""
+                        },
+                        "mapSchema": {
+                            "addressPattern": {
+                                "label": ""
+                            },
+                            "addressPatternProp": {
+                                "label": "",
+                                "none": ""
+                            },
+                            "addressProp": {
+                                "label": ""
+                            },
+                            "bounds": {
+                                "label": ""
+                            },
+                            "center": {
+                                "label": ""
+                            },
+                            "geocodeCountries": {
+                                "label": ""
+                            },
+                            "initialZoom": {
+                                "label": ""
+                            },
+                            "mapIconProp": {
+                                "label": "",
+                                "none": ""
+                            },
+                            "mapIconStylingProp": {
+                                "label": ""
+                            },
+                            "mapIconStylingSetting": {
+                                "label": "",
+                                "title": ""
+                            },
+                            "maxZoom": {
+                                "label": ""
+                            },
+                            "minZoom": {
+                                "label": ""
+                            },
+                            "style": {
+                                "help": "",
+                                "label": ""
+                            },
+                            "title": ""
+                        },
+                        "newsletterSettings": {
+                            "disabled": "",
+                            "label": "",
+                            "opts": {
+                                "disabled": "",
+                                "enabled": ""
+                            }
+                        },
+                        "openToEveryone": {
+                            "help": "",
+                            "label": "",
+                            "opts": {
+                                "disabled": "",
+                                "enabled": ""
+                            }
+                        },
+                        "requireCaptcha": {
+                            "help": "",
+                            "label": "",
+                            "members": {
+                                "label": "",
+                                "opts": {
+                                    "disabled": "",
+                                    "enabled": ""
+                                }
+                            },
+                            "opts": {
+                                "all": "",
+                                "guests": "",
+                                "none": ""
+                            }
+                        },
+                        "responseImageProp": {
+                            "description": "",
+                            "label": ""
+                        },
+                        "responseLinks": {
+                            "add": "",
+                            "description": "",
+                            "label": "",
+                            "opts": {
+                                "disabled": "",
+                                "enabled": ""
+                            },
+                            "placeholder": {
+                                "label": "",
+                                "url": ""
+                            },
+                            "text": {
+                                "label": ""
+                            },
+                            "url": {
+                                "label": ""
+                            }
+                        },
+                        "responseSettings": {
+                            "label": "",
+                            "opts": {
+                                "multiple": "",
+                                "singleEditable": "",
+                                "singleNonEditable": ""
+                            },
+                            "title": ""
+                        },
+                        "responseTitleProp": {
+                            "description": "",
+                            "label": ""
+                        },
+                        "showResponses": {
+                            "label": "",
+                            "opts": {
+                                "no": "",
+                                "yes": ""
+                            }
+                        },
+                        "starts": {
+                            "label": "",
+                            "opts": {
+                                "now": "",
+                                "schedule": ""
+                            }
+                        },
+                        "visible": {
+                            "help": "",
+                            "label": "",
+                            "opts": {
+                                "disabled": "",
+                                "enabled": ""
+                            }
+                        },
+                        "whichResponseBuckets": {
+                            "description": "",
+                            "label": ""
+                        }
+                    },
+                    "title": ""
+                },
+                "titleAndImage": {
+                    "inputs": {
+                        "description": {
+                            "help": "",
+                            "label": "",
+                            "placeholder": ""
+                        },
+                        "general": {
+                            "title": ""
+                        },
+                        "image": {
+                            "description": "",
+                            "help": "",
+                            "label": ""
+                        },
+                        "overrideShare": {
+                            "label": "",
+                            "opts": {
+                                "disabled": "",
+                                "enabled": ""
+                            }
+                        },
+                        "shareDescription": {
+                            "help": "",
+                            "label": "",
+                            "placeholder": ""
+                        },
+                        "shareTitle": {
+                            "help": "",
+                            "label": "",
+                            "placeholder": ""
+                        },
+                        "sharing": {
+                            "title": ""
+                        },
+                        "slug": {
+                            "boxTitle": "",
+                            "help": "",
+                            "label": "",
+                            "locked": {
+                                "title": ""
+                            },
+                            "opts": {
+                                "auto": "",
+                                "manual": ""
+                            }
+                        },
+                        "title": {
+                            "label": "",
+                            "placeholder": ""
+                        }
+                    },
+                    "title": "",
+                    "urlWillBe": ""
+                },
+                "translations": {
+                    "language": {
+                        "description": "",
+                        "enableLanguages": "",
+                        "title": ""
+                    },
+                    "languageSettings": {
+                        "title": ""
+                    },
+                    "navigationButtons": {
+                        "title": ""
+                    },
+                    "responseLinks": {
+                        "title": ""
+                    },
+                    "title": ""
+                }
+            },
+            "title": "",
+            "translationFields": {
+                "description": "",
+                "html": "",
+                "label": "",
+                "option": "",
+                "placeholder": ""
+            },
+            "untitledCallout": ""
+        },
+        "confirmHuman": "",
+        "contactDetails": "",
+        "ended": "",
+        "entryOf": "",
+        "form": {
+            "email": "",
+            "guestFieldsMissing": "",
+            "name": "",
+            "submittingResponseError": ""
+        },
+        "getStarted": "",
+        "joinNow": "",
+        "loginToYourAccount": "",
+        "membersOnly": "",
+        "responseSubmitted": "",
+        "share": {
+            "address": "",
+            "aria": {
+                "email": "",
+                "facebook": "",
+                "linkedin": "",
+                "telegram": "",
+                "twitter": "",
+                "whatsapp": ""
+            },
+            "services": ""
+        },
+        "showingPreview": "",
+        "toContributionPage": "",
+        "updateContribution": "",
+        "views": {
+            "gallery": "",
+            "map": ""
+        },
+        "youResponded": "",
+        "yourResponse": ""
+    },
+    "calloutAdmin": {
+        "deleted": "",
+        "ended": "",
+        "overview": "",
+        "reopened": "",
+        "responses": ""
+    },
+    "calloutAdminOverview": {
+        "actions": {
+            "confirmDelete": {
+                "text": "",
+                "title": ""
+            }
+        },
+        "created": "",
+        "dates": {
+            "ends": "",
+            "label": "",
+            "starts": ""
+        },
+        "settings": {
+            "answers": {
+                "editable": "",
+                "final": "",
+                "label": ""
+            },
+            "contactInfo": {
+                "label": "",
+                "optional": "",
+                "required": ""
+            },
+            "endsWith": {
+                "label": "",
+                "message": "",
+                "redirect": ""
+            },
+            "label": "",
+            "openTo": {
+                "everyone": "",
+                "label": "",
+                "membersOnly": ""
+            }
+        },
+        "summary": "",
+        "updated": ""
+    },
+    "calloutResponse": {
+        "data": {
+            "answers": "",
+            "assignee": "",
+            "bucket": "",
+            "callout": "",
+            "contact": "",
+            "createdAt": "",
+            "tags": "",
+            "updatedAt": ""
+        },
+        "dataGroup": {
+            "answers": "",
+            "response": ""
+        }
+    },
+    "calloutResponseBuckets": {
+        "inbox": "",
+        "trash": "",
+        "verified": ""
+    },
+    "calloutResponseComments": {
+        "actions": {
+            "addComment": "",
+            "updateComment": ""
+        },
+        "addComment": "",
+        "comments": "",
+        "confirmDelete": {
+            "text": "",
+            "title": ""
+        }
+    },
+    "calloutResponsePage": {
+        "actions": {
+            "assignTo": "",
+            "moveBucket": "",
+            "toggleTag": "",
+            "viewOnMap": ""
+        },
+        "editMode": "",
+        "manageFolders": "",
+        "manageReviewers": "",
+        "manageTags": "",
+        "notifications": {
+            "addedAssignee": "",
+            "addedTag": "",
+            "movedToBucket": "",
+            "removedAssignee": "",
+            "removedTag": ""
+        },
+        "responseOf": "",
+        "selectedCount": ""
+    },
+    "calloutResponsesPage": {
+        "moveToBucket": "",
+        "noTags": "",
+        "response": "",
+        "responseNo": "",
+        "searchAssignee": "",
+        "searchTag": "",
+        "showAnswer": "",
+        "showLatestComment": "",
+        "showingOf": ""
+    },
+    "calloutReviewerManager": {
+        "add": "",
+        "canEdit": "",
+        "confirmDelete": {
+            "text": "",
+            "title": ""
+        },
+        "contact": "",
+        "editorTag": "",
+        "search": {
+            "error": {
+                "message": "",
+                "title": ""
+            },
+            "placeholder": "",
+            "successMessage": ""
+        },
+        "title": ""
+    },
+    "calloutThanksPage": {
+        "oneResponseWarning": ""
+    },
+    "callouts": {
+        "archive": "",
+        "data": {
+            "callout": "",
+            "endDate": ""
+        },
+        "noArchivedCallouts": "",
+        "search": "",
+        "showAll": "",
+        "showAnswered": "",
+        "showingOf": ""
+    },
+    "calloutsAdmin": {
+        "addCallout": "",
+        "data": {
+            "expires": "",
+            "responses": "",
+            "starts": "",
+            "status": "",
+            "title": ""
+        },
+        "filter": {
+            "all": "",
+            "draft": "",
+            "ended": "",
+            "open": "",
+            "scheduled": ""
+        }
+    },
+    "common": {
+        "backToHome": "",
+        "contributing": "",
+        "contributionPeriod": {
+            "annually": "",
+            "monthly": ""
+        },
+        "contributionType": {
+            "automatic": "",
+            "gift": "",
+            "manual": "",
+            "none": ""
+        },
+        "default": "",
+        "hello": "",
+        "id": "",
+        "itemsPerPage": "",
+        "joined": "",
+        "label": "",
+        "loading": "",
+        "login": "",
+        "newsletterStatus": {
+            "cleaned": "",
+            "none": "",
+            "pending": "",
+            "subscribed": "",
+            "unsubscribed": ""
+        },
+        "no": "",
+        "noResults": "",
+        "pageCount": "",
+        "paymentStatus": {
+            "cancelled": "",
+            "draft": "",
+            "failed": "",
+            "pending": "",
+            "successful": ""
+        },
+        "perMonth": "",
+        "perMonthText": "",
+        "perYear": "",
+        "perYearText": "",
+        "role": {
+            "admin": "",
+            "member": "",
+            "superadmin": ""
+        },
+        "selectNone": "",
+        "selectOne": "",
+        "show": "",
+        "showingOf": "",
+        "status": {
+            "draft": "",
+            "ended": "",
+            "open": "",
+            "scheduled": ""
+        },
+        "statusLabel": "",
+        "thankYou": "",
+        "timeAgo": "",
+        "timeIn": "",
+        "until": "",
+        "yes": ""
+    },
+    "contactAccount": {
+        "confirmDelete": {
+            "text": "",
+            "title": "",
+            "warning": ""
+        },
+        "contactDeleted": ""
+    },
+    "contactContribution": {
+        "confirmCancel": {
+            "confirm": "",
+            "text": "",
+            "title": ""
+        },
+        "updateNotice": {
+            "text": "",
+            "title": ""
+        }
+    },
+    "contactOverview": {
+        "about": "",
+        "account": "",
+        "annotation": {
+            "copy": ""
+        },
+        "callouts": "",
+        "cancellationDate": "",
+        "contribution": "",
+        "contributionType": "",
+        "joinSurvey": "",
+        "newsletter": {
+            "groups": "",
+            "status": "",
+            "title": ""
+        },
+        "overview": "",
+        "pickTag": "",
+        "profile": "",
+        "roles": "",
+        "security": {
+            "instructions": "",
+            "loginOverride": "",
+            "mfa": {
+                "desc": "",
+                "disabledDesc": ""
+            },
+            "resetPassword": "",
+            "title": "",
+            "whatDoTheButtonsDo": ""
+        }
+    },
+    "contacts": {
+        "addContact": "",
+        "advancedSearch": {
+            "hasAnswered": "",
+            "selectCallout": ""
+        },
+        "allContacts": "",
+        "data": {
+            "activeMembership": "",
+            "activePermission": "",
+            "activeUser": "",
+            "amount": "",
+            "annotationsCopy": "",
+            "contribution": "",
+            "contributionCancelled": "",
+            "contributionMonthlyAmount": "",
+            "contributionPeriod": "",
+            "contributionType": "",
+            "deliveryOptIn": "",
+            "description": "",
+            "email": "",
+            "firstname": "",
+            "joined": "",
+            "lastSeen": "",
+            "lastname": "",
+            "manualPaymentSource": "",
+            "membershipExpires": "",
+            "membershipStarts": "",
+            "name": "",
+            "newsletterGroups": "",
+            "newsletterStatus": "",
+            "notes": "",
+            "payingFee": "",
+            "paymentReference": "",
+            "paymentSource": "",
+            "period": "",
+            "phone": "",
+            "preferredChannel": "",
+            "tags": ""
+        },
+        "dataGroup": {
+            "callout": "",
+            "contact": "",
+            "contribution": "",
+            "role": ""
+        },
+        "noContacts": "",
+        "noResults": "",
+        "numResults": "",
+        "search": "",
+        "selectedCount": "",
+        "showingOf": ""
+    },
+    "contribution": {
+        "adminCancelDescription": "",
+        "bankAccount": "",
+        "billing": "",
+        "cancelContribution": "",
+        "cancelDescription": "",
+        "cancelMessage": "",
+        "cancelledContribution": "",
+        "changeBank": "",
+        "changeBankInfo": "",
+        "contributing": "",
+        "contributionUpdateError": "",
+        "dueToRenew": "",
+        "expired": "",
+        "expiredText": "",
+        "hasPendingPayment": "",
+        "manualPayment": "",
+        "manualPaymentSource": "",
+        "nextAmountChanging": "",
+        "paymentHistory": {
+            "empty": "",
+            "title": ""
+        },
+        "paymentMethod": "",
+        "paymentSourceUpdateError": "",
+        "prorateDecreaseMessage": "",
+        "prorateDecreaseMessageWillStart": "",
+        "prorateIncreaseMessage": "",
+        "prorateIncreaseMessageOneOff": "",
+        "prorateNoText": "",
+        "prorateNoTitle": "",
+        "prorateYesText": "",
+        "prorateYesTitle": "",
+        "restartContribution": "",
+        "startContribution": "",
+        "startedContribution": "",
+        "updateContribution": "",
+        "updatePaymentType": "",
+        "updatedContribution": "",
+        "updatedPaymentSource": "",
+        "willExpire": "",
+        "willRenew": "",
+        "willRenewWithNewAmount": ""
+    },
+    "editCallout": {
+        "replicated": "",
+        "title": "",
+        "warning": ""
+    },
+    "editNotice": {
+        "title": ""
+    },
+    "footer": {
+        "contactUs": "",
+        "handbookResources": "",
+        "impressum": "",
+        "joinCommunity": "",
+        "poweredBy": "",
+        "privacyPolicy": "",
+        "terms": ""
+    },
+    "forgotPassword": {
+        "backToLogin": "",
+        "description": "",
+        "message": "",
+        "title": ""
+    },
+    "form": {
+        "addressLine1": "",
+        "addressLine2": "",
+        "cancel": "",
+        "characters": {
+            "remaining": ""
+        },
+        "cityOrTown": "",
+        "deliveryOptIn": "",
+        "description": "",
+        "email": "",
+        "errorMessages": {
+            "api": {
+                "account-locked": "",
+                "duplicate-email": "",
+                "duplicate-tag-name": "",
+                "invalid-token": "",
+                "login-failed": "",
+                "mfa-token-required": ""
+            },
+            "generic": "",
+            "unauthorized": "",
+            "validation": ""
+        },
+        "errors": {
+            "address": {
+                "required": ""
+            },
+            "addressLine1": {
+                "required": ""
+            },
+            "cityOrTown": {
+                "required": ""
+            },
+            "color": {
+                "pattern": "",
+                "required": ""
+            },
+            "confirmPassword": {
+                "password": "",
+                "required": "",
+                "sameAs": ""
+            },
+            "description": {
+                "maxLength": "",
+                "required": ""
+            },
+            "email": {
+                "email": "",
+                "required": ""
+            },
+            "file": {
+                "rateLimited": "",
+                "tooBig": "",
+                "unsupportedType": ""
+            },
+            "firstName": {
+                "required": ""
+            },
+            "lastName": {
+                "required": ""
+            },
+            "name": {
+                "required": ""
+            },
+            "password": {
+                "password": "",
+                "required": "",
+                "sameAs": ""
+            },
+            "postCode": {
+                "required": ""
+            },
+            "shareDescription": {
+                "maxLength": "",
+                "required": ""
+            },
+            "unknown": {
+                "email": "",
+                "max": "",
+                "maxLength": "",
+                "min": "",
+                "required": "",
+                "url": ""
+            },
+            "url": {
+                "required": "",
+                "url": ""
+            },
+            "verifyCode": {
+                "max": "",
+                "min": "",
+                "required": ""
+            }
+        },
+        "errorsFormio": {
+            "maxLength": "",
+            "minLength": ""
+        },
+        "firstName": "",
+        "lastName": "",
+        "newPassword": "",
+        "newPasswordConfirm": "",
+        "notes": "",
+        "password": "",
+        "passwordInfo": "",
+        "phone": "",
+        "postCode": "",
+        "richtext": {
+            "bold": "",
+            "bulletlist": "",
+            "editor": "",
+            "heading": "",
+            "italic": "",
+            "link": "",
+            "numberedlist": "",
+            "strikethrough": "",
+            "toolbar": "",
+            "underline": ""
+        },
+        "saveChanges": "",
+        "saved": "",
+        "unsavedChanges": "",
+        "updated": ""
+    },
+    "formRenderer": {
+        "components": {
+            "file": {
+                "browse": "",
+                "dropFiles": "",
+                "or": "",
+                "switchToFileUpload": "",
+                "takePicture": "",
+                "useCamera": ""
+            },
+            "multiple": {
+                "addAnother": ""
+            }
+        }
+    },
+    "homePage": {
+        "editProfile": "",
+        "manageContribution": "",
+        "newCallout": "",
+        "openCallouts": "",
+        "quickActions": "",
+        "title": "",
+        "viewAllCallouts": "",
+        "viewOpenCallouts": "",
+        "welcome": "",
+        "yourProfile": ""
+    },
+    "icons": {
+        "welcome": {
+            "ariaLabel": ""
+        }
+    },
+    "item": {
+        "status": {
+            "endsIn": "",
+            "startsIn": ""
+        }
+    },
+    "join": {
+        "absorbFeeForce": "",
+        "absorbFeeOptIn": "",
+        "absorbFeeText": "",
+        "contribute": "",
+        "errors": {
+            "confirmEmail": {
+                "message": "",
+                "proceed": "",
+                "title": ""
+            },
+            "failed": {
+                "backToJoin": "",
+                "message": "",
+                "title": ""
+            }
+        },
+        "login": "",
+        "memberAccount": "",
+        "memberAlready": "",
+        "minimumContribution": "",
+        "noContribution": "",
+        "notice": "",
+        "now": "",
+        "paymentMethod": "",
+        "poweredBy": "",
+        "privacy": "",
+        "tax": {
+            "included": ""
+        }
+    },
+    "joinPayment": {
+        "applePay": {
+            "description": "",
+            "recurringLabel": ""
+        },
+        "genericError": "",
+        "goBack": "",
+        "goBackButton": "",
+        "note": "",
+        "willBeContributing": ""
+    },
+    "joinSetup": {
+        "confirmDetails": "",
+        "continue": "",
+        "welcome": ""
+    },
+    "login": {
+        "backTo": "",
+        "forgotPassword": "",
+        "joinNow": "",
+        "lostMfaDevice": "",
+        "notMember": "",
+        "title": ""
+    },
+    "lostDevice": {
+        "description": "",
+        "message": "",
+        "title": ""
+    },
+    "mailOptIn": {
+        "optInLabel": "",
+        "text": "",
+        "title": ""
+    },
+    "membershipBuilder": {
+        "steps": {
+            "accountConfirmation": {
+                "deliveryAddress": {
+                    "showOptIn": "",
+                    "title": ""
+                },
+                "description": "",
+                "joinSurvey": {
+                    "required": "",
+                    "slug": "",
+                    "slugHelp": "",
+                    "text": "",
+                    "textIntro": "",
+                    "title": ""
+                },
+                "newsletter": {
+                    "showOptIn": "",
+                    "title": ""
+                },
+                "text": "",
+                "title": "",
+                "welcomeMessage": ""
+            },
+            "emails": {
+                "bigTitle": "",
+                "cancellationEmail": "",
+                "description": "",
+                "text": "",
+                "title": "",
+                "welcomeEmail": ""
+            },
+            "intro": {
+                "description": "",
+                "message": "",
+                "showWelcomeMessage": "",
+                "text": "",
+                "title": ""
+            },
+            "joinForm": {
+                "backgroundImage": "",
+                "defaultAmount": "",
+                "description": "",
+                "formSubtitle": "",
+                "formTitle": "",
+                "minAmount": "",
+                "noticeText": "",
+                "noticeTextHelp": "",
+                "showAbsorbFee": "",
+                "showNoContribution": "",
+                "suggestedAmounts": "",
+                "text": "",
+                "title": ""
+            }
+        },
+        "title": ""
+    },
+    "menu": {
+        "account": "",
+        "admin": "",
+        "adminSettings": "",
+        "callouts": "",
+        "contacts": "",
+        "contribution": "",
+        "dashboard": "",
+        "home": "",
+        "legacyApp": "",
+        "logout": "",
+        "membershipBuilder": "",
+        "notices": "",
+        "payments": "",
+        "settings": "",
+        "yourProfile": ""
+    },
+    "newsletterOptIn": {
+        "groups": {
+            "add": "",
+            "help": "",
+            "title": ""
+        },
+        "optInDisabled": "",
+        "optInLabel": "",
+        "text": "",
+        "title": ""
+    },
+    "notFound": {
+        "goBack": "",
+        "text": ""
+    },
+    "noticeAdminOverview": {
+        "actions": {
+            "confirmDelete": {
+                "text": "",
+                "title": ""
+            }
+        },
+        "created": "",
+        "summary": "",
+        "updated": ""
+    },
+    "notices": {
+        "addNotice": "",
+        "data": {
+            "createdAt": "",
+            "name": "",
+            "status": ""
+        },
+        "showingOf": ""
+    },
+    "notifications": {
+        "copy": {
+            "success": ""
+        },
+        "error": "",
+        "remove": ""
+    },
+    "pageTitle": {
+        "confirmEmail": "",
+        "duplicateEmail": "",
+        "failed": "",
+        "forgotPassword": "",
+        "join": "",
+        "login": "",
+        "lostDevice": "",
+        "notFound": "",
+        "resetDevice": "",
+        "resetPassword": "",
+        "setPassword": "",
+        "setup": ""
+    },
+    "paymentMethods": {
+        "gc_direct-debit": {
+            "changeLabel": "",
+            "label": "",
+            "setLabel": ""
+        },
+        "s_bacs": {
+            "changeLabel": "",
+            "label": "",
+            "setLabel": ""
+        },
+        "s_card": {
+            "changeLabel": "",
+            "label": "",
+            "setLabel": ""
+        },
+        "s_ideal": {
+            "changeLabel": "",
+            "label": "",
+            "setLabel": ""
+        },
+        "s_paypal": {
+            "changeLabel": "",
+            "label": "",
+            "setLabel": ""
+        },
+        "s_sepa": {
+            "changeLabel": "",
+            "label": "",
+            "setLabel": ""
+        }
+    },
+    "payments": {
+        "data": {
+            "amount": "",
+            "chargeDate": "",
+            "contact": "",
+            "status": ""
+        },
+        "dataGroup": {
+            "payment": ""
+        }
+    },
+    "paymentsAdmin": {
+        "filter": {
+            "all": "",
+            "cancelled": "",
+            "failed": "",
+            "pending": "",
+            "successful": ""
+        },
+        "showingOf": ""
+    },
+    "resetDevice": {
+        "description": "",
+        "failed": "",
+        "invalidPassword": "",
+        "success": "",
+        "title": ""
+    },
+    "resetPassword": {
+        "description": "",
+        "failed": "",
+        "login": "",
+        "lostDevice": "",
+        "success": "",
+        "title": ""
+    },
+    "roleEditor": {
+        "add": "",
+        "confirmDelete": {
+            "text": "",
+            "title": ""
+        },
+        "expires": {
+            "label": "",
+            "opts": {
+                "never": "",
+                "schedule": ""
+            }
+        },
+        "new": "",
+        "starts": {
+            "label": "",
+            "opts": {
+                "now": "",
+                "schedule": ""
+            }
+        },
+        "title": "",
+        "today": ""
+    },
+    "setPassword": {
+        "description": "",
+        "title": ""
+    },
+    "status": {
+        "connectingToServer": "",
+        "initializing": "",
+        "loadingApplication": "",
+        "pleaseWait": "",
+        "usuallyTakesSeconds": ""
+    },
+    "stepper": {
+        "navigation": {
+            "label": ""
+        },
+        "screen": {
+            "completed": "",
+            "currentStep": "",
+            "hasError": ""
+        }
+    },
+    "tagEditor": {
+        "add": "",
+        "confirmDelete": {
+            "text_contact": "",
+            "text_global": "",
+            "text_response": "",
+            "title": ""
+        },
+        "name": ""
+    },
+    "tags": {
+        "manageTags": "",
+        "noTags": "",
+        "notifications": {
+            "addedTag": "",
+            "removedTag": ""
+        },
+        "searchTag": "",
+        "toggleTag": ""
+    },
+    "taxRate": {
+        "invoiceName": ""
+    }
+}
