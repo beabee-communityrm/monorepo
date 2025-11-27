@@ -941,8 +941,8 @@
     "until": "tot",
     "yes": "Ja",
     "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
+      "annually": "Jaarlijks",
+      "monthly": "Maandelijks",
       "one-time": ""
     },
     "perOneTime": "",

@@ -941,8 +941,8 @@
     "until": "fino",
     "yes": "Sì",
     "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
+      "annually": "all'anno",
+      "monthly": "al mese",
       "one-time": ""
     },
     "perOneTime": "",
