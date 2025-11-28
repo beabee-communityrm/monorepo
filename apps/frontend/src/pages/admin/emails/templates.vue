@@ -6,49 +6,46 @@ meta:
 </route>
 
 <template>
-  <div class="space-y-8">
-    <section
-      v-for="group in groupedTemplates"
-      :key="group.type"
-      class="space-y-4"
-    >
-      <h2 class="text-xl font-semibold">
-        {{ t(`emails.templates.type.${group.type}`) }}
-      </h2>
-      <AppTable :headers="headers" :items="group.templates" class="w-full">
-        <template #value-name="{ item }">
-          <router-link
-            :to="`/admin/emails/template/${item.id}`"
-            class="text-base font-bold text-link"
-          >
-            {{ t(`emails.templates.names.${item.id}`) }}
-          </router-link>
-        </template>
-        <template #value-subject="{ value }">
-          <span class="text-body-80">{{ value }}</span>
-        </template>
-        <template #value-status="{ item }">
-          <span
-            v-if="item.hasOverride"
-            class="inline-block rounded bg-warning-10 px-2 py-1 text-xs font-medium text-warning"
-          >
-            {{ t('emails.customized') }}
-          </span>
-          <span
-            v-else
-            class="inline-block rounded bg-primary-5 px-2 py-1 text-xs text-body-60"
-          >
-            {{ t('emails.default') }}
-          </span>
-        </template>
-      </AppTable>
-    </section>
-  </div>
+  <AppTable :headers="headers" :items="sortedTemplates" class="w-full">
+    <template #value-type="{ item }">
+      <span class="text-body-80">
+        {{ t(`emails.templates.type.${item.type}`) }}
+      </span>
+    </template>
+    <template #value-name="{ item }">
+      <router-link
+        :to="`/admin/emails/template/${item.id}`"
+        class="text-base font-bold text-link"
+      >
+        {{ t(`emails.templates.names.${item.id}`) }}
+      </router-link>
+    </template>
+    <template #value-subject="{ value }">
+      <span class="text-body-80">{{ value }}</span>
+    </template>
+    <template #value-status="{ item }">
+      <div class="flex items-center justify-end gap-2">
+        <span v-if="item.hasOverride" class="text-xs font-medium text-body-80">
+          {{ t('emails.customized') }}
+        </span>
+        <span v-else class="text-xs text-body-80">
+          {{ t('emails.default') }}
+        </span>
+        <AppRoundBadge
+          :type="item.hasOverride ? 'warning' : 'success'"
+          size="small"
+          :aria-label="
+            item.hasOverride ? t('emails.customized') : t('emails.default')
+          "
+        />
+      </div>
+    </template>
+  </AppTable>
 </template>
 
 <script lang="ts" setup>
 import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
-import { AppTable, type Header } from '@beabee/vue';
+import { AppRoundBadge, AppTable, type Header } from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { computed, onMounted, ref } from 'vue';
@@ -59,33 +56,29 @@ const { t } = useI18n();
 const templates = ref<GetEmailTemplateInfoData[]>([]);
 
 const headers: Header[] = [
+  { value: 'type', text: t('emails.type') },
   { value: 'name', text: t('emails.name') },
   { value: 'subject', text: t('emailEditor.subject.label') },
   { value: 'status', text: t('emails.status'), align: 'right' },
 ];
 
 /**
- * Group templates by type (general, contact, admin)
+ * Sort templates by type (general, contact, admin) and then by name
  */
-const groupedTemplates = computed(() => {
-  const groups: Record<
-    string,
-    { type: string; templates: GetEmailTemplateInfoData[] }
-  > = {};
+const sortedTemplates = computed(() => {
+  const typeOrder: Record<string, number> = {
+    general: 0,
+    contact: 1,
+    admin: 2,
+  };
 
-  for (const template of templates.value) {
-    if (!groups[template.type]) {
-      groups[template.type] = {
-        type: template.type,
-        templates: [],
-      };
-    }
-    groups[template.type].templates.push(template);
-  }
-
-  // Return in a consistent order: general, contact, admin
-  const order = ['general', 'contact', 'admin'];
-  return order.filter((type) => groups[type]).map((type) => groups[type]);
+  return [...templates.value].sort((a, b) => {
+    const typeDiff = (typeOrder[a.type] ?? 999) - (typeOrder[b.type] ?? 999);
+    if (typeDiff !== 0) return typeDiff;
+    return t(`emails.templates.names.${a.id}`).localeCompare(
+      t(`emails.templates.names.${b.id}`)
+    );
+  });
 });
 
 onMounted(async () => {

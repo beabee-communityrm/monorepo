@@ -1667,6 +1667,7 @@
     "fromEmail": "",
     "mailingCount": "",
     "status": "",
+    "type": "",
     "actions": {
       "addCustom": "",
       "resetToDefault": ""

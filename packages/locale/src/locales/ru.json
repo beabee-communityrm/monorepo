@@ -1668,6 +1668,7 @@
     "fromEmail": "Email отправителя",
     "mailingCount": "Отправленных писем",
     "status": "Статус",
+    "type": "Тип",
     "actions": {
       "addCustom": "Добавить пользовательское письмо",
       "resetToDefault": "Сбросить к исходному"

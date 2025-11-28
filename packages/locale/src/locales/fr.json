@@ -1671,6 +1671,7 @@
     "fromEmail": "E-mail de l'expéditeur",
     "mailingCount": "E-mails envoyés",
     "status": "Statut",
+    "type": "Type",
     "actions": {
       "addCustom": "Ajouter un e-mail personnalisé",
       "resetToDefault": "Réinitialiser par défaut"

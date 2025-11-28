@@ -1667,6 +1667,7 @@
     "fromEmail": "Absender-E-Mail",
     "mailingCount": "Versendete E-Mails",
     "status": "Status",
+    "type": "Typ",
     "actions": {
       "addCustom": "Eigene E-Mail hinzufügen",
       "resetToDefault": "Auf Standard zurücksetzen"

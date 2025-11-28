@@ -1667,6 +1667,7 @@
     "fromEmail": "Email αποστολέα",
     "mailingCount": "Αποσταλμένα email",
     "status": "Κατάσταση",
+    "type": "Τύπος",
     "actions": {
       "addCustom": "Προσθήκη προσαρμοσμένου email",
       "resetToDefault": "Επαναφορά στα προεπιλεγμένα"

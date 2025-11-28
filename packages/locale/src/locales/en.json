@@ -1153,6 +1153,7 @@
     "fromEmail": "From email",
     "mailingCount": "Mailings sent",
     "status": "Status",
+    "type": "Type",
     "customized": "Customized",
     "default": "Default",
     "actions": {

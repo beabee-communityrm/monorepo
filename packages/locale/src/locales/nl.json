@@ -1667,6 +1667,7 @@
     "fromEmail": "Afzender e-mail",
     "mailingCount": "Verzonden e-mails",
     "status": "Status",
+    "type": "Type",
     "actions": {
       "addCustom": "Aangepaste e-mail toevoegen",
       "resetToDefault": "Terugzetten naar standaard"

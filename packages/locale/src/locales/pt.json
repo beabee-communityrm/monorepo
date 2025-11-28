@@ -1667,6 +1667,7 @@
     "fromEmail": "Email do remetente",
     "mailingCount": "Emails enviados",
     "status": "Estado",
+    "type": "Tipo",
     "actions": {
       "addCustom": "Adicionar email personalizado",
       "resetToDefault": "Repor predefinição"

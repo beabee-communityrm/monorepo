@@ -1153,6 +1153,7 @@
     "fromEmail": "Absender-E-Mail",
     "mailingCount": "Versendete E-Mails",
     "status": "Status",
+    "type": "Typ",
     "customized": "Angepasst",
     "default": "Standard",
     "actions": {

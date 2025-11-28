@@ -1667,6 +1667,7 @@
     "fromEmail": "Email mittente",
     "mailingCount": "Email inviate",
     "status": "Stato",
+    "type": "Tipo",
     "actions": {
       "addCustom": "Aggiungi email personalizzata",
       "resetToDefault": "Ripristina predefinito"
