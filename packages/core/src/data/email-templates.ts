@@ -272,7 +272,7 @@ export const contactEmailTemplates = {
     SPLINK: params.spLink,
   }),
   /**
-   * Email with callout response answers
+   * Pseudo email template for callout response answers
    *
    * **Available Merge Fields:**
    * - *|CALLOUTTITLE|* - Title of the callout
