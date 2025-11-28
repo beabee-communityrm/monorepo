@@ -36,7 +36,7 @@ meta:
   </AppForm>
 </template>
 <script lang="ts" setup>
-import type { GetEmailData } from '@beabee/beabee-common';
+import type { EmailPreviewData } from '@beabee/beabee-common';
 import { App2ColGrid, AppForm } from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
@@ -47,10 +47,10 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);
 
-const welcomeEmail = ref<GetEmailData | false>();
-const cancellationEmail = ref<GetEmailData | false>();
+const welcomeEmail = ref<EmailPreviewData | false>();
+const cancellationEmail = ref<EmailPreviewData | false>();
 
-async function loadEmail(id: string): Promise<GetEmailData | false> {
+async function loadEmail(id: string): Promise<EmailPreviewData | false> {
   try {
     return await client.email.get(id);
   } catch (err) {

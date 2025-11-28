@@ -16,7 +16,11 @@ export class UpdateEmailDto {
   body!: string;
 }
 
-export class GetEmailDto extends UpdateEmailDto {}
+/**
+ * DTO for email preview responses
+ * Contains rendered subject and body with merge fields replaced
+ */
+export class EmailPreviewDto extends UpdateEmailDto {}
 
 export class PreviewAdminEmailParams {
   @IsEmailTemplateId('admin')
@@ -61,9 +65,10 @@ export class CreateEmailDto {
 export class ListEmailsDto extends GetPaginatedQuery {}
 
 /**
- * DTO for email with full metadata
+ * DTO for email entity with full metadata
+ * Used for CRUD operations on email entities
  */
-export class GetEmailWithMetadataDto {
+export class GetEmailDto {
   @IsString()
   id!: string;
 

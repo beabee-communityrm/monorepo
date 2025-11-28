@@ -45,16 +45,13 @@ meta:
         :title="t('actions.delete')"
         variant="dangerText"
         size="sm"
-        @click="handleDelete(item as GetEmailWithMetadataData)"
+        @click="handleDelete(item as GetEmailData)"
       />
     </template>
   </AppPaginatedTable>
 </template>
 <script lang="ts" setup>
-import type {
-  GetEmailWithMetadataData,
-  Paginated,
-} from '@beabee/beabee-common';
+import type { GetEmailData, Paginated } from '@beabee/beabee-common';
 import { AppButton, type Header } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -97,7 +94,7 @@ const headers: Header[] = [
 
 const currentPaginatedQuery = definePaginatedQuery('date');
 
-const emailsTable = ref<Paginated<GetEmailWithMetadataData>>({
+const emailsTable = ref<Paginated<GetEmailData>>({
   items: [],
   total: 0,
   offset: 0,
@@ -109,7 +106,7 @@ watchEffect(async () => {
   emailsTable.value = await client.email.list(currentPaginatedQuery.query);
 });
 
-async function handleDelete(item: GetEmailWithMetadataData) {
+async function handleDelete(item: GetEmailData) {
   const confirmMessage =
     item.mailingCount && item.mailingCount > 0
       ? t('emails.confirmDelete.messageWithMailings', {

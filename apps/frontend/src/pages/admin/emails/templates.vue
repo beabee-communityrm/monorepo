@@ -86,8 +86,8 @@ meta:
 
 <script lang="ts" setup>
 import type {
+  GetEmailData,
   GetEmailTemplateInfoData,
-  GetEmailWithMetadataData,
 } from '@beabee/beabee-common';
 import { AppButton } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
@@ -99,7 +99,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const templates = ref<GetEmailTemplateInfoData[]>([]);
-const customEmails = ref<GetEmailWithMetadataData[]>([]);
+const customEmails = ref<GetEmailData[]>([]);
 
 /**
  * Group templates by type

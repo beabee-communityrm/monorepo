@@ -52,10 +52,7 @@ meta:
   </AppForm>
 </template>
 <script lang="ts" setup>
-import type {
-  GetEmailWithMetadataData,
-  UpdateEmailData,
-} from '@beabee/beabee-common';
+import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
 import { AppButton, AppForm, AppInput, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -76,7 +73,7 @@ const emailId = (() => {
   return Array.isArray(param) ? param[0] : param;
 })();
 
-const emailData = ref<GetEmailWithMetadataData | null>(null);
+const emailData = ref<GetEmailData | null>(null);
 
 const pageTitle = computed(() => {
   if (!emailData.value) return t('emails.edit.title');

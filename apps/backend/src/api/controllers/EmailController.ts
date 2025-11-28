@@ -13,9 +13,9 @@ import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import {
   AssignTemplateDto,
   CreateEmailDto,
+  EmailPreviewDto,
   GetEmailDto,
   GetEmailTemplateInfoDto,
-  GetEmailWithMetadataDto,
   ListEmailsDto,
   PreviewAdminEmailParams,
   PreviewEmailDto,
@@ -52,7 +52,7 @@ export class EmailController {
   async listEmails(
     @CurrentAuth() auth: AuthInfo,
     @QueryParams() query: ListEmailsDto
-  ): Promise<PaginatedDto<GetEmailWithMetadataDto>> {
+  ): Promise<PaginatedDto<GetEmailDto>> {
     const queryBuilder = createQueryBuilder(Email, 'e')
       .loadRelationCountAndMap('e.mailingCount', 'e.mailings')
       .orderBy({ 'e.date': 'DESC' });
@@ -88,7 +88,6 @@ export class EmailController {
 
   /**
    * Assign a template to an email (for System Templates view)
-   * Must be defined before all routes with :id to avoid route conflicts
    */
   @Put('/templates/:templateId')
   async assignTemplate(
@@ -124,7 +123,7 @@ export class EmailController {
   async createEmail(
     @CurrentAuth() auth: AuthInfo,
     @Body() data: CreateEmailDto
-  ): Promise<GetEmailWithMetadataDto> {
+  ): Promise<GetEmailDto> {
     const email = await getRepository(Email).save({
       name: data.name,
       fromName: data.fromName || null,
@@ -140,7 +139,7 @@ export class EmailController {
   async getEmail(
     @CurrentAuth() auth: AuthInfo,
     @Param('id') id: EmailTemplateId | string
-  ): Promise<GetEmailWithMetadataDto | undefined> {
+  ): Promise<GetEmailDto | undefined> {
     const email = await EmailService.findEmail(id);
     return email ? EmailTransformer.convert(email, auth) : undefined;
   }
@@ -154,7 +153,7 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Param('id') id: EmailTemplateId | string,
     @Body() data: UpdateEmailDto
-  ): Promise<GetEmailWithMetadataDto | undefined> {
+  ): Promise<GetEmailDto | undefined> {
     const email = await getRepository(Email).findOneBy({ id });
     if (!email) {
       throw new NotFoundError();
@@ -207,7 +206,7 @@ export class EmailController {
   async previewEmail(
     @CurrentUser({ required: true }) contact: Contact,
     @Body() data: PreviewEmailDto
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     return await this.getPreview(contact, data);
   }
 
@@ -221,7 +220,7 @@ export class EmailController {
     @CurrentUser({ required: true }) contact: Contact,
     @Params() { templateId }: PreviewGeneralEmailParams,
     @Body() data: PreviewEmailDto
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     return await this.getPreview(contact, { ...data, templateId });
   }
 
@@ -236,7 +235,7 @@ export class EmailController {
     @CurrentUser({ required: true }) contact: Contact,
     @Param('templateId') templateId: ContactEmailTemplateId,
     @Body() data: PreviewEmailDto
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     return await this.getPreview(contact, { ...data, templateId });
   }
 
@@ -250,7 +249,7 @@ export class EmailController {
     @CurrentUser({ required: true }) contact: Contact,
     @Params() { templateId }: PreviewAdminEmailParams,
     @Body() data: PreviewEmailDto
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     return await this.getPreview(contact, { ...data, templateId });
   }
 
@@ -260,8 +259,8 @@ export class EmailController {
   private async getPreview(
     contact: Contact,
     data: PreviewEmailOptions
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     const ret = await EmailService.getPreview(contact, data);
-    return plainToInstance(GetEmailDto, ret);
+    return plainToInstance(EmailPreviewDto, ret);
   }
 }

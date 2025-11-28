@@ -1,9 +1,9 @@
 import type {
   AssignTemplateData,
   CreateEmailData,
+  EmailPreviewData,
   GetEmailData,
   GetEmailTemplateInfoData,
-  GetEmailWithMetadataData,
   ListEmailsQuery,
   Paginated,
   UpdateEmailData,
@@ -35,10 +35,8 @@ export class EmailClient extends BaseClient {
    * @param query - Pagination query parameters
    * @returns Paginated list of emails with metadata
    */
-  async list(
-    query?: ListEmailsQuery
-  ): Promise<Paginated<GetEmailWithMetadataData>> {
-    const { data } = await this.fetch.get<Paginated<GetEmailWithMetadataData>>(
+  async list(query?: ListEmailsQuery): Promise<Paginated<GetEmailData>> {
+    const { data } = await this.fetch.get<Paginated<GetEmailData>>(
       '/',
       query || {}
     );
@@ -60,11 +58,8 @@ export class EmailClient extends BaseClient {
    * @param emailData - The email data to create
    * @returns The created email with metadata
    */
-  async create(emailData: CreateEmailData): Promise<GetEmailWithMetadataData> {
-    const { data } = await this.fetch.post<GetEmailWithMetadataData>(
-      '/',
-      emailData
-    );
+  async create(emailData: CreateEmailData): Promise<GetEmailData> {
+    const { data } = await this.fetch.post<GetEmailData>('/', emailData);
     return data;
   }
 
@@ -73,8 +68,8 @@ export class EmailClient extends BaseClient {
    * @param id - The email ID to fetch
    * @returns The email data with metadata
    */
-  async get(id: string): Promise<GetEmailWithMetadataData> {
-    const { data } = await this.fetch.get<GetEmailWithMetadataData>(`/${id}`);
+  async get(id: string): Promise<GetEmailData> {
+    const { data } = await this.fetch.get<GetEmailData>(`/${id}`);
     return data;
   }
 
@@ -84,12 +79,11 @@ export class EmailClient extends BaseClient {
    * @param data - The update data for the email
    * @returns The updated email data with metadata
    */
-  async update(
-    id: string,
-    data: UpdateEmailData
-  ): Promise<GetEmailWithMetadataData> {
-    const { data: responseData } =
-      await this.fetch.put<GetEmailWithMetadataData>(`/${id}`, data);
+  async update(id: string, data: UpdateEmailData): Promise<GetEmailData> {
+    const { data: responseData } = await this.fetch.put<GetEmailData>(
+      `/${id}`,
+      data
+    );
     return responseData;
   }
 
@@ -121,8 +115,11 @@ export class EmailClient extends BaseClient {
    * @param options Preview options including merge fields, custom subject and body
    * @returns The preview with merge fields replaced
    */
-  async preview(options: PreviewEmailOptions): Promise<GetEmailData> {
-    const { data } = await this.fetch.post<GetEmailData>(`/preview`, options);
+  async preview(options: PreviewEmailOptions): Promise<EmailPreviewData> {
+    const { data } = await this.fetch.post<EmailPreviewData>(
+      `/preview`,
+      options
+    );
     return data;
   }
 
@@ -158,8 +155,8 @@ export class EmailClient extends BaseClient {
     type: 'general' | 'contact' | 'admin',
     templateId: string,
     options: PreviewEmailOptions = {}
-  ): Promise<GetEmailData> {
-    const { data } = await this.fetch.post<GetEmailData>(
+  ): Promise<EmailPreviewData> {
+    const { data } = await this.fetch.post<EmailPreviewData>(
       `/preview/${type}/${templateId}`,
       options
     );
