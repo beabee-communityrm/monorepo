@@ -116,9 +116,6 @@ export class GetEmailTemplateInfoDto {
   mergeFields!: string[];
 
   @IsOptional()
-  showContactFields?: boolean;
-
-  @IsOptional()
   @IsString()
   overrideEmailId?: string;
 }
