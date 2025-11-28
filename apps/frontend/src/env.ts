@@ -1,7 +1,4 @@
-const cnrModeRaw = '__cnrMode__' as unknown as boolean | string;
-const experimentalFeaturesRaw = '__experimentalFeatures__' as unknown as
-  | boolean
-  | string;
+const toBool = (value: string) => value === 'true';
 
 export default {
   /**
@@ -86,19 +83,7 @@ export default {
    * Default: '' (empty string - disabled)
    *
    * Enables CrowdNewsroom specific features and UI elements
-   * Set to 'true' or any non-empty value to enable
+   * Set to 'true' to enable
    */
-  cnrMode: cnrModeRaw === 'true' || cnrModeRaw === true,
-
-  /**
-   * Comma-separated list of experimental features to enable
-   *
-   * Source: EXPERIMENTAL_FEATURES environment variable (mapped from BEABEE_EXPERIMENTAL_FEATURES in Docker)
-   * Default: '' (empty string - no experimental features)
-   *
-   * Example: 'feature1,feature2,feature3'
-   * Shows features that are still in development
-   */
-  experimentalFeatures:
-    experimentalFeaturesRaw === 'true' || experimentalFeaturesRaw === true,
+  cnrMode: toBool('__cnrMode__'),
 };
