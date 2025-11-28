@@ -959,8 +959,8 @@
     "until": "до",
     "yes": "Да",
     "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
+      "annually": "ежегодно",
+      "monthly": "ежемесячно",
       "one-time": ""
     },
     "perOneTime": "",
