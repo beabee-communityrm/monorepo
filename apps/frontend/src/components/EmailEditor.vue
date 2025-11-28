@@ -107,8 +107,6 @@ import { client } from '@utils/api';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 // Two-way binding models for subject and content
 const subject = defineModel<string>('subject', { default: '' });
 const content = defineModel<string>('content', { default: '' });
@@ -150,11 +148,11 @@ const props = withDefaults(
     template: undefined,
     mergeFields: () => ({}),
     mergeFieldGroups: undefined,
-    subjectLabel: undefined,
-    contentLabel: undefined,
     alwaysStacked: false,
   }
 );
+
+const { t } = useI18n();
 
 // Server preview state
 const serverPreviewResult = ref<EmailPreviewResult | null>(null);
