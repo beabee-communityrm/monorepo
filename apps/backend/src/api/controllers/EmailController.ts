@@ -95,11 +95,10 @@ export class EmailController {
       throw new NotFoundError('Invalid template ID');
     }
 
-    const email = await EmailService.findEmail(templateId as EmailTemplateId);
-    if (!email) {
-      throw new NotFoundError('Template not found');
-    }
-
+    // getTemplateEmail always returns an email (override, default, or empty)
+    const email = await EmailService.getTemplateEmail(
+      templateId as EmailTemplateId
+    );
     return EmailTransformer.convert(email, auth);
   }
 
