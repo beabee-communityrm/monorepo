@@ -355,16 +355,6 @@ class EmailService {
   }
 
   /**
-   * Get only the override email for a template (not default)
-   *
-   * @param template The template ID
-   * @returns The override email if exists, null otherwise
-   */
-  async getTemplateOverride(template: EmailTemplateId): Promise<Email | null> {
-    return await getRepository(Email).findOneBy({ templateId: template });
-  }
-
-  /**
    * Create or update a template override
    *
    * @param template The template ID
