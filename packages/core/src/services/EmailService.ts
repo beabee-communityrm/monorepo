@@ -1,4 +1,7 @@
-import { EmailTemplateType } from '@beabee/beabee-common';
+import {
+  EmailTemplateType,
+  type GetEmailTemplateInfoData,
+} from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
 import { isUUID } from 'class-validator';
@@ -438,15 +441,7 @@ class EmailService {
    * Get metadata for all email templates with override and subject info
    * @returns Array of template metadata with type, merge fields, override status, and subject
    */
-  async getTemplatesWithInfo(): Promise<
-    Array<{
-      id: string;
-      type: 'general' | 'admin' | 'contact';
-      mergeFields: string[];
-      hasOverride: boolean;
-      subject: string;
-    }>
-  > {
+  async getTemplatesWithInfo(): Promise<GetEmailTemplateInfoData[]> {
     // Get all overrides from database
     const overrides = await getRepository(Email).find({
       where: { templateId: Not(IsNull()) },
