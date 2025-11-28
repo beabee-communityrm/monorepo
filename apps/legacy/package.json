@@ -27,7 +27,7 @@
     "@inquirer/prompts": "^7.2.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^2.1.1",
-    "axios": "^1.7.9",
+    "axios": "^1.12.2",
     "body-parser": "^1.20.3",
     "bootstrap-sass": "^3.4.3",
     "chance": "^1.1.12",
@@ -62,7 +62,7 @@
     "routing-controllers": "^0.10.4",
     "slugify": "^1.6.6",
     "stripe": "^15.9.0",
-    "typeorm": "^0.3.20",
+    "typeorm": "^0.3.27",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
@@ -99,7 +99,7 @@
     "rimraf": "^6.0.1",
     "sass": "^1.77.4",
     "tsconfig": "^7.0.0",
-    "typescript": "~5.8.3"
+    "typescript": "~5.9.3"
   },
   "overrides": {
     "gulp-sourcemaps": {

@@ -1,3 +1,4 @@
+export * from './IsEmailTemplateId.js';
 export * from './IsLngLat.js';
 export * from './IsMapBounds.js';
 export * from './IsNonEmptyString.js';

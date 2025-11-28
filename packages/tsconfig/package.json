@@ -3,15 +3,15 @@
   "version": "0.28.1",
   "private": true,
   "files": [
+    "tsconfig.dev.json",
     "tsconfig.frontend.json",
-    "tsconfig.options.json",
     "tsconfig.server.json"
   ],
   "peerDependencies": {
     "typescript": "*"
   },
   "devDependencies": {
-    "typescript": "~5.8.3"
+    "typescript": "~5.9.3"
   },
   "dependencies": {
     "@tsconfig/node22": "^22.0.0",

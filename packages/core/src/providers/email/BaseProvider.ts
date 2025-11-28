@@ -111,6 +111,7 @@ export abstract class BaseProvider implements EmailProvider {
         (email.fromEmail ? '' : OptionsService.getText('support-email-from')),
     };
 
+    // Process magic merge fields (e.g., SPLINK, RPLINK, LOGINLINK)
     let preparedRecipients = recipients;
     for (const mergeField of magicMergeFields) {
       if (email.body.includes(`*|${mergeField}|*`)) {

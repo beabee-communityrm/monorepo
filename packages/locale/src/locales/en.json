@@ -366,6 +366,23 @@
         "content": {
           "title": "Content"
         },
+        "email": {
+          "body": {
+            "default": "<p>Hello {'*|FNAME|*'},</p><p>This email confirms your response to the callout <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> using your email address {'*|EMAIL|*'}.</p><p><br /></p><p>If you have any questions, please contact our support team at <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Best wishes</p>"
+          },
+          "collectInfoWarning": {
+            "description": "To send an email to all participants you must enable \"Collect contact information\" in the Settings tab",
+            "title": "Contact information not collected"
+          },
+          "sendEmail": {
+            "description": "Email will be sent to all participants who submit their contact information",
+            "label": "Send an email to all participants after submission"
+          },
+          "subject": {
+            "default": "Thank you for your response"
+          },
+          "title": "Email"
+        },
         "endMessage": {
           "inputs": {
             "action": {
@@ -1103,6 +1120,18 @@
   },
   "editNotice": {
     "title": "Edit: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Subject"
+    },
+    "body": {
+      "label": "Message"
+    },
+    "preview": {
+      "label": "Preview",
+      "unavailable": "Preview unavailable"
+    }
   },
   "footer": {
     "contactUs": "Contact us at",

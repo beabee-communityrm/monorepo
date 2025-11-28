@@ -4,9 +4,13 @@ import type { AppStepperStep } from '@beabee/vue';
 import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { Component, Raw } from 'vue';
 
-import type { ContentFormTabData } from './SidebarTabContent/ContentFormTab.vue';
-import type { EndMessageTabData } from './SidebarTabContent/EndMessageTab.vue';
-import type { IntroMessageTabData } from './SidebarTabContent/IntroMessageTab.vue';
+import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.interface';
+import type {
+  ContentFormTabData,
+  EmailTabData,
+  EndMessageTabData,
+  IntroMessageTabData,
+} from './SidebarTabContent/';
 
 /**
  * Base interface for a sidebar tab component
@@ -26,6 +30,8 @@ export interface SidebarTabProps<T> extends SidebarTab<T> {
   /** Slide information */
   slides: FormBuilderSlide[];
   currentSlide: FormBuilderSlide;
+  /** All horizontal tabs data for cross-tab access */
+  tabs: CalloutHorizontalTabs;
 }
 
 /**
@@ -43,13 +49,16 @@ export interface SidebarTabsData {
   content: ContentFormTabData;
   /** The intro message tab */
   intro: IntroMessageTabData;
+  /** The email tab */
+  email: EmailTabData;
   /** The end message tab */
   endMessage: EndMessageTabData;
 }
 
 export interface SidebarTabContentProps {
+  currentTab: SidebarTab<SidebarTabsData[keyof SidebarTabsData]>;
   slides: FormBuilderSlide[];
   currentSlide: FormBuilderSlide;
-  currentTab: SidebarTab<SidebarTabsData[keyof SidebarTabsData]>;
   status: ItemStatus | undefined;
+  tabs: CalloutHorizontalTabs;
 }

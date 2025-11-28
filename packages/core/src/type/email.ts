@@ -1,3 +1,10 @@
+import type { Locale } from '@beabee/locale';
+
+import type {
+  adminEmailTemplates,
+  contactEmailTemplates,
+  generalEmailTemplates,
+} from '#data/email-templates';
 import type { Email } from '#models/index';
 
 export interface EmailTemplate {
@@ -28,6 +35,12 @@ export interface EmailOptions {
   sendAt?: Date | undefined;
 }
 
+export interface PreviewEmailOptions {
+  templateId?: EmailTemplateId;
+  mergeFields?: Record<string, string>;
+  subject?: string;
+  body?: string;
+}
 export interface PreparedEmail extends Email {
   fromEmail: string;
   fromName: string;
@@ -47,3 +60,65 @@ export interface EmailProvider {
   getTemplateEmail(templateId: string): Promise<false | Email | null>;
   getTemplates(): Promise<EmailTemplate[]>;
 }
+
+/**
+ * Type helper for general email templates
+ */
+export type GeneralEmailTemplates = typeof generalEmailTemplates;
+
+/**
+ * General email template IDs
+ * Derived from generalEmailTemplates
+ */
+export type GeneralEmailTemplateId = keyof typeof generalEmailTemplates;
+
+/**
+ * Type helper for admin email templates
+ */
+export type AdminEmailTemplates = typeof adminEmailTemplates;
+
+/**
+ * Admin email template IDs
+ * Derived from adminEmailTemplates
+ */
+export type AdminEmailTemplateId = keyof typeof adminEmailTemplates;
+
+/**
+ * Type helper for contact email templates
+ */
+export type ContactEmailTemplates = typeof contactEmailTemplates;
+
+/**
+ * Contact email template IDs
+ * Derived from contactEmailTemplates
+ */
+export type ContactEmailTemplateId = keyof typeof contactEmailTemplates;
+
+/**
+ * All available email template IDs
+ */
+export type EmailTemplateId =
+  | GeneralEmailTemplateId
+  | AdminEmailTemplateId
+  | ContactEmailTemplateId;
+
+/**
+ * Helper type to extract parameters for contact email templates
+ */
+export type ContactEmailParams<T extends ContactEmailTemplateId> = Parameters<
+  ContactEmailTemplates[T]
+>[1];
+
+/**
+ * Helper type to extract parameters for general email templates
+ */
+export type GeneralEmailParams<T extends GeneralEmailTemplateId> = Parameters<
+  GeneralEmailTemplates[T]
+>[0];
+
+/**
+ * Helper type to extract parameters for admin email templates
+ */
+export type AdminEmailParams<T extends AdminEmailTemplateId> = Parameters<
+  AdminEmailTemplates[T]
+>[0];

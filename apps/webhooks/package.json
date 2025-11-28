@@ -29,7 +29,7 @@
     "gocardless-nodejs": "^4.3.0",
     "moment": "^2.30.1",
     "stripe": "^15.9.0",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.27"
   },
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
@@ -41,7 +41,7 @@
     "dpdm": "^3.14.0",
     "prettier": "^3.5.2",
     "rimraf": "^6.0.1",
-    "typescript": "~5.8.3"
+    "typescript": "~5.9.3"
   },
   "repository": {
     "type": "git",
