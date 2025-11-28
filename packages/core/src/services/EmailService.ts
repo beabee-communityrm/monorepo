@@ -383,11 +383,7 @@ class EmailService {
     };
 
     // 3. Special handling for callout-response-answers template
-    // If ANSWERS is not provided in merge fields, format empty answers for preview
-    if (
-      opts?.templateId === 'callout-response-answers' ||
-      !mergeFields.ANSWERS
-    ) {
+    if (opts?.templateId === 'callout-response-answers') {
       await this.formatCalloutAnswersForPreview(mergeFields);
     }
 
