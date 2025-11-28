@@ -19,7 +19,7 @@
 
     <div
       v-if="editor"
-      class="relative mb-2 flex flex-row gap-1"
+      class="mb-2 flex flex-row gap-1"
       role="toolbar"
       :aria-label="t('form.richtext.toolbar')"
     >
