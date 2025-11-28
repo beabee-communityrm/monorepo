@@ -20,6 +20,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import { addBreadcrumb } from '../../store/breadcrumb';
+import type { BreadcrumbItem } from '../../type/breadcrumb-item';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -39,8 +40,25 @@ const tabs = computed(() =>
 );
 
 addBreadcrumb(
-  computed(() => [
-    { title: t('menu.emails'), to: '/admin/emails', icon: faEnvelope },
-  ])
+  computed((): BreadcrumbItem[] => {
+    const breadcrumb: BreadcrumbItem[] = [
+      { title: t('menu.emails'), icon: faEnvelope },
+    ];
+
+    // Add tab-specific breadcrumb based on current route
+    if (route.name === 'adminEmailsCustom') {
+      breadcrumb.push({
+        title: t('emails.tabs.custom'),
+        to: '/admin/emails/custom',
+      });
+    } else if (route.name === 'adminEmailsTemplates') {
+      breadcrumb.push({
+        title: t('emails.tabs.templates'),
+        to: '/admin/emails/templates',
+      });
+    }
+
+    return breadcrumb;
+  })
 );
 </script>

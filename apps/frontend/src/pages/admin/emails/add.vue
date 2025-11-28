@@ -42,7 +42,6 @@ import { AppForm, AppInput, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import EmailEditor from '@components/EmailEditor.vue';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { computed, reactive } from 'vue';
@@ -54,7 +53,7 @@ const router = useRouter();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.emails'), to: '/admin/emails', icon: faEnvelope },
+    { title: t('emails.tabs.custom'), to: '/admin/emails/custom' },
     { title: t('emails.add.title') },
   ])
 );

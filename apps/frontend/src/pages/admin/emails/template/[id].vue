@@ -71,7 +71,6 @@ import { AppButton, AppForm, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import EmailEditor from '@components/EmailEditor.vue';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { computed, onMounted, ref } from 'vue';
@@ -103,7 +102,6 @@ const pageTitle = computed(() => {
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.emails'), to: '/admin/emails', icon: faEnvelope },
     { title: t('emails.tabs.templates'), to: '/admin/emails/templates' },
     { title: pageTitle.value },
   ])
