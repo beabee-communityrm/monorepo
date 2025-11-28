@@ -1266,7 +1266,8 @@
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
-      "underline": ""
+      "underline": "",
+      "mergeFields": "Campi di unione"
     },
     "saveChanges": "",
     "saved": "Salvato!",

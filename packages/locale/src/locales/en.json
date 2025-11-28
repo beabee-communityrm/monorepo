@@ -1266,7 +1266,8 @@
       "numberedlist": "Numbered list",
       "strikethrough": "Strikethrough",
       "toolbar": "Rich text formatting toolbar",
-      "underline": "Underline"
+      "underline": "Underline",
+      "mergeFields": "Placeholders"
     },
     "saveChanges": "Save Changes",
     "saved": "Saved!",

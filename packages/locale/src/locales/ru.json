@@ -1267,7 +1267,8 @@
       "numberedlist": "Нумерованный список",
       "strikethrough": "Перечёркнутый",
       "toolbar": "",
-      "underline": "Подчёркнутый"
+      "underline": "Подчёркнутый",
+      "mergeFields": "Поля слияния"
     },
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",

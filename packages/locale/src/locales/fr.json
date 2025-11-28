@@ -1270,7 +1270,8 @@
       "numberedlist": "Liste ordonnée",
       "strikethrough": "Barré",
       "toolbar": "",
-      "underline": "Souligné"
+      "underline": "Souligné",
+      "mergeFields": "Champs de fusion"
     },
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",
