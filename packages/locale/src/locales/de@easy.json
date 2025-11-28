@@ -1448,7 +1448,8 @@
     "notices": "",
     "payments": "",
     "settings": "",
-    "yourProfile": ""
+    "yourProfile": "",
+    "emails": ""
   },
   "newsletterOptIn": {
     "groups": {
@@ -1645,5 +1646,6 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
-  }
+  },
+  "emails": {}
 }
