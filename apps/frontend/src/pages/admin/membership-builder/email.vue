@@ -33,6 +33,14 @@ meta:
       :heading="stepT('cancellationEmail')"
       :template="{ type: 'contact', id: 'cancelled-contribution' }"
     />
+
+    <EmailEditor
+      v-if="oneTimeDonationEmail"
+      v-model:subject="oneTimeDonationEmail.subject"
+      v-model:content="oneTimeDonationEmail.body"
+      :label="stepT('oneTimeDonationEmail')"
+      :template="{ type: 'contact', id: 'one-time-donation' }"
+    />
   </AppForm>
 </template>
 <script lang="ts" setup>
@@ -49,6 +57,7 @@ const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);
 
 const welcomeEmail = ref<GetEmailData | false>();
 const cancellationEmail = ref<GetEmailData | false>();
+const oneTimeDonationEmail = ref<GetEmailData | false>();
 
 async function loadEmail(id: string): Promise<GetEmailData | false> {
   try {
@@ -71,10 +80,14 @@ async function handleUpdate() {
       cancellationEmail.value
     );
   }
+  if (oneTimeDonationEmail.value) {
+    await client.email.update('one-time-donation', oneTimeDonationEmail.value);
+  }
 }
 
 onBeforeMount(async () => {
   welcomeEmail.value = await loadEmail('welcome');
   cancellationEmail.value = await loadEmail('cancelled-contribution');
+  oneTimeDonationEmail.value = await loadEmail('one-time-donation');
 });
 </script>
