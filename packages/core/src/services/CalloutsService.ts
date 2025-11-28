@@ -603,10 +603,11 @@ export class CalloutsService {
     const variant = await this.getDefaultVariant(callout);
 
     // Check if custom subject and body are configured
-    if (!variant.responseEmailBody) {
+    if (!variant.responseEmailSubject || !variant.responseEmailBody) {
       log.warning(
         `Callout ${callout.id} has sendResponseEmail enabled but no email content configured`
       );
+      return;
     }
 
     // Format response answers as HTML
@@ -622,13 +623,10 @@ export class CalloutsService {
       }
     );
 
-    // Send custom email using the callout-response-answers template
-    // The template includes proper email structure (header, footer, etc.)
-    // Merge fields like *|FNAME|*, *|EMAIL|*, *|ANSWERS|* etc. will be replaced
     await EmailService.sendCustomEmailToContact(
       contact,
-      variant.responseEmailSubject || '',
-      variant.responseEmailBody || '',
+      variant.responseEmailSubject,
+      variant.responseEmailBody,
       {
         mergeFields,
       }
