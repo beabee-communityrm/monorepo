@@ -50,9 +50,12 @@ const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);
 const welcomeEmail = ref<EmailPreviewData | false>();
 const cancellationEmail = ref<EmailPreviewData | false>();
 
-async function loadEmail(id: string): Promise<EmailPreviewData | false> {
+async function loadEmail(
+  templateId: string
+): Promise<EmailPreviewData | false> {
   try {
-    return await client.email.get(id);
+    const email = await client.email.template.get(templateId);
+    return { subject: email.subject, body: email.body };
   } catch (err) {
     if (isApiError(err, ['external-email-template'])) {
       return false;
@@ -63,10 +66,10 @@ async function loadEmail(id: string): Promise<EmailPreviewData | false> {
 
 async function handleUpdate() {
   if (welcomeEmail.value) {
-    await client.email.update('welcome', welcomeEmail.value);
+    await client.email.template.update('welcome', welcomeEmail.value);
   }
   if (cancellationEmail.value) {
-    await client.email.update(
+    await client.email.template.update(
       'cancelled-contribution',
       cancellationEmail.value
     );
