@@ -322,8 +322,8 @@ class EmailService {
    * @param template The template ID
    * @returns The email template:
    *   - Override email if one exists (Email with templateId set)
-   *   - Default template from .yfm files if no override
-   *   - Empty template if no default exists (allows creating new overrides)
+   *   - Default template from .yfm files if no override and default exists
+   *   - Empty template if no override and no default exists (allows creating new overrides)
    */
   async getTemplateEmail(template: EmailTemplateId): Promise<Email> {
     // Check for override in database
@@ -334,14 +334,14 @@ class EmailService {
       return override;
     }
 
-    // Fall back to default template
+    // Fall back to default template if it exists
     const defaultEmail = this.getDefaultEmail(template);
     if (defaultEmail) {
       return defaultEmail;
     }
 
-    // Create an empty template for templates without .yfm defaults
-    // This allows users to create overrides for all defined templates
+    // No override and no default template exists
+    // Create an empty template to allow users to create overrides for all defined templates
     const email = new Email();
     email.id = `default-${template}`;
     email.name = template;
@@ -470,12 +470,14 @@ class EmailService {
       const hasOverride = overrideMap.has(id);
       const overrideSubject = overrideMap.get(id);
       const defaultEmail = this.getDefaultEmail(id as EmailTemplateId);
+      const hasDefaultTemplate = defaultEmail !== undefined;
 
       return {
         id,
         type: metadata.type,
         mergeFields: metadata.mergeFields,
         hasOverride,
+        hasDefaultTemplate,
         subject: hasOverride ? overrideSubject! : (defaultEmail?.subject ?? ''),
       };
     });

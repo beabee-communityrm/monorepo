@@ -1668,6 +1668,9 @@
     "mailingCount": "Versendete E-Mails",
     "status": "Status",
     "type": "Typ",
+    "customized": "Angepasst",
+    "default": "Standard",
+    "missingDefault": "Kein Template",
     "actions": {
       "addCustom": "Eigene E-Mail hinzufügen",
       "resetToDefault": "Auf Standard zurücksetzen"
@@ -1717,8 +1720,6 @@
       "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
       "templatesAssigned": "",
       "templateAssigned": ""
-    },
-    "customized": "Angepasst",
-    "default": "Standard"
+    }
   }
 }

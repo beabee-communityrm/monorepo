@@ -24,18 +24,31 @@ meta:
       <span class="text-body-80">{{ value }}</span>
     </template>
     <template #value-status="{ item }">
-      <div class="flex items-center justify-end gap-2">
-        <span v-if="item.hasOverride" class="text-xs font-medium text-body-80">
+      <div class="flex items-center justify-end gap-2 text-xs font-medium">
+        <span v-if="item.hasOverride" class="text-body-80">
           {{ t('emails.customized') }}
         </span>
-        <span v-else class="text-xs text-body-80">
+        <span v-else-if="!item.hasDefaultTemplate" class="text-danger">
+          {{ t('emails.missingDefault') }}
+        </span>
+        <span v-else class="text-body-80">
           {{ t('emails.default') }}
         </span>
         <AppRoundBadge
-          :type="item.hasOverride ? 'warning' : 'success'"
+          :type="
+            item.hasOverride
+              ? 'success'
+              : !item.hasDefaultTemplate
+                ? 'danger'
+                : 'warning'
+          "
           size="small"
           :aria-label="
-            item.hasOverride ? t('emails.customized') : t('emails.default')
+            item.hasOverride
+              ? t('emails.customized')
+              : !item.hasDefaultTemplate
+                ? t('emails.missingDefault')
+                : t('emails.default')
           "
         />
       </div>

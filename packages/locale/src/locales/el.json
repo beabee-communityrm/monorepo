@@ -1719,6 +1719,7 @@
       "templateAssigned": ""
     },
     "customized": "Προσαρμοσμένο",
-    "default": "Προεπιλογή"
+    "default": "Προεπιλογή",
+    "missingDefault": "Χωρίς προεπιλεγμένο πρότυπο"
   }
 }

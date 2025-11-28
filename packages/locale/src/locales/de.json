@@ -1156,6 +1156,7 @@
     "type": "Typ",
     "customized": "Angepasst",
     "default": "Standard",
+    "missingDefault": "Kein Template",
     "actions": {
       "addCustom": "Benutzerdefinierte E-Mail hinzufügen",
       "resetToDefault": "Auf Standard zurücksetzen"

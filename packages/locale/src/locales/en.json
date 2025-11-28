@@ -1156,6 +1156,7 @@
     "type": "Type",
     "customized": "Customized",
     "default": "Default",
+    "missingDefault": "No template",
     "actions": {
       "addCustom": "Add Custom Email",
       "resetToDefault": "Reset to Default"

@@ -1723,6 +1723,7 @@
       "templateAssigned": ""
     },
     "customized": "Personnalisé",
-    "default": "Par défaut"
+    "default": "Par défaut",
+    "missingDefault": "Aucun modèle par défaut"
   }
 }

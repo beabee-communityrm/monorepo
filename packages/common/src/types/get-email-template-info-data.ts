@@ -7,6 +7,8 @@ export interface GetEmailTemplateInfoData {
   mergeFields: string[];
   /** Whether this template has a custom override */
   hasOverride: boolean;
+  /** Whether a default template file exists for this template */
+  hasDefaultTemplate: boolean;
   /** The current subject (from override or default template) */
   subject: string;
 }

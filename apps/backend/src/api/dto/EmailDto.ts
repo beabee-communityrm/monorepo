@@ -117,6 +117,8 @@ export class GetEmailTemplateInfoDto {
 
   hasOverride!: boolean;
 
+  hasDefaultTemplate!: boolean;
+
   @IsString()
   subject!: string;
 }

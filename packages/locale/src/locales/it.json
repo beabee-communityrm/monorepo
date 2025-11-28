@@ -1719,6 +1719,7 @@
       "templateAssigned": ""
     },
     "customized": "Personalizzato",
-    "default": "Predefinito"
+    "default": "Predefinito",
+    "missingDefault": "Nessun modello predefinito"
   }
 }
