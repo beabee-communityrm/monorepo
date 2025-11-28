@@ -8,12 +8,12 @@ import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
 import type { ContactMfaSecure } from '@beabee/core/type';
 import { generatePassword, isValidPassword } from '@beabee/core/utils/auth';
-import { normalizeEmailAddress } from '@beabee/core/utils/email';
 
 import passport from 'passport';
 import passportLocal from 'passport-local';
 
 import type { LoginData, PassportLocalDoneCallback } from '#type';
+import { normalizeEmailAddress } from '#utils/email';
 
 // Add support for local authentication in Passport.js
 passport.use(

@@ -79,6 +79,7 @@
         :current-slide="currentSlide"
         :current-tab="currentSidebarTab"
         :status="status"
+        :tabs="tabs"
       />
     </div>
   </div>
@@ -100,9 +101,12 @@ import Draggable from 'vuedraggable';
 
 import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.interface';
 import CalloutSlideItem from './CalloutSlideItem.vue';
-import ContentFormTab from './SidebarTabContent/ContentFormTab.vue';
-import EndMessageTab from './SidebarTabContent/EndMessageTab.vue';
-import IntroMessageTab from './SidebarTabContent/IntroMessageTab.vue';
+import {
+  ContentFormTab,
+  EmailTab,
+  EndMessageTab,
+  IntroMessageTab,
+} from './SidebarTabContent';
 import type { SidebarTabs, SidebarTabsData } from './SidebarTabs.interface';
 import SidebarTabContent from './SidebarTabsContent.vue';
 import SidebarTabsNavigation from './SidebarTabsNavigation.vue';
@@ -183,6 +187,13 @@ const sidebarTabs = reactive<SidebarTabs>({
     error: false,
     component: markRaw(EndMessageTab),
     data: props.data.sidebarTabs.endMessage,
+  },
+  email: {
+    name: t('callout.builder.tabs.email.title'),
+    validated: false,
+    error: false,
+    component: markRaw(EmailTab),
+    data: props.data.sidebarTabs.email,
   },
 });
 

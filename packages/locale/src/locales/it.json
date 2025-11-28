@@ -366,6 +366,23 @@
         "content": {
           "title": ""
         },
+        "email": {
+          "title": "Email",
+          "body": {
+            "default": "<p>Ciao {'*|FNAME|*'},</p><p>Questa e-mail conferma la sua risposta al callout <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> utilizzando il suo indirizzo e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Per qualsiasi domanda, contattare il nostro team di supporto all'indirizzo <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Cordiali saluti</p>"
+          },
+          "collectInfoWarning": {
+            "description": "Per inviare un'email a tutti i partecipanti è necessario abilitare \"Raccogli informazioni di contatto\" nella scheda Impostazioni",
+            "title": "Informazioni di contatto non raccolte"
+          },
+          "sendEmail": {
+            "description": "L'email verrà inviata a tutti i partecipanti che inviano le loro informazioni di contatto",
+            "label": "Invia un'email a tutti i partecipanti dopo l'invio"
+          },
+          "subject": {
+            "default": "Grazie per la tua risposta"
+          }
+        },
         "endMessage": {
           "inputs": {
             "action": {
@@ -1102,7 +1119,19 @@
     "warning": "Attenzione! Stai modificando una CrowdNewsroom attiva. Modificare le proprietà del modulo può rendere inutilizzabili le risposte precedenti."
   },
   "editNotice": {
-    "title": ""
+    "title": "Modifica: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Oggetto"
+    },
+    "body": {
+      "label": "Messaggio"
+    },
+    "preview": {
+      "label": "Anteprima",
+      "unavailable": "Anteprima non disponibile"
+    }
   },
   "footer": {
     "contactUs": "Contattaci a",

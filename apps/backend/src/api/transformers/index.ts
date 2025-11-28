@@ -19,6 +19,7 @@ export * from './ContactRoleTransformer.js';
 export * from './ContactTagTransformer.js';
 export * from './ContactTransformer.js';
 export * from './ContentTransformer.js';
+export * from './EmailTransformer.js';
 export * from './NoticeTransformer.js';
 export * from './PaymentTransformer.js';
 export * from './SegmentTransformer.js';
