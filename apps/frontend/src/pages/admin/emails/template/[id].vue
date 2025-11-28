@@ -32,8 +32,11 @@ meta:
         <p class="text-body">{{ t(`emails.templates.names.${templateId}`) }}</p>
       </div>
 
-      <!-- Available merge fields -->
-      <div v-if="mergeFields.length > 0" class="rounded bg-primary-5 p-4">
+      <!-- Available merge fields
+           TODO: Temporary solution until PR #364 is merged. After merge, this will be
+           replaced with the new AppMergeFields component that allows inserting merge fields
+           directly in the EmailEditor rich text editor toolbar. -->
+      <div v-if="mergeFields.length > 0">
         <p class="mb-2 text-sm font-medium text-body-80">
           {{ t('emails.templates.availableFields') }}:
         </p>
