@@ -1136,15 +1136,11 @@
   "emails": {
     "actions": {
       "addCustom": "",
-      "assignTemplates": "",
-      "editEmail": "",
       "resetToDefault": ""
     },
     "add": {
       "title": ""
     },
-    "assignedTemplates": "",
-    "assignedTo": "",
     "confirmDelete": {
       "message": "",
       "messageWithMailings": "",
@@ -1154,34 +1150,26 @@
       "message": "",
       "title": ""
     },
-    "custom": "",
     "customized": "",
     "default": "",
     "edit": {
       "title": "",
-      "titleCustom": "",
-      "titleSystemOverride": ""
+      "titleCustom": ""
     },
     "fromEmail": "",
     "fromName": "",
     "list": {
-      "noEmails": "",
-      "showingOf": "",
-      "title": ""
+      "showingOf": ""
     },
     "mailingCount": "",
     "name": "",
-    "noAssignedTemplates": "",
     "notifications": {
       "created": "",
       "deleted": "",
       "resetToDefault": "",
-      "templateAssigned": "",
-      "templatesAssigned": "",
       "updated": ""
     },
     "status": "",
-    "systemOverride": "",
     "tabs": {
       "custom": "",
       "templates": ""
@@ -1209,17 +1197,12 @@
         "welcome": "",
         "welcome-post-gift": ""
       },
-      "select": "",
-      "selectOverride": "",
-      "title": "",
       "type": {
         "admin": "",
         "contact": "",
         "general": ""
-      },
-      "useDefault": ""
-    },
-    "title": ""
+      }
+    }
   },
   "footer": {
     "contactUs": "",

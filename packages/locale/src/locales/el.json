@@ -1648,14 +1648,11 @@
     "invoiceName": ""
   },
   "emails": {
-    "title": "Διαχείριση Email",
     "tabs": {
       "custom": "Προσαρμοσμένα Email",
       "templates": "Πρότυπα Συστήματος"
     },
     "list": {
-      "title": "Email",
-      "noEmails": "Δεν βρέθηκαν email",
       "showingOf": "Εμφάνιση {start} έως {end} email από {total}"
     },
     "add": {
@@ -1663,30 +1660,18 @@
     },
     "edit": {
       "title": "Επεξεργασία email",
-      "titleCustom": "Επεξεργασία: {name}",
-      "titleSystemOverride": "Παράκαμψη: {name}"
+      "titleCustom": "Επεξεργασία: {name}"
     },
     "name": "Όνομα email",
     "fromName": "Όνομα αποστολέα",
     "fromEmail": "Email αποστολέα",
-    "custom": "Προσαρμοσμένο email",
-    "systemOverride": "Παράκαμψη προτύπου συστήματος",
-    "assignedTemplates": "Ανατεθειμένα πρότυπα",
-    "assignedTo": "Ανατεθειμένο σε",
-    "noAssignedTemplates": "Δεν έχει ανατεθεί σε συμβάντα συστήματος",
     "mailingCount": "Αποσταλμένα email",
     "status": "Κατάσταση",
     "actions": {
       "addCustom": "Προσθήκη προσαρμοσμένου email",
-      "resetToDefault": "Επαναφορά στα προεπιλεγμένα",
-      "assignTemplates": "Ανάθεση σε συμβάντα συστήματος",
-      "editEmail": "Επεξεργασία email"
+      "resetToDefault": "Επαναφορά στα προεπιλεγμένα"
     },
     "templates": {
-      "title": "Πρότυπα Email Συστήματος",
-      "select": "Επιλέξτε πρότυπα για ανάθεση",
-      "useDefault": "Χρήση προεπιλεγμένου προτύπου",
-      "selectOverride": "Επιλέξτε παράκαμψη email",
       "availableFields": "Διαθέσιμα πεδία",
       "type": {
         "general": "Γενικά",

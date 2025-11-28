@@ -1649,14 +1649,11 @@
     "invoiceName": "???"
   },
   "emails": {
-    "title": "Управление письмами",
     "tabs": {
       "custom": "Пользовательские письма",
       "templates": "Системные шаблоны"
     },
     "list": {
-      "title": "Письма",
-      "noEmails": "Письма не найдены",
       "showingOf": "Показано {start} - {end} писем из {total}"
     },
     "add": {
@@ -1664,30 +1661,18 @@
     },
     "edit": {
       "title": "Редактировать письмо",
-      "titleCustom": "Редактировать: {name}",
-      "titleSystemOverride": "Переопределить: {name}"
+      "titleCustom": "Редактировать: {name}"
     },
     "name": "Название письма",
     "fromName": "Имя отправителя",
     "fromEmail": "Email отправителя",
-    "custom": "Пользовательское письмо",
-    "systemOverride": "Переопределение системного шаблона",
-    "assignedTemplates": "Назначенные шаблоны",
-    "assignedTo": "Назначено",
-    "noAssignedTemplates": "Не назначено системным событиям",
     "mailingCount": "Отправленных писем",
     "status": "Статус",
     "actions": {
       "addCustom": "Добавить пользовательское письмо",
-      "resetToDefault": "Сбросить к исходному",
-      "assignTemplates": "Назначить системным событиям",
-      "editEmail": "Редактировать письмо"
+      "resetToDefault": "Сбросить к исходному"
     },
     "templates": {
-      "title": "Системные шаблоны писем",
-      "select": "Выберите шаблоны для назначения",
-      "useDefault": "Использовать шаблон по умолчанию",
-      "selectOverride": "Выберите переопределение письма",
       "availableFields": "Доступные поля",
       "type": {
         "general": "Общие",

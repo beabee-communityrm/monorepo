@@ -1648,14 +1648,11 @@
     "invoiceName": "BTW"
   },
   "emails": {
-    "title": "E-mailbeheer",
     "tabs": {
       "custom": "Aangepaste e-mails",
       "templates": "Systeemsjablonen"
     },
     "list": {
-      "title": "E-mails",
-      "noEmails": "Geen e-mails gevonden",
       "showingOf": "Toont {start} tot {end} e-mails van {total}"
     },
     "add": {
@@ -1663,30 +1660,18 @@
     },
     "edit": {
       "title": "E-mail bewerken",
-      "titleCustom": "Bewerken: {name}",
-      "titleSystemOverride": "Overschrijven: {name}"
+      "titleCustom": "Bewerken: {name}"
     },
     "name": "E-mailnaam",
     "fromName": "Afzendernaam",
     "fromEmail": "Afzender e-mail",
-    "custom": "Aangepaste e-mail",
-    "systemOverride": "Systeemsjabloon overschrijving",
-    "assignedTemplates": "Toegewezen sjablonen",
-    "assignedTo": "Toegewezen aan",
-    "noAssignedTemplates": "Niet toegewezen aan systeemgebeurtenissen",
     "mailingCount": "Verzonden e-mails",
     "status": "Status",
     "actions": {
       "addCustom": "Aangepaste e-mail toevoegen",
-      "resetToDefault": "Terugzetten naar standaard",
-      "assignTemplates": "Toewijzen aan systeemgebeurtenissen",
-      "editEmail": "E-mail bewerken"
+      "resetToDefault": "Terugzetten naar standaard"
     },
     "templates": {
-      "title": "Systeem e-mailsjablonen",
-      "select": "Selecteer sjablonen om toe te wijzen",
-      "useDefault": "Standaardsjabloon gebruiken",
-      "selectOverride": "Selecteer e-mail overschrijving",
       "availableFields": "Beschikbare velden",
       "type": {
         "general": "Algemeen",

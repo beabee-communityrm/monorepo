@@ -1134,14 +1134,11 @@
     }
   },
   "emails": {
-    "title": "Email Management",
     "tabs": {
       "custom": "Custom Emails",
       "templates": "System Templates"
     },
     "list": {
-      "title": "Emails",
-      "noEmails": "No emails found",
       "showingOf": "Showing {start} to {end} emails out of {total}"
     },
     "add": {
@@ -1149,32 +1146,20 @@
     },
     "edit": {
       "title": "Edit Email",
-      "titleCustom": "Edit: {name}",
-      "titleSystemOverride": "Override: {name}"
+      "titleCustom": "Edit: {name}"
     },
     "name": "Email name",
     "fromName": "From name",
     "fromEmail": "From email",
-    "custom": "Custom Email",
-    "systemOverride": "System Template Override",
-    "assignedTemplates": "Assigned Templates",
-    "assignedTo": "Assigned to",
-    "noAssignedTemplates": "Not assigned to any system events",
     "mailingCount": "Mailings sent",
     "status": "Status",
     "customized": "Customized",
     "default": "Default",
     "actions": {
       "addCustom": "Add Custom Email",
-      "resetToDefault": "Reset to Default",
-      "assignTemplates": "Assign to System Events",
-      "editEmail": "Edit Email"
+      "resetToDefault": "Reset to Default"
     },
     "templates": {
-      "title": "System Email Templates",
-      "select": "Select templates to assign",
-      "useDefault": "Use default template",
-      "selectOverride": "Select email override",
       "availableFields": "Available fields",
       "type": {
         "general": "General",
@@ -1216,9 +1201,7 @@
       "created": "Email created successfully",
       "updated": "Email updated successfully",
       "deleted": "Email deleted successfully",
-      "resetToDefault": "Template reset to default successfully",
-      "templatesAssigned": "Templates assigned successfully",
-      "templateAssigned": "Template assignment updated"
+      "resetToDefault": "Template reset to default successfully"
     }
   },
   "footer": {

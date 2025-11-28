@@ -1648,14 +1648,11 @@
     "invoiceName": "???"
   },
   "emails": {
-    "title": "Gestão de emails",
     "tabs": {
       "custom": "Emails personalizados",
       "templates": "Modelos do sistema"
     },
     "list": {
-      "title": "Emails",
-      "noEmails": "Nenhum email encontrado",
       "showingOf": "A mostrar {start} a {end} emails de {total}"
     },
     "add": {
@@ -1663,30 +1660,18 @@
     },
     "edit": {
       "title": "Editar email",
-      "titleCustom": "Editar: {name}",
-      "titleSystemOverride": "Substituir: {name}"
+      "titleCustom": "Editar: {name}"
     },
     "name": "Nome do email",
     "fromName": "Nome do remetente",
     "fromEmail": "Email do remetente",
-    "custom": "Email personalizado",
-    "systemOverride": "Substituição de modelo do sistema",
-    "assignedTemplates": "Modelos atribuídos",
-    "assignedTo": "Atribuído a",
-    "noAssignedTemplates": "Não atribuído a eventos do sistema",
     "mailingCount": "Emails enviados",
     "status": "Estado",
     "actions": {
       "addCustom": "Adicionar email personalizado",
-      "resetToDefault": "Repor predefinição",
-      "assignTemplates": "Atribuir a eventos do sistema",
-      "editEmail": "Editar email"
+      "resetToDefault": "Repor predefinição"
     },
     "templates": {
-      "title": "Modelos de email do sistema",
-      "select": "Selecionar modelos para atribuir",
-      "useDefault": "Usar modelo predefinido",
-      "selectOverride": "Selecionar substituição de email",
       "availableFields": "Campos disponíveis",
       "type": {
         "general": "Geral",

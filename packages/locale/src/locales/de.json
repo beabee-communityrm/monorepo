@@ -1134,14 +1134,11 @@
     }
   },
   "emails": {
-    "title": "E-Mail-Verwaltung",
     "tabs": {
       "custom": "Benutzerdefinierte E-Mails",
       "templates": "System-Vorlagen"
     },
     "list": {
-      "title": "E-Mails",
-      "noEmails": "Keine E-Mails gefunden",
       "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
     },
     "add": {
@@ -1149,32 +1146,20 @@
     },
     "edit": {
       "title": "E-Mail bearbeiten",
-      "titleCustom": "Bearbeiten: {name}",
-      "titleSystemOverride": "Überschreiben: {name}"
+      "titleCustom": "Bearbeiten: {name}"
     },
     "name": "E-Mail-Name",
     "fromName": "Absendername",
     "fromEmail": "Absender-E-Mail",
-    "custom": "Benutzerdefinierte E-Mail",
-    "systemOverride": "System-Vorlagen-Überschreibung",
-    "assignedTemplates": "Zugewiesene Vorlagen",
-    "assignedTo": "Zugewiesen an",
-    "noAssignedTemplates": "Keinen System-Events zugewiesen",
     "mailingCount": "Versendete E-Mails",
     "status": "Status",
     "customized": "Angepasst",
     "default": "Standard",
     "actions": {
       "addCustom": "Benutzerdefinierte E-Mail hinzufügen",
-      "resetToDefault": "Auf Standard zurücksetzen",
-      "assignTemplates": "System-Events zuweisen",
-      "editEmail": "E-Mail bearbeiten"
+      "resetToDefault": "Auf Standard zurücksetzen"
     },
     "templates": {
-      "title": "System-E-Mail-Vorlagen",
-      "select": "Vorlagen zum Zuweisen auswählen",
-      "useDefault": "Standardvorlage verwenden",
-      "selectOverride": "E-Mail-Überschreibung auswählen",
       "availableFields": "Verfügbare Felder",
       "type": {
         "general": "Allgemein",
@@ -1216,9 +1201,7 @@
       "created": "E-Mail erfolgreich erstellt",
       "updated": "E-Mail erfolgreich aktualisiert",
       "deleted": "E-Mail erfolgreich gelöscht",
-      "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
-      "templateAssigned": "Vorlagenzuweisung aktualisiert",
-      "templatesAssigned": "Vorlagen erfolgreich zugewiesen"
+      "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt"
     }
   },
   "footer": {

@@ -1652,14 +1652,11 @@
     "invoiceName": "TVA"
   },
   "emails": {
-    "title": "Gestion des e-mails",
     "tabs": {
       "custom": "E-mails personnalisés",
       "templates": "Modèles système"
     },
     "list": {
-      "title": "E-mails",
-      "noEmails": "Aucun e-mail trouvé",
       "showingOf": "Affichage de {start} à {end} e-mails sur {total}"
     },
     "add": {
@@ -1667,30 +1664,18 @@
     },
     "edit": {
       "title": "Modifier l'e-mail",
-      "titleCustom": "Modifier : {name}",
-      "titleSystemOverride": "Remplacer : {name}"
+      "titleCustom": "Modifier : {name}"
     },
     "name": "Nom de l'e-mail",
     "fromName": "Nom de l'expéditeur",
     "fromEmail": "E-mail de l'expéditeur",
-    "custom": "E-mail personnalisé",
-    "systemOverride": "Remplacement du modèle système",
-    "assignedTemplates": "Modèles assignés",
-    "assignedTo": "Assigné à",
-    "noAssignedTemplates": "Non assigné à des événements système",
     "mailingCount": "E-mails envoyés",
     "status": "Statut",
     "actions": {
       "addCustom": "Ajouter un e-mail personnalisé",
-      "resetToDefault": "Réinitialiser par défaut",
-      "assignTemplates": "Assigner aux événements système",
-      "editEmail": "Modifier l'e-mail"
+      "resetToDefault": "Réinitialiser par défaut"
     },
     "templates": {
-      "title": "Modèles d'e-mails système",
-      "select": "Sélectionner les modèles à assigner",
-      "useDefault": "Utiliser le modèle par défaut",
-      "selectOverride": "Sélectionner le remplacement d'e-mail",
       "availableFields": "Champs disponibles",
       "type": {
         "general": "Général",
