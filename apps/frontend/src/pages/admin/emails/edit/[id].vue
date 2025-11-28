@@ -20,26 +20,33 @@ meta:
 
   <AppForm v-else :button-text="t('actions.save')" @submit="handleSubmit">
     <!-- Custom Email Fields -->
-    <div class="mb-6 max-w-2xl">
-      <AppInput
-        v-model="emailData.name"
-        :label="t('emails.name')"
-        required
-        class="mb-4"
-      />
-      <AppInput
-        :model-value="emailData.fromName || undefined"
-        :label="t('emails.fromName')"
-        class="mb-4"
-        @update:model-value="emailData.fromName = $event || null"
-      />
-      <AppInput
-        :model-value="emailData.fromEmail || undefined"
-        :label="t('emails.fromEmail')"
-        type="email"
-        class="mb-4"
-        @update:model-value="emailData.fromEmail = $event || null"
-      />
+    <div class="mb-6 flex flex-col gap-6 md:flex-row">
+      <div class="min-w-0 flex-1">
+        <div class="mb-4">
+          <AppInput
+            v-model="emailData.name"
+            :label="t('emails.name')"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <AppInput
+            :model-value="emailData.fromName || undefined"
+            :label="t('emails.fromName')"
+            @update:model-value="emailData.fromName = $event || null"
+          />
+        </div>
+        <div class="mb-4">
+          <AppInput
+            :model-value="emailData.fromEmail || undefined"
+            :label="t('emails.fromEmail')"
+            type="email"
+            @update:model-value="emailData.fromEmail = $event || null"
+          />
+        </div>
+      </div>
+      <!-- Spacer to match EmailEditor preview panel width -->
+      <div class="w-full md:w-[600px]"></div>
     </div>
 
     <!-- Email Editor -->
