@@ -1,5 +1,4 @@
 import type {
-  AssignTemplateData,
   CreateEmailData,
   EmailPreviewData,
   GetEmailData,
@@ -88,25 +87,11 @@ export class EmailClient extends BaseClient {
   }
 
   /**
-   * Delete an email or remove a template override
-   * @param id - The email ID or template ID to delete
+   * Delete an email or reset a template override to default
+   * @param id - The email ID (for custom emails) or template ID (for overrides)
    */
   async delete(id: string): Promise<void> {
     await this.fetch.delete(`/${id}`);
-  }
-
-  /**
-   * Assign a template to an email (or unassign by passing null)
-   * @param templateId - The template ID
-   * @param emailId - The email ID to assign, or null to unassign
-   */
-  async assignTemplate(
-    templateId: string,
-    emailId: string | null
-  ): Promise<void> {
-    await this.fetch.put(`/templates/${templateId}`, {
-      emailId,
-    } as AssignTemplateData);
   }
 
   /**

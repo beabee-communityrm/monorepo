@@ -1675,6 +1675,7 @@
     "assignedTo": "Zugewiesen an",
     "noAssignedTemplates": "Keinen System-Events zugewiesen",
     "mailingCount": "Versendete E-Mails",
+    "status": "Status",
     "actions": {
       "addCustom": "Eigene E-Mail hinzufügen",
       "resetToDefault": "Auf Standard zurücksetzen",
@@ -1730,6 +1731,8 @@
       "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
       "templatesAssigned": "",
       "templateAssigned": ""
-    }
+    },
+    "customized": "Angepasst",
+    "default": "Standard"
   }
 }

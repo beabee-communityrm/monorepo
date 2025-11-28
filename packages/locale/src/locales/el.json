@@ -1675,6 +1675,7 @@
     "assignedTo": "Ανατεθειμένο σε",
     "noAssignedTemplates": "Δεν έχει ανατεθεί σε συμβάντα συστήματος",
     "mailingCount": "Αποσταλμένα email",
+    "status": "Κατάσταση",
     "actions": {
       "addCustom": "Προσθήκη προσαρμοσμένου email",
       "resetToDefault": "Επαναφορά στα προεπιλεγμένα",
@@ -1730,6 +1731,8 @@
       "resetToDefault": "Το πρότυπο επαναφέρθηκε στα προεπιλεγμένα επιτυχώς",
       "templatesAssigned": "",
       "templateAssigned": ""
-    }
+    },
+    "customized": "Προσαρμοσμένο",
+    "default": "Προεπιλογή"
   }
 }

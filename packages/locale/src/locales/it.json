@@ -1675,6 +1675,7 @@
     "assignedTo": "Assegnato a",
     "noAssignedTemplates": "Non assegnato a eventi di sistema",
     "mailingCount": "Email inviate",
+    "status": "Stato",
     "actions": {
       "addCustom": "Aggiungi email personalizzata",
       "resetToDefault": "Ripristina predefinito",
@@ -1730,6 +1731,8 @@
       "resetToDefault": "Modello ripristinato ai valori predefiniti con successo",
       "templatesAssigned": "",
       "templateAssigned": ""
-    }
+    },
+    "customized": "Personalizzato",
+    "default": "Predefinito"
   }
 }

@@ -6,7 +6,7 @@ meta:
 </route>
 
 <template>
-  <div class="space-y-6">
+  <div class="space-y-8">
     <section
       v-for="group in groupedTemplates"
       :key="group.type"
@@ -15,82 +15,40 @@ meta:
       <h2 class="text-xl font-semibold">
         {{ t(`emails.templates.type.${group.type}`) }}
       </h2>
-      <div class="space-y-4">
-        <div
-          v-for="template in group.templates"
-          :key="template.id"
-          class="rounded border border-primary-20 p-4"
-        >
-          <div
-            class="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
+      <AppTable :headers="headers" :items="group.templates" class="w-full">
+        <template #value-name="{ item }">
+          <router-link
+            :to="`/admin/emails/template/${item.id}`"
+            class="text-base font-bold text-link"
           >
-            <div class="flex-1">
-              <h3 class="text-lg font-semibold">
-                {{ t(`emails.templates.names.${template.id}`) }}
-              </h3>
-            </div>
-            <div class="flex-0 sm:ml-4">
-              <label :for="`template-${template.id}`" class="sr-only">
-                {{ t('emails.templates.selectOverride') }}
-              </label>
-              <select
-                :id="`template-${template.id}`"
-                :value="template.overrideEmailId || ''"
-                class="form-select w-full sm:w-auto"
-                @change="
-                  handleAssignment(
-                    template.id,
-                    ($event.target as HTMLSelectElement).value
-                  )
-                "
-              >
-                <option value="">{{ t('emails.templates.useDefault') }}</option>
-                <option
-                  v-for="email in customEmails"
-                  :key="email.id"
-                  :value="email.id"
-                >
-                  {{ email.name }}
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <div
-            v-if="template.mergeFields.length > 0"
-            class="text-xs text-body-60"
+            {{ t(`emails.templates.names.${item.id}`) }}
+          </router-link>
+        </template>
+        <template #value-subject="{ value }">
+          <span class="text-body-80">{{ value }}</span>
+        </template>
+        <template #value-status="{ item }">
+          <span
+            v-if="item.hasOverride"
+            class="inline-block rounded bg-warning-10 px-2 py-1 text-xs font-medium text-warning"
           >
-            <strong>{{ t('emails.templates.availableFields') }}:</strong>
-            <span v-for="(field, index) in template.mergeFields" :key="field">
-              *|{{ field }}|*<span
-                v-if="index < template.mergeFields.length - 1"
-                >,
-              </span>
-            </span>
-          </div>
-
-          <div v-if="template.overrideEmailId" class="mt-3 flex gap-2">
-            <AppButton
-              size="sm"
-              variant="link"
-              :to="`/admin/emails/edit/${template.overrideEmailId}`"
-            >
-              {{ t('emails.actions.editEmail') }}
-            </AppButton>
-          </div>
-        </div>
-      </div>
+            {{ t('emails.customized') }}
+          </span>
+          <span
+            v-else
+            class="inline-block rounded bg-primary-5 px-2 py-1 text-xs text-body-60"
+          >
+            {{ t('emails.default') }}
+          </span>
+        </template>
+      </AppTable>
     </section>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type {
-  GetEmailData,
-  GetEmailTemplateInfoData,
-} from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue';
-import { addNotification } from '@beabee/vue/store/notifications';
+import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
+import { AppTable, type Header } from '@beabee/vue';
 
 import { client } from '@utils/api';
 import { computed, onMounted, ref } from 'vue';
@@ -99,11 +57,15 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const templates = ref<GetEmailTemplateInfoData[]>([]);
-const customEmails = ref<GetEmailData[]>([]);
+
+const headers: Header[] = [
+  { value: 'name', text: t('emails.name') },
+  { value: 'subject', text: t('emailEditor.subject.label') },
+  { value: 'status', text: t('emails.status'), align: 'right' },
+];
 
 /**
- * Group templates by type
- * @description Organizes templates into groups by their type (general, admin, contact)
+ * Group templates by type (general, contact, admin)
  */
 const groupedTemplates = computed(() => {
   const groups: Record<
@@ -128,24 +90,5 @@ const groupedTemplates = computed(() => {
 
 onMounted(async () => {
   templates.value = await client.email.getTemplates();
-  const result = await client.email.list({ limit: 100 });
-  customEmails.value = result.items;
 });
-
-async function handleAssignment(templateId: string, emailId: string) {
-  try {
-    await client.email.assignTemplate(templateId, emailId || null);
-    // Reload templates to show updated assignment
-    templates.value = await client.email.getTemplates();
-    addNotification({
-      variant: 'success',
-      title: t('emails.notifications.templateAssigned'),
-    });
-  } catch {
-    addNotification({
-      variant: 'error',
-      title: t('notifications.error'),
-    });
-  }
-}
 </script>

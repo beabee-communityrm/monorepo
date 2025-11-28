@@ -1161,6 +1161,9 @@
     "assignedTo": "Zugewiesen an",
     "noAssignedTemplates": "Keinen System-Events zugewiesen",
     "mailingCount": "Versendete E-Mails",
+    "status": "Status",
+    "customized": "Angepasst",
+    "default": "Standard",
     "actions": {
       "addCustom": "Benutzerdefinierte E-Mail hinzufügen",
       "resetToDefault": "Auf Standard zurücksetzen",

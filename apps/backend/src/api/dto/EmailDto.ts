@@ -72,6 +72,10 @@ export class GetEmailDto {
   @IsString()
   id!: string;
 
+  @IsOptional()
+  @IsString()
+  templateId?: string;
+
   @IsString()
   name!: string;
 
@@ -92,17 +96,13 @@ export class GetEmailDto {
   @IsString()
   date!: string;
 
-  @IsArray()
-  @IsString({ each: true })
-  assignedTemplates!: string[];
-
   @IsOptional()
   mailingCount?: number;
 }
 
 /**
  * DTO for email template metadata
- * Note: Template names and merge field descriptions are handled in the frontend via translations
+ * Used for the system templates list view
  */
 export class GetEmailTemplateInfoDto {
   @IsString()
@@ -115,18 +115,10 @@ export class GetEmailTemplateInfoDto {
   @IsString({ each: true })
   mergeFields!: string[];
 
-  @IsOptional()
-  @IsString()
-  overrideEmailId?: string;
-}
+  hasOverride!: boolean;
 
-/**
- * DTO for assigning a template to an email
- */
-export class AssignTemplateDto {
-  @IsOptional()
   @IsString()
-  emailId!: string | null;
+  subject!: string;
 }
 
 /**

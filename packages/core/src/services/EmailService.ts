@@ -4,6 +4,7 @@ import { Locale, isLocale } from '@beabee/locale';
 import { isUUID } from 'class-validator';
 import fs from 'fs';
 import path from 'path';
+import { IsNull, Not } from 'typeorm';
 import { loadFront } from 'yaml-front-matter';
 
 import config from '#config/config';
@@ -16,7 +17,6 @@ import {
   getContactEmailMergeFields,
 } from '#data/email-templates';
 import { getRepository } from '#database';
-import { ExternalEmailTemplate } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Contact, Email } from '#models/index';
 import { MandrillProvider, SMTPProvider, SendGridProvider } from '#providers';
@@ -68,11 +68,14 @@ class EmailService {
       const { __content: body, ...data } = loadFront(
         fs.readFileSync(path.join(emailDir, emailFile))
       );
-      // TODO: currently just spoofing an Email, could revisit
+      // Create a spoofed Email object for default templates
+      // These are never saved to the database, so we set required fields manually
       const email = new Email();
       Object.assign(email, data);
       email.id = emailFile;
       email.body = body;
+      email.date = new Date(0); // Epoch date for default templates
+      email.templateId = null;
 
       if (!this.defaultEmails[locale as Locale]) {
         this.defaultEmails[locale as Locale] = {};
@@ -273,13 +276,12 @@ class EmailService {
   /**
    * Internal method to send email templates
    *
-   * Handles template resolution: external provider templates (Mandrill, SendGrid) or
-   * default templates from database. Called by sendTemplateTo, sendTemplateToContact,
-   * and sendTemplateToAdmin.
+   * Handles template resolution: database override or default template from .yfm files.
+   * Called by sendTemplateTo, sendTemplateToContact, and sendTemplateToAdmin.
    *
    * **Template resolution:**
-   * 1. External provider template (if configured)
-   * 2. Default template from database
+   * 1. Database override (Email with templateId)
+   * 2. Default template from .yfm files
    * 3. Special fallback: cancelled-contribution-no-survey → cancelled-contribution
    *
    * @param template The template ID to send
@@ -293,59 +295,84 @@ class EmailService {
     opts: EmailOptions | undefined,
     required: boolean
   ): Promise<void> {
-    const providerTemplate = this.getProviderTemplate(template);
-    if (providerTemplate) {
-      log.info('Sending template ' + template, {
-        template,
-        providerTemplate,
-        recipients,
-      });
-      try {
-        await this.provider.sendTemplate(providerTemplate, recipients, opts);
-      } catch (error) {
-        log.error('Unable to send template ' + template, error);
-      }
-      // Fallback to cancelled contribution email if no no-survey variant
+    // Check for override in database
+    const email = await this.getTemplateEmail(template);
+
+    if (email) {
+      log.info('Sending template ' + template, { template, recipients });
+      await this.sendEmail(email, recipients, opts);
     } else if (template === 'cancelled-contribution-no-survey') {
-      this.sendTemplate('cancelled-contribution', recipients, opts, required);
-    } else {
-      const defaultEmail = this.getDefaultEmail(template);
-      if (defaultEmail) {
-        this.sendEmail(defaultEmail, recipients, opts);
-      } else if (required) {
-        log.error(
-          `Tried to send ${template} that has no provider template or default`
-        );
-      }
+      // Fallback to cancelled contribution email if no no-survey variant
+      await this.sendTemplate(
+        'cancelled-contribution',
+        recipients,
+        opts,
+        required
+      );
+    } else if (required) {
+      log.error(`Tried to send ${template} that has no override or default`);
     }
   }
 
   /**
-   * Get an email template
+   * Get an email template (override or default)
    *
    * @param template The template ID
-   * @returns The email template, or:
-   *   - `false` if the template is managed by an external email provider (not editable)
-   *   - `null` if the template was not found (no provider template and no default template)
-   *   - `Email` object if the template was found (either from provider or as default template)
+   * @returns The email template:
+   *   - Override email if one exists (Email with templateId set)
+   *   - Default template from .yfm files if no override
+   *   - null if template not found
    */
-  async getTemplateEmail(
-    template: EmailTemplateId
-  ): Promise<false | Email | null> {
-    const providerTemplate = this.getProviderTemplate(template);
-    return providerTemplate
-      ? await this.provider.getTemplateEmail(providerTemplate)
-      : this.getDefaultEmail(template) || null;
+  async getTemplateEmail(template: EmailTemplateId): Promise<Email | null> {
+    // Check for override in database
+    const override = await getRepository(Email).findOneBy({
+      templateId: template,
+    });
+    if (override) {
+      return override;
+    }
+    // Fall back to default template
+    return this.getDefaultEmail(template) || null;
   }
 
-  async setTemplateEmail(
+  /**
+   * Get only the override email for a template (not default)
+   *
+   * @param template The template ID
+   * @returns The override email if exists, null otherwise
+   */
+  async getTemplateOverride(template: EmailTemplateId): Promise<Email | null> {
+    return await getRepository(Email).findOneBy({ templateId: template });
+  }
+
+  /**
+   * Create or update a template override
+   *
+   * @param template The template ID
+   * @param data The email data (subject, body)
+   * @returns The created or updated email
+   */
+  async createOrUpdateTemplateOverride(
     template: EmailTemplateId,
-    email: Email
-  ): Promise<void> {
-    await OptionsService.setJSON('email-templates', {
-      ...OptionsService.getJSON('email-templates'),
-      [template]: email.id,
+    data: { subject: string; body: string }
+  ): Promise<Email> {
+    const existing = await getRepository(Email).findOneBy({
+      templateId: template,
     });
+
+    if (existing) {
+      // Update existing override
+      await getRepository(Email).update(existing.id, data);
+      return (await getRepository(Email).findOneBy({ id: existing.id }))!;
+    } else {
+      // Create new override
+      const email = new Email();
+      email.templateId = template;
+      email.name = `Override: ${template}`;
+      email.subject = data.subject;
+      email.body = data.body;
+      return await getRepository(Email).save(email);
+    }
   }
 
   /**
@@ -366,14 +393,10 @@ class EmailService {
     contact: Contact,
     opts?: PreviewEmailOptions
   ): Promise<{ subject: string; body: string }> {
-    // 1. Get the email template (from provider or default templates)
+    // 1. Get the email template (override or default)
     const emailTemplate = opts?.templateId
       ? await this.getTemplateEmail(opts.templateId)
       : null;
-
-    if (emailTemplate === false) {
-      throw new ExternalEmailTemplate();
-    }
 
     // 2. Generate base merge fields from contact and standard fields
     const mergeFields: EmailMergeFields = {
@@ -396,32 +419,44 @@ class EmailService {
   }
 
   /**
-   * Delete a template email override
+   * Delete a template email override (reset to default)
    * @param template The template ID
-   * @returns void
+   * @returns true if an override was deleted, false if none existed
    */
-  async deleteTemplateEmail(template: EmailTemplateId): Promise<void> {
-    const currentTemplates = OptionsService.getJSON('email-templates') || {};
-    if (currentTemplates[template]) {
-      delete currentTemplates[template];
-      await OptionsService.setJSON('email-templates', currentTemplates);
+  async deleteTemplateOverride(template: EmailTemplateId): Promise<boolean> {
+    const override = await getRepository(Email).findOneBy({
+      templateId: template,
+    });
+    if (override) {
+      await getRepository(Email).delete(override.id);
+      return true;
     }
+    return false;
   }
 
   /**
-   * Get metadata for all assignable email templates
-   * @returns Array of template metadata with type, merge fields, and override status
-   * Note: Template names are handled in the frontend via translations
+   * Get metadata for all email templates with override and subject info
+   * @returns Array of template metadata with type, merge fields, override status, and subject
    */
-  getAssignableTemplates(): Array<{
-    id: string;
-    type: 'general' | 'admin' | 'contact';
-    mergeFields: string[];
-    overrideEmailId?: string;
-  }> {
-    const emailTemplates = OptionsService.getJSON('email-templates') || {};
+  async getTemplatesWithInfo(): Promise<
+    Array<{
+      id: string;
+      type: 'general' | 'admin' | 'contact';
+      mergeFields: string[];
+      hasOverride: boolean;
+      subject: string;
+    }>
+  > {
+    // Get all overrides from database
+    const overrides = await getRepository(Email).find({
+      where: { templateId: Not(IsNull()) },
+      select: ['templateId', 'subject'],
+    });
+    const overrideMap = new Map(
+      overrides.map((e) => [e.templateId, e.subject])
+    );
 
-    // Iterate over all template types and their templates in a single loop
+    // Build template info list
     const allTemplates = Object.entries(emailTemplateDefinitions).flatMap(
       ([type, templates]) =>
         Object.entries(templates).map(([id, def]) => ({
@@ -430,12 +465,19 @@ class EmailService {
         }))
     );
 
-    return allTemplates.map(({ id, metadata }) => ({
-      id,
-      type: metadata.type,
-      mergeFields: metadata.mergeFields,
-      ...(emailTemplates[id] && { overrideEmailId: emailTemplates[id] }),
-    }));
+    return allTemplates.map(({ id, metadata }) => {
+      const hasOverride = overrideMap.has(id);
+      const overrideSubject = overrideMap.get(id);
+      const defaultEmail = this.getDefaultEmail(id as EmailTemplateId);
+
+      return {
+        id,
+        type: metadata.type,
+        mergeFields: metadata.mergeFields,
+        hasOverride,
+        subject: hasOverride ? overrideSubject! : (defaultEmail?.subject ?? ''),
+      };
+    });
   }
 
   /**
@@ -459,26 +501,15 @@ class EmailService {
    * Find an email by ID (UUID) or template ID
    *
    * @param id The email ID (UUID) or template ID
-   * @returns The email if found, or:
-   *   - `null` if not found
-   *   - Throws `ExternalEmailTemplate` if the template is managed by an external email provider
+   * @returns The email if found (override or default for templates), null if not found
    */
   async findEmail(id: string): Promise<Email | null> {
     if (isUUID(id, '4')) {
       return await getRepository(Email).findOneBy({ id });
     } else if (this.isTemplateId(id)) {
-      const maybeEmail = await this.getTemplateEmail(id);
-      if (maybeEmail) {
-        return maybeEmail;
-      } else if (maybeEmail === false) {
-        throw new ExternalEmailTemplate();
-      }
+      return await this.getTemplateEmail(id);
     }
     return null;
-  }
-
-  private getProviderTemplate(template: EmailTemplateId): string | undefined {
-    return OptionsService.getJSON('email-templates')[template];
   }
 
   private getDefaultEmail(template: EmailTemplateId): Email | undefined {

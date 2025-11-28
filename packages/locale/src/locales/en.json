@@ -1161,6 +1161,9 @@
     "assignedTo": "Assigned to",
     "noAssignedTemplates": "Not assigned to any system events",
     "mailingCount": "Mailings sent",
+    "status": "Status",
+    "customized": "Customized",
+    "default": "Default",
     "actions": {
       "addCustom": "Add Custom Email",
       "resetToDefault": "Reset to Default",

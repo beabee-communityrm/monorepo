@@ -1675,6 +1675,7 @@
     "assignedTo": "Toegewezen aan",
     "noAssignedTemplates": "Niet toegewezen aan systeemgebeurtenissen",
     "mailingCount": "Verzonden e-mails",
+    "status": "Status",
     "actions": {
       "addCustom": "Aangepaste e-mail toevoegen",
       "resetToDefault": "Terugzetten naar standaard",
@@ -1730,6 +1731,8 @@
       "resetToDefault": "Sjabloon succesvol teruggezet naar standaard",
       "templatesAssigned": "",
       "templateAssigned": ""
-    }
+    },
+    "customized": "Aangepast",
+    "default": "Standaard"
   }
 }

@@ -1,5 +1,3 @@
-import { getRepository } from '@beabee/core/database';
-import { Email } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import { emailService } from '@beabee/core/services/EmailService';
 import type { EmailTemplateId } from '@beabee/core/type';
@@ -15,21 +13,13 @@ export const createEmailOverride = async (
       throw new Error(`Unknown email template: ${argv.template}`);
     }
 
-    // Create the email object
-    const email = new Email();
-    email.name = `Email for ${argv.template}`;
-    email.subject = argv.subject;
-    email.body = argv.body;
-    email.fromName = argv.fromName || null;
-    email.fromEmail = argv.fromEmail || null;
-
-    // Save the email
-    const savedEmail = await getRepository('Email').save(email);
-
-    // Set it as the template override
-    await emailService.setTemplateEmail(
+    // Create or update the template override
+    const savedEmail = await emailService.createOrUpdateTemplateOverride(
       argv.template as EmailTemplateId,
-      savedEmail
+      {
+        subject: argv.subject,
+        body: argv.body,
+      }
     );
 
     console.log(`Email template override created successfully!`);

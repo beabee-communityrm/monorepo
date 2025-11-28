@@ -1676,6 +1676,7 @@
     "assignedTo": "Назначено",
     "noAssignedTemplates": "Не назначено системным событиям",
     "mailingCount": "Отправленных писем",
+    "status": "Статус",
     "actions": {
       "addCustom": "Добавить пользовательское письмо",
       "resetToDefault": "Сбросить к исходному",
@@ -1731,6 +1732,8 @@
       "resetToDefault": "Шаблон успешно сброшен к исходному",
       "templatesAssigned": "",
       "templateAssigned": ""
-    }
+    },
+    "customized": "Настроено",
+    "default": "По умолчанию"
   }
 }

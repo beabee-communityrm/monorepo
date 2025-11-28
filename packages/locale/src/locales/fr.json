@@ -1679,6 +1679,7 @@
     "assignedTo": "Assigné à",
     "noAssignedTemplates": "Non assigné à des événements système",
     "mailingCount": "E-mails envoyés",
+    "status": "Statut",
     "actions": {
       "addCustom": "Ajouter un e-mail personnalisé",
       "resetToDefault": "Réinitialiser par défaut",
@@ -1734,6 +1735,8 @@
       "resetToDefault": "Modèle réinitialisé par défaut avec succès",
       "templatesAssigned": "",
       "templateAssigned": ""
-    }
+    },
+    "customized": "Personnalisé",
+    "default": "Par défaut"
   }
 }

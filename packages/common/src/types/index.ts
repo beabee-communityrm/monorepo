@@ -1,7 +1,6 @@
 export type * from './address.js';
 export type * from './allow-null.js';
 export type * from './api-key-filter-name.js';
-export type * from './assign-template-data.js';
 export type * from './array-filter-args.js';
 export type * from './auth-info-data.js';
 export type * from './base-filter-args.js';

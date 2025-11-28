@@ -1155,6 +1155,8 @@
       "title": ""
     },
     "custom": "",
+    "customized": "",
+    "default": "",
     "edit": {
       "title": "",
       "titleCustom": "",
@@ -1178,6 +1180,7 @@
       "templatesAssigned": "",
       "updated": ""
     },
+    "status": "",
     "systemOverride": "",
     "tabs": {
       "custom": "",
