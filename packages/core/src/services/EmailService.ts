@@ -4,7 +4,6 @@ import {
 } from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
-import { isUUID } from 'class-validator';
 import fs from 'fs';
 import path from 'path';
 import { IsNull, Not } from 'typeorm';
@@ -507,21 +506,6 @@ class EmailService {
       (template in adminEmailTemplates && (!type || type === 'admin')) ||
       (template in contactEmailTemplates && (!type || type === 'contact'))
     );
-  }
-
-  /**
-   * Find an email by ID (UUID) or template ID
-   *
-   * @param id The email ID (UUID) or template ID
-   * @returns The email if found (override or default for templates), null if not found
-   */
-  async findEmail(id: string): Promise<Email | null> {
-    if (isUUID(id, '4')) {
-      return await getRepository(Email).findOneBy({ id });
-    } else if (this.isTemplateId(id)) {
-      return await this.getTemplateEmail(id);
-    }
-    return null;
   }
 
   private getDefaultEmail(template: EmailTemplateId): Email | undefined {
