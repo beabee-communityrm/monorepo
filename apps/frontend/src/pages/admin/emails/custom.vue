@@ -6,28 +6,22 @@ meta:
 </route>
 
 <template>
-  <div class="mb-4 flex items-center justify-between">
-    <div class="flex-0 hidden md:block">
-      <AppButton to="/admin/emails/add">{{
-        t('emails.actions.addCustom')
-      }}</AppButton>
-    </div>
-    <div class="fixed bottom-5 right-5 md:hidden">
-      <AppButton
-        :icon="faPlus"
-        :title="t('emails.actions.addCustom')"
-        class="rounded-full drop-shadow-md"
-        size="lg"
-        to="/admin/emails/add"
-      />
-    </div>
-  </div>
   <AppPaginatedTable
     v-model:query="currentPaginatedQuery"
     keypath="emails.list.showingOf"
     :headers="headers"
     :result="emailsTable"
   >
+    <template #actions>
+      <AppButtonGroup>
+        <AppButton
+          :icon="faPlus"
+          variant="primaryOutlined"
+          :title="t('emails.actions.addCustom')"
+          to="/admin/emails/add"
+        />
+      </AppButtonGroup>
+    </template>
     <template #value-name="{ item, value }">
       <router-link
         :to="'/admin/emails/edit/' + item.id"
@@ -52,7 +46,7 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { GetEmailData, Paginated } from '@beabee/beabee-common';
-import { AppButton, type Header } from '@beabee/vue';
+import { AppButton, AppButtonGroup, type Header } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
