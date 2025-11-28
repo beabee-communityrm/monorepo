@@ -89,6 +89,6 @@ const groupedTemplates = computed(() => {
 });
 
 onMounted(async () => {
-  templates.value = await client.email.getTemplates();
+  templates.value = await client.email.template.list();
 });
 </script>

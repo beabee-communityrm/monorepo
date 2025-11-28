@@ -84,6 +84,69 @@ export class EmailController {
   }
 
   /**
+   * Get a template email (override or default)
+   */
+  @Get('/template/:templateId')
+  async getTemplate(
+    @CurrentAuth() auth: AuthInfo,
+    @Param('templateId') templateId: string
+  ): Promise<GetEmailDto> {
+    if (!EmailService.isTemplateId(templateId)) {
+      throw new NotFoundError('Invalid template ID');
+    }
+
+    const email = await EmailService.findEmail(templateId as EmailTemplateId);
+    if (!email) {
+      throw new NotFoundError('Template not found');
+    }
+
+    return EmailTransformer.convert(email, auth);
+  }
+
+  /**
+   * Create or update a template override
+   */
+  @Put('/template/:templateId')
+  async updateTemplate(
+    @CurrentAuth() auth: AuthInfo,
+    @Param('templateId') templateId: string,
+    @Body() data: UpdateEmailDto
+  ): Promise<GetEmailDto> {
+    if (!EmailService.isTemplateId(templateId)) {
+      throw new BadRequestError('Invalid template ID');
+    }
+
+    const updated = await EmailService.createOrUpdateTemplateOverride(
+      templateId as EmailTemplateId,
+      {
+        subject: data.subject,
+        body: data.body,
+      }
+    );
+
+    return EmailTransformer.convert(updated, auth);
+  }
+
+  /**
+   * Delete a template override (reset to default)
+   */
+  @OnUndefined(204)
+  @Delete('/template/:templateId')
+  async deleteTemplate(@Param('templateId') templateId: string): Promise<void> {
+    if (!EmailService.isTemplateId(templateId)) {
+      throw new NotFoundError('Invalid template ID');
+    }
+
+    const deleted = await EmailService.deleteTemplateOverride(
+      templateId as EmailTemplateId
+    );
+
+    if (!deleted) {
+      throw new NotFoundError('No override exists for this template');
+    }
+  }
+
+  /**
    * Create a new custom email
    */
   @Post('/')
@@ -102,93 +165,73 @@ export class EmailController {
     return EmailTransformer.convert(email, auth);
   }
 
+  /**
+   * Get a custom email by UUID
+   */
   @Get('/:id')
   async getEmail(
     @CurrentAuth() auth: AuthInfo,
-    @Param('id') id: EmailTemplateId | string
-  ): Promise<GetEmailDto | undefined> {
-    const email = await EmailService.findEmail(id);
-    return email ? EmailTransformer.convert(email, auth) : undefined;
+    @Param('id') id: string
+  ): Promise<GetEmailDto> {
+    const email = await getRepository(Email).findOneBy({
+      id,
+      templateId: IsNull(), // Only custom emails
+    });
+
+    if (!email) {
+      throw new NotFoundError();
+    }
+
+    return EmailTransformer.convert(email, auth);
   }
 
   /**
-   * Update an existing email or create/update a template override
-   *
-   * - For UUIDs: Updates the existing custom email
-   * - For template IDs: Creates or updates a template override
+   * Update an existing custom email
    */
   @Put('/:id')
   async updateEmail(
     @CurrentAuth() auth: AuthInfo,
-    @Param('id') id: EmailTemplateId | string,
+    @Param('id') id: string,
     @Body() data: UpdateEmailDto
-  ): Promise<GetEmailDto | undefined> {
-    // Check if it's a template ID
-    if (EmailService.isTemplateId(id)) {
-      const updated = await EmailService.createOrUpdateTemplateOverride(id, {
-        subject: data.subject,
-        body: data.body,
-      });
-      return EmailTransformer.convert(updated, auth);
-    }
+  ): Promise<GetEmailDto> {
+    const email = await getRepository(Email).findOneBy({
+      id,
+      templateId: IsNull(), // Only custom emails
+    });
 
-    // Otherwise treat as UUID
-    const email = await getRepository(Email).findOneBy({ id });
     if (!email) {
       throw new NotFoundError();
     }
 
     await getRepository(Email).update(id, data);
     const updated = await getRepository(Email).findOneBy({ id });
-    return updated ? EmailTransformer.convert(updated, auth) : undefined;
+
+    if (!updated) {
+      throw new NotFoundError();
+    }
+
+    return EmailTransformer.convert(updated, auth);
   }
 
   /**
-   * Delete an email or remove a template override (reset to default)
-   *
-   * - For UUIDs: Deletes the custom email and associated mailings
-   * - For template IDs: Deletes the override (resets to default template)
+   * Delete a custom email and its associated mailings
    */
   @OnUndefined(204)
   @Delete('/:id')
   async deleteEmail(@Param('id') id: string): Promise<void> {
-    // Check if it's a template ID
-    if (EmailService.isTemplateId(id)) {
-      const deleted = await EmailService.deleteTemplateOverride(
-        id as EmailTemplateId
-      );
-      if (!deleted) {
-        throw new NotFoundError('No override exists for this template');
-      }
-      return;
+    const email = await getRepository(Email).findOneBy({
+      id,
+      templateId: IsNull(), // Only custom emails
+    });
+
+    if (!email) {
+      throw new NotFoundError();
     }
 
-    // Check if it's a UUID (custom email)
-    if (
-      id.match(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-      )
-    ) {
-      const email = await getRepository(Email).findOneBy({ id });
-      if (!email) {
-        throw new NotFoundError();
-      }
-
-      // Don't allow deleting template overrides via UUID
-      if (email.templateId) {
-        throw new BadRequestError(
-          'Cannot delete template override by UUID. Use the template ID instead.'
-        );
-      }
-
-      // Delete associated mailings first
-      await getRepository(EmailMailing).delete({ emailId: id });
-      // Delete the email
-      await getRepository(Email).delete(id);
-      return;
-    }
-
-    throw new NotFoundError();
+    // Delete associated mailings first
+    await getRepository(EmailMailing).delete({ emailId: id });
+    // Delete the email
+    await getRepository(Email).delete(id);
   }
 
   @Post('/preview')

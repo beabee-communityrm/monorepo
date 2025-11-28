@@ -109,7 +109,7 @@ addBreadcrumb(
 onMounted(async () => {
   try {
     // Load template metadata
-    const templates = await client.email.getTemplates();
+    const templates = await client.email.template.list();
     templateInfo.value =
       templates.find((t) => t.id === templateId.value) || null;
 
@@ -123,7 +123,7 @@ onMounted(async () => {
     }
 
     // Load email data (override or default)
-    emailData.value = await client.email.get(templateId.value);
+    emailData.value = await client.email.template.get(templateId.value);
   } catch {
     addNotification({
       variant: 'error',
@@ -138,7 +138,7 @@ async function handleSubmit() {
   if (!emailData.value) return;
 
   try {
-    await client.email.update(templateId.value, {
+    await client.email.template.update(templateId.value, {
       subject: emailData.value.subject,
       body: emailData.value.body,
     });
@@ -149,10 +149,10 @@ async function handleSubmit() {
     });
 
     // Reload to get updated hasOverride status
-    const templates = await client.email.getTemplates();
+    const templates = await client.email.template.list();
     templateInfo.value =
       templates.find((t) => t.id === templateId.value) || null;
-    emailData.value = await client.email.get(templateId.value);
+    emailData.value = await client.email.template.get(templateId.value);
   } catch {
     addNotification({
       variant: 'error',
@@ -171,7 +171,7 @@ async function handleReset() {
   }
 
   try {
-    await client.email.delete(templateId.value);
+    await client.email.template.delete(templateId.value);
 
     addNotification({
       variant: 'success',
@@ -179,10 +179,10 @@ async function handleReset() {
     });
 
     // Reload template data (now shows default)
-    const templates = await client.email.getTemplates();
+    const templates = await client.email.template.list();
     templateInfo.value =
       templates.find((t) => t.id === templateId.value) || null;
-    emailData.value = await client.email.get(templateId.value);
+    emailData.value = await client.email.template.get(templateId.value);
   } catch {
     addNotification({
       variant: 'error',
