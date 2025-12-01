@@ -34,6 +34,7 @@ export * from './passport-login-info';
 export * from './payment-flow-data';
 export * from './payment-flow-params';
 export * from './payment-flow';
+export * from './payment-update-flow-data';
 export * from './pg-error';
 export * from './rate-limiter';
 export * from './referral-gift-form';

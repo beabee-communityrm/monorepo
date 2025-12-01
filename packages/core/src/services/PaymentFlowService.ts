@@ -7,14 +7,10 @@ import {
 } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
-import { DuplicateEmailError } from '#errors/index';
+import { CantUpdateContribution, DuplicateEmailError } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Contact, JoinFlow, JoinForm } from '#models/index';
-import {
-  PaymentFlowProvider,
-  gcFlowProvider,
-  stripeFlowProvider,
-} from '#providers';
+import { gcFlowProvider, stripeFlowProvider } from '#providers';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import OptionsService from '#services/OptionsService';
@@ -26,7 +22,10 @@ import {
   PaymentFlow,
   PaymentFlowData,
   PaymentFlowParams,
+  PaymentUpdateFlowData,
 } from '#type/index';
+import { generatePassword } from '#utils/auth';
+import { getMonthlyAmount } from '#utils/payment';
 
 import ResetSecurityFlowService from './ResetSecurityFlowService';
 
@@ -51,14 +50,14 @@ const log = mainLogger.child({ app: 'payment-flow-service' });
  * 3. Payment completion
  * 4. Contact and subscription setup
  */
-class PaymentFlowService implements PaymentFlowProvider {
+class PaymentFlowService {
   /**
-   * Creates a new join flow for user registration
+   * Creates a new join flow for user registration without any payment
    * @param form - Basic user information (email and password)
    * @param urls - URLs for completion and cancellation handling
    * @returns Promise resolving to created JoinFlow
    */
-  async createJoinFlow(
+  async createSimpleJoinFlow(
     form: Pick<JoinForm, 'email' | 'password'>,
     urls: CompleteUrls
   ): Promise<JoinFlow> {
@@ -130,7 +129,7 @@ class PaymentFlowService implements PaymentFlowProvider {
    * @param joinFlow - The join flow to complete
    * @returns Promise resolving to completed payment flow or undefined.
    */
-  async completeJoinFlow(
+  private async completeJoinFlow(
     joinFlow: JoinFlow
   ): Promise<CompletedPaymentFlow | undefined> {
     log.info('Completing join flow ' + joinFlow.id);
@@ -272,6 +271,88 @@ class PaymentFlowService implements PaymentFlowProvider {
   }
 
   /**
+   * Create a new payment update flow. This is used to take the user through
+   * setting or updating their payment method. If contribution amount, period,
+   * etc. are provided then this flow will also be used to update a user's
+   * contribution after the new payment method is set.
+   *
+   * @param contact The contact updating their payment method
+   * @param data The payment update flow data
+   * @returns The payment flow parameters
+   */
+  async createPaymentUpdateFlow(
+    contact: Contact,
+    data: PaymentUpdateFlowData
+  ): Promise<PaymentFlowParams> {
+    const form = {
+      // TODO: These aren't used at all and should be optional
+      password: await generatePassword(''),
+      email: contact.email,
+      // TODO: These aren't needed if the flow is only for updating payment
+      // method (and not changing contribution)
+      amount: 0,
+      period: ContributionPeriod.Monthly,
+      payFee: false,
+      prorate: false,
+      // Overrides the values above if they are provided
+      ...data,
+      // ...and set the monthly amount correctly
+      monthlyAmount:
+        data.amount && data.period
+          ? getMonthlyAmount(data.amount, data.period)
+          : 0,
+    };
+
+    if (!(await PaymentService.canChangeContribution(contact, false, form))) {
+      throw new CantUpdateContribution();
+    }
+
+    return await this.createPaymentJoinFlow(
+      form,
+      // TODO: unused, should be optional
+      { confirmUrl: '', loginUrl: '', setPasswordUrl: '' },
+      data.completeUrl,
+      contact
+    );
+  }
+
+  /**
+   * Completes a payment update flow, updating the contact's payment method.
+   *
+   * @param contact The contact updating their payment method
+   * @param paymentFlowId The ID of the payment flow to complete
+   * @returns The completed join flow, or undefined if the flow could not be completed
+   */
+  async completePaymentUpdateFlow(
+    contact: Contact,
+    paymentFlowId: string
+  ): Promise<JoinFlow | undefined> {
+    const joinFlow = await this.getJoinFlowByPaymentId(paymentFlowId);
+    if (!joinFlow || !isContributionForm(joinFlow.joinForm)) {
+      return;
+    }
+
+    const canChange = await PaymentService.canChangeContribution(
+      contact,
+      false,
+      joinFlow.joinForm
+    );
+
+    if (!canChange) {
+      throw new CantUpdateContribution();
+    }
+
+    const completedFlow = await this.completeJoinFlow(joinFlow);
+    if (!completedFlow) {
+      return;
+    }
+
+    await PaymentService.updatePaymentMethod(contact, completedFlow);
+
+    return joinFlow;
+  }
+
+  /**
    * Create a new payment flow for the given join flow, dispatching to the
    * appropriate provider and returning the created payment flow.
    *
@@ -280,7 +361,7 @@ class PaymentFlowService implements PaymentFlowProvider {
    * @param data The payment flow data
    * @returns The created payment flow
    */
-  async createPaymentFlow(
+  private async createPaymentFlow(
     joinFlow: JoinFlow,
     completeUrl: string,
     data: PaymentFlowData
@@ -300,14 +381,24 @@ class PaymentFlowService implements PaymentFlowProvider {
    * @param joinFlow  The join flow
    * @returns The completed payment flow
    */
-  async completePaymentFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow> {
+  private async completePaymentFlow(
+    joinFlow: JoinFlow
+  ): Promise<CompletedPaymentFlow> {
     log.info('Complete payment flow for join flow ' + joinFlow.id);
     return paymentProviders[
       joinFlow.joinForm.paymentMethod
     ].completePaymentFlow(joinFlow);
   }
 
-  async getCompletedPaymentFlowData(
+  /**
+   * Fetch data from the provider for the completed payment flow. This is used
+   * to fetch additional information filled in by the user such as billing
+   * address or name.
+   *
+   * @param completedPaymentFlow  The completed payment flow
+   * @returns The completed payment flow data
+   */
+  private async getCompletedPaymentFlowData(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<CompletedPaymentFlowData> {
     return paymentProviders[
