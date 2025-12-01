@@ -933,9 +933,7 @@
       "successful": "Erfolgreich"
     },
     "perMonth": "/ Monat",
-    "perMonthText": "pro Monat",
     "perYear": "/ Jahr",
-    "perYearText": "pro Jahr",
     "role": {
       "admin": "Admin",
       "member": "Mitglied",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Zahlungsart",
     "paymentSourceUpdateError": "Du kannst deine Bankverbindung aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
+    "perMonthText": "pro Monat",
+    "perYearText": "pro Jahr",
     "prorateDecreaseMessage": "Dein Beitrag bleibt noch für 1 Monat gleich. | Dein Beitrag bleibt noch für {n} Monaten gleich.",
     "prorateDecreaseMessageWillStart": "Der neue Beitrag wird am {renewalDate} zum ersten Mal eingezogen.",
     "prorateIncreaseMessage": "Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch 1 Monat. | Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch {n} Monaten.",

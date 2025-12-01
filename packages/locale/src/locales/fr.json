@@ -937,9 +937,7 @@
       "successful": "Succès"
     },
     "perMonth": "/ mois",
-    "perMonthText": "un mois",
     "perYear": "/ an",
-    "perYearText": "un an",
     "role": {
       "admin": "Administrateur",
       "member": "Membre",
@@ -1098,6 +1096,8 @@
     },
     "paymentMethod": "Moyen de paiement",
     "paymentSourceUpdateError": "Vous ne pouvez pas mettre à jour votre compte bancaire pour le moment car vous avez un paiement en attente",
+    "perMonthText": "un mois",
+    "perYearText": "un an",
     "prorateDecreaseMessage": "Vous avez un mois restant pour votre cotisation actuelle. | Vous avez {n} mois restants pour votre cotisation actuelle.",
     "prorateDecreaseMessageWillStart": "Votre nouvelle cotisation commencera le {renewalDate}.",
     "prorateIncreaseMessage": "Vous avez un mois restant pour votre cotisation actuelle. | Vous avez {n} mois restants pour votre cotisation actuelle.",

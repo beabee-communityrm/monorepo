@@ -933,9 +933,7 @@
       "successful": ""
     },
     "perMonth": "",
-    "perMonthText": "",
     "perYear": "",
-    "perYearText": "",
     "role": {
       "admin": "",
       "member": "",
@@ -1111,7 +1109,9 @@
     "updatedPaymentSource": "",
     "willExpire": "",
     "willRenew": "",
-    "willRenewWithNewAmount": ""
+    "willRenewWithNewAmount": "",
+    "perMonthText": "",
+    "perYearText": ""
   },
   "editCallout": {
     "replicated": "",

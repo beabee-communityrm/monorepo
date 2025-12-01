@@ -938,11 +938,9 @@
       "successful": "Successful"
     },
     "perMonth": "/ month",
-    "perMonthText": "a month",
     "perOneTime": " one-time",
     "perOneTimeText": "one-time",
     "perYear": "/ year",
-    "perYearText": "a year",
     "role": {
       "admin": "Admin",
       "member": "Member",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Payment method",
     "paymentSourceUpdateError": "You can't update your bank account at the moment as you have a payment pending",
+    "perMonthText": "a month",
+    "perYearText": "a year",
     "prorateDecreaseMessage": "You have one month left on your current contribution. | You have {n} months left on your current contribution.",
     "prorateDecreaseMessageWillStart": "Your new contribution will start on {renewalDate}.",
     "prorateIncreaseMessage": "You have one month left on your current contribution. | You have {n} months left on your current contribution.",

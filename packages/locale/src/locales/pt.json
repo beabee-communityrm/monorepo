@@ -933,9 +933,7 @@
       "successful": "Sucesso"
     },
     "perMonth": "/ mês",
-    "perMonthText": "por mês",
     "perYear": "/ ano",
-    "perYearText": "por ano",
     "role": {
       "admin": "Administrador",
       "member": "Membro",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Método de pagamento",
     "paymentSourceUpdateError": "Não é possível atualizar a sua conta bancária porque o pagamento está pendente.",
+    "perMonthText": "por mês",
+    "perYearText": "por ano",
     "prorateDecreaseMessage": "Resta 1 mês na sua contribuição atual. | Restam {n} meses na tua contribuição atual.",
     "prorateDecreaseMessageWillStart": "A tua nova contribuição vai começar a {renewalDate}.",
     "prorateIncreaseMessage": "Tens 1 mês restante na sua contribuição atual. | Tens {n} meses restantes na tua contribuição atual.",

@@ -20,7 +20,11 @@
         <div class="text-3.5xl leading-7">
           {{ n(contribution.amount!, 'currency') }}
         </div>
-        {{ perPeriod }}
+        {{
+          contribution.period === ContributionPeriod.Monthly
+            ? t('contribution.perMonthText')
+            : t('contribution.perYearText')
+        }}
       </div>
 
       <div v-if="contribution.membershipStatus === MembershipStatus.Expiring">
@@ -71,18 +75,9 @@ import {
 } from '@beabee/beabee-common';
 import { AppSubHeading, AppTime, formatLocale } from '@beabee/vue';
 
-import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { n, t } = useI18n();
 
-const props = defineProps<{
-  contribution: ContributionInfo;
-}>();
-
-const perPeriod = computed(() =>
-  props.contribution.period === ContributionPeriod.Monthly
-    ? t('common.perMonthText')
-    : t('common.perYearText')
-);
+defineProps<{ contribution: ContributionInfo }>();
 </script>

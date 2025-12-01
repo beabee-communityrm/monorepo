@@ -933,9 +933,7 @@
       "successful": "Riuscito"
     },
     "perMonth": "/ mese",
-    "perMonthText": "al mese",
     "perYear": "/ anno",
-    "perYearText": "all'anno",
     "role": {
       "admin": "",
       "member": "",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Metodo di pagamento",
     "paymentSourceUpdateError": "",
+    "perMonthText": "al mese",
+    "perYearText": "all'anno",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
     "prorateIncreaseMessage": "",

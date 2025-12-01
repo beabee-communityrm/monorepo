@@ -938,11 +938,9 @@
       "successful": ""
     },
     "perMonth": "",
-    "perMonthText": "",
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "",
-    "perYearText": "",
     "role": {
       "admin": "",
       "member": "",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "",
     "paymentSourceUpdateError": "",
+    "perMonthText": "",
+    "perYearText": "",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
     "prorateIncreaseMessage": "",
