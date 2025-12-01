@@ -1,16 +1,28 @@
-import { PaymentStatus } from '@beabee/beabee-common';
+import { PaymentMethod, PaymentStatus } from '@beabee/beabee-common';
 
 import { GetPaginatedQuery } from '@api/dto/BaseDto';
 import { GetContactDto } from '@api/dto/ContactDto';
 import {
   IsArray,
+  IsBoolean,
   IsDate,
   IsEnum,
   IsIn,
   IsNumber,
   IsOptional,
+  Min,
   ValidateNested,
 } from 'class-validator';
+
+import { StartJoinFlowDto } from './JoinFlowDto';
+
+export class CreatePaymentDto extends StartJoinFlowDto {
+  @Min(1)
+  amount!: number;
+
+  @IsBoolean()
+  payFee!: boolean;
+}
 
 export class GetPaymentDto {
   @IsNumber()

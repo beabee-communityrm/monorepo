@@ -1,4 +1,8 @@
-import { GetContactWith, isContributionForm } from '@beabee/beabee-common';
+import {
+  GetContactWith,
+  PaymentForm,
+  PaymentPeriod,
+} from '@beabee/beabee-common';
 import {
   CantUpdateContribution,
   NoPaymentMethod,
@@ -44,7 +48,11 @@ import {
 } from '@api/dto/ContributionDto';
 import { CompleteJoinFlowDto, StartJoinFlowDto } from '@api/dto/JoinFlowDto';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
-import { GetPaymentDto, ListPaymentsDto } from '@api/dto/PaymentDto';
+import {
+  CreatePaymentDto,
+  GetPaymentDto,
+  ListPaymentsDto,
+} from '@api/dto/PaymentDto';
 import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
 import { ContactRoleParams } from '@api/params/ContactRoleParams';
 import ContactExporter from '@api/transformers/ContactExporter';
@@ -241,10 +249,16 @@ export class ContactController {
     @Body() data: StartContributionDto
   ): Promise<GetPaymentFlowDto> {
     if (data.paymentMethod) {
-      const flow = await PaymentFlowService.createPaymentUpdateFlow(target, {
+      const form = {
         ...data,
-        paymentMethod: data.paymentMethod,
-      });
+        monthlyAmount: getMonthlyAmount(data.amount, data.period),
+      };
+      const flow = await PaymentFlowService.createPaymentUpdateFlow(
+        target,
+        data.paymentMethod,
+        data.completeUrl,
+        form
+      );
       return plainToInstance(GetPaymentFlowDto, flow);
     } else {
       await this.updateContribution(target, data);
@@ -314,17 +328,11 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
   ): Promise<GetContributionInfoDto | undefined> {
-    const joinFlow = await PaymentFlowService.completePaymentUpdateFlow(
+    await PaymentFlowService.completePaymentUpdateFlow(
       target,
       data.paymentFlowId
     );
-    if (joinFlow && isContributionForm(joinFlow.joinForm)) {
-      await ContactsService.updateContactContribution(
-        target,
-        joinFlow.joinForm
-      );
-      return await this.getContribution(target);
-    }
+    return await this.getContribution(target);
   }
 
   /**
@@ -342,6 +350,43 @@ export class ContactController {
   ): Promise<GetContributionInfoDto> {
     await ContactsService.forceUpdateContactContribution(target, data);
     return await this.getContribution(target);
+  }
+
+  @Post('/:id/payment')
+  async createOneTimePayment(
+    @TargetUser() target: Contact,
+    @Body() data: CreatePaymentDto
+  ): Promise<GetPaymentFlowDto> {
+    const form: PaymentForm = {
+      monthlyAmount: data.amount,
+      payFee: data.payFee,
+      prorate: false,
+      period: 'one-time',
+    };
+    if (data.paymentMethod) {
+      const params = await PaymentFlowService.createPaymentUpdateFlow(
+        target,
+        data.paymentMethod,
+        data.completeUrl,
+        form
+      );
+      return plainToInstance(GetPaymentFlowDto, params);
+    } else {
+      await PaymentService.createOneTimePayment(target, form);
+      return plainToInstance(GetPaymentFlowDto, {});
+    }
+  }
+
+  @OnUndefined(204)
+  @Post('/:id/payment/complete')
+  async completeOneTimePayment(
+    @TargetUser() target: Contact,
+    @Body() data: CompleteJoinFlowDto
+  ): Promise<void> {
+    await PaymentFlowService.completePaymentUpdateFlow(
+      target,
+      data.paymentFlowId
+    );
   }
 
   @Get('/:id/payment')
@@ -379,7 +424,8 @@ export class ContactController {
 
     const paymentFlow = await PaymentFlowService.createPaymentUpdateFlow(
       target,
-      { ...data, paymentMethod }
+      paymentMethod,
+      data.completeUrl
     );
     return plainToInstance(GetPaymentFlowDto, paymentFlow);
   }

@@ -19,18 +19,14 @@ import {
   ValidateNested,
 } from 'class-validator';
 
+import { CreatePaymentDto } from './PaymentDto';
+
 class StartSignupFlowContributionDto extends StartContributionDto {
   @IsEnum(PaymentMethod)
   paymentMethod!: PaymentMethod;
 }
 
-class StartSignupFlowOneTimePaymentDto extends StartJoinFlowDto {
-  @Min(1)
-  amount!: number;
-
-  @IsBoolean()
-  payFee!: boolean;
-
+class StartSignupFlowOneTimePaymentDto extends CreatePaymentDto {
   @IsEnum(PaymentMethod)
   paymentMethod!: PaymentMethod;
 }

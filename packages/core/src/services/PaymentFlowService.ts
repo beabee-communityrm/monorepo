@@ -1,6 +1,7 @@
 import {
   Address,
   ContributionPeriod,
+  PaymentForm,
   PaymentMethod,
   RESET_SECURITY_FLOW_TYPE,
   isContributionForm,
@@ -9,7 +10,7 @@ import {
 import { getRepository } from '#database';
 import { CantUpdateContribution, DuplicateEmailError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Contact, JoinFlow, JoinForm } from '#models/index';
+import { Contact, JoinFlow, JoinForm, Password } from '#models/index';
 import { gcFlowProvider, stripeFlowProvider } from '#providers';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
@@ -22,10 +23,7 @@ import {
   PaymentFlow,
   PaymentFlowData,
   PaymentFlowParams,
-  PaymentUpdateFlowData,
 } from '#type/index';
-import { generatePassword } from '#utils/auth';
-import { getMonthlyAmount } from '#utils/payment';
 
 import ResetSecurityFlowService from './ResetSecurityFlowService';
 
@@ -248,7 +246,6 @@ class PaymentFlowService {
 
     if (completedPaymentFlow) {
       // Set the user's payment method and create their contribution or one-time donation
-
       await PaymentService.updatePaymentMethod(contact, completedPaymentFlow);
 
       if (isContributionForm(joinFlow.joinForm)) {
@@ -277,41 +274,40 @@ class PaymentFlowService {
    * contribution after the new payment method is set.
    *
    * @param contact The contact updating their payment method
-   * @param data The payment update flow data
+   * @param form Optional payment form
    * @returns The payment flow parameters
    */
   async createPaymentUpdateFlow(
     contact: Contact,
-    data: PaymentUpdateFlowData
+    paymentMethod: PaymentMethod,
+    completeUrl: string,
+    form?: PaymentForm
   ): Promise<PaymentFlowParams> {
-    const form = {
-      // TODO: These aren't used at all and should be optional
-      password: await generatePassword(''),
-      email: contact.email,
-      // TODO: These aren't needed if the flow is only for updating payment
-      // method (and not changing contribution)
-      amount: 0,
-      period: ContributionPeriod.Monthly,
-      payFee: false,
-      prorate: false,
-      // Overrides the values above if they are provided
-      ...data,
-      // ...and set the monthly amount correctly
-      monthlyAmount:
-        data.amount && data.period
-          ? getMonthlyAmount(data.amount, data.period)
-          : 0,
-    };
+    // TODO: if it's just a payment method update then these should be optional
+    if (!form) {
+      form = {
+        monthlyAmount: 0,
+        period: ContributionPeriod.Monthly,
+        payFee: false,
+        prorate: false,
+      };
+    }
 
     if (!(await PaymentService.canChangeContribution(contact, false, form))) {
       throw new CantUpdateContribution();
     }
 
     return await this.createPaymentJoinFlow(
-      form,
+      {
+        paymentMethod,
+        ...form,
+        // TODO: These aren't used at all and should be optional
+        password: Password.none,
+        email: contact.email,
+      },
       // TODO: unused, should be optional
       { confirmUrl: '', loginUrl: '', setPasswordUrl: '' },
-      data.completeUrl,
+      completeUrl,
       contact
     );
   }
@@ -328,10 +324,16 @@ class PaymentFlowService {
     paymentFlowId: string
   ): Promise<JoinFlow | undefined> {
     const joinFlow = await this.getJoinFlowByPaymentId(paymentFlowId);
-    if (!joinFlow || !isContributionForm(joinFlow.joinForm)) {
+    if (!joinFlow) {
       return;
     }
 
+    const completedFlow = await this.completeJoinFlow(joinFlow);
+    if (!completedFlow) {
+      return;
+    }
+
+    // TODO: how to test for updateability with no contribution change?
     const canChange = await PaymentService.canChangeContribution(
       contact,
       false,
@@ -342,12 +344,19 @@ class PaymentFlowService {
       throw new CantUpdateContribution();
     }
 
-    const completedFlow = await this.completeJoinFlow(joinFlow);
-    if (!completedFlow) {
-      return;
-    }
-
     await PaymentService.updatePaymentMethod(contact, completedFlow);
+
+    if (isContributionForm(joinFlow.joinForm)) {
+      await ContactsService.updateContactContribution(
+        contact,
+        joinFlow.joinForm
+      );
+    } else {
+      await PaymentService.createOneTimePayment(contact, joinFlow.joinForm);
+      await EmailService.sendTemplateToContact('one-time-donation', contact, {
+        amount: joinFlow.joinForm.monthlyAmount,
+      });
+    }
 
     return joinFlow;
   }
