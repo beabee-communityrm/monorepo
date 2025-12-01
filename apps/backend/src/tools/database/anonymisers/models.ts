@@ -1,4 +1,5 @@
 import {
+  ADDRESS_COMPONENT_TYPE,
   CalloutComponentSchema,
   CalloutComponentType,
   CalloutResponseAnswer,
@@ -121,11 +122,38 @@ function createComponentAnonymiser(
       case CalloutComponentType.CONTENT:
         return v;
       case CalloutComponentType.INPUT_ADDRESS:
+        const street = chance.street();
+        const streetNumber = chance.integer({ min: 1, max: 200 });
+        const postalCode = chance.postcode();
+        const city = chance.city();
+        const country = chance.country({ full: true });
+        const components: CalloutResponseAnswerAddress['components'] = [
+          {
+            type: ADDRESS_COMPONENT_TYPE.STREET_NUMBER,
+            value: streetNumber.toString(),
+          },
+          {
+            type: ADDRESS_COMPONENT_TYPE.ADDRESS,
+            value: street,
+          },
+          {
+            type: ADDRESS_COMPONENT_TYPE.LOCALITY,
+            value: city,
+          },
+          {
+            type: ADDRESS_COMPONENT_TYPE.COUNTRY,
+            value: country,
+          },
+        ];
+
         return {
-          formatted_address: chance.address(),
+          id: 'address.' + chance.integer({ min: 10000, max: 99999 }),
+          formatted_address: `${street} ${streetNumber}, ${postalCode} ${city}, ${country}`,
           geometry: {
             location: { lat: chance.latitude(), lng: chance.longitude() },
           },
+          components,
+          source: 'maptiler',
         } satisfies CalloutResponseAnswerAddress;
       case CalloutComponentType.INPUT_CHECKBOX:
         return chance.pickone([true, false]);
