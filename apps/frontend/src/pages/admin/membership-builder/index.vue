@@ -97,7 +97,7 @@ meta:
       </AppForm>
     </template>
     <template #col2>
-      <JoinForm
+      <JoinFormStep1
         :join-content="joinContent"
         :payment-content="paymentContent"
         preview
@@ -124,7 +124,7 @@ import {
 
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';
-import JoinForm from '@components/pages/join/JoinForm.vue';
+import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
 import { generalContent } from '@store';
 import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';

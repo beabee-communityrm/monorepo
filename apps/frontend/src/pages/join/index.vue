@@ -8,60 +8,20 @@ meta:
   noCnrMode: true
 </route>
 <template>
-  <JoinForm
+  <JoinFormStep1
     v-if="!stripeClientSecret"
     :join-content="joinContent"
     :payment-content="paymentContent"
-    @submit.prevent="submitSignUp"
+    @submit.prevent="submitStep1"
   />
 
-  <AuthBox v-else :title="joinContent.title">
-    <template #header>
-      <div class="content-message" v-html="joinContent.subtitle" />
-    </template>
-
-    <AppNotification
-      variant="info"
-      :title="t('joinPayment.willBeContributing', signUpDescription)"
-      :icon="faHandSparkles"
-      class="mb-4"
-    />
-    <p
-      v-if="paymentContent.taxRateEnabled"
-      class="-mt-2 mb-4 text-right text-xs"
-    >
-      {{ t('join.tax.included', { taxRate: paymentContent.taxRate }) }}
-    </p>
-
-    <p class="mb-3 text-xs font-semibold text-body-80">
-      {{ t('joinPayment.note') }}
-    </p>
-    <p class="mb-6 text-xs font-semibold text-body-80">
-      <i18n-t keypath="joinPayment.goBack">
-        <template #back>
-          <a
-            class="cursor-pointer text-link underline"
-            @click="stripeClientSecret = ''"
-          >
-            {{ t('joinPayment.goBackButton') }}
-          </a>
-        </template>
-      </i18n-t>
-    </p>
-
-    <StripePayment
-      :client-secret="stripeClientSecret"
-      :public-key="paymentContent.stripePublicKey"
-      :payment-data="signUpData"
-      :return-url="client.signup.completeUrl"
-      show-name-fields
-    />
-    <div
-      v-if="paymentContent.noticeText"
-      class="content-message mt-3 text-center text-xs"
-      v-html="paymentContent.noticeText"
-    />
-  </AuthBox>
+  <JoinFormStep2
+    v-else
+    :join-content="joinContent"
+    :payment-content="paymentContent"
+    :stripe-client-secret="stripeClientSecret"
+    @back="stripeClientSecret = ''"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -72,21 +32,15 @@ import {
   type SignupData,
 } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
-import { AppNotification } from '@beabee/vue';
 
-import AuthBox from '@components/AuthBox.vue';
-import StripePayment from '@components/StripePayment.vue';
-import JoinForm from '@components/pages/join/JoinForm.vue';
+import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
+import JoinFormStep2 from '@components/pages/join/JoinFormStep2.vue';
 import { useJoin } from '@components/pages/join/use-join';
-import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
 import { generalContent, isEmbed } from '@store';
 import { client } from '@utils/api';
 import { notifyRateLimited } from '@utils/api-error';
 import { onBeforeMount, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-
-const { t } = useI18n();
 
 const route = useRoute();
 const router = useRouter();
@@ -115,9 +69,9 @@ const paymentContent = ref<ContentPaymentData>({
   noticeText: '',
 });
 
-const { signUpData, signUpDescription } = useJoin(paymentContent);
+const { signUpData } = useJoin(paymentContent);
 
-async function submitSignUp() {
+async function submitStep1() {
   try {
     const clientData: SignupData = {
       email: signUpData.email,
