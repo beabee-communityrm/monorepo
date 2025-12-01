@@ -127,6 +127,9 @@ const contactEmailTemplates = {
     ORGNAME: OptionsService.getText('organisation'),
     SUPPORTEMAIL: OptionsService.getText('support-email'),
   }),
+  'one-time-donation': (_: Contact, params: { amount: number }) => ({
+    AMOUNT: config.currencySymbol + params.amount.toFixed(2),
+  }),
 } as const;
 
 type GeneralEmailTemplates = typeof generalEmailTemplates;

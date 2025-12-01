@@ -1375,6 +1375,7 @@
         "bigTitle": "Welcome & cancellation emails",
         "cancellationEmail": "Cancellation email",
         "description": "Customise your welcome and cancellation emails",
+        "oneTimeDonationEmail": "One-time donation email",
         "text": "All emails are sent from your support email address and include standard signature, you can change these in your email settings.",
         "title": "Emails",
         "welcomeEmail": "Welcome email"
