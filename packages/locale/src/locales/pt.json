@@ -1314,7 +1314,10 @@
   "join": {
     "absorbFeeForce": "É necessário que {amount} contributos suportem a taxa de {fee}.",
     "absorbFeeOptIn": "Sim, posso suportar a taxa de {fee}.",
-    "absorbFeeText": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo mensal. Poderias suportar a taxa de {fee}? ",
+    "absorbFeeText": {
+      "monthly": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo mensal. Poderias suportar a taxa de {fee}? ",
+      "one-time": ""
+    },
     "contribute": "Contribuir {contribution}",
     "errors": {
       "confirmEmail": {
@@ -1340,6 +1343,11 @@
     "privacy": "Política de Privacidade",
     "tax": {
       "included": ""
+    },
+    "contribution": {
+      "monthly": "",
+      "yearly": "",
+      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1351,7 +1359,8 @@
     "goBack": "Esqueceste-te de alguma coisa? {back}",
     "goBackButton": "Voltar ao passo anterior",
     "note": "Podes alterar a tua contribuição e aceder ao teu historial de pagamentos a qualquer altura na tua conta.",
-    "willBeContributing": "O tua contribuição será de {contribution}"
+    "willBeContributing": "O tua contribuição será de {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Por favor confirma os teus detalhes",

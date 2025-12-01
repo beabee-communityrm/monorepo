@@ -1318,7 +1318,10 @@
   "join": {
     "absorbFeeForce": "{amount} cotisations doivent compenser les frais de {fee}.",
     "absorbFeeOptIn": "Oui, je compense les frais de {fee}.",
-    "absorbFeeText": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations mensuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ? Vous pouvez également payer annuellement.",
+    "absorbFeeText": {
+      "monthly": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations mensuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ? Vous pouvez également payer annuellement.",
+      "one-time": ""
+    },
     "contribute": "Cotiser {contribution}",
     "errors": {
       "confirmEmail": {
@@ -1344,6 +1347,11 @@
     "privacy": "Politique de confidentialité",
     "tax": {
       "included": "La cotisation comprend {taxRate}% de TVA."
+    },
+    "contribution": {
+      "monthly": "",
+      "yearly": "",
+      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1355,7 +1363,8 @@
     "goBack": "Avez-vous oublié quelque chose ? {back}",
     "goBackButton": "Revenir à l'écran précédent",
     "note": "Vous pourrez modifier votre cotisation et accéder à votre historique de paiement à tout moment depuis votre compte membre",
-    "willBeContributing": "Vous cotiserez {contribution}"
+    "willBeContributing": "Vous cotiserez {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Veuillez confirmer vos informations",

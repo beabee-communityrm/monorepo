@@ -13,6 +13,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { PaymentPeriod } from '@beabee/beabee-common';
 import { AppCheckbox } from '@beabee/vue';
 
 import { computed } from 'vue';
@@ -25,6 +26,8 @@ const emit = defineEmits(['update:modelValue']);
 const props = defineProps<{
   /** The contribution amount */
   amount: number;
+  /** The payment period */
+  period: PaymentPeriod;
   /** The fee amount */
   fee: number;
   /** Whether absorbing the fee is forced */
@@ -39,7 +42,9 @@ const props = defineProps<{
  * Text explaining the fee absorption option
  */
 const absorbFeeText = computed(() => {
-  return t('join.absorbFeeText', { fee: n(props.fee, 'currency') });
+  return t('join.absorbFeeText.' + props.period, {
+    fee: n(props.fee, 'currency'),
+  });
 });
 
 /**

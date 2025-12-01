@@ -57,13 +57,14 @@ import StripePayment from '@components/StripePayment.vue';
 import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
 import type { JoinFormData } from '@type/join-form-data';
 import { client } from '@utils/api';
+import { calcJoinFormTotalAmount } from '@utils/payment';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { n, t } = useI18n();
 
 defineEmits<{ (e: 'back'): void }>();
-defineProps<{
+const props = defineProps<{
   joinContent: ContentJoinData;
   paymentContent: ContentPaymentData;
   stripeClientSecret: string;
@@ -72,10 +73,28 @@ defineProps<{
 const data = defineModel<JoinFormData>({ required: true });
 
 const notificationText = computed(() => {
-  return t('joinPayment.willBeContributing', {
-    contribution: t('join.contribution.' + data.value.period, {
-      amount: n(data.value.amount, 'currency'),
-    }),
-  });
+  const totalAmount = calcJoinFormTotalAmount(
+    data.value,
+    props.paymentContent.stripeCountry
+  );
+
+  switch (data.value.period) {
+    case ContributionPeriod.Monthly:
+    case ContributionPeriod.Annually:
+      return t('joinPayment.willBeContributing', {
+        contribution: t('join.contribution.' + data.value.period, {
+          amount: n(totalAmount, 'currency'),
+        }),
+      });
+
+    case 'one-time':
+      return t('joinPayment.willBeDonating', {
+        amount: n(totalAmount, 'currency'),
+      });
+
+    // Prevent vue/return-in-computed-property-warning
+    default:
+      return '';
+  }
 });
 </script>

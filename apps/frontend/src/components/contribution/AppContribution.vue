@@ -46,6 +46,7 @@
       v-if="isNotAnnually && content.showAbsorbFee"
       v-model="payFee"
       :amount="amount"
+      :period="period"
       :fee="fee"
       :force="shouldForceFee"
       :disabled="disabled"

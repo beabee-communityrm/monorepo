@@ -1314,8 +1314,16 @@
   "join": {
     "absorbFeeForce": "",
     "absorbFeeOptIn": "",
-    "absorbFeeText": "",
+    "absorbFeeText": {
+      "monthly": "",
+      "one-time": ""
+    },
     "contribute": "",
+    "contribution": {
+      "monthly": "",
+      "one-time": "",
+      "yearly": ""
+    },
     "errors": {
       "confirmEmail": {
         "message": "",
@@ -1351,7 +1359,8 @@
     "goBack": "",
     "goBackButton": "",
     "note": "",
-    "willBeContributing": ""
+    "willBeContributing": "",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "",
