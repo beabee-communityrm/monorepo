@@ -6,7 +6,7 @@
 
     <AppNotification
       variant="info"
-      :title="t('joinPayment.willBeContributing', signUpDescription)"
+      :title="notificationText"
       :icon="faHandSparkles"
       class="mb-4"
     />
@@ -33,7 +33,7 @@
     <StripePayment
       :client-secret="stripeClientSecret"
       :public-key="paymentContent.stripePublicKey"
-      :payment-data="signUpData"
+      :payment-data="data"
       :return-url="client.signup.completeUrl"
       show-name-fields
     />
@@ -48,29 +48,34 @@
 import {
   type ContentJoinData,
   type ContentPaymentData,
+  ContributionPeriod,
 } from '@beabee/beabee-common';
 import { AppNotification } from '@beabee/vue';
 
 import AuthBox from '@components/AuthBox.vue';
 import StripePayment from '@components/StripePayment.vue';
 import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
+import type { JoinFormData } from '@type/join-form-data';
 import { client } from '@utils/api';
-import { toRef } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useJoin } from './use-join';
+const { n, t } = useI18n();
 
-defineEmits<(e: 'back') => void>();
-
-const props = defineProps<{
+defineEmits<{ (e: 'back'): void }>();
+defineProps<{
   joinContent: ContentJoinData;
   paymentContent: ContentPaymentData;
   stripeClientSecret: string;
 }>();
 
-const { t } = useI18n();
+const data = defineModel<JoinFormData>({ required: true });
 
-const { signUpData, signUpDescription } = useJoin(
-  toRef(props, 'paymentContent')
-);
+const notificationText = computed(() => {
+  return t('joinPayment.willBeContributing', {
+    contribution: t('join.contribution.' + data.value.period, {
+      amount: n(data.value.amount, 'currency'),
+    }),
+  });
+});
 </script>

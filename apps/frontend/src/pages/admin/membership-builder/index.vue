@@ -98,6 +98,7 @@ meta:
     </template>
     <template #col2>
       <JoinFormStep1
+        v-model="formData"
         :join-content="joinContent"
         :payment-content="paymentContent"
         preview
@@ -110,6 +111,7 @@ import {
   type ContentJoinData,
   type ContentPaymentData,
   ContributionPeriod,
+  PaymentMethod,
 } from '@beabee/beabee-common';
 import {
   App2ColGrid,
@@ -126,20 +128,31 @@ import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';
 import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
 import { generalContent } from '@store';
+import type { JoinFormData } from '@type/join-form-data';
 import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+const { n, t } = useI18n();
+const stepT = (key: string) => t('membershipBuilder.steps.joinForm.' + key);
+
 const joinContent = ref<ContentJoinData>();
 const paymentContent = ref<ContentPaymentData>();
 const noticeText = ref('');
 const backgroundUrl = ref('');
 
-const { n, t } = useI18n();
-
-const stepT = (key: string) => t('membershipBuilder.steps.joinForm.' + key);
+const formData = computed<JoinFormData>(() => ({
+  email: '',
+  amount: joinContent.value?.initialAmount || 5,
+  period: joinContent.value?.initialPeriod || ContributionPeriod.Monthly,
+  payFee: true,
+  prorate: false,
+  paymentMethod:
+    joinContent.value?.paymentMethods[0] || PaymentMethod.StripeCard,
+  noContribution: false,
+}));
 
 const selectedDefaultAmount = computed({
   get: () =>

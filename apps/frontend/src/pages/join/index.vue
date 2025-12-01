@@ -10,6 +10,7 @@ meta:
 <template>
   <JoinFormStep1
     v-if="!stripeClientSecret"
+    v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
     @submit.prevent="submitStep1"
@@ -17,6 +18,7 @@ meta:
 
   <JoinFormStep2
     v-else
+    v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
     :stripe-client-secret="stripeClientSecret"
@@ -29,17 +31,18 @@ import {
   type ContentJoinData,
   type ContentPaymentData,
   ContributionPeriod,
+  PaymentMethod,
   type SignupData,
 } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
 
 import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
 import JoinFormStep2 from '@components/pages/join/JoinFormStep2.vue';
-import { useJoin } from '@components/pages/join/use-join';
 import { generalContent, isEmbed } from '@store';
+import type { JoinFormData } from '@type/join-form-data';
 import { client } from '@utils/api';
 import { notifyRateLimited } from '@utils/api-error';
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
@@ -69,31 +72,39 @@ const paymentContent = ref<ContentPaymentData>({
   noticeText: '',
 });
 
-const { signUpData } = useJoin(paymentContent);
+const formData = reactive<JoinFormData>({
+  email: '',
+  amount: 5,
+  period: ContributionPeriod.Monthly,
+  payFee: true,
+  prorate: false,
+  paymentMethod: PaymentMethod.StripeCard,
+  noContribution: false,
+});
 
 async function submitStep1() {
   try {
     const clientData: SignupData = {
-      email: signUpData.email,
-      ...(signUpData.noContribution
+      email: formData.email,
+      ...(formData.noContribution
         ? {}
-        : signUpData.period === 'one-time'
+        : formData.period === 'one-time'
           ? {
               oneTimePayment: {
-                amount: signUpData.amount,
-                paymentMethod: signUpData.paymentMethod,
-                payFee: signUpData.payFee,
+                amount: formData.amount,
+                paymentMethod: formData.paymentMethod,
+                payFee: formData.payFee,
                 completeUrl: client.signup.completeUrl,
               },
             }
           : {
               contribution: {
-                amount: signUpData.amount,
-                period: signUpData.period,
-                paymentMethod: signUpData.paymentMethod,
+                amount: formData.amount,
+                period: formData.period,
+                paymentMethod: formData.paymentMethod,
                 payFee:
-                  signUpData.period === ContributionPeriod.Monthly &&
-                  signUpData.payFee,
+                  formData.period === ContributionPeriod.Monthly &&
+                  formData.payFee,
                 prorate: false,
                 completeUrl: client.signup.completeUrl,
               },
@@ -129,23 +140,23 @@ onBeforeMount(async () => {
 
   paymentContent.value = await client.content.get('payment');
 
-  signUpData.amount =
+  formData.amount =
     (route.query.amount && Number(route.query.amount)) ||
     joinContent.value.initialAmount;
 
   const period = route.query.period as ContributionPeriod;
-  signUpData.period = Object.values(ContributionPeriod).includes(period)
+  formData.period = Object.values(ContributionPeriod).includes(period)
     ? period
     : joinContent.value.initialPeriod;
 
-  signUpData.paymentMethod = joinContent.value.paymentMethods[0];
+  formData.paymentMethod = joinContent.value.paymentMethods[0];
 
   if (!joinContent.value.showAbsorbFee) {
-    signUpData.payFee = false;
+    formData.payFee = false;
   }
 
   if (generalContent.value.hideContribution) {
-    signUpData.noContribution = true;
+    formData.noContribution = true;
   }
 });
 </script>
