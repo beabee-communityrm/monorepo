@@ -44,7 +44,7 @@ meta:
   </AppForm>
 </template>
 <script lang="ts" setup>
-import { type ContentJoinData, type GetEmailData } from '@beabee/beabee-common';
+import type { ContentJoinData, EmailPreviewData } from '@beabee/beabee-common';
 import { App2ColGrid, AppForm } from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
@@ -55,44 +55,44 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);
 
-const welcomeEmail = ref<GetEmailData | false>();
-const cancellationEmail = ref<GetEmailData | false>();
-const oneTimeDonationEmail = ref<GetEmailData | false>();
+const welcomeEmail = ref<EmailPreviewData | false>();
+const cancellationEmail = ref<EmailPreviewData | false>();
+const oneTimeDonationEmail = ref<EmailPreviewData | false>();
 const joinContent = ref<ContentJoinData>();
 
 const showOneTimeDonationEmail = computed(() =>
   joinContent.value?.periods.some((p) => p.name === 'one-time')
 );
 
-async function loadEmail(id: string): Promise<GetEmailData | false> {
+async function loadEmail(
+  templateId: string
+): Promise<EmailPreviewData | false> {
   try {
-    return await client.email.template.get(id);
+    const email = await client.email.template.get(templateId);
+    return { subject: email.subject, body: email.body };
   } catch (err) {
     if (isApiError(err, ['external-email-template'])) {
       return false;
     }
-    throw err;
+    return { body: '', subject: '' };
   }
 }
 
 async function handleUpdate() {
   if (welcomeEmail.value) {
-    await client.email.template.update('welcome', {
-      subject: welcomeEmail.value.subject,
-      body: welcomeEmail.value.body,
-    });
+    await client.email.template.update('welcome', welcomeEmail.value);
   }
   if (cancellationEmail.value) {
-    await client.email.template.update('cancelled-contribution', {
-      subject: cancellationEmail.value.subject,
-      body: cancellationEmail.value.body,
-    });
+    await client.email.template.update(
+      'cancelled-contribution',
+      cancellationEmail.value
+    );
   }
   if (oneTimeDonationEmail.value) {
-    await client.email.template.update('one-time-donation', {
-      subject: oneTimeDonationEmail.value.subject,
-      body: oneTimeDonationEmail.value.body,
-    });
+    await client.email.template.update(
+      'one-time-donation',
+      oneTimeDonationEmail.value
+    );
   }
 }
 
