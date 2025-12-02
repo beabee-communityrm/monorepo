@@ -39,6 +39,7 @@
         :payment-content="paymentContent"
         :show-period="showChangePeriod"
         :show-payment-method="!isAutoActiveMember"
+        :has-existing-payment-method="hasExistingPaymentMethod"
       />
 
       <ProrateContribution
@@ -195,6 +196,14 @@ const buttonText = computed(() =>
         ? t('contribution.restartContribution')
         : t('contribution.startContribution')
 );
+
+const hasExistingPaymentMethod = computed(() => {
+  if (props.modelValue.paymentSource?.method) {
+    return true;
+  } else {
+    return false;
+  }
+});
 
 async function handleCreate() {
   if (newContribution.period === 'one-time') {
