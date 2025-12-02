@@ -96,27 +96,33 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
 
 async function loadEmail(id: string): Promise<GetEmailData | false> {
   try {
-    return await client.email.get(id);
+    return await client.email.template.get(id);
   } catch (err) {
     if (isApiError(err, ['external-email-template'])) {
       return false;
     }
-    return { body: '', subject: '' };
+    throw err;
   }
 }
 
 async function handleUpdate() {
   if (welcomeEmail.value) {
-    await client.email.update('welcome', welcomeEmail.value);
+    await client.email.template.update('welcome', {
+      subject: welcomeEmail.value.subject,
+      body: welcomeEmail.value.body,
+    });
   }
   if (cancellationEmail.value) {
-    await client.email.update(
-      'cancelled-contribution',
-      cancellationEmail.value
-    );
+    await client.email.template.update('cancelled-contribution', {
+      subject: cancellationEmail.value.subject,
+      body: cancellationEmail.value.body,
+    });
   }
   if (oneTimeDonationEmail.value) {
-    await client.email.update('one-time-donation', oneTimeDonationEmail.value);
+    await client.email.template.update('one-time-donation', {
+      subject: oneTimeDonationEmail.value.subject,
+      body: oneTimeDonationEmail.value.body,
+    });
   }
 }
 
