@@ -1,5 +1,7 @@
 <script lang="ts" setup>
+import AppCategoryLabel from './AppCategoryLabel.vue';
 import AppHeading from './AppHeading.vue';
+import AppHelperText from './AppHelperText.vue';
 import AppSectionHeading from './AppSectionHeading.vue';
 import AppSubHeading from './AppSubHeading.vue';
 import AppTitle from './AppTitle.vue';
@@ -49,6 +51,18 @@ import AppTitle from './AppTitle.vue';
           <p class="text-sm text-body-80">
             font-title text-xl font-regular text-body
           </p>
+        </div>
+
+        <div>
+          <AppCategoryLabel>Category Label</AppCategoryLabel>
+          <p class="text-sm text-body-80">
+            text-xs font-semibold uppercase tracking-wide text-body-80
+          </p>
+        </div>
+
+        <div>
+          <AppHelperText>Helper text for descriptions</AppHelperText>
+          <p class="text-sm text-body-80">text-xs text-body-80</p>
         </div>
       </div>
     </Variant>

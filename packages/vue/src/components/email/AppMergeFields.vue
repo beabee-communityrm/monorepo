@@ -16,7 +16,7 @@
     <header
       class="sticky top-0 z-10 flex items-center justify-center border-b border-grey-light bg-white px-4 py-3"
     >
-      <h3 class="font-semibold text-body">
+      <h3 class="font-title font-semibold text-body">
         {{ t('mergeFields.title') }}
       </h3>
     </header>
@@ -28,12 +28,10 @@
       :aria-label="t('mergeFields.title')"
     >
       <div v-for="group in groups" :key="group.key" class="px-4 py-3">
-        <!-- Group title -->
-        <h4
-          class="mb-3 text-xs font-semibold uppercase tracking-wide text-body-80"
-        >
+        <!-- Group label -->
+        <AppCategoryLabel>
           {{ t(`mergeFields.groups.${group.key}`) }}
-        </h4>
+        </AppCategoryLabel>
 
         <!-- Merge tags in group -->
         <div class="space-y-3">
@@ -57,20 +55,20 @@
                 :icon="faPlus"
                 :name="t('mergeFields.insertTag', { tag: tag.tag })"
                 :title="t('mergeFields.insert')"
-                class="!p-2 !text-body-80 no-underline hover:!bg-primary-5 hover:!text-primary-80"
+                class="!p-2 !text-body-80 hover:!bg-primary-5 hover:!text-primary-80"
                 @click="handleInsert(tag.tag)"
               />
             </div>
 
             <!-- Description -->
-            <p class="text-xs text-body-80">
+            <AppHelperText>
               {{ t(`mergeFields.tags.${tag.tag}`) }}
-            </p>
+            </AppHelperText>
 
             <!-- Example value (if provided) -->
-            <p v-if="tag.example" class="text-xs italic text-body-60">
+            <AppHelperText v-if="tag.example" class="italic text-body-60">
               {{ t('mergeFields.example') }}: {{ tag.example }}
-            </p>
+            </AppHelperText>
           </div>
         </div>
       </div>
@@ -90,6 +88,7 @@ import { useI18n } from 'vue-i18n';
 
 import type { MergeTagGroup } from '../../types/merge-fields';
 import { AppButton } from '../index';
+import { AppCategoryLabel, AppHelperText } from '../typography';
 
 /**
  * Props for the AppMergeFields component
