@@ -1320,9 +1320,9 @@
     },
     "contribute": "",
     "contribution": {
+      "annually": "",
       "monthly": "",
-      "one-time": "",
-      "yearly": ""
+      "one-time": ""
     },
     "errors": {
       "confirmEmail": {

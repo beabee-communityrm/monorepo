@@ -1349,8 +1349,8 @@
       "included": "La cotisation comprend {taxRate}% de TVA."
     },
     "contribution": {
+      "annually": "",
       "monthly": "",
-      "yearly": "",
       "one-time": ""
     }
   },

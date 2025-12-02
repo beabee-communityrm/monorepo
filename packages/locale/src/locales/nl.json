@@ -1345,8 +1345,8 @@
       "included": "Bijdrage is inclusief {taxRate}% BTW."
     },
     "contribution": {
+      "annually": "",
       "monthly": "",
-      "yearly": "",
       "one-time": ""
     }
   },

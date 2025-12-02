@@ -1345,8 +1345,8 @@
       "included": "Beitrag inklusive {taxRate}% MwSt."
     },
     "contribution": {
+      "annually": "",
       "monthly": "",
-      "yearly": "",
       "one-time": ""
     }
   },

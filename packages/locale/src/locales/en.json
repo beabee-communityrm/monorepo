@@ -1320,8 +1320,8 @@
     },
     "contribute": "Contribute {contribution}",
     "contribution": {
+      "annually": "{amount} per year",
       "monthly": "{amount} per month",
-      "yearly": "{amount} per year",
       "one-time": "{amount} one-time"
     },
     "errors": {
