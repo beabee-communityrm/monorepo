@@ -15,7 +15,6 @@
           />
         </div>
         <AppRichTextEditor
-          ref="editorRef"
           v-model="content"
           :label="t('emailEditor.body.label')"
           required
@@ -180,9 +179,6 @@ const props = withDefaults(
 );
 
 const { t } = useI18n();
-
-// Editor ref for accessing editor instance
-const editorRef = ref<InstanceType<typeof AppRichTextEditor> | null>(null);
 
 // Merge fields dropdown state
 const showMergeFieldsDropdown = ref(false);

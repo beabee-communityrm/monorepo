@@ -280,22 +280,6 @@ function setLink(): void {
 }
 
 const isEditorEmpty = computed(() => editor.value?.isEmpty || false);
-
-/**
- * Expose editor instance for parent components to use
- * (e.g., for inserting content via toolbar slot)
- */
-defineExpose({
-  editor,
-  /**
-   * Insert content at cursor position
-   */
-  insertContent: (content: string) => {
-    if (editor.value && !props.disabled) {
-      editor.value.chain().focus().insertContent(content).run();
-    }
-  },
-});
 </script>
 
 <style lang="postcss">
