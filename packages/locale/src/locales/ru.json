@@ -1463,7 +1463,8 @@
     "notices": "Уведомления",
     "payments": "Платежи",
     "settings": "Настройки",
-    "yourProfile": "Ваш профиль"
+    "yourProfile": "Ваш профиль",
+    "emails": "Письма"
   },
   "mergeFields": {
     "title": "Поля слияния",
@@ -1705,5 +1706,80 @@
   },
   "taxRate": {
     "invoiceName": "???"
+  },
+  "emails": {
+    "tabs": {
+      "custom": "Пользовательские письма",
+      "templates": "Системные шаблоны"
+    },
+    "list": {
+      "showingOf": "Показано {start} - {end} писем из {total}"
+    },
+    "add": {
+      "title": "Создать пользовательское письмо"
+    },
+    "edit": {
+      "title": "Редактировать письмо",
+      "titleCustom": "Редактировать: {name}"
+    },
+    "name": "Название письма",
+    "fromName": "Имя отправителя",
+    "fromEmail": "Email отправителя",
+    "mailingCount": "Отправленных писем",
+    "status": "Статус",
+    "type": "Тип",
+    "actions": {
+      "addCustom": "Добавить пользовательское письмо",
+      "resetToDefault": "Сбросить к исходному"
+    },
+    "templates": {
+      "availableFields": "Доступные поля",
+      "type": {
+        "general": "Общие",
+        "admin": "Уведомления администратора",
+        "contact": "Контактные письма"
+      },
+      "names": {
+        "welcome": "Приветствие",
+        "welcome-post-gift": "Приветствие после подарочного членства",
+        "reset-password": "Сброс пароля",
+        "reset-device": "Сброс устройства",
+        "cancelled-contribution": "Отмена взноса",
+        "cancelled-contribution-no-survey": "Отмена взноса - без опроса",
+        "manual-to-automatic": "Ручной взнос преобразован в автоматический",
+        "email-exists-login": "Email существует - вход",
+        "email-exists-set-password": "Email существует - установка пароля",
+        "callout-response-answers": "Подтверждение ответа CrowdNewsroom",
+        "successful-referral": "Успешная рекомендация",
+        "giftee-success": "Активация подарка успешна",
+        "contribution-didnt-start": "Взнос не начат",
+        "purchased-gift": "Подтверждение покупки подарка",
+        "confirm-email": "Подтверждение email",
+        "expired-special-url-resend": "Повторная отправка истёкшей ссылки",
+        "new-member": "Админ: Новый контакт",
+        "cancelled-member": "Админ: Отменённый участник",
+        "new-callout-response": "Админ: Новый ответ CrowdNewsroom"
+      }
+    },
+    "confirmDelete": {
+      "title": "Удалить письмо",
+      "message": "Вы уверены, что хотите удалить это письмо? Это действие нельзя отменить.",
+      "messageWithMailings": "Это письмо было отправлено {count} раз(а). Вы уверены, что хотите его удалить? Это действие нельзя отменить."
+    },
+    "confirmResetToDefault": {
+      "title": "Сбросить к исходному",
+      "message": "Вы уверены, что хотите сбросить этот шаблон к исходному? Ваши изменения будут потеряны."
+    },
+    "notifications": {
+      "created": "Письмо успешно создано",
+      "updated": "Письмо успешно обновлено",
+      "deleted": "Письмо успешно удалено",
+      "resetToDefault": "Шаблон успешно сброшен к исходному",
+      "templatesAssigned": "",
+      "templateAssigned": ""
+    },
+    "customized": "Настроено",
+    "default": "По умолчанию",
+    "missingDefault": "Нет шаблона по умолчанию"
   }
 }

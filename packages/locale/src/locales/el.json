@@ -1462,7 +1462,8 @@
     "notices": "",
     "payments": "",
     "settings": "",
-    "yourProfile": ""
+    "yourProfile": "",
+    "emails": "Email"
   },
   "mergeFields": {
     "title": "Πεδία συγχώνευσης",
@@ -1704,5 +1705,80 @@
   },
   "taxRate": {
     "invoiceName": ""
+  },
+  "emails": {
+    "tabs": {
+      "custom": "Προσαρμοσμένα Email",
+      "templates": "Πρότυπα Συστήματος"
+    },
+    "list": {
+      "showingOf": "Εμφάνιση {start} έως {end} email από {total}"
+    },
+    "add": {
+      "title": "Δημιουργία προσαρμοσμένου email"
+    },
+    "edit": {
+      "title": "Επεξεργασία email",
+      "titleCustom": "Επεξεργασία: {name}"
+    },
+    "name": "Όνομα email",
+    "fromName": "Όνομα αποστολέα",
+    "fromEmail": "Email αποστολέα",
+    "mailingCount": "Αποσταλμένα email",
+    "status": "Κατάσταση",
+    "type": "Τύπος",
+    "actions": {
+      "addCustom": "Προσθήκη προσαρμοσμένου email",
+      "resetToDefault": "Επαναφορά στα προεπιλεγμένα"
+    },
+    "templates": {
+      "availableFields": "Διαθέσιμα πεδία",
+      "type": {
+        "general": "Γενικά",
+        "admin": "Ειδοποιήσεις διαχειριστή",
+        "contact": "Email επικοινωνίας"
+      },
+      "names": {
+        "welcome": "Καλωσόρισμα",
+        "welcome-post-gift": "Καλωσόρισμα μετά από δωρεά συνδρομής",
+        "reset-password": "Επαναφορά κωδικού",
+        "reset-device": "Επαναφορά συσκευής",
+        "cancelled-contribution": "Ακυρωμένη συνεισφορά",
+        "cancelled-contribution-no-survey": "Ακυρωμένη συνεισφορά - χωρίς έρευνα",
+        "manual-to-automatic": "Χειροκίνητη συνεισφορά μετατράπηκε σε αυτόματη",
+        "email-exists-login": "Το email υπάρχει - σύνδεση",
+        "email-exists-set-password": "Το email υπάρχει - ορισμός κωδικού",
+        "callout-response-answers": "Επιβεβαίωση απάντησης CrowdNewsroom",
+        "successful-referral": "Επιτυχής σύσταση",
+        "giftee-success": "Επιτυχής ενεργοποίηση δώρου",
+        "contribution-didnt-start": "Η συνεισφορά δεν ξεκίνησε",
+        "purchased-gift": "Επιβεβαίωση αγοράς δώρου",
+        "confirm-email": "Επιβεβαίωση email",
+        "expired-special-url-resend": "Επαναποστολή ληγμένου ειδικού συνδέσμου",
+        "new-member": "Διαχειριστής: Νέα επαφή",
+        "cancelled-member": "Διαχειριστής: Ακυρωμένο μέλος",
+        "new-callout-response": "Διαχειριστής: Νέα απάντηση CrowdNewsroom"
+      }
+    },
+    "confirmDelete": {
+      "title": "Διαγραφή email",
+      "message": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το email; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+      "messageWithMailings": "Αυτό το email έχει σταλεί {count} φορά/ές. Είστε σίγουροι ότι θέλετε να το διαγράψετε; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί."
+    },
+    "confirmResetToDefault": {
+      "title": "Επαναφορά στα προεπιλεγμένα",
+      "message": "Είστε σίγουροι ότι θέλετε να επαναφέρετε αυτό το πρότυπο στα προεπιλεγμένα; Οι προσαρμοσμένες αλλαγές σας θα χαθούν."
+    },
+    "notifications": {
+      "created": "Το email δημιουργήθηκε επιτυχώς",
+      "updated": "Το email ενημερώθηκε επιτυχώς",
+      "deleted": "Το email διαγράφηκε επιτυχώς",
+      "resetToDefault": "Το πρότυπο επαναφέρθηκε στα προεπιλεγμένα επιτυχώς",
+      "templatesAssigned": "",
+      "templateAssigned": ""
+    },
+    "customized": "Προσαρμοσμένο",
+    "default": "Προεπιλογή",
+    "missingDefault": "Χωρίς προεπιλεγμένο πρότυπο"
   }
 }

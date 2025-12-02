@@ -1466,7 +1466,8 @@
     "notices": "Avertissements",
     "payments": "Paiments",
     "settings": "Paramètres",
-    "yourProfile": "Votre profil"
+    "yourProfile": "Votre profil",
+    "emails": "E-mails"
   },
   "mergeFields": {
     "title": "Champs de fusion",
@@ -1708,5 +1709,80 @@
   },
   "taxRate": {
     "invoiceName": "TVA"
+  },
+  "emails": {
+    "tabs": {
+      "custom": "E-mails personnalisés",
+      "templates": "Modèles système"
+    },
+    "list": {
+      "showingOf": "Affichage de {start} à {end} e-mails sur {total}"
+    },
+    "add": {
+      "title": "Créer un e-mail personnalisé"
+    },
+    "edit": {
+      "title": "Modifier l'e-mail",
+      "titleCustom": "Modifier : {name}"
+    },
+    "name": "Nom de l'e-mail",
+    "fromName": "Nom de l'expéditeur",
+    "fromEmail": "E-mail de l'expéditeur",
+    "mailingCount": "E-mails envoyés",
+    "status": "Statut",
+    "type": "Type",
+    "actions": {
+      "addCustom": "Ajouter un e-mail personnalisé",
+      "resetToDefault": "Réinitialiser par défaut"
+    },
+    "templates": {
+      "availableFields": "Champs disponibles",
+      "type": {
+        "general": "Général",
+        "admin": "Notifications admin",
+        "contact": "E-mails de contact"
+      },
+      "names": {
+        "welcome": "Bienvenue",
+        "welcome-post-gift": "Bienvenue après adhésion cadeau",
+        "reset-password": "Réinitialiser le mot de passe",
+        "reset-device": "Réinitialiser l'appareil",
+        "cancelled-contribution": "Contribution annulée",
+        "cancelled-contribution-no-survey": "Contribution annulée - sans sondage",
+        "manual-to-automatic": "Contributeur manuel converti en automatique",
+        "email-exists-login": "E-mail existant - connexion",
+        "email-exists-set-password": "E-mail existant - définir mot de passe",
+        "callout-response-answers": "Confirmation de réponse CrowdNewsroom",
+        "successful-referral": "Parrainage réussi",
+        "giftee-success": "Activation du cadeau réussie",
+        "contribution-didnt-start": "La contribution n'a pas démarré",
+        "purchased-gift": "Confirmation d'achat de cadeau",
+        "confirm-email": "Confirmer l'e-mail",
+        "expired-special-url-resend": "Renvoyer le lien spécial expiré",
+        "new-member": "Admin : Nouveau contact",
+        "cancelled-member": "Admin : Membre annulé",
+        "new-callout-response": "Admin : Nouvelle réponse CrowdNewsroom"
+      }
+    },
+    "confirmDelete": {
+      "title": "Supprimer l'e-mail",
+      "message": "Êtes-vous sûr de vouloir supprimer cet e-mail ? Cette action est irréversible.",
+      "messageWithMailings": "Cet e-mail a été envoyé {count} fois. Êtes-vous sûr de vouloir le supprimer ? Cette action est irréversible."
+    },
+    "confirmResetToDefault": {
+      "title": "Réinitialiser par défaut",
+      "message": "Êtes-vous sûr de vouloir réinitialiser ce modèle par défaut ? Vos modifications personnalisées seront perdues."
+    },
+    "notifications": {
+      "created": "E-mail créé avec succès",
+      "updated": "E-mail mis à jour avec succès",
+      "deleted": "E-mail supprimé avec succès",
+      "resetToDefault": "Modèle réinitialisé par défaut avec succès",
+      "templatesAssigned": "",
+      "templateAssigned": ""
+    },
+    "customized": "Personnalisé",
+    "default": "Par défaut",
+    "missingDefault": "Aucun modèle par défaut"
   }
 }

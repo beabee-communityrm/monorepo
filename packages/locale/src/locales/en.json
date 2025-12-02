@@ -1134,6 +1134,79 @@
       "unavailable": "Preview unavailable"
     }
   },
+  "emails": {
+    "tabs": {
+      "custom": "Custom Emails",
+      "templates": "System Templates"
+    },
+    "list": {
+      "showingOf": "Showing {start} to {end} emails out of {total}"
+    },
+    "add": {
+      "title": "Create Custom Email"
+    },
+    "edit": {
+      "title": "Edit Email",
+      "titleCustom": "Edit: {name}"
+    },
+    "name": "Email name",
+    "fromName": "From name",
+    "fromEmail": "From email",
+    "mailingCount": "Mailings sent",
+    "status": "Status",
+    "type": "Type",
+    "customized": "Customized",
+    "default": "Default",
+    "missingDefault": "No template",
+    "actions": {
+      "addCustom": "Add Custom Email",
+      "resetToDefault": "Reset to Default"
+    },
+    "templates": {
+      "availableFields": "Available fields",
+      "type": {
+        "general": "General",
+        "admin": "Admin Notifications",
+        "contact": "Contact Emails"
+      },
+      "names": {
+        "welcome": "Welcome",
+        "welcome-post-gift": "Welcome after gift membership",
+        "reset-password": "Reset password",
+        "reset-device": "Reset device",
+        "cancelled-contribution": "Cancelled contribution",
+        "cancelled-contribution-no-survey": "Cancelled contribution - no survey",
+        "manual-to-automatic": "Manual contributor converted to automatic",
+        "email-exists-login": "Email exists - login",
+        "email-exists-set-password": "Email exists - set password",
+        "callout-response-answers": "Callout response confirmation",
+        "successful-referral": "Successful referral",
+        "giftee-success": "Gift activation success",
+        "contribution-didnt-start": "Contribution did not start",
+        "purchased-gift": "Gift purchased confirmation",
+        "confirm-email": "Confirm email",
+        "expired-special-url-resend": "Expired special URL resend",
+        "new-member": "Admin: New contact notification",
+        "cancelled-member": "Admin: Cancelled member notification",
+        "new-callout-response": "Admin: New callout response notification"
+      }
+    },
+    "confirmDelete": {
+      "title": "Delete Email",
+      "message": "Are you sure you want to delete this email? This action cannot be undone.",
+      "messageWithMailings": "This email has been sent {count} time(s). Are you sure you want to delete it? This action cannot be undone."
+    },
+    "confirmResetToDefault": {
+      "title": "Reset to Default",
+      "message": "Are you sure you want to reset this template to its default? Your custom changes will be lost."
+    },
+    "notifications": {
+      "created": "Email created successfully",
+      "updated": "Email updated successfully",
+      "deleted": "Email deleted successfully",
+      "resetToDefault": "Template reset to default successfully"
+    }
+  },
   "footer": {
     "contactUs": "Contact us at",
     "handbookResources": "Handbook & Resources",
@@ -1455,6 +1528,7 @@
     "contacts": "Contacts",
     "contribution": "Contribution",
     "dashboard": "Dashboard",
+    "emails": "Emails",
     "home": "Home",
     "legacyApp": "Old dashboard",
     "logout": "Log out",

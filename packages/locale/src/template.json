@@ -1134,6 +1134,79 @@
       "label": ""
     }
   },
+  "emails": {
+    "actions": {
+      "addCustom": "",
+      "resetToDefault": ""
+    },
+    "add": {
+      "title": ""
+    },
+    "confirmDelete": {
+      "message": "",
+      "messageWithMailings": "",
+      "title": ""
+    },
+    "confirmResetToDefault": {
+      "message": "",
+      "title": ""
+    },
+    "customized": "",
+    "default": "",
+    "edit": {
+      "title": "",
+      "titleCustom": ""
+    },
+    "fromEmail": "",
+    "fromName": "",
+    "list": {
+      "showingOf": ""
+    },
+    "mailingCount": "",
+    "missingDefault": "",
+    "name": "",
+    "notifications": {
+      "created": "",
+      "deleted": "",
+      "resetToDefault": "",
+      "updated": ""
+    },
+    "status": "",
+    "tabs": {
+      "custom": "",
+      "templates": ""
+    },
+    "templates": {
+      "availableFields": "",
+      "names": {
+        "callout-response-answers": "",
+        "cancelled-contribution": "",
+        "cancelled-contribution-no-survey": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "expired-special-url-resend": "",
+        "giftee-success": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "purchased-gift": "",
+        "reset-device": "",
+        "reset-password": "",
+        "successful-referral": "",
+        "welcome": "",
+        "welcome-post-gift": ""
+      },
+      "type": {
+        "admin": "",
+        "contact": "",
+        "general": ""
+      }
+    },
+    "type": ""
+  },
   "footer": {
     "contactUs": "",
     "handbookResources": "",
@@ -1455,6 +1528,7 @@
     "contacts": "",
     "contribution": "",
     "dashboard": "",
+    "emails": "",
     "home": "",
     "legacyApp": "",
     "logout": "",

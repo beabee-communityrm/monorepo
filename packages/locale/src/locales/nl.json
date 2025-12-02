@@ -1462,7 +1462,8 @@
     "notices": "Mededelingen",
     "payments": "Betalingen",
     "settings": "Instellingen",
-    "yourProfile": "Jouw profiel"
+    "yourProfile": "Jouw profiel",
+    "emails": "E-mails"
   },
   "mergeFields": {
     "copied": "Gekopieerd!",
@@ -1704,5 +1705,80 @@
   },
   "taxRate": {
     "invoiceName": "BTW"
+  },
+  "emails": {
+    "tabs": {
+      "custom": "Aangepaste e-mails",
+      "templates": "Systeemsjablonen"
+    },
+    "list": {
+      "showingOf": "Toont {start} tot {end} e-mails van {total}"
+    },
+    "add": {
+      "title": "Aangepaste e-mail maken"
+    },
+    "edit": {
+      "title": "E-mail bewerken",
+      "titleCustom": "Bewerken: {name}"
+    },
+    "name": "E-mailnaam",
+    "fromName": "Afzendernaam",
+    "fromEmail": "Afzender e-mail",
+    "mailingCount": "Verzonden e-mails",
+    "status": "Status",
+    "type": "Type",
+    "actions": {
+      "addCustom": "Aangepaste e-mail toevoegen",
+      "resetToDefault": "Terugzetten naar standaard"
+    },
+    "templates": {
+      "availableFields": "Beschikbare velden",
+      "type": {
+        "general": "Algemeen",
+        "admin": "Beheerdersmeldingen",
+        "contact": "Contact e-mails"
+      },
+      "names": {
+        "welcome": "Welkom",
+        "welcome-post-gift": "Welkom na cadeau-lidmaatschap",
+        "reset-password": "Wachtwoord resetten",
+        "reset-device": "Apparaat resetten",
+        "cancelled-contribution": "Bijdrage geannuleerd",
+        "cancelled-contribution-no-survey": "Bijdrage geannuleerd - geen enquête",
+        "manual-to-automatic": "Handmatige bijdrager omgezet naar automatisch",
+        "email-exists-login": "E-mail bestaat - inloggen",
+        "email-exists-set-password": "E-mail bestaat - wachtwoord instellen",
+        "callout-response-answers": "CrowdNewsroom-reactiebevestiging",
+        "successful-referral": "Succesvolle verwijzing",
+        "giftee-success": "Cadeau-activering geslaagd",
+        "contribution-didnt-start": "Bijdrage niet gestart",
+        "purchased-gift": "Cadeau-aankoopbevestiging",
+        "confirm-email": "E-mail bevestigen",
+        "expired-special-url-resend": "Verlopen speciale link opnieuw verzenden",
+        "new-member": "Beheer: Nieuw contact",
+        "cancelled-member": "Beheer: Geannuleerd lid",
+        "new-callout-response": "Beheer: Nieuwe CrowdNewsroom-reactie"
+      }
+    },
+    "confirmDelete": {
+      "title": "E-mail verwijderen",
+      "message": "Weet je zeker dat je deze e-mail wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "messageWithMailings": "Deze e-mail is {count} keer verzonden. Weet je zeker dat je deze wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt."
+    },
+    "confirmResetToDefault": {
+      "title": "Terugzetten naar standaard",
+      "message": "Weet je zeker dat je dit sjabloon wilt terugzetten naar standaard? Je aangepaste wijzigingen gaan verloren."
+    },
+    "notifications": {
+      "created": "E-mail succesvol aangemaakt",
+      "updated": "E-mail succesvol bijgewerkt",
+      "deleted": "E-mail succesvol verwijderd",
+      "resetToDefault": "Sjabloon succesvol teruggezet naar standaard",
+      "templatesAssigned": "",
+      "templateAssigned": ""
+    },
+    "customized": "Aangepast",
+    "default": "Standaard",
+    "missingDefault": "Geen standaardsjabloon"
   }
 }

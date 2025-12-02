@@ -1462,7 +1462,8 @@
     "notices": "Hinweise",
     "payments": "Zahlungen",
     "settings": "Einstellungen",
-    "yourProfile": "Dein Profil"
+    "yourProfile": "Dein Profil",
+    "emails": "E-Mails"
   },
   "mergeFields": {
     "copied": "Kopiert!",
@@ -1704,5 +1705,80 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "emails": {
+    "tabs": {
+      "custom": "Eigene E-Mails",
+      "templates": "System-Vorlagen"
+    },
+    "list": {
+      "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
+    },
+    "add": {
+      "title": "Eigene E-Mail erstellen"
+    },
+    "edit": {
+      "title": "E-Mail bearbeiten",
+      "titleCustom": "Bearbeiten: {name}"
+    },
+    "name": "E-Mail-Name",
+    "fromName": "Absendername",
+    "fromEmail": "Absender-E-Mail",
+    "mailingCount": "Versendete E-Mails",
+    "status": "Status",
+    "type": "Typ",
+    "customized": "Angepasst",
+    "default": "Standard",
+    "missingDefault": "Kein Template",
+    "actions": {
+      "addCustom": "Eigene E-Mail hinzufügen",
+      "resetToDefault": "Auf Standard zurücksetzen"
+    },
+    "templates": {
+      "availableFields": "Verfügbare Felder",
+      "type": {
+        "general": "Allgemein",
+        "admin": "Admin-Benachrichtigungen",
+        "contact": "Kontakt-E-Mails"
+      },
+      "names": {
+        "welcome": "Willkommen",
+        "welcome-post-gift": "Willkommen nach Geschenk-Mitgliedschaft",
+        "reset-password": "Passwort zurücksetzen",
+        "reset-device": "Gerät zurücksetzen",
+        "cancelled-contribution": "Beitrag gekündigt",
+        "cancelled-contribution-no-survey": "Beitrag gekündigt - keine Umfrage",
+        "manual-to-automatic": "Manueller Beitrag in automatischen umgewandelt",
+        "email-exists-login": "E-Mail existiert - Anmelden",
+        "email-exists-set-password": "E-Mail existiert - Passwort setzen",
+        "callout-response-answers": "CrowdNewsroom-Antwort-Bestätigung",
+        "successful-referral": "Erfolgreiche Weiterempfehlung",
+        "giftee-success": "Geschenk-Aktivierung erfolgreich",
+        "contribution-didnt-start": "Beitrag hat nicht begonnen",
+        "purchased-gift": "Geschenk-Kauf-Bestätigung",
+        "confirm-email": "E-Mail bestätigen",
+        "expired-special-url-resend": "Abgelaufener Spezial-Link erneut senden",
+        "new-member": "Admin: Neuer Kontakt",
+        "cancelled-member": "Admin: Gekündigtes Mitglied",
+        "new-callout-response": "Admin: Neue CrowdNewsroom-Antwort"
+      }
+    },
+    "confirmDelete": {
+      "title": "E-Mail löschen",
+      "message": "Bist du sicher, dass du diese E-Mail löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "messageWithMailings": "Diese E-Mail wurde {count} Mal versendet. Bist du sicher, dass du sie löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "confirmResetToDefault": {
+      "title": "Auf Standard zurücksetzen",
+      "message": "Bist du sicher, dass du diese Vorlage auf den Standard zurücksetzen möchtest? Deine eigenen Änderungen gehen verloren."
+    },
+    "notifications": {
+      "created": "E-Mail erfolgreich erstellt",
+      "updated": "E-Mail erfolgreich aktualisiert",
+      "deleted": "E-Mail erfolgreich gelöscht",
+      "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
+      "templatesAssigned": "",
+      "templateAssigned": ""
+    }
   }
 }

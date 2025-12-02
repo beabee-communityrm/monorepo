@@ -1462,7 +1462,8 @@
     "notices": "Notifiche",
     "payments": "Pagamenti",
     "settings": "Impostazioni",
-    "yourProfile": "Il tuo profilo"
+    "yourProfile": "Il tuo profilo",
+    "emails": "Email"
   },
   "mergeFields": {
     "title": "Campi di unione",
@@ -1704,5 +1705,80 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
+  },
+  "emails": {
+    "tabs": {
+      "custom": "Email personalizzate",
+      "templates": "Modelli di sistema"
+    },
+    "list": {
+      "showingOf": "Visualizzazione da {start} a {end} email su {total}"
+    },
+    "add": {
+      "title": "Crea email personalizzata"
+    },
+    "edit": {
+      "title": "Modifica email",
+      "titleCustom": "Modifica: {name}"
+    },
+    "name": "Nome email",
+    "fromName": "Nome mittente",
+    "fromEmail": "Email mittente",
+    "mailingCount": "Email inviate",
+    "status": "Stato",
+    "type": "Tipo",
+    "actions": {
+      "addCustom": "Aggiungi email personalizzata",
+      "resetToDefault": "Ripristina predefinito"
+    },
+    "templates": {
+      "availableFields": "Campi disponibili",
+      "type": {
+        "general": "Generale",
+        "admin": "Notifiche admin",
+        "contact": "Email di contatto"
+      },
+      "names": {
+        "welcome": "Benvenuto",
+        "welcome-post-gift": "Benvenuto dopo iscrizione regalo",
+        "reset-password": "Reimposta password",
+        "reset-device": "Reimposta dispositivo",
+        "cancelled-contribution": "Contributo annullato",
+        "cancelled-contribution-no-survey": "Contributo annullato - senza sondaggio",
+        "manual-to-automatic": "Contributore manuale convertito in automatico",
+        "email-exists-login": "Email esistente - accedi",
+        "email-exists-set-password": "Email esistente - imposta password",
+        "callout-response-answers": "Conferma risposta CrowdNewsroom",
+        "successful-referral": "Referral riuscito",
+        "giftee-success": "Attivazione regalo riuscita",
+        "contribution-didnt-start": "Contributo non avviato",
+        "purchased-gift": "Conferma acquisto regalo",
+        "confirm-email": "Conferma email",
+        "expired-special-url-resend": "Reinvia link speciale scaduto",
+        "new-member": "Admin: Nuovo contatto",
+        "cancelled-member": "Admin: Membro annullato",
+        "new-callout-response": "Admin: Nuova risposta CrowdNewsroom"
+      }
+    },
+    "confirmDelete": {
+      "title": "Elimina email",
+      "message": "Sei sicuro di voler eliminare questa email? Questa azione non può essere annullata.",
+      "messageWithMailings": "Questa email è stata inviata {count} volta/e. Sei sicuro di volerla eliminare? Questa azione non può essere annullata."
+    },
+    "confirmResetToDefault": {
+      "title": "Ripristina predefinito",
+      "message": "Sei sicuro di voler ripristinare questo modello ai valori predefiniti? Le tue modifiche personalizzate andranno perse."
+    },
+    "notifications": {
+      "created": "Email creata con successo",
+      "updated": "Email aggiornata con successo",
+      "deleted": "Email eliminata con successo",
+      "resetToDefault": "Modello ripristinato ai valori predefiniti con successo",
+      "templatesAssigned": "",
+      "templateAssigned": ""
+    },
+    "customized": "Personalizzato",
+    "default": "Predefinito",
+    "missingDefault": "Nessun modello predefinito"
   }
 }
