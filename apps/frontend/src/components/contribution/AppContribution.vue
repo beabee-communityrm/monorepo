@@ -8,40 +8,42 @@
   - Amount validation and preset selection
   - Payment method selection with icons
   - Fee absorption option with automatic forcing for minimum amounts
+  - Option to use existing payment method (hides form fields when enabled)
   - Internal currency formatting using vue-i18n
   - Responsive layout with proper spacing
   - Full accessibility support
 -->
 <template>
   <div>
-    <AppChoice
-      v-if="showPeriod"
-      v-model="period"
-      :items="periodItems"
-      :disabled="disabled"
-      class="mb-4"
-    />
+    <div v-if="!useExistingPaymentMethod">
+      <AppChoice
+        v-if="showPeriod"
+        v-model="period"
+        :items="periodItems"
+        :disabled="disabled"
+        class="mb-4"
+      />
 
-    <ContributionAmount
-      v-model.number="amount"
-      :period="period"
-      :min-amount="minAmount"
-      :defined-amounts="definedAmounts"
-      :disabled="disabled"
-      class="mb-4"
-    />
+      <ContributionAmount
+        v-model.number="amount"
+        :period="period"
+        :min-amount="minAmount"
+        :defined-amounts="definedAmounts"
+        :disabled="disabled"
+        class="mb-4"
+      />
 
-    <slot></slot>
+      <slot></slot>
 
-    <ContributionMethod
-      v-if="showPaymentMethod"
-      v-model="paymentMethod"
-      :methods="content.paymentMethods"
-      :disabled="disabled"
-      :title="t('join.paymentMethod')"
-      class="mb-4"
-    />
-
+      <ContributionMethod
+        v-if="showPaymentMethod"
+        v-model="paymentMethod"
+        :methods="content.paymentMethods"
+        :disabled="disabled"
+        :title="t('join.paymentMethod')"
+        class="mb-4"
+      />
+    </div>
     <ContributionFee
       v-if="content.showAbsorbFee"
       v-model="payFee"
@@ -50,6 +52,12 @@
       :fee="fee"
       :force="shouldForceFee"
       :disabled="disabled"
+    />
+    <AppCheckbox
+      v-if="hasExistingPaymentMethod"
+      v-model="useExistingPaymentMethod"
+      label="Use existing payment method"
+      class="mb-4"
     />
   </div>
 </template>
@@ -62,7 +70,7 @@ import {
   type PaymentPeriod,
   calcPaymentFee,
 } from '@beabee/beabee-common';
-import { AppChoice } from '@beabee/vue';
+import { AppCheckbox, AppChoice } from '@beabee/vue';
 
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -88,12 +96,15 @@ export interface ContributionProps {
   showPaymentMethod?: boolean;
   /** Whether the form is disabled */
   disabled?: boolean;
+  /** Whether to use existing Payment method */
+  hasExistingPaymentMethod?: boolean;
 }
 
 const props = withDefaults(defineProps<ContributionProps>(), {
   showPeriod: true,
   showPaymentMethod: true,
   disabled: false,
+  hasExistingPaymentMethod: false,
 });
 
 const amount = defineModel<number>('amount', { required: true });
@@ -102,6 +113,10 @@ const payFee = defineModel<boolean>('payFee', { required: true });
 const paymentMethod = defineModel<PaymentMethod>('paymentMethod', {
   required: true,
 });
+const useExistingPaymentMethod = defineModel<boolean>(
+  'useExistingPaymentMethod',
+  { required: true }
+);
 
 const fee = computed(() =>
   calcPaymentFee(
