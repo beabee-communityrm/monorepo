@@ -24,22 +24,20 @@ meta:
     @submit="handleSubmit"
   >
     <!-- Template Info (read-only) -->
-    <div class="mb-6 max-w-2xl">
-      <div class="mb-4">
-        <label class="mb-1 block text-sm font-medium text-body-80">
-          {{ t('emails.name') }}
-        </label>
-        <p class="text-body">{{ t(`emails.templates.names.${templateId}`) }}</p>
-      </div>
+    <AppInfoList class="mb-6 max-w-2xl">
+      <AppInfoListItem
+        :name="t('emails.name')"
+        :value="t(`emails.templates.names.${templateId}`)"
+      />
 
       <!-- Available merge fields
            TODO: Temporary solution until PR #364 is merged. After merge, this will be
            replaced with the new AppMergeFields component that allows inserting merge fields
            directly in the EmailEditor rich text editor toolbar. -->
-      <div v-if="mergeFields.length > 0">
-        <p class="mb-2 text-sm font-medium text-body-80">
-          {{ t('emails.templates.availableFields') }}:
-        </p>
+      <AppInfoListItem
+        v-if="mergeFields.length > 0"
+        :name="t('emails.templates.availableFields')"
+      >
         <div class="flex flex-wrap gap-2">
           <code
             v-for="field in mergeFields"
@@ -49,8 +47,8 @@ meta:
             *|{{ field }}|*
           </code>
         </div>
-      </div>
-    </div>
+      </AppInfoListItem>
+    </AppInfoList>
 
     <!-- Email Editor -->
     <EmailEditor
@@ -67,7 +65,13 @@ import type {
   GetEmailData,
   GetEmailTemplateInfoData,
 } from '@beabee/beabee-common';
-import { AppButton, AppForm, PageTitle } from '@beabee/vue';
+import {
+  AppButton,
+  AppForm,
+  AppInfoList,
+  AppInfoListItem,
+  PageTitle,
+} from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import EmailEditor from '@components/EmailEditor.vue';
