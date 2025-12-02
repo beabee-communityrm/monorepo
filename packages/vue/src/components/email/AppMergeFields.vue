@@ -50,12 +50,12 @@
 
               <!-- Insert button -->
               <AppButton
-                variant="text"
+                variant="primary"
                 size="xs"
                 :icon="faPlus"
                 :name="t('mergeFields.insertTag', { tag: tag.tag })"
                 :title="t('mergeFields.insert')"
-                class="!p-2 !text-body-80 hover:!bg-primary-5 hover:!text-primary-80"
+                class="h-7 w-7"
                 @click="handleInsert(tag.tag)"
               />
             </div>
