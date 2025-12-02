@@ -371,7 +371,7 @@
             "default": "<p>Вітаємо, {'*|FNAME|*'},</p><p>Цей електронний лист підтверджує вашу відповідь на виклик <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> з використанням вашої електронної адреси {'*|EMAIL|*'}.</p><p><br /></p><p>Якщо у вас виникли запитання, зверніться до нашої служби підтримки за адресою <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>З найкращими побажаннями</p>"
           },
           "collectInfoWarning": {
-            "description": "Щоб надіслати електронного листа всім учасникам, потрібно ввімкнути опцію «Збирати контактну інформацію» на вкладці «Налаштування»",
+            "description": "Щоб надіслати електронного листа всім учасникам, потрібно ввімкнути опцію «Збирати контактну інформацію» на вкладці 'Налаштування'",
             "title": "Контактна інформація не зібрана"
           },
           "sendEmail": {
@@ -765,389 +765,408 @@
       },
       "endsWith": {
         "label": "Закінчується на",
-        "message": "",
-        "redirect": ""
+        "message": "Повідомлення з подякою",
+        "redirect": "Перенаправлення"
       },
-      "label": "",
+      "label": "Налаштування",
       "openTo": {
-        "everyone": "",
-        "label": "",
-        "membersOnly": ""
+        "everyone": "Усі",
+        "label": "Відкрито для",
+        "membersOnly": "Тільки для членів"
       }
     },
-    "summary": "",
-    "updated": ""
+    "summary": "Короткий зміст",
+    "updated": "Вашу CrowdNewsroom успішно оновлено."
   },
   "calloutResponse": {
     "data": {
-      "answers": "",
-      "assignee": "",
-      "bucket": "",
-      "callout": "",
-      "contact": "",
-      "createdAt": "",
-      "tags": "",
-      "updatedAt": ""
+      "answers": "Відповіді",
+      "assignee": "Призначено",
+      "bucket": "Відро",
+      "callout": "CrowdNewsroom",
+      "contact": "Контакти",
+      "createdAt": "Дата подання",
+      "tags": "Теги",
+      "updatedAt": "Дата оновлення"
     },
     "dataGroup": {
-      "answers": "",
-      "response": ""
+      "answers": "Відповіді на запитання",
+      "response": "Інформація про відповідь"
     }
   },
   "calloutResponseBuckets": {
-    "inbox": "",
-    "trash": "",
-    "verified": ""
+    "inbox": "Вхідні",
+    "trash": "Сміття",
+    "verified": "Перевірено"
   },
   "calloutResponseComments": {
     "actions": {
-      "addComment": "",
-      "updateComment": ""
+      "addComment": "Додати коментар",
+      "updateComment": "Оновити коментар"
     },
-    "addComment": "",
-    "comments": "",
+    "addComment": "Додати коментар",
+    "comments": "Коментарі",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "Ви впевнені, що хочете видалити цей коментар?",
+      "title": "Видалити коментар?"
     }
   },
   "calloutResponsePage": {
     "actions": {
-      "assignTo": "",
-      "moveBucket": "",
-      "toggleTag": "",
-      "viewOnMap": ""
+      "assignTo": "Призначити",
+      "moveBucket": "Перемістити відро",
+      "toggleTag": "Перемкнути тег",
+      "viewOnMap": "Переглянути на карті"
     },
-    "editMode": "",
-    "manageFolders": "",
-    "manageReviewers": "",
-    "manageTags": "",
+    "editMode": "Ви в режимі редагування, будьте обережні!",
+    "manageFolders": "Керування папками",
+    "manageReviewers": "Керування рецензентами",
+    "manageTags": "Керування тегами",
     "notifications": {
-      "addedAssignee": "",
-      "addedTag": "",
-      "movedToBucket": "",
-      "removedAssignee": "",
-      "removedTag": ""
+      "addedAssignee": "Призначено \"{assignee}\"",
+      "addedTag": "Додано тег \"{tag}\"",
+      "movedToBucket": "Переміщено до {bucket}",
+      "removedAssignee": "Скасовано з \"{assignee}\"",
+      "removedTag": "Вилучено тег \"{tag}\" "
     },
-    "responseOf": "",
-    "selectedCount": ""
+    "responseOf": "Відповідь {no} з {total} у {bucket}",
+    "selectedCount": "{n} вибрано відповідь | {n} вибрано відповідей"
   },
   "calloutResponsesPage": {
-    "moveToBucket": "",
-    "noTags": "",
-    "response": "",
-    "responseNo": "",
-    "searchAssignee": "",
-    "searchTag": "",
-    "showAnswer": "",
-    "showLatestComment": "",
-    "showingOf": ""
+    "moveToBucket": "Перемістити до {bucket}",
+    "noTags": "Без тегів",
+    "response": "Відповідь",
+    "responseNo": "Відповідь {no}",
+    "searchAssignee": "Призначено...",
+    "searchTag": "Позначено тегом...",
+    "showAnswer": "Відповідь",
+    "showLatestComment": "Останній коментар",
+    "showingOf": "Показано відповідей від {start} до {end} з {total}"
   },
   "calloutReviewerManager": {
-    "add": "",
-    "canEdit": "",
+    "add": "Додати рецензента",
+    "canEdit": "Рецензент також може редагувати CrowdNewsroom",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "Ви впевнені, що хочете видалити {reviewerName}? Він більше не зможе рецензувати цю CrowdNewsroom.",
+      "title": "Вилучити рецензента"
     },
-    "contact": "",
-    "editorTag": "",
+    "contact": "Ідентифікатор контакту",
+    "editorTag": "Редактор",
     "search": {
       "error": {
-        "message": "",
-        "title": ""
+        "message": "Будь ласка, переконайтеся, що адреса електронної пошти існує та не містить друкарських помилок.",
+        "title": "Контакт не знайдено"
       },
-      "placeholder": "",
-      "successMessage": ""
+      "placeholder": "Пошук адреси електронної пошти",
+      "successMessage": "Електронна адреса дійсна"
     },
-    "title": ""
+    "title": "Рецензенти"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": ""
+    "oneResponseWarning": "Зверніть увагу, що від однієї особи дозволено лише одну відповідь. Якщо ви вже зробили свій внесок, додаткові відповіді не будуть записані."
   },
   "callouts": {
-    "archive": "",
+    "archive": "Архів",
     "data": {
-      "callout": "",
-      "endDate": ""
+      "callout": "CrowdNewsroom",
+      "endDate": "Дата завершення"
     },
-    "noArchivedCallouts": "",
-    "search": "",
-    "showAll": "",
-    "showAnswered": "",
-    "showingOf": ""
+    "noArchivedCallouts": "Тут нічого дивитися",
+    "search": "Пошук",
+    "showAll": "Усі",
+    "showAnswered": "Відповів",
+    "showingOf": "Показано {start} до {end} з {total}"
   },
   "calloutsAdmin": {
-    "addCallout": "",
+    "addCallout": "Створити",
     "data": {
-      "expires": "",
-      "responses": "",
-      "starts": "",
-      "status": "",
-      "title": ""
+      "expires": "Термін дії",
+      "responses": "Відповіді",
+      "starts": "Дата початку",
+      "status": "Статус",
+      "title": "Назва"
     },
     "filter": {
-      "all": "",
-      "draft": "",
-      "ended": "",
-      "open": "",
-      "scheduled": ""
+      "all": "Усі",
+      "draft": "Чернетки",
+      "ended": "Закінчилося",
+      "open": "Відкрити",
+      "scheduled": "Заплановано"
     }
   },
   "common": {
-    "backToHome": "",
-    "contributing": "",
+    "backToHome": "Назад додому",
+    "contributing": "Сприяння",
     "contributionPeriod": {
-      "annually": "",
-      "monthly": ""
+      "annually": "Щорічно",
+      "monthly": "Щомісяця"
     },
     "contributionType": {
-      "automatic": "",
-      "gift": "",
-      "manual": "",
-      "none": ""
+      "automatic": "Автоматичний",
+      "gift": "Подарунок",
+      "manual": "Ручний",
+      "none": "Жоден"
     },
-    "default": "",
-    "hello": "",
-    "id": "",
-    "itemsPerPage": "",
-    "joined": "",
-    "label": "",
-    "loading": "",
-    "login": "",
+    "default": "За замовчуванням",
+    "hello": "Привіт",
+    "id": "ID",
+    "itemsPerPage": "{items} елементів на сторінці",
+    "joined": "Приєднався",
+    "label": "Мітка",
+    "loading": "Завантаження...",
+    "login": "Вхід",
     "newsletterStatus": {
-      "cleaned": "",
-      "none": "",
-      "pending": "",
-      "subscribed": "",
-      "unsubscribed": ""
+      "cleaned": "Очищено",
+      "none": "Жоден",
+      "pending": "Очікує на розгляд",
+      "subscribed": "Підписано",
+      "unsubscribed": "Скасовано підписку"
     },
-    "no": "",
-    "noResults": "",
-    "pageCount": "",
+    "no": "Ні",
+    "noResults": "Результатів не знайдено",
+    "pageCount": "Сторінка {pageNumber} з {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Щорічно",
+      "monthly": "Щомісяця",
+      "one-time": "Одноразовий"
+    },
     "paymentStatus": {
-      "cancelled": "",
-      "draft": "",
-      "failed": "",
-      "pending": "",
-      "successful": ""
+      "cancelled": "Скасовано",
+      "draft": "Чернетка",
+      "failed": "Не вдалося",
+      "pending": "Очікує на розгляд",
+      "successful": "Успішний"
     },
-    "perMonth": "",
-    "perMonthText": "",
-    "perYear": "",
-    "perYearText": "",
+    "perMonth": "/ місяць",
+    "perMonthText": "місяць",
+    "perOneTime": " одноразовий",
+    "perOneTimeText": "одноразовий",
+    "perYear": "/ рік",
+    "perYearText": "рік",
     "role": {
-      "admin": "",
-      "member": "",
-      "superadmin": ""
+      "admin": "Адміністратор",
+      "member": "Член",
+      "superadmin": "Суперадміністратор"
     },
-    "selectNone": "",
-    "selectOne": "",
-    "show": "",
-    "showingOf": "",
+    "selectNone": "-- Жоден --",
+    "selectOne": "Виберіть один...",
+    "show": "Показати",
+    "showingOf": "Показано результати з {start} до {end} з {total}",
     "status": {
-      "draft": "",
-      "ended": "",
-      "open": "",
-      "scheduled": ""
+      "draft": "Чернетка",
+      "ended": "Закінчилося",
+      "open": "Відкрити",
+      "scheduled": "Заплановано"
     },
-    "statusLabel": "",
-    "thankYou": "",
-    "timeAgo": "",
-    "timeIn": "",
-    "until": "",
-    "yes": ""
+    "statusLabel": "Статус: {status}",
+    "thankYou": "Дякую!",
+    "timeAgo": "{time} тому",
+    "timeIn": "в {time}",
+    "until": "доки",
+    "yes": "Так"
   },
   "contactAccount": {
     "confirmDelete": {
-      "text": "",
-      "title": "",
-      "warning": ""
+      "text": "Це видалить усі дані, пов’язані з {email}. Якщо в них є активний внесок, його буде скасовано.",
+      "title": "Видалити контакт",
+      "warning": "Це незворотна дія. Ви впевнені, що хочете продовжити?"
     },
-    "contactDeleted": ""
+    "contactDeleted": "Контакт видалено."
   },
   "contactContribution": {
     "confirmCancel": {
-      "confirm": "",
-      "text": "",
-      "title": ""
+      "confirm": "Так, скасувати",
+      "text": "Ви впевнені, що хочете скасувати внесок цього контакту? Цю дію не можна скасувати.",
+      "title": "Скасувати внесок?"
     },
     "updateNotice": {
-      "text": "",
-      "title": ""
+      "text": "Наразі ви не можете оновити внесок контакту. Зверніться до служби підтримки{'@'}beabee.io.",
+      "title": "Наразі недоступно"
     }
   },
   "contactOverview": {
-    "about": "",
-    "account": "",
+    "about": "Про нас",
+    "account": "Обліковий запис",
     "annotation": {
-      "copy": ""
+      "copy": "<p>Уся інформація, додана в цьому розділі, <strong>видима лише для адміністраторів</strong>. Учасники ніколи не побачать її у своєму профілі чи зоні для учасників.</p>\n"
     },
-    "callouts": "",
-    "cancellationDate": "",
-    "contribution": "",
-    "contributionType": "",
-    "joinSurvey": "",
+    "callouts": "CrowdNewsroom",
+    "cancellationDate": "Скасовано або",
+    "contribution": "Внесок",
+    "contributionType": "Тип",
+    "joinSurvey": "Приєднатися до опитування",
     "newsletter": {
-      "groups": "",
-      "status": "",
-      "title": ""
+      "groups": "Групи",
+      "status": "Статус",
+      "title": "Інформаційний бюлетень"
     },
-    "overview": "",
-    "pickTag": "",
-    "profile": "",
-    "roles": "",
+    "overview": "Огляд",
+    "pickTag": "Виберіть тег зі списку нижче",
+    "profile": "Профіль",
+    "roles": "Ролі",
     "security": {
-      "instructions": "",
-      "loginOverride": "",
+      "instructions": "Скопіюйте та поділіться цим посиланням:",
+      "loginOverride": "Перевизначення входу",
       "mfa": {
-        "desc": "",
-        "disabledDesc": ""
+        "desc": "Для цього контакту ввімкнено двофакторну аутентифікацію. Натисніть кнопку \"{ disableLabel }\", щоб вимкнути її.",
+        "disabledDesc": "Двофакторна аутентифікація (2FA) не ввімкнена для цього контакту."
       },
-      "resetPassword": "",
-      "title": "",
-      "whatDoTheButtonsDo": ""
+      "resetPassword": "Скинути пароль",
+      "title": "Безпека",
+      "whatDoTheButtonsDo": "Натисніть кнопку, щоб створити екстрене посилання:"
     }
   },
   "contacts": {
-    "addContact": "",
+    "addContact": "Додати контакт",
     "advancedSearch": {
-      "hasAnswered": "",
-      "selectCallout": ""
+      "hasAnswered": "Взяв участь?",
+      "selectCallout": "Виберіть"
     },
-    "allContacts": "",
+    "allContacts": "Усі контакти",
     "data": {
-      "activeMembership": "",
-      "activePermission": "",
-      "activeUser": "",
-      "amount": "",
-      "annotationsCopy": "",
-      "contribution": "",
-      "contributionCancelled": "",
-      "contributionMonthlyAmount": "",
-      "contributionPeriod": "",
-      "contributionType": "",
-      "deliveryOptIn": "",
-      "description": "",
-      "email": "",
-      "firstname": "",
-      "joined": "",
-      "lastSeen": "",
-      "lastname": "",
-      "manualPaymentSource": "",
-      "membershipExpires": "",
-      "membershipStarts": "",
-      "name": "",
-      "newsletterGroups": "",
-      "newsletterStatus": "",
-      "notes": "",
-      "payingFee": "",
-      "paymentReference": "",
-      "paymentSource": "",
-      "period": "",
-      "phone": "",
-      "preferredChannel": "",
-      "tags": ""
+      "activeMembership": "Активне членство",
+      "activePermission": "Активна роль",
+      "activeUser": "Активний користувач",
+      "amount": "Сума",
+      "annotationsCopy": "Контакт успішно оновлено",
+      "contribution": "Внесок",
+      "contributionCancelled": "Внесок скасовано",
+      "contributionMonthlyAmount": "Сума щомісячного внеску",
+      "contributionPeriod": "Період внеску",
+      "contributionType": "Тип внеску",
+      "deliveryOptIn": "Підписка на доставку",
+      "description": "Опис",
+      "email": "Електронна пошта",
+      "firstname": "Основні ім'я",
+      "joined": "Приєднався",
+      "lastSeen": "Бачили востаннє",
+      "lastname": "Прізвище",
+      "manualPaymentSource": "Джерело ручного платежу",
+      "membershipExpires": "Член до",
+      "membershipStarts": "Учасник з",
+      "name": "Ім'я",
+      "newsletterGroups": "Групи розсилки",
+      "newsletterStatus": "Статус розсилки",
+      "notes": "Нотатки",
+      "payingFee": "Сплата збору?",
+      "paymentReference": "Довідка про платіж",
+      "paymentSource": "Джерело оплати",
+      "period": "Період",
+      "phone": "Номер телефону",
+      "preferredChannel": "Бажаний канал",
+      "tags": "Теги"
     },
     "dataGroup": {
-      "callout": "",
-      "contact": "",
-      "contribution": "",
-      "role": ""
+      "callout": "CrowdNewsroom",
+      "contact": "Контактна інформація",
+      "contribution": "Внесок",
+      "role": "Роль"
     },
-    "noContacts": "",
-    "noResults": "",
-    "numResults": "",
-    "search": "",
-    "selectedCount": "",
-    "showingOf": ""
+    "noContacts": "Контактів ще не додано",
+    "noResults": "Контактів не знайдено",
+    "numResults": "{n} контакт знайдено | {n} контактів знайдено",
+    "search": "Пошук контактів...",
+    "selectedCount": "{n} контакт вибрано | {n} контактів вибрано",
+    "showingOf": "Показано контакти з {start} до {end} з {total}"
   },
   "contribution": {
-    "adminCancelDescription": "",
-    "bankAccount": "",
-    "billing": "",
-    "cancelContribution": "",
-    "cancelDescription": "",
-    "cancelMessage": "",
-    "cancelledContribution": "",
-    "changeBank": "",
-    "changeBankInfo": "",
-    "contributing": "",
-    "contributionUpdateError": "",
-    "dueToRenew": "",
-    "expired": "",
-    "expiredText": "",
-    "hasPendingPayment": "",
-    "manualPayment": "",
-    "manualPaymentSource": "",
-    "nextAmountChanging": "",
+    "adminCancelDescription": "Якщо ви скасуєте внесок контакту, його членство завершиться в кінці поточного платіжного циклу {date}.",
+    "bankAccount": "Банківський рахунок",
+    "billing": "Виставлення рахунків",
+    "cancelContribution": "Скасувати внесок",
+    "cancelDescription": "Якщо ви скасуєте свій внесок, ваше членство завершиться в кінці поточного платіжного циклу {date}.",
+    "cancelMessage": "Нам шкода, що ви йдете.",
+    "cancelledContribution": "Ваш внесок скасовано.",
+    "changeBank": "Зміна на інший банківський рахунок",
+    "changeBankInfo": "На наступному кроці вас попросять ввести реквізити вашого нового банківського рахунку.",
+    "contributing": "Ви робите свій внесок",
+    "contributionUpdateError": "Ви не можете оновити свій внесок наразі, оскільки у вас є платіж, що очікує на обробку",
+    "dueToRenew": "Ваш внесок потрібно поновити {renewalDate}.",
+    "expired": "Термін дії вашого внеску закінчився.",
+    "expiredText": "Будь ласка, розгляньте можливість поновлення, навіть якщо сума буде мінімальною, це дуже допоможе нам. Дякуємо!",
+    "hasPendingPayment": "Ваш платіж наразі обробляється.",
+    "manualPayment": "Ви зараз сплачуєте свій членський внесок через {source}. Сплачуючи через нашу систему членства, ви допомагаєте нам знати, на скільки грошей від наших учасників ми можемо розраховувати щомісяця, і вам буде легше керувати своїм внеском.",
+    "manualPaymentSource": "інструмент сторонньої сторони",
+    "nextAmountChanging": "Ваш внесок зміниться на {nextAmount} {renewalDate}.",
     "paymentHistory": {
-      "empty": "",
-      "title": ""
+      "empty": "Тут відображатимуться минулі платежі та відповідні рахунки-фактури.",
+      "title": "Історія платежів"
     },
-    "paymentMethod": "",
-    "paymentSourceUpdateError": "",
-    "prorateDecreaseMessage": "",
-    "prorateDecreaseMessageWillStart": "",
-    "prorateIncreaseMessage": "",
-    "prorateIncreaseMessageOneOff": "",
-    "prorateNoText": "",
-    "prorateNoTitle": "",
-    "prorateYesText": "",
-    "prorateYesTitle": "",
-    "restartContribution": "",
-    "startContribution": "",
-    "startedContribution": "",
-    "updateContribution": "",
-    "updatePaymentType": "",
-    "updatedContribution": "",
-    "updatedPaymentSource": "",
-    "willExpire": "",
-    "willRenew": "",
-    "willRenewWithNewAmount": ""
+    "paymentMethod": "Спосіб оплати",
+    "paymentSourceUpdateError": "Наразі ви не можете оновити свій банківський рахунок, оскільки у вас є платіж, що очікує на обробку",
+    "prorateDecreaseMessage": "У вас залишився один місяць на ваш поточний внесок. | У вас залишилося {n} місяців на ваш поточний внесок.",
+    "prorateDecreaseMessageWillStart": "Ваш новий внесок розпочнеться {renewalDate}.",
+    "prorateIncreaseMessage": "У вас залишився один місяць на ваш поточний внесок. | У вас залишилося {n} місяців на ваш поточний внесок.",
+    "prorateIncreaseMessageOneOff": "Ви можете здійснити одноразовий платіж у розмірі {oneOffPayment}, щоб негайно розпочати свій новий внесок.",
+    "prorateNoText": "До того часу ви залишатиметеся зі своїм поточним внеском.",
+    "prorateNoTitle": "Оновити мій внесок {renewalDate}",
+    "prorateYesText": "З вас буде стягнуто одноразовий платіж у розмірі {oneOffPayment} зараз, і ваш внесок буде негайно оновлено",
+    "prorateYesTitle": "Оновити мій внесок зараз",
+    "restartContribution": "Перезавантажити внесок",
+    "startContribution": "Почати внесок",
+    "startedContribution": "Ваш внесок розпочато.",
+    "updateContribution": "Оновити внесок",
+    "updatePaymentType": "Оновити спосіб оплати",
+    "updatedContribution": "Ваш внесок оновлено.",
+    "updatedPaymentSource": "Ваш спосіб оплати оновлено.",
+    "willExpire": "Термін дії вашого внеску закінчується через {expires}.",
+    "willRenew": "Ваш внесок буде автоматично поновлено {renewalDate}.",
+    "willRenewWithNewAmount": "Ваш внесок буде автоматично поновлено {renewalDate} та зміниться на вибрану вами суму {nextAmount}."
   },
   "editCallout": {
-    "replicated": "",
-    "title": "",
-    "warning": ""
+    "replicated": "Вашу CrowdNewsroom успішно скопійовано, і тепер ви редагуєте нову копію. Обов’язково відредагуйте заголовок на вкладці «Заголовок і зображення».",
+    "title": "Редагувати: {title}",
+    "warning": "Обережно! Ви редагуєте активну публікацію CrowdNewsroom. Зміна властивостей форми може призвести до того, що попередні відповіді стануть непридатними для використання."
   },
   "editNotice": {
-    "title": ""
+    "title": "Редагувати: {title}"
+  },
+  "emailEditor": {
+    "body": {
+      "label": "Повідомлення"
+    },
+    "preview": {
+      "label": "Попередній перегляд",
+      "unavailable": "Попередній перегляд недоступний"
+    },
+    "subject": {
+      "label": "Предмет"
+    }
   },
   "footer": {
-    "contactUs": "",
-    "handbookResources": "",
-    "impressum": "",
-    "joinCommunity": "",
-    "poweredBy": "",
-    "privacyPolicy": "",
-    "terms": ""
+    "contactUs": "Зв'яжіться з нами за адресою",
+    "handbookResources": "Посібник та ресурси",
+    "impressum": "Імпресум",
+    "joinCommunity": "Приєднуйтесь до спільноти",
+    "poweredBy": "підтримка незалежних місцевих редакцій",
+    "privacyPolicy": "Політика конфіденційності",
+    "terms": "Умови та положення"
   },
   "forgotPassword": {
-    "backToLogin": "",
-    "description": "",
-    "message": "",
-    "title": ""
+    "backToLogin": "Назад до сторінки входу",
+    "description": "Будь ласка, введіть свою адресу електронної пошти, і ми надішлемо вам інструкції щодо скидання пароля.",
+    "message": "Якщо з адресою {email} пов’язано обліковий запис, ви незабаром отримаєте електронний лист. Перевірте папку зі спамом, якщо його немає.",
+    "title": "Забули пароль?"
   },
   "form": {
-    "addressLine1": "",
-    "addressLine2": "",
-    "cancel": "",
+    "addressLine1": "Адресний рядок 1",
+    "addressLine2": "Адресний рядок 2",
+    "cancel": "Скасувати",
     "characters": {
-      "remaining": ""
+      "remaining": "Залишилося {remaining} символів."
     },
-    "cityOrTown": "",
-    "deliveryOptIn": "",
-    "description": "",
-    "email": "",
+    "cityOrTown": "Місто/селище",
+    "deliveryOptIn": "Підписка на доставку",
+    "description": "Опис",
+    "email": "Електронна пошта",
     "errorMessages": {
       "api": {
-        "account-locked": "",
-        "duplicate-email": "",
-        "duplicate-tag-name": "",
-        "invalid-token": "",
-        "login-failed": "",
-        "mfa-token-required": ""
+        "account-locked": "Обліковий запис заблоковано через занадто багато невдалих спроб входу. Будь ласка, скиньте пароль або зверніться до служби підтримки.",
+        "duplicate-email": "Адреса електронної пошти вже існує",
+        "duplicate-tag-name": "Тег із такою назвою вже існує",
+        "invalid-token": "Недійсний токен 2FA",
+        "login-failed": "Недійсна комбінація пароля/електронної пошти",
+        "mfa-token-required": "Ви ввімкнули двофакторну аутентифікацію (2FA). Введіть токен із програми-автентифікатора, щоб продовжити."
       },
       "generic": "",
       "unauthorized": "",
