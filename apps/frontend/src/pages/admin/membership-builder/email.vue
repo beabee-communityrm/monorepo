@@ -33,15 +33,23 @@ meta:
       :heading="stepT('cancellationEmail')"
       :template="{ type: 'contact', id: 'cancelled-contribution' }"
     />
+
+    <EmailEditor
+      v-if="showOneTimeDonationEmail && oneTimeDonationEmail"
+      v-model:subject="oneTimeDonationEmail.subject"
+      v-model:content="oneTimeDonationEmail.body"
+      :heading="stepT('oneTimeDonationEmail')"
+      :template="{ type: 'contact', id: 'one-time-donation' }"
+    />
   </AppForm>
 </template>
 <script lang="ts" setup>
-import type { EmailPreviewData } from '@beabee/beabee-common';
+import type { ContentJoinData, EmailPreviewData } from '@beabee/beabee-common';
 import { App2ColGrid, AppForm } from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
 import { client, isApiError } from '@utils/api';
-import { onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -49,6 +57,12 @@ const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);
 
 const welcomeEmail = ref<EmailPreviewData | false>();
 const cancellationEmail = ref<EmailPreviewData | false>();
+const oneTimeDonationEmail = ref<EmailPreviewData | false>();
+const joinContent = ref<ContentJoinData>();
+
+const showOneTimeDonationEmail = computed(() =>
+  joinContent.value?.periods.some((p) => p.name === 'one-time')
+);
 
 async function loadEmail(
   templateId: string
@@ -74,10 +88,16 @@ async function handleUpdate() {
       cancellationEmail.value
     );
   }
+  if (oneTimeDonationEmail.value) {
+    await client.email.update('one-time-donation', oneTimeDonationEmail.value);
+  }
 }
 
 onBeforeMount(async () => {
   welcomeEmail.value = await loadEmail('welcome');
   cancellationEmail.value = await loadEmail('cancelled-contribution');
+  oneTimeDonationEmail.value = await loadEmail('one-time-donation');
+
+  joinContent.value = await client.content.get('join');
 });
 </script>

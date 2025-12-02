@@ -143,7 +143,7 @@ export const emailTemplateDefinitions = {
     'callout-response-answers': {
       metadata: {
         type: 'contact' as const,
-        mergeFields: ['MESSAGE', 'CALLOUTTITLE', 'CALLOUTLINK', 'SUPPORTEMAIL'],
+        mergeFields: ['MESSAGE', 'CALLOUTTITLE', 'CALLOUTLINK'],
       },
       fn: (
         _: Contact,
@@ -187,6 +187,15 @@ export const emailTemplateDefinitions = {
         mergeFields: [],
       },
       fn: (_: Contact) => ({}),
+    },
+    'one-time-donation': {
+      metadata: {
+        type: 'contact' as const,
+        mergeFields: ['AMOUNT'],
+      },
+      fn: (_: Contact, params: { amount: number }) => ({
+        AMOUNT: config.currencySymbol + params.amount.toFixed(2),
+      }),
     },
   },
 

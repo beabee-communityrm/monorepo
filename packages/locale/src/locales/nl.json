@@ -1406,7 +1406,8 @@
         "description": "Pas je welkomst- en annuleringsmails aan",
         "text": "Alle e-mails worden verzonden vanaf uw support e-mailadres en bevatten een standaard handtekening. U kunt deze wijzigen in uw e-mailinstellingen.",
         "title": "E-mails",
-        "welcomeEmail": "Welkom e-mail"
+        "welcomeEmail": "Welkom e-mail",
+        "oneTimeDonationEmail": ""
       },
       "intro": {
         "description": "Zeg hallo tegen je nieuwe leden",
