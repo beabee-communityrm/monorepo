@@ -213,6 +213,9 @@ abstract class BaseCalloutDto implements CalloutData {
   @IsOptional()
   @IsEnum(CalloutChannel, { each: true })
   channels!: CalloutChannel[] | null;
+
+  @IsBoolean()
+  sendResponseEmail!: boolean;
 }
 
 function transformVariants(

@@ -21,4 +21,5 @@ export interface CalloutData {
   newsletterSchema?: CalloutNewsletterSchema | null;
   responseViewSchema?: CalloutResponseViewSchema | null;
   channels: CalloutChannel[] | null;
+  sendResponseEmail: boolean;
 }

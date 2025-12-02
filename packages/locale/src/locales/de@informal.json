@@ -10,7 +10,7 @@
         "label": "Code"
       },
       "confirmDelete": {
-        "desc": "Möchtest du die Multi-Faktor-Authentifizierung wirklich deaktivieren? \nDanach brauchst du nur noch dein Passwort zum Anmelden. Bitte vergiss \nnicht, den Eintrag in deiner Authenticator-App zu löschen. Du kannst \ndiese Funktion jederzeit wieder einschalten.",
+        "desc": "Möchtest du die Multi-Faktor-Authentifizierung wirklich deaktivieren? \nDanach brauchst du nur noch dein Passwort zum Anmelden. Bitte vergiss \nnicht, den Eintrag in deiner Authenticator-App zu löschen. Du kannst \ndiese Funktion jederzeit wider einschalten.",
         "descToken": "Um 2FA zu deaktivieren, gib bitte deinen aktuellen 2FA-Code ein:",
         "title": "2FA deaktivieren"
       },
@@ -366,6 +366,23 @@
         "content": {
           "title": "Inhalt"
         },
+        "email": {
+          "title": "E-Mail",
+          "body": {
+            "default": "<p>Hallo {'*|FNAME|*'},</p><p>Diese E-Mail bestätigt deine Antwort auf <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung deiner E-Mail-Adresse {'*|EMAIL|*'}.</p><p><br /></p><p>Wenn du Fragen hast, wende dich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Viele Grüße</p>"
+          },
+          "collectInfoWarning": {
+            "description": "Um eine E-Mail an alle Teilnehmer zu senden, musst du \"Kontaktinformationen erfassen\" in der Registerkarte Einstellungen aktivieren",
+            "title": "Kontaktinformationen werden nicht erfasst"
+          },
+          "sendEmail": {
+            "description": "E-Mail wird an alle Teilnehmer gesendet, die ihre Kontaktinformationen übermitteln",
+            "label": "Nach der Übermittlung eine E-Mail an alle Teilnehmer senden"
+          },
+          "subject": {
+            "default": "Danke für deine Teilnahme"
+          }
+        },
         "endMessage": {
           "inputs": {
             "action": {
@@ -499,7 +516,7 @@
               "title": "Karteneinstellungen"
             },
             "newsletterSettings": {
-              "disabled": "Du kannst keine Newsletter-Anmeldungen anfordern, wenn du keine Kontaktinformationen sammelst",
+              "disabled": "Du kannst keine Newsletter-Anmeldungen anfordern, wenn du keine Kontaktinformationen erfassen",
               "label": "Füge dem Kontaktformular eine Newsletter-Anmeldung hinzu",
               "opts": {
                 "disabled": "Teilnehmer werden nicht gefragt, ob sie sich für den Newsletter anmelden möchten",
@@ -874,7 +891,7 @@
       "draft": "Entwürfe",
       "ended": "Beendete",
       "open": "Aktive",
-      "scheduled": "Geplante"
+      "scheduled": "Geplant"
     }
   },
   "common": {
@@ -932,7 +949,7 @@
       "draft": "Entwurf",
       "ended": "Beendet",
       "open": "Aktiv",
-      "scheduled": "Geplant"
+      "scheduled": "Geplante"
     },
     "statusLabel": "Status: {status}",
     "thankYou": "Vielen Dank!",
@@ -1089,12 +1106,12 @@
     "startContribution": "Mitgliedschaft beginnen",
     "startedContribution": "Deine Mitgliedschaft hat begonnen.",
     "updateContribution": "Beitrag aktualisieren",
-    "updatePaymentType": "Neue Zahlungsmethode einrichten",
     "updatedContribution": "Dein Beitrag wurde geändert.",
     "updatedPaymentSource": "Deine Zahlungsart wurde aktualisiert. ",
     "willExpire": "Deine Mitgliedschaft läuft in {expires} ab.",
     "willRenew": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
-    "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}."
+    "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}.",
+    "updatePaymentType": "Neue Zahlungsmethode einrichten"
   },
   "editCallout": {
     "replicated": "Dein CrowdNewsroom wurde kopiert! Du bearbeitest jetzt die Kopie. Denk bitte unbedingt daran, den Titel zu bearbeiten.",
@@ -1103,6 +1120,18 @@
   },
   "editNotice": {
     "title": "Bearbeiten: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Betreff"
+    },
+    "body": {
+      "label": "Nachricht"
+    },
+    "preview": {
+      "label": "Vorschau",
+      "unavailable": "Vorschau nicht verfügbar"
+    }
   },
   "footer": {
     "contactUs": "Kontaktiere uns unter",
@@ -1199,7 +1228,7 @@
       "unknown": {
         "email": "Ungültige E-Mail-Adresse",
         "max": "Dieses Feld darf höchstens {max} sein",
-        "maxLength": "Du hast die maximale Länge von {max} Zeichen überschritten",
+        "maxLength": "Dieses Feld darf höchstens {max} sein",
         "min": "Dieses Feld muss mindestens {min}",
         "required": "Dieses Feld wird benötigt",
         "url": "Ungültige URL"
@@ -1215,8 +1244,8 @@
       }
     },
     "errorsFormio": {
-      "maxLength": "Du hast die maximale Länge von {'{{length}}'} Zeichen überschritten",
-      "minLength": "Dieses Feld muss mindestens {'{{length}}'} Zeichen haben"
+      "maxLength": "Du hast die maximale Länge von {'{{length}}'} überschritten",
+      "minLength": "Dieses Feld muss mindestens {'{{length}}'}  Zeichen haben"
     },
     "firstName": "Vorname",
     "lastName": "Nachname",
@@ -1289,7 +1318,7 @@
     "contribute": "Mit {contribution} unterstützen.",
     "errors": {
       "confirmEmail": {
-        "message": "Fast geschafft! Wir müssen nur noch deine E-Mail-Adresse bestätigen, um fortzufahren.",
+        "message": "Fast geschafft! Wir müssen noch deine E-Mail-Adresse bestätigen, um fortzufahren.",
         "proceed": "Wir haben dir eine E-Mail geschickt. Bitte klicke auf den Bestätigungslink, um fortzufahren.",
         "title": "E-Mail-Adresse bestätigen"
       },
@@ -1395,7 +1424,7 @@
         "formTitle": "Titel",
         "minAmount": "Mindestbeitrag",
         "noticeText": "Hinweistext unter dem Zahlungsbutton",
-        "noticeTextHelp": "Verwende dieses Feld, um einen Hinweis unter dem Zahlungsbutton hinzuzufügen, zum Beispiel zur Erklärung von Zahlungsperioden oder Bankeinzugsermächtigungen. Du kannst dieses Feld auch leer lassen.",
+        "noticeTextHelp": "Verwende dieses Feld, um einen Hinweis unter dem Zahlungsbutton hinzufügen, zum Beispiel zur Erklärung von Zahlungsperioden oder Bankeinzugsermächtigungen. Du kannst dieses Feld auch leer lassen.",
         "showAbsorbFee": "Nutzer um Ausgleich der Gebühren bitten",
         "showNoContribution": "Registrierung ohne Zahlung erlauben",
         "suggestedAmounts": "Beiträge vorschlagen",
@@ -1475,7 +1504,7 @@
     "forgotPassword": "Passwort vergessen",
     "join": "Mitglied werden",
     "login": "Login",
-    "lostDevice": "Du hast dein 2FA-Gerät verloren?",
+    "lostDevice": "2FA-Gerät verloren? Bitte an den Support wenden.",
     "notFound": "Seite nicht gefunden",
     "resetDevice": "Zweitgerät zurücksetzen",
     "resetPassword": "Passwort zurücksetzen",
@@ -1553,7 +1582,7 @@
   "roleEditor": {
     "add": "Rolle hinzufügen",
     "confirmDelete": {
-      "text": "Bist Du sicher, dass Du diese Rolle entfernen willst?",
+      "text": "Bist du sicher, dass du diese Rolle entfernen willst?",
       "title": "Rolle entfernen"
     },
     "expires": {
@@ -1583,7 +1612,7 @@
     "initializing": "Wird initialisiert...",
     "loadingApplication": "Anwendung wird geladen",
     "pleaseWait": "Bitte warten...",
-    "usuallyTakesSeconds": "Das dauert normalerweise ein paar Sekunden"
+    "usuallyTakesSeconds": " Das dauert normalerweise ein paar Sekunden"
   },
   "stepper": {
     "navigation": {

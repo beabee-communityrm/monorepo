@@ -34,6 +34,8 @@ class CalloutVariantTransformer extends BaseTransformer<
       slideNavigation: variant.slideNavigation,
       componentText: variant.componentText,
       responseLinkText: variant.responseLinkText,
+      responseEmailSubject: variant.responseEmailSubject,
+      responseEmailBody: variant.responseEmailBody,
     };
   }
 

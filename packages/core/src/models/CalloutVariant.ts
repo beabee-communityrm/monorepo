@@ -56,4 +56,10 @@ export class CalloutVariant {
 
   @Column({ type: 'jsonb', default: '{}' })
   responseLinkText!: Record<string, string>;
+
+  @Column({ type: String, nullable: true })
+  responseEmailSubject!: string | null;
+
+  @Column({ type: 'text', nullable: true })
+  responseEmailBody!: string | null;
 }

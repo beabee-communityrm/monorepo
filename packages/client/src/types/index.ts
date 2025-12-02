@@ -1,5 +1,6 @@
-export type * from './base-client-options.js';
-export type * from './client-api-error-data.js';
-export type * from './fetch-options.js';
-export type * from './fetch-response.js';
-export type * from './http-method.js';
+export * from './base-client-options.js';
+export * from './client-api-error-data.js';
+export * from './fetch-options.js';
+export * from './fetch-response.js';
+export * from './http-method.js';
+export * from './preview-email-options.js';

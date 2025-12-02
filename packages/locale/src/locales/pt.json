@@ -366,6 +366,23 @@
         "content": {
           "title": ""
         },
+        "email": {
+          "title": "Email",
+          "body": {
+            "default": "<p>Olá {'*|FNAME|*'},</p><p>Este e-mail confirma a sua resposta à chamada <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> utilizando o seu endereço de correio eletrónico {'*|EMAIL|*'}.</p><p><br /></p><p>Se tiver alguma questão, contacte a nossa equipa de apoio em <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Atenciosamente</p>"
+          },
+          "collectInfoWarning": {
+            "description": "Para enviar um e-mail a todos os participantes, você deve ativar \"Coletar informações de contato\" na aba Configurações",
+            "title": "Informações de contato não coletadas"
+          },
+          "sendEmail": {
+            "description": "O e-mail será enviado a todos os participantes que enviarem suas informações de contato",
+            "label": "Enviar um e-mail a todos os participantes após o envio"
+          },
+          "subject": {
+            "default": "Obrigado pela sua resposta"
+          }
+        },
         "endMessage": {
           "inputs": {
             "action": {
@@ -1102,7 +1119,19 @@
     "warning": ""
   },
   "editNotice": {
-    "title": ""
+    "title": "Editar: {title}"
+  },
+  "emailEditor": {
+    "subject": {
+      "label": "Assunto"
+    },
+    "body": {
+      "label": "Mensagem"
+    },
+    "preview": {
+      "label": "Pré-visualização",
+      "unavailable": "Pré-visualização indisponível"
+    }
   },
   "footer": {
     "contactUs": "Entra em contacto connosco em",
