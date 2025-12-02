@@ -32,7 +32,7 @@
         <h4
           class="mb-3 text-xs font-semibold uppercase tracking-wide text-body-80"
         >
-          {{ getGroupLabel(group) }}
+          {{ t(`mergeFields.groups.${group.key}`) }}
         </h4>
 
         <!-- Merge tags in group -->
@@ -68,7 +68,7 @@
 
             <!-- Description -->
             <p class="text-xs text-body-80">
-              {{ getTagDescription(tag) }}
+              {{ t(`mergeFields.tags.${tag.tag}`) }}
             </p>
 
             <!-- Example value (if provided) -->
@@ -116,22 +116,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-
-/**
- * Get translated label for a group
- */
-function getGroupLabel(group: MergeTagGroup): string {
-  const key = group.labelKey || `mergeFields.groups.${group.key}`;
-  return t(key);
-}
-
-/**
- * Get translated description for a tag
- */
-function getTagDescription(tag: MergeTag): string {
-  const key = tag.descriptionKey || `mergeFields.tags.${tag.tag}`;
-  return t(key);
-}
 
 /**
  * Handle insert action
