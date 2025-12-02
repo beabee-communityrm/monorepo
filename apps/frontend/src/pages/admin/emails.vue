@@ -1,0 +1,64 @@
+<route lang="yaml">
+name: adminEmails
+meta:
+  role: admin
+</route>
+
+<template>
+  <PageTitle :title="t('menu.emails')" />
+  <AppTabs :items="tabs" :selected="(route.name as string) || ''" />
+  <router-view />
+</template>
+
+<script lang="ts" setup>
+import { AppTabs, PageTitle } from '@beabee/vue';
+
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { resolveTabNavigation } from '@utils/navigation';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
+
+import { addBreadcrumb } from '../../store/breadcrumb';
+import type { BreadcrumbItem } from '../../type/breadcrumb-item';
+
+const { t } = useI18n();
+const route = useRoute();
+const router = useRouter();
+
+const tabs = computed(() =>
+  resolveTabNavigation(router, [
+    {
+      id: 'adminEmailsCustom',
+      label: t('emails.tabs.custom'),
+    },
+    {
+      id: 'adminEmailsTemplates',
+      label: t('emails.tabs.templates'),
+    },
+  ])
+);
+
+addBreadcrumb(
+  computed((): BreadcrumbItem[] => {
+    const breadcrumb: BreadcrumbItem[] = [
+      { title: t('menu.emails'), icon: faEnvelope },
+    ];
+
+    // Add tab-specific breadcrumb based on current route
+    if (route.name === 'adminEmailsCustom') {
+      breadcrumb.push({
+        title: t('emails.tabs.custom'),
+        to: '/admin/emails/custom',
+      });
+    } else if (route.name === 'adminEmailsTemplates') {
+      breadcrumb.push({
+        title: t('emails.tabs.templates'),
+        to: '/admin/emails/templates',
+      });
+    }
+
+    return breadcrumb;
+  })
+);
+</script>
