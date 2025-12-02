@@ -51,19 +51,15 @@
               </code>
 
               <!-- Insert button -->
-              <button
-                type="button"
-                class="flex items-center justify-center rounded p-1 text-primary-70 transition-colors hover:bg-primary-5 hover:text-primary-80 focus:outline-none focus:ring-2 focus:ring-primary-70"
-                :aria-label="t('mergeFields.insertTag', { tag: tag.tag })"
+              <AppButton
+                variant="text"
+                size="xs"
+                :icon="faPlus"
+                :name="t('mergeFields.insertTag', { tag: tag.tag })"
                 :title="t('mergeFields.insert')"
+                class="!p-2 !text-body-80 no-underline hover:!bg-primary-5 hover:!text-primary-80"
                 @click="handleInsert(tag.tag)"
-              >
-                <font-awesome-icon
-                  :icon="faPlus"
-                  class="h-3.5 w-3.5"
-                  aria-hidden="true"
-                />
-              </button>
+              />
             </div>
 
             <!-- Description -->
@@ -92,7 +88,8 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 
-import type { MergeTag, MergeTagGroup } from '../../types/merge-fields';
+import type { MergeTagGroup } from '../../types/merge-fields';
+import { AppButton } from '../index';
 
 /**
  * Props for the AppMergeFields component
