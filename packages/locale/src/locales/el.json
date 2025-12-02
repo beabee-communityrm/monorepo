@@ -1266,7 +1266,8 @@
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
-      "underline": ""
+      "underline": "",
+      "mergeFields": "Πεδία συγχώνευσης"
     },
     "saveChanges": "",
     "saved": "",
@@ -1459,6 +1460,56 @@
     "payments": "",
     "settings": "",
     "yourProfile": ""
+  },
+  "mergeFields": {
+    "title": "Πεδία συγχώνευσης",
+    "expand": "Επέκταση",
+    "expandAll": "Επέκταση όλων των πεδίων συγχώνευσης",
+    "collapse": "Σύμπτυξη",
+    "collapseAll": "Σύμπτυξη όλων των πεδίων συγχώνευσης",
+    "clickToExpand": "Κάντε κλικ για επέκταση των πεδίων συγχώνευσης",
+    "copy": "Αντιγραφή",
+    "copyTag": "Αντιγραφή {tag}",
+    "copied": "Αντιγράφηκε!",
+    "insert": "Εισαγωγή",
+    "insertTag": "Εισαγωγή {tag}",
+    "example": "Παράδειγμα",
+    "groups": {
+      "contact": "Πεδία επαφής",
+      "standard": "Τυπικά πεδία",
+      "magic": "Magic Links",
+      "template": "Πεδία προτύπου"
+    },
+    "tags": {
+      "EMAIL": "Διεύθυνση email επαφής",
+      "NAME": "Πλήρες όνομα",
+      "FNAME": "Μικρό όνομα",
+      "LNAME": "Επώνυμο",
+      "MEMBERSHIPID": "ID συμμετοχής επαφής",
+      "RPLINK": "Σύνδεσμος επαναφοράς κωδικού",
+      "LOGINLINK": "Σύνδεσμος σύνδεσης",
+      "SPLINK": "Σύνδεσμος ορισμού κωδικού",
+      "MESSAGE": "Προσαρμοσμένο περιεχόμενο μηνύματος",
+      "CALLOUTTITLE": "Τίτλος callout",
+      "CALLOUTLINK": "Σύνδεσμος στο callout",
+      "SUPPORTEMAIL": "Διεύθυνση email υποστήριξης",
+      "ANSWERS": "Μορφοποιημένες απαντήσεις",
+      "REFCODE": "Κωδικός παραπομπής επαφής",
+      "EXPIRES": "Ημερομηνία λήξης συμμετοχής",
+      "REFEREENAME": "Όνομα προσελκυόμενου ατόμου",
+      "ISELIGIBLE": "Εάν η παραπομπή είναι επιλέξιμη",
+      "PURCHASER": "Όνομα αγοραστή δώρου",
+      "GIFTEE": "Όνομα αποδέκτη δώρου",
+      "GIFTDATE": "Ημερομηνία έναρξης δώρου",
+      "ACTIVATELINK": "Σύνδεσμος ενεργοποίησης δώρου",
+      "CONFIRMLINK": "Σύνδεσμος επιβεβαίωσης email",
+      "URL": "Ειδικό URL",
+      "MEMBERID": "ID μέλους",
+      "MEMBERNAME": "Όνομα μέλους",
+      "CALLOUTSLUG": "Slug callout",
+      "RESPNAME": "Όνομα απαντούμενου",
+      "ORGNAME": "Όνομα οργανισμού"
+    }
   },
   "newsletterOptIn": {
     "groups": {

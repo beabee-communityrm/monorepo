@@ -1270,7 +1270,8 @@
       "numberedlist": "Liste ordonnée",
       "strikethrough": "Barré",
       "toolbar": "",
-      "underline": "Souligné"
+      "underline": "Souligné",
+      "mergeFields": "Champs de fusion"
     },
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",
@@ -1463,6 +1464,56 @@
     "payments": "Paiments",
     "settings": "Paramètres",
     "yourProfile": "Votre profil"
+  },
+  "mergeFields": {
+    "title": "Champs de fusion",
+    "expand": "Développer",
+    "expandAll": "Développer tous les champs de fusion",
+    "collapse": "Réduire",
+    "collapseAll": "Réduire tous les champs de fusion",
+    "clickToExpand": "Cliquez pour développer les champs de fusion",
+    "copy": "Copier",
+    "copyTag": "Copier {tag}",
+    "copied": "Copié !",
+    "insert": "Insérer",
+    "insertTag": "Insérer {tag}",
+    "example": "Exemple",
+    "groups": {
+      "contact": "Champs de contact",
+      "standard": "Champs standards",
+      "magic": "Liens magiques",
+      "template": "Champs de modèle"
+    },
+    "tags": {
+      "EMAIL": "Adresse e-mail du contact",
+      "NAME": "Nom complet du contact",
+      "FNAME": "Prénom du contact",
+      "LNAME": "Nom de famille du contact",
+      "MEMBERSHIPID": "ID de membre du contact",
+      "RPLINK": "Lien de réinitialisation du mot de passe",
+      "LOGINLINK": "Lien de connexion",
+      "SPLINK": "Lien de définition du mot de passe",
+      "MESSAGE": "Contenu du message personnalisé",
+      "CALLOUTTITLE": "Titre de l'appel",
+      "CALLOUTLINK": "Lien vers l'appel",
+      "SUPPORTEMAIL": "Adresse e-mail de support",
+      "ANSWERS": "Réponses formatées",
+      "REFCODE": "Code de parrainage du contact",
+      "EXPIRES": "Date d'expiration de l'adhésion",
+      "REFEREENAME": "Nom de la personne parrainée",
+      "ISELIGIBLE": "Si le parrainage est éligible",
+      "PURCHASER": "Nom de l'acheteur du cadeau",
+      "GIFTEE": "Nom du bénéficiaire du cadeau",
+      "GIFTDATE": "Date de début du cadeau",
+      "ACTIVATELINK": "Lien d'activation du cadeau",
+      "CONFIRMLINK": "Lien de confirmation e-mail",
+      "URL": "URL spéciale",
+      "MEMBERID": "ID membre",
+      "MEMBERNAME": "Nom du membre",
+      "CALLOUTSLUG": "Slug d'appel",
+      "RESPNAME": "Nom du répondant",
+      "ORGNAME": "Nom de l'organisation"
+    }
   },
   "newsletterOptIn": {
     "groups": {

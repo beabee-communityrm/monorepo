@@ -34,6 +34,11 @@
               CALLOUTTITLE: props.tabs.titleAndImage.data.title.default,
               CALLOUTLINK: `${env.appUrl}/crowdnewsroom/${props.tabs.titleAndImage.data.slug}`,
             }"
+            :merge-field-groups="mergeFieldGroups"
+            :template="{
+              type: 'contact',
+              id: 'callout-response-answers',
+            }"
             :always-stacked="true"
           />
         </div>
@@ -48,10 +53,16 @@
 </template>
 
 <script lang="ts" setup>
-import { AppFormField, AppNotification, AppToggleField } from '@beabee/vue';
+import {
+  AppFormField,
+  AppNotification,
+  AppToggleField,
+  type MergeTagGroup,
+} from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
 import env from '@env';
+import { currentUser, generalContent } from '@store';
 import type { LocaleProp } from '@type';
 import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -80,6 +91,47 @@ const { t } = useI18n();
 
 // Check if "Collect contact information" is enabled in the settings tab
 const collectInfoEnabled = computed(() => props.tabs.settings.data.collectInfo);
+
+// Merge field groups for the rich text editor dropdown
+const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
+  const user = currentUser.value;
+  const fullName = user
+    ? `${user.firstname} ${user.lastname}`.trim()
+    : undefined;
+
+  return [
+    {
+      key: 'contact',
+      tags: [
+        { tag: 'EMAIL', example: user?.email },
+        { tag: 'NAME', example: fullName },
+        { tag: 'FNAME', example: user?.firstname },
+        { tag: 'LNAME', example: user?.lastname },
+      ],
+    },
+    {
+      key: 'standard',
+      tags: [
+        { tag: 'SUPPORTEMAIL', example: generalContent.value.supportEmail },
+        { tag: 'ORGNAME', example: generalContent.value.organisationName },
+      ],
+    },
+    {
+      key: 'template',
+      tags: [
+        {
+          tag: 'CALLOUTTITLE',
+          example: props.tabs.titleAndImage.data.title.default,
+        },
+        {
+          tag: 'CALLOUTLINK',
+          example: `${env.appUrl}/crowdnewsroom/${props.tabs.titleAndImage.data.slug}`,
+        },
+        { tag: 'CALLOUTSLUG', example: props.tabs.titleAndImage.data.slug },
+      ],
+    },
+  ];
+});
 
 // Create reactive email data that syncs with props.data
 const emailData = reactive({

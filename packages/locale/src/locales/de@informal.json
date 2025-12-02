@@ -1266,7 +1266,8 @@
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
       "toolbar": "Rich-Text-Formatierung Symbolleiste",
-      "underline": "Unterstreichen"
+      "underline": "Unterstreichen",
+      "mergeFields": ""
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
@@ -1655,5 +1656,55 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "mergeFields": {
+    "title": "",
+    "expand": "",
+    "expandAll": "",
+    "collapse": "",
+    "collapseAll": "",
+    "clickToExpand": "",
+    "copy": "",
+    "copyTag": "",
+    "copied": "",
+    "insert": "",
+    "insertTag": "",
+    "example": "",
+    "groups": {
+      "contact": "",
+      "standard": "",
+      "magic": "",
+      "template": ""
+    },
+    "tags": {
+      "EMAIL": "",
+      "NAME": "",
+      "FNAME": "",
+      "LNAME": "",
+      "MEMBERSHIPID": "",
+      "RPLINK": "",
+      "LOGINLINK": "",
+      "SPLINK": "",
+      "MESSAGE": "",
+      "CALLOUTTITLE": "",
+      "CALLOUTLINK": "",
+      "SUPPORTEMAIL": "",
+      "ANSWERS": "",
+      "REFCODE": "",
+      "EXPIRES": "",
+      "REFEREENAME": "",
+      "ISELIGIBLE": "",
+      "PURCHASER": "",
+      "GIFTEE": "",
+      "GIFTDATE": "",
+      "ACTIVATELINK": "",
+      "CONFIRMLINK": "",
+      "URL": "",
+      "MEMBERID": "",
+      "MEMBERNAME": "",
+      "CALLOUTSLUG": "",
+      "RESPNAME": "",
+      "ORGNAME": ""
+    }
   }
 }
