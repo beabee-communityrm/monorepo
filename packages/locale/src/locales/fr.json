@@ -379,8 +379,8 @@
             "label": "Envoyer un e-mail à tous les participants après la soumission"
           },
           "subject": {
-            "placeholder": "",
-            "default": "Merci pour votre réponse"
+            "default": "Merci pour votre réponse",
+            "placeholder": ""
           },
           "title": "E-mail"
         },
@@ -683,10 +683,10 @@
           "navigationButtons": {
             "title": "Boutons"
           },
-          "title": "Traductions",
           "responseLinks": {
             "title": ""
-          }
+          },
+          "title": "Traductions"
         }
       },
       "title": "",
@@ -929,6 +929,11 @@
     "no": "Non",
     "noResults": "Aucun résultat trouvé",
     "pageCount": "Page {pageNumber} sur {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Annuellement",
+      "monthly": "Mensuellement",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "Annulé",
       "draft": "Brouillon",
@@ -937,6 +942,8 @@
       "successful": "Succès"
     },
     "perMonth": "/ mois",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "/ an",
     "role": {
       "admin": "Administrateur",
@@ -958,14 +965,7 @@
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "Oui",
-    "paymentPeriod": {
-      "annually": "Annuellement",
-      "monthly": "Mensuellement",
-      "one-time": ""
-    },
-    "perOneTime": "",
-    "perOneTimeText": ""
+    "yes": "Oui"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1126,15 +1126,15 @@
     "title": "Modifier: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Objet"
-    },
     "body": {
       "label": "Message"
     },
     "preview": {
       "label": "Aperçu",
       "unavailable": "Aperçu non disponible"
+    },
+    "subject": {
+      "label": "Objet"
     }
   },
   "footer": {
@@ -1324,6 +1324,11 @@
       "one-time": ""
     },
     "contribute": "Cotiser {contribution}",
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "errors": {
       "confirmEmail": {
         "message": "Vous y êtes presque ! Vous devez simplement confirmer votre adresse e-mail pour finaliser votre adhésion.",
@@ -1348,11 +1353,6 @@
     "privacy": "Politique de confidentialité",
     "tax": {
       "included": "La cotisation comprend {taxRate}% de TVA."
-    },
-    "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1418,10 +1418,10 @@
         "bigTitle": "E-mails de bienvenue et d'annulation",
         "cancellationEmail": "E-mail d'annulation",
         "description": "Personnalisez vos e-mail de bienvenue et d'annulation",
+        "oneTimeDonationEmail": "",
         "text": "Tous les e-mails sont envoyés depuis votre adresse e-mail de support et comportent une signature standard. Vous pouvez modifier ceci dans vos paramètres d'e-mail.",
         "title": "E-mails",
-        "welcomeEmail": "E-mail de bienvenue",
-        "oneTimeDonationEmail": ""
+        "welcomeEmail": "E-mail de bienvenue"
       },
       "intro": {
         "description": "Souhaitez la bienvenue à vos nouveaux membres",
@@ -1555,11 +1555,11 @@
       "success": "Copié dans le presse-papiers"
     },
     "error": "Une erreur s'est produite. Essayez de recharger la page.",
-    "remove": "Fermer la notification",
     "rateLimit": {
       "generic": "Trop de demandes. Veuillez patienter un peu et réessayer.",
       "withWait": "Trop de demandes. Veuillez attendre {time} et réessayer."
-    }
+    },
+    "remove": "Fermer la notification"
   },
   "pageTitle": {
     "confirmEmail": "Confirmer l'e-mail",
