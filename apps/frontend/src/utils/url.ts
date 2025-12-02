@@ -15,6 +15,11 @@ export function resolveImageUrl(url: string | URL, width?: number): string {
   return resolveImageUrlCommon(url, env.apiUrl, env.appUrl, width);
 }
 
+/**
+ * Checks if a given URL is an internal URL (relative path).
+ * @param url The URL to check.
+ * @returns True if the URL is an internal URL, false otherwise.
+ */
 export function isInternalUrl(url: string | undefined): url is string {
   return !!url && /^\/([^/]|$)/.test(url);
 }

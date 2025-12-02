@@ -1410,7 +1410,8 @@
         "description": "Personnalisez vos e-mail de bienvenue et d'annulation",
         "text": "Tous les e-mails sont envoyés depuis votre adresse e-mail de support et comportent une signature standard. Vous pouvez modifier ceci dans vos paramètres d'e-mail.",
         "title": "E-mails",
-        "welcomeEmail": "E-mail de bienvenue"
+        "welcomeEmail": "E-mail de bienvenue",
+        "oneTimeDonationEmail": ""
       },
       "intro": {
         "description": "Souhaitez la bienvenue à vos nouveaux membres",

@@ -293,4 +293,14 @@ export const contactEmailTemplates = {
     ORGNAME: OptionsService.getText('organisation'),
     SUPPORTEMAIL: OptionsService.getText('support-email'),
   }),
+
+  /**
+   * Email for one-time donation receipt
+   *
+   * **Available Merge Fields:**
+   * - *|AMOUNT|* - Donation amount
+   */
+  'one-time-donation': (_: Contact, params: { amount: number }) => ({
+    AMOUNT: config.currencySymbol + params.amount.toFixed(2),
+  }),
 } as const;
