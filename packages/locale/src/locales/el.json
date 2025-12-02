@@ -933,9 +933,7 @@
       "successful": ""
     },
     "perMonth": "",
-    "perMonthText": "",
     "perYear": "",
-    "perYearText": "",
     "role": {
       "admin": "",
       "member": "",
@@ -1111,7 +1109,9 @@
     "updatedPaymentSource": "",
     "willExpire": "",
     "willRenew": "",
-    "willRenewWithNewAmount": ""
+    "willRenewWithNewAmount": "",
+    "perMonthText": "",
+    "perYearText": ""
   },
   "editCallout": {
     "replicated": "",
@@ -1315,7 +1315,10 @@
   "join": {
     "absorbFeeForce": "",
     "absorbFeeOptIn": "",
-    "absorbFeeText": "",
+    "absorbFeeText": {
+      "monthly": "",
+      "one-time": ""
+    },
     "contribute": "",
     "errors": {
       "confirmEmail": {
@@ -1341,6 +1344,11 @@
     "privacy": "",
     "tax": {
       "included": ""
+    },
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1352,7 +1360,8 @@
     "goBack": "",
     "goBackButton": "",
     "note": "",
-    "willBeContributing": ""
+    "willBeContributing": "",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "",

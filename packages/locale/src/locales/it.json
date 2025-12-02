@@ -933,9 +933,7 @@
       "successful": "Riuscito"
     },
     "perMonth": "/ mese",
-    "perMonthText": "al mese",
     "perYear": "/ anno",
-    "perYearText": "all'anno",
     "role": {
       "admin": "",
       "member": "",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Metodo di pagamento",
     "paymentSourceUpdateError": "",
+    "perMonthText": "al mese",
+    "perYearText": "all'anno",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
     "prorateIncreaseMessage": "",
@@ -1315,7 +1315,10 @@
   "join": {
     "absorbFeeForce": "",
     "absorbFeeOptIn": "Sì, intendo coprire i {fee} della transazione.",
-    "absorbFeeText": "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che mensilmente riceveremo meno rispetto alla quota che hai scelto. Vuoi coprire il costo della transazione? Il pagamento annuale, invece, non prevede costi ulteriori.  ",
+    "absorbFeeText": {
+      "monthly": "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che mensilmente riceveremo meno rispetto alla quota che hai scelto. Vuoi coprire il costo della transazione? Il pagamento annuale, invece, non prevede costi ulteriori.  ",
+      "one-time": ""
+    },
     "contribute": "Contribuisci con {contribution}",
     "errors": {
       "confirmEmail": {
@@ -1341,6 +1344,11 @@
     "privacy": "Privacy",
     "tax": {
       "included": ""
+    },
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1352,7 +1360,8 @@
     "goBack": "Ti sei perso qualcosa? {back}",
     "goBackButton": "Torna alla schermata precedente",
     "note": "Potrai modificare l'ammontare del tuo contributo e accedere allo storico delle tue donazioni in qualsiasi momento tramite il tuo account.",
-    "willBeContributing": "Contribuirai con {contribution}"
+    "willBeContributing": "Contribuirai con {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Per favore, conferma i tuoi dettagli.",
