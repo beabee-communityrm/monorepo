@@ -1,8 +1,11 @@
 <script lang="ts" setup>
+import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { logEvent } from 'histoire/client';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { MergeTagGroup } from '../../types/merge-fields';
+import { AppMergeFields, AppRichTextEditorButton } from '../index';
 import AppRichTextEditor from './AppRichTextEditor.vue';
 
 const content = ref(
@@ -10,6 +13,8 @@ const content = ref(
 );
 const emptyContent = ref('');
 const requiredContent = ref('');
+
+const { t } = useI18n();
 
 const mergeFieldsExample: MergeTagGroup[] = [
   {
@@ -29,8 +34,20 @@ const mergeFieldsExample: MergeTagGroup[] = [
   },
 ];
 
+const showMergeFieldsDropdown = ref(false);
+
 function onUpdate(value: string) {
   logEvent('update:modelValue', { value });
+}
+
+function toggleMergeFieldsDropdown(): void {
+  showMergeFieldsDropdown.value = !showMergeFieldsDropdown.value;
+}
+
+function insertMergeField(editor: any, tag: string): void {
+  const mergeTag = `*|${tag}|*`;
+  editor.chain().focus().insertContent(mergeTag).run();
+  showMergeFieldsDropdown.value = false;
 }
 </script>
 
@@ -110,10 +127,32 @@ function onUpdate(value: string) {
         <AppRichTextEditor
           v-model="content"
           label="Email Content with Merge Fields"
-          :merge-fields="mergeFieldsExample"
           info-message="Click the tag icon to insert merge fields"
           @update:model-value="onUpdate"
-        />
+        >
+          <template #toolbar="{ editor, disabled }">
+            <div class="relative">
+              <AppRichTextEditorButton
+                :icon="faTag"
+                :title="t('form.richtext.mergeFields')"
+                :active="showMergeFieldsDropdown"
+                :disabled="disabled"
+                @click="toggleMergeFieldsDropdown"
+              />
+              <!-- Dropdown content -->
+              <div
+                v-if="showMergeFieldsDropdown"
+                class="absolute right-0 top-full z-[100] mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
+                @click.stop
+              >
+                <AppMergeFields
+                  :groups="mergeFieldsExample"
+                  @insert="(tag) => insertMergeField(editor, tag)"
+                />
+              </div>
+            </div>
+          </template>
+        </AppRichTextEditor>
       </div>
     </Variant>
   </Story>

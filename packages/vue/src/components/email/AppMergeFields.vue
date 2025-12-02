@@ -16,7 +16,7 @@
     <header
       class="sticky top-0 z-10 flex items-center justify-center border-b border-grey-light bg-white px-4 py-3"
     >
-      <h3 class="font-semibold text-body">
+      <h3 class="font-title font-semibold text-body">
         {{ t('mergeFields.title') }}
       </h3>
     </header>
@@ -28,12 +28,10 @@
       :aria-label="t('mergeFields.title')"
     >
       <div v-for="group in groups" :key="group.key" class="px-4 py-3">
-        <!-- Group title -->
-        <h4
-          class="mb-3 text-xs font-semibold uppercase tracking-wide text-body-80"
-        >
-          {{ getGroupLabel(group) }}
-        </h4>
+        <!-- Group label -->
+        <AppCategoryLabel>
+          {{ t(`mergeFields.groups.${group.key}`) }}
+        </AppCategoryLabel>
 
         <!-- Merge tags in group -->
         <div class="space-y-3">
@@ -51,30 +49,26 @@
               </code>
 
               <!-- Insert button -->
-              <button
-                type="button"
-                class="flex items-center justify-center rounded p-1 text-primary-70 transition-colors hover:bg-primary-5 hover:text-primary-80 focus:outline-none focus:ring-2 focus:ring-primary-70"
-                :aria-label="t('mergeFields.insertTag', { tag: tag.tag })"
+              <AppButton
+                variant="primary"
+                size="xs"
+                :icon="faPlus"
+                :name="t('mergeFields.insertTag', { tag: tag.tag })"
                 :title="t('mergeFields.insert')"
+                class="h-7 w-7"
                 @click="handleInsert(tag.tag)"
-              >
-                <font-awesome-icon
-                  :icon="faPlus"
-                  class="h-3.5 w-3.5"
-                  aria-hidden="true"
-                />
-              </button>
+              />
             </div>
 
             <!-- Description -->
-            <p class="text-xs text-body-80">
-              {{ getTagDescription(tag) }}
-            </p>
+            <AppHelperText>
+              {{ t(`mergeFields.tags.${tag.tag}`) }}
+            </AppHelperText>
 
             <!-- Example value (if provided) -->
-            <p v-if="tag.example" class="text-xs italic text-body-60">
+            <AppHelperText v-if="tag.example" class="italic text-body-60">
               {{ t('mergeFields.example') }}: {{ tag.example }}
-            </p>
+            </AppHelperText>
           </div>
         </div>
       </div>
@@ -92,7 +86,9 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 
-import type { MergeTag, MergeTagGroup } from '../../types/merge-fields';
+import type { MergeTagGroup } from '../../types/merge-fields';
+import { AppButton } from '../index';
+import { AppCategoryLabel, AppHelperText } from '../typography';
 
 /**
  * Props for the AppMergeFields component
@@ -116,22 +112,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-
-/**
- * Get translated label for a group
- */
-function getGroupLabel(group: MergeTagGroup): string {
-  const key = group.labelKey || `mergeFields.groups.${group.key}`;
-  return t(key);
-}
-
-/**
- * Get translated description for a tag
- */
-function getTagDescription(tag: MergeTag): string {
-  const key = tag.descriptionKey || `mergeFields.tags.${tag.tag}`;
-  return t(key);
-}
 
 /**
  * Handle insert action

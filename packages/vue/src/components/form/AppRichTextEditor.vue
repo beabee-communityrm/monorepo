@@ -81,24 +81,8 @@
         :disabled="disabled"
         @click="setLink"
       />
-      <!-- Merge fields dropdown (only shown when mergeFields prop is provided) -->
-      <div v-if="mergeFields" class="relative">
-        <AppRichTextEditorButton
-          :icon="faTag"
-          :title="t('form.richtext.mergeFields')"
-          :active="showMergeFieldsDropdown"
-          :disabled="disabled"
-          @click="toggleMergeFieldsDropdown"
-        />
-        <!-- Dropdown content -->
-        <div
-          v-if="showMergeFieldsDropdown"
-          class="absolute right-0 top-full z-[100] mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
-          @click.stop
-        >
-          <AppMergeFields :groups="mergeFields" @insert="insertMergeField" />
-        </div>
-      </div>
+      <!-- Toolbar extension slot for custom buttons (e.g., merge fields) -->
+      <slot name="toolbar" :editor="editor" :disabled="disabled" />
     </div>
     <div class="grid w-full">
       <div
@@ -146,7 +130,6 @@ import {
   faList,
   faListOl,
   faStrikethrough,
-  faTag,
   faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
 import Link from '@tiptap/extension-link';
@@ -159,8 +142,6 @@ import { helpers, requiredIf } from '@vuelidate/validators';
 import { computed, onBeforeUnmount, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { MergeTagGroup } from '../../types/merge-fields';
-import AppMergeFields from '../email/AppMergeFields.vue';
 import { AppCopyButton, AppInputError, AppInputHelp, AppLabel } from '../index';
 import AppRichTextEditorButton from './AppRichTextEditorButton.vue';
 
@@ -184,8 +165,6 @@ export interface AppRichTextEditorProps {
   placeholder?: string;
   /** Controls displayed in toolbar */
   controls?: 'full' | 'inline';
-  /** Optional merge field groups for email templates */
-  mergeFields?: MergeTagGroup[];
 }
 
 const props = withDefaults(defineProps<AppRichTextEditorProps>(), {
@@ -196,7 +175,6 @@ const props = withDefaults(defineProps<AppRichTextEditorProps>(), {
   copyable: false,
   placeholder: undefined,
   controls: 'full',
-  mergeFields: undefined,
 });
 
 /**
@@ -211,9 +189,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-
-// Merge fields dropdown state
-const showMergeFieldsDropdown = ref(false);
 
 const editor = useEditor({
   content: props.modelValue as string,
@@ -302,29 +277,6 @@ function setLink(): void {
       .setLink({ href: url })
       .run();
   }
-}
-
-/**
- * Toggle merge fields dropdown
- */
-function toggleMergeFieldsDropdown(): void {
-  if (!props.disabled) {
-    showMergeFieldsDropdown.value = !showMergeFieldsDropdown.value;
-  }
-}
-
-/**
- * Insert merge field tag into editor at cursor position
- */
-function insertMergeField(tag: string): void {
-  if (!editor.value || props.disabled) return;
-
-  const mergeTag = `*|${tag}|*`;
-
-  editor.value.chain().focus().insertContent(mergeTag).run();
-
-  // Close the dropdown after insertion
-  showMergeFieldsDropdown.value = false;
 }
 
 const isEditorEmpty = computed(() => editor.value?.isEmpty || false);

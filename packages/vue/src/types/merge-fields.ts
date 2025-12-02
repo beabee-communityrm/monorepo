@@ -16,13 +16,6 @@ export interface MergeTag {
   tag: string;
 
   /**
-   * Optional i18n key for description
-   * If not provided, defaults to 'mergeFields.tags.{tag}'
-   * @example 'mergeFields.tags.FNAME'
-   */
-  descriptionKey?: string;
-
-  /**
    * Optional example value for preview purposes
    * @example 'John', 'user@example.com'
    */
@@ -38,13 +31,6 @@ export interface MergeTagGroup {
    * @example 'contact', 'magic', 'template'
    */
   key: string;
-
-  /**
-   * Optional i18n key for group label
-   * If not provided, defaults to 'mergeFields.groups.{key}'
-   * @example 'mergeFields.groups.contact'
-   */
-  labelKey?: string;
 
   /**
    * Merge tags belonging to this group

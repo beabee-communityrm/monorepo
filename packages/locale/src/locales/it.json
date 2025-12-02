@@ -958,8 +958,8 @@
     "until": "fino",
     "yes": "Sì",
     "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
+      "annually": "all'anno",
+      "monthly": "al mese",
       "one-time": ""
     },
     "perOneTime": "",
@@ -1407,7 +1407,8 @@
         "description": "",
         "text": "",
         "title": "",
-        "welcomeEmail": ""
+        "welcomeEmail": "",
+        "oneTimeDonationEmail": ""
       },
       "intro": {
         "description": "",

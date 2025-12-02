@@ -16,10 +16,32 @@
         </div>
         <AppRichTextEditor
           v-model="content"
-          :merge-fields="mergeFieldGroups"
           :label="t('emailEditor.body.label')"
           required
-        />
+        >
+          <template #toolbar="{ editor, disabled }">
+            <div v-if="mergeFieldGroups" class="relative">
+              <AppRichTextEditorButton
+                :icon="faTag"
+                :title="t('form.richtext.mergeFields')"
+                :active="showMergeFieldsDropdown"
+                :disabled="disabled"
+                @click="toggleMergeFieldsDropdown"
+              />
+              <!-- Dropdown content -->
+              <div
+                v-if="showMergeFieldsDropdown"
+                class="absolute right-0 top-full z-[100] mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
+                @click.stop
+              >
+                <AppMergeFields
+                  :groups="mergeFieldGroups"
+                  @insert="(tag) => insertMergeField(editor, tag)"
+                />
+              </div>
+            </div>
+          </template>
+        </AppRichTextEditor>
       </div>
 
       <!-- Preview panel -->
@@ -93,12 +115,16 @@ import type { PreviewEmailOptions } from '@beabee/client';
 import {
   AppInput,
   AppLabel,
+  AppMergeFields,
   AppRichTextEditor,
+  AppRichTextEditorButton,
   AppSubHeading,
   type MergeTagGroup,
   sanitizeHtml,
 } from '@beabee/vue';
 
+import { faTag } from '@fortawesome/free-solid-svg-icons';
+import type { Editor } from '@tiptap/vue-3';
 import type {
   EmailPreviewResult,
   EmailTemplateConfig,
@@ -154,6 +180,9 @@ const props = withDefaults(
 
 const { t } = useI18n();
 
+// Merge fields dropdown state
+const showMergeFieldsDropdown = ref(false);
+
 // Server preview state
 const serverPreviewResult = ref<EmailPreviewResult | null>(null);
 const isLoadingPreview = ref(false);
@@ -203,6 +232,22 @@ async function fetchServerPreview() {
   } finally {
     isLoadingPreview.value = false;
   }
+}
+
+/**
+ * Toggle merge fields dropdown
+ */
+function toggleMergeFieldsDropdown(): void {
+  showMergeFieldsDropdown.value = !showMergeFieldsDropdown.value;
+}
+
+/**
+ * Insert merge field tag into editor at cursor position
+ */
+function insertMergeField(editor: Editor, tag: string): void {
+  const mergeTag = `*|${tag}|*`;
+  editor.chain().focus().insertContent(mergeTag).run();
+  showMergeFieldsDropdown.value = false;
 }
 
 // Debounced version of fetchServerPreview to prevent excessive API calls

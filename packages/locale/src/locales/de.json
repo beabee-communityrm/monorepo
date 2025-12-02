@@ -1407,7 +1407,8 @@
         "description": "Passe deine Willkommens- und Kündigungs-E-Mail an",
         "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mail-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
-        "welcomeEmail": "Willkommens-E-Mail"
+        "welcomeEmail": "Willkommens-E-Mail",
+        "oneTimeDonationEmail": ""
       },
       "intro": {
         "description": "Heiße neue Mitglieder willkommen",
