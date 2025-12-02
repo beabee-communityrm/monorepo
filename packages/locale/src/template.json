@@ -1405,6 +1405,7 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
+        "oneTimeDonationEmail": "",
         "text": "",
         "title": "",
         "welcomeEmail": ""

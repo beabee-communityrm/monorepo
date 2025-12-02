@@ -1408,7 +1408,8 @@
         "description": "",
         "text": "",
         "title": "",
-        "welcomeEmail": ""
+        "welcomeEmail": "",
+        "oneTimeDonationEmail": ""
       },
       "intro": {
         "description": "",
