@@ -143,11 +143,11 @@
       "title": "Недавно присоединились"
     },
     "numbers": {
+      "averageContribution": "",
       "avgContribution": "Средний ежемесячный взнос",
       "newMembers": "Новые подписчики",
       "revenue": "Доход",
-      "title": "За последние 30 дней",
-      "averageContribution": ""
+      "title": "За последние 30 дней"
     },
     "responsesSoFar": "",
     "seeAllResponses": "",
@@ -680,10 +680,10 @@
           "navigationButtons": {
             "title": ""
           },
-          "title": "",
           "responseLinks": {
             "title": ""
-          }
+          },
+          "title": ""
         }
       },
       "title": "",
@@ -926,6 +926,11 @@
     "no": "Нет",
     "noResults": "Ничего не найдено",
     "pageCount": "Страница {pageNumber} из {pageTotal}",
+    "paymentPeriod": {
+      "annually": "ежегодно",
+      "monthly": "ежемесячно",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "Отменён",
       "draft": "Черновик",
@@ -934,6 +939,8 @@
       "successful": "Успех"
     },
     "perMonth": "/ месяц",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "/ год",
     "role": {
       "admin": "Администратор",
@@ -955,14 +962,7 @@
     "timeAgo": "до {time}",
     "timeIn": "в {time}",
     "until": "до",
-    "yes": "Да",
-    "paymentPeriod": {
-      "annually": "ежегодно",
-      "monthly": "ежемесячно",
-      "one-time": ""
-    },
-    "perOneTime": "",
-    "perOneTimeText": ""
+    "yes": "Да"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1123,15 +1123,15 @@
     "title": "Редактировать: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Тема"
-    },
     "body": {
       "label": "Сообщение"
     },
     "preview": {
       "label": "Предпросмотр",
       "unavailable": "Предпросмотр недоступен"
+    },
+    "subject": {
+      "label": "Тема"
     }
   },
   "footer": {
@@ -1321,6 +1321,11 @@
       "one-time": ""
     },
     "contribute": "Внести {contribution}",
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "errors": {
       "confirmEmail": {
         "message": "Почти готово! Осталось только подтвердить вашу почту.",
@@ -1345,11 +1350,6 @@
     "privacy": "Политика конфиденциальности",
     "tax": {
       "included": ""
-    },
-    "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1415,10 +1415,10 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
+        "oneTimeDonationEmail": "",
         "text": "",
         "title": "",
-        "welcomeEmail": "",
-        "oneTimeDonationEmail": ""
+        "welcomeEmail": ""
       },
       "intro": {
         "description": "",
@@ -1552,11 +1552,11 @@
       "success": ""
     },
     "error": "Что-то пошло не так. Перезагрузите страницу",
-    "remove": "",
     "rateLimit": {
       "generic": "Слишком много запросов. Подождите немного и попробуйте снова.",
       "withWait": "Слишком много запросов. Подождите {time} и попробуйте снова."
-    }
+    },
+    "remove": ""
   },
   "pageTitle": {
     "confirmEmail": "Подтвердить почту",
