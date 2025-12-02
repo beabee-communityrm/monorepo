@@ -222,7 +222,7 @@
       "colorNames": {
         "body": "Текст",
         "danger": "Небезпека",
-        "link": "Посилання",
+        "link": "Посилань",
         "primary": "Головний",
         "success": "Успіх",
         "warning": "Попередження"
@@ -784,7 +784,7 @@
       "assignee": "Призначено",
       "bucket": "Відро",
       "callout": "CrowdNewsroom",
-      "contact": "Контакти",
+      "contact": "Контакт",
       "createdAt": "Дата подання",
       "tags": "Теги",
       "updatedAt": "Дата оновлення"
@@ -1094,6 +1094,8 @@
     },
     "paymentMethod": "Спосіб оплати",
     "paymentSourceUpdateError": "Наразі ви не можете оновити свій банківський рахунок, оскільки у вас є платіж, що очікує на обробку",
+    "perMonthText": "місяць",
+    "perYearText": "рік",
     "prorateDecreaseMessage": "У вас залишився один місяць на ваш поточний внесок. | У вас залишилося {n} місяців на ваш поточний внесок.",
     "prorateDecreaseMessageWillStart": "Ваш новий внесок розпочнеться {renewalDate}.",
     "prorateIncreaseMessage": "У вас залишився один місяць на ваш поточний внесок. | У вас залишилося {n} місяців на ваш поточний внесок.",
@@ -1166,480 +1168,494 @@
         "duplicate-tag-name": "Тег із такою назвою вже існує",
         "invalid-token": "Недійсний токен 2FA",
         "login-failed": "Недійсна комбінація пароля/електронної пошти",
-        "mfa-token-required": "Ви ввімкнули двофакторну аутентифікацію (2FA). Введіть токен із програми-автентифікатора, щоб продовжити."
+        "mfa-token-required": "Ви ввімкнули двофакторну аутентифікацію (2FA) Введіть токен із програми-автентифікатора, щоб продовжити"
       },
-      "generic": "",
-      "unauthorized": "",
-      "validation": ""
+      "generic": "Ой, щось пішло не так! Зверніться до служби підтримки, якщо це станеться знову.",
+      "unauthorized": "У вас немає до цього доступу.",
+      "validation": "Чогось бракує. Будь ласка, перевірте поля вище."
     },
     "errors": {
       "address": {
-        "required": ""
+        "required": "Це поле обов'язкове для заповнення, якщо ви хочете додати адресу"
       },
       "addressLine1": {
-        "required": ""
+        "required": "Рядок 1 адреси обов'язковий"
       },
       "cityOrTown": {
-        "required": ""
+        "required": "Місто/селище обов'язкове"
       },
       "color": {
-        "pattern": "",
-        "required": ""
+        "pattern": "Недійсний колір",
+        "required": "Колір обов'язковий"
       },
       "confirmPassword": {
-        "password": "",
-        "required": "",
-        "sameAs": ""
+        "password": "Недійсний пароль",
+        "required": "Потрібен пароль",
+        "sameAs": "Паролі не збігаються"
       },
       "description": {
-        "maxLength": "",
-        "required": ""
+        "maxLength": "Перевищено максимальну довжину символів ({max})",
+        "required": "Опис обов'язковий"
       },
       "email": {
-        "email": "",
-        "required": ""
+        "email": "Недійсна адреса електронної пошти",
+        "required": "Потрібно вказати електронну пошту"
       },
       "file": {
-        "rateLimited": "",
-        "tooBig": "",
-        "unsupportedType": ""
+        "rateLimited": "Не вдалося завантажити: ви нещодавно завантажили забагато файлів, зачекайте кілька хвилин, перш ніж повторити спробу",
+        "tooBig": "Не вдалося завантажити: розмір файлу має бути менше 20 МБ",
+        "unsupportedType": "Не вдалося завантажити: тип файлу не підтримується"
       },
       "firstName": {
-        "required": ""
+        "required": "Ім'я є обов'язкове"
       },
       "lastName": {
-        "required": ""
+        "required": "Прізвище обов'язкове"
       },
       "name": {
-        "required": ""
+        "required": "Ім'я обов'язкове"
       },
       "password": {
-        "password": "",
-        "required": "",
-        "sameAs": ""
+        "password": "Недійсний пароль",
+        "required": "Потрібен пароль",
+        "sameAs": "Паролі не збігаються"
       },
       "postCode": {
-        "required": ""
+        "required": "Поштовий індекс обов'язковий"
       },
       "shareDescription": {
-        "maxLength": "",
-        "required": ""
+        "maxLength": "Перевищено максимальну довжину символів: {max}, залишилося символів: {remaining}",
+        "required": "Опис обов'язковий"
       },
       "unknown": {
-        "email": "",
-        "max": "",
-        "maxLength": "",
-        "min": "",
-        "required": "",
-        "url": ""
+        "email": "Недійсна адреса електронної пошти",
+        "max": "Це поле має бути не більше ніж {max}",
+        "maxLength": "Перевищено максимальну довжину символів ({max})",
+        "min": "Це поле має бути принаймні {min}",
+        "required": "Це поле обов'язкове",
+        "url": "Недійсна URL-адреса"
       },
       "url": {
-        "required": "",
-        "url": ""
+        "required": "URL-адреса обов'язкова",
+        "url": "Недійсна URL-адреса"
       },
       "verifyCode": {
-        "max": "",
-        "min": "",
-        "required": ""
+        "max": "Код може містити максимум {max} символів.",
+        "min": "Код має містити щонайменше {min} символів.",
+        "required": "Потрібен код"
       }
     },
     "errorsFormio": {
-      "maxLength": "",
-      "minLength": ""
+      "maxLength": "Перевищено максимальну довжину символів {'{{length}}'}",
+      "minLength": "Це поле має містити щонайменше {'{{length}}'} символів"
     },
-    "firstName": "",
-    "lastName": "",
-    "newPassword": "",
-    "newPasswordConfirm": "",
-    "notes": "",
-    "password": "",
-    "passwordInfo": "",
-    "phone": "",
-    "postCode": "",
+    "firstName": "Особисті ім'я",
+    "lastName": "Прізвище",
+    "newPassword": "Новий пароль",
+    "newPasswordConfirm": "Підтвердьте новий пароль",
+    "notes": "Нотатки",
+    "password": "Пароль",
+    "passwordInfo": "Встановіть надійний пароль: 8+ символів або більше, і він повинен містити цифру, великі та малі літери.",
+    "phone": "Номер телефону",
+    "postCode": "Поштовий індекс",
     "richtext": {
-      "bold": "",
-      "bulletlist": "",
-      "editor": "",
-      "heading": "",
-      "italic": "",
-      "link": "",
-      "numberedlist": "",
-      "strikethrough": "",
-      "toolbar": "",
-      "underline": ""
+      "bold": "Жирний шрифт",
+      "bulletlist": "Маркований список",
+      "editor": "Редактор форматованого тексту",
+      "heading": "Заголовок",
+      "italic": "Курсив",
+      "link": "Посилання",
+      "numberedlist": "Нумерований список",
+      "strikethrough": "Закреслення",
+      "toolbar": "Панель інструментів форматування RTF",
+      "underline": "Підкреслення"
     },
-    "saveChanges": "",
-    "saved": "",
-    "unsavedChanges": "",
-    "updated": ""
+    "saveChanges": "Зберегти зміни",
+    "saved": "Збережено!",
+    "unsavedChanges": "Незбережені зміни",
+    "updated": "Оновлено"
   },
   "formRenderer": {
     "components": {
       "file": {
-        "browse": "",
-        "dropFiles": "",
-        "or": "",
-        "switchToFileUpload": "",
-        "takePicture": "",
-        "useCamera": ""
+        "browse": "завантаження з пристрою",
+        "dropFiles": "Перетягніть файли, щоб прикріпити їх",
+        "or": "або",
+        "switchToFileUpload": "Перейти до завантаження файлів",
+        "takePicture": "Зробити фото",
+        "useCamera": "використовувати камеру"
       },
       "multiple": {
-        "addAnother": ""
+        "addAnother": "Додати ще один"
       }
     }
   },
   "homePage": {
-    "editProfile": "",
-    "manageContribution": "",
-    "newCallout": "",
-    "openCallouts": "",
-    "quickActions": "",
-    "title": "",
-    "viewAllCallouts": "",
-    "viewOpenCallouts": "",
-    "welcome": "",
-    "yourProfile": ""
+    "editProfile": "Редагувати профіль вашої спільноти",
+    "manageContribution": "Керуйте своїм внеском",
+    "newCallout": "Новий CrowdNewsroom!",
+    "openCallouts": "CrowdNewsroom",
+    "quickActions": "Швидкі дії",
+    "title": "Дім",
+    "viewAllCallouts": "Відкрийте CrowdNewsroom",
+    "viewOpenCallouts": "Відкрийте CrowdNewsroom",
+    "welcome": "Ласкаво просимо на борт {firstName}!",
+    "yourProfile": "Ваш профіль"
   },
   "icons": {
     "welcome": {
-      "ariaLabel": ""
+      "ariaLabel": "Значок привітання"
     }
   },
   "item": {
     "status": {
-      "endsIn": "",
-      "startsIn": ""
+      "endsIn": "Закінчується через {duration}",
+      "startsIn": "Починається в {duration}"
     }
   },
   "join": {
-    "absorbFeeForce": "",
-    "absorbFeeOptIn": "",
-    "absorbFeeText": "",
-    "contribute": "",
+    "absorbFeeForce": "Внески на суму {amount} повинні покрити комісію {fee}.",
+    "absorbFeeOptIn": "Так, я сплачу комісію {fee}.",
+    "absorbFeeText": {
+      "monthly": "Наш платіжний процесор стягує з нас плату за кожну транзакцію, а це означає, що ми отримуємо менше від щомісячних внесків. Бажаєте сплачувати комісію за транзакцію {fee}? Або ж ви можете сплачувати щорічно.",
+      "one-time": "Наш платіжний процесор стягує з нас плату за кожну транзакцію, а це означає, що ми отримуємо менше від одноразових внесків. Чи бажаєте ви сплатити комісію за транзакцію {fee}?"
+    },
+    "contribute": "Зробити внесок {contribution}",
+    "contribution": {
+      "annually": "{amount} на рік",
+      "monthly": "{amount} на місяць",
+      "one-time": "{amount} за весь час"
+    },
     "errors": {
       "confirmEmail": {
-        "message": "",
-        "proceed": "",
-        "title": ""
+        "message": "Майже готово! Нам лише потрібно підтвердити вашу адресу електронної пошти, щоб завершити налаштування вашої підписки.",
+        "proceed": "Ми надіслали вам електронного листа. Будь ласка, натисніть посилання, щоб продовжити.",
+        "title": "Підтвердьте свою адресу електронної пошти"
       },
       "failed": {
-        "backToJoin": "",
-        "message": "",
-        "title": ""
+        "backToJoin": "Назад до сторінки приєднання",
+        "message": "Виникла проблема з налаштуванням вашої підписки, нашу команду повідомлено. Будь ласка, зверніться до служби підтримки, якщо проблема не зникне.",
+        "title": "Щось пішло не так"
       }
     },
-    "login": "",
-    "memberAccount": "",
-    "memberAlready": "",
-    "minimumContribution": "",
-    "noContribution": "",
-    "notice": "",
-    "now": "",
-    "paymentMethod": "",
-    "poweredBy": "",
-    "privacy": "",
+    "login": "Увійти",
+    "memberAccount": "Обліковий запис учасника",
+    "memberAlready": "Ви вже учасник?",
+    "minimumContribution": "Мінімальний внесок становить",
+    "noContribution": "Я не хочу зараз робити свій внесок",
+    "notice": "Продовжуючи, ви приймаєте",
+    "now": "Приєднуйтесь зараз!",
+    "paymentMethod": "Спосіб оплати",
+    "poweredBy": "Працює на базі beabee",
+    "privacy": "Політика конфіденційності",
     "tax": {
-      "included": ""
+      "included": "Внесок включає ПДВ у розмірі {taxRate}%."
     }
   },
   "joinPayment": {
     "applePay": {
-      "description": "",
-      "recurringLabel": ""
+      "description": "Членство",
+      "recurringLabel": "Регулярний внесок"
     },
-    "genericError": "",
-    "goBack": "",
-    "goBackButton": "",
-    "note": "",
-    "willBeContributing": ""
+    "genericError": "Ой, щось пішло не так ({type})! Зверніться до служби підтримки, якщо це станеться знову.",
+    "goBack": "Ви щось пропустили? {back}",
+    "goBackButton": "Повернутися до попереднього екрана",
+    "note": "Ви зможете оновити свої дані та отримати доступ до історії платежів у будь-який час у своєму обліковому записі",
+    "willBeContributing": "Ви будете робити свій внесок {contribution}",
+    "willBeDonating": "Ви зробите пожертву у розмірі {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "",
-    "continue": "",
-    "welcome": ""
+    "confirmDetails": "Будь ласка, підтвердіть свої дані",
+    "continue": "Все добре! Продовжити",
+    "welcome": "Ласкаво просимо {firstName}!"
   },
   "login": {
-    "backTo": "",
-    "forgotPassword": "",
-    "joinNow": "",
-    "lostMfaDevice": "",
-    "notMember": "",
-    "title": ""
+    "backTo": "Назад до {newsroomName}",
+    "forgotPassword": "Забули пароль?",
+    "joinNow": "Приєднуйтесь зараз!",
+    "lostMfaDevice": "Втратили свій пристрій 2FA?",
+    "notMember": "Не є учасником?",
+    "title": "Увійдіть до свого облікового запису"
   },
   "lostDevice": {
-    "description": "",
-    "message": "",
-    "title": ""
+    "description": "Будь ласка, введіть свою адресу електронної пошти, і ми надішлемо вам інструкції щодо скидання вашої двофакторної аутентифікації (2FA).",
+    "message": "Якщо з адресою {email} пов’язано обліковий запис, ви незабаром отримаєте електронний лист. Перевірте папку зі спамом, якщо його немає.",
+    "title": "Втратили свій пристрій 2FA?"
   },
   "mailOptIn": {
-    "optInLabel": "",
-    "text": "",
-    "title": ""
+    "optInLabel": "Мітка прапорця",
+    "text": "Текст",
+    "title": "Заголовок"
   },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
         "deliveryAddress": {
-          "showOptIn": "",
-          "title": ""
+          "showOptIn": "Запитайте поштову адресу",
+          "title": "Поштова адреса"
         },
-        "description": "",
+        "description": "Створіть екран підтвердження",
         "joinSurvey": {
-          "required": "",
-          "slug": "",
-          "slugHelp": "",
-          "text": "",
-          "textIntro": "",
-          "title": ""
+          "required": "Користувачі повинні пройти опитування, перш ніж продовжити",
+          "slug": "CrowdNewsroom",
+          "slugHelp": "Ви можете використовувати будь-який відкритий CrowdNewsroom, який не має терміну дії.",
+          "text": "Ви можете попросити своїх нових користувачів заповнити анкету CrowdNewsroom як частину процесу приєднання. Це чудовий спосіб запитати їх, чому вони приєдналися, або, можливо, ви хочете отримати від них додаткову інформацію, яка допоможе їм інтегруватися в спільноту.",
+          "textIntro": "Розкажіть своїм користувачам трохи про те, чому ви запитуєте цю інформацію",
+          "title": "Приєднатися до опитування"
         },
         "newsletter": {
-          "showOptIn": "",
-          "title": ""
+          "showOptIn": "Запросити підписку на розсилку новин",
+          "title": "Інформаційний бюлетень"
         },
-        "text": "",
-        "title": "",
-        "welcomeMessage": ""
+        "text": "Після реєстрації користувачам буде запропоновано підтвердити свою реєстрацію. Тут ви можете налаштувати деталі екрана підтвердження.",
+        "title": "Підтвердження облікового запису",
+        "welcomeMessage": "Вітальне повідомлення"
       },
       "emails": {
-        "bigTitle": "",
-        "cancellationEmail": "",
-        "description": "",
-        "text": "",
-        "title": "",
-        "welcomeEmail": ""
+        "bigTitle": "Вітальні електронні листи та електронні листи про скасування",
+        "cancellationEmail": "Електронний лист про скасування",
+        "description": "Налаштуйте свої вітальні електронні листи та електронні листи про скасування",
+        "oneTimeDonationEmail": "Електронний лист про одноразову пожертву",
+        "text": "Усі електронні листи надсилаються з вашої адреси підтримки та містять стандартний підпис, ви можете змінити його в налаштуваннях електронної пошти.",
+        "title": "Електронні листи",
+        "welcomeEmail": "Вітальний електронний лист"
       },
       "intro": {
-        "description": "",
-        "message": "",
-        "showWelcomeMessage": "",
-        "text": "",
-        "title": ""
+        "description": "Привітайтеся зі своїми новими учасниками",
+        "message": "Повідомлення",
+        "showWelcomeMessage": "Показати вітальне повідомлення",
+        "text": "Щойно ваші учасники завершать реєстрацію, вони отримають повідомлення. Зробіть його своїм!",
+        "title": "Вітальне повідомлення"
       },
       "joinForm": {
-        "backgroundImage": "",
-        "defaultAmount": "",
-        "description": "",
-        "formSubtitle": "",
-        "formTitle": "",
-        "minAmount": "",
-        "noticeText": "",
-        "noticeTextHelp": "",
-        "showAbsorbFee": "",
-        "showNoContribution": "",
-        "suggestedAmounts": "",
-        "text": "",
-        "title": ""
+        "backgroundImage": "Фонове зображення",
+        "defaultAmount": "Сума за замовчуванням",
+        "description": "Удосконалення форми реєстрації для членства",
+        "formSubtitle": "Підзаголовок",
+        "formTitle": "Назва",
+        "minAmount": "Мінімальна сума",
+        "noticeText": "Повідомлення під кнопкою оплати",
+        "noticeTextHelp": "Використовуйте це поле, щоб додати повідомлення під кнопкою оплати, наприклад, пояснення періодів оплати або банківських авторизацій. Ви також можете залишити це поле порожнім.",
+        "showAbsorbFee": "Запитайте користувача про стягнення комісії за оплату",
+        "showNoContribution": "Дозволити користувачеві приєднатися без внеску",
+        "suggestedAmounts": "Рекомендовані суми внесків",
+        "text": "У цьому розділі ви можете редагувати, налаштовувати та переглядати форму реєстрації.",
+        "title": "Форма приєднання"
       }
     },
-    "title": ""
+    "title": "Конструктор членства"
   },
   "menu": {
-    "account": "",
-    "admin": "",
-    "adminSettings": "",
-    "callouts": "",
-    "contacts": "",
-    "contribution": "",
-    "dashboard": "",
-    "home": "",
-    "legacyApp": "",
-    "logout": "",
-    "membershipBuilder": "",
-    "notices": "",
-    "payments": "",
-    "settings": "",
-    "yourProfile": ""
+    "account": "Обліковий запис",
+    "admin": "Адміністрація",
+    "adminSettings": "Налаштування",
+    "callouts": "CrowdNewsroom",
+    "contacts": "Контакти",
+    "contribution": "Внесок",
+    "dashboard": "Інформаційна панель",
+    "home": "Дім",
+    "legacyApp": "Стара панель приладів",
+    "logout": "Вийти",
+    "membershipBuilder": "Конструктор членства",
+    "notices": "Повідомлень",
+    "payments": "Платежі",
+    "settings": "Налаштування",
+    "yourProfile": "Ваш профіль"
   },
   "newsletterOptIn": {
     "groups": {
-      "add": "",
-      "help": "",
-      "title": ""
+      "add": "Додати нову групу",
+      "help": "<p>Ви можете дозволити користувачам вибирати, до яких груп розсилки вони хочуть приєднатися. Ці групи вже мають бути налаштовані в Mailchimp, зверніться до <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a>, якщо ви не знаєте, як користуватися цією функцією.</p>\n",
+      "title": "Групи розсилки"
     },
-    "optInDisabled": "",
-    "optInLabel": "",
-    "text": "",
-    "title": ""
+    "optInDisabled": "Мітка не використовується, коли групи розсилки відображаються",
+    "optInLabel": "Мітка прапорця",
+    "text": "Текст",
+    "title": "Заголовок"
   },
   "notFound": {
-    "goBack": "",
-    "text": ""
+    "goBack": "Повернися додому",
+    "text": "Цієї сторінки не існує. Якщо ви вважаєте, що це помилка, будь ласка, зв’яжіться з нами {support}."
   },
   "noticeAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "Ви впевнені, що хочете видалити це повідомлення?",
+        "title": "Видалити сповіщення?"
       }
     },
-    "created": "",
-    "summary": "",
-    "updated": ""
+    "created": "Ваше нове повідомлення успішно створено.",
+    "summary": "Короткий зміст",
+    "updated": "Ваше повідомлення успішно оновлено."
   },
   "notices": {
-    "addNotice": "",
+    "addNotice": "Додати повідомлення",
     "data": {
-      "createdAt": "",
-      "name": "",
-      "status": ""
+      "createdAt": "Створено",
+      "name": "Ім'я",
+      "status": "Статус"
     },
-    "showingOf": ""
+    "showingOf": "Показано {start} – {end} оголошень із {total}"
   },
   "notifications": {
     "copy": {
-      "success": ""
+      "success": "Скопійовано в буфер обміну"
     },
-    "error": "",
-    "remove": ""
+    "error": "Щось пішло не так. Спробуйте перезавантажити сторінку.",
+    "rateLimit": {
+      "generic": "Забагато запитів. Будь ласка, зачекайте трохи та спробуйте ще раз.",
+      "withWait": "Забагато запитів. Будь ласка, зачекайте {time} та спробуйте ще раз."
+    },
+    "remove": "Закрити сповіщення"
   },
   "pageTitle": {
-    "confirmEmail": "",
-    "duplicateEmail": "",
-    "failed": "",
-    "forgotPassword": "",
-    "join": "",
-    "login": "",
-    "lostDevice": "",
-    "notFound": "",
-    "resetDevice": "",
-    "resetPassword": "",
-    "setPassword": "",
-    "setup": ""
+    "confirmEmail": "Підтвердити електронну пошту",
+    "duplicateEmail": "Дублікат електронної пошти",
+    "failed": "Не вдалося",
+    "forgotPassword": "Забули пароль",
+    "join": "Приєднатися",
+    "login": "Вхід",
+    "lostDevice": "Втратили свій пристрій 2FA?",
+    "notFound": "Сторінку не знайдено",
+    "resetDevice": "Скинути налаштування пристрою 2FA",
+    "resetPassword": "Скинути пароль",
+    "setPassword": "Встановити пароль",
+    "setup": "Встановлення"
   },
   "paymentMethods": {
     "gc_direct-debit": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "Змінити прямий дебет",
+      "label": "Прямий дебет",
+      "setLabel": "Ваші реквізити прямого дебету"
     },
     "s_bacs": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "Змінити прямий дебет",
+      "label": "Прямий дебет",
+      "setLabel": "Ваші реквізити прямого дебету"
     },
     "s_card": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "Зміна даних картки",
+      "label": "Картка",
+      "setLabel": "Дані вашої картки"
     },
     "s_ideal": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "Зміна даних iDEAL",
+      "label": "iDEAL",
+      "setLabel": "Ваші дані iDEAL"
     },
     "s_paypal": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "Зміна реквізитів PayPal",
+      "label": "PayPal",
+      "setLabel": "Ваші дані PayPal"
     },
     "s_sepa": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "Змінити прямий дебет",
+      "label": "Прямий дебет",
+      "setLabel": "Ваші реквізити прямого дебету"
     }
   },
   "payments": {
     "data": {
-      "amount": "",
-      "chargeDate": "",
-      "contact": "",
-      "status": ""
+      "amount": "Сума",
+      "chargeDate": "Дата стягнення плати",
+      "contact": "Контакти",
+      "status": "Статус"
     },
     "dataGroup": {
-      "payment": ""
+      "payment": "Оплата"
     }
   },
   "paymentsAdmin": {
     "filter": {
-      "all": "",
-      "cancelled": "",
-      "failed": "",
-      "pending": "",
-      "successful": ""
+      "all": "Усі платежі",
+      "cancelled": "Скасовані платежі",
+      "failed": "Невдалі платежі",
+      "pending": "Очікувані платежі",
+      "successful": "Успішні платежі"
     },
-    "showingOf": ""
+    "showingOf": "Показано платежі з {start} до {end} з {total}"
   },
   "resetDevice": {
-    "description": "",
-    "failed": "",
-    "invalidPassword": "",
-    "success": "",
-    "title": ""
+    "description": "Введіть свій пароль, щоб скинути захист 2FA, ви зможете налаштувати новий пристрій після входу в систему.",
+    "failed": "Скидання налаштувань пристрою не вдалося, можливо, термін дії посилання минув.",
+    "invalidPassword": "Недійсний пароль",
+    "success": "Ваш пристрій 2FA успішно скинуто",
+    "title": "Скинути налаштування пристрою 2FA?"
   },
   "resetPassword": {
-    "description": "",
-    "failed": "",
-    "login": "",
-    "lostDevice": "",
-    "success": "",
-    "title": ""
+    "description": "Встановіть новий пароль для входу.",
+    "failed": "Скидання пароля не вдалося, можливо, термін дії посилання минув.",
+    "login": "Увійдіть до свого облікового запису",
+    "lostDevice": "Якщо ви втратили свій пристрій 2FA, зверніться до служби підтримки",
+    "success": "Ваш пароль скинуто.",
+    "title": "Скинути пароль?"
   },
   "roleEditor": {
-    "add": "",
+    "add": "Додати роль",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "Ви впевнені, що хочете видалити цю роль?",
+      "title": "Вилучити роль"
     },
     "expires": {
-      "label": "",
+      "label": "Термін дії цієї ролі",
       "opts": {
-        "never": "",
-        "schedule": ""
+        "never": "Ніколи",
+        "schedule": "Встановити термін дії"
       }
     },
-    "new": "",
+    "new": "Нова роль",
     "starts": {
-      "label": "",
+      "label": "Дата початку роботи на цій посаді",
       "opts": {
-        "now": "",
-        "schedule": ""
+        "now": "Зараз",
+        "schedule": "Встановити дату початку"
       }
     },
-    "title": "",
-    "today": ""
+    "title": "Ролі",
+    "today": "подарунок"
   },
   "setPassword": {
-    "description": "",
-    "title": ""
+    "description": "Встановіть новий пароль для входу.",
+    "title": "Встановити пароль"
   },
   "status": {
-    "connectingToServer": "",
-    "initializing": "",
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "usuallyTakesSeconds": ""
+    "connectingToServer": "Підключення до сервера...",
+    "initializing": "Ініціалізація...",
+    "loadingApplication": "Завантаження програми",
+    "pleaseWait": "Будь ласка, зачекайте...",
+    "usuallyTakesSeconds": "Зазвичай це займає кілька секунд"
   },
   "stepper": {
     "navigation": {
-      "label": ""
+      "label": "Прогрес кроків"
     },
     "screen": {
-      "completed": "",
-      "currentStep": "",
-      "hasError": ""
+      "completed": ", завершено",
+      "currentStep": ", поточний крок",
+      "hasError": ", має помилку"
     }
   },
   "tagEditor": {
-    "add": "",
+    "add": "Додати тег",
     "confirmDelete": {
-      "text_contact": "",
-      "text_global": "",
-      "text_response": "",
-      "title": ""
+      "text_contact": "Ви впевнені, що хочете видалити цей тег? Кожен контакт, позначений тегом \"{tagName}\", втратить цей тег.",
+      "text_global": "Ви впевнені, що хочете вилучити тег \"{tagName}\"?",
+      "text_response": "Ви впевнені, що хочете вилучити цей тег? Кожна відповідь, позначена тегом \"{tagName}\", втратить цей тег",
+      "title": "Вилучити тег"
     },
-    "name": ""
+    "name": "Ім'я"
   },
   "tags": {
-    "manageTags": "",
-    "noTags": "",
+    "manageTags": "Керування тегами",
+    "noTags": "Без тегів",
     "notifications": {
-      "addedTag": "",
-      "removedTag": ""
+      "addedTag": "Додано тег \"{tag}\"",
+      "removedTag": "Вилучено тег \"{tag}\" "
     },
-    "searchTag": "",
-    "toggleTag": ""
+    "searchTag": "Позначено тегом...",
+    "toggleTag": "Перемкнути тег"
   },
   "taxRate": {
-    "invoiceName": ""
+    "invoiceName": "VAT"
   }
 }
