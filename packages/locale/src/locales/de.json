@@ -925,6 +925,11 @@
     "no": "Nein",
     "noResults": "Keine Ergebnisse gefunden",
     "pageCount": "Seite {pageNumber} von {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Jährlich",
+      "monthly": "Monatlich",
+      "one-time": "Einmalig"
+    },
     "paymentStatus": {
       "cancelled": "Gekündigt",
       "draft": "Entwurf",
@@ -933,6 +938,8 @@
       "successful": "Erfolgreich"
     },
     "perMonth": "/ Monat",
+    "perOneTime": "einmalig",
+    "perOneTimeText": "einmalig",
     "perYear": "/ Jahr",
     "role": {
       "admin": "Admin",
@@ -954,14 +961,7 @@
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja",
-    "paymentPeriod": {
-      "annually": "Jährlich",
-      "monthly": "Monatlich",
-      "one-time": "Einmalig"
-    },
-    "perOneTime": "einmalig",
-    "perOneTimeText": "einmalig"
+    "yes": "Ja"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1106,12 +1106,12 @@
     "startContribution": "Mitgliedschaft beginnen",
     "startedContribution": "Ihre Mitgliedschaft hat begonnen.",
     "updateContribution": "Beitrag aktualisieren",
+    "updatePaymentType": "",
     "updatedContribution": "Ihr Beitrag wurde geändert.",
     "updatedPaymentSource": "Ihre Zahlungsart wurde aktualisiert.",
     "willExpire": "Ihre Mitgliedschaft läuft in {expires} ab.",
     "willRenew": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
-    "willRenewWithNewAmount": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch. Ihr Beitrag ist dann {nextAmount}.",
-    "updatePaymentType": ""
+    "willRenewWithNewAmount": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch. Ihr Beitrag ist dann {nextAmount}."
   },
   "editCallout": {
     "replicated": "Ihr CrowdNewsroom wurde kopiert! Sie bearbeiten jetzt die Kopie. Bitte denken Sie unbedingt daran, den Titel zu bearbeiten.",
@@ -1122,15 +1122,15 @@
     "title": "Bearbeiten: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Betreff"
-    },
     "body": {
       "label": "Nachricht"
     },
     "preview": {
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
+    },
+    "subject": {
+      "label": "Betreff"
     }
   },
   "footer": {
@@ -1320,6 +1320,11 @@
       "one-time": ""
     },
     "contribute": "Mit {contribution} unterstützen.",
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "errors": {
       "confirmEmail": {
         "message": "Fast geschafft! Wir müssen nur noch Ihre E-Mail-Adresse bestätigen, um fortzufahren.",
@@ -1344,11 +1349,6 @@
     "privacy": "Datenschutzerklärung",
     "tax": {
       "included": "Beitrag inklusive {taxRate}% MwSt."
-    },
-    "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1414,10 +1414,10 @@
         "bigTitle": "Willkommens- & Kündigungs-E-Mail",
         "cancellationEmail": "Kündigungs-E-Mail",
         "description": "Passe deine Willkommens- und Kündigungs-E-Mail an",
+        "oneTimeDonationEmail": "",
         "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mail-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
-        "welcomeEmail": "Willkommens-E-Mail",
-        "oneTimeDonationEmail": ""
+        "welcomeEmail": "Willkommens-E-Mail"
       },
       "intro": {
         "description": "Heiße neue Mitglieder willkommen",
@@ -1551,11 +1551,11 @@
       "success": "In die Zwischenablage kopiert"
     },
     "error": "Da ist etwas schiefgelaufen!",
-    "remove": "Benachrichtigung schließen",
     "rateLimit": {
       "generic": "Zu viele Anfragen. Bitte warte kurz und versuche es erneut.",
       "withWait": "Zu viele Anfragen. Bitte warte {time} und versuche es erneut."
-    }
+    },
+    "remove": "Benachrichtigung schließen"
   },
   "pageTitle": {
     "confirmEmail": "E-Mail-Adresse bestätigen",
