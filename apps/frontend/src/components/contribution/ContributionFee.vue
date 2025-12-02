@@ -1,5 +1,9 @@
 <template>
-  <section class="mb-8" :class="disabled && 'opacity-50'">
+  <section
+    v-if="period !== ContributionPeriod.Annually"
+    class="mb-8"
+    :class="disabled && 'opacity-50'"
+  >
     <p class="mb-2 text-sm leading-normal">
       {{ absorbFeeText }}
     </p>
@@ -13,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { PaymentPeriod } from '@beabee/beabee-common';
+import { ContributionPeriod, type PaymentPeriod } from '@beabee/beabee-common';
 import { AppCheckbox } from '@beabee/vue';
 
 import { computed } from 'vue';

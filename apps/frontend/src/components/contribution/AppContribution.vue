@@ -43,7 +43,7 @@
     />
 
     <ContributionFee
-      v-if="isNotAnnually && content.showAbsorbFee"
+      v-if="content.showAbsorbFee"
       v-model="payFee"
       :amount="amount"
       :period="period"
