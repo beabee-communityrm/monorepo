@@ -1,1609 +1,1626 @@
 {
-    "accountPage": {
-        "contactInformation": "",
-        "deliveryAddress": "",
-        "deliveryOptIn": "",
-        "loginDetail": "",
-        "mfa": {
-            "codeInput": {
-                "info": "",
-                "label": ""
-            },
-            "confirmDelete": {
-                "desc": "",
-                "descToken": "",
-                "title": ""
-            },
-            "createUnknownErrorNotification": "",
-            "deleteUnknownErrorNotification": "",
-            "disabledNotification": "",
-            "enabledNotification": "",
-            "enterCode": {
-                "desc": "",
-                "title": ""
-            },
-            "modalTitle": "",
-            "result": {
-                "invalidCode": "",
-                "successful": "",
-                "title": ""
-            },
-            "scan": {
-                "desc": "",
-                "title": ""
-            },
-            "secretInput": {
-                "desc": "",
-                "label": ""
-            },
-            "title": "",
-            "validateButton": {
-                "label": ""
-            }
-        },
-        "newsletter": {
-            "cantUpdate": "",
-            "currentStatus": {
-                "cleaned": "",
-                "none": "",
-                "pending": "",
-                "subscribed": "",
-                "unsubscribed": ""
-            },
-            "subscribe": "",
-            "title": "",
-            "unsubscribe": ""
-        },
-        "phoneInfo": "",
-        "phoneInfoAdmin": "",
-        "savedPassword": "",
-        "subTitle": "",
-        "title": ""
+  "accountPage": {
+    "contactInformation": "Контактна інформація",
+    "deliveryAddress": "Адреса доставки",
+    "deliveryOptIn": "Підписка на доставку",
+    "loginDetail": "Дані для входу",
+    "mfa": {
+      "codeInput": {
+        "info": "Якщо ви втратили свій пристрій 2FA, зверніться до служби підтримки",
+        "label": "Код"
+      },
+      "confirmDelete": {
+        "desc": "Ви впевнені, що хочете вимкнути багатофакторну автентифікацію? Відтепер вам знадобиться лише пароль для входу. Не забудьте видалити запис із програми Authenticator. Ви завжди можете знову її ввімкнути.",
+        "descToken": "Щоб деактивувати 2FA, введіть свій поточний код 2FA:",
+        "title": "Вимкнути 2FA"
+      },
+      "createUnknownErrorNotification": "Не вдалося зберегти двофакторну автентифікацію через невідому помилку. Спробуйте ще раз або зверніться до служби підтримки.",
+      "deleteUnknownErrorNotification": "Двофакторну автентифікацію не вдалося видалити через невідому помилку. Спробуйте ще раз або зверніться до служби підтримки.",
+      "disabledNotification": "Двофакторну автентифікацію успішно деактивовано",
+      "enabledNotification": "Двофакторну автентифікацію успішно активовано",
+      "enterCode": {
+        "desc": "Введіть код, який відображається у вашому застосунку для автентифікації.",
+        "title": "Перевірка"
+      },
+      "modalTitle": "Увімкнути двофакторну автентифікацію",
+      "result": {
+        "invalidCode": "Код не вдалося підтвердити, спробуйте ще раз або зверніться до служби підтримки.",
+        "successful": "Двофакторну автентифікацію успішно налаштовано.",
+        "title": "Готово"
+      },
+      "scan": {
+        "desc": "Відскануйте QR-код нижче за допомогою програми автентифікації.",
+        "title": "QR-код"
+      },
+      "secretInput": {
+        "desc": "Або ж ви можете ввести наступний код у свій додаток Authenticator.",
+        "label": "Секретний код"
+      },
+      "title": "2-факторна автентифікація",
+      "validateButton": {
+        "label": "Перевірити токен"
+      }
     },
+    "newsletter": {
+      "cantUpdate": "Щоб змінити статус розсилки цього контакту, зверніться до служби підтримки{'@'}beabee.io.",
+      "currentStatus": {
+        "cleaned": "Цей контакт видалено з вашого списку розсилки, його електронна адреса, ймовірно, не надходить.",
+        "none": "Цей контакт не підписаний на вашу розсилку.",
+        "pending": "Цьому контакту надіслано запит на вашу розсилку новин. Щоб підписатися, він повинен його прийняти.",
+        "subscribed": "Цей контакт підписаний на вашу розсилку.",
+        "unsubscribed": "Цей контакт не підписаний на вашу розсилку."
+      },
+      "subscribe": "Підпишіть їх на розсилку",
+      "title": "Інформаційний бюлетень",
+      "unsubscribe": "Відписатися від їхньої розсилки"
+    },
+    "phoneInfo": "Надаючи свій номер телефону, ви погоджуєтеся на те, що з вами зв'яжуться телефоном",
+    "phoneInfoAdmin": "Ви повинні отримати згоду особи, перш ніж додавати її номер телефону до системи",
+    "savedPassword": "Новий пароль збережено",
+    "subTitle": "Обов’язкові поля позначені зірочкою. Уся надана тут інформація є конфіденційною.",
+    "title": "Обліковий запис"
+  },
+  "actions": {
+    "add": "Додати",
+    "back": "Назад",
+    "backToLogin": "Назад до сторінки входу",
+    "cancel": "Скасувати",
+    "changePassword": "Змінити пароль",
+    "chooseFile": "Виберіть файл",
+    "close": "Закрити",
+    "continue": "Продовжити",
+    "copy": "Копіювати",
+    "create": "Створити",
+    "decrease": "Зменшення",
+    "delete": "Видалити",
+    "disable": "Вимкнути",
+    "edit": "Редагувати",
+    "enable": "Увімкнути",
+    "endnow": "Кінець зараз",
+    "export": "Експорт",
+    "getStarted": "Почати",
+    "goBack": "Повернутися назад",
+    "increase": "Збільшення",
+    "next": "Далі",
+    "noBack": "Ні, повернутися назад",
+    "participate": "Взяти участь",
+    "preview": "Попередній перегляд",
+    "publish": "Опублікувати",
+    "reopen": "Знову відкрити",
+    "replicate": "Реплікувати",
+    "reset": "Скинути",
+    "reset2FA": "Скинути 2FA",
+    "resetPassword": "Скинути пароль",
+    "respond": "Відповісти",
+    "revertToDraft": "Повернутися до чернетки",
+    "save": "Зберегти",
+    "saveAndAnother": "Зберегти та додати ще один",
+    "saveDraft": "Зберегти чернетку",
+    "schedule": "Розклад",
+    "search": "Пошук",
+    "sendEmails": "Надсилати електронні листи",
+    "share": "Поділитися",
+    "skip": "Пропустити",
+    "submit": "Надіслати",
+    "tryAgain": "Спробуйте ще раз",
+    "unpublish": "Скасувати публікацію",
+    "update": "Оновлення",
+    "view": "Переглянути",
+    "yesDelete": "Так, видалити це",
+    "yesDisable": "Так, вимкнути",
+    "yesRemove": "Так, вилучити це"
+  },
+  "addContact": {
+    "contactSaved": "Контакт збережено",
+    "errors": {
+      "duplicateEmail": "Адреса електронної пошти вже існує"
+    },
+    "subscribeToNewsletter": "Синхронізація з інструментом розсилки новин",
+    "title": "Додати контакт"
+  },
+  "addNotice": {
+    "form": {
+      "buttonText": "Текст кнопки",
+      "expirationDateAndTime": "Дата та час закінчення терміну дії",
+      "name": "Ім'я",
+      "startDateAndTime": "Дата та час початку",
+      "text": "Текст",
+      "url": "URL"
+    },
+    "title": "Додати повідомлення"
+  },
+  "adminDashboard": {
+    "hint1": "<p>«Виклики» тепер називаються «Crowdnewsrooms». Перегляньте наш <a href=\"https://wiki.beabee.io/help-center-english/engagement/crowdnewsroom\" target=\"_blank\" rel=\"noopener noreferrer\">Довідковий центр</a>, щоб знайти посібники та тематичні дослідження для залучення вашої спільноти.</p>",
+    "hint2": "<p>Дізнайтеся більше про <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">бачення beabee</a> щодо залучення спільноти та змістовних стосунків з вашою аудиторією.</p>\n",
+    "hint3": "<p>Наші <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> містять відповіді на поширені запитання щодо початку роботи та варіантів використання. Якщо потрібної вам відповіді там немає, зв’яжіться з нами.</p>\n",
+    "joinSlack": "Приєднуйтесь до спільноти beabee на Slack!",
+    "latestCallout": {
+      "createNew": "Створити новий?",
+      "empty": "Немає активних CrowdNewsrooms",
+      "title": "Ваша CrowdNewsroom"
+    },
+    "mostRecentMembers": {
+      "title": "Найновіші приєднані учасники"
+    },
+    "numbers": {
+      "averageContribution": "Середній щомісячний внесок",
+      "newMembers": "Нові учасники",
+      "revenue": "Дохід",
+      "title": "Цифри за останні 30 днів"
+    },
+    "responsesSoFar": "{n} відповідей наразі | {n} відповідей наразі",
+    "seeAllResponses": "Переглянути всі відповіді",
+    "supportInbox": "<p>Потрібна допомога? Будь ласка, відвідайте <a href=\"https://wiki.beabee.io/help-center-english/\" target=\"_blank\" rel=\"noopener noreferrer\">Центр допомоги beabee</a> або скористайтеся нашою поштовою скринькою підтримки: <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a></p>\n",
+    "welcomeBack": "Ласкаво просимо назад {firstName}!"
+  },
+  "adminSettings": {
+    "apikey": {
+      "confirmCreate": {
+        "text": "Будь ласка, збережіть наступний токен. Його НЕ МОЖНА отримати пізніше.",
+        "title": "Ключ API створено"
+      },
+      "confirmDelete": {
+        "text": "Це незворотна дія. Будь-що, що використовує цей ключ API, перестане працювати.",
+        "title": "Видалити ключ API?"
+      },
+      "copied": "Ключ API скопійовано в буфер обміну",
+      "create": "Створити новий ключ API",
+      "expires": {
+        "days": "Через {n} днів",
+        "never": "Ніколи"
+      },
+      "expiresHelp": "Для кращої безпеки завжди слід встановлювати термін дії, щоб запобігти довгостроковому несанкціонованому доступу до вашої системи.",
+      "expiresNeverWarning": "Я розумію ризики, пов'язані з невстановленням терміну дії",
+      "label": "Ключі API",
+      "showingOf": "Показано ключі API від {start} до {end} з {total}"
+    },
+    "email": {
+      "fromEmail": "З електронної пошти",
+      "fromName": "Від імені",
+      "label": "Електронна пошта",
+      "text": "Усі електронні листи будуть надіслані з цієї адреси електронної пошти.",
+      "title": "Встановіть загальну адресу електронної пошти"
+    },
+    "general": {
+      "footer": {
+        "dataPrivacy": {
+          "impressumUrl": "URL-адреса вихідних даних",
+          "privacyUrl": "URL-адреса політики конфіденційності",
+          "termsUrl": "URL-адреса Умов надання послуг",
+          "title": "Конфіденційність даних"
+        },
+        "otherLinks": {
+          "add": "Додати ще одне посилання",
+          "linkText": "Текст посилання",
+          "title": "Інші посилання",
+          "url": "URL"
+        },
+        "siteUrl": "URL-адреса основного веб-сайту",
+        "text": "Ці посилання відображаються в нижньому колонтитулі beabee та в електронних листах",
+        "title": "Нижній колонтитул"
+      },
+      "label": "Загальне",
+      "language": "Мова",
+      "logo": "Логотип",
+      "organisationName": "Назва організації",
+      "socialSharing": {
+        "description": "Поділитися описом",
+        "image": "Поділитися зображенням",
+        "shareTitle": "Поділитися назвою",
+        "text": "Налаштуйте, що відображається в соціальних мережах, коли поширюється посилання на вашу спільноту beabee",
+        "title": "Поширення в соціальних мережах",
+        "twitterHandle": "Ім'я користувача в Твіттері"
+      }
+    },
+    "payment": {
+      "paymentTitle": "Оплата",
+      "taxRate": "Ставка ПДВ",
+      "taxRateEnabled": "Увімкнути ПДВ"
+    },
+    "theme": {
+      "bodyFont": "Основний текст",
+      "colorNames": {
+        "body": "Текст",
+        "danger": "Небезпека",
+        "link": "Посилання",
+        "primary": "Головний",
+        "success": "Успіх",
+        "warning": "Попередження"
+      },
+      "colors": "Кольори",
+      "customColors": "Користувацька",
+      "fontNotListed": "<p>Не бачите свого шрифту у списку? Зверніться до служби підтримки <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a>, щоб його додати.</p>\n",
+      "fonts": "Шрифти",
+      "label": "Тема",
+      "presetColors": {
+        "default": "За замовчуванням"
+      },
+      "titleFont": "Шрифт заголовка"
+    },
+    "title": "Налаштування"
+  },
+  "advancedSearch": {
+    "addRule": "Додати правило",
+    "button": "Фільтри",
+    "createFiltersAfter": "правила",
+    "createFiltersBefore": "Показувати лише відповідні результати",
+    "createFiltersType": {
+      "all": "всі",
+      "any": "будь-який"
+    },
+    "createdSegment": "Створено сегмент \"{segment}\"",
+    "matchWord": {
+      "AND": "і",
+      "OR": "або"
+    },
+    "nestedRules": "Вкладені правила",
+    "noNestedRules": "Цей фільтр містить вкладені правила, які не можна редагувати за допомогою редактора розширеного пошуку.",
+    "operators": {
+      "all": {
+        "is_empty": "порожній",
+        "is_not_empty": "не порожній"
+      },
+      "array": {
+        "contains": "включає",
+        "not_contains": "не включає"
+      },
+      "blob": {
+        "contains": "містить",
+        "not_contains": "не містить"
+      },
+      "boolean": {
+        "equal": "є"
+      },
+      "date": {
+        "between": "між",
+        "equal": "увімкнено",
+        "greater": "після",
+        "greater_or_equal": "після або на",
+        "less": "перед",
+        "less_or_equal": "перед або на",
+        "not_between": "не між",
+        "not_equal": "не ввімкнено"
+      },
+      "enum": {
+        "equal": "є",
+        "not_equal": "не є"
+      },
+      "number": {
+        "between": "між",
+        "equal": "є",
+        "greater": "більше ніж",
+        "greater_or_equal": "принаймні",
+        "less": "менше ніж",
+        "less_or_equal": "щонайбільше",
+        "not_between": "не між",
+        "not_equal": "не є"
+      },
+      "text": {
+        "begins_with": "починається з",
+        "contains": "містить",
+        "ends_with": "закінчується на",
+        "equal": "є",
+        "not_begins_with": "не починається з",
+        "not_contains": "не містить",
+        "not_ends_with": "не закінчується на",
+        "not_equal": "не є"
+      }
+    },
+    "saveSegment": {
+      "createOrUpdate": {
+        "create": "Створити новий сегмент",
+        "label": "Ви хочете створити новий сегмент?",
+        "update": "Оновити сегмент \"{segment}\""
+      },
+      "createSegment": "Створити сегмент",
+      "segmentName": "Назва сегмента",
+      "text": "Сегмент – це група контактів, яка відповідає набору фільтрів, подібних до тих, які ви щойно створили. Нові контакти, що відповідають цим фільтрам, автоматично додаються до сегмента.",
+      "title": "Зберегти сегмент",
+      "updateSegment": "Оновити сегмент"
+    },
+    "selectFilter": "Виберіть фільтр",
+    "updatedSegment": "Оновлений сегмент \"{segment}\""
+  },
+  "apiKey": {
+    "data": {
+      "createdAt": "Створено",
+      "description": "Опис",
+      "expires": "Термін дії",
+      "token": "Токен"
+    }
+  },
+  "callout": {
     "actions": {
-        "add": "",
-        "back": "",
-        "backToLogin": "",
-        "cancel": "",
-        "changePassword": "",
-        "chooseFile": "",
-        "close": "",
-        "continue": "",
-        "copy": "",
-        "create": "",
-        "decrease": "",
-        "delete": "",
-        "disable": "",
-        "edit": "",
-        "enable": "",
-        "endnow": "",
-        "export": "",
-        "getStarted": "",
-        "goBack": "",
-        "increase": "",
-        "next": "",
-        "noBack": "",
-        "participate": "",
-        "preview": "",
-        "publish": "",
-        "reopen": "",
-        "replicate": "",
-        "reset": "",
-        "reset2FA": "",
-        "resetPassword": "",
-        "respond": "",
-        "revertToDraft": "",
-        "save": "",
-        "saveAndAnother": "",
-        "saveDraft": "",
-        "schedule": "",
-        "search": "",
-        "sendEmails": "",
-        "share": "",
-        "skip": "",
-        "submit": "",
-        "tryAgain": "",
-        "unpublish": "",
-        "update": "",
-        "view": "",
-        "yesDelete": "",
-        "yesDisable": "",
-        "yesRemove": ""
+      "updateResponse": "Оновіть свою відповідь"
     },
-    "addContact": {
-        "contactSaved": "",
-        "errors": {
-            "duplicateEmail": ""
+    "addAPoint": "Натисніть на карту, де ви хочете додати точку",
+    "addLocation": "Додати новий запис",
+    "builder": {
+      "actions": {
+        "addSlide": "Додати слайд"
+      },
+      "common": {
+        "actions": {
+          "add": "Додати",
+          "remove": "Вилучити"
         },
-        "subscribeToNewsletter": "",
-        "title": ""
-    },
-    "addNotice": {
-        "form": {
-            "buttonText": "",
-            "expirationDateAndTime": "",
-            "name": "",
-            "startDateAndTime": "",
-            "text": "",
-            "url": ""
+        "internalTitle": "Внутрішня назва",
+        "showAdvancedOptions": "Показати розширені параметри",
+        "slides": "Слайди",
+        "startEndScreens": "Початковий та кінцевий екрани"
+      },
+      "navigation": {
+        "nextButton": "Текст кнопки «Далі»",
+        "nextSlide": {
+          "default": "– За замовчуванням –",
+          "label": "Наступний слайд"
         },
-        "title": ""
-    },
-    "adminDashboard": {
-        "hint1": "",
-        "hint2": "",
-        "hint3": "",
-        "joinSlack": "",
-        "latestCallout": {
-            "createNew": "",
-            "empty": "",
-            "title": ""
-        },
-        "mostRecentMembers": {
-            "title": ""
-        },
-        "numbers": {
-            "averageContribution": "",
-            "newMembers": "",
-            "revenue": "",
-            "title": ""
-        },
-        "responsesSoFar": "",
-        "seeAllResponses": "",
-        "supportInbox": "",
-        "welcomeBack": ""
-    },
-    "adminSettings": {
-        "apikey": {
-            "confirmCreate": {
-                "text": "",
-                "title": ""
-            },
-            "confirmDelete": {
-                "text": "",
-                "title": ""
-            },
-            "copied": "",
-            "create": "",
-            "expires": {
-                "days": "",
-                "never": ""
-            },
-            "expiresHelp": "",
-            "expiresNeverWarning": "",
-            "label": "",
-            "showingOf": ""
+        "prevButton": "Текст кнопки «Назад»",
+        "slideNo": "Слайд {no}",
+        "submitButton": "Текст кнопки «Надіслати»"
+      },
+      "showAdvancedOptions": "Показати розширені параметри",
+      "slidesTitle": "Слайди",
+      "startEndScreenTitle": "Початковий та кінцевий екрани",
+      "tabs": {
+        "content": {
+          "title": "Зміст"
         },
         "email": {
-            "fromEmail": "",
-            "fromName": "",
-            "label": "",
-            "text": "",
-            "title": ""
+          "body": {
+            "default": "<p>Вітаємо, {'*|FNAME|*'},</p><p>Цей електронний лист підтверджує вашу відповідь на виклик <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> з використанням вашої електронної адреси {'*|EMAIL|*'}.</p><p><br /></p><p>Якщо у вас виникли запитання, зверніться до нашої служби підтримки за адресою <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>З найкращими побажаннями</p>"
+          },
+          "collectInfoWarning": {
+            "description": "Щоб надіслати електронного листа всім учасникам, потрібно ввімкнути опцію «Збирати контактну інформацію» на вкладці «Налаштування»",
+            "title": "Контактна інформація не зібрана"
+          },
+          "sendEmail": {
+            "description": "Електронний лист буде надіслано всім учасникам, які нададуть свою контактну інформацію",
+            "label": "Надіслати електронного листа всім учасникам після подання"
+          },
+          "subject": {
+            "default": "Дякую за вашу відповідь"
+          },
+          "title": "Електронна пошта"
         },
-        "general": {
-            "footer": {
-                "dataPrivacy": {
-                    "impressumUrl": "",
-                    "privacyUrl": "",
-                    "termsUrl": "",
-                    "title": ""
-                },
-                "otherLinks": {
-                    "add": "",
-                    "linkText": "",
-                    "title": "",
-                    "url": ""
-                },
-                "siteUrl": "",
-                "text": "",
-                "title": ""
-            },
-            "label": "",
-            "language": "",
-            "logo": "",
-            "organisationName": "",
-            "socialSharing": {
-                "description": "",
-                "image": "",
-                "shareTitle": "",
-                "text": "",
-                "title": "",
-                "twitterHandle": ""
-            }
-        },
-        "payment": {
-            "paymentTitle": "",
-            "taxRate": "",
-            "taxRateEnabled": ""
-        },
-        "theme": {
-            "bodyFont": "",
-            "colorNames": {
-                "body": "",
-                "danger": "",
-                "link": "",
-                "primary": "",
-                "success": "",
-                "warning": ""
-            },
-            "colors": "",
-            "customColors": "",
-            "fontNotListed": "",
-            "fonts": "",
-            "label": "",
-            "presetColors": {
-                "default": ""
-            },
-            "titleFont": ""
-        },
-        "title": ""
-    },
-    "advancedSearch": {
-        "addRule": "",
-        "button": "",
-        "createFiltersAfter": "",
-        "createFiltersBefore": "",
-        "createFiltersType": {
-            "all": "",
-            "any": ""
-        },
-        "createdSegment": "",
-        "matchWord": {
-            "AND": "",
-            "OR": ""
-        },
-        "nestedRules": "",
-        "noNestedRules": "",
-        "operators": {
-            "all": {
-                "is_empty": "",
-                "is_not_empty": ""
-            },
-            "array": {
-                "contains": "",
-                "not_contains": ""
-            },
-            "blob": {
-                "contains": "",
-                "not_contains": ""
-            },
-            "boolean": {
-                "equal": ""
-            },
-            "date": {
-                "between": "",
-                "equal": "",
-                "greater": "",
-                "greater_or_equal": "",
-                "less": "",
-                "less_or_equal": "",
-                "not_between": "",
-                "not_equal": ""
-            },
-            "enum": {
-                "equal": "",
-                "not_equal": ""
-            },
-            "number": {
-                "between": "",
-                "equal": "",
-                "greater": "",
-                "greater_or_equal": "",
-                "less": "",
-                "less_or_equal": "",
-                "not_between": "",
-                "not_equal": ""
+        "endMessage": {
+          "inputs": {
+            "action": {
+              "label": "Після надсилання відповіді:",
+              "opts": {
+                "redirect": "Перенаправте їх на іншу сторінку",
+                "showMessage": "Показати повідомлення з подякою"
+              }
             },
             "text": {
-                "begins_with": "",
-                "contains": "",
-                "ends_with": "",
-                "equal": "",
-                "not_begins_with": "",
-                "not_contains": "",
-                "not_ends_with": "",
-                "not_equal": ""
-            }
-        },
-        "saveSegment": {
-            "createOrUpdate": {
-                "create": "",
-                "label": "",
-                "update": ""
+              "help": "<p>Тут ви можете детальніше подякувати користувачам і повідомити їм, коли очікувати оновлень або подальших дій.</p>",
+              "label": "Текст подяки",
+              "placeholder": "Додайте більше деталей про те, наскільки цінним був їхній внесок…"
             },
-            "createSegment": "",
-            "segmentName": "",
-            "text": "",
-            "title": "",
-            "updateSegment": ""
-        },
-        "selectFilter": "",
-        "updatedSegment": ""
-    },
-    "apiKey": {
-        "data": {
-            "createdAt": "",
-            "description": "",
-            "expires": "",
-            "token": ""
-        }
-    },
-    "callout": {
-        "actions": {
-            "updateResponse": ""
-        },
-        "addAPoint": "",
-        "addLocation": "",
-        "builder": {
-            "actions": {
-                "addSlide": ""
-            },
-            "common": {
-                "actions": {
-                    "add": "",
-                    "remove": ""
-                },
-                "internalTitle": "",
-                "showAdvancedOptions": "",
-                "slides": "",
-                "startEndScreens": ""
-            },
-            "navigation": {
-                "nextButton": "",
-                "nextSlide": {
-                    "default": "",
-                    "label": ""
-                },
-                "prevButton": "",
-                "slideNo": "",
-                "submitButton": ""
-            },
-            "showAdvancedOptions": "",
-            "slidesTitle": "",
-            "startEndScreenTitle": "",
-            "tabs": {
-                "content": {
-                    "title": ""
-                },
-                "endMessage": {
-                    "inputs": {
-                        "action": {
-                            "label": "",
-                            "opts": {
-                                "redirect": "",
-                                "showMessage": ""
-                            }
-                        },
-                        "text": {
-                            "help": "",
-                            "label": "",
-                            "placeholder": ""
-                        },
-                        "title": {
-                            "help": "",
-                            "label": "",
-                            "placeholder": ""
-                        },
-                        "url": {
-                            "help": "",
-                            "label": "",
-                            "placeholder": ""
-                        }
-                    },
-                    "title": ""
-                },
-                "intro": {
-                    "help": "",
-                    "label": "",
-                    "title": ""
-                },
-                "mailchimp": {
-                    "title": ""
-                },
-                "responseDisplay": {
-                    "title": ""
-                },
-                "settings": {
-                    "access": {
-                        "title": ""
-                    },
-                    "dates": {
-                        "title": ""
-                    },
-                    "displayOptions": {
-                        "description": "",
-                        "title": ""
-                    },
-                    "inputs": {
-                        "collectGuestInfo": {
-                            "label": "",
-                            "opts": {
-                                "disabled": "",
-                                "enabled": ""
-                            }
-                        },
-                        "collectMemberInfo": {
-                            "label": "",
-                            "opts": {
-                                "disabled": "",
-                                "enabled": ""
-                            }
-                        },
-                        "expires": {
-                            "description": "",
-                            "label": "",
-                            "opts": {
-                                "never": "",
-                                "schedule": ""
-                            }
-                        },
-                        "mapAndGallery": {
-                            "description": "",
-                            "gallery": {
-                                "disabledDescription": "",
-                                "enabledDescription": "",
-                                "label": ""
-                            },
-                            "map": {
-                                "disabledDescription": "",
-                                "enabledDescription": "",
-                                "label": ""
-                            },
-                            "title": ""
-                        },
-                        "mapSchema": {
-                            "addressPattern": {
-                                "label": ""
-                            },
-                            "addressPatternProp": {
-                                "label": "",
-                                "none": ""
-                            },
-                            "addressProp": {
-                                "label": ""
-                            },
-                            "bounds": {
-                                "label": ""
-                            },
-                            "center": {
-                                "label": ""
-                            },
-                            "geocodeCountries": {
-                                "label": ""
-                            },
-                            "initialZoom": {
-                                "label": ""
-                            },
-                            "mapIconProp": {
-                                "label": "",
-                                "none": ""
-                            },
-                            "mapIconStylingProp": {
-                                "label": ""
-                            },
-                            "mapIconStylingSetting": {
-                                "label": "",
-                                "title": ""
-                            },
-                            "maxZoom": {
-                                "label": ""
-                            },
-                            "minZoom": {
-                                "label": ""
-                            },
-                            "style": {
-                                "help": "",
-                                "label": ""
-                            },
-                            "title": ""
-                        },
-                        "newsletterSettings": {
-                            "disabled": "",
-                            "label": "",
-                            "opts": {
-                                "disabled": "",
-                                "enabled": ""
-                            }
-                        },
-                        "openToEveryone": {
-                            "help": "",
-                            "label": "",
-                            "opts": {
-                                "disabled": "",
-                                "enabled": ""
-                            }
-                        },
-                        "requireCaptcha": {
-                            "help": "",
-                            "label": "",
-                            "members": {
-                                "label": "",
-                                "opts": {
-                                    "disabled": "",
-                                    "enabled": ""
-                                }
-                            },
-                            "opts": {
-                                "all": "",
-                                "guests": "",
-                                "none": ""
-                            }
-                        },
-                        "responseImageProp": {
-                            "description": "",
-                            "label": ""
-                        },
-                        "responseLinks": {
-                            "add": "",
-                            "description": "",
-                            "label": "",
-                            "opts": {
-                                "disabled": "",
-                                "enabled": ""
-                            },
-                            "placeholder": {
-                                "label": "",
-                                "url": ""
-                            },
-                            "text": {
-                                "label": ""
-                            },
-                            "url": {
-                                "label": ""
-                            }
-                        },
-                        "responseSettings": {
-                            "label": "",
-                            "opts": {
-                                "multiple": "",
-                                "singleEditable": "",
-                                "singleNonEditable": ""
-                            },
-                            "title": ""
-                        },
-                        "responseTitleProp": {
-                            "description": "",
-                            "label": ""
-                        },
-                        "showResponses": {
-                            "label": "",
-                            "opts": {
-                                "no": "",
-                                "yes": ""
-                            }
-                        },
-                        "starts": {
-                            "label": "",
-                            "opts": {
-                                "now": "",
-                                "schedule": ""
-                            }
-                        },
-                        "visible": {
-                            "help": "",
-                            "label": "",
-                            "opts": {
-                                "disabled": "",
-                                "enabled": ""
-                            }
-                        },
-                        "whichResponseBuckets": {
-                            "description": "",
-                            "label": ""
-                        }
-                    },
-                    "title": ""
-                },
-                "titleAndImage": {
-                    "inputs": {
-                        "description": {
-                            "help": "",
-                            "label": "",
-                            "placeholder": ""
-                        },
-                        "general": {
-                            "title": ""
-                        },
-                        "image": {
-                            "description": "",
-                            "help": "",
-                            "label": ""
-                        },
-                        "overrideShare": {
-                            "label": "",
-                            "opts": {
-                                "disabled": "",
-                                "enabled": ""
-                            }
-                        },
-                        "shareDescription": {
-                            "help": "",
-                            "label": "",
-                            "placeholder": ""
-                        },
-                        "shareTitle": {
-                            "help": "",
-                            "label": "",
-                            "placeholder": ""
-                        },
-                        "sharing": {
-                            "title": ""
-                        },
-                        "slug": {
-                            "boxTitle": "",
-                            "help": "",
-                            "label": "",
-                            "locked": {
-                                "title": ""
-                            },
-                            "opts": {
-                                "auto": "",
-                                "manual": ""
-                            }
-                        },
-                        "title": {
-                            "label": "",
-                            "placeholder": ""
-                        }
-                    },
-                    "title": "",
-                    "urlWillBe": ""
-                },
-                "translations": {
-                    "language": {
-                        "description": "",
-                        "enableLanguages": "",
-                        "title": ""
-                    },
-                    "languageSettings": {
-                        "title": ""
-                    },
-                    "navigationButtons": {
-                        "title": ""
-                    },
-                    "responseLinks": {
-                        "title": ""
-                    },
-                    "title": ""
-                }
-            },
-            "title": "",
-            "translationFields": {
-                "description": "",
-                "html": "",
-                "label": "",
-                "option": "",
-                "placeholder": ""
-            },
-            "untitledCallout": ""
-        },
-        "confirmHuman": "",
-        "contactDetails": "",
-        "ended": "",
-        "entryOf": "",
-        "form": {
-            "email": "",
-            "guestFieldsMissing": "",
-            "name": "",
-            "submittingResponseError": ""
-        },
-        "getStarted": "",
-        "joinNow": "",
-        "loginToYourAccount": "",
-        "membersOnly": "",
-        "responseSubmitted": "",
-        "share": {
-            "address": "",
-            "aria": {
-                "email": "",
-                "facebook": "",
-                "linkedin": "",
-                "telegram": "",
-                "twitter": "",
-                "whatsapp": ""
-            },
-            "services": ""
-        },
-        "showingPreview": "",
-        "toContributionPage": "",
-        "updateContribution": "",
-        "views": {
-            "gallery": "",
-            "map": ""
-        },
-        "youResponded": "",
-        "yourResponse": ""
-    },
-    "calloutAdmin": {
-        "deleted": "",
-        "ended": "",
-        "overview": "",
-        "reopened": "",
-        "responses": ""
-    },
-    "calloutAdminOverview": {
-        "actions": {
-            "confirmDelete": {
-                "text": "",
-                "title": ""
-            }
-        },
-        "created": "",
-        "dates": {
-            "ends": "",
-            "label": "",
-            "starts": ""
-        },
-        "settings": {
-            "answers": {
-                "editable": "",
-                "final": "",
-                "label": ""
-            },
-            "contactInfo": {
-                "label": "",
-                "optional": "",
-                "required": ""
-            },
-            "endsWith": {
-                "label": "",
-                "message": "",
-                "redirect": ""
-            },
-            "label": "",
-            "openTo": {
-                "everyone": "",
-                "label": "",
-                "membersOnly": ""
-            }
-        },
-        "summary": "",
-        "updated": ""
-    },
-    "calloutResponse": {
-        "data": {
-            "answers": "",
-            "assignee": "",
-            "bucket": "",
-            "callout": "",
-            "contact": "",
-            "createdAt": "",
-            "tags": "",
-            "updatedAt": ""
-        },
-        "dataGroup": {
-            "answers": "",
-            "response": ""
-        }
-    },
-    "calloutResponseBuckets": {
-        "inbox": "",
-        "trash": "",
-        "verified": ""
-    },
-    "calloutResponseComments": {
-        "actions": {
-            "addComment": "",
-            "updateComment": ""
-        },
-        "addComment": "",
-        "comments": "",
-        "confirmDelete": {
-            "text": "",
-            "title": ""
-        }
-    },
-    "calloutResponsePage": {
-        "actions": {
-            "assignTo": "",
-            "moveBucket": "",
-            "toggleTag": "",
-            "viewOnMap": ""
-        },
-        "editMode": "",
-        "manageFolders": "",
-        "manageReviewers": "",
-        "manageTags": "",
-        "notifications": {
-            "addedAssignee": "",
-            "addedTag": "",
-            "movedToBucket": "",
-            "removedAssignee": "",
-            "removedTag": ""
-        },
-        "responseOf": "",
-        "selectedCount": ""
-    },
-    "calloutResponsesPage": {
-        "moveToBucket": "",
-        "noTags": "",
-        "response": "",
-        "responseNo": "",
-        "searchAssignee": "",
-        "searchTag": "",
-        "showAnswer": "",
-        "showLatestComment": "",
-        "showingOf": ""
-    },
-    "calloutReviewerManager": {
-        "add": "",
-        "canEdit": "",
-        "confirmDelete": {
-            "text": "",
-            "title": ""
-        },
-        "contact": "",
-        "editorTag": "",
-        "search": {
-            "error": {
-                "message": "",
-                "title": ""
-            },
-            "placeholder": "",
-            "successMessage": ""
-        },
-        "title": ""
-    },
-    "calloutThanksPage": {
-        "oneResponseWarning": ""
-    },
-    "callouts": {
-        "archive": "",
-        "data": {
-            "callout": "",
-            "endDate": ""
-        },
-        "noArchivedCallouts": "",
-        "search": "",
-        "showAll": "",
-        "showAnswered": "",
-        "showingOf": ""
-    },
-    "calloutsAdmin": {
-        "addCallout": "",
-        "data": {
-            "expires": "",
-            "responses": "",
-            "starts": "",
-            "status": "",
-            "title": ""
-        },
-        "filter": {
-            "all": "",
-            "draft": "",
-            "ended": "",
-            "open": "",
-            "scheduled": ""
-        }
-    },
-    "common": {
-        "backToHome": "",
-        "contributing": "",
-        "contributionPeriod": {
-            "annually": "",
-            "monthly": ""
-        },
-        "contributionType": {
-            "automatic": "",
-            "gift": "",
-            "manual": "",
-            "none": ""
-        },
-        "default": "",
-        "hello": "",
-        "id": "",
-        "itemsPerPage": "",
-        "joined": "",
-        "label": "",
-        "loading": "",
-        "login": "",
-        "newsletterStatus": {
-            "cleaned": "",
-            "none": "",
-            "pending": "",
-            "subscribed": "",
-            "unsubscribed": ""
-        },
-        "no": "",
-        "noResults": "",
-        "pageCount": "",
-        "paymentStatus": {
-            "cancelled": "",
-            "draft": "",
-            "failed": "",
-            "pending": "",
-            "successful": ""
-        },
-        "perMonth": "",
-        "perMonthText": "",
-        "perYear": "",
-        "perYearText": "",
-        "role": {
-            "admin": "",
-            "member": "",
-            "superadmin": ""
-        },
-        "selectNone": "",
-        "selectOne": "",
-        "show": "",
-        "showingOf": "",
-        "status": {
-            "draft": "",
-            "ended": "",
-            "open": "",
-            "scheduled": ""
-        },
-        "statusLabel": "",
-        "thankYou": "",
-        "timeAgo": "",
-        "timeIn": "",
-        "until": "",
-        "yes": ""
-    },
-    "contactAccount": {
-        "confirmDelete": {
-            "text": "",
-            "title": "",
-            "warning": ""
-        },
-        "contactDeleted": ""
-    },
-    "contactContribution": {
-        "confirmCancel": {
-            "confirm": "",
-            "text": "",
-            "title": ""
-        },
-        "updateNotice": {
-            "text": "",
-            "title": ""
-        }
-    },
-    "contactOverview": {
-        "about": "",
-        "account": "",
-        "annotation": {
-            "copy": ""
-        },
-        "callouts": "",
-        "cancellationDate": "",
-        "contribution": "",
-        "contributionType": "",
-        "joinSurvey": "",
-        "newsletter": {
-            "groups": "",
-            "status": "",
-            "title": ""
-        },
-        "overview": "",
-        "pickTag": "",
-        "profile": "",
-        "roles": "",
-        "security": {
-            "instructions": "",
-            "loginOverride": "",
-            "mfa": {
-                "desc": "",
-                "disabledDesc": ""
-            },
-            "resetPassword": "",
-            "title": "",
-            "whatDoTheButtonsDo": ""
-        }
-    },
-    "contacts": {
-        "addContact": "",
-        "advancedSearch": {
-            "hasAnswered": "",
-            "selectCallout": ""
-        },
-        "allContacts": "",
-        "data": {
-            "activeMembership": "",
-            "activePermission": "",
-            "activeUser": "",
-            "amount": "",
-            "annotationsCopy": "",
-            "contribution": "",
-            "contributionCancelled": "",
-            "contributionMonthlyAmount": "",
-            "contributionPeriod": "",
-            "contributionType": "",
-            "deliveryOptIn": "",
-            "description": "",
-            "email": "",
-            "firstname": "",
-            "joined": "",
-            "lastSeen": "",
-            "lastname": "",
-            "manualPaymentSource": "",
-            "membershipExpires": "",
-            "membershipStarts": "",
-            "name": "",
-            "newsletterGroups": "",
-            "newsletterStatus": "",
-            "notes": "",
-            "payingFee": "",
-            "paymentReference": "",
-            "paymentSource": "",
-            "period": "",
-            "phone": "",
-            "preferredChannel": "",
-            "tags": ""
-        },
-        "dataGroup": {
-            "callout": "",
-            "contact": "",
-            "contribution": "",
-            "role": ""
-        },
-        "noContacts": "",
-        "noResults": "",
-        "numResults": "",
-        "search": "",
-        "selectedCount": "",
-        "showingOf": ""
-    },
-    "contribution": {
-        "adminCancelDescription": "",
-        "bankAccount": "",
-        "billing": "",
-        "cancelContribution": "",
-        "cancelDescription": "",
-        "cancelMessage": "",
-        "cancelledContribution": "",
-        "changeBank": "",
-        "changeBankInfo": "",
-        "contributing": "",
-        "contributionUpdateError": "",
-        "dueToRenew": "",
-        "expired": "",
-        "expiredText": "",
-        "hasPendingPayment": "",
-        "manualPayment": "",
-        "manualPaymentSource": "",
-        "nextAmountChanging": "",
-        "paymentHistory": {
-            "empty": "",
-            "title": ""
-        },
-        "paymentMethod": "",
-        "paymentSourceUpdateError": "",
-        "prorateDecreaseMessage": "",
-        "prorateDecreaseMessageWillStart": "",
-        "prorateIncreaseMessage": "",
-        "prorateIncreaseMessageOneOff": "",
-        "prorateNoText": "",
-        "prorateNoTitle": "",
-        "prorateYesText": "",
-        "prorateYesTitle": "",
-        "restartContribution": "",
-        "startContribution": "",
-        "startedContribution": "",
-        "updateContribution": "",
-        "updatePaymentType": "",
-        "updatedContribution": "",
-        "updatedPaymentSource": "",
-        "willExpire": "",
-        "willRenew": "",
-        "willRenewWithNewAmount": ""
-    },
-    "editCallout": {
-        "replicated": "",
-        "title": "",
-        "warning": ""
-    },
-    "editNotice": {
-        "title": ""
-    },
-    "footer": {
-        "contactUs": "",
-        "handbookResources": "",
-        "impressum": "",
-        "joinCommunity": "",
-        "poweredBy": "",
-        "privacyPolicy": "",
-        "terms": ""
-    },
-    "forgotPassword": {
-        "backToLogin": "",
-        "description": "",
-        "message": "",
-        "title": ""
-    },
-    "form": {
-        "addressLine1": "",
-        "addressLine2": "",
-        "cancel": "",
-        "characters": {
-            "remaining": ""
-        },
-        "cityOrTown": "",
-        "deliveryOptIn": "",
-        "description": "",
-        "email": "",
-        "errorMessages": {
-            "api": {
-                "account-locked": "",
-                "duplicate-email": "",
-                "duplicate-tag-name": "",
-                "invalid-token": "",
-                "login-failed": "",
-                "mfa-token-required": ""
-            },
-            "generic": "",
-            "unauthorized": "",
-            "validation": ""
-        },
-        "errors": {
-            "address": {
-                "required": ""
-            },
-            "addressLine1": {
-                "required": ""
-            },
-            "cityOrTown": {
-                "required": ""
-            },
-            "color": {
-                "pattern": "",
-                "required": ""
-            },
-            "confirmPassword": {
-                "password": "",
-                "required": "",
-                "sameAs": ""
-            },
-            "description": {
-                "maxLength": "",
-                "required": ""
-            },
-            "email": {
-                "email": "",
-                "required": ""
-            },
-            "file": {
-                "rateLimited": "",
-                "tooBig": "",
-                "unsupportedType": ""
-            },
-            "firstName": {
-                "required": ""
-            },
-            "lastName": {
-                "required": ""
-            },
-            "name": {
-                "required": ""
-            },
-            "password": {
-                "password": "",
-                "required": "",
-                "sameAs": ""
-            },
-            "postCode": {
-                "required": ""
-            },
-            "shareDescription": {
-                "maxLength": "",
-                "required": ""
-            },
-            "unknown": {
-                "email": "",
-                "max": "",
-                "maxLength": "",
-                "min": "",
-                "required": "",
-                "url": ""
+            "title": {
+              "help": "<p>Ваші читачі побачать <strong>заголовок подяки</strong>, коли завершать відповідати на запитання CrowdNewsroom.</p>",
+              "label": "Заголовок \"Дякую\"",
+              "placeholder": "Дякую вам!"
             },
             "url": {
-                "required": "",
-                "url": ""
-            },
-            "verifyCode": {
-                "max": "",
-                "min": "",
-                "required": ""
+              "help": "Користувачі будуть автоматично перенаправлені на цю сторінку після надсилання відповіді",
+              "label": "URL-адреса для перенаправлення",
+              "placeholder": "https://example.com"
             }
+          },
+          "title": "Кінець повідомлення"
         },
-        "errorsFormio": {
-            "maxLength": "",
-            "minLength": ""
+        "intro": {
+          "help": "Вступний текст повинен містити будь-який контекст, який може знадобитися користувачеві перед відповіддю",
+          "label": "Вступний текст",
+          "title": "Вступ"
         },
-        "firstName": "",
-        "lastName": "",
-        "newPassword": "",
-        "newPasswordConfirm": "",
-        "notes": "",
-        "password": "",
-        "passwordInfo": "",
-        "phone": "",
-        "postCode": "",
-        "richtext": {
-            "bold": "",
-            "bulletlist": "",
-            "editor": "",
-            "heading": "",
-            "italic": "",
-            "link": "",
-            "numberedlist": "",
-            "strikethrough": "",
-            "toolbar": "",
-            "underline": ""
+        "mailchimp": {
+          "title": "Синхронізація Mailchimp"
         },
-        "saveChanges": "",
-        "saved": "",
-        "unsavedChanges": "",
-        "updated": ""
-    },
-    "formRenderer": {
-        "components": {
-            "file": {
-                "browse": "",
-                "dropFiles": "",
-                "or": "",
-                "switchToFileUpload": "",
-                "takePicture": "",
-                "useCamera": ""
+        "responseDisplay": {
+          "title": "Відображення відповіді"
+        },
+        "settings": {
+          "access": {
+            "title": "Доступ та безпека"
+          },
+          "dates": {
+            "title": "Планування"
+          },
+          "displayOptions": {
+            "description": "Виберіть, які варіанти відповідей мають бути видимими для користувачів",
+            "title": "Параметри відображення"
+          },
+          "inputs": {
+            "collectGuestInfo": {
+              "label": "Вимагати контактну інформацію від гостей",
+              "opts": {
+                "disabled": "Гості можуть відповідати анонімно",
+                "enabled": "Гостей також попросять надати їхню контактну інформацію"
+              }
             },
-            "multiple": {
-                "addAnother": ""
-            }
-        }
-    },
-    "homePage": {
-        "editProfile": "",
-        "manageContribution": "",
-        "newCallout": "",
-        "openCallouts": "",
-        "quickActions": "",
-        "title": "",
-        "viewAllCallouts": "",
-        "viewOpenCallouts": "",
-        "welcome": "",
-        "yourProfile": ""
-    },
-    "icons": {
-        "welcome": {
-            "ariaLabel": ""
-        }
-    },
-    "item": {
-        "status": {
-            "endsIn": "",
-            "startsIn": ""
-        }
-    },
-    "join": {
-        "absorbFeeForce": "",
-        "absorbFeeOptIn": "",
-        "absorbFeeText": "",
-        "contribute": "",
-        "errors": {
-            "confirmEmail": {
-                "message": "",
-                "proceed": "",
-                "title": ""
+            "collectMemberInfo": {
+              "label": "Збирати контактну інформацію",
+              "opts": {
+                "disabled": "Усі відповіді будуть анонімними",
+                "enabled": "Учасники будуть зібрані з їхньою контактною інформацією"
+              }
             },
-            "failed": {
-                "backToJoin": "",
-                "message": "",
-                "title": ""
+            "expires": {
+              "description": "Встановити дату завершення",
+              "label": "Встановити кінцеву дату",
+              "opts": {
+                "never": "CrowdNewsroom працюватиме до ручного закриття",
+                "schedule": "CrowdNewsroom автоматично закриється у певну дату."
+              }
+            },
+            "mapAndGallery": {
+              "description": "Виберіть, які подання відповідей мають бути доступними для користувачів",
+              "gallery": {
+                "disabledDescription": "Дошка відповідей на основі зображень не буде загальнодоступною",
+                "enabledDescription": "Дошка відповідей на основі зображень буде загальнодоступною",
+                "label": "Увімкнути перегляд галереї публічних відповідей"
+              },
+              "map": {
+                "disabledDescription": "Огляд карти з позначками місцезнаходження не буде загальнодоступним",
+                "enabledDescription": "Огляд карти з позначками місцезнаходження буде загальнодоступним",
+                "label": "Увімкнути перегляд карти публічних відповідей"
+              },
+              "title": "Перегляди карти та галереї"
+            },
+            "mapSchema": {
+              "addressPattern": {
+                "label": "Який формат ви хотіли б використовувати?"
+              },
+              "addressPatternProp": {
+                "label": "Ви хочете заповнити поле адресою?",
+                "none": "– Не заповнюйте поле –"
+              },
+              "addressProp": {
+                "label": "Яке поле форми слід використовувати для відображення відповідей на карті?"
+              },
+              "bounds": {
+                "label": "Максимальні межі карти"
+              },
+              "center": {
+                "label": "Початковий центр карти"
+              },
+              "geocodeCountries": {
+                "label": "Обмежити результати пошуку місцезнаходження певними країнами?"
+              },
+              "initialZoom": {
+                "label": "Початковий рівень масштабування"
+              },
+              "mapIconProp": {
+                "label": "Виберіть питання, щоб відобразити значки категорій на карті",
+                "none": "– Використовувати піктограми за замовчуванням для всіх відповідей –"
+              },
+              "mapIconStylingProp": {
+                "label": "Категорія"
+              },
+              "mapIconStylingSetting": {
+                "label": "Будь ласка, виберіть колір та значок для відповіді: ",
+                "title": "Стиль піктограм на карті"
+              },
+              "maxZoom": {
+                "label": "Максимальний рівень масштабування"
+              },
+              "minZoom": {
+                "label": "Мінімальний рівень масштабування"
+              },
+              "style": {
+                "help": "<p>Для перегляду карти <strong>потрібен сторонній інструмент роботи з картами</strong>, такий як <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> або <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Ці інструменти надають вам URL-адресу стилю карти, яку потрібно вставити сюди.</p>",
+                "label": "URL-адреса стилю карти"
+              },
+              "title": "Налаштування карти"
+            },
+            "newsletterSettings": {
+              "disabled": "Ви не можете просити підписатися на розсилку новин, якщо не збираєте контактну інформацію",
+              "label": "Додайте підписку на розсилку новин до контактної форми",
+              "opts": {
+                "disabled": "Учасників не запитуватимуть, чи хочуть вони підписатися на розсилку новин",
+                "enabled": "Учасників запитають, чи хочуть вони підписатися на розсилку новин"
+              }
+            },
+            "openToEveryone": {
+              "help": "<p>CrowdNewsrooms можна представити <strong>Усім</strong> або обмежити участь <strong>лише учасникам</strong></p>",
+              "label": "Відкрито для всіх",
+              "opts": {
+                "disabled": "Тільки учасники матимуть доступ до цієї CrowdNewsroom та зможуть брати участь у її роботі",
+                "enabled": "Будь-хто зможе отримати доступ до цієї CrowdNewsroom та брати участь у її роботі"
+              }
+            },
+            "requireCaptcha": {
+              "help": "<p>Якщо ви ввімкнете <strong>захист від спаму ботами</strong>, користувачам потрібно буде заповнити капчу, щоб підтвердити, що вони люди. Це корисно для запобігання спаму ботів у вашій CrowdNewsroom.</p>",
+              "label": "Увімкнути захист від спаму від ботів",
+              "members": {
+                "label": "Активувати також для учасників",
+                "opts": {
+                  "disabled": "Ваших учасників не просять вводити CAPTCHA",
+                  "enabled": "Навіть ваших учасників просять ввести капчу"
+                }
+              },
+              "opts": {
+                "all": "Усім користувачам буде запропоновано заповнити CAPTCHA",
+                "guests": "Неучасникам буде запропоновано заповнити CAPTCHA",
+                "none": "CAPTCHA не потрібна"
+              }
+            },
+            "responseImageProp": {
+              "description": "Зображення буде використано для візуалізації відповіді на карті або в режимі галереї",
+              "label": "Зображення відповіді"
+            },
+            "responseLinks": {
+              "add": "Додати",
+              "description": "Наприклад, використовуйте нижній колонтитул відповіді, щоб додати посилання для повідомлення про помилку або контактну електронну адресу. Щоб додати посилання на адресу електронної пошти, введіть mailto:, а потім адресу електронної пошти в поле URL-адреси.",
+              "label": "Додайте нижній колонтитул унизу відповідей",
+              "opts": {
+                "disabled": "Не показувати посилання в нижньому колонтитулі відповідей",
+                "enabled": "Показувати посилання в нижньому колонтитулі відповідей для контактів або звітів про помилки"
+              },
+              "placeholder": {
+                "label": "Приклад: Повідомити про помилку",
+                "url": "mailto:error{'@'}mail.com"
+              },
+              "text": {
+                "label": "Текст"
+              },
+              "url": {
+                "label": "Url"
+              }
+            },
+            "responseSettings": {
+              "label": "Поведінка реагування",
+              "opts": {
+                "multiple": "Кілька відповідей, не можна редагувати",
+                "singleEditable": "Одна відповідь, яку можна редагувати, поки відкрито CrowdNewsroom",
+                "singleNonEditable": "Одна відповідь, не можна редагувати"
+              },
+              "title": "Налаштування відповіді"
+            },
+            "responseTitleProp": {
+              "description": "Заголовок відображатиметься поверх кожної відповіді на карті або в режимі перегляду галереї",
+              "label": "Заголовок відповіді"
+            },
+            "showResponses": {
+              "label": "Публічно показувати відповіді",
+              "opts": {
+                "no": "Зібрані відповіді не є загальнодоступними",
+                "yes": "Показати зібрані відповіді публічно"
+              }
+            },
+            "starts": {
+              "label": "Встановіть дату початку",
+              "opts": {
+                "now": "CrowdNewsroom буде доступний негайно.",
+                "schedule": "CrowdNewsroom буде доступний у певну дату."
+              }
+            },
+            "visible": {
+              "help": "CrowdNewsroom буде видимим лише для тих, хто отримає посилання",
+              "label": "Показувати CrowdNewsroom на інформаційних панелях учасників",
+              "opts": {
+                "disabled": "CrowdNewsroom не відображатиметься на інформаційних панелях учасників",
+                "enabled": "CrowdNewsroom відображатиметься на інформаційних панелях учасників"
+              }
+            },
+            "whichResponseBuckets": {
+              "description": "Відповіді в неперевірених кошиках будуть приховані від загального перегляду",
+              "label": "Видимі групи відповідей"
             }
+          },
+          "title": "Налаштування"
         },
-        "login": "",
-        "memberAccount": "",
-        "memberAlready": "",
-        "minimumContribution": "",
-        "noContribution": "",
-        "notice": "",
-        "now": "",
-        "paymentMethod": "",
-        "poweredBy": "",
-        "privacy": "",
-        "tax": {
-            "included": ""
+        "titleAndImage": {
+          "inputs": {
+            "description": {
+              "help": "Цей опис відображається на панелі керування учасниками. Він також використовується для спільного доступу.",
+              "label": "Короткий опис",
+              "placeholder": "Швидко поясніть, чому людям варто брати участь"
+            },
+            "general": {
+              "title": "Загальна інформація"
+            },
+            "image": {
+              "description": "Не забудьте зберегти зображення після завантаження!",
+              "help": "Зображення обкладинки відображається в мініатюрах та посиланнях для спільного доступу",
+              "label": "Зображення обкладинки"
+            },
+            "overrideShare": {
+              "label": "Використовувати власний заголовок та опис для спільного доступу?",
+              "opts": {
+                "disabled": "Посилання, поширені в соціальних мережах, матимуть однаковий заголовок та опис.",
+                "enabled": "Посилання, поширені в соціальних мережах, матимуть власний заголовок та опис."
+              }
+            },
+            "shareDescription": {
+              "help": "<p>У полі <strong>Поділитися описом</strong> встановлюється короткий опис, який має відображатися на картках соціальних мереж.</p>",
+              "label": "Поділитися описом",
+              "placeholder": "Швидко поясніть, чому людям варто брати участь"
+            },
+            "shareTitle": {
+              "help": "<p>Поле <strong>Поділитися назвою</strong> визначає назву, яка має відображатися на картках соціальних мереж.</p>",
+              "label": "Поділитися назвою",
+              "placeholder": "Назва вашої CrowdNewsroom"
+            },
+            "sharing": {
+              "title": "Варіанти спільного доступу"
+            },
+            "slug": {
+              "boxTitle": "Постійне посилання",
+              "help": "Скористайтеся цим посиланням, щоб поділитися CrowdNewsroom",
+              "label": "Автоматично генерувати слаг із заголовка",
+              "locked": {
+                "title": "Постійне посилання заблоковано, оскільки CrowdNewsroom вже опубліковано."
+              },
+              "opts": {
+                "auto": "Постійне посилання генерується з назви CrowdNewsroom. Посилання автоматично оновлюватиметься, якщо ви зміните назву.",
+                "manual": "Постійне посилання встановлюється вручну"
+              }
+            },
+            "title": {
+              "label": "Назва",
+              "placeholder": "Назва вашої CrowdNewsroom."
+            }
+          },
+          "title": "Назва та зображення",
+          "urlWillBe": "Постійне посилання буде"
+        },
+        "translations": {
+          "language": {
+            "description": "Ви можете перекласти CrowdNewsroom кількома мовами. Якщо переклад відсутній, ми покажемо текст основною мовою.",
+            "enableLanguages": "Увімкнути підтримку перекладу",
+            "title": "Мова"
+          },
+          "languageSettings": {
+            "title": "Мова"
+          },
+          "navigationButtons": {
+            "title": "Ґудзики"
+          },
+          "responseLinks": {
+            "title": "Текст нижнього колонтитула"
+          },
+          "title": "Переклади"
         }
+      },
+      "title": "Конструктор новинних кімнат CrowdNewsroom",
+      "translationFields": {
+        "description": "Опис",
+        "html": "Зміст",
+        "label": "Мітка",
+        "option": "Варіант {n}",
+        "placeholder": "Заповнювач"
+      },
+      "untitledCallout": "Без назви CrowdNewsroom"
     },
-    "joinPayment": {
-        "applePay": {
-            "description": "",
-            "recurringLabel": ""
-        },
-        "genericError": "",
-        "goBack": "",
-        "goBackButton": "",
-        "note": "",
-        "willBeContributing": ""
+    "confirmHuman": "Будь ласка, підтвердіть, що ви людина",
+    "contactDetails": "Контактна інформація",
+    "ended": "Цей CrowdNewsroom завершився {date}",
+    "entryOf": "Вхід {no} з {total}",
+    "form": {
+      "email": "Ваша електронна адреса",
+      "guestFieldsMissing": "Будь ласка, повідомте нам свої контактні дані",
+      "name": "Ваше ім'я",
+      "submittingResponseError": "Виникла проблема з надсиланням вашої відповіді, спробуйте ще раз"
     },
-    "joinSetup": {
-        "confirmDetails": "",
-        "continue": "",
-        "welcome": ""
+    "getStarted": "Почати",
+    "joinNow": "Приєднатися зараз",
+    "loginToYourAccount": "Увійдіть до свого облікового запису",
+    "membersOnly": "Ця новинна кімната CrowdNews відкрита лише для учасників. Щоб взяти участь",
+    "responseSubmitted": "Відповідь надіслано",
+    "share": {
+      "address": "Поділитися, використовуючи наступне посилання:",
+      "aria": {
+        "email": "Поділитися електронною поштою",
+        "facebook": "Поділитися Facebook",
+        "linkedin": "Поділитися LinkedIn",
+        "telegram": "Поділитися Telegram",
+        "twitter": "Поділитися Twitter",
+        "whatsapp": "Поділитися WhatsApp"
+      },
+      "services": "Або швидко поділіться, скориставшись однією з цих служб:"
     },
-    "login": {
-        "backTo": "",
-        "forgotPassword": "",
-        "joinNow": "",
-        "lostMfaDevice": "",
-        "notMember": "",
-        "title": ""
+    "showingPreview": "Ви не можете надіслати відповідь у режимі попереднього перегляду",
+    "toContributionPage": "Редагувати мій внесок",
+    "updateContribution": "будь ласка, оновіть свій внесок",
+    "views": {
+      "gallery": "Галерея",
+      "map": "Карта"
     },
-    "lostDevice": {
-        "description": "",
+    "youResponded": "Ви відповіли на це CrowdNewsroom ♥",
+    "yourResponse": "Ваша відповідь"
+  },
+  "calloutAdmin": {
+    "deleted": "CrowdNewsroom видалено.",
+    "ended": "Роботу CrowdNewsroom завершено. Ви можете знову відкрити її, відредагувавши.",
+    "overview": "Огляд",
+    "reopened": "CrowdNewsroom знову відкрито. Відредагуйте CrowdNewsroom, якщо потрібно встановити іншу дату завершення.",
+    "responses": "Відповіді"
+  },
+  "calloutAdminOverview": {
+    "actions": {
+      "confirmDelete": {
+        "text": "Ви впевнені, що хочете видалити цю CrowdNewsroom?",
+        "title": "Видалити CrowdNewsroom?"
+      }
+    },
+    "created": "Ваш новий CrowdNewsroom успішно створено.",
+    "dates": {
+      "ends": "Закінчується",
+      "label": "Дати",
+      "starts": "Починається"
+    },
+    "settings": {
+      "answers": {
+        "editable": "Можна оновити",
+        "final": "Неможливо оновити",
+        "label": "Відповіді"
+      },
+      "contactInfo": {
+        "label": "Контактна інформація",
+        "optional": "Необов'язково",
+        "required": "Обов'язково"
+      },
+      "endsWith": {
+        "label": "Закінчується на",
+        "message": "",
+        "redirect": ""
+      },
+      "label": "",
+      "openTo": {
+        "everyone": "",
+        "label": "",
+        "membersOnly": ""
+      }
+    },
+    "summary": "",
+    "updated": ""
+  },
+  "calloutResponse": {
+    "data": {
+      "answers": "",
+      "assignee": "",
+      "bucket": "",
+      "callout": "",
+      "contact": "",
+      "createdAt": "",
+      "tags": "",
+      "updatedAt": ""
+    },
+    "dataGroup": {
+      "answers": "",
+      "response": ""
+    }
+  },
+  "calloutResponseBuckets": {
+    "inbox": "",
+    "trash": "",
+    "verified": ""
+  },
+  "calloutResponseComments": {
+    "actions": {
+      "addComment": "",
+      "updateComment": ""
+    },
+    "addComment": "",
+    "comments": "",
+    "confirmDelete": {
+      "text": "",
+      "title": ""
+    }
+  },
+  "calloutResponsePage": {
+    "actions": {
+      "assignTo": "",
+      "moveBucket": "",
+      "toggleTag": "",
+      "viewOnMap": ""
+    },
+    "editMode": "",
+    "manageFolders": "",
+    "manageReviewers": "",
+    "manageTags": "",
+    "notifications": {
+      "addedAssignee": "",
+      "addedTag": "",
+      "movedToBucket": "",
+      "removedAssignee": "",
+      "removedTag": ""
+    },
+    "responseOf": "",
+    "selectedCount": ""
+  },
+  "calloutResponsesPage": {
+    "moveToBucket": "",
+    "noTags": "",
+    "response": "",
+    "responseNo": "",
+    "searchAssignee": "",
+    "searchTag": "",
+    "showAnswer": "",
+    "showLatestComment": "",
+    "showingOf": ""
+  },
+  "calloutReviewerManager": {
+    "add": "",
+    "canEdit": "",
+    "confirmDelete": {
+      "text": "",
+      "title": ""
+    },
+    "contact": "",
+    "editorTag": "",
+    "search": {
+      "error": {
         "message": "",
         "title": ""
+      },
+      "placeholder": "",
+      "successMessage": ""
     },
-    "mailOptIn": {
-        "optInLabel": "",
-        "text": "",
-        "title": ""
+    "title": ""
+  },
+  "calloutThanksPage": {
+    "oneResponseWarning": ""
+  },
+  "callouts": {
+    "archive": "",
+    "data": {
+      "callout": "",
+      "endDate": ""
     },
-    "membershipBuilder": {
-        "steps": {
-            "accountConfirmation": {
-                "deliveryAddress": {
-                    "showOptIn": "",
-                    "title": ""
-                },
-                "description": "",
-                "joinSurvey": {
-                    "required": "",
-                    "slug": "",
-                    "slugHelp": "",
-                    "text": "",
-                    "textIntro": "",
-                    "title": ""
-                },
-                "newsletter": {
-                    "showOptIn": "",
-                    "title": ""
-                },
-                "text": "",
-                "title": "",
-                "welcomeMessage": ""
-            },
-            "emails": {
-                "bigTitle": "",
-                "cancellationEmail": "",
-                "description": "",
-                "text": "",
-                "title": "",
-                "welcomeEmail": ""
-            },
-            "intro": {
-                "description": "",
-                "message": "",
-                "showWelcomeMessage": "",
-                "text": "",
-                "title": ""
-            },
-            "joinForm": {
-                "backgroundImage": "",
-                "defaultAmount": "",
-                "description": "",
-                "formSubtitle": "",
-                "formTitle": "",
-                "minAmount": "",
-                "noticeText": "",
-                "noticeTextHelp": "",
-                "showAbsorbFee": "",
-                "showNoContribution": "",
-                "suggestedAmounts": "",
-                "text": "",
-                "title": ""
-            }
-        },
-        "title": ""
+    "noArchivedCallouts": "",
+    "search": "",
+    "showAll": "",
+    "showAnswered": "",
+    "showingOf": ""
+  },
+  "calloutsAdmin": {
+    "addCallout": "",
+    "data": {
+      "expires": "",
+      "responses": "",
+      "starts": "",
+      "status": "",
+      "title": ""
     },
-    "menu": {
-        "account": "",
-        "admin": "",
-        "adminSettings": "",
-        "callouts": "",
-        "contacts": "",
-        "contribution": "",
-        "dashboard": "",
-        "home": "",
-        "legacyApp": "",
-        "logout": "",
-        "membershipBuilder": "",
-        "notices": "",
-        "payments": "",
-        "settings": "",
-        "yourProfile": ""
-    },
-    "newsletterOptIn": {
-        "groups": {
-            "add": "",
-            "help": "",
-            "title": ""
-        },
-        "optInDisabled": "",
-        "optInLabel": "",
-        "text": "",
-        "title": ""
-    },
-    "notFound": {
-        "goBack": "",
-        "text": ""
-    },
-    "noticeAdminOverview": {
-        "actions": {
-            "confirmDelete": {
-                "text": "",
-                "title": ""
-            }
-        },
-        "created": "",
-        "summary": "",
-        "updated": ""
-    },
-    "notices": {
-        "addNotice": "",
-        "data": {
-            "createdAt": "",
-            "name": "",
-            "status": ""
-        },
-        "showingOf": ""
-    },
-    "notifications": {
-        "copy": {
-            "success": ""
-        },
-        "error": "",
-        "remove": ""
-    },
-    "pageTitle": {
-        "confirmEmail": "",
-        "duplicateEmail": "",
-        "failed": "",
-        "forgotPassword": "",
-        "join": "",
-        "login": "",
-        "lostDevice": "",
-        "notFound": "",
-        "resetDevice": "",
-        "resetPassword": "",
-        "setPassword": "",
-        "setup": ""
-    },
-    "paymentMethods": {
-        "gc_direct-debit": {
-            "changeLabel": "",
-            "label": "",
-            "setLabel": ""
-        },
-        "s_bacs": {
-            "changeLabel": "",
-            "label": "",
-            "setLabel": ""
-        },
-        "s_card": {
-            "changeLabel": "",
-            "label": "",
-            "setLabel": ""
-        },
-        "s_ideal": {
-            "changeLabel": "",
-            "label": "",
-            "setLabel": ""
-        },
-        "s_paypal": {
-            "changeLabel": "",
-            "label": "",
-            "setLabel": ""
-        },
-        "s_sepa": {
-            "changeLabel": "",
-            "label": "",
-            "setLabel": ""
-        }
-    },
-    "payments": {
-        "data": {
-            "amount": "",
-            "chargeDate": "",
-            "contact": "",
-            "status": ""
-        },
-        "dataGroup": {
-            "payment": ""
-        }
-    },
-    "paymentsAdmin": {
-        "filter": {
-            "all": "",
-            "cancelled": "",
-            "failed": "",
-            "pending": "",
-            "successful": ""
-        },
-        "showingOf": ""
-    },
-    "resetDevice": {
-        "description": "",
-        "failed": "",
-        "invalidPassword": "",
-        "success": "",
-        "title": ""
-    },
-    "resetPassword": {
-        "description": "",
-        "failed": "",
-        "login": "",
-        "lostDevice": "",
-        "success": "",
-        "title": ""
-    },
-    "roleEditor": {
-        "add": "",
-        "confirmDelete": {
-            "text": "",
-            "title": ""
-        },
-        "expires": {
-            "label": "",
-            "opts": {
-                "never": "",
-                "schedule": ""
-            }
-        },
-        "new": "",
-        "starts": {
-            "label": "",
-            "opts": {
-                "now": "",
-                "schedule": ""
-            }
-        },
-        "title": "",
-        "today": ""
-    },
-    "setPassword": {
-        "description": "",
-        "title": ""
-    },
-    "status": {
-        "connectingToServer": "",
-        "initializing": "",
-        "loadingApplication": "",
-        "pleaseWait": "",
-        "usuallyTakesSeconds": ""
-    },
-    "stepper": {
-        "navigation": {
-            "label": ""
-        },
-        "screen": {
-            "completed": "",
-            "currentStep": "",
-            "hasError": ""
-        }
-    },
-    "tagEditor": {
-        "add": "",
-        "confirmDelete": {
-            "text_contact": "",
-            "text_global": "",
-            "text_response": "",
-            "title": ""
-        },
-        "name": ""
-    },
-    "tags": {
-        "manageTags": "",
-        "noTags": "",
-        "notifications": {
-            "addedTag": "",
-            "removedTag": ""
-        },
-        "searchTag": "",
-        "toggleTag": ""
-    },
-    "taxRate": {
-        "invoiceName": ""
+    "filter": {
+      "all": "",
+      "draft": "",
+      "ended": "",
+      "open": "",
+      "scheduled": ""
     }
+  },
+  "common": {
+    "backToHome": "",
+    "contributing": "",
+    "contributionPeriod": {
+      "annually": "",
+      "monthly": ""
+    },
+    "contributionType": {
+      "automatic": "",
+      "gift": "",
+      "manual": "",
+      "none": ""
+    },
+    "default": "",
+    "hello": "",
+    "id": "",
+    "itemsPerPage": "",
+    "joined": "",
+    "label": "",
+    "loading": "",
+    "login": "",
+    "newsletterStatus": {
+      "cleaned": "",
+      "none": "",
+      "pending": "",
+      "subscribed": "",
+      "unsubscribed": ""
+    },
+    "no": "",
+    "noResults": "",
+    "pageCount": "",
+    "paymentStatus": {
+      "cancelled": "",
+      "draft": "",
+      "failed": "",
+      "pending": "",
+      "successful": ""
+    },
+    "perMonth": "",
+    "perMonthText": "",
+    "perYear": "",
+    "perYearText": "",
+    "role": {
+      "admin": "",
+      "member": "",
+      "superadmin": ""
+    },
+    "selectNone": "",
+    "selectOne": "",
+    "show": "",
+    "showingOf": "",
+    "status": {
+      "draft": "",
+      "ended": "",
+      "open": "",
+      "scheduled": ""
+    },
+    "statusLabel": "",
+    "thankYou": "",
+    "timeAgo": "",
+    "timeIn": "",
+    "until": "",
+    "yes": ""
+  },
+  "contactAccount": {
+    "confirmDelete": {
+      "text": "",
+      "title": "",
+      "warning": ""
+    },
+    "contactDeleted": ""
+  },
+  "contactContribution": {
+    "confirmCancel": {
+      "confirm": "",
+      "text": "",
+      "title": ""
+    },
+    "updateNotice": {
+      "text": "",
+      "title": ""
+    }
+  },
+  "contactOverview": {
+    "about": "",
+    "account": "",
+    "annotation": {
+      "copy": ""
+    },
+    "callouts": "",
+    "cancellationDate": "",
+    "contribution": "",
+    "contributionType": "",
+    "joinSurvey": "",
+    "newsletter": {
+      "groups": "",
+      "status": "",
+      "title": ""
+    },
+    "overview": "",
+    "pickTag": "",
+    "profile": "",
+    "roles": "",
+    "security": {
+      "instructions": "",
+      "loginOverride": "",
+      "mfa": {
+        "desc": "",
+        "disabledDesc": ""
+      },
+      "resetPassword": "",
+      "title": "",
+      "whatDoTheButtonsDo": ""
+    }
+  },
+  "contacts": {
+    "addContact": "",
+    "advancedSearch": {
+      "hasAnswered": "",
+      "selectCallout": ""
+    },
+    "allContacts": "",
+    "data": {
+      "activeMembership": "",
+      "activePermission": "",
+      "activeUser": "",
+      "amount": "",
+      "annotationsCopy": "",
+      "contribution": "",
+      "contributionCancelled": "",
+      "contributionMonthlyAmount": "",
+      "contributionPeriod": "",
+      "contributionType": "",
+      "deliveryOptIn": "",
+      "description": "",
+      "email": "",
+      "firstname": "",
+      "joined": "",
+      "lastSeen": "",
+      "lastname": "",
+      "manualPaymentSource": "",
+      "membershipExpires": "",
+      "membershipStarts": "",
+      "name": "",
+      "newsletterGroups": "",
+      "newsletterStatus": "",
+      "notes": "",
+      "payingFee": "",
+      "paymentReference": "",
+      "paymentSource": "",
+      "period": "",
+      "phone": "",
+      "preferredChannel": "",
+      "tags": ""
+    },
+    "dataGroup": {
+      "callout": "",
+      "contact": "",
+      "contribution": "",
+      "role": ""
+    },
+    "noContacts": "",
+    "noResults": "",
+    "numResults": "",
+    "search": "",
+    "selectedCount": "",
+    "showingOf": ""
+  },
+  "contribution": {
+    "adminCancelDescription": "",
+    "bankAccount": "",
+    "billing": "",
+    "cancelContribution": "",
+    "cancelDescription": "",
+    "cancelMessage": "",
+    "cancelledContribution": "",
+    "changeBank": "",
+    "changeBankInfo": "",
+    "contributing": "",
+    "contributionUpdateError": "",
+    "dueToRenew": "",
+    "expired": "",
+    "expiredText": "",
+    "hasPendingPayment": "",
+    "manualPayment": "",
+    "manualPaymentSource": "",
+    "nextAmountChanging": "",
+    "paymentHistory": {
+      "empty": "",
+      "title": ""
+    },
+    "paymentMethod": "",
+    "paymentSourceUpdateError": "",
+    "prorateDecreaseMessage": "",
+    "prorateDecreaseMessageWillStart": "",
+    "prorateIncreaseMessage": "",
+    "prorateIncreaseMessageOneOff": "",
+    "prorateNoText": "",
+    "prorateNoTitle": "",
+    "prorateYesText": "",
+    "prorateYesTitle": "",
+    "restartContribution": "",
+    "startContribution": "",
+    "startedContribution": "",
+    "updateContribution": "",
+    "updatePaymentType": "",
+    "updatedContribution": "",
+    "updatedPaymentSource": "",
+    "willExpire": "",
+    "willRenew": "",
+    "willRenewWithNewAmount": ""
+  },
+  "editCallout": {
+    "replicated": "",
+    "title": "",
+    "warning": ""
+  },
+  "editNotice": {
+    "title": ""
+  },
+  "footer": {
+    "contactUs": "",
+    "handbookResources": "",
+    "impressum": "",
+    "joinCommunity": "",
+    "poweredBy": "",
+    "privacyPolicy": "",
+    "terms": ""
+  },
+  "forgotPassword": {
+    "backToLogin": "",
+    "description": "",
+    "message": "",
+    "title": ""
+  },
+  "form": {
+    "addressLine1": "",
+    "addressLine2": "",
+    "cancel": "",
+    "characters": {
+      "remaining": ""
+    },
+    "cityOrTown": "",
+    "deliveryOptIn": "",
+    "description": "",
+    "email": "",
+    "errorMessages": {
+      "api": {
+        "account-locked": "",
+        "duplicate-email": "",
+        "duplicate-tag-name": "",
+        "invalid-token": "",
+        "login-failed": "",
+        "mfa-token-required": ""
+      },
+      "generic": "",
+      "unauthorized": "",
+      "validation": ""
+    },
+    "errors": {
+      "address": {
+        "required": ""
+      },
+      "addressLine1": {
+        "required": ""
+      },
+      "cityOrTown": {
+        "required": ""
+      },
+      "color": {
+        "pattern": "",
+        "required": ""
+      },
+      "confirmPassword": {
+        "password": "",
+        "required": "",
+        "sameAs": ""
+      },
+      "description": {
+        "maxLength": "",
+        "required": ""
+      },
+      "email": {
+        "email": "",
+        "required": ""
+      },
+      "file": {
+        "rateLimited": "",
+        "tooBig": "",
+        "unsupportedType": ""
+      },
+      "firstName": {
+        "required": ""
+      },
+      "lastName": {
+        "required": ""
+      },
+      "name": {
+        "required": ""
+      },
+      "password": {
+        "password": "",
+        "required": "",
+        "sameAs": ""
+      },
+      "postCode": {
+        "required": ""
+      },
+      "shareDescription": {
+        "maxLength": "",
+        "required": ""
+      },
+      "unknown": {
+        "email": "",
+        "max": "",
+        "maxLength": "",
+        "min": "",
+        "required": "",
+        "url": ""
+      },
+      "url": {
+        "required": "",
+        "url": ""
+      },
+      "verifyCode": {
+        "max": "",
+        "min": "",
+        "required": ""
+      }
+    },
+    "errorsFormio": {
+      "maxLength": "",
+      "minLength": ""
+    },
+    "firstName": "",
+    "lastName": "",
+    "newPassword": "",
+    "newPasswordConfirm": "",
+    "notes": "",
+    "password": "",
+    "passwordInfo": "",
+    "phone": "",
+    "postCode": "",
+    "richtext": {
+      "bold": "",
+      "bulletlist": "",
+      "editor": "",
+      "heading": "",
+      "italic": "",
+      "link": "",
+      "numberedlist": "",
+      "strikethrough": "",
+      "toolbar": "",
+      "underline": ""
+    },
+    "saveChanges": "",
+    "saved": "",
+    "unsavedChanges": "",
+    "updated": ""
+  },
+  "formRenderer": {
+    "components": {
+      "file": {
+        "browse": "",
+        "dropFiles": "",
+        "or": "",
+        "switchToFileUpload": "",
+        "takePicture": "",
+        "useCamera": ""
+      },
+      "multiple": {
+        "addAnother": ""
+      }
+    }
+  },
+  "homePage": {
+    "editProfile": "",
+    "manageContribution": "",
+    "newCallout": "",
+    "openCallouts": "",
+    "quickActions": "",
+    "title": "",
+    "viewAllCallouts": "",
+    "viewOpenCallouts": "",
+    "welcome": "",
+    "yourProfile": ""
+  },
+  "icons": {
+    "welcome": {
+      "ariaLabel": ""
+    }
+  },
+  "item": {
+    "status": {
+      "endsIn": "",
+      "startsIn": ""
+    }
+  },
+  "join": {
+    "absorbFeeForce": "",
+    "absorbFeeOptIn": "",
+    "absorbFeeText": "",
+    "contribute": "",
+    "errors": {
+      "confirmEmail": {
+        "message": "",
+        "proceed": "",
+        "title": ""
+      },
+      "failed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
+      }
+    },
+    "login": "",
+    "memberAccount": "",
+    "memberAlready": "",
+    "minimumContribution": "",
+    "noContribution": "",
+    "notice": "",
+    "now": "",
+    "paymentMethod": "",
+    "poweredBy": "",
+    "privacy": "",
+    "tax": {
+      "included": ""
+    }
+  },
+  "joinPayment": {
+    "applePay": {
+      "description": "",
+      "recurringLabel": ""
+    },
+    "genericError": "",
+    "goBack": "",
+    "goBackButton": "",
+    "note": "",
+    "willBeContributing": ""
+  },
+  "joinSetup": {
+    "confirmDetails": "",
+    "continue": "",
+    "welcome": ""
+  },
+  "login": {
+    "backTo": "",
+    "forgotPassword": "",
+    "joinNow": "",
+    "lostMfaDevice": "",
+    "notMember": "",
+    "title": ""
+  },
+  "lostDevice": {
+    "description": "",
+    "message": "",
+    "title": ""
+  },
+  "mailOptIn": {
+    "optInLabel": "",
+    "text": "",
+    "title": ""
+  },
+  "membershipBuilder": {
+    "steps": {
+      "accountConfirmation": {
+        "deliveryAddress": {
+          "showOptIn": "",
+          "title": ""
+        },
+        "description": "",
+        "joinSurvey": {
+          "required": "",
+          "slug": "",
+          "slugHelp": "",
+          "text": "",
+          "textIntro": "",
+          "title": ""
+        },
+        "newsletter": {
+          "showOptIn": "",
+          "title": ""
+        },
+        "text": "",
+        "title": "",
+        "welcomeMessage": ""
+      },
+      "emails": {
+        "bigTitle": "",
+        "cancellationEmail": "",
+        "description": "",
+        "text": "",
+        "title": "",
+        "welcomeEmail": ""
+      },
+      "intro": {
+        "description": "",
+        "message": "",
+        "showWelcomeMessage": "",
+        "text": "",
+        "title": ""
+      },
+      "joinForm": {
+        "backgroundImage": "",
+        "defaultAmount": "",
+        "description": "",
+        "formSubtitle": "",
+        "formTitle": "",
+        "minAmount": "",
+        "noticeText": "",
+        "noticeTextHelp": "",
+        "showAbsorbFee": "",
+        "showNoContribution": "",
+        "suggestedAmounts": "",
+        "text": "",
+        "title": ""
+      }
+    },
+    "title": ""
+  },
+  "menu": {
+    "account": "",
+    "admin": "",
+    "adminSettings": "",
+    "callouts": "",
+    "contacts": "",
+    "contribution": "",
+    "dashboard": "",
+    "home": "",
+    "legacyApp": "",
+    "logout": "",
+    "membershipBuilder": "",
+    "notices": "",
+    "payments": "",
+    "settings": "",
+    "yourProfile": ""
+  },
+  "newsletterOptIn": {
+    "groups": {
+      "add": "",
+      "help": "",
+      "title": ""
+    },
+    "optInDisabled": "",
+    "optInLabel": "",
+    "text": "",
+    "title": ""
+  },
+  "notFound": {
+    "goBack": "",
+    "text": ""
+  },
+  "noticeAdminOverview": {
+    "actions": {
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      }
+    },
+    "created": "",
+    "summary": "",
+    "updated": ""
+  },
+  "notices": {
+    "addNotice": "",
+    "data": {
+      "createdAt": "",
+      "name": "",
+      "status": ""
+    },
+    "showingOf": ""
+  },
+  "notifications": {
+    "copy": {
+      "success": ""
+    },
+    "error": "",
+    "remove": ""
+  },
+  "pageTitle": {
+    "confirmEmail": "",
+    "duplicateEmail": "",
+    "failed": "",
+    "forgotPassword": "",
+    "join": "",
+    "login": "",
+    "lostDevice": "",
+    "notFound": "",
+    "resetDevice": "",
+    "resetPassword": "",
+    "setPassword": "",
+    "setup": ""
+  },
+  "paymentMethods": {
+    "gc_direct-debit": {
+      "changeLabel": "",
+      "label": "",
+      "setLabel": ""
+    },
+    "s_bacs": {
+      "changeLabel": "",
+      "label": "",
+      "setLabel": ""
+    },
+    "s_card": {
+      "changeLabel": "",
+      "label": "",
+      "setLabel": ""
+    },
+    "s_ideal": {
+      "changeLabel": "",
+      "label": "",
+      "setLabel": ""
+    },
+    "s_paypal": {
+      "changeLabel": "",
+      "label": "",
+      "setLabel": ""
+    },
+    "s_sepa": {
+      "changeLabel": "",
+      "label": "",
+      "setLabel": ""
+    }
+  },
+  "payments": {
+    "data": {
+      "amount": "",
+      "chargeDate": "",
+      "contact": "",
+      "status": ""
+    },
+    "dataGroup": {
+      "payment": ""
+    }
+  },
+  "paymentsAdmin": {
+    "filter": {
+      "all": "",
+      "cancelled": "",
+      "failed": "",
+      "pending": "",
+      "successful": ""
+    },
+    "showingOf": ""
+  },
+  "resetDevice": {
+    "description": "",
+    "failed": "",
+    "invalidPassword": "",
+    "success": "",
+    "title": ""
+  },
+  "resetPassword": {
+    "description": "",
+    "failed": "",
+    "login": "",
+    "lostDevice": "",
+    "success": "",
+    "title": ""
+  },
+  "roleEditor": {
+    "add": "",
+    "confirmDelete": {
+      "text": "",
+      "title": ""
+    },
+    "expires": {
+      "label": "",
+      "opts": {
+        "never": "",
+        "schedule": ""
+      }
+    },
+    "new": "",
+    "starts": {
+      "label": "",
+      "opts": {
+        "now": "",
+        "schedule": ""
+      }
+    },
+    "title": "",
+    "today": ""
+  },
+  "setPassword": {
+    "description": "",
+    "title": ""
+  },
+  "status": {
+    "connectingToServer": "",
+    "initializing": "",
+    "loadingApplication": "",
+    "pleaseWait": "",
+    "usuallyTakesSeconds": ""
+  },
+  "stepper": {
+    "navigation": {
+      "label": ""
+    },
+    "screen": {
+      "completed": "",
+      "currentStep": "",
+      "hasError": ""
+    }
+  },
+  "tagEditor": {
+    "add": "",
+    "confirmDelete": {
+      "text_contact": "",
+      "text_global": "",
+      "text_response": "",
+      "title": ""
+    },
+    "name": ""
+  },
+  "tags": {
+    "manageTags": "",
+    "noTags": "",
+    "notifications": {
+      "addedTag": "",
+      "removedTag": ""
+    },
+    "searchTag": "",
+    "toggleTag": ""
+  },
+  "taxRate": {
+    "invoiceName": ""
+  }
 }
