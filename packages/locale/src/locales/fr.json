@@ -937,9 +937,7 @@
       "successful": "Succès"
     },
     "perMonth": "/ mois",
-    "perMonthText": "un mois",
     "perYear": "/ an",
-    "perYearText": "un an",
     "role": {
       "admin": "Administrateur",
       "member": "Membre",
@@ -1098,6 +1096,8 @@
     },
     "paymentMethod": "Moyen de paiement",
     "paymentSourceUpdateError": "Vous ne pouvez pas mettre à jour votre compte bancaire pour le moment car vous avez un paiement en attente",
+    "perMonthText": "un mois",
+    "perYearText": "un an",
     "prorateDecreaseMessage": "Vous avez un mois restant pour votre cotisation actuelle. | Vous avez {n} mois restants pour votre cotisation actuelle.",
     "prorateDecreaseMessageWillStart": "Votre nouvelle cotisation commencera le {renewalDate}.",
     "prorateIncreaseMessage": "Vous avez un mois restant pour votre cotisation actuelle. | Vous avez {n} mois restants pour votre cotisation actuelle.",
@@ -1318,7 +1318,10 @@
   "join": {
     "absorbFeeForce": "{amount} cotisations doivent compenser les frais de {fee}.",
     "absorbFeeOptIn": "Oui, je compense les frais de {fee}.",
-    "absorbFeeText": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations mensuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ? Vous pouvez également payer annuellement.",
+    "absorbFeeText": {
+      "monthly": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations mensuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ? Vous pouvez également payer annuellement.",
+      "one-time": ""
+    },
     "contribute": "Cotiser {contribution}",
     "errors": {
       "confirmEmail": {
@@ -1344,6 +1347,11 @@
     "privacy": "Politique de confidentialité",
     "tax": {
       "included": "La cotisation comprend {taxRate}% de TVA."
+    },
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1355,7 +1363,8 @@
     "goBack": "Avez-vous oublié quelque chose ? {back}",
     "goBackButton": "Revenir à l'écran précédent",
     "note": "Vous pourrez modifier votre cotisation et accéder à votre historique de paiement à tout moment depuis votre compte membre",
-    "willBeContributing": "Vous cotiserez {contribution}"
+    "willBeContributing": "Vous cotiserez {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Veuillez confirmer vos informations",

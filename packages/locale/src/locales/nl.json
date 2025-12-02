@@ -933,9 +933,7 @@
       "successful": "Succesvol"
     },
     "perMonth": "/ maand",
-    "perMonthText": "per maand",
     "perYear": "/ jaar",
-    "perYearText": "een jaar",
     "role": {
       "admin": "Beheerder",
       "member": "Lid",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Betaalmethode",
     "paymentSourceUpdateError": "Je kunt je bankrekening momenteel niet bijwerken omdat je nog een betaling tegoed hebt.",
+    "perMonthText": "per maand",
+    "perYearText": "een jaar",
     "prorateDecreaseMessage": "Uw huidige bijdrage is nog één maand geldig. | Uw huidige bijdrage duurt nog {n} maanden.",
     "prorateDecreaseMessageWillStart": "Uw nieuwe bijdrage start op {renewalDate}.",
     "prorateIncreaseMessage": "Uw huidige bijdrage is nog één maand geldig. | Uw huidige bijdrage duurt nog {n} maanden.",
@@ -1314,7 +1314,10 @@
   "join": {
     "absorbFeeForce": "{bedrag} bijdragen moeten de {fee} kosten opnemen.",
     "absorbFeeOptIn": "Ja, ik zal de {fee} kosten op me nemen.",
-    "absorbFeeText": "Onze betalingsverwerker brengt ons kosten per transactie in rekening, wat betekent dat we minder ontvangen uit maandelijkse bijdragen. Accepteer je de {fee} transactiekosten? Je kunt ook jaarlijks betalen.",
+    "absorbFeeText": {
+      "monthly": "Onze betalingsverwerker brengt ons kosten per transactie in rekening, wat betekent dat we minder ontvangen uit maandelijkse bijdragen. Accepteer je de {fee} transactiekosten? Je kunt ook jaarlijks betalen.",
+      "one-time": ""
+    },
     "contribute": "Draag bij {contribution}",
     "errors": {
       "confirmEmail": {
@@ -1340,6 +1343,11 @@
     "privacy": "Privacybeleid",
     "tax": {
       "included": "Bijdrage is inclusief {taxRate}% BTW."
+    },
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1351,7 +1359,8 @@
     "goBack": "Heb je iets gemist? {back}",
     "goBackButton": "Terug naar het vorige scherm",
     "note": "Je kunt je bijdrage op elk moment wijzigen en je betalingsgeschiedenis bekijken in je ledenaccount.",
-    "willBeContributing": "Je draagt {contribution} bij"
+    "willBeContributing": "Je draagt {contribution} bij",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Bevestig uw gegevens",

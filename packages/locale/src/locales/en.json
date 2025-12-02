@@ -938,11 +938,9 @@
       "successful": "Successful"
     },
     "perMonth": "/ month",
-    "perMonthText": "a month",
     "perOneTime": " one-time",
     "perOneTimeText": "one-time",
     "perYear": "/ year",
-    "perYearText": "a year",
     "role": {
       "admin": "Admin",
       "member": "Member",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Payment method",
     "paymentSourceUpdateError": "You can't update your bank account at the moment as you have a payment pending",
+    "perMonthText": "a month",
+    "perYearText": "a year",
     "prorateDecreaseMessage": "You have one month left on your current contribution. | You have {n} months left on your current contribution.",
     "prorateDecreaseMessageWillStart": "Your new contribution will start on {renewalDate}.",
     "prorateIncreaseMessage": "You have one month left on your current contribution. | You have {n} months left on your current contribution.",
@@ -1314,8 +1314,16 @@
   "join": {
     "absorbFeeForce": "{amount} contributions must absorb the {fee} fee.",
     "absorbFeeOptIn": "Yes, I'll absorb the {fee} fee.",
-    "absorbFeeText": "Our payment processor charges us per transaction which means we receive less from monthly contributions. Are you happy to absorb the {fee} transaction fee?  Alternatively you could pay annually.",
+    "absorbFeeText": {
+      "monthly": "Our payment processor charges us per transaction which means we receive less from monthly contributions. Would you like to absorb the {fee} transaction fee?  Alternatively you could pay annually.",
+      "one-time": "Our payment processor charges us per transaction which means we receive less from one-time contributions. Would you like to absorb the {fee} transaction fee?"
+    },
     "contribute": "Contribute {contribution}",
+    "contribution": {
+      "annually": "{amount} per year",
+      "monthly": "{amount} per month",
+      "one-time": "{amount} one-time"
+    },
     "errors": {
       "confirmEmail": {
         "message": "Almost there! We just need to confirm your email address to finish setting up your membership.",
@@ -1350,8 +1358,9 @@
     "genericError": "Oops, something went wrong ({type})! Contact support if this happens again.",
     "goBack": "Did you miss something? {back}",
     "goBackButton": "Back to the previous screen",
-    "note": "You'll be able to modify your contribution and access your payment history at any time in your member account",
-    "willBeContributing": "You'll be contributing {contribution}"
+    "note": "You'll be able to update your details and access your payment history at any time in your account",
+    "willBeContributing": "You'll be contributing {contribution}",
+    "willBeDonating": "You'll be making a donation of {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Please confirm your details",
