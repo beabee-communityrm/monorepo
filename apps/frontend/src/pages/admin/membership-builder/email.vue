@@ -23,6 +23,7 @@ meta:
       v-model:subject="welcomeEmail.subject"
       v-model:content="welcomeEmail.body"
       :heading="stepT('welcomeEmail')"
+      :merge-field-groups="mergeFieldGroups"
       :template="{ type: 'contact', id: 'welcome' }"
     />
 
@@ -31,6 +32,7 @@ meta:
       v-model:subject="cancellationEmail.subject"
       v-model:content="cancellationEmail.body"
       :heading="stepT('cancellationEmail')"
+      :merge-field-groups="mergeFieldGroups"
       :template="{ type: 'contact', id: 'cancelled-contribution' }"
     />
 
@@ -44,10 +46,11 @@ meta:
   </AppForm>
 </template>
 <script lang="ts" setup>
-import type { ContentJoinData, EmailPreviewData } from '@beabee/beabee-common';
-import { App2ColGrid, AppForm } from '@beabee/vue';
+import type { ContentJoinData, GetEmailData } from '@beabee/beabee-common';
+import { App2ColGrid, AppForm, type MergeTagGroup } from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
+import { currentUser, generalContent } from '@store';
 import { client, isApiError } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -55,44 +58,72 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);
 
-const welcomeEmail = ref<EmailPreviewData | false>();
-const cancellationEmail = ref<EmailPreviewData | false>();
-const oneTimeDonationEmail = ref<EmailPreviewData | false>();
+const welcomeEmail = ref<GetEmailData | false>();
+const cancellationEmail = ref<GetEmailData | false>();
+const oneTimeDonationEmail = ref<GetEmailData | false>();
 const joinContent = ref<ContentJoinData>();
 
 const showOneTimeDonationEmail = computed(() =>
   joinContent.value?.periods.some((p) => p.name === 'one-time')
 );
 
-async function loadEmail(
-  templateId: string
-): Promise<EmailPreviewData | false> {
+// Merge field groups for the rich text editor dropdown
+const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
+  const user = currentUser.value;
+  const fullName = user
+    ? `${user.firstname} ${user.lastname}`.trim()
+    : undefined;
+
+  return [
+    {
+      key: 'contact',
+      tags: [
+        { tag: 'EMAIL', example: user?.email },
+        { tag: 'NAME', example: fullName },
+        { tag: 'FNAME', example: user?.firstname },
+        { tag: 'LNAME', example: user?.lastname },
+      ],
+    },
+    {
+      key: 'standard',
+      tags: [
+        { tag: 'SUPPORTEMAIL', example: generalContent.value.supportEmail },
+        { tag: 'ORGNAME', example: generalContent.value.organisationName },
+      ],
+    },
+  ];
+});
+
+async function loadEmail(id: string): Promise<GetEmailData | false> {
   try {
-    const email = await client.email.template.get(templateId);
-    return { subject: email.subject, body: email.body };
+    const email = await client.email.template.get(id);
+    return email;
   } catch (err) {
     if (isApiError(err, ['external-email-template'])) {
       return false;
     }
-    return { body: '', subject: '' };
+    throw err;
   }
 }
 
 async function handleUpdate() {
   if (welcomeEmail.value) {
-    await client.email.template.update('welcome', welcomeEmail.value);
+    await client.email.template.update('welcome', {
+      subject: welcomeEmail.value.subject,
+      body: welcomeEmail.value.body,
+    });
   }
   if (cancellationEmail.value) {
-    await client.email.template.update(
-      'cancelled-contribution',
-      cancellationEmail.value
-    );
+    await client.email.template.update('cancelled-contribution', {
+      subject: cancellationEmail.value.subject,
+      body: cancellationEmail.value.body,
+    });
   }
   if (oneTimeDonationEmail.value) {
-    await client.email.template.update(
-      'one-time-donation',
-      oneTimeDonationEmail.value
-    );
+    await client.email.template.update('one-time-donation', {
+      subject: oneTimeDonationEmail.value.subject,
+      body: oneTimeDonationEmail.value.body,
+    });
   }
 }
 

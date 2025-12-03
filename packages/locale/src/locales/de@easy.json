@@ -1266,7 +1266,8 @@
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
-      "underline": ""
+      "underline": "",
+      "mergeFields": ""
     },
     "saveChanges": "",
     "saved": "",
@@ -1678,38 +1679,17 @@
     "mailingCount": "",
     "status": "",
     "type": "",
+    "customized": "",
+    "default": "",
+    "missingDefault": "",
     "actions": {
       "addCustom": "",
       "resetToDefault": ""
     },
     "templates": {
       "availableFields": "",
-      "type": {
-        "general": "",
-        "admin": "",
-        "contact": ""
-      },
-      "names": {
-        "welcome": "",
-        "welcome-post-gift": "",
-        "reset-password": "",
-        "reset-device": "",
-        "cancelled-contribution": "",
-        "cancelled-contribution-no-survey": "",
-        "manual-to-automatic": "",
-        "email-exists-login": "",
-        "email-exists-set-password": "",
-        "callout-response-answers": "",
-        "successful-referral": "",
-        "giftee-success": "",
-        "contribution-didnt-start": "",
-        "purchased-gift": "",
-        "confirm-email": "",
-        "expired-special-url-resend": "",
-        "new-member": "",
-        "cancelled-member": "",
-        "new-callout-response": ""
-      }
+      "type": {},
+      "names": {}
     },
     "confirmDelete": {
       "title": "",
@@ -1724,12 +1704,57 @@
       "created": "",
       "updated": "",
       "deleted": "",
-      "resetToDefault": "",
-      "templatesAssigned": "",
-      "templateAssigned": ""
+      "resetToDefault": ""
+    }
+  },
+  "mergeFields": {
+    "title": "",
+    "expand": "",
+    "expandAll": "",
+    "collapse": "",
+    "collapseAll": "",
+    "clickToExpand": "",
+    "copy": "",
+    "copyTag": "",
+    "copied": "",
+    "insert": "",
+    "insertTag": "",
+    "example": "",
+    "groups": {
+      "contact": "",
+      "standard": "",
+      "magic": "",
+      "template": ""
     },
-    "customized": "",
-    "default": "",
-    "missingDefault": ""
+    "tags": {
+      "EMAIL": "",
+      "NAME": "",
+      "FNAME": "",
+      "LNAME": "",
+      "MEMBERSHIPID": "",
+      "RPLINK": "",
+      "LOGINLINK": "",
+      "SPLINK": "",
+      "MESSAGE": "",
+      "CALLOUTTITLE": "",
+      "CALLOUTLINK": "",
+      "SUPPORTEMAIL": "",
+      "ANSWERS": "",
+      "REFCODE": "",
+      "EXPIRES": "",
+      "REFEREENAME": "",
+      "ISELIGIBLE": "",
+      "PURCHASER": "",
+      "GIFTEE": "",
+      "GIFTDATE": "",
+      "ACTIVATELINK": "",
+      "CONFIRMLINK": "",
+      "URL": "",
+      "MEMBERID": "",
+      "MEMBERNAME": "",
+      "CALLOUTSLUG": "",
+      "RESPNAME": "",
+      "ORGNAME": ""
+    }
   }
 }

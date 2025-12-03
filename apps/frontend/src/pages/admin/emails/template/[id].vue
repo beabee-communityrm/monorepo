@@ -29,33 +29,15 @@ meta:
         :name="t('emails.name')"
         :value="t(`emails.templates.names.${templateId}`)"
       />
-
-      <!-- Available merge fields
-           TODO: Temporary solution until PR #364 is merged. After merge, this will be
-           replaced with the new AppMergeFields component that allows inserting merge fields
-           directly in the EmailEditor rich text editor toolbar. -->
-      <AppInfoListItem
-        v-if="mergeFields.length > 0"
-        :name="t('emails.templates.availableFields')"
-      >
-        <div class="flex flex-wrap gap-2">
-          <code
-            v-for="field in mergeFields"
-            :key="field"
-            class="rounded bg-primary-10 px-2 py-1 text-xs"
-          >
-            *|{{ field }}|*
-          </code>
-        </div>
-      </AppInfoListItem>
     </AppInfoList>
 
     <!-- Email Editor -->
     <EmailEditor
       v-model:subject="emailData.subject"
       v-model:content="emailData.body"
-      :server-render="{ type: templateType, templateId }"
+      :template="{ type: templateType, id: templateId }"
       :heading="t('emailEditor.body.label')"
+      :merge-field-groups="mergeFieldGroups"
     />
   </AppForm>
 </template>
@@ -70,6 +52,7 @@ import {
   AppForm,
   AppInfoList,
   AppInfoListItem,
+  type MergeTagGroup,
   PageTitle,
 } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
@@ -98,6 +81,20 @@ const templateInfo = ref<GetEmailTemplateInfoData | null>(null);
 const hasOverride = computed(() => templateInfo.value?.hasOverride ?? false);
 const mergeFields = computed(() => templateInfo.value?.mergeFields ?? []);
 const templateType = computed(() => templateInfo.value?.type ?? 'general');
+
+// Convert merge fields array to MergeTagGroup format for EmailEditor
+const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
+  if (mergeFields.value.length === 0) {
+    return [];
+  }
+
+  return [
+    {
+      key: 'template',
+      tags: mergeFields.value.map((field) => ({ tag: field })),
+    },
+  ];
+});
 
 const pageTitle = computed(() => {
   if (!templateId.value) return t('emails.edit.title');
