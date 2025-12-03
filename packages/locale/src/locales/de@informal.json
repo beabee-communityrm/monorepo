@@ -369,7 +369,7 @@
         "email": {
           "title": "E-Mail",
           "body": {
-            "default": "<p>Hallo {'*|FNAME|*'},</p><p>Diese E-Mail bestätigt deine Antwort <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung deiner E-Mail-Adresse {'*|EMAIL|*'}.</p><p><br /></p><p>Wenn du Fragen hast, wende dich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Viele Grüße</p>"
+            "default": "<p>Hallo {'*|FNAME|*'},</p><p>Diese E-Mail bestätigt deine Antwort auf <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung deiner E-Mail-Adresse {'*|EMAIL|*'}.</p><p><br /></p><p>Wenn du Fragen hast, wende dich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Viele Grüße</p>"
           },
           "collectInfoWarning": {
             "description": "Um eine E-Mail an alle Teilnehmer zu senden, musst du \"Kontaktinformationen erfassen\" in der Registerkarte Einstellungen aktivieren",
