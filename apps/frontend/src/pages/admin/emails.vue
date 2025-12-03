@@ -29,12 +29,12 @@ const router = useRouter();
 const tabs = computed(() =>
   resolveTabNavigation(router, [
     {
-      id: 'adminEmailsCustom',
-      label: t('emails.tabs.custom'),
-    },
-    {
       id: 'adminEmailsTemplates',
       label: t('emails.tabs.templates'),
+    },
+    {
+      id: 'adminEmailsCustom',
+      label: t('emails.tabs.custom'),
     },
   ])
 );
