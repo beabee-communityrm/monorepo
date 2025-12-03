@@ -1463,11 +1463,6 @@
   },
   "mergeFields": {
     "title": "Campos de mesclagem",
-    "expand": "Expandir",
-    "expandAll": "Expandir todos os campos de mesclagem",
-    "collapse": "Recolher",
-    "collapseAll": "Recolher todos os campos de mesclagem",
-    "clickToExpand": "Clicar para expandir os campos de mesclagem",
     "copy": "Copiar",
     "copyTag": "Copiar {tag}",
     "copied": "Copiado!",

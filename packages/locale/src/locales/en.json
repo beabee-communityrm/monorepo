@@ -1463,11 +1463,6 @@
   },
   "mergeFields": {
     "title": "Placeholders",
-    "expand": "Expand",
-    "expandAll": "Expand all placeholders",
-    "collapse": "Collapse",
-    "collapseAll": "Collapse all placeholders",
-    "clickToExpand": "Click to expand placeholders",
     "copy": "Copy",
     "copyTag": "Copy {tag}",
     "copied": "Copied!",

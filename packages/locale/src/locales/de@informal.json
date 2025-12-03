@@ -1659,11 +1659,6 @@
   },
   "mergeFields": {
     "title": "",
-    "expand": "",
-    "expandAll": "",
-    "collapse": "",
-    "collapseAll": "",
-    "clickToExpand": "Klicke zum Ausklappen der Platzhalter",
     "copy": "",
     "copyTag": "",
     "copied": "",
