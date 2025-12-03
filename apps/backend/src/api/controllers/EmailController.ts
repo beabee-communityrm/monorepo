@@ -1,31 +1,29 @@
 import { getRepository } from '@beabee/core/database';
 import { Contact, Email, EmailMailing } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
-import {
-  AuthInfo,
-  ContactEmailTemplateId,
-  EmailTemplateId,
-  PreviewEmailOptions,
-} from '@beabee/core/type';
+import { AuthInfo, PreviewEmailOptions } from '@beabee/core/type';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import {
   CreateEmailDto,
+  DeleteEmailTemplateParams,
   EmailPreviewDto,
   GetEmailDto,
   GetEmailTemplateInfoDto,
+  GetEmailTemplateParams,
   ListEmailsDto,
   PreviewAdminEmailParams,
+  PreviewContactEmailParams,
   PreviewEmailDto,
   PreviewGeneralEmailParams,
   UpdateEmailDto,
+  UpdateEmailTemplateParams,
 } from '@api/dto/EmailDto';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
 import EmailTransformer from '@api/transformers/EmailTransformer';
 import { plainToInstance } from 'class-transformer';
 import {
   Authorized,
-  BadRequestError,
   Body,
   CurrentUser,
   Delete,
@@ -69,16 +67,10 @@ export class EmailController {
   @Get('/template/:templateId')
   async getTemplate(
     @CurrentAuth() auth: AuthInfo,
-    @Param('templateId') templateId: string
+    @Params() { templateId }: GetEmailTemplateParams
   ): Promise<GetEmailDto> {
-    if (!EmailService.isTemplateId(templateId)) {
-      throw new NotFoundError('Invalid template ID');
-    }
-
     // getTemplateEmail always returns an email (override, default, or empty)
-    const email = await EmailService.getTemplateEmail(
-      templateId as EmailTemplateId
-    );
+    const email = await EmailService.getTemplateEmail(templateId);
     return EmailTransformer.convert(email, auth);
   }
 
@@ -88,15 +80,11 @@ export class EmailController {
   @Put('/template/:templateId')
   async updateTemplate(
     @CurrentAuth() auth: AuthInfo,
-    @Param('templateId') templateId: string,
+    @Params() { templateId }: UpdateEmailTemplateParams,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto> {
-    if (!EmailService.isTemplateId(templateId)) {
-      throw new BadRequestError('Invalid template ID');
-    }
-
     const updated = await EmailService.createOrUpdateTemplateOverride(
-      templateId as EmailTemplateId,
+      templateId,
       {
         subject: data.subject,
         body: data.body,
@@ -111,14 +99,10 @@ export class EmailController {
    */
   @OnUndefined(204)
   @Delete('/template/:templateId')
-  async deleteTemplate(@Param('templateId') templateId: string): Promise<void> {
-    if (!EmailService.isTemplateId(templateId)) {
-      throw new NotFoundError('Invalid template ID');
-    }
-
-    const deleted = await EmailService.deleteTemplateOverride(
-      templateId as EmailTemplateId
-    );
+  async deleteTemplate(
+    @Params() { templateId }: DeleteEmailTemplateParams
+  ): Promise<void> {
+    const deleted = await EmailService.deleteTemplateOverride(templateId);
 
     if (!deleted) {
       throw new NotFoundError('No override exists for this template');
@@ -244,7 +228,7 @@ export class EmailController {
   @Post('/preview/contact/:templateId')
   async previewContactEmail(
     @CurrentUser({ required: true }) contact: Contact,
-    @Param('templateId') templateId: ContactEmailTemplateId,
+    @Params() { templateId }: PreviewContactEmailParams,
     @Body() data: PreviewEmailDto
   ): Promise<EmailPreviewDto> {
     return await this.getPreview(contact, { ...data, templateId });
