@@ -89,7 +89,7 @@ export const adminMenu = computed<MenuSection[]>(() => [
       },
       {
         title: 'menu.emails',
-        href: '/admin/emails/custom',
+        href: '/admin/emails/templates',
         icon: faEnvelope,
         isActive: /^\/admin\/emails.*/,
         visible: canAdmin.value,
