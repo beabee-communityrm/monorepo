@@ -116,6 +116,7 @@ export type * from './create-segment-data.js';
 export type * from './date-unit.js';
 export type * from './delete-contact-mfa-data.js';
 export type * from './duration.js';
+export type * from './email-filter-name.js';
 export type * from './email-template-type.js';
 export type * from './enum-filter-args.js';
 export type * from './feeable.js';
