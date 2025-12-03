@@ -368,7 +368,7 @@
         },
         "email": {
           "body": {
-            "default": "<p>Hello {'*|FNAME|*'},</p><p>This email confirms your response to the callout <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> using your email address {'*|EMAIL|*'}.</p><p><br /></p><p>If you have any questions, please contact our support team at <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Best wishes</p>"
+            "default": "<p>Hello {'*|FNAME|*'},</p><p>This email confirms your response <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> using your email address {'*|EMAIL|*'}.</p><p><br /></p><p>If you have any questions, please contact our support team at <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Best wishes</p>"
           },
           "collectInfoWarning": {
             "description": "To send an email to all participants you must enable \"Collect contact information\" in the Settings tab",
@@ -1490,8 +1490,8 @@
       "LOGINLINK": "Login link",
       "SPLINK": "Set password link",
       "MESSAGE": "Custom message content",
-      "CALLOUTTITLE": "Callout title",
-      "CALLOUTLINK": "Link to callout",
+      "CALLOUTTITLE": "CrowdNewsroom title",
+      "CALLOUTLINK": "Link to CrowdNewsroom",
       "SUPPORTEMAIL": "Support email address",
       "ANSWERS": "Formatted response answers",
       "REFCODE": "Contact referral code",
@@ -1506,7 +1506,7 @@
       "URL": "Special URL",
       "MEMBERID": "Member ID",
       "MEMBERNAME": "Member name",
-      "CALLOUTSLUG": "Callout slug",
+      "CALLOUTSLUG": "CrowdNewsroom slug",
       "RESPNAME": "Responder name",
       "ORGNAME": "Organization name"
     }

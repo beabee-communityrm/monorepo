@@ -369,7 +369,7 @@
         "email": {
           "title": "Email",
           "body": {
-            "default": "<p>Γεια σας {'*|FNAME|*'},</p><p>Αυτό το email επιβεβαιώνει την απάντησή σας στο callout <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> χρησιμοποιώντας τη διεύθυνση email σας {'*|EMAIL|*'}.</p><p><br /></p><p>Εάν έχετε ερωτήσεις, παρακαλούμε επικοινωνήστε με την ομάδα υποστήριξής μας στο <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Με εκτίμηση</p>"
+            "default": "<p>Γεια σας {'*|FNAME|*'},</p><p>Αυτό το email επιβεβαιώνει την απάντησή σας <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> χρησιμοποιώντας τη διεύθυνση email σας {'*|EMAIL|*'}.</p><p><br /></p><p>Εάν έχετε ερωτήσεις, παρακαλούμε επικοινωνήστε με την ομάδα υποστήριξής μας στο <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Με εκτίμηση</p>"
           },
           "collectInfoWarning": {
             "description": "Για να στείλετε email σε όλους τους συμμετέχοντες, πρέπει να ενεργοποιήσετε \"Συλλογή πληροφοριών επαφής\" στην καρτέλα Ρυθμίσεις",
@@ -1490,8 +1490,8 @@
       "LOGINLINK": "Σύνδεσμος σύνδεσης",
       "SPLINK": "Σύνδεσμος ορισμού κωδικού",
       "MESSAGE": "Προσαρμοσμένο περιεχόμενο μηνύματος",
-      "CALLOUTTITLE": "Τίτλος callout",
-      "CALLOUTLINK": "Σύνδεσμος στο callout",
+      "CALLOUTTITLE": "Τίτλος CrowdNewsroom",
+      "CALLOUTLINK": "Σύνδεσμος στο CrowdNewsroom",
       "SUPPORTEMAIL": "Διεύθυνση email υποστήριξης",
       "ANSWERS": "Μορφοποιημένες απαντήσεις",
       "REFCODE": "Κωδικός παραπομπής επαφής",
@@ -1506,7 +1506,7 @@
       "URL": "Ειδικό URL",
       "MEMBERID": "ID μέλους",
       "MEMBERNAME": "Όνομα μέλους",
-      "CALLOUTSLUG": "Slug callout",
+      "CALLOUTSLUG": "Slug CrowdNewsroom",
       "RESPNAME": "Όνομα απαντούμενου",
       "ORGNAME": "Όνομα οργανισμού"
     }

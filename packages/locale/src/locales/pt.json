@@ -369,7 +369,7 @@
         "email": {
           "title": "Email",
           "body": {
-            "default": "<p>Olá {'*|FNAME|*'},</p><p>Este e-mail confirma a sua resposta à chamada <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> utilizando o seu endereço de correio eletrónico {'*|EMAIL|*'}.</p><p><br /></p><p>Se tiver alguma questão, contacte a nossa equipa de apoio em <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Atenciosamente</p>"
+            "default": "<p>Olá {'*|FNAME|*'},</p><p>Este e-mail confirma a sua resposta <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> utilizando o seu endereço de correio eletrónico {'*|EMAIL|*'}.</p><p><br /></p><p>Se tiver alguma questão, contacte a nossa equipa de apoio em <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Atenciosamente</p>"
           },
           "collectInfoWarning": {
             "description": "Para enviar um e-mail a todos os participantes, você deve ativar \"Coletar informações de contato\" na aba Configurações",
@@ -1490,8 +1490,8 @@
       "LOGINLINK": "Link de login",
       "SPLINK": "Link de definição de palavra-passe",
       "MESSAGE": "Conteúdo de mensagem personalizado",
-      "CALLOUTTITLE": "Título do callout",
-      "CALLOUTLINK": "Link para o callout",
+      "CALLOUTTITLE": "Título do CrowdNewsroom",
+      "CALLOUTLINK": "Link para o CrowdNewsroom",
       "SUPPORTEMAIL": "Endereço de email de suporte",
       "ANSWERS": "Respostas formatadas",
       "REFCODE": "Código de referência do contacto",
@@ -1506,7 +1506,7 @@
       "URL": "URL especial",
       "MEMBERID": "ID de membro",
       "MEMBERNAME": "Nome do membro",
-      "CALLOUTSLUG": "Slug do callout",
+      "CALLOUTSLUG": "Slug do CrowdNewsroom",
       "RESPNAME": "Nome do respondente",
       "ORGNAME": "Nome da organização"
     }
