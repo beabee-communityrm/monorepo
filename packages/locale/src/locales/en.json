@@ -1266,7 +1266,8 @@
       "numberedlist": "Numbered list",
       "strikethrough": "Strikethrough",
       "toolbar": "Rich text formatting toolbar",
-      "underline": "Underline"
+      "underline": "Underline",
+      "mergeFields": "Placeholders"
     },
     "saveChanges": "Save Changes",
     "saved": "Saved!",
@@ -1459,6 +1460,56 @@
     "payments": "Payments",
     "settings": "Settings",
     "yourProfile": "Your profile"
+  },
+  "mergeFields": {
+    "title": "Placeholders",
+    "expand": "Expand",
+    "expandAll": "Expand all placeholders",
+    "collapse": "Collapse",
+    "collapseAll": "Collapse all placeholders",
+    "clickToExpand": "Click to expand placeholders",
+    "copy": "Copy",
+    "copyTag": "Copy {tag}",
+    "copied": "Copied!",
+    "insert": "Insert",
+    "insertTag": "Insert {tag}",
+    "example": "Example",
+    "groups": {
+      "contact": "Contact Fields",
+      "standard": "Standard Fields",
+      "magic": "Magic Links",
+      "template": "Template Fields"
+    },
+    "tags": {
+      "EMAIL": "Contact email address",
+      "NAME": "Contact full name",
+      "FNAME": "Contact first name",
+      "LNAME": "Contact last name",
+      "MEMBERSHIPID": "Contact membership ID",
+      "RPLINK": "Password reset link",
+      "LOGINLINK": "Login link",
+      "SPLINK": "Set password link",
+      "MESSAGE": "Custom message content",
+      "CALLOUTTITLE": "Callout title",
+      "CALLOUTLINK": "Link to callout",
+      "SUPPORTEMAIL": "Support email address",
+      "ANSWERS": "Formatted response answers",
+      "REFCODE": "Contact referral code",
+      "EXPIRES": "Membership expiration date",
+      "REFEREENAME": "Name of referred person",
+      "ISELIGIBLE": "Whether referral is eligible",
+      "PURCHASER": "Gift purchaser name",
+      "GIFTEE": "Gift recipient name",
+      "GIFTDATE": "Gift start date",
+      "ACTIVATELINK": "Gift activation link",
+      "CONFIRMLINK": "Email confirmation link",
+      "URL": "Special URL",
+      "MEMBERID": "Member ID",
+      "MEMBERNAME": "Member name",
+      "CALLOUTSLUG": "Callout slug",
+      "RESPNAME": "Responder name",
+      "ORGNAME": "Organization name"
+    }
   },
   "newsletterOptIn": {
     "groups": {

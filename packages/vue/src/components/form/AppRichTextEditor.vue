@@ -81,6 +81,8 @@
         :disabled="disabled"
         @click="setLink"
       />
+      <!-- Toolbar extension slot for custom buttons (e.g., merge fields) -->
+      <slot name="toolbar" :editor="editor" :disabled="disabled" />
     </div>
     <div class="grid w-full">
       <div
@@ -137,7 +139,7 @@ import StarterKit from '@tiptap/starter-kit';
 import { type ChainedCommands, EditorContent, useEditor } from '@tiptap/vue-3';
 import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf } from '@vuelidate/validators';
-import { computed, onBeforeUnmount, toRef, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { AppCopyButton, AppInputError, AppInputHelp, AppLabel } from '../index';

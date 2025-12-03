@@ -23,6 +23,7 @@ meta:
       v-model:subject="welcomeEmail.subject"
       v-model:content="welcomeEmail.body"
       :heading="stepT('welcomeEmail')"
+      :merge-field-groups="mergeFieldGroups"
       :template="{ type: 'contact', id: 'welcome' }"
     />
 
@@ -31,6 +32,7 @@ meta:
       v-model:subject="cancellationEmail.subject"
       v-model:content="cancellationEmail.body"
       :heading="stepT('cancellationEmail')"
+      :merge-field-groups="mergeFieldGroups"
       :template="{ type: 'contact', id: 'cancelled-contribution' }"
     />
 
@@ -44,10 +46,11 @@ meta:
   </AppForm>
 </template>
 <script lang="ts" setup>
-import { type ContentJoinData, type GetEmailData } from '@beabee/beabee-common';
-import { App2ColGrid, AppForm } from '@beabee/vue';
+import type { ContentJoinData, GetEmailData } from '@beabee/beabee-common';
+import { App2ColGrid, AppForm, type MergeTagGroup } from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
+import { currentUser, generalContent } from '@store';
 import { client, isApiError } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -63,6 +66,33 @@ const joinContent = ref<ContentJoinData>();
 const showOneTimeDonationEmail = computed(() =>
   joinContent.value?.periods.some((p) => p.name === 'one-time')
 );
+
+// Merge field groups for the rich text editor dropdown
+const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
+  const user = currentUser.value;
+  const fullName = user
+    ? `${user.firstname} ${user.lastname}`.trim()
+    : undefined;
+
+  return [
+    {
+      key: 'contact',
+      tags: [
+        { tag: 'EMAIL', example: user?.email },
+        { tag: 'NAME', example: fullName },
+        { tag: 'FNAME', example: user?.firstname },
+        { tag: 'LNAME', example: user?.lastname },
+      ],
+    },
+    {
+      key: 'standard',
+      tags: [
+        { tag: 'SUPPORTEMAIL', example: generalContent.value.supportEmail },
+        { tag: 'ORGNAME', example: generalContent.value.organisationName },
+      ],
+    },
+  ];
+});
 
 async function loadEmail(id: string): Promise<GetEmailData | false> {
   try {
