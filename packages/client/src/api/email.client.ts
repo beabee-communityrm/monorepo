@@ -106,20 +106,4 @@ export class EmailClient extends BaseClient {
     );
     return data;
   }
-
-  /**
-   * Preview an email template with custom merge fields
-   * @deprecated Use client.email.template.preview() instead
-   * @param type - The template type ('general', 'contact', or 'admin')
-   * @param templateId - The template ID
-   * @param options - Preview options
-   * @returns The preview with merge fields replaced
-   */
-  async previewTemplate(
-    type: 'general' | 'contact' | 'admin',
-    templateId: string,
-    options: PreviewEmailOptions = {}
-  ): Promise<EmailPreviewData> {
-    return this.template.preview(type, templateId, options);
-  }
 }
