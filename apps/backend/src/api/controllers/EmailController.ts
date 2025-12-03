@@ -69,8 +69,10 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Params() { templateId }: GetEmailTemplateParams
   ): Promise<GetEmailDto> {
-    // getTemplateEmail always returns an email (override, default, or empty)
     const email = await EmailService.getTemplateEmail(templateId);
+    if (!email) {
+      throw new NotFoundError('Template not found');
+    }
     return EmailTransformer.convert(email, auth);
   }
 
