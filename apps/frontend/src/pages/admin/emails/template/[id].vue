@@ -23,14 +23,6 @@ meta:
     :button-text="t('actions.save')"
     @submit="handleSubmit"
   >
-    <!-- Template Info (read-only) -->
-    <AppInfoList class="mb-6 max-w-2xl">
-      <AppInfoListItem
-        :name="t('emails.name')"
-        :value="t(`emails.templates.names.${templateId}`)"
-      />
-    </AppInfoList>
-
     <!-- Email Editor -->
     <EmailEditor
       v-model:subject="emailData.subject"
