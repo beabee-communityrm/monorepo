@@ -1,4 +1,4 @@
-import { createQueryBuilder, getRepository } from '@beabee/core/database';
+import { getRepository } from '@beabee/core/database';
 import { Contact, Email, EmailMailing } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
 import {
@@ -52,27 +52,7 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @QueryParams() query: ListEmailsDto
   ): Promise<PaginatedDto<GetEmailDto>> {
-    const queryBuilder = createQueryBuilder(Email, 'e')
-      .where({ templateId: IsNull() }) // Only custom emails, not template overrides
-      .loadRelationCountAndMap('e.mailingCount', 'e.mailings')
-      .orderBy({ 'e.date': 'DESC' });
-
-    // Apply pagination
-    if (query.limit) {
-      queryBuilder.take(query.limit);
-    }
-    if (query.offset) {
-      queryBuilder.skip(query.offset);
-    }
-
-    const [emails, total] = await queryBuilder.getManyAndCount();
-
-    return {
-      items: emails.map((email) => EmailTransformer.convert(email, auth)),
-      total,
-      offset: query.offset || 0,
-      count: emails.length,
-    };
+    return await EmailTransformer.fetch(auth, query);
   }
 
   /**
