@@ -1758,7 +1758,8 @@
         "expired-special-url-resend": "Повторная отправка истёкшей ссылки",
         "new-member": "Админ: Новый контакт",
         "cancelled-member": "Админ: Отменённый участник",
-        "new-callout-response": "Админ: Новый ответ CrowdNewsroom"
+        "new-callout-response": "Админ: Новый ответ CrowdNewsroom",
+        "one-time-donation": "Подтверждение разового пожертвования"
       }
     },
     "confirmDelete": {

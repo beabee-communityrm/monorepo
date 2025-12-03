@@ -1757,7 +1757,8 @@
         "expired-special-url-resend": "Reinvia link speciale scaduto",
         "new-member": "Admin: Nuovo contatto",
         "cancelled-member": "Admin: Membro annullato",
-        "new-callout-response": "Admin: Nuova risposta CrowdNewsroom"
+        "new-callout-response": "Admin: Nuova risposta CrowdNewsroom",
+        "one-time-donation": "Conferma donazione una tantum"
       }
     },
     "confirmDelete": {

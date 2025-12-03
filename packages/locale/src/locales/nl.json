@@ -1757,7 +1757,8 @@
         "expired-special-url-resend": "Verlopen speciale link opnieuw verzenden",
         "new-member": "Beheer: Nieuw contact",
         "cancelled-member": "Beheer: Geannuleerd lid",
-        "new-callout-response": "Beheer: Nieuwe CrowdNewsroom-reactie"
+        "new-callout-response": "Beheer: Nieuwe CrowdNewsroom-reactie",
+        "one-time-donation": "Bevestiging eenmalige donatie"
       }
     },
     "confirmDelete": {

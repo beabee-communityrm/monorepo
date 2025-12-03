@@ -1757,7 +1757,8 @@
         "expired-special-url-resend": "Επαναποστολή ληγμένου ειδικού συνδέσμου",
         "new-member": "Διαχειριστής: Νέα επαφή",
         "cancelled-member": "Διαχειριστής: Ακυρωμένο μέλος",
-        "new-callout-response": "Διαχειριστής: Νέα απάντηση CrowdNewsroom"
+        "new-callout-response": "Διαχειριστής: Νέα απάντηση CrowdNewsroom",
+        "one-time-donation": "Επιβεβαίωση εφάπαξ δωρεάς"
       }
     },
     "confirmDelete": {

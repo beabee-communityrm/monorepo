@@ -1188,7 +1188,8 @@
         "expired-special-url-resend": "Abgelaufene spezielle URL erneut senden",
         "new-member": "Admin: Neue Kontakt-Benachrichtigung",
         "cancelled-member": "Admin: Gekündigter Mitglied-Benachrichtigung",
-        "new-callout-response": "Admin: Neue CrowdNewsroom-Antwort-Benachrichtigung"
+        "new-callout-response": "Admin: Neue CrowdNewsroom-Antwort-Benachrichtigung",
+        "one-time-donation": "Bestätigung der Einmalspende"
       }
     },
     "confirmDelete": {

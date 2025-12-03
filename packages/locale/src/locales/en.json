@@ -1184,6 +1184,7 @@
         "giftee-success": "Gift activation success",
         "contribution-didnt-start": "Contribution did not start",
         "purchased-gift": "Gift purchased confirmation",
+        "one-time-donation": "One-time donation confirmation",
         "confirm-email": "Confirm email",
         "expired-special-url-resend": "Expired special URL resend",
         "new-member": "Admin: New contact notification",
