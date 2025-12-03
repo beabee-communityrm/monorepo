@@ -22,6 +22,9 @@ export class CreatePaymentDto extends StartJoinFlowDto {
 
   @IsBoolean()
   payFee!: boolean;
+
+  @IsEnum(PaymentMethod)
+  paymentMethod!: PaymentMethod;
 }
 
 export class GetPaymentDto {

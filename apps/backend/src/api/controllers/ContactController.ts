@@ -363,18 +363,13 @@ export class ContactController {
       prorate: false,
       period: 'one-time',
     };
-    if (data.paymentMethod) {
-      const params = await PaymentFlowService.createPaymentUpdateFlow(
-        target,
-        data.paymentMethod,
-        data.completeUrl,
-        form
-      );
-      return plainToInstance(GetPaymentFlowDto, params);
-    } else {
-      await PaymentService.createOneTimePayment(target, form);
-      return plainToInstance(GetPaymentFlowDto, {});
-    }
+    const params = await PaymentFlowService.createPaymentUpdateFlow(
+      target,
+      data.paymentMethod,
+      data.completeUrl,
+      form
+    );
+    return plainToInstance(GetPaymentFlowDto, params);
   }
 
   @OnUndefined(204)

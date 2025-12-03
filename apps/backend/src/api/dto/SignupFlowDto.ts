@@ -3,30 +3,27 @@ import type { JoinForm } from '@beabee/core/models';
 import { CompleteUrls } from '@beabee/core/type';
 
 import { StartContributionDto } from '@api/dto/ContributionDto';
-import { CompleteJoinFlowDto, StartJoinFlowDto } from '@api/dto/JoinFlowDto';
+import { CompleteJoinFlowDto } from '@api/dto/JoinFlowDto';
 import IsPassword from '@api/validators/IsPassword';
 import IsUrl from '@api/validators/IsUrl';
 import IsVatNumber from '@api/validators/IsVatNumber';
 import { Type } from 'class-transformer';
 import {
-  IsBoolean,
   IsEmail,
   IsEnum,
   IsOptional,
   IsString,
-  Min,
   Validate,
   ValidateNested,
 } from 'class-validator';
 
 import { CreatePaymentDto } from './PaymentDto';
 
+/**
+ * DTO for starting a contribution as part of the signup flow. This enforces
+ * that a payment method is required rather than optional.
+ */
 class StartSignupFlowContributionDto extends StartContributionDto {
-  @IsEnum(PaymentMethod)
-  paymentMethod!: PaymentMethod;
-}
-
-class StartSignupFlowOneTimePaymentDto extends CreatePaymentDto {
   @IsEnum(PaymentMethod)
   paymentMethod!: PaymentMethod;
 }
@@ -53,10 +50,10 @@ export class StartSignupFlowDto implements CompleteUrls {
   @IsOptional()
   contribution?: StartSignupFlowContributionDto;
 
-  @Type(() => StartSignupFlowOneTimePaymentDto)
+  @Type(() => CreatePaymentDto)
   @ValidateNested()
   @IsOptional()
-  oneTimePayment?: StartSignupFlowOneTimePaymentDto;
+  oneTimePayment?: CreatePaymentDto;
 }
 
 export class CompleteSignupFlowDto
