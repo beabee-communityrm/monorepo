@@ -63,8 +63,11 @@ export interface EmailProvider {
 
 /**
  * Type helper for general email templates
+ * Extracts the function types from template definitions
  */
-export type GeneralEmailTemplates = typeof generalEmailTemplates;
+export type GeneralEmailTemplates = {
+  [K in keyof typeof generalEmailTemplates]: (typeof generalEmailTemplates)[K]['fn'];
+};
 
 /**
  * General email template IDs
@@ -74,8 +77,11 @@ export type GeneralEmailTemplateId = keyof typeof generalEmailTemplates;
 
 /**
  * Type helper for admin email templates
+ * Extracts the function types from template definitions
  */
-export type AdminEmailTemplates = typeof adminEmailTemplates;
+export type AdminEmailTemplates = {
+  [K in keyof typeof adminEmailTemplates]: (typeof adminEmailTemplates)[K]['fn'];
+};
 
 /**
  * Admin email template IDs
@@ -85,8 +91,11 @@ export type AdminEmailTemplateId = keyof typeof adminEmailTemplates;
 
 /**
  * Type helper for contact email templates
+ * Extracts the function types from template definitions
  */
-export type ContactEmailTemplates = typeof contactEmailTemplates;
+export type ContactEmailTemplates = {
+  [K in keyof typeof contactEmailTemplates]: (typeof contactEmailTemplates)[K]['fn'];
+};
 
 /**
  * Contact email template IDs
