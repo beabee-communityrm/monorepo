@@ -933,9 +933,7 @@
       "successful": "Erfolgreich"
     },
     "perMonth": "/ Monat",
-    "perMonthText": "pro Monat",
     "perYear": "/ Jahr",
-    "perYearText": "pro Jahr",
     "role": {
       "admin": "Admin",
       "member": "Mitglied",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Zahlungsart",
     "paymentSourceUpdateError": "Du kannst deine Bankverbindung aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
+    "perMonthText": "pro Monat",
+    "perYearText": "pro Jahr",
     "prorateDecreaseMessage": "Dein Beitrag bleibt noch für 1 Monat gleich. | Dein Beitrag bleibt noch für {n} Monaten gleich.",
     "prorateDecreaseMessageWillStart": "Der neue Beitrag wird am {renewalDate} zum ersten Mal eingezogen.",
     "prorateIncreaseMessage": "Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch 1 Monat. | Deine Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch {n} Monaten.",
@@ -1266,7 +1266,8 @@
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
       "toolbar": "Rich-Text-Formatierung Symbolleiste",
-      "underline": "Unterstreichen"
+      "underline": "Unterstreichen",
+      "mergeFields": ""
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
@@ -1314,7 +1315,10 @@
   "join": {
     "absorbFeeForce": "Bei einem Beitrag von {amount}, musst du die {fee} Transaktionskosten übernehmen.",
     "absorbFeeOptIn": "Ja, ich übernehme die {fee} Transaktionskosten.",
-    "absorbFeeText": "Unser Zahlungsdienstleister stellt uns jede Transaktion in Rechnung. Das heißt, wir erhalten weniger von deinem monatlichen Beitrag. Möchtest du die Kosten dafür übernehmen? Alternativ kannst du auch jährlich bezahlen.",
+    "absorbFeeText": {
+      "monthly": "Unser Zahlungsdienstleister stellt uns jede Transaktion in Rechnung. Das heißt, wir erhalten weniger von deinem monatlichen Beitrag. Möchtest du die Kosten dafür übernehmen? Alternativ kannst du auch jährlich bezahlen.",
+      "one-time": ""
+    },
     "contribute": "Mit {contribution} unterstützen.",
     "errors": {
       "confirmEmail": {
@@ -1340,6 +1344,11 @@
     "privacy": "Datenschutzerklärung",
     "tax": {
       "included": "Beitrag inklusive {taxRate}% MwSt."
+    },
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1351,7 +1360,8 @@
     "goBack": "Möchtest du etwas ändern? {back}",
     "goBackButton": "Zurück zum letzten Schritt",
     "note": "Du kannst deine Zahlungsdaten jederzeit in deinem Nutzer-Account ändern und dort auch sehen, wie viel du in der Vergangenheit bereits gezahlt hast. ",
-    "willBeContributing": "Du zahlst {contribution}"
+    "willBeContributing": "Du zahlst {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Bitte bestätige deine Angaben:",
@@ -1406,7 +1416,8 @@
         "description": "Passe deine Willkommens- und Kündigungs-E-Mail an",
         "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mai-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
-        "welcomeEmail": "Willkommens-E-Mail"
+        "welcomeEmail": "Willkommens-E-Mail",
+        "oneTimeDonationEmail": ""
       },
       "intro": {
         "description": "Heiße neue Mitglieder willkommen",
@@ -1645,5 +1656,55 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "mergeFields": {
+    "title": "",
+    "expand": "",
+    "expandAll": "",
+    "collapse": "",
+    "collapseAll": "",
+    "clickToExpand": "",
+    "copy": "",
+    "copyTag": "",
+    "copied": "",
+    "insert": "",
+    "insertTag": "",
+    "example": "",
+    "groups": {
+      "contact": "",
+      "standard": "",
+      "magic": "",
+      "template": ""
+    },
+    "tags": {
+      "EMAIL": "",
+      "NAME": "",
+      "FNAME": "",
+      "LNAME": "",
+      "MEMBERSHIPID": "",
+      "RPLINK": "",
+      "LOGINLINK": "",
+      "SPLINK": "",
+      "MESSAGE": "",
+      "CALLOUTTITLE": "",
+      "CALLOUTLINK": "",
+      "SUPPORTEMAIL": "",
+      "ANSWERS": "",
+      "REFCODE": "",
+      "EXPIRES": "",
+      "REFEREENAME": "",
+      "ISELIGIBLE": "",
+      "PURCHASER": "",
+      "GIFTEE": "",
+      "GIFTDATE": "",
+      "ACTIVATELINK": "",
+      "CONFIRMLINK": "",
+      "URL": "",
+      "MEMBERID": "",
+      "MEMBERNAME": "",
+      "CALLOUTSLUG": "",
+      "RESPNAME": "",
+      "ORGNAME": ""
+    }
   }
 }

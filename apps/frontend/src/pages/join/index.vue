@@ -8,60 +8,22 @@ meta:
   noCnrMode: true
 </route>
 <template>
-  <JoinForm
+  <JoinFormStep1
     v-if="!stripeClientSecret"
+    v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
-    @submit.prevent="submitSignUp"
+    @submit.prevent="submitStep1"
   />
 
-  <AuthBox v-else :title="joinContent.title">
-    <template #header>
-      <div class="content-message" v-html="joinContent.subtitle" />
-    </template>
-
-    <AppNotification
-      variant="info"
-      :title="t('joinPayment.willBeContributing', signUpDescription)"
-      :icon="faHandSparkles"
-      class="mb-4"
-    />
-    <p
-      v-if="paymentContent.taxRateEnabled"
-      class="-mt-2 mb-4 text-right text-xs"
-    >
-      {{ t('join.tax.included', { taxRate: paymentContent.taxRate }) }}
-    </p>
-
-    <p class="mb-3 text-xs font-semibold text-body-80">
-      {{ t('joinPayment.note') }}
-    </p>
-    <p class="mb-6 text-xs font-semibold text-body-80">
-      <i18n-t keypath="joinPayment.goBack">
-        <template #back>
-          <a
-            class="cursor-pointer text-link underline"
-            @click="stripeClientSecret = ''"
-          >
-            {{ t('joinPayment.goBackButton') }}
-          </a>
-        </template>
-      </i18n-t>
-    </p>
-
-    <StripePayment
-      :client-secret="stripeClientSecret"
-      :public-key="paymentContent.stripePublicKey"
-      :payment-data="signUpData"
-      :return-url="client.signup.completeUrl"
-      show-name-fields
-    />
-    <div
-      v-if="paymentContent.noticeText"
-      class="content-message mt-3 text-center text-xs"
-      v-html="paymentContent.noticeText"
-    />
-  </AuthBox>
+  <JoinFormStep2
+    v-else
+    v-model="formData"
+    :join-content="joinContent"
+    :payment-content="paymentContent"
+    :stripe-client-secret="stripeClientSecret"
+    @back="stripeClientSecret = ''"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -69,24 +31,19 @@ import {
   type ContentJoinData,
   type ContentPaymentData,
   ContributionPeriod,
+  PaymentMethod,
   type SignupData,
 } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
-import { AppNotification } from '@beabee/vue';
 
-import AuthBox from '@components/AuthBox.vue';
-import StripePayment from '@components/StripePayment.vue';
-import JoinForm from '@components/pages/join/JoinForm.vue';
-import { useJoin } from '@components/pages/join/use-join';
-import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
+import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
+import JoinFormStep2 from '@components/pages/join/JoinFormStep2.vue';
 import { generalContent, isEmbed } from '@store';
+import type { JoinFormData } from '@type/join-form-data';
 import { client } from '@utils/api';
 import { notifyRateLimited } from '@utils/api-error';
-import { onBeforeMount, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { onBeforeMount, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-
-const { t } = useI18n();
 
 const route = useRoute();
 const router = useRouter();
@@ -115,31 +72,39 @@ const paymentContent = ref<ContentPaymentData>({
   noticeText: '',
 });
 
-const { signUpData, signUpDescription } = useJoin(paymentContent);
+const formData = reactive<JoinFormData>({
+  email: '',
+  amount: 5,
+  period: ContributionPeriod.Monthly,
+  payFee: true,
+  prorate: false,
+  paymentMethod: PaymentMethod.StripeCard,
+  noContribution: false,
+});
 
-async function submitSignUp() {
+async function submitStep1() {
   try {
     const clientData: SignupData = {
-      email: signUpData.email,
-      ...(signUpData.noContribution
+      email: formData.email,
+      ...(formData.noContribution
         ? {}
-        : signUpData.period === 'one-time'
+        : formData.period === 'one-time'
           ? {
               oneTimePayment: {
-                amount: signUpData.amount,
-                paymentMethod: signUpData.paymentMethod,
-                payFee: signUpData.payFee,
+                amount: formData.amount,
+                paymentMethod: formData.paymentMethod,
+                payFee: formData.payFee,
                 completeUrl: client.signup.completeUrl,
               },
             }
           : {
               contribution: {
-                amount: signUpData.amount,
-                period: signUpData.period,
-                paymentMethod: signUpData.paymentMethod,
+                amount: formData.amount,
+                period: formData.period,
+                paymentMethod: formData.paymentMethod,
                 payFee:
-                  signUpData.period === ContributionPeriod.Monthly &&
-                  signUpData.payFee,
+                  formData.period === ContributionPeriod.Monthly &&
+                  formData.payFee,
                 prorate: false,
                 completeUrl: client.signup.completeUrl,
               },
@@ -175,23 +140,23 @@ onBeforeMount(async () => {
 
   paymentContent.value = await client.content.get('payment');
 
-  signUpData.amount =
+  formData.amount =
     (route.query.amount && Number(route.query.amount)) ||
     joinContent.value.initialAmount;
 
   const period = route.query.period as ContributionPeriod;
-  signUpData.period = Object.values(ContributionPeriod).includes(period)
+  formData.period = Object.values(ContributionPeriod).includes(period)
     ? period
     : joinContent.value.initialPeriod;
 
-  signUpData.paymentMethod = joinContent.value.paymentMethods[0];
+  formData.paymentMethod = joinContent.value.paymentMethods[0];
 
   if (!joinContent.value.showAbsorbFee) {
-    signUpData.payFee = false;
+    formData.payFee = false;
   }
 
   if (generalContent.value.hideContribution) {
-    signUpData.noContribution = true;
+    formData.noContribution = true;
   }
 });
 </script>

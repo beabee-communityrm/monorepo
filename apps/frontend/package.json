@@ -15,7 +15,8 @@
     "check:eslint": "eslint 'src/**/*.{ts,vue}'",
     "check:prettier": "prettier -c .",
     "format": "prettier --write .",
-    "generate:index": "dev-cli start generate-index --extension none --baseDir $(pwd) -p ./src/type ./src/lib ./src/utils ./src/utils/api"
+    "generate:index": "dev-cli start generate-index --extension none --baseDir $(pwd) -p ./src/type ./src/lib ./src/utils ./src/utils/api",
+    "test": "vitest run"
   },
   "dependencies": {
     "@appsignal/javascript": "^1.5.0",
@@ -66,6 +67,7 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.34.0",
     "vite": "^6.3.5",
+    "vitest": "^3.2.1",
     "vue-tsc": "^2.2.10"
   },
   "overrides": {

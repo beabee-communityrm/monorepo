@@ -933,9 +933,7 @@
       "successful": "Riuscito"
     },
     "perMonth": "/ mese",
-    "perMonthText": "al mese",
     "perYear": "/ anno",
-    "perYearText": "all'anno",
     "role": {
       "admin": "",
       "member": "",
@@ -958,8 +956,8 @@
     "until": "fino",
     "yes": "Sì",
     "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
+      "annually": "all'anno",
+      "monthly": "al mese",
       "one-time": ""
     },
     "perOneTime": "",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Metodo di pagamento",
     "paymentSourceUpdateError": "",
+    "perMonthText": "al mese",
+    "perYearText": "all'anno",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
     "prorateIncreaseMessage": "",
@@ -1266,7 +1266,8 @@
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
-      "underline": ""
+      "underline": "",
+      "mergeFields": "Campi di unione"
     },
     "saveChanges": "",
     "saved": "Salvato!",
@@ -1314,7 +1315,10 @@
   "join": {
     "absorbFeeForce": "",
     "absorbFeeOptIn": "Sì, intendo coprire i {fee} della transazione.",
-    "absorbFeeText": "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che mensilmente riceveremo meno rispetto alla quota che hai scelto. Vuoi coprire il costo della transazione? Il pagamento annuale, invece, non prevede costi ulteriori.  ",
+    "absorbFeeText": {
+      "monthly": "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che mensilmente riceveremo meno rispetto alla quota che hai scelto. Vuoi coprire il costo della transazione? Il pagamento annuale, invece, non prevede costi ulteriori.  ",
+      "one-time": ""
+    },
     "contribute": "Contribuisci con {contribution}",
     "errors": {
       "confirmEmail": {
@@ -1340,6 +1344,11 @@
     "privacy": "Privacy",
     "tax": {
       "included": ""
+    },
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1351,7 +1360,8 @@
     "goBack": "Ti sei perso qualcosa? {back}",
     "goBackButton": "Torna alla schermata precedente",
     "note": "Potrai modificare l'ammontare del tuo contributo e accedere allo storico delle tue donazioni in qualsiasi momento tramite il tuo account.",
-    "willBeContributing": "Contribuirai con {contribution}"
+    "willBeContributing": "Contribuirai con {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Per favore, conferma i tuoi dettagli.",
@@ -1406,7 +1416,8 @@
         "description": "",
         "text": "",
         "title": "",
-        "welcomeEmail": ""
+        "welcomeEmail": "",
+        "oneTimeDonationEmail": ""
       },
       "intro": {
         "description": "",
@@ -1449,6 +1460,56 @@
     "payments": "Pagamenti",
     "settings": "Impostazioni",
     "yourProfile": "Il tuo profilo"
+  },
+  "mergeFields": {
+    "title": "Campi di unione",
+    "expand": "Espandi",
+    "expandAll": "Espandi tutti i campi di unione",
+    "collapse": "Comprimi",
+    "collapseAll": "Comprimi tutti i campi di unione",
+    "clickToExpand": "Clicca per espandere i campi di unione",
+    "copy": "Copia",
+    "copyTag": "Copia {tag}",
+    "copied": "Copiato!",
+    "insert": "Inserisci",
+    "insertTag": "Inserisci {tag}",
+    "example": "Esempio",
+    "groups": {
+      "contact": "Campi contatto",
+      "standard": "Campi standard",
+      "magic": "Link magici",
+      "template": "Campi template"
+    },
+    "tags": {
+      "EMAIL": "Indirizzo email del contatto",
+      "NAME": "Nome completo del contatto",
+      "FNAME": "Nome del contatto",
+      "LNAME": "Cognome del contatto",
+      "MEMBERSHIPID": "ID iscrizione del contatto",
+      "RPLINK": "Link reset password",
+      "LOGINLINK": "Link di accesso",
+      "SPLINK": "Link impostazione password",
+      "MESSAGE": "Contenuto messaggio personalizzato",
+      "CALLOUTTITLE": "Titolo callout",
+      "CALLOUTLINK": "Link al callout",
+      "SUPPORTEMAIL": "Indirizzo email supporto",
+      "ANSWERS": "Risposte formattate",
+      "REFCODE": "Codice referral del contatto",
+      "EXPIRES": "Data scadenza iscrizione",
+      "REFEREENAME": "Nome della persona indicata",
+      "ISELIGIBLE": "Se il referral è idoneo",
+      "PURCHASER": "Nome acquirente regalo",
+      "GIFTEE": "Nome destinatario regalo",
+      "GIFTDATE": "Data inizio regalo",
+      "ACTIVATELINK": "Link attivazione regalo",
+      "CONFIRMLINK": "Link conferma email",
+      "URL": "URL speciale",
+      "MEMBERID": "ID membro",
+      "MEMBERNAME": "Nome membro",
+      "CALLOUTSLUG": "Slug callout",
+      "RESPNAME": "Nome rispondente",
+      "ORGNAME": "Nome organizzazione"
+    }
   },
   "newsletterOptIn": {
     "groups": {

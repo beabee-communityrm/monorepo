@@ -127,11 +127,11 @@ export interface AppConfigOverride {
 }
 
 const s3: S3Config = {
-  endpoint: env.s('BEABEE_MINIO_ENDPOINT', 'http://minio:9000'), // MinIO/S3 endpoint URL
+  endpoint: env.s('BEABEE_MINIO_ENDPOINT'), // MinIO/S3 endpoint URL
   region: env.s('BEABEE_MINIO_REGION', 'us-east-1'), // MinIO/S3 region
-  accessKey: env.s('BEABEE_MINIO_ROOT_USER', 'minioadmin'), // MinIO/S3 access key (root user)
-  secretKey: env.s('BEABEE_MINIO_ROOT_PASSWORD', 'minioadmin'), // MinIO/S3 secret key (root password)
-  bucket: env.s('BEABEE_MINIO_BUCKET', 'uploads'), // MinIO/S3 bucket for uploads
+  accessKey: env.s('BEABEE_MINIO_ROOT_USER'), // MinIO/S3 access key (root user)
+  secretKey: env.s('BEABEE_MINIO_ROOT_PASSWORD'), // MinIO/S3 secret key (root password)
+  bucket: env.s('BEABEE_MINIO_BUCKET'), // MinIO/S3 bucket for uploads
   forcePathStyle: env.b('BEABEE_MINIO_FORCE_PATH_STYLE', true), // Force path style URLs for S3 compatibility
 };
 

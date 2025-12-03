@@ -933,9 +933,7 @@
       "successful": "Erfolgreich"
     },
     "perMonth": "/ Monat",
-    "perMonthText": "pro Monat",
     "perYear": "/ Jahr",
-    "perYearText": "pro Jahr",
     "role": {
       "admin": "Admin",
       "member": "Mitglied",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Zahlungsart",
     "paymentSourceUpdateError": "Sie können Ihre Bankverbindung aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
+    "perMonthText": "pro Monat",
+    "perYearText": "pro Jahr",
     "prorateDecreaseMessage": "Ihr Beitrag bleibt noch für 1 Monat gleich. | Ihr Beitrag bleibt noch für {n} Monaten gleich.",
     "prorateDecreaseMessageWillStart": "Der neue Beitrag wird am {renewalDate} zum ersten Mal eingezogen.",
     "prorateIncreaseMessage": "Ihre Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch 1 Monat. | Ihre Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch {n} Monaten.",
@@ -1266,7 +1266,8 @@
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
       "toolbar": "Rich-Text-Formatierung Symbolleiste",
-      "underline": "Unterstreichen"
+      "underline": "Unterstreichen",
+      "mergeFields": "Platzhalter"
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
@@ -1314,7 +1315,10 @@
   "join": {
     "absorbFeeForce": "Bei einem Beitrag von {amount}, müssen Sie die {fee} Transaktionskosten übernehmen.",
     "absorbFeeOptIn": "Ja, ich übernehme die {fee} Transaktionskosten.",
-    "absorbFeeText": "Bei unserem Zahlungsdienstleister zahlen wir für jede einzelne Transaktion. Das heißt, wir erhalten weniger von Ihrem monatlichen Beitrag. Sie haben die Möglichkeit, die Kosten dafür für uns zu übernehmen. Möchten Sie das? Alternativ können Sie auch jährlich bezahlen.",
+    "absorbFeeText": {
+      "monthly": "Bei unserem Zahlungsdienstleister zahlen wir für jede einzelne Transaktion. Das heißt, wir erhalten weniger von Ihrem monatlichen Beitrag. Sie haben die Möglichkeit, die Kosten dafür für uns zu übernehmen. Möchten Sie das? Alternativ können Sie auch jährlich bezahlen.",
+      "one-time": ""
+    },
     "contribute": "Mit {contribution} unterstützen.",
     "errors": {
       "confirmEmail": {
@@ -1340,6 +1344,11 @@
     "privacy": "Datenschutzerklärung",
     "tax": {
       "included": "Beitrag inklusive {taxRate}% MwSt."
+    },
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1351,7 +1360,8 @@
     "goBack": "Möchten Sie etwas ändern? {back}",
     "goBackButton": "Zurück zum letzten Schritt",
     "note": "Sie können Ihre Zahlungsdaten jederzeit in Ihrem Nutzer-Account ändern und dort auch sehen, wie viel Sie in der Vergangenheit bereits gezahlt haben. ",
-    "willBeContributing": "Sie zahlen {contribution}"
+    "willBeContributing": "Sie zahlen {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Bitte bestätigen Sie Ihre Angaben:",
@@ -1406,7 +1416,8 @@
         "description": "Passe deine Willkommens- und Kündigungs-E-Mail an",
         "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mail-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
-        "welcomeEmail": "Willkommens-E-Mail"
+        "welcomeEmail": "Willkommens-E-Mail",
+        "oneTimeDonationEmail": ""
       },
       "intro": {
         "description": "Heiße neue Mitglieder willkommen",
@@ -1449,6 +1460,56 @@
     "payments": "Zahlungen",
     "settings": "Einstellungen",
     "yourProfile": "Ihr Profil"
+  },
+  "mergeFields": {
+    "title": "Platzhalter",
+    "expand": "Ausklappen",
+    "expandAll": "Alle Platzhalter ausklappen",
+    "collapse": "Einklappen",
+    "collapseAll": "Alle Platzhalter einklappen",
+    "clickToExpand": "Klicken Sie zum Ausklappen der Platzhalter",
+    "copy": "Kopieren",
+    "copyTag": "{tag} kopieren",
+    "copied": "Kopiert!",
+    "insert": "Einfügen",
+    "insertTag": "{tag} einfügen",
+    "example": "Beispiel",
+    "groups": {
+      "contact": "Kontakt-Felder",
+      "standard": "Standard-Felder",
+      "magic": "Magic Links",
+      "template": "Template-Felder"
+    },
+    "tags": {
+      "EMAIL": "E-Mail-Adresse des Kontakts",
+      "NAME": "Vollständiger Name",
+      "FNAME": "Vorname",
+      "LNAME": "Nachname",
+      "MEMBERSHIPID": "Mitgliedschafts-ID",
+      "RPLINK": "Passwort zurücksetzen Link",
+      "LOGINLINK": "Login-Link",
+      "SPLINK": "Passwort setzen Link",
+      "MESSAGE": "Benutzerdefinierte Nachricht",
+      "CALLOUTTITLE": "Titel des Callouts",
+      "CALLOUTLINK": "Link zum Callout",
+      "SUPPORTEMAIL": "Support E-Mail-Adresse",
+      "ANSWERS": "Formatierte Antwort-Zusammenfassung",
+      "REFCODE": "Empfehlungs-Code des Kontakts",
+      "EXPIRES": "Ablaufdatum der Mitgliedschaft",
+      "REFEREENAME": "Name der geworbenen Person",
+      "ISELIGIBLE": "Ob die Empfehlung berechtigt ist",
+      "PURCHASER": "Name des Geschenkkäufers",
+      "GIFTEE": "Name des Geschenkempfängers",
+      "GIFTDATE": "Startdatum des Geschenks",
+      "ACTIVATELINK": "Geschenk-Aktivierungslink",
+      "CONFIRMLINK": "E-Mail-Bestätigungslink",
+      "URL": "Spezielle URL",
+      "MEMBERID": "Mitglieds-ID",
+      "MEMBERNAME": "Mitgliedsname",
+      "CALLOUTSLUG": "Callout-Slug",
+      "RESPNAME": "Name des Antwortenden",
+      "ORGNAME": "Name der Organisation"
+    }
   },
   "newsletterOptIn": {
     "groups": {

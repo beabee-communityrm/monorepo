@@ -938,11 +938,9 @@
       "successful": "Successful"
     },
     "perMonth": "/ month",
-    "perMonthText": "a month",
     "perOneTime": " one-time",
     "perOneTimeText": "one-time",
     "perYear": "/ year",
-    "perYearText": "a year",
     "role": {
       "admin": "Admin",
       "member": "Member",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Payment method",
     "paymentSourceUpdateError": "You can't update your bank account at the moment as you have a payment pending",
+    "perMonthText": "a month",
+    "perYearText": "a year",
     "prorateDecreaseMessage": "You have one month left on your current contribution. | You have {n} months left on your current contribution.",
     "prorateDecreaseMessageWillStart": "Your new contribution will start on {renewalDate}.",
     "prorateIncreaseMessage": "You have one month left on your current contribution. | You have {n} months left on your current contribution.",
@@ -1266,7 +1266,8 @@
       "numberedlist": "Numbered list",
       "strikethrough": "Strikethrough",
       "toolbar": "Rich text formatting toolbar",
-      "underline": "Underline"
+      "underline": "Underline",
+      "mergeFields": "Placeholders"
     },
     "saveChanges": "Save Changes",
     "saved": "Saved!",
@@ -1314,8 +1315,16 @@
   "join": {
     "absorbFeeForce": "{amount} contributions must absorb the {fee} fee.",
     "absorbFeeOptIn": "Yes, I'll absorb the {fee} fee.",
-    "absorbFeeText": "Our payment processor charges us per transaction which means we receive less from monthly contributions. Are you happy to absorb the {fee} transaction fee?  Alternatively you could pay annually.",
+    "absorbFeeText": {
+      "monthly": "Our payment processor charges us per transaction which means we receive less from monthly contributions. Would you like to absorb the {fee} transaction fee?  Alternatively you could pay annually.",
+      "one-time": "Our payment processor charges us per transaction which means we receive less from one-time contributions. Would you like to absorb the {fee} transaction fee?"
+    },
     "contribute": "Contribute {contribution}",
+    "contribution": {
+      "annually": "{amount} per year",
+      "monthly": "{amount} per month",
+      "one-time": "{amount} one-time"
+    },
     "errors": {
       "confirmEmail": {
         "message": "Almost there! We just need to confirm your email address to finish setting up your membership.",
@@ -1350,8 +1359,9 @@
     "genericError": "Oops, something went wrong ({type})! Contact support if this happens again.",
     "goBack": "Did you miss something? {back}",
     "goBackButton": "Back to the previous screen",
-    "note": "You'll be able to modify your contribution and access your payment history at any time in your member account",
-    "willBeContributing": "You'll be contributing {contribution}"
+    "note": "You'll be able to update your details and access your payment history at any time in your account",
+    "willBeContributing": "You'll be contributing {contribution}",
+    "willBeDonating": "You'll be making a donation of {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Please confirm your details",
@@ -1404,6 +1414,7 @@
         "bigTitle": "Welcome & cancellation emails",
         "cancellationEmail": "Cancellation email",
         "description": "Customise your welcome and cancellation emails",
+        "oneTimeDonationEmail": "One-time donation email",
         "text": "All emails are sent from your support email address and include standard signature, you can change these in your email settings.",
         "title": "Emails",
         "welcomeEmail": "Welcome email"
@@ -1449,6 +1460,56 @@
     "payments": "Payments",
     "settings": "Settings",
     "yourProfile": "Your profile"
+  },
+  "mergeFields": {
+    "title": "Placeholders",
+    "expand": "Expand",
+    "expandAll": "Expand all placeholders",
+    "collapse": "Collapse",
+    "collapseAll": "Collapse all placeholders",
+    "clickToExpand": "Click to expand placeholders",
+    "copy": "Copy",
+    "copyTag": "Copy {tag}",
+    "copied": "Copied!",
+    "insert": "Insert",
+    "insertTag": "Insert {tag}",
+    "example": "Example",
+    "groups": {
+      "contact": "Contact Fields",
+      "standard": "Standard Fields",
+      "magic": "Magic Links",
+      "template": "Template Fields"
+    },
+    "tags": {
+      "EMAIL": "Contact email address",
+      "NAME": "Contact full name",
+      "FNAME": "Contact first name",
+      "LNAME": "Contact last name",
+      "MEMBERSHIPID": "Contact membership ID",
+      "RPLINK": "Password reset link",
+      "LOGINLINK": "Login link",
+      "SPLINK": "Set password link",
+      "MESSAGE": "Custom message content",
+      "CALLOUTTITLE": "Callout title",
+      "CALLOUTLINK": "Link to callout",
+      "SUPPORTEMAIL": "Support email address",
+      "ANSWERS": "Formatted response answers",
+      "REFCODE": "Contact referral code",
+      "EXPIRES": "Membership expiration date",
+      "REFEREENAME": "Name of referred person",
+      "ISELIGIBLE": "Whether referral is eligible",
+      "PURCHASER": "Gift purchaser name",
+      "GIFTEE": "Gift recipient name",
+      "GIFTDATE": "Gift start date",
+      "ACTIVATELINK": "Gift activation link",
+      "CONFIRMLINK": "Email confirmation link",
+      "URL": "Special URL",
+      "MEMBERID": "Member ID",
+      "MEMBERNAME": "Member name",
+      "CALLOUTSLUG": "Callout slug",
+      "RESPNAME": "Responder name",
+      "ORGNAME": "Organization name"
+    }
   },
   "newsletterOptIn": {
     "groups": {

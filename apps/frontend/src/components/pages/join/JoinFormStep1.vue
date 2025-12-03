@@ -10,7 +10,7 @@
       :extract-error-code="extractApiErrorCode"
       @submit="onSubmit"
     >
-      <AccountSection v-model:email="signUpData.email" class="mb-6" />
+      <AccountSection v-model:email="data.email" class="mb-6" />
     </AppForm>
   </AuthBox>
 
@@ -21,27 +21,27 @@
 
     <AppForm :button-text="buttonText" full-button @submit="onSubmit">
       <AppContribution
-        v-model:amount="signUpData.amount"
-        v-model:period="signUpData.period"
-        v-model:pay-fee="signUpData.payFee"
-        v-model:payment-method="signUpData.paymentMethod"
+        v-model:amount="data.amount"
+        v-model:period="data.period"
+        v-model:pay-fee="data.payFee"
+        v-model:payment-method="data.paymentMethod"
         :content="joinContent"
         :payment-content="paymentContent"
-        :disabled="signUpData.noContribution"
+        :disabled="data.noContribution"
       >
         <AppCheckbox
           v-if="joinContent.showNoContribution"
-          v-model="signUpData.noContribution"
+          v-model="data.noContribution"
           class="mb-4"
           :label="t('join.noContribution')"
         />
-        <AccountSection v-model:email="signUpData.email" class="my-6" />
+        <AccountSection v-model:email="data.email" class="my-6" />
       </AppContribution>
     </AppForm>
 
     <div class="mt-3 text-center text-xs">
       <p
-        v-if="!signUpData.noContribution && paymentContent.taxRateEnabled"
+        v-if="!data.noContribution && paymentContent.taxRateEnabled"
         class="mb-2"
       >
         {{ t('join.tax.included', { taxRate: paymentContent.taxRate }) }}
@@ -66,9 +66,9 @@
   </AuthBox>
 </template>
 <script lang="ts" setup>
-import type {
-  ContentJoinData,
-  ContentPaymentData,
+import {
+  type ContentJoinData,
+  type ContentPaymentData,
 } from '@beabee/beabee-common';
 import { AppCheckbox, AppForm, AppTitle } from '@beabee/vue';
 
@@ -76,13 +76,14 @@ import beabeeLogo from '@assets/images/beabee-logo.png';
 import AuthBox from '@components/AuthBox.vue';
 import AppContribution from '@components/contribution/AppContribution.vue';
 import { generalContent, isEmbed } from '@store';
+import type { JoinFormData } from '@type/join-form-data';
 import { extractApiErrorCode } from '@utils/api-error';
+import { calcJoinFormTotalAmount } from '@utils/payment';
 import useVuelidate from '@vuelidate/core';
-import { computed, toRef } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AccountSection from './AccountSection.vue';
-import { useJoin } from './use-join';
 
 const props = defineProps<{
   joinContent: ContentJoinData;
@@ -91,16 +92,23 @@ const props = defineProps<{
   onSubmit?: () => Promise<void>;
 }>();
 
-const { t } = useI18n();
+const { n, t } = useI18n();
 
-const { signUpData, signUpDescription } = useJoin(
-  toRef(props, 'paymentContent')
-);
+const data = defineModel<JoinFormData>({ required: true });
 
 const buttonText = computed(() => {
-  return signUpData.noContribution
+  const totalAmount = calcJoinFormTotalAmount(
+    data.value,
+    props.paymentContent.stripeCountry
+  );
+
+  return data.value.noContribution
     ? t('join.now')
-    : t('join.contribute', signUpDescription.value);
+    : t('join.contribute', {
+        contribution: t('join.contribution.' + data.value.period, {
+          amount: n(totalAmount, 'currency'),
+        }),
+      });
 });
 
 useVuelidate({ $stopPropagation: true });

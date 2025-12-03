@@ -933,9 +933,7 @@
       "successful": "Sucesso"
     },
     "perMonth": "/ mês",
-    "perMonthText": "por mês",
     "perYear": "/ ano",
-    "perYearText": "por ano",
     "role": {
       "admin": "Administrador",
       "member": "Membro",
@@ -958,8 +956,8 @@
     "until": "até",
     "yes": "Sim",
     "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
+      "annually": "Anualmente",
+      "monthly": "Mensalmente",
       "one-time": ""
     },
     "perOneTime": "",
@@ -1094,6 +1092,8 @@
     },
     "paymentMethod": "Método de pagamento",
     "paymentSourceUpdateError": "Não é possível atualizar a sua conta bancária porque o pagamento está pendente.",
+    "perMonthText": "por mês",
+    "perYearText": "por ano",
     "prorateDecreaseMessage": "Resta 1 mês na sua contribuição atual. | Restam {n} meses na tua contribuição atual.",
     "prorateDecreaseMessageWillStart": "A tua nova contribuição vai começar a {renewalDate}.",
     "prorateIncreaseMessage": "Tens 1 mês restante na sua contribuição atual. | Tens {n} meses restantes na tua contribuição atual.",
@@ -1266,7 +1266,8 @@
       "numberedlist": "Lista numerada",
       "strikethrough": "Rasurado",
       "toolbar": "",
-      "underline": "Sublinhado"
+      "underline": "Sublinhado",
+      "mergeFields": "Campos de mesclagem"
     },
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",
@@ -1314,7 +1315,10 @@
   "join": {
     "absorbFeeForce": "É necessário que {amount} contributos suportem a taxa de {fee}.",
     "absorbFeeOptIn": "Sim, posso suportar a taxa de {fee}.",
-    "absorbFeeText": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo mensal. Poderias suportar a taxa de {fee}? ",
+    "absorbFeeText": {
+      "monthly": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo mensal. Poderias suportar a taxa de {fee}? ",
+      "one-time": ""
+    },
     "contribute": "Contribuir {contribution}",
     "errors": {
       "confirmEmail": {
@@ -1340,6 +1344,11 @@
     "privacy": "Política de Privacidade",
     "tax": {
       "included": ""
+    },
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1351,7 +1360,8 @@
     "goBack": "Esqueceste-te de alguma coisa? {back}",
     "goBackButton": "Voltar ao passo anterior",
     "note": "Podes alterar a tua contribuição e aceder ao teu historial de pagamentos a qualquer altura na tua conta.",
-    "willBeContributing": "O tua contribuição será de {contribution}"
+    "willBeContributing": "O tua contribuição será de {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Por favor confirma os teus detalhes",
@@ -1406,7 +1416,8 @@
         "description": "",
         "text": "",
         "title": "",
-        "welcomeEmail": ""
+        "welcomeEmail": "",
+        "oneTimeDonationEmail": ""
       },
       "intro": {
         "description": "",
@@ -1449,6 +1460,56 @@
     "payments": "",
     "settings": "Definições",
     "yourProfile": "Perfil"
+  },
+  "mergeFields": {
+    "title": "Campos de mesclagem",
+    "expand": "Expandir",
+    "expandAll": "Expandir todos os campos de mesclagem",
+    "collapse": "Recolher",
+    "collapseAll": "Recolher todos os campos de mesclagem",
+    "clickToExpand": "Clicar para expandir os campos de mesclagem",
+    "copy": "Copiar",
+    "copyTag": "Copiar {tag}",
+    "copied": "Copiado!",
+    "insert": "Inserir",
+    "insertTag": "Inserir {tag}",
+    "example": "Exemplo",
+    "groups": {
+      "contact": "Campos de contacto",
+      "standard": "Campos padrão",
+      "magic": "Links mágicos",
+      "template": "Campos de modelo"
+    },
+    "tags": {
+      "EMAIL": "Endereço de email do contacto",
+      "NAME": "Nome completo do contacto",
+      "FNAME": "Primeiro nome do contacto",
+      "LNAME": "Apelido do contacto",
+      "MEMBERSHIPID": "ID de membro do contacto",
+      "RPLINK": "Link de redefinição de palavra-passe",
+      "LOGINLINK": "Link de login",
+      "SPLINK": "Link de definição de palavra-passe",
+      "MESSAGE": "Conteúdo de mensagem personalizado",
+      "CALLOUTTITLE": "Título do callout",
+      "CALLOUTLINK": "Link para o callout",
+      "SUPPORTEMAIL": "Endereço de email de suporte",
+      "ANSWERS": "Respostas formatadas",
+      "REFCODE": "Código de referência do contacto",
+      "EXPIRES": "Data de expiração da adesão",
+      "REFEREENAME": "Nome da pessoa referida",
+      "ISELIGIBLE": "Se a referência é elegível",
+      "PURCHASER": "Nome do comprador do presente",
+      "GIFTEE": "Nome do destinatário do presente",
+      "GIFTDATE": "Data de início do presente",
+      "ACTIVATELINK": "Link de ativação do presente",
+      "CONFIRMLINK": "Link de confirmação de email",
+      "URL": "URL especial",
+      "MEMBERID": "ID de membro",
+      "MEMBERNAME": "Nome do membro",
+      "CALLOUTSLUG": "Slug do callout",
+      "RESPNAME": "Nome do respondente",
+      "ORGNAME": "Nome da organização"
+    }
   },
   "newsletterOptIn": {
     "groups": {

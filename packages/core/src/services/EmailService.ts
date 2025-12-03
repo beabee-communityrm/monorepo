@@ -432,7 +432,7 @@ class EmailService {
    *   - `null` if not found
    *   - Throws `ExternalEmailTemplate` if the template is managed by an external email provider
    */
-  async findEmail(id: EmailTemplateId | string): Promise<Email | null> {
+  async findEmail(id: string): Promise<Email | null> {
     if (isUUID(id, '4')) {
       return await getRepository(Email).findOneBy({ id });
     } else if (this.isTemplateId(id)) {

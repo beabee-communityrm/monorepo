@@ -937,9 +937,7 @@
       "successful": "Succès"
     },
     "perMonth": "/ mois",
-    "perMonthText": "un mois",
     "perYear": "/ an",
-    "perYearText": "un an",
     "role": {
       "admin": "Administrateur",
       "member": "Membre",
@@ -962,8 +960,8 @@
     "until": "jusqu'à",
     "yes": "Oui",
     "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
+      "annually": "Annuellement",
+      "monthly": "Mensuellement",
       "one-time": ""
     },
     "perOneTime": "",
@@ -1098,6 +1096,8 @@
     },
     "paymentMethod": "Moyen de paiement",
     "paymentSourceUpdateError": "Vous ne pouvez pas mettre à jour votre compte bancaire pour le moment car vous avez un paiement en attente",
+    "perMonthText": "un mois",
+    "perYearText": "un an",
     "prorateDecreaseMessage": "Vous avez un mois restant pour votre cotisation actuelle. | Vous avez {n} mois restants pour votre cotisation actuelle.",
     "prorateDecreaseMessageWillStart": "Votre nouvelle cotisation commencera le {renewalDate}.",
     "prorateIncreaseMessage": "Vous avez un mois restant pour votre cotisation actuelle. | Vous avez {n} mois restants pour votre cotisation actuelle.",
@@ -1270,7 +1270,8 @@
       "numberedlist": "Liste ordonnée",
       "strikethrough": "Barré",
       "toolbar": "",
-      "underline": "Souligné"
+      "underline": "Souligné",
+      "mergeFields": "Champs de fusion"
     },
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",
@@ -1318,7 +1319,10 @@
   "join": {
     "absorbFeeForce": "{amount} cotisations doivent compenser les frais de {fee}.",
     "absorbFeeOptIn": "Oui, je compense les frais de {fee}.",
-    "absorbFeeText": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations mensuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ? Vous pouvez également payer annuellement.",
+    "absorbFeeText": {
+      "monthly": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations mensuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ? Vous pouvez également payer annuellement.",
+      "one-time": ""
+    },
     "contribute": "Cotiser {contribution}",
     "errors": {
       "confirmEmail": {
@@ -1344,6 +1348,11 @@
     "privacy": "Politique de confidentialité",
     "tax": {
       "included": "La cotisation comprend {taxRate}% de TVA."
+    },
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1355,7 +1364,8 @@
     "goBack": "Avez-vous oublié quelque chose ? {back}",
     "goBackButton": "Revenir à l'écran précédent",
     "note": "Vous pourrez modifier votre cotisation et accéder à votre historique de paiement à tout moment depuis votre compte membre",
-    "willBeContributing": "Vous cotiserez {contribution}"
+    "willBeContributing": "Vous cotiserez {contribution}",
+    "willBeDonating": ""
   },
   "joinSetup": {
     "confirmDetails": "Veuillez confirmer vos informations",
@@ -1410,7 +1420,8 @@
         "description": "Personnalisez vos e-mail de bienvenue et d'annulation",
         "text": "Tous les e-mails sont envoyés depuis votre adresse e-mail de support et comportent une signature standard. Vous pouvez modifier ceci dans vos paramètres d'e-mail.",
         "title": "E-mails",
-        "welcomeEmail": "E-mail de bienvenue"
+        "welcomeEmail": "E-mail de bienvenue",
+        "oneTimeDonationEmail": ""
       },
       "intro": {
         "description": "Souhaitez la bienvenue à vos nouveaux membres",
@@ -1453,6 +1464,56 @@
     "payments": "Paiments",
     "settings": "Paramètres",
     "yourProfile": "Votre profil"
+  },
+  "mergeFields": {
+    "title": "Champs de fusion",
+    "expand": "Développer",
+    "expandAll": "Développer tous les champs de fusion",
+    "collapse": "Réduire",
+    "collapseAll": "Réduire tous les champs de fusion",
+    "clickToExpand": "Cliquez pour développer les champs de fusion",
+    "copy": "Copier",
+    "copyTag": "Copier {tag}",
+    "copied": "Copié !",
+    "insert": "Insérer",
+    "insertTag": "Insérer {tag}",
+    "example": "Exemple",
+    "groups": {
+      "contact": "Champs de contact",
+      "standard": "Champs standards",
+      "magic": "Liens magiques",
+      "template": "Champs de modèle"
+    },
+    "tags": {
+      "EMAIL": "Adresse e-mail du contact",
+      "NAME": "Nom complet du contact",
+      "FNAME": "Prénom du contact",
+      "LNAME": "Nom de famille du contact",
+      "MEMBERSHIPID": "ID de membre du contact",
+      "RPLINK": "Lien de réinitialisation du mot de passe",
+      "LOGINLINK": "Lien de connexion",
+      "SPLINK": "Lien de définition du mot de passe",
+      "MESSAGE": "Contenu du message personnalisé",
+      "CALLOUTTITLE": "Titre de l'appel",
+      "CALLOUTLINK": "Lien vers l'appel",
+      "SUPPORTEMAIL": "Adresse e-mail de support",
+      "ANSWERS": "Réponses formatées",
+      "REFCODE": "Code de parrainage du contact",
+      "EXPIRES": "Date d'expiration de l'adhésion",
+      "REFEREENAME": "Nom de la personne parrainée",
+      "ISELIGIBLE": "Si le parrainage est éligible",
+      "PURCHASER": "Nom de l'acheteur du cadeau",
+      "GIFTEE": "Nom du bénéficiaire du cadeau",
+      "GIFTDATE": "Date de début du cadeau",
+      "ACTIVATELINK": "Lien d'activation du cadeau",
+      "CONFIRMLINK": "Lien de confirmation e-mail",
+      "URL": "URL spéciale",
+      "MEMBERID": "ID membre",
+      "MEMBERNAME": "Nom du membre",
+      "CALLOUTSLUG": "Slug d'appel",
+      "RESPNAME": "Nom du répondant",
+      "ORGNAME": "Nom de l'organisation"
+    }
   },
   "newsletterOptIn": {
     "groups": {
