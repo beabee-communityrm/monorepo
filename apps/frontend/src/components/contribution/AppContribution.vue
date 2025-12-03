@@ -57,7 +57,7 @@
       v-if="hasExistingPaymentMethod"
       v-model="useExistingPaymentMethod"
       label="Use existing payment method"
-      class="mb-4 mt-3"
+      class="mb-4"
     />
   </div>
 </template>
