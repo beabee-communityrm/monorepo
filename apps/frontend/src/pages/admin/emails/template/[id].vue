@@ -39,17 +39,11 @@ import type {
   GetEmailData,
   GetEmailTemplateInfoData,
 } from '@beabee/beabee-common';
-import {
-  AppButton,
-  AppForm,
-  AppInfoList,
-  AppInfoListItem,
-  type MergeTagGroup,
-  PageTitle,
-} from '@beabee/vue';
+import { AppButton, AppForm, type MergeTagGroup, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import EmailEditor from '@components/EmailEditor.vue';
+import { currentUser, generalContent } from '@store';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { computed, onMounted, ref } from 'vue';
@@ -75,17 +69,52 @@ const mergeFields = computed(() => templateInfo.value?.mergeFields ?? []);
 const templateType = computed(() => templateInfo.value?.type ?? 'general');
 
 // Convert merge fields array to MergeTagGroup format for EmailEditor
+// Includes: standard fields (always), contact fields (if contact type), template-specific fields
 const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
-  if (mergeFields.value.length === 0) {
-    return [];
-  }
+  const groups: MergeTagGroup[] = [];
 
-  return [
-    {
+  // Template-specific merge fields
+  if (mergeFields.value.length > 0) {
+    groups.push({
       key: 'template',
       tags: mergeFields.value.map((field) => ({ tag: field })),
-    },
-  ];
+    });
+  }
+
+  // Contact merge fields (only for contact templates)
+  if (templateType.value === 'contact') {
+    const user = currentUser.value;
+    const fullName = user
+      ? `${user.firstname} ${user.lastname}`.trim()
+      : undefined;
+
+    groups.push({
+      key: 'contact',
+      tags: [
+        { tag: 'EMAIL', example: user?.email },
+        { tag: 'NAME', example: fullName },
+        { tag: 'FNAME', example: user?.firstname },
+        { tag: 'LNAME', example: user?.lastname },
+      ],
+    });
+  }
+
+  // Standard merge fields (available for all templates)
+  groups.push({
+    key: 'standard',
+    tags: [
+      {
+        tag: 'SUPPORTEMAIL',
+        example: generalContent.value.supportEmail,
+      },
+      {
+        tag: 'ORGNAME',
+        example: generalContent.value.organisationName,
+      },
+    ],
+  });
+
+  return groups;
 });
 
 const pageTitle = computed(() => {
