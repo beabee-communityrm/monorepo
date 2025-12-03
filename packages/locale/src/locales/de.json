@@ -1463,11 +1463,6 @@
   },
   "mergeFields": {
     "title": "Platzhalter",
-    "expand": "Ausklappen",
-    "expandAll": "Alle Platzhalter ausklappen",
-    "collapse": "Einklappen",
-    "collapseAll": "Alle Platzhalter einklappen",
-    "clickToExpand": "Klicken Sie zum Ausklappen der Platzhalter",
     "copy": "Kopieren",
     "copyTag": "{tag} kopieren",
     "copied": "Kopiert!",

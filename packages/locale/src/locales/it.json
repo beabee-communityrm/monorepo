@@ -1463,11 +1463,6 @@
   },
   "mergeFields": {
     "title": "Campi di unione",
-    "expand": "Espandi",
-    "expandAll": "Espandi tutti i campi di unione",
-    "collapse": "Comprimi",
-    "collapseAll": "Comprimi tutti i campi di unione",
-    "clickToExpand": "Clicca per espandere i campi di unione",
     "copy": "Copia",
     "copyTag": "Copia {tag}",
     "copied": "Copiato!",

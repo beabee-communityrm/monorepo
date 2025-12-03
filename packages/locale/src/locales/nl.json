@@ -1463,11 +1463,6 @@
   },
   "mergeFields": {
     "title": "Samenvoegvelden",
-    "expand": "Uitklappen",
-    "expandAll": "Alle samenvoegvelden uitklappen",
-    "collapse": "Inklappen",
-    "collapseAll": "Alle samenvoegvelden inklappen",
-    "clickToExpand": "Klik om samenvoegvelden uit te klappen",
     "copy": "Kopiëren",
     "copyTag": "Kopieer {tag}",
     "copied": "Gekopieerd!",

@@ -1467,11 +1467,6 @@
   },
   "mergeFields": {
     "title": "Champs de fusion",
-    "expand": "Développer",
-    "expandAll": "Développer tous les champs de fusion",
-    "collapse": "Réduire",
-    "collapseAll": "Réduire tous les champs de fusion",
-    "clickToExpand": "Cliquez pour développer les champs de fusion",
     "copy": "Copier",
     "copyTag": "Copier {tag}",
     "copied": "Copié !",
