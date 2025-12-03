@@ -362,19 +362,13 @@ class EmailService {
       templateId: template,
     });
 
-    if (existing) {
-      // Update existing override
-      await getRepository(Email).update(existing.id, data);
-      return (await getRepository(Email).findOneBy({ id: existing.id }))!;
-    } else {
-      // Create new override
-      const email = new Email();
-      email.templateId = template;
-      email.name = `Override: ${template}`;
-      email.subject = data.subject;
-      email.body = data.body;
-      return await getRepository(Email).save(email);
-    }
+    const email = existing || new Email();
+    email.templateId = template;
+    email.name = existing ? existing.name : `Override: ${template}`;
+    email.subject = data.subject;
+    email.body = data.body;
+
+    return await getRepository(Email).save(email);
   }
 
   /**
