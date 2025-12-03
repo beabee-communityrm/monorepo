@@ -1,6 +1,7 @@
 import {
   AdminEmailTemplateId,
   ContactEmailTemplateId,
+  EmailTemplateId,
   GeneralEmailTemplateId,
 } from '@beabee/core/type';
 
@@ -36,6 +37,15 @@ export class PreviewGeneralEmailParams {
   @IsEmailTemplateId('general')
   templateId!: GeneralEmailTemplateId;
 }
+
+export class UpdateEmailTemplateParams {
+  @IsEmailTemplateId()
+  templateId!: EmailTemplateId;
+}
+
+export class DeleteEmailTemplateParams extends UpdateEmailTemplateParams {}
+
+export class GetEmailTemplateParams extends UpdateEmailTemplateParams {}
 
 /**
  * DTO for creating custom emails
