@@ -23,34 +23,6 @@ meta:
     :button-text="t('actions.save')"
     @submit="handleSubmit"
   >
-    <!-- Template Info (read-only) -->
-    <AppInfoList class="mb-6 max-w-2xl">
-      <AppInfoListItem
-        :name="t('emails.name')"
-        :value="t(`emails.templates.names.${templateId}`)"
-      />
-
-      <!-- Available merge fields
-           TODO: Temporary solution until PR #364 is merged. After merge, this will be
-           replaced with the new AppMergeFields component that allows inserting merge fields
-           directly in the EmailEditor rich text editor toolbar. -->
-      <AppInfoListItem
-        v-if="mergeFields.length > 0"
-        :name="t('emails.templates.availableFields')"
-      >
-        <div class="flex flex-wrap gap-2">
-          <code
-            v-for="field in mergeFields"
-            :key="field"
-            class="rounded bg-primary-10 px-2 py-1 text-xs"
-          >
-            *|{{ field }}|*
-          </code>
-        </div>
-      </AppInfoListItem>
-    </AppInfoList>
-
-    <!-- Email Editor -->
     <EmailEditor
       v-model:subject="emailData.subject"
       v-model:content="emailData.body"
@@ -65,13 +37,7 @@ import type {
   GetEmailData,
   GetEmailTemplateInfoData,
 } from '@beabee/beabee-common';
-import {
-  AppButton,
-  AppForm,
-  AppInfoList,
-  AppInfoListItem,
-  PageTitle,
-} from '@beabee/vue';
+import { AppButton, AppForm, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import EmailEditor from '@components/EmailEditor.vue';
@@ -96,7 +62,6 @@ const emailData = ref<GetEmailData | null>(null);
 const templateInfo = ref<GetEmailTemplateInfoData | null>(null);
 
 const hasOverride = computed(() => templateInfo.value?.hasOverride ?? false);
-const mergeFields = computed(() => templateInfo.value?.mergeFields ?? []);
 const templateType = computed(() => templateInfo.value?.type ?? 'general');
 
 const pageTitle = computed(() => {

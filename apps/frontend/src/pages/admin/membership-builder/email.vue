@@ -102,7 +102,6 @@ onBeforeMount(async () => {
   welcomeEmail.value = await loadEmail('welcome');
   cancellationEmail.value = await loadEmail('cancelled-contribution');
   oneTimeDonationEmail.value = await loadEmail('one-time-donation');
-
   joinContent.value = await client.content.get('join');
 });
 </script>

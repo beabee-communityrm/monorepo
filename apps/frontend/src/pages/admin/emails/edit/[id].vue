@@ -49,24 +49,20 @@ meta:
       <div class="w-full md:w-[600px]"></div>
     </div>
 
-    <!-- Email Editor -->
     <EmailEditor
       v-model:subject="emailData.subject"
       v-model:content="emailData.body"
       :heading="t('emailEditor.body.label')"
-      :merge-field-groups="mergeFieldGroups"
     />
   </AppForm>
 </template>
 <script lang="ts" setup>
 import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
 import { AppButton, AppForm, AppInput, PageTitle } from '@beabee/vue';
-import type { MergeTagGroup } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import EmailEditor from '@components/EmailEditor.vue';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { generalContent } from '@store';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { computed, onMounted, ref } from 'vue';
@@ -83,23 +79,6 @@ const emailId = (() => {
 })();
 
 const emailData = ref<GetEmailData | null>(null);
-
-// Standard merge fields (available for all custom emails)
-const mergeFieldGroups = computed<MergeTagGroup[]>(() => [
-  {
-    key: 'standard',
-    tags: [
-      {
-        tag: 'SUPPORTEMAIL',
-        example: generalContent.value.supportEmail,
-      },
-      {
-        tag: 'ORGNAME',
-        example: generalContent.value.organisationName,
-      },
-    ],
-  },
-]);
 
 const pageTitle = computed(() => {
   if (!emailData.value) return t('emails.edit.title');
