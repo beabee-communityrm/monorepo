@@ -368,7 +368,7 @@
         },
         "email": {
           "body": {
-            "default": "<p>Hallo {'*|FNAME|*'} {'*|LNAME|*'},</p><p>Diese E-Mail bestätigt Ihre Antwort auf <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung Ihrer E-Mail-Adresse {'*|EMAIL|*'}.</p><p><br /></p><p>Wenn Sie Fragen haben, wenden Sie sich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Mit freundlichen Grüßen</p>"
+            "default": "<p>Hallo {'*|FNAME|*'} {'*|LNAME|*'},</p><p>Diese E-Mail bestätigt Ihre Antwort auf<a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung Ihrer E-Mail-Adresse {'*|EMAIL|*'}.</p><p><br /></p><p>Wenn Sie Fragen haben, wenden Sie sich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Mit freundlichen Grüßen</p>"
           },
           "collectInfoWarning": {
             "description": "Um eine E-Mail an alle Teilnehmer zu senden, müssen Sie \"Kontaktinformationen erfassen\" in der Registerkarte Einstellungen aktivieren",
@@ -1317,7 +1317,7 @@
     "absorbFeeOptIn": "Ja, ich übernehme die {fee} Transaktionskosten.",
     "absorbFeeText": {
       "monthly": "Bei unserem Zahlungsdienstleister zahlen wir für jede einzelne Transaktion. Das heißt, wir erhalten weniger von Ihrem monatlichen Beitrag. Sie haben die Möglichkeit, die Kosten dafür für uns zu übernehmen. Möchten Sie das? Alternativ können Sie auch jährlich bezahlen.",
-      "one-time": ""
+      "one-time": "Bei unserem Zahlungsdienstleister zahlen wir für jede einzelne Transaktion. Das heißt, wir erhalten weniger von Ihrem einmaligen Beitrag. Sie haben die Möglichkeit, die Kosten dafür für uns zu übernehmen. Möchten Sie das?"
     },
     "contribute": "Mit {contribution} unterstützen.",
     "errors": {
@@ -1346,9 +1346,9 @@
       "included": "Beitrag inklusive {taxRate}% MwSt."
     },
     "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "{amount} pro Jahr",
+      "monthly": "{amount} pro Monat",
+      "one-time": "{amount} einmalig"
     }
   },
   "joinPayment": {
@@ -1361,7 +1361,7 @@
     "goBackButton": "Zurück zum letzten Schritt",
     "note": "Sie können Ihre Zahlungsdaten jederzeit in Ihrem Nutzer-Account ändern und dort auch sehen, wie viel Sie in der Vergangenheit bereits gezahlt haben. ",
     "willBeContributing": "Sie zahlen {contribution}",
-    "willBeDonating": ""
+    "willBeDonating": "Sie spenden {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Bitte bestätigen Sie Ihre Angaben:",
@@ -1417,7 +1417,7 @@
         "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mail-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
         "welcomeEmail": "Willkommens-E-Mail",
-        "oneTimeDonationEmail": ""
+        "oneTimeDonationEmail": "Einmalige Spenden-E-Mail"
       },
       "intro": {
         "description": "Heiße neue Mitglieder willkommen",
@@ -1463,11 +1463,6 @@
   },
   "mergeFields": {
     "title": "Platzhalter",
-    "expand": "Ausklappen",
-    "expandAll": "Alle Platzhalter ausklappen",
-    "collapse": "Einklappen",
-    "collapseAll": "Alle Platzhalter einklappen",
-    "clickToExpand": "Klicken Sie zum Ausklappen der Platzhalter",
     "copy": "Kopieren",
     "copyTag": "{tag} kopieren",
     "copied": "Kopiert!",
@@ -1490,8 +1485,8 @@
       "LOGINLINK": "Login-Link",
       "SPLINK": "Passwort setzen Link",
       "MESSAGE": "Benutzerdefinierte Nachricht",
-      "CALLOUTTITLE": "Titel des Callouts",
-      "CALLOUTLINK": "Link zum Callout",
+      "CALLOUTTITLE": "Titel der CrowdNewsroom",
+      "CALLOUTLINK": "Link zur CrowdNewsroom",
       "SUPPORTEMAIL": "Support E-Mail-Adresse",
       "ANSWERS": "Formatierte Antwort-Zusammenfassung",
       "REFCODE": "Empfehlungs-Code des Kontakts",
@@ -1506,7 +1501,7 @@
       "URL": "Spezielle URL",
       "MEMBERID": "Mitglieds-ID",
       "MEMBERNAME": "Mitgliedsname",
-      "CALLOUTSLUG": "Callout-Slug",
+      "CALLOUTSLUG": "CrowdNewsroom-Slug",
       "RESPNAME": "Name des Antwortenden",
       "ORGNAME": "Name der Organisation"
     }

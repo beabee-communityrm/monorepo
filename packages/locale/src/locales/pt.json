@@ -369,7 +369,7 @@
         "email": {
           "title": "Email",
           "body": {
-            "default": "<p>Olá {'*|FNAME|*'},</p><p>Este e-mail confirma a sua resposta à chamada <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> utilizando o seu endereço de correio eletrónico {'*|EMAIL|*'}.</p><p><br /></p><p>Se tiver alguma questão, contacte a nossa equipa de apoio em <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Atenciosamente</p>"
+            "default": "<p>Olá {'*|FNAME|*'},</p><p>Este e-mail confirma a sua resposta a <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> utilizando o seu endereço de correio eletrónico {'*|EMAIL|*'}.</p><p><br /></p><p>Se tiver alguma questão, contacte a nossa equipa de apoio em <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Atenciosamente</p>"
           },
           "collectInfoWarning": {
             "description": "Para enviar um e-mail a todos os participantes, você deve ativar \"Coletar informações de contato\" na aba Configurações",
@@ -1317,7 +1317,7 @@
     "absorbFeeOptIn": "Sim, posso suportar a taxa de {fee}.",
     "absorbFeeText": {
       "monthly": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo mensal. Poderias suportar a taxa de {fee}? ",
-      "one-time": ""
+      "one-time": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo único. Poderias suportar a taxa de {fee}?"
     },
     "contribute": "Contribuir {contribution}",
     "errors": {
@@ -1346,9 +1346,9 @@
       "included": ""
     },
     "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "{amount} por ano",
+      "monthly": "{amount} por mês",
+      "one-time": "{amount} único"
     }
   },
   "joinPayment": {
@@ -1361,7 +1361,7 @@
     "goBackButton": "Voltar ao passo anterior",
     "note": "Podes alterar a tua contribuição e aceder ao teu historial de pagamentos a qualquer altura na tua conta.",
     "willBeContributing": "O tua contribuição será de {contribution}",
-    "willBeDonating": ""
+    "willBeDonating": "Vais fazer uma doação de {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Por favor confirma os teus detalhes",
@@ -1417,7 +1417,7 @@
         "text": "",
         "title": "",
         "welcomeEmail": "",
-        "oneTimeDonationEmail": ""
+        "oneTimeDonationEmail": "Email de doação única"
       },
       "intro": {
         "description": "",
@@ -1463,11 +1463,6 @@
   },
   "mergeFields": {
     "title": "Campos de mesclagem",
-    "expand": "Expandir",
-    "expandAll": "Expandir todos os campos de mesclagem",
-    "collapse": "Recolher",
-    "collapseAll": "Recolher todos os campos de mesclagem",
-    "clickToExpand": "Clicar para expandir os campos de mesclagem",
     "copy": "Copiar",
     "copyTag": "Copiar {tag}",
     "copied": "Copiado!",
@@ -1490,8 +1485,8 @@
       "LOGINLINK": "Link de login",
       "SPLINK": "Link de definição de palavra-passe",
       "MESSAGE": "Conteúdo de mensagem personalizado",
-      "CALLOUTTITLE": "Título do callout",
-      "CALLOUTLINK": "Link para o callout",
+      "CALLOUTTITLE": "Título do CrowdNewsroom",
+      "CALLOUTLINK": "Link para o CrowdNewsroom",
       "SUPPORTEMAIL": "Endereço de email de suporte",
       "ANSWERS": "Respostas formatadas",
       "REFCODE": "Código de referência do contacto",
@@ -1506,7 +1501,7 @@
       "URL": "URL especial",
       "MEMBERID": "ID de membro",
       "MEMBERNAME": "Nome do membro",
-      "CALLOUTSLUG": "Slug do callout",
+      "CALLOUTSLUG": "Slug do CrowdNewsroom",
       "RESPNAME": "Nome do respondente",
       "ORGNAME": "Nome da organização"
     }

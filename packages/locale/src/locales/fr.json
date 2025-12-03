@@ -368,7 +368,7 @@
         },
         "email": {
           "body": {
-            "default": "<p>Bonjour {'*|FNAME|*'},</p><p>Cet e-mail confirme votre réponse à l'appel <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> en utilisant votre adresse e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Cordialement</p>"
+            "default": "<p>Bonjour {'*|FNAME|*'},</p><p>Cet e-mail confirme votre réponse à <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> en utilisant votre adresse e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Cordialement</p>"
           },
           "collectInfoWarning": {
             "description": "Pour envoyer un e-mail à tous les participants, vous devez activer « Collecter les informations de contact » dans l'onglet Paramètres",
@@ -962,7 +962,7 @@
     "paymentPeriod": {
       "annually": "Annuellement",
       "monthly": "Mensuellement",
-      "one-time": ""
+      "one-time": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations ponctuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ?"
     },
     "perOneTime": "",
     "perOneTimeText": ""
@@ -1321,7 +1321,7 @@
     "absorbFeeOptIn": "Oui, je compense les frais de {fee}.",
     "absorbFeeText": {
       "monthly": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations mensuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ? Vous pouvez également payer annuellement.",
-      "one-time": ""
+      "one-time": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations ponctuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ?"
     },
     "contribute": "Cotiser {contribution}",
     "errors": {
@@ -1350,9 +1350,9 @@
       "included": "La cotisation comprend {taxRate}% de TVA."
     },
     "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "{amount} par an",
+      "monthly": "{amount} par mois",
+      "one-time": "{amount} ponctuel"
     }
   },
   "joinPayment": {
@@ -1365,7 +1365,7 @@
     "goBackButton": "Revenir à l'écran précédent",
     "note": "Vous pourrez modifier votre cotisation et accéder à votre historique de paiement à tout moment depuis votre compte membre",
     "willBeContributing": "Vous cotiserez {contribution}",
-    "willBeDonating": ""
+    "willBeDonating": "Vous ferez un don de {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Veuillez confirmer vos informations",
@@ -1421,7 +1421,7 @@
         "text": "Tous les e-mails sont envoyés depuis votre adresse e-mail de support et comportent une signature standard. Vous pouvez modifier ceci dans vos paramètres d'e-mail.",
         "title": "E-mails",
         "welcomeEmail": "E-mail de bienvenue",
-        "oneTimeDonationEmail": ""
+        "oneTimeDonationEmail": "E-mail de don ponctuel"
       },
       "intro": {
         "description": "Souhaitez la bienvenue à vos nouveaux membres",
@@ -1467,11 +1467,6 @@
   },
   "mergeFields": {
     "title": "Champs de fusion",
-    "expand": "Développer",
-    "expandAll": "Développer tous les champs de fusion",
-    "collapse": "Réduire",
-    "collapseAll": "Réduire tous les champs de fusion",
-    "clickToExpand": "Cliquez pour développer les champs de fusion",
     "copy": "Copier",
     "copyTag": "Copier {tag}",
     "copied": "Copié !",
@@ -1494,8 +1489,8 @@
       "LOGINLINK": "Lien de connexion",
       "SPLINK": "Lien de définition du mot de passe",
       "MESSAGE": "Contenu du message personnalisé",
-      "CALLOUTTITLE": "Titre de l'appel",
-      "CALLOUTLINK": "Lien vers l'appel",
+      "CALLOUTTITLE": "Titre de CrowdNewsroom",
+      "CALLOUTLINK": "Lien vers CrowdNewsroom",
       "SUPPORTEMAIL": "Adresse e-mail de support",
       "ANSWERS": "Réponses formatées",
       "REFCODE": "Code de parrainage du contact",
@@ -1510,7 +1505,7 @@
       "URL": "URL spéciale",
       "MEMBERID": "ID membre",
       "MEMBERNAME": "Nom du membre",
-      "CALLOUTSLUG": "Slug d'appel",
+      "CALLOUTSLUG": "Slug de CrowdNewsroom",
       "RESPNAME": "Nom du répondant",
       "ORGNAME": "Nom de l'organisation"
     }
