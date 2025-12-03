@@ -1316,8 +1316,8 @@
     "absorbFeeForce": "",
     "absorbFeeOptIn": "",
     "absorbFeeText": {
-      "monthly": "",
-      "one-time": ""
+      "monthly": "Ο επεξεργαστής πληρωμών μας χρεώνει ανά συναλλαγή, πράγμα που σημαίνει ότι λαμβάνουμε λιγότερα από τις μηνιαίες συνεισφορές. Θα θέλατε να απορροφήσετε το τέλος συναλλαγής {fee}; Εναλλακτικά, μπορείτε να πληρώσετε ετησίως.",
+      "one-time": "Ο επεξεργαστής πληρωμών μας χρεώνει ανά συναλλαγή, πράγμα που σημαίνει ότι λαμβάνουμε λιγότερα από τις εφάπαξ συνεισφορές. Θα θέλατε να απορροφήσετε το τέλος συναλλαγής {fee};"
     },
     "contribute": "",
     "errors": {
@@ -1346,9 +1346,9 @@
       "included": ""
     },
     "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "{amount} ετησίως",
+      "monthly": "{amount} μηνιαίως",
+      "one-time": "{amount} εφάπαξ"
     }
   },
   "joinPayment": {
@@ -1361,7 +1361,7 @@
     "goBackButton": "",
     "note": "",
     "willBeContributing": "",
-    "willBeDonating": ""
+    "willBeDonating": "Θα κάνετε δωρεά {amount}"
   },
   "joinSetup": {
     "confirmDetails": "",
@@ -1417,7 +1417,7 @@
         "text": "",
         "title": "",
         "welcomeEmail": "",
-        "oneTimeDonationEmail": ""
+        "oneTimeDonationEmail": "Email εφάπαξ δωρεάς"
       },
       "intro": {
         "description": "",

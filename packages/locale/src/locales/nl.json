@@ -1317,7 +1317,7 @@
     "absorbFeeOptIn": "Ja, ik zal de {fee} kosten op me nemen.",
     "absorbFeeText": {
       "monthly": "Onze betalingsverwerker brengt ons kosten per transactie in rekening, wat betekent dat we minder ontvangen uit maandelijkse bijdragen. Accepteer je de {fee} transactiekosten? Je kunt ook jaarlijks betalen.",
-      "one-time": ""
+      "one-time": "Onze betalingsverwerker brengt ons kosten per transactie in rekening, wat betekent dat we minder ontvangen uit eenmalige bijdragen. Accepteer je de {fee} transactiekosten?"
     },
     "contribute": "Draag bij {contribution}",
     "errors": {
@@ -1346,9 +1346,9 @@
       "included": "Bijdrage is inclusief {taxRate}% BTW."
     },
     "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "{amount} per jaar",
+      "monthly": "{amount} per maand",
+      "one-time": "{amount} eenmalig"
     }
   },
   "joinPayment": {
@@ -1361,7 +1361,7 @@
     "goBackButton": "Terug naar het vorige scherm",
     "note": "Je kunt je bijdrage op elk moment wijzigen en je betalingsgeschiedenis bekijken in je ledenaccount.",
     "willBeContributing": "Je draagt {contribution} bij",
-    "willBeDonating": ""
+    "willBeDonating": "Je doet een donatie van {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Bevestig uw gegevens",
@@ -1417,7 +1417,7 @@
         "text": "Alle e-mails worden verzonden vanaf uw support e-mailadres en bevatten een standaard handtekening. U kunt deze wijzigen in uw e-mailinstellingen.",
         "title": "E-mails",
         "welcomeEmail": "Welkom e-mail",
-        "oneTimeDonationEmail": ""
+        "oneTimeDonationEmail": "E-mail voor eenmalige donatie"
       },
       "intro": {
         "description": "Zeg hallo tegen je nieuwe leden",

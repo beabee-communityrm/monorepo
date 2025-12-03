@@ -1317,7 +1317,7 @@
     "absorbFeeOptIn": "Sì, intendo coprire i {fee} della transazione.",
     "absorbFeeText": {
       "monthly": "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che mensilmente riceveremo meno rispetto alla quota che hai scelto. Vuoi coprire il costo della transazione? Il pagamento annuale, invece, non prevede costi ulteriori.  ",
-      "one-time": ""
+      "one-time": "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che riceveremo meno rispetto alla quota una tantum che hai scelto. Vuoi coprire il costo della transazione?"
     },
     "contribute": "Contribuisci con {contribution}",
     "errors": {
@@ -1346,9 +1346,9 @@
       "included": ""
     },
     "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "{amount} all'anno",
+      "monthly": "{amount} al mese",
+      "one-time": "{amount} una tantum"
     }
   },
   "joinPayment": {
@@ -1361,7 +1361,7 @@
     "goBackButton": "Torna alla schermata precedente",
     "note": "Potrai modificare l'ammontare del tuo contributo e accedere allo storico delle tue donazioni in qualsiasi momento tramite il tuo account.",
     "willBeContributing": "Contribuirai con {contribution}",
-    "willBeDonating": ""
+    "willBeDonating": "Farai una donazione di {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Per favore, conferma i tuoi dettagli.",
@@ -1417,7 +1417,7 @@
         "text": "",
         "title": "",
         "welcomeEmail": "",
-        "oneTimeDonationEmail": ""
+        "oneTimeDonationEmail": "Email di donazione una tantum"
       },
       "intro": {
         "description": "",

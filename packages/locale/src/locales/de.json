@@ -1317,7 +1317,7 @@
     "absorbFeeOptIn": "Ja, ich übernehme die {fee} Transaktionskosten.",
     "absorbFeeText": {
       "monthly": "Bei unserem Zahlungsdienstleister zahlen wir für jede einzelne Transaktion. Das heißt, wir erhalten weniger von Ihrem monatlichen Beitrag. Sie haben die Möglichkeit, die Kosten dafür für uns zu übernehmen. Möchten Sie das? Alternativ können Sie auch jährlich bezahlen.",
-      "one-time": ""
+      "one-time": "Bei unserem Zahlungsdienstleister zahlen wir für jede einzelne Transaktion. Das heißt, wir erhalten weniger von Ihrem einmaligen Beitrag. Sie haben die Möglichkeit, die Kosten dafür für uns zu übernehmen. Möchten Sie das?"
     },
     "contribute": "Mit {contribution} unterstützen.",
     "errors": {
@@ -1346,9 +1346,9 @@
       "included": "Beitrag inklusive {taxRate}% MwSt."
     },
     "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "{amount} pro Jahr",
+      "monthly": "{amount} pro Monat",
+      "one-time": "{amount} einmalig"
     }
   },
   "joinPayment": {
@@ -1361,7 +1361,7 @@
     "goBackButton": "Zurück zum letzten Schritt",
     "note": "Sie können Ihre Zahlungsdaten jederzeit in Ihrem Nutzer-Account ändern und dort auch sehen, wie viel Sie in der Vergangenheit bereits gezahlt haben. ",
     "willBeContributing": "Sie zahlen {contribution}",
-    "willBeDonating": ""
+    "willBeDonating": "Sie spenden {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Bitte bestätigen Sie Ihre Angaben:",
@@ -1417,7 +1417,7 @@
         "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mail-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
         "welcomeEmail": "Willkommens-E-Mail",
-        "oneTimeDonationEmail": ""
+        "oneTimeDonationEmail": "Einmalige Spenden-E-Mail"
       },
       "intro": {
         "description": "Heiße neue Mitglieder willkommen",

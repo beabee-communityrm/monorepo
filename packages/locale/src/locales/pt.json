@@ -1317,7 +1317,7 @@
     "absorbFeeOptIn": "Sim, posso suportar a taxa de {fee}.",
     "absorbFeeText": {
       "monthly": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo mensal. Poderias suportar a taxa de {fee}? ",
-      "one-time": ""
+      "one-time": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo único. Poderias suportar a taxa de {fee}?"
     },
     "contribute": "Contribuir {contribution}",
     "errors": {
@@ -1346,9 +1346,9 @@
       "included": ""
     },
     "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "{amount} por ano",
+      "monthly": "{amount} por mês",
+      "one-time": "{amount} único"
     }
   },
   "joinPayment": {
@@ -1361,7 +1361,7 @@
     "goBackButton": "Voltar ao passo anterior",
     "note": "Podes alterar a tua contribuição e aceder ao teu historial de pagamentos a qualquer altura na tua conta.",
     "willBeContributing": "O tua contribuição será de {contribution}",
-    "willBeDonating": ""
+    "willBeDonating": "Vais fazer uma doação de {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Por favor confirma os teus detalhes",
@@ -1417,7 +1417,7 @@
         "text": "",
         "title": "",
         "welcomeEmail": "",
-        "oneTimeDonationEmail": ""
+        "oneTimeDonationEmail": "Email de doação única"
       },
       "intro": {
         "description": "",
