@@ -143,12 +143,13 @@ export const emailTemplateDefinitions = {
     'callout-response-answers': {
       metadata: {
         type: 'contact' as const,
-        mergeFields: ['MESSAGE', 'CALLOUTTITLE', 'CALLOUTLINK'],
+        mergeFields: ['MESSAGE', 'CALLOUTTITLE', 'CALLOUTLINK', 'CALLOUTSLUG'],
       },
       fn: (
         _: Contact,
         params: { calloutSlug: string; calloutTitle: string }
       ) => ({
+        CALLOUTSLUG: params.calloutSlug,
         CALLOUTTITLE: params.calloutTitle,
         CALLOUTLINK: `${config.audience}/crowdnewsroom/${params.calloutSlug}`,
       }),
