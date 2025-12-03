@@ -13,7 +13,6 @@ import config from '#config/config';
 import {
   adminEmailTemplates,
   contactEmailTemplates,
-  emailTemplateDefinitions,
   generalEmailTemplates,
   getBaseEmailMergeFields,
   getContactEmailMergeFields,
@@ -201,7 +200,9 @@ class EmailService {
     params: Parameters<GeneralEmailTemplates[T]>[0],
     opts?: EmailOptions
   ): Promise<void> {
-    const templateMergeFields = generalEmailTemplates[template](params as any); // https://github.com/microsoft/TypeScript/issues/30581
+    const templateMergeFields = generalEmailTemplates[template].fn(
+      params as any
+    ); // https://github.com/microsoft/TypeScript/issues/30581
     const mergeFields = {
       ...getBaseEmailMergeFields(),
       ...templateMergeFields,
@@ -237,7 +238,7 @@ class EmailService {
 
     const recipient = this.convertContactToRecipient(
       contact,
-      contactEmailTemplates[template](contact, params as any) // https://github.com/microsoft/TypeScript/issues/30581
+      contactEmailTemplates[template].fn(contact, params as any) // https://github.com/microsoft/TypeScript/issues/30581
     );
 
     await this.sendTemplate(template, [recipient], opts, true);
@@ -263,7 +264,7 @@ class EmailService {
     params: Parameters<AdminEmailTemplates[T]>[0],
     opts?: EmailOptions
   ): Promise<void> {
-    const templateMergeFields = adminEmailTemplates[template](params as any);
+    const templateMergeFields = adminEmailTemplates[template].fn(params as any);
     const recipient = {
       to: { email: OptionsService.getText('support-email') },
       mergeFields: {
@@ -458,13 +459,29 @@ class EmailService {
     );
 
     // Build template info list
-    const allTemplates = Object.entries(emailTemplateDefinitions).flatMap(
-      ([type, templates]) =>
-        Object.entries(templates).map(([id, def]) => ({
-          id,
-          metadata: def.metadata,
-        }))
-    );
+    const allTemplates = [
+      ...Object.entries(contactEmailTemplates).map(([id, def]) => ({
+        id,
+        metadata: {
+          ...def.metadata,
+          mergeFields: [...def.metadata.mergeFields],
+        },
+      })),
+      ...Object.entries(generalEmailTemplates).map(([id, def]) => ({
+        id,
+        metadata: {
+          ...def.metadata,
+          mergeFields: [...def.metadata.mergeFields],
+        },
+      })),
+      ...Object.entries(adminEmailTemplates).map(([id, def]) => ({
+        id,
+        metadata: {
+          ...def.metadata,
+          mergeFields: [...def.metadata.mergeFields],
+        },
+      })),
+    ];
 
     return allTemplates.map(({ id, metadata }) => {
       const hasOverride = overrideMap.has(id);
