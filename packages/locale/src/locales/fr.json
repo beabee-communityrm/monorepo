@@ -962,7 +962,7 @@
     "paymentPeriod": {
       "annually": "Annuellement",
       "monthly": "Mensuellement",
-      "one-time": ""
+      "one-time": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations ponctuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ?"
     },
     "perOneTime": "",
     "perOneTimeText": ""
@@ -1321,7 +1321,7 @@
     "absorbFeeOptIn": "Oui, je compense les frais de {fee}.",
     "absorbFeeText": {
       "monthly": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations mensuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ? Vous pouvez également payer annuellement.",
-      "one-time": ""
+      "one-time": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations ponctuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ?"
     },
     "contribute": "Cotiser {contribution}",
     "errors": {
@@ -1350,9 +1350,9 @@
       "included": "La cotisation comprend {taxRate}% de TVA."
     },
     "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "{amount} par an",
+      "monthly": "{amount} par mois",
+      "one-time": "{amount} ponctuel"
     }
   },
   "joinPayment": {
@@ -1365,7 +1365,7 @@
     "goBackButton": "Revenir à l'écran précédent",
     "note": "Vous pourrez modifier votre cotisation et accéder à votre historique de paiement à tout moment depuis votre compte membre",
     "willBeContributing": "Vous cotiserez {contribution}",
-    "willBeDonating": ""
+    "willBeDonating": "Vous ferez un don de {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Veuillez confirmer vos informations",
@@ -1421,7 +1421,7 @@
         "text": "Tous les e-mails sont envoyés depuis votre adresse e-mail de support et comportent une signature standard. Vous pouvez modifier ceci dans vos paramètres d'e-mail.",
         "title": "E-mails",
         "welcomeEmail": "E-mail de bienvenue",
-        "oneTimeDonationEmail": ""
+        "oneTimeDonationEmail": "E-mail de don ponctuel"
       },
       "intro": {
         "description": "Souhaitez la bienvenue à vos nouveaux membres",

@@ -1317,7 +1317,7 @@
     "absorbFeeOptIn": "Ja, ich übernehme die {fee} Transaktionskosten.",
     "absorbFeeText": {
       "monthly": "Unser Zahlungsdienstleister stellt uns jede Transaktion in Rechnung. Das heißt, wir erhalten weniger von deinem monatlichen Beitrag. Möchtest du die Kosten dafür übernehmen? Alternativ kannst du auch jährlich bezahlen.",
-      "one-time": ""
+      "one-time": "Unser Zahlungsdienstleister stellt uns jede Transaktion in Rechnung. Das heißt, wir erhalten weniger von deinem einmaligen Beitrag. Möchtest du die Kosten dafür übernehmen?"
     },
     "contribute": "Mit {contribution} unterstützen.",
     "errors": {
@@ -1361,7 +1361,7 @@
     "goBackButton": "Zurück zum letzten Schritt",
     "note": "Du kannst deine Zahlungsdaten jederzeit in deinem Nutzer-Account ändern und dort auch sehen, wie viel du in der Vergangenheit bereits gezahlt hast. ",
     "willBeContributing": "Du zahlst {contribution}",
-    "willBeDonating": ""
+    "willBeDonating": "Du spendest {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Bitte bestätige deine Angaben:",
@@ -1663,7 +1663,7 @@
     "expandAll": "",
     "collapse": "",
     "collapseAll": "",
-    "clickToExpand": "",
+    "clickToExpand": "Klicke zum Ausklappen der Platzhalter",
     "copy": "",
     "copyTag": "",
     "copied": "",
