@@ -368,7 +368,7 @@
         },
         "email": {
           "body": {
-            "default": "<p>Bonjour {'*|FNAME|*'},</p><p>Cet e-mail confirme votre réponse à l'appel <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> en utilisant votre adresse e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Cordialement</p>"
+            "default": "<p>Bonjour {'*|FNAME|*'},</p><p>Cet e-mail confirme votre réponse <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> en utilisant votre adresse e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Cordialement</p>"
           },
           "collectInfoWarning": {
             "description": "Pour envoyer un e-mail à tous les participants, vous devez activer « Collecter les informations de contact » dans l'onglet Paramètres",
@@ -1494,8 +1494,8 @@
       "LOGINLINK": "Lien de connexion",
       "SPLINK": "Lien de définition du mot de passe",
       "MESSAGE": "Contenu du message personnalisé",
-      "CALLOUTTITLE": "Titre de l'appel",
-      "CALLOUTLINK": "Lien vers l'appel",
+      "CALLOUTTITLE": "Titre de CrowdNewsroom",
+      "CALLOUTLINK": "Lien vers CrowdNewsroom",
       "SUPPORTEMAIL": "Adresse e-mail de support",
       "ANSWERS": "Réponses formatées",
       "REFCODE": "Code de parrainage du contact",
@@ -1510,7 +1510,7 @@
       "URL": "URL spéciale",
       "MEMBERID": "ID membre",
       "MEMBERNAME": "Nom du membre",
-      "CALLOUTSLUG": "Slug d'appel",
+      "CALLOUTSLUG": "Slug de CrowdNewsroom",
       "RESPNAME": "Nom du répondant",
       "ORGNAME": "Nom de l'organisation"
     }
