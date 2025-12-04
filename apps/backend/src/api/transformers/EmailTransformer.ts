@@ -44,53 +44,9 @@ class EmailTransformer extends BaseTransformer<
     };
   }
 
-  protected transformQuery<T extends ListEmailsDto & PaginatedQuery>(
-    query: T
-  ): T {
-    // Set default sort to date DESC if not specified
-    const transformedQuery = {
-      ...query,
-      sort: query.sort || 'date',
-      order: query.order || 'DESC',
-    };
-
-    // Add default filter for custom emails (templateId is null) if not already specified
-    const hasTemplateIdFilter = query.rules
-      ? this.hasTemplateIdFilter(query.rules)
-      : false;
-
-    if (!hasTemplateIdFilter) {
-      transformedQuery.rules = {
-        condition: 'AND',
-        rules: [
-          ...(query.rules ? [query.rules] : []),
-          {
-            field: 'templateId',
-            operator: 'is_empty',
-            value: [],
-          },
-        ],
-      } satisfies RuleGroup;
-    }
-
-    return transformedQuery as T;
-  }
-
-  private hasTemplateIdFilter(rules: RuleGroup): boolean {
-    return rules.rules.some((rule) => {
-      if ('rules' in rule) {
-        return this.hasTemplateIdFilter(rule);
-      }
-      return rule.field === 'templateId';
-    });
-  }
-
   protected modifyQueryBuilder(
     qb: SelectQueryBuilder<Email>,
-    fieldPrefix: string,
-    query: ListEmailsDto & PaginatedQuery,
-    auth: AuthInfo,
-    operation: 'read' | 'update' | 'delete'
+    fieldPrefix: string
   ): void {
     // Load mailing count relation
     qb.loadRelationCountAndMap(
