@@ -964,7 +964,8 @@
     "thankYou": "Merci !",
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
-    "until": "jusqu'à"
+    "until": "jusqu'à",
+    "yes": "oui"
   },
   "contactAccount": {
     "confirmDelete": {
