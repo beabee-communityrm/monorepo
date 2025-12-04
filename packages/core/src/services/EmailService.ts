@@ -19,13 +19,13 @@ import {
 } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import { log as mainLogger } from '#logging';
-import { Contact, Email } from '#models/index';
+import { Contact, Email, EmailMailing } from '#models/index';
 import { MandrillProvider, SMTPProvider, SendGridProvider } from '#providers';
 import OptionsService from '#services/OptionsService';
 import { formatEmailBody } from '#templates/email';
 import {
+  AdminEmailParams,
   AdminEmailTemplateId,
-  AdminEmailTemplates,
   ContactEmailParams,
   ContactEmailTemplateId,
   EmailMergeFields,
@@ -34,8 +34,8 @@ import {
   EmailProvider,
   EmailRecipient,
   EmailTemplateId,
+  GeneralEmailParams,
   GeneralEmailTemplateId,
-  GeneralEmailTemplates,
   PreviewEmailOptions,
 } from '#type/index';
 import { replaceMergeFields } from '#utils/email';
@@ -197,7 +197,7 @@ class EmailService {
   async sendTemplateTo<T extends GeneralEmailTemplateId>(
     template: T,
     to: EmailPerson,
-    params: Parameters<GeneralEmailTemplates[T]>[0],
+    params: GeneralEmailParams<T>,
     opts?: EmailOptions
   ): Promise<void> {
     const templateMergeFields = generalEmailTemplates[template].fn(
@@ -261,7 +261,7 @@ class EmailService {
    */
   async sendTemplateToAdmin<T extends AdminEmailTemplateId>(
     template: T,
-    params: Parameters<AdminEmailTemplates[T]>[0],
+    params: AdminEmailParams<T>,
     opts?: EmailOptions
   ): Promise<void> {
     const templateMergeFields = adminEmailTemplates[template].fn(params as any);
