@@ -62,40 +62,16 @@ export interface EmailProvider {
 }
 
 /**
- * Type helper for general email templates
- * Extracts the function types from template definitions
- */
-export type GeneralEmailTemplates = {
-  [K in keyof typeof generalEmailTemplates]: (typeof generalEmailTemplates)[K]['fn'];
-};
-
-/**
  * General email template IDs
  * Derived from generalEmailTemplates
  */
 export type GeneralEmailTemplateId = keyof typeof generalEmailTemplates;
 
 /**
- * Type helper for admin email templates
- * Extracts the function types from template definitions
- */
-export type AdminEmailTemplates = {
-  [K in keyof typeof adminEmailTemplates]: (typeof adminEmailTemplates)[K]['fn'];
-};
-
-/**
  * Admin email template IDs
  * Derived from adminEmailTemplates
  */
 export type AdminEmailTemplateId = keyof typeof adminEmailTemplates;
-
-/**
- * Type helper for contact email templates
- * Extracts the function types from template definitions
- */
-export type ContactEmailTemplates = {
-  [K in keyof typeof contactEmailTemplates]: (typeof contactEmailTemplates)[K]['fn'];
-};
 
 /**
  * Contact email template IDs
@@ -112,22 +88,22 @@ export type EmailTemplateId =
   | ContactEmailTemplateId;
 
 /**
- * Helper type to extract parameters for contact email templates
- */
-export type ContactEmailParams<T extends ContactEmailTemplateId> = Parameters<
-  ContactEmailTemplates[T]
->[1];
-
-/**
  * Helper type to extract parameters for general email templates
  */
 export type GeneralEmailParams<T extends GeneralEmailTemplateId> = Parameters<
-  GeneralEmailTemplates[T]
+  (typeof generalEmailTemplates)[T]['fn']
 >[0];
+
+/**
+ * Helper type to extract parameters for contact email templates
+ */
+export type ContactEmailParams<T extends ContactEmailTemplateId> = Parameters<
+  (typeof contactEmailTemplates)[T]['fn']
+>[1];
 
 /**
  * Helper type to extract parameters for admin email templates
  */
 export type AdminEmailParams<T extends AdminEmailTemplateId> = Parameters<
-  AdminEmailTemplates[T]
+  (typeof adminEmailTemplates)[T]['fn']
 >[0];
