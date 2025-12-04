@@ -46,7 +46,7 @@ meta:
   </AppForm>
 </template>
 <script lang="ts" setup>
-import type { ContentJoinData, GetEmailData } from '@beabee/beabee-common';
+import type { ContentJoinData } from '@beabee/beabee-common';
 import { App2ColGrid, AppForm, type MergeTagGroup } from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
@@ -58,9 +58,9 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const stepT = (key: string) => t('membershipBuilder.steps.emails.' + key);
 
-const welcomeEmail = ref<GetEmailData | false>();
-const cancellationEmail = ref<GetEmailData | false>();
-const oneTimeDonationEmail = ref<GetEmailData | false>();
+const welcomeEmail = ref({ subject: '', body: '' });
+const cancellationEmail = ref({ subject: '', body: '' });
+const oneTimeDonationEmail = ref({ subject: '', body: '' });
 const joinContent = ref<ContentJoinData>();
 
 const showOneTimeDonationEmail = computed(() =>
@@ -94,14 +94,17 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
   ];
 });
 
-async function loadEmail(id: string): Promise<GetEmailData | false> {
+async function loadEmail(
+  id: string
+): Promise<{ subject: string; body: string }> {
   try {
     return await client.email.template.get(id);
   } catch (err) {
-    if (isApiError(err, ['external-email-template'])) {
-      return false;
+    if (isApiError(err, undefined, [404])) {
+      return { subject: '', body: '' };
+    } else {
+      throw err;
     }
-    throw err;
   }
 }
 
