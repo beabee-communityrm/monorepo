@@ -1263,11 +1263,11 @@
       "heading": "Überschrift",
       "italic": "Kursiv",
       "link": "Link",
+      "mergeFields": "",
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
       "toolbar": "Rich-Text-Formatierung Symbolleiste",
-      "underline": "Unterstreichen",
-      "mergeFields": ""
+      "underline": "Unterstreichen"
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
@@ -1460,6 +1460,51 @@
     "payments": "Zahlungen",
     "settings": "Einstellungen",
     "yourProfile": "Dein Profil"
+  },
+  "mergeFields": {
+    "copied": "",
+    "copy": "",
+    "copyTag": "",
+    "example": "",
+    "groups": {
+      "contact": "",
+      "magic": "",
+      "standard": "",
+      "template": ""
+    },
+    "insert": "",
+    "insertTag": "",
+    "tags": {
+      "ACTIVATELINK": "",
+      "ANSWERS": "",
+      "CALLOUTLINK": "Link zur CrowdNewsroom",
+      "CALLOUTSLUG": "CrowdNewsroom-Slug",
+      "CALLOUTTITLE": "Titel der CrowdNewsroom",
+      "CONFIRMLINK": "",
+      "EMAIL": "",
+      "EXPIRES": "",
+      "FNAME": "",
+      "GIFTDATE": "",
+      "GIFTEE": "",
+      "ISELIGIBLE": "",
+      "LNAME": "",
+      "LOGINLINK": "",
+      "MEMBERID": "",
+      "MEMBERNAME": "",
+      "MEMBERSHIPID": "",
+      "MESSAGE": "",
+      "NAME": "",
+      "ORGNAME": "",
+      "PURCHASER": "",
+      "REFCODE": "",
+      "REFEREENAME": "",
+      "RESPNAME": "",
+      "RPLINK": "",
+      "SPLINK": "",
+      "SUPPORTEMAIL": "",
+      "URL": ""
+    },
+    "title": ""
   },
   "newsletterOptIn": {
     "groups": {
@@ -1656,50 +1701,5 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
-  },
-  "mergeFields": {
-    "title": "",
-    "copy": "",
-    "copyTag": "",
-    "copied": "",
-    "insert": "",
-    "insertTag": "",
-    "example": "",
-    "groups": {
-      "contact": "",
-      "standard": "",
-      "magic": "",
-      "template": ""
-    },
-    "tags": {
-      "EMAIL": "",
-      "NAME": "",
-      "FNAME": "",
-      "LNAME": "",
-      "MEMBERSHIPID": "",
-      "RPLINK": "",
-      "LOGINLINK": "",
-      "SPLINK": "",
-      "MESSAGE": "",
-      "CALLOUTTITLE": "Titel der CrowdNewsroom",
-      "CALLOUTLINK": "Link zur CrowdNewsroom",
-      "SUPPORTEMAIL": "",
-      "ANSWERS": "",
-      "REFCODE": "",
-      "EXPIRES": "",
-      "REFEREENAME": "",
-      "ISELIGIBLE": "",
-      "PURCHASER": "",
-      "GIFTEE": "",
-      "GIFTDATE": "",
-      "ACTIVATELINK": "",
-      "CONFIRMLINK": "",
-      "URL": "",
-      "MEMBERID": "",
-      "MEMBERNAME": "",
-      "CALLOUTSLUG": "CrowdNewsroom-Slug",
-      "RESPNAME": "",
-      "ORGNAME": ""
-    }
   }
 }
