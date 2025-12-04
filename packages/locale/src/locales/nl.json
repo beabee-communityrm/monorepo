@@ -367,7 +367,6 @@
           "title": ""
         },
         "email": {
-          "title": "Email",
           "body": {
             "default": "<p>Hallo {'*|FNAME|*'},</p><p>Deze e-mail bevestigt je reactie op <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> met je e-mailadres {'*|EMAIL|*'}.</p><p><br /></p><p>Als je vragen hebt, neem dan contact op met ons ondersteuningsteam via <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Met vriendelijke groet</p>"
           },
@@ -381,7 +380,8 @@
           },
           "subject": {
             "default": "Bedankt voor je reactie"
-          }
+          },
+          "title": "Email"
         },
         "endMessage": {
           "inputs": {
@@ -679,10 +679,10 @@
           "navigationButtons": {
             "title": ""
           },
-          "title": "",
           "responseLinks": {
             "title": ""
-          }
+          },
+          "title": ""
         }
       },
       "title": "",
@@ -925,6 +925,11 @@
     "no": "Nee",
     "noResults": "Geen resultaten gevonden",
     "pageCount": "Pagina {pageNumber} van {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Jaarlijks",
+      "monthly": "Maandelijks",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "Geannuleerd",
       "draft": "Concept",
@@ -933,6 +938,8 @@
       "successful": "Succesvol"
     },
     "perMonth": "/ maand",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "/ jaar",
     "role": {
       "admin": "Beheerder",
@@ -954,14 +961,7 @@
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
     "until": "tot",
-    "yes": "Ja",
-    "paymentPeriod": {
-      "annually": "Jaarlijks",
-      "monthly": "Maandelijks",
-      "one-time": ""
-    },
-    "perOneTime": "",
-    "perOneTimeText": ""
+    "yes": "Ja"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1122,15 +1122,15 @@
     "title": "Bewerken: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Onderwerp"
-    },
     "body": {
       "label": "Bericht"
     },
     "preview": {
       "label": "Voorbeeld",
       "unavailable": "Voorbeeld niet beschikbaar"
+    },
+    "subject": {
+      "label": "Onderwerp"
     }
   },
   "footer": {
@@ -1320,6 +1320,11 @@
       "one-time": "Onze betalingsverwerker brengt ons kosten per transactie in rekening, wat betekent dat we minder ontvangen uit eenmalige bijdragen. Accepteer je de {fee} transactiekosten?"
     },
     "contribute": "Draag bij {contribution}",
+    "contribution": {
+      "annually": "{amount} per jaar",
+      "monthly": "{amount} per maand",
+      "one-time": "{amount} eenmalig"
+    },
     "errors": {
       "confirmEmail": {
         "message": "Bijna klaar! We moeten alleen je e-mailadres bevestigen om het instellen van je lidmaatschap af te ronden.",
@@ -1344,11 +1349,6 @@
     "privacy": "Privacybeleid",
     "tax": {
       "included": "Bijdrage is inclusief {taxRate}% BTW."
-    },
-    "contribution": {
-      "annually": "{amount} per jaar",
-      "monthly": "{amount} per maand",
-      "one-time": "{amount} eenmalig"
     }
   },
   "joinPayment": {
@@ -1414,10 +1414,10 @@
         "bigTitle": "Welkomst- en annuleringsmails",
         "cancellationEmail": "E-mail voor annulering",
         "description": "Pas je welkomst- en annuleringsmails aan",
+        "oneTimeDonationEmail": "E-mail voor eenmalige donatie",
         "text": "Alle e-mails worden verzonden vanaf uw support e-mailadres en bevatten een standaard handtekening. U kunt deze wijzigen in uw e-mailinstellingen.",
         "title": "E-mails",
-        "welcomeEmail": "Welkom e-mail",
-        "oneTimeDonationEmail": "E-mail voor eenmalige donatie"
+        "welcomeEmail": "Welkom e-mail"
       },
       "intro": {
         "description": "Zeg hallo tegen je nieuwe leden",
@@ -1546,11 +1546,11 @@
       "success": ""
     },
     "error": "Er is iets misgegaan. Probeer de pagina opnieuw te laden.",
-    "remove": "",
     "rateLimit": {
       "generic": "Te veel verzoeken. Wacht even en probeer het opnieuw.",
       "withWait": "Te veel verzoeken. Wacht {time} en probeer het opnieuw."
-    }
+    },
+    "remove": ""
   },
   "pageTitle": {
     "confirmEmail": "Bevestig e-mail",

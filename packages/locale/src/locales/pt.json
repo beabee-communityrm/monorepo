@@ -367,7 +367,6 @@
           "title": ""
         },
         "email": {
-          "title": "Email",
           "body": {
             "default": "<p>Olá {'*|FNAME|*'},</p><p>Este e-mail confirma a sua resposta a <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> utilizando o seu endereço de correio eletrónico {'*|EMAIL|*'}.</p><p><br /></p><p>Se tiver alguma questão, contacte a nossa equipa de apoio em <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Atenciosamente</p>"
           },
@@ -381,7 +380,8 @@
           },
           "subject": {
             "default": "Obrigado pela sua resposta"
-          }
+          },
+          "title": "Email"
         },
         "endMessage": {
           "inputs": {
@@ -679,10 +679,10 @@
           "navigationButtons": {
             "title": ""
           },
-          "title": "",
           "responseLinks": {
             "title": ""
-          }
+          },
+          "title": ""
         }
       },
       "title": "",
@@ -925,6 +925,11 @@
     "no": "Não",
     "noResults": "Nenhum resultado encontrado",
     "pageCount": "Página {pageNumber} de {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Anualmente",
+      "monthly": "Mensalmente",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "Cancelado",
       "draft": "Rascunho",
@@ -933,6 +938,8 @@
       "successful": "Sucesso"
     },
     "perMonth": "/ mês",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "/ ano",
     "role": {
       "admin": "Administrador",
@@ -954,14 +961,7 @@
     "timeAgo": "há {time}",
     "timeIn": "em {time}",
     "until": "até",
-    "yes": "Sim",
-    "paymentPeriod": {
-      "annually": "Anualmente",
-      "monthly": "Mensalmente",
-      "one-time": ""
-    },
-    "perOneTime": "",
-    "perOneTimeText": ""
+    "yes": "Sim"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1122,15 +1122,15 @@
     "title": "Editar: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Assunto"
-    },
     "body": {
       "label": "Mensagem"
     },
     "preview": {
       "label": "Pré-visualização",
       "unavailable": "Pré-visualização indisponível"
+    },
+    "subject": {
+      "label": "Assunto"
     }
   },
   "footer": {
@@ -1320,6 +1320,11 @@
       "one-time": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo único. Poderias suportar a taxa de {fee}?"
     },
     "contribute": "Contribuir {contribution}",
+    "contribution": {
+      "annually": "{amount} por ano",
+      "monthly": "{amount} por mês",
+      "one-time": "{amount} único"
+    },
     "errors": {
       "confirmEmail": {
         "message": "Está quase! Precisamos apenas de confirmar o teu email para passares a fazer parte da comunidade.",
@@ -1344,11 +1349,6 @@
     "privacy": "Política de Privacidade",
     "tax": {
       "included": ""
-    },
-    "contribution": {
-      "annually": "{amount} por ano",
-      "monthly": "{amount} por mês",
-      "one-time": "{amount} único"
     }
   },
   "joinPayment": {
@@ -1414,10 +1414,10 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
+        "oneTimeDonationEmail": "Email de doação única",
         "text": "",
         "title": "",
-        "welcomeEmail": "",
-        "oneTimeDonationEmail": "Email de doação única"
+        "welcomeEmail": ""
       },
       "intro": {
         "description": "",
@@ -1546,11 +1546,11 @@
       "success": ""
     },
     "error": "Houve aqui um erro. Experimenta recarregar a página.",
-    "remove": "",
     "rateLimit": {
       "generic": "Demasiados pedidos. Aguarde um pouco e tente novamente.",
       "withWait": "Demasiados pedidos. Aguarde {time} e tente novamente."
-    }
+    },
+    "remove": ""
   },
   "pageTitle": {
     "confirmEmail": "Confirma o email",
