@@ -1303,7 +1303,8 @@
     "viewAllCallouts": "Voir toutes les CrowdNewsrooms",
     "viewOpenCallouts": "Voir les CrowdNewsrooms actives",
     "welcome": "Bienvenue à bord {firstName} !",
-    "yourProfile": "Votre profil"
+    "yourProfile": "Votre profil",
+    "makeOneTimeDonation": "Faire un don maintenant"
   },
   "icons": {
     "welcome": {

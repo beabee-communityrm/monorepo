@@ -1299,7 +1299,8 @@
     "viewAllCallouts": "Open the CrowdNewsroom",
     "viewOpenCallouts": "Open the CrowdNewsroom",
     "welcome": "Welcome aboard {firstName}!",
-    "yourProfile": "Your profile"
+    "yourProfile": "Your profile",
+    "makeOneTimeDonation": "Make a one time donation"
   },
   "icons": {
     "welcome": {
