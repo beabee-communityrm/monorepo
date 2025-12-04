@@ -1,5 +1,4 @@
-import { getRepository } from '@beabee/core/database';
-import { Contact, Email, EmailMailing } from '@beabee/core/models';
+import { Contact } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
 import { AuthInfo, PreviewEmailOptions } from '@beabee/core/type';
 
@@ -37,7 +36,6 @@ import {
   Put,
   QueryParams,
 } from 'routing-controllers';
-import { IsNull } from 'typeorm';
 
 @Authorized('admin')
 @JsonController('/email')
@@ -66,14 +64,13 @@ export class EmailController {
    */
   @Get('/template/:templateId')
   async getTemplate(
-    @CurrentAuth() auth: AuthInfo,
     @Params() { templateId }: GetEmailTemplateParams
   ): Promise<GetEmailDto> {
     const email = await EmailService.getTemplateEmail(templateId);
     if (!email) {
       throw new NotFoundError('Template not found');
     }
-    return EmailTransformer.convert(email, auth);
+    return EmailTransformer.convert(email);
   }
 
   /**
@@ -81,7 +78,6 @@ export class EmailController {
    */
   @Put('/template/:templateId')
   async updateTemplate(
-    @CurrentAuth() auth: AuthInfo,
     @Params() { templateId }: UpdateEmailTemplateParams,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto> {
@@ -93,7 +89,7 @@ export class EmailController {
       }
     );
 
-    return EmailTransformer.convert(updated, auth);
+    return EmailTransformer.convert(updated);
   }
 
   /**
@@ -102,12 +98,15 @@ export class EmailController {
   @OnUndefined(204)
   @Delete('/template/:templateId')
   async deleteTemplate(
+    @CurrentAuth() auth: AuthInfo,
     @Params() { templateId }: DeleteEmailTemplateParams
   ): Promise<void> {
-    const deleted = await EmailService.deleteTemplateOverride(templateId);
-
+    const deleted = await EmailTransformer.delete(auth, {
+      condition: 'AND',
+      rules: [{ field: 'templateId', operator: 'equal', value: [templateId] }],
+    });
     if (!deleted) {
-      throw new NotFoundError('No override exists for this template');
+      throw new NotFoundError();
     }
   }
 
@@ -119,15 +118,13 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Body() data: CreateEmailDto
   ): Promise<GetEmailDto> {
-    const email = await getRepository(Email).save({
+    return await EmailTransformer.createOne(auth, {
       name: data.name,
       fromName: data.fromName || null,
       fromEmail: data.fromEmail || null,
       subject: data.subject,
       body: data.body,
     });
-
-    return EmailTransformer.convert(email, auth);
   }
 
   /**
@@ -137,17 +134,8 @@ export class EmailController {
   async getEmail(
     @CurrentAuth() auth: AuthInfo,
     @Param('id') id: string
-  ): Promise<GetEmailDto> {
-    const email = await getRepository(Email).findOneBy({
-      id,
-      templateId: IsNull(), // Only custom emails
-    });
-
-    if (!email) {
-      throw new NotFoundError();
-    }
-
-    return EmailTransformer.convert(email, auth);
+  ): Promise<GetEmailDto | undefined> {
+    return await EmailTransformer.fetchOneById(auth, id);
   }
 
   /**
@@ -158,24 +146,11 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Param('id') id: string,
     @Body() data: UpdateEmailDto
-  ): Promise<GetEmailDto> {
-    const email = await getRepository(Email).findOneBy({
-      id,
-      templateId: IsNull(), // Only custom emails
-    });
-
-    if (!email) {
+  ): Promise<GetEmailDto | undefined> {
+    if (!(await EmailTransformer.updateById(auth, id, data))) {
       throw new NotFoundError();
     }
-
-    await getRepository(Email).update(id, data);
-    const updated = await getRepository(Email).findOneBy({ id });
-
-    if (!updated) {
-      throw new NotFoundError();
-    }
-
-    return EmailTransformer.convert(updated, auth);
+    return await EmailTransformer.fetchOneById(auth, id);
   }
 
   /**
@@ -184,19 +159,9 @@ export class EmailController {
   @OnUndefined(204)
   @Delete('/:id')
   async deleteEmail(@Param('id') id: string): Promise<void> {
-    const email = await getRepository(Email).findOneBy({
-      id,
-      templateId: IsNull(), // Only custom emails
-    });
-
-    if (!email) {
+    if (!(await EmailService.deleteEmail(id))) {
       throw new NotFoundError();
     }
-
-    // Delete associated mailings first
-    await getRepository(EmailMailing).delete({ emailId: id });
-    // Delete the email
-    await getRepository(Email).delete(id);
   }
 
   @Post('/preview')

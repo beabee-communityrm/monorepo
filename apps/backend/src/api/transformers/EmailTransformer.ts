@@ -30,7 +30,7 @@ class EmailTransformer extends BaseTransformer<
    * @returns Email DTO with metadata
    */
   @TransformPlainToInstance(GetEmailDto)
-  convert(email: Email, auth: AuthInfo): GetEmailDto {
+  convert(email: Email): GetEmailDto {
     return {
       id: email.id,
       ...(email.templateId && { templateId: email.templateId }),

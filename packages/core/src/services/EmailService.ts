@@ -17,7 +17,7 @@ import {
   getBaseEmailMergeFields,
   getContactEmailMergeFields,
 } from '#data/email-templates';
-import { getRepository } from '#database';
+import { getRepository, runTransaction } from '#database';
 import { log as mainLogger } from '#logging';
 import { Contact, Email } from '#models/index';
 import { MandrillProvider, SMTPProvider, SendGridProvider } from '#providers';
@@ -412,6 +412,15 @@ class EmailService {
       subject: opts?.subject || emailTemplate?.subject || '',
       body: previewBody,
     };
+  }
+
+  async deleteEmail(id: string): Promise<boolean> {
+    const result = await runTransaction(async (em) => {
+      await em.getRepository(EmailMailing).delete({ emailId: id });
+      return await em.getRepository(Email).delete(id);
+    });
+
+    return result.affected == null || result.affected > 0;
   }
 
   /**
