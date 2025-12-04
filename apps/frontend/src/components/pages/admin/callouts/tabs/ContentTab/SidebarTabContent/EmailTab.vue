@@ -26,7 +26,7 @@
         </AppFormField>
 
         <!-- Email editor with server-side preview (merge fields resolved server-side) -->
-        <div class="relative overflow-visible">
+        <div v-if="data.sendEmail" class="relative overflow-visible">
           <EmailEditor
             v-model:subject="emailData.subject"
             v-model:content="emailData.content"
