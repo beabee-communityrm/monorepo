@@ -1299,7 +1299,8 @@
     "viewAllCallouts": "Alle CrowdNewsrooms bekijken",
     "viewOpenCallouts": "Open CrowdNewsrooms bekijken",
     "welcome": "Welkom bij ons {firstName}!",
-    "yourProfile": "Uw profiel"
+    "yourProfile": "Uw profiel",
+    "makeOneTimeDonation": "Doe nu een donatie"
   },
   "icons": {
     "welcome": {

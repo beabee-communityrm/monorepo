@@ -1299,7 +1299,8 @@
     "viewAllCallouts": "Alle anzeigen",
     "viewOpenCallouts": "Alle anzeigen",
     "welcome": "Herzlich willkommen {firstName} {lastName}!",
-    "yourProfile": "Ihr Profil"
+    "yourProfile": "Ihr Profil",
+    "makeOneTimeDonation": "Jetzt Spenden"
   },
   "icons": {
     "welcome": {

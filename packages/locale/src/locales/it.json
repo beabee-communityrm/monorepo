@@ -1299,7 +1299,8 @@
     "viewAllCallouts": "Vedi tutte le callout",
     "viewOpenCallouts": "Vedi le callout in corso",
     "welcome": "Ben fatto {firstName}!",
-    "yourProfile": "Il tuo profilo"
+    "yourProfile": "Il tuo profilo",
+    "makeOneTimeDonation": "Fai una donazione ora"
   },
   "icons": {
     "welcome": {

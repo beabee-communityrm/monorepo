@@ -1300,7 +1300,8 @@
     "viewAllCallouts": "Открыть CrowdNewsroom",
     "viewOpenCallouts": "Открыть CrowdNewsroom",
     "welcome": "Добро пожаловать, {firstName}!",
-    "yourProfile": "Ваш профиль"
+    "yourProfile": "Ваш профиль",
+    "makeOneTimeDonation": "Сделать пожертвование сейчас"
   },
   "icons": {
     "welcome": {
