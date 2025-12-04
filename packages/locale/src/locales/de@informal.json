@@ -680,7 +680,7 @@
             "title": "Schaltflächen"
           },
           "responseLinks": {
-            "title": ""
+            "title": "Fußzeilentext"
           },
           "title": "Übersetzungen"
         }
@@ -1267,7 +1267,7 @@
       "strikethrough": "Durchstreichen",
       "toolbar": "Rich-Text-Formatierung Symbolleiste",
       "underline": "Unterstreichen",
-      "mergeFields": ""
+      "mergeFields": "Platzhalter"
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
@@ -1321,9 +1321,9 @@
     },
     "contribute": "Mit {contribution} unterstützen.",
     "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "{amount} pro Jahr",
+      "monthly": "{amount} pro Monat",
+      "one-time": "{amount} einmalig"
     },
     "errors": {
       "confirmEmail": {
@@ -1414,7 +1414,7 @@
         "bigTitle": "Willkommens- & Kündigungs-E-Mail",
         "cancellationEmail": "Kündigungs-E-Mail",
         "description": "Passe deine Willkommens- und Kündigungs-E-Mail an",
-        "oneTimeDonationEmail": "",
+        "oneTimeDonationEmail": "Einmalige Spenden-E-Mail",
         "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mai-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
         "welcomeEmail": "Willkommens-E-Mail"
@@ -1460,6 +1460,51 @@
     "payments": "Zahlungen",
     "settings": "Einstellungen",
     "yourProfile": "Dein Profil"
+  },
+  "mergeFields": {
+    "title": "Platzhalter",
+    "copy": "Kopieren",
+    "copyTag": "{tag} kopieren",
+    "copied": "Kopiert!",
+    "insert": "Einfügen",
+    "insertTag": "{tag} einfügen",
+    "example": "Beispiel",
+    "groups": {
+      "contact": "Kontakt-Felder",
+      "standard": "Standard-Felder",
+      "magic": "Magic Links",
+      "template": "Template-Felder"
+    },
+    "tags": {
+      "EMAIL": "E-Mail-Adresse des Kontakts",
+      "NAME": "Vollständiger Name",
+      "FNAME": "Vorname",
+      "LNAME": "Nachname",
+      "MEMBERSHIPID": "Mitgliedschafts-ID",
+      "RPLINK": "Passwort zurücksetzen Link",
+      "LOGINLINK": "Login-Link",
+      "SPLINK": "Passwort setzen Link",
+      "MESSAGE": "Benutzerdefinierte Nachricht",
+      "CALLOUTTITLE": "Titel der CrowdNewsroom",
+      "CALLOUTLINK": "Link zur CrowdNewsroom",
+      "SUPPORTEMAIL": "Support E-Mail-Adresse",
+      "ANSWERS": "Formatierte Antwort-Zusammenfassung",
+      "REFCODE": "Empfehlungs-Code des Kontakts",
+      "EXPIRES": "Ablaufdatum der Mitgliedschaft",
+      "REFEREENAME": "Name der geworbenen Person",
+      "ISELIGIBLE": "Ob die Empfehlung berechtigt ist",
+      "PURCHASER": "Name des Geschenkkäufers",
+      "GIFTEE": "Name des Geschenkempfängers",
+      "GIFTDATE": "Startdatum des Geschenks",
+      "ACTIVATELINK": "Geschenk-Aktivierungslink",
+      "CONFIRMLINK": "E-Mail-Bestätigungslink",
+      "URL": "Spezielle URL",
+      "MEMBERID": "Mitglieds-ID",
+      "MEMBERNAME": "Mitgliedsname",
+      "CALLOUTSLUG": "CrowdNewsroom-Slug",
+      "RESPNAME": "Name des Antwortenden",
+      "ORGNAME": "Name der Organisation"
+    }
   },
   "newsletterOptIn": {
     "groups": {
@@ -1656,50 +1701,5 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
-  },
-  "mergeFields": {
-    "title": "",
-    "copy": "",
-    "copyTag": "",
-    "copied": "",
-    "insert": "",
-    "insertTag": "",
-    "example": "",
-    "groups": {
-      "contact": "",
-      "standard": "",
-      "magic": "",
-      "template": ""
-    },
-    "tags": {
-      "EMAIL": "",
-      "NAME": "",
-      "FNAME": "",
-      "LNAME": "",
-      "MEMBERSHIPID": "",
-      "RPLINK": "",
-      "LOGINLINK": "",
-      "SPLINK": "",
-      "MESSAGE": "",
-      "CALLOUTTITLE": "Titel der CrowdNewsroom",
-      "CALLOUTLINK": "Link zur CrowdNewsroom",
-      "SUPPORTEMAIL": "",
-      "ANSWERS": "",
-      "REFCODE": "",
-      "EXPIRES": "",
-      "REFEREENAME": "",
-      "ISELIGIBLE": "",
-      "PURCHASER": "",
-      "GIFTEE": "",
-      "GIFTDATE": "",
-      "ACTIVATELINK": "",
-      "CONFIRMLINK": "",
-      "URL": "",
-      "MEMBERID": "",
-      "MEMBERNAME": "",
-      "CALLOUTSLUG": "CrowdNewsroom-Slug",
-      "RESPNAME": "",
-      "ORGNAME": ""
-    }
   }
 }
