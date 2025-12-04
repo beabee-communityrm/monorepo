@@ -1,16 +1,9 @@
-import type { Locale } from '@beabee/locale';
-
 import type {
   adminEmailTemplates,
   contactEmailTemplates,
   generalEmailTemplates,
 } from '#data/email-templates';
 import type { Email } from '#models/index';
-
-export interface EmailTemplate {
-  id: string;
-  name: string;
-}
 
 export type EmailMergeFields = Record<string, string>;
 
@@ -57,8 +50,7 @@ export interface EmailProvider {
     recipients: EmailRecipient[],
     opts?: EmailOptions
   ): Promise<void>;
-  getTemplateEmail(templateId: string): Promise<false | Email | null>;
-  getTemplates(): Promise<EmailTemplate[]>;
+  getTemplateEmail(templateId: string): Promise<Email | null>;
 }
 
 /**
