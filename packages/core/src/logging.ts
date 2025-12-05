@@ -41,6 +41,7 @@ export const requestLogger = expressWinston.logger({
       return req[propName];
     }
   },
+  ignoredRoutes: ['/1.0/health'],
 });
 
 export const requestErrorLogger: ErrorRequestHandler =
