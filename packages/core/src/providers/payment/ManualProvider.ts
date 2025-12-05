@@ -67,16 +67,13 @@ export class ManualProvider extends PaymentProvider {
    * No-op as manual payments don't use payment methods
    * @param completedPaymentFlow - The completed payment flow
    */
-  async updatePaymentMethod(
-    completedPaymentFlow: CompletedPaymentFlow
-  ): Promise<void> {
+  async updatePaymentMethod(): Promise<void> {
     throw new Error('Method not implemented.');
   }
   /**
    * No-op as manual payments don't support one-time payments
-   * @param form The payment form
    */
-  async createOneTimePayment(form: PaymentForm): Promise<void> {
+  async createOneTimePayment(): Promise<void> {
     throw new Error('Method not implemented.');
   }
 

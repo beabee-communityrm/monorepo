@@ -213,10 +213,13 @@ class PaymentService {
 
   async createOneTimePayment(
     contact: Contact,
+    completedPaymentFlow: CompletedPaymentFlow,
     form: PaymentForm
   ): Promise<void> {
     log.info('Create one-time payment for contact ' + contact.id);
-    await this.provider(contact, (p) => p.createOneTimePayment(form));
+    await this.provider(contact, (p) =>
+      p.createOneTimePayment(completedPaymentFlow, form)
+    );
   }
 
   /**

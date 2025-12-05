@@ -291,16 +291,23 @@ export async function deleteSubscription(
  * Create a one-time payment
  *
  * @param customerId The ID of the customer
+ * @param mandateId The ID of the payment mandate
  * @param form The payment form
  * @param paymentMethod The payment method
  */
 export async function chargeOneTimePayment(
   customerId: string,
+  mandateId: string,
   form: PaymentForm,
   paymentMethod: PaymentMethod
 ): Promise<void> {
+  await stripe.paymentMethods.attach(mandateId, {
+    customer: customerId,
+  });
+
   const invoice = await stripe.invoices.create({
     customer: customerId,
+    default_payment_method: mandateId,
     collection_method: 'charge_automatically',
     auto_advance: true,
   });
