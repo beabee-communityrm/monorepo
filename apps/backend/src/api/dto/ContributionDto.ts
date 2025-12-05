@@ -40,8 +40,7 @@ export class StartContributionDto
   completeUrl!: string;
 
   @IsEnum(PaymentMethod)
-  @IsOptional()
-  paymentMethod?: PaymentMethod;
+  paymentMethod!: PaymentMethod;
 }
 
 export class ForceUpdateContributionDto {

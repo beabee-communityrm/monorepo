@@ -1,8 +1,4 @@
-import {
-  GetContactWith,
-  PaymentForm,
-  PaymentPeriod,
-} from '@beabee/beabee-common';
+import { GetContactWith, PaymentForm } from '@beabee/beabee-common';
 import {
   CantUpdateContribution,
   NoPaymentMethod,
@@ -248,22 +244,17 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: StartContributionDto
   ): Promise<GetPaymentFlowDto> {
-    if (data.paymentMethod) {
-      const form = {
-        ...data,
-        monthlyAmount: getMonthlyAmount(data.amount, data.period),
-      };
-      const flow = await PaymentFlowService.createPaymentUpdateFlow(
-        target,
-        data.paymentMethod,
-        data.completeUrl,
-        form
-      );
-      return plainToInstance(GetPaymentFlowDto, flow);
-    } else {
-      await this.updateContribution(target, data);
-      return plainToInstance(GetPaymentFlowDto, {});
-    }
+    const form = {
+      ...data,
+      monthlyAmount: getMonthlyAmount(data.amount, data.period),
+    };
+    const flow = await PaymentFlowService.createPaymentUpdateFlow(
+      target,
+      data.paymentMethod,
+      data.completeUrl,
+      form
+    );
+    return plainToInstance(GetPaymentFlowDto, flow);
   }
 
   /**
