@@ -14,6 +14,7 @@ import {
   chargeOneTimePayment,
   createSubscription,
   deleteSubscription,
+  ensureCustomerAndAttachPayment,
   manadateToSource,
   stripe,
   updateSubscription,
@@ -105,7 +106,15 @@ export class StripeProvider extends PaymentProvider {
     const paymentMethod = await stripe.paymentMethods.retrieve(flow.mandateId);
     const address = paymentMethod.billing_details.address;
 
-    const customerData: Stripe.CustomerUpdateParams = {
+    this.data.customerId = await ensureCustomerAndAttachPayment(
+      this.contact,
+      this.data.customerId,
+      flow.mandateId,
+      flow.joinForm.vatNumber
+    );
+
+    log.info('Update customer details for ' + this.data.customerId);
+    await stripe.customers.update(this.data.customerId, {
       invoice_settings: {
         default_payment_method: flow.mandateId,
       },
@@ -119,17 +128,7 @@ export class StripeProvider extends PaymentProvider {
             ...(address.state && { state: address.state }),
           }
         : null,
-    };
-
-    if (this.data.customerId) {
-      log.info('Attach new payment source to ' + this.data.customerId);
-      await stripe.paymentMethods.attach(flow.mandateId, {
-        customer: this.data.customerId,
-      });
-      await stripe.customers.update(this.data.customerId, customerData);
-    } else {
-      this.data.customerId = await this.createCustomer(flow, customerData);
-    }
+    });
 
     if (this.data.mandateId) {
       log.info('Detach old payment method ' + this.data.mandateId);
@@ -263,10 +262,13 @@ export class StripeProvider extends PaymentProvider {
   ): Promise<void> {
     log.info('Create one-time payment of amount ' + form.monthlyAmount);
 
-    if (!this.data.customerId) {
-      this.data.customerId = await this.createCustomer(flow);
-      await this.updateData();
-    }
+    this.data.customerId = await ensureCustomerAndAttachPayment(
+      this.contact,
+      this.data.customerId,
+      flow.mandateId,
+      flow.joinForm.vatNumber
+    );
+    await this.updateData();
 
     await chargeOneTimePayment(
       this.data.customerId,
@@ -284,35 +286,6 @@ export class StripeProvider extends PaymentProvider {
     if (this.data.customerId) {
       await stripe.customers.del(this.data.customerId);
     }
-  }
-
-  /**
-   * Create a new customer in Stripe for the given contact and flow
-   *
-   * @param flow The completed payment flow
-   * @param customerData Optional additional customer data to set
-   * @returns The created customer ID
-   */
-  private async createCustomer(
-    flow: CompletedPaymentFlow,
-    customerData?: Partial<Stripe.CustomerCreateParams>
-  ): Promise<string> {
-    log.info('Create new Stripe customer for ' + this.contact.id);
-    const customer = await stripe.customers.create({
-      email: this.contact.email,
-      name: `${this.contact.firstname} ${this.contact.lastname}`,
-      payment_method: flow.mandateId,
-      ...(flow.joinForm.vatNumber && {
-        tax_id_data: [
-          {
-            type: 'eu_vat',
-            value: flow.joinForm.vatNumber,
-          },
-        ],
-      }),
-      ...customerData,
-    });
-    return customer.id;
   }
 }
 

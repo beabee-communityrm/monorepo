@@ -288,6 +288,39 @@ export async function deleteSubscription(
 }
 
 /**
+ * Create a customer in Stripe if needed and attach the payment mandate to them.
+ *
+ * @param contact The contact information
+ * @param customerId The existing customer ID or null to create a new one
+ * @param mandateId The payment mandate ID
+ * @param vatNumber The VAT number to attach to the customer
+ * @returns The Stripe customer ID
+ */
+export async function ensureCustomerAndAttachPayment(
+  contact: { email: string; firstname: string; lastname: string },
+  customerId: string | null,
+  mandateId: string,
+  vatNumber?: string | null
+): Promise<string> {
+  if (!customerId) {
+    log.info('Create new customer for ' + contact.email);
+    const customer = await stripe.customers.create({
+      email: contact.email,
+      name: `${contact.firstname} ${contact.lastname}`,
+      ...(vatNumber && { tax_id_data: [{ type: 'eu_vat', value: vatNumber }] }),
+    });
+    customerId = customer.id;
+  }
+
+  log.info('Attach payment method ' + mandateId + ' to customer ' + customerId);
+  await stripe.paymentMethods.attach(mandateId, {
+    customer: customerId,
+  });
+
+  return customerId;
+}
+
+/**
  * Create a one-time payment
  *
  * @param customerId The ID of the customer
