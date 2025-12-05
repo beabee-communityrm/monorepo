@@ -245,11 +245,7 @@ class PaymentFlowService {
     }
 
     if (completedPaymentFlow) {
-      await this.processCompletedFlow(
-        contact,
-        joinFlow.joinForm,
-        completedPaymentFlow
-      );
+      await this.processCompletedFlow(contact, completedPaymentFlow);
       // If this is a one-off payment join flow, skip the welcome email
       if (!isContributionForm(joinFlow.joinForm)) {
         return contact;
@@ -324,11 +320,7 @@ class PaymentFlowService {
     if (joinFlow) {
       const completedFlow = await this.completeJoinFlow(joinFlow);
       if (completedFlow) {
-        await this.processCompletedFlow(
-          contact,
-          joinFlow.joinForm,
-          completedFlow
-        );
+        await this.processCompletedFlow(contact, completedFlow);
         return joinFlow;
       }
     }
@@ -340,14 +332,13 @@ class PaymentFlowService {
    * payment flows it will create a one-time payment.
    *
    * @param contact The contact
-   * @param joinForm The join form
    * @param completedFlow The completed payment flow
    */
   private async processCompletedFlow(
     contact: Contact,
-    joinForm: JoinForm,
     completedFlow: CompletedPaymentFlow
   ): Promise<void> {
+    const joinForm = completedFlow.joinForm;
     if (isContributionForm(joinForm)) {
       const canChange = await PaymentService.canChangeContribution(
         contact,
@@ -364,11 +355,7 @@ class PaymentFlowService {
         await ContactsService.updateContactContribution(contact, joinForm);
       }
     } else {
-      await PaymentService.createOneTimePayment(
-        contact,
-        completedFlow,
-        joinForm
-      );
+      await PaymentService.createOneTimePayment(contact, completedFlow);
       await EmailService.sendTemplateToContact('one-time-donation', contact, {
         amount: joinForm.monthlyAmount,
       });

@@ -334,22 +334,20 @@ export async function chargeOneTimePayment(
   form: PaymentForm,
   paymentMethod: PaymentMethod
 ): Promise<void> {
-  await stripe.paymentMethods.attach(mandateId, {
-    customer: customerId,
-  });
+  log.info('Creating one-time payment on ' + customerId);
 
   const invoice = await stripe.invoices.create({
     customer: customerId,
     default_payment_method: mandateId,
     collection_method: 'charge_automatically',
     auto_advance: true,
+    currency: config.currencyCode,
   });
 
   await stripe.invoiceItems.create({
     customer: customerId,
     invoice: invoice.id,
     amount: getChargeableAmount(form, paymentMethod),
-    currency: config.currencyCode,
     description: 'One-time payment',
   });
 

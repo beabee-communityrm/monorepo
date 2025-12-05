@@ -256,11 +256,10 @@ export class StripeProvider extends PaymentProvider {
    * @param flow The completed payment flow
    * @param form The payment form
    */
-  async createOneTimePayment(
-    flow: CompletedPaymentFlow,
-    form: PaymentForm
-  ): Promise<void> {
-    log.info('Create one-time payment of amount ' + form.monthlyAmount);
+  async createOneTimePayment(flow: CompletedPaymentFlow): Promise<void> {
+    log.info(
+      'Create one-time payment of amount ' + flow.joinForm.monthlyAmount
+    );
 
     this.data.customerId = await ensureCustomerAndAttachPayment(
       this.contact,
@@ -273,8 +272,8 @@ export class StripeProvider extends PaymentProvider {
     await chargeOneTimePayment(
       this.data.customerId,
       flow.mandateId,
-      form,
-      this.method
+      flow.joinForm,
+      flow.joinForm.paymentMethod
     );
   }
 
