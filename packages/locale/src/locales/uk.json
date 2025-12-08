@@ -215,7 +215,8 @@
     "payment": {
       "paymentTitle": "Оплата",
       "taxRate": "Ставка ПДВ",
-      "taxRateEnabled": "Увімкнути ПДВ"
+      "taxRateEnabled": "Увімкнути ПДВ",
+      "showOneTimeDonation": "Показати опцію одноразової пожертви на головному екрані"
     },
     "theme": {
       "bodyFont": "Основний текст",

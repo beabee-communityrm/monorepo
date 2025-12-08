@@ -211,6 +211,9 @@ export class GetContentPaymentDto implements ContentPaymentData {
   @IsBoolean()
   taxRateEnabled!: boolean;
 
+  @IsBoolean()
+  showOneTimeDonation!: boolean;
+
   @IsNumber()
   taxRate!: number;
 

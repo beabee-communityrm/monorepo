@@ -216,7 +216,8 @@
     "payment": {
       "paymentTitle": "",
       "taxRate": "",
-      "taxRateEnabled": ""
+      "taxRateEnabled": "",
+      "showOneTimeDonation": ""
     },
     "theme": {
       "bodyFont": "",

@@ -6,4 +6,5 @@ export interface ContentPaymentData {
   taxRateEnabled: boolean;
   taxRate: number;
   noticeText: string;
+  showOneTimeDonation: boolean;
 }

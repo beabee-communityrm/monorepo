@@ -56,7 +56,10 @@ meta:
       >{{ t('homePage.manageContribution') }}</AppButton
     >
   </section>
-  <section class="mb-6 lg:mr-6 lg:w-1/4">
+  <section
+    v-if="paymentContent.showOneTimeDonation"
+    class="mb-6 lg:mr-6 lg:w-1/4"
+  >
     <form @submit.prevent="handleSubmitDonation">
       <SectionTitle>{{ t('homePage.makeOneTimeDonation') }}</SectionTitle>
 
@@ -143,6 +146,7 @@ const paymentContent = ref<ContentPaymentData>({
   stripeCountry: 'eu',
   taxRate: 0,
   taxRateEnabled: false,
+  showOneTimeDonation: false,
   noticeText: '',
 });
 
