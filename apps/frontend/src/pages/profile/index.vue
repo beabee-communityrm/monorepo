@@ -80,7 +80,7 @@ meta:
       :title="t('contribution.contributionUpdateError')"
     /> -->
 
-      <AppButton variant="link" class="mb-4 mt-4 w-full">
+      <AppButton variant="link" class="mb-4 w-full">
         Make a Donation
       </AppButton>
     </form>
