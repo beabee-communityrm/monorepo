@@ -89,12 +89,15 @@ export interface ContributionProps {
   showPaymentMethod?: boolean;
   /** Whether the form is disabled */
   disabled?: boolean;
+  /** Show one time donation tab */
+  disableOneTimeDonationTab?: boolean;
 }
 
 const props = withDefaults(defineProps<ContributionProps>(), {
   showPeriod: true,
   showPaymentMethod: true,
   disabled: false,
+  showOneTimeDonationTab: true,
 });
 
 const amount = defineModel<number>('amount', { required: true });
@@ -138,7 +141,12 @@ const periodItems = computed(() => {
   if (!('periods' in props.content)) {
     return [];
   }
-  return props.content.periods.map((period) => ({
+  // Remove one-time donation if disabled
+  const filteredPeriods = props.disableOneTimeDonationTab
+    ? props.content.periods.filter((p) => p.name !== 'one-time')
+    : props.content.periods;
+
+  return filteredPeriods.map((period) => ({
     label: t(`common.paymentPeriod.${period.name}`),
     value: period.name,
   }));
@@ -155,4 +163,15 @@ const shouldForceFee = computed(() => {
 watch(shouldForceFee, (force) => {
   if (force) payFee.value = true;
 });
+
+// Watch for when one-time donation is disabled and switch to monthly if currently selected
+watch(
+  () => props.disableOneTimeDonationTab,
+  (disabled) => {
+    if (disabled && period.value === 'one-time') {
+      // Switch to monthly as default when one-time is disabled
+      period.value = ContributionPeriod.Monthly;
+    }
+  }
+);
 </script>

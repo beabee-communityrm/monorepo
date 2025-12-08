@@ -39,6 +39,7 @@
         :payment-content="paymentContent"
         :show-period="showChangePeriod"
         :show-payment-method="!isAutoActiveMember"
+        :disable-one-time-donation-tab="true"
       />
 
       <ProrateContribution
