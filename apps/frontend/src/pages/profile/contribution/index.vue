@@ -7,7 +7,7 @@ meta:
 <template>
   <PageTitle :title="t('menu.contribution')" />
 
-  <App2ColGrid v-if="!isIniting">
+  <App2ColGrid v-if="!isInitiating">
     <template #col1>
       <AppNotification
         v-if="updatedPaymentSource"
@@ -110,10 +110,11 @@ const paymentContent = ref<ContentPaymentData>({
   stripeCountry: 'eu',
   taxRate: 0,
   taxRateEnabled: false,
+  showOneTimeDonation: false,
   noticeText: '',
 });
 
-const isIniting = ref(true);
+const isInitiating = ref(true);
 const contribution = ref<ContributionInfo>({
   type: ContributionType.None,
   membershipStatus: MembershipStatus.None,
@@ -126,12 +127,12 @@ const paymentSourceData = computed(() => ({
 }));
 
 onBeforeMount(async () => {
-  isIniting.value = true;
+  isInitiating.value = true;
 
   content.value = await client.content.get('join');
   paymentContent.value = await client.content.get('payment');
 
   contribution.value = await client.contact.contribution.get();
-  isIniting.value = false;
+  isInitiating.value = false;
 });
 </script>

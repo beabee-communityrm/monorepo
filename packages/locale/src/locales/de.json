@@ -215,7 +215,8 @@
     "payment": {
       "paymentTitle": "Zahlungen",
       "taxRate": "Mehrwertsteuersatz",
-      "taxRateEnabled": "Mehrwertsteuer aktivieren"
+      "taxRateEnabled": "Mehrwertsteuer aktivieren",
+      "showOneTimeDonation": "Einmalige Spendenoption auf Startbildschirm anzeigen"
     },
     "theme": {
       "bodyFont": "Text",
@@ -1299,7 +1300,8 @@
     "viewAllCallouts": "Alle anzeigen",
     "viewOpenCallouts": "Alle anzeigen",
     "welcome": "Herzlich willkommen {firstName} {lastName}!",
-    "yourProfile": "Ihr Profil"
+    "yourProfile": "Ihr Profil",
+    "makeOneTimeDonation": "Jetzt Spenden"
   },
   "icons": {
     "welcome": {
