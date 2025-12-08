@@ -215,7 +215,8 @@
     "payment": {
       "paymentTitle": "Paiement",
       "taxRate": "Taux de la TVA",
-      "taxRateEnabled": "Activer la TVA"
+      "taxRateEnabled": "Activer la TVA",
+      "showOneTimeDonation": "Afficher l’option de don unique sur l’écran d’accueil"
     },
     "theme": {
       "bodyFont": "Corps de texte",

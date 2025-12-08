@@ -214,6 +214,7 @@ const contentData = {
     stripePublicKey: ['readonly', () => config.stripe.publicKey],
     stripeCountry: ['readonly', () => config.stripe.country],
     taxRateEnabled: ['option', 'tax-rate-enabled', 'bool'],
+    showOneTimeDonation: ['option', 'show-one-time-donation', 'bool'],
     taxRate: ['option', 'tax-rate-percentage', 'int'],
     noticeText: ['data', ''],
   }),

@@ -110,6 +110,7 @@ const paymentContent = ref<ContentPaymentData>({
   stripeCountry: 'eu',
   taxRate: 0,
   taxRateEnabled: false,
+  showOneTimeDonation: false,
   noticeText: '',
 });
 
