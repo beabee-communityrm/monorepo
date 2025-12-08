@@ -89,7 +89,7 @@ export interface ContributionProps {
   showPaymentMethod?: boolean;
   /** Whether the form is disabled */
   disabled?: boolean;
-  /** Show one time donation tab */
+  /** Disable one time donation tab */
   disableOneTimeDonationTab?: boolean;
 }
 
