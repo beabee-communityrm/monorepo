@@ -97,7 +97,7 @@ const props = withDefaults(defineProps<ContributionProps>(), {
   showPeriod: true,
   showPaymentMethod: true,
   disabled: false,
-  showOneTimeDonationTab: true,
+  disableOneTimeDonationTab: true,
 });
 
 const amount = defineModel<number>('amount', { required: true });
