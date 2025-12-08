@@ -12,6 +12,7 @@ import { loadFront } from 'yaml-front-matter';
 import config from '#config/config';
 import {
   adminEmailTemplates,
+  allEmailTemplates,
   contactEmailTemplates,
   generalEmailTemplates,
   getBaseEmailMergeFields,
@@ -33,6 +34,7 @@ import {
   EmailPerson,
   EmailProvider,
   EmailRecipient,
+  EmailTemplate,
   EmailTemplateId,
   GeneralEmailParams,
   GeneralEmailTemplateId,
@@ -298,7 +300,6 @@ class EmailService {
     opts: EmailOptions | undefined,
     required: boolean
   ): Promise<void> {
-    // Check for override in database
     const email = await this.getTemplateEmail(template);
 
     if (email) {
@@ -330,21 +331,10 @@ class EmailService {
     template: EmailTemplateId
   ): Promise<Email | undefined> {
     // Check for override in database
-    const override = await getRepository(Email).findOneBy({
+    const email = await getRepository(Email).findOneBy({
       templateId: template,
     });
-    if (override) {
-      return override;
-    }
-
-    // Fall back to default template if it exists
-    const defaultEmail = this.getDefaultEmail(template);
-    if (defaultEmail) {
-      return defaultEmail;
-    }
-
-    // No override and no default template exists
-    return undefined;
+    return email || this.getDefaultEmail(template);
   }
 
   /**
@@ -414,6 +404,12 @@ class EmailService {
     };
   }
 
+  /**
+   * Delete an email by ID and its associated mailings
+   *
+   * @param id The email ID to delete
+   * @returns True if the email was deleted, false otherwise
+   */
   async deleteEmail(id: string): Promise<boolean> {
     const result = await runTransaction(async (em) => {
       await em.getRepository(EmailMailing).delete({ emailId: id });
@@ -432,11 +428,7 @@ class EmailService {
     const override = await getRepository(Email).findOneBy({
       templateId: template,
     });
-    if (override) {
-      await getRepository(Email).delete(override.id);
-      return true;
-    }
-    return false;
+    return override ? await this.deleteEmail(override.id) : false;
   }
 
   /**
@@ -449,49 +441,24 @@ class EmailService {
       where: { templateId: Not(IsNull()) },
       select: ['templateId', 'subject'],
     });
-    const overrideMap = new Map(
+    const templateIdSubjectMap = new Map(
       overrides.map((e) => [e.templateId, e.subject])
     );
 
-    // Build template info list
-    const allTemplates = [
-      ...Object.entries(contactEmailTemplates).map(([id, def]) => ({
-        id,
-        metadata: {
-          ...def.metadata,
-          mergeFields: [...def.metadata.mergeFields],
-        },
-      })),
-      ...Object.entries(generalEmailTemplates).map(([id, def]) => ({
-        id,
-        metadata: {
-          ...def.metadata,
-          mergeFields: [...def.metadata.mergeFields],
-        },
-      })),
-      ...Object.entries(adminEmailTemplates).map(([id, def]) => ({
-        id,
-        metadata: {
-          ...def.metadata,
-          mergeFields: [...def.metadata.mergeFields],
-        },
-      })),
-    ];
-
-    return allTemplates.map(({ id, metadata }) => {
-      const hasOverride = overrideMap.has(id);
-      const overrideSubject = overrideMap.get(id);
-      const defaultEmail = this.getDefaultEmail(id as EmailTemplateId);
-      const hasDefaultTemplate = defaultEmail !== undefined;
-
-      return {
-        id,
-        type: metadata.type,
-        mergeFields: metadata.mergeFields,
-        hasOverride,
-        hasDefaultTemplate,
-        subject: hasOverride ? overrideSubject! : (defaultEmail?.subject ?? ''),
-      };
+    return allEmailTemplates.flatMap(([type, templateSet]) => {
+      return Object.entries(templateSet).map(([id, template]) => {
+        // TypeScript doesn't infer types well when iterating over objects
+        const template2 = template as EmailTemplate<string, any>;
+        const defaultEmail = this.getDefaultEmail(id as EmailTemplateId);
+        return {
+          id,
+          type,
+          mergeFields: template2.mergeFields,
+          hasOverride: templateIdSubjectMap.has(id),
+          hasDefaultTemplate: defaultEmail !== undefined,
+          subject: templateIdSubjectMap.get(id) || defaultEmail?.subject || '',
+        };
+      });
     });
   }
 
@@ -512,6 +479,13 @@ class EmailService {
     );
   }
 
+  /**
+   * Get the default email for a given template ID in the system locale, or
+   * falling back to English if not found
+   *
+   * @param template The template ID to get the default email for
+   * @returns The default email for the given template ID, or undefined if not found
+   */
   private getDefaultEmail(template: EmailTemplateId): Email | undefined {
     const locale = OptionsService.getText('locale');
     return (

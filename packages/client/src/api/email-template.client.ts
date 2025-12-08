@@ -1,5 +1,6 @@
 import type {
   EmailPreviewData,
+  EmailTemplateType,
   GetEmailData,
   GetEmailTemplateInfoData,
   UpdateEmailData,
@@ -102,7 +103,7 @@ export class EmailTemplateClient extends BaseClient {
    * });
    */
   async preview(
-    type: 'general' | 'contact' | 'admin',
+    type: EmailTemplateType,
     templateId: string,
     options: PreviewEmailOptions = {}
   ): Promise<EmailPreviewData> {

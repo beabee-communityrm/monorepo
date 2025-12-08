@@ -1,3 +1,4 @@
+import { EmailTemplateType } from '@beabee/beabee-common';
 import {
   AdminEmailTemplateId,
   ContactEmailTemplateId,
@@ -119,11 +120,11 @@ export class GetEmailTemplateInfoDto {
   id!: string;
 
   @IsString()
-  type!: 'general' | 'admin' | 'contact';
+  type!: EmailTemplateType;
 
   @IsArray()
   @IsString({ each: true })
-  mergeFields!: string[];
+  mergeFields!: readonly string[];
 
   hasOverride!: boolean;
 

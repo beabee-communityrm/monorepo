@@ -28,6 +28,11 @@ export interface EmailOptions {
   sendAt?: Date | undefined;
 }
 
+export type EmailTemplate<T extends string, A extends any[]> = {
+  mergeFields: readonly T[];
+  fn: (...args: A) => { [key in T]: string };
+};
+
 export interface PreviewEmailOptions {
   templateId?: EmailTemplateId;
   mergeFields?: Record<string, string>;
