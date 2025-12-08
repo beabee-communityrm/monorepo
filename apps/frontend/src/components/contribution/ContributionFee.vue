@@ -1,6 +1,7 @@
 <template>
   <section
     v-if="period !== ContributionPeriod.Annually"
+    class="mb-8"
     :class="disabled && 'opacity-50'"
   >
     <p class="mb-2 text-sm leading-normal">
