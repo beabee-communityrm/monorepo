@@ -45,7 +45,7 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { ContentJoinData } from '@beabee/beabee-common';
-import { App2ColGrid, AppForm} from '@beabee/vue';
+import { App2ColGrid, AppForm } from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
 import { client, isApiError } from '@utils/api';
@@ -63,7 +63,6 @@ const joinContent = ref<ContentJoinData>();
 const showOneTimeDonationEmail = computed(() =>
   joinContent.value?.periods.some((p) => p.name === 'one-time')
 );
-
 
 async function loadEmail(
   templateId: string
