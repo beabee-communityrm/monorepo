@@ -31,7 +31,6 @@ meta:
     <EmailEditor
       v-model:subject="emailData.subject"
       v-model:content="emailData.body"
-      :server-render="{ type: 'general' }"
       :heading="t('emailEditor.body.label')"
     />
   </AppForm>

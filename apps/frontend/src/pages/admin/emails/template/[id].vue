@@ -26,7 +26,7 @@ meta:
     <EmailEditor
       v-model:subject="emailData.subject"
       v-model:content="emailData.body"
-      :server-render="{ type: templateType, templateId }"
+      :template="{ type: templateType, id: templateId }"
       :heading="t('emailEditor.body.label')"
     />
   </AppForm>
