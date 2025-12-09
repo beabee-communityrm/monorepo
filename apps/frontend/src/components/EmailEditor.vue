@@ -215,7 +215,7 @@ async function fetchServerPreview() {
     }
 
     const preview = props.template
-      ? await client.email.previewTemplate(
+      ? await client.email.template.preview(
           props.template.type,
           props.template.id,
           previewOptions

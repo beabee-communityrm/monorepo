@@ -36,6 +36,7 @@ export default {
   'footer-terms-link-url': 'http://example.com/terms',
   'footer-facebook-link-url': '',
   'footer-twitter-link-url': '',
+  /** @deprecated Use Email.templateId instead. Kept for legacy app compatibility. */
   'email-templates': '{}',
   'newsletter-active-member-tag': 'Active member',
   'newsletter-active-user-tag': 'Active user',
