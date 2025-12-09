@@ -180,7 +180,7 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/admin/emails.vue': {
-      routes: 'adminEmails' | 'adminEmailsTemplateEdit' | 'adminEmailsEdit' | 'adminEmailsAdd' | 'adminEmailsCustom' | '/admin/emails/edit' | '/admin/emails/template' | 'adminEmailsTemplates'
+      routes: 'adminEmails' | 'adminEmailsEdit' | 'adminEmailsTemplateEdit' | 'adminEmailsAdd' | 'adminEmailsCustom' | '/admin/emails/edit' | '/admin/emails/template' | 'adminEmailsTemplates'
       views: 'default'
     }
     'src/pages/admin/emails/add.vue': {

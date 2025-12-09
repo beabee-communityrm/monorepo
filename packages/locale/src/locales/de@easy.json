@@ -1679,9 +1679,6 @@
     "mailingCount": "",
     "status": "",
     "type": "",
-    "customized": "",
-    "default": "",
-    "missingDefault": "",
     "actions": {
       "addCustom": "",
       "resetToDefault": ""
@@ -1708,12 +1705,12 @@
         "giftee-success": "",
         "contribution-didnt-start": "",
         "purchased-gift": "",
-        "one-time-donation": "",
         "confirm-email": "",
         "expired-special-url-resend": "",
         "new-member": "",
         "cancelled-member": "",
-        "new-callout-response": ""
+        "new-callout-response": "",
+        "one-time-donation": ""
       }
     },
     "confirmDelete": {
@@ -1729,8 +1726,13 @@
       "created": "",
       "updated": "",
       "deleted": "",
-      "resetToDefault": ""
-    }
+      "resetToDefault": "",
+      "templatesAssigned": "",
+      "templateAssigned": ""
+    },
+    "customized": "",
+    "default": "",
+    "missingDefault": ""
   },
   "mergeFields": {
     "title": "",
@@ -1776,80 +1778,5 @@
       "RESPNAME": "",
       "ORGNAME": ""
     }
-  },
-  "emails": {
-    "tabs": {
-      "custom": "",
-      "templates": ""
-    },
-    "list": {
-      "showingOf": ""
-    },
-    "add": {
-      "title": ""
-    },
-    "edit": {
-      "title": "",
-      "titleCustom": ""
-    },
-    "name": "",
-    "fromName": "",
-    "fromEmail": "",
-    "mailingCount": "",
-    "status": "",
-    "type": "",
-    "actions": {
-      "addCustom": "",
-      "resetToDefault": ""
-    },
-    "templates": {
-      "availableFields": "",
-      "type": {
-        "general": "",
-        "admin": "",
-        "contact": ""
-      },
-      "names": {
-        "welcome": "",
-        "welcome-post-gift": "",
-        "reset-password": "",
-        "reset-device": "",
-        "cancelled-contribution": "",
-        "cancelled-contribution-no-survey": "",
-        "manual-to-automatic": "",
-        "email-exists-login": "",
-        "email-exists-set-password": "",
-        "callout-response-answers": "",
-        "successful-referral": "",
-        "giftee-success": "",
-        "contribution-didnt-start": "",
-        "purchased-gift": "",
-        "confirm-email": "",
-        "expired-special-url-resend": "",
-        "new-member": "",
-        "cancelled-member": "",
-        "new-callout-response": ""
-      }
-    },
-    "confirmDelete": {
-      "title": "",
-      "message": "",
-      "messageWithMailings": ""
-    },
-    "confirmResetToDefault": {
-      "title": "",
-      "message": ""
-    },
-    "notifications": {
-      "created": "",
-      "updated": "",
-      "deleted": "",
-      "resetToDefault": "",
-      "templatesAssigned": "",
-      "templateAssigned": ""
-    },
-    "customized": "",
-    "default": "",
-    "missingDefault": ""
   }
 }
