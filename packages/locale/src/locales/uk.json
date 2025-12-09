@@ -1713,5 +1713,24 @@
   "taxRate": {
     "invoiceName": "VAT"
   },
-  "emails": {}
+  "emails": {
+    "tabs": {},
+    "list": {},
+    "add": {},
+    "edit": {},
+    "name": "",
+    "fromName": "",
+    "fromEmail": "",
+    "mailingCount": "",
+    "status": "",
+    "type": "",
+    "customized": "",
+    "default": "",
+    "missingDefault": "",
+    "actions": {},
+    "templates": {},
+    "confirmDelete": {},
+    "confirmResetToDefault": {},
+    "notifications": {}
+  }
 }
