@@ -1461,7 +1461,8 @@
     "notices": "Повідомлень",
     "payments": "Платежі",
     "settings": "Налаштування",
-    "yourProfile": "Ваш профіль"
+    "yourProfile": "Ваш профіль",
+    "emails": ""
   },
   "mergeFields": {
     "clickToExpand": "Натисніть, щоб розгорнути заповнювачі",
@@ -1708,5 +1709,25 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
+  },
+  "emails": {
+    "tabs": {},
+    "list": {},
+    "add": {},
+    "edit": {},
+    "name": "",
+    "fromName": "",
+    "fromEmail": "",
+    "mailingCount": "",
+    "status": "",
+    "type": "",
+    "customized": "",
+    "default": "",
+    "missingDefault": "",
+    "actions": {},
+    "templates": {},
+    "confirmDelete": {},
+    "confirmResetToDefault": {},
+    "notifications": {}
   }
 }
