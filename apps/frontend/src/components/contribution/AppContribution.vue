@@ -64,7 +64,6 @@ import {
 } from '@beabee/beabee-common';
 import { AppChoice } from '@beabee/vue';
 
-import type { OneTimePaymentContent } from '@type/one-time-payment-content';
 import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -80,24 +79,24 @@ const { t } = useI18n();
  */
 export interface ContributionProps {
   /** Configuration data for the contribution form */
-  content: ContributionContent | OneTimePaymentContent;
+  content: ContributionContent;
   /** Payment-related configuration */
   paymentContent: ContentPaymentData;
+  /** Configure if the form is being used as a contribution only form or as a one-time only donation form */
+  mode?: 'one-time' | 'contribution';
   /** Whether to show period selection */
   showPeriod?: boolean;
   /** Whether to show payment method selection */
   showPaymentMethod?: boolean;
   /** Whether the form is disabled */
   disabled?: boolean;
-  /** Disable one time donation tab */
-  disableOneTimeDonationTab?: boolean;
 }
 
 const props = withDefaults(defineProps<ContributionProps>(), {
   showPeriod: true,
   showPaymentMethod: true,
   disabled: false,
-  disableOneTimeDonationTab: true,
+  mode: undefined, // the form allows one-time donations and contributions
 });
 
 const amount = defineModel<number>('amount', { required: true });
@@ -126,8 +125,7 @@ const minAmount = computed(() => {
 });
 
 const definedAmounts = computed(() => {
-  // PaymentContent doesn't have periods, return empty array
-  if (!('periods' in props.content)) {
+  if (props.mode === 'one-time') {
     return [];
   }
   const selectedPeriod = props.content.periods.find((p) => {
@@ -137,16 +135,20 @@ const definedAmounts = computed(() => {
 });
 
 const periodItems = computed(() => {
-  // PaymentContent doesn't have periods, return empty array
-  if (!('periods' in props.content)) {
+  if (props.mode === 'one-time') {
     return [];
   }
   // Remove one-time donation if disabled
-  const filteredPeriods = props.disableOneTimeDonationTab
-    ? props.content.periods.filter((p) => p.name !== 'one-time')
-    : props.content.periods;
+  const filteredPeriods = computed(() =>
+    props.content.periods.filter(
+      (p) =>
+        !props.mode || // All
+        (props.mode === 'one-time' && p.name === 'one-time') || // Only one-time
+        (props.mode === 'contribution' && p.name !== 'one-time') // Only contribution
+    )
+  );
 
-  return filteredPeriods.map((period) => ({
+  return filteredPeriods.value.map((period) => ({
     label: t(`common.paymentPeriod.${period.name}`),
     value: period.name,
   }));
@@ -163,15 +165,4 @@ const shouldForceFee = computed(() => {
 watch(shouldForceFee, (force) => {
   if (force) payFee.value = true;
 });
-
-// Watch for when one-time donation is disabled and switch to monthly if currently selected
-watch(
-  () => props.disableOneTimeDonationTab,
-  (disabled) => {
-    if (disabled && period.value === 'one-time') {
-      // Switch to monthly as default when one-time is disabled
-      period.value = ContributionPeriod.Monthly;
-    }
-  }
-);
 </script>

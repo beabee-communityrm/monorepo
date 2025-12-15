@@ -1305,7 +1305,8 @@
     "viewOpenCallouts": "Voir les CrowdNewsrooms actives",
     "welcome": "Bienvenue à bord {firstName} !",
     "yourProfile": "Votre profil",
-    "makeOneTimeDonation": "Faire un don maintenant"
+    "makeOneTimeDonationTitle": "Faire un don maintenant",
+    "makeOneTimeDonationButton": "Don"
   },
   "icons": {
     "welcome": {

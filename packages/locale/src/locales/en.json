@@ -1301,7 +1301,8 @@
     "viewOpenCallouts": "Open the CrowdNewsroom",
     "welcome": "Welcome aboard {firstName}!",
     "yourProfile": "Your profile",
-    "makeOneTimeDonation": "Make a one time donation"
+    "makeOneTimeDonationTitle": "Make a one time donation",
+    "makeOneTimeDonationButton": "Make a donation"
   },
   "icons": {
     "welcome": {

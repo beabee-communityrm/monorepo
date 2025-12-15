@@ -1301,7 +1301,8 @@
     "viewOpenCallouts": "Alle anzeigen",
     "welcome": "Herzlich willkommen {firstName} {lastName}!",
     "yourProfile": "Ihr Profil",
-    "makeOneTimeDonation": "Jetzt Spenden"
+    "makeOneTimeDonationTitle": "Jetzt Spenden",
+    "makeOneTimeDonationButton": "Spenden"
   },
   "icons": {
     "welcome": {

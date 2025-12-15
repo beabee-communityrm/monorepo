@@ -1303,7 +1303,8 @@
     "viewOpenCallouts": "Відкрийте CrowdNewsroom",
     "welcome": "Ласкаво просимо на борт {firstName}!",
     "yourProfile": "Ваш профіль",
-    "makeOneTimeDonation": "Зробити пожертву зараз"
+    "makeOneTimeDonationTitle": "Зробити пожертву зараз",
+    "makeOneTimeDonationButton": "Пожертвувати"
   },
   "icons": {
     "welcome": {
