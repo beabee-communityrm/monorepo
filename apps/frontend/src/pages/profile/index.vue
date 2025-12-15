@@ -60,17 +60,21 @@ meta:
     v-if="paymentContent && paymentContent.showOneTimeDonation"
     class="mb-6 lg:mr-6 lg:w-1/4"
   >
-    <form @submit.prevent="handleSubmitDonation">
-      <SectionTitle>{{ t('homePage.makeOneTimeDonation') }}</SectionTitle>
+    <AppForm
+      :button-text="t('homePage.makeOneTimeDonationButton')"
+      @submit.prevent="handleSubmitDonation"
+    >
+      <SectionTitle>{{ t('homePage.makeOneTimeDonationTitle') }}</SectionTitle>
 
       <AppContribution
         v-model:amount="oneTimeDonation.amount"
-        v-model:period="oneTimeDonation.period"
         v-model:pay-fee="oneTimeDonation.payFee"
         v-model:payment-method="oneTimeDonation.paymentMethod"
         :content="content"
         :payment-content="paymentContent"
         :show-period="false"
+        period="one-time"
+        mode="one-time"
       >
       </AppContribution>
 
@@ -79,11 +83,7 @@ meta:
       variant="error"
       :title="t('contribution.contributionUpdateError')"
     /> -->
-
-      <AppButton variant="link" class="mb-4 w-full">
-        Make a Donation
-      </AppButton>
-    </form>
+    </AppForm>
   </section>
 </template>
 
@@ -91,13 +91,14 @@ meta:
 import {
   type ContentPaymentData,
   type ContentProfileData,
+  ContributionPeriod,
   type GetCalloutData,
   type GetContactData,
   ItemStatus,
   PaymentMethod,
   type PaymentPeriod,
 } from '@beabee/beabee-common';
-import { AppButton, PageTitle, WelcomeMessage } from '@beabee/vue';
+import { AppButton, AppForm, PageTitle, WelcomeMessage } from '@beabee/vue';
 
 import CalloutCard from '@components/callout/CalloutCard.vue';
 import AppContribution from '@components/contribution/AppContribution.vue';
@@ -106,7 +107,7 @@ import NoticeContainer from '@components/pages/profile/NoticeContainer.vue';
 import QuickActions from '@components/pages/profile/QuickActions.vue';
 import SectionTitle from '@components/pages/profile/SectionTitle.vue';
 import { currentUser, generalContent } from '@store';
-import type { OneTimePaymentContent } from '@type/one-time-payment-content';
+import type { ContributionContent } from '@type/contribution';
 import { client } from '@utils/api';
 import { type Ref, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -134,9 +135,11 @@ const callouts = ref<GetCalloutData[]>([]);
 // TODO: is there a nicer way to handle this?
 const user = currentUser as Ref<GetContactData>;
 
-const content = ref<OneTimePaymentContent>({
+const content = ref<ContributionContent>({
   initialAmount: 5,
+  initialPeriod: ContributionPeriod.Monthly,
   minMonthlyAmount: 5,
+  periods: [],
   showAbsorbFee: true,
   paymentMethods: [PaymentMethod.StripeCard],
 });
@@ -178,15 +181,9 @@ async function handleSubmitDonation() {
 onBeforeMount(async () => {
   profileContent.value = await client.content.get('profile');
 
-  const joinContent = await client.content.get('join');
-  content.value = {
-    initialAmount: joinContent.initialAmount,
-    minMonthlyAmount: joinContent.minMonthlyAmount,
-    showAbsorbFee: joinContent.showAbsorbFee,
-    paymentMethods: joinContent.paymentMethods,
-  };
+  content.value = await client.content.get('join');
 
-  if (joinContent.periods.some((p) => p.name === 'one-time')) {
+  if (content.value.periods.some((p) => p.name === 'one-time')) {
     paymentContent.value = await client.content.get('payment');
   }
 

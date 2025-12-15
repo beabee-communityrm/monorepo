@@ -1301,7 +1301,8 @@
     "viewOpenCallouts": "Vedi le callout in corso",
     "welcome": "Ben fatto {firstName}!",
     "yourProfile": "Il tuo profilo",
-    "makeOneTimeDonation": "Fai una donazione ora"
+    "makeOneTimeDonationTitle": "Fai una donazione ora",
+    "makeOneTimeDonationButton": "Dona"
   },
   "icons": {
     "welcome": {

@@ -1301,7 +1301,8 @@
     "viewOpenCallouts": "Open CrowdNewsrooms bekijken",
     "welcome": "Welkom bij ons {firstName}!",
     "yourProfile": "Uw profiel",
-    "makeOneTimeDonation": "Doe nu een donatie"
+    "makeOneTimeDonationTitle": "Doe nu een donatie",
+    "makeOneTimeDonationButton": "Doneer"
   },
   "icons": {
     "welcome": {

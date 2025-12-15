@@ -1301,7 +1301,8 @@
     "viewOpenCallouts": "Ver CrowdNewsrooms abertas",
     "welcome": "Damos-te as boas-vindas, {firstName}!",
     "yourProfile": "O teu perfil",
-    "makeOneTimeDonation": "Doe nu een donatie"
+    "makeOneTimeDonationTitle": "Doe nu een donatie",
+    "makeOneTimeDonationButton": "Doar"
   },
   "icons": {
     "welcome": {

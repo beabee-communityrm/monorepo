@@ -1301,7 +1301,8 @@
     "viewOpenCallouts": "",
     "welcome": "",
     "yourProfile": "",
-    "makeOneTimeDonation": ""
+    "makeOneTimeDonationTitle": "",
+    "makeOneTimeDonationButton": ""
   },
   "icons": {
     "welcome": {
