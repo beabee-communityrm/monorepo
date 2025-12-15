@@ -57,7 +57,7 @@ meta:
     >
   </section>
   <section
-    v-if="paymentContent.showOneTimeDonation"
+    v-if="paymentContent && paymentContent.showOneTimeDonation"
     class="mb-6 lg:mr-6 lg:w-1/4"
   >
     <form @submit.prevent="handleSubmitDonation">
@@ -141,14 +141,7 @@ const content = ref<OneTimePaymentContent>({
   paymentMethods: [PaymentMethod.StripeCard],
 });
 
-const paymentContent = ref<ContentPaymentData>({
-  stripePublicKey: '',
-  stripeCountry: 'eu',
-  taxRate: 0,
-  taxRateEnabled: false,
-  showOneTimeDonation: false,
-  noticeText: '',
-});
+const paymentContent = ref<ContentPaymentData>();
 
 const oneTimeDonation = reactive({
   amount: 5,
@@ -185,8 +178,17 @@ async function handleSubmitDonation() {
 onBeforeMount(async () => {
   profileContent.value = await client.content.get('profile');
 
-  content.value = await client.content.get('join');
-  paymentContent.value = await client.content.get('payment');
+  const joinContent = await client.content.get('join');
+  content.value = {
+    initialAmount: joinContent.initialAmount,
+    minMonthlyAmount: joinContent.minMonthlyAmount,
+    showAbsorbFee: joinContent.showAbsorbFee,
+    paymentMethods: joinContent.paymentMethods,
+  };
+
+  if (joinContent.periods.some((p) => p.name === 'one-time')) {
+    paymentContent.value = await client.content.get('payment');
+  }
 
   callouts.value = (
     await client.callout.list({
