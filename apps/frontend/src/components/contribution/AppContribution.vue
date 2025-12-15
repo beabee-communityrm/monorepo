@@ -157,7 +157,7 @@ watch(isAnnually, (value) => {
 });
 
 const shouldForceFee = computed(() => {
-  return props.content.showAbsorbFee && amount.value === 1 && isAnnually.value;
+  return props.content.showAbsorbFee && amount.value === 1 && !isAnnually.value;
 });
 
 watch(shouldForceFee, (force) => {
