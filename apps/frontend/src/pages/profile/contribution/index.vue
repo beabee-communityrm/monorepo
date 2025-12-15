@@ -7,7 +7,7 @@ meta:
 <template>
   <PageTitle :title="t('menu.contribution')" />
 
-  <App2ColGrid v-if="!isInitiating">
+  <App2ColGrid v-if="!isIniting">
     <template #col1>
       <AppNotification
         v-if="updatedPaymentSource"
@@ -114,7 +114,7 @@ const paymentContent = ref<ContentPaymentData>({
   noticeText: '',
 });
 
-const isInitiating = ref(true);
+const isIniting = ref(true);
 const contribution = ref<ContributionInfo>({
   type: ContributionType.None,
   membershipStatus: MembershipStatus.None,
@@ -127,12 +127,12 @@ const paymentSourceData = computed(() => ({
 }));
 
 onBeforeMount(async () => {
-  isInitiating.value = true;
+  isIniting.value = true;
 
   content.value = await client.content.get('join');
   paymentContent.value = await client.content.get('payment');
 
   contribution.value = await client.contact.contribution.get();
-  isInitiating.value = false;
+  isIniting.value = false;
 });
 </script>
