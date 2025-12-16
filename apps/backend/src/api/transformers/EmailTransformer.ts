@@ -1,11 +1,5 @@
-import {
-  EmailFilterName,
-  PaginatedQuery,
-  RuleGroup,
-  emailFilters,
-} from '@beabee/beabee-common';
+import { EmailFilterName, emailFilters } from '@beabee/beabee-common';
 import { Email } from '@beabee/core/models';
-import { AuthInfo } from '@beabee/core/type';
 
 import { GetEmailDto, ListEmailsDto } from '@api/dto/EmailDto';
 import { TransformPlainToInstance } from 'class-transformer';
@@ -18,7 +12,7 @@ class EmailTransformer extends BaseTransformer<
   GetEmailDto,
   EmailFilterName,
   unknown,
-  ListEmailsDto & PaginatedQuery
+  ListEmailsDto
 > {
   protected model = Email;
   protected filters = emailFilters;
@@ -35,8 +29,8 @@ class EmailTransformer extends BaseTransformer<
       id: email.id,
       ...(email.templateId && { templateId: email.templateId }),
       name: email.name,
-      fromName: email.fromName,
-      fromEmail: email.fromEmail,
+      ...(email.fromName && { fromName: email.fromName }),
+      ...(email.fromEmail && { fromEmail: email.fromEmail }),
       subject: email.subject,
       body: email.body,
       date: email.date.toISOString(),

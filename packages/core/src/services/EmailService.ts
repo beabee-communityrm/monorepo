@@ -39,6 +39,7 @@ import {
   GeneralEmailParams,
   GeneralEmailTemplateId,
   PreviewEmailOptions,
+  UpdateEmailTemplateData,
 } from '#type/index';
 import { replaceMergeFields } from '#utils/email';
 
@@ -321,20 +322,18 @@ class EmailService {
   /**
    * Get an email template (override or default)
    *
-   * @param template The template ID
+   * @param templateId The template ID
    * @returns The email template:
    *   - Override email if one exists (Email with templateId set)
    *   - Default template from .yfm files if no override and default exists
    *   - undefined if no override and no default exists
    */
   async getTemplateEmail(
-    template: EmailTemplateId
+    templateId: EmailTemplateId
   ): Promise<Email | undefined> {
     // Check for override in database
-    const email = await getRepository(Email).findOneBy({
-      templateId: template,
-    });
-    return email || this.getDefaultEmail(template);
+    const email = await getRepository(Email).findOneBy({ templateId });
+    return email || this.getDefaultEmail(templateId);
   }
 
   /**
@@ -345,20 +344,17 @@ class EmailService {
    * @returns The created or updated email
    */
   async createOrUpdateTemplateOverride(
-    template: EmailTemplateId,
-    data: { subject: string; body: string }
+    templateId: EmailTemplateId,
+    data: UpdateEmailTemplateData
   ): Promise<Email> {
-    const existing = await getRepository(Email).findOneBy({
-      templateId: template,
+    const existing = await getRepository(Email).findOneBy({ templateId });
+
+    return await getRepository(Email).save({
+      ...existing,
+      ...data,
+      templateId,
+      name: data.name || existing?.name || `Override: ${templateId}`,
     });
-
-    const email = existing || new Email();
-    email.templateId = template;
-    email.name = existing ? existing.name : `Override: ${template}`;
-    email.subject = data.subject;
-    email.body = data.body;
-
-    return await getRepository(Email).save(email);
   }
 
   /**

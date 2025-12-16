@@ -17,8 +17,9 @@ export const createEmailOverride = async (
     const savedEmail = await emailService.createOrUpdateTemplateOverride(
       argv.template as EmailTemplateId,
       {
-        subject: argv.subject,
-        body: argv.body,
+        ...argv,
+        fromName: argv.fromName ?? null,
+        fromEmail: argv.fromEmail ?? null,
       }
     );
 

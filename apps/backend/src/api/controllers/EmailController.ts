@@ -83,10 +83,7 @@ export class EmailController {
   ): Promise<GetEmailDto> {
     const updated = await EmailService.createOrUpdateTemplateOverride(
       templateId,
-      {
-        subject: data.subject,
-        body: data.body,
-      }
+      data
     );
 
     return EmailTransformer.convert(updated);
@@ -98,13 +95,9 @@ export class EmailController {
   @OnUndefined(204)
   @Delete('/template/:templateId')
   async deleteTemplate(
-    @CurrentAuth() auth: AuthInfo,
     @Params() { templateId }: DeleteEmailTemplateParams
   ): Promise<void> {
-    const deleted = await EmailTransformer.delete(auth, {
-      condition: 'AND',
-      rules: [{ field: 'templateId', operator: 'equal', value: [templateId] }],
-    });
+    const deleted = await EmailService.deleteTemplateOverride(templateId);
     if (!deleted) {
       throw new NotFoundError();
     }
@@ -118,13 +111,7 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Body() data: CreateEmailDto
   ): Promise<GetEmailDto> {
-    return await EmailTransformer.createOne(auth, {
-      name: data.name,
-      fromName: data.fromName || null,
-      fromEmail: data.fromEmail || null,
-      subject: data.subject,
-      body: data.body,
-    });
+    return await EmailTransformer.createOne(auth, data);
   }
 
   /**

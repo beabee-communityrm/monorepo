@@ -10,19 +10,17 @@ import { GetPaginatedQuery } from '@api/dto/BaseDto';
 import IsEmailTemplateId from '@api/validators/IsEmailTemplateId';
 import { IsArray, IsObject, IsOptional, IsString } from 'class-validator';
 
-export class UpdateEmailDto {
+/**
+ * DTO for email preview responses
+ * Contains rendered subject and body with merge fields replaced
+ */
+export class EmailPreviewDto {
   @IsString()
   subject!: string;
 
   @IsString()
   body!: string;
 }
-
-/**
- * DTO for email preview responses
- * Contains rendered subject and body with merge fields replaced
- */
-export class EmailPreviewDto extends UpdateEmailDto {}
 
 export class PreviewAdminEmailParams {
   @IsEmailTemplateId('admin')
@@ -71,6 +69,31 @@ export class CreateEmailDto {
 }
 
 /**
+ * DTO for updating custom emails
+ */
+export class UpdateEmailDto {
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  subject?: string;
+
+  @IsOptional()
+  @IsString()
+  body?: string;
+
+  @IsOptional()
+  @IsString()
+  fromName?: string;
+
+  @IsOptional()
+  @IsString()
+  fromEmail?: string;
+}
+
+/**
  * DTO for listing emails with pagination
  */
 export class ListEmailsDto extends GetPaginatedQuery {}
@@ -79,30 +102,13 @@ export class ListEmailsDto extends GetPaginatedQuery {}
  * DTO for email entity with full metadata
  * Used for CRUD operations on email entities
  */
-export class GetEmailDto {
+export class GetEmailDto extends CreateEmailDto {
   @IsString()
   id!: string;
 
   @IsOptional()
   @IsString()
   templateId?: string;
-
-  @IsString()
-  name!: string;
-
-  @IsOptional()
-  @IsString()
-  fromName!: string | null;
-
-  @IsOptional()
-  @IsString()
-  fromEmail!: string | null;
-
-  @IsString()
-  subject!: string;
-
-  @IsString()
-  body!: string;
 
   @IsString()
   date!: string;

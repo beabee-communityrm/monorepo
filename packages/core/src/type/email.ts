@@ -33,6 +33,14 @@ export type EmailTemplate<T extends string, A extends any[]> = {
   fn: (...args: A) => { [key in T]: string };
 };
 
+export interface UpdateEmailTemplateData {
+  name?: string;
+  subject?: string;
+  body?: string;
+  fromName?: string | null;
+  fromEmail?: string | null;
+}
+
 export interface PreviewEmailOptions {
   templateId?: EmailTemplateId;
   mergeFields?: Record<string, string>;
