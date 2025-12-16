@@ -1,3 +1,6 @@
-import { GetEmailData } from './index.js';
+import { EmailPreviewData } from './index.js';
 
-export type UpdateEmailData = GetEmailData;
+/**
+ * Data for updating an email (subject and body only)
+ */
+export type UpdateEmailData = EmailPreviewData;

@@ -1,11 +1,5 @@
 import type { CommandModule } from 'yargs';
 
-import type {
-  CreateEmailOverrideArgs,
-  DeleteEmailOverrideArgs,
-  ListEmailOverridesArgs,
-} from '../types/index.js';
-
 export const emailCommand: CommandModule = {
   command: 'email <action>',
   describe: 'Manage email template overrides',
@@ -23,7 +17,7 @@ export const emailCommand: CommandModule = {
           const { listEmailOverrides } = await import(
             '../actions/email/list.js'
           );
-          return listEmailOverrides(argv as ListEmailOverridesArgs);
+          return listEmailOverrides(argv);
         },
       })
       .command({
@@ -70,7 +64,7 @@ export const emailCommand: CommandModule = {
           const { createEmailOverride } = await import(
             '../actions/email/create.js'
           );
-          return createEmailOverride(argv as CreateEmailOverrideArgs);
+          return createEmailOverride(argv);
         },
       })
       .command({
@@ -94,7 +88,7 @@ export const emailCommand: CommandModule = {
           const { deleteEmailOverride } = await import(
             '../actions/email/delete.js'
           );
-          return deleteEmailOverride(argv as DeleteEmailOverrideArgs);
+          return deleteEmailOverride(argv);
         },
       });
   },

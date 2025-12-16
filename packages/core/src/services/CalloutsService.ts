@@ -546,7 +546,7 @@ class CalloutsService {
       variant.responseEmailSubject,
       variant.responseEmailBody,
       {
-        mergeFields: contactEmailTemplates['callout-response-answers'](
+        mergeFields: contactEmailTemplates['callout-response-answers'].fn(
           contact,
           {
             calloutSlug: callout.slug,
