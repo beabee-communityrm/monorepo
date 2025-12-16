@@ -1714,10 +1714,20 @@
     "invoiceName": "VAT"
   },
   "emails": {
-    "tabs": {},
-    "list": {},
-    "add": {},
-    "edit": {},
+    "tabs": {
+      "custom": "",
+      "templates": ""
+    },
+    "list": {
+      "showingOf": ""
+    },
+    "add": {
+      "title": ""
+    },
+    "edit": {
+      "title": "",
+      "titleCustom": ""
+    },
     "name": "",
     "fromName": "",
     "fromEmail": "",
@@ -1727,10 +1737,54 @@
     "customized": "",
     "default": "",
     "missingDefault": "",
-    "actions": {},
-    "templates": {},
-    "confirmDelete": {},
-    "confirmResetToDefault": {},
-    "notifications": {}
+    "actions": {
+      "addCustom": "",
+      "resetToDefault": ""
+    },
+    "templates": {
+      "availableFields": "",
+      "type": {
+        "general": "",
+        "admin": "",
+        "contact": ""
+      },
+      "names": {
+        "welcome": "",
+        "welcome-post-gift": "",
+        "reset-password": "",
+        "reset-device": "",
+        "cancelled-contribution": "",
+        "cancelled-contribution-no-survey": "",
+        "manual-to-automatic": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "callout-response-answers": "",
+        "successful-referral": "",
+        "giftee-success": "",
+        "contribution-didnt-start": "",
+        "purchased-gift": "",
+        "one-time-donation": "",
+        "confirm-email": "",
+        "expired-special-url-resend": "",
+        "new-member": "",
+        "cancelled-member": "",
+        "new-callout-response": ""
+      }
+    },
+    "confirmDelete": {
+      "title": "",
+      "message": "",
+      "messageWithMailings": ""
+    },
+    "confirmResetToDefault": {
+      "title": "",
+      "message": ""
+    },
+    "notifications": {
+      "created": "",
+      "updated": "",
+      "deleted": "",
+      "resetToDefault": ""
+    }
   }
 }
