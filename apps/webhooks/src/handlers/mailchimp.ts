@@ -84,38 +84,77 @@ mailchimpWebhookApp.post(
 
     log.info('Got webhook ' + body.type);
 
-    switch (body.type) {
-      case 'upemail':
-        await handleUpdateEmail(body.data);
-        break;
+    // Send status early to avoid timeouts
+    const status = await handleEarlyChecksAndGetStatus(body);
+    res.sendStatus(status);
 
-      case 'subscribe':
-        await handleSubscribe(body.data);
-        break;
+    await handleEvent(body);
 
-      case 'unsubscribe':
-        await handleUnsubscribe(body.data);
-        break;
-
-      case 'cleaned':
-        await handleCleaned(body.data);
-        break;
-
-      case 'profile':
-        // Make MailChimp resend the webhook if we don't find a contact
-        // it's probably because the upemail and profile webhooks
-        // arrived out of order
-        // TODO: add checks for repeated failure
-        if (!(await handleUpdateProfile(body.data))) {
-          return res.sendStatus(404);
-        }
-        break;
-    }
-
-    res.sendStatus(200);
+    log.info(
+      'Finished processing webhook ' + body.type + ' with status ' + status
+    );
   })
 );
 
+/**
+ * Check some early conditions for the webhook and return appropriate status code.
+ * Only very fast checks should be done here (i.e. no dependency on external services).
+ *
+ * @param body The webhook body
+ * @returns HTTP status code to return immediately
+ */
+async function handleEarlyChecksAndGetStatus(body: MCWebhook): Promise<number> {
+  switch (body.type) {
+    case 'upemail':
+    case 'subscribe':
+    case 'unsubscribe':
+    case 'cleaned':
+      return 200;
+
+    case 'profile':
+      const email = normalizeEmailAddress(body.data.email);
+      const contact = await ContactsService.findOneBy({ email });
+      // Make MailChimp resend the webhook if we don't find a contact
+      // it's probably because the upemail and profile webhooks
+      // arrived out of order
+      return contact ? 200 : 404;
+  }
+}
+
+/**
+ * Handle the Mailchimp webhook event.
+
+ * @param body The webhook body
+ */
+async function handleEvent(body: MCWebhook) {
+  switch (body.type) {
+    case 'upemail':
+      await handleUpdateEmail(body.data);
+      break;
+
+    case 'subscribe':
+      await handleSubscribe(body.data);
+      break;
+
+    case 'unsubscribe':
+      await handleUnsubscribe(body.data);
+      break;
+
+    case 'cleaned':
+      await handleCleaned(body.data);
+      break;
+
+    case 'profile':
+      await handleUpdateProfile(body.data);
+      break;
+  }
+}
+
+/**
+ * Handle updating a contact's email if it changes in Mailchimp
+ *
+ * @param data The update email data
+ */
 async function handleUpdateEmail(data: MCUpdateEmailData) {
   const oldEmail = normalizeEmailAddress(data.old_email);
   const newEmail = normalizeEmailAddress(data.new_email);
@@ -192,7 +231,7 @@ async function handleCleaned(data: MCCleanedEmailData) {
   }
 }
 
-async function handleUpdateProfile(data: MCProfileData): Promise<boolean> {
+async function handleUpdateProfile(data: MCProfileData) {
   const email = normalizeEmailAddress(data.email);
 
   log.info('Update profile for ' + email);
@@ -207,10 +246,8 @@ async function handleUpdateProfile(data: MCProfileData): Promise<boolean> {
     await ContactsService.updateContactProfile(contact, {
       newsletterGroups: nlContact?.groups || [],
     });
-    return true;
   } else {
     log.info('Contact not found for ' + email);
-    return false;
   }
 }
 
