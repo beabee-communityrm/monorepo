@@ -38,11 +38,11 @@ declare module 'vue-router/auto-routes' {
     'adminCalloutViewResponsesTable': RouteRecordInfo<'adminCalloutViewResponsesTable', '/admin/crowdnewsroom/view/:id/responses', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminCalloutViewResponsesItem': RouteRecordInfo<'adminCalloutViewResponsesItem', '/admin/crowdnewsroom/view/:id/responses/:rid', { id: ParamValue<true>, rid: ParamValue<true> }, { id: ParamValue<false>, rid: ParamValue<false> }>,
     'adminCalloutViewResponsesTags': RouteRecordInfo<'adminCalloutViewResponsesTags', '/admin/crowdnewsroom/view/:id/responses/tags', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'adminEmails': RouteRecordInfo<'adminEmails', '/admin/emails', Record<never, never>, Record<never, never>, 'adminEmailsAdd' | 'adminEmailsCustom' | 'adminEmailsEdit' | 'adminEmailsTemplateEdit' | 'adminEmailsTemplates'>,
+    'adminEmails': RouteRecordInfo<'adminEmails', '/admin/emails', Record<never, never>, Record<never, never>, '/admin/emails/template/[id]' | 'adminEmailsAdd' | 'adminEmailsCustom' | 'adminEmailsEdit' | 'adminEmailsTemplates'>,
     'adminEmailsAdd': RouteRecordInfo<'adminEmailsAdd', '/admin/emails/add', Record<never, never>, Record<never, never>>,
     'adminEmailsCustom': RouteRecordInfo<'adminEmailsCustom', '/admin/emails/custom', Record<never, never>, Record<never, never>>,
     'adminEmailsEdit': RouteRecordInfo<'adminEmailsEdit', '/admin/emails/edit/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'adminEmailsTemplateEdit': RouteRecordInfo<'adminEmailsTemplateEdit', '/admin/emails/template/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    '/admin/emails/template/[id]': RouteRecordInfo<'/admin/emails/template/[id]', '/admin/emails/template/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminEmailsTemplates': RouteRecordInfo<'adminEmailsTemplates', '/admin/emails/templates', Record<never, never>, Record<never, never>>,
     'adminMembershipBuilder': RouteRecordInfo<'adminMembershipBuilder', '/admin/membership-builder', Record<never, never>, Record<never, never>, 'adminMembershipBuilderAccountConfirmation' | 'adminMembershipBuilderEmail' | 'adminMembershipBuilderIntroMessages' | 'adminMembershipBuilderJoinForm'>,
     'adminMembershipBuilderJoinForm': RouteRecordInfo<'adminMembershipBuilderJoinForm', '/admin/membership-builder', Record<never, never>, Record<never, never>>,
@@ -180,7 +180,7 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/admin/emails.vue': {
-      routes: 'adminEmails' | 'adminEmailsEdit' | 'adminEmailsTemplateEdit' | 'adminEmailsAdd' | 'adminEmailsCustom' | '/admin/emails/edit' | '/admin/emails/template' | 'adminEmailsTemplates'
+      routes: 'adminEmails' | 'adminEmailsEdit' | '/admin/emails/template/[id]' | 'adminEmailsAdd' | 'adminEmailsCustom' | '/admin/emails/edit' | '/admin/emails/template' | 'adminEmailsTemplates'
       views: 'default'
     }
     'src/pages/admin/emails/add.vue': {
@@ -196,7 +196,7 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/admin/emails/template/[id].vue': {
-      routes: 'adminEmailsTemplateEdit'
+      routes: '/admin/emails/template/[id]'
       views: never
     }
     'src/pages/admin/emails/templates.vue': {
