@@ -33,16 +33,13 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type {
-  GetEmailData,
-  GetEmailTemplateInfoData,
-} from '@beabee/beabee-common';
+import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
 import { AppButton, AppForm, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import EmailEditor from '@components/EmailEditor.vue';
 import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
+import { client, isApiError } from '@utils/api';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -58,7 +55,7 @@ const templateId = computed(() => {
 });
 
 const loading = ref(true);
-const emailData = ref<GetEmailData | null>(null);
+const emailData = ref<{ subject: string; body: string } | null>(null);
 const templateInfo = ref<GetEmailTemplateInfoData | null>(null);
 
 const hasOverride = computed(() => templateInfo.value?.hasOverride ?? false);
@@ -93,7 +90,7 @@ onMounted(async () => {
     }
 
     // Load email data (override or default)
-    emailData.value = await client.email.template.get(templateId.value);
+    emailData.value = await loadEmail(templateId.value);
   } catch {
     addNotification({
       variant: 'error',
@@ -122,7 +119,7 @@ async function handleSubmit() {
     const templates = await client.email.template.list();
     templateInfo.value =
       templates.find((t) => t.id === templateId.value) || null;
-    emailData.value = await client.email.template.get(templateId.value);
+    emailData.value = await loadEmail(templateId.value);
   } catch {
     addNotification({
       variant: 'error',
@@ -152,12 +149,27 @@ async function handleReset() {
     const templates = await client.email.template.list();
     templateInfo.value =
       templates.find((t) => t.id === templateId.value) || null;
-    emailData.value = await client.email.template.get(templateId.value);
+    emailData.value = await loadEmail(templateId.value);
   } catch {
     addNotification({
       variant: 'error',
       title: t('notifications.error'),
     });
+  }
+}
+
+async function loadEmail(
+  templateId: string
+): Promise<{ subject: string; body: string }> {
+  try {
+    const email = await client.email.template.get(templateId);
+    return { subject: email.subject, body: email.body };
+  } catch (err) {
+    if (isApiError(err, undefined, [404])) {
+      return { subject: '', body: '' };
+    } else {
+      throw err;
+    }
   }
 }
 </script>
