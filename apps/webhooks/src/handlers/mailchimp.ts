@@ -54,15 +54,20 @@ type MCWebhook =
   | MCUpdateEmailWebhook
   | MCCleanedEmailWebhook;
 
-// Mailchimp pings this endpoint when you first add the webhook
-// Don't check for newsletter provider here as the webhook can be set
-// before Mailchimp has been enabled
+/**
+ * Endpoint that Mailchimp uses to check the webhook is valid. Don't check for
+ * newsletter provider here as the webhook can be set before Mailchimp has been
+ * enabled in beabee.
+ */
 mailchimpWebhookApp.get('/', (req: Request, res: Response) => {
   res.sendStatus(
     req.query.secret === config.newsletter.settings.webhookSecret ? 200 : 404
   );
 });
 
+/**
+ * Middleware to verify Mailchimp webhook secret
+ */
 mailchimpWebhookApp.use((req: Request, res: Response, next: NextFunction) => {
   if (
     config.newsletter.provider === 'mailchimp' &&
@@ -77,6 +82,9 @@ mailchimpWebhookApp.use((req: Request, res: Response, next: NextFunction) => {
 mailchimpWebhookApp.use(bodyParser.json());
 mailchimpWebhookApp.use(bodyParser.urlencoded({ extended: true }));
 
+/**
+ * Main Mailchimp webhook handler
+ */
 mailchimpWebhookApp.post(
   '/',
   wrapAsync(async (req: Request, res: Response) => {
@@ -174,6 +182,12 @@ async function handleUpdateEmail(data: MCUpdateEmailData) {
   }
 }
 
+/**
+ * Handle either adding a new subscriber or updating an existing one
+ * when someone subscribes via Mailchimp
+ *
+ * @param data The profile data
+ */
 async function handleSubscribe(data: MCProfileData) {
   const email = normalizeEmailAddress(data.email);
 
@@ -204,6 +218,12 @@ async function handleSubscribe(data: MCProfileData) {
   }
 }
 
+/**
+ * Set a contact's newsletter status to unsubscribed when they unsubscribe via
+ * Mailchimp
+ *
+ * @param data The profile data
+ */
 async function handleUnsubscribe(data: MCProfileData) {
   const email = normalizeEmailAddress(data.email);
 
@@ -213,11 +233,18 @@ async function handleUnsubscribe(data: MCProfileData) {
   if (contact) {
     const nlContact = await NewsletterService.getNewsletterContact(email);
     await ContactsService.updateContactProfile(contact, {
+      // Use the status from the newsletter system in case it has changed
+      // since the webhook was sent
       newsletterStatus: nlContact?.status || NewsletterStatus.Unsubscribed,
     });
   }
 }
 
+/**
+ * Set a contact's newsletter status to cleaned when their email is cleaned.
+ *
+ * @param data  The cleaned email data
+ */
 async function handleCleaned(data: MCCleanedEmailData) {
   const email = normalizeEmailAddress(data.email);
 
@@ -231,6 +258,14 @@ async function handleCleaned(data: MCCleanedEmailData) {
   }
 }
 
+/**
+ * Handle updating a contact's name and newsletter gruops when they changes in
+ * Mailchimp. We are the source of truth for other data (e.g. our merge tags) so
+ * these updates are not processed and instead we overwrite them in Mailchimp
+ * when we update the contact profile
+ *
+ * @param data The profile data
+ */
 async function handleUpdateProfile(data: MCProfileData) {
   const email = normalizeEmailAddress(data.email);
 
@@ -243,6 +278,7 @@ async function handleUpdateProfile(data: MCProfileData) {
       firstname: data.merges.FNAME || contact.firstname,
       lastname: data.merges.LNAME || contact.lastname,
     });
+    // This will also overwrite any other changes made to merge tags
     await ContactsService.updateContactProfile(contact, {
       newsletterGroups: nlContact?.groups || [],
     });
