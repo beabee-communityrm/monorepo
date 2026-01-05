@@ -143,11 +143,11 @@
       "title": "Недавно присоединились"
     },
     "numbers": {
+      "averageContribution": "",
       "avgContribution": "Средний ежемесячный взнос",
       "newMembers": "Новые подписчики",
       "revenue": "Доход",
-      "title": "За последние 30 дней",
-      "averageContribution": ""
+      "title": "За последние 30 дней"
     },
     "responsesSoFar": "",
     "seeAllResponses": "",
@@ -369,7 +369,7 @@
         },
         "email": {
           "body": {
-            "default": "<p>Здравствуйте {'*|FNAME|*'},</p><p>Это письмо подтверждает ваш ответ на <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> с использованием вашего email адреса {'*|EMAIL|*'}.</p><p><br /></p><p>Если у вас есть вопросы, пожалуйста, свяжитесь с нашей службой поддержки по адресу <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>С наилучшими пожеланиями</p>"
+            "default": "<p>Здравствуйте {'*|FNAME|*'},</p><p></p><p>Это письмо подтверждает ваш ответ на <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> с использованием вашего email адреса {'*|EMAIL|*'}.</p><p></p><p>Если у вас есть вопросы, пожалуйста, свяжитесь с нашей службой поддержки по адресу <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p></p><p>С наилучшими пожеланиями</p>"
           },
           "collectInfoWarning": {
             "description": "Чтобы отправить письмо всем участникам, вы должны включить «Собирать контактную информацию» на вкладке Настройки",
@@ -680,10 +680,10 @@
           "navigationButtons": {
             "title": ""
           },
-          "title": "",
           "responseLinks": {
             "title": ""
-          }
+          },
+          "title": ""
         }
       },
       "title": "",
@@ -926,6 +926,11 @@
     "no": "Нет",
     "noResults": "Ничего не найдено",
     "pageCount": "Страница {pageNumber} из {pageTotal}",
+    "paymentPeriod": {
+      "annually": "ежегодно",
+      "monthly": "ежемесячно",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "Отменён",
       "draft": "Черновик",
@@ -934,6 +939,8 @@
       "successful": "Успех"
     },
     "perMonth": "/ месяц",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "/ год",
     "role": {
       "admin": "Администратор",
@@ -955,14 +962,7 @@
     "timeAgo": "до {time}",
     "timeIn": "в {time}",
     "until": "до",
-    "yes": "Да",
-    "paymentPeriod": {
-      "annually": "ежегодно",
-      "monthly": "ежемесячно",
-      "one-time": ""
-    },
-    "perOneTime": "",
-    "perOneTimeText": ""
+    "yes": "Да"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1123,15 +1123,15 @@
     "title": "Редактировать: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Тема"
-    },
     "body": {
       "label": "Сообщение"
     },
     "preview": {
       "label": "Предпросмотр",
       "unavailable": "Предпросмотр недоступен"
+    },
+    "subject": {
+      "label": "Тема"
     }
   },
   "footer": {
@@ -1321,6 +1321,11 @@
       "one-time": "Платёжная система вычитает комиссию из каждого взноса, который мы получаем. Не хотите ли вы взять на себя транзакционные издержки в размере {fee}?"
     },
     "contribute": "Внести {contribution}",
+    "contribution": {
+      "annually": "{amount} в год",
+      "monthly": "{amount} в месяц",
+      "one-time": "{amount} единовременно"
+    },
     "errors": {
       "confirmEmail": {
         "message": "Почти готово! Осталось только подтвердить вашу почту.",
@@ -1345,11 +1350,6 @@
     "privacy": "Политика конфиденциальности",
     "tax": {
       "included": ""
-    },
-    "contribution": {
-      "annually": "{amount} в год",
-      "monthly": "{amount} в месяц",
-      "one-time": "{amount} единовременно"
     }
   },
   "joinPayment": {
@@ -1415,10 +1415,10 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
+        "oneTimeDonationEmail": "Email о единовременном пожертвовании",
         "text": "",
         "title": "",
-        "welcomeEmail": "",
-        "oneTimeDonationEmail": "Email о единовременном пожертвовании"
+        "welcomeEmail": ""
       },
       "intro": {
         "description": "",
@@ -1460,7 +1460,8 @@
     "notices": "Уведомления",
     "payments": "Платежи",
     "settings": "Настройки",
-    "yourProfile": "Ваш профиль"
+    "yourProfile": "Ваш профиль",
+    "emails": "Письма"
   },
   "mergeFields": {
     "title": "Поля слияния",
@@ -1547,11 +1548,11 @@
       "success": ""
     },
     "error": "Что-то пошло не так. Перезагрузите страницу",
-    "remove": "",
     "rateLimit": {
       "generic": "Слишком много запросов. Подождите немного и попробуйте снова.",
       "withWait": "Слишком много запросов. Подождите {time} и попробуйте снова."
-    }
+    },
+    "remove": ""
   },
   "pageTitle": {
     "confirmEmail": "Подтвердить почту",
@@ -1702,5 +1703,81 @@
   },
   "taxRate": {
     "invoiceName": "???"
+  },
+  "emails": {
+    "tabs": {
+      "custom": "Пользовательские письма",
+      "templates": "Системные шаблоны"
+    },
+    "list": {
+      "showingOf": "Показано {start} - {end} писем из {total}"
+    },
+    "add": {
+      "title": "Создать пользовательское письмо"
+    },
+    "edit": {
+      "title": "Редактировать письмо",
+      "titleCustom": "Редактировать: {name}"
+    },
+    "name": "Название письма",
+    "fromName": "Имя отправителя",
+    "fromEmail": "Email отправителя",
+    "mailingCount": "Отправленных писем",
+    "status": "Статус",
+    "type": "Тип",
+    "actions": {
+      "addCustom": "Добавить пользовательское письмо",
+      "resetToDefault": "Сбросить к исходному"
+    },
+    "templates": {
+      "availableFields": "Доступные поля",
+      "type": {
+        "general": "Общие",
+        "admin": "Уведомления администратора",
+        "contact": "Контактные письма"
+      },
+      "names": {
+        "welcome": "Приветствие",
+        "welcome-post-gift": "Приветствие после подарочного членства",
+        "reset-password": "Сброс пароля",
+        "reset-device": "Сброс устройства",
+        "cancelled-contribution": "Отмена взноса",
+        "cancelled-contribution-no-survey": "Отмена взноса - без опроса",
+        "manual-to-automatic": "Ручной взнос преобразован в автоматический",
+        "email-exists-login": "Email существует - вход",
+        "email-exists-set-password": "Email существует - установка пароля",
+        "callout-response-answers": "Подтверждение ответа CrowdNewsroom",
+        "successful-referral": "Успешная рекомендация",
+        "giftee-success": "Активация подарка успешна",
+        "contribution-didnt-start": "Взнос не начат",
+        "purchased-gift": "Подтверждение покупки подарка",
+        "confirm-email": "Подтверждение email",
+        "expired-special-url-resend": "Повторная отправка истёкшей ссылки",
+        "new-member": "Админ: Новый контакт",
+        "cancelled-member": "Админ: Отменённый участник",
+        "new-callout-response": "Админ: Новый ответ CrowdNewsroom",
+        "one-time-donation": "Подтверждение разового пожертвования"
+      }
+    },
+    "confirmDelete": {
+      "title": "Удалить письмо",
+      "message": "Вы уверены, что хотите удалить это письмо? Это действие нельзя отменить.",
+      "messageWithMailings": "Это письмо было отправлено {count} раз(а). Вы уверены, что хотите его удалить? Это действие нельзя отменить."
+    },
+    "confirmResetToDefault": {
+      "title": "Сбросить к исходному",
+      "message": "Вы уверены, что хотите сбросить этот шаблон к исходному? Ваши изменения будут потеряны."
+    },
+    "notifications": {
+      "created": "Письмо успешно создано",
+      "updated": "Письмо успешно обновлено",
+      "deleted": "Письмо успешно удалено",
+      "resetToDefault": "Шаблон успешно сброшен к исходному",
+      "templatesAssigned": "",
+      "templateAssigned": ""
+    },
+    "customized": "Настроено",
+    "default": "По умолчанию",
+    "missingDefault": "Нет шаблона по умолчанию"
   }
 }

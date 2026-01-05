@@ -367,9 +367,8 @@
           "title": "Inhalt"
         },
         "email": {
-          "title": "E-Mail",
           "body": {
-            "default": "<p>Hallo {'*|FNAME|*'},</p><p>Diese E-Mail bestätigt deine Antwort auf <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung deiner E-Mail-Adresse {'*|EMAIL|*'}.</p><p><br /></p><p>Wenn du Fragen hast, wende dich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Viele Grüße</p>"
+            "default": "<p>Hallo {'*|FNAME|*'},</p><p></p><p>Diese E-Mail bestätigt deine Antwort auf <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung deiner E-Mail-Adresse {'*|EMAIL|*'}.</p><p></p><p>Wenn du Fragen hast, wende dich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p></p><p>Viele Grüße</p>"
           },
           "collectInfoWarning": {
             "description": "Um eine E-Mail an alle Teilnehmer zu senden, musst du \"Kontaktinformationen erfassen\" in der Registerkarte Einstellungen aktivieren",
@@ -381,7 +380,8 @@
           },
           "subject": {
             "default": "Danke für deine Teilnahme"
-          }
+          },
+          "title": "E-Mail"
         },
         "endMessage": {
           "inputs": {
@@ -679,10 +679,10 @@
           "navigationButtons": {
             "title": "Schaltflächen"
           },
-          "title": "Übersetzungen",
           "responseLinks": {
-            "title": ""
-          }
+            "title": "Fußzeilentext"
+          },
+          "title": "Übersetzungen"
         }
       },
       "title": "CrowdNewsroom-Builder",
@@ -925,6 +925,11 @@
     "no": "Nein",
     "noResults": "Keine Ergebnisse gefunden",
     "pageCount": "Seite {pageNumber} von {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Jährlich",
+      "monthly": "Monatlich",
+      "one-time": "Einmalig"
+    },
     "paymentStatus": {
       "cancelled": "Gekündigt",
       "draft": "Entwurf",
@@ -933,6 +938,8 @@
       "successful": "Erfolgreich"
     },
     "perMonth": "/ Monat",
+    "perOneTime": "einmalig",
+    "perOneTimeText": "einmalig",
     "perYear": "/ Jahr",
     "role": {
       "admin": "Admin",
@@ -954,14 +961,7 @@
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja",
-    "paymentPeriod": {
-      "annually": "Jährlich",
-      "monthly": "Monatlich",
-      "one-time": "Einmalig"
-    },
-    "perOneTime": "einmalig",
-    "perOneTimeText": "einmalig"
+    "yes": "Ja"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1106,12 +1106,12 @@
     "startContribution": "Mitgliedschaft beginnen",
     "startedContribution": "Deine Mitgliedschaft hat begonnen.",
     "updateContribution": "Beitrag aktualisieren",
+    "updatePaymentType": "Neue Zahlungsmethode einrichten",
     "updatedContribution": "Dein Beitrag wurde geändert.",
     "updatedPaymentSource": "Deine Zahlungsart wurde aktualisiert. ",
     "willExpire": "Deine Mitgliedschaft läuft in {expires} ab.",
     "willRenew": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
-    "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}.",
-    "updatePaymentType": "Neue Zahlungsmethode einrichten"
+    "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}."
   },
   "editCallout": {
     "replicated": "Dein CrowdNewsroom wurde kopiert! Du bearbeitest jetzt die Kopie. Denk bitte unbedingt daran, den Titel zu bearbeiten.",
@@ -1122,15 +1122,15 @@
     "title": "Bearbeiten: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Betreff"
-    },
     "body": {
       "label": "Nachricht"
     },
     "preview": {
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
+    },
+    "subject": {
+      "label": "Betreff"
     }
   },
   "footer": {
@@ -1263,11 +1263,11 @@
       "heading": "Überschrift",
       "italic": "Kursiv",
       "link": "Link",
+      "mergeFields": "Platzhalter",
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
       "toolbar": "Rich-Text-Formatierung Symbolleiste",
-      "underline": "Unterstreichen",
-      "mergeFields": ""
+      "underline": "Unterstreichen"
     },
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
@@ -1320,6 +1320,11 @@
       "one-time": "Unser Zahlungsdienstleister stellt uns jede Transaktion in Rechnung. Das heißt, wir erhalten weniger von deinem einmaligen Beitrag. Möchtest du die Kosten dafür übernehmen?"
     },
     "contribute": "Mit {contribution} unterstützen.",
+    "contribution": {
+      "annually": "{amount} pro Jahr",
+      "monthly": "{amount} pro Monat",
+      "one-time": "{amount} einmalig"
+    },
     "errors": {
       "confirmEmail": {
         "message": "Fast geschafft! Wir müssen noch deine E-Mail-Adresse bestätigen, um fortzufahren.",
@@ -1344,11 +1349,6 @@
     "privacy": "Datenschutzerklärung",
     "tax": {
       "included": "Beitrag inklusive {taxRate}% MwSt."
-    },
-    "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1414,10 +1414,10 @@
         "bigTitle": "Willkommens- & Kündigungs-E-Mail",
         "cancellationEmail": "Kündigungs-E-Mail",
         "description": "Passe deine Willkommens- und Kündigungs-E-Mail an",
+        "oneTimeDonationEmail": "Einmalige Spenden-E-Mail",
         "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mai-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
-        "welcomeEmail": "Willkommens-E-Mail",
-        "oneTimeDonationEmail": ""
+        "welcomeEmail": "Willkommens-E-Mail"
       },
       "intro": {
         "description": "Heiße neue Mitglieder willkommen",
@@ -1459,7 +1459,53 @@
     "notices": "Hinweise",
     "payments": "Zahlungen",
     "settings": "Einstellungen",
-    "yourProfile": "Dein Profil"
+    "yourProfile": "Dein Profil",
+    "emails": "E-Mails"
+  },
+  "mergeFields": {
+    "copied": "Kopiert!",
+    "copy": "Kopieren",
+    "copyTag": "{tag} kopieren",
+    "example": "Beispiel",
+    "groups": {
+      "contact": "Kontakt-Felder",
+      "magic": "Magic Links",
+      "standard": "Standard-Felder",
+      "template": "Template-Felder"
+    },
+    "insert": "Einfügen",
+    "insertTag": "{tag} einfügen",
+    "tags": {
+      "ACTIVATELINK": "Geschenk-Aktivierungslink",
+      "ANSWERS": "Formatierte Antwort-Zusammenfassung",
+      "CALLOUTLINK": "Link zur CrowdNewsroom",
+      "CALLOUTSLUG": "CrowdNewsroom-Slug",
+      "CALLOUTTITLE": "Titel der CrowdNewsroom",
+      "CONFIRMLINK": "E-Mail-Bestätigungslink",
+      "EMAIL": "E-Mail-Adresse des Kontakts",
+      "EXPIRES": "Ablaufdatum der Mitgliedschaft",
+      "FNAME": "Vorname",
+      "GIFTDATE": "Startdatum des Geschenks",
+      "GIFTEE": "Name des Geschenkempfängers",
+      "ISELIGIBLE": "Ob die Empfehlung berechtigt ist",
+      "LNAME": "Nachname",
+      "LOGINLINK": "Login-Link",
+      "MEMBERID": "Mitglieds-ID",
+      "MEMBERNAME": "Mitgliedsname",
+      "MEMBERSHIPID": "Mitgliedschafts-ID",
+      "MESSAGE": "Benutzerdefinierte Nachricht",
+      "NAME": "Vollständiger Name",
+      "ORGNAME": "Name der Organisation",
+      "PURCHASER": "Name des Geschenkkäufers",
+      "REFCODE": "Empfehlungs-Code des Kontakts",
+      "REFEREENAME": "Name der geworbenen Person",
+      "RESPNAME": "Name des Antwortenden",
+      "RPLINK": "Passwort zurücksetzen Link",
+      "SPLINK": "Passwort setzen Link",
+      "SUPPORTEMAIL": "Support E-Mail-Adresse",
+      "URL": "Spezielle URL"
+    },
+    "title": "Platzhalter"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1501,11 +1547,11 @@
       "success": "In die Zwischenablage kopiert"
     },
     "error": "Da ist etwas schiefgelaufen!",
-    "remove": "Benachrichtigung schließen",
     "rateLimit": {
       "generic": "Zu viele Anfragen. Warte kurz und probier's nochmal.",
       "withWait": "Zu viele Anfragen. Warte {time} und probier's nochmal."
-    }
+    },
+    "remove": "Benachrichtigung schließen"
   },
   "pageTitle": {
     "confirmEmail": "E-Mail-Adresse bestätigen",
@@ -1657,49 +1703,80 @@
   "taxRate": {
     "invoiceName": "MwSt"
   },
-  "mergeFields": {
-    "title": "",
-    "copy": "",
-    "copyTag": "",
-    "copied": "",
-    "insert": "",
-    "insertTag": "",
-    "example": "",
-    "groups": {
-      "contact": "",
-      "standard": "",
-      "magic": "",
-      "template": ""
+  "emails": {
+    "tabs": {
+      "custom": "Eigene E-Mails",
+      "templates": "System-Vorlagen"
     },
-    "tags": {
-      "EMAIL": "",
-      "NAME": "",
-      "FNAME": "",
-      "LNAME": "",
-      "MEMBERSHIPID": "",
-      "RPLINK": "",
-      "LOGINLINK": "",
-      "SPLINK": "",
-      "MESSAGE": "",
-      "CALLOUTTITLE": "Titel der CrowdNewsroom",
-      "CALLOUTLINK": "Link zur CrowdNewsroom",
-      "SUPPORTEMAIL": "",
-      "ANSWERS": "",
-      "REFCODE": "",
-      "EXPIRES": "",
-      "REFEREENAME": "",
-      "ISELIGIBLE": "",
-      "PURCHASER": "",
-      "GIFTEE": "",
-      "GIFTDATE": "",
-      "ACTIVATELINK": "",
-      "CONFIRMLINK": "",
-      "URL": "",
-      "MEMBERID": "",
-      "MEMBERNAME": "",
-      "CALLOUTSLUG": "CrowdNewsroom-Slug",
-      "RESPNAME": "",
-      "ORGNAME": ""
+    "list": {
+      "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
+    },
+    "add": {
+      "title": "Eigene E-Mail erstellen"
+    },
+    "edit": {
+      "title": "E-Mail bearbeiten",
+      "titleCustom": "Bearbeiten: {name}"
+    },
+    "name": "E-Mail-Name",
+    "fromName": "Absendername",
+    "fromEmail": "Absender-E-Mail",
+    "mailingCount": "Versendete E-Mails",
+    "status": "Status",
+    "type": "Typ",
+    "customized": "Angepasst",
+    "default": "Standard",
+    "missingDefault": "Kein Template",
+    "actions": {
+      "addCustom": "Eigene E-Mail hinzufügen",
+      "resetToDefault": "Auf Standard zurücksetzen"
+    },
+    "templates": {
+      "availableFields": "Verfügbare Felder",
+      "type": {
+        "general": "Allgemein",
+        "admin": "Admin-Benachrichtigungen",
+        "contact": "Kontakt-E-Mails"
+      },
+      "names": {
+        "welcome": "",
+        "welcome-post-gift": "",
+        "reset-password": "",
+        "reset-device": "",
+        "cancelled-contribution": "",
+        "cancelled-contribution-no-survey": "",
+        "manual-to-automatic": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "callout-response-answers": "",
+        "successful-referral": "",
+        "giftee-success": "",
+        "contribution-didnt-start": "",
+        "purchased-gift": "",
+        "confirm-email": "",
+        "expired-special-url-resend": "n",
+        "new-member": "",
+        "cancelled-member": "",
+        "new-callout-response": "",
+        "one-time-donation": ""
+      }
+    },
+    "confirmDelete": {
+      "title": "E-Mail löschen",
+      "message": "Bist du sicher, dass du diese E-Mail löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "messageWithMailings": "Diese E-Mail wurde {count} Mal versendet. Bist du sicher, dass du sie löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "confirmResetToDefault": {
+      "title": "Auf Standard zurücksetzen",
+      "message": "Bist du sicher, dass du diese Vorlage auf den Standard zurücksetzen möchtest? Deine eigenen Änderungen gehen verloren."
+    },
+    "notifications": {
+      "created": "E-Mail erfolgreich erstellt",
+      "updated": "E-Mail erfolgreich aktualisiert",
+      "deleted": "E-Mail erfolgreich gelöscht",
+      "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
+      "templatesAssigned": "",
+      "templateAssigned": ""
     }
   }
 }

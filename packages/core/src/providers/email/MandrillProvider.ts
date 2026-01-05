@@ -2,22 +2,11 @@ import axios, { AxiosRequestTransformer } from 'axios';
 
 import { MandrillEmailConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
-import { Email } from '#models/index';
-import type {
-  EmailOptions,
-  EmailRecipient,
-  EmailTemplate,
-  PreparedEmail,
-} from '#type/index';
+import type { EmailOptions, EmailRecipient, PreparedEmail } from '#type/index';
 
 import { BaseProvider } from './BaseProvider';
 
 const log = mainLogger.child({ app: 'mandrill-email-provider' });
-
-interface MandrillTemplate {
-  slug: string;
-  name: string;
-}
 
 interface MandrillMessage {
   to: { email: string; name?: string }[];
@@ -65,49 +54,6 @@ export class MandrillProvider extends BaseProvider {
     });
 
     log.info('Sent email', { data: resp.data });
-  }
-
-  async sendTemplate(
-    templateId: string,
-    recipients: EmailRecipient[],
-    opts?: EmailOptions
-  ): Promise<void> {
-    log.info(`Sending template ${templateId}`);
-
-    if (templateId.startsWith('mandrill_')) {
-      const resp = await this.instance.post('/messages/send-template', {
-        message: this.createMessageData(recipients, opts),
-        template_name: templateId.substring(9), // Remove mandrill_
-        template_content: [],
-        ...(opts?.sendAt && { send_at: opts.sendAt.toISOString() }),
-      });
-      log.info(`Sent template ${templateId}`, { data: resp.data });
-    } else {
-      super.sendTemplate(templateId, recipients, opts);
-    }
-  }
-
-  async getTemplateEmail(templateId: string): Promise<false | Email | null> {
-    return templateId.startsWith('mandrill_')
-      ? false
-      : await super.getTemplateEmail(templateId);
-  }
-
-  async getTemplates(): Promise<EmailTemplate[]> {
-    const resp =
-      await this.instance.post<MandrillTemplate[]>('/templates/list');
-    const localEmailTemplates = await super.getTemplates();
-
-    return [
-      ...localEmailTemplates.map((email) => ({
-        id: email.id,
-        name: 'Local: ' + email.name,
-      })),
-      ...resp.data.map((template) => ({
-        id: 'mandrill_' + template.slug,
-        name: 'Mandrill: ' + template.name,
-      })),
-    ];
   }
 
   private createMessageData(

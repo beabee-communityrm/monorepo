@@ -11,7 +11,6 @@ import type {
   EmailOptions,
   EmailProvider,
   EmailRecipient,
-  EmailTemplate,
   PreparedEmail,
 } from '#type/index';
 
@@ -134,13 +133,8 @@ export abstract class BaseProvider implements EmailProvider {
     }
   }
 
-  async getTemplateEmail(templateId: string): Promise<false | Email | null> {
-    return (await getRepository(Email).findOneBy({ id: templateId })) || null;
-  }
-
-  async getTemplates(): Promise<EmailTemplate[]> {
-    const emails = await getRepository(Email).find();
-    return emails.map((email) => ({ id: email.id, name: email.name }));
+  async getTemplateEmail(templateId: string): Promise<Email | null> {
+    return await getRepository(Email).findOneBy({ id: templateId });
   }
 }
 

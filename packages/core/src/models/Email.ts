@@ -16,6 +16,15 @@ export class Email {
   @CreateDateColumn()
   date!: Date;
 
+  /**
+   * Template ID for system email overrides.
+   * - null: Custom email (for mailings, segments, etc.)
+   * - string: Override for a system template (e.g. "welcome", "reset-password")
+   * UNIQUE constraint ensures each template can have at most one override.
+   */
+  @Column({ type: String, nullable: true, unique: true })
+  templateId!: string | null;
+
   @Column()
   name!: string;
 

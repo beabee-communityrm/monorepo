@@ -368,7 +368,7 @@
         },
         "email": {
           "body": {
-            "default": "<p>Bonjour {'*|FNAME|*'},</p><p>Cet e-mail confirme votre réponse à <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> en utilisant votre adresse e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Cordialement</p>"
+            "default": "<p>Bonjour {'*|FNAME|*'},</p><p></p><p>Cet e-mail confirme votre réponse à <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> en utilisant votre adresse e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p></p><p>Cordialement</p>"
           },
           "collectInfoWarning": {
             "description": "Pour envoyer un e-mail à tous les participants, vous devez activer « Collecter les informations de contact » dans l'onglet Paramètres",
@@ -379,8 +379,8 @@
             "label": "Envoyer un e-mail à tous les participants après la soumission"
           },
           "subject": {
-            "placeholder": "",
-            "default": "Merci pour votre réponse"
+            "default": "Merci pour votre réponse",
+            "placeholder": ""
           },
           "title": "E-mail"
         },
@@ -683,10 +683,10 @@
           "navigationButtons": {
             "title": "Boutons"
           },
-          "title": "Traductions",
           "responseLinks": {
             "title": ""
-          }
+          },
+          "title": "Traductions"
         }
       },
       "title": "",
@@ -929,6 +929,11 @@
     "no": "Non",
     "noResults": "Aucun résultat trouvé",
     "pageCount": "Page {pageNumber} sur {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Annuellement",
+      "monthly": "Mensuellement",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "Annulé",
       "draft": "Brouillon",
@@ -937,6 +942,8 @@
       "successful": "Succès"
     },
     "perMonth": "/ mois",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "/ an",
     "role": {
       "admin": "Administrateur",
@@ -958,14 +965,7 @@
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "Oui",
-    "paymentPeriod": {
-      "annually": "Annuellement",
-      "monthly": "Mensuellement",
-      "one-time": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations ponctuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ?"
-    },
-    "perOneTime": "",
-    "perOneTimeText": ""
+    "yes": "oui"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1126,15 +1126,15 @@
     "title": "Modifier: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Objet"
-    },
     "body": {
       "label": "Message"
     },
     "preview": {
       "label": "Aperçu",
       "unavailable": "Aperçu non disponible"
+    },
+    "subject": {
+      "label": "Objet"
     }
   },
   "footer": {
@@ -1324,6 +1324,11 @@
       "one-time": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations ponctuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ?"
     },
     "contribute": "Cotiser {contribution}",
+    "contribution": {
+      "annually": "{amount} par an",
+      "monthly": "{amount} par mois",
+      "one-time": "{amount} ponctuel"
+    },
     "errors": {
       "confirmEmail": {
         "message": "Vous y êtes presque ! Vous devez simplement confirmer votre adresse e-mail pour finaliser votre adhésion.",
@@ -1348,11 +1353,6 @@
     "privacy": "Politique de confidentialité",
     "tax": {
       "included": "La cotisation comprend {taxRate}% de TVA."
-    },
-    "contribution": {
-      "annually": "{amount} par an",
-      "monthly": "{amount} par mois",
-      "one-time": "{amount} ponctuel"
     }
   },
   "joinPayment": {
@@ -1418,10 +1418,10 @@
         "bigTitle": "E-mails de bienvenue et d'annulation",
         "cancellationEmail": "E-mail d'annulation",
         "description": "Personnalisez vos e-mail de bienvenue et d'annulation",
+        "oneTimeDonationEmail": "E-mail de don ponctuel",
         "text": "Tous les e-mails sont envoyés depuis votre adresse e-mail de support et comportent une signature standard. Vous pouvez modifier ceci dans vos paramètres d'e-mail.",
         "title": "E-mails",
-        "welcomeEmail": "E-mail de bienvenue",
-        "oneTimeDonationEmail": "E-mail de don ponctuel"
+        "welcomeEmail": "E-mail de bienvenue"
       },
       "intro": {
         "description": "Souhaitez la bienvenue à vos nouveaux membres",
@@ -1463,7 +1463,8 @@
     "notices": "Avertissements",
     "payments": "Paiments",
     "settings": "Paramètres",
-    "yourProfile": "Votre profil"
+    "yourProfile": "Votre profil",
+    "emails": "E-mails"
   },
   "mergeFields": {
     "title": "Champs de fusion",
@@ -1550,11 +1551,11 @@
       "success": "Copié dans le presse-papiers"
     },
     "error": "Une erreur s'est produite. Essayez de recharger la page.",
-    "remove": "Fermer la notification",
     "rateLimit": {
       "generic": "Trop de demandes. Veuillez patienter un peu et réessayer.",
       "withWait": "Trop de demandes. Veuillez attendre {time} et réessayer."
-    }
+    },
+    "remove": "Fermer la notification"
   },
   "pageTitle": {
     "confirmEmail": "Confirmer l'e-mail",
@@ -1705,5 +1706,81 @@
   },
   "taxRate": {
     "invoiceName": "TVA"
+  },
+  "emails": {
+    "tabs": {
+      "custom": "E-mails personnalisés",
+      "templates": "Modèles système"
+    },
+    "list": {
+      "showingOf": "Affichage de {start} à {end} e-mails sur {total}"
+    },
+    "add": {
+      "title": "Créer un e-mail personnalisé"
+    },
+    "edit": {
+      "title": "Modifier l'e-mail",
+      "titleCustom": "Modifier : {name}"
+    },
+    "name": "Nom de l'e-mail",
+    "fromName": "Nom de l'expéditeur",
+    "fromEmail": "E-mail de l'expéditeur",
+    "mailingCount": "E-mails envoyés",
+    "status": "Statut",
+    "type": "Type",
+    "actions": {
+      "addCustom": "Ajouter un e-mail personnalisé",
+      "resetToDefault": "Réinitialiser par défaut"
+    },
+    "templates": {
+      "availableFields": "Champs disponibles",
+      "type": {
+        "general": "Général",
+        "admin": "Notifications admin",
+        "contact": "E-mails de contact"
+      },
+      "names": {
+        "welcome": "Bienvenue",
+        "welcome-post-gift": "Bienvenue après adhésion cadeau",
+        "reset-password": "Réinitialiser le mot de passe",
+        "reset-device": "Réinitialiser l'appareil",
+        "cancelled-contribution": "Contribution annulée",
+        "cancelled-contribution-no-survey": "Contribution annulée - sans sondage",
+        "manual-to-automatic": "Contributeur manuel converti en automatique",
+        "email-exists-login": "E-mail existant - connexion",
+        "email-exists-set-password": "E-mail existant - définir mot de passe",
+        "callout-response-answers": "Confirmation de réponse CrowdNewsroom",
+        "successful-referral": "Parrainage réussi",
+        "giftee-success": "Activation du cadeau réussie",
+        "contribution-didnt-start": "La contribution n'a pas démarré",
+        "purchased-gift": "Confirmation d'achat de cadeau",
+        "confirm-email": "Confirmer l'e-mail",
+        "expired-special-url-resend": "Renvoyer le lien spécial expiré",
+        "new-member": "Admin : Nouveau contact",
+        "cancelled-member": "Admin : Membre annulé",
+        "new-callout-response": "Admin : Nouvelle réponse CrowdNewsroom",
+        "one-time-donation": "Confirmation de don unique"
+      }
+    },
+    "confirmDelete": {
+      "title": "Supprimer l'e-mail",
+      "message": "Êtes-vous sûr de vouloir supprimer cet e-mail ? Cette action est irréversible.",
+      "messageWithMailings": "Cet e-mail a été envoyé {count} fois. Êtes-vous sûr de vouloir le supprimer ? Cette action est irréversible."
+    },
+    "confirmResetToDefault": {
+      "title": "Réinitialiser par défaut",
+      "message": "Êtes-vous sûr de vouloir réinitialiser ce modèle par défaut ? Vos modifications personnalisées seront perdues."
+    },
+    "notifications": {
+      "created": "E-mail créé avec succès",
+      "updated": "E-mail mis à jour avec succès",
+      "deleted": "E-mail supprimé avec succès",
+      "resetToDefault": "Modèle réinitialisé par défaut avec succès",
+      "templatesAssigned": "",
+      "templateAssigned": ""
+    },
+    "customized": "Personnalisé",
+    "default": "Par défaut",
+    "missingDefault": "Aucun modèle par défaut"
   }
 }

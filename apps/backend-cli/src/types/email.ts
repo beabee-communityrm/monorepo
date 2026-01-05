@@ -1,17 +1,17 @@
 export interface ListEmailOverridesArgs {
-  template?: string;
+  template: string | undefined;
 }
 
 export interface CreateEmailOverrideArgs {
   template: string;
   subject: string;
   body: string;
-  fromName?: string;
-  fromEmail?: string;
-  force?: boolean;
+  fromName: string | undefined;
+  fromEmail: string | undefined;
+  force: boolean | undefined;
 }
 
 export interface DeleteEmailOverrideArgs {
   template: string;
-  force?: boolean;
+  force: boolean;
 }
