@@ -269,7 +269,7 @@ export class GCProvider extends PaymentProvider {
    *
    * @param form The payment form
    */
-  async createOneTimePayment(form: PaymentForm): Promise<void> {
+  async createOneTimePayment(): Promise<void> {
     throw new Error('Method not implemented.');
   }
 

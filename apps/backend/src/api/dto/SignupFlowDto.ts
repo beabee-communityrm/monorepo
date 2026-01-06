@@ -3,7 +3,6 @@ import { CompleteUrls } from '@beabee/core/type';
 
 import { StartContributionDto } from '@api/dto/ContributionDto';
 import { CompleteJoinFlowDto } from '@api/dto/JoinFlowDto';
-import { CreateOneTimePaymentDto } from '@api/dto/OneTimePaymentDto';
 import IsPassword from '@api/validators/IsPassword';
 import IsUrl from '@api/validators/IsUrl';
 import IsVatNumber from '@api/validators/IsVatNumber';
@@ -15,6 +14,8 @@ import {
   Validate,
   ValidateNested,
 } from 'class-validator';
+
+import { CreatePaymentDto } from './PaymentDto';
 
 export class StartSignupFlowDto implements CompleteUrls {
   @IsUrl()
@@ -38,10 +39,10 @@ export class StartSignupFlowDto implements CompleteUrls {
   @IsOptional()
   contribution?: StartContributionDto;
 
-  @Type(() => CreateOneTimePaymentDto)
+  @Type(() => CreatePaymentDto)
   @ValidateNested()
   @IsOptional()
-  oneTimePayment?: CreateOneTimePaymentDto;
+  oneTimePayment?: CreatePaymentDto;
 }
 
 export class CompleteSignupFlowDto
