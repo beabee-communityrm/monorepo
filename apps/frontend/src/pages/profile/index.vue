@@ -182,10 +182,11 @@ async function handleSubmitDonation() {
 onBeforeMount(async () => {
   profileContent.value = await client.content.get('profile');
 
-  content.value = await client.content.get('join');
-
-  if (content.value.periods.some((p) => p.name === 'one-time')) {
-    paymentContent.value = await client.content.get('payment');
+  if (profileContent.value.showOneTimeDonation) {
+    content.value = await client.content.get('join');
+    if (content.value.periods.some((p) => p.name === 'one-time')) {
+      paymentContent.value = await client.content.get('payment');
+    }
   }
 
   callouts.value = (
