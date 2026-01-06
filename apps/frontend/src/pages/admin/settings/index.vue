@@ -103,8 +103,8 @@ meta:
             class="font-bold"
           />
           <AppCheckbox
-            v-if="showOneTimeDonationSettings"
-            v-model="paymentData.showOneTimeDonation"
+            v-if="showOneTimeDonationSettings && profileContent"
+            v-model="profileContent.showOneTimeDonation"
             :label="t('adminSettings.payment.showOneTimeDonation')"
             class="font-bold"
           />
@@ -190,6 +190,7 @@ meta:
 import type {
   ContentJoinData,
   ContentPaymentData,
+  ContentProfileData,
   ContentShareData,
 } from '@beabee/beabee-common';
 import {
@@ -226,13 +227,18 @@ const footerData = reactive({
   footerLinks: [] as { text: string; url: string }[],
 });
 
-const paymentData = ref<
-  Pick<ContentPaymentData, 'taxRateEnabled' | 'taxRate' | 'showOneTimeDonation'>
->({
-  taxRateEnabled: false,
-  taxRate: 7,
+const paymentData = ref<Pick<ContentPaymentData, 'taxRateEnabled' | 'taxRate'>>(
+  {
+    taxRateEnabled: false,
+    taxRate: 7,
+  }
+);
+
+const profileContent = ref<ContentProfileData>({
+  introMessage: '',
   showOneTimeDonation: false,
 });
+
 const shareContent = ref<ContentShareData>();
 
 const joinContent = ref<ContentJoinData>();
@@ -272,6 +278,7 @@ async function handleSaveFooter() {
 
 async function handleSavePayment() {
   await client.content.update('payment', paymentData.value);
+  await client.content.update('profile', profileContent.value);
 }
 
 onBeforeMount(async () => {
@@ -290,11 +297,12 @@ onBeforeMount(async () => {
 
   joinContent.value = await client.content.get('join');
 
+  profileContent.value = await client.content.get('profile');
+
   const paymentContent = await client.content.get('payment');
   paymentData.value = {
     taxRateEnabled: paymentContent.taxRateEnabled,
     taxRate: paymentContent.taxRate,
-    showOneTimeDonation: paymentContent.showOneTimeDonation,
   };
 });
 </script>

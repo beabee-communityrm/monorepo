@@ -57,12 +57,12 @@ meta:
     >
   </section>
   <section
-    v-if="paymentContent && paymentContent.showOneTimeDonation"
+    v-if="paymentContent && profileContent.showOneTimeDonation"
     class="mb-6 lg:mr-6 lg:w-1/4"
   >
     <AppForm
       :button-text="t('homePage.makeOneTimeDonationButton')"
-      @submit.prevent="handleSubmitDonation"
+      @submit="handleSubmitDonation"
     >
       <SectionTitle>{{ t('homePage.makeOneTimeDonationTitle') }}</SectionTitle>
 
@@ -125,6 +125,7 @@ const removeWelcomeMessage = () => {
 
 const profileContent = ref<ContentProfileData>({
   introMessage: '',
+  showOneTimeDonation: false,
 });
 
 // const stripeClientSecret = ref('');

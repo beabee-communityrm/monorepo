@@ -185,6 +185,9 @@ export class GetContentJoinSetupDto implements ContentJoinSetupData {
 export class GetContentProfileDto implements ContentProfileData {
   @IsString()
   introMessage!: string;
+
+  @IsBoolean()
+  showOneTimeDonation!: boolean;
 }
 
 export class GetContentShareDto implements ContentShareData {
@@ -210,9 +213,6 @@ export class GetContentPaymentDto implements ContentPaymentData {
 
   @IsBoolean()
   taxRateEnabled!: boolean;
-
-  @IsBoolean()
-  showOneTimeDonation!: boolean;
 
   @IsNumber()
   taxRate!: number;
