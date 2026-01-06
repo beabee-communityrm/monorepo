@@ -66,12 +66,7 @@ const pageTitle = computed(() => {
   return t(`emails.templates.names.${templateId.value}`);
 });
 
-addBreadcrumb(
-  computed(() => [
-    { title: t('emails.tabs.templates'), to: '/admin/emails/templates' },
-    { title: pageTitle.value },
-  ])
-);
+addBreadcrumb(computed(() => [{ title: 'Email' }, { title: pageTitle.value }]));
 
 onMounted(async () => {
   try {

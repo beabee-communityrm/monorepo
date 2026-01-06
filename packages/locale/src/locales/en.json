@@ -179,7 +179,11 @@
       "fromName": "From name",
       "label": "Email",
       "text": "All email communication will be sent from this email address.",
-      "title": "Set a general email address"
+      "title": "Set a general email address",
+      "templates": {
+        "title": "Set emails",
+        "description": "Manage the subject and body of emails sent by the application. The status color shows whether the email is customized (green), using the default template (yellow), or not configured and therefore not sent (red)."
+      }
     },
     "general": {
       "footer": {

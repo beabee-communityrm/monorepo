@@ -1,10 +1,3 @@
-<route lang="yaml">
-name: adminEmailsTemplates
-meta:
-  role: admin
-  pageTitle: emails.tabs.templates
-</route>
-
 <template>
   <AppTable :headers="headers" :items="sortedTemplates" class="w-full">
     <template #value-type="{ item }">
@@ -14,7 +7,7 @@ meta:
     </template>
     <template #value-name="{ item }">
       <router-link
-        :to="`/admin/emails/template/${item.id}`"
+        :to="`/admin/settings/email/${item.id}`"
         class="text-base font-bold text-link"
       >
         {{ t(`emails.templates.names.${item.id}`) }}
