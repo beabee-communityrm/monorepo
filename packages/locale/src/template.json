@@ -178,6 +178,10 @@
       "fromEmail": "",
       "fromName": "",
       "label": "",
+      "templates": {
+        "description": "",
+        "title": ""
+      },
       "text": "",
       "title": ""
     },

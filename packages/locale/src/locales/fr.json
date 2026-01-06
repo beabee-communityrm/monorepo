@@ -179,7 +179,8 @@
       "fromName": "À partir du nom",
       "label": "E-mail",
       "text": "Toute communication par e-mail sera envoyée à partir de cette adresse e-mail.",
-      "title": "Définir une adresse e-mail générique"
+      "title": "Définir une adresse e-mail générique",
+      "templates": {}
     },
     "general": {
       "footer": {

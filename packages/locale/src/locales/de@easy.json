@@ -179,7 +179,8 @@
       "fromName": "",
       "label": "Betreff",
       "text": "",
-      "title": ""
+      "title": "",
+      "templates": {}
     },
     "general": {
       "footer": {

@@ -179,7 +179,8 @@
       "fromName": "Name",
       "label": "E-Mail",
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",
-      "title": "Lege eine Standard-E-Mail-Adresse fest."
+      "title": "Lege eine Standard-E-Mail-Adresse fest.",
+      "templates": {}
     },
     "general": {
       "footer": {
