@@ -5,7 +5,7 @@ import { getRepository } from '#database';
 import { CantUpdateNewsletterContact } from '#errors/CantUpdateNewsletterContact';
 import { log as mainLogger } from '#logging';
 import { Contact, ContactProfile } from '#models/index';
-import { MailchimpProvider, NoneProvider } from '#providers';
+import { MailchimpProvider, NoneProvider } from '#providers/newsletter/index';
 import {
   ContactNewsletterUpdates,
   NewsletterContact,
@@ -176,7 +176,7 @@ class NewsletterService {
     log.info(`Delete contact ${contact.id}`);
     const nlUpdate = await contactToNlUpdate(contact);
     if (nlUpdate) {
-      await this.provider.permanentlyDeleteContacts([nlUpdate.email]);
+      await this.provider.permanentlyDeleteContact(nlUpdate.email);
     }
   }
 

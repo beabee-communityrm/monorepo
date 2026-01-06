@@ -2,10 +2,15 @@ import config from '#config/config';
 import { getRepository } from '#database';
 import { log as mainLogger } from '#logging';
 import { Contact, ContactProfile } from '#models';
-import { MailchimpProvider, NoneProvider } from '#providers/newsletter';
-import { NewsletterContact } from '#type/newsletter-contact';
-import { NewsletterProvider } from '#type/newsletter-provider';
-import { UpdateNewsletterContact } from '#type/update-newsletter-contact';
+import {
+  MailchimpBulkProvider,
+  NoneBulkProvider,
+} from '#providers/newsletter-bulk/index';
+import {
+  NewsletterBulkProvider,
+  NewsletterContact,
+  UpdateNewsletterContact,
+} from '#type';
 
 import { contactToNlUpdate } from './NewsletterService';
 
@@ -32,10 +37,10 @@ async function getValidNlUpdates(
 }
 
 class NewsletterBulkService {
-  private readonly provider: NewsletterProvider =
+  private readonly provider: NewsletterBulkProvider =
     config.newsletter.provider === 'mailchimp'
-      ? new MailchimpProvider(config.newsletter.settings)
-      : new NoneProvider();
+      ? new MailchimpBulkProvider(config.newsletter.settings)
+      : new NoneBulkProvider();
 
   /**
    * Upserts the list of contacts to the newsletter provider. Unlike

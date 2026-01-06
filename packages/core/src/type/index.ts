@@ -24,6 +24,7 @@ export * from './mc-operation';
 export * from './mc-status';
 export * from './network-service-map';
 export * from './network-service';
+export * from './newsletter-bulk-provider';
 export * from './newsletter-contact';
 export * from './newsletter-provider';
 export * from './param-value';
