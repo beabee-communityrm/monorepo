@@ -9,15 +9,13 @@ import { optionsService } from '@beabee/core/services/OptionsService';
 import moment from 'moment';
 import { Between } from 'typeorm';
 
-const log = mainLogger.child({ app: 'mailchimp-sync' });
+import { SyncNewsletterActiveMemberTagArgs } from '../../../types/sync.js';
 
-interface SyncMailchimpArgs {
-  startDate?: string;
-  endDate?: string;
-  dryRun: boolean;
-}
+const log = mainLogger.child({ app: 'sync-newsletter-active-member-tag' });
 
-export const syncMailchimp = async (args: SyncMailchimpArgs): Promise<void> => {
+export const syncActiveMemberTag = async (
+  args: SyncNewsletterActiveMemberTagArgs
+): Promise<void> => {
   await runApp(async () => {
     const actualStartDate = moment(args.startDate).toDate();
     const actualEndDate = moment(args.endDate).toDate();
@@ -35,19 +33,16 @@ export const syncMailchimp = async (args: SyncMailchimpArgs): Promise<void> => {
       relations: { contact: { profile: true } },
     });
 
-    log.info(`Got ${memberships.length} members`);
+    log.info(`Got ${memberships.length} memberships`);
 
-    const contacts = memberships.map(({ contact }) => {
-      const status = contact.membership?.isActive ? 'Update' : 'Remove';
-      log.info(`${status} member status for ${contact.email}`);
-      return contact;
-    });
-
-    const contactsToArchive = contacts.filter(
-      (m) =>
-        m.profile.newsletterStatus !== NewsletterStatus.None &&
-        !m.membership?.isActive
-    );
+    // Filter contacts who are no longer active members but still have a newsletter status
+    const inactiveContacts = memberships
+      .filter(
+        (m) =>
+          m.contact.profile.newsletterStatus !== NewsletterStatus.None &&
+          !m.contact.membership?.isActive
+      )
+      .map((m) => m.contact);
 
     const activeMemberTag = optionsService.getText(
       'newsletter-active-member-tag'
@@ -55,30 +50,21 @@ export const syncMailchimp = async (args: SyncMailchimpArgs): Promise<void> => {
 
     if (args.dryRun) {
       log.info('DRY RUN - Following actions would be performed:');
-      log.info(`Total contacts processed: ${contacts.length}`);
       log.info(
-        `Contacts that would lose active member tag: ${contactsToArchive.length}`
+        `Contacts that would lose active member tag: ${inactiveContacts.length}`
       );
-
-      if (contactsToArchive.length > 0) {
-        log.info('\nContacts that would be archived:');
-        contactsToArchive.forEach((contact) => {
-          log.info(
-            `- ${contact.email} (Newsletter status: ${contact.profile.newsletterStatus})`
-          );
-        });
-        log.info(`\nWould remove tag "${activeMemberTag}" from these contacts`);
-      } else {
-        log.info('No contacts need to be archived');
+      for (const contact of inactiveContacts) {
+        log.info(
+          `- ${contact.email} (Newsletter status: ${contact.profile.newsletterStatus})`
+        );
       }
-
       log.info('\nDRY RUN - No changes were made');
     } else {
       log.info(
-        `Removing active member tag "${activeMemberTag}" from ${contactsToArchive.length} contacts`
+        `Removing active member tag "${activeMemberTag}" from ${inactiveContacts.length} contacts`
       );
       await newsletterService.removeTagFromContacts(
-        contactsToArchive,
+        inactiveContacts,
         activeMemberTag
       );
       log.info('Sync completed successfully');
