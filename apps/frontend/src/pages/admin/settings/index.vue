@@ -297,7 +297,9 @@ onBeforeMount(async () => {
 
   joinContent.value = await client.content.get('join');
 
-  profileContent.value = await client.content.get('profile');
+  if (showOneTimeDonationSettings.value) {
+    profileContent.value = await client.content.get('profile');
+  }
 
   const paymentContent = await client.content.get('payment');
   paymentData.value = {
