@@ -125,9 +125,6 @@ const minAmount = computed(() => {
 });
 
 const definedAmounts = computed(() => {
-  if (props.mode === 'one-time') {
-    return [];
-  }
   const selectedPeriod = props.content.periods.find((p) => {
     return p.name === period.value;
   });
@@ -135,23 +132,17 @@ const definedAmounts = computed(() => {
 });
 
 const periodItems = computed(() => {
-  if (props.mode === 'one-time') {
-    return [];
-  }
-  // Remove one-time donation if disabled
-  const filteredPeriods = computed(() =>
-    props.content.periods.filter(
+  return props.content.periods
+    .filter(
       (p) =>
         !props.mode || // All
         (props.mode === 'one-time' && p.name === 'one-time') || // Only one-time
         (props.mode === 'contribution' && p.name !== 'one-time') // Only contribution
     )
-  );
-
-  return filteredPeriods.value.map((period) => ({
-    label: t(`common.paymentPeriod.${period.name}`),
-    value: period.name,
-  }));
+    .map((period) => ({
+      label: t(`common.paymentPeriod.${period.name}`),
+      value: period.name,
+    }));
 });
 
 watch(isAnnually, (value) => {
