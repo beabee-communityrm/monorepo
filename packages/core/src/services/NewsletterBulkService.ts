@@ -11,8 +11,7 @@ import {
   NewsletterContact,
   UpdateNewsletterContact,
 } from '#type';
-
-import { contactToNlUpdate } from './NewsletterService';
+import { convertContactToNlUpdate } from '#utils/newsletter';
 
 const log = mainLogger.child({ app: 'newsletter-bulk-service' });
 
@@ -23,17 +22,10 @@ const log = mainLogger.child({ app: 'newsletter-bulk-service' });
  * @param contacts The list of contacts
  * @returns A list of valid newsletter updates
  */
-async function getValidNlUpdates(
-  contacts: Contact[]
-): Promise<UpdateNewsletterContact[]> {
-  const nlUpdates = [];
-  for (const contact of contacts) {
-    const nlUpdate = await contactToNlUpdate(contact);
-    if (nlUpdate) {
-      nlUpdates.push(nlUpdate);
-    }
-  }
-  return nlUpdates;
+function getValidNlUpdates(contacts: Contact[]): UpdateNewsletterContact[] {
+  return contacts
+    .map((c) => convertContactToNlUpdate(c))
+    .filter((c) => c !== undefined);
 }
 
 class NewsletterBulkService {
@@ -52,7 +44,7 @@ class NewsletterBulkService {
    */
   async upsertContacts(contacts: Contact[]): Promise<void> {
     log.info(`Upsert ${contacts.length} contacts`);
-    await this.provider.upsertContacts(await getValidNlUpdates(contacts));
+    await this.provider.upsertContacts(getValidNlUpdates(contacts));
   }
 
   /**
@@ -63,7 +55,7 @@ class NewsletterBulkService {
   async archiveContacts(contacts: Contact[]): Promise<void> {
     log.info(`Archive ${contacts.length} contacts`);
     await this.provider.archiveContacts(
-      (await getValidNlUpdates(contacts)).map((m) => m.email)
+      getValidNlUpdates(contacts).map((m) => m.email)
     );
   }
 
@@ -85,7 +77,7 @@ class NewsletterBulkService {
   async addTagToContacts(contacts: Contact[], tag: string): Promise<void> {
     log.info(`Add tag ${tag} to ${contacts.length} contacts`);
     await this.provider.addTagToContacts(
-      (await getValidNlUpdates(contacts)).map((m) => m.email),
+      getValidNlUpdates(contacts).map((m) => m.email),
       tag
     );
   }
@@ -100,7 +92,7 @@ class NewsletterBulkService {
   async removeTagFromContacts(contacts: Contact[], tag: string): Promise<void> {
     log.info(`Remove tag ${tag} from ${contacts.length} contacts`);
     await this.provider.removeTagFromContacts(
-      (await getValidNlUpdates(contacts)).map((m) => m.email),
+      getValidNlUpdates(contacts).map((m) => m.email),
       tag
     );
   }
