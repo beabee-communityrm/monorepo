@@ -49,15 +49,16 @@ export const syncCommand: CommandModule = {
                     description: 'Run without making changes',
                     default: false,
                   })
-                  .option('startDate', {
-                    type: 'string',
-                    description: 'Start date (ISO format)',
-                    default: moment().subtract({ d: 7 }).toISOString(), // 7 days ago
+                  .option('updateThem', {
+                    type: 'boolean',
+                    description:
+                      'Update the newsletter service to match our records',
+                    default: false,
                   })
-                  .option('endDate', {
-                    type: 'string',
-                    description: 'End date (ISO format)',
-                    default: new Date().toISOString(), // now
+                  .option('report', {
+                    type: 'boolean',
+                    description: 'Generate a report of the differences found',
+                    default: false,
                   }),
               handler: async (argv) => {
                 const { reconcile } = await import(

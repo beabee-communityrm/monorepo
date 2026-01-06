@@ -3,8 +3,7 @@ import { getRepository } from '@beabee/core/database';
 import { log as mainLogger } from '@beabee/core/logging';
 import { ContactRole } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
-import { newsletterService } from '@beabee/core/services/NewsletterService';
-import { optionsService } from '@beabee/core/services/OptionsService';
+import { newsletterBulkService, optionsService } from '@beabee/core/services';
 
 import moment from 'moment';
 import { Between } from 'typeorm';
@@ -63,7 +62,7 @@ export const syncActiveMemberTag = async (
       log.info(
         `Removing active member tag "${activeMemberTag}" from ${inactiveContacts.length} contacts`
       );
-      await newsletterService.removeTagFromContacts(
+      await newsletterBulkService.removeTagFromContacts(
         inactiveContacts,
         activeMemberTag
       );
