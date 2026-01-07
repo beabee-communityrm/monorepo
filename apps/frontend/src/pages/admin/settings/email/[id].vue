@@ -6,9 +6,24 @@ meta:
 </route>
 
 <template>
+  <AppConfirmDialog
+    :open="showResetConfirmDialog"
+    :title="t('emails.confirmResetToDefault.title')"
+    :cancel="t('actions.noBack')"
+    :confirm="t('actions.yesReset')"
+    variant="danger"
+    @close="showResetConfirmDialog = false"
+    @confirm="handleReset"
+  >
+    <p>{{ t('emails.confirmResetToDefault.message') }}</p>
+  </AppConfirmDialog>
+
   <PageTitle :title="pageTitle" back border>
     <div v-if="hasOverride" class="flex-0 ml-3">
-      <AppButton variant="dangerOutlined" @click="handleReset">
+      <AppButton
+        variant="dangerOutlined"
+        @click="showResetConfirmDialog = true"
+      >
         {{ t('emails.actions.resetToDefault') }}
       </AppButton>
     </div>
@@ -34,7 +49,7 @@ meta:
 
 <script lang="ts" setup>
 import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
-import { AppButton, AppForm, PageTitle } from '@beabee/vue';
+import { AppButton, AppConfirmDialog, AppForm, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import EmailEditor from '@components/EmailEditor.vue';
@@ -66,12 +81,9 @@ const pageTitle = computed(() => {
   return t(`emails.templates.names.${templateId.value}`);
 });
 
-addBreadcrumb(
-  computed(() => [
-    { title: t('emails.tabs.templates'), to: '/admin/emails/templates' },
-    { title: pageTitle.value },
-  ])
-);
+const showResetConfirmDialog = ref(false);
+
+addBreadcrumb(computed(() => [{ title: 'Email' }, { title: pageTitle.value }]));
 
 onMounted(async () => {
   try {
@@ -129,14 +141,6 @@ async function handleSubmit() {
 }
 
 async function handleReset() {
-  if (
-    !confirm(
-      `${t('emails.confirmResetToDefault.title')}\n\n${t('emails.confirmResetToDefault.message')}`
-    )
-  ) {
-    return;
-  }
-
   try {
     await client.email.template.delete(templateId.value);
 

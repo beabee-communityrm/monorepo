@@ -108,7 +108,8 @@
     "view": "Просмотреть",
     "yesDelete": "Да, удалить",
     "yesDisable": "Да, отключить",
-    "yesRemove": "Да, удалить"
+    "yesRemove": "Да, удалить",
+    "yesReset": "Да, сбросить"
   },
   "addContact": {
     "contactSaved": "",
@@ -180,7 +181,11 @@
       "fromName": "",
       "label": "",
       "text": "",
-      "title": ""
+      "title": "",
+      "templates": {
+        "title": "",
+        "description": ""
+      }
     },
     "general": {
       "footer": {
