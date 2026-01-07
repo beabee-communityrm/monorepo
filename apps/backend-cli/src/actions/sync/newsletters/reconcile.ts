@@ -106,16 +106,11 @@ async function fetchContacts(): Promise<ReconciliationData> {
     }
   }
 
-  // TODO: this filter could be removed once we delete expired pending contacts
-  const nlContactsToImport = nlContacts.filter(
-    (nc) => nc.status !== NewsletterStatus.Pending
-  );
-
   return {
     contactsToUpload,
     existingContacts,
     mismatchedContacts,
-    nlContactsToImport,
+    nlContactsToImport: nlContacts,
   };
 }
 
@@ -186,6 +181,11 @@ async function reconcileUs(data: ReconciliationData, dryRun: boolean) {
   );
   if (!dryRun) {
     for (const nlContact of data.nlContactsToImport) {
+      // TODO: this filter could be removed once we delete expired pending contacts
+      if (nlContact.status === NewsletterStatus.Pending) {
+        continue;
+      }
+
       await contactsService.createContact(
         {
           email: nlContact.email,
