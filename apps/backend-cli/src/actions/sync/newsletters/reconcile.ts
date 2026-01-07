@@ -14,6 +14,16 @@ import { SyncNewsletterReconcileArgs } from '../../../types/sync.js';
 const log = mainLogger.child({ app: 'sync-newsletter-reconcile' });
 
 /**
+ * The data structure holding the data for the reconciliation process.
+ */
+interface ReconciliationData {
+  contactsToUpload: Contact[];
+  existingContacts: Contact[];
+  mismatchedContacts: [Contact, NewsletterContact][];
+  nlContactsToImport: NewsletterContact[];
+}
+
+/**
  * Returns a reliably comparable string representation of the groups list for
  * comparison
  *
@@ -48,167 +58,218 @@ function isMismatchedContact(contact: Contact, nlContact: NewsletterContact) {
 }
 
 /**
+ * Fetch the list of contacts from both local database and newsletter service,
+ * and categorize them into:
+ * - Contacts that exist only our database and can be uploaded
+ * - Contacts that exist only in the newsletter service and should be imported
+ * - Contacts that exist in both
+ *   - Of those, the contacts with mismatched data that should be fixed
+ *
+ * @returns The reconciliation data
+ */
+async function fetchContacts(): Promise<ReconciliationData> {
+  log.info('📡 Fetching contact lists...');
+
+  const contacts = await contactsService.find({
+    relations: { profile: true },
+  });
+  const nlContacts = await newsletterBulkService.getNewsletterContacts();
+
+  log.info(
+    `📊 Found ${contacts.length} local contacts and ${nlContacts.length} newsletter contacts`
+  );
+
+  const contactsToUpload: Contact[] = [],
+    existingContacts: Contact[] = [],
+    mismatchedContacts: [Contact, NewsletterContact][] = [];
+
+  for (const contact of contacts) {
+    const i = nlContacts.findIndex((nc) => nc.email === contact.email);
+
+    // Remove found contact so we can later see which contacts are in the
+    // newsletter service but not in our database
+    const nlContact = i !== -1 ? nlContacts.splice(i, 1)[0] : undefined;
+
+    if (nlContact) {
+      existingContacts.push(contact);
+
+      if (isMismatchedContact(contact, nlContact)) {
+        mismatchedContacts.push([contact, nlContact]);
+      }
+
+      // Only consider active statuses for upload
+    } else if (
+      contact.profile.newsletterStatus === NewsletterStatus.Subscribed ||
+      contact.profile.newsletterStatus === NewsletterStatus.Pending
+    ) {
+      contactsToUpload.push(contact);
+    }
+  }
+
+  // TODO: this filter could be removed once we delete expired pending contacts
+  const nlContactsToImport = nlContacts.filter(
+    (nc) => nc.status !== NewsletterStatus.Pending
+  );
+
+  return {
+    contactsToUpload,
+    existingContacts,
+    mismatchedContacts,
+    nlContactsToImport,
+  };
+}
+
+/**
+ * Prints a report detailing exactly what changes will be made during the
+ * reconciliation process.
+ *
+ * @param data The reconciliation data
+ * @param updateThem Whether we will be updating the newsletter service
+ */
+function printReport(data: ReconciliationData, updateThem: boolean) {
+  log.info('');
+  log.info('============ Reconciliation Report ============');
+
+  log.info('📥 Contacts to import from newsletter service:');
+  if (data.nlContactsToImport.length === 0) {
+    log.info('  • (none)');
+  }
+  for (const nc of data.nlContactsToImport) {
+    log.info(
+      `  • ${nc.email}: status=${nc.status}, groups=[${groupsList(nc.groups)}]`
+    );
+  }
+
+  log.info('⚠️ Mismatched contacts:');
+  if (data.mismatchedContacts.length === 0) {
+    log.info('  • (none)');
+  }
+  for (const [c, nc] of data.mismatchedContacts) {
+    log.info(
+      `  • ${c.email}: status=${c.profile.newsletterStatus}→${nc.status}, groups=[${groupsList(c.profile.newsletterGroups)}]→[${groupsList(nc.groups)}]`
+    );
+  }
+
+  if (updateThem) {
+    log.info('📤 New contacts to upload to newsletter service:');
+    if (data.contactsToUpload.length === 0) {
+      log.info('  • (none)');
+    }
+    for (const c of data.contactsToUpload) {
+      log.info(
+        `  • ${c.email}: status=${c.profile.newsletterStatus}, groups=[${groupsList(c.profile.newsletterGroups)}]`
+      );
+    }
+  }
+
+  log.info('');
+}
+
+/**
+ * Reconcile our contact data based on the provided reconciliation data.
+ * - Update the newsletter data for our local contacts
+ * - Import missing contacts from the newsletter service
+ *
+ * @param data The reconciliation data
+ * @param dryRun Whether to perform a dry run (no changes made)
+ */
+async function reconcileUs(data: ReconciliationData, dryRun: boolean) {
+  log.info(
+    `🔧 Fixing ${data.mismatchedContacts.length} mismatched contact statuses locally...`
+  );
+  if (!dryRun) {
+    await newsletterBulkService.updateContactStatuses(data.mismatchedContacts);
+  }
+
+  log.info(
+    `📥 Importing ${data.nlContactsToImport.length} contacts from newsletter service...`
+  );
+  if (!dryRun) {
+    for (const nlContact of data.nlContactsToImport) {
+      await contactsService.createContact(
+        {
+          email: nlContact.email,
+          firstname: nlContact.firstname,
+          lastname: nlContact.lastname,
+          joined: nlContact.joined,
+        },
+        {
+          newsletterStatus: nlContact.status,
+          newsletterGroups: nlContact.groups,
+        },
+        { sync: false }
+      );
+    }
+  }
+}
+
+/**
+ * Update the newsletter service based on the provided reconciliation data.
+ * - Upload new contacts to the newsletter service
+ * - Update existing contacts in the newsletter service
+ * - Update active member tags for contacts in the newsletter service
+ *
+ * @param data The reconciliation data
+ * @param dryRun Whether to perform a dry run (no changes made)
+ */
+async function reconcileThem(data: ReconciliationData, dryRun: boolean) {
+  log.info(
+    `📤 Uploading ${data.contactsToUpload.length} new contacts to newsletter service...`
+  );
+  if (!dryRun) {
+    await newsletterBulkService.upsertContacts(data.contactsToUpload);
+  }
+
+  log.info(
+    `🔄 Updating ${data.existingContacts.length} existing contacts in newsletter service...`
+  );
+  if (!dryRun) {
+    await newsletterBulkService.upsertContacts(data.existingContacts);
+  }
+
+  log.info(
+    `🏷️ Updating active member tags for ${data.mismatchedContacts.length} contacts...`
+  );
+  if (!dryRun) {
+    await newsletterBulkService.addTagToContacts(
+      data.mismatchedContacts
+        .filter(([c]) => c.membership?.isActive)
+        .map(([c]) => c),
+      optionsService.getText('newsletter-active-member-tag')
+    );
+    await newsletterBulkService.removeTagFromContacts(
+      data.mismatchedContacts
+        .filter(([c]) => !c.membership?.isActive)
+        .map(([c]) => c),
+      optionsService.getText('newsletter-active-member-tag')
+    );
+  }
+}
+
+/**
  * Reconcile newsletter contacts between our database and the newsletter
- * service.
+ * service. This tool can be used to ensure both sides have consistent data.
  *
- * The reconciliation process includes:
- * - Identifying contacts that exist in our database but not in the newsletter
- *   service, and vice versa.
- * - Detecting mismatches in subscription statuses and group memberships.
- * - Optionally updating the newsletter service to align with our records.
- * - Generating a report of discrepancies found during the reconciliation.
- *
- * @param argv  The command line arguments
+ * @param argv The command line arguments
  */
 export async function reconcile(
   argv: SyncNewsletterReconcileArgs
 ): Promise<void> {
   await runApp(async () => {
-    log.info('📡 Fetching contact lists...');
-
-    const contacts = await contactsService.find({
-      relations: { profile: true },
-    });
-    const nlContacts = await newsletterBulkService.getNewsletterContacts();
-
-    log.info(
-      `📊 Found ${contacts.length} local contacts and ${nlContacts.length} newsletter contacts`
-    );
-
-    const contactsToUpload: Contact[] = [],
-      existingContacts: Contact[] = [],
-      mismatchedContacts: [Contact, NewsletterContact][] = [];
-
-    for (const contact of contacts) {
-      const i = nlContacts.findIndex((nc) => nc.email === contact.email);
-
-      // Remove found contact so we can later see which contacts are in the
-      // newsletter service but not in our database
-      const nlContact = i !== -1 ? nlContacts.splice(i, 1)[0] : undefined;
-
-      if (nlContact) {
-        existingContacts.push(contact);
-
-        if (isMismatchedContact(contact, nlContact)) {
-          mismatchedContacts.push([contact, nlContact]);
-        }
-
-        // Only consider active statuses for upload
-      } else if (
-        contact.profile.newsletterStatus === NewsletterStatus.Subscribed ||
-        contact.profile.newsletterStatus === NewsletterStatus.Pending
-      ) {
-        contactsToUpload.push(contact);
-      }
-    }
-
-    // TODO: this filter could be removed once we delete expired pending contacts
-    const nlContactsToImport = nlContacts.filter(
-      (nc) => nc.status !== NewsletterStatus.Pending
-    );
+    const data = await fetchContacts();
 
     if (argv.report) {
-      log.info('');
-      log.info('============ Reconciliation Report ============');
-      log.info('📥 Contacts to import from newsletter service:');
-      if (nlContactsToImport.length === 0) {
-        log.info('  • (none)');
-      }
-      for (const nc of nlContactsToImport) {
-        log.info(
-          `  • ${nc.email}: status=${nc.status}, groups=[${groupsList(nc.groups)}]`
-        );
-      }
-
-      log.info('⚠️ Mismatched contacts:');
-      if (mismatchedContacts.length === 0) {
-        log.info('  • (none)');
-      }
-      for (const [c, nc] of mismatchedContacts) {
-        log.info(
-          `  • ${c.email}: status=${c.profile.newsletterStatus}→${nc.status}, groups=[${groupsList(c.profile.newsletterGroups)}]→[${groupsList(nc.groups)}]`
-        );
-      }
-
-      if (argv.updateThem) {
-        log.info('📤 New contacts to upload to newsletter service:');
-        if (contactsToUpload.length === 0) {
-          log.info('  • (none)');
-        }
-        for (const c of contactsToUpload) {
-          log.info(
-            `  • ${c.email}: status=${c.profile.newsletterStatus}, groups=[${groupsList(c.profile.newsletterGroups)}]`
-          );
-        }
-      }
-
-      log.info('');
+      printReport(data, argv.updateThem);
     }
 
     if (argv.dryRun) {
       log.info('DRY RUN - No changes will actually be made');
     }
 
-    log.info(
-      `🔧 Fixing ${mismatchedContacts.length} mismatched contact statuses locally...`
-    );
-    if (!argv.dryRun) {
-      await newsletterBulkService.updateContactStatuses(mismatchedContacts);
-    }
-
-    log.info(
-      `📥 Importing ${nlContactsToImport.length} contacts from newsletter service...`
-    );
-    if (!argv.dryRun) {
-      for (const nlContact of nlContactsToImport) {
-        await contactsService.createContact(
-          {
-            email: nlContact.email,
-            firstname: nlContact.firstname,
-            lastname: nlContact.lastname,
-            joined: nlContact.joined,
-          },
-          {
-            newsletterStatus: nlContact.status,
-            newsletterGroups: nlContact.groups,
-          },
-          { sync: false }
-        );
-      }
-    }
+    await reconcileUs(data, argv.dryRun);
 
     if (argv.updateThem) {
-      log.info(
-        `📤 Uploading ${contactsToUpload.length} new contacts to newsletter service...`
-      );
-      if (!argv.dryRun) {
-        await newsletterBulkService.upsertContacts(contactsToUpload);
-      }
-
-      log.info(
-        `🔄 Updating ${existingContacts.length} existing contacts in newsletter service...`
-      );
-      if (!argv.dryRun) {
-        await newsletterBulkService.upsertContacts(existingContacts);
-      }
-
-      log.info(
-        `🏷️ Updating active member tags for ${mismatchedContacts.length} contacts...`
-      );
-      if (!argv.dryRun) {
-        await newsletterBulkService.addTagToContacts(
-          mismatchedContacts
-            .filter(([c]) => c.membership?.isActive)
-            .map(([c]) => c),
-          optionsService.getText('newsletter-active-member-tag')
-        );
-        await newsletterBulkService.removeTagFromContacts(
-          mismatchedContacts
-            .filter(([c]) => !c.membership?.isActive)
-            .map(([c]) => c),
-          optionsService.getText('newsletter-active-member-tag')
-        );
-      }
+      await reconcileThem(data, argv.dryRun);
     }
 
     log.info('✅ Newsletter reconciliation completed successfully!');
