@@ -1,7 +1,13 @@
-export interface SyncMailchimpArgs {
+export interface SyncNewsletterActiveMemberTagArgs {
   startDate: string;
   endDate: string;
   dryRun: boolean;
+}
+
+export interface SyncNewsletterReconcileArgs {
+  dryRun: boolean;
+  updateThem: boolean;
+  report: boolean;
 }
 
 export interface SyncSegmentsArgs {

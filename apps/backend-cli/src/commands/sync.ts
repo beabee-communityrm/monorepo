@@ -1,7 +1,5 @@
 import moment from 'moment';
-import type { ArgumentsCamelCase, CommandModule } from 'yargs';
-
-import type { SyncMailchimpArgs, SyncSegmentsArgs } from '../types/sync.js';
+import type { CommandModule } from 'yargs';
 
 export const syncCommand: CommandModule = {
   command: 'sync <action>',
@@ -9,31 +7,67 @@ export const syncCommand: CommandModule = {
   builder: (yargs) =>
     yargs
       .command({
-        command: 'mailchimp',
-        describe: 'Sync newsletter status with Mailchimp',
+        command: 'newsletter-service',
+        describe: 'Sync data with the newsletter service',
         builder: (yargs) =>
           yargs
-            .option('startDate', {
-              type: 'string',
-              description: 'Start date (ISO format)',
-              default: moment().subtract({ d: 1, h: 2 }).toISOString(), // 26h ago
+            .command({
+              command: 'active-member-tag',
+              describe:
+                'Remove expired active member tags from the newsletter service',
+              builder: (yargs) =>
+                yargs
+                  .option('startDate', {
+                    type: 'string',
+                    description: 'Start date (ISO format)',
+                    default: moment().subtract({ d: 1, h: 2 }).toISOString(), // 26h ago
+                  })
+                  .option('endDate', {
+                    type: 'string',
+                    description: 'End date (ISO format)',
+                    default: new Date().toISOString(), // now
+                  })
+                  .option('dryRun', {
+                    type: 'boolean',
+                    description: 'Run without making changes',
+                    default: false,
+                  }),
+              handler: async (argv) => {
+                const { syncActiveMemberTag } = await import(
+                  '../actions/sync/newsletters/active-member-tag.js'
+                );
+                return syncActiveMemberTag(argv);
+              },
             })
-            .option('endDate', {
-              type: 'string',
-              description: 'End date (ISO format)',
-              default: new Date().toISOString(), // now
-            })
-            .option('dryRun', {
-              type: 'boolean',
-              description: 'Run without making changes',
-              default: false,
+            .command({
+              command: 'reconcile',
+              describe: 'Reconcile changes from the newsletter service',
+              builder: (yargs) =>
+                yargs
+                  .option('dryRun', {
+                    type: 'boolean',
+                    description: 'Run without making changes',
+                    default: false,
+                  })
+                  .option('updateThem', {
+                    type: 'boolean',
+                    description:
+                      'Update the newsletter service to match our records',
+                    default: false,
+                  })
+                  .option('report', {
+                    type: 'boolean',
+                    description: 'Generate a report of the differences found',
+                    default: false,
+                  }),
+              handler: async (argv) => {
+                const { reconcile } = await import(
+                  '../actions/sync/newsletters/reconcile.js'
+                );
+                return reconcile(argv);
+              },
             }),
-        handler: async (argv: ArgumentsCamelCase<SyncMailchimpArgs>) => {
-          const { syncMailchimp } = await import(
-            '../actions/sync/mailchimp.js'
-          );
-          return syncMailchimp(argv);
-        },
+        handler: () => {},
       })
       .command({
         command: 'segments',
@@ -50,7 +84,7 @@ export const syncCommand: CommandModule = {
               description: 'Run without making changes',
               default: false,
             }),
-        handler: async (argv: ArgumentsCamelCase<SyncSegmentsArgs>) => {
+        handler: async (argv) => {
           const { syncSegments } = await import('../actions/sync/segments.js');
           return syncSegments(argv);
         },

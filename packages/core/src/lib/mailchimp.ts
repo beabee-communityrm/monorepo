@@ -84,17 +84,17 @@ export function createInstance(
     }
   }
 
-  async function getBatchResponses(
+  async function getBatchResponses<T = unknown>(
     batch: MCBatch,
     validateStatus?: (status: number) => boolean
-  ): Promise<any[]> {
+  ): Promise<T[]> {
     log.info(`Getting responses for batch ${batch.id}`, {
       finishedOperations: batch.finished_operations,
       totalOperations: batch.total_operations,
       erroredOperations: batch.errored_operations,
     });
 
-    const batchResponses: any[] = [];
+    const batchResponses: T[] = [];
 
     const response = await axios({
       method: 'GET',
