@@ -1,5 +1,6 @@
-import moment from 'moment';
 import type { CommandModule } from 'yargs';
+
+import { coerceToDate } from '../utils/coerce.js';
 
 export const syncCommand: CommandModule = {
   command: 'sync <action>',
@@ -19,13 +20,15 @@ export const syncCommand: CommandModule = {
                 yargs
                   .option('startDate', {
                     type: 'string',
-                    description: 'Start date (ISO format)',
-                    default: moment().subtract({ d: 1, h: 2 }).toISOString(), // 26h ago
+                    description: 'Start date or duration (ISO format)',
+                    coerce: coerceToDate,
+                    demandOption: true,
                   })
                   .option('endDate', {
                     type: 'string',
-                    description: 'End date (ISO format)',
-                    default: new Date().toISOString(), // now
+                    description: 'End date or duration (ISO format)',
+                    coerce: coerceToDate,
+                    default: new Date(),
                   })
                   .option('dryRun', {
                     type: 'boolean',

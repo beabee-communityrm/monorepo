@@ -1,6 +1,6 @@
 export interface SyncNewsletterActiveMemberTagArgs {
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   dryRun: boolean;
 }
 
