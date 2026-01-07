@@ -108,7 +108,8 @@
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen"
+    "yesRemove": "Ja, entfernen",
+    "yesReset": "Ja, zurücksetzten"
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -180,7 +181,10 @@
       "label": "E-Mail",
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",
       "title": "Lege eine Standard-E-Mail-Adresse fest.",
-      "templates": {}
+      "templates": {
+        "title": "E-Mails anpassen",
+        "description": "Hier legst du Betreff und Text der E-Mails fest, die die App rausschickt. Die Farbe zeigt dir: grün = selbst gemacht, gelb = Standard, rot = nicht aktiv (wird nicht gesendet)."
+      }
     },
     "general": {
       "footer": {

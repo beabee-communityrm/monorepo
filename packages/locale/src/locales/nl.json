@@ -108,7 +108,8 @@
     "view": "Bekijk",
     "yesDelete": "“Ja, verwijder het”",
     "yesDisable": "“Ja, schakel het uit”",
-    "yesRemove": "“Ja, verwijder het”"
+    "yesRemove": "“Ja, verwijder het”",
+    "yesReset": "Ja, resetten"
   },
   "addContact": {
     "contactSaved": "Contact opgeslagen",
@@ -180,7 +181,10 @@
       "label": "E-mail",
       "text": "Alle e-mailcommunicatie wordt vanaf dit e-mailadres verzonden.",
       "title": "Stel een algemeen e-mailadres in",
-      "templates": {}
+      "templates": {
+        "title": "E-mails instellen",
+        "description": "Hier stel je het onderwerp en de tekst in van de e-mails die de app verstuurt. De kleur laat zien: groen = aangepast, geel = standaardtemplate, rood = niet ingesteld (wordt niet verzonden)."
+      }
     },
     "general": {
       "footer": {
