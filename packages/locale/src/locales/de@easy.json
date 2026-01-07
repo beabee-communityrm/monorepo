@@ -108,7 +108,8 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "yesReset": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -180,7 +181,10 @@
       "label": "Betreff",
       "text": "",
       "title": "",
-      "templates": {}
+      "templates": {
+        "title": "E-Mails einrichten",
+        "description": "Hier kannst du Betreff und Text der E-Mails ändern, die die App verschickt. Die Farbe zeigt dir: grün = angepasst, gelb = Standardvorlage, rot = nicht eingerichtet (wird nicht gesendet)."
+      }
     },
     "general": {
       "footer": {

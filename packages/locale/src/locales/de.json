@@ -108,7 +108,8 @@
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen"
+    "yesRemove": "Ja, entfernen",
+    "yesReset": "Ja, zurücksetzen"
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -180,7 +181,10 @@
       "label": "E-Mail",
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",
       "title": "Lege eine Standard-E-Mail-Adresse fest.",
-      "templates": {}
+      "templates": {
+        "title": "E-Mail-Vorlagen verwalten",
+        "description": "Verwalten Sie Betreff und Inhalt der von der Anwendung versendeten E-Mails. Die Statusfarbe zeigt an, ob die E-Mail individuell angepasst (grün), die Standardvorlage verwendet (gelb) oder nicht konfiguriert und daher nicht versendet wird (rot)."
+      }
     },
     "general": {
       "footer": {

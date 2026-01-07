@@ -108,7 +108,8 @@
     "view": "Visualiser",
     "yesDelete": "Oui, supprimer",
     "yesDisable": "Oui, désactiver",
-    "yesRemove": "Oui, retirer"
+    "yesRemove": "Oui, retirer",
+    "yesReset": "Oui, réinitialiser"
   },
   "addContact": {
     "contactSaved": "Contact enregistré",
@@ -180,7 +181,10 @@
       "label": "E-mail",
       "text": "Toute communication par e-mail sera envoyée à partir de cette adresse e-mail.",
       "title": "Définir une adresse e-mail générique",
-      "templates": {}
+      "templates": {
+        "title": "Configurer les emails",
+        "description": "Ici, tu peux personnaliser l’objet et le contenu des emails envoyés par l’appli. La couleur t’indique : vert = personnalisé, jaune = modèle par défaut, rouge = non configuré (non envoyé)."
+      }
     },
     "general": {
       "footer": {

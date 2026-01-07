@@ -108,7 +108,8 @@
     "view": "Ver",
     "yesDelete": "Sim, apagar",
     "yesDisable": "Sim, desactivar",
-    "yesRemove": "Sim, remover"
+    "yesRemove": "Sim, remover",
+    "yesReset": "Sim, redefinir"
   },
   "addContact": {
     "contactSaved": "Contacto gravado",
@@ -180,7 +181,10 @@
       "label": "",
       "text": "",
       "title": "",
-      "templates": {}
+      "templates": {
+        "title": "",
+        "description": ""
+      }
     },
     "general": {
       "footer": {
