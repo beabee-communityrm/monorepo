@@ -69,21 +69,21 @@ function isMismatchedContact(contact: Contact, nlContact: NewsletterContact) {
  * that have been changed on the newsletter service within that window. This
  * will disable uploading of new contacts from our database.
  *
- * @param startDate An optional start date for reconciliation
- * @param endDate An optional end date for reconciliation
+ * @param since An optional start date for reconciliation
+ * @param until An optional end date for reconciliation
  * @returns The reconciliation data
  */
 async function fetchContacts(
-  startDate: Date | undefined,
-  endDate: Date | undefined
+  since: Date | undefined,
+  until: Date | undefined
 ): Promise<ReconciliationData> {
   log.info('📡 Loading local contact list...');
   const contacts = await contactsService.find({ relations: { profile: true } });
-  const window = startDate || endDate ? { startDate, endDate } : undefined;
+  const window = since || until ? { since, until } : undefined;
 
   if (window) {
     log.info(
-      `📡 Fetching newsletter contact list updates between ${startDate?.toISOString()} and ${endDate?.toISOString()}...`
+      `📡 Fetching newsletter contact list updates between ${since?.toISOString()} and ${until?.toISOString()}...`
     );
   } else {
     log.info('📡 Fetching whole newsletter contact list...');
@@ -273,7 +273,7 @@ export async function reconcile(
   argv: SyncNewsletterReconcileArgs
 ): Promise<void> {
   await runApp(async () => {
-    const data = await fetchContacts(argv.startDate, argv.endDate);
+    const data = await fetchContacts(argv.since, argv.until);
 
     if (argv.report) {
       printReport(data, argv.updateThem);

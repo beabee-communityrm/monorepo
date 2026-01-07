@@ -15,15 +15,12 @@ export const syncActiveMemberTag = async (
   args: SyncNewsletterActiveMemberTagArgs
 ): Promise<void> => {
   await runApp(async () => {
-    log.info('Fetching contacts', {
-      startDate: args.startDate,
-      endDate: args.endDate,
-    });
+    log.info('Fetching contacts', { since: args.since, until: args.until });
 
     const memberships = await getRepository(ContactRole).find({
       where: {
         type: 'member',
-        dateExpires: Between(args.startDate, args.endDate),
+        dateExpires: Between(args.since, args.until),
       },
       relations: { contact: { profile: true } },
     });

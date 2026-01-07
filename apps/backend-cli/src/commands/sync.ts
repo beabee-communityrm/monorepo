@@ -18,15 +18,17 @@ export const syncCommand: CommandModule = {
                 'Remove expired active member tags from the newsletter service',
               builder: (yargs) =>
                 yargs
-                  .option('startDate', {
+                  .option('since', {
                     type: 'string',
-                    description: 'Start date or duration (ISO format)',
+                    description:
+                      'Sync changes since date or duration (ISO format)',
                     coerce: coerceToDate,
                     demandOption: true,
                   })
-                  .option('endDate', {
+                  .option('until', {
                     type: 'string',
-                    description: 'End date or duration (ISO format)',
+                    description:
+                      'Sync changes until date or duration (ISO format)',
                     coerce: coerceToDate,
                     default: () => new Date(),
                   })
@@ -63,14 +65,16 @@ export const syncCommand: CommandModule = {
                     description: 'Generate a report of the differences found',
                     default: false,
                   })
-                  .option('startDate', {
+                  .option('since', {
                     type: 'string',
-                    description: 'Start date or duration (ISO format)',
+                    description:
+                      'Sync changes since date or duration (ISO format)',
                     coerce: coerceToDate,
                   })
-                  .option('endDate', {
+                  .option('until', {
                     type: 'string',
-                    description: 'End date or duration (ISO format)',
+                    description:
+                      'Sync changes until date or duration (ISO format)',
                     coerce: coerceToDate,
                   }),
               handler: async (argv) => {
