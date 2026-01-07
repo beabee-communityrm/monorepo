@@ -28,7 +28,7 @@ export const syncCommand: CommandModule = {
                     type: 'string',
                     description: 'End date or duration (ISO format)',
                     coerce: coerceToDate,
-                    default: new Date(),
+                    default: () => new Date(),
                   })
                   .option('dryRun', {
                     type: 'boolean',

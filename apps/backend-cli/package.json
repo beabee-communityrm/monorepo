@@ -10,7 +10,8 @@
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc -p ./tsconfig.build.json --noEmit",
     "check:prettier": "prettier -c .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "vitest run"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.779.0",
@@ -26,6 +27,7 @@
     "@beabee/tsconfig": "workspace:^",
     "concurrently": "^9.1.2",
     "prettier": "^3.5.2",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "vitest": "^3.2.1"
   }
 }
