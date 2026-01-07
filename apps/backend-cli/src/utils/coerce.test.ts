@@ -19,4 +19,9 @@ describe('coerceToDate', () => {
     const result = coerceToDate('P1M2D', fixedNow); // 1 month and 2 days ago
     expect(result).toEqual(new Date('2023-12-13T12:00:00Z'));
   });
+
+  it('should parse 0 duration to return now', () => {
+    const result = coerceToDate('P0D', fixedNow); // 0 days ago
+    expect(result).toEqual(new Date('2024-01-15T12:00:00Z'));
+  });
 });

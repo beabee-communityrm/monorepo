@@ -65,15 +65,30 @@ function isMismatchedContact(contact: Contact, nlContact: NewsletterContact) {
  * - Contacts that exist in both
  *   - Of those, the contacts with mismatched data that should be fixed
  *
+ * A limited reconciliation window can be provided to limit it to contacts
+ * that have been changed on the newsletter service within that window. This
+ * will disable uploading of new contacts from our database.
+ *
+ * @param startDate An optional start date for reconciliation
+ * @param endDate An optional end date for reconciliation
  * @returns The reconciliation data
  */
-async function fetchContacts(): Promise<ReconciliationData> {
-  log.info('📡 Fetching contact lists...');
+async function fetchContacts(
+  startDate: Date | undefined,
+  endDate: Date | undefined
+): Promise<ReconciliationData> {
+  log.info('📡 Loading local contact list...');
+  const contacts = await contactsService.find({ relations: { profile: true } });
+  const window = startDate || endDate ? { startDate, endDate } : undefined;
 
-  const contacts = await contactsService.find({
-    relations: { profile: true },
-  });
-  const nlContacts = await newsletterBulkService.getNewsletterContacts();
+  if (window) {
+    log.info(
+      `📡 Fetching newsletter contact list updates between ${startDate?.toISOString()} and ${endDate?.toISOString()}...`
+    );
+  } else {
+    log.info('📡 Fetching whole newsletter contact list...');
+  }
+  const nlContacts = await newsletterBulkService.getNewsletterContacts(window);
 
   log.info(
     `📊 Found ${contacts.length} local contacts and ${nlContacts.length} newsletter contacts`
@@ -96,11 +111,13 @@ async function fetchContacts(): Promise<ReconciliationData> {
       if (isMismatchedContact(contact, nlContact)) {
         mismatchedContacts.push([contact, nlContact]);
       }
-
-      // Only consider active statuses for upload
     } else if (
-      contact.profile.newsletterStatus === NewsletterStatus.Subscribed ||
-      contact.profile.newsletterStatus === NewsletterStatus.Pending
+      // If we are reconciling with a limited window, we can't assume the
+      // contact is missing so we won't upload any new contacts
+      !window &&
+      // Only consider active statuses for upload
+      (contact.profile.newsletterStatus === NewsletterStatus.Subscribed ||
+        contact.profile.newsletterStatus === NewsletterStatus.Pending)
     ) {
       contactsToUpload.push(contact);
     }
@@ -256,7 +273,7 @@ export async function reconcile(
   argv: SyncNewsletterReconcileArgs
 ): Promise<void> {
   await runApp(async () => {
-    const data = await fetchContacts();
+    const data = await fetchContacts(argv.startDate, argv.endDate);
 
     if (argv.report) {
       printReport(data, argv.updateThem);

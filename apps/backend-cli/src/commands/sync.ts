@@ -62,6 +62,16 @@ export const syncCommand: CommandModule = {
                     type: 'boolean',
                     description: 'Generate a report of the differences found',
                     default: false,
+                  })
+                  .option('startDate', {
+                    type: 'string',
+                    description: 'Start date or duration (ISO format)',
+                    coerce: coerceToDate,
+                  })
+                  .option('endDate', {
+                    type: 'string',
+                    description: 'End date or duration (ISO format)',
+                    coerce: coerceToDate,
                   }),
               handler: async (argv) => {
                 const { reconcile } = await import(
