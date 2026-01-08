@@ -1731,6 +1731,7 @@
     "fromEmail": "Email αποστολέα",
     "mailingCount": "Αποσταλμένα email",
     "status": "Κατάσταση",
+    "description": "Περιγραφή",
     "type": "Τύπος",
     "actions": {
       "addCustom": "Προσθήκη προσαρμοσμένου email",
@@ -1793,7 +1794,6 @@
     },
     "customized": "Προσαρμοσμένο",
     "default": "Προεπιλογή",
-    "missingDefault": "Χωρίς προεπιλεγμένο πρότυπο",
-    "description": ""
+    "missingDefault": "Χωρίς προεπιλεγμένο πρότυπο"
   }
 }

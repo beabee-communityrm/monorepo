@@ -1732,6 +1732,7 @@
     "fromEmail": "Email отправителя",
     "mailingCount": "Отправленных писем",
     "status": "Статус",
+    "description": "Описание",
     "type": "Тип",
     "actions": {
       "addCustom": "Добавить пользовательское письмо",
@@ -1794,7 +1795,6 @@
     },
     "customized": "Настроено",
     "default": "По умолчанию",
-    "missingDefault": "Нет шаблона по умолчанию",
-    "description": ""
+    "missingDefault": "Нет шаблона по умолчанию"
   }
 }

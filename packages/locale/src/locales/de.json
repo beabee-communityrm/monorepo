@@ -1159,6 +1159,7 @@
     "fromEmail": "Absender-E-Mail",
     "mailingCount": "Versendete E-Mails",
     "status": "Status",
+    "description": "Beschreibung",
     "type": "Typ",
     "customized": "Angepasst",
     "default": "Standard",
@@ -1219,8 +1220,7 @@
       "updated": "E-Mail erfolgreich aktualisiert",
       "deleted": "E-Mail erfolgreich gelöscht",
       "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt"
-    },
-    "description": ""
+    }
   },
   "footer": {
     "contactUs": "Kontaktieren Sie uns unter",
