@@ -1735,6 +1735,7 @@
     "fromEmail": "",
     "mailingCount": "",
     "status": "",
+    "description": "",
     "type": "",
     "customized": "",
     "default": "",
@@ -1795,7 +1796,6 @@
       "updated": "",
       "deleted": "",
       "resetToDefault": ""
-    },
-    "description": ""
+    }
   }
 }

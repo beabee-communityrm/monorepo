@@ -1728,6 +1728,7 @@
     "fromEmail": "Afzender e-mail",
     "mailingCount": "Verzonden e-mails",
     "status": "Status",
+    "description": "Beschrijving",
     "type": "Type",
     "actions": {
       "addCustom": "Aangepaste e-mail toevoegen",
@@ -1790,7 +1791,6 @@
     },
     "customized": "Aangepast",
     "default": "Standaard",
-    "missingDefault": "Geen standaardsjabloon",
-    "description": ""
+    "missingDefault": "Geen standaardsjabloon"
   }
 }

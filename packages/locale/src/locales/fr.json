@@ -1732,6 +1732,7 @@
     "fromEmail": "E-mail de l'expéditeur",
     "mailingCount": "E-mails envoyés",
     "status": "Statut",
+    "description": "Description",
     "type": "Type",
     "actions": {
       "addCustom": "Ajouter un e-mail personnalisé",
@@ -1794,7 +1795,6 @@
     },
     "customized": "Personnalisé",
     "default": "Par défaut",
-    "missingDefault": "Aucun modèle par défaut",
-    "description": ""
+    "missingDefault": "Aucun modèle par défaut"
   }
 }
