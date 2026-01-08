@@ -187,12 +187,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type {
-  ContentJoinData,
-  ContentPaymentData,
-  ContentProfileData,
-  ContentShareData,
-} from '@beabee/beabee-common';
+import type { ContentJoinData, ContentShareData } from '@beabee/beabee-common';
 import {
   App2ColGrid,
   AppCheckbox,
@@ -227,15 +222,12 @@ const footerData = reactive({
   footerLinks: [] as { text: string; url: string }[],
 });
 
-const paymentData = ref<Pick<ContentPaymentData, 'taxRateEnabled' | 'taxRate'>>(
-  {
-    taxRateEnabled: false,
-    taxRate: 7,
-  }
-);
+const paymentData = ref({
+  taxRateEnabled: false,
+  taxRate: 7,
+});
 
-const profileContent = ref<ContentProfileData>({
-  introMessage: '',
+const profileContent = ref({
   showOneTimeDonation: false,
 });
 
