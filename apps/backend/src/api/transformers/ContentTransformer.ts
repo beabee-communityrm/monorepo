@@ -203,6 +203,7 @@ const contentData = {
   }),
   profile: withValue<'profile'>({
     introMessage: ['data', ''],
+    showOneTimeDonation: ['option', 'show-one-time-donation', 'bool'],
   }),
   share: withValue<'share'>({
     description: ['option', 'share-description', 'text'],

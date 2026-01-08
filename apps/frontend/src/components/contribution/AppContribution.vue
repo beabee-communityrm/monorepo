@@ -82,6 +82,8 @@ export interface ContributionProps {
   content: ContributionContent;
   /** Payment-related configuration */
   paymentContent: ContentPaymentData;
+  /** Configure if the form is being used as a contribution only form or as a one-time only donation form */
+  mode?: 'one-time' | 'contribution';
   /** Whether to show period selection */
   showPeriod?: boolean;
   /** Whether to show payment method selection */
@@ -94,6 +96,7 @@ const props = withDefaults(defineProps<ContributionProps>(), {
   showPeriod: true,
   showPaymentMethod: true,
   disabled: false,
+  mode: undefined, // the form allows one-time donations and contributions
 });
 
 const amount = defineModel<number>('amount', { required: true });
@@ -114,13 +117,11 @@ const fee = computed(() =>
   )
 );
 
-const isNotAnnually = computed(
-  () => period.value !== ContributionPeriod.Annually
-);
+const isAnnually = computed(() => period.value === ContributionPeriod.Annually);
 
 const minAmount = computed(() => {
   const { minMonthlyAmount } = props.content;
-  return isNotAnnually.value ? minMonthlyAmount : minMonthlyAmount * 12;
+  return isAnnually.value ? minMonthlyAmount * 12 : minMonthlyAmount;
 });
 
 const definedAmounts = computed(() => {
@@ -130,21 +131,26 @@ const definedAmounts = computed(() => {
   return selectedPeriod?.presetAmounts || [];
 });
 
-const periodItems = computed(() =>
-  props.content.periods.map((period) => ({
-    label: t(`common.paymentPeriod.${period.name}`),
-    value: period.name,
-  }))
-);
+const periodItems = computed(() => {
+  return props.content.periods
+    .filter(
+      (p) =>
+        !props.mode || // All
+        (props.mode === 'one-time' && p.name === 'one-time') || // Only one-time
+        (props.mode === 'contribution' && p.name !== 'one-time') // Only contribution
+    )
+    .map((period) => ({
+      label: t(`common.paymentPeriod.${period.name}`),
+      value: period.name,
+    }));
+});
 
-watch(isNotAnnually, (value) => {
-  amount.value = value ? Math.floor(amount.value / 12) : amount.value * 12;
+watch(isAnnually, (value) => {
+  amount.value = value ? amount.value * 12 : Math.floor(amount.value / 12);
 });
 
 const shouldForceFee = computed(() => {
-  return (
-    props.content.showAbsorbFee && amount.value === 1 && isNotAnnually.value
-  );
+  return props.content.showAbsorbFee && amount.value === 1 && !isAnnually.value;
 });
 
 watch(shouldForceFee, (force) => {

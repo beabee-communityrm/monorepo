@@ -219,6 +219,7 @@
     },
     "payment": {
       "paymentTitle": "",
+      "showOneTimeDonation": "",
       "taxRate": "",
       "taxRateEnabled": ""
     },
@@ -1393,6 +1394,8 @@
   },
   "homePage": {
     "editProfile": "",
+    "makeOneTimeDonationButton": "",
+    "makeOneTimeDonationTitle": "",
     "manageContribution": "",
     "newCallout": "",
     "openCallouts": "",

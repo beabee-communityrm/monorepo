@@ -221,7 +221,8 @@
     "payment": {
       "paymentTitle": "",
       "taxRate": "",
-      "taxRateEnabled": ""
+      "taxRateEnabled": "",
+      "showOneTimeDonation": ""
     },
     "theme": {
       "bodyFont": "",
@@ -1305,7 +1306,9 @@
     "viewAllCallouts": "Открыть CrowdNewsroom",
     "viewOpenCallouts": "Открыть CrowdNewsroom",
     "welcome": "Добро пожаловать, {firstName}!",
-    "yourProfile": "Ваш профиль"
+    "yourProfile": "Ваш профиль",
+    "makeOneTimeDonationTitle": "Сделать пожертвование сейчас",
+    "makeOneTimeDonationButton": "Пожертвовать"
   },
   "icons": {
     "welcome": {
