@@ -13,8 +13,10 @@
         {{ t(`emails.templates.names.${item.id}`) }}
       </router-link>
     </template>
-    <template #value-subject="{ value }">
-      <span class="text-body-80">{{ value }}</span>
+    <template #value-description="{ item }">
+      <span class="text-body-80">{{
+        t(`emails.templates.description.${item.id}`)
+      }}</span>
     </template>
     <template #value-status="{ item }">
       <div class="flex items-center justify-end gap-2 text-xs font-medium">
@@ -64,8 +66,8 @@ const templates = ref<GetEmailTemplateInfoData[]>([]);
 const headers: Header[] = [
   { value: 'type', text: t('emails.type') },
   { value: 'name', text: t('emails.name') },
-  { value: 'subject', text: t('emailEditor.subject.label') },
-  { value: 'status', text: t('emails.status'), align: 'right' },
+  { value: 'description', text: t('emails.description') },
+  { value: 'status', text: t('emails.status'), align: 'right', width: '10%' },
 ];
 
 /**

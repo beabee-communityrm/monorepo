@@ -1765,6 +1765,28 @@
         "cancelled-member": "Админ: Отменённый участник",
         "new-callout-response": "Админ: Новый ответ CrowdNewsroom",
         "one-time-donation": "Подтверждение разового пожертвования"
+      },
+      "description": {
+        "welcome": "",
+        "welcome-post-gift": "",
+        "reset-password": "",
+        "reset-device": "",
+        "cancelled-contribution": "",
+        "cancelled-contribution-no-survey": "",
+        "manual-to-automatic": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "callout-response-answers": "",
+        "successful-referral": "",
+        "giftee-success": "",
+        "contribution-didnt-start": "",
+        "purchased-gift": "",
+        "one-time-donation": "",
+        "confirm-email": "",
+        "expired-special-url-resend": "",
+        "new-member": "",
+        "cancelled-member": "",
+        "new-callout-response": ""
       }
     },
     "confirmDelete": {
@@ -1786,6 +1808,7 @@
     },
     "customized": "Настроено",
     "default": "По умолчанию",
-    "missingDefault": "Нет шаблона по умолчанию"
+    "missingDefault": "Нет шаблона по умолчанию",
+    "description": ""
   }
 }

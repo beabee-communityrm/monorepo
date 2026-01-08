@@ -1774,6 +1774,28 @@
         "new-member": "",
         "cancelled-member": "",
         "new-callout-response": ""
+      },
+      "description": {
+        "welcome": "",
+        "welcome-post-gift": "",
+        "reset-password": "",
+        "reset-device": "",
+        "cancelled-contribution": "",
+        "cancelled-contribution-no-survey": "",
+        "manual-to-automatic": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "callout-response-answers": "",
+        "successful-referral": "",
+        "giftee-success": "",
+        "contribution-didnt-start": "",
+        "purchased-gift": "",
+        "one-time-donation": "",
+        "confirm-email": "",
+        "expired-special-url-resend": "",
+        "new-member": "",
+        "cancelled-member": "",
+        "new-callout-response": ""
       }
     },
     "confirmDelete": {
@@ -1790,6 +1812,7 @@
       "updated": "",
       "deleted": "",
       "resetToDefault": ""
-    }
+    },
+    "description": ""
   }
 }

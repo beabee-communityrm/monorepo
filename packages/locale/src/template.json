@@ -1158,6 +1158,7 @@
     },
     "customized": "",
     "default": "",
+    "description": "",
     "edit": {
       "title": "",
       "titleCustom": ""
@@ -1183,6 +1184,28 @@
     },
     "templates": {
       "availableFields": "",
+      "description": {
+        "callout-response-answers": "",
+        "cancelled-contribution": "",
+        "cancelled-contribution-no-survey": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "expired-special-url-resend": "",
+        "giftee-success": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "purchased-gift": "",
+        "reset-device": "",
+        "reset-password": "",
+        "successful-referral": "",
+        "welcome": "",
+        "welcome-post-gift": ""
+      },
       "names": {
         "callout-response-answers": "",
         "cancelled-contribution": "",
