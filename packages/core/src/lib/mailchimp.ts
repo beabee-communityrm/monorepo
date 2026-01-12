@@ -113,7 +113,9 @@ export function createInstance(
           .pipe(JSONStream.parse('*'))
           .on('data', (data: MCOperationResponse) => {
             if (!validateStatus || validateStatus(data.status_code)) {
-              batchResponses.push(JSON.parse(data.response));
+              if (data.status_code >= 200 && data.status_code < 300) {
+                batchResponses.push(JSON.parse(data.response));
+              }
             } else {
               log.error(
                 `Unexpected error for ${data.operation_id}, got ${data.status_code}`,
