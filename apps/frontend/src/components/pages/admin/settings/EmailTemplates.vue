@@ -94,7 +94,7 @@ const sortedTemplates = computed(() => {
 });
 
 onMounted(async () => {
-  templates.value = await client.email.template.list();
+  const allTemplates = await client.email.template.list();
 
   // Todo: remove these emails as soon as we deprecated the legacy app and clean them up
   const hiddenEmails = [
@@ -117,6 +117,6 @@ onMounted(async () => {
     hiddenEmails.push('one-time-donation');
   }
 
-  templates.value = templates.value.filter((t) => !hiddenEmails.includes(t.id));
+  templates.value = allTemplates.filter((t) => !hiddenEmails.includes(t.id));
 });
 </script>
