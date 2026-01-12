@@ -107,15 +107,8 @@ const mismatchTests: Record<SyncNewsletterReconcileTestId, MismatchTest> = {
    * newsletter service.
    * */
   'active-member-tag': {
-    test: (contact, nlContact) => {
-      const isActiveMemberTag = optionsService.getText(
-        'newsletter-active-member-tag'
-      );
-      return (
-        contact.membership?.isActive !==
-        nlContact.tags.includes(isActiveMemberTag)
-      );
-    },
+    test: (contact, nlContact) =>
+      contact.membership?.isActive !== nlContact.isActiveMember,
     print: (contact) =>
       'active-member-tag=' +
       (contact.membership?.isActive ? 'no->yes' : 'yes->no'),
@@ -139,14 +132,8 @@ const mismatchTests: Record<SyncNewsletterReconcileTestId, MismatchTest> = {
    * newsletter service.
    */
   'active-user-tag': {
-    test: (contact, nlContact) => {
-      const isActiveUserTag = optionsService.getText(
-        'newsletter-active-user-tag'
-      );
-      return (
-        !!contact.password.hash !== nlContact.tags.includes(isActiveUserTag)
-      );
-    },
+    test: (contact, nlContact) =>
+      !!contact.password.hash !== nlContact.isActiveUser,
     print: (contact) =>
       'active-user-tag=' + (contact.password.hash ? 'no->yes' : 'yes->no'),
     reconcile: async (mismatches) => {
