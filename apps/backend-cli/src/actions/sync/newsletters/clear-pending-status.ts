@@ -22,8 +22,9 @@ export async function clearPendingStatus(
       })
       .getMany();
 
-    // TODO: just fetch contacts with white list of emails
-    const nlContacts = await newsletterBulkService.fetchNewsletterContacts();
+    const nlContacts = await newsletterBulkService.fetchNewsletterContacts({
+      emails: pendingContacts.map((c) => c.email),
+    });
     const nlEmailsSet = new Set(nlContacts.map((nc) => nc.email));
 
     const contactsToUpdate = pendingContacts.filter(

@@ -54,34 +54,60 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
   async fetchContacts(
     opts?: NewsletterFetchContactsOpts
   ): Promise<NewsletterContact[]> {
-    const operation: MCOperation = {
-      path: `lists/${this.listId}/members`,
-      method: 'GET',
-      operation_id: 'get',
-      params: {
-        ...(opts?.updated?.since && {
-          since_timestamp_opt: opts.updated.since.toISOString(),
-        }),
-        ...(opts?.updated?.until && {
-          before_timestamp_opt: opts.updated.until.toISOString(),
-        }),
-      },
-    };
+    if (opts?.updated || !opts?.emails) {
+      // If there are updated filters or no filters at all fetch using the list
+      // endpoint. If the email filter is also provided we filter the results
+      // later as Mailchimp doesn't support email filters on the list endpoint
+      const operation: MCOperation = {
+        path: `lists/${this.listId}/members`,
+        method: 'GET',
+        operation_id: 'get',
+        params: {
+          ...(opts?.updated?.since && {
+            since_timestamp_opt: opts.updated.since.toISOString(),
+          }),
+          ...(opts?.updated?.until && {
+            before_timestamp_opt: opts.updated.until.toISOString(),
+          }),
+        },
+      };
 
-    const batch = await this.api.createBatch([operation]);
-    const finishedBatch = await this.api.waitForBatch(batch);
-    const responses = await this.api.getBatchResponses<{ members: MCMember[] }>(
-      finishedBatch
-    );
+      const batch = await this.api.createBatch([operation]);
+      const finishedBatch = await this.api.waitForBatch(batch);
+      const responses = await this.api.getBatchResponses<{
+        members: MCMember[];
+      }>(finishedBatch);
 
-    return responses.flatMap((r) => r.members).map(mcMemberToNlContact);
+      return (
+        responses
+          .flatMap((r) => r.members)
+          // Now filter by email if needed
+          .filter((m) => !opts?.emails || opts.emails.includes(m.email_address))
+          .map(mcMemberToNlContact)
+      );
+    } else {
+      // If only filtering by emails, fetch each member directly
+      const operations: MCOperation[] = opts.emails.map((email) => ({
+        path: getMCMemberUrl(this.listId, email),
+        method: 'GET',
+        operation_id: `get_${email}`,
+      }));
+
+      const batch = await this.api.createBatch(operations);
+      const finishedBatch = await this.api.waitForBatch(batch);
+      const responses = await this.api.getBatchResponses<MCMember | undefined>(
+        finishedBatch,
+        (status) => status === 200 || status === 404
+      );
+
+      return responses.filter((m) => !!m).map(mcMemberToNlContact);
+    }
   }
 
   /**
    * Upserts the list of contacts to the newsletter provider. This method does
    * not give any guarantees about the active member tag.
    *
-   * @deprecated Only used by legacy app newsletter sync, do not use.
    * @param nlContacts
    */
   async upsertContacts(nlContacts: UpdateNewsletterContact[]): Promise<void> {
