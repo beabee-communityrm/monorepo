@@ -59,11 +59,11 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
       method: 'GET',
       operation_id: 'get',
       params: {
-        ...(opts?.since && {
-          since_timestamp_opt: opts.since.toISOString(),
+        ...(opts?.updated?.since && {
+          since_timestamp_opt: opts.updated.since.toISOString(),
         }),
-        ...(opts?.until && {
-          before_timestamp_opt: opts.until.toISOString(),
+        ...(opts?.updated?.until && {
+          before_timestamp_opt: opts.updated.until.toISOString(),
         }),
       },
     };
