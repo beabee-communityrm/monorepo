@@ -1761,19 +1761,19 @@
         "one-time-donation": "Bevestiging eenmalige donatie"
       },
       "description": {
-        "welcome": "",
-        "reset-password": "",
-        "reset-device": "",
-        "cancelled-contribution": "",
-        "manual-to-automatic": "",
-        "email-exists-login": "",
-        "email-exists-set-password": "",
-        "contribution-didnt-start": "",
-        "confirm-email": "",
-        "new-member": "",
-        "cancelled-member": "",
-        "new-callout-response": "",
-        "one-time-donation": ""
+        "welcome": "Verzonden naar nieuwe leden nadat ze het registratieproces hebben voltooid, zodat ze hun e-mailadres kunnen bevestigen. Deze e-mail heet hen welkom in de community.",
+        "reset-password": "Verzonden wanneer een gebruiker vraagt om zijn wachtwoord te resetten. Bevat een veilige link om het wachtwoord te resetten.",
+        "reset-device": "Verzonden wanneer een gebruiker vraagt om zijn vertrouwde apparaat voor tweefactorauthenticatie te resetten. Bevat een veilige link om het apparaat te resetten.",
+        "cancelled-contribution": "Verzonden naar leden wanneer hun terugkerende bijdrage wordt geannuleerd. Bevat meestal informatie over wanneer het lidmaatschap eindigt, evenals het lid-ID. Kan een link naar een enquête bevatten.",
+        "manual-to-automatic": "Verzonden naar leden wanneer hun betaalmethode succesvol is gewijzigd van handmatig naar automatische terugkerende betaling. Bevestigt de succesvolle wijziging.",
+        "email-exists-login": "Verzonden wanneer iemand probeert te registreren met een e-mailadres dat al bestaat en toebehoort aan een actief lid met een ingesteld wachtwoord. Biedt een inloglink zodat ze toegang kunnen krijgen tot hun bestaande account.",
+        "email-exists-set-password": "Verzonden wanneer iemand probeert te registreren met een e-mailadres dat al bestaat en toebehoort aan een actief lid dat nog geen wachtwoord heeft ingesteld. Biedt een link om een wachtwoord in te stellen.",
+        "contribution-didnt-start": "Verzonden naar leden wanneer hun Stripe-abonnementsbetaling niet kon worden gestart (bijv. geweigerde betaalmethode, onvoldoende saldo). Informeert hen dat hun lidmaatschap is ingetrokken vanwege de betalingsfout.",
+        "confirm-email": "Verzonden naar nieuwe gebruikers tijdens het registratieproces om hun e-mailadres te verifiëren. Bevat een bevestigingslink die ze moeten klikken om de registratie te voltooien.",
+        "new-member": "Verzonden naar beheerders wanneer een nieuw lid met succes lid wordt van de community. Bevat meestal een melding met het ID en de naam van het nieuwe lid.",
+        "cancelled-member": "Verzonden naar beheerders wanneer een lid zijn bijdrage opzegt. Bevat meestal een melding met het ID en de naam van het opgezegde lid.",
+        "new-callout-response": "Verzonden naar beheerders wanneer een nieuwe reactie op een CrowdNewsroom wordt ingediend. Bevat meestal een melding met de CrowdNewsroom-details en de naam van de reagerende persoon.",
+        "one-time-donation": "Verzonden naar gebruikers nadat ze een eenmalige donatie (niet-terugkerende betaling) hebben voltooid. Bevestigt meestal het donatiebedrag en dient als ontvangstbewijs."
       }
     },
     "confirmDelete": {

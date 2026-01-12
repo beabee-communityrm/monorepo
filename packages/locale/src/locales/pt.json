@@ -1761,19 +1761,19 @@
         "one-time-donation": "Confirmação de doação única"
       },
       "description": {
-        "welcome": "",
-        "reset-password": "",
-        "reset-device": "",
-        "cancelled-contribution": "",
-        "manual-to-automatic": "",
-        "email-exists-login": "",
-        "email-exists-set-password": "",
-        "contribution-didnt-start": "",
-        "confirm-email": "",
-        "new-member": "",
-        "cancelled-member": "",
-        "new-callout-response": "",
-        "one-time-donation": ""
+        "welcome": "Enviado a novos membros após concluírem o processo de registo para que possam confirmar o seu endereço de email. Este email dá-lhes as boas-vindas à comunidade.",
+        "reset-password": "Enviado quando um utilizador solicita a reposição da palavra-passe. Contém uma ligação segura para repor a palavra-passe.",
+        "reset-device": "Enviado quando um utilizador solicita a reposição do seu dispositivo de confiança para autenticação de dois fatores. Contém uma ligação segura para repor o dispositivo.",
+        "cancelled-contribution": "Enviado aos membros quando a sua contribuição recorrente é cancelada. Normalmente inclui informações sobre quando termina a adesão, bem como o ID do membro. Pode conter uma ligação para um inquérito.",
+        "manual-to-automatic": "Enviado aos membros quando o seu método de pagamento é alterado com sucesso de manual para pagamento recorrente automático. Confirma a alteração bem-sucedida.",
+        "email-exists-login": "Enviado quando alguém tenta registar-se com um endereço de email que já existe e pertence a um membro ativo com palavra-passe definida. Fornece uma ligação de início de sessão para aceder à sua conta existente.",
+        "email-exists-set-password": "Enviado quando alguém tenta registar-se com um endereço de email que já existe e pertence a um membro ativo que ainda não definiu uma palavra-passe. Fornece uma ligação para definir uma palavra-passe.",
+        "contribution-didnt-start": "Enviado aos membros quando o seu pagamento de subscrição Stripe não pôde ser iniciado (por exemplo, método de pagamento recusado, fundos insuficientes). Informa-os de que a sua adesão foi revogada devido à falha do pagamento.",
+        "confirm-email": "Enviado a novos utilizadores durante o processo de registo para verificar o seu endereço de email. Contém uma ligação de confirmação que devem clicar para concluir o registo.",
+        "new-member": "Enviado aos administradores quando um novo membro se junta com sucesso à comunidade. Normalmente inclui uma notificação com o ID e o nome do novo membro.",
+        "cancelled-member": "Enviado aos administradores quando um membro cancela a sua contribuição. Normalmente inclui uma notificação com o ID e o nome do membro cancelado.",
+        "new-callout-response": "Enviado aos administradores quando uma nova resposta a um CrowdNewsroom é submetida. Normalmente inclui uma notificação com os detalhes do CrowdNewsroom e o nome da pessoa que responde.",
+        "one-time-donation": "Enviado aos utilizadores após concluírem uma doação única (pagamento não recorrente). Normalmente confirma o valor da doação e serve como recibo."
       }
     },
     "confirmDelete": {
