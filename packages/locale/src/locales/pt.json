@@ -1731,6 +1731,7 @@
     "fromEmail": "Email do remetente",
     "mailingCount": "Emails enviados",
     "status": "Estado",
+    "description": "Descrição",
     "type": "Tipo",
     "actions": {
       "addCustom": "Adicionar email personalizado",
@@ -1793,7 +1794,6 @@
     },
     "customized": "Personalizado",
     "default": "Padrão",
-    "missingDefault": "Sem modelo predefinido",
-    "description": ""
+    "missingDefault": "Sem modelo predefinido"
   }
 }

@@ -1686,6 +1686,7 @@
     "fromEmail": "",
     "mailingCount": "",
     "status": "",
+    "description": "",
     "type": "",
     "actions": {
       "addCustom": "",
@@ -1748,8 +1749,7 @@
     },
     "customized": "",
     "default": "",
-    "missingDefault": "",
-    "description": ""
+    "missingDefault": ""
   },
   "mergeFields": {
     "title": "",
