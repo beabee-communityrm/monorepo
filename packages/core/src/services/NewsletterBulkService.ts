@@ -68,6 +68,13 @@ class NewsletterBulkService {
     return await this.provider.getContacts();
   }
 
+  async updateContactTags(
+    updates: { email: string; tags: { name: string; active: boolean }[] }[]
+  ): Promise<void> {
+    log.info(`Update tags for ${updates.length} contacts`);
+    await this.provider.updateContactTags(updates);
+  }
+
   /**
    * Add the given tag to the list of contacts
    *
@@ -76,9 +83,11 @@ class NewsletterBulkService {
    */
   async addTagToContacts(contacts: Contact[], tag: string): Promise<void> {
     log.info(`Add tag ${tag} to ${contacts.length} contacts`);
-    await this.provider.addTagToContacts(
-      getValidNlUpdates(contacts).map((m) => m.email),
-      tag
+    await this.updateContactTags(
+      getValidNlUpdates(contacts).map((m) => ({
+        email: m.email,
+        tags: [{ name: tag, active: true }],
+      }))
     );
   }
 
@@ -91,31 +100,32 @@ class NewsletterBulkService {
    */
   async removeTagFromContacts(contacts: Contact[], tag: string): Promise<void> {
     log.info(`Remove tag ${tag} from ${contacts.length} contacts`);
-    await this.provider.removeTagFromContacts(
-      getValidNlUpdates(contacts).map((m) => m.email),
-      tag
+    await this.updateContactTags(
+      getValidNlUpdates(contacts).map((m) => ({
+        email: m.email,
+        tags: [{ name: tag, active: false }],
+      }))
     );
   }
 
   /**
-   * Update a contact's newsletter status and groups, without syncing to the
-   * newsletter provider
+   * Update a list of contacts' newsletter status and groups, without syncing to
+   * the newsletter provider
    *
-   * @param contact The contact to update
-   * @param newsletterStatus The new newsletter status
-   * @param newsletterGroups The new newsletter groups
+   * @param contactUpdateRequests The contacts to update
    */
-  async updateContactStatuses(
-    updates: [Contact, NewsletterContact][]
+  async updateContactNlData(
+    contactUpdateRequests: {
+      contact: Contact;
+      updates: Partial<
+        Pick<ContactProfile, 'newsletterStatus' | 'newsletterGroups'>
+      >;
+    }[]
   ): Promise<void> {
-    for (const [contact, nlContact] of updates) {
-      await getRepository(ContactProfile).update(contact.id, {
-        newsletterStatus: nlContact.status,
-        newsletterGroups: nlContact.groups,
-      });
+    for (const { contact, updates } of contactUpdateRequests) {
+      await getRepository(ContactProfile).update(contact.id, updates);
       if (contact.profile) {
-        contact.profile.newsletterStatus = nlContact.status;
-        contact.profile.newsletterGroups = nlContact.groups;
+        Object.assign(contact.profile, updates);
       }
     }
   }

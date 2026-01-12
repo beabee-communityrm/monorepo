@@ -1,6 +1,8 @@
 import moment from 'moment';
 import type { CommandModule } from 'yargs';
 
+import { SYNC_NEWSLETTER_RECONCILE_TESTS } from '../constants/sync.js';
+
 export const syncCommand: CommandModule = {
   command: 'sync <action>',
   describe: 'Synchronization commands',
@@ -49,16 +51,22 @@ export const syncCommand: CommandModule = {
                     description: 'Run without making changes',
                     default: false,
                   })
-                  .option('updateThem', {
-                    type: 'boolean',
-                    description:
-                      'Update the newsletter service to match our records',
-                    default: false,
-                  })
                   .option('report', {
                     type: 'boolean',
                     description: 'Generate a report of the differences found',
                     default: false,
+                  })
+                  .option('uploadNew', {
+                    type: 'boolean',
+                    description:
+                      'Upload new contacts to the newsletter service',
+                    default: false,
+                  })
+                  .option('fix', {
+                    type: 'array',
+                    description: 'The tests to run and fix',
+                    choices: SYNC_NEWSLETTER_RECONCILE_TESTS,
+                    demandOption: true,
                   }),
               handler: async (argv) => {
                 const { reconcile } = await import(
