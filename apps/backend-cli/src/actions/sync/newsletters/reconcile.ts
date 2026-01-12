@@ -157,19 +157,30 @@ const mismatchTests: Record<SyncNewsletterReconcileTestId, MismatchTest> = {
  * - Contacts that exist only in the newsletter service and should be imported
  * - Contacts that exist in both
  *   - Of those, the contacts with mismatched data that should be fixed
+
+ * A limited reconciliation window can be provided to limit it to contacts
+ * that have been changed on the newsletter service within that window.
  *
- * @param argv The command line arguments
+ * @params argv The command line arguments
  * @returns The reconciliation data
  */
 async function fetchContacts(
   argv: SyncNewsletterReconcileArgs
 ): Promise<ReconciliationData> {
-  log.info('📡 Fetching contact lists...');
+  log.info('📡 Loading local contact list...');
+  const contacts = await contactsService.find({ relations: { profile: true } });
 
-  const contacts = await contactsService.find({
-    relations: { profile: true },
+  if (argv.since || argv.until) {
+    log.info(
+      `📡 Fetching newsletter contact list updates between ${argv.since?.toISOString()} and ${argv.until?.toISOString()}...`
+    );
+  } else {
+    log.info('📡 Fetching whole newsletter contact list...');
+  }
+  const nlContacts = await newsletterBulkService.getNewsletterContacts({
+    since: argv.since,
+    until: argv.until,
   });
-  const nlContacts = await newsletterBulkService.getNewsletterContacts();
 
   log.info(
     `📊 Found ${contacts.length} local contacts and ${nlContacts.length} newsletter contacts`
@@ -347,6 +358,13 @@ export async function reconcile(
   argv: SyncNewsletterReconcileArgs
 ): Promise<void> {
   await runApp(async () => {
+    // Prevent uploading new contacts when we are only fetching limited data
+    // from the newsletter service
+    if ((argv.since || argv.until) && argv.uploadNew) {
+      log.error('Cannot use --since or --until with --uploadNew');
+      return;
+    }
+
     const data = await fetchContacts(argv);
 
     if (argv.report) {

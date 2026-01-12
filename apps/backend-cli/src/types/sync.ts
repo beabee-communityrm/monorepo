@@ -1,8 +1,8 @@
 import { SYNC_NEWSLETTER_RECONCILE_TESTS } from '../constants/sync.js';
 
 export interface SyncNewsletterActiveMemberTagArgs {
-  startDate: string;
-  endDate: string;
+  since: Date;
+  until: Date;
   dryRun: boolean;
 }
 
@@ -14,6 +14,8 @@ export interface SyncNewsletterReconcileArgs {
   report: boolean;
   uploadNew: boolean;
   fix: SyncNewsletterReconcileTestId[];
+  since: Date | undefined;
+  until: Date | undefined;
 }
 
 export interface SyncSegmentsArgs {

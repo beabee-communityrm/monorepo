@@ -10,6 +10,7 @@ import {
   MCOperation,
   NewsletterBulkProvider,
   NewsletterContact,
+  NewsletterGetContactOpts,
   UpdateNewsletterContact,
 } from '#type';
 
@@ -47,13 +48,24 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
   /**
    * Get all the contacts in the newsletter list
    *
+   * @param opts Options to filter the contacts
    * @returns The list of newsletter contacts
    */
-  async getContacts(): Promise<NewsletterContact[]> {
+  async getContacts(
+    opts?: NewsletterGetContactOpts
+  ): Promise<NewsletterContact[]> {
     const operation: MCOperation = {
       path: `lists/${this.listId}/members`,
       method: 'GET',
       operation_id: 'get',
+      params: {
+        ...(opts?.since && {
+          since_timestamp_opt: opts.since.toISOString(),
+        }),
+        ...(opts?.until && {
+          before_timestamp_opt: opts.until.toISOString(),
+        }),
+      },
     };
 
     const batch = await this.api.createBatch([operation]);
