@@ -108,7 +108,7 @@ const mismatchTests: Record<SyncNewsletterReconcileTestId, MismatchTest> = {
    * */
   'active-member-tag': {
     test: (contact, nlContact) =>
-      contact.membership?.isActive !== nlContact.isActiveMember,
+      !!contact.membership?.isActive !== nlContact.isActiveMember,
     print: (contact) =>
       'active-member-tag=' +
       (contact.membership?.isActive ? 'no->yes' : 'yes->no'),
