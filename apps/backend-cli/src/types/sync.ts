@@ -18,6 +18,10 @@ export interface SyncNewsletterReconcileArgs {
   until: Date | undefined;
 }
 
+export interface SyncClearPendingStatusArgs {
+  dryRun: boolean;
+}
+
 export interface SyncSegmentsArgs {
   segmentId: string;
   dryRun: boolean;

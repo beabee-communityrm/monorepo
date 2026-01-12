@@ -90,6 +90,23 @@ export const syncCommand: CommandModule = {
                 );
                 return reconcile(argv);
               },
+            })
+            .command({
+              command: 'clear-pending-status',
+              describe:
+                'Remove pending status from contacts that no longer exist on the newsletter service',
+              builder: (yargs) =>
+                yargs.option('dryRun', {
+                  type: 'boolean',
+                  description: 'Run without making changes',
+                  default: false,
+                }),
+              handler: async (argv) => {
+                const { clearPendingStatus } = await import(
+                  '../actions/sync/newsletters/clear-pending-status.js'
+                );
+                return clearPendingStatus(argv);
+              },
             }),
         handler: () => {},
       })
