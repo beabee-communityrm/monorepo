@@ -65,7 +65,9 @@ async function processSegment(segment: Segment) {
   const oldContacts =
     segment.newsletterTag ||
     outgoingEmails.some((oe) => oe.trigger === 'onLeave')
-      ? await ContactsService.findByIds(oldSegmentContactIds)
+      ? await ContactsService.findByIds(oldSegmentContactIds, {
+          relations: { profile: true },
+        })
       : [];
 
   for (const outgoingEmail of outgoingEmails) {
