@@ -6,6 +6,9 @@ meta:
 </route>
 
 <template>
+  <AppHeading>{{ t('adminSettings.email.templates.title') }}</AppHeading>
+  <p>{{ t('adminSettings.email.templates.description') }}</p>
+  <EmailTemplates class="mb-4"></EmailTemplates>
   <App2ColGrid>
     <template #col1>
       <AppForm
@@ -38,9 +41,6 @@ meta:
       </AppForm>
     </template>
   </App2ColGrid>
-  <AppHeading>{{ t('adminSettings.email.templates.title') }}</AppHeading>
-  <p class="mb-4">{{ t('adminSettings.email.templates.description') }}</p>
-  <EmailTemplates></EmailTemplates>
 </template>
 <script lang="ts" setup>
 import type { ContentEmailData } from '@beabee/beabee-common';
