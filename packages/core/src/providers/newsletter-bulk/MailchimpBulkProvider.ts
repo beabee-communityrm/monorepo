@@ -24,37 +24,23 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
   }
 
   /**
-   * Add the given tag to the list of email addresses
+   * Add or remove tags for the given contacts
    *
-   * @param emails List of email addresses
-   * @param tag The tag to add
+   * @param updates The list of contact email and tag updates
    */
-  async addTagToContacts(emails: string[], tag: string): Promise<void> {
-    const operations: MCOperation[] = emails.map((email) => ({
-      path: getMCMemberUrl(this.listId, email) + '/tags',
+  async updateContactTags(
+    updates: { email: string; tags: { name: string; active: boolean }[] }[]
+  ): Promise<void> {
+    const operations: MCOperation[] = updates.map((update) => ({
+      path: getMCMemberUrl(this.listId, update.email) + '/tags',
       method: 'POST',
       body: JSON.stringify({
-        tags: [{ name: tag, status: 'active' }],
+        tags: update.tags.map((tag) => ({
+          name: tag.name,
+          status: tag.active ? 'active' : 'inactive',
+        })),
       }),
-      operation_id: `add_tag_${email}`,
-    }));
-    await this.api.dispatchOperations(operations);
-  }
-
-  /**
-   * Remove the given tag from the list of email addresses
-   *
-   * @param emails List of email addresses
-   * @param tag The tag to remove
-   */
-  async removeTagFromContacts(emails: string[], tag: string): Promise<void> {
-    const operations: MCOperation[] = emails.map((email) => ({
-      path: getMCMemberUrl(this.listId, email) + '/tags',
-      method: 'POST',
-      body: JSON.stringify({
-        tags: [{ name: tag, status: 'inactive' }],
-      }),
-      operation_id: `remove_tag_${email}`,
+      operation_id: `update_tags_${update.email}`,
     }));
     await this.api.dispatchOperations(operations);
   }

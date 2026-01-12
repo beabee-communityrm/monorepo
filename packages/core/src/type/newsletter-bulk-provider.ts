@@ -3,8 +3,9 @@ import { NewsletterGetContactOpts } from './newsletter-get-contact-opts';
 import { UpdateNewsletterContact } from './update-newsletter-contact';
 
 export interface NewsletterBulkProvider {
-  addTagToContacts(emails: string[], tag: string): Promise<void>;
-  removeTagFromContacts(emails: string[], tag: string): Promise<void>;
+  updateContactTags(
+    updates: { email: string; tags: { name: string; active: boolean }[] }[]
+  ): Promise<void>;
   getContacts(opts?: NewsletterGetContactOpts): Promise<NewsletterContact[]>;
   upsertContacts(contacts: UpdateNewsletterContact[]): Promise<void>;
   archiveContacts(emails: string[]): Promise<void>;

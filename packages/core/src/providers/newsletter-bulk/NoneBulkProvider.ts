@@ -5,8 +5,7 @@ import {
 } from '#type';
 
 export class NoneBulkProvider implements NewsletterBulkProvider {
-  async addTagToContacts(emails: string[], tag: string): Promise<void> {}
-  async removeTagFromContacts(emails: string[], tag: string): Promise<void> {}
+  async updateContactTags(): Promise<void> {}
   async getContacts(): Promise<NewsletterContact[]> {
     return [];
   }
