@@ -1,6 +1,8 @@
 export interface NewsletterFetchContactsOpts {
-  /** Fetch contacts updated after this date */
-  since?: Date | undefined;
-  /** Fetch contacts updated before this date */
-  until?: Date | undefined;
+  updated?: {
+    /** Fetch contacts updated after this date */
+    since?: Date | undefined;
+    /** Fetch contacts updated before this date */
+    until?: Date | undefined;
+  };
 }
