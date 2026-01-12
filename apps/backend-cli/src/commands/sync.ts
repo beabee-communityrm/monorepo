@@ -1,5 +1,6 @@
-import moment from 'moment';
 import type { CommandModule } from 'yargs';
+
+import { coerceToDate } from '../utils/coerce.js';
 
 export const syncCommand: CommandModule = {
   command: 'sync <action>',
@@ -17,15 +18,19 @@ export const syncCommand: CommandModule = {
                 'Remove expired active member tags from the newsletter service',
               builder: (yargs) =>
                 yargs
-                  .option('startDate', {
+                  .option('since', {
                     type: 'string',
-                    description: 'Start date (ISO format)',
-                    default: moment().subtract({ d: 1, h: 2 }).toISOString(), // 26h ago
+                    description:
+                      'Sync changes since date or duration (ISO format)',
+                    coerce: coerceToDate,
+                    demandOption: true,
                   })
-                  .option('endDate', {
+                  .option('until', {
                     type: 'string',
-                    description: 'End date (ISO format)',
-                    default: new Date().toISOString(), // now
+                    description:
+                      'Sync changes until date or duration (ISO format)',
+                    coerce: coerceToDate,
+                    default: () => new Date(),
                   })
                   .option('dryRun', {
                     type: 'boolean',
@@ -59,6 +64,18 @@ export const syncCommand: CommandModule = {
                     type: 'boolean',
                     description: 'Generate a report of the differences found',
                     default: false,
+                  })
+                  .option('since', {
+                    type: 'string',
+                    description:
+                      'Sync changes since date or duration (ISO format)',
+                    coerce: coerceToDate,
+                  })
+                  .option('until', {
+                    type: 'string',
+                    description:
+                      'Sync changes until date or duration (ISO format)',
+                    coerce: coerceToDate,
                   }),
               handler: async (argv) => {
                 const { reconcile } = await import(

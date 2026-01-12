@@ -1,6 +1,6 @@
 export interface SyncNewsletterActiveMemberTagArgs {
-  startDate: string;
-  endDate: string;
+  since: Date;
+  until: Date;
   dryRun: boolean;
 }
 
@@ -8,6 +8,8 @@ export interface SyncNewsletterReconcileArgs {
   dryRun: boolean;
   updateThem: boolean;
   report: boolean;
+  since: Date | undefined;
+  until: Date | undefined;
 }
 
 export interface SyncSegmentsArgs {

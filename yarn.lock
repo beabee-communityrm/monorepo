@@ -1410,6 +1410,7 @@ __metadata:
     moment: "npm:^2.30.1"
     prettier: "npm:^3.5.2"
     typescript: "npm:~5.9.3"
+    vitest: "npm:^3.2.1"
     yargs: "npm:^17.7.2"
   bin:
     backend-cli: ./dist/index.js

@@ -5,7 +5,6 @@ import { ContactRole } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import { newsletterBulkService, optionsService } from '@beabee/core/services';
 
-import moment from 'moment';
 import { Between } from 'typeorm';
 
 import { SyncNewsletterActiveMemberTagArgs } from '../../../types/sync.js';
@@ -16,18 +15,12 @@ export const syncActiveMemberTag = async (
   args: SyncNewsletterActiveMemberTagArgs
 ): Promise<void> => {
   await runApp(async () => {
-    const actualStartDate = moment(args.startDate).toDate();
-    const actualEndDate = moment(args.endDate).toDate();
-
-    log.info('Fetching contacts', {
-      startDate: actualStartDate,
-      endDate: actualEndDate,
-    });
+    log.info('Fetching contacts', { since: args.since, until: args.until });
 
     const memberships = await getRepository(ContactRole).find({
       where: {
         type: 'member',
-        dateExpires: Between(actualStartDate, actualEndDate),
+        dateExpires: Between(args.since, args.until),
       },
       relations: { contact: { profile: true } },
     });
