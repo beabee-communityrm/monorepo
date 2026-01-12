@@ -8,14 +8,28 @@ meta:
 <template>
   <AppConfirmDialog
     :open="showResetConfirmDialog"
-    :title="t('emails.confirmResetToDefault.title')"
+    :title="
+      templateInfo?.hasDefaultTemplate
+        ? t('emails.confirmResetToDefault.title')
+        : t('emails.confirmDelete.title')
+    "
     :cancel="t('actions.noBack')"
-    :confirm="t('actions.yesReset')"
+    :confirm="
+      templateInfo?.hasDefaultTemplate
+        ? t('actions.yesReset')
+        : t('actions.yesDisable')
+    "
     variant="danger"
     @close="showResetConfirmDialog = false"
     @confirm="handleReset"
   >
-    <p>{{ t('emails.confirmResetToDefault.message') }}</p>
+    <p>
+      {{
+        templateInfo?.hasDefaultTemplate
+          ? t('emails.confirmResetToDefault.message')
+          : t('emails.confirmDelete.message')
+      }}
+    </p>
   </AppConfirmDialog>
 
   <PageTitle :title="pageTitle" back border>
@@ -24,7 +38,11 @@ meta:
         variant="dangerOutlined"
         @click="showResetConfirmDialog = true"
       >
-        {{ t('emails.actions.resetToDefault') }}
+        {{
+          templateInfo?.hasDefaultTemplate
+            ? t('emails.actions.resetToDefault')
+            : t('emails.actions.deactivate')
+        }}
       </AppButton>
     </div>
   </PageTitle>
@@ -154,6 +172,8 @@ async function handleReset() {
     templateInfo.value =
       templates.find((t) => t.id === templateId.value) || null;
     emailData.value = await loadEmail(templateId.value);
+
+    showResetConfirmDialog.value = false;
   } catch {
     addNotification({
       variant: 'error',

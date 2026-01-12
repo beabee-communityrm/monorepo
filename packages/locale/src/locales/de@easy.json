@@ -1690,7 +1690,8 @@
     "type": "",
     "actions": {
       "addCustom": "",
-      "resetToDefault": ""
+      "resetToDefault": "",
+      "deactivate": ""
     },
     "templates": {
       "availableFields": "",

@@ -182,8 +182,8 @@
       "text": "All email communication will be sent from this email address.",
       "title": "Set a general email address",
       "templates": {
-        "title": "Set emails",
-        "description": "Manage the subject and body of emails sent by the application. The status color shows whether the email is customized (green), using the default template (yellow), or not configured and therefore not sent (red)."
+        "title": "Set email templates",
+        "description": "Manage the subject and body of emails sent by the application. The status color shows whether the email is customized (green), using the default template (yellow), or not configured and therefore not active (red)."
       }
     },
     "general": {
@@ -1163,10 +1163,11 @@
     "type": "Type",
     "customized": "Customized",
     "default": "Default",
-    "missingDefault": "No template",
+    "missingDefault": "Not Active",
     "actions": {
       "addCustom": "Add Custom Email",
-      "resetToDefault": "Reset to Default"
+      "resetToDefault": "Reset to Default",
+      "deactivate": "Deactivate"
     },
     "templates": {
       "availableFields": "Available fields",
@@ -1177,38 +1178,38 @@
       },
       "names": {
         "welcome": "Welcome",
-        "reset-password": "Reset password",
-        "reset-device": "Reset device",
-        "cancelled-contribution": "Cancelled contribution",
-        "manual-to-automatic": "Manual contributor converted to automatic",
-        "email-exists-login": "Email exists - login",
-        "email-exists-set-password": "Email exists - set password",
-        "contribution-didnt-start": "Contribution did not start",
-        "confirm-email": "Confirm email",
-        "new-member": "Admin: New contact notification",
-        "cancelled-member": "Admin: Cancelled member notification",
-        "new-callout-response": "Admin: New callout response notification",
-        "one-time-donation": "One-time donation confirmation"
+        "reset-password": "Reset Password",
+        "reset-device": "Reset Device",
+        "cancelled-contribution": "Contribution Cancelled",
+        "manual-to-automatic": "Manual Contribution Converted to Automatic",
+        "email-exists-login": "Email Exists – Log In",
+        "email-exists-set-password": "Email Exists – Set Password",
+        "contribution-didnt-start": "Contribution Did Not Start",
+        "confirm-email": "Confirm Email",
+        "new-member": "Admin: New Contact – Notification",
+        "cancelled-member": "Admin: Cancelled Member – Notification",
+        "new-callout-response": "Admin: New CrowdNewsroom – Response Notification",
+        "one-time-donation": "One-Time Donation Confirmation"
       },
       "description": {
-        "welcome": "Sent to new members when they complete the signup process and confirm their email address. This email welcomes them to the community and includes their referral code.",
-        "reset-password": "Sent when a user requests to reset their password. Contains a secure link to reset their password.",
-        "reset-device": "Sent when a user requests to reset their trusted device for two-factor authentication. Contains a secure link to reset their device.",
-        "cancelled-contribution": "Sent to members when their recurring contribution is cancelled. Includes information about when their membership expires and their membership ID. May include a survey link.",
-        "manual-to-automatic": "Sent to members when their payment method is successfully converted from manual to automatic recurring payment. Confirms the successful conversion.",
-        "email-exists-login": "Sent when someone tries to sign up with an email address that already exists and belongs to an active member who has a password set. Provides a login link so they can access their existing account.",
-        "email-exists-set-password": "Sent when someone tries to sign up with an email address that already exists and belongs to an active member who doesn't have a password set. Provides a link to set a password for their account.",
-        "contribution-didnt-start": "Sent to members when their Stripe subscription payment fails to start (e.g., payment method declined, insufficient funds). Notifies them that their membership has been revoked due to the payment failure.",
-        "one-time-donation": "Sent to users when they complete a one-time donation (non-recurring payment). Confirms the donation amount and serves as a receipt.",
-        "confirm-email": "Sent to new users during the signup process to verify their email address. Contains a confirmation link they must click to complete registration.",
-        "new-member": "Sent to administrators when a new member successfully joins the community. Provides notification with the new member's ID and name.",
-        "cancelled-member": "Sent to administrators when a member cancels their contribution. Provides notification with the cancelled member's ID and name.",
-        "new-callout-response": "Sent to administrators when a new response is submitted to a callout. Provides notification with the callout details and the responder's name."
+        "welcome": "Sent to new members after they complete the registration process so they can confirm their email address. This email welcomes them to the community.",
+        "reset-password": "Sent when a user requests to reset their password. Contains a secure link to reset the password.",
+        "reset-device": "Sent when a user requests to reset their trusted device for two-factor authentication. Contains a secure link to reset the device.",
+        "cancelled-contribution": "Sent to members when their recurring contribution is cancelled. Typically includes information about when the membership ends, as well as the member ID. May contain a link to a survey.",
+        "manual-to-automatic": "Sent to members when their payment method is successfully changed from manual to automatic recurring payment. Confirms the successful change.",
+        "email-exists-login": "Sent when someone attempts to register with an email address that already exists and belongs to an active member with a password set. Provides a login link so they can access their existing account.",
+        "email-exists-set-password": "Sent when someone attempts to register with an email address that already exists and belongs to an active member who has not yet set a password. Provides a link to set a password.",
+        "contribution-didnt-start": "Sent to members when their Stripe subscription payment could not be started (e.g., declined payment method, insufficient funds). Informs them that their membership has been revoked due to the payment failure.",
+        "one-time-donation": "Sent to users after they complete a one-time donation (non-recurring payment). Typically confirms the donation amount and serves as a receipt.",
+        "confirm-email": "Sent to new users during the registration process to verify their email address. Contains a confirmation link they must click to complete registration.",
+        "new-member": "Sent to administrators when a new member successfully joins the community. Typically includes a notification with the ID and name of the new member.",
+        "cancelled-member": "Sent to administrators when a member cancels their contribution. Typically includes a notification with the ID and name of the cancelled member.",
+        "new-callout-response": "Sent to administrators when a new response to a CrowdNewsroom is submitted. Typically includes a notification with the CrowdNewsroom details and the name of the responding person."
       }
     },
     "confirmDelete": {
-      "title": "Delete Email",
-      "message": "Are you sure you want to delete this email? This action cannot be undone.",
+      "title": "Deactivate Email",
+      "message": "Are you sure you want to deactivate this email? This action cannot be undone.",
       "messageWithMailings": "This email has been sent {count} time(s). Are you sure you want to delete it? This action cannot be undone."
     },
     "confirmResetToDefault": {

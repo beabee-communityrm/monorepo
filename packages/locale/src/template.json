@@ -1142,6 +1142,7 @@
   "emails": {
     "actions": {
       "addCustom": "",
+      "deactivate": "",
       "resetToDefault": ""
     },
     "add": {

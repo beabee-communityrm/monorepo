@@ -1735,7 +1735,8 @@
     "type": "Tipo",
     "actions": {
       "addCustom": "Adicionar email personalizado",
-      "resetToDefault": "Repor predefinição"
+      "resetToDefault": "Repor predefinição",
+      "deactivate": "Desativar"
     },
     "templates": {
       "availableFields": "Campos disponíveis",
@@ -1776,8 +1777,8 @@
       }
     },
     "confirmDelete": {
-      "title": "Eliminar email",
-      "message": "Tem a certeza de que pretende eliminar este email? Esta ação não pode ser revertida.",
+      "title": "Desativar email",
+      "message": "Tem a certeza de que pretende desativar este email? Esta ação não pode ser revertida.",
       "messageWithMailings": "Este email foi enviado {count} vez(es). Tem a certeza de que pretende eliminá-lo? Esta ação não pode ser revertida."
     },
     "confirmResetToDefault": {
@@ -1794,6 +1795,6 @@
     },
     "customized": "Personalizado",
     "default": "Padrão",
-    "missingDefault": "Sem modelo predefinido"
+    "missingDefault": "Não Ativo"
   }
 }
