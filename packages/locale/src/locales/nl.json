@@ -1735,7 +1735,8 @@
     "type": "Type",
     "actions": {
       "addCustom": "Aangepaste e-mail toevoegen",
-      "resetToDefault": "Terugzetten naar standaard"
+      "resetToDefault": "Terugzetten naar standaard",
+      "deactivate": "Deactiveren"
     },
     "templates": {
       "availableFields": "Beschikbare velden",
@@ -1776,8 +1777,8 @@
       }
     },
     "confirmDelete": {
-      "title": "E-mail verwijderen",
-      "message": "Weet je zeker dat je deze e-mail wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "title": "E-mail deactiveren",
+      "message": "Weet je zeker dat je deze e-mail wilt deactiveren? Deze actie kan niet ongedaan worden gemaakt.",
       "messageWithMailings": "Deze e-mail is {count} keer verzonden. Weet je zeker dat je deze wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt."
     },
     "confirmResetToDefault": {
@@ -1794,6 +1795,6 @@
     },
     "customized": "Aangepast",
     "default": "Standaard",
-    "missingDefault": "Geen standaardsjabloon"
+    "missingDefault": "Niet Actief"
   }
 }

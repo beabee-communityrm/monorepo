@@ -1735,10 +1735,11 @@
     "type": "Typ",
     "customized": "Angepasst",
     "default": "Standard",
-    "missingDefault": "Kein Template",
+    "missingDefault": "Nicht Aktiv",
     "actions": {
       "addCustom": "Eigene E-Mail hinzufügen",
-      "resetToDefault": "Auf Standard zurücksetzen"
+      "resetToDefault": "Auf Standard zurücksetzen",
+      "deactivate": "Deaktivieren"
     },
     "templates": {
       "availableFields": "Verfügbare Felder",
@@ -1779,8 +1780,8 @@
       }
     },
     "confirmDelete": {
-      "title": "E-Mail löschen",
-      "message": "Bist du sicher, dass du diese E-Mail löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "title": "E-Mail deaktivieren",
+      "message": "Bist du sicher, dass du diese E-Mail deaktivieren möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
       "messageWithMailings": "Diese E-Mail wurde {count} Mal versendet. Bist du sicher, dass du sie löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
     },
     "confirmResetToDefault": {
