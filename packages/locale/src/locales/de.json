@@ -1204,7 +1204,7 @@
         "confirm-email": "Wird während des Registrierungsprozesses an neue Nutzer gesendet, um ihre E-Mail-Adresse zu verifizieren. Enthält einen Bestätigungslink, den sie anklicken müssen, um die Registrierung abzuschließen.",
         "new-member": "Wird an Administratoren gesendet, wenn ein neues Mitglied der Community erfolgreich beitritt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen des neuen Mitglieds.",
         "cancelled-member": "Wird an Administratoren gesendet, wenn ein Mitglied seinen Beitrag kündigt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen des gekündigten Mitglieds.",
-        "new-callout-response": "Wird an Administratoren gesendet, wenn eine neue Antwort auf einen Crowdnewsroom eingereicht wird. Enthält in der Regel eine Benachrichtigung mit den Crowdnewsroom-Details und dem Namen der antwortenden Person."
+        "new-callout-response": "Wird an Administratoren gesendet, wenn eine neue Antwort auf einen CrowdNewsroom eingereicht wird. Enthält in der Regel eine Benachrichtigung mit den CrowdNewsroom-Details und dem Namen der antwortenden Person."
       }
     },
     "confirmDelete": {
