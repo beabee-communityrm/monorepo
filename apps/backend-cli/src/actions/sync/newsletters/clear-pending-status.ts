@@ -7,7 +7,7 @@ import { newsletterBulkService } from '@beabee/core/services';
 
 import { SyncClearPendingStatusArgs } from '../../../types/sync.js';
 
-const log = mainLogger.child({ app: 'sync-newsletter-active-member-tag' });
+const log = mainLogger.child({ app: 'sync-newsletter-clear-pending-status' });
 
 export async function clearPendingStatus(
   args: SyncClearPendingStatusArgs
@@ -34,11 +34,15 @@ export async function clearPendingStatus(
     log.info(`📊 Found ${contactsToUpdate.length} contacts to clear.`);
 
     if (args.dryRun) {
-      log.info('DRY RUN - Following contacts would have their status cleared:');
-      for (const contact of contactsToUpdate) {
-        log.info(`  • ${contact.email}`);
-      }
-    } else {
+      log.info('DRY RUN - No changes will actually be made');
+    }
+
+    log.info('🧹 Clearing pending status for contacts:');
+    for (const contact of contactsToUpdate) {
+      log.info(`  • ${contact.email}`);
+    }
+
+    if (!args.dryRun) {
       await newsletterBulkService.updateContactNlData(
         contactsToUpdate.map((contact) => ({
           contact,
