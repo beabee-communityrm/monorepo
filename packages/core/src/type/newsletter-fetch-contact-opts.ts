@@ -5,4 +5,5 @@ export interface NewsletterFetchContactsOpts {
     /** Fetch contacts updated before this date */
     until?: Date | undefined;
   };
+  emails?: string[] | undefined;
 }
