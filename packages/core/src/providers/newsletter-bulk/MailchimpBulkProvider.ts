@@ -11,7 +11,7 @@ import {
   MCOperation,
   NewsletterBulkProvider,
   NewsletterContact,
-  NewsletterGetContactOpts,
+  NewsletterFetchContactsOpts,
   UpdateNewsletterContact,
 } from '#type';
 
@@ -52,8 +52,8 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
    * @param opts Options to filter the contacts
    * @returns The list of newsletter contacts
    */
-  async getContacts(
-    opts?: NewsletterGetContactOpts
+  async fetchContacts(
+    opts?: NewsletterFetchContactsOpts
   ): Promise<NewsletterContact[]> {
     const operation: MCOperation = {
       path: `lists/${this.listId}/members`,

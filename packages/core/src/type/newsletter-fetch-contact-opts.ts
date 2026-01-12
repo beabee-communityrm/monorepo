@@ -1,4 +1,4 @@
-export interface NewsletterGetContactOpts {
+export interface NewsletterFetchContactsOpts {
   /** Fetch contacts updated after this date */
   since?: Date | undefined;
   /** Fetch contacts updated before this date */
