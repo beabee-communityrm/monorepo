@@ -215,7 +215,8 @@
     "payment": {
       "paymentTitle": "Betaling",
       "taxRate": "BTW-tarief",
-      "taxRateEnabled": "BTW inschakelen"
+      "taxRateEnabled": "BTW inschakelen",
+      "showOneTimeDonation": "Eenmalige donatieoptie op het startscherm weergeven"
     },
     "theme": {
       "bodyFont": "Tekst lichaam",
@@ -1299,7 +1300,9 @@
     "viewAllCallouts": "Alle CrowdNewsrooms bekijken",
     "viewOpenCallouts": "Open CrowdNewsrooms bekijken",
     "welcome": "Welkom bij ons {firstName}!",
-    "yourProfile": "Uw profiel"
+    "yourProfile": "Uw profiel",
+    "makeOneTimeDonationTitle": "Doe nu een donatie",
+    "makeOneTimeDonationButton": "Doneer"
   },
   "icons": {
     "welcome": {

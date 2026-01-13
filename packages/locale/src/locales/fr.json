@@ -215,7 +215,8 @@
     "payment": {
       "paymentTitle": "Paiement",
       "taxRate": "Taux de la TVA",
-      "taxRateEnabled": "Activer la TVA"
+      "taxRateEnabled": "Activer la TVA",
+      "showOneTimeDonation": "Afficher l’option de don unique sur l’écran d’accueil"
     },
     "theme": {
       "bodyFont": "Corps de texte",
@@ -1303,7 +1304,9 @@
     "viewAllCallouts": "Voir toutes les CrowdNewsrooms",
     "viewOpenCallouts": "Voir les CrowdNewsrooms actives",
     "welcome": "Bienvenue à bord {firstName} !",
-    "yourProfile": "Votre profil"
+    "yourProfile": "Votre profil",
+    "makeOneTimeDonationTitle": "Faire un don maintenant",
+    "makeOneTimeDonationButton": "Don"
   },
   "icons": {
     "welcome": {

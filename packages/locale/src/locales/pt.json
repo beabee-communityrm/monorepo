@@ -215,7 +215,8 @@
     "payment": {
       "paymentTitle": "",
       "taxRate": "",
-      "taxRateEnabled": ""
+      "taxRateEnabled": "",
+      "showOneTimeDonation": ""
     },
     "theme": {
       "bodyFont": "",
@@ -1299,7 +1300,9 @@
     "viewAllCallouts": "Ver todas as CrowdNewsrooms",
     "viewOpenCallouts": "Ver CrowdNewsrooms abertas",
     "welcome": "Damos-te as boas-vindas, {firstName}!",
-    "yourProfile": "O teu perfil"
+    "yourProfile": "O teu perfil",
+    "makeOneTimeDonationTitle": "Doe nu een donatie",
+    "makeOneTimeDonationButton": "Doar"
   },
   "icons": {
     "welcome": {

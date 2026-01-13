@@ -215,7 +215,8 @@
     "payment": {
       "paymentTitle": "Payment",
       "taxRate": "VAT rate",
-      "taxRateEnabled": "Enable VAT"
+      "taxRateEnabled": "Enable VAT",
+      "showOneTimeDonation": "Show one time donation on home screen"
     },
     "theme": {
       "bodyFont": "Body text",
@@ -1299,7 +1300,9 @@
     "viewAllCallouts": "Open the CrowdNewsroom",
     "viewOpenCallouts": "Open the CrowdNewsroom",
     "welcome": "Welcome aboard {firstName}!",
-    "yourProfile": "Your profile"
+    "yourProfile": "Your profile",
+    "makeOneTimeDonationTitle": "Make a one time donation",
+    "makeOneTimeDonationButton": "Make a donation"
   },
   "icons": {
     "welcome": {

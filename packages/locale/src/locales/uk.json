@@ -215,7 +215,8 @@
     "payment": {
       "paymentTitle": "Оплата",
       "taxRate": "Ставка ПДВ",
-      "taxRateEnabled": "Увімкнути ПДВ"
+      "taxRateEnabled": "Увімкнути ПДВ",
+      "showOneTimeDonation": "Показати опцію одноразової пожертви на головному екрані"
     },
     "theme": {
       "bodyFont": "Основний текст",
@@ -1301,7 +1302,9 @@
     "viewAllCallouts": "Відкрийте CrowdNewsroom",
     "viewOpenCallouts": "Відкрийте CrowdNewsroom",
     "welcome": "Ласкаво просимо на борт {firstName}!",
-    "yourProfile": "Ваш профіль"
+    "yourProfile": "Ваш профіль",
+    "makeOneTimeDonationTitle": "Зробити пожертву зараз",
+    "makeOneTimeDonationButton": "Пожертвувати"
   },
   "icons": {
     "welcome": {

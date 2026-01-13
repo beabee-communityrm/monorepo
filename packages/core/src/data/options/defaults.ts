@@ -18,6 +18,7 @@ export default {
   'tax-rate-enabled': 'false',
   'tax-rate-percentage': '7',
   'tax-rate-stripe-id': '',
+  'show-one-time-donation': 'false',
   'show-absorb-fee': 'true',
   'show-mail-opt-in': '',
   'available-tags': '',
