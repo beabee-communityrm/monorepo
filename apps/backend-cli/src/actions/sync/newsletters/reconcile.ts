@@ -227,18 +227,23 @@ async function fetchContacts(
  * @param data The reconciliation data
  * @param uploadNew Whether we will be updating the newsletter service
  */
-function printReport(data: ReconciliationData, uploadNew: boolean) {
+function printReport(
+  data: ReconciliationData,
+  argv: SyncNewsletterReconcileArgs
+) {
   log.info('');
   log.info('============ Reconciliation Report ============');
 
-  log.info('📥 Contacts to import from newsletter service:');
-  if (data.nlContactsToImport.length === 0) {
-    log.info('  • (none)');
-  }
-  for (const nc of data.nlContactsToImport) {
-    log.info(
-      `  • ${nc.email}: status=${nc.status}, groups=[${groupsList(nc.groups)}]`
-    );
+  if (argv.importNew) {
+    log.info('📥 Contacts to import from newsletter service:');
+    if (data.nlContactsToImport.length === 0) {
+      log.info('  • (none)');
+    }
+    for (const nc of data.nlContactsToImport) {
+      log.info(
+        `  • ${nc.email}: status=${nc.status}, groups=[${groupsList(nc.groups)}]`
+      );
+    }
   }
 
   log.info('⚠️ Mismatched contacts:');
@@ -251,7 +256,7 @@ function printReport(data: ReconciliationData, uploadNew: boolean) {
     );
   }
 
-  if (uploadNew) {
+  if (argv.uploadNew) {
     log.info('📤 New contacts to upload to newsletter service:');
     if (data.contactsToUpload.length === 0) {
       log.info('  • (none)');
@@ -368,14 +373,16 @@ export async function reconcile(
     const data = await fetchContacts(argv);
 
     if (argv.report) {
-      printReport(data, argv.uploadNew);
+      printReport(data, argv);
     }
 
     if (argv.dryRun) {
       log.info('DRY RUN - No changes will actually be made');
     }
 
-    await importNlContacts(data.nlContactsToImport, argv.dryRun);
+    if (argv.importNew) {
+      await importNlContacts(data.nlContactsToImport, argv.dryRun);
+    }
     await runMismatchFixes(data.mismatchesToFix, argv.fix, argv.dryRun);
     if (argv.uploadNew) {
       await uploadNew(data.contactsToUpload, argv.dryRun);

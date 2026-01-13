@@ -12,6 +12,7 @@ export type SyncNewsletterReconcileTestId =
 export interface SyncNewsletterReconcileArgs {
   dryRun: boolean;
   report: boolean;
+  importNew: boolean;
   uploadNew: boolean;
   fix: SyncNewsletterReconcileTestId[];
   since: Date | undefined;
