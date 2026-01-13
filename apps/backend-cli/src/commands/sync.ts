@@ -60,6 +60,12 @@ export const syncCommand: CommandModule = {
                     description: 'Generate a report of the differences found',
                     default: false,
                   })
+                  .option('importNew', {
+                    type: 'boolean',
+                    description:
+                      'Import new contacts from the newsletter service',
+                    default: false,
+                  })
                   .option('uploadNew', {
                     type: 'boolean',
                     description:
