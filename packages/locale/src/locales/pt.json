@@ -1053,7 +1053,9 @@
       "period": "Período",
       "phone": "Telefone",
       "preferredChannel": "Canal preferido",
-      "tags": "Etiquetas"
+      "tags": "Etiquetas",
+      "donatedOn": "Doou em",
+      "hasDonated": "Doou"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",

@@ -1053,7 +1053,9 @@
       "period": "Periode",
       "phone": "Telefoon",
       "preferredChannel": "Voorkeur kanaal",
-      "tags": "Tags"
+      "tags": "Tags",
+      "donatedOn": "Gedoneerd op",
+      "hasDonated": "Heeft gedoneerd"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
