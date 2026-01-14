@@ -1067,7 +1067,9 @@
       "period": "",
       "phone": "",
       "preferredChannel": "",
-      "tags": ""
+      "tags": "",
+      "donatedOn": "",
+      "hasDonated": ""
     },
     "dataGroup": {
       "callout": "",

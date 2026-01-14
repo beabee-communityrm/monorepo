@@ -1071,7 +1071,9 @@
       "period": "Période",
       "phone": "Numéro de téléphone",
       "preferredChannel": "Canal de préférence",
-      "tags": "Libellés"
+      "tags": "Libellés",
+      "donatedOn": "Donné le",
+      "hasDonated": "A donné"
     },
     "dataGroup": {
       "callout": "CrowdNewsrooms",

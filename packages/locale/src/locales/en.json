@@ -1067,7 +1067,9 @@
       "period": "Period",
       "phone": "Phone number",
       "preferredChannel": "Preferred channel",
-      "tags": "Tags"
+      "tags": "Tags",
+      "donatedOn": "Donated on",
+      "hasDonated": "Has donated"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",

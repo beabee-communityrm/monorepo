@@ -4,6 +4,7 @@ import {
   ContactContribution,
   ContactProfile,
   ContactRole,
+  Payment,
 } from '@beabee/core/models';
 import { FilterHandler, FilterHandlers } from '@beabee/core/type';
 import { getFilterHandler } from '@beabee/core/utils/rules';
@@ -67,6 +68,32 @@ function contributionField(field: keyof ContactContribution): FilterHandler {
       .where(convertToWhereClause(`cc.${field}`));
 
     qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
+  };
+}
+
+/**
+ * Creates a filter handler for payment-related fields
+ * @param field - The field from Payment to filter on
+ * @returns A filter handler function for the specified payment field
+ */
+function paymentField(field?: keyof Payment): FilterHandler {
+  return (qb, { fieldPrefix, convertToWhereClause, value, operator }) => {
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select('p.contactId')
+      .from(Payment, 'p')
+      .where("p.status = 'successful'")
+      .where('p.subscriptionId IS NULL')
+      .andWhere('p.contactId IS NOT NULL');
+
+    if (field) {
+      subQb.andWhere(convertToWhereClause(`p.${field}`));
+      qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
+    } else {
+      // Boolean check: has any successful payment or not
+      const isIn = value[0] ? 'IN' : 'NOT IN';
+      qb.where(`${fieldPrefix}id ${isIn} ${subQb.getQuery()}`);
+    }
   };
 }
 
@@ -203,4 +230,6 @@ export const contactFilterHandlers: FilterHandlers<string> = {
   },
   'callouts.': calloutsFilterHandler,
   tags: contactTagFilterHandler,
+  hasDonated: paymentField(),
+  donatedOn: paymentField('chargeDate'),
 };

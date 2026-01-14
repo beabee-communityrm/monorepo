@@ -1069,7 +1069,9 @@
       "period": "Період",
       "phone": "Номер телефону",
       "preferredChannel": "Бажаний канал",
-      "tags": "Теги"
+      "tags": "Теги",
+      "donatedOn": "Пожертвувано",
+      "hasDonated": "Пожертвував"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
