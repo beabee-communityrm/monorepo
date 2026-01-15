@@ -127,6 +127,11 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
       [ContributionPeriod.Annually]: t('common.contributionPeriod.annually'),
     }
   ),
+  donatedOn: withLabel(contactFilters.donatedOn, t('contacts.data.donatedOn')),
+  hasDonated: withLabel(
+    contactFilters.hasDonated,
+    t('contacts.data.hasDonated')
+  ),
   manualPaymentSource: withLabel(
     contactFilters.manualPaymentSource,
     t('contacts.data.manualPaymentSource')
@@ -227,6 +232,8 @@ export function useContactFilters() {
         'contributionPeriod',
         'contributionCancelled',
         'manualPaymentSource',
+        'hasDonated',
+        'donatedOn',
       ]),
     },
     {
