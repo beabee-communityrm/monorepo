@@ -7,6 +7,7 @@ import {
 } from '#lib/mailchimp';
 import {
   MCMember,
+  MCMemberList,
   MCOperation,
   NewsletterBulkProvider,
   NewsletterContact,
@@ -59,6 +60,7 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
       method: 'GET',
       operation_id: 'get',
       params: {
+        limit: '1000',
         ...(opts?.since && {
           since_timestamp_opt: opts.since.toISOString(),
         }),
@@ -68,13 +70,23 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
       },
     };
 
+    // Performance optimization: when filtering, try to get all members in a
+    // single request If their are less than 1000 results then this uses many
+    // fewer API calls, otherwise fall back to batching
+    if (opts) {
+      const response =
+        await this.api.dispatchOperation<MCMemberList>(operation);
+      if (response.total_items < 1000) {
+        return response.members.map(mcMemberToNlContact);
+      }
+    }
+
     const batch = await this.api.createBatch([operation]);
     const finishedBatch = await this.api.waitForBatch(batch);
-    const responses = await this.api.getBatchResponses<{ members: MCMember[] }>(
-      finishedBatch
-    );
+    const batchResponses =
+      await this.api.getBatchResponses<MCMemberList>(finishedBatch);
 
-    return responses.flatMap((r) => r.members).map(mcMemberToNlContact);
+    return batchResponses.flatMap((r) => r.members).map(mcMemberToNlContact);
   }
 
   /**
