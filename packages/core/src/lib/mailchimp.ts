@@ -85,20 +85,18 @@ export function createInstance(
    * @returns The finished batch
    */
   async function waitForBatch(batch: MCBatch): Promise<MCBatch> {
-    log.info(`Waiting for batch ${batch.id}`, {
-      finishedOperations: batch.finished_operations,
-      totalOperations: batch.total_operations,
-      erroredOperations: batch.errored_operations,
-    });
+    while (batch.status !== 'finished') {
+      log.info(`Waiting for batch ${batch.id}`, {
+        finishedOperations: batch.finished_operations,
+        totalOperations: batch.total_operations,
+        erroredOperations: batch.errored_operations,
+      });
 
-    if (batch.status === 'finished') {
-      return batch;
-    } else {
       await new Promise((resolve) => setTimeout(resolve, 5000));
-      return await waitForBatch(
-        (await instance.get('/batches/' + batch.id)).data
-      );
+      batch = (await instance.get('/batches/' + batch.id)).data;
     }
+
+    return batch;
   }
 
   /**
