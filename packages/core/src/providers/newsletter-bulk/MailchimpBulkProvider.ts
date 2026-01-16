@@ -82,7 +82,7 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
       if (opts) {
         const response =
           await this.api.dispatchOperation<MCMemberList>(operation);
-        if (response.total_items < 1000) {
+        if (response && response.total_items < 1000) {
           members = response.members;
         }
       }

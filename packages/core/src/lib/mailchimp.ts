@@ -1,10 +1,7 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
 
-import JSONStream from 'JSONStream';
 import axios from 'axios';
 import crypto from 'crypto';
-import gunzip from 'gunzip-maybe';
-import tar from 'tar-stream';
 
 import { MailchimpNewsletterConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
@@ -19,6 +16,7 @@ import {
   UpdateNewsletterContact,
 } from '#type/index';
 import { normalizeEmailAddress } from '#utils/email';
+import { extractJsonArchive } from '#utils/file';
 
 const log = mainLogger.child({ app: 'mailchimp' });
 
@@ -94,53 +92,32 @@ export function createInstance(
       erroredOperations: batch.errored_operations,
     });
 
-    const batchResponses: T[] = [];
-
     const response = await axios({
       method: 'GET',
       url: batch.response_body_url,
       responseType: 'stream',
     });
 
-    const extract = tar.extract();
-
-    extract.on('entry', (header, stream, next) => {
-      stream.on('end', next);
-
-      if (header.type === 'file') {
-        log.info(`Checking batch error file: ${header.name}`);
-        stream
-          .pipe(JSONStream.parse('*'))
-          .on('data', (data: MCOperationResponse) => {
-            if (!validateStatus || validateStatus(data.status_code)) {
-              if (data.status_code >= 200 && data.status_code < 300) {
-                batchResponses.push(JSON.parse(data.response));
-              }
-            } else {
-              log.error(
-                `Unexpected error for ${data.operation_id}, got ${data.status_code}`,
-                data
-              );
-            }
-          });
-      } else {
-        stream.resume();
+    return await extractJsonArchive<T>(response.data, (json): T | null => {
+      if (!isOperationResponseArray(json) || json.length !== 1) {
+        throw new Error('Unexpected batch response format');
       }
-    });
+      if (validateStatus && !validateStatus(json[0].status_code)) {
+        throw new Error(
+          `Unexpected error for ${json[0].operation_id}, got ${json[0].status_code}`
+        );
+      }
 
-    return await new Promise((resolve, reject) => {
-      response.data
-        .pipe(gunzip())
-        .pipe(extract)
-        .on('error', reject)
-        .on('finish', () => resolve(batchResponses));
+      return json[0].status_code >= 200 && json[0].status_code < 300
+        ? (JSON.parse(json[0].response) as T)
+        : null;
     });
   }
 
   async function dispatchOperation<T = unknown>(
     operation: MCOperation,
     validateStatus?: (status: number) => boolean
-  ): Promise<T> {
+  ): Promise<T | null> {
     const resp = await instance({
       method: operation.method,
       params: operation.params,
@@ -148,7 +125,7 @@ export function createInstance(
       ...(operation.body && { data: JSON.parse(operation.body) }),
       validateStatus: validateStatus || null,
     });
-    return resp.data as T;
+    return resp.status >= 200 && resp.status < 300 ? (resp.data as T) : null;
   }
 
   async function dispatchOperations<T = unknown>(
@@ -166,7 +143,9 @@ export function createInstance(
       for (const operation of operations) {
         try {
           const result = await dispatchOperation<T>(operation, validateStatus);
-          results.push(result);
+          if (result !== null) {
+            results.push(result);
+          }
         } catch (err) {
           log.error(
             `Error in operation ${operation.operation_id}`,
@@ -271,4 +250,23 @@ export function mcMemberToNlContact(member: MCMember): NewsletterContact {
       member.tags.findIndex((t) => t.name === activeMemberTag) !== -1,
     isActiveUser: member.tags.findIndex((t) => t.name === activeUserTag) !== -1,
   };
+}
+
+/**
+ * Checks if the given object is an array of Mailchimp operation responses
+ *
+ * @param obj The object to check
+ */
+function isOperationResponseArray(obj: unknown): obj is MCOperationResponse[] {
+  return (
+    Array.isArray(obj) &&
+    obj.every(
+      (item) =>
+        typeof item === 'object' &&
+        item !== null &&
+        'status_code' in item &&
+        'response' in item &&
+        'operation_id' in item
+    )
+  );
 }
