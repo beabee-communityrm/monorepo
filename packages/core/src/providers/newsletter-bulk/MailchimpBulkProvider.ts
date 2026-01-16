@@ -60,12 +60,12 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
       method: 'GET',
       operation_id: 'get',
       params: {
-        limit: '1000',
+        count: '1000',
         ...(opts?.since && {
-          since_timestamp_opt: opts.since.toISOString(),
+          since_last_changed: opts.since.toISOString(),
         }),
         ...(opts?.until && {
-          before_timestamp_opt: opts.until.toISOString(),
+          before_last_changed: opts.until.toISOString(),
         }),
       },
     };
