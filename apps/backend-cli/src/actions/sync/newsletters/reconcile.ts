@@ -177,9 +177,8 @@ async function fetchContacts(
   } else {
     log.info('📡 Fetching whole newsletter contact list...');
   }
-  const nlContacts = await newsletterBulkService.getNewsletterContacts({
-    since: argv.since,
-    until: argv.until,
+  const nlContacts = await newsletterBulkService.fetchNewsletterContacts({
+    updated: { since: argv.since, until: argv.until },
   });
 
   log.info(
