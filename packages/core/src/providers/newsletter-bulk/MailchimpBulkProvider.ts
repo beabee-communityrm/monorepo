@@ -58,18 +58,18 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
     if (opts?.updated || !opts?.emails) {
       // If there are updated filters or no filters at all fetch using the list
       // endpoint. If the email filter is also provided we filter the results
-      // later as Mailchimp doesn't support email filters on the list endpoint
+      // later as Mailchimp doesn't support email filtering on the list endpoint
       const operation: MCOperation = {
         path: `lists/${this.listId}/members`,
         method: 'GET',
         operation_id: 'get',
         params: {
-          limit: '1000',
+          count: '1000',
           ...(opts?.updated?.since && {
-            since_timestamp_opt: opts.updated.since.toISOString(),
+            since_last_changed: opts.updated.since.toISOString(),
           }),
           ...(opts?.updated?.until && {
-            before_timestamp_opt: opts.updated.until.toISOString(),
+            before_last_changed: opts.updated.until.toISOString(),
           }),
         },
       };
@@ -77,15 +77,16 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
       let members: MCMember[] | null = null;
 
       // Performance optimization: when filtering, try to get all members in a
-      // single request If their are less than 1000 results then this uses many
+      // single request If their are 1000 results or less then this uses many
       // fewer API calls, otherwise fall back to batching
       if (opts) {
         const response =
           await this.api.dispatchOperation<MCMemberList>(operation);
-        if (response && response.total_items < 1000) {
+        if (response && response.total_items <= 1000) {
           members = response.members;
         }
       }
+
       if (!members) {
         const batch = await this.api.createBatch([operation]);
         const finishedBatch = await this.api.waitForBatch(batch);
@@ -107,12 +108,12 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
 
       const batch = await this.api.createBatch(operations);
       const finishedBatch = await this.api.waitForBatch(batch);
-      const responses = await this.api.getBatchResponses<MCMember | undefined>(
+      const responses = await this.api.getBatchResponses<MCMember>(
         finishedBatch,
         (status) => status === 200 || status === 404
       );
 
-      return responses.filter((m) => !!m).map(mcMemberToNlContact);
+      return responses.map(mcMemberToNlContact);
     }
   }
 
