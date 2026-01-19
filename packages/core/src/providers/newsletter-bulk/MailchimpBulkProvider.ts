@@ -11,7 +11,7 @@ import {
   MCOperation,
   NewsletterBulkProvider,
   NewsletterContact,
-  NewsletterGetContactOpts,
+  NewsletterFetchContactsOpts,
   UpdateNewsletterContact,
 } from '#type';
 
@@ -52,48 +52,75 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
    * @param opts Options to filter the contacts
    * @returns The list of newsletter contacts
    */
-  async getContacts(
-    opts?: NewsletterGetContactOpts
+  async fetchContacts(
+    opts?: NewsletterFetchContactsOpts
   ): Promise<NewsletterContact[]> {
-    const operation: MCOperation = {
-      path: `lists/${this.listId}/members`,
-      method: 'GET',
-      operation_id: 'get',
-      params: {
-        count: '1000',
-        ...(opts?.since && {
-          since_last_changed: opts.since.toISOString(),
-        }),
-        ...(opts?.until && {
-          before_last_changed: opts.until.toISOString(),
-        }),
-      },
-    };
+    if (opts?.updated || !opts?.emails) {
+      // If there are updated filters or no filters at all fetch using the list
+      // endpoint. If the email filter is also provided we filter the results
+      // later as Mailchimp doesn't support email filtering on the list endpoint
+      const operation: MCOperation = {
+        path: `lists/${this.listId}/members`,
+        method: 'GET',
+        operation_id: 'get',
+        params: {
+          count: '1000',
+          ...(opts?.updated?.since && {
+            since_last_changed: opts.updated.since.toISOString(),
+          }),
+          ...(opts?.updated?.until && {
+            before_last_changed: opts.updated.until.toISOString(),
+          }),
+        },
+      };
 
-    // Performance optimization: when filtering, try to get all members in a
-    // single request If their are less than 1000 results then this uses many
-    // fewer API calls, otherwise fall back to batching
-    if (opts) {
-      const response =
-        await this.api.dispatchOperation<MCMemberList>(operation);
-      if (response.total_items < 1000) {
-        return response.members.map(mcMemberToNlContact);
+      let members: MCMember[] | null = null;
+
+      // Performance optimization: when filtering, try to get all members in a
+      // single request If their are 1000 results or less then this uses many
+      // fewer API calls, otherwise fall back to batching
+      if (opts) {
+        const response =
+          await this.api.dispatchOperation<MCMemberList>(operation);
+        if (response && response.total_items <= 1000) {
+          members = response.members;
+        }
       }
+
+      if (!members) {
+        const batch = await this.api.createBatch([operation]);
+        const finishedBatch = await this.api.waitForBatch(batch);
+        const responses =
+          await this.api.getBatchResponses<MCMemberList>(finishedBatch);
+        members = responses.flatMap((r) => r.members);
+      }
+
+      return members
+        .filter((m) => !opts?.emails || opts.emails.includes(m.email_address))
+        .map(mcMemberToNlContact);
+    } else {
+      // If only filtering by emails, fetch each member directly
+      const operations: MCOperation[] = opts.emails.map((email) => ({
+        path: getMCMemberUrl(this.listId, email),
+        method: 'GET',
+        operation_id: `get_${email}`,
+      }));
+
+      const batch = await this.api.createBatch(operations);
+      const finishedBatch = await this.api.waitForBatch(batch);
+      const responses = await this.api.getBatchResponses<MCMember>(
+        finishedBatch,
+        (status) => status === 200 || status === 404
+      );
+
+      return responses.map(mcMemberToNlContact);
     }
-
-    const batch = await this.api.createBatch([operation]);
-    const finishedBatch = await this.api.waitForBatch(batch);
-    const batchResponses =
-      await this.api.getBatchResponses<MCMemberList>(finishedBatch);
-
-    return batchResponses.flatMap((r) => r.members).map(mcMemberToNlContact);
   }
 
   /**
    * Upserts the list of contacts to the newsletter provider. This method does
    * not give any guarantees about the active member tag.
    *
-   * @deprecated Only used by legacy app newsletter sync, do not use.
    * @param nlContacts
    */
   async upsertContacts(nlContacts: UpdateNewsletterContact[]): Promise<void> {

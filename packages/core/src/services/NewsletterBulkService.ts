@@ -9,7 +9,7 @@ import {
 import {
   NewsletterBulkProvider,
   NewsletterContact,
-  NewsletterGetContactOpts,
+  NewsletterFetchContactsOpts,
   UpdateNewsletterContact,
 } from '#type';
 import { convertContactToNlUpdate } from '#utils/newsletter';
@@ -61,15 +61,15 @@ class NewsletterBulkService {
   }
 
   /**
-   * Get all contacts from the newsletter provider
+   * Fetch all contacts from the newsletter provider with optional filters
    *
    * @param opts Options for fetching contacts
    * @returns List of newsletter contacts
    */
-  async getNewsletterContacts(
-    opts?: NewsletterGetContactOpts
+  async fetchNewsletterContacts(
+    opts?: NewsletterFetchContactsOpts
   ): Promise<NewsletterContact[]> {
-    return await this.provider.getContacts(opts);
+    return await this.provider.fetchContacts(opts);
   }
 
   async updateContactTags(

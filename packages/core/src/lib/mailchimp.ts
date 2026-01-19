@@ -1,10 +1,7 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
 
-import JSONStream from 'JSONStream';
 import axios from 'axios';
 import crypto from 'crypto';
-import gunzip from 'gunzip-maybe';
-import tar from 'tar-stream';
 
 import { MailchimpNewsletterConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
@@ -19,9 +16,16 @@ import {
   UpdateNewsletterContact,
 } from '#type/index';
 import { normalizeEmailAddress } from '#utils/email';
+import { extractJsonArchive } from '#utils/file';
 
 const log = mainLogger.child({ app: 'mailchimp' });
 
+/**
+ * Create a Mailchimp API instance
+ *
+ * @param settings The Mailchimp API settings
+ * @returns A Mailchimp API instance
+ */
 export function createInstance(
   settings: MailchimpNewsletterConfig['settings']
 ) {
@@ -61,29 +65,50 @@ export function createInstance(
     }
   );
 
+  /**
+   * Create a batch with the given operations
+   *
+   * @param operations The operations to include in the batch
+   * @returns
+   */
   async function createBatch(operations: MCOperation[]): Promise<MCBatch> {
     log.info(`Creating batch with ${operations.length} operations`);
     const response = await instance.post('/batches/', { operations });
     return response.data as MCBatch;
   }
 
+  /**
+   * Wait for the given batch to finish processing. Polls the batch status every
+   * 5 seconds until it is finished, then returns the finished batch.
+   *
+   * @param batch The batch
+   * @returns The finished batch
+   */
   async function waitForBatch(batch: MCBatch): Promise<MCBatch> {
-    log.info(`Waiting for batch ${batch.id}`, {
-      finishedOperations: batch.finished_operations,
-      totalOperations: batch.total_operations,
-      erroredOperations: batch.errored_operations,
-    });
+    while (batch.status !== 'finished') {
+      log.info(`Waiting for batch ${batch.id}`, {
+        finishedOperations: batch.finished_operations,
+        totalOperations: batch.total_operations,
+        erroredOperations: batch.errored_operations,
+      });
 
-    if (batch.status === 'finished') {
-      return batch;
-    } else {
       await new Promise((resolve) => setTimeout(resolve, 5000));
-      return await waitForBatch(
-        (await instance.get('/batches/' + batch.id)).data
-      );
+      batch = (await instance.get('/batches/' + batch.id)).data;
     }
+
+    return batch;
   }
 
+  /**
+   * Processes the batch response. Mailchimp provides a URL to download a tar
+   * archive with the responses for each operation in the batch. Check each
+   * response for errors, optionally specifying which statuses are expected, and
+   * return the parsed response bodies.
+   *
+   * @param batch The finished batch
+   * @param validateStatus Optional function to validate the status code of each operation
+   * @returns Array of operation responses
+   */
   async function getBatchResponses<T = unknown>(
     batch: MCBatch,
     validateStatus?: (status: number) => boolean
@@ -94,51 +119,44 @@ export function createInstance(
       erroredOperations: batch.errored_operations,
     });
 
-    const batchResponses: T[] = [];
-
     const response = await axios({
       method: 'GET',
       url: batch.response_body_url,
       responseType: 'stream',
     });
 
-    const extract = tar.extract();
-
-    extract.on('entry', (header, stream, next) => {
-      stream.on('end', next);
-
-      if (header.type === 'file') {
-        log.info(`Checking batch error file: ${header.name}`);
-        stream
-          .pipe(JSONStream.parse('*'))
-          .on('data', (data: MCOperationResponse) => {
-            if (!validateStatus || validateStatus(data.status_code)) {
-              batchResponses.push(JSON.parse(data.response));
-            } else {
-              log.error(
-                `Unexpected error for ${data.operation_id}, got ${data.status_code}`,
-                data
-              );
-            }
-          });
-      } else {
-        stream.resume();
+    return await extractJsonArchive<T>(response.data, (json): T | null => {
+      if (!isOperationResponseArray(json) || json.length !== 1) {
+        throw new Error('Unexpected batch response format');
       }
-    });
+      if (validateStatus && !validateStatus(json[0].status_code)) {
+        throw new Error(
+          `Unexpected error for ${json[0].operation_id}, got ${json[0].status_code}`
+        );
+      }
 
-    return await new Promise((resolve, reject) => {
-      response.data
-        .pipe(gunzip())
-        .pipe(extract)
-        .on('error', reject)
-        .on('finish', () => resolve(batchResponses));
+      return json[0].status_code >= 200 && json[0].status_code < 300
+        ? (JSON.parse(json[0].response) as T)
+        : null;
     });
   }
 
+  /**
+   * Dispatches a single operation to the Mailchimp API, optionally specifying
+   * which statuses are expected. This can be used to specify that some error
+   * codes are expected although only 2xx codes will return a body.
+   *
+   * For example, when fetching a member that might not exist, a 404 shouldn't
+   * throw an exception.
+   *
+   * @param operation The operation
+   * @param validateStatus Optional function to validate the status code
+   * @returns The parsed response body or null if the status is non 2xx
+   */
   async function dispatchOperation<T = unknown>(
     operation: MCOperation,
     validateStatus?: (status: number) => boolean
-  ): Promise<T> {
+  ): Promise<T | null> {
     const resp = await instance({
       method: operation.method,
       params: operation.params,
@@ -146,9 +164,17 @@ export function createInstance(
       ...(operation.body && { data: JSON.parse(operation.body) }),
       validateStatus: validateStatus || null,
     });
-    return resp.data as T;
+    return resp.status >= 200 && resp.status < 300 ? (resp.data as T) : null;
   }
 
+  /**
+   * Dispatches multiple operations to the Mailchimp API, either as individual
+   * requests or as a batch if there are more than 20 operations.
+   *
+   * @param operations The operations
+   * @param validateStatus Optional function to validate the status code
+   * @returns Array of operation responses
+   */
   async function dispatchOperations<T = unknown>(
     operations: MCOperation[],
     validateStatus?: (status: number) => boolean
@@ -164,7 +190,9 @@ export function createInstance(
       for (const operation of operations) {
         try {
           const result = await dispatchOperation<T>(operation, validateStatus);
-          results.push(result);
+          if (result !== null) {
+            results.push(result);
+          }
         } catch (err) {
           log.error(
             `Error in operation ${operation.operation_id}`,
@@ -187,6 +215,12 @@ export function createInstance(
   };
 }
 
+/**
+ * Convert a Mailchimp status to a NewsletterStatus
+ *
+ * @param mcStatus The Mailchimp status
+ * @returns The NewsletterStatus
+ */
 export function mcStatusToStatus(mcStatus: MCStatus): NewsletterStatus {
   switch (mcStatus) {
     case 'cleaned':
@@ -205,6 +239,13 @@ export function mcStatusToStatus(mcStatus: MCStatus): NewsletterStatus {
   }
 }
 
+/**
+ * Get the Mailchimp member URL for the given list ID and email address
+ *
+ * @param listId The Mailchimp list/audience ID
+ * @param email The email address
+ * @returns The Mailchimp member URL
+ */
 export function getMCMemberUrl(listId: string, email: string) {
   const emailHash = crypto
     .createHash('md5')
@@ -213,6 +254,12 @@ export function getMCMemberUrl(listId: string, email: string) {
   return `lists/${listId}/members/${emailHash}`;
 }
 
+/**
+ * Convert a NewsletterContact to a Mailchimp member object
+ *
+ * @param nlContact The newsletter contact
+ * @returns The Mailchimp member object
+ */
 export function nlContactToMCMember(
   nlContact: UpdateNewsletterContact
 ): Partial<MCMember> {
@@ -244,12 +291,19 @@ export function nlContactToMCMember(
   };
 }
 
+/**
+ * Convert a Mailchimp member object to a NewsletterContact
+ *
+ * @param member The Mailchimp member
+ * @returns The newsletter contact
+ */
 export function mcMemberToNlContact(member: MCMember): NewsletterContact {
   const { FNAME, LNAME, ...fields } = member.merge_fields;
   const activeMemberTag = OptionsService.getText(
     'newsletter-active-member-tag'
   );
   const activeUserTag = OptionsService.getText('newsletter-active-user-tag');
+
   return {
     email: normalizeEmailAddress(member.email_address),
     firstname: FNAME || '',
@@ -269,4 +323,23 @@ export function mcMemberToNlContact(member: MCMember): NewsletterContact {
       member.tags.findIndex((t) => t.name === activeMemberTag) !== -1,
     isActiveUser: member.tags.findIndex((t) => t.name === activeUserTag) !== -1,
   };
+}
+
+/**
+ * Checks if the given object is an array of Mailchimp operation responses
+ *
+ * @param obj The object to check
+ */
+function isOperationResponseArray(obj: unknown): obj is MCOperationResponse[] {
+  return (
+    Array.isArray(obj) &&
+    obj.every(
+      (item) =>
+        typeof item === 'object' &&
+        item !== null &&
+        'status_code' in item &&
+        'response' in item &&
+        'operation_id' in item
+    )
+  );
 }

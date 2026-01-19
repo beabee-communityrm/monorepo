@@ -10,7 +10,6 @@
     "paths": {
       "#locale": ["./src/locales/current"],
       "#*": ["./src/*"]
-    },
-    "typeRoots": ["./src/typings", "./node_modules/@types/"]
+    }
   }
 }
