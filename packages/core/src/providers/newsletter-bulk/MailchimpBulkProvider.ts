@@ -64,7 +64,6 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
         method: 'GET',
         operation_id: 'get',
         params: {
-          count: '1000',
           ...(opts?.updated?.since && {
             since_last_changed: opts.updated.since.toISOString(),
           }),
@@ -80,8 +79,10 @@ export class MailchimpBulkProvider implements NewsletterBulkProvider {
       // single request If their are 1000 results or less then this uses many
       // fewer API calls, otherwise fall back to batching
       if (opts) {
-        const response =
-          await this.api.dispatchOperation<MCMemberList>(operation);
+        const response = await this.api.dispatchOperation<MCMemberList>({
+          ...operation,
+          params: { ...operation.params, count: '1000' },
+        });
         if (response && response.total_items <= 1000) {
           members = response.members;
         }
