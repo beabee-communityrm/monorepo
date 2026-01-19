@@ -1,4 +1,5 @@
 import { PaymentFilterName, Rule, paymentFilters } from '@beabee/beabee-common';
+import { paymentFilterHandlers } from '@beabee/core/filter-handlers';
 import { Contact, Payment } from '@beabee/core/models';
 import { paymentService } from '@beabee/core/services';
 import { AuthInfo } from '@beabee/core/type';
@@ -25,6 +26,7 @@ class PaymentTransformer extends BaseTransformer<
 > {
   protected model = Payment;
   protected filters = paymentFilters;
+  filterHandlers = paymentFilterHandlers;
 
   @TransformPlainToInstance(GetPaymentDto)
   convert(

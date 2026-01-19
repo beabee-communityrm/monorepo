@@ -968,7 +968,12 @@
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja"
+    "yes": "Ja",
+    "paymentType": {
+      "oneTime": "",
+      "recurring": "",
+      "prorated": ""
+    }
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1703,7 +1708,8 @@
       "amount": "Betrag",
       "chargeDate": "Abbuchungsdatum",
       "contact": "Kontakt",
-      "status": "Status"
+      "status": "Status",
+      "type": ""
     },
     "dataGroup": {
       "payment": "Zahlung"
