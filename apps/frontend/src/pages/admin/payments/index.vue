@@ -58,7 +58,7 @@ import {
 import { PaymentStatus } from '@components/payment';
 import AppSearch from '@components/search/AppSearch.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import { faEuro } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine, faEuro } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import {
@@ -71,7 +71,16 @@ import { useI18n } from 'vue-i18n';
 
 const { t, n } = useI18n();
 
-addBreadcrumb(computed(() => [{ title: t('menu.payments'), icon: faEuro }]));
+addBreadcrumb(
+  computed(() => [
+    {
+      title: t('menu.dashboard'),
+      to: '/admin',
+      icon: faChartLine,
+    },
+    { title: t('menu.payments') },
+  ])
+);
 
 const currentStatus = defineParam('status', (v) => v || '', 'replace');
 const currentRules = defineRulesParam();
