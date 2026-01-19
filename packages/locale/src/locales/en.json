@@ -938,6 +938,11 @@
       "pending": "Pending",
       "successful": "Successful"
     },
+    "paymentType": {
+      "oneTime": "One-Time",
+      "recurring": "Recurring",
+      "prorated": "Prorated"
+    },
     "perMonth": "/ month",
     "perOneTime": " one-time",
     "perOneTimeText": "one-time",
@@ -1611,7 +1616,8 @@
       "amount": "Amount",
       "chargeDate": "Charge date",
       "contact": "Contact",
-      "status": "Status"
+      "status": "Status",
+      "type": "Type"
     },
     "dataGroup": {
       "payment": "Payment"
