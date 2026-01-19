@@ -962,7 +962,12 @@
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
     "until": "tot",
-    "yes": "Ja"
+    "yes": "Ja",
+    "paymentType": {
+      "oneTime": "",
+      "recurring": "",
+      "prorated": ""
+    }
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1606,7 +1611,8 @@
       "amount": "Bedrag",
       "chargeDate": "Datum",
       "contact": "Contact",
-      "status": "Status"
+      "status": "Status",
+      "type": ""
     },
     "dataGroup": {
       "payment": "Betaling"

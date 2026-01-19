@@ -966,7 +966,12 @@
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "oui"
+    "yes": "oui",
+    "paymentType": {
+      "oneTime": "",
+      "recurring": "",
+      "prorated": ""
+    }
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1610,7 +1615,8 @@
       "amount": "Montant",
       "chargeDate": "Date de facturation",
       "contact": "Contact",
-      "status": "Statut"
+      "status": "Statut",
+      "type": ""
     },
     "dataGroup": {
       "payment": "Paiement"

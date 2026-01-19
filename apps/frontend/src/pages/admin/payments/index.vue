@@ -58,7 +58,7 @@ import {
 import { PaymentStatus } from '@components/payment';
 import AppSearch from '@components/search/AppSearch.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import { faChartLine, faEuro } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import {

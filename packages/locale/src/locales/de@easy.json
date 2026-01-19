@@ -962,7 +962,12 @@
       "one-time": ""
     },
     "perOneTime": "",
-    "perOneTimeText": ""
+    "perOneTimeText": "",
+    "paymentType": {
+      "oneTime": "",
+      "recurring": "",
+      "prorated": ""
+    }
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1561,7 +1566,8 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
