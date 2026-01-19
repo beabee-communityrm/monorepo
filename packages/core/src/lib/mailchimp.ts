@@ -126,17 +126,25 @@ export function createInstance(
     });
 
     return await extractJsonArchive<T>(response.data, (json): T | null => {
-      if (!isOperationResponseArray(json) || json.length !== 1) {
+      if (!isOperationResponseArray(json) || json.length > 1) {
         throw new Error('Unexpected batch response format');
       }
-      if (validateStatus && !validateStatus(json[0].status_code)) {
+
+      // Last archive file can be empty
+      if (json.length === 0) {
+        return null;
+      }
+
+      const resp = json[0];
+
+      if (validateStatus && !validateStatus(resp.status_code)) {
         throw new Error(
-          `Unexpected error for ${json[0].operation_id}, got ${json[0].status_code}`
+          `Unexpected error for ${resp.operation_id}, got ${resp.status_code}`
         );
       }
 
-      return json[0].status_code >= 200 && json[0].status_code < 300
-        ? (JSON.parse(json[0].response) as T)
+      return resp.status_code >= 200 && resp.status_code < 300
+        ? (JSON.parse(resp.response) as T)
         : null;
     });
   }
