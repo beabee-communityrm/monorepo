@@ -22,6 +22,11 @@ export async function clearPendingStatus(
       })
       .getMany();
 
+    if (pendingContacts.length === 0) {
+      log.info('✅ No contacts with pending newsletter status found.');
+      return;
+    }
+
     const nlContacts = await newsletterBulkService.fetchNewsletterContacts({
       emails: pendingContacts.map((c) => c.email),
     });
