@@ -974,7 +974,12 @@
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja"
+    "yes": "Ja",
+    "paymentType": {
+      "oneTime": "",
+      "recurring": "",
+      "prorated": ""
+    }
   },
   "contactAccount": {
     "confirmDelete": {

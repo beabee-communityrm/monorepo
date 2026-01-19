@@ -976,7 +976,12 @@
     "timeAgo": "{time} тому",
     "timeIn": "в {time}",
     "until": "доки",
-    "yes": "Так"
+    "yes": "Так",
+    "paymentType": {
+      "oneTime": "",
+      "recurring": "",
+      "prorated": ""
+    }
   },
   "contactAccount": {
     "confirmDelete": {
