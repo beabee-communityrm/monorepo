@@ -1004,6 +1004,8 @@
     "callouts": "",
     "cancellationDate": "",
     "contribution": "",
+    "recurring": "Wiederkehrend",
+    "oneTime": "Einmalig",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {

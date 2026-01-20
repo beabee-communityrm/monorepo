@@ -1009,6 +1009,8 @@
     "callouts": "CrowdNewsrooms",
     "cancellationDate": "Gekündigt am",
     "contribution": "Beitrag",
+    "recurring": "Wiederkehrend",
+    "oneTime": "Einmalig",
     "contributionType": "Zahlungsart",
     "joinSurvey": "Anmelde-Fragebogen",
     "newsletter": {

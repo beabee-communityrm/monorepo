@@ -1004,6 +1004,8 @@
     "callouts": "",
     "cancellationDate": "",
     "contribution": "",
+    "recurring": "Επαναλαμβανόμενος",
+    "oneTime": "Εφάπαξ",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {

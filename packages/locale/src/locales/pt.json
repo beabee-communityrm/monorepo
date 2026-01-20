@@ -976,9 +976,9 @@
     "until": "até",
     "yes": "Sim",
     "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
+      "oneTime": "Único",
+      "recurring": "Recorrente",
+      "prorated": "Proporcional"
     }
   },
   "contactAccount": {
@@ -1009,6 +1009,8 @@
     "callouts": "",
     "cancellationDate": "",
     "contribution": "",
+    "recurring": "Recorrente",
+    "oneTime": "Único",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {

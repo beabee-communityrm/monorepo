@@ -976,9 +976,9 @@
     "until": "fino",
     "yes": "Sì",
     "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
+      "oneTime": "Una tantum",
+      "recurring": "Ricorrente",
+      "prorated": "Proporzionale"
     }
   },
   "contactAccount": {
@@ -1009,6 +1009,8 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "",
     "contribution": "",
+    "recurring": "Ricorrente",
+    "oneTime": "Una tantum",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {

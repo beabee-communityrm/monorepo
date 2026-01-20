@@ -47,6 +47,9 @@ meta:
         <AppHeading class="mt-6">
           {{ t('contactOverview.contribution') }}
         </AppHeading>
+        <AppSubHeading class="mb-1">
+          {{ t('contactOverview.recurring') }}
+        </AppSubHeading>
         <AppInfoList>
           <AppInfoListItem
             :name="t('contacts.data.amount')"
@@ -84,6 +87,27 @@ meta:
             v-if="contact.contribution.cancellationDate"
             :name="t('contactOverview.cancellationDate')"
             :value="formatLocale(contact.contribution.cancellationDate, 'PPP')"
+          />
+        </AppInfoList>
+        <AppSubHeading class="mb-1">
+          {{ t('contactOverview.oneTime') }}
+        </AppSubHeading>
+        <AppInfoList>
+          <AppInfoListItem
+            :name="t('paymentsAdmin.aggregation.total')"
+            :value="
+              paymentAggregations?.sum
+                ? n(paymentAggregations?.sum, 'currency')
+                : '–'
+            "
+          />
+          <AppInfoListItem
+            :name="t('paymentsAdmin.aggregation.average')"
+            :value="
+              paymentAggregations?.average
+                ? n(paymentAggregations?.average, 'currency')
+                : '–'
+            "
           />
         </AppInfoList>
       </div>
@@ -268,6 +292,7 @@ import {
   type GetContactData,
   type GetContactDataWith,
   GetContactWith,
+  type GetPaymentAggregationData,
   type RoleType,
 } from '@beabee/beabee-common';
 import {
@@ -280,6 +305,7 @@ import {
   AppInput,
   AppLoadingSpinner,
   AppRichTextEditor,
+  AppSubHeading,
   formatLocale,
 } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
@@ -314,6 +340,8 @@ const contactTags = ref<string[]>([]);
 const contactAbout = reactive({ notes: '', description: '' });
 const securityLink = ref('');
 const changingRoles = ref(false);
+
+const paymentAggregations = ref<GetPaymentAggregationData>();
 
 /** Multi factor authentication state */
 const mfa = ref({
@@ -435,6 +463,19 @@ onBeforeMount(async () => {
   contactAbout.description = contact.value.profile.description || '';
 
   contactTags.value = (await client.content.get('contacts')).tags;
+
+  paymentAggregations.value = await client.payment.aggregate({
+    rules: {
+      condition: 'AND',
+      rules: [
+        {
+          field: 'contact',
+          operator: 'equal',
+          value: [props.contact.id],
+        },
+      ],
+    },
+  });
 
   // Fetch MFA information
   const contactMfa = await client.contact.mfa.get(props.contact.id);

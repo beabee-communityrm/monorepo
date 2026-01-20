@@ -977,9 +977,9 @@
     "until": "до",
     "yes": "Да",
     "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
+      "oneTime": "Единовременный",
+      "recurring": "Повторяющийся",
+      "prorated": "Пропорциональный"
     }
   },
   "contactAccount": {
@@ -1010,6 +1010,8 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "",
     "contribution": "Взнос",
+    "recurring": "Повторяющийся",
+    "oneTime": "Единовременный",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {
