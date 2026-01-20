@@ -139,20 +139,25 @@ export class StripeWebhookEventHandler {
   }
 
   /**
-   * Handles newly created invoices by ensuring correct tax rates are applied
-   * Updates both the invoice and associated subscription if necessary
+   * Create a new payment record when an invoice is created and check if the tax
+   * rates need updating, as the system-wide tax rate might have been changed since
+   * the subscription was created.
+   *
    * @param invoice The newly created Stripe invoice
    */
   private static async handleInvoiceCreated(
     invoice: Stripe.Invoice
   ): Promise<void> {
+    // Create the new payment record
     const payment = await this.handleInvoiceUpdated(invoice);
 
-    // Only update the tax rate on invoices that we know about
-    if (!payment) return;
+    // Only invoices from subscriptions can have out-of-date tax rates because
+    // the invoices are generated asynchronously after the subscription is created
+    if (!payment?.subscriptionId) return;
 
     // Can't update non-draft invoices. This should never be a problem as only a
-    // subscription's initial invoice is created in a finalised state
+    // subscription's initial invoice is created in a finalised state, and the initial
+    // invoice with have the current system's tax rate applied.
     // https://docs.stripe.com/billing/invoices/subscription#update-first-invoice
     if (invoice.status !== 'draft') return;
 
@@ -173,7 +178,7 @@ export class StripeWebhookEventHandler {
   public static async handleInvoiceUpdated(
     invoice: Stripe.Invoice
   ): Promise<Payment | undefined> {
-    const payment = await this.findOrCreatePayment(invoice);
+    const payment = await this.findOrCreatePaymentForInvoice(invoice);
     if (payment) {
       log.info('Updating payment for invoice ' + invoice.id);
       payment.status = invoice.status
@@ -187,7 +192,11 @@ export class StripeWebhookEventHandler {
   }
 
   /**
-   * Processes paid invoices by extending membership periods and updating contribution amounts
+   * Handle updating the contact's membership when an invoice is paid. Stripe
+   * also sends an 'invoice.updated' event when an invoice is paid, so that
+   * handler will take care of updating payment records (including for
+   * non-subscription payments).
+   *
    * @param invoice The paid Stripe invoice
    */
   public static async handleInvoicePaid(
@@ -213,11 +222,12 @@ export class StripeWebhookEventHandler {
       return;
     }
 
-    await this.handleSuccessfulPayment(contribution, line);
+    await this.updateContributionAfterPayment(contribution, line);
   }
 
   /**
-   * Handles detached payment methods by removing references from our system
+   * Removes mandate references when a payment method is detached
+   *
    * @param paymentMethod The detached Stripe payment method
    */
   private static async handlePaymentMethodDetached(
@@ -239,7 +249,9 @@ export class StripeWebhookEventHandler {
   }
 
   /**
-   * Retrieves the associated contribution for an invoice
+   * Retrieves the associated contribution for an invoice based on
+   * the invoice customer ID
+   *
    * @param invoice The Stripe invoice
    * @returns The associated contact contribution or null if not found
    */
@@ -266,7 +278,7 @@ export class StripeWebhookEventHandler {
    * @param invoice The Stripe invoice
    * @returns The found or created payment record
    */
-  private static async findOrCreatePayment(
+  private static async findOrCreatePaymentForInvoice(
     invoice: Stripe.Invoice
   ): Promise<Payment | undefined> {
     const payment = await getRepository(Payment).findOneBy({ id: invoice.id });
@@ -355,11 +367,15 @@ export class StripeWebhookEventHandler {
   }
 
   /**
-   * Processes a successful payment by extending membership and updating contribution amounts
+   * Extends the contact's membership based on a successful contribution
+   * payment. If the contact has a next contribution amount and this payment
+   * matches it, then "activate" the next amount by updating the monthly
+   * contribution.
+   *
    * @param contribution The contact contribution record
    * @param line The invoice line item containing period and amount information
    */
-  private static async handleSuccessfulPayment(
+  private static async updateContributionAfterPayment(
     contribution: ContactContribution,
     line: Stripe.InvoiceLineItem
   ): Promise<void> {
