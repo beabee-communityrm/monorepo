@@ -1,9 +1,16 @@
-import { PaymentFilterName, Rule, paymentFilters } from '@beabee/beabee-common';
+import {
+  GetPaymentAggregationData,
+  PaymentFilterName,
+  Rule,
+  paymentFilters,
+} from '@beabee/beabee-common';
+import { createQueryBuilder } from '@beabee/core/database';
 import { paymentFilterHandlers } from '@beabee/core/filter-handlers';
 import { Contact, Payment } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
 import {
+  GetPaymentAggregationDto,
   GetPaymentDto,
   GetPaymentOptsDto,
   GetPaymentWith,
@@ -13,7 +20,7 @@ import { BaseTransformer } from '@api/transformers/BaseTransformer';
 import ContactTransformer, {
   loadContactRoles,
 } from '@api/transformers/ContactTransformer';
-import { TransformPlainToInstance } from 'class-transformer';
+import { TransformPlainToInstance, plainToInstance } from 'class-transformer';
 import { SelectQueryBuilder } from 'typeorm';
 
 class PaymentTransformer extends BaseTransformer<
@@ -68,6 +75,28 @@ class PaymentTransformer extends BaseTransformer<
 
       await loadContactRoles(contacts);
     }
+  }
+
+  async fetchAggregation(
+    auth: AuthInfo,
+    query: ListPaymentsDto
+  ): Promise<GetPaymentAggregationDto> {
+    const { db } = await this.prepareQuery(query, auth, 'read');
+
+    const qb = createQueryBuilder(Payment, 'item')
+      .select('SUM(item.amount)', 'sum')
+      .addSelect('AVG(item.amount)', 'average');
+
+    if (db) {
+      qb.where(db.where, db.params);
+    }
+
+    const result = await qb.getRawOne<GetPaymentAggregationData>();
+
+    return plainToInstance(GetPaymentAggregationDto, {
+      sum: result?.sum ?? null,
+      average: result?.average ?? null,
+    });
   }
 }
 
