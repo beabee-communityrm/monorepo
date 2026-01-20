@@ -1035,7 +1035,7 @@
       "contributionType": "",
       "deliveryOptIn": "",
       "description": "",
-      "donatedOn": "",
+      "donationDate": "",
       "email": "",
       "firstname": "",
       "hasDonated": "",
@@ -1060,7 +1060,8 @@
     "dataGroup": {
       "callout": "",
       "contact": "",
-      "contribution": "",
+      "oneTimeContributions": "",
+      "recurringContributions": "",
       "role": ""
     },
     "noContacts": "",
@@ -1105,6 +1106,7 @@
     "prorateNoTitle": "",
     "prorateYesText": "",
     "prorateYesTitle": "",
+    "recurringContribution": "",
     "restartContribution": "",
     "startContribution": "",
     "startedContribution": "",

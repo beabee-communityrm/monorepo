@@ -231,5 +231,5 @@ export const contactFilterHandlers: FilterHandlers<string> = {
   'callouts.': calloutsFilterHandler,
   tags: contactTagFilterHandler,
   hasDonated: paymentField(),
-  donatedOn: paymentField('chargeDate'),
+  donationDate: paymentField('chargeDate'),
 };

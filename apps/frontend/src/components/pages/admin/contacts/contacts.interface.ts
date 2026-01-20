@@ -127,7 +127,10 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
       [ContributionPeriod.Annually]: t('common.contributionPeriod.annually'),
     }
   ),
-  donatedOn: withLabel(contactFilters.donatedOn, t('contacts.data.donatedOn')),
+  donationDate: withLabel(
+    contactFilters.donationDate,
+    t('contacts.data.donationDate')
+  ),
   hasDonated: withLabel(
     contactFilters.hasDonated,
     t('contacts.data.hasDonated')
@@ -224,17 +227,20 @@ export function useContactFilters() {
       },
     },
     {
-      id: 'contribution',
-      label: t('contacts.dataGroup.contribution'),
+      id: 'recurringContributions',
+      label: t('contacts.dataGroup.recurringContributions'),
       items: withItems(filterItems, [
         'contributionType',
         'contributionMonthlyAmount',
         'contributionPeriod',
         'contributionCancelled',
         'manualPaymentSource',
-        'hasDonated',
-        'donatedOn',
       ]),
+    },
+    {
+      id: 'oneTimeContributions',
+      label: t('contacts.dataGroup.oneTimeContributions'),
+      items: withItems(filterItems, ['hasDonated', 'donationDate']),
     },
     {
       id: 'role',
