@@ -13,7 +13,7 @@ import {
   ManualProvider,
   PaymentProvider,
   StripeProvider,
-} from '#providers';
+} from '#providers/payment/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,

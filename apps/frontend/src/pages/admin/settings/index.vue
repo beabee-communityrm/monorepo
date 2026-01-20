@@ -102,6 +102,12 @@ meta:
             :label="t('adminSettings.payment.taxRateEnabled')"
             class="font-bold"
           />
+          <AppCheckbox
+            v-if="showOneTimeDonationSettings && profileContent"
+            v-model="profileContent.showOneTimeDonation"
+            :label="t('adminSettings.payment.showOneTimeDonation')"
+            class="font-bold"
+          />
         </div>
         <div
           v-if="paymentData.taxRateEnabled"
@@ -181,10 +187,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type {
-  ContentPaymentData,
-  ContentShareData,
-} from '@beabee/beabee-common';
+import type { ContentJoinData, ContentShareData } from '@beabee/beabee-common';
 import {
   App2ColGrid,
   AppCheckbox,
@@ -201,7 +204,7 @@ import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import { localeItems } from '@lib/i18n';
 import { generalContent as storeGeneralContent } from '@store';
 import { client } from '@utils/api';
-import { onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -219,14 +222,22 @@ const footerData = reactive({
   footerLinks: [] as { text: string; url: string }[],
 });
 
-const paymentData = ref<Pick<ContentPaymentData, 'taxRateEnabled' | 'taxRate'>>(
-  {
-    taxRateEnabled: false,
-    taxRate: 7,
-  }
-);
+const paymentData = ref({
+  taxRateEnabled: false,
+  taxRate: 7,
+});
+
+const profileContent = ref({
+  showOneTimeDonation: false,
+});
 
 const shareContent = ref<ContentShareData>();
+
+const joinContent = ref<ContentJoinData>();
+
+const showOneTimeDonationSettings = computed(() =>
+  joinContent.value?.periods.some((p) => p.name === 'one-time')
+);
 
 async function handleSaveGeneral() {
   storeGeneralContent.value = await client.content.update(
@@ -259,6 +270,7 @@ async function handleSaveFooter() {
 
 async function handleSavePayment() {
   await client.content.update('payment', paymentData.value);
+  await client.content.update('profile', profileContent.value);
 }
 
 onBeforeMount(async () => {
@@ -274,6 +286,12 @@ onBeforeMount(async () => {
     storeGeneralContent.value.footerLinks?.map((l) => ({ ...l })) || [];
 
   shareContent.value = await client.content.get('share');
+
+  joinContent.value = await client.content.get('join');
+
+  if (showOneTimeDonationSettings.value) {
+    profileContent.value = await client.content.get('profile');
+  }
 
   const paymentContent = await client.content.get('payment');
   paymentData.value = {

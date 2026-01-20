@@ -215,7 +215,8 @@
     "payment": {
       "paymentTitle": "",
       "taxRate": "",
-      "taxRateEnabled": ""
+      "taxRateEnabled": "",
+      "showOneTimeDonation": ""
     },
     "theme": {
       "bodyFont": "",
@@ -1299,7 +1300,9 @@
     "viewAllCallouts": "",
     "viewOpenCallouts": "",
     "welcome": "",
-    "yourProfile": ""
+    "yourProfile": "",
+    "makeOneTimeDonationTitle": "",
+    "makeOneTimeDonationButton": ""
   },
   "icons": {
     "welcome": {

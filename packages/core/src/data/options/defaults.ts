@@ -18,6 +18,7 @@ export default {
   'tax-rate-enabled': 'false',
   'tax-rate-percentage': '7',
   'tax-rate-stripe-id': '',
+  'show-one-time-donation': 'false',
   'show-absorb-fee': 'true',
   'show-mail-opt-in': '',
   'available-tags': '',
@@ -36,6 +37,7 @@ export default {
   'footer-terms-link-url': 'http://example.com/terms',
   'footer-facebook-link-url': '',
   'footer-twitter-link-url': '',
+  /** @deprecated Use Email.templateId instead. Kept for legacy app compatibility. */
   'email-templates': '{}',
   'newsletter-active-member-tag': 'Active member',
   'newsletter-active-user-tag': 'Active user',

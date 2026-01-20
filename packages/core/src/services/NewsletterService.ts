@@ -5,23 +5,25 @@ import { getRepository } from '#database';
 import { CantUpdateNewsletterContact } from '#errors/CantUpdateNewsletterContact';
 import { log as mainLogger } from '#logging';
 import { Contact, ContactProfile } from '#models/index';
-import { MailchimpProvider, NoneProvider } from '#providers';
+import { MailchimpProvider, NoneProvider } from '#providers/newsletter/index';
 import {
   ContactNewsletterUpdates,
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact,
 } from '#type/index';
-import { getContributionDescription } from '#utils/contact';
+import { convertContactToNlUpdate } from '#utils/newsletter';
 
 const log = mainLogger.child({ app: 'newsletter-service' });
 
 /**
- * Convert a contact to a newsletter update object that can be sent to the
- * newsletter provider
+ * Ensure the contact profile is loaded then creates a newsletter update object
+ * to be sent to the newsletter provider
  *
  * @param contact The contact
- * @returns A newsletter contact update
+ * @param updates Optional updates to apply
+ * @param opts Update options
+ * @returns
  */
 async function contactToNlUpdate(
   contact: Contact,
@@ -35,71 +37,7 @@ async function contactToNlUpdate(
     });
   }
 
-  let newStatus = updates?.newsletterStatus || contact.profile.newsletterStatus;
-  if (
-    newStatus === NewsletterStatus.None &&
-    contact.profile.newsletterStatus === NewsletterStatus.None
-  ) {
-    return undefined;
-  }
-
-  // Prevent newsletter status of subscribed users being set back to pending
-  if (
-    contact.profile.newsletterStatus === NewsletterStatus.Subscribed &&
-    newStatus === NewsletterStatus.Pending
-  ) {
-    newStatus = NewsletterStatus.Subscribed;
-  }
-
-  const groups = updates?.newsletterGroups
-    ? opts?.mergeGroups
-      ? [
-          ...contact.profile.newsletterGroups,
-          ...updates.newsletterGroups,
-        ].filter((v, i, a) => a.indexOf(v) === i)
-      : updates.newsletterGroups
-    : contact.profile.newsletterGroups;
-
-  return {
-    email: contact.email,
-    status: newStatus,
-    groups,
-    firstname: contact.firstname,
-    lastname: contact.lastname,
-    fields: {
-      REFCODE: contact.referralCode || '',
-      POLLSCODE: contact.pollsCode || '',
-      C_DESC: getContributionDescription(
-        contact.contributionType,
-        contact.contributionMonthlyAmount,
-        contact.contributionPeriod
-      ),
-      C_MNTHAMT: contact.contributionMonthlyAmount?.toFixed(2) || '',
-      C_PERIOD: contact.contributionPeriod || '',
-    },
-    isActiveMember: contact.membership?.isActive || false,
-    isActiveUser: !!contact.password.hash,
-  };
-}
-
-/**
- * Convert a list of contacts to a list of newsletter updates that can be sent
- * to the newsletter provider, ignoring any contacts that shouldn't be synced
- *
- * @param contacts The list of contacts
- * @returns A list of valid newsletter updates
- */
-async function getValidNlUpdates(
-  contacts: Contact[]
-): Promise<UpdateNewsletterContact[]> {
-  const nlUpdates = [];
-  for (const contact of contacts) {
-    const nlUpdate = await contactToNlUpdate(contact);
-    if (nlUpdate) {
-      nlUpdates.push(nlUpdate);
-    }
-  }
-  return nlUpdates;
+  return convertContactToNlUpdate(contact, updates, opts);
 }
 
 class NewsletterService {
@@ -107,35 +45,6 @@ class NewsletterService {
     config.newsletter.provider === 'mailchimp'
       ? new MailchimpProvider(config.newsletter.settings)
       : new NoneProvider();
-
-  /**
-   * Add the given tag to the list of contacts
-   *
-   * @param contacts List of contacts
-   * @param tag The tag to add
-   */
-  async addTagToContacts(contacts: Contact[], tag: string): Promise<void> {
-    log.info(`Add tag ${tag} to ${contacts.length} contacts`);
-    await this.provider.addTagToContacts(
-      (await getValidNlUpdates(contacts)).map((m) => m.email),
-      tag
-    );
-  }
-
-  /**
-   * Remove the given tag from the list of contacts. Any contacts that don't
-   * have the tag will be ignored.
-   *
-   * @param contacts  List of contacts
-   * @param tag The tag to remove
-   */
-  async removeTagFromContacts(contacts: Contact[], tag: string): Promise<void> {
-    log.info(`Remove tag ${tag} from ${contacts.length} contacts`);
-    await this.provider.removeTagFromContacts(
-      (await getValidNlUpdates(contacts)).map((m) => m.email),
-      tag
-    );
-  }
 
   /**
    * Updates or inserts a contact in the newsletter provider and handles status
@@ -195,19 +104,6 @@ class NewsletterService {
   }
 
   /**
-   * Upserts the list of contacts to the newsletter provider. This method is
-   * used for bulk operations but unlike upsertContact does not give any
-   * guarantees about the active member tag.
-   *
-   * @deprecated Only used by legacy app newsletter sync, do not use.
-   * @param contacts
-   */
-  async upsertContacts(contacts: Contact[]): Promise<void> {
-    log.info(`Upsert ${contacts.length} contacts`);
-    await this.provider.upsertContacts(await getValidNlUpdates(contacts));
-  }
-
-  /**
    * Update the merge fields of a contact in the newsletter provider. This
    * method merges the field updates with the contact's current fields, so it
    * overwrites any existing fields with the new values, but does not remove any
@@ -230,27 +126,16 @@ class NewsletterService {
   }
 
   /**
-   * Archive a list of contacts in the newsletter provider
+   * Permanently remove a contact from the newsletter provider
    *
-   * @param contacts The contacts to archive
+   * @param contact The contact to delete
    */
-  async archiveContacts(contacts: Contact[]): Promise<void> {
-    log.info(`Archive ${contacts.length} contacts`);
-    await this.provider.archiveContacts(
-      (await getValidNlUpdates(contacts)).map((m) => m.email)
-    );
-  }
-
-  /**
-   * Permanently remove contacts from the newsletter provider
-   *
-   * @param contacts The contacts to delete
-   */
-  async permanentlyDeleteContacts(contacts: Contact[]): Promise<void> {
-    log.info(`Delete ${contacts.length} contacts`);
-    await this.provider.permanentlyDeleteContacts(
-      (await getValidNlUpdates(contacts)).map((m) => m.email)
-    );
+  async permanentlyDeleteContact(contact: Contact): Promise<void> {
+    log.info(`Delete contact ${contact.id}`);
+    const nlUpdate = await contactToNlUpdate(contact);
+    if (nlUpdate) {
+      await this.provider.permanentlyDeleteContact(nlUpdate.email);
+    }
   }
 
   /**
@@ -263,15 +148,6 @@ class NewsletterService {
     email: string
   ): Promise<NewsletterContact | undefined> {
     return await this.provider.getContact(email);
-  }
-
-  /**
-   * Get all contacts from the newsletter provider
-   *
-   * @returns List of newsletter contacts
-   */
-  async getNewsletterContacts(): Promise<NewsletterContact[]> {
-    return await this.provider.getContacts();
   }
 }
 

@@ -1,64 +1,153 @@
-import { getRepository } from '@beabee/core/database';
-import { Contact, Email } from '@beabee/core/models';
+import { Contact } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
-import {
-  AuthInfo,
-  ContactEmailTemplateId,
-  EmailTemplateId,
-  PreviewEmailOptions,
-} from '@beabee/core/type';
+import { AuthInfo, PreviewEmailOptions } from '@beabee/core/type';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import {
+  CreateEmailDto,
+  DeleteEmailTemplateParams,
+  EmailPreviewDto,
   GetEmailDto,
+  GetEmailTemplateInfoDto,
+  GetEmailTemplateParams,
+  ListEmailsDto,
   PreviewAdminEmailParams,
+  PreviewContactEmailParams,
   PreviewEmailDto,
   PreviewGeneralEmailParams,
   UpdateEmailDto,
+  UpdateEmailTemplateParams,
 } from '@api/dto/EmailDto';
+import { PaginatedDto } from '@api/dto/PaginatedDto';
 import EmailTransformer from '@api/transformers/EmailTransformer';
 import { plainToInstance } from 'class-transformer';
 import {
   Authorized,
   Body,
   CurrentUser,
+  Delete,
   Get,
   JsonController,
+  NotFoundError,
+  OnUndefined,
   Param,
   Params,
   Post,
   Put,
+  QueryParams,
 } from 'routing-controllers';
 
 @Authorized('admin')
 @JsonController('/email')
 export class EmailController {
+  /**
+   * List custom emails (not template overrides) with pagination
+   */
+  @Get('/')
+  async listEmails(
+    @CurrentAuth() auth: AuthInfo,
+    @QueryParams() query: ListEmailsDto
+  ): Promise<PaginatedDto<GetEmailDto>> {
+    return await EmailTransformer.fetch(auth, query);
+  }
+
+  /**
+   * Get all email templates with metadata including override status and subject
+   */
+  @Get('/templates')
+  async getTemplates(): Promise<GetEmailTemplateInfoDto[]> {
+    return await EmailService.getTemplatesWithInfo();
+  }
+
+  /**
+   * Get a template email (override or default)
+   */
+  @Get('/template/:templateId')
+  async getTemplate(
+    @Params() { templateId }: GetEmailTemplateParams
+  ): Promise<GetEmailDto> {
+    const email = await EmailService.getTemplateEmail(templateId);
+    if (!email) {
+      throw new NotFoundError('Template not found');
+    }
+    return EmailTransformer.convert(email);
+  }
+
+  /**
+   * Create or update a template override
+   */
+  @Put('/template/:templateId')
+  async updateTemplate(
+    @Params() { templateId }: UpdateEmailTemplateParams,
+    @Body() data: UpdateEmailDto
+  ): Promise<GetEmailDto> {
+    const updated = await EmailService.createOrUpdateTemplateOverride(
+      templateId,
+      data
+    );
+
+    return EmailTransformer.convert(updated);
+  }
+
+  /**
+   * Delete a template override (reset to default)
+   */
+  @OnUndefined(204)
+  @Delete('/template/:templateId')
+  async deleteTemplate(
+    @Params() { templateId }: DeleteEmailTemplateParams
+  ): Promise<void> {
+    const deleted = await EmailService.deleteTemplateOverride(templateId);
+    if (!deleted) {
+      throw new NotFoundError();
+    }
+  }
+
+  /**
+   * Create a new custom email
+   */
+  @Post('/')
+  async createEmail(
+    @CurrentAuth() auth: AuthInfo,
+    @Body() data: CreateEmailDto
+  ): Promise<GetEmailDto> {
+    return await EmailTransformer.createOne(auth, data);
+  }
+
+  /**
+   * Get a custom email by UUID
+   */
   @Get('/:id')
   async getEmail(
     @CurrentAuth() auth: AuthInfo,
-    @Param('id') id: EmailTemplateId | string
+    @Param('id') id: string
   ): Promise<GetEmailDto | undefined> {
-    const email = await EmailService.findEmail(id);
-    return email ? EmailTransformer.convert(email, auth) : undefined;
+    return await EmailTransformer.fetchOneById(auth, id);
   }
 
+  /**
+   * Update an existing custom email
+   */
   @Put('/:id')
   async updateEmail(
     @CurrentAuth() auth: AuthInfo,
-    @Param('id') id: EmailTemplateId | string,
+    @Param('id') id: string,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto | undefined> {
-    const email = await EmailService.findEmail(id);
-    if (email) {
-      await getRepository(Email).update(email.id, data);
-      return data;
-    } else if (EmailService.isTemplateId(id)) {
-      const email = await getRepository(Email).save({
-        name: 'Email for ' + id,
-        ...data,
-      });
-      await EmailService.setTemplateEmail(id, email);
-      return EmailTransformer.convert(email, auth);
+    if (!(await EmailTransformer.updateById(auth, id, data))) {
+      throw new NotFoundError();
+    }
+    return await EmailTransformer.fetchOneById(auth, id);
+  }
+
+  /**
+   * Delete a custom email and its associated mailings
+   */
+  @OnUndefined(204)
+  @Delete('/:id')
+  async deleteEmail(@Param('id') id: string): Promise<void> {
+    if (!(await EmailService.deleteEmail(id))) {
+      throw new NotFoundError();
     }
   }
 
@@ -66,7 +155,7 @@ export class EmailController {
   async previewEmail(
     @CurrentUser({ required: true }) contact: Contact,
     @Body() data: PreviewEmailDto
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     return await this.getPreview(contact, data);
   }
 
@@ -80,7 +169,7 @@ export class EmailController {
     @CurrentUser({ required: true }) contact: Contact,
     @Params() { templateId }: PreviewGeneralEmailParams,
     @Body() data: PreviewEmailDto
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     return await this.getPreview(contact, { ...data, templateId });
   }
 
@@ -93,9 +182,9 @@ export class EmailController {
   @Post('/preview/contact/:templateId')
   async previewContactEmail(
     @CurrentUser({ required: true }) contact: Contact,
-    @Param('templateId') templateId: ContactEmailTemplateId,
+    @Params() { templateId }: PreviewContactEmailParams,
     @Body() data: PreviewEmailDto
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     return await this.getPreview(contact, { ...data, templateId });
   }
 
@@ -109,7 +198,7 @@ export class EmailController {
     @CurrentUser({ required: true }) contact: Contact,
     @Params() { templateId }: PreviewAdminEmailParams,
     @Body() data: PreviewEmailDto
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     return await this.getPreview(contact, { ...data, templateId });
   }
 
@@ -119,8 +208,8 @@ export class EmailController {
   private async getPreview(
     contact: Contact,
     data: PreviewEmailOptions
-  ): Promise<GetEmailDto> {
+  ): Promise<EmailPreviewDto> {
     const ret = await EmailService.getPreview(contact, data);
-    return plainToInstance(GetEmailDto, ret);
+    return plainToInstance(EmailPreviewDto, ret);
   }
 }

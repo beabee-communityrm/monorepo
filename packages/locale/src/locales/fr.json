@@ -215,7 +215,8 @@
     "payment": {
       "paymentTitle": "Paiement",
       "taxRate": "Taux de la TVA",
-      "taxRateEnabled": "Activer la TVA"
+      "taxRateEnabled": "Activer la TVA",
+      "showOneTimeDonation": "Afficher l’option de don unique sur l’écran d’accueil"
     },
     "theme": {
       "bodyFont": "Corps de texte",
@@ -368,7 +369,7 @@
         },
         "email": {
           "body": {
-            "default": "<p>Bonjour {'*|FNAME|*'},</p><p>Cet e-mail confirme votre réponse à <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> en utilisant votre adresse e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Cordialement</p>"
+            "default": "<p>Bonjour {'*|FNAME|*'},</p><p></p><p>Cet e-mail confirme votre réponse à <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> en utilisant votre adresse e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p></p><p>Cordialement</p>"
           },
           "collectInfoWarning": {
             "description": "Pour envoyer un e-mail à tous les participants, vous devez activer « Collecter les informations de contact » dans l'onglet Paramètres",
@@ -379,8 +380,8 @@
             "label": "Envoyer un e-mail à tous les participants après la soumission"
           },
           "subject": {
-            "placeholder": "",
-            "default": "Merci pour votre réponse"
+            "default": "Merci pour votre réponse",
+            "placeholder": ""
           },
           "title": "E-mail"
         },
@@ -683,10 +684,10 @@
           "navigationButtons": {
             "title": "Boutons"
           },
-          "title": "Traductions",
           "responseLinks": {
             "title": ""
-          }
+          },
+          "title": "Traductions"
         }
       },
       "title": "",
@@ -929,6 +930,11 @@
     "no": "Non",
     "noResults": "Aucun résultat trouvé",
     "pageCount": "Page {pageNumber} sur {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Annuellement",
+      "monthly": "Mensuellement",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "Annulé",
       "draft": "Brouillon",
@@ -937,6 +943,8 @@
       "successful": "Succès"
     },
     "perMonth": "/ mois",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "/ an",
     "role": {
       "admin": "Administrateur",
@@ -958,14 +966,7 @@
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "Oui",
-    "paymentPeriod": {
-      "annually": "Annuellement",
-      "monthly": "Mensuellement",
-      "one-time": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations ponctuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ?"
-    },
-    "perOneTime": "",
-    "perOneTimeText": ""
+    "yes": "oui"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1126,15 +1127,15 @@
     "title": "Modifier: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Objet"
-    },
     "body": {
       "label": "Message"
     },
     "preview": {
       "label": "Aperçu",
       "unavailable": "Aperçu non disponible"
+    },
+    "subject": {
+      "label": "Objet"
     }
   },
   "footer": {
@@ -1303,7 +1304,9 @@
     "viewAllCallouts": "Voir toutes les CrowdNewsrooms",
     "viewOpenCallouts": "Voir les CrowdNewsrooms actives",
     "welcome": "Bienvenue à bord {firstName} !",
-    "yourProfile": "Votre profil"
+    "yourProfile": "Votre profil",
+    "makeOneTimeDonationTitle": "Faire un don maintenant",
+    "makeOneTimeDonationButton": "Don"
   },
   "icons": {
     "welcome": {
@@ -1324,6 +1327,11 @@
       "one-time": "Notre prestataire de paiement nous fait payer des frais pour chaque transaction, ce qui signifie que nous recevons moins de cotisations ponctuelles. Pourriez-vous prendre en charge {fee} de frais de transaction ?"
     },
     "contribute": "Cotiser {contribution}",
+    "contribution": {
+      "annually": "{amount} par an",
+      "monthly": "{amount} par mois",
+      "one-time": "{amount} ponctuel"
+    },
     "errors": {
       "confirmEmail": {
         "message": "Vous y êtes presque ! Vous devez simplement confirmer votre adresse e-mail pour finaliser votre adhésion.",
@@ -1348,11 +1356,6 @@
     "privacy": "Politique de confidentialité",
     "tax": {
       "included": "La cotisation comprend {taxRate}% de TVA."
-    },
-    "contribution": {
-      "annually": "{amount} par an",
-      "monthly": "{amount} par mois",
-      "one-time": "{amount} ponctuel"
     }
   },
   "joinPayment": {
@@ -1418,10 +1421,10 @@
         "bigTitle": "E-mails de bienvenue et d'annulation",
         "cancellationEmail": "E-mail d'annulation",
         "description": "Personnalisez vos e-mail de bienvenue et d'annulation",
+        "oneTimeDonationEmail": "E-mail de don ponctuel",
         "text": "Tous les e-mails sont envoyés depuis votre adresse e-mail de support et comportent une signature standard. Vous pouvez modifier ceci dans vos paramètres d'e-mail.",
         "title": "E-mails",
-        "welcomeEmail": "E-mail de bienvenue",
-        "oneTimeDonationEmail": "E-mail de don ponctuel"
+        "welcomeEmail": "E-mail de bienvenue"
       },
       "intro": {
         "description": "Souhaitez la bienvenue à vos nouveaux membres",
@@ -1550,11 +1553,11 @@
       "success": "Copié dans le presse-papiers"
     },
     "error": "Une erreur s'est produite. Essayez de recharger la page.",
-    "remove": "Fermer la notification",
     "rateLimit": {
       "generic": "Trop de demandes. Veuillez patienter un peu et réessayer.",
       "withWait": "Trop de demandes. Veuillez attendre {time} et réessayer."
-    }
+    },
+    "remove": "Fermer la notification"
   },
   "pageTitle": {
     "confirmEmail": "Confirmer l'e-mail",

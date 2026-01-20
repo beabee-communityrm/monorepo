@@ -11,7 +11,10 @@ import { getRepository } from '#database';
 import { CantUpdateContribution, DuplicateEmailError } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Contact, JoinFlow, JoinForm, Password } from '#models/index';
-import { gcFlowProvider, stripeFlowProvider } from '#providers';
+import {
+  gcFlowProvider,
+  stripeFlowProvider,
+} from '#providers/payment-flow/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import OptionsService from '#services/OptionsService';

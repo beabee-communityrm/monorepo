@@ -2,28 +2,20 @@ import {
   ContactFilterName,
   Filters,
   PaginatedQuery,
-  Rule,
-  RuleGroup,
   calloutResponseFilters,
   contactCalloutFilters,
   contactFilters,
+  flattenRules,
   getCalloutFilters,
-  isRuleGroup,
 } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { contactFilterHandlers } from '@beabee/core/filter-handlers';
 import { Callout, Contact } from '@beabee/core/models';
 import { FilterHandlers } from '@beabee/core/type';
+import { prefixKeys } from '@beabee/core/utils/objects';
 
 import { BaseTransformer } from '@api/transformers/BaseTransformer';
-import { prefixKeys } from '@api/utils';
 import { isUUID } from 'class-validator';
-
-function flattenRules(rules: RuleGroup): Rule[] {
-  return rules.rules.flatMap((rule) =>
-    isRuleGroup(rule) ? flattenRules(rule) : rule
-  );
-}
 
 export abstract class BaseContactTransformer<
   GetDto,

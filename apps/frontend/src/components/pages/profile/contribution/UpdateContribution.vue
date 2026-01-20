@@ -39,6 +39,7 @@
         :payment-content="paymentContent"
         :show-period="showChangePeriod"
         :show-payment-method="!isAutoActiveMember"
+        mode="contribution"
       />
 
       <ProrateContribution
