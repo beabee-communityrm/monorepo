@@ -119,34 +119,33 @@ export function createInstance(
       erroredOperations: batch.errored_operations,
     });
 
-    const response = await axios({
+    const archive = await axios({
       method: 'GET',
       url: batch.response_body_url,
       responseType: 'stream',
     });
 
-    return await extractJsonArchive<T>(response.data, (json): T | null => {
-      if (!isOperationResponseArray(json) || json.length > 1) {
-        throw new Error('Unexpected batch response format');
-      }
-
-      // Last archive file can be empty
-      if (json.length === 0) {
-        return null;
-      }
-
-      const resp = json[0];
-
-      if (validateStatus && !validateStatus(resp.status_code)) {
+    const responses = await extractJsonArchive<T[]>(archive.data, (json) => {
+      if (!isOperationResponseArray(json)) {
         throw new Error(
-          `Unexpected error for ${resp.operation_id}, got ${resp.status_code}`
+          'Unexpected batch response format for batch ' + batch.id
         );
       }
 
-      return resp.status_code >= 200 && resp.status_code < 300
-        ? (JSON.parse(resp.response) as T)
-        : null;
+      return json
+        .filter((resp) => {
+          if (validateStatus && !validateStatus(resp.status_code)) {
+            throw new Error(
+              `Unexpected error for batch ${batch.id}/${resp.operation_id}, got ${resp.status_code}`
+            );
+          }
+
+          return resp.status_code >= 200 && resp.status_code < 300;
+        })
+        .map((resp) => JSON.parse(resp.response) as T);
     });
+
+    return responses.flat();
   }
 
   /**
