@@ -1733,7 +1733,11 @@
       "pending": "In afwachting van betalingen",
       "successful": "Geslaagde betalingen"
     },
-    "showingOf": "{start} tot {end} betalingen van {total} weergeven"
+    "showingOf": "{start} tot {end} betalingen van {total} weergeven",
+    "aggregation": {
+      "total": "",
+      "average": ""
+    }
   },
   "resetDevice": {
     "description": "Voer je wachtwoord in om de 2FA beveiliging te resetten, je kunt een nieuw apparaat instellen zodra je bent ingelogd.",

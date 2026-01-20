@@ -1734,7 +1734,11 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": ""
+    "showingOf": "",
+    "aggregation": {
+      "total": "",
+      "average": ""
+    }
   },
   "resetDevice": {
     "description": "Введите пароль, чтобы сбросить двухфакторной аутентификации. После входа в систему вы сможете настроить новое устройство.",

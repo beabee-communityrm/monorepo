@@ -1733,7 +1733,11 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": ""
+    "showingOf": "",
+    "aggregation": {
+      "total": "",
+      "average": ""
+    }
   },
   "resetDevice": {
     "description": "Insere a tua palavra-pase para fazer reset do seu dispositivo 2FA. Vais poder associar um novo dispositivo quando fizeres login.",

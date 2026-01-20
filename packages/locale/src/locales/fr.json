@@ -1737,7 +1737,11 @@
       "pending": "Paiements en attente",
       "successful": "Paiements réussis"
     },
-    "showingOf": "Affichage des paiements {start} à {end} sur {total}"
+    "showingOf": "Affichage des paiements {start} à {end} sur {total}",
+    "aggregation": {
+      "total": "",
+      "average": ""
+    }
   },
   "resetDevice": {
     "description": "Entrez votre mot de passe pour réinitialiser la protection par A2F. Vous pourrez configurer un nouvel appareil après connexion.",

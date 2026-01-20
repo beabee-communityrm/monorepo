@@ -1733,7 +1733,11 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": ""
+    "showingOf": "",
+    "aggregation": {
+      "total": "",
+      "average": ""
+    }
   },
   "resetDevice": {
     "description": "",
