@@ -1073,7 +1073,9 @@
       "preferredChannel": "Canal de préférence",
       "tags": "Libellés",
       "donationDate": "Date de contribution unique",
-      "hasDonated": "A effectué une contribution unique"
+      "hasDonated": "A effectué une contribution unique",
+      "totalDonationAmount": "Montant total des contributions uniques",
+      "averageDonationAmount": "Montant moyen des contributions uniques"
     },
     "dataGroup": {
       "callout": "CrowdNewsrooms",

@@ -1042,6 +1042,7 @@
       "activeUser": "",
       "amount": "",
       "annotationsCopy": "",
+      "averageDonationAmount": "",
       "contribution": "",
       "contributionCancelled": "",
       "contributionMonthlyAmount": "",
@@ -1069,7 +1070,8 @@
       "period": "",
       "phone": "",
       "preferredChannel": "",
-      "tags": ""
+      "tags": "",
+      "totalDonationAmount": ""
     },
     "dataGroup": {
       "callout": "",

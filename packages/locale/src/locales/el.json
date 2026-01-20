@@ -1069,7 +1069,9 @@
       "preferredChannel": "",
       "tags": "",
       "donationDate": "Ημερομηνία εφάπαξ συνεισφοράς",
-      "hasDonated": "Έκανε εφάπαξ συνεισφορά"
+      "hasDonated": "Έκανε εφάπαξ συνεισφορά",
+      "totalDonationAmount": "Συνολικό ποσό εφάπαξ συνεισφορών",
+      "averageDonationAmount": "Μέσο ποσό εφάπαξ συνεισφορών"
     },
     "dataGroup": {
       "callout": "",

@@ -1069,7 +1069,9 @@
       "preferredChannel": "Bevorzugter Kanal",
       "tags": "Tags",
       "donationDate": "Datum des einmaligen Beitrags",
-      "hasDonated": "Einmaliger Beitrag geleistet"
+      "hasDonated": "Einmaliger Beitrag geleistet",
+      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge",
+      "averageDonationAmount": "Durchschnitt einmaliger Beiträge"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",

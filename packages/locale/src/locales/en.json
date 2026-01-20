@@ -1069,7 +1069,9 @@
       "preferredChannel": "Preferred channel",
       "tags": "Tags",
       "donationDate": "One-time contribution date",
-      "hasDonated": "Made one-time contribution"
+      "hasDonated": "Made one-time contribution",
+      "totalDonationAmount" :"Total amount one-time contributions",
+      "averageDonationAmount":"Average amount one-time contributions"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",

@@ -1070,7 +1070,9 @@
       "preferredChannel": "Предпочтительный канал",
       "tags": "Теги",
       "donationDate": "Дата разового взноса",
-      "hasDonated": "Сделал разовый взнос"
+      "hasDonated": "Сделал разовый взнос",
+      "totalDonationAmount": "Общая сумма разовых взносов",
+      "averageDonationAmount": "Средняя сумма разовых взносов"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",

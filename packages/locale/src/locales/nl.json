@@ -1069,7 +1069,9 @@
       "preferredChannel": "Voorkeur kanaal",
       "tags": "Tags",
       "donationDate": "Datum eenmalige bijdrage",
-      "hasDonated": "Heeft eenmalige bijdrage gedaan"
+      "hasDonated": "Heeft eenmalige bijdrage gedaan",
+      "totalDonationAmount": "Totaalsom eenmalige bijdragen",
+      "averageDonationAmount": "Gemiddelde eenmalige bijdragen"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
