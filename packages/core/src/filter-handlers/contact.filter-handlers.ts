@@ -83,8 +83,9 @@ function paymentField(field?: keyof Payment): FilterHandler {
       .select('p.contactId')
       .from(Payment, 'p')
       .where("p.status = 'successful'")
-      .where('p.subscriptionId IS NULL')
-      .andWhere('p.contactId IS NOT NULL');
+      .andWhere('p.subscriptionId IS NULL')
+      .andWhere('p.contactId IS NOT NULL')
+      .distinct(true);
 
     if (field) {
       subQb.andWhere(convertToWhereClause(`p.${field}`));
