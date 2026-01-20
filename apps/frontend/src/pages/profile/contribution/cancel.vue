@@ -5,7 +5,7 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="t('menu.contribution')" />
+  <PageTitle :title="t('contribution.recurringContribution')" />
 
   <h3 class="mb-4 text-2xl font-semibold text-body">
     {{ t('contribution.cancelMessage') }}

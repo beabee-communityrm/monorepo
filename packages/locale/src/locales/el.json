@@ -1042,11 +1042,11 @@
       "activeUser": "",
       "amount": "",
       "annotationsCopy": "",
-      "contribution": "",
-      "contributionCancelled": "",
-      "contributionMonthlyAmount": "",
-      "contributionPeriod": "",
-      "contributionType": "",
+      "contribution": "Επαναλαμβανόμενη συνεισφορά",
+      "contributionCancelled": "Επαναλαμβανόμενη συνεισφορά ακυρώθηκε",
+      "contributionMonthlyAmount": "Μηνιαίο ποσό επαναλαμβανόμενης συνεισφοράς",
+      "contributionPeriod": "Περίοδος επαναλαμβανόμενης συνεισφοράς",
+      "contributionType": "Τύπος επαναλαμβανόμενης συνεισφοράς",
       "deliveryOptIn": "",
       "description": "",
       "email": "",
@@ -1068,13 +1068,14 @@
       "phone": "",
       "preferredChannel": "",
       "tags": "",
-      "donatedOn": "",
-      "hasDonated": ""
+      "donationDate": "Ημερομηνία εφάπαξ συνεισφοράς",
+      "hasDonated": "Έκανε εφάπαξ συνεισφορά"
     },
     "dataGroup": {
       "callout": "",
       "contact": "",
-      "contribution": "",
+      "recurringContributions": "",
+      "oneTimeContributions": "",
       "role": ""
     },
     "noContacts": "",
@@ -1126,7 +1127,8 @@
     "updatedPaymentSource": "",
     "willExpire": "",
     "willRenew": "",
-    "willRenewWithNewAmount": ""
+    "willRenewWithNewAmount": "",
+    "recurringContribution": "Επαναλαμβανόμενη συνεισφορά"
   },
   "editCallout": {
     "replicated": "",
@@ -1393,8 +1395,6 @@
   },
   "homePage": {
     "editProfile": "",
-    "makeOneTimeDonationButton": "Κάντε δωρεά",
-    "makeOneTimeDonationTitle": "Κάνε δωρεά τώρα",
     "manageContribution": "",
     "newCallout": "",
     "openCallouts": "",
@@ -1403,7 +1403,9 @@
     "viewAllCallouts": "",
     "viewOpenCallouts": "",
     "welcome": "",
-    "yourProfile": ""
+    "yourProfile": "",
+    "makeOneTimeDonationTitle": "Κάνε εφάπαξ συνεισφορά τώρα",
+    "makeOneTimeDonationButton": "Συνεισφορά"
   },
   "icons": {
     "welcome": {
@@ -1470,7 +1472,7 @@
     "goBackButton": "",
     "note": "",
     "willBeContributing": "",
-    "willBeDonating": "Θα κάνετε δωρεά {amount}"
+    "willBeDonating": "Θα κάνετε εφάπαξ συνεισφορά {amount}"
   },
   "joinSetup": {
     "confirmDetails": "",
@@ -1523,10 +1525,10 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
-        "oneTimeDonationEmail": "Email εφάπαξ δωρεάς",
         "text": "",
         "title": "",
-        "welcomeEmail": ""
+        "welcomeEmail": "",
+        "oneTimeDonationEmail": "Email εφάπαξ συνεισφοράς"
       },
       "intro": {
         "description": "",

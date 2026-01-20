@@ -220,9 +220,9 @@
     },
     "payment": {
       "paymentTitle": "Betaling",
-      "showOneTimeDonation": "Eenmalige donatieoptie op het startscherm weergeven",
       "taxRate": "BTW-tarief",
-      "taxRateEnabled": "BTW inschakelen"
+      "taxRateEnabled": "BTW inschakelen",
+      "showOneTimeDonation": "Eenmalige bijdrageoptie op het startscherm weergeven"
     },
     "theme": {
       "bodyFont": "Tekst lichaam",
@@ -1042,11 +1042,11 @@
       "activeUser": "",
       "amount": "Bedrag",
       "annotationsCopy": "Contact succesvol bijgewerkt",
-      "contribution": "Bijdrage",
-      "contributionCancelled": "Opzegging contributie",
-      "contributionMonthlyAmount": "Contributie maandbedrag",
-      "contributionPeriod": "Contributie periode",
-      "contributionType": "Type bijdrage",
+      "contribution": "Terugkerende bijdrage",
+      "contributionCancelled": "Terugkerende bijdrage geannuleerd",
+      "contributionMonthlyAmount": "Terugkerende bijdrage maandelijks bedrag",
+      "contributionPeriod": "Terugkerende bijdrage periode",
+      "contributionType": "Terugkerende bijdrage type",
       "deliveryOptIn": "Keuze voor levering",
       "description": "Beschrijving",
       "email": "E-mail",
@@ -1068,13 +1068,14 @@
       "phone": "Telefoon",
       "preferredChannel": "Voorkeur kanaal",
       "tags": "Tags",
-      "donatedOn": "Gedoneerd op",
-      "hasDonated": "Heeft gedoneerd"
+      "donationDate": "Datum eenmalige bijdrage",
+      "hasDonated": "Heeft eenmalige bijdrage gedaan"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Contact informatie",
-      "contribution": "Bijdrage",
+      "recurringContributions": "Doorlopende bijdragen",
+      "oneTimeContributions": "Eenmalige bijdragen",
       "role": "Rol"
     },
     "noContacts": "Nog geen contacten toegevoegd",
@@ -1126,7 +1127,8 @@
     "updatedPaymentSource": "Je betaalmethode is bijgewerkt.",
     "willExpire": "Je bijdrage vervalt over {expires}.",
     "willRenew": "Je bijdrage wordt automatisch verlengd op {renewalDate}.",
-    "willRenewWithNewAmount": "Je bijdrage zal automatisch vernieuwd worden op {renewalDate} en zal veranderen naar het door jou gekozen bedrag van {nextAmount}."
+    "willRenewWithNewAmount": "Je bijdrage zal automatisch vernieuwd worden op {renewalDate} en zal veranderen naar het door jou gekozen bedrag van {nextAmount}.",
+    "recurringContribution": "Terugkerende bijdrage"
   },
   "editCallout": {
     "replicated": "Je CrowdNewsroom is succesvol gerepliceerd en je bent nu de nieuwe kopie aan het bewerken. Zorg ervoor dat je de titel aanpast op het tabblad “Titel en afbeelding”.",
@@ -1393,8 +1395,6 @@
   },
   "homePage": {
     "editProfile": "Bewerk je community profiel",
-    "makeOneTimeDonationButton": "Doneer",
-    "makeOneTimeDonationTitle": "Doe nu een donatie",
     "manageContribution": "Je bijdrage beheren",
     "newCallout": "Nieuwe CrowdNewsroom!",
     "openCallouts": "CrowdNewsroom openen",
@@ -1403,7 +1403,9 @@
     "viewAllCallouts": "Alle CrowdNewsrooms bekijken",
     "viewOpenCallouts": "Open CrowdNewsrooms bekijken",
     "welcome": "Welkom bij ons {firstName}!",
-    "yourProfile": "Uw profiel"
+    "yourProfile": "Uw profiel",
+    "makeOneTimeDonationTitle": "Doe nu een eenmalige bijdrage",
+    "makeOneTimeDonationButton": "Bijdrage doen"
   },
   "icons": {
     "welcome": {
@@ -1470,7 +1472,7 @@
     "goBackButton": "Terug naar het vorige scherm",
     "note": "Je kunt je bijdrage op elk moment wijzigen en je betalingsgeschiedenis bekijken in je ledenaccount.",
     "willBeContributing": "Je draagt {contribution} bij",
-    "willBeDonating": "Je doet een donatie van {amount}"
+    "willBeDonating": "Je doet een eenmalige bijdrage van {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Bevestig uw gegevens",
@@ -1523,7 +1525,7 @@
         "bigTitle": "Welkomst- en annuleringsmails",
         "cancellationEmail": "E-mail voor annulering",
         "description": "Pas je welkomst- en annuleringsmails aan",
-        "oneTimeDonationEmail": "E-mail voor eenmalige donatie",
+        "oneTimeDonationEmail": "E-mail voor eenmalige bijdrage",
         "text": "Alle e-mails worden verzonden vanaf uw support e-mailadres en bevatten een standaard handtekening. U kunt deze wijzigen in uw e-mailinstellingen.",
         "title": "E-mails",
         "welcomeEmail": "Welkom e-mail"

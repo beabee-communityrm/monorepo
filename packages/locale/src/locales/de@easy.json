@@ -1068,13 +1068,14 @@
       "phone": "",
       "preferredChannel": "",
       "tags": "",
-      "donatedOn": "",
+      "donationDate": "",
       "hasDonated": ""
     },
     "dataGroup": {
       "callout": "",
       "contact": "",
-      "contribution": "",
+      "recurringContributions": "",
+      "oneTimeContributions": "",
       "role": ""
     },
     "noContacts": "",
@@ -1126,7 +1127,8 @@
     "updatedPaymentSource": "",
     "willExpire": "",
     "willRenew": "",
-    "willRenewWithNewAmount": ""
+    "willRenewWithNewAmount": "",
+    "recurringContribution": ""
   },
   "editCallout": {
     "replicated": "",

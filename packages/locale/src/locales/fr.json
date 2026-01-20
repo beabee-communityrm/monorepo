@@ -1046,11 +1046,11 @@
       "activeUser": "Utilisateur actif",
       "amount": "Montant",
       "annotationsCopy": "Le contact a bien été mis à jour",
-      "contribution": "Cotisation",
-      "contributionCancelled": "Cotisation annulée",
-      "contributionMonthlyAmount": "Montant de cotisation mensuelle",
-      "contributionPeriod": "Période de cotisation",
-      "contributionType": "Type de cotisation",
+      "contribution": "Cotisation récurrente",
+      "contributionCancelled": "Cotisation récurrente annulée",
+      "contributionMonthlyAmount": "Montant mensuel de cotisation récurrente",
+      "contributionPeriod": "Période de cotisation récurrente",
+      "contributionType": "Type de cotisation récurrente",
       "deliveryOptIn": "",
       "description": "Description",
       "email": "E-mail",
@@ -1072,13 +1072,14 @@
       "phone": "Numéro de téléphone",
       "preferredChannel": "Canal de préférence",
       "tags": "Libellés",
-      "donatedOn": "Donné le",
-      "hasDonated": "A donné"
+      "donationDate": "Date de contribution unique",
+      "hasDonated": "A effectué une contribution unique"
     },
     "dataGroup": {
       "callout": "CrowdNewsrooms",
       "contact": "Informations de contact",
-      "contribution": "Cotisation",
+      "recurringContributions": "Cotisations récurrentes",
+      "oneTimeContributions": "Dons uniques",
       "role": "Rôle"
     },
     "noContacts": "Aucun contact ajouté pour le moment",
@@ -1130,7 +1131,8 @@
     "updatedPaymentSource": "Votre moyen de paiement a été mis à jour.",
     "willExpire": "Votre cotisation expire dans {expires}.",
     "willRenew": "Votre cotisation sera automatiquement renouvelée le {renewalDate}.",
-    "willRenewWithNewAmount": "Votre cotisation sera automatiquement renouvelée le {renewalDate} et sera modifiée pour le montant choisi de {nextAmount}."
+    "willRenewWithNewAmount": "Votre cotisation sera automatiquement renouvelée le {renewalDate} et sera modifiée pour le montant choisi de {nextAmount}.",
+    "recurringContribution": "Cotisation récurrente"
   },
   "editCallout": {
     "replicated": "Votre CrowdNewsrooms a bien été répliquée et vous modifiez désormais la copie. Assurez-vous de modifier le titre dans l'onglet « Titre et image ».",
@@ -1397,8 +1399,6 @@
   },
   "homePage": {
     "editProfile": "Modifiez votre profil communautaire",
-    "makeOneTimeDonationButton": "Don",
-    "makeOneTimeDonationTitle": "Faire un don maintenant",
     "manageContribution": "Gérer votre cotisation",
     "newCallout": "Nouvelle CrowdNewsrooms !",
     "openCallouts": "CrowdNewsrooms actives",
@@ -1407,7 +1407,9 @@
     "viewAllCallouts": "Voir toutes les CrowdNewsrooms",
     "viewOpenCallouts": "Voir les CrowdNewsrooms actives",
     "welcome": "Bienvenue à bord {firstName} !",
-    "yourProfile": "Votre profil"
+    "yourProfile": "Votre profil",
+    "makeOneTimeDonationTitle": "Faire une contribution unique maintenant",
+    "makeOneTimeDonationButton": "Contribution"
   },
   "icons": {
     "welcome": {
@@ -1474,7 +1476,7 @@
     "goBackButton": "Revenir à l'écran précédent",
     "note": "Vous pourrez modifier votre cotisation et accéder à votre historique de paiement à tout moment depuis votre compte membre",
     "willBeContributing": "Vous cotiserez {contribution}",
-    "willBeDonating": "Vous ferez un don de {amount}"
+    "willBeDonating": "Vous ferez une contribution unique de {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Veuillez confirmer vos informations",
@@ -1527,7 +1529,7 @@
         "bigTitle": "E-mails de bienvenue et d'annulation",
         "cancellationEmail": "E-mail d'annulation",
         "description": "Personnalisez vos e-mail de bienvenue et d'annulation",
-        "oneTimeDonationEmail": "E-mail de don ponctuel",
+        "oneTimeDonationEmail": "E-mail de contribution unique",
         "text": "Tous les e-mails sont envoyés depuis votre adresse e-mail de support et comportent une signature standard. Vous pouvez modifier ceci dans vos paramètres d'e-mail.",
         "title": "E-mails",
         "welcomeEmail": "E-mail de bienvenue"
