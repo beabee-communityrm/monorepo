@@ -964,9 +964,9 @@
     "until": "tot",
     "yes": "Ja",
     "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
+      "oneTime": "Eenmalig",
+      "recurring": "Terugkerend",
+      "prorated": "Prorata"
     }
   },
   "contactAccount": {
@@ -997,6 +997,8 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "Geannuleerd op",
     "contribution": "Bijdrage",
+    "recurring": "Terugkerend",
+    "oneTime": "Eenmalig",
     "contributionType": "Type",
     "joinSurvey": "Meedoen aan onderzoek",
     "newsletter": {

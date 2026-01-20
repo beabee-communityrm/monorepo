@@ -966,9 +966,9 @@
     "until": "доки",
     "yes": "Так",
     "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
+      "oneTime": "Одноразовий",
+      "recurring": "Регулярний",
+      "prorated": "Пропорційний"
     }
   },
   "contactAccount": {
@@ -999,6 +999,8 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "Скасовано або",
     "contribution": "Внесок",
+    "recurring": "Регулярний",
+    "oneTime": "Одноразовий",
     "contributionType": "Тип",
     "joinSurvey": "Приєднатися до опитування",
     "newsletter": {
