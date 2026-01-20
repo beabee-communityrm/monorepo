@@ -3,6 +3,7 @@ import { AuthInfo } from '@beabee/core/type';
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
 import {
+  GetPaymentAggregationDto,
   GetPaymentDto,
   GetPaymentOptsDto,
   ListPaymentsDto,
@@ -27,6 +28,14 @@ export class PaymentController {
     @QueryParams() query: ListPaymentsDto
   ): Promise<PaginatedDto<GetPaymentDto>> {
     return await PaymentTransformer.fetch(auth, query);
+  }
+
+  @Get('/aggregate')
+  async getPaymentAggregation(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @QueryParams() query: ListPaymentsDto
+  ): Promise<GetPaymentAggregationDto> {
+    return await PaymentTransformer.fetchAggregation(auth, query);
   }
 
   @Get('/:id')

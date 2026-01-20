@@ -1,4 +1,5 @@
 import type {
+  GetPaymentAggregationData,
   GetPaymentDataWith,
   GetPaymentWith,
   GetPaymentsQuery,
@@ -66,5 +67,20 @@ export class PaymentClient extends BaseClient {
       ...data,
       items: data.items.map((item) => PaymentClient.deserialize(item)),
     };
+  }
+
+  /**
+   * Aggregate payments with optional filtering
+   * @param query - Query parameters for filtering payments
+   * @returns A paginated list of payments
+   */
+  async aggregate(
+    query: GetPaymentsQuery = {}
+  ): Promise<GetPaymentAggregationData> {
+    const { data } = await this.fetch.get<GetPaymentAggregationData>(
+      '/aggregate',
+      query
+    );
+    return data;
   }
 }

@@ -73,3 +73,13 @@ export class ListPaymentsDto extends GetPaginatedQuery {
   @IsIn(['amount', 'chargeDate'])
   sort?: string;
 }
+
+export class GetPaymentAggregationDto {
+  @IsNumber()
+  @IsOptional()
+  sum!: number | null;
+
+  @IsNumber()
+  @IsOptional()
+  average!: number | null;
+}

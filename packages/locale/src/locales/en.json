@@ -1721,7 +1721,11 @@
       "pending": "Pending payments",
       "successful": "Successful payments"
     },
-    "showingOf": "Showing {start} to {end} payments out of {total}"
+    "showingOf": "Showing {start} to {end} payments out of {total}",
+    "aggregation": {
+      "total": "Total Amount",
+      "average": "Average Amount"
+    }
   },
   "resetDevice": {
     "description": "Enter your password to reset 2FA protection, you will be able to set up a new device once you are logged in.",

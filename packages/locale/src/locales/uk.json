@@ -1728,7 +1728,11 @@
       "pending": "Очікувані платежі",
       "successful": "Успішні платежі"
     },
-    "showingOf": "Показано платежі з {start} до {end} з {total}"
+    "showingOf": "Показано платежі з {start} до {end} з {total}",
+    "aggregation": {
+      "total": "",
+      "average": ""
+    }
   },
   "resetDevice": {
     "description": "Введіть свій пароль, щоб скинути захист 2FA, ви зможете налаштувати новий пристрій після входу в систему.",

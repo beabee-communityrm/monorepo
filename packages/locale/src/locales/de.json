@@ -1721,7 +1721,11 @@
       "pending": "Ausstehende Zahlungen",
       "successful": "Erfolgreiche Zahlungen"
     },
-    "showingOf": "Zahlungen {start} bis {end} von {total}"
+    "showingOf": "Zahlungen {start} bis {end} von {total}",
+    "aggregation": {
+      "total": "Gesamtbetrag",
+      "average": "Durchschnittsbetrag"
+    }
   },
   "resetDevice": {
     "description": "Geben Sie Ihr Passwort ein, um den 2FA-Schutz zurückzusetzen. Sobald Sie eingeloggt sind, können Sie ein neues Gerät einrichten.",

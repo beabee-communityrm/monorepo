@@ -1714,6 +1714,10 @@
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "",
+      "total": ""
+    },
     "filter": {
       "all": "",
       "cancelled": "",
