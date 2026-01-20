@@ -25,7 +25,7 @@ export const syncActiveMemberTag = async (
       relations: { contact: { profile: true } },
     });
 
-    log.info(`Got ${memberships.length} memberships`);
+    log.info(`📊 Got ${memberships.length} memberships`);
 
     // Filter contacts who are no longer active members but still have a newsletter status
     const inactiveContacts = memberships
@@ -41,25 +41,23 @@ export const syncActiveMemberTag = async (
     );
 
     if (args.dryRun) {
-      log.info('DRY RUN - Following actions would be performed:');
-      log.info(
-        `Contacts that would lose active member tag: ${inactiveContacts.length}`
-      );
-      for (const contact of inactiveContacts) {
-        log.info(
-          `- ${contact.email} (Newsletter status: ${contact.profile.newsletterStatus})`
-        );
-      }
-      log.info('\nDRY RUN - No changes were made');
-    } else {
-      log.info(
-        `Removing active member tag "${activeMemberTag}" from ${inactiveContacts.length} contacts`
-      );
+      log.info('DRY RUN - No changes will actually be made');
+    }
+
+    log.info(
+      `🧹 Removing active member tag for ${inactiveContacts.length} contacts:`
+    );
+    for (const contact of inactiveContacts) {
+      log.info(`  • ${contact.email}`);
+    }
+
+    if (!args.dryRun) {
       await newsletterBulkService.removeTagFromContacts(
         inactiveContacts,
         activeMemberTag
       );
-      log.info('Sync completed successfully');
     }
+
+    log.info('✅ Done removing active member tag.');
   });
 };
