@@ -964,9 +964,9 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
+      "oneTime": "Εφάπαξ",
+      "recurring": "Επαναλαμβανόμενος",
+      "prorated": "Αναλογικός"
     }
   },
   "contactAccount": {
@@ -997,6 +997,8 @@
     "callouts": "",
     "cancellationDate": "",
     "contribution": "",
+    "recurring": "Επαναλαμβανόμενος",
+    "oneTime": "Εφάπαξ",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {

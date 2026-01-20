@@ -968,9 +968,9 @@
     "until": "jusqu'à",
     "yes": "oui",
     "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
+      "oneTime": "Ponctuel",
+      "recurring": "Récurrent",
+      "prorated": "Proratisé"
     }
   },
   "contactAccount": {
@@ -1001,6 +1001,8 @@
     "callouts": "CrowdNewsrooms",
     "cancellationDate": "Annulé le",
     "contribution": "Cotisation",
+    "recurring": "Récurrent",
+    "oneTime": "Ponctuel",
     "contributionType": "Type",
     "joinSurvey": "Rejoindre le sondage",
     "newsletter": {
