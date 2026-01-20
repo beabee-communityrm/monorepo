@@ -9,11 +9,26 @@ meta:
   <PageTitle :title="t('menu.payments')" border />
 
   <AppFilterGrid v-model="currentStatus" :items="statusItems">
+    <div v-if="aggregation" class="mb-6 flex gap-4">
+      <KeyStat
+        :label="t('paymentsAdmin.aggregation.total')"
+        :stat="aggregation.sum === null ? '-' : n(aggregation.sum, 'currency')"
+      />
+      <KeyStat
+        :label="t('paymentsAdmin.aggregation.average')"
+        :stat="
+          aggregation.average === null
+            ? '-'
+            : n(aggregation.average, 'currency')
+        "
+      />
+    </div>
     <AppSearch
       v-model="currentRules"
       :filter-groups="filterGroups"
       @reset="currentRules = undefined"
     />
+
     <AppPaginatedTable
       v-model:query="currentPaginatedQuery"
       keypath="paymentsAdmin.showingOf"
@@ -43,6 +58,7 @@ meta:
 
 <script lang="ts" setup>
 import type {
+  GetPaymentAggregationData,
   GetPaymentDataWith,
   GetPaymentsQuery,
   Paginated,
@@ -50,6 +66,7 @@ import type {
 import { PaymentStatus as PaymentStatusEnum } from '@beabee/beabee-common';
 import { AppFilterGrid, PageTitle, formatLocale } from '@beabee/vue';
 
+import KeyStat from '@components/pages/admin/KeyStat.vue';
 import {
   filterGroups,
   headers,
@@ -86,6 +103,7 @@ const currentStatus = defineParam('status', (v) => v || '', 'replace');
 const currentRules = defineRulesParam();
 const currentPaginatedQuery = definePaginatedQuery('chargeDate');
 const paymentsTable = ref<Paginated<GetPaymentDataWith<'contact'>>>();
+const aggregation = ref<GetPaymentAggregationData>();
 
 watchEffect(async () => {
   const rules: GetPaymentsQuery['rules'] = { condition: 'AND', rules: [] };
@@ -109,5 +127,10 @@ watchEffect(async () => {
     },
     ['contact']
   );
+
+  aggregation.value = await client.payment.aggregate({
+    ...currentPaginatedQuery.query,
+    rules,
+  });
 });
 </script>
