@@ -135,6 +135,14 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
     contactFilters.hasDonated,
     t('contacts.data.hasDonated')
   ),
+  totalDonationAmount: withLabel(
+    contactFilters.totalDonationAmount,
+    t('contacts.data.totalDonationAmount')
+  ),
+  averageDonationAmount: withLabel(
+    contactFilters.averageDonationAmount,
+    t('contacts.data.averageDonationAmount')
+  ),
   manualPaymentSource: withLabel(
     contactFilters.manualPaymentSource,
     t('contacts.data.manualPaymentSource')
@@ -240,7 +248,12 @@ export function useContactFilters() {
     {
       id: 'oneTimeContributions',
       label: t('contacts.dataGroup.oneTimeContributions'),
-      items: withItems(filterItems, ['hasDonated', 'donationDate']),
+      items: withItems(filterItems, [
+        'hasDonated',
+        'donationDate',
+        'totalDonationAmount',
+        'averageDonationAmount',
+      ]),
     },
     {
       id: 'role',

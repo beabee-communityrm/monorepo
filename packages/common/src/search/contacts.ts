@@ -56,6 +56,8 @@ export const contactFilters = {
   hasDonated: {
     type: 'boolean',
   },
+  totalDonationAmount: { type: 'number' },
+  averageDonationAmount: { type: 'number' },
   deliveryOptIn: {
     type: 'boolean',
   },

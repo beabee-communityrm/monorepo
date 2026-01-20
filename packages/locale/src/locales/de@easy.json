@@ -1055,7 +1055,9 @@
       "preferredChannel": "",
       "tags": "",
       "donationDate": "",
-      "hasDonated": ""
+      "hasDonated": "",
+      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge",
+      "averageDonationAmount": "Durchschnitt einmaliger Beiträge"
     },
     "dataGroup": {
       "callout": "",
