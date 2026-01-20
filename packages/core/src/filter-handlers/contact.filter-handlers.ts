@@ -98,6 +98,30 @@ function paymentField(field?: keyof Payment): FilterHandler {
 }
 
 /**
+ * Creates a filter handler for payment-statistics-related fields
+ * @param statistic - The statistic to use to calculate the result
+ * @returns A filter handler function for the specified payment field based on the statistics method
+ */
+function paymentStatistic(statistic?: 'avg' | 'total'): FilterHandler {
+  return (qb, { fieldPrefix, convertToWhereClause }) => {
+    const aggregateExpr =
+      statistic === 'total' ? 'SUM(p.amount)' : 'AVG(p.amount)';
+
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select('p.contactId')
+      .from(Payment, 'p')
+      .where("p.status = 'successful'")
+      .andWhere('p.subscriptionId IS NULL')
+      .andWhere('p.contactId IS NOT NULL')
+      .groupBy('p.contactId')
+      .having(convertToWhereClause(aggregateExpr));
+
+    qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
+  };
+}
+
+/**
  * Creates a filter handler for active permission-related fields
  * @param field - The field to filter on
  * @returns A filter handler function for the specified permission field
@@ -232,4 +256,6 @@ export const contactFilterHandlers: FilterHandlers<string> = {
   tags: contactTagFilterHandler,
   hasDonated: paymentField(),
   donationDate: paymentField('chargeDate'),
+  totalDonationAmount: paymentStatistic('total'),
+  averageDonationAmount: paymentStatistic('avg'),
 };
