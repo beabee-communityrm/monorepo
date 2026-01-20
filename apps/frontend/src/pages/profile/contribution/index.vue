@@ -5,7 +5,7 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="t('menu.contribution')" />
+  <PageTitle :title="t('contribution.recurringContribution')" />
 
   <App2ColGrid v-if="!isIniting">
     <template #col1>

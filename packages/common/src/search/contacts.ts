@@ -50,7 +50,7 @@ export const contactFilters = {
       ContributionPeriod.Annually,
     ] satisfies ContributionPeriod[] as ContributionPeriod[],
   },
-  donatedOn: {
+  donationDate: {
     type: 'date',
   },
   hasDonated: {

@@ -1054,13 +1054,14 @@
       "phone": "",
       "preferredChannel": "",
       "tags": "",
-      "donatedOn": "",
+      "donationDate": "",
       "hasDonated": ""
     },
     "dataGroup": {
       "callout": "",
       "contact": "",
-      "contribution": "",
+      "recurringContributions": "",
+      "oneTimeContributions": "",
       "role": ""
     },
     "noContacts": "",
@@ -1114,7 +1115,8 @@
     "willRenew": "",
     "willRenewWithNewAmount": "",
     "perMonthText": "",
-    "perYearText": ""
+    "perYearText": "",
+    "recurringContribution": ""
   },
   "editCallout": {
     "replicated": "",
