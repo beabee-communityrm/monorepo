@@ -342,6 +342,12 @@ export async function chargeOneTimePayment(
     collection_method: 'charge_automatically',
     auto_advance: true,
     currency: config.currencyCode,
+    custom_fields: [
+      {
+        name: 'beabee-invoice-type',
+        value: 'one-time-payment-detach-mandate',
+      },
+    ],
   });
 
   await stripe.invoiceItems.create({
