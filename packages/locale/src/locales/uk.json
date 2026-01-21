@@ -1072,8 +1072,8 @@
       "tags": "Теги",
       "donationDate": "Дата одноразового внеску",
       "hasDonated": "Зробив одноразовий внесок",
-      "totalDonationAmount": "Загальна сума одноразових внесків",
-      "averageDonationAmount": "Середня сума одноразових внесків"
+      "totalDonationAmount": "Загальна сума одноразових внесків (за весь час)",
+      "averageDonationAmount": "Середня сума одноразових внесків (за весь час)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",

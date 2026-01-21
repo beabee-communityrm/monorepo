@@ -1070,8 +1070,8 @@
       "tags": "Tags",
       "donationDate": "Datum eenmalige bijdrage",
       "hasDonated": "Heeft eenmalige bijdrage gedaan",
-      "totalDonationAmount": "Totaalsom eenmalige bijdragen",
-      "averageDonationAmount": "Gemiddelde eenmalige bijdragen"
+      "totalDonationAmount": "Totaalsom eenmalige bijdragen (aller tijden)",
+      "averageDonationAmount": "Gemiddelde eenmalige bijdragen (aller tijden)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",

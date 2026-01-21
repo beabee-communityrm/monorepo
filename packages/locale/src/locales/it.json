@@ -1070,8 +1070,8 @@
       "tags": "",
       "donationDate": "Data del contributo una tantum",
       "hasDonated": "Ha effettuato un contributo una tantum",
-      "totalDonationAmount": "Importo totale contributi una tantum",
-      "averageDonationAmount": "Importo medio contributi una tantum"
+      "totalDonationAmount": "Importo totale contributi una tantum (complessivo)",
+      "averageDonationAmount": "Importo medio contributi una tantum (complessivo)"
     },
     "dataGroup": {
       "callout": "Callout",

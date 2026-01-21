@@ -1070,8 +1070,8 @@
       "tags": "Etiquetas",
       "donationDate": "Data da contribuição única",
       "hasDonated": "Fez uma contribuição única",
-      "totalDonationAmount": "Valor total de contribuições únicas",
-      "averageDonationAmount": "Valor médio de contribuições únicas"
+      "totalDonationAmount": "Valor total de contribuições únicas (desde sempre)",
+      "averageDonationAmount": "Valor médio de contribuições únicas (desde sempre)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",

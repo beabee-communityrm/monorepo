@@ -1071,8 +1071,8 @@
       "tags": "Теги",
       "donationDate": "Дата разового взноса",
       "hasDonated": "Сделал разовый взнос",
-      "totalDonationAmount": "Общая сумма разовых взносов",
-      "averageDonationAmount": "Средняя сумма разовых взносов"
+      "totalDonationAmount": "Общая сумма разовых взносов (за всё время)",
+      "averageDonationAmount": "Средняя сумма разовых взносов (за всё время)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",

@@ -1074,8 +1074,8 @@
       "tags": "Libellés",
       "donationDate": "Date de contribution unique",
       "hasDonated": "A effectué une contribution unique",
-      "totalDonationAmount": "Montant total des contributions uniques",
-      "averageDonationAmount": "Montant moyen des contributions uniques"
+      "totalDonationAmount": "Montant total des contributions uniques (depuis le début)",
+      "averageDonationAmount": "Montant moyen des contributions uniques (depuis le début)"
     },
     "dataGroup": {
       "callout": "CrowdNewsrooms",
