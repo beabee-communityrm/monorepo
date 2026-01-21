@@ -108,7 +108,7 @@ function getRowClass(item: GetPaymentData) {
 }
 
 function downloadInvoice() {
-  // TODO: Invoice Download Button
+  // TODO: Add invoice download API-endpoint
 }
 
 watchEffect(async () => {
@@ -119,7 +119,11 @@ watchEffect(async () => {
     order: SortType.Desc,
     rules: {
       condition: 'AND',
-      rules: [{ field: 'status', operator: 'not_equal', value: ['draft'] }],
+      rules: [
+        { field: 'status', operator: 'not_equal', value: ['draft'] },
+        // TODO: Enable when paymentType exists
+        // { field: 'paymentType', operator: 'equal', value: ['one-time'] },
+      ],
     },
   };
   paymentsHistoryTable.value = await client.contact.payment.list(
