@@ -12,9 +12,9 @@ import {
   SegmentOngoingEmail,
 } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
+import { newsletterBulkService } from '@beabee/core/services';
 import ContactsService from '@beabee/core/services/ContactsService';
 import EmailService from '@beabee/core/services/EmailService';
-import NewsletterService from '@beabee/core/services/NewsletterService';
 
 import ContactTransformer from '@api/transformers/ContactTransformer';
 import { In } from 'typeorm';
@@ -65,7 +65,9 @@ async function processSegment(segment: Segment) {
   const oldContacts =
     segment.newsletterTag ||
     outgoingEmails.some((oe) => oe.trigger === 'onLeave')
-      ? await ContactsService.findByIds(oldSegmentContactIds)
+      ? await ContactsService.findByIds(oldSegmentContactIds, {
+          relations: { profile: true },
+        })
       : [];
 
   for (const outgoingEmail of outgoingEmails) {
@@ -81,11 +83,11 @@ async function processSegment(segment: Segment) {
   }
 
   if (segment.newsletterTag) {
-    await NewsletterService.addTagToContacts(
+    await newsletterBulkService.addTagToContacts(
       newContacts,
       segment.newsletterTag
     );
-    await NewsletterService.removeTagFromContacts(
+    await newsletterBulkService.removeTagFromContacts(
       oldContacts,
       segment.newsletterTag
     );

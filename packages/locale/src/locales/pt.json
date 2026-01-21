@@ -1033,11 +1033,11 @@
       "activeUser": "",
       "amount": "Montante",
       "annotationsCopy": "Contacto atualizado",
-      "contribution": "Contribuição",
-      "contributionCancelled": "Contribuição cancelada",
-      "contributionMonthlyAmount": "Valor mensal da contribuição",
-      "contributionPeriod": "Período da contribuição",
-      "contributionType": "Tipo de contributo",
+      "contribution": "Contribuição recorrente",
+      "contributionCancelled": "Contribuição recorrente cancelada",
+      "contributionMonthlyAmount": "Valor mensal da contribuição recorrente",
+      "contributionPeriod": "Período da contribuição recorrente",
+      "contributionType": "Tipo de contribuição recorrente",
       "deliveryOptIn": "",
       "description": "Descrição",
       "email": "Email",
@@ -1058,12 +1058,17 @@
       "period": "Período",
       "phone": "Telefone",
       "preferredChannel": "Canal preferido",
-      "tags": "Etiquetas"
+      "tags": "Etiquetas",
+      "donationDate": "Data da contribuição única",
+      "hasDonated": "Fez uma contribuição única",
+      "totalDonationAmount": "Valor total de contribuições únicas (desde sempre)",
+      "averageDonationAmount": "Valor médio de contribuições únicas (desde sempre)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Informação de contacto",
-      "contribution": "Contribuição",
+      "recurringContributions": "Contribuições recorrentes",
+      "oneTimeContributions": "Contribuições únicas",
       "role": "Cargo"
     },
     "noContacts": "Nenhum contacto ainda adicionado",
@@ -1117,7 +1122,8 @@
     "updatedPaymentSource": "O teu método de pagamento foi atualizado.",
     "willExpire": "A tua contribuição vai expirar a {expires}.",
     "willRenew": "A tua contribuição vai renovar automaticamente a {renewalDate}.",
-    "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}."
+    "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}.",
+    "recurringContribution": "Contribuição recorrente"
   },
   "editCallout": {
     "replicated": "",
@@ -1306,8 +1312,8 @@
     "viewOpenCallouts": "Ver CrowdNewsrooms abertas",
     "welcome": "Damos-te as boas-vindas, {firstName}!",
     "yourProfile": "O teu perfil",
-    "makeOneTimeDonationTitle": "Doe nu een donatie",
-    "makeOneTimeDonationButton": "Doar"
+    "makeOneTimeDonationTitle": "Fazer uma contribuição única agora",
+    "makeOneTimeDonationButton": "Contribuição"
   },
   "icons": {
     "welcome": {
@@ -1369,7 +1375,7 @@
     "goBackButton": "Voltar ao passo anterior",
     "note": "Podes alterar a tua contribuição e aceder ao teu historial de pagamentos a qualquer altura na tua conta.",
     "willBeContributing": "O tua contribuição será de {contribution}",
-    "willBeDonating": "Vais fazer uma doação de {amount}"
+    "willBeDonating": "Vais fazer uma contribuição única de {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Por favor confirma os teus detalhes",
@@ -1422,7 +1428,7 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
-        "oneTimeDonationEmail": "Email de doação única",
+        "oneTimeDonationEmail": "Email de contribuição única",
         "text": "",
         "title": "",
         "welcomeEmail": ""

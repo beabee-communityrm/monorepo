@@ -21,7 +21,11 @@ import {
 import { getRepository, runTransaction } from '#database';
 import { log as mainLogger } from '#logging';
 import { Contact, Email, EmailMailing } from '#models/index';
-import { MandrillProvider, SMTPProvider, SendGridProvider } from '#providers';
+import {
+  MandrillProvider,
+  SMTPProvider,
+  SendGridProvider,
+} from '#providers/email/index';
 import OptionsService from '#services/OptionsService';
 import { formatEmailBody } from '#templates/email';
 import {

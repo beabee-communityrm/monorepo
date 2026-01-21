@@ -14,7 +14,7 @@ import {
   PaymentFlowProvider,
   gcFlowProvider,
   stripeFlowProvider,
-} from '#providers';
+} from '#providers/payment-flow/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import OptionsService from '#services/OptionsService';
