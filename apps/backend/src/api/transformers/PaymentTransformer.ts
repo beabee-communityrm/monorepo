@@ -11,6 +11,7 @@ import { AuthInfo } from '@beabee/core/type';
 
 import {
   GetPaymentAggregationDto,
+  GetPaymentAggregationOptsDto,
   GetPaymentDto,
   GetPaymentOptsDto,
   GetPaymentWith,
@@ -80,7 +81,7 @@ class PaymentTransformer extends BaseTransformer<
 
   async fetchAggregation(
     auth: AuthInfo,
-    query: ListPaymentsDto
+    query: GetPaymentAggregationOptsDto
   ): Promise<GetPaymentAggregationDto> {
     const { db } = await this.prepareQuery(query, auth, 'read');
 
