@@ -7,7 +7,7 @@ import { AuthInfo } from '@beabee/core/type';
 
 
 
-import { GetPaymentAggregationDto, GetPaymentDto, GetPaymentOptsDto, GetPaymentWith, ListPaymentsDto } from '@api/dto/PaymentDto';
+import { GetPaymentAggregationDto, GetPaymentAggregationOptsDto, GetPaymentDto, GetPaymentOptsDto, GetPaymentWith, ListPaymentsDto } from '@api/dto/PaymentDto';
 import { BaseTransformer } from '@api/transformers/BaseTransformer';
 import ContactTransformer, { loadContactRoles } from '@api/transformers/ContactTransformer';
 import { TransformPlainToInstance, plainToInstance } from 'class-transformer';
@@ -127,7 +127,7 @@ class PaymentTransformer extends BaseTransformer<
    */
   async fetchAggregation(
     auth: AuthInfo,
-    query: ListPaymentsDto
+    query: GetPaymentAggregationOptsDto
   ): Promise<GetPaymentAggregationDto> {
     const { db } = await this.prepareQuery(query, auth, 'read');
 

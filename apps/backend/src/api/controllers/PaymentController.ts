@@ -4,6 +4,7 @@ import { CurrentAuth } from '@api/decorators/CurrentAuth';
 import { PaginatedDto } from '@api/dto/PaginatedDto';
 import {
   GetPaymentAggregationDto,
+  GetPaymentAggregationOptsDto,
   GetPaymentDto,
   GetPaymentOptsDto,
   ListPaymentsDto,
@@ -33,7 +34,7 @@ export class PaymentController {
   @Get('/aggregate')
   async getPaymentAggregation(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @QueryParams() query: ListPaymentsDto
+    @QueryParams() query: GetPaymentAggregationOptsDto
   ): Promise<GetPaymentAggregationDto> {
     return await PaymentTransformer.fetchAggregation(auth, query);
   }
