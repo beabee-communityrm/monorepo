@@ -1056,8 +1056,8 @@
       "tags": "Tags",
       "donationDate": "Datum des einmaligen Beitrags",
       "hasDonated": "Einmaliger Beitrag geleistet",
-      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge",
-      "averageDonationAmount": "Durchschnitt einmaliger Beiträge"
+      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge (insgesamt)",
+      "averageDonationAmount": "Durchschnitt einmaliger Beiträge (insgesamt)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
