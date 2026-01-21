@@ -2,6 +2,7 @@ import type {
   GetPaymentAggregationData,
   GetPaymentDataWith,
   GetPaymentWith,
+  GetPaymentsAggregationQuery,
   GetPaymentsQuery,
   Paginated,
   Serial,
@@ -75,7 +76,7 @@ export class PaymentClient extends BaseClient {
    * @returns A paginated list of payments
    */
   async aggregate(
-    query: GetPaymentsQuery = {}
+    query: GetPaymentsAggregationQuery = {}
   ): Promise<GetPaymentAggregationData> {
     const { data } = await this.fetch.get<GetPaymentAggregationData>(
       '/aggregate',

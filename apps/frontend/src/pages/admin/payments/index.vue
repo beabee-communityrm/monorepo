@@ -129,7 +129,6 @@ watchEffect(async () => {
   );
 
   aggregation.value = await client.payment.aggregate({
-    ...currentPaginatedQuery.query,
     rules,
   });
 });

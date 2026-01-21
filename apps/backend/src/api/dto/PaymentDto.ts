@@ -1,6 +1,6 @@
 import { PaymentStatus } from '@beabee/beabee-common';
 
-import { GetPaginatedQuery } from '@api/dto/BaseDto';
+import { GetExportQuery, GetPaginatedQuery } from '@api/dto/BaseDto';
 import { GetContactDto } from '@api/dto/ContactDto';
 import {
   IsArray,
@@ -30,6 +30,8 @@ export class GetPaymentDto {
 export enum GetPaymentWith {
   Contact = 'contact',
 }
+
+export class GetPaymentAggregationOptsDto extends GetExportQuery {}
 
 export class GetPaymentOptsDto {
   @IsArray()
