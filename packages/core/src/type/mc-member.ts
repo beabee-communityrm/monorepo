@@ -10,3 +10,8 @@ export interface MCMember {
   timestamp_signup?: string;
   last_changed: string;
 }
+
+export interface MCMemberList {
+  members: MCMember[];
+  total_items: number;
+}

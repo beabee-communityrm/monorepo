@@ -135,26 +135,36 @@ export function createInstance(
     });
   }
 
-  async function dispatchOperations(
+  async function dispatchOperation<T = unknown>(
+    operation: MCOperation,
+    validateStatus?: (status: number) => boolean
+  ): Promise<T> {
+    const resp = await instance({
+      method: operation.method,
+      params: operation.params,
+      url: operation.path,
+      ...(operation.body && { data: JSON.parse(operation.body) }),
+      validateStatus: validateStatus || null,
+    });
+    return resp.data as T;
+  }
+
+  async function dispatchOperations<T = unknown>(
     operations: MCOperation[],
     validateStatus?: (status: number) => boolean
-  ): Promise<void> {
+  ): Promise<T[]> {
     log.info(`Dispatching ${operations.length} operations`);
 
     if (operations.length > 20) {
       const batch = await createBatch(operations);
       const finishedBatch = await waitForBatch(batch);
-      await getBatchResponses(finishedBatch, validateStatus); // Just check for errors
+      return await getBatchResponses<T>(finishedBatch, validateStatus);
     } else {
+      const results: T[] = [];
       for (const operation of operations) {
         try {
-          await instance({
-            method: operation.method,
-            params: operation.params,
-            url: operation.path,
-            ...(operation.body && { data: JSON.parse(operation.body) }),
-            validateStatus: validateStatus || null,
-          });
+          const result = await dispatchOperation<T>(operation, validateStatus);
+          results.push(result);
         } catch (err) {
           log.error(
             `Error in operation ${operation.operation_id}`,
@@ -163,6 +173,7 @@ export function createInstance(
           );
         }
       }
+      return results;
     }
   }
 
@@ -171,6 +182,7 @@ export function createInstance(
     createBatch,
     waitForBatch,
     getBatchResponses,
+    dispatchOperation,
     dispatchOperations,
   };
 }

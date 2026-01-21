@@ -2,6 +2,11 @@
 PATH=/usr/local/bin:/usr/bin:/bin
 
 # Spread the jobs out over a few minutes to avoid overloading the server
-0 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli sync newsletter-service active-member-tag --since PT26H' > /proc/1/fd/1 2>&1
+
+# Hourly cron jobs
+0 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service active-member-tag --dryRun --since PT1H10M' > /proc/1/fd/1 2>&1
+5 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service reconcile --dryRun --since PT1H10M --fix status groups' > /proc/1/fd/1 2>&1
+
+# Daily cron jobs
 10 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli process gifts' > /proc/1/fd/1 2>&1
 20 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && node ./dist/tools/process-segments.js' > /proc/1/fd/1 2>&1

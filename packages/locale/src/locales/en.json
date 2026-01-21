@@ -943,6 +943,11 @@
       "pending": "Pending",
       "successful": "Successful"
     },
+    "paymentType": {
+      "oneTime": "One-Time",
+      "recurring": "Recurring",
+      "prorated": "Prorated"
+    },
     "perMonth": "/ month",
     "perOneTime": " one-time",
     "perOneTimeText": "one-time",
@@ -996,7 +1001,9 @@
     },
     "callouts": "CrowdNewsroom",
     "cancellationDate": "Cancelled on",
-    "contribution": "Contributions",
+    "contribution": "Contribution",
+    "recurring": "Recurring",
+    "oneTime": "One-time",
     "contributionType": "Type",
     "joinSurvey": "Join survey",
     "newsletter": {
@@ -1702,7 +1709,8 @@
       "amount": "Amount",
       "chargeDate": "Charge date",
       "contact": "Contact",
-      "status": "Status"
+      "status": "Status",
+      "type": "Type"
     },
     "dataGroup": {
       "payment": "Payment"
@@ -1716,7 +1724,11 @@
       "pending": "Pending payments",
       "successful": "Successful payments"
     },
-    "showingOf": "Showing {start} to {end} payments out of {total}"
+    "showingOf": "Showing {start} to {end} payments out of {total}",
+    "aggregation": {
+      "total": "Total Amount",
+      "average": "Average Amount"
+    }
   },
   "resetDevice": {
     "description": "Enter your password to reset 2FA protection, you will be able to set up a new device once you are logged in.",

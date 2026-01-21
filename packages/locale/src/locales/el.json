@@ -967,7 +967,12 @@
       "one-time": ""
     },
     "perOneTime": "",
-    "perOneTimeText": ""
+    "perOneTimeText": "",
+    "paymentType": {
+      "oneTime": "Εφάπαξ",
+      "recurring": "Επαναλαμβανόμενος",
+      "prorated": "Αναλογικός"
+    }
   },
   "contactAccount": {
     "confirmDelete": {
@@ -997,6 +1002,8 @@
     "callouts": "",
     "cancellationDate": "",
     "contribution": "",
+    "recurring": "Επαναλαμβανόμενος",
+    "oneTime": "Εφάπαξ",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {
@@ -1618,7 +1625,8 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
@@ -1632,7 +1640,11 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": ""
+    "showingOf": "",
+    "aggregation": {
+      "total": "",
+      "average": ""
+    }
   },
   "resetDevice": {
     "description": "",

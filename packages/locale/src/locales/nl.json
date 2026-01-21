@@ -967,7 +967,12 @@
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
     "until": "tot",
-    "yes": "Ja"
+    "yes": "Ja",
+    "paymentType": {
+      "oneTime": "Eenmalig",
+      "recurring": "Terugkerend",
+      "prorated": "Prorata"
+    }
   },
   "contactAccount": {
     "confirmDelete": {
@@ -997,6 +1002,8 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "Geannuleerd op",
     "contribution": "Bijdrage",
+    "recurring": "Terugkerend",
+    "oneTime": "Eenmalig",
     "contributionType": "Type",
     "joinSurvey": "Meedoen aan onderzoek",
     "newsletter": {
@@ -1618,7 +1625,8 @@
       "amount": "Bedrag",
       "chargeDate": "Datum",
       "contact": "Contact",
-      "status": "Status"
+      "status": "Status",
+      "type": ""
     },
     "dataGroup": {
       "payment": "Betaling"
@@ -1632,7 +1640,11 @@
       "pending": "In afwachting van betalingen",
       "successful": "Geslaagde betalingen"
     },
-    "showingOf": "{start} tot {end} betalingen van {total} weergeven"
+    "showingOf": "{start} tot {end} betalingen van {total} weergeven",
+    "aggregation": {
+      "total": "",
+      "average": ""
+    }
   },
   "resetDevice": {
     "description": "Voer je wachtwoord in om de 2FA beveiliging te resetten, je kunt een nieuw apparaat instellen zodra je bent ingelogd.",

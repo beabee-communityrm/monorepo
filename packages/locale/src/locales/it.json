@@ -967,7 +967,12 @@
     "timeAgo": "{time} fa",
     "timeIn": "in {time}",
     "until": "fino",
-    "yes": "Sì"
+    "yes": "Sì",
+    "paymentType": {
+      "oneTime": "Una tantum",
+      "recurring": "Ricorrente",
+      "prorated": "Proporzionale"
+    }
   },
   "contactAccount": {
     "confirmDelete": {
@@ -997,6 +1002,8 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "",
     "contribution": "",
+    "recurring": "Ricorrente",
+    "oneTime": "Una tantum",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {
@@ -1618,7 +1625,8 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
@@ -1632,7 +1640,11 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": ""
+    "showingOf": "",
+    "aggregation": {
+      "total": "",
+      "average": ""
+    }
   },
   "resetDevice": {
     "description": "",

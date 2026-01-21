@@ -967,7 +967,12 @@
       "one-time": ""
     },
     "perOneTime": "",
-    "perOneTimeText": ""
+    "perOneTimeText": "",
+    "paymentType": {
+      "oneTime": "Einmalig",
+      "recurring": "Wiederkehrend",
+      "prorated": "Ratierlich"
+    }
   },
   "contactAccount": {
     "confirmDelete": {
@@ -997,6 +1002,8 @@
     "callouts": "",
     "cancellationDate": "",
     "contribution": "",
+    "recurring": "Wiederkehrend",
+    "oneTime": "Einmalig",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {
@@ -1573,7 +1580,8 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
@@ -1587,7 +1595,11 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": ""
+    "showingOf": "",
+    "aggregation": {
+      "total": "",
+      "average": ""
+    }
   },
   "resetDevice": {
     "description": "",
