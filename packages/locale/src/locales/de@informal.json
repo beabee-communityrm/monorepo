@@ -1338,6 +1338,11 @@
         "backToJoin": "Zurück zur Registrierung",
         "message": "Es gab ein Problem bei der Registrierung, unser Team wurde benachrichtigt. Bitte kontaktiere uns, wenn das Problem weiterhin auftritt.",
         "title": "Etwas ist schief gelaufen"
+      },
+      "paymentFailed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
       }
     },
     "login": "Anmelden",

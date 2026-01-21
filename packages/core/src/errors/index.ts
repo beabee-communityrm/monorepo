@@ -9,6 +9,7 @@ export * from './InvalidCalloutResponse';
 export * from './InvalidRuleError';
 export * from './NoPaymentMethod';
 export * from './NotFoundError';
+export * from './PaymentFailed';
 export * from './TooManyRequestsError';
 export * from './UnauthorizedError';
 export * from './UnsupportedFileType';
