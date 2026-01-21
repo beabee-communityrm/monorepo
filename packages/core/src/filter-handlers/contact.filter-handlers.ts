@@ -72,11 +72,11 @@ function contributionField(field: keyof ContactContribution): FilterHandler {
 }
 
 /**
- * Creates a filter handler for payment-related fields
+ * Creates a filter handler for one-time payment-related fields
  * @param field - The field from Payment to filter on
  * @returns A filter handler function for the specified payment field
  */
-function paymentField(field?: keyof Payment): FilterHandler {
+function oneTimePaymentField(field?: keyof Payment): FilterHandler {
   return (qb, { fieldPrefix, convertToWhereClause, value, operator }) => {
     const subQb = createQueryBuilder()
       .subQuery()
@@ -99,11 +99,11 @@ function paymentField(field?: keyof Payment): FilterHandler {
 }
 
 /**
- * Creates a filter handler for payment-statistics-related fields
+ * Creates a filter handler for one-time payment-statistics-related fields
  * @param statistic - The statistic to use to calculate the result
  * @returns A filter handler function for the specified payment field based on the statistics method
  */
-function paymentStatistic(statistic?: 'avg' | 'total'): FilterHandler {
+function oneTimePaymentStatistic(statistic: 'avg' | 'total'): FilterHandler {
   return (qb, { fieldPrefix, convertToWhereClause }) => {
     const aggregateExpr =
       statistic === 'total' ? 'SUM(p.amount)' : 'AVG(p.amount)';
@@ -255,8 +255,8 @@ export const contactFilterHandlers: FilterHandlers<string> = {
   },
   'callouts.': calloutsFilterHandler,
   tags: contactTagFilterHandler,
-  hasDonated: paymentField(),
-  donationDate: paymentField('chargeDate'),
-  totalDonationAmount: paymentStatistic('total'),
-  averageDonationAmount: paymentStatistic('avg'),
+  hasDonated: oneTimePaymentField(),
+  donationDate: oneTimePaymentField('chargeDate'),
+  totalDonationAmount: oneTimePaymentStatistic('total'),
+  averageDonationAmount: oneTimePaymentStatistic('avg'),
 };
