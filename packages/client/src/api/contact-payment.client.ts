@@ -1,7 +1,9 @@
 import type {
+  CreatePaymentData,
   GetPaymentData,
   GetPaymentsQuery,
   Paginated,
+  PaymentFlowParams,
   Serial,
 } from '@beabee/beabee-common';
 
@@ -28,7 +30,24 @@ export class ContactPaymentClient extends BaseClient {
     this.completeUrl = options.host + '/profile/contribution/payment/complete';
   }
 
-  async create() {}
+  async create(dataIn: CreatePaymentData): Promise<PaymentFlowParams> {
+    const { data } = await this.fetch.post<Serial<PaymentFlowParams>>(
+      '/me/payment',
+      {
+        amount: dataIn.amount,
+        payFee: dataIn.payFee,
+        paymentMethod: dataIn.paymentMethod,
+        completeUrl: dataIn.completeUrl,
+      }
+    );
+    return data;
+  }
+
+  async complete(paymentFlowId: string): Promise<void> {
+    await this.fetch.post('/me/payment/complete', {
+      paymentFlowId,
+    });
+  }
 
   /**
    * Lists payment history for a contact
