@@ -103,7 +103,7 @@ meta:
             class="font-bold"
           />
           <AppCheckbox
-            v-if="showOneTimeDonationSettings && profileContent"
+            v-if="showOneTimeContributionSettings && profileContent"
             v-model="profileContent.showOneTimeDonation"
             :label="t('adminSettings.payment.showOneTimeDonation')"
             class="font-bold"
@@ -235,7 +235,7 @@ const shareContent = ref<ContentShareData>();
 
 const joinContent = ref<ContentJoinData>();
 
-const showOneTimeDonationSettings = computed(() =>
+const showOneTimeContributionSettings = computed(() =>
   joinContent.value?.periods.some((p) => p.name === 'one-time')
 );
 
@@ -289,7 +289,7 @@ onBeforeMount(async () => {
 
   joinContent.value = await client.content.get('join');
 
-  if (showOneTimeDonationSettings.value) {
+  if (showOneTimeContributionSettings.value) {
     profileContent.value = await client.content.get('profile');
   }
 
