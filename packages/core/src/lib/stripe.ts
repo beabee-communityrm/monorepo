@@ -360,6 +360,16 @@ export async function chargeOneTimePayment(
   await stripe.invoices.pay(invoice.id);
 }
 
+export function isOneTimePaymentInvoice(invoice: Stripe.Invoice): boolean {
+  return (
+    invoice.custom_fields?.some(
+      (field) =>
+        field.name === 'beabee-invoice-type' &&
+        field.value === 'one-time-payment-detach-mandate'
+    ) ?? false
+  );
+}
+
 /**
  * Convert a payment method to a Stripe payment type.
  *

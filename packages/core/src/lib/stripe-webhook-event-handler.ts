@@ -11,7 +11,12 @@ import ContactsService from '../services/ContactsService';
 import EmailService from '../services/EmailService';
 import GiftService from '../services/GiftService';
 import PaymentService from '../services/PaymentService';
-import { convertStatus, getSalesTaxRateObject, stripe } from './stripe';
+import {
+  convertStatus,
+  getSalesTaxRateObject,
+  isOneTimePaymentInvoice,
+  stripe,
+} from './stripe';
 
 const log = mainLogger.child({ app: 'stripe-webhook-handler' });
 
@@ -50,6 +55,9 @@ export class StripeWebhookEventHandler {
         break;
       case 'invoice.paid':
         await this.handleInvoicePaid(event.data.object);
+        break;
+      case 'invoice.payment_failed':
+        await this.handleInvoicePaymentFailed(event.data.object);
         break;
       case 'payment_method.detached':
         await this.handlePaymentMethodDetached(event.data.object);
@@ -157,7 +165,7 @@ export class StripeWebhookEventHandler {
 
     // Can't update non-draft invoices. This should never be a problem as only a
     // subscription's initial invoice is created in a finalised state, and the initial
-    // invoice with have the current system's tax rate applied.
+    // invoice will have the current system tax rate applied.
     // https://docs.stripe.com/billing/invoices/subscription#update-first-invoice
     if (invoice.status !== 'draft') return;
 
@@ -172,6 +180,7 @@ export class StripeWebhookEventHandler {
 
   /**
    * Updates or creates a payment record in our system based on invoice updates
+   *
    * @param invoice The updated Stripe invoice
    * @returns The updated or created payment record
    */
@@ -179,16 +188,28 @@ export class StripeWebhookEventHandler {
     invoice: Stripe.Invoice
   ): Promise<Payment | undefined> {
     const payment = await this.findOrCreatePaymentForInvoice(invoice);
-    if (payment) {
-      log.info('Updating payment for invoice ' + invoice.id);
-      payment.status = invoice.status
-        ? convertStatus(invoice.status)
-        : PaymentStatus.Draft;
-      payment.description = invoice.description || '';
-      payment.amount = invoice.total / 100;
-      payment.chargeDate = new Date(invoice.created * 1000);
-      return await getRepository(Payment).save(payment);
+    if (!payment) return;
+
+    if (
+      isOneTimePaymentInvoice(invoice) &&
+      (invoice.status === 'paid' ||
+        invoice.status === 'void' ||
+        invoice.status === 'uncollectible')
+    ) {
+      log.info('Detaching payment method for one-time invoice ' + invoice.id);
+      await stripe.paymentMethods.detach(
+        invoice.default_payment_method as string
+      );
     }
+
+    log.info('Updating payment for invoice ' + invoice.id);
+    payment.status = invoice.status
+      ? convertStatus(invoice.status)
+      : PaymentStatus.Draft;
+    payment.description = invoice.description || '';
+    payment.amount = invoice.total / 100;
+    payment.chargeDate = new Date(invoice.created * 1000);
+    return await getRepository(Payment).save(payment);
   }
 
   /**
@@ -203,40 +224,48 @@ export class StripeWebhookEventHandler {
     invoice: Stripe.Invoice
   ): Promise<void> {
     const contribution = await this.getContributionFromInvoice(invoice);
-    if (!contribution) return;
+    if (!contribution || !invoice.subscription) return;
 
     log.info(`Invoice ${invoice.id} was paid`);
 
-    if (invoice.subscription) {
-      // Unlikely, just log for now
-      if (invoice.lines.has_more) {
-        log.error(`Invoice ${invoice.id} has too many lines`);
-        return;
-      }
-
-      // Stripe docs say the subscription will always be the last line in the invoice
-      const line = invoice.lines.data.slice(-1)[0];
-      if (line.subscription !== invoice.subscription) {
-        log.error(
-          'Expected subscription to be last line on invoice' + invoice.id
-        );
-        return;
-      }
-
-      await this.updateContributionAfterPayment(contribution, line);
-    } else if (
-      invoice.custom_fields?.some(
-        (field) =>
-          field.name === 'beabee-invoice-type' &&
-          field.value === 'one-time-payment-detach-mandate'
-      )
-    ) {
-      log.info(`Detaching mandate for one-time payment invoice ${invoice.id}`);
-      // Detach payment method from one-time payments
-      await stripe.paymentMethods.detach(
-        invoice.default_payment_method as string
-      );
+    // Unlikely, just log for now
+    if (invoice.lines.has_more) {
+      log.error(`Invoice ${invoice.id} has too many lines`);
+      return;
     }
+
+    // Stripe docs say the subscription will always be the last line in the invoice
+    const line = invoice.lines.data.slice(-1)[0];
+    if (line.subscription !== invoice.subscription) {
+      log.error(
+        'Expected subscription to be last line on invoice' + invoice.id
+      );
+      return;
+    }
+
+    await this.updateContributionAfterPayment(contribution, line);
+  }
+
+  /**
+   * When there are no more payment attempts for an invoice, mark it as
+   * uncollectible so it doesn't remain open indefinitely.
+   *
+   * @param invoice The Stripe invoice
+   */
+  private static async handleInvoicePaymentFailed(
+    invoice: Stripe.Invoice
+  ): Promise<void> {
+    // For now only handle one-time payment invoices
+    // TODO: Consider handling subscription invoices too
+    if (!isOneTimePaymentInvoice(invoice)) {
+      return;
+    }
+
+    // At the moment just marks as uncollectible straight away and therefore
+    // cancels any retry schedule. This could change in the future if it is
+    // supported
+    log.info(`Marking invoice ${invoice.id} as uncollectible `);
+    await stripe.invoices.markUncollectible(invoice.id);
   }
 
   /**
