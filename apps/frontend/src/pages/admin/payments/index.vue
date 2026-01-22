@@ -25,7 +25,7 @@ meta:
     </div>
     <AppSearch
       v-model="currentRules"
-      :filter-groups="filterGroups"
+      :filter-groups="filteredGroups"
       @reset="currentRules = undefined"
     />
 
@@ -58,6 +58,7 @@ meta:
 
 <script lang="ts" setup>
 import type {
+  ContentJoinData,
   GetPaymentAggregationData,
   GetPaymentDataWith,
   GetPaymentsQuery,
@@ -83,7 +84,7 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import { computed, ref, watchEffect } from 'vue';
+import { computed, onBeforeMount, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t, n } = useI18n();
@@ -104,6 +105,24 @@ const currentRules = defineRulesParam();
 const currentPaginatedQuery = definePaginatedQuery('chargeDate');
 const paymentsTable = ref<Paginated<GetPaymentDataWith<'contact'>>>();
 const aggregation = ref<GetPaymentAggregationData>();
+const joinContent = ref<ContentJoinData>();
+
+const hasOneTimeContribution = computed(() =>
+  joinContent.value?.periods.some((p) => p.name === 'one-time')
+);
+
+const filteredGroups = computed(() => {
+  const filterToExclude = hasOneTimeContribution.value
+    ? 'paymentTypeSimple'
+    : 'paymentTypeAdvanced';
+
+  return filterGroups.value.map((group) => ({
+    ...group,
+    items: Object.fromEntries(
+      Object.entries(group.items).filter(([key]) => key !== filterToExclude)
+    ),
+  }));
+});
 
 watchEffect(async () => {
   const rules: GetPaymentsQuery['rules'] = { condition: 'AND', rules: [] };
@@ -131,5 +150,9 @@ watchEffect(async () => {
   aggregation.value = await client.payment.aggregate({
     rules,
   });
+});
+
+onBeforeMount(async () => {
+  joinContent.value = await client.content.get('join');
 });
 </script>

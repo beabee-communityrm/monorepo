@@ -25,7 +25,17 @@ export const paymentFilters = {
       PaymentStatus.Cancelled,
     ] satisfies readonly PaymentStatus[] as readonly PaymentStatus[],
   },
-  paymentType: {
+  paymentTypeSimple: {
+    type: 'enum',
+    options: [
+      PaymentType.Prorated,
+      PaymentType.Recurring,
+    ] satisfies readonly Exclude<
+      PaymentType,
+      PaymentType.OneTime
+    >[] as readonly Exclude<PaymentType, PaymentType.OneTime>[],
+  },
+  paymentTypeAdvanced: {
     type: 'enum',
     options: [
       PaymentType.Prorated,
