@@ -1,4 +1,4 @@
-import { PaymentStatus } from '@beabee/beabee-common';
+import { PaymentStatus, PaymentType } from '@beabee/beabee-common';
 
 import {
   Column,
@@ -26,6 +26,9 @@ export class Payment {
 
   @Column()
   status!: PaymentStatus;
+
+  @Column()
+  type!: PaymentType;
 
   @Column()
   description!: string;

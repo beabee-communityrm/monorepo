@@ -34,6 +34,7 @@ class PaymentTransformer extends BaseTransformer<
       amount: payment.amount,
       chargeDate: payment.chargeDate,
       status: payment.status,
+      type: payment.type,
       ...(opts.with?.includes(GetPaymentWith.Contact) && {
         contact:
           payment.contact && ContactTransformer.convert(payment.contact, auth),

@@ -1,4 +1,8 @@
-import { PaymentMethod, PaymentStatus } from '@beabee/beabee-common';
+import {
+  PaymentMethod,
+  PaymentStatus,
+  PaymentType,
+} from '@beabee/beabee-common';
 
 import { GetPaginatedQuery } from '@api/dto/BaseDto';
 import { GetContactDto } from '@api/dto/ContactDto';
@@ -36,6 +40,9 @@ export class GetPaymentDto {
 
   @IsEnum(PaymentStatus)
   status!: PaymentStatus;
+
+  @IsEnum(PaymentType)
+  type!: PaymentType;
 
   @IsOptional()
   @ValidateNested()
