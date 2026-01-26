@@ -1079,7 +1079,6 @@
     "changeBank": "",
     "changeBankInfo": "",
     "contributing": "",
-    "contributionUpdateError": "",
     "dueToRenew": "",
     "expired": "",
     "expiredText": "",
@@ -1092,7 +1091,6 @@
       "title": ""
     },
     "paymentMethod": "",
-    "paymentSourceUpdateError": "",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
     "prorateIncreaseMessage": "",
@@ -1167,7 +1165,8 @@
         "duplicate-tag-name": "Diesen Tag gibt es schon",
         "invalid-token": "",
         "login-failed": "",
-        "mfa-token-required": ""
+        "mfa-token-required": "",
+        "cant-update-contribution": ""
       },
       "generic": "Das ist nicht richtig. Hol dir Hilfe.",
       "unauthorized": "Sie haben daruf keinen Zugriff.",

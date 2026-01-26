@@ -4,49 +4,33 @@
 
     <PaymentMethod class="mb-4" :source="paymentSource" />
 
-    <AppNotification
-      v-if="cantUpdate"
-      class="mb-4"
-      variant="error"
-      :title="t('contribution.paymentSourceUpdateError')"
-    />
-
-    <AppButton
-      :loading="loading"
-      variant="primaryOutlined"
-      class="mb-2 w-full"
-      @click="handleUpdate"
-    >
-      {{ changeLabel }}
-    </AppButton>
-
-    <AppModal
-      v-if="stripeClientSecret"
-      :open="stripePaymentLoaded"
+    <PaymentFlowForm
+      id="profile-update-payment-source"
       :title="changeLabel"
-      class="w-full"
-      @close="reset"
-    >
-      <StripePayment
-        :client-secret="stripeClientSecret"
-        :public-key="stripePublicKey"
-        :payment-data="paymentData"
-        :return-url="client.contact.paymentMethod.completeUrl"
-        @loaded="onStripeLoaded"
-      />
-    </AppModal>
+      :button-text="changeLabel"
+      :stripe-public-key="stripePublicKey"
+      :flow-data="paymentData"
+      :complete-url="client.contact.paymentMethod.completeUrl"
+      :start-flow="handleStartPaymentUpdate"
+      :complete-flow="handleCompletePaymentUpdate"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { PaymentSource, PaymentSourceManual } from '@beabee/beabee-common';
-import { AppButton, AppHeading, AppModal, AppNotification } from '@beabee/vue';
+import {
+  type ContributionInfo,
+  type PaymentFlowParams,
+  type PaymentSource,
+  type PaymentSourceManual,
+} from '@beabee/beabee-common';
+import { AppHeading, addNotification } from '@beabee/vue';
 
-import StripePayment from '@components/StripePayment.vue';
+import PaymentFlowForm from '@components/forms/PaymentFlowForm.vue';
 import { PaymentMethod } from '@components/payment';
-import type { StripePaymentData } from '@type/stripe-payment-data';
-import { client, isApiError } from '@utils/api';
-import { computed, onBeforeMount, ref } from 'vue';
+import type { PaymentFlowFormData } from '@type/payment-flow-form-data';
+import { client } from '@utils/api';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -54,46 +38,28 @@ const { t } = useI18n();
 const props = defineProps<{
   stripePublicKey: string;
   paymentSource: Exclude<PaymentSource, PaymentSourceManual>;
-  paymentData: StripePaymentData;
+  paymentData: PaymentFlowFormData;
 }>();
 
-const loading = ref(false);
-const cantUpdate = ref(false);
-const stripeClientSecret = ref('');
-const stripePaymentLoaded = ref(false);
+const contribution = defineModel<ContributionInfo>({ required: true });
 
 const changeLabel = computed(() =>
   t(`paymentMethods.${props.paymentSource.method}.changeLabel`)
 );
 
-function reset() {
-  loading.value = false;
-  stripeClientSecret.value = '';
-  stripePaymentLoaded.value = false;
+async function handleStartPaymentUpdate(
+  completeUrl: string
+): Promise<PaymentFlowParams> {
+  return await client.contact.paymentMethod.update(completeUrl);
 }
 
-function onStripeLoaded() {
-  stripePaymentLoaded.value = true;
-  loading.value = false;
-}
+async function handleCompletePaymentUpdate(paymentFlowId: string) {
+  contribution.value =
+    await client.contact.paymentMethod.completeUpdate(paymentFlowId);
 
-async function handleUpdate() {
-  cantUpdate.value = false;
-  loading.value = true;
-  try {
-    const data = await client.contact.paymentMethod.update();
-    if (data.redirectUrl) {
-      window.location.href = data.redirectUrl;
-    } else if (data.clientSecret) {
-      stripeClientSecret.value = data.clientSecret;
-    }
-  } catch (err) {
-    loading.value = false;
-    if (isApiError(err, ['cant-update-contribution'])) {
-      cantUpdate.value = true;
-    }
-  }
+  addNotification({
+    title: t('contribution.updatedPaymentSource'),
+    variant: 'success',
+  });
 }
-
-onBeforeMount(reset);
 </script>

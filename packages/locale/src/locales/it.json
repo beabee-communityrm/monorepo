@@ -1079,7 +1079,6 @@
     "changeBank": "",
     "changeBankInfo": "",
     "contributing": "Il tuo contributo è",
-    "contributionUpdateError": "",
     "dueToRenew": "",
     "expired": "",
     "expiredText": "",
@@ -1092,7 +1091,6 @@
       "title": "Cronologia dei pagamenti"
     },
     "paymentMethod": "Metodo di pagamento",
-    "paymentSourceUpdateError": "",
     "perMonthText": "al mese",
     "perYearText": "all'anno",
     "prorateDecreaseMessage": "",
@@ -1167,7 +1165,8 @@
         "duplicate-tag-name": "",
         "invalid-token": "",
         "login-failed": "",
-        "mfa-token-required": ""
+        "mfa-token-required": "",
+        "cant-update-contribution": ""
       },
       "generic": "",
       "unauthorized": "",

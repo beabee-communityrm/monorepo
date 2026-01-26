@@ -34,10 +34,13 @@ export class ContactPaymentMethodClient extends BaseClient {
    * change payment source but keep the same method (e.g. new card)
    * @returns Payment flow parameters for client-side handling
    */
-  async update(paymentMethod?: string): Promise<PaymentFlowParams> {
+  async update(
+    completeUrl: string,
+    paymentMethod?: string
+  ): Promise<PaymentFlowParams> {
     const { data } = await this.fetch.put('/me/payment-method', {
       paymentMethod,
-      completeUrl: this.completeUrl,
+      completeUrl,
     });
     return data;
   }

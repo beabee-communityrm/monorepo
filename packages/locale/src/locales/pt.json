@@ -1079,7 +1079,6 @@
     "changeBank": "Mudar para outra conta bancária",
     "changeBankInfo": "No próximo passo, vais poder inserir os detalhes bancários da tua nova conta.",
     "contributing": "Estás a contribuir",
-    "contributionUpdateError": "Não é possível atualizar a tua contribuição porque tens um pagamento pendente.",
     "dueToRenew": "A tua contribuição vai renovar a {renewalDate}.",
     "expired": "A tua contribuição expirou.",
     "expiredText": "Considera renovar a tua contribuição mensal, nem que seja pelo valor mais baixo. É muito importante para o nosso jornalismo. Obrigado!",
@@ -1092,7 +1091,6 @@
       "title": "Histórico de pagamentos"
     },
     "paymentMethod": "Método de pagamento",
-    "paymentSourceUpdateError": "Não é possível atualizar a sua conta bancária porque o pagamento está pendente.",
     "perMonthText": "por mês",
     "perYearText": "por ano",
     "prorateDecreaseMessage": "Resta 1 mês na sua contribuição atual. | Restam {n} meses na tua contribuição atual.",
@@ -1167,7 +1165,8 @@
         "duplicate-tag-name": "",
         "invalid-token": "Token 2FA inválido",
         "login-failed": "Combinação inválida de email e palavra-passe",
-        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar."
+        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar.",
+        "cant-update-contribution": "Não é possível atualizar a tua contribuição porque tens um pagamento pendente."
       },
       "generic": "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
       "unauthorized": "",
