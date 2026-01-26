@@ -49,10 +49,28 @@ interface MCCleanedEmailWebhook {
   data: MCCleanedEmailData;
 }
 
+const knownWebhookTypes = [
+  'subscribe',
+  'unsubscribe',
+  'profile',
+  'upemail',
+  'cleaned',
+];
+
 type MCWebhook =
   | MCProfileWebhook
   | MCUpdateEmailWebhook
   | MCCleanedEmailWebhook;
+
+function isKnownWebhook(body: unknown): body is MCWebhook {
+  return (
+    typeof body === 'object' &&
+    body !== null &&
+    'type' in body &&
+    typeof body.type === 'string' &&
+    knownWebhookTypes.includes(body.type)
+  );
+}
 
 /**
  * Endpoint that Mailchimp uses to check the webhook is valid. Don't check for
@@ -88,7 +106,12 @@ mailchimpWebhookApp.use(bodyParser.urlencoded({ extended: true }));
 mailchimpWebhookApp.post(
   '/',
   wrapAsync(async (req: Request, res: Response) => {
-    const body = req.body as MCWebhook;
+    const body = req.body;
+
+    // Ignore webhooks we don't know about
+    if (!isKnownWebhook(body)) {
+      return res.sendStatus(200);
+    }
 
     log.info('Got webhook ' + body.type);
 

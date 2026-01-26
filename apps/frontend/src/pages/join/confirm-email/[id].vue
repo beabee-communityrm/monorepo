@@ -28,9 +28,11 @@ onBeforeMount(() => {
     .catch((err) => {
       if (isApiError(err, undefined, [429])) {
         notifyRateLimited(err);
-        return;
+      } else if (isApiError(err, ['payment-failed'])) {
+        router.replace('/join/payment-failed');
+      } else {
+        router.replace('/join/failed');
       }
-      router.replace('/join/failed');
     });
 });
 </script>

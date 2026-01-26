@@ -1,17 +1,17 @@
 import {
   Address,
   ContributionPeriod,
+  PaymentForm,
   PaymentMethod,
   RESET_SECURITY_FLOW_TYPE,
   isContributionForm,
 } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
-import { DuplicateEmailError } from '#errors/index';
+import { CantUpdateContribution, DuplicateEmailError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Contact, JoinFlow, JoinForm } from '#models/index';
+import { Contact, JoinFlow, JoinForm, Password } from '#models/index';
 import {
-  PaymentFlowProvider,
   gcFlowProvider,
   stripeFlowProvider,
 } from '#providers/payment-flow/index';
@@ -51,14 +51,14 @@ const log = mainLogger.child({ app: 'payment-flow-service' });
  * 3. Payment completion
  * 4. Contact and subscription setup
  */
-class PaymentFlowService implements PaymentFlowProvider {
+class PaymentFlowService {
   /**
-   * Creates a new join flow for user registration
+   * Creates a new join flow for user registration without any payment
    * @param form - Basic user information (email and password)
    * @param urls - URLs for completion and cancellation handling
    * @returns Promise resolving to created JoinFlow
    */
-  async createJoinFlow(
+  async createSimpleJoinFlow(
     form: Pick<JoinForm, 'email' | 'password'>,
     urls: CompleteUrls
   ): Promise<JoinFlow> {
@@ -130,7 +130,7 @@ class PaymentFlowService implements PaymentFlowProvider {
    * @param joinFlow - The join flow to complete
    * @returns Promise resolving to completed payment flow or undefined.
    */
-  async completeJoinFlow(
+  private async completeJoinFlow(
     joinFlow: JoinFlow
   ): Promise<CompletedPaymentFlow | undefined> {
     log.info('Completing join flow ' + joinFlow.id);
@@ -248,27 +248,121 @@ class PaymentFlowService implements PaymentFlowProvider {
     }
 
     if (completedPaymentFlow) {
-      // Set the user's payment method and create their contribution or one-time donation
-
-      await PaymentService.updatePaymentMethod(contact, completedPaymentFlow);
-
-      if (isContributionForm(joinFlow.joinForm)) {
-        await ContactsService.updateContactContribution(
-          contact,
-          joinFlow.joinForm
-        );
-        await EmailService.sendTemplateToContact('welcome', contact);
-      } else {
-        await PaymentService.createOneTimePayment(contact, joinFlow.joinForm);
-        await EmailService.sendTemplateToContact('one-time-donation', contact, {
-          amount: joinFlow.joinForm.monthlyAmount,
-        });
+      await this.processCompletedFlow(contact, completedPaymentFlow);
+      // If this is a one-off payment join flow, skip the welcome email
+      if (!isContributionForm(joinFlow.joinForm)) {
+        return contact;
       }
-    } else {
-      await EmailService.sendTemplateToContact('welcome', contact);
     }
 
+    await EmailService.sendTemplateToContact('welcome', contact);
+
     return contact;
+  }
+
+  /**
+   * Create a new payment update flow. This is used to take the user through
+   * setting or updating their payment method. If contribution amount, period,
+   * etc. are provided then this flow will also be used to update a user's
+   * contribution after the new payment method is set.
+   *
+   * @param contact The contact updating their payment method
+   * @param form Optional payment form
+   * @returns The payment flow parameters
+   */
+  async createPaymentUpdateFlow(
+    contact: Contact,
+    paymentMethod: PaymentMethod,
+    completeUrl: string,
+    form?: PaymentForm
+  ): Promise<PaymentFlowParams> {
+    // TODO: if it's just a payment method update then these should be optional
+    if (!form) {
+      form = {
+        monthlyAmount: 0, // Stub to indicate no contribution update
+        period: ContributionPeriod.Monthly,
+        payFee: false,
+        prorate: false,
+      };
+    }
+
+    if (
+      isContributionForm(form) &&
+      !(await PaymentService.canChangeContribution(contact, false, form))
+    ) {
+      throw new CantUpdateContribution();
+    }
+
+    // TODO: rework this to not reuse createPaymentJoinFlow so that we don't
+    // have to stub so many fielsd
+    return await this.createPaymentJoinFlow(
+      {
+        paymentMethod,
+        ...form,
+        password: Password.none,
+        email: contact.email,
+      },
+      { confirmUrl: '', loginUrl: '', setPasswordUrl: '' },
+      completeUrl,
+      contact
+    );
+  }
+
+  /**
+   * Completes a payment update flow, updating the contact's payment method.
+   *
+   * @param contact The contact updating their payment method
+   * @param paymentFlowId The ID of the payment flow to complete
+   * @returns The completed join flow, or undefined if the flow could not be completed
+   */
+  async completePaymentUpdateFlow(
+    contact: Contact,
+    paymentFlowId: string
+  ): Promise<JoinFlow | undefined> {
+    const joinFlow = await this.getJoinFlowByPaymentId(paymentFlowId);
+    if (joinFlow) {
+      const completedFlow = await this.completeJoinFlow(joinFlow);
+      if (completedFlow) {
+        await this.processCompletedFlow(contact, completedFlow);
+        return joinFlow;
+      }
+    }
+  }
+
+  /**
+   * Process the completed payment flow. For contribution flows this will update
+   * the payment method and either update or create a contribution. For one-time
+   * payment flows it will create a one-time payment.
+   *
+   * @param contact The contact
+   * @param completedFlow The completed payment flow
+   */
+  private async processCompletedFlow(
+    contact: Contact,
+    completedFlow: CompletedPaymentFlow
+  ): Promise<void> {
+    const joinForm = completedFlow.joinForm;
+    if (isContributionForm(joinForm)) {
+      const canChange = await PaymentService.canChangeContribution(
+        contact,
+        false,
+        joinForm
+      );
+
+      if (!canChange) {
+        throw new CantUpdateContribution();
+      }
+
+      await PaymentService.updatePaymentMethod(contact, completedFlow);
+      if (joinForm.monthlyAmount > 0) {
+        await ContactsService.updateContactContribution(contact, joinForm);
+      }
+    } else {
+      await PaymentService.createOneTimePayment(contact, completedFlow);
+      await EmailService.sendTemplateToContact('one-time-donation', contact, {
+        amount: joinForm.monthlyAmount,
+      });
+    }
   }
 
   /**
@@ -280,7 +374,7 @@ class PaymentFlowService implements PaymentFlowProvider {
    * @param data The payment flow data
    * @returns The created payment flow
    */
-  async createPaymentFlow(
+  private async createPaymentFlow(
     joinFlow: JoinFlow,
     completeUrl: string,
     data: PaymentFlowData
@@ -300,14 +394,24 @@ class PaymentFlowService implements PaymentFlowProvider {
    * @param joinFlow  The join flow
    * @returns The completed payment flow
    */
-  async completePaymentFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow> {
+  private async completePaymentFlow(
+    joinFlow: JoinFlow
+  ): Promise<CompletedPaymentFlow> {
     log.info('Complete payment flow for join flow ' + joinFlow.id);
     return paymentProviders[
       joinFlow.joinForm.paymentMethod
     ].completePaymentFlow(joinFlow);
   }
 
-  async getCompletedPaymentFlowData(
+  /**
+   * Fetch data from the provider for the completed payment flow. This is used
+   * to fetch additional information filled in by the user such as billing
+   * address or name.
+   *
+   * @param completedPaymentFlow  The completed payment flow
+   * @returns The completed payment flow data
+   */
+  private async getCompletedPaymentFlowData(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<CompletedPaymentFlowData> {
     return paymentProviders[

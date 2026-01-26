@@ -81,10 +81,12 @@ export abstract class PaymentProvider {
   ): Promise<void>;
 
   /**
-   * Creates a one-time payment
-   * @param form - One-time payment form data
+   * Creates a one-time payment using a completed payment flow
+   * @param completedPaymentFlow - The completed payment flow
    */
-  abstract createOneTimePayment(form: PaymentForm): Promise<void>;
+  abstract createOneTimePayment(
+    completedPaymentFlow: CompletedPaymentFlow
+  ): Promise<void>;
 
   /**
    * Permanently deletes contact data from payment provider

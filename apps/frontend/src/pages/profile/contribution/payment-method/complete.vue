@@ -22,7 +22,7 @@ onBeforeMount(async () => {
 
   if (paymentFlowId) {
     try {
-      await client.contact.payment.completeUpdate(paymentFlowId);
+      await client.contact.paymentMethod.completeUpdate(paymentFlowId);
       router.replace({
         path: '/profile/contribution',
         query: { updatedPaymentSource: null },

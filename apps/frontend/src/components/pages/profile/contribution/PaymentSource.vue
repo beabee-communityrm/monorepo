@@ -31,7 +31,7 @@
         :client-secret="stripeClientSecret"
         :public-key="stripePublicKey"
         :payment-data="paymentData"
-        :return-url="client.contact.payment.completeUrl"
+        :return-url="client.contact.paymentMethod.completeUrl"
         @loaded="onStripeLoaded"
       />
     </AppModal>
@@ -81,7 +81,7 @@ async function handleUpdate() {
   cantUpdate.value = false;
   loading.value = true;
   try {
-    const data = await client.contact.payment.update();
+    const data = await client.contact.paymentMethod.update();
     if (data.redirectUrl) {
       window.location.href = data.redirectUrl;
     } else if (data.clientSecret) {
