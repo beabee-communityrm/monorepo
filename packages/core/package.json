@@ -53,7 +53,8 @@
     "./templates": "./dist/templates/index.js",
     "./templates/*": "./dist/templates/*.js",
     "./utils": "./dist/utils/index.js",
-    "./utils/*": "./dist/utils/*.js"
+    "./utils/*": "./dist/utils/*.js",
+    "./tools/*": "./dist/tools/*.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.525.0",
