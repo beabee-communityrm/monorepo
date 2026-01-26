@@ -9,10 +9,14 @@ import {
   IsIn,
   IsNumber,
   IsOptional,
+  IsString,
   ValidateNested,
 } from 'class-validator';
 
 export class GetPaymentDto {
+  @IsString()
+  id!: string;
+
   @IsNumber()
   amount!: number;
 
@@ -46,4 +50,9 @@ export class ListPaymentsDto extends GetPaginatedQuery {
 
   @IsIn(['amount', 'chargeDate'])
   sort?: string;
+}
+
+export class GetPaymentInvoiceDto {
+  @IsString()
+  url!: string;
 }
