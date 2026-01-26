@@ -44,10 +44,23 @@ class PaymentTransformer extends BaseTransformer<
     };
   }
 
+  /**
+   * Non-admin users can only see their own payments
+   *
+   * @returns The rules for non-admin users
+   */
   protected async getNonAdminAuthRules(): Promise<Rule[]> {
     return [{ field: 'contact', operator: 'equal', value: ['me'] }];
   }
 
+  /**
+   * Joins the contacts table if the query requested to also load the contacts
+   * associated with the payments
+   *
+   * @param qb The query builder
+   * @param fieldPrefix The field prefix
+   * @param query The query
+   */
   protected modifyQueryBuilder(
     qb: SelectQueryBuilder<Payment>,
     fieldPrefix: string,
@@ -58,6 +71,13 @@ class PaymentTransformer extends BaseTransformer<
     }
   }
 
+  /**
+   * Loads the contact roles into the list of contacts after the main query to
+   * avoid duplicate joins
+   *
+   * @param payments The list of payments
+   * @param query The query
+   */
   protected async modifyItems(
     payments: Payment[],
     query: ListPaymentsDto
