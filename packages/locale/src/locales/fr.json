@@ -1342,6 +1342,11 @@
         "backToJoin": "Retour à la page d'inscription",
         "message": "Une erreur s'est produite lors de votre adhésion, notre équipe en a été informée. Veuillez contacter l'assistance si le problème persiste.",
         "title": "Une erreur s'est produite"
+      },
+      "paymentFailed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
       }
     },
     "login": "Se connecter",

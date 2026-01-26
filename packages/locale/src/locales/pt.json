@@ -1338,6 +1338,11 @@
         "backToJoin": "Voltar à página de registo",
         "message": "Houve um problema inesperado ao criar a tua conta. Entra em contacto connosco se o problema continuar, e diz-nos com detalhe o que aconteceu.",
         "title": "Houve aqui um problema."
+      },
+      "paymentFailed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
       }
     },
     "login": "Login",

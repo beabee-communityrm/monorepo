@@ -1338,6 +1338,11 @@
         "backToJoin": "",
         "message": "",
         "title": "Qualcosa è andato storto"
+      },
+      "paymentFailed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
       }
     },
     "login": "Log in",

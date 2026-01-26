@@ -72,6 +72,7 @@ declare module 'vue-router/auto-routes' {
     'confirmEmail': RouteRecordInfo<'confirmEmail', '/join/confirm-email', Record<never, never>, Record<never, never>>,
     'confirmEmailLoading': RouteRecordInfo<'confirmEmailLoading', '/join/confirm-email/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'joinFailed': RouteRecordInfo<'joinFailed', '/join/failed', Record<never, never>, Record<never, never>>,
+    'joinPaymentFailed': RouteRecordInfo<'joinPaymentFailed', '/join/payment-failed', Record<never, never>, Record<never, never>>,
     'joinSetup': RouteRecordInfo<'joinSetup', '/join/setup', Record<never, never>, Record<never, never>>,
     'joinSurvey': RouteRecordInfo<'joinSurvey', '/join/survey', Record<never, never>, Record<never, never>>,
     'profile': RouteRecordInfo<'profile', '/profile', Record<never, never>, Record<never, never>>,
@@ -307,6 +308,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/join/failed.vue': {
       routes: 'joinFailed'
+      views: never
+    }
+    'src/pages/join/payment-failed.vue': {
+      routes: 'joinPaymentFailed'
       views: never
     }
     'src/pages/join/setup.vue': {

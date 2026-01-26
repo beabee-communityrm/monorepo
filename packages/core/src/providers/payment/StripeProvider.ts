@@ -9,7 +9,7 @@ import { add } from 'date-fns';
 import Stripe from 'stripe';
 
 import config from '#config/config';
-import { NoPaymentMethod } from '#errors/index';
+import { NoPaymentMethod, PaymentFailed } from '#errors/index';
 import {
   chargeOneTimePayment,
   createSubscription,
@@ -269,12 +269,20 @@ export class StripeProvider extends PaymentProvider {
     );
     await this.updateData();
 
-    await chargeOneTimePayment(
-      this.data.customerId,
-      flow.mandateId,
-      flow.joinForm,
-      flow.joinForm.paymentMethod
-    );
+    try {
+      await chargeOneTimePayment(
+        this.data.customerId,
+        flow.mandateId,
+        flow.joinForm,
+        flow.joinForm.paymentMethod
+      );
+    } catch (err) {
+      if (err instanceof Stripe.errors.StripeCardError) {
+        throw new PaymentFailed(err.decline_code);
+      } else {
+        throw err;
+      }
+    }
   }
 
   /**

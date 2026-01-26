@@ -1338,6 +1338,11 @@
         "backToJoin": "Terug naar de aanmeldpagina",
         "message": "Er is een probleem opgetreden bij het opzetten van je lidmaatschap. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
         "title": "Er is iets fout gegaan"
+      },
+      "paymentFailed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
       }
     },
     "login": "Inloggen",
