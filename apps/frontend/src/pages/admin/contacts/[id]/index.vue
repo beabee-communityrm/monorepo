@@ -89,27 +89,29 @@ meta:
             :value="formatLocale(contact.contribution.cancellationDate, 'PPP')"
           />
         </AppInfoList>
-        <AppSubHeading class="mb-1">
-          {{ t('contactOverview.oneTime') }}
-        </AppSubHeading>
-        <AppInfoList>
-          <AppInfoListItem
-            :name="t('paymentsAdmin.aggregation.total')"
-            :value="
-              paymentAggregations?.sum
-                ? n(paymentAggregations?.sum, 'currency')
-                : '–'
-            "
-          />
-          <AppInfoListItem
-            :name="t('paymentsAdmin.aggregation.average')"
-            :value="
-              paymentAggregations?.average
-                ? n(paymentAggregations?.average, 'currency')
-                : '–'
-            "
-          />
-        </AppInfoList>
+        <template v-if="showOneTimeDonation">
+          <AppSubHeading class="mb-1">
+            {{ t('contactOverview.oneTime') }}
+          </AppSubHeading>
+          <AppInfoList>
+            <AppInfoListItem
+              :name="t('paymentsAdmin.aggregation.total')"
+              :value="
+                paymentAggregations?.sum
+                  ? n(paymentAggregations?.sum, 'currency')
+                  : '–'
+              "
+            />
+            <AppInfoListItem
+              :name="t('paymentsAdmin.aggregation.average')"
+              :value="
+                paymentAggregations?.average
+                  ? n(paymentAggregations?.average, 'currency')
+                  : '–'
+              "
+            />
+          </AppInfoList>
+        </template>
       </div>
 
       <AppHeading class="mt-6">{{ t('contactOverview.roles') }}</AppHeading>
@@ -284,6 +286,7 @@ meta:
 import {
   CONTACT_MFA_TYPE,
   type ContactRoleData,
+  type ContentJoinData,
   type ContentJoinSetupData,
   ContributionType,
   type GetCalloutDataWith,
@@ -319,7 +322,7 @@ import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import env from '@env';
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
-import { onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t, n } = useI18n();
@@ -421,6 +424,11 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
 }
 
 const setupContent = ref<ContentJoinSetupData>();
+const joinContent = ref<ContentJoinData>();
+
+const showOneTimeDonation = computed(() =>
+  joinContent.value?.periods.some((p) => p.name === 'one-time')
+);
 
 const changingTags = ref(false);
 const tagItems = ref<{ id: string; label: string }[]>([]);
@@ -484,6 +492,8 @@ onBeforeMount(async () => {
   }
 
   setupContent.value = await client.content.get('join/setup');
+  joinContent.value = await client.content.get('join');
+
   const joinSurveySlug = setupContent.value.surveySlug;
   if (joinSurveySlug) {
     joinSurvey.value = await client.callout.get(joinSurveySlug, ['form']);
