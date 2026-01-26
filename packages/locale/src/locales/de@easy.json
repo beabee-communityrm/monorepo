@@ -964,9 +964,9 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
+      "oneTime": "Einmalig",
+      "recurring": "Wiederkehrend",
+      "prorated": "Ratierlich"
     }
   },
   "contactAccount": {
@@ -997,6 +997,8 @@
     "callouts": "",
     "cancellationDate": "",
     "contribution": "",
+    "recurring": "Wiederkehrend",
+    "oneTime": "Einmalig",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {
