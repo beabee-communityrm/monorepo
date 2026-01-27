@@ -10,7 +10,6 @@
       :button-text="changeLabel"
       :stripe-public-key="stripePublicKey"
       :flow-data="paymentData"
-      :complete-url="client.contact.paymentMethod.completeUrl"
       :start-flow="handleStartPaymentUpdate"
       :complete-flow="handleCompletePaymentUpdate"
     />

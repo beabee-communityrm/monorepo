@@ -12,8 +12,6 @@ import { ContactContributionClient } from './contact-contribution.client.js';
  * Client for managing contact payment method operations
  */
 export class ContactPaymentMethodClient extends BaseClient {
-  completeUrl: string;
-
   /**
    * Creates a new contact payment client
    * @param options - The client options
@@ -23,8 +21,6 @@ export class ContactPaymentMethodClient extends BaseClient {
       ...options,
       path: cleanUrl(options.path + '/contact'),
     });
-    this.completeUrl =
-      options.host + '/profile/contribution/payment-method/complete';
   }
 
   /**
@@ -39,8 +35,8 @@ export class ContactPaymentMethodClient extends BaseClient {
     paymentMethod?: string
   ): Promise<PaymentFlowParams> {
     const { data } = await this.fetch.put('/me/payment-method', {
-      paymentMethod,
       completeUrl,
+      paymentMethod,
     });
     return data;
   }
