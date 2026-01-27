@@ -1758,7 +1758,7 @@
         "new-member": "Admin: Nuovo contatto",
         "cancelled-member": "Admin: Membro annullato",
         "new-callout-response": "Admin: Nuova risposta CrowdNewsroom",
-        "one-time-donation": "Conferma donazione una tantum"
+        "one-time-donation": "Conferma contributo una tantum"
       },
       "description": {
         "welcome": "Inviato ai nuovi membri dopo che hanno completato il processo di registrazione in modo che possano confermare il loro indirizzo email. Questa email li dà il benvenuto nella community.",
@@ -1773,7 +1773,7 @@
         "new-member": "Inviato agli amministratori quando un nuovo membro si unisce con successo alla community. Include generalmente una notifica con l'ID e il nome del nuovo membro.",
         "cancelled-member": "Inviato agli amministratori quando un membro annulla il proprio contributo. Include generalmente una notifica con l'ID e il nome del membro annullato.",
         "new-callout-response": "Inviato agli amministratori quando viene inviata una nuova risposta a un CrowdNewsroom. Include generalmente una notifica con i dettagli del CrowdNewsroom e il nome della persona che risponde.",
-        "one-time-donation": "Inviato agli utenti dopo che hanno completato una donazione una tantum (pagamento non ricorrente). Conferma generalmente l'importo della donazione e funge da ricevuta."
+        "one-time-donation": "Inviato agli utenti dopo che hanno completato un contributo una tantum (pagamento non ricorrente). Conferma generalmente l'importo del contributo e funge da ricevuta."
       }
     },
     "confirmDelete": {

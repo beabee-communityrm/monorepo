@@ -1189,7 +1189,7 @@
         "new-member": "Admin: Neuer Kontakt - Benachrichtigung",
         "cancelled-member": "Admin: Gekündigtes Mitglied - Benachrichtigung",
         "new-callout-response": "Admin: Neuer CrowdNewsroom - Antwort-Benachrichtigung",
-        "one-time-donation": "Bestätigung der Einmalspende"
+        "one-time-donation": "Bestätigung des Einmalbeitrags"
       },
       "description": {
         "welcome": "Wird an neue Mitglieder gesendet, nachdem sie den Registrierungsprozess abgeschlossen haben, damit sie ihre E-Mail-Adresse bestätigen können. Diese E-Mail heißt sie in der Community willkommen",
@@ -1200,7 +1200,7 @@
         "email-exists-login": "Wird gesendet, wenn jemand versucht, sich mit einer E-Mail-Adresse zu registrieren, die bereits existiert und zu einem aktiven Mitglied mit gesetztem Passwort gehört. Stellt einen Login-Link bereit, damit sie auf ihr bestehendes Konto zugreifen können.",
         "email-exists-set-password": "Wird gesendet, wenn jemand versucht, sich mit einer E-Mail-Adresse zu registrieren, die bereits existiert und zu einem aktiven Mitglied gehört, das noch kein Passwort gesetzt hat. Stellt einen Link zum Festlegen eines Passworts bereit.",
         "contribution-didnt-start": "Wird an Mitglieder gesendet, wenn ihre Stripe-Abonnementzahlung nicht gestartet werden konnte (z. B. abgelehnte Zahlungsmethode, unzureichende Deckung). Informiert sie darüber, dass ihre Mitgliedschaft aufgrund des Zahlungsfehlers widerrufen wurde.",
-        "one-time-donation": "Wird an Nutzer gesendet, nachdem sie eine einmalige Spende (nicht wiederkehrende Zahlung) abgeschlossen haben. Bestätigt in der Regel den Spendenbetrag und dient als Quittung.",
+        "one-time-donation": "Wird an Nutzer gesendet, nachdem sie einen Einmalbeitrag (nicht wiederkehrende Zahlung) abgeschlossen haben. Bestätigt in der Regel den Beitragsbetrag und dient als Quittung.",
         "confirm-email": "Wird während des Registrierungsprozesses an neue Nutzer gesendet, um ihre E-Mail-Adresse zu verifizieren. Enthält einen Bestätigungslink, den sie anklicken müssen, um die Registrierung abzuschließen.",
         "new-member": "Wird an Administratoren gesendet, wenn ein neues Mitglied der Community erfolgreich beitritt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen des neuen Mitglieds.",
         "cancelled-member": "Wird an Administratoren gesendet, wenn ein Mitglied seinen Beitrag kündigt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen des gekündigten Mitglieds.",

@@ -1758,7 +1758,7 @@
         "new-member": "Beheer: Nieuw contact",
         "cancelled-member": "Beheer: Geannuleerd lid",
         "new-callout-response": "Beheer: Nieuwe CrowdNewsroom-reactie",
-        "one-time-donation": "Bevestiging eenmalige donatie"
+        "one-time-donation": "Bevestiging eenmalige bijdrage"
       },
       "description": {
         "welcome": "Verzonden naar nieuwe leden nadat ze het registratieproces hebben voltooid, zodat ze hun e-mailadres kunnen bevestigen. Deze e-mail heet hen welkom in de community.",
@@ -1773,7 +1773,7 @@
         "new-member": "Verzonden naar beheerders wanneer een nieuw lid met succes lid wordt van de community. Bevat meestal een melding met het ID en de naam van het nieuwe lid.",
         "cancelled-member": "Verzonden naar beheerders wanneer een lid zijn bijdrage opzegt. Bevat meestal een melding met het ID en de naam van het opgezegde lid.",
         "new-callout-response": "Verzonden naar beheerders wanneer een nieuwe reactie op een CrowdNewsroom wordt ingediend. Bevat meestal een melding met de CrowdNewsroom-details en de naam van de reagerende persoon.",
-        "one-time-donation": "Verzonden naar gebruikers nadat ze een eenmalige donatie (niet-terugkerende betaling) hebben voltooid. Bevestigt meestal het donatiebedrag en dient als ontvangstbewijs."
+        "one-time-donation": "Verzonden naar gebruikers nadat ze een eenmalige bijdrage (niet-terugkerende betaling) hebben voltooid. Bevestigt meestal het bijdragebedrag en dient als ontvangstbewijs."
       }
     },
     "confirmDelete": {
