@@ -342,12 +342,9 @@ export async function chargeOneTimePayment(
     collection_method: 'charge_automatically',
     auto_advance: true,
     currency: config.currencyCode,
-    custom_fields: [
-      {
-        name: 'beabee-invoice-type',
-        value: 'one-time-payment-detach-mandate',
-      },
-    ],
+    metadata: {
+      'beabee-invoice-type': 'one-time-payment-detach-mandate',
+    },
   });
 
   await stripe.invoiceItems.create({
@@ -362,11 +359,8 @@ export async function chargeOneTimePayment(
 
 export function isOneTimePaymentInvoice(invoice: Stripe.Invoice): boolean {
   return (
-    invoice.custom_fields?.some(
-      (field) =>
-        field.name === 'beabee-invoice-type' &&
-        field.value === 'one-time-payment-detach-mandate'
-    ) ?? false
+    invoice.metadata?.['beabee-invoice-type'] ===
+    'one-time-payment-detach-mandate'
   );
 }
 
