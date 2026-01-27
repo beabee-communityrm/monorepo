@@ -508,7 +508,7 @@ export function getInvoiceType(invoice: Stripe.Invoice): PaymentType {
       case 'subscription_cycle':
         return PaymentType.Recurring;
       case 'subscription_update':
-        return PaymentType.Proration;
+        return PaymentType.Prorated;
       default:
         return PaymentType.Recurring;
     }
