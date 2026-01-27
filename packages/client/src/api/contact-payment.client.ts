@@ -16,8 +16,6 @@ import { BaseClient } from './base.client.js';
  * Handles payment methods, payment flows, and payment history for contacts
  */
 export class ContactPaymentClient extends BaseClient {
-  completeUrl: string;
-
   /**
    * Creates a new contact payment client
    * @param options - The client options
@@ -27,7 +25,6 @@ export class ContactPaymentClient extends BaseClient {
       ...options,
       path: cleanUrl(options.path + '/contact'),
     });
-    this.completeUrl = options.host + '/profile/contribution/payment/complete';
   }
 
   async create(dataIn: CreatePaymentData): Promise<PaymentFlowParams> {

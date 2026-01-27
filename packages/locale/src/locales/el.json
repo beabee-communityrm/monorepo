@@ -1096,7 +1096,6 @@
     "changeBank": "",
     "changeBankInfo": "",
     "contributing": "",
-    "contributionUpdateError": "",
     "dueToRenew": "",
     "expired": "",
     "expiredText": "",
@@ -1109,7 +1108,6 @@
       "title": ""
     },
     "paymentMethod": "",
-    "paymentSourceUpdateError": "",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
     "prorateIncreaseMessage": "",
@@ -1185,7 +1183,8 @@
         "duplicate-tag-name": "",
         "invalid-token": "",
         "login-failed": "",
-        "mfa-token-required": ""
+        "mfa-token-required": "",
+        "cant-update-contribution": ""
       },
       "generic": "Ωχ! Κάτι πήγε στραβά. Επικοινωνήστε με την υποστήριξη εάν συμβεί ξανά αυτό.",
       "unauthorized": "Δεν περιλαμβάνεται πρόσβαση.",
