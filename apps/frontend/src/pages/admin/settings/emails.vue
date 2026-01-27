@@ -11,7 +11,7 @@ meta:
   <EmailTemplates class="mb-4"></EmailTemplates>
   <App2ColGrid>
     <template #col1>
-      <AppForm
+      <AppApiForm
         v-if="emailContent.footer"
         class="mb-6"
         :button-text="t('actions.update')"
@@ -38,14 +38,15 @@ meta:
             required
           />
         </div>
-      </AppForm>
+      </AppApiForm>
     </template>
   </App2ColGrid>
 </template>
 <script lang="ts" setup>
 import type { ContentEmailData } from '@beabee/beabee-common';
-import { App2ColGrid, AppForm, AppHeading, AppInput } from '@beabee/vue';
+import { App2ColGrid, AppHeading, AppInput } from '@beabee/vue';
 
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import EmailTemplates from '@components/pages/admin/settings/EmailTemplates.vue';
 import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';

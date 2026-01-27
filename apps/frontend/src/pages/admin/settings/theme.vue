@@ -6,7 +6,7 @@ meta:
 </route>
 
 <template>
-  <AppForm
+  <AppApiForm
     :button-text="t('actions.update')"
     :success-text="t('form.saved')"
     :reset-button-text="t('actions.reset')"
@@ -99,14 +99,13 @@ meta:
         </div>
       </template>
     </App2ColGrid>
-  </AppForm>
+  </AppApiForm>
 </template>
 
 <script lang="ts" setup>
 import {
   App2ColGrid,
   AppColorInput,
-  AppForm,
   AppHeading,
   AppRadioInput,
   AppSelect,
@@ -119,6 +118,7 @@ import {
   visibleCustomColors,
 } from '@beabee/vue/lib/theme';
 
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import { client } from '@utils/api';
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';

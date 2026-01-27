@@ -4,14 +4,9 @@
       <AppTitle>{{ joinContent.title }}</AppTitle>
       <div class="content-message mb-6" v-html="joinContent.subtitle" />
     </template>
-    <AppForm
-      :button-text="buttonText"
-      full-button
-      :extract-error-code="extractApiErrorCode"
-      @submit="onSubmit"
-    >
+    <AppApiForm :button-text="buttonText" full-button @submit="onSubmit">
       <AccountSection v-model:email="data.email" class="mb-6" />
-    </AppForm>
+    </AppApiForm>
   </AuthBox>
 
   <AuthBox v-else :title="joinContent.title" :preview="preview">
@@ -19,7 +14,7 @@
       <div class="content-message" v-html="joinContent.subtitle" />
     </template>
 
-    <AppForm :button-text="buttonText" full-button @submit="onSubmit">
+    <AppApiForm :button-text="buttonText" full-button @submit="onSubmit">
       <AppContribution
         v-model:amount="data.amount"
         v-model:period="data.period"
@@ -37,7 +32,7 @@
         />
         <AccountSection v-model:email="data.email" class="my-6" />
       </AppContribution>
-    </AppForm>
+    </AppApiForm>
 
     <div class="mt-3 text-center text-xs">
       <p
@@ -70,14 +65,14 @@ import {
   type ContentJoinData,
   type ContentPaymentData,
 } from '@beabee/beabee-common';
-import { AppCheckbox, AppForm, AppTitle } from '@beabee/vue';
+import { AppCheckbox, AppTitle } from '@beabee/vue';
 
 import beabeeLogo from '@assets/images/beabee-logo.png';
 import AuthBox from '@components/AuthBox.vue';
 import AppContribution from '@components/contribution/AppContribution.vue';
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import { generalContent, isEmbed } from '@store';
 import type { JoinFormData } from '@type/join-form-data';
-import { extractApiErrorCode } from '@utils/api-error';
 import { calcJoinFormTotalAmount } from '@utils/payment';
 import useVuelidate from '@vuelidate/core';
 import { computed } from 'vue';
