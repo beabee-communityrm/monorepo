@@ -51,8 +51,3 @@ export class ListPaymentsDto extends GetPaginatedQuery {
   @IsIn(['amount', 'chargeDate'])
   sort?: string;
 }
-
-export class GetPaymentInvoiceDto {
-  @IsString()
-  url!: string;
-}
