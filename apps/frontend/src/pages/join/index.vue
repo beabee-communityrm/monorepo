@@ -32,7 +32,6 @@ import {
   type ContentPaymentData,
   ContributionPeriod,
   PaymentMethod,
-  type PaymentPeriod,
   type SignupData,
 } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
@@ -145,11 +144,10 @@ onBeforeMount(async () => {
     (route.query.amount && Number(route.query.amount)) ||
     joinContent.value.initialAmount;
 
-  const period = route.query.period as PaymentPeriod;
-  formData.period =
-    period === 'one-time' || Object.values(ContributionPeriod).includes(period)
-      ? period
-      : joinContent.value.initialPeriod;
+  const period = route.query.period as ContributionPeriod;
+  formData.period = Object.values(ContributionPeriod).includes(period)
+    ? period
+    : joinContent.value.initialPeriod;
 
   formData.paymentMethod = joinContent.value.paymentMethods[0];
 

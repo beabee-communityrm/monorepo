@@ -6,10 +6,14 @@ meta:
 </route>
 
 <template>
+  <AppHeading>{{ t('adminSettings.email.templates.title') }}</AppHeading>
+  <p>{{ t('adminSettings.email.templates.description') }}</p>
+  <EmailTemplates class="mb-4"></EmailTemplates>
   <App2ColGrid>
     <template #col1>
       <AppForm
         v-if="emailContent.footer"
+        class="mb-6"
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
         @submit="handleSubmit"
@@ -42,6 +46,7 @@ meta:
 import type { ContentEmailData } from '@beabee/beabee-common';
 import { App2ColGrid, AppForm, AppHeading, AppInput } from '@beabee/vue';
 
+import EmailTemplates from '@components/pages/admin/settings/EmailTemplates.vue';
 import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

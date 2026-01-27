@@ -108,7 +108,8 @@
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen"
+    "yesRemove": "Ja, entfernen",
+    "yesReset": "Ja, zurücksetzen"
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -179,7 +180,11 @@
       "fromName": "Name",
       "label": "E-Mail",
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",
-      "title": "Lege eine Standard-E-Mail-Adresse fest."
+      "title": "Lege eine Standard-E-Mail-Adresse fest.",
+      "templates": {
+        "title": "E-Mail-Vorlagen verwalten",
+        "description": "Verwalten Sie Betreff und Inhalt der von der Anwendung versendeten E-Mails. Die Statusfarbe zeigt an, ob die E-Mail individuell angepasst (grün), die Standardvorlage verwendet (gelb) oder die E-Mail gerade nicht konfiguriert ist und daher nicht aktiv ist (rot)."
+      }
     },
     "general": {
       "footer": {
@@ -1134,6 +1139,90 @@
       "label": "Betreff"
     }
   },
+  "emails": {
+    "tabs": {
+      "custom": "Benutzerdefinierte E-Mails",
+      "templates": "System-Vorlagen"
+    },
+    "list": {
+      "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
+    },
+    "add": {
+      "title": "Benutzerdefinierte E-Mail erstellen"
+    },
+    "edit": {
+      "title": "E-Mail bearbeiten",
+      "titleCustom": "Bearbeiten: {name}"
+    },
+    "name": "E-Mail-Name",
+    "fromName": "Absendername",
+    "fromEmail": "Absender-E-Mail",
+    "mailingCount": "Versendete E-Mails",
+    "status": "Status",
+    "description": "Beschreibung",
+    "type": "Typ",
+    "customized": "Angepasst",
+    "default": "Standard",
+    "missingDefault": "Nicht Aktiv",
+    "actions": {
+      "addCustom": "Benutzerdefinierte E-Mail hinzufügen",
+      "resetToDefault": "Auf Standard zurücksetzen",
+      "deactivate": "Deaktivieren"
+    },
+    "templates": {
+      "availableFields": "Verfügbare Felder",
+      "type": {
+        "general": "Allgemein",
+        "admin": "Admin-Benachrichtigungen",
+        "contact": "Kontakt-E-Mails"
+      },
+      "names": {
+        "welcome": "Willkommen",
+        "reset-password": "Passwort zurücksetzen",
+        "reset-device": "Gerät zurücksetzen",
+        "cancelled-contribution": "Beitrag gekündigt",
+        "manual-to-automatic": "Manueller Beitrag in automatischen umgewandelt",
+        "email-exists-login": "E-Mail existiert - Anmelden",
+        "email-exists-set-password": "E-Mail existiert - Passwort setzen",
+        "contribution-didnt-start": "Beitrag hat nicht begonnen",
+        "confirm-email": "E-Mail bestätigen",
+        "new-member": "Admin: Neuer Kontakt - Benachrichtigung",
+        "cancelled-member": "Admin: Gekündigtes Mitglied - Benachrichtigung",
+        "new-callout-response": "Admin: Neuer CrowdNewsroom - Antwort-Benachrichtigung",
+        "one-time-donation": "Bestätigung des Einmalbeitrags"
+      },
+      "description": {
+        "welcome": "Wird an neue Mitglieder gesendet, nachdem sie den Registrierungsprozess abgeschlossen haben, damit sie ihre E-Mail-Adresse bestätigen können. Diese E-Mail heißt sie in der Community willkommen",
+        "reset-password": "Wird gesendet, wenn ein Nutzer das Zurücksetzen seines Passworts anfordert. Enthält einen sicheren Link zum Zurücksetzen des Passworts.",
+        "reset-device": "Wird gesendet, wenn ein Nutzer das Zurücksetzen seines vertrauenswürdigen Geräts für die Zwei-Faktor-Authentifizierung anfordert. Enthält einen sicheren Link zum Zurücksetzen des Geräts.",
+        "cancelled-contribution": "Wird an Mitglieder gesendet, wenn ihr wiederkehrender Beitrag gekündigt wird. Enthält in der Regel Informationen darüber, wann die Mitgliedschaft endet, sowie die Mitglieds-ID. Kann einen Link zu einer Umfrage enthalten.",
+        "manual-to-automatic": "Wird an Mitglieder gesendet, wenn ihre Zahlungsmethode erfolgreich von manuell auf automatisch wiederkehrende Zahlung umgestellt wurde. Bestätigt die erfolgreiche Umstellung.",
+        "email-exists-login": "Wird gesendet, wenn jemand versucht, sich mit einer E-Mail-Adresse zu registrieren, die bereits existiert und zu einem aktiven Mitglied mit gesetztem Passwort gehört. Stellt einen Login-Link bereit, damit sie auf ihr bestehendes Konto zugreifen können.",
+        "email-exists-set-password": "Wird gesendet, wenn jemand versucht, sich mit einer E-Mail-Adresse zu registrieren, die bereits existiert und zu einem aktiven Mitglied gehört, das noch kein Passwort gesetzt hat. Stellt einen Link zum Festlegen eines Passworts bereit.",
+        "contribution-didnt-start": "Wird an Mitglieder gesendet, wenn ihre Stripe-Abonnementzahlung nicht gestartet werden konnte (z. B. abgelehnte Zahlungsmethode, unzureichende Deckung). Informiert sie darüber, dass ihre Mitgliedschaft aufgrund des Zahlungsfehlers widerrufen wurde.",
+        "one-time-donation": "Wird an Nutzer gesendet, nachdem sie einen Einmalbeitrag (nicht wiederkehrende Zahlung) abgeschlossen haben. Bestätigt in der Regel den Beitragsbetrag und dient als Quittung.",
+        "confirm-email": "Wird während des Registrierungsprozesses an neue Nutzer gesendet, um ihre E-Mail-Adresse zu verifizieren. Enthält einen Bestätigungslink, den sie anklicken müssen, um die Registrierung abzuschließen.",
+        "new-member": "Wird an Administratoren gesendet, wenn ein neues Mitglied der Community erfolgreich beitritt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen des neuen Mitglieds.",
+        "cancelled-member": "Wird an Administratoren gesendet, wenn ein Mitglied seinen Beitrag kündigt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen des gekündigten Mitglieds.",
+        "new-callout-response": "Wird an Administratoren gesendet, wenn eine neue Antwort auf einen CrowdNewsroom eingereicht wird. Enthält in der Regel eine Benachrichtigung mit den CrowdNewsroom-Details und dem Namen der antwortenden Person."
+      }
+    },
+    "confirmDelete": {
+      "title": "E-Mail deaktivieren",
+      "message": "Sind Sie sicher, dass Sie diese E-Mail deaktivieren möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "messageWithMailings": "Diese E-Mail wurde {count} Mal versendet. Sind Sie sicher, dass Sie sie löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "confirmResetToDefault": {
+      "title": "Auf Standard zurücksetzen",
+      "message": "Sind Sie sicher, dass Sie diese Vorlage auf den Standard zurücksetzen möchten? Ihre benutzerdefinierten Änderungen gehen verloren."
+    },
+    "notifications": {
+      "created": "E-Mail erfolgreich erstellt",
+      "updated": "E-Mail erfolgreich aktualisiert",
+      "deleted": "E-Mail erfolgreich gelöscht",
+      "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt"
+    }
+  },
   "footer": {
     "contactUs": "Kontaktieren Sie uns unter",
     "handbookResources": "Handbuch & Ressourcen",
@@ -1455,6 +1544,7 @@
     "contacts": "Kontakte",
     "contribution": "Beitrag",
     "dashboard": "Dashboard",
+    "emails": "E-Mails",
     "home": "Home",
     "legacyApp": "Alter Adminbereich",
     "logout": "Log out",

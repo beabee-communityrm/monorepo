@@ -42,10 +42,6 @@ const tabs = computed(() =>
       id: 'adminMembershipBuilderIntroMessages',
       label: t('membershipBuilder.steps.intro.title'),
     },
-    {
-      id: 'adminMembershipBuilderEmail',
-      label: t('membershipBuilder.steps.emails.title'),
-    },
   ])
 );
 

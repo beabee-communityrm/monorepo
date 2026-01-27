@@ -108,7 +108,8 @@
     "view": "Visualiser",
     "yesDelete": "Oui, supprimer",
     "yesDisable": "Oui, désactiver",
-    "yesRemove": "Oui, retirer"
+    "yesRemove": "Oui, retirer",
+    "yesReset": "Oui, réinitialiser"
   },
   "addContact": {
     "contactSaved": "Contact enregistré",
@@ -179,7 +180,11 @@
       "fromName": "À partir du nom",
       "label": "E-mail",
       "text": "Toute communication par e-mail sera envoyée à partir de cette adresse e-mail.",
-      "title": "Définir une adresse e-mail générique"
+      "title": "Définir une adresse e-mail générique",
+      "templates": {
+        "title": "Configurer les emails",
+        "description": "Ici, tu peux personnaliser l’objet et le contenu des emails envoyés par l’appli. La couleur t’indique : vert = personnalisé, jaune = modèle par défaut, rouge = non configuré (non envoyé)."
+      }
     },
     "general": {
       "footer": {
@@ -1466,7 +1471,8 @@
     "notices": "Avertissements",
     "payments": "Paiments",
     "settings": "Paramètres",
-    "yourProfile": "Votre profil"
+    "yourProfile": "Votre profil",
+    "emails": "E-mails"
   },
   "mergeFields": {
     "title": "Champs de fusion",
@@ -1708,5 +1714,91 @@
   },
   "taxRate": {
     "invoiceName": "TVA"
+  },
+  "emails": {
+    "tabs": {
+      "custom": "E-mails personnalisés",
+      "templates": "Modèles système"
+    },
+    "list": {
+      "showingOf": "Affichage de {start} à {end} e-mails sur {total}"
+    },
+    "add": {
+      "title": "Créer un e-mail personnalisé"
+    },
+    "edit": {
+      "title": "Modifier l'e-mail",
+      "titleCustom": "Modifier : {name}"
+    },
+    "name": "Nom de l'e-mail",
+    "fromName": "Nom de l'expéditeur",
+    "fromEmail": "E-mail de l'expéditeur",
+    "mailingCount": "E-mails envoyés",
+    "status": "Statut",
+    "description": "Description",
+    "type": "Type",
+    "actions": {
+      "addCustom": "Ajouter un e-mail personnalisé",
+      "resetToDefault": "Réinitialiser par défaut",
+      "deactivate": "Désactiver"
+    },
+    "templates": {
+      "availableFields": "Champs disponibles",
+      "type": {
+        "general": "Général",
+        "admin": "Notifications admin",
+        "contact": "E-mails de contact"
+      },
+      "names": {
+        "welcome": "Bienvenue",
+        "reset-password": "Réinitialiser le mot de passe",
+        "reset-device": "Réinitialiser l'appareil",
+        "cancelled-contribution": "Contribution annulée",
+        "manual-to-automatic": "Contributeur manuel converti en automatique",
+        "email-exists-login": "E-mail existant - connexion",
+        "email-exists-set-password": "E-mail existant - définir mot de passe",
+        "contribution-didnt-start": "La contribution n'a pas démarré",
+        "confirm-email": "Confirmer l'e-mail",
+        "new-member": "Admin : Nouveau contact",
+        "cancelled-member": "Admin : Membre annulé",
+        "new-callout-response": "Admin : Nouvelle réponse CrowdNewsroom",
+        "one-time-donation": "Confirmation de contribution unique"
+      },
+      "description": {
+        "welcome": "Envoyé aux nouveaux membres après qu'ils aient terminé le processus d'inscription afin qu'ils puissent confirmer leur adresse e-mail. Cet e-mail les accueille dans la communauté.",
+        "reset-password": "Envoyé lorsqu'un utilisateur demande à réinitialiser son mot de passe. Contient un lien sécurisé pour réinitialiser le mot de passe.",
+        "reset-device": "Envoyé lorsqu'un utilisateur demande à réinitialiser son appareil de confiance pour l'authentification à deux facteurs. Contient un lien sécurisé pour réinitialiser l'appareil.",
+        "cancelled-contribution": "Envoyé aux membres lorsque leur contribution récurrente est annulée. Contient généralement des informations sur la fin de l'adhésion, ainsi que l'ID du membre. Peut contenir un lien vers une enquête.",
+        "manual-to-automatic": "Envoyé aux membres lorsque leur méthode de paiement a été modifiée avec succès de manuel à paiement récurrent automatique. Confirme le changement réussi.",
+        "email-exists-login": "Envoyé lorsque quelqu'un tente de s'inscrire avec une adresse e-mail qui existe déjà et appartient à un membre actif avec un mot de passe défini. Fournit un lien de connexion pour accéder à son compte existant.",
+        "email-exists-set-password": "Envoyé lorsque quelqu'un tente de s'inscrire avec une adresse e-mail qui existe déjà et appartient à un membre actif qui n'a pas encore défini de mot de passe. Fournit un lien pour définir un mot de passe.",
+        "contribution-didnt-start": "Envoyé aux membres lorsque leur paiement d'abonnement Stripe n'a pas pu être démarré (par exemple, méthode de paiement refusée, fonds insuffisants). Les informe que leur adhésion a été révoquée en raison de l'échec du paiement.",
+        "confirm-email": "Envoyé aux nouveaux utilisateurs pendant le processus d'inscription pour vérifier leur adresse e-mail. Contient un lien de confirmation qu'ils doivent cliquer pour terminer l'inscription.",
+        "new-member": "Envoyé aux administrateurs lorsqu'un nouveau membre rejoint avec succès la communauté. Contient généralement une notification avec l'ID et le nom du nouveau membre.",
+        "cancelled-member": "Envoyé aux administrateurs lorsqu'un membre annule sa contribution. Contient généralement une notification avec l'ID et le nom du membre annulé.",
+        "new-callout-response": "Envoyé aux administrateurs lorsqu'une nouvelle réponse à un CrowdNewsroom est soumise. Contient généralement une notification avec les détails du CrowdNewsroom et le nom de la personne qui répond.",
+        "one-time-donation": "Envoyé aux utilisateurs après qu'ils aient effectué une contribution unique (paiement non récurrent). Confirme généralement le montant de la contribution et sert de reçu."
+      }
+    },
+    "confirmDelete": {
+      "title": "Désactiver l'e-mail",
+      "message": "Êtes-vous sûr de vouloir désactiver cet e-mail ? Cette action est irréversible.",
+      "messageWithMailings": "Cet e-mail a été envoyé {count} fois. Êtes-vous sûr de vouloir le supprimer ? Cette action est irréversible."
+    },
+    "confirmResetToDefault": {
+      "title": "Réinitialiser par défaut",
+      "message": "Êtes-vous sûr de vouloir réinitialiser ce modèle par défaut ? Vos modifications personnalisées seront perdues."
+    },
+    "notifications": {
+      "created": "E-mail créé avec succès",
+      "updated": "E-mail mis à jour avec succès",
+      "deleted": "E-mail supprimé avec succès",
+      "resetToDefault": "Modèle réinitialisé par défaut avec succès",
+      "templatesAssigned": "",
+      "templateAssigned": ""
+    },
+    "customized": "Personnalisé",
+    "default": "Par défaut",
+    "missingDefault": "Non Actif"
   }
 }

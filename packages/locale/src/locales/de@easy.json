@@ -108,7 +108,8 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "yesReset": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -179,7 +180,11 @@
       "fromName": "",
       "label": "Betreff",
       "text": "",
-      "title": ""
+      "title": "",
+      "templates": {
+        "title": "E-Mails einrichten",
+        "description": "Hier kannst du Betreff und Text der E-Mails ändern, die die App verschickt. Die Farbe zeigt dir: grün = angepasst, gelb = Standardvorlage, rot = nicht eingerichtet (wird nicht gesendet)."
+      }
     },
     "general": {
       "footer": {
@@ -1462,7 +1467,8 @@
     "notices": "",
     "payments": "",
     "settings": "",
-    "yourProfile": ""
+    "yourProfile": "",
+    "emails": ""
   },
   "newsletterOptIn": {
     "groups": {
@@ -1659,6 +1665,92 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
+  },
+  "emails": {
+    "tabs": {
+      "custom": "",
+      "templates": ""
+    },
+    "list": {
+      "showingOf": ""
+    },
+    "add": {
+      "title": ""
+    },
+    "edit": {
+      "title": "",
+      "titleCustom": ""
+    },
+    "name": "",
+    "fromName": "",
+    "fromEmail": "",
+    "mailingCount": "",
+    "status": "",
+    "description": "",
+    "type": "",
+    "actions": {
+      "addCustom": "",
+      "resetToDefault": "",
+      "deactivate": ""
+    },
+    "templates": {
+      "availableFields": "",
+      "type": {
+        "general": "",
+        "admin": "",
+        "contact": ""
+      },
+      "names": {
+        "welcome": "",
+        "reset-password": "",
+        "reset-device": "",
+        "cancelled-contribution": "",
+        "manual-to-automatic": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "contribution-didnt-start": "",
+        "confirm-email": "",
+        "new-member": "",
+        "cancelled-member": "",
+        "new-callout-response": "",
+        "one-time-donation": ""
+      },
+      "description": {
+        "welcome": "",
+        "reset-password": "",
+        "reset-device": "",
+        "cancelled-contribution": "",
+        "manual-to-automatic": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "contribution-didnt-start": "",
+        "confirm-email": "",
+        "new-member": "",
+        "cancelled-member": "",
+        "new-callout-response": "",
+        "one-time-donation": ""
+      }
+    },
+    "confirmDelete": {
+      "title": "",
+      "message": "",
+      "messageWithMailings": ""
+    },
+    "confirmResetToDefault": {
+      "title": "",
+      "message": ""
+    },
+    "notifications": {
+      "created": "",
+      "updated": "",
+      "deleted": "",
+      "resetToDefault": "",
+      "templatesAssigned": "",
+      "templateAssigned": ""
+    },
+    "customized": "",
+    "default": "",
+    "missingDefault": ""
   },
   "mergeFields": {
     "title": "",
