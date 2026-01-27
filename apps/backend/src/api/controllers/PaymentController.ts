@@ -6,16 +6,20 @@ import {
   GetPaymentAggregationDto,
   GetPaymentAggregationOptsDto,
   GetPaymentDto,
+  GetPaymentInvoiceDto,
   GetPaymentOptsDto,
   ListPaymentsDto,
 } from '@api/dto/PaymentDto';
 import PaymentTransformer from '@api/transformers/PaymentTransformer';
+import { plainToInstance } from 'class-transformer';
 import {
   Authorized,
   Get,
   JsonController,
   Param,
+  Post,
   QueryParams,
+  Redirect,
 } from 'routing-controllers';
 
 @JsonController('/payment')
@@ -44,5 +48,15 @@ export class PaymentController {
     @QueryParams() query: GetPaymentOptsDto
   ): Promise<GetPaymentDto | undefined> {
     return await PaymentTransformer.fetchOneById(auth, id, query);
+  }
+
+  @Get('/:id/invoice')
+  @Redirect(':url')
+  async getPaymentInvoice(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Param('id') id: string
+  ): Promise<GetPaymentInvoiceDto> {
+    const url = await PaymentTransformer.fetchOneInvoiceUrl(auth, id);
+    return plainToInstance(GetPaymentInvoiceDto, { url });
   }
 }
