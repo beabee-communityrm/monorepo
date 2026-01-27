@@ -78,8 +78,3 @@ export class GetPaymentAggregationDto {
   @IsOptional()
   average!: number | null;
 }
-
-export class GetPaymentInvoiceDto {
-  @IsString()
-  url!: string;
-}
