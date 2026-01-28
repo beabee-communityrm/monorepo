@@ -240,6 +240,11 @@ export class StripeProvider extends PaymentProvider {
       await stripe.customers.del(this.data.customerId);
     }
   }
+
+  static async fetchInvoiceUrl(paymentId: string): Promise<string | null> {
+    const invoice = await stripe.invoices.retrieve(paymentId);
+    return invoice.invoice_pdf || null;
+  }
 }
 
 /** @deprecated Use stripeProvider instead */

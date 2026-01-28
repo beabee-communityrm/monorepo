@@ -9,10 +9,14 @@ import {
   IsIn,
   IsNumber,
   IsOptional,
+  IsString,
   ValidateNested,
 } from 'class-validator';
 
 export class GetPaymentDto {
+  @IsString()
+  id!: string;
+
   @IsNumber()
   amount!: number;
 
