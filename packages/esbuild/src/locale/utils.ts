@@ -22,10 +22,10 @@ export function sortKeysAlphabetically(obj: LocaleObject): LocaleObject {
   const result: LocaleObject = {};
   for (const key of Object.keys(obj).sort()) {
     const v = obj[key];
-    if (v !== null && typeof v === 'object' && !Array.isArray(v)) {
-      result[key] = sortKeysAlphabetically(v as LocaleObject);
+    if (typeof v === 'object') {
+      result[key] = sortKeysAlphabetically(v);
     } else {
-      result[key] = (v as string) ?? '';
+      result[key] = v ?? '';
     }
   }
   return result;
@@ -38,12 +38,10 @@ export function mapLocaleStrings(
 ): LocaleObject {
   const out: LocaleObject = {};
   for (const [key, value] of Object.entries(obj)) {
-    if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
-      out[key] = mapLocaleStrings(value as LocaleObject, fn);
-    } else if (typeof value === 'string') {
-      out[key] = fn(value);
+    if (typeof value === 'object') {
+      out[key] = mapLocaleStrings(value, fn);
     } else {
-      out[key] = typeof value === 'string' ? value : '';
+      out[key] = fn(value ?? '');
     }
   }
   return out;
@@ -63,25 +61,15 @@ export function mergeLocaleObjects(
 
   for (const [key, sourceVal] of Object.entries(source)) {
     const targetVal = result[key];
-    const isRefObject =
-      sourceVal !== null &&
-      typeof sourceVal === 'object' &&
-      !Array.isArray(sourceVal);
-    const isTargetObject =
-      targetVal !== null &&
-      typeof targetVal === 'object' &&
-      !Array.isArray(targetVal);
+    const isSourceObject = typeof sourceVal === 'object';
+    const isTargetObject = typeof targetVal === 'object';
 
     if (!(key in result)) {
-      result[key] = isRefObject
-        ? mergeLocaleObjects({}, sourceVal as LocaleObject, stringHandler)
-        : stringHandler(undefined, sourceVal as string);
-    } else if (isRefObject && isTargetObject) {
-      result[key] = mergeLocaleObjects(
-        targetVal as LocaleObject,
-        sourceVal as LocaleObject,
-        stringHandler
-      );
+      result[key] = isSourceObject
+        ? mergeLocaleObjects({}, sourceVal, stringHandler)
+        : stringHandler(undefined, sourceVal);
+    } else if (isSourceObject && isTargetObject) {
+      result[key] = mergeLocaleObjects(targetVal, sourceVal, stringHandler);
     } else if (typeof sourceVal === 'string' && typeof targetVal === 'string') {
       result[key] = stringHandler(targetVal, sourceVal);
     }
