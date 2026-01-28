@@ -1,6 +1,6 @@
 /**
  * Build template from en.json: same structure, all string values empty.
- * Key order alphabetical (like template.json).
+ * Key order alphabetical.
  */
 import { join } from 'node:path';
 
