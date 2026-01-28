@@ -13,7 +13,7 @@ meta:
   </App2ColGrid>
   <App2ColGrid v-if="joinContent && paymentContent" extended>
     <template #col1>
-      <AppForm
+      <AppApiForm
         :button-text="t('form.saveChanges')"
         :success-text="t('form.saved')"
         @submit="handleUpdate"
@@ -94,7 +94,7 @@ meta:
           :info-message="stepT('noticeTextHelp')"
           class="mb-4"
         />
-      </AppForm>
+      </AppApiForm>
     </template>
     <template #col2>
       <JoinFormStep1
@@ -116,7 +116,6 @@ import {
 import {
   App2ColGrid,
   AppCheckbox,
-  AppForm,
   AppInput,
   AppLabel,
   AppRichTextEditor,
@@ -124,6 +123,7 @@ import {
   AppSubHeading,
 } from '@beabee/vue';
 
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';
 import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';

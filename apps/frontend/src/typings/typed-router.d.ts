@@ -47,10 +47,10 @@ declare module 'vue-router/auto-routes' {
     'adminNoticeEdit': RouteRecordInfo<'adminNoticeEdit', '/admin/notices/edit/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminNoticeView': RouteRecordInfo<'adminNoticeView', '/admin/notices/view/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminPayments': RouteRecordInfo<'adminPayments', '/admin/payments', Record<never, never>, Record<never, never>>,
-    'adminSettings': RouteRecordInfo<'adminSettings', '/admin/settings', Record<never, never>, Record<never, never>, 'adminEmailsTemplateEdit' | 'adminSettingsApikeys' | 'adminSettingsEmail' | 'adminSettingsGeneral' | 'adminSettingsTheme'>,
+    'adminSettings': RouteRecordInfo<'adminSettings', '/admin/settings', Record<never, never>, Record<never, never>, 'adminSettingsApikeys' | 'adminSettingsEmail' | 'adminSettingsEmailEdit' | 'adminSettingsGeneral' | 'adminSettingsTheme'>,
     'adminSettingsGeneral': RouteRecordInfo<'adminSettingsGeneral', '/admin/settings', Record<never, never>, Record<never, never>>,
     'adminSettingsApikeys': RouteRecordInfo<'adminSettingsApikeys', '/admin/settings/api-keys', Record<never, never>, Record<never, never>>,
-    'adminEmailsTemplateEdit': RouteRecordInfo<'adminEmailsTemplateEdit', '/admin/settings/email/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'adminSettingsEmailEdit': RouteRecordInfo<'adminSettingsEmailEdit', '/admin/settings/email/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminSettingsEmail': RouteRecordInfo<'adminSettingsEmail', '/admin/settings/emails', Record<never, never>, Record<never, never>>,
     'adminSettingsTheme': RouteRecordInfo<'adminSettingsTheme', '/admin/settings/theme', Record<never, never>, Record<never, never>>,
     'adminUiToolkit': RouteRecordInfo<'adminUiToolkit', '/admin/ui-toolkit', Record<never, never>, Record<never, never>>,
@@ -209,7 +209,7 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/admin/settings.vue': {
-      routes: 'adminSettings' | 'adminSettingsGeneral' | 'adminEmailsTemplateEdit' | 'adminSettingsApikeys' | '/admin/settings/email' | 'adminSettingsEmail' | 'adminSettingsTheme'
+      routes: 'adminSettings' | 'adminSettingsGeneral' | 'adminSettingsEmailEdit' | 'adminSettingsApikeys' | '/admin/settings/email' | 'adminSettingsEmail' | 'adminSettingsTheme'
       views: 'default'
     }
     'src/pages/admin/settings/index.vue': {
@@ -221,7 +221,7 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/admin/settings/email/[id].vue': {
-      routes: 'adminEmailsTemplateEdit'
+      routes: 'adminSettingsEmailEdit'
       views: never
     }
     'src/pages/admin/settings/emails.vue': {

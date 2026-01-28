@@ -1,7 +1,11 @@
 <template>
-  <AppForm full-button :button-text="buttonText" @submit.prevent="handleSubmit">
+  <AppApiForm
+    full-button
+    :button-text="buttonText"
+    @submit.prevent="handleSubmit"
+  >
     <slot />
-  </AppForm>
+  </AppApiForm>
 
   <AppModal
     v-if="stripeClientSecret"
@@ -45,7 +49,7 @@
 
 <script setup lang="ts">
 import type { PaymentFlowParams } from '@beabee/beabee-common';
-import { AppForm, AppModal } from '@beabee/vue';
+import { AppModal } from '@beabee/vue';
 
 import StripePaymentForm from '@components/forms/StripePaymentForm.vue';
 import env from '@env';
@@ -54,6 +58,8 @@ import type { PaymentFlowFormData } from '@type/payment-flow-form-data';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import AppApiForm from './AppApiForm.vue';
 
 const { t } = useI18n();
 

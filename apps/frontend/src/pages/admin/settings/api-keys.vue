@@ -75,7 +75,7 @@ meta:
   <App2ColGrid>
     <template #col1>
       <AppHeading>{{ t('adminSettings.apikey.create') }}</AppHeading>
-      <AppForm :button-text="t('actions.create')" @submit="generateApiKey">
+      <AppApiForm :button-text="t('actions.create')" @submit="generateApiKey">
         <div class="mb-4">
           <AppInput
             v-model="newApiKeyData.description"
@@ -97,7 +97,7 @@ meta:
           required
           class="mb-4"
         />
-      </AppForm>
+      </AppApiForm>
     </template>
   </App2ColGrid>
 </template>
@@ -109,7 +109,6 @@ import {
   AppButton,
   AppCheckbox,
   AppConfirmDialog,
-  AppForm,
   AppHeading,
   AppInput,
   AppSelect,
@@ -119,6 +118,7 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';

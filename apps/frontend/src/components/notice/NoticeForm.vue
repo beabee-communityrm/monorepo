@@ -1,7 +1,6 @@
 <template>
-  <AppForm
+  <AppApiForm
     :button-text="t('actions.save')"
-    :extract-error-code="extractApiErrorCode"
     @submit.prevent="$emit('submit', convertFormData(data))"
   >
     <div class="mb-3">
@@ -54,15 +53,15 @@
         :label="t('addNotice.form.url')"
       />
     </div>
-  </AppForm>
+  </AppApiForm>
 </template>
 
 <script lang="ts" setup>
 import type { CreateNoticeData } from '@beabee/beabee-common';
 import type { GetNoticeData } from '@beabee/beabee-common';
-import { AppForm, AppInput, AppLabel } from '@beabee/vue';
+import { AppInput, AppLabel } from '@beabee/vue';
 
-import { extractApiErrorCode } from '@utils/api-error';
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import { format } from 'date-fns';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';

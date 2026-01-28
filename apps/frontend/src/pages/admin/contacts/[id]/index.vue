@@ -132,7 +132,7 @@ meta:
         class="mb-4 text-sm text-body-80"
         v-html="t('contactOverview.annotation.copy')"
       />
-      <AppForm
+      <AppApiForm
         :button-text="t('form.saveChanges')"
         :success-text="t('contacts.data.annotationsCopy')"
         @submit.prevent="handleUpdateAbout"
@@ -148,7 +148,7 @@ meta:
           :label="t('contacts.data.notes')"
           class="mb-4"
         />
-      </AppForm>
+      </AppApiForm>
     </template>
     <template #col2>
       <section class="mb-6">
@@ -299,7 +299,6 @@ import {
   App2ColGrid,
   AppButton,
   AppConfirmDialog,
-  AppForm,
   AppHeading,
   AppInfoList,
   AppInfoListItem,
@@ -310,6 +309,7 @@ import {
 } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
 import { PaymentMethod } from '@components/payment';
 import AppRoleEditor from '@components/role/AppRoleEditor.vue';

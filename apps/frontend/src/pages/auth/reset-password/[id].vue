@@ -8,7 +8,7 @@ meta:
 
 <template>
   <AuthBox>
-    <AppForm
+    <AppApiForm
       :button-text="
         mode === 'set' ? t('common.login') : t('actions.changePassword')
       "
@@ -74,7 +74,7 @@ meta:
           />
         </div>
       </template>
-    </AppForm>
+    </AppApiForm>
 
     <div v-if="props.mode === 'reset'" class="mt-4 text-center">
       <router-link
@@ -89,9 +89,10 @@ meta:
 
 <script lang="ts" setup>
 import { RESET_SECURITY_FLOW_ERROR_CODE } from '@beabee/beabee-common';
-import { AppForm, AppInput, AppNotification, AppTitle } from '@beabee/vue';
+import { AppInput, AppNotification, AppTitle } from '@beabee/vue';
 
 import AuthBox from '@components/AuthBox.vue';
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import { updateCurrentUser } from '@store/index';
 import { client, isApiError } from '@utils/api';
 import { isInternalUrl } from '@utils/index';
