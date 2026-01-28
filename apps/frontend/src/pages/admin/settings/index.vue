@@ -8,7 +8,7 @@ meta:
 <template>
   <App2ColGrid>
     <template #col1>
-      <AppForm
+      <AppApiForm
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
         @submit="handleSaveGeneral"
@@ -37,11 +37,11 @@ meta:
             required
           />
         </div>
-      </AppForm>
+      </AppApiForm>
 
       <div class="my-8 border-b border-b-primary-40" />
 
-      <AppForm
+      <AppApiForm
         v-if="shareContent"
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
@@ -83,12 +83,12 @@ meta:
             :label="t('adminSettings.general.socialSharing.twitterHandle')"
           />
         </div>
-      </AppForm>
+      </AppApiForm>
     </template>
     <template #col2>
       <div class="my-8 border-b border-b-primary-40 md:hidden" />
 
-      <AppForm
+      <AppApiForm
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
         @submit="handleSavePayment"
@@ -123,11 +123,11 @@ meta:
             required
           />
         </div>
-      </AppForm>
+      </AppApiForm>
 
       <div class="my-8 border-b border-b-primary-40" />
 
-      <AppForm
+      <AppApiForm
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
         @submit="handleSaveFooter"
@@ -181,7 +181,7 @@ meta:
           :url-label="t('adminSettings.general.footer.otherLinks.url')"
           :add-label="t('adminSettings.general.footer.otherLinks.add')"
         />
-      </AppForm>
+      </AppApiForm>
     </template>
   </App2ColGrid>
 </template>
@@ -191,7 +191,6 @@ import type { ContentJoinData, ContentShareData } from '@beabee/beabee-common';
 import {
   App2ColGrid,
   AppCheckbox,
-  AppForm,
   AppHeading,
   AppInput,
   AppLinkList,
@@ -200,6 +199,7 @@ import {
   AppTextArea,
 } from '@beabee/vue';
 
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import { localeItems } from '@lib/i18n';
 import { generalContent as storeGeneralContent } from '@store';

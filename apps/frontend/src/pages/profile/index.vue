@@ -60,7 +60,7 @@ meta:
     v-if="paymentContent && profileContent.showOneTimeDonation"
     class="mb-6 lg:mr-6 lg:w-1/4"
   >
-    <AppForm
+    <AppApiForm
       :button-text="t('homePage.makeOneTimeDonationButton')"
       @submit="handleSubmitDonation"
     >
@@ -83,7 +83,7 @@ meta:
       variant="error"
       :title="t('contribution.contributionUpdateError')"
     /> -->
-    </AppForm>
+    </AppApiForm>
   </section>
 </template>
 
@@ -98,10 +98,11 @@ import {
   PaymentMethod,
   type PaymentPeriod,
 } from '@beabee/beabee-common';
-import { AppButton, AppForm, PageTitle, WelcomeMessage } from '@beabee/vue';
+import { AppButton, PageTitle, WelcomeMessage } from '@beabee/vue';
 
 import CalloutCard from '@components/callout/CalloutCard.vue';
 import AppContribution from '@components/contribution/AppContribution.vue';
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import ContributionInfo from '@components/pages/profile/ContributionInfo.vue';
 import NoticeContainer from '@components/pages/profile/NoticeContainer.vue';
 import QuickActions from '@components/pages/profile/QuickActions.vue';

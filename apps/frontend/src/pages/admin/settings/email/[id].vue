@@ -51,7 +51,7 @@ meta:
     <p>{{ t('common.loading') }}...</p>
   </div>
 
-  <AppForm
+  <AppApiForm
     v-else-if="emailData"
     :button-text="t('actions.save')"
     @submit="handleSubmit"
@@ -62,15 +62,16 @@ meta:
       :template="{ type: templateType, id: templateId }"
       :heading="t('emailEditor.body.label')"
     />
-  </AppForm>
+  </AppApiForm>
 </template>
 
 <script lang="ts" setup>
 import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
-import { AppButton, AppConfirmDialog, AppForm, PageTitle } from '@beabee/vue';
+import { AppButton, AppConfirmDialog, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import EmailEditor from '@components/EmailEditor.vue';
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client, isApiError } from '@utils/api';
 import { computed, onMounted, ref } from 'vue';
