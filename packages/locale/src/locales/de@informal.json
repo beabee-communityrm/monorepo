@@ -179,12 +179,12 @@
       "fromEmail": "E-Mail-Adresse",
       "fromName": "Name",
       "label": "E-Mail",
-      "text": "Alle E-Mails werden von dieser Adresse gesendet.",
-      "title": "Lege eine Standard-E-Mail-Adresse fest.",
       "templates": {
-        "title": "E-Mails anpassen",
-        "description": "Hier legst du Betreff und Text der E-Mails fest, die die App rausschickt. Die Farbe zeigt dir: grün = selbst gemacht, gelb = Standard, rot = nicht aktiv (wird nicht gesendet)."
-      }
+        "description": "Hier legst du Betreff und Text der E-Mails fest, die die App rausschickt. Die Farbe zeigt dir: grün = selbst gemacht, gelb = Standard, rot = nicht aktiv (wird nicht gesendet).",
+        "title": "E-Mails anpassen"
+      },
+      "text": "Alle E-Mails werden von dieser Adresse gesendet.",
+      "title": "Lege eine Standard-E-Mail-Adresse fest."
     },
     "general": {
       "footer": {
@@ -219,9 +219,9 @@
     },
     "payment": {
       "paymentTitle": "Zahlungen",
+      "showOneTimeDonation": "Einmalige Spendenoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",
-      "taxRateEnabled": "Mehrwertsteuer aktivieren",
-      "showOneTimeDonation": "Einmalige Spendenoption auf Startbildschirm anzeigen"
+      "taxRateEnabled": "Mehrwertsteuer aktivieren"
     },
     "theme": {
       "bodyFont": "Text",
@@ -1139,6 +1139,92 @@
       "label": "Betreff"
     }
   },
+  "emails": {
+    "actions": {
+      "addCustom": "Eigene E-Mail hinzufügen",
+      "deactivate": "Deaktivieren",
+      "resetToDefault": "Auf Standard zurücksetzen"
+    },
+    "add": {
+      "title": "Eigene E-Mail erstellen"
+    },
+    "confirmDelete": {
+      "message": "Bist du sicher, dass du diese E-Mail deaktivieren möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "messageWithMailings": "Diese E-Mail wurde {count} Mal versendet. Bist du sicher, dass du sie löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "title": "E-Mail deaktivieren"
+    },
+    "confirmResetToDefault": {
+      "message": "Bist du sicher, dass du diese Vorlage auf den Standard zurücksetzen möchtest? Deine eigenen Änderungen gehen verloren.",
+      "title": "Auf Standard zurücksetzen"
+    },
+    "customized": "Angepasst",
+    "default": "Standard",
+    "description": "Beschreibung",
+    "edit": {
+      "title": "E-Mail bearbeiten",
+      "titleCustom": "Bearbeiten: {name}"
+    },
+    "fromEmail": "Absender-E-Mail",
+    "fromName": "Absendername",
+    "list": {
+      "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
+    },
+    "mailingCount": "Versendete E-Mails",
+    "missingDefault": "Nicht Aktiv",
+    "name": "E-Mail-Name",
+    "notifications": {
+      "created": "E-Mail erfolgreich erstellt",
+      "deleted": "E-Mail erfolgreich gelöscht",
+      "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
+      "templateAssigned": "",
+      "templatesAssigned": "",
+      "updated": "E-Mail erfolgreich aktualisiert"
+    },
+    "status": "Status",
+    "tabs": {
+      "custom": "Eigene E-Mails",
+      "templates": "System-Vorlagen"
+    },
+    "templates": {
+      "availableFields": "Verfügbare Felder",
+      "description": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "names": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "type": {
+        "admin": "Admin-Benachrichtigungen",
+        "contact": "Kontakt-E-Mails",
+        "general": "Allgemein"
+      }
+    },
+    "type": "Typ"
+  },
   "footer": {
     "contactUs": "Kontaktiere uns unter",
     "handbookResources": "Handbuch & Ressourcen",
@@ -1297,6 +1383,8 @@
   },
   "homePage": {
     "editProfile": "Profil bearbeiten",
+    "makeOneTimeDonationButton": "Spenden",
+    "makeOneTimeDonationTitle": "Jetzt Spenden",
     "manageContribution": "Beitrag ändern",
     "newCallout": "Was Neues!",
     "openCallouts": "CrowdNewsroom",
@@ -1305,9 +1393,7 @@
     "viewAllCallouts": "Alle anzeigen",
     "viewOpenCallouts": "Alle anzeigen",
     "welcome": "Herzlich willkommen {firstName}!",
-    "yourProfile": "Dein Profil",
-    "makeOneTimeDonationTitle": "Jetzt Spenden",
-    "makeOneTimeDonationButton": "Spenden"
+    "yourProfile": "Dein Profil"
   },
   "icons": {
     "welcome": {
@@ -1460,6 +1546,7 @@
     "contacts": "Kontakte",
     "contribution": "Beitrag",
     "dashboard": "Dashboard",
+    "emails": "E-Mails",
     "home": "Home",
     "legacyApp": "Alter Adminbereich",
     "logout": "Log out",
@@ -1467,8 +1554,7 @@
     "notices": "Hinweise",
     "payments": "Zahlungen",
     "settings": "Einstellungen",
-    "yourProfile": "Dein Profil",
-    "emails": "E-Mails"
+    "yourProfile": "Dein Profil"
   },
   "mergeFields": {
     "copied": "Kopiert!",
@@ -1710,91 +1796,5 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
-  },
-  "emails": {
-    "tabs": {
-      "custom": "Eigene E-Mails",
-      "templates": "System-Vorlagen"
-    },
-    "list": {
-      "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
-    },
-    "add": {
-      "title": "Eigene E-Mail erstellen"
-    },
-    "edit": {
-      "title": "E-Mail bearbeiten",
-      "titleCustom": "Bearbeiten: {name}"
-    },
-    "name": "E-Mail-Name",
-    "fromName": "Absendername",
-    "fromEmail": "Absender-E-Mail",
-    "mailingCount": "Versendete E-Mails",
-    "status": "Status",
-    "description": "Beschreibung",
-    "type": "Typ",
-    "customized": "Angepasst",
-    "default": "Standard",
-    "missingDefault": "Nicht Aktiv",
-    "actions": {
-      "addCustom": "Eigene E-Mail hinzufügen",
-      "resetToDefault": "Auf Standard zurücksetzen",
-      "deactivate": "Deaktivieren"
-    },
-    "templates": {
-      "availableFields": "Verfügbare Felder",
-      "type": {
-        "general": "Allgemein",
-        "admin": "Admin-Benachrichtigungen",
-        "contact": "Kontakt-E-Mails"
-      },
-      "names": {
-        "welcome": "",
-        "reset-password": "",
-        "reset-device": "",
-        "cancelled-contribution": "",
-        "manual-to-automatic": "",
-        "email-exists-login": "",
-        "email-exists-set-password": "",
-        "contribution-didnt-start": "",
-        "confirm-email": "",
-        "new-member": "",
-        "cancelled-member": "",
-        "new-callout-response": "",
-        "one-time-donation": ""
-      },
-      "description": {
-        "welcome": "",
-        "reset-password": "",
-        "reset-device": "",
-        "cancelled-contribution": "",
-        "manual-to-automatic": "",
-        "email-exists-login": "",
-        "email-exists-set-password": "",
-        "contribution-didnt-start": "",
-        "confirm-email": "",
-        "new-member": "",
-        "cancelled-member": "",
-        "new-callout-response": "",
-        "one-time-donation": ""
-      }
-    },
-    "confirmDelete": {
-      "title": "E-Mail deaktivieren",
-      "message": "Bist du sicher, dass du diese E-Mail deaktivieren möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
-      "messageWithMailings": "Diese E-Mail wurde {count} Mal versendet. Bist du sicher, dass du sie löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
-    },
-    "confirmResetToDefault": {
-      "title": "Auf Standard zurücksetzen",
-      "message": "Bist du sicher, dass du diese Vorlage auf den Standard zurücksetzen möchtest? Deine eigenen Änderungen gehen verloren."
-    },
-    "notifications": {
-      "created": "E-Mail erfolgreich erstellt",
-      "updated": "E-Mail erfolgreich aktualisiert",
-      "deleted": "E-Mail erfolgreich gelöscht",
-      "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
-      "templatesAssigned": "",
-      "templateAssigned": ""
-    }
   }
 }

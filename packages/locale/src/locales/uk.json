@@ -179,12 +179,12 @@
       "fromEmail": "З електронної пошти",
       "fromName": "Від імені",
       "label": "Електронна пошта",
-      "text": "Усі електронні листи будуть надіслані з цієї адреси електронної пошти.",
-      "title": "Встановіть загальну адресу електронної пошти",
       "templates": {
-        "title": "",
-        "description": ""
-      }
+        "description": "",
+        "title": ""
+      },
+      "text": "Усі електронні листи будуть надіслані з цієї адреси електронної пошти.",
+      "title": "Встановіть загальну адресу електронної пошти"
     },
     "general": {
       "footer": {
@@ -219,9 +219,9 @@
     },
     "payment": {
       "paymentTitle": "Оплата",
+      "showOneTimeDonation": "Показати опцію одноразової пожертви на головному екрані",
       "taxRate": "Ставка ПДВ",
-      "taxRateEnabled": "Увімкнути ПДВ",
-      "showOneTimeDonation": "Показати опцію одноразової пожертви на головному екрані"
+      "taxRateEnabled": "Увімкнути ПДВ"
     },
     "theme": {
       "bodyFont": "Основний текст",
@@ -1141,6 +1141,90 @@
       "label": "Предмет"
     }
   },
+  "emails": {
+    "actions": {
+      "addCustom": "",
+      "deactivate": "",
+      "resetToDefault": ""
+    },
+    "add": {
+      "title": ""
+    },
+    "confirmDelete": {
+      "message": "",
+      "messageWithMailings": "",
+      "title": ""
+    },
+    "confirmResetToDefault": {
+      "message": "",
+      "title": ""
+    },
+    "customized": "",
+    "default": "",
+    "description": "",
+    "edit": {
+      "title": "",
+      "titleCustom": ""
+    },
+    "fromEmail": "",
+    "fromName": "",
+    "list": {
+      "showingOf": ""
+    },
+    "mailingCount": "",
+    "missingDefault": "",
+    "name": "",
+    "notifications": {
+      "created": "",
+      "deleted": "",
+      "resetToDefault": "",
+      "updated": ""
+    },
+    "status": "",
+    "tabs": {
+      "custom": "",
+      "templates": ""
+    },
+    "templates": {
+      "availableFields": "",
+      "description": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "names": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "type": {
+        "admin": "",
+        "contact": "",
+        "general": ""
+      }
+    },
+    "type": ""
+  },
   "footer": {
     "contactUs": "Зв'яжіться з нами за адресою",
     "handbookResources": "Посібник та ресурси",
@@ -1299,6 +1383,8 @@
   },
   "homePage": {
     "editProfile": "Редагувати профіль вашої спільноти",
+    "makeOneTimeDonationButton": "Пожертвувати",
+    "makeOneTimeDonationTitle": "Зробити пожертву зараз",
     "manageContribution": "Керуйте своїм внеском",
     "newCallout": "Новий CrowdNewsroom!",
     "openCallouts": "CrowdNewsroom",
@@ -1307,9 +1393,7 @@
     "viewAllCallouts": "Відкрийте CrowdNewsroom",
     "viewOpenCallouts": "Відкрийте CrowdNewsroom",
     "welcome": "Ласкаво просимо на борт {firstName}!",
-    "yourProfile": "Ваш профіль",
-    "makeOneTimeDonationTitle": "Зробити пожертву зараз",
-    "makeOneTimeDonationButton": "Пожертвувати"
+    "yourProfile": "Ваш профіль"
   },
   "icons": {
     "welcome": {
@@ -1462,6 +1546,7 @@
     "contacts": "Контакти",
     "contribution": "Внесок",
     "dashboard": "Інформаційна панель",
+    "emails": "",
     "home": "Дім",
     "legacyApp": "Стара панель приладів",
     "logout": "Вийти",
@@ -1469,8 +1554,7 @@
     "notices": "Повідомлень",
     "payments": "Платежі",
     "settings": "Налаштування",
-    "yourProfile": "Ваш профіль",
-    "emails": ""
+    "yourProfile": "Ваш профіль"
   },
   "mergeFields": {
     "clickToExpand": "Натисніть, щоб розгорнути заповнювачі",
@@ -1717,89 +1801,5 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
-  },
-  "emails": {
-    "tabs": {
-      "custom": "",
-      "templates": ""
-    },
-    "list": {
-      "showingOf": ""
-    },
-    "add": {
-      "title": ""
-    },
-    "edit": {
-      "title": "",
-      "titleCustom": ""
-    },
-    "name": "",
-    "fromName": "",
-    "fromEmail": "",
-    "mailingCount": "",
-    "status": "",
-    "description": "",
-    "type": "",
-    "customized": "",
-    "default": "",
-    "missingDefault": "",
-    "actions": {
-      "addCustom": "",
-      "resetToDefault": "",
-      "deactivate": ""
-    },
-    "templates": {
-      "availableFields": "",
-      "type": {
-        "general": "",
-        "admin": "",
-        "contact": ""
-      },
-      "names": {
-        "welcome": "",
-        "reset-password": "",
-        "reset-device": "",
-        "cancelled-contribution": "",
-        "manual-to-automatic": "",
-        "email-exists-login": "",
-        "email-exists-set-password": "",
-        "contribution-didnt-start": "",
-        "confirm-email": "",
-        "new-member": "",
-        "cancelled-member": "",
-        "new-callout-response": "",
-        "one-time-donation": ""
-      },
-      "description": {
-        "welcome": "",
-        "reset-password": "",
-        "reset-device": "",
-        "cancelled-contribution": "",
-        "manual-to-automatic": "",
-        "email-exists-login": "",
-        "email-exists-set-password": "",
-        "contribution-didnt-start": "",
-        "confirm-email": "",
-        "new-member": "",
-        "cancelled-member": "",
-        "new-callout-response": "",
-        "one-time-donation": ""
-      }
-    },
-    "confirmDelete": {
-      "title": "",
-      "message": "",
-      "messageWithMailings": ""
-    },
-    "confirmResetToDefault": {
-      "title": "",
-      "message": ""
-    },
-    "notifications": {
-      "created": "",
-      "updated": "",
-      "deleted": "",
-      "resetToDefault": ""
-    }
   }
 }
