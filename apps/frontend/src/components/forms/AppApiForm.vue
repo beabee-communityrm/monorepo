@@ -39,7 +39,8 @@ const errorMessages = computed<Record<string, string>>(() => ({
  * Extract a nice error text from an API error
  *
  * @param error The error object to extract code from
- * @returns The error code or unknown error message if not a matching API error
+ * @returns The translated error message for known errors or a generic one for
+ * unknown errors
  */
 function extractErrorText(error: unknown): string {
   return isApiError(error) && errorMessages.value[error.code]
