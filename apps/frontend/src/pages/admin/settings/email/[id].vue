@@ -1,5 +1,5 @@
 <route lang="yaml">
-name: adminEmailsTemplateEdit
+name: adminSettingsEmailEdit
 meta:
   role: admin
   pageTitle: emails.edit.title
