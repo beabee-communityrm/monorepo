@@ -15,9 +15,7 @@ export async function writeJsonFile(
   await writeFile(filePath, JSON.stringify(data, null, 2) + '\n', 'utf-8');
 }
 
-/**
- * Returns a copy of `obj` with keys at each level sorted alphabetically.
- */
+/** Returns a copy of obj with keys at each level sorted alphabetically. */
 export function sortKeysAlphabetically(obj: LocaleObject): LocaleObject {
   const result: LocaleObject = {};
   for (const key of Object.keys(obj).sort()) {
@@ -31,7 +29,7 @@ export function sortKeysAlphabetically(obj: LocaleObject): LocaleObject {
   return result;
 }
 
-/** Recursively maps string values; nested objects are traversed. Key order follows input. */
+/** Maps each string value with fn; recurses into nested objects. */
 export function mapLocaleStrings(
   obj: LocaleObject,
   fn: (value: string) => string
@@ -47,11 +45,7 @@ export function mapLocaleStrings(
   return out;
 }
 
-/**
- * Merges target into source shape: for each key in source, result has that key.
- * Values: from target when present (and same type), else from source. Nested objects merged recursively.
- * stringHandler(targetValue, sourceValue) decides the final string when both are strings.
- */
+/** Merges target into source shape; stringHandler(target, source) picks string values. Nested objects merged recursively. */
 export function mergeLocaleObjects(
   target: LocaleObject,
   source: LocaleObject,

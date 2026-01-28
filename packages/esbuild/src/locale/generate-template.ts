@@ -1,7 +1,4 @@
-/**
- * Build template from en.json: same structure, all string values empty.
- * Key order alphabetical.
- */
+/** Build template from en.json: same structure, all strings empty, keys alphabetical. */
 import { join } from 'node:path';
 
 import type { LocaleObject } from '../types/index.ts';
@@ -13,18 +10,18 @@ import {
   writeJsonFile,
 } from './utils.ts';
 
-const SOURCE_LOCALE = 'en.json';
+const EN = 'en.json';
 
 export async function generateTemplate(
   localesDir: string,
   templatePath: string
 ): Promise<void> {
   try {
-    const enPath = join(localesDir, SOURCE_LOCALE);
-    const en = await readJsonFile<LocaleObject>(enPath);
-    const template = mapLocaleStrings(en, () => '');
-    const sorted = sortKeysAlphabetically(template);
-    await writeJsonFile(templatePath, sorted);
+    const en = await readJsonFile<LocaleObject>(join(localesDir, EN));
+    await writeJsonFile(
+      templatePath,
+      sortKeysAlphabetically(mapLocaleStrings(en, () => ''))
+    );
   } catch (err) {
     throwWithContext(err, 'generating template');
   }

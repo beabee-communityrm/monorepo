@@ -11,14 +11,11 @@ import {
   writeJsonFile,
 } from './utils.ts';
 
-/** Merge locale with fallback: use target value when non-empty, else source. */
 function mergeWithFallback(
   locale: LocaleObject,
   fallback: LocaleObject
 ): LocaleObject {
-  return mergeLocaleObjects(locale, fallback, (target, source) =>
-    target ? target : source
-  );
+  return mergeLocaleObjects(locale, fallback, (t, s) => t || s);
 }
 
 async function loadLocaleWithFallbacks(
@@ -42,10 +39,7 @@ async function loadLocaleWithFallbacks(
   return mergeWithFallback(data, fallback);
 }
 
-/**
- * Writes locale files with fallbacks applied to outputDir.
- * Key order alphabetical.
- */
+/** Writes locale files with fallbacks applied to outputDir. Keys sorted alphabetically. */
 export async function generateFallbackTranslations(
   config: Record<string, LocaleOption>,
   localesDir: string,
@@ -53,26 +47,13 @@ export async function generateFallbackTranslations(
 ): Promise<void> {
   await mkdir(outputDir, { recursive: true });
 
-  const withFallback = Object.entries(config).filter(
-    ([id, cfg]) => cfg.fallbackLocale && id !== cfg.fallbackLocale
-  );
-
-  for (const [localeId] of withFallback) {
-    const data = await loadLocaleWithFallbacks(localeId, config, localesDir);
-    await writeJsonFile(
-      join(outputDir, `${localeId}.json`),
-      sortKeysAlphabetically(data)
-    );
-  }
-
-  const withoutFallback = Object.entries(config).filter(
-    ([id, cfg]) => !cfg.fallbackLocale || id === cfg.fallbackLocale
-  );
-
-  for (const [localeId] of withoutFallback) {
-    const data = await readJsonFile<LocaleObject>(
-      join(localesDir, `${localeId}.json`)
-    );
+  for (const [localeId, cfg] of Object.entries(config)) {
+    const data =
+      cfg.fallbackLocale && localeId !== cfg.fallbackLocale
+        ? await loadLocaleWithFallbacks(localeId, config, localesDir)
+        : await readJsonFile<LocaleObject>(
+            join(localesDir, `${localeId}.json`)
+          );
     await writeJsonFile(
       join(outputDir, `${localeId}.json`),
       sortKeysAlphabetically(data)
