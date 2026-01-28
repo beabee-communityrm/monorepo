@@ -1,4 +1,5 @@
 import { PaymentStatus } from '../data/index.js';
+import { PaymentType } from '../data/payment-type.js';
 import type { Filters } from '../types/index.js';
 
 export const paymentFilters = {
@@ -23,6 +24,24 @@ export const paymentFilters = {
       PaymentStatus.Failed,
       PaymentStatus.Cancelled,
     ] satisfies readonly PaymentStatus[] as readonly PaymentStatus[],
+  },
+  paymentTypeSimple: {
+    type: 'enum',
+    options: [
+      PaymentType.Prorated,
+      PaymentType.Recurring,
+    ] satisfies readonly Exclude<
+      PaymentType,
+      PaymentType.OneTime
+    >[] as readonly Exclude<PaymentType, PaymentType.OneTime>[],
+  },
+  paymentTypeAdvanced: {
+    type: 'enum',
+    options: [
+      PaymentType.Prorated,
+      PaymentType.Recurring,
+      PaymentType.OneTime,
+    ] satisfies readonly PaymentType[] as readonly PaymentType[],
   },
 } as const;
 paymentFilters satisfies Filters;

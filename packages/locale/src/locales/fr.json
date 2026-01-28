@@ -966,7 +966,12 @@
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "oui"
+    "yes": "oui",
+    "paymentType": {
+      "oneTime": "",
+      "recurring": "",
+      "prorated": ""
+    }
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1615,7 +1620,8 @@
       "amount": "Montant",
       "chargeDate": "Date de facturation",
       "contact": "Contact",
-      "status": "Statut"
+      "status": "Statut",
+      "type": ""
     },
     "dataGroup": {
       "payment": "Paiement"
@@ -1629,7 +1635,11 @@
       "pending": "Paiements en attente",
       "successful": "Paiements réussis"
     },
-    "showingOf": "Affichage des paiements {start} à {end} sur {total}"
+    "showingOf": "Affichage des paiements {start} à {end} sur {total}",
+    "aggregation": {
+      "total": "",
+      "average": ""
+    }
   },
   "resetDevice": {
     "description": "Entrez votre mot de passe pour réinitialiser la protection par A2F. Vous pourrez configurer un nouvel appareil après connexion.",
