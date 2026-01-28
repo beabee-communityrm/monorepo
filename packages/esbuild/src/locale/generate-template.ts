@@ -1,43 +1,31 @@
 /**
- * Script to generate a template file from the English locale file
- *
- * This script loads the English locale file, removes all string values
- * and saves it as a template file that can be used as a starting point
- * for new translations.
+ * Build template from en.json: same structure, all string values empty.
+ * Key order alphabetical (like template.json).
  */
 import { join } from 'node:path';
 
+import type { LocaleObject } from '../types/index.ts';
 import {
-  handleError,
-  processObjectStrings,
+  mapLocaleStrings,
   readJsonFile,
+  sortKeysAlphabetically,
+  throwWithContext,
   writeJsonFile,
 } from './utils.ts';
 
-/**
- * Generates a template file from the English locale file
- * @param localesDir Directory containing the locale files
- * @param templatePath Path where to save the template file
- */
+const SOURCE_LOCALE = 'en.json';
+
 export async function generateTemplate(
   localesDir: string,
   templatePath: string
 ): Promise<void> {
   try {
-    const englishFilePath = join(localesDir, 'en.json');
-
-    console.log(`Reading English locale file from ${englishFilePath}`);
-
-    // Read the English locale file and process it
-    const englishData =
-      await readJsonFile<Record<string, any>>(englishFilePath);
-    const templateData = processObjectStrings(englishData, () => '');
-
-    // Save the template file
-    await writeJsonFile(templatePath, templateData);
-
-    console.log(`Template file successfully created at ${templatePath}`);
-  } catch (error) {
-    handleError(error, 'generating template file');
+    const enPath = join(localesDir, SOURCE_LOCALE);
+    const en = await readJsonFile<LocaleObject>(enPath);
+    const template = mapLocaleStrings(en, () => '');
+    const sorted = sortKeysAlphabetically(template);
+    await writeJsonFile(templatePath, sorted);
+  } catch (err) {
+    throwWithContext(err, 'generating template');
   }
 }
