@@ -1,6 +1,6 @@
 /**
  * Normalize locale JSON: same keys as en.json, missing keys filled with empty string,
- * key order alphabetical (like template.json).
+ * key order alphabetical.
  */
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';

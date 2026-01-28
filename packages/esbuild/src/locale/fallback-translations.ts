@@ -44,7 +44,7 @@ async function loadLocaleWithFallbacks(
 
 /**
  * Writes locale files with fallbacks applied to outputDir.
- * Key order alphabetical (like template.json).
+ * Key order alphabetical.
  */
 export async function generateFallbackTranslations(
   config: Record<string, LocaleOption>,
