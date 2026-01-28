@@ -179,12 +179,12 @@
       "fromEmail": "",
       "fromName": "",
       "label": "",
-      "text": "",
-      "title": "",
       "templates": {
-        "title": "",
-        "description": ""
-      }
+        "description": "",
+        "title": ""
+      },
+      "text": "",
+      "title": ""
     },
     "general": {
       "footer": {
@@ -219,9 +219,9 @@
     },
     "payment": {
       "paymentTitle": "",
+      "showOneTimeDonation": "",
       "taxRate": "",
-      "taxRateEnabled": "",
-      "showOneTimeDonation": ""
+      "taxRateEnabled": ""
     },
     "theme": {
       "bodyFont": "",
@@ -1139,6 +1139,92 @@
       "label": "Oggetto"
     }
   },
+  "emails": {
+    "actions": {
+      "addCustom": "Aggiungi email personalizzata",
+      "deactivate": "Disattiva",
+      "resetToDefault": "Ripristina predefinito"
+    },
+    "add": {
+      "title": "Crea email personalizzata"
+    },
+    "confirmDelete": {
+      "message": "Sei sicuro di voler disattivare questa email? Questa azione non può essere annullata.",
+      "messageWithMailings": "Questa email è stata inviata {count} volta/e. Sei sicuro di volerla eliminare? Questa azione non può essere annullata.",
+      "title": "Disattiva email"
+    },
+    "confirmResetToDefault": {
+      "message": "Sei sicuro di voler ripristinare questo modello ai valori predefiniti? Le tue modifiche personalizzate andranno perse.",
+      "title": "Ripristina predefinito"
+    },
+    "customized": "Personalizzato",
+    "default": "Predefinito",
+    "description": "Descrizione",
+    "edit": {
+      "title": "Modifica email",
+      "titleCustom": "Modifica: {name}"
+    },
+    "fromEmail": "Email mittente",
+    "fromName": "Nome mittente",
+    "list": {
+      "showingOf": "Visualizzazione da {start} a {end} email su {total}"
+    },
+    "mailingCount": "Email inviate",
+    "missingDefault": "Non Attivo",
+    "name": "Nome email",
+    "notifications": {
+      "created": "Email creata con successo",
+      "deleted": "Email eliminata con successo",
+      "resetToDefault": "Modello ripristinato ai valori predefiniti con successo",
+      "templateAssigned": "",
+      "templatesAssigned": "",
+      "updated": "Email aggiornata con successo"
+    },
+    "status": "Stato",
+    "tabs": {
+      "custom": "Email personalizzate",
+      "templates": "Modelli di sistema"
+    },
+    "templates": {
+      "availableFields": "Campi disponibili",
+      "description": {
+        "cancelled-contribution": "Inviato ai membri quando il loro contributo ricorrente viene annullato. Include generalmente informazioni su quando termina l'adesione, nonché l'ID del membro. Può contenere un link a un sondaggio.",
+        "cancelled-member": "Inviato agli amministratori quando un membro annulla il proprio contributo. Include generalmente una notifica con l'ID e il nome del membro annullato.",
+        "confirm-email": "Inviato ai nuovi utenti durante il processo di registrazione per verificare il loro indirizzo email. Contiene un link di conferma che devono cliccare per completare la registrazione.",
+        "contribution-didnt-start": "Inviato ai membri quando il loro pagamento dell'abbonamento Stripe non è stato avviato (ad esempio, metodo di pagamento rifiutato, fondi insufficienti). Li informa che la loro adesione è stata revocata a causa del fallimento del pagamento.",
+        "email-exists-login": "Inviato quando qualcuno tenta di registrarsi con un indirizzo email che esiste già e appartiene a un membro attivo con password impostata. Fornisce un link di accesso per accedere al proprio account esistente.",
+        "email-exists-set-password": "Inviato quando qualcuno tenta di registrarsi con un indirizzo email che esiste già e appartiene a un membro attivo che non ha ancora impostato una password. Fornisce un link per impostare una password.",
+        "manual-to-automatic": "Inviato ai membri quando il loro metodo di pagamento è stato modificato con successo da manuale a pagamento ricorrente automatico. Conferma la modifica riuscita.",
+        "new-callout-response": "Inviato agli amministratori quando viene inviata una nuova risposta a un CrowdNewsroom. Include generalmente una notifica con i dettagli del CrowdNewsroom e il nome della persona che risponde.",
+        "new-member": "Inviato agli amministratori quando un nuovo membro si unisce con successo alla community. Include generalmente una notifica con l'ID e il nome del nuovo membro.",
+        "one-time-donation": "Inviato agli utenti dopo che hanno completato un contributo una tantum (pagamento non ricorrente). Conferma generalmente l'importo del contributo e funge da ricevuta.",
+        "reset-device": "Inviato quando un utente richiede di reimpostare il proprio dispositivo attendibile per l'autenticazione a due fattori. Contiene un link sicuro per reimpostare il dispositivo.",
+        "reset-password": "Inviato quando un utente richiede di reimpostare la propria password. Contiene un link sicuro per reimpostare la password.",
+        "welcome": "Inviato ai nuovi membri dopo che hanno completato il processo di registrazione in modo che possano confermare il loro indirizzo email. Questa email li dà il benvenuto nella community."
+      },
+      "names": {
+        "cancelled-contribution": "Contributo annullato",
+        "cancelled-member": "Admin: Membro annullato",
+        "confirm-email": "Conferma email",
+        "contribution-didnt-start": "Contributo non avviato",
+        "email-exists-login": "Email esistente - accedi",
+        "email-exists-set-password": "Email esistente - imposta password",
+        "manual-to-automatic": "Contributore manuale convertito in automatico",
+        "new-callout-response": "Admin: Nuova risposta CrowdNewsroom",
+        "new-member": "Admin: Nuovo contatto",
+        "one-time-donation": "Conferma contributo una tantum",
+        "reset-device": "Reimposta dispositivo",
+        "reset-password": "Reimposta password",
+        "welcome": "Benvenuto"
+      },
+      "type": {
+        "admin": "Notifiche admin",
+        "contact": "Email di contatto",
+        "general": "Generale"
+      }
+    },
+    "type": "Tipo"
+  },
   "footer": {
     "contactUs": "Contattaci a",
     "handbookResources": "Manuale & risorse",
@@ -1269,11 +1355,11 @@
       "heading": "",
       "italic": "",
       "link": "",
+      "mergeFields": "Campi di unione",
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
-      "underline": "",
-      "mergeFields": "Campi di unione"
+      "underline": ""
     },
     "saveChanges": "",
     "saved": "Salvato!",
@@ -1297,6 +1383,8 @@
   },
   "homePage": {
     "editProfile": "",
+    "makeOneTimeDonationButton": "Dona",
+    "makeOneTimeDonationTitle": "Fai una donazione ora",
     "manageContribution": "Gestisci il tuo contributo",
     "newCallout": "Nuova CrowdNewsroom!",
     "openCallouts": "Callout in corso",
@@ -1305,9 +1393,7 @@
     "viewAllCallouts": "Vedi tutte le callout",
     "viewOpenCallouts": "Vedi le callout in corso",
     "welcome": "Ben fatto {firstName}!",
-    "yourProfile": "Il tuo profilo",
-    "makeOneTimeDonationTitle": "Fai una donazione ora",
-    "makeOneTimeDonationButton": "Dona"
+    "yourProfile": "Il tuo profilo"
   },
   "icons": {
     "welcome": {
@@ -1460,6 +1546,7 @@
     "contacts": "Contatti",
     "contribution": "Il tuo contributo",
     "dashboard": "Dashboard",
+    "emails": "Email",
     "home": "Home",
     "legacyApp": "Vecchia dashboard",
     "logout": "Log out",
@@ -1467,53 +1554,52 @@
     "notices": "Notifiche",
     "payments": "Pagamenti",
     "settings": "Impostazioni",
-    "yourProfile": "Il tuo profilo",
-    "emails": "Email"
+    "yourProfile": "Il tuo profilo"
   },
   "mergeFields": {
-    "title": "Campi di unione",
+    "copied": "Copiato!",
     "copy": "Copia",
     "copyTag": "Copia {tag}",
-    "copied": "Copiato!",
-    "insert": "Inserisci",
-    "insertTag": "Inserisci {tag}",
     "example": "Esempio",
     "groups": {
       "contact": "Campi contatto",
-      "standard": "Campi standard",
       "magic": "Link magici",
+      "standard": "Campi standard",
       "template": "Campi template"
     },
+    "insert": "Inserisci",
+    "insertTag": "Inserisci {tag}",
     "tags": {
-      "EMAIL": "Indirizzo email del contatto",
-      "NAME": "Nome completo del contatto",
-      "FNAME": "Nome del contatto",
-      "LNAME": "Cognome del contatto",
-      "MEMBERSHIPID": "ID iscrizione del contatto",
-      "RPLINK": "Link reset password",
-      "LOGINLINK": "Link di accesso",
-      "SPLINK": "Link impostazione password",
-      "MESSAGE": "Contenuto messaggio personalizzato",
-      "CALLOUTTITLE": "Titolo CrowdNewsroom",
-      "CALLOUTLINK": "Link a CrowdNewsroom",
-      "SUPPORTEMAIL": "Indirizzo email supporto",
-      "ANSWERS": "Risposte formattate",
-      "REFCODE": "Codice referral del contatto",
-      "EXPIRES": "Data scadenza iscrizione",
-      "REFEREENAME": "Nome della persona indicata",
-      "ISELIGIBLE": "Se il referral è idoneo",
-      "PURCHASER": "Nome acquirente regalo",
-      "GIFTEE": "Nome destinatario regalo",
-      "GIFTDATE": "Data inizio regalo",
       "ACTIVATELINK": "Link attivazione regalo",
+      "ANSWERS": "Risposte formattate",
+      "CALLOUTLINK": "Link a CrowdNewsroom",
+      "CALLOUTSLUG": "Slug CrowdNewsroom",
+      "CALLOUTTITLE": "Titolo CrowdNewsroom",
       "CONFIRMLINK": "Link conferma email",
-      "URL": "URL speciale",
+      "EMAIL": "Indirizzo email del contatto",
+      "EXPIRES": "Data scadenza iscrizione",
+      "FNAME": "Nome del contatto",
+      "GIFTDATE": "Data inizio regalo",
+      "GIFTEE": "Nome destinatario regalo",
+      "ISELIGIBLE": "Se il referral è idoneo",
+      "LNAME": "Cognome del contatto",
+      "LOGINLINK": "Link di accesso",
       "MEMBERID": "ID membro",
       "MEMBERNAME": "Nome membro",
-      "CALLOUTSLUG": "Slug CrowdNewsroom",
+      "MEMBERSHIPID": "ID iscrizione del contatto",
+      "MESSAGE": "Contenuto messaggio personalizzato",
+      "NAME": "Nome completo del contatto",
+      "ORGNAME": "Nome organizzazione",
+      "PURCHASER": "Nome acquirente regalo",
+      "REFCODE": "Codice referral del contatto",
+      "REFEREENAME": "Nome della persona indicata",
       "RESPNAME": "Nome rispondente",
-      "ORGNAME": "Nome organizzazione"
-    }
+      "RPLINK": "Link reset password",
+      "SPLINK": "Link impostazione password",
+      "SUPPORTEMAIL": "Indirizzo email supporto",
+      "URL": "URL speciale"
+    },
+    "title": "Campi di unione"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1710,91 +1796,5 @@
   },
   "taxRate": {
     "invoiceName": "VAT"
-  },
-  "emails": {
-    "tabs": {
-      "custom": "Email personalizzate",
-      "templates": "Modelli di sistema"
-    },
-    "list": {
-      "showingOf": "Visualizzazione da {start} a {end} email su {total}"
-    },
-    "add": {
-      "title": "Crea email personalizzata"
-    },
-    "edit": {
-      "title": "Modifica email",
-      "titleCustom": "Modifica: {name}"
-    },
-    "name": "Nome email",
-    "fromName": "Nome mittente",
-    "fromEmail": "Email mittente",
-    "mailingCount": "Email inviate",
-    "status": "Stato",
-    "description": "Descrizione",
-    "type": "Tipo",
-    "actions": {
-      "addCustom": "Aggiungi email personalizzata",
-      "resetToDefault": "Ripristina predefinito",
-      "deactivate": "Disattiva"
-    },
-    "templates": {
-      "availableFields": "Campi disponibili",
-      "type": {
-        "general": "Generale",
-        "admin": "Notifiche admin",
-        "contact": "Email di contatto"
-      },
-      "names": {
-        "welcome": "Benvenuto",
-        "reset-password": "Reimposta password",
-        "reset-device": "Reimposta dispositivo",
-        "cancelled-contribution": "Contributo annullato",
-        "manual-to-automatic": "Contributore manuale convertito in automatico",
-        "email-exists-login": "Email esistente - accedi",
-        "email-exists-set-password": "Email esistente - imposta password",
-        "contribution-didnt-start": "Contributo non avviato",
-        "confirm-email": "Conferma email",
-        "new-member": "Admin: Nuovo contatto",
-        "cancelled-member": "Admin: Membro annullato",
-        "new-callout-response": "Admin: Nuova risposta CrowdNewsroom",
-        "one-time-donation": "Conferma contributo una tantum"
-      },
-      "description": {
-        "welcome": "Inviato ai nuovi membri dopo che hanno completato il processo di registrazione in modo che possano confermare il loro indirizzo email. Questa email li dà il benvenuto nella community.",
-        "reset-password": "Inviato quando un utente richiede di reimpostare la propria password. Contiene un link sicuro per reimpostare la password.",
-        "reset-device": "Inviato quando un utente richiede di reimpostare il proprio dispositivo attendibile per l'autenticazione a due fattori. Contiene un link sicuro per reimpostare il dispositivo.",
-        "cancelled-contribution": "Inviato ai membri quando il loro contributo ricorrente viene annullato. Include generalmente informazioni su quando termina l'adesione, nonché l'ID del membro. Può contenere un link a un sondaggio.",
-        "manual-to-automatic": "Inviato ai membri quando il loro metodo di pagamento è stato modificato con successo da manuale a pagamento ricorrente automatico. Conferma la modifica riuscita.",
-        "email-exists-login": "Inviato quando qualcuno tenta di registrarsi con un indirizzo email che esiste già e appartiene a un membro attivo con password impostata. Fornisce un link di accesso per accedere al proprio account esistente.",
-        "email-exists-set-password": "Inviato quando qualcuno tenta di registrarsi con un indirizzo email che esiste già e appartiene a un membro attivo che non ha ancora impostato una password. Fornisce un link per impostare una password.",
-        "contribution-didnt-start": "Inviato ai membri quando il loro pagamento dell'abbonamento Stripe non è stato avviato (ad esempio, metodo di pagamento rifiutato, fondi insufficienti). Li informa che la loro adesione è stata revocata a causa del fallimento del pagamento.",
-        "confirm-email": "Inviato ai nuovi utenti durante il processo di registrazione per verificare il loro indirizzo email. Contiene un link di conferma che devono cliccare per completare la registrazione.",
-        "new-member": "Inviato agli amministratori quando un nuovo membro si unisce con successo alla community. Include generalmente una notifica con l'ID e il nome del nuovo membro.",
-        "cancelled-member": "Inviato agli amministratori quando un membro annulla il proprio contributo. Include generalmente una notifica con l'ID e il nome del membro annullato.",
-        "new-callout-response": "Inviato agli amministratori quando viene inviata una nuova risposta a un CrowdNewsroom. Include generalmente una notifica con i dettagli del CrowdNewsroom e il nome della persona che risponde.",
-        "one-time-donation": "Inviato agli utenti dopo che hanno completato un contributo una tantum (pagamento non ricorrente). Conferma generalmente l'importo del contributo e funge da ricevuta."
-      }
-    },
-    "confirmDelete": {
-      "title": "Disattiva email",
-      "message": "Sei sicuro di voler disattivare questa email? Questa azione non può essere annullata.",
-      "messageWithMailings": "Questa email è stata inviata {count} volta/e. Sei sicuro di volerla eliminare? Questa azione non può essere annullata."
-    },
-    "confirmResetToDefault": {
-      "title": "Ripristina predefinito",
-      "message": "Sei sicuro di voler ripristinare questo modello ai valori predefiniti? Le tue modifiche personalizzate andranno perse."
-    },
-    "notifications": {
-      "created": "Email creata con successo",
-      "updated": "Email aggiornata con successo",
-      "deleted": "Email eliminata con successo",
-      "resetToDefault": "Modello ripristinato ai valori predefiniti con successo",
-      "templatesAssigned": "",
-      "templateAssigned": ""
-    },
-    "customized": "Personalizzato",
-    "default": "Predefinito",
-    "missingDefault": "Non Attivo"
   }
 }
