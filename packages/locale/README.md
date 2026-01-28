@@ -157,7 +157,7 @@ We welcome translations in both directions:
 
 #### Using Weblate
 
-[Weblate](https://weblate.org/) provides a user-friendly interface for translating strings without needing to understand the technical details:
+[Weblate](https://weblate.org/) provides a user-friendly interface for translating strings without needing to understand the technical details.
 
 For detailed instructions on how to use Weblate, check the [official Weblate documentation](https://docs.weblate.org/en/latest/user/translating.html). The documentation is available in many languages - you can change the language using the language selector.
 

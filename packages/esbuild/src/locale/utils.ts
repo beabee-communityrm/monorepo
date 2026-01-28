@@ -1,113 +1,96 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
-/**
- * Read and parse a JSON file
- * @param filePath Path to the JSON file
- * @returns Parsed JSON content
- */
+import type { LocaleObject } from '../types/index.ts';
+
 export async function readJsonFile<T>(filePath: string): Promise<T> {
   const content = await readFile(filePath, 'utf-8');
   return JSON.parse(content) as T;
 }
 
-/**
- * Write data to a JSON file
- * @param filePath Path where to write the file
- * @param data Data to write
- */
+/** Writes JSON with 2-space indent and trailing newline. */
 export async function writeJsonFile(
   filePath: string,
-  data: Record<string, any>
+  data: LocaleObject
 ): Promise<void> {
   await writeFile(filePath, JSON.stringify(data, null, 2) + '\n', 'utf-8');
 }
 
 /**
- * Process an object recursively, applying a transformation function to string values
- * @param obj The object to process
- * @param transformFn Function to transform string values
- * @returns A new object with transformed values
+ * Returns a copy of `obj` with keys at each level sorted alphabetically.
  */
-export function processObjectStrings(
-  obj: Record<string, any>,
-  transformFn: (value: string) => string
-): Record<string, any> {
-  const result: Record<string, any> = {};
-
-  for (const [key, value] of Object.entries(obj).sort()) {
-    if (value !== null && typeof value === 'object') {
-      result[key] = processObjectStrings(value, transformFn);
-    } else if (typeof value === 'string') {
-      result[key] = transformFn(value);
+export function sortKeysAlphabetically(obj: LocaleObject): LocaleObject {
+  const result: LocaleObject = {};
+  for (const key of Object.keys(obj).sort()) {
+    const v = obj[key];
+    if (v !== null && typeof v === 'object' && !Array.isArray(v)) {
+      result[key] = sortKeysAlphabetically(v as LocaleObject);
     } else {
-      result[key] = value;
+      result[key] = (v as string) ?? '';
     }
   }
-
   return result;
 }
 
-/**
- * Recursively merges two objects, using a function to handle string values
- * @param target The target object to be updated
- * @param source The source object containing the complete structure
- * @param stringHandler Function to handle string values when merging
- * @returns The merged object
- */
-export function mergeObjects(
-  target: Record<string, any>,
-  source: Record<string, any>,
-  stringHandler: (
-    targetValue: string | undefined,
-    sourceValue: string
-  ) => string
-): Record<string, any> {
-  const result = { ...target };
+/** Recursively maps string values; nested objects are traversed. Key order follows input. */
+export function mapLocaleStrings(
+  obj: LocaleObject,
+  fn: (value: string) => string
+): LocaleObject {
+  const out: LocaleObject = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+      out[key] = mapLocaleStrings(value as LocaleObject, fn);
+    } else if (typeof value === 'string') {
+      out[key] = fn(value);
+    } else {
+      out[key] = typeof value === 'string' ? value : '';
+    }
+  }
+  return out;
+}
 
-  for (const [key, sourceValue] of Object.entries(source)) {
-    // Handle non-existent keys
+/**
+ * Merges target into source shape: for each key in source, result has that key.
+ * Values: from target when present (and same type), else from source. Nested objects merged recursively.
+ * stringHandler(targetValue, sourceValue) decides the final string when both are strings.
+ */
+export function mergeLocaleObjects(
+  target: LocaleObject,
+  source: LocaleObject,
+  stringHandler: (targetVal: string | undefined, sourceVal: string) => string
+): LocaleObject {
+  const result: LocaleObject = { ...target };
+
+  for (const [key, sourceVal] of Object.entries(source)) {
+    const targetVal = result[key];
+    const isRefObject =
+      sourceVal !== null &&
+      typeof sourceVal === 'object' &&
+      !Array.isArray(sourceVal);
+    const isTargetObject =
+      targetVal !== null &&
+      typeof targetVal === 'object' &&
+      !Array.isArray(targetVal);
+
     if (!(key in result)) {
-      if (sourceValue !== null && typeof sourceValue === 'object') {
-        result[key] = {};
-      } else if (typeof sourceValue === 'string') {
-        result[key] = stringHandler(undefined, sourceValue);
-      } else {
-        result[key] = sourceValue;
-      }
-    }
-    // Handle existing keys
-    else {
-      const targetValue = result[key];
-
-      // For objects, merge recursively
-      if (
-        sourceValue !== null &&
-        typeof sourceValue === 'object' &&
-        targetValue !== null &&
-        typeof targetValue === 'object'
-      ) {
-        result[key] = mergeObjects(targetValue, sourceValue, stringHandler);
-      }
-      // For strings, use the string handler
-      else if (
-        typeof sourceValue === 'string' &&
-        typeof targetValue === 'string'
-      ) {
-        result[key] = stringHandler(targetValue, sourceValue);
-      }
-      // For other types, keep the target value
+      result[key] = isRefObject
+        ? mergeLocaleObjects({}, sourceVal as LocaleObject, stringHandler)
+        : stringHandler(undefined, sourceVal as string);
+    } else if (isRefObject && isTargetObject) {
+      result[key] = mergeLocaleObjects(
+        targetVal as LocaleObject,
+        sourceVal as LocaleObject,
+        stringHandler
+      );
+    } else if (typeof sourceVal === 'string' && typeof targetVal === 'string') {
+      result[key] = stringHandler(targetVal, sourceVal);
     }
   }
 
   return result;
 }
 
-/**
- * Error handler for async operations
- * @param error The error to handle
- * @param context Additional context about where the error occurred
- */
-export function handleError(error: unknown, context: string): never {
+export function throwWithContext(error: unknown, context: string): never {
   console.error(`Error ${context}:`, error);
   throw error;
 }

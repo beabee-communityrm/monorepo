@@ -73,9 +73,9 @@ await generateTemplate('./src/locales', './src/template.json');
 
 ### Locale Functions
 
-- `normalizeTranslations(localesDir)` - Normalizes translation file structure
-- `generateTemplate(localesDir, templatePath)` - Generates template from English locale
-- `applyFallbacksToSources(config, localesDir)` - Applies fallback translations to source files
+- `normalizeTranslations(localesDir)` - Same keys as en.json, missing keys filled with `""`, key order alphabetical (like template.json)
+- `generateTemplate(localesDir, templatePath)` - Empty-string template from en.json, keys sorted alphabetically
+- `generateFallbackTranslations(config, localesDir, outputDir)` - Writes locale files with fallbacks applied; output keys sorted alphabetically
 
 ### Types
 
