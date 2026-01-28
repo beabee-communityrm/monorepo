@@ -216,7 +216,7 @@
       "paymentTitle": "Zahlungen",
       "taxRate": "Mehrwertsteuersatz",
       "taxRateEnabled": "Mehrwertsteuer aktivieren",
-      "showOneTimeDonation": "Einmalige Spendenoption auf Startbildschirm anzeigen"
+      "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen"
     },
     "theme": {
       "bodyFont": "Text",
@@ -1028,11 +1028,11 @@
       "activeUser": "Aktiver Nutzer",
       "amount": "Betrag",
       "annotationsCopy": "Änderungen gespeichert!",
-      "contribution": "Beitrag",
-      "contributionCancelled": "Mitgliedschaft beendet",
-      "contributionMonthlyAmount": "Monatlicher Beitrag",
-      "contributionPeriod": "Beitragsintervall",
-      "contributionType": "Beitragstyp",
+      "contribution": " Wiederkehrender Beitrag",
+      "contributionCancelled": "Wiederkehrender Beitrag beendet",
+      "contributionMonthlyAmount": "Wiederkehrender monatlicher Beitrag",
+      "contributionPeriod": "Wiederkehrender Beitragsintervall",
+      "contributionType": "Wiederkehrender Beitragstyp",
       "deliveryOptIn": "Postsendung",
       "description": "Beschreibung",
       "email": "E-Mail",
@@ -1053,12 +1053,17 @@
       "period": "Zeitraum",
       "phone": "Telefon",
       "preferredChannel": "Bevorzugter Kanal",
-      "tags": "Tags"
+      "tags": "Tags",
+      "donationDate": "Datum des einmaligen Beitrags",
+      "hasDonated": "Einmaliger Beitrag geleistet",
+      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge (insgesamt)",
+      "averageDonationAmount": "Durchschnitt einmaliger Beiträge (insgesamt)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Kontaktdaten",
-      "contribution": "Beitrag",
+      "recurringContributions": "Wiederkehrende Beiträge",
+      "oneTimeContributions": "Einmalige Beiträge",
       "role": "Rolle"
     },
     "noContacts": "Keine Kontakte",
@@ -1112,7 +1117,8 @@
     "updatedPaymentSource": "Ihre Zahlungsart wurde aktualisiert.",
     "willExpire": "Ihre Mitgliedschaft läuft in {expires} ab.",
     "willRenew": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
-    "willRenewWithNewAmount": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch. Ihr Beitrag ist dann {nextAmount}."
+    "willRenewWithNewAmount": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch. Ihr Beitrag ist dann {nextAmount}.",
+    "recurringContribution": "Wiederkehrender Beitrag"
   },
   "editCallout": {
     "replicated": "Ihr CrowdNewsroom wurde kopiert! Sie bearbeiten jetzt die Kopie. Bitte denken Sie unbedingt daran, den Titel zu bearbeiten.",
@@ -1301,8 +1307,8 @@
     "viewOpenCallouts": "Alle anzeigen",
     "welcome": "Herzlich willkommen {firstName} {lastName}!",
     "yourProfile": "Ihr Profil",
-    "makeOneTimeDonationTitle": "Jetzt Spenden",
-    "makeOneTimeDonationButton": "Spenden"
+    "makeOneTimeDonationTitle": "Jetzt einen einmaligen Beitrag leisten",
+    "makeOneTimeDonationButton": "Beitrag leisten"
   },
   "icons": {
     "welcome": {
@@ -1369,7 +1375,7 @@
     "goBackButton": "Zurück zum letzten Schritt",
     "note": "Sie können Ihre Zahlungsdaten jederzeit in Ihrem Nutzer-Account ändern und dort auch sehen, wie viel Sie in der Vergangenheit bereits gezahlt haben. ",
     "willBeContributing": "Sie zahlen {contribution}",
-    "willBeDonating": "Sie spenden {amount}"
+    "willBeDonating": "Sie leisten einen einmaligen Beitrag von {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Bitte bestätigen Sie Ihre Angaben:",
@@ -1422,7 +1428,7 @@
         "bigTitle": "Willkommens- & Kündigungs-E-Mail",
         "cancellationEmail": "Kündigungs-E-Mail",
         "description": "Passe deine Willkommens- und Kündigungs-E-Mail an",
-        "oneTimeDonationEmail": "Einmalige Spenden-E-Mail",
+        "oneTimeDonationEmail": "Einmalige Beitrags-E-Mail",
         "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mail-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
         "welcomeEmail": "Willkommens-E-Mail"

@@ -1028,11 +1028,11 @@
       "activeUser": "",
       "amount": "",
       "annotationsCopy": "",
-      "contribution": "",
-      "contributionCancelled": "",
-      "contributionMonthlyAmount": "",
-      "contributionPeriod": "",
-      "contributionType": "",
+      "contribution": "Contributo ricorrente",
+      "contributionCancelled": "Contributo ricorrente cancellato",
+      "contributionMonthlyAmount": "Importo mensile del contributo ricorrente",
+      "contributionPeriod": "Periodo del contributo ricorrente",
+      "contributionType": "Tipo di contributo ricorrente",
       "deliveryOptIn": "",
       "description": "",
       "email": "",
@@ -1053,12 +1053,17 @@
       "period": "",
       "phone": "",
       "preferredChannel": "",
-      "tags": ""
+      "tags": "",
+      "donationDate": "Data del contributo una tantum",
+      "hasDonated": "Ha effettuato un contributo una tantum",
+      "totalDonationAmount": "Importo totale contributi una tantum (complessivo)",
+      "averageDonationAmount": "Importo medio contributi una tantum (complessivo)"
     },
     "dataGroup": {
       "callout": "Callout",
       "contact": "Informazioni di contatto",
-      "contribution": "",
+      "recurringContributions": "Contributi ricorrenti",
+      "oneTimeContributions": "Contributi una tantum",
       "role": ""
     },
     "noContacts": "",
@@ -1112,7 +1117,8 @@
     "updatedPaymentSource": "",
     "willExpire": "",
     "willRenew": "Il tuo contributo sarà aggiornato il {renewalDate}.",
-    "willRenewWithNewAmount": ""
+    "willRenewWithNewAmount": "",
+    "recurringContribution": "Contributo ricorrente"
   },
   "editCallout": {
     "replicated": "La tua CrowdNewsroom è stata replicata con successo e ora stai modificando la nuova copia. Ricordati di modificare il titolo nella scheda \"Titolo e Immagine\".",
@@ -1301,8 +1307,8 @@
     "viewOpenCallouts": "Vedi le callout in corso",
     "welcome": "Ben fatto {firstName}!",
     "yourProfile": "Il tuo profilo",
-    "makeOneTimeDonationTitle": "Fai una donazione ora",
-    "makeOneTimeDonationButton": "Dona"
+    "makeOneTimeDonationTitle": "Fai un contributo una tantum ora",
+    "makeOneTimeDonationButton": "Contributo"
   },
   "icons": {
     "welcome": {
@@ -1369,7 +1375,7 @@
     "goBackButton": "Torna alla schermata precedente",
     "note": "Potrai modificare l'ammontare del tuo contributo e accedere allo storico delle tue donazioni in qualsiasi momento tramite il tuo account.",
     "willBeContributing": "Contribuirai con {contribution}",
-    "willBeDonating": "Farai una donazione di {amount}"
+    "willBeDonating": "Farai un contributo una tantum di {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Per favore, conferma i tuoi dettagli.",
@@ -1422,7 +1428,7 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
-        "oneTimeDonationEmail": "Email di donazione una tantum",
+        "oneTimeDonationEmail": "Email di contributo una tantum",
         "text": "",
         "title": "",
         "welcomeEmail": ""
