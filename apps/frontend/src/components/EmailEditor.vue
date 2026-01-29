@@ -165,13 +165,25 @@ const props = withDefaults(
      * Whether to always stack the preview below the editor (ignores responsive breakpoints)
      */
     alwaysStacked?: boolean;
+
+    /**
+     * Optional contact ID to use for preview. If not set, the current user is used.
+     * Override this for e.g. segment send page to preview as a selected contact.
+     */
+    previewContactId?: string | null;
   }>(),
   {
     heading: '',
     template: undefined,
     mergeFields: () => ({}),
     alwaysStacked: false,
+    previewContactId: undefined,
   }
+);
+
+/** Contact used for preview: override prop or current user. Same rule for template and one-off preview. */
+const effectivePreviewContactId = computed(
+  () => props.previewContactId ?? currentUser.value?.id ?? null
 );
 
 const { t } = useI18n();
@@ -261,17 +273,15 @@ const sanitizedPreviewBody = computed(() => {
  */
 async function fetchServerPreview() {
   isLoadingPreview.value = true;
-
   try {
     const previewOptions: PreviewEmailOptions = {
       subject: subject.value,
       body: content.value,
+      contactId: effectivePreviewContactId.value ?? undefined,
+      ...(Object.keys(props.mergeFields).length > 0 && {
+        mergeFields: props.mergeFields,
+      }),
     };
-
-    if (Object.keys(props.mergeFields).length > 0) {
-      previewOptions.mergeFields = props.mergeFields;
-    }
-
     const preview = props.template
       ? await client.email.template.preview(
           props.template.type,
@@ -279,7 +289,10 @@ async function fetchServerPreview() {
           previewOptions
         )
       : await client.email.preview(previewOptions);
-
+    if (!preview) {
+      serverPreviewResult.value = null;
+      return;
+    }
     serverPreviewResult.value = {
       subject: preview.subject,
       body: preview.body,
@@ -316,10 +329,10 @@ const debouncedFetchServerPreview = debounce(fetchServerPreview, 500);
 // watchEffect automatically tracks reactive dependencies (subject, content, mergeFields)
 watchEffect(() => {
   // Trigger re-fetch when any reactive value changes
-  // Access these values to establish reactive dependencies
   void subject.value;
   void content.value;
   void props.mergeFields;
+  void effectivePreviewContactId.value;
 
   void debouncedFetchServerPreview();
 });

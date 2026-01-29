@@ -141,10 +141,14 @@ export class GetEmailTemplateInfoDto {
 }
 
 /**
- * DTO for previewing email templates
- * Supports custom merge fields and locale selection
+ * DTO for email preview (POST /email/preview).
+ * Optional contactId: when set (admin), merge fields use that contact; otherwise the current user.
  */
 export class PreviewEmailDto {
+  @IsOptional()
+  @IsString()
+  contactId?: string;
+
   @IsOptional()
   @IsString()
   subject?: string;

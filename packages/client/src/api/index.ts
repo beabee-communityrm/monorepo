@@ -22,6 +22,8 @@ export * from './health.client.js';
 export * from './notice.client.js';
 export * from './payment.client.js';
 export * from './reset-security.client.js';
+export * from './segment-contact.client.js';
+export * from './segment-email.client.js';
 export * from './segments.client.js';
 export * from './signup.client.js';
 export * from './stats.client.js';

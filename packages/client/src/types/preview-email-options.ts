@@ -2,6 +2,11 @@
  * Options for email preview requests
  */
 export interface PreviewEmailOptions {
+  /**
+   * Optional contact ID to preview as (admin only).
+   * When set, merge fields use this contact; otherwise the current user.
+   */
+  contactId?: string;
   /** Custom merge fields to use in the preview */
   mergeFields?: Record<string, string>;
   /** Optional subject to override the template's default subject */

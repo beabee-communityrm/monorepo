@@ -99,6 +99,8 @@
     "schedule": "",
     "search": "",
     "sendEmails": "",
+    "sendOneOffEmail": "",
+    "sendOngoingEmails": "",
     "share": "",
     "skip": "",
     "submit": "",
@@ -1071,6 +1073,13 @@
     "numResults": "",
     "search": "",
     "selectedCount": "",
+    "sendEmail": {
+      "contactNOfTotal": "",
+      "previewAsContact": "",
+      "send": "",
+      "sent": "",
+      "title": ""
+    },
     "showingOf": ""
   },
   "contribution": {
