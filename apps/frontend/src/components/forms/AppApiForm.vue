@@ -5,7 +5,7 @@
 <template>
   <AppForm
     v-bind="$props"
-    :extract-error-text="(code) => extractErrorText(code, errorText)"
+    :extract-error-text="(error) => extractErrorText(error, errorText)"
   >
     <slot />
   </AppForm>
