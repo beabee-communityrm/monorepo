@@ -1,6 +1,6 @@
-import type { PaymentMethod } from '../data';
+import { PaymentMethod } from '../data';
 
-export interface CreateOneTimePaymentData {
+export interface CreatePaymentData {
   amount: number;
   payFee: boolean;
   paymentMethod: PaymentMethod;

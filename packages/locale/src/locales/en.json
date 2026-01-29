@@ -1427,6 +1427,11 @@
         "backToJoin": "Back to join page",
         "message": "There was a problem setting up your membership, our team has been notified. Please contact support if the problem persists.",
         "title": "Something went wrong"
+      },
+      "paymentFailed": {
+        "backToJoin": "Back to join page",
+        "message": "Your payment was not successful. Please try again or use a different payment method.",
+        "title": "Payment failed"
       }
     },
     "login": "Log in",

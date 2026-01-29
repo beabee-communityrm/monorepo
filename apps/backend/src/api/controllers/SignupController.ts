@@ -87,7 +87,10 @@ export class SignupController {
       return plainToInstance(GetPaymentFlowDto, joinFlowParams);
     } else {
       // Handle a no-payment sign up
-      const joinFlow = await PaymentFlowService.createJoinFlow(baseForm, data);
+      const joinFlow = await PaymentFlowService.createSimpleJoinFlow(
+        baseForm,
+        data
+      );
       await PaymentFlowService.sendConfirmEmail(joinFlow);
     }
   }

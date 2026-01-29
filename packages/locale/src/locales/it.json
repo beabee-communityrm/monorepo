@@ -1426,9 +1426,14 @@
         "title": "Conferma il tuo account."
       },
       "failed": {
-        "backToJoin": "",
-        "message": "",
+        "backToJoin": "Torna alla pagina di registrazione",
+        "message": "Si è verificato un problema durante la configurazione della tua iscrizione, il nostro team è stato informato. Contatta l’assistenza se il problema persiste.",
         "title": "Qualcosa è andato storto"
+      },
+      "paymentFailed": {
+        "backToJoin": "Torna alla pagina di registrazione",
+        "message": "Il pagamento non è andato a buon fine. Riprova o utilizza un metodo di pagamento diverso.",
+        "title": "Pagamento non riuscito"
       }
     },
     "login": "Log in",

@@ -1429,6 +1429,11 @@
         "backToJoin": "Voltar à página de registo",
         "message": "Houve um problema inesperado ao criar a tua conta. Entra em contacto connosco se o problema continuar, e diz-nos com detalhe o que aconteceu.",
         "title": "Houve aqui um problema."
+      },
+      "paymentFailed": {
+        "backToJoin": "Voltar à página de registo",
+        "message": "O seu pagamento não foi bem-sucedido. Tente novamente ou utilize outro método de pagamento.",
+        "title": "Falha no pagamento"
       }
     },
     "login": "Login",

@@ -1427,6 +1427,11 @@
         "backToJoin": "Zurück zur Registrierung",
         "message": "Es gab ein Problem bei der Registrierung, unser Team wurde benachrichtigt. Bitte kontaktieren Sie uns, wenn das Problem weiterhin auftritt.",
         "title": "Etwas ist schief gelaufen"
+      },
+      "paymentFailed": {
+        "backToJoin": "Zurück zur Registrierung",
+        "message": "Ihre Zahlung war nicht erfolgreich. Bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsmethode.",
+        "title": "Zahlung fehlgeschlagen"
       }
     },
     "login": "Anmelden",

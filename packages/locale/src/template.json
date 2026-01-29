@@ -1427,6 +1427,11 @@
         "backToJoin": "",
         "message": "",
         "title": ""
+      },
+      "paymentFailed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
       }
     },
     "login": "",

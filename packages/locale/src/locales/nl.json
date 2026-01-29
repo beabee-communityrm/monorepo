@@ -1429,6 +1429,11 @@
         "backToJoin": "Terug naar de aanmeldpagina",
         "message": "Er is een probleem opgetreden bij het opzetten van je lidmaatschap. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
         "title": "Er is iets fout gegaan"
+      },
+      "paymentFailed": {
+        "backToJoin": "Terug naar de aanmeldpagina",
+        "message": "Je betaling is niet gelukt. Probeer het opnieuw of gebruik een andere betaalmethode.",
+        "title": "Betaling mislukt"
       }
     },
     "login": "Inloggen",
