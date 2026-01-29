@@ -510,7 +510,7 @@ export function getInvoiceType(invoice: Stripe.Invoice): PaymentType {
       case 'subscription_update':
         return PaymentType.Prorated;
       default:
-        return PaymentType.Recurring;
+        return PaymentType.Unknown;
     }
   } else {
     return PaymentType.OneTime;
