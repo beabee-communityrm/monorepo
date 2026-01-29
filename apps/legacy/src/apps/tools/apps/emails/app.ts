@@ -235,20 +235,30 @@ app.post(
 
 app.post('/:id/mailings', hasNewModel(Email, 'id'), busboy(), (req, res) => {
   const email = req.model as Email;
-  let recipients: EmailMailingRecipient[];
+  let parseRecipients: Promise<EmailMailingRecipient[]> | null = null;
 
   req.busboy.on('file', (fieldname, file) => {
-    Papa.parse(file, {
-      header: true,
-      complete: function (results) {
-        recipients = results.data as EmailMailingRecipient[];
-      },
+    parseRecipients = new Promise((resolve) => {
+      Papa.parse(file, {
+        header: true,
+        complete: (results) =>
+          resolve((results.data as EmailMailingRecipient[]) ?? []),
+        error: () => resolve([]),
+      });
     });
   });
   req.busboy.on('finish', async () => {
+    const list = parseRecipients ? await parseRecipients : [];
+    if (!list.length) {
+      req.flash(
+        'error',
+        'Please upload a CSV file with at least one recipient.'
+      );
+      return res.redirect(`/tools/emails/${email.id}`);
+    }
     const mailing = new EmailMailing();
     mailing.email = email;
-    mailing.recipients = recipients;
+    mailing.recipients = list;
     const savedMailing = await getRepository(EmailMailing).save(mailing);
     res.redirect(`/tools/emails/${email.id}/mailings/${savedMailing.id}`);
   });
@@ -270,12 +280,16 @@ app.get(
     const mergeFields = _.uniq(
       matches.map((f) => f.substring(2, f.length - 2))
     );
+    const recipients = mailing.recipients ?? [];
+    const first = recipients[0];
+    const headers =
+      first != null && typeof first === 'object' ? Object.keys(first) : [];
     res.render('mailing', {
       email,
       emailBody: formatEmailBody(email.body),
-      mailing,
+      mailing: { ...mailing, recipients },
       mergeFields,
-      headers: Object.keys(mailing.recipients[0]),
+      headers,
       onlyPreview: req.query.preview !== undefined,
     });
   })
@@ -296,6 +310,10 @@ app.post(
       id: req.params.mailingId,
     });
     if (!mailing) return next('route');
+    if (!mailing.recipients?.length) {
+      req.flash('error', 'This mailing has no recipients.');
+      return res.redirect(`/tools/emails/${email.id}`);
+    }
 
     const { emailField, nameField, mergeFields }: SendSchema = req.body;
 
