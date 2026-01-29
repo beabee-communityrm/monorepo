@@ -1340,9 +1340,9 @@
         "title": "Etwas ist schief gelaufen"
       },
       "paymentFailed": {
-        "backToJoin": "",
-        "message": "",
-        "title": ""
+        "backToJoin": "Zurück zur Registrierung",
+        "message": "Ihre Zahlung war nicht erfolgreich. Bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsmethode.",
+        "title": "Zahlung fehlgeschlagen"
       }
     },
     "login": "Anmelden",

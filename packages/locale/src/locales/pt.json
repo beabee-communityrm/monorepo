@@ -1340,9 +1340,9 @@
         "title": "Houve aqui um problema."
       },
       "paymentFailed": {
-        "backToJoin": "",
-        "message": "",
-        "title": ""
+        "backToJoin": "Voltar à página de registo",
+        "message": "O seu pagamento não foi bem-sucedido. Tente novamente ou utilize outro método de pagamento.",
+        "title": "Falha no pagamento"
       }
     },
     "login": "Login",

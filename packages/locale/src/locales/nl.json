@@ -1340,9 +1340,9 @@
         "title": "Er is iets fout gegaan"
       },
       "paymentFailed": {
-        "backToJoin": "",
-        "message": "",
-        "title": ""
+        "backToJoin": "Terug naar de aanmeldpagina",
+        "message": "Je betaling is niet gelukt. Probeer het opnieuw of gebruik een andere betaalmethode.",
+        "title": "Betaling mislukt"
       }
     },
     "login": "Inloggen",
