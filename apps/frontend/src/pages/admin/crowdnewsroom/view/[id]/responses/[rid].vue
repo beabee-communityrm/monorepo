@@ -199,6 +199,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
+import { extractErrorText } from '@utils/api-error';
 import { buckets } from '@utils/callouts';
 import { computed, ref, toRef, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -273,7 +274,7 @@ async function handleUpdate(
   } catch (err) {
     addNotification({
       variant: 'error',
-      title: t('form.errorMessages.generic'),
+      title: extractErrorText(err),
     });
   }
 
