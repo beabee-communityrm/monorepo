@@ -112,7 +112,7 @@ meta:
 
       <transition name="add-notice">
         <div
-          v-if="isAddMode && !newResponseAnswers"
+          v-if="isAddMode && !newResponseAddress"
           class="absolute inset-x-0 top-10 flex justify-center md:top-20"
         >
           <p class="mx-4 rounded bg-white p-4 font-bold shadow-lg">
@@ -178,7 +178,9 @@ meta:
 
     <CalloutAddResponsePanel
       :callout="callout"
-      :answers="isAddMode ? newResponseAnswers : undefined"
+      :answers="
+        isAddMode && newResponseAddress ? newResponseAnswers : undefined
+      "
       @close="handleCancelAddMode"
     />
   </div>
@@ -644,7 +646,7 @@ function handleClick(e: { event: MapMouseEvent }) {
   if (!map.value) return;
 
   if (isAddMode.value) {
-    if (!newResponseAnswers.value) {
+    if (!newResponseAddress.value) {
       handleAddClick(e.event);
     }
   } else {
