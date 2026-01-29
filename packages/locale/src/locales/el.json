@@ -108,7 +108,8 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "yesReset": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -178,6 +179,10 @@
       "fromEmail": "",
       "fromName": "",
       "label": "",
+      "templates": {
+        "description": "",
+        "title": ""
+      },
       "text": "",
       "title": ""
     },
@@ -214,6 +219,7 @@
     },
     "payment": {
       "paymentTitle": "",
+      "showOneTimeDonation": "",
       "taxRate": "",
       "taxRateEnabled": ""
     },
@@ -367,9 +373,8 @@
           "title": ""
         },
         "email": {
-          "title": "Email",
           "body": {
-            "default": "<p>Γεια σας {'*|FNAME|*'},</p><p>Αυτό το email επιβεβαιώνει την απάντησή σας στο <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> χρησιμοποιώντας τη διεύθυνση email σας {'*|EMAIL|*'}.</p><p><br /></p><p>Εάν έχετε ερωτήσεις, παρακαλούμε επικοινωνήστε με την ομάδα υποστήριξής μας στο <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Με εκτίμηση</p>"
+            "default": "<p>Γεια σας {'*|FNAME|*'},</p><p></p><p>Αυτό το email επιβεβαιώνει την απάντησή σας στο <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> χρησιμοποιώντας τη διεύθυνση email σας {'*|EMAIL|*'}.</p><p></p><p>Εάν έχετε ερωτήσεις, παρακαλούμε επικοινωνήστε με την ομάδα υποστήριξής μας στο <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p></p><p>Με εκτίμηση</p>"
           },
           "collectInfoWarning": {
             "description": "Για να στείλετε email σε όλους τους συμμετέχοντες, πρέπει να ενεργοποιήσετε \"Συλλογή πληροφοριών επαφής\" στην καρτέλα Ρυθμίσεις",
@@ -381,7 +386,8 @@
           },
           "subject": {
             "default": "Ευχαριστούμε για την απάντησή σας"
-          }
+          },
+          "title": "Email"
         },
         "endMessage": {
           "inputs": {
@@ -492,6 +498,17 @@
               "initialZoom": {
                 "label": ""
               },
+              "mapIconProp": {
+                "label": "",
+                "none": ""
+              },
+              "mapIconStylingProp": {
+                "label": ""
+              },
+              "mapIconStylingSetting": {
+                "label": "",
+                "title": ""
+              },
               "maxZoom": {
                 "label": ""
               },
@@ -502,18 +519,7 @@
                 "help": "",
                 "label": ""
               },
-              "title": "",
-              "mapIconStylingSetting": {
-                "label": "",
-                "title": ""
-              },
-              "mapIconProp": {
-                "label": "",
-                "none": ""
-              },
-              "mapIconStylingProp": {
-                "label": ""
-              }
+              "title": ""
             },
             "newsletterSettings": {
               "disabled": "",
@@ -679,10 +685,10 @@
           "navigationButtons": {
             "title": ""
           },
-          "title": "",
           "responseLinks": {
             "title": ""
-          }
+          },
+          "title": ""
         }
       },
       "title": "",
@@ -925,6 +931,11 @@
     "no": "",
     "noResults": "Δε βρέθηκαν αποτελέσματα.",
     "pageCount": "",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "",
       "draft": "",
@@ -933,6 +944,8 @@
       "successful": ""
     },
     "perMonth": "",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "",
     "role": {
       "admin": "",
@@ -954,14 +967,7 @@
     "timeAgo": "πριν το {time}",
     "timeIn": "σε {time}",
     "until": "",
-    "yes": "",
-    "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
-    },
-    "perOneTime": "",
-    "perOneTimeText": ""
+    "yes": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1092,6 +1098,8 @@
     },
     "paymentMethod": "",
     "paymentSourceUpdateError": "",
+    "perMonthText": "",
+    "perYearText": "",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
     "prorateIncreaseMessage": "",
@@ -1109,9 +1117,7 @@
     "updatedPaymentSource": "",
     "willExpire": "",
     "willRenew": "",
-    "willRenewWithNewAmount": "",
-    "perMonthText": "",
-    "perYearText": ""
+    "willRenewWithNewAmount": ""
   },
   "editCallout": {
     "replicated": "",
@@ -1122,16 +1128,102 @@
     "title": "Επεξεργασία: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Θέμα"
-    },
     "body": {
       "label": "Μήνυμα"
     },
     "preview": {
       "label": "Προεπισκόπηση",
       "unavailable": "Προεπισκόπηση μη διαθέσιμη"
+    },
+    "subject": {
+      "label": "Θέμα"
     }
+  },
+  "emails": {
+    "actions": {
+      "addCustom": "Προσθήκη προσαρμοσμένου email",
+      "deactivate": "Απενεργοποίηση",
+      "resetToDefault": "Επαναφορά στα προεπιλεγμένα"
+    },
+    "add": {
+      "title": "Δημιουργία προσαρμοσμένου email"
+    },
+    "confirmDelete": {
+      "message": "Είστε σίγουροι ότι θέλετε να απενεργοποιήσετε αυτό το email; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+      "messageWithMailings": "Αυτό το email έχει σταλεί {count} φορά/ές. Είστε σίγουροι ότι θέλετε να το διαγράψετε; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+      "title": "Απενεργοποίηση email"
+    },
+    "confirmResetToDefault": {
+      "message": "Είστε σίγουροι ότι θέλετε να επαναφέρετε αυτό το πρότυπο στα προεπιλεγμένα; Οι προσαρμοσμένες αλλαγές σας θα χαθούν.",
+      "title": "Επαναφορά στα προεπιλεγμένα"
+    },
+    "customized": "Προσαρμοσμένο",
+    "default": "Προεπιλογή",
+    "description": "Περιγραφή",
+    "edit": {
+      "title": "Επεξεργασία email",
+      "titleCustom": "Επεξεργασία: {name}"
+    },
+    "fromEmail": "Email αποστολέα",
+    "fromName": "Όνομα αποστολέα",
+    "list": {
+      "showingOf": "Εμφάνιση {start} έως {end} email από {total}"
+    },
+    "mailingCount": "Αποσταλμένα email",
+    "missingDefault": "Μη Ενεργό",
+    "name": "Όνομα email",
+    "notifications": {
+      "created": "Το email δημιουργήθηκε επιτυχώς",
+      "deleted": "Το email διαγράφηκε επιτυχώς",
+      "resetToDefault": "Το πρότυπο επαναφέρθηκε στα προεπιλεγμένα επιτυχώς",
+      "templateAssigned": "",
+      "templatesAssigned": "",
+      "updated": "Το email ενημερώθηκε επιτυχώς"
+    },
+    "status": "Κατάσταση",
+    "tabs": {
+      "custom": "Προσαρμοσμένα Email",
+      "templates": "Πρότυπα Συστήματος"
+    },
+    "templates": {
+      "availableFields": "Διαθέσιμα πεδία",
+      "description": {
+        "cancelled-contribution": "Αποστέλλεται σε μέλη όταν η επαναλαμβανόμενη συνεισφορά τους ακυρώνεται. Συνήθως περιλαμβάνει πληροφορίες σχετικά με το πότε λήγει η συμμετοχή, καθώς και το ID του μέλους. Μπορεί να περιέχει έναν σύνδεσμο σε μια έρευνα.",
+        "cancelled-member": "Αποστέλλεται στους διαχειριστές όταν ένα μέλος ακυρώνει τη συνεισφορά του. Συνήθως περιλαμβάνει μια ειδοποίηση με το ID και το όνομά του ακυρωμένου μέλους.",
+        "confirm-email": "Αποστέλλεται σε νέους χρήστες κατά τη διαδικασία εγγραφής για να επιβεβαιώσουν τη διεύθυνση email τους. Περιέχει έναν σύνδεσμο επιβεβαίωσης που πρέπει να κάνουν κλικ για να ολοκληρώσουν την εγγραφή.",
+        "contribution-didnt-start": "Αποστέλλεται σε μέλη όταν η πληρωμή συνδρομής Stripe τους δεν μπόρεσε να ξεκινήσει (π.χ. απορριφθείσα μέθοδος πληρωμής, ανεπαρκές υπόλοιπο). Τους ενημερώνει ότι η συμμετοχή τους έχει ανακληθεί λόγω της αποτυχίας πληρωμής.",
+        "email-exists-login": "Αποστέλλεται όταν κάποιος προσπαθεί να εγγραφεί με μια διεύθυνση email που υπάρχει ήδη και ανήκει σε ένα ενεργό μέλος με ορισμένο κωδικό πρόσβασης. Παρέχει έναν σύνδεσμο σύνδεσης ώστε να μπορούν να αποκτήσουν πρόσβαση στον υπάρχοντα λογαριασμό τους.",
+        "email-exists-set-password": "Αποστέλλεται όταν κάποιος προσπαθεί να εγγραφεί με μια διεύθυνση email που υπάρχει ήδη και ανήκει σε ένα ενεργό μέλος που δεν έχει ορίσει ακόμα κωδικό πρόσβασης. Παρέχει έναν σύνδεσμο για τον ορισμό κωδικού πρόσβασης.",
+        "manual-to-automatic": "Αποστέλλεται σε μέλη όταν η μέθοδος πληρωμής τους αλλάζει με επιτυχία από χειροκίνητη σε αυτόματη επαναλαμβανόμενη πληρωμή. Επιβεβαιώνει την επιτυχημένη αλλαγή.",
+        "new-callout-response": "Αποστέλλεται στους διαχειριστές όταν υποβάλλεται μια νέα απάντηση σε ένα CrowdNewsroom. Συνήθως περιλαμβάνει μια ειδοποίηση με τις λεπτομέρειες του CrowdNewsroom και το όνομά του ατόμου που απαντά.",
+        "new-member": "Αποστέλλεται στους διαχειριστές όταν ένα νέο μέλος εντάσσεται με επιτυχία στην κοινότητα. Συνήθως περιλαμβάνει μια ειδοποίηση με το ID και το όνομά του νέου μέλους.",
+        "one-time-donation": "Αποστέλλεται σε χρήστες αφού ολοκληρώσουν μια εφάπαξ συνεισφορά (μη επαναλαμβανόμενη πληρωμή). Συνήθως επιβεβαιώνει το ποσό της συνεισφοράς και χρησιμεύει ως απόδειξη.",
+        "reset-device": "Αποστέλλεται όταν ένας χρήστης ζητά να επαναφέρει την αξιόπιστη συσκευή του για τον έλεγχο ταυτότητας δύο παραγόντων. Περιέχει έναν ασφαλή σύνδεσμο για επαναφορά της συσκευής.",
+        "reset-password": "Αποστέλλεται όταν ένας χρήστης ζητά να επαναφέρει τον κωδικό πρόσβασής του. Περιέχει έναν ασφαλή σύνδεσμο για επαναφορά του κωδικού πρόσβασης.",
+        "welcome": "Αποστέλλεται σε νέα μέλη αφού ολοκληρώσουν τη διαδικασία εγγραφής ώστε να μπορέσουν να επιβεβαιώσουν τη διεύθυνση email τους. Αυτό το email τους καλωσορίζει στην κοινότητα."
+      },
+      "names": {
+        "cancelled-contribution": "Ακυρωμένη συνεισφορά",
+        "cancelled-member": "Διαχειριστής: Ακυρωμένο μέλος",
+        "confirm-email": "Επιβεβαίωση email",
+        "contribution-didnt-start": "Η συνεισφορά δεν ξεκίνησε",
+        "email-exists-login": "Το email υπάρχει - σύνδεση",
+        "email-exists-set-password": "Το email υπάρχει - ορισμός κωδικού",
+        "manual-to-automatic": "Χειροκίνητη συνεισφορά μετατράπηκε σε αυτόματη",
+        "new-callout-response": "Διαχειριστής: Νέα απάντηση CrowdNewsroom",
+        "new-member": "Διαχειριστής: Νέα επαφή",
+        "one-time-donation": "Επιβεβαίωση εφάπαξ συνεισφοράς",
+        "reset-device": "Επαναφορά συσκευής",
+        "reset-password": "Επαναφορά κωδικού",
+        "welcome": "Καλωσόρισμα"
+      },
+      "type": {
+        "admin": "Ειδοποιήσεις διαχειριστή",
+        "contact": "Email επικοινωνίας",
+        "general": "Γενικά"
+      }
+    },
+    "type": "Τύπος"
   },
   "footer": {
     "contactUs": "",
@@ -1263,11 +1355,11 @@
       "heading": "",
       "italic": "",
       "link": "",
+      "mergeFields": "Πεδία συγχώνευσης",
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
-      "underline": "",
-      "mergeFields": "Πεδία συγχώνευσης"
+      "underline": ""
     },
     "saveChanges": "",
     "saved": "",
@@ -1291,6 +1383,8 @@
   },
   "homePage": {
     "editProfile": "",
+    "makeOneTimeDonationButton": "Κάντε δωρεά",
+    "makeOneTimeDonationTitle": "Κάνε δωρεά τώρα",
     "manageContribution": "",
     "newCallout": "",
     "openCallouts": "",
@@ -1320,6 +1414,11 @@
       "one-time": "Ο επεξεργαστής πληρωμών μας χρεώνει ανά συναλλαγή, πράγμα που σημαίνει ότι λαμβάνουμε λιγότερα από τις εφάπαξ συνεισφορές. Θα θέλατε να απορροφήσετε το τέλος συναλλαγής {fee};"
     },
     "contribute": "",
+    "contribution": {
+      "annually": "{amount} ετησίως",
+      "monthly": "{amount} μηνιαίως",
+      "one-time": "{amount} εφάπαξ"
+    },
     "errors": {
       "confirmEmail": {
         "message": "",
@@ -1327,6 +1426,11 @@
         "title": ""
       },
       "failed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
+      },
+      "paymentFailed": {
         "backToJoin": "",
         "message": "",
         "title": ""
@@ -1344,11 +1448,6 @@
     "privacy": "",
     "tax": {
       "included": ""
-    },
-    "contribution": {
-      "annually": "{amount} ετησίως",
-      "monthly": "{amount} μηνιαίως",
-      "one-time": "{amount} εφάπαξ"
     }
   },
   "joinPayment": {
@@ -1414,10 +1513,10 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
+        "oneTimeDonationEmail": "Email εφάπαξ δωρεάς",
         "text": "",
         "title": "",
-        "welcomeEmail": "",
-        "oneTimeDonationEmail": "Email εφάπαξ δωρεάς"
+        "welcomeEmail": ""
       },
       "intro": {
         "description": "",
@@ -1452,6 +1551,7 @@
     "contacts": "",
     "contribution": "",
     "dashboard": "",
+    "emails": "Email",
     "home": "",
     "legacyApp": "",
     "logout": "",
@@ -1462,49 +1562,49 @@
     "yourProfile": ""
   },
   "mergeFields": {
-    "title": "Πεδία συγχώνευσης",
+    "copied": "Αντιγράφηκε!",
     "copy": "Αντιγραφή",
     "copyTag": "Αντιγραφή {tag}",
-    "copied": "Αντιγράφηκε!",
-    "insert": "Εισαγωγή",
-    "insertTag": "Εισαγωγή {tag}",
     "example": "Παράδειγμα",
     "groups": {
       "contact": "Πεδία επαφής",
-      "standard": "Τυπικά πεδία",
       "magic": "Magic Links",
+      "standard": "Τυπικά πεδία",
       "template": "Πεδία προτύπου"
     },
+    "insert": "Εισαγωγή",
+    "insertTag": "Εισαγωγή {tag}",
     "tags": {
-      "EMAIL": "Διεύθυνση email επαφής",
-      "NAME": "Πλήρες όνομα",
-      "FNAME": "Μικρό όνομα",
-      "LNAME": "Επώνυμο",
-      "MEMBERSHIPID": "ID συμμετοχής επαφής",
-      "RPLINK": "Σύνδεσμος επαναφοράς κωδικού",
-      "LOGINLINK": "Σύνδεσμος σύνδεσης",
-      "SPLINK": "Σύνδεσμος ορισμού κωδικού",
-      "MESSAGE": "Προσαρμοσμένο περιεχόμενο μηνύματος",
-      "CALLOUTTITLE": "Τίτλος CrowdNewsroom",
-      "CALLOUTLINK": "Σύνδεσμος στο CrowdNewsroom",
-      "SUPPORTEMAIL": "Διεύθυνση email υποστήριξης",
-      "ANSWERS": "Μορφοποιημένες απαντήσεις",
-      "REFCODE": "Κωδικός παραπομπής επαφής",
-      "EXPIRES": "Ημερομηνία λήξης συμμετοχής",
-      "REFEREENAME": "Όνομα προσελκυόμενου ατόμου",
-      "ISELIGIBLE": "Εάν η παραπομπή είναι επιλέξιμη",
-      "PURCHASER": "Όνομα αγοραστή δώρου",
-      "GIFTEE": "Όνομα αποδέκτη δώρου",
-      "GIFTDATE": "Ημερομηνία έναρξης δώρου",
       "ACTIVATELINK": "Σύνδεσμος ενεργοποίησης δώρου",
+      "ANSWERS": "Μορφοποιημένες απαντήσεις",
+      "CALLOUTLINK": "Σύνδεσμος στο CrowdNewsroom",
+      "CALLOUTSLUG": "Slug CrowdNewsroom",
+      "CALLOUTTITLE": "Τίτλος CrowdNewsroom",
       "CONFIRMLINK": "Σύνδεσμος επιβεβαίωσης email",
-      "URL": "Ειδικό URL",
+      "EMAIL": "Διεύθυνση email επαφής",
+      "EXPIRES": "Ημερομηνία λήξης συμμετοχής",
+      "FNAME": "Μικρό όνομα",
+      "GIFTDATE": "Ημερομηνία έναρξης δώρου",
+      "GIFTEE": "Όνομα αποδέκτη δώρου",
+      "ISELIGIBLE": "Εάν η παραπομπή είναι επιλέξιμη",
+      "LNAME": "Επώνυμο",
+      "LOGINLINK": "Σύνδεσμος σύνδεσης",
       "MEMBERID": "ID μέλους",
       "MEMBERNAME": "Όνομα μέλους",
-      "CALLOUTSLUG": "Slug CrowdNewsroom",
+      "MEMBERSHIPID": "ID συμμετοχής επαφής",
+      "MESSAGE": "Προσαρμοσμένο περιεχόμενο μηνύματος",
+      "NAME": "Πλήρες όνομα",
+      "ORGNAME": "Όνομα οργανισμού",
+      "PURCHASER": "Όνομα αγοραστή δώρου",
+      "REFCODE": "Κωδικός παραπομπής επαφής",
+      "REFEREENAME": "Όνομα προσελκυόμενου ατόμου",
       "RESPNAME": "Όνομα απαντούμενου",
-      "ORGNAME": "Όνομα οργανισμού"
-    }
+      "RPLINK": "Σύνδεσμος επαναφοράς κωδικού",
+      "SPLINK": "Σύνδεσμος ορισμού κωδικού",
+      "SUPPORTEMAIL": "Διεύθυνση email υποστήριξης",
+      "URL": "Ειδικό URL"
+    },
+    "title": "Πεδία συγχώνευσης"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1546,11 +1646,11 @@
       "success": ""
     },
     "error": "σφάλματος",
-    "remove": "",
     "rateLimit": {
       "generic": "Πάρα πολλά αιτήματα. Περιμένετε λίγο και δοκιμάστε ξανά.",
       "withWait": "Πάρα πολλά αιτήματα. Περιμένετε {time} και δοκιμάστε ξανά."
-    }
+    },
+    "remove": ""
   },
   "pageTitle": {
     "confirmEmail": "",

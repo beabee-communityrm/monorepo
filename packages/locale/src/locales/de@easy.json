@@ -108,7 +108,8 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "yesReset": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -178,6 +179,10 @@
       "fromEmail": "",
       "fromName": "",
       "label": "Betreff",
+      "templates": {
+        "description": "Hier kannst du Betreff und Text der E-Mails ändern, die die App verschickt. Die Farbe zeigt dir: grün = angepasst, gelb = Standardvorlage, rot = nicht eingerichtet (wird nicht gesendet).",
+        "title": "E-Mails einrichten"
+      },
       "text": "",
       "title": ""
     },
@@ -214,6 +219,7 @@
     },
     "payment": {
       "paymentTitle": "",
+      "showOneTimeDonation": "",
       "taxRate": "",
       "taxRateEnabled": ""
     },
@@ -367,7 +373,6 @@
           "title": ""
         },
         "email": {
-          "title": "E-Mail",
           "body": {
             "default": ""
           },
@@ -381,7 +386,8 @@
           },
           "subject": {
             "default": ""
-          }
+          },
+          "title": "E-Mail"
         },
         "endMessage": {
           "inputs": {
@@ -492,6 +498,17 @@
               "initialZoom": {
                 "label": "Betreff"
               },
+              "mapIconProp": {
+                "label": "Betreff",
+                "none": ""
+              },
+              "mapIconStylingProp": {
+                "label": "Betreff"
+              },
+              "mapIconStylingSetting": {
+                "label": "Betreff",
+                "title": ""
+              },
               "maxZoom": {
                 "label": "Betreff"
               },
@@ -502,18 +519,7 @@
                 "help": "",
                 "label": "Betreff"
               },
-              "title": "",
-              "mapIconStylingSetting": {
-                "label": "Betreff",
-                "title": ""
-              },
-              "mapIconProp": {
-                "label": "Betreff",
-                "none": ""
-              },
-              "mapIconStylingProp": {
-                "label": "Betreff"
-              }
+              "title": ""
             },
             "newsletterSettings": {
               "disabled": "",
@@ -679,10 +685,10 @@
           "navigationButtons": {
             "title": ""
           },
-          "title": "",
           "responseLinks": {
             "title": ""
-          }
+          },
+          "title": ""
         }
       },
       "title": "",
@@ -925,6 +931,11 @@
     "no": "",
     "noResults": "Der Computer hat keine Ergebnisse gefunden.",
     "pageCount": "",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "",
       "draft": "Hier ist ein erster Vorschlag.",
@@ -933,6 +944,8 @@
       "successful": ""
     },
     "perMonth": "",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "",
     "role": {
       "admin": "",
@@ -954,14 +967,7 @@
     "timeAgo": "vor",
     "timeIn": "in",
     "until": "",
-    "yes": "",
-    "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
-    },
-    "perOneTime": "",
-    "perOneTimeText": ""
+    "yes": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1092,6 +1098,8 @@
     },
     "paymentMethod": "",
     "paymentSourceUpdateError": "",
+    "perMonthText": "",
+    "perYearText": "",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
     "prorateIncreaseMessage": "",
@@ -1109,9 +1117,7 @@
     "updatedPaymentSource": "",
     "willExpire": "",
     "willRenew": "",
-    "willRenewWithNewAmount": "",
-    "perMonthText": "",
-    "perYearText": ""
+    "willRenewWithNewAmount": ""
   },
   "editCallout": {
     "replicated": "",
@@ -1122,16 +1128,102 @@
     "title": "Bearbeiten: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Betreff"
-    },
     "body": {
       "label": "Betreff"
     },
     "preview": {
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
+    },
+    "subject": {
+      "label": "Betreff"
     }
+  },
+  "emails": {
+    "actions": {
+      "addCustom": "",
+      "deactivate": "",
+      "resetToDefault": ""
+    },
+    "add": {
+      "title": ""
+    },
+    "confirmDelete": {
+      "message": "",
+      "messageWithMailings": "",
+      "title": ""
+    },
+    "confirmResetToDefault": {
+      "message": "",
+      "title": ""
+    },
+    "customized": "",
+    "default": "",
+    "description": "",
+    "edit": {
+      "title": "",
+      "titleCustom": ""
+    },
+    "fromEmail": "",
+    "fromName": "",
+    "list": {
+      "showingOf": ""
+    },
+    "mailingCount": "",
+    "missingDefault": "",
+    "name": "",
+    "notifications": {
+      "created": "",
+      "deleted": "",
+      "resetToDefault": "",
+      "templateAssigned": "",
+      "templatesAssigned": "",
+      "updated": ""
+    },
+    "status": "",
+    "tabs": {
+      "custom": "",
+      "templates": ""
+    },
+    "templates": {
+      "availableFields": "",
+      "description": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "names": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "type": {
+        "admin": "",
+        "contact": "",
+        "general": ""
+      }
+    },
+    "type": ""
   },
   "footer": {
     "contactUs": "Schreibe uns. Nutze diese Adresse:",
@@ -1263,11 +1355,11 @@
       "heading": "",
       "italic": "",
       "link": "",
+      "mergeFields": "",
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
-      "underline": "",
-      "mergeFields": ""
+      "underline": ""
     },
     "saveChanges": "",
     "saved": "",
@@ -1291,6 +1383,8 @@
   },
   "homePage": {
     "editProfile": "",
+    "makeOneTimeDonationButton": "",
+    "makeOneTimeDonationTitle": "",
     "manageContribution": "",
     "newCallout": "",
     "openCallouts": "",
@@ -1320,6 +1414,11 @@
       "one-time": ""
     },
     "contribute": "",
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "errors": {
       "confirmEmail": {
         "message": "",
@@ -1327,6 +1426,11 @@
         "title": ""
       },
       "failed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
+      },
+      "paymentFailed": {
         "backToJoin": "",
         "message": "",
         "title": ""
@@ -1344,11 +1448,6 @@
     "privacy": "",
     "tax": {
       "included": ""
-    },
-    "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
     }
   },
   "joinPayment": {
@@ -1414,10 +1513,10 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
+        "oneTimeDonationEmail": "",
         "text": "",
         "title": "",
-        "welcomeEmail": "",
-        "oneTimeDonationEmail": ""
+        "welcomeEmail": ""
       },
       "intro": {
         "description": "",
@@ -1452,6 +1551,7 @@
     "contacts": "",
     "contribution": "",
     "dashboard": "",
+    "emails": "",
     "home": "",
     "legacyApp": "",
     "logout": "",
@@ -1460,6 +1560,51 @@
     "payments": "",
     "settings": "",
     "yourProfile": ""
+  },
+  "mergeFields": {
+    "copied": "",
+    "copy": "",
+    "copyTag": "",
+    "example": "",
+    "groups": {
+      "contact": "",
+      "magic": "",
+      "standard": "",
+      "template": ""
+    },
+    "insert": "",
+    "insertTag": "",
+    "tags": {
+      "ACTIVATELINK": "",
+      "ANSWERS": "",
+      "CALLOUTLINK": "",
+      "CALLOUTSLUG": "",
+      "CALLOUTTITLE": "",
+      "CONFIRMLINK": "",
+      "EMAIL": "",
+      "EXPIRES": "",
+      "FNAME": "",
+      "GIFTDATE": "",
+      "GIFTEE": "",
+      "ISELIGIBLE": "",
+      "LNAME": "",
+      "LOGINLINK": "",
+      "MEMBERID": "",
+      "MEMBERNAME": "",
+      "MEMBERSHIPID": "",
+      "MESSAGE": "",
+      "NAME": "",
+      "ORGNAME": "",
+      "PURCHASER": "",
+      "REFCODE": "",
+      "REFEREENAME": "",
+      "RESPNAME": "",
+      "RPLINK": "",
+      "SPLINK": "",
+      "SUPPORTEMAIL": "",
+      "URL": ""
+    },
+    "title": ""
   },
   "newsletterOptIn": {
     "groups": {
@@ -1501,11 +1646,11 @@
       "success": ""
     },
     "error": "Das war nicht richtig. Probiere es noch mal.",
-    "remove": "",
     "rateLimit": {
       "generic": "Zu viele Versuche. Warte kurz und versuche es nochmal.",
       "withWait": "Zu viele Versuche. Warte {time} und versuche es nochmal."
-    }
+    },
+    "remove": ""
   },
   "pageTitle": {
     "confirmEmail": "",
@@ -1656,50 +1801,5 @@
   },
   "taxRate": {
     "invoiceName": "MwSt"
-  },
-  "mergeFields": {
-    "title": "",
-    "copy": "",
-    "copyTag": "",
-    "copied": "",
-    "insert": "",
-    "insertTag": "",
-    "example": "",
-    "groups": {
-      "contact": "",
-      "standard": "",
-      "magic": "",
-      "template": ""
-    },
-    "tags": {
-      "EMAIL": "",
-      "NAME": "",
-      "FNAME": "",
-      "LNAME": "",
-      "MEMBERSHIPID": "",
-      "RPLINK": "",
-      "LOGINLINK": "",
-      "SPLINK": "",
-      "MESSAGE": "",
-      "CALLOUTTITLE": "",
-      "CALLOUTLINK": "",
-      "SUPPORTEMAIL": "",
-      "ANSWERS": "",
-      "REFCODE": "",
-      "EXPIRES": "",
-      "REFEREENAME": "",
-      "ISELIGIBLE": "",
-      "PURCHASER": "",
-      "GIFTEE": "",
-      "GIFTDATE": "",
-      "ACTIVATELINK": "",
-      "CONFIRMLINK": "",
-      "URL": "",
-      "MEMBERID": "",
-      "MEMBERNAME": "",
-      "CALLOUTSLUG": "",
-      "RESPNAME": "",
-      "ORGNAME": ""
-    }
   }
 }

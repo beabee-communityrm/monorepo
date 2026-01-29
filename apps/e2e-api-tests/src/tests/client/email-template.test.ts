@@ -1,14 +1,14 @@
 import type { UpdateEmailData } from '@beabee/beabee-common';
-import { EmailClient } from '@beabee/client';
+import { EmailClient, EmailTemplateClient } from '@beabee/client';
 import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 
-describe('Email API', () => {
-  let emailClient: EmailClient;
+describe('Email Template API', () => {
+  let client: EmailTemplateClient;
 
   beforeAll(() => {
-    emailClient = new EmailClient({
+    client = new EmailTemplateClient({
       host: HOST,
       path: PATH,
       token: API_KEY,
@@ -19,7 +19,7 @@ describe('Email API', () => {
     it('should retrieve email data by ID', async () => {
       try {
         // Test with welcome email template
-        const response = await emailClient.get('welcome');
+        const response = await client.get('welcome');
 
         expect(response).toBeDefined();
         if (response) {
@@ -35,25 +35,14 @@ describe('Email API', () => {
       }
     });
 
-    it('should throw NotFoundError for non-existent email template', async () => {
+    it('should throw BadRequestError for non-existent email template', async () => {
       try {
-        await emailClient.get('non-existent-template');
+        await client.get('non-existent-template');
         // If we reach here, the test should fail
         expect(true).toBe(false);
       } catch (error: any) {
-        expect(error.httpCode).toBe(404);
-        expect(error.name).toBe('NotFoundError');
-      }
-    });
-
-    it('should throw NotFoundError for external template', async () => {
-      try {
-        await emailClient.get('external-template');
-        // If we reach here, the test should fail
-        expect(true).toBe(false);
-      } catch (error: any) {
-        expect(error.httpCode).toBe(404);
-        expect(error.name).toBe('NotFoundError');
+        expect(error.httpCode).toBe(400);
+        expect(error.name).toBe('BadRequestError');
       }
     });
   });
@@ -66,7 +55,7 @@ describe('Email API', () => {
         body: 'Welcome to our platform! This is an updated message.',
       };
 
-      const response = await emailClient.update(templateId, updateData);
+      const response = await client.update(templateId, updateData);
 
       expect(response).toBeDefined();
       expect(response.subject).toBe(updateData.subject);
@@ -80,7 +69,7 @@ describe('Email API', () => {
         body: '',
       };
 
-      const response = await emailClient.update(templateId, updateData);
+      const response = await client.update(templateId, updateData);
 
       expect(response).toBeDefined();
       expect(response.subject).toBe('');
@@ -95,12 +84,12 @@ describe('Email API', () => {
       };
 
       try {
-        await emailClient.update(templateId, updateData);
+        await client.update(templateId, updateData);
         // If we reach here, the test should fail
         expect(true).toBe(false);
       } catch (error: any) {
         expect(error).toBeDefined();
-        expect(error.httpCode).toBe(404);
+        expect(error.httpCode).toBe(400);
       }
     });
   });
@@ -110,7 +99,7 @@ describe('Email API', () => {
       const invalidId = 'invalid/id/format';
 
       try {
-        await emailClient.get(invalidId);
+        await client.get(invalidId);
         // If we reach here, the test should fail
         expect(true).toBe(false);
       } catch (error: any) {

@@ -2,13 +2,14 @@ import { ClientApiErrorData } from '@beabee/beabee-common';
 
 import { BadRequestError } from './BadRequestError';
 
-export class ExternalEmailTemplate
+export class PaymentFailed
   extends BadRequestError
   implements ClientApiErrorData
 {
-  readonly code = 'external-email-template';
-  constructor() {
+  readonly code = 'payment-failed';
+
+  constructor(readonly subCode: string) {
     super();
-    Object.setPrototypeOf(this, ExternalEmailTemplate.prototype);
+    Object.setPrototypeOf(this, PaymentFailed.prototype);
   }
 }

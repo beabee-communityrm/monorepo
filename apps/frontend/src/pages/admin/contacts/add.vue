@@ -9,7 +9,7 @@ meta:
   <PageTitle :title="t('addContact.title')" border></PageTitle>
   <App2ColGrid>
     <template #col1>
-      <AppForm
+      <AppApiForm
         :button-text="t('actions.save')"
         :success-text="t('addContact.contactSaved')"
         @submit.prevent="handleSubmit"
@@ -49,7 +49,7 @@ meta:
             {{ t('actions.saveAndAnother') }}
           </AppButton>
         </template>
-      </AppForm>
+      </AppApiForm>
     </template>
   </App2ColGrid>
 </template>
@@ -65,7 +65,6 @@ import {
   App2ColGrid,
   AppButton,
   AppCheckbox,
-  AppForm,
   AppHeading,
   PageTitle,
 } from '@beabee/vue';
@@ -73,6 +72,7 @@ import {
 import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
 import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
 import type { UpdateContribution } from '@components/contact/contact.interface';
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import AppRoleEditor from '@components/role/AppRoleEditor.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';

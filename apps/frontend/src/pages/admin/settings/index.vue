@@ -8,7 +8,7 @@ meta:
 <template>
   <App2ColGrid>
     <template #col1>
-      <AppForm
+      <AppApiForm
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
         @submit="handleSaveGeneral"
@@ -37,11 +37,11 @@ meta:
             required
           />
         </div>
-      </AppForm>
+      </AppApiForm>
 
       <div class="my-8 border-b border-b-primary-40" />
 
-      <AppForm
+      <AppApiForm
         v-if="shareContent"
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
@@ -83,12 +83,12 @@ meta:
             :label="t('adminSettings.general.socialSharing.twitterHandle')"
           />
         </div>
-      </AppForm>
+      </AppApiForm>
     </template>
     <template #col2>
       <div class="my-8 border-b border-b-primary-40 md:hidden" />
 
-      <AppForm
+      <AppApiForm
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
         @submit="handleSavePayment"
@@ -100,6 +100,12 @@ meta:
           <AppCheckbox
             v-model="paymentData.taxRateEnabled"
             :label="t('adminSettings.payment.taxRateEnabled')"
+            class="font-bold"
+          />
+          <AppCheckbox
+            v-if="showOneTimeDonationSettings && profileContent"
+            v-model="profileContent.showOneTimeDonation"
+            :label="t('adminSettings.payment.showOneTimeDonation')"
             class="font-bold"
           />
         </div>
@@ -117,11 +123,11 @@ meta:
             required
           />
         </div>
-      </AppForm>
+      </AppApiForm>
 
       <div class="my-8 border-b border-b-primary-40" />
 
-      <AppForm
+      <AppApiForm
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
         @submit="handleSaveFooter"
@@ -175,20 +181,16 @@ meta:
           :url-label="t('adminSettings.general.footer.otherLinks.url')"
           :add-label="t('adminSettings.general.footer.otherLinks.add')"
         />
-      </AppForm>
+      </AppApiForm>
     </template>
   </App2ColGrid>
 </template>
 
 <script lang="ts" setup>
-import type {
-  ContentPaymentData,
-  ContentShareData,
-} from '@beabee/beabee-common';
+import type { ContentJoinData, ContentShareData } from '@beabee/beabee-common';
 import {
   App2ColGrid,
   AppCheckbox,
-  AppForm,
   AppHeading,
   AppInput,
   AppLinkList,
@@ -197,11 +199,12 @@ import {
   AppTextArea,
 } from '@beabee/vue';
 
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
 import { localeItems } from '@lib/i18n';
 import { generalContent as storeGeneralContent } from '@store';
 import { client } from '@utils/api';
-import { onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -219,14 +222,22 @@ const footerData = reactive({
   footerLinks: [] as { text: string; url: string }[],
 });
 
-const paymentData = ref<Pick<ContentPaymentData, 'taxRateEnabled' | 'taxRate'>>(
-  {
-    taxRateEnabled: false,
-    taxRate: 7,
-  }
-);
+const paymentData = ref({
+  taxRateEnabled: false,
+  taxRate: 7,
+});
+
+const profileContent = ref({
+  showOneTimeDonation: false,
+});
 
 const shareContent = ref<ContentShareData>();
+
+const joinContent = ref<ContentJoinData>();
+
+const showOneTimeDonationSettings = computed(() =>
+  joinContent.value?.periods.some((p) => p.name === 'one-time')
+);
 
 async function handleSaveGeneral() {
   storeGeneralContent.value = await client.content.update(
@@ -259,6 +270,7 @@ async function handleSaveFooter() {
 
 async function handleSavePayment() {
   await client.content.update('payment', paymentData.value);
+  await client.content.update('profile', profileContent.value);
 }
 
 onBeforeMount(async () => {
@@ -274,6 +286,12 @@ onBeforeMount(async () => {
     storeGeneralContent.value.footerLinks?.map((l) => ({ ...l })) || [];
 
   shareContent.value = await client.content.get('share');
+
+  joinContent.value = await client.content.get('join');
+
+  if (showOneTimeDonationSettings.value) {
+    profileContent.value = await client.content.get('profile');
+  }
 
   const paymentContent = await client.content.get('payment');
   paymentData.value = {

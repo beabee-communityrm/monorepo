@@ -86,8 +86,10 @@
  * - Email footer with organization info, logo, and links
  * - Inline CSS styles for consistent email client rendering
  *
- * The preview is fetched from the server API and debounced to prevent
- * excessive API calls during editing.
+ * Merge fields are automatically loaded based on the template configuration:
+ * - Standard fields (SUPPORTEMAIL, ORGNAME) are always available
+ * - Contact fields (EMAIL, NAME, FNAME, LNAME) are available for contact templates
+ * - Template-specific fields are loaded from the API
  *
  * @example Basic usage for contact email template
  * ```vue
@@ -95,21 +97,20 @@
  *   v-model:subject="emailSubject"
  *   v-model:content="emailContent"
  *   :template="{ type: 'contact', id: 'welcome' }"
- *   :contact="currentUser"
  * />
  * ```
  *
- * @example With custom merge fields
+ * @example With custom merge fields for preview
  * ```vue
  * <EmailEditor
  *   v-model:subject="emailSubject"
  *   v-model:content="emailContent"
  *   :template="{ type: 'contact', id: 'callout-response-answers' }"
  *   :mergeFields="{ CALLOUTTITLE: calloutTitle }"
- *   :contact="currentUser"
  * />
  * ```
  */
+import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
 import { debounce } from '@beabee/beabee-common';
 import type { PreviewEmailOptions } from '@beabee/client';
 import {
@@ -124,13 +125,14 @@ import {
 } from '@beabee/vue';
 
 import { faTag } from '@fortawesome/free-solid-svg-icons';
+import { currentUser, generalContent } from '@store';
 import type { Editor } from '@tiptap/vue-3';
 import type {
   EmailPreviewResult,
   EmailTemplateConfig,
 } from '@type/email-editor';
 import { client } from '@utils/api';
-import { computed, ref, watchEffect } from 'vue';
+import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Two-way binding models for subject and content
@@ -148,6 +150,7 @@ const props = withDefaults(
     /**
      * Email template configuration
      * Configures the email template type and ID for preview generation
+     * Also determines which merge fields are available
      */
     template?: EmailTemplateConfig;
 
@@ -159,12 +162,6 @@ const props = withDefaults(
     mergeFields?: Record<string, string>;
 
     /**
-     * Merge field groups for the rich text editor dropdown
-     * Enables insertion of merge fields via dropdown button in the editor
-     */
-    mergeFieldGroups?: MergeTagGroup[];
-
-    /**
      * Whether to always stack the preview below the editor (ignores responsive breakpoints)
      */
     alwaysStacked?: boolean;
@@ -173,12 +170,14 @@ const props = withDefaults(
     heading: '',
     template: undefined,
     mergeFields: () => ({}),
-    mergeFieldGroups: undefined,
     alwaysStacked: false,
   }
 );
 
 const { t } = useI18n();
+
+// Template info loaded from API
+const templateInfoList = ref<GetEmailTemplateInfoData[]>([]);
 
 // Merge fields dropdown state
 const showMergeFieldsDropdown = ref(false);
@@ -186,6 +185,65 @@ const showMergeFieldsDropdown = ref(false);
 // Server preview state
 const serverPreviewResult = ref<EmailPreviewResult | null>(null);
 const isLoadingPreview = ref(false);
+
+/**
+ * Build merge field groups based on template configuration
+ * Includes: template-specific fields, contact fields (if contact type), standard fields
+ */
+const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
+  const groups: MergeTagGroup[] = [];
+
+  // Template-specific merge fields (from API)
+  if (props.template?.id) {
+    const templateInfo = templateInfoList.value.find(
+      (t) => t.id === props.template?.id
+    );
+    if (templateInfo && templateInfo.mergeFields.length > 0) {
+      groups.push({
+        key: 'template',
+        tags: templateInfo.mergeFields.map((field) => ({ tag: field })),
+      });
+    }
+  }
+
+  // Contact merge fields (only for contact templates)
+  if (props.template?.type === 'contact') {
+    const user = currentUser.value;
+    const fullName = user
+      ? `${user.firstname} ${user.lastname}`.trim()
+      : undefined;
+
+    groups.push({
+      key: 'contact',
+      tags: [
+        { tag: 'EMAIL', example: user?.email },
+        { tag: 'NAME', example: fullName },
+        { tag: 'FNAME', example: user?.firstname },
+        { tag: 'LNAME', example: user?.lastname },
+      ],
+    });
+  }
+
+  // Standard merge fields (available for all templates)
+  groups.push({
+    key: 'standard',
+    tags: [
+      { tag: 'SUPPORTEMAIL', example: generalContent.value.supportEmail },
+      { tag: 'ORGNAME', example: generalContent.value.organisationName },
+    ],
+  });
+
+  return groups;
+});
+
+// Load template info on mount
+onMounted(async () => {
+  try {
+    templateInfoList.value = await client.email.template.list();
+  } catch {
+    // Failed to load template info, merge fields will be limited
+  }
+});
 
 /**
  * Sanitized preview body HTML
@@ -215,7 +273,7 @@ async function fetchServerPreview() {
     }
 
     const preview = props.template
-      ? await client.email.previewTemplate(
+      ? await client.email.template.preview(
           props.template.type,
           props.template.id,
           previewOptions

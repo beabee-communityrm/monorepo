@@ -108,7 +108,8 @@
     "view": "Visualiser",
     "yesDelete": "Oui, supprimer",
     "yesDisable": "Oui, désactiver",
-    "yesRemove": "Oui, retirer"
+    "yesRemove": "Oui, retirer",
+    "yesReset": "Oui, réinitialiser"
   },
   "addContact": {
     "contactSaved": "Contact enregistré",
@@ -178,6 +179,10 @@
       "fromEmail": "À partir de l'e-mail",
       "fromName": "À partir du nom",
       "label": "E-mail",
+      "templates": {
+        "description": "Ici, tu peux personnaliser l’objet et le contenu des emails envoyés par l’appli. La couleur t’indique : vert = personnalisé, jaune = modèle par défaut, rouge = non configuré (non envoyé).",
+        "title": "Configurer les emails"
+      },
       "text": "Toute communication par e-mail sera envoyée à partir de cette adresse e-mail.",
       "title": "Définir une adresse e-mail générique"
     },
@@ -214,6 +219,7 @@
     },
     "payment": {
       "paymentTitle": "Paiement",
+      "showOneTimeDonation": "Afficher l’option de don unique sur l’écran d’accueil",
       "taxRate": "Taux de la TVA",
       "taxRateEnabled": "Activer la TVA"
     },
@@ -368,7 +374,7 @@
         },
         "email": {
           "body": {
-            "default": "<p>Bonjour {'*|FNAME|*'},</p><p>Cet e-mail confirme votre réponse à <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> en utilisant votre adresse e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Cordialement</p>"
+            "default": "<p>Bonjour {'*|FNAME|*'},</p><p></p><p>Cet e-mail confirme votre réponse à <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> en utilisant votre adresse e-mail {'*|EMAIL|*'}.</p><p><br /></p><p>Si vous avez des questions, veuillez contacter notre équipe de support à l'adresse <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p></p><p>Cordialement</p>"
           },
           "collectInfoWarning": {
             "description": "Pour envoyer un e-mail à tous les participants, vous devez activer « Collecter les informations de contact » dans l'onglet Paramètres",
@@ -1137,6 +1143,92 @@
       "label": "Objet"
     }
   },
+  "emails": {
+    "actions": {
+      "addCustom": "Ajouter un e-mail personnalisé",
+      "deactivate": "Désactiver",
+      "resetToDefault": "Réinitialiser par défaut"
+    },
+    "add": {
+      "title": "Créer un e-mail personnalisé"
+    },
+    "confirmDelete": {
+      "message": "Êtes-vous sûr de vouloir désactiver cet e-mail ? Cette action est irréversible.",
+      "messageWithMailings": "Cet e-mail a été envoyé {count} fois. Êtes-vous sûr de vouloir le supprimer ? Cette action est irréversible.",
+      "title": "Désactiver l'e-mail"
+    },
+    "confirmResetToDefault": {
+      "message": "Êtes-vous sûr de vouloir réinitialiser ce modèle par défaut ? Vos modifications personnalisées seront perdues.",
+      "title": "Réinitialiser par défaut"
+    },
+    "customized": "Personnalisé",
+    "default": "Par défaut",
+    "description": "Description",
+    "edit": {
+      "title": "Modifier l'e-mail",
+      "titleCustom": "Modifier : {name}"
+    },
+    "fromEmail": "E-mail de l'expéditeur",
+    "fromName": "Nom de l'expéditeur",
+    "list": {
+      "showingOf": "Affichage de {start} à {end} e-mails sur {total}"
+    },
+    "mailingCount": "E-mails envoyés",
+    "missingDefault": "Non Actif",
+    "name": "Nom de l'e-mail",
+    "notifications": {
+      "created": "E-mail créé avec succès",
+      "deleted": "E-mail supprimé avec succès",
+      "resetToDefault": "Modèle réinitialisé par défaut avec succès",
+      "templateAssigned": "",
+      "templatesAssigned": "",
+      "updated": "E-mail mis à jour avec succès"
+    },
+    "status": "Statut",
+    "tabs": {
+      "custom": "E-mails personnalisés",
+      "templates": "Modèles système"
+    },
+    "templates": {
+      "availableFields": "Champs disponibles",
+      "description": {
+        "cancelled-contribution": "Envoyé aux membres lorsque leur contribution récurrente est annulée. Contient généralement des informations sur la fin de l'adhésion, ainsi que l'ID du membre. Peut contenir un lien vers une enquête.",
+        "cancelled-member": "Envoyé aux administrateurs lorsqu'un membre annule sa contribution. Contient généralement une notification avec l'ID et le nom du membre annulé.",
+        "confirm-email": "Envoyé aux nouveaux utilisateurs pendant le processus d'inscription pour vérifier leur adresse e-mail. Contient un lien de confirmation qu'ils doivent cliquer pour terminer l'inscription.",
+        "contribution-didnt-start": "Envoyé aux membres lorsque leur paiement d'abonnement Stripe n'a pas pu être démarré (par exemple, méthode de paiement refusée, fonds insuffisants). Les informe que leur adhésion a été révoquée en raison de l'échec du paiement.",
+        "email-exists-login": "Envoyé lorsque quelqu'un tente de s'inscrire avec une adresse e-mail qui existe déjà et appartient à un membre actif avec un mot de passe défini. Fournit un lien de connexion pour accéder à son compte existant.",
+        "email-exists-set-password": "Envoyé lorsque quelqu'un tente de s'inscrire avec une adresse e-mail qui existe déjà et appartient à un membre actif qui n'a pas encore défini de mot de passe. Fournit un lien pour définir un mot de passe.",
+        "manual-to-automatic": "Envoyé aux membres lorsque leur méthode de paiement a été modifiée avec succès de manuel à paiement récurrent automatique. Confirme le changement réussi.",
+        "new-callout-response": "Envoyé aux administrateurs lorsqu'une nouvelle réponse à un CrowdNewsroom est soumise. Contient généralement une notification avec les détails du CrowdNewsroom et le nom de la personne qui répond.",
+        "new-member": "Envoyé aux administrateurs lorsqu'un nouveau membre rejoint avec succès la communauté. Contient généralement une notification avec l'ID et le nom du nouveau membre.",
+        "one-time-donation": "Envoyé aux utilisateurs après qu'ils aient effectué une contribution unique (paiement non récurrent). Confirme généralement le montant de la contribution et sert de reçu.",
+        "reset-device": "Envoyé lorsqu'un utilisateur demande à réinitialiser son appareil de confiance pour l'authentification à deux facteurs. Contient un lien sécurisé pour réinitialiser l'appareil.",
+        "reset-password": "Envoyé lorsqu'un utilisateur demande à réinitialiser son mot de passe. Contient un lien sécurisé pour réinitialiser le mot de passe.",
+        "welcome": "Envoyé aux nouveaux membres après qu'ils aient terminé le processus d'inscription afin qu'ils puissent confirmer leur adresse e-mail. Cet e-mail les accueille dans la communauté."
+      },
+      "names": {
+        "cancelled-contribution": "Contribution annulée",
+        "cancelled-member": "Admin : Membre annulé",
+        "confirm-email": "Confirmer l'e-mail",
+        "contribution-didnt-start": "La contribution n'a pas démarré",
+        "email-exists-login": "E-mail existant - connexion",
+        "email-exists-set-password": "E-mail existant - définir mot de passe",
+        "manual-to-automatic": "Contributeur manuel converti en automatique",
+        "new-callout-response": "Admin : Nouvelle réponse CrowdNewsroom",
+        "new-member": "Admin : Nouveau contact",
+        "one-time-donation": "Confirmation de contribution unique",
+        "reset-device": "Réinitialiser l'appareil",
+        "reset-password": "Réinitialiser le mot de passe",
+        "welcome": "Bienvenue"
+      },
+      "type": {
+        "admin": "Notifications admin",
+        "contact": "E-mails de contact",
+        "general": "Général"
+      }
+    },
+    "type": "Type"
+  },
   "footer": {
     "contactUs": "Contactez-nous à",
     "handbookResources": "Manuel et ressources",
@@ -1267,11 +1359,11 @@
       "heading": "Titre",
       "italic": "Italique",
       "link": "Lien",
+      "mergeFields": "Champs de fusion",
       "numberedlist": "Liste ordonnée",
       "strikethrough": "Barré",
       "toolbar": "",
-      "underline": "Souligné",
-      "mergeFields": "Champs de fusion"
+      "underline": "Souligné"
     },
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",
@@ -1295,6 +1387,8 @@
   },
   "homePage": {
     "editProfile": "Modifiez votre profil communautaire",
+    "makeOneTimeDonationButton": "Don",
+    "makeOneTimeDonationTitle": "Faire un don maintenant",
     "manageContribution": "Gérer votre cotisation",
     "newCallout": "Nouvelle CrowdNewsrooms !",
     "openCallouts": "CrowdNewsrooms actives",
@@ -1339,6 +1433,11 @@
         "backToJoin": "Retour à la page d'inscription",
         "message": "Une erreur s'est produite lors de votre adhésion, notre équipe en a été informée. Veuillez contacter l'assistance si le problème persiste.",
         "title": "Une erreur s'est produite"
+      },
+      "paymentFailed": {
+        "backToJoin": "Retour à la page d’inscription",
+        "message": "Votre paiement n’a pas abouti. Veuillez réessayer ou utiliser un autre moyen de paiement.",
+        "title": "Échec du paiement"
       }
     },
     "login": "Se connecter",
@@ -1456,6 +1555,7 @@
     "contacts": "Contacts",
     "contribution": "Cotisation",
     "dashboard": "Tableau de bord",
+    "emails": "E-mails",
     "home": "Accueil",
     "legacyApp": "Ancien tableau de bord",
     "logout": "Se déconnecter",
@@ -1466,49 +1566,49 @@
     "yourProfile": "Votre profil"
   },
   "mergeFields": {
-    "title": "Champs de fusion",
+    "copied": "Copié !",
     "copy": "Copier",
     "copyTag": "Copier {tag}",
-    "copied": "Copié !",
-    "insert": "Insérer",
-    "insertTag": "Insérer {tag}",
     "example": "Exemple",
     "groups": {
       "contact": "Champs de contact",
-      "standard": "Champs standards",
       "magic": "Liens magiques",
+      "standard": "Champs standards",
       "template": "Champs de modèle"
     },
+    "insert": "Insérer",
+    "insertTag": "Insérer {tag}",
     "tags": {
-      "EMAIL": "Adresse e-mail du contact",
-      "NAME": "Nom complet du contact",
-      "FNAME": "Prénom du contact",
-      "LNAME": "Nom de famille du contact",
-      "MEMBERSHIPID": "ID de membre du contact",
-      "RPLINK": "Lien de réinitialisation du mot de passe",
-      "LOGINLINK": "Lien de connexion",
-      "SPLINK": "Lien de définition du mot de passe",
-      "MESSAGE": "Contenu du message personnalisé",
-      "CALLOUTTITLE": "Titre de CrowdNewsroom",
-      "CALLOUTLINK": "Lien vers CrowdNewsroom",
-      "SUPPORTEMAIL": "Adresse e-mail de support",
-      "ANSWERS": "Réponses formatées",
-      "REFCODE": "Code de parrainage du contact",
-      "EXPIRES": "Date d'expiration de l'adhésion",
-      "REFEREENAME": "Nom de la personne parrainée",
-      "ISELIGIBLE": "Si le parrainage est éligible",
-      "PURCHASER": "Nom de l'acheteur du cadeau",
-      "GIFTEE": "Nom du bénéficiaire du cadeau",
-      "GIFTDATE": "Date de début du cadeau",
       "ACTIVATELINK": "Lien d'activation du cadeau",
+      "ANSWERS": "Réponses formatées",
+      "CALLOUTLINK": "Lien vers CrowdNewsroom",
+      "CALLOUTSLUG": "Slug de CrowdNewsroom",
+      "CALLOUTTITLE": "Titre de CrowdNewsroom",
       "CONFIRMLINK": "Lien de confirmation e-mail",
-      "URL": "URL spéciale",
+      "EMAIL": "Adresse e-mail du contact",
+      "EXPIRES": "Date d'expiration de l'adhésion",
+      "FNAME": "Prénom du contact",
+      "GIFTDATE": "Date de début du cadeau",
+      "GIFTEE": "Nom du bénéficiaire du cadeau",
+      "ISELIGIBLE": "Si le parrainage est éligible",
+      "LNAME": "Nom de famille du contact",
+      "LOGINLINK": "Lien de connexion",
       "MEMBERID": "ID membre",
       "MEMBERNAME": "Nom du membre",
-      "CALLOUTSLUG": "Slug de CrowdNewsroom",
+      "MEMBERSHIPID": "ID de membre du contact",
+      "MESSAGE": "Contenu du message personnalisé",
+      "NAME": "Nom complet du contact",
+      "ORGNAME": "Nom de l'organisation",
+      "PURCHASER": "Nom de l'acheteur du cadeau",
+      "REFCODE": "Code de parrainage du contact",
+      "REFEREENAME": "Nom de la personne parrainée",
       "RESPNAME": "Nom du répondant",
-      "ORGNAME": "Nom de l'organisation"
-    }
+      "RPLINK": "Lien de réinitialisation du mot de passe",
+      "SPLINK": "Lien de définition du mot de passe",
+      "SUPPORTEMAIL": "Adresse e-mail de support",
+      "URL": "URL spéciale"
+    },
+    "title": "Champs de fusion"
   },
   "newsletterOptIn": {
     "groups": {

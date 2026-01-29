@@ -324,8 +324,12 @@ class CalloutsService {
 
       let contact = await ContactsService.findOneBy({ email: guest.email });
 
-      // Create a contact if it doesn't exist
-      if (!contact) {
+      if (contact) {
+        log.info(
+          'Found existing contact for callout response with email ' +
+            guest.email
+        );
+      } else {
         log.info(
           'Creating new contact for callout response with email ' + guest.email
         );
@@ -546,7 +550,7 @@ class CalloutsService {
       variant.responseEmailSubject,
       variant.responseEmailBody,
       {
-        mergeFields: contactEmailTemplates['callout-response-answers'](
+        mergeFields: contactEmailTemplates['callout-response-answers'].fn(
           contact,
           {
             calloutSlug: callout.slug,

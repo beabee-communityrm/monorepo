@@ -13,7 +13,7 @@ import {
   ManualProvider,
   PaymentProvider,
   StripeProvider,
-} from '#providers';
+} from '#providers/payment/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
@@ -213,10 +213,27 @@ class PaymentService {
 
   async createOneTimePayment(
     contact: Contact,
-    form: PaymentForm
+    completedPaymentFlow: CompletedPaymentFlow
   ): Promise<void> {
     log.info('Create one-time payment for contact ' + contact.id);
-    await this.provider(contact, (p) => p.createOneTimePayment(form));
+    // Use flow method to fetch provider as we don't store payment method for
+    // one-time payments
+    const contribution = await this.getContribution(contact);
+    const provider = new PaymentProviders[
+      completedPaymentFlow.joinForm.paymentMethod
+    ](contribution);
+    await provider.createOneTimePayment(completedPaymentFlow);
+  }
+
+  async fetchInvoiceUrl(paymentId: string): Promise<string | null> {
+    log.info('Fetch invoice URL for payment ' + paymentId);
+
+    if (paymentId.startsWith('in_')) {
+      return await StripeProvider.fetchInvoiceUrl(paymentId);
+    } else {
+      // Currently only Stripe invoices are supported
+      return null;
+    }
   }
 
   /**

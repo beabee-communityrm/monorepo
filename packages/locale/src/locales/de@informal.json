@@ -108,7 +108,8 @@
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen"
+    "yesRemove": "Ja, entfernen",
+    "yesReset": "Ja, zurücksetzten"
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -178,6 +179,10 @@
       "fromEmail": "E-Mail-Adresse",
       "fromName": "Name",
       "label": "E-Mail",
+      "templates": {
+        "description": "Hier legst du Betreff und Text der E-Mails fest, die die App rausschickt. Die Farbe zeigt dir: grün = selbst gemacht, gelb = Standard, rot = nicht aktiv (wird nicht gesendet).",
+        "title": "E-Mails anpassen"
+      },
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",
       "title": "Lege eine Standard-E-Mail-Adresse fest."
     },
@@ -214,6 +219,7 @@
     },
     "payment": {
       "paymentTitle": "Zahlungen",
+      "showOneTimeDonation": "Einmalige Spendenoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",
       "taxRateEnabled": "Mehrwertsteuer aktivieren"
     },
@@ -368,7 +374,7 @@
         },
         "email": {
           "body": {
-            "default": "<p>Hallo {'*|FNAME|*'},</p><p>Diese E-Mail bestätigt deine Antwort auf <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung deiner E-Mail-Adresse {'*|EMAIL|*'}.</p><p><br /></p><p>Wenn du Fragen hast, wende dich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p><br /></p><p>Viele Grüße</p>"
+            "default": "<p>Hallo {'*|FNAME|*'},</p><p></p><p>Diese E-Mail bestätigt deine Antwort auf <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung deiner E-Mail-Adresse {'*|EMAIL|*'}.</p><p></p><p>Wenn du Fragen hast, wende dich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p></p><p>Viele Grüße</p>"
           },
           "collectInfoWarning": {
             "description": "Um eine E-Mail an alle Teilnehmer zu senden, musst du \"Kontaktinformationen erfassen\" in der Registerkarte Einstellungen aktivieren",
@@ -1133,6 +1139,92 @@
       "label": "Betreff"
     }
   },
+  "emails": {
+    "actions": {
+      "addCustom": "Eigene E-Mail hinzufügen",
+      "deactivate": "Deaktivieren",
+      "resetToDefault": "Auf Standard zurücksetzen"
+    },
+    "add": {
+      "title": "Eigene E-Mail erstellen"
+    },
+    "confirmDelete": {
+      "message": "Bist du sicher, dass du diese E-Mail deaktivieren möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "messageWithMailings": "Diese E-Mail wurde {count} Mal versendet. Bist du sicher, dass du sie löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "title": "E-Mail deaktivieren"
+    },
+    "confirmResetToDefault": {
+      "message": "Bist du sicher, dass du diese Vorlage auf den Standard zurücksetzen möchtest? Deine eigenen Änderungen gehen verloren.",
+      "title": "Auf Standard zurücksetzen"
+    },
+    "customized": "Angepasst",
+    "default": "Standard",
+    "description": "Beschreibung",
+    "edit": {
+      "title": "E-Mail bearbeiten",
+      "titleCustom": "Bearbeiten: {name}"
+    },
+    "fromEmail": "Absender-E-Mail",
+    "fromName": "Absendername",
+    "list": {
+      "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
+    },
+    "mailingCount": "Versendete E-Mails",
+    "missingDefault": "Nicht Aktiv",
+    "name": "E-Mail-Name",
+    "notifications": {
+      "created": "E-Mail erfolgreich erstellt",
+      "deleted": "E-Mail erfolgreich gelöscht",
+      "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
+      "templateAssigned": "",
+      "templatesAssigned": "",
+      "updated": "E-Mail erfolgreich aktualisiert"
+    },
+    "status": "Status",
+    "tabs": {
+      "custom": "Eigene E-Mails",
+      "templates": "System-Vorlagen"
+    },
+    "templates": {
+      "availableFields": "Verfügbare Felder",
+      "description": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "names": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "type": {
+        "admin": "Admin-Benachrichtigungen",
+        "contact": "Kontakt-E-Mails",
+        "general": "Allgemein"
+      }
+    },
+    "type": "Typ"
+  },
   "footer": {
     "contactUs": "Kontaktiere uns unter",
     "handbookResources": "Handbuch & Ressourcen",
@@ -1291,6 +1383,8 @@
   },
   "homePage": {
     "editProfile": "Profil bearbeiten",
+    "makeOneTimeDonationButton": "Spenden",
+    "makeOneTimeDonationTitle": "Jetzt Spenden",
     "manageContribution": "Beitrag ändern",
     "newCallout": "Was Neues!",
     "openCallouts": "CrowdNewsroom",
@@ -1335,6 +1429,11 @@
         "backToJoin": "Zurück zur Registrierung",
         "message": "Es gab ein Problem bei der Registrierung, unser Team wurde benachrichtigt. Bitte kontaktiere uns, wenn das Problem weiterhin auftritt.",
         "title": "Etwas ist schief gelaufen"
+      },
+      "paymentFailed": {
+        "backToJoin": "Zurück zur Registrierung",
+        "message": "Deine Zahlung war nicht erfolgreich. Bitte versuche es erneut oder verwende eine andere Zahlungsmethode.",
+        "title": "Zahlung fehlgeschlagen"
       }
     },
     "login": "Anmelden",
@@ -1452,6 +1551,7 @@
     "contacts": "Kontakte",
     "contribution": "Beitrag",
     "dashboard": "Dashboard",
+    "emails": "E-Mails",
     "home": "Home",
     "legacyApp": "Alter Adminbereich",
     "logout": "Log out",
