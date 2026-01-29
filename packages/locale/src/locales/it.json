@@ -78,7 +78,7 @@
     "enable": "Attiva",
     "endnow": "",
     "export": "",
-    "getStarted": "Iniziare",
+    "getStarted": "Iniziamo",
     "goBack": "",
     "increase": "",
     "next": "",
@@ -101,7 +101,7 @@
     "sendEmails": "Invia e-mail",
     "share": "",
     "skip": "",
-    "submit": "Inviare",
+    "submit": "Invia",
     "tryAgain": "",
     "unpublish": "",
     "update": "Aggiorna",
@@ -333,8 +333,8 @@
     "actions": {
       "updateResponse": ""
     },
-    "addAPoint": "",
-    "addLocation": "",
+    "addAPoint": "Clicca sulla mappa dove vuoi aggiungere un punto",
+    "addLocation": "Aggiungi una nuova voce",
     "builder": {
       "actions": {
         "addSlide": ""
@@ -705,7 +705,7 @@
       "name": "",
       "submittingResponseError": ""
     },
-    "getStarted": "Iniziare",
+    "getStarted": "Iniziamo",
     "joinNow": "",
     "loginToYourAccount": "",
     "membersOnly": "Questa CrowdNewsroom è aperta solo ai membri. Per partecipare",
@@ -1328,7 +1328,7 @@
     "errors": {
       "confirmEmail": {
         "message": "Ci sei quasi! Devi solo confermare il tuo indirizzo mail. Controlla la tua casella di posta.",
-        "proceed": "Ti abbiamo inviato una mail. Clicca il link all'interno per procedere. ",
+        "proceed": "Ti abbiamo inviato una mail. Clicca il link all'interno per procedere.",
         "title": "Conferma il tuo account."
       },
       "failed": {
