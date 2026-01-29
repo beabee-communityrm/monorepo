@@ -178,7 +178,7 @@ meta:
 
     <CalloutAddResponsePanel
       :callout="callout"
-      :answers="newResponseAnswers"
+      :answers="isAddMode ? newResponseAnswers : undefined"
       @close="handleCancelAddMode"
     />
   </div>
@@ -582,7 +582,11 @@ async function handleAddClick(event: MapMouseEvent) {
     },
   };
 
-  const responseAnswers: CalloutResponseAnswersSlide = {};
+  const responseAnswers: CalloutResponseAnswersSlide = newResponseAnswers.value
+    ? (JSON.parse(
+        JSON.stringify(newResponseAnswers.value)
+      ) as CalloutResponseAnswersSlide)
+    : {};
   setKey(responseAnswers, mapSchema.addressProp, address);
 
   if (mapSchema.addressPatternProp && geocodeResult) {
@@ -783,7 +787,15 @@ watch(isAddMode, (v) => {
     showIntroPanel.value = false;
     map.value.getCanvas().style.cursor = 'crosshair';
   } else {
-    newResponseAnswers.value = undefined;
+    if (route.query.answers) {
+      try {
+        newResponseAnswers.value = JSON.parse(
+          route.query.answers.toString()
+        ) as CalloutResponseAnswersSlide;
+      } catch {
+        newResponseAnswers.value = undefined;
+      }
+    }
     map.value.getCanvas().style.cursor = '';
   }
 });
