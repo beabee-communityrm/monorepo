@@ -100,6 +100,8 @@
     "schedule": "Schedule",
     "search": "Search",
     "sendEmails": "Send emails",
+    "sendOneOffEmail": "Send one-off email",
+    "sendOngoingEmails": "Ongoing emails",
     "share": "Share",
     "skip": "Skip",
     "submit": "Submit",
@@ -1072,6 +1074,13 @@
     "numResults": "{n} contact found | {n} contacts found",
     "search": "Search contacts...",
     "selectedCount": "{n} contact selected | {n} contacts selected",
+    "sendEmail": {
+      "contactNOfTotal": "Contact {current} of {total}",
+      "previewAsContact": "Preview as contact",
+      "send": "Send",
+      "sent": "Email sent to segment.",
+      "title": "Send email to segment"
+    },
     "showingOf": "Showing {start} to {end} contacts out of {total}"
   },
   "contribution": {

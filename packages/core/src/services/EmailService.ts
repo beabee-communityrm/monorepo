@@ -4,6 +4,7 @@ import {
 } from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
+import { randomUUID } from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { IsNull, Not } from 'typeorm';
@@ -145,6 +146,29 @@ class EmailService {
       this.convertContactToRecipient(contact)
     );
     await this.sendEmail(email, recipients, opts);
+  }
+
+  /**
+   * Send a one-off email (subject + body) to a list of contacts.
+   * Builds a transient email and delegates to sendEmailToContact.
+   */
+  async sendEmailToSegment(
+    contacts: Contact[],
+    subject: string,
+    body: string
+  ): Promise<void> {
+    const email = new Email();
+    Object.assign(email, {
+      id: randomUUID(),
+      subject,
+      body,
+      name: 'One-off segment email',
+      templateId: null,
+      date: new Date(),
+      fromName: null,
+      fromEmail: null,
+    });
+    await this.sendEmailToContact(email, contacts);
   }
 
   /**
