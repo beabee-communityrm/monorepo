@@ -30,7 +30,7 @@
       </i18n-t>
     </p>
 
-    <StripePayment
+    <StripePaymentForm
       :client-secret="stripeClientSecret"
       :public-key="paymentContent.stripePublicKey"
       :payment-data="data"
@@ -53,7 +53,7 @@ import {
 import { AppNotification } from '@beabee/vue';
 
 import AuthBox from '@components/AuthBox.vue';
-import StripePayment from '@components/StripePayment.vue';
+import StripePaymentForm from '@components/forms/StripePaymentForm.vue';
 import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
 import type { JoinFormData } from '@type/join-form-data';
 import { client } from '@utils/api';

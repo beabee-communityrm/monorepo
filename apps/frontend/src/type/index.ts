@@ -12,6 +12,6 @@ export * from './locale-prop';
 export * from './map';
 export * from './navigation';
 export * from './notification';
+export * from './payment-flow-form-data';
 export * from './set-mfa-steps';
 export * from './set-mfa-totp-identity';
-export * from './stripe-payment-data';

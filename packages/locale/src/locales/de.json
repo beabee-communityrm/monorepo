@@ -1084,7 +1084,6 @@
     "changeBank": "Ändern Sie Ihre Bankverbindung.",
     "changeBankInfo": "Im nächsten Schritt können Sie Ihre neue Bankverbindung eingeben.",
     "contributing": "Sie zahlen",
-    "contributionUpdateError": "Sie können Ihren Beitrag aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
     "dueToRenew": "Ihre Mitgliedschaft wird am {renewalDate} erneuert.",
     "expired": "Ihre Mitgliedschaft ist ausgelaufen.",
     "expiredText": "Möchten Sie Ihre Mitgliedschaft verlängern? Selbst kleinste Beträge helfen uns und unserer Arbeit. Danke!",
@@ -1097,7 +1096,6 @@
       "title": "Bisher gezahlte Beiträge"
     },
     "paymentMethod": "Zahlungsart",
-    "paymentSourceUpdateError": "Sie können Ihre Bankverbindung aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
     "perMonthText": "pro Monat",
     "perYearText": "pro Jahr",
     "prorateDecreaseMessage": "Ihr Beitrag bleibt noch für 1 Monat gleich. | Ihr Beitrag bleibt noch für {n} Monaten gleich.",
@@ -1256,7 +1254,8 @@
         "duplicate-tag-name": "Ein Tag mit diesem Namen existiert bereits",
         "invalid-token": "Der von Ihnen eingegebene 2FA Token ist nicht korrekt.",
         "login-failed": "Falsche Kombination von Passwort und E-Mail.",
-        "mfa-token-required": "Bitte geben Sie den Code Ihrer Authentifizierungs-App ein."
+        "mfa-token-required": "Bitte geben Sie den Code Ihrer Authentifizierungs-App ein.",
+        "cant-update-contribution": "Sie können Ihren Beitrag aktuell nicht ändern, weil eine Zahlung kurz bevorsteht."
       },
       "generic": "Upps! Etwas ist schiefgelaufen. Bitte wenden Sie sich an den Support, sollte das erneut passieren.",
       "unauthorized": "Sie haben daruf keinen Zugriff.",

@@ -1088,7 +1088,6 @@
     "changeBank": "Changer de compte bancaire",
     "changeBankInfo": "Les informations de votre nouveau compte bancaire vous seront demandées à l'étape suivante.",
     "contributing": "Vous cotisez",
-    "contributionUpdateError": "Vous ne pouvez pas mettre à jour votre cotisation pour le moment car vous avez un paiement en attente",
     "dueToRenew": "Votre cotisation sera renouvelée le {renewalDate}.",
     "expired": "Votre cotisation a expiré.",
     "expiredText": "Veuillez envisager de renouveler votre adhésion, même si le montant est le plus bas possible, cela nous aiderait énormément. Merci !",
@@ -1101,7 +1100,6 @@
       "title": "Historique de paiement"
     },
     "paymentMethod": "Moyen de paiement",
-    "paymentSourceUpdateError": "Vous ne pouvez pas mettre à jour votre compte bancaire pour le moment car vous avez un paiement en attente",
     "perMonthText": "un mois",
     "perYearText": "un an",
     "prorateDecreaseMessage": "Vous avez un mois restant pour votre cotisation actuelle. | Vous avez {n} mois restants pour votre cotisation actuelle.",
@@ -1262,7 +1260,8 @@
         "duplicate-tag-name": "Un libellé portant ce nom existe déjà",
         "invalid-token": "Jeton A2F invalide",
         "login-failed": "Identifiants invalides",
-        "mfa-token-required": "Vous avez activé l'A2F, tapez le code depuis votre application d'authentification pour continuer"
+        "mfa-token-required": "Vous avez activé l'A2F, tapez le code depuis votre application d'authentification pour continuer",
+        "cant-update-contribution": "Vous ne pouvez pas mettre à jour votre cotisation pour le moment car vous avez un paiement en attente"
       },
       "generic": "Oups, une erreur s'est produite ! Contactez l'assistance si cela se produit à nouveau.",
       "unauthorized": "Vous n'avez pas accès à ceci.",

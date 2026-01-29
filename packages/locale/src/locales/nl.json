@@ -1084,7 +1084,6 @@
     "changeBank": "Overstappen naar een andere bankrekening",
     "changeBankInfo": "In de volgende stap worden de gegevens van je nieuwe bankrekening gevraagd.",
     "contributing": "Je draagt bij:",
-    "contributionUpdateError": "Je kunt je bijdrage op dit moment niet bijwerken omdat je nog een betaling tegoed hebt.",
     "dueToRenew": "Je bijdrage moet vernieuwd worden op {renewalDate}.",
     "expired": "Je bijdrage is verlopen.",
     "expiredText": "Overweeg om te verlengen, al is het maar voor het laagste bedrag, het zou ons enorm helpen. Hartelijk dank!",
@@ -1097,7 +1096,6 @@
       "title": "Betalingsgeschiedenis"
     },
     "paymentMethod": "Betaalmethode",
-    "paymentSourceUpdateError": "Je kunt je bankrekening momenteel niet bijwerken omdat je nog een betaling tegoed hebt.",
     "perMonthText": "per maand",
     "perYearText": "een jaar",
     "prorateDecreaseMessage": "Uw huidige bijdrage is nog één maand geldig. | Uw huidige bijdrage duurt nog {n} maanden.",
@@ -1258,7 +1256,8 @@
         "duplicate-tag-name": "Er bestaat al een tag met deze naam",
         "invalid-token": "Ongeldig 2FA token",
         "login-failed": "Ongeldige combinatie wachtwoord/e-mail",
-        "mfa-token-required": "Je hebt 2FA ingeschakeld, voer het token van je authenticator app in om verder te gaan."
+        "mfa-token-required": "Je hebt 2FA ingeschakeld, voer het token van je authenticator app in om verder te gaan.",
+        "cant-update-contribution": "Je kunt je bijdrage op dit moment niet bijwerken omdat je nog een betaling tegoed hebt."
       },
       "generic": "Oeps, er is iets fout gegaan! Neem contact op met support als dit weer gebeurt.",
       "unauthorized": "Je hebt hier geen toegang toe.",
