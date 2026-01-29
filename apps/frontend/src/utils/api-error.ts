@@ -2,21 +2,40 @@ import { isApiError } from '@beabee/client';
 import { formatDistanceLocale } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
+import { computed } from 'vue';
+
 import { i18n } from '../lib/i18n';
 
+const t = i18n.global.t;
+
+const defaultErrorMessages = computed<Record<string, string>>(() => ({
+  unknown: t('form.errorMessages.generic'),
+  'account-locked': t('form.errorMessages.api.account-locked'),
+  'duplicate-email': t('form.errorMessages.api.duplicate-email'),
+  'duplicate-tag-name': t('form.errorMessages.api.duplicate-tag-name'),
+  'invalid-token': t('form.errorMessages.api.invalid-token'),
+  'login-failed': t('form.errorMessages.api.login-failed'),
+  'mfa-token-required': t('form.errorMessages.api.mfa-token-required'),
+}));
 /**
- * Extract error code from an API error for use with AppForm component
- * @param error - The error object to extract code from
- * @param statusCodes - Optional array of HTTP status codes to match (defaults to [400, 401])
- * @returns The error code or 'unknown' if not a matching API error
+ * Extract a nice error text from an API error
+ *
+ * @param error The error object to extract code from
+ * @param errorMessages Optional custom error messages to override defaults
+ * @returns The translated error message for known errors or a generic one for
+ * unknown errors
  */
-export function extractApiErrorCode(
+export function extractErrorText(
   error: unknown,
-  statusCodes: number[] = [400, 401]
+  errorMessages?: Record<string, string>
 ): string {
-  return isApiError(error, undefined, statusCodes)
-    ? error.code || 'unknown'
-    : 'unknown';
+  const code = isApiError(error) ? error.code : 'unknown';
+
+  return (
+    errorMessages?.[code] ||
+    defaultErrorMessages.value[code] ||
+    defaultErrorMessages.value.unknown
+  );
 }
 
 /**
@@ -26,7 +45,6 @@ export function extractApiErrorCode(
 export function notifyRateLimited(error: unknown): void {
   if (!isApiError(error, undefined, [429])) return;
   const seconds = error.retryAfterSeconds;
-  const t = i18n.global.t;
   const title = seconds
     ? t('notifications.rateLimit.withWait', {
         time: formatDistanceLocale(

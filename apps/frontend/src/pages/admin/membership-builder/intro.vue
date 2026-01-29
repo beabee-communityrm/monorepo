@@ -18,7 +18,7 @@ meta:
   </App2ColGrid>
   <App2ColGrid v-if="showIntroMessage" extended>
     <template #col1>
-      <AppForm
+      <AppApiForm
         :button-text="t('form.saveChanges')"
         :success-text="t('form.saved')"
         @submit="handleUpdate"
@@ -29,7 +29,7 @@ meta:
           class="mb-4"
           required
         />
-      </AppForm>
+      </AppApiForm>
     </template>
     <template #col2>
       <WelcomeMessage
@@ -45,11 +45,11 @@ meta:
 import {
   App2ColGrid,
   AppCheckbox,
-  AppForm,
   AppRichTextEditor,
   WelcomeMessage,
 } from '@beabee/vue';
 
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

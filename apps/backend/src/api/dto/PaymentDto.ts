@@ -10,6 +10,7 @@ import {
   IsIn,
   IsNumber,
   IsOptional,
+  IsString,
   Min,
   ValidateNested,
 } from 'class-validator';
@@ -28,6 +29,9 @@ export class CreatePaymentDto extends StartJoinFlowDto {
 }
 
 export class GetPaymentDto {
+  @IsString()
+  id!: string;
+
   @IsNumber()
   amount!: number;
 

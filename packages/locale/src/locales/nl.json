@@ -108,7 +108,8 @@
     "view": "Bekijk",
     "yesDelete": "“Ja, verwijder het”",
     "yesDisable": "“Ja, schakel het uit”",
-    "yesRemove": "“Ja, verwijder het”"
+    "yesRemove": "“Ja, verwijder het”",
+    "yesReset": "Ja, resetten"
   },
   "addContact": {
     "contactSaved": "Contact opgeslagen",
@@ -178,6 +179,10 @@
       "fromEmail": "Van e-mail",
       "fromName": "Van naam",
       "label": "E-mail",
+      "templates": {
+        "description": "Hier stel je het onderwerp en de tekst in van de e-mails die de app verstuurt. De kleur laat zien: groen = aangepast, geel = standaardtemplate, rood = niet ingesteld (wordt niet verzonden).",
+        "title": "E-mails instellen"
+      },
       "text": "Alle e-mailcommunicatie wordt vanaf dit e-mailadres verzonden.",
       "title": "Stel een algemeen e-mailadres in"
     },
@@ -214,9 +219,9 @@
     },
     "payment": {
       "paymentTitle": "Betaling",
+      "showOneTimeDonation": "Eenmalige donatieoptie op het startscherm weergeven",
       "taxRate": "BTW-tarief",
-      "taxRateEnabled": "BTW inschakelen",
-      "showOneTimeDonation": "Eenmalige donatieoptie op het startscherm weergeven"
+      "taxRateEnabled": "BTW inschakelen"
     },
     "theme": {
       "bodyFont": "Tekst lichaam",
@@ -1132,6 +1137,92 @@
       "label": "Onderwerp"
     }
   },
+  "emails": {
+    "actions": {
+      "addCustom": "Aangepaste e-mail toevoegen",
+      "deactivate": "Deactiveren",
+      "resetToDefault": "Terugzetten naar standaard"
+    },
+    "add": {
+      "title": "Aangepaste e-mail maken"
+    },
+    "confirmDelete": {
+      "message": "Weet je zeker dat je deze e-mail wilt deactiveren? Deze actie kan niet ongedaan worden gemaakt.",
+      "messageWithMailings": "Deze e-mail is {count} keer verzonden. Weet je zeker dat je deze wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "title": "E-mail deactiveren"
+    },
+    "confirmResetToDefault": {
+      "message": "Weet je zeker dat je dit sjabloon wilt terugzetten naar standaard? Je aangepaste wijzigingen gaan verloren.",
+      "title": "Terugzetten naar standaard"
+    },
+    "customized": "Aangepast",
+    "default": "Standaard",
+    "description": "Beschrijving",
+    "edit": {
+      "title": "E-mail bewerken",
+      "titleCustom": "Bewerken: {name}"
+    },
+    "fromEmail": "Afzender e-mail",
+    "fromName": "Afzendernaam",
+    "list": {
+      "showingOf": "Toont {start} tot {end} e-mails van {total}"
+    },
+    "mailingCount": "Verzonden e-mails",
+    "missingDefault": "Niet Actief",
+    "name": "E-mailnaam",
+    "notifications": {
+      "created": "E-mail succesvol aangemaakt",
+      "deleted": "E-mail succesvol verwijderd",
+      "resetToDefault": "Sjabloon succesvol teruggezet naar standaard",
+      "templateAssigned": "",
+      "templatesAssigned": "",
+      "updated": "E-mail succesvol bijgewerkt"
+    },
+    "status": "Status",
+    "tabs": {
+      "custom": "Aangepaste e-mails",
+      "templates": "Systeemsjablonen"
+    },
+    "templates": {
+      "availableFields": "Beschikbare velden",
+      "description": {
+        "cancelled-contribution": "Verzonden naar leden wanneer hun terugkerende bijdrage wordt geannuleerd. Bevat meestal informatie over wanneer het lidmaatschap eindigt, evenals het lid-ID. Kan een link naar een enquête bevatten.",
+        "cancelled-member": "Verzonden naar beheerders wanneer een lid zijn bijdrage opzegt. Bevat meestal een melding met het ID en de naam van het opgezegde lid.",
+        "confirm-email": "Verzonden naar nieuwe gebruikers tijdens het registratieproces om hun e-mailadres te verifiëren. Bevat een bevestigingslink die ze moeten klikken om de registratie te voltooien.",
+        "contribution-didnt-start": "Verzonden naar leden wanneer hun Stripe-abonnementsbetaling niet kon worden gestart (bijv. geweigerde betaalmethode, onvoldoende saldo). Informeert hen dat hun lidmaatschap is ingetrokken vanwege de betalingsfout.",
+        "email-exists-login": "Verzonden wanneer iemand probeert te registreren met een e-mailadres dat al bestaat en toebehoort aan een actief lid met een ingesteld wachtwoord. Biedt een inloglink zodat ze toegang kunnen krijgen tot hun bestaande account.",
+        "email-exists-set-password": "Verzonden wanneer iemand probeert te registreren met een e-mailadres dat al bestaat en toebehoort aan een actief lid dat nog geen wachtwoord heeft ingesteld. Biedt een link om een wachtwoord in te stellen.",
+        "manual-to-automatic": "Verzonden naar leden wanneer hun betaalmethode succesvol is gewijzigd van handmatig naar automatische terugkerende betaling. Bevestigt de succesvolle wijziging.",
+        "new-callout-response": "Verzonden naar beheerders wanneer een nieuwe reactie op een CrowdNewsroom wordt ingediend. Bevat meestal een melding met de CrowdNewsroom-details en de naam van de reagerende persoon.",
+        "new-member": "Verzonden naar beheerders wanneer een nieuw lid met succes lid wordt van de community. Bevat meestal een melding met het ID en de naam van het nieuwe lid.",
+        "one-time-donation": "Verzonden naar gebruikers nadat ze een eenmalige bijdrage (niet-terugkerende betaling) hebben voltooid. Bevestigt meestal het bijdragebedrag en dient als ontvangstbewijs.",
+        "reset-device": "Verzonden wanneer een gebruiker vraagt om zijn vertrouwde apparaat voor tweefactorauthenticatie te resetten. Bevat een veilige link om het apparaat te resetten.",
+        "reset-password": "Verzonden wanneer een gebruiker vraagt om zijn wachtwoord te resetten. Bevat een veilige link om het wachtwoord te resetten.",
+        "welcome": "Verzonden naar nieuwe leden nadat ze het registratieproces hebben voltooid, zodat ze hun e-mailadres kunnen bevestigen. Deze e-mail heet hen welkom in de community."
+      },
+      "names": {
+        "cancelled-contribution": "Bijdrage geannuleerd",
+        "cancelled-member": "Beheer: Geannuleerd lid",
+        "confirm-email": "E-mail bevestigen",
+        "contribution-didnt-start": "Bijdrage niet gestart",
+        "email-exists-login": "E-mail bestaat - inloggen",
+        "email-exists-set-password": "E-mail bestaat - wachtwoord instellen",
+        "manual-to-automatic": "Handmatige bijdrager omgezet naar automatisch",
+        "new-callout-response": "Beheer: Nieuwe CrowdNewsroom-reactie",
+        "new-member": "Beheer: Nieuw contact",
+        "one-time-donation": "Bevestiging eenmalige bijdrage",
+        "reset-device": "Apparaat resetten",
+        "reset-password": "Wachtwoord resetten",
+        "welcome": "Welkom"
+      },
+      "type": {
+        "admin": "Beheerdersmeldingen",
+        "contact": "Contact e-mails",
+        "general": "Algemeen"
+      }
+    },
+    "type": "Type"
+  },
   "footer": {
     "contactUs": "Neem contact met ons op",
     "handbookResources": "Handboek & bronnen",
@@ -1291,6 +1382,8 @@
   },
   "homePage": {
     "editProfile": "Bewerk je community profiel",
+    "makeOneTimeDonationButton": "Doneer",
+    "makeOneTimeDonationTitle": "Doe nu een donatie",
     "manageContribution": "Je bijdrage beheren",
     "newCallout": "Nieuwe CrowdNewsroom!",
     "openCallouts": "CrowdNewsroom openen",
@@ -1299,9 +1392,7 @@
     "viewAllCallouts": "Alle CrowdNewsrooms bekijken",
     "viewOpenCallouts": "Open CrowdNewsrooms bekijken",
     "welcome": "Welkom bij ons {firstName}!",
-    "yourProfile": "Uw profiel",
-    "makeOneTimeDonationTitle": "Doe nu een donatie",
-    "makeOneTimeDonationButton": "Doneer"
+    "yourProfile": "Uw profiel"
   },
   "icons": {
     "welcome": {
@@ -1339,9 +1430,9 @@
         "title": "Er is iets fout gegaan"
       },
       "paymentFailed": {
-        "backToJoin": "",
-        "message": "",
-        "title": ""
+        "backToJoin": "Terug naar de aanmeldpagina",
+        "message": "Je betaling is niet gelukt. Probeer het opnieuw of gebruik een andere betaalmethode.",
+        "title": "Betaling mislukt"
       }
     },
     "login": "Inloggen",
@@ -1459,6 +1550,7 @@
     "contacts": "Contacten",
     "contribution": "Bijdrage",
     "dashboard": "Dashboard",
+    "emails": "E-mails",
     "home": "Home",
     "legacyApp": "Oud dashboard",
     "logout": "Afmelden",

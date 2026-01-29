@@ -225,6 +225,17 @@ class PaymentService {
     await provider.createOneTimePayment(completedPaymentFlow);
   }
 
+  async fetchInvoiceUrl(paymentId: string): Promise<string | null> {
+    log.info('Fetch invoice URL for payment ' + paymentId);
+
+    if (paymentId.startsWith('in_')) {
+      return await StripeProvider.fetchInvoiceUrl(paymentId);
+    } else {
+      // Currently only Stripe invoices are supported
+      return null;
+    }
+  }
+
   /**
    * Permanently delete or disassociate all payment related data for a contact.
    * This will also cancel any active contributions

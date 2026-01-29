@@ -108,7 +108,8 @@
     "view": "Переглянути",
     "yesDelete": "Так, видалити це",
     "yesDisable": "Так, вимкнути",
-    "yesRemove": "Так, вилучити це"
+    "yesRemove": "Так, вилучити це",
+    "yesReset": "Так, скинути"
   },
   "addContact": {
     "contactSaved": "Контакт збережено",
@@ -130,7 +131,7 @@
     "title": "Додати повідомлення"
   },
   "adminDashboard": {
-    "hint1": "<p>«Виклики» тепер називаються «Crowdnewsrooms». Перегляньте наш <a href=\"https://wiki.beabee.io/help-center-english/engagement/crowdnewsroom\" target=\"_blank\" rel=\"noopener noreferrer\">Довідковий центр</a>, щоб знайти посібники та тематичні дослідження для залучення вашої спільноти.</p>",
+    "hint1": "<p>«Виклики» тепер називаються «CrowdNewsrooms». Перегляньте наш <a href=\"https://wiki.beabee.io/help-center-english/engagement/crowdnewsroom\" target=\"_blank\" rel=\"noopener noreferrer\">Довідковий центр</a>, щоб знайти посібники та тематичні дослідження для залучення вашої спільноти.</p>",
     "hint2": "<p>Дізнайтеся більше про <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">бачення beabee</a> щодо залучення спільноти та змістовних стосунків з вашою аудиторією.</p>\n",
     "hint3": "<p>Наші <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> містять відповіді на поширені запитання щодо початку роботи та варіантів використання. Якщо потрібної вам відповіді там немає, зв’яжіться з нами.</p>\n",
     "joinSlack": "Приєднуйтесь до спільноти beabee на Slack!",
@@ -178,6 +179,10 @@
       "fromEmail": "З електронної пошти",
       "fromName": "Від імені",
       "label": "Електронна пошта",
+      "templates": {
+        "description": "",
+        "title": ""
+      },
       "text": "Усі електронні листи будуть надіслані з цієї адреси електронної пошти.",
       "title": "Встановіть загальну адресу електронної пошти"
     },
@@ -214,9 +219,9 @@
     },
     "payment": {
       "paymentTitle": "Оплата",
+      "showOneTimeDonation": "Показати опцію одноразової пожертви на головному екрані",
       "taxRate": "Ставка ПДВ",
-      "taxRateEnabled": "Увімкнути ПДВ",
-      "showOneTimeDonation": "Показати опцію одноразової пожертви на головному екрані"
+      "taxRateEnabled": "Увімкнути ПДВ"
     },
     "theme": {
       "bodyFont": "Основний текст",
@@ -1134,6 +1139,90 @@
       "label": "Предмет"
     }
   },
+  "emails": {
+    "actions": {
+      "addCustom": "",
+      "deactivate": "",
+      "resetToDefault": ""
+    },
+    "add": {
+      "title": ""
+    },
+    "confirmDelete": {
+      "message": "",
+      "messageWithMailings": "",
+      "title": ""
+    },
+    "confirmResetToDefault": {
+      "message": "",
+      "title": ""
+    },
+    "customized": "",
+    "default": "",
+    "description": "",
+    "edit": {
+      "title": "",
+      "titleCustom": ""
+    },
+    "fromEmail": "",
+    "fromName": "",
+    "list": {
+      "showingOf": ""
+    },
+    "mailingCount": "",
+    "missingDefault": "",
+    "name": "",
+    "notifications": {
+      "created": "",
+      "deleted": "",
+      "resetToDefault": "",
+      "updated": ""
+    },
+    "status": "",
+    "tabs": {
+      "custom": "",
+      "templates": ""
+    },
+    "templates": {
+      "availableFields": "",
+      "description": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "names": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "type": {
+        "admin": "",
+        "contact": "",
+        "general": ""
+      }
+    },
+    "type": ""
+  },
   "footer": {
     "contactUs": "Зв'яжіться з нами за адресою",
     "handbookResources": "Посібник та ресурси",
@@ -1293,6 +1382,8 @@
   },
   "homePage": {
     "editProfile": "Редагувати профіль вашої спільноти",
+    "makeOneTimeDonationButton": "Пожертвувати",
+    "makeOneTimeDonationTitle": "Зробити пожертву зараз",
     "manageContribution": "Керуйте своїм внеском",
     "newCallout": "Новий CrowdNewsroom!",
     "openCallouts": "CrowdNewsroom",
@@ -1301,9 +1392,7 @@
     "viewAllCallouts": "Відкрийте CrowdNewsroom",
     "viewOpenCallouts": "Відкрийте CrowdNewsroom",
     "welcome": "Ласкаво просимо на борт {firstName}!",
-    "yourProfile": "Ваш профіль",
-    "makeOneTimeDonationTitle": "Зробити пожертву зараз",
-    "makeOneTimeDonationButton": "Пожертвувати"
+    "yourProfile": "Ваш профіль"
   },
   "icons": {
     "welcome": {
@@ -1461,6 +1550,7 @@
     "contacts": "Контакти",
     "contribution": "Внесок",
     "dashboard": "Інформаційна панель",
+    "emails": "",
     "home": "Дім",
     "legacyApp": "Стара панель приладів",
     "logout": "Вийти",

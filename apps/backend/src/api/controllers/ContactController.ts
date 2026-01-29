@@ -318,11 +318,14 @@ export class ContactController {
   async completeStartContribution(
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
-  ): Promise<GetContributionInfoDto | undefined> {
-    await PaymentFlowService.completePaymentUpdateFlow(
+  ): Promise<GetContributionInfoDto> {
+    const flow = await PaymentFlowService.completePaymentUpdateFlow(
       target,
       data.paymentFlowId
     );
+    if (!flow) {
+      throw new NotFoundError();
+    }
     return await this.getContribution(target);
   }
 
@@ -369,10 +372,13 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
   ): Promise<void> {
-    await PaymentFlowService.completePaymentUpdateFlow(
+    const flow = await PaymentFlowService.completePaymentUpdateFlow(
       target,
       data.paymentFlowId
     );
+    if (!flow) {
+      throw new NotFoundError();
+    }
   }
 
   @Get('/:id/payment')
@@ -421,10 +427,14 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
   ): Promise<GetContributionInfoDto> {
-    await PaymentFlowService.completePaymentUpdateFlow(
+    const flow = await PaymentFlowService.completePaymentUpdateFlow(
       target,
       data.paymentFlowId
     );
+    if (!flow) {
+      throw new NotFoundError();
+    }
+
     return await this.getContribution(target);
   }
 
