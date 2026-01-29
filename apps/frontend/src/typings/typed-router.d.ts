@@ -38,20 +38,20 @@ declare module 'vue-router/auto-routes' {
     'adminCalloutViewResponsesTable': RouteRecordInfo<'adminCalloutViewResponsesTable', '/admin/crowdnewsroom/view/:id/responses', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminCalloutViewResponsesItem': RouteRecordInfo<'adminCalloutViewResponsesItem', '/admin/crowdnewsroom/view/:id/responses/:rid', { id: ParamValue<true>, rid: ParamValue<true> }, { id: ParamValue<false>, rid: ParamValue<false> }>,
     'adminCalloutViewResponsesTags': RouteRecordInfo<'adminCalloutViewResponsesTags', '/admin/crowdnewsroom/view/:id/responses/tags', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'adminMembershipBuilder': RouteRecordInfo<'adminMembershipBuilder', '/admin/membership-builder', Record<never, never>, Record<never, never>, 'adminMembershipBuilderAccountConfirmation' | 'adminMembershipBuilderEmail' | 'adminMembershipBuilderIntroMessages' | 'adminMembershipBuilderJoinForm'>,
+    'adminMembershipBuilder': RouteRecordInfo<'adminMembershipBuilder', '/admin/membership-builder', Record<never, never>, Record<never, never>, 'adminMembershipBuilderAccountConfirmation' | 'adminMembershipBuilderIntroMessages' | 'adminMembershipBuilderJoinForm'>,
     'adminMembershipBuilderJoinForm': RouteRecordInfo<'adminMembershipBuilderJoinForm', '/admin/membership-builder', Record<never, never>, Record<never, never>>,
     'adminMembershipBuilderAccountConfirmation': RouteRecordInfo<'adminMembershipBuilderAccountConfirmation', '/admin/membership-builder/confirmation', Record<never, never>, Record<never, never>>,
-    'adminMembershipBuilderEmail': RouteRecordInfo<'adminMembershipBuilderEmail', '/admin/membership-builder/email', Record<never, never>, Record<never, never>>,
     'adminMembershipBuilderIntroMessages': RouteRecordInfo<'adminMembershipBuilderIntroMessages', '/admin/membership-builder/intro', Record<never, never>, Record<never, never>>,
     'adminNotices': RouteRecordInfo<'adminNotices', '/admin/notices', Record<never, never>, Record<never, never>>,
     'adminNoticesAdd': RouteRecordInfo<'adminNoticesAdd', '/admin/notices/add', Record<never, never>, Record<never, never>>,
     'adminNoticeEdit': RouteRecordInfo<'adminNoticeEdit', '/admin/notices/edit/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminNoticeView': RouteRecordInfo<'adminNoticeView', '/admin/notices/view/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminPayments': RouteRecordInfo<'adminPayments', '/admin/payments', Record<never, never>, Record<never, never>>,
-    'adminSettings': RouteRecordInfo<'adminSettings', '/admin/settings', Record<never, never>, Record<never, never>, 'adminSettingsApikeys' | 'adminSettingsEmail' | 'adminSettingsGeneral' | 'adminSettingsTheme'>,
+    'adminSettings': RouteRecordInfo<'adminSettings', '/admin/settings', Record<never, never>, Record<never, never>, 'adminSettingsApikeys' | 'adminSettingsEmail' | 'adminSettingsEmailEdit' | 'adminSettingsGeneral' | 'adminSettingsTheme'>,
     'adminSettingsGeneral': RouteRecordInfo<'adminSettingsGeneral', '/admin/settings', Record<never, never>, Record<never, never>>,
     'adminSettingsApikeys': RouteRecordInfo<'adminSettingsApikeys', '/admin/settings/api-keys', Record<never, never>, Record<never, never>>,
-    'adminSettingsEmail': RouteRecordInfo<'adminSettingsEmail', '/admin/settings/email', Record<never, never>, Record<never, never>>,
+    'adminSettingsEmailEdit': RouteRecordInfo<'adminSettingsEmailEdit', '/admin/settings/email/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'adminSettingsEmail': RouteRecordInfo<'adminSettingsEmail', '/admin/settings/emails', Record<never, never>, Record<never, never>>,
     'adminSettingsTheme': RouteRecordInfo<'adminSettingsTheme', '/admin/settings/theme', Record<never, never>, Record<never, never>>,
     'adminUiToolkit': RouteRecordInfo<'adminUiToolkit', '/admin/ui-toolkit', Record<never, never>, Record<never, never>>,
     'forgot-password': RouteRecordInfo<'forgot-password', '/auth/forgot-password', Record<never, never>, Record<never, never>>,
@@ -175,7 +175,7 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/admin/membership-builder.vue': {
-      routes: 'adminMembershipBuilder' | 'adminMembershipBuilderJoinForm' | 'adminMembershipBuilderAccountConfirmation' | 'adminMembershipBuilderEmail' | 'adminMembershipBuilderIntroMessages'
+      routes: 'adminMembershipBuilder' | 'adminMembershipBuilderJoinForm' | 'adminMembershipBuilderAccountConfirmation' | 'adminMembershipBuilderIntroMessages'
       views: 'default'
     }
     'src/pages/admin/membership-builder/index.vue': {
@@ -184,10 +184,6 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/admin/membership-builder/confirmation.vue': {
       routes: 'adminMembershipBuilderAccountConfirmation'
-      views: never
-    }
-    'src/pages/admin/membership-builder/email.vue': {
-      routes: 'adminMembershipBuilderEmail'
       views: never
     }
     'src/pages/admin/membership-builder/intro.vue': {
@@ -215,7 +211,7 @@ declare module 'vue-router/auto-routes' {
       views: never
     }
     'src/pages/admin/settings.vue': {
-      routes: 'adminSettings' | 'adminSettingsGeneral' | 'adminSettingsApikeys' | 'adminSettingsEmail' | 'adminSettingsTheme'
+      routes: 'adminSettings' | 'adminSettingsGeneral' | 'adminSettingsEmailEdit' | 'adminSettingsApikeys' | '/admin/settings/email' | 'adminSettingsEmail' | 'adminSettingsTheme'
       views: 'default'
     }
     'src/pages/admin/settings/index.vue': {
@@ -226,7 +222,11 @@ declare module 'vue-router/auto-routes' {
       routes: 'adminSettingsApikeys'
       views: never
     }
-    'src/pages/admin/settings/email.vue': {
+    'src/pages/admin/settings/email/[id].vue': {
+      routes: 'adminSettingsEmailEdit'
+      views: never
+    }
+    'src/pages/admin/settings/emails.vue': {
       routes: 'adminSettingsEmail'
       views: never
     }

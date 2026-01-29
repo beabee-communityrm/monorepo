@@ -108,7 +108,8 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "yesReset": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -178,6 +179,10 @@
       "fromEmail": "",
       "fromName": "",
       "label": "",
+      "templates": {
+        "description": "",
+        "title": ""
+      },
       "text": "",
       "title": ""
     },
@@ -1134,6 +1139,90 @@
       "label": ""
     }
   },
+  "emails": {
+    "actions": {
+      "addCustom": "",
+      "deactivate": "",
+      "resetToDefault": ""
+    },
+    "add": {
+      "title": ""
+    },
+    "confirmDelete": {
+      "message": "",
+      "messageWithMailings": "",
+      "title": ""
+    },
+    "confirmResetToDefault": {
+      "message": "",
+      "title": ""
+    },
+    "customized": "",
+    "default": "",
+    "description": "",
+    "edit": {
+      "title": "",
+      "titleCustom": ""
+    },
+    "fromEmail": "",
+    "fromName": "",
+    "list": {
+      "showingOf": ""
+    },
+    "mailingCount": "",
+    "missingDefault": "",
+    "name": "",
+    "notifications": {
+      "created": "",
+      "deleted": "",
+      "resetToDefault": "",
+      "updated": ""
+    },
+    "status": "",
+    "tabs": {
+      "custom": "",
+      "templates": ""
+    },
+    "templates": {
+      "availableFields": "",
+      "description": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "names": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "reset-device": "",
+        "reset-password": "",
+        "welcome": ""
+      },
+      "type": {
+        "admin": "",
+        "contact": "",
+        "general": ""
+      }
+    },
+    "type": ""
+  },
   "footer": {
     "contactUs": "",
     "handbookResources": "",
@@ -1460,6 +1549,7 @@
     "contacts": "",
     "contribution": "",
     "dashboard": "",
+    "emails": "",
     "home": "",
     "legacyApp": "",
     "logout": "",
