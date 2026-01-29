@@ -112,7 +112,7 @@ meta:
 
       <transition name="add-notice">
         <div
-          v-if="isAddMode && !newResponseAnswers"
+          v-if="isAddMode && !newResponseAddress"
           class="absolute inset-x-0 top-10 flex justify-center md:top-20"
         >
           <p class="mx-4 rounded bg-white p-4 font-bold shadow-lg">
@@ -178,7 +178,9 @@ meta:
 
     <CalloutAddResponsePanel
       :callout="callout"
-      :answers="newResponseAnswers"
+      :answers="
+        isAddMode && newResponseAddress ? newResponseAnswers : undefined
+      "
       @close="handleCancelAddMode"
     />
   </div>
@@ -340,7 +342,13 @@ const showAddButton = computed(
   () => isOpen.value && route.query.noadd === undefined
 );
 
-const newResponseAnswers = ref<CalloutResponseAnswersSlide>();
+const newResponseAnswers = ref(
+  route.query.answers
+    ? (JSON.parse(
+        route.query.answers.toString()
+      ) as CalloutResponseAnswersSlide)
+    : undefined
+);
 
 // Use the geocoding address to show a marker on the map
 const geocodeAddress = ref<CalloutResponseAnswerAddress>();
@@ -576,7 +584,11 @@ async function handleAddClick(event: MapMouseEvent) {
     },
   };
 
-  const responseAnswers: CalloutResponseAnswersSlide = {};
+  const responseAnswers: CalloutResponseAnswersSlide = newResponseAnswers.value
+    ? (JSON.parse(
+        JSON.stringify(newResponseAnswers.value)
+      ) as CalloutResponseAnswersSlide)
+    : {};
   setKey(responseAnswers, mapSchema.addressProp, address);
 
   if (mapSchema.addressPatternProp && geocodeResult) {
@@ -634,7 +646,7 @@ function handleClick(e: { event: MapMouseEvent }) {
   if (!map.value) return;
 
   if (isAddMode.value) {
-    if (!newResponseAnswers.value) {
+    if (!newResponseAddress.value) {
       handleAddClick(e.event);
     }
   } else {
@@ -777,7 +789,15 @@ watch(isAddMode, (v) => {
     showIntroPanel.value = false;
     map.value.getCanvas().style.cursor = 'crosshair';
   } else {
-    newResponseAnswers.value = undefined;
+    if (route.query.answers) {
+      try {
+        newResponseAnswers.value = JSON.parse(
+          route.query.answers.toString()
+        ) as CalloutResponseAnswersSlide;
+      } catch {
+        newResponseAnswers.value = undefined;
+      }
+    }
     map.value.getCanvas().style.cursor = '';
   }
 });
