@@ -851,6 +851,15 @@
       "title": "Remove reviewer"
     },
     "contact": "Contact ID",
+    "editorTag": "Editor",
+    "search": {
+      "error": {
+        "message": "Please ensure that the email address exists and is free of typos.",
+        "title": "Contact not found"
+      },
+      "placeholder": "Search email address",
+      "successMessage": "Email is valid"
+    },
     "title": "Reviewers"
   },
   "calloutThanksPage": {
