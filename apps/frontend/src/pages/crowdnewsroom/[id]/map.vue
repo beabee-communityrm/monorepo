@@ -340,7 +340,13 @@ const showAddButton = computed(
   () => isOpen.value && route.query.noadd === undefined
 );
 
-const newResponseAnswers = ref<CalloutResponseAnswersSlide>();
+const newResponseAnswers = ref(
+  route.query.answers
+    ? (JSON.parse(
+        route.query.answers.toString()
+      ) as CalloutResponseAnswersSlide)
+    : undefined
+);
 
 // Use the geocoding address to show a marker on the map
 const geocodeAddress = ref<CalloutResponseAnswerAddress>();
