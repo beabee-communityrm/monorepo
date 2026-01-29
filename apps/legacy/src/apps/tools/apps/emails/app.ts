@@ -235,30 +235,20 @@ app.post(
 
 app.post('/:id/mailings', hasNewModel(Email, 'id'), busboy(), (req, res) => {
   const email = req.model as Email;
-  let parseRecipients: Promise<EmailMailingRecipient[]> | null = null;
+  let recipients: EmailMailingRecipient[];
 
   req.busboy.on('file', (fieldname, file) => {
-    parseRecipients = new Promise((resolve) => {
-      Papa.parse(file, {
-        header: true,
-        complete: (results) =>
-          resolve((results.data as EmailMailingRecipient[]) ?? []),
-        error: () => resolve([]),
-      });
+    Papa.parse(file, {
+      header: true,
+      complete: function (results) {
+        recipients = results.data as EmailMailingRecipient[];
+      },
     });
   });
   req.busboy.on('finish', async () => {
-    const list = parseRecipients ? await parseRecipients : [];
-    if (!list.length) {
-      req.flash(
-        'error',
-        'Please upload a CSV file with at least one recipient.'
-      );
-      return res.redirect(`/tools/emails/${email.id}`);
-    }
     const mailing = new EmailMailing();
     mailing.email = email;
-    mailing.recipients = list;
+    mailing.recipients = recipients;
     const savedMailing = await getRepository(EmailMailing).save(mailing);
     res.redirect(`/tools/emails/${email.id}/mailings/${savedMailing.id}`);
   });
@@ -281,9 +271,10 @@ app.get(
       matches.map((f) => f.substring(2, f.length - 2))
     );
     const recipients = mailing.recipients ?? [];
-    const first = recipients[0];
     const headers =
-      first != null && typeof first === 'object' ? Object.keys(first) : [];
+      recipients[0] != null && typeof recipients[0] === 'object'
+        ? Object.keys(recipients[0])
+        : [];
     res.render('mailing', {
       email,
       emailBody: formatEmailBody(email.body),
