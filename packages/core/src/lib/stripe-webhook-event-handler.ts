@@ -13,6 +13,7 @@ import GiftService from '../services/GiftService';
 import PaymentService from '../services/PaymentService';
 import {
   convertStatus,
+  getInvoiceType,
   getSalesTaxRateObject,
   isOneTimePaymentInvoice,
   stripe,
@@ -334,6 +335,7 @@ export class StripeWebhookEventHandler {
     newPayment.id = invoice.id;
     newPayment.contact = contribution.contact;
     newPayment.subscriptionId = invoice.subscription as string | null;
+    newPayment.type = getInvoiceType(invoice);
 
     log.info(
       `Creating payment for ${contribution.contact.id} with invoice ${invoice.id}`
