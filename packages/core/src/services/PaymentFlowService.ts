@@ -156,7 +156,10 @@ class PaymentFlowService {
       email: joinFlow.joinForm.email,
     });
 
-    if (contact?.membership?.isActive) {
+    if (
+      contact?.membership?.isActive &&
+      isContributionForm(joinFlow.joinForm)
+    ) {
       if (contact.password.hash) {
         // Active membership and already has a password set, just send them a login link
         await EmailService.sendTemplateToContact(
@@ -181,8 +184,9 @@ class PaymentFlowService {
         );
       }
     } else {
-      // User doesn't exist or their membership is inactive, ask them to confirm
-      // their email address so they can continue the join flow
+      // User doesn't exist, their membership is inactive or they are not
+      // starting a recurring contribution, ask them to confirm their email
+      // address so they can continue the join flow
       await EmailService.sendTemplateTo(
         'confirm-email',
         { email: joinFlow.joinForm.email },
@@ -205,52 +209,62 @@ class PaymentFlowService {
    * @returns The created or updated contact
    */
   async completeConfirmEmail(joinFlow: JoinFlow): Promise<Contact> {
-    // Check for an existing active member first to avoid completing the join
-    // flow unnecessarily. This should never really happen as the user won't
-    // get a confirm email if they are already an active member
     let contact = await ContactsService.findOne({
       where: { email: joinFlow.joinForm.email },
       relations: { profile: true },
     });
-    if (contact?.membership?.isActive) {
+
+    const isRecurringForm = isContributionForm(joinFlow.joinForm);
+
+    // If this flow is trying to setup a recurring contribution then check if
+    // the contact is already an active member first. This should never really
+    // happen as sendConfirmEmail should have already handled this case by sending
+    // a login or set password email instead of a confirm email.
+    if (contact?.membership?.isActive && isRecurringForm) {
       throw new DuplicateEmailError();
     }
 
-    const partialContact = {
-      email: joinFlow.joinForm.email,
-      password: joinFlow.joinForm.password,
-      firstname: joinFlow.joinForm.firstname || '',
-      lastname: joinFlow.joinForm.lastname || '',
-    };
-
     const completedPaymentFlow = await this.completeJoinFlow(joinFlow);
-    let deliveryAddress: Address | undefined;
 
-    if (completedPaymentFlow) {
-      const paymentData =
-        await this.getCompletedPaymentFlowData(completedPaymentFlow);
+    // If new contact or they don't have an active membership then update their
+    // details, otherwise we leave them alone to avoid overwriting information
+    // that is already in use.
+    if (!contact?.membership?.isActive) {
+      let deliveryAddress: Address | undefined;
+
+      const partialContact = {
+        email: joinFlow.joinForm.email,
+        password: joinFlow.joinForm.password,
+        firstname: joinFlow.joinForm.firstname || '',
+        lastname: joinFlow.joinForm.lastname || '',
+      };
 
       // Prefill contact data from payment provider if possible
-      partialContact.firstname ||= paymentData.firstname || '';
-      partialContact.lastname ||= paymentData.lastname || '';
-      deliveryAddress = OptionsService.getBool('show-mail-opt-in')
-        ? paymentData.billingAddress
-        : undefined;
-    }
+      if (completedPaymentFlow) {
+        const paymentData =
+          await this.getCompletedPaymentFlowData(completedPaymentFlow);
 
-    if (contact) {
-      await ContactsService.updateContact(contact, partialContact);
-    } else {
-      contact = await ContactsService.createContact(partialContact, {
-        newsletterStatus: OptionsService.getText('newsletter-default-status'),
-        deliveryAddress: deliveryAddress || null,
-      });
+        partialContact.firstname ||= paymentData.firstname || '';
+        partialContact.lastname ||= paymentData.lastname || '';
+        deliveryAddress = OptionsService.getBool('show-mail-opt-in')
+          ? paymentData.billingAddress
+          : undefined;
+      }
+
+      if (contact) {
+        await ContactsService.updateContact(contact, partialContact);
+      } else {
+        contact = await ContactsService.createContact(partialContact, {
+          newsletterStatus: OptionsService.getText('newsletter-default-status'),
+          deliveryAddress: deliveryAddress || null,
+        });
+      }
     }
 
     if (completedPaymentFlow) {
       await this.processCompletedFlow(contact, completedPaymentFlow);
       // If this is a one-off payment join flow, skip the welcome email
-      if (!isContributionForm(joinFlow.joinForm)) {
+      if (!isRecurringForm) {
         return contact;
       }
     }
