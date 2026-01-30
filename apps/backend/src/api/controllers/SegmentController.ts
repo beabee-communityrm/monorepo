@@ -1,11 +1,9 @@
 import { getRepository } from '@beabee/core/database';
 import {
-  Contact,
   Segment,
   SegmentContact,
   SegmentOngoingEmail,
 } from '@beabee/core/models';
-import EmailService from '@beabee/core/services/EmailService';
 import { AuthInfo } from '@beabee/core/type';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
@@ -21,6 +19,7 @@ import {
   SendSegmentEmailBodyDto,
 } from '@api/dto/SegmentDto';
 import { UUIDParams } from '@api/params/UUIDParams';
+import { sendEmailToSegment } from '@api/utils';
 import ContactTransformer from '@api/transformers/ContactTransformer';
 import SegmentTransformer from '@api/transformers/SegmentTransformer';
 import {
@@ -126,24 +125,6 @@ export class SegmentController {
     @Params() { id }: UUIDParams,
     @Body() data: SendSegmentEmailBodyDto
   ): Promise<void> {
-    const segment = await getRepository(Segment).findOneBy({ id });
-    if (!segment) throw new NotFoundError();
-    const pageSize = 100;
-    let offset = 0;
-    while (true) {
-      const { items } = await ContactTransformer.fetchRaw(auth, {
-        limit: pageSize,
-        offset,
-        rules: segment.ruleGroup,
-      });
-      if (items.length === 0) break;
-      await EmailService.sendEmailToSegment(
-        items as Contact[],
-        data.subject,
-        data.body
-      );
-      offset += items.length;
-      if (items.length < pageSize) break;
-    }
+    await sendEmailToSegment(auth, id, data.subject, data.body);
   }
 }

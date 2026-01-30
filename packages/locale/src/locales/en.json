@@ -1080,7 +1080,6 @@
     "search": "Search contacts...",
     "selectedCount": "{n} contact selected | {n} contacts selected",
     "sendEmail": {
-      "previewAsContact": "Preview as contact",
       "send": "Send",
       "sent": "The email has been sent to the segment.",
       "title": "Send email to segment"
@@ -1147,6 +1146,7 @@
       "label": "Message"
     },
     "preview": {
+      "asContactLabel": "Preview as contact",
       "label": "Preview",
       "unavailable": "Preview unavailable"
     }

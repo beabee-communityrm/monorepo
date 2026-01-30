@@ -1080,7 +1080,6 @@
     "search": "Pesquisar contactos...",
     "selectedCount": "",
     "sendEmail": {
-      "previewAsContact": "Pré-visualizar como contacto",
       "send": "Enviar",
       "sent": "O e-mail foi enviado para o segmento.",
       "title": "Enviar e-mail ao segmento"
@@ -1144,6 +1143,7 @@
       "label": "Mensagem"
     },
     "preview": {
+      "asContactLabel": "Pré-visualizar como contacto",
       "label": "Pré-visualização",
       "unavailable": "Pré-visualização indisponível"
     },

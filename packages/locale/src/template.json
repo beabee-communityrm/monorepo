@@ -1080,7 +1080,6 @@
     "search": "",
     "selectedCount": "",
     "sendEmail": {
-      "previewAsContact": "",
       "send": "",
       "sent": "",
       "title": ""
@@ -1144,6 +1143,7 @@
       "label": ""
     },
     "preview": {
+      "asContactLabel": "",
       "label": "",
       "unavailable": ""
     },

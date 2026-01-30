@@ -250,6 +250,20 @@ class ContactTransformer extends BaseContactTransformer<
   }
 
   /**
+   * Same as fetchForSegment but returns raw Contact entities (for internal use, e.g. segment email send).
+   */
+  async fetchRawForSegment(
+    auth: AuthInfo,
+    ruleGroup: RuleGroup,
+    query: ListContactsDto
+  ): Promise<{ items: Contact[]; total: number; offset: number }> {
+    const mergedRules = query.rules
+      ? { condition: 'AND' as const, rules: [ruleGroup, query.rules] }
+      : ruleGroup;
+    return await this.fetchRaw(auth, { ...query, rules: mergedRules });
+  }
+
+  /**
    * Performs batch updates on contacts.
    * Currently supports tag updates and basic contact field updates.
    *

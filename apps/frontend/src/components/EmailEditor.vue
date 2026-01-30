@@ -46,18 +46,22 @@
 
       <!-- Preview panel -->
       <div class="w-full" :class="alwaysStacked ? '' : 'md:w-[600px]'">
-        <ContactSelector
-          v-if="previewSelectorOptions.length > 0"
-          :model-value="previewContactIdValue"
-          :options="previewSelectorOptions"
-          :label="t('contacts.sendEmail.previewAsContact')"
-          :self-option-label="t('contactSelector.selfOption')"
-          :count-template="t('contactSelector.contactNOfTotal')"
-          :previous-aria-label="t('actions.previous')"
-          :next-aria-label="t('actions.next')"
-          class="mb-3"
-          @update:model-value="emitPreviewContactId"
-        />
+        <template v-if="previewSelectorOptions.length > 0">
+          <AppLabel
+            :label="t('emailEditor.preview.asContactLabel')"
+            class="block"
+          />
+          <ContactSelector
+            v-model="previewContactIdModel"
+            :options="previewSelectorOptions"
+            :name-aria-label="t('emailEditor.preview.asContactLabel')"
+            :self-option-label="t('contactSelector.selfOption')"
+            :count-template="t('contactSelector.contactNOfTotal')"
+            :previous-aria-label="t('actions.previous')"
+            :next-aria-label="t('actions.next')"
+            class="mb-3"
+          />
+        </template>
         <AppLabel :label="t('emailEditor.preview.label')" class="mb-0.5" />
         <div
           class="content-message rounded border border-primary-40 bg-white p-4"
@@ -224,11 +228,10 @@ const previewSelectorOptions = computed(() => {
   return [{ id: '' }, ...props.previewContactOptions];
 });
 
-const previewContactIdValue = computed(() => props.previewContactId ?? '');
-
-function emitPreviewContactId(value: string) {
-  emit('update:previewContactId', value || undefined);
-}
+const previewContactIdModel = computed({
+  get: () => props.previewContactId ?? '',
+  set: (value: string) => emit('update:previewContactId', value || undefined),
+});
 
 const { t } = useI18n();
 

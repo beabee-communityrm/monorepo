@@ -1084,7 +1084,6 @@
     "search": "Rechercher un contact…",
     "selectedCount": "{n} contact sélectionné | {n} contacts sélectionnés",
     "sendEmail": {
-      "previewAsContact": "Aperçu en tant que contact",
       "send": "Envoyer",
       "sent": "L'e-mail a été envoyé au segment.",
       "title": "Envoyer un e-mail au segment"
@@ -1148,6 +1147,7 @@
       "label": "Message"
     },
     "preview": {
+      "asContactLabel": "Aperçu en tant que contact",
       "label": "Aperçu",
       "unavailable": "Aperçu non disponible"
     },
