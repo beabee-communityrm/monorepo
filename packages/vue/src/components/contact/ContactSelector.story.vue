@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
 
+import { AppLabel } from '../form';
 import { ContactSelector } from './index';
 
 const state = reactive({
@@ -25,10 +26,11 @@ const optionsWithContacts = [
   <Story title="Contact/ContactSelector">
     <Variant title="Self only (both buttons disabled)">
       <div class="max-w-md">
+        <AppLabel :label="state.label" class="mb-2 block" />
         <ContactSelector
           v-model="state.selectedId"
           :options="optionsSelfOnly"
-          :label="state.label"
+          :name-aria-label="state.label"
           :self-option-label="state.selfOptionLabel"
           :count-template="state.countTemplate"
           :previous-aria-label="state.previousAriaLabel"
@@ -39,10 +41,11 @@ const optionsWithContacts = [
 
     <Variant title="Self + contacts">
       <div class="max-w-md">
+        <AppLabel :label="state.label" class="mb-2 block" />
         <ContactSelector
           v-model="state.selectedId"
           :options="optionsWithContacts"
-          :label="state.label"
+          :name-aria-label="state.label"
           :self-option-label="state.selfOptionLabel"
           :count-template="state.countTemplate"
           :previous-aria-label="state.previousAriaLabel"

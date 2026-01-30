@@ -1,54 +1,32 @@
-<!--
-  # ContactSelector
-  Compact contact selector: prev/next buttons with fixed-width display of the current
-  contact. Application-independent; all user-visible strings are passed as props.
-
-  ## Props
-  - modelValue: selected contact id ('' = first option, typically "self")
-  - options: list of { id, firstname?, lastname?, email? }; first item often { id: '' } for "self"
-  - label, selfOptionLabel, countTemplate, previousAriaLabel, nextAriaLabel
-
-  ## Use in app
-  Pass translated strings, e.g. :label="t('contacts.sendEmail.previewAsContact')"
-  and :count-template="t('contactSelector.contactNOfTotal')" with %current%,%total% placeholders.
--->
 <template>
-  <div class="contact-selector">
-    <AppLabel v-if="label" :label="label" class="mb-2 block" />
-    <div class="flex flex-wrap items-center gap-2">
-      <AppButtonGroup>
-        <AppButton
-          type="button"
-          variant="primaryOutlined"
-          :icon="faCaretLeft"
-          :aria-label="previousAriaLabel"
-          :disabled="currentIndex <= 0"
-          @click="goToIndex(currentIndex - 1)"
-        />
-        <div
-          class="contact-selector__name flex h-10 w-52 shrink-0 items-center border-0 bg-grey-lighter"
-          :aria-label="label || undefined"
-        >
-          <AppInput
-            :model-value="displayName"
-            disabled
-            hide-error-message
-            class="contact-selector__name-input [&_input]:!bg-transparent h-full min-w-0 [&_input]:!truncate [&_input]:!border-0 [&_input]:!shadow-none [&_input]:!outline-none"
-          />
-        </div>
-        <AppButton
-          type="button"
-          variant="primaryOutlined"
-          :icon="faCaretRight"
-          :aria-label="nextAriaLabel"
-          :disabled="currentIndex >= options.length - 1"
-          @click="goToIndex(currentIndex + 1)"
-        />
-      </AppButtonGroup>
-      <span v-if="countTemplate" class="text-body-80">
-        {{ countText }}
-      </span>
-    </div>
+  <div class="flex flex-wrap items-center gap-2">
+    <AppButtonGroup>
+      <AppButton
+        type="button"
+        variant="primaryOutlined"
+        :icon="faCaretLeft"
+        :aria-label="previousAriaLabel"
+        :disabled="currentIndex <= 0"
+        @click="goToIndex(currentIndex - 1)"
+      />
+      <div
+        class="h-10 w-52 shrink-0 items-center border-0 bg-grey-lighter"
+        :aria-label="nameAriaLabel || undefined"
+      >
+        <AppInput :model-value="displayName" disabled hide-error-message />
+      </div>
+      <AppButton
+        type="button"
+        variant="primaryOutlined"
+        :icon="faCaretRight"
+        :aria-label="nextAriaLabel"
+        :disabled="currentIndex >= options.length - 1"
+        @click="goToIndex(currentIndex + 1)"
+      />
+    </AppButtonGroup>
+    <span v-if="countTemplate" class="text-body-80">
+      {{ countText }}
+    </span>
   </div>
 </template>
 
@@ -57,7 +35,7 @@ import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 
 import { AppButton, AppButtonGroup } from '../button';
-import { AppInput, AppLabel } from '../form';
+import { AppInput } from '../form';
 
 /**
  * Option for the selector. First item is often { id: '' } for "self" / current user.
@@ -75,8 +53,8 @@ const props = withDefaults(
     modelValue: string;
     /** Options: first is often { id: '' } for self, then additional contacts. */
     options: ContactSelectorOption[];
-    /** Label above the control (e.g. "Preview as contact" or "Select contact"). */
-    label?: string;
+    /** Optional aria-label for the name display (e.g. same as parent's visible label). */
+    nameAriaLabel?: string;
     /** Text shown when the selected option has id ''. */
     selfOptionLabel?: string;
     /** Template for count, e.g. "Contact %current% of %total%". Use %current% and %total% (or {current}/{total}) so i18n does not interpolate. */
@@ -87,7 +65,7 @@ const props = withDefaults(
     nextAriaLabel?: string;
   }>(),
   {
-    label: '',
+    nameAriaLabel: '',
     selfOptionLabel: 'Myself',
     countTemplate: '',
     previousAriaLabel: 'Previous',
@@ -135,5 +113,14 @@ function goToIndex(index: number) {
   border-radius: 0;
   box-shadow: none !important;
   outline: none !important;
+  background: transparent;
+}
+.contact-selector__name-input :deep(> div:first-child),
+.contact-selector__name-input :deep(input) {
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
