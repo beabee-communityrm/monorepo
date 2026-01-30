@@ -85,6 +85,7 @@
     "noBack": "",
     "participate": "",
     "preview": "",
+    "previous": "",
     "publish": "",
     "reopen": "",
     "replicate": "",
@@ -99,6 +100,8 @@
     "schedule": "",
     "search": "",
     "sendEmails": "",
+    "sendOneOffEmail": "",
+    "sendOngoingEmails": "",
     "share": "",
     "skip": "",
     "submit": "",
@@ -1020,6 +1023,10 @@
       "whatDoTheButtonsDo": ""
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "",
+    "selfOption": ""
+  },
   "contacts": {
     "addContact": "",
     "advancedSearch": {
@@ -1071,6 +1078,11 @@
     "numResults": "",
     "search": "",
     "selectedCount": "",
+    "sendEmail": {
+      "send": "",
+      "sent": "",
+      "title": ""
+    },
     "showingOf": ""
   },
   "contribution": {
@@ -1130,6 +1142,7 @@
       "label": ""
     },
     "preview": {
+      "asContactLabel": "",
       "label": "",
       "unavailable": ""
     },

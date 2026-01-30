@@ -85,6 +85,7 @@
     "noBack": "",
     "participate": "",
     "preview": "",
+    "previous": "Προηγούμενο",
     "publish": "",
     "reopen": "",
     "replicate": "",
@@ -99,6 +100,8 @@
     "schedule": "",
     "search": "",
     "sendEmails": "",
+    "sendOneOffEmail": "Αποστολή email",
+    "sendOngoingEmails": "Επαναλαμβανόμενα email",
     "share": "Μοιραστείτε",
     "skip": "",
     "submit": "υποβάλετε",
@@ -1020,6 +1023,10 @@
       "whatDoTheButtonsDo": ""
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Επαφή %current% από %total%",
+    "selfOption": "Εσείς οι ίδιοι"
+  },
   "contacts": {
     "addContact": "",
     "advancedSearch": {
@@ -1071,6 +1078,11 @@
     "numResults": "",
     "search": "",
     "selectedCount": "",
+    "sendEmail": {
+      "send": "Αποστολή",
+      "sent": "Το email στάλθηκε στο τμήμα.",
+      "title": "Αποστολή email στο τμήμα"
+    },
     "showingOf": ""
   },
   "contribution": {
@@ -1130,6 +1142,7 @@
       "label": "Μήνυμα"
     },
     "preview": {
+      "asContactLabel": "Επαφή για προεπισκόπηση",
       "label": "Προεπισκόπηση",
       "unavailable": "Προεπισκόπηση μη διαθέσιμη"
     },

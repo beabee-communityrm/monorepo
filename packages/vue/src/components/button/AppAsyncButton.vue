@@ -18,14 +18,14 @@
 <template>
   <AppButton
     :loading="loading"
-    :disabled="loading"
+    :disabled="loading || props.disabled"
     :aria-busy="loading"
     :aria-label="ariaLabel"
     :title="title"
     @click="handleClick"
   >
     <span v-if="loading" class="sr-only">{{ t('common.loading') }}</span>
-    <span v-else>
+    <span :class="{ invisible: loading }">
       <slot />
     </span>
   </AppButton>
@@ -77,7 +77,7 @@ const loading = ref(false);
  * Automatically sets loading state and handles errors with notifications
  */
 async function handleClick(evt: Event) {
-  if (loading.value) return;
+  if (loading.value || props.disabled) return;
 
   loading.value = true;
   try {

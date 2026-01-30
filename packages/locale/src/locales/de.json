@@ -85,6 +85,7 @@
     "noBack": "Nein, gehe zurück",
     "participate": "Teilnehmen",
     "preview": "Vorschau",
+    "previous": "Vorheriger",
     "publish": "Veröffentlichen",
     "reopen": "Wieder aktivieren",
     "replicate": "Kopieren",
@@ -99,6 +100,8 @@
     "schedule": "Planen",
     "search": "Suchen",
     "sendEmails": "E-Mails senden",
+    "sendOneOffEmail": "E-Mail senden",
+    "sendOngoingEmails": "Laufende E-Mails",
     "share": "Teilen",
     "skip": "Überspringen",
     "submit": "Abschicken",
@@ -1020,6 +1023,10 @@
       "whatDoTheButtonsDo": "Auf den Button klicken, um Link zu erzeugen:"
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Kontakt %current% von %total%",
+    "selfOption": "Sie selbst"
+  },
   "contacts": {
     "addContact": "Kontakt hinzufügen",
     "advancedSearch": {
@@ -1071,6 +1078,11 @@
     "numResults": "{n} Kontakt gefunden | {n} Kontakte gefunden",
     "search": "Kontakte durchsuchen...",
     "selectedCount": "{n} Kontakt ausgewählt | {n} Kontakte ausgewählt",
+    "sendEmail": {
+      "send": "Senden",
+      "sent": "Die E-Mail wurde an das Segment gesendet.",
+      "title": "E-Mail an Segment senden"
+    },
     "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt."
   },
   "contribution": {
@@ -1130,6 +1142,7 @@
       "label": "Nachricht"
     },
     "preview": {
+      "asContactLabel": "Kontakt für Vorschau",
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
     },

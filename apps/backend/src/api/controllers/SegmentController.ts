@@ -1,9 +1,11 @@
 import { getRepository } from '@beabee/core/database';
 import {
+  Contact,
   Segment,
   SegmentContact,
   SegmentOngoingEmail,
 } from '@beabee/core/models';
+import EmailService from '@beabee/core/services/EmailService';
 import { AuthInfo } from '@beabee/core/type';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
@@ -16,6 +18,7 @@ import {
   GetSegmentOptsDto,
   GetSegmentWith,
   ListSegmentsDto,
+  SendSegmentEmailBodyDto,
 } from '@api/dto/SegmentDto';
 import { UUIDParams } from '@api/params/UUIDParams';
 import ContactTransformer from '@api/transformers/ContactTransformer';
@@ -33,6 +36,8 @@ import {
   Post,
   QueryParams,
 } from 'routing-controllers';
+
+const SEGMENT_EMAIL_PAGE_SIZE = 100;
 
 @JsonController('/segments')
 @Authorized('admin')
@@ -107,16 +112,40 @@ export class SegmentController {
     @QueryParams() query: ListContactsDto
   ): Promise<PaginatedDto<GetContactDto> | undefined> {
     const segment = await getRepository(Segment).findOneBy({ id });
-    if (segment) {
-      return await ContactTransformer.fetch(auth, {
-        ...query,
-        rules: query.rules
-          ? {
-              condition: 'AND',
-              rules: [segment.ruleGroup, query.rules],
-            }
-          : segment.ruleGroup,
-      });
+    if (!segment) return undefined;
+    return await ContactTransformer.fetchForSegment(
+      auth,
+      segment.ruleGroup,
+      query
+    );
+  }
+
+  /** One-off email to all contacts in the segment (chunked). */
+  @OnUndefined(204)
+  @Post('/:id/email/send')
+  async sendEmail(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Params() { id }: UUIDParams,
+    @Body() data: SendSegmentEmailBodyDto
+  ): Promise<void> {
+    const segment = await getRepository(Segment).findOneBy({ id });
+    if (!segment) throw new NotFoundError();
+
+    let offset = 0;
+    while (true) {
+      const { items } = await ContactTransformer.fetchRawForSegment(
+        auth,
+        segment.ruleGroup,
+        { limit: SEGMENT_EMAIL_PAGE_SIZE, offset }
+      );
+      if (items.length === 0) break;
+      await EmailService.sendEmailToSegment(
+        items as Contact[],
+        data.subject,
+        data.body
+      );
+      offset += items.length;
+      if (items.length < SEGMENT_EMAIL_PAGE_SIZE) break;
     }
   }
 }

@@ -10,21 +10,27 @@ import type {
 import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
 import { BaseClient } from './base.client.js';
+import { SegmentContactClient } from './segment-contact.client.js';
+import { SegmentEmailClient } from './segment-email.client.js';
 
 /**
  * Client for managing contact segments.
  * Segments are saved filter rule groups that allow filtering and grouping contacts based on specific criteria.
  */
 export class SegmentsClient extends BaseClient {
-  /**
-   * Creates a new segments client
-   * @param options - The client options
-   */
+  /** Client for segment-scoped contact operations (e.g. list). */
+  readonly contact: SegmentContactClient;
+
+  /** Client for segment-scoped email operations (e.g. send one-off email). */
+  readonly email: SegmentEmailClient;
+
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
       path: cleanUrl(options.path + '/segments'),
     });
+    this.contact = new SegmentContactClient(options);
+    this.email = new SegmentEmailClient(options);
   }
 
   /**

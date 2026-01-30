@@ -85,6 +85,7 @@
     "noBack": "",
     "participate": "",
     "preview": "",
+    "previous": "",
     "publish": "",
     "reopen": "",
     "replicate": "",
@@ -99,6 +100,8 @@
     "schedule": "",
     "search": "",
     "sendEmails": "E-Mails schicken",
+    "sendOneOffEmail": "E-Mail schicken",
+    "sendOngoingEmails": "E-Mails die immer wieder gehen",
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
     "skip": "",
     "submit": "Hier wird deine Meldung weg-geschickt.",
@@ -1020,6 +1023,10 @@
       "whatDoTheButtonsDo": ""
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Kontakt %current% von %total%",
+    "selfOption": "Du selbst"
+  },
   "contacts": {
     "addContact": "",
     "advancedSearch": {
@@ -1071,6 +1078,11 @@
     "numResults": "",
     "search": "",
     "selectedCount": "",
+    "sendEmail": {
+      "send": "Schicken",
+      "sent": "Die E-Mail wurde an das Segment geschickt.",
+      "title": "E-Mail an Segment schicken"
+    },
     "showingOf": ""
   },
   "contribution": {
@@ -1130,6 +1142,7 @@
       "label": "Betreff"
     },
     "preview": {
+      "asContactLabel": "Kontakt für Vorschau",
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
     },
