@@ -1,13 +1,12 @@
 <template>
-  <form class="w-full max-w-md" @submit.prevent="submit">
+  <form @submit.prevent="submit">
     <AppInput v-model="searchText" :placeholder="placeholder" @blur="submit">
       <template #suffixAction>
-        <div class="flex h-10 shrink-0 items-center">
+        <div class="flex h-10 items-center">
           <button
             v-if="searchText.length > 0"
             type="button"
             class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none"
-            :aria-label="t('actions.clearSearch')"
             @click="emit('update:modelValue', '')"
           >
             <font-awesome-icon :icon="faTimes" />
@@ -15,8 +14,6 @@
           <button
             type="submit"
             class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none"
-            :aria-label="t('actions.search')"
-            :class="searchText.length > 0 && 'border-l border-primary-40'"
           >
             <font-awesome-icon :icon="faSearch" />
           </button>
@@ -29,11 +26,8 @@
 <script lang="ts" setup>
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import AppInput from './AppInput.vue';
-
-const { t } = useI18n();
 
 /**
  * Props for the AppSearchInput component

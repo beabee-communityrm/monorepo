@@ -29,11 +29,7 @@ export async function sendEmailToSegment(
       { limit: PAGE_SIZE, offset }
     );
     if (items.length === 0) break;
-    await EmailService.sendEmailToSegment(
-      items as Contact[],
-      subject,
-      body
-    );
+    await EmailService.sendEmailToSegment(items as Contact[], subject, body);
     offset += items.length;
     if (items.length < PAGE_SIZE) break;
   }
