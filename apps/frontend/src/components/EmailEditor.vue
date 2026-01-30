@@ -46,6 +46,18 @@
 
       <!-- Preview panel -->
       <div class="w-full" :class="alwaysStacked ? '' : 'md:w-[600px]'">
+        <ContactSelector
+          v-if="previewSelectorOptions.length > 0"
+          :model-value="previewContactIdValue"
+          :options="previewSelectorOptions"
+          :label="t('contacts.sendEmail.previewAsContact')"
+          :self-option-label="t('contactSelector.selfOption')"
+          :count-template="t('contactSelector.contactNOfTotal')"
+          :previous-aria-label="t('actions.previous')"
+          :next-aria-label="t('actions.next')"
+          class="mb-3"
+          @update:model-value="emitPreviewContactId"
+        />
         <AppLabel :label="t('emailEditor.preview.label')" class="mb-0.5" />
         <div
           class="content-message rounded border border-primary-40 bg-white p-4"
@@ -86,9 +98,9 @@
  * - Email footer with organization info, logo, and links
  * - Inline CSS styles for consistent email client rendering
  *
- * Merge fields are automatically loaded based on the template configuration:
+ * Merge fields are automatically loaded based on the template and context:
  * - Standard fields (SUPPORTEMAIL, ORGNAME) are always available
- * - Contact fields (EMAIL, NAME, FNAME, LNAME) are available for contact templates
+ * - Contact fields (EMAIL, NAME, FNAME, LNAME) for contact templates or when sending to contacts (e.g. previewContactOptions)
  * - Template-specific fields are loaded from the API
  *
  * @example Basic usage for contact email template
@@ -123,6 +135,7 @@ import {
   type MergeTagGroup,
   sanitizeHtml,
 } from '@beabee/vue';
+import { ContactSelector } from '@beabee/vue';
 
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { currentUser, generalContent } from '@store';
@@ -168,9 +181,15 @@ const props = withDefaults(
 
     /**
      * Optional contact ID to use for preview. If not set, the current user is used.
-     * Override this for e.g. segment send page to preview as a selected contact.
+     * Bind with v-model:previewContactId when passing previewContactOptions (e.g. segment send).
      */
     previewContactId?: string | null;
+
+    /**
+     * When provided, shows additional contacts in the selector (self + these).
+     * Pass segment contacts for "send email to segment"; omit for template edit (self only).
+     */
+    previewContactOptions?: PreviewContactOption[];
   }>(),
   {
     heading: '',
@@ -178,13 +197,38 @@ const props = withDefaults(
     mergeFields: () => ({}),
     alwaysStacked: false,
     previewContactId: undefined,
+    previewContactOptions: undefined,
   }
 );
+
+const emit = defineEmits<{
+  (e: 'update:previewContactId', value: string | undefined): void;
+}>();
+
+/** Minimal contact shape for preview selector (id + display fields). */
+export interface PreviewContactOption {
+  id: string;
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+}
 
 /** Contact used for preview: override prop or current user. Same rule for template and one-off preview. */
 const effectivePreviewContactId = computed(
   () => props.previewContactId ?? currentUser.value?.id ?? null
 );
+
+/** Options for the contact preview selector: always at least self, plus any passed contacts. */
+const previewSelectorOptions = computed(() => {
+  if (props.previewContactOptions === undefined) return [{ id: '' }];
+  return [{ id: '' }, ...props.previewContactOptions];
+});
+
+const previewContactIdValue = computed(() => props.previewContactId ?? '');
+
+function emitPreviewContactId(value: string) {
+  emit('update:previewContactId', value || undefined);
+}
 
 const { t } = useI18n();
 
@@ -218,8 +262,11 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
     }
   }
 
-  // Contact merge fields (only for contact templates)
-  if (props.template?.type === 'contact') {
+  // Contact merge fields (contact templates or when sending to contacts, e.g. segment send)
+  if (
+    props.template?.type === 'contact' ||
+    props.previewContactOptions !== undefined
+  ) {
     const user = currentUser.value;
     const fullName = user
       ? `${user.firstname} ${user.lastname}`.trim()
