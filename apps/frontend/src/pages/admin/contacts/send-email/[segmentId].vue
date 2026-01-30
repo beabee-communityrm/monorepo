@@ -17,23 +17,11 @@ meta:
   </div>
 
   <template v-else-if="segment">
-    <div class="mb-6 flex flex-wrap items-center gap-2">
-      <AppLabel
-        :label="t('contacts.sendEmail.previewAsContact')"
-        class="mb-0"
-      />
-      <AppSelect
-        v-model="previewContactId"
-        class="min-w-[200px]"
-        :items="previewContactItems"
-        :placeholder="t('contacts.sendEmail.previewAsContact')"
-      />
-    </div>
-
     <EmailEditor
       v-model:subject="emailData.subject"
       v-model:content="emailData.body"
-      :preview-contact-id="previewContactId || undefined"
+      v-model:preview-contact-id="previewContactId"
+      :preview-contact-options="segmentContacts"
     />
 
     <div class="mt-6">
@@ -50,13 +38,7 @@ meta:
 
 <script lang="ts" setup>
 import type { GetContactData, GetSegmentDataWith } from '@beabee/beabee-common';
-import {
-  AppAsyncButton,
-  AppLabel,
-  AppSelect,
-  PageTitle,
-  addNotification,
-} from '@beabee/vue';
+import { AppAsyncButton, PageTitle, addNotification } from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
 import { client } from '@utils/api';
@@ -90,18 +72,6 @@ const segmentContacts = ref<GetContactData[]>([]);
 const emailData = ref({ subject: '', body: '' });
 const previewContactId = ref<string>('');
 
-const previewContactItems = computed(() => {
-  const items: { id: string; label: string }[] = [
-    { id: '', label: t('contacts.sendEmail.previewAsContact') },
-    ...segmentContacts.value.map((c, i) => ({
-      id: c.id,
-      label:
-        `${c.firstname} ${c.lastname}`.trim() || c.email || `Contact ${i + 1}`,
-    })),
-  ];
-  return items;
-});
-
 onMounted(async () => {
   if (!segmentId.value) {
     router.replace('/admin/contacts');
@@ -114,9 +84,6 @@ onMounted(async () => {
       offset: 0,
     });
     segmentContacts.value = result.items;
-    if (result.items.length > 0 && !previewContactId.value) {
-      previewContactId.value = result.items[0].id;
-    }
   } catch (err) {
     if (isApiError(err, undefined, [404])) {
       addNotification({
