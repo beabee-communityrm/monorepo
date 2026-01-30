@@ -26,6 +26,8 @@
   ## Slots
   - `before` (Optional): A slot to display before the input.
   - `after` (Optional): A slot to display after the input.
+  - `prefixAction` (Optional): Content rendered inside the input box before the field (e.g. icon button). Same height and border as the input.
+  - `suffixAction` (Optional): Content rendered inside the input box after the field (e.g. icon button). Same height and border as the input.
 
  -->
 <template>
@@ -45,16 +47,25 @@
       <span
         v-if="prefix"
         :id="prefixId"
-        class="flex-0 border-r border-primary-40 bg-grey-lighter px-2 py-2"
+        class="flex-0 shrink-0 border-r border-primary-40 bg-grey-lighter px-2 py-2"
         :class="disabled && 'opacity-60'"
         aria-hidden="true"
       >
         {{ prefix }}
       </span>
+      <div
+        v-if="$slots.prefixAction"
+        class="flex-0 flex h-10 shrink-0 items-center border-r border-primary-40"
+        :class="
+          hasError ? 'bg-danger-10' : disabled ? 'bg-grey-lighter' : 'bg-white'
+        "
+      >
+        <slot name="prefixAction" />
+      </div>
       <input
         :id="inputId"
         v-model.trim="value"
-        class="h-10 w-full flex-1 bg-white/0 px-2 leading-[20px] focus:outline-none"
+        class="h-10 min-w-0 flex-1 bg-white/0 px-2 leading-[20px] focus:outline-none"
         :class="disabled && 'opacity-60'"
         :type="type"
         :name="name"
@@ -68,10 +79,27 @@
         v-bind="$attrs"
         @blur="validation.$touch"
       />
-      <span v-if="suffix" :id="suffixId" class="flex-0 px-2" aria-hidden="true">
+      <span
+        v-if="suffix"
+        :id="suffixId"
+        class="flex-0 shrink-0 px-2"
+        aria-hidden="true"
+      >
         {{ suffix }}
       </span>
-      <div v-if="copyable" class="flex-0 h-10 border-l border-primary-40">
+      <div
+        v-if="$slots.suffixAction"
+        class="flex-0 flex h-10 shrink-0 items-center border-l border-primary-40"
+        :class="
+          hasError ? 'bg-danger-10' : disabled ? 'bg-grey-lighter' : 'bg-white'
+        "
+      >
+        <slot name="suffixAction" />
+      </div>
+      <div
+        v-if="copyable"
+        class="flex-0 h-10 shrink-0 border-l border-primary-40"
+      >
         <AppCopyButton
           :text="prefix ? `${prefix}${value}` : value?.toString() || ''"
           :disabled="copyButtonDisabled"
