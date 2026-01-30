@@ -8,6 +8,7 @@ export * from './BaseTransformer.js';
 export * from './CalloutResponseCommentTransformer.js';
 export * from './CalloutResponseExporter.js';
 export * from './CalloutResponseMapTransformer.js';
+export * from './CalloutResponseSegmentTransformer.js';
 export * from './CalloutResponseTransformer.js';
 export * from './CalloutReviewerTransformer.js';
 export * from './CalloutTagTransformer.js';
