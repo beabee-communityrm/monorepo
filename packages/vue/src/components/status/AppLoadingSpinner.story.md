@@ -1,0 +1,6 @@
+# AppLoadingSpinner
+
+Inline loading indicator (spinner + optional message). Use where a small loading state is needed (e.g. preview panels, inline content). Matches design tokens used in AppStatusPage.
+
+- **Message**: Optional text next to the spinner (e.g. "Loading...").
+- **Inverted**: Use on dark backgrounds (e.g. image upload overlay); spinner and message use light color.

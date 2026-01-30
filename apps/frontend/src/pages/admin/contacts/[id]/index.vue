@@ -99,7 +99,7 @@ meta:
           v-if="changingRoles"
           class="absolute inset-0 flex items-center justify-center bg-primary-5/50"
         >
-          <font-awesome-icon :icon="faCircleNotch" spin />
+          <AppLoadingSpinner loading />
         </div>
       </div>
 
@@ -278,6 +278,7 @@ import {
   AppInfoList,
   AppInfoListItem,
   AppInput,
+  AppLoadingSpinner,
   AppRichTextEditor,
   formatLocale,
 } from '@beabee/vue';
@@ -290,7 +291,7 @@ import AppRoleEditor from '@components/role/AppRoleEditor.vue';
 import TagList from '@components/tag/TagList.vue';
 import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import env from '@env';
-import { faCircleNotch, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

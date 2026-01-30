@@ -14,9 +14,9 @@
         />
         <span
           v-if="uploading"
-          class="absolute inset-0 flex items-center justify-center bg-black/50 text-xl text-white"
+          class="absolute inset-0 flex items-center justify-center bg-black/50"
         >
-          <font-awesome-icon :icon="faCircleNotch" spin />
+          <AppLoadingSpinner :loading="true" inverted />
         </span>
       </div>
       <div>
@@ -48,10 +48,10 @@ import {
   AppButton,
   AppInputError,
   AppLabel,
+  AppLoadingSpinner,
   generateUniqueId,
 } from '@beabee/vue';
 
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
 import { extractErrorText } from '@utils/api-error';
 import { resolveImageUrl } from '@utils/url';
