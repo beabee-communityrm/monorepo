@@ -1079,7 +1079,6 @@
     "search": "Contacten zoeken...",
     "selectedCount": "{n} contactpersoon geselecteerd | {n} contactpersonen geselecteerd",
     "sendEmail": {
-      "previewAsContact": "Voorbeeld als contact",
       "send": "Verzenden",
       "sent": "De e-mail is naar het segment verzonden.",
       "title": "E-mail verzenden naar segment"
@@ -1143,6 +1142,7 @@
       "label": "Bericht"
     },
     "preview": {
+      "asContactLabel": "Voorbeeld als contact",
       "label": "Voorbeeld",
       "unavailable": "Voorbeeld niet beschikbaar"
     },

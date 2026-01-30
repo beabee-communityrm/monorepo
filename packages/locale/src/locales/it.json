@@ -1079,7 +1079,6 @@
     "search": "",
     "selectedCount": "",
     "sendEmail": {
-      "previewAsContact": "Anteprima come contatto",
       "send": "Invia",
       "sent": "L'e-mail è stata inviata al segmento.",
       "title": "Invia e-mail al segmento"
@@ -1143,6 +1142,7 @@
       "label": "Messaggio"
     },
     "preview": {
+      "asContactLabel": "Anteprima come contatto",
       "label": "Anteprima",
       "unavailable": "Anteprima non disponibile"
     },

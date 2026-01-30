@@ -1079,7 +1079,6 @@
     "search": "",
     "selectedCount": "",
     "sendEmail": {
-      "previewAsContact": "Vorschau als Kontakt",
       "send": "Schicken",
       "sent": "Die E-Mail wurde an das Segment geschickt.",
       "title": "E-Mail an Segment schicken"
@@ -1143,6 +1142,7 @@
       "label": "Betreff"
     },
     "preview": {
+      "asContactLabel": "Vorschau als Kontakt",
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
     },

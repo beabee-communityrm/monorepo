@@ -1,5 +1,5 @@
-import { getRepository } from '@beabee/core/database';
 import { Contact } from '@beabee/core/models';
+import ContactsService from '@beabee/core/services/ContactsService';
 import EmailService from '@beabee/core/services/EmailService';
 import { AuthInfo, PreviewEmailOptions } from '@beabee/core/type';
 
@@ -152,36 +152,21 @@ export class EmailController {
     }
   }
 
-  /** Preview email (with optional contactId for merge fields; admin-only when contactId set). */
+  /**
+   * Preview email (subject, body, mergeFields from body).
+   * Optional contactId: when set, merge fields use that contact; otherwise the current user.
+   */
   @Post('/preview')
   async previewEmail(
     @CurrentUser({ required: true }) currentUser: Contact,
     @Body() data: PreviewEmailDto
   ): Promise<EmailPreviewDto> {
-    const contact = await this.resolvePreviewContact(
-      currentUser,
-      data.contactId
-    );
-    const opts = this.dtoToPreviewOptions(data);
-    return await this.getPreview(contact, opts);
-  }
-
-  private async resolvePreviewContact(
-    currentUser: Contact,
-    contactId?: string
-  ): Promise<Contact> {
-    if (!contactId) return currentUser;
-    const contact = await getRepository(Contact).findOneBy({ id: contactId });
+    const contact = data.contactId
+      ? await ContactsService.findOneBy({ id: data.contactId })
+      : currentUser;
     if (!contact) throw new NotFoundError('Contact not found');
-    return contact;
-  }
-
-  private dtoToPreviewOptions(data: PreviewEmailDto): PreviewEmailOptions {
-    const opts: PreviewEmailOptions = {};
-    if (data.subject !== undefined) opts.subject = data.subject;
-    if (data.body !== undefined) opts.body = data.body;
-    if (data.mergeFields !== undefined) opts.mergeFields = data.mergeFields;
-    return opts;
+    const { contactId: _contactId, ...opts } = data;
+    return await this.getPreview(contact, opts as PreviewEmailOptions);
   }
 
   /**

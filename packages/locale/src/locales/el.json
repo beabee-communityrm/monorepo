@@ -1079,7 +1079,6 @@
     "search": "",
     "selectedCount": "",
     "sendEmail": {
-      "previewAsContact": "Προεπισκόπηση ως επαφή",
       "send": "Αποστολή",
       "sent": "Το email στάλθηκε στο τμήμα.",
       "title": "Αποστολή email στο τμήμα"
@@ -1143,6 +1142,7 @@
       "label": "Μήνυμα"
     },
     "preview": {
+      "asContactLabel": "Προεπισκόπηση ως επαφή",
       "label": "Προεπισκόπηση",
       "unavailable": "Προεπισκόπηση μη διαθέσιμη"
     },
