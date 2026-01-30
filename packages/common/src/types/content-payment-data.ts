@@ -3,7 +3,6 @@ import { StripeFeeCountry } from './index.js';
 export interface ContentPaymentData {
   stripePublicKey: string;
   stripeCountry: StripeFeeCountry;
-  taxRateEnabled: boolean;
-  taxRate: number;
+  taxRate: number | null;
   noticeText: string;
 }

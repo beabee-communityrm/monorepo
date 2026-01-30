@@ -91,7 +91,6 @@ const paymentContent = ref<ContentPaymentData>({
   stripePublicKey: '',
   stripeCountry: 'eu',
   taxRate: 0,
-  taxRateEnabled: false,
   noticeText: '',
 });
 

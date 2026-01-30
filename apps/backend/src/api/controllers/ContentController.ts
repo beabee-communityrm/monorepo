@@ -103,17 +103,14 @@ export class ContentController {
   async updatePayment(
     @PartialBody() data: GetContentPaymentDto // Should be Partial<GetContentPaymentDto>
   ): Promise<GetContentPaymentDto> {
-    if (data.taxRateEnabled === false) {
+    if (data.taxRate === null) {
       await disableSalesTaxRate();
-    } else if (data.taxRateEnabled === true) {
-      if (data.taxRate === undefined) {
-        throw new BadRequestError(
-          'taxRate must be provided when taxRateEnabled is true'
-        );
-      }
+    } else if (data.taxRate !== undefined) {
       await updateSalesTaxRate(data.taxRate);
     }
 
+    // taxRate is also stored here to avoid calling external services when
+    // fetching the payment content
     await ContentTransformer.updateOne('payment', data);
     return ContentTransformer.fetchOne('payment');
   }

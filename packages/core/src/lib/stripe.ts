@@ -25,7 +25,7 @@ export const stripe = new Stripe(config.stripe.secretKey, {
 });
 
 export function getSalesTaxRateObject(): string[] {
-  const taxRateId = OptionsService.getText('tax-rate-stripe-id');
+  const taxRateId = OptionsService.getText('tax-rate-recurring-stripe-id');
   return taxRateId ? [taxRateId] : [];
 }
 
@@ -38,16 +38,16 @@ export function getSalesTaxRateObject(): string[] {
 export async function updateSalesTaxRate(percentage: number): Promise<void> {
   log.info(`Updating sales tax rate to ${percentage}%`);
 
-  const id = OptionsService.getText('tax-rate-stripe-id');
+  const id = OptionsService.getText('tax-rate-recurring-stripe-id');
   if (id) {
     const taxRate = await stripe.taxRates.retrieve(id);
     // Tax rate is already set to the right percentage
     if (taxRate.percentage === percentage) {
       return;
     }
-  }
 
-  await disableSalesTaxRate();
+    await stripe.taxRates.update(id, { active: false });
+  }
 
   const taxRate = await stripe.taxRates.create({
     percentage: percentage,
@@ -56,16 +56,16 @@ export async function updateSalesTaxRate(percentage: number): Promise<void> {
     display_name: currentLocale().taxRate.invoiceName,
   });
 
-  await OptionsService.set('tax-rate-stripe-id', taxRate.id);
+  await OptionsService.set('tax-rate-recurring-stripe-id', taxRate.id);
 }
 
 export async function disableSalesTaxRate(): Promise<void> {
   log.info('Disabling sales tax rate');
 
-  const id = OptionsService.getText('tax-rate-stripe-id');
+  const id = OptionsService.getText('tax-rate-recurring-stripe-id');
   if (id) {
     await stripe.taxRates.update(id, { active: false });
-    await OptionsService.set('tax-rate-stripe-id', '');
+    await OptionsService.set('tax-rate-recurring-stripe-id', '');
   }
 }
 
