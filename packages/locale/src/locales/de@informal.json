@@ -1252,12 +1252,12 @@
     "errorMessages": {
       "api": {
         "account-locked": "Konto wegen zu vieler fehlgeschlagener Anmeldeversuche gesperrt. Bitte Passwort zurücksetzen oder an den Support wenden, um Hilfe zu erhalten.",
+        "cant-update-contribution": "Du kannst deinen Beitrag aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
         "duplicate-email": "Diese E-Mail-Adresse existiert bereits.",
         "duplicate-tag-name": "Ein Tag mit diesem Namen existiert bereits",
         "invalid-token": "Dein eingegebener 2FA Token stimmt nicht.",
         "login-failed": "Falsche Kombination von Passwort und E-Mail.",
-        "mfa-token-required": "Bitte gebe den Code deiner Authentifizierungs-App ein.",
-        "cant-update-contribution": "Du kannst deinen Beitrag aktuell nicht ändern, weil eine Zahlung kurz bevorsteht."
+        "mfa-token-required": "Bitte gebe den Code deiner Authentifizierungs-App ein."
       },
       "generic": "Upps! Etwas ist schiefgelaufen. Bitte wende dich an den Support, sollte das erneut passieren.",
       "unauthorized": "Du hast daruf keinen Zugriff.",

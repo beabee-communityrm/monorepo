@@ -1252,12 +1252,12 @@
     "errorMessages": {
       "api": {
         "account-locked": "",
+        "cant-update-contribution": "",
         "duplicate-email": "",
         "duplicate-tag-name": "",
         "invalid-token": "",
         "login-failed": "",
-        "mfa-token-required": "",
-        "cant-update-contribution": ""
+        "mfa-token-required": ""
       },
       "generic": "",
       "unauthorized": "",

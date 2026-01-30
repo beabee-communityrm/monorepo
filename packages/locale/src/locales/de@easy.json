@@ -1252,12 +1252,12 @@
     "errorMessages": {
       "api": {
         "account-locked": "",
+        "cant-update-contribution": "",
         "duplicate-email": "",
         "duplicate-tag-name": "Diesen Tag gibt es schon",
         "invalid-token": "",
         "login-failed": "",
-        "mfa-token-required": "",
-        "cant-update-contribution": ""
+        "mfa-token-required": ""
       },
       "generic": "Das ist nicht richtig. Hol dir Hilfe.",
       "unauthorized": "Sie haben daruf keinen Zugriff.",
