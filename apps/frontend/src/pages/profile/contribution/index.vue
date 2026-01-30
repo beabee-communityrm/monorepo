@@ -90,8 +90,8 @@ const content = ref<ContributionContent>({
 const paymentContent = ref<ContentPaymentData>({
   stripePublicKey: '',
   stripeCountry: 'eu',
-  taxRate: 0,
-  taxRateEnabled: false,
+  taxRateRecurring: null,
+  taxRateOneTime: null,
   noticeText: '',
 });
 

@@ -214,8 +214,8 @@ const contentData = {
   payment: withValue<'payment'>({
     stripePublicKey: ['readonly', () => config.stripe.publicKey],
     stripeCountry: ['readonly', () => config.stripe.country],
-    taxRateEnabled: ['option', 'tax-rate-enabled', 'bool'],
-    taxRate: ['option', 'tax-rate-percentage', 'int'],
+    taxRateRecurring: ['data', null],
+    taxRateOneTime: ['data', null],
     noticeText: ['data', ''],
   }),
   telegram: withValue<'telegram'>({
