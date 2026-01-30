@@ -1053,12 +1053,17 @@
       "period": "",
       "phone": "",
       "preferredChannel": "",
-      "tags": ""
+      "tags": "",
+      "donationDate": "",
+      "hasDonated": "",
+      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge",
+      "averageDonationAmount": "Durchschnitt einmaliger Beiträge"
     },
     "dataGroup": {
       "callout": "",
       "contact": "",
-      "contribution": "",
+      "recurringContributions": "",
+      "oneTimeContributions": "",
       "role": ""
     },
     "noContacts": "",
@@ -1112,7 +1117,8 @@
     "willRenew": "",
     "willRenewWithNewAmount": "",
     "perMonthText": "",
-    "perYearText": ""
+    "perYearText": "",
+    "recurringContribution": ""
   },
   "editCallout": {
     "replicated": "",

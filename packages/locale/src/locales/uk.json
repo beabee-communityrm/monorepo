@@ -216,7 +216,7 @@
       "paymentTitle": "Оплата",
       "taxRate": "Ставка ПДВ",
       "taxRateEnabled": "Увімкнути ПДВ",
-      "showOneTimeDonation": "Показати опцію одноразової пожертви на головному екрані"
+      "showOneTimeDonation": "Показати опцію одноразового внеску на головному екрані"
     },
     "theme": {
       "bodyFont": "Основний текст",
@@ -1030,11 +1030,11 @@
       "activeUser": "Активний користувач",
       "amount": "Сума",
       "annotationsCopy": "Контакт успішно оновлено",
-      "contribution": "Внесок",
-      "contributionCancelled": "Внесок скасовано",
-      "contributionMonthlyAmount": "Сума щомісячного внеску",
-      "contributionPeriod": "Період внеску",
-      "contributionType": "Тип внеску",
+      "contribution": "Регулярний внесок",
+      "contributionCancelled": "Регулярний внесок скасовано",
+      "contributionMonthlyAmount": "Щомісячна сума регулярного внеску",
+      "contributionPeriod": "Період регулярного внеску",
+      "contributionType": "Тип регулярного внеску",
       "deliveryOptIn": "Підписка на доставку",
       "description": "Опис",
       "email": "Електронна пошта",
@@ -1055,12 +1055,17 @@
       "period": "Період",
       "phone": "Номер телефону",
       "preferredChannel": "Бажаний канал",
-      "tags": "Теги"
+      "tags": "Теги",
+      "donationDate": "Дата одноразового внеску",
+      "hasDonated": "Зробив одноразовий внесок",
+      "totalDonationAmount": "Загальна сума одноразових внесків (за весь час)",
+      "averageDonationAmount": "Середня сума одноразових внесків (за весь час)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Контактна інформація",
-      "contribution": "Внесок",
+      "recurringContributions": "Регулярні внески",
+      "oneTimeContributions": "Одноразові внески",
       "role": "Роль"
     },
     "noContacts": "Контактів ще не додано",
@@ -1114,7 +1119,8 @@
     "updatedPaymentSource": "Ваш спосіб оплати оновлено.",
     "willExpire": "Термін дії вашого внеску закінчується через {expires}.",
     "willRenew": "Ваш внесок буде автоматично поновлено {renewalDate}.",
-    "willRenewWithNewAmount": "Ваш внесок буде автоматично поновлено {renewalDate} та зміниться на вибрану вами суму {nextAmount}."
+    "willRenewWithNewAmount": "Ваш внесок буде автоматично поновлено {renewalDate} та зміниться на вибрану вами суму {nextAmount}.",
+    "recurringContribution": "Регулярний внесок"
   },
   "editCallout": {
     "replicated": "Вашу CrowdNewsroom успішно скопійовано, і тепер ви редагуєте нову копію. Обов’язково відредагуйте заголовок на вкладці «Заголовок і зображення».",
@@ -1303,8 +1309,8 @@
     "viewOpenCallouts": "Відкрийте CrowdNewsroom",
     "welcome": "Ласкаво просимо на борт {firstName}!",
     "yourProfile": "Ваш профіль",
-    "makeOneTimeDonationTitle": "Зробити пожертву зараз",
-    "makeOneTimeDonationButton": "Пожертвувати"
+    "makeOneTimeDonationTitle": "Зробити одноразовий внесок зараз",
+    "makeOneTimeDonationButton": "Внесок"
   },
   "icons": {
     "welcome": {
@@ -1371,7 +1377,7 @@
     "goBackButton": "Повернутися до попереднього екрана",
     "note": "Ви зможете оновити свої дані та отримати доступ до історії платежів у будь-який час у своєму обліковому записі",
     "willBeContributing": "Ви будете робити свій внесок {contribution}",
-    "willBeDonating": "Ви зробите пожертву у розмірі {amount}"
+    "willBeDonating": "Ви зробите одноразовий внесок у розмірі {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Будь ласка, підтвердіть свої дані",
@@ -1424,7 +1430,7 @@
         "bigTitle": "Вітальні електронні листи та електронні листи про скасування",
         "cancellationEmail": "Електронний лист про скасування",
         "description": "Налаштуйте свої вітальні електронні листи та електронні листи про скасування",
-        "oneTimeDonationEmail": "Електронний лист про одноразову пожертву",
+        "oneTimeDonationEmail": "Електронний лист про одноразовий внесок",
         "text": "Усі електронні листи надсилаються з вашої адреси підтримки та містять стандартний підпис, ви можете змінити його в налаштуваннях електронної пошти.",
         "title": "Електронні листи",
         "welcomeEmail": "Вітальний електронний лист"
