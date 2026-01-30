@@ -6,10 +6,8 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="pageTitle" back border>
-    <template #back>
-      <router-link :to="backUrl">{{ t('actions.back') }}</router-link>
-    </template>
+  <PageTitle :title="pageTitle" border>
+    <router-link :to="backUrl">{{ t('actions.back') }}</router-link>
   </PageTitle>
 
   <div v-if="loading">
