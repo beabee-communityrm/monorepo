@@ -1,24 +1,25 @@
 <template>
-  <form class="relative" @submit.prevent="submit">
-    <AppInput
-      v-model="searchText"
-      class="pr-12"
-      :placeholder="placeholder"
-      @blur="submit"
-    />
-    <button
-      v-if="searchText.length > 0"
-      type="button"
-      class="absolute right-5 top-0 h-full w-8 text-primary hover:text-primary-70"
-      @click="emit('update:modelValue', '')"
-    >
-      <font-awesome-icon :icon="faTimes" />
-    </button>
-    <button
-      class="absolute right-0 top-0 h-full w-8 text-primary hover:text-primary-70"
-    >
-      <font-awesome-icon :icon="faSearch" />
-    </button>
+  <form @submit.prevent="submit">
+    <AppInput v-model="searchText" :placeholder="placeholder" @blur="submit">
+      <template #suffixAction>
+        <div class="flex h-10 items-center">
+          <button
+            v-if="searchText.length > 0"
+            type="button"
+            class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none"
+            @click="emit('update:modelValue', '')"
+          >
+            <font-awesome-icon :icon="faTimes" />
+          </button>
+          <button
+            type="submit"
+            class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none"
+          >
+            <font-awesome-icon :icon="faSearch" />
+          </button>
+        </div>
+      </template>
+    </AppInput>
   </form>
 </template>
 
