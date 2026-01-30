@@ -24,8 +24,10 @@ export const stripe = new Stripe(config.stripe.secretKey, {
   typescript: true,
 });
 
-export function getSalesTaxRateObject(): string[] {
-  const taxRateId = OptionsService.getText('tax-rate-recurring-stripe-id');
+export function getSalesTaxRateObject(
+  type: 'recurring' | 'one-time'
+): string[] {
+  const taxRateId = OptionsService.getText(`tax-rate-${type}-stripe-id`);
   return taxRateId ? [taxRateId] : [];
 }
 
@@ -35,37 +37,36 @@ export function getSalesTaxRateObject(): string[] {
  * @param percentage The new sales tax rate percentage
  * @returns
  */
-export async function updateSalesTaxRate(percentage: number): Promise<void> {
-  log.info(`Updating sales tax rate to ${percentage}%`);
+export async function updateSalesTaxRate(
+  type: 'recurring' | 'one-time',
+  percentage: number | null
+): Promise<void> {
+  const id = OptionsService.getText(`tax-rate-${type}-stripe-id`);
 
-  const id = OptionsService.getText('tax-rate-recurring-stripe-id');
   if (id) {
     const taxRate = await stripe.taxRates.retrieve(id);
-    // Tax rate is already set to the right percentage
+    // Tax rate is already set to the right percentage, do nothing
     if (taxRate.percentage === percentage) {
+      log.info(`Sales tax rate for ${type} is already ${percentage}%`);
       return;
     }
 
+    log.info(`Disabling old ${type} sales tax rate`);
     await stripe.taxRates.update(id, { active: false });
   }
 
-  const taxRate = await stripe.taxRates.create({
-    percentage: percentage,
-    active: true,
-    inclusive: true,
-    display_name: currentLocale().taxRate.invoiceName,
-  });
+  if (percentage === null) {
+    await OptionsService.set(`tax-rate-${type}-stripe-id`, '');
+  } else {
+    log.info(`Updating ${type} sales tax rate to ${percentage}%`);
+    const taxRate = await stripe.taxRates.create({
+      percentage: percentage,
+      active: true,
+      inclusive: true,
+      display_name: currentLocale().taxRate.invoiceName,
+    });
 
-  await OptionsService.set('tax-rate-recurring-stripe-id', taxRate.id);
-}
-
-export async function disableSalesTaxRate(): Promise<void> {
-  log.info('Disabling sales tax rate');
-
-  const id = OptionsService.getText('tax-rate-recurring-stripe-id');
-  if (id) {
-    await stripe.taxRates.update(id, { active: false });
-    await OptionsService.set('tax-rate-recurring-stripe-id', '');
+    await OptionsService.set(`tax-rate-${type}-stripe-id`, taxRate.id);
   }
 }
 
@@ -148,7 +149,7 @@ export const getCreateSubscriptionParams = (
         billing_cycle_anchor: Math.floor(+renewalDate / 1000),
         proration_behavior: 'none',
       }),
-    default_tax_rates: getSalesTaxRateObject(),
+    default_tax_rates: getSalesTaxRateObject('recurring'),
   };
 };
 
@@ -346,6 +347,7 @@ export async function chargeOneTimePayment(
     metadata: {
       'beabee-invoice-type': 'one-time-payment-detach-mandate',
     },
+    default_tax_rates: getSalesTaxRateObject('one-time'),
   });
 
   await stripe.invoiceItems.create({

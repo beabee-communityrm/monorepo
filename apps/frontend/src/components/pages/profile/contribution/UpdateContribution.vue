@@ -58,8 +58,11 @@
       />
     </PaymentFlowForm>
 
-    <p v-if="paymentContent.taxRate !== null" class="mt-2 text-center text-sm">
-      {{ t('join.tax.included', { taxRate: paymentContent.taxRate }) }}
+    <p
+      v-if="paymentContent.taxRateRecurring !== null"
+      class="mt-2 text-center text-sm"
+    >
+      {{ t('join.tax.included', { taxRate: paymentContent.taxRateRecurring }) }}
     </p>
   </div>
 </template>
