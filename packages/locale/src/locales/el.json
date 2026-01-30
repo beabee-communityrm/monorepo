@@ -86,6 +86,7 @@
     "noBack": "",
     "participate": "",
     "preview": "",
+    "previous": "Προηγούμενο",
     "publish": "",
     "reopen": "",
     "replicate": "",
@@ -100,6 +101,8 @@
     "schedule": "",
     "search": "",
     "sendEmails": "",
+    "sendOneOffEmail": "Αποστολή email",
+    "sendOngoingEmails": "Επαναλαμβανόμενα email",
     "share": "Μοιραστείτε",
     "skip": "",
     "submit": "υποβάλετε",
@@ -1021,6 +1024,10 @@
       "whatDoTheButtonsDo": ""
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Επαφή %current% από %total%",
+    "selfOption": "Εσείς οι ίδιοι"
+  },
   "contacts": {
     "addContact": "",
     "advancedSearch": {
@@ -1072,6 +1079,12 @@
     "numResults": "",
     "search": "",
     "selectedCount": "",
+    "sendEmail": {
+      "previewAsContact": "Προεπισκόπηση ως επαφή",
+      "send": "Αποστολή",
+      "sent": "Το email στάλθηκε στο τμήμα.",
+      "title": "Αποστολή email στο τμήμα"
+    },
     "showingOf": ""
   },
   "contribution": {

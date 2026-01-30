@@ -86,6 +86,7 @@
     "noBack": "“Nee, ga terug”.",
     "participate": "Deelnemen",
     "preview": "Voorbeeld",
+    "previous": "Vorige",
     "publish": "Publiceren",
     "reopen": "Heropen",
     "replicate": "Repliceren",
@@ -100,6 +101,8 @@
     "schedule": "Plan",
     "search": "Zoeken",
     "sendEmails": "E-mails verzenden",
+    "sendOneOffEmail": "E-mail verzenden",
+    "sendOngoingEmails": "Doorlopende e-mails",
     "share": "Delen",
     "skip": "Sla over",
     "submit": "Verzenden",
@@ -1021,6 +1024,10 @@
       "whatDoTheButtonsDo": "Klik op de knop om een noodlink te genereren:"
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Contact %current% van %total%",
+    "selfOption": "Uzelf"
+  },
   "contacts": {
     "addContact": "Contact toevoegen",
     "advancedSearch": {
@@ -1072,6 +1079,12 @@
     "numResults": "{n} contact gevonden | {n} contacten gevonden",
     "search": "Contacten zoeken...",
     "selectedCount": "{n} contactpersoon geselecteerd | {n} contactpersonen geselecteerd",
+    "sendEmail": {
+      "previewAsContact": "Voorbeeld als contact",
+      "send": "Verzenden",
+      "sent": "De e-mail is naar het segment verzonden.",
+      "title": "E-mail verzenden naar segment"
+    },
     "showingOf": "Toont {start} tot {end} contacten uit {total}"
   },
   "contribution": {

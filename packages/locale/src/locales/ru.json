@@ -86,6 +86,7 @@
     "noBack": "Нет, вернуться назад",
     "participate": "Участвовать",
     "preview": "Предварительный просмотр",
+    "previous": "Предыдущий",
     "publish": "Опубликовать",
     "reopen": "Активировать снова",
     "replicate": "Копировать",
@@ -100,6 +101,8 @@
     "schedule": "Запланировать",
     "search": "Искать",
     "sendEmails": "Отправить e-mails",
+    "sendOneOffEmail": "Отправить письмо",
+    "sendOngoingEmails": "Регулярные рассылки",
     "share": "Поделиться",
     "skip": "Пропустить",
     "submit": "Отправить",
@@ -1022,6 +1025,10 @@
       "whatDoTheButtonsDo": "Нажмите кнопку, чтобы создать экстренную ссылку:"
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Контакт %current% из %total%",
+    "selfOption": "Вы сами"
+  },
   "contacts": {
     "addContact": "",
     "advancedSearch": {
@@ -1073,6 +1080,12 @@
     "numResults": "",
     "search": "",
     "selectedCount": "",
+    "sendEmail": {
+      "previewAsContact": "Предварительный просмотр как контакт",
+      "send": "Отправить",
+      "sent": "Письмо было отправлено сегменту.",
+      "title": "Отправить письмо сегменту"
+    },
     "showingOf": ""
   },
   "contribution": {

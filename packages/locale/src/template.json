@@ -86,6 +86,7 @@
     "noBack": "",
     "participate": "",
     "preview": "",
+    "previous": "",
     "publish": "",
     "reopen": "",
     "replicate": "",
@@ -1023,6 +1024,10 @@
       "whatDoTheButtonsDo": ""
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "",
+    "selfOption": ""
+  },
   "contacts": {
     "addContact": "",
     "advancedSearch": {
@@ -1075,7 +1080,6 @@
     "search": "",
     "selectedCount": "",
     "sendEmail": {
-      "contactNOfTotal": "",
       "previewAsContact": "",
       "send": "",
       "sent": "",

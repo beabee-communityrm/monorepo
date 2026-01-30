@@ -86,6 +86,7 @@
     "noBack": "Ні, повернутися назад",
     "participate": "Взяти участь",
     "preview": "Попередній перегляд",
+    "previous": "Попередній",
     "publish": "Опублікувати",
     "reopen": "Знову відкрити",
     "replicate": "Реплікувати",
@@ -100,6 +101,8 @@
     "schedule": "Розклад",
     "search": "Пошук",
     "sendEmails": "Надсилати електронні листи",
+    "sendOneOffEmail": "Надіслати лист",
+    "sendOngoingEmails": "Регулярні листи",
     "share": "Поділитися",
     "skip": "Пропустити",
     "submit": "Надіслати",
@@ -1023,6 +1026,10 @@
       "whatDoTheButtonsDo": "Натисніть кнопку, щоб створити екстрене посилання:"
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Контакт %current% з %total%",
+    "selfOption": "Ви самі"
+  },
   "contacts": {
     "addContact": "Додати контакт",
     "advancedSearch": {
@@ -1074,6 +1081,12 @@
     "numResults": "{n} контакт знайдено | {n} контактів знайдено",
     "search": "Пошук контактів...",
     "selectedCount": "{n} контакт вибрано | {n} контактів вибрано",
+    "sendEmail": {
+      "previewAsContact": "Попередній перегляд як контакт",
+      "send": "Надіслати",
+      "sent": "Лист було надіслано сегменту.",
+      "title": "Надіслати лист сегменту"
+    },
     "showingOf": "Показано контакти з {start} до {end} з {total}"
   },
   "contribution": {
