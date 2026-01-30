@@ -17,14 +17,14 @@ const state = reactive({
         class="flex min-h-[120px] items-center justify-center rounded border border-primary-40 bg-white p-6"
       >
         <AppLoadingSpinner
-          :loading="state.loading"
+          v-if="state.loading"
           :message="state.message"
           :inverted="state.inverted"
         />
       </div>
 
       <template #controls>
-        <HstCheckbox v-model="state.loading" title="Loading" />
+        <HstCheckbox v-model="state.loading" title="Show (v-if)" />
         <HstText v-model="state.message" title="Message" />
         <HstCheckbox
           v-model="state.inverted"
@@ -37,7 +37,7 @@ const state = reactive({
       <div
         class="flex min-h-[120px] items-center justify-center rounded bg-black/50 p-6"
       >
-        <AppLoadingSpinner loading inverted />
+        <AppLoadingSpinner inverted />
       </div>
     </Variant>
   </Story>

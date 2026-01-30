@@ -99,7 +99,7 @@ meta:
           v-if="changingRoles"
           class="absolute inset-0 flex items-center justify-center bg-primary-5/50"
         >
-          <AppLoadingSpinner loading />
+          <AppLoadingSpinner />
         </div>
       </div>
 

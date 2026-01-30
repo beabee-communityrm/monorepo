@@ -16,7 +16,7 @@
           v-if="uploading"
           class="absolute inset-0 flex items-center justify-center bg-black/50"
         >
-          <AppLoadingSpinner :loading="true" inverted />
+          <AppLoadingSpinner inverted />
         </span>
       </div>
       <div>

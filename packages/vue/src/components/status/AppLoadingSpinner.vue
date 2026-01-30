@@ -1,15 +1,14 @@
 <!--
   # AppLoadingSpinner
   Inline loading indicator (spinner + optional message). Matches AppStatusPage / design system.
+  Control visibility via v-if on the instance (e.g. <AppLoadingSpinner v-if="loading" />).
 
   ## Props
-  - `loading` (boolean): When true, shows spinner.
   - `message` (string): Optional text next to the spinner (e.g. "Loading...").
   - `inverted` (boolean): When true, use light color (e.g. on dark overlays). Default false.
 -->
 <template>
   <div
-    v-if="loading"
     class="flex items-center"
     :class="inverted ? 'text-white' : 'text-body-80'"
   >
@@ -28,8 +27,6 @@
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 export interface AppLoadingSpinnerProps {
-  /** When true, show spinner. */
-  loading: boolean;
   /** Optional text next to the spinner (e.g. "Loading..."). */
   message?: string;
   /** When true, use light color for dark backgrounds (e.g. overlays). */
