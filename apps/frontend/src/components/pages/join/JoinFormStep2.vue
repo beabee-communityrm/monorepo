@@ -10,13 +10,9 @@
       :icon="faHandSparkles"
       class="mb-4"
     />
-    <p
-      v-if="paymentContent.taxRate !== null"
-      class="-mt-2 mb-4 text-right text-xs"
-    >
-      {{ t('join.tax.included', { taxRate: paymentContent.taxRate }) }}
+    <p v-if="activeTaxRate !== null" class="-mt-2 mb-4 text-right text-xs">
+      {{ t('join.tax.included', { taxRate: activeTaxRate }) }}
     </p>
-
     <p class="mb-3 text-xs font-semibold text-body-80">
       {{ t('joinPayment.note') }}
     </p>
@@ -71,6 +67,12 @@ const props = defineProps<{
 }>();
 
 const data = defineModel<JoinFormData>({ required: true });
+
+const activeTaxRate = computed(() => {
+  return data.value.period === 'one-time'
+    ? props.paymentContent.taxRateOneTime
+    : props.paymentContent.taxRateRecurring;
+});
 
 const notificationText = computed(() => {
   const totalAmount = calcJoinFormTotalAmount(

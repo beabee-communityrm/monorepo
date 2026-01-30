@@ -96,28 +96,21 @@ meta:
         <AppSubHeading>
           {{ t('adminSettings.payment.paymentTitle') }}</AppSubHeading
         >
+        <TaxRateInput
+          v-model="taxRateRecurring"
+          :label="t('adminSettings.payment.taxRateLabelRecurring')"
+        />
+        <TaxRateInput
+          v-if="showOneTimeDonationSettings"
+          v-model="taxRateOneTime"
+          :label="t('adminSettings.payment.taxRateOneTimeLabel')"
+        />
         <div class="mb-4">
-          <AppCheckbox
-            v-model="taxRateEnabled"
-            :label="t('adminSettings.payment.taxRateEnabled')"
-            class="font-bold"
-          />
           <AppCheckbox
             v-if="showOneTimeDonationSettings && profileContent"
             v-model="profileContent.showOneTimeDonation"
             :label="t('adminSettings.payment.showOneTimeDonation')"
             class="font-bold"
-          />
-        </div>
-        <div v-if="taxRateEnabled" class="mb-4 max-w-[8rem] whitespace-nowrap">
-          <AppInput
-            v-model="taxRate"
-            type="number"
-            :label="t('adminSettings.payment.taxRate')"
-            :min="0"
-            :max="100"
-            suffix="%"
-            required
           />
         </div>
       </AppApiForm>
@@ -198,6 +191,7 @@ import {
 
 import AppApiForm from '@components/forms/AppApiForm.vue';
 import AppImageUpload from '@components/forms/AppImageUpload.vue';
+import TaxRateInput from '@components/pages/admin/settings/TaxRateInput.vue';
 import { localeItems } from '@lib/i18n';
 import { generalContent as storeGeneralContent } from '@store';
 import { client } from '@utils/api';
@@ -219,8 +213,8 @@ const footerData = reactive({
   footerLinks: [] as { text: string; url: string }[],
 });
 
-const taxRateEnabled = ref(false);
-const taxRate = ref(7);
+const taxRateRecurring = ref<number | null>(null);
+const taxRateOneTime = ref<number | null>(null);
 
 const profileContent = ref({
   showOneTimeDonation: false,
@@ -265,7 +259,8 @@ async function handleSaveFooter() {
 
 async function handleSavePayment() {
   await client.content.update('payment', {
-    taxRate: taxRateEnabled.value ? taxRate.value : null,
+    taxRateRecurring: taxRateRecurring.value,
+    taxRateOneTime: taxRateOneTime.value,
   });
   await client.content.update('profile', profileContent.value);
 }
@@ -291,7 +286,7 @@ onBeforeMount(async () => {
   }
 
   const paymentContent = await client.content.get('payment');
-  taxRateEnabled.value = paymentContent.taxRate !== null;
-  taxRate.value = paymentContent.taxRate || 7;
+  taxRateRecurring.value = paymentContent.taxRateRecurring;
+  taxRateOneTime.value = paymentContent.taxRateOneTime;
 });
 </script>

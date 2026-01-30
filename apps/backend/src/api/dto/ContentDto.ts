@@ -214,7 +214,11 @@ export class GetContentPaymentDto implements ContentPaymentData {
 
   @IsOptional()
   @IsNumber()
-  taxRate!: number | null;
+  taxRateRecurring!: number | null;
+
+  @IsOptional()
+  @IsNumber()
+  taxRateOneTime!: number | null;
 
   @IsString()
   noticeText!: string;

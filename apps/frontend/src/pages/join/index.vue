@@ -67,7 +67,8 @@ const joinContent = ref<ContentJoinData>({
 const paymentContent = ref<ContentPaymentData>({
   stripePublicKey: '',
   stripeCountry: 'eu',
-  taxRate: 7,
+  taxRateRecurring: null,
+  taxRateOneTime: null,
   noticeText: '',
 });
 

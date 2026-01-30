@@ -1,7 +1,4 @@
-import {
-  disableSalesTaxRate,
-  updateSalesTaxRate,
-} from '@beabee/core/lib/stripe';
+import { updateSalesTaxRate } from '@beabee/core/lib/stripe';
 
 import PartialBody from '@api/decorators/PartialBody';
 import {
@@ -103,14 +100,15 @@ export class ContentController {
   async updatePayment(
     @PartialBody() data: GetContentPaymentDto // Should be Partial<GetContentPaymentDto>
   ): Promise<GetContentPaymentDto> {
-    if (data.taxRate === null) {
-      await disableSalesTaxRate();
-    } else if (data.taxRate !== undefined) {
-      await updateSalesTaxRate(data.taxRate);
+    if (data.taxRateRecurring !== undefined) {
+      await updateSalesTaxRate('recurring', data.taxRateRecurring);
+    }
+    if (data.taxRateOneTime !== undefined) {
+      await updateSalesTaxRate('one-time', data.taxRateOneTime);
     }
 
-    // taxRate is also stored here to avoid calling external services when
-    // fetching the payment content
+    // Tax rates are also stored here to cache the percentage and avoid calling
+    // external services when fetching the payment content
     await ContentTransformer.updateOne('payment', data);
     return ContentTransformer.fetchOne('payment');
   }
