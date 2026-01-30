@@ -1256,12 +1256,12 @@
     "errorMessages": {
       "api": {
         "account-locked": "Compte verrouillé en raison d'un trop grand nombre de tentatives de connexion. Veuillez réinitialiser votre mot de passe ou contacter l'assistance pour obtenir de l'aide.",
+        "cant-update-contribution": "Vous ne pouvez pas mettre à jour votre cotisation pour le moment car vous avez un paiement en attente",
         "duplicate-email": "L'adresse e-mail existe déjà",
         "duplicate-tag-name": "Un libellé portant ce nom existe déjà",
         "invalid-token": "Jeton A2F invalide",
         "login-failed": "Identifiants invalides",
-        "mfa-token-required": "Vous avez activé l'A2F, tapez le code depuis votre application d'authentification pour continuer",
-        "cant-update-contribution": "Vous ne pouvez pas mettre à jour votre cotisation pour le moment car vous avez un paiement en attente"
+        "mfa-token-required": "Vous avez activé l'A2F, tapez le code depuis votre application d'authentification pour continuer"
       },
       "generic": "Oups, une erreur s'est produite ! Contactez l'assistance si cela se produit à nouveau.",
       "unauthorized": "Vous n'avez pas accès à ceci.",

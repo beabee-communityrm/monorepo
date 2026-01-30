@@ -1252,12 +1252,12 @@
     "errorMessages": {
       "api": {
         "account-locked": "Conta bloqueada por demasiadas tentativas de login. Faz reset da tua password ou fala connosco.",
+        "cant-update-contribution": "Não é possível atualizar a tua contribuição porque tens um pagamento pendente.",
         "duplicate-email": "Este endereço de e-mail já existe",
         "duplicate-tag-name": "",
         "invalid-token": "Token 2FA inválido",
         "login-failed": "Combinação inválida de email e palavra-passe",
-        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar.",
-        "cant-update-contribution": "Não é possível atualizar a tua contribuição porque tens um pagamento pendente."
+        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar."
       },
       "generic": "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
       "unauthorized": "",
