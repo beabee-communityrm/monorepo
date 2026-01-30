@@ -1143,7 +1143,7 @@
       "label": "Nachricht"
     },
     "preview": {
-      "asContactLabel": "Vorschau als Kontakt",
+      "asContactLabel": "Kontakt für Vorschau",
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
     },

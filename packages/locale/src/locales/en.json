@@ -1146,7 +1146,7 @@
       "label": "Message"
     },
     "preview": {
-      "asContactLabel": "Preview as contact",
+      "asContactLabel": "Contact for preview",
       "label": "Preview",
       "unavailable": "Preview unavailable"
     }

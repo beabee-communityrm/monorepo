@@ -1147,7 +1147,7 @@
       "label": "Message"
     },
     "preview": {
-      "asContactLabel": "Aperçu en tant que contact",
+      "asContactLabel": "Contact pour aperçu",
       "label": "Aperçu",
       "unavailable": "Aperçu non disponible"
     },
