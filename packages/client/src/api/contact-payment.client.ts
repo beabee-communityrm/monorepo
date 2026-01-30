@@ -67,9 +67,8 @@ export class ContactPaymentClient extends BaseClient {
     return {
       ...data,
       items: data.items.map((item) => ({
+        ...item,
         chargeDate: ContactPaymentClient.deserializeDate(item.chargeDate),
-        amount: item.amount,
-        status: item.status,
       })),
     };
   }
