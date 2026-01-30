@@ -85,6 +85,7 @@
     "noBack": "Não, voltar atrás",
     "participate": "Participar",
     "preview": "Pré-visualizar",
+    "previous": "Anterior",
     "publish": "Publicar",
     "reopen": "Reabrir",
     "replicate": "Replicar",
@@ -99,6 +100,8 @@
     "schedule": "Agendar",
     "search": "Pesquisar",
     "sendEmails": "Fechar",
+    "sendOneOffEmail": "Enviar e-mail",
+    "sendOngoingEmails": "E-mails contínuos",
     "share": "Partilhar",
     "skip": "Saltar",
     "submit": "Enviar",
@@ -1020,6 +1023,10 @@
       "whatDoTheButtonsDo": ""
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Contacto %current% de %total%",
+    "selfOption": "Tu mesmo"
+  },
   "contacts": {
     "addContact": "Adicionar contacto",
     "advancedSearch": {
@@ -1071,6 +1078,12 @@
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
     "search": "Pesquisar contactos...",
     "selectedCount": "",
+    "sendEmail": {
+      "previewAsContact": "Pré-visualizar como contacto",
+      "send": "Enviar",
+      "sent": "O e-mail foi enviado para o segmento.",
+      "title": "Enviar e-mail ao segmento"
+    },
     "showingOf": "Contactos {start} a {end} de um total de {total}"
   },
   "contribution": {

@@ -85,6 +85,7 @@
     "noBack": "",
     "participate": "",
     "preview": "",
+    "previous": "Precedente",
     "publish": "",
     "reopen": "",
     "replicate": "",
@@ -99,6 +100,8 @@
     "schedule": "",
     "search": "",
     "sendEmails": "Invia e-mail",
+    "sendOneOffEmail": "Invia e-mail",
+    "sendOngoingEmails": "E-mail ricorrenti",
     "share": "",
     "skip": "",
     "submit": "Invia",
@@ -1020,6 +1023,10 @@
       "whatDoTheButtonsDo": ""
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Contatto %current% di %total%",
+    "selfOption": "Tu stesso"
+  },
   "contacts": {
     "addContact": "",
     "advancedSearch": {
@@ -1071,6 +1078,12 @@
     "numResults": "",
     "search": "",
     "selectedCount": "",
+    "sendEmail": {
+      "previewAsContact": "Anteprima come contatto",
+      "send": "Invia",
+      "sent": "L'e-mail è stata inviata al segmento.",
+      "title": "Invia e-mail al segmento"
+    },
     "showingOf": ""
   },
   "contribution": {
