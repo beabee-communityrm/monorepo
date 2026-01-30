@@ -14,6 +14,7 @@ import Stripe from 'stripe';
 import config from '#config/config';
 import currentLocale from '#locale';
 import { log as mainLogger } from '#logging';
+import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
 import { getChargeableAmount } from '#utils/payment';
 
@@ -462,6 +463,21 @@ export async function manadateToSource(
       email: method.link.email || '',
     };
   }
+}
+
+export function convertInvoiceToPayment(
+  invoice: Stripe.Invoice
+): Partial<Payment> {
+  return {
+    amount: invoice.total / 100,
+    chargeDate: new Date(invoice.created * 1000),
+    description: invoice.description || '',
+    subscriptionId: invoice.subscription as string | null,
+    status: invoice.status
+      ? convertStatus(invoice.status)
+      : PaymentStatus.Draft,
+    type: getInvoiceType(invoice),
+  };
 }
 
 /**
