@@ -1,29 +1,35 @@
 <template>
   <div class="flex flex-wrap items-center gap-2">
-    <AppButtonGroup>
-      <AppButton
-        type="button"
-        variant="primaryOutlined"
-        :icon="faCaretLeft"
-        :aria-label="previousAriaLabel"
-        :disabled="currentIndex <= 0"
-        @click="goToIndex(currentIndex - 1)"
-      />
-      <div
-        class="h-10 w-52 shrink-0 items-center border-0 bg-grey-lighter"
-        :aria-label="nameAriaLabel || undefined"
-      >
-        <AppInput :model-value="displayName" disabled hide-error-message />
-      </div>
-      <AppButton
-        type="button"
-        variant="primaryOutlined"
-        :icon="faCaretRight"
-        :aria-label="nextAriaLabel"
-        :disabled="currentIndex >= options.length - 1"
-        @click="goToIndex(currentIndex + 1)"
-      />
-    </AppButtonGroup>
+    <AppInput
+      :model-value="displayName"
+      disabled
+      hide-error-message
+      class="w-52 shrink-0"
+      :aria-label="nameAriaLabel || undefined"
+    >
+      <template #prefixAction>
+        <button
+          type="button"
+          class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          :disabled="currentIndex <= 0"
+          :aria-label="previousAriaLabel"
+          @click="goToIndex(currentIndex - 1)"
+        >
+          <font-awesome-icon :icon="faCaretLeft" aria-hidden="true" />
+        </button>
+      </template>
+      <template #suffixAction>
+        <button
+          type="button"
+          class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          :disabled="currentIndex >= options.length - 1"
+          :aria-label="nextAriaLabel"
+          @click="goToIndex(currentIndex + 1)"
+        >
+          <font-awesome-icon :icon="faCaretRight" aria-hidden="true" />
+        </button>
+      </template>
+    </AppInput>
     <span v-if="countTemplate" class="text-body-80">
       {{ countText }}
     </span>
@@ -34,7 +40,6 @@
 import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 
-import { AppButton, AppButtonGroup } from '../button';
 import { AppInput } from '../form';
 
 /**
@@ -106,18 +111,7 @@ function goToIndex(index: number) {
 </script>
 
 <style scoped>
-.contact-selector__name,
-.contact-selector__name-input :deep(> div:first-child),
-.contact-selector__name-input :deep(input) {
-  border: none !important;
-  border-radius: 0;
-  box-shadow: none !important;
-  outline: none !important;
-  background: transparent;
-}
-.contact-selector__name-input :deep(> div:first-child),
-.contact-selector__name-input :deep(input) {
-  height: 100%;
+:deep(input) {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;

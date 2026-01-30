@@ -19,9 +19,9 @@ import {
   SendSegmentEmailBodyDto,
 } from '@api/dto/SegmentDto';
 import { UUIDParams } from '@api/params/UUIDParams';
-import { sendEmailToSegment } from '@api/utils';
 import ContactTransformer from '@api/transformers/ContactTransformer';
 import SegmentTransformer from '@api/transformers/SegmentTransformer';
+import { sendEmailToSegment } from '@api/utils';
 import {
   Authorized,
   Body,
