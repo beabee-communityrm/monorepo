@@ -17,14 +17,14 @@
 -->
 <template>
   <AppButton
-    :loading="loading"
-    :disabled="loading"
-    :aria-busy="loading"
+    :loading="isBusy"
+    :disabled="isBusy"
+    :aria-busy="isBusy"
     :aria-label="ariaLabel"
     :title="title"
     @click="handleClick"
   >
-    <span v-if="loading" class="sr-only">{{ t('common.loading') }}</span>
+    <span v-if="isBusy" class="sr-only">{{ t('common.loading') }}</span>
     <span v-else>
       <slot />
     </span>
@@ -45,7 +45,7 @@
  */
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppButton, { type AppButtonProps } from './AppButton.vue';
@@ -58,6 +58,8 @@ const { t } = useI18n();
 export interface AppAsyncButtonProps extends AppButtonProps {
   /** Async function to execute when the button is clicked */
   onClick?: (evt: Event) => Promise<void>;
+  /** When true, button shows loading and is disabled (e.g. while page data is loading) */
+  busy?: boolean;
   /** Accessible label for the button */
   ariaLabel?: string;
   /** Tooltip text displayed on hover */
@@ -66,18 +68,20 @@ export interface AppAsyncButtonProps extends AppButtonProps {
 
 const props = withDefaults(defineProps<AppAsyncButtonProps>(), {
   onClick: undefined,
+  busy: false,
   ariaLabel: undefined,
   title: undefined,
 });
 
 const loading = ref(false);
+const isBusy = computed(() => loading.value || props.busy);
 
 /**
  * Handles button click events and manages async operations
  * Automatically sets loading state and handles errors with notifications
  */
 async function handleClick(evt: Event) {
-  if (loading.value) return;
+  if (loading.value || props.busy) return;
 
   loading.value = true;
   try {
