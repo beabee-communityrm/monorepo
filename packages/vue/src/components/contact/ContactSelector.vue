@@ -10,7 +10,7 @@
       <template #prefixAction>
         <button
           type="button"
-          class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          :class="actionButtonClass"
           :disabled="currentIndex <= 0"
           :aria-label="previousAriaLabel"
           @click="goToIndex(currentIndex - 1)"
@@ -21,7 +21,7 @@
       <template #suffixAction>
         <button
           type="button"
-          class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          :class="actionButtonClass"
           :disabled="currentIndex >= options.length - 1"
           :aria-label="nextAriaLabel"
           @click="goToIndex(currentIndex + 1)"
@@ -41,6 +41,9 @@ import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 
 import { AppInput } from '../form';
+
+const actionButtonClass =
+  'flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50';
 
 /**
  * Option for the selector. First item is often { id: '' } for "self" / current user.
