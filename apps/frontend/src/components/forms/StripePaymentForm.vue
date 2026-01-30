@@ -34,7 +34,7 @@ import env from '@env';
 import type { Appearance } from '@stripe/stripe-js';
 import type { ApplePayOption } from '@stripe/stripe-js/dist/stripe-js/elements/apple-pay';
 import { loadStripe } from '@stripe/stripe-js/pure';
-import type { StripePaymentData } from '@type';
+import type { PaymentFlowFormData } from '@type/payment-flow-form-data';
 import useVuelidate from '@vuelidate/core';
 import theme from 'virtual:theme';
 import { computed, onBeforeMount, ref } from 'vue';
@@ -45,7 +45,7 @@ const emit = defineEmits(['loaded']);
 const props = defineProps<{
   clientSecret: string;
   publicKey: string;
-  paymentData: StripePaymentData;
+  paymentData: PaymentFlowFormData;
   returnUrl: string;
   showNameFields?: boolean;
 }>();

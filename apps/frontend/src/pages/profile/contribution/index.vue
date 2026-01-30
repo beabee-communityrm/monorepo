@@ -10,22 +10,6 @@ meta:
   <App2ColGrid v-if="!isIniting">
     <template #col1>
       <AppNotification
-        v-if="updatedPaymentSource"
-        class="mb-8"
-        variant="success"
-        :title="t('contribution.updatedPaymentSource')"
-        removeable
-        @remove="updatedPaymentSource = false"
-      />
-      <AppNotification
-        v-if="startedContribution"
-        class="mb-8"
-        variant="success"
-        :title="t('contribution.startedContribution')"
-        removeable
-        @remove="startedContribution = false"
-      />
-      <AppNotification
         v-if="cancelledContribution"
         class="mb-8"
         variant="error"
@@ -45,11 +29,13 @@ meta:
 
       <PaymentSource
         v-if="contribution.paymentSource?.method"
-        class="mb-7 md:mb-9"
+        v-model="contribution"
         :payment-data="paymentSourceData"
         :payment-source="contribution.paymentSource"
         :stripe-public-key="paymentContent.stripePublicKey"
+        class="mb-7 md:mb-9"
       />
+
       <ContactCancelContribution
         id="me"
         :contribution="contribution"
@@ -90,10 +76,6 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const updatedPaymentSource = ref(
-  route.query.updatedPaymentSource !== undefined
-);
-const startedContribution = ref(route.query.startedContribution !== undefined);
 const cancelledContribution = ref(route.query.cancelled !== undefined);
 
 const content = ref<ContributionContent>({

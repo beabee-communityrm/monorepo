@@ -60,9 +60,14 @@ meta:
     v-if="paymentContent && profileContent.showOneTimeDonation"
     class="mb-6 lg:mr-6 lg:w-1/4"
   >
-    <AppApiForm
+    <PaymentFlowForm
+      id="profile-one-time-contribution"
       :button-text="t('homePage.makeOneTimeDonationButton')"
-      @submit="handleSubmitDonation"
+      :title="t(`paymentMethods.${oneTimeDonation.paymentMethod}.setLabel`)"
+      :stripe-public-key="paymentContent.stripePublicKey"
+      :flow-data="paymentFlowData"
+      :start-flow="startDonationFlow"
+      :complete-flow="completeDonationFlow"
     >
       <SectionTitle>{{ t('homePage.makeOneTimeDonationTitle') }}</SectionTitle>
 
@@ -75,15 +80,8 @@ meta:
         :show-period="false"
         period="one-time"
         mode="one-time"
-      >
-      </AppContribution>
-
-      <!-- <AppNotification
-      class="mb-4"
-      variant="error"
-      :title="t('contribution.contributionUpdateError')"
-    /> -->
-    </AppApiForm>
+      />
+    </PaymentFlowForm>
   </section>
 </template>
 
@@ -96,13 +94,17 @@ import {
   type GetContactData,
   ItemStatus,
   PaymentMethod,
-  type PaymentPeriod,
 } from '@beabee/beabee-common';
-import { AppButton, PageTitle, WelcomeMessage } from '@beabee/vue';
+import {
+  AppButton,
+  PageTitle,
+  WelcomeMessage,
+  addNotification,
+} from '@beabee/vue';
 
 import CalloutCard from '@components/callout/CalloutCard.vue';
 import AppContribution from '@components/contribution/AppContribution.vue';
-import AppApiForm from '@components/forms/AppApiForm.vue';
+import PaymentFlowForm from '@components/forms/PaymentFlowForm.vue';
 import ContributionInfo from '@components/pages/profile/ContributionInfo.vue';
 import NoticeContainer from '@components/pages/profile/NoticeContainer.vue';
 import QuickActions from '@components/pages/profile/QuickActions.vue';
@@ -110,7 +112,7 @@ import SectionTitle from '@components/pages/profile/SectionTitle.vue';
 import { currentUser, generalContent } from '@store';
 import type { ContributionContent } from '@type/contribution';
 import { client } from '@utils/api';
-import { type Ref, onBeforeMount, reactive, ref } from 'vue';
+import { type Ref, computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
@@ -128,8 +130,6 @@ const profileContent = ref<ContentProfileData>({
   introMessage: '',
   showOneTimeDonation: false,
 });
-
-// const stripeClientSecret = ref('');
 
 const callouts = ref<GetCalloutData[]>([]);
 
@@ -150,34 +150,31 @@ const paymentContent = ref<ContentPaymentData>();
 
 const oneTimeDonation = reactive({
   amount: 5,
-  period: 'one-time' as PaymentPeriod,
   payFee: true,
-  prorate: true, // TODO: check if this is correct
   paymentMethod: PaymentMethod.StripeCard,
 });
+const paymentFlowData = computed(() => ({
+  email: user.value.email,
+  amount: oneTimeDonation.amount,
+  period: 'one-time' as const,
+}));
 
-const loading = ref(false);
+async function startDonationFlow(completeUrl: string) {
+  return await client.contact.payment.create({
+    amount: oneTimeDonation.amount,
+    payFee: oneTimeDonation.payFee,
+    paymentMethod: oneTimeDonation.paymentMethod,
+    completeUrl,
+  });
+}
 
-async function handleSubmitDonation() {
-  loading.value = true;
+async function completeDonationFlow(paymentFlowId: string) {
+  await client.contact.payment.complete(paymentFlowId);
 
-  try {
-    // TODO: add correct endpoint as soon as it is done
-    // const clientData: CreateOneTimePaymentData = {
-    //   amount: oneTimeDonation.amount,
-    //   paymentMethod: oneTimeDonation.paymentMethod,
-    //   payFee: oneTimeDonation.payFee,
-    //   completeUrl: client.signup.completeUrl,
-    // };
-    // const data = await client.contact.contribution.start(clientData);
-    // if (data.redirectUrl) {
-    //   window.location.href = data.redirectUrl;
-    // } else if (data.clientSecret) {
-    //   stripeClientSecret.value = data.clientSecret;
-    // }
-  } finally {
-    loading.value = false;
-  }
+  addNotification({
+    variant: 'success',
+    title: t('profile.oneTimeDonationSuccessNotification'),
+  });
 }
 
 onBeforeMount(async () => {

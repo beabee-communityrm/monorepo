@@ -79,8 +79,6 @@ declare module 'vue-router/auto-routes' {
     'profileAccount': RouteRecordInfo<'profileAccount', '/profile/account', Record<never, never>, Record<never, never>>,
     'profileContribution': RouteRecordInfo<'profileContribution', '/profile/contribution', Record<never, never>, Record<never, never>>,
     'profileContributionCancel': RouteRecordInfo<'profileContributionCancel', '/profile/contribution/cancel', Record<never, never>, Record<never, never>>,
-    'profileContributionComplete': RouteRecordInfo<'profileContributionComplete', '/profile/contribution/complete', Record<never, never>, Record<never, never>>,
-    'profileContributionPaymentMethodComplete': RouteRecordInfo<'profileContributionPaymentMethodComplete', '/profile/contribution/payment-method/complete', Record<never, never>, Record<never, never>>,
   }
 
   /**
@@ -336,14 +334,6 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/profile/contribution/cancel.vue': {
       routes: 'profileContributionCancel'
-      views: never
-    }
-    'src/pages/profile/contribution/complete.vue': {
-      routes: 'profileContributionComplete'
-      views: never
-    }
-    'src/pages/profile/contribution/payment-method/complete.vue': {
-      routes: 'profileContributionPaymentMethodComplete'
       views: never
     }
   }

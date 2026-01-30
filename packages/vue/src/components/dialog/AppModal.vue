@@ -20,6 +20,7 @@
         @click.stop
       >
         <button
+          v-if="!noClose"
           class="absolute right-0 top-0 h-8 w-8 hover:text-primary"
           type="button"
           :aria-label="t('actions.close')"
@@ -75,6 +76,8 @@ export interface AppModalProps {
   title?: string;
   /** Visual variant affecting title styling */
   variant?: 'danger';
+  /** Can the modal be closed? */
+  noClose?: boolean;
 }
 
 /**
