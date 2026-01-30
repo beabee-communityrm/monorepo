@@ -98,7 +98,7 @@ meta:
         >
         <div class="mb-4">
           <AppCheckbox
-            v-model="paymentData.taxRateEnabled"
+            v-model="taxRateEnabled"
             :label="t('adminSettings.payment.taxRateEnabled')"
             class="font-bold"
           />
@@ -109,12 +109,9 @@ meta:
             class="font-bold"
           />
         </div>
-        <div
-          v-if="paymentData.taxRateEnabled"
-          class="mb-4 max-w-[8rem] whitespace-nowrap"
-        >
+        <div v-if="taxRateEnabled" class="mb-4 max-w-[8rem] whitespace-nowrap">
           <AppInput
-            v-model="paymentData.taxRate"
+            v-model="taxRate"
             type="number"
             :label="t('adminSettings.payment.taxRate')"
             :min="0"
@@ -222,10 +219,8 @@ const footerData = reactive({
   footerLinks: [] as { text: string; url: string }[],
 });
 
-const paymentData = ref({
-  taxRateEnabled: false,
-  taxRate: 7,
-});
+const taxRateEnabled = ref(false);
+const taxRate = ref(7);
 
 const profileContent = ref({
   showOneTimeDonation: false,
@@ -269,7 +264,9 @@ async function handleSaveFooter() {
 }
 
 async function handleSavePayment() {
-  await client.content.update('payment', paymentData.value);
+  await client.content.update('payment', {
+    taxRate: taxRateEnabled.value ? taxRate.value : null,
+  });
   await client.content.update('profile', profileContent.value);
 }
 
@@ -294,9 +291,7 @@ onBeforeMount(async () => {
   }
 
   const paymentContent = await client.content.get('payment');
-  paymentData.value = {
-    taxRateEnabled: paymentContent.taxRateEnabled,
-    taxRate: paymentContent.taxRate,
-  };
+  taxRateEnabled.value = paymentContent.taxRate !== null;
+  taxRate.value = paymentContent.taxRate || 7;
 });
 </script>

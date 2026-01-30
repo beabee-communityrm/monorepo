@@ -26,6 +26,7 @@ import {
   IsIn,
   IsNumber,
   IsObject,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -211,11 +212,9 @@ export class GetContentPaymentDto implements ContentPaymentData {
   @IsIn(['eu', 'gb', 'ca'])
   stripeCountry!: StripeFeeCountry;
 
-  @IsBoolean()
-  taxRateEnabled!: boolean;
-
+  @IsOptional()
   @IsNumber()
-  taxRate!: number;
+  taxRate!: number | null;
 
   @IsString()
   noticeText!: string;

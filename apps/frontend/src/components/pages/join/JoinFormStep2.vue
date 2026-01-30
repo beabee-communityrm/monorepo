@@ -11,7 +11,7 @@
       class="mb-4"
     />
     <p
-      v-if="paymentContent.taxRateEnabled"
+      v-if="paymentContent.taxRate !== null"
       class="-mt-2 mb-4 text-right text-xs"
     >
       {{ t('join.tax.included', { taxRate: paymentContent.taxRate }) }}

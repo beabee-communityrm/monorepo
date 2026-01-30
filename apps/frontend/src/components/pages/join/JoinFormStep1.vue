@@ -36,7 +36,7 @@
 
     <div class="mt-3 text-center text-xs">
       <p
-        v-if="!data.noContribution && paymentContent.taxRateEnabled"
+        v-if="!data.noContribution && paymentContent.taxRate !== null"
         class="mb-2"
       >
         {{ t('join.tax.included', { taxRate: paymentContent.taxRate }) }}
