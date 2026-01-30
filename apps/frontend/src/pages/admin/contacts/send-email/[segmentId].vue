@@ -12,7 +12,7 @@ meta:
     </template>
   </PageTitle>
 
-  <div v-if="loading" class="p-4">
+  <div v-if="loading">
     <p>{{ t('common.loading') }}...</p>
   </div>
 
