@@ -5,7 +5,6 @@
       class="relative mb-6 flex flex-col gap-6"
       :class="alwaysStacked ? '' : 'md:flex-row'"
     >
-      <!-- Editor panel -->
       <div class="relative min-w-0 flex-1">
         <div class="mb-4">
           <AppInput
@@ -28,7 +27,6 @@
                 :disabled="disabled"
                 @click="toggleMergeFieldsDropdown"
               />
-              <!-- Dropdown content -->
               <div
                 v-if="showMergeFieldsDropdown"
                 class="absolute right-0 top-full z-[100] mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
@@ -44,7 +42,6 @@
         </AppRichTextEditor>
       </div>
 
-      <!-- Preview panel -->
       <div class="w-full" :class="alwaysStacked ? '' : 'md:w-[600px]'">
         <template v-if="previewSelectorOptions.length > 0">
           <AppLabel
@@ -66,26 +63,18 @@
         <div
           class="content-message rounded border border-primary-40 bg-white p-4"
         >
-          <!-- Loading state -->
           <div
-            v-if="isLoadingPreview"
-            class="text-gray-500 flex items-center justify-center p-8"
+            v-if="!serverPreviewResult"
+            class="flex min-h-[6rem] items-center justify-center p-8 text-body-80"
           >
-            <div
-              class="border-gray-900 mr-2 h-6 w-6 animate-spin rounded-full border-b-2"
-            ></div>
-            {{ t('common.loading') }}
+            <AppLoadingSpinner
+              :loading="isLoadingPreview"
+              :message="t('common.loading')"
+            />
+            <span v-if="!isLoadingPreview">
+              {{ t('emailEditor.preview.unavailable') }}
+            </span>
           </div>
-
-          <!-- Error state -->
-          <div
-            v-else-if="!serverPreviewResult"
-            class="text-gray-500 flex items-center justify-center p-8"
-          >
-            {{ t('emailEditor.preview.unavailable') }}
-          </div>
-
-          <!-- Preview content (server-rendered with footer and CSS) -->
           <div v-else v-html="sanitizedPreviewBody" />
         </div>
       </div>
@@ -94,37 +83,8 @@
 </template>
 <script lang="ts" setup>
 /**
- * EmailEditor component for editing and previewing email templates
- *
- * This component provides server-side email preview that matches exactly
- * what will be sent via email, including:
- * - Merge field replacement (contact fields, template-specific fields, custom fields)
- * - Email footer with organization info, logo, and links
- * - Inline CSS styles for consistent email client rendering
- *
- * Merge fields are automatically loaded based on the template and context:
- * - Standard fields (SUPPORTEMAIL, ORGNAME) are always available
- * - Contact fields (EMAIL, NAME, FNAME, LNAME) for contact templates or when sending to contacts (e.g. previewContactOptions)
- * - Template-specific fields are loaded from the API
- *
- * @example Basic usage for contact email template
- * ```vue
- * <EmailEditor
- *   v-model:subject="emailSubject"
- *   v-model:content="emailContent"
- *   :template="{ type: 'contact', id: 'welcome' }"
- * />
- * ```
- *
- * @example With custom merge fields for preview
- * ```vue
- * <EmailEditor
- *   v-model:subject="emailSubject"
- *   v-model:content="emailContent"
- *   :template="{ type: 'contact', id: 'callout-response-answers' }"
- *   :mergeFields="{ CALLOUTTITLE: calloutTitle }"
- * />
- * ```
+ * EmailEditor: edit subject/body and get server-side email preview (merge fields, footer, inline CSS).
+ * Merge fields: standard (SUPPORTEMAIL, ORGNAME), contact (when template/options), template-specific from API.
  */
 import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
 import { debounce } from '@beabee/beabee-common';
@@ -132,14 +92,15 @@ import type { PreviewEmailOptions } from '@beabee/client';
 import {
   AppInput,
   AppLabel,
+  AppLoadingSpinner,
   AppMergeFields,
   AppRichTextEditor,
   AppRichTextEditorButton,
   AppSubHeading,
+  ContactSelector,
   type MergeTagGroup,
   sanitizeHtml,
 } from '@beabee/vue';
-import { ContactSelector } from '@beabee/vue';
 
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { currentUser, generalContent } from '@store';
@@ -152,11 +113,11 @@ import { client } from '@utils/api';
 import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-// Two-way binding models for subject and content
+const PREVIEW_DEBOUNCE_MS = 500;
+
 const subject = defineModel<string>('subject', { default: '' });
 const content = defineModel<string>('content', { default: '' });
 
-// Props definition
 const props = withDefaults(
   defineProps<{
     /**
@@ -209,7 +170,6 @@ const emit = defineEmits<{
   (e: 'update:previewContactId', value: string | undefined): void;
 }>();
 
-/** Minimal contact shape for preview selector (id + display fields). */
 export interface PreviewContactOption {
   id: string;
   firstname?: string;
@@ -217,12 +177,17 @@ export interface PreviewContactOption {
   email?: string;
 }
 
-/** Contact used for preview: override prop or current user. Same rule for template and one-off preview. */
+const { t } = useI18n();
+
+const templateInfoList = ref<GetEmailTemplateInfoData[]>([]);
+const showMergeFieldsDropdown = ref(false);
+const serverPreviewResult = ref<EmailPreviewResult | null>(null);
+const isLoadingPreview = ref(false);
+
 const effectivePreviewContactId = computed(
   () => props.previewContactId ?? currentUser.value?.id ?? null
 );
 
-/** Options for the contact preview selector: always at least self, plus any passed contacts. */
 const previewSelectorOptions = computed(() => {
   if (props.previewContactOptions === undefined) return [{ id: '' }];
   return [{ id: '' }, ...props.previewContactOptions];
@@ -233,29 +198,12 @@ const previewContactIdModel = computed({
   set: (value: string) => emit('update:previewContactId', value || undefined),
 });
 
-const { t } = useI18n();
-
-// Template info loaded from API
-const templateInfoList = ref<GetEmailTemplateInfoData[]>([]);
-
-// Merge fields dropdown state
-const showMergeFieldsDropdown = ref(false);
-
-// Server preview state
-const serverPreviewResult = ref<EmailPreviewResult | null>(null);
-const isLoadingPreview = ref(false);
-
-/**
- * Build merge field groups based on template configuration
- * Includes: template-specific fields, contact fields (if contact type), standard fields
- */
 const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
   const groups: MergeTagGroup[] = [];
 
-  // Template-specific merge fields (from API)
   if (props.template?.id) {
     const templateInfo = templateInfoList.value.find(
-      (t) => t.id === props.template?.id
+      (info) => info.id === props.template?.id
     );
     if (templateInfo && templateInfo.mergeFields.length > 0) {
       groups.push({
@@ -265,7 +213,6 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
     }
   }
 
-  // Contact merge fields (contact templates or when sending to contacts, e.g. segment send)
   if (
     props.template?.type === 'contact' ||
     props.previewContactOptions !== undefined
@@ -286,7 +233,6 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
     });
   }
 
-  // Standard merge fields (available for all templates)
   groups.push({
     key: 'standard',
     tags: [
@@ -298,29 +244,18 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
   return groups;
 });
 
-// Load template info on mount
 onMounted(async () => {
   try {
     templateInfoList.value = await client.email.template.list();
   } catch {
-    // Failed to load template info, merge fields will be limited
+    // Merge fields limited if template list fails
   }
 });
 
-/**
- * Sanitized preview body HTML
- * Sanitizes server-rendered HTML to prevent XSS attacks while preserving
- * email-safe HTML elements (styles, links, images, etc.)
- */
-const sanitizedPreviewBody = computed(() => {
-  return sanitizeHtml(serverPreviewResult.value?.body);
-});
+const sanitizedPreviewBody = computed(() =>
+  sanitizeHtml(serverPreviewResult.value?.body)
+);
 
-/**
- * Fetches preview from server using the API
- * Sends subject, content, and merge fields to the server
- * Server handles all merge field resolution and formatting
- */
 async function fetchServerPreview() {
   isLoadingPreview.value = true;
   try {
@@ -348,42 +283,31 @@ async function fetchServerPreview() {
       body: preview.body,
     };
   } catch {
-    // Failed to load preview, component will show error state
     serverPreviewResult.value = null;
   } finally {
     isLoadingPreview.value = false;
   }
 }
 
-/**
- * Toggle merge fields dropdown
- */
-function toggleMergeFieldsDropdown(): void {
+function toggleMergeFieldsDropdown() {
   showMergeFieldsDropdown.value = !showMergeFieldsDropdown.value;
 }
 
-/**
- * Insert merge field tag into editor at cursor position
- */
-function insertMergeField(editor: Editor, tag: string): void {
-  const mergeTag = `*|${tag}|*`;
-  editor.chain().focus().insertContent(mergeTag).run();
+function insertMergeField(editor: Editor, tag: string) {
+  editor.chain().focus().insertContent(`*|${tag}|*`).run();
   showMergeFieldsDropdown.value = false;
 }
 
-// Debounced version of fetchServerPreview to prevent excessive API calls
-// Wait 500ms after user stops typing before fetching preview
-const debouncedFetchServerPreview = debounce(fetchServerPreview, 500);
+const debouncedFetchServerPreview = debounce(
+  fetchServerPreview,
+  PREVIEW_DEBOUNCE_MS
+);
 
-// Watch for content changes and fetch preview
-// watchEffect automatically tracks reactive dependencies (subject, content, mergeFields)
 watchEffect(() => {
-  // Trigger re-fetch when any reactive value changes
   void subject.value;
   void content.value;
   void props.mergeFields;
   void effectivePreviewContactId.value;
-
   void debouncedFetchServerPreview();
 });
 </script>
