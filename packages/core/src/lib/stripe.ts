@@ -5,6 +5,7 @@ import {
   PaymentMethod,
   PaymentSource,
   PaymentStatus,
+  PaymentType,
 } from '@beabee/beabee-common';
 
 import { differenceInMonths } from 'date-fns';
@@ -485,6 +486,28 @@ export function convertStatus(status: Stripe.Invoice.Status): PaymentStatus {
 
     case 'uncollectible':
       return PaymentStatus.Failed;
+  }
+}
+
+/**
+ * Get the payment type from a Stripe invoice.
+ * @param invoice The Stripe invoice
+ * @returns The payment type
+ */
+export function getInvoiceType(invoice: Stripe.Invoice): PaymentType {
+  if (invoice.subscription) {
+    switch (invoice.billing_reason) {
+      case 'subscription':
+      case 'subscription_create':
+      case 'subscription_cycle':
+        return PaymentType.Recurring;
+      case 'subscription_update':
+        return PaymentType.Prorated;
+      default:
+        return PaymentType.Unknown;
+    }
+  } else {
+    return PaymentType.OneTime;
   }
 }
 

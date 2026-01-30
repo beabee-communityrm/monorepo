@@ -1,4 +1,4 @@
-import { PaymentStatus } from '@beabee/beabee-common';
+import { PaymentStatus, PaymentType } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import gocardless, { convertStatus } from '@beabee/core/lib/gocardless';
@@ -32,6 +32,7 @@ export async function updatePayment(
     payment.amount = Number(gcPayment.amount) / 100;
     payment.amountRefunded = Number(gcPayment.amount_refunded) / 100;
     payment.chargeDate = moment.utc(gcPayment.charge_date).toDate();
+    payment.type = PaymentType.Recurring; // TODO: determine properly
 
     await getRepository(Payment).save(payment);
 
