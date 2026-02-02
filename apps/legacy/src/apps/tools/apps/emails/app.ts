@@ -270,12 +270,17 @@ app.get(
     const mergeFields = _.uniq(
       matches.map((f) => f.substring(2, f.length - 2))
     );
+    const recipients = mailing.recipients ?? [];
+    const headers =
+      recipients[0] != null && typeof recipients[0] === 'object'
+        ? Object.keys(recipients[0])
+        : [];
     res.render('mailing', {
       email,
       emailBody: formatEmailBody(email.body),
-      mailing,
+      mailing: { ...mailing, recipients },
       mergeFields,
-      headers: Object.keys(mailing.recipients[0]),
+      headers,
       onlyPreview: req.query.preview !== undefined,
     });
   })
@@ -296,6 +301,10 @@ app.post(
       id: req.params.mailingId,
     });
     if (!mailing) return next('route');
+    if (!mailing.recipients?.length) {
+      req.flash('error', 'This mailing has no recipients.');
+      return res.redirect(`/tools/emails/${email.id}`);
+    }
 
     const { emailField, nameField, mergeFields }: SendSchema = req.body;
 
