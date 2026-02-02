@@ -222,7 +222,8 @@
       "paymentTitle": "Paiement",
       "showOneTimeDonation": "Afficher l’option de don unique sur l’écran d’accueil",
       "taxRate": "Taux de la TVA",
-      "taxRateEnabled": "Activer la TVA"
+      "taxRateLabelOneTime": "Activer le taux de TVA pour les paiements ponctuels",
+      "taxRateLabelRecurring": "Activer le taux de TVA pour les paiements récurrents"
     },
     "theme": {
       "bodyFont": "Corps de texte",

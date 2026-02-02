@@ -220,9 +220,10 @@
     },
     "payment": {
       "paymentTitle": "Payment",
+      "showOneTimeDonation": "Show one time donation on home screen",
       "taxRate": "VAT rate",
-      "taxRateEnabled": "Enable VAT",
-      "showOneTimeDonation": "Show one time donation on home screen"
+      "taxRateLabelOneTime": "Enable VAT rate for one-time payments",
+      "taxRateLabelRecurring": "Enable VAT rate for recurring payments"
     },
     "theme": {
       "bodyFont": "Body text",

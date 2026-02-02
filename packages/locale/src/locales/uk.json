@@ -222,7 +222,8 @@
       "paymentTitle": "Оплата",
       "showOneTimeDonation": "Показати опцію одноразової пожертви на головному екрані",
       "taxRate": "Ставка ПДВ",
-      "taxRateEnabled": "Увімкнути ПДВ"
+      "taxRateLabelOneTime": "",
+      "taxRateLabelRecurring": ""
     },
     "theme": {
       "bodyFont": "Основний текст",

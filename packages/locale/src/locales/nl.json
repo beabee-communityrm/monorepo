@@ -222,7 +222,8 @@
       "paymentTitle": "Betaling",
       "showOneTimeDonation": "Eenmalige donatieoptie op het startscherm weergeven",
       "taxRate": "BTW-tarief",
-      "taxRateEnabled": "BTW inschakelen"
+      "taxRateLabelOneTime": "BTW-tarief inschakelen voor eenmalige betalingen",
+      "taxRateLabelRecurring": "BTW-tarief inschakelen voor terugkerende betalingen"
     },
     "theme": {
       "bodyFont": "Tekst lichaam",
