@@ -29,7 +29,11 @@ export const generateIndex = async (argv: GenerateIndexArgs): Promise<void> => {
       let indexContent = '';
 
       for (const file of files) {
-        if (file.name.endsWith('.ts') && file.name !== 'index.ts') {
+        if (
+          file.name.endsWith('.ts') &&
+          file.name !== 'index.ts' &&
+          !file.name.endsWith('.test.ts')
+        ) {
           const importName = basename(file.name, '.ts');
           const importExtension = getImportExtension(extension);
           const exportPrefix = isTypesDirectory
