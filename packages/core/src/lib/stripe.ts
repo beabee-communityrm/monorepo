@@ -32,10 +32,10 @@ export function getSalesTaxRateObject(
 }
 
 /**
- * Update the subscription sales tax rate.
+ * Update the sales tax rate, disabling the previous one if needed
  *
- * @param percentage The new sales tax rate percentage
- * @returns
+ * @param type The type of tax rate to update
+ * @param percentage The new sales tax rate percentage or null to disable
  */
 export async function updateSalesTaxRate(
   type: 'recurring' | 'one-time',
@@ -51,14 +51,14 @@ export async function updateSalesTaxRate(
       return;
     }
 
-    log.info(`Disabling old ${type} sales tax rate`);
+    log.info(`Disabling current ${type} sales tax rate`);
     await stripe.taxRates.update(id, { active: false });
   }
 
   if (percentage === null) {
     await OptionsService.set(`tax-rate-${type}-stripe-id`, '');
   } else {
-    log.info(`Updating ${type} sales tax rate to ${percentage}%`);
+    log.info(`Setting new ${type} sales tax rate to ${percentage}%`);
     const taxRate = await stripe.taxRates.create({
       percentage: percentage,
       active: true,
