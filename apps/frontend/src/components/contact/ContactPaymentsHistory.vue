@@ -18,16 +18,15 @@
         </span>
         <b>{{ n(value, 'currency') }}</b>
       </template>
-      <template #value-paymentType="{}">
-        {{ '-payment type placeholder-' }}
-        <!-- {{ value }} -->
+      <template #value-type="{ value }">
+        {{ value }}
       </template>
-      <template #value-downloadInvoice="{}">
+      <template #value-downloadInvoice="{item}">
         <AppButton
           size="xs"
           :icon="faDownload"
           variant="primaryOutlined"
-          @click="downloadInvoice"
+          @click="downloadInvoice(item.id)"
         ></AppButton>
       </template>
     </AppTable>
@@ -90,7 +89,7 @@ const totalPages = computed(() =>
 const headers: Header[] = [
   { value: 'chargeDate', text: '' },
   { value: 'amount', text: '', align: 'right' },
-  { value: 'paymentType', text: '', align: 'right' },
+  { value: 'type', text: '', align: 'right' },
   { value: 'downloadInvoice', text: '', align: 'right' },
 ];
 
@@ -107,8 +106,8 @@ function getRowClass(item: GetPaymentData) {
   }
 }
 
-function downloadInvoice() {
-  // TODO: Add invoice download API-endpoint
+function downloadInvoice(paymentId: string) {
+  window.open(client.payment.getInvoiceUrl(paymentId), '_blank');
 }
 
 watchEffect(async () => {
@@ -121,8 +120,7 @@ watchEffect(async () => {
       condition: 'AND',
       rules: [
         { field: 'status', operator: 'not_equal', value: ['draft'] },
-        // TODO: Enable when paymentType exists
-        // { field: 'paymentType', operator: 'equal', value: ['one-time'] },
+        { field: 'type', operator: 'equal', value: ['one-time'] },
       ],
     },
   };

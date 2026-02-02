@@ -84,4 +84,15 @@ export class PaymentClient extends BaseClient {
     );
     return data;
   }
+
+  /**
+   * Returns the URL for a payment's invoice. The backend redirects from this URL
+   * to the actual invoice (e.g. Stripe). Open it in a new tab to download/view:
+   * e.g. window.open(client.payment.getInvoiceUrl(id), '_blank')
+   * @param id - Payment id
+   * @returns The invoice endpoint URL (same-origin request will redirect with auth)
+   */
+  getInvoiceUrl(id: string): string {
+    return cleanUrl(this.options.path + '/payment/' + id + '/invoice');
+  }
 }
