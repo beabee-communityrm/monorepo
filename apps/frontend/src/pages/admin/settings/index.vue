@@ -103,7 +103,7 @@ meta:
         <TaxRateInput
           v-if="showOneTimeDonationSettings"
           v-model="taxRateOneTime"
-          :label="t('adminSettings.payment.taxRateOneTimeLabel')"
+          :label="t('adminSettings.payment.taxRateLabelOneTime')"
         />
         <div class="mb-4">
           <AppCheckbox

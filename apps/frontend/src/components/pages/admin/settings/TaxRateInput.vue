@@ -18,23 +18,38 @@
 <script lang="ts" setup>
 import { AppCheckbox, AppInput } from '@beabee/vue';
 
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: number | null): void;
-}>();
-const props = defineProps<{
-  label: string;
-  modelValue: number | null;
-}>();
 
 const { t } = useI18n();
 
-const enabled = ref(props.modelValue !== null);
-const taxRate = ref(props.modelValue || 0);
+defineProps<{ label: string }>();
 
-watch([enabled, taxRate], () => {
-  emit('update:modelValue', enabled.value ? taxRate.value : null);
+const model = defineModel<number | null>({ default: null });
+
+// last non-null value to restore when re-enabled
+const draft = ref(0);
+
+const taxRate = computed({
+  get: () => model.value ?? draft.value,
+  set(v) {
+    draft.value = v;
+    if (enabled.value) model.value = v;
+  },
 });
+
+const enabled = computed({
+  get: () => model.value !== null,
+  set(on) {
+    model.value = on ? draft.value : null;
+  },
+});
+
+watch(
+  model,
+  (mv) => {
+    if (mv !== null) draft.value = mv;
+  },
+  { immediate: true }
+);
 </script>
