@@ -947,7 +947,8 @@
     "paymentType": {
       "oneTime": "",
       "prorated": "",
-      "recurring": ""
+      "recurring": "",
+      "unknown": ""
     },
     "perMonth": "",
     "perOneTime": "",

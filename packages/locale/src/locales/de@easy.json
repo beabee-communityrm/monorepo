@@ -944,6 +944,12 @@
       "pending": "",
       "successful": ""
     },
+    "paymentType": {
+      "oneTime": "",
+      "prorated": "",
+      "recurring": "",
+      "unknown": ""
+    },
     "perMonth": "",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -968,19 +974,7 @@
     "timeAgo": "vor",
     "timeIn": "in",
     "until": "",
-    "yes": "",
-    "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
-    },
-    "perOneTime": "",
-    "perOneTimeText": "",
-    "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
-    }
+    "yes": ""
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1723,6 +1717,10 @@
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "",
+      "total": ""
+    },
     "filter": {
       "all": "",
       "cancelled": "",
@@ -1730,11 +1728,7 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": "",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": ""
   },
   "resetDevice": {
     "description": "",

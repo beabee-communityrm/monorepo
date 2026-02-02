@@ -944,6 +944,12 @@
       "pending": "In Bearbeitung",
       "successful": "Erfolgreich"
     },
+    "paymentType": {
+      "oneTime": "Einmalig",
+      "prorated": "Ratierlich",
+      "recurring": "Wiederkehrend",
+      "unknown": "Unbekannt"
+    },
     "perMonth": "/ Monat",
     "perOneTime": "einmalig",
     "perOneTimeText": "einmalig",
@@ -968,12 +974,7 @@
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja",
-    "paymentType": {
-      "oneTime": "Einmalig",
-      "recurring": "Wiederkehrend",
-      "prorated": "Ratierlich"
-    }
+    "yes": "Ja"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1714,6 +1715,10 @@
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Durchschnittsbetrag",
+      "total": "Gesamtbetrag"
+    },
     "filter": {
       "all": "Alle Zahlungen",
       "cancelled": "Stonierte Zahlungen",
@@ -1721,11 +1726,7 @@
       "pending": "Ausstehende Zahlungen",
       "successful": "Erfolgreiche Zahlungen"
     },
-    "showingOf": "Zahlungen {start} bis {end} von {total}",
-    "aggregation": {
-      "total": "Gesamtbetrag",
-      "average": "Durchschnittsbetrag"
-    }
+    "showingOf": "Zahlungen {start} bis {end} von {total}"
   },
   "resetDevice": {
     "description": "Geben Sie Ihr Passwort ein, um den 2FA-Schutz zurückzusetzen. Sobald Sie eingeloggt sind, können Sie ein neues Gerät einrichten.",

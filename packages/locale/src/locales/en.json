@@ -946,8 +946,9 @@
     },
     "paymentType": {
       "oneTime": "One-Time",
+      "prorated": "Prorated",
       "recurring": "Recurring",
-      "prorated": "Prorated"
+      "unknown": "Unknown"
     },
     "perMonth": "/ month",
     "perOneTime": " one-time",
@@ -1723,8 +1724,8 @@
     },
     "showingOf": "Showing {start} to {end} payments out of {total}",
     "aggregation": {
-      "total": "Total Amount",
-      "average": "Average Amount"
+      "average": "Average Amount",
+      "total": "Total Amount"
     }
   },
   "resetDevice": {

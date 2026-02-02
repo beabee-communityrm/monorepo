@@ -944,6 +944,12 @@
       "pending": "Очікує на розгляд",
       "successful": "Успішний"
     },
+    "paymentType": {
+      "oneTime": "Разовий",
+      "prorated": "Пропорційний",
+      "recurring": "Регулярний",
+      "unknown": "Невідомо"
+    },
     "perMonth": "/ місяць",
     "perMonthText": "місяць",
     "perOneTime": " одноразовий",
@@ -970,12 +976,7 @@
     "timeAgo": "{time} тому",
     "timeIn": "в {time}",
     "until": "доки",
-    "yes": "Так",
-    "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
-    }
+    "yes": "Так"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1721,6 +1722,10 @@
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Середня сума",
+      "total": "Загальна сума"
+    },
     "filter": {
       "all": "Усі платежі",
       "cancelled": "Скасовані платежі",
@@ -1728,11 +1733,7 @@
       "pending": "Очікувані платежі",
       "successful": "Успішні платежі"
     },
-    "showingOf": "Показано платежі з {start} до {end} з {total}",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": "Показано платежі з {start} до {end} з {total}"
   },
   "resetDevice": {
     "description": "Введіть свій пароль, щоб скинути захист 2FA, ви зможете налаштувати новий пристрій після входу в систему.",

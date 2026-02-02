@@ -948,6 +948,12 @@
       "pending": "En attente",
       "successful": "Succès"
     },
+    "paymentType": {
+      "oneTime": "Ponctuel",
+      "prorated": "Au prorata",
+      "recurring": "Récurrent",
+      "unknown": "Inconnu"
+    },
     "perMonth": "/ mois",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -972,12 +978,7 @@
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "oui",
-    "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
-    }
+    "yes": "oui"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1720,6 +1721,10 @@
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Montant moyen",
+      "total": "Montant total"
+    },
     "filter": {
       "all": "Tous les paiements",
       "cancelled": "Paiements annulés",
@@ -1727,11 +1732,7 @@
       "pending": "Paiements en attente",
       "successful": "Paiements réussis"
     },
-    "showingOf": "Affichage des paiements {start} à {end} sur {total}",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": "Affichage des paiements {start} à {end} sur {total}"
   },
   "resetDevice": {
     "description": "Entrez votre mot de passe pour réinitialiser la protection par A2F. Vous pourrez configurer un nouvel appareil après connexion.",

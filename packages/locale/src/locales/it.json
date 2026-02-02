@@ -944,6 +944,12 @@
       "pending": "In attesa",
       "successful": "Riuscito"
     },
+    "paymentType": {
+      "oneTime": "Una tantum",
+      "prorated": "Proporzionato",
+      "recurring": "Ricorrente",
+      "unknown": "Sconosciuto"
+    },
     "perMonth": "/ mese",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -968,12 +974,7 @@
     "timeAgo": "{time} fa",
     "timeIn": "in {time}",
     "until": "fino",
-    "yes": "Sì",
-    "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
-    }
+    "yes": "Sì"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1716,6 +1717,10 @@
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Importo medio",
+      "total": "Importo totale"
+    },
     "filter": {
       "all": "",
       "cancelled": "",
@@ -1723,11 +1728,7 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": "",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": ""
   },
   "resetDevice": {
     "description": "",

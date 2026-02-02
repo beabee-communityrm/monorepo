@@ -944,6 +944,12 @@
       "pending": "In afwachting van",
       "successful": "Succesvol"
     },
+    "paymentType": {
+      "oneTime": "Eenmalig",
+      "prorated": "Pro-rata",
+      "recurring": "Terugkerend",
+      "unknown": "Onbekend"
+    },
     "perMonth": "/ maand",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -968,12 +974,7 @@
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
     "until": "tot",
-    "yes": "Ja",
-    "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
-    }
+    "yes": "Ja"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1716,6 +1717,10 @@
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Gemiddeld bedrag",
+      "total": "Totaalbedrag"
+    },
     "filter": {
       "all": "Alle betalingen",
       "cancelled": "Geannuleerde betalingen",
@@ -1723,11 +1728,7 @@
       "pending": "In afwachting van betalingen",
       "successful": "Geslaagde betalingen"
     },
-    "showingOf": "{start} tot {end} betalingen van {total} weergeven",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": "{start} tot {end} betalingen van {total} weergeven"
   },
   "resetDevice": {
     "description": "Voer je wachtwoord in om de 2FA beveiliging te resetten, je kunt een nieuw apparaat instellen zodra je bent ingelogd.",

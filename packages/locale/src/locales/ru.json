@@ -945,6 +945,12 @@
       "pending": "В работе",
       "successful": "Успех"
     },
+    "paymentType": {
+      "oneTime": "Разовый",
+      "prorated": "Пропорциональный",
+      "recurring": "Регулярный",
+      "unknown": "Неизвестно"
+    },
     "perMonth": "/ месяц",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -969,12 +975,7 @@
     "timeAgo": "до {time}",
     "timeIn": "в {time}",
     "until": "до",
-    "yes": "Да",
-    "paymentType": {
-      "oneTime": "",
-      "recurring": "",
-      "prorated": ""
-    }
+    "yes": "Да"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1717,6 +1718,10 @@
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Средняя сумма",
+      "total": "Общая сумма"
+    },
     "filter": {
       "all": "",
       "cancelled": "",
@@ -1724,11 +1729,7 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": "",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": ""
   },
   "resetDevice": {
     "description": "Введите пароль, чтобы сбросить двухфакторной аутентификации. После входа в систему вы сможете настроить новое устройство.",

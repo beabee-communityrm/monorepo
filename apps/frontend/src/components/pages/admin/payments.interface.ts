@@ -76,7 +76,7 @@ const filterItems = computed<FilterItems<PaymentFilterName>>(() => ({
     'one-time': t('common.paymentType.oneTime'),
     recurring: t('common.paymentType.recurring'),
     prorated: t('common.paymentType.prorated'),
-    unknown: t('unknown'),
+    unknown: t('common.paymentType.unknown'),
   }),
 }));
 
