@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { reactive, ref } from 'vue';
 
 import AppInput from './AppInput.vue';
@@ -234,6 +235,37 @@ const timeValue = ref('');
             info-message="Click the copy button to copy this value"
           />
         </div>
+      </div>
+    </Variant>
+
+    <Variant title="With prefixAction and suffixAction">
+      <div class="max-w-md">
+        <AppInput
+          v-model="textValue"
+          label="With action slots"
+          disabled
+          hide-error-message
+          class="w-52"
+        >
+          <template #prefixAction>
+            <button
+              type="button"
+              class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none"
+              aria-label="Previous"
+            >
+              <font-awesome-icon :icon="faCaretLeft" aria-hidden="true" />
+            </button>
+          </template>
+          <template #suffixAction>
+            <button
+              type="button"
+              class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none"
+              aria-label="Next"
+            >
+              <font-awesome-icon :icon="faCaretRight" aria-hidden="true" />
+            </button>
+          </template>
+        </AppInput>
       </div>
     </Variant>
   </Story>
