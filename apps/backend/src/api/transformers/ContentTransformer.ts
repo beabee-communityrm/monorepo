@@ -49,7 +49,7 @@ class ContentTransformer {
     for (const [key, value] of Object.entries(contentData[id])) {
       switch (value[0]) {
         case 'data':
-          ret[key] = content?.data[key] || value[1];
+          ret[key] = content?.data[key] ?? value[1];
           break;
         case 'option':
           ret[key] = OptionsService[optTypeGetter[value[2]]](value[1]);
