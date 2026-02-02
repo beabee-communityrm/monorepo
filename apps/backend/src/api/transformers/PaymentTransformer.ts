@@ -1,22 +1,30 @@
-import { GetPaymentAggregationData, PaymentFilterName, Rule, paymentFilters } from '@beabee/beabee-common';
+import {
+  GetPaymentAggregationData,
+  PaymentFilterName,
+  Rule,
+  paymentFilters,
+} from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
 import { paymentFilterHandlers } from '@beabee/core/filter-handlers';
 import { Contact, Payment } from '@beabee/core/models';
 import { paymentService } from '@beabee/core/services';
 import { AuthInfo } from '@beabee/core/type';
 
-
-
-import { GetPaymentAggregationDto, GetPaymentAggregationOptsDto, GetPaymentDto, GetPaymentOptsDto, GetPaymentWith, ListPaymentsDto } from '@api/dto/PaymentDto';
+import {
+  GetPaymentAggregationDto,
+  GetPaymentAggregationOptsDto,
+  GetPaymentDto,
+  GetPaymentOptsDto,
+  GetPaymentWith,
+  ListPaymentsDto,
+} from '@api/dto/PaymentDto';
 import { BaseTransformer } from '@api/transformers/BaseTransformer';
-import ContactTransformer, { loadContactRoles } from '@api/transformers/ContactTransformer';
+import ContactTransformer, {
+  loadContactRoles,
+} from '@api/transformers/ContactTransformer';
 import { TransformPlainToInstance, plainToInstance } from 'class-transformer';
 import { NotFoundError } from 'routing-controllers';
 import { SelectQueryBuilder } from 'typeorm';
-
-
-
-
 
 class PaymentTransformer extends BaseTransformer<
   Payment,
@@ -119,7 +127,7 @@ class PaymentTransformer extends BaseTransformer<
    * Computes payment aggregation data based on the provided query.
    *
    * Executes a database query to calculate the sum and average of
-   * payment amounts. 
+   * payment amounts.
    *
    * @param auth The current authorization context determining access control
    * @param query The query parameters including filters and options

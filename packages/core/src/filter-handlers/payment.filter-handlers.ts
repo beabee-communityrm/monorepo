@@ -15,28 +15,11 @@ const contactFilterHandler: FilterHandler = (qb, args) => {
 };
 
 /**
- * Filter handler for paymentType field
- * Determines payment type based on subscriptionId and contact's contributionType
- */
-const paymentTypeFilterHandler: FilterHandler = (qb, args) => {
-  const value = args.value[0] as PaymentType;
-
-  if (value === 'one-time') {
-    qb.where(`${args.fieldPrefix}subscriptionId IS NULL`);
-  } else {
-    // TODO: implement as soon as payment type is available in table
-    // qb.where(args.convertToWhereClause(`${args.fieldPrefix}paymentType`));
-  }
-};
-
-/**
  * Collection of all payment-related filter handlers
  *
  * Available filters:
  * - contact: Filters by payment's contact (supports "me" value)
- * - paymentType: Filters by payment type (one-time, Automatic, Manual, Gift, None)
- */
+*/
 export const paymentFilterHandlers: FilterHandlers<string> = {
   contact: contactFilterHandler,
-  paymentType: paymentTypeFilterHandler,
 };

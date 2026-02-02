@@ -25,22 +25,13 @@ export const paymentFilters = {
       PaymentStatus.Cancelled,
     ] satisfies readonly PaymentStatus[] as readonly PaymentStatus[],
   },
-  paymentTypeSimple: {
-    type: 'enum',
-    options: [
-      PaymentType.Prorated,
-      PaymentType.Recurring,
-    ] satisfies readonly Exclude<
-      PaymentType,
-      PaymentType.OneTime
-    >[] as readonly Exclude<PaymentType, PaymentType.OneTime>[],
-  },
-  paymentTypeAdvanced: {
+  type: {
     type: 'enum',
     options: [
       PaymentType.Prorated,
       PaymentType.Recurring,
       PaymentType.OneTime,
+      PaymentType.Unknown,
     ] satisfies readonly PaymentType[] as readonly PaymentType[],
   },
 } as const;
