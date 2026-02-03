@@ -112,16 +112,25 @@ const hasOneTimeContribution = computed(() =>
 );
 
 const filteredGroups = computed(() => {
-  const filterToExclude = hasOneTimeContribution.value
-    ? 'paymentTypeSimple'
-    : 'paymentTypeAdvanced';
+  const groups = filterGroups.value;
 
-  return filterGroups.value.map((group) => ({
-    ...group,
-    items: Object.fromEntries(
-      Object.entries(group.items).filter(([key]) => key !== filterToExclude)
-    ),
-  }));
+  if (hasOneTimeContribution.value) {
+    return groups;
+  }
+
+  return groups.map((group) => {
+    const items = { ...group.items };
+    const typeItem = items.type;
+
+    if (typeItem && 'options' in typeItem && Array.isArray(typeItem.options)) {
+      items.type = {
+        ...typeItem,
+        options: typeItem.options.filter((opt) => opt.id !== 'one-time'),
+      };
+    }
+
+    return { ...group, items };
+  });
 });
 
 watchEffect(async () => {
