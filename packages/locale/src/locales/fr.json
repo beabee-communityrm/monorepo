@@ -1433,9 +1433,9 @@
     },
     "errors": {
       "confirmEmail": {
-        "message": "Vous y êtes presque ! Vous devez simplement confirmer votre adresse e-mail pour finaliser votre adhésion.",
-        "proceed": "Nous vous avons envoyé un e-mail. Veuillez cliquer sur le lien pour continuer.",
-        "title": "Confirmez votre adresse e-mail"
+        "message": "Nous venons d’envoyer un e-mail de confirmation à l’adresse que vous avez indiquée.",
+        "proceed": "N’oubliez pas de finaliser la configuration de votre compte. Vous trouverez les prochaines étapes dans votre boîte de réception.",
+        "title": "Merci!"
       },
       "failed": {
         "backToJoin": "Retour à la page d'inscription",
