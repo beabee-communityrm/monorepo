@@ -45,7 +45,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 const { t } = useI18n();
-const route = useRoute();
+const route = useRoute('adminContactsSendEmailSegmentId');
 const router = useRouter();
 
 addBreadcrumb(
@@ -59,11 +59,7 @@ addBreadcrumb(
   ])
 );
 
-const segmentId = computed(() => {
-  const param = (route.params as { segmentId?: string | string[] }).segmentId;
-  if (param == null) return '';
-  return Array.isArray(param) ? (param[0] ?? '') : param;
-});
+const segmentId = computed(() => route.params.segmentId);
 
 const backUrl = computed(
   () => `/admin/contacts${segmentId.value ? `?segment=${segmentId.value}` : ''}`
