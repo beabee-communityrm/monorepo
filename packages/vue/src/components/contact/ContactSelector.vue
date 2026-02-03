@@ -5,14 +5,14 @@
       disabled
       hide-error-message
       class="w-52 shrink-0"
-      :aria-label="nameAriaLabel || undefined"
+      :aria-label="nameAriaLabel"
     >
       <template #prefixAction>
         <button
           type="button"
           :class="actionButtonClass"
           :disabled="currentIndex <= 0"
-          :aria-label="previousAriaLabel"
+          :aria-label="t('actions.previous')"
           @click="goToIndex(currentIndex - 1)"
         >
           <font-awesome-icon :icon="faCaretLeft" aria-hidden="true" />
@@ -23,14 +23,14 @@
           type="button"
           :class="actionButtonClass"
           :disabled="currentIndex >= options.length - 1"
-          :aria-label="nextAriaLabel"
+          :aria-label="t('actions.next')"
           @click="goToIndex(currentIndex + 1)"
         >
           <font-awesome-icon :icon="faCaretRight" aria-hidden="true" />
         </button>
       </template>
     </AppInput>
-    <span v-if="countTemplate" class="text-body-80">
+    <span v-if="options.length > 1" class="text-body-80">
       {{ countText }}
     </span>
   </div>
@@ -39,6 +39,7 @@
 <script lang="ts" setup>
 import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { AppInput } from '../form';
 
@@ -55,65 +56,47 @@ export interface ContactSelectorOption {
   email?: string;
 }
 
-const props = withDefaults(
-  defineProps<{
-    /** Selected contact id; empty string = first option (e.g. "self"). */
-    modelValue: string;
-    /** Options: first is often { id: '' } for self, then additional contacts. */
-    options: ContactSelectorOption[];
-    /** Optional aria-label for the name display (e.g. same as parent's visible label). */
-    nameAriaLabel?: string;
-    /** Text shown when the selected option has id ''. */
-    selfOptionLabel?: string;
-    /** Template for count, e.g. "Contact %current% of %total%". Use %current% and %total% (or {current}/{total}) so i18n does not interpolate. */
-    countTemplate?: string;
-    /** Aria-label for the previous button. */
-    previousAriaLabel?: string;
-    /** Aria-label for the next button. */
-    nextAriaLabel?: string;
-  }>(),
-  {
-    nameAriaLabel: '',
-    selfOptionLabel: 'Myself',
-    countTemplate: '',
-    previousAriaLabel: 'Previous',
-    nextAriaLabel: 'Next',
-  }
-);
+const model = defineModel<string>({ default: '' });
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void;
+const props = defineProps<{
+  /** Options: first is often { id: '' } for self, then additional contacts. */
+  options: ContactSelectorOption[];
 }>();
 
+const { t } = useI18n();
+
 const currentIndex = computed(() => {
-  const idx = props.options.findIndex((o) => o.id === props.modelValue);
+  const idx = props.options.findIndex((o) => o.id === model.value);
   return idx >= 0 ? idx : 0;
 });
 
 const displayName = computed(() => {
   const opt = props.options[currentIndex.value];
   if (!opt) return '';
-  if (opt.id === '') return props.selfOptionLabel;
+  if (opt.id === '') return t('contactSelector.selfOption');
   const full = `${opt.firstname ?? ''} ${opt.lastname ?? ''}`.trim();
   return full || opt.email || `Contact ${currentIndex.value + 1}`;
 });
 
-const countText = computed(() => {
-  if (!props.countTemplate) return '';
-  return props.countTemplate
-    .replace(/%current%/g, String(currentIndex.value + 1))
-    .replace(/%total%/g, String(props.options.length))
-    .replace(/\{current\}/g, String(currentIndex.value + 1))
-    .replace(/\{total\}/g, String(props.options.length));
-});
+const countText = computed(() =>
+  t('contactSelector.contactNOfTotal', {
+    current: currentIndex.value + 1,
+    total: props.options.length,
+  })
+);
+
+const nameAriaLabel = computed(() =>
+  props.options.length > 1 ? countText.value : undefined
+);
 
 function goToIndex(index: number) {
   if (index < 0 || index >= props.options.length) return;
-  emit('update:modelValue', props.options[index].id);
+  model.value = props.options[index].id;
 }
 </script>
 
 <style scoped>
+/* Constrain disabled input text so it doesn't overflow the fixed-width container */
 :deep(input) {
   min-width: 0;
   overflow: hidden;
