@@ -26,7 +26,7 @@
           size="xs"
           :icon="faDownload"
           variant="primaryOutlined"
-          @click="downloadInvoice(item.id)"
+          :href="client.payment.getInvoiceUrl(item.id)"
         ></AppButton>
       </template>
     </AppTable>
@@ -104,10 +104,6 @@ function getRowClass(item: GetPaymentData) {
     default:
       return '';
   }
-}
-
-function downloadInvoice(paymentId: string) {
-  window.open(client.payment.getInvoiceUrl(paymentId), '_blank');
 }
 
 watchEffect(async () => {
