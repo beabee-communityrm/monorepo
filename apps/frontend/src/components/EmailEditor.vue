@@ -77,10 +77,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-/**
- * EmailEditor: edit subject/body and get server-side email preview (merge fields, footer, inline CSS).
- * Merge fields: standard (SUPPORTEMAIL, ORGNAME), contact (when template/options), template-specific from API.
- */
+/** Edit subject/body with server preview. Merge fields: standard, contact (when template/options), template-specific. */
 import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
 import { debounce } from '@beabee/beabee-common';
 import type { PreviewEmailOptions } from '@beabee/client';
@@ -115,40 +112,16 @@ const content = defineModel<string>('content', { default: '' });
 
 const props = withDefaults(
   defineProps<{
-    /**
-     * Optional heading text for the editor
-     */
     heading?: string;
-
-    /**
-     * Email template configuration
-     * Configures the email template type and ID for preview generation
-     * Also determines which merge fields are available
-     */
+    /** Template type/id for preview and merge fields. */
     template?: EmailTemplateConfig;
-
-    /**
-     * Custom merge fields to send to the server for preview
-     * These override template-specific fields
-     * Format: { FIELD_NAME: 'value' }
-     */
+    /** Override merge fields for preview. { FIELD_NAME: 'value' } */
     mergeFields?: Record<string, string>;
-
-    /**
-     * Whether to always stack the preview below the editor (ignores responsive breakpoints)
-     */
+    /** If true, preview always below editor (no side-by-side). */
     alwaysStacked?: boolean;
-
-    /**
-     * Optional contact ID to use for preview. If not set, the current user is used.
-     * Bind with v-model:previewContactId when passing previewContactOptions (e.g. segment send).
-     */
+    /** Contact ID for preview. Use v-model:previewContactId with previewContactOptions. */
     previewContactId?: string | null;
-
-    /**
-     * When provided, shows additional contacts in the selector (self + these).
-     * Pass segment contacts for "send email to segment"; omit for template edit (self only).
-     */
+    /** Extra contacts in selector (e.g. segment send). Omit for template edit (self only). */
     previewContactOptions?: PreviewContactOption[];
   }>(),
   {

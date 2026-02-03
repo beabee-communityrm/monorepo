@@ -44,6 +44,8 @@ import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+const PREVIEW_CONTACTS_LIMIT = 50;
+
 const { t } = useI18n();
 const route = useRoute('adminContactsSendEmailSegmentId');
 const router = useRouter();
@@ -84,7 +86,7 @@ onMounted(async () => {
   try {
     segment.value = await client.segments.get(segmentId.value);
     const result = await client.segments.contact.list(segmentId.value, {
-      limit: 50,
+      limit: PREVIEW_CONTACTS_LIMIT,
       offset: 0,
     });
     segmentContacts.value = result.items;

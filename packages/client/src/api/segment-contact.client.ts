@@ -8,10 +8,7 @@ import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
 import { BaseClient } from './base.client.js';
 
-/**
- * Client for segment-scoped contact operations (e.g. list contacts in segment).
- * Obtained via segments.contact.
- */
+/** Segment-scoped contacts (e.g. list). Use segments.contact. */
 export class SegmentContactClient extends BaseClient {
   constructor(protected override readonly options: BaseClientOptions) {
     super({

@@ -234,10 +234,7 @@ class ContactTransformer extends BaseContactTransformer<
     });
   }
 
-  /**
-   * Fetch contacts matching a rule group (e.g. segment rules), with optional query overrides.
-   * Merges ruleGroup with query.rules when both are present.
-   */
+  /** Fetch contacts for a rule group (e.g. segment). Merges ruleGroup with query.rules when both present. */
   async fetchForSegment(
     auth: AuthInfo,
     ruleGroup: RuleGroup,
@@ -249,9 +246,7 @@ class ContactTransformer extends BaseContactTransformer<
     return await this.fetch(auth, { ...query, rules: mergedRules });
   }
 
-  /**
-   * Same as fetchForSegment but returns raw Contact entities (for internal use, e.g. segment email send).
-   */
+  /** Like fetchForSegment but returns raw Contact[] (e.g. for segment email send). */
   async fetchRawForSegment(
     auth: AuthInfo,
     ruleGroup: RuleGroup,

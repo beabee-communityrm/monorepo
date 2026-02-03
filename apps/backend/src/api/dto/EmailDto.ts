@@ -140,10 +140,7 @@ export class GetEmailTemplateInfoDto {
   subject!: string;
 }
 
-/**
- * DTO for email preview (POST /email/preview).
- * Optional contactId: when set (admin), merge fields use that contact; otherwise the current user.
- */
+/** POST /email/preview. contactId: when set (admin), merge fields use that contact; else current user. */
 export class PreviewEmailDto {
   @IsOptional()
   @IsString()
@@ -153,11 +150,6 @@ export class PreviewEmailDto {
   @IsString()
   subject?: string;
 
-  /**
-   * Optional body to override the template's body for preview
-   * When provided, this body will be used instead of the saved template body,
-   * allowing preview of unsaved changes. Merge fields will still be replaced.
-   */
   @IsOptional()
   @IsString()
   body?: string;

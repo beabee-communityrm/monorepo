@@ -147,10 +147,7 @@ class EmailService {
     await this.sendEmail(email, recipients, opts);
   }
 
-  /**
-   * Send a custom email (subject + body) to one or more contacts.
-   * Builds a transient email; merge fields are applied per recipient.
-   */
+  /** Send custom subject+body to one or more contacts. Merge fields applied per recipient. */
   async sendCustomEmailToContact(
     contactOrContacts: Contact | Contact[],
     subject: string,

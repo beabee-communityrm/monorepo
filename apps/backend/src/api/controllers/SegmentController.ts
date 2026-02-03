@@ -37,6 +37,7 @@ import {
   QueryParams,
 } from 'routing-controllers';
 
+/** Chunk size for segment email send to limit memory use. */
 const SEGMENT_EMAIL_PAGE_SIZE = 100;
 
 @JsonController('/segments')
@@ -120,6 +121,7 @@ export class SegmentController {
     );
   }
 
+  /** One-off email to all contacts in the segment (chunked). */
   @OnUndefined(204)
   @Post('/:id/email/send')
   async sendEmail(
