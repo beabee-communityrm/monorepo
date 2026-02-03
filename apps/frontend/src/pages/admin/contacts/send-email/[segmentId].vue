@@ -14,31 +14,28 @@ meta:
     <p>{{ t('common.loading') }}...</p>
   </div>
 
-  <template v-else-if="segment">
+  <AppApiForm
+    v-else-if="segment"
+    :button-text="t('contacts.sendEmail.send')"
+    :success-text="t('contacts.sendEmail.sent')"
+    inline-error
+    @submit="handleSend"
+  >
     <EmailEditor
       v-model:subject="emailData.subject"
       v-model:content="emailData.body"
       v-model:preview-contact-id="previewContactId"
       :preview-contact-options="segmentContacts"
     />
-
-    <div class="mt-6">
-      <AppAsyncButton
-        variant="primaryOutlined"
-        :disabled="!emailData.subject.trim() || !emailData.body.trim()"
-        @click="handleSend"
-      >
-        {{ t('contacts.sendEmail.send') }}
-      </AppAsyncButton>
-    </div>
-  </template>
+  </AppApiForm>
 </template>
 
 <script lang="ts" setup>
-import type { GetContactData, GetSegmentDataWith } from '@beabee/beabee-common';
-import { AppAsyncButton, PageTitle, addNotification } from '@beabee/vue';
+import type { GetContactData, GetSegmentData } from '@beabee/beabee-common';
+import { PageTitle, addNotification } from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
@@ -63,9 +60,9 @@ addBreadcrumb(
 );
 
 const segmentId = computed(() => {
-  const param = (route.params as Record<string, string | string[]>).segmentId;
-  if (!param) return '';
-  return Array.isArray(param) ? param[0] : param;
+  const param = (route.params as { segmentId?: string | string[] }).segmentId;
+  if (param == null) return '';
+  return Array.isArray(param) ? (param[0] ?? '') : param;
 });
 
 const backUrl = computed(
@@ -78,7 +75,7 @@ const pageTitle = computed(() => {
 });
 
 const loading = ref(true);
-const segment = ref<GetSegmentDataWith<void> | null>(null);
+const segment = ref<GetSegmentData | null>(null);
 const segmentContacts = ref<GetContactData[]>([]);
 const emailData = ref({ subject: '', body: '' });
 const previewContactId = ref<string>('');
@@ -118,21 +115,10 @@ async function handleSend() {
   ) {
     return;
   }
-  try {
-    await client.segments.email.send(segmentId.value, {
-      subject: emailData.value.subject,
-      body: emailData.value.body,
-    });
-    addNotification({
-      variant: 'success',
-      title: t('contacts.sendEmail.sent'),
-    });
-    router.push(backUrl.value);
-  } catch {
-    addNotification({
-      variant: 'error',
-      title: t('notifications.error'),
-    });
-  }
+  await client.segments.email.send(segmentId.value, {
+    subject: emailData.value.subject,
+    body: emailData.value.body,
+  });
+  router.push(backUrl.value);
 }
 </script>
