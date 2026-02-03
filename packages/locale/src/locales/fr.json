@@ -1029,7 +1029,7 @@
     }
   },
   "contactSelector": {
-    "contactNOfTotal": "Contact %current% sur %total%",
+    "contactNOfTotal": "Contact {current} sur {total}",
     "selfOption": "Vous-même"
   },
   "contacts": {

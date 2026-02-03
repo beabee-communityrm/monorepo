@@ -1025,7 +1025,7 @@
     }
   },
   "contactSelector": {
-    "contactNOfTotal": "Contact %current% van %total%",
+    "contactNOfTotal": "Contact {current} van {total}",
     "selfOption": "Uzelf"
   },
   "contacts": {

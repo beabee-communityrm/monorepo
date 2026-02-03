@@ -1025,7 +1025,7 @@
     }
   },
   "contactSelector": {
-    "contactNOfTotal": "Επαφή %current% από %total%",
+    "contactNOfTotal": "Επαφή {current} από {total}",
     "selfOption": "Εσείς οι ίδιοι"
   },
   "contacts": {

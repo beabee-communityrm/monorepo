@@ -1025,7 +1025,7 @@
     }
   },
   "contactSelector": {
-    "contactNOfTotal": "Contatto %current% di %total%",
+    "contactNOfTotal": "Contatto {current} di {total}",
     "selfOption": "Tu stesso"
   },
   "contacts": {

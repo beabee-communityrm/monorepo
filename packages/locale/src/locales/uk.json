@@ -1027,7 +1027,7 @@
     }
   },
   "contactSelector": {
-    "contactNOfTotal": "Контакт %current% з %total%",
+    "contactNOfTotal": "Контакт {current} з {total}",
     "selfOption": "Ви самі"
   },
   "contacts": {
