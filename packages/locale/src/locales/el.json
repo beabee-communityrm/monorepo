@@ -1011,9 +1011,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "Εφάπαξ",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "Επαναλαμβανόμενος",
     "roles": "",
     "security": {
       "instructions": "",
@@ -1718,8 +1720,8 @@
   },
   "paymentsAdmin": {
     "aggregation": {
-      "average": "Μέσο ποσό",
-      "total": "Συνολικό ποσό"
+      "average": "",
+      "total": ""
     },
     "filter": {
       "all": "",

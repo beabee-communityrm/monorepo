@@ -1011,9 +1011,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "Einmalig",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "Wiederkehrend",
     "roles": "",
     "security": {
       "instructions": "",

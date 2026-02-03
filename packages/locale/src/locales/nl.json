@@ -1011,9 +1011,11 @@
       "status": "Status",
       "title": "Nieuwsbrief"
     },
+    "oneTime": "Eenmalig",
     "overview": "Overzicht",
     "pickTag": "Kies een tag uit de onderstaande lijst",
     "profile": "Profiel",
+    "recurring": "Terugkerend",
     "roles": "Rollen",
     "security": {
       "instructions": "Kopieer en deel deze link:",

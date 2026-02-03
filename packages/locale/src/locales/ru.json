@@ -1012,9 +1012,11 @@
       "status": "Статус",
       "title": "Новости"
     },
+    "oneTime": "Единовременный",
     "overview": "Обзор",
     "pickTag": "",
     "profile": "",
+    "recurring": "Повторяющийся",
     "roles": "Роль",
     "security": {
       "instructions": "Скопируйте и поделитесь этой ссылкой:",

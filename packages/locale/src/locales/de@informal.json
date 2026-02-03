@@ -1011,9 +1011,11 @@
       "status": "Status",
       "title": "Newsletter"
     },
+    "oneTime": "Einmalig",
     "overview": "Überblick",
     "pickTag": "Tag aus der Liste wählen",
     "profile": "Profil",
+    "recurring": "Wiederkehrend",
     "roles": "Rolle",
     "security": {
       "instructions": "Link kopieren und teilen:",

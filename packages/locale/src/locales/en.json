@@ -1004,6 +1004,8 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "Cancelled on",
     "contribution": "Contribution",
+    "recurring": "Recurring",
+    "oneTime": "One-time",
     "contributionType": "Type",
     "joinSurvey": "Join survey",
     "newsletter": {

@@ -1011,9 +1011,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "Una tantum",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "Ricorrente",
     "roles": "",
     "security": {
       "instructions": "",
