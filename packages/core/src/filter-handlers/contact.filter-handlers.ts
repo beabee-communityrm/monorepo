@@ -82,7 +82,7 @@ function oneTimePaymentField(field?: keyof Payment): FilterHandler {
       .subQuery()
       .select('p.contactId')
       .from(Payment, 'p')
-      .where("p.status = 'successful'")
+      .where("p.type = 'one-time'")
       .andWhere('p.subscriptionId IS NULL')
       .andWhere('p.contactId IS NOT NULL')
       .distinct(true);
@@ -112,7 +112,7 @@ function oneTimePaymentStatistic(statistic: 'avg' | 'total'): FilterHandler {
       .subQuery()
       .select('p.contactId')
       .from(Payment, 'p')
-      .where("p.status = 'successful'")
+      .where("p.type = 'one-time'")
       .andWhere('p.subscriptionId IS NULL')
       .andWhere('p.contactId IS NOT NULL')
       .groupBy('p.contactId')
