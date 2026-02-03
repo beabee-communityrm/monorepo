@@ -945,6 +945,12 @@
       "pending": "",
       "successful": ""
     },
+    "paymentType": {
+      "oneTime": "",
+      "prorated": "",
+      "recurring": "",
+      "unknown": ""
+    },
     "perMonth": "",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -1006,9 +1012,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "",
     "roles": "",
     "security": {
       "instructions": "",
@@ -1035,6 +1043,7 @@
       "activeUser": "",
       "amount": "",
       "annotationsCopy": "",
+      "averageDonationAmount": "",
       "contribution": "",
       "contributionCancelled": "",
       "contributionMonthlyAmount": "",
@@ -1042,8 +1051,10 @@
       "contributionType": "",
       "deliveryOptIn": "",
       "description": "",
+      "donationDate": "",
       "email": "",
       "firstname": "",
+      "hasDonated": "",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
@@ -1060,12 +1071,14 @@
       "period": "",
       "phone": "",
       "preferredChannel": "",
-      "tags": ""
+      "tags": "",
+      "totalDonationAmount": ""
     },
     "dataGroup": {
       "callout": "",
       "contact": "",
-      "contribution": "",
+      "oneTimeContributions": "",
+      "recurringContributions": "",
       "role": ""
     },
     "noContacts": "",
@@ -1108,6 +1121,7 @@
     "prorateNoTitle": "",
     "prorateYesText": "",
     "prorateYesTitle": "",
+    "recurringContribution": "",
     "restartContribution": "",
     "startContribution": "",
     "startedContribution": "",
@@ -1702,13 +1716,18 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "",
+      "total": ""
+    },
     "filter": {
       "all": "",
       "cancelled": "",

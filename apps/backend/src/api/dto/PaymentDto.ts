@@ -4,7 +4,7 @@ import {
   PaymentType,
 } from '@beabee/beabee-common';
 
-import { GetPaginatedQuery } from '@api/dto/BaseDto';
+import { GetExportQuery, GetPaginatedQuery } from '@api/dto/BaseDto';
 import { GetContactDto } from '@api/dto/ContactDto';
 import {
   IsArray,
@@ -57,6 +57,8 @@ export enum GetPaymentWith {
   Contact = 'contact',
 }
 
+export class GetPaymentAggregationOptsDto extends GetExportQuery {}
+
 export class GetPaymentOptsDto {
   @IsArray()
   @IsOptional()
@@ -72,4 +74,14 @@ export class ListPaymentsDto extends GetPaginatedQuery {
 
   @IsIn(['amount', 'chargeDate'])
   sort?: string;
+}
+
+export class GetPaymentAggregationDto {
+  @IsNumber()
+  @IsOptional()
+  sum!: number | null;
+
+  @IsNumber()
+  @IsOptional()
+  average!: number | null;
 }

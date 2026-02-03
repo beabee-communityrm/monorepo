@@ -9,11 +9,26 @@ meta:
   <PageTitle :title="t('menu.payments')" border />
 
   <AppFilterGrid v-model="currentStatus" :items="statusItems">
+    <div v-if="aggregation" class="mb-6 flex gap-4">
+      <KeyStat
+        :label="t('paymentsAdmin.aggregation.total')"
+        :stat="aggregation.sum === null ? '-' : n(aggregation.sum, 'currency')"
+      />
+      <KeyStat
+        :label="t('paymentsAdmin.aggregation.average')"
+        :stat="
+          aggregation.average === null
+            ? '-'
+            : n(aggregation.average, 'currency')
+        "
+      />
+    </div>
     <AppSearch
       v-model="currentRules"
-      :filter-groups="filterGroups"
+      :filter-groups="filteredGroups"
       @reset="currentRules = undefined"
     />
+
     <AppPaginatedTable
       v-model:query="currentPaginatedQuery"
       keypath="paymentsAdmin.showingOf"
@@ -43,6 +58,8 @@ meta:
 
 <script lang="ts" setup>
 import type {
+  ContentJoinData,
+  GetPaymentAggregationData,
   GetPaymentDataWith,
   GetPaymentsQuery,
   Paginated,
@@ -50,6 +67,7 @@ import type {
 import { PaymentStatus as PaymentStatusEnum } from '@beabee/beabee-common';
 import { AppFilterGrid, PageTitle, formatLocale } from '@beabee/vue';
 
+import KeyStat from '@components/pages/admin/KeyStat.vue';
 import {
   filterGroups,
   headers,
@@ -58,7 +76,7 @@ import {
 import { PaymentStatus } from '@components/payment';
 import AppSearch from '@components/search/AppSearch.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import { faEuro } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import {
@@ -66,17 +84,54 @@ import {
   defineParam,
   defineRulesParam,
 } from '@utils/pagination';
-import { computed, ref, watchEffect } from 'vue';
+import { computed, onBeforeMount, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t, n } = useI18n();
 
-addBreadcrumb(computed(() => [{ title: t('menu.payments'), icon: faEuro }]));
+addBreadcrumb(
+  computed(() => [
+    {
+      title: t('menu.dashboard'),
+      to: '/admin',
+      icon: faChartLine,
+    },
+    { title: t('menu.payments') },
+  ])
+);
 
 const currentStatus = defineParam('status', (v) => v || '', 'replace');
 const currentRules = defineRulesParam();
 const currentPaginatedQuery = definePaginatedQuery('chargeDate');
 const paymentsTable = ref<Paginated<GetPaymentDataWith<'contact'>>>();
+const aggregation = ref<GetPaymentAggregationData>();
+const joinContent = ref<ContentJoinData>();
+
+const hasOneTimeContribution = computed(() =>
+  joinContent.value?.periods.some((p) => p.name === 'one-time')
+);
+
+const filteredGroups = computed(() => {
+  const groups = filterGroups.value;
+
+  if (hasOneTimeContribution.value) {
+    return groups;
+  }
+
+  return groups.map((group) => {
+    const items = { ...group.items };
+    const typeItem = items.type;
+
+    if (typeItem && 'options' in typeItem && Array.isArray(typeItem.options)) {
+      items.type = {
+        ...typeItem,
+        options: typeItem.options.filter((opt) => opt.id !== 'one-time'),
+      };
+    }
+
+    return { ...group, items };
+  });
+});
 
 watchEffect(async () => {
   const rules: GetPaymentsQuery['rules'] = { condition: 'AND', rules: [] };
@@ -100,5 +155,13 @@ watchEffect(async () => {
     },
     ['contact']
   );
+
+  aggregation.value = await client.payment.aggregate({
+    rules,
+  });
+});
+
+onBeforeMount(async () => {
+  joinContent.value = await client.content.get('join');
 });
 </script>

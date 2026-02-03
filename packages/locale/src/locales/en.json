@@ -945,6 +945,12 @@
       "pending": "Pending",
       "successful": "Successful"
     },
+    "paymentType": {
+      "oneTime": "One-Time",
+      "prorated": "Prorated",
+      "recurring": "Recurring",
+      "unknown": "Unknown"
+    },
     "perMonth": "/ month",
     "perOneTime": " one-time",
     "perOneTimeText": "one-time",
@@ -999,6 +1005,8 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "Cancelled on",
     "contribution": "Contribution",
+    "recurring": "Recurring",
+    "oneTime": "One-time",
     "contributionType": "Type",
     "joinSurvey": "Join survey",
     "newsletter": {
@@ -1035,11 +1043,11 @@
       "activeUser": "Active user",
       "amount": "Amount",
       "annotationsCopy": "Contact successfully updated",
-      "contribution": "Contribution",
-      "contributionCancelled": "Contribution cancelled",
-      "contributionMonthlyAmount": "Contribution monthly amount",
-      "contributionPeriod": "Contribution period",
-      "contributionType": "Contribution type",
+      "contribution": "Recurring contribution",
+      "contributionCancelled": "Recurring contribution cancelled",
+      "contributionMonthlyAmount": "Recurring contribution monthly amount",
+      "contributionPeriod": "Recurring contribution period",
+      "contributionType": "Recurring contribution type",
       "deliveryOptIn": "Delivery opt-in",
       "description": "Description",
       "email": "Email",
@@ -1060,12 +1068,17 @@
       "period": "Period",
       "phone": "Phone number",
       "preferredChannel": "Preferred channel",
-      "tags": "Tags"
+      "tags": "Tags",
+      "donationDate": "One-time contribution date",
+      "hasDonated": "Made one-time contribution",
+      "totalDonationAmount": "Total amount of one-time contributions (all time)",
+      "averageDonationAmount": "Average amount of one-time contributions (all time)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Contact information",
-      "contribution": "Contribution",
+      "recurringContributions": "Recurring Contributions",
+      "oneTimeContributions": "One-Time Contributions",
       "role": "Role"
     },
     "noContacts": "No contacts added yet",
@@ -1109,6 +1122,7 @@
     "prorateYesText": "You'll be charged a one-off payment of {oneOffPayment} now and your contribution will be updated immedately",
     "prorateYesTitle": "Update my contribution now",
     "restartContribution": "Restart contribution",
+    "recurringContribution": "Recurring Contribution",
     "startContribution": "Start contribution",
     "startedContribution": "Your contribution has started.",
     "updateContribution": "Update contribution",
@@ -1391,8 +1405,8 @@
     "viewOpenCallouts": "Open the CrowdNewsroom",
     "welcome": "Welcome aboard {firstName}!",
     "yourProfile": "Your profile",
-    "makeOneTimeDonationTitle": "Make a one time donation",
-    "makeOneTimeDonationButton": "Make a donation"
+    "makeOneTimeDonationTitle": "Make one-time contribution",
+    "makeOneTimeDonationButton": "Make contribution"
   },
   "icons": {
     "welcome": {
@@ -1459,7 +1473,7 @@
     "goBackButton": "Back to the previous screen",
     "note": "You'll be able to update your details and access your payment history at any time in your account",
     "willBeContributing": "You'll be contributing {contribution}",
-    "willBeDonating": "You'll be making a donation of {amount}"
+    "willBeDonating": "You'll be making a one-time contribution of {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Please confirm your details",
@@ -1512,7 +1526,7 @@
         "bigTitle": "Welcome & cancellation emails",
         "cancellationEmail": "Cancellation email",
         "description": "Customise your welcome and cancellation emails",
-        "oneTimeDonationEmail": "One-time donation email",
+        "oneTimeDonationEmail": "One-time contribution email",
         "text": "All emails are sent from your support email address and include standard signature, you can change these in your email settings.",
         "title": "Emails",
         "welcomeEmail": "Welcome email"
@@ -1702,7 +1716,8 @@
       "amount": "Amount",
       "chargeDate": "Charge date",
       "contact": "Contact",
-      "status": "Status"
+      "status": "Status",
+      "type": "Type"
     },
     "dataGroup": {
       "payment": "Payment"
@@ -1716,7 +1731,11 @@
       "pending": "Pending payments",
       "successful": "Successful payments"
     },
-    "showingOf": "Showing {start} to {end} payments out of {total}"
+    "showingOf": "Showing {start} to {end} payments out of {total}",
+    "aggregation": {
+      "average": "Average Amount",
+      "total": "Total Amount"
+    }
   },
   "resetDevice": {
     "description": "Enter your password to reset 2FA protection, you will be able to set up a new device once you are logged in.",

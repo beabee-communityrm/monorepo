@@ -949,6 +949,12 @@
       "pending": "En attente",
       "successful": "Succès"
     },
+    "paymentType": {
+      "oneTime": "Ponctuel",
+      "prorated": "Proratisé",
+      "recurring": "Récurrent",
+      "unknown": "Inconnu"
+    },
     "perMonth": "/ mois",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -1010,9 +1016,11 @@
       "status": "Statut",
       "title": "Lettre d'information"
     },
+    "oneTime": "Ponctuel",
     "overview": "Vue d'ensemble",
     "pickTag": "Sélectionnez un libellé dans la liste ci-dessous",
     "profile": "Profil",
+    "recurring": "Récurrent",
     "roles": "Rôles",
     "security": {
       "instructions": "Copiez et partagez ce lien :",
@@ -1039,15 +1047,18 @@
       "activeUser": "Utilisateur actif",
       "amount": "Montant",
       "annotationsCopy": "Le contact a bien été mis à jour",
-      "contribution": "Cotisation",
-      "contributionCancelled": "Cotisation annulée",
-      "contributionMonthlyAmount": "Montant de cotisation mensuelle",
-      "contributionPeriod": "Période de cotisation",
-      "contributionType": "Type de cotisation",
+      "averageDonationAmount": "Montant moyen des contributions uniques (depuis le début)",
+      "contribution": "Cotisation récurrente",
+      "contributionCancelled": "Cotisation récurrente annulée",
+      "contributionMonthlyAmount": "Montant mensuel de cotisation récurrente",
+      "contributionPeriod": "Période de cotisation récurrente",
+      "contributionType": "Type de cotisation récurrente",
       "deliveryOptIn": "",
       "description": "Description",
+      "donationDate": "Date de contribution unique",
       "email": "E-mail",
       "firstname": "Prénom",
+      "hasDonated": "A effectué une contribution unique",
       "joined": "Inscrit",
       "lastSeen": "Dernière connexion",
       "lastname": "Nom",
@@ -1064,12 +1075,14 @@
       "period": "Période",
       "phone": "Numéro de téléphone",
       "preferredChannel": "Canal de préférence",
-      "tags": "Libellés"
+      "tags": "Libellés",
+      "totalDonationAmount": "Montant total des contributions uniques (depuis le début)"
     },
     "dataGroup": {
       "callout": "CrowdNewsrooms",
       "contact": "Informations de contact",
-      "contribution": "Cotisation",
+      "oneTimeContributions": "Dons uniques",
+      "recurringContributions": "Cotisations récurrentes",
       "role": "Rôle"
     },
     "noContacts": "Aucun contact ajouté pour le moment",
@@ -1112,6 +1125,7 @@
     "prorateNoTitle": "Mettre à jour ma cotisation le {renewalDate}",
     "prorateYesText": "Un paiement unique de {oneOffPayment} vous sera facturé et votre cotisation sera mise à jour immédiatement",
     "prorateYesTitle": "Mettre à jour ma cotisation maintenant",
+    "recurringContribution": "Cotisation récurrente",
     "restartContribution": "",
     "startContribution": "Commencer à cotiser",
     "startedContribution": "Votre cotisation a commencé.",
@@ -1388,8 +1402,8 @@
   },
   "homePage": {
     "editProfile": "Modifiez votre profil communautaire",
-    "makeOneTimeDonationButton": "Don",
-    "makeOneTimeDonationTitle": "Faire un don maintenant",
+    "makeOneTimeDonationButton": "Contribution",
+    "makeOneTimeDonationTitle": "Faire une contribution unique maintenant",
     "manageContribution": "Gérer votre cotisation",
     "newCallout": "Nouvelle CrowdNewsrooms !",
     "openCallouts": "CrowdNewsrooms actives",
@@ -1465,7 +1479,7 @@
     "goBackButton": "Revenir à l'écran précédent",
     "note": "Vous pourrez modifier votre cotisation et accéder à votre historique de paiement à tout moment depuis votre compte membre",
     "willBeContributing": "Vous cotiserez {contribution}",
-    "willBeDonating": "Vous ferez un don de {amount}"
+    "willBeDonating": "Vous ferez une contribution unique de {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Veuillez confirmer vos informations",
@@ -1518,7 +1532,7 @@
         "bigTitle": "E-mails de bienvenue et d'annulation",
         "cancellationEmail": "E-mail d'annulation",
         "description": "Personnalisez vos e-mail de bienvenue et d'annulation",
-        "oneTimeDonationEmail": "E-mail de don ponctuel",
+        "oneTimeDonationEmail": "E-mail de contribution unique",
         "text": "Tous les e-mails sont envoyés depuis votre adresse e-mail de support et comportent une signature standard. Vous pouvez modifier ceci dans vos paramètres d'e-mail.",
         "title": "E-mails",
         "welcomeEmail": "E-mail de bienvenue"
@@ -1708,13 +1722,18 @@
       "amount": "Montant",
       "chargeDate": "Date de facturation",
       "contact": "Contact",
-      "status": "Statut"
+      "status": "Statut",
+      "type": ""
     },
     "dataGroup": {
       "payment": "Paiement"
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Montant moyen",
+      "total": "Montant total"
+    },
     "filter": {
       "all": "Tous les paiements",
       "cancelled": "Paiements annulés",
