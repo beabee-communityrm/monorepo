@@ -165,8 +165,8 @@ export class EmailController {
       ? await ContactsService.findOneBy({ id: data.contactId })
       : currentUser;
     if (!contact) throw new NotFoundError('Contact not found');
-    const { contactId: _contactId, ...opts } = data;
-    return await this.getPreview(contact, opts as PreviewEmailOptions);
+    const { contactId: _, ...opts } = data;
+    return await this.getPreview(contact, opts);
   }
 
   /**
