@@ -7,7 +7,7 @@ export class MigrateTaxOptions1769782234884 implements MigrationInterface {
     // Move tax-rate-percentage to the content table
     await queryRunner.query(
       `UPDATE "content" SET data = jsonb_set(
-        data, '{taxRate}',
+        data, '{taxRateRecurring}',
         COALESCE(
           (SELECT "value" FROM "option" WHERE key = 'tax-rate-percentage'),
           'null'
@@ -32,14 +32,14 @@ export class MigrateTaxOptions1769782234884 implements MigrationInterface {
       `UPDATE "option" SET key = 'tax-rate-stripe-id' WHERE key = 'tax-rate-recurring-stripe-id'`
     );
 
-    // Move taxRate back to option
+    // Move taxRateRecurring back to option
     await queryRunner.query(
       `INSERT INTO "option" (key, value)
-      SELECT 'tax-rate-percentage', data->>'taxRate'
+      SELECT 'tax-rate-percentage', data->>'taxRateRecurring'
       FROM "content" WHERE id = 'payment'`
     );
     await queryRunner.query(
-      `UPDATE "content" SET data = data - 'taxRate' WHERE id = 'payment'`
+      `UPDATE "content" SET data = data - 'taxRateRecurring' WHERE id = 'payment'`
     );
 
     // Re-add unused option with default value
