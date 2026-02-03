@@ -1042,6 +1042,7 @@
       "activeUser": "",
       "amount": "",
       "annotationsCopy": "",
+      "averageDonationAmount": "Durchschnitt einmaliger Beiträge",
       "contribution": "",
       "contributionCancelled": "",
       "contributionMonthlyAmount": "",
@@ -1049,8 +1050,10 @@
       "contributionType": "",
       "deliveryOptIn": "",
       "description": "",
+      "donationDate": "",
       "email": "",
       "firstname": "",
+      "hasDonated": "",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
@@ -1067,12 +1070,14 @@
       "period": "",
       "phone": "",
       "preferredChannel": "",
-      "tags": ""
+      "tags": "",
+      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge"
     },
     "dataGroup": {
       "callout": "",
       "contact": "",
-      "contribution": "",
+      "oneTimeContributions": "",
+      "recurringContributions": "",
       "role": ""
     },
     "noContacts": "",
@@ -1115,6 +1120,7 @@
     "prorateNoTitle": "",
     "prorateYesText": "",
     "prorateYesTitle": "",
+    "recurringContribution": "",
     "restartContribution": "",
     "startContribution": "",
     "startedContribution": "",

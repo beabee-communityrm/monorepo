@@ -220,7 +220,7 @@
     },
     "payment": {
       "paymentTitle": "Zahlungen",
-      "showOneTimeDonation": "Einmalige Spendenoption auf Startbildschirm anzeigen",
+      "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",
       "taxRateEnabled": "Mehrwertsteuer aktivieren"
     },
@@ -1042,15 +1042,18 @@
       "activeUser": "Aktiver Nutzer",
       "amount": "Betrag",
       "annotationsCopy": "Änderungen gespeichert!",
-      "contribution": "Beitrag",
-      "contributionCancelled": "Mitgliedschaft beendet",
-      "contributionMonthlyAmount": "Monatlicher Beitrag",
-      "contributionPeriod": "Beitragsintervall",
-      "contributionType": "Beitragstyp",
+      "averageDonationAmount": "Durchschnitt einmaliger Beiträge",
+      "contribution": "Wiederkehrender Beitrag",
+      "contributionCancelled": "Wiederkehrender Beitrag beendet",
+      "contributionMonthlyAmount": "Wiederkehrender Beitrag monatlicher Betrag",
+      "contributionPeriod": "Wiederkehrender Beitrag Intervall",
+      "contributionType": "Wiederkehrender Beitrag Typ",
       "deliveryOptIn": "Postsendung",
       "description": "Beschreibung",
+      "donationDate": "Datum des einmaligen Beitrags",
       "email": "E-Mail",
       "firstname": "Vorname",
+      "hasDonated": "Einmaliger Beitrag geleistet",
       "joined": "Kontakt seit",
       "lastSeen": "Zuletzt angemeldet",
       "lastname": "Nachname",
@@ -1067,12 +1070,14 @@
       "period": "Zeitraum",
       "phone": "Telefon",
       "preferredChannel": "Bevorzugter Kanal",
-      "tags": "Tags"
+      "tags": "Tags",
+      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Kontaktdaten",
-      "contribution": "Beitrag",
+      "oneTimeContributions": "Einmalige Beiträge",
+      "recurringContributions": "Wiederkehrende Beiträge",
       "role": "Rolle"
     },
     "noContacts": "Keine Kontakte",
@@ -1115,6 +1120,7 @@
     "prorateNoTitle": "Ändern Sie meinen Beitrag ab dem {renewalDate}.",
     "prorateYesText": "Wählst Du diese Option, buchen wir eine Einmalzahlung in Höhe von {oneOffPayment} ab und deine Mitgliedschaft wird mit deinem neuen Beitrag sofort verlängert.",
     "prorateYesTitle": "Meinen Beitrag jetzt erhöhen",
+    "recurringContribution": "Wiederkehrender Beitrag",
     "restartContribution": "Mitgliedschaft erneuern",
     "startContribution": "Mitgliedschaft beginnen",
     "startedContribution": "Deine Mitgliedschaft hat begonnen.",
@@ -1391,8 +1397,8 @@
   },
   "homePage": {
     "editProfile": "Profil bearbeiten",
-    "makeOneTimeDonationButton": "Spenden",
-    "makeOneTimeDonationTitle": "Jetzt Spenden",
+    "makeOneTimeDonationButton": "Beitrag leisten",
+    "makeOneTimeDonationTitle": "Jetzt einen einmaligen Beitrag leisten",
     "manageContribution": "Beitrag ändern",
     "newCallout": "Was Neues!",
     "openCallouts": "CrowdNewsroom",
@@ -1468,7 +1474,7 @@
     "goBackButton": "Zurück zum letzten Schritt",
     "note": "Du kannst deine Zahlungsdaten jederzeit in deinem Nutzer-Account ändern und dort auch sehen, wie viel du in der Vergangenheit bereits gezahlt hast. ",
     "willBeContributing": "Du zahlst {contribution}",
-    "willBeDonating": "Du spendest {amount}"
+    "willBeDonating": "Du leistest einen einmaligen Beitrag von {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Bitte bestätige deine Angaben:",
@@ -1521,7 +1527,7 @@
         "bigTitle": "Willkommens- & Kündigungs-E-Mail",
         "cancellationEmail": "Kündigungs-E-Mail",
         "description": "Passe deine Willkommens- und Kündigungs-E-Mail an",
-        "oneTimeDonationEmail": "Einmalige Spenden-E-Mail",
+        "oneTimeDonationEmail": "Einmalige Beitrags-E-Mail",
         "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mai-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
         "welcomeEmail": "Willkommens-E-Mail"

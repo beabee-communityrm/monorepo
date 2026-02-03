@@ -1042,15 +1042,18 @@
       "activeUser": "",
       "amount": "",
       "annotationsCopy": "",
-      "contribution": "",
-      "contributionCancelled": "",
-      "contributionMonthlyAmount": "",
-      "contributionPeriod": "",
-      "contributionType": "",
+      "averageDonationAmount": "Importo medio contributi una tantum (complessivo)",
+      "contribution": "Contributo ricorrente",
+      "contributionCancelled": "Contributo ricorrente cancellato",
+      "contributionMonthlyAmount": "Importo mensile del contributo ricorrente",
+      "contributionPeriod": "Periodo del contributo ricorrente",
+      "contributionType": "Tipo di contributo ricorrente",
       "deliveryOptIn": "",
       "description": "",
+      "donationDate": "Data del contributo una tantum",
       "email": "",
       "firstname": "",
+      "hasDonated": "Ha effettuato un contributo una tantum",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
@@ -1067,12 +1070,14 @@
       "period": "",
       "phone": "",
       "preferredChannel": "",
-      "tags": ""
+      "tags": "",
+      "totalDonationAmount": "Importo totale contributi una tantum (complessivo)"
     },
     "dataGroup": {
       "callout": "Callout",
       "contact": "Informazioni di contatto",
-      "contribution": "",
+      "oneTimeContributions": "Contributi una tantum",
+      "recurringContributions": "Contributi ricorrenti",
       "role": ""
     },
     "noContacts": "",
@@ -1115,6 +1120,7 @@
     "prorateNoTitle": "",
     "prorateYesText": "",
     "prorateYesTitle": "",
+    "recurringContribution": "Contributo ricorrente",
     "restartContribution": "Ripristina contributo",
     "startContribution": "Avvia contirbuto",
     "startedContribution": "",
@@ -1391,8 +1397,8 @@
   },
   "homePage": {
     "editProfile": "",
-    "makeOneTimeDonationButton": "Dona",
-    "makeOneTimeDonationTitle": "Fai una donazione ora",
+    "makeOneTimeDonationButton": "Contributo",
+    "makeOneTimeDonationTitle": "Fai un contributo una tantum ora",
     "manageContribution": "Gestisci il tuo contributo",
     "newCallout": "Nuova CrowdNewsroom!",
     "openCallouts": "Callout in corso",
@@ -1468,7 +1474,7 @@
     "goBackButton": "Torna alla schermata precedente",
     "note": "Potrai modificare l'ammontare del tuo contributo e accedere allo storico delle tue donazioni in qualsiasi momento tramite il tuo account.",
     "willBeContributing": "Contribuirai con {contribution}",
-    "willBeDonating": "Farai una donazione di {amount}"
+    "willBeDonating": "Farai un contributo una tantum di {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Per favore, conferma i tuoi dettagli.",
@@ -1521,7 +1527,7 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
-        "oneTimeDonationEmail": "Email di donazione una tantum",
+        "oneTimeDonationEmail": "Email di contributo una tantum",
         "text": "",
         "title": "",
         "welcomeEmail": ""

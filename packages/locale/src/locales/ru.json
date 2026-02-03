@@ -1043,15 +1043,18 @@
       "activeUser": "",
       "amount": "Сумма",
       "annotationsCopy": "",
-      "contribution": "Взнос",
-      "contributionCancelled": "",
-      "contributionMonthlyAmount": "",
-      "contributionPeriod": "",
-      "contributionType": "",
+      "averageDonationAmount": "Средняя сумма разовых взносов (за всё время)",
+      "contribution": "Регулярный взнос",
+      "contributionCancelled": "Регулярный взнос отменен",
+      "contributionMonthlyAmount": "Ежемесячная сумма регулярного взноса",
+      "contributionPeriod": "Период регулярного взноса",
+      "contributionType": "Тип регулярного взноса",
       "deliveryOptIn": "Согласие на доставку",
       "description": "Описание",
+      "donationDate": "Дата разового взноса",
       "email": "Почтовый ящик",
       "firstname": "",
+      "hasDonated": "Сделал разовый взнос",
       "joined": "Участник с",
       "lastSeen": "Последний раз онлайн",
       "lastname": "",
@@ -1068,12 +1071,14 @@
       "period": "Период",
       "phone": "Телефон",
       "preferredChannel": "Предпочтительный канал",
-      "tags": "Теги"
+      "tags": "Теги",
+      "totalDonationAmount": "Общая сумма разовых взносов (за всё время)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Контакты",
-      "contribution": "",
+      "oneTimeContributions": "Разовые взносы",
+      "recurringContributions": "Регулярные взносы",
       "role": ""
     },
     "noContacts": "",
@@ -1116,6 +1121,7 @@
     "prorateNoTitle": "Изменить мой взнос с {renewalDate}",
     "prorateYesText": "С вас будет списан единоразовый платеж в размере {oneOffPayment}, и ваш взнос будет немедленно обновлён.",
     "prorateYesTitle": "Изменить мой взнос сейчас",
+    "recurringContribution": "Регулярный взнос",
     "restartContribution": "Обновить уровень участия",
     "startContribution": "Стать участником",
     "startedContribution": "Ваша подписка началась",
@@ -1392,8 +1398,8 @@
   },
   "homePage": {
     "editProfile": "Настроить ваш профиль",
-    "makeOneTimeDonationButton": "Пожертвовать",
-    "makeOneTimeDonationTitle": "Сделать пожертвование сейчас",
+    "makeOneTimeDonationButton": "Взнос",
+    "makeOneTimeDonationTitle": "Сделать разовый взнос сейчас",
     "manageContribution": "Изменить ваш взнос",
     "newCallout": "Новая CrowdNewsroom!",
     "openCallouts": "CrowdNewsroom",
@@ -1469,7 +1475,7 @@
     "goBackButton": "Назад",
     "note": "Вы сможете в любое время поменять сумму взноса и посмотреть историю платежей в вашем личном профиле.",
     "willBeContributing": "Вы будете платить {contribution}",
-    "willBeDonating": "Вы сделаете пожертвование в размере {amount}"
+    "willBeDonating": "Вы сделаете разовый взнос в размере {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Пожалуйста, подтвердите ваши данные",
@@ -1522,7 +1528,7 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
-        "oneTimeDonationEmail": "Email о единовременном пожертвовании",
+        "oneTimeDonationEmail": "Email о разовом взносе",
         "text": "",
         "title": "",
         "welcomeEmail": ""
