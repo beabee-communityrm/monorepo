@@ -220,9 +220,9 @@
     },
     "payment": {
       "paymentTitle": "Zahlungen",
+      "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",
-      "taxRateEnabled": "Mehrwertsteuer aktivieren",
-      "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen"
+      "taxRateEnabled": "Mehrwertsteuer aktivieren"
     },
     "theme": {
       "bodyFont": "Text",
@@ -1042,6 +1042,7 @@
       "activeUser": "Aktiver Nutzer",
       "amount": "Betrag",
       "annotationsCopy": "Änderungen gespeichert!",
+      "averageDonationAmount": "Durchschnitt einmaliger Beiträge (insgesamt)",
       "contribution": " Wiederkehrender Beitrag",
       "contributionCancelled": "Wiederkehrender Beitrag beendet",
       "contributionMonthlyAmount": "Wiederkehrender monatlicher Beitrag",
@@ -1049,8 +1050,10 @@
       "contributionType": "Wiederkehrender Beitragstyp",
       "deliveryOptIn": "Postsendung",
       "description": "Beschreibung",
+      "donationDate": "Datum des einmaligen Beitrags",
       "email": "E-Mail",
       "firstname": "Vorname",
+      "hasDonated": "Einmaliger Beitrag geleistet",
       "joined": "Kontakt seit",
       "lastSeen": "Zuletzt angemeldet",
       "lastname": "Nachname",
@@ -1068,16 +1071,13 @@
       "phone": "Telefon",
       "preferredChannel": "Bevorzugter Kanal",
       "tags": "Tags",
-      "donationDate": "Datum des einmaligen Beitrags",
-      "hasDonated": "Einmaliger Beitrag geleistet",
-      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge (insgesamt)",
-      "averageDonationAmount": "Durchschnitt einmaliger Beiträge (insgesamt)"
+      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge (insgesamt)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Kontaktdaten",
-      "recurringContributions": "Wiederkehrende Beiträge",
       "oneTimeContributions": "Einmalige Beiträge",
+      "recurringContributions": "Wiederkehrende Beiträge",
       "role": "Rolle"
     },
     "noContacts": "Keine Kontakte",
@@ -1120,6 +1120,7 @@
     "prorateNoTitle": "Ändern Sie meinen Beitrag ab dem {renewalDate}.",
     "prorateYesText": "Wählen Sie diese Option, buchen wir eine Einmalzahlung in Höhe von {oneOffPayment} ab und Ihre Mitgliedschaft wird mit Ihrem neuen Beitrag sofort verlängert.",
     "prorateYesTitle": "Meinen Beitrag jetzt erhöhen",
+    "recurringContribution": "Wiederkehrender Beitrag",
     "restartContribution": "Mitgliedschaft erneuern",
     "startContribution": "Mitgliedschaft beginnen",
     "startedContribution": "Ihre Mitgliedschaft hat begonnen.",
@@ -1129,8 +1130,7 @@
     "updatedPaymentSource": "Ihre Zahlungsart wurde aktualisiert.",
     "willExpire": "Ihre Mitgliedschaft läuft in {expires} ab.",
     "willRenew": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
-    "willRenewWithNewAmount": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch. Ihr Beitrag ist dann {nextAmount}.",
-    "recurringContribution": "Wiederkehrender Beitrag"
+    "willRenewWithNewAmount": "Ihre Mitgliedschaft verlängert sich am {renewalDate} automatisch. Ihr Beitrag ist dann {nextAmount}."
   },
   "editCallout": {
     "replicated": "Ihr CrowdNewsroom wurde kopiert! Sie bearbeiten jetzt die Kopie. Bitte denken Sie unbedingt daran, den Titel zu bearbeiten.",
@@ -1395,6 +1395,8 @@
   },
   "homePage": {
     "editProfile": "Profil bearbeiten",
+    "makeOneTimeDonationButton": "Beitrag leisten",
+    "makeOneTimeDonationTitle": "Jetzt einen einmaligen Beitrag leisten",
     "manageContribution": "Beitrag ändern",
     "newCallout": "Was Neues!",
     "openCallouts": "CrowdNewsroom",
@@ -1403,9 +1405,7 @@
     "viewAllCallouts": "Alle anzeigen",
     "viewOpenCallouts": "Alle anzeigen",
     "welcome": "Herzlich willkommen {firstName} {lastName}!",
-    "yourProfile": "Ihr Profil",
-    "makeOneTimeDonationTitle": "Jetzt einen einmaligen Beitrag leisten",
-    "makeOneTimeDonationButton": "Beitrag leisten"
+    "yourProfile": "Ihr Profil"
   },
   "icons": {
     "welcome": {

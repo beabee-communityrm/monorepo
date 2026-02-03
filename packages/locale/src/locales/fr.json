@@ -1046,6 +1046,7 @@
       "activeUser": "Utilisateur actif",
       "amount": "Montant",
       "annotationsCopy": "Le contact a bien été mis à jour",
+      "averageDonationAmount": "Montant moyen des contributions uniques (depuis le début)",
       "contribution": "Cotisation récurrente",
       "contributionCancelled": "Cotisation récurrente annulée",
       "contributionMonthlyAmount": "Montant mensuel de cotisation récurrente",
@@ -1053,8 +1054,10 @@
       "contributionType": "Type de cotisation récurrente",
       "deliveryOptIn": "",
       "description": "Description",
+      "donationDate": "Date de contribution unique",
       "email": "E-mail",
       "firstname": "Prénom",
+      "hasDonated": "A effectué une contribution unique",
       "joined": "Inscrit",
       "lastSeen": "Dernière connexion",
       "lastname": "Nom",
@@ -1072,16 +1075,13 @@
       "phone": "Numéro de téléphone",
       "preferredChannel": "Canal de préférence",
       "tags": "Libellés",
-      "donationDate": "Date de contribution unique",
-      "hasDonated": "A effectué une contribution unique",
-      "totalDonationAmount": "Montant total des contributions uniques (depuis le début)",
-      "averageDonationAmount": "Montant moyen des contributions uniques (depuis le début)"
+      "totalDonationAmount": "Montant total des contributions uniques (depuis le début)"
     },
     "dataGroup": {
       "callout": "CrowdNewsrooms",
       "contact": "Informations de contact",
-      "recurringContributions": "Cotisations récurrentes",
       "oneTimeContributions": "Dons uniques",
+      "recurringContributions": "Cotisations récurrentes",
       "role": "Rôle"
     },
     "noContacts": "Aucun contact ajouté pour le moment",
@@ -1124,6 +1124,7 @@
     "prorateNoTitle": "Mettre à jour ma cotisation le {renewalDate}",
     "prorateYesText": "Un paiement unique de {oneOffPayment} vous sera facturé et votre cotisation sera mise à jour immédiatement",
     "prorateYesTitle": "Mettre à jour ma cotisation maintenant",
+    "recurringContribution": "Cotisation récurrente",
     "restartContribution": "",
     "startContribution": "Commencer à cotiser",
     "startedContribution": "Votre cotisation a commencé.",
@@ -1133,8 +1134,7 @@
     "updatedPaymentSource": "Votre moyen de paiement a été mis à jour.",
     "willExpire": "Votre cotisation expire dans {expires}.",
     "willRenew": "Votre cotisation sera automatiquement renouvelée le {renewalDate}.",
-    "willRenewWithNewAmount": "Votre cotisation sera automatiquement renouvelée le {renewalDate} et sera modifiée pour le montant choisi de {nextAmount}.",
-    "recurringContribution": "Cotisation récurrente"
+    "willRenewWithNewAmount": "Votre cotisation sera automatiquement renouvelée le {renewalDate} et sera modifiée pour le montant choisi de {nextAmount}."
   },
   "editCallout": {
     "replicated": "Votre CrowdNewsrooms a bien été répliquée et vous modifiez désormais la copie. Assurez-vous de modifier le titre dans l'onglet « Titre et image ».",
@@ -1401,6 +1401,8 @@
   },
   "homePage": {
     "editProfile": "Modifiez votre profil communautaire",
+    "makeOneTimeDonationButton": "Contribution",
+    "makeOneTimeDonationTitle": "Faire une contribution unique maintenant",
     "manageContribution": "Gérer votre cotisation",
     "newCallout": "Nouvelle CrowdNewsrooms !",
     "openCallouts": "CrowdNewsrooms actives",
@@ -1409,9 +1411,7 @@
     "viewAllCallouts": "Voir toutes les CrowdNewsrooms",
     "viewOpenCallouts": "Voir les CrowdNewsrooms actives",
     "welcome": "Bienvenue à bord {firstName} !",
-    "yourProfile": "Votre profil",
-    "makeOneTimeDonationTitle": "Faire une contribution unique maintenant",
-    "makeOneTimeDonationButton": "Contribution"
+    "yourProfile": "Votre profil"
   },
   "icons": {
     "welcome": {

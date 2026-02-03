@@ -220,9 +220,9 @@
     },
     "payment": {
       "paymentTitle": "Zahlungen",
+      "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",
-      "taxRateEnabled": "Mehrwertsteuer aktivieren",
-      "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen"
+      "taxRateEnabled": "Mehrwertsteuer aktivieren"
     },
     "theme": {
       "bodyFont": "Text",
@@ -1042,6 +1042,7 @@
       "activeUser": "Aktiver Nutzer",
       "amount": "Betrag",
       "annotationsCopy": "Änderungen gespeichert!",
+      "averageDonationAmount": "Durchschnitt einmaliger Beiträge",
       "contribution": "Wiederkehrender Beitrag",
       "contributionCancelled": "Wiederkehrender Beitrag beendet",
       "contributionMonthlyAmount": "Wiederkehrender Beitrag monatlicher Betrag",
@@ -1049,8 +1050,10 @@
       "contributionType": "Wiederkehrender Beitrag Typ",
       "deliveryOptIn": "Postsendung",
       "description": "Beschreibung",
+      "donationDate": "Datum des einmaligen Beitrags",
       "email": "E-Mail",
       "firstname": "Vorname",
+      "hasDonated": "Einmaliger Beitrag geleistet",
       "joined": "Kontakt seit",
       "lastSeen": "Zuletzt angemeldet",
       "lastname": "Nachname",
@@ -1068,16 +1071,13 @@
       "phone": "Telefon",
       "preferredChannel": "Bevorzugter Kanal",
       "tags": "Tags",
-      "donationDate": "Datum des einmaligen Beitrags",
-      "hasDonated": "Einmaliger Beitrag geleistet",
-      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge",
-      "averageDonationAmount": "Durchschnitt einmaliger Beiträge"
+      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Kontaktdaten",
-      "recurringContributions": "Wiederkehrende Beiträge",
       "oneTimeContributions": "Einmalige Beiträge",
+      "recurringContributions": "Wiederkehrende Beiträge",
       "role": "Rolle"
     },
     "noContacts": "Keine Kontakte",
@@ -1120,6 +1120,7 @@
     "prorateNoTitle": "Ändern Sie meinen Beitrag ab dem {renewalDate}.",
     "prorateYesText": "Wählst Du diese Option, buchen wir eine Einmalzahlung in Höhe von {oneOffPayment} ab und deine Mitgliedschaft wird mit deinem neuen Beitrag sofort verlängert.",
     "prorateYesTitle": "Meinen Beitrag jetzt erhöhen",
+    "recurringContribution": "Wiederkehrender Beitrag",
     "restartContribution": "Mitgliedschaft erneuern",
     "startContribution": "Mitgliedschaft beginnen",
     "startedContribution": "Deine Mitgliedschaft hat begonnen.",
@@ -1129,8 +1130,7 @@
     "updatedPaymentSource": "Deine Zahlungsart wurde aktualisiert. ",
     "willExpire": "Deine Mitgliedschaft läuft in {expires} ab.",
     "willRenew": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch.",
-    "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}.",
-    "recurringContribution": "Wiederkehrender Beitrag"
+    "willRenewWithNewAmount": "Deine Mitgliedschaft verlängert sich am {renewalDate} automatisch. Dein Beitrag ist dann {nextAmount}."
   },
   "editCallout": {
     "replicated": "Dein CrowdNewsroom wurde kopiert! Du bearbeitest jetzt die Kopie. Denk bitte unbedingt daran, den Titel zu bearbeiten.",
@@ -1397,6 +1397,8 @@
   },
   "homePage": {
     "editProfile": "Profil bearbeiten",
+    "makeOneTimeDonationButton": "Beitrag leisten",
+    "makeOneTimeDonationTitle": "Jetzt einen einmaligen Beitrag leisten",
     "manageContribution": "Beitrag ändern",
     "newCallout": "Was Neues!",
     "openCallouts": "CrowdNewsroom",
@@ -1405,9 +1407,7 @@
     "viewAllCallouts": "Alle anzeigen",
     "viewOpenCallouts": "Alle anzeigen",
     "welcome": "Herzlich willkommen {firstName}!",
-    "yourProfile": "Dein Profil",
-    "makeOneTimeDonationTitle": "Jetzt einen einmaligen Beitrag leisten",
-    "makeOneTimeDonationButton": "Beitrag leisten"
+    "yourProfile": "Dein Profil"
   },
   "icons": {
     "welcome": {

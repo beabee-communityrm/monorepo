@@ -220,9 +220,9 @@
     },
     "payment": {
       "paymentTitle": "Betaling",
+      "showOneTimeDonation": "Eenmalige bijdrageoptie op het startscherm weergeven",
       "taxRate": "BTW-tarief",
-      "taxRateEnabled": "BTW inschakelen",
-      "showOneTimeDonation": "Eenmalige bijdrageoptie op het startscherm weergeven"
+      "taxRateEnabled": "BTW inschakelen"
     },
     "theme": {
       "bodyFont": "Tekst lichaam",
@@ -1042,6 +1042,7 @@
       "activeUser": "",
       "amount": "Bedrag",
       "annotationsCopy": "Contact succesvol bijgewerkt",
+      "averageDonationAmount": "Gemiddelde eenmalige bijdragen (aller tijden)",
       "contribution": "Terugkerende bijdrage",
       "contributionCancelled": "Terugkerende bijdrage geannuleerd",
       "contributionMonthlyAmount": "Terugkerende bijdrage maandelijks bedrag",
@@ -1049,8 +1050,10 @@
       "contributionType": "Terugkerende bijdrage type",
       "deliveryOptIn": "Keuze voor levering",
       "description": "Beschrijving",
+      "donationDate": "Datum eenmalige bijdrage",
       "email": "E-mail",
       "firstname": "Voornaam",
+      "hasDonated": "Heeft eenmalige bijdrage gedaan",
       "joined": "Aangesloten bij",
       "lastSeen": "Laatst gezien",
       "lastname": "Achternaam",
@@ -1068,16 +1071,13 @@
       "phone": "Telefoon",
       "preferredChannel": "Voorkeur kanaal",
       "tags": "Tags",
-      "donationDate": "Datum eenmalige bijdrage",
-      "hasDonated": "Heeft eenmalige bijdrage gedaan",
-      "totalDonationAmount": "Totaalsom eenmalige bijdragen (aller tijden)",
-      "averageDonationAmount": "Gemiddelde eenmalige bijdragen (aller tijden)"
+      "totalDonationAmount": "Totaalsom eenmalige bijdragen (aller tijden)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Contact informatie",
-      "recurringContributions": "Doorlopende bijdragen",
       "oneTimeContributions": "Eenmalige bijdragen",
+      "recurringContributions": "Doorlopende bijdragen",
       "role": "Rol"
     },
     "noContacts": "Nog geen contacten toegevoegd",
@@ -1120,6 +1120,7 @@
     "prorateNoTitle": "Update mijn bijdrage op {renewalDate}",
     "prorateYesText": "Er wordt u nu een eenmalige betaling van {oneOffPayment} in rekening gebracht en uw bijdrage wordt onmiddellijk bijgewerkt.",
     "prorateYesTitle": "Mijn bijdrage nu aanpassen",
+    "recurringContribution": "Terugkerende bijdrage",
     "restartContribution": "Contributie herstarten",
     "startContribution": "Contributie starten",
     "startedContribution": "Je bijdrage is gestart.",
@@ -1129,8 +1130,7 @@
     "updatedPaymentSource": "Je betaalmethode is bijgewerkt.",
     "willExpire": "Je bijdrage vervalt over {expires}.",
     "willRenew": "Je bijdrage wordt automatisch verlengd op {renewalDate}.",
-    "willRenewWithNewAmount": "Je bijdrage zal automatisch vernieuwd worden op {renewalDate} en zal veranderen naar het door jou gekozen bedrag van {nextAmount}.",
-    "recurringContribution": "Terugkerende bijdrage"
+    "willRenewWithNewAmount": "Je bijdrage zal automatisch vernieuwd worden op {renewalDate} en zal veranderen naar het door jou gekozen bedrag van {nextAmount}."
   },
   "editCallout": {
     "replicated": "Je CrowdNewsroom is succesvol gerepliceerd en je bent nu de nieuwe kopie aan het bewerken. Zorg ervoor dat je de titel aanpast op het tabblad “Titel en afbeelding”.",
@@ -1397,6 +1397,8 @@
   },
   "homePage": {
     "editProfile": "Bewerk je community profiel",
+    "makeOneTimeDonationButton": "Bijdrage doen",
+    "makeOneTimeDonationTitle": "Doe nu een eenmalige bijdrage",
     "manageContribution": "Je bijdrage beheren",
     "newCallout": "Nieuwe CrowdNewsroom!",
     "openCallouts": "CrowdNewsroom openen",
@@ -1405,9 +1407,7 @@
     "viewAllCallouts": "Alle CrowdNewsrooms bekijken",
     "viewOpenCallouts": "Open CrowdNewsrooms bekijken",
     "welcome": "Welkom bij ons {firstName}!",
-    "yourProfile": "Uw profiel",
-    "makeOneTimeDonationTitle": "Doe nu een eenmalige bijdrage",
-    "makeOneTimeDonationButton": "Bijdrage doen"
+    "yourProfile": "Uw profiel"
   },
   "icons": {
     "welcome": {

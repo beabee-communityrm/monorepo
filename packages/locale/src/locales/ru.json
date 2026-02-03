@@ -221,9 +221,9 @@
     },
     "payment": {
       "paymentTitle": "",
+      "showOneTimeDonation": "",
       "taxRate": "",
-      "taxRateEnabled": "",
-      "showOneTimeDonation": ""
+      "taxRateEnabled": ""
     },
     "theme": {
       "bodyFont": "",
@@ -1043,6 +1043,7 @@
       "activeUser": "",
       "amount": "Сумма",
       "annotationsCopy": "",
+      "averageDonationAmount": "Средняя сумма разовых взносов (за всё время)",
       "contribution": "Регулярный взнос",
       "contributionCancelled": "Регулярный взнос отменен",
       "contributionMonthlyAmount": "Ежемесячная сумма регулярного взноса",
@@ -1050,8 +1051,10 @@
       "contributionType": "Тип регулярного взноса",
       "deliveryOptIn": "Согласие на доставку",
       "description": "Описание",
+      "donationDate": "Дата разового взноса",
       "email": "Почтовый ящик",
       "firstname": "",
+      "hasDonated": "Сделал разовый взнос",
       "joined": "Участник с",
       "lastSeen": "Последний раз онлайн",
       "lastname": "",
@@ -1069,16 +1072,13 @@
       "phone": "Телефон",
       "preferredChannel": "Предпочтительный канал",
       "tags": "Теги",
-      "donationDate": "Дата разового взноса",
-      "hasDonated": "Сделал разовый взнос",
-      "totalDonationAmount": "Общая сумма разовых взносов (за всё время)",
-      "averageDonationAmount": "Средняя сумма разовых взносов (за всё время)"
+      "totalDonationAmount": "Общая сумма разовых взносов (за всё время)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Контакты",
-      "recurringContributions": "Регулярные взносы",
       "oneTimeContributions": "Разовые взносы",
+      "recurringContributions": "Регулярные взносы",
       "role": ""
     },
     "noContacts": "",
@@ -1121,6 +1121,7 @@
     "prorateNoTitle": "Изменить мой взнос с {renewalDate}",
     "prorateYesText": "С вас будет списан единоразовый платеж в размере {oneOffPayment}, и ваш взнос будет немедленно обновлён.",
     "prorateYesTitle": "Изменить мой взнос сейчас",
+    "recurringContribution": "Регулярный взнос",
     "restartContribution": "Обновить уровень участия",
     "startContribution": "Стать участником",
     "startedContribution": "Ваша подписка началась",
@@ -1130,8 +1131,7 @@
     "updatedPaymentSource": "Обновите способ оплаты",
     "willExpire": "Ваша подписка заканчивается через {expires}",
     "willRenew": "Ваше подписка будет автоматически продлена {renewalDate}",
-    "willRenewWithNewAmount": "Ваша подписка будет автоматически продлена {renewalDate}. Начиная с этой даты мы будем списывать выбранную вами сумму {nextAmount}.",
-    "recurringContribution": "Регулярный взнос"
+    "willRenewWithNewAmount": "Ваша подписка будет автоматически продлена {renewalDate}. Начиная с этой даты мы будем списывать выбранную вами сумму {nextAmount}."
   },
   "editCallout": {
     "replicated": "Ваша CrowdNewsroom успешно скопирована, и вы редактируете новую версию. Не забудьте изменить заголовок во вкладке «Заголовок и изображение».",
@@ -1398,6 +1398,8 @@
   },
   "homePage": {
     "editProfile": "Настроить ваш профиль",
+    "makeOneTimeDonationButton": "Взнос",
+    "makeOneTimeDonationTitle": "Сделать разовый взнос сейчас",
     "manageContribution": "Изменить ваш взнос",
     "newCallout": "Новая CrowdNewsroom!",
     "openCallouts": "CrowdNewsroom",
@@ -1406,9 +1408,7 @@
     "viewAllCallouts": "Открыть CrowdNewsroom",
     "viewOpenCallouts": "Открыть CrowdNewsroom",
     "welcome": "Добро пожаловать, {firstName}!",
-    "yourProfile": "Ваш профиль",
-    "makeOneTimeDonationTitle": "Сделать разовый взнос сейчас",
-    "makeOneTimeDonationButton": "Взнос"
+    "yourProfile": "Ваш профиль"
   },
   "icons": {
     "welcome": {

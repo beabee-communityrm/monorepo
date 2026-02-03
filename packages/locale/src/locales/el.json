@@ -1042,6 +1042,7 @@
       "activeUser": "",
       "amount": "",
       "annotationsCopy": "",
+      "averageDonationAmount": "Μέσο ποσό εφάπαξ συνεισφορών",
       "contribution": "Επαναλαμβανόμενη συνεισφορά",
       "contributionCancelled": "Επαναλαμβανόμενη συνεισφορά ακυρώθηκε",
       "contributionMonthlyAmount": "Μηνιαίο ποσό επαναλαμβανόμενης συνεισφοράς",
@@ -1049,8 +1050,10 @@
       "contributionType": "Τύπος επαναλαμβανόμενης συνεισφοράς",
       "deliveryOptIn": "",
       "description": "",
+      "donationDate": "Ημερομηνία εφάπαξ συνεισφοράς",
       "email": "",
       "firstname": "",
+      "hasDonated": "Έκανε εφάπαξ συνεισφορά",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
@@ -1068,16 +1071,13 @@
       "phone": "",
       "preferredChannel": "",
       "tags": "",
-      "donationDate": "Ημερομηνία εφάπαξ συνεισφοράς",
-      "hasDonated": "Έκανε εφάπαξ συνεισφορά",
-      "totalDonationAmount": "Συνολικό ποσό εφάπαξ συνεισφορών",
-      "averageDonationAmount": "Μέσο ποσό εφάπαξ συνεισφορών"
+      "totalDonationAmount": "Συνολικό ποσό εφάπαξ συνεισφορών"
     },
     "dataGroup": {
       "callout": "",
       "contact": "",
-      "recurringContributions": "",
       "oneTimeContributions": "",
+      "recurringContributions": "",
       "role": ""
     },
     "noContacts": "",
@@ -1120,6 +1120,7 @@
     "prorateNoTitle": "",
     "prorateYesText": "",
     "prorateYesTitle": "",
+    "recurringContribution": "Επαναλαμβανόμενη συνεισφορά",
     "restartContribution": "",
     "startContribution": "",
     "startedContribution": "",
@@ -1129,8 +1130,7 @@
     "updatedPaymentSource": "",
     "willExpire": "",
     "willRenew": "",
-    "willRenewWithNewAmount": "",
-    "recurringContribution": "Επαναλαμβανόμενη συνεισφορά"
+    "willRenewWithNewAmount": ""
   },
   "editCallout": {
     "replicated": "",
@@ -1397,6 +1397,8 @@
   },
   "homePage": {
     "editProfile": "",
+    "makeOneTimeDonationButton": "Συνεισφορά",
+    "makeOneTimeDonationTitle": "Κάνε εφάπαξ συνεισφορά τώρα",
     "manageContribution": "",
     "newCallout": "",
     "openCallouts": "",
@@ -1405,9 +1407,7 @@
     "viewAllCallouts": "",
     "viewOpenCallouts": "",
     "welcome": "",
-    "yourProfile": "",
-    "makeOneTimeDonationTitle": "Κάνε εφάπαξ συνεισφορά τώρα",
-    "makeOneTimeDonationButton": "Συνεισφορά"
+    "yourProfile": ""
   },
   "icons": {
     "welcome": {
@@ -1527,10 +1527,10 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
+        "oneTimeDonationEmail": "Email εφάπαξ συνεισφοράς",
         "text": "",
         "title": "",
-        "welcomeEmail": "",
-        "oneTimeDonationEmail": "Email εφάπαξ συνεισφοράς"
+        "welcomeEmail": ""
       },
       "intro": {
         "description": "",

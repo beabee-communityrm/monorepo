@@ -1042,6 +1042,7 @@
       "activeUser": "",
       "amount": "Montante",
       "annotationsCopy": "Contacto atualizado",
+      "averageDonationAmount": "Valor médio de contribuições únicas (desde sempre)",
       "contribution": "Contribuição recorrente",
       "contributionCancelled": "Contribuição recorrente cancelada",
       "contributionMonthlyAmount": "Valor mensal da contribuição recorrente",
@@ -1049,8 +1050,10 @@
       "contributionType": "Tipo de contribuição recorrente",
       "deliveryOptIn": "",
       "description": "Descrição",
+      "donationDate": "Data da contribuição única",
       "email": "Email",
       "firstname": "Primeiro nome",
+      "hasDonated": "Fez uma contribuição única",
       "joined": "Inscreveu-se em",
       "lastSeen": "Visto pela última vez em",
       "lastname": "Último nome",
@@ -1068,16 +1071,13 @@
       "phone": "Telefone",
       "preferredChannel": "Canal preferido",
       "tags": "Etiquetas",
-      "donationDate": "Data da contribuição única",
-      "hasDonated": "Fez uma contribuição única",
-      "totalDonationAmount": "Valor total de contribuições únicas (desde sempre)",
-      "averageDonationAmount": "Valor médio de contribuições únicas (desde sempre)"
+      "totalDonationAmount": "Valor total de contribuições únicas (desde sempre)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Informação de contacto",
-      "recurringContributions": "Contribuições recorrentes",
       "oneTimeContributions": "Contribuições únicas",
+      "recurringContributions": "Contribuições recorrentes",
       "role": "Cargo"
     },
     "noContacts": "Nenhum contacto ainda adicionado",
@@ -1120,6 +1120,7 @@
     "prorateNoTitle": "Atualizar a minha contribuição a {renewalDate}",
     "prorateYesText": "Vamos cobrar-te um pagamento único {oneOffPayment} agora e a tua contribuição será atualizada de forma imediata.",
     "prorateYesTitle": "Atualizar a minha contribuição agora",
+    "recurringContribution": "Contribuição recorrente",
     "restartContribution": "Voltar a contribuir",
     "startContribution": "Começar a contribuir",
     "startedContribution": "A tua contribuição começou.",
@@ -1129,8 +1130,7 @@
     "updatedPaymentSource": "O teu método de pagamento foi atualizado.",
     "willExpire": "A tua contribuição vai expirar a {expires}.",
     "willRenew": "A tua contribuição vai renovar automaticamente a {renewalDate}.",
-    "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}.",
-    "recurringContribution": "Contribuição recorrente"
+    "willRenewWithNewAmount": "A tua contribuição vai renovar automaticamente a {renewalDate}, passando para a nova quantia de {nextAmount}."
   },
   "editCallout": {
     "replicated": "",
@@ -1397,6 +1397,8 @@
   },
   "homePage": {
     "editProfile": "Editar o teu perfil de comunidade",
+    "makeOneTimeDonationButton": "Contribuição",
+    "makeOneTimeDonationTitle": "Fazer uma contribuição única agora",
     "manageContribution": "Gerir o teu contributo",
     "newCallout": "Nova CrowdNewsroom!",
     "openCallouts": "CrowdNewsrooms abertas",
@@ -1405,9 +1407,7 @@
     "viewAllCallouts": "Ver todas as CrowdNewsrooms",
     "viewOpenCallouts": "Ver CrowdNewsrooms abertas",
     "welcome": "Damos-te as boas-vindas, {firstName}!",
-    "yourProfile": "O teu perfil",
-    "makeOneTimeDonationTitle": "Fazer uma contribuição única agora",
-    "makeOneTimeDonationButton": "Contribuição"
+    "yourProfile": "O teu perfil"
   },
   "icons": {
     "welcome": {
