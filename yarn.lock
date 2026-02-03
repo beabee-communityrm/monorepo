@@ -1645,7 +1645,7 @@ __metadata:
     "@beabee/tsconfig": "workspace:^"
     "@fortawesome/fontawesome-free": "npm:^6.7.2"
     "@types/node": "npm:^22.15.28"
-    minisearch: "npm:^7.1.2"
+    minisearch: "npm:^7.2.0"
     prettier: "npm:^3.5.3"
     typescript: "npm:~5.9.3"
     vitest: "npm:^3.2.3"
@@ -14393,10 +14393,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minisearch@npm:^7.1.2":
-  version: 7.1.2
-  resolution: "minisearch@npm:7.1.2"
-  checksum: 10c0/039f494927a4a932c168654ba8ff434d2be6af8e3393b29577d54da64cd64d6ae9bfbf33b7cd7bdc1783cb354d67c5dc99bac1305599d8d653933676f2d1a355
+"minisearch@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "minisearch@npm:7.2.0"
+  checksum: 10c0/64efaf30ead2acb19eb8be49c78352c527812dd2927a0981c9d666339d5d206d132b83038d2bfa756f5161cae5d98f15b07cc7e7b7be6b8278d35d2ecdc2628c
   languageName: node
   linkType: hard
 
