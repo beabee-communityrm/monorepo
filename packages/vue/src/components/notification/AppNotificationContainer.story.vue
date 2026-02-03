@@ -22,7 +22,10 @@ const addTestNotification = (
 </script>
 
 <template>
-  <Story title="AppNotificationContainer" :layout="{ type: 'fullscreen' }">
+  <Story
+    title="AppNotificationContainer"
+    :layout="{ type: 'single', iframe: false }"
+  >
     <Variant title="Playground">
       <div class="relative h-96 w-full overflow-hidden rounded bg-grey-lighter">
         <AppNotificationContainer />
