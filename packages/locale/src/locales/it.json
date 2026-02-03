@@ -1429,13 +1429,13 @@
     },
     "errors": {
       "confirmEmail": {
-        "message": "Ci sei quasi! Devi solo confermare il tuo indirizzo mail. Controlla la tua casella di posta.",
-        "proceed": "Ti abbiamo inviato una mail. Clicca il link all'interno per procedere.",
-        "title": "Conferma il tuo account."
+        "message": "Abbiamo appena inviato un’e-mail di conferma all’indirizzo che hai fornito.",
+        "proceed": "Non dimenticare di completare la configurazione del tuo account! Troverai i prossimi passaggi nella tua casella di posta.",
+        "title": "Grazie!"
       },
       "failed": {
         "backToJoin": "Indietro to join page",
-        "message": "There was a problem setting up your membership, our team has been notified. Please contact support if the problem persists.",
+        "message": "Si è verificato un problema durante la configurazione dell'iscrizione, il nostro team è stato informato. Se il problema persiste, contatta l'assistenza.",
         "title": "Qualcosa è andato storto"
       },
       "paymentFailed": {
