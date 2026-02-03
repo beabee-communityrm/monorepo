@@ -974,12 +974,7 @@
     "timeAgo": "vor {time}",
     "timeIn": "in {time}",
     "until": "bis",
-    "yes": "Ja",
-    "paymentType": {
-      "oneTime": "Einmalig",
-      "recurring": "Wiederkehrend",
-      "prorated": "Ratierlich"
-    }
+    "yes": "Ja"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1009,8 +1004,6 @@
     "callouts": "CrowdNewsrooms",
     "cancellationDate": "Gekündigt am",
     "contribution": "Beitrag",
-    "recurring": "Wiederkehrend",
-    "oneTime": "Einmalig",
     "contributionType": "Zahlungsart",
     "joinSurvey": "Anmelde-Fragebogen",
     "newsletter": {
@@ -1018,9 +1011,11 @@
       "status": "Status",
       "title": "Newsletter"
     },
+    "oneTime": "Einmalig",
     "overview": "Überblick",
     "pickTag": "Tag aus der Liste wählen",
     "profile": "Profil",
+    "recurring": "Wiederkehrend",
     "roles": "Rollen",
     "security": {
       "instructions": "Link kopieren und teilen:",
@@ -1733,11 +1728,7 @@
       "pending": "Ausstehende Zahlungen",
       "successful": "Erfolgreiche Zahlungen"
     },
-    "showingOf": "Zahlungen {start} bis {end} von {total}",
-    "aggregation": {
-      "total": "Gesamtbetrag",
-      "average": "Durchschnittsbetrag"
-    }
+    "showingOf": "Zahlungen {start} bis {end} von {total}"
   },
   "resetDevice": {
     "description": "Geben Sie Ihr Passwort ein, um den 2FA-Schutz zurückzusetzen. Sobald Sie eingeloggt sind, können Sie ein neues Gerät einrichten.",

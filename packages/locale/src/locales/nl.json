@@ -974,12 +974,7 @@
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
     "until": "tot",
-    "yes": "Ja",
-    "paymentType": {
-      "oneTime": "Eenmalig",
-      "recurring": "Terugkerend",
-      "prorated": "Prorata"
-    }
+    "yes": "Ja"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1009,8 +1004,6 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "Geannuleerd op",
     "contribution": "Bijdrage",
-    "recurring": "Terugkerend",
-    "oneTime": "Eenmalig",
     "contributionType": "Type",
     "joinSurvey": "Meedoen aan onderzoek",
     "newsletter": {
@@ -1018,9 +1011,11 @@
       "status": "Status",
       "title": "Nieuwsbrief"
     },
+    "oneTime": "Eenmalig",
     "overview": "Overzicht",
     "pickTag": "Kies een tag uit de onderstaande lijst",
     "profile": "Profiel",
+    "recurring": "Terugkerend",
     "roles": "Rollen",
     "security": {
       "instructions": "Kopieer en deel deze link:",
@@ -1735,11 +1730,7 @@
       "pending": "In afwachting van betalingen",
       "successful": "Geslaagde betalingen"
     },
-    "showingOf": "{start} tot {end} betalingen van {total} weergeven",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": "{start} tot {end} betalingen van {total} weergeven"
   },
   "resetDevice": {
     "description": "Voer je wachtwoord in om de 2FA beveiliging te resetten, je kunt een nieuw apparaat instellen zodra je bent ingelogd.",

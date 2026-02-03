@@ -950,7 +950,7 @@
     },
     "paymentType": {
       "oneTime": "Ponctuel",
-      "prorated": "Au prorata",
+      "prorated": "Proratisé",
       "recurring": "Récurrent",
       "unknown": "Inconnu"
     },
@@ -978,12 +978,7 @@
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
     "until": "jusqu'à",
-    "yes": "oui",
-    "paymentType": {
-      "oneTime": "Ponctuel",
-      "recurring": "Récurrent",
-      "prorated": "Proratisé"
-    }
+    "yes": "oui"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1013,8 +1008,6 @@
     "callouts": "CrowdNewsrooms",
     "cancellationDate": "Annulé le",
     "contribution": "Cotisation",
-    "recurring": "Récurrent",
-    "oneTime": "Ponctuel",
     "contributionType": "Type",
     "joinSurvey": "Rejoindre le sondage",
     "newsletter": {
@@ -1022,9 +1015,11 @@
       "status": "Statut",
       "title": "Lettre d'information"
     },
+    "oneTime": "Ponctuel",
     "overview": "Vue d'ensemble",
     "pickTag": "Sélectionnez un libellé dans la liste ci-dessous",
     "profile": "Profil",
+    "recurring": "Récurrent",
     "roles": "Rôles",
     "security": {
       "instructions": "Copiez et partagez ce lien :",
@@ -1739,11 +1734,7 @@
       "pending": "Paiements en attente",
       "successful": "Paiements réussis"
     },
-    "showingOf": "Affichage des paiements {start} à {end} sur {total}",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": "Affichage des paiements {start} à {end} sur {total}"
   },
   "resetDevice": {
     "description": "Entrez votre mot de passe pour réinitialiser la protection par A2F. Vous pourrez configurer un nouvel appareil après connexion.",

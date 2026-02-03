@@ -976,12 +976,7 @@
     "timeAgo": "{time} тому",
     "timeIn": "в {time}",
     "until": "доки",
-    "yes": "Так",
-    "paymentType": {
-      "oneTime": "Одноразовий",
-      "recurring": "Регулярний",
-      "prorated": "Пропорційний"
-    }
+    "yes": "Так"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1011,8 +1006,6 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "Скасовано або",
     "contribution": "Внесок",
-    "recurring": "Регулярний",
-    "oneTime": "Одноразовий",
     "contributionType": "Тип",
     "joinSurvey": "Приєднатися до опитування",
     "newsletter": {
@@ -1020,9 +1013,11 @@
       "status": "Статус",
       "title": "Інформаційний бюлетень"
     },
+    "oneTime": "Одноразовий",
     "overview": "Огляд",
     "pickTag": "Виберіть тег зі списку нижче",
     "profile": "Профіль",
+    "recurring": "Регулярний",
     "roles": "Ролі",
     "security": {
       "instructions": "Скопіюйте та поділіться цим посиланням:",
@@ -1740,11 +1735,7 @@
       "pending": "Очікувані платежі",
       "successful": "Успішні платежі"
     },
-    "showingOf": "Показано платежі з {start} до {end} з {total}",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": "Показано платежі з {start} до {end} з {total}"
   },
   "resetDevice": {
     "description": "Введіть свій пароль, щоб скинути захист 2FA, ви зможете налаштувати новий пристрій після входу в систему.",

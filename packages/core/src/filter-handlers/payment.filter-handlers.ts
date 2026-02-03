@@ -19,7 +19,7 @@ const contactFilterHandler: FilterHandler = (qb, args) => {
  *
  * Available filters:
  * - contact: Filters by payment's contact (supports "me" value)
-*/
+ */
 export const paymentFilterHandlers: FilterHandlers<string> = {
   contact: contactFilterHandler,
 };

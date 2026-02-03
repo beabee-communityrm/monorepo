@@ -21,7 +21,7 @@
       <template #value-type="{ value }">
         {{ value }}
       </template>
-      <template #value-downloadInvoice="{item}">
+      <template #value-downloadInvoice="{ item }">
         <AppButton
           size="xs"
           :icon="faDownload"

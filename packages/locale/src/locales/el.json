@@ -1004,8 +1004,6 @@
     "callouts": "",
     "cancellationDate": "",
     "contribution": "",
-    "recurring": "Επαναλαμβανόμενος",
-    "oneTime": "Εφάπαξ",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {
@@ -1013,9 +1011,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "Εφάπαξ",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "Επαναλαμβανόμενος",
     "roles": "",
     "security": {
       "instructions": "",
@@ -1720,8 +1720,8 @@
   },
   "paymentsAdmin": {
     "aggregation": {
-      "average": "Μέσο ποσό",
-      "total": "Συνολικό ποσό"
+      "average": "",
+      "total": ""
     },
     "filter": {
       "all": "",
@@ -1730,11 +1730,7 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": "",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": ""
   },
   "resetDevice": {
     "description": "",

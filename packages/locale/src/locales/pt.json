@@ -974,12 +974,7 @@
     "timeAgo": "há {time}",
     "timeIn": "em {time}",
     "until": "até",
-    "yes": "Sim",
-    "paymentType": {
-      "oneTime": "Único",
-      "recurring": "Recorrente",
-      "prorated": "Proporcional"
-    }
+    "yes": "Sim"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1009,8 +1004,6 @@
     "callouts": "",
     "cancellationDate": "",
     "contribution": "",
-    "recurring": "Recorrente",
-    "oneTime": "Único",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {
@@ -1018,9 +1011,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "Único",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "Recorrente",
     "roles": "",
     "security": {
       "instructions": "",
@@ -1735,11 +1730,7 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": "",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": ""
   },
   "resetDevice": {
     "description": "Insere a tua palavra-pase para fazer reset do seu dispositivo 2FA. Vais poder associar um novo dispositivo quando fizeres login.",

@@ -975,12 +975,7 @@
     "timeAgo": "до {time}",
     "timeIn": "в {time}",
     "until": "до",
-    "yes": "Да",
-    "paymentType": {
-      "oneTime": "Единовременный",
-      "recurring": "Повторяющийся",
-      "prorated": "Пропорциональный"
-    }
+    "yes": "Да"
   },
   "contactAccount": {
     "confirmDelete": {
@@ -1010,8 +1005,6 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "",
     "contribution": "Взнос",
-    "recurring": "Повторяющийся",
-    "oneTime": "Единовременный",
     "contributionType": "",
     "joinSurvey": "",
     "newsletter": {
@@ -1019,9 +1012,11 @@
       "status": "Статус",
       "title": "Новости"
     },
+    "oneTime": "Единовременный",
     "overview": "Обзор",
     "pickTag": "",
     "profile": "",
+    "recurring": "Повторяющийся",
     "roles": "Роль",
     "security": {
       "instructions": "Скопируйте и поделитесь этой ссылкой:",
@@ -1736,11 +1731,7 @@
       "pending": "",
       "successful": ""
     },
-    "showingOf": "",
-    "aggregation": {
-      "total": "",
-      "average": ""
-    }
+    "showingOf": ""
   },
   "resetDevice": {
     "description": "Введите пароль, чтобы сбросить двухфакторной аутентификации. После входа в систему вы сможете настроить новое устройство.",
