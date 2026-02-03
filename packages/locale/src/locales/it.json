@@ -2,60 +2,60 @@
   "accountPage": {
     "contactInformation": "Informazioni di contatto",
     "deliveryAddress": "Indirizzo",
-    "deliveryOptIn": "",
+    "deliveryOptIn": "Opt-in per la consegna",
     "loginDetail": "Credenziali",
     "mfa": {
       "codeInput": {
-        "info": "",
-        "label": ""
+        "info": "Se hai perso il tuo dispositivo 2FA, contatta l'assistenza",
+        "label": "Codice"
       },
       "confirmDelete": {
-        "desc": "",
-        "descToken": "",
-        "title": ""
+        "desc": "Sei sicuro you want to disable Multi-Factor Authentication? From then on, you'll only need your password to log in. Remember to delete the entry from your Authenticator app. You can always enable it again.",
+        "descToken": "Per disattivare la 2FA, inserisci il tuo attuale codice 2FA:",
+        "title": "Disabilitare 2FA"
       },
       "createUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata attivata a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
       "deleteUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata rimossa a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
-      "disabledNotification": "",
-      "enabledNotification": "",
+      "disabledNotification": "Autenticazione a due fattori disattivata correttamente",
+      "enabledNotification": "Autenticazione a due fattori attivata correttamente",
       "enterCode": {
-        "desc": "",
-        "title": ""
+        "desc": "Inserisci il codice visualizzato nella tua app di autenticazione.",
+        "title": "Verifica"
       },
       "modalTitle": "Attiva autenticazione a 2 fattori",
       "result": {
-        "invalidCode": "",
+        "invalidCode": "Impossibile confermare il codice. Riprova o contatta l'assistenza.",
         "successful": "L'autenticazione a 2 fattori è stata attivata",
-        "title": ""
+        "title": "Fatto"
       },
       "scan": {
-        "desc": "",
-        "title": ""
+        "desc": "Scansiona il codice QR qui sotto con la tua app di autenticazione.",
+        "title": "Codice QR"
       },
       "secretInput": {
-        "desc": "",
-        "label": ""
+        "desc": "In alternativa, puoi inserire il seguente codice nella tua app Authenticator.",
+        "label": "Codice segreto"
       },
       "title": "Autenticazione a 2 fattori",
       "validateButton": {
-        "label": ""
+        "label": "Verifica token"
       }
     },
     "newsletter": {
-      "cantUpdate": "",
+      "cantUpdate": "Per modificare lo stato della newsletter di questo contatto, contatta support{'@'}beabee.io.",
       "currentStatus": {
-        "cleaned": "",
-        "none": "",
-        "pending": "",
-        "subscribed": "",
-        "unsubscribed": ""
+        "cleaned": "Questo contatto è stato rimosso dall'elenco delle tue newsletter, probabilmente il suo indirizzo email non viene più recapitato.",
+        "none": "Questo contatto non è iscritto alla tua newsletter.",
+        "pending": "A questo contatto è stata inviata una richiesta di iscrizione alla tua newsletter; deve accettarla per iscriversi.",
+        "subscribed": "Questo contatto è iscritto alla tua newsletter.",
+        "unsubscribed": "Questo contatto non è iscritto alla tua newsletter."
       },
-      "subscribe": "",
+      "subscribe": "Iscrivili alla newsletter",
       "title": "Newsletter",
-      "unsubscribe": ""
+      "unsubscribe": "Cancellarli dalla newsletter"
     },
-    "phoneInfo": "",
-    "phoneInfoAdmin": "",
+    "phoneInfo": "Fornendo il tuo numero di telefono acconsenti ad essere contattato telefonicamente",
+    "phoneInfoAdmin": "È necessario avere il consenso della persona prima di aggiungere il suo numero di telefono al sistema",
     "savedPassword": "Nuova password salvata",
     "subTitle": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
     "title": "Account"
@@ -63,315 +63,315 @@
   "actions": {
     "add": "Aggiungi",
     "back": "Indietro",
-    "backToLogin": "",
-    "cancel": "",
+    "backToLogin": "Torna alla pagina di accesso",
+    "cancel": "Annulla",
     "changePassword": "Modifica la password",
-    "chooseFile": "",
+    "chooseFile": "Scegli file",
     "clearSearch": "Cancella ricerca",
     "close": "Chiudi",
-    "continue": "Prosegui",
-    "copy": "",
-    "create": "",
-    "decrease": "",
-    "delete": "",
+    "continue": "Continua",
+    "copy": "Copia",
+    "create": "Crea",
+    "decrease": "Riduci",
+    "delete": "Elimina",
     "disable": "Disattiva",
-    "edit": "",
+    "edit": "Modifica",
     "enable": "Attiva",
-    "endnow": "",
-    "export": "",
-    "getStarted": "Iniziamo",
-    "goBack": "",
-    "increase": "",
-    "next": "",
-    "noBack": "",
-    "participate": "",
-    "preview": "",
-    "publish": "",
-    "reopen": "",
-    "replicate": "",
-    "reset": "",
-    "reset2FA": "",
-    "resetPassword": "",
-    "respond": "",
-    "revertToDraft": "",
-    "save": "",
-    "saveAndAnother": "",
-    "saveDraft": "",
-    "schedule": "",
-    "search": "",
+    "endnow": "Termina ora",
+    "export": "Esporta",
+    "getStarted": "Inizia",
+    "goBack": "Indietro",
+    "increase": "Aumenta",
+    "next": "Prossimo",
+    "noBack": "No, torna indietro",
+    "participate": "Partecipa",
+    "preview": "Anteprima",
+    "publish": "Pubblica",
+    "reopen": "Riaprire",
+    "replicate": "Replica",
+    "reset": "Reset",
+    "reset2FA": "Reimposta 2FA",
+    "resetPassword": "Reimposta password",
+    "respond": "Rispondere",
+    "revertToDraft": "Ripristina bozza",
+    "save": "Salva",
+    "saveAndAnother": "Salva e aggiungine un altro",
+    "saveDraft": "Salva bozza",
+    "schedule": "Programma",
+    "search": "Ricerca",
     "sendEmails": "Invia e-mail",
-    "share": "",
-    "skip": "",
+    "share": "Condividi",
+    "skip": "Salta",
     "submit": "Invia",
-    "tryAgain": "",
-    "unpublish": "",
+    "tryAgain": "Riprova",
+    "unpublish": "Annulla pubblicazione",
     "update": "Aggiorna",
-    "view": "",
-    "yesDelete": "",
-    "yesDisable": "",
-    "yesRemove": "",
+    "view": "Visualizza",
+    "yesDelete": "Sì, eliminalo",
+    "yesDisable": "Sì, disattivalo",
+    "yesRemove": "Sì, rimuovilo",
     "yesReset": ""
   },
   "addContact": {
-    "contactSaved": "",
+    "contactSaved": "Contatto salvato",
     "errors": {
-      "duplicateEmail": ""
+      "duplicateEmail": "L'indirizzo email esiste già"
     },
-    "subscribeToNewsletter": "",
-    "title": ""
+    "subscribeToNewsletter": "Sincronizza con lo strumento newsletter",
+    "title": "Aggiungi un contatto"
   },
   "addNotice": {
     "form": {
-      "buttonText": "",
-      "expirationDateAndTime": "",
-      "name": "",
-      "startDateAndTime": "",
-      "text": "",
-      "url": ""
+      "buttonText": "Testo del pulsante",
+      "expirationDateAndTime": "Data e ora di scadenza",
+      "name": "Nome",
+      "startDateAndTime": "Data e ora di inizio",
+      "text": "Testo",
+      "url": "URL"
     },
-    "title": ""
+    "title": "Aggiungi un avviso"
   },
   "adminDashboard": {
     "hint1": "",
-    "hint2": "",
-    "hint3": "",
-    "joinSlack": "",
+    "hint2": "<p>Find out more about <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">the beabee vision</a> around community engagement and meaningful relationships with your audience.</p>\n",
+    "hint3": "<p>Our <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> addresses common questions about getting started and use cases. If the answer you're looking for isn't there, get in touch.</p>\n",
+    "joinSlack": "Join the beabee community on Slack!",
     "latestCallout": {
-      "createNew": "",
+      "createNew": "Crearne uno nuovo?",
       "empty": "Nessuna CrowdNewsroom attiva",
       "title": "La tua CrowdNewsroom"
     },
     "mostRecentMembers": {
-      "title": ""
+      "title": "Membri iscritti più di recente"
     },
     "numbers": {
-      "averageContribution": "",
-      "newMembers": "",
-      "revenue": "",
-      "title": ""
+      "averageContribution": "Contributo mensile medio",
+      "newMembers": "Nuovi membri",
+      "revenue": "Reddito",
+      "title": "Numeri degli ultimi 30 giorni"
     },
-    "responsesSoFar": "",
-    "seeAllResponses": "",
-    "supportInbox": "",
-    "welcomeBack": ""
+    "responsesSoFar": "{n} risposte finora | {n} risposte finora",
+    "seeAllResponses": "Vedi tutte le risposte",
+    "supportInbox": "<p>Need help? Please visit <a href=\"https://wiki.beabee.io/help-center-english/\" target=\"_blank\" rel=\"noopener noreferrer\">the beabee Help Center</a> or use our support inbox: <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a></p>\n",
+    "welcomeBack": "Welcome back {firstNome}!"
   },
   "adminSettings": {
     "apikey": {
       "confirmCreate": {
-        "text": "",
-        "title": ""
+        "text": "Si prega di conservare il token seguente. NON potrà essere recuperato in seguito.",
+        "title": "Chiave API creata"
       },
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "Questa operazione è irreversibile. Qualsiasi dispositivo che utilizzi questa chiave API smetterà di funzionare.",
+        "title": "Eliminare la chiave API?"
       },
-      "copied": "",
-      "create": "",
+      "copied": "Chiave API copiata negli appunti",
+      "create": "Crea una nuova chiave API",
       "expires": {
-        "days": "",
-        "never": ""
+        "days": "Tra {n} giorni",
+        "never": "Mai"
       },
-      "expiresHelp": "",
-      "expiresNeverWarning": "",
-      "label": "",
-      "showingOf": ""
+      "expiresHelp": "Per una maggiore sicurezza dovresti sempre impostare una data di scadenza per evitare accessi non autorizzati al tuo sistema a lungo termine.",
+      "expiresNeverWarning": "Comprendo i rischi derivanti dalla mancata impostazione di una data di scadenza",
+      "label": "Chiavi API",
+      "showingOf": "Showing {start} to {end} API keys out of {total}"
     },
     "email": {
-      "fromEmail": "",
-      "fromName": "",
-      "label": "",
+      "fromEmail": "E-mail del mittente",
+      "fromName": "Nome del mittente",
+      "label": "E-mail",
       "templates": {
         "description": "",
         "title": ""
       },
-      "text": "",
-      "title": ""
+      "text": "Tutte le comunicazioni via e-mail verranno inviate da questo indirizzo e-mail.",
+      "title": "Imposta un indirizzo email generale"
     },
     "general": {
       "footer": {
         "dataPrivacy": {
-          "impressumUrl": "",
+          "impressumUrl": "URL delle informazioni legali",
           "privacyUrl": "Url della privacy",
           "termsUrl": "Url dei termini di servizio",
-          "title": ""
+          "title": "Privacy dei dati"
         },
         "otherLinks": {
-          "add": "",
-          "linkText": "",
-          "title": "",
-          "url": ""
+          "add": "Aggiungi un altro link",
+          "linkText": "Testo del link",
+          "title": "Altri link",
+          "url": "URL"
         },
-        "siteUrl": "",
-        "text": "",
-        "title": ""
+        "siteUrl": "URL del sito web principale",
+        "text": "Questi link appaiono nel piè di pagina di beabee e nelle email",
+        "title": "Piè di pagina"
       },
-      "label": "",
-      "language": "",
-      "logo": "",
-      "organisationName": "",
+      "label": "Generale",
+      "language": "Lingua",
+      "logo": "Logo",
+      "organisationName": "Nome dell'organizzazione",
       "socialSharing": {
-        "description": "",
-        "image": "",
-        "shareTitle": "",
-        "text": "",
-        "title": "",
-        "twitterHandle": ""
+        "description": "Il link da condividere",
+        "image": "La descrizione da condividere",
+        "shareTitle": "Il titolo da condividere",
+        "text": "Configura cosa appare sui social media quando viene condiviso un link alla tua community beabee",
+        "title": "Condivisione sociale",
+        "twitterHandle": "Twitter"
       }
     },
     "payment": {
-      "paymentTitle": "",
+      "paymentTitle": "Pagamento",
       "showOneTimeDonation": "",
-      "taxRate": "",
-      "taxRateEnabled": ""
+      "taxRate": "Aliquota IVA",
+      "taxRateEnabled": "Attiva IVA"
     },
     "theme": {
-      "bodyFont": "",
+      "bodyFont": "Testo",
       "colorNames": {
-        "body": "",
-        "danger": "",
-        "link": "",
-        "primary": "",
-        "success": "",
-        "warning": ""
+        "body": "Testo",
+        "danger": "Pericolo",
+        "link": "Link",
+        "primary": "Principale",
+        "success": "Successo",
+        "warning": "Avvertimento"
       },
-      "colors": "",
-      "customColors": "",
-      "fontNotListed": "",
-      "fonts": "",
-      "label": "",
+      "colors": "Colori",
+      "customColors": "Colori personalizzati",
+      "fontNotListed": "<p>Don't see your font listed? Contact <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> to get it added.</p>\n",
+      "fonts": "Caratteri",
+      "label": "Tema",
       "presetColors": {
-        "default": ""
+        "default": "Predefinito"
       },
-      "titleFont": ""
+      "titleFont": "Carattere del titolo"
     },
-    "title": ""
+    "title": "Impostazioni"
   },
   "advancedSearch": {
-    "addRule": "",
-    "button": "",
-    "createFiltersAfter": "",
-    "createFiltersBefore": "",
+    "addRule": "Aggiungi regola",
+    "button": "Filtri",
+    "createFiltersAfter": "regole",
+    "createFiltersBefore": "Only show results matching",
     "createFiltersType": {
-      "all": "",
-      "any": ""
+      "all": "all",
+      "any": "any"
     },
-    "createdSegment": "",
+    "createdSegment": "Cread segment \"{segment}\"",
     "matchWord": {
-      "AND": "",
-      "OR": ""
+      "AND": "and",
+      "OR": "or"
     },
-    "nestedRules": "",
-    "noNestedRules": "",
+    "nestedRules": "Nested rules",
+    "noNestedRules": "This filter contains nested rules which cannot be edited using the advanced search editor.",
     "operators": {
       "all": {
-        "is_empty": "",
-        "is_not_empty": ""
+        "is_empty": "is empty",
+        "is_not_empty": "isn't empty"
       },
       "array": {
-        "contains": "",
-        "not_contains": ""
+        "contains": "includes",
+        "not_contains": "doesn't include"
       },
       "blob": {
-        "contains": "",
-        "not_contains": ""
+        "contains": "contains",
+        "not_contains": "doesn't contain"
       },
       "boolean": {
-        "equal": ""
+        "equal": "is"
       },
       "date": {
-        "between": "",
-        "equal": "",
-        "greater": "",
-        "greater_or_equal": "",
-        "less": "",
-        "less_or_equal": "",
-        "not_between": "",
-        "not_equal": ""
+        "between": "between",
+        "equal": "is on",
+        "greater": "after",
+        "greater_or_equal": "after or on",
+        "less": "before",
+        "less_or_equal": "before or on",
+        "not_between": "isn't between",
+        "not_equal": "is not on"
       },
       "enum": {
-        "equal": "",
-        "not_equal": ""
+        "equal": "is",
+        "not_equal": "is not"
       },
       "number": {
-        "between": "",
-        "equal": "",
-        "greater": "",
-        "greater_or_equal": "",
-        "less": "",
-        "less_or_equal": "",
-        "not_between": "",
-        "not_equal": ""
+        "between": "between",
+        "equal": "is",
+        "greater": "more than",
+        "greater_or_equal": "at least",
+        "less": "less than",
+        "less_or_equal": "at most",
+        "not_between": "isn't between",
+        "not_equal": "isn't"
       },
       "text": {
-        "begins_with": "",
-        "contains": "",
-        "ends_with": "",
-        "equal": "",
-        "not_begins_with": "",
-        "not_contains": "",
-        "not_ends_with": "",
-        "not_equal": ""
+        "begins_with": "begins with",
+        "contains": "contains",
+        "ends_with": "ends with",
+        "equal": "is",
+        "not_begins_with": "doesn't begin with",
+        "not_contains": "doesn't contain",
+        "not_ends_with": "doesn't end with",
+        "not_equal": "is not"
       }
     },
     "saveSegment": {
       "createOrUpdate": {
-        "create": "",
-        "label": "",
-        "update": ""
+        "create": "Crea new segment",
+        "label": "Do you want to create a new segment?",
+        "update": "Aggiorna segment \"{segment}\""
       },
-      "createSegment": "",
-      "segmentName": "",
-      "text": "",
-      "title": "",
-      "updateSegment": ""
+      "createSegment": "Crea segment",
+      "segmentName": "Segment name",
+      "text": "A segment is a group of contacts that matches a set of filters, like the ones you've just created. New contacts that match these filters are automatically added to the segment.",
+      "title": "Salva segment",
+      "updateSegment": "Aggiorna segment"
     },
-    "selectFilter": "",
-    "updatedSegment": ""
+    "selectFilter": "Seleziona a filter",
+    "updatedSegment": "Aggiornad segment \"{segment}\""
   },
   "apiKey": {
     "data": {
-      "createdAt": "",
-      "description": "",
-      "expires": "",
-      "token": ""
+      "createdAt": "Cread",
+      "description": "Description",
+      "expires": "Expiry date",
+      "token": "Token"
     }
   },
   "callout": {
     "actions": {
-      "updateResponse": ""
+      "updateResponse": "Aggiorna your response"
     },
-    "addAPoint": "Clicca sulla mappa dove vuoi aggiungere un punto",
-    "addLocation": "Aggiungi una nuova voce",
+    "addAPoint": "Click on the map where you want to add a point",
+    "addLocation": "Aggiungi a new entry",
     "builder": {
       "actions": {
-        "addSlide": ""
+        "addSlide": "Aggiungi slide"
       },
       "common": {
         "actions": {
-          "add": "",
-          "remove": ""
+          "add": "Aggiungi",
+          "remove": "Rimuovi"
         },
-        "internalTitle": "",
-        "showAdvancedOptions": "",
-        "slides": "",
-        "startEndScreens": ""
+        "internalTitle": "Internal title",
+        "showAdvancedOptions": "Show advanced options",
+        "slides": "Slides",
+        "startEndScreens": "Start & End screens"
       },
       "navigation": {
-        "nextButton": "",
+        "nextButton": "Avanti button text",
         "nextSlide": {
-          "default": "",
-          "label": ""
+          "default": "– Default –",
+          "label": "Avanti slide"
         },
-        "prevButton": "",
-        "slideNo": "",
-        "submitButton": ""
+        "prevButton": "Indietro button text",
+        "slideNo": "Slide {no}",
+        "submitButton": "Invia button text"
       },
-      "showAdvancedOptions": "",
-      "slidesTitle": "",
-      "startEndScreenTitle": "",
+      "showAdvancedOptions": "Show advanced options",
+      "slidesTitle": "Slides",
+      "startEndScreenTitle": "Start & End screens",
       "tabs": {
         "content": {
-          "title": ""
+          "title": "Content"
         },
         "email": {
           "body": {
@@ -393,111 +393,111 @@
         "endMessage": {
           "inputs": {
             "action": {
-              "label": "",
+              "label": "After an answer is submitted:",
               "opts": {
-                "redirect": "",
-                "showMessage": ""
+                "redirect": "Redirect them to another page",
+                "showMessage": "Show a thank you message"
               }
             },
             "text": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "<p>Here you can thank users in more detail and let them know when to expect updates or follow-ups.</p>",
+              "label": "Thank you text",
+              "placeholder": "Include more details about how valuable their input was…"
             },
             "title": {
               "help": "<p>I tuoi lettori vedranno il <strong>titolo di ringraziamento</strong> al termine della compilazione della CrowdNewsroom.</p>",
-              "label": "",
-              "placeholder": ""
+              "label": "Thank you title",
+              "placeholder": "Thank you!"
             },
             "url": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "Utentes will be automatically taken to this page after submitting a response",
+              "label": "URL for redirect",
+              "placeholder": "https://example.com"
             }
           },
-          "title": ""
+          "title": "End message"
         },
         "intro": {
-          "help": "",
-          "label": "",
-          "title": ""
+          "help": "The introduction text should give any context the user might need before answering",
+          "label": "Introduction text",
+          "title": "Introduction"
         },
         "mailchimp": {
-          "title": ""
+          "title": "Mailchimp sync"
         },
         "responseDisplay": {
-          "title": ""
+          "title": "Response display"
         },
         "settings": {
           "access": {
-            "title": ""
+            "title": "Access and security"
           },
           "dates": {
-            "title": ""
+            "title": "Scheduling"
           },
           "displayOptions": {
-            "description": "",
-            "title": ""
+            "description": "Choose which response options should be visible to users",
+            "title": "Display options"
           },
           "inputs": {
             "collectGuestInfo": {
-              "label": "",
+              "label": "Require contact information from guests",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "Guests can respond anonymously",
+                "enabled": "Guests will also be asked for their contact information"
               }
             },
             "collectMemberInfo": {
-              "label": "",
+              "label": "Collect contact information",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "All responses will be anonymous",
+                "enabled": "Membros will have their contact information collected"
               }
             },
             "expires": {
-              "description": "",
-              "label": "",
+              "description": "Set an end date",
+              "label": "Set an ending date",
               "opts": {
                 "never": "La CrowdNewsroom rimarrà attiva fino alla chiusura manuale",
                 "schedule": "La CrowdNewsroom si chiuderà automaticamente a una data specifica."
               }
             },
             "mapAndGallery": {
-              "description": "",
+              "description": "Choose which response views should be available to users",
               "gallery": {
-                "disabledDescription": "",
-                "enabledDescription": "",
-                "label": ""
+                "disabledDescription": "An image-based board of responses will not be publicly available",
+                "enabledDescription": "An image-based board of responses will be publicly available",
+                "label": "Enable gallery view of public responses"
               },
               "map": {
-                "disabledDescription": "",
-                "enabledDescription": "",
-                "label": ""
+                "disabledDescription": "A location-tagged map overview will not be publicly available",
+                "enabledDescription": "A location-tagged map overview will be publicly available",
+                "label": "Enable map view of public responses"
               },
-              "title": ""
+              "title": "Map and gallery views"
             },
             "mapSchema": {
               "addressPattern": {
-                "label": ""
+                "label": "What format would you like to use?"
               },
               "addressPatternProp": {
-                "label": "",
-                "none": ""
+                "label": "Do you want to populate a field with the address?",
+                "none": "– Don't populate a field –"
               },
               "addressProp": {
-                "label": ""
+                "label": "What form field should be used to plot responses on the map?"
               },
               "bounds": {
-                "label": ""
+                "label": "Maximum map bounds"
               },
               "center": {
-                "label": ""
+                "label": "Initial map center"
               },
               "geocodeCountries": {
-                "label": ""
+                "label": "Restrict location search results to specific countries?"
               },
               "initialZoom": {
-                "label": ""
+                "label": "Initial zoom level"
               },
               "mapIconProp": {
                 "label": "Selezionare una domanda per visualizzare le icone sulla mappa",
@@ -511,28 +511,28 @@
                 "title": "Stile dell’icona sulla mappa"
               },
               "maxZoom": {
-                "label": ""
+                "label": "Maximum zoom level"
               },
               "minZoom": {
-                "label": ""
+                "label": "Minimum zoom level"
               },
               "style": {
-                "help": "",
-                "label": ""
+                "help": "<p>The map view <strong>requires a third-party map tool</strong> like <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> or <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Those tools provide you with the map style URL you need to paste in here.</p>",
+                "label": "Map style URL"
               },
-              "title": ""
+              "title": "Map settings"
             },
             "newsletterSettings": {
-              "disabled": "",
-              "label": "",
+              "disabled": "You can't ask for newsletter sign-ups if you don't collect contact information",
+              "label": "Aggiungi a newsletter sign-up to the contact form",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "Participants won't be asked if they want to sign up to the newsletter",
+                "enabled": "Participants will be asked if they want to sign up to the newsletter"
               }
             },
             "openToEveryone": {
               "help": "<p>Le CrowdNewsroom possono essere presentate a <strong>tutti</strong> o limitate alla partecipazione dei <strong>soli membri</strong></p>",
-              "label": "",
+              "label": "Open to everyone",
               "opts": {
                 "disabled": "Solo i membri potranno accedere e partecipare a questa CrowdNewsroom",
                 "enabled": "Chiunque potrà accedere e partecipare a questa CrowdNewsroom"
@@ -540,65 +540,65 @@
             },
             "requireCaptcha": {
               "help": "<p>Se abiliti la <strong>protezione anti-bot</strong>, gli utenti dovranno completare un Captcha per confermare di essere umani. Questo è utile per evitare che la tua CrowdNewsroom venga spammata da bot</p>",
-              "label": "",
+              "label": "Enable bot spam protection",
               "members": {
-                "label": "",
+                "label": "Activate for members too",
                 "opts": {
-                  "disabled": "",
-                  "enabled": ""
+                  "disabled": "Your members are not asked for a CAPTCHA",
+                  "enabled": "Even your members are asked for a CAPTCHA"
                 }
               },
               "opts": {
-                "all": "",
-                "guests": "",
-                "none": ""
+                "all": "All users will be asked to fill out a CAPTCHA",
+                "guests": "Non-members will be asked to fill out a CAPTCHA",
+                "none": "No CAPTCHA will be required"
               }
             },
             "responseImageProp": {
-              "description": "",
-              "label": ""
+              "description": "The image will be used to visualise the answer in map or gallery view",
+              "label": "Response image"
             },
             "responseLinks": {
-              "add": "",
-              "description": "",
-              "label": "",
+              "add": "Aggiungi",
+              "description": "For example, use the response footer to include a link to report an error or a contact email. To link to an email address, type mailto: followed by the email address in the URL field.",
+              "label": "Include a footer at the bottom of responses",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "Don't show any footer links on responses",
+                "enabled": "Show footer links on responses for contact or error reporting"
               },
               "placeholder": {
-                "label": "",
-                "url": ""
+                "label": "Example: Report an error",
+                "url": "mailto:error{'@'}mail.com"
               },
               "text": {
-                "label": ""
+                "label": "Text"
               },
               "url": {
-                "label": ""
+                "label": "Url"
               }
             },
             "responseSettings": {
-              "label": "",
+              "label": "Response behaviour",
               "opts": {
-                "multiple": "",
+                "multiple": "Multiple responses, non-editable",
                 "singleEditable": "Una sola risposta, ma modificabile finché la CrowdNewsroom è aperta",
-                "singleNonEditable": ""
+                "singleNonEditable": "Single response, non-editable"
               },
-              "title": ""
+              "title": "Response settings"
             },
             "responseTitleProp": {
-              "description": "",
-              "label": ""
+              "description": "The title will appear on top of each response in the map or gallery view",
+              "label": "Response title"
             },
             "showResponses": {
-              "label": "",
+              "label": "Display responses publicly",
               "opts": {
-                "no": "",
-                "yes": ""
+                "no": "Collected responses are not publicly available",
+                "yes": "Show collected responses publicly"
               }
             },
             "starts": {
-              "label": "",
+              "label": "Set a starting date",
               "opts": {
                 "now": "La CrowdNewsroom sarà resa disponibile immediatamente.",
                 "schedule": "La CrowdNewsroom sarà resa disponibile a una data specifica."
@@ -613,138 +613,138 @@
               }
             },
             "whichResponseBuckets": {
-              "description": "",
-              "label": ""
+              "description": "Responses in unchecked buckets will be hidden from public view",
+              "label": "Visible response buckets"
             }
           },
-          "title": ""
+          "title": "Impostazioni"
         },
         "titleAndImage": {
           "inputs": {
             "description": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "This description is shown in the member dashboard. It is also used for sharing.",
+              "label": "Short description",
+              "placeholder": "Quickly explain why people should participate"
             },
             "general": {
-              "title": ""
+              "title": "General information"
             },
             "image": {
-              "description": "",
-              "help": "",
-              "label": ""
+              "description": "Don't forget to save after uploading an image!",
+              "help": "The cover image is displayed in thumbnails and share links",
+              "label": "Cover image"
             },
             "overrideShare": {
-              "label": "",
+              "label": "Use custom title and description for sharing?",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "Links shared on social networks will have the same title and description.",
+                "enabled": "Links shared on social networks will have a custom title and description."
               }
             },
             "shareDescription": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "<p>The <strong>Share description</strong> field sets the short description as it should appear on social media cards.</p>",
+              "label": "Share description",
+              "placeholder": "Quickly explain why people should participate"
             },
             "shareTitle": {
-              "help": "",
-              "label": "",
+              "help": "<p>The <strong>Share title</strong> field sets the title as it should appear on social media cards.</p>",
+              "label": "Share title",
               "placeholder": "Il nome della tua CrowdNewsroom"
             },
             "sharing": {
-              "title": ""
+              "title": "Sharing options"
             },
             "slug": {
-              "boxTitle": "",
+              "boxTitle": "Permalink",
               "help": "Usa questo link per condividere la CrowdNewsroom",
-              "label": "",
+              "label": "Auto-generate slug from title",
               "locked": {
                 "title": "Il permalink è bloccato perché la CrowdNewsroom è già stata pubblicata."
               },
               "opts": {
                 "auto": "Il permalink è generato dal titolo della CrowdNewsroom. Il link si aggiornerà automaticamente se cambi il titolo.",
-                "manual": ""
+                "manual": "The permalink is set manually"
               }
             },
             "title": {
-              "label": "",
+              "label": "Title",
               "placeholder": "Il nome della tua CrowdNewsroom."
             }
           },
-          "title": "",
-          "urlWillBe": ""
+          "title": "Title and image",
+          "urlWillBe": "Permalink will be"
         },
         "translations": {
           "language": {
             "description": "Puoi tradurre la CrowdNewsroom in più lingue. Se manca una traduzione, verrà mostrato il testo nella lingua principale.",
-            "enableLanguages": "",
-            "title": ""
+            "enableLanguages": "Enable translation support",
+            "title": "Language"
           },
           "languageSettings": {
-            "title": ""
+            "title": "Language"
           },
           "navigationButtons": {
-            "title": ""
+            "title": "Buttons"
           },
           "responseLinks": {
-            "title": ""
+            "title": "Footer text"
           },
-          "title": ""
+          "title": "Translations"
         }
       },
-      "title": "",
+      "title": "CrowdNewsroom builder",
       "translationFields": {
-        "description": "",
-        "html": "",
-        "label": "",
-        "option": "",
-        "placeholder": ""
+        "description": "Description",
+        "html": "Content",
+        "label": "Label",
+        "option": "Option {n}",
+        "placeholder": "Placeholder"
       },
-      "untitledCallout": ""
+      "untitledCallout": "Untitled CrowdNewsroom"
     },
-    "confirmHuman": "",
-    "contactDetails": "",
+    "confirmHuman": "Please confirm you are human",
+    "contactDetails": "Contact details",
     "ended": "Questa CrowdNewsroom è terminata il {date}",
-    "entryOf": "",
+    "entryOf": "Entry {no} of {total}",
     "form": {
-      "email": "",
-      "guestFieldsMissing": "",
-      "name": "",
-      "submittingResponseError": ""
+      "email": "Your email",
+      "guestFieldsMissing": "Please tell us your contact details",
+      "name": "Your name",
+      "submittingResponseError": "There was a problem submitting your response, please try again"
     },
-    "getStarted": "Iniziamo",
-    "joinNow": "",
-    "loginToYourAccount": "",
+    "getStarted": "Iniziare",
+    "joinNow": "Join now",
+    "loginToYourAccount": "Accedi to your account",
     "membersOnly": "Questa CrowdNewsroom è aperta solo ai membri. Per partecipare",
-    "responseSubmitted": "",
+    "responseSubmitted": "Response submitted",
     "share": {
-      "address": "",
+      "address": "Share using the following link:",
       "aria": {
-        "email": "",
-        "facebook": "",
-        "linkedin": "",
-        "telegram": "",
-        "twitter": "",
-        "whatsapp": ""
+        "email": "Share via email",
+        "facebook": "Share on Facebook",
+        "linkedin": "Share on LinkedIn",
+        "telegram": "Share on Telegram",
+        "twitter": "Share on Twitter",
+        "whatsapp": "Share on WhatsApp"
       },
-      "services": ""
+      "services": "Or quickly share using one of these services:"
     },
-    "showingPreview": "",
-    "toContributionPage": "",
-    "updateContribution": "",
+    "showingPreview": "You can't submit a response in preview mode",
+    "toContributionPage": "Modifica my contribution",
+    "updateContribution": "please update your contribution",
     "views": {
-      "gallery": "",
-      "map": ""
+      "gallery": "Gallery",
+      "map": "Map"
     },
     "youResponded": "Hai risposto a questa CrowdNewsroom ♥",
-    "yourResponse": ""
+    "yourResponse": "Your response"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom eliminata.",
     "ended": "CrowdNewsroom terminata. Puoi riaprirla modificandola.",
-    "overview": "",
+    "overview": "Overview",
     "reopened": "CrowdNewsroom riaperta. Modifica la CrowdNewsroom se vuoi impostare un'altra data di fine.",
-    "responses": ""
+    "responses": "Responses"
   },
   "calloutAdminOverview": {
     "actions": {
@@ -755,100 +755,100 @@
     },
     "created": "La tua nuova CrowdNewsroom è stata creata con successo.",
     "dates": {
-      "ends": "",
-      "label": "",
-      "starts": ""
+      "ends": "Ends",
+      "label": "Datas",
+      "starts": "Starts"
     },
     "settings": {
       "answers": {
-        "editable": "",
-        "final": "",
-        "label": ""
+        "editable": "Can be updated",
+        "final": "Can't be updated",
+        "label": "Answers"
       },
       "contactInfo": {
-        "label": "",
-        "optional": "",
-        "required": ""
+        "label": "Contact info",
+        "optional": "Facoltativo",
+        "required": "Obbligatorio"
       },
       "endsWith": {
-        "label": "",
-        "message": "",
-        "redirect": ""
+        "label": "Ends with",
+        "message": "Thank you message",
+        "redirect": "Redirect"
       },
-      "label": "",
+      "label": "Impostazioni",
       "openTo": {
-        "everyone": "",
-        "label": "",
-        "membersOnly": ""
+        "everyone": "Everyone",
+        "label": "Open to",
+        "membersOnly": "Membros only"
       }
     },
-    "summary": "",
+    "summary": "Summary",
     "updated": "La tua CrowdNewsroom è stata aggiornata con successo."
   },
   "calloutResponse": {
     "data": {
-      "answers": "",
-      "assignee": "",
-      "bucket": "",
+      "answers": "Answers",
+      "assignee": "Assigned to",
+      "bucket": "Bucket",
       "callout": "CrowdNewsroom",
-      "contact": "",
-      "createdAt": "",
-      "tags": "",
-      "updatedAt": ""
+      "contact": "Contact",
+      "createdAt": "Data submitted",
+      "tags": "Tags",
+      "updatedAt": "Data updated"
     },
     "dataGroup": {
-      "answers": "",
-      "response": ""
+      "answers": "Response answers",
+      "response": "Response information"
     }
   },
   "calloutResponseBuckets": {
-    "inbox": "",
-    "trash": "",
-    "verified": ""
+    "inbox": "Inbox",
+    "trash": "Trash",
+    "verified": "Verified"
   },
   "calloutResponseComments": {
     "actions": {
-      "addComment": "",
-      "updateComment": ""
+      "addComment": "Aggiungi comment",
+      "updateComment": "Aggiorna comment"
     },
-    "addComment": "",
-    "comments": "",
+    "addComment": "Aggiungi a comment",
+    "comments": "Comments",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "Sei sicuro you want to delete this comment?",
+      "title": "Elimina comment?"
     }
   },
   "calloutResponsePage": {
     "actions": {
-      "assignTo": "",
-      "moveBucket": "",
-      "toggleTag": "",
-      "viewOnMap": ""
+      "assignTo": "Assign to",
+      "moveBucket": "Move bucket",
+      "toggleTag": "Toggle tag",
+      "viewOnMap": "Visualizza on map"
     },
-    "editMode": "",
-    "manageFolders": "",
-    "manageReviewers": "",
-    "manageTags": "",
+    "editMode": "You are in edit mode, be careful!",
+    "manageFolders": "Gestisci folders",
+    "manageReviewers": "Gestisci reviewers",
+    "manageTags": "Gestisci tags",
     "notifications": {
-      "addedAssignee": "",
-      "addedTag": "",
-      "movedToBucket": "",
-      "removedAssignee": "",
-      "removedTag": ""
+      "addedAssignee": "Assigned to \"{assignee}\"",
+      "addedTag": "Aggiungied tag \"{tag}\"",
+      "movedToBucket": "Moved to {bucket}",
+      "removedAssignee": "Unassigned from \"{assignee}\"",
+      "removedTag": "Rimuovid tag \"{tag}\" "
     },
-    "responseOf": "",
-    "selectedCount": ""
+    "responseOf": "Response {no} out of {total} in {bucket}",
+    "selectedCount": "{n} response selected | {n} responses selected"
   },
   "calloutResponsesPage": {
-    "moveToBucket": "",
-    "noTags": "",
-    "response": "",
-    "responseNo": "",
-    "searchAssignee": "",
-    "searchTag": "",
-    "showAnswer": "",
-    "showLatestComment": "",
-    "showingOf": ""
+    "moveToBucket": "Move to {bucket}",
+    "noTags": "No tags",
+    "response": "Response",
+    "responseNo": "Response {no}",
+    "searchAssignee": "Assigned to...",
+    "searchTag": "Tagged with...",
+    "showAnswer": "Answer",
+    "showLatestComment": "Latest comment",
+    "showingOf": "Showing {start} to {end} responses out of {total}"
   },
   "calloutReviewerManager": {
     "add": "Aggiungere un verificatore",
@@ -870,7 +870,7 @@
     "title": "Verificatori"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": ""
+    "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded."
   },
   "callouts": {
     "archive": "Archivio",
@@ -882,23 +882,23 @@
     "search": "Cerca un callout",
     "showAll": "Tutti",
     "showAnswered": "Completati",
-    "showingOf": ""
+    "showingOf": "Showing {start} to {end} out of {total}"
   },
   "calloutsAdmin": {
-    "addCallout": "",
+    "addCallout": "Crea",
     "data": {
-      "expires": "",
-      "responses": "",
-      "starts": "",
-      "status": "",
-      "title": ""
+      "expires": "Expiry date",
+      "responses": "Responses",
+      "starts": "Start date",
+      "status": "Stato",
+      "title": "Title"
     },
     "filter": {
-      "all": "",
-      "draft": "",
-      "ended": "",
-      "open": "",
-      "scheduled": ""
+      "all": "All",
+      "draft": "Drafts",
+      "ended": "Ended",
+      "open": "Open",
+      "scheduled": "Scheduled"
     }
   },
   "common": {
@@ -917,9 +917,9 @@
     "default": "Predefinito",
     "hello": "Ciao",
     "id": "ID",
-    "itemsPerPage": "",
+    "itemsPerPage": "{items} items per page",
     "joined": "Iscritto",
-    "label": "",
+    "label": "Label",
     "loading": "Caricamento...",
     "login": "Login",
     "newsletterStatus": {
@@ -935,7 +935,7 @@
     "paymentPeriod": {
       "annually": "all'anno",
       "monthly": "al mese",
-      "one-time": ""
+      "one-time": "One-time"
     },
     "paymentStatus": {
       "cancelled": "Cancellato",
@@ -952,24 +952,24 @@
     },
     "perMonth": "/ mese",
     "perOneTime": "",
-    "perOneTimeText": "",
+    "perOneTimeText": "one-time",
     "perYear": "/ anno",
     "role": {
-      "admin": "",
-      "member": "",
-      "superadmin": ""
+      "admin": "Admin",
+      "member": "Membro",
+      "superadmin": "Super Admin"
     },
     "selectNone": "-- Nessuno --",
     "selectOne": "Seleziona",
     "show": "Mostra",
-    "showingOf": "",
+    "showingOf": "Showing {start} to {end} of {total} results",
     "status": {
       "draft": "Bozza",
       "ended": "Chiuso",
       "open": "Aperto",
       "scheduled": "Programmato"
     },
-    "statusLabel": "",
+    "statusLabel": "Stato: {status}",
     "thankYou": "Grazie!",
     "timeAgo": "{time} fa",
     "timeIn": "in {time}",
@@ -978,11 +978,11 @@
   },
   "contactAccount": {
     "confirmDelete": {
-      "text": "",
-      "title": "",
-      "warning": ""
+      "text": "This will delete all data associated with {email}. If they have an active contribution this will be cancelled.",
+      "title": "Elimina contact",
+      "warning": "This is irreversible. Sei sicuro you want to proceed?"
     },
-    "contactDeleted": ""
+    "contactDeleted": "Contact deleted."
   },
   "contactContribution": {
     "confirmCancel": {
@@ -991,144 +991,144 @@
       "title": "Cancellare il contributo?"
     },
     "updateNotice": {
-      "text": "",
-      "title": ""
+      "text": "You can't currently update a contact's contribution, contact support{'@'}beabee.io for support.",
+      "title": "Not currently available"
     }
   },
   "contactOverview": {
-    "about": "",
-    "account": "",
+    "about": "About",
+    "account": "Account",
     "annotation": {
-      "copy": ""
+      "copy": "<p>All information added in this section is <strong>visible for admins only</strong>. Membros will never see these in their profile or member area.</p>\n"
     },
     "callouts": "CrowdNewsroom",
-    "cancellationDate": "",
-    "contribution": "",
-    "contributionType": "",
-    "joinSurvey": "",
+    "cancellationDate": "Annullaled on",
+    "contribution": "Contribution",
+    "contributionType": "Type",
+    "joinSurvey": "Join survey",
     "newsletter": {
-      "groups": "",
-      "status": "",
-      "title": ""
+      "groups": "Groups",
+      "status": "Stato",
+      "title": "Newsletter"
     },
     "oneTime": "Una tantum",
-    "overview": "",
-    "pickTag": "",
-    "profile": "",
+    "overview": "Overview",
+    "pickTag": "Pick a tag from the list below",
+    "profile": "Profilo",
     "recurring": "Ricorrente",
-    "roles": "",
+    "roles": "Roles",
     "security": {
-      "instructions": "",
-      "loginOverride": "",
+      "instructions": "Copy and share this link:",
+      "loginOverride": "Accedi override",
       "mfa": {
-        "desc": "",
-        "disabledDesc": ""
+        "desc": "This contact has 2FA enabled. Click on the \"{ disableLabel }\" button to disable it.",
+        "disabledDesc": "2FA is not enabled for this contact."
       },
-      "resetPassword": "",
-      "title": "",
-      "whatDoTheButtonsDo": ""
+      "resetPassword": "Reset password",
+      "title": "Security",
+      "whatDoTheButtonsDo": "Click the button to generate an emergency link:"
     }
   },
   "contacts": {
-    "addContact": "",
+    "addContact": "Aggiungi contact",
     "advancedSearch": {
-      "hasAnswered": "",
-      "selectCallout": ""
+      "hasAnswered": "Has participated?",
+      "selectCallout": "Seleziona"
     },
-    "allContacts": "",
+    "allContacts": "All contacts",
     "data": {
-      "activeMembership": "",
-      "activePermission": "",
-      "activeUser": "",
-      "amount": "",
-      "annotationsCopy": "",
-      "contribution": "",
-      "contributionCancelled": "",
-      "contributionMonthlyAmount": "",
-      "contributionPeriod": "",
-      "contributionType": "",
-      "deliveryOptIn": "",
-      "description": "",
-      "email": "",
-      "firstname": "",
-      "joined": "",
-      "lastSeen": "",
-      "lastname": "",
-      "manualPaymentSource": "",
-      "membershipExpires": "",
-      "membershipStarts": "",
-      "name": "",
-      "newsletterGroups": "",
-      "newsletterStatus": "",
-      "notes": "",
-      "payingFee": "",
-      "paymentReference": "",
-      "paymentSource": "",
-      "period": "",
-      "phone": "",
-      "preferredChannel": "",
-      "tags": ""
+      "activeMembership": "Attivo membership",
+      "activePermission": "Attivo role",
+      "activeUser": "Attivo user",
+      "amount": "Importo",
+      "annotationsCopy": "Contact successfully updated",
+      "contribution": "Contribution",
+      "contributionCancelled": "Contribution cancelled",
+      "contributionMonthlyAmount": "Contribution monthly amount",
+      "contributionPeriod": "Contribution period",
+      "contributionType": "Contribution type",
+      "deliveryOptIn": "Delivery opt-in",
+      "description": "Description",
+      "email": "Email",
+      "firstname": "First name",
+      "joined": "Joined",
+      "lastSeen": "Last seen",
+      "lastname": "Last name",
+      "manualPaymentSource": "Manual payment source",
+      "membershipExpires": "Membro until",
+      "membershipStarts": "Membro since",
+      "name": "Nome",
+      "newsletterGroups": "Newsletter groups",
+      "newsletterStatus": "Newsletter status",
+      "notes": "Notes",
+      "payingFee": "Paying fee?",
+      "paymentReference": "Pagamento reference",
+      "paymentSource": "Pagamento source",
+      "period": "Period",
+      "phone": "Telefono number",
+      "preferredChannel": "Preferred channel",
+      "tags": "Tags"
     },
     "dataGroup": {
       "callout": "Callout",
       "contact": "Informazioni di contatto",
-      "contribution": "",
-      "role": ""
+      "contribution": "Contribution",
+      "role": "Role"
     },
-    "noContacts": "",
-    "noResults": "",
-    "numResults": "",
-    "search": "",
-    "selectedCount": "",
-    "showingOf": ""
+    "noContacts": "No contacts added yet",
+    "noResults": "No contacts found",
+    "numResults": "{n} contact found | {n} contacts found",
+    "search": "Cerca contacts...",
+    "selectedCount": "{n} contact selected | {n} contacts selected",
+    "showingOf": "Showing {start} to {end} contacts out of {total}"
   },
   "contribution": {
-    "adminCancelDescription": "",
-    "bankAccount": "",
-    "billing": "",
+    "adminCancelDescription": "If you cancel the contact's contribution their membership will finish at the end of their current payment cycle on {date}.",
+    "bankAccount": "Bank account",
+    "billing": "Fatturazione",
     "cancelContribution": "Cancella il tuo contributo",
     "cancelDescription": "Cancellando il tuo contributo, la tua membership terminerà alla fine del ciclo di pagamento, il {date}.",
-    "cancelMessage": "",
-    "cancelledContribution": "",
-    "changeBank": "",
-    "changeBankInfo": "",
+    "cancelMessage": "We're sorry to see you go.",
+    "cancelledContribution": "Your contribution has been cancelled.",
+    "changeBank": "Change to a different bank account",
+    "changeBankInfo": "You'll be asked for the details of your new bank account in the next step.",
     "contributing": "Il tuo contributo è",
-    "dueToRenew": "",
-    "expired": "",
-    "expiredText": "",
-    "hasPendingPayment": "",
-    "manualPayment": "",
-    "manualPaymentSource": "",
-    "nextAmountChanging": "",
+    "dueToRenew": "Your contribution is due to renew on {renewalData}.",
+    "expired": "Your contribution expired.",
+    "expiredText": "Please consider renewing, even if at the lowest amount it would help us immensely. Thank you!",
+    "hasPendingPayment": "Your payment is currently being processed.",
+    "manualPayment": "You are currently paying your membership contribution via {source}. By paying through our membership system you'll help us to know how much money from our members we can rely on month on month and it'll be easier for you to manage your contribution.",
+    "manualPaymentSource": "a third party tool",
+    "nextAmountChanging": "Your contribution will change to {nextImporto} on {renewalData}.",
     "paymentHistory": {
-      "empty": "",
+      "empty": "Past payments and their invoices will show up here.",
       "title": "Cronologia dei pagamenti"
     },
     "paymentMethod": "Metodo di pagamento",
     "perMonthText": "al mese",
     "perYearText": "all'anno",
-    "prorateDecreaseMessage": "",
-    "prorateDecreaseMessageWillStart": "",
-    "prorateIncreaseMessage": "",
-    "prorateIncreaseMessageOneOff": "",
-    "prorateNoText": "",
-    "prorateNoTitle": "",
-    "prorateYesText": "",
-    "prorateYesTitle": "",
+    "prorateDecreaseMessage": "You have one month left on your current contribution. | You have {n} months left on your current contribution.",
+    "prorateDecreaseMessageWillStart": "Your new contribution will start on {renewalData}.",
+    "prorateIncreaseMessage": "You have one month left on your current contribution. | You have {n} months left on your current contribution.",
+    "prorateIncreaseMessageOneOff": "You can make a one-off payment of {oneOffPagamento} to start your new contribution immediately.",
+    "prorateNoText": "You'll stay on your current contribution until then.",
+    "prorateNoTitle": "Aggiorna my contribution on {renewalData}",
+    "prorateYesText": "You'll be charged a one-off payment of {oneOffPagamento} now and your contribution will be updated immedately",
+    "prorateYesTitle": "Aggiorna my contribution now",
     "restartContribution": "Ripristina contributo",
     "startContribution": "Avvia contirbuto",
-    "startedContribution": "",
+    "startedContribution": "Your contribution has started.",
     "updateContribution": "Aggiorna il tuo contributo",
     "updatePaymentType": "Aggiorna il metodo di pagamento",
-    "updatedContribution": "",
-    "updatedPaymentSource": "",
-    "willExpire": "",
+    "updatedContribution": "Your contribution has been updated.",
+    "updatedPaymentSource": "Your payment method has been updated.",
+    "willExpire": "Your contribution will expire in {expires}.",
     "willRenew": "Il tuo contributo sarà aggiornato il {renewalDate}.",
-    "willRenewWithNewAmount": ""
+    "willRenewWithNewAmount": "Your contribution will automatically renew on {renewalData} and will change to your chosen amount of {nextImporto}."
   },
   "editCallout": {
     "replicated": "La tua CrowdNewsroom è stata replicata con successo e ora stai modificando la nuova copia. Ricordati di modificare il titolo nella scheda \"Titolo e Immagine\".",
-    "title": "",
+    "title": "Modifica: {title}",
     "warning": "Attenzione! Stai modificando una CrowdNewsroom attiva. Modificare le proprietà del modulo può rendere inutilizzabili le risposte precedenti."
   },
   "editNotice": {
@@ -1242,7 +1242,7 @@
     "terms": "Termini e condizioni"
   },
   "forgotPassword": {
-    "backToLogin": "Torna alla pagina di login ",
+    "backToLogin": "Torna alla pagina di login",
     "description": "Inserisci la tua mail. Ti invieremo le istruzioni su come reimpostare la tua password.",
     "message": "Se esiste già un account associato a {email}, riceverai una mail a breve. Controlla anche la tua cartella spam.",
     "title": "Hai dimenticato la password?"
@@ -1250,147 +1250,147 @@
   "form": {
     "addressLine1": "Dettagli indirizzo 1",
     "addressLine2": "Dettagli indirizzo 2",
-    "cancel": "",
+    "cancel": "Annulla",
     "characters": {
-      "remaining": ""
+      "remaining": "{remaining} characters remaining."
     },
     "cityOrTown": "Città",
-    "deliveryOptIn": "",
-    "description": "",
-    "email": "",
+    "deliveryOptIn": "Delivery opt-in",
+    "description": "Description",
+    "email": "Email",
     "errorMessages": {
       "api": {
-        "account-locked": "",
-        "cant-update-contribution": "",
-        "duplicate-email": "",
-        "duplicate-tag-name": "",
-        "invalid-token": "",
-        "login-failed": "",
-        "mfa-token-required": ""
+        "account-locked": "Account locked due to too many failed login attempts. Please reset your password or contact support for help.",
+        "cant-update-contribution": "You can't update your contribution at the moment as you have a payment pending",
+        "duplicate-email": "Email address already exists",
+        "duplicate-tag-name": "A tag with this name already exists",
+        "invalid-token": "Invalid 2FA token",
+        "login-failed": "Invalid password/email combination",
+        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed"
       },
-      "generic": "",
-      "unauthorized": "",
-      "validation": ""
+      "generic": "Oops, something went wrong! Contact support if this happens again.",
+      "unauthorized": "You don't have access to that.",
+      "validation": "Something is missing. Please check the fields above."
     },
     "errors": {
       "address": {
-        "required": ""
+        "required": "This field is required if you want to add an address"
       },
       "addressLine1": {
-        "required": ""
+        "required": "Aggiungiress line 1 is required"
       },
       "cityOrTown": {
-        "required": ""
+        "required": "City/Town is required"
       },
       "color": {
-        "pattern": "",
-        "required": ""
+        "pattern": "Invalid color",
+        "required": "Color is required"
       },
       "confirmPassword": {
-        "password": "",
-        "required": "",
-        "sameAs": ""
+        "password": "Invalid password",
+        "required": "Password is required",
+        "sameAs": "The passwords don't match"
       },
       "description": {
-        "maxLength": "",
-        "required": ""
+        "maxLength": "Maximum length of {max} characters exceeded",
+        "required": "Description is required"
       },
       "email": {
-        "email": "",
-        "required": ""
+        "email": "Invalid email address",
+        "required": "Email is required"
       },
       "file": {
-        "rateLimited": "",
-        "tooBig": "",
-        "unsupportedType": ""
+        "rateLimited": "Carica failed: you have uploaded too many files recently, please wait a few minutes before trying again",
+        "tooBig": "Carica failed: the file size must be under 20Mb",
+        "unsupportedType": "Carica failed: the file type is not supported"
       },
       "firstName": {
-        "required": ""
+        "required": "First name is required"
       },
       "lastName": {
-        "required": ""
+        "required": "Last name is required"
       },
       "name": {
-        "required": ""
+        "required": "Nome is required"
       },
       "password": {
-        "password": "",
-        "required": "",
-        "sameAs": ""
+        "password": "Invalid password",
+        "required": "Password is required",
+        "sameAs": "The passwords don't match"
       },
       "postCode": {
-        "required": ""
+        "required": "Postcode is required"
       },
       "shareDescription": {
-        "maxLength": "",
-        "required": ""
+        "maxLength": "Maximum length of {max} characters exceeded, {remaining} characters remaining",
+        "required": "Description is required"
       },
       "unknown": {
-        "email": "",
-        "max": "",
-        "maxLength": "",
-        "min": "",
-        "required": "",
-        "url": ""
+        "email": "Invalid email address",
+        "max": "This field must be at most {max}",
+        "maxLength": "Maximum length of {max} characters exceeded",
+        "min": "This field must be at least {min}",
+        "required": "This field is required",
+        "url": "Invalid URL"
       },
       "url": {
-        "required": "",
-        "url": ""
+        "required": "URL is required",
+        "url": "Invalid URL"
       },
       "verifyCode": {
-        "max": "",
-        "min": "",
-        "required": ""
+        "max": "The code may only be a maximum of {max} characters long.",
+        "min": "The code must be at least {min} characters long.",
+        "required": "Code is required"
       }
     },
     "errorsFormio": {
-      "maxLength": "",
-      "minLength": ""
+      "maxLength": "Maximum length of {'{{length}}'} characters exceeded",
+      "minLength": "This field must be at least {'{{length}}'} characters long"
     },
     "firstName": "Nome",
     "lastName": "Cognome",
-    "newPassword": "",
-    "newPasswordConfirm": "",
-    "notes": "",
-    "password": "",
+    "newPassword": "New password",
+    "newPasswordConfirm": "Conferma new password",
+    "notes": "Notes",
+    "password": "Password",
     "passwordInfo": "Crea una password sicura: almeno 8 caratteri, un numero, una lettera minuscola e una maiuscola.",
-    "phone": "",
+    "phone": "Telefono number",
     "postCode": "CAP",
     "richtext": {
-      "bold": "",
-      "bulletlist": "",
-      "editor": "",
-      "heading": "",
-      "italic": "",
-      "link": "",
+      "bold": "Bold",
+      "bulletlist": "Bullet list",
+      "editor": "Rich text editor",
+      "heading": "Heading",
+      "italic": "Italic",
+      "link": "Link",
       "mergeFields": "Campi di unione",
-      "numberedlist": "",
-      "strikethrough": "",
-      "toolbar": "",
-      "underline": ""
+      "numberedlist": "Numbered list",
+      "strikethrough": "Strikethrough",
+      "toolbar": "Rich text formatting toolbar",
+      "underline": "Underline"
     },
-    "saveChanges": "",
+    "saveChanges": "Salva Changes",
     "saved": "Salvato!",
-    "unsavedChanges": "",
+    "unsavedChanges": "Unsaved changes",
     "updated": "Aggiornato"
   },
   "formRenderer": {
     "components": {
       "file": {
-        "browse": "",
-        "dropFiles": "",
-        "or": "",
-        "switchToFileUpload": "",
-        "takePicture": "",
-        "useCamera": ""
+        "browse": "upload from device",
+        "dropFiles": "Drop files to attach",
+        "or": "or",
+        "switchToFileUpload": "Switch to file upload",
+        "takePicture": "Take Picture",
+        "useCamera": "use camera"
       },
       "multiple": {
-        "addAnother": ""
+        "addAnother": "Aggiungi another"
       }
     }
   },
   "homePage": {
-    "editProfile": "",
+    "editProfile": "Modifica your community profile",
     "makeOneTimeDonationButton": "Dona",
     "makeOneTimeDonationTitle": "Fai una donazione ora",
     "manageContribution": "Gestisci il tuo contributo",
@@ -1405,17 +1405,17 @@
   },
   "icons": {
     "welcome": {
-      "ariaLabel": ""
+      "ariaLabel": "Welcome icon"
     }
   },
   "item": {
     "status": {
-      "endsIn": "",
-      "startsIn": ""
+      "endsIn": "Ends in {duration}",
+      "startsIn": "Starts in {duration}"
     }
   },
   "join": {
-    "absorbFeeForce": "",
+    "absorbFeeForce": "{amount} contributions must absorb the {fee} fee.",
     "absorbFeeOptIn": "Sì, intendo coprire i {fee} della transazione.",
     "absorbFeeText": {
       "monthly": "La nostra piattaforma di pagamento addebita un costo per la transazione. Significa che mensilmente riceveremo meno rispetto alla quota che hai scelto. Vuoi coprire il costo della transazione? Il pagamento annuale, invece, non prevede costi ulteriori.  ",
@@ -1434,8 +1434,8 @@
         "title": "Conferma il tuo account."
       },
       "failed": {
-        "backToJoin": "Torna alla pagina di registrazione",
-        "message": "Si è verificato un problema durante la configurazione della tua iscrizione, il nostro team è stato informato. Contatta l’assistenza se il problema persiste.",
+        "backToJoin": "Indietro to join page",
+        "message": "There was a problem setting up your membership, our team has been notified. Please contact support if the problem persists.",
         "title": "Qualcosa è andato storto"
       },
       "paymentFailed": {
@@ -1447,15 +1447,15 @@
     "login": "Log in",
     "memberAccount": "Il tuo account",
     "memberAlready": "Sei già iscritto?",
-    "minimumContribution": "",
-    "noContribution": "",
-    "notice": "",
-    "now": "",
+    "minimumContribution": "Minimum contribution is",
+    "noContribution": "I don't want to contribute right now",
+    "notice": "By proceeding you are accepting the",
+    "now": "Join now!",
     "paymentMethod": "Metodo di pagamento",
-    "poweredBy": "",
+    "poweredBy": "Powered by beabee",
     "privacy": "Privacy",
     "tax": {
-      "included": ""
+      "included": "Contribution includes {taxRate}% VAT."
     }
   },
   "joinPayment": {
@@ -1489,67 +1489,67 @@
     "title": "Hai perso il tuo dispositivo 2FA?"
   },
   "mailOptIn": {
-    "optInLabel": "",
-    "text": "",
-    "title": ""
+    "optInLabel": "Checkbox label",
+    "text": "Text",
+    "title": "Heading"
   },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
         "deliveryAddress": {
-          "showOptIn": "",
-          "title": ""
+          "showOptIn": "Ask for postal address",
+          "title": "Postal address"
         },
-        "description": "",
+        "description": "Compose your confirmation screen",
         "joinSurvey": {
-          "required": "",
+          "required": "Utentes must complete the survey before proceeding",
           "slug": "CrowdNewsroom",
           "slugHelp": "Puoi usare qualsiasi CrowdNewsroom aperta che non abbia una data di scadenza.",
           "text": "Puoi chiedere ai tuoi nuovi utenti di completare una CrowdNewsroom come parte del processo di iscrizione. È un ottimo modo per chiedere loro perché si sono uniti o per raccogliere informazioni aggiuntive utili alla loro integrazione nella community.",
-          "textIntro": "",
-          "title": ""
+          "textIntro": "Tell your users a bit about why you are asking for this information",
+          "title": "Join survey"
         },
         "newsletter": {
-          "showOptIn": "",
+          "showOptIn": "Ask to subscribe to newsletter",
           "title": "Newsletter"
         },
-        "text": "",
-        "title": "",
-        "welcomeMessage": ""
+        "text": "After joining, users will be asked to confirm their registration. Here you can set the details of the confirmation screen.",
+        "title": "Account confirmation",
+        "welcomeMessage": "Welcome message"
       },
       "emails": {
-        "bigTitle": "",
-        "cancellationEmail": "",
-        "description": "",
+        "bigTitle": "Welcome & cancellation emails",
+        "cancellationEmail": "Annullalation email",
+        "description": "Customise your welcome and cancellation emails",
         "oneTimeDonationEmail": "Email di donazione una tantum",
-        "text": "",
-        "title": "",
-        "welcomeEmail": ""
+        "text": "All emails are sent from your support email address and include standard signature, you can change these in your email settings.",
+        "title": "Emails",
+        "welcomeEmail": "Welcome email"
       },
       "intro": {
-        "description": "",
-        "message": "",
-        "showWelcomeMessage": "",
-        "text": "",
-        "title": ""
+        "description": "Say hello to your new members",
+        "message": "Message",
+        "showWelcomeMessage": "Show welcome message",
+        "text": "Once your members are done with registration, they'll be greeted with a message. Make it yours!",
+        "title": "Welcome message"
       },
       "joinForm": {
-        "backgroundImage": "",
-        "defaultAmount": "",
-        "description": "",
-        "formSubtitle": "",
-        "formTitle": "",
-        "minAmount": "",
-        "noticeText": "",
-        "noticeTextHelp": "",
-        "showAbsorbFee": "",
-        "showNoContribution": "",
-        "suggestedAmounts": "",
-        "text": "",
-        "title": ""
+        "backgroundImage": "Indietroground image",
+        "defaultAmount": "Default amount",
+        "description": "Fine tune your membership join form",
+        "formSubtitle": "Subtitle",
+        "formTitle": "Title",
+        "minAmount": "Minimum amount",
+        "noticeText": "Notice below payment button",
+        "noticeTextHelp": "Use this field to add a notice below the payment button, for example explaining payment periods or bank authorizations. You can also leave this field blank.",
+        "showAbsorbFee": "Ask user about absorbing the payment fee",
+        "showNoContribution": "Allow user to join without a contribution",
+        "suggestedAmounts": "Suggested contribution amounts",
+        "text": "In this section you can edit, fine tune and preview your membership join form.",
+        "title": "Join form"
       }
     },
-    "title": ""
+    "title": "Membroship builder"
   },
   "menu": {
     "account": "Account",
@@ -1563,7 +1563,7 @@
     "home": "Home",
     "legacyApp": "Vecchia dashboard",
     "logout": "Log out",
-    "membershipBuilder": "",
+    "membershipBuilder": "Membroship builder",
     "notices": "Notifiche",
     "payments": "Pagamenti",
     "settings": "Impostazioni",
@@ -1616,106 +1616,106 @@
   },
   "newsletterOptIn": {
     "groups": {
-      "add": "",
-      "help": "",
-      "title": ""
+      "add": "Aggiungi new group",
+      "help": "<p>You can let users choose which newsletter groups they want to join. These groups must already be configured in Mailchimp, contact <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> if you are unsure how to use this feature.</p>\n",
+      "title": "Newsletter groups"
     },
-    "optInDisabled": "",
-    "optInLabel": "",
-    "text": "",
-    "title": ""
+    "optInDisabled": "The label is not used when newsletter groups are visible",
+    "optInLabel": "Checkbox label",
+    "text": "Text",
+    "title": "Heading"
   },
   "notFound": {
-    "goBack": "",
-    "text": ""
+    "goBack": "Go back to home",
+    "text": "This page doesn't exist. If you think this is a mistake please contact {support}."
   },
   "noticeAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "Sei sicuro you want to delete this notice?",
+        "title": "Elimina notice?"
       }
     },
-    "created": "",
-    "summary": "",
-    "updated": ""
+    "created": "Your new notice was successfully created.",
+    "summary": "Summary",
+    "updated": "Your notice was successfully updated."
   },
   "notices": {
-    "addNotice": "",
+    "addNotice": "Aggiungi notice",
     "data": {
-      "createdAt": "",
-      "name": "",
-      "status": ""
+      "createdAt": "Cread",
+      "name": "Nome",
+      "status": "Stato"
     },
-    "showingOf": ""
+    "showingOf": "Showing {start} to {end} notices out of {total}"
   },
   "notifications": {
     "copy": {
-      "success": ""
+      "success": "Copied to clipboard"
     },
-    "error": "",
+    "error": "Something went wrong. Try reloading the page.",
     "rateLimit": {
       "generic": "Troppe richieste. Attendi un momento e riprova.",
       "withWait": "Troppe richieste. Attendi {time} e riprova."
     },
-    "remove": ""
+    "remove": "Chiudi notification"
   },
   "pageTitle": {
-    "confirmEmail": "",
-    "duplicateEmail": "",
-    "failed": "",
-    "forgotPassword": "",
-    "join": "",
-    "login": "",
-    "lostDevice": "",
-    "notFound": "",
-    "resetDevice": "",
-    "resetPassword": "",
-    "setPassword": "",
-    "setup": ""
+    "confirmEmail": "Conferma email",
+    "duplicateEmail": "Duplicate email",
+    "failed": "Failed",
+    "forgotPassword": "Password dimenticata",
+    "join": "Join",
+    "login": "Accedi",
+    "lostDevice": "Lost your 2FA device?",
+    "notFound": "Page not found",
+    "resetDevice": "Reset 2FA device",
+    "resetPassword": "Reset password",
+    "setPassword": "Set password",
+    "setup": "Setup"
   },
   "paymentMethods": {
     "gc_direct-debit": {
-      "changeLabel": "",
+      "changeLabel": "Change direct debit",
       "label": "Addebito diretto",
-      "setLabel": ""
+      "setLabel": "Your direct debit details"
     },
     "s_bacs": {
-      "changeLabel": "",
+      "changeLabel": "Change direct debit",
       "label": "Addebito diretto",
-      "setLabel": ""
+      "setLabel": "Your direct debit details"
     },
     "s_card": {
       "changeLabel": "Modifica i dettagli della carta",
       "label": "Carta di credito",
-      "setLabel": ""
+      "setLabel": "Your card details"
     },
     "s_ideal": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "Change iDEAL details",
+      "label": "iDEAL",
+      "setLabel": "Your iDEAL details"
     },
     "s_paypal": {
-      "changeLabel": "",
+      "changeLabel": "Change PayPal details",
       "label": "PayPal",
-      "setLabel": ""
+      "setLabel": "Your PayPal details"
     },
     "s_sepa": {
-      "changeLabel": "",
+      "changeLabel": "Change direct debit",
       "label": "Addebito diretto",
-      "setLabel": ""
+      "setLabel": "Your direct debit details"
     }
   },
   "payments": {
     "data": {
-      "amount": "",
-      "chargeDate": "",
-      "contact": "",
-      "status": "",
+      "amount": "Importo",
+      "chargeDate": "Charge date",
+      "contact": "Contact",
+      "status": "Stato",
       "type": ""
     },
     "dataGroup": {
-      "payment": ""
+      "payment": "Pagamento"
     }
   },
   "paymentsAdmin": {
@@ -1724,93 +1724,93 @@
       "total": "Importo totale"
     },
     "filter": {
-      "all": "",
-      "cancelled": "",
-      "failed": "",
-      "pending": "",
-      "successful": ""
+      "all": "All payments",
+      "cancelled": "Annullaled payments",
+      "failed": "Failed payments",
+      "pending": "Pending payments",
+      "successful": "Operazione riuscitaful payments"
     },
-    "showingOf": ""
+    "showingOf": "Showing {start} to {end} payments out of {total}"
   },
   "resetDevice": {
-    "description": "",
-    "failed": "",
-    "invalidPassword": "",
-    "success": "",
-    "title": ""
+    "description": "Enter your password to reset 2FA protection, you will be able to set up a new device once you are logged in.",
+    "failed": "Resetting device was unsuccessful, the link might have expired.",
+    "invalidPassword": "Invalid password",
+    "success": "Your 2FA device was successfully reset",
+    "title": "Reset your 2FA device?"
   },
   "resetPassword": {
-    "description": "",
-    "failed": "",
-    "login": "Accedi al tuo account. ",
-    "lostDevice": "",
-    "success": "",
+    "description": "Set a new password to login.",
+    "failed": "Password reset failed, the link might have expired.",
+    "login": "Accedi al tuo account.",
+    "lostDevice": "If you have lost your 2FA device please contact support",
+    "success": "Your password has been reset.",
     "title": "Vuoi reimpostare la tua password?"
   },
   "roleEditor": {
-    "add": "",
+    "add": "Aggiungi role",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "Sei sicuro you want to remove this role?",
+      "title": "Rimuovi role"
     },
     "expires": {
-      "label": "",
+      "label": "Expiry date for this role",
       "opts": {
-        "never": "",
-        "schedule": ""
+        "never": "Never",
+        "schedule": "Set an expiry date"
       }
     },
-    "new": "",
+    "new": "New role",
     "starts": {
-      "label": "",
+      "label": "Start date for this role",
       "opts": {
-        "now": "",
-        "schedule": ""
+        "now": "Now",
+        "schedule": "Set a start date"
       }
     },
-    "title": "",
-    "today": ""
+    "title": "Roles",
+    "today": "present"
   },
   "setPassword": {
     "description": "Imposta una nuova password.",
     "title": "Imposta una password"
   },
   "status": {
-    "connectingToServer": "",
-    "initializing": "",
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "usuallyTakesSeconds": ""
+    "connectingToServer": "Connecting to server...",
+    "initializing": "Initializing...",
+    "loadingApplication": "Caricamento Application",
+    "pleaseWait": "Please wait...",
+    "usuallyTakesSeconds": "This usually takes a few seconds"
   },
   "stepper": {
     "navigation": {
-      "label": ""
+      "label": "Step progress"
     },
     "screen": {
-      "completed": "",
-      "currentStep": "",
-      "hasError": ""
+      "completed": ", completed",
+      "currentStep": ", current step",
+      "hasError": ", has error"
     }
   },
   "tagEditor": {
-    "add": "",
+    "add": "Aggiungi tag",
     "confirmDelete": {
-      "text_contact": "",
-      "text_global": "",
-      "text_response": "",
-      "title": ""
+      "text_contact": "Sei sicuro you want to remove this tag? Every contact that is tagged with \"{tagNome}\" will lose the tag.",
+      "text_global": "Sei sicuro you want to remove the tag \"{tagNome}\"?",
+      "text_response": "Sei sicuro you want to remove this tag? Every response that is tagged with \"{tagNome}\" will lose the tag",
+      "title": "Rimuovi tag"
     },
-    "name": ""
+    "name": "Nome"
   },
   "tags": {
-    "manageTags": "",
-    "noTags": "",
+    "manageTags": "Gestisci tags",
+    "noTags": "No tags",
     "notifications": {
-      "addedTag": "",
-      "removedTag": ""
+      "addedTag": "Aggiungied tag \"{tag}\"",
+      "removedTag": "Rimuovid tag \"{tag}\" "
     },
-    "searchTag": "",
-    "toggleTag": ""
+    "searchTag": "Tagged with...",
+    "toggleTag": "Toggle tag"
   },
   "taxRate": {
     "invoiceName": "VAT"
