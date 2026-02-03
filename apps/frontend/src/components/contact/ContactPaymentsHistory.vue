@@ -27,7 +27,7 @@
           :icon="faDownload"
           variant="primaryOutlined"
           :href="client.payment.getInvoiceUrl(item.id)"
-        ></AppButton>
+        />
       </template>
     </AppTable>
     <div v-if="totalPages > 1" class="mt-6 flex w-full justify-between gap-2">
