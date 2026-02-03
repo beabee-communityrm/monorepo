@@ -70,7 +70,7 @@ async function createAndActivateSubscription(
     items: [{ price_data: getPriceData(form, paymentMethod) }],
     payment_behavior: 'error_if_incomplete',
     expand: ['latest_invoice.payment_intent'],
-    default_tax_rates: getSalesTaxRateObject(),
+    default_tax_rates: getSalesTaxRateObject('recurring'),
   });
 
   // Ensure subscription is active

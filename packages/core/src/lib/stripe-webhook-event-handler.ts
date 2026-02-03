@@ -169,7 +169,7 @@ export class StripeWebhookEventHandler {
     // https://docs.stripe.com/billing/invoices/subscription#update-first-invoice
     if (invoice.status !== 'draft') return;
 
-    const taxRateObj = getSalesTaxRateObject();
+    const taxRateObj = getSalesTaxRateObject('recurring');
     const invoiceTaxRateObj = invoice.default_tax_rates.map((rate) => rate.id);
 
     // If tax rates match then there's nothing to do

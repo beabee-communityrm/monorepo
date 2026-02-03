@@ -222,7 +222,8 @@
       "paymentTitle": "Zahlungen",
       "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",
-      "taxRateEnabled": "Mehrwertsteuer aktivieren"
+      "taxRateLabelOneTime": "Mehrwertsteuersatz für einmalige Zahlungen aktivieren",
+      "taxRateLabelRecurring": "Mehrwertsteuersatz für wiederkehrende Zahlungen aktivieren"
     },
     "theme": {
       "bodyFont": "Text",

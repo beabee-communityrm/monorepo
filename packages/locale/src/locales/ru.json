@@ -223,7 +223,8 @@
       "paymentTitle": "",
       "showOneTimeDonation": "",
       "taxRate": "",
-      "taxRateEnabled": ""
+      "taxRateLabelOneTime": "",
+      "taxRateLabelRecurring": ""
     },
     "theme": {
       "bodyFont": "",
