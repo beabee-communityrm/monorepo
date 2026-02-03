@@ -13,9 +13,9 @@ const PLAYGROUND_LIMIT_DEFAULT = 25;
 /** Styles we have Font Awesome packages for in this workspace. */
 const STYLE_OPTIONS: AppIconPickerIconStyle[] = ['solid', 'regular', 'brands'];
 
-/** Normalize HstSelect value (may be option object) to icon style string. */
+/** Normalize HstSelect value (may be option object) to icon style. */
 function toIconStyle(value: unknown): AppIconPickerIconStyle {
-  if (typeof value === 'string') return value;
+  if (typeof value === 'string') return value as AppIconPickerIconStyle;
   const v = (value as { value?: AppIconPickerIconStyle })?.value;
   return v ?? 'solid';
 }
@@ -27,7 +27,7 @@ const state = reactive<{
 }>({
   modelValue: { prefix: 'fas', name: 'map-marker-alt' },
   limit: PLAYGROUND_LIMIT_DEFAULT,
-  style: 'solid',
+  style: 'solid' as AppIconPickerIconStyle,
 });
 
 const styleValue = computed(() => toIconStyle(state.style));
