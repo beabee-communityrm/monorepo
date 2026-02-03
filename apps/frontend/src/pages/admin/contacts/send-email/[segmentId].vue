@@ -39,6 +39,8 @@ import type { GetContactData, GetSegmentDataWith } from '@beabee/beabee-common';
 import { AppAsyncButton, PageTitle, addNotification } from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { isApiError } from '@utils/api';
 import { computed, onMounted, ref } from 'vue';
@@ -48,6 +50,17 @@ import { useRoute, useRouter } from 'vue-router';
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
+
+addBreadcrumb(
+  computed(() => [
+    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
+    {
+      title: segment.value
+        ? `${t('contacts.sendEmail.title')}: ${segment.value.name}`
+        : t('contacts.sendEmail.title'),
+    },
+  ])
+);
 
 const segmentId = computed(() => {
   const param = (route.params as Record<string, string | string[]>).segmentId;
