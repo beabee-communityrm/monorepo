@@ -481,6 +481,11 @@ onBeforeMount(async () => {
           operator: 'equal',
           value: [props.contact.id],
         },
+        {
+          field: 'type',
+          operator: 'equal',
+          value: ['one-time'],
+        },
       ],
     },
   });
