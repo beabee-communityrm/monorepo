@@ -51,11 +51,6 @@
           <ContactSelector
             v-model="previewContactIdModel"
             :options="previewSelectorOptions"
-            :name-aria-label="t('emailEditor.preview.asContactLabel')"
-            :self-option-label="t('contactSelector.selfOption')"
-            :count-template="t('contactSelector.contactNOfTotal')"
-            :previous-aria-label="t('actions.previous')"
-            :next-aria-label="t('actions.next')"
             class="mb-3"
           />
         </template>
@@ -166,10 +161,6 @@ const props = withDefaults(
   }
 );
 
-const emit = defineEmits<{
-  (e: 'update:previewContactId', value: string | undefined): void;
-}>();
-
 export interface PreviewContactOption {
   id: string;
   firstname?: string;
@@ -184,19 +175,19 @@ const showMergeFieldsDropdown = ref(false);
 const serverPreviewResult = ref<EmailPreviewResult | null>(null);
 const isLoadingPreview = ref(false);
 
+const previewContactIdModel = defineModel<string>('previewContactId', {
+  default: '',
+});
+
 const effectivePreviewContactId = computed(
-  () => props.previewContactId ?? currentUser.value?.id ?? null
+  () => previewContactIdModel.value || currentUser.value?.id || null
 );
 
-const previewSelectorOptions = computed(() => {
-  if (props.previewContactOptions === undefined) return [{ id: '' }];
-  return [{ id: '' }, ...props.previewContactOptions];
-});
-
-const previewContactIdModel = computed({
-  get: () => props.previewContactId ?? '',
-  set: (value: string) => emit('update:previewContactId', value || undefined),
-});
+const previewSelectorOptions = computed(() =>
+  props.previewContactOptions === undefined
+    ? [{ id: '' }]
+    : [{ id: '' }, ...props.previewContactOptions]
+);
 
 const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
   const groups: MergeTagGroup[] = [];
