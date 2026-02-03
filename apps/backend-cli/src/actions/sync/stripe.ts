@@ -222,7 +222,14 @@ async function processContribution(
     const payments = await getRepository(Payment).findBy({
       contactId: contribution.contact.id,
     });
-    await syncPayments(contribution.customerId, payments, dryRun);
+    try {
+      await syncPayments(contribution.customerId, payments, dryRun);
+    } catch (e) {
+      // Ignore missing customer errors here as they are handled above
+      if (!isResourceMissingError(e)) {
+        throw e;
+      }
+    }
   }
 
   // Apply updates
