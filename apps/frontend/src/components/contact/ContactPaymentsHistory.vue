@@ -118,10 +118,7 @@ watchEffect(async () => {
     order: SortType.Desc,
     rules: {
       condition: 'AND',
-      rules: [
-        { field: 'status', operator: 'not_equal', value: ['draft'] },
-        { field: 'type', operator: 'equal', value: ['one-time'] },
-      ],
+      rules: [{ field: 'status', operator: 'not_equal', value: ['draft'] }],
     },
   };
   paymentsHistoryTable.value = await client.contact.payment.list(
