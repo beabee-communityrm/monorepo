@@ -1429,13 +1429,13 @@
     },
     "errors": {
       "confirmEmail": {
-        "message": "Bijna klaar! We moeten alleen je e-mailadres bevestigen om het instellen van je lidmaatschap af te ronden.",
-        "proceed": "We hebben je een e-mail gestuurd. Klik op de link om verder te gaan.",
-        "title": "Bevestig je e-mailadres"
+        "message": "We hebben zojuist een bevestigingsmail gestuurd naar het e-mailadres dat je hebt opgegeven.",
+        "proceed": "Vergeet niet je account verder in te stellen! Je vindt de volgende stappen in je inbox.",
+        "title": "Dankjewel!"
       },
       "failed": {
         "backToJoin": "Terug naar de aanmeldpagina",
-        "message": "Er is een probleem opgetreden bij het opzetten van je lidmaatschap. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
+        "message": "Er is een probleem opgetreden bij het opzetten van je account. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
         "title": "Er is iets fout gegaan"
       },
       "paymentFailed": {
