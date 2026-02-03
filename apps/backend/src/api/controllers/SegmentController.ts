@@ -120,7 +120,6 @@ export class SegmentController {
     );
   }
 
-  /** One-off email to all contacts in the segment (chunked). */
   @OnUndefined(204)
   @Post('/:id/email/send')
   async sendEmail(
@@ -139,8 +138,8 @@ export class SegmentController {
         { limit: SEGMENT_EMAIL_PAGE_SIZE, offset }
       );
       if (items.length === 0) break;
-      await EmailService.sendEmailToSegment(
-        items as Contact[],
+      await EmailService.sendCustomEmailToContact(
+        items,
         data.subject,
         data.body
       );

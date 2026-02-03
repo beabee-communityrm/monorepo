@@ -4,7 +4,6 @@ import {
 } from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
-import { randomUUID } from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { IsNull, Not } from 'typeorm';
@@ -149,61 +148,30 @@ class EmailService {
   }
 
   /**
-   * Send a one-off email (subject + body) to a list of contacts.
-   * Builds a transient email and delegates to sendEmailToContact.
-   */
-  async sendEmailToSegment(
-    contacts: Contact[],
-    subject: string,
-    body: string
-  ): Promise<void> {
-    const email = new Email();
-    Object.assign(email, {
-      id: randomUUID(),
-      subject,
-      body,
-      name: 'One-off segment email',
-      templateId: null,
-      date: new Date(),
-      fromName: null,
-      fromEmail: null,
-    });
-    await this.sendEmailToContact(email, contacts);
-  }
-
-  /**
-   * Send a custom email to a contact with custom subject and body
-   *
-   * Creates a new Email entity on-the-fly with custom subject and body content.
-   * Useful for user-generated email content (e.g., callout response emails with
-   * custom messages configured by admins). Merge fields are automatically replaced
-   * by the email provider. See email-templates.ts for available merge fields.
-   *
-   * **When to use:**
-   * - Sending emails with user-defined subject and body content
-   * - Callout response confirmation emails with custom messages
-   * - Dynamically generated email content (not from templates)
-   *
-   * @param contact The contact to send the email to
-   * @param subject Email subject (supports merge fields)
-   * @param body Email body (supports merge fields)
-   * @param opts Optional email options including mergeFields for additional custom fields
-   * @returns Promise that resolves when the email is sent
+   * Send a custom email (subject + body) to one or more contacts.
+   * Builds a transient email; merge fields are applied per recipient.
    */
   async sendCustomEmailToContact(
-    contact: Contact,
+    contactOrContacts: Contact | Contact[],
     subject: string,
     body: string,
     opts?: EmailOptions & { mergeFields?: EmailMergeFields }
   ): Promise<void> {
+    const contacts = Array.isArray(contactOrContacts)
+      ? contactOrContacts
+      : [contactOrContacts];
     const email = new Email();
     email.subject = subject;
     email.body = body;
-    const recipient = this.convertContactToRecipient(
-      contact,
-      opts?.mergeFields
-    );
-    await this.sendEmail(email, [recipient], opts);
+    if (contacts.length === 1 && opts?.mergeFields) {
+      const recipient = this.convertContactToRecipient(
+        contacts[0],
+        opts.mergeFields
+      );
+      await this.sendEmail(email, [recipient], opts);
+    } else {
+      await this.sendEmailToContact(email, contacts, opts);
+    }
   }
 
   /**
