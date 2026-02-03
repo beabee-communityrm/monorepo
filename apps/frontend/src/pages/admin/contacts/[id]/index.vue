@@ -47,6 +47,9 @@ meta:
         <AppHeading class="mt-6">
           {{ t('contactOverview.contribution') }}
         </AppHeading>
+        <AppSubHeading class="mb-1">
+          {{ t('contactOverview.recurring') }}
+        </AppSubHeading>
         <AppInfoList>
           <AppInfoListItem
             :name="t('contacts.data.amount')"
@@ -86,6 +89,29 @@ meta:
             :value="formatLocale(contact.contribution.cancellationDate, 'PPP')"
           />
         </AppInfoList>
+        <template v-if="showOneTimeDonation">
+          <AppSubHeading class="mb-1">
+            {{ t('contactOverview.oneTime') }}
+          </AppSubHeading>
+          <AppInfoList>
+            <AppInfoListItem
+              :name="t('paymentsAdmin.aggregation.total')"
+              :value="
+                paymentAggregations?.sum
+                  ? n(paymentAggregations?.sum, 'currency')
+                  : '–'
+              "
+            />
+            <AppInfoListItem
+              :name="t('paymentsAdmin.aggregation.average')"
+              :value="
+                paymentAggregations?.average
+                  ? n(paymentAggregations?.average, 'currency')
+                  : '–'
+              "
+            />
+          </AppInfoList>
+        </template>
       </div>
 
       <AppHeading class="mt-6">{{ t('contactOverview.roles') }}</AppHeading>
@@ -260,6 +286,7 @@ meta:
 import {
   CONTACT_MFA_TYPE,
   type ContactRoleData,
+  type ContentJoinData,
   type ContentJoinSetupData,
   ContributionType,
   type GetCalloutDataWith,
@@ -268,6 +295,7 @@ import {
   type GetContactData,
   type GetContactDataWith,
   GetContactWith,
+  type GetPaymentAggregationData,
   type RoleType,
 } from '@beabee/beabee-common';
 import {
@@ -280,6 +308,7 @@ import {
   AppInput,
   AppLoadingSpinner,
   AppRichTextEditor,
+  AppSubHeading,
   formatLocale,
 } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
@@ -293,7 +322,7 @@ import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import env from '@env';
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { client } from '@utils/api';
-import { onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t, n } = useI18n();
@@ -314,6 +343,8 @@ const contactTags = ref<string[]>([]);
 const contactAbout = reactive({ notes: '', description: '' });
 const securityLink = ref('');
 const changingRoles = ref(false);
+
+const paymentAggregations = ref<GetPaymentAggregationData>();
 
 /** Multi factor authentication state */
 const mfa = ref({
@@ -393,6 +424,11 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
 }
 
 const setupContent = ref<ContentJoinSetupData>();
+const joinContent = ref<ContentJoinData>();
+
+const showOneTimeDonation = computed(() =>
+  joinContent.value?.periods.some((p) => p.name === 'one-time')
+);
 
 const changingTags = ref(false);
 const tagItems = ref<{ id: string; label: string }[]>([]);
@@ -436,6 +472,24 @@ onBeforeMount(async () => {
 
   contactTags.value = (await client.content.get('contacts')).tags;
 
+  paymentAggregations.value = await client.payment.aggregate({
+    rules: {
+      condition: 'AND',
+      rules: [
+        {
+          field: 'contact',
+          operator: 'equal',
+          value: [props.contact.id],
+        },
+        {
+          field: 'type',
+          operator: 'equal',
+          value: ['one-time'],
+        },
+      ],
+    },
+  });
+
   // Fetch MFA information
   const contactMfa = await client.contact.mfa.get(props.contact.id);
   if (contactMfa && contactMfa.type === CONTACT_MFA_TYPE.TOTP) {
@@ -443,6 +497,8 @@ onBeforeMount(async () => {
   }
 
   setupContent.value = await client.content.get('join/setup');
+  joinContent.value = await client.content.get('join');
+
   const joinSurveySlug = setupContent.value.surveySlug;
   if (joinSurveySlug) {
     joinSurvey.value = await client.callout.get(joinSurveySlug, ['form']);

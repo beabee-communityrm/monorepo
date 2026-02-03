@@ -944,6 +944,12 @@
       "pending": "In attesa",
       "successful": "Riuscito"
     },
+    "paymentType": {
+      "oneTime": "Una tantum",
+      "prorated": "Proporzionato",
+      "recurring": "Ricorrente",
+      "unknown": "Sconosciuto"
+    },
     "perMonth": "/ mese",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -1005,9 +1011,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "Una tantum",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "Ricorrente",
     "roles": "",
     "security": {
       "instructions": "",
@@ -1703,13 +1711,18 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Importo medio",
+      "total": "Importo totale"
+    },
     "filter": {
       "all": "",
       "cancelled": "",

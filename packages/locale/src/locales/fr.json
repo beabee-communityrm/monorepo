@@ -948,6 +948,12 @@
       "pending": "En attente",
       "successful": "Succès"
     },
+    "paymentType": {
+      "oneTime": "Ponctuel",
+      "prorated": "Proratisé",
+      "recurring": "Récurrent",
+      "unknown": "Inconnu"
+    },
     "perMonth": "/ mois",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -1009,9 +1015,11 @@
       "status": "Statut",
       "title": "Lettre d'information"
     },
+    "oneTime": "Ponctuel",
     "overview": "Vue d'ensemble",
     "pickTag": "Sélectionnez un libellé dans la liste ci-dessous",
     "profile": "Profil",
+    "recurring": "Récurrent",
     "roles": "Rôles",
     "security": {
       "instructions": "Copiez et partagez ce lien :",
@@ -1707,13 +1715,18 @@
       "amount": "Montant",
       "chargeDate": "Date de facturation",
       "contact": "Contact",
-      "status": "Statut"
+      "status": "Statut",
+      "type": ""
     },
     "dataGroup": {
       "payment": "Paiement"
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Montant moyen",
+      "total": "Montant total"
+    },
     "filter": {
       "all": "Tous les paiements",
       "cancelled": "Paiements annulés",

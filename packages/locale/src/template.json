@@ -944,6 +944,12 @@
       "pending": "",
       "successful": ""
     },
+    "paymentType": {
+      "oneTime": "",
+      "prorated": "",
+      "recurring": "",
+      "unknown": ""
+    },
     "perMonth": "",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -1005,9 +1011,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "",
     "roles": "",
     "security": {
       "instructions": "",
@@ -1701,13 +1709,18 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "",
+      "total": ""
+    },
     "filter": {
       "all": "",
       "cancelled": "",

@@ -21,6 +21,7 @@ meta:
               ? '-'
               : n(stats.totalRevenue, 'currency')
           "
+          :label-link="'/admin/payments'"
         />
         <KeyStat
           :label="t('adminDashboard.numbers.averageContribution')"

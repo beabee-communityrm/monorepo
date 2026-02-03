@@ -944,6 +944,12 @@
       "pending": "Очікує на розгляд",
       "successful": "Успішний"
     },
+    "paymentType": {
+      "oneTime": "Разовий",
+      "prorated": "Пропорційний",
+      "recurring": "Регулярний",
+      "unknown": "Невідомо"
+    },
     "perMonth": "/ місяць",
     "perMonthText": "місяць",
     "perOneTime": " одноразовий",
@@ -1007,9 +1013,11 @@
       "status": "Статус",
       "title": "Інформаційний бюлетень"
     },
+    "oneTime": "Одноразовий",
     "overview": "Огляд",
     "pickTag": "Виберіть тег зі списку нижче",
     "profile": "Профіль",
+    "recurring": "Регулярний",
     "roles": "Ролі",
     "security": {
       "instructions": "Скопіюйте та поділіться цим посиланням:",
@@ -1708,13 +1716,18 @@
       "amount": "Сума",
       "chargeDate": "Дата стягнення плати",
       "contact": "Контакти",
-      "status": "Статус"
+      "status": "Статус",
+      "type": ""
     },
     "dataGroup": {
       "payment": "Оплата"
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Середня сума",
+      "total": "Загальна сума"
+    },
     "filter": {
       "all": "Усі платежі",
       "cancelled": "Скасовані платежі",

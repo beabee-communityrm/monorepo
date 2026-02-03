@@ -944,6 +944,12 @@
       "pending": "In afwachting van",
       "successful": "Succesvol"
     },
+    "paymentType": {
+      "oneTime": "Eenmalig",
+      "prorated": "Pro-rata",
+      "recurring": "Terugkerend",
+      "unknown": "Onbekend"
+    },
     "perMonth": "/ maand",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -1005,9 +1011,11 @@
       "status": "Status",
       "title": "Nieuwsbrief"
     },
+    "oneTime": "Eenmalig",
     "overview": "Overzicht",
     "pickTag": "Kies een tag uit de onderstaande lijst",
     "profile": "Profiel",
+    "recurring": "Terugkerend",
     "roles": "Rollen",
     "security": {
       "instructions": "Kopieer en deel deze link:",
@@ -1703,13 +1711,18 @@
       "amount": "Bedrag",
       "chargeDate": "Datum",
       "contact": "Contact",
-      "status": "Status"
+      "status": "Status",
+      "type": ""
     },
     "dataGroup": {
       "payment": "Betaling"
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Gemiddeld bedrag",
+      "total": "Totaalbedrag"
+    },
     "filter": {
       "all": "Alle betalingen",
       "cancelled": "Geannuleerde betalingen",

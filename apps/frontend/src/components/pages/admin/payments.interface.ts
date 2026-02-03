@@ -72,12 +72,18 @@ const filterItems = computed<FilterItems<PaymentFilterName>>(() => ({
     failed: t('common.paymentStatus.failed'),
     cancelled: t('common.paymentStatus.cancelled'),
   }),
+  type: withLabel(paymentFilters.type, t('payments.data.type'), {
+    'one-time': t('common.paymentType.oneTime'),
+    recurring: t('common.paymentType.recurring'),
+    prorated: t('common.paymentType.prorated'),
+    unknown: t('common.paymentType.unknown'),
+  }),
 }));
 
 export const filterGroups = computed<FilterGroups>(() => [
   {
     id: 'payment',
     label: t('payments.dataGroup.payment'),
-    items: withItems(filterItems, ['amount', 'chargeDate']),
+    items: withItems(filterItems, ['amount', 'chargeDate', 'contact', 'type']),
   },
 ]);

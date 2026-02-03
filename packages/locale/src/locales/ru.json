@@ -945,6 +945,12 @@
       "pending": "В работе",
       "successful": "Успех"
     },
+    "paymentType": {
+      "oneTime": "Разовый",
+      "prorated": "Пропорциональный",
+      "recurring": "Регулярный",
+      "unknown": "Неизвестно"
+    },
     "perMonth": "/ месяц",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -1006,9 +1012,11 @@
       "status": "Статус",
       "title": "Новости"
     },
+    "oneTime": "Единовременный",
     "overview": "Обзор",
     "pickTag": "",
     "profile": "",
+    "recurring": "Повторяющийся",
     "roles": "Роль",
     "security": {
       "instructions": "Скопируйте и поделитесь этой ссылкой:",
@@ -1704,13 +1712,18 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Средняя сумма",
+      "total": "Общая сумма"
+    },
     "filter": {
       "all": "",
       "cancelled": "",

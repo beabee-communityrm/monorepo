@@ -944,6 +944,12 @@
       "pending": "",
       "successful": ""
     },
+    "paymentType": {
+      "oneTime": "Εφάπαξ",
+      "prorated": "Αναλογική",
+      "recurring": "Επαναλαμβανόμενη",
+      "unknown": "Άγνωστο"
+    },
     "perMonth": "",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -1005,9 +1011,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "Εφάπαξ",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "Επαναλαμβανόμενος",
     "roles": "",
     "security": {
       "instructions": "",
@@ -1703,13 +1711,18 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "",
+      "total": ""
+    },
     "filter": {
       "all": "",
       "cancelled": "",
