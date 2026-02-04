@@ -31,6 +31,7 @@ import { formatEmailBody } from '#templates/email';
 import {
   AdminEmailParams,
   AdminEmailTemplateId,
+  ContactEmailOptions,
   ContactEmailParams,
   ContactEmailTemplateId,
   EmailMergeFields,
@@ -126,7 +127,7 @@ class EmailService {
    *
    * Convenience wrapper that automatically converts Contact objects to EmailRecipient
    * objects with contact and base merge fields. See email-templates.ts for available
-   * merge fields.
+   * merge fields. Optional opts.mergeFields are merged on top for each recipient.
    *
    * **When to use:**
    * - Sending a pre-configured Email entity to contacts
@@ -134,29 +135,27 @@ class EmailService {
    *
    * @param email The Email entity to send
    * @param contacts List of contacts to send the email to
-   * @param opts Optional email options (attachments, sendAt, etc.)
+   * @param opts Optional email options (attachments, sendAt, mergeFields)
    */
   async sendEmailToContact(
     email: Email,
     contacts: Contact[],
-    opts?: EmailOptions
+    opts?: ContactEmailOptions
   ): Promise<void> {
     const recipients = contacts.map((contact) =>
-      this.convertContactToRecipient(contact)
+      this.convertContactToRecipient(contact, opts?.mergeFields)
     );
     await this.sendEmail(email, recipients, opts);
   }
 
   /**
    * Send custom subject and body to one or more contacts.
-   * When a single contact is passed with opts.mergeFields, those are applied; otherwise
-   * sendEmailToContact is used (no per-call mergeFields).
    */
   async sendCustomEmailToContact(
     contactOrContacts: Contact | Contact[],
     subject: string,
     body: string,
-    opts?: EmailOptions & { mergeFields?: EmailMergeFields }
+    opts?: ContactEmailOptions
   ): Promise<void> {
     const contacts = Array.isArray(contactOrContacts)
       ? contactOrContacts
@@ -164,15 +163,7 @@ class EmailService {
     const email = new Email();
     email.subject = subject;
     email.body = body;
-    if (contacts.length === 1 && opts?.mergeFields) {
-      const recipient = this.convertContactToRecipient(
-        contacts[0],
-        opts.mergeFields
-      );
-      await this.sendEmail(email, [recipient], opts);
-    } else {
-      await this.sendEmailToContact(email, contacts, opts);
-    }
+    await this.sendEmailToContact(email, contacts, opts);
   }
 
   /**
@@ -377,10 +368,10 @@ class EmailService {
       ? await this.getTemplateEmail(opts.templateId)
       : null;
 
-    // 2. Generate base merge fields from contact and standard fields
+    // 2. Merge fields in same order as sending (base, contact, additional)
     const mergeFields: EmailMergeFields = {
-      ...getContactEmailMergeFields(contact),
       ...getBaseEmailMergeFields(),
+      ...getContactEmailMergeFields(contact),
       ...opts?.mergeFields,
     };
 
@@ -488,12 +479,7 @@ class EmailService {
   }
 
   /**
-   * Convert a contact to an email recipient
-   * This ensures all recipients have access to standard merge fields and contact merge fields
-   *
-   * @param contact The contact to convert
-   * @param additionalMergeFields Additional merge fields to add to the contact
-   * @returns Email recipient with standard merge fields and additional merge fields
+   * Convert a contact to an email recipient with standard and optional merge fields.
    */
   private convertContactToRecipient(
     contact: Contact,

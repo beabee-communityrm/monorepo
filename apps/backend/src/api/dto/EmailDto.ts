@@ -8,7 +8,13 @@ import {
 
 import { GetPaginatedQuery } from '@api/dto/BaseDto';
 import IsEmailTemplateId from '@api/validators/IsEmailTemplateId';
-import { IsArray, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  Allow,
+  IsArray,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 /**
  * DTO for email preview responses
@@ -145,6 +151,7 @@ export class GetEmailTemplateInfoDto {
  * contactId: when set (admin), merge fields use that contact; otherwise the current user.
  */
 export class PreviewEmailDto {
+  @Allow()
   @IsOptional()
   @IsString()
   contactId?: string;
