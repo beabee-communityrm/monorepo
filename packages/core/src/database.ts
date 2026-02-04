@@ -18,7 +18,7 @@ const log = mainLogger.child({ app: 'database' });
 export const dataSource: DataSource = new DataSource({
   type: 'postgres',
   url: config.databaseUrl,
-  logging: config.logging,
+  logging: config.dev && config.logging,
   entities: [__dirname + '/models/*.js'],
   migrations: [__dirname + '/migrations/*.js'],
 });
