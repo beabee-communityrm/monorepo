@@ -40,6 +40,7 @@ import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import { isApiError } from '@utils/api';
+import { extractErrorText } from '@utils/api-error';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -94,7 +95,7 @@ onMounted(async () => {
     if (isApiError(err, undefined, [404])) {
       addNotification({
         variant: 'error',
-        title: t('notifications.error'),
+        title: extractErrorText(err),
       });
       router.replace('/admin/contacts');
     } else {
@@ -106,13 +107,7 @@ onMounted(async () => {
 });
 
 async function handleSend() {
-  if (
-    !segmentId.value ||
-    !emailData.value.subject.trim() ||
-    !emailData.value.body.trim()
-  ) {
-    return;
-  }
+  if (!segmentId.value) return;
   await client.segments.email.send(segmentId.value, {
     subject: emailData.value.subject,
     body: emailData.value.body,
