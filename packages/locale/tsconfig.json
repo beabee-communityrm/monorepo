@@ -1,7 +1,5 @@
 {
-  "extends": [
-    "@beabee/tsconfig/tsconfig.vanilla.json"
-  ],
+  "extends": ["@beabee/tsconfig/tsconfig.vanilla.json"],
   "include": ["./src"],
   "compilerOptions": {
     "module": "ESNext",
