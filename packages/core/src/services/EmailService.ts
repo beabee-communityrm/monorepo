@@ -147,7 +147,11 @@ class EmailService {
     await this.sendEmail(email, recipients, opts);
   }
 
-  /** Send custom subject+body to one or more contacts. Merge fields applied per recipient. */
+  /**
+   * Send custom subject and body to one or more contacts.
+   * When a single contact is passed with opts.mergeFields, those are applied; otherwise
+   * sendEmailToContact is used (no per-call mergeFields).
+   */
   async sendCustomEmailToContact(
     contactOrContacts: Contact | Contact[],
     subject: string,
