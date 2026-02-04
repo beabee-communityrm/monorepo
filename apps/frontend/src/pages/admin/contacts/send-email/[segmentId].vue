@@ -39,7 +39,6 @@ import AppApiForm from '@components/forms/AppApiForm.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
-import { isApiError } from '@utils/api';
 import { extractErrorText } from '@utils/api-error';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -92,15 +91,11 @@ onMounted(async () => {
     });
     segmentContacts.value = result.items;
   } catch (err) {
-    if (isApiError(err, undefined, [404])) {
-      addNotification({
-        variant: 'error',
-        title: extractErrorText(err),
-      });
-      router.replace('/admin/contacts');
-    } else {
-      throw err;
-    }
+    addNotification({
+      variant: 'error',
+      title: extractErrorText(err),
+    });
+    router.replace('/admin/contacts');
   } finally {
     loading.value = false;
   }
