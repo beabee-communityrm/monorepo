@@ -1797,8 +1797,10 @@ __metadata:
   resolution: "@beabee/locale@workspace:packages/locale"
   dependencies:
     "@beabee/esbuild": "workspace:^"
+    "@beabee/prettier-config": "workspace:^"
     "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
     esbuild: "npm:^0.25.5"
+    prettier: "npm:^3.5.3"
     typescript: "npm:~5.9.3"
   languageName: unknown
   linkType: soft
