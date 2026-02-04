@@ -173,7 +173,7 @@ async function completeDonationFlow(paymentFlowId: string) {
 
   addNotification({
     variant: 'success',
-    title: t('profile.oneTimeDonationSuccessNotification'),
+    title: t('homePage.oneTimeContributionSuccessMessage'),
   });
 }
 
