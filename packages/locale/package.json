@@ -14,15 +14,20 @@
     "build": "yarn build:types && yarn build:esbuild",
     "build:types": "rm -f tsconfig.build.tsbuildinfo && tsc",
     "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings esbuild.ts",
-    "check": "tsc --noEmit",
+    "check": "yarn check:tsc && yarn check:prettier",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier -c .",
+    "format": "prettier --write .",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch",
     "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $(pwd) --extension js -p ./src/types"
   },
   "devDependencies": {
     "@beabee/esbuild": "workspace:^",
+    "@beabee/prettier-config": "workspace:^",
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "esbuild": "^0.25.5",
+    "prettier": "^3.5.3",
     "typescript": "~5.9.3"
   },
   "files": [
