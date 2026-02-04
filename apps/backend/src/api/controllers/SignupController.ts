@@ -1,5 +1,4 @@
-import { getRepository } from '@beabee/core/database';
-import { JoinFlow, Password } from '@beabee/core/models';
+import { Password } from '@beabee/core/models';
 import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
@@ -19,7 +18,6 @@ import {
   BadRequestError,
   Body,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Post,
   Req,
@@ -56,7 +54,7 @@ export class SignupController {
 
     if (data.contribution) {
       // Handle a recurring contribution sign up
-      const joinFlowParams = await PaymentFlowService.createPaymentJoinFlow(
+      const joinFlowParams = await PaymentFlowService.startPaymentRegistration(
         {
           ...baseForm,
           ...data.contribution,
@@ -72,7 +70,7 @@ export class SignupController {
       return plainToInstance(GetPaymentFlowDto, joinFlowParams);
     } else if (data.oneTimePayment) {
       // Handle a one-time payment sign up
-      const joinFlowParams = await PaymentFlowService.createPaymentJoinFlow(
+      const joinFlowParams = await PaymentFlowService.startPaymentRegistration(
         {
           ...baseForm,
           ...data.oneTimePayment,
@@ -87,11 +85,7 @@ export class SignupController {
       return plainToInstance(GetPaymentFlowDto, joinFlowParams);
     } else {
       // Handle a no-payment sign up
-      const joinFlow = await PaymentFlowService.createSimpleJoinFlow(
-        baseForm,
-        data
-      );
-      await PaymentFlowService.sendConfirmEmail(joinFlow);
+      await PaymentFlowService.startSimpleRegistration(baseForm, data);
     }
   }
 
@@ -104,20 +98,10 @@ export class SignupController {
     })
   )
   async completeSignup(@Body() data: CompleteSignupFlowDto): Promise<void> {
-    const joinFlow = await PaymentFlowService.getJoinFlowByPaymentId(
-      data.paymentFlowId
+    await PaymentFlowService.advancePaymentRegistration(
+      data.paymentFlowId,
+      data // TODO: pick fields
     );
-    if (!joinFlow) {
-      throw new NotFoundError();
-    }
-
-    // Merge additional data into the join form
-    if (data.firstname || data.lastname || data.vatNumber) {
-      Object.assign(joinFlow.joinForm, data);
-      await getRepository(JoinFlow).save(joinFlow);
-    }
-
-    await PaymentFlowService.sendConfirmEmail(joinFlow);
   }
 
   @Post('/confirm-email')
@@ -131,14 +115,7 @@ export class SignupController {
     @Req() req: Request,
     @Body() { joinFlowId }: SignupConfirmEmailParams
   ): Promise<GetContactDto> {
-    const joinFlow = await getRepository(JoinFlow).findOneBy({
-      id: joinFlowId,
-    });
-    if (!joinFlow) {
-      throw new NotFoundError();
-    }
-
-    const contact = await PaymentFlowService.completeConfirmEmail(joinFlow);
+    const contact = await PaymentFlowService.finalizeRegistration(joinFlowId);
     await login(req, contact);
 
     return ContactTransformer.convert(contact, {

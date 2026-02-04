@@ -223,9 +223,10 @@
     },
     "payment": {
       "paymentTitle": "Betaling",
-      "showOneTimeDonation": "Eenmalige donatieoptie op het startscherm weergeven",
+      "showOneTimeDonation": "Eenmalige bijdrageoptie op het startscherm weergeven",
       "taxRate": "BTW-tarief",
-      "taxRateEnabled": "BTW inschakelen"
+      "taxRateLabelOneTime": "BTW-tarief inschakelen voor eenmalige betalingen",
+      "taxRateLabelRecurring": "BTW-tarief inschakelen voor terugkerende betalingen"
     },
     "theme": {
       "bodyFont": "Tekst lichaam",
@@ -947,6 +948,12 @@
       "pending": "In afwachting van",
       "successful": "Succesvol"
     },
+    "paymentType": {
+      "oneTime": "Eenmalig",
+      "prorated": "Pro-rata",
+      "recurring": "Terugkerend",
+      "unknown": "Onbekend"
+    },
     "perMonth": "/ maand",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -1008,9 +1015,11 @@
       "status": "Status",
       "title": "Nieuwsbrief"
     },
+    "oneTime": "Eenmalig",
     "overview": "Overzicht",
     "pickTag": "Kies een tag uit de onderstaande lijst",
     "profile": "Profiel",
+    "recurring": "Terugkerend",
     "roles": "Rollen",
     "security": {
       "instructions": "Kopieer en deel deze link:",
@@ -1041,15 +1050,18 @@
       "activeUser": "",
       "amount": "Bedrag",
       "annotationsCopy": "Contact succesvol bijgewerkt",
-      "contribution": "Bijdrage",
-      "contributionCancelled": "Opzegging contributie",
-      "contributionMonthlyAmount": "Contributie maandbedrag",
-      "contributionPeriod": "Contributie periode",
-      "contributionType": "Type bijdrage",
+      "averageDonationAmount": "Gemiddelde eenmalige bijdragen (aller tijden)",
+      "contribution": "Terugkerende bijdrage",
+      "contributionCancelled": "Terugkerende bijdrage geannuleerd",
+      "contributionMonthlyAmount": "Terugkerende bijdrage maandelijks bedrag",
+      "contributionPeriod": "Terugkerende bijdrage periode",
+      "contributionType": "Terugkerende bijdrage type",
       "deliveryOptIn": "Keuze voor levering",
       "description": "Beschrijving",
+      "donationDate": "Datum eenmalige bijdrage",
       "email": "E-mail",
       "firstname": "Voornaam",
+      "hasDonated": "Heeft eenmalige bijdrage gedaan",
       "joined": "Aangesloten bij",
       "lastSeen": "Laatst gezien",
       "lastname": "Achternaam",
@@ -1066,12 +1078,14 @@
       "period": "Periode",
       "phone": "Telefoon",
       "preferredChannel": "Voorkeur kanaal",
-      "tags": "Tags"
+      "tags": "Tags",
+      "totalDonationAmount": "Totaalsom eenmalige bijdragen (aller tijden)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Contact informatie",
-      "contribution": "Bijdrage",
+      "oneTimeContributions": "Eenmalige bijdragen",
+      "recurringContributions": "Doorlopende bijdragen",
       "role": "Rol"
     },
     "noContacts": "Nog geen contacten toegevoegd",
@@ -1119,6 +1133,7 @@
     "prorateNoTitle": "Update mijn bijdrage op {renewalDate}",
     "prorateYesText": "Er wordt u nu een eenmalige betaling van {oneOffPayment} in rekening gebracht en uw bijdrage wordt onmiddellijk bijgewerkt.",
     "prorateYesTitle": "Mijn bijdrage nu aanpassen",
+    "recurringContribution": "Terugkerende bijdrage",
     "restartContribution": "Contributie herstarten",
     "startContribution": "Contributie starten",
     "startedContribution": "Je bijdrage is gestart.",
@@ -1396,8 +1411,8 @@
   },
   "homePage": {
     "editProfile": "Bewerk je community profiel",
-    "makeOneTimeDonationButton": "Doneer",
-    "makeOneTimeDonationTitle": "Doe nu een donatie",
+    "makeOneTimeDonationButton": "Bijdrage doen",
+    "makeOneTimeDonationTitle": "Doe nu een eenmalige bijdrage",
     "manageContribution": "Je bijdrage beheren",
     "newCallout": "Nieuwe CrowdNewsroom!",
     "openCallouts": "CrowdNewsroom openen",
@@ -1434,13 +1449,13 @@
     },
     "errors": {
       "confirmEmail": {
-        "message": "Bijna klaar! We moeten alleen je e-mailadres bevestigen om het instellen van je lidmaatschap af te ronden.",
-        "proceed": "We hebben je een e-mail gestuurd. Klik op de link om verder te gaan.",
-        "title": "Bevestig je e-mailadres"
+        "message": "We hebben zojuist een bevestigingsmail gestuurd naar het e-mailadres dat je hebt opgegeven.",
+        "proceed": "Vergeet niet je account verder in te stellen! Je vindt de volgende stappen in je inbox.",
+        "title": "Dankjewel!"
       },
       "failed": {
         "backToJoin": "Terug naar de aanmeldpagina",
-        "message": "Er is een probleem opgetreden bij het opzetten van je lidmaatschap. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
+        "message": "Er is een probleem opgetreden bij het opzetten van je account. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
         "title": "Er is iets fout gegaan"
       },
       "paymentFailed": {
@@ -1473,7 +1488,7 @@
     "goBackButton": "Terug naar het vorige scherm",
     "note": "Je kunt je bijdrage op elk moment wijzigen en je betalingsgeschiedenis bekijken in je ledenaccount.",
     "willBeContributing": "Je draagt {contribution} bij",
-    "willBeDonating": "Je doet een donatie van {amount}"
+    "willBeDonating": "Je doet een eenmalige bijdrage van {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Bevestig uw gegevens",
@@ -1526,7 +1541,7 @@
         "bigTitle": "Welkomst- en annuleringsmails",
         "cancellationEmail": "E-mail voor annulering",
         "description": "Pas je welkomst- en annuleringsmails aan",
-        "oneTimeDonationEmail": "E-mail voor eenmalige donatie",
+        "oneTimeDonationEmail": "E-mail voor eenmalige bijdrage",
         "text": "Alle e-mails worden verzonden vanaf uw support e-mailadres en bevatten een standaard handtekening. U kunt deze wijzigen in uw e-mailinstellingen.",
         "title": "E-mails",
         "welcomeEmail": "Welkom e-mail"
@@ -1716,13 +1731,18 @@
       "amount": "Bedrag",
       "chargeDate": "Datum",
       "contact": "Contact",
-      "status": "Status"
+      "status": "Status",
+      "type": ""
     },
     "dataGroup": {
       "payment": "Betaling"
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Gemiddeld bedrag",
+      "total": "Totaalbedrag"
+    },
     "filter": {
       "all": "Alle betalingen",
       "cancelled": "Geannuleerde betalingen",

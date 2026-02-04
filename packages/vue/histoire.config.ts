@@ -7,4 +7,17 @@ export default defineConfig({
   theme: {
     title: 'Beabee Vue Components',
   },
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          globals: {
+            '@fortawesome/free-solid-svg-icons': 'freeSolidSvgIcons',
+            '@fortawesome/free-regular-svg-icons': 'freeRegularSvgIcons',
+            '@fortawesome/free-brands-svg-icons': 'freeBrandsSvgIcons',
+          },
+        },
+      },
+    },
+  },
 });

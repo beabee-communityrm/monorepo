@@ -22,33 +22,36 @@ const addTestNotification = (
 </script>
 
 <template>
-  <Story title="AppNotificationContainer" :layout="{ type: 'fullscreen' }">
+  <Story
+    title="AppNotificationContainer"
+    :layout="{ type: 'single', iframe: false }"
+  >
     <Variant title="Playground">
       <div class="relative h-96 w-full overflow-hidden rounded bg-grey-lighter">
         <AppNotificationContainer />
 
         <!-- Control area -->
-        <div class="absolute left-4 top-4 space-y-2">
+        <div class="absolute bottom-4 left-4 flex flex-wrap gap-2">
           <button
-            class="bg-green-500 rounded px-3 py-1 text-white"
+            class="rounded bg-success-70 px-3 py-1 font-semibold text-white shadow-sm"
             @click="addTestNotification('success')"
           >
             Add Success
           </button>
           <button
-            class="bg-yellow-500 rounded px-3 py-1 text-white"
+            class="rounded bg-warning-70 px-3 py-1 font-semibold text-white shadow-sm"
             @click="addTestNotification('warning')"
           >
             Add Warning
           </button>
           <button
-            class="bg-red-500 rounded px-3 py-1 text-white"
+            class="rounded bg-danger-70 px-3 py-1 font-semibold text-white shadow-sm"
             @click="addTestNotification('error')"
           >
             Add Error
           </button>
           <button
-            class="bg-blue-500 rounded px-3 py-1 text-white"
+            class="rounded bg-primary-70 px-3 py-1 font-semibold text-white shadow-sm"
             @click="addTestNotification('info')"
           >
             Add Info

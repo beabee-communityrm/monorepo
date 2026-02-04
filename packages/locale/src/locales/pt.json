@@ -225,7 +225,8 @@
       "paymentTitle": "",
       "showOneTimeDonation": "",
       "taxRate": "",
-      "taxRateEnabled": ""
+      "taxRateLabelOneTime": "",
+      "taxRateLabelRecurring": ""
     },
     "theme": {
       "bodyFont": "",
@@ -947,6 +948,12 @@
       "pending": "A aguardar",
       "successful": "Sucesso"
     },
+    "paymentType": {
+      "oneTime": "Único",
+      "prorated": "Proporcional",
+      "recurring": "Recorrente",
+      "unknown": "Desconhecido"
+    },
     "perMonth": "/ mês",
     "perOneTime": "",
     "perOneTimeText": "",
@@ -1008,9 +1015,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "Único",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "Recorrente",
     "roles": "",
     "security": {
       "instructions": "",
@@ -1041,15 +1050,18 @@
       "activeUser": "",
       "amount": "Montante",
       "annotationsCopy": "Contacto atualizado",
-      "contribution": "Contribuição",
-      "contributionCancelled": "Contribuição cancelada",
-      "contributionMonthlyAmount": "Valor mensal da contribuição",
-      "contributionPeriod": "Período da contribuição",
-      "contributionType": "Tipo de contributo",
+      "averageDonationAmount": "Valor médio de contribuições únicas (desde sempre)",
+      "contribution": "Contribuição recorrente",
+      "contributionCancelled": "Contribuição recorrente cancelada",
+      "contributionMonthlyAmount": "Valor mensal da contribuição recorrente",
+      "contributionPeriod": "Período da contribuição recorrente",
+      "contributionType": "Tipo de contribuição recorrente",
       "deliveryOptIn": "",
       "description": "Descrição",
+      "donationDate": "Data da contribuição única",
       "email": "Email",
       "firstname": "Primeiro nome",
+      "hasDonated": "Fez uma contribuição única",
       "joined": "Inscreveu-se em",
       "lastSeen": "Visto pela última vez em",
       "lastname": "Último nome",
@@ -1066,12 +1078,14 @@
       "period": "Período",
       "phone": "Telefone",
       "preferredChannel": "Canal preferido",
-      "tags": "Etiquetas"
+      "tags": "Etiquetas",
+      "totalDonationAmount": "Valor total de contribuições únicas (desde sempre)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Informação de contacto",
-      "contribution": "Contribuição",
+      "oneTimeContributions": "Contribuições únicas",
+      "recurringContributions": "Contribuições recorrentes",
       "role": "Cargo"
     },
     "noContacts": "Nenhum contacto ainda adicionado",
@@ -1119,6 +1133,7 @@
     "prorateNoTitle": "Atualizar a minha contribuição a {renewalDate}",
     "prorateYesText": "Vamos cobrar-te um pagamento único {oneOffPayment} agora e a tua contribuição será atualizada de forma imediata.",
     "prorateYesTitle": "Atualizar a minha contribuição agora",
+    "recurringContribution": "Contribuição recorrente",
     "restartContribution": "Voltar a contribuir",
     "startContribution": "Começar a contribuir",
     "startedContribution": "A tua contribuição começou.",
@@ -1396,8 +1411,8 @@
   },
   "homePage": {
     "editProfile": "Editar o teu perfil de comunidade",
-    "makeOneTimeDonationButton": "Doar",
-    "makeOneTimeDonationTitle": "Doe nu een donatie",
+    "makeOneTimeDonationButton": "Contribuição",
+    "makeOneTimeDonationTitle": "Fazer uma contribuição única agora",
     "manageContribution": "Gerir o teu contributo",
     "newCallout": "Nova CrowdNewsroom!",
     "openCallouts": "CrowdNewsrooms abertas",
@@ -1434,9 +1449,9 @@
     },
     "errors": {
       "confirmEmail": {
-        "message": "Está quase! Precisamos apenas de confirmar o teu email para passares a fazer parte da comunidade.",
-        "proceed": "Enviámos-te um email. Clica no link para continuar.",
-        "title": "Confirmar endereço de email"
+        "message": "Acabamos de enviar um e-mail de confirmação para o endereço que você informou.",
+        "proceed": "Não se esqueça de concluir a configuração da sua conta! Você encontrará as próximas etapas na sua caixa de entrada.",
+        "title": "Obrigado!"
       },
       "failed": {
         "backToJoin": "Voltar à página de registo",
@@ -1473,7 +1488,7 @@
     "goBackButton": "Voltar ao passo anterior",
     "note": "Podes alterar a tua contribuição e aceder ao teu historial de pagamentos a qualquer altura na tua conta.",
     "willBeContributing": "O tua contribuição será de {contribution}",
-    "willBeDonating": "Vais fazer uma doação de {amount}"
+    "willBeDonating": "Vais fazer uma contribuição única de {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Por favor confirma os teus detalhes",
@@ -1526,7 +1541,7 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
-        "oneTimeDonationEmail": "Email de doação única",
+        "oneTimeDonationEmail": "Email de contribuição única",
         "text": "",
         "title": "",
         "welcomeEmail": ""
@@ -1716,13 +1731,18 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Valor médio",
+      "total": "Valor total"
+    },
     "filter": {
       "all": "",
       "cancelled": "",

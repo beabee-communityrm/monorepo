@@ -5,7 +5,7 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="t('menu.contribution')" />
+  <PageTitle :title="t('contribution.recurringContribution')" />
 
   <App2ColGrid v-if="!isIniting">
     <template #col1>
@@ -90,8 +90,8 @@ const content = ref<ContributionContent>({
 const paymentContent = ref<ContentPaymentData>({
   stripePublicKey: '',
   stripeCountry: 'eu',
-  taxRate: 0,
-  taxRateEnabled: false,
+  taxRateRecurring: null,
+  taxRateOneTime: null,
   noticeText: '',
 });
 

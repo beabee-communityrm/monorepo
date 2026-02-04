@@ -27,10 +27,18 @@ export default defineConfig({
         '@fortawesome/vue-fontawesome',
         '@fortawesome/fontawesome-svg-core',
         '@fortawesome/free-solid-svg-icons',
+        '@fortawesome/free-regular-svg-icons',
+        '@fortawesome/free-brands-svg-icons',
       ],
       output: {
         globals: {
           vue: 'Vue',
+          'vue-router': 'VueRouter',
+          '@fortawesome/vue-fontawesome': 'VueFontawesome',
+          '@fortawesome/fontawesome-svg-core': 'FontawesomeSvgCore',
+          '@fortawesome/free-solid-svg-icons': 'freeSolidSvgIcons',
+          '@fortawesome/free-regular-svg-icons': 'freeRegularSvgIcons',
+          '@fortawesome/free-brands-svg-icons': 'freeBrandsSvgIcons',
         },
       },
     },

@@ -49,7 +49,7 @@ class ContentTransformer {
     for (const [key, value] of Object.entries(contentData[id])) {
       switch (value[0]) {
         case 'data':
-          ret[key] = content?.data[key] || value[1];
+          ret[key] = content?.data[key] ?? value[1];
           break;
         case 'option':
           ret[key] = OptionsService[optTypeGetter[value[2]]](value[1]);
@@ -214,8 +214,8 @@ const contentData = {
   payment: withValue<'payment'>({
     stripePublicKey: ['readonly', () => config.stripe.publicKey],
     stripeCountry: ['readonly', () => config.stripe.country],
-    taxRateEnabled: ['option', 'tax-rate-enabled', 'bool'],
-    taxRate: ['option', 'tax-rate-percentage', 'int'],
+    taxRateRecurring: ['data', null],
+    taxRateOneTime: ['data', null],
     noticeText: ['data', ''],
   }),
   telegram: withValue<'telegram'>({
