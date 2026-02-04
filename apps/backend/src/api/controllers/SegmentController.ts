@@ -37,9 +37,6 @@ import {
   QueryParams,
 } from 'routing-controllers';
 
-/** Chunk size for segment email send to limit memory use. */
-const SEGMENT_EMAIL_PAGE_SIZE = 100;
-
 @JsonController('/segments')
 @Authorized('admin')
 export class SegmentController {
@@ -114,14 +111,15 @@ export class SegmentController {
   ): Promise<PaginatedDto<GetContactDto> | undefined> {
     const segment = await getRepository(Segment).findOneBy({ id });
     if (!segment) return undefined;
-    return await ContactTransformer.fetchForSegment(
-      auth,
-      segment.ruleGroup,
-      query
-    );
+    const mergedRules = query.rules
+      ? { condition: 'AND' as const, rules: [segment.ruleGroup, query.rules] }
+      : segment.ruleGroup;
+    return await ContactTransformer.fetch(auth, {
+      ...query,
+      rules: mergedRules,
+    });
   }
 
-  /** One-off email to all contacts in the segment (chunked). */
   @OnUndefined(204)
   @Post('/:id/email/send')
   async sendEmail(
@@ -131,22 +129,16 @@ export class SegmentController {
   ): Promise<void> {
     const segment = await getRepository(Segment).findOneBy({ id });
     if (!segment) throw new NotFoundError();
-
-    let offset = 0;
-    while (true) {
-      const { items } = await ContactTransformer.fetchRawForSegment(
-        auth,
-        segment.ruleGroup,
-        { limit: SEGMENT_EMAIL_PAGE_SIZE, offset }
-      );
-      if (items.length === 0) break;
+    const { items } = await ContactTransformer.fetchRaw(auth, {
+      rules: segment.ruleGroup,
+      limit: -1,
+    });
+    if (items.length > 0) {
       await EmailService.sendCustomEmailToContact(
         items,
         data.subject,
         data.body
       );
-      offset += items.length;
-      if (items.length < SEGMENT_EMAIL_PAGE_SIZE) break;
     }
   }
 }

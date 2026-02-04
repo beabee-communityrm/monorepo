@@ -16,7 +16,6 @@ import {
   ListContactsDto,
   UpdateContactDto,
 } from '@api/dto/ContactDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
 import { BaseContactTransformer } from '@api/transformers/BaseContactTransformer';
 import ContactProfileTransformer from '@api/transformers/ContactProfileTransformer';
 import ContactRoleTransformer from '@api/transformers/ContactRoleTransformer';
@@ -232,30 +231,6 @@ class ContactTransformer extends BaseContactTransformer<
     return await this.fetchOneById(auth, target.id, {
       with: data.profile ? [GetContactWith.Profile] : [],
     });
-  }
-
-  /** Fetch contacts for a rule group (e.g. segment). Merges ruleGroup with query.rules when both present. */
-  async fetchForSegment(
-    auth: AuthInfo,
-    ruleGroup: RuleGroup,
-    query: ListContactsDto
-  ): Promise<PaginatedDto<GetContactDto>> {
-    const mergedRules = query.rules
-      ? { condition: 'AND' as const, rules: [ruleGroup, query.rules] }
-      : ruleGroup;
-    return await this.fetch(auth, { ...query, rules: mergedRules });
-  }
-
-  /** Like fetchForSegment but returns raw Contact[] (e.g. for segment email send). */
-  async fetchRawForSegment(
-    auth: AuthInfo,
-    ruleGroup: RuleGroup,
-    query: ListContactsDto
-  ): Promise<{ items: Contact[]; total: number; offset: number }> {
-    const mergedRules = query.rules
-      ? { condition: 'AND' as const, rules: [ruleGroup, query.rules] }
-      : ruleGroup;
-    return await this.fetchRaw(auth, { ...query, rules: mergedRules });
   }
 
   /**
