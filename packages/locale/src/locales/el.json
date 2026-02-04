@@ -222,7 +222,8 @@
       "paymentTitle": "",
       "showOneTimeDonation": "",
       "taxRate": "",
-      "taxRateEnabled": ""
+      "taxRateLabelOneTime": "",
+      "taxRateLabelRecurring": ""
     },
     "theme": {
       "bodyFont": "",
@@ -1042,15 +1043,18 @@
       "activeUser": "",
       "amount": "",
       "annotationsCopy": "",
-      "contribution": "",
-      "contributionCancelled": "",
-      "contributionMonthlyAmount": "",
-      "contributionPeriod": "",
-      "contributionType": "",
+      "averageDonationAmount": "Μέσο ποσό εφάπαξ συνεισφορών",
+      "contribution": "Επαναλαμβανόμενη συνεισφορά",
+      "contributionCancelled": "Επαναλαμβανόμενη συνεισφορά ακυρώθηκε",
+      "contributionMonthlyAmount": "Μηνιαίο ποσό επαναλαμβανόμενης συνεισφοράς",
+      "contributionPeriod": "Περίοδος επαναλαμβανόμενης συνεισφοράς",
+      "contributionType": "Τύπος επαναλαμβανόμενης συνεισφοράς",
       "deliveryOptIn": "",
       "description": "",
+      "donationDate": "Ημερομηνία εφάπαξ συνεισφοράς",
       "email": "",
       "firstname": "",
+      "hasDonated": "Έκανε εφάπαξ συνεισφορά",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
@@ -1067,12 +1071,14 @@
       "period": "",
       "phone": "",
       "preferredChannel": "",
-      "tags": ""
+      "tags": "",
+      "totalDonationAmount": "Συνολικό ποσό εφάπαξ συνεισφορών"
     },
     "dataGroup": {
       "callout": "",
       "contact": "",
-      "contribution": "",
+      "oneTimeContributions": "",
+      "recurringContributions": "",
       "role": ""
     },
     "noContacts": "",
@@ -1115,6 +1121,7 @@
     "prorateNoTitle": "",
     "prorateYesText": "",
     "prorateYesTitle": "",
+    "recurringContribution": "Επαναλαμβανόμενη συνεισφορά",
     "restartContribution": "",
     "startContribution": "",
     "startedContribution": "",
@@ -1391,8 +1398,8 @@
   },
   "homePage": {
     "editProfile": "",
-    "makeOneTimeDonationButton": "Κάντε δωρεά",
-    "makeOneTimeDonationTitle": "Κάνε δωρεά τώρα",
+    "makeOneTimeDonationButton": "Συνεισφορά",
+    "makeOneTimeDonationTitle": "Κάνε εφάπαξ συνεισφορά τώρα",
     "manageContribution": "",
     "newCallout": "",
     "openCallouts": "",
@@ -1468,7 +1475,7 @@
     "goBackButton": "",
     "note": "",
     "willBeContributing": "",
-    "willBeDonating": "Θα κάνετε δωρεά {amount}"
+    "willBeDonating": "Θα κάνετε εφάπαξ συνεισφορά {amount}"
   },
   "joinSetup": {
     "confirmDetails": "",
@@ -1521,7 +1528,7 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
-        "oneTimeDonationEmail": "Email εφάπαξ δωρεάς",
+        "oneTimeDonationEmail": "Email εφάπαξ συνεισφοράς",
         "text": "",
         "title": "",
         "welcomeEmail": ""

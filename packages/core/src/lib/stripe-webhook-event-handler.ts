@@ -12,8 +12,7 @@ import EmailService from '../services/EmailService';
 import GiftService from '../services/GiftService';
 import PaymentService from '../services/PaymentService';
 import {
-  convertStatus,
-  getInvoiceType,
+  convertInvoiceToPayment,
   getSalesTaxRateObject,
   isOneTimePaymentInvoice,
   stripe,
@@ -170,7 +169,7 @@ export class StripeWebhookEventHandler {
     // https://docs.stripe.com/billing/invoices/subscription#update-first-invoice
     if (invoice.status !== 'draft') return;
 
-    const taxRateObj = getSalesTaxRateObject();
+    const taxRateObj = getSalesTaxRateObject('recurring');
     const invoiceTaxRateObj = invoice.default_tax_rates.map((rate) => rate.id);
 
     // If tax rates match then there's nothing to do
@@ -204,12 +203,8 @@ export class StripeWebhookEventHandler {
     }
 
     log.info('Updating payment for invoice ' + invoice.id);
-    payment.status = invoice.status
-      ? convertStatus(invoice.status)
-      : PaymentStatus.Draft;
-    payment.description = invoice.description || '';
-    payment.amount = invoice.total / 100;
-    payment.chargeDate = new Date(invoice.created * 1000);
+    Object.assign(payment, convertInvoiceToPayment(invoice));
+
     return await getRepository(Payment).save(payment);
   }
 
@@ -334,8 +329,6 @@ export class StripeWebhookEventHandler {
     const newPayment = new Payment();
     newPayment.id = invoice.id;
     newPayment.contact = contribution.contact;
-    newPayment.subscriptionId = invoice.subscription as string | null;
-    newPayment.type = getInvoiceType(invoice);
 
     log.info(
       `Creating payment for ${contribution.contact.id} with invoice ${invoice.id}`

@@ -222,7 +222,8 @@
       "paymentTitle": "Payment",
       "showOneTimeDonation": "Show one time donation on home screen",
       "taxRate": "VAT rate",
-      "taxRateEnabled": "Enable VAT"
+      "taxRateLabelOneTime": "Enable VAT rate for one-time payments",
+      "taxRateLabelRecurring": "Enable VAT rate for recurring payments"
     },
     "theme": {
       "bodyFont": "Body text",
@@ -1042,11 +1043,11 @@
       "activeUser": "Active user",
       "amount": "Amount",
       "annotationsCopy": "Contact successfully updated",
-      "contribution": "Contribution",
-      "contributionCancelled": "Contribution cancelled",
-      "contributionMonthlyAmount": "Contribution monthly amount",
-      "contributionPeriod": "Contribution period",
-      "contributionType": "Contribution type",
+      "contribution": "Recurring contribution",
+      "contributionCancelled": "Recurring contribution cancelled",
+      "contributionMonthlyAmount": "Recurring contribution monthly amount",
+      "contributionPeriod": "Recurring contribution period",
+      "contributionType": "Recurring contribution type",
       "deliveryOptIn": "Delivery opt-in",
       "description": "Description",
       "email": "Email",
@@ -1067,12 +1068,17 @@
       "period": "Period",
       "phone": "Phone number",
       "preferredChannel": "Preferred channel",
-      "tags": "Tags"
+      "tags": "Tags",
+      "donationDate": "One-time contribution date",
+      "hasDonated": "Made one-time contribution",
+      "totalDonationAmount": "Total amount of one-time contributions (all time)",
+      "averageDonationAmount": "Average amount of one-time contributions (all time)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Contact information",
-      "contribution": "Contribution",
+      "recurringContributions": "Recurring Contributions",
+      "oneTimeContributions": "One-Time Contributions",
       "role": "Role"
     },
     "noContacts": "No contacts added yet",
@@ -1116,6 +1122,7 @@
     "prorateYesText": "You'll be charged a one-off payment of {oneOffPayment} now and your contribution will be updated immedately",
     "prorateYesTitle": "Update my contribution now",
     "restartContribution": "Restart contribution",
+    "recurringContribution": "Recurring Contribution",
     "startContribution": "Start contribution",
     "startedContribution": "Your contribution has started.",
     "updateContribution": "Update contribution",
@@ -1389,8 +1396,8 @@
   },
   "homePage": {
     "editProfile": "Edit your community profile",
-    "makeOneTimeDonationButton": "Make a donation",
-    "makeOneTimeDonationTitle": "Make a one time donation",
+    "makeOneTimeDonationButton": "Make contribution",
+    "makeOneTimeDonationTitle": "Make one-time contribution",
     "manageContribution": "Manage your contribution",
     "newCallout": "New CrowdNewsroom!",
     "openCallouts": "CrowdNewsroom",
@@ -1466,7 +1473,7 @@
     "goBackButton": "Back to the previous screen",
     "note": "You'll be able to update your details and access your payment history at any time in your account",
     "willBeContributing": "You'll be contributing {contribution}",
-    "willBeDonating": "You'll be making a donation of {amount}"
+    "willBeDonating": "You'll be making a one-time contribution of {amount}"
   },
   "joinSetup": {
     "confirmDetails": "Please confirm your details",
@@ -1519,7 +1526,7 @@
         "bigTitle": "Welcome & cancellation emails",
         "cancellationEmail": "Cancellation email",
         "description": "Customise your welcome and cancellation emails",
-        "oneTimeDonationEmail": "One-time donation email",
+        "oneTimeDonationEmail": "One-time contribution email",
         "text": "All emails are sent from your support email address and include standard signature, you can change these in your email settings.",
         "title": "Emails",
         "welcomeEmail": "Welcome email"

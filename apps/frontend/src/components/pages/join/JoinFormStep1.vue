@@ -35,11 +35,8 @@
     </AppApiForm>
 
     <div class="mt-3 text-center text-xs">
-      <p
-        v-if="!data.noContribution && paymentContent.taxRateEnabled"
-        class="mb-2"
-      >
-        {{ t('join.tax.included', { taxRate: paymentContent.taxRate }) }}
+      <p v-if="activeTaxRate !== null" class="mb-2">
+        {{ t('join.tax.included', { taxRate: activeTaxRate }) }}
       </p>
       <p class="mb-2">
         {{ t('join.notice') }}
@@ -90,6 +87,14 @@ const props = defineProps<{
 const { n, t } = useI18n();
 
 const data = defineModel<JoinFormData>({ required: true });
+
+const activeTaxRate = computed(() => {
+  return data.value.noContribution
+    ? null
+    : data.value.period === 'one-time'
+      ? props.paymentContent.taxRateOneTime
+      : props.paymentContent.taxRateRecurring;
+});
 
 const buttonText = computed(() => {
   const totalAmount = calcJoinFormTotalAmount(

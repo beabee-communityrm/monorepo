@@ -27,6 +27,6 @@
     "yaml": "^2.8.0"
   },
   "dependencies": {
-    "minisearch": "^7.1.2"
+    "minisearch": "^7.2.0"
   }
 }
