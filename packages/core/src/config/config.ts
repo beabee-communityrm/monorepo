@@ -259,6 +259,7 @@ export const config = {
   },
 
   // Logging configuration
+  logging: env.b('BEABEE_LOGGING', false), // Enable logging (default: false)
   logFormat: env.e('BEABEE_LOGFORMAT', ['json', 'simple'] as const, 'json'), // Log format (default: json)
 
   // App configuration overrides from environment
