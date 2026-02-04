@@ -1436,9 +1436,9 @@
     },
     "errors": {
       "confirmEmail": {
-        "message": "Está quase! Precisamos apenas de confirmar o teu email para passares a fazer parte da comunidade.",
-        "proceed": "Enviámos-te um email. Clica no link para continuar.",
-        "title": "Confirmar endereço de email"
+        "message": "Acabamos de enviar um e-mail de confirmação para o endereço que você informou.",
+        "proceed": "Não se esqueça de concluir a configuração da sua conta! Você encontrará as próximas etapas na sua caixa de entrada.",
+        "title": "Obrigado!"
       },
       "failed": {
         "backToJoin": "Voltar à página de registo",

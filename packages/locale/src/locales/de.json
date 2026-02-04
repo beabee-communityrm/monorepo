@@ -1434,9 +1434,9 @@
     },
     "errors": {
       "confirmEmail": {
-        "message": "Fast geschafft! Wir müssen nur noch Ihre E-Mail-Adresse bestätigen, um fortzufahren.",
-        "proceed": "Wir haben Ihnen eine E-Mail geschickt. Bitte klicken Sie auf den Bestätigung-Link, um fortzufahren.",
-        "title": "E-Mail-Adresse bestätigen"
+        "message": "Wir haben soeben eine Bestätigungs-E-Mail an die von Ihnen angegebene Adresse gesendet.",
+        "proceed": "Vergessen Sie nicht, die Einrichtung Ihres Kontos abzuschließen! Die nächsten Schritte finden Sie in Ihrem Posteingang.",
+        "title": "Danke!"
       },
       "failed": {
         "backToJoin": "Zurück zur Registrierung",

@@ -67,9 +67,9 @@
     "cancel": "Cancel",
     "changePassword": "Change password",
     "chooseFile": "Choose file",
+    "clearSearch": "Clear search",
     "close": "Close",
     "continue": "Continue",
-    "clearSearch": "Clear search",
     "copy": "Copy",
     "create": "Create",
     "decrease": "Decrease",
@@ -180,12 +180,12 @@
       "fromEmail": "From email",
       "fromName": "From name",
       "label": "Email",
-      "text": "All email communication will be sent from this email address.",
-      "title": "Set a general email address",
       "templates": {
-        "title": "Set email templates",
-        "description": "Manage the subject and body of emails sent by the application. The status color shows whether the email is customized (green), using the default template (yellow), or not configured and therefore not active (red)."
-      }
+        "description": "Manage the subject and body of emails sent by the application. The status color shows whether the email is customized (green), using the default template (yellow), or not configured and therefore not active (red).",
+        "title": "Set email templates"
+      },
+      "text": "All email communication will be sent from this email address.",
+      "title": "Set a general email address"
     },
     "general": {
       "footer": {
@@ -905,11 +905,6 @@
   "common": {
     "backToHome": "Back to home",
     "contributing": "Contributing",
-    "paymentPeriod": {
-      "annually": "Annually",
-      "monthly": "Monthly",
-      "one-time": "One-time"
-    },
     "contributionPeriod": {
       "annually": "Annually",
       "monthly": "Monthly"
@@ -938,6 +933,11 @@
     "no": "No",
     "noResults": "No results found",
     "pageCount": "Page {pageNumber} out of {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Annually",
+      "monthly": "Monthly",
+      "one-time": "One-time"
+    },
     "paymentStatus": {
       "cancelled": "Cancelled",
       "draft": "Draft",
@@ -1005,8 +1005,6 @@
     "callouts": "CrowdNewsroom",
     "cancellationDate": "Cancelled on",
     "contribution": "Contribution",
-    "recurring": "Recurring",
-    "oneTime": "One-time",
     "contributionType": "Type",
     "joinSurvey": "Join survey",
     "newsletter": {
@@ -1014,9 +1012,11 @@
       "status": "Status",
       "title": "Newsletter"
     },
+    "oneTime": "One-time",
     "overview": "Overview",
     "pickTag": "Pick a tag from the list below",
     "profile": "Profile",
+    "recurring": "Recurring",
     "roles": "Roles",
     "security": {
       "instructions": "Copy and share this link:",
@@ -1142,100 +1142,100 @@
     "title": "Edit: {title}"
   },
   "emailEditor": {
-    "subject": {
-      "label": "Subject"
-    },
     "body": {
       "label": "Message"
     },
     "preview": {
       "label": "Preview",
       "unavailable": "Preview unavailable"
+    },
+    "subject": {
+      "label": "Subject"
     }
   },
   "emails": {
-    "tabs": {
-      "custom": "Custom Emails",
-      "templates": "System Templates"
-    },
-    "list": {
-      "showingOf": "Showing {start} to {end} emails out of {total}"
+    "actions": {
+      "addCustom": "Add Custom Email",
+      "deactivate": "Deactivate",
+      "resetToDefault": "Reset to Default"
     },
     "add": {
       "title": "Create Custom Email"
     },
+    "confirmDelete": {
+      "message": "Are you sure you want to deactivate this email? This action cannot be undone.",
+      "messageWithMailings": "This email has been sent {count} time(s). Are you sure you want to delete it? This action cannot be undone.",
+      "title": "Deactivate Email"
+    },
+    "confirmResetToDefault": {
+      "message": "Are you sure you want to reset this template to its default? Your custom changes will be lost.",
+      "title": "Reset to Default"
+    },
+    "customized": "Customized",
+    "default": "Default",
+    "description": "Description",
     "edit": {
       "title": "Edit Email",
       "titleCustom": "Edit: {name}"
     },
-    "name": "Email name",
-    "fromName": "From name",
     "fromEmail": "From email",
+    "fromName": "From name",
+    "list": {
+      "showingOf": "Showing {start} to {end} emails out of {total}"
+    },
     "mailingCount": "Mailings sent",
-    "status": "Status",
-    "description": "Description",
-    "type": "Type",
-    "customized": "Customized",
-    "default": "Default",
     "missingDefault": "Not Active",
-    "actions": {
-      "addCustom": "Add Custom Email",
-      "resetToDefault": "Reset to Default",
-      "deactivate": "Deactivate"
+    "name": "Email name",
+    "notifications": {
+      "created": "Email created successfully",
+      "deleted": "Email deleted successfully",
+      "resetToDefault": "Template reset to default successfully",
+      "updated": "Email updated successfully"
+    },
+    "status": "Status",
+    "tabs": {
+      "custom": "Custom Emails",
+      "templates": "System Templates"
     },
     "templates": {
       "availableFields": "Available fields",
-      "type": {
-        "general": "General",
-        "admin": "Admin Notifications",
-        "contact": "Contact Emails"
-      },
-      "names": {
-        "welcome": "Welcome",
-        "reset-password": "Reset Password",
-        "reset-device": "Reset Device",
-        "cancelled-contribution": "Contribution Cancelled",
-        "manual-to-automatic": "Manual Contribution Converted to Automatic",
-        "email-exists-login": "Email Exists – Log In",
-        "email-exists-set-password": "Email Exists – Set Password",
-        "contribution-didnt-start": "Contribution Did Not Start",
-        "confirm-email": "Confirm Email",
-        "new-member": "Admin: New Contact – Notification",
-        "cancelled-member": "Admin: Cancelled Member – Notification",
-        "new-callout-response": "Admin: New CrowdNewsroom – Response Notification",
-        "one-time-donation": "One-Time Contribution Confirmation"
-      },
       "description": {
-        "welcome": "Sent to new members after they complete the registration process so they can confirm their email address. This email welcomes them to the community.",
-        "reset-password": "Sent when a user requests to reset their password. Contains a secure link to reset the password.",
-        "reset-device": "Sent when a user requests to reset their trusted device for two-factor authentication. Contains a secure link to reset the device.",
         "cancelled-contribution": "Sent to members when their recurring contribution is cancelled. Typically includes information about when the membership ends, as well as the member ID. May contain a link to a survey.",
-        "manual-to-automatic": "Sent to members when their payment method is successfully changed from manual to automatic recurring payment. Confirms the successful change.",
+        "cancelled-member": "Sent to administrators when a member cancels their contribution. Typically includes a notification with the ID and name of the cancelled member.",
+        "confirm-email": "Sent to new users during the registration process to verify their email address. Contains a confirmation link they must click to complete registration.",
+        "contribution-didnt-start": "Sent to members when their Stripe subscription payment could not be started (e.g., declined payment method, insufficient funds). Informs them that their membership has been revoked due to the payment failure.",
         "email-exists-login": "Sent when someone attempts to register with an email address that already exists and belongs to an active member with a password set. Provides a login link so they can access their existing account.",
         "email-exists-set-password": "Sent when someone attempts to register with an email address that already exists and belongs to an active member who has not yet set a password. Provides a link to set a password.",
-        "contribution-didnt-start": "Sent to members when their Stripe subscription payment could not be started (e.g., declined payment method, insufficient funds). Informs them that their membership has been revoked due to the payment failure.",
-        "one-time-donation": "Sent to users after they complete a one-time contribution (non-recurring payment). Typically confirms the contribution amount and serves as a receipt.",
-        "confirm-email": "Sent to new users during the registration process to verify their email address. Contains a confirmation link they must click to complete registration.",
+        "manual-to-automatic": "Sent to members when their payment method is successfully changed from manual to automatic recurring payment. Confirms the successful change.",
+        "new-callout-response": "Sent to administrators when a new response to a CrowdNewsroom is submitted. Typically includes a notification with the CrowdNewsroom details and the name of the responding person.",
         "new-member": "Sent to administrators when a new member successfully joins the community. Typically includes a notification with the ID and name of the new member.",
-        "cancelled-member": "Sent to administrators when a member cancels their contribution. Typically includes a notification with the ID and name of the cancelled member.",
-        "new-callout-response": "Sent to administrators when a new response to a CrowdNewsroom is submitted. Typically includes a notification with the CrowdNewsroom details and the name of the responding person."
+        "one-time-donation": "Sent to users after they complete a one-time contribution (non-recurring payment). Typically confirms the contribution amount and serves as a receipt.",
+        "reset-device": "Sent when a user requests to reset their trusted device for two-factor authentication. Contains a secure link to reset the device.",
+        "reset-password": "Sent when a user requests to reset their password. Contains a secure link to reset the password.",
+        "welcome": "Sent to new members after they complete the registration process so they can confirm their email address. This email welcomes them to the community."
+      },
+      "names": {
+        "cancelled-contribution": "Contribution Cancelled",
+        "cancelled-member": "Admin: Cancelled Member – Notification",
+        "confirm-email": "Confirm Email",
+        "contribution-didnt-start": "Contribution Did Not Start",
+        "email-exists-login": "Email Exists – Log In",
+        "email-exists-set-password": "Email Exists – Set Password",
+        "manual-to-automatic": "Manual Contribution Converted to Automatic",
+        "new-callout-response": "Admin: New CrowdNewsroom – Response Notification",
+        "new-member": "Admin: New Contact – Notification",
+        "one-time-donation": "One-Time Contribution Confirmation",
+        "reset-device": "Reset Device",
+        "reset-password": "Reset Password",
+        "welcome": "Welcome"
+      },
+      "type": {
+        "admin": "Admin Notifications",
+        "contact": "Contact Emails",
+        "general": "General"
       }
     },
-    "confirmDelete": {
-      "title": "Deactivate Email",
-      "message": "Are you sure you want to deactivate this email? This action cannot be undone.",
-      "messageWithMailings": "This email has been sent {count} time(s). Are you sure you want to delete it? This action cannot be undone."
-    },
-    "confirmResetToDefault": {
-      "title": "Reset to Default",
-      "message": "Are you sure you want to reset this template to its default? Your custom changes will be lost."
-    },
-    "notifications": {
-      "created": "Email created successfully",
-      "updated": "Email updated successfully",
-      "deleted": "Email deleted successfully",
-      "resetToDefault": "Template reset to default successfully"
-    }
+    "type": "Type"
   },
   "footer": {
     "contactUs": "Contact us at",
@@ -1266,12 +1266,12 @@
     "errorMessages": {
       "api": {
         "account-locked": "Account locked due to too many failed login attempts. Please reset your password or contact support for help.",
+        "cant-update-contribution": "You can't update your contribution at the moment as you have a payment pending",
         "duplicate-email": "Email address already exists",
         "duplicate-tag-name": "A tag with this name already exists",
         "invalid-token": "Invalid 2FA token",
         "login-failed": "Invalid password/email combination",
-        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed",
-        "cant-update-contribution": "You can't update your contribution at the moment as you have a payment pending"
+        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed"
       },
       "generic": "Oops, something went wrong! Contact support if this happens again.",
       "unauthorized": "You don't have access to that.",
@@ -1368,11 +1368,11 @@
       "heading": "Heading",
       "italic": "Italic",
       "link": "Link",
+      "mergeFields": "Placeholders",
       "numberedlist": "Numbered list",
       "strikethrough": "Strikethrough",
       "toolbar": "Rich text formatting toolbar",
-      "underline": "Underline",
-      "mergeFields": "Placeholders"
+      "underline": "Underline"
     },
     "saveChanges": "Save Changes",
     "saved": "Saved!",
@@ -1396,6 +1396,8 @@
   },
   "homePage": {
     "editProfile": "Edit your community profile",
+    "makeOneTimeDonationButton": "Make contribution",
+    "makeOneTimeDonationTitle": "Make one-time contribution",
     "manageContribution": "Manage your contribution",
     "newCallout": "New CrowdNewsroom!",
     "openCallouts": "CrowdNewsroom",
@@ -1404,9 +1406,7 @@
     "viewAllCallouts": "Open the CrowdNewsroom",
     "viewOpenCallouts": "Open the CrowdNewsroom",
     "welcome": "Welcome aboard {firstName}!",
-    "yourProfile": "Your profile",
-    "makeOneTimeDonationTitle": "Make one-time contribution",
-    "makeOneTimeDonationButton": "Make contribution"
+    "yourProfile": "Your profile"
   },
   "icons": {
     "welcome": {
@@ -1434,13 +1434,13 @@
     },
     "errors": {
       "confirmEmail": {
-        "message": "Almost there! We just need to confirm your email address to finish setting up your membership.",
-        "proceed": "We've sent you an email. Please click the link to proceed.",
-        "title": "Confirm your email address"
+        "message": "We have just sent a confirmation email to the address you provided.",
+        "proceed": "Don't forget to finish setting up your account! You will find the next steps in your inbox.",
+        "title": "Thank you!"
       },
       "failed": {
         "backToJoin": "Back to join page",
-        "message": "There was a problem setting up your membership, our team has been notified. Please contact support if the problem persists.",
+        "message": "There was a problem setting up your account, our team has been notified. Please contact support if the problem persists.",
         "title": "Something went wrong"
       },
       "paymentFailed": {
@@ -1575,49 +1575,49 @@
     "yourProfile": "Your profile"
   },
   "mergeFields": {
-    "title": "Placeholders",
+    "copied": "Copied!",
     "copy": "Copy",
     "copyTag": "Copy {tag}",
-    "copied": "Copied!",
-    "insert": "Insert",
-    "insertTag": "Insert {tag}",
     "example": "Example",
     "groups": {
       "contact": "Contact Fields",
-      "standard": "Standard Fields",
       "magic": "Magic Links",
+      "standard": "Standard Fields",
       "template": "Template Fields"
     },
+    "insert": "Insert",
+    "insertTag": "Insert {tag}",
     "tags": {
-      "EMAIL": "Contact email address",
-      "NAME": "Contact full name",
-      "FNAME": "Contact first name",
-      "LNAME": "Contact last name",
-      "MEMBERSHIPID": "Contact membership ID",
-      "RPLINK": "Password reset link",
-      "LOGINLINK": "Login link",
-      "SPLINK": "Set password link",
-      "MESSAGE": "Custom message content",
-      "CALLOUTTITLE": "CrowdNewsroom title",
-      "CALLOUTLINK": "Link to CrowdNewsroom",
-      "SUPPORTEMAIL": "Support email address",
-      "ANSWERS": "Formatted response answers",
-      "REFCODE": "Contact referral code",
-      "EXPIRES": "Membership expiration date",
-      "REFEREENAME": "Name of referred person",
-      "ISELIGIBLE": "Whether referral is eligible",
-      "PURCHASER": "Gift purchaser name",
-      "GIFTEE": "Gift recipient name",
-      "GIFTDATE": "Gift start date",
       "ACTIVATELINK": "Gift activation link",
+      "ANSWERS": "Formatted response answers",
+      "CALLOUTLINK": "Link to CrowdNewsroom",
+      "CALLOUTSLUG": "CrowdNewsroom slug",
+      "CALLOUTTITLE": "CrowdNewsroom title",
       "CONFIRMLINK": "Email confirmation link",
-      "URL": "Special URL",
+      "EMAIL": "Contact email address",
+      "EXPIRES": "Membership expiration date",
+      "FNAME": "Contact first name",
+      "GIFTDATE": "Gift start date",
+      "GIFTEE": "Gift recipient name",
+      "ISELIGIBLE": "Whether referral is eligible",
+      "LNAME": "Contact last name",
+      "LOGINLINK": "Login link",
       "MEMBERID": "Member ID",
       "MEMBERNAME": "Member name",
-      "CALLOUTSLUG": "CrowdNewsroom slug",
+      "MEMBERSHIPID": "Contact membership ID",
+      "MESSAGE": "Custom message content",
+      "NAME": "Contact full name",
+      "ORGNAME": "Organization name",
+      "PURCHASER": "Gift purchaser name",
+      "REFCODE": "Contact referral code",
+      "REFEREENAME": "Name of referred person",
       "RESPNAME": "Responder name",
-      "ORGNAME": "Organization name"
-    }
+      "RPLINK": "Password reset link",
+      "SPLINK": "Set password link",
+      "SUPPORTEMAIL": "Support email address",
+      "URL": "Special URL"
+    },
+    "title": "Placeholders"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1659,11 +1659,11 @@
       "success": "Copied to clipboard"
     },
     "error": "Something went wrong. Try reloading the page.",
-    "remove": "Close notification",
     "rateLimit": {
       "generic": "Too many requests. Please wait a bit and try again.",
       "withWait": "Too many requests. Please wait {time} and try again."
-    }
+    },
+    "remove": "Close notification"
   },
   "pageTitle": {
     "confirmEmail": "Confirm email",
@@ -1724,6 +1724,10 @@
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Average Amount",
+      "total": "Total Amount"
+    },
     "filter": {
       "all": "All payments",
       "cancelled": "Cancelled payments",
@@ -1731,11 +1735,7 @@
       "pending": "Pending payments",
       "successful": "Successful payments"
     },
-    "showingOf": "Showing {start} to {end} payments out of {total}",
-    "aggregation": {
-      "average": "Average Amount",
-      "total": "Total Amount"
-    }
+    "showingOf": "Showing {start} to {end} payments out of {total}"
   },
   "resetDevice": {
     "description": "Enter your password to reset 2FA protection, you will be able to set up a new device once you are logged in.",
