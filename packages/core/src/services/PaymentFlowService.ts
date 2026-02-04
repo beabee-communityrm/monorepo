@@ -119,7 +119,8 @@ class PaymentFlowService {
 
   /**
    * Advances a payment registration after payment provider setup is complete.
-   * Merges additional user data and sends confirmation email.
+   * Merges additional user data and sends confirmation email. For one-time payments,
+   * immediately finalizes the registration.
    * @param paymentFlowId - ID of the payment flow to advance
    * @param data - Additional user data from the payment provider
    */
@@ -139,6 +140,14 @@ class PaymentFlowService {
     }
 
     await this.sendConfirmationEmail(joinFlow);
+
+    if (!isContributionForm(joinFlow.joinForm)) {
+      log.info(
+        'Payment join flow is for one-time payment, finalizing immediately ' +
+          joinFlow.id
+      );
+      await this.finalizeRegistration(joinFlow.id, true);
+    }
   }
 
   /**
@@ -149,7 +158,10 @@ class PaymentFlowService {
    * @param joinFlowId - The ID of the join flow to finalize
    * @returns The created or updated contact
    */
-  async finalizeRegistration(joinFlowId: string): Promise<Contact> {
+  async finalizeRegistration(
+    joinFlowId: string,
+    keepFlow: boolean = false
+  ): Promise<Contact> {
     const joinFlow = await getRepository(JoinFlow).findOneBy({
       id: joinFlowId,
     });
@@ -172,7 +184,10 @@ class PaymentFlowService {
       throw new DuplicateEmailError();
     }
 
-    const completedPaymentFlow = await this.finalizeAndCleanupFlow(joinFlow);
+    const completedPaymentFlow = await this.finalizeAndCleanupFlow(
+      joinFlow,
+      keepFlow
+    );
 
     // If new contact or they don't have an active membership then update their
     // details, otherwise we leave them alone to avoid overwriting information
@@ -284,7 +299,7 @@ class PaymentFlowService {
   ): Promise<JoinFlow | undefined> {
     const joinFlow = await getRepository(JoinFlow).findOneBy({ paymentFlowId });
     if (joinFlow) {
-      const completedFlow = await this.finalizeAndCleanupFlow(joinFlow);
+      const completedFlow = await this.finalizeAndCleanupFlow(joinFlow, false);
       if (completedFlow) {
         await this.executePaymentActions(contact, completedFlow);
         return joinFlow;
@@ -358,13 +373,21 @@ class PaymentFlowService {
    * @returns Promise resolving to completed payment flow or undefined
    */
   private async finalizeAndCleanupFlow(
-    joinFlow: JoinFlow
+    joinFlow: JoinFlow,
+    keepFlow: boolean
   ): Promise<CompletedPaymentFlow | undefined> {
     log.info('Completing join flow ' + joinFlow.id);
     const paymentFlow = joinFlow.paymentFlowId
       ? await this.completePaymentFlow(joinFlow)
       : undefined;
-    await getRepository(JoinFlow).delete(joinFlow.id);
+
+    if (keepFlow) {
+      await getRepository(JoinFlow).update(joinFlow.id, {
+        paymentFlowId: '',
+      });
+    } else {
+      await getRepository(JoinFlow).delete(joinFlow.id);
+    }
     return paymentFlow;
   }
 
