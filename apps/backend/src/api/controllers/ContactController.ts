@@ -248,7 +248,7 @@ export class ContactController {
       ...data,
       monthlyAmount: getMonthlyAmount(data.amount, data.period),
     };
-    const flow = await PaymentFlowService.createPaymentUpdateFlow(
+    const flow = await PaymentFlowService.startContributionUpdate(
       target,
       data.paymentMethod,
       data.completeUrl,
@@ -319,7 +319,7 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
   ): Promise<GetContributionInfoDto> {
-    const flow = await PaymentFlowService.completePaymentUpdateFlow(
+    const flow = await PaymentFlowService.finalizeContributionUpdate(
       target,
       data.paymentFlowId
     );
@@ -357,7 +357,7 @@ export class ContactController {
       prorate: false,
       period: 'one-time',
     };
-    const params = await PaymentFlowService.createPaymentUpdateFlow(
+    const params = await PaymentFlowService.startContributionUpdate(
       target,
       data.paymentMethod,
       data.completeUrl,
@@ -372,7 +372,7 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
   ): Promise<void> {
-    const flow = await PaymentFlowService.completePaymentUpdateFlow(
+    const flow = await PaymentFlowService.finalizeContributionUpdate(
       target,
       data.paymentFlowId
     );
@@ -414,7 +414,7 @@ export class ContactController {
       throw new NoPaymentMethod();
     }
 
-    const paymentFlow = await PaymentFlowService.createPaymentUpdateFlow(
+    const paymentFlow = await PaymentFlowService.startContributionUpdate(
       target,
       paymentMethod,
       data.completeUrl
@@ -427,7 +427,7 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
   ): Promise<GetContributionInfoDto> {
-    const flow = await PaymentFlowService.completePaymentUpdateFlow(
+    const flow = await PaymentFlowService.finalizeContributionUpdate(
       target,
       data.paymentFlowId
     );
