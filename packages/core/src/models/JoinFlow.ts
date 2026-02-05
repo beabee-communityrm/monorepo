@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -35,5 +36,6 @@ export class JoinFlow {
   @Column({ type: String, nullable: true })
   contactId!: string | null;
   @OneToOne('Contact', { nullable: true })
+  @JoinColumn()
   contact!: Contact | null;
 }
