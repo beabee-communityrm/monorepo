@@ -31,6 +31,7 @@ import { formatEmailBody } from '#templates/email';
 import {
   AdminEmailParams,
   AdminEmailTemplateId,
+  ContactEmailOptions,
   ContactEmailParams,
   ContactEmailTemplateId,
   EmailMergeFields,
@@ -126,7 +127,7 @@ class EmailService {
    *
    * Convenience wrapper that automatically converts Contact objects to EmailRecipient
    * objects with contact and base merge fields. See email-templates.ts for available
-   * merge fields.
+   * merge fields. Optional opts.mergeFields are merged on top for each recipient.
    *
    * **When to use:**
    * - Sending a pre-configured Email entity to contacts
@@ -134,52 +135,41 @@ class EmailService {
    *
    * @param email The Email entity to send
    * @param contacts List of contacts to send the email to
-   * @param opts Optional email options (attachments, sendAt, etc.)
+   * @param opts Optional email options (attachments, sendAt, mergeFields)
    */
   async sendEmailToContact(
     email: Email,
     contacts: Contact[],
-    opts?: EmailOptions
+    opts?: ContactEmailOptions
   ): Promise<void> {
     const recipients = contacts.map((contact) =>
-      this.convertContactToRecipient(contact)
+      this.convertContactToRecipient(contact, opts?.mergeFields)
     );
     await this.sendEmail(email, recipients, opts);
   }
 
   /**
-   * Send a custom email to a contact with custom subject and body
+   * Send custom subject and body to one or more contacts.
+   * Merge fields are resolved per contact. See email-templates.ts for available merge fields.
    *
-   * Creates a new Email entity on-the-fly with custom subject and body content.
-   * Useful for user-generated email content (e.g., callout response emails with
-   * custom messages configured by admins). Merge fields are automatically replaced
-   * by the email provider. See email-templates.ts for available merge fields.
-   *
-   * **When to use:**
-   * - Sending emails with user-defined subject and body content
-   * - Callout response confirmation emails with custom messages
-   * - Dynamically generated email content (not from templates)
-   *
-   * @param contact The contact to send the email to
+   * @param contactOrContacts One contact or array of contacts to send to
    * @param subject Email subject (supports merge fields)
    * @param body Email body (supports merge fields)
-   * @param opts Optional email options including mergeFields for additional custom fields
-   * @returns Promise that resolves when the email is sent
+   * @param opts Optional options (e.g. mergeFields, attachments, sendAt)
    */
   async sendCustomEmailToContact(
-    contact: Contact,
+    contactOrContacts: Contact | Contact[],
     subject: string,
     body: string,
-    opts?: EmailOptions & { mergeFields?: EmailMergeFields }
+    opts?: ContactEmailOptions
   ): Promise<void> {
+    const contacts = Array.isArray(contactOrContacts)
+      ? contactOrContacts
+      : [contactOrContacts];
     const email = new Email();
     email.subject = subject;
     email.body = body;
-    const recipient = this.convertContactToRecipient(
-      contact,
-      opts?.mergeFields
-    );
-    await this.sendEmail(email, [recipient], opts);
+    await this.sendEmailToContact(email, contacts, opts);
   }
 
   /**
@@ -384,10 +374,10 @@ class EmailService {
       ? await this.getTemplateEmail(opts.templateId)
       : null;
 
-    // 2. Generate base merge fields from contact and standard fields
+    // 2. Merge fields in same order as sending (base, contact, additional)
     const mergeFields: EmailMergeFields = {
-      ...getContactEmailMergeFields(contact),
       ...getBaseEmailMergeFields(),
+      ...getContactEmailMergeFields(contact),
       ...opts?.mergeFields,
     };
 
@@ -495,12 +485,11 @@ class EmailService {
   }
 
   /**
-   * Convert a contact to an email recipient
-   * This ensures all recipients have access to standard merge fields and contact merge fields
+   * Convert a contact to an email recipient with standard and optional merge fields.
    *
    * @param contact The contact to convert
-   * @param additionalMergeFields Additional merge fields to add to the contact
-   * @returns Email recipient with standard merge fields and additional merge fields
+   * @param additionalMergeFields Optional merge fields to add on top of contact and base fields
+   * @returns Email recipient object (to, mergeFields)
    */
   private convertContactToRecipient(
     contact: Contact,

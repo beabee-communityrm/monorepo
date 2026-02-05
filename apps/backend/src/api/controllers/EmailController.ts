@@ -1,4 +1,5 @@
 import { Contact } from '@beabee/core/models';
+import ContactsService from '@beabee/core/services/ContactsService';
 import EmailService from '@beabee/core/services/EmailService';
 import { AuthInfo, PreviewEmailOptions } from '@beabee/core/type';
 
@@ -151,12 +152,21 @@ export class EmailController {
     }
   }
 
+  /**
+   * Preview email using subject, body and optional mergeFields from the request.
+   * When contactId is set (admin), merge fields use that contact; otherwise the current user.
+   */
   @Post('/preview')
   async previewEmail(
-    @CurrentUser({ required: true }) contact: Contact,
+    @CurrentUser({ required: true }) currentUser: Contact,
     @Body() data: PreviewEmailDto
   ): Promise<EmailPreviewDto> {
-    return await this.getPreview(contact, data);
+    const contact = data.contactId
+      ? await ContactsService.findOneBy({ id: data.contactId })
+      : currentUser;
+    if (!contact) throw new NotFoundError('Contact not found');
+    const { contactId: _, ...opts } = data;
+    return await this.getPreview(contact, opts);
   }
 
   /**

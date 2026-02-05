@@ -86,6 +86,7 @@
     "noBack": "No, torna indietro",
     "participate": "Partecipa",
     "preview": "Anteprima",
+    "previous": "Precedente",
     "publish": "Pubblica",
     "reopen": "Riapri",
     "replicate": "Replica",
@@ -100,6 +101,8 @@
     "schedule": "Programma",
     "search": "Ricerca",
     "sendEmails": "Invia e-mail",
+    "sendOneOffEmail": "Invia e-mail",
+    "sendOngoingEmails": "E-mail ricorrenti",
     "share": "Condividi",
     "skip": "Salta",
     "submit": "Invia",
@@ -1030,6 +1033,10 @@
       "whatDoTheButtonsDo": "Clicca il pulsante per generare un link di emergenza:"
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Contatto {current} di {total}",
+    "selfOption": "Tu stesso"
+  },
   "contacts": {
     "addContact": "Aggiungi contatto",
     "advancedSearch": {
@@ -1086,6 +1093,11 @@
     "numResults": "{n} contatto trovato | {n} contatti trovati",
     "search": "Cerca contatti...",
     "selectedCount": "{n} contatto selezionato | {n} contatti selezionati",
+    "sendEmail": {
+      "send": "",
+      "sent": "",
+      "title": ""
+    },
     "showingOf": "Contatti da {start} a {end} su {total}"
   },
   "contribution": {
@@ -1146,6 +1158,7 @@
       "label": "Messaggio"
     },
     "preview": {
+      "asContactLabel": "Contatto per anteprima",
       "label": "Anteprima",
       "unavailable": "Anteprima non disponibile"
     },

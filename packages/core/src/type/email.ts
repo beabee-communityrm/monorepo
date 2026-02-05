@@ -28,6 +28,11 @@ export interface EmailOptions {
   sendAt?: Date | undefined;
 }
 
+/** Email options for contact-based sending; mergeFields are merged on top of contact fields. */
+export type ContactEmailOptions = EmailOptions & {
+  mergeFields?: EmailMergeFields;
+};
+
 export type EmailTemplate<T extends string, A extends any[]> = {
   mergeFields: readonly T[];
   fn: (...args: A) => { [key in T]: string };
