@@ -151,7 +151,6 @@ export class GetEmailTemplateInfoDto {
  */
 export class PreviewEmailDto {
   /** When set (admin), merge fields use this contact; otherwise the current user. */
-  @Allow()
   @IsOptional()
   @IsString()
   contactId?: string;
