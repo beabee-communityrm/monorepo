@@ -9,37 +9,55 @@ meta:
 
   <App2ColGrid v-if="!isIniting">
     <template #col1>
-      <AppNotification
-        v-if="cancelledContribution"
-        class="mb-8"
-        variant="error"
-        :title="t('contribution.cancelledContribution')"
-        removeable
-        @remove="cancelledContribution = false"
+      <AppTabs
+        v-if="showOneTimeContributionSettings"
+        :items="[
+          { id: 'recurring', label: t('common.paymentType.recurring') },
+          { id: 'one-time', label: t('common.paymentType.oneTime') },
+        ]"
+        :selected="activeTab"
+        @tab-click="activeTab = $event"
       />
 
-      <ContributionBox :contribution="contribution" class="mb-9" />
+      <template v-if="activeTab === 'recurring'">
+        <AppNotification
+          v-if="cancelledContribution"
+          class="mb-8"
+          variant="error"
+          :title="t('contribution.cancelledContribution')"
+          removeable
+          @remove="cancelledContribution = false"
+        />
 
-      <UpdateContribution
-        v-model="contribution"
+        <ContributionBox :contribution="contribution" class="mb-9" />
+
+        <UpdateContribution
+          v-model="contribution"
+          :content="content"
+          :payment-content="paymentContent"
+          class="mb-7 md:mb-9"
+        />
+
+        <PaymentSource
+          v-if="contribution.paymentSource?.method"
+          v-model="contribution"
+          :payment-data="paymentSourceData"
+          :payment-source="contribution.paymentSource"
+          :stripe-public-key="paymentContent.stripePublicKey"
+          class="mb-7 md:mb-9"
+        />
+
+        <ContactCancelContribution
+          id="me"
+          :contribution="contribution"
+          @cancel="router.push('/profile/contribution/cancel')"
+        />
+      </template>
+
+      <OneTimeDonationForm
+        v-else
         :content="content"
         :payment-content="paymentContent"
-        class="mb-7 md:mb-9"
-      />
-
-      <PaymentSource
-        v-if="contribution.paymentSource?.method"
-        v-model="contribution"
-        :payment-data="paymentSourceData"
-        :payment-source="contribution.paymentSource"
-        :stripe-public-key="paymentContent.stripePublicKey"
-        class="mb-7 md:mb-9"
-      />
-
-      <ContactCancelContribution
-        id="me"
-        :contribution="contribution"
-        @cancel="router.push('/profile/contribution/cancel')"
       />
     </template>
     <template #col2>
@@ -57,11 +75,12 @@ import {
   MembershipStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import { App2ColGrid, AppNotification, PageTitle } from '@beabee/vue';
+import { App2ColGrid, AppNotification, AppTabs, PageTitle } from '@beabee/vue';
 
 import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
 import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
 import ContributionBox from '@components/pages/profile/contribution/ContributionBox.vue';
+import OneTimeDonationForm from '@components/pages/profile/contribution/OneTimeDonationForm.vue';
 import PaymentSource from '@components/pages/profile/contribution/PaymentSource.vue';
 import UpdateContribution from '@components/pages/profile/contribution/UpdateContribution.vue';
 import { currentUser } from '@store';
@@ -75,6 +94,13 @@ import type { ContributionContent } from '../../../type/contribution';
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
+
+const activeTab = computed({
+  get: () => route.query.tab?.toString() || 'recurring',
+  set: (value) => {
+    router.push({ query: { ...route.query, tab: value } });
+  },
+});
 
 const cancelledContribution = ref(route.query.cancelled !== undefined);
 
@@ -106,6 +132,10 @@ const paymentSourceData = computed(() => ({
   amount: contribution.value.amount || 0,
   period: contribution.value.period || ContributionPeriod.Monthly,
 }));
+
+const showOneTimeContributionSettings = computed(() =>
+  content.value?.periods.some((p) => p.name === 'one-time')
+);
 
 onBeforeMount(async () => {
   isIniting.value = true;
