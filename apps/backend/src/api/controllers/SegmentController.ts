@@ -120,6 +120,7 @@ export class SegmentController {
     });
   }
 
+  /** Send one-off email to all contacts in the segment (admin). */
   @OnUndefined(204)
   @Post('/:id/email/send')
   async sendEmail(

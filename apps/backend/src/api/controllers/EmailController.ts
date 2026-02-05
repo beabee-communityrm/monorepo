@@ -153,8 +153,8 @@ export class EmailController {
   }
 
   /**
-   * Preview email (subject, body, mergeFields from body).
-   * Optional contactId: when set, merge fields use that contact; otherwise the current user.
+   * Preview email using subject, body and optional mergeFields from the request.
+   * When contactId is set (admin), merge fields use that contact; otherwise the current user.
    */
   @Post('/preview')
   async previewEmail(

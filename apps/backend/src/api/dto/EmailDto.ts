@@ -155,6 +155,7 @@ export class PreviewEmailDto {
   @IsString()
   contactId?: string;
 
+  /** Subject to use for preview (overrides template default if provided). */
   @IsOptional()
   @IsString()
   subject?: string;
@@ -164,6 +165,7 @@ export class PreviewEmailDto {
   @IsString()
   body?: string;
 
+  /** Custom merge fields for preview. { FIELD_NAME: value }. */
   @IsOptional()
   @IsObject()
   mergeFields?: Record<string, string>;

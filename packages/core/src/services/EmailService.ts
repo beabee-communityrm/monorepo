@@ -489,7 +489,7 @@ class EmailService {
    *
    * @param contact The contact to convert
    * @param additionalMergeFields Optional merge fields to add on top of contact and base fields
-   * @returns Email recipient with to, mergeFields
+   * @returns Email recipient object (to, mergeFields)
    */
   private convertContactToRecipient(
     contact: Contact,
