@@ -450,11 +450,13 @@ class PaymentFlowService {
   private async completePaymentFlow(
     joinFlow: JoinFlow
   ): Promise<CompletedPaymentFlow | undefined> {
-    log.info('Complete payment flow for join flow ' + joinFlow.id);
     if (joinFlow.paymentFlowId) {
+      log.info('Complete payment flow for join flow ' + joinFlow.id);
       return paymentProviders[
         joinFlow.joinForm.paymentMethod
       ].completePaymentFlow(joinFlow);
+    } else {
+      return undefined;
     }
   }
 
