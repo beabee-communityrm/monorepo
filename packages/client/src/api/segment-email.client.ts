@@ -14,7 +14,12 @@ export class SegmentEmailClient extends BaseClient {
     });
   }
 
-  /** One-off email to all contacts in the segment (admin). */
+  /**
+   * Send one-off email to all contacts in the segment (admin).
+   *
+   * @param segmentId Segment ID
+   * @param data Subject and body (merge fields supported)
+   */
   async send(
     segmentId: string,
     data: { subject: string; body: string }

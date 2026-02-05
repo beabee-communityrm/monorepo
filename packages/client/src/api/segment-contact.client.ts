@@ -17,6 +17,12 @@ export class SegmentContactClient extends BaseClient {
     });
   }
 
+  /**
+   * List contacts in the segment (optionally with extra rule filter).
+   *
+   * @param segmentId Segment ID
+   * @param query Optional pagination and rules (rules are ANDed with segment rules)
+   */
   async list(
     segmentId: string,
     query?: GetContactsQuery

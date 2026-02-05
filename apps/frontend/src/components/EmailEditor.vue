@@ -77,7 +77,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-/** Edit subject/body with server preview. Merge fields: standard, contact (when template/options), template-specific. */
+/**
+ * EmailEditor: edit subject/body with server-side preview.
+ * Preview includes merge field replacement, email footer and inline CSS.
+ * Merge fields: template-specific (from API), contact fields (contact templates or when preview options set), standard (SUPPORTEMAIL, ORGNAME).
+ */
 import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
 import { debounce } from '@beabee/beabee-common';
 import type { PreviewEmailOptions } from '@beabee/client';
@@ -112,16 +116,17 @@ const content = defineModel<string>('content', { default: '' });
 
 const props = withDefaults(
   defineProps<{
+    /** Optional heading above the editor. */
     heading?: string;
     /** Template type/id for preview and merge fields. */
     template?: EmailTemplateConfig;
-    /** Override merge fields for preview. { FIELD_NAME: 'value' } */
+    /** Override merge fields for preview. Format: { FIELD_NAME: 'value' }. */
     mergeFields?: Record<string, string>;
-    /** If true, preview always below editor (no side-by-side). */
+    /** If true, preview is always below the editor (no side-by-side on md+). */
     alwaysStacked?: boolean;
-    /** Contact ID for preview. Use v-model:previewContactId with previewContactOptions. */
+    /** Contact ID used for preview merge fields. Use with v-model:previewContactId and previewContactOptions. */
     previewContactId?: string | null;
-    /** Extra contacts in selector (e.g. segment send). Omit for template edit (self only). */
+    /** Extra contacts in the preview-as selector (e.g. segment send). Omit for template edit (current user only). */
     previewContactOptions?: PreviewContactOption[];
   }>(),
   {

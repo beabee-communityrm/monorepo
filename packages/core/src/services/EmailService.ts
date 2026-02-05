@@ -150,6 +150,12 @@ class EmailService {
 
   /**
    * Send custom subject and body to one or more contacts.
+   * Merge fields are resolved per contact. See email-templates.ts for available merge fields.
+   *
+   * @param contactOrContacts One contact or array of contacts to send to
+   * @param subject Email subject (supports merge fields)
+   * @param body Email body (supports merge fields)
+   * @param opts Optional options (e.g. mergeFields, attachments, sendAt)
    */
   async sendCustomEmailToContact(
     contactOrContacts: Contact | Contact[],
@@ -480,6 +486,10 @@ class EmailService {
 
   /**
    * Convert a contact to an email recipient with standard and optional merge fields.
+   *
+   * @param contact The contact to convert
+   * @param additionalMergeFields Optional merge fields to add on top of contact and base fields
+   * @returns Email recipient with to, mergeFields
    */
   private convertContactToRecipient(
     contact: Contact,
