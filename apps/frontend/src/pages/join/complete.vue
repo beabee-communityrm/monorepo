@@ -9,10 +9,8 @@ meta:
 <template><div /></template>
 
 <script lang="ts" setup>
-import { isApiError } from '@beabee/client';
-
 import { client } from '@utils/api';
-import { notifyRateLimited } from '@utils/api-error';
+import { handleJoinError } from '@utils/api-error';
 import { onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -33,15 +31,9 @@ onBeforeMount(async () => {
         vatNumber: route.query.vatNumber?.toString(),
       });
       router.replace('/join/confirm-email');
-      return;
     } catch (err) {
-      if (isApiError(err, undefined, [429])) {
-        notifyRateLimited(err);
-        return;
-      }
+      handleJoinError(err);
     }
   }
-
-  router.replace('/join/failed');
 });
 </script>
