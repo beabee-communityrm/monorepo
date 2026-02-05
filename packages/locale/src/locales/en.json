@@ -1398,6 +1398,7 @@
     "editProfile": "Edit your community profile",
     "makeOneTimeDonationButton": "Make contribution",
     "makeOneTimeDonationTitle": "Make one-time contribution",
+    "oneTimeContributionSuccessMessage": "Thank you for your contribution!",
     "manageContribution": "Manage your contribution",
     "newCallout": "New CrowdNewsroom!",
     "openCallouts": "CrowdNewsroom",
