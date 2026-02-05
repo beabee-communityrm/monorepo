@@ -270,6 +270,14 @@ export class StripeWebhookEventHandler {
     // supported
     log.info(`Marking invoice ${invoice.id} as uncollectible `);
     await stripe.invoices.markUncollectible(invoice.id);
+
+    const contribution = await this.getContributionFromInvoice(invoice);
+    if (contribution) {
+      await EmailService.sendTemplateToContact(
+        'one-time-donation-failed',
+        contribution.contact
+      );
+    }
   }
 
   /**
