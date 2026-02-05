@@ -412,9 +412,6 @@ class PaymentFlowService {
       }
     } else {
       await PaymentService.createOneTimePayment(contact, completedFlow);
-      await EmailService.sendTemplateToContact('one-time-donation', contact, {
-        amount: joinForm.monthlyAmount,
-      });
     }
   }
 

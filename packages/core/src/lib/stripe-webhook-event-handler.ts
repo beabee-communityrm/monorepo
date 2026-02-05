@@ -220,26 +220,34 @@ export class StripeWebhookEventHandler {
     invoice: Stripe.Invoice
   ): Promise<void> {
     const contribution = await this.getContributionFromInvoice(invoice);
-    if (!contribution || !invoice.subscription) return;
+    if (!contribution) return;
 
     log.info(`Invoice ${invoice.id} was paid`);
 
-    // Unlikely, just log for now
-    if (invoice.lines.has_more) {
-      log.error(`Invoice ${invoice.id} has too many lines`);
-      return;
-    }
+    if (invoice.subscription) {
+      // Unlikely, just log for now
+      if (invoice.lines.has_more) {
+        log.error(`Invoice ${invoice.id} has too many lines`);
+        return;
+      }
 
-    // Stripe docs say the subscription will always be the last line in the invoice
-    const line = invoice.lines.data.slice(-1)[0];
-    if (line.subscription !== invoice.subscription) {
-      log.error(
-        'Expected subscription to be last line on invoice' + invoice.id
+      // Stripe docs say the subscription will always be the last line in the invoice
+      const line = invoice.lines.data.slice(-1)[0];
+      if (line.subscription !== invoice.subscription) {
+        log.error(
+          'Expected subscription to be last line on invoice' + invoice.id
+        );
+        return;
+      }
+
+      await this.updateContributionAfterPayment(contribution, line);
+    } else if (isOneTimePaymentInvoice(invoice)) {
+      await EmailService.sendTemplateToContact(
+        'one-time-donation',
+        contribution.contact,
+        { amount: invoice.total / 100 }
       );
-      return;
     }
-
-    await this.updateContributionAfterPayment(contribution, line);
   }
 
   /**
