@@ -7,5 +7,6 @@ export type Locale =
   | 'pt'
   | 'it'
   | 'ru'
+  | 'uk'
   | 'fr'
   | 'el';
