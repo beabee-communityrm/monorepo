@@ -325,6 +325,16 @@ class PaymentFlowService {
   }
 
   /**
+   * Permanently deletes all join flows associated with a contact
+   *
+   * @param contact The contact
+   */
+  async permanentlyDeleteContact(contact: Contact): Promise<void> {
+    // Delete any join flows associated with this contact
+    await getRepository(JoinFlow).delete({ contactId: contact.id });
+  }
+
+  /**
    * Sends the appropriate email for the given join flow. If the email given in
    * the join flow belongs to a contact with an active contribution the user
    * will instead exists in the database the user will instead be given a link
