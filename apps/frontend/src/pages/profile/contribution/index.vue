@@ -10,7 +10,7 @@ meta:
   <App2ColGrid v-if="!isIniting">
     <template #col1>
       <AppTabs
-        v-if="showOneTimeContributionSettings"
+        v-if="showOneTimeContribution"
         :items="[
           { id: 'recurring', label: t('common.paymentType.recurring') },
           { id: 'one-time', label: t('common.paymentType.oneTime') },
@@ -119,6 +119,7 @@ const paymentContent = ref<ContentPaymentData>({
   taxRateRecurring: null,
   taxRateOneTime: null,
   noticeText: '',
+  showOneTimeDonation: false,
 });
 
 const isIniting = ref(true);
@@ -133,8 +134,10 @@ const paymentSourceData = computed(() => ({
   period: contribution.value.period || ContributionPeriod.Monthly,
 }));
 
-const showOneTimeContributionSettings = computed(() =>
-  content.value?.periods.some((p) => p.name === 'one-time')
+const showOneTimeContribution = computed(
+  () =>
+    content.value?.periods.some((p) => p.name === 'one-time') &&
+    paymentContent.value.showOneTimeDonation
 );
 
 onBeforeMount(async () => {

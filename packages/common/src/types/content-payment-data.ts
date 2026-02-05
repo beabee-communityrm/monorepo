@@ -6,4 +6,5 @@ export interface ContentPaymentData {
   taxRateRecurring: number | null;
   taxRateOneTime: number | null;
   noticeText: string;
+  showOneTimeDonation: boolean;
 }

@@ -90,7 +90,6 @@ const removeWelcomeMessage = () => {
 
 const profileContent = ref<ContentProfileData>({
   introMessage: '',
-  showOneTimeDonation: false,
 });
 
 const callouts = ref<GetCalloutData[]>([]);
