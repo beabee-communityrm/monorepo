@@ -4,7 +4,7 @@
       :model-value="displayName"
       disabled
       hide-error-message
-      class="w-52 shrink-0"
+      class="w-52 min-w-0 shrink-0 truncate"
       :aria-label="nameAriaLabel"
     >
       <template #prefixAction>
@@ -94,13 +94,3 @@ function goToIndex(index: number) {
   model.value = props.options[index].id;
 }
 </script>
-
-<style scoped>
-/* Constrain disabled input text so it doesn't overflow the fixed-width container */
-:deep(input) {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-</style>
