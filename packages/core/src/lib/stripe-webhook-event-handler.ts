@@ -194,7 +194,8 @@ export class StripeWebhookEventHandler {
       isOneTimePaymentInvoice(invoice) &&
       (invoice.status === 'paid' ||
         invoice.status === 'void' ||
-        invoice.status === 'uncollectible')
+        invoice.status === 'uncollectible') &&
+      invoice.default_payment_method
     ) {
       log.info('Detaching payment method for one-time invoice ' + invoice.id);
       await stripe.paymentMethods.detach(
@@ -268,15 +269,17 @@ export class StripeWebhookEventHandler {
     // At the moment just marks as uncollectible straight away and therefore
     // cancels any retry schedule. This could change in the future if it is
     // supported
-    log.info(`Marking invoice ${invoice.id} as uncollectible `);
-    await stripe.invoices.markUncollectible(invoice.id);
+    if (invoice.status !== 'uncollectible') {
+      log.info(`Marking invoice ${invoice.id} as uncollectible `);
+      await stripe.invoices.markUncollectible(invoice.id);
 
-    const contribution = await this.getContributionFromInvoice(invoice);
-    if (contribution) {
-      await EmailService.sendTemplateToContact(
-        'one-time-donation-failed',
-        contribution.contact
-      );
+      const contribution = await this.getContributionFromInvoice(invoice);
+      if (contribution) {
+        await EmailService.sendTemplateToContact(
+          'one-time-donation-failed',
+          contribution.contact
+        );
+      }
     }
   }
 
