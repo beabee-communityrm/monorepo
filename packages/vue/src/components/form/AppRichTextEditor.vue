@@ -14,7 +14,12 @@
   - Touch-friendly interface
 -->
 <template>
-  <div :class="hasError && 'ProseMirror-hasError'">
+  <div
+    :class="[
+      hasError && 'ProseMirror-hasError',
+      fillHeight && 'fill-height flex min-h-0 flex-1 flex-col',
+    ]"
+  >
     <AppLabel v-if="label" :label="label" :required="required" />
 
     <div
@@ -84,7 +89,7 @@
       <!-- Toolbar extension slot for custom buttons (e.g., merge fields) -->
       <slot name="toolbar" :editor="editor" :disabled="disabled" />
     </div>
-    <div class="grid w-full">
+    <div class="grid w-full" :class="fillHeight && 'min-h-0 flex-1'">
       <div
         v-if="isEditorEmpty && placeholder"
         class="pointer-events-none invisible col-start-1 row-start-1 w-full self-start p-2"
@@ -94,7 +99,7 @@
       <EditorContent
         :editor="editor"
         class="content-message z-0 col-start-1 row-start-1"
-        :class="disabled && 'ProseMirror-disabled'"
+        :class="[disabled && 'ProseMirror-disabled', fillHeight && 'h-full']"
         :aria-label="t('form.richtext.editor')"
       />
       <div
@@ -165,6 +170,8 @@ export interface AppRichTextEditorProps {
   placeholder?: string;
   /** Controls displayed in toolbar */
   controls?: 'full' | 'inline';
+  /** When true, component participates in flex layout and editor area fills available height */
+  fillHeight?: boolean;
 }
 
 const props = withDefaults(defineProps<AppRichTextEditorProps>(), {
@@ -175,6 +182,7 @@ const props = withDefaults(defineProps<AppRichTextEditorProps>(), {
   copyable: false,
   placeholder: undefined,
   controls: 'full',
+  fillHeight: false,
 });
 
 /**
