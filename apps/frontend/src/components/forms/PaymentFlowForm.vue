@@ -155,9 +155,14 @@ onBeforeMount(async () => {
 
     router.replace({
       query: {
+        ...route.query,
         formId: undefined,
+        // GoCardless redirect flow param
         redirect_flow_id: undefined,
+        // Stripe SetupIntent params
         setup_intent: undefined,
+        setup_intent_client_secret: undefined,
+        redirect_status: undefined,
       },
     });
   }
