@@ -1101,6 +1101,7 @@
       "send": "Enviar",
       "sent": "O e-mail foi enviado para o segmento.",
       "sentTimes": "Enviado {n} vezes",
+      "templateLabel": "Modelo",
       "templateName": "Nome do novo modelo",
       "title": "Enviar e-mail ao segmento"
     },

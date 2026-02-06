@@ -15,25 +15,28 @@ meta:
   </div>
 
   <form v-else-if="segment" class="flex flex-col gap-6" @submit.prevent>
-    <div class="flex flex-col gap-4">
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
-        <div class="min-w-0 flex-1">
-          <AppSelect
-            v-model="selectedTemplateId"
-            :items="templateSelectItems"
-            :placeholder="t('contacts.sendEmail.newEmail')"
-            class="w-full"
-            @update:model-value="onTemplateChange"
-          />
-        </div>
-        <div v-if="isNewEmailSelected" class="min-w-0 flex-1 sm:max-w-xs">
-          <AppInput
-            v-model="newTemplateName"
-            :label="t('contacts.sendEmail.templateName')"
-            :placeholder="defaultNewTemplateName"
-            required
-          />
-        </div>
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
+      <div class="min-w-0 flex-1">
+        <AppLabel
+          :label="t('contacts.sendEmail.templateLabel')"
+          class="block"
+        />
+        <AppSelect
+          v-model="selectedTemplateId"
+          :items="templateSelectItems"
+          :placeholder="t('contacts.sendEmail.newEmail')"
+          class="mt-1 w-full"
+          @update:model-value="onTemplateChange"
+        />
+      </div>
+      <div class="min-w-0 flex-1 sm:max-w-xs">
+        <AppInput
+          v-model="templateNameDisplay"
+          :label="t('contacts.sendEmail.templateName')"
+          :placeholder="defaultNewTemplateName"
+          :readonly="!isNewEmailSelected"
+          :required="isNewEmailSelected"
+        />
       </div>
     </div>
 
@@ -64,6 +67,7 @@ import type {
 import {
   AppAsyncButton,
   AppInput,
+  AppLabel,
   AppSelect,
   PageTitle,
   addNotification,
@@ -81,7 +85,7 @@ import { useRoute, useRouter } from 'vue-router';
 const NEW_EMAIL_VALUE = '__new__';
 
 const PREVIEW_CONTACTS_LIMIT = 50;
-const TEMPLATES_LIMIT = 500;
+const TEMPLATES_LIMIT = 100;
 
 const { t } = useI18n();
 const route = useRoute('adminContactsSendEmailSegmentId');
@@ -129,6 +133,22 @@ const isNewEmailSelected = computed(
   () => selectedTemplateId.value === NEW_EMAIL_VALUE
 );
 
+const selectedTemplate = computed(() =>
+  templates.value.find((e) => e.id === selectedTemplateId.value)
+);
+
+const templateNameDisplay = computed({
+  get: () =>
+    isNewEmailSelected.value
+      ? newTemplateName.value
+      : (selectedTemplate.value?.name ?? ''),
+  set: (value: string) => {
+    if (isNewEmailSelected.value) {
+      newTemplateName.value = value;
+    }
+  },
+});
+
 const templateSelectItems = computed(() => {
   const newOption = {
     id: NEW_EMAIL_VALUE,
@@ -136,12 +156,7 @@ const templateSelectItems = computed(() => {
   };
   const templateItems = templates.value.map((email) => ({
     id: email.id,
-    label:
-      email.mailingCount != null && email.mailingCount > 0
-        ? `${email.name} (${t('contacts.sendEmail.sentTimes', {
-            n: email.mailingCount,
-          })})`
-        : email.name,
+    label: email.name,
   }));
   return [newOption, ...templateItems];
 });

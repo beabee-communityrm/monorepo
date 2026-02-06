@@ -1101,6 +1101,7 @@
       "send": "Send",
       "sent": "The email has been sent to the segment.",
       "sentTimes": "Sent {n} times",
+      "templateLabel": "Template",
       "templateName": "Name of new template",
       "title": "Send email to segment"
     },

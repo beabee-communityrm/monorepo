@@ -1101,6 +1101,7 @@
       "send": "Verzenden",
       "sent": "De e-mail is naar het segment verzonden.",
       "sentTimes": "{n} keer verzonden",
+      "templateLabel": "Sjabloon",
       "templateName": "Naam van het nieuwe sjabloon",
       "title": "E-mail verzenden naar segment"
     },

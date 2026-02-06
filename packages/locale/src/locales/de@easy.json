@@ -1101,6 +1101,7 @@
       "send": "Schicken",
       "sent": "Die E-Mail wurde an das Segment geschickt.",
       "sentTimes": "{n}-mal geschickt",
+      "templateLabel": "Vorlage",
       "templateName": "Name der neuen Vorlage",
       "title": "E-Mail an Segment schicken"
     },
