@@ -907,7 +907,6 @@
   },
   "common": {
     "backToHome": "",
-    "contributing": "",
     "contributionPeriod": {
       "annually": "",
       "monthly": ""
@@ -922,7 +921,6 @@
     "hello": "Γεια σας",
     "id": "",
     "itemsPerPage": "",
-    "joined": "",
     "label": "",
     "loading": "Φορτία",
     "login": "",
@@ -1495,7 +1493,6 @@
     "willBeDonating": "Θα κάνετε εφάπαξ συνεισφορά {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "",
     "continue": "",
     "welcome": ""
   },

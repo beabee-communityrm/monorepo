@@ -908,7 +908,6 @@
   },
   "common": {
     "backToHome": "На главную",
-    "contributing": "Ваш взнос",
     "contributionPeriod": {
       "annually": "ежегодно",
       "monthly": "ежемесячно"
@@ -923,7 +922,6 @@
     "hello": "Привет",
     "id": "",
     "itemsPerPage": "",
-    "joined": "Вы присоединились",
     "label": "",
     "loading": "Загрузка...",
     "login": "Войти",
@@ -1496,7 +1494,6 @@
     "willBeDonating": "Вы сделаете разовый взнос в размере {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Пожалуйста, подтвердите ваши данные",
     "continue": "Хорошо! Продолжить",
     "welcome": "Добро пожаловать, {firstName} {lastName}!"
   },

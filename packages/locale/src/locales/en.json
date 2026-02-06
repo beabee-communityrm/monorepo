@@ -907,7 +907,6 @@
   },
   "common": {
     "backToHome": "Back to home",
-    "contributing": "Contributing",
     "contributionPeriod": {
       "annually": "Annually",
       "monthly": "Monthly"
@@ -922,7 +921,6 @@
     "hello": "Hello",
     "id": "ID",
     "itemsPerPage": "{items} items per page",
-    "joined": "Joined",
     "label": "Label",
     "loading": "Loading...",
     "login": "Login",
@@ -1493,7 +1491,6 @@
     "willBeDonating": "You'll be making a one-time contribution of {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Please confirm your details",
     "continue": "All good! Continue",
     "welcome": "Welcome {firstName}!"
   },

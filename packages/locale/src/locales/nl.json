@@ -907,7 +907,6 @@
   },
   "common": {
     "backToHome": "Terug naar home",
-    "contributing": "Bijdragend",
     "contributionPeriod": {
       "annually": "Jaarlijks",
       "monthly": "Maandelijks"
@@ -922,7 +921,6 @@
     "hello": "Hallo",
     "id": "ID",
     "itemsPerPage": "{items} items per pagina",
-    "joined": "Aangesloten bij",
     "label": "Label",
     "loading": "Aan het laden...",
     "login": "Inloggen",
@@ -1495,7 +1493,6 @@
     "willBeDonating": "Je doet een eenmalige bijdrage van {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Bevestig uw gegevens",
     "continue": "Alles goed! Ga verder",
     "welcome": "Welkom {firstName}!"
   },
