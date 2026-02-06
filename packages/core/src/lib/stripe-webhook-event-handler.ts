@@ -277,7 +277,8 @@ export class StripeWebhookEventHandler {
       if (contribution) {
         await EmailService.sendTemplateToContact(
           'one-time-donation-failed',
-          contribution.contact
+          contribution.contact,
+          { amount: invoice.total / 100 }
         );
       }
     }

@@ -152,7 +152,12 @@ export const contactEmailTemplates = {
       AMOUNT: config.currencySymbol + params.amount.toFixed(2),
     })
   ),
-  'one-time-donation-failed': withMergeFields([], (_: Contact) => ({})),
+  'one-time-donation-failed': withMergeFields(
+    ['AMOUNT'],
+    (_: Contact, params: { amount: number }) => ({
+      AMOUNT: config.currencySymbol + params.amount.toFixed(2),
+    })
+  ),
 } as const;
 
 /**
