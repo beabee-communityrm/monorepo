@@ -1287,7 +1287,8 @@
         "duplicate-tag-name": "",
         "invalid-token": "Token 2FA inválido",
         "login-failed": "Combinação inválida de email e palavra-passe",
-        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar."
+        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar.",
+        "payment-failed": "O seu pagamento não foi bem-sucedido. Tente novamente ou utilize outro método de pagamento."
       },
       "generic": "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
       "unauthorized": "",

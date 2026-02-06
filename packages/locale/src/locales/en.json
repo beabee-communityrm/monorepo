@@ -1238,9 +1238,9 @@
         "new-member": "Admin: New Contact – Notification",
         "one-time-donation": "One-Time Contribution Confirmation",
         "one-time-donation-failed": "One-Time Contribution Failed",
-        "setup-account": "Setup Account",
         "reset-device": "Reset Device",
         "reset-password": "Reset Password",
+        "setup-account": "Setup Account",
         "welcome": "Welcome"
       },
       "type": {
@@ -1285,7 +1285,8 @@
         "duplicate-tag-name": "A tag with this name already exists",
         "invalid-token": "Invalid 2FA token",
         "login-failed": "Invalid password/email combination",
-        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed"
+        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed",
+        "payment-failed": "Your payment was not successful. Please try again or use a different payment method."
       },
       "generic": "Oops, something went wrong! Contact support if this happens again.",
       "unauthorized": "You don't have access to that.",

@@ -1291,7 +1291,8 @@
         "duplicate-tag-name": "Un libellé portant ce nom existe déjà",
         "invalid-token": "Jeton A2F invalide",
         "login-failed": "Identifiants invalides",
-        "mfa-token-required": "Vous avez activé l'A2F, tapez le code depuis votre application d'authentification pour continuer"
+        "mfa-token-required": "Vous avez activé l'A2F, tapez le code depuis votre application d'authentification pour continuer",
+        "payment-failed": "Votre paiement n’a pas abouti. Veuillez réessayer ou utiliser un autre moyen de paiement."
       },
       "generic": "Oups, une erreur s'est produite ! Contactez l'assistance si cela se produit à nouveau.",
       "unauthorized": "Vous n'avez pas accès à ceci.",

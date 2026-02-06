@@ -17,6 +17,7 @@ const defaultErrorMessages = computed<Record<string, string>>(() => ({
   'invalid-token': t('form.errorMessages.api.invalid-token'),
   'login-failed': t('form.errorMessages.api.login-failed'),
   'mfa-token-required': t('form.errorMessages.api.mfa-token-required'),
+  'payment-failed': t('form.errorMessages.api.payment-failed'),
 }));
 /**
  * Extract a nice error text from an API error

@@ -1285,7 +1285,8 @@
         "duplicate-tag-name": "Ein Tag mit diesem Namen existiert bereits",
         "invalid-token": "Der von Ihnen eingegebene 2FA Token ist nicht korrekt.",
         "login-failed": "Falsche Kombination von Passwort und E-Mail.",
-        "mfa-token-required": "Bitte geben Sie den Code Ihrer Authentifizierungs-App ein."
+        "mfa-token-required": "Bitte geben Sie den Code Ihrer Authentifizierungs-App ein.",
+        "payment-failed": "Ihre Zahlung war nicht erfolgreich. Bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsmethode."
       },
       "generic": "Upps! Etwas ist schiefgelaufen. Bitte wenden Sie sich an den Support, sollte das erneut passieren.",
       "unauthorized": "Sie haben daruf keinen Zugriff.",
