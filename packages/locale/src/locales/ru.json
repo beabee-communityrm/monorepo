@@ -1490,7 +1490,6 @@
     "willBeDonating": "Вы сделаете разовый взнос в размере {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Пожалуйста, подтвердите ваши данные",
     "continue": "Хорошо! Продолжить",
     "welcome": "Добро пожаловать, {firstName} {lastName}!"
   },

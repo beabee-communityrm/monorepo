@@ -1489,7 +1489,6 @@
     "willBeDonating": "Je doet een eenmalige bijdrage van {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Bevestig uw gegevens",
     "continue": "Alles goed! Ga verder",
     "welcome": "Welkom {firstName}!"
   },

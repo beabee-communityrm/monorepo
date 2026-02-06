@@ -1489,7 +1489,6 @@
     "willBeDonating": "Vais fazer uma contribuição única de {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Por favor confirma os teus detalhes",
     "continue": "Tudo OK! Continuar",
     "welcome": "Boas-vindas, {firstName}!"
   },

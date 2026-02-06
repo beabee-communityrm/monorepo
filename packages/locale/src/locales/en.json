@@ -1487,7 +1487,6 @@
     "willBeDonating": "You'll be making a one-time contribution of {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Please confirm your details",
     "continue": "All good! Continue",
     "welcome": "Welcome {firstName}!"
   },

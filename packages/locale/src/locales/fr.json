@@ -1493,7 +1493,6 @@
     "willBeDonating": "Vous ferez une contribution unique de {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Veuillez confirmer vos informations",
     "continue": "Tout est bon ! Continuer",
     "welcome": "Bienvenue {firstName} !"
   },

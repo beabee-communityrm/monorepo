@@ -1489,7 +1489,6 @@
     "willBeDonating": "Farai un contributo una tantum di {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Per favore, conferma i tuoi dettagli.",
     "continue": "Ottimo! Prosegui",
     "welcome": "Benvenutə {firstName}!"
   },
