@@ -16,38 +16,34 @@
             required
           />
         </div>
-        <div
-          :class="!alwaysStacked && 'md:flex md:min-h-0 md:flex-1 md:flex-col'"
+        <AppRichTextEditor
+          v-model="content"
+          :class="!alwaysStacked && 'md:min-h-0 md:flex-1'"
+          :label="t('emailEditor.body.label')"
+          required
         >
-          <AppRichTextEditor
-            v-model="content"
-            :label="t('emailEditor.body.label')"
-            :fill-height="!alwaysStacked"
-            required
-          >
-            <template #toolbar="{ editor, disabled }">
-              <div v-if="mergeFieldGroups" class="relative">
-                <AppRichTextEditorButton
-                  :icon="faTag"
-                  :title="t('form.richtext.mergeFields')"
-                  :active="showMergeFieldsDropdown"
-                  :disabled="disabled"
-                  @click="toggleMergeFieldsDropdown"
+          <template #toolbar="{ editor, disabled }">
+            <div v-if="mergeFieldGroups" class="relative">
+              <AppRichTextEditorButton
+                :icon="faTag"
+                :title="t('form.richtext.mergeFields')"
+                :active="showMergeFieldsDropdown"
+                :disabled="disabled"
+                @click="toggleMergeFieldsDropdown"
+              />
+              <div
+                v-if="showMergeFieldsDropdown"
+                class="absolute right-0 top-full z-[100] mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
+                @click.stop
+              >
+                <AppMergeFields
+                  :groups="mergeFieldGroups"
+                  @insert="(tag) => insertMergeField(editor, tag)"
                 />
-                <div
-                  v-if="showMergeFieldsDropdown"
-                  class="absolute right-0 top-full z-[100] mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
-                  @click.stop
-                >
-                  <AppMergeFields
-                    :groups="mergeFieldGroups"
-                    @insert="(tag) => insertMergeField(editor, tag)"
-                  />
-                </div>
               </div>
-            </template>
-          </AppRichTextEditor>
-        </div>
+            </div>
+          </template>
+        </AppRichTextEditor>
       </div>
 
       <div
