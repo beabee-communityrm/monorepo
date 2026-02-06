@@ -1221,10 +1221,12 @@
         "manual-to-automatic": "Sent to members when their payment method is successfully changed from manual to automatic recurring payment. Confirms the successful change.",
         "new-callout-response": "Sent to administrators when a new response to a CrowdNewsroom is submitted. Typically includes a notification with the CrowdNewsroom details and the name of the responding person.",
         "new-member": "Sent to administrators when a new member successfully joins the community. Typically includes a notification with the ID and name of the new member.",
-        "one-time-donation": "Sent to users after they complete a one-time contribution (non-recurring payment). Typically confirms the contribution amount and serves as a receipt.",
+        "one-time-donation": "Sent to users after they complete a one-time contribution.",
+        "one-time-donation-failed": "Sent to users when their one-time contribution payment fails.",
         "reset-device": "Sent when a user requests to reset their trusted device for two-factor authentication. Contains a secure link to reset the device.",
         "reset-password": "Sent when a user requests to reset their password. Contains a secure link to reset the password.",
-        "welcome": "Sent to new members after they complete the registration process so they can confirm their email address. This email welcomes them to the community."
+        "setup-account": "Sent to users who have completed a one-time contribution and don't have an account yet.",
+        "welcome": "Sent to new members after they complete the registration process. This email welcomes them to the community."
       },
       "names": {
         "cancelled-contribution": "Contribution Cancelled",
@@ -1237,6 +1239,8 @@
         "new-callout-response": "Admin: New CrowdNewsroom – Response Notification",
         "new-member": "Admin: New Contact – Notification",
         "one-time-donation": "One-Time Contribution Confirmation",
+        "one-time-donation-failed": "One-Time Contribution Failed",
+        "setup-account": "Setup Account",
         "reset-device": "Reset Device",
         "reset-password": "Reset Password",
         "welcome": "Welcome"

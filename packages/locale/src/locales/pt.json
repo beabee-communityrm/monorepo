@@ -1223,10 +1223,12 @@
         "manual-to-automatic": "Enviado aos membros quando o seu método de pagamento é alterado com sucesso de manual para pagamento recorrente automático. Confirma a alteração bem-sucedida.",
         "new-callout-response": "Enviado aos administradores quando uma nova resposta a um CrowdNewsroom é submetida. Normalmente inclui uma notificação com os detalhes do CrowdNewsroom e o nome da pessoa que responde.",
         "new-member": "Enviado aos administradores quando um novo membro se junta com sucesso à comunidade. Normalmente inclui uma notificação com o ID e o nome do novo membro.",
-        "one-time-donation": "Enviado aos utilizadores após concluírem uma contribuição única (pagamento não recorrente). Normalmente confirma o valor da contribuição e serve como recibo.",
+        "one-time-donation": "Enviado aos utilizadores após concluírem uma contribuição única.",
+        "one-time-donation-failed": "",
         "reset-device": "Enviado quando um utilizador solicita a reposição do seu dispositivo de confiança para autenticação de dois fatores. Contém uma ligação segura para repor o dispositivo.",
         "reset-password": "Enviado quando um utilizador solicita a reposição da palavra-passe. Contém uma ligação segura para repor a palavra-passe.",
-        "welcome": "Enviado a novos membros após concluírem o processo de registo para que possam confirmar o seu endereço de email. Este email dá-lhes as boas-vindas à comunidade."
+        "setup-account": "",
+        "welcome": "Enviado a novos membros após concluírem o processo de registo. Este email dá-lhes as boas-vindas à comunidade."
       },
       "names": {
         "cancelled-contribution": "Contribuição cancelada",
@@ -1239,8 +1241,10 @@
         "new-callout-response": "Admin: Nova resposta CrowdNewsroom",
         "new-member": "Admin: Novo contacto",
         "one-time-donation": "Confirmação de contribuição única",
+        "one-time-donation-failed": "",
         "reset-device": "Repor dispositivo",
         "reset-password": "Repor palavra-passe",
+        "setup-account": "",
         "welcome": "Bem-vindo"
       },
       "type": {

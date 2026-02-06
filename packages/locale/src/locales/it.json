@@ -1224,8 +1224,10 @@
         "new-callout-response": "Inviato agli amministratori quando viene inviata una nuova risposta a un CrowdNewsroom. Include generalmente una notifica con i dettagli del CrowdNewsroom e il nome della persona che risponde.",
         "new-member": "Inviato agli amministratori quando un nuovo membro si unisce con successo alla community. Include generalmente una notifica con l'ID e il nome del nuovo membro.",
         "one-time-donation": "Inviato agli utenti dopo che hanno completato un contributo una tantum (pagamento non ricorrente). Conferma generalmente l'importo del contributo e funge da ricevuta.",
+        "one-time-donation-failed": "",
         "reset-device": "Inviato quando un utente richiede di reimpostare il proprio dispositivo attendibile per l'autenticazione a due fattori. Contiene un link sicuro per reimpostare il dispositivo.",
         "reset-password": "Inviato quando un utente richiede di reimpostare la propria password. Contiene un link sicuro per reimpostare la password.",
+        "setup-account": "",
         "welcome": "Inviato ai nuovi membri dopo che hanno completato il processo di registrazione in modo che possano confermare il loro indirizzo email. Questa email li dà il benvenuto nella community."
       },
       "names": {
@@ -1239,8 +1241,10 @@
         "new-callout-response": "Admin: Nuova risposta CrowdNewsroom",
         "new-member": "Admin: Nuovo contatto",
         "one-time-donation": "Conferma contributo una tantum",
+        "one-time-donation-failed": "",
         "reset-device": "Reimposta dispositivo",
         "reset-password": "Reimposta password",
+        "setup-account": "",
         "welcome": "Benvenuto"
       },
       "type": {
