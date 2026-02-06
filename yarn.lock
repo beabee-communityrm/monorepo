@@ -1682,7 +1682,6 @@ __metadata:
     "@vuelidate/core": "npm:^2.0.3"
     "@vuelidate/validators": "npm:^2.0.4"
     autoprefixer: "npm:^10.4.21"
-    axios: "npm:^1.12.2"
     body-scroll-lock: "npm:^4.0.0-beta.0"
     date-fns: "npm:^4.1.0"
     eslint: "npm:^9.28.0"
