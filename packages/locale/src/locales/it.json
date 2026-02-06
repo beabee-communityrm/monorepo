@@ -1133,7 +1133,6 @@
     "prorateNoTitle": "Aggiorna il mio contributo il {renewalDate}",
     "prorateYesText": "Ti verrà addebitato ora un pagamento una tantum di {oneOffPayment} e il tuo contributo sarà aggiornato immediatamente.",
     "prorateYesTitle": "Aggiorna il mio contributo ora",
-    "recurringContribution": "Contributo ricorrente",
     "restartContribution": "Ripristina contributo",
     "startContribution": "Avvia contributo",
     "startedContribution": "Il tuo contributo è stato avviato.",

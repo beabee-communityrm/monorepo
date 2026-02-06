@@ -70,6 +70,7 @@ const paymentContent = ref<ContentPaymentData>({
   taxRateRecurring: null,
   taxRateOneTime: null,
   noticeText: '',
+  showOneTimeDonation: false,
 });
 
 const formData = reactive<JoinFormData>({
