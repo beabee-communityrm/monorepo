@@ -335,10 +335,17 @@ class PaymentFlowService {
   }
 
   /**
-   * Sends the appropriate email for the given join flow. If the email given in
-   * the join flow belongs to a contact with an active contribution the user
-   * will instead exists in the database the user will instead be given a link
-   * to access their account.
+   * Sends the appropriate email for the given join flow based on the contact's
+   * status and the type of contribution they are setting up.
+   *
+   * Email logic:
+   * - One-time contributions:
+   *   - Contact with password set: sends login email
+   *   - No contact or no password: sends setup account email
+   * - Recurring contributions:
+   *   - Contact with active membership: sends login email
+   *   - Contact with active membership but no password: sends set password email
+   *   - No contact or inactive membership: confirm email
    *
    * @param joinFlow The join flow
    */
