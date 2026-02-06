@@ -12,9 +12,10 @@
   - Responsive design
   - Disabled state support
   - Touch-friendly interface
+  - Flex-friendly: use class="min-h-0 flex-1" in a flex container to let the editor fill available height.
 -->
 <template>
-  <div :class="hasError && 'ProseMirror-hasError'">
+  <div :class="['flex min-h-0 flex-col', hasError && 'ProseMirror-hasError']">
     <AppLabel v-if="label" :label="label" :required="required" />
 
     <div
@@ -84,7 +85,7 @@
       <!-- Toolbar extension slot for custom buttons (e.g., merge fields) -->
       <slot name="toolbar" :editor="editor" :disabled="disabled" />
     </div>
-    <div class="grid w-full">
+    <div class="grid min-h-0 w-full flex-1">
       <div
         v-if="isEditorEmpty && placeholder"
         class="pointer-events-none invisible col-start-1 row-start-1 w-full self-start p-2"
@@ -93,7 +94,7 @@
       />
       <EditorContent
         :editor="editor"
-        class="content-message z-0 col-start-1 row-start-1"
+        class="content-message z-0 col-start-1 row-start-1 h-full"
         :class="disabled && 'ProseMirror-disabled'"
         :aria-label="t('form.richtext.editor')"
       />

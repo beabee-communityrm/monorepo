@@ -3,9 +3,12 @@
     <AppSubHeading v-if="heading">{{ heading }}</AppSubHeading>
     <div
       class="relative mb-6 flex flex-col gap-6"
-      :class="alwaysStacked ? '' : 'md:flex-row'"
+      :class="alwaysStacked ? '' : 'md:flex-row md:items-stretch'"
     >
-      <div class="relative min-w-0 flex-1">
+      <div
+        class="relative min-w-0 flex-1"
+        :class="!alwaysStacked && 'md:flex md:min-h-0 md:flex-col'"
+      >
         <div class="mb-4">
           <AppInput
             v-model="subject"
@@ -15,6 +18,7 @@
         </div>
         <AppRichTextEditor
           v-model="content"
+          :class="!alwaysStacked && 'md:min-h-0 md:flex-1'"
           :label="t('emailEditor.body.label')"
           required
         >
@@ -42,7 +46,13 @@
         </AppRichTextEditor>
       </div>
 
-      <div class="w-full" :class="alwaysStacked ? '' : 'md:w-[600px]'">
+      <div
+        class="w-full min-w-0"
+        :class="[
+          alwaysStacked ? '' : 'md:w-[600px]',
+          !alwaysStacked && 'md:flex md:min-h-0 md:flex-1 md:flex-col',
+        ]"
+      >
         <template v-if="previewSelectorOptions.length > 0">
           <AppLabel
             :label="t('emailEditor.preview.asContactLabel')"
@@ -56,7 +66,8 @@
         </template>
         <AppLabel :label="t('emailEditor.preview.label')" class="mb-0.5" />
         <div
-          class="content-message rounded border border-primary-40 bg-white p-4"
+          class="content-message overflow-auto rounded border border-primary-40 bg-white p-4"
+          :class="!alwaysStacked && 'md:min-h-0 md:flex-1'"
         >
           <div
             v-if="!serverPreviewResult"
