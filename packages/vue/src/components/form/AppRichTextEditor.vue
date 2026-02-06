@@ -94,8 +94,8 @@
       />
       <EditorContent
         :editor="editor"
-        class="content-message z-0 col-start-1 row-start-1"
-        :class="[disabled && 'ProseMirror-disabled', 'h-full']"
+        class="content-message z-0 col-start-1 row-start-1 h-full"
+        :class="disabled && 'ProseMirror-disabled'"
         :aria-label="t('form.richtext.editor')"
       />
       <div
