@@ -19,7 +19,7 @@ meta:
         @tab-click="activeTab = $event"
       />
 
-      <template v-if="activeTab === 'recurring'">
+      <template v-if="!showOneTimeContribution || activeTab === 'recurring'">
         <AppNotification
           v-if="cancelledContribution"
           class="mb-8"
