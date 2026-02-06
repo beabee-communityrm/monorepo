@@ -17,11 +17,20 @@
 -->
 <template>
   <AppButton
+    :variant="props.variant"
+    :size="props.size"
+    :icon="props.icon"
+    :type="props.type"
+    :href="props.href"
+    :external="props.external"
+    :to="props.to"
+    :is="props.is"
+    :name="props.name"
+    :aria-label="ariaLabel"
+    :title="props.title"
     :loading="loading"
     :disabled="loading || props.disabled"
     :aria-busy="loading"
-    :aria-label="ariaLabel"
-    :title="title"
     @click="handleClick"
   >
     <span v-if="loading" class="sr-only">{{ t('common.loading') }}</span>
