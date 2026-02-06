@@ -18,11 +18,11 @@ export class SegmentEmailClient extends BaseClient {
    * Send one-off email to all contacts in the segment (admin).
    *
    * @param segmentId Segment ID
-   * @param data Subject and body (merge fields supported)
+   * @param data Subject and body (merge fields supported). When emailId is set, the saved template is used and a mailing record is created for tracking.
    */
   async send(
     segmentId: string,
-    data: { subject: string; body: string }
+    data: { subject: string; body: string; emailId?: string }
   ): Promise<void> {
     await this.fetch.post(`/${segmentId}/email/send`, data);
   }
