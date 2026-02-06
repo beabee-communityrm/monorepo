@@ -1224,10 +1224,12 @@
         "manual-to-automatic": "Verzonden naar leden wanneer hun betaalmethode succesvol is gewijzigd van handmatig naar automatische terugkerende betaling. Bevestigt de succesvolle wijziging.",
         "new-callout-response": "Verzonden naar beheerders wanneer een nieuwe reactie op een CrowdNewsroom wordt ingediend. Bevat meestal een melding met de CrowdNewsroom-details en de naam van de reagerende persoon.",
         "new-member": "Verzonden naar beheerders wanneer een nieuw lid met succes lid wordt van de community. Bevat meestal een melding met het ID en de naam van het nieuwe lid.",
-        "one-time-donation": "Verzonden naar gebruikers nadat ze een eenmalige bijdrage (niet-terugkerende betaling) hebben voltooid. Bevestigt meestal het bijdragebedrag en dient als ontvangstbewijs.",
+        "one-time-donation": "Verzonden naar gebruikers nadat ze een eenmalige bijdrage hebben voltooid.",
+        "one-time-donation-failed": "Verzonden naar gebruikers wanneer hun eenmalige bijdragebetaling mislukt.",
         "reset-device": "Verzonden wanneer een gebruiker vraagt om zijn vertrouwde apparaat voor tweefactorauthenticatie te resetten. Bevat een veilige link om het apparaat te resetten.",
         "reset-password": "Verzonden wanneer een gebruiker vraagt om zijn wachtwoord te resetten. Bevat een veilige link om het wachtwoord te resetten.",
-        "welcome": "Verzonden naar nieuwe leden nadat ze het registratieproces hebben voltooid, zodat ze hun e-mailadres kunnen bevestigen. Deze e-mail heet hen welkom in de community."
+        "setup-account": "Verzonden naar gebruikers die een eenmalige bijdrage hebben gedaan en nog geen account hebben.",
+        "welcome": "Verzonden naar nieuwe leden nadat ze het registratieproces hebben voltooid. Deze e-mail heet hen welkom in de community."
       },
       "names": {
         "cancelled-contribution": "Bijdrage geannuleerd",
@@ -1240,8 +1242,10 @@
         "new-callout-response": "Beheer: Nieuwe CrowdNewsroom-reactie",
         "new-member": "Beheer: Nieuw contact",
         "one-time-donation": "Bevestiging eenmalige bijdrage",
+        "one-time-donation-failed": "Eenmalige bijdrage mislukt",
         "reset-device": "Apparaat resetten",
         "reset-password": "Wachtwoord resetten",
+        "setup-account": "Account instellen",
         "welcome": "Welkom"
       },
       "type": {

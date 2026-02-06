@@ -1222,10 +1222,12 @@
         "manual-to-automatic": "Wird an Mitglieder gesendet, wenn ihre Zahlungsmethode erfolgreich von manuell auf automatisch wiederkehrende Zahlung umgestellt wurde. Bestätigt die erfolgreiche Umstellung.",
         "new-callout-response": "Wird an Administratoren gesendet, wenn eine neue Antwort auf einen CrowdNewsroom eingereicht wird. Enthält in der Regel eine Benachrichtigung mit den CrowdNewsroom-Details und dem Namen der antwortenden Person.",
         "new-member": "Wird an Administratoren gesendet, wenn ein neues Mitglied der Community erfolgreich beitritt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen des neuen Mitglieds.",
-        "one-time-donation": "Wird an Nutzer gesendet, nachdem sie einen Einmalbeitrag (nicht wiederkehrende Zahlung) abgeschlossen haben. Bestätigt in der Regel den Beitragsbetrag und dient als Quittung.",
+        "one-time-donation": "Wird an Nutzer gesendet, nachdem sie einen Einmalbeitrag abgeschlossen haben.",
+        "one-time-donation-failed": "Wird an Nutzer gesendet, wenn ihre Einmalzahlung fehlschlägt.",
         "reset-device": "Wird gesendet, wenn ein Nutzer das Zurücksetzen seines vertrauenswürdigen Geräts für die Zwei-Faktor-Authentifizierung anfordert. Enthält einen sicheren Link zum Zurücksetzen des Geräts.",
         "reset-password": "Wird gesendet, wenn ein Nutzer das Zurücksetzen seines Passworts anfordert. Enthält einen sicheren Link zum Zurücksetzen des Passworts.",
-        "welcome": "Wird an neue Mitglieder gesendet, nachdem sie den Registrierungsprozess abgeschlossen haben, damit sie ihre E-Mail-Adresse bestätigen können. Diese E-Mail heißt sie in der Community willkommen"
+        "setup-account": "Wird an Nutzer gesendet, die einen Einmalbeitrag abgeschlossen haben und noch kein Konto besitzen.",
+        "welcome": "Wird an neue Mitglieder gesendet, nachdem sie den Registrierungsprozess abgeschlossen haben. Diese E-Mail heißt sie in der Community willkommen."
       },
       "names": {
         "cancelled-contribution": "Beitrag gekündigt",
@@ -1238,8 +1240,10 @@
         "new-callout-response": "Admin: Neuer CrowdNewsroom - Antwort-Benachrichtigung",
         "new-member": "Admin: Neuer Kontakt - Benachrichtigung",
         "one-time-donation": "Bestätigung des Einmalbeitrags",
+        "one-time-donation-failed": "Einmalbeitrag fehlgeschlagen",
         "reset-device": "Gerät zurücksetzen",
         "reset-password": "Passwort zurücksetzen",
+        "setup-account": "Konto einrichten",
         "welcome": "Willkommen"
       },
       "type": {

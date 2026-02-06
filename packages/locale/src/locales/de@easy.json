@@ -1225,8 +1225,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "names": {
@@ -1240,8 +1242,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "type": {
