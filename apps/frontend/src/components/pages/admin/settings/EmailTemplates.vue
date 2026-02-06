@@ -52,10 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import type {
-  ContentJoinData,
-  GetEmailTemplateInfoData,
-} from '@beabee/beabee-common';
+import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
 import { AppRoundBadge, AppTable, type Header } from '@beabee/vue';
 
 import { client } from '@utils/api';
@@ -65,7 +62,6 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const templates = ref<GetEmailTemplateInfoData[]>([]);
-const joinContent = ref<ContentJoinData>();
 
 const headers: Header[] = [
   { value: 'type', text: t('emails.type') },
@@ -96,8 +92,14 @@ const sortedTemplates = computed(() => {
 onMounted(async () => {
   const allTemplates = await client.email.template.list();
 
-  // Todo: remove these emails as soon as we deprecated the legacy app and clean them up
+  const joinContent = await client.content.get('join');
+
+  const hasOneTimeDonation = joinContent.periods.some(
+    (p) => p.name === 'one-time'
+  );
+
   const hiddenEmails = [
+    // Todo: remove these emails as soon as we deprecated the legacy app and clean them up
     'welcome-post-gift',
     'cancelled-contribution-no-survey',
     'callout-response-answers',
@@ -105,18 +107,10 @@ onMounted(async () => {
     'giftee-success',
     'purchased-gift',
     'expired-special-url-resend',
+    ...(hasOneTimeDonation
+      ? []
+      : ['one-time-donation', 'one-time-donation-failed', 'setup-account']),
   ];
-
-  joinContent.value = await client.content.get('join');
-
-  const hasOneTimeDonation = computed(() =>
-    joinContent.value?.periods.some((p) => p.name === 'one-time')
-  );
-
-  if (!hasOneTimeDonation.value) {
-    hiddenEmails.push('one-time-donation');
-    hiddenEmails.push('one-time-donation-failed');
-  }
 
   templates.value = allTemplates.filter((t) => !hiddenEmails.includes(t.id));
 });
