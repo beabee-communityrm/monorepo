@@ -21,6 +21,12 @@
       mode="one-time"
     />
   </PaymentFlowForm>
+  <p
+    v-if="paymentContent.taxRateOneTime !== null"
+    class="mt-2 text-center text-sm"
+  >
+    {{ t('join.tax.included', { taxRate: paymentContent.taxRateOneTime }) }}
+  </p>
 </template>
 <script lang="ts" setup>
 import { type ContentPaymentData, PaymentMethod } from '@beabee/beabee-common';
