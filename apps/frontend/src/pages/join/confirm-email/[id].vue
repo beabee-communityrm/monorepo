@@ -8,10 +8,8 @@ meta:
 <template><div /></template>
 
 <script lang="ts" setup>
-import { isApiError } from '@beabee/client';
-
 import { client } from '@utils/api';
-import { notifyRateLimited } from '@utils/api-error';
+import { handleJoinError } from '@utils/api-error';
 import { onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -20,19 +18,14 @@ import { updateCurrentUser } from '../../../store';
 const route = useRoute('confirmEmailLoading');
 const router = useRouter();
 
-onBeforeMount(() => {
-  client.signup
-    .confirmEmail(route.params.id)
-    .then(() => updateCurrentUser())
-    .then(() => router.replace('/join/setup'))
-    .catch((err) => {
-      if (isApiError(err, undefined, [429])) {
-        notifyRateLimited(err);
-      } else if (isApiError(err, ['payment-failed'])) {
-        router.replace('/join/payment-failed');
-      } else {
-        router.replace('/join/failed');
-      }
-    });
+onBeforeMount(async () => {
+  try {
+    await client.signup.confirmEmail(route.params.id);
+    // User has been logged in, update our current user to reflect this
+    await updateCurrentUser();
+    router.replace('/join/setup');
+  } catch (err) {
+    handleJoinError(err, router);
+  }
 });
 </script>

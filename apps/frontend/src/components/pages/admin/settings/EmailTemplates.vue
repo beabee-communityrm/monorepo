@@ -115,6 +115,7 @@ onMounted(async () => {
 
   if (!hasOneTimeDonation.value) {
     hiddenEmails.push('one-time-donation');
+    hiddenEmails.push('one-time-donation-failed');
   }
 
   templates.value = allTemplates.filter((t) => !hiddenEmails.includes(t.id));
