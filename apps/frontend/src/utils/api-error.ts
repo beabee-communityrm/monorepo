@@ -3,7 +3,7 @@ import { formatDistanceLocale } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { type Router } from 'vue-router';
 
 import { i18n } from '../lib/i18n';
 
@@ -57,14 +57,14 @@ export function notifyRateLimited(error: unknown): void {
   addNotification({ variant: 'warning', title, removeable: true });
 }
 
-export function handleJoinError(err: unknown): void {
-  const router = useRouter();
-
-  if (isApiError(err, undefined, [429])) {
-    notifyRateLimited(err);
-  } else if (isApiError(err, ['payment-failed'])) {
+export function handleJoinError(err: unknown, router: Router): void {
+  if (isApiError(err, ['payment-failed'])) {
     router.replace('/join/payment-failed');
   } else {
+    if (isApiError(err, undefined, [429])) {
+      notifyRateLimited(err);
+    }
+
     router.replace('/join/failed');
   }
 }

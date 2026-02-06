@@ -25,7 +25,7 @@ onBeforeMount(async () => {
     await updateCurrentUser();
     router.replace('/join/setup');
   } catch (err) {
-    handleJoinError(err);
+    handleJoinError(err, router);
   }
 });
 </script>

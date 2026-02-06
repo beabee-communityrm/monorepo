@@ -32,8 +32,10 @@ onBeforeMount(async () => {
       });
       router.replace('/join/confirm-email');
     } catch (err) {
-      handleJoinError(err);
+      handleJoinError(err, router);
     }
+  } else {
+    router.replace('/join/failed');
   }
 });
 </script>
