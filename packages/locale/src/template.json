@@ -1092,8 +1092,15 @@
     "search": "",
     "selectedCount": "",
     "sendEmail": {
+      "newEmail": "",
+      "saveAndBack": "",
+      "saveAndBackSuccess": "",
+      "saveAndSend": "",
       "send": "",
       "sent": "",
+      "sentTimes": "",
+      "templateLabel": "",
+      "templateName": "",
       "title": ""
     },
     "showingOf": ""

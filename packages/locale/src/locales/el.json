@@ -1092,8 +1092,15 @@
     "search": "",
     "selectedCount": "",
     "sendEmail": {
+      "newEmail": "Νέο email",
+      "saveAndBack": "Αποθήκευση και επιστροφή",
+      "saveAndBackSuccess": "Το πρότυπο αποθηκεύτηκε.",
+      "saveAndSend": "Αποθήκευση και αποστολή",
       "send": "Αποστολή",
       "sent": "Το email στάλθηκε στο τμήμα.",
+      "sentTimes": "Στάλθηκε {n} φορές",
+      "templateLabel": "Πρότυπο",
+      "templateName": "Όνομα νέου προτύπου",
       "title": "Αποστολή email στο τμήμα"
     },
     "showingOf": ""

@@ -1092,8 +1092,15 @@
     "search": "Search contacts...",
     "selectedCount": "{n} contact selected | {n} contacts selected",
     "sendEmail": {
+      "newEmail": "New email",
+      "saveAndBack": "Save and return",
+      "saveAndSend": "Save and send",
+      "saveAndBackSuccess": "Template saved.",
       "send": "Send",
       "sent": "The email has been sent to the segment.",
+      "sentTimes": "Sent {n} times",
+      "templateLabel": "Template",
+      "templateName": "Name of new template",
       "title": "Send email to segment"
     },
     "showingOf": "Showing {start} to {end} contacts out of {total}"
