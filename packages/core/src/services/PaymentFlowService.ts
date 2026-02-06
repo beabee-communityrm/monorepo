@@ -349,12 +349,15 @@ class PaymentFlowService {
       email: joinFlow.joinForm.email,
     });
 
+    const isRecurring = isContributionForm(joinFlow.joinForm);
+
     if (
-      contact?.membership?.isActive &&
-      isContributionForm(joinFlow.joinForm)
+      // Contact already exists with an active contribution
+      contact?.membership?.isActive ||
+      // One-time contribution and their account was previously setup
+      (!isRecurring && contact?.password.hash)
     ) {
       if (contact.password.hash) {
-        // Active membership and already has a password set, just send them a login link
         await EmailService.sendTemplateToContact(
           'email-exists-login',
           contact,
@@ -363,7 +366,6 @@ class PaymentFlowService {
           }
         );
       } else {
-        // Active membership but has no password set, give them a link to set a new password
         const rpFlow = await ResetSecurityFlowService.create(
           contact,
           RESET_SECURITY_FLOW_TYPE.PASSWORD
@@ -381,7 +383,7 @@ class PaymentFlowService {
       // starting a recurring contribution, ask them to confirm their email
       // address so they can continue the join flow
       await EmailService.sendTemplateTo(
-        'confirm-email',
+        isRecurring ? 'confirm-email' : 'setup-account',
         { email: joinFlow.joinForm.email },
         {
           firstName: joinFlow.joinForm.firstname || '',
