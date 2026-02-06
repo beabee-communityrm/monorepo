@@ -79,7 +79,11 @@ async function completeDonationFlow(paymentFlowId: string) {
   });
 }
 
-watch(props, (newProps) => {
-  formData.paymentMethod = newProps.content.paymentMethods[0];
-});
+watch(
+  props,
+  (newProps) => {
+    formData.paymentMethod = newProps.content.paymentMethods[0];
+  },
+  { immediate: true }
+);
 </script>
