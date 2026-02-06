@@ -1287,7 +1287,8 @@
         "duplicate-tag-name": "Er bestaat al een tag met deze naam",
         "invalid-token": "Ongeldig 2FA token",
         "login-failed": "Ongeldige combinatie wachtwoord/e-mail",
-        "mfa-token-required": "Je hebt 2FA ingeschakeld, voer het token van je authenticator app in om verder te gaan."
+        "mfa-token-required": "Je hebt 2FA ingeschakeld, voer het token van je authenticator app in om verder te gaan.",
+        "payment-failed": "Je betaling is niet gelukt. Probeer het opnieuw of gebruik een andere betaalmethode."
       },
       "generic": "Oeps, er is iets fout gegaan! Neem contact op met support als dit weer gebeurt.",
       "unauthorized": "Je hebt hier geen toegang toe.",
