@@ -139,8 +139,6 @@ class PaymentFlowService {
       await getRepository(JoinFlow).save(joinFlow);
     }
 
-    await this.sendConfirmationEmail(joinFlow);
-
     if (!isContributionForm(joinFlow.joinForm)) {
       log.info(
         'Payment join flow is for one-time payment, finalizing immediately ' +
@@ -148,6 +146,8 @@ class PaymentFlowService {
       );
       await this.finalizeRegistration(joinFlow.id, true);
     }
+
+    await this.sendConfirmationEmail(joinFlow);
   }
 
   /**
