@@ -1094,8 +1094,14 @@
     "search": "Pesquisar contactos...",
     "selectedCount": "",
     "sendEmail": {
+      "newEmail": "Novo e-mail",
+      "saveAndBack": "Guardar e voltar",
+      "saveAndBackSuccess": "Modelo guardado.",
+      "saveAndSend": "Guardar e enviar",
       "send": "Enviar",
       "sent": "O e-mail foi enviado para o segmento.",
+      "sentTimes": "Enviado {n} vezes",
+      "templateName": "Nome do novo modelo",
       "title": "Enviar e-mail ao segmento"
     },
     "showingOf": "Contactos {start} a {end} de um total de {total}"

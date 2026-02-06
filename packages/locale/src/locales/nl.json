@@ -1094,8 +1094,14 @@
     "search": "Contacten zoeken...",
     "selectedCount": "{n} contactpersoon geselecteerd | {n} contactpersonen geselecteerd",
     "sendEmail": {
+      "newEmail": "Nieuwe e-mail",
+      "saveAndBack": "Opslaan en terugkeren",
+      "saveAndBackSuccess": "Sjabloon opgeslagen.",
+      "saveAndSend": "Opslaan en verzenden",
       "send": "Verzenden",
       "sent": "De e-mail is naar het segment verzonden.",
+      "sentTimes": "{n} keer verzonden",
+      "templateName": "Naam van het nieuwe sjabloon",
       "title": "E-mail verzenden naar segment"
     },
     "showingOf": "Toont {start} tot {end} contacten uit {total}"

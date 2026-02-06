@@ -1094,8 +1094,14 @@
     "search": "",
     "selectedCount": "",
     "sendEmail": {
+      "newEmail": "",
+      "saveAndBack": "",
+      "saveAndBackSuccess": "",
+      "saveAndSend": "",
       "send": "",
       "sent": "",
+      "sentTimes": "",
+      "templateName": "",
       "title": ""
     },
     "showingOf": ""

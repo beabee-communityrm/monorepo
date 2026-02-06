@@ -1095,8 +1095,14 @@
     "search": "",
     "selectedCount": "",
     "sendEmail": {
+      "newEmail": "Новое письмо",
+      "saveAndBack": "Сохранить и вернуться",
+      "saveAndBackSuccess": "Шаблон сохранён.",
+      "saveAndSend": "Сохранить и отправить",
       "send": "Отправить",
       "sent": "Письмо было отправлено сегменту.",
+      "sentTimes": "Отправлено {n} раз",
+      "templateName": "Название нового шаблона",
       "title": "Отправить письмо сегменту"
     },
     "showingOf": ""

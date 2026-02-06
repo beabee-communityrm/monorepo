@@ -1094,8 +1094,14 @@
     "search": "Kontakte durchsuchen...",
     "selectedCount": "{n} Kontakt ausgewählt | {n} Kontakte ausgewählt",
     "sendEmail": {
+      "newEmail": "Neue E-Mail",
+      "saveAndBack": "Speichern und zurück",
+      "saveAndBackSuccess": "Vorlage gespeichert.",
+      "saveAndSend": "Speichern und senden",
       "send": "Senden",
       "sent": "Die E-Mail wurde an das Segment gesendet.",
+      "sentTimes": "{n}-mal verschickt",
+      "templateName": "Name der neuen Vorlage",
       "title": "E-Mail an Segment senden"
     },
     "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt."
