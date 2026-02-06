@@ -11,13 +11,15 @@ import {
   writeJsonFile,
 } from './utils.ts';
 
-const EN = 'en.json';
+const SOURCE_LOCALE = 'en.json';
 
 export async function normalizeTranslations(localesDir: string): Promise<void> {
   try {
-    const en = await readJsonFile<LocaleObject>(join(localesDir, EN));
-    const files = (await readdir(localesDir)).filter(
-      (f) => f.endsWith('.json') && f !== EN
+    const en = await readJsonFile<LocaleObject>(
+      join(localesDir, SOURCE_LOCALE)
+    );
+    const files = (await readdir(localesDir)).filter((f) =>
+      f.endsWith('.json')
     );
     for (const file of files) {
       const path = join(localesDir, file);
