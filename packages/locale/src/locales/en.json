@@ -907,7 +907,6 @@
   },
   "common": {
     "backToHome": "Back to home",
-    "contributing": "Contributing",
     "contributionPeriod": {
       "annually": "Annually",
       "monthly": "Monthly"
@@ -922,7 +921,6 @@
     "hello": "Hello",
     "id": "ID",
     "itemsPerPage": "{items} items per page",
-    "joined": "Joined",
     "label": "Label",
     "loading": "Loading...",
     "login": "Login",

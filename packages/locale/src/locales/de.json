@@ -907,7 +907,6 @@
   },
   "common": {
     "backToHome": "Zurück zur Startseite",
-    "contributing": "Ihr Beitrag",
     "contributionPeriod": {
       "annually": "Jährlich",
       "monthly": "Monatlich"
@@ -922,7 +921,6 @@
     "hello": "Hallo",
     "id": "ID",
     "itemsPerPage": "{items} Einträge pro Seite",
-    "joined": "Mitglied seit",
     "label": "Label",
     "loading": "Lädt...",
     "login": "Login",
@@ -1051,7 +1049,7 @@
       "amount": "Betrag",
       "annotationsCopy": "Änderungen gespeichert!",
       "averageDonationAmount": "Durchschnitt einmaliger Beiträge (insgesamt)",
-      "contribution": " Wiederkehrender Beitrag",
+      "contribution": "Wiederkehrender Beitrag",
       "contributionCancelled": "Wiederkehrender Beitrag beendet",
       "contributionMonthlyAmount": "Wiederkehrender monatlicher Beitrag",
       "contributionPeriod": "Wiederkehrender Beitragsintervall",

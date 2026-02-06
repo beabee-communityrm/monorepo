@@ -907,7 +907,6 @@
   },
   "common": {
     "backToHome": "",
-    "contributing": "",
     "contributionPeriod": {
       "annually": "",
       "monthly": ""
@@ -922,7 +921,6 @@
     "hello": "Hallo.",
     "id": "",
     "itemsPerPage": "",
-    "joined": "",
     "label": "Betreff",
     "loading": "Der Computer arbeitet.",
     "login": "",
