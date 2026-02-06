@@ -1134,7 +1134,6 @@
     "prorateNoTitle": "Изменить мой взнос с {renewalDate}",
     "prorateYesText": "С вас будет списан единоразовый платеж в размере {oneOffPayment}, и ваш взнос будет немедленно обновлён.",
     "prorateYesTitle": "Изменить мой взнос сейчас",
-    "recurringContribution": "Регулярный взнос",
     "restartContribution": "Обновить уровень участия",
     "startContribution": "Стать участником",
     "startedContribution": "Ваша подписка началась",
