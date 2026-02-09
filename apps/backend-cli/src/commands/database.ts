@@ -30,6 +30,23 @@ export const databaseCommand: CommandModule = {
         },
       })
       .command({
+        command: 'export-demo',
+        describe:
+          'Export demo subset (limited contacts, latest callouts, anonymized)',
+        builder: (yargs) =>
+          yargs.option('dryRun', {
+            type: 'boolean',
+            description: 'Run without making changes',
+            default: false,
+          }),
+        handler: async (argv) => {
+          const { exportDemoDatabase } = await import(
+            '../actions/database/export-demo.js'
+          );
+          return exportDemoDatabase(argv.dryRun);
+        },
+      })
+      .command({
         command: 'import',
         describe:
           'Import database from a SQL dump (dev only; use export output)',

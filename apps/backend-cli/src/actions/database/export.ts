@@ -3,9 +3,7 @@
  *
  * This module provides functionality to export database data to JSON or SQL dumps.
  * It supports:
- * - Full or demo subset exports
- * - Configurable anonymization (contacts always anonymized for privacy)
- * - JSON and SQL output formats
+ * - Full export with configurable anonymization (contacts always anonymized for privacy)
  */
 import { runApp } from '@beabee/core/server';
 import {
@@ -16,7 +14,7 @@ import {
 import { getAnonymizers } from '../../utils/anonymizers.js';
 
 /**
- * Export database to JSON or SQL dump with configurable anonymization and subset options
+ * Export database to SQL dump with configurable anonymization
  *
  * @param dryRun If true, only logs what would be done
  * @param anonymize If true, anonymize all data (contacts are always anonymized)
