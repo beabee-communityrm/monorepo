@@ -105,6 +105,21 @@ function anonymiseItem<T>(
     }
   }
 
+
+  // When objectMap is empty we only copy; still remap any value that's already in valueMap
+  // (e.g. FKs to already-anonymised entities like Contact) so references stay valid.
+  if (copyProps && Object.keys(objectMap as object).length === 0) {
+    for (const prop in newItem) {
+      const val = newItem[prop];
+      if (val !== null && val !== undefined) {
+        const key = stringify(val);
+        if (valueMap.has(key)) {
+          (newItem as Record<string, unknown>)[prop] = valueMap.get(key);
+        }
+      }
+    }
+  }
+
   return newItem;
 }
 

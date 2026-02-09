@@ -15,6 +15,7 @@ export const ALWAYS_ANONYMIZED_MODELS = [
   models.emailMailingAnonymiser,
   models.segmentContactsAnonymiser,
   models.segmentOngoingEmailsAnonymiser,
+  models.paymentsAnonymiser,
 ] as models.ModelAnonymiser[];
 
 /**
@@ -26,7 +27,6 @@ export const OPTIONALLY_ANONYMIZED_MODELS = [
   models.giftFlowAnonymiser,
   models.noticesAnonymiser,
   models.optionsAnonymiser,
-  models.paymentsAnonymiser,
   models.pageSettingsAnonymiser,
   models.calloutsAnonymiser,
   models.calloutTagsAnonymiser,
@@ -43,6 +43,17 @@ export const OPTIONALLY_ANONYMIZED_MODELS = [
   models.segmentsAnonymiser,
   models.exportItemsAnonymiser,
 ] as models.ModelAnonymiser[];
+
+/**
+ * Passthrough anonymisers: same models as OPTIONALLY_ANONYMIZED_MODELS but with
+ * empty objectMap so the core exports rows as-is (no anonymisation).
+ */
+function getOptionalPassthroughAnonymisers(): models.ModelAnonymiser[] {
+  return OPTIONALLY_ANONYMIZED_MODELS.map((a) => ({
+    model: a.model,
+    objectMap: {} as models.ObjectMap<unknown>,
+  })) as models.ModelAnonymiser[];
+}
 
 /**
  * Demo export configuration
@@ -62,12 +73,5 @@ export const getAnonymizers = (
 ): models.ModelAnonymiser[] => {
   return anonymize
     ? [...ALWAYS_ANONYMIZED_MODELS, ...OPTIONALLY_ANONYMIZED_MODELS]
-    : ALWAYS_ANONYMIZED_MODELS;
-};
-
-/**
- * Get all models for JSON export (needed for complete dumps)
- */
-export const getAllModels = (): models.ModelAnonymiser[] => {
-  return [...ALWAYS_ANONYMIZED_MODELS, ...OPTIONALLY_ANONYMIZED_MODELS];
+    : [...ALWAYS_ANONYMIZED_MODELS, ...getOptionalPassthroughAnonymisers()];
 };

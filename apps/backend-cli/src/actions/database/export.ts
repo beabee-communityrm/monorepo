@@ -12,9 +12,9 @@ import {
   anonymiseModel,
   clearModels,
 } from '@beabee/core/tools/database/anonymisers/index';
-import { allAnonymisers } from '@beabee/core/tools/database/anonymisers/model-sets';
 
-const anonymisers = allAnonymisers;
+import { getAnonymizers } from '../../utils/anonymizers.js';
+
 /**
  * Export database to JSON or SQL dump with configurable anonymization and subset options
  *
@@ -29,6 +29,7 @@ export const exportDatabase = async (
   anonymize = true,
   subset: 'full' | 'demo' = 'full'
 ): Promise<void> => {
+  const anonymisers = getAnonymizers(anonymize);
   await runApp(async () => {
     const valueMap = new Map<string, unknown>();
 
