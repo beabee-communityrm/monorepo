@@ -21,12 +21,23 @@ export const databaseCommand: CommandModule = {
               description:
                 'Anonymize all data (contacts are always anonymized)',
               default: true,
+            })
+            .option('skipAnonymizeTables', {
+              type: 'array',
+              string: true,
+              description:
+                'Table names to export without anonymisation (e.g. contact, segment)',
+              default: [],
             }),
         handler: async (argv) => {
           const { exportDatabase } = await import(
             '../actions/database/export.js'
           );
-          return exportDatabase(argv.dryRun, argv.anonymize);
+          return exportDatabase(
+            argv.dryRun,
+            argv.anonymize,
+            argv.skipAnonymizeTables ?? []
+          );
         },
       })
       .command({

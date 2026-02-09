@@ -1,6 +1,6 @@
 import * as models from '@beabee/core/tools/database/anonymisers/models';
 
-import type { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
+import { type ObjectLiteral, type SelectQueryBuilder } from 'typeorm';
 
 /**
  * Models that must always be anonymised (contacts and their direct relations)
@@ -181,9 +181,23 @@ export function getDemoPrepareQuery(
  * Get anonymizers based on anonymization level
  */
 export const getAnonymizers = (
-  anonymize: boolean
+  anonymize: boolean,
+  skipAnonymizeTables: string[] = []
 ): models.ModelAnonymiser[] => {
-  return anonymize
+  const fullList = anonymize
     ? [...ALWAYS_ANONYMIZED_MODELS, ...OPTIONALLY_ANONYMIZED_MODELS]
     : [...ALWAYS_ANONYMIZED_MODELS, ...getOptionalPassthroughAnonymisers()];
+
+  if (skipAnonymizeTables.length === 0) return fullList;
+
+  const skipSet = new Set(skipAnonymizeTables.map((t) => t.toLowerCase()));
+
+  return fullList.map((a) => {
+    const entityName =
+      typeof a.model === 'function' ? a.model.name : String(a.model);
+    if (skipSet.has(entityName.toLowerCase())) {
+      return { model: a.model, objectMap: {} as models.ObjectMap<unknown> };
+    }
+    return a;
+  }) as models.ModelAnonymiser[];
 };

@@ -21,9 +21,10 @@ import { getAnonymizers } from '../../utils/anonymizers.js';
  */
 export const exportDatabase = async (
   dryRun = false,
-  anonymize = true
+  anonymize = true,
+  skipAnonymizeTables: string[] = []
 ): Promise<void> => {
-  const anonymisers = getAnonymizers(anonymize);
+  const anonymisers = getAnonymizers(anonymize, skipAnonymizeTables);
 
   if (dryRun) {
     const modelNames = anonymisers.map((a) =>
