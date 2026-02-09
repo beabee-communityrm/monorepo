@@ -16,12 +16,6 @@ export const databaseCommand: CommandModule = {
               description: 'Run without making changes',
               default: false,
             })
-            .option('type', {
-              type: 'string',
-              description: 'Export type: json or sql',
-              default: 'json',
-              choices: ['json', 'sql'],
-            })
             .option('anonymize', {
               type: 'boolean',
               description:
@@ -41,7 +35,6 @@ export const databaseCommand: CommandModule = {
           );
           return exportDatabase(
             argv.dryRun,
-            argv.type as 'json' | 'sql',
             argv.anonymize,
             argv.subset as 'full' | 'demo'
           );

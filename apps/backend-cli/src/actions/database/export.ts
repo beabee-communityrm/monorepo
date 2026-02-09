@@ -25,7 +25,6 @@ import { getAnonymizers } from '../../utils/anonymizers.js';
  */
 export const exportDatabase = async (
   dryRun = false,
-  type: 'json' | 'sql' = 'sql',
   anonymize = true,
   subset: 'full' | 'demo' = 'full'
 ): Promise<void> => {
