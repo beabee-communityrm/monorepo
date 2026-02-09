@@ -19,16 +19,26 @@ import { getAnonymizers } from '../../utils/anonymizers.js';
  * Export database to JSON or SQL dump with configurable anonymization and subset options
  *
  * @param dryRun If true, only logs what would be done
- * @param type Export type: json or sql
- * @param anonymize Export subset: 'full' for all data, 'demo' for subset
- * @param subset Output directory for the dump file
+ * @param anonymize If true, anonymize all data (contacts are always anonymized)
  */
 export const exportDatabase = async (
   dryRun = false,
-  anonymize = true,
-  subset: 'full' | 'demo' = 'full'
+  anonymize = true
 ): Promise<void> => {
   const anonymisers = getAnonymizers(anonymize);
+
+  if (dryRun) {
+    const modelNames = anonymisers.map((a) =>
+      typeof a.model === 'function' ? a.model.name : String(a.model)
+    );
+    console.log('Dry run: would export database (full)');
+    console.log(
+      `Would clear and anonymise ${anonymisers.length} models:`,
+      modelNames.join(', ')
+    );
+    return;
+  }
+
   await runApp(async () => {
     const valueMap = new Map<string, unknown>();
 

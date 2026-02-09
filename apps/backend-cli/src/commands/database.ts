@@ -21,23 +21,12 @@ export const databaseCommand: CommandModule = {
               description:
                 'Anonymize all data (contacts are always anonymized)',
               default: true,
-            })
-            .option('subset', {
-              type: 'string',
-              description:
-                'Export subset: full for all data, demo for subset (400 contacts, 20 latest callouts)',
-              default: 'full',
-              choices: ['full', 'demo'],
             }),
         handler: async (argv) => {
           const { exportDatabase } = await import(
             '../actions/database/export.js'
           );
-          return exportDatabase(
-            argv.dryRun,
-            argv.anonymize,
-            argv.subset as 'full' | 'demo'
-          );
+          return exportDatabase(argv.dryRun, argv.anonymize);
         },
       })
       .command({
