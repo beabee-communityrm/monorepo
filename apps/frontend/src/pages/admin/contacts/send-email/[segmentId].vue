@@ -15,8 +15,8 @@ meta:
   </div>
 
   <form v-else-if="segment" class="flex flex-col gap-6" @submit.prevent>
-    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
-      <div class="min-w-0 flex-1">
+    <div class="flex flex-col gap-6 md:flex-row md:items-stretch">
+      <div class="relative min-w-0 flex-1 md:flex md:min-h-0 md:flex-col">
         <AppLabel
           :label="t('contacts.sendEmail.templateLabel')"
           class="block"
@@ -25,11 +25,13 @@ meta:
           v-model="selectedTemplateId"
           :items="templateSelectItems"
           :placeholder="t('contacts.sendEmail.newEmail')"
-          class="mt-1 w-full"
+          class="w-full"
           @update:model-value="onTemplateChange"
         />
       </div>
-      <div class="min-w-0 flex-1 sm:max-w-xs">
+      <div
+        class="w-full min-w-0 md:flex md:min-h-0 md:w-[600px] md:flex-1 md:flex-col"
+      >
         <AppInput
           v-model="templateNameDisplay"
           :label="t('contacts.sendEmail.templateName')"

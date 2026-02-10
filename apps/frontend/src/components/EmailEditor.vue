@@ -64,7 +64,7 @@
             class="mb-3"
           />
         </template>
-        <AppLabel :label="t('emailEditor.preview.label')" class="mb-0.5" />
+        <AppLabel :label="t('emailEditor.preview.label')" />
         <div
           class="content-message overflow-auto rounded border border-primary-40 bg-white p-4"
           :class="!alwaysStacked && 'md:min-h-[300px] md:flex-1'"
