@@ -907,7 +907,6 @@
   },
   "common": {
     "backToHome": "",
-    "contributing": "",
     "contributionPeriod": {
       "annually": "",
       "monthly": ""
@@ -922,7 +921,6 @@
     "hello": "",
     "id": "",
     "itemsPerPage": "",
-    "joined": "",
     "label": "",
     "loading": "",
     "login": "",
@@ -1222,8 +1220,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "names": {
@@ -1237,8 +1237,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "type": {
@@ -1283,7 +1285,8 @@
         "duplicate-tag-name": "",
         "invalid-token": "",
         "login-failed": "",
-        "mfa-token-required": ""
+        "mfa-token-required": "",
+        "payment-failed": ""
       },
       "generic": "",
       "unauthorized": "",
@@ -1489,7 +1492,6 @@
     "willBeDonating": ""
   },
   "joinSetup": {
-    "confirmDetails": "",
     "continue": "",
     "welcome": ""
   },

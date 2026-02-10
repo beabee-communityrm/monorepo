@@ -10,7 +10,6 @@
   >
     <template #header>
       <p class="mb-4">{{ setupContent.welcome }}</p>
-      <p>{{ t('joinSetup.confirmDetails') }}</p>
     </template>
 
     <AppApiForm

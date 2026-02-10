@@ -907,7 +907,6 @@
   },
   "common": {
     "backToHome": "Zurück zur Startseite",
-    "contributing": "Dein Beitrag",
     "contributionPeriod": {
       "annually": "Jährlich",
       "monthly": "Monatlich"
@@ -922,7 +921,6 @@
     "hello": "Hallo",
     "id": "ID",
     "itemsPerPage": "{items} Einträge pro Seite",
-    "joined": "Mitglied seit",
     "label": "Label",
     "loading": "Lädt...",
     "login": "Login",
@@ -1224,8 +1222,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "names": {
@@ -1239,8 +1239,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "type": {
@@ -1285,7 +1287,8 @@
         "duplicate-tag-name": "Ein Tag mit diesem Namen existiert bereits",
         "invalid-token": "Dein eingegebener 2FA Token stimmt nicht.",
         "login-failed": "Falsche Kombination von Passwort und E-Mail.",
-        "mfa-token-required": "Bitte gebe den Code deiner Authentifizierungs-App ein."
+        "mfa-token-required": "Bitte gebe den Code deiner Authentifizierungs-App ein.",
+        "payment-failed": "Deine Zahlung war nicht erfolgreich. Bitte versuche es erneut oder verwende eine andere Zahlungsmethode."
       },
       "generic": "Upps! Etwas ist schiefgelaufen. Bitte wende dich an den Support, sollte das erneut passieren.",
       "unauthorized": "Du hast daruf keinen Zugriff.",
@@ -1491,7 +1494,6 @@
     "willBeDonating": "Du leistest einen einmaligen Beitrag von {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Bitte bestätige deine Angaben:",
     "continue": "Weiter",
     "welcome": "Willkommen {firstName}!"
   },
