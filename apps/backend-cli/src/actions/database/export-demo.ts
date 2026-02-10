@@ -53,16 +53,16 @@ async function fetchDemoContext(options: {
     .andWhere(
       new Brackets((qb) =>
         qb
-          .where('item.contact IS NULL')
-          .orWhere('item.contact IN (:...contacts)')
+          .where('item.contactId IS NULL')
+          .orWhere('item.contactId IN (:...contacts)')
       ),
       { contacts: contactIds }
     )
     .andWhere(
       new Brackets((qb) =>
         qb
-          .where('item.assignee IS NULL')
-          .orWhere('item.assignee IN (:...contacts)')
+          .where('item.assigneeId IS NULL')
+          .orWhere('item.assigneeId IN (:...contacts)')
       ),
       { contacts: contactIds }
     )
