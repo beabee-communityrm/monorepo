@@ -1102,6 +1102,7 @@
       "sentTimes": "Отправлено {n} раз",
       "templateLabel": "Шаблон",
       "templateName": "Название нового шаблона",
+      "templateNameRequired": "Введите название нового шаблона.",
       "title": "Отправить письмо сегменту"
     },
     "showingOf": ""

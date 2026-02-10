@@ -134,9 +134,7 @@ const previewContactId = ref<string>('');
 const pendingAction = ref<'back' | 'send'>('send');
 
 const defaultNewTemplateName = computed(() =>
-  segment.value
-    ? `${t('contacts.sendEmail.title')}: ${segment.value.name}`
-    : ''
+  segment.value ? `${t('contacts.sendEmail.title')}: ${segment.value.name}` : ''
 );
 
 const isNewEmailSelected = computed(
@@ -207,7 +205,7 @@ async function ensureSavedEmailId(): Promise<string> {
     if (!name.trim()) {
       addNotification({
         variant: 'error',
-        title: t('contacts.sendEmail.templateName'),
+        title: t('contacts.sendEmail.templateNameRequired'),
       });
       throw new Error('Template name required');
     }

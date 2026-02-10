@@ -1101,6 +1101,7 @@
       "sentTimes": "Sent {n} times",
       "templateLabel": "Template",
       "templateName": "Name of new template",
+      "templateNameRequired": "Please enter a name for the new template.",
       "title": "Send email to segment"
     },
     "showingOf": "Showing {start} to {end} contacts out of {total}"

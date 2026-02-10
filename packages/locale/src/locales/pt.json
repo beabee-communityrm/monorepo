@@ -1101,6 +1101,7 @@
       "sentTimes": "Enviado {n} vezes",
       "templateLabel": "Modelo",
       "templateName": "Nome do novo modelo",
+      "templateNameRequired": "Introduza um nome para o novo modelo.",
       "title": "Enviar e-mail ao segmento"
     },
     "showingOf": "Contactos {start} a {end} de um total de {total}"

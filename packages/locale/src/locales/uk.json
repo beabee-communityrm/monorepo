@@ -1103,6 +1103,7 @@
       "sentTimes": "Надіслано {n} разів",
       "templateLabel": "Шаблон",
       "templateName": "Назва нового шаблону",
+      "templateNameRequired": "Введіть назву нового шаблону.",
       "title": "Надіслати лист сегменту"
     },
     "showingOf": "Показано контакти з {start} до {end} з {total}"

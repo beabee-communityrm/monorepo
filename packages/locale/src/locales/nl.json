@@ -1101,6 +1101,7 @@
       "sentTimes": "{n} keer verzonden",
       "templateLabel": "Sjabloon",
       "templateName": "Naam van het nieuwe sjabloon",
+      "templateNameRequired": "Voer een naam in voor het nieuwe sjabloon.",
       "title": "E-mail verzenden naar segment"
     },
     "showingOf": "Toont {start} tot {end} contacten uit {total}"

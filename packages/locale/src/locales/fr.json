@@ -1105,6 +1105,7 @@
       "sentTimes": "Envoyé {n} fois",
       "templateLabel": "Modèle",
       "templateName": "Nom du nouveau modèle",
+      "templateNameRequired": "Veuillez saisir un nom pour le nouveau modèle.",
       "title": "Envoyer un e-mail au segment"
     },
     "showingOf": "Affichage des contacts {start} à {end} sur {total}"

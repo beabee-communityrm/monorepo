@@ -1101,6 +1101,7 @@
       "sentTimes": "Inviato {n} volte",
       "templateLabel": "Modello",
       "templateName": "Nome del nuovo modello",
+      "templateNameRequired": "Inserisci un nome per il nuovo modello.",
       "title": "Invia email al segmento"
     },
     "showingOf": "Contatti da {start} a {end} su {total}"

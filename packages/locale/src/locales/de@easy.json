@@ -1101,6 +1101,7 @@
       "sentTimes": "{n}-mal geschickt",
       "templateLabel": "Vorlage",
       "templateName": "Name der neuen Vorlage",
+      "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
       "title": "E-Mail an Segment schicken"
     },
     "showingOf": ""
