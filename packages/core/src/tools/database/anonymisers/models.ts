@@ -352,7 +352,7 @@ export const emailAnonymiser = createModelAnonymiser(Email, {
 
 export const emailMailingAnonymiser = createModelAnonymiser(EmailMailing, {
   id: () => uuidv4(),
-  emailId: () => uuidv4(), // Wird durch valueMap konsistent gehalten
+  emailId: () => uuidv4(),
   createdDate: () => new Date(),
   sentDate: () => new Date(),
   recipients: () => [
@@ -362,8 +362,8 @@ export const emailMailingAnonymiser = createModelAnonymiser(EmailMailing, {
       id: uuidv4(),
     },
   ],
-  emailField: () => 'email', // Standard-Feldname
-  nameField: () => 'firstname', // Standard-Feldname
+  emailField: () => 'email',
+  nameField: () => 'firstname',
   mergeFields: () => ({
     firstname: chance.first(),
     lastname: chance.last(),
@@ -414,7 +414,7 @@ export const projectContactsAnonymiser = createModelAnonymiser(ProjectContact, {
   tag: () => chance.profession(),
 });
 
-export const projectEngagmentsAnonymiser = createModelAnonymiser(
+export const projectEngagementsAnonymiser = createModelAnonymiser(
   ProjectEngagement,
   {
     id: () => uuidv4(),

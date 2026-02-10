@@ -41,7 +41,7 @@ export const OPTIONALLY_ANONYMIZED_MODELS = [
   models.calloutVariantAnonymiser,
   models.projectsAnonymiser,
   models.projectContactsAnonymiser,
-  models.projectEngagmentsAnonymiser,
+  models.projectEngagementsAnonymiser,
   models.referralsGiftAnonymiser,
   models.referralsAnonymiser,
   models.resetSecurityFlowAnonymiser,
@@ -106,7 +106,7 @@ export const DEMO_CALLOUT_RESPONSE_ANONYMIZERS = [
 export const DEMO_CLEAR_ONLY_ANONYMIZERS = [
   models.calloutResponseCommentsAnonymiser,
   models.projectContactsAnonymiser,
-  models.projectEngagmentsAnonymiser,
+  models.projectEngagementsAnonymiser,
   models.segmentContactsAnonymiser,
   models.referralsAnonymiser,
   models.resetSecurityFlowAnonymiser,
