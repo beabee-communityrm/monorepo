@@ -55,15 +55,11 @@ async function handleClick(evt: Event) {
   isLoading.value = true;
   try {
     await props.onClick?.(evt);
-  } catch (error: unknown) {
-    const description =
-      error instanceof Error
-        ? error.message
-        : t('form.errorMessages.asyncActionFailed');
+  } catch (_error: unknown) {
     addNotification({
       title: t('form.errorMessages.generic'),
       variant: 'error',
-      description,
+      description: t('form.errorMessages.asyncActionFailed'),
     });
   } finally {
     isLoading.value = false;
