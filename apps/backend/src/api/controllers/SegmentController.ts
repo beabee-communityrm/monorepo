@@ -152,7 +152,13 @@ export class SegmentController {
     }
   }
 
-  /** Send saved template to contacts and record EmailMailing for tracking. */
+  /**
+   * Send saved template to contacts and record EmailMailing for tracking.
+   * sentDate is only set after a successful send; if sending throws, the mailing record stays without sentDate.
+   *
+   * @throws {NotFoundError} When the email template is not found
+   * @throws Rethrows any error from EmailService.sendEmailToContact
+   */
   private async sendWithTemplate(
     contacts: Contact[],
     emailId: string
