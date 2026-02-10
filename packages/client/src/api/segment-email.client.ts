@@ -15,10 +15,9 @@ export class SegmentEmailClient extends BaseClient {
   }
 
   /**
-   * Send one-off email to all contacts in the segment (admin).
-   *
+   * Send one-off email to all segment contacts (admin). With emailId, uses saved template and creates a mailing record for tracking.
    * @param segmentId Segment ID
-   * @param data Subject and body (merge fields supported). When emailId is set, the saved template is used and a mailing record is created for tracking.
+   * @param data Subject and body (merge fields supported). Optional emailId to use a saved template.
    */
   async send(
     segmentId: string,

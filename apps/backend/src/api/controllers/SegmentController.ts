@@ -152,9 +152,7 @@ export class SegmentController {
     }
   }
 
-  /**
-   * Send a saved email template to contacts and record the mailing for tracking.
-   */
+  /** Send saved template to contacts and record EmailMailing for tracking. */
   private async sendWithTemplate(
     contacts: Contact[],
     emailId: string

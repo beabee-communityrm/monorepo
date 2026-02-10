@@ -14,7 +14,12 @@ meta:
     <p>{{ t('common.loading') }}...</p>
   </div>
 
-  <form v-else-if="segment" class="flex flex-col gap-6" @submit.prevent>
+  <AppApiForm
+    v-else-if="segment"
+    :button-text="t('contacts.sendEmail.saveAndSend')"
+    class="flex flex-col gap-6"
+    @submit="handleSubmit"
+  >
     <div class="flex flex-col gap-6 md:flex-row md:items-stretch">
       <div class="relative min-w-0 flex-1 md:flex md:min-h-0 md:flex-col">
         <AppLabel
@@ -49,15 +54,17 @@ meta:
       :preview-contact-options="segmentContacts"
     />
 
-    <div class="flex flex-wrap gap-3">
-      <AppAsyncButton :on-click="handleSaveAndBack" variant="primaryOutlined">
+    <template #buttons="{ disabled }">
+      <AppButton
+        type="button"
+        variant="primaryOutlined"
+        :disabled="disabled"
+        @click="(e: Event) => triggerSubmit(e, 'back')"
+      >
         {{ t('contacts.sendEmail.saveAndBack') }}
-      </AppAsyncButton>
-      <AppAsyncButton :on-click="handleSaveAndSend" variant="primary">
-        {{ t('contacts.sendEmail.saveAndSend') }}
-      </AppAsyncButton>
-    </div>
-  </form>
+      </AppButton>
+    </template>
+  </AppApiForm>
 </template>
 
 <script lang="ts" setup>
@@ -67,7 +74,7 @@ import type {
   GetSegmentData,
 } from '@beabee/beabee-common';
 import {
-  AppAsyncButton,
+  AppButton,
   AppInput,
   AppLabel,
   AppSelect,
@@ -76,6 +83,7 @@ import {
 } from '@beabee/vue';
 
 import EmailEditor from '@components/EmailEditor.vue';
+import AppApiForm from '@components/forms/AppApiForm.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
@@ -123,12 +131,12 @@ const selectedTemplateId = ref<string>(NEW_EMAIL_VALUE);
 const newTemplateName = ref('');
 const emailData = ref({ subject: '', body: '' });
 const previewContactId = ref<string>('');
+const pendingAction = ref<'back' | 'send'>('send');
 
-const defaultNewTemplateName = computed(
-  () =>
-    (segment.value
-      ? t('contacts.sendEmail.title') + ': ' + segment.value.name
-      : '') as string
+const defaultNewTemplateName = computed(() =>
+  segment.value
+    ? `${t('contacts.sendEmail.title')}: ${segment.value.name}`
+    : ''
 );
 
 const isNewEmailSelected = computed(
@@ -217,18 +225,22 @@ async function ensureSavedEmailId(): Promise<string> {
   return selectedTemplateId.value;
 }
 
-async function handleSaveAndBack() {
-  if (!segmentId.value || !validateForm()) return;
-  await ensureSavedEmailId();
-  addNotification({
-    variant: 'success',
-    title: t('contacts.sendEmail.saveAndBackSuccess'),
-  });
-  router.push(backUrl.value);
+function triggerSubmit(evt: Event, action: 'back' | 'send') {
+  pendingAction.value = action;
+  (evt.currentTarget as HTMLElement).closest('form')?.requestSubmit();
 }
 
-async function handleSaveAndSend() {
+async function handleSubmit() {
   if (!segmentId.value || !validateForm()) return;
+  if (pendingAction.value === 'back') {
+    await ensureSavedEmailId();
+    addNotification({
+      variant: 'success',
+      title: t('contacts.sendEmail.saveAndBackSuccess'),
+    });
+    router.push(backUrl.value);
+    return;
+  }
   const emailId = await ensureSavedEmailId();
   await client.segments.email.send(segmentId.value, {
     subject: emailData.value.subject,
@@ -258,7 +270,6 @@ onMounted(async () => {
     ] as const);
     segment.value = segmentRes;
     segmentContacts.value = contactsRes.items;
-    newTemplateName.value = defaultNewTemplateName.value;
   } catch (err) {
     addNotification({
       variant: 'error',

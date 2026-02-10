@@ -56,7 +56,7 @@ export class ListSegmentsDto extends GetPaginatedQuery {
 
 /** Body for POST /segments/:id/email/send (one-off email to all segment contacts). */
 export class SendSegmentEmailBodyDto {
-  /** When set, use this saved email template and create an EmailMailing (for tracking). */
+  /** When set, use this saved template (subject/body ignored) and create an EmailMailing for tracking. */
   @IsOptional()
   @IsString()
   emailId?: string;
