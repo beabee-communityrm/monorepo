@@ -8,6 +8,9 @@
     :extract-error-text="(error) => extractErrorText(error, errorText)"
   >
     <slot />
+    <template v-if="$slots.buttons" #buttons="slotProps">
+      <slot name="buttons" v-bind="slotProps" />
+    </template>
   </AppForm>
 </template>
 
