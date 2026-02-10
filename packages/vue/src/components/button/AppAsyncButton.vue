@@ -17,17 +17,8 @@
 -->
 <template>
   <AppButton
-    :variant="props.variant"
-    :size="props.size"
-    :icon="props.icon"
-    :type="props.type"
-    :href="props.href"
-    :external="props.external"
-    :to="props.to"
-    :is="props.is"
-    :name="props.name"
+    v-bind="buttonBindProps"
     :aria-label="ariaLabel"
-    :title="props.title"
     :loading="loading"
     :disabled="loading || props.disabled"
     :aria-busy="loading"
@@ -54,7 +45,7 @@
  */
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppButton, { type AppButtonProps } from './AppButton.vue';
@@ -77,6 +68,12 @@ const props = withDefaults(defineProps<AppAsyncButtonProps>(), {
   onClick: undefined,
   ariaLabel: undefined,
   title: undefined,
+});
+
+/** Props to forward to AppButton (excludes onClick which is handled here) */
+const buttonBindProps = computed(() => {
+  const { onClick: _onClick, ...rest } = props;
+  return rest;
 });
 
 const loading = ref(false);
