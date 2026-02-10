@@ -1,31 +1,14 @@
-<!--
-  # AppAsyncButton
-  A button component that handles async operations with loading states.
-
-  ## Features
-  - Automatic loading state during async operations
-  - Error handling with notifications
-  - Customizable styling and sizing
-  - Icon support
-  - Accessibility features
-
-  ## Props
-  - Standard button props (variant, size, icon, etc.)
-
-  ## Events
-  - `click`: Emitted when button is clicked (returns Promise for async operations)
--->
+<!-- AppAsyncButton: async operations with loading state and error notifications -->
 <template>
   <AppButton
-    v-bind="buttonBindProps"
-    :aria-label="ariaLabel"
-    :loading="loading"
-    :disabled="loading || props.disabled"
-    :aria-busy="loading"
+    v-bind="forwardedButtonProps"
+    :loading="isLoading"
+    :disabled="isLoading || props.disabled"
+    :aria-busy="isLoading"
     @click="handleClick"
   >
-    <span v-if="loading" class="sr-only">{{ t('common.loading') }}</span>
-    <span :class="{ invisible: loading }">
+    <span v-if="isLoading" class="sr-only">{{ t('common.loading') }}</span>
+    <span :class="{ invisible: isLoading }">
       <slot />
     </span>
   </AppButton>
@@ -33,15 +16,12 @@
 
 <script lang="ts" setup>
 /**
- * Asynchronous button component that handles loading states and error notifications.
- * Extends AppButton with automatic async operation support.
+ * Button that runs an async action on click, shows loading state, and reports errors via notifications.
+ * Forwards all AppButton props except the async handler; overrides loading and disabled from local state.
  *
  * @component AppAsyncButton
- *
  * @example
- * <AppAsyncButton :onClick="async () => await saveData()">
- *   Save Changes
- * </AppAsyncButton>
+ * <AppAsyncButton :onClick="async () => await save()">Save</AppAsyncButton>
  */
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -52,52 +32,41 @@ import AppButton, { type AppButtonProps } from './AppButton.vue';
 
 const { t } = useI18n();
 
-/**
- * Props for the AppAsyncButton component
- */
 export interface AppAsyncButtonProps extends AppButtonProps {
-  /** Async function to execute when the button is clicked */
+  /** Async handler called on click; errors trigger an error notification */
   onClick?: (evt: Event) => Promise<void>;
-  /** Accessible label for the button */
-  ariaLabel?: string;
-  /** Tooltip text displayed on hover */
-  title?: string;
 }
 
 const props = withDefaults(defineProps<AppAsyncButtonProps>(), {
   onClick: undefined,
-  ariaLabel: undefined,
-  title: undefined,
 });
 
-/** Props to forward to AppButton (excludes onClick which is handled here) */
-const buttonBindProps = computed(() => {
+/** Props passed to AppButton; excludes onClick which is handled internally */
+const forwardedButtonProps = computed(() => {
   const { onClick: _onClick, ...rest } = props;
   return rest;
 });
 
-const loading = ref(false);
+const isLoading = ref(false);
 
-/**
- * Handles button click events and manages async operations
- * Automatically sets loading state and handles errors with notifications
- */
 async function handleClick(evt: Event) {
-  if (loading.value || props.disabled) return;
+  if (isLoading.value || props.disabled) return;
 
-  loading.value = true;
+  isLoading.value = true;
   try {
     await props.onClick?.(evt);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (_: unknown) {
+  } catch (error: unknown) {
+    const description =
+      error instanceof Error
+        ? error.message
+        : t('form.errorMessages.asyncActionFailed');
     addNotification({
       title: t('form.errorMessages.generic'),
       variant: 'error',
-      // Add more descriptive error message for screen readers
-      description: t('form.errorMessages.asyncActionFailed'),
+      description,
     });
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 }
 </script>
