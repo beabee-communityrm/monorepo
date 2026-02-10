@@ -100,19 +100,19 @@ meta:
           v-model="taxRateRecurring"
           :label="t('adminSettings.payment.taxRateLabelRecurring')"
         />
-        <TaxRateInput
-          v-if="showOneTimeContributionSettings"
-          v-model="taxRateOneTime"
-          :label="t('adminSettings.payment.taxRateLabelOneTime')"
-        />
-        <div class="mb-4">
-          <AppCheckbox
-            v-if="showOneTimeContributionSettings && profileContent"
-            v-model="profileContent.showOneTimeDonation"
-            :label="t('adminSettings.payment.showOneTimeDonation')"
-            class="font-bold"
+        <template v-if="showOneTimeContributionSettings">
+          <TaxRateInput
+            v-model="taxRateOneTime"
+            :label="t('adminSettings.payment.taxRateLabelOneTime')"
           />
-        </div>
+          <div class="mb-4">
+            <AppCheckbox
+              v-model="showOneTimeDonation"
+              :label="t('adminSettings.payment.showOneTimeDonation')"
+              class="font-bold"
+            />
+          </div>
+        </template>
       </AppApiForm>
 
       <div class="my-8 border-b border-b-primary-40" />
@@ -215,10 +215,7 @@ const footerData = reactive({
 
 const taxRateRecurring = ref<number | null>(null);
 const taxRateOneTime = ref<number | null>(null);
-
-const profileContent = ref({
-  showOneTimeDonation: false,
-});
+const showOneTimeDonation = ref(false);
 
 const shareContent = ref<ContentShareData>();
 
@@ -261,8 +258,8 @@ async function handleSavePayment() {
   await client.content.update('payment', {
     taxRateRecurring: taxRateRecurring.value,
     taxRateOneTime: taxRateOneTime.value,
+    showOneTimeDonation: showOneTimeDonation.value,
   });
-  await client.content.update('profile', profileContent.value);
 }
 
 onBeforeMount(async () => {
@@ -281,12 +278,9 @@ onBeforeMount(async () => {
 
   joinContent.value = await client.content.get('join');
 
-  if (showOneTimeContributionSettings.value) {
-    profileContent.value = await client.content.get('profile');
-  }
-
   const paymentContent = await client.content.get('payment');
   taxRateRecurring.value = paymentContent.taxRateRecurring;
   taxRateOneTime.value = paymentContent.taxRateOneTime;
+  showOneTimeDonation.value = paymentContent.showOneTimeDonation;
 });
 </script>

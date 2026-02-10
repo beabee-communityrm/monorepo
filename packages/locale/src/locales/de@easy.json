@@ -907,7 +907,6 @@
   },
   "common": {
     "backToHome": "",
-    "contributing": "",
     "contributionPeriod": {
       "annually": "",
       "monthly": ""
@@ -922,7 +921,6 @@
     "hello": "Hallo.",
     "id": "",
     "itemsPerPage": "",
-    "joined": "",
     "label": "Betreff",
     "loading": "Der Computer arbeitet.",
     "login": "",
@@ -1140,7 +1138,6 @@
     "prorateNoTitle": "",
     "prorateYesText": "",
     "prorateYesTitle": "",
-    "recurringContribution": "",
     "restartContribution": "",
     "startContribution": "",
     "startedContribution": "",
@@ -1232,8 +1229,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "names": {
@@ -1247,8 +1246,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "type": {
@@ -1293,7 +1294,8 @@
         "duplicate-tag-name": "Diesen Tag gibt es schon",
         "invalid-token": "",
         "login-failed": "",
-        "mfa-token-required": ""
+        "mfa-token-required": "",
+        "payment-failed": ""
       },
       "generic": "Das ist nicht richtig. Hol dir Hilfe.",
       "unauthorized": "Sie haben daruf keinen Zugriff.",
@@ -1499,7 +1501,6 @@
     "willBeDonating": ""
   },
   "joinSetup": {
-    "confirmDetails": "",
     "continue": "",
     "welcome": ""
   },

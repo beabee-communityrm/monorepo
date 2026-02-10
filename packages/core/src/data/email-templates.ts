@@ -185,6 +185,14 @@ export const generalEmailTemplates = {
       CONFIRMLINK: params.confirmLink,
     })
   ),
+  'setup-account': withMergeFields(
+    ['FNAME', 'LNAME', 'CONFIRMLINK'],
+    (params: { firstName: string; lastName: string; confirmLink: string }) => ({
+      FNAME: params.firstName,
+      LNAME: params.lastName,
+      CONFIRMLINK: params.confirmLink,
+    })
+  ),
   'expired-special-url-resend': withMergeFields(
     ['FNAME', 'URL'],
     (params: { firstName: string; newUrl: string }) => ({
