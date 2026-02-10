@@ -139,8 +139,6 @@ class PaymentFlowService {
       await getRepository(JoinFlow).save(joinFlow);
     }
 
-    await this.sendConfirmationEmail(joinFlow);
-
     if (!isContributionForm(joinFlow.joinForm)) {
       log.info(
         'Payment join flow is for one-time payment, finalizing immediately ' +
@@ -148,6 +146,8 @@ class PaymentFlowService {
       );
       await this.finalizeRegistration(joinFlow.id, true);
     }
+
+    await this.sendConfirmationEmail(joinFlow);
   }
 
   /**
@@ -156,17 +156,27 @@ class PaymentFlowService {
    * the payment or contribution setup.
    *
    * @param joinFlowId - The ID of the join flow to finalize
+   * @param keepFlow - Whether to keep the join flow record after finalization
    * @returns The created or updated contact
    */
   async finalizeRegistration(
     joinFlowId: string,
     keepFlow: boolean = false
   ): Promise<Contact> {
-    const joinFlow = await getRepository(JoinFlow).findOneBy({
-      id: joinFlowId,
+    const joinFlow = await getRepository(JoinFlow).findOne({
+      where: { id: joinFlowId },
+      relations: { contact: true },
     });
     if (!joinFlow) {
       throw new NotFoundError();
+    }
+
+    if (joinFlow.contact) {
+      if (!keepFlow) {
+        await getRepository(JoinFlow).delete(joinFlow.id);
+      }
+
+      return joinFlow.contact;
     }
 
     let contact = await ContactsService.findOne({
@@ -184,10 +194,7 @@ class PaymentFlowService {
       throw new DuplicateEmailError();
     }
 
-    const completedPaymentFlow = await this.finalizeAndCleanupFlow(
-      joinFlow,
-      keepFlow
-    );
+    const completedPaymentFlow = await this.completePaymentFlow(joinFlow);
 
     // If new contact or they don't have an active membership then update their
     // details, otherwise we leave them alone to avoid overwriting information
@@ -226,13 +233,20 @@ class PaymentFlowService {
 
     if (completedPaymentFlow) {
       await this.executePaymentActions(contact, completedPaymentFlow);
-      // If this is a one-off payment join flow, skip the welcome email
-      if (!isRecurringForm) {
-        return contact;
-      }
     }
 
-    await EmailService.sendTemplateToContact('welcome', contact);
+    if (keepFlow) {
+      await getRepository(JoinFlow).update(joinFlow.id, {
+        contactId: contact.id,
+      });
+    } else {
+      await getRepository(JoinFlow).delete(joinFlow.id);
+    }
+
+    // If this is a one-off payment join flow, skip the welcome email
+    if (!completedPaymentFlow || isRecurringForm) {
+      await EmailService.sendTemplateToContact('welcome', contact);
+    }
 
     return contact;
   }
@@ -291,27 +305,47 @@ class PaymentFlowService {
    *
    * @param contact - The contact whose contribution is being updated
    * @param paymentFlowId - The ID of the payment flow to finalize
-   * @returns The completed join flow, or undefined if the flow could not be completed
+   * @returns True if the contribution update was finalized, false otherwise
    */
   async finalizeContributionUpdate(
     contact: Contact,
     paymentFlowId: string
-  ): Promise<JoinFlow | undefined> {
+  ): Promise<boolean> {
     const joinFlow = await getRepository(JoinFlow).findOneBy({ paymentFlowId });
     if (joinFlow) {
-      const completedFlow = await this.finalizeAndCleanupFlow(joinFlow, false);
+      const completedFlow = await this.completePaymentFlow(joinFlow);
       if (completedFlow) {
         await this.executePaymentActions(contact, completedFlow);
-        return joinFlow;
+        await getRepository(JoinFlow).delete(joinFlow.id);
+        return true;
       }
     }
+
+    return false;
   }
 
   /**
-   * Sends the appropriate email for the given join flow. If the email given in
-   * the join flow belongs to a contact with an active contribution the user
-   * will instead exists in the database the user will instead be given a link
-   * to access their account.
+   * Permanently deletes all join flows associated with a contact
+   *
+   * @param contact The contact
+   */
+  async permanentlyDeleteContact(contact: Contact): Promise<void> {
+    // Delete any join flows associated with this contact
+    await getRepository(JoinFlow).delete({ contactId: contact.id });
+  }
+
+  /**
+   * Sends the appropriate email for the given join flow based on the contact's
+   * status and the type of contribution they are setting up.
+   *
+   * Email logic:
+   * - One-time contributions:
+   *   - Contact with password set: sends login email
+   *   - No contact or no password: sends setup account email
+   * - Recurring contributions:
+   *   - Contact with active membership: sends login email
+   *   - Contact with active membership but no password: sends set password email
+   *   - No contact or inactive membership: confirm email
    *
    * @param joinFlow The join flow
    */
@@ -322,12 +356,15 @@ class PaymentFlowService {
       email: joinFlow.joinForm.email,
     });
 
+    const isRecurring = isContributionForm(joinFlow.joinForm);
+
     if (
-      contact?.membership?.isActive &&
-      isContributionForm(joinFlow.joinForm)
+      // Contact already exists with an active contribution
+      contact?.membership?.isActive ||
+      // One-time contribution and their account was previously setup
+      (!isRecurring && contact?.password.hash)
     ) {
       if (contact.password.hash) {
-        // Active membership and already has a password set, just send them a login link
         await EmailService.sendTemplateToContact(
           'email-exists-login',
           contact,
@@ -336,7 +373,6 @@ class PaymentFlowService {
           }
         );
       } else {
-        // Active membership but has no password set, give them a link to set a new password
         const rpFlow = await ResetSecurityFlowService.create(
           contact,
           RESET_SECURITY_FLOW_TYPE.PASSWORD
@@ -354,7 +390,7 @@ class PaymentFlowService {
       // starting a recurring contribution, ask them to confirm their email
       // address so they can continue the join flow
       await EmailService.sendTemplateTo(
-        'confirm-email',
+        isRecurring ? 'confirm-email' : 'setup-account',
         { email: joinFlow.joinForm.email },
         {
           firstName: joinFlow.joinForm.firstname || '',
@@ -363,32 +399,6 @@ class PaymentFlowService {
         }
       );
     }
-  }
-
-  /**
-   * Finalizes any associated payment flow and cleans up the join flow record.
-   * This handles the payment provider interaction and database cleanup.
-   *
-   * @param joinFlow - The join flow to finalize and clean up
-   * @returns Promise resolving to completed payment flow or undefined
-   */
-  private async finalizeAndCleanupFlow(
-    joinFlow: JoinFlow,
-    keepFlow: boolean
-  ): Promise<CompletedPaymentFlow | undefined> {
-    log.info('Completing join flow ' + joinFlow.id);
-    const paymentFlow = joinFlow.paymentFlowId
-      ? await this.completePaymentFlow(joinFlow)
-      : undefined;
-
-    if (keepFlow) {
-      await getRepository(JoinFlow).update(joinFlow.id, {
-        paymentFlowId: '',
-      });
-    } else {
-      await getRepository(JoinFlow).delete(joinFlow.id);
-    }
-    return paymentFlow;
   }
 
   /**
@@ -421,9 +431,6 @@ class PaymentFlowService {
       }
     } else {
       await PaymentService.createOneTimePayment(contact, completedFlow);
-      await EmailService.sendTemplateToContact('one-time-donation', contact, {
-        amount: joinForm.monthlyAmount,
-      });
     }
   }
 
@@ -458,11 +465,15 @@ class PaymentFlowService {
    */
   private async completePaymentFlow(
     joinFlow: JoinFlow
-  ): Promise<CompletedPaymentFlow> {
-    log.info('Complete payment flow for join flow ' + joinFlow.id);
-    return paymentProviders[
-      joinFlow.joinForm.paymentMethod
-    ].completePaymentFlow(joinFlow);
+  ): Promise<CompletedPaymentFlow | undefined> {
+    if (joinFlow.paymentFlowId) {
+      log.info('Complete payment flow for join flow ' + joinFlow.id);
+      return paymentProviders[
+        joinFlow.joinForm.paymentMethod
+      ].completePaymentFlow(joinFlow);
+    } else {
+      return undefined;
+    }
   }
 
   /**

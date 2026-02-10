@@ -1,17 +1,15 @@
 /**
- * Options for email preview requests
+ * Options for email preview requests.
  */
 export interface PreviewEmailOptions {
-  /** Custom merge fields to use in the preview */
+  /** When set (admin), merge fields use this contact; otherwise the current user. */
+  contactId?: string;
+  /** Custom merge fields for the preview. { FIELD_NAME: value }. */
   mergeFields?: Record<string, string>;
-  /** Optional subject to override the template's default subject */
+  /** Subject to use for the preview (overrides template default if provided). */
   subject?: string;
-  /**
-   * Optional body to override the template's body for preview
-   * When provided, this body will be used instead of the saved template body,
-   * allowing preview of unsaved changes. Merge fields will still be replaced.
-   */
+  /** Body to use for the preview (overrides template body; merge fields are still replaced). */
   body?: string;
-  /** Optional locale for the preview (defaults to system locale) */
+  /** Locale for the preview (defaults to system locale if omitted). */
   locale?: string;
 }

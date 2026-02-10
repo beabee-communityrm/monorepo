@@ -74,19 +74,33 @@ meta:
                 handleUpdateAction({ tags: [tagId] }, successText)
             "
           />
-          <!--
-          TODO:
-           * Add support for emailing selected contacts (instead of all contacts)
-           * This redirects to the legacy members app, we need to implement this in the new frontend
-          -->
-          <AppButton
+          <AppDropdownButton
             :icon="faMailBulk"
             variant="primaryOutlined"
             :title="t('actions.sendEmails')"
             :disabled="!currentSegment || selectedCount > 0"
-            :href="`/members/segments/${currentSegment?.id}/email`"
-            external
-          />
+          >
+            <router-link
+              v-if="currentSegment"
+              class="block px-3 py-2 hover:bg-primary-5"
+              role="menuitem"
+              :to="`/admin/contacts/send-email/${currentSegment.id}`"
+              @click.stop
+            >
+              {{ t('actions.sendOneOffEmail') }}
+            </router-link>
+            <a
+              v-if="currentSegment"
+              class="block border-t border-primary-40 px-3 py-2 hover:bg-primary-5"
+              :href="`/members/segments/${currentSegment.id}/email`"
+              role="menuitem"
+              target="_blank"
+              rel="noopener noreferrer"
+              @click.stop
+            >
+              {{ t('actions.sendOngoingEmails') }}
+            </a>
+          </AppDropdownButton>
         </AppButtonGroup>
         <p v-if="selectedCount > 0" class="self-center text-sm">
           <i18n-t keypath="contacts.selectedCount" :plural="selectedCount">
@@ -167,6 +181,7 @@ import {
 import {
   AppButton,
   AppButtonGroup,
+  AppDropdownButton,
   AppFilterGrid,
   AppSearchInput,
   AppSelect,

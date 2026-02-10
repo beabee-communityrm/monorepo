@@ -1,9 +1,11 @@
 import { getRepository } from '@beabee/core/database';
 import {
+  Contact,
   Segment,
   SegmentContact,
   SegmentOngoingEmail,
 } from '@beabee/core/models';
+import EmailService from '@beabee/core/services/EmailService';
 import { AuthInfo } from '@beabee/core/type';
 
 import { CurrentAuth } from '@api/decorators/CurrentAuth';
@@ -16,6 +18,7 @@ import {
   GetSegmentOptsDto,
   GetSegmentWith,
   ListSegmentsDto,
+  SendSegmentEmailBodyDto,
 } from '@api/dto/SegmentDto';
 import { UUIDParams } from '@api/params/UUIDParams';
 import ContactTransformer from '@api/transformers/ContactTransformer';
@@ -107,16 +110,36 @@ export class SegmentController {
     @QueryParams() query: ListContactsDto
   ): Promise<PaginatedDto<GetContactDto> | undefined> {
     const segment = await getRepository(Segment).findOneBy({ id });
-    if (segment) {
-      return await ContactTransformer.fetch(auth, {
-        ...query,
-        rules: query.rules
-          ? {
-              condition: 'AND',
-              rules: [segment.ruleGroup, query.rules],
-            }
-          : segment.ruleGroup,
-      });
+    if (!segment) return undefined;
+    const mergedRules = query.rules
+      ? { condition: 'AND' as const, rules: [segment.ruleGroup, query.rules] }
+      : segment.ruleGroup;
+    return await ContactTransformer.fetch(auth, {
+      ...query,
+      rules: mergedRules,
+    });
+  }
+
+  /** Send one-off email to all contacts in the segment (admin). */
+  @OnUndefined(204)
+  @Post('/:id/email/send')
+  async sendEmail(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Params() { id }: UUIDParams,
+    @Body() data: SendSegmentEmailBodyDto
+  ): Promise<void> {
+    const segment = await getRepository(Segment).findOneBy({ id });
+    if (!segment) throw new NotFoundError();
+    const { items } = await ContactTransformer.fetchRaw(auth, {
+      rules: segment.ruleGroup,
+      limit: -1,
+    });
+    if (items.length > 0) {
+      await EmailService.sendCustomEmailToContact(
+        items,
+        data.subject,
+        data.body
+      );
     }
   }
 }

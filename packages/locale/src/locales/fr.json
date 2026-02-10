@@ -86,6 +86,7 @@
     "noBack": "Non, revenir en arrière",
     "participate": "Participer",
     "preview": "Aperçu",
+    "previous": "Précédent",
     "publish": "Publier",
     "reopen": "Réouvrir",
     "replicate": "Répliquer",
@@ -100,6 +101,8 @@
     "schedule": "Planifier",
     "search": "Rechercher",
     "sendEmails": "Envoyer des e-mails",
+    "sendOneOffEmail": "Envoyer un e-mail",
+    "sendOngoingEmails": "E-mails récurrents",
     "share": "Partager",
     "skip": "Ignorer",
     "submit": "Soumettre",
@@ -908,7 +911,6 @@
   },
   "common": {
     "backToHome": "Retour à l'accueil",
-    "contributing": "Contribue",
     "contributionPeriod": {
       "annually": "Annuellement",
       "monthly": "Mensuellement"
@@ -923,7 +925,6 @@
     "hello": "Bonjour",
     "id": "Identifiant",
     "itemsPerPage": "{items} éléments par page",
-    "joined": "Inscrit",
     "label": "Intitulé",
     "loading": "Chargement…",
     "login": "Se connecter",
@@ -1034,6 +1035,10 @@
       "whatDoTheButtonsDo": "Cliquez sur le bouton pour générer un lien d'urgence :"
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Contact {current} sur {total}",
+    "selfOption": "Vous-même"
+  },
   "contacts": {
     "addContact": "Ajouter un contact",
     "advancedSearch": {
@@ -1090,6 +1095,11 @@
     "numResults": "{n} contact trouvé | {n} contacts trouvés",
     "search": "Rechercher un contact…",
     "selectedCount": "{n} contact sélectionné | {n} contacts sélectionnés",
+    "sendEmail": {
+      "send": "Envoyer",
+      "sent": "L'e-mail a été envoyé au segment.",
+      "title": "Envoyer un e-mail au segment"
+    },
     "showingOf": "Affichage des contacts {start} à {end} sur {total}"
   },
   "contribution": {
@@ -1125,7 +1135,6 @@
     "prorateNoTitle": "Mettre à jour ma cotisation le {renewalDate}",
     "prorateYesText": "Un paiement unique de {oneOffPayment} vous sera facturé et votre cotisation sera mise à jour immédiatement",
     "prorateYesTitle": "Mettre à jour ma cotisation maintenant",
-    "recurringContribution": "Cotisation récurrente",
     "restartContribution": "",
     "startContribution": "Commencer à cotiser",
     "startedContribution": "Votre cotisation a commencé.",
@@ -1150,6 +1159,7 @@
       "label": "Message"
     },
     "preview": {
+      "asContactLabel": "Contact pour aperçu",
       "label": "Aperçu",
       "unavailable": "Aperçu non disponible"
     },
@@ -1215,10 +1225,12 @@
         "manual-to-automatic": "Envoyé aux membres lorsque leur méthode de paiement a été modifiée avec succès de manuel à paiement récurrent automatique. Confirme le changement réussi.",
         "new-callout-response": "Envoyé aux administrateurs lorsqu'une nouvelle réponse à un CrowdNewsroom est soumise. Contient généralement une notification avec les détails du CrowdNewsroom et le nom de la personne qui répond.",
         "new-member": "Envoyé aux administrateurs lorsqu'un nouveau membre rejoint avec succès la communauté. Contient généralement une notification avec l'ID et le nom du nouveau membre.",
-        "one-time-donation": "Envoyé aux utilisateurs après qu'ils aient effectué une contribution unique (paiement non récurrent). Confirme généralement le montant de la contribution et sert de reçu.",
+        "one-time-donation": "Envoyé aux utilisateurs après qu'ils aient complété une contribution ponctuelle.",
+        "one-time-donation-failed": "",
         "reset-device": "Envoyé lorsqu'un utilisateur demande à réinitialiser son appareil de confiance pour l'authentification à deux facteurs. Contient un lien sécurisé pour réinitialiser l'appareil.",
         "reset-password": "Envoyé lorsqu'un utilisateur demande à réinitialiser son mot de passe. Contient un lien sécurisé pour réinitialiser le mot de passe.",
-        "welcome": "Envoyé aux nouveaux membres après qu'ils aient terminé le processus d'inscription afin qu'ils puissent confirmer leur adresse e-mail. Cet e-mail les accueille dans la communauté."
+        "setup-account": "",
+        "welcome": "Envoyé aux nouveaux membres après qu'ils aient terminé le processus d'inscription. Cet e-mail les accueille dans la communauté."
       },
       "names": {
         "cancelled-contribution": "Contribution annulée",
@@ -1231,8 +1243,10 @@
         "new-callout-response": "Admin : Nouvelle réponse CrowdNewsroom",
         "new-member": "Admin : Nouveau contact",
         "one-time-donation": "Confirmation de contribution unique",
+        "one-time-donation-failed": "",
         "reset-device": "Réinitialiser l'appareil",
         "reset-password": "Réinitialiser le mot de passe",
+        "setup-account": "",
         "welcome": "Bienvenue"
       },
       "type": {
@@ -1277,7 +1291,8 @@
         "duplicate-tag-name": "Un libellé portant ce nom existe déjà",
         "invalid-token": "Jeton A2F invalide",
         "login-failed": "Identifiants invalides",
-        "mfa-token-required": "Vous avez activé l'A2F, tapez le code depuis votre application d'authentification pour continuer"
+        "mfa-token-required": "Vous avez activé l'A2F, tapez le code depuis votre application d'authentification pour continuer",
+        "payment-failed": "Votre paiement n’a pas abouti. Veuillez réessayer ou utiliser un autre moyen de paiement."
       },
       "generic": "Oups, une erreur s'est produite ! Contactez l'assistance si cela se produit à nouveau.",
       "unauthorized": "Vous n'avez pas accès à ceci.",
@@ -1406,6 +1421,7 @@
     "makeOneTimeDonationTitle": "Faire une contribution unique maintenant",
     "manageContribution": "Gérer votre cotisation",
     "newCallout": "Nouvelle CrowdNewsrooms !",
+    "oneTimeContributionSuccessMessage": "Merci pour votre contribution !",
     "openCallouts": "CrowdNewsrooms actives",
     "quickActions": "Actions rapides",
     "title": "Accueil",
@@ -1482,7 +1498,6 @@
     "willBeDonating": "Vous ferez une contribution unique de {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Veuillez confirmer vos informations",
     "continue": "Tout est bon ! Continuer",
     "welcome": "Bienvenue {firstName} !"
   },

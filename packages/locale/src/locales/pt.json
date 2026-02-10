@@ -86,6 +86,7 @@
     "noBack": "Não, voltar atrás",
     "participate": "Participar",
     "preview": "Pré-visualizar",
+    "previous": "Anterior",
     "publish": "Publicar",
     "reopen": "Reabrir",
     "replicate": "Replicar",
@@ -100,6 +101,8 @@
     "schedule": "Agendar",
     "search": "Pesquisar",
     "sendEmails": "Fechar",
+    "sendOneOffEmail": "Enviar e-mail",
+    "sendOngoingEmails": "E-mails contínuos",
     "share": "Partilhar",
     "skip": "Saltar",
     "submit": "Enviar",
@@ -904,7 +907,6 @@
   },
   "common": {
     "backToHome": "Voltar ao início",
-    "contributing": "A contribuir",
     "contributionPeriod": {
       "annually": "Anualmente",
       "monthly": "Mensalmente"
@@ -919,7 +921,6 @@
     "hello": "Olá",
     "id": "ID",
     "itemsPerPage": "{items} itens por página",
-    "joined": "Juntaste-te",
     "label": "Label",
     "loading": "A carregar...",
     "login": "Login",
@@ -1030,6 +1031,10 @@
       "whatDoTheButtonsDo": ""
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Contacto {current} de {total}",
+    "selfOption": "Tu mesmo"
+  },
   "contacts": {
     "addContact": "Adicionar contacto",
     "advancedSearch": {
@@ -1086,6 +1091,11 @@
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
     "search": "Pesquisar contactos...",
     "selectedCount": "",
+    "sendEmail": {
+      "send": "Enviar",
+      "sent": "O e-mail foi enviado para o segmento.",
+      "title": "Enviar e-mail ao segmento"
+    },
     "showingOf": "Contactos {start} a {end} de um total de {total}"
   },
   "contribution": {
@@ -1121,7 +1131,6 @@
     "prorateNoTitle": "Atualizar a minha contribuição a {renewalDate}",
     "prorateYesText": "Vamos cobrar-te um pagamento único {oneOffPayment} agora e a tua contribuição será atualizada de forma imediata.",
     "prorateYesTitle": "Atualizar a minha contribuição agora",
-    "recurringContribution": "Contribuição recorrente",
     "restartContribution": "Voltar a contribuir",
     "startContribution": "Começar a contribuir",
     "startedContribution": "A tua contribuição começou.",
@@ -1146,6 +1155,7 @@
       "label": "Mensagem"
     },
     "preview": {
+      "asContactLabel": "Contacto para pré-visualização",
       "label": "Pré-visualização",
       "unavailable": "Pré-visualização indisponível"
     },
@@ -1211,10 +1221,12 @@
         "manual-to-automatic": "Enviado aos membros quando o seu método de pagamento é alterado com sucesso de manual para pagamento recorrente automático. Confirma a alteração bem-sucedida.",
         "new-callout-response": "Enviado aos administradores quando uma nova resposta a um CrowdNewsroom é submetida. Normalmente inclui uma notificação com os detalhes do CrowdNewsroom e o nome da pessoa que responde.",
         "new-member": "Enviado aos administradores quando um novo membro se junta com sucesso à comunidade. Normalmente inclui uma notificação com o ID e o nome do novo membro.",
-        "one-time-donation": "Enviado aos utilizadores após concluírem uma contribuição única (pagamento não recorrente). Normalmente confirma o valor da contribuição e serve como recibo.",
+        "one-time-donation": "Enviado aos utilizadores após concluírem uma contribuição única.",
+        "one-time-donation-failed": "",
         "reset-device": "Enviado quando um utilizador solicita a reposição do seu dispositivo de confiança para autenticação de dois fatores. Contém uma ligação segura para repor o dispositivo.",
         "reset-password": "Enviado quando um utilizador solicita a reposição da palavra-passe. Contém uma ligação segura para repor a palavra-passe.",
-        "welcome": "Enviado a novos membros após concluírem o processo de registo para que possam confirmar o seu endereço de email. Este email dá-lhes as boas-vindas à comunidade."
+        "setup-account": "",
+        "welcome": "Enviado a novos membros após concluírem o processo de registo. Este email dá-lhes as boas-vindas à comunidade."
       },
       "names": {
         "cancelled-contribution": "Contribuição cancelada",
@@ -1227,8 +1239,10 @@
         "new-callout-response": "Admin: Nova resposta CrowdNewsroom",
         "new-member": "Admin: Novo contacto",
         "one-time-donation": "Confirmação de contribuição única",
+        "one-time-donation-failed": "",
         "reset-device": "Repor dispositivo",
         "reset-password": "Repor palavra-passe",
+        "setup-account": "",
         "welcome": "Bem-vindo"
       },
       "type": {
@@ -1273,7 +1287,8 @@
         "duplicate-tag-name": "",
         "invalid-token": "Token 2FA inválido",
         "login-failed": "Combinação inválida de email e palavra-passe",
-        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar."
+        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar.",
+        "payment-failed": "O seu pagamento não foi bem-sucedido. Tente novamente ou utilize outro método de pagamento."
       },
       "generic": "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
       "unauthorized": "",
@@ -1402,6 +1417,7 @@
     "makeOneTimeDonationTitle": "Fazer uma contribuição única agora",
     "manageContribution": "Gerir o teu contributo",
     "newCallout": "Nova CrowdNewsroom!",
+    "oneTimeContributionSuccessMessage": "Obrigado pela tua contribuição!",
     "openCallouts": "CrowdNewsrooms abertas",
     "quickActions": "Ações rápidas",
     "title": "Página inicial",
@@ -1478,7 +1494,6 @@
     "willBeDonating": "Vais fazer uma contribuição única de {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Por favor confirma os teus detalhes",
     "continue": "Tudo OK! Continuar",
     "welcome": "Boas-vindas, {firstName}!"
   },

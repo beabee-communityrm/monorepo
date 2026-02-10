@@ -1,5 +1,6 @@
 export * from './badge';
 export * from './button';
+export * from './contact';
 export * from './dialog';
 export * from './email';
 export * from './form';

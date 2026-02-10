@@ -86,6 +86,7 @@
     "noBack": "“Nee, ga terug”.",
     "participate": "Deelnemen",
     "preview": "Voorbeeld",
+    "previous": "Vorige",
     "publish": "Publiceren",
     "reopen": "Heropen",
     "replicate": "Repliceren",
@@ -100,6 +101,8 @@
     "schedule": "Plan",
     "search": "Zoeken",
     "sendEmails": "E-mails verzenden",
+    "sendOneOffEmail": "E-mail verzenden",
+    "sendOngoingEmails": "Doorlopende e-mails",
     "share": "Delen",
     "skip": "Sla over",
     "submit": "Verzenden",
@@ -904,7 +907,6 @@
   },
   "common": {
     "backToHome": "Terug naar home",
-    "contributing": "Bijdragend",
     "contributionPeriod": {
       "annually": "Jaarlijks",
       "monthly": "Maandelijks"
@@ -919,7 +921,6 @@
     "hello": "Hallo",
     "id": "ID",
     "itemsPerPage": "{items} items per pagina",
-    "joined": "Aangesloten bij",
     "label": "Label",
     "loading": "Aan het laden...",
     "login": "Inloggen",
@@ -1030,6 +1031,10 @@
       "whatDoTheButtonsDo": "Klik op de knop om een noodlink te genereren:"
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Contact {current} van {total}",
+    "selfOption": "Uzelf"
+  },
   "contacts": {
     "addContact": "Contact toevoegen",
     "advancedSearch": {
@@ -1086,6 +1091,11 @@
     "numResults": "{n} contact gevonden | {n} contacten gevonden",
     "search": "Contacten zoeken...",
     "selectedCount": "{n} contactpersoon geselecteerd | {n} contactpersonen geselecteerd",
+    "sendEmail": {
+      "send": "Verzenden",
+      "sent": "De e-mail is naar het segment verzonden.",
+      "title": "E-mail verzenden naar segment"
+    },
     "showingOf": "Toont {start} tot {end} contacten uit {total}"
   },
   "contribution": {
@@ -1121,7 +1131,6 @@
     "prorateNoTitle": "Update mijn bijdrage op {renewalDate}",
     "prorateYesText": "Er wordt u nu een eenmalige betaling van {oneOffPayment} in rekening gebracht en uw bijdrage wordt onmiddellijk bijgewerkt.",
     "prorateYesTitle": "Mijn bijdrage nu aanpassen",
-    "recurringContribution": "Terugkerende bijdrage",
     "restartContribution": "Contributie herstarten",
     "startContribution": "Contributie starten",
     "startedContribution": "Je bijdrage is gestart.",
@@ -1146,6 +1155,7 @@
       "label": "Bericht"
     },
     "preview": {
+      "asContactLabel": "Contact voor voorbeeld",
       "label": "Voorbeeld",
       "unavailable": "Voorbeeld niet beschikbaar"
     },
@@ -1211,10 +1221,12 @@
         "manual-to-automatic": "Verzonden naar leden wanneer hun betaalmethode succesvol is gewijzigd van handmatig naar automatische terugkerende betaling. Bevestigt de succesvolle wijziging.",
         "new-callout-response": "Verzonden naar beheerders wanneer een nieuwe reactie op een CrowdNewsroom wordt ingediend. Bevat meestal een melding met de CrowdNewsroom-details en de naam van de reagerende persoon.",
         "new-member": "Verzonden naar beheerders wanneer een nieuw lid met succes lid wordt van de community. Bevat meestal een melding met het ID en de naam van het nieuwe lid.",
-        "one-time-donation": "Verzonden naar gebruikers nadat ze een eenmalige bijdrage (niet-terugkerende betaling) hebben voltooid. Bevestigt meestal het bijdragebedrag en dient als ontvangstbewijs.",
+        "one-time-donation": "Verzonden naar gebruikers nadat ze een eenmalige bijdrage hebben voltooid.",
+        "one-time-donation-failed": "Verzonden naar gebruikers wanneer hun eenmalige bijdragebetaling mislukt.",
         "reset-device": "Verzonden wanneer een gebruiker vraagt om zijn vertrouwde apparaat voor tweefactorauthenticatie te resetten. Bevat een veilige link om het apparaat te resetten.",
         "reset-password": "Verzonden wanneer een gebruiker vraagt om zijn wachtwoord te resetten. Bevat een veilige link om het wachtwoord te resetten.",
-        "welcome": "Verzonden naar nieuwe leden nadat ze het registratieproces hebben voltooid, zodat ze hun e-mailadres kunnen bevestigen. Deze e-mail heet hen welkom in de community."
+        "setup-account": "Verzonden naar gebruikers die een eenmalige bijdrage hebben gedaan en nog geen account hebben.",
+        "welcome": "Verzonden naar nieuwe leden nadat ze het registratieproces hebben voltooid. Deze e-mail heet hen welkom in de community."
       },
       "names": {
         "cancelled-contribution": "Bijdrage geannuleerd",
@@ -1227,8 +1239,10 @@
         "new-callout-response": "Beheer: Nieuwe CrowdNewsroom-reactie",
         "new-member": "Beheer: Nieuw contact",
         "one-time-donation": "Bevestiging eenmalige bijdrage",
+        "one-time-donation-failed": "Eenmalige bijdrage mislukt",
         "reset-device": "Apparaat resetten",
         "reset-password": "Wachtwoord resetten",
+        "setup-account": "Account instellen",
         "welcome": "Welkom"
       },
       "type": {
@@ -1273,7 +1287,8 @@
         "duplicate-tag-name": "Er bestaat al een tag met deze naam",
         "invalid-token": "Ongeldig 2FA token",
         "login-failed": "Ongeldige combinatie wachtwoord/e-mail",
-        "mfa-token-required": "Je hebt 2FA ingeschakeld, voer het token van je authenticator app in om verder te gaan."
+        "mfa-token-required": "Je hebt 2FA ingeschakeld, voer het token van je authenticator app in om verder te gaan.",
+        "payment-failed": "Je betaling is niet gelukt. Probeer het opnieuw of gebruik een andere betaalmethode."
       },
       "generic": "Oeps, er is iets fout gegaan! Neem contact op met support als dit weer gebeurt.",
       "unauthorized": "Je hebt hier geen toegang toe.",
@@ -1402,6 +1417,7 @@
     "makeOneTimeDonationTitle": "Doe nu een eenmalige bijdrage",
     "manageContribution": "Je bijdrage beheren",
     "newCallout": "Nieuwe CrowdNewsroom!",
+    "oneTimeContributionSuccessMessage": "Bedankt voor je bijdrage!",
     "openCallouts": "CrowdNewsroom openen",
     "quickActions": "Snelle acties",
     "title": "Home",
@@ -1478,7 +1494,6 @@
     "willBeDonating": "Je doet een eenmalige bijdrage van {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Bevestig uw gegevens",
     "continue": "Alles goed! Ga verder",
     "welcome": "Welkom {firstName}!"
   },

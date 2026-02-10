@@ -86,6 +86,7 @@
     "noBack": "No, go back",
     "participate": "Participate",
     "preview": "Preview",
+    "previous": "Previous",
     "publish": "Publish",
     "reopen": "Reopen",
     "replicate": "Replicate",
@@ -100,6 +101,8 @@
     "schedule": "Schedule",
     "search": "Search",
     "sendEmails": "Send emails",
+    "sendOneOffEmail": "Send email",
+    "sendOngoingEmails": "Ongoing emails",
     "share": "Share",
     "skip": "Skip",
     "submit": "Submit",
@@ -904,7 +907,6 @@
   },
   "common": {
     "backToHome": "Back to home",
-    "contributing": "Contributing",
     "contributionPeriod": {
       "annually": "Annually",
       "monthly": "Monthly"
@@ -919,7 +921,6 @@
     "hello": "Hello",
     "id": "ID",
     "itemsPerPage": "{items} items per page",
-    "joined": "Joined",
     "label": "Label",
     "loading": "Loading...",
     "login": "Login",
@@ -1030,6 +1031,10 @@
       "whatDoTheButtonsDo": "Click the button to generate an emergency link:"
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Contact {current} of {total}",
+    "selfOption": "As yourself"
+  },
   "contacts": {
     "addContact": "Add contact",
     "advancedSearch": {
@@ -1043,6 +1048,7 @@
       "activeUser": "Active user",
       "amount": "Amount",
       "annotationsCopy": "Contact successfully updated",
+      "averageDonationAmount": "Average amount of one-time contributions (all time)",
       "contribution": "Recurring contribution",
       "contributionCancelled": "Recurring contribution cancelled",
       "contributionMonthlyAmount": "Recurring contribution monthly amount",
@@ -1050,8 +1056,10 @@
       "contributionType": "Recurring contribution type",
       "deliveryOptIn": "Delivery opt-in",
       "description": "Description",
+      "donationDate": "One-time contribution date",
       "email": "Email",
       "firstname": "First name",
+      "hasDonated": "Made one-time contribution",
       "joined": "Joined",
       "lastSeen": "Last seen",
       "lastname": "Last name",
@@ -1069,16 +1077,13 @@
       "phone": "Phone number",
       "preferredChannel": "Preferred channel",
       "tags": "Tags",
-      "donationDate": "One-time contribution date",
-      "hasDonated": "Made one-time contribution",
-      "totalDonationAmount": "Total amount of one-time contributions (all time)",
-      "averageDonationAmount": "Average amount of one-time contributions (all time)"
+      "totalDonationAmount": "Total amount of one-time contributions (all time)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Contact information",
-      "recurringContributions": "Recurring Contributions",
       "oneTimeContributions": "One-Time Contributions",
+      "recurringContributions": "Recurring Contributions",
       "role": "Role"
     },
     "noContacts": "No contacts added yet",
@@ -1086,6 +1091,11 @@
     "numResults": "{n} contact found | {n} contacts found",
     "search": "Search contacts...",
     "selectedCount": "{n} contact selected | {n} contacts selected",
+    "sendEmail": {
+      "send": "Send",
+      "sent": "The email has been sent to the segment.",
+      "title": "Send email to segment"
+    },
     "showingOf": "Showing {start} to {end} contacts out of {total}"
   },
   "contribution": {
@@ -1122,7 +1132,6 @@
     "prorateYesText": "You'll be charged a one-off payment of {oneOffPayment} now and your contribution will be updated immedately",
     "prorateYesTitle": "Update my contribution now",
     "restartContribution": "Restart contribution",
-    "recurringContribution": "Recurring Contribution",
     "startContribution": "Start contribution",
     "startedContribution": "Your contribution has started.",
     "updateContribution": "Update contribution",
@@ -1146,6 +1155,7 @@
       "label": "Message"
     },
     "preview": {
+      "asContactLabel": "Contact for preview",
       "label": "Preview",
       "unavailable": "Preview unavailable"
     },
@@ -1209,10 +1219,12 @@
         "manual-to-automatic": "Sent to members when their payment method is successfully changed from manual to automatic recurring payment. Confirms the successful change.",
         "new-callout-response": "Sent to administrators when a new response to a CrowdNewsroom is submitted. Typically includes a notification with the CrowdNewsroom details and the name of the responding person.",
         "new-member": "Sent to administrators when a new member successfully joins the community. Typically includes a notification with the ID and name of the new member.",
-        "one-time-donation": "Sent to users after they complete a one-time contribution (non-recurring payment). Typically confirms the contribution amount and serves as a receipt.",
+        "one-time-donation": "Sent to users after they complete a one-time contribution.",
+        "one-time-donation-failed": "Sent to users when their one-time contribution payment fails.",
         "reset-device": "Sent when a user requests to reset their trusted device for two-factor authentication. Contains a secure link to reset the device.",
         "reset-password": "Sent when a user requests to reset their password. Contains a secure link to reset the password.",
-        "welcome": "Sent to new members after they complete the registration process so they can confirm their email address. This email welcomes them to the community."
+        "setup-account": "Sent to users who have completed a one-time contribution and don't have an account yet.",
+        "welcome": "Sent to new members after they complete the registration process. This email welcomes them to the community."
       },
       "names": {
         "cancelled-contribution": "Contribution Cancelled",
@@ -1225,8 +1237,10 @@
         "new-callout-response": "Admin: New CrowdNewsroom – Response Notification",
         "new-member": "Admin: New Contact – Notification",
         "one-time-donation": "One-Time Contribution Confirmation",
+        "one-time-donation-failed": "One-Time Contribution Failed",
         "reset-device": "Reset Device",
         "reset-password": "Reset Password",
+        "setup-account": "Setup Account",
         "welcome": "Welcome"
       },
       "type": {
@@ -1271,7 +1285,8 @@
         "duplicate-tag-name": "A tag with this name already exists",
         "invalid-token": "Invalid 2FA token",
         "login-failed": "Invalid password/email combination",
-        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed"
+        "mfa-token-required": "You have 2FA enabled, enter the token from your authenticator app to proceed",
+        "payment-failed": "Your payment was not successful. Please try again or use a different payment method."
       },
       "generic": "Oops, something went wrong! Contact support if this happens again.",
       "unauthorized": "You don't have access to that.",
@@ -1400,6 +1415,7 @@
     "makeOneTimeDonationTitle": "Make one-time contribution",
     "manageContribution": "Manage your contribution",
     "newCallout": "New CrowdNewsroom!",
+    "oneTimeContributionSuccessMessage": "Thank you for your contribution!",
     "openCallouts": "CrowdNewsroom",
     "quickActions": "Quick actions",
     "title": "Home",
@@ -1476,7 +1492,6 @@
     "willBeDonating": "You'll be making a one-time contribution of {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Please confirm your details",
     "continue": "All good! Continue",
     "welcome": "Welcome {firstName}!"
   },

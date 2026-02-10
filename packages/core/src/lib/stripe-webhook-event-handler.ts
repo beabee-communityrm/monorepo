@@ -194,7 +194,8 @@ export class StripeWebhookEventHandler {
       isOneTimePaymentInvoice(invoice) &&
       (invoice.status === 'paid' ||
         invoice.status === 'void' ||
-        invoice.status === 'uncollectible')
+        invoice.status === 'uncollectible') &&
+      invoice.default_payment_method
     ) {
       log.info('Detaching payment method for one-time invoice ' + invoice.id);
       await stripe.paymentMethods.detach(
@@ -220,26 +221,34 @@ export class StripeWebhookEventHandler {
     invoice: Stripe.Invoice
   ): Promise<void> {
     const contribution = await this.getContributionFromInvoice(invoice);
-    if (!contribution || !invoice.subscription) return;
+    if (!contribution) return;
 
     log.info(`Invoice ${invoice.id} was paid`);
 
-    // Unlikely, just log for now
-    if (invoice.lines.has_more) {
-      log.error(`Invoice ${invoice.id} has too many lines`);
-      return;
-    }
+    if (invoice.subscription) {
+      // Unlikely, just log for now
+      if (invoice.lines.has_more) {
+        log.error(`Invoice ${invoice.id} has too many lines`);
+        return;
+      }
 
-    // Stripe docs say the subscription will always be the last line in the invoice
-    const line = invoice.lines.data.slice(-1)[0];
-    if (line.subscription !== invoice.subscription) {
-      log.error(
-        'Expected subscription to be last line on invoice' + invoice.id
+      // Stripe docs say the subscription will always be the last line in the invoice
+      const line = invoice.lines.data.slice(-1)[0];
+      if (line.subscription !== invoice.subscription) {
+        log.error(
+          'Expected subscription to be last line on invoice' + invoice.id
+        );
+        return;
+      }
+
+      await this.updateContributionAfterPayment(contribution, line);
+    } else if (isOneTimePaymentInvoice(invoice)) {
+      await EmailService.sendTemplateToContact(
+        'one-time-donation',
+        contribution.contact,
+        { amount: invoice.total / 100 }
       );
-      return;
     }
-
-    await this.updateContributionAfterPayment(contribution, line);
   }
 
   /**
@@ -260,8 +269,19 @@ export class StripeWebhookEventHandler {
     // At the moment just marks as uncollectible straight away and therefore
     // cancels any retry schedule. This could change in the future if it is
     // supported
-    log.info(`Marking invoice ${invoice.id} as uncollectible `);
-    await stripe.invoices.markUncollectible(invoice.id);
+    if (invoice.status !== 'uncollectible') {
+      log.info(`Marking invoice ${invoice.id} as uncollectible `);
+      await stripe.invoices.markUncollectible(invoice.id);
+
+      const contribution = await this.getContributionFromInvoice(invoice);
+      if (contribution) {
+        await EmailService.sendTemplateToContact(
+          'one-time-donation-failed',
+          contribution.contact,
+          { amount: invoice.total / 100 }
+        );
+      }
+    }
   }
 
   /**

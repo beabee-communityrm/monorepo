@@ -86,6 +86,7 @@
     "noBack": "No, torna indietro",
     "participate": "Partecipa",
     "preview": "Anteprima",
+    "previous": "Precedente",
     "publish": "Pubblica",
     "reopen": "Riapri",
     "replicate": "Replica",
@@ -100,6 +101,8 @@
     "schedule": "Programma",
     "search": "Ricerca",
     "sendEmails": "Invia e-mail",
+    "sendOneOffEmail": "Invia e-mail",
+    "sendOngoingEmails": "E-mail ricorrenti",
     "share": "Condividi",
     "skip": "Salta",
     "submit": "Invia",
@@ -904,7 +907,6 @@
   },
   "common": {
     "backToHome": "Torna alla home",
-    "contributing": "Il tuo contributo",
     "contributionPeriod": {
       "annually": "all'anno",
       "monthly": "al mese"
@@ -919,7 +921,6 @@
     "hello": "Ciao",
     "id": "ID",
     "itemsPerPage": "{items} elementi per pagina",
-    "joined": "Iscritto",
     "label": "Etichetta",
     "loading": "Caricamento...",
     "login": "Login",
@@ -1030,6 +1031,10 @@
       "whatDoTheButtonsDo": "Clicca il pulsante per generare un link di emergenza:"
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Contatto {current} di {total}",
+    "selfOption": "Tu stesso"
+  },
   "contacts": {
     "addContact": "Aggiungi contatto",
     "advancedSearch": {
@@ -1086,6 +1091,11 @@
     "numResults": "{n} contatto trovato | {n} contatti trovati",
     "search": "Cerca contatti...",
     "selectedCount": "{n} contatto selezionato | {n} contatti selezionati",
+    "sendEmail": {
+      "send": "",
+      "sent": "",
+      "title": ""
+    },
     "showingOf": "Contatti da {start} a {end} su {total}"
   },
   "contribution": {
@@ -1121,7 +1131,6 @@
     "prorateNoTitle": "Aggiorna il mio contributo il {renewalDate}",
     "prorateYesText": "Ti verrà addebitato ora un pagamento una tantum di {oneOffPayment} e il tuo contributo sarà aggiornato immediatamente.",
     "prorateYesTitle": "Aggiorna il mio contributo ora",
-    "recurringContribution": "Contributo ricorrente",
     "restartContribution": "Ripristina contributo",
     "startContribution": "Avvia contributo",
     "startedContribution": "Il tuo contributo è stato avviato.",
@@ -1146,6 +1155,7 @@
       "label": "Messaggio"
     },
     "preview": {
+      "asContactLabel": "Contatto per anteprima",
       "label": "Anteprima",
       "unavailable": "Anteprima non disponibile"
     },
@@ -1212,8 +1222,10 @@
         "new-callout-response": "Inviato agli amministratori quando viene inviata una nuova risposta a un CrowdNewsroom. Include generalmente una notifica con i dettagli del CrowdNewsroom e il nome della persona che risponde.",
         "new-member": "Inviato agli amministratori quando un nuovo membro si unisce con successo alla community. Include generalmente una notifica con l'ID e il nome del nuovo membro.",
         "one-time-donation": "Inviato agli utenti dopo che hanno completato un contributo una tantum (pagamento non ricorrente). Conferma generalmente l'importo del contributo e funge da ricevuta.",
+        "one-time-donation-failed": "",
         "reset-device": "Inviato quando un utente richiede di reimpostare il proprio dispositivo attendibile per l'autenticazione a due fattori. Contiene un link sicuro per reimpostare il dispositivo.",
         "reset-password": "Inviato quando un utente richiede di reimpostare la propria password. Contiene un link sicuro per reimpostare la password.",
+        "setup-account": "",
         "welcome": "Inviato ai nuovi membri dopo che hanno completato il processo di registrazione in modo che possano confermare il loro indirizzo email. Questa email li dà il benvenuto nella community."
       },
       "names": {
@@ -1227,8 +1239,10 @@
         "new-callout-response": "Admin: Nuova risposta CrowdNewsroom",
         "new-member": "Admin: Nuovo contatto",
         "one-time-donation": "Conferma contributo una tantum",
+        "one-time-donation-failed": "",
         "reset-device": "Reimposta dispositivo",
         "reset-password": "Reimposta password",
+        "setup-account": "",
         "welcome": "Benvenuto"
       },
       "type": {
@@ -1273,7 +1287,8 @@
         "duplicate-tag-name": "Esiste già un tag con questo nome",
         "invalid-token": "Token 2FA non valido",
         "login-failed": "Combinazione email/password non valida",
-        "mfa-token-required": "Hai la 2FA attiva: inserisci il token dall'app authenticator per procedere"
+        "mfa-token-required": "Hai la 2FA attiva: inserisci il token dall'app authenticator per procedere",
+        "payment-failed": "Il pagamento non è andato a buon fine. Riprova o utilizza un metodo di pagamento diverso."
       },
       "generic": "Ops, qualcosa è andato storto! Contatta l'assistenza se si ripete.",
       "unauthorized": "Non hai accesso a questa risorsa.",
@@ -1402,6 +1417,7 @@
     "makeOneTimeDonationTitle": "Fai un contributo una tantum",
     "manageContribution": "Gestisci il tuo contributo",
     "newCallout": "Nuova CrowdNewsroom!",
+    "oneTimeContributionSuccessMessage": "Grazie per il tuo contributo!",
     "openCallouts": "Callout in corso",
     "quickActions": "Azioni veloci",
     "title": "Home",
@@ -1478,7 +1494,6 @@
     "willBeDonating": "Farai un contributo una tantum di {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Per favore, conferma i tuoi dettagli.",
     "continue": "Ottimo! Prosegui",
     "welcome": "Benvenutə {firstName}!"
   },

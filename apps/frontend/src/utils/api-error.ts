@@ -3,6 +3,7 @@ import { formatDistanceLocale } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import { computed } from 'vue';
+import { type Router } from 'vue-router';
 
 import { i18n } from '../lib/i18n';
 
@@ -16,6 +17,7 @@ const defaultErrorMessages = computed<Record<string, string>>(() => ({
   'invalid-token': t('form.errorMessages.api.invalid-token'),
   'login-failed': t('form.errorMessages.api.login-failed'),
   'mfa-token-required': t('form.errorMessages.api.mfa-token-required'),
+  'payment-failed': t('form.errorMessages.api.payment-failed'),
 }));
 /**
  * Extract a nice error text from an API error
@@ -54,4 +56,16 @@ export function notifyRateLimited(error: unknown): void {
       })
     : t('notifications.rateLimit.generic');
   addNotification({ variant: 'warning', title, removeable: true });
+}
+
+export function handleJoinError(err: unknown, router: Router): void {
+  if (isApiError(err, ['payment-failed'])) {
+    router.replace('/join/payment-failed');
+  } else {
+    if (isApiError(err, undefined, [429])) {
+      notifyRateLimited(err);
+    }
+
+    router.replace('/join/failed');
+  }
 }

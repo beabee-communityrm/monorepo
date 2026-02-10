@@ -8,7 +8,13 @@ import {
 
 import { GetPaginatedQuery } from '@api/dto/BaseDto';
 import IsEmailTemplateId from '@api/validators/IsEmailTemplateId';
-import { IsArray, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  Allow,
+  IsArray,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 /**
  * DTO for email preview responses
@@ -141,23 +147,25 @@ export class GetEmailTemplateInfoDto {
 }
 
 /**
- * DTO for previewing email templates
- * Supports custom merge fields and locale selection
+ * DTO for email preview (POST /email/preview).
  */
 export class PreviewEmailDto {
+  /** When set (admin), merge fields use this contact; otherwise the current user. */
+  @IsOptional()
+  @IsString()
+  contactId?: string;
+
+  /** Subject to use for preview (overrides template default if provided). */
   @IsOptional()
   @IsString()
   subject?: string;
 
-  /**
-   * Optional body to override the template's body for preview
-   * When provided, this body will be used instead of the saved template body,
-   * allowing preview of unsaved changes. Merge fields will still be replaced.
-   */
+  /** Body to use for preview (overrides template body; merge fields are still replaced). */
   @IsOptional()
   @IsString()
   body?: string;
 
+  /** Custom merge fields for preview. { FIELD_NAME: value }. */
   @IsOptional()
   @IsObject()
   mergeFields?: Record<string, string>;

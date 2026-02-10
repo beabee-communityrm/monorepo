@@ -319,11 +319,11 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
   ): Promise<GetContributionInfoDto> {
-    const flow = await PaymentFlowService.finalizeContributionUpdate(
+    const updated = await PaymentFlowService.finalizeContributionUpdate(
       target,
       data.paymentFlowId
     );
-    if (!flow) {
+    if (!updated) {
       throw new NotFoundError();
     }
     return await this.getContribution(target);
@@ -372,11 +372,11 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
   ): Promise<void> {
-    const flow = await PaymentFlowService.finalizeContributionUpdate(
+    const updated = await PaymentFlowService.finalizeContributionUpdate(
       target,
       data.paymentFlowId
     );
-    if (!flow) {
+    if (!updated) {
       throw new NotFoundError();
     }
   }
@@ -427,11 +427,11 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
   ): Promise<GetContributionInfoDto> {
-    const flow = await PaymentFlowService.finalizeContributionUpdate(
+    const updated = await PaymentFlowService.finalizeContributionUpdate(
       target,
       data.paymentFlowId
     );
-    if (!flow) {
+    if (!updated) {
       throw new NotFoundError();
     }
 

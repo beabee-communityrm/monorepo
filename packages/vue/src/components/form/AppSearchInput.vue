@@ -1,5 +1,5 @@
 <template>
-  <form class="w-full max-w-md" @submit.prevent="submit">
+  <form @submit.prevent="submit">
     <AppInput v-model="searchText" :placeholder="placeholder" @blur="submit">
       <template #suffixAction>
         <div class="flex h-10 shrink-0 items-center">

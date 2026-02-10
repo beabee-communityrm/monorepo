@@ -152,6 +152,12 @@ export const contactEmailTemplates = {
       AMOUNT: config.currencySymbol + params.amount.toFixed(2),
     })
   ),
+  'one-time-donation-failed': withMergeFields(
+    ['AMOUNT'],
+    (_: Contact, params: { amount: number }) => ({
+      AMOUNT: config.currencySymbol + params.amount.toFixed(2),
+    })
+  ),
 } as const;
 
 /**
@@ -172,6 +178,14 @@ export const generalEmailTemplates = {
     })
   ),
   'confirm-email': withMergeFields(
+    ['FNAME', 'LNAME', 'CONFIRMLINK'],
+    (params: { firstName: string; lastName: string; confirmLink: string }) => ({
+      FNAME: params.firstName,
+      LNAME: params.lastName,
+      CONFIRMLINK: params.confirmLink,
+    })
+  ),
+  'setup-account': withMergeFields(
     ['FNAME', 'LNAME', 'CONFIRMLINK'],
     (params: { firstName: string; lastName: string; confirmLink: string }) => ({
       FNAME: params.firstName,

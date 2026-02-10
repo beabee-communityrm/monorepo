@@ -53,3 +53,12 @@ export class ListSegmentsDto extends GetPaginatedQuery {
   @IsIn(['name', 'description', 'order'])
   sort?: string;
 }
+
+/** Body for POST /segments/:id/email/send (one-off email to all segment contacts). */
+export class SendSegmentEmailBodyDto {
+  @IsString()
+  subject!: string;
+
+  @IsString()
+  body!: string;
+}

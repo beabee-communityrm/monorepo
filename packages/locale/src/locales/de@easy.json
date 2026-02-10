@@ -86,6 +86,7 @@
     "noBack": "",
     "participate": "",
     "preview": "",
+    "previous": "",
     "publish": "",
     "reopen": "",
     "replicate": "",
@@ -100,6 +101,8 @@
     "schedule": "",
     "search": "",
     "sendEmails": "E-Mails schicken",
+    "sendOneOffEmail": "E-Mail schicken",
+    "sendOngoingEmails": "E-Mails die immer wieder gehen",
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
     "skip": "",
     "submit": "Hier wird deine Meldung weg-geschickt.",
@@ -904,7 +907,6 @@
   },
   "common": {
     "backToHome": "",
-    "contributing": "",
     "contributionPeriod": {
       "annually": "",
       "monthly": ""
@@ -919,7 +921,6 @@
     "hello": "Hallo.",
     "id": "",
     "itemsPerPage": "",
-    "joined": "",
     "label": "Betreff",
     "loading": "Der Computer arbeitet.",
     "login": "",
@@ -1030,6 +1031,10 @@
       "whatDoTheButtonsDo": ""
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "Kontakt {current} von {total}",
+    "selfOption": "Du selbst"
+  },
   "contacts": {
     "addContact": "",
     "advancedSearch": {
@@ -1086,6 +1091,11 @@
     "numResults": "",
     "search": "",
     "selectedCount": "",
+    "sendEmail": {
+      "send": "Schicken",
+      "sent": "Die E-Mail wurde an das Segment geschickt.",
+      "title": "E-Mail an Segment schicken"
+    },
     "showingOf": ""
   },
   "contribution": {
@@ -1121,7 +1131,6 @@
     "prorateNoTitle": "",
     "prorateYesText": "",
     "prorateYesTitle": "",
-    "recurringContribution": "",
     "restartContribution": "",
     "startContribution": "",
     "startedContribution": "",
@@ -1146,6 +1155,7 @@
       "label": "Betreff"
     },
     "preview": {
+      "asContactLabel": "Kontakt für Vorschau",
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
     },
@@ -1212,8 +1222,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "names": {
@@ -1227,8 +1239,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "type": {
@@ -1273,7 +1287,8 @@
         "duplicate-tag-name": "Diesen Tag gibt es schon",
         "invalid-token": "",
         "login-failed": "",
-        "mfa-token-required": ""
+        "mfa-token-required": "",
+        "payment-failed": ""
       },
       "generic": "Das ist nicht richtig. Hol dir Hilfe.",
       "unauthorized": "Sie haben daruf keinen Zugriff.",
@@ -1402,6 +1417,7 @@
     "makeOneTimeDonationTitle": "",
     "manageContribution": "",
     "newCallout": "",
+    "oneTimeContributionSuccessMessage": "",
     "openCallouts": "",
     "quickActions": "",
     "title": "",
@@ -1478,7 +1494,6 @@
     "willBeDonating": ""
   },
   "joinSetup": {
-    "confirmDetails": "",
     "continue": "",
     "welcome": ""
   },

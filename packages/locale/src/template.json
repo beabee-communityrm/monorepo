@@ -86,6 +86,7 @@
     "noBack": "",
     "participate": "",
     "preview": "",
+    "previous": "",
     "publish": "",
     "reopen": "",
     "replicate": "",
@@ -100,6 +101,8 @@
     "schedule": "",
     "search": "",
     "sendEmails": "",
+    "sendOneOffEmail": "",
+    "sendOngoingEmails": "",
     "share": "",
     "skip": "",
     "submit": "",
@@ -904,7 +907,6 @@
   },
   "common": {
     "backToHome": "",
-    "contributing": "",
     "contributionPeriod": {
       "annually": "",
       "monthly": ""
@@ -919,7 +921,6 @@
     "hello": "",
     "id": "",
     "itemsPerPage": "",
-    "joined": "",
     "label": "",
     "loading": "",
     "login": "",
@@ -1030,6 +1031,10 @@
       "whatDoTheButtonsDo": ""
     }
   },
+  "contactSelector": {
+    "contactNOfTotal": "",
+    "selfOption": ""
+  },
   "contacts": {
     "addContact": "",
     "advancedSearch": {
@@ -1086,6 +1091,11 @@
     "numResults": "",
     "search": "",
     "selectedCount": "",
+    "sendEmail": {
+      "send": "",
+      "sent": "",
+      "title": ""
+    },
     "showingOf": ""
   },
   "contribution": {
@@ -1121,7 +1131,6 @@
     "prorateNoTitle": "",
     "prorateYesText": "",
     "prorateYesTitle": "",
-    "recurringContribution": "",
     "restartContribution": "",
     "startContribution": "",
     "startedContribution": "",
@@ -1146,6 +1155,7 @@
       "label": ""
     },
     "preview": {
+      "asContactLabel": "",
       "label": "",
       "unavailable": ""
     },
@@ -1210,8 +1220,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "names": {
@@ -1225,8 +1237,10 @@
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",
+        "one-time-donation-failed": "",
         "reset-device": "",
         "reset-password": "",
+        "setup-account": "",
         "welcome": ""
       },
       "type": {
@@ -1271,7 +1285,8 @@
         "duplicate-tag-name": "",
         "invalid-token": "",
         "login-failed": "",
-        "mfa-token-required": ""
+        "mfa-token-required": "",
+        "payment-failed": ""
       },
       "generic": "",
       "unauthorized": "",
@@ -1400,6 +1415,7 @@
     "makeOneTimeDonationTitle": "",
     "manageContribution": "",
     "newCallout": "",
+    "oneTimeContributionSuccessMessage": "",
     "openCallouts": "",
     "quickActions": "",
     "title": "",
@@ -1476,7 +1492,6 @@
     "willBeDonating": ""
   },
   "joinSetup": {
-    "confirmDetails": "",
     "continue": "",
     "welcome": ""
   },

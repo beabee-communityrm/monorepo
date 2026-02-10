@@ -155,5 +155,24 @@ function insertMergeField(editor: any, tag: string): void {
         </AppRichTextEditor>
       </div>
     </Variant>
+
+    <Variant title="Fill height (side-by-side)">
+      <div class="flex h-80 gap-4 p-4">
+        <AppRichTextEditor
+          v-model="content"
+          class="min-h-0 flex-1"
+          label="Editor (fills height)"
+          @update:model-value="onUpdate"
+        />
+        <div class="flex min-w-0 flex-1 flex-col">
+          <span class="mb-1 text-sm font-medium">Preview</span>
+          <div
+            class="min-h-0 flex-1 overflow-auto rounded border border-primary-40 bg-white p-4"
+          >
+            <div v-html="content" />
+          </div>
+        </div>
+      </div>
+    </Variant>
   </Story>
 </template>
