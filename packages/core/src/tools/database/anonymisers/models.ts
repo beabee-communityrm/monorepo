@@ -50,8 +50,6 @@ import crypto from 'crypto';
 import { EntityTarget, ObjectLiteral } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-import { n } from '#config/env';
-
 /**
  * Note: Following models are not added to the anonymiser
  * - ApiKey: Not necessary for testing
