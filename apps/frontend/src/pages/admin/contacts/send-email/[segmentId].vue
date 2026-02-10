@@ -18,6 +18,7 @@ meta:
     v-else-if="segment"
     :button-text="t('contacts.sendEmail.saveAndSend')"
     class="flex flex-col gap-6"
+    inline-error
     @submit="handleSubmit"
   >
     <div class="flex flex-col gap-6 md:flex-row md:items-stretch">
