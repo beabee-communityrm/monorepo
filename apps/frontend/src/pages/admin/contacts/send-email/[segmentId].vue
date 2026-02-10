@@ -55,14 +55,16 @@ meta:
     />
 
     <template #buttons="{ disabled }">
-      <AppButton
-        type="button"
-        variant="primaryOutlined"
-        :disabled="disabled"
-        @click="(e: Event) => triggerSubmit(e, 'back')"
-      >
-        {{ t('contacts.sendEmail.saveAndBack') }}
-      </AppButton>
+      <div class="order-first">
+        <AppButton
+          type="button"
+          variant="primaryOutlined"
+          :disabled="disabled"
+          @click="(e: Event) => triggerSubmit(e, 'back')"
+        >
+          {{ t('contacts.sendEmail.saveAndBack') }}
+        </AppButton>
+      </div>
     </template>
   </AppApiForm>
 </template>
