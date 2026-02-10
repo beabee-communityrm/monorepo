@@ -1094,8 +1094,8 @@
     "sendEmail": {
       "newEmail": "New email",
       "saveAndBack": "Save and return",
-      "saveAndSend": "Save and send",
       "saveAndBackSuccess": "Template saved.",
+      "saveAndSend": "Save and send",
       "send": "Send",
       "sent": "The email has been sent to the segment.",
       "sentTimes": "Sent {n} times",
