@@ -18,6 +18,7 @@ import { getAnonymizers } from '../../utils/anonymizers.js';
  *
  * @param dryRun If true, only logs what would be done
  * @param anonymize If true, anonymize all data (contacts are always anonymized)
+ * @param skipAnonymizeTables If provided, skip anonymization for the given table names
  */
 export const exportDatabase = async (
   dryRun = false,
