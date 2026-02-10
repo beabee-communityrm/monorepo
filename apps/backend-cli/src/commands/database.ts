@@ -7,8 +7,7 @@ export const databaseCommand: CommandModule = {
     yargs
       .command({
         command: 'export',
-        describe:
-          'Export database to JSON or SQL dump (contacts always anonymized)',
+        describe: 'Export database to SQL dump (contacts always anonymized)',
         builder: (yargs) =>
           yargs
             .option('dryRun', {

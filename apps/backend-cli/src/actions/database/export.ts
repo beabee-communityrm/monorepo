@@ -1,7 +1,7 @@
 /**
  * Database Export Module
  *
- * This module provides functionality to export database data to JSON or SQL dumps.
+ * This module provides functionality to export database data to SQL dumps.
  * It supports:
  * - Full export with configurable anonymization (contacts always anonymized for privacy)
  */
