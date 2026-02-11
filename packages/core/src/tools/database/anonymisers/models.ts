@@ -58,8 +58,6 @@ import { v4 as uuidv4 } from 'uuid';
  * - Content: Pre-filled by migration
  * - ContactMfa: Not necessary for testing
  *
- * Todo: Do Callouts need to be anonymised?
- * Todo: Do we need to anonymise RuleGroups?
  *
  */
 
@@ -314,6 +312,7 @@ export const contactProfileAnonymiser = createModelAnonymiser(ContactProfile, {
   notes: () => chance.sentence(),
   telephone: () => chance.phone(),
   twitter: () => chance.twitter(),
+  preferredContact: () => chance.pickone(['email', 'phone']),
   deliveryAddress: {
     line1: () => chance.address(),
     line2: () => chance.pickone(['Cabot', 'Easton', 'Southmead', 'Hanham']),
@@ -357,16 +356,17 @@ export const emailMailingAnonymiser = createModelAnonymiser(EmailMailing, {
   sentDate: () => new Date(),
   recipients: () => [
     {
-      email: chance.email({ domain: 'fake.beabee.io' }),
-      name: chance.name(),
-      id: uuidv4(),
+      Email: chance.email({ domain: 'fake.beabee.io' }),
+      Name: chance.name(),
+      FirstName: chance.first(),
+      LastName: chance.last(),
     },
   ],
-  emailField: () => 'email',
-  nameField: () => 'firstname',
+  emailField: () => 'Email',
+  nameField: () => 'Name',
   mergeFields: () => ({
-    firstname: chance.first(),
-    lastname: chance.last(),
+    FirstName: chance.first(),
+    LastName: chance.last(),
   }),
 });
 
@@ -387,6 +387,18 @@ export const giftFlowAnonymiser = createModelAnonymiser(GiftFlow, {
     message: () => chance.sentence(),
     fromName: () => chance.name(),
     fromEmail: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
+    giftAddress: {
+      line1: () => chance.address(),
+      line2: () => chance.pickone(['Cabot', 'Easton', 'Southmead', 'Hanham']),
+      city: () => 'Bristol',
+      postcode: () => 'BS1 1AA',
+    },
+    deliveryAddress: {
+      line1: () => chance.address(),
+      line2: () => chance.pickone(['Cabot', 'Easton', 'Southmead', 'Hanham']),
+      city: () => 'Bristol',
+      postcode: () => 'BS1 1AA',
+    },
   },
   gifteeId: () => uuidv4(),
 });
@@ -394,7 +406,6 @@ export const giftFlowAnonymiser = createModelAnonymiser(GiftFlow, {
 export const noticesAnonymiser = createModelAnonymiser(Notice);
 
 export const optionsAnonymiser = createModelAnonymiser(Option);
-
 export const pageSettingsAnonymiser = createModelAnonymiser(PageSettings);
 
 export const paymentsAnonymiser = createModelAnonymiser(Payment, {
@@ -402,6 +413,11 @@ export const paymentsAnonymiser = createModelAnonymiser(Payment, {
   subscriptionId: randomId(12, 'SB'),
   contactId: () => uuidv4(),
   description: () => 'Anonymised Payment',
+  amount: () => chance.floating({ min: 0, max: 1000, fixed: 2 }),
+  amountRefunded: () => chance.floating({ min: 0, max: 1000, fixed: 2 }),
+  createdAt: () => new Date(),
+  updatedAt: () => new Date(),
+  chargeDate: () => new Date(),
 });
 
 export const projectsAnonymiser = createModelAnonymiser(Project, {
