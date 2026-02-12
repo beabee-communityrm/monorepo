@@ -1092,8 +1092,16 @@
     "search": "",
     "selectedCount": "",
     "sendEmail": {
+      "newEmail": "Neue E-Mail",
+      "saveAndBack": "Speichern und zurück",
+      "saveAndBackSuccess": "Vorlage gespeichert.",
+      "saveAndSend": "Speichern und schicken",
       "send": "Schicken",
       "sent": "Die E-Mail wurde an das Segment geschickt.",
+      "sentTimes": "{n}-mal geschickt",
+      "templateLabel": "Vorlage",
+      "templateName": "Name der neuen Vorlage",
+      "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
       "title": "E-Mail an Segment schicken"
     },
     "showingOf": ""

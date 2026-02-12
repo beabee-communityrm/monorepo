@@ -1092,9 +1092,17 @@
     "search": "Cerca contatti...",
     "selectedCount": "{n} contatto selezionato | {n} contatti selezionati",
     "sendEmail": {
-      "send": "",
-      "sent": "",
-      "title": ""
+      "newEmail": "Nuova email",
+      "saveAndBack": "Salva e torna",
+      "saveAndBackSuccess": "Modello salvato.",
+      "saveAndSend": "Salva e invia",
+      "send": "Invia",
+      "sent": "L'email è stata inviata al segmento.",
+      "sentTimes": "Inviato {n} volte",
+      "templateLabel": "Modello",
+      "templateName": "Nome del nuovo modello",
+      "templateNameRequired": "Inserisci un nome per il nuovo modello.",
+      "title": "Invia email al segmento"
     },
     "showingOf": "Contatti da {start} a {end} su {total}"
   },

@@ -1,6 +1,8 @@
 import { getRepository } from '@beabee/core/database';
 import {
   Contact,
+  Email,
+  EmailMailing,
   Segment,
   SegmentContact,
   SegmentOngoingEmail,
@@ -130,16 +132,53 @@ export class SegmentController {
   ): Promise<void> {
     const segment = await getRepository(Segment).findOneBy({ id });
     if (!segment) throw new NotFoundError();
-    const { items } = await ContactTransformer.fetchRaw(auth, {
+
+    const { items: contacts } = await ContactTransformer.fetchRaw(auth, {
       rules: segment.ruleGroup,
       limit: -1,
     });
-    if (items.length > 0) {
+    if (contacts.length === 0) return;
+
+    const contactList = contacts as Contact[];
+
+    if (data.emailId) {
+      await this.sendWithTemplate(contactList, data.emailId);
+    } else {
       await EmailService.sendCustomEmailToContact(
-        items,
+        contactList,
         data.subject,
         data.body
       );
     }
+  }
+
+  /**
+   * Send saved template to contacts and record EmailMailing for tracking.
+   * sentDate is only set after a successful send; if sending throws, the mailing record stays without sentDate.
+   *
+   * @throws {NotFoundError} When the email template is not found
+   * @throws Rethrows any error from EmailService.sendEmailToContact
+   */
+  private async sendWithTemplate(
+    contacts: Contact[],
+    emailId: string
+  ): Promise<void> {
+    const email = await getRepository(Email).findOneBy({ id: emailId });
+    if (!email) throw new NotFoundError();
+
+    const mailing = await getRepository(EmailMailing).save({
+      emailId: email.id,
+      recipients: contacts.map((c) => ({
+        Email: c.email,
+        Name: c.fullname,
+        FirstName: c.firstname,
+        LastName: c.lastname,
+      })),
+    });
+
+    await EmailService.sendEmailToContact(email, contacts);
+    await getRepository(EmailMailing).update(mailing.id, {
+      sentDate: new Date(),
+    });
   }
 }
