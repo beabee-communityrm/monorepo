@@ -15,6 +15,7 @@ import { TransformerOperation } from '#type/transformer-operation';
 
 import { BaseTransformer } from './BaseTransformer';
 import CalloutResponseTransformer from './CalloutResponseTransformer';
+import { InvalidRuleError } from '@beabee/core/errors';
 
 class CalloutResponseSegmentTransformer extends BaseTransformer<
   CalloutResponseSegment,
@@ -68,14 +69,24 @@ class CalloutResponseSegmentTransformer extends BaseTransformer<
   ): Promise<void> {
     if (query.with?.includes(GetCalloutResponseSegmentWith.itemCount)) {
       for (const segment of segments) {
-        const result = await CalloutResponseTransformer.fetchForCallout(
-          auth,
-          query.calloutId,
-          {
-            rules: segment.ruleGroup,
+        try {
+          const result = await CalloutResponseTransformer.fetchForCallout(
+            auth,
+            query.calloutId,
+            {
+              rules: segment.ruleGroup,
+            }
+          );
+          segment.itemCount = result.total;
+        } catch (err) {
+          // If rules are invalid, set itemCount to undefined so the segment
+          // can still be fetched and displayed in the frontend
+          if (err instanceof InvalidRuleError) {
+            segment.itemCount = undefined;
+          } else {
+            throw err;
           }
-        );
-        segment.itemCount = result.total;
+        }
       }
     }
   }
