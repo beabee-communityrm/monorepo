@@ -145,10 +145,11 @@ onBeforeMount(async () => {
     (route.query.amount && Number(route.query.amount)) ||
     joinContent.value.initialAmount;
 
-  const period = route.query.period as ContributionPeriod;
-  formData.period = Object.values(ContributionPeriod).includes(period)
-    ? period
-    : joinContent.value.initialPeriod;
+  const period = route.query.period as ContributionPeriod | 'one-time';
+  formData.period =
+    period === 'one-time' || Object.values(ContributionPeriod).includes(period)
+      ? period
+      : joinContent.value.initialPeriod;
 
   formData.paymentMethod = joinContent.value.paymentMethods[0];
 
