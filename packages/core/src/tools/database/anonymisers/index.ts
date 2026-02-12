@@ -195,7 +195,7 @@ export async function anonymiseModel<T extends ObjectLiteral>(
 
 /**
  * Output SQL to clear models
- * The ouput is in the format:
+ * The output is in the format:
  * DELETE FROM "table";
  * -- Empty params line
  *

@@ -18,14 +18,14 @@ export const databaseCommand: CommandModule = {
             .option('anonymize', {
               type: 'boolean',
               description:
-                'Anonymize all data (contacts are always anonymized)',
+                'Anonymize all data (contacts are always anonymized). This includes a preset of tables that are always anonymized (contacts, etc.), when turning off anonymisation.',
               default: true,
             })
             .option('skipAnonymizeTables', {
               type: 'array',
               string: true,
               description:
-                'Table names to export without anonymisation (e.g. contact, segment)',
+                'Table names to export without anonymisation (e.g. segment). Allows turning off single tables explicitly.',
               default: [],
             }),
         handler: async (argv) => {
