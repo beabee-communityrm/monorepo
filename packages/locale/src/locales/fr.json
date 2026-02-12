@@ -1096,8 +1096,16 @@
     "search": "Rechercher un contact…",
     "selectedCount": "{n} contact sélectionné | {n} contacts sélectionnés",
     "sendEmail": {
+      "newEmail": "Nouvel e-mail",
+      "saveAndBack": "Enregistrer et revenir",
+      "saveAndBackSuccess": "Modèle enregistré.",
+      "saveAndSend": "Enregistrer et envoyer",
       "send": "Envoyer",
       "sent": "L'e-mail a été envoyé au segment.",
+      "sentTimes": "Envoyé {n} fois",
+      "templateLabel": "Modèle",
+      "templateName": "Nom du nouveau modèle",
+      "templateNameRequired": "Veuillez saisir un nom pour le nouveau modèle.",
       "title": "Envoyer un e-mail au segment"
     },
     "showingOf": "Affichage des contacts {start} à {end} sur {total}"
