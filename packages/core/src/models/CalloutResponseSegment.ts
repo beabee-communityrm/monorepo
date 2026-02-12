@@ -23,5 +23,5 @@ export class CalloutResponseSegment {
   @Column({ type: 'int', default: 0 })
   order!: number;
 
-  itemCount?: number;
+  itemCount?: number | undefined;
 }

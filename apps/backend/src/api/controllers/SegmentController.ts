@@ -1,4 +1,5 @@
 import { getRepository } from '@beabee/core/database';
+import { InvalidRuleError } from '@beabee/core/errors';
 import {
   Contact,
   Email,
@@ -117,10 +118,24 @@ export class SegmentController {
     const mergedRules = query.rules
       ? { condition: 'AND' as const, rules: [segment.ruleGroup, query.rules] }
       : segment.ruleGroup;
-    return await ContactTransformer.fetch(auth, {
-      ...query,
-      rules: mergedRules,
-    });
+    try {
+      return await ContactTransformer.fetch(auth, {
+        ...query,
+        rules: mergedRules,
+      });
+    } catch (err) {
+      // If rules are invalid, return an empty paginated result so the segment
+      // can still be fetched and displayed in the frontend
+      if (err instanceof InvalidRuleError) {
+        return {
+          items: [],
+          total: 0,
+          offset: query.offset || 0,
+          count: 0,
+        };
+      }
+      throw err;
+    }
   }
 
   /** Send one-off email to all contacts in the segment (admin). */

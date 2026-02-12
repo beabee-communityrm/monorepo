@@ -33,7 +33,7 @@ export class GetCalloutResponseSegmentDto extends CreateCalloutResponseSegmentDt
 
   @IsOptional()
   @IsNumber()
-  itemCount?: number;
+  itemCount?: number | undefined;
 }
 
 export class GetCalloutResponseSegmentOptsDto {
