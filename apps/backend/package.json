@@ -77,7 +77,7 @@
     "@types/express-session": "^1.18.1",
     "@types/module-alias": "^2.0.4",
     "@types/multer": "^1.4.12",
-    "@types/node": "^22.15.28",
+    "@types/node": "^24.10.13",
     "@types/passport": "^1.0.17",
     "@types/passport-local": "^1.0.38",
     "concurrently": "^9.1.2",
