@@ -1,11 +1,5 @@
 import ContactsService from '@beabee/core/services/ContactsService';
 
-import {
-  CreateResetPasswordDto,
-  UpdateResetPasswordDto,
-} from '#api/dto/ResetPasswordDto';
-import { UUIDParams } from '#api/params/UUIDParams';
-import { login } from '#api/utils/auth';
 import { Request } from 'express';
 import {
   Body,
@@ -16,6 +10,13 @@ import {
   Put,
   Req,
 } from 'routing-controllers';
+
+import {
+  CreateResetPasswordDto,
+  UpdateResetPasswordDto,
+} from '#api/dto/ResetPasswordDto';
+import { UUIDParams } from '#api/params/UUIDParams';
+import { login } from '#api/utils/auth';
 
 @JsonController('/reset-password')
 export class ResetPasswordController {

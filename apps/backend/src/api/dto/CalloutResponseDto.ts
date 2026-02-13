@@ -13,16 +13,6 @@ import {
 import { GetCalloutResponseWith } from '@beabee/beabee-common';
 import { Callout } from '@beabee/core/models';
 
-import {
-  GetExportQuery,
-  GetPaginatedQuery,
-  GetPaginatedRuleGroup,
-} from '#api/dto/BaseDto';
-import { GetCalloutDto } from '#api/dto/CalloutDto';
-import { GetCalloutResponseCommentDto } from '#api/dto/CalloutResponseCommentDto';
-import { GetCalloutTagDto } from '#api/dto/CalloutTagDto';
-import { GetContactDto } from '#api/dto/ContactDto';
-import IsNonEmptyString from '#api/validators/IsNonEmptyString';
 import { Type } from 'class-transformer';
 import {
   Allow,
@@ -41,6 +31,17 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
+
+import {
+  GetExportQuery,
+  GetPaginatedQuery,
+  GetPaginatedRuleGroup,
+} from '#api/dto/BaseDto';
+import { GetCalloutDto } from '#api/dto/CalloutDto';
+import { GetCalloutResponseCommentDto } from '#api/dto/CalloutResponseCommentDto';
+import { GetCalloutTagDto } from '#api/dto/CalloutTagDto';
+import { GetContactDto } from '#api/dto/ContactDto';
+import IsNonEmptyString from '#api/validators/IsNonEmptyString';
 
 export interface BaseGetCalloutResponseOptsDto {
   callout?: Callout;

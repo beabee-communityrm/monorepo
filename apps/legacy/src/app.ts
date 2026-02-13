@@ -1,5 +1,3 @@
-import 'module-alias/register';
-
 import { resolveImageUrl } from '@beabee/beabee-common';
 //import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
 import config from '@beabee/core/config';

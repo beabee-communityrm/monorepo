@@ -10,6 +10,10 @@ import { Contact, Payment } from '@beabee/core/models';
 import { paymentService } from '@beabee/core/services';
 import { AuthInfo } from '@beabee/core/type';
 
+import { TransformPlainToInstance, plainToInstance } from 'class-transformer';
+import { NotFoundError } from 'routing-controllers';
+import { SelectQueryBuilder } from 'typeorm';
+
 import {
   GetPaymentAggregationDto,
   GetPaymentAggregationOptsDto,
@@ -22,9 +26,6 @@ import { BaseTransformer } from '#api/transformers/BaseTransformer';
 import ContactTransformer, {
   loadContactRoles,
 } from '#api/transformers/ContactTransformer';
-import { TransformPlainToInstance, plainToInstance } from 'class-transformer';
-import { NotFoundError } from 'routing-controllers';
-import { SelectQueryBuilder } from 'typeorm';
 
 class PaymentTransformer extends BaseTransformer<
   Payment,

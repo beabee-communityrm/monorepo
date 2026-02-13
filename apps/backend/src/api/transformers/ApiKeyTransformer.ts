@@ -6,9 +6,10 @@ import {
 import { ApiKey } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
-import { GetApiKeyDto } from '#api/dto/ApiKeyDto';
 import { TransformPlainToInstance } from 'class-transformer';
 import { SelectQueryBuilder } from 'typeorm';
+
+import { GetApiKeyDto } from '#api/dto/ApiKeyDto';
 
 import { BaseTransformer } from './BaseTransformer';
 import ContactTransformer, { loadContactRoles } from './ContactTransformer';

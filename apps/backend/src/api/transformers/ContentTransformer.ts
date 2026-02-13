@@ -7,6 +7,8 @@ import OptionsService, {
 } from '@beabee/core/services/OptionsService';
 import { getEmailFooter } from '@beabee/core/templates/email';
 
+import { plainToInstance } from 'class-transformer';
+
 import {
   GetContentContactsDto,
   GetContentDto,
@@ -19,7 +21,6 @@ import {
   GetContentShareDto,
   GetContentTelegramDto,
 } from '#api/dto/index';
-import { plainToInstance } from 'class-transformer';
 
 class ContentTransformer {
   convert<Id extends ContentId>(

@@ -1,5 +1,15 @@
 import { updateSalesTaxRate } from '@beabee/core/lib/stripe';
 
+import {
+  Authorized,
+  BadRequestError,
+  Body,
+  Get,
+  JsonController,
+  Params,
+  Patch,
+} from 'routing-controllers';
+
 import PartialBody from '#api/decorators/PartialBody';
 import {
   GetContentContactsDto,
@@ -15,15 +25,6 @@ import {
 } from '#api/dto';
 import { ContentParams } from '#api/params/ContentParams';
 import ContentTransformer from '#api/transformers/ContentTransformer';
-import {
-  Authorized,
-  BadRequestError,
-  Body,
-  Get,
-  JsonController,
-  Params,
-  Patch,
-} from 'routing-controllers';
 
 @JsonController('/content')
 export class ContentController {

@@ -1,5 +1,3 @@
-import 'module-alias/register';
-
 // TODO: Port this to apps/backend-cli/src/actions/sync/segments.ts.
 // To do that, we have to package ContactTransformer e.g. to @beabee/transformers.
 import { GetContactWith } from '@beabee/beabee-common';
@@ -16,8 +14,9 @@ import { newsletterBulkService } from '@beabee/core/services';
 import ContactsService from '@beabee/core/services/ContactsService';
 import EmailService from '@beabee/core/services/EmailService';
 
-import ContactTransformer from '#api/transformers/ContactTransformer';
 import { In } from 'typeorm';
+
+import ContactTransformer from '#api/transformers/ContactTransformer';
 
 const log = mainLogger.child({ app: 'process-segments' });
 

@@ -16,9 +16,6 @@ import {
 } from '@beabee/beabee-common';
 import { Locale } from '@beabee/locale';
 
-import { GetContentTelegramDto } from '#api/dto/ContentTelegramDto';
-import { LinkDto } from '#api/dto/LinkDto';
-import { NewsletterGroupDto } from '#api/dto/NewsletterDto';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
@@ -30,6 +27,10 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
+
+import { GetContentTelegramDto } from '#api/dto/ContentTelegramDto';
+import { LinkDto } from '#api/dto/LinkDto';
+import { NewsletterGroupDto } from '#api/dto/NewsletterDto';
 
 export class GetContentContactsDto implements ContentContactsData {
   @IsString({ each: true })

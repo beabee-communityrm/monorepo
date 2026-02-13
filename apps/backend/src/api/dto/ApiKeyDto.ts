@@ -1,5 +1,3 @@
-import { GetPaginatedQuery } from '#api/dto/BaseDto';
-import { GetContactDto } from '#api/dto/ContactDto';
 import { Type } from 'class-transformer';
 import {
   IsDate,
@@ -8,6 +6,9 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
+
+import { GetPaginatedQuery } from '#api/dto/BaseDto';
+import { GetContactDto } from '#api/dto/ContactDto';
 
 export class CreateApiKeyDto {
   @IsString()

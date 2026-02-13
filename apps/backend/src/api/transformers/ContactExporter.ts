@@ -3,10 +3,11 @@ import { Contact } from '@beabee/core/models';
 import { getMembershipStatus } from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
 
-import { GetExportQuery } from '#api/dto/BaseDto';
-import { ExportContactDto } from '#api/dto/ContactDto';
 import { stringify } from 'csv-stringify/sync';
 import { SelectQueryBuilder } from 'typeorm';
+
+import { GetExportQuery } from '#api/dto/BaseDto';
+import { ExportContactDto } from '#api/dto/ContactDto';
 
 import { BaseContactTransformer } from './BaseContactTransformer';
 

@@ -1,5 +1,6 @@
-import { GetPaginatedQuery } from '#api/dto/BaseDto';
 import { IsBoolean, IsIn, IsString, ValidateNested } from 'class-validator';
+
+import { GetPaginatedQuery } from '#api/dto/BaseDto';
 
 import { GetContactDto } from './ContactDto';
 

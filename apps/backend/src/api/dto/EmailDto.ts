@@ -6,8 +6,6 @@ import {
   GeneralEmailTemplateId,
 } from '@beabee/core/type';
 
-import { GetPaginatedQuery } from '#api/dto/BaseDto';
-import IsEmailTemplateId from '#api/validators/IsEmailTemplateId';
 import {
   Allow,
   IsArray,
@@ -15,6 +13,9 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+
+import { GetPaginatedQuery } from '#api/dto/BaseDto';
+import IsEmailTemplateId from '#api/validators/IsEmailTemplateId';
 
 /**
  * DTO for email preview responses

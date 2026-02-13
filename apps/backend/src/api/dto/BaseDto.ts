@@ -8,7 +8,6 @@ import {
   ruleOperators,
 } from '@beabee/beabee-common';
 
-import { IsType } from '#api/validators/IsType';
 import {
   Transform,
   TransformFnParams,
@@ -24,6 +23,8 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
+
+import { IsType } from '#api/validators/IsType';
 
 export class GetPaginatedRule implements Rule {
   @IsString()

@@ -4,8 +4,6 @@ import {
   PaymentType,
 } from '@beabee/beabee-common';
 
-import { GetExportQuery, GetPaginatedQuery } from '#api/dto/BaseDto';
-import { GetContactDto } from '#api/dto/ContactDto';
 import {
   IsArray,
   IsBoolean,
@@ -18,6 +16,9 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
+
+import { GetExportQuery, GetPaginatedQuery } from '#api/dto/BaseDto';
+import { GetContactDto } from '#api/dto/ContactDto';
 
 import { StartJoinFlowDto } from './JoinFlowDto';
 

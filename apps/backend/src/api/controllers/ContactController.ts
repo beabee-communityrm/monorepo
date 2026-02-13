@@ -14,6 +14,25 @@ import { AuthInfo } from '@beabee/core/type';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
+import { plainToInstance } from 'class-transformer';
+import { Response } from 'express';
+import {
+  Authorized,
+  BadRequestError,
+  Body,
+  Delete,
+  Get,
+  JsonController,
+  NotFoundError,
+  OnUndefined,
+  Params,
+  Patch,
+  Post,
+  Put,
+  QueryParams,
+  Res,
+} from 'routing-controllers';
+
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
 import { TargetUser } from '#api/decorators/TargetUser';
@@ -55,24 +74,6 @@ import ContactExporter from '#api/transformers/ContactExporter';
 import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import PaymentTransformer from '#api/transformers/PaymentTransformer';
-import { plainToInstance } from 'class-transformer';
-import { Response } from 'express';
-import {
-  Authorized,
-  BadRequestError,
-  Body,
-  Delete,
-  Get,
-  JsonController,
-  NotFoundError,
-  OnUndefined,
-  Params,
-  Patch,
-  Post,
-  Put,
-  QueryParams,
-  Res,
-} from 'routing-controllers';
 
 @JsonController('/contact')
 @Authorized()

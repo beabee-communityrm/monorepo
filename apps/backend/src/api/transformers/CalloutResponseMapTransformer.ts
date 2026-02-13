@@ -13,6 +13,8 @@ import { NotFoundError } from '@beabee/core/errors';
 import { Callout, CalloutResponse } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
+import { TransformPlainToInstance } from 'class-transformer';
+
 import {
   GetCalloutResponseMapDto,
   GetCalloutResponseMapOptsDto,
@@ -20,7 +22,6 @@ import {
 } from '#api/dto/CalloutResponseDto';
 import { PaginatedDto } from '#api/dto/PaginatedDto';
 import { BaseCalloutResponseTransformer } from '#api/transformers/BaseCalloutResponseTransformer';
-import { TransformPlainToInstance } from 'class-transformer';
 
 class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseMapDto,

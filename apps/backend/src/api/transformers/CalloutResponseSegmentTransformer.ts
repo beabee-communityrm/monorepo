@@ -2,6 +2,9 @@ import { PaginatedQuery, segmentFilters } from '@beabee/beabee-common';
 import { CalloutResponseSegment } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
+import { TransformPlainToInstance } from 'class-transformer';
+import { SelectQueryBuilder } from 'typeorm';
+
 import {
   GetCalloutResponseSegmentDto,
   GetCalloutResponseSegmentOptsDto,
@@ -9,8 +12,6 @@ import {
   ListCalloutResponseSegmentsDto,
 } from '#api/dto/CalloutResponseSegmentDto';
 import { TransformerOperation } from '#type/transformer-operation';
-import { TransformPlainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
 
 import { BaseTransformer } from './BaseTransformer';
 import CalloutResponseTransformer from './CalloutResponseTransformer';

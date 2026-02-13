@@ -10,6 +10,20 @@ import {
 import EmailService from '@beabee/core/services/EmailService';
 import { AuthInfo } from '@beabee/core/type';
 
+import {
+  Authorized,
+  Body,
+  Delete,
+  Get,
+  JsonController,
+  NotFoundError,
+  OnUndefined,
+  Params,
+  Patch,
+  Post,
+  QueryParams,
+} from 'routing-controllers';
+
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
 import { GetContactDto, ListContactsDto } from '#api/dto/ContactDto';
@@ -25,19 +39,6 @@ import {
 import { UUIDParams } from '#api/params/UUIDParams';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import SegmentTransformer from '#api/transformers/SegmentTransformer';
-import {
-  Authorized,
-  Body,
-  Delete,
-  Get,
-  JsonController,
-  NotFoundError,
-  OnUndefined,
-  Params,
-  Patch,
-  Post,
-  QueryParams,
-} from 'routing-controllers';
 
 @JsonController('/segments')
 @Authorized('admin')

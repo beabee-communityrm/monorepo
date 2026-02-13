@@ -10,6 +10,10 @@ import {
 import { AuthInfo } from '@beabee/core/type';
 import { batchUpdate } from '@beabee/core/utils/rules';
 
+import { TransformPlainToInstance } from 'class-transformer';
+import { SelectQueryBuilder } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
+
 import {
   BatchUpdateCalloutResponseDto,
   GetCalloutResponseDto,
@@ -26,9 +30,6 @@ import ContactTransformer, {
   loadContactRoles,
 } from '#api/transformers/ContactTransformer';
 import { getReviewerRules } from '#api/utils';
-import { TransformPlainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
 
 export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseDto,

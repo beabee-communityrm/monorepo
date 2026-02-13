@@ -1,5 +1,3 @@
-import 'module-alias/register';
-
 import { createQueryBuilder } from '@beabee/core/database';
 import { Callout, CalloutResponse, Contact } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';

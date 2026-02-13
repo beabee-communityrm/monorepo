@@ -10,16 +10,6 @@ import {
   ItemStatus,
 } from '@beabee/beabee-common';
 
-import { GetPaginatedQuery } from '#api/dto/BaseDto';
-import { GetCalloutFormDto, SetCalloutFormDto } from '#api/dto/CalloutFormDto';
-import { CalloutVariantDto } from '#api/dto/CalloutVariantDto';
-import { LinkDto } from '#api/dto/LinkDto';
-import { NewsletterGroupDto } from '#api/dto/NewsletterDto';
-import IsLngLat from '#api/validators/IsLngLat';
-import IsMapBounds from '#api/validators/IsMapBounds';
-import IsSlug from '#api/validators/IsSlug';
-import IsUrl from '#api/validators/IsUrl';
-import IsVariantsObject from '#api/validators/IsVariantsObject';
 import {
   Transform,
   TransformFnParams,
@@ -41,6 +31,17 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
+
+import { GetPaginatedQuery } from '#api/dto/BaseDto';
+import { GetCalloutFormDto, SetCalloutFormDto } from '#api/dto/CalloutFormDto';
+import { CalloutVariantDto } from '#api/dto/CalloutVariantDto';
+import { LinkDto } from '#api/dto/LinkDto';
+import { NewsletterGroupDto } from '#api/dto/NewsletterDto';
+import IsLngLat from '#api/validators/IsLngLat';
+import IsMapBounds from '#api/validators/IsMapBounds';
+import IsSlug from '#api/validators/IsSlug';
+import IsUrl from '#api/validators/IsUrl';
+import IsVariantsObject from '#api/validators/IsVariantsObject';
 
 export enum GetCalloutWith {
   Form = 'form',
