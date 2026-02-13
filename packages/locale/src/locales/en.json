@@ -1086,6 +1086,23 @@
       "recurringContributions": "Recurring Contributions",
       "role": "Role"
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Are you sure you want to delete this email template? This cannot be undone.",
+        "title": "Delete template?"
+      },
+      "date": "Created",
+      "edit": "Edit",
+      "editTitle": "Edit template",
+      "editTitleWithName": "Edit template: {name}",
+      "empty": "No email templates yet.",
+      "manage": "Manage email templates",
+      "name": "Name",
+      "showingOf": "Showing {start} to {end} templates out of {total}",
+      "subject": "Subject",
+      "title": "Email templates",
+      "use": "Use"
+    },
     "noContacts": "No contacts added yet",
     "noResults": "No contacts found",
     "numResults": "{n} contact found | {n} contacts found",

@@ -1086,6 +1086,23 @@
       "recurringContributions": "Doorlopende bijdragen",
       "role": "Rol"
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Weet je zeker dat je dit e-mailsjabloon wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "title": "Sjabloon verwijderen?"
+      },
+      "date": "Aangemaakt",
+      "edit": "Bewerken",
+      "editTitle": "Sjabloon bewerken",
+      "editTitleWithName": "Sjabloon bewerken: {name}",
+      "empty": "Nog geen e-mailsjablonen.",
+      "manage": "E-mailsjablonen beheren",
+      "name": "Naam",
+      "showingOf": "Toont sjablonen {start} tot {end} van {total}",
+      "subject": "Onderwerp",
+      "title": "E-mailsjablonen",
+      "use": "Gebruiken"
+    },
     "noContacts": "Nog geen contacten toegevoegd",
     "noResults": "Geen contacten gevonden",
     "numResults": "{n} contact gevonden | {n} contacten gevonden",
