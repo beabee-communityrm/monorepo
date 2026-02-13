@@ -82,7 +82,7 @@ const { t } = useI18n();
 const route = useRoute('adminContactsEmailTemplatesEdit');
 const router = useRouter();
 
-const emailId = computed(() => route.params.emailId as string);
+const emailId = computed(() => route.params.emailId);
 
 addBreadcrumb(
   computed(() => [
