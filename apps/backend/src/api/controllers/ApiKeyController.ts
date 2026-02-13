@@ -2,15 +2,15 @@ import { Contact } from '@beabee/core/models';
 import ApiKeyService from '@beabee/core/services/ApiKeyService';
 import { AuthInfo } from '@beabee/core/type';
 
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import {
   CreateApiKeyDto,
   GetApiKeyDto,
   ListApiKeysDto,
   NewApiKeyDto,
-} from '@api/dto/ApiKeyDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import ApiKeyTransformer from '@api/transformers/ApiKeyTransformer';
+} from '#api/dto/ApiKeyDto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
+import ApiKeyTransformer from '#api/transformers/ApiKeyTransformer';
 import { plainToInstance } from 'class-transformer';
 import {
   Authorized,

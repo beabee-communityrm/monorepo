@@ -3,9 +3,9 @@ import ContactsService from '@beabee/core/services/ContactsService';
 import {
   CreateResetDeviceDto,
   UpdateResetDeviceDto,
-} from '@api/dto/ResetDeviceDto';
-import { UUIDParams } from '@api/params/UUIDParams';
-import { login } from '@api/utils/auth';
+} from '#api/dto/ResetDeviceDto';
+import { UUIDParams } from '#api/params/UUIDParams';
+import { login } from '#api/utils/auth';
 import { Request } from 'express';
 import {
   Body,

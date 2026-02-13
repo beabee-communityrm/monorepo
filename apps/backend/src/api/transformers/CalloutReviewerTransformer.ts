@@ -6,9 +6,9 @@ import {
 import { CalloutReviewer } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
-import { GetCalloutReviewerDto } from '@api/dto/CalloutReviewerDto';
-import { getReviewerRules } from '@api/utils/callouts';
-import { TransformerOperation } from '@type/transformer-operation';
+import { GetCalloutReviewerDto } from '#api/dto/CalloutReviewerDto';
+import { getReviewerRules } from '#api/utils/callouts';
+import { TransformerOperation } from '#type/transformer-operation';
 import { SelectQueryBuilder } from 'typeorm';
 
 import { BaseTransformer } from './BaseTransformer';

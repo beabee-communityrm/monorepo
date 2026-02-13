@@ -7,8 +7,8 @@ import {
   GetCalloutResponseSegmentOptsDto,
   GetCalloutResponseSegmentWith,
   ListCalloutResponseSegmentsDto,
-} from '@api/dto/CalloutResponseSegmentDto';
-import { TransformerOperation } from '@type/transformer-operation';
+} from '#api/dto/CalloutResponseSegmentDto';
+import { TransformerOperation } from '#type/transformer-operation';
 import { TransformPlainToInstance } from 'class-transformer';
 import { SelectQueryBuilder } from 'typeorm';
 

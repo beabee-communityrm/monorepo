@@ -16,7 +16,7 @@ import { newsletterBulkService } from '@beabee/core/services';
 import ContactsService from '@beabee/core/services/ContactsService';
 import EmailService from '@beabee/core/services/EmailService';
 
-import ContactTransformer from '@api/transformers/ContactTransformer';
+import ContactTransformer from '#api/transformers/ContactTransformer';
 import { In } from 'typeorm';
 
 const log = mainLogger.child({ app: 'process-segments' });

@@ -6,8 +6,8 @@ import {
   GeneralEmailTemplateId,
 } from '@beabee/core/type';
 
-import { GetPaginatedQuery } from '@api/dto/BaseDto';
-import IsEmailTemplateId from '@api/validators/IsEmailTemplateId';
+import { GetPaginatedQuery } from '#api/dto/BaseDto';
+import IsEmailTemplateId from '#api/validators/IsEmailTemplateId';
 import {
   Allow,
   IsArray,

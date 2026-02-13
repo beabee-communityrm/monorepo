@@ -14,10 +14,10 @@ import { AuthInfo } from '@beabee/core/type';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import PartialBody from '@api/decorators/PartialBody';
-import { TargetUser } from '@api/decorators/TargetUser';
-import { GetExportQuery } from '@api/dto/BaseDto';
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import PartialBody from '#api/decorators/PartialBody';
+import { TargetUser } from '#api/decorators/TargetUser';
+import { GetExportQuery } from '#api/dto/BaseDto';
 import {
   BatchUpdateContactDto,
   BatchUpdateContactResultDto,
@@ -27,34 +27,34 @@ import {
   GetContributionInfoDto,
   ListContactsDto,
   UpdateContactDto,
-} from '@api/dto/ContactDto';
+} from '#api/dto/ContactDto';
 import {
   CreateContactMfaDto,
   DeleteContactMfaDto,
   GetContactMfaDto,
-} from '@api/dto/ContactMfaDto';
+} from '#api/dto/ContactMfaDto';
 import {
   GetContactRoleDto,
   UpdateContactRoleDto,
-} from '@api/dto/ContactRoleDto';
+} from '#api/dto/ContactRoleDto';
 import {
   ForceUpdateContributionDto,
   StartContributionDto,
   UpdateContributionDto,
-} from '@api/dto/ContributionDto';
-import { CompleteJoinFlowDto, StartJoinFlowDto } from '@api/dto/JoinFlowDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
+} from '#api/dto/ContributionDto';
+import { CompleteJoinFlowDto, StartJoinFlowDto } from '#api/dto/JoinFlowDto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
 import {
   CreatePaymentDto,
   GetPaymentDto,
   ListPaymentsDto,
-} from '@api/dto/PaymentDto';
-import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
-import { ContactRoleParams } from '@api/params/ContactRoleParams';
-import ContactExporter from '@api/transformers/ContactExporter';
-import ContactRoleTransformer from '@api/transformers/ContactRoleTransformer';
-import ContactTransformer from '@api/transformers/ContactTransformer';
-import PaymentTransformer from '@api/transformers/PaymentTransformer';
+} from '#api/dto/PaymentDto';
+import { GetPaymentFlowDto } from '#api/dto/PaymentFlowDto';
+import { ContactRoleParams } from '#api/params/ContactRoleParams';
+import ContactExporter from '#api/transformers/ContactExporter';
+import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
+import ContactTransformer from '#api/transformers/ContactTransformer';
+import PaymentTransformer from '#api/transformers/PaymentTransformer';
 import { plainToInstance } from 'class-transformer';
 import { Response } from 'express';
 import {

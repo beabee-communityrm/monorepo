@@ -13,7 +13,7 @@ import { runApp } from '@beabee/core/server';
 import ContactsService from '@beabee/core/services/ContactsService';
 import { normalizeEmailAddress } from '@beabee/core/utils/email';
 
-import contactTagTransformer from '@api/transformers/ContactTagTransformer';
+import contactTagTransformer from '#api/transformers/ContactTagTransformer';
 import { parse } from 'csv-parse';
 import { In } from 'typeorm';
 

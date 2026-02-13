@@ -16,9 +16,9 @@ import {
 } from '@beabee/beabee-common';
 import { Locale } from '@beabee/locale';
 
-import { GetContentTelegramDto } from '@api/dto/ContentTelegramDto';
-import { LinkDto } from '@api/dto/LinkDto';
-import { NewsletterGroupDto } from '@api/dto/NewsletterDto';
+import { GetContentTelegramDto } from '#api/dto/ContentTelegramDto';
+import { LinkDto } from '#api/dto/LinkDto';
+import { NewsletterGroupDto } from '#api/dto/NewsletterDto';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,

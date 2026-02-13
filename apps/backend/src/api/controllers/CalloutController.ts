@@ -5,47 +5,47 @@ import { Callout, Contact } from '@beabee/core/models';
 import { calloutsService } from '@beabee/core/services/CalloutsService';
 import { AuthInfo } from '@beabee/core/type';
 
-import { CalloutId } from '@api/decorators/CalloutId';
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import PartialBody from '@api/decorators/PartialBody';
-import { ListTagsDto } from '@api/dto';
-import { GetExportQuery } from '@api/dto/BaseDto';
+import { CalloutId } from '#api/decorators/CalloutId';
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import PartialBody from '#api/decorators/PartialBody';
+import { ListTagsDto } from '#api/dto';
+import { GetExportQuery } from '#api/dto/BaseDto';
 import {
   CreateCalloutDto,
   GetCalloutDto,
   GetCalloutOptsDto,
   ListCalloutsDto,
-} from '@api/dto/CalloutDto';
+} from '#api/dto/CalloutDto';
 import {
   CreateCalloutResponseDto,
   GetCalloutResponseDto,
   GetCalloutResponseMapDto,
   GetGuestCalloutResponseDto,
   ListCalloutResponsesDto,
-} from '@api/dto/CalloutResponseDto';
+} from '#api/dto/CalloutResponseDto';
 import {
   CreateCalloutResponseSegmentDto,
   GetCalloutResponseSegmentDto,
   GetCalloutResponseSegmentWith,
   ListCalloutResponseSegmentsDto,
-} from '@api/dto/CalloutResponseSegmentDto';
+} from '#api/dto/CalloutResponseSegmentDto';
 import {
   CreateCalloutReviewerDto,
   GetCalloutReviewerDto,
   UpdateCalloutReviewerDto,
-} from '@api/dto/CalloutReviewerDto';
-import { CreateCalloutTagDto, GetCalloutTagDto } from '@api/dto/CalloutTagDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import CalloutResponseExporter from '@api/transformers/CalloutResponseExporter';
-import CalloutResponseMapTransformer from '@api/transformers/CalloutResponseMapTransformer';
-import CalloutResponseSegmentTransformer from '@api/transformers/CalloutResponseSegmentTransformer';
-import CalloutResponseTransformer from '@api/transformers/CalloutResponseTransformer';
-import CalloutReviewerTransformer from '@api/transformers/CalloutReviewerTransformer';
-import calloutTagTransformer from '@api/transformers/CalloutTagTransformer';
-import CalloutTransformer from '@api/transformers/CalloutTransformer';
-import CalloutVariantTransformer from '@api/transformers/CalloutVariantTransformer';
-import { validateOrReject } from '@api/utils/validation';
-import { verify } from '@core/lib/captchafox';
+} from '#api/dto/CalloutReviewerDto';
+import { CreateCalloutTagDto, GetCalloutTagDto } from '#api/dto/CalloutTagDto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
+import CalloutResponseExporter from '#api/transformers/CalloutResponseExporter';
+import CalloutResponseMapTransformer from '#api/transformers/CalloutResponseMapTransformer';
+import CalloutResponseSegmentTransformer from '#api/transformers/CalloutResponseSegmentTransformer';
+import CalloutResponseTransformer from '#api/transformers/CalloutResponseTransformer';
+import CalloutReviewerTransformer from '#api/transformers/CalloutReviewerTransformer';
+import calloutTagTransformer from '#api/transformers/CalloutTagTransformer';
+import CalloutTransformer from '#api/transformers/CalloutTransformer';
+import CalloutVariantTransformer from '#api/transformers/CalloutVariantTransformer';
+import { validateOrReject } from '#api/utils/validation';
+import { verify } from '#core/lib/captchafox';
 import { plainToInstance } from 'class-transformer';
 import { Response } from 'express';
 import {

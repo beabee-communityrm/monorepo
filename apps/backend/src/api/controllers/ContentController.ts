@@ -1,6 +1,6 @@
 import { updateSalesTaxRate } from '@beabee/core/lib/stripe';
 
-import PartialBody from '@api/decorators/PartialBody';
+import PartialBody from '#api/decorators/PartialBody';
 import {
   GetContentContactsDto,
   GetContentDto,
@@ -12,9 +12,9 @@ import {
   GetContentProfileDto,
   GetContentShareDto,
   GetContentTelegramDto,
-} from '@api/dto';
-import { ContentParams } from '@api/params/ContentParams';
-import ContentTransformer from '@api/transformers/ContentTransformer';
+} from '#api/dto';
+import { ContentParams } from '#api/params/ContentParams';
+import ContentTransformer from '#api/transformers/ContentTransformer';
 import {
   Authorized,
   BadRequestError,

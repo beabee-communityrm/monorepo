@@ -4,8 +4,8 @@ import {
   PaymentType,
 } from '@beabee/beabee-common';
 
-import { GetExportQuery, GetPaginatedQuery } from '@api/dto/BaseDto';
-import { GetContactDto } from '@api/dto/ContactDto';
+import { GetExportQuery, GetPaginatedQuery } from '#api/dto/BaseDto';
+import { GetContactDto } from '#api/dto/ContactDto';
 import {
   IsArray,
   IsBoolean,

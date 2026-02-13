@@ -3,15 +3,15 @@ import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
-import { GetContactDto } from '@api/dto/ContactDto';
-import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
+import { GetContactDto } from '#api/dto/ContactDto';
+import { GetPaymentFlowDto } from '#api/dto/PaymentFlowDto';
 import {
   CompleteSignupFlowDto,
   StartSignupFlowDto,
-} from '@api/dto/SignupFlowDto';
-import { SignupConfirmEmailParams } from '@api/params/SignupConfirmEmailParams';
-import ContactTransformer from '@api/transformers/ContactTransformer';
-import { login } from '@api/utils/auth';
+} from '#api/dto/SignupFlowDto';
+import { SignupConfirmEmailParams } from '#api/params/SignupConfirmEmailParams';
+import ContactTransformer from '#api/transformers/ContactTransformer';
+import { login } from '#api/utils/auth';
 import { plainToInstance } from 'class-transformer';
 import { Request } from 'express';
 import {

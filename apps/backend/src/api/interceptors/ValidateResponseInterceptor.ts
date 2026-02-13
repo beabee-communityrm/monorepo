@@ -1,6 +1,6 @@
 import { log as mainLogger } from '@beabee/core/logging';
 
-import { validateOrReject } from '@api/utils';
+import { validateOrReject } from '#api/utils';
 import { Request } from 'express';
 import { ServerResponse } from 'node:http';
 import {

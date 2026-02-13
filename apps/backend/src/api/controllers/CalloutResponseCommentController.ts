@@ -1,15 +1,15 @@
 import { AuthInfo } from '@beabee/core/type';
 
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import PartialBody from '@api/decorators/PartialBody';
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import PartialBody from '#api/decorators/PartialBody';
 import {
   CreateCalloutResponseCommentDto,
   GetCalloutResponseCommentDto,
   ListCalloutResponseCommentsDto,
-} from '@api/dto/CalloutResponseCommentDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import { UUIDParams } from '@api/params/UUIDParams';
-import CalloutResponseCommentTransformer from '@api/transformers/CalloutResponseCommentTransformer';
+} from '#api/dto/CalloutResponseCommentDto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
+import { UUIDParams } from '#api/params/UUIDParams';
+import CalloutResponseCommentTransformer from '#api/transformers/CalloutResponseCommentTransformer';
 import {
   BadRequestError,
   Body,

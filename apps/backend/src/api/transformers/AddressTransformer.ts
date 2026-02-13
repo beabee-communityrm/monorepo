@@ -1,6 +1,6 @@
 import { Address } from '@beabee/beabee-common';
 
-import { GetAddressDto } from '@api/dto/AddressDto';
+import { GetAddressDto } from '#api/dto/AddressDto';
 import { TransformPlainToInstance } from 'class-transformer';
 
 // TODO: make Address into a proper model

@@ -10,10 +10,10 @@ import {
 import EmailService from '@beabee/core/services/EmailService';
 import { AuthInfo } from '@beabee/core/type';
 
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import PartialBody from '@api/decorators/PartialBody';
-import { GetContactDto, ListContactsDto } from '@api/dto/ContactDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import PartialBody from '#api/decorators/PartialBody';
+import { GetContactDto, ListContactsDto } from '#api/dto/ContactDto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
 import {
   CreateSegmentDto,
   GetSegmentDto,
@@ -21,10 +21,10 @@ import {
   GetSegmentWith,
   ListSegmentsDto,
   SendSegmentEmailBodyDto,
-} from '@api/dto/SegmentDto';
-import { UUIDParams } from '@api/params/UUIDParams';
-import ContactTransformer from '@api/transformers/ContactTransformer';
-import SegmentTransformer from '@api/transformers/SegmentTransformer';
+} from '#api/dto/SegmentDto';
+import { UUIDParams } from '#api/params/UUIDParams';
+import ContactTransformer from '#api/transformers/ContactTransformer';
+import SegmentTransformer from '#api/transformers/SegmentTransformer';
 import {
   Authorized,
   Body,

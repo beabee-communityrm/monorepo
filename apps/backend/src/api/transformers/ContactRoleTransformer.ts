@@ -1,6 +1,6 @@
 import { ContactRole } from '@beabee/core/models';
 
-import { GetContactRoleDto } from '@api/dto/ContactRoleDto';
+import { GetContactRoleDto } from '#api/dto/ContactRoleDto';
 import { TransformPlainToInstance } from 'class-transformer';
 
 import { BaseTransformer } from './BaseTransformer';

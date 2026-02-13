@@ -7,8 +7,8 @@ import {
 import { statusFilterHandler } from '@beabee/core/filter-handlers';
 import { Notice } from '@beabee/core/models';
 
-import { GetNoticeDto } from '@api/dto/NoticeDto';
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
+import { GetNoticeDto } from '#api/dto/NoticeDto';
+import { BaseTransformer } from '#api/transformers/BaseTransformer';
 import { TransformPlainToInstance } from 'class-transformer';
 
 export class NoticeTransformer extends BaseTransformer<

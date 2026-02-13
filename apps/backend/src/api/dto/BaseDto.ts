@@ -8,7 +8,7 @@ import {
   ruleOperators,
 } from '@beabee/beabee-common';
 
-import { IsType } from '@api/validators/IsType';
+import { IsType } from '#api/validators/IsType';
 import {
   Transform,
   TransformFnParams,

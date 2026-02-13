@@ -1,6 +1,6 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
 
-import { GetAddressDto, UpdateAddressDto } from '@api/dto/AddressDto';
+import { GetAddressDto, UpdateAddressDto } from '#api/dto/AddressDto';
 import { Type } from 'class-transformer';
 import {
   IsArray,

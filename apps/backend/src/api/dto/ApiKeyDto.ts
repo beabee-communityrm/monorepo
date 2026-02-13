@@ -1,5 +1,5 @@
-import { GetPaginatedQuery } from '@api/dto/BaseDto';
-import { GetContactDto } from '@api/dto/ContactDto';
+import { GetPaginatedQuery } from '#api/dto/BaseDto';
+import { GetContactDto } from '#api/dto/ContactDto';
 import { Type } from 'class-transformer';
 import {
   IsDate,

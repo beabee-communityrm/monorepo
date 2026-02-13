@@ -7,10 +7,10 @@ import { Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import { AuthInfo, PassportLoginInfo } from '@beabee/core/type';
 
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import { GetAuthInfoDto, LoginDto } from '@api/dto';
-import { authTransformer } from '@api/transformers';
-import { login } from '@api/utils/auth';
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import { GetAuthInfoDto, LoginDto } from '#api/dto';
+import { authTransformer } from '#api/transformers';
+import { login } from '#api/utils/auth';
 import { isUUID } from 'class-validator';
 import { Request, Response } from 'express';
 import {

@@ -4,7 +4,7 @@ import { getRepository } from '@beabee/core/database';
 import { Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 
-import { login } from '@api/utils/auth';
+import { login } from '#api/utils/auth';
 import { isUUID } from 'class-validator';
 import { Request, Response } from 'express';
 import {

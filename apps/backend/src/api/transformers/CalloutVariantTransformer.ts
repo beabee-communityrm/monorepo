@@ -6,9 +6,9 @@ import {
 import { CalloutVariant } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
-import { CalloutVariantDto } from '@api/dto/CalloutVariantDto';
-import { canCreateForCallout, getReviewerRules } from '@api/utils';
-import { TransformerOperation } from '@type/transformer-operation';
+import { CalloutVariantDto } from '#api/dto/CalloutVariantDto';
+import { canCreateForCallout, getReviewerRules } from '#api/utils';
+import { TransformerOperation } from '#type/transformer-operation';
 import { TransformPlainToInstance } from 'class-transformer';
 
 import { BaseTransformer } from './BaseTransformer';

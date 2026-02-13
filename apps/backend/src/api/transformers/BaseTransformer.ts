@@ -15,9 +15,9 @@ import {
 import { AuthInfo, FilterHandlers } from '@beabee/core/type';
 import { convertRulesToWhereClause } from '@beabee/core/utils/rules';
 
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import { TransformerOperation } from '@type/index';
-import { FetchRawResult } from '@type/index';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
+import { TransformerOperation } from '#type/index';
+import { FetchRawResult } from '#type/index';
 import { plainToInstance } from 'class-transformer';
 import { BadRequestError } from 'routing-controllers';
 import { Brackets, ObjectLiteral, SelectQueryBuilder } from 'typeorm';

@@ -15,10 +15,10 @@ import {
   GetContactOptsDto,
   ListContactsDto,
   UpdateContactDto,
-} from '@api/dto/ContactDto';
-import { BaseContactTransformer } from '@api/transformers/BaseContactTransformer';
-import ContactProfileTransformer from '@api/transformers/ContactProfileTransformer';
-import ContactRoleTransformer from '@api/transformers/ContactRoleTransformer';
+} from '#api/dto/ContactDto';
+import { BaseContactTransformer } from '#api/transformers/BaseContactTransformer';
+import ContactProfileTransformer from '#api/transformers/ContactProfileTransformer';
+import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
 import { TransformPlainToInstance } from 'class-transformer';
 import { In, SelectQueryBuilder } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';

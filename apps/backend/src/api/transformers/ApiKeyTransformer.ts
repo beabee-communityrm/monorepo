@@ -6,7 +6,7 @@ import {
 import { ApiKey } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
-import { GetApiKeyDto } from '@api/dto/ApiKeyDto';
+import { GetApiKeyDto } from '#api/dto/ApiKeyDto';
 import { TransformPlainToInstance } from 'class-transformer';
 import { SelectQueryBuilder } from 'typeorm';
 

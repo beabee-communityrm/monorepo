@@ -1,9 +1,9 @@
 import { ContactProfile } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
-import { GetContactProfileDto } from '@api/dto/ContactProfileDto';
-import AddressTransformer from '@api/transformers/AddressTransformer';
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
+import { GetContactProfileDto } from '#api/dto/ContactProfileDto';
+import AddressTransformer from '#api/transformers/AddressTransformer';
+import { BaseTransformer } from '#api/transformers/BaseTransformer';
 import { TransformPlainToInstance } from 'class-transformer';
 
 class ContactProfileTransformer extends BaseTransformer<

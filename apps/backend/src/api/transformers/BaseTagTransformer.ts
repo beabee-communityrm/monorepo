@@ -7,7 +7,7 @@ import type {
   TaggableEntity,
 } from '@beabee/core/type';
 
-import { GetTagDto } from '@api/dto/TagDto';
+import { GetTagDto } from '#api/dto/TagDto';
 import { plainToInstance } from 'class-transformer';
 import { BadRequestError } from 'routing-controllers';
 

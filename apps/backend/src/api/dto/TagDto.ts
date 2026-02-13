@@ -1,4 +1,4 @@
-import { GetPaginatedQuery } from '@api/dto/BaseDto';
+import { GetPaginatedQuery } from '#api/dto/BaseDto';
 import { IsIn, IsString, IsUUID } from 'class-validator';
 
 export class GetTagDto {

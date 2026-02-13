@@ -1,8 +1,8 @@
 import { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 
-import { UUIDParams } from '@api/params/UUIDParams';
-import { validateOrReject } from '@api/utils/validation';
+import { UUIDParams } from '#api/params/UUIDParams';
+import { validateOrReject } from '#api/utils/validation';
 import { Request } from 'express';
 import {
   NotFoundError,

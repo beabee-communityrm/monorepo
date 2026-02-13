@@ -17,11 +17,11 @@ import {
   GetPaymentOptsDto,
   GetPaymentWith,
   ListPaymentsDto,
-} from '@api/dto/PaymentDto';
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
+} from '#api/dto/PaymentDto';
+import { BaseTransformer } from '#api/transformers/BaseTransformer';
 import ContactTransformer, {
   loadContactRoles,
-} from '@api/transformers/ContactTransformer';
+} from '#api/transformers/ContactTransformer';
 import { TransformPlainToInstance, plainToInstance } from 'class-transformer';
 import { NotFoundError } from 'routing-controllers';
 import { SelectQueryBuilder } from 'typeorm';

@@ -23,11 +23,11 @@ import {
   GetCalloutOptsDto,
   GetCalloutWith,
   ListCalloutsDto,
-} from '@api/dto/CalloutDto';
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
-import CalloutVariantTransformer from '@api/transformers/CalloutVariantTransformer';
-import { getReviewerRules } from '@api/utils/callouts';
-import { TransformerOperation } from '@type/index';
+} from '#api/dto/CalloutDto';
+import { BaseTransformer } from '#api/transformers/BaseTransformer';
+import CalloutVariantTransformer from '#api/transformers/CalloutVariantTransformer';
+import { getReviewerRules } from '#api/utils/callouts';
+import { TransformerOperation } from '#type/index';
 import { TransformPlainToInstance } from 'class-transformer';
 import {
   BadRequestError,

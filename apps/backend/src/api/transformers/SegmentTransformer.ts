@@ -7,9 +7,9 @@ import {
   GetSegmentOptsDto,
   GetSegmentWith,
   ListSegmentsDto,
-} from '@api/dto/SegmentDto';
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
-import ContactTransformer from '@api/transformers/ContactTransformer';
+} from '#api/dto/SegmentDto';
+import { BaseTransformer } from '#api/transformers/BaseTransformer';
+import ContactTransformer from '#api/transformers/ContactTransformer';
 import { TransformPlainToInstance } from 'class-transformer';
 
 class SegmentTransformer extends BaseTransformer<

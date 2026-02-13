@@ -17,9 +17,9 @@ import {
   GetCalloutResponseMapDto,
   GetCalloutResponseMapOptsDto,
   ListCalloutResponsesDto,
-} from '@api/dto/CalloutResponseDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import { BaseCalloutResponseTransformer } from '@api/transformers/BaseCalloutResponseTransformer';
+} from '#api/dto/CalloutResponseDto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
+import { BaseCalloutResponseTransformer } from '#api/transformers/BaseCalloutResponseTransformer';
 import { TransformPlainToInstance } from 'class-transformer';
 
 class CalloutResponseMapTransformer extends BaseCalloutResponseTransformer<

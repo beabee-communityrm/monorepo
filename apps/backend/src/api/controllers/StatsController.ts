@@ -2,7 +2,7 @@ import { PaymentStatus } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
 import { Contact, Payment } from '@beabee/core/models';
 
-import { GetStatsDto, GetStatsOptsDto } from '@api/dto/StatsDto';
+import { GetStatsDto, GetStatsOptsDto } from '#api/dto/StatsDto';
 import { plainToInstance } from 'class-transformer';
 import {
   Authorized,

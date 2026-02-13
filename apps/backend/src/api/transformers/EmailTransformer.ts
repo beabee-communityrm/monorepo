@@ -1,7 +1,7 @@
 import { EmailFilterName, emailFilters } from '@beabee/beabee-common';
 import { Email } from '@beabee/core/models';
 
-import { GetEmailDto, ListEmailsDto } from '@api/dto/EmailDto';
+import { GetEmailDto, ListEmailsDto } from '#api/dto/EmailDto';
 import { TransformPlainToInstance } from 'class-transformer';
 import { SelectQueryBuilder } from 'typeorm';
 

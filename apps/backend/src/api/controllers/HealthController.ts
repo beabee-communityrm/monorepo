@@ -1,5 +1,5 @@
-import { GetHealthDto } from '@api/dto/HealthDto';
-import ContentTransformer from '@api/transformers/ContentTransformer';
+import { GetHealthDto } from '#api/dto/HealthDto';
+import ContentTransformer from '#api/transformers/ContentTransformer';
 import { Response } from 'express';
 import { Get, JsonController, Res } from 'routing-controllers';
 

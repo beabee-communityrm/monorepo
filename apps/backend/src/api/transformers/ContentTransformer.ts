@@ -18,7 +18,7 @@ import {
   GetContentProfileDto,
   GetContentShareDto,
   GetContentTelegramDto,
-} from '@api/dto/index';
+} from '#api/dto/index';
 import { plainToInstance } from 'class-transformer';
 
 class ContentTransformer {

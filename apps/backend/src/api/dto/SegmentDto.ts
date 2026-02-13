@@ -1,4 +1,4 @@
-import { GetPaginatedQuery, GetPaginatedRuleGroup } from '@api/dto/BaseDto';
+import { GetPaginatedQuery, GetPaginatedRuleGroup } from '#api/dto/BaseDto';
 import { Type } from 'class-transformer';
 import {
   IsEnum,
