@@ -222,6 +222,8 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "Paiement",
       "showOneTimeDonation": "Afficher l’option de don unique sur l’écran d’accueil",
       "taxRate": "Taux de la TVA",

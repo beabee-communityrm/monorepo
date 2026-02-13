@@ -223,6 +223,8 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "",
       "showOneTimeDonation": "",
       "taxRate": "",

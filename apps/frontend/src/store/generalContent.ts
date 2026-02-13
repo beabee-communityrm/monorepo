@@ -19,6 +19,7 @@ export const generalContent = ref<ContentGeneralData>({
   theme: {},
   backgroundUrl: '',
   hideContribution: false,
+  enableOneTimeDonations: false,
 });
 
 export const initGeneralContent = () =>

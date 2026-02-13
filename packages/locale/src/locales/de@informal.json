@@ -222,6 +222,8 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "Zahlungen",
       "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",

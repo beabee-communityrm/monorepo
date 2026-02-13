@@ -222,6 +222,8 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "Betaling",
       "showOneTimeDonation": "Eenmalige bijdrageoptie op het startscherm weergeven",
       "taxRate": "BTW-tarief",
