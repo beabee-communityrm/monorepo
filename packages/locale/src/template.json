@@ -1086,6 +1086,23 @@
       "recurringContributions": "",
       "role": ""
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      },
+      "date": "",
+      "edit": "",
+      "editTitle": "",
+      "editTitleWithName": "",
+      "empty": "",
+      "manage": "",
+      "name": "",
+      "showingOf": "",
+      "subject": "",
+      "title": "",
+      "use": ""
+    },
     "noContacts": "",
     "noResults": "",
     "numResults": "",

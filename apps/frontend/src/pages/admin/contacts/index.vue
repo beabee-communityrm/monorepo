@@ -78,7 +78,7 @@ meta:
             :icon="faMailBulk"
             variant="primaryOutlined"
             :title="t('actions.sendEmails')"
-            :disabled="!currentSegment || selectedCount > 0"
+            :disabled="selectedCount > 0"
           >
             <router-link
               v-if="currentSegment"
@@ -100,6 +100,14 @@ meta:
             >
               {{ t('actions.sendOngoingEmails') }}
             </a>
+            <router-link
+              class="block border-t border-primary-40 px-3 py-2 hover:bg-primary-5"
+              role="menuitem"
+              to="/admin/contacts/email-templates"
+              @click.stop
+            >
+              {{ t('contacts.emailTemplates.manage') }}
+            </router-link>
           </AppDropdownButton>
         </AppButtonGroup>
         <p v-if="selectedCount > 0" class="self-center text-sm">
