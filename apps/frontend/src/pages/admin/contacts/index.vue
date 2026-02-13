@@ -89,6 +89,14 @@ meta:
             >
               {{ t('actions.sendOneOffEmail') }}
             </router-link>
+            <span
+              v-else
+              role="menuitem"
+              aria-disabled="true"
+              class="block cursor-not-allowed px-3 py-2 opacity-60"
+            >
+              {{ t('actions.sendOneOffEmail') }}
+            </span>
             <a
               v-if="currentSegment"
               class="block border-t border-primary-40 px-3 py-2 hover:bg-primary-5"
@@ -100,6 +108,14 @@ meta:
             >
               {{ t('actions.sendOngoingEmails') }}
             </a>
+            <span
+              v-else
+              role="menuitem"
+              aria-disabled="true"
+              class="block cursor-not-allowed border-t border-primary-40 px-3 py-2 opacity-60"
+            >
+              {{ t('actions.sendOngoingEmails') }}
+            </span>
             <router-link
               class="block border-t border-primary-40 px-3 py-2 hover:bg-primary-5"
               role="menuitem"
