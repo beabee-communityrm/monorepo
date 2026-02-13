@@ -19,7 +19,7 @@ meta:
   </AppConfirmDialog>
 
   <PageTitle :title="pageTitle" border>
-    <router-link :to="listRoute">{{ t('actions.back') }}</router-link>
+    <router-link :to="LIST_ROUTE">{{ t('actions.back') }}</router-link>
   </PageTitle>
 
   <div v-if="loading">
@@ -57,7 +57,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type { GetEmailData } from '@beabee/beabee-common';
+import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
 import {
   AppButton,
   AppConfirmDialog,
@@ -76,11 +76,12 @@ import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
+
 const { t } = useI18n();
 const route = useRoute('adminContactsEmailTemplatesEdit');
 const router = useRouter();
 
-const listRoute = { name: 'adminContactsEmailTemplates' as const };
 const emailId = computed(() => route.params.emailId as string);
 
 addBreadcrumb(
@@ -88,7 +89,7 @@ addBreadcrumb(
     { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
     {
       title: t('contacts.emailTemplates.title'),
-      to: router.resolve(listRoute).href,
+      to: router.resolve(LIST_ROUTE).href,
     },
     {
       title: email.value
@@ -103,7 +104,7 @@ addBreadcrumb(
 const loading = ref(true);
 const showDeleteConfirm = ref(false);
 const email = ref<GetEmailData | null>(null);
-const form = ref({
+const form = ref<UpdateEmailData>({
   name: '',
   subject: '',
   body: '',
@@ -119,16 +120,14 @@ const pageTitle = computed(() => {
 async function handleSubmit() {
   if (!emailId.value || !email.value) return;
   try {
-    await client.email.update(emailId.value, {
+    const payload: UpdateEmailData = {
       name: form.value.name,
       subject: form.value.subject,
       body: form.value.body,
-    } as Parameters<typeof client.email.update>[1]);
-    addNotification({
-      variant: 'success',
-      title: t('form.saved'),
-    });
-    router.push(listRoute);
+    };
+    await client.email.update(emailId.value, payload);
+    addNotification({ variant: 'success', title: t('form.saved') });
+    await router.push(LIST_ROUTE);
   } catch (err) {
     addNotification({
       variant: 'error',
@@ -146,7 +145,7 @@ async function confirmDeleteEmail() {
       variant: 'success',
       title: t('emails.notifications.deleted'),
     });
-    router.push(listRoute);
+    await router.push(LIST_ROUTE);
   } catch (err) {
     addNotification({
       variant: 'error',
@@ -168,7 +167,7 @@ async function loadEmail() {
 
 onMounted(async () => {
   if (!emailId.value) {
-    router.replace(listRoute);
+    await router.replace(LIST_ROUTE);
     return;
   }
   try {
@@ -178,7 +177,7 @@ onMounted(async () => {
       variant: 'error',
       title: extractErrorText(err),
     });
-    router.replace(listRoute);
+    await router.replace(LIST_ROUTE);
   } finally {
     loading.value = false;
   }
