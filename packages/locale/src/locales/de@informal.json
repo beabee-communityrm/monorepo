@@ -1121,7 +1121,7 @@
       "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
       "title": "E-Mail an Segment senden"
     },
-    "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt."
+    "showingOf": "{start} bis {end} von {total} Kontakten werden angezeigt."
   },
   "contribution": {
     "adminCancelDescription": "Wenn du die Mitgliedschaft des Kontakts kündigst, endet sie am Ende des aktuellen Zahlungszyklus am {date}.",

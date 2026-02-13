@@ -1095,7 +1095,7 @@
         "text": "Êtes-vous sûr de vouloir supprimer ce modèle d'e-mail ? Cette action est irréversible.",
         "title": "Supprimer le modèle ?"
       },
-      "date": "Créé le",
+      "date": "Créé",
       "edit": "Modifier",
       "editTitle": "Modifier le modèle",
       "editTitleWithName": "Modifier le modèle : {name}",
