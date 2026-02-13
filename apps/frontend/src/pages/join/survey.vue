@@ -38,13 +38,14 @@ import type {
 } from '@beabee/beabee-common';
 import { AppButton } from '@beabee/vue';
 
-import AuthBox from '@components/AuthBox.vue';
-import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import { currentUser } from '@store';
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+
+import AuthBox from '#components/AuthBox.vue';
+import CalloutForm from '#components/pages/callouts/CalloutForm.vue';
+import { currentUser } from '#store';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 const router = useRouter();

@@ -36,14 +36,15 @@ import {
 } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
 
-import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
-import JoinFormStep2 from '@components/pages/join/JoinFormStep2.vue';
-import { generalContent, isEmbed } from '@store';
-import type { JoinFormData } from '@type/join-form-data';
-import { client } from '@utils/api';
-import { notifyRateLimited } from '@utils/api-error';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+
+import JoinFormStep1 from '#components/pages/join/JoinFormStep1.vue';
+import JoinFormStep2 from '#components/pages/join/JoinFormStep2.vue';
+import { generalContent, isEmbed } from '#store';
+import type { JoinFormData } from '#type/join-form-data';
+import { client } from '#utils/api';
+import { notifyRateLimited } from '#utils/api-error';
 
 const route = useRoute();
 const router = useRouter();

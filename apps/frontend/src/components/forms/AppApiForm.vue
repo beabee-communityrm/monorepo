@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { AppForm, type AppFormProps } from '@beabee/vue';
 
-import { extractErrorText } from '@utils/api-error';
+import { extractErrorText } from '#utils/api-error';
 
 interface AppApiFormProps extends Omit<AppFormProps, 'extractErrorText'> {
   /** Custom error messages for API error codes */

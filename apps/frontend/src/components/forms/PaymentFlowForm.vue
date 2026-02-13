@@ -47,14 +47,15 @@
 import type { PaymentFlowParams } from '@beabee/beabee-common';
 import { AppForm, AppModal, addNotification } from '@beabee/vue';
 
-import StripePaymentForm from '@components/forms/StripePaymentForm.vue';
-import env from '@env';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
-import type { PaymentFlowFormData } from '@type/payment-flow-form-data';
-import { extractErrorText } from '@utils/api-error';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import StripePaymentForm from '#components/forms/StripePaymentForm.vue';
+import env from '#env';
+import type { PaymentFlowFormData } from '#type/payment-flow-form-data';
+import { extractErrorText } from '#utils/api-error';
 
 const { t } = useI18n();
 

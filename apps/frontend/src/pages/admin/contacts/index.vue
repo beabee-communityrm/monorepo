@@ -190,26 +190,27 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';
-import {
-  headers,
-  useContactFilters,
-} from '@components/pages/admin/contacts/contacts.interface';
-import AppSearch from '@components/search/AppSearch.vue';
-import TagList from '@components/tag/TagList.vue';
-import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import {
   faDownload,
   faMailBulk,
   faPlus,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
-import { definePaginatedQuery, defineParam } from '@utils/pagination';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+
+import SaveSegment from '#components/pages/admin/contacts/SaveSegment.vue';
+import {
+  headers,
+  useContactFilters,
+} from '#components/pages/admin/contacts/contacts.interface';
+import AppSearch from '#components/search/AppSearch.vue';
+import TagList from '#components/tag/TagList.vue';
+import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
+import { definePaginatedQuery, defineParam } from '#utils/pagination';
 
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';

@@ -29,10 +29,11 @@ import {
 } from '@beabee/beabee-common';
 import { AppSelect } from '@beabee/vue';
 
-import AppSearchRuleFilter from '@components/search/AppSearchRuleFilter.vue';
-import { client } from '@utils/api';
 import { computed, onBeforeMount, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppSearchRuleFilter from '#components/search/AppSearchRuleFilter.vue';
+import { client } from '#utils/api';
 
 import type {
   SearchRuleEmits,

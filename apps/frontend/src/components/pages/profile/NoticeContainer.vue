@@ -7,9 +7,10 @@
 <script lang="ts" setup>
 import { type GetNoticeData, ItemStatus } from '@beabee/beabee-common';
 
-import AppNotice from '@components/notice/AppNotice.vue';
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
+
+import AppNotice from '#components/notice/AppNotice.vue';
+import { client } from '#utils/api';
 
 const notices = ref<GetNoticeData[]>([]);
 const loading = ref(false);

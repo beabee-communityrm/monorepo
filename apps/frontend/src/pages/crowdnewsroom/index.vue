@@ -87,12 +87,13 @@ import {
   PageTitle,
 } from '@beabee/vue';
 
-import CalloutCard from '@components/callout/CalloutCard.vue';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
-import { defineParam } from '@utils/pagination';
 import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import CalloutCard from '#components/callout/CalloutCard.vue';
+import { client } from '#utils/api';
+import { defineParam } from '#utils/pagination';
 
 const { t } = useI18n();
 
