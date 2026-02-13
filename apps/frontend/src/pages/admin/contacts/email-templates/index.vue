@@ -17,7 +17,10 @@ meta:
   >
     <template #value-name="{ item, value }">
       <router-link
-        :to="`/admin/contacts/email-templates/edit/${item.id}`"
+        :to="{
+          name: 'adminContactsEmailTemplatesEdit',
+          params: { emailId: item.id },
+        }"
         class="text-base font-bold text-link"
       >
         {{ value }}
@@ -59,7 +62,7 @@ addBreadcrumb(
   ])
 );
 
-const headers: Header[] = [
+const headers = computed<Header[]>(() => [
   {
     value: 'name',
     text: t('contacts.emailTemplates.name'),
@@ -82,7 +85,7 @@ const headers: Header[] = [
     text: t('emails.mailingCount'),
     align: 'right',
   },
-];
+]);
 
 const emailTable = ref<Paginated<GetEmailData>>();
 
