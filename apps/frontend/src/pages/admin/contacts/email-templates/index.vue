@@ -88,7 +88,6 @@ const headers = computed<Header[]>(() => [
 ]);
 
 const emailTable = ref<Paginated<GetEmailData>>();
-
 const currentPaginatedQuery = definePaginatedQuery('date');
 
 async function refreshEmails() {
