@@ -119,7 +119,7 @@ meta:
             <router-link
               class="block border-t border-primary-40 px-3 py-2 hover:bg-primary-5"
               role="menuitem"
-              to="/admin/contacts/email-templates"
+              :to="{ name: 'adminContactsEmailTemplates' }"
               @click.stop
             >
               {{ t('contacts.emailTemplates.manage') }}

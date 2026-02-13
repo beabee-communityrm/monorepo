@@ -19,7 +19,7 @@ meta:
   </AppConfirmDialog>
 
   <PageTitle :title="pageTitle" border>
-    <router-link :to="listUrl">{{ t('actions.back') }}</router-link>
+    <router-link :to="listRoute">{{ t('actions.back') }}</router-link>
   </PageTitle>
 
   <div v-if="loading">
@@ -80,14 +80,16 @@ const { t } = useI18n();
 const route = useRoute('adminContactsEmailTemplatesEdit');
 const router = useRouter();
 
-const listUrl = '/admin/contacts/email-templates';
-
+const listRoute = { name: 'adminContactsEmailTemplates' as const };
 const emailId = computed(() => route.params.emailId as string);
 
 addBreadcrumb(
   computed(() => [
     { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
-    { title: t('contacts.emailTemplates.title'), to: listUrl },
+    {
+      title: t('contacts.emailTemplates.title'),
+      to: router.resolve(listRoute).href,
+    },
     {
       title: email.value
         ? t('contacts.emailTemplates.editTitleWithName', {
@@ -118,13 +120,15 @@ async function handleSubmit() {
   if (!emailId.value || !email.value) return;
   try {
     await client.email.update(emailId.value, {
-      ...form.value,
+      name: form.value.name,
+      subject: form.value.subject,
+      body: form.value.body,
     } as Parameters<typeof client.email.update>[1]);
     addNotification({
       variant: 'success',
       title: t('form.saved'),
     });
-    router.push(listUrl);
+    router.push(listRoute);
   } catch (err) {
     addNotification({
       variant: 'error',
@@ -142,7 +146,7 @@ async function confirmDeleteEmail() {
       variant: 'success',
       title: t('emails.notifications.deleted'),
     });
-    router.push(listUrl);
+    router.push(listRoute);
   } catch (err) {
     addNotification({
       variant: 'error',
@@ -151,25 +155,30 @@ async function confirmDeleteEmail() {
   }
 }
 
+async function loadEmail() {
+  if (!emailId.value) return;
+  const data = await client.email.get(emailId.value);
+  email.value = data;
+  form.value = {
+    name: data.name,
+    subject: data.subject,
+    body: data.body,
+  };
+}
+
 onMounted(async () => {
   if (!emailId.value) {
-    router.replace(listUrl);
+    router.replace(listRoute);
     return;
   }
   try {
-    const data = await client.email.get(emailId.value);
-    email.value = data;
-    form.value = {
-      name: data.name,
-      subject: data.subject,
-      body: data.body,
-    };
+    await loadEmail();
   } catch (err) {
     addNotification({
       variant: 'error',
       title: extractErrorText(err),
     });
-    router.replace(listUrl);
+    router.replace(listRoute);
   } finally {
     loading.value = false;
   }
