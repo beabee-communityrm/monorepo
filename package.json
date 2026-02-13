@@ -21,20 +21,30 @@
     "packages/*",
     "apps/*"
   ],
-  "_moduleAliases": {
-    "@core": "./apps/backend/dist/core",
-    "@api": "./apps/backend/dist/api",
-    "@apps": "./apps/backend/dist/apps",
-    "@config": "./apps/backend/dist/config/config.js",
-    "@locale": "./apps/backend/dist/locales/current.js",
-    "@models": "./apps/backend/dist/models",
-    "@type": "./apps/backend/dist/type",
-    "@enums": "./apps/backend/dist/enums"
-  },
   "resolutions": {
     "@types/express": "^4.17.21",
     "@types/express-serve-static-core": "^4.17.33",
     "tar-fs": "^3.1.1"
   },
-  "packageManager": "yarn@4.7.0"
+  "packageManager": "yarn@4.7.0",
+  "imports": {
+    "#core/*": "./apps/backend/dist/core/*.js",
+    "#api/dto": "./apps/backend/dist/api/dto/index.js",
+    "#api/utils": "./apps/backend/dist/api/utils/index.js",
+    "#api/controllers": "./apps/backend/dist/api/controllers/index.js",
+    "#api/transformers": "./apps/backend/dist/api/transformers/index.js",
+    "#api/validators": "./apps/backend/dist/api/validators/index.js",
+    "#api/params": "./apps/backend/dist/api/params/index.js",
+    "#api/decorators": "./apps/backend/dist/api/decorators/index.js",
+    "#api/interceptors": "./apps/backend/dist/api/interceptors/index.js",
+    "#api/middlewares": "./apps/backend/dist/api/middlewares/index.js",
+    "#api/*": "./apps/backend/dist/api/*.js",
+    "#apps/*": "./apps/backend/dist/apps/*.js",
+    "#config": "./apps/backend/dist/config/config.js",
+    "#locale": "./apps/backend/dist/locales/current.js",
+    "#models/*": "./apps/backend/dist/models/*.js",
+    "#type": "./apps/backend/dist/type/index.js",
+    "#type/*": "./apps/backend/dist/type/*.js",
+    "#enums/*": "./apps/backend/dist/enums/*.js"
+  }
 }

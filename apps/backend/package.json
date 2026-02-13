@@ -87,11 +87,17 @@
     "typescript": "~5.9.3"
   },
   "imports": {
-    "#core": "./dist/core/index.js",
     "#core/*": "./dist/core/*.js",
-    "#api": "./dist/api/index.js",
+    "#api/dto": "./dist/api/dto/index.js",
+    "#api/utils": "./dist/api/utils/index.js",
+    "#api/controllers": "./dist/api/controllers/index.js",
+    "#api/transformers": "./dist/api/transformers/index.js",
+    "#api/validators": "./dist/api/validators/index.js",
+    "#api/params": "./dist/api/params/index.js",
+    "#api/decorators": "./dist/api/decorators/index.js",
+    "#api/interceptors": "./dist/api/interceptors/index.js",
+    "#api/middlewares": "./dist/api/middlewares/index.js",
     "#api/*": "./dist/api/*.js",
-    "#apps": "./dist/apps/index.js",
     "#apps/*": "./dist/apps/*.js",
     "#type": "./dist/type/index.js",
     "#type/*": "./dist/type/*.js"

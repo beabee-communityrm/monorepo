@@ -1,5 +1,4 @@
 import { resolveImageUrl } from '@beabee/beabee-common';
-//import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
 import config from '@beabee/core/config';
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
 import { initApp, startServer } from '@beabee/core/server';
