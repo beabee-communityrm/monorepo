@@ -226,33 +226,34 @@ import {
 } from '@beabee/vue';
 
 import {
-  headers,
-  useCalloutResponseFilters,
-} from '@components/pages/admin/callout-responses.interface';
-import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
-import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
-import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';
-import AppSearch from '@components/search/AppSearch.vue';
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import TagList from '@components/tag/TagList.vue';
-import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
-import {
   faComment,
   faDownload,
   faUser,
   faUserPen,
 } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { canAdmin } from '@store/currentUser';
-import { client } from '@utils/api';
+import { computed, ref, toRef, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+
+import {
+  headers,
+  useCalloutResponseFilters,
+} from '#components/pages/admin/callout-responses.interface';
+import MoveBucketButton from '#components/pages/admin/callouts/MoveBucketButton.vue';
+import SetAssigneeButton from '#components/pages/admin/callouts/SetAssigneeButton.vue';
+import SaveSegment from '#components/pages/admin/contacts/SaveSegment.vue';
+import AppSearch from '#components/search/AppSearch.vue';
+import AppPaginatedTable from '#components/table/AppPaginatedTable.vue';
+import TagList from '#components/tag/TagList.vue';
+import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { canAdmin } from '#store/currentUser';
+import { client } from '#utils/api';
 import {
   definePaginatedQuery,
   defineParam,
   defineRulesParam,
-} from '@utils/pagination';
-import { computed, ref, toRef, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+} from '#utils/pagination';
 
 import { useSegmentManagement } from '../../../../../../composables/useSegmentManagement';
 import { useTagFilter } from '../../../../../../composables/useTagFilter';

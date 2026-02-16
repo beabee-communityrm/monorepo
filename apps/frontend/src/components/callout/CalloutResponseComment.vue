@@ -66,9 +66,10 @@ import {
 } from '@beabee/vue';
 
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { client } from '#utils/api';
 
 import CalloutResponseCommentForm from './CalloutResponseCommentForm.vue';
 

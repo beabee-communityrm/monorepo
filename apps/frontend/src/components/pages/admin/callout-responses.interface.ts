@@ -7,11 +7,12 @@ import {
 import type { Header } from '@beabee/vue';
 import type { SelectItem } from '@beabee/vue/types';
 
-import env from '@env';
-import { i18n } from '@lib/i18n';
-import { client } from '@utils/api';
-import { buckets, convertComponentsToFilters } from '@utils/callouts';
 import { type Ref, computed, ref, watchEffect } from 'vue';
+
+import env from '#env';
+import { i18n } from '#lib/i18n';
+import { client } from '#utils/api';
+import { buckets, convertComponentsToFilters } from '#utils/callouts';
 
 import { type FilterGroups, type FilterItems } from '../../../type/search';
 import { withLabel } from '../../../utils/filters';

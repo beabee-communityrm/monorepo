@@ -16,11 +16,12 @@ import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { PageTitle } from '@beabee/vue';
 
 import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
 
 const route = useRoute('adminCalloutView');
 const { t } = useI18n();

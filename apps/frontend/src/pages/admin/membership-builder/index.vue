@@ -123,17 +123,18 @@ import {
   AppSubHeading,
 } from '@beabee/vue';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import PeriodAmounts from '@components/pages/admin/membership-builder/PeriodAmounts.vue';
-import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
-import { generalContent } from '@store';
-import type { JoinFormData } from '@type/join-form-data';
-import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import AppImageUpload from '#components/forms/AppImageUpload.vue';
+import PeriodAmounts from '#components/pages/admin/membership-builder/PeriodAmounts.vue';
+import JoinFormStep1 from '#components/pages/join/JoinFormStep1.vue';
+import { generalContent } from '#store';
+import type { JoinFormData } from '#type/join-form-data';
+import { client } from '#utils/api';
 
 const { n, t } = useI18n();
 const stepT = (key: string) => t('membershipBuilder.steps.joinForm.' + key);

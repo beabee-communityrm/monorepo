@@ -189,14 +189,15 @@ import {
   AppTextArea,
 } from '@beabee/vue';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import TaxRateInput from '@components/pages/admin/settings/TaxRateInput.vue';
-import { localeItems } from '@lib/i18n';
-import { generalContent as storeGeneralContent } from '@store';
-import { client } from '@utils/api';
 import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import AppImageUpload from '#components/forms/AppImageUpload.vue';
+import TaxRateInput from '#components/pages/admin/settings/TaxRateInput.vue';
+import { localeItems } from '#lib/i18n';
+import { generalContent as storeGeneralContent } from '#store';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 

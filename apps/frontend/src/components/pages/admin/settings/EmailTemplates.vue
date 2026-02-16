@@ -55,9 +55,10 @@
 import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
 import { AppRoundBadge, AppTable, type Header } from '@beabee/vue';
 
-import { client } from '@utils/api';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 

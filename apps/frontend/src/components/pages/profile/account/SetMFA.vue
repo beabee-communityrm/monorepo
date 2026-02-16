@@ -242,10 +242,6 @@ import {
 } from '@beabee/vue';
 
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
-import { generalContent } from '@store/index';
-import type { SetMfaSteps } from '@type/set-mfa-steps';
-import type { SetMfaTotpIdentity } from '@type/set-mfa-totp-identity';
-import { client, isApiError } from '@utils/api';
 import { Secret, TOTP } from 'otpauth';
 import {
   computed,
@@ -257,6 +253,11 @@ import {
   watch,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { generalContent } from '#store/index';
+import type { SetMfaSteps } from '#type/set-mfa-steps';
+import type { SetMfaTotpIdentity } from '#type/set-mfa-totp-identity';
+import { client, isApiError } from '#utils/api';
 
 const { t } = useI18n();
 

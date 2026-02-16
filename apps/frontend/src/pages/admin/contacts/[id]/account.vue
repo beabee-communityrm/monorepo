@@ -54,12 +54,13 @@ import { ActionButton, AppConfirmDialog } from '@beabee/vue';
 import { App2ColGrid } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import ContactUpdateAccount from '@components/contact/ContactUpdateAccount.vue';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+
+import ContactUpdateAccount from '#components/contact/ContactUpdateAccount.vue';
+import { client } from '#utils/api';
 
 const props = defineProps<{ contact: GetContactData }>();
 
