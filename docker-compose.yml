@@ -142,6 +142,10 @@ services:
       context: .
       dockerfile: ./apps/router/Dockerfile
     environment:
+      LEGACY_APP_HOST: app:3000
+      API_APP_HOST: api_app:3000
+      FRONTEND_APP_HOST: frontend:80
+      WEBHOOK_APP_HOST: webhook_app:3000
       LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
       TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
     ports:
