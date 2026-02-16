@@ -24,16 +24,6 @@
     "packages/*",
     "apps/*"
   ],
-  "_moduleAliases": {
-    "@core": "./apps/backend/dist/core",
-    "@api": "./apps/backend/dist/api",
-    "@apps": "./apps/backend/dist/apps",
-    "@config": "./apps/backend/dist/config/config.js",
-    "@locale": "./apps/backend/dist/locales/current.js",
-    "@models": "./apps/backend/dist/models",
-    "@type": "./apps/backend/dist/type",
-    "@enums": "./apps/backend/dist/enums"
-  },
   "resolutions": {
     "@types/express": "^4.17.21",
     "@types/express-serve-static-core": "^4.17.33",

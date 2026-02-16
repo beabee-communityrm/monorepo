@@ -7,8 +7,8 @@ import {
 import { CalloutResponseTag, CalloutTag } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
-import { GetCalloutTagDto } from '@api/dto';
-import { canCreateForCallout, getReviewerRules } from '@api/utils/callouts';
+import { GetCalloutTagDto } from '#api/dto';
+import { canCreateForCallout, getReviewerRules } from '#api/utils/callouts';
 
 import BaseTagTransformer from './BaseTagTransformer';
 
