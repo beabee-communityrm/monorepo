@@ -54,17 +54,18 @@ import {
   PageTitle,
 } from '@beabee/vue';
 
-import AppNotice from '@components/notice/AppNotice.vue';
 import {
   faPencilAlt,
   faSignHanging,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import AppNotice from '#components/notice/AppNotice.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
 
 import ItemStatusText from '../../../../components/item/ItemStatusText.vue';
 

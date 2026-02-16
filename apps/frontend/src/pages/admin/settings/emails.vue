@@ -46,11 +46,12 @@ meta:
 import type { ContentEmailData } from '@beabee/beabee-common';
 import { App2ColGrid, AppHeading, AppInput } from '@beabee/vue';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import EmailTemplates from '@components/pages/admin/settings/EmailTemplates.vue';
-import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import EmailTemplates from '#components/pages/admin/settings/EmailTemplates.vue';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 

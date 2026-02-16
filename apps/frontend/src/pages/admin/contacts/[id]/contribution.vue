@@ -69,15 +69,16 @@ import {
   AppNotification,
 } from '@beabee/vue';
 
-import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
-import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
-import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
-import type { UpdateContribution } from '@components/contact/contact.interface';
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+
+import ContactCancelContribution from '#components/contact/ContactCancelContribution.vue';
+import ContactContributionFields from '#components/contact/ContactContributionFields.vue';
+import ContactPaymentsHistory from '#components/contact/ContactPaymentsHistory.vue';
+import type { UpdateContribution } from '#components/contact/contact.interface';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 

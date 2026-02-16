@@ -23,8 +23,9 @@
 <script lang="ts" setup>
 import { AppFormField, AppRichTextEditor } from '@beabee/vue';
 
-import type { LocaleProp } from '@type';
 import { useI18n } from 'vue-i18n';
+
+import type { LocaleProp } from '#type';
 
 import type { SidebarTabProps } from '../SidebarTabs.interface';
 

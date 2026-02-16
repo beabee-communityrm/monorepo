@@ -43,10 +43,11 @@ import {
 } from '@beabee/beabee-common';
 import { type Header, formatLocale } from '@beabee/vue';
 
-import { client } from '@utils/api';
-import { definePaginatedQuery } from '@utils/pagination';
 import { ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { client } from '#utils/api';
+import { definePaginatedQuery } from '#utils/pagination';
 
 import AppPaginatedTable from '../../../../components/table/AppPaginatedTable.vue';
 

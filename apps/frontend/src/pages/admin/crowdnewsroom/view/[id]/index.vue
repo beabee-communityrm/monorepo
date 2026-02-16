@@ -118,7 +118,6 @@ import {
   addNotification,
 } from '@beabee/vue';
 
-import CalloutSummary from '@components/callout/CalloutSummary.vue';
 import {
   faClone,
   faEye,
@@ -127,11 +126,13 @@ import {
   faPencilAlt,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
-import { canAdmin } from '@store/currentUser';
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+
+import CalloutSummary from '#components/callout/CalloutSummary.vue';
+import { canAdmin } from '#store/currentUser';
+import { client } from '#utils/api';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseCount'>;

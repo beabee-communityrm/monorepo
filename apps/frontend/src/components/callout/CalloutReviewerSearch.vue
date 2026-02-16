@@ -30,11 +30,12 @@ import {
 } from '@beabee/beabee-common';
 import { AppNotification, AppSearchInput } from '@beabee/vue';
 
-import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
 import { not } from '@vuelidate/validators';
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 

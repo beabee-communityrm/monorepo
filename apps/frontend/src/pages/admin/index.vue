@@ -99,16 +99,17 @@ import {
 } from '@beabee/beabee-common';
 import { AppHeading, AppTime, PageTitle } from '@beabee/vue';
 
-import CalloutSummary from '@components/callout/CalloutSummary.vue';
-import HintBox from '@components/pages/admin/HintBox.vue';
-import KeyStat from '@components/pages/admin/KeyStat.vue';
 import { faChartLine } from '@fortawesome/free-solid-svg-icons';
-import { currentUser } from '@store';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
 import { subDays } from 'date-fns';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import CalloutSummary from '#components/callout/CalloutSummary.vue';
+import HintBox from '#components/pages/admin/HintBox.vue';
+import KeyStat from '#components/pages/admin/KeyStat.vue';
+import { currentUser } from '#store';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
 
 import env from '../../env';
 

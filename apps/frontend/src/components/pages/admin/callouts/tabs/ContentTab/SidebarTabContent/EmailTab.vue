@@ -54,11 +54,12 @@
 <script lang="ts" setup>
 import { AppFormField, AppNotification, AppToggleField } from '@beabee/vue';
 
-import EmailEditor from '@components/EmailEditor.vue';
-import env from '@env';
-import type { LocaleProp } from '@type';
 import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import EmailEditor from '#components/EmailEditor.vue';
+import env from '#env';
+import type { LocaleProp } from '#type';
 
 import type { SidebarTabProps } from '../SidebarTabs.interface';
 
