@@ -7,7 +7,6 @@ export * from './DocumentService';
 export * from './EmailService';
 export * from './GiftService';
 export * from './ImageService';
-export * from './NetworkCommunicatorService';
 export * from './NewsletterBulkService';
 export * from './NewsletterService';
 export * from './OptionsService';
