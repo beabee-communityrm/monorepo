@@ -1088,20 +1088,20 @@
     },
     "emailTemplates": {
       "confirmDelete": {
-        "text": "Möchtest du diese E-Mail-Vorlage wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
-        "title": "Vorlage löschen?"
+        "text": "",
+        "title": ""
       },
-      "date": "Erstellt",
-      "edit": "Bearbeiten",
-      "editTitle": "Vorlage bearbeiten",
-      "editTitleWithName": "Vorlage bearbeiten: {name}",
-      "empty": "Noch keine E-Mail-Vorlagen.",
-      "manage": "E-Mail-Vorlagen verwalten",
-      "name": "Name",
-      "showingOf": "{start} bis {end} von {total} Vorlagen werden angezeigt.",
-      "subject": "Betreff",
-      "title": "E-Mail-Vorlagen",
-      "use": "Verwenden"
+      "date": "",
+      "edit": "",
+      "editTitle": "",
+      "editTitleWithName": "",
+      "empty": "",
+      "manage": "",
+      "name": "",
+      "showingOf": "",
+      "subject": "",
+      "title": "",
+      "use": ""
     },
     "noContacts": "",
     "noResults": "",

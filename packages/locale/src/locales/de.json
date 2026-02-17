@@ -1088,7 +1088,7 @@
     },
     "emailTemplates": {
       "confirmDelete": {
-        "text": "Möchtest du diese E-Mail-Vorlage wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
+        "text": "Möchten Sie diese E-Mail-Vorlage wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
         "title": "Vorlage löschen?"
       },
       "date": "Erstellt",
