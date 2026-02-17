@@ -14,7 +14,7 @@
     </template>
     <template v-else>
       <p class="text-sm font-semibold text-danger">
-        {{ t('advancedSearch.invalidRuleError') }}
+        {{ t('advancedSearch.invalidRuleError', { rule: rule }) }}
       </p>
     </template>
   </template>
