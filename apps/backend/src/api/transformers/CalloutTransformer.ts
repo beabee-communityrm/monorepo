@@ -18,16 +18,6 @@ import {
 import { AuthInfo, FilterHandlers } from '@beabee/core/type';
 import { groupBy } from '@beabee/core/utils/objects';
 
-import {
-  GetCalloutDto,
-  GetCalloutOptsDto,
-  GetCalloutWith,
-  ListCalloutsDto,
-} from '@api/dto/CalloutDto';
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
-import CalloutVariantTransformer from '@api/transformers/CalloutVariantTransformer';
-import { getReviewerRules } from '@api/utils/callouts';
-import { TransformerOperation } from '@type/index';
 import { TransformPlainToInstance } from 'class-transformer';
 import {
   BadRequestError,
@@ -35,6 +25,17 @@ import {
   UnauthorizedError,
 } from 'routing-controllers';
 import { SelectQueryBuilder } from 'typeorm';
+
+import {
+  GetCalloutDto,
+  GetCalloutOptsDto,
+  GetCalloutWith,
+  ListCalloutsDto,
+} from '#api/dto/CalloutDto';
+import { BaseTransformer } from '#api/transformers/BaseTransformer';
+import CalloutVariantTransformer from '#api/transformers/CalloutVariantTransformer';
+import { getReviewerRules } from '#api/utils/callouts';
+import { TransformerOperation } from '#type/index';
 
 const isOpenOrEndedRule: RuleGroup = {
   condition: 'OR',

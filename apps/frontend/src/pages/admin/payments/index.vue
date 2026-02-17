@@ -67,25 +67,26 @@ import type {
 import { PaymentStatus as PaymentStatusEnum } from '@beabee/beabee-common';
 import { AppFilterGrid, PageTitle, formatLocale } from '@beabee/vue';
 
-import KeyStat from '@components/pages/admin/KeyStat.vue';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { computed, onBeforeMount, ref, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import KeyStat from '#components/pages/admin/KeyStat.vue';
 import {
   filterGroups,
   headers,
   statusItems,
-} from '@components/pages/admin/payments.interface';
-import { PaymentStatus } from '@components/payment';
-import AppSearch from '@components/search/AppSearch.vue';
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import { faChartLine } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
+} from '#components/pages/admin/payments.interface';
+import { PaymentStatus } from '#components/payment';
+import AppSearch from '#components/search/AppSearch.vue';
+import AppPaginatedTable from '#components/table/AppPaginatedTable.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
 import {
   definePaginatedQuery,
   defineParam,
   defineRulesParam,
-} from '@utils/pagination';
-import { computed, onBeforeMount, ref, watchEffect } from 'vue';
-import { useI18n } from 'vue-i18n';
+} from '#utils/pagination';
 
 const { t, n } = useI18n();
 

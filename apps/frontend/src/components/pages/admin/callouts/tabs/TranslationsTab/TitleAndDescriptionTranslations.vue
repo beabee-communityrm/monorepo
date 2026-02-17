@@ -73,8 +73,9 @@
 <script lang="ts" setup>
 import { AppFormBox, AppInput, AppTextArea } from '@beabee/vue';
 
-import { getLocalizedValue, updateLocalizedValue } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
+
+import { getLocalizedValue, updateLocalizedValue } from '#utils/callouts';
 
 import type { TitleAndImageTabData } from '../TitleAndImageTab.vue';
 

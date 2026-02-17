@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import FormBuilder from '@components/form-builder/FormBuilder.vue';
+import FormBuilder from '#components/form-builder/FormBuilder.vue';
 
 import type { SidebarTabProps } from '../SidebarTabs.interface';
 

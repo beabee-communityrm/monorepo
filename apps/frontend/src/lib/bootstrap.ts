@@ -1,8 +1,9 @@
 import { AppStatusPage } from '@beabee/vue';
 import { icons } from '@beabee/vue/plugins/icons';
 
-import { waitForBackend } from '@utils/api/client';
 import { type App as VueApp, createApp, h } from 'vue';
+
+import { waitForBackend } from '#utils/api/client';
 
 import App from '../App.vue';
 import { init as initErrorHandler } from './appsignal';

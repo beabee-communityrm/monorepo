@@ -50,11 +50,12 @@
 <script lang="ts" setup>
 import { AppButton, AppHeading, AppInput } from '@beabee/vue';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 

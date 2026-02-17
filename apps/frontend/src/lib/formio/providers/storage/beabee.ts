@@ -8,10 +8,11 @@ import {
   isSupportedImageType,
 } from '@beabee/beabee-common';
 
-import { i18n } from '@lib/i18n';
-import { client } from '@utils/api';
-import { extractErrorText } from '@utils/api-error';
 import { ref } from 'vue';
+
+import { i18n } from '#lib/i18n';
+import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
 
 const { t } = i18n.global;
 

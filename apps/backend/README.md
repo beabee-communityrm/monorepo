@@ -12,7 +12,7 @@ You need:
 
 - Docker >= 19.03.8
 - Docker Compose >= 2
-- Node.js >= 20.10.0
+- Node.js >= 24
 
 NOTE: Lower non-major versions probably work but haven't been tested
 
@@ -75,14 +75,6 @@ docker compose run --rm api_app yarn backend-cli setup admin --firstname <YourFi
 ```
 
 > ⚠️ If you only set up the system locally, it doesn't matter what email domain you specify, but it still has to be valid, e.g. `example.org`.
-
-#### Import some data
-
-Need some test data? Download it here: coming soon
-
-```bash
-docker compose run --rm -T api_app node dist/tools/database/import.js < <import file>
-```
 
 #### Go to the frontend
 

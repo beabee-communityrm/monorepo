@@ -70,13 +70,14 @@ import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
 import { AppButton, AppConfirmDialog, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import EmailEditor from '@components/EmailEditor.vue';
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client, isApiError } from '@utils/api';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import EmailEditor from '#components/EmailEditor.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client, isApiError } from '#utils/api';
 
 const { t } = useI18n();
 const route = useRoute();

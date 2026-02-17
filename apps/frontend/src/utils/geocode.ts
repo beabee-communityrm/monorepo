@@ -1,7 +1,8 @@
 import { type CalloutResponseAnswerAddress } from '@beabee/beabee-common';
 
-import { currentLocaleConfig } from '@lib/i18n';
 import { type GeocodingFeature } from '@maptiler/client';
+
+import { currentLocaleConfig } from '#lib/i18n';
 
 import env from '../env';
 import { geocoding } from '../lib/maptiler';

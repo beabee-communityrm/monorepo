@@ -4,8 +4,9 @@ import {
   type RoleType,
 } from '@beabee/beabee-common';
 
-import { client } from '@utils/api';
 import { type ComputedRef, computed, ref } from 'vue';
+
+import { client } from '#utils/api';
 
 export async function updateCurrentUser(): Promise<void> {
   try {

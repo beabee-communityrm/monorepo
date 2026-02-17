@@ -118,10 +118,11 @@ import {
   visibleCustomColors,
 } from '@beabee/vue/lib/theme';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import { client } from '@utils/api';
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { client } from '#utils/api';
 
 import { generalContent } from '../../../store';
 

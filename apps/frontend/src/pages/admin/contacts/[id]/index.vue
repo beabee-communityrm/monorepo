@@ -313,17 +313,18 @@ import {
 } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import { PaymentMethod } from '@components/payment';
-import AppRoleEditor from '@components/role/AppRoleEditor.vue';
-import TagList from '@components/tag/TagList.vue';
-import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
-import env from '@env';
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
 import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import CalloutForm from '#components/pages/callouts/CalloutForm.vue';
+import { PaymentMethod } from '#components/payment';
+import AppRoleEditor from '#components/role/AppRoleEditor.vue';
+import TagList from '#components/tag/TagList.vue';
+import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
+import env from '#env';
+import { client } from '#utils/api';
 
 const { t, n } = useI18n();
 

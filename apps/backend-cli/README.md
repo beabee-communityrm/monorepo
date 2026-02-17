@@ -14,6 +14,7 @@ yarn backend-cli <command>
 
 Commands:
   yarn backend-cli api-key <action>  Manage API keys
+  yarn backend-cli database <action>  Database management commands
   yarn backend-cli user <action>     Manage users
   yarn backend-cli setup <action>    Configure system settings
   yarn backend-cli payment <action>  Payment management commands
@@ -33,10 +34,34 @@ Options:
 ### API Key Management
 
 ```bash
-yarn backend-cli api-key list         List all API keys
-yarn backend-cli api-key create       Create a new API key
-yarn backend-cli api-key delete <id>  Delete an API key
+yarn backend-cli api-key list          List all API keys
+yarn backend-cli api-key create        Create a new API key
+yarn backend-cli api-key delete <id>   Delete an API key
 ```
+
+### Database Management
+
+```bash
+# Export full database (SQL dump with anonymised data)
+yarn backend-cli database export \
+  [--dryRun] \
+  [--anonymize=true|false] \
+  [--skipAnonymizeTables contact segment ...]
+
+# Export demo subset (limited random contacts and latest callouts, anonymised)
+yarn backend-cli database export-demo [--dryRun]
+
+# Import database from SQL dump (dev only)
+yarn backend-cli database import \
+  [--file path/to/dump.sql] \
+  [--dryRun]
+```
+
+Notes:
+
+- **Export format** is a SQL dump: each pair of lines is a SQL statement followed by a JSON array of parameters (or an empty line).
+- **Contacts and related models are always anonymised**; `--anonymize=false` only disables anonymisation for less sensitive tables.
+- `--skipAnonymizeTables` lets you export specific tables without anonymisation while still keeping foreign keys consistent.
 
 ### User Management
 

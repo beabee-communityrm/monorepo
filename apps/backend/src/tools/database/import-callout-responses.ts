@@ -1,5 +1,3 @@
-import 'module-alias/register';
-
 import {
   CalloutComponentSchema,
   CalloutComponentType,

@@ -50,7 +50,7 @@ TypeScript references establish dependencies between packages and enable:
 Configuration for server-side TypeScript projects, particularly those using decorators.
 
 **Features:**
-- Extends `@tsconfig/node22` for Node.js compatibility
+- Extends `@tsconfig/node24` for Node.js compatibility
 - Enables experimental decorators and decorator metadata for frameworks like `routing-controllers`
 - Includes strict type checking options like `exactOptionalPropertyTypes`
 - Allows importing JSON modules with `resolveJsonModule`

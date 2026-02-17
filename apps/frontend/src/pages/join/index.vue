@@ -36,14 +36,15 @@ import {
 } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
 
-import JoinFormStep1 from '@components/pages/join/JoinFormStep1.vue';
-import JoinFormStep2 from '@components/pages/join/JoinFormStep2.vue';
-import { generalContent, isEmbed } from '@store';
-import type { JoinFormData } from '@type/join-form-data';
-import { client } from '@utils/api';
-import { notifyRateLimited } from '@utils/api-error';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+
+import JoinFormStep1 from '#components/pages/join/JoinFormStep1.vue';
+import JoinFormStep2 from '#components/pages/join/JoinFormStep2.vue';
+import { generalContent, isEmbed } from '#store';
+import type { JoinFormData } from '#type/join-form-data';
+import { client } from '#utils/api';
+import { notifyRateLimited } from '#utils/api-error';
 
 const route = useRoute();
 const router = useRouter();
@@ -145,10 +146,11 @@ onBeforeMount(async () => {
     (route.query.amount && Number(route.query.amount)) ||
     joinContent.value.initialAmount;
 
-  const period = route.query.period as ContributionPeriod;
-  formData.period = Object.values(ContributionPeriod).includes(period)
-    ? period
-    : joinContent.value.initialPeriod;
+  const period = route.query.period as ContributionPeriod | 'one-time';
+  formData.period =
+    period === 'one-time' || Object.values(ContributionPeriod).includes(period)
+      ? period
+      : joinContent.value.initialPeriod;
 
   formData.paymentMethod = joinContent.value.paymentMethods[0];
 
