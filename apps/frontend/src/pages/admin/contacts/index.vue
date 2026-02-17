@@ -272,6 +272,15 @@ const selectedTags = computed(() => {
 });
 
 /**
+ * Search & Filter state
+ * @description Manages search and filter parameters
+ */
+const currentPaginatedQuery = definePaginatedQuery('joined');
+const currentSearch = defineParam('s', (v) => v || '');
+
+const { filterGroups, tagItems } = useContactFilters();
+
+/**
  * Handle settings for one-time contribution
  */
 const joinContent = ref<ContentJoinData>();
@@ -335,15 +344,6 @@ async function listSegments() {
 async function listTotalSegmentItems() {
   return (await client.contact.list({ limit: 1 })).total;
 }
-
-/**
- * Search & Filter state
- * @description Manages search and filter parameters
- */
-const currentPaginatedQuery = definePaginatedQuery('joined');
-const currentSearch = defineParam('s', (v) => v || '');
-
-const { filterGroups, tagItems } = useContactFilters();
 
 /**
  * Action state
