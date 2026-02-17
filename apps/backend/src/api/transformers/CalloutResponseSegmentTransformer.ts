@@ -1,4 +1,5 @@
 import { PaginatedQuery, segmentFilters } from '@beabee/beabee-common';
+import { InvalidRuleError } from '@beabee/core/errors';
 import { CalloutResponseSegment } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
@@ -15,7 +16,6 @@ import { TransformerOperation } from '#type/transformer-operation';
 
 import { BaseTransformer } from './BaseTransformer';
 import CalloutResponseTransformer from './CalloutResponseTransformer';
-import { InvalidRuleError } from '@beabee/core/errors';
 
 class CalloutResponseSegmentTransformer extends BaseTransformer<
   CalloutResponseSegment,

@@ -260,6 +260,7 @@
       "any": "peu importe"
     },
     "createdSegment": "Segment « {segment} » créé",
+    "invalidRuleError": "Quelque chose ne va pas dans cette règle : \"{ rule }\". Veuillez mettre à jour !",
     "matchWord": {
       "AND": "et",
       "OR": "ou"

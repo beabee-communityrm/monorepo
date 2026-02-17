@@ -9,7 +9,11 @@ import {
   operatorsByTypeMap,
 } from '@beabee/beabee-common';
 
-import type { OperatorLabels, RuleGroupWithEmpty } from '../type/search';
+import type {
+  FilterGroups,
+  OperatorLabels,
+  RuleGroupWithEmpty,
+} from '../type/search';
 
 /**
  * Get default value for a rule based on its type
@@ -193,4 +197,35 @@ export function createOperatorLabels(
       is_not_empty: t('advancedSearch.operators.all.is_not_empty'),
     },
   };
+}
+
+/**
+ * Check if a rule's field exists in any of the filter groups.
+ */
+function isRuleFieldValid(field: string, filterGroups: FilterGroups): boolean {
+  return filterGroups.some(
+    (group) => field in group.items || (group.itemsMatch?.test(field) ?? false)
+  );
+}
+
+/**
+ * Check if a rule group is valid for the given filter groups (every rule's field exists).
+ * Used to avoid loading the table when a segment has outdated/invalid rules.
+ */
+export function isRuleGroupValidForFilterGroups(
+  ruleGroup: RuleGroup,
+  filterGroups: FilterGroups
+): boolean {
+  for (const ruleOrGroup of ruleGroup.rules) {
+    if (isRuleGroup(ruleOrGroup)) {
+      if (!isRuleGroupValidForFilterGroups(ruleOrGroup, filterGroups)) {
+        return false;
+      }
+    } else {
+      if (!isRuleFieldValid(ruleOrGroup.field, filterGroups)) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
