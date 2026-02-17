@@ -45,13 +45,14 @@ meta:
 import type { GetEmailData, Paginated } from '@beabee/beabee-common';
 import { type Header, PageTitle, formatLocale } from '@beabee/vue';
 
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
-import { definePaginatedQuery } from '@utils/pagination';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppPaginatedTable from '#components/table/AppPaginatedTable.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
+import { definePaginatedQuery } from '#utils/pagination';
 
 const { t } = useI18n();
 

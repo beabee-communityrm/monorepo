@@ -66,15 +66,16 @@ import {
   addNotification,
 } from '@beabee/vue';
 
-import EmailEditor from '@components/EmailEditor.vue';
-import AppApiForm from '@components/forms/AppApiForm.vue';
 import { faTrash, faUsers } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
-import { extractErrorText } from '@utils/api-error';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import EmailEditor from '#components/EmailEditor.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
