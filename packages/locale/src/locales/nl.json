@@ -260,6 +260,7 @@
       "any": "elke"
     },
     "createdSegment": "Segment “{segment}” aangemaakt",
+    "invalidRuleError": "Er klopt iets niet in deze regel: \"{ rule }\". Werk bij!",
     "matchWord": {
       "AND": "en",
       "OR": "of"

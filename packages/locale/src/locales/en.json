@@ -260,6 +260,7 @@
       "any": "any"
     },
     "createdSegment": "Created segment \"{segment}\"",
+    "invalidRuleError": "Something is broken in this rule: \"{ rule }\". Please update!",
     "matchWord": {
       "AND": "and",
       "OR": "or"

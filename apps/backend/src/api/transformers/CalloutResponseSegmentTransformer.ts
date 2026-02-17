@@ -1,4 +1,5 @@
 import { PaginatedQuery, segmentFilters } from '@beabee/beabee-common';
+import { InvalidRuleError } from '@beabee/core/errors';
 import { CalloutResponseSegment } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
@@ -68,14 +69,24 @@ class CalloutResponseSegmentTransformer extends BaseTransformer<
   ): Promise<void> {
     if (query.with?.includes(GetCalloutResponseSegmentWith.itemCount)) {
       for (const segment of segments) {
-        const result = await CalloutResponseTransformer.fetchForCallout(
-          auth,
-          query.calloutId,
-          {
-            rules: segment.ruleGroup,
+        try {
+          const result = await CalloutResponseTransformer.fetchForCallout(
+            auth,
+            query.calloutId,
+            {
+              rules: segment.ruleGroup,
+            }
+          );
+          segment.itemCount = result.total;
+        } catch (err) {
+          // If rules are invalid, set itemCount to undefined so the segment
+          // can still be fetched and displayed in the frontend
+          if (err instanceof InvalidRuleError) {
+            segment.itemCount = undefined;
+          } else {
+            throw err;
           }
-        );
-        segment.itemCount = result.total;
+        }
       }
     }
   }

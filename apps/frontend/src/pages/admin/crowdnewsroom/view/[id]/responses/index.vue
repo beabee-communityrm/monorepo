@@ -367,12 +367,22 @@ const currentRules = defineRulesParam(
 );
 
 /**
+ * Search & Filter State
+ * @description Manages search and filter parameters
+ */
+const currentPaginatedQuery = definePaginatedQuery('createdAt');
+const { formComponents, answerItems, filterGroups, reviewerItems, tagItems } =
+  useCalloutResponseFilters(toRef(props, 'callout'));
+
+/**
  * Segment Management
  * @description Handles segment filtering and saving
  */
 const {
   currentSegmentId,
   hasUnsavedSegment,
+  hasInvalidRules,
+  emptyTable,
   segmentItems,
   handleSavedSegment,
   currentSegment,
@@ -380,7 +390,8 @@ const {
   `/admin/crowdnewsroom/view/${props.callout.slug}/responses`,
   'All Responses',
   listSegments,
-  listTotalSegmentItems
+  listTotalSegmentItems,
+  filterGroups.value
 );
 
 async function saveSegment(name: string, rules: RuleGroup) {
@@ -422,14 +433,6 @@ async function listTotalSegmentItems() {
   return (await client.callout.listResponses(props.callout.slug, { limit: 1 }))
     .total;
 }
-
-/**
- * Search & Filter State
- * @description Manages search and filter parameters
- */
-const currentPaginatedQuery = definePaginatedQuery('createdAt');
-const { formComponents, answerItems, filterGroups, reviewerItems, tagItems } =
-  useCalloutResponseFilters(toRef(props, 'callout'));
 
 /**
  * Action State
@@ -510,6 +513,10 @@ const isRefreshing = ref(false);
  * Refreshes the response list based on current filters
  */
 async function refreshResponses() {
+  if (hasInvalidRules.value) {
+    responses.value = emptyTable();
+    return;
+  }
   if (isRefreshing.value) return;
 
   isRefreshing.value = true;

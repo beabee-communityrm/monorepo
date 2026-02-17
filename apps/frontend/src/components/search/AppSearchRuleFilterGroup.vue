@@ -12,7 +12,11 @@
         <font-awesome-icon :icon="faTimes" />
       </button>
     </template>
-    <template v-else>???</template>
+    <template v-else>
+      <p class="text-sm font-semibold text-danger">
+        {{ t('advancedSearch.invalidRuleError', { rule: rule }) }}
+      </p>
+    </template>
   </template>
 
   <div v-else class="flex items-center gap-2">
