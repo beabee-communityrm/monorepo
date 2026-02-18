@@ -222,11 +222,13 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "Einmalige Beiträge aktivieren",
+      "oneTimeDonationsTitle": "Einmalige Beiträge",
       "paymentTitle": "Zahlungen",
       "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",
-      "taxRateLabelOneTime": "Mehrwertsteuersatz für einmalige Zahlungen aktivieren",
-      "taxRateLabelRecurring": "Mehrwertsteuersatz für wiederkehrende Zahlungen aktivieren"
+      "taxRateLabelOneTime": "Mehrwertsteuersatz für einmalige Beiträge aktivieren",
+      "taxRateLabelRecurring": "Mehrwertsteuersatz für wiederkehrende Beiträge aktivieren"
     },
     "theme": {
       "bodyFont": "Text",

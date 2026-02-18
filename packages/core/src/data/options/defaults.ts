@@ -45,6 +45,7 @@ export default {
   'newsletter-resync-status': '',
   'newsletter-resync-data': '',
   'tracking-code': '',
+  'switch-feature-one-time-donation': 'false',
   'switch-webhook-gc': 'true',
   'switch-webhook-mailchimp': 'true',
   'switch-webhook-stripe': 'true',

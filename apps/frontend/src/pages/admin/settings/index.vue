@@ -93,21 +93,31 @@ meta:
         :success-text="t('form.saved')"
         @submit="handleSavePayment"
       >
-        <AppSubHeading>
-          {{ t('adminSettings.payment.paymentTitle') }}</AppSubHeading
-        >
+        <AppHeading>
+          {{ t('adminSettings.payment.paymentTitle') }}
+        </AppHeading>
         <TaxRateInput
-          v-model="taxRateRecurring"
+          v-model="paymentData.taxRateRecurring"
           :label="t('adminSettings.payment.taxRateLabelRecurring')"
         />
-        <template v-if="showOneTimeContributionSettings">
+
+        <AppSubHeading>
+          {{ t('adminSettings.payment.oneTimeDonationsTitle') }}
+        </AppSubHeading>
+        <div class="mb-4">
+          <AppCheckbox
+            v-model="paymentData.enableOneTimeDonation"
+            :label="t('adminSettings.payment.enableOneTimeDonation')"
+          />
+        </div>
+        <template v-if="paymentData.enableOneTimeDonation">
           <TaxRateInput
-            v-model="taxRateOneTime"
+            v-model="paymentData.taxRateOneTime"
             :label="t('adminSettings.payment.taxRateLabelOneTime')"
           />
           <div class="mb-4">
             <AppCheckbox
-              v-model="showOneTimeDonation"
+              v-model="paymentData.showOneTimeDonation"
               :label="t('adminSettings.payment.showOneTimeDonation')"
               class="font-bold"
             />
@@ -177,7 +187,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type { ContentJoinData, ContentShareData } from '@beabee/beabee-common';
+import type { ContentShareData } from '@beabee/beabee-common';
 import {
   App2ColGrid,
   AppCheckbox,
@@ -195,7 +205,7 @@ import TaxRateInput from '@components/pages/admin/settings/TaxRateInput.vue';
 import { localeItems } from '@lib/i18n';
 import { generalContent as storeGeneralContent } from '@store';
 import { client } from '@utils/api';
-import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -212,18 +222,14 @@ const footerData = reactive({
   impressumLink: '',
   footerLinks: [] as { text: string; url: string }[],
 });
-
-const taxRateRecurring = ref<number | null>(null);
-const taxRateOneTime = ref<number | null>(null);
-const showOneTimeDonation = ref(false);
+const paymentData = reactive({
+  taxRateRecurring: null as number | null,
+  taxRateOneTime: null as number | null,
+  enableOneTimeDonation: false,
+  showOneTimeDonation: false,
+});
 
 const shareContent = ref<ContentShareData>();
-
-const joinContent = ref<ContentJoinData>();
-
-const showOneTimeContributionSettings = computed(() =>
-  joinContent.value?.periods.some((p) => p.name === 'one-time')
-);
 
 async function handleSaveGeneral() {
   storeGeneralContent.value = await client.content.update(
@@ -255,10 +261,13 @@ async function handleSaveFooter() {
 }
 
 async function handleSavePayment() {
+  storeGeneralContent.value = await client.content.update('general', {
+    enableOneTimeDonations: paymentData.enableOneTimeDonation,
+  });
   await client.content.update('payment', {
-    taxRateRecurring: taxRateRecurring.value,
-    taxRateOneTime: taxRateOneTime.value,
-    showOneTimeDonation: showOneTimeDonation.value,
+    taxRateRecurring: paymentData.taxRateRecurring,
+    taxRateOneTime: paymentData.taxRateOneTime,
+    showOneTimeDonation: paymentData.showOneTimeDonation,
   });
 }
 
@@ -276,11 +285,12 @@ onBeforeMount(async () => {
 
   shareContent.value = await client.content.get('share');
 
-  joinContent.value = await client.content.get('join');
-
   const paymentContent = await client.content.get('payment');
-  taxRateRecurring.value = paymentContent.taxRateRecurring;
-  taxRateOneTime.value = paymentContent.taxRateOneTime;
-  showOneTimeDonation.value = paymentContent.showOneTimeDonation;
+
+  paymentData.taxRateRecurring = paymentContent.taxRateRecurring;
+  paymentData.taxRateOneTime = paymentContent.taxRateOneTime;
+  paymentData.showOneTimeDonation = paymentContent.showOneTimeDonation;
+  paymentData.enableOneTimeDonation =
+    storeGeneralContent.value.enableOneTimeDonations;
 });
 </script>

@@ -245,16 +245,20 @@ export function useContactFilters() {
         'manualPaymentSource',
       ]),
     },
-    {
-      id: 'oneTimeContributions',
-      label: t('contacts.dataGroup.oneTimeContributions'),
-      items: withItems(filterItems, [
-        'hasDonated',
-        'donationDate',
-        'totalDonationAmount',
-        'averageDonationAmount',
-      ]),
-    },
+    ...(generalContent.value.enableOneTimeDonations
+      ? [
+          {
+            id: 'oneTimeContributions',
+            label: t('contacts.dataGroup.oneTimeContributions'),
+            items: withItems(filterItems, [
+              'hasDonated',
+              'donationDate',
+              'totalDonationAmount',
+              'averageDonationAmount',
+            ]),
+          },
+        ]
+      : []),
     {
       id: 'role',
       label: t('contacts.dataGroup.role'),

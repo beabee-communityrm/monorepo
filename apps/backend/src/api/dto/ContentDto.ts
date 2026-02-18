@@ -93,6 +93,9 @@ export class GetContentGeneralDto implements ContentGeneralData<Locale> {
   @ValidateNested({ each: true })
   @Type(() => LinkDto)
   footerLinks!: LinkDto[];
+
+  @IsBoolean()
+  enableOneTimeDonations!: boolean;
 }
 
 class GetContentJoinPeriodDto implements ContentJoinPeriodData {
