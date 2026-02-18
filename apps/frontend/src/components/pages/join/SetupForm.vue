@@ -70,15 +70,16 @@ import {
 } from '@beabee/beabee-common';
 import { AppAddress, AppInput } from '@beabee/vue';
 
-import AuthBox from '@components/AuthBox.vue';
-import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
-import ContactMailOptIn from '@components/contact/ContactMailOptIn.vue';
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import AppNewsletterOptIn from '@components/newsletter/AppNewsletterOptIn.vue';
-import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AuthBox from '#components/AuthBox.vue';
+import ContactBasicFields from '#components/contact/ContactBasicFields.vue';
+import ContactMailOptIn from '#components/contact/ContactMailOptIn.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import AppNewsletterOptIn from '#components/newsletter/AppNewsletterOptIn.vue';
+import { client } from '#utils/api';
 
 import { type SetupContactData } from './join.interface';
 

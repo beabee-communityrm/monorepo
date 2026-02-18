@@ -1089,6 +1089,23 @@
       "recurringContributions": "Регулярные взносы",
       "role": ""
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Вы уверены, что хотите удалить этот шаблон письма? Это действие нельзя отменить.",
+        "title": "Удалить шаблон?"
+      },
+      "date": "Создано",
+      "edit": "Изменить",
+      "editTitle": "Редактировать шаблон",
+      "editTitleWithName": "Редактировать шаблон: {name}",
+      "empty": "Пока нет шаблонов писем.",
+      "manage": "Управление шаблонами писем",
+      "name": "Название",
+      "showingOf": "Показано шаблонов {start} – {end} из {total}",
+      "subject": "Тема",
+      "title": "Шаблоны писем",
+      "use": "Использовать"
+    },
     "noContacts": "",
     "noResults": "",
     "numResults": "",

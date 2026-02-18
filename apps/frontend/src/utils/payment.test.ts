@@ -1,7 +1,8 @@
 import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
 
-import type { JoinFormData } from '@type/join-form-data';
 import { describe, expect, it } from 'vitest';
+
+import type { JoinFormData } from '#type/join-form-data';
 
 import { calcJoinFormTotalAmount } from './payment';
 

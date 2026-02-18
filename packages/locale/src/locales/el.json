@@ -1088,6 +1088,23 @@
       "recurringContributions": "",
       "role": ""
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το πρότυπο email; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+        "title": "Διαγραφή προτύπου;"
+      },
+      "date": "Δημιουργήθηκε",
+      "edit": "Επεξεργασία",
+      "editTitle": "Επεξεργασία προτύπου",
+      "editTitleWithName": "Επεξεργασία προτύπου: {name}",
+      "empty": "Δεν υπάρχουν ακόμα πρότυπα email.",
+      "manage": "Διαχείριση προτύπων email",
+      "name": "Όνομα",
+      "showingOf": "Εμφάνιση προτύπων {start} έως {end} από {total}",
+      "subject": "Θέμα",
+      "title": "Πρότυπα email",
+      "use": "Χρήση"
+    },
     "noContacts": "",
     "noResults": "",
     "numResults": "",

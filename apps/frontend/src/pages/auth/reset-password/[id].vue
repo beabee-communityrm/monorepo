@@ -91,14 +91,15 @@ meta:
 import { RESET_SECURITY_FLOW_ERROR_CODE } from '@beabee/beabee-common';
 import { AppInput, AppNotification, AppTitle } from '@beabee/vue';
 
-import AuthBox from '@components/AuthBox.vue';
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import { updateCurrentUser } from '@store/index';
-import { client, isApiError } from '@utils/api';
-import { isInternalUrl } from '@utils/index';
 import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import AuthBox from '#components/AuthBox.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { updateCurrentUser } from '#store/index';
+import { client, isApiError } from '#utils/api';
+import { isInternalUrl } from '#utils/index';
 
 const props = withDefaults(
   defineProps<{

@@ -129,12 +129,13 @@ import {
   AppSubHeading,
 } from '@beabee/vue';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import AppNewsletterOptInSettings from '@components/newsletter/AppNewsletterOptInSettings.vue';
-import SetupForm from '@components/pages/join/SetupForm.vue';
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import AppNewsletterOptInSettings from '#components/newsletter/AppNewsletterOptInSettings.vue';
+import SetupForm from '#components/pages/join/SetupForm.vue';
+import { client } from '#utils/api';
 
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);

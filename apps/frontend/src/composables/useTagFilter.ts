@@ -1,6 +1,6 @@
 import type { RuleGroup } from '@beabee/beabee-common';
 
-import { defineParam } from '@utils/pagination';
+import { defineParam } from '#utils/pagination';
 
 export function useTagFilter() {
   const currentTag = defineParam('tag', (v) => v || '');

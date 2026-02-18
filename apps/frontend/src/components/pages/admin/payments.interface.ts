@@ -1,9 +1,10 @@
 import { type PaymentFilterName, paymentFilters } from '@beabee/beabee-common';
 import { type Header } from '@beabee/vue';
 
-import { i18n } from '@lib/i18n';
-import { generalContent } from '@store/generalContent';
 import { computed } from 'vue';
+
+import { i18n } from '#lib/i18n';
+import { generalContent } from '#store/generalContent';
 
 import type { FilterGroups, FilterItems } from '../../../type/search';
 import { withItems, withLabel } from '../../../utils/filters';

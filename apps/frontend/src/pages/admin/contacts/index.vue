@@ -78,7 +78,7 @@ meta:
             :icon="faMailBulk"
             variant="primaryOutlined"
             :title="t('actions.sendEmails')"
-            :disabled="!currentSegment || selectedCount > 0"
+            :disabled="selectedCount > 0"
           >
             <router-link
               v-if="currentSegment"
@@ -89,6 +89,14 @@ meta:
             >
               {{ t('actions.sendOneOffEmail') }}
             </router-link>
+            <span
+              v-else
+              role="menuitem"
+              aria-disabled="true"
+              class="block cursor-not-allowed px-3 py-2 opacity-60"
+            >
+              {{ t('actions.sendOneOffEmail') }}
+            </span>
             <a
               v-if="currentSegment"
               class="block border-t border-primary-40 px-3 py-2 hover:bg-primary-5"
@@ -100,6 +108,22 @@ meta:
             >
               {{ t('actions.sendOngoingEmails') }}
             </a>
+            <span
+              v-else
+              role="menuitem"
+              aria-disabled="true"
+              class="block cursor-not-allowed border-t border-primary-40 px-3 py-2 opacity-60"
+            >
+              {{ t('actions.sendOngoingEmails') }}
+            </span>
+            <router-link
+              class="block border-t border-primary-40 px-3 py-2 hover:bg-primary-5"
+              role="menuitem"
+              :to="{ name: 'adminContactsEmailTemplates' }"
+              @click.stop
+            >
+              {{ t('contacts.emailTemplates.manage') }}
+            </router-link>
           </AppDropdownButton>
         </AppButtonGroup>
         <p v-if="selectedCount > 0" class="self-center text-sm">
@@ -189,26 +213,27 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';
-import {
-  headers,
-  useContactFilters,
-} from '@components/pages/admin/contacts/contacts.interface';
-import AppSearch from '@components/search/AppSearch.vue';
-import TagList from '@components/tag/TagList.vue';
-import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import {
   faDownload,
   faMailBulk,
   faPlus,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
-import { definePaginatedQuery, defineParam } from '@utils/pagination';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+
+import SaveSegment from '#components/pages/admin/contacts/SaveSegment.vue';
+import {
+  headers,
+  useContactFilters,
+} from '#components/pages/admin/contacts/contacts.interface';
+import AppSearch from '#components/search/AppSearch.vue';
+import TagList from '#components/tag/TagList.vue';
+import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
+import { definePaginatedQuery, defineParam } from '#utils/pagination';
 
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';

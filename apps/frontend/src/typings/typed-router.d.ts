@@ -29,6 +29,8 @@ declare module 'vue-router/auto-routes' {
     'adminContactsViewCallouts': RouteRecordInfo<'adminContactsViewCallouts', '/admin/contacts/:id/callouts', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminContactsViewContribution': RouteRecordInfo<'adminContactsViewContribution', '/admin/contacts/:id/contribution', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'adminContactsAdd': RouteRecordInfo<'adminContactsAdd', '/admin/contacts/add', Record<never, never>, Record<never, never>>,
+    'adminContactsEmailTemplates': RouteRecordInfo<'adminContactsEmailTemplates', '/admin/contacts/email-templates', Record<never, never>, Record<never, never>>,
+    'adminContactsEmailTemplatesEdit': RouteRecordInfo<'adminContactsEmailTemplatesEdit', '/admin/contacts/email-templates/edit/:emailId', { emailId: ParamValue<true> }, { emailId: ParamValue<false> }>,
     'adminContactsSendEmailSegmentId': RouteRecordInfo<'adminContactsSendEmailSegmentId', '/admin/contacts/send-email/:segmentId', { segmentId: ParamValue<true> }, { segmentId: ParamValue<false> }>,
     'adminContactTags': RouteRecordInfo<'adminContactTags', '/admin/contacts/tags', Record<never, never>, Record<never, never>>,
     'adminCallouts': RouteRecordInfo<'adminCallouts', '/admin/crowdnewsroom', Record<never, never>, Record<never, never>>,
@@ -135,6 +137,14 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/admin/contacts/add.vue': {
       routes: 'adminContactsAdd'
+      views: never
+    }
+    'src/pages/admin/contacts/email-templates/index.vue': {
+      routes: 'adminContactsEmailTemplates'
+      views: never
+    }
+    'src/pages/admin/contacts/email-templates/edit/[emailId].vue': {
+      routes: 'adminContactsEmailTemplatesEdit'
       views: never
     }
     'src/pages/admin/contacts/send-email/[segmentId].vue': {

@@ -32,7 +32,7 @@ You need the following tools installed on your machine:
 
 - Docker >= 19.03.8
 - Docker Compose >= 2
-- Node.js >= 20.10.0
+- Node.js >= 24
 - Yarn >= 1.22.22 (automatically uses the Yarn version from the repo)
 
 ### Initial Setup

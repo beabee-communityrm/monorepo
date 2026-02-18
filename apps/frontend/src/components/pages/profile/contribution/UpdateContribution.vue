@@ -78,13 +78,14 @@ import {
 import { AppHeading, AppNotification, formatLocale } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import AppContribution from '@components/contribution/AppContribution.vue';
-import PaymentFlowForm from '@components/forms/PaymentFlowForm.vue';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { currentUser } from '@store/currentUser';
-import { client } from '@utils/api';
 import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppContribution from '#components/contribution/AppContribution.vue';
+import PaymentFlowForm from '#components/forms/PaymentFlowForm.vue';
+import { currentUser } from '#store/currentUser';
+import { client } from '#utils/api';
 
 import type { ContributionContent } from '../../../../type/contribution';
 import ProrateContribution from './ProrateContribution.vue';

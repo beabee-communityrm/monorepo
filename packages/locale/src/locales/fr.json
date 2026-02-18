@@ -1092,6 +1092,23 @@
       "recurringContributions": "Cotisations récurrentes",
       "role": "Rôle"
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Êtes-vous sûr de vouloir supprimer ce modèle d'e-mail ? Cette action est irréversible.",
+        "title": "Supprimer le modèle ?"
+      },
+      "date": "Créé",
+      "edit": "Modifier",
+      "editTitle": "Modifier le modèle",
+      "editTitleWithName": "Modifier le modèle : {name}",
+      "empty": "Aucun modèle d'e-mail pour le moment.",
+      "manage": "Gérer les modèles d'e-mail",
+      "name": "Nom",
+      "showingOf": "Affichage des modèles {start} à {end} sur {total}",
+      "subject": "Objet",
+      "title": "Modèles d'e-mail",
+      "use": "Utiliser"
+    },
     "noContacts": "Aucun contact ajouté pour le moment",
     "noResults": "Aucun contact trouvé",
     "numResults": "{n} contact trouvé | {n} contacts trouvés",

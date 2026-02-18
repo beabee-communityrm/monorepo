@@ -62,9 +62,10 @@
 <script lang="ts" setup>
 import { AppFormBox, AppInput, AppRichTextEditor } from '@beabee/vue';
 
-import type { LocaleProp } from '@type';
-import { getLocalizedValue, updateLocalizedValue } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
+
+import type { LocaleProp } from '#type';
+import { getLocalizedValue, updateLocalizedValue } from '#utils/callouts';
 
 import type { EndMessageTabData } from '../ContentTab/SidebarTabContent/EndMessageTab.vue';
 

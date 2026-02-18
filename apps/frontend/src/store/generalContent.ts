@@ -1,8 +1,9 @@
 import type { ContentGeneralData } from '@beabee/beabee-common';
 
-import { client } from '@utils/api';
-import { resolveImageUrl } from '@utils/url';
 import { computed, ref } from 'vue';
+
+import { client } from '#utils/api';
+import { resolveImageUrl } from '#utils/url';
 
 export const generalContent = ref<ContentGeneralData>({
   organisationName: '',

@@ -1088,6 +1088,23 @@
       "recurringContributions": "Contributi ricorrenti",
       "role": "Ruolo"
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Sei sicuro di voler eliminare questo modello email? Questa azione non può essere annullata.",
+        "title": "Eliminare il modello?"
+      },
+      "date": "Creato",
+      "edit": "Modifica",
+      "editTitle": "Modifica modello",
+      "editTitleWithName": "Modifica modello: {name}",
+      "empty": "Nessun modello email ancora.",
+      "manage": "Gestisci modelli email",
+      "name": "Nome",
+      "showingOf": "Modelli da {start} a {end} su {total}",
+      "subject": "Oggetto",
+      "title": "Modelli email",
+      "use": "Usa"
+    },
     "noContacts": "Nessun contatto aggiunto ancora",
     "noResults": "Nessun contatto trovato",
     "numResults": "{n} contatto trovato | {n} contatti trovati",

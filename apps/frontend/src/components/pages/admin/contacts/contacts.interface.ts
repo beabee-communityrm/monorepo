@@ -8,10 +8,11 @@ import {
 } from '@beabee/beabee-common';
 import { type Header, type SelectItem } from '@beabee/vue';
 
-import { i18n } from '@lib/i18n';
-import { generalContent } from '@store';
-import { client } from '@utils/api';
 import { computed, ref, watchEffect } from 'vue';
+
+import { i18n } from '#lib/i18n';
+import { generalContent } from '#store';
+import { client } from '#utils/api';
 
 import type { FilterGroups, FilterItems } from '../../../../type/search';
 import { withItems, withLabel } from '../../../../utils/filters';

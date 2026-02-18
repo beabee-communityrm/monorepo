@@ -8,10 +8,11 @@ meta:
 <template><div /></template>
 
 <script lang="ts" setup>
-import { client } from '@utils/api';
-import { handleJoinError } from '@utils/api-error';
 import { onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+
+import { client } from '#utils/api';
+import { handleJoinError } from '#utils/api-error';
 
 import { updateCurrentUser } from '../../../store';
 
