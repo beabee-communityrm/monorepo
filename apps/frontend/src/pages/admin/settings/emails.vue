@@ -7,8 +7,22 @@ meta:
 
 <template>
   <AppHeading>{{ t('adminSettings.email.templates.title') }}</AppHeading>
+  <AppSubHeading>{{
+    t('adminSettings.email.templates.subtitle')
+  }}</AppSubHeading>
   <p>{{ t('adminSettings.email.templates.description') }}</p>
   <EmailTemplates class="mb-4"></EmailTemplates>
+  <section class="mb-6 lg:mr-6">
+    <AppSubHeading>{{
+      t('adminSettings.email.contactTemplates.title')
+    }}</AppSubHeading>
+    <p class="mb-4">
+      {{ t('adminSettings.email.contactTemplates.description') }}
+    </p>
+    <AppButton to="/admin/contacts/email-templates" variant="primaryOutlined">
+      {{ t('adminSettings.email.contactTemplates.button') }}
+    </AppButton>
+  </section>
   <App2ColGrid>
     <template #col1>
       <AppApiForm
@@ -44,7 +58,13 @@ meta:
 </template>
 <script lang="ts" setup>
 import type { ContentEmailData } from '@beabee/beabee-common';
-import { App2ColGrid, AppHeading, AppInput } from '@beabee/vue';
+import {
+  App2ColGrid,
+  AppButton,
+  AppHeading,
+  AppInput,
+  AppSubHeading,
+} from '@beabee/vue';
 
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

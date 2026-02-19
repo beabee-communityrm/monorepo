@@ -181,11 +181,17 @@
       "showingOf": ""
     },
     "email": {
+      "contactTemplates": {
+        "button": "",
+        "description": "",
+        "title": ""
+      },
       "fromEmail": "",
       "fromName": "",
       "label": "",
       "templates": {
         "description": "",
+        "subtitle": "",
         "title": ""
       },
       "text": "",

@@ -180,11 +180,17 @@
       "showingOf": "API Keys {start} bis {end} von {total} werden angezeigt."
     },
     "email": {
+      "contactTemplates": {
+        "button": "E-Mail Vorlagen verwalten",
+        "description": "Hier können Sie E-Mail-Vorlagen für verschiedene Zielgruppen erstellen und individuell anpassen. Sie haben die Möglichkeit, sowohl einmalige als auch wiederkehrende E-Mails zu verwalten.",
+        "title": "Segment Basierte"
+      },
       "fromEmail": "E-Mail-Adresse",
       "fromName": "Name",
       "label": "E-Mail",
       "templates": {
         "description": "Verwalten Sie Betreff und Inhalt der von der Anwendung versendeten E-Mails. Die Statusfarbe zeigt an, ob die E-Mail individuell angepasst (grün), die Standardvorlage verwendet (gelb) oder die E-Mail gerade nicht konfiguriert ist und daher nicht aktiv ist (rot).",
+        "subtitle": "Systemweite",
         "title": "E-Mail-Vorlagen verwalten"
       },
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",

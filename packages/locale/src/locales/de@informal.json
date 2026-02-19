@@ -180,11 +180,17 @@
       "showingOf": "API Keys {start} bis {end} von {total} werden angezeigt."
     },
     "email": {
+      "contactTemplates": {
+        "button": "E-Mail Vorlagen verwalten",
+        "description": "Hier kannst du E-Mail-Vorlagen für verschiedene Zielgruppen erstellen und anpassen. Du kannst sowohl einmalige als auch wiederkehrende E-Mails verwalten.",
+        "title": "Segment Basierte"
+      },
       "fromEmail": "E-Mail-Adresse",
       "fromName": "Name",
       "label": "E-Mail",
       "templates": {
         "description": "Hier legst du Betreff und Text der E-Mails fest, die die App rausschickt. Die Farbe zeigt dir: grün = selbst gemacht, gelb = Standard, rot = nicht aktiv (wird nicht gesendet).",
+        "subtitle": "Systemweite",
         "title": "E-Mails anpassen"
       },
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",

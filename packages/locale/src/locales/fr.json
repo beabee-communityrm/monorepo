@@ -180,11 +180,17 @@
       "showingOf": "Affichage de {start} à {end} clés API sur {total}"
     },
     "email": {
+      "contactTemplates": {
+        "button": "",
+        "description": "",
+        "title": ""
+      },
       "fromEmail": "À partir de l'e-mail",
       "fromName": "À partir du nom",
       "label": "E-mail",
       "templates": {
         "description": "Ici, tu peux personnaliser l’objet et le contenu des emails envoyés par l’appli. La couleur t’indique : vert = personnalisé, jaune = modèle par défaut, rouge = non configuré (non envoyé).",
+        "subtitle": "",
         "title": "Configurer les emails"
       },
       "text": "Toute communication par e-mail sera envoyée à partir de cette adresse e-mail.",

@@ -180,11 +180,17 @@
       "showingOf": "Chiavi API da {start} a {end} su {total}"
     },
     "email": {
+      "contactTemplates": {
+        "button": "",
+        "description": "",
+        "title": ""
+      },
       "fromEmail": "E-mail del mittente",
       "fromName": "Nome del mittente",
       "label": "E-mail",
       "templates": {
         "description": "Gestisci oggetto e corpo delle email inviate dall'applicazione. Il colore dello stato indica se l'email è personalizzata (verde), usa il modello predefinito (giallo) o non è configurata e quindi non attiva (rosso).",
+        "subtitle": "",
         "title": "Imposta i modelli email"
       },
       "text": "Tutte le comunicazioni via e-mail verranno inviate da questo indirizzo e-mail.",

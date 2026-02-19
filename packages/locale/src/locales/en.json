@@ -180,11 +180,17 @@
       "showingOf": "Showing {start} to {end} API keys out of {total}"
     },
     "email": {
+      "contactTemplates": {
+        "button": "",
+        "description": "",
+        "title": ""
+      },
       "fromEmail": "From email",
       "fromName": "From name",
       "label": "Email",
       "templates": {
         "description": "Manage the subject and body of emails sent by the application. The status color shows whether the email is customized (green), using the default template (yellow), or not configured and therefore not active (red).",
+        "subtitle": "",
         "title": "Set email templates"
       },
       "text": "All email communication will be sent from this email address.",

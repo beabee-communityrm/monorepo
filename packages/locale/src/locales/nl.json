@@ -180,11 +180,17 @@
       "showingOf": "{start} tot {end} weergeven API-sleutels van {total}"
     },
     "email": {
+      "contactTemplates": {
+        "button": "",
+        "description": "",
+        "title": ""
+      },
       "fromEmail": "Van e-mail",
       "fromName": "Van naam",
       "label": "E-mail",
       "templates": {
         "description": "Hier stel je het onderwerp en de tekst in van de e-mails die de app verstuurt. De kleur laat zien: groen = aangepast, geel = standaardtemplate, rood = niet ingesteld (wordt niet verzonden).",
+        "subtitle": "",
         "title": "E-mails instellen"
       },
       "text": "Alle e-mailcommunicatie wordt vanaf dit e-mailadres verzonden.",
