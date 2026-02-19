@@ -181,7 +181,7 @@
     },
     "email": {
       "contactTemplates": {
-        "button": "E-Mail Vorlagen verwalten",
+        "button": "E-Mail-Vorlagen verwalten",
         "description": "Hier können Sie E-Mail-Vorlagen für verschiedene Zielgruppen erstellen und individuell anpassen. Sie haben die Möglichkeit, sowohl einmalige als auch wiederkehrende E-Mails zu verwalten.",
         "title": "Segment Basierte"
       },
