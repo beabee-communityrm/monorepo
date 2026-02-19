@@ -58,6 +58,7 @@ import { AppRoundBadge, AppTable, type Header } from '@beabee/vue';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { generalContent } from '#store/generalContent';
 import { client } from '#utils/api';
 
 const { t } = useI18n();
@@ -93,12 +94,6 @@ const sortedTemplates = computed(() => {
 onMounted(async () => {
   const allTemplates = await client.email.template.list();
 
-  const joinContent = await client.content.get('join');
-
-  const hasOneTimeDonation = joinContent.periods.some(
-    (p) => p.name === 'one-time'
-  );
-
   const hiddenEmails = [
     // Todo: remove these emails as soon as we deprecated the legacy app and clean them up
     'welcome-post-gift',
@@ -108,7 +103,7 @@ onMounted(async () => {
     'giftee-success',
     'purchased-gift',
     'expired-special-url-resend',
-    ...(hasOneTimeDonation
+    ...(generalContent.value.enableOneTimeDonations
       ? []
       : ['one-time-donation', 'one-time-donation-failed', 'setup-account']),
   ];

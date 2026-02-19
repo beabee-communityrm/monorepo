@@ -222,6 +222,8 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "Pagamento",
       "showOneTimeDonation": "Mostra opzione contributo una tantum nella schermata iniziale",
       "taxRate": "Aliquota IVA",

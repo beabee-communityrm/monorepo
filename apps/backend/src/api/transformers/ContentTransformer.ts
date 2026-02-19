@@ -173,6 +173,11 @@ const contentData = {
     privacyLink: ['option', 'footer-privacy-link-url', 'text'],
     impressumLink: ['option', 'footer-impressum-link-url', 'text'],
     locale: ['option', 'locale', 'text'],
+    enableOneTimeDonations: [
+      'option',
+      'switch-feature-one-time-donation',
+      'bool',
+    ],
   }),
   join: withValue<'join'>({
     initialAmount: ['data', 0],

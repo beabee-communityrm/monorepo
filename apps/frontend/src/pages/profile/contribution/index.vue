@@ -87,7 +87,7 @@ import ContributionBox from '#components/pages/profile/contribution/Contribution
 import OneTimeDonationForm from '#components/pages/profile/contribution/OneTimeDonationForm.vue';
 import PaymentSource from '#components/pages/profile/contribution/PaymentSource.vue';
 import UpdateContribution from '#components/pages/profile/contribution/UpdateContribution.vue';
-import { currentUser } from '#store';
+import { currentUser, generalContent } from '#store';
 import { client } from '#utils/api';
 
 import type { ContributionContent } from '../../../type/contribution';
@@ -137,6 +137,7 @@ const paymentSourceData = computed(() => ({
 
 const showOneTimeContribution = computed(
   () =>
+    generalContent.value.enableOneTimeDonations &&
     content.value?.periods.some((p) => p.name === 'one-time') &&
     paymentContent.value.showOneTimeDonation
 );

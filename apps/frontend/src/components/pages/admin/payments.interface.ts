@@ -4,6 +4,7 @@ import { type Header } from '@beabee/vue';
 import { computed } from 'vue';
 
 import { i18n } from '#lib/i18n';
+import { generalContent } from '#store/generalContent';
 
 import type { FilterGroups, FilterItems } from '../../../type/search';
 import { withItems, withLabel } from '../../../utils/filters';
@@ -74,7 +75,11 @@ const filterItems = computed<FilterItems<PaymentFilterName>>(() => ({
     cancelled: t('common.paymentStatus.cancelled'),
   }),
   type: withLabel(paymentFilters.type, t('payments.data.type'), {
-    'one-time': t('common.paymentType.oneTime'),
+    // Only show "one-time" if switch is enabled, but cast to
+    // { 'one-time': string } to satisfy type requirements
+    ...((generalContent.value.enableOneTimeDonations && {
+      'one-time': t('common.paymentType.oneTime'),
+    }) as { 'one-time': string }),
     recurring: t('common.paymentType.recurring'),
     prorated: t('common.paymentType.prorated'),
     unknown: t('common.paymentType.unknown'),

@@ -25,7 +25,7 @@ meta:
   <AppFilterGrid v-model="currentSegmentId" :items="segmentItems">
     <AppSearch
       v-model="currentRules"
-      :filter-groups="filteredGroups"
+      :filter-groups="filterGroups"
       :has-changed="hasUnsavedSegment"
       @reset="currentRules = undefined"
     >
@@ -194,7 +194,6 @@ meta:
 
 <script lang="ts" setup>
 import {
-  type ContentJoinData,
   ContributionPeriod,
   type GetContactDataWith,
   GetContactWith,
@@ -220,7 +219,7 @@ import {
   faPlus,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
@@ -488,21 +487,4 @@ async function handleUpdateAction(
   addNotification({ variant: 'success', title: successText });
   doingAction.value = false;
 }
-/**
- * Handle settings for one-time contribution
- */
-const joinContent = ref<ContentJoinData>();
-const hasOneTimeContribution = computed(() =>
-  joinContent.value?.periods.some((p) => p.name === 'one-time')
-);
-const filteredGroups = computed(() => {
-  return filterGroups.value.filter(
-    (group) =>
-      hasOneTimeContribution.value || group.id !== 'oneTimeContributions'
-  );
-});
-
-onBeforeMount(async () => {
-  joinContent.value = await client.content.get('join');
-});
 </script>

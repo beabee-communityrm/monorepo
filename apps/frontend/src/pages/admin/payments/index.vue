@@ -25,7 +25,7 @@ meta:
     </div>
     <AppSearch
       v-model="currentRules"
-      :filter-groups="filteredGroups"
+      :filter-groups="filterGroups"
       @reset="currentRules = undefined"
     />
 
@@ -58,7 +58,6 @@ meta:
 
 <script lang="ts" setup>
 import type {
-  ContentJoinData,
   GetPaymentAggregationData,
   GetPaymentDataWith,
   GetPaymentsQuery,
@@ -68,7 +67,7 @@ import { PaymentStatus as PaymentStatusEnum } from '@beabee/beabee-common';
 import { AppFilterGrid, PageTitle, formatLocale } from '@beabee/vue';
 
 import { faChartLine } from '@fortawesome/free-solid-svg-icons';
-import { computed, onBeforeMount, ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import KeyStat from '#components/pages/admin/KeyStat.vue';
@@ -106,33 +105,6 @@ const currentRules = defineRulesParam();
 const currentPaginatedQuery = definePaginatedQuery('chargeDate');
 const paymentsTable = ref<Paginated<GetPaymentDataWith<'contact'>>>();
 const aggregation = ref<GetPaymentAggregationData>();
-const joinContent = ref<ContentJoinData>();
-
-const hasOneTimeContribution = computed(() =>
-  joinContent.value?.periods.some((p) => p.name === 'one-time')
-);
-
-const filteredGroups = computed(() => {
-  const groups = filterGroups.value;
-
-  if (hasOneTimeContribution.value) {
-    return groups;
-  }
-
-  return groups.map((group) => {
-    const items = { ...group.items };
-    const typeItem = items.type;
-
-    if (typeItem && 'options' in typeItem && Array.isArray(typeItem.options)) {
-      items.type = {
-        ...typeItem,
-        options: typeItem.options.filter((opt) => opt.id !== 'one-time'),
-      };
-    }
-
-    return { ...group, items };
-  });
-});
 
 watchEffect(async () => {
   const rules: GetPaymentsQuery['rules'] = { condition: 'AND', rules: [] };
@@ -160,9 +132,5 @@ watchEffect(async () => {
   aggregation.value = await client.payment.aggregate({
     rules,
   });
-});
-
-onBeforeMount(async () => {
-  joinContent.value = await client.content.get('join');
 });
 </script>

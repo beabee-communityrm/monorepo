@@ -89,7 +89,7 @@ meta:
             :value="formatLocale(contact.contribution.cancellationDate, 'PPP')"
           />
         </AppInfoList>
-        <template v-if="showOneTimeDonation">
+        <template v-if="generalContent.enableOneTimeDonations">
           <AppSubHeading class="mb-1">
             {{ t('contactOverview.oneTime') }}
           </AppSubHeading>
@@ -286,7 +286,6 @@ meta:
 import {
   CONTACT_MFA_TYPE,
   type ContactRoleData,
-  type ContentJoinData,
   type ContentJoinSetupData,
   ContributionType,
   type GetCalloutDataWith,
@@ -314,7 +313,7 @@ import {
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
-import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppApiForm from '#components/forms/AppApiForm.vue';
@@ -324,6 +323,7 @@ import AppRoleEditor from '#components/role/AppRoleEditor.vue';
 import TagList from '#components/tag/TagList.vue';
 import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
 import env from '#env';
+import { generalContent } from '#store/generalContent';
 import { client } from '#utils/api';
 
 const { t, n } = useI18n();
@@ -425,11 +425,6 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
 }
 
 const setupContent = ref<ContentJoinSetupData>();
-const joinContent = ref<ContentJoinData>();
-
-const showOneTimeDonation = computed(() =>
-  joinContent.value?.periods.some((p) => p.name === 'one-time')
-);
 
 const changingTags = ref(false);
 const tagItems = ref<{ id: string; label: string }[]>([]);
@@ -498,7 +493,6 @@ onBeforeMount(async () => {
   }
 
   setupContent.value = await client.content.get('join/setup');
-  joinContent.value = await client.content.get('join');
 
   const joinSurveySlug = setupContent.value.surveySlug;
   if (joinSurveySlug) {

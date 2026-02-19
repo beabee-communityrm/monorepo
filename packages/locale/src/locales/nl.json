@@ -222,11 +222,13 @@
       }
     },
     "payment": {
-      "paymentTitle": "Betaling",
-      "showOneTimeDonation": "Eenmalige bijdrageoptie op het startscherm weergeven",
-      "taxRate": "BTW-tarief",
-      "taxRateLabelOneTime": "BTW-tarief inschakelen voor eenmalige betalingen",
-      "taxRateLabelRecurring": "BTW-tarief inschakelen voor terugkerende betalingen"
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
+      "paymentTitle": "",
+      "showOneTimeDonation": "",
+      "taxRate": "",
+      "taxRateLabelOneTime": "",
+      "taxRateLabelRecurring": ""
     },
     "theme": {
       "bodyFont": "Tekst lichaam",
