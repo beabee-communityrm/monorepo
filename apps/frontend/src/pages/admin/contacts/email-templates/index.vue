@@ -6,7 +6,13 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="t('contacts.emailTemplates.title')" border />
+  <PageTitle :title="t('contacts.emailTemplates.title')" border>
+    <div class="flex-0 ml-3 hidden md:block">
+      <AppButton to="/admin/contacts/email-templates/new">
+        {{ t('contacts.emailTemplates.create') }}
+      </AppButton>
+    </div>
+  </PageTitle>
 
   <AppPaginatedTable
     v-model:query="currentPaginatedQuery"
@@ -43,7 +49,7 @@ meta:
 
 <script lang="ts" setup>
 import type { GetEmailData, Paginated } from '@beabee/beabee-common';
-import { type Header, PageTitle, formatLocale } from '@beabee/vue';
+import { AppButton, type Header, PageTitle, formatLocale } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
