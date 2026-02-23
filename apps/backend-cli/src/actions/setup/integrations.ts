@@ -4,8 +4,12 @@ import { currentLocale } from '@beabee/core/locale';
 import { runApp } from '@beabee/core/server';
 import { optionsService } from '@beabee/core/services/OptionsService';
 
-export const setupStripe = async () => {
+export const setupStripe = async (dryRun: boolean) => {
   console.log('Setting up Stripe integration...\n');
+
+  if (dryRun) {
+    console.log('⚠️ Running in dry-run mode. No changes will be made.');
+  }
 
   try {
     await runApp(async () => {
@@ -16,12 +20,15 @@ export const setupStripe = async () => {
         console.log(`✅ Membership product already exists: ${productId}`);
       } else {
         console.log('Creating Stripe membership product...');
-        const product = await stripe.products.create({
-          name: currentLocale().paymentLabels.membershipProductName,
-        });
-
-        await optionsService.set('stripe-membership-product-id', product.id);
-        console.log(`✅ Created membership product: ${product.id}`);
+        if (dryRun) {
+          console.log(`✅ Created membership product: [DRY RUN]`);
+        } else {
+          const product = await stripe.products.create({
+            name: currentLocale().paymentLabels.membershipProductName,
+          });
+          await optionsService.set('stripe-membership-product-id', product.id);
+          console.log(`✅ Created membership product: ${product.id}`);
+        }
       }
 
       // Step 2: Check/create webhook
@@ -56,7 +63,9 @@ export const setupStripe = async () => {
             (endpoint) => endpoint.url === oldWebhookUrl
           );
           if (webhook) {
-            await stripe.webhookEndpoints.del(webhook.id);
+            if (!dryRun) {
+              await stripe.webhookEndpoints.del(webhook.id);
+            }
             console.log(`🗑️ Deleted old webhook with URL ${oldWebhookUrl}`);
           } else {
             console.warn(`⚠️ Webhook secret exists but no webhook found`);
@@ -65,24 +74,30 @@ export const setupStripe = async () => {
       }
 
       if (existingWebhook) {
-        await stripe.webhookEndpoints.update(existingWebhook.id, {
-          enabled_events: enabledEvents,
-        });
+        if (!dryRun) {
+          await stripe.webhookEndpoints.update(existingWebhook.id, {
+            enabled_events: enabledEvents,
+          });
+        }
         console.log(`✅ Updated existing webhook: ${existingWebhook.id}`);
       } else {
         console.log('Creating Stripe webhook...');
-        const webhookEndpoint = await stripe.webhookEndpoints.create({
-          url: webhookUrl,
-          enabled_events: enabledEvents,
-          api_version: config.stripe.version,
-          description: `Beabee webhook - created ${new Date().toISOString()}`,
-        });
+        if (dryRun) {
+          console.log(`✅ Created webhook endpoint: [DRY RUN]`);
+        } else {
+          const webhookEndpoint = await stripe.webhookEndpoints.create({
+            url: webhookUrl,
+            enabled_events: enabledEvents,
+            api_version: config.stripe.version,
+            description: `Beabee webhook - created ${new Date().toISOString()}`,
+          });
 
-        await optionsService.set(
-          'stripe-webhook-secret',
-          webhookEndpoint.secret!
-        );
-        console.log(`✅ Created webhook endpoint: ${webhookEndpoint.id}`);
+          await optionsService.set(
+            'stripe-webhook-secret',
+            webhookEndpoint.secret!
+          );
+          console.log(`✅ Created webhook endpoint: ${webhookEndpoint.id}`);
+        }
       }
 
       console.log('\n🎉 Stripe integration setup completed successfully!');

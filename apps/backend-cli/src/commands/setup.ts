@@ -85,11 +85,17 @@ export const setupCommand: CommandModule = {
           return yargs.command({
             command: 'stripe',
             describe: 'Set up Stripe integration',
-            handler: async () => {
+            builder: (yargs) =>
+              yargs.option('dry-run', {
+                type: 'boolean',
+                describe: 'Run setup without making changes',
+                default: false,
+              }),
+            handler: async (argv) => {
               const { setupStripe } = await import(
                 '../actions/setup/integrations.js'
               );
-              return setupStripe();
+              return setupStripe(argv.dryRun);
             },
           });
         },
