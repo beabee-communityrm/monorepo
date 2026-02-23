@@ -32,4 +32,5 @@ export interface ContentGeneralData<L = string> {
   backgroundUrl: string;
   hideContribution: boolean;
   footerLinks: FooterLink[];
+  enableOneTimeDonations: boolean;
 }
