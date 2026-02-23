@@ -6,7 +6,7 @@ meta:
 </route>
 
 <template>
-  <EmailTemplateEditor></EmailTemplateEditor>
+  <EmailTemplateEditor />
 </template>
 
 <script lang="ts" setup>

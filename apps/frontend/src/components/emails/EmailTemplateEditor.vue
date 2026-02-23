@@ -12,7 +12,11 @@
   </AppConfirmDialog>
 
   <PageTitle :title="pageTitle" border>
-    <router-link :to="LIST_ROUTE">{{ t('actions.back') }}</router-link>
+    <div class="flex-0 ml-3 hidden md:block">
+      <AppButton :to="LIST_ROUTE">
+        {{ t('actions.back') }}
+      </AppButton>
+    </div>
   </PageTitle>
 
   <div v-if="loading">

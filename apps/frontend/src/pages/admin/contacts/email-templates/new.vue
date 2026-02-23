@@ -5,6 +5,8 @@ meta:
   role: admin
 </route>
 
-<template>Neue Vorlage erstellen!</template>
+<template><EmailTemplateEditor /></template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
+</script>
