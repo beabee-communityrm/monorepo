@@ -30,7 +30,6 @@ export const setupStripe = async () => {
       );
       const webhookUrl = `${config.webhookUrl}/webhook/stripe`;
 
-      // Define the events we need
       const enabledEvents: Stripe.WebhookEndpointCreateParams.EnabledEvent[] = [
         'checkout.session.completed',
         'customer.deleted',
