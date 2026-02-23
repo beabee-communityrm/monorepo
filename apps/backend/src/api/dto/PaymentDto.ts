@@ -85,3 +85,16 @@ export class GetPaymentAggregationDto {
   @IsOptional()
   average!: number | null;
 }
+
+export interface ExportPaymentDto {
+  Id: string;
+  Amount: number;
+  ChargeDate: string;
+  Status: PaymentStatus;
+  Type: PaymentType;
+  SubscriptionId: string;
+  ContactId: string;
+  ContactEmail: string;
+  ContactFirstName: string;
+  ContactLastName: string;
+}
