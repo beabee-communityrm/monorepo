@@ -50,8 +50,10 @@ export default {
   'tracking-code': '',
 
   /** Stripe integration options */
-  'tax-rate-one-time-stripe-id': '',
-  'tax-rate-recurring-stripe-id': '',
+  'stripe-tax-rate-one-time-id': '',
+  'stripe-tax-rate-recurring-id': '',
+  'stripe-membership-product-id': '',
+  'stripe-webhook-secret': '',
 
   /**
    * Show one-time contribution form to logged in users

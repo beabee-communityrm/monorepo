@@ -239,8 +239,6 @@ export const config = {
   stripe: {
     publicKey: env.s('BEABEE_STRIPE_PUBLICKEY', ''), // Stripe publishable key (default: empty)
     secretKey: env.s('BEABEE_STRIPE_SECRETKEY', ''), // Stripe secret key (default: empty)
-    webhookSecret: env.s('BEABEE_STRIPE_WEBHOOKSECRET', ''), // Stripe webhook signing secret (default: empty)
-    membershipProductId: env.s('BEABEE_STRIPE_MEMBERSHIPPRODUCTID', ''), // Stripe product ID for memberships
     country: env.e('BEABEE_STRIPE_COUNTRY', ['gb', 'eu', 'ca'] as const, 'gb'), // Stripe account country (default: gb)
   },
 
