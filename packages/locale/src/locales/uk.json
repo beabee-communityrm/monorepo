@@ -1711,6 +1711,11 @@
     "setPassword": "Встановити пароль",
     "setup": "Встановлення"
   },
+  "paymentLabels": {
+    "membershipProductName": "Членство",
+    "recurringContribution": "Регулярний внесок",
+    "taxRateDisplayName": "ПДВ"
+  },
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "Змінити прямий дебет",
@@ -1848,8 +1853,5 @@
     },
     "searchTag": "Позначено тегом...",
     "toggleTag": "Перемкнути тег"
-  },
-  "taxRate": {
-    "invoiceName": "VAT"
   }
 }

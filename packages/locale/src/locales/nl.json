@@ -1492,10 +1492,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Lidmaatschap",
-      "recurringLabel": "Periodieke bijdrage"
-    },
     "genericError": "Oeps, er is iets misgegaan ({type})! Neem contact op met support als dit weer gebeurt.",
     "goBack": "Heb je iets gemist? {back}",
     "goBackButton": "Terug naar het vorige scherm",
@@ -1706,6 +1702,11 @@
     "setPassword": "Wachtwoord instellen",
     "setup": "Instellen"
   },
+  "paymentLabels": {
+    "membershipProductName": "Lidmaatschap",
+    "recurringContribution": "Periodieke bijdrage",
+    "taxRateDisplayName": "BTW"
+  },
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "Automatische incasso wijzigen",
@@ -1843,8 +1844,5 @@
     },
     "searchTag": "Tagged met...",
     "toggleTag": "Tag schakelen"
-  },
-  "taxRate": {
-    "invoiceName": "BTW"
   }
 }

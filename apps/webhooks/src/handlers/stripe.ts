@@ -1,4 +1,3 @@
-import config from '@beabee/core/config';
 import { stripe } from '@beabee/core/lib/stripe';
 import { StripeWebhookEventHandler } from '@beabee/core/lib/stripe-webhook-event-handler';
 import { log as mainLogger } from '@beabee/core/logging';

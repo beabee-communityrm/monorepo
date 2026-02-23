@@ -114,10 +114,10 @@ const applePayOption = computed<ApplePayOption | undefined>(() => {
   return props.paymentData.period !== 'one-time'
     ? {
         recurringPaymentRequest: {
-          paymentDescription: t('joinPayment.applePay.description'),
+          paymentDescription: t('paymentLabels.membershipProductName'),
           managementURL: env.appUrl + '/profile/contribution',
           regularBilling: {
-            label: t('joinPayment.applePay.recurringLabel'),
+            label: t('paymentLabels.recurringContribution'),
             amount: props.paymentData.amount * 100,
             recurringPaymentIntervalUnit:
               props.paymentData.period === ContributionPeriod.Monthly

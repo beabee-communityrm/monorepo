@@ -1707,6 +1707,11 @@
     "setPassword": "Установить пароль",
     "setup": "Создать аккаунт"
   },
+  "paymentLabels": {
+    "membershipProductName": "Членство",
+    "recurringContribution": "Периодический взнос",
+    "taxRateDisplayName": "НДС"
+  },
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "Поменять данные счёта",
@@ -1844,8 +1849,5 @@
     },
     "searchTag": "",
     "toggleTag": ""
-  },
-  "taxRate": {
-    "invoiceName": "???"
   }
 }
