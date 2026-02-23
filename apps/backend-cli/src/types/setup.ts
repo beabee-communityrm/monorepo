@@ -1,16 +1,16 @@
 export interface SetupSupportEmailArgs {
-  emailDomain?: string;
+  emailDomain: string | undefined;
 }
 
 export interface SetupPaymentMethodsArgs {
-  paymentMethods?: string[];
+  paymentMethods: string[] | undefined;
 }
 
 export interface SetupAdminArgs {
-  firstname?: string;
-  lastname?: string;
-  email?: string;
-  password?: string;
+  firstname: string | undefined;
+  lastname: string | undefined;
+  email: string | undefined;
+  password: string | undefined;
 }
 
 export interface SetupAllArgs

@@ -13,7 +13,7 @@ import { setupSupportEmail } from './support-email.js';
  *
  * Accepts command line arguments or prompts for missing information
  */
-export async function setupAll(args: SetupAllArgs = {}): Promise<void> {
+export async function setupAll(args: SetupAllArgs): Promise<void> {
   try {
     console.log('🚀 Starting complete system setup...\n');
     console.log('This will configure:');
@@ -26,23 +26,19 @@ export async function setupAll(args: SetupAllArgs = {}): Promise<void> {
     // Step 1: Support Email Setup
     console.log('📧 Step 1/4: Setting up support email');
     console.log('='.repeat(50));
-    await setupSupportEmail(
-      args.emailDomain ? { emailDomain: args.emailDomain } : {}
-    );
+    await setupSupportEmail(args);
     console.log('✅ Support email setup completed!\n');
 
     // Step 2: Payment Methods Setup
     console.log('💳 Step 2/4: Setting up payment methods');
     console.log('='.repeat(50));
-    await setupPaymentMethods(
-      args.paymentMethods ? { paymentMethods: args.paymentMethods } : {}
-    );
+    await setupPaymentMethods(args);
     console.log('✅ Payment methods setup completed!\n');
 
     // Step 3: Stripe Integration Setup
     console.log('🔧 Step 3/4: Setting up Stripe integration');
     console.log('='.repeat(50));
-    await setupStripe();
+    await setupStripe(false);
     console.log('✅ Stripe integration setup completed!\n');
 
     // Step 4: Admin User Setup
