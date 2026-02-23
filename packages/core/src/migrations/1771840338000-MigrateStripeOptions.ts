@@ -4,13 +4,17 @@ export class MigrateStripeOptions1771840338000 implements MigrationInterface {
   name = 'MigrateStripeOptions1771840338000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`
+    await queryRunner.query(
+      `
       INSERT INTO "option" (key, value)
-      VALUES
-        ('stripe-webhook-secret', '${process.env.BEABEE_STRIPE_WEBHOOKSECRET}'),
-        ('stripe-membership-product-id', '${process.env.BEABEE_STRIPE_MEMBERSHIPPRODUCTID}')
+      VALUES ('stripe-webhook-secret', $1), ('stripe-membership-product-id', $2)
       ON CONFLICT (key) DO NOTHING
-    `);
+    `,
+      [
+        process.env.BEABEE_STRIPE_WEBHOOKSECRET,
+        process.env.BEABEE_STRIPE_MEMBERSHIPPRODUCTID,
+      ]
+    );
 
     await queryRunner.query(
       `UPDATE "option" SET "key"= 'stripe-tax-rate-one-time-id' WHERE "key" = 'tax-rate-one-time-stripe-id'`
