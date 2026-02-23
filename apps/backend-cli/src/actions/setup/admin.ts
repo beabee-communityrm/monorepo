@@ -85,7 +85,7 @@ export async function setupAdmin(args: SetupAdminArgs = {}): Promise<void> {
     console.log(
       `Password: ${userPassword ? 'Set' : 'Will generate reset link'}`
     );
-    console.log(`Membership: permanent`);
+    console.log(`Membership: none`);
     console.log(`Role: superadmin`);
 
     const confirmCreate = await confirm({
@@ -104,8 +104,8 @@ export async function setupAdmin(args: SetupAdminArgs = {}): Promise<void> {
       lastname,
       email,
       password: userPassword,
-      membership: 'permanent', // Fixed to permanent
-      role: 'superadmin', // Fixed to superadmin
+      membership: 'none',
+      role: 'superadmin',
     };
 
     await createUser(userArgs);
