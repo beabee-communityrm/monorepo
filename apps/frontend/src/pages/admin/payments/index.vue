@@ -35,6 +35,14 @@ meta:
       :headers="headers"
       :result="paymentsTable"
     >
+      <template #actions>
+        <AppButton
+          :icon="faDownload"
+          variant="primaryOutlined"
+          :title="t('actions.export')"
+          @click="handleExport"
+        />
+      </template>
       <template #value-status="{ value }">
         <PaymentStatus :status="value as PaymentStatusEnum" />
       </template>
@@ -60,11 +68,11 @@ meta:
 import type {
   GetPaymentAggregationData,
   GetPaymentDataWith,
-  GetPaymentsQuery,
   Paginated,
+  RuleGroup,
 } from '@beabee/beabee-common';
 import { PaymentStatus as PaymentStatusEnum } from '@beabee/beabee-common';
-import { AppFilterGrid, PageTitle, formatLocale } from '@beabee/vue';
+import { AppButton, AppFilterGrid, PageTitle, formatLocale } from '@beabee/vue';
 
 import KeyStat from '@components/pages/admin/KeyStat.vue';
 import {
@@ -75,7 +83,7 @@ import {
 import { PaymentStatus } from '@components/payment';
 import AppSearch from '@components/search/AppSearch.vue';
 import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
-import { faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { addBreadcrumb } from '@store/breadcrumb';
 import { client } from '@utils/api';
 import {
@@ -105,8 +113,11 @@ const currentPaginatedQuery = definePaginatedQuery('chargeDate');
 const paymentsTable = ref<Paginated<GetPaymentDataWith<'contact'>>>();
 const aggregation = ref<GetPaymentAggregationData>();
 
-watchEffect(async () => {
-  const rules: GetPaymentsQuery['rules'] = { condition: 'AND', rules: [] };
+/**
+ * Builds the search rules for the current filter state
+ */
+function getSearchRules(): RuleGroup {
+  const rules: RuleGroup = { condition: 'AND', rules: [] };
 
   if (currentStatus.value) {
     rules.rules.push({
@@ -120,11 +131,23 @@ watchEffect(async () => {
     rules.rules.push(currentRules.value);
   }
 
+  return rules;
+}
+
+/**
+ * Handles exporting payments
+ */
+function handleExport() {
+  const rules = getSearchRules();
+  const rulesQuery = encodeURIComponent(JSON.stringify(rules));
+  window.open(`/api/1.0/payment.csv?rules=${rulesQuery}`, '_blank');
+}
+
+watchEffect(async () => {
+  const rules = getSearchRules();
+
   paymentsTable.value = await client.payment.list(
-    {
-      ...currentPaginatedQuery.query,
-      rules,
-    },
+    { ...currentPaginatedQuery.query, rules },
     ['contact']
   );
 
