@@ -3,54 +3,104 @@ import { type Locale } from '@beabee/locale';
 
 export default {
   organisation: 'UK Makerspace',
-  'software-name': 'Membership System',
   logo: '',
-  'home-text': 'Hello there Makers!',
-  'home-link-text': 'Find out more',
   'home-link-url': 'http://example.com/about',
-  'home-redirect-url': '/login',
-  'user-home-url': '/profile',
-  'admin-home-url': '/admin',
-  'referral-short-url': 'http://example.com/refer',
+
+  /** Application active locale */
+  locale: 'en' as Locale,
+
+  /** Application active theme */
+  theme: '{}',
+
+  /** Support email settings */
   'support-email': 'membership@example.com',
   'support-email-from': 'UK Makerspace Membership',
+
+  /** Minimum contribution amount (monthly) */
   'contribution-min-monthly-amount': '1',
-  'tax-rate-one-time-stripe-id': '',
-  'tax-rate-recurring-stripe-id': '',
-  'show-one-time-donation': 'false',
-  'show-absorb-fee': 'true',
-  'show-mail-opt-in': '',
-  'available-tags': '',
+
+  /** List of possible manual payment sources */
   'available-manual-payment-sources': '',
+
+  /** ID of the callout to be shown in join setup flow */
   'join-survey': '',
+
+  /**
+   * ID of the callout to be shown in cancellation flow
+   * Note: only currently used in legacy app, but should be implemented in new frontend
+   */
   'cancellation-survey': '',
+
+  /** Global share settings */
   'share-twitter-handle': '',
   'share-title': '',
   'share-description': '',
   'share-image': '',
-  'footer-strapline': '',
+
+  /** Footer options */
   'footer-impressum-link-url': '',
-  'footer-privacy-link-text': 'Privacy policy',
   'footer-privacy-link-url': 'http://example.com/privacy',
-  'footer-terms-link-text': 'Terms and conditions',
   'footer-terms-link-url': 'http://example.com/terms',
-  'footer-facebook-link-url': '',
-  'footer-twitter-link-url': '',
-  /** @deprecated Use Email.templateId instead. Kept for legacy app compatibility. */
-  'email-templates': '{}',
+
+  /** Newsletter options */
   'newsletter-active-member-tag': 'Active member',
   'newsletter-active-user-tag': 'Active user',
   'newsletter-default-status': NewsletterStatus.None,
   'newsletter-groups': '[]',
-  'newsletter-resync-status': '',
-  'newsletter-resync-data': '',
   'tracking-code': '',
+
+  /** Stripe integration options */
+  'tax-rate-one-time-stripe-id': '',
+  'tax-rate-recurring-stripe-id': '',
+
+  /**
+   * Show one-time contribution form to logged in users
+   * TODO: frontend only option, move to content
+   * */
+  'show-one-time-donation': 'false',
+
+  /** Enable option for contacts to absorb contribution fees */
+  'show-absorb-fee': 'true',
+
+  /** Enable the collection of postal addresses */
+  'show-mail-opt-in': '',
+
+  /** Feature switches */
   'switch-feature-one-time-donation': 'false',
+
+  /** Webhook switches: turn webhook listeners on or off */
   'switch-webhook-gc': 'true',
   'switch-webhook-mailchimp': 'true',
   'switch-webhook-stripe': 'true',
-  locale: 'en' as Locale,
-  theme: '{}',
+
+  /** Rate limiter version: used to reset rate limiter */
+  'rate-limiter-version': '0',
+
+  /** @deprecated Old list of available contact tags */
+  'available-tags': '',
+
+  /** @deprecated Use Email.templateId instead. Kept for legacy app compatibility. */
+  'email-templates': '{}',
+
+  /** @deprecated Only in legacy app */
+  'home-text': 'Hello there Makers!',
+  'software-name': 'Membership System',
+  'home-link-text': 'Find out more',
+  'home-redirect-url': '/login',
+  'user-home-url': '/profile',
+  'admin-home-url': '/admin',
+  'referral-short-url': 'http://example.com/refer',
+  'footer-strapline': '',
+  'footer-facebook-link-url': '',
+  'footer-twitter-link-url': '',
+  'footer-terms-link-text': 'Terms and conditions',
+  'footer-privacy-link-text': 'Privacy policy',
+
+  /** @deprecated Only used by legacy newsletter sync tool */
+  'newsletter-resync-status': '',
+  'newsletter-resync-data': '',
+
+  /** @deprecated Flash messages are no longer used */
   'flash-logged-in': 'Login successful',
   'flash-logged-out': 'Logged out',
   'flash-login-failed': 'Login unsuccessful',
@@ -200,5 +250,4 @@ export default {
   'flash-validation-error.url-format': 'URL was invalid',
   'flash-validation-error.candidates-maxItems':
     'You can only choose at most three candidates',
-  'rate-limiter-version': '0',
 } as const;
