@@ -1,7 +1,7 @@
 import juice from 'juice';
 
 import config from '#config/config';
-import currentLocale from '#locale';
+import { currentLocale } from '#locale';
 import OptionsService from '#services/OptionsService';
 
 export function getEmailFooter(): string {

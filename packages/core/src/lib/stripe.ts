@@ -12,7 +12,7 @@ import { differenceInMonths } from 'date-fns';
 import Stripe from 'stripe';
 
 import config from '#config/config';
-import currentLocale from '#locale';
+import { currentLocale } from '#locale';
 import { log as mainLogger } from '#logging';
 import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
@@ -21,7 +21,7 @@ import { getChargeableAmount } from '#utils/payment';
 const log = mainLogger.child({ app: 'stripe-utils' });
 
 export const stripe = new Stripe(config.stripe.secretKey, {
-  apiVersion: '2024-04-10',
+  apiVersion: config.stripe.version,
   typescript: true,
 });
 
@@ -64,7 +64,7 @@ export async function updateSalesTaxRate(
       percentage: percentage,
       active: true,
       inclusive: true,
-      display_name: currentLocale().taxRate.invoiceName,
+      display_name: currentLocale().paymentLabels.taxRateDisplayName,
     });
 
     await OptionsService.set(`stripe-tax-rate-${type}-id`, taxRate.id);

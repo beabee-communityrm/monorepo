@@ -87,6 +87,23 @@ export const setupCommand: CommandModule = {
         },
       })
       .command({
+        command: 'integrations <integration>',
+        describe: 'Set up third-party integrations',
+        builder: (yargs: any) => {
+          return yargs.command({
+            command: 'stripe',
+            describe: 'Set up Stripe integration',
+            handler: async () => {
+              const { setupStripe } = await import(
+                '../actions/setup/integrations.js'
+              );
+              return setupStripe();
+            },
+          });
+        },
+        handler: () => {},
+      })
+      .command({
         command: 'all',
         describe: 'Complete system setup (all steps in sequence)',
         builder: (yargs: any) => {
