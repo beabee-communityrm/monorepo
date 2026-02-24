@@ -52,7 +52,6 @@
 import type {
   GetContactData,
   GetEmailData,
-  GetSegmentData,
   UpdateEmailData,
 } from '@beabee/beabee-common';
 import { AppInput, AppLabel, AppSelect, addNotification } from '@beabee/vue';
@@ -78,12 +77,12 @@ const props = withDefaults(
     submitButtonText: string;
     showSelectTemplate?: boolean;
     contacts?: GetContactData[];
-    //template id
-    // segment id
+    defaultNewTemplateName?: string;
   }>(),
   {
     showSelectTemplate: false,
     contacts: () => [],
+    defaultNewTemplateName: '',
   }
 );
 
@@ -91,16 +90,11 @@ const emit = defineEmits<{
   submit: [];
 }>();
 
-/** Segment Management **/
+/** Template Management **/
 const templates = ref<GetEmailData[]>([]);
-const segment = ref<GetSegmentData | null>(null);
 const selectedTemplateId = ref<string>(NEW_EMAIL_VALUE);
 const newTemplateName = ref('');
 const previewContactId = ref<string>('');
-
-const defaultNewTemplateName = computed(() =>
-  segment.value ? `${t('contacts.sendEmail.title')}: ${segment.value.name}` : ''
-);
 
 const isNewEmailSelected = computed(
   () => selectedTemplateId.value === NEW_EMAIL_VALUE
@@ -128,7 +122,8 @@ async function loadTemplates() {
 
 function onTemplateChange(value: string) {
   if (value === NEW_EMAIL_VALUE) {
-    newTemplateName.value = defaultNewTemplateName.value;
+    newTemplateName.value = props.defaultNewTemplateName;
+    email.value = { name: newTemplateName.value, subject: '', body: '' };
     return;
   }
   const template = templates.value.find((e) => e.id === value);

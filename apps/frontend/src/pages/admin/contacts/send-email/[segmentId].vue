@@ -23,6 +23,7 @@ meta:
     show-select-template
     :email="emailData"
     :contacts="segmentContacts"
+    :default-new-template-name="defaultNewTemplateName"
     @submit="handleSubmit"
   >
     <template #buttons="{ disabled }">
