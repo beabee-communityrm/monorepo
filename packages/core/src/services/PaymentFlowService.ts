@@ -1,6 +1,8 @@
 import {
   Address,
   ContributionPeriod,
+  PaymentFlowParams,
+  PaymentFlowResult,
   PaymentForm,
   PaymentMethod,
   RESET_SECURITY_FLOW_TYPE,
@@ -28,8 +30,6 @@ import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
-  PaymentFlowData,
-  PaymentFlowParams,
 } from '#type/index';
 
 import ResetSecurityFlowService from './ResetSecurityFlowService';
@@ -88,16 +88,14 @@ class PaymentFlowService {
    * Starts a payment registration flow with contribution details
    * @param joinForm - Complete join form with payment details
    * @param urls - Navigation URLs
-   * @param completeUrl - Provider-specific completion URL
-   * @param user - User data for the flow
-   * @returns Promise resolving to payment flow parameters
+   * @param paymentFlowParams - Parameters for the payment flow
+   * @returns The payment flow result for the client
    */
   async startPaymentRegistration(
     joinForm: JoinForm,
     urls: CompleteUrls,
-    completeUrl: string,
-    user: { email: string; firstname?: string; lastname?: string }
-  ): Promise<PaymentFlowParams> {
+    paymentFlowParams: PaymentFlowParams
+  ): Promise<PaymentFlowResult> {
     const joinFlow = await getRepository(JoinFlow).save({
       ...urls,
       joinForm,
@@ -108,13 +106,12 @@ class PaymentFlowService {
 
     const paymentFlow = await this.createPaymentFlow(
       joinFlow,
-      completeUrl,
-      user
+      paymentFlowParams
     );
     await getRepository(JoinFlow).update(joinFlow.id, {
       paymentFlowId: paymentFlow.id,
     });
-    return paymentFlow.params;
+    return paymentFlow.result;
   }
 
   /**
@@ -259,14 +256,14 @@ class PaymentFlowService {
    * @param paymentMethod - The new payment method to use
    * @param completeUrl - URL to redirect to after payment setup
    * @param form - Optional form data for contribution changes
-   * @returns The payment flow parameters
+   * @returns The payment flow result
    */
   async startContributionUpdate(
     contact: Contact,
     paymentMethod: PaymentMethod,
-    completeUrl: string,
+    paymentFlowParams: PaymentFlowParams,
     form?: PaymentForm
-  ): Promise<PaymentFlowParams> {
+  ): Promise<PaymentFlowResult> {
     // TODO: if it's just a payment method update then these should be optional
     if (!form) {
       form = {
@@ -294,8 +291,7 @@ class PaymentFlowService {
         email: contact.email,
       },
       { confirmUrl: '', loginUrl: '', setPasswordUrl: '' },
-      completeUrl,
-      contact
+      paymentFlowParams
     );
   }
 
@@ -445,14 +441,12 @@ class PaymentFlowService {
    */
   private async createPaymentFlow(
     joinFlow: JoinFlow,
-    completeUrl: string,
-    data: PaymentFlowData
+    params: PaymentFlowParams
   ): Promise<PaymentFlow> {
     log.info('Create payment flow for join flow ' + joinFlow.id);
     return paymentProviders[joinFlow.joinForm.paymentMethod].createPaymentFlow(
       joinFlow,
-      completeUrl,
-      data
+      params
     );
   }
 

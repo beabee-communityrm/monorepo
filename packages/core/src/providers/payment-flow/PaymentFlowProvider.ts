@@ -1,9 +1,10 @@
+import { PaymentFlowParams } from '@beabee/beabee-common';
+
 import { JoinFlow } from '#models/index';
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
-  PaymentFlowData,
 } from '#type/index';
 
 /**
@@ -14,19 +15,18 @@ export abstract class PaymentFlowProvider {
   /**
    * Creates a new payment flow with the provider
    * @param joinFlow - The join flow containing user and payment information
-   * @param completeUrl - URL to redirect after successful setup
-   * @param data - Additional data needed for the flow
+   * @param params - Parameters for the payment flow
    * @returns Promise resolving to created payment flow
    */
   abstract createPaymentFlow(
     joinFlow: JoinFlow,
-    completeUrl: string,
-    data: PaymentFlowData
+    params: PaymentFlowParams
   ): Promise<PaymentFlow>;
 
   /**
    * Completes a payment flow after provider setup
    * @param joinFlow - The join flow to complete
+   * @param params - Parameters for the payment flow
    * @returns Promise resolving to completed payment flow
    */
   abstract completePaymentFlow(

@@ -1,4 +1,5 @@
 import {
+  PaymentFlowParams,
   PaymentMethod,
   isContributionForm,
   paymentMethodToStripeType,
@@ -12,7 +13,6 @@ import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
-  PaymentFlowData,
 } from '#type/index';
 
 import { PaymentFlowProvider } from './PaymentFlowProvider';
@@ -27,16 +27,16 @@ class StripeFlowProvider implements PaymentFlowProvider {
   /**
    * Creates a Stripe SetupIntent for payment method setup
    * @param joinFlow - Join flow containing payment method selection
-   * @param _completeUrl - URL for setup completion (unused in Stripe flow)
-   * @param _data - Additional setup data (unused in Stripe flow)
+   * @param params - Parameters for the payment flow
    * @returns Promise resolving to payment flow with SetupIntent details
    * @throws {BadRequestError} If payment method is not supported
    */
   async createPaymentFlow(
     joinFlow: JoinFlow,
-    _completeUrl: string,
-    _data: PaymentFlowData
+    params: PaymentFlowParams
   ): Promise<PaymentFlow> {
+    // TODO: use new params: just store the parameters I guess?
+
     const setupIntent = await stripe.setupIntents.create({
       payment_method_types: [
         paymentMethodToStripeType(joinFlow.joinForm.paymentMethod),
@@ -47,7 +47,8 @@ class StripeFlowProvider implements PaymentFlowProvider {
 
     return {
       id: setupIntent.id,
-      params: {
+      result: {
+        type: 'stripe',
         clientSecret: setupIntent.client_secret as string,
       },
     };

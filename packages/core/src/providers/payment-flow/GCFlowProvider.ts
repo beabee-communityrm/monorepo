@@ -1,3 +1,5 @@
+import { PaymentFlowParams } from '@beabee/beabee-common';
+
 import gocardless from '#lib/gocardless';
 import { log as mainLogger } from '#logging';
 import { JoinFlow } from '#models/index';
@@ -5,7 +7,6 @@ import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlow,
-  PaymentFlowData,
 } from '#type/index';
 
 import { PaymentFlowProvider } from './PaymentFlowProvider';
@@ -20,29 +21,33 @@ class GCFlowProvider implements PaymentFlowProvider {
   /**
    * Creates a GoCardless redirect flow for direct debit setup
    * @param joinFlow - Join flow containing user information
-   * @param completeUrl - URL to redirect after mandate setup
-   * @param data - Additional customer data
+   * @param params - Parameters for the payment flow
    * @returns Promise resolving to payment flow with redirect URL
    */
   async createPaymentFlow(
     joinFlow: JoinFlow,
-    completeUrl: string,
-    params: PaymentFlowData
+    params: PaymentFlowParams
   ): Promise<PaymentFlow> {
+    if (!('completeUrl' in params)) {
+      // TODO: fix properly
+      throw new Error('completeUrl is required for GoCardless payment flow');
+    }
+
     const redirectFlow = await gocardless.redirectFlows.create({
       session_token: joinFlow.id,
-      success_redirect_url: completeUrl,
-      prefilled_customer: {
-        email: params.email,
-        ...(params.firstname && { given_name: params.firstname }),
-        ...(params.lastname && { family_name: params.lastname }),
-      },
+      success_redirect_url: params.completeUrl,
+      // prefilled_customer: {
+      //   email: params.email,
+      //   ...(params.firstname && { given_name: params.firstname }),
+      //   ...(params.lastname && { family_name: params.lastname }),
+      // },
     });
     log.info('Created redirect flow ' + redirectFlow.id);
 
     return {
       id: redirectFlow.id!,
-      params: {
+      result: {
+        type: 'gocardless',
         redirectUrl: redirectFlow.redirect_url!,
       },
     };
