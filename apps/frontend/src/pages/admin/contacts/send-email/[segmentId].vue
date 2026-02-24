@@ -18,7 +18,54 @@ meta:
     <p>{{ t('common.loading') }}...</p>
   </div>
 
+  <div class="flex flex-col gap-6 md:flex-row md:items-stretch">
+    <div class="relative min-w-0 flex-1 md:flex md:min-h-0 md:flex-col">
+      <AppRadioGroup
+        v-model="emailSettingType"
+        :options="[
+          ['one-off', 'One-off'],
+          ['ongoing', 'Ongoing'],
+        ]"
+        :variant="'link'"
+        :disabled="false"
+        :label="'Typ'"
+        :inline="true"
+        :required="false"
+      />
+    </div>
+    <div
+      v-if="emailSettingType === 'ongoing'"
+      class="relative min-w-0 flex-1 md:flex md:min-h-0 md:flex-col"
+    >
+      <AppRadioGroup
+        v-model="emailSettingSendTime"
+        :options="[
+          ['contact-joins', 'Contact joins segment'],
+          ['contact-leaves', 'Contact leaves segment'],
+        ]"
+        :variant="'link'"
+        :disabled="false"
+        :label="'Send when'"
+        :inline="true"
+        :required="false"
+      />
+      <AppCheckbox
+        v-if="emailSettingSendTime === 'contact-joins'"
+        v-model="emailSettingDirectSend"
+        class="mt-2"
+        :variant="'link'"
+        :disabled="false"
+        label="Send the email immediately to all contacts in the segment"
+        :required="false"
+      />
+      <p class="mt-2 text-sm text-body-80">
+        Ongoing emails are triggered once per day
+      </p>
+    </div>
+  </div>
+
   <EmailTemplateEditor
+    class="mt-4"
     :submit-button-text="t('contacts.sendEmail.saveAndSend')"
     show-select-template
     :email="emailData"
@@ -47,7 +94,13 @@ import type {
   GetEmailData,
   GetSegmentData,
 } from '@beabee/beabee-common';
-import { AppButton, PageTitle, addNotification } from '@beabee/vue';
+import {
+  AppButton,
+  AppCheckbox,
+  AppRadioGroup,
+  PageTitle,
+  addNotification,
+} from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref, watch } from 'vue';
@@ -211,4 +264,9 @@ watch(defaultNewTemplateName, (name) => {
     newTemplateName.value = name;
   }
 });
+
+// ** Send State Management **/
+const emailSettingType = ref<string>('one-off');
+const emailSettingSendTime = ref<string>('contact-joins');
+const emailSettingDirectSend = ref<boolean>(false);
 </script>

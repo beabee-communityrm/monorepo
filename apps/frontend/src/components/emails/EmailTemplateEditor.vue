@@ -54,7 +54,12 @@ import type {
   GetEmailData,
   UpdateEmailData,
 } from '@beabee/beabee-common';
-import { AppInput, AppLabel, AppSelect, addNotification } from '@beabee/vue';
+import {
+  AppInput,
+  AppLabel,
+  AppSelect,
+  addNotification,
+} from '@beabee/vue';
 
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
