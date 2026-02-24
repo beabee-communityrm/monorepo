@@ -10,4 +10,5 @@ PATH=/usr/local/bin:/usr/bin:/bin
 # Daily cron jobs
 0  1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli sync newsletter-service clear-pending-status' > /proc/1/fd/1 2>&1
 10 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli process gifts' > /proc/1/fd/1 2>&1
+15 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli database clean' > /proc/1/fd/1 2>&1
 20 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && node ./dist/tools/process-segments.js' > /proc/1/fd/1 2>&1

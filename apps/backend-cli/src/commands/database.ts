@@ -77,6 +77,16 @@ export const databaseCommand: CommandModule = {
           );
           return importDatabase(argv.file, argv.dryRun);
         },
+      })
+      .command({
+        command: 'clean',
+        describe: 'Clean old data from the database',
+        handler: async () => {
+          const { cleanDatabase } = await import(
+            '../actions/database/clean.js'
+          );
+          return cleanDatabase();
+        },
       }),
   handler: () => {},
 };
