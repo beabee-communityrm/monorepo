@@ -5,8 +5,6 @@ meta:
   role: admin
 </route>
 
-<template><EmailTemplateEditor /></template>
+<template>Create New Segment</template>
 
-<script lang="ts" setup>
-import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
-</script>
+<script lang="ts" setup></script>
