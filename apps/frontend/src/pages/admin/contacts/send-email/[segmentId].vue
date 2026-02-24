@@ -22,6 +22,7 @@ meta:
     :submit-button-text="t('contacts.sendEmail.saveAndSend')"
     show-select-template
     :email="emailData"
+    :contacts="segmentContacts"
     @submit="handleSubmit"
   >
     <template #buttons="{ disabled }">

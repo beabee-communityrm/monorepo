@@ -35,7 +35,12 @@
       </div>
     </div>
 
-    <EmailEditor v-model:subject="email.subject" v-model:content="email.body" />
+    <EmailEditor
+      v-model:subject="email.subject"
+      v-model:content="email.body"
+      v-model:preview-contact-id="previewContactId"
+      :preview-contact-options="contacts"
+    />
 
     <template #buttons="slotProps">
       <slot name="buttons" v-bind="slotProps" />
@@ -45,6 +50,7 @@
 
 <script lang="ts" setup>
 import type {
+  GetContactData,
   GetEmailData,
   GetSegmentData,
   UpdateEmailData,
@@ -71,11 +77,13 @@ const props = withDefaults(
   defineProps<{
     submitButtonText: string;
     showSelectTemplate?: boolean;
+    contacts?: GetContactData[];
     //template id
     // segment id
   }>(),
   {
     showSelectTemplate: false,
+    contacts: () => [],
   }
 );
 
@@ -88,6 +96,7 @@ const templates = ref<GetEmailData[]>([]);
 const segment = ref<GetSegmentData | null>(null);
 const selectedTemplateId = ref<string>(NEW_EMAIL_VALUE);
 const newTemplateName = ref('');
+const previewContactId = ref<string>('');
 
 const defaultNewTemplateName = computed(() =>
   segment.value ? `${t('contacts.sendEmail.title')}: ${segment.value.name}` : ''
