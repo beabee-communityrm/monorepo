@@ -369,31 +369,6 @@ export function isOneTimePaymentInvoice(invoice: Stripe.Invoice): boolean {
 }
 
 /**
- * Convert a payment method to a Stripe payment type.
- *
- * @param method The payment method
- * @returns The Stripe payment type
- */
-export function paymentMethodToStripeType(
-  method: PaymentMethod
-): Stripe.PaymentMethod.Type {
-  switch (method) {
-    case PaymentMethod.StripeCard:
-      return 'card';
-    case PaymentMethod.StripeSEPA:
-      return 'sepa_debit';
-    case PaymentMethod.StripeBACS:
-      return 'bacs_debit';
-    case PaymentMethod.StripePayPal:
-      return 'paypal';
-    case PaymentMethod.StripeIdeal:
-      return 'ideal';
-    case PaymentMethod.GoCardlessDirectDebit:
-      return 'bacs_debit';
-  }
-}
-
-/**
  * Convert a Stripe payment type to a payment method, mirrors
  * paymentMethodToStripeType.
  *

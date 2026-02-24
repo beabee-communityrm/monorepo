@@ -1,7 +1,6 @@
 import {
   type CompleteSignupData,
-  ContributionPeriod,
-  type PaymentFlowParams,
+  type PaymentFlowResult,
   type Serial,
   type SignupData,
 } from '@beabee/beabee-common';
@@ -36,9 +35,9 @@ export class SignupClient extends BaseClient {
    * @param data - The signup data including email and contribution details
    * @returns Payment flow parameters for completing signup
    */
-  async start(data: SignupData): Promise<PaymentFlowParams | undefined> {
+  async start(data: SignupData): Promise<PaymentFlowResult> {
     const { data: responseData } = await this.fetch.post<
-      Serial<PaymentFlowParams> | undefined
+      Serial<PaymentFlowResult>
     >('', {
       ...data,
       loginUrl: this.options.host + '/auth/login',

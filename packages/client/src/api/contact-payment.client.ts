@@ -3,7 +3,7 @@ import type {
   GetPaymentData,
   GetPaymentsQuery,
   Paginated,
-  PaymentFlowParams,
+  PaymentFlowResult,
   Serial,
 } from '@beabee/beabee-common';
 
@@ -27,14 +27,14 @@ export class ContactPaymentClient extends BaseClient {
     });
   }
 
-  async create(dataIn: CreatePaymentData): Promise<PaymentFlowParams> {
-    const { data } = await this.fetch.post<Serial<PaymentFlowParams>>(
+  async create(dataIn: CreatePaymentData): Promise<PaymentFlowResult> {
+    const { data } = await this.fetch.post<Serial<PaymentFlowResult>>(
       '/me/payment',
       {
         amount: dataIn.amount,
         payFee: dataIn.payFee,
         paymentMethod: dataIn.paymentMethod,
-        completeUrl: dataIn.completeUrl,
+        paymentFlowParams: dataIn.paymentFlowParams,
       }
     );
     return data;

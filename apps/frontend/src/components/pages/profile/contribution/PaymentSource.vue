@@ -9,7 +9,7 @@
       :title="changeLabel"
       :button-text="changeLabel"
       :stripe-public-key="stripePublicKey"
-      :flow-data="paymentData"
+      :flow-data="{ ...paymentData, paymentMethod: paymentSource.method }"
       :start-flow="handleStartPaymentUpdate"
       :complete-flow="handleCompletePaymentUpdate"
     />
@@ -20,6 +20,7 @@
 import {
   type ContributionInfo,
   type PaymentFlowParams,
+  type PaymentFlowResult,
   type PaymentSource,
   type PaymentSourceManual,
 } from '@beabee/beabee-common';
@@ -37,7 +38,7 @@ const { t } = useI18n();
 const props = defineProps<{
   stripePublicKey: string;
   paymentSource: Exclude<PaymentSource, PaymentSourceManual>;
-  paymentData: PaymentFlowFormData;
+  paymentData: Omit<PaymentFlowFormData, 'paymentMethod'>;
 }>();
 
 const contribution = defineModel<ContributionInfo>({ required: true });
@@ -47,9 +48,9 @@ const changeLabel = computed(() =>
 );
 
 async function handleStartPaymentUpdate(
-  completeUrl: string
-): Promise<PaymentFlowParams> {
-  return await client.contact.paymentMethod.update(completeUrl);
+  paymentFlowParams: PaymentFlowParams
+): Promise<PaymentFlowResult> {
+  return await client.contact.paymentMethod.update(paymentFlowParams);
 }
 
 async function handleCompletePaymentUpdate(paymentFlowId: string) {

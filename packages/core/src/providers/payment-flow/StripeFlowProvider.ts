@@ -1,7 +1,11 @@
-import { PaymentMethod, isContributionForm } from '@beabee/beabee-common';
+import {
+  PaymentMethod,
+  isContributionForm,
+  paymentMethodToStripeType,
+} from '@beabee/beabee-common';
 
 import { BadRequestError } from '#errors/BadRequestError';
-import { Stripe, paymentMethodToStripeType, stripe } from '#lib/stripe';
+import { Stripe, stripe } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
 import { JoinFlow } from '#models/index';
 import {

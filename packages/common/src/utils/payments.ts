@@ -4,6 +4,7 @@ import type {
   Feeable,
   PaymentForm,
   StripeFeeCountry,
+  StripePaymentMethod,
 } from '../types/index.js';
 
 const stripeFees = {
@@ -59,4 +60,29 @@ export function isContributionForm(
   form: PaymentForm
 ): form is ContributionForm {
   return form.period !== 'one-time';
+}
+
+/**
+ * Convert a payment method to a Stripe payment type.
+ *
+ * @param method The payment method
+ * @returns The Stripe payment type
+ */
+export function paymentMethodToStripeType(
+  method: PaymentMethod
+): StripePaymentMethod {
+  switch (method) {
+    case PaymentMethod.StripeCard:
+      return 'card';
+    case PaymentMethod.StripeSEPA:
+      return 'sepa_debit';
+    case PaymentMethod.StripeBACS:
+      return 'bacs_debit';
+    case PaymentMethod.StripePayPal:
+      return 'paypal';
+    case PaymentMethod.StripeIdeal:
+      return 'ideal';
+    case PaymentMethod.GoCardlessDirectDebit:
+      return 'bacs_debit';
+  }
 }
