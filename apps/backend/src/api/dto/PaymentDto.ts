@@ -13,23 +13,25 @@ import {
   IsEnum,
   IsIn,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   Min,
   ValidateNested,
 } from 'class-validator';
 
-import { StartJoinFlowDto } from './JoinFlowDto';
+import { PaymentFlowParamsDto } from './PaymentFlowDto';
 
-export class CreatePaymentDto extends StartJoinFlowDto {
+export class CreatePaymentDto {
   @Min(1)
   amount!: number;
 
   @IsBoolean()
   payFee!: boolean;
 
-  @IsEnum(PaymentMethod)
-  paymentMethod!: PaymentMethod;
+  // TODO: validate
+  @IsObject()
+  paymentFlowParams!: PaymentFlowParamsDto;
 }
 
 export class GetPaymentDto {

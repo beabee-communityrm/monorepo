@@ -1,11 +1,21 @@
-interface PaymentFlowParamsGoCardless {
+import type { PaymentMethod } from '../data';
+
+export interface PaymentFlowParamsGoCardless {
+  paymentMethod: PaymentMethod.GoCardlessDirectDebit;
   completeUrl: string;
 }
 
-interface PaymentFlowParamsStripe {
+export interface PaymentFlowParamsStripe {
+  paymentMethod:
+    | PaymentMethod.StripeCard
+    | PaymentMethod.StripeBACS
+    | PaymentMethod.StripeSEPA
+    | PaymentMethod.StripePayPal
+    | PaymentMethod.StripeIdeal;
   token: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
+  vatNumber?: string;
 }
 
 export type PaymentFlowParams =

@@ -1,7 +1,7 @@
 import {
   ContributionForm,
   ContributionType,
-  PaymentForm,
+  PaymentFlowParamsStripe,
   PaymentSource,
 } from '@beabee/beabee-common';
 
@@ -102,7 +102,9 @@ export class StripeProvider extends PaymentProvider {
    *
    * @param flow The completed payment flow
    */
-  async updatePaymentMethod(flow: CompletedPaymentFlow): Promise<void> {
+  async updatePaymentMethod(
+    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
+  ): Promise<void> {
     const paymentMethod = await stripe.paymentMethods.retrieve(flow.mandateId);
     const address = paymentMethod.billing_details.address;
 
@@ -110,7 +112,7 @@ export class StripeProvider extends PaymentProvider {
       this.contact,
       this.data.customerId,
       flow.mandateId,
-      flow.joinForm.vatNumber
+      flow.paymentFlowParams.vatNumber
     );
 
     log.info('Update customer details for ' + this.data.customerId);
@@ -256,7 +258,9 @@ export class StripeProvider extends PaymentProvider {
    * @param flow The completed payment flow
    * @param form The payment form
    */
-  async createOneTimePayment(flow: CompletedPaymentFlow): Promise<void> {
+  async createOneTimePayment(
+    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
+  ): Promise<void> {
     log.info(
       'Create one-time payment of amount ' + flow.joinForm.monthlyAmount
     );
@@ -265,7 +269,7 @@ export class StripeProvider extends PaymentProvider {
       this.contact,
       this.data.customerId,
       flow.mandateId,
-      flow.joinForm.vatNumber
+      flow.paymentFlowParams.vatNumber
     );
     await this.updateData();
 
@@ -274,7 +278,7 @@ export class StripeProvider extends PaymentProvider {
         this.data.customerId,
         flow.mandateId,
         flow.joinForm,
-        flow.joinForm.paymentMethod
+        flow.paymentFlowParams.paymentMethod
       );
     } catch (err) {
       if (err instanceof Stripe.errors.StripeCardError) {

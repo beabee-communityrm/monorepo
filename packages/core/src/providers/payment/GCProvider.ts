@@ -1,5 +1,6 @@
 import {
   ContributionForm,
+  PaymentFlowParamsGoCardless,
   PaymentForm,
   PaymentMethod,
   PaymentSource,

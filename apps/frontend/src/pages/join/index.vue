@@ -156,6 +156,7 @@ async function submitStep1() {
     await startNoContributionSignup();
   } else if (formData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
     await startSignupFlow({
+      paymentMethod: PaymentMethod.GoCardlessDirectDebit,
       completeUrl: client.signup.completeUrl,
     });
   } else {
@@ -168,7 +169,17 @@ async function startStripeSignup(
   firstName: string,
   lastName: string
 ) {
-  return await startSignupFlow({ token, firstName, lastName });
+  // Shouldn't be possible
+  if (formData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+    return;
+  }
+
+  return await startSignupFlow({
+    paymentMethod: formData.paymentMethod,
+    token,
+    firstName,
+    lastName,
+  });
 }
 
 onBeforeMount(async () => {

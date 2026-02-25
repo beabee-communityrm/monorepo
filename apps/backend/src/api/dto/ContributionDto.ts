@@ -1,10 +1,5 @@
-import {
-  ContributionPeriod,
-  ContributionType,
-  PaymentMethod,
-} from '@beabee/beabee-common';
+import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
 
-import IsUrl from '@api/validators/IsUrl';
 import IsValidPayFee from '@api/validators/IsValidPayFee';
 import MinContributionAmount from '@api/validators/MinContributionAmount';
 import {
@@ -12,11 +7,12 @@ import {
   IsEnum,
   IsIn,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
 } from 'class-validator';
 
-import { StartJoinFlowDto } from './JoinFlowDto';
+import { PaymentFlowParamsDto } from './PaymentFlowDto';
 
 export class UpdateContributionDto {
   @MinContributionAmount()
@@ -32,15 +28,9 @@ export class UpdateContributionDto {
   prorate!: boolean;
 }
 
-export class StartContributionDto
-  extends UpdateContributionDto
-  implements StartJoinFlowDto
-{
-  @IsUrl()
-  completeUrl!: string;
-
-  @IsEnum(PaymentMethod)
-  paymentMethod!: PaymentMethod;
+export class StartContributionDto extends UpdateContributionDto {
+  @IsObject()
+  paymentFlowParams!: PaymentFlowParamsDto;
 }
 
 export class ForceUpdateContributionDto {

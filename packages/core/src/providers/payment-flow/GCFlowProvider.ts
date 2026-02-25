@@ -1,4 +1,4 @@
-import { PaymentFlowParams } from '@beabee/beabee-common';
+import { PaymentFlowParamsGoCardless } from '@beabee/beabee-common';
 
 import gocardless from '#lib/gocardless';
 import { log as mainLogger } from '#logging';
@@ -25,17 +25,11 @@ class GCFlowProvider implements PaymentFlowProvider {
    * @returns Promise resolving to payment flow with redirect URL
    */
   async createPaymentFlow(
-    joinFlow: JoinFlow,
-    params: PaymentFlowParams
+    joinFlow: JoinFlow<PaymentFlowParamsGoCardless>
   ): Promise<PaymentFlow> {
-    if (!('completeUrl' in params)) {
-      // TODO: fix properly
-      throw new Error('completeUrl is required for GoCardless payment flow');
-    }
-
     const redirectFlow = await gocardless.redirectFlows.create({
       session_token: joinFlow.id,
-      success_redirect_url: params.completeUrl,
+      success_redirect_url: joinFlow.paymentFlowParams.completeUrl,
       // prefilled_customer: {
       //   email: params.email,
       //   ...(params.firstname && { given_name: params.firstname }),
@@ -58,7 +52,9 @@ class GCFlowProvider implements PaymentFlowProvider {
    * @param joinFlow - Join flow to complete
    * @returns Promise resolving to completed payment flow with mandate ID
    */
-  async completePaymentFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow> {
+  async completePaymentFlow(
+    joinFlow: JoinFlow<PaymentFlowParamsGoCardless>
+  ): Promise<CompletedPaymentFlow> {
     const redirectFlow = await gocardless.redirectFlows.complete(
       joinFlow.paymentFlowId,
       {
@@ -68,6 +64,7 @@ class GCFlowProvider implements PaymentFlowProvider {
     log.info('Completed redirect flow ' + redirectFlow.id);
 
     return {
+      paymentFlowParams: joinFlow.paymentFlowParams,
       joinForm: joinFlow.joinForm,
       customerId: redirectFlow.links!.customer!,
       mandateId: redirectFlow.links!.mandate!,
@@ -80,15 +77,15 @@ class GCFlowProvider implements PaymentFlowProvider {
    * @returns Promise resolving to payment flow data including billing address
    */
   async getCompletedPaymentFlowData(
-    completedPaymentFlow: CompletedPaymentFlow
+    completedPaymentFlow: CompletedPaymentFlow<PaymentFlowParamsGoCardless>
   ): Promise<CompletedPaymentFlowData> {
     const customer = await gocardless.customers.get(
       completedPaymentFlow.customerId
     );
 
     return {
-      ...(customer.given_name && { firstname: customer.given_name }),
-      ...(customer.family_name && { lastname: customer.family_name }),
+      firstname: customer.given_name || '',
+      lastname: customer.family_name || '',
       billingAddress: {
         line1: customer.address_line1 || '',
         line2: customer.address_line2 || undefined,

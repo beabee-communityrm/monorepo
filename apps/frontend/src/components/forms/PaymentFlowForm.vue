@@ -118,7 +118,10 @@ const paymentFlowId = computed(
  */
 async function handleSubmit() {
   if (props.flowData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
-    const data = await props.startFlow({ completeUrl: completeUrl.value });
+    const data = await props.startFlow({
+      paymentMethod: PaymentMethod.GoCardlessDirectDebit,
+      completeUrl: completeUrl.value,
+    });
     if (data.type === 'gocardless') {
       window.location.href = data.redirectUrl;
     }
@@ -132,7 +135,17 @@ async function handleStripeConfirm(
   firstName: string,
   lastName: string
 ) {
-  const data = await props.startFlow({ token, firstName, lastName });
+  // Shouldn't be possible
+  if (props.flowData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+    return;
+  }
+
+  const data = await props.startFlow({
+    paymentMethod: props.flowData.paymentMethod,
+    token,
+    firstName,
+    lastName,
+  });
   if (data.type === 'stripe') {
     return data.clientSecret;
   }

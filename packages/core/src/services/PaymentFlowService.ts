@@ -73,7 +73,6 @@ class PaymentFlowService {
       period: ContributionPeriod.Monthly,
       payFee: false,
       prorate: false,
-      paymentMethod: PaymentMethod.StripeCard,
     };
     const joinFlow = await getRepository(JoinFlow).save({
       ...urls,
@@ -94,20 +93,18 @@ class PaymentFlowService {
   async startPaymentRegistration(
     joinForm: JoinForm,
     urls: CompleteUrls,
-    paymentFlowParams: PaymentFlowParams
+    params: PaymentFlowParams
   ): Promise<PaymentFlowResult> {
     const joinFlow = await getRepository(JoinFlow).save({
       ...urls,
       joinForm,
       paymentFlowId: '',
+      paymentFlowParams: params,
     });
 
     log.info('Creating payment registration flow ' + joinFlow.id, { joinForm });
 
-    const paymentFlow = await this.createPaymentFlow(
-      joinFlow,
-      paymentFlowParams
-    );
+    const paymentFlow = await this.createPaymentFlow(joinFlow);
     await getRepository(JoinFlow).update(joinFlow.id, {
       paymentFlowId: paymentFlow.id,
     });
@@ -116,25 +113,21 @@ class PaymentFlowService {
 
   /**
    * Advances a payment registration after payment provider setup is complete.
-   * Merges additional user data and sends confirmation email. For one-time payments,
-   * immediately finalizes the registration.
+   * Sends confirmation email, and for one-time payments, immediately finalizes
+   * the registration.
    * @param paymentFlowId - ID of the payment flow to advance
-   * @param data - Additional user data from the payment provider
    */
-  async advancePaymentRegistration(
-    paymentFlowId: string,
-    data: Partial<JoinForm>
-  ): Promise<void> {
+  async advancePaymentRegistration(paymentFlowId: string): Promise<void> {
     const joinFlow = await getRepository(JoinFlow).findOneBy({ paymentFlowId });
     if (!joinFlow) {
       throw new NotFoundError();
     }
 
     // Merge additional data into the join form
-    if (data.firstname || data.lastname || data.vatNumber) {
-      Object.assign(joinFlow.joinForm, data);
-      await getRepository(JoinFlow).save(joinFlow);
-    }
+    // if (data.firstname || data.lastname || data.vatNumber) {
+    //   Object.assign(joinFlow.joinForm, data);
+    //   await getRepository(JoinFlow).save(joinFlow);
+    // }
 
     if (!isContributionForm(joinFlow.joinForm)) {
       log.info(
@@ -199,22 +192,20 @@ class PaymentFlowService {
     if (!contact?.membership?.isActive) {
       let deliveryAddress: Address | undefined;
 
-      const partialContact = {
+      const partialContact: Partial<Contact> & { email: string } = {
         email: joinFlow.joinForm.email,
         password: joinFlow.joinForm.password,
-        firstname: joinFlow.joinForm.firstname || '',
-        lastname: joinFlow.joinForm.lastname || '',
       };
 
       // Prefill contact data from payment provider if possible
       if (completedPaymentFlow) {
-        const paymentData =
+        const flowData =
           await this.getCompletedPaymentFlowData(completedPaymentFlow);
 
-        partialContact.firstname ||= paymentData.firstname || '';
-        partialContact.lastname ||= paymentData.lastname || '';
+        partialContact.firstname = flowData.firstname;
+        partialContact.lastname = flowData.lastname;
         deliveryAddress = OptionsService.getBool('show-mail-opt-in')
-          ? paymentData.billingAddress
+          ? flowData.billingAddress
           : undefined;
       }
 
@@ -260,8 +251,7 @@ class PaymentFlowService {
    */
   async startContributionUpdate(
     contact: Contact,
-    paymentMethod: PaymentMethod,
-    paymentFlowParams: PaymentFlowParams,
+    params: PaymentFlowParams,
     form?: PaymentForm
   ): Promise<PaymentFlowResult> {
     // TODO: if it's just a payment method update then these should be optional
@@ -285,13 +275,12 @@ class PaymentFlowService {
     // have to stub so many fielsd
     return await this.startPaymentRegistration(
       {
-        paymentMethod,
         ...form,
         password: Password.none,
         email: contact.email,
       },
       { confirmUrl: '', loginUrl: '', setPasswordUrl: '' },
-      paymentFlowParams
+      params
     );
   }
 
@@ -389,8 +378,8 @@ class PaymentFlowService {
         isRecurring ? 'confirm-email' : 'setup-account',
         { email: joinFlow.joinForm.email },
         {
-          firstName: joinFlow.joinForm.firstname || '',
-          lastName: joinFlow.joinForm.lastname || '',
+          firstName: '', // TODO: joinFlow.joinForm.firstname || '',
+          lastName: '', // TODO: joinFlow.joinForm.lastname || '',
           confirmLink: joinFlow.confirmUrl + '/' + joinFlow.id,
         }
       );
@@ -439,15 +428,11 @@ class PaymentFlowService {
    * @param data The payment flow data
    * @returns The created payment flow
    */
-  private async createPaymentFlow(
-    joinFlow: JoinFlow,
-    params: PaymentFlowParams
-  ): Promise<PaymentFlow> {
+  private async createPaymentFlow(joinFlow: JoinFlow): Promise<PaymentFlow> {
     log.info('Create payment flow for join flow ' + joinFlow.id);
-    return paymentProviders[joinFlow.joinForm.paymentMethod].createPaymentFlow(
-      joinFlow,
-      params
-    );
+    return paymentProviders[
+      joinFlow.paymentFlowParams.paymentMethod
+    ].createPaymentFlow(joinFlow as any); // TODO
   }
 
   /**
@@ -463,8 +448,8 @@ class PaymentFlowService {
     if (joinFlow.paymentFlowId) {
       log.info('Complete payment flow for join flow ' + joinFlow.id);
       return paymentProviders[
-        joinFlow.joinForm.paymentMethod
-      ].completePaymentFlow(joinFlow);
+        joinFlow.paymentFlowParams.paymentMethod
+      ].completePaymentFlow(joinFlow as any); // TODO
     } else {
       return undefined;
     }
@@ -482,8 +467,8 @@ class PaymentFlowService {
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<CompletedPaymentFlowData> {
     return paymentProviders[
-      completedPaymentFlow.joinForm.paymentMethod
-    ].getCompletedPaymentFlowData(completedPaymentFlow);
+      completedPaymentFlow.paymentFlowParams.paymentMethod
+    ].getCompletedPaymentFlowData(completedPaymentFlow as any); // TODO
   }
 }
 

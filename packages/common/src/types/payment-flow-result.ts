@@ -1,14 +1,14 @@
-interface PaymentFlowResultGoCardless {
+export interface PaymentFlowResultGoCardless {
   type: 'gocardless';
   redirectUrl: string;
 }
 
-interface PaymentFlowResultStripe {
+export interface PaymentFlowResultStripe {
   type: 'stripe';
   clientSecret?: string;
 }
 
-interface PaymentFlowResultNone {
+export interface PaymentFlowResultNone {
   type: 'none';
 }
 

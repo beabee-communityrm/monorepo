@@ -1,3 +1,5 @@
+import { PaymentFlowParams } from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,
@@ -10,7 +12,7 @@ import { Contact } from './Contact';
 import { JoinForm } from './JoinForm';
 
 @Entity()
-export class JoinFlow {
+export class JoinFlow<Params extends PaymentFlowParams = PaymentFlowParams> {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -19,6 +21,9 @@ export class JoinFlow {
 
   @Column()
   paymentFlowId!: string;
+
+  @Column({ type: 'jsonb' })
+  paymentFlowParams!: Params;
 
   @Column()
   loginUrl!: string;

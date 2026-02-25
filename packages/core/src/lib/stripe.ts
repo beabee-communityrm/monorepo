@@ -295,14 +295,14 @@ export async function deleteSubscription(
  *
  * @param contact The contact information
  * @param customerId The existing customer ID or null to create a new one
- * @param mandateId The payment mandate ID
+ * @param token The payment mandate ID
  * @param vatNumber The VAT number to attach to the customer
  * @returns The Stripe customer ID
  */
 export async function ensureCustomerAndAttachPayment(
   contact: { email: string; firstname: string; lastname: string },
   customerId: string | null,
-  mandateId: string,
+  token: string,
   vatNumber?: string | null
 ): Promise<string> {
   if (!customerId) {
@@ -315,8 +315,8 @@ export async function ensureCustomerAndAttachPayment(
     customerId = customer.id;
   }
 
-  log.info('Attach payment method ' + mandateId + ' to customer ' + customerId);
-  await stripe.paymentMethods.attach(mandateId, {
+  log.info('Attach payment method ' + token + ' to customer ' + customerId);
+  await stripe.paymentMethods.attach(token, {
     customer: customerId,
   });
 
@@ -333,39 +333,50 @@ export async function ensureCustomerAndAttachPayment(
  */
 export async function chargeOneTimePayment(
   customerId: string,
-  mandateId: string,
+  confirmationToken: string,
   form: PaymentForm,
   paymentMethod: PaymentMethod
 ): Promise<void> {
   log.info('Creating one-time payment on ' + customerId);
 
-  const invoice = await stripe.invoices.create({
+  await stripe.paymentIntents.create({
     customer: customerId,
-    default_payment_method: mandateId,
-    collection_method: 'charge_automatically',
-    auto_advance: true,
-    currency: config.currencyCode,
-    metadata: {
-      'beabee-invoice-type': 'one-time-payment-detach-mandate',
-    },
-    default_tax_rates: getSalesTaxRateObject('one-time'),
-  });
-
-  await stripe.invoiceItems.create({
-    customer: customerId,
-    invoice: invoice.id,
+    confirmation_token: confirmationToken,
     amount: getChargeableAmount(form, paymentMethod),
-    description: 'One-time payment',
+    currency: config.currencyCode,
+    confirm: true,
+    description: 'One-time payment', // TODO: i18n
   });
 
-  await stripe.invoices.pay(invoice.id);
+  // const invoice = await stripe.invoices.create({
+  //   customer: customerId,
+  //   collection_method: 'charge_automatically',
+  //   auto_advance: true,
+  //   currency: config.currencyCode,
+  //   metadata: {
+  //     'beabee-invoice-type': 'one-time-payment',
+  //   },
+  //   default_tax_rates: getSalesTaxRateObject('one-time'),
+  // });
+
+  // await stripe.invoiceItems.create({
+  //   customer: customerId,
+  //   invoice: invoice.id,
+  //   amount: getChargeableAmount(form, paymentMethod),
+  //   description: 'One-time payment',
+  // });
+
+  // await stripe.invoices.pay(invoice.id);
 }
 
-export function isOneTimePaymentInvoice(invoice: Stripe.Invoice): boolean {
-  return (
-    invoice.metadata?.['beabee-invoice-type'] ===
-    'one-time-payment-detach-mandate'
-  );
+export function isOneTimePaymentInvoice(
+  invoice: Stripe.Invoice,
+  detach?: true
+): boolean {
+  const type = invoice.metadata?.['beabee-invoice-type'] || '';
+  return detach
+    ? type === 'one-time-payment-detach-mandate'
+    : type.startsWith('one-time-payment');
 }
 
 /**
