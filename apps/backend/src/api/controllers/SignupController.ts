@@ -58,6 +58,7 @@ export class SignupController {
     if (data.contribution) {
       // Handle a recurring contribution sign up
       const result = await PaymentFlowService.startPaymentRegistration(
+        'start-contribution',
         {
           ...baseForm,
           ...data.contribution,
@@ -74,6 +75,7 @@ export class SignupController {
     } else if (data.oneTimePayment) {
       // Handle a one-time payment sign up
       const result = await PaymentFlowService.startPaymentRegistration(
+        'create-one-time-payment',
         {
           ...baseForm,
           ...data.oneTimePayment,

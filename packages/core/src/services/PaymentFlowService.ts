@@ -30,6 +30,7 @@ import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlowSetup,
+  PaymentFlowType,
 } from '#type/index';
 
 import ResetSecurityFlowService from './ResetSecurityFlowService';
@@ -77,9 +78,10 @@ class PaymentFlowService {
 
     const flow = await getRepository(PaymentFlow).save({
       ...urls,
+      type: 'no-payment-registration',
       form,
+      params: {},
       paymentFlowId: '',
-      // params here
     });
 
     await this.sendConfirmationEmail(flow);
@@ -93,15 +95,17 @@ class PaymentFlowService {
    * @returns The payment flow result for the client
    */
   async startPaymentRegistration(
+    type: PaymentFlowType,
     form: PaymentFlowForm,
     urls: CompleteUrls,
     params: PaymentFlowParams
   ): Promise<PaymentFlowResult> {
     const flow = await getRepository(PaymentFlow).save({
       ...urls,
+      type,
       form,
-      paymentFlowId: '',
       params,
+      paymentFlowId: '',
     });
 
     log.info('Creating payment registration flow ' + flow.id, { form });
@@ -238,8 +242,8 @@ class PaymentFlowService {
   }
 
   /**
-   * Starts a contribution update flow for existing contacts to change their
-   * payment method and/or contribution details (amount, period, etc.).
+   * Starts a payment flow for existing contacts to change their payment method
+   * and/or contribution details (amount, period, etc.).
    *
    * @param contact - The contact updating their contribution
    * @param paymentMethod - The new payment method to use
@@ -247,15 +251,27 @@ class PaymentFlowService {
    * @param form - Optional form data for contribution changes
    * @returns The payment flow result
    */
-  async startContributionUpdate(
+  async startPaymentFlow(
     contact: Contact,
+    type: 'update-payment-method',
+    params: PaymentFlowParams
+  ): Promise<PaymentFlowResult>;
+  async startPaymentFlow(
+    contact: Contact,
+    type: 'start-contribution' | 'create-one-time-payment',
+    params: PaymentFlowParams,
+    form: PaymentForm
+  ): Promise<PaymentFlowResult>;
+  async startPaymentFlow(
+    contact: Contact,
+    type: PaymentFlowType,
     params: PaymentFlowParams,
     form?: PaymentForm
   ): Promise<PaymentFlowResult> {
     // TODO: if it's just a payment method update then these should be optional
     if (!form) {
       form = {
-        monthlyAmount: 0, // Stub to indicate no contribution update
+        monthlyAmount: 0,
         period: ContributionPeriod.Monthly,
         payFee: false,
         prorate: false,
@@ -270,8 +286,9 @@ class PaymentFlowService {
     }
 
     // TODO: rework this to not reuse startPaymentRegistration so that we don't
-    // have to stub so many fielsd
+    // have to stub so many fields
     return await this.startPaymentRegistration(
+      type,
       {
         ...form,
         password: Password.none,
@@ -290,11 +307,13 @@ class PaymentFlowService {
    * @param paymentFlowId - The ID of the payment flow to finalize
    * @returns True if the contribution update was finalized, false otherwise
    */
-  async finalizeContributionUpdate(
+  async finalizePaymentFlow(
     contact: Contact,
+    type: PaymentFlowType,
     paymentFlowId: string
   ): Promise<boolean> {
     const flow = await getRepository(PaymentFlow).findOneBy({
+      type,
       paymentFlowId,
     });
     if (flow) {

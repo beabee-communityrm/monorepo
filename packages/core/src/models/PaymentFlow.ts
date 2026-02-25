@@ -8,6 +8,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { PaymentFlowType } from '#type/index';
+
 import { Contact } from './Contact';
 import { PaymentFlowForm } from './PaymentFlowForm';
 
@@ -18,6 +20,9 @@ export class PaymentFlow<Params extends PaymentFlowParams = PaymentFlowParams> {
 
   @CreateDateColumn()
   date!: Date;
+
+  @Column()
+  type!: PaymentFlowType;
 
   @Column()
   paymentFlowId!: string;

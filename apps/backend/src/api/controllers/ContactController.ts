@@ -248,8 +248,9 @@ export class ContactController {
       ...data,
       monthlyAmount: getMonthlyAmount(data.amount, data.period),
     };
-    const result = await PaymentFlowService.startContributionUpdate(
+    const result = await PaymentFlowService.startPaymentFlow(
       target,
+      'start-contribution',
       data.paymentFlowParams,
       form
     );
@@ -318,8 +319,9 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    const updated = await PaymentFlowService.finalizeContributionUpdate(
+    const updated = await PaymentFlowService.finalizePaymentFlow(
       target,
+      'start-contribution',
       data.paymentFlowId
     );
     if (!updated) {
@@ -356,8 +358,9 @@ export class ContactController {
       prorate: false,
       period: 'one-time',
     };
-    const result = await PaymentFlowService.startContributionUpdate(
+    const result = await PaymentFlowService.startPaymentFlow(
       target,
+      'create-one-time-payment',
       data.paymentFlowParams,
       form
     );
@@ -370,8 +373,9 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<void> {
-    const updated = await PaymentFlowService.finalizeContributionUpdate(
+    const updated = await PaymentFlowService.finalizePaymentFlow(
       target,
+      'create-one-time-payment',
       data.paymentFlowId
     );
     if (!updated) {
@@ -402,8 +406,9 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: PaymentFlowParamsDto // TODO: Is not validating
   ): Promise<PaymentFlowResultDto> {
-    const result = await PaymentFlowService.startContributionUpdate(
+    const result = await PaymentFlowService.startPaymentFlow(
       target,
+      'update-payment-method',
       data
     );
     return plainPaymentFlowResultToDto(result);
@@ -414,8 +419,9 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    const updated = await PaymentFlowService.finalizeContributionUpdate(
+    const updated = await PaymentFlowService.finalizePaymentFlow(
       target,
+      'update-payment-method',
       data.paymentFlowId
     );
     if (!updated) {
