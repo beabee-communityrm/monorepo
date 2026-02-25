@@ -12,7 +12,7 @@ The payment flow describes how users set up and manage their payment methods and
 - Configures contribution
 
 **Backend:**
-- Creates join flow record
+- Creates payment flow record
 - Validates user data
 - Returns setup parameters
 

@@ -9,10 +9,10 @@ import {
 } from 'typeorm';
 
 import { Contact } from './Contact';
-import { JoinForm } from './JoinForm';
+import { PaymentFlowForm } from './PaymentFlowForm';
 
 @Entity()
-export class JoinFlow<Params extends PaymentFlowParams = PaymentFlowParams> {
+export class PaymentFlow<Params extends PaymentFlowParams = PaymentFlowParams> {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -23,7 +23,10 @@ export class JoinFlow<Params extends PaymentFlowParams = PaymentFlowParams> {
   paymentFlowId!: string;
 
   @Column({ type: 'jsonb' })
-  paymentFlowParams!: Params;
+  params!: Params;
+
+  @Column(() => PaymentFlowForm)
+  form!: PaymentFlowForm;
 
   @Column()
   loginUrl!: string;
@@ -33,9 +36,6 @@ export class JoinFlow<Params extends PaymentFlowParams = PaymentFlowParams> {
 
   @Column()
   confirmUrl!: string;
-
-  @Column(() => JoinForm)
-  joinForm!: JoinForm;
 
   @Column({ type: String, nullable: true })
   contactId!: string | null;

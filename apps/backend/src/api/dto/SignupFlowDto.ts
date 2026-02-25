@@ -1,4 +1,3 @@
-import type { JoinForm } from '@beabee/core/models';
 import { CompleteUrls } from '@beabee/core/type';
 
 import { StartContributionDto } from '@api/dto/ContributionDto';
@@ -7,13 +6,7 @@ import IsPassword from '@api/validators/IsPassword';
 import IsUrl from '@api/validators/IsUrl';
 import IsVatNumber from '@api/validators/IsVatNumber';
 import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsOptional,
-  IsString,
-  Validate,
-  ValidateNested,
-} from 'class-validator';
+import { IsEmail, IsOptional, Validate, ValidateNested } from 'class-validator';
 
 import { CreatePaymentDto } from './PaymentDto';
 

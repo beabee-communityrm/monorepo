@@ -6,7 +6,7 @@ import { ReferralGiftForm } from '#type/index';
 
 import { Password } from './Password';
 
-export class JoinForm implements PaymentForm, ReferralGiftForm {
+export class PaymentFlowForm implements PaymentForm, ReferralGiftForm {
   @Column()
   email!: string;
 

@@ -34,7 +34,7 @@ Handles initial payment setup:
 - `Contact`: Main user entity
 - `ContactContribution`: Payment configuration
 - `Payment`: Transaction records
-- `JoinFlow`: Setup process tracking
+- `PaymentFlow`: Payment flow process tracking
 
 ### Integration Points
 - REST API endpoints

@@ -62,9 +62,9 @@ export class SignupClient extends BaseClient {
 
   /**
    * Confirms a user's email address
-   * @param joinFlowId - The join flow ID from the confirmation email
+   * @param flowId - The flow ID from the confirmation email
    */
-  async confirmEmail(joinFlowId: string | string[]): Promise<void> {
-    await this.fetch.post('/confirm-email', { joinFlowId });
+  async confirmEmail(flowId: string | string[]): Promise<void> {
+    await this.fetch.post('/confirm-email', { flowId });
   }
 }

@@ -176,7 +176,7 @@ class PaymentService {
     });
 
     const contribution = await this.getContribution(contact);
-    const newMethod = completedPaymentFlow.paymentFlowParams.paymentMethod;
+    const newMethod = completedPaymentFlow.params.paymentMethod;
     if (contribution.method !== newMethod) {
       log.info('Changing payment method, cancelling previous contribution', {
         contribution,
@@ -220,7 +220,7 @@ class PaymentService {
     // one-time payments
     const contribution = await this.getContribution(contact);
     const provider = new PaymentProviders[
-      completedPaymentFlow.paymentFlowParams.paymentMethod
+      completedPaymentFlow.params.paymentMethod
     ](contribution);
     await provider.createOneTimePayment(completedPaymentFlow as any); // TODO
   }

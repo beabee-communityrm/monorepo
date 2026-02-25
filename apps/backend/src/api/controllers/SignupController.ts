@@ -113,9 +113,9 @@ export class SignupController {
   )
   async confirmEmail(
     @Req() req: Request,
-    @Body() { joinFlowId }: SignupConfirmEmailParams
+    @Body() { flowId }: SignupConfirmEmailParams
   ): Promise<GetContactDto> {
-    const contact = await PaymentFlowService.finalizeRegistration(joinFlowId);
+    const contact = await PaymentFlowService.finalizeRegistration(flowId);
     await login(req, contact);
 
     return ContactTransformer.convert(contact, {

@@ -1,12 +1,12 @@
 import { PaymentFlowParams } from '@beabee/beabee-common';
 
-import type { JoinForm } from '#models/index';
+import type { PaymentFlowForm } from '#models/index';
 
 export interface CompletedPaymentFlow<
   Params extends PaymentFlowParams = PaymentFlowParams,
 > {
-  paymentFlowParams: Params;
-  joinForm: JoinForm;
+  params: Params;
+  form: PaymentFlowForm;
   customerId: string;
   mandateId: string;
 }

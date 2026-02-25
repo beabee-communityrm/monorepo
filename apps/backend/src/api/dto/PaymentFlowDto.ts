@@ -1,5 +1,4 @@
 import {
-  PaymentFlowParams,
   PaymentFlowParamsGoCardless,
   PaymentFlowParamsStripe,
   PaymentFlowResultGoCardless,
