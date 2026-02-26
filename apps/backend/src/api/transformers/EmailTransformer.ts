@@ -36,6 +36,7 @@ class EmailTransformer extends BaseTransformer<
       body: email.body,
       date: email.date.toISOString(),
       mailingCount: email.mailingCount || 0,
+      isOngoing: (email.ongoingMailingCount ?? 0) > 0,
     };
   }
 
@@ -47,6 +48,12 @@ class EmailTransformer extends BaseTransformer<
     qb.loadRelationCountAndMap(
       `${fieldPrefix}mailingCount`,
       `${fieldPrefix}mailings`
+    );
+
+    // Check for is ongoing emails
+    qb.loadRelationCountAndMap(
+      `${fieldPrefix}ongoingMailingCount`,
+      `${fieldPrefix}ongoingMailings`
     );
   }
 }

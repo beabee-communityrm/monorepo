@@ -44,4 +44,9 @@ export class Email {
   mailings!: EmailMailing[];
 
   mailingCount?: number;
+
+  @OneToMany('SegmentOngoingEmail', 'email')
+  ongoingMailings!: EmailMailing[];
+
+  ongoingMailingCount?: number;
 }
