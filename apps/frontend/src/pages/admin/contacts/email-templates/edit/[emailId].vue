@@ -32,23 +32,12 @@ meta:
 
   <EmailTemplateEditor
     :submit-button-text="t('actions.save')"
+    :reset-button-text="t('actions.delete')"
     :email="form"
+    :save-preview="savePreview"
     @submit="handleSubmit"
-  >
-    <template #buttons>
-      <div class="order-first">
-        <AppButton
-          type="button"
-          s
-          variant="dangerOutlined"
-          :icon="faTrash"
-          @click="showDeleteConfirm = true"
-        >
-          {{ t('actions.delete') }}
-        </AppButton>
-      </div>
-    </template>
-  </EmailTemplateEditor>
+    @reset="showDeleteConfirm = true"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -60,7 +49,7 @@ import {
   addNotification,
 } from '@beabee/vue';
 
-import { faTrash, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -103,6 +92,7 @@ const form = ref<UpdateEmailData>({
   subject: '',
   body: '',
 });
+const savePreview = ref(true);
 
 const pageTitle = computed(() => {
   if (!email.value) return t('contacts.emailTemplates.editTitle');

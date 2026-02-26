@@ -6,13 +6,7 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="pageTitle" border>
-    <div class="flex-0 ml-3 hidden md:block">
-      <AppButton :to="backUrl">
-        {{ t('actions.back') }}
-      </AppButton>
-    </div>
-  </PageTitle>
+  <PageTitle :title="pageTitle" border />
 
   <div v-if="loading">
     <p>{{ t('common.loading') }}...</p>
@@ -66,26 +60,16 @@ meta:
 
   <EmailTemplateEditor
     class="mt-4"
-    :submit-button-text="t('contacts.sendEmail.saveAndSend')"
+    submit-button-text="Senden"
+    reset-button-text="Zurück"
     show-select-template
     :email="emailData"
+    :save-preview="savePreview"
     :contacts="segmentContacts"
     :default-new-template-name="defaultNewTemplateName"
     @submit="handleSubmit"
-  >
-    <template #buttons="{ disabled }">
-      <div class="order-first">
-        <AppButton
-          type="button"
-          variant="primaryOutlined"
-          :disabled="disabled"
-          @click="(e: Event) => triggerSubmit(e, 'back')"
-        >
-          {{ t('contacts.sendEmail.saveAndBack') }}
-        </AppButton>
-      </div>
-    </template>
-  </EmailTemplateEditor>
+    @reset="(e: Event) => triggerSubmit(e, 'back')"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -95,7 +79,6 @@ import type {
   GetSegmentData,
 } from '@beabee/beabee-common';
 import {
-  AppButton,
   AppCheckbox,
   AppRadioGroup,
   PageTitle,
@@ -151,6 +134,7 @@ const selectedTemplateId = ref<string>(NEW_EMAIL_VALUE);
 const newTemplateName = ref('');
 const emailData = ref({ subject: '', body: '' });
 const pendingAction = ref<'back' | 'send'>('send');
+const savePreview = ref(true);
 
 const defaultNewTemplateName = computed(() =>
   segment.value ? `${t('contacts.sendEmail.title')}: ${segment.value.name}` : ''

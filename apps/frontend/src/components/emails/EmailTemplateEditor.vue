@@ -1,6 +1,7 @@
 <template>
   <AppApiForm
     :button-text="submitButtonText"
+    reset-button-text="Hi"
     class="flex flex-col gap-6"
     inline-error
     @submit="emit('submit')"
@@ -42,6 +43,11 @@
       :preview-contact-options="contacts"
     />
 
+    <AppCheckbox
+      v-model="savePreview"
+      label="Als Vorlage Speichern"
+    ></AppCheckbox>
+
     <template #buttons="slotProps">
       <slot name="buttons" v-bind="slotProps" />
     </template>
@@ -55,6 +61,7 @@ import type {
   UpdateEmailData,
 } from '@beabee/beabee-common';
 import {
+  AppCheckbox,
   AppInput,
   AppLabel,
   AppSelect,
@@ -76,6 +83,9 @@ const NEW_EMAIL_VALUE = '__new__';
 const TEMPLATES_LIMIT = 100;
 
 const email = defineModel<UpdateEmailData>('email', { required: true });
+const savePreview = defineModel<boolean>('savePreview', {
+  required: true,
+});
 
 const props = withDefaults(
   defineProps<{
