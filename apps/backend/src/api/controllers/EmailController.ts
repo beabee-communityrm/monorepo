@@ -1,6 +1,6 @@
 import { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
-import EmailService from '@beabee/core/services/EmailService';
+import EmailService, { emailService } from '@beabee/core/services/EmailService';
 import { AuthInfo, PreviewEmailOptions } from '@beabee/core/type';
 
 import { plainToInstance } from 'class-transformer';
@@ -113,7 +113,16 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Body() data: CreateEmailDto
   ): Promise<GetEmailDto> {
-    return await EmailTransformer.createOne(auth, data);
+    const email = await EmailTransformer.createOne(auth, data);
+    if (data.isOngoing && email.templateId && data.trigger) {
+      await EmailService.addOngoingEmail(
+        email.templateId,
+        email.id,
+        data.trigger,
+        true
+      );
+    }
+    return email;
   }
 
   /**

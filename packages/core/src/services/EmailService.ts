@@ -20,7 +20,12 @@ import {
 } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import { log as mainLogger } from '#logging';
-import { Contact, Email, EmailMailing } from '#models/index';
+import {
+  Contact,
+  Email,
+  EmailMailing,
+  SegmentOngoingEmail,
+} from '#models/index';
 import {
   MandrillProvider,
   SMTPProvider,
@@ -503,6 +508,24 @@ class EmailService {
         ...additionalMergeFields,
       },
     };
+  }
+
+  /**
+   * Add ongoing email for a segment (so the cronjob can process it).
+   */
+  async addOngoingEmail(
+    segmentId: string,
+    emailId: string,
+    trigger: string,
+    enabled = true
+  ): Promise<SegmentOngoingEmail> {
+    const repo = getRepository(SegmentOngoingEmail);
+    return repo.save({
+      segmentId,
+      emailId,
+      trigger,
+      enabled,
+    });
   }
 }
 

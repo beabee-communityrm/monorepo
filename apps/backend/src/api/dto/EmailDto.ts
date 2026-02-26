@@ -9,6 +9,7 @@ import {
 import {
   Allow,
   IsArray,
+  IsBoolean,
   IsObject,
   IsOptional,
   IsString,
@@ -73,6 +74,13 @@ export class CreateEmailDto {
 
   @IsString()
   body!: string;
+
+  @IsBoolean()
+  isOngoing?: boolean;
+
+  @IsOptional()
+  @IsString()
+  trigger?: string;
 }
 
 /**
