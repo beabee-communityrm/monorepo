@@ -6,6 +6,7 @@ import { AuthInfo, PreviewEmailOptions } from '@beabee/core/type';
 import { plainToInstance } from 'class-transformer';
 import {
   Authorized,
+  BadRequestError,
   Body,
   CurrentUser,
   Delete,
@@ -114,7 +115,17 @@ export class EmailController {
     @Body() data: CreateEmailDto
   ): Promise<GetEmailDto> {
     const email = await EmailTransformer.createOne(auth, data);
-    if (data.isOngoing && email.templateId && data.trigger) {
+    if (data.isOngoing) {
+      if (!email.templateId) {
+        throw new BadRequestError(
+          'A email template is required for creating ongoing emails.'
+        );
+      }
+      if (!data.trigger) {
+        throw new BadRequestError(
+          'A trigger type is required for creating ongoing emails.'
+        );
+      }
       await EmailService.addOngoingEmail(
         email.templateId,
         email.id,
