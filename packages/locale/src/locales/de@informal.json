@@ -1222,6 +1222,7 @@
     },
     "fromEmail": "Absender-E-Mail",
     "fromName": "Absendername",
+    "isOngoing": "",
     "list": {
       "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
     },
@@ -1235,6 +1236,10 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "E-Mail erfolgreich aktualisiert"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": ""
     },
     "status": "Status",
     "tabs": {

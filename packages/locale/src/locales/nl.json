@@ -1222,6 +1222,7 @@
     },
     "fromEmail": "Afzender e-mail",
     "fromName": "Afzendernaam",
+    "isOngoing": "",
     "list": {
       "showingOf": "Toont {start} tot {end} e-mails van {total}"
     },
@@ -1235,6 +1236,10 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "E-mail succesvol bijgewerkt"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": ""
     },
     "status": "Status",
     "tabs": {

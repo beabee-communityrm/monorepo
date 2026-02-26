@@ -1222,6 +1222,7 @@
     },
     "fromEmail": "",
     "fromName": "",
+    "isOngoing": "",
     "list": {
       "showingOf": ""
     },
@@ -1235,6 +1236,10 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": ""
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": ""
     },
     "status": "",
     "tabs": {

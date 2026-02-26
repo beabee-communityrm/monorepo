@@ -41,6 +41,9 @@ meta:
     <template #value-mailingCount="{ value }">
       {{ value ?? 0 }}
     </template>
+    <template #value-isOngoing="{ value }">
+      {{ value ? t('emails.sendType.ongoing') : t('emails.sendType.oneOff') }}
+    </template>
     <template #empty>
       <p>{{ t('contacts.emailTemplates.empty') }}</p>
     </template>
@@ -90,6 +93,11 @@ const headers = computed<Header[]>(() => [
   {
     value: 'mailingCount',
     text: t('emails.mailingCount'),
+    align: 'right',
+  },
+  {
+    value: 'isOngoing',
+    text: t('emails.isOngoing'),
     align: 'right',
   },
 ]);

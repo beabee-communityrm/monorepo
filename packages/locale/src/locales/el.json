@@ -1222,6 +1222,7 @@
     },
     "fromEmail": "Email αποστολέα",
     "fromName": "Όνομα αποστολέα",
+    "isOngoing": "",
     "list": {
       "showingOf": "Εμφάνιση {start} έως {end} email από {total}"
     },
@@ -1235,6 +1236,10 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "Το email ενημερώθηκε επιτυχώς"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": ""
     },
     "status": "Κατάσταση",
     "tabs": {

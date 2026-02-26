@@ -1222,6 +1222,7 @@
     },
     "fromEmail": "From email",
     "fromName": "From name",
+    "isOngoing": "Type",
     "list": {
       "showingOf": "Showing {start} to {end} emails out of {total}"
     },
@@ -1233,6 +1234,10 @@
       "deleted": "Email deleted successfully",
       "resetToDefault": "Template reset to default successfully",
       "updated": "Email updated successfully"
+    },
+    "sendType": {
+      "oneOff": "One-off",
+      "ongoing": "Ongoing"
     },
     "status": "Status",
     "tabs": {

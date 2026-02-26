@@ -1222,6 +1222,7 @@
     },
     "fromEmail": "",
     "fromName": "",
+    "isOngoing": "",
     "list": {
       "showingOf": ""
     },
@@ -1233,6 +1234,10 @@
       "deleted": "",
       "resetToDefault": "",
       "updated": ""
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": ""
     },
     "status": "",
     "tabs": {

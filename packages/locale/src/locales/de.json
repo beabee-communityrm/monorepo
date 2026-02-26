@@ -1222,6 +1222,7 @@
     },
     "fromEmail": "Absender-E-Mail",
     "fromName": "Absendername",
+    "isOngoing": "Art",
     "list": {
       "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
     },
@@ -1233,6 +1234,10 @@
       "deleted": "E-Mail erfolgreich gelöscht",
       "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
       "updated": "E-Mail erfolgreich aktualisiert"
+    },
+    "sendType": {
+      "oneOff": "Einmalig",
+      "ongoing": "Wiederkehrend"
     },
     "status": "Status",
     "tabs": {

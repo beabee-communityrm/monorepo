@@ -1223,6 +1223,7 @@
     },
     "fromEmail": "Email отправителя",
     "fromName": "Имя отправителя",
+    "isOngoing": "",
     "list": {
       "showingOf": "Показано {start} - {end} писем из {total}"
     },
@@ -1236,6 +1237,10 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "Письмо успешно обновлено"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": ""
     },
     "status": "Статус",
     "tabs": {
