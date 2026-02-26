@@ -1,7 +1,5 @@
 import {
   ContributionForm,
-  PaymentFlowParamsGoCardless,
-  PaymentForm,
   PaymentMethod,
   PaymentSource,
 } from '@beabee/beabee-common';
@@ -22,6 +20,7 @@ import { Contact } from '#models/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
+  PaymentFlowForm,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate } from '#utils/payment';
@@ -71,36 +70,61 @@ export class GCProvider extends PaymentProvider {
     };
   }
 
+  async canUpdateContribution(form: ContributionForm): Promise<boolean> {
+    if (!this.data.mandateId) {
+      return false;
+    }
+
+    // Monthly contributors can update their contribution amount even if they have
+    // pending payments, but they can't always change their period
+    return (
+      (this.contact.contributionPeriod === 'monthly' &&
+        form.period === 'monthly') ||
+      !(await hasPendingPayment(this.data.mandateId))
+    );
+  }
+
+  async canProcessPaymentFlow(form: PaymentFlowForm): Promise<boolean> {
+    if (!this.data.mandateId) {
+      return false;
+    }
+
+    return (
+      form.action === 'create-one-time-payment' ||
+      !(await hasPendingPayment(this.data.mandateId))
+    );
+  }
+
   /**
    * Checks if contribution changes are allowed based on mandate status
    * @param useExistingMandate - Whether to use existing mandate
    * @param form - New payment details
    * @returns Promise resolving to boolean indicating if changes are allowed
    */
-  async canChangeContribution(
-    useExistingMandate: boolean,
-    form: ContributionForm
-  ): Promise<boolean> {
-    // No payment method available
-    if (useExistingMandate && !this.data.mandateId) {
-      return false;
-    }
+  // async canChangeContribution(
+  //   useExistingMandate: boolean,
+  //   form: PaymentFlowForm
+  // ): Promise<boolean> {
+  //   // No payment method available
+  //   if (useExistingMandate && !this.data.mandateId) {
+  //     return false;
+  //   }
 
-    // Can always change contribution if there is no subscription
-    if (!this.data.subscriptionId) {
-      return true;
-    }
+  //   // Can always change contribution if there is no subscription
+  //   if (!this.data.subscriptionId) {
+  //     return true;
+  //   }
 
-    // Monthly contributors can update their contribution amount even if they have
-    // pending payments, but they can't always change their period or mandate as this can
-    // result in double charging
-    return (
-      (useExistingMandate &&
-        this.contact.contributionPeriod === 'monthly' &&
-        form.period === 'monthly') ||
-      !(this.data.mandateId && (await hasPendingPayment(this.data.mandateId)))
-    );
-  }
+  //   // Monthly contributors can update their contribution amount even if they have
+  //   // pending payments, but they can't always change their period or mandate as this can
+  //   // result in double charging
+  //   return (
+  //     (useExistingMandate &&
+  //       this.contact.contributionPeriod === 'monthly' &&
+  //       form.period === 'monthly') ||
+  //     !(this.data.mandateId && (await hasPendingPayment(this.data.mandateId)))
+  //   );
+  // }
 
   /**
    * Updates contribution amount and schedule

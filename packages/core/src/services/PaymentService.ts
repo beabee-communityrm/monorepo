@@ -1,7 +1,6 @@
 import {
   ContributionForm,
   MembershipStatus,
-  PaymentForm,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
@@ -17,6 +16,7 @@ import {
 import {
   CompletedPaymentFlow,
   ContributionInfo,
+  PaymentFlowForm,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate, getActualAmount } from '#utils/payment';
@@ -88,16 +88,28 @@ class PaymentService {
     return await fn(new Provider(data), data);
   }
 
-  async canChangeContribution(
+  async canUpdateContribution(
     contact: Contact,
-    useExistingPaymentSource: boolean,
     form: ContributionForm
   ): Promise<boolean> {
     const ret = await this.provider(contact, (p) =>
-      p.canChangeContribution(useExistingPaymentSource, form)
+      p.canUpdateContribution(form)
     );
     log.info(
-      `Contact ${contact.id} ${ret ? 'can' : 'cannot'} change contribution`
+      `Contact ${contact.id} ${ret ? 'can' : 'cannot'} update contribution`
+    );
+    return ret;
+  }
+
+  async canProcessPaymentFlow(
+    contact: Contact,
+    form: PaymentFlowForm
+  ): Promise<boolean> {
+    const ret = await this.provider(contact, (p) =>
+      p.canProcessPaymentFlow(form)
+    );
+    log.info(
+      `Contact ${contact.id} ${ret ? 'can' : 'cannot'} process payment flow`
     );
     return ret;
   }

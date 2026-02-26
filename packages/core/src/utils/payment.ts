@@ -1,7 +1,7 @@
 import {
+  ContributionForm,
   ContributionPeriod,
   ContributionType,
-  PaymentForm,
   PaymentMethod,
   PaymentPeriod,
   calcPaymentFee,
@@ -11,6 +11,7 @@ import { addMonths, getYear, setYear, sub } from 'date-fns';
 
 import config from '#config/config';
 import { Contact } from '#models/index';
+import { PaymentFlowFormCreateOneTimePayment } from '#type/index';
 
 /**
  * Calculate the equivalent monthly amount from a given amount and period
@@ -51,13 +52,24 @@ export function getActualAmount(
  * @returns The chargeable amount in cents
  */
 export function getChargeableAmount(
-  paymentForm: PaymentForm,
+  paymentForm: PaymentFlowFormCreateOneTimePayment | ContributionForm,
   paymentMethod: PaymentMethod
 ): number {
-  const amount = getActualAmount(paymentForm.monthlyAmount, paymentForm.period);
-  const fee = paymentForm.payFee
+  // FIXME: handle both one-time payments and contribution forms
+  // Should have better typecheck
+  const form =
+    'period' in paymentForm
+      ? paymentForm
+      : {
+          payFee: paymentForm.payFee,
+          monthlyAmount: paymentForm.amount,
+          period: 'one-time' as const,
+        };
+
+  const amount = getActualAmount(form.monthlyAmount, form.period);
+  const fee = form.payFee
     ? calcPaymentFee(
-        { amount, period: paymentForm.period, paymentMethod },
+        { amount, period: form.period, paymentMethod },
         config.stripe.country
       )
     : 0;

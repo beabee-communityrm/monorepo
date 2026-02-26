@@ -24,6 +24,7 @@ import { Contact } from '#models/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
+  PaymentFlowFormCreateOneTimePayment,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate, getChargeableAmount } from '#utils/payment';
@@ -33,15 +34,12 @@ import { PaymentProvider } from './PaymentProvider';
 const log = mainLogger.child({ app: 'stripe-payment-provider' });
 
 export class StripeProvider extends PaymentProvider {
-  /**
-   * Checks if a contribution can be changed. With Stripe this is always
-   * possible as long as the user has a valid mandate.
-   *
-   * @param useExistingMandate Whether an existing mandate will be used
-   * @returns Whether the contribution can be changed
-   */
-  async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
-    return !useExistingMandate || !!this.data.mandateId;
+  async canUpdateContribution(): Promise<boolean> {
+    return true;
+  }
+
+  async canProcessPaymentFlow(): Promise<boolean> {
+    return true;
   }
 
   /**
@@ -259,9 +257,12 @@ export class StripeProvider extends PaymentProvider {
    * @param form The payment form
    */
   async createOneTimePayment(
-    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
+    flow: CompletedPaymentFlow<
+      PaymentFlowParamsStripe,
+      PaymentFlowFormCreateOneTimePayment
+    >
   ): Promise<void> {
-    log.info('Create one-time payment of amount ' + flow.form.monthlyAmount);
+    log.info('Create one-time payment of amount ' + flow.form.amount);
 
     this.data.customerId = await ensureCustomerAndAttachPayment(
       this.contact,

@@ -1,14 +1,11 @@
-import {
-  ContributionForm,
-  PaymentForm,
-  PaymentMethod,
-} from '@beabee/beabee-common';
+import { ContributionForm, PaymentMethod } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { Contact, ContactContribution } from '#models/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
+  PaymentFlowForm,
   UpdateContributionResult,
 } from '#type/index';
 
@@ -34,16 +31,20 @@ export abstract class PaymentProvider {
     await getRepository(ContactContribution).update(this.contact.id, this.data);
   }
 
+  abstract canUpdateContribution(form: ContributionForm): Promise<boolean>;
+
+  abstract canProcessPaymentFlow(form: PaymentFlowForm): Promise<boolean>;
+
   /**
    * Checks if contribution changes are allowed
    * @param useExistingMandate - Whether to use existing payment mandate
    * @param form - New contribution details
    * @returns Promise resolving to boolean indicating if changes are allowed
    */
-  abstract canChangeContribution(
-    useExistingMandate: boolean,
-    form: ContributionForm
-  ): Promise<boolean>;
+  // abstract canChangeContribution(
+  //   useExistingMandate: boolean,
+  //   form: PaymentFlowForm
+  // ): Promise<boolean>;
 
   /**
    * Cancels an active contribution

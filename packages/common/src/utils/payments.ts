@@ -1,8 +1,6 @@
 import { ContributionPeriod, PaymentMethod } from '../data/index.js';
 import type {
-  ContributionForm,
   Feeable,
-  PaymentForm,
   StripeFeeCountry,
   StripePaymentMethod,
 } from '../types/index.js';
@@ -54,12 +52,6 @@ export function calcPaymentFee(
   return feeable.period === ContributionPeriod.Annually
     ? 0
     : feeFn(feeable.amount);
-}
-
-export function isContributionForm(
-  form: PaymentForm
-): form is ContributionForm {
-  return form.period !== 'one-time';
 }
 
 /**

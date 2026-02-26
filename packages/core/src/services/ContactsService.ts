@@ -327,6 +327,11 @@ class ContactsService {
     form: ContributionForm
   ): Promise<void> {
     log.info('Update contribution for ' + contact.id, { form });
+
+    if (!(await PaymentService.canUpdateContribution(contact, form))) {
+      throw new CantUpdateContribution();
+    }
+
     // At the moment the only possibility is to go from whatever contribution
     // type the user was before to an automatic contribution
     const wasManual = contact.contributionType === ContributionType.Manual;

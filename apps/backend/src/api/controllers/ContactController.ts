@@ -1,5 +1,5 @@
-import { GetContactWith, PaymentForm } from '@beabee/beabee-common';
-import { CantUpdateContribution, UnauthorizedError } from '@beabee/core/errors';
+import { GetContactWith } from '@beabee/beabee-common';
+import { UnauthorizedError } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
@@ -231,10 +231,6 @@ export class ContactController {
       monthlyAmount: getMonthlyAmount(data.amount, data.period),
     };
 
-    if (!(await PaymentService.canChangeContribution(target, true, form))) {
-      throw new CantUpdateContribution();
-    }
-
     await ContactsService.updateContactContribution(target, form);
     return await this.getContribution(target);
   }
@@ -245,14 +241,14 @@ export class ContactController {
     @Body() data: StartContributionDto
   ): Promise<PaymentFlowResultDto> {
     const form = {
+      action: 'start-contribution' as const,
       ...data,
       monthlyAmount: getMonthlyAmount(data.amount, data.period),
     };
-    const result = await PaymentFlowService.startPaymentFlow(
+    const result = await PaymentFlowService.startContactPaymentFlow(
       target,
-      'start-contribution',
-      data.paymentFlowParams,
-      form
+      form,
+      data.paymentFlowParams
     );
     return plainPaymentFlowResultToDto(result);
   }
@@ -321,7 +317,6 @@ export class ContactController {
   ): Promise<GetContributionInfoDto> {
     const updated = await PaymentFlowService.finalizePaymentFlow(
       target,
-      'start-contribution',
       data.paymentFlowId
     );
     if (!updated) {
@@ -352,17 +347,15 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CreatePaymentDto
   ): Promise<PaymentFlowResultDto> {
-    const form: PaymentForm = {
-      monthlyAmount: data.amount,
+    const form = {
+      action: 'create-one-time-payment' as const,
+      amount: data.amount,
       payFee: data.payFee,
-      prorate: false,
-      period: 'one-time',
     };
-    const result = await PaymentFlowService.startPaymentFlow(
+    const result = await PaymentFlowService.startContactPaymentFlow(
       target,
-      'create-one-time-payment',
-      data.paymentFlowParams,
-      form
+      form,
+      data.paymentFlowParams
     );
     return plainPaymentFlowResultToDto(result);
   }
@@ -375,7 +368,6 @@ export class ContactController {
   ): Promise<void> {
     const updated = await PaymentFlowService.finalizePaymentFlow(
       target,
-      'create-one-time-payment',
       data.paymentFlowId
     );
     if (!updated) {
@@ -406,9 +398,12 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: PaymentFlowParamsDto // TODO: Is not validating
   ): Promise<PaymentFlowResultDto> {
-    const result = await PaymentFlowService.startPaymentFlow(
+    const form = {
+      action: 'update-payment-method' as const,
+    };
+    const result = await PaymentFlowService.startContactPaymentFlow(
       target,
-      'update-payment-method',
+      form,
       data
     );
     return plainPaymentFlowResultToDto(result);
@@ -421,7 +416,6 @@ export class ContactController {
   ): Promise<GetContributionInfoDto> {
     const updated = await PaymentFlowService.finalizePaymentFlow(
       target,
-      'update-payment-method',
       data.paymentFlowId
     );
     if (!updated) {

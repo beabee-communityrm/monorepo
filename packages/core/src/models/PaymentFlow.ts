@@ -8,10 +8,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { PaymentFlowType } from '#type/index';
+import { PaymentFlowForm } from '#type/index';
 
 import { Contact } from './Contact';
-import { PaymentFlowForm } from './PaymentFlowForm';
 
 @Entity()
 export class PaymentFlow<Params extends PaymentFlowParams = PaymentFlowParams> {
@@ -22,25 +21,13 @@ export class PaymentFlow<Params extends PaymentFlowParams = PaymentFlowParams> {
   date!: Date;
 
   @Column()
-  type!: PaymentFlowType;
-
-  @Column()
   paymentFlowId!: string;
 
   @Column({ type: 'jsonb' })
   params!: Params;
 
-  @Column(() => PaymentFlowForm)
+  @Column({ type: 'jsonb' })
   form!: PaymentFlowForm;
-
-  @Column()
-  loginUrl!: string;
-
-  @Column()
-  setPasswordUrl!: string;
-
-  @Column()
-  confirmUrl!: string;
 
   @Column({ type: String, nullable: true })
   contactId!: string | null;
