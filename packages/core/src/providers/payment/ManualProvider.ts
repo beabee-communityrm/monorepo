@@ -10,6 +10,9 @@ import { PaymentProvider } from './PaymentProvider';
  * Provides basic payment operations without external provider integration.
  */
 export class ManualProvider extends PaymentProvider {
+  async canProcessPaymentFlow(): Promise<boolean> {
+    return true;
+  }
   /**
    * Checks if contribution changes are allowed
    * @param useExistingMandate - Whether to use existing mandate
