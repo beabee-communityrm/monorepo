@@ -116,18 +116,8 @@ export class EmailController {
   ): Promise<GetEmailDto> {
     const email = await EmailTransformer.createOne(auth, data);
     if (data.isOngoing) {
-      if (!email.templateId) {
-        throw new BadRequestError(
-          'A email template is required for creating ongoing emails.'
-        );
-      }
-      if (!data.trigger) {
-        throw new BadRequestError(
-          'A trigger type is required for creating ongoing emails.'
-        );
-      }
       await EmailService.addOngoingEmail(
-        email.templateId,
+        data.segmentId,
         email.id,
         data.trigger,
         true
@@ -158,6 +148,14 @@ export class EmailController {
   ): Promise<GetEmailDto | undefined> {
     if (!(await EmailTransformer.updateById(auth, id, data))) {
       throw new NotFoundError();
+    }
+    if (data.isOngoing) {
+      await EmailService.addOngoingEmail(
+        data.segmentId,
+        id,
+        data.trigger,
+        true
+      );
     }
     return await EmailTransformer.fetchOneById(auth, id);
   }

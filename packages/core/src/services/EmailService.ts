@@ -6,7 +6,7 @@ import { Locale, isLocale } from '@beabee/locale';
 
 import fs from 'fs';
 import path from 'path';
-import { IsNull, Not } from 'typeorm';
+import { IsNull, Not, UpdateResult } from 'typeorm';
 import { loadFront } from 'yaml-front-matter';
 
 import config from '#config/config';
@@ -408,6 +408,7 @@ class EmailService {
   async deleteEmail(id: string): Promise<boolean> {
     const result = await runTransaction(async (em) => {
       await em.getRepository(EmailMailing).delete({ emailId: id });
+      await em.getRepository(SegmentOngoingEmail).delete({ emailId: id });
       return await em.getRepository(Email).delete(id);
     });
 
@@ -526,6 +527,19 @@ class EmailService {
       trigger,
       enabled,
     });
+  }
+
+  /**
+   * Update ongoing email for a segment (so the cronjob can process it).
+   */
+  async updateOngoingEmail(
+    segmentId: string,
+    emailId: string,
+    trigger: string,
+    enabled = true
+  ): Promise<UpdateResult> {
+    const repo = getRepository(SegmentOngoingEmail);
+    return repo.update({ segmentId, emailId }, { trigger, enabled });
   }
 }
 

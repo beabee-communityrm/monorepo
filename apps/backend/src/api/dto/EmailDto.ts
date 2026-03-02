@@ -13,6 +13,7 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  ValidateIf,
 } from 'class-validator';
 
 import { GetPaginatedQuery } from '#api/dto/BaseDto';
@@ -78,9 +79,13 @@ export class CreateEmailDto {
   @IsBoolean()
   isOngoing?: boolean;
 
-  @IsOptional()
+  @ValidateIf((o) => o.isOngoing)
   @IsString()
-  trigger?: string;
+  trigger!: string;
+
+  @ValidateIf((o) => o.isOngoing)
+  @IsString()
+  segmentId!: string;
 }
 
 /**
@@ -106,6 +111,17 @@ export class UpdateEmailDto {
   @IsOptional()
   @IsString()
   fromEmail?: string;
+
+  @IsBoolean()
+  isOngoing?: boolean;
+
+  @ValidateIf((o) => o.isOngoing)
+  @IsString()
+  trigger!: string;
+
+  @ValidateIf((o) => o.isOngoing)
+  @IsString()
+  segmentId!: string;
 }
 
 /**
@@ -117,7 +133,27 @@ export class ListEmailsDto extends GetPaginatedQuery {}
  * DTO for email entity with full metadata
  * Used for CRUD operations on email entities
  */
-export class GetEmailDto extends CreateEmailDto {
+export class GetEmailDto {
+  @IsString()
+  name!: string;
+
+  @IsOptional()
+  @IsString()
+  fromName?: string;
+
+  @IsOptional()
+  @IsString()
+  fromEmail?: string;
+
+  @IsString()
+  subject!: string;
+
+  @IsString()
+  body!: string;
+
+  @IsBoolean()
+  isOngoing?: boolean;
+
   @IsString()
   id!: string;
 
