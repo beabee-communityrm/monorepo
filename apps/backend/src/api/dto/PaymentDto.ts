@@ -19,9 +19,9 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-import { StartJoinFlowDto } from './JoinFlowDto';
+import { StartPaymentFlowDto } from './PaymentFlowDto';
 
-export class CreatePaymentDto extends StartJoinFlowDto {
+export class CreatePaymentDto extends StartPaymentFlowDto {
   @Min(1)
   amount!: number;
 

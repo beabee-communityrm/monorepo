@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import {
   type ContributionInfo,
-  type PaymentFlowParams,
+  type PaymentFlowResult,
   type PaymentSource,
   type PaymentSourceManual,
 } from '@beabee/beabee-common';
@@ -48,7 +48,7 @@ const changeLabel = computed(() =>
 
 async function handleStartPaymentUpdate(
   completeUrl: string
-): Promise<PaymentFlowParams> {
+): Promise<PaymentFlowResult> {
   return await client.contact.paymentMethod.update(completeUrl);
 }
 

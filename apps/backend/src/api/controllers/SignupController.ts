@@ -4,7 +4,7 @@ import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
 import { GetContactDto } from '@api/dto/ContactDto';
-import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
+import { PaymentFlowResultDto } from '@api/dto/PaymentFlowDto';
 import {
   CompleteSignupFlowDto,
   StartSignupFlowDto,
@@ -38,7 +38,7 @@ export class SignupController {
   )
   async startSignup(
     @Body() data: StartSignupFlowDto
-  ): Promise<GetPaymentFlowDto | undefined> {
+  ): Promise<PaymentFlowResultDto | undefined> {
     if (data.contribution && data.oneTimePayment) {
       throw new BadRequestError(
         'Cannot start signup with both contribution and one-time payment'
@@ -54,7 +54,7 @@ export class SignupController {
 
     if (data.contribution) {
       // Handle a recurring contribution sign up
-      const joinFlowParams = await PaymentFlowService.startPaymentRegistration(
+      const result = await PaymentFlowService.startPaymentRegistration(
         {
           ...baseForm,
           ...data.contribution,
@@ -67,10 +67,10 @@ export class SignupController {
         data.contribution.completeUrl,
         { email: data.email }
       );
-      return plainToInstance(GetPaymentFlowDto, joinFlowParams);
+      return plainToInstance(PaymentFlowResultDto, result);
     } else if (data.oneTimePayment) {
       // Handle a one-time payment sign up
-      const joinFlowParams = await PaymentFlowService.startPaymentRegistration(
+      const result = await PaymentFlowService.startPaymentRegistration(
         {
           ...baseForm,
           ...data.oneTimePayment,
@@ -82,7 +82,7 @@ export class SignupController {
         data.oneTimePayment.completeUrl,
         { email: data.email }
       );
-      return plainToInstance(GetPaymentFlowDto, joinFlowParams);
+      return plainToInstance(PaymentFlowResultDto, result);
     } else {
       // Handle a no-payment sign up
       await PaymentFlowService.startSimpleRegistration(baseForm, data);
