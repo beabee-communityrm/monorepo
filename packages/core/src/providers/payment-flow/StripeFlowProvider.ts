@@ -7,7 +7,6 @@ import { PaymentFlow } from '#models/index';
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
-  PaymentFlowData,
   PaymentFlowSetup,
 } from '#type/index';
 
