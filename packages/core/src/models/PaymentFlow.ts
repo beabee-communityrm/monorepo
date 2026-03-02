@@ -7,10 +7,10 @@ import {
 } from 'typeorm';
 
 import { Contact } from './Contact';
-import { JoinForm } from './JoinForm';
+import { PaymentFlowForm } from './PaymentFlowForm';
 
 @Entity()
-export class JoinFlow {
+export class PaymentFlow {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -29,8 +29,8 @@ export class JoinFlow {
   @Column()
   confirmUrl!: string;
 
-  @Column(() => JoinForm)
-  joinForm!: JoinForm;
+  @Column(() => PaymentFlowForm)
+  form!: PaymentFlowForm;
 
   @Column({ type: String, nullable: true })
   contactId!: string | null;

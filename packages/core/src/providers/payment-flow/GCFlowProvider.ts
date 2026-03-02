@@ -1,11 +1,11 @@
 import gocardless from '#lib/gocardless';
 import { log as mainLogger } from '#logging';
-import { JoinFlow } from '#models/index';
+import { PaymentFlow } from '#models/index';
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
-  PaymentFlow,
   PaymentFlowData,
+  PaymentFlowSetup,
 } from '#type/index';
 
 import { PaymentFlowProvider } from './PaymentFlowProvider';
@@ -19,18 +19,18 @@ const log = mainLogger.child({ app: 'gc-payment-flow-provider' });
 class GCFlowProvider implements PaymentFlowProvider {
   /**
    * Creates a GoCardless redirect flow for direct debit setup
-   * @param joinFlow - Join flow containing user information
+   * @param flow - Payment flow containing user information
    * @param completeUrl - URL to redirect after mandate setup
    * @param data - Additional customer data
    * @returns Promise resolving to payment flow with redirect URL
    */
-  async createPaymentFlow(
-    joinFlow: JoinFlow,
+  async setupPaymentFlow(
+    flow: PaymentFlow,
     completeUrl: string,
     params: PaymentFlowData
-  ): Promise<PaymentFlow> {
+  ): Promise<PaymentFlowSetup> {
     const redirectFlow = await gocardless.redirectFlows.create({
-      session_token: joinFlow.id,
+      session_token: flow.id,
       success_redirect_url: completeUrl,
       prefilled_customer: {
         email: params.email,
@@ -42,7 +42,7 @@ class GCFlowProvider implements PaymentFlowProvider {
 
     return {
       id: redirectFlow.id!,
-      params: {
+      result: {
         redirectUrl: redirectFlow.redirect_url!,
       },
     };
@@ -50,20 +50,20 @@ class GCFlowProvider implements PaymentFlowProvider {
 
   /**
    * Completes the GoCardless redirect flow and retrieves mandate
-   * @param joinFlow - Join flow to complete
+   * @param flow - Payment flow to complete
    * @returns Promise resolving to completed payment flow with mandate ID
    */
-  async completePaymentFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow> {
+  async completePaymentFlow(flow: PaymentFlow): Promise<CompletedPaymentFlow> {
     const redirectFlow = await gocardless.redirectFlows.complete(
-      joinFlow.paymentFlowId,
+      flow.paymentFlowId,
       {
-        session_token: joinFlow.id,
+        session_token: flow.id,
       }
     );
     log.info('Completed redirect flow ' + redirectFlow.id);
 
     return {
-      joinForm: joinFlow.joinForm,
+      form: flow.form,
       customerId: redirectFlow.links!.customer!,
       mandateId: redirectFlow.links!.mandate!,
     };
