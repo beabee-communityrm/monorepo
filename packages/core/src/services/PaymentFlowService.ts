@@ -7,7 +7,7 @@ import {
 import { getRepository } from '#database';
 import { CantUpdateContribution, NotFoundError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Contact, PaymentFlow, PaymentFlowForm } from '#models/index';
+import { Contact, PaymentFlow } from '#models/index';
 import {
   gcFlowProvider,
   stripeFlowProvider,
@@ -18,6 +18,7 @@ import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlowData,
+  PaymentFlowForm,
   PaymentFlowSetup,
 } from '#type/index';
 
@@ -78,7 +79,7 @@ class PaymentFlowService {
     completeUrl: string
   ): Promise<PaymentFlowResult> {
     if (
-      isContributionForm(form) &&
+      form.action !== 'create-one-time-payment' &&
       !(await PaymentService.canChangeContribution(contact, false, form))
     ) {
       throw new CantUpdateContribution();
@@ -169,7 +170,9 @@ class PaymentFlowService {
     completedFlow: CompletedPaymentFlow
   ): Promise<void> {
     const form = completedFlow.form;
-    if (isContributionForm(form)) {
+    if (form.action === 'create-one-time-payment') {
+      await PaymentService.createOneTimePayment(contact, completedFlow);
+    } else {
       const canChange = await PaymentService.canChangeContribution(
         contact,
         false,
@@ -181,11 +184,12 @@ class PaymentFlowService {
       }
 
       await PaymentService.updatePaymentMethod(contact, completedFlow);
-      if (form.monthlyAmount > 0) {
-        await ContactsService.updateContactContribution(contact, form);
+      if (form.action === 'start-contribution') {
+        await ContactsService.updateContactContribution(contact, {
+          ...form,
+          prorate: false,
+        });
       }
-    } else {
-      await PaymentService.createOneTimePayment(contact, completedFlow);
     }
   }
 
