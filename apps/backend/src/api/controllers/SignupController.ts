@@ -60,16 +60,18 @@ export class SignupController {
       const result = await SignupService.startSignupWithPayment(
         signupForm,
         {
+          action: 'start-contribution',
           monthlyAmount: getMonthlyAmount(
             data.contribution.amount,
             data.contribution.period
           ),
           payFee: data.contribution.payFee,
           period: data.contribution.period,
-          prorate: data.contribution.prorate,
-          paymentMethod: data.contribution.paymentMethod,
         },
-        data.contribution.completeUrl
+        {
+          paymentMethod: data.contribution.paymentMethod,
+          completeUrl: data.contribution.completeUrl,
+        }
       );
       return plainToInstance(PaymentFlowResultDto, result);
     } else if (data.oneTimePayment) {
@@ -77,13 +79,14 @@ export class SignupController {
       const result = await SignupService.startSignupWithPayment(
         signupForm,
         {
-          monthlyAmount: data.oneTimePayment.amount,
-          period: 'one-time',
-          prorate: false,
+          action: 'create-one-time-payment',
+          amount: data.oneTimePayment.amount,
           payFee: data.oneTimePayment.payFee,
-          paymentMethod: data.oneTimePayment.paymentMethod,
         },
-        data.oneTimePayment.completeUrl
+        {
+          paymentMethod: data.oneTimePayment.paymentMethod,
+          completeUrl: data.oneTimePayment.completeUrl,
+        }
       );
       return plainToInstance(PaymentFlowResultDto, result);
     } else {

@@ -1,5 +1,3 @@
-import type { PaymentFlowForm } from '@beabee/core/models';
-
 import { StartContributionDto } from '@api/dto/ContributionDto';
 import { CompletePaymentFlowDto } from '@api/dto/PaymentFlowDto';
 import IsPassword from '@api/validators/IsPassword';
@@ -44,10 +42,7 @@ export class StartSignupFlowDto {
   oneTimePayment?: CreatePaymentDto;
 }
 
-export class CompleteSignupFlowDto
-  extends CompletePaymentFlowDto
-  implements Pick<PaymentFlowForm, 'firstname' | 'lastname' | 'vatNumber'>
-{
+export class CompleteSignupFlowDto extends CompletePaymentFlowDto {
   @IsOptional()
   @IsString()
   firstname?: string;
