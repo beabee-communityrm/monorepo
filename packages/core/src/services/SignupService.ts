@@ -2,6 +2,7 @@ import {
   PaymentFlowParams,
   PaymentFlowParamsStripe,
   PaymentFlowResult,
+  PaymentMethod,
   RESET_SECURITY_FLOW_TYPE,
 } from '@beabee/beabee-common';
 
@@ -142,6 +143,19 @@ class SignupService {
         );
       }
     } else {
+      let firstName = '',
+        lastName = '';
+
+      // TODO: remove once payment flow logic is reworked
+      if (
+        signupFlow.paymentFlow &&
+        signupFlow.paymentFlow.params.paymentMethod !==
+          PaymentMethod.GoCardlessDirectDebit
+      ) {
+        firstName = signupFlow.paymentFlow.params.firstname || '';
+        lastName = signupFlow.paymentFlow.params.lastname || '';
+      }
+
       // User doesn't exist, their membership is inactive or they are not
       // starting a recurring contribution, ask them to confirm their email
       // address so they can continue the signup flow
@@ -149,10 +163,8 @@ class SignupService {
         isOneTime ? 'setup-account' : 'confirm-email',
         { email: signupFlow.email },
         {
-          firstName: '',
-          lastName: '',
-          // firstName: signupFlow.paymentFlow?.form.firstname || '',
-          // lastName: signupFlow.paymentFlow?.form.lastname || '',
+          firstName,
+          lastName,
           confirmLink: signupFlow.confirmUrl + '/' + signupFlow.id,
         }
       );
