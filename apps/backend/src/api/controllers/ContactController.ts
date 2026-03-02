@@ -248,19 +248,21 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: StartContributionDto
   ): Promise<PaymentFlowResultDto> {
-    const result = await PaymentFlowService.startPaymentFlowForContact(
-      target,
-      {
-        action: 'start-contribution',
-        monthlyAmount: getMonthlyAmount(data.amount, data.period),
-        payFee: data.payFee,
-        period: data.period,
-      },
-      {
-        paymentMethod: data.paymentMethod,
-        completeUrl: data.completeUrl,
-      }
-    );
+    const form = {
+      action: 'start-contribution' as const,
+      monthlyAmount: getMonthlyAmount(data.amount, data.period),
+      payFee: data.payFee,
+      period: data.period,
+    };
+
+    if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
+      throw new CantUpdateContribution();
+    }
+
+    const result = await PaymentFlowService.startPaymentFlow(form, {
+      paymentMethod: data.paymentMethod,
+      completeUrl: data.completeUrl,
+    });
     return plainToInstance(PaymentFlowResultDto, result);
   }
 
@@ -352,18 +354,20 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CreatePaymentDto
   ): Promise<PaymentFlowResultDto> {
-    const result = await PaymentFlowService.startPaymentFlowForContact(
-      target,
-      {
-        action: 'create-one-time-payment',
-        amount: data.amount,
-        payFee: data.payFee,
-      },
-      {
-        paymentMethod: data.paymentMethod,
-        completeUrl: data.completeUrl,
-      }
-    );
+    const form = {
+      action: 'create-one-time-payment' as const,
+      amount: data.amount,
+      payFee: data.payFee,
+    };
+
+    if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
+      throw new CantUpdateContribution();
+    }
+
+    const result = await PaymentFlowService.startPaymentFlow(form, {
+      paymentMethod: data.paymentMethod,
+      completeUrl: data.completeUrl,
+    });
     return plainToInstance(PaymentFlowResultDto, result);
   }
 
@@ -409,16 +413,18 @@ export class ContactController {
       throw new NoPaymentMethod();
     }
 
-    const result = await PaymentFlowService.startPaymentFlowForContact(
-      target,
-      {
-        action: 'update-payment-method',
-      },
-      {
-        paymentMethod,
-        completeUrl: data.completeUrl,
-      }
-    );
+    const form = {
+      action: 'update-payment-method' as const,
+    };
+
+    if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
+      throw new CantUpdateContribution();
+    }
+
+    const result = await PaymentFlowService.startPaymentFlow(form, {
+      paymentMethod,
+      completeUrl: data.completeUrl,
+    });
     return plainToInstance(PaymentFlowResultDto, result);
   }
 
