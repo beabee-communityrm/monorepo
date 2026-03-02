@@ -6,17 +6,7 @@ import {
 
 import { Column } from 'typeorm';
 
-import { ReferralGiftForm } from '#type/index';
-
-import { Password } from './Password';
-
-export class PaymentFlowForm implements PaymentForm, ReferralGiftForm {
-  @Column()
-  email!: string;
-
-  @Column(() => Password)
-  password!: Password;
-
+export class PaymentFlowForm implements PaymentForm {
   @Column({ type: 'real' })
   monthlyAmount!: number;
 
@@ -40,13 +30,4 @@ export class PaymentFlowForm implements PaymentForm, ReferralGiftForm {
 
   @Column({ type: String, nullable: true })
   vatNumber?: string | null;
-
-  @Column({ type: String, nullable: true })
-  referralCode?: string | null;
-
-  @Column({ type: String, nullable: true })
-  referralGift?: string | null;
-
-  @Column({ type: 'jsonb', nullable: true })
-  referralGiftOptions?: Record<string, string> | null;
 }
