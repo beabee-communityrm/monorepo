@@ -65,31 +65,6 @@ class PaymentFlowService {
   }
 
   /**
-   * Starts a payment flow for existing contacts to change their payment method
-   * and/or contribution details (amount, period, etc.).
-   *
-   * @param contact - The contact updating their contribution
-   * @param form - Form data for contribution changes
-   * @param completeUrl - URL to redirect to after payment setup
-   * @returns The payment flow parameters
-   */
-  async startPaymentFlowForContact(
-    contact: Contact,
-    form: PaymentFlowForm,
-    params: PaymentFlowParams
-  ): Promise<PaymentFlowResult> {
-    if (
-      form.action !== 'create-one-time-payment' &&
-      !(await PaymentService.canProcessPaymentFlow(contact, form))
-    ) {
-      throw new CantUpdateContribution();
-    }
-
-    const ret = await this.startPaymentFlow(form, params);
-    return ret.result;
-  }
-
-  /**
    * Finalizes a payment flow after payment provider confirms the
    * new payment method is set up, updating the contact's payment details.
    *
@@ -119,7 +94,6 @@ class PaymentFlowService {
 
     const completedPaymentFlow = await this.completePaymentFlow(flow);
     await this.executePaymentActions(contact, completedPaymentFlow);
-    // await this.executeAndCleanupPaymentFlow(contact, flow);
   }
 
   /**
