@@ -13,8 +13,8 @@ export interface PaymentFlowParamsStripe {
     | PaymentMethod.StripePayPal
     | PaymentMethod.StripeIdeal;
   completeUrl: string;
-  firstName?: string;
-  lastName?: string;
+  firstname?: string;
+  lastname?: string;
   vatNumber?: string;
 }
 
