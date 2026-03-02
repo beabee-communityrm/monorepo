@@ -1,3 +1,5 @@
+import { PaymentFlowParamsGoCardless } from '@beabee/beabee-common';
+
 import gocardless from '#lib/gocardless';
 import { log as mainLogger } from '#logging';
 import { PaymentFlow } from '#models/index';
@@ -20,22 +22,21 @@ class GCFlowProvider implements PaymentFlowProvider {
   /**
    * Creates a GoCardless redirect flow for direct debit setup
    * @param flow - Payment flow containing user information
-   * @param completeUrl - URL to redirect after mandate setup
+   * @param params - Parameters for the payment flow
    * @param data - Additional customer data
    * @returns Promise resolving to payment flow with redirect URL
    */
   async setupPaymentFlow(
-    flow: PaymentFlow,
-    completeUrl: string,
-    params: PaymentFlowData
+    flow: PaymentFlow<PaymentFlowParamsGoCardless>,
+    data: PaymentFlowData
   ): Promise<PaymentFlowSetup> {
     const redirectFlow = await gocardless.redirectFlows.create({
       session_token: flow.id,
-      success_redirect_url: completeUrl,
+      success_redirect_url: flow.params.completeUrl,
       prefilled_customer: {
-        email: params.email,
-        ...(params.firstname && { given_name: params.firstname }),
-        ...(params.lastname && { family_name: params.lastname }),
+        email: data.email,
+        ...(data.firstname && { given_name: data.firstname }),
+        ...(data.lastname && { family_name: data.lastname }),
       },
     });
     log.info('Created redirect flow ' + redirectFlow.id);
@@ -53,7 +54,9 @@ class GCFlowProvider implements PaymentFlowProvider {
    * @param flow - Payment flow to complete
    * @returns Promise resolving to completed payment flow with mandate ID
    */
-  async completePaymentFlow(flow: PaymentFlow): Promise<CompletedPaymentFlow> {
+  async completePaymentFlow(
+    flow: PaymentFlow<PaymentFlowParamsGoCardless>
+  ): Promise<CompletedPaymentFlow> {
     const redirectFlow = await gocardless.redirectFlows.complete(
       flow.paymentFlowId,
       {
@@ -63,6 +66,7 @@ class GCFlowProvider implements PaymentFlowProvider {
     log.info('Completed redirect flow ' + redirectFlow.id);
 
     return {
+      params: flow.params,
       form: flow.form,
       customerId: redirectFlow.links!.customer!,
       mandateId: redirectFlow.links!.mandate!,

@@ -1,5 +1,3 @@
-import type { PaymentFlowForm } from '@beabee/core/models';
-
 import { Type } from 'class-transformer';
 import {
   IsEmail,
@@ -45,10 +43,7 @@ export class StartSignupFlowDto {
   oneTimePayment?: CreatePaymentDto;
 }
 
-export class CompleteSignupFlowDto
-  extends CompletePaymentFlowDto
-  implements Pick<PaymentFlowForm, 'firstname' | 'lastname' | 'vatNumber'>
-{
+export class CompleteSignupFlowDto extends CompletePaymentFlowDto {
   @IsOptional()
   @IsString()
   firstname?: string;

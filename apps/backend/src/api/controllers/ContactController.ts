@@ -255,9 +255,11 @@ export class ContactController {
         monthlyAmount: getMonthlyAmount(data.amount, data.period),
         payFee: data.payFee,
         period: data.period,
-        paymentMethod: data.paymentMethod,
       },
-      data.completeUrl
+      {
+        paymentMethod: data.paymentMethod,
+        completeUrl: data.completeUrl,
+      }
     );
     return plainToInstance(PaymentFlowResultDto, result);
   }
@@ -356,9 +358,11 @@ export class ContactController {
         action: 'create-one-time-payment',
         amount: data.amount,
         payFee: data.payFee,
-        paymentMethod: data.paymentMethod,
       },
-      data.completeUrl
+      {
+        paymentMethod: data.paymentMethod,
+        completeUrl: data.completeUrl,
+      }
     );
     return plainToInstance(PaymentFlowResultDto, result);
   }
@@ -409,9 +413,11 @@ export class ContactController {
       target,
       {
         action: 'update-payment-method',
-        paymentMethod,
       },
-      data.completeUrl
+      {
+        paymentMethod,
+        completeUrl: data.completeUrl,
+      }
     );
     return plainToInstance(PaymentFlowResultDto, result);
   }
