@@ -28,7 +28,6 @@ export * from './PageSettings';
 export * from './Password';
 export * from './Payment';
 export * from './PaymentFlow';
-export * from './PaymentFlowForm';
 export * from './Project';
 export * from './ProjectContact';
 export * from './ProjectEngagement';
