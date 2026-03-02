@@ -58,11 +58,7 @@ class SignupService {
     form: PaymentFlowForm,
     params: PaymentFlowParams
   ): Promise<PaymentFlowResult> {
-    const setup = await PaymentFlowService.startPaymentFlow(
-      form,
-      params,
-      signupData
-    );
+    const setup = await PaymentFlowService.startPaymentFlow(form, params);
 
     await getRepository(SignupFlow).save({
       ...signupData,
