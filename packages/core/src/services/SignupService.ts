@@ -6,17 +6,12 @@ import {
 import { getRepository } from '#database';
 import { DuplicateEmailError, NotFoundError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import {
-  Contact,
-  Password,
-  PaymentFlow,
-  PaymentFlowForm,
-  SignupFlow,
-} from '#models/index';
+import { Contact, Password, PaymentFlow, SignupFlow } from '#models/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import OptionsService from '#services/OptionsService';
 import PaymentFlowService from '#services/PaymentFlowService';
+import { PaymentFlowForm } from '#type/index';
 
 import ResetSecurityFlowService from './ResetSecurityFlowService';
 
@@ -84,7 +79,7 @@ class SignupService {
    */
   async advanceSignupWithPayment(
     paymentFlowId: string,
-    data: Partial<Pick<PaymentFlowForm, 'firstname' | 'lastname' | 'vatNumber'>>
+    data: Partial<PaymentFlowForm>
   ): Promise<void> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { paymentFlow: { paymentFlowId } },
@@ -95,16 +90,11 @@ class SignupService {
       throw new NotFoundError();
     }
 
-    for (const key of ['firstname', 'lastname', 'vatNumber'] as const) {
-      if (data[key]) {
-        signupFlow.paymentFlow.form[key] = data[key];
-      }
-    }
     Object.assign(signupFlow.paymentFlow.form, data);
     await getRepository(PaymentFlow).save(signupFlow.paymentFlow);
 
     // Finalise one-time payments early
-    if (signupFlow.paymentFlow.form.period === 'one-time') {
+    if (signupFlow.paymentFlow.form.action === 'create-one-time-payment') {
       const contact = await this.finalizeSignup(signupFlow.id);
       // Ignore a failure to create a contact here. This means this flow is
       // being processed elsewhere, probably because the user opened the URL
@@ -130,7 +120,8 @@ class SignupService {
       email: signupFlow.email,
     });
 
-    const isOneTime = signupFlow.paymentFlow?.form.period === 'one-time';
+    const isOneTime =
+      signupFlow.paymentFlow?.form.action === 'create-one-time-payment';
 
     if (
       // Contact already exists with an active contribution
@@ -167,8 +158,10 @@ class SignupService {
         isOneTime ? 'setup-account' : 'confirm-email',
         { email: signupFlow.email },
         {
-          firstName: signupFlow.paymentFlow?.form.firstname || '',
-          lastName: signupFlow.paymentFlow?.form.lastname || '',
+          firstName: '',
+          lastName: '',
+          // firstName: signupFlow.paymentFlow?.form.firstname || '',
+          // lastName: signupFlow.paymentFlow?.form.lastname || '',
           confirmLink: signupFlow.confirmUrl + '/' + signupFlow.id,
         }
       );
@@ -212,7 +205,7 @@ class SignupService {
     // Check if contact already exists with active membership
     if (
       contact?.membership?.isActive &&
-      signupFlow.paymentFlow?.form.period !== 'one-time'
+      signupFlow.paymentFlow?.form.action === 'start-contribution'
     ) {
       throw new DuplicateEmailError();
     }
@@ -259,7 +252,7 @@ class SignupService {
     }
 
     // One-time contributions receive a separate one-time-donation email
-    if (signupFlow.paymentFlow?.form.period !== 'one-time') {
+    if (signupFlow.paymentFlow?.form.action !== 'create-one-time-payment') {
       await EmailService.sendTemplateToContact('welcome', contact);
     }
 

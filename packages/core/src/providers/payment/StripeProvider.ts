@@ -23,6 +23,7 @@ import { Contact } from '#models/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
+  PaymentFlowFormCreateOneTimePayment,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate, getChargeableAmount } from '#utils/payment';
@@ -255,8 +256,10 @@ export class StripeProvider extends PaymentProvider {
    * @param flow The completed payment flow
    * @param form The payment form
    */
-  async createOneTimePayment(flow: CompletedPaymentFlow): Promise<void> {
-    log.info('Create one-time payment of amount ' + flow.form.monthlyAmount);
+  async createOneTimePayment(
+    flow: CompletedPaymentFlow<PaymentFlowFormCreateOneTimePayment>
+  ): Promise<void> {
+    log.info('Create one-time payment of amount ' + flow.form.amount);
 
     this.data.customerId = await ensureCustomerAndAttachPayment(
       this.contact,
