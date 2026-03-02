@@ -1,5 +1,4 @@
 import type { PaymentFlowForm } from '@beabee/core/models';
-import { CompleteUrls } from '@beabee/core/type';
 
 import { Type } from 'class-transformer';
 import {
@@ -18,7 +17,7 @@ import IsVatNumber from '#api/validators/IsVatNumber';
 import { CreatePaymentDto } from './PaymentDto';
 import { CompletePaymentFlowDto } from './PaymentFlowDto';
 
-export class StartSignupFlowDto implements CompleteUrls {
+export class StartSignupFlowDto {
   @IsUrl()
   loginUrl!: string;
 

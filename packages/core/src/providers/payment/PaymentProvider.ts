@@ -1,8 +1,4 @@
-import {
-  ContributionForm,
-  PaymentForm,
-  PaymentMethod,
-} from '@beabee/beabee-common';
+import { ContributionForm, PaymentMethod } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { Contact, ContactContribution } from '#models/index';

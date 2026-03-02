@@ -82,8 +82,8 @@ class GCFlowProvider implements PaymentFlowProvider {
     );
 
     return {
-      ...(customer.given_name && { firstname: customer.given_name }),
-      ...(customer.family_name && { lastname: customer.family_name }),
+      firstname: customer.given_name || '',
+      lastname: customer.family_name || '',
       billingAddress: {
         line1: customer.address_line1 || '',
         line2: customer.address_line2 || undefined,

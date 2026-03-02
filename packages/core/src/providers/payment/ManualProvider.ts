@@ -1,11 +1,7 @@
-import { ContributionForm, PaymentForm } from '@beabee/beabee-common';
+import { ContributionForm } from '@beabee/beabee-common';
 
 import { Contact } from '#models/index';
-import {
-  CompletedPaymentFlow,
-  ContributionInfo,
-  UpdateContributionResult,
-} from '#type/index';
+import { ContributionInfo, UpdateContributionResult } from '#type/index';
 
 import { PaymentProvider } from './PaymentProvider';
 
