@@ -17,7 +17,6 @@ import PaymentService from '#services/PaymentService';
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
-  PaymentFlowData,
   PaymentFlowForm,
   PaymentFlowSetup,
 } from '#type/index';
@@ -47,14 +46,13 @@ class PaymentFlowService {
    */
   async startPaymentFlow(
     form: PaymentFlowForm,
-    params: PaymentFlowParams,
-    data: PaymentFlowData
+    params: PaymentFlowParams
   ): Promise<{ flow: PaymentFlow; result: PaymentFlowResult }> {
     const flow = await getRepository(PaymentFlow).save({ form, params });
 
     log.info('Creating payment registration flow ' + flow.id, { form });
 
-    const setup = await this.setupPaymentFlow(flow, data);
+    const setup = await this.setupPaymentFlow(flow);
     await getRepository(PaymentFlow).update(flow.id, {
       paymentFlowId: setup.id,
     });
@@ -83,7 +81,7 @@ class PaymentFlowService {
       throw new CantUpdateContribution();
     }
 
-    const ret = await this.startPaymentFlow(form, params, contact);
+    const ret = await this.startPaymentFlow(form, params);
     return ret.result;
   }
 
@@ -189,14 +187,10 @@ class PaymentFlowService {
    * @param data The payment flow data
    * @returns The created payment flow
    */
-  private async setupPaymentFlow(
-    flow: PaymentFlow,
-    data: PaymentFlowData
-  ): Promise<PaymentFlowSetup> {
+  private async setupPaymentFlow(flow: PaymentFlow): Promise<PaymentFlowSetup> {
     log.info('Create payment flow for payment flow ' + flow.id);
     return paymentProviders[flow.params.paymentMethod].setupPaymentFlow(
-      flow as any, // TODO: fix type
-      data
+      flow as any // TODO: fix type
     );
   }
 
