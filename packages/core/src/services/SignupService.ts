@@ -1,4 +1,6 @@
 import {
+  PaymentFlowParams,
+  PaymentFlowParamsStripe,
   PaymentFlowResult,
   RESET_SECURITY_FLOW_TYPE,
 } from '@beabee/beabee-common';
@@ -47,18 +49,18 @@ class SignupService {
   /**
    * Starts a signup flow with payment, coordinating between signup and payment flows
    * @param signupData - User signup information
-   * @param paymentData - Payment form data
-   * @param completeUrl - URL to redirect to after payment setup
+   * @param form - Payment form data
+   * @param params - Payment flow parameters
    * @returns The payment flow result for the client
    */
   async startSignupWithPayment(
     signupData: SignupData,
-    paymentData: PaymentFlowForm,
-    completeUrl: string
+    form: PaymentFlowForm,
+    params: PaymentFlowParams
   ): Promise<PaymentFlowResult> {
     const setup = await PaymentFlowService.startPaymentFlow(
-      paymentData,
-      completeUrl,
+      form,
+      params,
       signupData
     );
 
@@ -75,11 +77,10 @@ class SignupService {
    * and sending confirmation email.
    *
    * @param paymentFlowId - The ID of the payment flow to advance
-   * @param data - Any additional data to merge into the payment flow form (e.g. firstname, lastname)
    */
   async advanceSignupWithPayment(
     paymentFlowId: string,
-    data: Partial<PaymentFlowForm>
+    data: Partial<PaymentFlowParamsStripe>
   ): Promise<void> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { paymentFlow: { paymentFlowId } },
@@ -90,7 +91,8 @@ class SignupService {
       throw new NotFoundError();
     }
 
-    Object.assign(signupFlow.paymentFlow.form, data);
+    // TODO: remove once payment flow logic reworked
+    Object.assign(signupFlow.paymentFlow.params, data);
     await getRepository(PaymentFlow).save(signupFlow.paymentFlow);
 
     // Finalise one-time payments early

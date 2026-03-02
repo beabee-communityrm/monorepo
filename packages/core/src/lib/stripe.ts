@@ -15,7 +15,7 @@ import { currentLocale } from '#locale';
 import { log as mainLogger } from '#logging';
 import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
-import { PaymentFlowFormCreateOneTimePayment } from '#type/PaymentFlowForm';
+import { PaymentFlowFormCreateOneTimePayment } from '#type/index';
 import { getChargeableAmount } from '#utils/payment';
 
 // Stripe webhook events that we handle

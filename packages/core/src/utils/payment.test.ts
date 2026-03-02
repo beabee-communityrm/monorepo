@@ -272,12 +272,11 @@ describe('getChargeableAmount', () => {
       action: 'create-one-time-payment',
       amount: 25,
       payFee: false,
-      paymentMethod: PaymentMethod.StripeCard,
     };
 
     const result = getChargeableAmount(
       paymentForm,
-      paymentForm.paymentMethod,
+      PaymentMethod.StripeCard,
       'eu'
     );
 
@@ -289,12 +288,11 @@ describe('getChargeableAmount', () => {
       action: 'create-one-time-payment',
       amount: 30,
       payFee: true,
-      paymentMethod: PaymentMethod.StripeCard,
     };
 
     const result = getChargeableAmount(
       paymentForm,
-      paymentForm.paymentMethod,
+      PaymentMethod.StripeCard,
       'eu'
     );
 
