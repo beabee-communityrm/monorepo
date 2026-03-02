@@ -1,7 +1,7 @@
 import {
+  PaymentFlowParams,
   PaymentFlowResult,
   PaymentMethod,
-  isContributionForm,
 } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
@@ -47,20 +47,18 @@ class PaymentFlowService {
    */
   async startPaymentFlow(
     form: PaymentFlowForm,
-    completeUrl: string,
+    params: PaymentFlowParams,
     data: PaymentFlowData
   ): Promise<{ flow: PaymentFlow; result: PaymentFlowResult }> {
-    const flow = await getRepository(PaymentFlow).save({
-      form,
-      paymentFlowId: '',
-    });
+    const flow = await getRepository(PaymentFlow).save({ form, params });
 
     log.info('Creating payment registration flow ' + flow.id, { form });
 
-    const setup = await this.setupPaymentFlow(flow, completeUrl, data);
+    const setup = await this.setupPaymentFlow(flow, data);
     await getRepository(PaymentFlow).update(flow.id, {
       paymentFlowId: setup.id,
     });
+
     return { flow, result: setup.result };
   }
 
@@ -76,16 +74,16 @@ class PaymentFlowService {
   async startPaymentFlowForContact(
     contact: Contact,
     form: PaymentFlowForm,
-    completeUrl: string
+    params: PaymentFlowParams
   ): Promise<PaymentFlowResult> {
     if (
       form.action !== 'create-one-time-payment' &&
-      !(await PaymentService.canChangeContribution(contact, false, form))
+      !(await PaymentService.canProcessPaymentFlow(contact, form))
     ) {
       throw new CantUpdateContribution();
     }
 
-    const ret = await this.startPaymentFlow(form, completeUrl, contact);
+    const ret = await this.startPaymentFlow(form, params, contact);
     return ret.result;
   }
 
@@ -145,16 +143,9 @@ class PaymentFlowService {
     }
 
     const completedPaymentFlow = await this.completePaymentFlow(paymentFlow);
-    const ret = await this.getCompletedPaymentFlowData(completedPaymentFlow);
+    const data = await this.getCompletedPaymentFlowData(completedPaymentFlow);
 
-    return {
-      flow: completedPaymentFlow,
-      data: {
-        ...ret,
-        firstname: ret.firstname || paymentFlow.form.firstname || '',
-        lastname: ret.lastname || paymentFlow.form.lastname || '',
-      },
-    };
+    return { flow: completedPaymentFlow, data };
   }
 
   /**
@@ -170,19 +161,15 @@ class PaymentFlowService {
     completedFlow: CompletedPaymentFlow
   ): Promise<void> {
     const form = completedFlow.form;
+
+    const canChange = await PaymentService.canProcessPaymentFlow(contact, form);
+    if (!canChange) {
+      throw new CantUpdateContribution();
+    }
+
     if (form.action === 'create-one-time-payment') {
       await PaymentService.createOneTimePayment(contact, completedFlow);
     } else {
-      const canChange = await PaymentService.canChangeContribution(
-        contact,
-        false,
-        form
-      );
-
-      if (!canChange) {
-        throw new CantUpdateContribution();
-      }
-
       await PaymentService.updatePaymentMethod(contact, completedFlow);
       if (form.action === 'start-contribution') {
         await ContactsService.updateContactContribution(contact, {
@@ -204,13 +191,11 @@ class PaymentFlowService {
    */
   private async setupPaymentFlow(
     flow: PaymentFlow,
-    completeUrl: string,
     data: PaymentFlowData
   ): Promise<PaymentFlowSetup> {
     log.info('Create payment flow for payment flow ' + flow.id);
-    return paymentProviders[flow.form.paymentMethod].setupPaymentFlow(
-      flow,
-      completeUrl,
+    return paymentProviders[flow.params.paymentMethod].setupPaymentFlow(
+      flow as any, // TODO: fix type
       data
     );
   }
@@ -226,7 +211,9 @@ class PaymentFlowService {
     flow: PaymentFlow
   ): Promise<CompletedPaymentFlow> {
     log.info('Complete payment flow for payment flow ' + flow.id);
-    return paymentProviders[flow.form.paymentMethod].completePaymentFlow(flow);
+    return paymentProviders[flow.params.paymentMethod].completePaymentFlow(
+      flow as any // TODO: fix type
+    );
   }
 
   /**
@@ -241,7 +228,7 @@ class PaymentFlowService {
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<CompletedPaymentFlowData> {
     return paymentProviders[
-      completedPaymentFlow.form.paymentMethod
+      completedPaymentFlow.params.paymentMethod
     ].getCompletedPaymentFlowData(completedPaymentFlow);
   }
 }

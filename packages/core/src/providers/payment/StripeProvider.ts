@@ -1,6 +1,7 @@
 import {
   ContributionForm,
   ContributionType,
+  PaymentFlowParamsStripe,
   PaymentSource,
 } from '@beabee/beabee-common';
 
@@ -33,6 +34,9 @@ import { PaymentProvider } from './PaymentProvider';
 const log = mainLogger.child({ app: 'stripe-payment-provider' });
 
 export class StripeProvider extends PaymentProvider {
+  async canProcessPaymentFlow(): Promise<boolean> {
+    return true;
+  }
   /**
    * Checks if a contribution can be changed. With Stripe this is always
    * possible as long as the user has a valid mandate.
@@ -102,7 +106,9 @@ export class StripeProvider extends PaymentProvider {
    *
    * @param flow The completed payment flow
    */
-  async updatePaymentMethod(flow: CompletedPaymentFlow): Promise<void> {
+  async updatePaymentMethod(
+    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
+  ): Promise<void> {
     const paymentMethod = await stripe.paymentMethods.retrieve(flow.mandateId);
     const address = paymentMethod.billing_details.address;
 
@@ -110,7 +116,7 @@ export class StripeProvider extends PaymentProvider {
       this.contact,
       this.data.customerId,
       flow.mandateId,
-      flow.form.vatNumber
+      flow.params.vatNumber
     );
 
     log.info('Update customer details for ' + this.data.customerId);
@@ -257,7 +263,10 @@ export class StripeProvider extends PaymentProvider {
    * @param form The payment form
    */
   async createOneTimePayment(
-    flow: CompletedPaymentFlow<PaymentFlowFormCreateOneTimePayment>
+    flow: CompletedPaymentFlow<
+      PaymentFlowParamsStripe,
+      PaymentFlowFormCreateOneTimePayment
+    >
   ): Promise<void> {
     log.info('Create one-time payment of amount ' + flow.form.amount);
 
@@ -265,7 +274,7 @@ export class StripeProvider extends PaymentProvider {
       this.contact,
       this.data.customerId,
       flow.mandateId,
-      flow.form.vatNumber
+      flow.params.vatNumber
     );
     await this.updateData();
 
@@ -274,7 +283,7 @@ export class StripeProvider extends PaymentProvider {
         this.data.customerId,
         flow.mandateId,
         flow.form,
-        flow.form.paymentMethod
+        flow.params.paymentMethod
       );
     } catch (err) {
       if (err instanceof Stripe.errors.StripeCardError) {

@@ -177,6 +177,7 @@ export type * from './paginated-query.js';
 export type * from './paginated.js';
 export type * from './parse-iso-options.js';
 export type * from './payment-filter-name.js';
+export type * from './payment-flow-params.js';
 export type * from './payment-flow-result.js';
 export type * from './payment-period.js';
 export type * from './payment-source-base.js';
