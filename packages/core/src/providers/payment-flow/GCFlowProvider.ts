@@ -6,7 +6,6 @@ import { PaymentFlow } from '#models/index';
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
-  PaymentFlowData,
   PaymentFlowSetup,
 } from '#type/index';
 
@@ -27,17 +26,11 @@ class GCFlowProvider implements PaymentFlowProvider {
    * @returns Promise resolving to payment flow with redirect URL
    */
   async setupPaymentFlow(
-    flow: PaymentFlow<PaymentFlowParamsGoCardless>,
-    data: PaymentFlowData
+    flow: PaymentFlow<PaymentFlowParamsGoCardless>
   ): Promise<PaymentFlowSetup> {
     const redirectFlow = await gocardless.redirectFlows.create({
       session_token: flow.id,
       success_redirect_url: flow.params.completeUrl,
-      prefilled_customer: {
-        email: data.email,
-        ...(data.firstname && { given_name: data.firstname }),
-        ...(data.lastname && { family_name: data.lastname }),
-      },
     });
     log.info('Created redirect flow ' + redirectFlow.id);
 
