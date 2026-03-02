@@ -111,6 +111,9 @@ class StripeFlowProvider implements PaymentFlowProvider {
 
     const address = paymentMethod.billing_details.address;
     return {
+      // TODO: Remove after payment flow changes
+      firstname: '',
+      lastname: '',
       ...(address && {
         billingAddress: {
           line1: address.line1 || '',
