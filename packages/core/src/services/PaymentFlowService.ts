@@ -48,7 +48,11 @@ class PaymentFlowService {
     form: PaymentFlowForm,
     params: PaymentFlowParams
   ): Promise<{ flow: PaymentFlow; result: PaymentFlowResult }> {
-    const flow = await getRepository(PaymentFlow).save({ form, params });
+    const flow = await getRepository(PaymentFlow).save({
+      form,
+      params,
+      paymentFlowId: '',
+    });
 
     log.info('Creating payment registration flow ' + flow.id, { form });
 
@@ -223,7 +227,9 @@ class PaymentFlowService {
   ): Promise<CompletedPaymentFlowData> {
     return paymentProviders[
       completedPaymentFlow.params.paymentMethod
-    ].getCompletedPaymentFlowData(completedPaymentFlow);
+    ].getCompletedPaymentFlowData(
+      completedPaymentFlow as any // TODO: fix type
+    );
   }
 }
 

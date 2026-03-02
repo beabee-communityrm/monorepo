@@ -98,7 +98,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
    * @returns Promise resolving to payment flow data including billing details
    */
   async getCompletedPaymentFlowData(
-    completedPaymentFlow: CompletedPaymentFlow
+    completedPaymentFlow: CompletedPaymentFlow<PaymentFlowParamsStripe>
   ): Promise<CompletedPaymentFlowData> {
     const paymentMethod = await stripe.paymentMethods.retrieve(
       completedPaymentFlow.mandateId
@@ -106,9 +106,8 @@ class StripeFlowProvider implements PaymentFlowProvider {
 
     const address = paymentMethod.billing_details.address;
     return {
-      // TODO: Remove after payment flow changes
-      firstname: '',
-      lastname: '',
+      firstname: completedPaymentFlow.params.firstname || '',
+      lastname: completedPaymentFlow.params.lastname || '',
       ...(address && {
         billingAddress: {
           line1: address.line1 || '',
