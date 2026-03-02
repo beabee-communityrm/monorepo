@@ -1,7 +1,6 @@
 import {
   ContributionForm,
   ContributionPeriod,
-  PaymentForm,
   PaymentMethod,
   PaymentSource,
   PaymentStatus,
@@ -16,6 +15,7 @@ import { currentLocale } from '#locale';
 import { log as mainLogger } from '#logging';
 import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
+import { PaymentFlowFormCreateOneTimePayment } from '#type/PaymentFlowForm';
 import { getChargeableAmount } from '#utils/payment';
 
 // Stripe webhook events that we handle
@@ -347,7 +347,7 @@ export async function ensureCustomerAndAttachPayment(
 export async function chargeOneTimePayment(
   customerId: string,
   mandateId: string,
-  form: PaymentForm,
+  form: PaymentFlowFormCreateOneTimePayment,
   paymentMethod: PaymentMethod
 ): Promise<void> {
   log.info('Creating one-time payment on ' + customerId);

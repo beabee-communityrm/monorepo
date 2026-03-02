@@ -1,4 +1,4 @@
-import { PaymentMethod, isContributionForm } from '@beabee/beabee-common';
+import { PaymentMethod } from '@beabee/beabee-common';
 
 import { BadRequestError } from '#errors/BadRequestError';
 import { Stripe, paymentMethodToStripeType, stripe } from '#lib/stripe';
@@ -70,7 +70,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
     // https://docs.stripe.com/payments/ideal/set-up-payment
     if (
       paymentMethod === PaymentMethod.StripeIdeal &&
-      isContributionForm(flow.form)
+      flow.form.action === 'start-contribution'
     ) {
       const latestAttempt =
         setupIntent.latest_attempt as Stripe.SetupAttempt | null;

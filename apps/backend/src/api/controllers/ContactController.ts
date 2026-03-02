@@ -248,13 +248,15 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: StartContributionDto
   ): Promise<PaymentFlowResultDto> {
-    const form = {
-      ...data,
-      monthlyAmount: getMonthlyAmount(data.amount, data.period),
-    };
     const result = await PaymentFlowService.startPaymentFlowForContact(
       target,
-      form,
+      {
+        action: 'start-contribution',
+        monthlyAmount: getMonthlyAmount(data.amount, data.period),
+        payFee: data.payFee,
+        period: data.period,
+        paymentMethod: data.paymentMethod,
+      },
       data.completeUrl
     );
     return plainToInstance(PaymentFlowResultDto, result);
@@ -348,16 +350,14 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CreatePaymentDto
   ): Promise<PaymentFlowResultDto> {
-    const form = {
-      monthlyAmount: data.amount,
-      payFee: data.payFee,
-      prorate: false,
-      period: 'one-time' as const,
-      paymentMethod: data.paymentMethod,
-    };
     const result = await PaymentFlowService.startPaymentFlowForContact(
       target,
-      form,
+      {
+        action: 'create-one-time-payment',
+        amount: data.amount,
+        payFee: data.payFee,
+        paymentMethod: data.paymentMethod,
+      },
       data.completeUrl
     );
     return plainToInstance(PaymentFlowResultDto, result);
@@ -405,17 +405,12 @@ export class ContactController {
       throw new NoPaymentMethod();
     }
 
-    const form = {
-      monthlyAmount: 0, // Stub to indicate no contribution update
-      paymentMethod,
-      payFee: false,
-      period: ContributionPeriod.Monthly,
-      prorate: false,
-    };
-
     const result = await PaymentFlowService.startPaymentFlowForContact(
       target,
-      form,
+      {
+        action: 'update-payment-method',
+        paymentMethod,
+      },
       data.completeUrl
     );
     return plainToInstance(PaymentFlowResultDto, result);

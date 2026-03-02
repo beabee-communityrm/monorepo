@@ -1,7 +1,6 @@
 import {
   ContributionForm,
   ContributionPeriod,
-  PaymentForm,
   PaymentMethod,
   PaymentStatus,
 } from '@beabee/beabee-common';
@@ -221,7 +220,7 @@ const gocardless = {
 
 export default gocardless;
 
-function getGCChargeableAmount(paymentForm: PaymentForm): string {
+function getGCChargeableAmount(paymentForm: ContributionForm): string {
   return getChargeableAmount(
     paymentForm,
     PaymentMethod.GoCardlessDirectDebit
