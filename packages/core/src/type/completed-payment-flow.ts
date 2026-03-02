@@ -1,7 +1,9 @@
-import type { PaymentFlowForm } from '#models/index';
+import type { PaymentFlowForm } from '#type/PaymentFlowForm';
 
-export interface CompletedPaymentFlow {
-  form: PaymentFlowForm;
+export interface CompletedPaymentFlow<
+  TForm extends PaymentFlowForm = PaymentFlowForm,
+> {
+  form: TForm;
   customerId: string;
   mandateId: string;
 }
