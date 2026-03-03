@@ -111,19 +111,13 @@ class PaymentFlowService {
       throw new CantUpdateContribution();
     }
 
-    if (form.action === 'create-one-time-payment') {
-      await PaymentService.createOneTimePayment(contact, {
-        ...completedFlow,
-        form,
-      });
-    } else {
-      await PaymentService.updatePaymentMethod(contact, completedFlow);
-      if (form.action === 'start-contribution') {
-        await ContactsService.updateContactContribution(contact, {
-          ...form,
-          prorate: false,
-        });
-      }
+    const result = await PaymentService.processPaymentFlow(
+      contact,
+      completedFlow
+    );
+
+    if (result) {
+      await ContactsService.handleUpdateContributionResult(contact, result);
     }
   }
 

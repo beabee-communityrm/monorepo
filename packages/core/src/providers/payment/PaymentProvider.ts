@@ -1,8 +1,4 @@
-import {
-  ContributionForm,
-  PaymentFlowParams,
-  PaymentMethod,
-} from '@beabee/beabee-common';
+import { PaymentFlowParams, PaymentMethod } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { Contact, ContactContribution } from '#models/index';
@@ -11,6 +7,7 @@ import {
   ContributionInfo,
   PaymentFlowForm,
   PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
 
@@ -40,14 +37,28 @@ export abstract class PaymentProvider {
 
   /**
    * Checks if contribution changes are allowed
-   * @param useExistingMandate - Whether to use existing payment mandate
    * @param form - New contribution details
    * @returns Promise resolving to boolean indicating if changes are allowed
    */
-  abstract canChangeContribution(
-    useExistingMandate: boolean,
-    form: ContributionForm
+  abstract canUpdateContribution(
+    form: UpdateContributionForm
   ): Promise<boolean>;
+
+  /**
+   * Updates contribution details
+   * @param form - New contribution form data
+   * @returns Promise resolving to update result
+   */
+  abstract processUpdateContribution(
+    form: UpdateContributionForm
+  ): Promise<UpdateContributionResult>;
+
+  /**
+   * Process a payment flow
+   */
+  abstract processPaymentFlow(
+    flow: CompletedPaymentFlow
+  ): Promise<UpdateContributionResult | undefined>;
 
   /**
    * Cancels an active contribution
@@ -66,34 +77,6 @@ export abstract class PaymentProvider {
    * @param updates - Contact fields to update
    */
   abstract updateContact(updates: Partial<Contact>): Promise<void>;
-
-  /**
-   * Updates contribution details
-   * @param form - New contribution form data
-   * @returns Promise resolving to update result
-   */
-  abstract updateContribution(
-    form: ContributionForm
-  ): Promise<UpdateContributionResult>;
-
-  /**
-   * Updates payment method using completed payment flow
-   * @param completedPaymentFlow - The completed payment flow with new method
-   */
-  abstract updatePaymentMethod(
-    completedPaymentFlow: CompletedPaymentFlow
-  ): Promise<void>;
-
-  /**
-   * Creates a one-time payment using a completed payment flow
-   * @param completedPaymentFlow - The completed payment flow
-   */
-  abstract createOneTimePayment(
-    completedPaymentFlow: CompletedPaymentFlow<
-      PaymentFlowParams,
-      PaymentFlowFormCreateOneTimePayment
-    >
-  ): Promise<void>;
 
   /**
    * Permanently deletes contact data from payment provider

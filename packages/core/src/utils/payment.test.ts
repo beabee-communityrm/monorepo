@@ -1,5 +1,4 @@
 import {
-  ContributionForm,
   ContributionPeriod,
   ContributionType,
   PaymentMethod,
@@ -11,6 +10,7 @@ import { describe, expect, test } from 'vitest';
 import config from '#config/config';
 import { Contact, ContactRole, Password } from '#models/index';
 import { PaymentFlowFormCreateOneTimePayment } from '#type/payment-flow-form';
+import { UpdateContributionForm } from '#type/update-contribution-form';
 
 import { calcRenewalDate, getChargeableAmount } from './payment';
 
@@ -111,7 +111,7 @@ describe('Renewal calculation should be', () => {
 
 describe('getChargeableAmount', () => {
   test('should calculate correct amount for monthly contribution without fee', () => {
-    const paymentForm: ContributionForm = {
+    const paymentForm: UpdateContributionForm = {
       monthlyAmount: 10,
       period: ContributionPeriod.Monthly,
       payFee: false,
@@ -128,7 +128,7 @@ describe('getChargeableAmount', () => {
   });
 
   test('should calculate correct amount for annual contribution without fee', () => {
-    const paymentForm: ContributionForm = {
+    const paymentForm: UpdateContributionForm = {
       monthlyAmount: 10,
       period: ContributionPeriod.Annually,
       payFee: false,
@@ -145,7 +145,7 @@ describe('getChargeableAmount', () => {
   });
 
   test('should ignore fee for annual contribution', () => {
-    const paymentForm: ContributionForm = {
+    const paymentForm: UpdateContributionForm = {
       monthlyAmount: 5,
       period: ContributionPeriod.Annually,
       payFee: true, // Fee shouldn't be applied
@@ -162,7 +162,7 @@ describe('getChargeableAmount', () => {
   });
 
   test('should handle different Stripe payment methods with different fees', () => {
-    const paymentForm: ContributionForm = {
+    const paymentForm: UpdateContributionForm = {
       monthlyAmount: 20,
       period: ContributionPeriod.Monthly,
       payFee: true,
@@ -187,7 +187,7 @@ describe('getChargeableAmount', () => {
   });
 
   test('should handle GoCardless payment method', () => {
-    const paymentForm: ContributionForm = {
+    const paymentForm: UpdateContributionForm = {
       monthlyAmount: 15,
       period: ContributionPeriod.Monthly,
       payFee: true,
@@ -204,7 +204,7 @@ describe('getChargeableAmount', () => {
   });
 
   test('should round to nearest cent', () => {
-    const paymentForm: ContributionForm = {
+    const paymentForm: UpdateContributionForm = {
       monthlyAmount: 10.333,
       period: ContributionPeriod.Monthly,
       payFee: false,
@@ -221,7 +221,7 @@ describe('getChargeableAmount', () => {
   });
 
   test('should handle different countries', () => {
-    const paymentForm: ContributionForm = {
+    const paymentForm: UpdateContributionForm = {
       monthlyAmount: 25,
       period: ContributionPeriod.Monthly,
       payFee: true,
@@ -251,7 +251,7 @@ describe('getChargeableAmount', () => {
   });
 
   test('should handle zero fee when payFee is false', () => {
-    const paymentForm: ContributionForm = {
+    const paymentForm: UpdateContributionForm = {
       monthlyAmount: 100,
       period: ContributionPeriod.Annually,
       payFee: false, // Key: fee should be ignored

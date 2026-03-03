@@ -1,5 +1,4 @@
 import {
-  ContributionForm,
   ContributionPeriod,
   PaymentMethod,
   PaymentSource,
@@ -16,6 +15,7 @@ import { log as mainLogger } from '#logging';
 import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
 import { PaymentFlowFormCreateOneTimePayment } from '#type/index';
+import { UpdateContributionForm } from '#type/update-contribution-form';
 import { getChargeableAmount } from '#utils/payment';
 
 const log = mainLogger.child({ app: 'stripe-utils' });
@@ -79,7 +79,7 @@ export async function updateSalesTaxRate(
  * @returns A Stripe price data object
  */
 export function getPriceData(
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod
 ): Stripe.SubscriptionCreateParams.Item.PriceData {
   return {
@@ -137,7 +137,7 @@ async function calculateProrationParams(
 
 export const getCreateSubscriptionParams = (
   customerId: string,
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod,
   renewalDate?: Date
 ): Stripe.SubscriptionCreateParams => {
@@ -165,7 +165,7 @@ export const getCreateSubscriptionParams = (
  */
 export async function createSubscription(
   customerId: string,
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod,
   renewalDate?: Date
 ): Promise<Stripe.Subscription> {
@@ -188,7 +188,7 @@ export async function createSubscription(
  */
 export async function updateSubscription(
   subscriptionId: string,
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod
 ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {

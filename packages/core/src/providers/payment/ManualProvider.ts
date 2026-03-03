@@ -1,7 +1,9 @@
-import { ContributionForm } from '@beabee/beabee-common';
-
 import { Contact } from '#models/index';
-import { ContributionInfo, UpdateContributionResult } from '#type/index';
+import {
+  CompletedPaymentFlow,
+  ContributionInfo,
+  UpdateContributionResult,
+} from '#type/index';
 
 import { PaymentProvider } from './PaymentProvider';
 
@@ -13,13 +15,27 @@ export class ManualProvider extends PaymentProvider {
   async canProcessPaymentFlow(): Promise<boolean> {
     return true;
   }
+
+  async processPaymentFlow(
+    flow: CompletedPaymentFlow
+  ): Promise<UpdateContributionResult | undefined> {
+    throw new Error('Manual provider does not support payment flows');
+  }
+
   /**
    * Checks if contribution changes are allowed
-   * @param useExistingMandate - Whether to use existing mandate
-   * @returns Promise resolving to true as manual payments can always be changed
+   * @returns True as manual payments can always be changed
    */
-  async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
-    return !useExistingMandate;
+  async canUpdateContribution(): Promise<boolean> {
+    return true;
+  }
+
+  /**
+   * Updates contribution details
+   * @param form - New contribution form data
+   */
+  async processUpdateContribution(): Promise<UpdateContributionResult> {
+    throw new Error('Manual provider does not support updating contributions');
   }
 
   /**
@@ -51,30 +67,6 @@ export class ManualProvider extends PaymentProvider {
    * @param updates - Contact fields to update
    */
   async updateContact(updates: Partial<Contact>): Promise<void> {}
-
-  /**
-   * Updates contribution details
-   * @param form - New contribution form data
-   */
-  async updateContribution(
-    form: ContributionForm
-  ): Promise<UpdateContributionResult> {
-    throw new Error('Method not implemented.');
-  }
-
-  /**
-   * No-op as manual payments don't use payment methods
-   * @param completedPaymentFlow - The completed payment flow
-   */
-  async updatePaymentMethod(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  /**
-   * No-op as manual payments don't support one-time payments
-   */
-  async createOneTimePayment(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
 
   /**
    * No-op as manual payments don't store external data
