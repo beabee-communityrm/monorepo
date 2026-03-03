@@ -50,16 +50,6 @@ app.post(
     const contact = req.model as Contact;
 
     switch (req.body.action) {
-      case 'update-subscription':
-        await ContactsService.updateContactContribution(contact, {
-          monthlyAmount: Number(req.body.amount),
-          period: req.body.period,
-          prorate: req.body.prorate === 'true',
-          payFee: req.body.payFee === 'true',
-        });
-        req.flash('success', 'contribution-updated');
-        break;
-
       case 'cancel-subscription':
         await ContactsService.cancelContactContribution(
           contact,
