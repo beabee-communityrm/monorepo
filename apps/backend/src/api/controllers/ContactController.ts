@@ -258,7 +258,7 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    const result = await PaymentFlowService.startPaymentFlow(form, {
+    const { result } = await PaymentFlowService.startPaymentFlow(form, {
       paymentMethod: data.paymentMethod,
       completeUrl: data.completeUrl,
     });
@@ -366,7 +366,7 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    const result = await PaymentFlowService.startPaymentFlow(form, {
+    const { result } = await PaymentFlowService.startPaymentFlow(form, {
       paymentMethod: data.paymentMethod,
       completeUrl: data.completeUrl,
     });
@@ -426,7 +426,7 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    const result = await PaymentFlowService.startPaymentFlow(form, {
+    const { result } = await PaymentFlowService.startPaymentFlow(form, {
       paymentMethod,
       completeUrl: data.completeUrl,
     });
