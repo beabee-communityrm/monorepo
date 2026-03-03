@@ -328,7 +328,10 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    await PaymentFlowService.finalizePaymentFlow(target, data.paymentFlowId);
+    await PaymentFlowService.completePaymentFlowAndExecuteActions(
+      target,
+      data.paymentFlowId
+    );
     return await this.getContribution(target);
   }
 
@@ -377,7 +380,10 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<void> {
-    await PaymentFlowService.finalizePaymentFlow(target, data.paymentFlowId);
+    await PaymentFlowService.completePaymentFlowAndExecuteActions(
+      target,
+      data.paymentFlowId
+    );
   }
 
   @Get('/:id/payment')
@@ -433,7 +439,10 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    await PaymentFlowService.finalizePaymentFlow(target, data.paymentFlowId);
+    await PaymentFlowService.completePaymentFlowAndExecuteActions(
+      target,
+      data.paymentFlowId
+    );
     return await this.getContribution(target);
   }
 
