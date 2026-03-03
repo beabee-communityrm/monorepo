@@ -1,4 +1,8 @@
-import { ContributionForm, PaymentMethod } from '@beabee/beabee-common';
+import {
+  ContributionForm,
+  PaymentFlowParams,
+  PaymentMethod,
+} from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { Contact, ContactContribution } from '#models/index';
@@ -6,6 +10,7 @@ import {
   CompletedPaymentFlow,
   ContributionInfo,
   PaymentFlowForm,
+  PaymentFlowFormCreateOneTimePayment,
   UpdateContributionResult,
 } from '#type/index';
 
@@ -84,7 +89,10 @@ export abstract class PaymentProvider {
    * @param completedPaymentFlow - The completed payment flow
    */
   abstract createOneTimePayment(
-    completedPaymentFlow: CompletedPaymentFlow
+    completedPaymentFlow: CompletedPaymentFlow<
+      PaymentFlowParams,
+      PaymentFlowFormCreateOneTimePayment
+    >
   ): Promise<void>;
 
   /**
