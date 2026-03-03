@@ -1,6 +1,7 @@
 import {
   ContributionForm,
   MembershipStatus,
+  PaymentFlowParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
@@ -17,6 +18,7 @@ import {
   CompletedPaymentFlow,
   ContributionInfo,
   PaymentFlowForm,
+  PaymentFlowFormCreateOneTimePayment,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate, getActualAmount } from '#utils/payment';
@@ -227,16 +229,32 @@ class PaymentService {
 
   async createOneTimePayment(
     contact: Contact,
-    completedPaymentFlow: CompletedPaymentFlow
+    completedPaymentFlow: CompletedPaymentFlow<
+      PaymentFlowParams,
+      PaymentFlowFormCreateOneTimePayment
+    >
   ): Promise<void> {
     log.info('Create one-time payment for contact ' + contact.id);
     // Use flow method to fetch provider as we don't store payment method for
     // one-time payments
     const contribution = await this.getContribution(contact);
-    const provider = new PaymentProviders[
-      completedPaymentFlow.params.paymentMethod
-    ](contribution);
-    await provider.createOneTimePayment(completedPaymentFlow as any); // TODO: fix type
+
+    // There is probably a nicer way to narrow the type and dispatch to the
+    // correct provider, but this is straightforward and works for now
+    if (
+      completedPaymentFlow.params.paymentMethod ===
+      PaymentMethod.GoCardlessDirectDebit
+    ) {
+      await new GCProvider(contribution).createOneTimePayment({
+        ...completedPaymentFlow,
+        params: completedPaymentFlow.params,
+      });
+    } else {
+      await new StripeProvider(contribution).createOneTimePayment({
+        ...completedPaymentFlow,
+        params: completedPaymentFlow.params,
+      });
+    }
   }
 
   async fetchInvoiceUrl(paymentId: string): Promise<string | null> {
