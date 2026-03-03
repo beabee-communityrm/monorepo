@@ -71,7 +71,7 @@ class PaymentFlowService {
    * @param contact - The contact
    * @param paymentFlowId - The ID of the payment flow to finalize
    */
-  async finalizePaymentFlow(
+  async completePaymentFlowAndExecuteActions(
     contact: Contact,
     paymentFlowId: string
   ): Promise<void> {
@@ -98,10 +98,10 @@ class PaymentFlowService {
 
   /**
    * Completes a payment flow and returns additional contact data from the provider
-   * @param paymentFlow - The payment flow entity to complete
+   * @param flow - The payment flow entity to complete
    * @returns Payment flow data and additional contact information
    */
-  async completePaymentFlowAndGetData(paymentFlow: PaymentFlow): Promise<
+  async completePaymentFlowAndGetData(flow: PaymentFlow): Promise<
     | {
         flow: CompletedPaymentFlow;
         data: CompletedPaymentFlowData;
@@ -111,14 +111,14 @@ class PaymentFlowService {
     // Use atomic update to prevent multiple simultaneous attempts to finalize
     // the same flow
     const res = await getRepository(PaymentFlow).update(
-      { id: paymentFlow.id, processing: false },
+      { id: flow.id, processing: false },
       { processing: true }
     );
     if (res.affected === 0) {
       return;
     }
 
-    const completedPaymentFlow = await this.completePaymentFlow(paymentFlow);
+    const completedPaymentFlow = await this.completePaymentFlow(flow);
     const data = await this.getCompletedPaymentFlowData(completedPaymentFlow);
 
     return { flow: completedPaymentFlow, data };
