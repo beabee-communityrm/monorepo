@@ -249,6 +249,7 @@ import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { canAdmin } from '#store/currentUser';
 import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
 import {
   definePaginatedQuery,
   defineParam,
@@ -381,7 +382,6 @@ const { formComponents, answerItems, filterGroups, reviewerItems, tagItems } =
 const {
   currentSegmentId,
   hasUnsavedSegment,
-  hasInvalidRules,
   emptyTable,
   segmentItems,
   handleSavedSegment,
@@ -390,8 +390,7 @@ const {
   `/admin/crowdnewsroom/view/${props.callout.slug}/responses`,
   'All Responses',
   listSegments,
-  listTotalSegmentItems,
-  filterGroups.value
+  listTotalSegmentItems
 );
 
 async function saveSegment(name: string, rules: RuleGroup) {
@@ -513,10 +512,6 @@ const isRefreshing = ref(false);
  * Refreshes the response list based on current filters
  */
 async function refreshResponses() {
-  if (hasInvalidRules.value) {
-    responses.value = emptyTable();
-    return;
-  }
   if (isRefreshing.value) return;
 
   isRefreshing.value = true;
@@ -554,6 +549,12 @@ async function refreshResponses() {
         selected: selectedIds.has(r.id),
       })),
     };
+  } catch (err) {
+    responses.value = emptyTable();
+    addNotification({
+      variant: 'error',
+      title: extractErrorText(err),
+    });
   } finally {
     isRefreshing.value = false;
   }

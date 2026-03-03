@@ -210,6 +210,7 @@ import TagList from '#components/tag/TagList.vue';
 import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
 import { definePaginatedQuery, defineParam } from '#utils/pagination';
 
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
@@ -303,7 +304,6 @@ const {
   currentSegment,
   currentRules,
   hasUnsavedSegment,
-  hasInvalidRules,
   emptyTable,
   segmentItems,
   handleSavedSegment,
@@ -311,8 +311,7 @@ const {
   '/admin/contacts',
   'All Contacts',
   listSegments,
-  listTotalSegmentItems,
-  filteredGroups.value //TODO: replace with filterGroups after merge of #472
+  listTotalSegmentItems
 );
 
 async function saveSegment(name: string, rules: RuleGroup) {
@@ -423,11 +422,6 @@ const isRefreshing = ref(false);
  * Refreshes the contact list based on current filters
  */
 async function refreshResponses() {
-  if (hasInvalidRules.value) {
-    contactsTable.value = emptyTable();
-    return;
-  }
-
   if (isRefreshing.value) return;
 
   isRefreshing.value = true;
@@ -452,6 +446,12 @@ async function refreshResponses() {
         selected: selectedIds.has(c.id),
       })),
     };
+  } catch (err) {
+    contactsTable.value = emptyTable();
+    addNotification({
+      variant: 'error',
+      title: extractErrorText(err),
+    });
   } finally {
     isRefreshing.value = false;
   }

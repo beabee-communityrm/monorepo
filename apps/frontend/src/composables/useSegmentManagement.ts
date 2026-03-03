@@ -3,16 +3,13 @@ import type { GetSegmentDataWith } from '@beabee/beabee-common';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import type { FilterGroups } from '#type/search';
 import { defineParam, defineRulesParam } from '#utils/pagination';
-import { isRuleGroupValidForFilterGroups } from '#utils/rules';
 
 export function useSegmentManagement(
   basePath: string,
   totalSegmentsLabel: string,
   listSegments: () => Promise<GetSegmentDataWith<'itemCount'>[]>,
-  listTotalSegmentItems: () => Promise<number>,
-  filterGroups: FilterGroups
+  listTotalSegmentItems: () => Promise<number>
 ) {
   const route = useRoute();
 
@@ -46,13 +43,6 @@ export function useSegmentManagement(
       !!route.query.r &&
       !!currentRules.value &&
       currentRules.value.rules.length > 0
-  );
-
-  const hasInvalidRules = computed(
-    () =>
-      !!currentRules.value &&
-      currentRules.value.rules.length > 0 &&
-      !isRuleGroupValidForFilterGroups(currentRules.value, filterGroups)
   );
 
   const segmentItems = computed(() => [
@@ -95,7 +85,6 @@ export function useSegmentManagement(
     totalItems,
     currentRules,
     hasUnsavedSegment,
-    hasInvalidRules,
     emptyTable,
     segmentItems,
     handleSavedSegment,

@@ -118,24 +118,10 @@ export class SegmentController {
     const mergedRules = query.rules
       ? { condition: 'AND' as const, rules: [segment.ruleGroup, query.rules] }
       : segment.ruleGroup;
-    try {
-      return await ContactTransformer.fetch(auth, {
-        ...query,
-        rules: mergedRules,
-      });
-    } catch (err) {
-      // If rules are invalid, return an empty paginated result so the segment
-      // can still be fetched and displayed in the frontend
-      if (err instanceof InvalidRuleError) {
-        return {
-          items: [],
-          total: 0,
-          offset: query.offset || 0,
-          count: 0,
-        };
-      }
-      throw err;
-    }
+    return await ContactTransformer.fetch(auth, {
+      ...query,
+      rules: mergedRules,
+    });
   }
 
   /** Send one-off email to all contacts in the segment (admin). */
