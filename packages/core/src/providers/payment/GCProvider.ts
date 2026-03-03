@@ -1,5 +1,6 @@
 import {
   ContributionForm,
+  PaymentFlowParams,
   PaymentMethod,
   PaymentSource,
 } from '@beabee/beabee-common';
@@ -21,6 +22,7 @@ import {
   CompletedPaymentFlow,
   ContributionInfo,
   PaymentFlowForm,
+  PaymentFlowFormCreateOneTimePayment,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate } from '#utils/payment';
@@ -279,7 +281,12 @@ export class GCProvider extends PaymentProvider {
    *
    * @param form The payment form
    */
-  async createOneTimePayment(): Promise<void> {
+  async createOneTimePayment(
+    _completedPaymentFlow: CompletedPaymentFlow<
+      PaymentFlowParams,
+      PaymentFlowFormCreateOneTimePayment
+    >
+  ): Promise<void> {
     throw new Error('Method not implemented.');
   }
 

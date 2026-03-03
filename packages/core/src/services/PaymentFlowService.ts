@@ -21,15 +21,6 @@ import {
   PaymentFlowSetup,
 } from '#type/index';
 
-const paymentProviders = {
-  [PaymentMethod.StripeCard]: stripeFlowProvider,
-  [PaymentMethod.StripeSEPA]: stripeFlowProvider,
-  [PaymentMethod.StripeBACS]: stripeFlowProvider,
-  [PaymentMethod.StripePayPal]: stripeFlowProvider,
-  [PaymentMethod.StripeIdeal]: stripeFlowProvider,
-  [PaymentMethod.GoCardlessDirectDebit]: gcFlowProvider,
-};
-
 const log = mainLogger.child({ app: 'payment-flow-service' });
 
 /**
@@ -121,7 +112,10 @@ class PaymentFlowService {
     }
 
     if (form.action === 'create-one-time-payment') {
-      await PaymentService.createOneTimePayment(contact, completedFlow);
+      await PaymentService.createOneTimePayment(contact, {
+        ...completedFlow,
+        form,
+      });
     } else {
       await PaymentService.updatePaymentMethod(contact, completedFlow);
       if (form.action === 'start-contribution') {
@@ -144,9 +138,17 @@ class PaymentFlowService {
    */
   private async setupPaymentFlow(flow: PaymentFlow): Promise<PaymentFlowSetup> {
     log.info('Create payment flow for payment flow ' + flow.id);
-    return paymentProviders[flow.params.paymentMethod].setupPaymentFlow(
-      flow as any // TODO: fix type
-    );
+
+    // There is probably a nicer way to narrow the type and dispatch to the
+    // correct provider, but this is straightforward and works for now
+    if (flow.params.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+      return gcFlowProvider.setupPaymentFlow({ ...flow, params: flow.params });
+    } else {
+      return stripeFlowProvider.setupPaymentFlow({
+        ...flow,
+        params: flow.params,
+      });
+    }
   }
 
   /**
@@ -160,9 +162,20 @@ class PaymentFlowService {
     flow: PaymentFlow
   ): Promise<CompletedPaymentFlow> {
     log.info('Complete payment flow for payment flow ' + flow.id);
-    return paymentProviders[flow.params.paymentMethod].completePaymentFlow(
-      flow as any // TODO: fix type
-    );
+
+    // There is probably a nicer way to narrow the type and dispatch to the
+    // correct provider, but this is straightforward and works for now
+    if (flow.params.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+      return gcFlowProvider.completePaymentFlow({
+        ...flow,
+        params: flow.params,
+      });
+    } else {
+      return stripeFlowProvider.completePaymentFlow({
+        ...flow,
+        params: flow.params,
+      });
+    }
   }
 
   /**
@@ -176,11 +189,22 @@ class PaymentFlowService {
   private async getCompletedPaymentFlowData(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<CompletedPaymentFlowData> {
-    return paymentProviders[
-      completedPaymentFlow.params.paymentMethod
-    ].getCompletedPaymentFlowData(
-      completedPaymentFlow as any // TODO: fix type
-    );
+    // There is probably a nicer way to narrow the type and dispatch to the
+    // correct provider, but this is straightforward and works for now
+    if (
+      completedPaymentFlow.params.paymentMethod ===
+      PaymentMethod.GoCardlessDirectDebit
+    ) {
+      return gcFlowProvider.getCompletedPaymentFlowData({
+        ...completedPaymentFlow,
+        params: completedPaymentFlow.params,
+      });
+    } else {
+      return stripeFlowProvider.getCompletedPaymentFlowData({
+        ...completedPaymentFlow,
+        params: completedPaymentFlow.params,
+      });
+    }
   }
 }
 
