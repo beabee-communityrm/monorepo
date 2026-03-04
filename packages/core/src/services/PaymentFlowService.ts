@@ -162,7 +162,7 @@ class PaymentFlowService {
   async finalizeRegistration(
     joinFlowId: string,
     keepFlow: boolean = false
-  ): Promise<Contact> {
+  ): Promise<Contact | undefined> {
     const joinFlow = await getRepository(JoinFlow).findOne({
       where: { id: joinFlowId },
       relations: { contact: true },
@@ -177,6 +177,16 @@ class PaymentFlowService {
       }
 
       return joinFlow.contact;
+    }
+
+    // Use atomic update to prevent multiple simultaneous attempts to finalize
+    // the same flow
+    const res = await getRepository(JoinFlow).update(
+      { id: joinFlow.id, processing: false },
+      { processing: true }
+    );
+    if (res.affected === 0) {
+      return;
     }
 
     let contact = await ContactsService.findOne({
@@ -313,6 +323,16 @@ class PaymentFlowService {
   ): Promise<boolean> {
     const joinFlow = await getRepository(JoinFlow).findOneBy({ paymentFlowId });
     if (joinFlow) {
+      // Use atomic update to prevent multiple simultaneous attempts to finalize
+      // the same flow
+      const res = await getRepository(JoinFlow).update(
+        { id: joinFlow.id, processing: false },
+        { processing: true }
+      );
+      if (res.affected === 0) {
+        return true;
+      }
+
       const completedFlow = await this.completePaymentFlow(joinFlow);
       if (completedFlow) {
         await this.executePaymentActions(contact, completedFlow);
