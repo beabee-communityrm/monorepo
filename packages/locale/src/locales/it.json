@@ -1486,6 +1486,11 @@
         "message": "Si è verificato un problema durante la configurazione dell'iscrizione, il nostro team è stato informato. Se il problema persiste, contatta l'assistenza.",
         "title": "Qualcosa è andato storto"
       },
+      "notFound": {
+        "backToJoin": "Torna alla pagina di registrazione",
+        "message": "Questo link di registrazione è scaduto o è già stato utilizzato. Se ti sei appena registrato in un'altra scheda, dovresti ricevere un'e-mail di conferma a breve. Se ti sei registrato tempo fa, dovrai iniziare una nuova registrazione.",
+        "title": "Link di registrazione scaduto"
+      },
       "paymentFailed": {
         "backToJoin": "Torna alla pagina di registrazione",
         "message": "Il pagamento non è andato a buon fine. Riprova o utilizza un metodo di pagamento diverso.",

@@ -1486,6 +1486,11 @@
         "message": "Es gab ein Problem bei der Registrierung, unser Team wurde benachrichtigt. Bitte kontaktiere uns, wenn das Problem weiterhin auftritt.",
         "title": "Etwas ist schief gelaufen"
       },
+      "notFound": {
+        "backToJoin": "Zurück zur Registrierung",
+        "message": "Dieser Registrierungslink ist abgelaufen oder wurde bereits verwendet. Falls du dich gerade in einem anderen Tab registriert hast, solltest du in Kürze eine Bestätigungs-E-Mail erhalten. Falls du dich vor längerer Zeit registriert hast, musst du eine neue Registrierung starten.",
+        "title": "Registrierungslink abgelaufen"
+      },
       "paymentFailed": {
         "backToJoin": "Zurück zur Registrierung",
         "message": "Deine Zahlung war nicht erfolgreich. Bitte versuche es erneut oder verwende eine andere Zahlungsmethode.",
