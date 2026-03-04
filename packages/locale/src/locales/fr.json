@@ -1475,6 +1475,11 @@
         "message": "Une erreur s'est produite lors de votre adhésion, notre équipe en a été informée. Veuillez contacter l'assistance si le problème persiste.",
         "title": "Une erreur s'est produite"
       },
+      "notFound": {
+        "backToJoin": "Retour à la page d'inscription",
+        "message": "Ce lien d'inscription a expiré ou a déjà été utilisé. Si vous venez de vous inscrire dans un autre onglet, vous devriez recevoir un e-mail de confirmation sous peu. Si vous vous êtes inscrit il y a quelque temps, vous devrez recommencer une nouvelle inscription.",
+        "title": "Lien d'inscription expiré"
+      },
       "paymentFailed": {
         "backToJoin": "Retour à la page d’inscription",
         "message": "Votre paiement n’a pas abouti. Veuillez réessayer ou utiliser un autre moyen de paiement.",

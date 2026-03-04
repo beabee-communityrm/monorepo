@@ -1471,6 +1471,11 @@
         "message": "Er is een probleem opgetreden bij het opzetten van je account. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
         "title": "Er is iets fout gegaan"
       },
+      "notFound": {
+        "backToJoin": "Terug naar de aanmeldpagina",
+        "message": "Deze registratielink is verlopen of al gebruikt. Als je zojuist hebt geregistreerd in een ander tabblad, ontvang je binnenkort een bevestigingsmail. Als je je een tijd geleden hebt geregistreerd, moet je een nieuwe registratie starten.",
+        "title": "Registratielink verlopen"
+      },
       "paymentFailed": {
         "backToJoin": "Terug naar de aanmeldpagina",
         "message": "Je betaling is niet gelukt. Probeer het opnieuw of gebruik een andere betaalmethode.",
