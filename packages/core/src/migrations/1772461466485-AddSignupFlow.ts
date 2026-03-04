@@ -70,22 +70,22 @@ export class AddSignupFlow1772461466485 implements MigrationInterface {
       `ALTER TABLE "signup_flow" DROP CONSTRAINT "FK_6153d3160f5f810ad8ad3aecb8c"`
     );
     await queryRunner.query(
-      `ALTER TABLE "payment_flow" ADD "confirmUrl" character varying NOT NULL`
+      `ALTER TABLE "payment_flow" ADD "confirmUrl" character varying NOT NULL DEFAULT ''`
     );
     await queryRunner.query(
-      `ALTER TABLE "payment_flow" ADD "setPasswordUrl" character varying NOT NULL`
+      `ALTER TABLE "payment_flow" ADD "setPasswordUrl" character varying NOT NULL DEFAULT ''`
     );
     await queryRunner.query(
-      `ALTER TABLE "payment_flow" ADD "loginUrl" character varying NOT NULL`
+      `ALTER TABLE "payment_flow" ADD "loginUrl" character varying NOT NULL DEFAULT ''`
     );
     await queryRunner.query(
-      `ALTER TABLE "payment_flow" ADD "formPasswordSalt" character varying NOT NULL`
+      `ALTER TABLE "payment_flow" ADD "formPasswordSalt" character varying NOT NULL DEFAULT ''`
     );
     await queryRunner.query(
-      `ALTER TABLE "payment_flow" ADD "formPasswordHash" character varying NOT NULL`
+      `ALTER TABLE "payment_flow" ADD "formPasswordHash" character varying NOT NULL DEFAULT ''`
     );
     await queryRunner.query(
-      `ALTER TABLE "payment_flow" ADD "formEmail" character varying NOT NULL`
+      `ALTER TABLE "payment_flow" ADD "formEmail" character varying NOT NULL DEFAULT ''`
     );
     await queryRunner.query(
       `ALTER TABLE "payment_flow" ADD "formReferralgift" character varying`
@@ -107,17 +107,37 @@ export class AddSignupFlow1772461466485 implements MigrationInterface {
     // Move data back from signup_flow to payment_flow
     await queryRunner.query(
       `UPDATE "payment_flow" pf SET
-        "formEmail" = sf.email,
-        "loginUrl" = sf.loginUrl,
-        "setPasswordUrl" = sf.setPasswordUrl,
-        "confirmUrl" = sf.confirmUrl,
-        "contactId" = sf.contactId,
-        "formPasswordHash" = sf.passwordHash,
-        "formPasswordSalt" = sf.passwordSalt,
-        "formPasswordIterations" = sf.passwordIterations,
-        "formPasswordTries" = sf.passwordTries
+        "formEmail" = sf."email",
+        "loginUrl" = sf."loginUrl",
+        "setPasswordUrl" = sf."setPasswordUrl",
+        "confirmUrl" = sf."confirmUrl",
+        "contactId" = sf."contactId",
+        "formPasswordHash" = sf."passwordHash",
+        "formPasswordSalt" = sf."passwordSalt",
+        "formPasswordIterations" = sf."passwordIterations",
+        "formPasswordTries" = sf."passwordTries"
       FROM "signup_flow" sf
       WHERE pf.id = sf."paymentFlowId"`
+    );
+
+    // Remove default values after updating data
+    await queryRunner.query(
+      `ALTER TABLE "payment_flow" ALTER COLUMN "confirmUrl" DROP DEFAULT`
+    );
+    await queryRunner.query(
+      `ALTER TABLE "payment_flow" ALTER COLUMN "setPasswordUrl" DROP DEFAULT`
+    );
+    await queryRunner.query(
+      `ALTER TABLE "payment_flow" ALTER COLUMN "loginUrl" DROP DEFAULT`
+    );
+    await queryRunner.query(
+      `ALTER TABLE "payment_flow" ALTER COLUMN "formPasswordSalt" DROP DEFAULT`
+    );
+    await queryRunner.query(
+      `ALTER TABLE "payment_flow" ALTER COLUMN "formPasswordHash" DROP DEFAULT`
+    );
+    await queryRunner.query(
+      `ALTER TABLE "payment_flow" ALTER COLUMN "formEmail" DROP DEFAULT`
     );
 
     await queryRunner.query(`DROP TABLE "signup_flow"`);
