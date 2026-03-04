@@ -1471,6 +1471,11 @@
         "message": "",
         "title": ""
       },
+      "notFound": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
+      },
       "paymentFailed": {
         "backToJoin": "",
         "message": "",

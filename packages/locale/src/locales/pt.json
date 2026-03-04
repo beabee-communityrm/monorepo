@@ -1471,6 +1471,11 @@
         "message": "Houve um problema inesperado ao criar a tua conta. Entra em contacto connosco se o problema continuar, e diz-nos com detalhe o que aconteceu.",
         "title": "Houve aqui um problema."
       },
+      "notFound": {
+        "backToJoin": "Voltar à página de registo",
+        "message": "Este link de registo expirou ou já foi utilizado. Se acabou de se registar noutra aba, deve receber um e-mail de confirmação em breve. Se se registou há algum tempo, terá de iniciar um novo registo.",
+        "title": "Link de registo expirado"
+      },
       "paymentFailed": {
         "backToJoin": "Voltar à página de registo",
         "message": "O seu pagamento não foi bem-sucedido. Tente novamente ou utilize outro método de pagamento.",
