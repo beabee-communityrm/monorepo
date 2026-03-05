@@ -260,6 +260,7 @@
       "any": "einer dieser"
     },
     "createdSegment": "Erstelltes Segment \"{segment}\"",
+    "invalidRuleError": "In dieser Regel ist was kaputt: \"{ rule }\". Bitte aktualisieren!",
     "matchWord": {
       "AND": "und",
       "OR": "oder"

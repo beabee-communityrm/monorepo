@@ -249,6 +249,7 @@ import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { canAdmin } from '#store/currentUser';
 import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
 import {
   definePaginatedQuery,
   defineParam,
@@ -367,12 +368,21 @@ const currentRules = defineRulesParam(
 );
 
 /**
+ * Search & Filter State
+ * @description Manages search and filter parameters
+ */
+const currentPaginatedQuery = definePaginatedQuery('createdAt');
+const { formComponents, answerItems, filterGroups, reviewerItems, tagItems } =
+  useCalloutResponseFilters(toRef(props, 'callout'));
+
+/**
  * Segment Management
  * @description Handles segment filtering and saving
  */
 const {
   currentSegmentId,
   hasUnsavedSegment,
+  emptyTable,
   segmentItems,
   handleSavedSegment,
   currentSegment,
@@ -422,14 +432,6 @@ async function listTotalSegmentItems() {
   return (await client.callout.listResponses(props.callout.slug, { limit: 1 }))
     .total;
 }
-
-/**
- * Search & Filter State
- * @description Manages search and filter parameters
- */
-const currentPaginatedQuery = definePaginatedQuery('createdAt');
-const { formComponents, answerItems, filterGroups, reviewerItems, tagItems } =
-  useCalloutResponseFilters(toRef(props, 'callout'));
 
 /**
  * Action State
@@ -547,6 +549,12 @@ async function refreshResponses() {
         selected: selectedIds.has(r.id),
       })),
     };
+  } catch (err) {
+    responses.value = emptyTable();
+    addNotification({
+      variant: 'error',
+      title: extractErrorText(err),
+    });
   } finally {
     isRefreshing.value = false;
   }

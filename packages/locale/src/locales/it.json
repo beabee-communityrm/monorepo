@@ -260,6 +260,7 @@
       "any": "una delle"
     },
     "createdSegment": "Segmento creato \"{segment}\"",
+    "invalidRuleError": "Qualcosa non va in questa regola: \"{ rule }\". Si prega di aggiornare!",
     "matchWord": {
       "AND": "e",
       "OR": "o"

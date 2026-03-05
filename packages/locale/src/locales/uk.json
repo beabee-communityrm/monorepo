@@ -260,6 +260,7 @@
       "any": "будь-який"
     },
     "createdSegment": "Створено сегмент \"{segment}\"",
+    "invalidRuleError": "У цьому правилі щось не так: \"{ rule }\". Будь ласка, оновіть!",
     "matchWord": {
       "AND": "і",
       "OR": "або"

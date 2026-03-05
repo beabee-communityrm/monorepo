@@ -234,6 +234,7 @@ import TagList from '#components/tag/TagList.vue';
 import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
 import { definePaginatedQuery, defineParam } from '#utils/pagination';
 
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
@@ -296,6 +297,29 @@ const selectedTags = computed(() => {
 });
 
 /**
+ * Search & Filter state
+ * @description Manages search and filter parameters
+ */
+const currentPaginatedQuery = definePaginatedQuery('joined');
+const currentSearch = defineParam('s', (v) => v || '');
+
+const { filterGroups, tagItems } = useContactFilters();
+
+/**
+ * Handle settings for one-time contribution
+ */
+const joinContent = ref<ContentJoinData>();
+const hasOneTimeContribution = computed(() =>
+  joinContent.value?.periods.some((p) => p.name === 'one-time')
+);
+const filteredGroups = computed(() => {
+  return filterGroups.value.filter(
+    (group) =>
+      hasOneTimeContribution.value || group.id !== 'oneTimeContributions'
+  );
+});
+
+/**
  * Segment Management
  * @description Handles segment filtering and saving
  */
@@ -304,6 +328,7 @@ const {
   currentSegment,
   currentRules,
   hasUnsavedSegment,
+  emptyTable,
   segmentItems,
   handleSavedSegment,
 } = useSegmentManagement(
@@ -342,14 +367,6 @@ async function listSegments() {
 async function listTotalSegmentItems() {
   return (await client.contact.list({ limit: 1 })).total;
 }
-/**
- * Search & Filter state
- * @description Manages search and filter parameters
- */
-const currentPaginatedQuery = definePaginatedQuery('joined');
-const currentSearch = defineParam('s', (v) => v || '');
-
-const { filterGroups, tagItems } = useContactFilters();
 
 /**
  * Action state
@@ -453,6 +470,12 @@ async function refreshResponses() {
         selected: selectedIds.has(c.id),
       })),
     };
+  } catch (err) {
+    contactsTable.value = emptyTable();
+    addNotification({
+      variant: 'error',
+      title: extractErrorText(err),
+    });
   } finally {
     isRefreshing.value = false;
   }
@@ -463,7 +486,6 @@ watch(
   () => refreshResponses(),
   { deep: true }
 );
-
 refreshResponses();
 
 /**
@@ -488,19 +510,6 @@ async function handleUpdateAction(
   addNotification({ variant: 'success', title: successText });
   doingAction.value = false;
 }
-/**
- * Handle settings for one-time contribution
- */
-const joinContent = ref<ContentJoinData>();
-const hasOneTimeContribution = computed(() =>
-  joinContent.value?.periods.some((p) => p.name === 'one-time')
-);
-const filteredGroups = computed(() => {
-  return filterGroups.value.filter(
-    (group) =>
-      hasOneTimeContribution.value || group.id !== 'oneTimeContributions'
-  );
-});
 
 onBeforeMount(async () => {
   joinContent.value = await client.content.get('join');

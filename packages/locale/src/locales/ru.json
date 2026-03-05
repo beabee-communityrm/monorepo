@@ -261,6 +261,7 @@
       "any": ""
     },
     "createdSegment": "",
+    "invalidRuleError": "",
     "matchWord": {
       "AND": "",
       "OR": ""
