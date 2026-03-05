@@ -1,5 +1,4 @@
 import { getRepository } from '@beabee/core/database';
-import { InvalidRuleError } from '@beabee/core/errors';
 import {
   Contact,
   Email,
