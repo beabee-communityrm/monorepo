@@ -4,4 +4,7 @@ export interface CreateEmailData {
   fromEmail?: string;
   subject: string;
   body: string;
+  isOngoing?: boolean;
+  segmentId?: string;
+  trigger?: string;
 }

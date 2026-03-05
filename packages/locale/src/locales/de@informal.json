@@ -182,8 +182,18 @@
     "email": {
       "contactTemplates": {
         "button": "E-Mail Vorlagen verwalten",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
         "description": "Hier kannst du E-Mail-Vorlagen für verschiedene Zielgruppen erstellen und anpassen. Du kannst sowohl einmalige als auch wiederkehrende E-Mails verwalten.",
-        "title": "Segment Basierte"
+        "descriptionOngoingEmails": "",
+        "oneOff": "",
+        "ongoing": "",
+        "send": "",
+        "title": "Segment Basierte",
+        "titleDirectSend": "",
+        "titleEmailType": "",
+        "titleSendTime": ""
       },
       "fromEmail": "E-Mail-Adresse",
       "fromName": "Name",

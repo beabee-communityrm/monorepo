@@ -17,12 +17,12 @@ meta:
       <AppRadioGroup
         v-model="emailSettingType"
         :options="[
-          ['one-off', 'One-off'],
-          ['ongoing', 'Ongoing'],
+          ['one-off', t('adminSettings.email.contactTemplates.oneOff')],
+          ['ongoing', t('adminSettings.email.contactTemplates.ongoing')],
         ]"
         :variant="'link'"
         :disabled="false"
-        :label="'Typ'"
+        :label="t('adminSettings.email.contactTemplates.titleEmailType')"
         :inline="true"
         :required="false"
       />
@@ -34,12 +34,12 @@ meta:
       <AppRadioGroup
         v-model="emailSettingSendTime"
         :options="[
-          ['contact-joins', 'Contact joins segment'],
-          ['contact-leaves', 'Contact leaves segment'],
+          ['contact-joins', t('adminSettings.email.contactTemplates.contactJoins')],
+          ['contact-leaves', t('adminSettings.email.contactTemplates.contactLeaves')],
         ]"
         :variant="'link'"
         :disabled="false"
-        :label="'Send when'"
+        :label="t('adminSettings.email.contactTemplates.titleSendTime')"
         :inline="true"
         :required="false"
       />
@@ -49,21 +49,20 @@ meta:
         class="mt-2"
         :variant="'link'"
         :disabled="false"
-        label="Send the email immediately to all contacts in the segment"
+        :label="t('adminSettings.email.contactTemplates.titleDirectSend')"
         :required="false"
       />
       <p class="mt-2 text-sm text-body-80">
-        Ongoing emails are triggered once per day
+        {{ t('adminSettings.email.contactTemplates.descriptionOngoingEmails') }}
       </p>
     </div>
   </div>
-
   <EmailTemplateEditor
+    v-model:email="emailData"
     class="mt-4"
-    submit-button-text="Senden"
-    reset-button-text="Zurück"
+    :submit-button-text="submitButtonText"
+    :reset-button-text="t('actions.goBack')"
     show-select-template
-    :email="emailData"
     :save-preview="savePreview"
     :contacts="segmentContacts"
     :default-new-template-name="defaultNewTemplateName"
@@ -117,7 +116,19 @@ addBreadcrumb(
 
 const segmentId = computed(() => route.params.segmentId);
 
-const backUrl = computed(
+const sendEmail = computed(() =>
+  emailSettingType.value === 'one-off' ||
+  (emailSettingDirectSend.value &&
+    emailSettingSendTime.value === 'contact-joins')
+    ? true
+    : false
+);
+
+const submitButtonText = computed(() =>
+  sendEmail.value ? t('adminSettings.email.contactTemplates.send') : t('adminSettings.email.create')
+);
+
+const backUrl = computed( 
   () => `/admin/contacts${segmentId.value ? `?segment=${segmentId.value}` : ''}`
 );
 
@@ -132,7 +143,7 @@ const segmentContacts = ref<GetContactData[]>([]);
 const templates = ref<GetEmailData[]>([]);
 const selectedTemplateId = ref<string>(NEW_EMAIL_VALUE);
 const newTemplateName = ref('');
-const emailData = ref({ subject: '', body: '' });
+const emailData = ref({ name: '', subject: '', body: '' });
 const pendingAction = ref<'back' | 'send'>('send');
 const savePreview = ref(true);
 
@@ -173,14 +184,19 @@ async function ensureSavedEmailId(): Promise<string> {
       });
       throw new Error('Template name required');
     }
+    const isOngoing = emailSettingType.value === 'ongoing';
     const created = await client.email.create({
-      name,
+      name: emailData.value.name,
       subject: emailData.value.subject,
       body: emailData.value.body,
+      isOngoing: isOngoing,
+      segmentId: isOngoing ? segmentId.value : undefined,
+      trigger: isOngoing ? emailSettingSendTime.value : undefined,
     });
     return created.id;
   }
   await client.email.update(selectedTemplateId.value, {
+    name: emailData.value.name,
     subject: emailData.value.subject,
     body: emailData.value.body,
   });
@@ -204,11 +220,13 @@ async function handleSubmit() {
     return;
   }
   const emailId = await ensureSavedEmailId();
-  await client.segments.email.send(segmentId.value, {
-    subject: emailData.value.subject,
-    body: emailData.value.body,
-    emailId,
-  });
+  if (sendEmail.value) {
+    await client.segments.email.send(segmentId.value, {
+      subject: emailData.value.subject,
+      body: emailData.value.body,
+      emailId,
+    });
+  }
   addNotification({
     variant: 'success',
     title: t('contacts.sendEmail.sent'),

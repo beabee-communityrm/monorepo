@@ -182,8 +182,18 @@
     "email": {
       "contactTemplates": {
         "button": "E-Mail-Vorlagen verwalten",
+        "contactJoins": "Kontakt tritt Segment bei",
+        "contactLeaves": "Kontakt verlässt Segment",
+        "create": "Erstellen",
         "description": "Hier können Sie E-Mail-Vorlagen für verschiedene Zielgruppen erstellen und individuell anpassen. Sie haben die Möglichkeit, sowohl einmalige als auch wiederkehrende E-Mails zu verwalten.",
-        "title": "Segment Basierte"
+        "descriptionOngoingEmails": "Laufende E-Mails werden einmal täglich ausgelöst",
+        "oneOff": "Einmalig",
+        "ongoing": "Wiederkehrend",
+        "send": "Senden",
+        "title": "Segment Basierte",
+        "titleDirectSend": "Sende die E-Mail sofort an alle Kontakte im Segment",
+        "titleEmailType": "Typ",
+        "titleSendTime": "Senden, sobald"
       },
       "fromEmail": "E-Mail-Adresse",
       "fromName": "Name",

@@ -182,8 +182,18 @@
     "email": {
       "contactTemplates": {
         "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
         "description": "",
-        "title": ""
+        "descriptionOngoingEmails": "",
+        "oneOff": "",
+        "ongoing": "",
+        "send": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleEmailType": "",
+        "titleSendTime": ""
       },
       "fromEmail": "Van e-mail",
       "fromName": "Van naam",

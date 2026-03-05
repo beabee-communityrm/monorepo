@@ -181,9 +181,19 @@
     },
     "email": {
       "contactTemplates": {
-        "button": "",
+        "button": "Manage email templates",
+        "contactJoins": "Contact joins segment",
+        "contactLeaves": "Contact leaves segment",
+        "create": "Erstellen",
         "description": "",
-        "title": ""
+        "descriptionOngoingEmails": "Ongoing emails are triggered once per day",
+        "oneOff": "One off",
+        "ongoing": "Ongoing",
+        "send": "Senden",
+        "title": "Segment based",
+        "titleDirectSend": "Send the email immediately to all contacts in the segment",
+        "titleEmailType": "Typ",
+        "titleSendTime": "Send when"
       },
       "fromEmail": "From email",
       "fromName": "From name",
