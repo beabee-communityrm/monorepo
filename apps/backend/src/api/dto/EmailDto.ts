@@ -76,6 +76,7 @@ export class CreateEmailDto {
   @IsString()
   body!: string;
 
+  @IsOptional()
   @IsBoolean()
   isOngoing?: boolean;
 
@@ -112,6 +113,7 @@ export class UpdateEmailDto {
   @IsString()
   fromEmail?: string;
 
+  @IsOptional()
   @IsBoolean()
   isOngoing?: boolean;
 
@@ -151,6 +153,7 @@ export class GetEmailDto {
   @IsString()
   body!: string;
 
+  @IsOptional()
   @IsBoolean()
   isOngoing?: boolean;
 
