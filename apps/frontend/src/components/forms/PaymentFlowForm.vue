@@ -142,7 +142,7 @@ async function handleStripeConfirm(
 
   const data = await props.startFlow({
     paymentMethod: props.flowData.paymentMethod,
-    completeUrl: token,
+    token,
     firstname,
     lastname,
   });
