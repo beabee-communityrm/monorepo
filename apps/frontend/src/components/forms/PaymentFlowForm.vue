@@ -3,13 +3,7 @@
     <slot />
   </AppForm>
 
-  <AppModal
-    v-if="stripeClientSecret"
-    open
-    :title="title"
-    class="w-full"
-    @close="reset"
-  >
+  <AppModal v-if="showModal" open :title="title" class="w-full" @close="reset">
     <p v-if="!stripeHasLoaded" class="p-4 text-center">
       <font-awesome-icon
         class="text-[50px] text-body-60"
@@ -18,10 +12,11 @@
       />
     </p>
     <StripePaymentForm
-      :client-secret="stripeClientSecret"
       :public-key="stripePublicKey"
       :payment-data="flowData"
       :return-url="completeUrl"
+      :confirm-flow="handleStripeConfirm"
+      @completed="handleStripeCompleted"
       @loaded="stripeHasLoaded = true"
     />
   </AppModal>
@@ -44,7 +39,11 @@
 </template>
 
 <script setup lang="ts">
-import type { PaymentFlowResult } from '@beabee/beabee-common';
+import {
+  type PaymentFlowParams,
+  type PaymentFlowResult,
+  PaymentMethod,
+} from '@beabee/beabee-common';
 import { AppForm, AppModal, addNotification } from '@beabee/vue';
 
 import StripePaymentForm from '@components/forms/StripePaymentForm.vue';
@@ -73,19 +72,16 @@ const props = defineProps<{
   /** The payment data to use for the payment flow */
   flowData: PaymentFlowFormData;
   /** A method which calls the API to start a payment flow*/
-  startFlow: (completeUrl: string) => Promise<PaymentFlowResult>;
+  startFlow: (params: PaymentFlowParams) => Promise<PaymentFlowResult>;
   /** A method which calls the API to complete a payment flow */
   completeFlow: (paymentFlowId: string) => Promise<void>;
 }>();
 
 /**
- * The Stripe client secret to use to load the Stripe Elements form
- */
-const stripeClientSecret = ref('');
-/**
  * Show a spinner until the Stripe Elements form has loaded
  */
 const stripeHasLoaded = ref(false);
+const showModal = ref(false);
 
 /**
  * The URL to return to after completing the payment flow. The page will return
@@ -121,19 +117,49 @@ const paymentFlowId = computed(
  * - No further action
  */
 async function handleSubmit() {
-  const data = await props.startFlow(completeUrl.value);
-  if (data.redirectUrl) {
-    window.location.href = data.redirectUrl;
-  } else if (data.clientSecret) {
-    stripeClientSecret.value = data.clientSecret;
+  if (props.flowData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+    const data = await props.startFlow({
+      paymentMethod: PaymentMethod.GoCardlessDirectDebit,
+      completeUrl: completeUrl.value,
+    });
+    if (data.redirectUrl) {
+      window.location.href = data.redirectUrl;
+    }
+  } else {
+    showModal.value = true;
   }
+}
+
+async function handleStripeConfirm(
+  token: string,
+  firstname: string,
+  lastname: string
+) {
+  // Shouldn't be possible
+  if (props.flowData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+    return;
+  }
+
+  const data = await props.startFlow({
+    paymentMethod: props.flowData.paymentMethod,
+    completeUrl: token,
+    firstname,
+    lastname,
+  });
+  if (data.clientSecret) {
+    return data.clientSecret;
+  }
+}
+
+async function handleStripeCompleted() {
+  // TODO: handle success
 }
 
 /**
  * Resets the form state
  */
 function reset() {
-  stripeClientSecret.value = '';
+  showModal.value = false;
   stripeHasLoaded.value = false;
 }
 

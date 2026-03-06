@@ -203,6 +203,7 @@ export type * from './set-contribution-data.js';
 export type * from './signup-data.js';
 export type * from './start-contribution-data.js';
 export type * from './stripe-fee-country.js';
+export type * from './stripe-payment-method.js';
 export type * from './tag-create-data.js';
 export type * from './tag-data.js';
 export type * from './tag-get-data.js';
