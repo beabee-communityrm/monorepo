@@ -1,7 +1,6 @@
 import {
   ContributionForm,
   ContributionType,
-  PaymentForm,
   PaymentSource,
 } from '@beabee/beabee-common';
 
