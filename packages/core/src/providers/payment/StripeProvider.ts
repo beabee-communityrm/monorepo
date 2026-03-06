@@ -49,104 +49,6 @@ export class StripeProvider extends PaymentProvider {
   }
 
   /**
-   * Retrieves information about the contact's current payment source
-   *
-   * @returns Information about the current contribution payment source
-   */
-  async getContributionInfo(): Promise<Partial<ContributionInfo>> {
-    let paymentSource: PaymentSource | undefined;
-    try {
-      paymentSource = this.data.mandateId
-        ? await manadateToSource(this.data.mandateId)
-        : undefined;
-    } catch (err) {
-      // 404s can happen on dev as we don't use real mandate IDs
-      if (
-        !(
-          config.dev &&
-          err instanceof Stripe.errors.StripeInvalidRequestError &&
-          err.statusCode === 404
-        )
-      ) {
-        throw err;
-      }
-    }
-
-    return {
-      // TODO hasPendingPayment: await this.hasPendingPayment(),
-      ...(paymentSource && { paymentSource }),
-    };
-  }
-
-  /**
-   * Cancels an active Stripe subscription and the payment method unless it
-   * should be specifically kept for future use.
-   *
-   * @param keepMandate  Whether to keep payment mandate for future use
-   */
-  async cancelContribution(keepMandate: boolean): Promise<void> {
-    if (this.data.mandateId && !keepMandate) {
-      await stripe.paymentMethods.detach(this.data.mandateId);
-      this.data.mandateId = null;
-    }
-    if (this.data.subscriptionId) {
-      await deleteSubscription(this.data.subscriptionId);
-      this.data.subscriptionId = null;
-    }
-    this.data.nextAmount = null;
-
-    await this.updateData();
-  }
-
-  /**
-   * Update the payment method to the one provided in the completed flow.
-   * This will also create a Stripe customer if one doesn't exist and detach
-   * any existing payment methods. The customer object will be created or updated
-   * with information from the completed flow (e.g. name etc.)
-   *
-   * @param flow The completed payment flow
-   */
-  async updatePaymentMethod(
-    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
-  ): Promise<void> {
-    const paymentMethod = await stripe.paymentMethods.retrieve(flow.mandateId);
-    const address = paymentMethod.billing_details.address;
-
-    this.data.customerId = await ensureCustomerAndAttachPayment(
-      this.contact,
-      this.data.customerId,
-      flow.mandateId,
-      flow.params.vatNumber
-    );
-
-    log.info('Update customer details for ' + this.data.customerId);
-    await stripe.customers.update(this.data.customerId, {
-      invoice_settings: {
-        default_payment_method: flow.mandateId,
-      },
-      address: address
-        ? {
-            line1: address.line1 || '',
-            ...(address.city && { city: address.city }),
-            ...(address.country && { country: address.country }),
-            ...(address.line2 && { line2: address.line2 }),
-            ...(address.postal_code && { postal_code: address.postal_code }),
-            ...(address.state && { state: address.state }),
-          }
-        : null,
-    });
-
-    if (this.data.mandateId) {
-      log.info('Detach old payment method ' + this.data.mandateId);
-      await stripe.paymentMethods.detach(this.data.mandateId);
-    }
-
-    this.data.mandateId = flow.mandateId;
-
-    await this.updateData();
-  }
-
-  /**
    * Update a contacts contribution. This will create or update the subscription
    * as needed.
    *
@@ -204,36 +106,53 @@ export class StripeProvider extends PaymentProvider {
   }
 
   /**
-   * Update or create a Stripe subscription object. If the contact has an active
-   * subscription but inactive membership, the existing subscription will be
-   * cancelled and a new one created.
+   * Retrieves information about the contact's current payment source
    *
-   * @param form The contribution form
-   * @returns Information about the updated subscription
+   * @returns Information about the current contribution payment source
    */
-  private async updateOrCreateSubscription(
-    form: UpdateContributionForm
-  ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
-    if (this.data.subscriptionId && this.contact.membership?.isActive) {
-      log.info('Update subscription ' + this.data.subscriptionId);
-      return await updateSubscription(
-        this.data.subscriptionId,
-        form,
-        this.method
-      );
-    } else {
-      // Cancel any existing (failing) subscriptions
-      await this.cancelContribution(true);
-
-      log.info('Create subscription');
-      const subscription = await createSubscription(
-        this.data.customerId!, // customerId is asserted in updateContribution
-        form,
-        this.method,
-        calcRenewalDate(this.contact)
-      );
-      return { subscription, startNow: true };
+  async getContributionInfo(): Promise<Partial<ContributionInfo>> {
+    let paymentSource: PaymentSource | undefined;
+    try {
+      paymentSource = this.data.mandateId
+        ? await manadateToSource(this.data.mandateId)
+        : undefined;
+    } catch (err) {
+      // 404s can happen on dev as we don't use real mandate IDs
+      if (
+        !(
+          config.dev &&
+          err instanceof Stripe.errors.StripeInvalidRequestError &&
+          err.statusCode === 404
+        )
+      ) {
+        throw err;
+      }
     }
+
+    return {
+      // TODO hasPendingPayment: await this.hasPendingPayment(),
+      ...(paymentSource && { paymentSource }),
+    };
+  }
+
+  /**
+   * Cancels an active Stripe subscription and the payment method unless it
+   * should be specifically kept for future use.
+   *
+   * @param keepMandate  Whether to keep payment mandate for future use
+   */
+  async cancelContribution(keepMandate: boolean): Promise<void> {
+    if (this.data.mandateId && !keepMandate) {
+      await stripe.paymentMethods.detach(this.data.mandateId);
+      this.data.mandateId = null;
+    }
+    if (this.data.subscriptionId) {
+      await deleteSubscription(this.data.subscriptionId);
+      this.data.subscriptionId = null;
+    }
+    this.data.nextAmount = null;
+
+    await this.updateData();
   }
 
   /**
@@ -254,6 +173,64 @@ export class StripeProvider extends PaymentProvider {
         }),
       });
     }
+  }
+
+  /**
+   * Permanently deletes customer data from Stripe. Stripe handles
+   * cancelling any active subscriptions when the customer is deleted.
+   */
+  async permanentlyDeleteContact(): Promise<void> {
+    if (this.data.customerId) {
+      await stripe.customers.del(this.data.customerId);
+    }
+  }
+
+  /**
+   * Update the payment method to the one provided in the completed flow.
+   * This will also create a Stripe customer if one doesn't exist and detach
+   * any existing payment methods. The customer object will be created or updated
+   * with information from the completed flow (e.g. name etc.)
+   *
+   * @param flow The completed payment flow
+   */
+  async updatePaymentMethod(
+    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
+  ): Promise<void> {
+    const paymentMethod = await stripe.paymentMethods.retrieve(flow.mandateId);
+    const address = paymentMethod.billing_details.address;
+
+    this.data.customerId = await ensureCustomerAndAttachPayment(
+      this.contact,
+      this.data.customerId,
+      flow.mandateId,
+      flow.params.vatNumber
+    );
+
+    log.info('Update customer details for ' + this.data.customerId);
+    await stripe.customers.update(this.data.customerId, {
+      invoice_settings: {
+        default_payment_method: flow.mandateId,
+      },
+      address: address
+        ? {
+            line1: address.line1 || '',
+            ...(address.city && { city: address.city }),
+            ...(address.country && { country: address.country }),
+            ...(address.line2 && { line2: address.line2 }),
+            ...(address.postal_code && { postal_code: address.postal_code }),
+            ...(address.state && { state: address.state }),
+          }
+        : null,
+    });
+
+    if (this.data.mandateId) {
+      log.info('Detach old payment method ' + this.data.mandateId);
+      await stripe.paymentMethods.detach(this.data.mandateId);
+    }
+
+    this.data.mandateId = flow.mandateId;
+
+    await this.updateData();
   }
 
   /**
@@ -295,12 +272,35 @@ export class StripeProvider extends PaymentProvider {
   }
 
   /**
-   * Permanently deletes customer data from Stripe. Stripe handles
-   * cancelling any active subscriptions when the customer is deleted.
+   * Update or create a Stripe subscription object. If the contact has an active
+   * subscription but inactive membership, the existing subscription will be
+   * cancelled and a new one created.
+   *
+   * @param form The contribution form
+   * @returns Information about the updated subscription
    */
-  async permanentlyDeleteContact(): Promise<void> {
-    if (this.data.customerId) {
-      await stripe.customers.del(this.data.customerId);
+  private async updateOrCreateSubscription(
+    form: UpdateContributionForm
+  ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
+    if (this.data.subscriptionId && this.contact.membership?.isActive) {
+      log.info('Update subscription ' + this.data.subscriptionId);
+      return await updateSubscription(
+        this.data.subscriptionId,
+        form,
+        this.method
+      );
+    } else {
+      // Cancel any existing (failing) subscriptions
+      await this.cancelContribution(true);
+
+      log.info('Create subscription');
+      const subscription = await createSubscription(
+        this.data.customerId!, // customerId is asserted in updateContribution
+        form,
+        this.method,
+        calcRenewalDate(this.contact)
+      );
+      return { subscription, startNow: true };
     }
   }
 
