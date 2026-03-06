@@ -1,7 +1,7 @@
 import { PaymentFlowParamsStripe, PaymentMethod } from '@beabee/beabee-common';
 
 import { BadRequestError } from '#errors/BadRequestError';
-import { Stripe, paymentMethodToStripeType, stripe } from '#lib/stripe';
+import { Stripe, stripe } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
 import { PaymentFlow } from '#models/index';
 import {
@@ -24,19 +24,21 @@ class StripeFlowProvider implements PaymentFlowProvider {
    * @param flow - Payment flow containing payment method selection
    * @returns Promise resolving to payment flow with SetupIntent details
    */
-  async setupPaymentFlow(flow: PaymentFlow): Promise<PaymentFlowSetup> {
-    const setupIntent = await stripe.setupIntents.create({
-      payment_method_types: [
-        paymentMethodToStripeType(flow.params.paymentMethod),
-      ],
-    });
+  async setupPaymentFlow(
+    flow: PaymentFlow<PaymentFlowParamsStripe>
+  ): Promise<PaymentFlowSetup> {
+    // const setupIntent = await stripe.setupIntents.create({
+    //   payment_method_types: [
+    //     paymentMethodToStripeType(flow.params.paymentMethod),
+    //   ],
+    // });
 
-    log.info('Created setup intent ' + setupIntent.id);
+    // log.info('Created setup intent ' + setupIntent.id);
 
     return {
-      id: setupIntent.id,
+      id: flow.params.token,
       result: {
-        clientSecret: setupIntent.client_secret as string,
+        // clientSecret: setupIntent.client_secret as string,
       },
     };
   }
@@ -50,45 +52,45 @@ class StripeFlowProvider implements PaymentFlowProvider {
   async completePaymentFlow(
     flow: PaymentFlow<PaymentFlowParamsStripe>
   ): Promise<CompletedPaymentFlow> {
-    const setupIntent = await stripe.setupIntents.retrieve(flow.paymentFlowId, {
-      expand: ['latest_attempt'],
-    });
+    // const setupIntent = await stripe.setupIntents.retrieve(flow.paymentFlowId, {
+    //   expand: ['latest_attempt'],
+    // });
 
-    let paymentMethod = flow.params.paymentMethod;
-    let mandateId: string | null;
+    // let paymentMethod = flow.params.paymentMethod;
+    // let mandateId: string | null;
 
-    log.info('Fetched setup intent ' + setupIntent.id);
+    // log.info('Fetched setup intent ' + setupIntent.id);
 
-    // iDEAL is a one time payment method, use setup intent to retrieve the SEPA
-    // debit payment method instead
-    // https://docs.stripe.com/payments/ideal/set-up-payment
-    if (
-      paymentMethod === PaymentMethod.StripeIdeal &&
-      flow.form.action === 'start-contribution'
-    ) {
-      const latestAttempt =
-        setupIntent.latest_attempt as Stripe.SetupAttempt | null;
+    // // iDEAL is a one time payment method, use setup intent to retrieve the SEPA
+    // // debit payment method instead
+    // // https://docs.stripe.com/payments/ideal/set-up-payment
+    // if (
+    //   paymentMethod === PaymentMethod.StripeIdeal &&
+    //   flow.form.action === 'start-contribution'
+    // ) {
+    //   const latestAttempt =
+    //     setupIntent.latest_attempt as Stripe.SetupAttempt | null;
 
-      paymentMethod = PaymentMethod.StripeSEPA;
-      mandateId = latestAttempt?.payment_method_details.ideal
-        ?.generated_sepa_debit as string | null;
-    } else {
-      mandateId = setupIntent.payment_method as string | null;
-    }
+    //   paymentMethod = PaymentMethod.StripeSEPA;
+    //   mandateId = latestAttempt?.payment_method_details.ideal
+    //     ?.generated_sepa_debit as string | null;
+    // } else {
+    //   mandateId = setupIntent.payment_method as string | null;
+    // }
 
-    if (!mandateId) {
-      log.error('Setup intent missing mandate or customer ID', {
-        flow,
-        setupIntent,
-      });
-      throw new BadRequestError({ message: 'Failed to complete payment flow' });
-    }
+    // if (!mandateId) {
+    //   log.error('Setup intent missing mandate or customer ID', {
+    //     flow,
+    //     setupIntent,
+    //   });
+    //   throw new BadRequestError({ message: 'Failed to complete payment flow' });
+    // }
 
     return {
-      params: { ...flow.params, paymentMethod },
+      params: flow.params,
       form: flow.form,
       customerId: '', // Unused in the Stripe flow
-      mandateId,
+      mandateId: '', // Unused in the Stripe flow
     };
   }
 
@@ -100,11 +102,12 @@ class StripeFlowProvider implements PaymentFlowProvider {
   async getCompletedPaymentFlowData(
     completedPaymentFlow: CompletedPaymentFlow<PaymentFlowParamsStripe>
   ): Promise<CompletedPaymentFlowData> {
-    const paymentMethod = await stripe.paymentMethods.retrieve(
-      completedPaymentFlow.mandateId
+    const token = await stripe.confirmationTokens.retrieve(
+      completedPaymentFlow.params.token
     );
 
-    const address = paymentMethod.billing_details.address;
+    const address = token.payment_method_preview?.billing_details.address;
+
     return {
       firstname: completedPaymentFlow.params.firstname || '',
       lastname: completedPaymentFlow.params.lastname || '',

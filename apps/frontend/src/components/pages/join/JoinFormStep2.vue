@@ -27,10 +27,10 @@
     </p>
 
     <StripePaymentForm
-      :client-secret="stripeClientSecret"
       :public-key="paymentContent.stripePublicKey"
       :payment-data="data"
       :return-url="client.signup.completeUrl"
+      :confirm-flow="confirmFlow"
       show-name-fields
     />
     <div
@@ -63,7 +63,11 @@ defineEmits<{ (e: 'back'): void }>();
 const props = defineProps<{
   joinContent: ContentJoinData;
   paymentContent: ContentPaymentData;
-  stripeClientSecret: string;
+  confirmFlow: (
+    token: string,
+    firstName: string,
+    lastName: string
+  ) => Promise<string | undefined>;
 }>();
 
 const data = defineModel<JoinFormData>({ required: true });

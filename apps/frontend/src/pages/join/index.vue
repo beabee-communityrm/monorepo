@@ -9,7 +9,7 @@ meta:
 </route>
 <template>
   <JoinFormStep1
-    v-if="!stripeClientSecret"
+    v-if="!showStep2"
     v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
@@ -21,8 +21,9 @@ meta:
     v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
-    :stripe-client-secret="stripeClientSecret"
-    @back="stripeClientSecret = ''"
+    :confirm-flow="startStripeSignup"
+    @back="showStep2 = false"
+    @completed="goToConfirmEmailPage"
   />
 </template>
 
@@ -31,6 +32,7 @@ import {
   type ContentJoinData,
   type ContentPaymentData,
   ContributionPeriod,
+  type PaymentFlowParams,
   PaymentMethod,
   type SignupData,
 } from '@beabee/beabee-common';
@@ -48,7 +50,7 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 
-const stripeClientSecret = ref('');
+const showStep2 = ref(false);
 
 const joinContent = ref<ContentJoinData>({
   initialAmount: 5,
@@ -83,47 +85,62 @@ const formData = reactive<JoinFormData>({
   noContribution: false,
 });
 
-async function submitStep1() {
-  try {
-    const clientData: SignupData = {
-      email: formData.email,
-      ...(formData.noContribution
-        ? {}
-        : formData.period === 'one-time'
-          ? {
-              oneTimePayment: {
-                amount: formData.amount,
-                paymentMethod: formData.paymentMethod,
-                payFee: formData.payFee,
-                completeUrl: client.signup.completeUrl,
-              },
-            }
-          : {
-              contribution: {
-                amount: formData.amount,
-                period: formData.period,
-                paymentMethod: formData.paymentMethod,
-                payFee:
-                  formData.period === ContributionPeriod.Monthly &&
-                  formData.payFee,
-                prorate: false,
-                completeUrl: client.signup.completeUrl,
-              },
-            }),
-    };
+function goToConfirmEmailPage() {
+  const topWindow = window.top || window;
+  if (isEmbed) {
+    topWindow.location.href = '/join/confirm-email';
+  } else {
+    router.push({ path: '/join/confirm-email' });
+  }
+}
 
+async function startNoContributionSignup() {
+  try {
+    await client.signup.start({ email: formData.email });
+    goToConfirmEmailPage();
+  } catch (err) {
+    if (isApiError(err, undefined, [429])) {
+      notifyRateLimited(err);
+      return;
+    }
+    throw err;
+  }
+}
+
+async function startSignupFlow(params: PaymentFlowParams) {
+  const clientData: SignupData = {
+    email: formData.email,
+    ...(formData.period === 'one-time'
+      ? {
+          oneTimePayment: {
+            amount: formData.amount,
+            // paymentMethod: formData.paymentMethod,
+            payFee: formData.payFee,
+            params,
+          },
+        }
+      : {
+          contribution: {
+            amount: formData.amount,
+            period: formData.period,
+            // paymentMethod: formData.paymentMethod,
+            payFee:
+              formData.period === ContributionPeriod.Monthly && formData.payFee,
+            prorate: false,
+            params,
+          },
+        }),
+  };
+
+  try {
     const data = await client.signup.start(clientData);
     const topWindow = window.top || window;
     if (data?.redirectUrl) {
       topWindow.location.href = data.redirectUrl;
     } else if (data?.clientSecret) {
-      stripeClientSecret.value = data.clientSecret;
+      return data.clientSecret;
     } else {
-      if (isEmbed) {
-        topWindow.location.href = '/join/confirm-email';
-      } else {
-        router.push({ path: '/join/confirm-email' });
-      }
+      goToConfirmEmailPage();
     }
   } catch (err) {
     if (isApiError(err, undefined, [429])) {
@@ -134,8 +151,39 @@ async function submitStep1() {
   }
 }
 
+async function submitStep1() {
+  if (formData.noContribution) {
+    await startNoContributionSignup();
+  } else if (formData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+    await startSignupFlow({
+      paymentMethod: PaymentMethod.GoCardlessDirectDebit,
+      completeUrl: client.signup.completeUrl,
+    });
+  } else {
+    showStep2.value = true;
+  }
+}
+
+async function startStripeSignup(
+  token: string,
+  firstname: string,
+  lastname: string
+) {
+  // Shouldn't be possible
+  if (formData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+    return;
+  }
+
+  return await startSignupFlow({
+    paymentMethod: formData.paymentMethod,
+    token,
+    firstname,
+    lastname,
+  });
+}
+
 onBeforeMount(async () => {
-  stripeClientSecret.value = '';
+  showStep2.value = false;
 
   joinContent.value = await client.content.get('join');
 
