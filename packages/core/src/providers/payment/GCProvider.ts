@@ -43,14 +43,10 @@ export class GCProvider extends PaymentProvider {
         return await this.canChangeContribution(false, {
           monthlyAmount: 0,
           period: ContributionPeriod.Monthly,
-          prorate: false,
           payFee: false,
         });
       case 'start-contribution':
-        return await this.canChangeContribution(false, {
-          ...form,
-          prorate: true,
-        });
+        return await this.canChangeContribution(false, form);
       default:
         return false;
     }
@@ -64,10 +60,7 @@ export class GCProvider extends PaymentProvider {
     } else {
       await this.updatePaymentMethod(flow);
       if (flow.form.action === 'start-contribution') {
-        return await this.processUpdateContribution({
-          ...flow.form,
-          prorate: false,
-        });
+        return await this.processUpdateContribution(flow.form);
       }
     }
   }
@@ -287,7 +280,6 @@ export class GCProvider extends PaymentProvider {
         monthlyAmount: this.contact.contributionMonthlyAmount,
         period: this.contact.contributionPeriod,
         payFee: !!this.data.payFee,
-        prorate: false,
       });
     }
   }
