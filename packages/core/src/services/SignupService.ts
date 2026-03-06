@@ -235,7 +235,7 @@ class SignupService {
     }
 
     if (completedFlow) {
-      await PaymentFlowService.executePaymentActions(
+      await PaymentFlowService.processCompletedFlow(
         contact,
         completedFlow.flow
       );

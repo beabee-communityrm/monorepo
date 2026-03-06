@@ -1,5 +1,5 @@
 import {
-  PaymentFlowParams,
+  ContributionPeriod,
   PaymentMethod,
   PaymentSource,
 } from '@beabee/beabee-common';
@@ -21,7 +21,6 @@ import {
   CompletedPaymentFlow,
   ContributionInfo,
   PaymentFlowForm,
-  PaymentFlowFormCreateOneTimePayment,
   UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
@@ -37,44 +36,57 @@ const log = mainLogger.child({ app: 'gc-payment-provider' });
  */
 export class GCProvider extends PaymentProvider {
   async canProcessPaymentFlow(form: PaymentFlowForm): Promise<boolean> {
-    // Can't update payment method when there are pending payments as ths can result
-    // in double charging
-    if (form.action === 'update-payment-method' && this.data.mandateId) {
-      return !(await hasPendingPayment(this.data.mandateId));
+    switch (form.action) {
+      case 'create-one-time-payment':
+        return false;
+      case 'update-payment-method':
+        return await this.canChangeContribution(false, {
+          monthlyAmount: 0,
+          period: ContributionPeriod.Monthly,
+          prorate: false,
+          payFee: false,
+        });
+      case 'start-contribution':
+        return await this.canChangeContribution(false, {
+          ...form,
+          prorate: true,
+        });
+      default:
+        return false;
     }
 
-    return true;
+    // // Can't update payment method when there are pending payments as ths can result
+    // // in double charging
+    // if (form.action === 'update-payment-method' && this.data.mandateId) {
+    //   return !(await hasPendingPayment(this.data.mandateId));
+    // }
+
+    // return true;
+  }
+
+  async processPaymentFlow(
+    flow: CompletedPaymentFlow
+  ): Promise<UpdateContributionResult | undefined> {
+    if (flow.form.action === 'create-one-time-payment') {
+      throw new Error('One-time payments are not supported with GoCardless');
+    } else {
+      await this.updatePaymentMethod(flow);
+      if (flow.form.action === 'start-contribution') {
+        return await this.processUpdateContribution({
+          ...flow.form,
+          prorate: false,
+        });
+      }
+    }
   }
 
   /**
-   * Checks if contribution changes are allowed based on mandate status
-   * @param useExistingMandate - Whether to use existing mandate
+   * Checks if contribution updates are allowed
    * @param form - New payment details
-   * @returns Promise resolving to boolean indicating if changes are allowed
+   * @returns Whether contribution updates are allowed
    */
-  async canChangeContribution(
-    useExistingMandate: boolean,
-    form: UpdateContributionForm
-  ): Promise<boolean> {
-    // No payment method available
-    if (useExistingMandate && !this.data.mandateId) {
-      return false;
-    }
-
-    // Can always change contribution if there is no subscription
-    if (!this.data.subscriptionId) {
-      return true;
-    }
-
-    // Monthly contributors can update their contribution amount even if they have
-    // pending payments, but they can't always change their period or mandate as this can
-    // result in double charging
-    return (
-      (useExistingMandate &&
-        this.contact.contributionPeriod === 'monthly' &&
-        form.period === 'monthly') ||
-      !(this.data.mandateId && (await hasPendingPayment(this.data.mandateId)))
-    );
+  async canUpdateContribution(form: UpdateContributionForm): Promise<boolean> {
+    return await this.canChangeContribution(true, form);
   }
 
   /**
@@ -82,7 +94,7 @@ export class GCProvider extends PaymentProvider {
    * @param form - New payment form data
    * @returns Promise resolving to update result
    */
-  async updateContribution(
+  async processUpdateContribution(
     form: UpdateContributionForm
   ): Promise<UpdateContributionResult> {
     log.info('Update contribution for ' + this.contact.id, {
@@ -151,7 +163,7 @@ export class GCProvider extends PaymentProvider {
 
     await this.updateData();
 
-    return { startNow, expiryDate: moment.utc(expiryDate).toDate() };
+    return { form, startNow, expiryDate: moment.utc(expiryDate).toDate() };
   }
 
   /**
@@ -250,7 +262,7 @@ export class GCProvider extends PaymentProvider {
    * Updates payment method using completed payment flow
    * @param completedPaymentFlow - The completed flow with new mandate
    */
-  async updatePaymentMethod(
+  private async updatePaymentMethod(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<void> {
     log.info('Update payment source for ' + this.contact.id, {
@@ -279,7 +291,7 @@ export class GCProvider extends PaymentProvider {
       this.contact.contributionPeriod &&
       this.contact.contributionMonthlyAmount
     ) {
-      await this.updateContribution({
+      await this.processUpdateContribution({
         monthlyAmount: this.contact.contributionMonthlyAmount,
         period: this.contact.contributionPeriod,
         payFee: !!this.data.payFee,
@@ -289,17 +301,39 @@ export class GCProvider extends PaymentProvider {
   }
 
   /**
-   * Create a one-time payment
+   * Checks if contribution changes are allowed based on mandate status
+   * @param useExistingMandate - Whether to use existing mandate
+   * @param form - New payment details
+   * @returns Promise resolving to boolean indicating if changes are allowed
    *
-   * @param form The payment form
+   * @deprecated
+   * Only used internally to avoid changing GoCardless processing behaviour.
+   * Should be removed and actual logic implemented in canProcessPaymentFlow and
+   * canUpdateContribution
    */
-  async createOneTimePayment(
-    _completedPaymentFlow: CompletedPaymentFlow<
-      PaymentFlowParams,
-      PaymentFlowFormCreateOneTimePayment
-    >
-  ): Promise<void> {
-    throw new Error('Method not implemented.');
+  private async canChangeContribution(
+    useExistingMandate: boolean,
+    form: UpdateContributionForm
+  ): Promise<boolean> {
+    // No payment method available
+    if (useExistingMandate && !this.data.mandateId) {
+      return false;
+    }
+
+    // Can always change contribution if there is no subscription
+    if (!this.data.subscriptionId) {
+      return true;
+    }
+
+    // Monthly contributors can update their contribution amount even if they have
+    // pending payments, but they can't always change their period or mandate as this can
+    // result in double charging
+    return (
+      (useExistingMandate &&
+        this.contact.contributionPeriod === 'monthly' &&
+        form.period === 'monthly') ||
+      !(this.data.mandateId && (await hasPendingPayment(this.data.mandateId)))
+    );
   }
 }
 
