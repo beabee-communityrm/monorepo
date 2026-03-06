@@ -10,7 +10,7 @@ import type { SetupSupportEmailArgs } from '../../types/setup.js';
  * Accepts command line arguments or prompts for missing information
  */
 export const setupSupportEmail = async (
-  args: SetupSupportEmailArgs = {}
+  args: SetupSupportEmailArgs
 ): Promise<void> => {
   try {
     console.log('Setting up support email configuration...\n');

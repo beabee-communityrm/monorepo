@@ -166,6 +166,8 @@ export const config = {
   serviceSecret: env.s('BEABEE_SERVICE_SECRET'), // Secret for internal service authentication
   session: env.s('BEABEE_SESSION', 'session'), // Session identifier (default: "session")
 
+  webhookUrl: env.s('BEABEE_WEBHOOKURL', env.s('BEABEE_AUDIENCE')), // Public URL for receiving webhooks
+
   // Cookie settings for authentication
   cookie: {
     domain: env.s('BEABEE_COOKIE_DOMAIN'), // Cookie domain (e.g., localhost)
@@ -239,9 +241,8 @@ export const config = {
   stripe: {
     publicKey: env.s('BEABEE_STRIPE_PUBLICKEY', ''), // Stripe publishable key (default: empty)
     secretKey: env.s('BEABEE_STRIPE_SECRETKEY', ''), // Stripe secret key (default: empty)
-    webhookSecret: env.s('BEABEE_STRIPE_WEBHOOKSECRET', ''), // Stripe webhook signing secret (default: empty)
-    membershipProductId: env.s('BEABEE_STRIPE_MEMBERSHIPPRODUCTID', ''), // Stripe product ID for memberships
     country: env.e('BEABEE_STRIPE_COUNTRY', ['gb', 'eu', 'ca'] as const, 'gb'), // Stripe account country (default: gb)
+    version: '2024-04-10' as const, // Stripe API version to use
   },
 
   // Localization settings

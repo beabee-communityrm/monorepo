@@ -9,7 +9,7 @@ import { createUser } from '../user/create.js';
  * Role is automatically set to superadmin and membership to permanent
  * Accepts command line arguments or prompts for missing information
  */
-export async function setupAdmin(args: SetupAdminArgs = {}): Promise<void> {
+export async function setupAdmin(args: SetupAdminArgs): Promise<void> {
   try {
     console.log('Setting up initial admin user...\n');
 

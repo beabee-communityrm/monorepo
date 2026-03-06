@@ -1495,10 +1495,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "",
-      "recurringLabel": ""
-    },
     "genericError": "",
     "goBack": "",
     "goBackButton": "",
@@ -1709,6 +1705,11 @@
     "setPassword": "",
     "setup": ""
   },
+  "paymentLabels": {
+    "membershipProductName": "",
+    "recurringContribution": "",
+    "taxRateDisplayName": ""
+  },
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "",
@@ -1846,8 +1847,5 @@
     },
     "searchTag": "",
     "toggleTag": ""
-  },
-  "taxRate": {
-    "invoiceName": ""
   }
 }

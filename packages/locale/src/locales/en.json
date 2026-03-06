@@ -1495,10 +1495,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Membership",
-      "recurringLabel": "Recurring contribution"
-    },
     "genericError": "Oops, something went wrong ({type})! Contact support if this happens again.",
     "goBack": "Did you miss something? {back}",
     "goBackButton": "Back to the previous screen",
@@ -1709,6 +1705,11 @@
     "setPassword": "Set password",
     "setup": "Setup"
   },
+  "paymentLabels": {
+    "membershipProductName": "Membership",
+    "recurringContribution": "Recurring contribution",
+    "taxRateDisplayName": "VAT"
+  },
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "Change direct debit",
@@ -1846,8 +1847,5 @@
     },
     "searchTag": "Tagged with...",
     "toggleTag": "Toggle tag"
-  },
-  "taxRate": {
-    "invoiceName": "VAT"
   }
 }

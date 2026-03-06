@@ -265,12 +265,6 @@ stripe login
 stripe listen --forward-to localhost:3001/webhook/stripe
 ```
 
-Now the stripe CLI prints out the webhook secret, copy it and add it to the .env file while you keep the forwarding process running:
-
-```bash
-BEABEE_STRIPE_WEBHOOKSECRET=<webhook secret>
-```
-
 ##### Testing payment
 
 To test payments you can use the following credit card details:

@@ -12,7 +12,7 @@ import { differenceInMonths } from 'date-fns';
 import Stripe from 'stripe';
 
 import config from '#config/config';
-import currentLocale from '#locale';
+import { currentLocale } from '#locale';
 import { log as mainLogger } from '#logging';
 import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
@@ -21,14 +21,14 @@ import { getChargeableAmount } from '#utils/payment';
 const log = mainLogger.child({ app: 'stripe-utils' });
 
 export const stripe = new Stripe(config.stripe.secretKey, {
-  apiVersion: '2024-04-10',
+  apiVersion: config.stripe.version,
   typescript: true,
 });
 
 export function getSalesTaxRateObject(
   type: 'recurring' | 'one-time'
 ): string[] {
-  const taxRateId = OptionsService.getText(`tax-rate-${type}-stripe-id`);
+  const taxRateId = OptionsService.getText(`stripe-tax-rate-${type}-id`);
   return taxRateId ? [taxRateId] : [];
 }
 
@@ -42,7 +42,7 @@ export async function updateSalesTaxRate(
   type: 'recurring' | 'one-time',
   percentage: number | null
 ): Promise<void> {
-  const id = OptionsService.getText(`tax-rate-${type}-stripe-id`);
+  const id = OptionsService.getText(`stripe-tax-rate-${type}-id`);
 
   if (id) {
     const taxRate = await stripe.taxRates.retrieve(id);
@@ -57,17 +57,17 @@ export async function updateSalesTaxRate(
   }
 
   if (percentage === null) {
-    await OptionsService.set(`tax-rate-${type}-stripe-id`, '');
+    await OptionsService.set(`stripe-tax-rate-${type}-id`, '');
   } else {
     log.info(`Setting new ${type} sales tax rate to ${percentage}%`);
     const taxRate = await stripe.taxRates.create({
       percentage: percentage,
       active: true,
       inclusive: true,
-      display_name: currentLocale().taxRate.invoiceName,
+      display_name: currentLocale().paymentLabels.taxRateDisplayName,
     });
 
-    await OptionsService.set(`tax-rate-${type}-stripe-id`, taxRate.id);
+    await OptionsService.set(`stripe-tax-rate-${type}-id`, taxRate.id);
   }
 }
 
@@ -84,7 +84,7 @@ export function getPriceData(
 ): Stripe.SubscriptionCreateParams.Item.PriceData {
   return {
     currency: config.currencyCode,
-    product: config.stripe.membershipProductId,
+    product: OptionsService.getText('stripe-membership-product-id'),
     recurring: {
       interval: form.period === ContributionPeriod.Monthly ? 'month' : 'year',
     },

@@ -1501,10 +1501,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Adhésion",
-      "recurringLabel": "Cotisation récurrente"
-    },
     "genericError": "Oups, une erreur s'est produite ({type}) ! Contactez l'assistance si cela se produit à nouveau.",
     "goBack": "Avez-vous oublié quelque chose ? {back}",
     "goBackButton": "Revenir à l'écran précédent",
@@ -1715,6 +1711,11 @@
     "setPassword": "Définir le mot de passe",
     "setup": "Configuration"
   },
+  "paymentLabels": {
+    "membershipProductName": "Adhésion",
+    "recurringContribution": "Cotisation récurrente",
+    "taxRateDisplayName": "TVA"
+  },
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "Passer au prélèvement automatique",
@@ -1852,8 +1853,5 @@
     },
     "searchTag": "Libellé par…",
     "toggleTag": "Activer/Désactiver le libellé"
-  },
-  "taxRate": {
-    "invoiceName": "TVA"
   }
 }
