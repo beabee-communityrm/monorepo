@@ -231,15 +231,19 @@ export class ContactController {
     @Body() data: UpdateContributionDto
   ): Promise<GetContributionInfoDto> {
     const form = {
-      ...data,
       monthlyAmount: getMonthlyAmount(data.amount, data.period),
+      period: data.period,
+      payFee: data.payFee,
+      prorate: data.prorate,
     };
 
-    if (!(await PaymentService.canChangeContribution(target, true, form))) {
+    if (!(await PaymentService.canUpdateContribution(target, form))) {
       throw new CantUpdateContribution();
     }
 
-    await ContactsService.updateContactContribution(target, form);
+    const result = await PaymentService.processUpdateContribution(target, form);
+    await ContactsService.handleUpdateContributionResult(target, result);
+
     return await this.getContribution(target);
   }
 
@@ -328,7 +332,7 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    await PaymentFlowService.completePaymentFlowAndExecuteActions(
+    await PaymentFlowService.completePaymentFlowAndProcess(
       target,
       data.paymentFlowId
     );
@@ -380,7 +384,7 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<void> {
-    await PaymentFlowService.completePaymentFlowAndExecuteActions(
+    await PaymentFlowService.completePaymentFlowAndProcess(
       target,
       data.paymentFlowId
     );
@@ -439,7 +443,7 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    await PaymentFlowService.completePaymentFlowAndExecuteActions(
+    await PaymentFlowService.completePaymentFlowAndProcess(
       target,
       data.paymentFlowId
     );
