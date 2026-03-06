@@ -13,7 +13,12 @@
 
   <div ref="divRef"></div>
 
-  <AppNotification v-if="error" variant="error" class="mt-4" :title="error" />
+  <AppNotification
+    v-if="errorText"
+    variant="error"
+    class="mt-4"
+    :title="errorText"
+  />
 
   <AppButton
     :disabled="!paymentReady || validation.$invalid"
@@ -26,12 +31,16 @@
   >
 </template>
 <script lang="ts" setup>
-import { ContributionPeriod } from '@beabee/beabee-common';
+import {
+  ContributionPeriod,
+  paymentMethodToStripeType,
+} from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
 import { AppButton, AppLabel, AppNotification } from '@beabee/vue';
 
 import env from '@env';
-import type { Appearance } from '@stripe/stripe-js';
+import { generalContent } from '@store/generalContent';
+import type Stripe from '@stripe/stripe-js';
 import type { ApplePayOption } from '@stripe/stripe-js/dist/stripe-js/elements/apple-pay';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import type { PaymentFlowFormData } from '@type/payment-flow-form-data';
@@ -40,13 +49,20 @@ import theme from 'virtual:theme';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const emit = defineEmits(['loaded']);
+const emit = defineEmits<{
+  (event: 'loaded'): void;
+  (event: 'completed'): void;
+}>();
 
 const props = defineProps<{
-  clientSecret: string;
   publicKey: string;
   paymentData: PaymentFlowFormData;
   returnUrl: string;
+  confirmFlow: (
+    token: string,
+    firstName: string,
+    lastName: string
+  ) => Promise<string | undefined>;
   showNameFields?: boolean;
 }>();
 
@@ -55,7 +71,7 @@ const { t } = useI18n();
 const divRef = ref<HTMLElement>();
 const paymentReady = ref(false);
 const loading = ref(false);
-const error = ref('');
+const errorText = ref('');
 
 const firstName = ref('');
 const lastName = ref('');
@@ -71,7 +87,7 @@ function getColor(name: string): string {
   return `rgb(${value})`;
 }
 
-const appearance: Appearance = {
+const appearance: Stripe.Appearance = {
   theme: 'flat',
   variables: {
     colorDanger: getColor('--c-danger'),
@@ -130,11 +146,27 @@ const applePayOption = computed<ApplePayOption | undefined>(() => {
     : undefined;
 });
 
+function handleError(err: Stripe.StripeError) {
+  errorText.value =
+    err.message &&
+    (err.type === 'card_error' || err.type === 'validation_error')
+      ? (errorText.value = err.message)
+      : t('joinPayment.genericError', { type: err.type });
+  loading.value = false;
+}
+
 onBeforeMount(async () => {
   const stripe = await loadStripe(props.publicKey);
   if (stripe && divRef.value) {
     const elements = stripe.elements({
-      clientSecret: props.clientSecret,
+      mode:
+        props.paymentData.period === 'one-time' ? 'payment' : 'subscription',
+      amount: props.paymentData.amount * 100,
+      currency: generalContent.value.currencyCode.toLowerCase(),
+      paymentMethodCreation: 'manual',
+      paymentMethodTypes: [
+        paymentMethodToStripeType(props.paymentData.paymentMethod),
+      ],
       appearance,
     });
     const paymentElement = elements.create('payment', {
@@ -154,17 +186,17 @@ onBeforeMount(async () => {
 
     completePayment.value = async () => {
       loading.value = true;
-      const returnUrl =
-        props.returnUrl +
-        (props.showNameFields
-          ? `?firstName=${encodeURIComponent(
-              firstName.value
-            )}&lastName=${encodeURIComponent(lastName.value)}`
-          : '');
-      const result = await stripe.confirmSetup({
+
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        handleError(submitError);
+        return;
+      }
+
+      const result = await stripe.createConfirmationToken({
         elements,
-        confirmParams: {
-          return_url: returnUrl,
+        params: {
+          return_url: props.returnUrl,
           payment_method_data: {
             billing_details: {
               email: props.paymentData.email,
@@ -175,14 +207,26 @@ onBeforeMount(async () => {
           },
         },
       });
+
       if (result.error) {
-        loading.value = false;
-        error.value =
-          result.error.message &&
-          (result.error.type === 'card_error' ||
-            result.error.type === 'validation_error')
-            ? (error.value = result.error.message)
-            : t('joinPayment.genericError', { type: result.error.type });
+        handleError(result.error);
+        return;
+      }
+
+      const clientSecret = await props.confirmFlow(
+        result.confirmationToken.id,
+        firstName.value,
+        lastName.value
+      );
+      if (clientSecret) {
+        const { error: actionError } = await stripe.handleNextAction({
+          clientSecret,
+        });
+        if (actionError) {
+          handleError(actionError);
+        } else {
+          emit('completed');
+        }
       }
     };
   }
