@@ -47,10 +47,13 @@ export abstract class PaymentProvider {
   ): Promise<boolean>;
 
   /**
-   * Cancels an active contribution
-   * @param keepMandate - Whether to keep payment mandate for future use
+   * Updates contribution details
+   * @param form - New contribution form data
+   * @returns Promise resolving to update result
    */
-  abstract cancelContribution(keepMandate: boolean): Promise<void>;
+  abstract updateContribution(
+    form: UpdateContributionForm
+  ): Promise<UpdateContributionResult>;
 
   /**
    * Gets current contribution information
@@ -59,19 +62,21 @@ export abstract class PaymentProvider {
   abstract getContributionInfo(): Promise<Partial<ContributionInfo>>;
 
   /**
+   * Cancels an active contribution
+   * @param keepMandate - Whether to keep payment mandate for future use
+   */
+  abstract cancelContribution(keepMandate: boolean): Promise<void>;
+
+  /**
    * Updates contact information with payment provider
    * @param updates - Contact fields to update
    */
   abstract updateContact(updates: Partial<Contact>): Promise<void>;
 
   /**
-   * Updates contribution details
-   * @param form - New contribution form data
-   * @returns Promise resolving to update result
+   * Permanently deletes contact data from payment provider
    */
-  abstract updateContribution(
-    form: UpdateContributionForm
-  ): Promise<UpdateContributionResult>;
+  abstract permanentlyDeleteContact(): Promise<void>;
 
   /**
    * Updates payment method using completed payment flow
@@ -91,9 +96,4 @@ export abstract class PaymentProvider {
       PaymentFlowFormCreateOneTimePayment
     >
   ): Promise<void>;
-
-  /**
-   * Permanently deletes contact data from payment provider
-   */
-  abstract permanentlyDeleteContact(): Promise<void>;
 }

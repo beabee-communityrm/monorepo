@@ -25,6 +25,16 @@ export class ManualProvider extends PaymentProvider {
   }
 
   /**
+   * Updates contribution details
+   * @param form - New contribution form data
+   */
+  async updateContribution(
+    form: UpdateContributionForm
+  ): Promise<UpdateContributionResult> {
+    throw new Error('Method not implemented.');
+  }
+
+  /**
    * Gets current contribution information
    * @returns Promise resolving to partial contribution info with basic payment source data
    */
@@ -55,14 +65,9 @@ export class ManualProvider extends PaymentProvider {
   async updateContact(updates: Partial<Contact>): Promise<void> {}
 
   /**
-   * Updates contribution details
-   * @param form - New contribution form data
+   * No-op as manual payments don't store external data
    */
-  async updateContribution(
-    form: UpdateContributionForm
-  ): Promise<UpdateContributionResult> {
-    throw new Error('Method not implemented.');
-  }
+  async permanentlyDeleteContact(): Promise<void> {}
 
   /**
    * No-op as manual payments don't use payment methods
@@ -77,11 +82,6 @@ export class ManualProvider extends PaymentProvider {
   async createOneTimePayment(): Promise<void> {
     throw new Error('Method not implemented.');
   }
-
-  /**
-   * No-op as manual payments don't store external data
-   */
-  async permanentlyDeleteContact(): Promise<void> {}
 }
 
 /** @deprecated Use named import ManualProvider instead */
