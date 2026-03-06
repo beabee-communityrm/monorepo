@@ -73,6 +73,8 @@ import {
   ContributionPeriod,
   ContributionType,
   MembershipStatus,
+  type PaymentFlowParams,
+  type PaymentFlowResult,
   PaymentMethod,
 } from '@beabee/beabee-common';
 import { AppHeading, AppNotification, formatLocale } from '@beabee/vue';
@@ -111,6 +113,7 @@ const paymentData = computed(() => ({
   email: currentUser.value ? currentUser.value.email : '',
   amount: newContribution.amount,
   period: newContribution.period,
+  paymentMethod: newContribution.paymentMethod,
 }));
 
 const isActiveMember = computed(
@@ -149,7 +152,9 @@ const buttonText = computed(() =>
         : t('contribution.startContribution')
 );
 
-async function handleStartFlow(completeUrl: string) {
+async function handleStartFlow(
+  paymentFlowParams: PaymentFlowParams
+): Promise<PaymentFlowResult> {
   if (isAutoActiveMember.value) {
     contribution.value = await client.contact.contribution.update({
       amount: newContribution.amount,
@@ -173,8 +178,8 @@ async function handleStartFlow(completeUrl: string) {
       prorate:
         newContribution.prorate &&
         newContribution.period === ContributionPeriod.Annually,
-      paymentMethod: newContribution.paymentMethod,
-      completeUrl,
+      // paymentMethod: newContribution.paymentMethod,
+      ...paymentFlowParams,
     });
   }
 }
