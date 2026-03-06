@@ -1,5 +1,4 @@
 import {
-  ContributionForm,
   ContributionPeriod,
   ContributionType,
   PaymentMethod,
@@ -11,7 +10,7 @@ import { addMonths, getYear, setYear, sub } from 'date-fns';
 
 import config from '#config/config';
 import { Contact } from '#models/index';
-import { PaymentFlowForm } from '#type/payment-flow-form';
+import { PaymentFlowForm, UpdateContributionForm } from '#type/index';
 
 /**
  * Calculate the equivalent monthly amount from a given amount and period
@@ -47,36 +46,33 @@ export function getActualAmount(
 /**
  * Calculate the amount to charge including the payment fee if applicable
  *
- * @param paymentForm The payment form
+ * @param form The payment form
  * @param paymentMethod The payment method
  * @returns The chargeable amount in cents
  */
 export function getChargeableAmount(
-  paymentForm: PaymentFlowForm | ContributionForm,
+  form: PaymentFlowForm | UpdateContributionForm,
   paymentMethod: PaymentMethod,
   country = config.stripe.country
 ): number {
-  // TODO: Remove once we've refactored ContributionForm
-  if (
-    'action' in paymentForm &&
-    paymentForm.action === 'update-payment-method'
-  ) {
+  // TODO: Remove once we've refactored UpdateContributionForm
+  if ('action' in form && form.action === 'update-payment-method') {
     throw new Error(
       'Cannot calculate chargeable amount for payment method update'
     );
   }
 
   const amount =
-    'action' in paymentForm && paymentForm.action === 'create-one-time-payment'
-      ? paymentForm.amount
-      : getActualAmount(paymentForm.monthlyAmount, paymentForm.period);
+    'action' in form && form.action === 'create-one-time-payment'
+      ? form.amount
+      : getActualAmount(form.monthlyAmount, form.period);
 
   const period =
-    'action' in paymentForm && paymentForm.action === 'create-one-time-payment'
+    'action' in form && form.action === 'create-one-time-payment'
       ? ('one-time' as const)
-      : paymentForm.period;
+      : form.period;
 
-  const fee = paymentForm.payFee
+  const fee = form.payFee
     ? calcPaymentFee({ amount, period, paymentMethod }, country)
     : 0;
   return Math.round((amount + fee) * 100);

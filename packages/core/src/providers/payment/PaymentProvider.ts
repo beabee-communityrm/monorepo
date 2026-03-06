@@ -1,8 +1,4 @@
-import {
-  ContributionForm,
-  PaymentFlowParams,
-  PaymentMethod,
-} from '@beabee/beabee-common';
+import { PaymentFlowParams, PaymentMethod } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { Contact, ContactContribution } from '#models/index';
@@ -11,6 +7,7 @@ import {
   ContributionInfo,
   PaymentFlowForm,
   PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
 
@@ -46,7 +43,7 @@ export abstract class PaymentProvider {
    */
   abstract canChangeContribution(
     useExistingMandate: boolean,
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<boolean>;
 
   /**
@@ -73,7 +70,7 @@ export abstract class PaymentProvider {
    * @returns Promise resolving to update result
    */
   abstract updateContribution(
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<UpdateContributionResult>;
 
   /**

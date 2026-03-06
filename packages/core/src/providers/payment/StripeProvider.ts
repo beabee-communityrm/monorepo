@@ -1,5 +1,4 @@
 import {
-  ContributionForm,
   ContributionType,
   PaymentFlowParamsStripe,
   PaymentSource,
@@ -25,6 +24,7 @@ import {
   CompletedPaymentFlow,
   ContributionInfo,
   PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate, getChargeableAmount } from '#utils/payment';
@@ -154,7 +154,7 @@ export class StripeProvider extends PaymentProvider {
    * @returns Information about the updated contribution
    */
   async updateContribution(
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<UpdateContributionResult> {
     if (!this.data.customerId || !this.data.mandateId) {
       throw new NoPaymentMethod();
@@ -212,7 +212,7 @@ export class StripeProvider extends PaymentProvider {
    * @returns Information about the updated subscription
    */
   private async updateOrCreateSubscription(
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
     if (this.data.subscriptionId && this.contact.membership?.isActive) {
       log.info('Update subscription ' + this.data.subscriptionId);
