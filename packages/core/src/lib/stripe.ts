@@ -145,7 +145,8 @@ async function calculateProrationParams(
     // Only prorate amounts above 100 cents. This aligns with GoCardless's minimum
     // amount and is much simpler than trying to calculate the minimum payment per
     // payment method
-    prorationAmount: prorationAmount < 100 ? 0 : prorationAmount,
+    prorationAmount:
+      prorationAmount >= 0 && prorationAmount < 100 ? 0 : prorationAmount,
     prorationTime,
   };
 }
@@ -237,7 +238,8 @@ export async function updateSubscription(
     await stripe.subscriptionSchedules.release(oldSchedule.id);
   }
 
-  const startNow = prorationAmount === 0 || form.prorate;
+  const startNow =
+    prorationAmount === 0 || (prorationAmount > 0 && form.prorate);
 
   if (startNow) {
     const params: Stripe.SubscriptionUpdateParams = {
