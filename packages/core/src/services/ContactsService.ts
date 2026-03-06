@@ -1,6 +1,5 @@
 import {
   CONTACT_MFA_TYPE,
-  ContributionForm,
   ContributionPeriod,
   ContributionType,
   LOGIN_CODES,
@@ -46,6 +45,7 @@ import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
+import { UpdateContributionForm } from '#type/update-contribution-form';
 import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
 import { isDuplicateIndex } from '#utils/db';
@@ -324,7 +324,7 @@ class ContactsService {
    */
   async updateContactContribution(
     contact: Contact,
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<void> {
     log.info('Update contribution for ' + contact.id, { form });
     // At the moment the only possibility is to go from whatever contribution

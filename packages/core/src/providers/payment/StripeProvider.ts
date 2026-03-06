@@ -1,5 +1,4 @@
 import {
-  ContributionForm,
   ContributionType,
   PaymentFlowParamsStripe,
   PaymentSource,
@@ -25,6 +24,7 @@ import {
   CompletedPaymentFlow,
   ContributionInfo,
   PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate, getChargeableAmount } from '#utils/payment';
@@ -46,6 +46,63 @@ export class StripeProvider extends PaymentProvider {
    */
   async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
     return !useExistingMandate || !!this.data.mandateId;
+  }
+
+  /**
+   * Update a contacts contribution. This will create or update the subscription
+   * as needed.
+   *
+   * @param form The contribution form
+   * @returns Information about the updated contribution
+   */
+  async updateContribution(
+    form: UpdateContributionForm
+  ): Promise<UpdateContributionResult> {
+    if (!this.data.customerId || !this.data.mandateId) {
+      throw new NoPaymentMethod();
+    }
+
+    // Manual contributors don't have a real subscription yet, create one on
+    // their previous amount so Stripe can automatically handle any proration
+    if (
+      this.contact.membership?.isActive &&
+      this.contact.contributionType === ContributionType.Manual
+    ) {
+      log.info('Creating new subscription for manual contributor');
+      const newSubscription = await createSubscription(
+        this.data.customerId,
+        {
+          ...form,
+          monthlyAmount: this.contact.contributionMonthlyAmount || 0,
+        },
+        this.method,
+        calcRenewalDate(this.contact)
+      );
+      // Set this for the updateOrCreateSubscription call below
+      this.data.subscriptionId = newSubscription.id;
+    }
+
+    const { subscription, startNow } =
+      await this.updateOrCreateSubscription(form);
+
+    this.data.subscriptionId = subscription.id;
+    this.data.payFee = form.payFee;
+    this.data.nextAmount = startNow
+      ? null
+      : {
+          chargeable: getChargeableAmount(form, this.method),
+          monthly: form.monthlyAmount,
+        };
+
+    await this.updateData();
+
+    return {
+      startNow,
+      expiryDate: add(
+        new Date(subscription.current_period_end * 1000),
+        config.gracePeriod
+      ),
+    };
   }
 
   /**
@@ -99,6 +156,36 @@ export class StripeProvider extends PaymentProvider {
   }
 
   /**
+   * Updates a contact's basic information in Stripe
+   *
+   * @param updates The contact updates
+   */
+  async updateContact(updates: Partial<Contact>): Promise<void> {
+    if (
+      (updates.email || updates.firstname || updates.lastname) &&
+      this.data.customerId
+    ) {
+      log.info('Update contact');
+      await stripe.customers.update(this.data.customerId, {
+        ...(updates.email && { email: updates.email }),
+        ...((updates.firstname || updates.lastname) && {
+          name: `${updates.firstname} ${updates.lastname}`,
+        }),
+      });
+    }
+  }
+
+  /**
+   * Permanently deletes customer data from Stripe. Stripe handles
+   * cancelling any active subscriptions when the customer is deleted.
+   */
+  async permanentlyDeleteContact(): Promise<void> {
+    if (this.data.customerId) {
+      await stripe.customers.del(this.data.customerId);
+    }
+  }
+
+  /**
    * Update the payment method to the one provided in the completed flow.
    * This will also create a Stripe customer if one doesn't exist and detach
    * any existing payment methods. The customer object will be created or updated
@@ -147,116 +234,6 @@ export class StripeProvider extends PaymentProvider {
   }
 
   /**
-   * Update a contacts contribution. This will create or update the subscription
-   * as needed.
-   *
-   * @param form The contribution form
-   * @returns Information about the updated contribution
-   */
-  async updateContribution(
-    form: ContributionForm
-  ): Promise<UpdateContributionResult> {
-    if (!this.data.customerId || !this.data.mandateId) {
-      throw new NoPaymentMethod();
-    }
-
-    // Manual contributors don't have a real subscription yet, create one on
-    // their previous amount so Stripe can automatically handle any proration
-    if (
-      this.contact.membership?.isActive &&
-      this.contact.contributionType === ContributionType.Manual
-    ) {
-      log.info('Creating new subscription for manual contributor');
-      const newSubscription = await createSubscription(
-        this.data.customerId,
-        {
-          ...form,
-          monthlyAmount: this.contact.contributionMonthlyAmount || 0,
-        },
-        this.method,
-        calcRenewalDate(this.contact)
-      );
-      // Set this for the updateOrCreateSubscription call below
-      this.data.subscriptionId = newSubscription.id;
-    }
-
-    const { subscription, startNow } =
-      await this.updateOrCreateSubscription(form);
-
-    this.data.subscriptionId = subscription.id;
-    this.data.payFee = form.payFee;
-    this.data.nextAmount = startNow
-      ? null
-      : {
-          chargeable: getChargeableAmount(form, this.method),
-          monthly: form.monthlyAmount,
-        };
-
-    await this.updateData();
-
-    return {
-      startNow,
-      expiryDate: add(
-        new Date(subscription.current_period_end * 1000),
-        config.gracePeriod
-      ),
-    };
-  }
-
-  /**
-   * Update or create a Stripe subscription object. If the contact has an active
-   * subscription but inactive membership, the existing subscription will be
-   * cancelled and a new one created.
-   *
-   * @param form The contribution form
-   * @returns Information about the updated subscription
-   */
-  private async updateOrCreateSubscription(
-    form: ContributionForm
-  ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
-    if (this.data.subscriptionId && this.contact.membership?.isActive) {
-      log.info('Update subscription ' + this.data.subscriptionId);
-      return await updateSubscription(
-        this.data.subscriptionId,
-        form,
-        this.method
-      );
-    } else {
-      // Cancel any existing (failing) subscriptions
-      await this.cancelContribution(true);
-
-      log.info('Create subscription');
-      const subscription = await createSubscription(
-        this.data.customerId!, // customerId is asserted in updateContribution
-        form,
-        this.method,
-        calcRenewalDate(this.contact)
-      );
-      return { subscription, startNow: true };
-    }
-  }
-
-  /**
-   * Updates a contact's basic information in Stripe
-   *
-   * @param updates The contact updates
-   */
-  async updateContact(updates: Partial<Contact>): Promise<void> {
-    if (
-      (updates.email || updates.firstname || updates.lastname) &&
-      this.data.customerId
-    ) {
-      log.info('Update contact');
-      await stripe.customers.update(this.data.customerId, {
-        ...(updates.email && { email: updates.email }),
-        ...((updates.firstname || updates.lastname) && {
-          name: `${updates.firstname} ${updates.lastname}`,
-        }),
-      });
-    }
-  }
-
-  /**
    * Create a one-time payment using the payment method from the completed flow
    *
    * @param flow The completed payment flow
@@ -295,12 +272,35 @@ export class StripeProvider extends PaymentProvider {
   }
 
   /**
-   * Permanently deletes customer data from Stripe. Stripe handles
-   * cancelling any active subscriptions when the customer is deleted.
+   * Update or create a Stripe subscription object. If the contact has an active
+   * subscription but inactive membership, the existing subscription will be
+   * cancelled and a new one created.
+   *
+   * @param form The contribution form
+   * @returns Information about the updated subscription
    */
-  async permanentlyDeleteContact(): Promise<void> {
-    if (this.data.customerId) {
-      await stripe.customers.del(this.data.customerId);
+  private async updateOrCreateSubscription(
+    form: UpdateContributionForm
+  ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
+    if (this.data.subscriptionId && this.contact.membership?.isActive) {
+      log.info('Update subscription ' + this.data.subscriptionId);
+      return await updateSubscription(
+        this.data.subscriptionId,
+        form,
+        this.method
+      );
+    } else {
+      // Cancel any existing (failing) subscriptions
+      await this.cancelContribution(true);
+
+      log.info('Create subscription');
+      const subscription = await createSubscription(
+        this.data.customerId!, // customerId is asserted in updateContribution
+        form,
+        this.method,
+        calcRenewalDate(this.contact)
+      );
+      return { subscription, startNow: true };
     }
   }
 

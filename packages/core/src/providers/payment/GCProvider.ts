@@ -1,5 +1,4 @@
 import {
-  ContributionForm,
   PaymentFlowParams,
   PaymentMethod,
   PaymentSource,
@@ -23,6 +22,7 @@ import {
   ContributionInfo,
   PaymentFlowForm,
   PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate } from '#utils/payment';
@@ -36,42 +36,6 @@ const log = mainLogger.child({ app: 'gc-payment-provider' });
  * Handles ongoing payment operations for direct debit mandates.
  */
 export class GCProvider extends PaymentProvider {
-  /**
-   * Retrieves current contribution information including mandate and payment status
-   * @returns Promise resolving to partial contribution info
-   */
-  async getContributionInfo(): Promise<Partial<ContributionInfo>> {
-    let paymentSource: PaymentSource | undefined;
-    let pendingPayment = false;
-
-    if (this.data.mandateId) {
-      try {
-        const mandate = await gocardless.mandates.get(this.data.mandateId);
-        const bankAccount = await gocardless.customerBankAccounts.get(
-          mandate.links!.customer_bank_account!
-        );
-
-        paymentSource = {
-          method: PaymentMethod.GoCardlessDirectDebit,
-          bankName: bankAccount.bank_name || '',
-          accountHolderName: bankAccount.account_holder_name || '',
-          accountNumberEnding: bankAccount.account_number_ending || '',
-        };
-        pendingPayment = await hasPendingPayment(this.data.mandateId);
-      } catch (err: any) {
-        // 404s can happen on dev as we don't use real mandate IDs
-        if (!(config.dev && err.response && err.response.status === 404)) {
-          throw err;
-        }
-      }
-    }
-
-    return {
-      hasPendingPayment: pendingPayment,
-      ...(paymentSource && { paymentSource }),
-    };
-  }
-
   async canProcessPaymentFlow(form: PaymentFlowForm): Promise<boolean> {
     // Can't update payment method when there are pending payments as ths can result
     // in double charging
@@ -90,7 +54,7 @@ export class GCProvider extends PaymentProvider {
    */
   async canChangeContribution(
     useExistingMandate: boolean,
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<boolean> {
     // No payment method available
     if (useExistingMandate && !this.data.mandateId) {
@@ -119,7 +83,7 @@ export class GCProvider extends PaymentProvider {
    * @returns Promise resolving to update result
    */
   async updateContribution(
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<UpdateContributionResult> {
     log.info('Update contribution for ' + this.contact.id, {
       userId: this.contact.id,
@@ -191,6 +155,42 @@ export class GCProvider extends PaymentProvider {
   }
 
   /**
+   * Retrieves current contribution information including mandate and payment status
+   * @returns Promise resolving to partial contribution info
+   */
+  async getContributionInfo(): Promise<Partial<ContributionInfo>> {
+    let paymentSource: PaymentSource | undefined;
+    let pendingPayment = false;
+
+    if (this.data.mandateId) {
+      try {
+        const mandate = await gocardless.mandates.get(this.data.mandateId);
+        const bankAccount = await gocardless.customerBankAccounts.get(
+          mandate.links!.customer_bank_account!
+        );
+
+        paymentSource = {
+          method: PaymentMethod.GoCardlessDirectDebit,
+          bankName: bankAccount.bank_name || '',
+          accountHolderName: bankAccount.account_holder_name || '',
+          accountNumberEnding: bankAccount.account_number_ending || '',
+        };
+        pendingPayment = await hasPendingPayment(this.data.mandateId);
+      } catch (err: any) {
+        // 404s can happen on dev as we don't use real mandate IDs
+        if (!(config.dev && err.response && err.response.status === 404)) {
+          throw err;
+        }
+      }
+    }
+
+    return {
+      hasPendingPayment: pendingPayment,
+      ...(paymentSource && { paymentSource }),
+    };
+  }
+
+  /**
    * Cancels active subscription and optionally cancels mandate
    * @param keepMandate - Whether to keep mandate for future use
    */
@@ -213,6 +213,36 @@ export class GCProvider extends PaymentProvider {
     }
     if (subscriptionId) {
       await gocardless.subscriptions.cancel(subscriptionId);
+    }
+  }
+
+  /**
+   * Updates customer information with GoCardless
+   * @param updates - Contact fields to update
+   */
+  async updateContact(updates: Partial<Contact>): Promise<void> {
+    if (
+      (updates.email || updates.firstname || updates.lastname) &&
+      this.data.customerId
+    ) {
+      log.info('Update contact in GoCardless');
+      await gocardless.customers.update(this.data.customerId, {
+        ...(updates.email && { email: updates.email }),
+        ...(updates.firstname && { given_name: updates.firstname }),
+        ...(updates.lastname && { family_name: updates.lastname }),
+      });
+    }
+  }
+
+  /**
+   * Permanently deletes customer data from GoCardless
+   */
+  async permanentlyDeleteContact(): Promise<void> {
+    if (this.data.mandateId) {
+      await gocardless.mandates.cancel(this.data.mandateId);
+    }
+    if (this.data.customerId) {
+      await gocardless.customers.remove(this.data.customerId);
     }
   }
 
@@ -259,24 +289,6 @@ export class GCProvider extends PaymentProvider {
   }
 
   /**
-   * Updates customer information with GoCardless
-   * @param updates - Contact fields to update
-   */
-  async updateContact(updates: Partial<Contact>): Promise<void> {
-    if (
-      (updates.email || updates.firstname || updates.lastname) &&
-      this.data.customerId
-    ) {
-      log.info('Update contact in GoCardless');
-      await gocardless.customers.update(this.data.customerId, {
-        ...(updates.email && { email: updates.email }),
-        ...(updates.firstname && { given_name: updates.firstname }),
-        ...(updates.lastname && { family_name: updates.lastname }),
-      });
-    }
-  }
-
-  /**
    * Create a one-time payment
    *
    * @param form The payment form
@@ -288,18 +300,6 @@ export class GCProvider extends PaymentProvider {
     >
   ): Promise<void> {
     throw new Error('Method not implemented.');
-  }
-
-  /**
-   * Permanently deletes customer data from GoCardless
-   */
-  async permanentlyDeleteContact(): Promise<void> {
-    if (this.data.mandateId) {
-      await gocardless.mandates.cancel(this.data.mandateId);
-    }
-    if (this.data.customerId) {
-      await gocardless.customers.remove(this.data.customerId);
-    }
   }
 }
 
