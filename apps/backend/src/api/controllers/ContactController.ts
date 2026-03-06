@@ -69,8 +69,8 @@ import {
 } from '#api/dto/PaymentDto';
 import {
   CompletePaymentFlowDto,
+  PaymentFlowParamsDto,
   PaymentFlowResultDto,
-  StartPaymentFlowDto,
 } from '#api/dto/PaymentFlowDto';
 import { ContactRoleParams } from '#api/params/ContactRoleParams';
 import ContactExporter from '#api/transformers/ContactExporter';
@@ -263,10 +263,10 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    const { result } = await PaymentFlowService.startPaymentFlow(form, {
-      paymentMethod: data.paymentMethod,
-      completeUrl: data.completeUrl,
-    });
+    const { result } = await PaymentFlowService.startPaymentFlow(
+      form,
+      data.params
+    );
     return plainToInstance(PaymentFlowResultDto, result);
   }
 
@@ -371,10 +371,10 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    const { result } = await PaymentFlowService.startPaymentFlow(form, {
-      paymentMethod: data.paymentMethod,
-      completeUrl: data.completeUrl,
-    });
+    const { result } = await PaymentFlowService.startPaymentFlow(
+      form,
+      data.params
+    );
     return plainToInstance(PaymentFlowResultDto, result);
   }
 
@@ -411,7 +411,7 @@ export class ContactController {
   @Put('/:id/payment-method')
   async updatePaymentMethod(
     @TargetUser() target: Contact,
-    @Body() data: StartPaymentFlowDto
+    @Body() data: PaymentFlowParamsDto // TODO: Need to validate
   ): Promise<PaymentFlowResultDto> {
     // Use existing payment method if one is not provided.
     // This means the user is changing to the same payment method but with new
@@ -431,10 +431,7 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    const { result } = await PaymentFlowService.startPaymentFlow(form, {
-      paymentMethod,
-      completeUrl: data.completeUrl,
-    });
+    const { result } = await PaymentFlowService.startPaymentFlow(form, data);
     return plainToInstance(PaymentFlowResultDto, result);
   }
 

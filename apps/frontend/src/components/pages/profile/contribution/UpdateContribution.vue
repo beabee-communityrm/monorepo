@@ -153,7 +153,7 @@ const buttonText = computed(() =>
 );
 
 async function handleStartFlow(
-  paymentFlowParams: PaymentFlowParams
+  params: PaymentFlowParams
 ): Promise<PaymentFlowResult> {
   if (isAutoActiveMember.value) {
     contribution.value = await client.contact.contribution.update({
@@ -178,8 +178,7 @@ async function handleStartFlow(
       prorate:
         newContribution.prorate &&
         newContribution.period === ContributionPeriod.Annually,
-      // paymentMethod: newContribution.paymentMethod,
-      ...paymentFlowParams,
+      params,
     });
   }
 }

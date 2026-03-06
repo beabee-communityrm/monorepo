@@ -108,7 +108,7 @@ async function startNoContributionSignup() {
   }
 }
 
-async function startSignupFlow(paymentFlowParams: PaymentFlowParams) {
+async function startSignupFlow(params: PaymentFlowParams) {
   const clientData: SignupData = {
     email: formData.email,
     ...(formData.period === 'one-time'
@@ -117,7 +117,7 @@ async function startSignupFlow(paymentFlowParams: PaymentFlowParams) {
             amount: formData.amount,
             // paymentMethod: formData.paymentMethod,
             payFee: formData.payFee,
-            ...paymentFlowParams,
+            params,
           },
         }
       : {
@@ -128,7 +128,7 @@ async function startSignupFlow(paymentFlowParams: PaymentFlowParams) {
             payFee:
               formData.period === ContributionPeriod.Monthly && formData.payFee,
             prorate: false,
-            ...paymentFlowParams,
+            params,
           },
         }),
   };
@@ -177,7 +177,7 @@ async function startStripeSignup(
 
   return await startSignupFlow({
     paymentMethod: formData.paymentMethod,
-    completeUrl: token,
+    token,
     firstname,
     lastname,
   });

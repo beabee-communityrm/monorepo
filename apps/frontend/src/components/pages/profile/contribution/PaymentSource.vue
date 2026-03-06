@@ -49,11 +49,9 @@ const changeLabel = computed(() =>
 );
 
 async function handleStartPaymentUpdate(
-  paymentFlowParams: PaymentFlowParams
+  params: PaymentFlowParams
 ): Promise<PaymentFlowResult> {
-  return await client.contact.paymentMethod.update(
-    paymentFlowParams.completeUrl
-  );
+  return await client.contact.paymentMethod.update(params);
 }
 
 async function handleCompletePaymentUpdate(paymentFlowId: string) {

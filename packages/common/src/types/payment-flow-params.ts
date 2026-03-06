@@ -12,7 +12,7 @@ export interface PaymentFlowParamsStripe {
     | PaymentMethod.StripeSEPA
     | PaymentMethod.StripePayPal
     | PaymentMethod.StripeIdeal;
-  completeUrl: string;
+  token: string;
   firstname?: string;
   lastname?: string;
   vatNumber?: string;

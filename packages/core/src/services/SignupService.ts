@@ -75,12 +75,7 @@ class SignupService {
    *
    * @param paymentFlowId - The ID of the payment flow to advance
    */
-  async advanceSignupWithPayment(
-    paymentFlowId: string,
-    data: Partial<
-      Pick<PaymentFlowParamsStripe, 'firstname' | 'lastname' | 'vatNumber'>
-    >
-  ): Promise<void> {
+  async advanceSignupWithPayment(paymentFlowId: string): Promise<void> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { paymentFlow: { paymentFlowId } },
       relations: { paymentFlow: true },
@@ -89,15 +84,6 @@ class SignupService {
     if (!signupFlow?.paymentFlow) {
       throw new NotFoundError();
     }
-
-    // TODO: remove once payment flow logic reworked
-    for (const key of ['firstname', 'lastname', 'vatNumber'] as const) {
-      if (data[key]) {
-        (signupFlow.paymentFlow.params as PaymentFlowParamsStripe)[key] =
-          data[key];
-      }
-    }
-    await getRepository(PaymentFlow).save(signupFlow.paymentFlow);
 
     // Finalise one-time payments early
     if (signupFlow.paymentFlow.form.action === 'create-one-time-payment') {

@@ -17,11 +17,11 @@ import {
 } from 'routing-controllers';
 
 import { GetContactDto } from '#api/dto/ContactDto';
-import { PaymentFlowResultDto } from '#api/dto/PaymentFlowDto';
 import {
-  CompleteSignupFlowDto,
-  StartSignupFlowDto,
-} from '#api/dto/SignupFlowDto';
+  CompletePaymentFlowDto,
+  PaymentFlowResultDto,
+} from '#api/dto/PaymentFlowDto';
+import { StartSignupFlowDto } from '#api/dto/SignupFlowDto';
 import { SignupConfirmEmailParams } from '#api/params/SignupConfirmEmailParams';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import { login } from '#api/utils/auth';
@@ -70,10 +70,7 @@ export class SignupController {
           payFee: data.contribution.payFee,
           period: data.contribution.period,
         },
-        {
-          paymentMethod: data.contribution.paymentMethod,
-          completeUrl: data.contribution.completeUrl,
-        }
+        data.contribution.params
       );
       return plainToInstance(PaymentFlowResultDto, result);
     } else if (data.oneTimePayment) {
@@ -85,10 +82,7 @@ export class SignupController {
           amount: data.oneTimePayment.amount,
           payFee: data.oneTimePayment.payFee,
         },
-        {
-          paymentMethod: data.oneTimePayment.paymentMethod,
-          completeUrl: data.oneTimePayment.completeUrl,
-        }
+        data.oneTimePayment.params
       );
       return plainToInstance(PaymentFlowResultDto, result);
     } else {
@@ -105,8 +99,8 @@ export class SignupController {
       user: { points: 5, duration: 60 }, // Same limit for consistency (though authenticated users don't use this endpoint)
     })
   )
-  async completeSignup(@Body() data: CompleteSignupFlowDto): Promise<void> {
-    await SignupService.advanceSignupWithPayment(data.paymentFlowId, data);
+  async completeSignup(@Body() data: CompletePaymentFlowDto): Promise<void> {
+    await SignupService.advanceSignupWithPayment(data.paymentFlowId);
   }
 
   @Post('/confirm-email')
