@@ -75,10 +75,7 @@ class SignupService {
    *
    * @param paymentFlowId - The ID of the payment flow to advance
    */
-  async advanceSignupWithPayment(
-    paymentFlowId: string,
-    data: Partial<PaymentFlowParamsStripe>
-  ): Promise<void> {
+  async advanceSignupWithPayment(paymentFlowId: string): Promise<void> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { paymentFlow: { paymentFlowId } },
       relations: { paymentFlow: true },
@@ -87,10 +84,6 @@ class SignupService {
     if (!signupFlow?.paymentFlow) {
       throw new NotFoundError();
     }
-
-    // TODO: remove once payment flow logic reworked
-    Object.assign(signupFlow.paymentFlow.params, data);
-    await getRepository(PaymentFlow).save(signupFlow.paymentFlow);
 
     // Finalise one-time payments early
     if (signupFlow.paymentFlow.form.action === 'create-one-time-payment') {

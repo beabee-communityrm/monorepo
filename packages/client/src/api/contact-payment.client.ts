@@ -33,8 +33,7 @@ export class ContactPaymentClient extends BaseClient {
       {
         amount: dataIn.amount,
         payFee: dataIn.payFee,
-        paymentMethod: dataIn.paymentMethod,
-        completeUrl: dataIn.completeUrl,
+        params: dataIn.params,
       }
     );
     return data;

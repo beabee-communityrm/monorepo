@@ -66,12 +66,11 @@ const paymentFlowData = computed(() => ({
   paymentMethod: formData.paymentMethod,
 }));
 
-async function startDonationFlow(paymentFlowParams: PaymentFlowParams) {
+async function startDonationFlow(params: PaymentFlowParams) {
   return await client.contact.payment.create({
     amount: formData.amount,
     payFee: formData.payFee,
-    // paymentMethod: formData.paymentMethod,
-    ...paymentFlowParams,
+    params,
   });
 }
 
