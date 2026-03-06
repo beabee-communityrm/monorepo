@@ -138,25 +138,6 @@ async function calculateProrationParams(
   };
 }
 
-export const getCreateSubscriptionParams = (
-  customerId: string,
-  form: UpdateContributionForm,
-  paymentMethod: PaymentMethod,
-  renewalDate?: Date
-): Stripe.SubscriptionCreateParams => {
-  return {
-    customer: customerId,
-    items: [{ price_data: getPriceData(form, paymentMethod) }],
-    off_session: true,
-    ...(renewalDate &&
-      renewalDate > new Date() && {
-        billing_cycle_anchor: Math.floor(+renewalDate / 1000),
-        proration_behavior: 'none',
-      }),
-    default_tax_rates: getSalesTaxRateObject('recurring'),
-  };
-};
-
 /**
  * Create a new subscription in Stripe, optionally starting at a specific date.
  *
@@ -176,9 +157,19 @@ export async function createSubscription(
     form,
     renewalDate,
   });
-  return await stripe.subscriptions.create(
-    getCreateSubscriptionParams(customerId, form, paymentMethod, renewalDate)
-  );
+  return await stripe.subscriptions.create({
+    customer: customerId,
+    items: [{ price_data: getPriceData(form, paymentMethod) }],
+    off_session: true,
+    default_tax_rates: getSalesTaxRateObject('recurring'),
+    expand: ['latest_invoice'],
+    payment_behavior: 'default_incomplete',
+    ...(renewalDate &&
+      renewalDate > new Date() && {
+        billing_cycle_anchor: Math.floor(+renewalDate / 1000),
+        proration_behavior: 'none',
+      }),
+  });
 }
 
 /**
@@ -226,7 +217,7 @@ export async function updateSubscription(
   }
 
   const startNow =
-    prorationAmount === 0 || (prorationAmount > 0 && form.prorate);
+    prorationAmount === 0 || (prorationAmount > 0 && !!form.prorate);
 
   if (startNow) {
     const params: Stripe.SubscriptionUpdateParams = {
@@ -306,7 +297,6 @@ export async function deleteSubscription(
 export async function ensureCustomerAndAttachPayment(
   contact: { email: string; firstname: string; lastname: string },
   customerId: string | null,
-  mandateId: string,
   vatNumber?: string | null
 ): Promise<string> {
   if (!customerId) {
@@ -319,11 +309,6 @@ export async function ensureCustomerAndAttachPayment(
     customerId = customer.id;
   }
 
-  log.info('Attach payment method ' + mandateId + ' to customer ' + customerId);
-  await stripe.paymentMethods.attach(mandateId, {
-    customer: customerId,
-  });
-
   return customerId;
 }
 
@@ -331,38 +316,47 @@ export async function ensureCustomerAndAttachPayment(
  * Create a one-time payment
  *
  * @param customerId The ID of the customer
- * @param mandateId The ID of the payment mandate
+ * @param token The confirmation token
  * @param form The payment form
  * @param paymentMethod The payment method
  */
 export async function chargeOneTimePayment(
   customerId: string,
-  mandateId: string,
+  token: string,
   form: PaymentFlowFormCreateOneTimePayment,
   paymentMethod: PaymentMethod
 ): Promise<void> {
   log.info('Creating one-time payment on ' + customerId);
 
-  const invoice = await stripe.invoices.create({
+  await stripe.paymentIntents.create({
     customer: customerId,
-    default_payment_method: mandateId,
-    collection_method: 'charge_automatically',
-    auto_advance: true,
-    currency: config.currencyCode,
-    metadata: {
-      'beabee-invoice-type': 'one-time-payment-detach-mandate',
-    },
-    default_tax_rates: getSalesTaxRateObject('one-time'),
-  });
-
-  await stripe.invoiceItems.create({
-    customer: customerId,
-    invoice: invoice.id,
     amount: getChargeableAmount(form, paymentMethod),
-    description: 'One-time payment',
+    currency: config.currencyCode,
+    confirmation_token: token,
+    confirm: true,
+    description: 'One-time payment', // TODO: i18n
   });
 
-  await stripe.invoices.pay(invoice.id);
+  // const invoice = await stripe.invoices.create({
+  //   customer: customerId,
+  //   default_payment_method: token,
+  //   collection_method: 'charge_automatically',
+  //   auto_advance: true,
+  //   currency: config.currencyCode,
+  //   metadata: {
+  //     'beabee-invoice-type': 'one-time-payment-detach-mandate',
+  //   },
+  //   default_tax_rates: getSalesTaxRateObject('one-time'),
+  // });
+
+  // await stripe.invoiceItems.create({
+  //   customer: customerId,
+  //   invoice: invoice.id,
+  //   amount: getChargeableAmount(form, paymentMethod),
+  //   description: 'One-time payment',
+  // });
+
+  // await stripe.invoices.pay(invoice.id);
 }
 
 export function isOneTimePaymentInvoice(invoice: Stripe.Invoice): boolean {
@@ -370,31 +364,6 @@ export function isOneTimePaymentInvoice(invoice: Stripe.Invoice): boolean {
     invoice.metadata?.['beabee-invoice-type'] ===
     'one-time-payment-detach-mandate'
   );
-}
-
-/**
- * Convert a payment method to a Stripe payment type.
- *
- * @param method The payment method
- * @returns The Stripe payment type
- */
-export function paymentMethodToStripeType(
-  method: PaymentMethod
-): Stripe.PaymentMethod.Type {
-  switch (method) {
-    case PaymentMethod.StripeCard:
-      return 'card';
-    case PaymentMethod.StripeSEPA:
-      return 'sepa_debit';
-    case PaymentMethod.StripeBACS:
-      return 'bacs_debit';
-    case PaymentMethod.StripePayPal:
-      return 'paypal';
-    case PaymentMethod.StripeIdeal:
-      return 'ideal';
-    case PaymentMethod.GoCardlessDirectDebit:
-      return 'bacs_debit';
-  }
 }
 
 /**
