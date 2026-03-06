@@ -1,5 +1,4 @@
 import {
-  ContributionForm,
   MembershipStatus,
   PaymentFlowParams,
   PaymentMethod,
@@ -19,6 +18,7 @@ import {
   ContributionInfo,
   PaymentFlowForm,
   PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate, getActualAmount } from '#utils/payment';
@@ -107,7 +107,7 @@ class PaymentService {
   async canChangeContribution(
     contact: Contact,
     useExistingPaymentSource: boolean,
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<boolean> {
     const ret = await this.provider(contact, (p) =>
       p.canChangeContribution(useExistingPaymentSource, form)
@@ -172,7 +172,7 @@ class PaymentService {
 
   async updateContribution(
     contact: Contact,
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<UpdateContributionResult> {
     log.info('Update contribution for contact ' + contact.id);
     const ret = await this.provider(contact, (p) => p.updateContribution(form));
