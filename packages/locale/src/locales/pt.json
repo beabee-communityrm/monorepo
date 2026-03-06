@@ -1118,6 +1118,7 @@
       "showingOf": "A mostrar modelos {start} a {end} de {total}",
       "subject": "Assunto",
       "title": "Modelos de e-mail",
+      "titleNew": "",
       "use": "Usar"
     },
     "noContacts": "Nenhum contacto ainda adicionado",

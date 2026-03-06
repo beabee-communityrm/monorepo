@@ -1119,6 +1119,7 @@
       "showingOf": "Показано шаблонов {start} – {end} из {total}",
       "subject": "Тема",
       "title": "Шаблоны писем",
+      "titleNew": "",
       "use": "Использовать"
     },
     "noContacts": "",

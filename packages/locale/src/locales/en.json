@@ -1118,6 +1118,7 @@
       "showingOf": "Showing {start} to {end} templates out of {total}",
       "subject": "Subject",
       "title": "Email templates",
+      "titleNew": "Create new template",
       "use": "Use"
     },
     "noContacts": "No contacts added yet",

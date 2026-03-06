@@ -1118,6 +1118,7 @@
       "showingOf": "{start} bis {end} von {total} Vorlagen werden angezeigt.",
       "subject": "Betreff",
       "title": "E-Mail-Vorlagen",
+      "titleNew": "Neue Vorlage erstellen",
       "use": "Verwenden"
     },
     "noContacts": "Keine Kontakte",

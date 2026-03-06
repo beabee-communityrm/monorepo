@@ -1118,6 +1118,7 @@
       "showingOf": "Εμφάνιση προτύπων {start} έως {end} από {total}",
       "subject": "Θέμα",
       "title": "Πρότυπα email",
+      "titleNew": "",
       "use": "Χρήση"
     },
     "noContacts": "",

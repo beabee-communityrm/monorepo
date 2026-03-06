@@ -1118,6 +1118,7 @@
       "showingOf": "Modelli da {start} a {end} su {total}",
       "subject": "Oggetto",
       "title": "Modelli email",
+      "titleNew": "",
       "use": "Usa"
     },
     "noContacts": "Nessun contatto aggiunto ancora",

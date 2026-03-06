@@ -1118,6 +1118,7 @@
       "showingOf": "Toont sjablonen {start} tot {end} van {total}",
       "subject": "Onderwerp",
       "title": "E-mailsjablonen",
+      "titleNew": "",
       "use": "Gebruiken"
     },
     "noContacts": "Nog geen contacten toegevoegd",

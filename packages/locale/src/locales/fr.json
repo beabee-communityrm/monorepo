@@ -1122,6 +1122,7 @@
       "showingOf": "Affichage des modèles {start} à {end} sur {total}",
       "subject": "Objet",
       "title": "Modèles d'e-mail",
+      "titleNew": "",
       "use": "Utiliser"
     },
     "noContacts": "Aucun contact ajouté pour le moment",

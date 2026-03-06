@@ -5,6 +5,84 @@ meta:
   role: admin
 </route>
 
-<template>Create New Segment</template>
+<template>
+  <PageTitle :title="pageTitle" border />
 
-<script lang="ts" setup></script>
+  <EmailTemplateEditor
+    v-model:email="form"
+    :submit-button-text="t('actions.save')"
+    :reset-button-text="t('actions.back')"
+    :save-preview="savePreview"
+    @submit="handleSubmit"
+    @reset="handleBack"
+  />
+</template>
+
+<script lang="ts" setup>
+import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
+import { PageTitle, addNotification } from '@beabee/vue';
+
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+
+import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
+
+const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
+
+const { t } = useI18n();
+const router = useRouter();
+
+addBreadcrumb(
+  computed(() => [
+    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
+    {
+      title: t('contacts.emailTemplates.title'),
+      to: router.resolve(LIST_ROUTE).href,
+    },
+    {
+      title: t('contacts.emailTemplates.titleNew'),
+    },
+  ])
+);
+
+const email = ref<GetEmailData | null>(null);
+const form = ref<UpdateEmailData>({ name: '', subject: '', body: '' });
+const savePreview = ref(true);
+
+const pageTitle = computed(() => {
+  if (!email.value) return t('contacts.emailTemplates.editTitle');
+  return t('contacts.emailTemplates.editTitleWithName', {
+    name: email.value.name,
+  });
+});
+
+async function handleBack() {
+  return await router.push(LIST_ROUTE);
+}
+
+async function handleSubmit() {
+  if (!form.value) return;
+  try {
+    await client.email.create({
+      name: form.value.name ? form.value.name : '',
+      subject: form.value.subject,
+      body: form.value.body,
+    });
+    addNotification({
+      variant: 'success',
+      title: t('contacts.sendEmail.sent'),
+    });
+    await router.push(LIST_ROUTE);
+  } catch (err) {
+    addNotification({
+      variant: 'error',
+      title: extractErrorText(err),
+    });
+  }
+}
+</script>

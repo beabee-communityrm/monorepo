@@ -1,10 +1,10 @@
 <template>
   <AppApiForm
     :button-text="submitButtonText"
-    reset-button-text="Hi"
     class="flex flex-col gap-6"
     inline-error
     @submit="emit('submit')"
+    @reset="emit('reset')"
   >
     <div class="flex flex-col gap-6 md:flex-row md:items-stretch">
       <div
@@ -27,30 +27,20 @@
         class="w-full min-w-0 md:flex md:min-h-0 md:w-[600px] md:flex-1 md:flex-col"
       >
         <AppInput
+          v-if="isNewEmailSelected"
           v-model="email.name"
           :label="t('contacts.sendEmail.templateName')"
           :placeholder="defaultNewTemplateName"
-          :readonly="!isNewEmailSelected"
-          :required="isNewEmailSelected"
+          required
         />
       </div>
     </div>
-
     <EmailEditor
       v-model:subject="email.subject"
       v-model:content="email.body"
       v-model:preview-contact-id="previewContactId"
       :preview-contact-options="contacts"
     />
-
-    <AppCheckbox
-      v-model="savePreview"
-      label="Als Vorlage Speichern"
-    ></AppCheckbox>
-
-    <template #buttons="slotProps">
-      <slot name="buttons" v-bind="slotProps" />
-    </template>
   </AppApiForm>
 </template>
 
@@ -60,13 +50,7 @@ import type {
   GetEmailData,
   UpdateEmailData,
 } from '@beabee/beabee-common';
-import {
-  AppCheckbox,
-  AppInput,
-  AppLabel,
-  AppSelect,
-  addNotification,
-} from '@beabee/vue';
+import { AppInput, AppLabel, AppSelect, addNotification } from '@beabee/vue';
 
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -83,9 +67,6 @@ const NEW_EMAIL_VALUE = '__new__';
 const TEMPLATES_LIMIT = 100;
 
 const email = defineModel<UpdateEmailData>('email', { required: true });
-const savePreview = defineModel<boolean>('savePreview', {
-  required: true,
-});
 
 const props = withDefaults(
   defineProps<{
@@ -103,6 +84,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   submit: [];
+  reset: [];
 }>();
 
 /** Template Management **/
@@ -143,7 +125,11 @@ function onTemplateChange(value: string) {
   }
   const template = templates.value.find((e) => e.id === value);
   if (template) {
-    email.value = { subject: template.subject, body: template.body };
+    email.value = {
+      name: template.name,
+      subject: template.subject,
+      body: template.body,
+    };
   }
 }
 

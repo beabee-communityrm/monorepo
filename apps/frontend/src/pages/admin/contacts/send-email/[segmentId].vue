@@ -34,8 +34,14 @@ meta:
       <AppRadioGroup
         v-model="emailSettingSendTime"
         :options="[
-          ['contact-joins', t('adminSettings.email.contactTemplates.contactJoins')],
-          ['contact-leaves', t('adminSettings.email.contactTemplates.contactLeaves')],
+          [
+            'contact-joins',
+            t('adminSettings.email.contactTemplates.contactJoins'),
+          ],
+          [
+            'contact-leaves',
+            t('adminSettings.email.contactTemplates.contactLeaves'),
+          ],
         ]"
         :variant="'link'"
         :disabled="false"
@@ -67,7 +73,7 @@ meta:
     :contacts="segmentContacts"
     :default-new-template-name="defaultNewTemplateName"
     @submit="handleSubmit"
-    @reset="(e: Event) => triggerSubmit(e, 'back')"
+    @reset="handleBack"
   />
 </template>
 
@@ -125,10 +131,12 @@ const sendEmail = computed(() =>
 );
 
 const submitButtonText = computed(() =>
-  sendEmail.value ? t('adminSettings.email.contactTemplates.send') : t('adminSettings.email.create')
+  sendEmail.value
+    ? t('adminSettings.email.contactTemplates.send')
+    : t('adminSettings.email.create')
 );
 
-const backUrl = computed( 
+const backUrl = computed(
   () => `/admin/contacts${segmentId.value ? `?segment=${segmentId.value}` : ''}`
 );
 
@@ -203,11 +211,6 @@ async function ensureSavedEmailId(): Promise<string> {
   return selectedTemplateId.value;
 }
 
-function triggerSubmit(evt: Event, action: 'back' | 'send') {
-  pendingAction.value = action;
-  (evt.currentTarget as HTMLElement).closest('form')?.requestSubmit();
-}
-
 async function handleSubmit() {
   if (!segmentId.value || !validateForm()) return;
   if (pendingAction.value === 'back') {
@@ -232,6 +235,10 @@ async function handleSubmit() {
     title: t('contacts.sendEmail.sent'),
   });
   router.push(backUrl.value);
+}
+
+async function handleBack() {
+  return router.push(backUrl.value);
 }
 
 onMounted(async () => {

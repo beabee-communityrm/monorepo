@@ -18,22 +18,16 @@ meta:
     <p>{{ t('contacts.emailTemplates.confirmDelete.text') }}</p>
   </AppConfirmDialog>
 
-  <PageTitle :title="pageTitle" border>
-    <div class="flex-0 ml-3 hidden md:block">
-      <AppButton :to="LIST_ROUTE">
-        {{ t('actions.back') }}
-      </AppButton>
-    </div>
-  </PageTitle>
+  <PageTitle :title="pageTitle" border />
 
   <div v-if="loading">
     <p>{{ t('common.loading') }}...</p>
   </div>
 
   <EmailTemplateEditor
+    v-model:email="form"
     :submit-button-text="t('actions.save')"
     :reset-button-text="t('actions.delete')"
-    :email="form"
     :save-preview="savePreview"
     @submit="handleSubmit"
     @reset="showDeleteConfirm = true"
@@ -42,12 +36,7 @@ meta:
 
 <script lang="ts" setup>
 import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
-import {
-  AppButton,
-  AppConfirmDialog,
-  PageTitle,
-  addNotification,
-} from '@beabee/vue';
+import { AppConfirmDialog, PageTitle, addNotification } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
