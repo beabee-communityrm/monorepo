@@ -1,5 +1,4 @@
 import {
-  ContributionForm,
   PaymentFlowParams,
   PaymentMethod,
   PaymentSource,
@@ -23,6 +22,7 @@ import {
   ContributionInfo,
   PaymentFlowForm,
   PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate } from '#utils/payment';
@@ -90,7 +90,7 @@ export class GCProvider extends PaymentProvider {
    */
   async canChangeContribution(
     useExistingMandate: boolean,
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<boolean> {
     // No payment method available
     if (useExistingMandate && !this.data.mandateId) {
@@ -119,7 +119,7 @@ export class GCProvider extends PaymentProvider {
    * @returns Promise resolving to update result
    */
   async updateContribution(
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<UpdateContributionResult> {
     log.info('Update contribution for ' + this.contact.id, {
       userId: this.contact.id,

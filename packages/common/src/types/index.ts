@@ -96,7 +96,6 @@ export type * from './content-payment-data.js';
 export type * from './content-profile-data.js';
 export type * from './content-share-data.js';
 export type * from './content-telegram-data.js';
-export type * from './contribution-form.js';
 export type * from './contribution-info.js';
 export type * from './create-api-key-data.js';
 export type * from './create-callout-data.js';
