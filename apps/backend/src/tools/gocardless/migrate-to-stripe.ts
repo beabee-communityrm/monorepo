@@ -154,7 +154,7 @@ runApp(async () => {
         });
 
         // Recreate the contribution
-        await PaymentService.updateContribution(contact, {
+        await PaymentService.processUpdateContribution(contact, {
           monthlyAmount: contact.contributionMonthlyAmount,
           period: contact.contributionPeriod,
           payFee: false,

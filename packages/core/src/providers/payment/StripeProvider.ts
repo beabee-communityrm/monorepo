@@ -34,18 +34,38 @@ import { PaymentProvider } from './PaymentProvider';
 const log = mainLogger.child({ app: 'stripe-payment-provider' });
 
 export class StripeProvider extends PaymentProvider {
+  /**
+   * Check if the payment flow can be processed. With Stripe this is always
+   * possible as it handles all the necessary steps internally.
+   * @returns Whether the payment flow can be processed
+   */
   async canProcessPaymentFlow(): Promise<boolean> {
     return true;
   }
+
+  async processPaymentFlow(
+    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
+  ): Promise<UpdateContributionResult | undefined> {
+    if (flow.form.action === 'create-one-time-payment') {
+      await this.createOneTimePayment({ ...flow, form: flow.form });
+    } else {
+      await this.updatePaymentMethod(flow);
+      if (flow.form.action === 'start-contribution') {
+        return await this.processUpdateContribution({
+          ...flow.form,
+          prorate: false,
+        });
+      }
+    }
+  }
+
   /**
    * Checks if a contribution can be changed. With Stripe this is always
-   * possible as long as the user has a valid mandate.
-   *
-   * @param useExistingMandate Whether an existing mandate will be used
+   * possible as it handles all the necessary steps internally.
    * @returns Whether the contribution can be changed
    */
-  async canChangeContribution(useExistingMandate: boolean): Promise<boolean> {
-    return !useExistingMandate || !!this.data.mandateId;
+  async canUpdateContribution(): Promise<boolean> {
+    return true;
   }
 
   /**
@@ -55,7 +75,7 @@ export class StripeProvider extends PaymentProvider {
    * @param form The contribution form
    * @returns Information about the updated contribution
    */
-  async updateContribution(
+  async processUpdateContribution(
     form: UpdateContributionForm
   ): Promise<UpdateContributionResult> {
     if (!this.data.customerId || !this.data.mandateId) {
@@ -97,6 +117,7 @@ export class StripeProvider extends PaymentProvider {
     await this.updateData();
 
     return {
+      form,
       startNow,
       expiryDate: add(
         new Date(subscription.current_period_end * 1000),
@@ -193,7 +214,7 @@ export class StripeProvider extends PaymentProvider {
    *
    * @param flow The completed payment flow
    */
-  async updatePaymentMethod(
+  private async updatePaymentMethod(
     flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
   ): Promise<void> {
     const paymentMethod = await stripe.paymentMethods.retrieve(flow.mandateId);
@@ -239,7 +260,7 @@ export class StripeProvider extends PaymentProvider {
    * @param flow The completed payment flow
    * @param form The payment form
    */
-  async createOneTimePayment(
+  private async createOneTimePayment(
     flow: CompletedPaymentFlow<
       PaymentFlowParamsStripe,
       PaymentFlowFormCreateOneTimePayment
