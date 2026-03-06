@@ -41,6 +41,7 @@ export * from './s3-config';
 export * from './select-result';
 export * from './tag-assignment';
 export * from './taggable-entity';
+export * from './update-contribution-form';
 export * from './update-contribution-result';
 export * from './update-mc-member-response';
 export * from './update-newsletter-contact';
