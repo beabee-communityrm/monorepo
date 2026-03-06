@@ -248,14 +248,20 @@ export class ContactController {
     @Body() data: StartContributionDto
   ): Promise<PaymentFlowResultDto> {
     const form = {
-      ...data,
+      action: 'start-contribution' as const,
       monthlyAmount: getMonthlyAmount(data.amount, data.period),
+      payFee: data.payFee,
+      period: data.period,
     };
-    const result = await PaymentFlowService.startPaymentFlowForContact(
-      target,
-      form,
-      data.completeUrl
-    );
+
+    if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
+      throw new CantUpdateContribution();
+    }
+
+    const { result } = await PaymentFlowService.startPaymentFlow(form, {
+      paymentMethod: data.paymentMethod,
+      completeUrl: data.completeUrl,
+    });
     return plainToInstance(PaymentFlowResultDto, result);
   }
 
@@ -321,7 +327,10 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    await PaymentFlowService.finalizePaymentFlow(target, data.paymentFlowId);
+    await PaymentFlowService.completePaymentFlowAndExecuteActions(
+      target,
+      data.paymentFlowId
+    );
     return await this.getContribution(target);
   }
 
@@ -348,17 +357,19 @@ export class ContactController {
     @Body() data: CreatePaymentDto
   ): Promise<PaymentFlowResultDto> {
     const form = {
-      monthlyAmount: data.amount,
+      action: 'create-one-time-payment' as const,
+      amount: data.amount,
       payFee: data.payFee,
-      prorate: false,
-      period: 'one-time' as const,
-      paymentMethod: data.paymentMethod,
     };
-    const result = await PaymentFlowService.startPaymentFlowForContact(
-      target,
-      form,
-      data.completeUrl
-    );
+
+    if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
+      throw new CantUpdateContribution();
+    }
+
+    const { result } = await PaymentFlowService.startPaymentFlow(form, {
+      paymentMethod: data.paymentMethod,
+      completeUrl: data.completeUrl,
+    });
     return plainToInstance(PaymentFlowResultDto, result);
   }
 
@@ -368,7 +379,10 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<void> {
-    await PaymentFlowService.finalizePaymentFlow(target, data.paymentFlowId);
+    await PaymentFlowService.completePaymentFlowAndExecuteActions(
+      target,
+      data.paymentFlowId
+    );
   }
 
   @Get('/:id/payment')
@@ -405,18 +419,17 @@ export class ContactController {
     }
 
     const form = {
-      monthlyAmount: 0, // Stub to indicate no contribution update
-      paymentMethod,
-      payFee: false,
-      period: ContributionPeriod.Monthly,
-      prorate: false,
+      action: 'update-payment-method' as const,
     };
 
-    const result = await PaymentFlowService.startPaymentFlowForContact(
-      target,
-      form,
-      data.completeUrl
-    );
+    if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
+      throw new CantUpdateContribution();
+    }
+
+    const { result } = await PaymentFlowService.startPaymentFlow(form, {
+      paymentMethod,
+      completeUrl: data.completeUrl,
+    });
     return plainToInstance(PaymentFlowResultDto, result);
   }
 
@@ -425,7 +438,10 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    await PaymentFlowService.finalizePaymentFlow(target, data.paymentFlowId);
+    await PaymentFlowService.completePaymentFlowAndExecuteActions(
+      target,
+      data.paymentFlowId
+    );
     return await this.getContribution(target);
   }
 

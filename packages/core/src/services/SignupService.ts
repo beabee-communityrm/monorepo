@@ -1,22 +1,20 @@
 import {
+  PaymentFlowParams,
+  PaymentFlowParamsStripe,
   PaymentFlowResult,
+  PaymentMethod,
   RESET_SECURITY_FLOW_TYPE,
 } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { DuplicateEmailError, NotFoundError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import {
-  Contact,
-  Password,
-  PaymentFlow,
-  PaymentFlowForm,
-  SignupFlow,
-} from '#models/index';
+import { Contact, Password, PaymentFlow, SignupFlow } from '#models/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import OptionsService from '#services/OptionsService';
 import PaymentFlowService from '#services/PaymentFlowService';
+import { PaymentFlowForm } from '#type/index';
 
 import ResetSecurityFlowService from './ResetSecurityFlowService';
 
@@ -52,20 +50,16 @@ class SignupService {
   /**
    * Starts a signup flow with payment, coordinating between signup and payment flows
    * @param signupData - User signup information
-   * @param paymentData - Payment form data
-   * @param completeUrl - URL to redirect to after payment setup
+   * @param form - Payment form data
+   * @param params - Payment flow parameters
    * @returns The payment flow result for the client
    */
   async startSignupWithPayment(
     signupData: SignupData,
-    paymentData: PaymentFlowForm,
-    completeUrl: string
+    form: PaymentFlowForm,
+    params: PaymentFlowParams
   ): Promise<PaymentFlowResult> {
-    const setup = await PaymentFlowService.startPaymentFlow(
-      paymentData,
-      completeUrl,
-      signupData
-    );
+    const setup = await PaymentFlowService.startPaymentFlow(form, params);
 
     await getRepository(SignupFlow).save({
       ...signupData,
@@ -80,11 +74,10 @@ class SignupService {
    * and sending confirmation email.
    *
    * @param paymentFlowId - The ID of the payment flow to advance
-   * @param data - Any additional data to merge into the payment flow form (e.g. firstname, lastname)
    */
   async advanceSignupWithPayment(
     paymentFlowId: string,
-    data: Partial<PaymentFlowForm>
+    data: Partial<PaymentFlowParamsStripe>
   ): Promise<void> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { paymentFlow: { paymentFlowId } },
@@ -96,11 +89,11 @@ class SignupService {
     }
 
     // TODO: remove once payment flow logic reworked
-    Object.assign(signupFlow.paymentFlow.form, data);
+    Object.assign(signupFlow.paymentFlow.params, data);
     await getRepository(PaymentFlow).save(signupFlow.paymentFlow);
 
     // Finalise one-time payments early
-    if (signupFlow.paymentFlow.form.period === 'one-time') {
+    if (signupFlow.paymentFlow.form.action === 'create-one-time-payment') {
       await this.finalizeSignup(signupFlow.id);
     }
 
@@ -119,7 +112,8 @@ class SignupService {
       email: signupFlow.email,
     });
 
-    const isOneTime = signupFlow.paymentFlow?.form.period === 'one-time';
+    const isOneTime =
+      signupFlow.paymentFlow?.form.action === 'create-one-time-payment';
 
     if (
       // Contact already exists with an active contribution
@@ -149,6 +143,19 @@ class SignupService {
         );
       }
     } else {
+      let firstName = '',
+        lastName = '';
+
+      // TODO: remove once payment flow logic is reworked
+      if (
+        signupFlow.paymentFlow &&
+        signupFlow.paymentFlow.params.paymentMethod !==
+          PaymentMethod.GoCardlessDirectDebit
+      ) {
+        firstName = signupFlow.paymentFlow.params.firstname || '';
+        lastName = signupFlow.paymentFlow.params.lastname || '';
+      }
+
       // User doesn't exist, their membership is inactive or they are not
       // starting a recurring contribution, ask them to confirm their email
       // address so they can continue the signup flow
@@ -156,8 +163,8 @@ class SignupService {
         isOneTime ? 'setup-account' : 'confirm-email',
         { email: signupFlow.email },
         {
-          firstName: signupFlow.paymentFlow?.form.firstname || '',
-          lastName: signupFlow.paymentFlow?.form.lastname || '',
+          firstName,
+          lastName,
           confirmLink: signupFlow.confirmUrl + '/' + signupFlow.id,
         }
       );
@@ -191,7 +198,7 @@ class SignupService {
     // Check if contact already exists with active membership
     if (
       contact?.membership?.isActive &&
-      signupFlow.paymentFlow?.form.period !== 'one-time'
+      signupFlow.paymentFlow?.form.action === 'start-contribution'
     ) {
       throw new DuplicateEmailError();
     }
@@ -235,7 +242,7 @@ class SignupService {
     }
 
     // One-time contributions receive a separate one-time-donation email
-    if (signupFlow.paymentFlow?.form.period !== 'one-time') {
+    if (signupFlow.paymentFlow?.form.action !== 'create-one-time-payment') {
       await EmailService.sendTemplateToContact('welcome', contact);
     }
 

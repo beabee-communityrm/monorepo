@@ -1,3 +1,5 @@
+import { PaymentFlowParams } from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,
@@ -5,10 +7,12 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { PaymentFlowForm } from './PaymentFlowForm';
+import { PaymentFlowForm } from '#type/index';
 
 @Entity()
-export class PaymentFlow {
+export class PaymentFlow<
+  TParams extends PaymentFlowParams = PaymentFlowParams,
+> {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -18,6 +22,9 @@ export class PaymentFlow {
   @Column()
   paymentFlowId!: string;
 
-  @Column(() => PaymentFlowForm)
+  @Column({ type: 'jsonb' })
+  params!: TParams;
+
+  @Column({ type: 'jsonb' })
   form!: PaymentFlowForm;
 }
