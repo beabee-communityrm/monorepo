@@ -30,4 +30,6 @@ export interface SyncSegmentsArgs {
 
 export interface SyncStripeArgs {
   dryRun: boolean;
+  contactIds: string[] | undefined;
+  fix: ('subscriptions' | 'payments' | 'mandates' | 'customers')[];
 }
