@@ -116,10 +116,10 @@ export class StripeWebhookEventHandler {
         await PaymentService.updateData(contribution.contact, {
           subscriptionId: null,
         });
-        await EmailService.sendTemplateToContact(
-          'contribution-didnt-start',
-          contribution.contact
-        );
+        // await EmailService.sendTemplateToContact(
+        //   'contribution-didnt-start',
+        //   contribution.contact
+        // );
       }
     }
   }
@@ -282,11 +282,11 @@ export class StripeWebhookEventHandler {
 
       const contribution = await this.getContributionFromInvoice(invoice);
       if (contribution) {
-        await EmailService.sendTemplateToContact(
-          'one-time-donation-failed',
-          contribution.contact,
-          { amount: invoice.total / 100 }
-        );
+        // await EmailService.sendTemplateToContact(
+        //   'one-time-donation-failed',
+        //   contribution.contact,
+        //   { amount: invoice.total / 100 }
+        // );
       }
     }
   }
