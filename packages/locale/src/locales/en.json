@@ -189,7 +189,7 @@
         "descriptionOngoingEmails": "Ongoing emails are triggered once per day",
         "oneOff": "One off",
         "ongoing": "Ongoing",
-        "send": "Senden",
+        "send": "Send",
         "title": "Segment based",
         "titleDirectSend": "Send the email immediately to all contacts in the segment",
         "titleEmailType": "Typ",
