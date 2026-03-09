@@ -190,9 +190,9 @@ export class StripeWebhookEventHandler {
 
     if (
       isOneTimePaymentInvoice(invoice) &&
-      (invoice.status === 'paid' ||
+      invoice.status === 'paid' /* ||
         invoice.status === 'void' ||
-        invoice.status === 'uncollectible') &&
+        invoice.status === 'uncollectible'*/ &&
       invoice.default_payment_method
     ) {
       log.info('Detaching payment method for one-time invoice ' + invoice.id);
