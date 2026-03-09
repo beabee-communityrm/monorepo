@@ -133,7 +133,7 @@ const sendEmail = computed(() =>
 const submitButtonText = computed(() =>
   sendEmail.value
     ? t('adminSettings.email.contactTemplates.send')
-    : t('adminSettings.email.create')
+    : t('adminSettings.email.contactTemplates.create')
 );
 
 const backUrl = computed(
