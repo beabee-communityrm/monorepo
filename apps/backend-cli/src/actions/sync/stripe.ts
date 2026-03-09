@@ -158,12 +158,23 @@ async function syncPayments(
     const newPayment = convertInvoiceToPayment(invoice);
 
     if (payment) {
-      for (const [_key, value] of Object.entries(newPayment)) {
-        const key = _key as keyof Payment;
+      // Date type needs different equality check
+      if (payment.chargeDate.getTime() !== newPayment.chargeDate.getTime()) {
+        log.info(
+          `      🔄 Updating field chargeDate: ${payment.chargeDate} -> ${newPayment.chargeDate}`
+        );
+      }
 
-        if (payment[key] !== value) {
+      for (const key of [
+        'amount',
+        'description',
+        'subscriptionId',
+        'status',
+        'type',
+      ] as const) {
+        if (payment[key] !== newPayment[key]) {
           log.info(
-            `      🔄 Updating field ${key}: ${payment[key]} -> ${value}`
+            `      🔄 Updating field ${key}: ${payment[key]} -> ${newPayment[key]}`
           );
         }
       }
