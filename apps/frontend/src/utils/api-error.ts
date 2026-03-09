@@ -61,6 +61,8 @@ export function notifyRateLimited(error: unknown): void {
 export function handleJoinError(err: unknown, router: Router): void {
   if (isApiError(err, ['payment-failed'])) {
     router.replace('/join/payment-failed');
+  } else if (isApiError(err, undefined, [404])) {
+    router.replace('/join/not-found');
   } else {
     if (isApiError(err, undefined, [429])) {
       notifyRateLimited(err);

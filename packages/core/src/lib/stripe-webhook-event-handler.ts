@@ -1,7 +1,5 @@
-import { PaymentStatus } from '@beabee/beabee-common';
-
 import { add } from 'date-fns';
-import type Stripe from 'stripe';
+import Stripe from 'stripe';
 
 import config from '../config/config';
 import { getRepository } from '../database';
@@ -198,9 +196,17 @@ export class StripeWebhookEventHandler {
       invoice.default_payment_method
     ) {
       log.info('Detaching payment method for one-time invoice ' + invoice.id);
-      await stripe.paymentMethods.detach(
-        invoice.default_payment_method as string
-      );
+      try {
+        await stripe.paymentMethods.detach(
+          invoice.default_payment_method as string
+        );
+      } catch (err) {
+        if (err instanceof Stripe.errors.StripeInvalidRequestError) {
+          log.info('Payment method already detached for invoice ' + invoice.id);
+        } else {
+          throw err;
+        }
+      }
     }
 
     log.info('Updating payment for invoice ' + invoice.id);

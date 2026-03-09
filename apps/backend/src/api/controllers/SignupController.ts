@@ -9,6 +9,7 @@ import {
   BadRequestError,
   Body,
   JsonController,
+  NotFoundError,
   OnUndefined,
   Post,
   Req,
@@ -117,6 +118,10 @@ export class SignupController {
     @Body() { joinFlowId }: SignupConfirmEmailParams
   ): Promise<GetContactDto> {
     const contact = await PaymentFlowService.finalizeRegistration(joinFlowId);
+    if (!contact) {
+      throw new NotFoundError();
+    }
+
     await login(req, contact);
 
     return ContactTransformer.convert(contact, {
