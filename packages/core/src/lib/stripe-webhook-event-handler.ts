@@ -118,10 +118,10 @@ export class StripeWebhookEventHandler {
         await PaymentService.updateData(contribution.contact, {
           subscriptionId: null,
         });
-        await EmailService.sendTemplateToContact(
-          'contribution-didnt-start',
-          contribution.contact
-        );
+        // await EmailService.sendTemplateToContact(
+        //   'contribution-didnt-start',
+        //   contribution.contact
+        // );
       }
     }
   }
@@ -204,9 +204,9 @@ export class StripeWebhookEventHandler {
 
     if (
       isOneTimePaymentInvoice(invoice) &&
-      (invoice.status === 'paid' ||
+      invoice.status === 'paid' /* ||
         invoice.status === 'void' ||
-        invoice.status === 'uncollectible') &&
+        invoice.status === 'uncollectible'*/ &&
       invoice.default_payment_method
     ) {
       log.info('Detaching payment method for one-time invoice ' + invoice.id);
@@ -296,11 +296,11 @@ export class StripeWebhookEventHandler {
 
       const contribution = await this.getContributionFromInvoice(invoice);
       if (contribution) {
-        await EmailService.sendTemplateToContact(
-          'one-time-donation-failed',
-          contribution.contact,
-          { amount: invoice.total / 100 }
-        );
+        // await EmailService.sendTemplateToContact(
+        //   'one-time-donation-failed',
+        //   contribution.contact,
+        //   { amount: invoice.total / 100 }
+        // );
       }
     }
   }
