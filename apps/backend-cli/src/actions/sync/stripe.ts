@@ -1,4 +1,3 @@
-import { PaymentMethod } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import {
   Stripe,
@@ -11,7 +10,7 @@ import { Contact, ContactContribution, Payment } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import { contactsService } from '@beabee/core/services';
 
-import { In } from 'typeorm';
+import { In, Like } from 'typeorm';
 
 import { SyncStripeArgs } from '../../types/sync.js';
 
@@ -278,13 +277,7 @@ export const syncStripe = async (argv: SyncStripeArgs): Promise<void> => {
     log.info('📡 Loading Stripe contributions...');
     const contributions = await getRepository(ContactContribution).find({
       where: {
-        method: In([
-          PaymentMethod.StripeBACS,
-          PaymentMethod.StripeCard,
-          PaymentMethod.StripeSEPA,
-          PaymentMethod.StripePayPal,
-          PaymentMethod.StripeIdeal,
-        ]),
+        customerId: Like('cus_%'),
         ...(argv.contactIds && { contactId: In(argv.contactIds) }),
       },
       relations: { contact: true },
