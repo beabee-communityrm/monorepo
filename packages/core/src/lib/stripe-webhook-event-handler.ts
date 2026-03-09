@@ -224,7 +224,8 @@ export class StripeWebhookEventHandler {
    * @param invoice The paid Stripe invoice
    */
   public static async handleInvoicePaid(
-    invoice: Stripe.Invoice
+    invoice: Stripe.Invoice,
+    sendEmail = true
   ): Promise<void> {
     const contribution = await this.getContributionFromInvoice(invoice);
     if (!contribution) return;
@@ -248,7 +249,7 @@ export class StripeWebhookEventHandler {
       }
 
       await this.updateContributionAfterPayment(contribution, line);
-    } else if (isOneTimePaymentInvoice(invoice)) {
+    } else if (isOneTimePaymentInvoice(invoice) && sendEmail) {
       await EmailService.sendTemplateToContact(
         'one-time-donation',
         contribution.contact,
