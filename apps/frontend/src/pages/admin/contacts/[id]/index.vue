@@ -295,6 +295,7 @@ import {
   type GetContactDataWith,
   GetContactWith,
   type GetPaymentAggregationData,
+  PaymentStatus,
   type RoleType,
 } from '@beabee/beabee-common';
 import {
@@ -480,6 +481,11 @@ onBeforeMount(async () => {
           field: 'type',
           operator: 'equal',
           value: ['one-time'],
+        },
+        {
+          field: 'status',
+          operator: 'equal',
+          value: [PaymentStatus.Successful],
         },
       ],
     },
