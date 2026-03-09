@@ -1,6 +1,8 @@
 import { add } from 'date-fns';
 import Stripe from 'stripe';
 
+import { isDuplicateIndex } from '#utils/db';
+
 import config from '../config/config';
 import { getRepository } from '../database';
 import { log as mainLogger } from '../logging';
@@ -154,8 +156,20 @@ export class StripeWebhookEventHandler {
   private static async handleInvoiceCreated(
     invoice: Stripe.Invoice
   ): Promise<void> {
-    // Create the new payment record
-    const payment = await this.handleInvoiceUpdated(invoice);
+    let payment;
+    try {
+      // Create the new payment entry
+      payment = await this.handleInvoiceUpdated(invoice);
+    } catch (err) {
+      // If the payment already exists then the invoice.updated handled already
+      // handled it, this can be ignored as invoice.updated is more up-to-date
+      // than invoice.created
+      if (isDuplicateIndex(err, 'id')) {
+        payment = await this.findOrCreatePaymentForInvoice(invoice);
+      } else {
+        throw err;
+      }
+    }
 
     // Only invoices from subscriptions can have out-of-date tax rates because
     // the invoices are generated asynchronously after the subscription is created
