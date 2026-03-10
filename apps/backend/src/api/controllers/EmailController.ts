@@ -3,24 +3,6 @@ import ContactsService from '@beabee/core/services/ContactsService';
 import EmailService from '@beabee/core/services/EmailService';
 import { AuthInfo, PreviewEmailOptions } from '@beabee/core/type';
 
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import {
-  CreateEmailDto,
-  DeleteEmailTemplateParams,
-  EmailPreviewDto,
-  GetEmailDto,
-  GetEmailTemplateInfoDto,
-  GetEmailTemplateParams,
-  ListEmailsDto,
-  PreviewAdminEmailParams,
-  PreviewContactEmailParams,
-  PreviewEmailDto,
-  PreviewGeneralEmailParams,
-  UpdateEmailDto,
-  UpdateEmailTemplateParams,
-} from '@api/dto/EmailDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import EmailTransformer from '@api/transformers/EmailTransformer';
 import { plainToInstance } from 'class-transformer';
 import {
   Authorized,
@@ -37,6 +19,25 @@ import {
   Put,
   QueryParams,
 } from 'routing-controllers';
+
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import {
+  CreateEmailDto,
+  DeleteEmailTemplateParams,
+  EmailPreviewDto,
+  GetEmailDto,
+  GetEmailTemplateInfoDto,
+  GetEmailTemplateParams,
+  ListEmailsDto,
+  PreviewAdminEmailParams,
+  PreviewContactEmailParams,
+  PreviewEmailDto,
+  PreviewGeneralEmailParams,
+  UpdateEmailDto,
+  UpdateEmailTemplateParams,
+} from '#api/dto/EmailDto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
+import EmailTransformer from '#api/transformers/EmailTransformer';
 
 @Authorized('admin')
 @JsonController('/email')

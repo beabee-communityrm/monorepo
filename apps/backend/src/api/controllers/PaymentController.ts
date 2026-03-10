@@ -1,17 +1,5 @@
 import { AuthInfo } from '@beabee/core/type';
 
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import { GetExportQuery } from '@api/dto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import {
-  GetPaymentAggregationDto,
-  GetPaymentAggregationOptsDto,
-  GetPaymentDto,
-  GetPaymentOptsDto,
-  ListPaymentsDto,
-} from '@api/dto/PaymentDto';
-import PaymentExporter from '@api/transformers/PaymentExporter';
-import PaymentTransformer from '@api/transformers/PaymentTransformer';
 import { Response } from 'express';
 import {
   Authorized,
@@ -21,6 +9,19 @@ import {
   QueryParams,
   Res,
 } from 'routing-controllers';
+
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import { GetExportQuery } from '#api/dto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
+import {
+  GetPaymentAggregationDto,
+  GetPaymentAggregationOptsDto,
+  GetPaymentDto,
+  GetPaymentOptsDto,
+  ListPaymentsDto,
+} from '#api/dto/PaymentDto';
+import PaymentExporter from '#api/transformers/PaymentExporter';
+import PaymentTransformer from '#api/transformers/PaymentTransformer';
 
 @JsonController('/payment')
 @Authorized()

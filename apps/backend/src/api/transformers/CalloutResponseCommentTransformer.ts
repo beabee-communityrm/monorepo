@@ -11,15 +11,16 @@ import {
 } from '@beabee/core/models';
 import { AuthInfo, FilterHandlers } from '@beabee/core/type';
 
-import { GetCalloutResponseCommentDto } from '@api/dto/CalloutResponseCommentDto';
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
-import ContactTransformer, {
-  loadContactRoles,
-} from '@api/transformers/ContactTransformer';
-import { getReviewerRules } from '@api/utils/callouts';
 import { TransformPlainToInstance } from 'class-transformer';
 import { BadRequestError } from 'routing-controllers';
 import { SelectQueryBuilder } from 'typeorm';
+
+import { GetCalloutResponseCommentDto } from '#api/dto/CalloutResponseCommentDto';
+import { BaseTransformer } from '#api/transformers/BaseTransformer';
+import ContactTransformer, {
+  loadContactRoles,
+} from '#api/transformers/ContactTransformer';
+import { getReviewerRules } from '#api/utils/callouts';
 
 class CalloutResponseCommentTransformer extends BaseTransformer<
   CalloutResponseComment,

@@ -6,7 +6,7 @@
   "type": "module",
   "main": "./src/index.ts",
   "engines": {
-    "node": ">=20"
+    "node": ">=24"
   },
   "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/weblate-client",
   "repository": {

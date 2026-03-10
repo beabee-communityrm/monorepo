@@ -151,13 +151,14 @@ import {
   type ScrollSection,
 } from '@beabee/vue';
 
-import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import env from '@env';
-import type { LocaleProp } from '@type';
 import useVuelidate from '@vuelidate/core';
 import slugify from 'slugify';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppImageUpload from '#components/forms/AppImageUpload.vue';
+import env from '#env';
+import type { LocaleProp } from '#type';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 

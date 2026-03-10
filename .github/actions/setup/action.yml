@@ -26,7 +26,7 @@ runs:
       uses: actions/setup-node@v4
       with:
         cache: yarn
-        node-version: 22.x
+        node-version: 24.x
     - name: Install dependencies
       run: yarn install
       shell: bash

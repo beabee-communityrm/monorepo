@@ -8,6 +8,10 @@ import { AuthInfo } from '@beabee/core/type';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { batchSelect, batchUpdate } from '@beabee/core/utils/rules';
 
+import { TransformPlainToInstance } from 'class-transformer';
+import { In, SelectQueryBuilder } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+
 import {
   BatchUpdateContactDto,
   BatchUpdateContactUpdatesDto,
@@ -15,13 +19,10 @@ import {
   GetContactOptsDto,
   ListContactsDto,
   UpdateContactDto,
-} from '@api/dto/ContactDto';
-import { BaseContactTransformer } from '@api/transformers/BaseContactTransformer';
-import ContactProfileTransformer from '@api/transformers/ContactProfileTransformer';
-import ContactRoleTransformer from '@api/transformers/ContactRoleTransformer';
-import { TransformPlainToInstance } from 'class-transformer';
-import { In, SelectQueryBuilder } from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+} from '#api/dto/ContactDto';
+import { BaseContactTransformer } from '#api/transformers/BaseContactTransformer';
+import ContactProfileTransformer from '#api/transformers/ContactProfileTransformer';
+import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
 
 import contactTagTransformer from './ContactTagTransformer';
 

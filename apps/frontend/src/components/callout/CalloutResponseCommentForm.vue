@@ -19,10 +19,11 @@
 import type { GetCalloutResponseCommentData } from '@beabee/beabee-common';
 import { AppRichTextEditor } from '@beabee/vue';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
 import useVuelidate from '@vuelidate/core';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
 
 import { type CommentFormData } from './calloutResponseComment.interface';
 

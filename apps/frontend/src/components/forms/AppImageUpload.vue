@@ -52,13 +52,14 @@ import {
   generateUniqueId,
 } from '@beabee/vue';
 
-import { client } from '@utils/api';
-import { extractErrorText } from '@utils/api-error';
-import { resolveImageUrl } from '@utils/url';
 import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf, sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
+import { resolveImageUrl } from '#utils/url';
 
 const emit = defineEmits(['update:modelValue']);
 

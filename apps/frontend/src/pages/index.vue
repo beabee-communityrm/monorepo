@@ -4,8 +4,9 @@ meta:
 </route>
 <template><div /></template>
 <script lang="ts" setup>
-import env from '@env';
 import { useRouter } from 'vue-router';
+
+import env from '#env';
 
 import { canAdmin, currentUser } from '../store';
 

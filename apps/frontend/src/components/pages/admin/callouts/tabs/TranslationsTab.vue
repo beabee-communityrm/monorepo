@@ -142,10 +142,11 @@ import {
   getLocaleItemsForContext,
 } from '@beabee/vue';
 
-import { generalContent } from '@store';
-import type { LocaleProp } from '@type';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { generalContent } from '#store';
+import type { LocaleProp } from '#type';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 import ButtonTranslations from './TranslationsTab/ButtonTranslations.vue';

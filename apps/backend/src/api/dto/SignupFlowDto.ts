@@ -1,11 +1,6 @@
 import type { JoinForm } from '@beabee/core/models';
 import { CompleteUrls } from '@beabee/core/type';
 
-import { StartContributionDto } from '@api/dto/ContributionDto';
-import { CompleteJoinFlowDto } from '@api/dto/JoinFlowDto';
-import IsPassword from '@api/validators/IsPassword';
-import IsUrl from '@api/validators/IsUrl';
-import IsVatNumber from '@api/validators/IsVatNumber';
 import { Type } from 'class-transformer';
 import {
   IsEmail,
@@ -14,6 +9,12 @@ import {
   Validate,
   ValidateNested,
 } from 'class-validator';
+
+import { StartContributionDto } from '#api/dto/ContributionDto';
+import { CompleteJoinFlowDto } from '#api/dto/JoinFlowDto';
+import IsPassword from '#api/validators/IsPassword';
+import IsUrl from '#api/validators/IsUrl';
+import IsVatNumber from '#api/validators/IsVatNumber';
 
 import { CreatePaymentDto } from './PaymentDto';
 

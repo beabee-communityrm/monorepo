@@ -25,12 +25,13 @@ import {
 } from '@beabee/beabee-common';
 import { AppHeading, addNotification } from '@beabee/vue';
 
-import PaymentFlowForm from '@components/forms/PaymentFlowForm.vue';
-import { PaymentMethod } from '@components/payment';
-import type { PaymentFlowFormData } from '@type/payment-flow-form-data';
-import { client } from '@utils/api';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import PaymentFlowForm from '#components/forms/PaymentFlowForm.vue';
+import { PaymentMethod } from '#components/payment';
+import type { PaymentFlowFormData } from '#type/payment-flow-form-data';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 

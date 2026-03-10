@@ -115,11 +115,12 @@
 import { ContributionPeriod, type PaymentPeriod } from '@beabee/beabee-common';
 import { AppChoice } from '@beabee/vue';
 
-import { generalContent } from '@store/generalContent';
 import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
 import { computed, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { generalContent } from '#store/generalContent';
 
 const { t, n } = useI18n();
 

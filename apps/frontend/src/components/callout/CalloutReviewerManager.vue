@@ -53,9 +53,10 @@ import {
 import { AppCheckbox, AppHeading, AppTag, ItemManager } from '@beabee/vue';
 
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
 import { reactive, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { client } from '#utils/api';
 
 import CalloutReviewerSearch from './CalloutReviewerSearch.vue';
 

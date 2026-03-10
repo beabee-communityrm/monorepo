@@ -118,15 +118,16 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import AppPaginatedTable from '@components/table/AppPaginatedTable.vue';
 import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
-import { definePaginatedQuery } from '@utils/pagination';
 import useVuelidate from '@vuelidate/core';
 import { addDays } from 'date-fns';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import AppPaginatedTable from '#components/table/AppPaginatedTable.vue';
+import { client } from '#utils/api';
+import { definePaginatedQuery } from '#utils/pagination';
 
 const { n, t } = useI18n();
 

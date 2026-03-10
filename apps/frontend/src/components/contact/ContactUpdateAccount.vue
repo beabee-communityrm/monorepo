@@ -94,10 +94,11 @@ import { AppAddress, AppInput } from '@beabee/vue';
 import { AppCheckbox, AppNotification, AppRadioGroup } from '@beabee/vue';
 import { AppHeading } from '@beabee/vue';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import { client } from '@utils/api';
 import { computed, reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { client } from '#utils/api';
 
 import ContactBasicFields from './ContactBasicFields.vue';
 import ContactMailOptIn from './ContactMailOptIn.vue';

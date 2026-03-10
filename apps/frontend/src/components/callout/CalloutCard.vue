@@ -44,9 +44,10 @@
 import type { GetCalloutData } from '@beabee/beabee-common';
 import { AppSubHeading, AppTime, formatLocale } from '@beabee/vue';
 
-import { resolveImageUrl } from '@utils/url';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { resolveImageUrl } from '#utils/url';
 
 import noImage from '../../assets/images/no-image.avif';
 

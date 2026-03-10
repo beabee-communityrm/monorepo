@@ -64,9 +64,10 @@ import {
 } from '@beabee/vue';
 
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { client } from '#utils/api';
 
 const { t, n } = useI18n();
 

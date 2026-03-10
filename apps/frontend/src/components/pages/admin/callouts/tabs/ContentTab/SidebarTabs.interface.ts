@@ -1,8 +1,9 @@
 import type { ItemStatus } from '@beabee/beabee-common';
 import type { AppStepperStep } from '@beabee/vue';
 
-import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import type { Component, Raw } from 'vue';
+
+import type { FormBuilderSlide } from '#components/form-builder/form-builder.interface';
 
 import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.interface';
 import type {

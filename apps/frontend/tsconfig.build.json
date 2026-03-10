@@ -3,26 +3,26 @@
   "compilerOptions": {
     "allowImportingTsExtensions": true,
     "paths": {
-      "@components/*": ["./src/components/*"],
-      "@layouts/*": ["./src/layouts/*"],
-      "@lib/*": ["./src/lib/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@store/*": ["./src/store/*"],
-      "@type/*": ["./src/type/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@enums/*": ["./src/enums/*"],
+      "#components/*": ["./src/components/*"],
+      "#layouts/*": ["./src/layouts/*"],
+      "#lib/*": ["./src/lib/*"],
+      "#pages/*": ["./src/pages/*"],
+      "#store/*": ["./src/store/*"],
+      "#type/*": ["./src/type/*"],
+      "#utils/*": ["./src/utils/*"],
+      "#enums/*": ["./src/enums/*"],
 
-      "@components": ["./src/components/index"],
-      "@layouts": ["./src/layouts/index"],
-      "@lib": ["./src/lib/index"],
-      "@pages": ["./src/pages/index"],
-      "@store": ["./src/store/index"],
-      "@type": ["./src/type/index"],
-      "@utils": ["./src/utils/index"],
-      "@enums": ["./src/enums/index"],
+      "#components": ["./src/components/index"],
+      "#layouts": ["./src/layouts/index"],
+      "#lib": ["./src/lib/index"],
+      "#pages": ["./src/pages/index"],
+      "#store": ["./src/store/index"],
+      "#type": ["./src/type/index"],
+      "#utils": ["./src/utils/index"],
+      "#enums": ["./src/enums/index"],
 
-      "@env": ["./src/env"],
-      "@assets/*": ["./src/assets/*"]
+      "#env": ["./src/env"],
+      "#assets/*": ["./src/assets/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]

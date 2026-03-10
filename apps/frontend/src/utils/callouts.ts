@@ -16,18 +16,19 @@ import {
 } from '@beabee/beabee-common';
 import { type LocaleOptions, config as localeConfig } from '@beabee/locale';
 
+import { format } from 'date-fns';
+import { computed } from 'vue';
+
 import type {
   FormBuilderNavigation,
   FormBuilderSlide,
-} from '@components/form-builder/form-builder.interface';
-import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
-import type { ContentTabData } from '@components/pages/admin/callouts/tabs/ContentTab/ContentTab.vue';
-import type { SettingsTabData } from '@components/pages/admin/callouts/tabs/SettingsTab.vue';
-import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
-import type { TranslationsTabData } from '@components/pages/admin/callouts/tabs/TranslationsTab.vue';
-import type { LocaleProp } from '@type';
-import { format } from 'date-fns';
-import { computed } from 'vue';
+} from '#components/form-builder/form-builder.interface';
+import type { CalloutHorizontalTabsData } from '#components/pages/admin/callouts/CalloutHorizontalTabs.interface';
+import type { ContentTabData } from '#components/pages/admin/callouts/tabs/ContentTab/ContentTab.vue';
+import type { SettingsTabData } from '#components/pages/admin/callouts/tabs/SettingsTab.vue';
+import type { TitleAndImageTabData } from '#components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
+import type { TranslationsTabData } from '#components/pages/admin/callouts/tabs/TranslationsTab.vue';
+import type { LocaleProp } from '#type';
 
 import env from '../env';
 import { i18n } from '../lib/i18n';

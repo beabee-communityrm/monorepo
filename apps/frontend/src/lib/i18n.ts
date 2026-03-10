@@ -8,9 +8,10 @@ import {
 import { getLocaleItemsForContext, i18n } from '@beabee/vue/lib/i18n';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import env from '@env';
-import router from '@lib/router';
 import { computed, watch } from 'vue';
+
+import env from '#env';
+import router from '#lib/router';
 
 import { currentUser, generalContent, initStore, isEmbed } from '../store';
 

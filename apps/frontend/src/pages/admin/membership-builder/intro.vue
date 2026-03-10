@@ -48,10 +48,11 @@ import {
   WelcomeMessage,
 } from '@beabee/vue';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { client } from '#utils/api';
 
 import { currentUser } from '../../../store';
 

@@ -1461,9 +1461,8 @@ __metadata:
     "@types/cors": "npm:^2.8.17"
     "@types/express": "npm:^4.17.21"
     "@types/express-session": "npm:^1.18.1"
-    "@types/module-alias": "npm:^2.0.4"
     "@types/multer": "npm:^1.4.12"
-    "@types/node": "npm:^22.15.28"
+    "@types/node": "npm:^24.10.13"
     "@types/passport": "npm:^1.0.17"
     "@types/passport-local": "npm:^1.0.38"
     chance: "npm:^1.1.12"
@@ -1482,7 +1481,6 @@ __metadata:
     express-session: "npm:^1.18.1"
     gocardless-nodejs: "npm:^4.3.0"
     jsvat-next: "npm:^3.0.4"
-    module-alias: "npm:^2.2.3"
     moment: "npm:^2.30.1"
     multer: "npm:^1.4.5-lts.2"
     passport: "npm:^0.7.0"
@@ -1592,7 +1590,7 @@ __metadata:
     "@beabee/esbuild": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
-    "@types/node": "npm:^22.15.28"
+    "@types/node": "npm:^24.10.13"
     "@types/yargs": "npm:^17.0.33"
     prettier: "npm:^3.5.3"
     typescript: "npm:~5.9.3"
@@ -1630,7 +1628,7 @@ __metadata:
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@gjsify/esbuild-plugin-transform-ext": "npm:^0.0.4"
-    "@types/node": "npm:^22.15.28"
+    "@types/node": "npm:^24.10.13"
     esbuild: "npm:^0.25.5"
     prettier: "npm:^3.5.3"
     typescript: "npm:~5.9.3"
@@ -1644,7 +1642,7 @@ __metadata:
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@fortawesome/fontawesome-free": "npm:^6.7.2"
-    "@types/node": "npm:^22.15.28"
+    "@types/node": "npm:^24.10.13"
     minisearch: "npm:^7.2.0"
     prettier: "npm:^3.5.3"
     typescript: "npm:~5.9.3"
@@ -1729,8 +1727,7 @@ __metadata:
     "@types/express-flash": "npm:0.0.5"
     "@types/express-session": "npm:^1.18.1"
     "@types/lodash": "npm:^4.17.15"
-    "@types/module-alias": "npm:^2.0.4"
-    "@types/node": "npm:^22.15.28"
+    "@types/node": "npm:^24.10.13"
     "@types/papaparse": "npm:^5.3.15"
     "@types/passport": "npm:^1.0.17"
     "@types/passport-local": "npm:^1.0.38"
@@ -1769,7 +1766,6 @@ __metadata:
     gulp-sourcemaps: "npm:^3.0.0"
     helmet: "npm:^7.1.0"
     lodash: "npm:^4.17.21"
-    module-alias: "npm:^2.2.3"
     moment: "npm:^2.30.1"
     papaparse: "npm:^5.4.1"
     passport: "npm:^0.7.0"
@@ -1835,7 +1831,7 @@ __metadata:
   dependencies:
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
-    "@types/node": "npm:^22.15.28"
+    "@types/node": "npm:^24.10.13"
     prettier: "npm:^3.5.3"
     typescript: "npm:~5.9.3"
   languageName: unknown
@@ -1857,7 +1853,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/tsconfig@workspace:packages/tsconfig"
   dependencies:
-    "@tsconfig/node22": "npm:^22.0.0"
+    "@tsconfig/node24": "npm:^24.0.0"
     "@vue/tsconfig": "npm:^0.7.0"
     typescript: "npm:~5.9.3"
   peerDependencies:
@@ -1926,7 +1922,7 @@ __metadata:
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     "@types/express": "npm:^4.17.21"
-    "@types/node": "npm:^22.15.28"
+    "@types/node": "npm:^24.10.13"
     body-parser: "npm:^1.20.3"
     concurrently: "npm:^9.1.2"
     date-fns: "npm:^4.1.0"
@@ -5800,10 +5796,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/node22@npm:^22.0.0":
-  version: 22.0.0
-  resolution: "@tsconfig/node22@npm:22.0.0"
-  checksum: 10c0/ccb736a008d33fb5ae0ac1254e83d7fa53cdbade02c645131eafcddd11f61982a4efe4c507487952202c240d2bd46c991561a4a0dfea52972947446d80de2081
+"@tsconfig/node24@npm:^24.0.0":
+  version: 24.0.4
+  resolution: "@tsconfig/node24@npm:24.0.4"
+  checksum: 10c0/9c5d4173204c6935c45d3ff0584fd423bd7d8bc3f6b246e646320ae584e4226b34ea1c66ec67cd16769c73e7e80f4cc562287b0acaa4ec81aa482463972ff83f
   languageName: node
   linkType: hard
 
@@ -6262,13 +6258,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/module-alias@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "@types/module-alias@npm:2.0.4"
-  checksum: 10c0/73e0993763526093d9e0993923e93a43186fac9b73e6ee6f785a34a79db6130468b2c9d9798c092ae5d50e8a2e6f7ab51a7f638ee7671037c15b5dde15dc5787
-  languageName: node
-  linkType: hard
-
 "@types/multer@npm:^1.4.12":
   version: 1.4.12
   resolution: "@types/multer@npm:1.4.12"
@@ -6323,12 +6312,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.15.28":
-  version: 22.15.28
-  resolution: "@types/node@npm:22.15.28"
+"@types/node@npm:^24.10.13":
+  version: 24.10.13
+  resolution: "@types/node@npm:24.10.13"
   dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10c0/5d540f44a421edf57d492c5c8f1dcbc4eb1d07f820501848e958c64a83cdb76bebf1d0456d2677c3dc37b94f3fde054b76c880bdd88e19518ae87b05a72bac3c
+    undici-types: "npm:~7.16.0"
+  checksum: 10c0/4ff0b9b060b5477c0fec5b11a176f294be588104ab546295db65b17a92ba0a6077b52ad92dd3c0d2154198c7f9d0021e6c1d42b00c9ac7ebfd85632afbcc48a4
   languageName: node
   linkType: hard
 
@@ -14481,13 +14470,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"module-alias@npm:^2.2.3":
-  version: 2.2.3
-  resolution: "module-alias@npm:2.2.3"
-  checksum: 10c0/47dc5b6d04f6e7df0ff330ca9b2a37c688a682ed661e9432b0b327e1e6c43eedad052151b8d50d6beea8b924828d2a92fa4625c18d651bf2d93d8f03aa0172fa
-  languageName: node
-  linkType: hard
-
 "moment-timezone@npm:^0.5.40":
   version: 0.5.46
   resolution: "moment-timezone@npm:0.5.46"
@@ -19293,6 +19275,13 @@ __metadata:
   version: 6.21.0
   resolution: "undici-types@npm:6.21.0"
   checksum: 10c0/c01ed51829b10aa72fc3ce64b747f8e74ae9b60eafa19a7b46ef624403508a54c526ffab06a14a26b3120d055e1104d7abe7c9017e83ced038ea5cf52f8d5e04
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~7.16.0":
+  version: 7.16.0
+  resolution: "undici-types@npm:7.16.0"
+  checksum: 10c0/3033e2f2b5c9f1504bdc5934646cb54e37ecaca0f9249c983f7b1fc2e87c6d18399ebb05dc7fd5419e02b2e915f734d872a65da2e3eeed1813951c427d33cc9a
   languageName: node
   linkType: hard
 

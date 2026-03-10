@@ -10,25 +10,26 @@ import {
 import { AuthInfo } from '@beabee/core/type';
 import { batchUpdate } from '@beabee/core/utils/rules';
 
+import { TransformPlainToInstance } from 'class-transformer';
+import { SelectQueryBuilder } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
+
 import {
   BatchUpdateCalloutResponseDto,
   GetCalloutResponseDto,
   GetCalloutResponseOptsDto,
   ListCalloutResponsesDto,
   UpdateCalloutResponseDto,
-} from '@api/dto/CalloutResponseDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import { BaseCalloutResponseTransformer } from '@api/transformers/BaseCalloutResponseTransformer';
-import CalloutResponseCommentTransformer from '@api/transformers/CalloutResponseCommentTransformer';
-import calloutTagTransformer from '@api/transformers/CalloutTagTransformer';
-import CalloutTransformer from '@api/transformers/CalloutTransformer';
+} from '#api/dto/CalloutResponseDto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
+import { BaseCalloutResponseTransformer } from '#api/transformers/BaseCalloutResponseTransformer';
+import CalloutResponseCommentTransformer from '#api/transformers/CalloutResponseCommentTransformer';
+import calloutTagTransformer from '#api/transformers/CalloutTagTransformer';
+import CalloutTransformer from '#api/transformers/CalloutTransformer';
 import ContactTransformer, {
   loadContactRoles,
-} from '@api/transformers/ContactTransformer';
-import { getReviewerRules } from '@api/utils';
-import { TransformPlainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
+} from '#api/transformers/ContactTransformer';
+import { getReviewerRules } from '#api/utils';
 
 export class CalloutResponseTransformer extends BaseCalloutResponseTransformer<
   GetCalloutResponseDto,

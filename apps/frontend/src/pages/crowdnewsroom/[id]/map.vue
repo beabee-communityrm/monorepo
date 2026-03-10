@@ -199,40 +199,9 @@ import { fetchAllPages } from '@beabee/client';
 import { AppButton } from '@beabee/vue';
 import { library } from '@beabee/vue/plugins/icons';
 
-import CalloutAddResponsePanel from '@components/pages/callouts/CalloutAddResponsePanel.vue';
-import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue';
-import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
-import CalloutShowResponsePanel from '@components/pages/callouts/CalloutShowResponsePanel.vue';
-import {
-  HASH_PREFIX,
-  useCallout,
-} from '@components/pages/callouts/use-callout';
 import { faInfoCircle, faPlus, fas } from '@fortawesome/free-solid-svg-icons';
-import { currentLocaleConfig } from '@lib/i18n';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
 import '@maptiler/geocoding-control/style.css';
-import { isEmbed } from '@store';
-import type {
-  GeocodePickEvent,
-  GetCalloutResponseMapDataWithAddress,
-  MapClusterFeature,
-  MapPointFeature,
-  MapPointFeatureCollection,
-} from '@type';
-import {
-  generateImageId,
-  getImageString,
-  loadImageFromDataURLToMap,
-  setKey,
-  svgToDataURL,
-} from '@utils';
-import { client } from '@utils/api';
-import {
-  type GeocodeResult,
-  featureToAddress,
-  formatGeocodeResult,
-  reverseGeocode,
-} from '@utils/geocode';
 import {
   type GeoJSONSource,
   type LngLatLike,
@@ -263,6 +232,38 @@ import {
 } from 'vue-maplibre-gl';
 import 'vue-maplibre-gl/dist/vue-maplibre-gl.css';
 import { useRoute, useRouter } from 'vue-router';
+
+import CalloutAddResponsePanel from '#components/pages/callouts/CalloutAddResponsePanel.vue';
+import CalloutIntroPanel from '#components/pages/callouts/CalloutIntroPanel.vue';
+import CalloutMapHeader from '#components/pages/callouts/CalloutMapHeader.vue';
+import CalloutShowResponsePanel from '#components/pages/callouts/CalloutShowResponsePanel.vue';
+import {
+  HASH_PREFIX,
+  useCallout,
+} from '#components/pages/callouts/use-callout';
+import { currentLocaleConfig } from '#lib/i18n';
+import { isEmbed } from '#store';
+import type {
+  GeocodePickEvent,
+  GetCalloutResponseMapDataWithAddress,
+  MapClusterFeature,
+  MapPointFeature,
+  MapPointFeatureCollection,
+} from '#type';
+import {
+  generateImageId,
+  getImageString,
+  loadImageFromDataURLToMap,
+  setKey,
+  svgToDataURL,
+} from '#utils';
+import { client } from '#utils/api';
+import {
+  type GeocodeResult,
+  featureToAddress,
+  formatGeocodeResult,
+  reverseGeocode,
+} from '#utils/geocode';
 
 import env from '../../../env';
 

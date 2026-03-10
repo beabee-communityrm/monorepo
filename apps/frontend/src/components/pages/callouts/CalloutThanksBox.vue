@@ -26,8 +26,9 @@ import { CalloutAccess, type GetCalloutDataWith } from '@beabee/beabee-common';
 import { AppMessageBox } from '@beabee/vue';
 
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
-import { currentUser } from '@store/currentUser';
 import { useI18n } from 'vue-i18n';
+
+import { currentUser } from '#store/currentUser';
 
 defineProps<{
   callout: GetCalloutDataWith<'form'>;

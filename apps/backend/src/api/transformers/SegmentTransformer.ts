@@ -2,15 +2,16 @@ import { SegmentFilterName, segmentFilters } from '@beabee/beabee-common';
 import { Segment } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
+import { TransformPlainToInstance } from 'class-transformer';
+
 import {
   GetSegmentDto,
   GetSegmentOptsDto,
   GetSegmentWith,
   ListSegmentsDto,
-} from '@api/dto/SegmentDto';
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
-import ContactTransformer from '@api/transformers/ContactTransformer';
-import { TransformPlainToInstance } from 'class-transformer';
+} from '#api/dto/SegmentDto';
+import { BaseTransformer } from '#api/transformers/BaseTransformer';
+import ContactTransformer from '#api/transformers/ContactTransformer';
 
 class SegmentTransformer extends BaseTransformer<
   Segment,

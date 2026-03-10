@@ -6,10 +6,11 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "paths": {
-      "@core/*": ["./src/core/*"],
-      "@apps/*": ["./src/apps/*"],
-      "@api/*": ["./src/api/*"],
-      "@type/*": ["./src/type/*"]
+      "#core/*": ["./src/core/*"],
+      "#api/*": ["./src/api/*"],
+      "#apps/*": ["./src/apps/*"],
+      "#type": ["./src/type/index"],
+      "#type/*": ["./src/type/*"]
     },
     "typeRoots": ["./src/typings", "./node_modules/@types/"]
   }

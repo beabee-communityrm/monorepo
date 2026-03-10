@@ -32,13 +32,14 @@
 import { type ContentPaymentData, PaymentMethod } from '@beabee/beabee-common';
 import { addNotification } from '@beabee/vue';
 
-import AppContribution from '@components/contribution/AppContribution.vue';
-import PaymentFlowForm from '@components/forms/PaymentFlowForm.vue';
-import { currentUser } from '@store/currentUser';
-import type { ContributionContent } from '@type/contribution';
-import { client } from '@utils/api';
 import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppContribution from '#components/contribution/AppContribution.vue';
+import PaymentFlowForm from '#components/forms/PaymentFlowForm.vue';
+import { currentUser } from '#store/currentUser';
+import type { ContributionContent } from '#type/contribution';
+import { client } from '#utils/api';
 
 import SectionTitle from '../SectionTitle.vue';
 

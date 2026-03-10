@@ -17,7 +17,7 @@
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
-    "@types/node": "^22.15.28",
+    "@types/node": "^24.10.13",
     "prettier": "^3.5.3",
     "typescript": "~5.9.3"
   }

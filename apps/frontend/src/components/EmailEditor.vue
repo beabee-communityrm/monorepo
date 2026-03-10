@@ -110,15 +110,16 @@ import {
 } from '@beabee/vue';
 
 import { faTag } from '@fortawesome/free-solid-svg-icons';
-import { currentUser, generalContent } from '@store';
 import type { Editor } from '@tiptap/vue-3';
+import { computed, onMounted, ref, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import { currentUser, generalContent } from '#store';
 import type {
   EmailPreviewResult,
   EmailTemplateConfig,
-} from '@type/email-editor';
-import { client } from '@utils/api';
-import { computed, onMounted, ref, watchEffect } from 'vue';
-import { useI18n } from 'vue-i18n';
+} from '#type/email-editor';
+import { client } from '#utils/api';
 
 const PREVIEW_DEBOUNCE_MS = 500;
 

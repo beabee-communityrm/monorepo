@@ -25,9 +25,10 @@ import {
 } from '@beabee/beabee-common';
 import { AppHeading, AppSubHeading } from '@beabee/vue';
 
-import { client } from '@utils/api';
 import { onBeforeMount, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { client } from '#utils/api';
 
 import CalloutResponseComment from './CalloutResponseComment.vue';
 import CalloutResponseCommentForm from './CalloutResponseCommentForm.vue';

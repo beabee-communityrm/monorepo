@@ -64,16 +64,17 @@ import {
 } from '@beabee/beabee-common';
 import { AppCheckbox, AppTitle } from '@beabee/vue';
 
-import beabeeLogo from '@assets/images/beabee-logo.png';
-import AuthBox from '@components/AuthBox.vue';
-import AppContribution from '@components/contribution/AppContribution.vue';
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import { generalContent, isEmbed } from '@store';
-import type { JoinFormData } from '@type/join-form-data';
-import { calcJoinFormTotalAmount } from '@utils/payment';
 import useVuelidate from '@vuelidate/core';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import beabeeLogo from '#assets/images/beabee-logo.png';
+import AuthBox from '#components/AuthBox.vue';
+import AppContribution from '#components/contribution/AppContribution.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { generalContent, isEmbed } from '#store';
+import type { JoinFormData } from '#type/join-form-data';
+import { calcJoinFormTotalAmount } from '#utils/payment';
 
 import AccountSection from './AccountSection.vue';
 
