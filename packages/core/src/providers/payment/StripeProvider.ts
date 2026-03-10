@@ -367,7 +367,11 @@ export class StripeProvider extends PaymentProvider {
     }
 
     // Handle iDEAL to SEPA conversion
-    if (flow.params.paymentMethod === PaymentMethod.StripeIdeal) {
+    if (
+      flow.params.paymentMethod === PaymentMethod.StripeIdeal &&
+      // TODO: fix this properly
+      'latest_attempt' in intent
+    ) {
       const latestAttempt = intent.latest_attempt as Stripe.SetupAttempt | null;
       const newMandateId = latestAttempt?.payment_method_details?.ideal
         ?.generated_sepa_debit as string | null;
