@@ -18,7 +18,6 @@ import {
   chargeOneTimePayment,
   createSubscription,
   deleteSubscription,
-  ensureCustomerAndAttachPayment,
   manadateToSource,
   stripe,
   updateSubscription,
@@ -52,18 +51,20 @@ export class StripeProvider extends PaymentProvider {
   async processPaymentFlow(
     flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
   ): Promise<UpdateContributionResult | undefined> {
-    switch (flow.form.action) {
-      case 'create-one-time-payment':
-        await this.createOneTimePayment({ ...flow, form: flow.form });
-        return;
-      case 'update-payment-method':
-        await this.updatePaymentMethod(flow);
-        return;
-      case 'start-contribution':
-        return await this.startContribution({ ...flow, form: flow.form });
-      default:
-        throw new Error('Unknown payment flow action');
-    }
+    return await this.withDataUpdate(async () => {
+      switch (flow.form.action) {
+        case 'create-one-time-payment':
+          await this.createOneTimePayment({ ...flow, form: flow.form });
+          return;
+        case 'update-payment-method':
+          await this.updatePaymentMethod(flow);
+          return;
+        case 'start-contribution':
+          return await this.startContribution({ ...flow, form: flow.form });
+        default:
+          throw new Error('Unknown payment flow action');
+      }
+    });
   }
 
   /**
@@ -85,52 +86,56 @@ export class StripeProvider extends PaymentProvider {
   async processUpdateContribution(
     form: UpdateContributionForm
   ): Promise<UpdateContributionResult> {
-    if (!this.data.customerId || !this.data.subscriptionId) {
-      throw new CantUpdateContribution();
-    }
+    return await this.withDataUpdate(async () => {
+      if (!this.data.customerId || !this.data.subscriptionId) {
+        throw new CantUpdateContribution();
+      }
 
-    log.info('Update subscription ' + this.data.subscriptionId);
+      log.info('Update subscription ' + this.data.subscriptionId);
 
-    // Manual contributors don't have a real subscription yet, create one on
-    // their previous amount so Stripe can automatically handle any proration
-    if (
-      this.contact.membership?.isActive &&
-      this.contact.contributionType === ContributionType.Manual
-    ) {
-      log.info('Creating new subscription for manual contributor');
-      const newSubscription = await createSubscription(
-        this.data.customerId,
-        form,
-        this.method,
-        calcRenewalDate(this.contact)
-      );
+      // Manual contributors don't have a real subscription yet, create one on
+      // their previous amount so Stripe can automatically handle any proration
+      if (
+        this.contact.membership?.isActive &&
+        this.contact.contributionType === ContributionType.Manual
+      ) {
+        log.info('Creating new subscription for manual contributor');
+        const newSubscription = await createSubscription(
+          this.data.customerId,
+          form,
+          this.method,
+          calcRenewalDate(this.contact)
+        );
 
-      // Will be read by updateOrCreateSubscription
-      this.data.subscriptionId = newSubscription.id;
-    }
+        this.data.subscriptionId = newSubscription.id;
+      }
 
-    const { subscription, startNow } =
-      await this.updateOrCreateSubscription(form);
+      if (this.contact.membership?.isActive) {
+        log.info('Update subscription ' + this.data.subscriptionId);
+        const { subscription, startNow } = await updateSubscription(
+          this.data.subscriptionId,
+          form,
+          this.method
+        );
+        return await this.handleSubscriptionResult(
+          subscription,
+          form,
+          startNow
+        );
+      } else {
+        // Cancel any existing (failing) subscriptions
+        await this.cancelContribution(true);
 
-    this.data.subscriptionId = subscription.id;
-    this.data.payFee = form.payFee;
-    this.data.nextAmount = startNow
-      ? null
-      : {
-          chargeable: getChargeableAmount(form, this.method),
-          monthly: form.monthlyAmount,
-        };
-
-    await this.updateData();
-
-    return {
-      form,
-      startNow,
-      expiryDate: add(
-        new Date(subscription.current_period_end * 1000),
-        config.gracePeriod
-      ),
-    };
+        log.info('Create subscription');
+        const subscription = await createSubscription(
+          this.data.customerId,
+          form,
+          this.method,
+          calcRenewalDate(this.contact)
+        );
+        return await this.handleSubscriptionResult(subscription, form, true);
+      }
+    });
   }
 
   /**
@@ -170,17 +175,17 @@ export class StripeProvider extends PaymentProvider {
    * @param keepMandate  Whether to keep payment mandate for future use
    */
   async cancelContribution(keepMandate: boolean): Promise<void> {
-    if (this.data.mandateId && !keepMandate) {
-      await stripe.paymentMethods.detach(this.data.mandateId);
-      this.data.mandateId = null;
-    }
-    if (this.data.subscriptionId) {
-      await deleteSubscription(this.data.subscriptionId);
-      this.data.subscriptionId = null;
-    }
-    this.data.nextAmount = null;
-
-    await this.updateData();
+    await this.withDataUpdate(async () => {
+      if (this.data.mandateId && !keepMandate) {
+        await stripe.paymentMethods.detach(this.data.mandateId);
+        this.data.mandateId = null;
+      }
+      if (this.data.subscriptionId) {
+        await deleteSubscription(this.data.subscriptionId);
+        this.data.subscriptionId = null;
+      }
+      this.data.nextAmount = null;
+    });
   }
 
   /**
@@ -208,9 +213,13 @@ export class StripeProvider extends PaymentProvider {
    * cancelling any active subscriptions when the customer is deleted.
    */
   async permanentlyDeleteContact(): Promise<void> {
-    if (this.data.customerId) {
-      await stripe.customers.del(this.data.customerId);
-    }
+    await this.withDataUpdate(async () => {
+      if (this.data.customerId) {
+        await stripe.customers.del(this.data.customerId);
+        // Clear local customer reference after deletion
+        this.data.customerId = null;
+      }
+    });
   }
 
   /**
@@ -224,67 +233,17 @@ export class StripeProvider extends PaymentProvider {
   private async updatePaymentMethod(
     flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
   ): Promise<void> {
-    this.data.customerId = await ensureCustomerAndAttachPayment(
-      this.contact,
-      this.data.customerId,
-      flow.params.vatNumber
-    );
+    const customerId = await this.ensureCustomerForFlow(flow);
 
     // TODO: handle requires_action
     const intent = await stripe.setupIntents.create({
-      customer: this.data.customerId,
+      customer: customerId,
       confirm: true,
       confirmation_token: flow.params.token,
       expand: ['latest_attempt'],
     });
 
-    const paymentMethod = intent.payment_method as Stripe.PaymentMethod | null;
-    if (!paymentMethod) {
-      throw new NoPaymentMethod();
-    }
-
-    const oldMandateId = this.data.mandateId;
-
-    this.data.mandateId = paymentMethod.id;
-
-    if (flow.params.paymentMethod === PaymentMethod.StripeIdeal) {
-      const latestAttempt = intent.latest_attempt as Stripe.SetupAttempt | null;
-      const newMandateId = latestAttempt?.payment_method_details?.ideal
-        ?.generated_sepa_debit as string | null;
-
-      if (!newMandateId) {
-        throw new NoPaymentMethod();
-      }
-
-      this.data.mandateId = newMandateId;
-      this.data.method = PaymentMethod.StripeSEPA;
-    }
-
-    const address = paymentMethod.billing_details.address;
-
-    log.info('Update customer details for ' + this.data.customerId);
-    await stripe.customers.update(this.data.customerId, {
-      invoice_settings: {
-        default_payment_method: this.data.mandateId,
-      },
-      address: address
-        ? {
-            line1: address.line1 || '',
-            ...(address.city && { city: address.city }),
-            ...(address.country && { country: address.country }),
-            ...(address.line2 && { line2: address.line2 }),
-            ...(address.postal_code && { postal_code: address.postal_code }),
-            ...(address.state && { state: address.state }),
-          }
-        : null,
-    });
-
-    if (oldMandateId) {
-      log.info('Detach old payment method ' + oldMandateId);
-      await stripe.paymentMethods.detach(oldMandateId);
-    }
-
-    await this.updateData();
+    await this.processConfirmedIntent(intent, flow);
   }
 
   /**
@@ -301,21 +260,11 @@ export class StripeProvider extends PaymentProvider {
   ): Promise<void> {
     log.info('Create one-time payment of amount ' + flow.form.amount);
 
-    this.data.customerId = await ensureCustomerAndAttachPayment(
-      this.contact,
-      this.data.customerId,
-      flow.params.vatNumber
-    );
-    await this.updateData();
+    const customerId = await this.ensureCustomerForFlow(flow);
 
     try {
       // TODO: handle requires_action
-      await chargeOneTimePayment(
-        this.data.customerId,
-        flow.params.token,
-        flow.form,
-        flow.params.paymentMethod
-      );
+      await chargeOneTimePayment(customerId, flow);
     } catch (err) {
       if (err instanceof Stripe.errors.StripeCardError) {
         throw new PaymentFailed(err.decline_code);
@@ -326,8 +275,9 @@ export class StripeProvider extends PaymentProvider {
   }
 
   /**
-   *
-   * @param flow
+   * Start a contribution for the given flow
+   * @param flow The completed flow to start the contribution for
+   * @returns The result of the update
    */
   private async startContribution(
     flow: CompletedPaymentFlow<
@@ -335,81 +285,161 @@ export class StripeProvider extends PaymentProvider {
       PaymentFlowFormStartContribution
     >
   ): Promise<UpdateContributionResult> {
-    this.data.customerId = await ensureCustomerAndAttachPayment(
-      this.contact,
-      this.data.customerId,
-      flow.params.vatNumber
-    );
+    log.info('Start contribution for completed flow', flow);
 
-    log.info('Create subscription');
+    if (this.data.subscriptionId) {
+      throw new CantUpdateContribution();
+    }
+
+    const customerId = await this.ensureCustomerForFlow(flow);
+
     const subscription = await createSubscription(
-      this.data.customerId,
+      customerId,
       flow.form,
       this.method,
       calcRenewalDate(this.contact)
     );
 
     // Use the confirmation token on the payment intent
-    const latestInvoice = subscription.latest_invoice as Stripe.Invoice;
-    const paymentIntent = latestInvoice.payment_intent as Stripe.PaymentIntent;
+    const latestInvoice = subscription.latest_invoice as Stripe.Invoice | null;
+    const paymentIntent =
+      latestInvoice?.payment_intent as Stripe.PaymentIntent | null;
+
+    if (!paymentIntent) {
+      throw new NoPaymentMethod();
+    }
 
     // TODO: handle requires_action
-    await stripe.paymentIntents.confirm(paymentIntent.id, {
-      confirmation_token: flow.params.token,
+    const confirmedPaymentIntent = await stripe.paymentIntents.confirm(
+      paymentIntent.id,
+      { confirmation_token: flow.params.token }
+    );
+
+    await this.processConfirmedIntent(confirmedPaymentIntent, flow);
+
+    return await this.handleSubscriptionResult(subscription, flow.form, true);
+  }
+
+  /**
+   * Ensure a customer exists and is attached to the payment flow.
+   * This is a common operation used by multiple payment flow methods.
+   *
+   * @param flow The payment flow
+   * @returns The customer ID
+   */
+  private async ensureCustomerForFlow(
+    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
+  ): Promise<string> {
+    let customerId = this.data.customerId;
+
+    if (!customerId) {
+      const customer = await stripe.customers.create({
+        email: this.contact.email,
+        name: `${this.contact.firstname} ${this.contact.lastname}`,
+        ...(flow.params.vatNumber && {
+          tax_id_data: [{ type: 'eu_vat', value: flow.params.vatNumber }],
+        }),
+      });
+      customerId = customer.id;
+    }
+
+    this.data.customerId = customerId;
+    return customerId;
+  }
+
+  /**
+   * Process the result of a confirmed Stripe intent (setup or payment).
+   * Handles iDEAL to SEPA conversion, customer updates, and old payment method cleanup.
+   *
+   * @param intent The confirmed Stripe intent (setup or payment)
+   * @param flow The payment flow containing method information
+   */
+  private async processConfirmedIntent(
+    intent: Stripe.SetupIntent | Stripe.PaymentIntent,
+    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
+  ): Promise<void> {
+    // Save old mandate to remove afterwards
+    const oldMandateId = this.data.mandateId;
+
+    const paymentMethod = intent.payment_method as Stripe.PaymentMethod | null;
+    if (!paymentMethod) {
+      throw new NoPaymentMethod();
+    }
+
+    // Handle iDEAL to SEPA conversion
+    if (flow.params.paymentMethod === PaymentMethod.StripeIdeal) {
+      const latestAttempt = intent.latest_attempt as Stripe.SetupAttempt | null;
+      const newMandateId = latestAttempt?.payment_method_details?.ideal
+        ?.generated_sepa_debit as string | null;
+
+      if (!newMandateId) {
+        throw new NoPaymentMethod();
+      }
+
+      this.data.mandateId = newMandateId;
+      this.data.method = PaymentMethod.StripeSEPA;
+    } else {
+      this.data.mandateId = paymentMethod.id;
+    }
+
+    // Update customer with new payment method and address
+    const address = paymentMethod.billing_details.address;
+    await stripe.customers.update(this.data.customerId!, {
+      invoice_settings: {
+        default_payment_method: this.data.mandateId,
+      },
+      address: address
+        ? {
+            line1: address.line1 || '',
+            ...(address.city && { city: address.city }),
+            ...(address.country && { country: address.country }),
+            ...(address.line2 && { line2: address.line2 }),
+            ...(address.postal_code && { postal_code: address.postal_code }),
+            ...(address.state && { state: address.state }),
+          }
+        : null,
     });
 
-    this.data.subscriptionId = subscription.id;
-    this.data.payFee = flow.form.payFee;
-    this.data.nextAmount = null;
+    // Detach old payment method if it exists
+    if (oldMandateId) {
+      log.info('Detach old payment method ' + oldMandateId);
+      await stripe.paymentMethods.detach(oldMandateId);
+    }
+  }
 
-    await this.updateData();
+  /**
+   * Handle the result of a subscription creation by updating the contact data
+   * and returning the appropriate result object.
+   *
+   * @param subscription The created Stripe subscription
+   * @param form The contribution form
+   * @param startNow Whether the contribution should start immediately
+   * @returns The update contribution result
+   */
+  private async handleSubscriptionResult(
+    subscription: Stripe.Subscription,
+    form: UpdateContributionForm,
+    startNow: boolean
+  ): Promise<UpdateContributionResult> {
+    this.data.subscriptionId = subscription.id;
+    this.data.payFee = form.payFee;
+
+    // Calculate nextAmount if not starting immediately
+    this.data.nextAmount = !startNow
+      ? {
+          chargeable: getChargeableAmount(form, this.method),
+          monthly: form.monthlyAmount,
+        }
+      : null;
 
     return {
-      form: flow.form,
-      startNow: true,
+      form,
+      startNow,
       expiryDate: add(
         new Date(subscription.current_period_end * 1000),
         config.gracePeriod
       ),
     };
-  }
-
-  /**
-   * Update or create a Stripe subscription object. If the contact has an active
-   * subscription but inactive membership, the existing subscription will be
-   * cancelled and a new one created.
-   *
-   * @param form The contribution form
-   * @returns Information about the updated subscription
-   */
-  private async updateOrCreateSubscription(
-    form: UpdateContributionForm
-  ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
-    if (!this.data.customerId) {
-      throw new NoPaymentMethod();
-    }
-
-    if (this.data.subscriptionId && this.contact.membership?.isActive) {
-      log.info('Update subscription ' + this.data.subscriptionId);
-      return await updateSubscription(
-        this.data.subscriptionId,
-        form,
-        this.method
-      );
-    } else {
-      // Cancel any existing (failing) subscriptions
-      // TODO: think about previous mandates
-      await this.cancelContribution(true);
-
-      log.info('Create subscription');
-      const subscription = await createSubscription(
-        this.data.customerId,
-        form,
-        this.method,
-        calcRenewalDate(this.contact)
-      );
-      return { subscription, startNow: true };
-    }
   }
 
   static async fetchInvoiceUrl(paymentId: string): Promise<string | null> {
