@@ -262,11 +262,13 @@ function setLink(): void {
   if (!editor.value || props.disabled) return;
 
   const previousUrl = editor.value.getAttributes('link').href;
-  const url = window.prompt('Set URL (blank to remove)', previousUrl);
+  let url = window.prompt('Set URL (blank to remove)', previousUrl);
 
   if (url === null) {
     return;
   }
+
+  url = url.trim();
 
   if (url === '') {
     editor.value.chain().focus().extendMarkRange('link').unsetLink().run();

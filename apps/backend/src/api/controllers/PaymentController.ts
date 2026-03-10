@@ -11,6 +11,7 @@ import {
 } from 'routing-controllers';
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import { GetExportQuery } from '#api/dto';
 import { PaginatedDto } from '#api/dto/PaginatedDto';
 import {
   GetPaymentAggregationDto,
@@ -19,6 +20,7 @@ import {
   GetPaymentOptsDto,
   ListPaymentsDto,
 } from '#api/dto/PaymentDto';
+import PaymentExporter from '#api/transformers/PaymentExporter';
 import PaymentTransformer from '#api/transformers/PaymentTransformer';
 
 @JsonController('/payment')
@@ -30,6 +32,17 @@ export class PaymentController {
     @QueryParams() query: ListPaymentsDto
   ): Promise<PaginatedDto<GetPaymentDto>> {
     return await PaymentTransformer.fetch(auth, query);
+  }
+
+  @Get('.csv')
+  async exportPayments(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @QueryParams() query: GetExportQuery,
+    @Res() res: Response
+  ): Promise<Response> {
+    const [exportName, exportData] = await PaymentExporter.export(auth, query);
+    res.attachment(exportName).send(exportData);
+    return res;
   }
 
   @Get('/aggregate')

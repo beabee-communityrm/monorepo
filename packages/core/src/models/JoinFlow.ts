@@ -36,4 +36,7 @@ export class JoinFlow {
   contactId!: string | null;
   @ManyToOne('Contact', { nullable: true })
   contact!: Contact | null;
+
+  @Column({ default: false })
+  processing!: boolean;
 }

@@ -222,11 +222,13 @@
       }
     },
     "payment": {
-      "paymentTitle": "Betaling",
-      "showOneTimeDonation": "Eenmalige bijdrageoptie op het startscherm weergeven",
-      "taxRate": "BTW-tarief",
-      "taxRateLabelOneTime": "BTW-tarief inschakelen voor eenmalige betalingen",
-      "taxRateLabelRecurring": "BTW-tarief inschakelen voor terugkerende betalingen"
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
+      "paymentTitle": "",
+      "showOneTimeDonation": "",
+      "taxRate": "",
+      "taxRateLabelOneTime": "",
+      "taxRateLabelRecurring": ""
     },
     "theme": {
       "bodyFont": "Tekst lichaam",
@@ -1087,6 +1089,23 @@
       "recurringContributions": "Doorlopende bijdragen",
       "role": "Rol"
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Weet je zeker dat je dit e-mailsjabloon wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "title": "Sjabloon verwijderen?"
+      },
+      "date": "Aangemaakt",
+      "edit": "Bewerken",
+      "editTitle": "Sjabloon bewerken",
+      "editTitleWithName": "Sjabloon bewerken: {name}",
+      "empty": "Nog geen e-mailsjablonen.",
+      "manage": "E-mailsjablonen beheren",
+      "name": "Naam",
+      "showingOf": "Toont sjablonen {start} tot {end} van {total}",
+      "subject": "Onderwerp",
+      "title": "E-mailsjablonen",
+      "use": "Gebruiken"
+    },
     "noContacts": "Nog geen contacten toegevoegd",
     "noResults": "Geen contacten gevonden",
     "numResults": "{n} contact gevonden | {n} contacten gevonden",
@@ -1469,6 +1488,11 @@
         "backToJoin": "Terug naar de aanmeldpagina",
         "message": "Er is een probleem opgetreden bij het opzetten van je account. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
         "title": "Er is iets fout gegaan"
+      },
+      "notFound": {
+        "backToJoin": "Terug naar de aanmeldpagina",
+        "message": "Deze registratielink is verlopen of al gebruikt. Als je zojuist hebt geregistreerd in een ander tabblad, ontvang je binnenkort een bevestigingsmail. Als je je een tijd geleden hebt geregistreerd, moet je een nieuwe registratie starten.",
+        "title": "Registratielink verlopen"
       },
       "paymentFailed": {
         "backToJoin": "Terug naar de aanmeldpagina",

@@ -25,7 +25,7 @@ meta:
   <AppFilterGrid v-model="currentSegmentId" :items="segmentItems">
     <AppSearch
       v-model="currentRules"
-      :filter-groups="filteredGroups"
+      :filter-groups="filterGroups"
       :has-changed="hasUnsavedSegment"
       @reset="currentRules = undefined"
     >
@@ -74,33 +74,19 @@ meta:
                 handleUpdateAction({ tags: [tagId] }, successText)
             "
           />
-          <AppDropdownButton
+          <!--
+          TODO:
+           * Add support for emailing selected contacts (instead of all contacts)
+           * This redirects to the legacy members app, we need to implement this in the new frontend
+          -->
+          <AppButton
             :icon="faMailBulk"
             variant="primaryOutlined"
             :title="t('actions.sendEmails')"
             :disabled="!currentSegment || selectedCount > 0"
-          >
-            <router-link
-              v-if="currentSegment"
-              class="block px-3 py-2 hover:bg-primary-5"
-              role="menuitem"
-              :to="`/admin/contacts/send-email/${currentSegment.id}`"
-              @click.stop
-            >
-              {{ t('actions.sendOneOffEmail') }}
-            </router-link>
-            <a
-              v-if="currentSegment"
-              class="block border-t border-primary-40 px-3 py-2 hover:bg-primary-5"
-              :href="`/members/segments/${currentSegment.id}/email`"
-              role="menuitem"
-              target="_blank"
-              rel="noopener noreferrer"
-              @click.stop
-            >
-              {{ t('actions.sendOngoingEmails') }}
-            </a>
-          </AppDropdownButton>
+            :href="`/members/segments/${currentSegment?.id}/email`"
+            external
+          />
         </AppButtonGroup>
         <p v-if="selectedCount > 0" class="self-center text-sm">
           <i18n-t keypath="contacts.selectedCount" :plural="selectedCount">
@@ -170,7 +156,6 @@ meta:
 
 <script lang="ts" setup>
 import {
-  type ContentJoinData,
   ContributionPeriod,
   type GetContactDataWith,
   GetContactWith,
@@ -181,7 +166,6 @@ import {
 import {
   AppButton,
   AppButtonGroup,
-  AppDropdownButton,
   AppFilterGrid,
   AppSearchInput,
   AppSelect,
@@ -196,7 +180,7 @@ import {
   faPlus,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
@@ -280,20 +264,6 @@ const currentPaginatedQuery = definePaginatedQuery('joined');
 const currentSearch = defineParam('s', (v) => v || '');
 
 const { filterGroups, tagItems } = useContactFilters();
-
-/**
- * Handle settings for one-time contribution
- */
-const joinContent = ref<ContentJoinData>();
-const hasOneTimeContribution = computed(() =>
-  joinContent.value?.periods.some((p) => p.name === 'one-time')
-);
-const filteredGroups = computed(() => {
-  return filterGroups.value.filter(
-    (group) =>
-      hasOneTimeContribution.value || group.id !== 'oneTimeContributions'
-  );
-});
 
 /**
  * Segment Management
@@ -486,8 +456,4 @@ async function handleUpdateAction(
   addNotification({ variant: 'success', title: successText });
   doingAction.value = false;
 }
-
-onBeforeMount(async () => {
-  joinContent.value = await client.content.get('join');
-});
 </script>

@@ -222,11 +222,13 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "Einmalige Beiträge aktivieren",
+      "oneTimeDonationsTitle": "Einmalige Beiträge",
       "paymentTitle": "Zahlungen",
       "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",
-      "taxRateLabelOneTime": "Mehrwertsteuersatz für einmalige Zahlungen aktivieren",
-      "taxRateLabelRecurring": "Mehrwertsteuersatz für wiederkehrende Zahlungen aktivieren"
+      "taxRateLabelOneTime": "Mehrwertsteuersatz für einmalige Beiträge aktivieren",
+      "taxRateLabelRecurring": "Mehrwertsteuersatz für wiederkehrende Beiträge aktivieren"
     },
     "theme": {
       "bodyFont": "Text",
@@ -1087,6 +1089,23 @@
       "recurringContributions": "Wiederkehrende Beiträge",
       "role": "Rolle"
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Möchtest du diese E-Mail-Vorlage wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
+        "title": "Vorlage löschen?"
+      },
+      "date": "Erstellt",
+      "edit": "Bearbeiten",
+      "editTitle": "Vorlage bearbeiten",
+      "editTitleWithName": "Vorlage bearbeiten: {name}",
+      "empty": "Noch keine E-Mail-Vorlagen.",
+      "manage": "E-Mail-Vorlagen verwalten",
+      "name": "Name",
+      "showingOf": "{start} bis {end} von {total} Vorlagen werden angezeigt.",
+      "subject": "Betreff",
+      "title": "E-Mail-Vorlagen",
+      "use": "Verwenden"
+    },
     "noContacts": "Keine Kontakte",
     "noResults": "Keine Kontakte gefunden",
     "numResults": "{n} Kontakt gefunden | {n} Kontakte gefunden",
@@ -1105,7 +1124,7 @@
       "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
       "title": "E-Mail an Segment senden"
     },
-    "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt."
+    "showingOf": "{start} bis {end} von {total} Kontakten werden angezeigt."
   },
   "contribution": {
     "adminCancelDescription": "Wenn du die Mitgliedschaft des Kontakts kündigst, endet sie am Ende des aktuellen Zahlungszyklus am {date}.",
@@ -1469,6 +1488,11 @@
         "backToJoin": "Zurück zur Registrierung",
         "message": "Es gab ein Problem bei der Registrierung, unser Team wurde benachrichtigt. Bitte kontaktiere uns, wenn das Problem weiterhin auftritt.",
         "title": "Etwas ist schief gelaufen"
+      },
+      "notFound": {
+        "backToJoin": "Zurück zur Registrierung",
+        "message": "Dieser Registrierungslink ist abgelaufen oder wurde bereits verwendet. Falls du dich gerade in einem anderen Tab registriert hast, solltest du in Kürze eine Bestätigungs-E-Mail erhalten. Falls du dich vor längerer Zeit registriert hast, musst du eine neue Registrierung starten.",
+        "title": "Registrierungslink abgelaufen"
       },
       "paymentFailed": {
         "backToJoin": "Zurück zur Registrierung",
