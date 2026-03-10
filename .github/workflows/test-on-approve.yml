@@ -1,13 +1,17 @@
 name: Test on Approval
 
 on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
   pull_request_review:
     types: [submitted]
 
 jobs:
   test:
-    # Only run if the review was approved
-    if: github.event.review.state == 'approved'
+    # Run for workflow_dispatch, push to main, or approved pull request reviews
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.review.state == 'approved'
     runs-on: ubuntu-latest
 
     steps:
