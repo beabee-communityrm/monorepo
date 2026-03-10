@@ -222,6 +222,8 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "Оплата",
       "showOneTimeDonation": "Показати опцію одноразового внеску на головному екрані",
       "taxRate": "Ставка ПДВ",

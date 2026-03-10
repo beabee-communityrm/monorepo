@@ -1,4 +1,3 @@
-import { PaymentMethod } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import {
   Stripe,
@@ -11,7 +10,9 @@ import { Contact, ContactContribution, Payment } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import { contactsService } from '@beabee/core/services';
 
-import { In } from 'typeorm';
+import { In, Like } from 'typeorm';
+
+import { SyncStripeArgs } from '../../types/sync.js';
 
 const log = mainLogger.child({ app: 'sync-stripe' });
 
@@ -156,12 +157,23 @@ async function syncPayments(
     const newPayment = convertInvoiceToPayment(invoice);
 
     if (payment) {
-      for (const [_key, value] of Object.entries(newPayment)) {
-        const key = _key as keyof Payment;
+      // Date type needs different equality check
+      if (payment.chargeDate.getTime() !== newPayment.chargeDate.getTime()) {
+        log.info(
+          `      🔄 Updating field chargeDate: ${payment.chargeDate} -> ${newPayment.chargeDate}`
+        );
+      }
 
-        if (payment[key] !== value) {
+      for (const key of [
+        'amount',
+        'description',
+        'subscriptionId',
+        'status',
+        'type',
+      ] as const) {
+        if (payment[key] !== newPayment[key]) {
           log.info(
-            `      🔄 Updating field ${key}: ${payment[key]} -> ${value}`
+            `      🔄 Updating field ${key}: ${payment[key]} -> ${newPayment[key]}`
           );
         }
       }
@@ -176,7 +188,7 @@ async function syncPayments(
       // If the invoice is paid, we need to handle that too to ensure
       // membership roles are updated
       if (invoice.paid) {
-        await StripeWebhookEventHandler.handleInvoicePaid(invoice);
+        await StripeWebhookEventHandler.handleInvoicePaid(invoice, false);
       }
     }
   }
@@ -191,52 +203,60 @@ async function syncPayments(
  */
 async function processContribution(
   contribution: ContactContribution,
-  dryRun: boolean
+  argv: SyncStripeArgs
 ) {
   log.info(`👤 Syncing ${contribution.contact.email}`);
 
   const updates: Partial<ContactContribution> = {};
 
-  if (contribution.subscriptionId) {
+  if (contribution.subscriptionId && argv.fix.includes('subscriptions')) {
     log.info(`  📋 Syncing subscription ${contribution.subscriptionId}`);
     const subscriptionUpdates = await syncSubscription(
       contribution.subscriptionId,
       contribution.contact,
-      dryRun
+      argv.dryRun
     );
     Object.assign(updates, subscriptionUpdates);
   }
 
-  if (contribution.mandateId) {
+  if (contribution.mandateId && argv.fix.includes('mandates')) {
     log.info(`  💳 Syncing mandate ${contribution.mandateId}`);
     const mandateUpdates = await syncPaymentMethod(contribution.mandateId);
     Object.assign(updates, mandateUpdates);
   }
 
   if (contribution.customerId) {
-    log.info(`  👤 Syncing customer ${contribution.customerId}`);
-    const customerUpdates = await syncCustomer(contribution.customerId);
-    Object.assign(updates, customerUpdates);
+    if (argv.fix.includes('customers')) {
+      log.info(`  👤 Syncing customer ${contribution.customerId}`);
+      const customerUpdates = await syncCustomer(contribution.customerId);
+      Object.assign(updates, customerUpdates);
+    }
 
-    log.info(`  💰 Syncing payments for customer ${contribution.customerId}`);
-    const payments = await getRepository(Payment).findBy({
-      contactId: contribution.contact.id,
-    });
-    try {
-      await syncPayments(contribution.customerId, payments, dryRun);
-    } catch (e) {
-      // Ignore missing customer errors here as they are handled above
-      if (!isResourceMissingError(e)) {
-        throw e;
+    if (argv.fix.includes('payments')) {
+      log.info(`  💰 Syncing payments for customer ${contribution.customerId}`);
+      const payments = await getRepository(Payment).findBy({
+        contactId: contribution.contact.id,
+      });
+      try {
+        await syncPayments(contribution.customerId, payments, argv.dryRun);
+      } catch (e) {
+        // Ignore missing customer errors here as they are handled above
+        if (!isResourceMissingError(e)) {
+          throw e;
+        }
       }
     }
   }
 
   // Apply updates
   if (Object.keys(updates).length > 0) {
-    log.info(`  🔄 Updating contribution`, contribution);
+    log.info(
+      `  🔄 Updating contribution`,
+      { ...contribution, contact: undefined },
+      updates
+    );
 
-    if (!dryRun) {
+    if (!argv.dryRun) {
       await getRepository(ContactContribution).update(
         contribution.contact.id,
         updates
@@ -252,30 +272,25 @@ async function processContribution(
  *
  * @param dryRun Whether to perform a dry run (no changes applied)
  */
-export const syncStripe = async (dryRun: boolean): Promise<void> => {
+export const syncStripe = async (argv: SyncStripeArgs): Promise<void> => {
   await runApp(async () => {
     log.info('📡 Loading Stripe contributions...');
     const contributions = await getRepository(ContactContribution).find({
       where: {
-        method: In([
-          PaymentMethod.StripeBACS,
-          PaymentMethod.StripeCard,
-          PaymentMethod.StripeSEPA,
-          PaymentMethod.StripePayPal,
-          PaymentMethod.StripeIdeal,
-        ]),
+        customerId: Like('cus_%'),
+        ...(argv.contactIds && { contactId: In(argv.contactIds) }),
       },
       relations: { contact: true },
     });
 
     log.info(`📊 Processing ${contributions.length} Stripe contributions`);
 
-    if (dryRun) {
+    if (argv.dryRun) {
       log.info('🔍 DRY RUN - No changes will actually be made');
     }
 
     for (const contribution of contributions) {
-      await processContribution(contribution, dryRun);
+      await processContribution(contribution, argv);
     }
 
     log.info('✅ Stripe sync completed successfully!');

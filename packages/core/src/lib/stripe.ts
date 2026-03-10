@@ -469,7 +469,10 @@ export async function manadateToSource(
 
 export function convertInvoiceToPayment(
   invoice: Stripe.Invoice
-): Partial<Payment> {
+): Pick<
+  Payment,
+  'amount' | 'chargeDate' | 'description' | 'subscriptionId' | 'status' | 'type'
+> {
   return {
     amount: invoice.total / 100,
     chargeDate: new Date(invoice.created * 1000),
