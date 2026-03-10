@@ -116,17 +116,17 @@ class PaymentService {
 
     const contribution = await this.getContribution(contact);
 
-    const newMethod = flow.params.paymentMethod;
+    const activeMethod = flow.params.paymentMethod;
 
     // If the saved payment method is changing then cancel the old one, except
     // in the case of one-time payments as the payment method won't be saved
     if (
       flow.form.action !== 'create-one-time-payment' &&
-      contribution.method !== newMethod
+      contribution.method !== activeMethod
     ) {
       log.info('Changing payment method, cancelling previous contribution', {
         oldMethod: contribution.method,
-        newMethod,
+        newMethod: activeMethod,
       });
       await this.providerFromData(contribution, (p) =>
         p.cancelContribution(false)
@@ -135,12 +135,12 @@ class PaymentService {
       // Clear the old payment data, set the new method
       Object.assign(contribution, {
         ...ContactContribution.empty,
-        method: newMethod,
+        method: activeMethod,
       });
       await getRepository(ContactContribution).save(contribution);
     }
 
-    return await new PaymentProviders[newMethod](
+    return await new PaymentProviders[activeMethod](
       contribution
     ).processPaymentFlow(flow as any); // TODO: improve type
   }
