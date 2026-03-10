@@ -222,11 +222,13 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "Enable one-time contributions",
+      "oneTimeDonationsTitle": "One-time contributions",
       "paymentTitle": "Payment",
-      "showOneTimeDonation": "Show one time donation on home screen",
+      "showOneTimeDonation": "Show one-time contributions on home screen",
       "taxRate": "VAT rate",
-      "taxRateLabelOneTime": "Enable VAT rate for one-time payments",
-      "taxRateLabelRecurring": "Enable VAT rate for recurring payments"
+      "taxRateLabelOneTime": "Enable VAT rate for one-time contributions",
+      "taxRateLabelRecurring": "Enable VAT rate for recurring contributions"
     },
     "theme": {
       "bodyFont": "Body text",
