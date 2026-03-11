@@ -1,16 +1,8 @@
 import { StartContributionDto } from '@api/dto/ContributionDto';
-import { CompletePaymentFlowDto } from '@api/dto/PaymentFlowDto';
 import IsPassword from '@api/validators/IsPassword';
 import IsUrl from '@api/validators/IsUrl';
-import IsVatNumber from '@api/validators/IsVatNumber';
 import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsOptional,
-  IsString,
-  Validate,
-  ValidateNested,
-} from 'class-validator';
+import { IsEmail, IsOptional, Validate, ValidateNested } from 'class-validator';
 
 import { CreatePaymentDto } from './PaymentDto';
 
@@ -40,18 +32,4 @@ export class StartSignupFlowDto {
   @ValidateNested()
   @IsOptional()
   oneTimePayment?: CreatePaymentDto;
-}
-
-export class CompleteSignupFlowDto extends CompletePaymentFlowDto {
-  @IsOptional()
-  @IsString()
-  firstname?: string;
-
-  @IsOptional()
-  @IsString()
-  lastname?: string;
-
-  @IsOptional()
-  @IsVatNumber()
-  vatNumber?: string;
 }

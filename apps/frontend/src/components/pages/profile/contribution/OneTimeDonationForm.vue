@@ -29,7 +29,11 @@
   </p>
 </template>
 <script lang="ts" setup>
-import { type ContentPaymentData, PaymentMethod } from '@beabee/beabee-common';
+import {
+  type ContentPaymentData,
+  type PaymentFlowParams,
+  PaymentMethod,
+} from '@beabee/beabee-common';
 import { addNotification } from '@beabee/vue';
 
 import AppContribution from '@components/contribution/AppContribution.vue';
@@ -59,14 +63,14 @@ const paymentFlowData = computed(() => ({
   email: currentUser.value?.email || '',
   amount: formData.amount,
   period: 'one-time' as const,
+  paymentMethod: formData.paymentMethod,
 }));
 
-async function startDonationFlow(completeUrl: string) {
+async function startDonationFlow(params: PaymentFlowParams) {
   return await client.contact.payment.create({
     amount: formData.amount,
     payFee: formData.payFee,
-    paymentMethod: formData.paymentMethod,
-    completeUrl,
+    params,
   });
 }
 

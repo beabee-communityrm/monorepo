@@ -1,9 +1,11 @@
 import {
   ContributionPeriod,
+  PaymentFlowParamsStripe,
   PaymentMethod,
   PaymentSource,
   PaymentStatus,
   PaymentType,
+  StripePaymentMethod,
 } from '@beabee/beabee-common';
 
 import { differenceInMonths } from 'date-fns';
@@ -15,6 +17,7 @@ import { log as mainLogger } from '#logging';
 import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
 import {
+  CompletedPaymentFlow,
   PaymentFlowFormCreateOneTimePayment,
   UpdateContributionForm,
 } from '#type/index';
@@ -138,25 +141,6 @@ async function calculateProrationParams(
   };
 }
 
-export const getCreateSubscriptionParams = (
-  customerId: string,
-  form: UpdateContributionForm,
-  paymentMethod: PaymentMethod,
-  renewalDate?: Date
-): Stripe.SubscriptionCreateParams => {
-  return {
-    customer: customerId,
-    items: [{ price_data: getPriceData(form, paymentMethod) }],
-    off_session: true,
-    ...(renewalDate &&
-      renewalDate > new Date() && {
-        billing_cycle_anchor: Math.floor(+renewalDate / 1000),
-        proration_behavior: 'none',
-      }),
-    default_tax_rates: getSalesTaxRateObject('recurring'),
-  };
-};
-
 /**
  * Create a new subscription in Stripe, optionally starting at a specific date.
  *
@@ -176,9 +160,19 @@ export async function createSubscription(
     form,
     renewalDate,
   });
-  return await stripe.subscriptions.create(
-    getCreateSubscriptionParams(customerId, form, paymentMethod, renewalDate)
-  );
+  return await stripe.subscriptions.create({
+    customer: customerId,
+    items: [{ price_data: getPriceData(form, paymentMethod) }],
+    off_session: true,
+    default_tax_rates: getSalesTaxRateObject('recurring'),
+    expand: ['latest_invoice'],
+    payment_behavior: 'default_incomplete',
+    ...(renewalDate &&
+      renewalDate > new Date() && {
+        billing_cycle_anchor: Math.floor(+renewalDate / 1000),
+        proration_behavior: 'none',
+      }),
+  });
 }
 
 /**
@@ -226,7 +220,7 @@ export async function updateSubscription(
   }
 
   const startNow =
-    prorationAmount === 0 || (prorationAmount > 0 && form.prorate);
+    prorationAmount === 0 || (prorationAmount > 0 && !!form.prorate);
 
   if (startNow) {
     const params: Stripe.SubscriptionUpdateParams = {
@@ -295,62 +289,29 @@ export async function deleteSubscription(
 }
 
 /**
- * Create a customer in Stripe if needed and attach the payment mandate to them.
- *
- * @param contact The contact information
- * @param customerId The existing customer ID or null to create a new one
- * @param mandateId The payment mandate ID
- * @param vatNumber The VAT number to attach to the customer
- * @returns The Stripe customer ID
- */
-export async function ensureCustomerAndAttachPayment(
-  contact: { email: string; firstname: string; lastname: string },
-  customerId: string | null,
-  mandateId: string,
-  vatNumber?: string | null
-): Promise<string> {
-  if (!customerId) {
-    log.info('Create new customer for ' + contact.email);
-    const customer = await stripe.customers.create({
-      email: contact.email,
-      name: `${contact.firstname} ${contact.lastname}`,
-      ...(vatNumber && { tax_id_data: [{ type: 'eu_vat', value: vatNumber }] }),
-    });
-    customerId = customer.id;
-  }
-
-  log.info('Attach payment method ' + mandateId + ' to customer ' + customerId);
-  await stripe.paymentMethods.attach(mandateId, {
-    customer: customerId,
-  });
-
-  return customerId;
-}
-
-/**
  * Create a one-time payment
  *
  * @param customerId The ID of the customer
- * @param mandateId The ID of the payment mandate
+ * @param token The confirmation token
  * @param form The payment form
  * @param paymentMethod The payment method
  */
 export async function chargeOneTimePayment(
   customerId: string,
-  mandateId: string,
-  form: PaymentFlowFormCreateOneTimePayment,
-  paymentMethod: PaymentMethod
+  flow: CompletedPaymentFlow<
+    PaymentFlowParamsStripe,
+    PaymentFlowFormCreateOneTimePayment
+  >
 ): Promise<void> {
   log.info('Creating one-time payment on ' + customerId);
 
   const invoice = await stripe.invoices.create({
     customer: customerId,
-    default_payment_method: mandateId,
     collection_method: 'charge_automatically',
-    auto_advance: true,
+    auto_advance: false,
     currency: config.currencyCode,
     metadata: {
-      'beabee-invoice-type': 'one-time-payment-detach-mandate',
+      'beabee-invoice-type': 'one-time-payment',
     },
     default_tax_rates: getSalesTaxRateObject('one-time'),
   });
@@ -358,43 +319,30 @@ export async function chargeOneTimePayment(
   await stripe.invoiceItems.create({
     customer: customerId,
     invoice: invoice.id,
-    amount: getChargeableAmount(form, paymentMethod),
+    amount: getChargeableAmount(flow.form, flow.params.paymentMethod),
     description: 'One-time payment',
   });
 
-  await stripe.invoices.pay(invoice.id);
-}
+  const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id);
 
-export function isOneTimePaymentInvoice(invoice: Stripe.Invoice): boolean {
-  return (
-    invoice.metadata?.['beabee-invoice-type'] ===
-    'one-time-payment-detach-mandate'
-  );
-}
-
-/**
- * Convert a payment method to a Stripe payment type.
- *
- * @param method The payment method
- * @returns The Stripe payment type
- */
-export function paymentMethodToStripeType(
-  method: PaymentMethod
-): Stripe.PaymentMethod.Type {
-  switch (method) {
-    case PaymentMethod.StripeCard:
-      return 'card';
-    case PaymentMethod.StripeSEPA:
-      return 'sepa_debit';
-    case PaymentMethod.StripeBACS:
-      return 'bacs_debit';
-    case PaymentMethod.StripePayPal:
-      return 'paypal';
-    case PaymentMethod.StripeIdeal:
-      return 'ideal';
-    case PaymentMethod.GoCardlessDirectDebit:
-      return 'bacs_debit';
+  const paymentIntent = finalizedInvoice.payment_intent as string | null;
+  if (!paymentIntent) {
+    throw new Error();
   }
+
+  await stripe.paymentIntents.confirm(paymentIntent, {
+    confirmation_token: flow.params.token,
+  });
+}
+
+export function isOneTimePaymentInvoice(
+  invoice: Stripe.Invoice,
+  detach?: true
+): boolean {
+  const type = invoice.metadata?.['beabee-invoice-type'] || '';
+  return detach
+    ? type === 'one-time-payment-detach-mandate'
+    : type.startsWith('one-time-payment');
 }
 
 /**
@@ -405,7 +353,7 @@ export function paymentMethodToStripeType(
  * @returns The payment method
  */
 export function stripeTypeToPaymentMethod(
-  type: Stripe.PaymentMethod.Type
+  type: StripePaymentMethod
 ): PaymentMethod {
   switch (type) {
     case 'card':
