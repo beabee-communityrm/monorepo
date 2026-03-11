@@ -52,7 +52,7 @@ import type { PaymentFlowFormData } from '#type/payment-flow-form-data';
 
 const emit = defineEmits<{
   (event: 'loaded'): void;
-  (event: 'completed'): void;
+  // (event: 'completed'): void;
 }>();
 
 const props = defineProps<{
@@ -63,7 +63,7 @@ const props = defineProps<{
     token: string,
     firstName: string,
     lastName: string
-  ) => Promise<string | undefined>;
+  ) => Promise<void>;
   showNameFields?: boolean;
 }>();
 
@@ -211,24 +211,23 @@ onBeforeMount(async () => {
 
       if (result.error) {
         handleError(result.error);
-        return;
+      } else {
+        await props.confirmFlow(
+          result.confirmationToken.id,
+          firstName.value,
+          lastName.value
+        );
       }
-
-      const clientSecret = await props.confirmFlow(
-        result.confirmationToken.id,
-        firstName.value,
-        lastName.value
-      );
-      if (clientSecret) {
-        const { error: actionError } = await stripe.handleNextAction({
-          clientSecret,
-        });
-        if (actionError) {
-          handleError(actionError);
-        } else {
-          emit('completed');
-        }
-      }
+      // if (clientSecret) {
+      //   const { error: actionError } = await stripe.handleNextAction({
+      //     clientSecret,
+      //   });
+      //   if (actionError) {
+      //     handleError(actionError);
+      //   } else {
+      //     emit('completed');
+      //   }
+      // }
     };
   }
 });

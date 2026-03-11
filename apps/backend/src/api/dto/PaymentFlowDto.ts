@@ -12,10 +12,6 @@ import IsUrl from '#api/validators/IsUrl';
 export class PaymentFlowResultDto implements PaymentFlowResult {
   @IsOptional()
   @IsString()
-  clientSecret?: string;
-
-  @IsOptional()
-  @IsString()
   redirectUrl?: string;
 }
 

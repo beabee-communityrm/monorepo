@@ -37,9 +37,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
 
     return {
       id: flow.params.token,
-      result: {
-        // clientSecret: setupIntent.client_secret as string,
-      },
+      result: {},
     };
   }
 
