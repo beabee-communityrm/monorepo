@@ -302,8 +302,7 @@ export class StripeProvider extends PaymentProvider {
 
     // Use the confirmation token on the payment intent
     const latestInvoice = subscription.latest_invoice as Stripe.Invoice | null;
-    const paymentIntent =
-      latestInvoice?.payment_intent as Stripe.PaymentIntent | null;
+    const paymentIntent = latestInvoice?.payment_intent as string | null;
 
     if (!paymentIntent) {
       throw new NoPaymentMethod();
@@ -311,7 +310,7 @@ export class StripeProvider extends PaymentProvider {
 
     // TODO: handle requires_action
     const confirmedPaymentIntent = await stripe.paymentIntents.confirm(
-      paymentIntent.id,
+      paymentIntent,
       { confirmation_token: flow.params.token }
     );
 
