@@ -67,7 +67,7 @@ const props = defineProps<{
     token: string,
     firstName: string,
     lastName: string
-  ) => Promise<string | undefined>;
+  ) => Promise<void>;
 }>();
 
 const data = defineModel<JoinFormData>({ required: true });

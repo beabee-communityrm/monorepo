@@ -11,10 +11,6 @@ import { Equals, IsEnum, IsOptional, IsString } from 'class-validator';
 export class PaymentFlowResultDto implements PaymentFlowResult {
   @IsOptional()
   @IsString()
-  clientSecret?: string;
-
-  @IsOptional()
-  @IsString()
   redirectUrl?: string;
 }
 

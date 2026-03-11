@@ -16,7 +16,6 @@
       :payment-data="flowData"
       :return-url="completeUrl"
       :confirm-flow="handleStripeConfirm"
-      @completed="handleStripeCompleted"
       @loaded="stripeHasLoaded = true"
     />
   </AppModal>
@@ -114,7 +113,6 @@ const paymentFlowId = computed(
  * can trigger one of:
  * - An redirect to an off-site payment confirmation page (e.g. GoCardless)
  * - An inline payment flow (using Stripe)
- * - No further action
  */
 async function handleSubmit() {
   if (props.flowData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
@@ -140,20 +138,19 @@ async function handleStripeConfirm(
     return;
   }
 
-  const data = await props.startFlow({
+  await props.startFlow({
     paymentMethod: props.flowData.paymentMethod,
     token,
     firstname,
     lastname,
   });
-  if (data.clientSecret) {
-    return data.clientSecret;
-  }
+
+  await props.completeFlow(token);
 }
 
-async function handleStripeCompleted() {
-  // TODO: handle success
-}
+// async function handleStripeCompleted() {
+//   // TODO: handle success
+// }
 
 /**
  * Resets the form state
