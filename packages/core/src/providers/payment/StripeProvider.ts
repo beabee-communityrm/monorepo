@@ -240,7 +240,7 @@ export class StripeProvider extends PaymentProvider {
       customer: customerId,
       confirm: true,
       confirmation_token: flow.params.token,
-      expand: ['latest_attempt'],
+      expand: ['latest_attempt', 'payment_method'],
     });
 
     await this.processConfirmedIntent(intent, flow);
@@ -312,7 +312,7 @@ export class StripeProvider extends PaymentProvider {
     // TODO: handle requires_action
     const confirmedPaymentIntent = await stripe.paymentIntents.confirm(
       paymentIntent,
-      { confirmation_token: flow.params.token }
+      { confirmation_token: flow.params.token, expand: ['payment_method'] }
     );
 
     await this.processConfirmedIntent(confirmedPaymentIntent, flow);
