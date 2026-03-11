@@ -293,6 +293,7 @@ export class StripeProvider extends PaymentProvider {
 
     const customerId = await this.ensureCustomerForFlow(flow);
 
+    // TODO: check no mandate ID?
     const subscription = await createSubscription(
       customerId,
       flow.form,
