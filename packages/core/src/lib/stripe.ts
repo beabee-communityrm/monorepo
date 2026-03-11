@@ -5,6 +5,7 @@ import {
   PaymentSource,
   PaymentStatus,
   PaymentType,
+  StripePaymentMethod,
 } from '@beabee/beabee-common';
 
 import { differenceInMonths } from 'date-fns';
@@ -304,42 +305,44 @@ export async function chargeOneTimePayment(
 ): Promise<void> {
   log.info('Creating one-time payment on ' + customerId);
 
-  await stripe.paymentIntents.create({
+  const invoice = await stripe.invoices.create({
     customer: customerId,
-    amount: getChargeableAmount(flow.form, flow.params.paymentMethod),
+    collection_method: 'charge_automatically',
+    auto_advance: false,
     currency: config.currencyCode,
-    confirmation_token: flow.params.token,
-    confirm: true,
-    description: 'One-time payment', // TODO: i18n
+    metadata: {
+      'beabee-invoice-type': 'one-time-payment',
+    },
+    default_tax_rates: getSalesTaxRateObject('one-time'),
   });
 
-  // const invoice = await stripe.invoices.create({
-  //   customer: customerId,
-  //   default_payment_method: token,
-  //   collection_method: 'charge_automatically',
-  //   auto_advance: true,
-  //   currency: config.currencyCode,
-  //   metadata: {
-  //     'beabee-invoice-type': 'one-time-payment-detach-mandate',
-  //   },
-  //   default_tax_rates: getSalesTaxRateObject('one-time'),
-  // });
+  await stripe.invoiceItems.create({
+    customer: customerId,
+    invoice: invoice.id,
+    amount: getChargeableAmount(flow.form, flow.params.paymentMethod),
+    description: 'One-time payment',
+  });
 
-  // await stripe.invoiceItems.create({
-  //   customer: customerId,
-  //   invoice: invoice.id,
-  //   amount: getChargeableAmount(form, paymentMethod),
-  //   description: 'One-time payment',
-  // });
+  const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id);
 
-  // await stripe.invoices.pay(invoice.id);
+  const paymentIntent = finalizedInvoice.payment_intent as string | null;
+  if (!paymentIntent) {
+    throw new Error();
+  }
+
+  await stripe.paymentIntents.confirm(paymentIntent, {
+    confirmation_token: flow.params.token,
+  });
 }
 
-export function isOneTimePaymentInvoice(invoice: Stripe.Invoice): boolean {
-  return (
-    invoice.metadata?.['beabee-invoice-type'] ===
-    'one-time-payment-detach-mandate'
-  );
+export function isOneTimePaymentInvoice(
+  invoice: Stripe.Invoice,
+  detach?: true
+): boolean {
+  const type = invoice.metadata?.['beabee-invoice-type'] || '';
+  return detach
+    ? type === 'one-time-payment-detach-mandate'
+    : type.startsWith('one-time-payment');
 }
 
 /**
@@ -350,7 +353,7 @@ export function isOneTimePaymentInvoice(invoice: Stripe.Invoice): boolean {
  * @returns The payment method
  */
 export function stripeTypeToPaymentMethod(
-  type: Stripe.PaymentMethod.Type
+  type: StripePaymentMethod
 ): PaymentMethod {
   switch (type) {
     case 'card':
