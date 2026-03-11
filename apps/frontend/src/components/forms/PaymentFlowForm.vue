@@ -147,6 +147,7 @@ async function handleStripeConfirm(
   });
 
   await props.completeFlow(token);
+  showModal.value = false;
 }
 
 // async function handleStripeCompleted() {

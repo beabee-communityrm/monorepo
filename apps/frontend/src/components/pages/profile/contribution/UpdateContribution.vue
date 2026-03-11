@@ -29,7 +29,32 @@
       class="mb-4"
     />
 
+    <AppApiForm
+      v-if="isAutoActiveMember"
+      :button-text="t('contribution.updateContribution')"
+      :success-text="t('contribution.updatedContribution')"
+      full-button
+      @submit="handleUpdateContribution"
+    >
+      <AppContribution
+        v-model:amount="newContribution.amount"
+        v-model:pay-fee="newContribution.payFee"
+        v-model:period="newContribution.period"
+        v-model:payment-method="newContribution.paymentMethod"
+        :content="content"
+        :payment-content="paymentContent"
+        :show-payment-method="!isAutoActiveMember"
+      />
+      <ProrateContribution
+        v-model="newContribution.prorate"
+        :new-amount="newContribution.amount"
+        :old-amount="contribution.amount || 0"
+        :renewal-date="contribution.renewalDate || new Date()"
+      />
+    </AppApiForm>
+
     <PaymentFlowForm
+      v-else
       id="profile-update-contribution"
       :title="t(`paymentMethods.${newContribution.paymentMethod}.setLabel`)"
       :button-text="buttonText"
@@ -46,7 +71,7 @@
         :content="content"
         :payment-content="paymentContent"
         :show-period="showChangePeriod"
-        :show-payment-method="!isAutoActiveMember"
+        show-payment-method
         mode="contribution"
       />
 
@@ -85,6 +110,7 @@ import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppContribution from '#components/contribution/AppContribution.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
 import PaymentFlowForm from '#components/forms/PaymentFlowForm.vue';
 import { currentUser } from '#store/currentUser';
 import { client } from '#utils/api';
@@ -152,17 +178,19 @@ const buttonText = computed(() =>
         : t('contribution.startContribution')
 );
 
+async function handleUpdateContribution() {
+  contribution.value = await client.contact.contribution.update({
+    amount: newContribution.amount,
+    period: newContribution.period,
+    payFee: newContribution.payFee,
+    prorate: newContribution.prorate,
+  });
+}
+
 async function handleStartFlow(
   params: PaymentFlowParams
 ): Promise<PaymentFlowResult> {
   if (isAutoActiveMember.value) {
-    contribution.value = await client.contact.contribution.update({
-      amount: newContribution.amount,
-      period: newContribution.period,
-      payFee: newContribution.payFee,
-      prorate: newContribution.prorate,
-    });
-
     addNotification({
       variant: 'success',
       title: t('contribution.updatedContribution'),
