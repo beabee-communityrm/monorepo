@@ -12,75 +12,72 @@ meta:
     <p>{{ t('common.loading') }}...</p>
   </div>
 
-  <div class="flex flex-col gap-6 md:flex-row md:items-stretch">
-    <div class="relative min-w-0 flex-1 md:flex md:min-h-0 md:flex-col">
-      <AppRadioGroup
-        v-model="emailSettingType"
-        :options="[
-          ['one-off', t('adminSettings.email.contactTemplates.oneOff')],
-          ['ongoing', t('adminSettings.email.contactTemplates.ongoing')],
-        ]"
-        :variant="'link'"
-        :disabled="false"
-        :label="t('adminSettings.email.contactTemplates.titleEmailType')"
-        :inline="true"
-        :required="false"
-      />
+  <template v-else-if="segment">
+    <div class="flex flex-col gap-6 md:flex-row md:items-stretch">
+      <div class="relative min-w-0 flex-1 md:flex md:min-h-0 md:flex-col">
+        <AppRadioGroup
+          v-model="emailSettingType"
+          :options="[
+            ['one-off', t('adminSettings.email.contactTemplates.oneOff')],
+            ['ongoing', t('adminSettings.email.contactTemplates.ongoing')],
+          ]"
+          variant="link"
+          :label="t('adminSettings.email.contactTemplates.titleEmailType')"
+          :inline="true"
+        />
+      </div>
+      <div
+        v-if="emailSettingType === 'ongoing'"
+        class="relative min-w-0 flex-1 md:flex md:min-h-0 md:flex-col"
+      >
+        <AppRadioGroup
+          v-model="emailSettingTrigger"
+          :options="[
+            [
+              'onJoin',
+              t('adminSettings.email.contactTemplates.contactJoins'),
+            ],
+            [
+              'onLeave',
+              t('adminSettings.email.contactTemplates.contactLeaves'),
+            ],
+          ]"
+          variant="link"
+          :label="t('adminSettings.email.contactTemplates.titleSendTime')"
+          :inline="true"
+        />
+        <AppCheckbox
+          v-if="emailSettingTrigger === 'onJoin'"
+          v-model="emailSettingDirectSend"
+          class="mt-2"
+          variant="link"
+          :label="t('adminSettings.email.contactTemplates.titleDirectSend')"
+        />
+        <p class="mt-2 text-sm text-body-80">
+          {{
+            t('adminSettings.email.contactTemplates.descriptionOngoingEmails')
+          }}
+        </p>
+      </div>
     </div>
-    <div
-      v-if="emailSettingType === 'ongoing'"
-      class="relative min-w-0 flex-1 md:flex md:min-h-0 md:flex-col"
-    >
-      <AppRadioGroup
-        v-model="emailSettingSendTime"
-        :options="[
-          [
-            'contact-joins',
-            t('adminSettings.email.contactTemplates.contactJoins'),
-          ],
-          [
-            'contact-leaves',
-            t('adminSettings.email.contactTemplates.contactLeaves'),
-          ],
-        ]"
-        :variant="'link'"
-        :disabled="false"
-        :label="t('adminSettings.email.contactTemplates.titleSendTime')"
-        :inline="true"
-        :required="false"
-      />
-      <AppCheckbox
-        v-if="emailSettingSendTime === 'contact-joins'"
-        v-model="emailSettingDirectSend"
-        class="mt-2"
-        :variant="'link'"
-        :disabled="false"
-        :label="t('adminSettings.email.contactTemplates.titleDirectSend')"
-        :required="false"
-      />
-      <p class="mt-2 text-sm text-body-80">
-        {{ t('adminSettings.email.contactTemplates.descriptionOngoingEmails') }}
-      </p>
-    </div>
-  </div>
-  <EmailTemplateEditor
-    v-model:email="emailData"
-    class="mt-4"
-    :submit-button-text="submitButtonText"
-    :reset-button-text="t('actions.goBack')"
-    show-select-template
-    :save-preview="savePreview"
-    :contacts="segmentContacts"
-    :default-new-template-name="defaultNewTemplateName"
-    @submit="handleSubmit"
-    @reset="handleBack"
-  />
+
+    <EmailTemplateEditor
+      v-model:email="emailData"
+      class="mt-4"
+      :submit-button-text="submitButtonText"
+      :reset-button-text="t('actions.goBack')"
+      show-select-template
+      :contacts="segmentContacts"
+      :default-new-template-name="defaultNewTemplateName"
+      @submit="handleSubmit"
+      @reset="handleBack"
+    />
+  </template>
 </template>
 
 <script lang="ts" setup>
 import type {
   GetContactData,
-  GetEmailData,
   GetSegmentData,
 } from '@beabee/beabee-common';
 import {
@@ -91,7 +88,7 @@ import {
 } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -100,10 +97,7 @@ import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 
-const NEW_EMAIL_VALUE = '__new__';
-
 const PREVIEW_CONTACTS_LIMIT = 50;
-const TEMPLATES_LIMIT = 100;
 
 const { t } = useI18n();
 const route = useRoute('adminContactsSendEmailSegmentId');
@@ -122,20 +116,6 @@ addBreadcrumb(
 
 const segmentId = computed(() => route.params.segmentId);
 
-const sendEmail = computed(() =>
-  emailSettingType.value === 'one-off' ||
-  (emailSettingDirectSend.value &&
-    emailSettingSendTime.value === 'contact-joins')
-    ? true
-    : false
-);
-
-const submitButtonText = computed(() =>
-  sendEmail.value
-    ? t('adminSettings.email.contactTemplates.send')
-    : t('adminSettings.email.contactTemplates.create')
-);
-
 const backUrl = computed(
   () => `/admin/contacts${segmentId.value ? `?segment=${segmentId.value}` : ''}`
 );
@@ -145,96 +125,83 @@ const pageTitle = computed(() => {
   return `${t('contacts.sendEmail.title')}: ${segment.value.name}`;
 });
 
+// State
 const loading = ref(true);
 const segment = ref<GetSegmentData | null>(null);
 const segmentContacts = ref<GetContactData[]>([]);
-const templates = ref<GetEmailData[]>([]);
-const selectedTemplateId = ref<string>(NEW_EMAIL_VALUE);
-const newTemplateName = ref('');
 const emailData = ref({ name: '', subject: '', body: '' });
-const pendingAction = ref<'back' | 'send'>('send');
-const savePreview = ref(true);
+
+// Ongoing email settings
+const emailSettingType = ref<'one-off' | 'ongoing'>('one-off');
+const emailSettingTrigger = ref<'onJoin' | 'onLeave'>('onJoin');
+const emailSettingDirectSend = ref(false);
+
+const isOngoing = computed(() => emailSettingType.value === 'ongoing');
+
+const shouldSendImmediately = computed(
+  () =>
+    !isOngoing.value ||
+    (emailSettingDirectSend.value && emailSettingTrigger.value === 'onJoin')
+);
+
+const submitButtonText = computed(() =>
+  shouldSendImmediately.value
+    ? t('adminSettings.email.contactTemplates.send')
+    : t('adminSettings.email.contactTemplates.create')
+);
 
 const defaultNewTemplateName = computed(() =>
   segment.value ? `${t('contacts.sendEmail.title')}: ${segment.value.name}` : ''
 );
 
-const isNewEmailSelected = computed(
-  () => selectedTemplateId.value === NEW_EMAIL_VALUE
-);
-
-async function loadTemplates() {
-  const result = await client.email.list({
-    limit: TEMPLATES_LIMIT,
-    offset: 0,
-  });
-  templates.value = result.items;
-}
-
-function validateForm(): boolean {
+async function handleSubmit() {
+  if (!segmentId.value) return;
   if (!emailData.value.subject.trim() || !emailData.value.body.trim()) {
     addNotification({
       variant: 'error',
       title: t('form.errorMessages.generic'),
     });
-    return false;
-  }
-  return true;
-}
-
-async function ensureSavedEmailId(): Promise<string> {
-  if (selectedTemplateId.value === NEW_EMAIL_VALUE) {
-    const name = newTemplateName.value.trim() || defaultNewTemplateName.value;
-    if (!name.trim()) {
-      addNotification({
-        variant: 'error',
-        title: t('contacts.sendEmail.templateNameRequired'),
-      });
-      throw new Error('Template name required');
-    }
-    const isOngoing = emailSettingType.value === 'ongoing';
-    const created = await client.email.create({
-      name: emailData.value.name,
-      subject: emailData.value.subject,
-      body: emailData.value.body,
-      isOngoing: isOngoing,
-      segmentId: isOngoing ? segmentId.value : undefined,
-      trigger: isOngoing ? emailSettingSendTime.value : undefined,
-    });
-    return created.id;
-  }
-  await client.email.update(selectedTemplateId.value, {
-    name: emailData.value.name,
-    subject: emailData.value.subject,
-    body: emailData.value.body,
-  });
-  return selectedTemplateId.value;
-}
-
-async function handleSubmit() {
-  if (!segmentId.value || !validateForm()) return;
-  if (pendingAction.value === 'back') {
-    await ensureSavedEmailId();
-    addNotification({
-      variant: 'success',
-      title: t('contacts.sendEmail.saveAndBackSuccess'),
-    });
-    router.push(backUrl.value);
     return;
   }
+
   const emailId = await ensureSavedEmailId();
-  if (sendEmail.value) {
+
+  if (shouldSendImmediately.value) {
     await client.segments.email.send(segmentId.value, {
       subject: emailData.value.subject,
       body: emailData.value.body,
       emailId,
     });
   }
+
   addNotification({
     variant: 'success',
     title: t('contacts.sendEmail.sent'),
   });
   router.push(backUrl.value);
+}
+
+async function ensureSavedEmailId(): Promise<string> {
+  // EmailTemplateEditor manages template selection internally,
+  // so we always create a new email here
+  const name = emailData.value.name.trim() || defaultNewTemplateName.value;
+  if (!name.trim()) {
+    addNotification({
+      variant: 'error',
+      title: t('contacts.sendEmail.templateNameRequired'),
+    });
+    throw new Error('Template name required');
+  }
+
+  const created = await client.email.create({
+    name,
+    subject: emailData.value.subject,
+    body: emailData.value.body,
+    isOngoing: isOngoing.value,
+    segmentId: isOngoing.value ? segmentId.value : undefined,
+    trigger: isOngoing.value ? emailSettingTrigger.value : undefined,
+  });
+  return created.id;
 }
 
 async function handleBack() {
@@ -253,7 +220,6 @@ onMounted(async () => {
         limit: PREVIEW_CONTACTS_LIMIT,
         offset: 0,
       }),
-      loadTemplates(),
     ] as const);
     segment.value = segmentRes;
     segmentContacts.value = contactsRes.items;
@@ -267,15 +233,4 @@ onMounted(async () => {
     loading.value = false;
   }
 });
-
-watch(defaultNewTemplateName, (name) => {
-  if (isNewEmailSelected.value && !newTemplateName.value) {
-    newTemplateName.value = name;
-  }
-});
-
-// ** Send State Management **/
-const emailSettingType = ref<string>('one-off');
-const emailSettingSendTime = ref<string>('contact-joins');
-const emailSettingDirectSend = ref<boolean>(false);
 </script>

@@ -1,6 +1,7 @@
 <template>
   <AppApiForm
     :button-text="submitButtonText"
+    :reset-button-text="resetButtonText"
     class="flex flex-col gap-6"
     inline-error
     @submit="emit('submit')"
@@ -27,10 +28,10 @@
         class="w-full min-w-0 md:flex md:min-h-0 md:w-[600px] md:flex-1 md:flex-col"
       >
         <AppInput
-          v-if="isNewEmailSelected"
           v-model="email.name"
           :label="t('contacts.sendEmail.templateName')"
           :placeholder="defaultNewTemplateName"
+          :disabled="!isNewEmailSelected"
           required
         />
       </div>
@@ -61,7 +62,6 @@ import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 
 const { t } = useI18n();
-const loading = ref(true);
 
 const NEW_EMAIL_VALUE = '__new__';
 const TEMPLATES_LIMIT = 100;
@@ -71,11 +71,13 @@ const email = defineModel<UpdateEmailData>('email', { required: true });
 const props = withDefaults(
   defineProps<{
     submitButtonText: string;
+    resetButtonText?: string;
     showSelectTemplate?: boolean;
     contacts?: GetContactData[];
     defaultNewTemplateName?: string;
   }>(),
   {
+    resetButtonText: undefined,
     showSelectTemplate: false,
     contacts: () => [],
     defaultNewTemplateName: '',
@@ -90,7 +92,6 @@ const emit = defineEmits<{
 /** Template Management **/
 const templates = ref<GetEmailData[]>([]);
 const selectedTemplateId = ref<string>(NEW_EMAIL_VALUE);
-const newTemplateName = ref('');
 const previewContactId = ref<string>('');
 
 const isNewEmailSelected = computed(
@@ -119,8 +120,7 @@ async function loadTemplates() {
 
 function onTemplateChange(value: string) {
   if (value === NEW_EMAIL_VALUE) {
-    newTemplateName.value = props.defaultNewTemplateName;
-    email.value = { name: newTemplateName.value, subject: '', body: '' };
+    email.value = { name: props.defaultNewTemplateName, subject: '', body: '' };
     return;
   }
   const template = templates.value.find((e) => e.id === value);
@@ -138,14 +138,12 @@ onMounted(async () => {
     return;
   }
   try {
-    loadTemplates();
+    await loadTemplates();
   } catch (err) {
     addNotification({
       variant: 'error',
       title: extractErrorText(err),
     });
-  } finally {
-    loading.value = false;
   }
 });
 </script>

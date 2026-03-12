@@ -28,7 +28,6 @@ meta:
     v-model:email="form"
     :submit-button-text="t('actions.save')"
     :reset-button-text="t('actions.delete')"
-    :save-preview="savePreview"
     @submit="handleSubmit"
     @reset="showDeleteConfirm = true"
   />
@@ -81,8 +80,6 @@ const form = ref<UpdateEmailData>({
   subject: '',
   body: '',
 });
-const savePreview = ref(true);
-
 const pageTitle = computed(() => {
   if (!email.value) return t('contacts.emailTemplates.editTitle');
   return t('contacts.emailTemplates.editTitleWithName', {

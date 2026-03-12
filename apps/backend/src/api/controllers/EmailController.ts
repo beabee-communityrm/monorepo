@@ -1,12 +1,11 @@
 import { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
-import EmailService, { emailService } from '@beabee/core/services/EmailService';
+import EmailService from '@beabee/core/services/EmailService';
 import { AuthInfo, PreviewEmailOptions } from '@beabee/core/type';
 
 import { plainToInstance } from 'class-transformer';
 import {
   Authorized,
-  BadRequestError,
   Body,
   CurrentUser,
   Delete,

@@ -6,20 +6,19 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="pageTitle" border />
+  <PageTitle :title="t('contacts.emailTemplates.titleNew')" border />
 
   <EmailTemplateEditor
     v-model:email="form"
     :submit-button-text="t('actions.save')"
     :reset-button-text="t('actions.back')"
-    :save-preview="savePreview"
     @submit="handleSubmit"
     @reset="handleBack"
   />
 </template>
 
 <script lang="ts" setup>
-import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
+import type { UpdateEmailData } from '@beabee/beabee-common';
 import { PageTitle, addNotification } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
@@ -50,16 +49,7 @@ addBreadcrumb(
   ])
 );
 
-const email = ref<GetEmailData | null>(null);
 const form = ref<UpdateEmailData>({ name: '', subject: '', body: '' });
-const savePreview = ref(true);
-
-const pageTitle = computed(() => {
-  if (!email.value) return t('contacts.emailTemplates.editTitle');
-  return t('contacts.emailTemplates.editTitleWithName', {
-    name: email.value.name,
-  });
-});
 
 async function handleBack() {
   return await router.push(LIST_ROUTE);
@@ -69,13 +59,13 @@ async function handleSubmit() {
   if (!form.value) return;
   try {
     await client.email.create({
-      name: form.value.name ? form.value.name : '',
+      name: form.value.name || '',
       subject: form.value.subject,
       body: form.value.body,
     });
     addNotification({
       variant: 'success',
-      title: t('contacts.sendEmail.sent'),
+      title: t('emails.notifications.created'),
     });
     await router.push(LIST_ROUTE);
   } catch (err) {

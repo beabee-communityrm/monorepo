@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { type EmailMailing } from './index';
+import { type EmailMailing, type SegmentOngoingEmail } from './index';
 
 @Entity()
 export class Email {
@@ -46,7 +46,7 @@ export class Email {
   mailingCount?: number;
 
   @OneToMany('SegmentOngoingEmail', 'email')
-  ongoingMailings!: EmailMailing[];
+  ongoingMailings!: SegmentOngoingEmail[];
 
   ongoingMailingCount?: number;
 }
