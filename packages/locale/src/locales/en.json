@@ -238,11 +238,13 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "Enable one-time contributions",
+      "oneTimeDonationsTitle": "One-time contributions",
       "paymentTitle": "Payment",
-      "showOneTimeDonation": "Show one time donation on home screen",
+      "showOneTimeDonation": "Show one-time contributions on home screen",
       "taxRate": "VAT rate",
-      "taxRateLabelOneTime": "Enable VAT rate for one-time payments",
-      "taxRateLabelRecurring": "Enable VAT rate for recurring payments"
+      "taxRateLabelOneTime": "Enable VAT rate for one-time contributions",
+      "taxRateLabelRecurring": "Enable VAT rate for recurring contributions"
     },
     "theme": {
       "bodyFont": "Body text",
@@ -276,6 +278,7 @@
       "any": "any"
     },
     "createdSegment": "Created segment \"{segment}\"",
+    "invalidRuleError": "Something is broken in this rule: \"{ rule }\". Please update!",
     "matchWord": {
       "AND": "and",
       "OR": "or"
@@ -1506,6 +1509,11 @@
         "backToJoin": "Back to join page",
         "message": "There was a problem setting up your account, our team has been notified. Please contact support if the problem persists.",
         "title": "Something went wrong"
+      },
+      "notFound": {
+        "backToJoin": "Back to join page",
+        "message": "This registration link has expired or has already been used. If you just registered in another tab, you should receive a confirmation email shortly. If you registered some time ago, you'll need to start a new registration.",
+        "title": "Registration link expired"
       },
       "paymentFailed": {
         "backToJoin": "Back to join page",

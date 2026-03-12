@@ -1,7 +1,7 @@
-import { PaymentStatus } from '@beabee/beabee-common';
-
 import { add } from 'date-fns';
-import type Stripe from 'stripe';
+import Stripe from 'stripe';
+
+import { isDuplicateIndex } from '#utils/db';
 
 import config from '../config/config';
 import { getRepository } from '../database';
@@ -156,8 +156,20 @@ export class StripeWebhookEventHandler {
   private static async handleInvoiceCreated(
     invoice: Stripe.Invoice
   ): Promise<void> {
-    // Create the new payment record
-    const payment = await this.handleInvoiceUpdated(invoice);
+    let payment;
+    try {
+      // Create the new payment entry
+      payment = await this.handleInvoiceUpdated(invoice);
+    } catch (err) {
+      // If the payment already exists then the invoice.updated handled already
+      // handled it, this can be ignored as invoice.updated is more up-to-date
+      // than invoice.created
+      if (isDuplicateIndex(err, 'id')) {
+        payment = await this.findOrCreatePaymentForInvoice(invoice);
+      } else {
+        throw err;
+      }
+    }
 
     // Only invoices from subscriptions can have out-of-date tax rates because
     // the invoices are generated asynchronously after the subscription is created
@@ -198,9 +210,17 @@ export class StripeWebhookEventHandler {
       invoice.default_payment_method
     ) {
       log.info('Detaching payment method for one-time invoice ' + invoice.id);
-      await stripe.paymentMethods.detach(
-        invoice.default_payment_method as string
-      );
+      try {
+        await stripe.paymentMethods.detach(
+          invoice.default_payment_method as string
+        );
+      } catch (err) {
+        if (err instanceof Stripe.errors.StripeInvalidRequestError) {
+          log.info('Payment method already detached for invoice ' + invoice.id);
+        } else {
+          throw err;
+        }
+      }
     }
 
     log.info('Updating payment for invoice ' + invoice.id);
@@ -218,7 +238,8 @@ export class StripeWebhookEventHandler {
    * @param invoice The paid Stripe invoice
    */
   public static async handleInvoicePaid(
-    invoice: Stripe.Invoice
+    invoice: Stripe.Invoice,
+    sendEmail = true
   ): Promise<void> {
     const contribution = await this.getContributionFromInvoice(invoice);
     if (!contribution) return;
@@ -242,7 +263,7 @@ export class StripeWebhookEventHandler {
       }
 
       await this.updateContributionAfterPayment(contribution, line);
-    } else if (isOneTimePaymentInvoice(invoice)) {
+    } else if (isOneTimePaymentInvoice(invoice) && sendEmail) {
       await EmailService.sendTemplateToContact(
         'one-time-donation',
         contribution.contact,

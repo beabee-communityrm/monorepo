@@ -238,6 +238,8 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "",
       "showOneTimeDonation": "",
       "taxRate": "",
@@ -276,6 +278,7 @@
       "any": ""
     },
     "createdSegment": "",
+    "invalidRuleError": "",
     "matchWord": {
       "AND": "",
       "OR": ""
@@ -1503,6 +1506,11 @@
         "title": ""
       },
       "failed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
+      },
+      "notFound": {
         "backToJoin": "",
         "message": "",
         "title": ""

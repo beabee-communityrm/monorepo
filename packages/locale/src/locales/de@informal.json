@@ -238,11 +238,13 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "Einmalige Beiträge aktivieren",
+      "oneTimeDonationsTitle": "Einmalige Beiträge",
       "paymentTitle": "Zahlungen",
       "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",
-      "taxRateLabelOneTime": "Mehrwertsteuersatz für einmalige Zahlungen aktivieren",
-      "taxRateLabelRecurring": "Mehrwertsteuersatz für wiederkehrende Zahlungen aktivieren"
+      "taxRateLabelOneTime": "Mehrwertsteuersatz für einmalige Beiträge aktivieren",
+      "taxRateLabelRecurring": "Mehrwertsteuersatz für wiederkehrende Beiträge aktivieren"
     },
     "theme": {
       "bodyFont": "Text",
@@ -276,6 +278,7 @@
       "any": "einer dieser"
     },
     "createdSegment": "Erstelltes Segment \"{segment}\"",
+    "invalidRuleError": "In dieser Regel ist was kaputt: \"{ rule }\". Bitte aktualisieren!",
     "matchWord": {
       "AND": "und",
       "OR": "oder"
@@ -1508,6 +1511,11 @@
         "backToJoin": "Zurück zur Registrierung",
         "message": "Es gab ein Problem bei der Registrierung, unser Team wurde benachrichtigt. Bitte kontaktiere uns, wenn das Problem weiterhin auftritt.",
         "title": "Etwas ist schief gelaufen"
+      },
+      "notFound": {
+        "backToJoin": "Zurück zur Registrierung",
+        "message": "Dieser Registrierungslink ist abgelaufen oder wurde bereits verwendet. Falls du dich gerade in einem anderen Tab registriert hast, solltest du in Kürze eine Bestätigungs-E-Mail erhalten. Falls du dich vor längerer Zeit registriert hast, musst du eine neue Registrierung starten.",
+        "title": "Registrierungslink abgelaufen"
       },
       "paymentFailed": {
         "backToJoin": "Zurück zur Registrierung",

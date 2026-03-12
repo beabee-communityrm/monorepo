@@ -238,6 +238,8 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "Pagamento",
       "showOneTimeDonation": "Mostra opzione contributo una tantum nella schermata iniziale",
       "taxRate": "Aliquota IVA",
@@ -276,6 +278,7 @@
       "any": "una delle"
     },
     "createdSegment": "Segmento creato \"{segment}\"",
+    "invalidRuleError": "Qualcosa non va in questa regola: \"{ rule }\". Si prega di aggiornare!",
     "matchWord": {
       "AND": "e",
       "OR": "o"
@@ -1508,6 +1511,11 @@
         "backToJoin": "Torna alla pagina di iscrizione",
         "message": "Si è verificato un problema durante la configurazione dell'iscrizione, il nostro team è stato informato. Se il problema persiste, contatta l'assistenza.",
         "title": "Qualcosa è andato storto"
+      },
+      "notFound": {
+        "backToJoin": "Torna alla pagina di registrazione",
+        "message": "Questo link di registrazione è scaduto o è già stato utilizzato. Se ti sei appena registrato in un'altra scheda, dovresti ricevere un'e-mail di conferma a breve. Se ti sei registrato tempo fa, dovrai iniziare una nuova registrazione.",
+        "title": "Link di registrazione scaduto"
       },
       "paymentFailed": {
         "backToJoin": "Torna alla pagina di registrazione",

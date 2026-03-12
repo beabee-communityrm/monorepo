@@ -19,6 +19,15 @@ export function useSegmentManagement(
 
   const totalItems = ref<number | null>(null);
 
+  function emptyTable() {
+    return {
+      items: [],
+      total: 0,
+      offset: 0,
+      count: 0,
+    };
+  }
+
   const currentRules = defineRulesParam(
     computed(() => currentSegment.value?.ruleGroup)
   );
@@ -76,6 +85,7 @@ export function useSegmentManagement(
     totalItems,
     currentRules,
     hasUnsavedSegment,
+    emptyTable,
     segmentItems,
     handleSavedSegment,
   };

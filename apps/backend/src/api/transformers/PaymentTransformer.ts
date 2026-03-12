@@ -1,11 +1,5 @@
-import {
-  GetPaymentAggregationData,
-  PaymentFilterName,
-  Rule,
-  paymentFilters,
-} from '@beabee/beabee-common';
+import { GetPaymentAggregationData } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
-import { paymentFilterHandlers } from '@beabee/core/filter-handlers';
 import { Contact, Payment } from '@beabee/core/models';
 import { paymentService } from '@beabee/core/services';
 import { AuthInfo } from '@beabee/core/type';
@@ -22,21 +16,15 @@ import {
   GetPaymentWith,
   ListPaymentsDto,
 } from '#api/dto/PaymentDto';
-import { BaseTransformer } from '#api/transformers/BaseTransformer';
+import { BasePaymentTransformer } from '#api/transformers/BasePaymentTransformer';
 import ContactTransformer, {
   loadContactRoles,
 } from '#api/transformers/ContactTransformer';
 
-class PaymentTransformer extends BaseTransformer<
-  Payment,
+class PaymentTransformer extends BasePaymentTransformer<
   GetPaymentDto,
-  PaymentFilterName,
   GetPaymentOptsDto
 > {
-  protected model = Payment;
-  protected filters = paymentFilters;
-  filterHandlers = paymentFilterHandlers;
-
   @TransformPlainToInstance(GetPaymentDto)
   convert(
     payment: Payment,
@@ -54,15 +42,6 @@ class PaymentTransformer extends BaseTransformer<
           payment.contact && ContactTransformer.convert(payment.contact, auth),
       }),
     };
-  }
-
-  /**
-   * Non-admin users can only see their own payments
-   *
-   * @returns The rules for non-admin users
-   */
-  protected async getNonAdminAuthRules(): Promise<Rule[]> {
-    return [{ field: 'contact', operator: 'equal', value: ['me'] }];
   }
 
   /**

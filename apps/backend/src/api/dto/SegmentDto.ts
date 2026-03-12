@@ -36,7 +36,7 @@ export class GetSegmentDto extends CreateSegmentDto {
 
   @IsOptional()
   @IsNumber()
-  itemCount?: number;
+  itemCount?: number | undefined;
 }
 
 export class GetSegmentOptsDto {
