@@ -196,6 +196,7 @@ export type * from './rule-value.js';
 export type * from './rule.js';
 export type * from './s3-metadata.js';
 export type * from './segment-filter-name.js';
+export type * from './segment-ongoing-email-trigger.js';
 export type * from './serial.js';
 export type * from './set-callout-form-schema.js';
 export type * from './set-callout-navigation-schema.js';

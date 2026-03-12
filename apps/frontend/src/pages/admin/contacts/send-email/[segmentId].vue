@@ -33,10 +33,7 @@ meta:
         <AppRadioGroup
           v-model="emailSettingTrigger"
           :options="[
-            [
-              'onJoin',
-              t('adminSettings.email.contactTemplates.contactJoins'),
-            ],
+            ['onJoin', t('adminSettings.email.contactTemplates.contactJoins')],
             [
               'onLeave',
               t('adminSettings.email.contactTemplates.contactLeaves'),
@@ -76,10 +73,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type {
-  GetContactData,
-  GetSegmentData,
-} from '@beabee/beabee-common';
+import type { GetContactData, GetSegmentData } from '@beabee/beabee-common';
 import {
   AppCheckbox,
   AppRadioGroup,

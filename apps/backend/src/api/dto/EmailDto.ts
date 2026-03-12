@@ -1,4 +1,7 @@
-import { EmailTemplateType } from '@beabee/beabee-common';
+import {
+  EmailTemplateType,
+  type SegmentOngoingEmailTrigger,
+} from '@beabee/beabee-common';
 import {
   AdminEmailTemplateId,
   ContactEmailTemplateId,
@@ -7,9 +10,9 @@ import {
 } from '@beabee/core/type';
 
 import {
-  Allow,
   IsArray,
   IsBoolean,
+  IsIn,
   IsObject,
   IsOptional,
   IsString,
@@ -81,8 +84,8 @@ export class CreateEmailDto {
   isOngoing?: boolean;
 
   @ValidateIf((o) => o.isOngoing)
-  @IsString()
-  trigger!: string;
+  @IsIn(['onJoin', 'onLeave'])
+  trigger!: SegmentOngoingEmailTrigger;
 
   @ValidateIf((o) => o.isOngoing)
   @IsString()
@@ -118,8 +121,8 @@ export class UpdateEmailDto {
   isOngoing?: boolean;
 
   @ValidateIf((o) => o.isOngoing)
-  @IsString()
-  trigger!: string;
+  @IsIn(['onJoin', 'onLeave'])
+  trigger!: SegmentOngoingEmailTrigger;
 
   @ValidateIf((o) => o.isOngoing)
   @IsString()

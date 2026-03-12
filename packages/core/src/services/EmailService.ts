@@ -1,6 +1,7 @@
 import {
   EmailTemplateType,
   type GetEmailTemplateInfoData,
+  type SegmentOngoingEmailTrigger,
 } from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
@@ -517,7 +518,7 @@ class EmailService {
   async addOngoingEmail(
     segmentId: string,
     emailId: string,
-    trigger: string,
+    trigger: SegmentOngoingEmailTrigger,
     enabled = true
   ): Promise<SegmentOngoingEmail> {
     const repo = getRepository(SegmentOngoingEmail);
@@ -535,7 +536,7 @@ class EmailService {
   async updateOngoingEmail(
     segmentId: string,
     emailId: string,
-    trigger: string,
+    trigger: SegmentOngoingEmailTrigger,
     enabled = true
   ): Promise<UpdateResult> {
     const repo = getRepository(SegmentOngoingEmail);

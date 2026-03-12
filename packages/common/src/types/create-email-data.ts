@@ -1,3 +1,5 @@
+import type { SegmentOngoingEmailTrigger } from './segment-ongoing-email-trigger.js';
+
 export interface CreateEmailData {
   name: string;
   fromName?: string;
@@ -6,5 +8,5 @@ export interface CreateEmailData {
   body: string;
   isOngoing?: boolean;
   segmentId?: string;
-  trigger?: string;
+  trigger?: SegmentOngoingEmailTrigger;
 }
