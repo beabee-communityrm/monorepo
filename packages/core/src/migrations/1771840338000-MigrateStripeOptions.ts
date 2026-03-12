@@ -11,8 +11,8 @@ export class MigrateStripeOptions1771840338000 implements MigrationInterface {
       ON CONFLICT (key) DO NOTHING
     `,
       [
-        process.env.BEABEE_STRIPE_WEBHOOKSECRET,
-        process.env.BEABEE_STRIPE_MEMBERSHIPPRODUCTID,
+        process.env.BEABEE_STRIPE_WEBHOOKSECRET || '',
+        process.env.BEABEE_STRIPE_MEMBERSHIPPRODUCTID || '',
       ]
     );
 
