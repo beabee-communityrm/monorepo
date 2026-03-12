@@ -192,7 +192,7 @@
         "send": "Send",
         "title": "Segment based",
         "titleDirectSend": "Send the email immediately to all contacts in the segment",
-        "titleEmailType": "Typ",
+        "titleEmailType": "Type",
         "titleSendTime": "Send when"
       },
       "fromEmail": "From email",
@@ -1138,7 +1138,7 @@
       "sent": "The email has been sent to the segment.",
       "sentTimes": "Sent {n} times",
       "templateLabel": "Template",
-      "templateName": "Name of new template",
+      "templateName": "Name of template",
       "templateNameRequired": "Please enter a name for the new template.",
       "title": "Send email to segment"
     },

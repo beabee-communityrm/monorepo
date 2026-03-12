@@ -1138,7 +1138,7 @@
       "sent": "Το email στάλθηκε στο τμήμα.",
       "sentTimes": "Στάλθηκε {n} φορές",
       "templateLabel": "Πρότυπο",
-      "templateName": "Όνομα νέου προτύπου",
+      "templateName": "Όνομα προτύπου",
       "templateNameRequired": "Εισάγετε όνομα για το νέο πρότυπο.",
       "title": "Αποστολή email στο τμήμα"
     },
