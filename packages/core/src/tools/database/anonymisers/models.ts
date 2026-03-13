@@ -484,10 +484,10 @@ export const calloutReviewerAnonymiser = createModelAnonymiser(
 export const paymentFlowAnonymiser = createModelAnonymiser(PaymentFlow, {
   id: () => uuidv4(),
   paymentFlowId: () => uuidv4(),
-  form: {
+  params: {
     firstname: () => chance.first(),
     lastname: () => chance.last(),
-    vatNumber: () => null,
+    vatNumber: () => 'DE123456789',
   },
 });
 
