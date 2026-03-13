@@ -1,4 +1,4 @@
-import type { JoinForm } from '@beabee/core/models';
+import type { PaymentFlowForm } from '@beabee/core/models';
 import { CompleteUrls } from '@beabee/core/type';
 
 import { Type } from 'class-transformer';
@@ -11,12 +11,12 @@ import {
 } from 'class-validator';
 
 import { StartContributionDto } from '#api/dto/ContributionDto';
-import { CompleteJoinFlowDto } from '#api/dto/JoinFlowDto';
 import IsPassword from '#api/validators/IsPassword';
 import IsUrl from '#api/validators/IsUrl';
 import IsVatNumber from '#api/validators/IsVatNumber';
 
 import { CreatePaymentDto } from './PaymentDto';
+import { CompletePaymentFlowDto } from './PaymentFlowDto';
 
 export class StartSignupFlowDto implements CompleteUrls {
   @IsUrl()
@@ -47,8 +47,8 @@ export class StartSignupFlowDto implements CompleteUrls {
 }
 
 export class CompleteSignupFlowDto
-  extends CompleteJoinFlowDto
-  implements Pick<JoinForm, 'firstname' | 'lastname' | 'vatNumber'>
+  extends CompletePaymentFlowDto
+  implements Pick<PaymentFlowForm, 'firstname' | 'lastname' | 'vatNumber'>
 {
   @IsOptional()
   @IsString()

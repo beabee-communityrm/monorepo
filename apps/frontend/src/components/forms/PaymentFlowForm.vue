@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import type { PaymentFlowParams } from '@beabee/beabee-common';
+import type { PaymentFlowResult } from '@beabee/beabee-common';
 import { AppForm, AppModal, addNotification } from '@beabee/vue';
 
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
@@ -74,7 +74,7 @@ const props = defineProps<{
   /** The payment data to use for the payment flow */
   flowData: PaymentFlowFormData;
   /** A method which calls the API to start a payment flow*/
-  startFlow: (completeUrl: string) => Promise<PaymentFlowParams>;
+  startFlow: (completeUrl: string) => Promise<PaymentFlowResult>;
   /** A method which calls the API to complete a payment flow */
   completeFlow: (paymentFlowId: string) => Promise<void>;
 }>();

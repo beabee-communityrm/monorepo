@@ -28,12 +28,12 @@ import {
   Export,
   ExportItem,
   GiftFlow,
-  JoinFlow,
   Notice,
   Option,
   PageSettings,
   Password,
   Payment,
+  PaymentFlow,
   Project,
   ProjectContact,
   ProjectEngagement,
@@ -496,13 +496,13 @@ export const calloutReviewerAnonymiser = createModelAnonymiser(
 
 //Ignore Content as pre-filled by migration
 
-export const joinFlowAnonymiser = createModelAnonymiser(JoinFlow, {
+export const paymentFlowAnonymiser = createModelAnonymiser(PaymentFlow, {
   id: () => uuidv4(),
   paymentFlowId: () => uuidv4(),
   loginUrl: () => 'https://fake.beabee.io/login',
   setPasswordUrl: () => 'https://fake.beabee.io/set-password',
   confirmUrl: () => 'https://fake.beabee.io/confirm',
-  joinForm: {
+  form: {
     email: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
     password: () => Password.none,
     firstname: () => chance.first(),

@@ -2,7 +2,7 @@ import {
   type ContributionInfo,
   ContributionPeriod,
   type ForceUpdateContributionData,
-  type PaymentFlowParams,
+  type PaymentFlowResult,
   type Serial,
   type SetContributionData,
   type StartContributionData,
@@ -80,8 +80,8 @@ export class ContactContributionClient extends BaseClient {
   /**
    * Start a new contribution
    */
-  async start(startData: StartContributionData): Promise<PaymentFlowParams> {
-    const { data } = await this.fetch.post<Serial<PaymentFlowParams>>(
+  async start(startData: StartContributionData): Promise<PaymentFlowResult> {
+    const { data } = await this.fetch.post<Serial<PaymentFlowResult>>(
       '/me/contribution',
       startData
     );
