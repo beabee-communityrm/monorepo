@@ -1,10 +1,11 @@
+import { PaymentFlowParamsGoCardless } from '@beabee/beabee-common';
+
 import gocardless from '#lib/gocardless';
 import { log as mainLogger } from '#logging';
 import { PaymentFlow } from '#models/index';
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
-  PaymentFlowData,
   PaymentFlowSetup,
 } from '#type/index';
 
@@ -20,23 +21,16 @@ class GCFlowProvider implements PaymentFlowProvider {
   /**
    * Creates a GoCardless redirect flow for direct debit setup
    * @param flow - Payment flow containing user information
-   * @param completeUrl - URL to redirect after mandate setup
+   * @param params - Parameters for the payment flow
    * @param data - Additional customer data
    * @returns Promise resolving to payment flow with redirect URL
    */
   async setupPaymentFlow(
-    flow: PaymentFlow,
-    completeUrl: string,
-    params: PaymentFlowData
+    flow: PaymentFlow<PaymentFlowParamsGoCardless>
   ): Promise<PaymentFlowSetup> {
     const redirectFlow = await gocardless.redirectFlows.create({
       session_token: flow.id,
-      success_redirect_url: completeUrl,
-      prefilled_customer: {
-        email: params.email,
-        ...(params.firstname && { given_name: params.firstname }),
-        ...(params.lastname && { family_name: params.lastname }),
-      },
+      success_redirect_url: flow.params.completeUrl,
     });
     log.info('Created redirect flow ' + redirectFlow.id);
 
@@ -53,7 +47,9 @@ class GCFlowProvider implements PaymentFlowProvider {
    * @param flow - Payment flow to complete
    * @returns Promise resolving to completed payment flow with mandate ID
    */
-  async completePaymentFlow(flow: PaymentFlow): Promise<CompletedPaymentFlow> {
+  async completePaymentFlow(
+    flow: PaymentFlow<PaymentFlowParamsGoCardless>
+  ): Promise<CompletedPaymentFlow> {
     const redirectFlow = await gocardless.redirectFlows.complete(
       flow.paymentFlowId,
       {
@@ -63,6 +59,7 @@ class GCFlowProvider implements PaymentFlowProvider {
     log.info('Completed redirect flow ' + redirectFlow.id);
 
     return {
+      params: flow.params,
       form: flow.form,
       customerId: redirectFlow.links!.customer!,
       mandateId: redirectFlow.links!.mandate!,
@@ -82,8 +79,8 @@ class GCFlowProvider implements PaymentFlowProvider {
     );
 
     return {
-      ...(customer.given_name && { firstname: customer.given_name }),
-      ...(customer.family_name && { lastname: customer.family_name }),
+      firstname: customer.given_name || '',
+      lastname: customer.family_name || '',
       billingAddress: {
         line1: customer.address_line1 || '',
         line2: customer.address_line2 || undefined,

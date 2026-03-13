@@ -1,6 +1,6 @@
 import {
   ContributionForm,
-  PaymentForm,
+  PaymentFlowParams,
   PaymentMethod,
   PaymentSource,
 } from '@beabee/beabee-common';
@@ -21,6 +21,8 @@ import { Contact } from '#models/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
+  PaymentFlowForm,
+  PaymentFlowFormCreateOneTimePayment,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate } from '#utils/payment';
@@ -68,6 +70,16 @@ export class GCProvider extends PaymentProvider {
       hasPendingPayment: pendingPayment,
       ...(paymentSource && { paymentSource }),
     };
+  }
+
+  async canProcessPaymentFlow(form: PaymentFlowForm): Promise<boolean> {
+    // Can't update payment method when there are pending payments as ths can result
+    // in double charging
+    if (form.action === 'update-payment-method' && this.data.mandateId) {
+      return !(await hasPendingPayment(this.data.mandateId));
+    }
+
+    return true;
   }
 
   /**
@@ -269,7 +281,12 @@ export class GCProvider extends PaymentProvider {
    *
    * @param form The payment form
    */
-  async createOneTimePayment(): Promise<void> {
+  async createOneTimePayment(
+    _completedPaymentFlow: CompletedPaymentFlow<
+      PaymentFlowParams,
+      PaymentFlowFormCreateOneTimePayment
+    >
+  ): Promise<void> {
     throw new Error('Method not implemented.');
   }
 

@@ -1,16 +1,18 @@
+import { PaymentFlowParams } from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Contact } from './Contact';
-import { PaymentFlowForm } from './PaymentFlowForm';
+import { PaymentFlowForm } from '#type/index';
 
 @Entity()
-export class PaymentFlow {
+export class PaymentFlow<
+  TParams extends PaymentFlowParams = PaymentFlowParams,
+> {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -20,22 +22,11 @@ export class PaymentFlow {
   @Column()
   paymentFlowId!: string;
 
-  @Column()
-  loginUrl!: string;
+  @Column({ type: 'jsonb' })
+  params!: TParams;
 
-  @Column()
-  setPasswordUrl!: string;
-
-  @Column()
-  confirmUrl!: string;
-
-  @Column(() => PaymentFlowForm)
+  @Column({ type: 'jsonb' })
   form!: PaymentFlowForm;
-
-  @Column({ type: String, nullable: true })
-  contactId!: string | null;
-  @ManyToOne('Contact', { nullable: true })
-  contact!: Contact | null;
 
   @Column({ default: false })
   processing!: boolean;

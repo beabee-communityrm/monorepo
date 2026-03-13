@@ -1,6 +1,6 @@
 import {
   ContributionForm,
-  PaymentForm,
+  PaymentFlowParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
@@ -9,6 +9,8 @@ import { Contact, ContactContribution } from '#models/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
+  PaymentFlowForm,
+  PaymentFlowFormCreateOneTimePayment,
   UpdateContributionResult,
 } from '#type/index';
 
@@ -33,6 +35,8 @@ export abstract class PaymentProvider {
   protected async updateData() {
     await getRepository(ContactContribution).update(this.contact.id, this.data);
   }
+
+  abstract canProcessPaymentFlow(form: PaymentFlowForm): Promise<boolean>;
 
   /**
    * Checks if contribution changes are allowed
@@ -85,7 +89,10 @@ export abstract class PaymentProvider {
    * @param completedPaymentFlow - The completed payment flow
    */
   abstract createOneTimePayment(
-    completedPaymentFlow: CompletedPaymentFlow
+    completedPaymentFlow: CompletedPaymentFlow<
+      PaymentFlowParams,
+      PaymentFlowFormCreateOneTimePayment
+    >
   ): Promise<void>;
 
   /**

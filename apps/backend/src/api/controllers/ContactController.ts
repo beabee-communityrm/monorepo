@@ -1,4 +1,4 @@
-import { GetContactWith, PaymentForm } from '@beabee/beabee-common';
+import { ContributionPeriod, GetContactWith } from '@beabee/beabee-common';
 import {
   CantUpdateContribution,
   NoPaymentMethod,
@@ -249,15 +249,20 @@ export class ContactController {
     @Body() data: StartContributionDto
   ): Promise<PaymentFlowResultDto> {
     const form = {
-      ...data,
+      action: 'start-contribution' as const,
       monthlyAmount: getMonthlyAmount(data.amount, data.period),
+      payFee: data.payFee,
+      period: data.period,
     };
-    const result = await PaymentFlowService.startContributionUpdate(
-      target,
-      data.paymentMethod,
-      data.completeUrl,
-      form
-    );
+
+    if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
+      throw new CantUpdateContribution();
+    }
+
+    const { result } = await PaymentFlowService.startPaymentFlow(form, {
+      paymentMethod: data.paymentMethod,
+      completeUrl: data.completeUrl,
+    });
     return plainToInstance(PaymentFlowResultDto, result);
   }
 
@@ -323,13 +328,10 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    const updated = await PaymentFlowService.finalizeContributionUpdate(
+    await PaymentFlowService.completePaymentFlowAndExecuteActions(
       target,
       data.paymentFlowId
     );
-    if (!updated) {
-      throw new NotFoundError();
-    }
     return await this.getContribution(target);
   }
 
@@ -355,18 +357,20 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CreatePaymentDto
   ): Promise<PaymentFlowResultDto> {
-    const form: PaymentForm = {
-      monthlyAmount: data.amount,
+    const form = {
+      action: 'create-one-time-payment' as const,
+      amount: data.amount,
       payFee: data.payFee,
-      prorate: false,
-      period: 'one-time',
     };
-    const result = await PaymentFlowService.startContributionUpdate(
-      target,
-      data.paymentMethod,
-      data.completeUrl,
-      form
-    );
+
+    if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
+      throw new CantUpdateContribution();
+    }
+
+    const { result } = await PaymentFlowService.startPaymentFlow(form, {
+      paymentMethod: data.paymentMethod,
+      completeUrl: data.completeUrl,
+    });
     return plainToInstance(PaymentFlowResultDto, result);
   }
 
@@ -376,13 +380,10 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<void> {
-    const updated = await PaymentFlowService.finalizeContributionUpdate(
+    await PaymentFlowService.completePaymentFlowAndExecuteActions(
       target,
       data.paymentFlowId
     );
-    if (!updated) {
-      throw new NotFoundError();
-    }
   }
 
   @Get('/:id/payment')
@@ -418,11 +419,18 @@ export class ContactController {
       throw new NoPaymentMethod();
     }
 
-    const result = await PaymentFlowService.startContributionUpdate(
-      target,
+    const form = {
+      action: 'update-payment-method' as const,
+    };
+
+    if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
+      throw new CantUpdateContribution();
+    }
+
+    const { result } = await PaymentFlowService.startPaymentFlow(form, {
       paymentMethod,
-      data.completeUrl
-    );
+      completeUrl: data.completeUrl,
+    });
     return plainToInstance(PaymentFlowResultDto, result);
   }
 
@@ -431,14 +439,10 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    const updated = await PaymentFlowService.finalizeContributionUpdate(
+    await PaymentFlowService.completePaymentFlowAndExecuteActions(
       target,
       data.paymentFlowId
     );
-    if (!updated) {
-      throw new NotFoundError();
-    }
-
     return await this.getContribution(target);
   }
 

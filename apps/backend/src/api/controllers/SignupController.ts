@@ -1,5 +1,5 @@
 import { Password } from '@beabee/core/models';
-import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
+import SignupService from '@beabee/core/services/SignupService';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
@@ -47,47 +47,53 @@ export class SignupController {
       );
     }
 
-    const baseForm = {
+    const signupForm = {
       email: data.email,
       password: data.password
         ? await generatePassword(data.password)
         : Password.none,
+      confirmUrl: data.confirmUrl,
+      loginUrl: data.loginUrl,
+      setPasswordUrl: data.setPasswordUrl,
     };
 
     if (data.contribution) {
       // Handle a recurring contribution sign up
-      const result = await PaymentFlowService.startPaymentRegistration(
+      const result = await SignupService.startSignupWithPayment(
+        signupForm,
         {
-          ...baseForm,
-          ...data.contribution,
+          action: 'start-contribution',
           monthlyAmount: getMonthlyAmount(
             data.contribution.amount,
             data.contribution.period
           ),
+          payFee: data.contribution.payFee,
+          period: data.contribution.period,
         },
-        data,
-        data.contribution.completeUrl,
-        { email: data.email }
+        {
+          paymentMethod: data.contribution.paymentMethod,
+          completeUrl: data.contribution.completeUrl,
+        }
       );
       return plainToInstance(PaymentFlowResultDto, result);
     } else if (data.oneTimePayment) {
       // Handle a one-time payment sign up
-      const result = await PaymentFlowService.startPaymentRegistration(
+      const result = await SignupService.startSignupWithPayment(
+        signupForm,
         {
-          ...baseForm,
-          ...data.oneTimePayment,
-          monthlyAmount: data.oneTimePayment.amount,
-          period: 'one-time',
-          prorate: false,
+          action: 'create-one-time-payment',
+          amount: data.oneTimePayment.amount,
+          payFee: data.oneTimePayment.payFee,
         },
-        data,
-        data.oneTimePayment.completeUrl,
-        { email: data.email }
+        {
+          paymentMethod: data.oneTimePayment.paymentMethod,
+          completeUrl: data.oneTimePayment.completeUrl,
+        }
       );
       return plainToInstance(PaymentFlowResultDto, result);
     } else {
       // Handle a no-payment sign up
-      await PaymentFlowService.startSimpleRegistration(baseForm, data);
+      await SignupService.startSimpleSignup(signupForm);
     }
   }
 
@@ -100,10 +106,7 @@ export class SignupController {
     })
   )
   async completeSignup(@Body() data: CompleteSignupFlowDto): Promise<void> {
-    await PaymentFlowService.advancePaymentRegistration(
-      data.paymentFlowId,
-      data // TODO: pick fields
-    );
+    await SignupService.advanceSignupWithPayment(data.paymentFlowId, data);
   }
 
   @Post('/confirm-email')
@@ -117,7 +120,7 @@ export class SignupController {
     @Req() req: Request,
     @Body() { joinFlowId }: SignupConfirmEmailParams
   ): Promise<GetContactDto> {
-    const contact = await PaymentFlowService.finalizeRegistration(joinFlowId);
+    const contact = await SignupService.finalizeSignup(joinFlowId);
     if (!contact) {
       throw new NotFoundError();
     }
