@@ -84,7 +84,7 @@ class SignupService {
    */
   async advanceSignupWithPayment(
     paymentFlowId: string,
-    data: Partial<PaymentFlowForm>
+    data: Partial<Pick<PaymentFlowForm, 'firstname' | 'lastname' | 'vatNumber'>>
   ): Promise<void> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { paymentFlow: { paymentFlowId } },
@@ -95,7 +95,11 @@ class SignupService {
       throw new NotFoundError();
     }
 
-    // TODO: remove once payment flow logic reworked
+    for (const key of ['firstname', 'lastname', 'vatNumber'] as const) {
+      if (data[key]) {
+        signupFlow.paymentFlow.form[key] = data[key];
+      }
+    }
     Object.assign(signupFlow.paymentFlow.form, data);
     await getRepository(PaymentFlow).save(signupFlow.paymentFlow);
 
