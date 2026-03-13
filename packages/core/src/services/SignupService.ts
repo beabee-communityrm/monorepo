@@ -268,8 +268,12 @@ class SignupService {
       );
     }
 
-    // One-time contributions receive a separate one-time-donation email
-    if (signupFlow.paymentFlow?.form.action !== 'create-one-time-payment') {
+    // Only send welcome email to non-payment signups or those starting a
+    // contribution. One-time contributors get a separate email
+    if (
+      !signupFlow.paymentFlow ||
+      signupFlow.paymentFlow.form.action === 'start-contribution'
+    ) {
       await EmailService.sendTemplateToContact('welcome', contact);
     }
 
