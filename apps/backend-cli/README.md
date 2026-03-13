@@ -4,7 +4,13 @@ Command line interface for managing Beabee backend operations.
 
 ## Usage
 
-> **Important**: This CLI tool can only be executed within the `api_app` Docker container and cannot be run locally.
+You can run the CLI from here or from the monorepo root:
+
+```bash
+yarn backend-cli <command>
+```
+
+> **Note**: When running against a remote database, make sure the `.env.remote` file is configured. See the [Environment Variables Documentation](../../docs/environment-variables.md) for details.
 
 The CLI provides several commands for managing different aspects of Beabee, you can see the list of commands by running `yarn backend-cli --help`:
 
@@ -62,6 +68,7 @@ Notes:
 - **Export format** is a SQL dump: each pair of lines is a SQL statement followed by a JSON array of parameters (or an empty line).
 - **Contacts and related models are always anonymised**; `--anonymize=false` only disables anonymisation for less sensitive tables.
 - `--skipAnonymizeTables` lets you export specific tables without anonymisation while still keeping foreign keys consistent.
+- Database dumps are stored in the `exports/` directory at the monorepo root (git-ignored).
 
 ### User Management
 
