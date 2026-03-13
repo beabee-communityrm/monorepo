@@ -1,5 +1,4 @@
 import {
-  ContributionForm,
   ContributionPeriod,
   PaymentMethod,
   PaymentSource,
@@ -15,7 +14,10 @@ import { currentLocale } from '#locale';
 import { log as mainLogger } from '#logging';
 import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
-import { PaymentFlowFormCreateOneTimePayment } from '#type/index';
+import {
+  PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
+} from '#type/index';
 import { getChargeableAmount } from '#utils/payment';
 
 // Stripe webhook events that we handle
@@ -92,7 +94,7 @@ export async function updateSalesTaxRate(
  * @returns A Stripe price data object
  */
 export function getPriceData(
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod
 ): Stripe.SubscriptionCreateParams.Item.PriceData {
   return {
@@ -150,7 +152,7 @@ async function calculateProrationParams(
 
 export const getCreateSubscriptionParams = (
   customerId: string,
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod,
   renewalDate?: Date
 ): Stripe.SubscriptionCreateParams => {
@@ -171,14 +173,14 @@ export const getCreateSubscriptionParams = (
  * Create a new subscription in Stripe, optionally starting at a specific date.
  *
  * @param customerId The Stripe customer ID
- * @param paymentForm The payment form data
+ * @param form The payment form data
  * @param paymentMethod The payment method to use
  * @param renewalDate The date the subscription should start
  * @returns The new Stripe subscription
  */
 export async function createSubscription(
   customerId: string,
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod,
   renewalDate?: Date
 ): Promise<Stripe.Subscription> {
@@ -195,13 +197,13 @@ export async function createSubscription(
  * Update a subscription with a new payment method or amount.
  *
  * @param subscriptionId
- * @param paymentForm
+ * @param form
  * @param paymentMethod
  * @returns
  */
 export async function updateSubscription(
   subscriptionId: string,
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod
 ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
