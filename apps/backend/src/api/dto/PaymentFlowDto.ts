@@ -1,7 +1,8 @@
 import { PaymentFlowResult, PaymentMethod } from '@beabee/beabee-common';
 
-import IsUrl from '@api/validators/IsUrl';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
+
+import IsUrl from '#api/validators/IsUrl';
 
 export class PaymentFlowResultDto implements PaymentFlowResult {
   @IsOptional()
