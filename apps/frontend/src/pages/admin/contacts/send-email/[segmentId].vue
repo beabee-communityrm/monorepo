@@ -18,6 +18,7 @@ meta:
       v-model:trigger="ongoingTrigger"
       v-model:direct-send="ongoingDirectSend"
       v-model:enabled="ongoingEnabled"
+      :segment-id="segmentId"
       show-direct-send
     />
 

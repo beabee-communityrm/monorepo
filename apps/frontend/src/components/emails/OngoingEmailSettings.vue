@@ -13,6 +13,7 @@
             v-model="isOngoing"
             variant="link"
             :label="t('adminSettings.email.contactTemplates.ongoing')"
+            :disabled="!canEnableOngoing && !isOngoing"
             :disabled-description="
               t('adminSettings.email.contactTemplates.ongoingDisabled')
             "
@@ -45,12 +46,14 @@
               variant="link"
               :label="t('adminSettings.email.contactTemplates.titleSendTime')"
               :inline="true"
+              :disabled="!isOngoing"
             />
 
             <div v-if="showDirectSend && trigger === 'onJoin'" class="mt-4">
               <AppToggleField
                 v-model="directSend"
                 variant="link"
+                :disabled="!isOngoing"
                 :label="
                   t('adminSettings.email.contactTemplates.titleDirectSend')
                 "
@@ -67,6 +70,7 @@
               <AppToggleField
                 v-model="enabled"
                 variant="link"
+                :disabled="!isOngoing"
                 :label="t('adminSettings.email.contactTemplates.activeLabel')"
                 :disabled-description="
                   t('adminSettings.email.contactTemplates.activePaused')
@@ -101,17 +105,20 @@ import {
   AppToggleField,
 } from '@beabee/vue';
 
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
+    segmentId?: string;
     showDirectSend?: boolean;
     showEnabled?: boolean;
     segmentName?: string;
   }>(),
   {
+    segmentId: undefined,
     showDirectSend: false,
     showEnabled: false,
     segmentName: undefined,
@@ -119,6 +126,10 @@ withDefaults(
 );
 
 const isOngoing = defineModel<boolean>('isOngoing', { required: true });
+
+// Can only enable ongoing if a segment is assigned
+const canEnableOngoing = computed(() => !!props.segmentId);
+
 const trigger = defineModel<SegmentOngoingEmailTrigger>('trigger', {
   required: true,
 });
