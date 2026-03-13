@@ -41,8 +41,14 @@ meta:
     <template #value-mailingCount="{ value }">
       {{ value ?? 0 }}
     </template>
-    <template #value-isOngoing="{ value }">
-      {{ value ? t('emails.sendType.ongoing') : t('emails.sendType.oneOff') }}
+    <template #value-isOngoing="{ item }">
+      {{
+        item.isOngoing
+          ? item.enabled === false
+            ? t('emails.sendType.paused')
+            : t('emails.sendType.ongoing')
+          : t('emails.sendType.oneOff')
+      }}
     </template>
     <template #empty>
       <p>{{ t('contacts.emailTemplates.empty') }}</p>

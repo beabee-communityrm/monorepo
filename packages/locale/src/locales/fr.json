@@ -1266,7 +1266,8 @@
     },
     "sendType": {
       "oneOff": "",
-      "ongoing": ""
+      "ongoing": "",
+      "paused": ""
     },
     "status": "Statut",
     "tabs": {

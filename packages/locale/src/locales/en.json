@@ -1258,7 +1258,8 @@
     },
     "sendType": {
       "oneOff": "One-off",
-      "ongoing": "Ongoing"
+      "ongoing": "Ongoing",
+      "paused": "Paused"
     },
     "status": "Status",
     "tabs": {

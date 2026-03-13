@@ -1258,7 +1258,8 @@
     },
     "sendType": {
       "oneOff": "",
-      "ongoing": ""
+      "ongoing": "",
+      "paused": ""
     },
     "status": "",
     "tabs": {

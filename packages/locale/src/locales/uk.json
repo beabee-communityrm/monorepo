@@ -1262,7 +1262,8 @@
     },
     "sendType": {
       "oneOff": "",
-      "ongoing": ""
+      "ongoing": "",
+      "paused": ""
     },
     "status": "Статус",
     "tabs": {
