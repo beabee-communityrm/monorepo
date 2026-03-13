@@ -23,4 +23,6 @@ export interface GetEmailData {
   segmentName?: string;
   /** Trigger type for ongoing emails */
   trigger?: SegmentOngoingEmailTrigger;
+  /** Whether the ongoing email is active (not paused) */
+  enabled?: boolean;
 }

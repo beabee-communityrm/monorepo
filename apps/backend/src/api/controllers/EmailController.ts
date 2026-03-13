@@ -113,13 +113,14 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Body() data: CreateEmailDto
   ): Promise<GetEmailDto> {
-    const email = await EmailTransformer.createOne(auth, data);
-    if (data.isOngoing) {
+    const { isOngoing, segmentId, trigger, enabled, ...emailData } = data;
+    const email = await EmailTransformer.createOne(auth, emailData);
+    if (isOngoing) {
       await EmailService.addOngoingEmail(
-        data.segmentId,
+        segmentId,
         email.id,
-        data.trigger,
-        true
+        trigger,
+        enabled ?? true
       );
     }
     return email;
@@ -145,16 +146,19 @@ export class EmailController {
     @Param('id') id: string,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto | undefined> {
-    if (!(await EmailTransformer.updateById(auth, id, data))) {
+    const { isOngoing, segmentId, trigger, enabled, ...emailData } = data;
+    if (!(await EmailTransformer.updateById(auth, id, emailData))) {
       throw new NotFoundError();
     }
-    if (data.isOngoing) {
+    if (isOngoing) {
       await EmailService.addOngoingEmail(
-        data.segmentId,
+        segmentId,
         id,
-        data.trigger,
-        true
+        trigger,
+        enabled ?? true
       );
+    } else if (isOngoing === false) {
+      await EmailService.removeOngoingEmailByEmailId(id);
     }
     return await EmailTransformer.fetchOneById(auth, id);
   }

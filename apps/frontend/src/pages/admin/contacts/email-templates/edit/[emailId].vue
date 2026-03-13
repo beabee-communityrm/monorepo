@@ -29,7 +29,9 @@ meta:
       v-model:is-ongoing="isOngoing"
       v-model:trigger="ongoingTrigger"
       v-model:direct-send="ongoingDirectSend"
+      v-model:enabled="ongoingEnabled"
       :segment-name="segmentName"
+      show-enabled
     />
 
     <EmailTemplateEditor
@@ -99,6 +101,7 @@ const form = ref<UpdateEmailData>({
 const isOngoing = ref(false);
 const ongoingTrigger = ref<SegmentOngoingEmailTrigger>('onJoin');
 const ongoingDirectSend = ref(false);
+const ongoingEnabled = ref(true);
 const segmentName = ref<string | undefined>(undefined);
 const pageTitle = computed(() => {
   if (!email.value) return t('contacts.emailTemplates.editTitle');
@@ -117,6 +120,7 @@ async function handleSubmit() {
       isOngoing: isOngoing.value,
       segmentId: isOngoing.value ? email.value?.segmentId : undefined,
       trigger: isOngoing.value ? ongoingTrigger.value : undefined,
+      enabled: isOngoing.value ? ongoingEnabled.value : undefined,
     };
     await client.email.update(emailId.value, payload);
     addNotification({ variant: 'success', title: t('form.saved') });
@@ -160,6 +164,7 @@ async function loadEmail() {
   // Load ongoing email settings
   isOngoing.value = !!data.isOngoing;
   ongoingTrigger.value = data.trigger || 'onJoin';
+  ongoingEnabled.value = data.enabled ?? true;
   segmentName.value = data.segmentName;
 }
 

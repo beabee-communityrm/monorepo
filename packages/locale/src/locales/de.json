@@ -181,6 +181,9 @@
     },
     "email": {
       "contactTemplates": {
+        "activeLabel": "Aktiv",
+        "activePaused": "Automatischer Versand ist pausiert",
+        "activeRunning": "E-Mails werden automatisch versendet",
         "button": "E-Mail-Vorlagen verwalten",
         "contactJoins": "Kontakt tritt Segment bei",
         "contactLeaves": "Kontakt verlässt Segment",

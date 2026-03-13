@@ -9,4 +9,5 @@ export interface CreateEmailData {
   isOngoing?: boolean;
   segmentId?: string;
   trigger?: SegmentOngoingEmailTrigger;
+  enabled?: boolean;
 }

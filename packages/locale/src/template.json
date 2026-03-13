@@ -181,6 +181,9 @@
     },
     "email": {
       "contactTemplates": {
+        "activeLabel": "",
+        "activePaused": "",
+        "activeRunning": "",
         "button": "",
         "contactJoins": "",
         "contactLeaves": "",
@@ -189,7 +192,6 @@
         "descriptionOngoingEmails": "",
         "directSendDisabled": "",
         "directSendEnabled": "",
-        "oneOff": "",
         "ongoing": "",
         "ongoingDisabled": "",
         "ongoingEnabled": "",
@@ -198,7 +200,6 @@
         "sendSettings": "",
         "title": "",
         "titleDirectSend": "",
-        "titleEmailType": "",
         "titleSendTime": ""
       },
       "fromEmail": "",

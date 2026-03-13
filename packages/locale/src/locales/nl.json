@@ -181,6 +181,9 @@
     },
     "email": {
       "contactTemplates": {
+        "activeLabel": "",
+        "activePaused": "",
+        "activeRunning": "",
         "button": "",
         "contactJoins": "",
         "contactLeaves": "",

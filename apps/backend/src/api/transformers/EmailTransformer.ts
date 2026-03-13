@@ -42,6 +42,7 @@ class EmailTransformer extends BaseTransformer<
         segmentId: ongoingMailing.segmentId,
         segmentName: ongoingMailing.segment?.name,
         trigger: ongoingMailing.trigger,
+        enabled: ongoingMailing.enabled,
       }),
     };
   }

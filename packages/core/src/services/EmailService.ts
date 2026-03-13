@@ -7,7 +7,7 @@ import { Locale, isLocale } from '@beabee/locale';
 
 import fs from 'fs';
 import path from 'path';
-import { IsNull, Not, UpdateResult } from 'typeorm';
+import { IsNull, Not } from 'typeorm';
 import { loadFront } from 'yaml-front-matter';
 
 import config from '#config/config';
@@ -513,7 +513,7 @@ class EmailService {
   }
 
   /**
-   * Add ongoing email for a segment (so the cronjob can process it).
+   * Add or update ongoing email for a segment (upsert).
    */
   async addOngoingEmail(
     segmentId: string,
@@ -522,25 +522,21 @@ class EmailService {
     enabled = true
   ): Promise<SegmentOngoingEmail> {
     const repo = getRepository(SegmentOngoingEmail);
-    return repo.save({
-      segmentId,
-      emailId,
-      trigger,
-      enabled,
-    });
+    const existing = await repo.findOneBy({ emailId });
+    if (existing) {
+      existing.trigger = trigger;
+      existing.enabled = enabled;
+      return repo.save(existing);
+    }
+    return repo.save({ segmentId, emailId, trigger, enabled });
   }
 
   /**
-   * Update ongoing email for a segment (so the cronjob can process it).
+   * Remove all ongoing email entries for a given email.
    */
-  async updateOngoingEmail(
-    segmentId: string,
-    emailId: string,
-    trigger: SegmentOngoingEmailTrigger,
-    enabled = true
-  ): Promise<UpdateResult> {
+  async removeOngoingEmailByEmailId(emailId: string): Promise<void> {
     const repo = getRepository(SegmentOngoingEmail);
-    return repo.update({ segmentId, emailId }, { trigger, enabled });
+    await repo.delete({ emailId });
   }
 }
 

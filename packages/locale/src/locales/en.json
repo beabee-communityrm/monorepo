@@ -181,6 +181,9 @@
     },
     "email": {
       "contactTemplates": {
+        "activeLabel": "Active",
+        "activePaused": "Automatic delivery is paused",
+        "activeRunning": "Emails are being sent automatically",
         "button": "Manage email templates",
         "contactJoins": "Contact joins segment",
         "contactLeaves": "Contact leaves segment",

@@ -90,6 +90,10 @@ export class CreateEmailDto {
   @ValidateIf((o) => o.isOngoing)
   @IsString()
   segmentId!: string;
+
+  @IsOptional()
+  @IsBoolean()
+  enabled?: boolean;
 }
 
 /**
@@ -127,6 +131,10 @@ export class UpdateEmailDto {
   @ValidateIf((o) => o.isOngoing)
   @IsString()
   segmentId!: string;
+
+  @IsOptional()
+  @IsBoolean()
+  enabled?: boolean;
 }
 
 /**
@@ -171,6 +179,10 @@ export class GetEmailDto {
   @IsOptional()
   @IsIn(['onJoin', 'onLeave'])
   trigger?: SegmentOngoingEmailTrigger;
+
+  @IsOptional()
+  @IsBoolean()
+  enabled?: boolean;
 
   @IsString()
   id!: string;

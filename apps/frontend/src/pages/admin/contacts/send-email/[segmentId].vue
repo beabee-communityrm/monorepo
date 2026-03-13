@@ -17,6 +17,7 @@ meta:
       v-model:is-ongoing="isOngoing"
       v-model:trigger="ongoingTrigger"
       v-model:direct-send="ongoingDirectSend"
+      v-model:enabled="ongoingEnabled"
       show-direct-send
     />
 
@@ -86,6 +87,7 @@ const emailData = ref({ name: '', subject: '', body: '' });
 const isOngoing = ref(false);
 const ongoingTrigger = ref<'onJoin' | 'onLeave'>('onJoin');
 const ongoingDirectSend = ref(false);
+const ongoingEnabled = ref(true);
 
 const shouldSendImmediately = computed(
   () =>

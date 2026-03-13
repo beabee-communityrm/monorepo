@@ -63,6 +63,20 @@
               />
             </div>
 
+            <div v-if="showEnabled" class="mt-4">
+              <AppToggleField
+                v-model="enabled"
+                variant="link"
+                :label="t('adminSettings.email.contactTemplates.activeLabel')"
+                :disabled-description="
+                  t('adminSettings.email.contactTemplates.activePaused')
+                "
+                :enabled-description="
+                  t('adminSettings.email.contactTemplates.activeRunning')
+                "
+              />
+            </div>
+
             <p class="mt-4 text-sm text-body-80">
               {{
                 t(
@@ -94,10 +108,12 @@ const { t } = useI18n();
 withDefaults(
   defineProps<{
     showDirectSend?: boolean;
+    showEnabled?: boolean;
     segmentName?: string;
   }>(),
   {
     showDirectSend: false,
+    showEnabled: false,
     segmentName: undefined,
   }
 );
@@ -107,4 +123,5 @@ const trigger = defineModel<SegmentOngoingEmailTrigger>('trigger', {
   required: true,
 });
 const directSend = defineModel<boolean>('directSend', { required: true });
+const enabled = defineModel<boolean>('enabled', { required: true });
 </script>
