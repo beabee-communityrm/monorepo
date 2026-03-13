@@ -54,14 +54,6 @@ export class GCProvider extends PaymentProvider {
       default:
         return false;
     }
-
-    // // Can't update payment method when there are pending payments as ths can result
-    // // in double charging
-    // if (form.action === 'update-payment-method' && this.data.mandateId) {
-    //   return !(await hasPendingPayment(this.data.mandateId));
-    // }
-
-    // return true;
   }
 
   async processPaymentFlow(
