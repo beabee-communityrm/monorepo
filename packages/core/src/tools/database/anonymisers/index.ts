@@ -103,7 +103,7 @@ function anonymiseItem<T>(
         newValue = valueMap.get(valueKey) || propertyFn(oldValue);
       } else if (typeof propertyMap === 'function') {
         // PropertyMap is type (prop: T) => T
-        // No namespace, just map the value simply
+        // No namespace, just map
         valueKey = stringify(oldValue);
         newValue = valueMap.get(valueKey) || propertyMap(oldValue);
       } else {
