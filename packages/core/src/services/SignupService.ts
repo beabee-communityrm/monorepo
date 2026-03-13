@@ -105,7 +105,14 @@ class SignupService {
 
     // Finalise one-time payments early
     if (signupFlow.paymentFlow.form.period === 'one-time') {
-      await this.finalizeSignup(signupFlow.id);
+      const contact = await this.finalizeSignup(signupFlow.id);
+      // Ignore a failure to create a contact here. This means this flow is
+      // being processed elsewhere, probably because the user opened the URL
+      // twice accidentally. Don't send the confirmation email though as
+      // otherwise that will be sent twice
+      if (!contact) {
+        return;
+      }
     }
 
     await this.sendConfirmationEmail(signupFlow);
