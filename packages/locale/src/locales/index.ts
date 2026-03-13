@@ -8,6 +8,7 @@ import it from './it.json' with { type: 'json' };
 import nl from './nl.json' with { type: 'json' };
 import pt from './pt.json' with { type: 'json' };
 import ru from './ru.json' with { type: 'json' };
+import uk from './uk.json' with { type: 'json' };
 
 export { en };
 
@@ -24,5 +25,7 @@ export { pt };
 export { it };
 
 export { ru };
+
+export { uk };
 
 export { deEasy };
