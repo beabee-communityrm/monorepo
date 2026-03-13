@@ -77,7 +77,9 @@ class SignupService {
    */
   async advanceSignupWithPayment(
     paymentFlowId: string,
-    data: Partial<PaymentFlowParamsStripe>
+    data: Partial<
+      Pick<PaymentFlowParamsStripe, 'firstname' | 'lastname' | 'vatNumber'>
+    >
   ): Promise<void> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { paymentFlow: { paymentFlowId } },
@@ -89,7 +91,12 @@ class SignupService {
     }
 
     // TODO: remove once payment flow logic reworked
-    Object.assign(signupFlow.paymentFlow.params, data);
+    for (const key of ['firstname', 'lastname', 'vatNumber'] as const) {
+      if (data[key]) {
+        (signupFlow.paymentFlow.params as PaymentFlowParamsStripe)[key] =
+          data[key];
+      }
+    }
     await getRepository(PaymentFlow).save(signupFlow.paymentFlow);
 
     // Finalise one-time payments early
