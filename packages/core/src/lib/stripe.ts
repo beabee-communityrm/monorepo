@@ -18,6 +18,19 @@ import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
 import { getChargeableAmount } from '#utils/payment';
 
+// Stripe webhook events that we handle
+export const STRIPE_WEBHOOK_EVENTS = [
+  'checkout.session.completed',
+  'customer.deleted',
+  'customer.subscription.updated',
+  'customer.subscription.deleted',
+  'invoice.created',
+  'invoice.updated',
+  'invoice.paid',
+  'invoice.payment_failed',
+  'payment_method.detached',
+] as const;
+
 const log = mainLogger.child({ app: 'stripe-utils' });
 
 export const stripe = new Stripe(config.stripe.secretKey, {

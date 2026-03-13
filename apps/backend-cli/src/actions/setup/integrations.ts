@@ -1,5 +1,5 @@
 import { config } from '@beabee/core/config';
-import { Stripe, stripe } from '@beabee/core/lib/stripe';
+import { STRIPE_WEBHOOK_EVENTS, Stripe, stripe } from '@beabee/core/lib/stripe';
 import { currentLocale } from '@beabee/core/locale';
 import { runApp } from '@beabee/core/server';
 import { optionsService } from '@beabee/core/services/OptionsService';
@@ -43,18 +43,6 @@ export const setupStripe = async (dryRun: boolean) => {
       );
       const webhookUrl = `${config.webhookUrl}/webhook/stripe`;
 
-      const enabledEvents: Stripe.WebhookEndpointCreateParams.EnabledEvent[] = [
-        'checkout.session.completed',
-        'customer.deleted',
-        'customer.subscription.updated',
-        'customer.subscription.deleted',
-        'invoice.created',
-        'invoice.updated',
-        'invoice.paid',
-        'invoice.payment_failed',
-        'payment_method.detached',
-      ];
-
       let existingWebhook;
       if (existingWebhookSecret) {
         const webhookEndpoints = await stripe.webhookEndpoints.list();
@@ -82,7 +70,7 @@ export const setupStripe = async (dryRun: boolean) => {
       if (existingWebhook) {
         if (!dryRun) {
           await stripe.webhookEndpoints.update(existingWebhook.id, {
-            enabled_events: enabledEvents,
+            enabled_events: [...STRIPE_WEBHOOK_EVENTS],
           });
         }
         console.log(`✅ Updated existing webhook: ${existingWebhook.id}`);
@@ -93,7 +81,7 @@ export const setupStripe = async (dryRun: boolean) => {
         } else {
           const webhookEndpoint = await stripe.webhookEndpoints.create({
             url: webhookUrl,
-            enabled_events: enabledEvents,
+            enabled_events: [...STRIPE_WEBHOOK_EVENTS],
             api_version: config.stripe.version,
             description: `Beabee webhook - created ${new Date().toISOString()}`,
           });
