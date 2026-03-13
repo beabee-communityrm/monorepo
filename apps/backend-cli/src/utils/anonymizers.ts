@@ -37,6 +37,7 @@ export const OPTIONALLY_ANONYMIZED_MODELS = [
   models.calloutResponseTagsAnonymiser,
   models.calloutReviewerAnonymiser,
   models.calloutResponseSegmentsAnonymiser,
+  models.signupFlowAnonymiser,
   models.paymentFlowAnonymiser,
   models.calloutVariantAnonymiser,
   models.projectsAnonymiser,
@@ -110,6 +111,7 @@ export const DEMO_CLEAR_ONLY_ANONYMIZERS = [
   models.segmentContactsAnonymiser,
   models.referralsAnonymiser,
   models.resetSecurityFlowAnonymiser,
+  models.signupFlowAnonymiser,
 ] as models.ModelAnonymiser[];
 
 /**
