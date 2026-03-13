@@ -28,7 +28,14 @@
           >
             <div v-if="segmentName" class="mb-4 text-sm text-body-80">
               {{ t('adminSettings.email.contactTemplates.segment') }}:
-              <strong>{{ segmentName }}</strong>
+              <router-link
+                v-if="segmentId"
+                :to="`/admin/contacts?segment=${segmentId}`"
+                class="font-bold text-link"
+              >
+                {{ segmentName }}
+              </router-link>
+              <strong v-else>{{ segmentName }}</strong>
             </div>
 
             <AppRadioGroup
