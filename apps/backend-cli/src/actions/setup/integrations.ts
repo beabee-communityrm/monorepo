@@ -5,6 +5,12 @@ import { runApp } from '@beabee/core/server';
 import { optionsService } from '@beabee/core/services/OptionsService';
 
 export const setupStripe = async (dryRun: boolean) => {
+  if (!config.stripe.secretKey) {
+    throw new Error(
+      'BEABEE_STRIPE_SECRETKEY must be set before running Stripe setup'
+    );
+  }
+
   console.log('Setting up Stripe integration...\n');
 
   if (dryRun) {
@@ -94,7 +100,7 @@ export const setupStripe = async (dryRun: boolean) => {
 
           await optionsService.set(
             'stripe-webhook-secret',
-            webhookEndpoint.secret!
+            webhookEndpoint.secret as string
           );
           console.log(`✅ Created webhook endpoint: ${webhookEndpoint.id}`);
         }

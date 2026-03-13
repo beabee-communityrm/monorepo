@@ -44,12 +44,7 @@ export async function setupAll(args: SetupAllArgs): Promise<void> {
     // Step 4: Admin User Setup
     console.log('👤 Step 4/4: Setting up initial admin user');
     console.log('='.repeat(50));
-    const adminArgs: any = {};
-    if (args.firstname) adminArgs.firstname = args.firstname;
-    if (args.lastname) adminArgs.lastname = args.lastname;
-    if (args.email) adminArgs.email = args.email;
-    if (args.password) adminArgs.password = args.password;
-    await setupAdmin(adminArgs);
+    await setupAdmin(args);
     console.log('✅ Admin user setup completed!\n');
 
     // Final success message
