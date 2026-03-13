@@ -62,7 +62,7 @@ class PaymentFlowService {
    * @param contact - The contact
    * @param paymentFlowId - The ID of the payment flow to finalize
    */
-  async completePaymentFlowAndExecuteActions(
+  async completePaymentFlowAndProcess(
     contact: Contact,
     paymentFlowId: string
   ): Promise<void> {
@@ -84,7 +84,7 @@ class PaymentFlowService {
     }
 
     const completedPaymentFlow = await this.completePaymentFlow(flow);
-    await this.executePaymentActions(contact, completedPaymentFlow);
+    await this.processCompletedFlow(contact, completedPaymentFlow);
   }
 
   /**
@@ -123,7 +123,7 @@ class PaymentFlowService {
    * @param contact - The contact receiving the payment actions
    * @param completedFlow - The completed payment flow data
    */
-  async executePaymentActions(
+  async processCompletedFlow(
     contact: Contact,
     completedFlow: CompletedPaymentFlow
   ): Promise<void> {
@@ -134,19 +134,12 @@ class PaymentFlowService {
       throw new CantUpdateContribution();
     }
 
-    if (form.action === 'create-one-time-payment') {
-      await PaymentService.createOneTimePayment(contact, {
-        ...completedFlow,
-        form,
-      });
-    } else {
-      await PaymentService.updatePaymentMethod(contact, completedFlow);
-      if (form.action === 'start-contribution') {
-        await ContactsService.updateContactContribution(contact, {
-          ...form,
-          prorate: false,
-        });
-      }
+    const result = await PaymentService.processPaymentFlow(
+      contact,
+      completedFlow
+    );
+    if (result) {
+      await ContactsService.handleUpdateContributionResult(contact, result);
     }
   }
 
