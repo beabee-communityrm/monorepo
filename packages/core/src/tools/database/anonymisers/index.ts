@@ -92,15 +92,30 @@ function anonymiseItem<T>(
     const propertyMap = objectMap[prop] as PropertyMap<unknown>;
     const oldValue = item[prop];
     if (oldValue && propertyMap) {
-      const valueKey = stringify(oldValue);
+      let valueKey, newValue;
 
-      const newValue =
-        typeof propertyMap === 'function'
-          ? valueMap.get(valueKey) || propertyMap(oldValue)
-          : anonymiseItem(oldValue, propertyMap, valueMap);
+      if (Array.isArray(propertyMap) && typeof propertyMap[0] === 'symbol') {
+        // PropertyMap is type [symbol, (prop: T) => T]
+        const [namespace, propertyFn] = propertyMap;
+        // Use the symbol to namespace the value key so that the new value is only
+        // remapped for other properties in this namespace
+        valueKey = `${namespace.toString()}-${stringify(oldValue)}`;
+        newValue = valueMap.get(valueKey) || propertyFn(oldValue);
+      } else if (typeof propertyMap === 'function') {
+        // PropertyMap is type (prop: T) => T
+        // No namespace, just map
+        valueKey = stringify(oldValue);
+        newValue = valueMap.get(valueKey) || propertyMap(oldValue);
+      } else {
+        // PropertyMap is type ObjectMap
+        // Nested property, anonymise the object recursively
+        valueKey = stringify(oldValue);
+        newValue = anonymiseItem(oldValue, propertyMap, valueMap);
+      }
 
       newItem[prop] = newValue;
 
+      // Remember the new value to apply the same mapping if that value is seen again
       valueMap.set(valueKey, newValue);
     }
   }
