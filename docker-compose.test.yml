@@ -68,14 +68,6 @@ services:
       - api_app
       - webhook_app
 
-  migration:
-    extends:
-      file: docker-compose.yml
-      service: migration
-    env_file:
-      - .env
-      - .env.test
-
   stripe_cli:
     extends:
       file: docker-compose.yml
