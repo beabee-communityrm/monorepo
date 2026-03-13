@@ -22,8 +22,16 @@ jobs:
         with:
           stripe_public_key: ${{ secrets.BEABEE_STRIPE_PUBLICKEY }}
           stripe_secret_key: ${{ secrets.BEABEE_STRIPE_SECRETKEY }}
-          stripe_webhook_secret: ${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}
-          stripe_membership_product_id: ${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}
+
+        # Deprecated:
+        # Currently uses the MigrateStripeOptions migration to set the
+        # stripe-webhook-secret option, this should be changed when the E2E
+        # tests are updated
+      - name: Set Stripe environment variables
+        shell: bash
+        run: |
+          sed -i "s|BEABEE_STRIPE_WEBHOOKSECRET=|BEABEE_STRIPE_WEBHOOKSECRET=${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}|" .env.test
+          sed -i "s|BEABEE_STRIPE_MEMBERSHIPPRODUCTID=|BEABEE_STRIPE_MEMBERSHIPPRODUCTID=${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}|" .env.test
 
       - name: Run tests
         run: yarn test

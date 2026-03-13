@@ -1515,10 +1515,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Iscrizione",
-      "recurringLabel": "Donazione ricorrente"
-    },
     "genericError": "Ops! Qualcosa è andato storto ({type})",
     "goBack": "Ti sei perso qualcosa? {back}",
     "goBackButton": "Torna alla schermata precedente",
@@ -1729,6 +1725,11 @@
     "setPassword": "Imposta password",
     "setup": "Configurazione"
   },
+  "paymentLabels": {
+    "membershipProductName": "Iscrizione",
+    "recurringContribution": "Contributo ricorrente",
+    "taxRateDisplayName": "IVA"
+  },
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "Modifica addebito diretto",
@@ -1866,8 +1867,5 @@
     },
     "searchTag": "Con tag...",
     "toggleTag": "Attiva/disattiva tag"
-  },
-  "taxRate": {
-    "invoiceName": "VAT"
   }
 }

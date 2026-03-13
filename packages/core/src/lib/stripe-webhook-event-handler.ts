@@ -11,6 +11,7 @@ import ContactsService from '../services/ContactsService';
 import EmailService from '../services/EmailService';
 import GiftService from '../services/GiftService';
 import PaymentService from '../services/PaymentService';
+import { STRIPE_WEBHOOK_EVENTS } from './stripe';
 import {
   convertInvoiceToPayment,
   getSalesTaxRateObject,
@@ -33,6 +34,11 @@ export class StripeWebhookEventHandler {
    */
   static async handleEvent(event: Stripe.Event): Promise<void> {
     log.info(`Processing webhook ${event.id} ${event.type}`);
+
+    if (!STRIPE_WEBHOOK_EVENTS.includes(event.type as any)) {
+      log.warn(`Unknown event type: ${event.type}`);
+      return;
+    }
 
     switch (event.type) {
       case 'checkout.session.completed':
