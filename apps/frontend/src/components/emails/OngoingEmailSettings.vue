@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-6 flex flex-col md:flex-row md:items-stretch">
+  <div class="flex flex-col md:flex-row md:items-stretch">
     <div class="relative min-w-0 flex-1">
       <div class="md:mr-3">
         <AppLabel
