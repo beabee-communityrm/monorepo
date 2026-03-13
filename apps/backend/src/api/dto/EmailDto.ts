@@ -59,26 +59,10 @@ export class DeleteEmailTemplateParams extends UpdateEmailTemplateParams {}
 export class GetEmailTemplateParams extends UpdateEmailTemplateParams {}
 
 /**
- * DTO for creating custom emails
+ * Shared ongoing email fields for create/update DTOs.
+ * Extracted to avoid duplicating validators across DTOs.
  */
-export class CreateEmailDto {
-  @IsString()
-  name!: string;
-
-  @IsOptional()
-  @IsString()
-  fromName?: string;
-
-  @IsOptional()
-  @IsString()
-  fromEmail?: string;
-
-  @IsString()
-  subject!: string;
-
-  @IsString()
-  body!: string;
-
+class OngoingEmailFieldsDto {
   @IsOptional()
   @IsBoolean()
   isOngoing?: boolean;
@@ -97,9 +81,31 @@ export class CreateEmailDto {
 }
 
 /**
+ * DTO for creating custom emails
+ */
+export class CreateEmailDto extends OngoingEmailFieldsDto {
+  @IsString()
+  name!: string;
+
+  @IsOptional()
+  @IsString()
+  fromName?: string;
+
+  @IsOptional()
+  @IsString()
+  fromEmail?: string;
+
+  @IsString()
+  subject!: string;
+
+  @IsString()
+  body!: string;
+}
+
+/**
  * DTO for updating custom emails
  */
-export class UpdateEmailDto {
+export class UpdateEmailDto extends OngoingEmailFieldsDto {
   @IsOptional()
   @IsString()
   name?: string;
@@ -119,22 +125,6 @@ export class UpdateEmailDto {
   @IsOptional()
   @IsString()
   fromEmail?: string;
-
-  @IsOptional()
-  @IsBoolean()
-  isOngoing?: boolean;
-
-  @ValidateIf((o) => o.isOngoing)
-  @IsIn(['onJoin', 'onLeave'])
-  trigger!: SegmentOngoingEmailTrigger;
-
-  @ValidateIf((o) => o.isOngoing)
-  @IsString()
-  segmentId!: string;
-
-  @IsOptional()
-  @IsBoolean()
-  enabled?: boolean;
 }
 
 /**

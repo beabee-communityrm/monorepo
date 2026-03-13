@@ -31,7 +31,7 @@ meta:
       v-model:direct-send="ongoingDirectSend"
       v-model:enabled="ongoingEnabled"
       :segment-id="email?.segmentId"
-      :segment-name="segmentName"
+      :segment-name="email?.segmentName"
       show-enabled
     />
 
@@ -46,11 +46,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type {
-  GetEmailData,
-  SegmentOngoingEmailTrigger,
-  UpdateEmailData,
-} from '@beabee/beabee-common';
+import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
 import { AppConfirmDialog, PageTitle, addNotification } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
@@ -63,6 +59,8 @@ import OngoingEmailSettings from '#components/emails/OngoingEmailSettings.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
+
+import { useOngoingEmailSettings } from '../../../../../composables/useOngoingEmailSettings';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
@@ -98,12 +96,15 @@ const form = ref<UpdateEmailData>({
   body: '',
 });
 
-// Ongoing email settings
-const isOngoing = ref(false);
-const ongoingTrigger = ref<SegmentOngoingEmailTrigger>('onJoin');
-const ongoingDirectSend = ref(false);
-const ongoingEnabled = ref(true);
-const segmentName = ref<string | undefined>(undefined);
+const {
+  isOngoing,
+  trigger: ongoingTrigger,
+  directSend: ongoingDirectSend,
+  enabled: ongoingEnabled,
+  loadFromEmail,
+  buildUpdatePayload,
+} = useOngoingEmailSettings();
+
 const pageTitle = computed(() => {
   if (!email.value) return t('contacts.emailTemplates.editTitle');
   return t('contacts.emailTemplates.editTitleWithName', {
@@ -118,10 +119,7 @@ async function handleSubmit() {
       name: form.value.name,
       subject: form.value.subject,
       body: form.value.body,
-      isOngoing: isOngoing.value,
-      segmentId: isOngoing.value ? email.value?.segmentId : undefined,
-      trigger: isOngoing.value ? ongoingTrigger.value : undefined,
-      enabled: isOngoing.value ? ongoingEnabled.value : undefined,
+      ...buildUpdatePayload(email.value?.segmentId),
     };
     await client.email.update(emailId.value, payload);
     addNotification({ variant: 'success', title: t('form.saved') });
@@ -161,12 +159,7 @@ async function loadEmail() {
     subject: data.subject,
     body: data.body,
   };
-
-  // Load ongoing email settings
-  isOngoing.value = !!data.isOngoing;
-  ongoingTrigger.value = data.trigger || 'onJoin';
-  ongoingEnabled.value = data.enabled ?? true;
-  segmentName.value = data.segmentName;
+  loadFromEmail(data);
 }
 
 onMounted(async () => {

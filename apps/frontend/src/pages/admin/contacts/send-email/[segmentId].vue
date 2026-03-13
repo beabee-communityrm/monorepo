@@ -50,11 +50,15 @@ import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 
+import { useOngoingEmailSettings } from '../../../../composables/useOngoingEmailSettings';
+
 const PREVIEW_CONTACTS_LIMIT = 50;
 
 const { t } = useI18n();
 const route = useRoute('adminContactsSendEmailSegmentId');
 const router = useRouter();
+
+const segmentId = computed(() => route.params.segmentId);
 
 addBreadcrumb(
   computed(() => [
@@ -66,8 +70,6 @@ addBreadcrumb(
     },
   ])
 );
-
-const segmentId = computed(() => route.params.segmentId);
 
 const backUrl = computed(
   () => `/admin/contacts${segmentId.value ? `?segment=${segmentId.value}` : ''}`
@@ -84,17 +86,14 @@ const segment = ref<GetSegmentData | null>(null);
 const segmentContacts = ref<GetContactData[]>([]);
 const emailData = ref({ name: '', subject: '', body: '' });
 
-// Ongoing email settings
-const isOngoing = ref(false);
-const ongoingTrigger = ref<'onJoin' | 'onLeave'>('onJoin');
-const ongoingDirectSend = ref(false);
-const ongoingEnabled = ref(true);
-
-const shouldSendImmediately = computed(
-  () =>
-    !isOngoing.value ||
-    (ongoingDirectSend.value && ongoingTrigger.value === 'onJoin')
-);
+const {
+  isOngoing,
+  trigger: ongoingTrigger,
+  directSend: ongoingDirectSend,
+  enabled: ongoingEnabled,
+  shouldSendImmediately,
+  buildCreatePayload,
+} = useOngoingEmailSettings();
 
 const submitButtonText = computed(() =>
   shouldSendImmediately.value
@@ -134,8 +133,6 @@ async function handleSubmit() {
 }
 
 async function ensureSavedEmailId(): Promise<string> {
-  // EmailTemplateEditor manages template selection internally,
-  // so we always create a new email here
   const name = emailData.value.name.trim() || defaultNewTemplateName.value;
   if (!name.trim()) {
     addNotification({
@@ -149,9 +146,7 @@ async function ensureSavedEmailId(): Promise<string> {
     name,
     subject: emailData.value.subject,
     body: emailData.value.body,
-    isOngoing: isOngoing.value,
-    segmentId: isOngoing.value ? segmentId.value : undefined,
-    trigger: isOngoing.value ? ongoingTrigger.value : undefined,
+    ...buildCreatePayload(segmentId.value),
   });
   return created.id;
 }

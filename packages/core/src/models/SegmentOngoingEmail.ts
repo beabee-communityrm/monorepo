@@ -31,6 +31,6 @@ export class SegmentOngoingEmail {
   @ManyToOne('Email')
   email!: Email;
 
-  @Column({ default: false })
+  @Column({ default: true })
   enabled!: boolean;
 }
