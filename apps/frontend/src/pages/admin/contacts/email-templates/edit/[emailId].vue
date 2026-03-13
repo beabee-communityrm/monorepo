@@ -24,17 +24,30 @@ meta:
     <p>{{ t('common.loading') }}...</p>
   </div>
 
-  <EmailTemplateEditor
-    v-model:email="form"
-    :submit-button-text="t('actions.save')"
-    :reset-button-text="t('actions.delete')"
-    @submit="handleSubmit"
-    @reset="showDeleteConfirm = true"
-  />
+  <template v-else>
+    <OngoingEmailSettings
+      v-model:is-ongoing="isOngoing"
+      v-model:trigger="ongoingTrigger"
+      v-model:direct-send="ongoingDirectSend"
+      :segment-name="segmentName"
+    />
+
+    <EmailTemplateEditor
+      v-model:email="form"
+      :submit-button-text="t('actions.save')"
+      :reset-button-text="t('actions.delete')"
+      @submit="handleSubmit"
+      @reset="showDeleteConfirm = true"
+    />
+  </template>
 </template>
 
 <script lang="ts" setup>
-import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
+import type {
+  GetEmailData,
+  SegmentOngoingEmailTrigger,
+  UpdateEmailData,
+} from '@beabee/beabee-common';
 import { AppConfirmDialog, PageTitle, addNotification } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
@@ -43,6 +56,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
+import OngoingEmailSettings from '#components/emails/OngoingEmailSettings.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
@@ -80,6 +94,12 @@ const form = ref<UpdateEmailData>({
   subject: '',
   body: '',
 });
+
+// Ongoing email settings
+const isOngoing = ref(false);
+const ongoingTrigger = ref<SegmentOngoingEmailTrigger>('onJoin');
+const ongoingDirectSend = ref(false);
+const segmentName = ref<string | undefined>(undefined);
 const pageTitle = computed(() => {
   if (!email.value) return t('contacts.emailTemplates.editTitle');
   return t('contacts.emailTemplates.editTitleWithName', {
@@ -94,6 +114,9 @@ async function handleSubmit() {
       name: form.value.name,
       subject: form.value.subject,
       body: form.value.body,
+      isOngoing: isOngoing.value,
+      segmentId: isOngoing.value ? email.value?.segmentId : undefined,
+      trigger: isOngoing.value ? ongoingTrigger.value : undefined,
     };
     await client.email.update(emailId.value, payload);
     addNotification({ variant: 'success', title: t('form.saved') });
@@ -133,6 +156,11 @@ async function loadEmail() {
     subject: data.subject,
     body: data.body,
   };
+
+  // Load ongoing email settings
+  isOngoing.value = !!data.isOngoing;
+  ongoingTrigger.value = data.trigger || 'onJoin';
+  segmentName.value = data.segmentName;
 }
 
 onMounted(async () => {

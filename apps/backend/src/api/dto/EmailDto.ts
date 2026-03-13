@@ -160,6 +160,18 @@ export class GetEmailDto {
   @IsBoolean()
   isOngoing?: boolean;
 
+  @IsOptional()
+  @IsString()
+  segmentId?: string;
+
+  @IsOptional()
+  @IsString()
+  segmentName?: string;
+
+  @IsOptional()
+  @IsIn(['onJoin', 'onLeave'])
+  trigger?: SegmentOngoingEmailTrigger;
+
   @IsString()
   id!: string;
 

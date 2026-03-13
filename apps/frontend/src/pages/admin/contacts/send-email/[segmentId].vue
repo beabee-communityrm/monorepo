@@ -13,54 +13,15 @@ meta:
   </div>
 
   <template v-else-if="segment">
-    <div class="flex flex-col gap-6 md:flex-row md:items-stretch">
-      <div class="relative min-w-0 flex-1 md:flex md:min-h-0 md:flex-col">
-        <AppRadioGroup
-          v-model="emailSettingType"
-          :options="[
-            ['one-off', t('adminSettings.email.contactTemplates.oneOff')],
-            ['ongoing', t('adminSettings.email.contactTemplates.ongoing')],
-          ]"
-          variant="link"
-          :label="t('adminSettings.email.contactTemplates.titleEmailType')"
-          :inline="true"
-        />
-      </div>
-      <div
-        v-if="emailSettingType === 'ongoing'"
-        class="relative min-w-0 flex-1 md:flex md:min-h-0 md:flex-col"
-      >
-        <AppRadioGroup
-          v-model="emailSettingTrigger"
-          :options="[
-            ['onJoin', t('adminSettings.email.contactTemplates.contactJoins')],
-            [
-              'onLeave',
-              t('adminSettings.email.contactTemplates.contactLeaves'),
-            ],
-          ]"
-          variant="link"
-          :label="t('adminSettings.email.contactTemplates.titleSendTime')"
-          :inline="true"
-        />
-        <AppCheckbox
-          v-if="emailSettingTrigger === 'onJoin'"
-          v-model="emailSettingDirectSend"
-          class="mt-2"
-          variant="link"
-          :label="t('adminSettings.email.contactTemplates.titleDirectSend')"
-        />
-        <p class="mt-2 text-sm text-body-80">
-          {{
-            t('adminSettings.email.contactTemplates.descriptionOngoingEmails')
-          }}
-        </p>
-      </div>
-    </div>
+    <OngoingEmailSettings
+      v-model:is-ongoing="isOngoing"
+      v-model:trigger="ongoingTrigger"
+      v-model:direct-send="ongoingDirectSend"
+      show-direct-send
+    />
 
     <EmailTemplateEditor
       v-model:email="emailData"
-      class="mt-4"
       :submit-button-text="submitButtonText"
       :reset-button-text="t('actions.goBack')"
       show-select-template
@@ -74,12 +35,7 @@ meta:
 
 <script lang="ts" setup>
 import type { GetContactData, GetSegmentData } from '@beabee/beabee-common';
-import {
-  AppCheckbox,
-  AppRadioGroup,
-  PageTitle,
-  addNotification,
-} from '@beabee/vue';
+import { PageTitle, addNotification } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
@@ -87,6 +43,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
+import OngoingEmailSettings from '#components/emails/OngoingEmailSettings.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
@@ -126,16 +83,14 @@ const segmentContacts = ref<GetContactData[]>([]);
 const emailData = ref({ name: '', subject: '', body: '' });
 
 // Ongoing email settings
-const emailSettingType = ref<'one-off' | 'ongoing'>('one-off');
-const emailSettingTrigger = ref<'onJoin' | 'onLeave'>('onJoin');
-const emailSettingDirectSend = ref(false);
-
-const isOngoing = computed(() => emailSettingType.value === 'ongoing');
+const isOngoing = ref(false);
+const ongoingTrigger = ref<'onJoin' | 'onLeave'>('onJoin');
+const ongoingDirectSend = ref(false);
 
 const shouldSendImmediately = computed(
   () =>
     !isOngoing.value ||
-    (emailSettingDirectSend.value && emailSettingTrigger.value === 'onJoin')
+    (ongoingDirectSend.value && ongoingTrigger.value === 'onJoin')
 );
 
 const submitButtonText = computed(() =>
@@ -193,7 +148,7 @@ async function ensureSavedEmailId(): Promise<string> {
     body: emailData.value.body,
     isOngoing: isOngoing.value,
     segmentId: isOngoing.value ? segmentId.value : undefined,
-    trigger: isOngoing.value ? emailSettingTrigger.value : undefined,
+    trigger: isOngoing.value ? ongoingTrigger.value : undefined,
   });
   return created.id;
 }
