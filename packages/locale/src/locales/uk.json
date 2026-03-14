@@ -180,11 +180,36 @@
       "showingOf": "Показано ключі API від {start} до {end} з {total}"
     },
     "email": {
+      "contactTemplates": {
+        "activeLabel": "",
+        "activePaused": "",
+        "activeRunning": "",
+        "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "",
+        "descriptionOngoingEmails": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "oneOff": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleEmailType": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "З електронної пошти",
       "fromName": "Від імені",
       "label": "Електронна пошта",
       "templates": {
         "description": "Керуйте темою та вмістом електронних листів, що надсилаються програмою. Колір статусу показує, чи електронний лист налаштовано (зелений), чи використовується шаблон за замовчуванням (жовтий), чи не налаштовано, а отже, неактивно (червоний).",
+        "subtitle": "",
         "title": "Налаштування шаблонів електронних листів"
       },
       "text": "Усі електронні листи будуть надіслані з цієї адреси електронної пошти.",
@@ -1096,6 +1121,7 @@
         "text": "Ви впевнені, що хочете видалити цей шаблон листа? Цю дію не можна скасувати.",
         "title": "Видалити шаблон?"
       },
+      "create": "",
       "date": "Створено",
       "edit": "Редагувати",
       "editTitle": "Редагувати шаблон",
@@ -1106,6 +1132,7 @@
       "showingOf": "Показано шаблонів з {start} до {end} з {total}",
       "subject": "Тема",
       "title": "Шаблони листів",
+      "titleNew": "",
       "use": "Використати"
     },
     "noContacts": "Контактів ще не додано",
@@ -1122,7 +1149,7 @@
       "sent": "Лист було надіслано сегменту.",
       "sentTimes": "Надіслано {n} разів",
       "templateLabel": "Шаблон",
-      "templateName": "Назва нового шаблону",
+      "templateName": "Назва шаблону",
       "templateNameRequired": "Введіть назву нового шаблону.",
       "title": "Надіслати лист сегменту"
     },
@@ -1220,6 +1247,7 @@
     },
     "fromEmail": "З електронної пошти",
     "fromName": "Від імені",
+    "isOngoing": "",
     "list": {
       "showingOf": "Показано {start} до {end} електронних листів з {total}"
     },
@@ -1231,6 +1259,11 @@
       "deleted": "Електронну пошту успішно видалено",
       "resetToDefault": "Шаблон успішно скинуто до заводських налаштувань",
       "updated": "Електронну пошту успішно оновлено"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "Статус",
     "tabs": {

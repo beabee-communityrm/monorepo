@@ -180,11 +180,34 @@
       "showingOf": "API Keys {start} bis {end} von {total} werden angezeigt."
     },
     "email": {
+      "contactTemplates": {
+        "activeLabel": "Aktiv",
+        "activePaused": "Automatischer Versand ist pausiert",
+        "activeRunning": "E-Mails werden automatisch versendet",
+        "button": "E-Mail-Vorlagen verwalten",
+        "contactJoins": "Kontakt tritt Segment bei",
+        "contactLeaves": "Kontakt verlässt Segment",
+        "create": "Erstellen",
+        "description": "Hier können Sie E-Mail-Vorlagen für verschiedene Zielgruppen erstellen und individuell anpassen. Sie haben die Möglichkeit, sowohl einmalige als auch wiederkehrende E-Mails zu verwalten.",
+        "descriptionOngoingEmails": "Segmentänderungen werden einmal täglich geprüft. E-Mails werden nur an neu hinzugekommene bzw. ausgetretene Kontakte gesendet – nicht erneut an bestehende.",
+        "directSendDisabled": "Nur zukünftige Kontakte erhalten die E-Mail",
+        "directSendEnabled": "Alle aktuellen Kontakte erhalten die E-Mail sofort",
+        "ongoing": "Wiederkehrend",
+        "ongoingDisabled": "E-Mail wird einmalig an alle aktuellen Kontakte gesendet",
+        "ongoingEnabled": "E-Mail wird automatisch bei Segmentänderungen gesendet",
+        "segment": "Segment",
+        "send": "Senden",
+        "sendSettings": "Versandeinstellungen",
+        "title": "Segment Basierte",
+        "titleDirectSend": "Sofort an bestehende Kontakte senden",
+        "titleSendTime": "Senden, sobald"
+      },
       "fromEmail": "E-Mail-Adresse",
       "fromName": "Name",
       "label": "E-Mail",
       "templates": {
         "description": "Verwalten Sie Betreff und Inhalt der von der Anwendung versendeten E-Mails. Die Statusfarbe zeigt an, ob die E-Mail individuell angepasst (grün), die Standardvorlage verwendet (gelb) oder die E-Mail gerade nicht konfiguriert ist und daher nicht aktiv ist (rot).",
+        "subtitle": "Systemweite",
         "title": "E-Mail-Vorlagen verwalten"
       },
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",
@@ -1094,6 +1117,7 @@
         "text": "Möchten Sie diese E-Mail-Vorlage wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
         "title": "Vorlage löschen?"
       },
+      "create": "Vorlage erstellen",
       "date": "Erstellt",
       "edit": "Bearbeiten",
       "editTitle": "Vorlage bearbeiten",
@@ -1104,6 +1128,7 @@
       "showingOf": "{start} bis {end} von {total} Vorlagen werden angezeigt.",
       "subject": "Betreff",
       "title": "E-Mail-Vorlagen",
+      "titleNew": "Neue Vorlage erstellen",
       "use": "Verwenden"
     },
     "noContacts": "Keine Kontakte",
@@ -1120,7 +1145,7 @@
       "sent": "Die E-Mail wurde an das Segment gesendet.",
       "sentTimes": "{n}-mal verschickt",
       "templateLabel": "Vorlage",
-      "templateName": "Name der neuen Vorlage",
+      "templateName": "Name der Vorlage",
       "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
       "title": "E-Mail an Segment senden"
     },
@@ -1218,6 +1243,7 @@
     },
     "fromEmail": "Absender-E-Mail",
     "fromName": "Absendername",
+    "isOngoing": "Art",
     "list": {
       "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
     },
@@ -1230,6 +1256,11 @@
       "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
       "updated": "E-Mail erfolgreich aktualisiert"
     },
+    "sendType": {
+      "oneOff": "Einmalig",
+      "ongoing": "Wiederkehrend",
+      "paused": "Pausiert"
+    },
     "status": "Status",
     "tabs": {
       "custom": "Benutzerdefinierte E-Mails",
@@ -1238,21 +1269,21 @@
     "templates": {
       "availableFields": "Verfügbare Felder",
       "description": {
-        "cancelled-contribution": "Wird an Mitglieder gesendet, wenn ihr wiederkehrender Beitrag gekündigt wird. Enthält in der Regel Informationen darüber, wann die Mitgliedschaft endet, sowie die Mitglieds-ID. Kann einen Link zu einer Umfrage enthalten.",
-        "cancelled-member": "Wird an Administratoren gesendet, wenn ein Mitglied seinen Beitrag kündigt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen des gekündigten Mitglieds.",
-        "confirm-email": "Wird während des Registrierungsprozesses an neue Nutzer gesendet, um ihre E-Mail-Adresse zu verifizieren. Enthält einen Bestätigungslink, den sie anklicken müssen, um die Registrierung abzuschließen.",
-        "contribution-didnt-start": "Wird an Mitglieder gesendet, wenn ihre Stripe-Abonnementzahlung nicht gestartet werden konnte (z. B. abgelehnte Zahlungsmethode, unzureichende Deckung). Informiert sie darüber, dass ihre Mitgliedschaft aufgrund des Zahlungsfehlers widerrufen wurde.",
-        "email-exists-login": "Wird gesendet, wenn jemand versucht, sich mit einer E-Mail-Adresse zu registrieren, die bereits existiert und zu einem aktiven Mitglied mit gesetztem Passwort gehört. Stellt einen Login-Link bereit, damit sie auf ihr bestehendes Konto zugreifen können.",
-        "email-exists-set-password": "Wird gesendet, wenn jemand versucht, sich mit einer E-Mail-Adresse zu registrieren, die bereits existiert und zu einem aktiven Mitglied gehört, das noch kein Passwort gesetzt hat. Stellt einen Link zum Festlegen eines Passworts bereit.",
-        "manual-to-automatic": "Wird an Mitglieder gesendet, wenn ihre Zahlungsmethode erfolgreich von manuell auf automatisch wiederkehrende Zahlung umgestellt wurde. Bestätigt die erfolgreiche Umstellung.",
-        "new-callout-response": "Wird an Administratoren gesendet, wenn eine neue Antwort auf einen CrowdNewsroom eingereicht wird. Enthält in der Regel eine Benachrichtigung mit den CrowdNewsroom-Details und dem Namen der antwortenden Person.",
-        "new-member": "Wird an Administratoren gesendet, wenn ein neues Mitglied der Community erfolgreich beitritt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen des neuen Mitglieds.",
-        "one-time-donation": "Wird an Nutzer gesendet, nachdem sie einen Einmalbeitrag abgeschlossen haben.",
-        "one-time-donation-failed": "Wird an Nutzer gesendet, wenn ihre Einmalzahlung fehlschlägt.",
-        "reset-device": "Wird gesendet, wenn ein Nutzer das Zurücksetzen seines vertrauenswürdigen Geräts für die Zwei-Faktor-Authentifizierung anfordert. Enthält einen sicheren Link zum Zurücksetzen des Geräts.",
-        "reset-password": "Wird gesendet, wenn ein Nutzer das Zurücksetzen seines Passworts anfordert. Enthält einen sicheren Link zum Zurücksetzen des Passworts.",
-        "setup-account": "Wird an Nutzer gesendet, die einen Einmalbeitrag abgeschlossen haben und noch kein Konto besitzen.",
-        "welcome": "Wird an neue Mitglieder gesendet, nachdem sie den Registrierungsprozess abgeschlossen haben. Diese E-Mail heißt sie in der Community willkommen."
+        "cancelled-contribution": "Wird an Personen mit wiederkehrenden Beitrag gesendet, wenn ihr wiederkehrender Beitrag gekündigt wird. Enthält in der Regel Informationen darüber, wann der Beitrag endet, sowie die Mitglieds-ID. Kann einen Link zu einer Umfrage enthalten.",
+        "cancelled-member": "Wird an Admins gesendet, wenn eine Person den Beitrag kündigt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen der gekündigten Person.",
+        "confirm-email": "Wird während des Registrierungsprozesses an neue Nutzende gesendet, um ihre E-Mail-Adresse zu verifizieren. Enthält einen Bestätigungslink, der angeklickt werden muss, um die Registrierung abzuschließen.",
+        "contribution-didnt-start": "Wird an Personen gesendet, wenn ihre Stripe-Abonnementzahlung nicht gestartet werden konnte (z. B. abgelehnte Zahlungsmethode, unzureichende Deckung). Informiert sie darüber, dass ihr wiederkehrender Beitrag aufgrund des Zahlungsfehlers widerrufen wurde.",
+        "email-exists-login": "Wird gesendet, wenn eine Person versucht, sich mit einer E-Mail-Adresse zu registrieren, die bereits existiert und ein Passwort hat. Stellt einen Login-Link bereit, damit sie auf ihr bestehendes Konto zugreifen können.",
+        "email-exists-set-password": "Wird gesendet, wenn eine Person versucht, sich mit einer E-Mail-Adresse zu registrieren, die bereits existiert und noch kein Passwort gesetzt hat. Stellt einen Link zum Festlegen eines Passworts bereit.",
+        "manual-to-automatic": "Wird an Personen mit wiederkehrenden Beiträgen gesendet, wenn ihre Zahlungsmethode erfolgreich von manuell auf automatisch wiederkehrende Zahlung umgestellt wurde. Bestätigt die erfolgreiche Umstellung.",
+        "new-callout-response": "Wird an Admins gesendet, wenn eine neue Antwort auf einen CrowdNewsroom eingereicht wird. Enthält in der Regel eine Benachrichtigung mit den CrowdNewsroom-Details und dem Namen der antwortenden Person.",
+        "new-member": "Wird an Admins gesendet, wenn eine Person erfolgreich beitritt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen der Person.",
+        "one-time-donation": "Wird an Nutzende gesendet, nachdem sie einen Einmalbeitrag abgeschlossen haben.",
+        "one-time-donation-failed": "Wird an Nutzende gesendet, wenn ihre Einmalzahlung fehlschlägt.",
+        "reset-device": "Wird gesendet, wenn eine Person das Zurücksetzen eines vertrauenswürdigen Geräts für die Zwei-Faktor-Authentifizierung anfordert. Enthält einen sicheren Link zum Zurücksetzen des Geräts.",
+        "reset-password": "Wird gesendet, wenn eine Person das Zurücksetzen eines Passworts anfordert. Enthält einen sicheren Link zum Zurücksetzen des Passworts.",
+        "setup-account": "Wird an Personen gesendet, die einen Einmalbeitrag abgeschlossen haben und noch kein Konto besitzen.",
+        "welcome": "Wird an neue Nutzende gesendet, nachdem sie den Registrierungsprozess abgeschlossen haben. Diese E-Mail heißt sie willkommen."
       },
       "names": {
         "cancelled-contribution": "Beitrag gekündigt",

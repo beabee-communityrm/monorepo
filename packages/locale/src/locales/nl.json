@@ -180,11 +180,36 @@
       "showingOf": "{start} tot {end} weergeven API-sleutels van {total}"
     },
     "email": {
+      "contactTemplates": {
+        "activeLabel": "",
+        "activePaused": "",
+        "activeRunning": "",
+        "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "",
+        "descriptionOngoingEmails": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "oneOff": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleEmailType": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "Van e-mail",
       "fromName": "Van naam",
       "label": "E-mail",
       "templates": {
         "description": "Hier stel je het onderwerp en de tekst in van de e-mails die de app verstuurt. De kleur laat zien: groen = aangepast, geel = standaardtemplate, rood = niet ingesteld (wordt niet verzonden).",
+        "subtitle": "",
         "title": "E-mails instellen"
       },
       "text": "Alle e-mailcommunicatie wordt vanaf dit e-mailadres verzonden.",
@@ -1094,6 +1119,7 @@
         "text": "Weet je zeker dat je dit e-mailsjabloon wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
         "title": "Sjabloon verwijderen?"
       },
+      "create": "",
       "date": "Aangemaakt",
       "edit": "Bewerken",
       "editTitle": "Sjabloon bewerken",
@@ -1104,6 +1130,7 @@
       "showingOf": "Toont sjablonen {start} tot {end} van {total}",
       "subject": "Onderwerp",
       "title": "E-mailsjablonen",
+      "titleNew": "",
       "use": "Gebruiken"
     },
     "noContacts": "Nog geen contacten toegevoegd",
@@ -1120,7 +1147,7 @@
       "sent": "De e-mail is naar het segment verzonden.",
       "sentTimes": "{n} keer verzonden",
       "templateLabel": "Sjabloon",
-      "templateName": "Naam van het nieuwe sjabloon",
+      "templateName": "Naam van het sjabloon",
       "templateNameRequired": "Voer een naam in voor het nieuwe sjabloon.",
       "title": "E-mail verzenden naar segment"
     },
@@ -1218,6 +1245,7 @@
     },
     "fromEmail": "Afzender e-mail",
     "fromName": "Afzendernaam",
+    "isOngoing": "",
     "list": {
       "showingOf": "Toont {start} tot {end} e-mails van {total}"
     },
@@ -1231,6 +1259,11 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "E-mail succesvol bijgewerkt"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "Status",
     "tabs": {

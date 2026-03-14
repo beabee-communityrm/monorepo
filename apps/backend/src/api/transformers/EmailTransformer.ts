@@ -26,6 +26,7 @@ class EmailTransformer extends BaseTransformer<
    */
   @TransformPlainToInstance(GetEmailDto)
   convert(email: Email): GetEmailDto {
+    const ongoingMailing = email.ongoingMailings?.[0];
     return {
       id: email.id,
       ...(email.templateId && { templateId: email.templateId }),
@@ -36,6 +37,13 @@ class EmailTransformer extends BaseTransformer<
       body: email.body,
       date: email.date.toISOString(),
       mailingCount: email.mailingCount || 0,
+      isOngoing: !!ongoingMailing,
+      ...(ongoingMailing && {
+        segmentId: ongoingMailing.segmentId,
+        segmentName: ongoingMailing.segment?.name,
+        trigger: ongoingMailing.trigger,
+        enabled: ongoingMailing.enabled,
+      }),
     };
   }
 
@@ -48,6 +56,12 @@ class EmailTransformer extends BaseTransformer<
       `${fieldPrefix}mailingCount`,
       `${fieldPrefix}mailings`
     );
+
+    // Load ongoing mailings with segment for detail data
+    qb.leftJoinAndSelect(
+      `${fieldPrefix}ongoingMailings`,
+      'ongoingMailing'
+    ).leftJoinAndSelect('ongoingMailing.segment', 'ongoingSegment');
   }
 }
 

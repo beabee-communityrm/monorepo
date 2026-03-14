@@ -180,11 +180,36 @@
       "showingOf": ""
     },
     "email": {
+      "contactTemplates": {
+        "activeLabel": "",
+        "activePaused": "",
+        "activeRunning": "",
+        "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "",
+        "descriptionOngoingEmails": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "oneOff": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleEmailType": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "",
       "fromName": "",
       "label": "Betreff",
       "templates": {
         "description": "Hier kannst du Betreff und Text der E-Mails ändern, die die App verschickt. Die Farbe zeigt dir: grün = angepasst, gelb = Standardvorlage, rot = nicht eingerichtet (wird nicht gesendet).",
+        "subtitle": "",
         "title": "E-Mails einrichten"
       },
       "text": "",
@@ -1094,6 +1119,7 @@
         "text": "",
         "title": ""
       },
+      "create": "",
       "date": "",
       "edit": "",
       "editTitle": "",
@@ -1104,6 +1130,7 @@
       "showingOf": "",
       "subject": "",
       "title": "",
+      "titleNew": "",
       "use": ""
     },
     "noContacts": "",
@@ -1120,7 +1147,7 @@
       "sent": "Die E-Mail wurde an das Segment geschickt.",
       "sentTimes": "{n}-mal geschickt",
       "templateLabel": "Vorlage",
-      "templateName": "Name der neuen Vorlage",
+      "templateName": "Name der Vorlage",
       "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
       "title": "E-Mail an Segment schicken"
     },
@@ -1218,6 +1245,7 @@
     },
     "fromEmail": "",
     "fromName": "",
+    "isOngoing": "",
     "list": {
       "showingOf": ""
     },
@@ -1231,6 +1259,11 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": ""
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "",
     "tabs": {

@@ -180,11 +180,36 @@
       "showingOf": "API Keys {start} bis {end} von {total} werden angezeigt."
     },
     "email": {
+      "contactTemplates": {
+        "activeLabel": "",
+        "activePaused": "",
+        "activeRunning": "",
+        "button": "E-Mail Vorlagen verwalten",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "Hier kannst du E-Mail-Vorlagen für verschiedene Zielgruppen erstellen und anpassen. Du kannst sowohl einmalige als auch wiederkehrende E-Mails verwalten.",
+        "descriptionOngoingEmails": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "oneOff": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "title": "Segment Basierte",
+        "titleDirectSend": "",
+        "titleEmailType": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "E-Mail-Adresse",
       "fromName": "Name",
       "label": "E-Mail",
       "templates": {
         "description": "Hier legst du Betreff und Text der E-Mails fest, die die App rausschickt. Die Farbe zeigt dir: grün = selbst gemacht, gelb = Standard, rot = nicht aktiv (wird nicht gesendet).",
+        "subtitle": "Systemweite",
         "title": "E-Mails anpassen"
       },
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",
@@ -1094,6 +1119,7 @@
         "text": "Möchtest du diese E-Mail-Vorlage wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
         "title": "Vorlage löschen?"
       },
+      "create": "",
       "date": "Erstellt",
       "edit": "Bearbeiten",
       "editTitle": "Vorlage bearbeiten",
@@ -1104,6 +1130,7 @@
       "showingOf": "{start} bis {end} von {total} Vorlagen werden angezeigt.",
       "subject": "Betreff",
       "title": "E-Mail-Vorlagen",
+      "titleNew": "",
       "use": "Verwenden"
     },
     "noContacts": "Keine Kontakte",
@@ -1120,7 +1147,7 @@
       "sent": "Die E-Mail wurde an das Segment gesendet.",
       "sentTimes": "{n}-mal verschickt",
       "templateLabel": "Vorlage",
-      "templateName": "Name der neuen Vorlage",
+      "templateName": "Name der Vorlage",
       "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
       "title": "E-Mail an Segment senden"
     },
@@ -1218,6 +1245,7 @@
     },
     "fromEmail": "Absender-E-Mail",
     "fromName": "Absendername",
+    "isOngoing": "",
     "list": {
       "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
     },
@@ -1231,6 +1259,11 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "E-Mail erfolgreich aktualisiert"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "Status",
     "tabs": {

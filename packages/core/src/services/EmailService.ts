@@ -1,6 +1,7 @@
 import {
   EmailTemplateType,
   type GetEmailTemplateInfoData,
+  type SegmentOngoingEmailTrigger,
 } from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
@@ -20,7 +21,12 @@ import {
 } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import { log as mainLogger } from '#logging';
-import { Contact, Email, EmailMailing } from '#models/index';
+import {
+  Contact,
+  Email,
+  EmailMailing,
+  SegmentOngoingEmail,
+} from '#models/index';
 import {
   MandrillProvider,
   SMTPProvider,
@@ -403,6 +409,7 @@ class EmailService {
   async deleteEmail(id: string): Promise<boolean> {
     const result = await runTransaction(async (em) => {
       await em.getRepository(EmailMailing).delete({ emailId: id });
+      await em.getRepository(SegmentOngoingEmail).delete({ emailId: id });
       return await em.getRepository(Email).delete(id);
     });
 
@@ -503,6 +510,33 @@ class EmailService {
         ...additionalMergeFields,
       },
     };
+  }
+
+  /**
+   * Add or update ongoing email for a segment (upsert).
+   */
+  async addOngoingEmail(
+    segmentId: string,
+    emailId: string,
+    trigger: SegmentOngoingEmailTrigger,
+    enabled = true
+  ): Promise<SegmentOngoingEmail> {
+    const repo = getRepository(SegmentOngoingEmail);
+    const existing = await repo.findOneBy({ emailId });
+    if (existing) {
+      existing.trigger = trigger;
+      existing.enabled = enabled;
+      return repo.save(existing);
+    }
+    return repo.save({ segmentId, emailId, trigger, enabled });
+  }
+
+  /**
+   * Remove all ongoing email entries for a given email.
+   */
+  async removeOngoingEmailByEmailId(emailId: string): Promise<void> {
+    const repo = getRepository(SegmentOngoingEmail);
+    await repo.delete({ emailId });
   }
 }
 

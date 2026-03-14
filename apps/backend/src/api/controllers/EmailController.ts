@@ -113,7 +113,15 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Body() data: CreateEmailDto
   ): Promise<GetEmailDto> {
-    return await EmailTransformer.createOne(auth, data);
+    const { isOngoing, segmentId, trigger, enabled, ...emailData } = data;
+    const email = await EmailTransformer.createOne(auth, emailData);
+    await this.syncOngoingEmail(email.id, {
+      isOngoing,
+      segmentId,
+      trigger,
+      enabled,
+    });
+    return email;
   }
 
   /**
@@ -136,9 +144,11 @@ export class EmailController {
     @Param('id') id: string,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto | undefined> {
-    if (!(await EmailTransformer.updateById(auth, id, data))) {
+    const { isOngoing, segmentId, trigger, enabled, ...emailData } = data;
+    if (!(await EmailTransformer.updateById(auth, id, emailData))) {
       throw new NotFoundError();
     }
+    await this.syncOngoingEmail(id, { isOngoing, segmentId, trigger, enabled });
     return await EmailTransformer.fetchOneById(auth, id);
   }
 
@@ -211,6 +221,38 @@ export class EmailController {
     @Body() data: PreviewEmailDto
   ): Promise<EmailPreviewDto> {
     return await this.getPreview(contact, { ...data, templateId });
+  }
+
+  /**
+   * Add, update, or remove an ongoing email link based on the isOngoing flag.
+   * - true  → upsert the SegmentOngoingEmail row
+   * - false → remove any existing row
+   * - undefined → no change
+   */
+  private async syncOngoingEmail(
+    emailId: string,
+    {
+      isOngoing,
+      segmentId,
+      trigger,
+      enabled,
+    }: {
+      isOngoing: boolean | undefined;
+      segmentId: string | undefined;
+      trigger: CreateEmailDto['trigger'] | undefined;
+      enabled: boolean | undefined;
+    }
+  ): Promise<void> {
+    if (isOngoing && segmentId && trigger) {
+      await EmailService.addOngoingEmail(
+        segmentId,
+        emailId,
+        trigger,
+        enabled ?? true
+      );
+    } else if (isOngoing === false) {
+      await EmailService.removeOngoingEmailByEmailId(emailId);
+    }
   }
 
   /**

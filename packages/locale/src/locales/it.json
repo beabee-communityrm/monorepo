@@ -180,11 +180,36 @@
       "showingOf": "Chiavi API da {start} a {end} su {total}"
     },
     "email": {
+      "contactTemplates": {
+        "activeLabel": "",
+        "activePaused": "",
+        "activeRunning": "",
+        "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "",
+        "descriptionOngoingEmails": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "oneOff": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleEmailType": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "E-mail del mittente",
       "fromName": "Nome del mittente",
       "label": "E-mail",
       "templates": {
         "description": "Gestisci oggetto e corpo delle email inviate dall'applicazione. Il colore dello stato indica se l'email è personalizzata (verde), usa il modello predefinito (giallo) o non è configurata e quindi non attiva (rosso).",
+        "subtitle": "",
         "title": "Imposta i modelli email"
       },
       "text": "Tutte le comunicazioni via e-mail verranno inviate da questo indirizzo e-mail.",
@@ -1094,6 +1119,7 @@
         "text": "Sei sicuro di voler eliminare questo modello email? Questa azione non può essere annullata.",
         "title": "Eliminare il modello?"
       },
+      "create": "",
       "date": "Creato",
       "edit": "Modifica",
       "editTitle": "Modifica modello",
@@ -1104,6 +1130,7 @@
       "showingOf": "Modelli da {start} a {end} su {total}",
       "subject": "Oggetto",
       "title": "Modelli email",
+      "titleNew": "",
       "use": "Usa"
     },
     "noContacts": "Nessun contatto aggiunto ancora",
@@ -1120,7 +1147,7 @@
       "sent": "L'email è stata inviata al segmento.",
       "sentTimes": "Inviato {n} volte",
       "templateLabel": "Modello",
-      "templateName": "Nome del nuovo modello",
+      "templateName": "Nome del modello",
       "templateNameRequired": "Inserisci un nome per il nuovo modello.",
       "title": "Invia email al segmento"
     },
@@ -1218,6 +1245,7 @@
     },
     "fromEmail": "Email mittente",
     "fromName": "Nome mittente",
+    "isOngoing": "",
     "list": {
       "showingOf": "Visualizzazione da {start} a {end} email su {total}"
     },
@@ -1231,6 +1259,11 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "Email aggiornata con successo"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "Stato",
     "tabs": {

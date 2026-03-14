@@ -180,11 +180,34 @@
       "showingOf": "Showing {start} to {end} API keys out of {total}"
     },
     "email": {
+      "contactTemplates": {
+        "activeLabel": "Active",
+        "activePaused": "Automatic delivery is paused",
+        "activeRunning": "Emails are being sent automatically",
+        "button": "Manage email templates",
+        "contactJoins": "Contact joins segment",
+        "contactLeaves": "Contact leaves segment",
+        "create": "Create",
+        "description": "Here you can create and customize email templates for different target groups. You have the option to manage both one-time and recurring emails.",
+        "descriptionOngoingEmails": "Segment changes are checked once daily. Emails are only sent to contacts who have newly joined or left — not again to existing ones.",
+        "directSendDisabled": "Only future contacts will receive the email",
+        "directSendEnabled": "All current contacts will receive the email immediately",
+        "ongoing": "Ongoing",
+        "ongoingDisabled": "Email will be sent once to all current contacts",
+        "ongoingEnabled": "Email will be sent automatically on segment changes",
+        "segment": "Segment",
+        "send": "Send",
+        "sendSettings": "Send settings",
+        "title": "Segment based",
+        "titleDirectSend": "Send immediately to existing contacts",
+        "titleSendTime": "Send when"
+      },
       "fromEmail": "From email",
       "fromName": "From name",
       "label": "Email",
       "templates": {
         "description": "Manage the subject and body of emails sent by the application. The status color shows whether the email is customized (green), using the default template (yellow), or not configured and therefore not active (red).",
+        "subtitle": "System-wide",
         "title": "Set email templates"
       },
       "text": "All email communication will be sent from this email address.",
@@ -1094,6 +1117,7 @@
         "text": "Are you sure you want to delete this email template? This cannot be undone.",
         "title": "Delete template?"
       },
+      "create": "Create template",
       "date": "Created",
       "edit": "Edit",
       "editTitle": "Edit template",
@@ -1104,6 +1128,7 @@
       "showingOf": "Showing {start} to {end} templates out of {total}",
       "subject": "Subject",
       "title": "Email templates",
+      "titleNew": "Create new template",
       "use": "Use"
     },
     "noContacts": "No contacts added yet",
@@ -1120,7 +1145,7 @@
       "sent": "The email has been sent to the segment.",
       "sentTimes": "Sent {n} times",
       "templateLabel": "Template",
-      "templateName": "Name of new template",
+      "templateName": "Name of template",
       "templateNameRequired": "Please enter a name for the new template.",
       "title": "Send email to segment"
     },
@@ -1218,17 +1243,23 @@
     },
     "fromEmail": "From email",
     "fromName": "From name",
+    "isOngoing": "Type",
     "list": {
       "showingOf": "Showing {start} to {end} emails out of {total}"
     },
     "mailingCount": "Mailings sent",
-    "missingDefault": "Not Active",
+    "missingDefault": "Not active",
     "name": "Email name",
     "notifications": {
       "created": "Email created successfully",
       "deleted": "Email deleted successfully",
       "resetToDefault": "Template reset to default successfully",
       "updated": "Email updated successfully"
+    },
+    "sendType": {
+      "oneOff": "One-off",
+      "ongoing": "Ongoing",
+      "paused": "Paused"
     },
     "status": "Status",
     "tabs": {
@@ -1255,25 +1286,25 @@
         "welcome": "Sent to new members after they complete the registration process. This email welcomes them to the community."
       },
       "names": {
-        "cancelled-contribution": "Contribution Cancelled",
-        "cancelled-member": "Admin: Cancelled Member – Notification",
-        "confirm-email": "Confirm Email",
-        "contribution-didnt-start": "Contribution Did Not Start",
-        "email-exists-login": "Email Exists – Log In",
-        "email-exists-set-password": "Email Exists – Set Password",
-        "manual-to-automatic": "Manual Contribution Converted to Automatic",
-        "new-callout-response": "Admin: New CrowdNewsroom – Response Notification",
-        "new-member": "Admin: New Contact – Notification",
-        "one-time-donation": "One-Time Contribution Confirmation",
-        "one-time-donation-failed": "One-Time Contribution Failed",
-        "reset-device": "Reset Device",
-        "reset-password": "Reset Password",
-        "setup-account": "Setup Account",
+        "cancelled-contribution": "Contribution cancelled",
+        "cancelled-member": "Admin: cancelled member – notification",
+        "confirm-email": "Confirm email",
+        "contribution-didnt-start": "Contribution did not start",
+        "email-exists-login": "Email exists – log in",
+        "email-exists-set-password": "Email exists – set password",
+        "manual-to-automatic": "Manual contribution converted to automatic",
+        "new-callout-response": "Admin: new CrowdNewsroom – response notification",
+        "new-member": "Admin: new contact – notification",
+        "one-time-donation": "One-time contribution confirmation",
+        "one-time-donation-failed": "One-time contribution failed",
+        "reset-device": "Reset device",
+        "reset-password": "Reset password",
+        "setup-account": "Setup account",
         "welcome": "Welcome"
       },
       "type": {
-        "admin": "Admin Notifications",
-        "contact": "Contact Emails",
+        "admin": "Admin notifications",
+        "contact": "Contact emails",
         "general": "General"
       }
     },

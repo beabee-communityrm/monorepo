@@ -1,4 +1,7 @@
-import { EmailTemplateType } from '@beabee/beabee-common';
+import {
+  EmailTemplateType,
+  type SegmentOngoingEmailTrigger,
+} from '@beabee/beabee-common';
 import {
   AdminEmailTemplateId,
   ContactEmailTemplateId,
@@ -7,11 +10,13 @@ import {
 } from '@beabee/core/type';
 
 import {
-  Allow,
   IsArray,
+  IsBoolean,
+  IsIn,
   IsObject,
   IsOptional,
   IsString,
+  ValidateIf,
 } from 'class-validator';
 
 import { GetPaginatedQuery } from '#api/dto/BaseDto';
@@ -54,9 +59,31 @@ export class DeleteEmailTemplateParams extends UpdateEmailTemplateParams {}
 export class GetEmailTemplateParams extends UpdateEmailTemplateParams {}
 
 /**
+ * Shared ongoing email fields for create/update DTOs.
+ * Extracted to avoid duplicating validators across DTOs.
+ */
+class OngoingEmailFieldsDto {
+  @IsOptional()
+  @IsBoolean()
+  isOngoing?: boolean;
+
+  @ValidateIf((o) => o.isOngoing)
+  @IsIn(['onJoin', 'onLeave'])
+  trigger!: SegmentOngoingEmailTrigger;
+
+  @ValidateIf((o) => o.isOngoing)
+  @IsString()
+  segmentId!: string;
+
+  @IsOptional()
+  @IsBoolean()
+  enabled?: boolean;
+}
+
+/**
  * DTO for creating custom emails
  */
-export class CreateEmailDto {
+export class CreateEmailDto extends OngoingEmailFieldsDto {
   @IsString()
   name!: string;
 
@@ -78,7 +105,7 @@ export class CreateEmailDto {
 /**
  * DTO for updating custom emails
  */
-export class UpdateEmailDto {
+export class UpdateEmailDto extends OngoingEmailFieldsDto {
   @IsOptional()
   @IsString()
   name?: string;
@@ -109,7 +136,44 @@ export class ListEmailsDto extends GetPaginatedQuery {}
  * DTO for email entity with full metadata
  * Used for CRUD operations on email entities
  */
-export class GetEmailDto extends CreateEmailDto {
+export class GetEmailDto {
+  @IsString()
+  name!: string;
+
+  @IsOptional()
+  @IsString()
+  fromName?: string;
+
+  @IsOptional()
+  @IsString()
+  fromEmail?: string;
+
+  @IsString()
+  subject!: string;
+
+  @IsString()
+  body!: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isOngoing?: boolean;
+
+  @IsOptional()
+  @IsString()
+  segmentId?: string;
+
+  @IsOptional()
+  @IsString()
+  segmentName?: string;
+
+  @IsOptional()
+  @IsIn(['onJoin', 'onLeave'])
+  trigger?: SegmentOngoingEmailTrigger;
+
+  @IsOptional()
+  @IsBoolean()
+  enabled?: boolean;
+
   @IsString()
   id!: string;
 

@@ -6,7 +6,13 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="t('contacts.emailTemplates.title')" border />
+  <PageTitle :title="t('contacts.emailTemplates.title')" border>
+    <div class="flex-0 ml-3 hidden md:block">
+      <AppButton to="/admin/contacts/email-templates/new">
+        {{ t('contacts.emailTemplates.create') }}
+      </AppButton>
+    </div>
+  </PageTitle>
 
   <AppPaginatedTable
     v-model:query="currentPaginatedQuery"
@@ -35,6 +41,15 @@ meta:
     <template #value-mailingCount="{ value }">
       {{ value ?? 0 }}
     </template>
+    <template #value-isOngoing="{ item }">
+      {{
+        item.isOngoing
+          ? item.enabled === false
+            ? t('emails.sendType.paused')
+            : t('emails.sendType.ongoing')
+          : t('emails.sendType.oneOff')
+      }}
+    </template>
     <template #empty>
       <p>{{ t('contacts.emailTemplates.empty') }}</p>
     </template>
@@ -43,7 +58,7 @@ meta:
 
 <script lang="ts" setup>
 import type { GetEmailData, Paginated } from '@beabee/beabee-common';
-import { type Header, PageTitle, formatLocale } from '@beabee/vue';
+import { AppButton, type Header, PageTitle, formatLocale } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
@@ -84,6 +99,11 @@ const headers = computed<Header[]>(() => [
   {
     value: 'mailingCount',
     text: t('emails.mailingCount'),
+    align: 'right',
+  },
+  {
+    value: 'isOngoing',
+    text: t('emails.isOngoing'),
     align: 'right',
   },
 ]);

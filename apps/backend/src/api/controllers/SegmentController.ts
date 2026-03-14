@@ -4,10 +4,10 @@ import {
   Email,
   EmailMailing,
   Segment,
-  SegmentContact,
   SegmentOngoingEmail,
 } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
+import SegmentService from '@beabee/core/services/SegmentService';
 import { AuthInfo } from '@beabee/core/type';
 
 import {
@@ -98,7 +98,7 @@ export class SegmentController {
   @Delete('/:id')
   @OnUndefined(204)
   async deleteSegment(@Params() { id }: UUIDParams): Promise<void> {
-    await getRepository(SegmentContact).delete({ segment: { id } });
+    await SegmentService.removeAllContactsFromSegment(id);
     await getRepository(SegmentOngoingEmail).delete({ segment: { id } });
     const result = await getRepository(Segment).delete(id);
     if (result.affected === 0) {
@@ -151,6 +151,13 @@ export class SegmentController {
         data.body
       );
     }
+
+    // Track sent contacts in segment_contact so that process-segments
+    // won't treat them as "new" and re-send ongoing emails.
+    await SegmentService.addContactsToSegment(
+      id,
+      contactList.map((c) => c.id)
+    );
   }
 
   /**

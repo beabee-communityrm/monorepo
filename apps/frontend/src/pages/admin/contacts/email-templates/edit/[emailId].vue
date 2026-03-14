@@ -18,64 +18,49 @@ meta:
     <p>{{ t('contacts.emailTemplates.confirmDelete.text') }}</p>
   </AppConfirmDialog>
 
-  <PageTitle :title="pageTitle" border>
-    <router-link :to="LIST_ROUTE">{{ t('actions.back') }}</router-link>
-  </PageTitle>
+  <PageTitle :title="pageTitle" border />
 
   <div v-if="loading">
     <p>{{ t('common.loading') }}...</p>
   </div>
 
-  <AppApiForm
-    v-else-if="email"
-    :button-text="t('actions.save')"
-    class="flex flex-col gap-6"
-    inline-error
-    @submit="handleSubmit"
-  >
-    <AppInput
-      v-model="form.name"
-      :label="t('contacts.emailTemplates.name')"
-      required
+  <template v-else>
+    <OngoingEmailSettings
+      v-model:is-ongoing="isOngoing"
+      v-model:trigger="ongoingTrigger"
+      v-model:direct-send="ongoingDirectSend"
+      v-model:enabled="ongoingEnabled"
+      :segment-id="email?.segmentId"
+      :segment-name="email?.segmentName"
+      show-enabled
     />
 
-    <EmailEditor v-model:subject="form.subject" v-model:content="form.body" />
-
-    <template #buttons>
-      <div class="order-first">
-        <AppButton
-          type="button"
-          variant="dangerOutlined"
-          :icon="faTrash"
-          @click="showDeleteConfirm = true"
-        >
-          {{ t('actions.delete') }}
-        </AppButton>
-      </div>
-    </template>
-  </AppApiForm>
+    <EmailTemplateEditor
+      v-model:email="form"
+      :submit-button-text="t('actions.save')"
+      :reset-button-text="t('actions.delete')"
+      @submit="handleSubmit"
+      @reset="showDeleteConfirm = true"
+    />
+  </template>
 </template>
 
 <script lang="ts" setup>
 import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
-import {
-  AppButton,
-  AppConfirmDialog,
-  AppInput,
-  PageTitle,
-  addNotification,
-} from '@beabee/vue';
+import { AppConfirmDialog, PageTitle, addNotification } from '@beabee/vue';
 
-import { faTrash, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-import EmailEditor from '#components/EmailEditor.vue';
-import AppApiForm from '#components/forms/AppApiForm.vue';
+import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
+import OngoingEmailSettings from '#components/emails/OngoingEmailSettings.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
+
+import { useOngoingEmailSettings } from '../../../../../composables/useOngoingEmailSettings';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
@@ -111,6 +96,15 @@ const form = ref<UpdateEmailData>({
   body: '',
 });
 
+const {
+  isOngoing,
+  trigger: ongoingTrigger,
+  directSend: ongoingDirectSend,
+  enabled: ongoingEnabled,
+  loadFromEmail,
+  buildUpdatePayload,
+} = useOngoingEmailSettings();
+
 const pageTitle = computed(() => {
   if (!email.value) return t('contacts.emailTemplates.editTitle');
   return t('contacts.emailTemplates.editTitleWithName', {
@@ -125,6 +119,7 @@ async function handleSubmit() {
       name: form.value.name,
       subject: form.value.subject,
       body: form.value.body,
+      ...buildUpdatePayload(email.value?.segmentId),
     };
     await client.email.update(emailId.value, payload);
     addNotification({ variant: 'success', title: t('form.saved') });
@@ -164,6 +159,7 @@ async function loadEmail() {
     subject: data.subject,
     body: data.body,
   };
+  loadFromEmail(data);
 }
 
 onMounted(async () => {

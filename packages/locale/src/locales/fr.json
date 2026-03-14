@@ -180,11 +180,36 @@
       "showingOf": "Affichage de {start} à {end} clés API sur {total}"
     },
     "email": {
+      "contactTemplates": {
+        "activeLabel": "",
+        "activePaused": "",
+        "activeRunning": "",
+        "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "",
+        "descriptionOngoingEmails": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "oneOff": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleEmailType": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "À partir de l'e-mail",
       "fromName": "À partir du nom",
       "label": "E-mail",
       "templates": {
         "description": "Ici, tu peux personnaliser l’objet et le contenu des emails envoyés par l’appli. La couleur t’indique : vert = personnalisé, jaune = modèle par défaut, rouge = non configuré (non envoyé).",
+        "subtitle": "",
         "title": "Configurer les emails"
       },
       "text": "Toute communication par e-mail sera envoyée à partir de cette adresse e-mail.",
@@ -1098,6 +1123,7 @@
         "text": "Êtes-vous sûr de vouloir supprimer ce modèle d'e-mail ? Cette action est irréversible.",
         "title": "Supprimer le modèle ?"
       },
+      "create": "",
       "date": "Créé",
       "edit": "Modifier",
       "editTitle": "Modifier le modèle",
@@ -1108,6 +1134,7 @@
       "showingOf": "Affichage des modèles {start} à {end} sur {total}",
       "subject": "Objet",
       "title": "Modèles d'e-mail",
+      "titleNew": "",
       "use": "Utiliser"
     },
     "noContacts": "Aucun contact ajouté pour le moment",
@@ -1124,7 +1151,7 @@
       "sent": "L'e-mail a été envoyé au segment.",
       "sentTimes": "Envoyé {n} fois",
       "templateLabel": "Modèle",
-      "templateName": "Nom du nouveau modèle",
+      "templateName": "Nom du modèle",
       "templateNameRequired": "Veuillez saisir un nom pour le nouveau modèle.",
       "title": "Envoyer un e-mail au segment"
     },
@@ -1222,6 +1249,7 @@
     },
     "fromEmail": "E-mail de l'expéditeur",
     "fromName": "Nom de l'expéditeur",
+    "isOngoing": "",
     "list": {
       "showingOf": "Affichage de {start} à {end} e-mails sur {total}"
     },
@@ -1235,6 +1263,11 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "E-mail mis à jour avec succès"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "Statut",
     "tabs": {

@@ -181,11 +181,36 @@
       "showingOf": ""
     },
     "email": {
+      "contactTemplates": {
+        "activeLabel": "",
+        "activePaused": "",
+        "activeRunning": "",
+        "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "",
+        "descriptionOngoingEmails": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "oneOff": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleEmailType": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "",
       "fromName": "",
       "label": "",
       "templates": {
         "description": "",
+        "subtitle": "",
         "title": ""
       },
       "text": "",
@@ -1095,6 +1120,7 @@
         "text": "Вы уверены, что хотите удалить этот шаблон письма? Это действие нельзя отменить.",
         "title": "Удалить шаблон?"
       },
+      "create": "",
       "date": "Создано",
       "edit": "Изменить",
       "editTitle": "Редактировать шаблон",
@@ -1105,6 +1131,7 @@
       "showingOf": "Показано шаблонов {start} – {end} из {total}",
       "subject": "Тема",
       "title": "Шаблоны писем",
+      "titleNew": "",
       "use": "Использовать"
     },
     "noContacts": "",
@@ -1121,7 +1148,7 @@
       "sent": "Письмо было отправлено сегменту.",
       "sentTimes": "Отправлено {n} раз",
       "templateLabel": "Шаблон",
-      "templateName": "Название нового шаблона",
+      "templateName": "Название шаблона",
       "templateNameRequired": "Введите название нового шаблона.",
       "title": "Отправить письмо сегменту"
     },
@@ -1219,6 +1246,7 @@
     },
     "fromEmail": "Email отправителя",
     "fromName": "Имя отправителя",
+    "isOngoing": "",
     "list": {
       "showingOf": "Показано {start} - {end} писем из {total}"
     },
@@ -1232,6 +1260,11 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "Письмо успешно обновлено"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "Статус",
     "tabs": {

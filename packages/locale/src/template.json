@@ -180,11 +180,34 @@
       "showingOf": ""
     },
     "email": {
+      "contactTemplates": {
+        "activeLabel": "",
+        "activePaused": "",
+        "activeRunning": "",
+        "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "",
+        "descriptionOngoingEmails": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "",
       "fromName": "",
       "label": "",
       "templates": {
         "description": "",
+        "subtitle": "",
         "title": ""
       },
       "text": "",
@@ -1094,6 +1117,7 @@
         "text": "",
         "title": ""
       },
+      "create": "",
       "date": "",
       "edit": "",
       "editTitle": "",
@@ -1104,6 +1128,7 @@
       "showingOf": "",
       "subject": "",
       "title": "",
+      "titleNew": "",
       "use": ""
     },
     "noContacts": "",
@@ -1218,6 +1243,7 @@
     },
     "fromEmail": "",
     "fromName": "",
+    "isOngoing": "",
     "list": {
       "showingOf": ""
     },
@@ -1229,6 +1255,11 @@
       "deleted": "",
       "resetToDefault": "",
       "updated": ""
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "",
     "tabs": {

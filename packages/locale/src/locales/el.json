@@ -180,11 +180,36 @@
       "showingOf": ""
     },
     "email": {
+      "contactTemplates": {
+        "activeLabel": "",
+        "activePaused": "",
+        "activeRunning": "",
+        "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "",
+        "descriptionOngoingEmails": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "oneOff": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleEmailType": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "",
       "fromName": "",
       "label": "",
       "templates": {
         "description": "",
+        "subtitle": "",
         "title": ""
       },
       "text": "",
@@ -1094,6 +1119,7 @@
         "text": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το πρότυπο email; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
         "title": "Διαγραφή προτύπου;"
       },
+      "create": "",
       "date": "Δημιουργήθηκε",
       "edit": "Επεξεργασία",
       "editTitle": "Επεξεργασία προτύπου",
@@ -1104,6 +1130,7 @@
       "showingOf": "Εμφάνιση προτύπων {start} έως {end} από {total}",
       "subject": "Θέμα",
       "title": "Πρότυπα email",
+      "titleNew": "",
       "use": "Χρήση"
     },
     "noContacts": "",
@@ -1120,7 +1147,7 @@
       "sent": "Το email στάλθηκε στο τμήμα.",
       "sentTimes": "Στάλθηκε {n} φορές",
       "templateLabel": "Πρότυπο",
-      "templateName": "Όνομα νέου προτύπου",
+      "templateName": "Όνομα προτύπου",
       "templateNameRequired": "Εισάγετε όνομα για το νέο πρότυπο.",
       "title": "Αποστολή email στο τμήμα"
     },
@@ -1218,6 +1245,7 @@
     },
     "fromEmail": "Email αποστολέα",
     "fromName": "Όνομα αποστολέα",
+    "isOngoing": "",
     "list": {
       "showingOf": "Εμφάνιση {start} έως {end} email από {total}"
     },
@@ -1231,6 +1259,11 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "Το email ενημερώθηκε επιτυχώς"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "Κατάσταση",
     "tabs": {
