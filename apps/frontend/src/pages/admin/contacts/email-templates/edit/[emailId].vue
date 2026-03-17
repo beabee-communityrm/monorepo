@@ -43,6 +43,32 @@ meta:
   </div>
 
   <template v-else>
+    <AppNotification
+      v-if="email"
+      variant="info"
+      class="mb-4"
+      :icon="email.isOngoing ? faRotate : faEnvelope"
+      :title="
+        t(`adminSettings.email.contactTemplates.${editSummaryKey}`, {
+          segment: email.segmentName,
+        })
+      "
+    >
+      <template v-if="email.isOngoing && email.segmentId" #title>
+        <i18n-t
+          :keypath="`adminSettings.email.contactTemplates.${editSummaryKey}`"
+        >
+          <template #segment>
+            <router-link
+              :to="`/admin/contacts?segment=${email.segmentId}`"
+              class="font-bold text-link"
+            >
+              {{ email.segmentName }}
+            </router-link>
+          </template>
+        </i18n-t>
+      </template>
+    </AppNotification>
     <EmailTemplateEditor
       v-model:email="form"
       :submit-button-text="t('actions.save')"
@@ -51,38 +77,46 @@ meta:
       @reset="showDeleteConfirm = true"
     />
 
-    <div v-if="email" class="mt-6 text-sm text-body-80">
-      <template v-if="email.isOngoing">
-        <p>
-          {{ t('adminSettings.email.contactTemplates.segment') }}:
-          <router-link
-            v-if="email.segmentId"
-            :to="`/admin/contacts?segment=${email.segmentId}`"
-            class="font-bold text-link"
-          >
-            {{ email.segmentName }}
-          </router-link>
-        </p>
-        <p class="mt-1">
-          {{ t('adminSettings.email.contactTemplates.titleSendTime') }}:
-          <strong>
-            {{
-              email.trigger === 'onLeave'
-                ? t('adminSettings.email.contactTemplates.contactLeaves')
-                : t('adminSettings.email.contactTemplates.contactJoins')
-            }}
-          </strong>
-        </p>
-      </template>
-      <p :class="{ 'mt-1': email.isOngoing }">
-        {{ t('emails.mailingCount') }}:
-        <strong>{{ email.mailingCount ?? 0 }}</strong>
-      </p>
-      <p class="mt-1">
-        {{ t('contacts.emailTemplates.date') }}:
-        <strong>{{ formatLocale(new Date(email.date), 'PP') }}</strong>
-      </p>
-    </div>
+    <AppInfoList v-if="email" class="mt-6">
+      <AppInfoListItem
+        :name="t('emails.isOngoing')"
+        :value="
+          !email.isOngoing
+            ? t('emails.sendType.oneOff')
+            : ongoingEnabled
+              ? t('emails.sendType.ongoing')
+              : t('emails.sendType.paused')
+        "
+      />
+      <AppInfoListItem
+        v-if="email.isOngoing && email.segmentId"
+        :name="t('adminSettings.email.contactTemplates.segment')"
+      >
+        <router-link
+          :to="`/admin/contacts?segment=${email.segmentId}`"
+          class="text-link"
+        >
+          {{ email.segmentName }}
+        </router-link>
+      </AppInfoListItem>
+      <AppInfoListItem
+        v-if="email.isOngoing"
+        :name="t('adminSettings.email.contactTemplates.titleSendTime')"
+        :value="
+          email.trigger === 'onLeave'
+            ? t('adminSettings.email.contactTemplates.contactLeaves')
+            : t('adminSettings.email.contactTemplates.contactJoins')
+        "
+      />
+      <AppInfoListItem
+        :name="t('emails.mailingCount')"
+        :value="email.mailingCount ?? 0"
+      />
+      <AppInfoListItem
+        :name="t('contacts.emailTemplates.date')"
+        :value="formatLocale(new Date(email.date), 'PP')"
+      />
+    </AppInfoList>
   </template>
 </template>
 
@@ -90,13 +124,20 @@ meta:
 import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
 import {
   AppConfirmDialog,
+  AppInfoList,
+  AppInfoListItem,
+  AppNotification,
   AppToggleSwitch,
   PageTitle,
   addNotification,
   formatLocale,
 } from '@beabee/vue';
 
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEnvelope,
+  faRotate,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -143,10 +184,15 @@ const form = ref<UpdateEmailData>({
 });
 
 const {
+  summaryKey,
   enabled: ongoingEnabled,
   loadFromEmail,
   buildUpdatePayload,
 } = useOngoingEmailSettings();
+
+const editSummaryKey = computed(() =>
+  summaryKey.value === 'summaryOnceOnly' ? 'summaryTemplate' : summaryKey.value
+);
 
 const pageTitle = computed(() => {
   if (!email.value) return t('contacts.emailTemplates.editTitle');

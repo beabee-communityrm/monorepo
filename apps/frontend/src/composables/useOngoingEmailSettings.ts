@@ -21,6 +21,15 @@ export function useOngoingEmailSettings() {
     () => !isOngoing.value || (directSend.value && trigger.value === 'onJoin')
   );
 
+  /** Returns the i18n key suffix for the current settings summary. */
+  const summaryKey = computed(() => {
+    if (!isOngoing.value) return 'summaryOnceOnly';
+    if (!enabled.value) return 'summaryOngoingPaused';
+    if (trigger.value === 'onLeave') return 'summaryOngoingLeave';
+    if (directSend.value) return 'summaryOngoingJoinDirectSend';
+    return 'summaryOngoingJoin';
+  });
+
   /** Populate state from a loaded email (edit page). */
   function loadFromEmail(data: GetEmailData) {
     isOngoing.value = !!data.isOngoing;
@@ -60,6 +69,7 @@ export function useOngoingEmailSettings() {
     trigger,
     directSend,
     enabled,
+    summaryKey,
     shouldSendImmediately,
     loadFromEmail,
     buildCreatePayload,

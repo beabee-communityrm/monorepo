@@ -198,6 +198,12 @@
         "segment": "",
         "send": "",
         "sendSettings": "",
+        "summaryOnceOnly": "",
+        "summaryOngoingJoin": "",
+        "summaryOngoingJoinDirectSend": "",
+        "summaryOngoingLeave": "",
+        "summaryOngoingPaused": "",
+        "summaryTemplate": "",
         "title": "",
         "titleDirectSend": "",
         "titleSendTime": ""

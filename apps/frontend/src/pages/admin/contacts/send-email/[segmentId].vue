@@ -13,6 +13,32 @@ meta:
   </div>
 
   <template v-else-if="segment">
+    <AppNotification
+      variant="info"
+      class="mb-4"
+      :icon="isOngoing ? faRotate : faEnvelope"
+      :title="
+        t(`adminSettings.email.contactTemplates.${summaryKey}`, {
+          segment: segment.name,
+        })
+      "
+    >
+      <template v-if="isOngoing" #title>
+        <i18n-t
+          :keypath="`adminSettings.email.contactTemplates.${summaryKey}`"
+        >
+          <template #segment>
+            <router-link
+              :to="`/admin/contacts?segment=${segmentId}`"
+              class="font-bold text-link"
+            >
+              {{ segment.name }}
+            </router-link>
+          </template>
+        </i18n-t>
+      </template>
+    </AppNotification>
+
     <OngoingEmailSettings
       v-model:is-ongoing="isOngoing"
       v-model:trigger="ongoingTrigger"
@@ -36,9 +62,9 @@ meta:
 
 <script lang="ts" setup>
 import type { GetContactData, GetSegmentData } from '@beabee/beabee-common';
-import { PageTitle, addNotification } from '@beabee/vue';
+import { AppNotification, PageTitle, addNotification } from '@beabee/vue';
 
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faRotate, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -89,6 +115,7 @@ const {
   isOngoing,
   trigger: ongoingTrigger,
   directSend: ongoingDirectSend,
+  summaryKey,
   shouldSendImmediately,
   buildCreatePayload,
 } = useOngoingEmailSettings();

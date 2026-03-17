@@ -198,6 +198,12 @@
         "segment": "Segment",
         "send": "Send",
         "sendSettings": "Send settings",
+        "summaryOnceOnly": "This email will be sent once to all current contacts in the segment.",
+        "summaryOngoingJoin": "This email is sent daily to contacts who have newly joined the segment \"{segment}\".",
+        "summaryOngoingJoinDirectSend": "This email is sent daily to new contacts in the segment \"{segment}\". In addition, all existing contacts will receive it immediately.",
+        "summaryOngoingLeave": "This email is sent daily to contacts who have left the segment \"{segment}\".",
+        "summaryOngoingPaused": "This recurring email for the segment \"{segment}\" is currently paused and not being sent.",
+        "summaryTemplate": "This email is not sent automatically and can be used as a template for new emails to segments.",
         "title": "Segment based",
         "titleDirectSend": "Send immediately to existing contacts",
         "titleSendTime": "Send when"
