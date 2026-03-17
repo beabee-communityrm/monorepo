@@ -121,11 +121,10 @@ import { useRoute, useRouter } from 'vue-router';
 
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
 import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
+import { useOngoingEmailSettings } from '#composables/useOngoingEmailSettings';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
-
-import { useOngoingEmailSettings } from '#composables/useOngoingEmailSettings';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 

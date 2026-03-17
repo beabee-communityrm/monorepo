@@ -9,9 +9,7 @@
     "
   >
     <template v-if="isOngoing && segmentId" #title>
-      <i18n-t
-        :keypath="`adminSettings.email.contactTemplates.${summaryKey}`"
-      >
+      <i18n-t :keypath="`adminSettings.email.contactTemplates.${summaryKey}`">
         <template #segment>
           <router-link
             :to="`/admin/contacts?segment=${segmentId}`"
@@ -27,6 +25,7 @@
 
 <script lang="ts" setup>
 import { AppNotification } from '@beabee/vue';
+
 import { faEnvelope, faRotate } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 

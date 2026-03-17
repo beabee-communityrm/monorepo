@@ -43,9 +43,7 @@
             <AppToggleField
               v-model="directSend"
               variant="link"
-              :label="
-                t('adminSettings.email.contactTemplates.titleDirectSend')
-              "
+              :label="t('adminSettings.email.contactTemplates.titleDirectSend')"
               :disabled-description="
                 t('adminSettings.email.contactTemplates.directSendDisabled')
               "
