@@ -26,18 +26,6 @@
             v-if="isOngoing"
             class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
           >
-            <div v-if="segmentName" class="mb-4 text-sm text-body-80">
-              {{ t('adminSettings.email.contactTemplates.segment') }}:
-              <router-link
-                v-if="segmentId"
-                :to="`/admin/contacts?segment=${segmentId}`"
-                class="font-bold text-link"
-              >
-                {{ segmentName }}
-              </router-link>
-              <strong v-else>{{ segmentName }}</strong>
-            </div>
-
             <AppRadioGroup
               v-model="trigger"
               :options="[
@@ -69,21 +57,6 @@
                 "
                 :enabled-description="
                   t('adminSettings.email.contactTemplates.directSendEnabled')
-                "
-              />
-            </div>
-
-            <div v-if="showEnabled" class="mt-4">
-              <AppToggleField
-                v-model="enabled"
-                variant="link"
-                :disabled="!isOngoing"
-                :label="t('adminSettings.email.contactTemplates.activeLabel')"
-                :disabled-description="
-                  t('adminSettings.email.contactTemplates.activePaused')
-                "
-                :enabled-description="
-                  t('adminSettings.email.contactTemplates.activeRunning')
                 "
               />
             </div>
@@ -121,14 +94,10 @@ const props = withDefaults(
   defineProps<{
     segmentId?: string;
     showDirectSend?: boolean;
-    showEnabled?: boolean;
-    segmentName?: string;
   }>(),
   {
     segmentId: undefined,
     showDirectSend: false,
-    showEnabled: false,
-    segmentName: undefined,
   }
 );
 
@@ -141,5 +110,4 @@ const trigger = defineModel<SegmentOngoingEmailTrigger>('trigger', {
   required: true,
 });
 const directSend = defineModel<boolean>('directSend', { required: true });
-const enabled = defineModel<boolean>('enabled', { required: true });
 </script>

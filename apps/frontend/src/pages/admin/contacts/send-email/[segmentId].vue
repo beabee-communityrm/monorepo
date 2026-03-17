@@ -17,7 +17,6 @@ meta:
       v-model:is-ongoing="isOngoing"
       v-model:trigger="ongoingTrigger"
       v-model:direct-send="ongoingDirectSend"
-      v-model:enabled="ongoingEnabled"
       :segment-id="segmentId"
       show-direct-send
     />
@@ -90,7 +89,6 @@ const {
   isOngoing,
   trigger: ongoingTrigger,
   directSend: ongoingDirectSend,
-  enabled: ongoingEnabled,
   shouldSendImmediately,
   buildCreatePayload,
 } = useOngoingEmailSettings();

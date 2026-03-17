@@ -18,23 +18,31 @@ meta:
     <p>{{ t('contacts.emailTemplates.confirmDelete.text') }}</p>
   </AppConfirmDialog>
 
-  <PageTitle :title="pageTitle" border />
+  <PageTitle :title="pageTitle" border>
+    <div
+      v-if="email?.isOngoing"
+      class="flex flex-1 items-center justify-between gap-2 py-2 md:flex-none md:justify-end md:py-0"
+    >
+      <span class="text-sm text-body-80">
+        {{
+          ongoingEnabled
+            ? t('adminSettings.email.contactTemplates.activeRunning')
+            : t('adminSettings.email.contactTemplates.activePaused')
+        }}
+      </span>
+      <AppToggleSwitch
+        :model-value="ongoingEnabled"
+        variant="link"
+        @update:model-value="handleToggleEnabled"
+      />
+    </div>
+  </PageTitle>
 
   <div v-if="loading">
     <p>{{ t('common.loading') }}...</p>
   </div>
 
   <template v-else>
-    <OngoingEmailSettings
-      v-model:is-ongoing="isOngoing"
-      v-model:trigger="ongoingTrigger"
-      v-model:direct-send="ongoingDirectSend"
-      v-model:enabled="ongoingEnabled"
-      :segment-id="email?.segmentId"
-      :segment-name="email?.segmentName"
-      show-enabled
-    />
-
     <EmailTemplateEditor
       v-model:email="form"
       :submit-button-text="t('actions.save')"
@@ -42,12 +50,51 @@ meta:
       @submit="handleSubmit"
       @reset="showDeleteConfirm = true"
     />
+
+    <div v-if="email" class="mt-6 text-sm text-body-80">
+      <template v-if="email.isOngoing">
+        <p>
+          {{ t('adminSettings.email.contactTemplates.segment') }}:
+          <router-link
+            v-if="email.segmentId"
+            :to="`/admin/contacts?segment=${email.segmentId}`"
+            class="font-bold text-link"
+          >
+            {{ email.segmentName }}
+          </router-link>
+        </p>
+        <p class="mt-1">
+          {{ t('adminSettings.email.contactTemplates.titleSendTime') }}:
+          <strong>
+            {{
+              email.trigger === 'onLeave'
+                ? t('adminSettings.email.contactTemplates.contactLeaves')
+                : t('adminSettings.email.contactTemplates.contactJoins')
+            }}
+          </strong>
+        </p>
+      </template>
+      <p :class="{ 'mt-1': email.isOngoing }">
+        {{ t('emails.mailingCount') }}:
+        <strong>{{ email.mailingCount ?? 0 }}</strong>
+      </p>
+      <p class="mt-1">
+        {{ t('contacts.emailTemplates.date') }}:
+        <strong>{{ formatLocale(new Date(email.date), 'PP') }}</strong>
+      </p>
+    </div>
   </template>
 </template>
 
 <script lang="ts" setup>
 import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
-import { AppConfirmDialog, PageTitle, addNotification } from '@beabee/vue';
+import {
+  AppConfirmDialog,
+  AppToggleSwitch,
+  PageTitle,
+  addNotification,
+  formatLocale,
+} from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
@@ -55,7 +102,6 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
-import OngoingEmailSettings from '#components/emails/OngoingEmailSettings.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
@@ -97,9 +143,6 @@ const form = ref<UpdateEmailData>({
 });
 
 const {
-  isOngoing,
-  trigger: ongoingTrigger,
-  directSend: ongoingDirectSend,
   enabled: ongoingEnabled,
   loadFromEmail,
   buildUpdatePayload,
@@ -111,6 +154,27 @@ const pageTitle = computed(() => {
     name: email.value.name,
   });
 });
+
+async function handleToggleEnabled(value: boolean) {
+  if (!emailId.value) return;
+  const previous = ongoingEnabled.value;
+  ongoingEnabled.value = value;
+  try {
+    await client.email.update(emailId.value, {
+      subject: form.value.subject,
+      body: form.value.body,
+      ...buildUpdatePayload(email.value?.segmentId),
+      enabled: value,
+    });
+    addNotification({ variant: 'success', title: t('form.saved') });
+  } catch (err) {
+    ongoingEnabled.value = previous;
+    addNotification({
+      variant: 'error',
+      title: extractErrorText(err),
+    });
+  }
+}
 
 async function handleSubmit() {
   if (!emailId.value || !email.value) return;
