@@ -23,6 +23,6 @@ function toCamelCase(name: string): keyof typeof locales {
     .join('') as keyof typeof locales;
 }
 
-export default function currentLocale() {
+export function currentLocale() {
   return locales[toCamelCase(OptionsService.getText('locale'))];
 }

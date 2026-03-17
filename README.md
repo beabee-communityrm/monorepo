@@ -10,6 +10,7 @@ The Beabee Monorepo is organized into the following directories:
 
   - `frontend/`: Contains the code for the frontend application. See [Frontend README](apps/frontend/README.md) for more information.
   - `backend/`: Contains the code for the backend API. See [Backend README](apps/backend/README.md) for more information.
+  - `backend-cli/`: Command line interface for managing Beabee backend operations. See [Backend CLI README](apps/backend-cli/README.md) for more information.
   - `router/`: Contains the code for the new frontend router. See [Router README](apps/router/README.md) for more information.
 
 - `packages/`

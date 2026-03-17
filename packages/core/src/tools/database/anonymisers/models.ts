@@ -92,7 +92,10 @@ import { v4 as uuidv4 } from 'uuid';
  * }
  */
 export type ObjectMap<T> = { [K in keyof T]?: PropertyMap<T[K]> };
-export type PropertyMap<T> = ((prop: T) => T) | ObjectMap<T>;
+export type PropertyMap<T> =
+  | ((prop: T) => T)
+  | [Symbol, (prop: T) => T]
+  | ObjectMap<T>;
 
 /**
  * A model anonymiser describes how to anonymise a given database model
@@ -413,8 +416,14 @@ export const paymentsAnonymiser = createModelAnonymiser(Payment, {
   subscriptionId: randomId(12, 'SB'),
   contactId: () => uuidv4(),
   description: () => 'Anonymised Payment',
-  amount: () => chance.floating({ min: 0, max: 1000, fixed: 2 }),
-  amountRefunded: () => chance.floating({ min: 0, max: 1000, fixed: 2 }),
+  amount: [
+    Symbol('amount'),
+    () => chance.floating({ min: 0, max: 1000, fixed: 2 }),
+  ],
+  amountRefunded: [
+    Symbol('amount'),
+    () => chance.floating({ min: 0, max: 1000, fixed: 2 }),
+  ],
   createdAt: () => new Date(),
   updatedAt: () => new Date(),
   chargeDate: () => new Date(),
@@ -458,7 +467,9 @@ export const resetSecurityFlowAnonymiser = createModelAnonymiser(
   }
 );
 
-export const segmentsAnonymiser = createModelAnonymiser(Segment);
+export const segmentsAnonymiser = createModelAnonymiser(Segment, {
+  order: [Symbol('order'), copy],
+});
 
 export const segmentContactsAnonymiser = createModelAnonymiser(SegmentContact, {
   contactId: () => uuidv4(),
@@ -468,7 +479,10 @@ export const segmentOngoingEmailsAnonymiser =
   createModelAnonymiser(SegmentOngoingEmail);
 
 export const calloutResponseSegmentsAnonymiser = createModelAnonymiser(
-  CalloutResponseSegment
+  CalloutResponseSegment,
+  {
+    order: [Symbol('order'), copy],
+  }
 );
 
 export const calloutReviewerAnonymiser = createModelAnonymiser(

@@ -1550,10 +1550,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Mitgliedschaft",
-      "recurringLabel": "Regelmäßiger Beitrag"
-    },
     "genericError": "Upps! Etwas ist schiefgelaufen ({type}). Bitte wenden Sie sich an den Support, sollte das erneut passieren.",
     "goBack": "Möchten Sie etwas ändern? {back}",
     "goBackButton": "Zurück zum letzten Schritt",
@@ -1764,6 +1760,11 @@
     "setPassword": "Passwort vergeben",
     "setup": "Account fertigstellen"
   },
+  "paymentLabels": {
+    "membershipProductName": "Mitgliedschaft",
+    "recurringContribution": "Regelmäßiger Beitrag",
+    "taxRateDisplayName": "MwSt"
+  },
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "Lastschrift ändern",
@@ -1901,8 +1902,5 @@
     },
     "searchTag": "Getaggt mit...",
     "toggleTag": "Tag hinzufügen / entfernen"
-  },
-  "taxRate": {
-    "invoiceName": "MwSt"
   }
 }
