@@ -13,31 +13,13 @@ meta:
   </div>
 
   <template v-else-if="segment">
-    <AppNotification
-      variant="info"
+    <OngoingEmailSummary
       class="mb-4"
-      :icon="isOngoing ? faRotate : faEnvelope"
-      :title="
-        t(`adminSettings.email.contactTemplates.${summaryKey}`, {
-          segment: segment.name,
-        })
-      "
-    >
-      <template v-if="isOngoing" #title>
-        <i18n-t
-          :keypath="`adminSettings.email.contactTemplates.${summaryKey}`"
-        >
-          <template #segment>
-            <router-link
-              :to="`/admin/contacts?segment=${segmentId}`"
-              class="font-bold text-link"
-            >
-              {{ segment.name }}
-            </router-link>
-          </template>
-        </i18n-t>
-      </template>
-    </AppNotification>
+      :summary-key="summaryKey"
+      :is-ongoing="isOngoing"
+      :segment-id="segmentId"
+      :segment-name="segment.name"
+    />
 
     <OngoingEmailSettings
       v-model:is-ongoing="isOngoing"
@@ -62,20 +44,21 @@ meta:
 
 <script lang="ts" setup>
 import type { GetContactData, GetSegmentData } from '@beabee/beabee-common';
-import { AppNotification, PageTitle, addNotification } from '@beabee/vue';
+import { PageTitle, addNotification } from '@beabee/vue';
 
-import { faEnvelope, faRotate, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
 import OngoingEmailSettings from '#components/emails/OngoingEmailSettings.vue';
+import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 
-import { useOngoingEmailSettings } from '../../../../composables/useOngoingEmailSettings';
+import { useOngoingEmailSettings } from '#composables/useOngoingEmailSettings';
 
 const PREVIEW_CONTACTS_LIMIT = 50;
 

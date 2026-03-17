@@ -37,14 +37,12 @@
             variant="link"
             :label="t('adminSettings.email.contactTemplates.titleSendTime')"
             :inline="true"
-            :disabled="!isOngoing"
           />
 
           <div v-if="showDirectSend && trigger === 'onJoin'" class="mt-4">
             <AppToggleField
               v-model="directSend"
               variant="link"
-              :disabled="!isOngoing"
               :label="
                 t('adminSettings.email.contactTemplates.titleDirectSend')
               "
@@ -56,7 +54,6 @@
               "
             />
           </div>
-
         </template>
       </div>
     </div>

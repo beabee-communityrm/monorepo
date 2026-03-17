@@ -7,6 +7,14 @@ import type {
 
 import { computed, ref } from 'vue';
 
+export type OngoingEmailSummaryKey =
+  | 'summaryOnceOnly'
+  | 'summaryTemplate'
+  | 'summaryOngoingPaused'
+  | 'summaryOngoingLeave'
+  | 'summaryOngoingJoinDirectSend'
+  | 'summaryOngoingJoin';
+
 /**
  * Composable for managing ongoing email settings state.
  * Used by both the send-email page (create) and the edit-email page (update).
@@ -21,14 +29,24 @@ export function useOngoingEmailSettings() {
     () => !isOngoing.value || (directSend.value && trigger.value === 'onJoin')
   );
 
-  /** Returns the i18n key suffix for the current settings summary. */
-  const summaryKey = computed(() => {
-    if (!isOngoing.value) return 'summaryOnceOnly';
+  /**
+   * Returns the i18n key suffix for the current settings summary.
+   * In 'edit' mode, non-ongoing emails use 'summaryTemplate' instead of 'summaryOnceOnly'.
+   */
+  function getSummaryKey(
+    mode: 'create' | 'edit' = 'create'
+  ): OngoingEmailSummaryKey {
+    if (!isOngoing.value) {
+      return mode === 'edit' ? 'summaryTemplate' : 'summaryOnceOnly';
+    }
     if (!enabled.value) return 'summaryOngoingPaused';
     if (trigger.value === 'onLeave') return 'summaryOngoingLeave';
     if (directSend.value) return 'summaryOngoingJoinDirectSend';
     return 'summaryOngoingJoin';
-  });
+  }
+
+  /** Reactive summary key for create mode. */
+  const summaryKey = computed<OngoingEmailSummaryKey>(() => getSummaryKey());
 
   /** Populate state from a loaded email (edit page). */
   function loadFromEmail(data: GetEmailData) {
@@ -70,6 +88,7 @@ export function useOngoingEmailSettings() {
     directSend,
     enabled,
     summaryKey,
+    getSummaryKey,
     shouldSendImmediately,
     loadFromEmail,
     buildCreatePayload,

@@ -43,32 +43,14 @@ meta:
   </div>
 
   <template v-else>
-    <AppNotification
+    <OngoingEmailSummary
       v-if="email"
-      variant="info"
       class="mb-4"
-      :icon="email.isOngoing ? faRotate : faEnvelope"
-      :title="
-        t(`adminSettings.email.contactTemplates.${editSummaryKey}`, {
-          segment: email.segmentName,
-        })
-      "
-    >
-      <template v-if="email.isOngoing && email.segmentId" #title>
-        <i18n-t
-          :keypath="`adminSettings.email.contactTemplates.${editSummaryKey}`"
-        >
-          <template #segment>
-            <router-link
-              :to="`/admin/contacts?segment=${email.segmentId}`"
-              class="font-bold text-link"
-            >
-              {{ email.segmentName }}
-            </router-link>
-          </template>
-        </i18n-t>
-      </template>
-    </AppNotification>
+      :summary-key="summaryKey"
+      :is-ongoing="!!email.isOngoing"
+      :segment-id="email.segmentId"
+      :segment-name="email.segmentName"
+    />
     <EmailTemplateEditor
       v-model:email="form"
       :submit-button-text="t('actions.save')"
@@ -126,28 +108,24 @@ import {
   AppConfirmDialog,
   AppInfoList,
   AppInfoListItem,
-  AppNotification,
   AppToggleSwitch,
   PageTitle,
   addNotification,
   formatLocale,
 } from '@beabee/vue';
 
-import {
-  faEnvelope,
-  faRotate,
-  faUsers,
-} from '@fortawesome/free-solid-svg-icons';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
+import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 
-import { useOngoingEmailSettings } from '../../../../../composables/useOngoingEmailSettings';
+import { useOngoingEmailSettings } from '#composables/useOngoingEmailSettings';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
@@ -184,15 +162,13 @@ const form = ref<UpdateEmailData>({
 });
 
 const {
-  summaryKey,
   enabled: ongoingEnabled,
+  getSummaryKey,
   loadFromEmail,
   buildUpdatePayload,
 } = useOngoingEmailSettings();
 
-const editSummaryKey = computed(() =>
-  summaryKey.value === 'summaryOnceOnly' ? 'summaryTemplate' : summaryKey.value
-);
+const summaryKey = computed(() => getSummaryKey('edit'));
 
 const pageTitle = computed(() => {
   if (!email.value) return t('contacts.emailTemplates.editTitle');
@@ -207,9 +183,11 @@ async function handleToggleEnabled(value: boolean) {
   ongoingEnabled.value = value;
   try {
     await client.email.update(emailId.value, {
-      subject: form.value.subject,
-      body: form.value.body,
-      ...buildUpdatePayload(email.value?.segmentId),
+      subject: email.value!.subject,
+      body: email.value!.body,
+      isOngoing: email.value!.isOngoing,
+      segmentId: email.value!.segmentId,
+      trigger: email.value!.trigger,
       enabled: value,
     });
     addNotification({ variant: 'success', title: t('form.saved') });
