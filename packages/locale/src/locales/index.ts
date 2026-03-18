@@ -4,6 +4,7 @@ import deEasy from './de@easy.json' with { type: 'json' };
 import deInformal from './de@informal.json' with { type: 'json' };
 import el from './el.json' with { type: 'json' };
 import en from './en.json' with { type: 'json' };
+import es from './es.json' with { type: 'json' };
 import it from './it.json' with { type: 'json' };
 import nl from './nl.json' with { type: 'json' };
 import pt from './pt.json' with { type: 'json' };
@@ -24,5 +25,7 @@ export { pt };
 export { it };
 
 export { ru };
+
+export { es };
 
 export { deEasy };
