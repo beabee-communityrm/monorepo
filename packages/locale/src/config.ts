@@ -60,6 +60,13 @@ export const config: LocaleOptions = {
     adminLocale: 'en',
     availableIn: [LocaleContext.Callout, LocaleContext.System],
   },
+  es: {
+    baseLocale: 'es',
+    name: 'Español',
+    displayName: 'Español',
+    adminLocale: 'en',
+    availableIn: [LocaleContext.Callout],
+  },
   fr: {
     baseLocale: 'fr',
     name: 'Français',
