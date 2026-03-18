@@ -115,13 +115,20 @@ export class EmailController {
   ): Promise<GetEmailDto> {
     const { isOngoing, segmentId, trigger, enabled, ...emailData } = data;
     const email = await EmailTransformer.createOne(auth, emailData);
-    await this.syncOngoingEmail(email.id, {
-      isOngoing,
-      segmentId,
-      trigger,
-      enabled,
-    });
-    return email;
+    try {
+      await this.syncOngoingEmail(email.id, {
+        isOngoing,
+        segmentId,
+        trigger,
+        enabled,
+      });
+    } catch (err) {
+      // Clean up the email if linking the ongoing email fails
+      await EmailService.deleteEmail(email.id);
+      throw err;
+    }
+    // Re-fetch to include ongoing email fields in the response
+    return (await EmailTransformer.fetchOneById(auth, email.id))!;
   }
 
   /**

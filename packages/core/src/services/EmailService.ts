@@ -514,21 +514,21 @@ class EmailService {
 
   /**
    * Add or update ongoing email for a segment (upsert).
+   * Uses INSERT ... ON CONFLICT to avoid race conditions.
    */
   async addOngoingEmail(
     segmentId: string,
     emailId: string,
     trigger: SegmentOngoingEmailTrigger,
     enabled = true
-  ): Promise<SegmentOngoingEmail> {
-    const repo = getRepository(SegmentOngoingEmail);
-    const existing = await repo.findOneBy({ emailId });
-    if (existing) {
-      existing.trigger = trigger;
-      existing.enabled = enabled;
-      return repo.save(existing);
-    }
-    return repo.save({ segmentId, emailId, trigger, enabled });
+  ): Promise<void> {
+    await getRepository(SegmentOngoingEmail)
+      .createQueryBuilder()
+      .insert()
+      .into(SegmentOngoingEmail)
+      .values({ segmentId, emailId, trigger, enabled })
+      .orUpdate(['segmentId', 'trigger', 'enabled'], ['emailId'])
+      .execute();
   }
 
   /**

@@ -181,7 +181,6 @@
     },
     "email": {
       "contactTemplates": {
-        "activeLabel": "",
         "activePaused": "",
         "activeRunning": "",
         "button": "",
@@ -189,7 +188,6 @@
         "contactLeaves": "",
         "create": "",
         "description": "",
-        "descriptionOngoingEmails": "",
         "directSendDisabled": "",
         "directSendEnabled": "",
         "oneOff": "",
@@ -1127,17 +1125,15 @@
       },
       "create": "",
       "date": "",
-      "edit": "",
       "editTitle": "",
       "editTitleWithName": "",
       "empty": "",
       "manage": "",
       "name": "",
+      "newTitle": "",
       "showingOf": "",
       "subject": "",
-      "title": "",
-      "titleNew": "",
-      "use": ""
+      "title": ""
     },
     "noContacts": "",
     "noResults": "",
@@ -1146,12 +1142,7 @@
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "Neue E-Mail",
-      "saveAndBack": "Speichern und zurück",
-      "saveAndBackSuccess": "Vorlage gespeichert.",
-      "saveAndSend": "Speichern und schicken",
-      "send": "Schicken",
       "sent": "Die E-Mail wurde an das Segment geschickt.",
-      "sentTimes": "{n}-mal geschickt",
       "templateLabel": "Vorlage",
       "templateName": "Name der Vorlage",
       "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",

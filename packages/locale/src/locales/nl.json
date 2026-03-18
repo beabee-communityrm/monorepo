@@ -181,7 +181,6 @@
     },
     "email": {
       "contactTemplates": {
-        "activeLabel": "",
         "activePaused": "",
         "activeRunning": "",
         "button": "",
@@ -189,7 +188,6 @@
         "contactLeaves": "",
         "create": "",
         "description": "",
-        "descriptionOngoingEmails": "",
         "directSendDisabled": "",
         "directSendEnabled": "",
         "oneOff": "",
@@ -1127,17 +1125,15 @@
       },
       "create": "",
       "date": "Aangemaakt",
-      "edit": "Bewerken",
       "editTitle": "Sjabloon bewerken",
       "editTitleWithName": "Sjabloon bewerken: {name}",
       "empty": "Nog geen e-mailsjablonen.",
       "manage": "E-mailsjablonen beheren",
       "name": "Naam",
+      "newTitle": "",
       "showingOf": "Toont sjablonen {start} tot {end} van {total}",
       "subject": "Onderwerp",
-      "title": "E-mailsjablonen",
-      "titleNew": "",
-      "use": "Gebruiken"
+      "title": "E-mailsjablonen"
     },
     "noContacts": "Nog geen contacten toegevoegd",
     "noResults": "Geen contacten gevonden",
@@ -1146,12 +1142,7 @@
     "selectedCount": "{n} contactpersoon geselecteerd | {n} contactpersonen geselecteerd",
     "sendEmail": {
       "newEmail": "Nieuwe e-mail",
-      "saveAndBack": "Opslaan en terugkeren",
-      "saveAndBackSuccess": "Sjabloon opgeslagen.",
-      "saveAndSend": "Opslaan en verzenden",
-      "send": "Verzenden",
       "sent": "De e-mail is naar het segment verzonden.",
-      "sentTimes": "{n} keer verzonden",
       "templateLabel": "Sjabloon",
       "templateName": "Naam van het sjabloon",
       "templateNameRequired": "Voer een naam in voor het nieuwe sjabloon.",

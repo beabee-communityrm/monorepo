@@ -16,6 +16,7 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  IsUUID,
   ValidateIf,
 } from 'class-validator';
 
@@ -72,7 +73,7 @@ class OngoingEmailFieldsDto {
   trigger!: SegmentOngoingEmailTrigger;
 
   @ValidateIf((o) => o.isOngoing)
-  @IsString()
+  @IsUUID()
   segmentId!: string;
 
   @IsOptional()

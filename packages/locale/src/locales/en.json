@@ -181,7 +181,6 @@
     },
     "email": {
       "contactTemplates": {
-        "activeLabel": "Active",
         "activePaused": "Automatic delivery is paused",
         "activeRunning": "Emails are being sent automatically",
         "button": "Manage email templates",
@@ -189,7 +188,6 @@
         "contactLeaves": "Contact leaves segment",
         "create": "Create",
         "description": "Here you can create and customize email templates for different target groups. You have the option to manage both one-time and recurring emails.",
-        "descriptionOngoingEmails": "Segment changes are checked once daily. Emails are only sent to contacts who have newly joined or left — not again to existing ones.",
         "directSendDisabled": "Only future contacts will receive the email",
         "directSendEnabled": "All current contacts will receive the email immediately",
         "ongoing": "Ongoing",
@@ -1125,17 +1123,15 @@
       },
       "create": "Create template",
       "date": "Created",
-      "edit": "Edit",
       "editTitle": "Edit template",
       "editTitleWithName": "Edit template: {name}",
       "empty": "No email templates yet.",
       "manage": "Manage email templates",
       "name": "Name",
+      "newTitle": "Create new template",
       "showingOf": "Showing {start} to {end} templates out of {total}",
       "subject": "Subject",
-      "title": "Email templates",
-      "titleNew": "Create new template",
-      "use": "Use"
+      "title": "Email templates"
     },
     "noContacts": "No contacts added yet",
     "noResults": "No contacts found",
@@ -1144,12 +1140,7 @@
     "selectedCount": "{n} contact selected | {n} contacts selected",
     "sendEmail": {
       "newEmail": "New email",
-      "saveAndBack": "Save and return",
-      "saveAndBackSuccess": "Template saved.",
-      "saveAndSend": "Save and send",
-      "send": "Send",
       "sent": "The email has been sent to the segment.",
-      "sentTimes": "Sent {n} times",
       "templateLabel": "Template",
       "templateName": "Name of template",
       "templateNameRequired": "Please enter a name for the new template.",

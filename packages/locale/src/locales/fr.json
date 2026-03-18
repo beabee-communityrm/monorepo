@@ -181,7 +181,6 @@
     },
     "email": {
       "contactTemplates": {
-        "activeLabel": "",
         "activePaused": "",
         "activeRunning": "",
         "button": "",
@@ -189,7 +188,6 @@
         "contactLeaves": "",
         "create": "",
         "description": "",
-        "descriptionOngoingEmails": "",
         "directSendDisabled": "",
         "directSendEnabled": "",
         "oneOff": "",
@@ -1131,17 +1129,15 @@
       },
       "create": "",
       "date": "Créé",
-      "edit": "Modifier",
       "editTitle": "Modifier le modèle",
       "editTitleWithName": "Modifier le modèle : {name}",
       "empty": "Aucun modèle d'e-mail pour le moment.",
       "manage": "Gérer les modèles d'e-mail",
       "name": "Nom",
+      "newTitle": "",
       "showingOf": "Affichage des modèles {start} à {end} sur {total}",
       "subject": "Objet",
-      "title": "Modèles d'e-mail",
-      "titleNew": "",
-      "use": "Utiliser"
+      "title": "Modèles d'e-mail"
     },
     "noContacts": "Aucun contact ajouté pour le moment",
     "noResults": "Aucun contact trouvé",
@@ -1150,12 +1146,7 @@
     "selectedCount": "{n} contact sélectionné | {n} contacts sélectionnés",
     "sendEmail": {
       "newEmail": "Nouvel e-mail",
-      "saveAndBack": "Enregistrer et revenir",
-      "saveAndBackSuccess": "Modèle enregistré.",
-      "saveAndSend": "Enregistrer et envoyer",
-      "send": "Envoyer",
       "sent": "L'e-mail a été envoyé au segment.",
-      "sentTimes": "Envoyé {n} fois",
       "templateLabel": "Modèle",
       "templateName": "Nom du modèle",
       "templateNameRequired": "Veuillez saisir un nom pour le nouveau modèle.",

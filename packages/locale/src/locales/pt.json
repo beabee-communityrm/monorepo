@@ -181,7 +181,6 @@
     },
     "email": {
       "contactTemplates": {
-        "activeLabel": "",
         "activePaused": "",
         "activeRunning": "",
         "button": "",
@@ -189,7 +188,6 @@
         "contactLeaves": "",
         "create": "",
         "description": "",
-        "descriptionOngoingEmails": "",
         "directSendDisabled": "",
         "directSendEnabled": "",
         "oneOff": "",
@@ -1127,17 +1125,15 @@
       },
       "create": "",
       "date": "Criado",
-      "edit": "Editar",
       "editTitle": "Editar modelo",
       "editTitleWithName": "Editar modelo: {name}",
       "empty": "Ainda não há modelos de e-mail.",
       "manage": "Gerir modelos de e-mail",
       "name": "Nome",
+      "newTitle": "",
       "showingOf": "A mostrar modelos {start} a {end} de {total}",
       "subject": "Assunto",
-      "title": "Modelos de e-mail",
-      "titleNew": "",
-      "use": "Usar"
+      "title": "Modelos de e-mail"
     },
     "noContacts": "Nenhum contacto ainda adicionado",
     "noResults": "Nenhum contacto encontrado",
@@ -1146,12 +1142,7 @@
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "Novo e-mail",
-      "saveAndBack": "Guardar e voltar",
-      "saveAndBackSuccess": "Modelo guardado.",
-      "saveAndSend": "Guardar e enviar",
-      "send": "Enviar",
       "sent": "O e-mail foi enviado para o segmento.",
-      "sentTimes": "Enviado {n} vezes",
       "templateLabel": "Modelo",
       "templateName": "Nome do modelo",
       "templateNameRequired": "Introduza um nome para o novo modelo.",

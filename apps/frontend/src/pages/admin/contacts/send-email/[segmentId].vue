@@ -31,6 +31,7 @@ meta:
 
     <EmailTemplateEditor
       v-model:email="emailData"
+      v-model:selected-email-id="selectedEmailId"
       :submit-button-text="submitButtonText"
       :reset-button-text="t('actions.goBack')"
       show-select-template
@@ -92,6 +93,7 @@ const loading = ref(true);
 const segment = ref<GetSegmentData | null>(null);
 const segmentContacts = ref<GetContactData[]>([]);
 const emailData = ref({ name: '', subject: '', body: '' });
+const selectedEmailId = ref<string | undefined>(undefined);
 
 const {
   isOngoing,
@@ -122,24 +124,44 @@ async function handleSubmit() {
     return;
   }
 
-  const emailId = await ensureSavedEmailId();
+  try {
+    const emailId = await ensureSavedEmailId();
 
-  if (shouldSendImmediately.value) {
-    await client.segments.email.send(segmentId.value, {
-      subject: emailData.value.subject,
-      body: emailData.value.body,
-      emailId,
+    if (shouldSendImmediately.value) {
+      await client.segments.email.send(segmentId.value, {
+        subject: emailData.value.subject,
+        body: emailData.value.body,
+        emailId,
+      });
+    }
+
+    addNotification({
+      variant: 'success',
+      title: shouldSendImmediately.value
+        ? t('contacts.sendEmail.sent')
+        : t('emails.notifications.created'),
+    });
+    router.push(backUrl.value);
+  } catch (err) {
+    addNotification({
+      variant: 'error',
+      title: extractErrorText(err),
     });
   }
-
-  addNotification({
-    variant: 'success',
-    title: t('contacts.sendEmail.sent'),
-  });
-  router.push(backUrl.value);
 }
 
 async function ensureSavedEmailId(): Promise<string> {
+  // Update existing template if one was selected
+  if (selectedEmailId.value) {
+    await client.email.update(selectedEmailId.value, {
+      subject: emailData.value.subject,
+      body: emailData.value.body,
+      ...buildCreatePayload(segmentId.value),
+    });
+    return selectedEmailId.value;
+  }
+
+  // Create new template
   const name = emailData.value.name.trim() || defaultNewTemplateName.value;
   if (!name.trim()) {
     addNotification({

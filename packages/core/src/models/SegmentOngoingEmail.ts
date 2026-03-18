@@ -26,7 +26,7 @@ export class SegmentOngoingEmail {
   @Column()
   trigger!: SegmentOngoingEmailTrigger;
 
-  @Column()
+  @Column({ unique: true })
   emailId!: string;
   @ManyToOne('Email')
   email!: Email;

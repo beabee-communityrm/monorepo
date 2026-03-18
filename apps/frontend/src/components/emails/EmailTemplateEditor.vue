@@ -67,6 +67,7 @@ const NEW_EMAIL_VALUE = '__new__';
 const TEMPLATES_LIMIT = 100;
 
 const email = defineModel<UpdateEmailData>('email', { required: true });
+const selectedEmailId = defineModel<string | undefined>('selectedEmailId');
 
 const props = withDefaults(
   defineProps<{
@@ -120,11 +121,13 @@ async function loadTemplates() {
 
 function onTemplateChange(value: string) {
   if (value === NEW_EMAIL_VALUE) {
+    selectedEmailId.value = undefined;
     email.value = { name: props.defaultNewTemplateName, subject: '', body: '' };
     return;
   }
   const template = templates.value.find((e) => e.id === value);
   if (template) {
+    selectedEmailId.value = template.id;
     email.value = {
       name: template.name,
       subject: template.subject,

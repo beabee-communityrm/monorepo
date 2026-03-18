@@ -181,7 +181,6 @@
     },
     "email": {
       "contactTemplates": {
-        "activeLabel": "",
         "activePaused": "",
         "activeRunning": "",
         "button": "",
@@ -189,7 +188,6 @@
         "contactLeaves": "",
         "create": "",
         "description": "",
-        "descriptionOngoingEmails": "",
         "directSendDisabled": "",
         "directSendEnabled": "",
         "oneOff": "",
@@ -1127,17 +1125,15 @@
       },
       "create": "",
       "date": "Δημιουργήθηκε",
-      "edit": "Επεξεργασία",
       "editTitle": "Επεξεργασία προτύπου",
       "editTitleWithName": "Επεξεργασία προτύπου: {name}",
       "empty": "Δεν υπάρχουν ακόμα πρότυπα email.",
       "manage": "Διαχείριση προτύπων email",
       "name": "Όνομα",
+      "newTitle": "",
       "showingOf": "Εμφάνιση προτύπων {start} έως {end} από {total}",
       "subject": "Θέμα",
-      "title": "Πρότυπα email",
-      "titleNew": "",
-      "use": "Χρήση"
+      "title": "Πρότυπα email"
     },
     "noContacts": "",
     "noResults": "",
@@ -1146,12 +1142,7 @@
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "Νέο email",
-      "saveAndBack": "Αποθήκευση και επιστροφή",
-      "saveAndBackSuccess": "Το πρότυπο αποθηκεύτηκε.",
-      "saveAndSend": "Αποθήκευση και αποστολή",
-      "send": "Αποστολή",
       "sent": "Το email στάλθηκε στο τμήμα.",
-      "sentTimes": "Στάλθηκε {n} φορές",
       "templateLabel": "Πρότυπο",
       "templateName": "Όνομα προτύπου",
       "templateNameRequired": "Εισάγετε όνομα για το νέο πρότυπο.",

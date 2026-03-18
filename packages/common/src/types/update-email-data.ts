@@ -1,14 +1,15 @@
-import { EmailPreviewData } from './index.js';
 import type { SegmentOngoingEmailTrigger } from './segment-ongoing-email-trigger.js';
 
 /**
  * Data for updating an email.
- * Subject and body are required; name is optional (custom emails only).
+ * All fields are optional to support partial updates (e.g. toggling enabled).
  */
-export type UpdateEmailData = EmailPreviewData & {
+export interface UpdateEmailData {
   name?: string;
+  subject?: string;
+  body?: string;
   isOngoing?: boolean;
   segmentId?: string;
   trigger?: SegmentOngoingEmailTrigger;
   enabled?: boolean;
-};
+}

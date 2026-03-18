@@ -6,7 +6,7 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="t('contacts.emailTemplates.titleNew')" border />
+  <PageTitle :title="t('contacts.emailTemplates.newTitle')" border />
 
   <EmailTemplateEditor
     v-model:email="form"
@@ -44,7 +44,7 @@ addBreadcrumb(
       to: router.resolve(LIST_ROUTE).href,
     },
     {
-      title: t('contacts.emailTemplates.titleNew'),
+      title: t('contacts.emailTemplates.newTitle'),
     },
   ])
 );
@@ -60,8 +60,8 @@ async function handleSubmit() {
   try {
     await client.email.create({
       name: form.value.name || '',
-      subject: form.value.subject,
-      body: form.value.body,
+      subject: form.value.subject || '',
+      body: form.value.body || '',
     });
     addNotification({
       variant: 'success',

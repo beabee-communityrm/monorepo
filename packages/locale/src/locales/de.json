@@ -181,7 +181,6 @@
     },
     "email": {
       "contactTemplates": {
-        "activeLabel": "Aktiv",
         "activePaused": "Automatischer Versand ist pausiert",
         "activeRunning": "E-Mails werden automatisch versendet",
         "button": "E-Mail-Vorlagen verwalten",
@@ -189,7 +188,6 @@
         "contactLeaves": "Kontakt verlässt Segment",
         "create": "Erstellen",
         "description": "Hier können Sie E-Mail-Vorlagen für verschiedene Zielgruppen erstellen und individuell anpassen. Sie haben die Möglichkeit, sowohl einmalige als auch wiederkehrende E-Mails zu verwalten.",
-        "descriptionOngoingEmails": "Segmentänderungen werden einmal täglich geprüft. E-Mails werden nur an neu hinzugekommene bzw. ausgetretene Kontakte gesendet – nicht erneut an bestehende.",
         "directSendDisabled": "Nur zukünftige Kontakte erhalten die E-Mail",
         "directSendEnabled": "Alle aktuellen Kontakte erhalten die E-Mail sofort",
         "ongoing": "Wiederkehrend",
@@ -204,7 +202,7 @@
         "summaryOngoingLeave": "Diese E-Mail wird täglich an Kontakte gesendet, die das Segment „{segment}“ verlassen haben.",
         "summaryOngoingPaused": "Diese wiederkehrende E-Mail für das Segment „{segment}“ ist derzeit pausiert und wird nicht versendet.",
         "summaryTemplate": "Diese E-Mail wird nicht automatisch versendet und kann als Vorlage für neue E-Mails an Segmente verwendet werden.",
-        "title": "Segment Basierte",
+        "title": "Segmentbasiert",
         "titleDirectSend": "Sofort an bestehende Kontakte senden",
         "titleSendTime": "Senden, sobald"
       },
@@ -1125,17 +1123,15 @@
       },
       "create": "Vorlage erstellen",
       "date": "Erstellt",
-      "edit": "Bearbeiten",
       "editTitle": "Vorlage bearbeiten",
       "editTitleWithName": "Vorlage bearbeiten: {name}",
       "empty": "Noch keine E-Mail-Vorlagen.",
       "manage": "E-Mail-Vorlagen verwalten",
       "name": "Name",
+      "newTitle": "Neue Vorlage erstellen",
       "showingOf": "{start} bis {end} von {total} Vorlagen werden angezeigt.",
       "subject": "Betreff",
-      "title": "E-Mail-Vorlagen",
-      "titleNew": "Neue Vorlage erstellen",
-      "use": "Verwenden"
+      "title": "E-Mail-Vorlagen"
     },
     "noContacts": "Keine Kontakte",
     "noResults": "Keine Kontakte gefunden",
@@ -1144,12 +1140,7 @@
     "selectedCount": "{n} Kontakt ausgewählt | {n} Kontakte ausgewählt",
     "sendEmail": {
       "newEmail": "Neue E-Mail",
-      "saveAndBack": "Speichern und zurück",
-      "saveAndBackSuccess": "Vorlage gespeichert.",
-      "saveAndSend": "Speichern und senden",
-      "send": "Senden",
       "sent": "Die E-Mail wurde an das Segment gesendet.",
-      "sentTimes": "{n}-mal verschickt",
       "templateLabel": "Vorlage",
       "templateName": "Name der Vorlage",
       "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",

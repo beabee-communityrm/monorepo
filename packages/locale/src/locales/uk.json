@@ -181,7 +181,6 @@
     },
     "email": {
       "contactTemplates": {
-        "activeLabel": "",
         "activePaused": "",
         "activeRunning": "",
         "button": "",
@@ -189,7 +188,6 @@
         "contactLeaves": "",
         "create": "",
         "description": "",
-        "descriptionOngoingEmails": "",
         "directSendDisabled": "",
         "directSendEnabled": "",
         "oneOff": "",
@@ -1129,17 +1127,15 @@
       },
       "create": "",
       "date": "Створено",
-      "edit": "Редагувати",
       "editTitle": "Редагувати шаблон",
       "editTitleWithName": "Редагувати шаблон: {name}",
       "empty": "Ще немає шаблонів листів.",
       "manage": "Керування шаблонами листів",
       "name": "Назва",
+      "newTitle": "",
       "showingOf": "Показано шаблонів з {start} до {end} з {total}",
       "subject": "Тема",
-      "title": "Шаблони листів",
-      "titleNew": "",
-      "use": "Використати"
+      "title": "Шаблони листів"
     },
     "noContacts": "Контактів ще не додано",
     "noResults": "Контактів не знайдено",
@@ -1148,12 +1144,7 @@
     "selectedCount": "{n} контакт вибрано | {n} контактів вибрано",
     "sendEmail": {
       "newEmail": "Новий лист",
-      "saveAndBack": "Зберегти та повернутися",
-      "saveAndBackSuccess": "Шаблон збережено.",
-      "saveAndSend": "Зберегти та надіслати",
-      "send": "Надіслати",
       "sent": "Лист було надіслано сегменту.",
-      "sentTimes": "Надіслано {n} разів",
       "templateLabel": "Шаблон",
       "templateName": "Назва шаблону",
       "templateNameRequired": "Введіть назву нового шаблону.",
