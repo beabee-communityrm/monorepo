@@ -102,6 +102,7 @@ const {
   summaryKey,
   shouldSendImmediately,
   buildCreatePayload,
+  buildUpdatePayload,
 } = useOngoingEmailSettings();
 
 const submitButtonText = computed(() =>
@@ -156,7 +157,7 @@ async function ensureSavedEmailId(): Promise<string> {
     await client.email.update(selectedEmailId.value, {
       subject: emailData.value.subject,
       body: emailData.value.body,
-      ...buildCreatePayload(segmentId.value),
+      ...buildUpdatePayload(segmentId.value),
     });
     return selectedEmailId.value;
   }

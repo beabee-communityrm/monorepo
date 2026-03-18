@@ -187,6 +187,9 @@ async function handleToggleEnabled(value: boolean) {
       trigger: email.value!.trigger,
       enabled: value,
     });
+    if (email.value) {
+      email.value = { ...email.value, enabled: value };
+    }
     addNotification({ variant: 'success', title: t('form.saved') });
   } catch (err) {
     ongoingEnabled.value = previous;

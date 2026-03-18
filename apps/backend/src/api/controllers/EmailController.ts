@@ -83,9 +83,10 @@ export class EmailController {
     @Params() { templateId }: UpdateEmailTemplateParams,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto> {
+    const { isOngoing, segmentId, trigger, enabled, ...emailData } = data;
     const updated = await EmailService.createOrUpdateTemplateOverride(
       templateId,
-      data
+      emailData
     );
 
     return EmailTransformer.convert(updated);
@@ -257,6 +258,8 @@ export class EmailController {
         trigger,
         enabled ?? true
       );
+    } else if (isOngoing === true) {
+      throw new Error('isOngoing is true but segmentId or trigger is missing');
     } else if (isOngoing === false) {
       await EmailService.removeOngoingEmailByEmailId(emailId);
     }

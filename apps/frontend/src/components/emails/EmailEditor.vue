@@ -53,7 +53,7 @@
           !alwaysStacked && 'md:flex md:min-h-0 md:flex-1 md:flex-col',
         ]"
       >
-        <template v-if="previewSelectorOptions.length > 0">
+        <template v-if="previewSelectorOptions.length > 1">
           <AppLabel
             :label="t('emailEditor.preview.asContactLabel')"
             class="block"
@@ -270,8 +270,17 @@ async function fetchServerPreview() {
   }
 }
 
+function closeMergeFieldsDropdown() {
+  showMergeFieldsDropdown.value = false;
+}
+
 function toggleMergeFieldsDropdown() {
   showMergeFieldsDropdown.value = !showMergeFieldsDropdown.value;
+  if (showMergeFieldsDropdown.value) {
+    document.addEventListener('click', closeMergeFieldsDropdown, {
+      once: true,
+    });
+  }
 }
 
 function insertMergeField(editor: Editor, tag: string) {

@@ -70,11 +70,11 @@ class OngoingEmailFieldsDto {
 
   @ValidateIf((o) => o.isOngoing)
   @IsIn(['onJoin', 'onLeave'])
-  trigger!: SegmentOngoingEmailTrigger;
+  trigger?: SegmentOngoingEmailTrigger;
 
   @ValidateIf((o) => o.isOngoing)
   @IsUUID()
-  segmentId!: string;
+  segmentId?: string;
 
   @IsOptional()
   @IsBoolean()

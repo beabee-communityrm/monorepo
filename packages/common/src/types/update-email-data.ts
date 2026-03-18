@@ -6,6 +6,8 @@ import type { SegmentOngoingEmailTrigger } from './segment-ongoing-email-trigger
  */
 export interface UpdateEmailData {
   name?: string;
+  fromName?: string;
+  fromEmail?: string;
   subject?: string;
   body?: string;
   isOngoing?: boolean;

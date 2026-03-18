@@ -12,6 +12,15 @@ meta:
         {{ t('contacts.emailTemplates.create') }}
       </AppButton>
     </div>
+    <div class="fixed bottom-5 right-5 md:hidden">
+      <AppButton
+        :icon="faPlus"
+        :title="t('contacts.emailTemplates.create')"
+        class="rounded-full drop-shadow-md"
+        size="lg"
+        to="/admin/contacts/email-templates/new"
+      />
+    </div>
   </PageTitle>
 
   <AppPaginatedTable
@@ -60,7 +69,7 @@ meta:
 import type { GetEmailData, Paginated } from '@beabee/beabee-common';
 import { AppButton, type Header, PageTitle, formatLocale } from '@beabee/vue';
 
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
