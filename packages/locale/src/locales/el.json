@@ -181,43 +181,41 @@
     },
     "email": {
       "contactTemplates": {
-        "activePaused": "",
-        "activeRunning": "",
-        "button": "",
-        "contactJoins": "",
-        "contactLeaves": "",
-        "create": "",
-        "description": "",
-        "directSendDisabled": "",
-        "directSendEnabled": "",
-        "oneOff": "",
-        "ongoing": "",
-        "ongoingDisabled": "",
-        "ongoingEnabled": "",
-        "segment": "",
-        "send": "",
-        "sendSettings": "",
-        "summaryOnceOnly": "",
-        "summaryOngoingJoin": "",
-        "summaryOngoingJoinDirectSend": "",
-        "summaryOngoingLeave": "",
-        "summaryOngoingPaused": "",
-        "summaryTemplate": "",
-        "title": "",
-        "titleDirectSend": "",
-        "titleEmailType": "",
-        "titleSendTime": ""
+        "activePaused": "Η αυτόματη αποστολή είναι σε παύση",
+        "activeRunning": "Τα e-mail αποστέλλονται αυτόματα",
+        "button": "Διαχείριση προτύπων e-mail",
+        "contactJoins": "Η επαφή εντάσσεται στο τμήμα",
+        "contactLeaves": "Η επαφή αποχωρεί από το τμήμα",
+        "create": "Δημιουργία",
+        "description": "Εδώ μπορείτε να δημιουργήσετε και να προσαρμόσετε πρότυπα e-mail για διαφορετικές ομάδες-στόχους. Έχετε τη δυνατότητα να διαχειρίζεστε τόσο μεμονωμένα όσο και επαναλαμβανόμενα e-mail.",
+        "directSendDisabled": "Μόνο οι μελλοντικές επαφές θα λάβουν το e-mail",
+        "directSendEnabled": "Όλες οι τρέχουσες επαφές θα λάβουν το e-mail αμέσως",
+        "ongoing": "Επαναλαμβανόμενο",
+        "ongoingDisabled": "Το e-mail θα σταλεί μία φορά σε όλες τις τρέχουσες επαφές",
+        "ongoingEnabled": "Το e-mail θα αποστέλλεται αυτόματα κατά τις αλλαγές τμήματος",
+        "segment": "Τμήμα",
+        "send": "Αποστολή",
+        "sendSettings": "Ρυθμίσεις αποστολής",
+        "summaryOnceOnly": "Αυτό το e-mail θα σταλεί μία φορά σε όλες τις τρέχουσες επαφές του τμήματος.",
+        "summaryOngoingJoin": "Αυτό το e-mail αποστέλλεται καθημερινά στις επαφές που εντάχθηκαν πρόσφατα στο τμήμα «{segment}».",
+        "summaryOngoingJoinDirectSend": "Αυτό το e-mail αποστέλλεται καθημερινά στις νέες επαφές του τμήματος «{segment}». Επιπλέον, όλες οι υπάρχουσες επαφές θα το λάβουν αμέσως.",
+        "summaryOngoingLeave": "Αυτό το e-mail αποστέλλεται καθημερινά στις επαφές που αποχώρησαν από το τμήμα «{segment}».",
+        "summaryOngoingPaused": "Αυτό το επαναλαμβανόμενο e-mail για το τμήμα «{segment}» είναι προς το παρόν σε παύση και δεν αποστέλλεται.",
+        "summaryTemplate": "Αυτό το e-mail δεν αποστέλλεται αυτόματα και μπορεί να χρησιμοποιηθεί ως πρότυπο για νέα e-mail σε τμήματα.",
+        "title": "Βασισμένο σε τμήματα",
+        "titleDirectSend": "Αποστολή αμέσως στις υπάρχουσες επαφές",
+        "titleSendTime": "Αποστολή όταν"
       },
-      "fromEmail": "",
-      "fromName": "",
-      "label": "",
+      "fromEmail": "Από e-mail",
+      "fromName": "Από όνομα",
+      "label": "E-mail",
       "templates": {
-        "description": "",
-        "subtitle": "",
-        "title": ""
+        "description": "Διαχειριστείτε το θέμα και το περιεχόμενο των e-mail που αποστέλλονται από την εφαρμογή. Το χρώμα κατάστασης δείχνει αν το e-mail είναι προσαρμοσμένο (πράσινο), χρησιμοποιεί το προεπιλεγμένο πρότυπο (κίτρινο) ή δεν έχει ρυθμιστεί και συνεπώς δεν είναι ενεργό (κόκκινο).",
+        "subtitle": "Σε επίπεδο συστήματος",
+        "title": "Ορισμός προτύπων e-mail"
       },
-      "text": "",
-      "title": ""
+      "text": "Όλη η επικοινωνία μέσω e-mail θα αποστέλλεται από αυτήν τη διεύθυνση e-mail.",
+      "title": "Ορίστε μια γενική διεύθυνση e-mail"
     },
     "general": {
       "footer": {
@@ -1123,14 +1121,14 @@
         "text": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το πρότυπο email; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
         "title": "Διαγραφή προτύπου;"
       },
-      "create": "",
+      "create": "Δημιουργία προτύπου",
       "date": "Δημιουργήθηκε",
       "editTitle": "Επεξεργασία προτύπου",
       "editTitleWithName": "Επεξεργασία προτύπου: {name}",
       "empty": "Δεν υπάρχουν ακόμα πρότυπα email.",
       "manage": "Διαχείριση προτύπων email",
       "name": "Όνομα",
-      "newTitle": "",
+      "newTitle": "Δημιουργία νέου προτύπου",
       "showingOf": "Εμφάνιση προτύπων {start} έως {end} από {total}",
       "subject": "Θέμα",
       "title": "Πρότυπα email"
@@ -1242,7 +1240,7 @@
     },
     "fromEmail": "Email αποστολέα",
     "fromName": "Όνομα αποστολέα",
-    "isOngoing": "",
+    "isOngoing": "Τύπος",
     "list": {
       "showingOf": "Εμφάνιση {start} έως {end} email από {total}"
     },
@@ -1258,9 +1256,9 @@
       "updated": "Το email ενημερώθηκε επιτυχώς"
     },
     "sendType": {
-      "oneOff": "",
-      "ongoing": "",
-      "paused": ""
+      "oneOff": "Μεμονωμένο",
+      "ongoing": "Επαναλαμβανόμενο",
+      "paused": "Σε παύση"
     },
     "status": "Κατάσταση",
     "tabs": {

@@ -180,11 +180,38 @@
       "showingOf": "Mostrando de {start} a {end} claves API de {total}"
     },
     "email": {
+      "contactTemplates": {
+        "activePaused": "El envío automático está en pausa",
+        "activeRunning": "Los correos se envían automáticamente",
+        "button": "Gestionar plantillas de correo",
+        "contactJoins": "El contacto se une al segmento",
+        "contactLeaves": "El contacto abandona el segmento",
+        "create": "Crear",
+        "description": "Aquí puede crear y personalizar plantillas de correo electrónico para diferentes grupos destinatarios. Tiene la opción de gestionar tanto correos puntuales como recurrentes.",
+        "directSendDisabled": "Solo los contactos futuros recibirán el correo",
+        "directSendEnabled": "Todos los contactos actuales recibirán el correo inmediatamente",
+        "ongoing": "Recurrente",
+        "ongoingDisabled": "El correo se enviará una sola vez a todos los contactos actuales",
+        "ongoingEnabled": "El correo se enviará automáticamente ante cambios en el segmento",
+        "segment": "Segmento",
+        "send": "Enviar",
+        "sendSettings": "Configuración de envío",
+        "summaryOnceOnly": "Este correo se enviará una sola vez a todos los contactos actuales del segmento.",
+        "summaryOngoingJoin": "Este correo se envía diariamente a los contactos que se han unido recientemente al segmento «{segment}».",
+        "summaryOngoingJoinDirectSend": "Este correo se envía diariamente a los nuevos contactos del segmento «{segment}». Además, todos los contactos existentes lo recibirán inmediatamente.",
+        "summaryOngoingLeave": "Este correo se envía diariamente a los contactos que han abandonado el segmento «{segment}».",
+        "summaryOngoingPaused": "Este correo recurrente para el segmento «{segment}» está actualmente en pausa y no se está enviando.",
+        "summaryTemplate": "Este correo no se envía automáticamente y puede utilizarse como plantilla para nuevos correos a segmentos.",
+        "title": "Basado en segmentos",
+        "titleDirectSend": "Enviar inmediatamente a los contactos existentes",
+        "titleSendTime": "Enviar cuando"
+      },
       "fromEmail": "Correo del remitente",
       "fromName": "Nombre del remitente",
       "label": "Correo electrónico",
       "templates": {
         "description": "Gestiona el asunto y cuerpo de los correos enviados por la aplicación. El color del estado indica si el correo está personalizado (verde), usa la plantilla predeterminada (amarillo) o no está configurado y por tanto no está activo (rojo).",
+        "subtitle": "De todo el sistema",
         "title": "Configurar plantillas de correo"
       },
       "text": "Toda la comunicación por correo se enviará desde esta dirección.",
@@ -1094,17 +1121,17 @@
         "text": "¿Seguro que deseas eliminar esta plantilla de correo? Esta acción no se puede deshacer.",
         "title": "¿Eliminar plantilla?"
       },
+      "create": "Crear plantilla",
       "date": "Creada",
-      "edit": "Editar",
       "editTitle": "Editar plantilla",
       "editTitleWithName": "Editar plantilla: {name}",
       "empty": "Aún no hay plantillas de correo.",
       "manage": "Gestionar plantillas de correo",
       "name": "Nombre",
+      "newTitle": "Crear nueva plantilla",
       "showingOf": "Mostrando de {start} a {end} plantillas de {total}",
       "subject": "Asunto",
-      "title": "Plantillas de correo",
-      "use": "Usar"
+      "title": "Plantillas de correo"
     },
     "noContacts": "Aún no se han añadido contactos",
     "noResults": "No se encontraron contactos",
@@ -1113,12 +1140,7 @@
     "selectedCount": "{n} contacto seleccionado | {n} contactos seleccionados",
     "sendEmail": {
       "newEmail": "Nuevo correo",
-      "saveAndBack": "Guardar y volver",
-      "saveAndBackSuccess": "Plantilla guardada.",
-      "saveAndSend": "Guardar y enviar",
-      "send": "Enviar",
       "sent": "El correo ha sido enviado al segmento.",
-      "sentTimes": "Enviado {n} veces",
       "templateLabel": "Plantilla",
       "templateName": "Nombre de la nueva plantilla",
       "templateNameRequired": "Introduce un nombre para la nueva plantilla.",
@@ -1218,6 +1240,7 @@
     },
     "fromEmail": "Correo del remitente",
     "fromName": "Nombre del remitente",
+    "isOngoing": "Tipo",
     "list": {
       "showingOf": "Mostrando de {start} a {end} correos de {total}"
     },
@@ -1229,6 +1252,11 @@
       "deleted": "Correo eliminado correctamente",
       "resetToDefault": "Plantilla restablecida correctamente",
       "updated": "Correo actualizado correctamente"
+    },
+    "sendType": {
+      "oneOff": "Puntual",
+      "ongoing": "Recurrente",
+      "paused": "En pausa"
     },
     "status": "Estado",
     "tabs": {

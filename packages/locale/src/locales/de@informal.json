@@ -190,7 +190,6 @@
         "description": "Hier kannst du E-Mail-Vorlagen für verschiedene Zielgruppen erstellen und anpassen. Du kannst sowohl einmalige als auch wiederkehrende E-Mails verwalten.",
         "directSendDisabled": "",
         "directSendEnabled": "",
-        "oneOff": "",
         "ongoing": "",
         "ongoingDisabled": "",
         "ongoingEnabled": "",
@@ -205,7 +204,6 @@
         "summaryTemplate": "",
         "title": "Segmentbasiert",
         "titleDirectSend": "",
-        "titleEmailType": "",
         "titleSendTime": ""
       },
       "fromEmail": "E-Mail-Adresse",
