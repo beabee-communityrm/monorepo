@@ -6,6 +6,7 @@ export * from './images';
 export * from './navigation';
 export * from './objects';
 export * from './pagination';
+export * from './payment';
 export * from './rules';
 export * from './search';
 export * from './url';
