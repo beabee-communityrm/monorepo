@@ -153,8 +153,10 @@ export class EmailController {
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto | undefined> {
     const { isOngoing, segmentId, trigger, enabled, ...emailData } = data;
-    if (!(await EmailTransformer.updateById(auth, id, emailData))) {
-      throw new NotFoundError();
+    if (Object.keys(emailData).length > 0) {
+      if (!(await EmailTransformer.updateById(auth, id, emailData))) {
+        throw new NotFoundError();
+      }
     }
     await this.syncOngoingEmail(id, { isOngoing, segmentId, trigger, enabled });
     return await EmailTransformer.fetchOneById(auth, id);
