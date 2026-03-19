@@ -18,6 +18,17 @@
         </span>
         <b>{{ n(value, 'currency') }}</b>
       </template>
+      <template #value-type="{ value }">
+        {{ value }}
+      </template>
+      <template #value-downloadInvoice="{ item }">
+        <AppButton
+          size="xs"
+          :icon="faDownload"
+          variant="primaryOutlined"
+          :href="client.payment.getInvoiceUrl(item.id)"
+        />
+      </template>
     </AppTable>
     <div v-if="totalPages > 1" class="mt-6 flex w-full justify-between gap-2">
       <p class="self-center text-sm">
@@ -43,6 +54,7 @@ import {
   PaymentStatus,
 } from '@beabee/beabee-common';
 import {
+  AppButton,
   AppHeading,
   AppPagination,
   AppTable,
@@ -51,9 +63,11 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import { client } from '@utils/api';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { client } from '#utils/api';
 
 const { t, n } = useI18n();
 
@@ -76,6 +90,8 @@ const totalPages = computed(() =>
 const headers: Header[] = [
   { value: 'chargeDate', text: '' },
   { value: 'amount', text: '', align: 'right' },
+  { value: 'type', text: '', align: 'right' },
+  { value: 'downloadInvoice', text: '', align: 'right' },
 ];
 
 function getRowClass(item: GetPaymentData) {

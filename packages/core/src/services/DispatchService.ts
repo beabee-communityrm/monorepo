@@ -5,6 +5,7 @@ import CalloutsService from '#services/CalloutsService';
 import ContactMfaService from '#services/ContactMfaService';
 import ContactsService from '#services/ContactsService';
 import NewsletterService from '#services/NewsletterService';
+import PaymentFlowService from '#services/PaymentFlowService';
 import PaymentService from '#services/PaymentService';
 import ReferralsService from '#services/ReferralsService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
@@ -21,11 +22,12 @@ class DispatchService {
     log.info('Permanently deleting contact ' + contact.id);
 
     // Delete external data first, this is more likely to fail so we'd exit the process early
-    await NewsletterService.permanentlyDeleteContacts([contact]);
+    await NewsletterService.permanentlyDeleteContact(contact);
     await PaymentService.permanentlyDeleteContact(contact);
 
     // Delete internal data after the external services are done, this should really never fail
     await ResetSecurityFlowService.deleteAll(contact);
+    await PaymentFlowService.permanentlyDeleteContact(contact);
     await ApiKeyService.permanentlyDeleteContact(contact);
     await ReferralsService.permanentlyDeleteContact(contact);
     await SegmentService.permanentlyDeleteContact(contact);

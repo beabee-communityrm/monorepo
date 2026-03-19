@@ -3,4 +3,5 @@ import type { SetContributionData } from './index.js';
 
 export interface StartContributionData extends SetContributionData {
   paymentMethod: PaymentMethod;
+  completeUrl: string;
 }

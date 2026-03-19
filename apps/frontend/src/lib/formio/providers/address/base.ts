@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { FormioAddressProviderOptions } from '@type';
+import type { FormioAddressProviderOptions } from '#type';
 
 /**
  * Abstract base class for address providers in Form.io

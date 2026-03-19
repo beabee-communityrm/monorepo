@@ -72,5 +72,6 @@ export {
 } from './AppToggleField.vue';
 export {
   default as AppIconPicker,
+  type AppIconPickerIconStyle,
   type AppIconPickerProps,
 } from './AppIconPicker.vue';

@@ -11,7 +11,6 @@ export const baseConfig = {
   plugins: ["@trivago/prettier-plugin-sort-imports"],
   // Configure import order - sorts by import paths, not by import type
   importOrder: [
-    "^module-alias/register$", // Must be on top of all other imports
     "^reflect-metadata$", // Must be on top of all other imports
     "^@beabee/(.*)$", // Internal beabee packages
     "<THIRD_PARTY_MODULES>", // Third party modules

@@ -6,7 +6,7 @@ import {
 } from '@beabee/beabee-common';
 import { ContactTag, ContactTagAssignment } from '@beabee/core/models';
 
-import { GetContactTagDto } from '@api/dto';
+import { GetContactTagDto } from '#api/dto';
 
 import BaseTagTransformer from './BaseTagTransformer';
 

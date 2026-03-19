@@ -14,9 +14,9 @@
         />
         <span
           v-if="uploading"
-          class="absolute inset-0 flex items-center justify-center bg-black/50 text-xl text-white"
+          class="absolute inset-0 flex items-center justify-center bg-black/50"
         >
-          <font-awesome-icon :icon="faCircleNotch" spin />
+          <AppLoadingSpinner inverted />
         </span>
       </div>
       <div>
@@ -48,16 +48,18 @@ import {
   AppButton,
   AppInputError,
   AppLabel,
+  AppLoadingSpinner,
   generateUniqueId,
 } from '@beabee/vue';
 
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
-import { ClientApiError, client } from '@utils/api';
-import { resolveImageUrl } from '@utils/url';
 import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf, sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
+import { resolveImageUrl } from '#utils/url';
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -131,18 +133,11 @@ async function handleChange() {
     // Emit the original unmanipulated URL to the parent component
     emit('update:modelValue', originalUrl);
   } catch (error) {
-    if (error instanceof ClientApiError) {
-      formError.value =
-        error.code === 'TOO_MANY_REQUESTS'
-          ? t('form.errors.file.rateLimited')
-          : error.code === 'LIMIT_FILE_SIZE'
-            ? t('form.errors.file.tooBig')
-            : error.code === 'UNSUPPORTED_FILE_TYPE'
-              ? t('form.errors.file.unsupportedType')
-              : t('form.errorMessages.generic');
-    } else {
-      formError.value = t('form.errorMessages.generic');
-    }
+    formError.value = extractErrorText(error, {
+      TOO_MANY_REQUESTS: t('form.errors.file.rateLimited'),
+      LIMIT_FILE_SIZE: t('form.errors.file.tooBig'),
+      UNSUPPORTED_FILE_TYPE: t('form.errors.file.unsupportedType'),
+    });
   }
 
   uploading.value = false;

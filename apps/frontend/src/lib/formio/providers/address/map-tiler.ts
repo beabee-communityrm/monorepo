@@ -1,10 +1,11 @@
 import type { CalloutResponseAnswerAddress } from '@beabee/beabee-common';
 
-import { AddressFormatter } from '@lib/address.formatter';
-import { currentLocaleConfig } from '@lib/i18n';
-import { geocoding } from '@lib/maptiler';
 import { type GeocodingSearchResult } from '@maptiler/client';
-import type { FormioMapTilerProviderOptions } from '@type';
+
+import { AddressFormatter } from '#lib/address.formatter';
+import { currentLocaleConfig } from '#lib/i18n';
+import { geocoding } from '#lib/maptiler';
+import type { FormioMapTilerProviderOptions } from '#type';
 
 import { BaseAddressProvider } from './base';
 

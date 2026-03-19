@@ -1,7 +1,7 @@
-import { PaymentStatus } from '@beabee/beabee-common';
-
 import { add } from 'date-fns';
-import type Stripe from 'stripe';
+import Stripe from 'stripe';
+
+import { isDuplicateIndex } from '#utils/db';
 
 import config from '../config/config';
 import { getRepository } from '../database';
@@ -11,7 +11,13 @@ import ContactsService from '../services/ContactsService';
 import EmailService from '../services/EmailService';
 import GiftService from '../services/GiftService';
 import PaymentService from '../services/PaymentService';
-import { convertStatus, getSalesTaxRateObject, stripe } from './stripe';
+import { STRIPE_WEBHOOK_EVENTS } from './stripe';
+import {
+  convertInvoiceToPayment,
+  getSalesTaxRateObject,
+  isOneTimePaymentInvoice,
+  stripe,
+} from './stripe';
 
 const log = mainLogger.child({ app: 'stripe-webhook-handler' });
 
@@ -28,6 +34,11 @@ export class StripeWebhookEventHandler {
    */
   static async handleEvent(event: Stripe.Event): Promise<void> {
     log.info(`Processing webhook ${event.id} ${event.type}`);
+
+    if (!STRIPE_WEBHOOK_EVENTS.includes(event.type as any)) {
+      log.warning(`Unknown event type: ${event.type}`);
+      return;
+    }
 
     switch (event.type) {
       case 'checkout.session.completed':
@@ -50,6 +61,9 @@ export class StripeWebhookEventHandler {
         break;
       case 'invoice.paid':
         await this.handleInvoicePaid(event.data.object);
+        break;
+      case 'invoice.payment_failed':
+        await this.handleInvoicePaymentFailed(event.data.object);
         break;
       case 'payment_method.detached':
         await this.handlePaymentMethodDetached(event.data.object);
@@ -139,24 +153,41 @@ export class StripeWebhookEventHandler {
   }
 
   /**
-   * Handles newly created invoices by ensuring correct tax rates are applied
-   * Updates both the invoice and associated subscription if necessary
+   * Create a new payment record when an invoice is created and check if the tax
+   * rates need updating, as the system-wide tax rate might have been changed since
+   * the subscription was created.
+   *
    * @param invoice The newly created Stripe invoice
    */
   private static async handleInvoiceCreated(
     invoice: Stripe.Invoice
   ): Promise<void> {
-    const payment = await this.handleInvoiceUpdated(invoice);
+    let payment;
+    try {
+      // Create the new payment entry
+      payment = await this.handleInvoiceUpdated(invoice);
+    } catch (err) {
+      // If the payment already exists then the invoice.updated handled already
+      // handled it, this can be ignored as invoice.updated is more up-to-date
+      // than invoice.created
+      if (isDuplicateIndex(err, 'id')) {
+        payment = await this.findOrCreatePaymentForInvoice(invoice);
+      } else {
+        throw err;
+      }
+    }
 
-    // Only update the tax rate on invoices that we know about
-    if (!payment) return;
+    // Only invoices from subscriptions can have out-of-date tax rates because
+    // the invoices are generated asynchronously after the subscription is created
+    if (!payment?.subscriptionId) return;
 
     // Can't update non-draft invoices. This should never be a problem as only a
-    // subscription's initial invoice is created in a finalised state
+    // subscription's initial invoice is created in a finalised state, and the initial
+    // invoice will have the current system tax rate applied.
     // https://docs.stripe.com/billing/invoices/subscription#update-first-invoice
     if (invoice.status !== 'draft') return;
 
-    const taxRateObj = getSalesTaxRateObject();
+    const taxRateObj = getSalesTaxRateObject('recurring');
     const invoiceTaxRateObj = invoice.default_tax_rates.map((rate) => rate.id);
 
     // If tax rates match then there's nothing to do
@@ -167,57 +198,122 @@ export class StripeWebhookEventHandler {
 
   /**
    * Updates or creates a payment record in our system based on invoice updates
+   *
    * @param invoice The updated Stripe invoice
    * @returns The updated or created payment record
    */
   public static async handleInvoiceUpdated(
     invoice: Stripe.Invoice
   ): Promise<Payment | undefined> {
-    const payment = await this.findOrCreatePayment(invoice);
-    if (payment) {
-      log.info('Updating payment for invoice ' + invoice.id);
-      payment.status = invoice.status
-        ? convertStatus(invoice.status)
-        : PaymentStatus.Draft;
-      payment.description = invoice.description || '';
-      payment.amount = invoice.total / 100;
-      payment.chargeDate = new Date(invoice.created * 1000);
-      return await getRepository(Payment).save(payment);
+    const payment = await this.findOrCreatePaymentForInvoice(invoice);
+    if (!payment) return;
+
+    if (
+      isOneTimePaymentInvoice(invoice) &&
+      (invoice.status === 'paid' ||
+        invoice.status === 'void' ||
+        invoice.status === 'uncollectible') &&
+      invoice.default_payment_method
+    ) {
+      log.info('Detaching payment method for one-time invoice ' + invoice.id);
+      try {
+        await stripe.paymentMethods.detach(
+          invoice.default_payment_method as string
+        );
+      } catch (err) {
+        if (err instanceof Stripe.errors.StripeInvalidRequestError) {
+          log.info('Payment method already detached for invoice ' + invoice.id);
+        } else {
+          throw err;
+        }
+      }
     }
+
+    log.info('Updating payment for invoice ' + invoice.id);
+    Object.assign(payment, convertInvoiceToPayment(invoice));
+
+    return await getRepository(Payment).save(payment);
   }
 
   /**
-   * Processes paid invoices by extending membership periods and updating contribution amounts
+   * Handle updating the contact's membership when an invoice is paid. Stripe
+   * also sends an 'invoice.updated' event when an invoice is paid, so that
+   * handler will take care of updating payment records (including for
+   * non-subscription payments).
+   *
    * @param invoice The paid Stripe invoice
    */
   public static async handleInvoicePaid(
-    invoice: Stripe.Invoice
+    invoice: Stripe.Invoice,
+    sendEmail = true
   ): Promise<void> {
     const contribution = await this.getContributionFromInvoice(invoice);
-    if (!contribution || !invoice.subscription) return;
+    if (!contribution) return;
 
     log.info(`Invoice ${invoice.id} was paid`);
 
-    // Unlikely, just log for now
-    if (invoice.lines.has_more) {
-      log.error(`Invoice ${invoice.id} has too many lines`);
-      return;
-    }
+    if (invoice.subscription) {
+      // Unlikely, just log for now
+      if (invoice.lines.has_more) {
+        log.error(`Invoice ${invoice.id} has too many lines`);
+        return;
+      }
 
-    // Stripe docs say the subscription will always be the last line in the invoice
-    const line = invoice.lines.data.slice(-1)[0];
-    if (line.subscription !== invoice.subscription) {
-      log.error(
-        'Expected subscription to be last line on invoice' + invoice.id
+      // Stripe docs say the subscription will always be the last line in the invoice
+      const line = invoice.lines.data.slice(-1)[0];
+      if (line.subscription !== invoice.subscription) {
+        log.error(
+          'Expected subscription to be last line on invoice' + invoice.id
+        );
+        return;
+      }
+
+      await this.updateContributionAfterPayment(contribution, line);
+    } else if (isOneTimePaymentInvoice(invoice) && sendEmail) {
+      await EmailService.sendTemplateToContact(
+        'one-time-donation',
+        contribution.contact,
+        { amount: invoice.total / 100 }
       );
-      return;
     }
-
-    await this.handleSuccessfulPayment(contribution, line);
   }
 
   /**
-   * Handles detached payment methods by removing references from our system
+   * When there are no more payment attempts for an invoice, mark it as
+   * uncollectible so it doesn't remain open indefinitely.
+   *
+   * @param invoice The Stripe invoice
+   */
+  private static async handleInvoicePaymentFailed(
+    invoice: Stripe.Invoice
+  ): Promise<void> {
+    // For now only handle one-time payment invoices
+    // TODO: Consider handling subscription invoices too
+    if (!isOneTimePaymentInvoice(invoice)) {
+      return;
+    }
+
+    // At the moment just marks as uncollectible straight away and therefore
+    // cancels any retry schedule. This could change in the future if it is
+    // supported
+    if (invoice.status !== 'uncollectible') {
+      log.info(`Marking invoice ${invoice.id} as uncollectible `);
+      await stripe.invoices.markUncollectible(invoice.id);
+
+      const contribution = await this.getContributionFromInvoice(invoice);
+      if (contribution) {
+        await EmailService.sendTemplateToContact(
+          'one-time-donation-failed',
+          contribution.contact,
+          { amount: invoice.total / 100 }
+        );
+      }
+    }
+  }
+
+  /**
+   * Removes mandate references when a payment method is detached
+   *
    * @param paymentMethod The detached Stripe payment method
    */
   private static async handlePaymentMethodDetached(
@@ -239,7 +335,9 @@ export class StripeWebhookEventHandler {
   }
 
   /**
-   * Retrieves the associated contribution for an invoice
+   * Retrieves the associated contribution for an invoice based on
+   * the invoice customer ID
+   *
    * @param invoice The Stripe invoice
    * @returns The associated contact contribution or null if not found
    */
@@ -266,7 +364,7 @@ export class StripeWebhookEventHandler {
    * @param invoice The Stripe invoice
    * @returns The found or created payment record
    */
-  private static async findOrCreatePayment(
+  private static async findOrCreatePaymentForInvoice(
     invoice: Stripe.Invoice
   ): Promise<Payment | undefined> {
     const payment = await getRepository(Payment).findOneBy({ id: invoice.id });
@@ -278,7 +376,6 @@ export class StripeWebhookEventHandler {
     const newPayment = new Payment();
     newPayment.id = invoice.id;
     newPayment.contact = contribution.contact;
-    newPayment.subscriptionId = invoice.subscription as string | null;
 
     log.info(
       `Creating payment for ${contribution.contact.id} with invoice ${invoice.id}`
@@ -355,11 +452,15 @@ export class StripeWebhookEventHandler {
   }
 
   /**
-   * Processes a successful payment by extending membership and updating contribution amounts
+   * Extends the contact's membership based on a successful contribution
+   * payment. If the contact has a next contribution amount and this payment
+   * matches it, then "activate" the next amount by updating the monthly
+   * contribution.
+   *
    * @param contribution The contact contribution record
    * @param line The invoice line item containing period and amount information
    */
-  private static async handleSuccessfulPayment(
+  private static async updateContributionAfterPayment(
     contribution: ContactContribution,
     line: Stripe.InvoiceLineItem
   ): Promise<void> {

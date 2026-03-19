@@ -16,14 +16,11 @@ import { BaseClient } from './base.client.js';
  * Client for managing contribution operations
  */
 export class ContactContributionClient extends BaseClient {
-  completeUrl: string;
-
   constructor(protected override readonly options: BaseClientOptions) {
     super({
       ...options,
       path: cleanUrl(options.path + '/contact'),
     });
-    this.completeUrl = options.host + '/profile/contribution/complete';
   }
 
   /**
@@ -84,16 +81,10 @@ export class ContactContributionClient extends BaseClient {
    * Start a new contribution
    */
   async start(startData: StartContributionData): Promise<PaymentFlowParams> {
-    const { data } = await this.fetch.post('/me/contribution', {
-      amount: startData.amount,
-      period: startData.period,
-      payFee:
-        startData.payFee && startData.period === ContributionPeriod.Monthly,
-      prorate:
-        startData.prorate && startData.period === ContributionPeriod.Annually,
-      paymentMethod: startData.paymentMethod,
-      completeUrl: this.completeUrl,
-    });
+    const { data } = await this.fetch.post<Serial<PaymentFlowParams>>(
+      '/me/contribution',
+      startData
+    );
     return data;
   }
 

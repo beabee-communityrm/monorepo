@@ -33,7 +33,7 @@ const bioState = reactive({
 
 <template>
   <Story title="Form/AppTextArea">
-    <Variant title="Default" :init-state="state">
+    <Variant title="Default" :init-state="() => state">
       <template #default="{ state }">
         <div class="max-w-md">
           <AppTextArea

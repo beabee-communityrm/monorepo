@@ -7,6 +7,8 @@ import OptionsService, {
 } from '@beabee/core/services/OptionsService';
 import { getEmailFooter } from '@beabee/core/templates/email';
 
+import { plainToInstance } from 'class-transformer';
+
 import {
   GetContentContactsDto,
   GetContentDto,
@@ -18,8 +20,7 @@ import {
   GetContentProfileDto,
   GetContentShareDto,
   GetContentTelegramDto,
-} from '@api/dto/index';
-import { plainToInstance } from 'class-transformer';
+} from '#api/dto/index';
 
 class ContentTransformer {
   convert<Id extends ContentId>(
@@ -49,7 +50,7 @@ class ContentTransformer {
     for (const [key, value] of Object.entries(contentData[id])) {
       switch (value[0]) {
         case 'data':
-          ret[key] = content?.data[key] || value[1];
+          ret[key] = content?.data[key] ?? value[1];
           break;
         case 'option':
           ret[key] = OptionsService[optTypeGetter[value[2]]](value[1]);
@@ -172,6 +173,11 @@ const contentData = {
     privacyLink: ['option', 'footer-privacy-link-url', 'text'],
     impressumLink: ['option', 'footer-impressum-link-url', 'text'],
     locale: ['option', 'locale', 'text'],
+    enableOneTimeDonations: [
+      'option',
+      'switch-feature-one-time-donation',
+      'bool',
+    ],
   }),
   join: withValue<'join'>({
     initialAmount: ['data', 0],
@@ -213,9 +219,10 @@ const contentData = {
   payment: withValue<'payment'>({
     stripePublicKey: ['readonly', () => config.stripe.publicKey],
     stripeCountry: ['readonly', () => config.stripe.country],
-    taxRateEnabled: ['option', 'tax-rate-enabled', 'bool'],
-    taxRate: ['option', 'tax-rate-percentage', 'int'],
+    taxRateRecurring: ['data', null],
+    taxRateOneTime: ['data', null],
     noticeText: ['data', ''],
+    showOneTimeDonation: ['option', 'show-one-time-donation', 'bool'],
   }),
   telegram: withValue<'telegram'>({
     welcomeMessageMd: [

@@ -5,13 +5,8 @@ import {
 } from '#type/index';
 
 export class NoneProvider implements NewsletterProvider {
-  async addTagToContacts(emails: string[], tag: string): Promise<void> {}
-  async removeTagFromContacts(emails: string[], tag: string): Promise<void> {}
   async getContact(email: string): Promise<NewsletterContact | undefined> {
     return;
-  }
-  async getContacts(): Promise<NewsletterContact[]> {
-    return [];
   }
   async upsertContact(
     contact: UpdateNewsletterContact,
@@ -19,9 +14,7 @@ export class NoneProvider implements NewsletterProvider {
   ): Promise<NewsletterContact> {
     return { ...contact, joined: new Date(), tags: [] };
   }
-  async upsertContacts(contacts: UpdateNewsletterContact[]): Promise<void> {}
-  async archiveContacts(emails: string[]): Promise<void> {}
-  async permanentlyDeleteContacts(emails: string[]): Promise<void> {}
+  async permanentlyDeleteContact(email: string): Promise<void> {}
   async updateContactFields(
     email: string,
     fields: Record<string, string>

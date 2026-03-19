@@ -27,6 +27,7 @@
     <button
       class="absolute right-4 top-4 cursor-pointer rounded text-2xl hover:text-body-60 focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
       :aria-label="t('actions.close')"
+      type="button"
       @click="$emit('close')"
     >
       <font-awesome-icon :icon="faTimes" />

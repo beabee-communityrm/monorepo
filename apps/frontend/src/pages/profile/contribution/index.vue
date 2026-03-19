@@ -5,55 +5,59 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="t('menu.contribution')" />
+  <PageTitle :title="t('menu.contribution')" border />
 
   <App2ColGrid v-if="!isIniting">
     <template #col1>
-      <AppNotification
-        v-if="updatedPaymentSource"
-        class="mb-8"
-        variant="success"
-        :title="t('contribution.updatedPaymentSource')"
-        removeable
-        @remove="updatedPaymentSource = false"
-      />
-      <AppNotification
-        v-if="startedContribution"
-        class="mb-8"
-        variant="success"
-        :title="t('contribution.startedContribution')"
-        removeable
-        @remove="startedContribution = false"
-      />
-      <AppNotification
-        v-if="cancelledContribution"
-        class="mb-8"
-        variant="error"
-        :title="t('contribution.cancelledContribution')"
-        removeable
-        @remove="cancelledContribution = false"
+      <AppTabs
+        v-if="showOneTimeContribution"
+        :items="[
+          { id: 'recurring', label: t('common.paymentType.recurring') },
+          { id: 'one-time', label: t('common.paymentType.oneTime') },
+        ]"
+        :selected="activeTab"
+        @tab-click="activeTab = $event"
       />
 
-      <ContributionBox :contribution="contribution" class="mb-9" />
+      <template v-if="!showOneTimeContribution || activeTab === 'recurring'">
+        <AppNotification
+          v-if="cancelledContribution"
+          class="mb-8"
+          variant="error"
+          :title="t('contribution.cancelledContribution')"
+          removeable
+          @remove="cancelledContribution = false"
+        />
 
-      <UpdateContribution
-        v-model="contribution"
+        <ContributionBox :contribution="contribution" class="mb-9" />
+
+        <UpdateContribution
+          v-model="contribution"
+          :content="content"
+          :payment-content="paymentContent"
+          class="mb-7 md:mb-9"
+        />
+
+        <PaymentSource
+          v-if="contribution.paymentSource?.method"
+          v-model="contribution"
+          :payment-data="paymentSourceData"
+          :payment-source="contribution.paymentSource"
+          :stripe-public-key="paymentContent.stripePublicKey"
+          class="mb-7 md:mb-9"
+        />
+
+        <ContactCancelContribution
+          id="me"
+          :contribution="contribution"
+          @cancel="router.push('/profile/contribution/cancel')"
+        />
+      </template>
+
+      <OneTimeDonationForm
+        v-else
         :content="content"
         :payment-content="paymentContent"
-        class="mb-7 md:mb-9"
-      />
-
-      <PaymentSource
-        v-if="contribution.paymentSource?.method"
-        class="mb-7 md:mb-9"
-        :payment-data="paymentSourceData"
-        :payment-source="contribution.paymentSource"
-        :stripe-public-key="paymentContent.stripePublicKey"
-      />
-      <ContactCancelContribution
-        id="me"
-        :contribution="contribution"
-        @cancel="router.push('/profile/contribution/cancel')"
       />
     </template>
     <template #col2>
@@ -71,18 +75,20 @@ import {
   MembershipStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import { App2ColGrid, AppNotification, PageTitle } from '@beabee/vue';
+import { App2ColGrid, AppNotification, AppTabs, PageTitle } from '@beabee/vue';
 
-import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
-import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
-import ContributionBox from '@components/pages/profile/contribution/ContributionBox.vue';
-import PaymentSource from '@components/pages/profile/contribution/PaymentSource.vue';
-import UpdateContribution from '@components/pages/profile/contribution/UpdateContribution.vue';
-import { currentUser } from '@store';
-import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import ContactCancelContribution from '#components/contact/ContactCancelContribution.vue';
+import ContactPaymentsHistory from '#components/contact/ContactPaymentsHistory.vue';
+import ContributionBox from '#components/pages/profile/contribution/ContributionBox.vue';
+import OneTimeDonationForm from '#components/pages/profile/contribution/OneTimeDonationForm.vue';
+import PaymentSource from '#components/pages/profile/contribution/PaymentSource.vue';
+import UpdateContribution from '#components/pages/profile/contribution/UpdateContribution.vue';
+import { currentUser, generalContent } from '#store';
+import { client } from '#utils/api';
 
 import type { ContributionContent } from '../../../type/contribution';
 
@@ -90,10 +96,13 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const updatedPaymentSource = ref(
-  route.query.updatedPaymentSource !== undefined
-);
-const startedContribution = ref(route.query.startedContribution !== undefined);
+const activeTab = computed({
+  get: () => route.query.tab?.toString() || 'recurring',
+  set: (value) => {
+    router.push({ query: { ...route.query, tab: value } });
+  },
+});
+
 const cancelledContribution = ref(route.query.cancelled !== undefined);
 
 const content = ref<ContributionContent>({
@@ -108,9 +117,10 @@ const content = ref<ContributionContent>({
 const paymentContent = ref<ContentPaymentData>({
   stripePublicKey: '',
   stripeCountry: 'eu',
-  taxRate: 0,
-  taxRateEnabled: false,
+  taxRateRecurring: null,
+  taxRateOneTime: null,
   noticeText: '',
+  showOneTimeDonation: false,
 });
 
 const isIniting = ref(true);
@@ -124,6 +134,13 @@ const paymentSourceData = computed(() => ({
   amount: contribution.value.amount || 0,
   period: contribution.value.period || ContributionPeriod.Monthly,
 }));
+
+const showOneTimeContribution = computed(
+  () =>
+    generalContent.value.enableOneTimeDonations &&
+    content.value?.periods.some((p) => p.name === 'one-time') &&
+    paymentContent.value.showOneTimeDonation
+);
 
 onBeforeMount(async () => {
   isIniting.value = true;

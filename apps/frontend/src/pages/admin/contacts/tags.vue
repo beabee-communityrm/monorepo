@@ -16,12 +16,13 @@ meta:
 <script lang="ts" setup>
 import { App2ColGrid } from '@beabee/vue';
 
-import TagManager from '@components/tag/TagManager.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import TagManager from '#components/tag/TagManager.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 

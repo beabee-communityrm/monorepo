@@ -309,11 +309,12 @@ import {
   type ScrollSection,
 } from '@beabee/vue';
 
-import MapIconPicker from '@components/pages/admin/callouts/MapIconPicker.vue';
-import { buckets } from '@utils/callouts';
 import useVuelidate from '@vuelidate/core';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import MapIconPicker from '#components/pages/admin/callouts/MapIconPicker.vue';
+import { buckets } from '#utils/callouts';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 

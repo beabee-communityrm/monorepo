@@ -1,6 +1,8 @@
-import { BadRequestError } from 'routing-controllers';
+import { ClientApiErrorData } from '@beabee/beabee-common';
 
-export class DuplicateId extends BadRequestError {
+import { BadRequestError } from './BadRequestError';
+
+export class DuplicateId extends BadRequestError implements ClientApiErrorData {
   readonly code = 'duplicate-id';
 
   constructor(readonly id: string) {

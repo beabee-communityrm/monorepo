@@ -17,10 +17,11 @@ meta:
 import { AppTabs, PageTitle } from '@beabee/vue';
 
 import { faHandsHelping } from '@fortawesome/free-solid-svg-icons';
-import { resolveTabNavigation } from '@utils/navigation';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import { resolveTabNavigation } from '#utils/navigation';
 
 import { addBreadcrumb } from '../../store/breadcrumb';
 
@@ -41,10 +42,6 @@ const tabs = computed(() =>
     {
       id: 'adminMembershipBuilderIntroMessages',
       label: t('membershipBuilder.steps.intro.title'),
-    },
-    {
-      id: 'adminMembershipBuilderEmail',
-      label: t('membershipBuilder.steps.emails.title'),
     },
   ])
 );

@@ -16,18 +16,19 @@ import {
 } from '@beabee/beabee-common';
 import { type LocaleOptions, config as localeConfig } from '@beabee/locale';
 
+import { format } from 'date-fns';
+import { computed } from 'vue';
+
 import type {
   FormBuilderNavigation,
   FormBuilderSlide,
-} from '@components/form-builder/form-builder.interface';
-import type { CalloutHorizontalTabsData } from '@components/pages/admin/callouts/CalloutHorizontalTabs.interface';
-import type { ContentTabData } from '@components/pages/admin/callouts/tabs/ContentTab/ContentTab.vue';
-import type { SettingsTabData } from '@components/pages/admin/callouts/tabs/SettingsTab.vue';
-import type { TitleAndImageTabData } from '@components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
-import type { TranslationsTabData } from '@components/pages/admin/callouts/tabs/TranslationsTab.vue';
-import type { LocaleProp } from '@type';
-import { format } from 'date-fns';
-import { computed } from 'vue';
+} from '#components/form-builder/form-builder.interface';
+import type { CalloutHorizontalTabsData } from '#components/pages/admin/callouts/CalloutHorizontalTabs.interface';
+import type { ContentTabData } from '#components/pages/admin/callouts/tabs/ContentTab/ContentTab.vue';
+import type { SettingsTabData } from '#components/pages/admin/callouts/tabs/SettingsTab.vue';
+import type { TitleAndImageTabData } from '#components/pages/admin/callouts/tabs/TitleAndImageTab.vue';
+import type { TranslationsTabData } from '#components/pages/admin/callouts/tabs/TranslationsTab.vue';
+import type { LocaleProp } from '#type';
 
 import env from '../env';
 import { i18n } from '../lib/i18n';
@@ -74,6 +75,8 @@ const textFields = [
   'thanksRedirect',
   'shareTitle',
   'shareDescription',
+  'responseEmailSubject',
+  'responseEmailBody',
 ] as const;
 
 /**
@@ -97,6 +100,8 @@ function convertVariantsForSteps(
     thanksRedirect: { default: '' },
     shareTitle: { default: '' },
     shareDescription: { default: '' },
+    responseEmailSubject: { default: '' },
+    responseEmailBody: { default: '' },
   };
 
   if (!variants) return result;
@@ -232,6 +237,11 @@ export function convertCalloutToTabs(
       content: undefined,
       intro: {
         introText: variants.intro,
+      },
+      email: {
+        sendEmail: callout?.sendResponseEmail || false,
+        emailSubject: variants.responseEmailSubject,
+        emailContent: variants.responseEmailBody,
       },
       endMessage: {
         whenFinished: callout?.thanksRedirect ? 'redirect' : 'message',
@@ -379,6 +389,10 @@ function convertVariantForCallout(
     slideNavigation,
     componentText,
     responseLinkText,
+    responseEmailSubject:
+      tabs.content.sidebarTabs.email.emailSubject[variant] || '',
+    responseEmailBody:
+      tabs.content.sidebarTabs.email.emailContent[variant] || '',
   };
 }
 
@@ -438,13 +452,19 @@ export function convertStepsToCallout(
   const slides = convertSlidesForCallout(tabs);
   const variants = convertVariantsForCallout(tabs);
 
-  const access = tabs.settings.openToEveryone
-    ? tabs.settings.collectInfo
-      ? tabs.settings.collectGuestInfo
-        ? CalloutAccess.Guest
-        : CalloutAccess.Anonymous
-      : CalloutAccess.OnlyAnonymous
-    : CalloutAccess.Member;
+  let access: CalloutAccess;
+
+  if (env.cnrMode) {
+    access = CalloutAccess.OnlyAnonymous;
+  } else {
+    access = tabs.settings.openToEveryone
+      ? tabs.settings.collectInfo
+        ? tabs.settings.collectGuestInfo
+          ? CalloutAccess.Guest
+          : CalloutAccess.Anonymous
+        : CalloutAccess.OnlyAnonymous
+      : CalloutAccess.Member;
+  }
 
   return {
     slug: slug || undefined,
@@ -492,6 +512,7 @@ export function convertStepsToCallout(
       tabs.settings.showNewsletterOptIn
         ? tabs.settings.newsletterSettings
         : null,
+    sendResponseEmail: tabs.content.sidebarTabs.email.sendEmail,
   };
 }
 

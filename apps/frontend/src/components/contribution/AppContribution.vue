@@ -3,24 +3,6 @@
   A comprehensive contribution form component that orchestrates all contribution-related inputs.
   Combines amount selection, period selection, payment method selection, and fee handling.
 
-  ## Props
-  - `amount` (number): Current contribution amount
-  - `period` (ContributionPeriod): Current contribution period
-  - `payFee` (boolean): Whether to pay processing fee
-  - `paymentMethod` (PaymentMethod): Selected payment method
-  - `content` (ContributionContent): Configuration data for the contribution form
-  - `paymentContent` (ContentPaymentData): Payment-related configuration
-  - `showPeriod` (boolean): Whether to show period selection
-  - `showPaymentMethod` (boolean): Whether to show payment method selection
-  - `disabled` (boolean): Whether the form is disabled
-  - `currencySymbol` (string): Currency symbol (e.g. "€", "$")
-
-  ## Events
-  - `update:amount` (number): Emitted when amount changes
-  - `update:period` (ContributionPeriod): Emitted when period changes
-  - `update:payFee` (boolean): Emitted when pay fee selection changes
-  - `update:paymentMethod` (PaymentMethod): Emitted when payment method changes
-
   ## Features
   - Period selection with dynamic amount adjustment
   - Amount validation and preset selection
@@ -34,15 +16,15 @@
   <div>
     <AppChoice
       v-if="showPeriod"
-      v-model="periodProxy"
+      v-model="period"
       :items="periodItems"
       :disabled="disabled"
       class="mb-4"
     />
 
     <ContributionAmount
-      v-model.number="amountProxy"
-      :is-monthly="isMonthly"
+      v-model.number="amount"
+      :period="period"
       :min-amount="minAmount"
       :defined-amounts="definedAmounts"
       :disabled="disabled"
@@ -53,7 +35,7 @@
 
     <ContributionMethod
       v-if="showPaymentMethod"
-      v-model="paymentMethodProxy"
+      v-model="paymentMethod"
       :methods="content.paymentMethods"
       :disabled="disabled"
       :title="t('join.paymentMethod')"
@@ -61,9 +43,10 @@
     />
 
     <ContributionFee
-      v-if="isMonthly && content.showAbsorbFee"
-      v-model="payFeeProxy"
-      :amount="amountProxy"
+      v-if="content.showAbsorbFee"
+      v-model="payFee"
+      :amount="amount"
+      :period="period"
       :fee="fee"
       :force="shouldForceFee"
       :disabled="disabled"
@@ -76,6 +59,7 @@ import {
   type ContentPaymentData,
   ContributionPeriod,
   PaymentMethod,
+  type PaymentPeriod,
   calcPaymentFee,
 } from '@beabee/beabee-common';
 import { AppChoice } from '@beabee/vue';
@@ -94,18 +78,12 @@ const { t } = useI18n();
  * Props for the Contribution component
  */
 export interface ContributionProps {
-  /** Current contribution amount */
-  amount: number;
-  /** Current contribution period */
-  period: ContributionPeriod;
-  /** Whether to pay processing fee */
-  payFee: boolean;
-  /** Selected payment method */
-  paymentMethod: PaymentMethod;
   /** Configuration data for the contribution form */
   content: ContributionContent;
   /** Payment-related configuration */
   paymentContent: ContentPaymentData;
+  /** Configure if the form is being used as a contribution only form or as a one-time only donation form */
+  mode?: 'one-time' | 'contribution';
   /** Whether to show period selection */
   showPeriod?: boolean;
   /** Whether to show payment method selection */
@@ -118,75 +96,64 @@ const props = withDefaults(defineProps<ContributionProps>(), {
   showPeriod: true,
   showPaymentMethod: true,
   disabled: false,
+  mode: undefined, // the form allows one-time donations and contributions
+});
+
+const amount = defineModel<number>('amount', { required: true });
+const period = defineModel<PaymentPeriod>('period', { required: true });
+const payFee = defineModel<boolean>('payFee', { required: true });
+const paymentMethod = defineModel<PaymentMethod>('paymentMethod', {
+  required: true,
 });
 
 const fee = computed(() =>
-  calcPaymentFee(props, props.paymentContent.stripeCountry)
+  calcPaymentFee(
+    {
+      amount: amount.value,
+      period: period.value,
+      paymentMethod: paymentMethod.value,
+    },
+    props.paymentContent.stripeCountry
+  )
 );
 
-const emit = defineEmits([
-  'update:amount',
-  'update:period',
-  'update:payFee',
-  'update:paymentMethod',
-]);
-
-const amountProxy = computed({
-  get: () => props.amount,
-  set: (amount) => emit('update:amount', amount),
-});
-
-const periodProxy = computed({
-  get: () => props.period,
-  set: (period: ContributionPeriod) => emit('update:period', period),
-});
-
-const payFeeProxy = computed({
-  get: () => props.payFee,
-  set: (payFee) => emit('update:payFee', payFee),
-});
-
-const paymentMethodProxy = computed({
-  get: () => props.paymentMethod,
-  set: (paymentMethod) => emit('update:paymentMethod', paymentMethod),
-});
-
-const isMonthly = computed(
-  () => periodProxy.value === ContributionPeriod.Monthly
-);
+const isAnnually = computed(() => period.value === ContributionPeriod.Annually);
 
 const minAmount = computed(() => {
   const { minMonthlyAmount } = props.content;
-  return isMonthly.value ? minMonthlyAmount : minMonthlyAmount * 12;
+  return isAnnually.value ? minMonthlyAmount * 12 : minMonthlyAmount;
 });
 
 const definedAmounts = computed(() => {
-  const selectedPeriod = props.content.periods.find((period) => {
-    return period.name === periodProxy.value;
+  const selectedPeriod = props.content.periods.find((p) => {
+    return p.name === period.value;
   });
   return selectedPeriod?.presetAmounts || [];
 });
 
-const periodItems = computed(() =>
-  props.content.periods.map((period) => ({
-    label: t(`common.contributionPeriod.${period.name}`),
-    value: period.name,
-  }))
-);
+const periodItems = computed(() => {
+  return props.content.periods
+    .filter(
+      (p) =>
+        !props.mode || // All
+        (props.mode === 'one-time' && p.name === 'one-time') || // Only one-time
+        (props.mode === 'contribution' && p.name !== 'one-time') // Only contribution
+    )
+    .map((period) => ({
+      label: t(`common.paymentPeriod.${period.name}`),
+      value: period.name,
+    }));
+});
 
-watch(isMonthly, (value) => {
-  amountProxy.value = value
-    ? Math.floor(amountProxy.value / 12)
-    : amountProxy.value * 12;
+watch(isAnnually, (value) => {
+  amount.value = value ? amount.value * 12 : Math.floor(amount.value / 12);
 });
 
 const shouldForceFee = computed(() => {
-  return (
-    props.content.showAbsorbFee && amountProxy.value === 1 && isMonthly.value
-  );
+  return props.content.showAbsorbFee && amount.value === 1 && !isAnnually.value;
 });
 
 watch(shouldForceFee, (force) => {
-  if (force) payFeeProxy.value = true;
+  if (force) payFee.value = true;
 });
 </script>

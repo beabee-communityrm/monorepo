@@ -1,4 +1,3 @@
-export { default as AppBadge } from './AppBadge.vue';
 export { default as AppColor, type AppColorProps } from './AppColor.vue';
 export {
   default as AppRoundBadge,

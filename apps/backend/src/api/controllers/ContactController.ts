@@ -1,10 +1,10 @@
-import { ContributionPeriod, GetContactWith } from '@beabee/beabee-common';
+import { GetContactWith, PaymentForm } from '@beabee/beabee-common';
 import {
   CantUpdateContribution,
   NoPaymentMethod,
   UnauthorizedError,
 } from '@beabee/core/errors';
-import { Contact, JoinFlow } from '@beabee/core/models';
+import { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
 import DispatchService from '@beabee/core/services/DispatchService';
@@ -12,44 +12,8 @@ import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
 import { generatePassword } from '@beabee/core/utils/auth';
+import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import PartialBody from '@api/decorators/PartialBody';
-import { TargetUser } from '@api/decorators/TargetUser';
-import { GetExportQuery } from '@api/dto/BaseDto';
-import {
-  BatchUpdateContactDto,
-  BatchUpdateContactResultDto,
-  CreateContactDto,
-  GetContactDto,
-  GetContactOptsDto,
-  GetContributionInfoDto,
-  ListContactsDto,
-  UpdateContactDto,
-} from '@api/dto/ContactDto';
-import {
-  CreateContactMfaDto,
-  DeleteContactMfaDto,
-  GetContactMfaDto,
-} from '@api/dto/ContactMfaDto';
-import {
-  GetContactRoleDto,
-  UpdateContactRoleDto,
-} from '@api/dto/ContactRoleDto';
-import {
-  ForceUpdateContributionDto,
-  StartContributionDto,
-  UpdateContributionDto,
-} from '@api/dto/ContributionDto';
-import { CompleteJoinFlowDto, StartJoinFlowDto } from '@api/dto/JoinFlowDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import { GetPaymentDto, ListPaymentsDto } from '@api/dto/PaymentDto';
-import { GetPaymentFlowDto } from '@api/dto/PaymentFlowDto';
-import { ContactRoleParams } from '@api/params/ContactRoleParams';
-import ContactExporter from '@api/transformers/ContactExporter';
-import ContactRoleTransformer from '@api/transformers/ContactRoleTransformer';
-import ContactTransformer from '@api/transformers/ContactTransformer';
-import PaymentTransformer from '@api/transformers/PaymentTransformer';
 import { plainToInstance } from 'class-transformer';
 import { Response } from 'express';
 import {
@@ -68,6 +32,48 @@ import {
   QueryParams,
   Res,
 } from 'routing-controllers';
+
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import PartialBody from '#api/decorators/PartialBody';
+import { TargetUser } from '#api/decorators/TargetUser';
+import { GetExportQuery } from '#api/dto/BaseDto';
+import {
+  BatchUpdateContactDto,
+  BatchUpdateContactResultDto,
+  CreateContactDto,
+  GetContactDto,
+  GetContactOptsDto,
+  GetContributionInfoDto,
+  ListContactsDto,
+  UpdateContactDto,
+} from '#api/dto/ContactDto';
+import {
+  CreateContactMfaDto,
+  DeleteContactMfaDto,
+  GetContactMfaDto,
+} from '#api/dto/ContactMfaDto';
+import {
+  GetContactRoleDto,
+  UpdateContactRoleDto,
+} from '#api/dto/ContactRoleDto';
+import {
+  ForceUpdateContributionDto,
+  StartContributionDto,
+  UpdateContributionDto,
+} from '#api/dto/ContributionDto';
+import { CompleteJoinFlowDto, StartJoinFlowDto } from '#api/dto/JoinFlowDto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
+import {
+  CreatePaymentDto,
+  GetPaymentDto,
+  ListPaymentsDto,
+} from '#api/dto/PaymentDto';
+import { GetPaymentFlowDto } from '#api/dto/PaymentFlowDto';
+import { ContactRoleParams } from '#api/params/ContactRoleParams';
+import ContactExporter from '#api/transformers/ContactExporter';
+import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
+import ContactTransformer from '#api/transformers/ContactTransformer';
+import PaymentTransformer from '#api/transformers/PaymentTransformer';
 
 @JsonController('/contact')
 @Authorized()
@@ -221,11 +227,16 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: UpdateContributionDto
   ): Promise<GetContributionInfoDto> {
-    if (!(await PaymentService.canChangeContribution(target, true, data))) {
+    const form = {
+      ...data,
+      monthlyAmount: getMonthlyAmount(data.amount, data.period),
+    };
+
+    if (!(await PaymentService.canChangeContribution(target, true, form))) {
       throw new CantUpdateContribution();
     }
 
-    await ContactsService.updateContactContribution(target, data);
+    await ContactsService.updateContactContribution(target, form);
     return await this.getContribution(target);
   }
 
@@ -234,7 +245,17 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: StartContributionDto
   ): Promise<GetPaymentFlowDto> {
-    return await this.handleStartUpdatePaymentMethod(target, data);
+    const form = {
+      ...data,
+      monthlyAmount: getMonthlyAmount(data.amount, data.period),
+    };
+    const flow = await PaymentFlowService.startContributionUpdate(
+      target,
+      data.paymentMethod,
+      data.completeUrl,
+      form
+    );
+    return plainToInstance(GetPaymentFlowDto, flow);
   }
 
   /**
@@ -299,8 +320,13 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
   ): Promise<GetContributionInfoDto> {
-    const joinFlow = await this.handleCompleteUpdatePaymentMethod(target, data);
-    await ContactsService.updateContactContribution(target, joinFlow.joinForm);
+    const updated = await PaymentFlowService.finalizeContributionUpdate(
+      target,
+      data.paymentFlowId
+    );
+    if (!updated) {
+      throw new NotFoundError();
+    }
     return await this.getContribution(target);
   }
 
@@ -319,6 +345,41 @@ export class ContactController {
   ): Promise<GetContributionInfoDto> {
     await ContactsService.forceUpdateContactContribution(target, data);
     return await this.getContribution(target);
+  }
+
+  @Post('/:id/payment')
+  async createOneTimePayment(
+    @TargetUser() target: Contact,
+    @Body() data: CreatePaymentDto
+  ): Promise<GetPaymentFlowDto> {
+    const form: PaymentForm = {
+      monthlyAmount: data.amount,
+      payFee: data.payFee,
+      prorate: false,
+      period: 'one-time',
+    };
+    const params = await PaymentFlowService.startContributionUpdate(
+      target,
+      data.paymentMethod,
+      data.completeUrl,
+      form
+    );
+    return plainToInstance(GetPaymentFlowDto, params);
+  }
+
+  @OnUndefined(204)
+  @Post('/:id/payment/complete')
+  async completeOneTimePayment(
+    @TargetUser() target: Contact,
+    @Body() data: CompleteJoinFlowDto
+  ): Promise<void> {
+    const updated = await PaymentFlowService.finalizeContributionUpdate(
+      target,
+      data.paymentFlowId
+    );
+    if (!updated) {
+      throw new NotFoundError();
+    }
   }
 
   @Get('/:id/payment')
@@ -344,6 +405,9 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: StartJoinFlowDto
   ): Promise<GetPaymentFlowDto> {
+    // Use existing payment method if one is not provided.
+    // This means the user is changing to the same payment method but with new
+    // payment details (e.g. new card)
     const paymentMethod =
       data.paymentMethod ||
       (await PaymentService.getContribution(target)).method;
@@ -351,16 +415,12 @@ export class ContactController {
       throw new NoPaymentMethod();
     }
 
-    return await this.handleStartUpdatePaymentMethod(target, {
-      ...data,
+    const paymentFlow = await PaymentFlowService.startContributionUpdate(
+      target,
       paymentMethod,
-      // TODO: not needed, should be optional
-      amount: 0,
-      period: ContributionPeriod.Annually,
-      monthlyAmount: 0,
-      payFee: false,
-      prorate: false,
-    });
+      data.completeUrl
+    );
+    return plainToInstance(GetPaymentFlowDto, paymentFlow);
   }
 
   @Post('/:id/payment-method/complete')
@@ -368,69 +428,15 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompleteJoinFlowDto
   ): Promise<GetContributionInfoDto> {
-    await this.handleCompleteUpdatePaymentMethod(target, data);
-    return await this.getContribution(target);
-  }
-
-  // TODO: move to PaymentTransformer or PaymentService
-  private async handleStartUpdatePaymentMethod(
-    target: Contact,
-    data: StartContributionDto
-  ): Promise<GetPaymentFlowDto> {
-    if (!(await PaymentService.canChangeContribution(target, false, data))) {
-      throw new CantUpdateContribution();
-    }
-
-    const joinFlowParams = await PaymentFlowService.createPaymentJoinFlow(
-      {
-        ...data,
-        monthlyAmount: data.monthlyAmount,
-        // TODO: unnecessary, should be optional
-        password: await generatePassword(''),
-        email: '',
-      },
-      {
-        confirmUrl: '',
-        loginUrl: '',
-        setPasswordUrl: '',
-      },
-      data.completeUrl,
-      target
-    );
-
-    return plainToInstance(GetPaymentFlowDto, joinFlowParams);
-  }
-
-  // TODO: move to PaymentTransformer or PaymentService
-  private async handleCompleteUpdatePaymentMethod(
-    target: Contact,
-    data: CompleteJoinFlowDto
-  ): Promise<JoinFlow> {
-    const joinFlow = await PaymentFlowService.getJoinFlowByPaymentId(
+    const updated = await PaymentFlowService.finalizeContributionUpdate(
+      target,
       data.paymentFlowId
     );
-    if (!joinFlow) {
+    if (!updated) {
       throw new NotFoundError();
     }
 
-    if (
-      !(await PaymentService.canChangeContribution(
-        target,
-        false,
-        joinFlow.joinForm
-      ))
-    ) {
-      throw new CantUpdateContribution();
-    }
-
-    const completedFlow = await PaymentFlowService.completeJoinFlow(joinFlow);
-    if (!completedFlow) {
-      throw new NotFoundError();
-    }
-
-    await PaymentService.updatePaymentMethod(target, completedFlow);
-
-    return joinFlow;
+    return await this.getContribution(target);
   }
 
   @Authorized('admin')

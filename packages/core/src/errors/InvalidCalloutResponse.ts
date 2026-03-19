@@ -1,4 +1,6 @@
-import { BadRequestError } from 'routing-controllers';
+import { ClientApiErrorData } from '@beabee/beabee-common';
+
+import { BadRequestError } from './BadRequestError';
 
 type InvalidCalloutResponseCode =
   | 'only-anonymous'
@@ -9,7 +11,10 @@ type InvalidCalloutResponseCode =
   | 'logged-in-guest-fields'
   | 'unknown-user';
 
-export class InvalidCalloutResponse extends BadRequestError {
+export class InvalidCalloutResponse
+  extends BadRequestError
+  implements ClientApiErrorData
+{
   readonly code = 'invalid-callout-response';
   constructor(readonly subCode: InvalidCalloutResponseCode) {
     super();

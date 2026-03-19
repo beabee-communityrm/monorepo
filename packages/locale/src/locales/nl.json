@@ -67,6 +67,7 @@
     "cancel": "Annuleren",
     "changePassword": "Wijzig wachtwoord",
     "chooseFile": "Bestand kiezen",
+    "clearSearch": "Zoekopdracht wissen",
     "close": "Sluit",
     "continue": "Doorgaan",
     "copy": "Kopieer",
@@ -85,6 +86,7 @@
     "noBack": "“Nee, ga terug”.",
     "participate": "Deelnemen",
     "preview": "Voorbeeld",
+    "previous": "Vorige",
     "publish": "Publiceren",
     "reopen": "Heropen",
     "replicate": "Repliceren",
@@ -99,6 +101,8 @@
     "schedule": "Plan",
     "search": "Zoeken",
     "sendEmails": "E-mails verzenden",
+    "sendOneOffEmail": "E-mail verzenden",
+    "sendOngoingEmails": "Doorlopende e-mails",
     "share": "Delen",
     "skip": "Sla over",
     "submit": "Verzenden",
@@ -108,7 +112,8 @@
     "view": "Bekijk",
     "yesDelete": "“Ja, verwijder het”",
     "yesDisable": "“Ja, schakel het uit”",
-    "yesRemove": "“Ja, verwijder het”"
+    "yesRemove": "“Ja, verwijder het”",
+    "yesReset": "Ja, resetten"
   },
   "addContact": {
     "contactSaved": "Contact opgeslagen",
@@ -178,6 +183,10 @@
       "fromEmail": "Van e-mail",
       "fromName": "Van naam",
       "label": "E-mail",
+      "templates": {
+        "description": "Hier stel je het onderwerp en de tekst in van de e-mails die de app verstuurt. De kleur laat zien: groen = aangepast, geel = standaardtemplate, rood = niet ingesteld (wordt niet verzonden).",
+        "title": "E-mails instellen"
+      },
       "text": "Alle e-mailcommunicatie wordt vanaf dit e-mailadres verzonden.",
       "title": "Stel een algemeen e-mailadres in"
     },
@@ -213,9 +222,13 @@
       }
     },
     "payment": {
-      "paymentTitle": "Betaling",
-      "taxRate": "BTW-tarief",
-      "taxRateEnabled": "BTW inschakelen"
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
+      "paymentTitle": "",
+      "showOneTimeDonation": "",
+      "taxRate": "",
+      "taxRateLabelOneTime": "",
+      "taxRateLabelRecurring": ""
     },
     "theme": {
       "bodyFont": "Tekst lichaam",
@@ -249,6 +262,7 @@
       "any": "elke"
     },
     "createdSegment": "Segment “{segment}” aangemaakt",
+    "invalidRuleError": "Er klopt iets niet in deze regel: \"{ rule }\". Werk bij!",
     "matchWord": {
       "AND": "en",
       "OR": "of"
@@ -365,6 +379,23 @@
       "tabs": {
         "content": {
           "title": ""
+        },
+        "email": {
+          "body": {
+            "default": "<p>Hallo {'*|FNAME|*'},</p><p></p><p>Deze e-mail bevestigt je reactie op <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> met je e-mailadres {'*|EMAIL|*'}.</p><p></p><p>Als je vragen hebt, neem dan contact op met ons ondersteuningsteam via <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p></p><p>Met vriendelijke groet</p>"
+          },
+          "collectInfoWarning": {
+            "description": "Om een e-mail naar alle deelnemers te sturen, moet je \"Contactgegevens verzamelen\" inschakelen in het tabblad Instellingen",
+            "title": "Contactgegevens niet verzameld"
+          },
+          "sendEmail": {
+            "description": "E-mail wordt verzonden naar alle deelnemers die hun contactgegevens indienen",
+            "label": "Stuur een e-mail naar alle deelnemers na indiening"
+          },
+          "subject": {
+            "default": "Bedankt voor je reactie"
+          },
+          "title": "Email"
         },
         "endMessage": {
           "inputs": {
@@ -662,10 +693,10 @@
           "navigationButtons": {
             "title": ""
           },
-          "title": "",
           "responseLinks": {
             "title": ""
-          }
+          },
+          "title": ""
         }
       },
       "title": "",
@@ -846,7 +877,7 @@
     "title": "Recensenten"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, worden extra reacties niet geregistreerd."
+    "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, wordt extra reacties niet geregistreerd."
   },
   "callouts": {
     "archive": "Archief",
@@ -879,7 +910,6 @@
   },
   "common": {
     "backToHome": "Terug naar home",
-    "contributing": "Bijdragend",
     "contributionPeriod": {
       "annually": "Jaarlijks",
       "monthly": "Maandelijks"
@@ -894,7 +924,6 @@
     "hello": "Hallo",
     "id": "ID",
     "itemsPerPage": "{items} items per pagina",
-    "joined": "Aangesloten bij",
     "label": "Label",
     "loading": "Aan het laden...",
     "login": "Inloggen",
@@ -908,6 +937,11 @@
     "no": "Nee",
     "noResults": "Geen resultaten gevonden",
     "pageCount": "Pagina {pageNumber} van {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Jaarlijks",
+      "monthly": "Maandelijks",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "Geannuleerd",
       "draft": "Concept",
@@ -915,10 +949,16 @@
       "pending": "In afwachting van",
       "successful": "Succesvol"
     },
+    "paymentType": {
+      "oneTime": "Eenmalig",
+      "prorated": "Pro-rata",
+      "recurring": "Terugkerend",
+      "unknown": "Onbekend"
+    },
     "perMonth": "/ maand",
-    "perMonthText": "per maand",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "/ jaar",
-    "perYearText": "een jaar",
     "role": {
       "admin": "Beheerder",
       "member": "Lid",
@@ -976,9 +1016,11 @@
       "status": "Status",
       "title": "Nieuwsbrief"
     },
+    "oneTime": "Eenmalig",
     "overview": "Overzicht",
     "pickTag": "Kies een tag uit de onderstaande lijst",
     "profile": "Profiel",
+    "recurring": "Terugkerend",
     "roles": "Rollen",
     "security": {
       "instructions": "Kopieer en deel deze link:",
@@ -991,6 +1033,10 @@
       "title": "Beveiliging",
       "whatDoTheButtonsDo": "Klik op de knop om een noodlink te genereren:"
     }
+  },
+  "contactSelector": {
+    "contactNOfTotal": "Contact {current} van {total}",
+    "selfOption": "Uzelf"
   },
   "contacts": {
     "addContact": "Contact toevoegen",
@@ -1005,15 +1051,18 @@
       "activeUser": "",
       "amount": "Bedrag",
       "annotationsCopy": "Contact succesvol bijgewerkt",
-      "contribution": "Bijdrage",
-      "contributionCancelled": "Opzegging contributie",
-      "contributionMonthlyAmount": "Contributie maandbedrag",
-      "contributionPeriod": "Contributie periode",
-      "contributionType": "Type bijdrage",
+      "averageDonationAmount": "Gemiddelde eenmalige bijdragen (aller tijden)",
+      "contribution": "Terugkerende bijdrage",
+      "contributionCancelled": "Terugkerende bijdrage geannuleerd",
+      "contributionMonthlyAmount": "Terugkerende bijdrage maandelijks bedrag",
+      "contributionPeriod": "Terugkerende bijdrage periode",
+      "contributionType": "Terugkerende bijdrage type",
       "deliveryOptIn": "Keuze voor levering",
       "description": "Beschrijving",
+      "donationDate": "Datum eenmalige bijdrage",
       "email": "E-mail",
       "firstname": "Voornaam",
+      "hasDonated": "Heeft eenmalige bijdrage gedaan",
       "joined": "Aangesloten bij",
       "lastSeen": "Laatst gezien",
       "lastname": "Achternaam",
@@ -1030,19 +1079,51 @@
       "period": "Periode",
       "phone": "Telefoon",
       "preferredChannel": "Voorkeur kanaal",
-      "tags": "Tags"
+      "tags": "Tags",
+      "totalDonationAmount": "Totaalsom eenmalige bijdragen (aller tijden)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Contact informatie",
-      "contribution": "Bijdrage",
+      "oneTimeContributions": "Eenmalige bijdragen",
+      "recurringContributions": "Doorlopende bijdragen",
       "role": "Rol"
+    },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Weet je zeker dat je dit e-mailsjabloon wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "title": "Sjabloon verwijderen?"
+      },
+      "date": "Aangemaakt",
+      "edit": "Bewerken",
+      "editTitle": "Sjabloon bewerken",
+      "editTitleWithName": "Sjabloon bewerken: {name}",
+      "empty": "Nog geen e-mailsjablonen.",
+      "manage": "E-mailsjablonen beheren",
+      "name": "Naam",
+      "showingOf": "Toont sjablonen {start} tot {end} van {total}",
+      "subject": "Onderwerp",
+      "title": "E-mailsjablonen",
+      "use": "Gebruiken"
     },
     "noContacts": "Nog geen contacten toegevoegd",
     "noResults": "Geen contacten gevonden",
     "numResults": "{n} contact gevonden | {n} contacten gevonden",
     "search": "Contacten zoeken...",
     "selectedCount": "{n} contactpersoon geselecteerd | {n} contactpersonen geselecteerd",
+    "sendEmail": {
+      "newEmail": "Nieuwe e-mail",
+      "saveAndBack": "Opslaan en terugkeren",
+      "saveAndBackSuccess": "Sjabloon opgeslagen.",
+      "saveAndSend": "Opslaan en verzenden",
+      "send": "Verzenden",
+      "sent": "De e-mail is naar het segment verzonden.",
+      "sentTimes": "{n} keer verzonden",
+      "templateLabel": "Sjabloon",
+      "templateName": "Naam van het nieuwe sjabloon",
+      "templateNameRequired": "Voer een naam in voor het nieuwe sjabloon.",
+      "title": "E-mail verzenden naar segment"
+    },
     "showingOf": "Toont {start} tot {end} contacten uit {total}"
   },
   "contribution": {
@@ -1056,7 +1137,6 @@
     "changeBank": "Overstappen naar een andere bankrekening",
     "changeBankInfo": "In de volgende stap worden de gegevens van je nieuwe bankrekening gevraagd.",
     "contributing": "Je draagt bij:",
-    "contributionUpdateError": "Je kunt je bijdrage op dit moment niet bijwerken omdat je nog een betaling tegoed hebt.",
     "dueToRenew": "Je bijdrage moet vernieuwd worden op {renewalDate}.",
     "expired": "Je bijdrage is verlopen.",
     "expiredText": "Overweeg om te verlengen, al is het maar voor het laagste bedrag, het zou ons enorm helpen. Hartelijk dank!",
@@ -1069,7 +1149,8 @@
       "title": "Betalingsgeschiedenis"
     },
     "paymentMethod": "Betaalmethode",
-    "paymentSourceUpdateError": "Je kunt je bankrekening momenteel niet bijwerken omdat je nog een betaling tegoed hebt.",
+    "perMonthText": "per maand",
+    "perYearText": "een jaar",
     "prorateDecreaseMessage": "Uw huidige bijdrage is nog één maand geldig. | Uw huidige bijdrage duurt nog {n} maanden.",
     "prorateDecreaseMessageWillStart": "Uw nieuwe bijdrage start op {renewalDate}.",
     "prorateIncreaseMessage": "Uw huidige bijdrage is nog één maand geldig. | Uw huidige bijdrage duurt nog {n} maanden.",
@@ -1096,6 +1177,109 @@
   },
   "editNotice": {
     "title": "Bewerken: {title}"
+  },
+  "emailEditor": {
+    "body": {
+      "label": "Bericht"
+    },
+    "preview": {
+      "asContactLabel": "Contact voor voorbeeld",
+      "label": "Voorbeeld",
+      "unavailable": "Voorbeeld niet beschikbaar"
+    },
+    "subject": {
+      "label": "Onderwerp"
+    }
+  },
+  "emails": {
+    "actions": {
+      "addCustom": "Aangepaste e-mail toevoegen",
+      "deactivate": "Deactiveren",
+      "resetToDefault": "Terugzetten naar standaard"
+    },
+    "add": {
+      "title": "Aangepaste e-mail maken"
+    },
+    "confirmDelete": {
+      "message": "Weet je zeker dat je deze e-mail wilt deactiveren? Deze actie kan niet ongedaan worden gemaakt.",
+      "messageWithMailings": "Deze e-mail is {count} keer verzonden. Weet je zeker dat je deze wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "title": "E-mail deactiveren"
+    },
+    "confirmResetToDefault": {
+      "message": "Weet je zeker dat je dit sjabloon wilt terugzetten naar standaard? Je aangepaste wijzigingen gaan verloren.",
+      "title": "Terugzetten naar standaard"
+    },
+    "customized": "Aangepast",
+    "default": "Standaard",
+    "description": "Beschrijving",
+    "edit": {
+      "title": "E-mail bewerken",
+      "titleCustom": "Bewerken: {name}"
+    },
+    "fromEmail": "Afzender e-mail",
+    "fromName": "Afzendernaam",
+    "list": {
+      "showingOf": "Toont {start} tot {end} e-mails van {total}"
+    },
+    "mailingCount": "Verzonden e-mails",
+    "missingDefault": "Niet Actief",
+    "name": "E-mailnaam",
+    "notifications": {
+      "created": "E-mail succesvol aangemaakt",
+      "deleted": "E-mail succesvol verwijderd",
+      "resetToDefault": "Sjabloon succesvol teruggezet naar standaard",
+      "templateAssigned": "",
+      "templatesAssigned": "",
+      "updated": "E-mail succesvol bijgewerkt"
+    },
+    "status": "Status",
+    "tabs": {
+      "custom": "Aangepaste e-mails",
+      "templates": "Systeemsjablonen"
+    },
+    "templates": {
+      "availableFields": "Beschikbare velden",
+      "description": {
+        "cancelled-contribution": "Verzonden naar leden wanneer hun terugkerende bijdrage wordt geannuleerd. Bevat meestal informatie over wanneer het lidmaatschap eindigt, evenals het lid-ID. Kan een link naar een enquête bevatten.",
+        "cancelled-member": "Verzonden naar beheerders wanneer een lid zijn bijdrage opzegt. Bevat meestal een melding met het ID en de naam van het opgezegde lid.",
+        "confirm-email": "Verzonden naar nieuwe gebruikers tijdens het registratieproces om hun e-mailadres te verifiëren. Bevat een bevestigingslink die ze moeten klikken om de registratie te voltooien.",
+        "contribution-didnt-start": "Verzonden naar leden wanneer hun Stripe-abonnementsbetaling niet kon worden gestart (bijv. geweigerde betaalmethode, onvoldoende saldo). Informeert hen dat hun lidmaatschap is ingetrokken vanwege de betalingsfout.",
+        "email-exists-login": "Verzonden wanneer iemand probeert te registreren met een e-mailadres dat al bestaat en toebehoort aan een actief lid met een ingesteld wachtwoord. Biedt een inloglink zodat ze toegang kunnen krijgen tot hun bestaande account.",
+        "email-exists-set-password": "Verzonden wanneer iemand probeert te registreren met een e-mailadres dat al bestaat en toebehoort aan een actief lid dat nog geen wachtwoord heeft ingesteld. Biedt een link om een wachtwoord in te stellen.",
+        "manual-to-automatic": "Verzonden naar leden wanneer hun betaalmethode succesvol is gewijzigd van handmatig naar automatische terugkerende betaling. Bevestigt de succesvolle wijziging.",
+        "new-callout-response": "Verzonden naar beheerders wanneer een nieuwe reactie op een CrowdNewsroom wordt ingediend. Bevat meestal een melding met de CrowdNewsroom-details en de naam van de reagerende persoon.",
+        "new-member": "Verzonden naar beheerders wanneer een nieuw lid met succes lid wordt van de community. Bevat meestal een melding met het ID en de naam van het nieuwe lid.",
+        "one-time-donation": "Verzonden naar gebruikers nadat ze een eenmalige bijdrage hebben voltooid.",
+        "one-time-donation-failed": "Verzonden naar gebruikers wanneer hun eenmalige bijdragebetaling mislukt.",
+        "reset-device": "Verzonden wanneer een gebruiker vraagt om zijn vertrouwde apparaat voor tweefactorauthenticatie te resetten. Bevat een veilige link om het apparaat te resetten.",
+        "reset-password": "Verzonden wanneer een gebruiker vraagt om zijn wachtwoord te resetten. Bevat een veilige link om het wachtwoord te resetten.",
+        "setup-account": "Verzonden naar gebruikers die een eenmalige bijdrage hebben gedaan en nog geen account hebben.",
+        "welcome": "Verzonden naar nieuwe leden nadat ze het registratieproces hebben voltooid. Deze e-mail heet hen welkom in de community."
+      },
+      "names": {
+        "cancelled-contribution": "Bijdrage geannuleerd",
+        "cancelled-member": "Beheer: Geannuleerd lid",
+        "confirm-email": "E-mail bevestigen",
+        "contribution-didnt-start": "Bijdrage niet gestart",
+        "email-exists-login": "E-mail bestaat - inloggen",
+        "email-exists-set-password": "E-mail bestaat - wachtwoord instellen",
+        "manual-to-automatic": "Handmatige bijdrager omgezet naar automatisch",
+        "new-callout-response": "Beheer: Nieuwe CrowdNewsroom-reactie",
+        "new-member": "Beheer: Nieuw contact",
+        "one-time-donation": "Bevestiging eenmalige bijdrage",
+        "one-time-donation-failed": "Eenmalige bijdrage mislukt",
+        "reset-device": "Apparaat resetten",
+        "reset-password": "Wachtwoord resetten",
+        "setup-account": "Account instellen",
+        "welcome": "Welkom"
+      },
+      "type": {
+        "admin": "Beheerdersmeldingen",
+        "contact": "Contact e-mails",
+        "general": "Algemeen"
+      }
+    },
+    "type": "Type"
   },
   "footer": {
     "contactUs": "Neem contact met ons op",
@@ -1126,11 +1310,13 @@
     "errorMessages": {
       "api": {
         "account-locked": "Account vergrendeld vanwege te veel mislukte inlogpogingen. Reset je wachtwoord of neem contact op met support voor hulp.",
+        "cant-update-contribution": "Je kunt je bijdrage op dit moment niet bijwerken omdat je nog een betaling tegoed hebt.",
         "duplicate-email": "E-mailadres bestaat al",
         "duplicate-tag-name": "Er bestaat al een tag met deze naam",
         "invalid-token": "Ongeldig 2FA token",
         "login-failed": "Ongeldige combinatie wachtwoord/e-mail",
-        "mfa-token-required": "Je hebt 2FA ingeschakeld, voer het token van je authenticator app in om verder te gaan."
+        "mfa-token-required": "Je hebt 2FA ingeschakeld, voer het token van je authenticator app in om verder te gaan.",
+        "payment-failed": "Je betaling is niet gelukt. Probeer het opnieuw of gebruik een andere betaalmethode."
       },
       "generic": "Oeps, er is iets fout gegaan! Neem contact op met support als dit weer gebeurt.",
       "unauthorized": "Je hebt hier geen toegang toe.",
@@ -1227,6 +1413,7 @@
       "heading": "Kop",
       "italic": "Cursief",
       "link": "Link",
+      "mergeFields": "Samenvoegvelden",
       "numberedlist": "Genummerde lijst",
       "strikethrough": "Doorhalen",
       "toolbar": "",
@@ -1254,8 +1441,11 @@
   },
   "homePage": {
     "editProfile": "Bewerk je community profiel",
+    "makeOneTimeDonationButton": "Bijdrage doen",
+    "makeOneTimeDonationTitle": "Doe nu een eenmalige bijdrage",
     "manageContribution": "Je bijdrage beheren",
     "newCallout": "Nieuwe CrowdNewsroom!",
+    "oneTimeContributionSuccessMessage": "Bedankt voor je bijdrage!",
     "openCallouts": "CrowdNewsroom openen",
     "quickActions": "Snelle acties",
     "title": "Home",
@@ -1278,18 +1468,36 @@
   "join": {
     "absorbFeeForce": "{bedrag} bijdragen moeten de {fee} kosten opnemen.",
     "absorbFeeOptIn": "Ja, ik zal de {fee} kosten op me nemen.",
-    "absorbFeeText": "Onze betalingsverwerker brengt ons kosten per transactie in rekening, wat betekent dat we minder ontvangen uit maandelijkse bijdragen. Accepteer je de {fee} transactiekosten? Je kunt ook jaarlijks betalen.",
+    "absorbFeeText": {
+      "monthly": "Onze betalingsverwerker brengt ons kosten per transactie in rekening, wat betekent dat we minder ontvangen uit maandelijkse bijdragen. Accepteer je de {fee} transactiekosten? Je kunt ook jaarlijks betalen.",
+      "one-time": "Onze betalingsverwerker brengt ons kosten per transactie in rekening, wat betekent dat we minder ontvangen uit eenmalige bijdragen. Accepteer je de {fee} transactiekosten?"
+    },
     "contribute": "Draag bij {contribution}",
+    "contribution": {
+      "annually": "{amount} per jaar",
+      "monthly": "{amount} per maand",
+      "one-time": "{amount} eenmalig"
+    },
     "errors": {
       "confirmEmail": {
-        "message": "Bijna klaar! We moeten alleen je e-mailadres bevestigen om het instellen van je lidmaatschap af te ronden.",
-        "proceed": "We hebben je een e-mail gestuurd. Klik op de link om verder te gaan.",
-        "title": "Bevestig je e-mailadres"
+        "message": "We hebben zojuist een bevestigingsmail gestuurd naar het e-mailadres dat je hebt opgegeven.",
+        "proceed": "Vergeet niet je account verder in te stellen! Je vindt de volgende stappen in je inbox.",
+        "title": "Dankjewel!"
       },
       "failed": {
         "backToJoin": "Terug naar de aanmeldpagina",
-        "message": "Er is een probleem opgetreden bij het opzetten van je lidmaatschap. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
+        "message": "Er is een probleem opgetreden bij het opzetten van je account. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
         "title": "Er is iets fout gegaan"
+      },
+      "notFound": {
+        "backToJoin": "Terug naar de aanmeldpagina",
+        "message": "Deze registratielink is verlopen of al gebruikt. Als je zojuist hebt geregistreerd in een ander tabblad, ontvang je binnenkort een bevestigingsmail. Als je je een tijd geleden hebt geregistreerd, moet je een nieuwe registratie starten.",
+        "title": "Registratielink verlopen"
+      },
+      "paymentFailed": {
+        "backToJoin": "Terug naar de aanmeldpagina",
+        "message": "Je betaling is niet gelukt. Probeer het opnieuw of gebruik een andere betaalmethode.",
+        "title": "Betaling mislukt"
       }
     },
     "login": "Inloggen",
@@ -1307,18 +1515,14 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Lidmaatschap",
-      "recurringLabel": "Periodieke bijdrage"
-    },
     "genericError": "Oeps, er is iets misgegaan ({type})! Neem contact op met support als dit weer gebeurt.",
     "goBack": "Heb je iets gemist? {back}",
     "goBackButton": "Terug naar het vorige scherm",
     "note": "Je kunt je bijdrage op elk moment wijzigen en je betalingsgeschiedenis bekijken in je ledenaccount.",
-    "willBeContributing": "Je draagt {contribution} bij"
+    "willBeContributing": "Je draagt {contribution} bij",
+    "willBeDonating": "Je doet een eenmalige bijdrage van {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Bevestig uw gegevens",
     "continue": "Alles goed! Ga verder",
     "welcome": "Welkom {firstName}!"
   },
@@ -1368,6 +1572,7 @@
         "bigTitle": "Welkomst- en annuleringsmails",
         "cancellationEmail": "E-mail voor annulering",
         "description": "Pas je welkomst- en annuleringsmails aan",
+        "oneTimeDonationEmail": "E-mail voor eenmalige bijdrage",
         "text": "Alle e-mails worden verzonden vanaf uw support e-mailadres en bevatten een standaard handtekening. U kunt deze wijzigen in uw e-mailinstellingen.",
         "title": "E-mails",
         "welcomeEmail": "Welkom e-mail"
@@ -1405,6 +1610,7 @@
     "contacts": "Contacten",
     "contribution": "Bijdrage",
     "dashboard": "Dashboard",
+    "emails": "E-mails",
     "home": "Home",
     "legacyApp": "Oud dashboard",
     "logout": "Afmelden",
@@ -1413,6 +1619,51 @@
     "payments": "Betalingen",
     "settings": "Instellingen",
     "yourProfile": "Jouw profiel"
+  },
+  "mergeFields": {
+    "copied": "Gekopieerd!",
+    "copy": "Kopiëren",
+    "copyTag": "Kopieer {tag}",
+    "example": "Voorbeeld",
+    "groups": {
+      "contact": "Contactvelden",
+      "magic": "Magische links",
+      "standard": "Standaardvelden",
+      "template": "Sjabloonvelden"
+    },
+    "insert": "Invoegen",
+    "insertTag": "Voeg {tag} in",
+    "tags": {
+      "ACTIVATELINK": "Cadeau activatielink",
+      "ANSWERS": "Geformatteerde antwoorden",
+      "CALLOUTLINK": "Link naar de CrowdNewsroom",
+      "CALLOUTSLUG": "CrowdNewsroom slug",
+      "CALLOUTTITLE": "Titel van de CrowdNewsroom",
+      "CONFIRMLINK": "E-mail bevestigingslink",
+      "EMAIL": "E-mailadres van contact",
+      "EXPIRES": "Vervaldatum lidmaatschap",
+      "FNAME": "Voornaam van contact",
+      "GIFTDATE": "Startdatum cadeau",
+      "GIFTEE": "Naam van cadeauontvanger",
+      "ISELIGIBLE": "Of doorverwijzing in aanmerking komt",
+      "LNAME": "Achternaam van contact",
+      "LOGINLINK": "Loginlink",
+      "MEMBERID": "Lid-ID",
+      "MEMBERNAME": "Lidnaam",
+      "MEMBERSHIPID": "Lidmaatschap-ID van contact",
+      "MESSAGE": "Aangepaste berichtinhoud",
+      "NAME": "Volledige naam van contact",
+      "ORGNAME": "Organisatienaam",
+      "PURCHASER": "Naam van cadeauverkoper",
+      "REFCODE": "Doorverwijzingscode van contact",
+      "REFEREENAME": "Naam van doorverwezen persoon",
+      "RESPNAME": "Naam van respondent",
+      "RPLINK": "Link voor wachtwoordreset",
+      "SPLINK": "Link voor wachtwoord instellen",
+      "SUPPORTEMAIL": "E-mailadres voor ondersteuning",
+      "URL": "Speciale URL"
+    },
+    "title": "Samenvoegvelden"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1454,6 +1705,10 @@
       "success": ""
     },
     "error": "Er is iets misgegaan. Probeer de pagina opnieuw te laden.",
+    "rateLimit": {
+      "generic": "Te veel verzoeken. Wacht even en probeer het opnieuw.",
+      "withWait": "Te veel verzoeken. Wacht {time} en probeer het opnieuw."
+    },
     "remove": ""
   },
   "pageTitle": {
@@ -1469,6 +1724,11 @@
     "resetPassword": "Wachtwoord opnieuw instellen",
     "setPassword": "Wachtwoord instellen",
     "setup": "Instellen"
+  },
+  "paymentLabels": {
+    "membershipProductName": "Lidmaatschap",
+    "recurringContribution": "Periodieke bijdrage",
+    "taxRateDisplayName": "BTW"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -1507,13 +1767,18 @@
       "amount": "Bedrag",
       "chargeDate": "Datum",
       "contact": "Contact",
-      "status": "Status"
+      "status": "Status",
+      "type": ""
     },
     "dataGroup": {
       "payment": "Betaling"
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Gemiddeld bedrag",
+      "total": "Totaalbedrag"
+    },
     "filter": {
       "all": "Alle betalingen",
       "cancelled": "Geannuleerde betalingen",
@@ -1602,8 +1867,5 @@
     },
     "searchTag": "Tagged met...",
     "toggleTag": "Tag schakelen"
-  },
-  "taxRate": {
-    "invoiceName": "BTW"
   }
 }

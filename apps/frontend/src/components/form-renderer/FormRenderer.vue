@@ -33,6 +33,11 @@ import { sameAs } from '@vuelidate/validators';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import {
+  activeUploadsCount,
+  resetActiveUploadsCount,
+} from '#lib/formio/providers/storage/beabee';
+
 import { Form } from '../../lib/formio';
 import { type FormChangeEvent } from './form-renderer.interface';
 
@@ -50,7 +55,18 @@ const { t } = useI18n();
 
 const isValid = ref(false);
 
-useVuelidate({ isValid: { yes: sameAs(true) } }, { isValid });
+// Custom validator to ensure no files are uploading
+const notUploading = () => activeUploadsCount.value === 0;
+
+useVuelidate(
+  {
+    isValid: {
+      yes: sameAs(true),
+      notUploading,
+    },
+  },
+  { isValid }
+);
 
 function handleChange(evt: FormChangeEvent, changes?: { noValidate: boolean }) {
   // This handler gets lots of different change events. Use the second argument to
@@ -203,6 +219,9 @@ const formOpts = computed(() => {
 });
 
 onBeforeMount(() => {
+  // Reset upload counter to ensure no stale counts from previous forms
+  resetActiveUploadsCount();
+
   library.add(
     faCalendar,
     faCamera,

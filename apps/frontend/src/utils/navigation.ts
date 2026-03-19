@@ -1,9 +1,10 @@
+import type { Router } from 'vue-router';
+
 import type {
   NavigationOptions,
   NavigationResolvedTabItem,
   NavigationTabItem,
-} from '@type/navigation';
-import type { Router } from 'vue-router';
+} from '#type/navigation';
 
 /**
  * Resolves tab navigation items with type-safe route resolution

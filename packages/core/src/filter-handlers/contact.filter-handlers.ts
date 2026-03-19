@@ -4,6 +4,7 @@ import {
   ContactContribution,
   ContactProfile,
   ContactRole,
+  Payment,
 } from '@beabee/core/models';
 import { FilterHandler, FilterHandlers } from '@beabee/core/type';
 import { getFilterHandler } from '@beabee/core/utils/rules';
@@ -65,6 +66,57 @@ function contributionField(field: keyof ContactContribution): FilterHandler {
       .select(`cc.contactId`)
       .from(ContactContribution, 'cc')
       .where(convertToWhereClause(`cc.${field}`));
+
+    qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
+  };
+}
+
+/**
+ * Creates a filter handler for one-time payment-related fields
+ * @param field - The field from Payment to filter on
+ * @returns A filter handler function for the specified payment field
+ */
+function oneTimePaymentField(field?: keyof Payment): FilterHandler {
+  return (qb, { fieldPrefix, convertToWhereClause, value, operator }) => {
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select('p.contactId')
+      .from(Payment, 'p')
+      .where("p.type = 'one-time'")
+      .andWhere('p.subscriptionId IS NULL')
+      .andWhere('p.contactId IS NOT NULL')
+      .distinct(true);
+
+    if (field) {
+      subQb.andWhere(convertToWhereClause(`p.${field}`));
+      qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
+    } else {
+      // Boolean check: has any successful payment or not
+      const isIn = value[0] ? 'IN' : 'NOT IN';
+      qb.where(`${fieldPrefix}id ${isIn} ${subQb.getQuery()}`);
+    }
+  };
+}
+
+/**
+ * Creates a filter handler for one-time payment-statistics-related fields
+ * @param statistic - The statistic to use to calculate the result
+ * @returns A filter handler function for the specified payment field based on the statistics method
+ */
+function oneTimePaymentStatistic(statistic: 'avg' | 'total'): FilterHandler {
+  return (qb, { fieldPrefix, convertToWhereClause }) => {
+    const aggregateExpr =
+      statistic === 'total' ? 'SUM(p.amount)' : 'AVG(p.amount)';
+
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select('p.contactId')
+      .from(Payment, 'p')
+      .where("p.type = 'one-time'")
+      .andWhere('p.subscriptionId IS NULL')
+      .andWhere('p.contactId IS NOT NULL')
+      .groupBy('p.contactId')
+      .having(convertToWhereClause(aggregateExpr));
 
     qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
   };
@@ -203,4 +255,8 @@ export const contactFilterHandlers: FilterHandlers<string> = {
   },
   'callouts.': calloutsFilterHandler,
   tags: contactTagFilterHandler,
+  hasDonated: oneTimePaymentField(),
+  donationDate: oneTimePaymentField('chargeDate'),
+  totalDonationAmount: oneTimePaymentStatistic('total'),
+  averageDonationAmount: oneTimePaymentStatistic('avg'),
 };

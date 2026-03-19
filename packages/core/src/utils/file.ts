@@ -1,4 +1,7 @@
+import gunzip from 'gunzip-maybe';
 import type { FormatEnum } from 'sharp';
+import { Readable } from 'stream';
+import tar from 'tar-stream';
 
 /**
  * Get MIME type from file extension
@@ -247,3 +250,51 @@ export const sanitizeFilename = (filename: string): string => {
     .replace(/[^\w.-]/g, '_') // Replace any remaining non-alphanumeric chars except dots and hyphens
     .trim(); // Trim any leading/trailing spaces
 };
+
+export async function extractJsonArchive<T = unknown>(
+  archive: Readable,
+  processJson: (json: unknown) => T | null
+): Promise<T[]> {
+  const extract = tar.extract();
+  const responses: T[] = [];
+
+  return new Promise((resolve, reject) => {
+    extract.on('entry', (header, stream, next) => {
+      if (header.type === 'file') {
+        let chunks: Buffer[] = [];
+
+        stream.on('data', (chunk: Buffer) => {
+          chunks.push(chunk);
+        });
+
+        stream.on('end', () => {
+          try {
+            const content = Buffer.concat(chunks).toString('utf8');
+            const jsonData = JSON.parse(content);
+            const result = processJson(jsonData);
+            if (result !== null) {
+              responses.push(result);
+            }
+            next();
+          } catch (error) {
+            next(error);
+          }
+        });
+
+        stream.on('error', next);
+      } else {
+        stream.resume();
+        stream.on('end', next);
+      }
+    });
+
+    // Handle errors from the source archive stream
+    archive.on('error', reject);
+
+    archive
+      .pipe(gunzip())
+      .pipe(extract)
+      .on('error', reject)
+      .on('finish', () => resolve(responses));
+  });
+}

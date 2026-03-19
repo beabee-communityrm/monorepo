@@ -27,7 +27,7 @@
     "@inquirer/prompts": "^7.2.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^2.1.1",
-    "axios": "^1.7.9",
+    "axios": "^1.12.2",
     "body-parser": "^1.20.3",
     "bootstrap-sass": "^3.4.3",
     "chance": "^1.1.12",
@@ -51,7 +51,6 @@
     "gocardless-nodejs": "^4.3.0",
     "helmet": "^7.1.0",
     "lodash": "^4.17.21",
-    "module-alias": "^2.2.3",
     "moment": "^2.30.1",
     "papaparse": "^5.4.1",
     "passport": "^0.7.0",
@@ -62,7 +61,7 @@
     "routing-controllers": "^0.10.4",
     "slugify": "^1.6.6",
     "stripe": "^15.9.0",
-    "typeorm": "^0.3.20",
+    "typeorm": "^0.3.27",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
@@ -80,8 +79,7 @@
     "@types/express-flash": "0.0.5",
     "@types/express-session": "^1.18.1",
     "@types/lodash": "^4.17.15",
-    "@types/module-alias": "^2.0.4",
-    "@types/node": "^22.15.28",
+    "@types/node": "^24.10.13",
     "@types/papaparse": "^5.3.15",
     "@types/passport": "^1.0.17",
     "@types/passport-local": "^1.0.38",
@@ -99,7 +97,7 @@
     "rimraf": "^6.0.1",
     "sass": "^1.77.4",
     "tsconfig": "^7.0.0",
-    "typescript": "~5.8.3"
+    "typescript": "~5.9.3"
   },
   "overrides": {
     "gulp-sourcemaps": {

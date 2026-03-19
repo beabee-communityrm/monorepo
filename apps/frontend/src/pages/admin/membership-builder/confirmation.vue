@@ -13,7 +13,7 @@ meta:
   </App2ColGrid>
   <App2ColGrid v-if="setupContent" extended>
     <template #col1>
-      <AppForm
+      <AppApiForm
         :button-text="t('form.saveChanges')"
         :success-text="t('form.saved')"
         @submit="handleUpdate"
@@ -105,7 +105,7 @@ meta:
             class="mb-4 font-semibold"
           />
         </template>
-      </AppForm>
+      </AppApiForm>
     </template>
     <template #col2>
       <Suspense>
@@ -123,18 +123,19 @@ import {
 import {
   App2ColGrid,
   AppCheckbox,
-  AppForm,
   AppInput,
   AppRichTextEditor,
   AppSelect,
   AppSubHeading,
 } from '@beabee/vue';
 
-import AppNewsletterOptInSettings from '@components/newsletter/AppNewsletterOptInSettings.vue';
-import SetupForm from '@components/pages/join/SetupForm.vue';
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import AppNewsletterOptInSettings from '#components/newsletter/AppNewsletterOptInSettings.vue';
+import SetupForm from '#components/pages/join/SetupForm.vue';
+import { client } from '#utils/api';
 
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);

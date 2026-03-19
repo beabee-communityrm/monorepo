@@ -1,4 +1,4 @@
 export enum LocaleContext {
-  Callout = "callout",
-  System = "system",
+  Callout = 'callout',
+  System = 'system',
 }

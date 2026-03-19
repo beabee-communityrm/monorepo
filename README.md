@@ -10,6 +10,7 @@ The Beabee Monorepo is organized into the following directories:
 
   - `frontend/`: Contains the code for the frontend application. See [Frontend README](apps/frontend/README.md) for more information.
   - `backend/`: Contains the code for the backend API. See [Backend README](apps/backend/README.md) for more information.
+  - `backend-cli/`: Command line interface for managing Beabee backend operations. See [Backend CLI README](apps/backend-cli/README.md) for more information.
   - `router/`: Contains the code for the new frontend router. See [Router README](apps/router/README.md) for more information.
 
 - `packages/`
@@ -32,7 +33,7 @@ You need the following tools installed on your machine:
 
 - Docker >= 19.03.8
 - Docker Compose >= 2
-- Node.js >= 20.10.0
+- Node.js >= 24
 - Yarn >= 1.22.22 (automatically uses the Yarn version from the repo)
 
 ### Initial Setup

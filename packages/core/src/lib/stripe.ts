@@ -1,91 +1,107 @@
 import {
+  ContributionForm,
   ContributionPeriod,
   PaymentForm,
   PaymentMethod,
   PaymentSource,
   PaymentStatus,
+  PaymentType,
 } from '@beabee/beabee-common';
 
 import { differenceInMonths } from 'date-fns';
 import Stripe from 'stripe';
 
 import config from '#config/config';
-import currentLocale from '#locale';
+import { currentLocale } from '#locale';
 import { log as mainLogger } from '#logging';
+import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
 import { getChargeableAmount } from '#utils/payment';
+
+// Stripe webhook events that we handle
+export const STRIPE_WEBHOOK_EVENTS = [
+  'checkout.session.completed',
+  'customer.deleted',
+  'customer.subscription.updated',
+  'customer.subscription.deleted',
+  'invoice.created',
+  'invoice.updated',
+  'invoice.paid',
+  'invoice.payment_failed',
+  'payment_method.detached',
+] as const;
 
 const log = mainLogger.child({ app: 'stripe-utils' });
 
 export const stripe = new Stripe(config.stripe.secretKey, {
-  apiVersion: '2024-04-10',
+  apiVersion: config.stripe.version,
   typescript: true,
 });
 
-export function getSalesTaxRateObject(): string[] {
-  const taxRateId = OptionsService.getText('tax-rate-stripe-id');
+export function getSalesTaxRateObject(
+  type: 'recurring' | 'one-time'
+): string[] {
+  const taxRateId = OptionsService.getText(`stripe-tax-rate-${type}-id`);
   return taxRateId ? [taxRateId] : [];
 }
 
 /**
- * Update the subscription sales tax rate.
+ * Update the sales tax rate, disabling the previous one if needed
  *
- * @param percentage The new sales tax rate percentage
- * @returns
+ * @param type The type of tax rate to update
+ * @param percentage The new sales tax rate percentage or null to disable
  */
-export async function updateSalesTaxRate(percentage: number): Promise<void> {
-  log.info(`Updating sales tax rate to ${percentage}%`);
+export async function updateSalesTaxRate(
+  type: 'recurring' | 'one-time',
+  percentage: number | null
+): Promise<void> {
+  const id = OptionsService.getText(`stripe-tax-rate-${type}-id`);
 
-  const id = OptionsService.getText('tax-rate-stripe-id');
   if (id) {
     const taxRate = await stripe.taxRates.retrieve(id);
-    // Tax rate is already set to the right percentage
+    // Tax rate is already set to the right percentage, do nothing
     if (taxRate.percentage === percentage) {
+      log.info(`Sales tax rate for ${type} is already ${percentage}%`);
       return;
     }
+
+    log.info(`Disabling current ${type} sales tax rate`);
+    await stripe.taxRates.update(id, { active: false });
   }
 
-  await disableSalesTaxRate();
+  if (percentage === null) {
+    await OptionsService.set(`stripe-tax-rate-${type}-id`, '');
+  } else {
+    log.info(`Setting new ${type} sales tax rate to ${percentage}%`);
+    const taxRate = await stripe.taxRates.create({
+      percentage: percentage,
+      active: true,
+      inclusive: true,
+      display_name: currentLocale().paymentLabels.taxRateDisplayName,
+    });
 
-  const taxRate = await stripe.taxRates.create({
-    percentage: percentage,
-    active: true,
-    inclusive: true,
-    display_name: currentLocale().taxRate.invoiceName,
-  });
-
-  await OptionsService.set('tax-rate-stripe-id', taxRate.id);
-}
-
-export async function disableSalesTaxRate(): Promise<void> {
-  log.info('Disabling sales tax rate');
-
-  const id = OptionsService.getText('tax-rate-stripe-id');
-  if (id) {
-    await stripe.taxRates.update(id, { active: false });
-    await OptionsService.set('tax-rate-stripe-id', '');
+    await OptionsService.set(`stripe-tax-rate-${type}-id`, taxRate.id);
   }
 }
 
 /**
  * Convert a payment form and method into a Stripe price data object.
  *
- * @param paymentForm The payment form
+ * @param form The contribution form
  * @param paymentMethod The payment method
  * @returns A Stripe price data object
  */
 export function getPriceData(
-  paymentForm: PaymentForm,
+  form: ContributionForm,
   paymentMethod: PaymentMethod
 ): Stripe.SubscriptionCreateParams.Item.PriceData {
   return {
     currency: config.currencyCode,
-    product: config.stripe.membershipProductId,
+    product: OptionsService.getText('stripe-membership-product-id'),
     recurring: {
-      interval:
-        paymentForm.period === ContributionPeriod.Monthly ? 'month' : 'year',
+      interval: form.period === ContributionPeriod.Monthly ? 'month' : 'year',
     },
-    unit_amount: getChargeableAmount(paymentForm, paymentMethod),
+    unit_amount: getChargeableAmount(form, paymentMethod),
   };
 }
 
@@ -134,20 +150,20 @@ async function calculateProrationParams(
 
 export const getCreateSubscriptionParams = (
   customerId: string,
-  paymentForm: PaymentForm,
+  form: ContributionForm,
   paymentMethod: PaymentMethod,
   renewalDate?: Date
 ): Stripe.SubscriptionCreateParams => {
   return {
     customer: customerId,
-    items: [{ price_data: getPriceData(paymentForm, paymentMethod) }],
+    items: [{ price_data: getPriceData(form, paymentMethod) }],
     off_session: true,
     ...(renewalDate &&
       renewalDate > new Date() && {
         billing_cycle_anchor: Math.floor(+renewalDate / 1000),
         proration_behavior: 'none',
       }),
-    default_tax_rates: getSalesTaxRateObject(),
+    default_tax_rates: getSalesTaxRateObject('recurring'),
   };
 };
 
@@ -162,21 +178,16 @@ export const getCreateSubscriptionParams = (
  */
 export async function createSubscription(
   customerId: string,
-  paymentForm: PaymentForm,
+  form: ContributionForm,
   paymentMethod: PaymentMethod,
   renewalDate?: Date
 ): Promise<Stripe.Subscription> {
   log.info('Creating subscription on ' + customerId, {
-    paymentForm,
+    form,
     renewalDate,
   });
   return await stripe.subscriptions.create(
-    getCreateSubscriptionParams(
-      customerId,
-      paymentForm,
-      paymentMethod,
-      renewalDate
-    )
+    getCreateSubscriptionParams(customerId, form, paymentMethod, renewalDate)
   );
 }
 
@@ -190,7 +201,7 @@ export async function createSubscription(
  */
 export async function updateSubscription(
   subscriptionId: string,
-  paymentForm: PaymentForm,
+  form: ContributionForm,
   paymentMethod: PaymentMethod
 ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
@@ -198,7 +209,7 @@ export async function updateSubscription(
   });
   const newSubscriptionItem = {
     id: subscription.items.data[0].id,
-    price_data: getPriceData(paymentForm, paymentMethod),
+    price_data: getPriceData(form, paymentMethod),
   };
 
   const { prorationAmount, prorationTime } = await calculateProrationParams(
@@ -210,7 +221,7 @@ export async function updateSubscription(
     renewalDate: new Date(subscription.current_period_end * 1000),
     prorationDate: new Date(prorationTime * 1000),
     prorationAmount,
-    paymentForm,
+    form,
   });
 
   // Clear any previous schedule
@@ -224,7 +235,7 @@ export async function updateSubscription(
     await stripe.subscriptionSchedules.release(oldSchedule.id);
   }
 
-  const startNow = prorationAmount === 0 || paymentForm.prorate;
+  const startNow = prorationAmount === 0 || form.prorate;
 
   if (startNow) {
     const params: Stripe.SubscriptionUpdateParams = {
@@ -290,6 +301,84 @@ export async function deleteSubscription(
       throw error;
     }
   }
+}
+
+/**
+ * Create a customer in Stripe if needed and attach the payment mandate to them.
+ *
+ * @param contact The contact information
+ * @param customerId The existing customer ID or null to create a new one
+ * @param mandateId The payment mandate ID
+ * @param vatNumber The VAT number to attach to the customer
+ * @returns The Stripe customer ID
+ */
+export async function ensureCustomerAndAttachPayment(
+  contact: { email: string; firstname: string; lastname: string },
+  customerId: string | null,
+  mandateId: string,
+  vatNumber?: string | null
+): Promise<string> {
+  if (!customerId) {
+    log.info('Create new customer for ' + contact.email);
+    const customer = await stripe.customers.create({
+      email: contact.email,
+      name: `${contact.firstname} ${contact.lastname}`,
+      ...(vatNumber && { tax_id_data: [{ type: 'eu_vat', value: vatNumber }] }),
+    });
+    customerId = customer.id;
+  }
+
+  log.info('Attach payment method ' + mandateId + ' to customer ' + customerId);
+  await stripe.paymentMethods.attach(mandateId, {
+    customer: customerId,
+  });
+
+  return customerId;
+}
+
+/**
+ * Create a one-time payment
+ *
+ * @param customerId The ID of the customer
+ * @param mandateId The ID of the payment mandate
+ * @param form The payment form
+ * @param paymentMethod The payment method
+ */
+export async function chargeOneTimePayment(
+  customerId: string,
+  mandateId: string,
+  form: PaymentForm,
+  paymentMethod: PaymentMethod
+): Promise<void> {
+  log.info('Creating one-time payment on ' + customerId);
+
+  const invoice = await stripe.invoices.create({
+    customer: customerId,
+    default_payment_method: mandateId,
+    collection_method: 'charge_automatically',
+    auto_advance: true,
+    currency: config.currencyCode,
+    metadata: {
+      'beabee-invoice-type': 'one-time-payment-detach-mandate',
+    },
+    default_tax_rates: getSalesTaxRateObject('one-time'),
+  });
+
+  await stripe.invoiceItems.create({
+    customer: customerId,
+    invoice: invoice.id,
+    amount: getChargeableAmount(form, paymentMethod),
+    description: 'One-time payment',
+  });
+
+  await stripe.invoices.pay(invoice.id);
+}
+
+export function isOneTimePaymentInvoice(invoice: Stripe.Invoice): boolean {
+  return (
+    invoice.metadata?.['beabee-invoice-type'] ===
+    'one-time-payment-detach-mandate'
+  );
 }
 
 /**
@@ -391,6 +480,24 @@ export async function manadateToSource(
   }
 }
 
+export function convertInvoiceToPayment(
+  invoice: Stripe.Invoice
+): Pick<
+  Payment,
+  'amount' | 'chargeDate' | 'description' | 'subscriptionId' | 'status' | 'type'
+> {
+  return {
+    amount: invoice.total / 100,
+    chargeDate: new Date(invoice.created * 1000),
+    description: invoice.description || '',
+    subscriptionId: invoice.subscription as string | null,
+    status: invoice.status
+      ? convertStatus(invoice.status)
+      : PaymentStatus.Draft,
+    type: getInvoiceType(invoice),
+  };
+}
+
 /**
  * Convert a Stripe invoice status to a payment status.
  *
@@ -413,6 +520,28 @@ export function convertStatus(status: Stripe.Invoice.Status): PaymentStatus {
 
     case 'uncollectible':
       return PaymentStatus.Failed;
+  }
+}
+
+/**
+ * Get the payment type from a Stripe invoice.
+ * @param invoice The Stripe invoice
+ * @returns The payment type
+ */
+export function getInvoiceType(invoice: Stripe.Invoice): PaymentType {
+  if (invoice.subscription) {
+    switch (invoice.billing_reason) {
+      case 'subscription':
+      case 'subscription_create':
+      case 'subscription_cycle':
+        return PaymentType.Recurring;
+      case 'subscription_update':
+        return PaymentType.Prorated;
+      default:
+        return PaymentType.Unknown;
+    }
+  } else {
+    return PaymentType.OneTime;
   }
 }
 

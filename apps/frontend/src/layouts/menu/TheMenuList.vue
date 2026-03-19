@@ -40,10 +40,11 @@ import {
   faSignInAlt,
   faWindowRestore,
 } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+
+import { client } from '#utils/api';
 
 import env from '../../env';
 import { canAdmin } from '../../store';

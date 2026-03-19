@@ -67,6 +67,7 @@
     "cancel": "Abbrechen",
     "changePassword": "Passwort ändern",
     "chooseFile": "Datei auswählen",
+    "clearSearch": "Suche löschen",
     "close": "Schließen",
     "continue": "Weiter",
     "copy": "Kopieren",
@@ -85,6 +86,7 @@
     "noBack": "Nein, gehe zurück",
     "participate": "Teilnehmen",
     "preview": "Vorschau",
+    "previous": "Vorheriger",
     "publish": "Veröffentlichen",
     "reopen": "Wieder aktivieren",
     "replicate": "Kopieren",
@@ -99,6 +101,8 @@
     "schedule": "Planen",
     "search": "Suchen",
     "sendEmails": "E-Mails senden",
+    "sendOneOffEmail": "E-Mail senden",
+    "sendOngoingEmails": "Laufende E-Mails",
     "share": "Teilen",
     "skip": "Überspringen",
     "submit": "Abschicken",
@@ -108,7 +112,8 @@
     "view": "Anzeigen",
     "yesDelete": "Ja, löschen",
     "yesDisable": "Ja, deaktivieren",
-    "yesRemove": "Ja, entfernen"
+    "yesRemove": "Ja, entfernen",
+    "yesReset": "Ja, zurücksetzen"
   },
   "addContact": {
     "contactSaved": "Kontakt gespeichert",
@@ -178,6 +183,10 @@
       "fromEmail": "E-Mail-Adresse",
       "fromName": "Name",
       "label": "E-Mail",
+      "templates": {
+        "description": "Verwalten Sie Betreff und Inhalt der von der Anwendung versendeten E-Mails. Die Statusfarbe zeigt an, ob die E-Mail individuell angepasst (grün), die Standardvorlage verwendet (gelb) oder die E-Mail gerade nicht konfiguriert ist und daher nicht aktiv ist (rot).",
+        "title": "E-Mail-Vorlagen verwalten"
+      },
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",
       "title": "Lege eine Standard-E-Mail-Adresse fest."
     },
@@ -213,9 +222,13 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "Einmalige Beiträge aktivieren",
+      "oneTimeDonationsTitle": "Einmalige Beiträge",
       "paymentTitle": "Zahlungen",
+      "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",
-      "taxRateEnabled": "Mehrwertsteuer aktivieren"
+      "taxRateLabelOneTime": "Mehrwertsteuersatz für einmalige Beiträge aktivieren",
+      "taxRateLabelRecurring": "Mehrwertsteuersatz für wiederkehrende Beiträge aktivieren"
     },
     "theme": {
       "bodyFont": "Text",
@@ -249,6 +262,7 @@
       "any": "einer dieser"
     },
     "createdSegment": "Erstelltes Segment \"{segment}\"",
+    "invalidRuleError": "In dieser Regel liegt ein Fehler vor: \"{ rule }\". Bitte nehmen Sie eine Aktualisierung vor.",
     "matchWord": {
       "AND": "und",
       "OR": "oder"
@@ -365,6 +379,23 @@
       "tabs": {
         "content": {
           "title": "Inhalt"
+        },
+        "email": {
+          "body": {
+            "default": "<p>Hallo {'*|FNAME|*'} {'*|LNAME|*'},</p><p></p><p>Diese E-Mail bestätigt Ihre Antwort auf <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> unter Verwendung Ihrer E-Mail-Adresse {'*|EMAIL|*'}.</p><p></p><p>Wenn Sie Fragen haben, wenden Sie sich bitte an unser Support-Team unter <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p></p><p>Mit freundlichen Grüßen</p>"
+          },
+          "collectInfoWarning": {
+            "description": "Um eine E-Mail an alle Teilnehmer zu senden, müssen Sie \"Kontaktinformationen erfassen\" in der Registerkarte Einstellungen aktivieren",
+            "title": "Kontaktinformationen werden nicht erfasst"
+          },
+          "sendEmail": {
+            "description": "E-Mail wird an alle Teilnehmer gesendet, die ihre Kontaktinformationen übermitteln",
+            "label": "Nach der Übermittlung eine E-Mail an alle Teilnehmer senden"
+          },
+          "subject": {
+            "default": "Danke für Ihre Teilnahme"
+          },
+          "title": "E-Mail"
         },
         "endMessage": {
           "inputs": {
@@ -499,7 +530,7 @@
               "title": "Karteneinstellungen"
             },
             "newsletterSettings": {
-              "disabled": "Sie können keine Newsletter-Anmeldungen anfordern, wenn Sie keine Kontaktinformationen sammeln",
+              "disabled": "Sie können keine Newsletter-Anmeldungen anfordern, wenn Sie keine Kontaktinformationen erfassen",
               "label": "Fügen Sie dem Kontaktformular eine Newsletter-Anmeldung hinzu",
               "opts": {
                 "disabled": "Teilnehmer werden nicht gefragt, ob sie sich für den Newsletter anmelden möchten",
@@ -686,7 +717,7 @@
       "email": "Ihre E-Mail-Adresse",
       "guestFieldsMissing": "Bitte geben Sie uns Ihre Kontaktdaten.",
       "name": "Ihr Name",
-      "submittingResponseError": "Es gab ein Problem bei der Übermittlung ihrer Antworten. Bitte versuchen Sie es erneut."
+      "submittingResponseError": "Es gab ein Problem bei der Übermittlung Ihrer Antworten. Bitte versuchen Sie es erneut."
     },
     "getStarted": "Starten",
     "joinNow": "Mitglied werden",
@@ -703,7 +734,7 @@
         "twitter": "Auf Twitter teilen",
         "whatsapp": "Auf WhatsApp teilen"
       },
-      "services": "Diesen CrowdNewsroom auf einer der folgenden Plattformen teilen: "
+      "services": "Diesen CrowdNewsroom auf einer der folgenden Plattformen teilen:"
     },
     "showingPreview": "Im Vorschaumodus sind Antworten deaktiviert.",
     "toContributionPage": "Meinen Beitrag ändern",
@@ -879,7 +910,6 @@
   },
   "common": {
     "backToHome": "Zurück zur Startseite",
-    "contributing": "Ihr Beitrag",
     "contributionPeriod": {
       "annually": "Jährlich",
       "monthly": "Monatlich"
@@ -894,7 +924,6 @@
     "hello": "Hallo",
     "id": "ID",
     "itemsPerPage": "{items} Einträge pro Seite",
-    "joined": "Mitglied seit",
     "label": "Label",
     "loading": "Lädt...",
     "login": "Login",
@@ -908,6 +937,11 @@
     "no": "Nein",
     "noResults": "Keine Ergebnisse gefunden",
     "pageCount": "Seite {pageNumber} von {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Jährlich",
+      "monthly": "Monatlich",
+      "one-time": "Einmalig"
+    },
     "paymentStatus": {
       "cancelled": "Gekündigt",
       "draft": "Entwurf",
@@ -915,10 +949,16 @@
       "pending": "In Bearbeitung",
       "successful": "Erfolgreich"
     },
+    "paymentType": {
+      "oneTime": "Einmalig",
+      "prorated": "Ratierlich",
+      "recurring": "Wiederkehrend",
+      "unknown": "Unbekannt"
+    },
     "perMonth": "/ Monat",
-    "perMonthText": "pro Monat",
+    "perOneTime": "einmalig",
+    "perOneTimeText": "einmalig",
     "perYear": "/ Jahr",
-    "perYearText": "pro Jahr",
     "role": {
       "admin": "Admin",
       "member": "Mitglied",
@@ -976,10 +1016,12 @@
       "status": "Status",
       "title": "Newsletter"
     },
+    "oneTime": "Einmalig",
     "overview": "Überblick",
     "pickTag": "Tag aus der Liste wählen",
     "profile": "Profil",
-    "roles": "Rolle",
+    "recurring": "Wiederkehrend",
+    "roles": "Rollen",
     "security": {
       "instructions": "Link kopieren und teilen:",
       "loginOverride": "Automatischer Login",
@@ -991,6 +1033,10 @@
       "title": "Sicherheit",
       "whatDoTheButtonsDo": "Auf den Button klicken, um Link zu erzeugen:"
     }
+  },
+  "contactSelector": {
+    "contactNOfTotal": "Kontakt {current} von {total}",
+    "selfOption": "Sie selbst"
   },
   "contacts": {
     "addContact": "Kontakt hinzufügen",
@@ -1005,15 +1051,18 @@
       "activeUser": "Aktiver Nutzer",
       "amount": "Betrag",
       "annotationsCopy": "Änderungen gespeichert!",
-      "contribution": "Beitrag",
-      "contributionCancelled": "Mitgliedschaft beendet",
-      "contributionMonthlyAmount": "Monatlicher Beitrag",
-      "contributionPeriod": "Beitragsintervall",
-      "contributionType": "Beitragstyp",
+      "averageDonationAmount": "Durchschnitt einmaliger Beiträge (insgesamt)",
+      "contribution": "Wiederkehrender Beitrag",
+      "contributionCancelled": "Wiederkehrender Beitrag beendet",
+      "contributionMonthlyAmount": "Wiederkehrender monatlicher Beitrag",
+      "contributionPeriod": "Wiederkehrender Beitragsintervall",
+      "contributionType": "Wiederkehrender Beitragstyp",
       "deliveryOptIn": "Postsendung",
       "description": "Beschreibung",
+      "donationDate": "Datum des einmaligen Beitrags",
       "email": "E-Mail",
       "firstname": "Vorname",
+      "hasDonated": "Einmaliger Beitrag geleistet",
       "joined": "Kontakt seit",
       "lastSeen": "Zuletzt angemeldet",
       "lastname": "Nachname",
@@ -1021,7 +1070,7 @@
       "membershipExpires": "Mitglied bis",
       "membershipStarts": "Mitglied seit",
       "name": "Name",
-      "newsletterGroups": "Newsletter groups",
+      "newsletterGroups": "Newsletter Gruppen",
       "newsletterStatus": "Newsletter-Status",
       "notes": "Notizen",
       "payingFee": "Übernimmt Transaktionskosten?",
@@ -1030,20 +1079,52 @@
       "period": "Zeitraum",
       "phone": "Telefon",
       "preferredChannel": "Bevorzugter Kanal",
-      "tags": "Tags"
+      "tags": "Tags",
+      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge (insgesamt)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Kontaktdaten",
-      "contribution": "Beitrag",
+      "oneTimeContributions": "Einmalige Beiträge",
+      "recurringContributions": "Wiederkehrende Beiträge",
       "role": "Rolle"
+    },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Möchten Sie diese E-Mail-Vorlage wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
+        "title": "Vorlage löschen?"
+      },
+      "date": "Erstellt",
+      "edit": "Bearbeiten",
+      "editTitle": "Vorlage bearbeiten",
+      "editTitleWithName": "Vorlage bearbeiten: {name}",
+      "empty": "Noch keine E-Mail-Vorlagen.",
+      "manage": "E-Mail-Vorlagen verwalten",
+      "name": "Name",
+      "showingOf": "{start} bis {end} von {total} Vorlagen werden angezeigt.",
+      "subject": "Betreff",
+      "title": "E-Mail-Vorlagen",
+      "use": "Verwenden"
     },
     "noContacts": "Keine Kontakte",
     "noResults": "Keine Kontakte gefunden",
     "numResults": "{n} Kontakt gefunden | {n} Kontakte gefunden",
     "search": "Kontakte durchsuchen...",
     "selectedCount": "{n} Kontakt ausgewählt | {n} Kontakte ausgewählt",
-    "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt."
+    "sendEmail": {
+      "newEmail": "Neue E-Mail",
+      "saveAndBack": "Speichern und zurück",
+      "saveAndBackSuccess": "Vorlage gespeichert.",
+      "saveAndSend": "Speichern und senden",
+      "send": "Senden",
+      "sent": "Die E-Mail wurde an das Segment gesendet.",
+      "sentTimes": "{n}-mal verschickt",
+      "templateLabel": "Vorlage",
+      "templateName": "Name der neuen Vorlage",
+      "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
+      "title": "E-Mail an Segment senden"
+    },
+    "showingOf": "{start} bis {end} von {total} Kontakten werden angezeigt."
   },
   "contribution": {
     "adminCancelDescription": "Wenn du die Mitgliedschaft des Kontakts kündigst, endet sie am Ende des aktuellen Zahlungszyklus am {date}.",
@@ -1056,7 +1137,6 @@
     "changeBank": "Ändern Sie Ihre Bankverbindung.",
     "changeBankInfo": "Im nächsten Schritt können Sie Ihre neue Bankverbindung eingeben.",
     "contributing": "Sie zahlen",
-    "contributionUpdateError": "Sie können Ihren Beitrag aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
     "dueToRenew": "Ihre Mitgliedschaft wird am {renewalDate} erneuert.",
     "expired": "Ihre Mitgliedschaft ist ausgelaufen.",
     "expiredText": "Möchten Sie Ihre Mitgliedschaft verlängern? Selbst kleinste Beträge helfen uns und unserer Arbeit. Danke!",
@@ -1069,7 +1149,8 @@
       "title": "Bisher gezahlte Beiträge"
     },
     "paymentMethod": "Zahlungsart",
-    "paymentSourceUpdateError": "Sie können Ihre Bankverbindung aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
+    "perMonthText": "pro Monat",
+    "perYearText": "pro Jahr",
     "prorateDecreaseMessage": "Ihr Beitrag bleibt noch für 1 Monat gleich. | Ihr Beitrag bleibt noch für {n} Monaten gleich.",
     "prorateDecreaseMessageWillStart": "Der neue Beitrag wird am {renewalDate} zum ersten Mal eingezogen.",
     "prorateIncreaseMessage": "Ihre Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch 1 Monat. | Ihre Mitgliedschaft mit dem oben angezeigten Beitrag läuft noch {n} Monaten.",
@@ -1096,6 +1177,107 @@
   },
   "editNotice": {
     "title": "Bearbeiten: {title}"
+  },
+  "emailEditor": {
+    "body": {
+      "label": "Nachricht"
+    },
+    "preview": {
+      "asContactLabel": "Kontakt für Vorschau",
+      "label": "Vorschau",
+      "unavailable": "Vorschau nicht verfügbar"
+    },
+    "subject": {
+      "label": "Betreff"
+    }
+  },
+  "emails": {
+    "actions": {
+      "addCustom": "Benutzerdefinierte E-Mail hinzufügen",
+      "deactivate": "Deaktivieren",
+      "resetToDefault": "Auf Standard zurücksetzen"
+    },
+    "add": {
+      "title": "Benutzerdefinierte E-Mail erstellen"
+    },
+    "confirmDelete": {
+      "message": "Sind Sie sicher, dass Sie diese E-Mail deaktivieren möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "messageWithMailings": "Diese E-Mail wurde {count} Mal versendet. Sind Sie sicher, dass Sie sie löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "title": "E-Mail deaktivieren"
+    },
+    "confirmResetToDefault": {
+      "message": "Sind Sie sicher, dass Sie diese Vorlage auf den Standard zurücksetzen möchten? Ihre benutzerdefinierten Änderungen gehen verloren.",
+      "title": "Auf Standard zurücksetzen"
+    },
+    "customized": "Angepasst",
+    "default": "Standard",
+    "description": "Beschreibung",
+    "edit": {
+      "title": "E-Mail bearbeiten",
+      "titleCustom": "Bearbeiten: {name}"
+    },
+    "fromEmail": "Absender-E-Mail",
+    "fromName": "Absendername",
+    "list": {
+      "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
+    },
+    "mailingCount": "Versendete E-Mails",
+    "missingDefault": "Nicht Aktiv",
+    "name": "E-Mail-Name",
+    "notifications": {
+      "created": "E-Mail erfolgreich erstellt",
+      "deleted": "E-Mail erfolgreich gelöscht",
+      "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
+      "updated": "E-Mail erfolgreich aktualisiert"
+    },
+    "status": "Status",
+    "tabs": {
+      "custom": "Benutzerdefinierte E-Mails",
+      "templates": "System-Vorlagen"
+    },
+    "templates": {
+      "availableFields": "Verfügbare Felder",
+      "description": {
+        "cancelled-contribution": "Wird an Mitglieder gesendet, wenn ihr wiederkehrender Beitrag gekündigt wird. Enthält in der Regel Informationen darüber, wann die Mitgliedschaft endet, sowie die Mitglieds-ID. Kann einen Link zu einer Umfrage enthalten.",
+        "cancelled-member": "Wird an Administratoren gesendet, wenn ein Mitglied seinen Beitrag kündigt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen des gekündigten Mitglieds.",
+        "confirm-email": "Wird während des Registrierungsprozesses an neue Nutzer gesendet, um ihre E-Mail-Adresse zu verifizieren. Enthält einen Bestätigungslink, den sie anklicken müssen, um die Registrierung abzuschließen.",
+        "contribution-didnt-start": "Wird an Mitglieder gesendet, wenn ihre Stripe-Abonnementzahlung nicht gestartet werden konnte (z. B. abgelehnte Zahlungsmethode, unzureichende Deckung). Informiert sie darüber, dass ihre Mitgliedschaft aufgrund des Zahlungsfehlers widerrufen wurde.",
+        "email-exists-login": "Wird gesendet, wenn jemand versucht, sich mit einer E-Mail-Adresse zu registrieren, die bereits existiert und zu einem aktiven Mitglied mit gesetztem Passwort gehört. Stellt einen Login-Link bereit, damit sie auf ihr bestehendes Konto zugreifen können.",
+        "email-exists-set-password": "Wird gesendet, wenn jemand versucht, sich mit einer E-Mail-Adresse zu registrieren, die bereits existiert und zu einem aktiven Mitglied gehört, das noch kein Passwort gesetzt hat. Stellt einen Link zum Festlegen eines Passworts bereit.",
+        "manual-to-automatic": "Wird an Mitglieder gesendet, wenn ihre Zahlungsmethode erfolgreich von manuell auf automatisch wiederkehrende Zahlung umgestellt wurde. Bestätigt die erfolgreiche Umstellung.",
+        "new-callout-response": "Wird an Administratoren gesendet, wenn eine neue Antwort auf einen CrowdNewsroom eingereicht wird. Enthält in der Regel eine Benachrichtigung mit den CrowdNewsroom-Details und dem Namen der antwortenden Person.",
+        "new-member": "Wird an Administratoren gesendet, wenn ein neues Mitglied der Community erfolgreich beitritt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen des neuen Mitglieds.",
+        "one-time-donation": "Wird an Nutzer gesendet, nachdem sie einen Einmalbeitrag abgeschlossen haben.",
+        "one-time-donation-failed": "Wird an Nutzer gesendet, wenn ihre Einmalzahlung fehlschlägt.",
+        "reset-device": "Wird gesendet, wenn ein Nutzer das Zurücksetzen seines vertrauenswürdigen Geräts für die Zwei-Faktor-Authentifizierung anfordert. Enthält einen sicheren Link zum Zurücksetzen des Geräts.",
+        "reset-password": "Wird gesendet, wenn ein Nutzer das Zurücksetzen seines Passworts anfordert. Enthält einen sicheren Link zum Zurücksetzen des Passworts.",
+        "setup-account": "Wird an Nutzer gesendet, die einen Einmalbeitrag abgeschlossen haben und noch kein Konto besitzen.",
+        "welcome": "Wird an neue Mitglieder gesendet, nachdem sie den Registrierungsprozess abgeschlossen haben. Diese E-Mail heißt sie in der Community willkommen."
+      },
+      "names": {
+        "cancelled-contribution": "Beitrag gekündigt",
+        "cancelled-member": "Admin: Gekündigtes Mitglied - Benachrichtigung",
+        "confirm-email": "E-Mail bestätigen",
+        "contribution-didnt-start": "Beitrag hat nicht begonnen",
+        "email-exists-login": "E-Mail existiert - Anmelden",
+        "email-exists-set-password": "E-Mail existiert - Passwort setzen",
+        "manual-to-automatic": "Manueller Beitrag in automatischen umgewandelt",
+        "new-callout-response": "Admin: Neuer CrowdNewsroom - Antwort-Benachrichtigung",
+        "new-member": "Admin: Neuer Kontakt - Benachrichtigung",
+        "one-time-donation": "Bestätigung des Einmalbeitrags",
+        "one-time-donation-failed": "Einmalbeitrag fehlgeschlagen",
+        "reset-device": "Gerät zurücksetzen",
+        "reset-password": "Passwort zurücksetzen",
+        "setup-account": "Konto einrichten",
+        "welcome": "Willkommen"
+      },
+      "type": {
+        "admin": "Admin-Benachrichtigungen",
+        "contact": "Kontakt-E-Mails",
+        "general": "Allgemein"
+      }
+    },
+    "type": "Typ"
   },
   "footer": {
     "contactUs": "Kontaktieren Sie uns unter",
@@ -1126,11 +1308,13 @@
     "errorMessages": {
       "api": {
         "account-locked": "Konto wegen zu vieler fehlgeschlagener Anmeldeversuche gesperrt. Bitte Passwort zurücksetzen oder an den Support wenden, um Hilfe zu erhalten.",
+        "cant-update-contribution": "Sie können Ihren Beitrag aktuell nicht ändern, weil eine Zahlung kurz bevorsteht.",
         "duplicate-email": "Diese E-Mail-Adresse existiert bereits.",
         "duplicate-tag-name": "Ein Tag mit diesem Namen existiert bereits",
         "invalid-token": "Der von Ihnen eingegebene 2FA Token ist nicht korrekt.",
         "login-failed": "Falsche Kombination von Passwort und E-Mail.",
-        "mfa-token-required": "Bitte geben Sie den Code Ihrer Authentifizierungs-App ein."
+        "mfa-token-required": "Bitte geben Sie den Code Ihrer Authentifizierungs-App ein.",
+        "payment-failed": "Ihre Zahlung war nicht erfolgreich. Bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsmethode."
       },
       "generic": "Upps! Etwas ist schiefgelaufen. Bitte wenden Sie sich an den Support, sollte das erneut passieren.",
       "unauthorized": "Sie haben daruf keinen Zugriff.",
@@ -1227,6 +1411,7 @@
       "heading": "Überschrift",
       "italic": "Kursiv",
       "link": "Link",
+      "mergeFields": "Platzhalter",
       "numberedlist": "Nummerierung",
       "strikethrough": "Durchstreichen",
       "toolbar": "Rich-Text-Formatierung Symbolleiste",
@@ -1254,8 +1439,11 @@
   },
   "homePage": {
     "editProfile": "Profil bearbeiten",
+    "makeOneTimeDonationButton": "Beitrag leisten",
+    "makeOneTimeDonationTitle": "Jetzt einen einmaligen Beitrag leisten",
     "manageContribution": "Beitrag ändern",
     "newCallout": "Was Neues!",
+    "oneTimeContributionSuccessMessage": "Vielen Dank für Ihren Beitrag!",
     "openCallouts": "CrowdNewsroom",
     "quickActions": "Schnellaktionen",
     "title": "Home",
@@ -1278,18 +1466,36 @@
   "join": {
     "absorbFeeForce": "Bei einem Beitrag von {amount}, müssen Sie die {fee} Transaktionskosten übernehmen.",
     "absorbFeeOptIn": "Ja, ich übernehme die {fee} Transaktionskosten.",
-    "absorbFeeText": "Bei unserem Zahlungsdienstleister zahlen wir für jede einzelne Transaktion. Das heißt, wir erhalten weniger von Ihrem monatlichen Beitrag. Sie haben die Möglichkeit, die Kosten dafür für uns zu übernehmen. Möchten Sie das? Alternativ können Sie auch jährlich bezahlen.",
+    "absorbFeeText": {
+      "monthly": "Bei unserem Zahlungsdienstleister zahlen wir für jede einzelne Transaktion. Das heißt, wir erhalten weniger von Ihrem monatlichen Beitrag. Sie haben die Möglichkeit, die Kosten dafür für uns zu übernehmen. Möchten Sie das? Alternativ können Sie auch jährlich bezahlen.",
+      "one-time": "Bei unserem Zahlungsdienstleister zahlen wir für jede einzelne Transaktion. Das heißt, wir erhalten weniger von Ihrem einmaligen Beitrag. Sie haben die Möglichkeit, die Kosten dafür für uns zu übernehmen. Möchten Sie das?"
+    },
     "contribute": "Mit {contribution} unterstützen.",
+    "contribution": {
+      "annually": "{amount} pro Jahr",
+      "monthly": "{amount} pro Monat",
+      "one-time": "{amount} einmalig"
+    },
     "errors": {
       "confirmEmail": {
-        "message": "Fast geschafft! Wir müssen nur noch Ihre E-Mail-Adresse bestätigen, um fortzufahren.",
-        "proceed": "Wir haben Ihnen eine E-Mail geschickt. Bitte klicken Sie auf den Bestätigung-Link, um fortzufahren.",
-        "title": "E-Mail-Adresse bestätigen"
+        "message": "Wir haben soeben eine Bestätigungs-E-Mail an die von Ihnen angegebene Adresse gesendet.",
+        "proceed": "Vergessen Sie nicht, die Einrichtung Ihres Kontos abzuschließen! Die nächsten Schritte finden Sie in Ihrem Posteingang.",
+        "title": "Danke!"
       },
       "failed": {
         "backToJoin": "Zurück zur Registrierung",
         "message": "Es gab ein Problem bei der Registrierung, unser Team wurde benachrichtigt. Bitte kontaktieren Sie uns, wenn das Problem weiterhin auftritt.",
         "title": "Etwas ist schief gelaufen"
+      },
+      "notFound": {
+        "backToJoin": "Zurück zur Registrierung",
+        "message": "Dieser Registrierungslink ist abgelaufen oder wurde bereits verwendet. Falls Sie sich gerade in einem anderen Tab registriert haben, sollten Sie in Kürze eine Bestätigungs-E-Mail erhalten. Falls Sie sich vor längerer Zeit registriert haben, müssen Sie eine neue Registrierung starten.",
+        "title": "Registrierungslink abgelaufen"
+      },
+      "paymentFailed": {
+        "backToJoin": "Zurück zur Registrierung",
+        "message": "Ihre Zahlung war nicht erfolgreich. Bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsmethode.",
+        "title": "Zahlung fehlgeschlagen"
       }
     },
     "login": "Anmelden",
@@ -1307,18 +1513,14 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Mitgliedschaft",
-      "recurringLabel": "Regelmäßiger Beitrag"
-    },
     "genericError": "Upps! Etwas ist schiefgelaufen ({type}). Bitte wenden Sie sich an den Support, sollte das erneut passieren.",
     "goBack": "Möchten Sie etwas ändern? {back}",
     "goBackButton": "Zurück zum letzten Schritt",
     "note": "Sie können Ihre Zahlungsdaten jederzeit in Ihrem Nutzer-Account ändern und dort auch sehen, wie viel Sie in der Vergangenheit bereits gezahlt haben. ",
-    "willBeContributing": "Sie zahlen {contribution}"
+    "willBeContributing": "Sie zahlen {contribution}",
+    "willBeDonating": "Sie leisten einen einmaligen Beitrag von {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Bitte bestätigen Sie Ihre Angaben:",
     "continue": "Weiter",
     "welcome": "Willkommen {firstName} {lastName}!"
   },
@@ -1332,7 +1534,7 @@
   },
   "lostDevice": {
     "description": "Bitte geben Sie Ihre E-Mail-Adresse ein, und wir senden Ihnen Anweisungen zum Zurücksetzen Ihres 2FA.",
-    "message": "Gibt es einen Account mit der E-Mail-Adresse {email}, bekommen Sie in Kürze eine Nachricht. Bitte schauen Sie in Ihren Posteingang und befolgen Sie die Anleitung in der E-Mail. Sollte die E-Mail nicht auftauchen, schauen Sie auch in ihrem Spamordner nach.",
+    "message": "Gibt es einen Account mit der E-Mail-Adresse {email}, bekommen Sie in Kürze eine Nachricht. Bitte schauen Sie in Ihren Posteingang und befolgen Sie die Anleitung in der E-Mail. Sollte die E-Mail nicht auftauchen, schauen Sie auch in Ihrem Spamordner nach.",
     "title": "Haben Sie Ihr 2FA-Gerät verloren?"
   },
   "mailOptIn": {
@@ -1368,7 +1570,8 @@
         "bigTitle": "Willkommens- & Kündigungs-E-Mail",
         "cancellationEmail": "Kündigungs-E-Mail",
         "description": "Passe deine Willkommens- und Kündigungs-E-Mail an",
-        "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mai-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
+        "oneTimeDonationEmail": "Einmalige Beitrags-E-Mail",
+        "text": "Neue Mitglieder bekommen eine automatische E-Mail, sobald ihre Registrierung abgeschlossen ist. Wer kündigt, bekommt ebenfalls eine automatische E-Mail. Alle E-Mails werden von deiner Support-E-Mail-Adresse gesendet und enthalten eine Standardsignatur. Du kannst die Support-E-Mail-Adresse und die Signatur in den E-Mail-Einstellungen anpassen.",
         "title": "E-Mails",
         "welcomeEmail": "Willkommens-E-Mail"
       },
@@ -1405,6 +1608,7 @@
     "contacts": "Kontakte",
     "contribution": "Beitrag",
     "dashboard": "Dashboard",
+    "emails": "E-Mails",
     "home": "Home",
     "legacyApp": "Alter Adminbereich",
     "logout": "Log out",
@@ -1413,6 +1617,51 @@
     "payments": "Zahlungen",
     "settings": "Einstellungen",
     "yourProfile": "Ihr Profil"
+  },
+  "mergeFields": {
+    "copied": "Kopiert!",
+    "copy": "Kopieren",
+    "copyTag": "{tag} kopieren",
+    "example": "Beispiel",
+    "groups": {
+      "contact": "Kontakt-Felder",
+      "magic": "Magic Links",
+      "standard": "Standard-Felder",
+      "template": "Template-Felder"
+    },
+    "insert": "Einfügen",
+    "insertTag": "{tag} einfügen",
+    "tags": {
+      "ACTIVATELINK": "Geschenk-Aktivierungslink",
+      "ANSWERS": "Formatierte Antwort-Zusammenfassung",
+      "CALLOUTLINK": "Link zur CrowdNewsroom",
+      "CALLOUTSLUG": "CrowdNewsroom-Slug",
+      "CALLOUTTITLE": "Titel der CrowdNewsroom",
+      "CONFIRMLINK": "E-Mail-Bestätigungslink",
+      "EMAIL": "E-Mail-Adresse des Kontakts",
+      "EXPIRES": "Ablaufdatum der Mitgliedschaft",
+      "FNAME": "Vorname",
+      "GIFTDATE": "Startdatum des Geschenks",
+      "GIFTEE": "Name des Geschenkempfängers",
+      "ISELIGIBLE": "Ob die Empfehlung berechtigt ist",
+      "LNAME": "Nachname",
+      "LOGINLINK": "Login-Link",
+      "MEMBERID": "Mitglieds-ID",
+      "MEMBERNAME": "Mitgliedsname",
+      "MEMBERSHIPID": "Mitgliedschafts-ID",
+      "MESSAGE": "Benutzerdefinierte Nachricht",
+      "NAME": "Vollständiger Name",
+      "ORGNAME": "Name der Organisation",
+      "PURCHASER": "Name des Geschenkkäufers",
+      "REFCODE": "Empfehlungs-Code des Kontakts",
+      "REFEREENAME": "Name der geworbenen Person",
+      "RESPNAME": "Name des Antwortenden",
+      "RPLINK": "Passwort zurücksetzen Link",
+      "SPLINK": "Passwort setzen Link",
+      "SUPPORTEMAIL": "Support E-Mail-Adresse",
+      "URL": "Spezielle URL"
+    },
+    "title": "Platzhalter"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1454,6 +1703,10 @@
       "success": "In die Zwischenablage kopiert"
     },
     "error": "Da ist etwas schiefgelaufen!",
+    "rateLimit": {
+      "generic": "Zu viele Anfragen. Bitte warte kurz und versuche es erneut.",
+      "withWait": "Zu viele Anfragen. Bitte warte {time} und versuche es erneut."
+    },
     "remove": "Benachrichtigung schließen"
   },
   "pageTitle": {
@@ -1469,6 +1722,11 @@
     "resetPassword": "Passwort zurücksetzen",
     "setPassword": "Passwort vergeben",
     "setup": "Account fertigstellen"
+  },
+  "paymentLabels": {
+    "membershipProductName": "Mitgliedschaft",
+    "recurringContribution": "Regelmäßiger Beitrag",
+    "taxRateDisplayName": "MwSt"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -1507,13 +1765,18 @@
       "amount": "Betrag",
       "chargeDate": "Abbuchungsdatum",
       "contact": "Kontakt",
-      "status": "Status"
+      "status": "Status",
+      "type": "Art"
     },
     "dataGroup": {
       "payment": "Zahlung"
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Durchschnittsbetrag",
+      "total": "Gesamtbetrag"
+    },
     "filter": {
       "all": "Alle Zahlungen",
       "cancelled": "Stonierte Zahlungen",
@@ -1602,8 +1865,5 @@
     },
     "searchTag": "Getaggt mit...",
     "toggleTag": "Tag hinzufügen / entfernen"
-  },
-  "taxRate": {
-    "invoiceName": "MwSt"
   }
 }

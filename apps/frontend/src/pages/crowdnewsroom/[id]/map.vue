@@ -109,7 +109,7 @@ meta:
 
       <transition name="add-notice">
         <div
-          v-if="isAddMode && !newResponseAnswers"
+          v-if="isAddMode && !newResponseAddress"
           class="absolute inset-x-0 top-10 flex justify-center md:top-20"
         >
           <p class="mx-4 rounded bg-white p-4 font-bold shadow-lg">
@@ -175,7 +175,9 @@ meta:
 
     <CalloutAddResponsePanel
       :callout="callout"
-      :answers="newResponseAnswers"
+      :answers="
+        isAddMode && newResponseAddress ? newResponseAnswers : undefined
+      "
       @close="handleCancelAddMode"
     />
   </div>
@@ -194,36 +196,9 @@ import { fetchAllPages } from '@beabee/client';
 import { AppButton } from '@beabee/vue';
 import { library } from '@beabee/vue/plugins/icons';
 
-import CalloutAddResponsePanel from '@components/pages/callouts/CalloutAddResponsePanel.vue';
-import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue';
-import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
-import CalloutShowResponsePanel from '@components/pages/callouts/CalloutShowResponsePanel.vue';
-import {
-  HASH_PREFIX,
-  useCallout,
-} from '@components/pages/callouts/use-callout';
 import { faInfoCircle, faPlus, fas } from '@fortawesome/free-solid-svg-icons';
-import { AddressFormatter } from '@lib/address.formatter';
-import { currentLocaleConfig } from '@lib/i18n';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
 import '@maptiler/geocoding-control/style.css';
-import { isEmbed } from '@store';
-import type {
-  GeocodePickEvent,
-  GetCalloutResponseMapDataWithAddress,
-  MapClusterFeature,
-  MapPointFeature,
-  MapPointFeatureCollection,
-} from '@type';
-import {
-  generateImageId,
-  getImageString,
-  loadImageFromDataURLToMap,
-  setKey,
-  svgToDataURL,
-} from '@utils';
-import { client } from '@utils/api';
-import { reverseGeocode } from '@utils/geocode';
 import {
   type GeoJSONSource,
   type LngLatLike,
@@ -254,6 +229,34 @@ import {
 } from 'vue-maplibre-gl';
 import 'vue-maplibre-gl/dist/vue-maplibre-gl.css';
 import { useRoute, useRouter } from 'vue-router';
+
+import CalloutAddResponsePanel from '#components/pages/callouts/CalloutAddResponsePanel.vue';
+import CalloutIntroPanel from '#components/pages/callouts/CalloutIntroPanel.vue';
+import CalloutMapHeader from '#components/pages/callouts/CalloutMapHeader.vue';
+import CalloutShowResponsePanel from '#components/pages/callouts/CalloutShowResponsePanel.vue';
+import {
+  HASH_PREFIX,
+  useCallout,
+} from '#components/pages/callouts/use-callout';
+import { AddressFormatter } from '#lib/address.formatter';
+import { currentLocaleConfig } from '#lib/i18n';
+import { isEmbed } from '#store';
+import type {
+  GeocodePickEvent,
+  GetCalloutResponseMapDataWithAddress,
+  MapClusterFeature,
+  MapPointFeature,
+  MapPointFeatureCollection,
+} from '#type';
+import {
+  generateImageId,
+  getImageString,
+  loadImageFromDataURLToMap,
+  setKey,
+  svgToDataURL,
+} from '#utils';
+import { client } from '#utils/api';
+import { reverseGeocode } from '#utils/geocode';
 
 import env from '../../../env';
 
@@ -333,7 +336,13 @@ const showAddButton = computed(
   () => isOpen.value && route.query.noadd === undefined
 );
 
-const newResponseAnswers = ref<CalloutResponseAnswersSlide>();
+const newResponseAnswers = ref(
+  route.query.answers
+    ? (JSON.parse(
+        route.query.answers.toString()
+      ) as CalloutResponseAnswersSlide)
+    : undefined
+);
 
 // Use the geocoding location to show a marker on the map
 const geocodeLocation = ref<LngLatLike>();
@@ -573,7 +582,11 @@ async function handleAddClick(event: MapMouseEvent) {
     },
   };
 
-  const responseAnswers: CalloutResponseAnswersSlide = {};
+  const responseAnswers: CalloutResponseAnswersSlide = newResponseAnswers.value
+    ? (JSON.parse(
+        JSON.stringify(newResponseAnswers.value)
+      ) as CalloutResponseAnswersSlide)
+    : {};
   setKey(responseAnswers, mapSchema.addressProp, resultWithClickCoords);
 
   if (mapSchema.addressPatternProp) {
@@ -631,7 +644,7 @@ function handleClick(e: { event: MapMouseEvent }) {
   if (!map.value) return;
 
   if (isAddMode.value) {
-    if (!newResponseAnswers.value) {
+    if (!newResponseAddress.value) {
       handleAddClick(e.event);
     }
   } else {
@@ -778,7 +791,15 @@ watch(isAddMode, (v) => {
     showIntroPanel.value = false;
     map.value.getCanvas().style.cursor = 'crosshair';
   } else {
-    newResponseAnswers.value = undefined;
+    if (route.query.answers) {
+      try {
+        newResponseAnswers.value = JSON.parse(
+          route.query.answers.toString()
+        ) as CalloutResponseAnswersSlide;
+      } catch {
+        newResponseAnswers.value = undefined;
+      }
+    }
     map.value.getCanvas().style.cursor = '';
   }
 });

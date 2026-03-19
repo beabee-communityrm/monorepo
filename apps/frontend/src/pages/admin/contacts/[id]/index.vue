@@ -47,6 +47,9 @@ meta:
         <AppHeading class="mt-6">
           {{ t('contactOverview.contribution') }}
         </AppHeading>
+        <AppSubHeading class="mb-1">
+          {{ t('contactOverview.recurring') }}
+        </AppSubHeading>
         <AppInfoList>
           <AppInfoListItem
             :name="t('contacts.data.amount')"
@@ -86,6 +89,29 @@ meta:
             :value="formatLocale(contact.contribution.cancellationDate, 'PPP')"
           />
         </AppInfoList>
+        <template v-if="generalContent.enableOneTimeDonations">
+          <AppSubHeading class="mb-1">
+            {{ t('contactOverview.oneTime') }}
+          </AppSubHeading>
+          <AppInfoList>
+            <AppInfoListItem
+              :name="t('paymentsAdmin.aggregation.total')"
+              :value="
+                paymentAggregations?.sum
+                  ? n(paymentAggregations?.sum, 'currency')
+                  : '–'
+              "
+            />
+            <AppInfoListItem
+              :name="t('paymentsAdmin.aggregation.average')"
+              :value="
+                paymentAggregations?.average
+                  ? n(paymentAggregations?.average, 'currency')
+                  : '–'
+              "
+            />
+          </AppInfoList>
+        </template>
       </div>
 
       <AppHeading class="mt-6">{{ t('contactOverview.roles') }}</AppHeading>
@@ -99,7 +125,7 @@ meta:
           v-if="changingRoles"
           class="absolute inset-0 flex items-center justify-center bg-primary-5/50"
         >
-          <font-awesome-icon :icon="faCircleNotch" spin />
+          <AppLoadingSpinner />
         </div>
       </div>
 
@@ -108,7 +134,7 @@ meta:
         class="mb-4 text-sm text-body-80"
         v-html="t('contactOverview.annotation.copy')"
       />
-      <AppForm
+      <AppApiForm
         :button-text="t('form.saveChanges')"
         :success-text="t('contacts.data.annotationsCopy')"
         @submit.prevent="handleUpdateAbout"
@@ -124,7 +150,7 @@ meta:
           :label="t('contacts.data.notes')"
           class="mb-4"
         />
-      </AppForm>
+      </AppApiForm>
     </template>
     <template #col2>
       <section class="mb-6">
@@ -268,32 +294,38 @@ import {
   type GetContactData,
   type GetContactDataWith,
   GetContactWith,
+  type GetPaymentAggregationData,
+  PaymentStatus,
   type RoleType,
 } from '@beabee/beabee-common';
 import {
   App2ColGrid,
   AppButton,
   AppConfirmDialog,
-  AppForm,
   AppHeading,
   AppInfoList,
   AppInfoListItem,
   AppInput,
+  AppLoadingSpinner,
   AppRichTextEditor,
+  AppSubHeading,
   formatLocale,
 } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import { PaymentMethod } from '@components/payment';
-import AppRoleEditor from '@components/role/AppRoleEditor.vue';
-import TagList from '@components/tag/TagList.vue';
-import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
-import env from '@env';
-import { faCircleNotch, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
+import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import CalloutForm from '#components/pages/callouts/CalloutForm.vue';
+import { PaymentMethod } from '#components/payment';
+import AppRoleEditor from '#components/role/AppRoleEditor.vue';
+import TagList from '#components/tag/TagList.vue';
+import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
+import env from '#env';
+import { generalContent } from '#store/generalContent';
+import { client } from '#utils/api';
 
 const { t, n } = useI18n();
 
@@ -313,6 +345,8 @@ const contactTags = ref<string[]>([]);
 const contactAbout = reactive({ notes: '', description: '' });
 const securityLink = ref('');
 const changingRoles = ref(false);
+
+const paymentAggregations = ref<GetPaymentAggregationData>();
 
 /** Multi factor authentication state */
 const mfa = ref({
@@ -435,6 +469,29 @@ onBeforeMount(async () => {
 
   contactTags.value = (await client.content.get('contacts')).tags;
 
+  paymentAggregations.value = await client.payment.aggregate({
+    rules: {
+      condition: 'AND',
+      rules: [
+        {
+          field: 'contact',
+          operator: 'equal',
+          value: [props.contact.id],
+        },
+        {
+          field: 'type',
+          operator: 'equal',
+          value: ['one-time'],
+        },
+        {
+          field: 'status',
+          operator: 'equal',
+          value: [PaymentStatus.Successful],
+        },
+      ],
+    },
+  });
+
   // Fetch MFA information
   const contactMfa = await client.contact.mfa.get(props.contact.id);
   if (contactMfa && contactMfa.type === CONTACT_MFA_TYPE.TOTP) {
@@ -442,6 +499,7 @@ onBeforeMount(async () => {
   }
 
   setupContent.value = await client.content.get('join/setup');
+
   const joinSurveySlug = setupContent.value.surveySlug;
   if (joinSurveySlug) {
     joinSurvey.value = await client.callout.get(joinSurveySlug, ['form']);

@@ -1,9 +1,16 @@
-import {
-  disableSalesTaxRate,
-  updateSalesTaxRate,
-} from '@beabee/core/lib/stripe';
+import { updateSalesTaxRate } from '@beabee/core/lib/stripe';
 
-import PartialBody from '@api/decorators/PartialBody';
+import {
+  Authorized,
+  BadRequestError,
+  Body,
+  Get,
+  JsonController,
+  Params,
+  Patch,
+} from 'routing-controllers';
+
+import PartialBody from '#api/decorators/PartialBody';
 import {
   GetContentContactsDto,
   GetContentDto,
@@ -15,18 +22,9 @@ import {
   GetContentProfileDto,
   GetContentShareDto,
   GetContentTelegramDto,
-} from '@api/dto';
-import { ContentParams } from '@api/params/ContentParams';
-import ContentTransformer from '@api/transformers/ContentTransformer';
-import {
-  Authorized,
-  BadRequestError,
-  Body,
-  Get,
-  JsonController,
-  Params,
-  Patch,
-} from 'routing-controllers';
+} from '#api/dto';
+import { ContentParams } from '#api/params/ContentParams';
+import ContentTransformer from '#api/transformers/ContentTransformer';
 
 @JsonController('/content')
 export class ContentController {
@@ -103,17 +101,15 @@ export class ContentController {
   async updatePayment(
     @PartialBody() data: GetContentPaymentDto // Should be Partial<GetContentPaymentDto>
   ): Promise<GetContentPaymentDto> {
-    if (data.taxRateEnabled === false) {
-      await disableSalesTaxRate();
-    } else if (data.taxRateEnabled === true) {
-      if (data.taxRate === undefined) {
-        throw new BadRequestError(
-          'taxRate must be provided when taxRateEnabled is true'
-        );
-      }
-      await updateSalesTaxRate(data.taxRate);
+    if (data.taxRateRecurring !== undefined) {
+      await updateSalesTaxRate('recurring', data.taxRateRecurring);
+    }
+    if (data.taxRateOneTime !== undefined) {
+      await updateSalesTaxRate('one-time', data.taxRateOneTime);
     }
 
+    // Tax rates are also stored here to cache the percentage and avoid calling
+    // external services when fetching the payment content
     await ContentTransformer.updateOne('payment', data);
     return ContentTransformer.fetchOne('payment');
   }

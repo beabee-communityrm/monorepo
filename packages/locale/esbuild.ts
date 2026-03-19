@@ -6,19 +6,21 @@ import {
   generateTemplate,
   isWatchMode,
   normalizeTranslations,
-} from "@beabee/esbuild";
-import * as esbuild from "esbuild";
-import { config } from "./src/config.ts";
+} from '@beabee/esbuild';
 
-const OUTDIR_CJS = "./dist/cjs";
-const SOURCE_LOCALES_DIR = "./src/locales";
-const FALLBACK_LOCALES_DIR = "./dist/locales-with-fallback";
-const TEMPLATE_PATH = "./src/template.json";
+import * as esbuild from 'esbuild';
+
+import { config } from './src/config.ts';
+
+const OUTDIR_CJS = './dist/cjs';
+const SOURCE_LOCALES_DIR = './src/locales';
+const FALLBACK_LOCALES_DIR = './dist/locales-with-fallback';
+const TEMPLATE_PATH = './src/template.json';
 
 const isWatch = isWatchMode();
 
 async function buildJSON(outdir: string, watch = false) {
-  const dirName = outdir.includes("cjs") ? "JSON-CJS" : "JSON-Types";
+  const dirName = outdir.includes('cjs') ? 'JSON-CJS' : 'JSON-Types';
 
   const ctx = await esbuild.context({
     entryPoints: [], // No actual entry points needed, just using for the plugin system
@@ -50,31 +52,31 @@ async function main() {
   await generateFallbackTranslations(
     config,
     SOURCE_LOCALES_DIR,
-    FALLBACK_LOCALES_DIR,
+    FALLBACK_LOCALES_DIR
   );
 
-  const entryPoints = ["./src/index.ts", "./src/**/*.ts"];
+  const entryPoints = ['./src/index.ts', './src/**/*.ts'];
 
   if (isWatch) {
-    console.log("🚀 Starting watch mode...");
+    console.log('🚀 Starting watch mode...');
     await Promise.all([
       buildCJS({ entryPoints, outdir: OUTDIR_CJS, watch: true }),
       buildJSON(OUTDIR_CJS, true),
-      buildJSON("./dist/types", true),
+      buildJSON('./dist/types', true),
     ]);
-    console.log("👀 Watching for changes...");
+    console.log('👀 Watching for changes...');
     // Keep process alive
     process.stdin.resume();
   } else {
     const cjs = await buildCJS({ entryPoints, outdir: OUTDIR_CJS });
 
-    for (const outdir of [OUTDIR_CJS, "./dist/types"]) {
+    for (const outdir of [OUTDIR_CJS, './dist/types']) {
       const json = await buildJSON(outdir);
       await json.dispose();
     }
 
     await cjs.dispose();
-    console.log("@beabee/locale build completed");
+    console.log('@beabee/locale build completed');
   }
 }
 

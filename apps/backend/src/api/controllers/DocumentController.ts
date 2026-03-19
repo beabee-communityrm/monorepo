@@ -9,14 +9,12 @@ import { documentService } from '@beabee/core/services';
 import { convertMulterError } from '@beabee/core/utils/multer';
 
 import { Request, Response } from 'express';
-import { MulterError } from 'multer';
 import {
   Authorized,
   CurrentUser,
   Delete,
   Get,
   JsonController,
-  NotFoundError,
   Param,
   Post,
   Req,

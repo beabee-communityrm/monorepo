@@ -6,9 +6,7 @@ import { join } from 'node:path';
 import type { CopyPluginOptions } from '../types/index.ts';
 import { getTimestamp } from '../utils.ts';
 
-/**
- * Creates a plugin that copies locale JSON files to the output directory
- */
+/** Copies locale JSON files from sourceDir to outdir/locales. Optionally watches for changes. */
 export function createCopyPlugin({
   sourceDir,
   outdir,
@@ -17,64 +15,42 @@ export function createCopyPlugin({
 }: CopyPluginOptions): Plugin {
   return {
     name: `copy-plugin-${dirName}`,
-    setup(build: any) {
-      let copying = false;
+    setup(build: {
+      onEnd: (fn: () => Promise<void>) => void;
+      onDispose?: (fn: () => void) => void;
+    }) {
+      let busy = false;
 
-      const copyFiles = async () => {
-        if (copying) return;
-        copying = true;
-
+      const run = async () => {
+        if (busy) return;
+        busy = true;
         try {
-          // Ensure output directory exists
-          const localesOutDir = join(outdir, 'locales');
-          if (!existsSync(localesOutDir)) {
-            await mkdir(localesOutDir, { recursive: true });
-          }
+          const dest = join(outdir, 'locales');
+          if (!existsSync(dest)) await mkdir(dest, { recursive: true });
 
-          // Copy JSON files
           const files = await readdir(sourceDir);
-          const jsonFiles = files.filter((file) => file.endsWith('.json'));
+          const jsonFiles = files.filter((f) => f.endsWith('.json'));
 
-          for (const file of jsonFiles) {
-            const sourcePath = join(sourceDir, file);
-            const targetPath = join(localesOutDir, file);
-            await copyFile(sourcePath, targetPath);
+          for (const f of jsonFiles) {
+            await copyFile(join(sourceDir, f), join(dest, f));
           }
-
           console.log(
             `📋 [${getTimestamp()}] ${dirName} copied ${jsonFiles.length} locale files`
           );
-        } catch (error) {
-          console.error(
-            `❌ [${getTimestamp()}] ${dirName} copy failed:`,
-            error
-          );
+        } catch (err) {
+          console.error(`❌ [${getTimestamp()}] ${dirName} copy failed:`, err);
         } finally {
-          copying = false;
+          busy = false;
         }
       };
 
-      // Initial copy on build
-      build.onEnd(copyFiles);
+      build.onEnd(run);
 
-      // Watch mode: Monitor source files for changes
       if (isWatch) {
-        const watcher = watch(
-          sourceDir,
-          { recursive: true },
-          async (eventType, filename) => {
-            if (filename && filename.endsWith('.json')) {
-              console.log(
-                `📄 [${getTimestamp()}] ${dirName} detected change: ${filename}`
-              );
-              await copyFiles();
-            }
-          }
-        );
-
-        build.onDispose(() => {
-          watcher.close();
+        const watcher = watch(sourceDir, { recursive: true }, (_, filename) => {
+          if (filename?.endsWith('.json')) run();
         });
+        build.onDispose?.(() => watcher.close());
       }
     },
   };

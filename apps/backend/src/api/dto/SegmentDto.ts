@@ -1,4 +1,3 @@
-import { GetPaginatedQuery, GetPaginatedRuleGroup } from '@api/dto/BaseDto';
 import { Type } from 'class-transformer';
 import {
   IsEnum,
@@ -8,6 +7,8 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
+
+import { GetPaginatedQuery, GetPaginatedRuleGroup } from '#api/dto/BaseDto';
 
 export enum GetSegmentWith {
   itemCount = 'itemCount',
@@ -35,7 +36,7 @@ export class GetSegmentDto extends CreateSegmentDto {
 
   @IsOptional()
   @IsNumber()
-  itemCount?: number;
+  itemCount?: number | undefined;
 }
 
 export class GetSegmentOptsDto {
@@ -52,4 +53,18 @@ export class ListSegmentsDto extends GetPaginatedQuery {
   @IsOptional()
   @IsIn(['name', 'description', 'order'])
   sort?: string;
+}
+
+/** Body for POST /segments/:id/email/send (one-off email to all segment contacts). */
+export class SendSegmentEmailBodyDto {
+  /** When set, use this saved template (subject/body ignored) and create an EmailMailing for tracking. */
+  @IsOptional()
+  @IsString()
+  emailId?: string;
+
+  @IsString()
+  subject!: string;
+
+  @IsString()
+  body!: string;
 }

@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@beabee/beabee-common';
+import { PaymentMethod, isContributionForm } from '@beabee/beabee-common';
 
 import { BadRequestError } from '#errors/BadRequestError';
 import { Stripe, paymentMethodToStripeType, stripe } from '#lib/stripe';
@@ -69,7 +69,10 @@ class StripeFlowProvider implements PaymentFlowProvider {
     // iDEAL is a one time payment method, use setup intent to retrieve the SEPA
     // debit payment method instead
     // https://docs.stripe.com/payments/ideal/set-up-payment
-    if (paymentMethod === PaymentMethod.StripeIdeal) {
+    if (
+      paymentMethod === PaymentMethod.StripeIdeal &&
+      isContributionForm(joinFlow.joinForm)
+    ) {
       const latestAttempt =
         setupIntent.latest_attempt as Stripe.SetupAttempt | null;
 

@@ -13,9 +13,10 @@
 </template>
 <script setup lang="ts">
 import { CaptchaFox } from '@captchafox/vue';
-import env from '@env';
-import { currentLocaleConfig } from '@lib/i18n';
 import { useI18n } from 'vue-i18n';
+
+import env from '#env';
+import { currentLocaleConfig } from '#lib/i18n';
 
 defineEmits(['update:modelValue']);
 defineProps<{ modelValue: string }>();

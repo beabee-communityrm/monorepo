@@ -9,9 +9,11 @@ meta:
 <template><div /></template>
 
 <script lang="ts" setup>
-import { client } from '@utils/api';
 import { onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+
+import { client } from '#utils/api';
+import { handleJoinError } from '#utils/api-error';
 
 const route = useRoute();
 const router = useRouter();
@@ -30,11 +32,11 @@ onBeforeMount(async () => {
         vatNumber: route.query.vatNumber?.toString(),
       });
       router.replace('/join/confirm-email');
-      return;
-      // eslint-disable-next-line no-empty, @typescript-eslint/no-unused-vars
-    } catch (_err) {}
+    } catch (err) {
+      handleJoinError(err, router);
+    }
+  } else {
+    router.replace('/join/failed');
   }
-
-  router.replace('/join/failed');
 });
 </script>

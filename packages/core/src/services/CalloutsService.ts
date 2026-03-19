@@ -16,6 +16,8 @@ import slugify from 'slugify';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { v4 as uuidv4 } from 'uuid';
 
+import config from '#config/config';
+import { contactEmailTemplates } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import {
   DuplicateId,
@@ -289,6 +291,9 @@ class CalloutsService {
       });
     }
 
+    // Send confirmation email to the contact
+    await this.sendResponseEmail(callout, contact);
+
     return savedResponse;
   }
 
@@ -319,8 +324,12 @@ class CalloutsService {
 
       let contact = await ContactsService.findOneBy({ email: guest.email });
 
-      // Create a contact if it doesn't exist
-      if (!contact) {
+      if (contact) {
+        log.info(
+          'Found existing contact for callout response with email ' +
+            guest.email
+        );
+      } else {
         log.info(
           'Creating new contact for callout response with email ' + guest.email
         );
@@ -335,13 +344,6 @@ class CalloutsService {
           newsletter
         );
 
-        // Let the contact know in case it wasn't them
-        const title = await this.getCalloutTitle(callout);
-        await EmailService.sendTemplateToContact(
-          'confirm-callout-response',
-          contact,
-          { calloutTitle: title, calloutSlug: callout.slug }
-        );
         return response.id;
       } catch (err) {
         // Suppress errors from creating a response for a contact, this prevents
@@ -493,6 +495,16 @@ class CalloutsService {
    * @returns Callout title
    */
   private async getCalloutTitle(callout: Callout): Promise<string> {
+    const defaultVariant = await this.getDefaultVariant(callout);
+    return defaultVariant.title;
+  }
+
+  /**
+   * Get the default variant for a callout, fetching it if it's not already available
+   * @param callout The callout
+   * @returns Default variant
+   */
+  private async getDefaultVariant(callout: Callout): Promise<CalloutVariant> {
     const defaultVariant =
       callout.variants?.find((v) => v.name === 'default') ||
       (await getRepository(CalloutVariant).findOneByOrFail({
@@ -501,9 +513,52 @@ class CalloutsService {
       }));
 
     // Store for future use
-    callout.variants = [...(callout.variants || []), defaultVariant];
+    if (!callout.variants?.some((v) => v.name === 'default')) {
+      callout.variants = [...(callout.variants || []), defaultVariant];
+    }
 
-    return defaultVariant.title;
+    return defaultVariant;
+  }
+
+  /**
+   * Send a response confirmation email to a contact
+   * Only sends email if custom email is enabled and configured
+   * @param callout The callout
+   * @param contact The contact to send the email to
+   */
+  private async sendResponseEmail(
+    callout: Callout,
+    contact: Contact
+  ): Promise<void> {
+    // Only send email if custom email is enabled and configured
+    if (!callout.sendResponseEmail) {
+      return;
+    }
+
+    const variant = await this.getDefaultVariant(callout);
+
+    // Check if custom subject and body are configured
+    if (!variant.responseEmailSubject || !variant.responseEmailBody) {
+      log.warning(
+        `Callout ${callout.id} has sendResponseEmail enabled but no email content configured`
+      );
+      return;
+    }
+
+    await EmailService.sendCustomEmailToContact(
+      contact,
+      variant.responseEmailSubject,
+      variant.responseEmailBody,
+      {
+        mergeFields: contactEmailTemplates['callout-response-answers'].fn(
+          contact,
+          {
+            calloutSlug: callout.slug,
+            calloutTitle: variant.title,
+          }
+        ),
+      }
+    );
   }
 
   /**
@@ -580,19 +635,19 @@ class CalloutsService {
     });
 
     if (!response) {
-      log.warn(`Response ${responseId} not found`);
+      log.warning(`Response ${responseId} not found`);
       return false;
     }
 
     const slideAnswers = response.answers[slideId];
     if (!slideAnswers) {
-      log.warn(`Slide ${slideId} not found in response ${responseId}`);
+      log.warning(`Slide ${slideId} not found in response ${responseId}`);
       return false;
     }
 
     const answer = slideAnswers[componentKey];
     if (!answer) {
-      log.warn(`Component ${componentKey} not found in slide ${slideId}`);
+      log.warning(`Component ${componentKey} not found in slide ${slideId}`);
       return false;
     }
 
@@ -600,13 +655,13 @@ class CalloutsService {
     if (arrayIndex !== null && Array.isArray(answer)) {
       // Update an item in an array
       if (arrayIndex < 0 || arrayIndex >= answer.length) {
-        log.warn(`Array index ${arrayIndex} out of bounds`);
+        log.warning(`Array index ${arrayIndex} out of bounds`);
         return false;
       }
 
       const item = answer[arrayIndex];
       if (!isFileUploadAnswer(item)) {
-        log.warn(`Item at index ${arrayIndex} is not a file upload`);
+        log.warning(`Item at index ${arrayIndex} is not a file upload`);
         return false;
       }
 
@@ -615,7 +670,7 @@ class CalloutsService {
       // Update a direct answer
       slideAnswers[componentKey] = newFileUpload;
     } else {
-      log.warn(`Answer is not a file upload`);
+      log.warning(`Answer is not a file upload`);
       return false;
     }
 

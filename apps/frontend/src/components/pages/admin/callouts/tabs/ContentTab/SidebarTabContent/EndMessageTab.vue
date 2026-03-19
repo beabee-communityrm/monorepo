@@ -58,10 +58,11 @@ import {
   AppRichTextEditor,
 } from '@beabee/vue';
 
-import type { LocaleProp } from '@type';
 import useVuelidate from '@vuelidate/core';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import type { LocaleProp } from '#type';
 
 import type { SidebarTabProps } from '../SidebarTabs.interface';
 

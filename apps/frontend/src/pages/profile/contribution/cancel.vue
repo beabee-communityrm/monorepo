@@ -5,7 +5,7 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="t('menu.contribution')" />
+  <PageTitle :title="t('menu.contribution')" border />
 
   <h3 class="mb-4 text-2xl font-semibold text-body">
     {{ t('contribution.cancelMessage') }}
@@ -29,10 +29,11 @@ meta:
 <script lang="ts" setup>
 import { AppButton, PageTitle } from '@beabee/vue';
 
-import { client } from '@utils/api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 const router = useRouter();

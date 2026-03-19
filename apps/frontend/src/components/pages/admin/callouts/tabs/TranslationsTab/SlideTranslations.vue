@@ -105,10 +105,11 @@ import {
   AppTextArea,
 } from '@beabee/vue';
 
-import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import type { LocaleProp } from '@type/locale-prop';
-import { getComponentText, updateComponentText } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
+
+import type { FormBuilderSlide } from '#components/form-builder/form-builder.interface';
+import type { LocaleProp } from '#type/locale-prop';
+import { getComponentText, updateComponentText } from '#utils/callouts';
 
 const props = defineProps<{
   defaultLocale: string;

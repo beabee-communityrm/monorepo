@@ -11,7 +11,7 @@ import type { SetupPaymentMethodsArgs } from '../../types/setup.js';
  * Accepts command line arguments or prompts for missing information
  */
 export const setupPaymentMethods = async (
-  args: SetupPaymentMethodsArgs = {}
+  args: SetupPaymentMethodsArgs
 ): Promise<void> => {
   try {
     console.log('Setting up payment methods configuration...\n');

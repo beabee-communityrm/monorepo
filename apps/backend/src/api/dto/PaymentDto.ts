@@ -1,18 +1,42 @@
-import { PaymentStatus } from '@beabee/beabee-common';
+import {
+  PaymentMethod,
+  PaymentStatus,
+  PaymentType,
+} from '@beabee/beabee-common';
 
-import { GetPaginatedQuery } from '@api/dto/BaseDto';
-import { GetContactDto } from '@api/dto/ContactDto';
 import {
   IsArray,
+  IsBoolean,
   IsDate,
   IsEnum,
   IsIn,
   IsNumber,
   IsOptional,
+  IsString,
+  Min,
   ValidateNested,
 } from 'class-validator';
 
+import { GetExportQuery, GetPaginatedQuery } from '#api/dto/BaseDto';
+import { GetContactDto } from '#api/dto/ContactDto';
+
+import { StartJoinFlowDto } from './JoinFlowDto';
+
+export class CreatePaymentDto extends StartJoinFlowDto {
+  @Min(1)
+  amount!: number;
+
+  @IsBoolean()
+  payFee!: boolean;
+
+  @IsEnum(PaymentMethod)
+  paymentMethod!: PaymentMethod;
+}
+
 export class GetPaymentDto {
+  @IsString()
+  id!: string;
+
   @IsNumber()
   amount!: number;
 
@@ -22,6 +46,9 @@ export class GetPaymentDto {
   @IsEnum(PaymentStatus)
   status!: PaymentStatus;
 
+  @IsEnum(PaymentType)
+  type!: PaymentType;
+
   @IsOptional()
   @ValidateNested()
   contact?: GetContactDto | null;
@@ -30,6 +57,8 @@ export class GetPaymentDto {
 export enum GetPaymentWith {
   Contact = 'contact',
 }
+
+export class GetPaymentAggregationOptsDto extends GetExportQuery {}
 
 export class GetPaymentOptsDto {
   @IsArray()
@@ -46,4 +75,27 @@ export class ListPaymentsDto extends GetPaginatedQuery {
 
   @IsIn(['amount', 'chargeDate'])
   sort?: string;
+}
+
+export class GetPaymentAggregationDto {
+  @IsNumber()
+  @IsOptional()
+  sum!: number | null;
+
+  @IsNumber()
+  @IsOptional()
+  average!: number | null;
+}
+
+export interface ExportPaymentDto {
+  Id: string;
+  Amount: number;
+  ChargeDate: string;
+  Status: PaymentStatus;
+  Type: PaymentType;
+  SubscriptionId: string;
+  ContactId: string;
+  ContactEmail: string;
+  ContactFirstName: string;
+  ContactLastName: string;
 }

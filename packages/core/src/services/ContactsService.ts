@@ -1,10 +1,9 @@
 import {
   CONTACT_MFA_TYPE,
+  ContributionForm,
   ContributionPeriod,
   ContributionType,
   LOGIN_CODES,
-  NewsletterStatus,
-  PaymentForm,
   RESET_SECURITY_FLOW_ERROR_CODE,
   RESET_SECURITY_FLOW_TYPE,
   RoleType,
@@ -22,14 +21,25 @@ import {
 } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import {
+  ApiKey,
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutReviewer,
   Contact,
+  ContactContribution,
+  ContactMfa,
   ContactProfile,
   ContactRole,
   ContactTagAssignment,
   GiftFlow,
   Password,
+  Payment,
   Project,
+  ProjectContact,
   ProjectEngagement,
+  Referral,
+  ResetSecurityFlow,
+  SegmentContact,
 } from '#models/index';
 import ContactMfaService from '#services/ContactMfaService';
 import EmailService from '#services/EmailService';
@@ -307,35 +317,16 @@ class ContactsService {
   }
 
   /**
-   * Update a contact's newsletter status and groups, without syncing to the
-   * newsletter provider
+   * Updates a contact's contribution and adjusts their role accordingly.
    *
-   * @param contact The contact to update
-   * @param newsletterStatus The new newsletter status
-   * @param newsletterGroups The new newsletter groups
-
-   * @deprecated Only used by legacy app newsletter sync, do not use.
+   * @param contact  The contact
+   * @param form The new contribution
    */
-  async updateContactNLNoSync(
-    contact: Contact,
-    newsletterStatus: NewsletterStatus,
-    newsletterGroups: string[]
-  ): Promise<void> {
-    await getRepository(ContactProfile).update(contact.id, {
-      newsletterStatus,
-      newsletterGroups,
-    });
-    if (contact.profile) {
-      contact.profile.newsletterStatus = newsletterStatus;
-      contact.profile.newsletterGroups = newsletterGroups;
-    }
-  }
-
   async updateContactContribution(
     contact: Contact,
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<void> {
-    log.info('Update contribution for ' + contact.id, { paymentForm });
+    log.info('Update contribution for ' + contact.id, { form });
     // At the moment the only possibility is to go from whatever contribution
     // type the user was before to an automatic contribution
     const wasManual = contact.contributionType === ContributionType.Manual;
@@ -346,7 +337,7 @@ class ContactsService {
       contact.membership?.isActive &&
       // Annual contributors can't change their period
       contact.contributionPeriod === ContributionPeriod.Annually &&
-      paymentForm.period !== ContributionPeriod.Annually
+      form.period !== ContributionPeriod.Annually
     ) {
       log.info("Can't update contribution for " + contact.id);
       throw new CantUpdateContribution();
@@ -354,7 +345,7 @@ class ContactsService {
 
     const { startNow, expiryDate } = await PaymentService.updateContribution(
       contact,
-      paymentForm
+      form
     );
 
     log.info('Updated contribution for ' + contact.id, {
@@ -364,9 +355,9 @@ class ContactsService {
 
     await this.updateContact(contact, {
       contributionType: ContributionType.Automatic,
-      contributionPeriod: paymentForm.period,
+      contributionPeriod: form.period,
       ...(startNow && {
-        contributionMonthlyAmount: paymentForm.monthlyAmount,
+        contributionMonthlyAmount: form.monthlyAmount,
       }),
     });
 
@@ -377,6 +368,12 @@ class ContactsService {
     }
   }
 
+  /**
+   * Cancel a contact's contribution and send the cancellation email.
+   *
+   * @param contact The contact
+   * @param email The email template to send
+   */
   async cancelContactContribution(
     contact: Contact,
     email: 'cancelled-contribution' | 'cancelled-contribution-no-survey'
@@ -392,35 +389,94 @@ class ContactsService {
 
   /**
    * Permanently delete a contact and all associated data.
+   * This method cleans up all foreign key references before deleting the contact.
    *
-   * @param contact The contact
+   * @param contact The contact to delete
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
     log.info('Permanently delete contact ' + contact.id);
     await runTransaction(async (em) => {
-      // Projects are only in the legacy app, so really no one should have any, but we'll delete them just in case
-      // TODO: Remove this when we've reworked projects
+      // 1. Reset security flows (password reset, MFA reset)
+      await em
+        .getRepository(ResetSecurityFlow)
+        .delete({ contactId: contact.id });
+
+      // 2. MFA settings
+      await em.getRepository(ContactMfa).delete({ contactId: contact.id });
+
+      // 3. API keys: set creator to NULL
+      await em
+        .getRepository(ApiKey)
+        .update({ creatorId: contact.id }, { creatorId: null });
+
+      // 4. Callout reviewers
+      await em.getRepository(CalloutReviewer).delete({ contactId: contact.id });
+
+      // 5. Callout response comments: set contact to NULL
+      await em
+        .getRepository(CalloutResponseComment)
+        .update(
+          { contactId: contact.id },
+          { contactId: null as unknown as string }
+        );
+
+      // 6. Callout responses: set contact and assignee to NULL
+      await em
+        .getRepository(CalloutResponse)
+        .update({ contactId: contact.id }, { contactId: null });
+      await em
+        .getRepository(CalloutResponse)
+        .update({ assigneeId: contact.id }, { assigneeId: null });
+
+      // 7. Payments: set contact to NULL
+      await em
+        .getRepository(Payment)
+        .update({ contactId: contact.id }, { contactId: null });
+
+      // 8. Contact contribution
+      await em
+        .getRepository(ContactContribution)
+        .delete({ contactId: contact.id });
+
+      // 9. Segment contacts
+      await em.getRepository(SegmentContact).delete({ contactId: contact.id });
+
+      // 10. Project engagements (legacy app)
       await em
         .getRepository(ProjectEngagement)
         .delete({ byContactId: contact.id });
       await em
         .getRepository(ProjectEngagement)
         .delete({ toContactId: contact.id });
+
+      // 11. Project contacts (legacy app)
+      await em.getRepository(ProjectContact).delete({ contactId: contact.id });
+
+      // 12. Projects: set owner to NULL (legacy app)
       await em
         .getRepository(Project)
         .update({ ownerId: contact.id }, { ownerId: null });
 
-      // Gifts are only in the legacy app, so really no one should have any, but we'll delete them just in case
-      // TODO: Remove this when we've reworked gifts
+      // 13. Gift flows: set giftee to NULL (legacy app)
       await em
         .getRepository(GiftFlow)
         .update({ gifteeId: contact.id }, { gifteeId: null });
 
+      // 14. Referrals: delete where contact is referee (legacy feature)
+      await em.getRepository(Referral).delete({ refereeId: contact.id });
+
+      // 15. Contact tag assignments (has CASCADE but explicit for safety)
       await em
         .getRepository(ContactTagAssignment)
         .delete({ contactId: contact.id });
+
+      // 16. Contact roles
       await em.getRepository(ContactRole).delete({ contactId: contact.id });
+
+      // 17. Contact profile
       await em.getRepository(ContactProfile).delete({ contactId: contact.id });
+
+      // 18. Finally delete the contact
       await em.getRepository(Contact).delete(contact.id);
     });
   }
@@ -460,22 +516,24 @@ class ContactsService {
   /**
    * Increment the number of password tries for a contact.
    * @param contact The contact to increment the password tries for
-   * @returns The new number of tries
    */
   async incrementPasswordTries(contact: Contact) {
-    contact.password.tries ||= 0;
-    contact.password.tries++;
-    await this.updateContact(contact, {
-      password: { ...contact.password },
-    });
-    return contact.password.tries;
+    await this.resetPasswordTries(contact, contact.password.tries + 1);
   }
 
-  async resetPasswordTries(contact: Contact) {
-    contact.password.tries = 0;
-    await this.updateContact(contact, {
-      password: { ...contact.password },
-    });
+  /**
+   * Reset the number of password tries for a contact.
+   * @param contact The contact to reset the password tries for
+   * @param tries The new number of password tries
+   */
+  async resetPasswordTries(contact: Contact, tries = 0): Promise<void> {
+    if (contact.password.tries !== tries) {
+      contact.password.tries = tries;
+      // Update directly on database to avoid syncing with external services (e.g. newsletter)
+      await getRepository(Contact).update(contact.id, {
+        password: { tries },
+      });
+    }
   }
 
   /**

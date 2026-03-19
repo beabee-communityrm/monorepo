@@ -42,7 +42,7 @@ meta:
     }}</AppButton>
   </section>
 
-  <section>
+  <section class="mb-6 lg:mr-6">
     <SectionTitle>{{ t('homePage.yourProfile') }}</SectionTitle>
 
     <div class="mb-4 flex">
@@ -67,16 +67,17 @@ import {
 } from '@beabee/beabee-common';
 import { AppButton, PageTitle, WelcomeMessage } from '@beabee/vue';
 
-import CalloutCard from '@components/callout/CalloutCard.vue';
-import ContributionInfo from '@components/pages/profile/ContributionInfo.vue';
-import NoticeContainer from '@components/pages/profile/NoticeContainer.vue';
-import QuickActions from '@components/pages/profile/QuickActions.vue';
-import SectionTitle from '@components/pages/profile/SectionTitle.vue';
-import { currentUser, generalContent } from '@store';
-import { client } from '@utils/api';
 import { type Ref, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+
+import CalloutCard from '#components/callout/CalloutCard.vue';
+import ContributionInfo from '#components/pages/profile/ContributionInfo.vue';
+import NoticeContainer from '#components/pages/profile/NoticeContainer.vue';
+import QuickActions from '#components/pages/profile/QuickActions.vue';
+import SectionTitle from '#components/pages/profile/SectionTitle.vue';
+import { currentUser, generalContent } from '#store';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 
@@ -100,6 +101,7 @@ const user = currentUser as Ref<GetContactData>;
 
 onBeforeMount(async () => {
   profileContent.value = await client.content.get('profile');
+
   callouts.value = (
     await client.callout.list({
       order: 'DESC',

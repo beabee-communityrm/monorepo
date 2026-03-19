@@ -1,11 +1,9 @@
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { Email, EmailMailing, SegmentOngoingEmail } from '@beabee/core/models';
-import EmailService, {
-  type EmailTemplateId,
-} from '@beabee/core/services/EmailService';
+import { emailService } from '@beabee/core/services/EmailService';
 import OptionsService from '@beabee/core/services/OptionsService';
 import { formatEmailBody } from '@beabee/core/templates/email';
-import { EmailMailingRecipient } from '@beabee/core/type';
+import { EmailMailingRecipient, EmailTemplateId } from '@beabee/core/type';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import busboy from 'connect-busboy';
@@ -87,8 +85,8 @@ const assignableSystemEmails: Partial<Record<EmailTemplateId, EmailType>> = {
     showContactFields: true,
     mergeFields: [],
   },
-  'confirm-callout-response': {
-    name: 'Confirm callout response',
+  'callout-response-answers': {
+    name: 'Callout response confirmation',
     showContactFields: true,
     mergeFields: [
       ['CALLOUTTITLE', 'Callout title'],
@@ -272,12 +270,17 @@ app.get(
     const mergeFields = _.uniq(
       matches.map((f) => f.substring(2, f.length - 2))
     );
+    const recipients = mailing.recipients ?? [];
+    const headers =
+      recipients[0] != null && typeof recipients[0] === 'object'
+        ? Object.keys(recipients[0])
+        : [];
     res.render('mailing', {
       email,
       emailBody: formatEmailBody(email.body),
-      mailing,
+      mailing: { ...mailing, recipients },
       mergeFields,
-      headers: Object.keys(mailing.recipients[0]),
+      headers,
       onlyPreview: req.query.preview !== undefined,
     });
   })
@@ -298,6 +301,10 @@ app.post(
       id: req.params.mailingId,
     });
     if (!mailing) return next('route');
+    if (!mailing.recipients?.length) {
+      req.flash('error', 'This mailing has no recipients.');
+      return res.redirect(`/tools/emails/${email.id}`);
+    }
 
     const { emailField, nameField, mergeFields }: SendSchema = req.body;
 
@@ -312,7 +319,7 @@ app.post(
       ),
     }));
 
-    await EmailService.sendEmail(email, recipients);
+    await emailService.sendEmail(email, recipients);
 
     await getRepository(EmailMailing).update(mailing.id, {
       sentDate: new Date(),

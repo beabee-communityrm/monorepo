@@ -67,6 +67,7 @@
     "cancel": "Cancelar",
     "changePassword": "Mudar palavra-passe",
     "chooseFile": "Escolher um ficheiro",
+    "clearSearch": "Limpar pesquisa",
     "close": "Fechar",
     "continue": "Continuar",
     "copy": "Copiar",
@@ -85,6 +86,7 @@
     "noBack": "Não, voltar atrás",
     "participate": "Participar",
     "preview": "Pré-visualizar",
+    "previous": "Anterior",
     "publish": "Publicar",
     "reopen": "Reabrir",
     "replicate": "Replicar",
@@ -99,6 +101,8 @@
     "schedule": "Agendar",
     "search": "Pesquisar",
     "sendEmails": "Fechar",
+    "sendOneOffEmail": "Enviar e-mail",
+    "sendOngoingEmails": "E-mails contínuos",
     "share": "Partilhar",
     "skip": "Saltar",
     "submit": "Enviar",
@@ -108,7 +112,8 @@
     "view": "Ver",
     "yesDelete": "Sim, apagar",
     "yesDisable": "Sim, desactivar",
-    "yesRemove": "Sim, remover"
+    "yesRemove": "Sim, remover",
+    "yesReset": "Sim, redefinir"
   },
   "addContact": {
     "contactSaved": "Contacto gravado",
@@ -178,6 +183,10 @@
       "fromEmail": "",
       "fromName": "",
       "label": "",
+      "templates": {
+        "description": "",
+        "title": ""
+      },
       "text": "",
       "title": ""
     },
@@ -213,9 +222,13 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "",
+      "showOneTimeDonation": "",
       "taxRate": "",
-      "taxRateEnabled": ""
+      "taxRateLabelOneTime": "",
+      "taxRateLabelRecurring": ""
     },
     "theme": {
       "bodyFont": "",
@@ -249,6 +262,7 @@
       "any": ""
     },
     "createdSegment": "",
+    "invalidRuleError": "",
     "matchWord": {
       "AND": "",
       "OR": ""
@@ -365,6 +379,23 @@
       "tabs": {
         "content": {
           "title": ""
+        },
+        "email": {
+          "body": {
+            "default": "<p>Olá {'*|FNAME|*'},</p><p></p><p>Este e-mail confirma a sua resposta a <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a> utilizando o seu endereço de correio eletrónico {'*|EMAIL|*'}.</p><p></p><p>Se tiver alguma questão, contacte a nossa equipa de apoio em <a href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p></p><p>Atenciosamente</p>"
+          },
+          "collectInfoWarning": {
+            "description": "Para enviar um e-mail a todos os participantes, você deve ativar \"Coletar informações de contato\" na aba Configurações",
+            "title": "Informações de contato não coletadas"
+          },
+          "sendEmail": {
+            "description": "O e-mail será enviado a todos os participantes que enviarem suas informações de contato",
+            "label": "Enviar um e-mail a todos os participantes após o envio"
+          },
+          "subject": {
+            "default": "Obrigado pela sua resposta"
+          },
+          "title": "Email"
         },
         "endMessage": {
           "inputs": {
@@ -662,10 +693,10 @@
           "navigationButtons": {
             "title": ""
           },
-          "title": "",
           "responseLinks": {
             "title": ""
-          }
+          },
+          "title": ""
         }
       },
       "title": "",
@@ -879,7 +910,6 @@
   },
   "common": {
     "backToHome": "Voltar ao início",
-    "contributing": "A contribuir",
     "contributionPeriod": {
       "annually": "Anualmente",
       "monthly": "Mensalmente"
@@ -894,7 +924,6 @@
     "hello": "Olá",
     "id": "ID",
     "itemsPerPage": "{items} itens por página",
-    "joined": "Juntaste-te",
     "label": "Label",
     "loading": "A carregar...",
     "login": "Login",
@@ -908,6 +937,11 @@
     "no": "Não",
     "noResults": "Nenhum resultado encontrado",
     "pageCount": "Página {pageNumber} de {pageTotal}",
+    "paymentPeriod": {
+      "annually": "Anualmente",
+      "monthly": "Mensalmente",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "Cancelado",
       "draft": "Rascunho",
@@ -915,10 +949,16 @@
       "pending": "A aguardar",
       "successful": "Sucesso"
     },
+    "paymentType": {
+      "oneTime": "Único",
+      "prorated": "Proporcional",
+      "recurring": "Recorrente",
+      "unknown": "Desconhecido"
+    },
     "perMonth": "/ mês",
-    "perMonthText": "por mês",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "/ ano",
-    "perYearText": "por ano",
     "role": {
       "admin": "Administrador",
       "member": "Membro",
@@ -976,9 +1016,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "Único",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "Recorrente",
     "roles": "",
     "security": {
       "instructions": "",
@@ -991,6 +1033,10 @@
       "title": "",
       "whatDoTheButtonsDo": ""
     }
+  },
+  "contactSelector": {
+    "contactNOfTotal": "Contacto {current} de {total}",
+    "selfOption": "Tu mesmo"
   },
   "contacts": {
     "addContact": "Adicionar contacto",
@@ -1005,15 +1051,18 @@
       "activeUser": "",
       "amount": "Montante",
       "annotationsCopy": "Contacto atualizado",
-      "contribution": "Contribuição",
-      "contributionCancelled": "Contribuição cancelada",
-      "contributionMonthlyAmount": "Valor mensal da contribuição",
-      "contributionPeriod": "Período da contribuição",
-      "contributionType": "Tipo de contributo",
+      "averageDonationAmount": "Valor médio de contribuições únicas (desde sempre)",
+      "contribution": "Contribuição recorrente",
+      "contributionCancelled": "Contribuição recorrente cancelada",
+      "contributionMonthlyAmount": "Valor mensal da contribuição recorrente",
+      "contributionPeriod": "Período da contribuição recorrente",
+      "contributionType": "Tipo de contribuição recorrente",
       "deliveryOptIn": "",
       "description": "Descrição",
+      "donationDate": "Data da contribuição única",
       "email": "Email",
       "firstname": "Primeiro nome",
+      "hasDonated": "Fez uma contribuição única",
       "joined": "Inscreveu-se em",
       "lastSeen": "Visto pela última vez em",
       "lastname": "Último nome",
@@ -1030,19 +1079,51 @@
       "period": "Período",
       "phone": "Telefone",
       "preferredChannel": "Canal preferido",
-      "tags": "Etiquetas"
+      "tags": "Etiquetas",
+      "totalDonationAmount": "Valor total de contribuições únicas (desde sempre)"
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
       "contact": "Informação de contacto",
-      "contribution": "Contribuição",
+      "oneTimeContributions": "Contribuições únicas",
+      "recurringContributions": "Contribuições recorrentes",
       "role": "Cargo"
+    },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Tem a certeza de que deseja eliminar este modelo de e-mail? Esta ação não pode ser desfeita.",
+        "title": "Eliminar modelo?"
+      },
+      "date": "Criado",
+      "edit": "Editar",
+      "editTitle": "Editar modelo",
+      "editTitleWithName": "Editar modelo: {name}",
+      "empty": "Ainda não há modelos de e-mail.",
+      "manage": "Gerir modelos de e-mail",
+      "name": "Nome",
+      "showingOf": "A mostrar modelos {start} a {end} de {total}",
+      "subject": "Assunto",
+      "title": "Modelos de e-mail",
+      "use": "Usar"
     },
     "noContacts": "Nenhum contacto ainda adicionado",
     "noResults": "Nenhum contacto encontrado",
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
     "search": "Pesquisar contactos...",
     "selectedCount": "",
+    "sendEmail": {
+      "newEmail": "Novo e-mail",
+      "saveAndBack": "Guardar e voltar",
+      "saveAndBackSuccess": "Modelo guardado.",
+      "saveAndSend": "Guardar e enviar",
+      "send": "Enviar",
+      "sent": "O e-mail foi enviado para o segmento.",
+      "sentTimes": "Enviado {n} vezes",
+      "templateLabel": "Modelo",
+      "templateName": "Nome do novo modelo",
+      "templateNameRequired": "Introduza um nome para o novo modelo.",
+      "title": "Enviar e-mail ao segmento"
+    },
     "showingOf": "Contactos {start} a {end} de um total de {total}"
   },
   "contribution": {
@@ -1056,7 +1137,6 @@
     "changeBank": "Mudar para outra conta bancária",
     "changeBankInfo": "No próximo passo, vais poder inserir os detalhes bancários da tua nova conta.",
     "contributing": "Estás a contribuir",
-    "contributionUpdateError": "Não é possível atualizar a tua contribuição porque tens um pagamento pendente.",
     "dueToRenew": "A tua contribuição vai renovar a {renewalDate}.",
     "expired": "A tua contribuição expirou.",
     "expiredText": "Considera renovar a tua contribuição mensal, nem que seja pelo valor mais baixo. É muito importante para o nosso jornalismo. Obrigado!",
@@ -1069,7 +1149,8 @@
       "title": "Histórico de pagamentos"
     },
     "paymentMethod": "Método de pagamento",
-    "paymentSourceUpdateError": "Não é possível atualizar a sua conta bancária porque o pagamento está pendente.",
+    "perMonthText": "por mês",
+    "perYearText": "por ano",
     "prorateDecreaseMessage": "Resta 1 mês na sua contribuição atual. | Restam {n} meses na tua contribuição atual.",
     "prorateDecreaseMessageWillStart": "A tua nova contribuição vai começar a {renewalDate}.",
     "prorateIncreaseMessage": "Tens 1 mês restante na sua contribuição atual. | Tens {n} meses restantes na tua contribuição atual.",
@@ -1095,7 +1176,110 @@
     "warning": ""
   },
   "editNotice": {
-    "title": ""
+    "title": "Editar: {title}"
+  },
+  "emailEditor": {
+    "body": {
+      "label": "Mensagem"
+    },
+    "preview": {
+      "asContactLabel": "Contacto para pré-visualização",
+      "label": "Pré-visualização",
+      "unavailable": "Pré-visualização indisponível"
+    },
+    "subject": {
+      "label": "Assunto"
+    }
+  },
+  "emails": {
+    "actions": {
+      "addCustom": "Adicionar email personalizado",
+      "deactivate": "Desativar",
+      "resetToDefault": "Repor predefinição"
+    },
+    "add": {
+      "title": "Criar email personalizado"
+    },
+    "confirmDelete": {
+      "message": "Tem a certeza de que pretende desativar este email? Esta ação não pode ser revertida.",
+      "messageWithMailings": "Este email foi enviado {count} vez(es). Tem a certeza de que pretende eliminá-lo? Esta ação não pode ser revertida.",
+      "title": "Desativar email"
+    },
+    "confirmResetToDefault": {
+      "message": "Tem a certeza de que pretende repor este modelo para a predefinição? As suas alterações personalizadas serão perdidas.",
+      "title": "Repor predefinição"
+    },
+    "customized": "Personalizado",
+    "default": "Padrão",
+    "description": "Descrição",
+    "edit": {
+      "title": "Editar email",
+      "titleCustom": "Editar: {name}"
+    },
+    "fromEmail": "Email do remetente",
+    "fromName": "Nome do remetente",
+    "list": {
+      "showingOf": "A mostrar {start} a {end} emails de {total}"
+    },
+    "mailingCount": "Emails enviados",
+    "missingDefault": "Não Ativo",
+    "name": "Nome do email",
+    "notifications": {
+      "created": "Email criado com sucesso",
+      "deleted": "Email eliminado com sucesso",
+      "resetToDefault": "Modelo reposto para predefinição com sucesso",
+      "templateAssigned": "",
+      "templatesAssigned": "",
+      "updated": "Email atualizado com sucesso"
+    },
+    "status": "Estado",
+    "tabs": {
+      "custom": "Emails personalizados",
+      "templates": "Modelos do sistema"
+    },
+    "templates": {
+      "availableFields": "Campos disponíveis",
+      "description": {
+        "cancelled-contribution": "Enviado aos membros quando a sua contribuição recorrente é cancelada. Normalmente inclui informações sobre quando termina a adesão, bem como o ID do membro. Pode conter uma ligação para um inquérito.",
+        "cancelled-member": "Enviado aos administradores quando um membro cancela a sua contribuição. Normalmente inclui uma notificação com o ID e o nome do membro cancelado.",
+        "confirm-email": "Enviado a novos utilizadores durante o processo de registo para verificar o seu endereço de email. Contém uma ligação de confirmação que devem clicar para concluir o registo.",
+        "contribution-didnt-start": "Enviado aos membros quando o seu pagamento de subscrição Stripe não pôde ser iniciado (por exemplo, método de pagamento recusado, fundos insuficientes). Informa-os de que a sua adesão foi revogada devido à falha do pagamento.",
+        "email-exists-login": "Enviado quando alguém tenta registar-se com um endereço de email que já existe e pertence a um membro ativo com palavra-passe definida. Fornece uma ligação de início de sessão para aceder à sua conta existente.",
+        "email-exists-set-password": "Enviado quando alguém tenta registar-se com um endereço de email que já existe e pertence a um membro ativo que ainda não definiu uma palavra-passe. Fornece uma ligação para definir uma palavra-passe.",
+        "manual-to-automatic": "Enviado aos membros quando o seu método de pagamento é alterado com sucesso de manual para pagamento recorrente automático. Confirma a alteração bem-sucedida.",
+        "new-callout-response": "Enviado aos administradores quando uma nova resposta a um CrowdNewsroom é submetida. Normalmente inclui uma notificação com os detalhes do CrowdNewsroom e o nome da pessoa que responde.",
+        "new-member": "Enviado aos administradores quando um novo membro se junta com sucesso à comunidade. Normalmente inclui uma notificação com o ID e o nome do novo membro.",
+        "one-time-donation": "Enviado aos utilizadores após concluírem uma contribuição única.",
+        "one-time-donation-failed": "",
+        "reset-device": "Enviado quando um utilizador solicita a reposição do seu dispositivo de confiança para autenticação de dois fatores. Contém uma ligação segura para repor o dispositivo.",
+        "reset-password": "Enviado quando um utilizador solicita a reposição da palavra-passe. Contém uma ligação segura para repor a palavra-passe.",
+        "setup-account": "",
+        "welcome": "Enviado a novos membros após concluírem o processo de registo. Este email dá-lhes as boas-vindas à comunidade."
+      },
+      "names": {
+        "cancelled-contribution": "Contribuição cancelada",
+        "cancelled-member": "Admin: Membro cancelado",
+        "confirm-email": "Confirmar email",
+        "contribution-didnt-start": "Contribuição não iniciada",
+        "email-exists-login": "Email existente - iniciar sessão",
+        "email-exists-set-password": "Email existente - definir palavra-passe",
+        "manual-to-automatic": "Contribuinte manual convertido para automático",
+        "new-callout-response": "Admin: Nova resposta CrowdNewsroom",
+        "new-member": "Admin: Novo contacto",
+        "one-time-donation": "Confirmação de contribuição única",
+        "one-time-donation-failed": "",
+        "reset-device": "Repor dispositivo",
+        "reset-password": "Repor palavra-passe",
+        "setup-account": "",
+        "welcome": "Bem-vindo"
+      },
+      "type": {
+        "admin": "Notificações de admin",
+        "contact": "Emails de contacto",
+        "general": "Geral"
+      }
+    },
+    "type": "Tipo"
   },
   "footer": {
     "contactUs": "Entra em contacto connosco em",
@@ -1126,11 +1310,13 @@
     "errorMessages": {
       "api": {
         "account-locked": "Conta bloqueada por demasiadas tentativas de login. Faz reset da tua password ou fala connosco.",
+        "cant-update-contribution": "Não é possível atualizar a tua contribuição porque tens um pagamento pendente.",
         "duplicate-email": "Este endereço de e-mail já existe",
         "duplicate-tag-name": "",
         "invalid-token": "Token 2FA inválido",
         "login-failed": "Combinação inválida de email e palavra-passe",
-        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar."
+        "mfa-token-required": "Ativaste a autenticação de dois fatores. Introduz o token da tua aplicação de autenticação para continuar.",
+        "payment-failed": "O seu pagamento não foi bem-sucedido. Tente novamente ou utilize outro método de pagamento."
       },
       "generic": "Ups, houve aqui um erro. Fala connosco se isto voltar a acontecer.",
       "unauthorized": "",
@@ -1227,6 +1413,7 @@
       "heading": "Cabeçalho",
       "italic": "Itálico",
       "link": "Link",
+      "mergeFields": "Campos de mesclagem",
       "numberedlist": "Lista numerada",
       "strikethrough": "Rasurado",
       "toolbar": "",
@@ -1254,8 +1441,11 @@
   },
   "homePage": {
     "editProfile": "Editar o teu perfil de comunidade",
+    "makeOneTimeDonationButton": "Contribuição",
+    "makeOneTimeDonationTitle": "Fazer uma contribuição única agora",
     "manageContribution": "Gerir o teu contributo",
     "newCallout": "Nova CrowdNewsroom!",
+    "oneTimeContributionSuccessMessage": "Obrigado pela tua contribuição!",
     "openCallouts": "CrowdNewsrooms abertas",
     "quickActions": "Ações rápidas",
     "title": "Página inicial",
@@ -1278,18 +1468,36 @@
   "join": {
     "absorbFeeForce": "É necessário que {amount} contributos suportem a taxa de {fee}.",
     "absorbFeeOptIn": "Sim, posso suportar a taxa de {fee}.",
-    "absorbFeeText": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo mensal. Poderias suportar a taxa de {fee}? ",
+    "absorbFeeText": {
+      "monthly": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo mensal. Poderias suportar a taxa de {fee}? ",
+      "one-time": "O nosso processador de pagamentos cobra-nos por transação, o que significa que perdemos uma parte de cada contributo único. Poderias suportar a taxa de {fee}?"
+    },
     "contribute": "Contribuir {contribution}",
+    "contribution": {
+      "annually": "{amount} por ano",
+      "monthly": "{amount} por mês",
+      "one-time": "{amount} único"
+    },
     "errors": {
       "confirmEmail": {
-        "message": "Está quase! Precisamos apenas de confirmar o teu email para passares a fazer parte da comunidade.",
-        "proceed": "Enviámos-te um email. Clica no link para continuar.",
-        "title": "Confirmar endereço de email"
+        "message": "Acabamos de enviar um e-mail de confirmação para o endereço que você informou.",
+        "proceed": "Não se esqueça de concluir a configuração da sua conta! Você encontrará as próximas etapas na sua caixa de entrada.",
+        "title": "Obrigado!"
       },
       "failed": {
         "backToJoin": "Voltar à página de registo",
         "message": "Houve um problema inesperado ao criar a tua conta. Entra em contacto connosco se o problema continuar, e diz-nos com detalhe o que aconteceu.",
         "title": "Houve aqui um problema."
+      },
+      "notFound": {
+        "backToJoin": "Voltar à página de registo",
+        "message": "Este link de registo expirou ou já foi utilizado. Se acabou de se registar noutra aba, deve receber um e-mail de confirmação em breve. Se se registou há algum tempo, terá de iniciar um novo registo.",
+        "title": "Link de registo expirado"
+      },
+      "paymentFailed": {
+        "backToJoin": "Voltar à página de registo",
+        "message": "O seu pagamento não foi bem-sucedido. Tente novamente ou utilize outro método de pagamento.",
+        "title": "Falha no pagamento"
       }
     },
     "login": "Login",
@@ -1307,18 +1515,14 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Assinatura",
-      "recurringLabel": "Contribuição recorrente"
-    },
     "genericError": "Ups, houve aqui um erro ({type}). Fala connosco se isto voltar a acontecer.",
     "goBack": "Esqueceste-te de alguma coisa? {back}",
     "goBackButton": "Voltar ao passo anterior",
     "note": "Podes alterar a tua contribuição e aceder ao teu historial de pagamentos a qualquer altura na tua conta.",
-    "willBeContributing": "O tua contribuição será de {contribution}"
+    "willBeContributing": "O tua contribuição será de {contribution}",
+    "willBeDonating": "Vais fazer uma contribuição única de {amount}"
   },
   "joinSetup": {
-    "confirmDetails": "Por favor confirma os teus detalhes",
     "continue": "Tudo OK! Continuar",
     "welcome": "Boas-vindas, {firstName}!"
   },
@@ -1368,6 +1572,7 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
+        "oneTimeDonationEmail": "Email de contribuição única",
         "text": "",
         "title": "",
         "welcomeEmail": ""
@@ -1405,6 +1610,7 @@
     "contacts": "Contactos",
     "contribution": "Contribuição",
     "dashboard": "Painel",
+    "emails": "Emails",
     "home": "Página inicial",
     "legacyApp": "",
     "logout": "Sair",
@@ -1413,6 +1619,51 @@
     "payments": "",
     "settings": "Definições",
     "yourProfile": "Perfil"
+  },
+  "mergeFields": {
+    "copied": "Copiado!",
+    "copy": "Copiar",
+    "copyTag": "Copiar {tag}",
+    "example": "Exemplo",
+    "groups": {
+      "contact": "Campos de contacto",
+      "magic": "Links mágicos",
+      "standard": "Campos padrão",
+      "template": "Campos de modelo"
+    },
+    "insert": "Inserir",
+    "insertTag": "Inserir {tag}",
+    "tags": {
+      "ACTIVATELINK": "Link de ativação do presente",
+      "ANSWERS": "Respostas formatadas",
+      "CALLOUTLINK": "Link para o CrowdNewsroom",
+      "CALLOUTSLUG": "Slug do CrowdNewsroom",
+      "CALLOUTTITLE": "Título do CrowdNewsroom",
+      "CONFIRMLINK": "Link de confirmação de email",
+      "EMAIL": "Endereço de email do contacto",
+      "EXPIRES": "Data de expiração da adesão",
+      "FNAME": "Primeiro nome do contacto",
+      "GIFTDATE": "Data de início do presente",
+      "GIFTEE": "Nome do destinatário do presente",
+      "ISELIGIBLE": "Se a referência é elegível",
+      "LNAME": "Apelido do contacto",
+      "LOGINLINK": "Link de login",
+      "MEMBERID": "ID de membro",
+      "MEMBERNAME": "Nome do membro",
+      "MEMBERSHIPID": "ID de membro do contacto",
+      "MESSAGE": "Conteúdo de mensagem personalizado",
+      "NAME": "Nome completo do contacto",
+      "ORGNAME": "Nome da organização",
+      "PURCHASER": "Nome do comprador do presente",
+      "REFCODE": "Código de referência do contacto",
+      "REFEREENAME": "Nome da pessoa referida",
+      "RESPNAME": "Nome do respondente",
+      "RPLINK": "Link de redefinição de palavra-passe",
+      "SPLINK": "Link de definição de palavra-passe",
+      "SUPPORTEMAIL": "Endereço de email de suporte",
+      "URL": "URL especial"
+    },
+    "title": "Campos de mesclagem"
   },
   "newsletterOptIn": {
     "groups": {
@@ -1454,6 +1705,10 @@
       "success": ""
     },
     "error": "Houve aqui um erro. Experimenta recarregar a página.",
+    "rateLimit": {
+      "generic": "Demasiados pedidos. Aguarde um pouco e tente novamente.",
+      "withWait": "Demasiados pedidos. Aguarde {time} e tente novamente."
+    },
     "remove": ""
   },
   "pageTitle": {
@@ -1469,6 +1724,11 @@
     "resetPassword": "Redefinir palavra-passe",
     "setPassword": "Definir uma palavra-passe",
     "setup": "Setup"
+  },
+  "paymentLabels": {
+    "membershipProductName": "Adesão",
+    "recurringContribution": "Contribuição recorrente",
+    "taxRateDisplayName": "IVA"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -1507,13 +1767,18 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "Valor médio",
+      "total": "Valor total"
+    },
     "filter": {
       "all": "",
       "cancelled": "",
@@ -1602,8 +1867,5 @@
     },
     "searchTag": "",
     "toggleTag": ""
-  },
-  "taxRate": {
-    "invoiceName": "???"
   }
 }

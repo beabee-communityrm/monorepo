@@ -83,10 +83,11 @@
 <script lang="ts" setup>
 import { AppFormBox, AppInput } from '@beabee/vue';
 
-import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
-import type { LocaleProp } from '@type/locale-prop';
-import { getLocalizedValue, updateLocalizedValue } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
+
+import type { FormBuilderSlide } from '#components/form-builder/form-builder.interface';
+import type { LocaleProp } from '#type/locale-prop';
+import { getLocalizedValue, updateLocalizedValue } from '#utils/callouts';
 
 const props = defineProps<{
   slides: FormBuilderSlide[];

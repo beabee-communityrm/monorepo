@@ -1,58 +1,20 @@
 import { TooManyRequestsError } from '@beabee/core/errors';
+import { log as mainLogger } from '@beabee/core/logging';
+import type { RateLimitOptions } from '@beabee/core/type';
+import { RateLimiterRes, rateLimiter } from '@beabee/core/utils';
 
 import type { NextFunction, Request, Response } from 'express';
-import {
-  IRateLimiterOptions,
-  RateLimiterMemory,
-  RateLimiterRes,
-} from 'rate-limiter-flexible';
 
-import type { RateLimitOptions } from '../../type';
+const log = mainLogger.child({ app: 'rate-limit-decorator' });
 
-// Defaults merged with provided options
-const defaultGuestLimit: IRateLimiterOptions = {
-  points: 10,
-  duration: 60 * 60,
-  keyPrefix: 'rate_limit_guest_default',
-};
-const defaultUserLimit: IRateLimiterOptions = {
-  points: 100,
-  duration: 60 * 60,
-  keyPrefix: 'rate_limit_user_default',
-};
-
-// Cache limiter instances based on final config string
-const limiterCache = new Map<
-  string,
-  { guest: RateLimiterMemory; user: RateLimiterMemory }
->();
-
-function getLimiters(options: RateLimitOptions): {
-  guest: RateLimiterMemory;
-  user: RateLimiterMemory;
-} {
-  // Merge defaults with provided options
-  const guestConfig = { ...defaultGuestLimit, ...(options.guest || {}) };
-  const userConfig = { ...defaultUserLimit, ...(options.user || {}) };
-
-  // Use unique prefixes if provided in options, otherwise use defaults
-  guestConfig.keyPrefix =
-    options.guest?.keyPrefix ||
-    `rate_limit_guest_${guestConfig.points}_${guestConfig.duration}`;
-  userConfig.keyPrefix =
-    options.user?.keyPrefix ||
-    `rate_limit_user_${userConfig.points}_${userConfig.duration}`;
-
-  const cacheKey = JSON.stringify({ guest: guestConfig, user: userConfig });
-
-  if (!limiterCache.has(cacheKey)) {
-    console.log(`Creating rate limiters for key: ${cacheKey}`); // Debug log
-    limiterCache.set(cacheKey, {
-      guest: new RateLimiterMemory(guestConfig),
-      user: new RateLimiterMemory(userConfig),
-    });
-  }
-  return limiterCache.get(cacheKey)!;
+/**
+ * Logically resets rate limiting for all in-memory limiters.
+ * Delegates to the core rateLimiter.
+ *
+ * @param options.force - If true, the cache will be cleared even if not in dev mode.
+ */
+export async function clearRateLimiterCache(options: { force?: boolean } = {}) {
+  await rateLimiter.clearCache(options);
 }
 
 /**
@@ -64,7 +26,7 @@ function getLimiters(options: RateLimitOptions): {
  */
 export function RateLimit(options: RateLimitOptions) {
   // Get or create the specific limiter instances for these options
-  const limiters = getLimiters(options);
+  const limiters = rateLimiter.getLimiters(options);
 
   // Return the actual middleware function
   return function rateLimitMiddleware(
@@ -73,16 +35,18 @@ export function RateLimit(options: RateLimitOptions) {
     next: NextFunction
   ) {
     const currentUser = req.user;
-    let key: string;
-    let limiter: RateLimiterMemory;
+    let keyBase: string;
+    let limiter;
 
     if (currentUser) {
-      key = currentUser.id.toString();
+      keyBase = currentUser.id.toString();
       limiter = limiters.user;
     } else {
-      key = req.ip || 'unknown_ip';
+      keyBase = req.ip || 'unknown_ip';
       limiter = limiters.guest;
     }
+
+    const key = rateLimiter.generateKey(keyBase);
 
     limiter
       .consume(key)
@@ -93,6 +57,14 @@ export function RateLimit(options: RateLimitOptions) {
         if (rejRes instanceof RateLimiterRes) {
           const retryAfter = Math.ceil(rejRes.msBeforeNext / 1000);
           res.set('Retry-After', String(retryAfter));
+
+          log.warning('Rate limit exceeded', {
+            key: keyBase,
+            retryAfter,
+            msBeforeNext: rejRes.msBeforeNext,
+            limiter: limiter === limiters.user ? 'user' : 'guest',
+          });
+
           // Use routing-controllers error handling by throwing the error
           next(
             new TooManyRequestsError({
@@ -100,7 +72,6 @@ export function RateLimit(options: RateLimitOptions) {
             })
           );
         } else {
-          console.error('Rate limiting error:', rejRes);
           next(new Error('Internal server error during rate limiting.'));
         }
       });

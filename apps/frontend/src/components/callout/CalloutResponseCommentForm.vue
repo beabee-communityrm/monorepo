@@ -1,29 +1,29 @@
 <template>
-  <AppForm
+  <AppApiForm
     :button-text="
       props.comment
         ? t('calloutResponseComments.actions.updateComment')
         : t('calloutResponseComments.actions.addComment')
     "
     :reset-button-text="props.comment && t('actions.cancel')"
-    :extract-error-code="extractApiErrorCode"
     @submit.prevent="handleSubmit"
     @reset="emit('cancel')"
   >
     <div class="mb-4">
       <AppRichTextEditor v-model="data.text" required />
     </div>
-  </AppForm>
+  </AppApiForm>
 </template>
 
 <script lang="ts" setup>
 import type { GetCalloutResponseCommentData } from '@beabee/beabee-common';
-import { AppForm, AppRichTextEditor } from '@beabee/vue';
+import { AppRichTextEditor } from '@beabee/vue';
 
-import { extractApiErrorCode } from '@utils/api-error';
 import useVuelidate from '@vuelidate/core';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
 
 import { type CommentFormData } from './calloutResponseComment.interface';
 

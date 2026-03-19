@@ -1,4 +1,5 @@
 import {
+  ContributionForm,
   MembershipStatus,
   PaymentForm,
   PaymentMethod,
@@ -12,7 +13,7 @@ import {
   ManualProvider,
   PaymentProvider,
   StripeProvider,
-} from '#providers';
+} from '#providers/payment/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
@@ -90,10 +91,10 @@ class PaymentService {
   async canChangeContribution(
     contact: Contact,
     useExistingPaymentSource: boolean,
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<boolean> {
     const ret = await this.provider(contact, (p) =>
-      p.canChangeContribution(useExistingPaymentSource, paymentForm)
+      p.canChangeContribution(useExistingPaymentSource, form)
     );
     log.info(
       `Contact ${contact.id} ${ret ? 'can' : 'cannot'} change contribution`
@@ -155,12 +156,10 @@ class PaymentService {
 
   async updateContribution(
     contact: Contact,
-    paymentForm: PaymentForm
+    form: ContributionForm
   ): Promise<UpdateContributionResult> {
     log.info('Update contribution for contact ' + contact.id);
-    const ret = await this.provider(contact, (p) =>
-      p.updateContribution(paymentForm)
-    );
+    const ret = await this.provider(contact, (p) => p.updateContribution(form));
     await getRepository(ContactContribution).update(
       { contactId: contact.id },
       { cancelledAt: null }
@@ -210,6 +209,31 @@ class PaymentService {
       { contactId: contact.id },
       { cancelledAt: new Date() }
     );
+  }
+
+  async createOneTimePayment(
+    contact: Contact,
+    completedPaymentFlow: CompletedPaymentFlow
+  ): Promise<void> {
+    log.info('Create one-time payment for contact ' + contact.id);
+    // Use flow method to fetch provider as we don't store payment method for
+    // one-time payments
+    const contribution = await this.getContribution(contact);
+    const provider = new PaymentProviders[
+      completedPaymentFlow.joinForm.paymentMethod
+    ](contribution);
+    await provider.createOneTimePayment(completedPaymentFlow);
+  }
+
+  async fetchInvoiceUrl(paymentId: string): Promise<string | null> {
+    log.info('Fetch invoice URL for payment ' + paymentId);
+
+    if (paymentId.startsWith('in_')) {
+      return await StripeProvider.fetchInvoiceUrl(paymentId);
+    } else {
+      // Currently only Stripe invoices are supported
+      return null;
+    }
   }
 
   /**

@@ -8,11 +8,10 @@ meta:
 
 <template>
   <AuthBox>
-    <AppForm
+    <AppApiForm
       :button-text="t('common.login')"
       inline-error
       full-button
-      :extract-error-code="extractApiErrorCode"
       @submit="submitLogin"
     >
       <AppTitle>{{ t('login.title') }}</AppTitle>
@@ -84,24 +83,25 @@ meta:
           </router-link>
         </div>
       </template>
-    </AppForm>
+    </AppApiForm>
   </AuthBox>
 </template>
 
 <script lang="ts" setup>
 import { LOGIN_CODES } from '@beabee/beabee-common';
 import type { LoginData } from '@beabee/beabee-common';
-import { AppForm, AppInput, AppNotification, AppTitle } from '@beabee/vue';
+import { AppInput, AppNotification, AppTitle } from '@beabee/vue';
 
-import AuthBox from '@components/AuthBox.vue';
-import env from '@env';
-import { updateCurrentUser } from '@store/index';
-import { client, isApiError } from '@utils/api';
-import { extractApiErrorCode } from '@utils/api-error';
-import { isInternalUrl } from '@utils/index';
 import { reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+
+import AuthBox from '#components/AuthBox.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import env from '#env';
+import { updateCurrentUser } from '#store/index';
+import { client, isApiError } from '#utils/api';
+import { isInternalUrl } from '#utils/index';
 
 const { t } = useI18n();
 

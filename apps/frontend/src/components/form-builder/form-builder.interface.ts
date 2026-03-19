@@ -1,6 +1,6 @@
 import { type CalloutComponentSchema } from '@beabee/beabee-common';
 
-import type { LocaleProp } from '@type';
+import type { LocaleProp } from '#type';
 
 /**
  * Reference interface for the Form Builder component

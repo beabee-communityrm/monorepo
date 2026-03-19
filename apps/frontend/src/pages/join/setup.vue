@@ -22,12 +22,13 @@ import {
   type UpdateContactProfileData,
 } from '@beabee/beabee-common';
 
-import SetupForm from '@components/pages/join/SetupForm.vue';
-import type { SetupContactData } from '@components/pages/join/join.interface';
-import { updateCurrentUser } from '@store';
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+import SetupForm from '#components/pages/join/SetupForm.vue';
+import type { SetupContactData } from '#components/pages/join/join.interface';
+import { updateCurrentUser } from '#store';
+import { client } from '#utils/api';
 
 const router = useRouter();
 

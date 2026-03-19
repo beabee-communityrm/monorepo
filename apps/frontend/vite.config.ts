@@ -35,28 +35,28 @@ export default ({ command, mode }) => {
     theme(),
   ];
 
-  // Keep this in sync with tsconfig.json -> compilerOptions.paths
+  // Keep this in sync with tsconfig.build.json -> compilerOptions.paths (# subpath imports)
   const alias = {
-    '@components/': `${resolve(__dirname, './src/components')}/`,
-    '@layouts/': `${resolve(__dirname, './src/layouts')}/`,
-    '@lib/': `${resolve(__dirname, './src/lib')}/`,
-    '@pages/': `${resolve(__dirname, './src/pages')}/`,
-    '@store/': `${resolve(__dirname, './src/store')}/`,
-    '@type/': `${resolve(__dirname, './src/type')}/`,
-    '@utils/': `${resolve(__dirname, './src/utils')}/`,
-    '@enums/': `${resolve(__dirname, './src/enums')}/`,
+    '#components/': `${resolve(__dirname, './src/components')}/`,
+    '#layouts/': `${resolve(__dirname, './src/layouts')}/`,
+    '#lib/': `${resolve(__dirname, './src/lib')}/`,
+    '#pages/': `${resolve(__dirname, './src/pages')}/`,
+    '#store/': `${resolve(__dirname, './src/store')}/`,
+    '#type/': `${resolve(__dirname, './src/type')}/`,
+    '#utils/': `${resolve(__dirname, './src/utils')}/`,
+    '#enums/': `${resolve(__dirname, './src/enums')}/`,
 
-    '@components': `${resolve(__dirname, './src/components/index')}`,
-    '@layouts': `${resolve(__dirname, './src/layouts/index')}`,
-    '@lib': `${resolve(__dirname, './src/lib/index')}`,
-    '@pages': `${resolve(__dirname, './src/pages/index')}`,
-    '@store': `${resolve(__dirname, './src/store/index')}`,
-    '@type': `${resolve(__dirname, './src/type/index')}`,
-    '@utils': `${resolve(__dirname, './src/utils/index')}`,
-    '@enums': `${resolve(__dirname, './src/enums/index')}`,
+    '#components': `${resolve(__dirname, './src/components/index')}`,
+    '#layouts': `${resolve(__dirname, './src/layouts/index')}`,
+    '#lib': `${resolve(__dirname, './src/lib/index')}`,
+    '#pages': `${resolve(__dirname, './src/pages/index')}`,
+    '#store': `${resolve(__dirname, './src/store/index')}`,
+    '#type': `${resolve(__dirname, './src/type/index')}`,
+    '#utils': `${resolve(__dirname, './src/utils/index')}`,
+    '#enums': `${resolve(__dirname, './src/enums/index')}`,
 
-    '@env': `${resolve(__dirname, './src/env')}`,
-    '@assets': `${resolve(__dirname, './src/assets')}`,
+    '#env': `${resolve(__dirname, './src/env')}`,
+    '#assets': `${resolve(__dirname, './src/assets')}`,
   };
 
   /*
@@ -79,7 +79,6 @@ export default ({ command, mode }) => {
           __captchafoxKey__: env.BEABEE_CAPTCHAFOX_KEY || '',
           __maptilerKey__: env.BEABEE_MAPTILER_KEY || '',
           __cnrMode__: env.BEABEE_CNR_MODE || '',
-          __experimentalFeatures__: env.BEABEE_EXPERIMENTAL_FEATURES || '',
         },
         preventAssignment: true,
       }) as Plugin
@@ -98,7 +97,7 @@ export default ({ command, mode }) => {
     plugins,
     server: {
       port: Number(env.VITE_DEV_SERVER_PORT || 3000),
-      // Proxy API requests to the backend
+      // Proxy API requests to the backend via router service (nginx)
       proxy: {
         '^/(api|login|favicon.png)': {
           target: env.BEABEE_AUDIENCE || 'http://localhost:3002',

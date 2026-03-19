@@ -174,26 +174,28 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';
-import {
-  headers,
-  useContactFilters,
-} from '@components/pages/admin/contacts/contacts.interface';
-import AppSearch from '@components/search/AppSearch.vue';
-import TagList from '@components/tag/TagList.vue';
-import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import {
   faDownload,
   faMailBulk,
   faPlus,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
-import { definePaginatedQuery, defineParam } from '@utils/pagination';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+
+import SaveSegment from '#components/pages/admin/contacts/SaveSegment.vue';
+import {
+  headers,
+  useContactFilters,
+} from '#components/pages/admin/contacts/contacts.interface';
+import AppSearch from '#components/search/AppSearch.vue';
+import TagList from '#components/tag/TagList.vue';
+import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
+import { definePaginatedQuery, defineParam } from '#utils/pagination';
 
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';
@@ -255,6 +257,15 @@ const selectedTags = computed(() => {
 });
 
 /**
+ * Search & Filter state
+ * @description Manages search and filter parameters
+ */
+const currentPaginatedQuery = definePaginatedQuery('joined');
+const currentSearch = defineParam('s', (v) => v || '');
+
+const { filterGroups, tagItems } = useContactFilters();
+
+/**
  * Segment Management
  * @description Handles segment filtering and saving
  */
@@ -263,6 +274,7 @@ const {
   currentSegment,
   currentRules,
   hasUnsavedSegment,
+  emptyTable,
   segmentItems,
   handleSavedSegment,
 } = useSegmentManagement(
@@ -301,14 +313,6 @@ async function listSegments() {
 async function listTotalSegmentItems() {
   return (await client.contact.list({ limit: 1 })).total;
 }
-/**
- * Search & Filter state
- * @description Manages search and filter parameters
- */
-const currentPaginatedQuery = definePaginatedQuery('joined');
-const currentSearch = defineParam('s', (v) => v || '');
-
-const { filterGroups, tagItems } = useContactFilters();
 
 /**
  * Action state
@@ -412,6 +416,12 @@ async function refreshResponses() {
         selected: selectedIds.has(c.id),
       })),
     };
+  } catch (err) {
+    contactsTable.value = emptyTable();
+    addNotification({
+      variant: 'error',
+      title: extractErrorText(err),
+    });
   } finally {
     isRefreshing.value = false;
   }
@@ -422,7 +432,6 @@ watch(
   () => refreshResponses(),
   { deep: true }
 );
-
 refreshResponses();
 
 /**
