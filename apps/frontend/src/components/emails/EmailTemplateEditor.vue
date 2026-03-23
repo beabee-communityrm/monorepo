@@ -10,19 +10,15 @@
           required
         />
       </div>
-      <template v-if="showSelectTemplate">
-        <AppLabel
-          :label="t('contacts.sendEmail.templateLabel')"
-          class="block"
-        />
-        <AppSelect
-          v-model="selectedTemplateId"
-          :items="templateSelectItems"
-          :placeholder="t('contacts.sendEmail.newEmail')"
-          class="w-full"
-          @update:model-value="onTemplateChange"
-        />
-      </template>
+      <AppSelect
+        v-if="showSelectTemplate"
+        v-model="selectedTemplateId"
+        :label="t('contacts.sendEmail.templateLabel')"
+        :items="templateSelectItems"
+        :placeholder="t('contacts.sendEmail.newEmail')"
+        class="mb-4"
+        @update:model-value="onTemplateChange"
+      />
     </template>
   </App2ColGrid>
 
@@ -30,6 +26,7 @@
     v-model:subject="email.subject"
     v-model:content="email.body"
     v-model:preview-contact-id="previewContactId"
+    :heading="t('emailEditor.body.label')"
     :preview-contact-options="contacts"
     class="mb-4"
   />
@@ -41,13 +38,7 @@ import type {
   GetEmailData,
   UpdateEmailData,
 } from '@beabee/beabee-common';
-import {
-  App2ColGrid,
-  AppInput,
-  AppLabel,
-  AppSelect,
-  addNotification,
-} from '@beabee/vue';
+import { App2ColGrid, AppInput, AppSelect, addNotification } from '@beabee/vue';
 
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

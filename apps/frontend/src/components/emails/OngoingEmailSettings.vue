@@ -1,62 +1,57 @@
 <template>
   <div>
-    <AppLabel
-      :label="t('adminSettings.email.contactTemplates.sendSettings')"
-      class="mb-3"
+    <AppSubHeading>
+      {{ t('adminSettings.email.contactTemplates.sendSettings') }}
+    </AppSubHeading>
+
+    <AppToggleField
+      v-model="isOngoing"
+      variant="link"
+      :label="t('adminSettings.email.contactTemplates.ongoing')"
+      :disabled="!canEnableOngoing && !isOngoing"
+      :disabled-description="
+        t('adminSettings.email.contactTemplates.ongoingDisabled')
+      "
+      :enabled-description="
+        t('adminSettings.email.contactTemplates.ongoingEnabled')
+      "
+      class="mb-4"
     />
-    <div>
-      <AppToggleField
-        v-model="isOngoing"
+
+    <template v-if="isOngoing">
+      <AppRadioGroup
+        v-model="trigger"
+        :options="[
+          ['onJoin', t('adminSettings.email.contactTemplates.contactJoins')],
+          ['onLeave', t('adminSettings.email.contactTemplates.contactLeaves')],
+        ]"
         variant="link"
-        :label="t('adminSettings.email.contactTemplates.ongoing')"
-        :disabled="!canEnableOngoing && !isOngoing"
-        :disabled-description="
-          t('adminSettings.email.contactTemplates.ongoingDisabled')
-        "
-        :enabled-description="
-          t('adminSettings.email.contactTemplates.ongoingEnabled')
-        "
+        :label="t('adminSettings.email.contactTemplates.titleSendTime')"
+        :inline="true"
+        required
+        class="mb-4"
       />
-    </div>
 
-    <div :class="{ 'hidden md:block': !isOngoing }">
-      <template v-if="isOngoing">
-        <AppRadioGroup
-          v-model="trigger"
-          :options="[
-            ['onJoin', t('adminSettings.email.contactTemplates.contactJoins')],
-            [
-              'onLeave',
-              t('adminSettings.email.contactTemplates.contactLeaves'),
-            ],
-          ]"
+      <div v-if="showDirectSend && trigger === 'onJoin'" class="mb-4">
+        <AppToggleField
+          v-model="directSend"
           variant="link"
-          :label="t('adminSettings.email.contactTemplates.titleSendTime')"
-          :inline="true"
-          class="mb-4"
+          :label="t('adminSettings.email.contactTemplates.titleDirectSend')"
+          :disabled-description="
+            t('adminSettings.email.contactTemplates.directSendDisabled')
+          "
+          :enabled-description="
+            t('adminSettings.email.contactTemplates.directSendEnabled')
+          "
         />
-
-        <div v-if="showDirectSend && trigger === 'onJoin'" class="mb-4">
-          <AppToggleField
-            v-model="directSend"
-            variant="link"
-            :label="t('adminSettings.email.contactTemplates.titleDirectSend')"
-            :disabled-description="
-              t('adminSettings.email.contactTemplates.directSendDisabled')
-            "
-            :enabled-description="
-              t('adminSettings.email.contactTemplates.directSendEnabled')
-            "
-          />
-        </div>
-      </template>
-    </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { SegmentOngoingEmailTrigger } from '@beabee/beabee-common';
-import { AppLabel, AppRadioGroup, AppToggleField } from '@beabee/vue';
+import { AppRadioGroup, AppSubHeading, AppToggleField } from '@beabee/vue';
 
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
