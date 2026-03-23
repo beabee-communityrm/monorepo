@@ -58,9 +58,7 @@ meta:
       @submit="handleSubmit"
       @reset="showDeleteConfirm = true"
     >
-      <EmailTemplateEditor
-        v-model:email="form"
-      />
+      <EmailTemplateEditor v-model:email="form" />
     </AppApiForm>
 
     <AppInfoList v-if="email" class="mt-6">

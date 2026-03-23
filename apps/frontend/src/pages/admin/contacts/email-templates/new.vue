@@ -15,9 +15,7 @@ meta:
     @submit="handleSubmit"
     @reset="handleBack"
   >
-    <EmailTemplateEditor
-      v-model:email="form"
-    />
+    <EmailTemplateEditor v-model:email="form" />
   </AppApiForm>
 </template>
 
