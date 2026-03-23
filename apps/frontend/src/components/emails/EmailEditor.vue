@@ -1,58 +1,49 @@
 <template>
   <div>
     <AppSubHeading v-if="heading">{{ heading }}</AppSubHeading>
-    <div
-      class="relative mb-6 flex flex-col gap-6"
-      :class="alwaysStacked ? '' : 'md:flex-row md:items-stretch'"
-    >
-      <div
-        class="relative min-w-0 flex-1"
-        :class="!alwaysStacked && 'md:flex md:min-h-0 md:flex-col'"
-      >
-        <div class="mb-4">
-          <AppInput
-            v-model="subject"
-            :label="t('emailEditor.subject.label')"
-            required
-          />
-        </div>
-        <AppRichTextEditor
-          v-model="content"
-          :class="!alwaysStacked && 'md:min-h-0 md:flex-1'"
-          :label="t('emailEditor.body.label')"
-          required
-        >
-          <template #toolbar="{ editor, disabled }">
-            <div v-if="mergeFieldGroups" class="relative">
-              <AppRichTextEditorButton
-                :icon="faTag"
-                :title="t('form.richtext.mergeFields')"
-                :active="showMergeFieldsDropdown"
-                :disabled="disabled"
-                @click="toggleMergeFieldsDropdown"
-              />
-              <div
-                v-if="showMergeFieldsDropdown"
-                class="absolute right-0 top-full z-[100] mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
-                @click.stop
-              >
-                <AppMergeFields
-                  :groups="mergeFieldGroups"
-                  @insert="(tag) => insertMergeField(editor, tag)"
-                />
-              </div>
-            </div>
-          </template>
-        </AppRichTextEditor>
-      </div>
 
-      <div
-        class="w-full min-w-0"
-        :class="[
-          alwaysStacked ? '' : 'md:w-[600px]',
-          !alwaysStacked && 'md:flex md:min-h-0 md:flex-1 md:flex-col',
-        ]"
-      >
+    <App2ColGrid extended :stack="alwaysStacked" class="mb-4">
+      <template #col1>
+        <div class="flex h-full flex-col">
+          <div class="flex-0 mb-4">
+            <AppInput
+              v-model="subject"
+              :label="t('emailEditor.subject.label')"
+              required
+            />
+          </div>
+          <AppRichTextEditor
+            v-model="content"
+            class="flex-1"
+            :label="t('emailEditor.body.label')"
+            required
+          >
+            <template #toolbar="{ editor, disabled }">
+              <div v-if="mergeFieldGroups" class="relative">
+                <AppRichTextEditorButton
+                  :icon="faTag"
+                  :title="t('form.richtext.mergeFields')"
+                  :active="showMergeFieldsDropdown"
+                  :disabled="disabled"
+                  @click="toggleMergeFieldsDropdown"
+                />
+                <div
+                  v-if="showMergeFieldsDropdown"
+                  class="absolute right-0 top-full z-[100] mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
+                  @click.stop
+                >
+                  <AppMergeFields
+                    :groups="mergeFieldGroups"
+                    @insert="(tag) => insertMergeField(editor, tag)"
+                  />
+                </div>
+              </div>
+            </template>
+          </AppRichTextEditor>
+        </div>
+      </template>
+
+      <template #col2>
         <template v-if="previewSelectorOptions.length > 1">
           <AppLabel
             :label="t('emailEditor.preview.asContactLabel')"
@@ -67,7 +58,6 @@
         <AppLabel :label="t('emailEditor.preview.label')" />
         <div
           class="content-message overflow-auto rounded border border-primary-40 bg-white p-4"
-          :class="!alwaysStacked && 'md:min-h-[300px] md:flex-1'"
         >
           <div
             v-if="!serverPreviewResult"
@@ -83,8 +73,8 @@
           </div>
           <div v-else v-html="sanitizedPreviewBody" />
         </div>
-      </div>
-    </div>
+      </template>
+    </App2ColGrid>
   </div>
 </template>
 <script lang="ts" setup>
@@ -97,6 +87,7 @@ import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
 import { debounce } from '@beabee/beabee-common';
 import type { PreviewEmailOptions } from '@beabee/client';
 import {
+  App2ColGrid,
   AppInput,
   AppLabel,
   AppLoadingSpinner,
