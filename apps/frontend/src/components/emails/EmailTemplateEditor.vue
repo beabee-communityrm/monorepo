@@ -1,46 +1,38 @@
 <template>
-  <AppApiForm
-    :button-text="submitButtonText"
-    :reset-button-text="resetButtonText"
-    inline-error
-    @submit="emit('submit')"
-    @reset="emit('reset')"
-  >
-    <App2ColGrid>
-      <template #col1>
-        <div class="mb-4">
-          <AppInput
-            v-model="email.name"
-            :label="t('contacts.sendEmail.templateName')"
-            :placeholder="defaultNewTemplateName"
-            :disabled="!isNewEmailSelected"
-            required
-          />
-        </div>
-        <template v-if="showSelectTemplate">
-          <AppLabel
-            :label="t('contacts.sendEmail.templateLabel')"
-            class="block"
-          />
-          <AppSelect
-            v-model="selectedTemplateId"
-            :items="templateSelectItems"
-            :placeholder="t('contacts.sendEmail.newEmail')"
-            class="w-full"
-            @update:model-value="onTemplateChange"
-          />
-        </template>
+  <App2ColGrid>
+    <template #col1>
+      <div class="mb-4">
+        <AppInput
+          v-model="email.name"
+          :label="t('contacts.sendEmail.templateName')"
+          :placeholder="defaultNewTemplateName"
+          :disabled="!isNewEmailSelected"
+          required
+        />
+      </div>
+      <template v-if="showSelectTemplate">
+        <AppLabel
+          :label="t('contacts.sendEmail.templateLabel')"
+          class="block"
+        />
+        <AppSelect
+          v-model="selectedTemplateId"
+          :items="templateSelectItems"
+          :placeholder="t('contacts.sendEmail.newEmail')"
+          class="w-full"
+          @update:model-value="onTemplateChange"
+        />
       </template>
-    </App2ColGrid>
+    </template>
+  </App2ColGrid>
 
-    <EmailEditor
-      v-model:subject="email.subject"
-      v-model:content="email.body"
-      v-model:preview-contact-id="previewContactId"
-      :preview-contact-options="contacts"
-      class="mb-4"
-    />
-  </AppApiForm>
+  <EmailEditor
+    v-model:subject="email.subject"
+    v-model:content="email.body"
+    v-model:preview-contact-id="previewContactId"
+    :preview-contact-options="contacts"
+    class="mb-4"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -61,7 +53,6 @@ import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import EmailEditor from '#components/emails/EmailEditor.vue';
-import AppApiForm from '#components/forms/AppApiForm.vue';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 
@@ -75,24 +66,16 @@ const selectedEmailId = defineModel<string | undefined>('selectedEmailId');
 
 const props = withDefaults(
   defineProps<{
-    submitButtonText: string;
-    resetButtonText?: string;
     showSelectTemplate?: boolean;
     contacts?: GetContactData[];
     defaultNewTemplateName?: string;
   }>(),
   {
-    resetButtonText: undefined,
     showSelectTemplate: false,
     contacts: () => [],
     defaultNewTemplateName: '',
   }
 );
-
-const emit = defineEmits<{
-  submit: [];
-  reset: [];
-}>();
 
 /** Template Management **/
 const templates = ref<GetEmailData[]>([]);

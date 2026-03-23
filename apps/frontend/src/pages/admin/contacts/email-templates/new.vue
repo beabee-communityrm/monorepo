@@ -8,13 +8,17 @@ meta:
 <template>
   <PageTitle :title="t('contacts.emailTemplates.newTitle')" border />
 
-  <EmailTemplateEditor
-    v-model:email="form"
-    :submit-button-text="t('actions.save')"
+  <AppApiForm
+    :button-text="t('actions.save')"
     :reset-button-text="t('actions.back')"
+    inline-error
     @submit="handleSubmit"
     @reset="handleBack"
-  />
+  >
+    <EmailTemplateEditor
+      v-model:email="form"
+    />
+  </AppApiForm>
 </template>
 
 <script lang="ts" setup>
@@ -27,6 +31,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';

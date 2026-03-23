@@ -13,14 +13,6 @@ meta:
   </div>
 
   <div v-else-if="segment">
-    <OngoingEmailSummary
-      class="mb-4"
-      :summary-key="summaryKey"
-      :is-ongoing="isOngoing"
-      :segment-id="segmentId"
-      :segment-name="segment.name"
-    />
-
     <App2ColGrid>
       <template #col1>
         <OngoingEmailSettings
@@ -33,17 +25,28 @@ meta:
       </template>
     </App2ColGrid>
 
-    <EmailTemplateEditor
-      v-model:email="emailData"
-      v-model:selected-email-id="selectedEmailId"
-      :submit-button-text="submitButtonText"
+    <AppApiForm
+      :button-text="submitButtonText"
       :reset-button-text="t('actions.goBack')"
-      show-select-template
-      :contacts="segmentContacts"
-      :default-new-template-name="defaultNewTemplateName"
+      inline-error
       @submit="handleSubmit"
       @reset="handleBack"
-    />
+    >
+      <EmailTemplateEditor
+        v-model:email="emailData"
+        v-model:selected-email-id="selectedEmailId"
+        show-select-template
+        :contacts="segmentContacts"
+        :default-new-template-name="defaultNewTemplateName"
+      />
+      <OngoingEmailSummary
+        class="mb-4"
+        :summary-key="summaryKey"
+        :is-ongoing="isOngoing"
+        :segment-id="segmentId"
+        :segment-name="segment.name"
+      />
+    </AppApiForm>
   </div>
 </template>
 
@@ -59,6 +62,7 @@ import { useRoute, useRouter } from 'vue-router';
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
 import OngoingEmailSettings from '#components/emails/OngoingEmailSettings.vue';
 import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
 import { useOngoingEmailSettings } from '#composables/useOngoingEmailSettings';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';

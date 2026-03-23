@@ -51,13 +51,17 @@ meta:
       :segment-id="email.segmentId"
       :segment-name="email.segmentName"
     />
-    <EmailTemplateEditor
-      v-model:email="form"
-      :submit-button-text="t('actions.save')"
+    <AppApiForm
+      :button-text="t('actions.save')"
       :reset-button-text="t('actions.delete')"
+      inline-error
       @submit="handleSubmit"
       @reset="showDeleteConfirm = true"
-    />
+    >
+      <EmailTemplateEditor
+        v-model:email="form"
+      />
+    </AppApiForm>
 
     <AppInfoList v-if="email" class="mt-6">
       <AppInfoListItem
@@ -121,6 +125,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
 import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
 import { useOngoingEmailSettings } from '#composables/useOngoingEmailSettings';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
