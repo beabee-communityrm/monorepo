@@ -22,7 +22,7 @@ export class UniqueEmailId1773823606137 implements MigrationInterface {
          keep."trigger" AS "keepTrigger"
        FROM "segment_ongoing_email" dup
        JOIN (
-         SELECT DISTINCT ON ("emailId") "id", "segmentId", "trigger"
+         SELECT DISTINCT ON ("emailId") "id", "emailId", "segmentId", "trigger"
          FROM "segment_ongoing_email"
          ORDER BY "emailId", "date" DESC
        ) keep ON keep."emailId" = dup."emailId" AND keep."id" != dup."id"`
