@@ -12,7 +12,7 @@ meta:
     <p>{{ t('common.loading') }}...</p>
   </div>
 
-  <template v-else-if="segment">
+  <div v-else-if="segment">
     <OngoingEmailSummary
       class="mb-4"
       :summary-key="summaryKey"
@@ -21,13 +21,17 @@ meta:
       :segment-name="segment.name"
     />
 
-    <OngoingEmailSettings
-      v-model:is-ongoing="isOngoing"
-      v-model:trigger="ongoingTrigger"
-      v-model:direct-send="ongoingDirectSend"
-      :segment-id="segmentId"
-      show-direct-send
-    />
+    <App2ColGrid>
+      <template #col1>
+        <OngoingEmailSettings
+          v-model:is-ongoing="isOngoing"
+          v-model:trigger="ongoingTrigger"
+          v-model:direct-send="ongoingDirectSend"
+          :segment-id="segmentId"
+          show-direct-send
+        />
+      </template>
+    </App2ColGrid>
 
     <EmailTemplateEditor
       v-model:email="emailData"
@@ -40,12 +44,12 @@ meta:
       @submit="handleSubmit"
       @reset="handleBack"
     />
-  </template>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import type { GetContactData, GetSegmentData } from '@beabee/beabee-common';
-import { PageTitle, addNotification } from '@beabee/vue';
+import { App2ColGrid, PageTitle, addNotification } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';

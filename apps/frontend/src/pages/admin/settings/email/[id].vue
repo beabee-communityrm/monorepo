@@ -61,6 +61,7 @@ meta:
       v-model:content="emailData.body"
       :template="{ type: templateType, id: templateId }"
       :heading="t('emailEditor.body.label')"
+      class="mb-4"
     />
   </AppApiForm>
 </template>

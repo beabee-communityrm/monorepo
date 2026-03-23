@@ -4,56 +4,52 @@
       :label="t('adminSettings.email.contactTemplates.sendSettings')"
       class="mb-3"
     />
-    <div class="flex flex-col gap-6 md:flex-row md:items-start">
-      <div class="min-w-0 flex-1">
-        <AppToggleField
-          v-model="isOngoing"
+    <div>
+      <AppToggleField
+        v-model="isOngoing"
+        variant="link"
+        :label="t('adminSettings.email.contactTemplates.ongoing')"
+        :disabled="!canEnableOngoing && !isOngoing"
+        :disabled-description="
+          t('adminSettings.email.contactTemplates.ongoingDisabled')
+        "
+        :enabled-description="
+          t('adminSettings.email.contactTemplates.ongoingEnabled')
+        "
+      />
+    </div>
+
+    <div :class="{ 'hidden md:block': !isOngoing }">
+      <template v-if="isOngoing">
+        <AppRadioGroup
+          v-model="trigger"
+          :options="[
+            ['onJoin', t('adminSettings.email.contactTemplates.contactJoins')],
+            [
+              'onLeave',
+              t('adminSettings.email.contactTemplates.contactLeaves'),
+            ],
+          ]"
           variant="link"
-          :label="t('adminSettings.email.contactTemplates.ongoing')"
-          :disabled="!canEnableOngoing && !isOngoing"
-          :disabled-description="
-            t('adminSettings.email.contactTemplates.ongoingDisabled')
-          "
-          :enabled-description="
-            t('adminSettings.email.contactTemplates.ongoingEnabled')
-          "
+          :label="t('adminSettings.email.contactTemplates.titleSendTime')"
+          :inline="true"
+          class="mb-4"
         />
-      </div>
 
-      <div class="min-w-0 flex-1" :class="{ 'hidden md:block': !isOngoing }">
-        <template v-if="isOngoing">
-          <AppRadioGroup
-            v-model="trigger"
-            :options="[
-              [
-                'onJoin',
-                t('adminSettings.email.contactTemplates.contactJoins'),
-              ],
-              [
-                'onLeave',
-                t('adminSettings.email.contactTemplates.contactLeaves'),
-              ],
-            ]"
+        <div v-if="showDirectSend && trigger === 'onJoin'" class="mb-4">
+          <AppToggleField
+            v-model="directSend"
             variant="link"
-            :label="t('adminSettings.email.contactTemplates.titleSendTime')"
-            :inline="true"
+            :label="t('adminSettings.email.contactTemplates.titleDirectSend')"
+            :disabled-description="
+              t('adminSettings.email.contactTemplates.directSendDisabled')
+            "
+            :enabled-description="
+              t('adminSettings.email.contactTemplates.directSendEnabled')
+            "
           />
-
-          <div v-if="showDirectSend && trigger === 'onJoin'" class="mt-4">
-            <AppToggleField
-              v-model="directSend"
-              variant="link"
-              :label="t('adminSettings.email.contactTemplates.titleDirectSend')"
-              :disabled-description="
-                t('adminSettings.email.contactTemplates.directSendDisabled')
-              "
-              :enabled-description="
-                t('adminSettings.email.contactTemplates.directSendEnabled')
-              "
-            />
-          </div>
-        </template>
-      </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>

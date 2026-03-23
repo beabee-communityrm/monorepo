@@ -2,45 +2,43 @@
   <AppApiForm
     :button-text="submitButtonText"
     :reset-button-text="resetButtonText"
-    class="flex flex-col gap-6"
     inline-error
     @submit="emit('submit')"
     @reset="emit('reset')"
   >
-    <div class="flex flex-col gap-6 md:flex-row md:items-stretch">
-      <div
-        v-if="showSelectTemplate"
-        class="relative min-w-0 flex-1 md:flex md:min-h-0 md:flex-col"
-      >
-        <AppLabel
-          :label="t('contacts.sendEmail.templateLabel')"
-          class="block"
-        />
-        <AppSelect
-          v-model="selectedTemplateId"
-          :items="templateSelectItems"
-          :placeholder="t('contacts.sendEmail.newEmail')"
-          class="w-full"
-          @update:model-value="onTemplateChange"
-        />
-      </div>
-      <div
-        class="w-full min-w-0 md:flex md:min-h-0 md:w-[600px] md:flex-1 md:flex-col"
-      >
-        <AppInput
-          v-model="email.name"
-          :label="t('contacts.sendEmail.templateName')"
-          :placeholder="defaultNewTemplateName"
-          :disabled="!isNewEmailSelected"
-          required
-        />
-      </div>
-    </div>
+    <App2ColGrid>
+      <template #col1>
+        <div class="mb-4">
+          <AppInput
+            v-model="email.name"
+            :label="t('contacts.sendEmail.templateName')"
+            :placeholder="defaultNewTemplateName"
+            :disabled="!isNewEmailSelected"
+            required
+          />
+        </div>
+        <template v-if="showSelectTemplate">
+          <AppLabel
+            :label="t('contacts.sendEmail.templateLabel')"
+            class="block"
+          />
+          <AppSelect
+            v-model="selectedTemplateId"
+            :items="templateSelectItems"
+            :placeholder="t('contacts.sendEmail.newEmail')"
+            class="w-full"
+            @update:model-value="onTemplateChange"
+          />
+        </template>
+      </template>
+    </App2ColGrid>
+
     <EmailEditor
       v-model:subject="email.subject"
       v-model:content="email.body"
       v-model:preview-contact-id="previewContactId"
       :preview-contact-options="contacts"
+      class="mb-4"
     />
   </AppApiForm>
 </template>
@@ -51,7 +49,13 @@ import type {
   GetEmailData,
   UpdateEmailData,
 } from '@beabee/beabee-common';
-import { AppInput, AppLabel, AppSelect, addNotification } from '@beabee/vue';
+import {
+  App2ColGrid,
+  AppInput,
+  AppLabel,
+  AppSelect,
+  addNotification,
+} from '@beabee/vue';
 
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

@@ -2,7 +2,7 @@
   <div>
     <AppSubHeading v-if="heading">{{ heading }}</AppSubHeading>
 
-    <App2ColGrid extended :stack="alwaysStacked" class="mb-4">
+    <App2ColGrid extended :stack="alwaysStacked">
       <template #col1>
         <div class="flex h-full flex-col">
           <div class="flex-0 mb-4">
