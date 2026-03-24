@@ -19,22 +19,17 @@ meta:
   </AppConfirmDialog>
 
   <PageTitle :title="pageTitle" border>
-    <div
-      v-if="email?.isOngoing"
-      class="flex flex-1 items-center justify-between gap-2 py-2 md:flex-none md:justify-end md:py-0"
-    >
-      <span class="text-sm text-body-80">
-        {{
-          ongoingEnabled
-            ? t('adminSettings.email.contactTemplates.activeRunning')
-            : t('adminSettings.email.contactTemplates.activePaused')
-        }}
-      </span>
-      <AppToggleSwitch
-        :model-value="ongoingEnabled"
-        variant="link"
-        @update:model-value="handleToggleEnabled"
-      />
+    <div class="flex flex-wrap gap-2">
+      <ActionButton
+        v-if="email?.isOngoing"
+        :icon="ongoingEnabled ? faPause : faPlay"
+        @click="handleToggleEnabled(!ongoingEnabled)"
+      >
+        {{ ongoingEnabled ? t('actions.disable') : t('actions.enable') }}
+      </ActionButton>
+      <ActionButton :icon="faTrash" @click="showDeleteConfirm = true">
+        {{ t('actions.delete') }}
+      </ActionButton>
     </div>
   </PageTitle>
 
@@ -48,20 +43,12 @@ meta:
       class="mb-4"
       :summary-key="summaryKey"
       :is-ongoing="!!email.isOngoing"
+      :enabled="ongoingEnabled"
       :segment-id="email.segmentId"
       :segment-name="email.segmentName"
     />
-    <AppApiForm
-      :button-text="t('actions.save')"
-      :reset-button-text="t('actions.delete')"
-      inline-error
-      @submit="handleSubmit"
-      @reset="showDeleteConfirm = true"
-    >
-      <EmailTemplateEditor v-model:email="form" />
-    </AppApiForm>
 
-    <AppInfoList v-if="email" class="mt-6">
+    <AppInfoList v-if="email" class="mb-4">
       <AppInfoListItem
         :name="t('emails.isOngoing')"
         :value="
@@ -101,22 +88,35 @@ meta:
         :value="formatLocale(new Date(email.date), 'PP')"
       />
     </AppInfoList>
+
+    <AppApiForm
+      :button-text="t('actions.save')"
+      inline-error
+      @submit="handleSubmit"
+    >
+      <EmailTemplateEditor v-model:email="form" />
+    </AppApiForm>
   </template>
 </template>
 
 <script lang="ts" setup>
 import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
 import {
+  ActionButton,
   AppConfirmDialog,
   AppInfoList,
   AppInfoListItem,
-  AppToggleSwitch,
   PageTitle,
   addNotification,
   formatLocale,
 } from '@beabee/vue';
 
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPause,
+  faPlay,
+  faTrash,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';

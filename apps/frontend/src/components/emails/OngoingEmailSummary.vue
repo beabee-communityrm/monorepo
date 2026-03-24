@@ -1,6 +1,6 @@
 <template>
   <AppNotification
-    variant="info"
+    :variant="notificationVariant"
     :icon="isOngoing ? faRotate : faEnvelope"
     :title="
       t(`adminSettings.email.contactTemplates.${summaryKey}`, {
@@ -27,16 +27,23 @@
 import { AppNotification } from '@beabee/vue';
 
 import { faEnvelope, faRotate } from '@fortawesome/free-solid-svg-icons';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { OngoingEmailSummaryKey } from '#composables/useOngoingEmailSettings';
 
 const { t } = useI18n();
 
-defineProps<{
+const props = defineProps<{
   summaryKey: OngoingEmailSummaryKey;
   isOngoing: boolean;
+  enabled?: boolean;
   segmentId?: string;
   segmentName?: string;
 }>();
+
+const notificationVariant = computed(() => {
+  if (!props.isOngoing) return 'info';
+  return props.enabled ? 'success' : 'warning';
+});
 </script>
