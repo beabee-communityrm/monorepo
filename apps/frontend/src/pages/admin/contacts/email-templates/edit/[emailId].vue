@@ -185,10 +185,12 @@ async function handleToggleEnabled(value: boolean) {
   ongoingEnabled.value = value;
   try {
     await client.email.update(emailId.value, {
-      isOngoing: email.value!.isOngoing,
-      segmentId: email.value!.segmentId,
-      trigger: email.value!.trigger,
-      enabled: value,
+      ongoingEmail: {
+        isOngoing: email.value!.isOngoing,
+        segmentId: email.value!.segmentId,
+        trigger: email.value!.trigger,
+        enabled: value,
+      },
     });
     if (email.value) {
       email.value = { ...email.value, enabled: value };

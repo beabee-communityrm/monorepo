@@ -1,4 +1,4 @@
-import type { SegmentOngoingEmailTrigger } from './segment-ongoing-email-trigger.js';
+import type { OngoingEmailFields } from './ongoing-email-fields.js';
 
 export interface CreateEmailData {
   name: string;
@@ -6,8 +6,5 @@ export interface CreateEmailData {
   fromEmail?: string;
   subject: string;
   body: string;
-  isOngoing?: boolean;
-  segmentId?: string;
-  trigger?: SegmentOngoingEmailTrigger;
-  enabled?: boolean;
+  ongoingEmail?: OngoingEmailFields;
 }

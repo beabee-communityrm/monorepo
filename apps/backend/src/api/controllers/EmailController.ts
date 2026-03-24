@@ -1,4 +1,3 @@
-import type { SegmentOngoingEmailTrigger } from '@beabee/beabee-common';
 import { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import EmailService from '@beabee/core/services/EmailService';
@@ -30,6 +29,7 @@ import {
   GetEmailTemplateInfoDto,
   GetEmailTemplateParams,
   ListEmailsDto,
+  OngoingEmailFieldsDto,
   PreviewAdminEmailParams,
   PreviewContactEmailParams,
   PreviewEmailDto,
@@ -84,7 +84,7 @@ export class EmailController {
     @Params() { templateId }: UpdateEmailTemplateParams,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto> {
-    const { isOngoing, segmentId, trigger, enabled, ...emailData } = data;
+    const { ongoingEmail, ...emailData } = data;
     const updated = await EmailService.createOrUpdateTemplateOverride(
       templateId,
       emailData
@@ -115,15 +115,10 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Body() data: CreateEmailDto
   ): Promise<GetEmailDto> {
-    const { isOngoing, segmentId, trigger, enabled, ...emailData } = data;
+    const { ongoingEmail, ...emailData } = data;
     const email = await EmailTransformer.createOne(auth, emailData);
     try {
-      await this.syncOngoingEmail(email.id, {
-        isOngoing,
-        segmentId,
-        trigger,
-        enabled,
-      });
+      await this.syncOngoingEmail(email.id, ongoingEmail);
     } catch (err) {
       // Clean up the email if linking the ongoing email fails
       await EmailService.deleteEmail(email.id);
@@ -153,13 +148,13 @@ export class EmailController {
     @Param('id') id: string,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto | undefined> {
-    const { isOngoing, segmentId, trigger, enabled, ...emailData } = data;
+    const { ongoingEmail, ...emailData } = data;
     if (Object.keys(emailData).length > 0) {
       if (!(await EmailTransformer.updateById(auth, id, emailData))) {
         throw new NotFoundError();
       }
     }
-    await this.syncOngoingEmail(id, { isOngoing, segmentId, trigger, enabled });
+    await this.syncOngoingEmail(id, ongoingEmail);
     return await EmailTransformer.fetchOneById(auth, id);
   }
 
@@ -242,18 +237,11 @@ export class EmailController {
    */
   private async syncOngoingEmail(
     emailId: string,
-    {
-      isOngoing,
-      segmentId,
-      trigger,
-      enabled,
-    }: {
-      isOngoing: boolean | undefined;
-      segmentId: string | undefined;
-      trigger: SegmentOngoingEmailTrigger | undefined;
-      enabled: boolean | undefined;
-    }
+    ongoingEmail?: OngoingEmailFieldsDto
   ): Promise<void> {
+    if (!ongoingEmail) return;
+
+    const { isOngoing, segmentId, trigger, enabled } = ongoingEmail;
     if (isOngoing && segmentId && trigger) {
       await EmailService.addOngoingEmail(
         segmentId,

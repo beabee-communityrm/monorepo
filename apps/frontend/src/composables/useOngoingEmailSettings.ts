@@ -58,27 +58,31 @@ export function useOngoingEmailSettings() {
   /** Build the ongoing-related fields for a create payload. */
   function buildCreatePayload(
     segmentId?: string
-  ): Pick<CreateEmailData, 'isOngoing' | 'segmentId' | 'trigger' | 'enabled'> {
+  ): Pick<CreateEmailData, 'ongoingEmail'> {
     if (!isOngoing.value) return {};
     return {
-      isOngoing: true,
-      segmentId,
-      trigger: trigger.value,
-      enabled: enabled.value,
+      ongoingEmail: {
+        isOngoing: true,
+        segmentId,
+        trigger: trigger.value,
+        enabled: enabled.value,
+      },
     };
   }
 
   /** Build the ongoing-related fields for an update payload. */
   function buildUpdatePayload(
     segmentId?: string
-  ): Pick<UpdateEmailData, 'isOngoing' | 'segmentId' | 'trigger' | 'enabled'> {
+  ): Pick<UpdateEmailData, 'ongoingEmail'> {
     return {
-      isOngoing: isOngoing.value,
-      ...(isOngoing.value && {
-        segmentId,
-        trigger: trigger.value,
-        enabled: enabled.value,
-      }),
+      ongoingEmail: {
+        isOngoing: isOngoing.value,
+        ...(isOngoing.value && {
+          segmentId,
+          trigger: trigger.value,
+          enabled: enabled.value,
+        }),
+      },
     };
   }
 

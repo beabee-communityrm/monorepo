@@ -9,6 +9,7 @@ import {
   GeneralEmailTemplateId,
 } from '@beabee/core/type';
 
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -18,6 +19,7 @@ import {
   IsString,
   IsUUID,
   ValidateIf,
+  ValidateNested,
 } from 'class-validator';
 
 import { GetPaginatedQuery } from '#api/dto/BaseDto';
@@ -61,9 +63,8 @@ export class GetEmailTemplateParams extends UpdateEmailTemplateParams {}
 
 /**
  * Shared ongoing email fields for create/update DTOs.
- * Extracted to avoid duplicating validators across DTOs.
  */
-class OngoingEmailFieldsDto {
+export class OngoingEmailFieldsDto {
   @IsOptional()
   @IsBoolean()
   isOngoing?: boolean;
@@ -84,7 +85,7 @@ class OngoingEmailFieldsDto {
 /**
  * DTO for creating custom emails
  */
-export class CreateEmailDto extends OngoingEmailFieldsDto {
+export class CreateEmailDto {
   @IsString()
   name!: string;
 
@@ -101,12 +102,17 @@ export class CreateEmailDto extends OngoingEmailFieldsDto {
 
   @IsString()
   body!: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OngoingEmailFieldsDto)
+  ongoingEmail?: OngoingEmailFieldsDto;
 }
 
 /**
  * DTO for updating custom emails
  */
-export class UpdateEmailDto extends OngoingEmailFieldsDto {
+export class UpdateEmailDto {
   @IsOptional()
   @IsString()
   name?: string;
@@ -126,6 +132,11 @@ export class UpdateEmailDto extends OngoingEmailFieldsDto {
   @IsOptional()
   @IsString()
   fromEmail?: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OngoingEmailFieldsDto)
+  ongoingEmail?: OngoingEmailFieldsDto;
 }
 
 /**

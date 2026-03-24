@@ -171,6 +171,7 @@ export type * from './newsletter-group-data.js';
 export type * from './noop.js';
 export type * from './notice-data.js';
 export type * from './notice-filter-name.js';
+export type * from './ongoing-email-fields.js';
 export type * from './operators-by-type.js';
 export type * from './other-filter-args.js';
 export type * from './paginated-query.js';
