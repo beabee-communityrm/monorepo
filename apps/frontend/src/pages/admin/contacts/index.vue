@@ -74,11 +74,7 @@ meta:
                 handleUpdateAction({ tags: [tagId] }, successText)
             "
           />
-          <!--
-          TODO:
-           * Add support for emailing selected contacts (instead of all contacts)
-           * This redirects to the legacy members app, we need to implement this in the new frontend
-          -->
+          <!-- TODO: Add support for emailing selected contacts (instead of all contacts) -->
           <AppDropdownButton
             :icon="faMailBulk"
             variant="primaryOutlined"

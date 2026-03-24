@@ -123,7 +123,7 @@ export class SegmentController {
     });
   }
 
-  /** Send one-off email to all contacts in the segment (admin). */
+  /** Send email to all contacts in the segment (admin). */
   @OnUndefined(204)
   @Post('/:id/email/send')
   async sendEmail(
@@ -152,12 +152,19 @@ export class SegmentController {
       );
     }
 
-    // Track sent contacts in segment_contact so that process-segments
-    // won't treat them as "new" and re-send ongoing emails.
-    await SegmentService.addContactsToSegment(
-      id,
-      contactList.map((c) => c.id)
-    );
+    // Only track contacts when an ongoing email exists for this segment,
+    // so process-segments won't treat them as "new" and re-send.
+    // Without this guard, pure one-off sends would pollute segment_contact
+    // and prevent contacts from receiving future ongoing emails.
+    const hasOngoing = await getRepository(SegmentOngoingEmail).findOneBy({
+      segmentId: id,
+    });
+    if (hasOngoing) {
+      await SegmentService.addContactsToSegment(
+        id,
+        contactList.map((c) => c.id)
+      );
+    }
   }
 
   /**
