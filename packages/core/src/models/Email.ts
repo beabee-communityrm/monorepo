@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -45,6 +46,6 @@ export class Email {
 
   mailingCount?: number;
 
-  @OneToMany('SegmentOngoingEmail', 'email')
-  ongoingMailings!: SegmentOngoingEmail[];
+  @OneToOne('SegmentOngoingEmail', 'email')
+  ongoingEmail!: SegmentOngoingEmail | null;
 }

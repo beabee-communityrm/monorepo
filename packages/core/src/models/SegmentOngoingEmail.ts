@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -28,7 +30,8 @@ export class SegmentOngoingEmail {
 
   @Column({ unique: true })
   emailId!: string;
-  @ManyToOne('Email')
+  @OneToOne('Email', 'ongoingEmail')
+  @JoinColumn()
   email!: Email;
 
   @Column({ default: false })
