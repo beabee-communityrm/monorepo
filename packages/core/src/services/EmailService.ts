@@ -535,8 +535,7 @@ class EmailService {
    * Remove all ongoing email entries for a given email.
    */
   async removeOngoingEmailByEmailId(emailId: string): Promise<void> {
-    const repo = getRepository(SegmentOngoingEmail);
-    await repo.delete({ emailId });
+    await getRepository(SegmentOngoingEmail).delete({ emailId });
   }
 }
 
