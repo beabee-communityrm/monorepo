@@ -156,37 +156,9 @@ Migrate from `apps/frontend` → `packages/vue/src/components`.
 
 **Completion:** Update `apps/frontend` imports to `@beabee/vue` | Create wrappers for repeated prop combos | Reuse existing import declarations | Remove translation prop drilling | Run `yarn generate:index && yarn format && yarn build && yarn check` | Verify stories exist | Suggest pages/routes to test | Provide commit msg + PR description
 
-## Task: Restore Vue Package Independence
-
-Move components with external deps from `packages/vue` → `apps/frontend`.
-
-**Move to frontend:** Components importing `@beabee/beabee-common`, `@beabee/client`, API client, backend schemas
-
-**Keep in vue:** Basic UI (buttons, inputs, modals) | Layout/typography | Generic utils without business logic
-
-**Steps:**
-1. `git mv packages/vue/src/components/[comp] apps/frontend/src/components/`
-2. Remove story files + index.ts from destination
-3. `git mv` related types to `apps/frontend/src/type/`
-4. Fix imports: relative → `@beabee/vue` | type paths → `@/type/[comp]`
-5. Remove exports from vue package index files
-6. Update frontend: `@beabee/vue` → local component imports
-
-**Validate after each phase:** `yarn format && yarn check` (both packages + full workspace)
-
-**Never** commit code failing format/check. If TS errors persist after 3 attempts, document and ask.
-
-**Success:** Clean git history with explicit moves | Both packages build + pass linting | Vue package contains only design system components | All imports resolve correctly
-
 ## Task: Scaffold Vanilla Package
 
 Use `packages/template-vanilla` conventions. Read its `README.md` and follow instructions. Not suitable for backend/CommonJS packages.
-
-## Task: Generate Client Tests
-
-**Locations:** Old client: `apps/frontend/src/utils/api/` | New client: `packages/client/src/api/` | Controller: `apps/backend/src/api/controllers/` | Tests: `packages/client/test/api/` | Test data: `packages/client/test/api/data/`
-
-**Rules:** No API mocking | Use `vitest` (not jest) | Use new client only (old client for reference) | No direct `fetch`/`axios` | Write complete tests | Analyze usage in `apps/frontend/src/{components,pages}` for patterns
 
 ## Prompt Compression
 
