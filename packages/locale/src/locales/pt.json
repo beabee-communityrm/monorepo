@@ -181,8 +181,6 @@
     },
     "email": {
       "contactTemplates": {
-        "activePaused": "O envio automático está em pausa",
-        "activeRunning": "Os e-mails estão a ser enviados automaticamente",
         "button": "Gerir modelos de e-mail",
         "contactJoins": "O contacto entra no segmento",
         "contactLeaves": "O contacto sai do segmento",

@@ -181,8 +181,6 @@
     },
     "email": {
       "contactTemplates": {
-        "activePaused": "Η αυτόματη αποστολή είναι σε παύση",
-        "activeRunning": "Τα e-mail αποστέλλονται αυτόματα",
         "button": "Διαχείριση προτύπων e-mail",
         "contactJoins": "Η επαφή εντάσσεται στο τμήμα",
         "contactLeaves": "Η επαφή αποχωρεί από το τμήμα",

@@ -181,8 +181,6 @@
     },
     "email": {
       "contactTemplates": {
-        "activePaused": "Automatische verzending is gepauzeerd",
-        "activeRunning": "E-mails worden automatisch verzonden",
         "button": "E-mailsjablonen beheren",
         "contactJoins": "Contact treedt toe tot segment",
         "contactLeaves": "Contact verlaat segment",
