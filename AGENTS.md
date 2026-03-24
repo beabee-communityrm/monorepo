@@ -83,7 +83,7 @@ Build follows topological order (deps first).
 
 ## General Code Standards
 
-Applies to: `*.ts, *.js, *.vue`
+For all TypeScript, JavaScript, and Vue files:
 
 - Write complete code blocks
 - ESM imports/exports for TypeScript
@@ -97,8 +97,6 @@ Applies to: `*.ts, *.js, *.vue`
 - Read existing code first to stay consistent
 
 ## Frontend / Vue Components
-
-Applies to: `packages/vue/**/*.vue, apps/frontend/**/*.vue`
 
 **UI:** Mobile-first Tailwind CSS | Responsive design | hover/active states
 
@@ -114,9 +112,7 @@ Templates: `packages/vue/src/components/template/` (AppTemplate.vue, index.ts)
 
 **req:** App-independent (no API deps) | Create `.story.vue` + `.story.md` | Follow patterns in `packages/vue/src/components` | Assign to semantically appropriate dir (create if needed) | Reference existing docs, don't duplicate | Additional types in `packages/vue/src/types`
 
-### Story Files
-
-Applies to: `packages/vue/src/components/**/*.story.md`
+### Story Documentation (`.story.md`)
 
 Template: `packages/vue/src/components/template/AppTemplate.story.md`
 
