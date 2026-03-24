@@ -1,7 +1,7 @@
-import type { JoinForm } from '#models/index';
+import type { PaymentFlowForm } from '#models/index';
 
 export interface CompletedPaymentFlow {
-  joinForm: JoinForm;
+  form: PaymentFlowForm;
   customerId: string;
   mandateId: string;
 }

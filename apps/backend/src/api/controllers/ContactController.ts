@@ -61,14 +61,17 @@ import {
   StartContributionDto,
   UpdateContributionDto,
 } from '#api/dto/ContributionDto';
-import { CompleteJoinFlowDto, StartJoinFlowDto } from '#api/dto/JoinFlowDto';
 import { PaginatedDto } from '#api/dto/PaginatedDto';
 import {
   CreatePaymentDto,
   GetPaymentDto,
   ListPaymentsDto,
 } from '#api/dto/PaymentDto';
-import { GetPaymentFlowDto } from '#api/dto/PaymentFlowDto';
+import {
+  CompletePaymentFlowDto,
+  PaymentFlowResultDto,
+  StartPaymentFlowDto,
+} from '#api/dto/PaymentFlowDto';
 import { ContactRoleParams } from '#api/params/ContactRoleParams';
 import ContactExporter from '#api/transformers/ContactExporter';
 import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
@@ -244,18 +247,18 @@ export class ContactController {
   async startContribution(
     @TargetUser() target: Contact,
     @Body() data: StartContributionDto
-  ): Promise<GetPaymentFlowDto> {
+  ): Promise<PaymentFlowResultDto> {
     const form = {
       ...data,
       monthlyAmount: getMonthlyAmount(data.amount, data.period),
     };
-    const flow = await PaymentFlowService.startContributionUpdate(
+    const result = await PaymentFlowService.startContributionUpdate(
       target,
       data.paymentMethod,
       data.completeUrl,
       form
     );
-    return plainToInstance(GetPaymentFlowDto, flow);
+    return plainToInstance(PaymentFlowResultDto, result);
   }
 
   /**
@@ -318,7 +321,7 @@ export class ContactController {
   @Post('/:id/contribution/complete')
   async completeStartContribution(
     @TargetUser() target: Contact,
-    @Body() data: CompleteJoinFlowDto
+    @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
     const updated = await PaymentFlowService.finalizeContributionUpdate(
       target,
@@ -351,27 +354,27 @@ export class ContactController {
   async createOneTimePayment(
     @TargetUser() target: Contact,
     @Body() data: CreatePaymentDto
-  ): Promise<GetPaymentFlowDto> {
+  ): Promise<PaymentFlowResultDto> {
     const form: PaymentForm = {
       monthlyAmount: data.amount,
       payFee: data.payFee,
       prorate: false,
       period: 'one-time',
     };
-    const params = await PaymentFlowService.startContributionUpdate(
+    const result = await PaymentFlowService.startContributionUpdate(
       target,
       data.paymentMethod,
       data.completeUrl,
       form
     );
-    return plainToInstance(GetPaymentFlowDto, params);
+    return plainToInstance(PaymentFlowResultDto, result);
   }
 
   @OnUndefined(204)
   @Post('/:id/payment/complete')
   async completeOneTimePayment(
     @TargetUser() target: Contact,
-    @Body() data: CompleteJoinFlowDto
+    @Body() data: CompletePaymentFlowDto
   ): Promise<void> {
     const updated = await PaymentFlowService.finalizeContributionUpdate(
       target,
@@ -403,8 +406,8 @@ export class ContactController {
   @Put('/:id/payment-method')
   async updatePaymentMethod(
     @TargetUser() target: Contact,
-    @Body() data: StartJoinFlowDto
-  ): Promise<GetPaymentFlowDto> {
+    @Body() data: StartPaymentFlowDto
+  ): Promise<PaymentFlowResultDto> {
     // Use existing payment method if one is not provided.
     // This means the user is changing to the same payment method but with new
     // payment details (e.g. new card)
@@ -415,18 +418,18 @@ export class ContactController {
       throw new NoPaymentMethod();
     }
 
-    const paymentFlow = await PaymentFlowService.startContributionUpdate(
+    const result = await PaymentFlowService.startContributionUpdate(
       target,
       paymentMethod,
       data.completeUrl
     );
-    return plainToInstance(GetPaymentFlowDto, paymentFlow);
+    return plainToInstance(PaymentFlowResultDto, result);
   }
 
   @Post('/:id/payment-method/complete')
   async completeUpdatePaymentMethod(
     @TargetUser() target: Contact,
-    @Body() data: CompleteJoinFlowDto
+    @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
     const updated = await PaymentFlowService.finalizeContributionUpdate(
       target,

@@ -1,5 +1,5 @@
 import { getRepository } from '@beabee/core/database';
-import { JoinFlow, ResetSecurityFlow } from '@beabee/core/models';
+import { PaymentFlow, ResetSecurityFlow } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 
 import { subDays } from 'date-fns';
@@ -35,7 +35,7 @@ export const cleanDatabase = async (): Promise<void> => {
     const now = new Date();
 
     await clean(ResetSecurityFlow, { date: LessThan(subDays(now, 1)) });
-    await clean(JoinFlow, { date: LessThan(subDays(now, 7)) });
+    await clean(PaymentFlow, { date: LessThan(subDays(now, 7)) });
 
     console.log('\n✅ Database cleanup completed successfully!');
   });

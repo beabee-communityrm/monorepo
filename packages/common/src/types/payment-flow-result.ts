@@ -1,4 +1,4 @@
-export interface PaymentFlowParams {
+export interface PaymentFlowResult {
   clientSecret?: string;
   redirectUrl?: string;
 }
