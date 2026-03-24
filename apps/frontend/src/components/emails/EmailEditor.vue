@@ -268,8 +268,11 @@ function closeMergeFieldsDropdown() {
 function toggleMergeFieldsDropdown() {
   showMergeFieldsDropdown.value = !showMergeFieldsDropdown.value;
   if (showMergeFieldsDropdown.value) {
-    document.addEventListener('click', closeMergeFieldsDropdown, {
-      once: true,
+    // Defer so the current click event doesn't immediately close the dropdown
+    setTimeout(() => {
+      document.addEventListener('click', closeMergeFieldsDropdown, {
+        once: true,
+      });
     });
   }
 }
