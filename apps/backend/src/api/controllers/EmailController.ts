@@ -1,3 +1,4 @@
+import type { SegmentOngoingEmailTrigger } from '@beabee/beabee-common';
 import { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import EmailService from '@beabee/core/services/EmailService';
@@ -249,7 +250,7 @@ export class EmailController {
     }: {
       isOngoing: boolean | undefined;
       segmentId: string | undefined;
-      trigger: CreateEmailDto['trigger'] | undefined;
+      trigger: SegmentOngoingEmailTrigger | undefined;
       enabled: boolean | undefined;
     }
   ): Promise<void> {
