@@ -4,17 +4,17 @@
       {{ t('adminSettings.email.contactTemplates.sendSettings') }}
     </AppSubHeading>
 
-    <AppToggleField
-      v-model="isOngoing"
-      variant="link"
-      :label="t('adminSettings.email.contactTemplates.ongoing')"
+    <AppRadioGroup
+      v-model="sendType"
+      :options="[
+        ['oneOff', t('emails.sendType.oneOff')],
+        ['ongoing', t('emails.sendType.ongoing')],
+      ]"
       :disabled="!canEnableOngoing && !isOngoing"
-      :disabled-description="
-        t('adminSettings.email.contactTemplates.ongoingDisabled')
-      "
-      :enabled-description="
-        t('adminSettings.email.contactTemplates.ongoingEnabled')
-      "
+      variant="link"
+      :label="t('emails.type')"
+      :inline="true"
+      required
       class="mb-4"
     />
 
@@ -70,6 +70,12 @@ const props = withDefaults(
 );
 
 const isOngoing = defineModel<boolean>('isOngoing', { required: true });
+const sendType = computed({
+  get: () => (isOngoing.value ? 'ongoing' : 'oneOff'),
+  set: (val) => {
+    isOngoing.value = val === 'ongoing';
+  },
+});
 
 // Can only enable ongoing if a segment is assigned
 const canEnableOngoing = computed(() => !!props.segmentId);
