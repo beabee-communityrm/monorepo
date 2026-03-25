@@ -1,6 +1,3 @@
-import type { PaymentFlowForm } from '@beabee/core/models';
-import { CompleteUrls } from '@beabee/core/type';
-
 import { Type } from 'class-transformer';
 import {
   IsEmail,
@@ -18,7 +15,7 @@ import IsVatNumber from '#api/validators/IsVatNumber';
 import { CreatePaymentDto } from './PaymentDto';
 import { CompletePaymentFlowDto } from './PaymentFlowDto';
 
-export class StartSignupFlowDto implements CompleteUrls {
+export class StartSignupFlowDto {
   @IsUrl()
   loginUrl!: string;
 
@@ -46,10 +43,7 @@ export class StartSignupFlowDto implements CompleteUrls {
   oneTimePayment?: CreatePaymentDto;
 }
 
-export class CompleteSignupFlowDto
-  extends CompletePaymentFlowDto
-  implements Pick<PaymentFlowForm, 'firstname' | 'lastname' | 'vatNumber'>
-{
+export class CompleteSignupFlowDto extends CompletePaymentFlowDto {
   @IsOptional()
   @IsString()
   firstname?: string;

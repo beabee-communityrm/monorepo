@@ -1,7 +1,7 @@
 import {
   ContributionForm,
   MembershipStatus,
-  PaymentForm,
+  PaymentFlowParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
@@ -17,6 +17,8 @@ import {
 import {
   CompletedPaymentFlow,
   ContributionInfo,
+  PaymentFlowForm,
+  PaymentFlowFormCreateOneTimePayment,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate, getActualAmount } from '#utils/payment';
@@ -86,6 +88,20 @@ class PaymentService {
       ? PaymentProviders[data.method]
       : ManualProvider;
     return await fn(new Provider(data), data);
+  }
+
+  async canProcessPaymentFlow(
+    contact: Contact,
+    form: PaymentFlowForm
+  ): Promise<boolean> {
+    const ret = await this.provider(contact, (p) =>
+      p.canProcessPaymentFlow(form)
+    );
+    log.info(
+      `Contact ${contact.id} ${ret ? 'can' : 'cannot'} process payment flow`,
+      { form }
+    );
+    return ret;
   }
 
   async canChangeContribution(
@@ -176,7 +192,7 @@ class PaymentService {
     });
 
     const contribution = await this.getContribution(contact);
-    const newMethod = completedPaymentFlow.form.paymentMethod;
+    const newMethod = completedPaymentFlow.params.paymentMethod;
     if (contribution.method !== newMethod) {
       log.info('Changing payment method, cancelling previous contribution', {
         contribution,
@@ -213,16 +229,32 @@ class PaymentService {
 
   async createOneTimePayment(
     contact: Contact,
-    completedPaymentFlow: CompletedPaymentFlow
+    completedPaymentFlow: CompletedPaymentFlow<
+      PaymentFlowParams,
+      PaymentFlowFormCreateOneTimePayment
+    >
   ): Promise<void> {
     log.info('Create one-time payment for contact ' + contact.id);
     // Use flow method to fetch provider as we don't store payment method for
     // one-time payments
     const contribution = await this.getContribution(contact);
-    const provider = new PaymentProviders[
-      completedPaymentFlow.form.paymentMethod
-    ](contribution);
-    await provider.createOneTimePayment(completedPaymentFlow);
+
+    // There is probably a nicer way to narrow the type and dispatch to the
+    // correct provider, but this is straightforward and works for now
+    if (
+      completedPaymentFlow.params.paymentMethod ===
+      PaymentMethod.GoCardlessDirectDebit
+    ) {
+      await new GCProvider(contribution).createOneTimePayment({
+        ...completedPaymentFlow,
+        params: completedPaymentFlow.params,
+      });
+    } else {
+      await new StripeProvider(contribution).createOneTimePayment({
+        ...completedPaymentFlow,
+        params: completedPaymentFlow.params,
+      });
+    }
   }
 
   async fetchInvoiceUrl(paymentId: string): Promise<string | null> {
