@@ -141,6 +141,10 @@ async function handleSubmit() {
         subject: emailData.value.subject,
         body: emailData.value.body,
         emailId,
+        // Only track contacts when this is the initial send of an ongoing
+        // email, so process-segments won't re-send to these contacts.
+        ongoingDirectSend:
+          isOngoing.value && ongoingDirectSend.value ? true : undefined,
       });
     }
 

@@ -152,14 +152,10 @@ export class SegmentController {
       );
     }
 
-    // Only track contacts when an ongoing email exists for this segment,
-    // so process-segments won't treat them as "new" and re-send.
-    // Without this guard, pure one-off sends would pollute segment_contact
-    // and prevent contacts from receiving future ongoing emails.
-    const hasOngoing = await getRepository(SegmentOngoingEmail).findOneBy({
-      segmentId: id,
-    });
-    if (hasOngoing) {
+    // Only track contacts when explicitly requested (i.e. initial send of
+    // an ongoing email). Pure one-off sends must not pollute segment_contact,
+    // otherwise contacts would be skipped by future ongoing emails.
+    if (data.ongoingDirectSend) {
       await SegmentService.addContactsToSegment(
         id,
         contactList.map((c) => c.id)
