@@ -1,8 +1,4 @@
-import {
-  ContributionForm,
-  PaymentFlowParams,
-  PaymentMethod,
-} from '@beabee/beabee-common';
+import { PaymentFlowParams, PaymentMethod } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { Contact, ContactContribution } from '#models/index';
@@ -11,6 +7,7 @@ import {
   ContributionInfo,
   PaymentFlowForm,
   PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
 
@@ -46,14 +43,17 @@ export abstract class PaymentProvider {
    */
   abstract canChangeContribution(
     useExistingMandate: boolean,
-    form: ContributionForm
+    form: UpdateContributionForm
   ): Promise<boolean>;
 
   /**
-   * Cancels an active contribution
-   * @param keepMandate - Whether to keep payment mandate for future use
+   * Updates contribution details
+   * @param form - New contribution form data
+   * @returns Promise resolving to update result
    */
-  abstract cancelContribution(keepMandate: boolean): Promise<void>;
+  abstract updateContribution(
+    form: UpdateContributionForm
+  ): Promise<UpdateContributionResult>;
 
   /**
    * Gets current contribution information
@@ -62,19 +62,21 @@ export abstract class PaymentProvider {
   abstract getContributionInfo(): Promise<Partial<ContributionInfo>>;
 
   /**
+   * Cancels an active contribution
+   * @param keepMandate - Whether to keep payment mandate for future use
+   */
+  abstract cancelContribution(keepMandate: boolean): Promise<void>;
+
+  /**
    * Updates contact information with payment provider
    * @param updates - Contact fields to update
    */
   abstract updateContact(updates: Partial<Contact>): Promise<void>;
 
   /**
-   * Updates contribution details
-   * @param form - New contribution form data
-   * @returns Promise resolving to update result
+   * Permanently deletes contact data from payment provider
    */
-  abstract updateContribution(
-    form: ContributionForm
-  ): Promise<UpdateContributionResult>;
+  abstract permanentlyDeleteContact(): Promise<void>;
 
   /**
    * Updates payment method using completed payment flow
@@ -94,9 +96,4 @@ export abstract class PaymentProvider {
       PaymentFlowFormCreateOneTimePayment
     >
   ): Promise<void>;
-
-  /**
-   * Permanently deletes contact data from payment provider
-   */
-  abstract permanentlyDeleteContact(): Promise<void>;
 }
