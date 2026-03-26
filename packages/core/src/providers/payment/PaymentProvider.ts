@@ -36,7 +36,7 @@ export abstract class PaymentProvider {
    * Can the provider process the given payment flow at the moment. This can be used by
    * payment providers to block certain flows when the user is in a state where they can't
    * be processed.
-   * @params form - The payment flow to be processed
+   * @param form - The payment flow to be processed
    * @returns Whether the payment flow can be processed
    */
   abstract canProcessPaymentFlow(form: PaymentFlowForm): Promise<boolean>;
