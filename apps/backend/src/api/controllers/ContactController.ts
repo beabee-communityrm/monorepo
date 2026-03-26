@@ -14,7 +14,7 @@ import { AuthInfo } from '@beabee/core/type';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
-import { plainToInstance } from 'class-transformer';
+import { Transform, plainToInstance } from 'class-transformer';
 import { Response } from 'express';
 import {
   Authorized,
@@ -66,11 +66,13 @@ import {
   CreatePaymentDto,
   GetPaymentDto,
   ListPaymentsDto,
+  UpdatePaymentMethodDto,
 } from '#api/dto/PaymentDto';
 import {
   CompletePaymentFlowDto,
   PaymentFlowParamsDto,
   PaymentFlowResultDto,
+  transformPaymentFlowParams,
 } from '#api/dto/PaymentFlowDto';
 import { ContactRoleParams } from '#api/params/ContactRoleParams';
 import ContactExporter from '#api/transformers/ContactExporter';
@@ -411,18 +413,8 @@ export class ContactController {
   @Put('/:id/payment-method')
   async updatePaymentMethod(
     @TargetUser() target: Contact,
-    @Body() data: PaymentFlowParamsDto // TODO: Need to validate
+    @Body() { params }: UpdatePaymentMethodDto
   ): Promise<PaymentFlowResultDto> {
-    // Use existing payment method if one is not provided.
-    // This means the user is changing to the same payment method but with new
-    // payment details (e.g. new card)
-    const paymentMethod =
-      data.paymentMethod ||
-      (await PaymentService.getContribution(target)).method;
-    if (!paymentMethod) {
-      throw new NoPaymentMethod();
-    }
-
     const form = {
       action: 'update-payment-method' as const,
     };
@@ -431,7 +423,7 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    const { result } = await PaymentFlowService.startPaymentFlow(form, data);
+    const { result } = await PaymentFlowService.startPaymentFlow(form, params);
     return plainToInstance(PaymentFlowResultDto, result);
   }
 

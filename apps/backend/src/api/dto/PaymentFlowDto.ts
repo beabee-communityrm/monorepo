@@ -5,6 +5,11 @@ import {
   PaymentMethod,
 } from '@beabee/beabee-common';
 
+import {
+  Transform,
+  TransformFnParams,
+  plainToInstance,
+} from 'class-transformer';
 import { Equals, IsEnum, IsOptional, IsString } from 'class-validator';
 
 import IsUrl from '#api/validators/IsUrl';
@@ -62,3 +67,14 @@ class PaymentFlowParamsStripeDto implements PaymentFlowParamsStripe {
 export type PaymentFlowParamsDto =
   | PaymentFlowParamsGoCardlessDto
   | PaymentFlowParamsStripeDto;
+
+export function transformPaymentFlowParams(
+  params: TransformFnParams
+): PaymentFlowParamsDto {
+  return plainToInstance<PaymentFlowParamsDto, unknown>(
+    params.value.paymentMethod === PaymentMethod.GoCardlessDirectDebit
+      ? PaymentFlowParamsGoCardlessDto
+      : PaymentFlowParamsStripeDto,
+    params.value
+  );
+}
