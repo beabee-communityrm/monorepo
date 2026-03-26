@@ -329,11 +329,7 @@ class ContactsService {
   ): Promise<void> {
     log.info('Updated contribution for ' + contact.id, result);
 
-    // At the moment the only possibility is to go from whatever contribution
-    // type the user was before to an automatic contribution
-    if (contact.contributionType === ContributionType.Manual) {
-      await EmailService.sendTemplateToContact('manual-to-automatic', contact);
-    }
+    const wasManual = contact.contributionType === ContributionType.Manual;
 
     await this.updateContact(contact, {
       contributionType: ContributionType.Automatic,
@@ -344,6 +340,12 @@ class ContactsService {
     });
 
     await this.extendContactRole(contact, 'member', result.expiryDate);
+
+    // If this contribution update was a conversion from manual to automatic then
+    // send the user a confirmation email
+    if (wasManual) {
+      await EmailService.sendTemplateToContact('manual-to-automatic', contact);
+    }
   }
 
   /**
