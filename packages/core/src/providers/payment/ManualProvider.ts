@@ -30,7 +30,7 @@ export class ManualProvider extends PaymentProvider {
    * @returns Whether contribution updates are allowed
    */
   async canUpdateContribution(): Promise<boolean> {
-    return true;
+    return false;
   }
 
   /**
