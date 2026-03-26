@@ -27,6 +27,12 @@ export const databaseCommand: CommandModule = {
               description:
                 'Table names to export without anonymisation (e.g. segment). Allows turning off single tables explicitly.',
               default: [],
+            })
+            .option('preserveCalloutAnswers', {
+              type: 'boolean',
+              description:
+                'Keep callout response answers intact instead of anonymizing per component. Contact FKs and guest data are still anonymized.',
+              default: false,
             }),
         handler: async (argv) => {
           const { exportDatabase } = await import(
@@ -35,7 +41,8 @@ export const databaseCommand: CommandModule = {
           return exportDatabase(
             argv.dryRun,
             argv.anonymize,
-            argv.skipAnonymizeTables ?? []
+            argv.skipAnonymizeTables ?? [],
+            argv.preserveCalloutAnswers
           );
         },
       })
@@ -54,6 +61,40 @@ export const databaseCommand: CommandModule = {
             '../actions/database/export-demo.js'
           );
           return exportDemoDatabase(argv.dryRun);
+        },
+      })
+      .command({
+        command: 'export-callouts',
+        describe:
+          'Export callout data only (for migration testing). Keeps form schemas and answers intact.',
+        builder: (yargs) =>
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes',
+              default: false,
+            })
+            .option('anonymize', {
+              type: 'boolean',
+              description:
+                'Anonymize personal data (guest names/emails, contact FKs). Callout content and answers are always preserved.',
+              default: true,
+            })
+            .option('preserveCalloutAnswers', {
+              type: 'boolean',
+              description:
+                'Keep callout response answers intact instead of anonymizing per component. Defaults to true for this command.',
+              default: true,
+            }),
+        handler: async (argv) => {
+          const { exportCalloutsDatabase } = await import(
+            '../actions/database/export-callouts.js'
+          );
+          return exportCalloutsDatabase(
+            argv.dryRun,
+            argv.anonymize,
+            argv.preserveCalloutAnswers
+          );
         },
       })
       .command({

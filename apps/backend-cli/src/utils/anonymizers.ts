@@ -1,5 +1,16 @@
+import {
+  Callout,
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutResponseSegment,
+  CalloutResponseTag,
+  CalloutReviewer,
+  CalloutTag,
+  CalloutVariant,
+} from '@beabee/core/models';
 import * as models from '@beabee/core/tools/database/anonymisers/models';
 
+import { Chance } from 'chance';
 import { type ObjectLiteral, type SelectQueryBuilder } from 'typeorm';
 
 /**
@@ -184,16 +195,84 @@ export function getDemoPrepareQuery(
   return (qb) => qb;
 }
 
+// --- Callout export anonymizers ---
+
+const calloutExportChance = new Chance();
+
+/**
+ * Callout response anonymiser for callout export: keeps answers intact,
+ * NULLs contact FKs, anonymises guest personal data.
+ * This is intentionally a different object than calloutResponsesAnonymiser
+ * so anonymiseModel() uses the normal code path (no per-callout answer anonymisation).
+ */
+const calloutResponseCalloutExportAnonymiser: models.ModelAnonymiser = {
+  model: CalloutResponse,
+  objectMap: {
+    contactId: () => null,
+    assigneeId: () => null,
+    guestName: () => calloutExportChance.name(),
+    guestEmail: () =>
+      calloutExportChance.email({ domain: 'example.com', length: 10 }),
+  } as models.ObjectMap<unknown>,
+};
+
+/** Callout export: tables to insert with anonymisation (personal data only) */
+export const CALLOUT_EXPORT_ANONYMIZERS: models.ModelAnonymiser[] = [
+  { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
+  calloutResponseCalloutExportAnonymiser,
+];
+
+/** Callout export: full anonymisation including per-component answer anonymisation */
+export const CALLOUT_EXPORT_FULL_ANONYMIZERS: models.ModelAnonymiser[] = [
+  { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
+  models.calloutResponsesAnonymiser,
+] as models.ModelAnonymiser[];
+
+/** Callout export: tables to insert without any anonymisation */
+export const CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS: models.ModelAnonymiser[] =
+  [
+    { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
+    { model: CalloutResponse, objectMap: {} as models.ObjectMap<unknown> },
+  ];
+
+/** Callout export: all tables to clear (FK dependencies), in insert order.
+ *  clearModels() reverses this to delete children before parents. */
+export const CALLOUT_EXPORT_CLEAR_MODELS: models.ModelAnonymiser[] = [
+  { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutReviewer, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutResponseSegment, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutResponse, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutResponseTag, objectMap: {} as models.ObjectMap<unknown> },
+  {
+    model: CalloutResponseComment,
+    objectMap: {} as models.ObjectMap<unknown>,
+  },
+];
+
 /**
  * Get anonymizers based on anonymization level
  */
 export const getAnonymizers = (
   anonymize: boolean,
-  skipAnonymizeTables: string[] = []
+  skipAnonymizeTables: string[] = [],
+  preserveCalloutAnswers = false
 ): models.ModelAnonymiser[] => {
-  const fullList = anonymize
+  let fullList = anonymize
     ? [...ALWAYS_ANONYMIZED_MODELS, ...OPTIONALLY_ANONYMIZED_MODELS]
     : [...ALWAYS_ANONYMIZED_MODELS, ...getOptionalPassthroughAnonymisers()];
+
+  // When anonymize=true but answers should be preserved, swap in the callout-export
+  // anonymiser that NULLs FKs/guest data but keeps answers intact (avoids the
+  // per-component answer anonymisation triggered by the calloutResponsesAnonymiser identity check).
+  if (preserveCalloutAnswers && anonymize) {
+    fullList = fullList.map((a) =>
+      a === models.calloutResponsesAnonymiser
+        ? calloutResponseCalloutExportAnonymiser
+        : a
+    );
+  }
 
   if (skipAnonymizeTables.length === 0) return fullList;
 
