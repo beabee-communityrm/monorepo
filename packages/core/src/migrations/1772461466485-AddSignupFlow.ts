@@ -13,8 +13,8 @@ export class AddSignupFlow1772461466485 implements MigrationInterface {
 
     // Move data from payment_flow to signup_flow
     await queryRunner.query(
-      `INSERT INTO "signup_flow" ("email", "loginUrl", "setPasswordUrl", "confirmUrl", "paymentFlowId", "contactId", "passwordHash", "passwordSalt", "passwordIterations", "passwordTries")
-      SELECT "formEmail", "loginUrl", "setPasswordUrl", "confirmUrl", id, "contactId", "formPasswordHash", "formPasswordSalt", "formPasswordIterations", "formPasswordTries" FROM "payment_flow"`
+      `INSERT INTO "signup_flow" ("date", "email", "loginUrl", "setPasswordUrl", "confirmUrl", "paymentFlowId", "contactId", "passwordHash", "passwordSalt", "passwordIterations", "passwordTries")
+      SELECT "date", "formEmail", "loginUrl", "setPasswordUrl", "confirmUrl", id, "contactId", "formPasswordHash", "formPasswordSalt", "formPasswordIterations", "formPasswordTries" FROM "payment_flow"`
     );
 
     // Remove columns from payment_flow
