@@ -1,10 +1,12 @@
 import {
+  ContributionPeriod,
   MembershipStatus,
   PaymentFlowParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
 import { getRepository, runTransaction } from '#database';
+import { CantUpdateContribution } from '#errors/CantUpdateContribution';
 import { log as mainLogger } from '#logging';
 import { Contact, ContactContribution, Payment } from '#models/index';
 import {
@@ -161,6 +163,19 @@ class PaymentService {
     form: UpdateContributionForm
   ): Promise<UpdateContributionResult> {
     log.info('Update contribution for contact ' + contact.id);
+
+    // Active members can't change from annual to monthly contributions at the
+    // moment as the behaviour of the necessary proration is unclear (i.e. do
+    // they get a refund for time not used, does it only change in the next
+    // contribution period)
+    if (
+      contact.membership?.isActive &&
+      contact.contributionPeriod === ContributionPeriod.Annually &&
+      form.period !== ContributionPeriod.Annually
+    ) {
+      throw new CantUpdateContribution();
+    }
+
     const ret = await this.provider(contact, (p) =>
       p.processUpdateContribution(form)
     );
