@@ -19,13 +19,19 @@ import { getAnonymizers } from '../../utils/anonymizers.js';
  * @param dryRun If true, only logs what would be done
  * @param anonymize If true, anonymize all data (contacts are always anonymized)
  * @param skipAnonymizeTables If provided, skip anonymization for the given table names
+ * @param preserveCalloutAnswers If true, keep callout response answers intact (only anonymize FKs/guest data)
  */
 export const exportDatabase = async (
   dryRun = false,
   anonymize = true,
-  skipAnonymizeTables: string[] = []
+  skipAnonymizeTables: string[] = [],
+  preserveCalloutAnswers = false
 ): Promise<void> => {
-  const anonymisers = getAnonymizers(anonymize, skipAnonymizeTables);
+  const anonymisers = getAnonymizers(
+    anonymize,
+    skipAnonymizeTables,
+    preserveCalloutAnswers
+  );
 
   if (dryRun) {
     const modelNames = anonymisers.map((a) =>
