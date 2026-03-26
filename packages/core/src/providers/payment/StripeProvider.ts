@@ -65,7 +65,7 @@ export class StripeProvider extends PaymentProvider {
    * @returns Whether the contribution can be changed
    */
   async canUpdateContribution(): Promise<boolean> {
-    return true;
+    return !!(this.data.customerId && this.data.mandateId);
   }
 
   /**
