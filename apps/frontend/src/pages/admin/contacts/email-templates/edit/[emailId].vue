@@ -168,7 +168,7 @@ const {
   getSummaryKey,
   loadFromEmail,
   buildUpdatePayload,
-} = useOngoingEmailSettings();
+} = useOngoingEmailSettings(undefined);
 
 const summaryKey = computed(() => getSummaryKey('edit'));
 

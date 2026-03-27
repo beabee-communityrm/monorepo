@@ -194,11 +194,15 @@
         "segment": "",
         "send": "",
         "sendSettings": "",
+        "sendTypes": {
+          "oneOffLabel": "",
+          "ongoingLabel": "",
+          "title": ""
+        },
         "summaryOnceOnly": "",
         "summaryOngoingJoin": "",
         "summaryOngoingJoinDirectSend": "",
         "summaryOngoingLeave": "",
-        "summaryOngoingPaused": "",
         "summaryTemplate": "",
         "title": "",
         "titleDirectSend": "",

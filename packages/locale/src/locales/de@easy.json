@@ -194,6 +194,11 @@
         "segment": "Gruppe",
         "send": "",
         "sendSettings": "",
+        "sendTypes": {
+          "oneOffLabel": "",
+          "ongoingLabel": "",
+          "title": ""
+        },
         "summaryOnceOnly": "Diese E-Mail wird einmal an alle Kontakte in der Gruppe geschickt.",
         "summaryOngoingJoin": "Diese E-Mail wird jeden Tag an Kontakte geschickt, die neu in der Gruppe „{segment}“ sind.",
         "summaryOngoingJoinDirectSend": "Diese E-Mail wird jeden Tag an neue Kontakte in der Gruppe „{segment}“ geschickt. Alle anderen Kontakte bekommen sie sofort.",

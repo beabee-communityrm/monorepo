@@ -1,6 +1,15 @@
 <template>
   <App2ColGrid>
     <template #col1>
+      <AppSelect
+        v-if="showSelectTemplate"
+        v-model="selectedTemplateId"
+        class="mb-4"
+        :label="t('contacts.sendEmail.templateLabel')"
+        :items="templateSelectItems"
+        :placeholder="t('contacts.sendEmail.newEmail')"
+        @update:model-value="onTemplateChange"
+      />
       <div class="mb-4">
         <AppInput
           v-model="email.name"
@@ -10,15 +19,6 @@
           required
         />
       </div>
-      <AppSelect
-        v-if="showSelectTemplate"
-        v-model="selectedTemplateId"
-        :label="t('contacts.sendEmail.templateLabel')"
-        :items="templateSelectItems"
-        :placeholder="t('contacts.sendEmail.newEmail')"
-        class="mb-4"
-        @update:model-value="onTemplateChange"
-      />
     </template>
   </App2ColGrid>
 

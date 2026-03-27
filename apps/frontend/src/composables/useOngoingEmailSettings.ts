@@ -19,7 +19,7 @@ export type OngoingEmailSummaryKey =
  * Composable for managing ongoing email settings state.
  * Used by both the send-email page (create) and the edit-email page (update).
  */
-export function useOngoingEmailSettings() {
+export function useOngoingEmailSettings(segmentId: string | undefined) {
   const isOngoing = ref(false);
   const trigger = ref<SegmentOngoingEmailTrigger>('onJoin');
   const directSend = ref(false);
@@ -86,11 +86,24 @@ export function useOngoingEmailSettings() {
     };
   }
 
+  /** Reactive send type properties that depend on isOngoing. */
+  const sendType = computed({
+    get: () => (isOngoing.value ? 'ongoing' : 'oneOff'),
+    set: (val) => {
+      isOngoing.value = val === 'ongoing';
+    },
+  });
+
+  /** Reactive property that sees if ongoing emails can be enabled or not. */
+  const canEnableOngoing = computed(() => !!segmentId);
+
   return {
     isOngoing,
     trigger,
     directSend,
+    sendType,
     enabled,
+    canEnableOngoing,
     summaryKey,
     getSummaryKey,
     shouldSendImmediately,

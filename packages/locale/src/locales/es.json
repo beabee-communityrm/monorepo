@@ -194,6 +194,11 @@
         "segment": "Segmento",
         "send": "Enviar",
         "sendSettings": "Configuración de envío",
+        "sendTypes": {
+          "oneOffLabel": "Correo puntual",
+          "ongoingLabel": "Correo recurrente",
+          "title": "Enviar como"
+        },
         "summaryOnceOnly": "Este correo se enviará una sola vez a todos los contactos actuales del segmento.",
         "summaryOngoingJoin": "Este correo se envía diariamente a los contactos que se han unido recientemente al segmento «{segment}».",
         "summaryOngoingJoinDirectSend": "Este correo se envía diariamente a los nuevos contactos del segmento «{segment}». Además, todos los contactos existentes lo recibirán inmediatamente.",

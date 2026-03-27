@@ -194,6 +194,11 @@
         "segment": "Segment",
         "send": "Verzenden",
         "sendSettings": "Verzendinstellingen",
+        "sendTypes": {
+          "oneOffLabel": "Eenmalige e-mail",
+          "ongoingLabel": "Terugkerende e-mail",
+          "title": "Versturen als"
+        },
         "summaryOnceOnly": "Deze e-mail wordt eenmalig naar alle huidige contacten in het segment verzonden.",
         "summaryOngoingJoin": "Deze e-mail wordt dagelijks verzonden naar contacten die recent zijn toegetreden tot het segment „{segment}”.",
         "summaryOngoingJoinDirectSend": "Deze e-mail wordt dagelijks verzonden naar nieuwe contacten in het segment „{segment}”. Daarnaast ontvangen alle bestaande contacten deze onmiddellijk.",

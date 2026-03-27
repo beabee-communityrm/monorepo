@@ -13,18 +13,28 @@ meta:
   </div>
 
   <div v-else-if="segment">
-    <App2ColGrid>
-      <template #col1>
-        <OngoingEmailSettings
-          v-model:is-ongoing="isOngoing"
-          v-model:trigger="ongoingTrigger"
-          v-model:direct-send="ongoingDirectSend"
-          :segment-id="segmentId"
-          show-direct-send
-        />
-      </template>
-    </App2ColGrid>
-
+    <AppSubHeading>
+      {{ t('adminSettings.email.contactTemplates.sendSettings') }}
+    </AppSubHeading>
+    <AppRadioGroup
+      v-model="sendType"
+      :options="[
+        [
+          'oneOff',
+          t('adminSettings.email.contactTemplates.sendTypes.oneOffLabel'),
+        ],
+        [
+          'ongoing',
+          t('adminSettings.email.contactTemplates.sendTypes.ongoingLabel'),
+        ],
+      ]"
+      :disabled="!canEnableOngoing && !isOngoing"
+      variant="link"
+      :label="t('adminSettings.email.contactTemplates.sendTypes.title')"
+      :inline="true"
+      required
+      class="mb-4"
+    />
     <AppApiForm
       :button-text="submitButtonText"
       :reset-button-text="t('actions.goBack')"
@@ -39,6 +49,38 @@ meta:
         :contacts="segmentContacts"
         :default-new-template-name="defaultNewTemplateName"
       />
+      <template v-if="isOngoing">
+        <AppRadioGroup
+          v-model="ongoingTrigger"
+          :options="[
+            ['onJoin', t('adminSettings.email.contactTemplates.contactJoins')],
+            [
+              'onLeave',
+              t('adminSettings.email.contactTemplates.contactLeaves'),
+            ],
+          ]"
+          variant="link"
+          :label="t('adminSettings.email.contactTemplates.titleSendTime')"
+          :inline="true"
+          required
+          class="mb-4"
+        />
+      </template>
+      <App2ColGrid v-if="ongoingTrigger === 'onJoin' && isOngoing" class="mb-4">
+        <template #col1>
+          <AppToggleField
+            v-model="ongoingDirectSend"
+            variant="link"
+            :label="t('adminSettings.email.contactTemplates.titleDirectSend')"
+            :disabled-description="
+              t('adminSettings.email.contactTemplates.directSendDisabled')
+            "
+            :enabled-description="
+              t('adminSettings.email.contactTemplates.directSendEnabled')
+            "
+          />
+        </template>
+      </App2ColGrid>
       <OngoingEmailSummary
         class="mb-4"
         :summary-key="summaryKey"
@@ -52,7 +94,14 @@ meta:
 
 <script lang="ts" setup>
 import type { GetContactData, GetSegmentData } from '@beabee/beabee-common';
-import { App2ColGrid, PageTitle, addNotification } from '@beabee/vue';
+import {
+  App2ColGrid,
+  AppRadioGroup,
+  AppSubHeading,
+  AppToggleField,
+  PageTitle,
+  addNotification,
+} from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
@@ -60,7 +109,6 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
-import OngoingEmailSettings from '#components/emails/OngoingEmailSettings.vue';
 import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import { useOngoingEmailSettings } from '#composables/useOngoingEmailSettings';
@@ -109,9 +157,11 @@ const {
   directSend: ongoingDirectSend,
   summaryKey,
   shouldSendImmediately,
+  canEnableOngoing,
+  sendType,
   buildCreatePayload,
   buildUpdatePayload,
-} = useOngoingEmailSettings();
+} = useOngoingEmailSettings(segmentId.value);
 
 const submitButtonText = computed(() =>
   shouldSendImmediately.value
