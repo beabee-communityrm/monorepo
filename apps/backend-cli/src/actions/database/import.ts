@@ -7,23 +7,25 @@ import { config } from '@beabee/core/config';
 import { dataSource } from '@beabee/core/database';
 import { runApp } from '@beabee/core/server';
 
-import { createReadStream } from 'node:fs';
-import readline from 'node:readline';
+import { createReadStream, readFileSync } from 'node:fs';
 import type { Readable } from 'node:stream';
 
-async function importFromStream(
-  stream: Readable,
-  merge = false
-): Promise<void> {
-  await dataSource.manager.transaction(async (manager) => {
-    const rl = readline.createInterface({
-      input: stream,
-      output: process.stdout,
-      terminal: false,
-    });
+/**
+ * Read all lines from a stream without readline's internal line length limit.
+ * Node.js readline can silently split lines longer than ~1.8MB.
+ */
+async function readLines(stream: Readable): Promise<string[]> {
+  const chunks: Buffer[] = [];
+  for await (const chunk of stream) {
+    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+  }
+  return Buffer.concat(chunks).toString('utf8').split('\n');
+}
 
+async function importFromLines(lines: string[], merge = false): Promise<void> {
+  await dataSource.manager.transaction(async (manager) => {
     let query = '';
-    for await (const line of rl) {
+    for (const line of lines) {
       if (query) {
         if (merge && query.startsWith('DELETE FROM')) {
           console.log('Skipping ' + query.substring(0, 100) + ' (merge mode)');
@@ -60,10 +62,11 @@ export const importDatabase = async (
 
   await runApp(async () => {
     if (filePath) {
-      const stream = createReadStream(filePath, 'utf8');
-      await importFromStream(stream, merge);
+      const lines = readFileSync(filePath, 'utf8').split('\n');
+      await importFromLines(lines, merge);
     } else {
-      await importFromStream(process.stdin, merge);
+      const lines = await readLines(process.stdin);
+      await importFromLines(lines, merge);
     }
   });
 };
