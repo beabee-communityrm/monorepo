@@ -12,6 +12,7 @@ import {
 } from '@beabee/core/tools/database/anonymisers/index';
 
 import { getAnonymizers } from '../../utils/anonymizers.js';
+import { withFileOutput } from '../../utils/file-output.js';
 
 /**
  * Export database to SQL dump with configurable anonymization
@@ -20,12 +21,14 @@ import { getAnonymizers } from '../../utils/anonymizers.js';
  * @param anonymize If true, anonymize all data (contacts are always anonymized)
  * @param skipAnonymizeTables If provided, skip anonymization for the given table names
  * @param preserveCalloutAnswers If true, keep callout response answers intact (only anonymize FKs/guest data)
+ * @param filePath If set, write output to this file instead of stdout
  */
 export const exportDatabase = async (
   dryRun = false,
   anonymize = true,
   skipAnonymizeTables: string[] = [],
-  preserveCalloutAnswers = false
+  preserveCalloutAnswers = false,
+  filePath?: string
 ): Promise<void> => {
   const anonymisers = getAnonymizers(
     anonymize,
@@ -46,12 +49,14 @@ export const exportDatabase = async (
   }
 
   await runApp(async () => {
-    const valueMap = new Map<string, unknown>();
+    await withFileOutput(filePath, async () => {
+      const valueMap = new Map<string, unknown>();
 
-    clearModels(anonymisers);
+      clearModels(anonymisers);
 
-    for (const anonymiser of anonymisers) {
-      await anonymiseModel(anonymiser, (qb) => qb, valueMap);
-    }
+      for (const anonymiser of anonymisers) {
+        await anonymiseModel(anonymiser, (qb) => qb, valueMap);
+      }
+    });
   });
 };

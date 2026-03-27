@@ -22,6 +22,7 @@ import {
   getDemoClearModels,
   getDemoPrepareQuery,
 } from '../../utils/anonymizers.js';
+import { withFileOutput } from '../../utils/file-output.js';
 
 /**
  * Fetch the subset of IDs used for demo export (must be called inside runApp)
@@ -76,8 +77,12 @@ async function fetchDemoContext(options: {
  * Export a demo subset of the database (limited contacts, latest callouts, and responses).
  *
  * @param dryRun If true, only logs what would be done
+ * @param filePath If set, write output to this file instead of stdout
  */
-export const exportDemoDatabase = async (dryRun = false): Promise<void> => {
+export const exportDemoDatabase = async (
+  dryRun = false,
+  filePath?: string
+): Promise<void> => {
   if (dryRun) {
     console.log('Dry run: would export database (demo subset)');
     console.log(
@@ -87,17 +92,22 @@ export const exportDemoDatabase = async (dryRun = false): Promise<void> => {
   }
 
   await runApp(async () => {
-    const valueMap = new Map<string, unknown>();
+    // fetchDemoContext must run before withFileOutput so its SELECT queries
+    // are not captured into the file
     const context = await fetchDemoContext(DEMO_EXPORT_CONFIG);
     const anonymisers = getDemoAnonymisers();
     const modelsToClear = getDemoClearModels();
-    clearModels(modelsToClear);
-    for (const anonymiser of anonymisers) {
-      await anonymiseModel(
-        anonymiser,
-        getDemoPrepareQuery(anonymiser, context),
-        valueMap
-      );
-    }
+
+    await withFileOutput(filePath, async () => {
+      const valueMap = new Map<string, unknown>();
+      clearModels(modelsToClear);
+      for (const anonymiser of anonymisers) {
+        await anonymiseModel(
+          anonymiser,
+          getDemoPrepareQuery(anonymiser, context),
+          valueMap
+        );
+      }
+    });
   });
 };
