@@ -21,6 +21,7 @@ import {
   CALLOUT_EXPORT_FULL_ANONYMIZERS,
   CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS,
 } from '../../utils/anonymizers.js';
+import { withFileOutput } from '../../utils/file-output.js';
 
 /**
  * Export callout data to SQL dump
@@ -28,11 +29,13 @@ import {
  * @param dryRun If true, only logs what would be done
  * @param anonymize If true, anonymize personal data (contact FKs, guest info)
  * @param preserveCalloutAnswers If true, keep answers intact; if false, anonymize per component type
+ * @param filePath If set, write output to this file instead of stdout
  */
 export const exportCalloutsDatabase = async (
   dryRun = false,
   anonymize = true,
-  preserveCalloutAnswers = true
+  preserveCalloutAnswers = true,
+  filePath?: string
 ): Promise<void> => {
   const anonymisers = !anonymize
     ? CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS
@@ -54,12 +57,14 @@ export const exportCalloutsDatabase = async (
   }
 
   await runApp(async () => {
-    const valueMap = new Map<string, unknown>();
+    await withFileOutput(filePath, async () => {
+      const valueMap = new Map<string, unknown>();
 
-    clearModels(CALLOUT_EXPORT_CLEAR_MODELS);
+      clearModels(CALLOUT_EXPORT_CLEAR_MODELS);
 
-    for (const anonymiser of anonymisers) {
-      await anonymiseModel(anonymiser, (qb) => qb, valueMap);
-    }
+      for (const anonymiser of anonymisers) {
+        await anonymiseModel(anonymiser, (qb) => qb, valueMap);
+      }
+    });
   });
 };

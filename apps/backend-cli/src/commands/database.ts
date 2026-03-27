@@ -33,6 +33,11 @@ export const databaseCommand: CommandModule = {
               description:
                 'Keep callout response answers intact instead of anonymizing per component. Contact FKs and guest data are still anonymized.',
               default: false,
+            })
+            .option('file', {
+              type: 'string',
+              description:
+                'Write output to this file instead of stdout (avoids TypeORM log pollution)',
             }),
         handler: async (argv) => {
           const { exportDatabase } = await import(
@@ -42,7 +47,8 @@ export const databaseCommand: CommandModule = {
             argv.dryRun,
             argv.anonymize,
             argv.skipAnonymizeTables ?? [],
-            argv.preserveCalloutAnswers
+            argv.preserveCalloutAnswers,
+            argv.file
           );
         },
       })
@@ -51,16 +57,22 @@ export const databaseCommand: CommandModule = {
         describe:
           'Export demo subset (limited contacts, latest callouts, anonymized)',
         builder: (yargs) =>
-          yargs.option('dryRun', {
-            type: 'boolean',
-            description: 'Run without making changes',
-            default: false,
-          }),
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes',
+              default: false,
+            })
+            .option('file', {
+              type: 'string',
+              description:
+                'Write output to this file instead of stdout (avoids TypeORM log pollution)',
+            }),
         handler: async (argv) => {
           const { exportDemoDatabase } = await import(
             '../actions/database/export-demo.js'
           );
-          return exportDemoDatabase(argv.dryRun);
+          return exportDemoDatabase(argv.dryRun, argv.file);
         },
       })
       .command({
@@ -85,6 +97,11 @@ export const databaseCommand: CommandModule = {
               description:
                 'Keep callout response answers intact instead of anonymizing per component. Defaults to true for this command.',
               default: true,
+            })
+            .option('file', {
+              type: 'string',
+              description:
+                'Write output to this file instead of stdout (avoids TypeORM log pollution)',
             }),
         handler: async (argv) => {
           const { exportCalloutsDatabase } = await import(
@@ -93,7 +110,8 @@ export const databaseCommand: CommandModule = {
           return exportCalloutsDatabase(
             argv.dryRun,
             argv.anonymize,
-            argv.preserveCalloutAnswers
+            argv.preserveCalloutAnswers,
+            argv.file
           );
         },
       })
