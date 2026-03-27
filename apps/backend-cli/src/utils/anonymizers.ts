@@ -216,15 +216,21 @@ const calloutResponseCalloutExportAnonymiser: models.ModelAnonymiser = {
   } as models.ObjectMap<unknown>,
 };
 
-/** Callout export: tables to insert with anonymisation (personal data only) */
+/** Callout export: tables to insert with anonymisation (personal data only).
+ *  CalloutVariant and CalloutTag are passthrough (no personal data).
+ *  CalloutReviewer is excluded (non-nullable contactId FK). */
 export const CALLOUT_EXPORT_ANONYMIZERS: models.ModelAnonymiser[] = [
   { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
   calloutResponseCalloutExportAnonymiser,
 ];
 
 /** Callout export: full anonymisation including per-component answer anonymisation */
 export const CALLOUT_EXPORT_FULL_ANONYMIZERS: models.ModelAnonymiser[] = [
   { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
   models.calloutResponsesAnonymiser,
 ] as models.ModelAnonymiser[];
 
@@ -232,6 +238,8 @@ export const CALLOUT_EXPORT_FULL_ANONYMIZERS: models.ModelAnonymiser[] = [
 export const CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS: models.ModelAnonymiser[] =
   [
     { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
+    { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
+    { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
     { model: CalloutResponse, objectMap: {} as models.ObjectMap<unknown> },
   ];
 
