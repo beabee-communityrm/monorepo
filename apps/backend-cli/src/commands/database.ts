@@ -129,12 +129,18 @@ export const databaseCommand: CommandModule = {
               type: 'boolean',
               description: 'Run without making changes',
               default: false,
+            })
+            .option('merge', {
+              type: 'boolean',
+              description:
+                'Merge imported data with existing data instead of replacing. Skips DELETE statements and ignores duplicate key conflicts.',
+              default: false,
             }),
         handler: async (argv) => {
           const { importDatabase } = await import(
             '../actions/database/import.js'
           );
-          return importDatabase(argv.file, argv.dryRun);
+          return importDatabase(argv.file, argv.dryRun, argv.merge);
         },
       })
       .command({
