@@ -102,6 +102,13 @@ export const databaseCommand: CommandModule = {
               type: 'string',
               description:
                 'Write output to this file instead of stdout (avoids TypeORM log pollution)',
+            })
+            .option('callout-slug', {
+              type: 'array',
+              string: true,
+              description:
+                'Export only specific callouts by slug (can be specified multiple times). No DELETE statements emitted; use --merge on import.',
+              default: [] as string[],
             }),
         handler: async (argv) => {
           const { exportCalloutsDatabase } = await import(
@@ -111,7 +118,8 @@ export const databaseCommand: CommandModule = {
             argv.dryRun,
             argv.anonymize,
             argv.preserveCalloutAnswers,
-            argv.file
+            argv.file,
+            argv.calloutSlug
           );
         },
       })
