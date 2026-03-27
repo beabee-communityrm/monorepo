@@ -11,7 +11,10 @@ import { createReadStream } from 'node:fs';
 import readline from 'node:readline';
 import type { Readable } from 'node:stream';
 
-async function importFromStream(stream: Readable): Promise<void> {
+async function importFromStream(
+  stream: Readable,
+  merge = false
+): Promise<void> {
   await dataSource.manager.transaction(async (manager) => {
     const rl = readline.createInterface({
       input: stream,
@@ -22,8 +25,16 @@ async function importFromStream(stream: Readable): Promise<void> {
     let query = '';
     for await (const line of rl) {
       if (query) {
-        console.log('Running ' + query.substring(0, 100) + '...');
-        await manager.query(query, line !== '' ? JSON.parse(line) : undefined);
+        if (merge && query.startsWith('DELETE FROM')) {
+          console.log('Skipping ' + query.substring(0, 100) + ' (merge mode)');
+        } else {
+          let sql = query;
+          if (merge && sql.startsWith('INSERT INTO')) {
+            sql = sql.replace(/;\s*$/, ' ON CONFLICT DO NOTHING;');
+          }
+          console.log('Running ' + sql.substring(0, 100) + '...');
+          await manager.query(sql, line !== '' ? JSON.parse(line) : undefined);
+        }
         query = '';
       } else {
         query = line;
@@ -34,7 +45,8 @@ async function importFromStream(stream: Readable): Promise<void> {
 
 export const importDatabase = async (
   filePath: string | undefined,
-  dryRun = false
+  dryRun = false,
+  merge = false
 ): Promise<void> => {
   if (!config.dev) {
     console.error("Can't import to live database");
@@ -49,9 +61,9 @@ export const importDatabase = async (
   await runApp(async () => {
     if (filePath) {
       const stream = createReadStream(filePath, 'utf8');
-      await importFromStream(stream);
+      await importFromStream(stream, merge);
     } else {
-      await importFromStream(process.stdin);
+      await importFromStream(process.stdin, merge);
     }
   });
 };
