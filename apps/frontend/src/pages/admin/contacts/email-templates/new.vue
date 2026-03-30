@@ -11,6 +11,7 @@ meta:
   <AppApiForm
     :button-text="t('actions.save')"
     :reset-button-text="t('actions.back')"
+    :success-message="t('emails.notifications.created')"
     inline-error
     @submit="handleSubmit"
     @reset="handleBack"
@@ -21,7 +22,7 @@ meta:
 
 <script lang="ts" setup>
 import type { CreateEmailData } from '@beabee/beabee-common';
-import { PageTitle, addNotification } from '@beabee/vue';
+import { PageTitle } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref } from 'vue';
@@ -32,7 +33,6 @@ import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
-import { extractErrorText } from '#utils/api-error';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
@@ -65,19 +65,7 @@ async function handleBack() {
 }
 
 async function handleSubmit() {
-  if (!form.value) return;
-  try {
-    await client.email.create(form.value);
-    addNotification({
-      variant: 'success',
-      title: t('emails.notifications.created'),
-    });
-    await router.push(LIST_ROUTE);
-  } catch (err) {
-    addNotification({
-      variant: 'error',
-      title: extractErrorText(err),
-    });
-  }
+  await client.email.create(form.value);
+  await router.push(LIST_ROUTE);
 }
 </script>

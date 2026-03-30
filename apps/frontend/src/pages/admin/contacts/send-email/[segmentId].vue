@@ -38,6 +38,7 @@ meta:
     <AppApiForm
       :button-text="submitButtonText"
       :reset-button-text="t('actions.goBack')"
+      :success-text="successText"
       inline-error
       @submit="handleSubmit"
       @reset="handleBack"
@@ -175,48 +176,32 @@ const submitButtonText = computed(() =>
     : t('adminSettings.email.contactTemplates.create')
 );
 
+const successText = computed(() =>
+  shouldSendImmediately.value
+    ? t('contacts.sendEmail.sent')
+    : t('emails.notifications.created')
+);
+
 const defaultNewTemplateName = computed(() =>
   segment.value ? `${t('contacts.sendEmail.title')}: ${segment.value.name}` : ''
 );
 
 async function handleSubmit() {
-  if (!segmentId.value) return;
-  if (!emailData.value.subject.trim() || !emailData.value.body.trim()) {
-    addNotification({
-      variant: 'error',
-      title: t('form.errorMessages.generic'),
-    });
-    return;
-  }
+  const emailId = await ensureSavedEmailId();
 
-  try {
-    const emailId = await ensureSavedEmailId();
-
-    if (shouldSendImmediately.value) {
-      await client.segments.email.send(segmentId.value, {
-        subject: emailData.value.subject,
-        body: emailData.value.body,
-        emailId,
-        // Only track contacts when this is the initial send of an ongoing
-        // email, so process-segments won't re-send to these contacts.
-        ongoingDirectSend:
-          isOngoing.value && ongoingDirectSend.value ? true : undefined,
-      });
-    }
-
-    addNotification({
-      variant: 'success',
-      title: shouldSendImmediately.value
-        ? t('contacts.sendEmail.sent')
-        : t('emails.notifications.created'),
-    });
-    router.push(backUrl.value);
-  } catch (err) {
-    addNotification({
-      variant: 'error',
-      title: extractErrorText(err),
+  if (shouldSendImmediately.value) {
+    await client.segments.email.send(segmentId.value, {
+      subject: emailData.value.subject,
+      body: emailData.value.body,
+      emailId,
+      // Only track contacts when this is the initial send of an ongoing
+      // email, so process-segments won't re-send to these contacts.
+      ongoingDirectSend:
+        isOngoing.value && ongoingDirectSend.value ? true : undefined,
     });
   }
+
+  router.push(backUrl.value);
 }
 
 async function ensureSavedEmailId(): Promise<string> {

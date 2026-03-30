@@ -91,6 +91,7 @@ meta:
 
     <AppApiForm
       :button-text="t('actions.save')"
+      :success-message="t('form.saved')"
       inline-error
       @submit="handleSubmit"
     >
@@ -107,7 +108,6 @@ import {
   AppInfoList,
   AppInfoListItem,
   PageTitle,
-  addNotification,
   formatLocale,
 } from '@beabee/vue';
 
@@ -127,7 +127,6 @@ import AppApiForm from '#components/forms/AppApiForm.vue';
 import { useOngoingEmailSettings } from '#composables/useOngoingEmailSettings';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
-import { extractErrorText } from '#utils/api-error';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
@@ -182,7 +181,6 @@ const pageTitle = computed(() => {
 });
 
 async function handleToggleEnabled(value: boolean) {
-  if (!emailId.value) return;
   const previous = ongoingEnabled.value;
   ongoingEnabled.value = value;
   try {
@@ -197,79 +195,41 @@ async function handleToggleEnabled(value: boolean) {
     if (email.value) {
       email.value = { ...email.value, enabled: value };
     }
-    addNotification({ variant: 'success', title: t('form.saved') });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     ongoingEnabled.value = previous;
-    addNotification({
-      variant: 'error',
-      title: extractErrorText(err),
-    });
   }
 }
 
 async function handleSubmit() {
-  if (!emailId.value || !email.value) return;
-  try {
-    const payload: UpdateEmailData = {
-      ...form.value,
-      ...buildUpdatePayload(email.value?.segmentId),
-    };
-    await client.email.update(emailId.value, payload);
-    addNotification({ variant: 'success', title: t('form.saved') });
-    await router.push(LIST_ROUTE);
-  } catch (err) {
-    addNotification({
-      variant: 'error',
-      title: extractErrorText(err),
-    });
-  }
+  if (!email.value) return;
+  const payload: UpdateEmailData = {
+    ...form.value,
+    ...buildUpdatePayload(email.value?.segmentId),
+  };
+  await client.email.update(emailId.value, payload);
+  await router.push(LIST_ROUTE);
 }
 
 async function confirmDeleteEmail() {
-  if (!emailId.value) return;
   showDeleteConfirm.value = false;
-  try {
-    await client.email.delete(emailId.value);
-    addNotification({
-      variant: 'success',
-      title: t('emails.notifications.deleted'),
-    });
-    await router.push(LIST_ROUTE);
-  } catch (err) {
-    addNotification({
-      variant: 'error',
-      title: extractErrorText(err),
-    });
-  }
+  await client.email.delete(emailId.value);
+  await router.push(LIST_ROUTE);
 }
 
-async function loadEmail() {
-  if (!emailId.value) return;
+onMounted(async () => {
   const data = await client.email.get(emailId.value);
   email.value = data;
   form.value = {
+    fromName: data.fromName,
+    fromEmail: data.fromEmail,
     name: data.name,
     subject: data.subject,
     body: data.body,
   };
-  loadFromEmail(data);
-}
 
-onMounted(async () => {
-  if (!emailId.value) {
-    await router.replace(LIST_ROUTE);
-    return;
-  }
-  try {
-    await loadEmail();
-  } catch (err) {
-    addNotification({
-      variant: 'error',
-      title: extractErrorText(err),
-    });
-    await router.replace(LIST_ROUTE);
-  } finally {
-    loading.value = false;
-  }
+  loadFromEmail(data);
+
+  loading.value = false;
 });
 </script>
