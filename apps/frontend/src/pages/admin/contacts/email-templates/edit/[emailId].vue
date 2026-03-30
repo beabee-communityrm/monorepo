@@ -25,8 +25,8 @@ meta:
         :icon="email.enabled ? faPause : faPlay"
         :success-text="
           email.enabled
-            ? t('contacts.emailTemplates.toggleEnabled.disabled')
-            : t('contacts.emailTemplates.toggleEnabled.enabled')
+            ? t('contacts.emailTemplates.toggleEnabled.enabled')
+            : t('contacts.emailTemplates.toggleEnabled.disabled')
         "
         @click="handleToggleEnabled"
       >
