@@ -27,7 +27,6 @@
     v-model:from-email="email.fromEmail"
     v-model:subject="email.subject"
     v-model:content="email.body"
-    v-model:preview-contact-id="previewContactId"
     :heading="t('emailEditor.body.label')"
     :preview-contact-options="contacts"
     show-from-fields
@@ -74,7 +73,6 @@ const props = withDefaults(
 /** Template Management **/
 const templates = ref<GetEmailData[]>([]);
 const selectedTemplateId = ref<string>(NEW_EMAIL_VALUE);
-const previewContactId = ref<string>('');
 
 const isNewEmailSelected = computed(
   () => selectedTemplateId.value === NEW_EMAIL_VALUE

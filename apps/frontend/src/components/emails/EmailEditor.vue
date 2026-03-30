@@ -74,7 +74,7 @@
             class="block"
           />
           <ContactSelector
-            v-model="previewContactIdModel"
+            v-model="previewContactId"
             :options="previewSelectorOptions"
             class="mb-3"
           />
@@ -207,8 +207,6 @@ const props = withDefaults(
     mergeFields?: Record<string, string>;
     /** If true, preview is always below the editor (no side-by-side on md+). */
     alwaysStacked?: boolean;
-    /** Contact ID used for preview merge fields. Use with v-model:previewContactId and previewContactOptions. */
-    previewContactId?: string | null;
     /** Extra contacts in the preview-as selector (e.g. segment send). Omit for template edit (current user only). */
     previewContactOptions?: PreviewContactOption[];
     /** Whether to show the from fields (sender name/email) */
@@ -219,7 +217,6 @@ const props = withDefaults(
     template: undefined,
     mergeFields: () => ({}),
     alwaysStacked: false,
-    previewContactId: undefined,
     previewContactOptions: undefined,
     showFromFields: false,
   }
@@ -239,12 +236,12 @@ const showMergeFieldsDropdown = ref(false);
 const serverPreviewResult = ref<EmailPreviewResult | null>(null);
 const isLoadingPreview = ref(false);
 
-const previewContactIdModel = defineModel<string>('previewContactId', {
+const previewContactId = defineModel<string>('previewContactId', {
   default: '',
 });
 
 const effectivePreviewContactId = computed(
-  () => previewContactIdModel.value || currentUser.value?.id || null
+  () => previewContactId.value || currentUser.value?.id || null
 );
 
 const previewSelectorOptions = computed(() =>
