@@ -203,6 +203,7 @@
         "summaryOngoingJoin": "",
         "summaryOngoingJoinDirectSend": "",
         "summaryOngoingLeave": "",
+        "summaryOngoingPaused": "",
         "summaryTemplate": "",
         "title": "",
         "titleDirectSend": "",
@@ -1207,8 +1208,18 @@
     "body": {
       "label": ""
     },
+    "from": {
+      "label": ""
+    },
+    "fromEmail": {
+      "label": ""
+    },
+    "fromName": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "",
+      "from": "",
       "label": "",
       "unavailable": ""
     },

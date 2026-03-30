@@ -1208,8 +1208,18 @@
     "body": {
       "label": "Messaggio"
     },
+    "from": {
+      "label": ""
+    },
+    "fromEmail": {
+      "label": ""
+    },
+    "fromName": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "Contatto per anteprima",
+      "from": "",
       "label": "Anteprima",
       "unavailable": "Anteprima non disponibile"
     },

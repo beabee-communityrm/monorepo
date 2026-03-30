@@ -1208,8 +1208,18 @@
     "body": {
       "label": "Bericht"
     },
+    "from": {
+      "label": ""
+    },
+    "fromEmail": {
+      "label": ""
+    },
+    "fromName": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "Contact voor voorbeeld",
+      "from": "",
       "label": "Voorbeeld",
       "unavailable": "Voorbeeld niet beschikbaar"
     },

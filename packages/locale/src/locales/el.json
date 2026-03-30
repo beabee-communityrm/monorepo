@@ -1208,8 +1208,18 @@
     "body": {
       "label": "Μήνυμα"
     },
+    "from": {
+      "label": ""
+    },
+    "fromEmail": {
+      "label": ""
+    },
+    "fromName": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "Επαφή για προεπισκόπηση",
+      "from": "",
       "label": "Προεπισκόπηση",
       "unavailable": "Προεπισκόπηση μη διαθέσιμη"
     },

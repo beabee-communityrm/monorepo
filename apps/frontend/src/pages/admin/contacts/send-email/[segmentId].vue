@@ -17,18 +17,17 @@ meta:
       {{ t('adminSettings.email.contactTemplates.sendSettings') }}
     </AppSubHeading>
     <AppRadioGroup
-      v-model="sendType"
+      v-model="emailData.isOngoing"
       :options="[
         [
-          'oneOff',
+          false,
           t('adminSettings.email.contactTemplates.sendTypes.oneOffLabel'),
         ],
         [
-          'ongoing',
+          true,
           t('adminSettings.email.contactTemplates.sendTypes.ongoingLabel'),
         ],
       ]"
-      :disabled="!canEnableOngoing && !isOngoing"
       variant="link"
       :label="t('adminSettings.email.contactTemplates.sendTypes.title')"
       :inline="true"
@@ -44,14 +43,14 @@ meta:
       @reset="handleBack"
     >
       <EmailTemplateEditor
-        v-model:email="emailData"
+        v-model:email="formData"
         v-model:selected-email-id="selectedEmailId"
         show-select-template
         :contacts="segmentContacts"
       />
-      <template v-if="isOngoing">
+      <template v-if="emailData.isOngoing">
         <AppRadioGroup
-          v-model="ongoingTrigger"
+          v-model="emailData.trigger"
           :options="[
             ['onJoin', t('adminSettings.email.contactTemplates.contactJoins')],
             [
@@ -66,10 +65,13 @@ meta:
           class="mb-4"
         />
       </template>
-      <App2ColGrid v-if="ongoingTrigger === 'onJoin' && isOngoing" class="mb-4">
+      <App2ColGrid
+        v-if="emailData.trigger === 'onJoin' && emailData.isOngoing"
+        class="mb-4"
+      >
         <template #col1>
           <AppToggleField
-            v-model="ongoingDirectSend"
+            v-model="emailData.directSend"
             variant="link"
             :label="t('adminSettings.email.contactTemplates.titleDirectSend')"
             :disabled-description="
@@ -83,17 +85,22 @@ meta:
       </App2ColGrid>
       <OngoingEmailSummary
         class="mb-4"
-        :summary-key="summaryKey"
-        :is-ongoing="isOngoing"
+        :email="emailData"
+        :direct-send="emailData.directSend"
         :segment-id="segmentId"
         :segment-name="segment.name"
+        mode="send"
       />
     </AppApiForm>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { GetContactData, GetSegmentData } from '@beabee/beabee-common';
+import {
+  type GetContactData,
+  type GetSegmentData,
+  type SegmentOngoingEmailTrigger,
+} from '@beabee/beabee-common';
 import {
   App2ColGrid,
   AppRadioGroup,
@@ -104,14 +111,13 @@ import {
 } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
 import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
-import { useOngoingEmailSettings } from '#composables/useOngoingEmailSettings';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
@@ -148,26 +154,29 @@ const pageTitle = computed(() => {
 const loading = ref(true);
 const segment = ref<GetSegmentData | null>(null);
 const segmentContacts = ref<GetContactData[]>([]);
-const emailData = ref({
+
+const emailData = reactive({
+  enabled: true,
+  isOngoing: false,
+  trigger: 'onJoin' as SegmentOngoingEmailTrigger,
+  directSend: false,
+});
+
+const formData = ref({
   name: '',
   fromName: null,
   fromEmail: null,
   subject: '',
   body: '',
 });
+
 const selectedEmailId = ref<string | undefined>(undefined);
 
-const {
-  isOngoing,
-  trigger: ongoingTrigger,
-  directSend: ongoingDirectSend,
-  summaryKey,
-  shouldSendImmediately,
-  canEnableOngoing,
-  sendType,
-  buildCreatePayload,
-  buildUpdatePayload,
-} = useOngoingEmailSettings(segmentId.value);
+const shouldSendImmediately = computed(
+  () =>
+    !emailData.isOngoing ||
+    (emailData.directSend && emailData.trigger === 'onJoin')
+);
 
 const submitButtonText = computed(() =>
   shouldSendImmediately.value
@@ -186,13 +195,12 @@ async function handleSubmit() {
 
   if (shouldSendImmediately.value) {
     await client.segments.email.send(segmentId.value, {
-      subject: emailData.value.subject,
-      body: emailData.value.body,
+      subject: formData.value.subject,
+      body: formData.value.body,
       emailId,
       // Only track contacts when this is the initial send of an ongoing
       // email, so process-segments won't re-send to these contacts.
-      ongoingDirectSend:
-        isOngoing.value && ongoingDirectSend.value ? true : undefined,
+      ongoingDirectSend: emailData.isOngoing ? true : undefined,
     });
   }
 
@@ -200,31 +208,26 @@ async function handleSubmit() {
 }
 
 async function ensureSavedEmailId(): Promise<string> {
+  const emailPayload = {
+    ...formData.value,
+    ongoingEmail: {
+      isOngoing: emailData.isOngoing,
+      ...(emailData.isOngoing && {
+        segmentId: segmentId.value,
+        trigger: emailData.trigger,
+        enabled: true,
+      }),
+    },
+  };
+
   // Update existing template if one was selected
   if (selectedEmailId.value) {
-    await client.email.update(selectedEmailId.value, {
-      subject: emailData.value.subject,
-      body: emailData.value.body,
-      ...buildUpdatePayload(segmentId.value),
-    });
+    await client.email.update(selectedEmailId.value, emailPayload);
     return selectedEmailId.value;
+  } else {
+    const created = await client.email.create(emailPayload);
+    return created.id;
   }
-
-  // Create new template
-  const name = emailData.value.name.trim() || defaultNewTemplateName.value;
-  if (!name.trim()) {
-    addNotification({
-      variant: 'error',
-      title: t('contacts.sendEmail.templateNameRequired'),
-    });
-    throw new Error('Template name required');
-  }
-
-  const created = await client.email.create({
-    ...emailData.value,
-    ...buildCreatePayload(segmentId.value),
-  });
-  return created.id;
 }
 
 async function handleBack() {

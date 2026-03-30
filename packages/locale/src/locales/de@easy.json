@@ -1208,8 +1208,18 @@
     "body": {
       "label": "Betreff"
     },
+    "from": {
+      "label": ""
+    },
+    "fromEmail": {
+      "label": ""
+    },
+    "fromName": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "Kontakt für Vorschau",
+      "from": "",
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
     },

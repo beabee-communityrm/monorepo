@@ -1,14 +1,14 @@
 <template>
   <AppNotification
     :variant="notificationVariant"
-    :icon="isOngoing ? faRotate : faEnvelope"
+    :icon="email.isOngoing ? faRotate : faEnvelope"
     :title="
       t(`adminSettings.email.contactTemplates.${summaryKey}`, {
         segment: segmentName,
       })
     "
   >
-    <template v-if="isOngoing && segmentId" #title>
+    <template v-if="email.isOngoing && segmentId" #title>
       <i18n-t :keypath="`adminSettings.email.contactTemplates.${summaryKey}`">
         <template #segment>
           <router-link
@@ -30,20 +30,33 @@ import { faEnvelope, faRotate } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { OngoingEmailSummaryKey } from '#composables/useOngoingEmailSettings';
-
 const { t } = useI18n();
 
-const props = defineProps<{
-  summaryKey: OngoingEmailSummaryKey;
+interface OngoingEmailData {
   isOngoing: boolean;
   enabled?: boolean;
+  trigger?: 'onJoin' | 'onLeave';
+  directSend?: boolean;
+}
+
+const props = defineProps<{
+  email: OngoingEmailData;
+  mode: 'edit' | 'send';
   segmentId?: string;
   segmentName?: string;
 }>();
 
-const notificationVariant = computed(() => {
-  if (!props.isOngoing) return 'info';
-  return props.enabled ? 'success' : 'warning';
+const notificationVariant = computed(() =>
+  props.email.isOngoing ? (props.email.enabled ? 'success' : 'warning') : 'info'
+);
+
+const summaryKey = computed(() => {
+  if (!props.email.isOngoing) {
+    return props.mode === 'edit' ? 'summaryTemplate' : 'summaryOnceOnly';
+  }
+  if (!props.email.enabled) return 'summaryOngoingPaused';
+  if (props.email.trigger === 'onLeave') return 'summaryOngoingLeave';
+  if (props.email.directSend) return 'summaryOngoingJoinDirectSend';
+  return 'summaryOngoingJoin';
 });
 </script>

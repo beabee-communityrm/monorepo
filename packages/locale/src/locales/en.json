@@ -195,14 +195,15 @@
         "send": "Send",
         "sendSettings": "Settings",
         "sendTypes": {
-          "oneOffLabel": "Recurring email",
-          "ongoingLabel": "Single email",
+          "oneOffLabel": "One-off email",
+          "ongoingLabel": "Ongoing email",
           "title": "Send as"
         },
         "summaryOnceOnly": "This email will be sent once to all current contacts in the segment.",
         "summaryOngoingJoin": "This email is sent daily to contacts who have newly joined the segment \"{segment}\".",
         "summaryOngoingJoinDirectSend": "This email is sent daily to new contacts in the segment \"{segment}\". In addition, all existing contacts will receive it immediately.",
         "summaryOngoingLeave": "This email is sent daily to contacts who have left the segment \"{segment}\".",
+        "summaryOngoingPaused": "This email is currently paused and will not be sent automatically.",
         "summaryTemplate": "This email is not sent automatically and can be used as a template for new emails to segments.",
         "title": "Segment based",
         "titleDirectSend": "Send immediately to existing contacts",

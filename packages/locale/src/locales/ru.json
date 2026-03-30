@@ -1209,8 +1209,18 @@
     "body": {
       "label": "Сообщение"
     },
+    "from": {
+      "label": ""
+    },
+    "fromEmail": {
+      "label": ""
+    },
+    "fromName": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "Контакт для предварительного просмотра",
+      "from": "",
       "label": "Предпросмотр",
       "unavailable": "Предпросмотр недоступен"
     },

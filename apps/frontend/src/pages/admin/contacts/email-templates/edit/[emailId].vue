@@ -22,10 +22,11 @@ meta:
     <div class="flex flex-wrap gap-2">
       <AppApiAsyncButton
         v-if="email?.isOngoing"
-        :icon="ongoingEnabled ? faPause : faPlay"
+        :icon="email.enabled ? faPause : faPlay"
+        :success-text="email.enabled ? t('disabled') : t('enabled')"
         @click="handleToggleEnabled"
       >
-        {{ ongoingEnabled ? t('actions.disable') : t('actions.enable') }}
+        {{ email.enabled ? t('actions.disable') : t('actions.enable') }}
       </AppApiAsyncButton>
       <ActionButton :icon="faTrash" @click="showDeleteConfirm = true">
         {{ t('actions.delete') }}
@@ -33,19 +34,17 @@ meta:
     </div>
   </PageTitle>
 
-  <div v-if="loading">
+  <div v-if="!email">
     <p>{{ t('common.loading') }}...</p>
   </div>
 
   <template v-else>
     <OngoingEmailSummary
-      v-if="email"
       class="mb-4"
-      :summary-key="summaryKey"
-      :is-ongoing="!!email.isOngoing"
-      :enabled="ongoingEnabled"
+      :email="email"
       :segment-id="email.segmentId"
       :segment-name="email.segmentName"
+      mode="edit"
     />
 
     <AppInfoList v-if="email" class="mb-4">
@@ -54,7 +53,7 @@ meta:
         :value="
           !email.isOngoing
             ? t('emails.sendType.oneOff')
-            : ongoingEnabled
+            : email.enabled
               ? t('emails.sendType.ongoing')
               : t('emails.sendType.paused')
         "
@@ -101,7 +100,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
+import type { GetEmailData } from '@beabee/beabee-common';
 import {
   ActionButton,
   AppConfirmDialog,
@@ -125,7 +124,6 @@ import AppApiAsyncButton from '#components/button/AppApiAsyncButton.vue';
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
 import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
-import { useOngoingEmailSettings } from '#composables/useOngoingEmailSettings';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 
@@ -154,25 +152,15 @@ addBreadcrumb(
   ])
 );
 
-const loading = ref(true);
 const showDeleteConfirm = ref(false);
 const email = ref<GetEmailData | null>(null);
-const form = ref<UpdateEmailData>({
+const form = ref({
   name: '',
-  fromName: null,
-  fromEmail: null,
+  fromName: null as string | null,
+  fromEmail: null as string | null,
   subject: '',
   body: '',
 });
-
-const {
-  enabled: ongoingEnabled,
-  getSummaryKey,
-  loadFromEmail,
-  buildUpdatePayload,
-} = useOngoingEmailSettings(undefined);
-
-const summaryKey = computed(() => getSummaryKey('edit'));
 
 const pageTitle = computed(() => {
   if (!email.value) return t('contacts.emailTemplates.editTitle');
@@ -183,27 +171,20 @@ const pageTitle = computed(() => {
 
 async function handleToggleEnabled() {
   if (!email.value) return;
-  const newEnabled = !email.value.enabled;
 
-  await client.email.update(emailId.value, {
+  email.value = await client.email.update(emailId.value, {
     ongoingEmail: {
       isOngoing: email.value.isOngoing,
       segmentId: email.value.segmentId,
       trigger: email.value.trigger,
-      enabled: newEnabled,
+      enabled: !email.value.enabled,
     },
   });
-  email.value = { ...email.value, enabled: newEnabled };
 }
 
 async function handleSubmit() {
   if (!email.value) return;
-  const payload: UpdateEmailData = {
-    ...form.value,
-    ...buildUpdatePayload(email.value?.segmentId),
-  };
-  await client.email.update(emailId.value, payload);
-  await router.push(LIST_ROUTE);
+  email.value = await client.email.update(emailId.value, form.value);
 }
 
 async function confirmDeleteEmail() {
@@ -222,9 +203,5 @@ onMounted(async () => {
     subject: data.subject,
     body: data.body,
   };
-
-  loadFromEmail(data);
-
-  loading.value = false;
 });
 </script>

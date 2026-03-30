@@ -1210,8 +1210,18 @@
     "body": {
       "label": "Повідомлення"
     },
+    "from": {
+      "label": ""
+    },
+    "fromEmail": {
+      "label": ""
+    },
+    "fromName": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "Контакт для попереднього перегляду",
+      "from": "",
       "label": "Попередній перегляд",
       "unavailable": "Попередній перегляд недоступний"
     },
