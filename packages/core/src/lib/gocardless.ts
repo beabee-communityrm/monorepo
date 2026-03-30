@@ -1,7 +1,5 @@
 import {
-  ContributionForm,
   ContributionPeriod,
-  PaymentForm,
   PaymentMethod,
   PaymentStatus,
 } from '@beabee/beabee-common';
@@ -29,6 +27,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import config from '#config/config';
 import { log as mainLogger } from '#logging';
+import { UpdateContributionForm } from '#type/update-contribution-form';
 import { getChargeableAmount } from '#utils/payment';
 
 const log = mainLogger.child({ app: 'gocardless-api' });
@@ -221,9 +220,9 @@ const gocardless = {
 
 export default gocardless;
 
-function getGCChargeableAmount(paymentForm: PaymentForm): string {
+function getGCChargeableAmount(form: UpdateContributionForm): string {
   return getChargeableAmount(
-    paymentForm,
+    form,
     PaymentMethod.GoCardlessDirectDebit
   ).toString();
 }
@@ -269,7 +268,7 @@ export async function getSubscriptionNextChargeDate(
 
 export async function createSubscription(
   mandateId: string,
-  form: ContributionForm,
+  form: UpdateContributionForm,
   _startDate?: Date
 ): Promise<Subscription> {
   let startDate = _startDate && format(_startDate, 'yyyy-MM-dd');
@@ -307,7 +306,7 @@ export async function createSubscription(
 
 export async function updateSubscription(
   subscriptionId: string,
-  form: ContributionForm
+  form: UpdateContributionForm
 ): Promise<Subscription> {
   const chargeableAmount = getGCChargeableAmount(form);
   const subscription = await gocardless.subscriptions.get(subscriptionId);
@@ -330,7 +329,7 @@ export async function updateSubscription(
 export async function prorateSubscription(
   mandateId: string,
   renewalDate: Date,
-  form: ContributionForm,
+  form: UpdateContributionForm,
   lastMonthlyAmount: number
 ): Promise<boolean> {
   const monthsLeft = Math.max(0, differenceInMonths(renewalDate, new Date()));

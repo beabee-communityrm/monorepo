@@ -1,6 +1,5 @@
 import {
   CONTACT_MFA_TYPE,
-  ContributionForm,
   ContributionPeriod,
   ContributionType,
   LOGIN_CODES,
@@ -46,6 +45,8 @@ import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
+import { UpdateContributionForm } from '#type/update-contribution-form';
+import { UpdateContributionResult } from '#type/update-contribution-result';
 import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
 import { isDuplicateIndex } from '#utils/db';
@@ -322,47 +323,26 @@ class ContactsService {
    * @param contact  The contact
    * @param form The new contribution
    */
-  async updateContactContribution(
+  async handleUpdateContributionResult(
     contact: Contact,
-    form: ContributionForm
+    result: UpdateContributionResult
   ): Promise<void> {
-    log.info('Update contribution for ' + contact.id, { form });
-    // At the moment the only possibility is to go from whatever contribution
-    // type the user was before to an automatic contribution
+    log.info('Updated contribution for ' + contact.id, result);
+
     const wasManual = contact.contributionType === ContributionType.Manual;
-
-    // Some period changes on active members aren't allowed at the moment to
-    // prevent proration problems
-    if (
-      contact.membership?.isActive &&
-      // Annual contributors can't change their period
-      contact.contributionPeriod === ContributionPeriod.Annually &&
-      form.period !== ContributionPeriod.Annually
-    ) {
-      log.info("Can't update contribution for " + contact.id);
-      throw new CantUpdateContribution();
-    }
-
-    const { startNow, expiryDate } = await PaymentService.updateContribution(
-      contact,
-      form
-    );
-
-    log.info('Updated contribution for ' + contact.id, {
-      startNow,
-      expiryDate,
-    });
 
     await this.updateContact(contact, {
       contributionType: ContributionType.Automatic,
-      contributionPeriod: form.period,
-      ...(startNow && {
-        contributionMonthlyAmount: form.monthlyAmount,
+      contributionPeriod: result.form.period,
+      ...(result.startNow && {
+        contributionMonthlyAmount: result.form.monthlyAmount,
       }),
     });
 
-    await this.extendContactRole(contact, 'member', expiryDate);
+    await this.extendContactRole(contact, 'member', result.expiryDate);
 
+    // If this contribution update was a conversion from manual to automatic then
+    // send the user a confirmation email
     if (wasManual) {
       await EmailService.sendTemplateToContact('manual-to-automatic', contact);
     }

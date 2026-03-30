@@ -1,14 +1,13 @@
-import { PaymentMethod, isContributionForm } from '@beabee/beabee-common';
+import { PaymentFlowParamsStripe, PaymentMethod } from '@beabee/beabee-common';
 
 import { BadRequestError } from '#errors/BadRequestError';
 import { Stripe, paymentMethodToStripeType, stripe } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
-import { JoinFlow } from '#models/index';
+import { PaymentFlow } from '#models/index';
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
-  PaymentFlow,
-  PaymentFlowData,
+  PaymentFlowSetup,
 } from '#type/index';
 
 import { PaymentFlowProvider } from './PaymentFlowProvider';
@@ -22,20 +21,13 @@ const log = mainLogger.child({ app: 'stripe-payment-flow-provider' });
 class StripeFlowProvider implements PaymentFlowProvider {
   /**
    * Creates a Stripe SetupIntent for payment method setup
-   * @param joinFlow - Join flow containing payment method selection
-   * @param _completeUrl - URL for setup completion (unused in Stripe flow)
-   * @param _data - Additional setup data (unused in Stripe flow)
+   * @param flow - Payment flow containing payment method selection
    * @returns Promise resolving to payment flow with SetupIntent details
-   * @throws {BadRequestError} If payment method is not supported
    */
-  async createPaymentFlow(
-    joinFlow: JoinFlow,
-    _completeUrl: string,
-    _data: PaymentFlowData
-  ): Promise<PaymentFlow> {
+  async setupPaymentFlow(flow: PaymentFlow): Promise<PaymentFlowSetup> {
     const setupIntent = await stripe.setupIntents.create({
       payment_method_types: [
-        paymentMethodToStripeType(joinFlow.joinForm.paymentMethod),
+        paymentMethodToStripeType(flow.params.paymentMethod),
       ],
     });
 
@@ -43,7 +35,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
 
     return {
       id: setupIntent.id,
-      params: {
+      result: {
         clientSecret: setupIntent.client_secret as string,
       },
     };
@@ -51,17 +43,18 @@ class StripeFlowProvider implements PaymentFlowProvider {
 
   /**
    * Completes a payment flow by retrieving and validating the SetupIntent
-   * @param joinFlow - Join flow to complete
+   * @param flow - Payment flow to complete
    * @returns Promise resolving to completed payment flow with payment method ID
    * @throws {BadRequestError} If SetupIntent status is not succeeded
    */
-  async completePaymentFlow(joinFlow: JoinFlow): Promise<CompletedPaymentFlow> {
-    const setupIntent = await stripe.setupIntents.retrieve(
-      joinFlow.paymentFlowId,
-      { expand: ['latest_attempt'] }
-    );
+  async completePaymentFlow(
+    flow: PaymentFlow<PaymentFlowParamsStripe>
+  ): Promise<CompletedPaymentFlow> {
+    const setupIntent = await stripe.setupIntents.retrieve(flow.paymentFlowId, {
+      expand: ['latest_attempt'],
+    });
 
-    let paymentMethod = joinFlow.joinForm.paymentMethod;
+    let paymentMethod = flow.params.paymentMethod;
     let mandateId: string | null;
 
     log.info('Fetched setup intent ' + setupIntent.id);
@@ -71,7 +64,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
     // https://docs.stripe.com/payments/ideal/set-up-payment
     if (
       paymentMethod === PaymentMethod.StripeIdeal &&
-      isContributionForm(joinFlow.joinForm)
+      flow.form.action === 'start-contribution'
     ) {
       const latestAttempt =
         setupIntent.latest_attempt as Stripe.SetupAttempt | null;
@@ -85,14 +78,15 @@ class StripeFlowProvider implements PaymentFlowProvider {
 
     if (!mandateId) {
       log.error('Setup intent missing mandate or customer ID', {
-        joinFlow,
+        flow,
         setupIntent,
       });
       throw new BadRequestError({ message: 'Failed to complete payment flow' });
     }
 
     return {
-      joinForm: { ...joinFlow.joinForm, paymentMethod },
+      params: { ...flow.params, paymentMethod },
+      form: flow.form,
       customerId: '', // Unused in the Stripe flow
       mandateId,
     };
@@ -104,7 +98,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
    * @returns Promise resolving to payment flow data including billing details
    */
   async getCompletedPaymentFlowData(
-    completedPaymentFlow: CompletedPaymentFlow
+    completedPaymentFlow: CompletedPaymentFlow<PaymentFlowParamsStripe>
   ): Promise<CompletedPaymentFlowData> {
     const paymentMethod = await stripe.paymentMethods.retrieve(
       completedPaymentFlow.mandateId
@@ -112,6 +106,8 @@ class StripeFlowProvider implements PaymentFlowProvider {
 
     const address = paymentMethod.billing_details.address;
     return {
+      firstname: completedPaymentFlow.params.firstname || '',
+      lastname: completedPaymentFlow.params.lastname || '',
       ...(address && {
         billingAddress: {
           line1: address.line1 || '',

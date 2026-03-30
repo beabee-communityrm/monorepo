@@ -17,7 +17,7 @@ import IsUrl from '#api/validators/IsUrl';
 import IsValidPayFee from '#api/validators/IsValidPayFee';
 import MinContributionAmount from '#api/validators/MinContributionAmount';
 
-import { StartJoinFlowDto } from './JoinFlowDto';
+import { StartPaymentFlowDto } from './PaymentFlowDto';
 
 export class UpdateContributionDto {
   @MinContributionAmount()
@@ -35,7 +35,7 @@ export class UpdateContributionDto {
 
 export class StartContributionDto
   extends UpdateContributionDto
-  implements StartJoinFlowDto
+  implements StartPaymentFlowDto
 {
   @IsUrl()
   completeUrl!: string;

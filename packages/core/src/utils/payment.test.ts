@@ -1,12 +1,20 @@
-import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
+import {
+  ContributionPeriod,
+  ContributionType,
+  PaymentMethod,
+} from '@beabee/beabee-common';
 
 import { add, sub } from 'date-fns';
 import { describe, expect, test } from 'vitest';
 
 import config from '#config/config';
 import { Contact, ContactRole, Password } from '#models/index';
+import {
+  PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
+} from '#type/index';
 
-import { calcRenewalDate } from './payment';
+import { calcRenewalDate, getChargeableAmount } from './payment';
 
 function createContact(contact?: Partial<Contact>): Contact {
   return Object.assign(new Contact(), {
@@ -100,5 +108,156 @@ describe('Renewal calculation should be', () => {
     expect(calcRenewalDate(contact, now)).toEqual(
       add(oneYearAgoAnd5Days, { years: 1 })
     );
+  });
+});
+
+describe('getChargeableAmount', () => {
+  test('should calculate correct amount for monthly contribution without fee', () => {
+    const form: UpdateContributionForm = {
+      monthlyAmount: 10,
+      period: ContributionPeriod.Monthly,
+      payFee: false,
+      prorate: false,
+    };
+
+    const result = getChargeableAmount(form, PaymentMethod.StripeCard, 'eu');
+
+    expect(result).toBe(1000);
+  });
+
+  test('should calculate correct amount for annual contribution without fee', () => {
+    const form: UpdateContributionForm = {
+      monthlyAmount: 10,
+      period: ContributionPeriod.Annually,
+      payFee: false,
+      prorate: false,
+    };
+
+    const result = getChargeableAmount(form, PaymentMethod.StripeCard, 'eu');
+
+    expect(result).toBe(12000);
+  });
+
+  test('should ignore fee for annual contribution', () => {
+    const form: UpdateContributionForm = {
+      monthlyAmount: 5,
+      period: ContributionPeriod.Annually,
+      payFee: true, // Fee shouldn't be applied
+      prorate: false,
+    };
+
+    const result = getChargeableAmount(form, PaymentMethod.StripeCard, 'gb');
+
+    expect(result).toBe(6000);
+  });
+
+  test('should handle different Stripe payment methods with different fees', () => {
+    const form: UpdateContributionForm = {
+      monthlyAmount: 20,
+      period: ContributionPeriod.Monthly,
+      payFee: true,
+      prorate: false,
+    };
+
+    // Test PayPal
+    const resultPayPal = getChargeableAmount(
+      form,
+      PaymentMethod.StripePayPal,
+      'gb'
+    );
+    expect(resultPayPal).toBe(2050);
+
+    // Test BACS
+    const resultBACS = getChargeableAmount(
+      form,
+      PaymentMethod.StripeBACS,
+      'gb'
+    );
+    expect(resultBACS).toBe(2020);
+  });
+
+  test('should handle GoCardless payment method', () => {
+    const form: UpdateContributionForm = {
+      monthlyAmount: 15,
+      period: ContributionPeriod.Monthly,
+      payFee: true,
+      prorate: false,
+    };
+
+    const result = getChargeableAmount(
+      form,
+      PaymentMethod.GoCardlessDirectDebit,
+      'gb'
+    );
+
+    expect(result).toBe(1535);
+  });
+
+  test('should round to nearest cent', () => {
+    const form: UpdateContributionForm = {
+      monthlyAmount: 10.333,
+      period: ContributionPeriod.Monthly,
+      payFee: false,
+      prorate: false,
+    };
+
+    const result = getChargeableAmount(form, PaymentMethod.StripeCard, 'eu');
+
+    expect(result).toBe(1000);
+  });
+
+  test('should handle different countries', () => {
+    const form: UpdateContributionForm = {
+      monthlyAmount: 25,
+      period: ContributionPeriod.Monthly,
+      payFee: true,
+      prorate: false,
+    };
+
+    const resultCA = getChargeableAmount(form, PaymentMethod.StripeCard, 'ca');
+    expect(resultCA).toBe(2603);
+
+    const resultGB = getChargeableAmount(form, PaymentMethod.StripeCard, 'gb');
+    expect(resultGB).toBe(2558);
+
+    const resultEU = getChargeableAmount(form, PaymentMethod.StripeCard, 'eu');
+    expect(resultEU).toBe(2563);
+  });
+
+  test('should handle zero fee when payFee is false', () => {
+    const form: UpdateContributionForm = {
+      monthlyAmount: 100,
+      period: ContributionPeriod.Annually,
+      payFee: false, // Key: fee should be ignored
+      prorate: false,
+    };
+
+    const result = getChargeableAmount(form, PaymentMethod.StripeCard, 'eu');
+
+    expect(result).toBe(120000);
+  });
+
+  test('should calculate correct amount for one-time payment without fee', () => {
+    const form: PaymentFlowFormCreateOneTimePayment = {
+      action: 'create-one-time-payment',
+      amount: 25,
+      payFee: false,
+    };
+
+    const result = getChargeableAmount(form, PaymentMethod.StripeCard, 'eu');
+
+    expect(result).toBe(2500);
+  });
+
+  test('should include fee for one-time payment when payFee is true', () => {
+    const form: PaymentFlowFormCreateOneTimePayment = {
+      action: 'create-one-time-payment',
+      amount: 30,
+      payFee: true,
+    };
+
+    const result = getChargeableAmount(form, PaymentMethod.StripeCard, 'eu');
+
+    expect(result).toBe(3070);
   });
 });
