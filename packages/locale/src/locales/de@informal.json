@@ -209,8 +209,8 @@
         "titleDirectSend": "",
         "titleSendTime": ""
       },
-      "fromEmail": "E-Mail-Adresse",
-      "fromName": "Name",
+      "fromEmail": "Absender-E-Mail",
+      "fromName": "Absendername",
       "label": "E-Mail",
       "templates": {
         "description": "Hier legst du Betreff und Text der E-Mails fest, die die App rausschickt. Die Farbe zeigt dir: grün = selbst gemacht, gelb = Standard, rot = nicht aktiv (wird nicht gesendet).",
@@ -1210,12 +1210,6 @@
     },
     "from": {
       "label": "Eigenen Absender verwenden"
-    },
-    "fromEmail": {
-      "label": "Absender-E-Mail"
-    },
-    "fromName": {
-      "label": "Absendername"
     },
     "preview": {
       "asContactLabel": "Kontakt für Vorschau",

@@ -1215,12 +1215,6 @@
     "from": {
       "label": ""
     },
-    "fromEmail": {
-      "label": ""
-    },
-    "fromName": {
-      "label": ""
-    },
     "preview": {
       "asContactLabel": "Contact pour aperçu",
       "from": "",

@@ -1211,12 +1211,6 @@
     "from": {
       "label": "Use a custom sender name and email address"
     },
-    "fromEmail": {
-      "label": "From email"
-    },
-    "fromName": {
-      "label": "From name"
-    },
     "preview": {
       "asContactLabel": "Contact for preview",
       "from": "From:",

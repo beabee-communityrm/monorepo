@@ -209,8 +209,8 @@
         "titleDirectSend": "Sofort an bestehende Kontakte senden",
         "titleSendTime": "Senden, sobald"
       },
-      "fromEmail": "E-Mail-Adresse",
-      "fromName": "Name",
+      "fromEmail": "Absender-E-Mail",
+      "fromName": "Absendername",
       "label": "E-Mail",
       "templates": {
         "description": "Verwalten Sie Betreff und Inhalt der von der Anwendung versendeten E-Mails. Die Statusfarbe zeigt an, ob die E-Mail individuell angepasst (grün), die Standardvorlage verwendet (gelb) oder die E-Mail gerade nicht konfiguriert ist und daher nicht aktiv ist (rot).",
@@ -1210,12 +1210,6 @@
     },
     "from": {
       "label": "Benutzerdefinierten Absender verwenden"
-    },
-    "fromEmail": {
-      "label": "Absender-E-Mail"
-    },
-    "fromName": {
-      "label": "Absendername"
     },
     "preview": {
       "asContactLabel": "Kontakt für Vorschau",

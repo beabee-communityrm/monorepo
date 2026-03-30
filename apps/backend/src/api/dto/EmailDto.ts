@@ -24,6 +24,7 @@ import {
 
 import { GetPaginatedQuery } from '#api/dto/BaseDto';
 import IsEmailTemplateId from '#api/validators/IsEmailTemplateId';
+import IsFromEmail from '#api/validators/IsFromEmail';
 
 /**
  * DTO for email preview responses
@@ -94,7 +95,7 @@ export class CreateEmailDto {
   fromName!: string | null;
 
   @IsOptional()
-  @IsString()
+  @IsFromEmail()
   fromEmail!: string | null;
 
   @IsString()
@@ -130,7 +131,7 @@ export class UpdateEmailDto {
   fromName?: string | null;
 
   @IsOptional()
-  @IsString()
+  @IsFromEmail()
   fromEmail?: string | null;
 
   @IsOptional()
@@ -157,7 +158,7 @@ export class GetEmailDto {
   fromName!: string | null;
 
   @IsOptional()
-  @IsString()
+  @IsFromEmail()
   fromEmail!: string | null;
 
   @IsString()

@@ -1213,12 +1213,6 @@
     "from": {
       "label": ""
     },
-    "fromEmail": {
-      "label": ""
-    },
-    "fromName": {
-      "label": ""
-    },
     "preview": {
       "asContactLabel": "Контакт для попереднього перегляду",
       "from": "",

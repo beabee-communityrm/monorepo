@@ -11,23 +11,12 @@
               :label="t('emailEditor.from.label')"
               class="flex-0 mb-4"
             />
-            <div class="flex-0 mb-4">
-              <AppInput
-                v-model="effectiveFromName"
-                :label="t('emailEditor.fromName.label')"
-                :disabled="!useCustomSender"
-                required
-              />
-            </div>
-            <div class="flex-0 mb-4">
-              <AppInput
-                v-model="effectiveFromEmail"
-                :label="t('emailEditor.fromEmail.label')"
-                :disabled="!useCustomSender"
-                type="email"
-                required
-              />
-            </div>
+            <FromEmailInput
+              v-model:email="effectiveFromEmail"
+              v-model:name="effectiveFromName"
+              :disabled="!useCustomSender"
+              class="mb-4"
+            />
           </template>
           <div class="flex-0 mb-4">
             <AppInput
@@ -135,6 +124,7 @@ import type { Editor } from '@tiptap/vue-3';
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import FromEmailInput from '#components/forms/FromEmailInput.vue';
 import { currentUser, generalContent } from '#store';
 import type {
   EmailPreviewResult,
