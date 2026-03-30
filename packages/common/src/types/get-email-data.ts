@@ -14,9 +14,9 @@ export interface GetEmailData {
   subject: string;
   body: string;
   date: string;
-  mailingCount?: number;
   /** Whether this email is linked to an ongoing segment email */
-  isOngoing?: boolean;
+  isOngoing: boolean;
+  mailingCount?: number;
   /** Segment ID if this is an ongoing email */
   segmentId?: string;
   /** Segment name for display purposes */

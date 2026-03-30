@@ -166,9 +166,8 @@ export class GetEmailDto {
   @IsString()
   body!: string;
 
-  @IsOptional()
   @IsBoolean()
-  isOngoing?: boolean;
+  isOngoing!: boolean;
 
   @IsOptional()
   @IsString()
