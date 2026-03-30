@@ -91,11 +91,11 @@ export class CreateEmailDto {
 
   @IsOptional()
   @IsString()
-  fromName?: string;
+  fromName!: string | null;
 
   @IsOptional()
   @IsString()
-  fromEmail?: string;
+  fromEmail!: string | null;
 
   @IsString()
   subject!: string;
@@ -127,11 +127,11 @@ export class UpdateEmailDto {
 
   @IsOptional()
   @IsString()
-  fromName?: string;
+  fromName?: string | null;
 
   @IsOptional()
   @IsString()
-  fromEmail?: string;
+  fromEmail?: string | null;
 
   @IsOptional()
   @ValidateNested()
@@ -154,11 +154,11 @@ export class GetEmailDto {
 
   @IsOptional()
   @IsString()
-  fromName?: string;
+  fromName!: string | null;
 
   @IsOptional()
   @IsString()
-  fromEmail?: string;
+  fromEmail!: string | null;
 
   @IsString()
   subject!: string;

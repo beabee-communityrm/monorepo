@@ -1207,8 +1207,18 @@
     "body": {
       "label": "Nachricht"
     },
+    "from": {
+      "label": "Benutzerdefinierten Absender verwenden"
+    },
+    "fromEmail": {
+      "label": "Absender-E-Mail"
+    },
+    "fromName": {
+      "label": "Absendername"
+    },
     "preview": {
       "asContactLabel": "Kontakt für Vorschau",
+      "from": "Von:",
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
     },

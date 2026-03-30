@@ -159,6 +159,8 @@ const showDeleteConfirm = ref(false);
 const email = ref<GetEmailData | null>(null);
 const form = ref<UpdateEmailData>({
   name: '',
+  fromName: null,
+  fromEmail: null,
   subject: '',
   body: '',
 });
@@ -209,9 +211,7 @@ async function handleSubmit() {
   if (!emailId.value || !email.value) return;
   try {
     const payload: UpdateEmailData = {
-      name: form.value.name,
-      subject: form.value.subject,
-      body: form.value.body,
+      ...form.value,
       ...buildUpdatePayload(email.value?.segmentId),
     };
     await client.email.update(emailId.value, payload);

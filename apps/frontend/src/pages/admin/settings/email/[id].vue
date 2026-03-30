@@ -57,17 +57,23 @@ meta:
     @submit="handleSubmit"
   >
     <EmailEditor
+      v-model:from-name="emailData.fromName"
+      v-model:from-email="emailData.fromEmail"
       v-model:subject="emailData.subject"
       v-model:content="emailData.body"
       :template="{ type: templateType, id: templateId }"
       :heading="t('emailEditor.body.label')"
+      show-from-fields
       class="mb-4"
     />
   </AppApiForm>
 </template>
 
 <script lang="ts" setup>
-import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
+import type {
+  GetEmailData,
+  GetEmailTemplateInfoData,
+} from '@beabee/beabee-common';
 import { AppButton, AppConfirmDialog, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -90,8 +96,13 @@ const templateId = computed(() => {
   return Array.isArray(param) ? param[0] : param;
 });
 
+type EmailFormData = Pick<
+  GetEmailData,
+  'fromName' | 'fromEmail' | 'subject' | 'body'
+>;
+
 const loading = ref(true);
-const emailData = ref<{ subject: string; body: string } | null>(null);
+const emailData = ref<EmailFormData | null>(null);
 const templateInfo = ref<GetEmailTemplateInfoData | null>(null);
 
 const hasOverride = computed(() => templateInfo.value?.hasOverride ?? false);
@@ -138,10 +149,7 @@ async function handleSubmit() {
   if (!emailData.value) return;
 
   try {
-    await client.email.template.update(templateId.value, {
-      subject: emailData.value.subject,
-      body: emailData.value.body,
-    });
+    await client.email.template.update(templateId.value, emailData.value);
 
     addNotification({
       variant: 'success',
@@ -185,15 +193,18 @@ async function handleReset() {
   }
 }
 
-async function loadEmail(
-  templateId: string
-): Promise<{ subject: string; body: string }> {
+async function loadEmail(templateId: string): Promise<EmailFormData> {
   try {
     const email = await client.email.template.get(templateId);
-    return { subject: email.subject, body: email.body };
+    return {
+      fromName: email.fromName,
+      fromEmail: email.fromEmail,
+      subject: email.subject,
+      body: email.body,
+    };
   } catch (err) {
     if (isApiError(err, undefined, [404])) {
-      return { subject: '', body: '' };
+      return { fromName: null, fromEmail: null, subject: '', body: '' };
     } else {
       throw err;
     }

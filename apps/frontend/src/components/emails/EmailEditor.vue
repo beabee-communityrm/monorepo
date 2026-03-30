@@ -5,6 +5,30 @@
     <App2ColGrid extended :stack="alwaysStacked">
       <template #col1>
         <div class="flex h-full flex-col">
+          <template v-if="showFromFields">
+            <AppToggleField
+              v-model="useCustomSender"
+              :label="t('emailEditor.from.label')"
+              class="flex-0 mb-4"
+            />
+            <div class="flex-0 mb-4">
+              <AppInput
+                v-model="effectiveFromName"
+                :label="t('emailEditor.fromName.label')"
+                :disabled="!useCustomSender"
+                required
+              />
+            </div>
+            <div class="flex-0 mb-4">
+              <AppInput
+                v-model="effectiveFromEmail"
+                :label="t('emailEditor.fromEmail.label')"
+                :disabled="!useCustomSender"
+                type="email"
+                required
+              />
+            </div>
+          </template>
           <div class="flex-0 mb-4">
             <AppInput
               v-model="subject"
@@ -59,6 +83,11 @@
         <div
           class="content-message overflow-auto rounded border border-primary-40 bg-white p-4"
         >
+          <p>
+            <b>{{ t('emailEditor.preview.from') }}</b>
+            {{ effectiveFromName }} &lt;{{ effectiveFromEmail }}&gt;
+          </p>
+          <p></p>
           <div
             v-if="!serverPreviewResult"
             class="flex min-h-[6rem] items-center justify-center p-8 text-body-80"
@@ -95,6 +124,7 @@ import {
   AppRichTextEditor,
   AppRichTextEditorButton,
   AppSubHeading,
+  AppToggleField,
   ContactSelector,
   type MergeTagGroup,
   sanitizeHtml,
@@ -102,7 +132,7 @@ import {
 
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import type { Editor } from '@tiptap/vue-3';
-import { computed, onMounted, ref, watchEffect } from 'vue';
+import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { currentUser, generalContent } from '#store';
@@ -114,8 +144,58 @@ import { client } from '#utils/api';
 
 const PREVIEW_DEBOUNCE_MS = 500;
 
+const fromName = defineModel<string | null>('fromName', { default: null });
+const fromEmail = defineModel<string | null>('fromEmail', { default: null });
 const subject = defineModel<string>('subject', { default: '' });
 const content = defineModel<string>('content', { default: '' });
+
+const useCustomSender = ref(fromName.value !== null);
+const emailContent = ref({
+  supportEmailName: '',
+  supportEmail: '',
+});
+
+// Internal state to remember custom sender values
+const customFromName = ref(fromName.value || '');
+const customFromEmail = ref(fromEmail.value || '');
+
+// Sync internal state with model values
+watch(
+  [useCustomSender, customFromName, customFromEmail],
+  ([isCustom, name, email]) => {
+    if (isCustom) {
+      fromName.value = name;
+      fromEmail.value = email;
+    } else {
+      fromName.value = null;
+      fromEmail.value = null;
+    }
+  }
+);
+
+const effectiveFromName = computed({
+  get: () =>
+    useCustomSender.value
+      ? customFromName.value
+      : emailContent.value.supportEmailName,
+  set: (value) => {
+    if (useCustomSender.value) {
+      customFromName.value = value;
+    }
+  },
+});
+
+const effectiveFromEmail = computed({
+  get: () =>
+    useCustomSender.value
+      ? customFromEmail.value
+      : emailContent.value.supportEmail,
+  set: (value) => {
+    if (useCustomSender.value) {
+      customFromEmail.value = value;
+    }
+  },
+});
 
 const props = withDefaults(
   defineProps<{
@@ -131,6 +211,8 @@ const props = withDefaults(
     previewContactId?: string | null;
     /** Extra contacts in the preview-as selector (e.g. segment send). Omit for template edit (current user only). */
     previewContactOptions?: PreviewContactOption[];
+    /** Whether to show the from fields (sender name/email) */
+    showFromFields?: boolean;
   }>(),
   {
     heading: '',
@@ -139,6 +221,7 @@ const props = withDefaults(
     alwaysStacked: false,
     previewContactId: undefined,
     previewContactOptions: undefined,
+    showFromFields: false,
   }
 );
 
@@ -219,6 +302,7 @@ const mergeFieldGroups = computed<MergeTagGroup[]>(() => {
 onMounted(async () => {
   try {
     templateInfoList.value = await client.email.template.list();
+    emailContent.value = await client.content.get('email');
   } catch {
     // Merge fields limited if template list fails
   }

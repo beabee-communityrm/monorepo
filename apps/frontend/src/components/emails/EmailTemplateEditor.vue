@@ -23,11 +23,14 @@
   </App2ColGrid>
 
   <EmailEditor
+    v-model:from-name="email.fromName"
+    v-model:from-email="email.fromEmail"
     v-model:subject="email.subject"
     v-model:content="email.body"
     v-model:preview-contact-id="previewContactId"
     :heading="t('emailEditor.body.label')"
     :preview-contact-options="contacts"
+    show-from-fields
     class="mb-4"
   />
 </template>

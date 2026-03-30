@@ -20,7 +20,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type { UpdateEmailData } from '@beabee/beabee-common';
+import type { CreateEmailData } from '@beabee/beabee-common';
 import { PageTitle, addNotification } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
@@ -52,7 +52,13 @@ addBreadcrumb(
   ])
 );
 
-const form = ref<UpdateEmailData>({ name: '', subject: '', body: '' });
+const form = ref<CreateEmailData>({
+  name: '',
+  fromName: null,
+  fromEmail: null,
+  subject: '',
+  body: '',
+});
 
 async function handleBack() {
   return await router.push(LIST_ROUTE);
@@ -61,11 +67,7 @@ async function handleBack() {
 async function handleSubmit() {
   if (!form.value) return;
   try {
-    await client.email.create({
-      name: form.value.name || '',
-      subject: form.value.subject || '',
-      body: form.value.body || '',
-    });
+    await client.email.create(form.value);
     addNotification({
       variant: 'success',
       title: t('emails.notifications.created'),

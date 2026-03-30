@@ -148,7 +148,13 @@ const pageTitle = computed(() => {
 const loading = ref(true);
 const segment = ref<GetSegmentData | null>(null);
 const segmentContacts = ref<GetContactData[]>([]);
-const emailData = ref({ name: '', subject: '', body: '' });
+const emailData = ref({
+  name: '',
+  fromName: null,
+  fromEmail: null,
+  subject: '',
+  body: '',
+});
 const selectedEmailId = ref<string | undefined>(undefined);
 
 const {
@@ -235,9 +241,7 @@ async function ensureSavedEmailId(): Promise<string> {
   }
 
   const created = await client.email.create({
-    name,
-    subject: emailData.value.subject,
-    body: emailData.value.body,
+    ...emailData.value,
     ...buildCreatePayload(segmentId.value),
   });
   return created.id;
