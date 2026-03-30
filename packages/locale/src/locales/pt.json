@@ -1135,7 +1135,11 @@
       "newTitle": "Criar novo modelo",
       "showingOf": "A mostrar modelos {start} a {end} de {total}",
       "subject": "Assunto",
-      "title": "Modelos de e-mail"
+      "title": "Modelos de e-mail",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "Nenhum contacto ainda adicionado",
     "noResults": "Nenhum contacto encontrado",

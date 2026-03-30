@@ -1135,7 +1135,11 @@
       "newTitle": "Crear nueva plantilla",
       "showingOf": "Mostrando de {start} a {end} plantillas de {total}",
       "subject": "Asunto",
-      "title": "Plantillas de correo"
+      "title": "Plantillas de correo",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "Aún no se han añadido contactos",
     "noResults": "No se encontraron contactos",

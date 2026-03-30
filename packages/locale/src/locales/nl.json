@@ -1135,7 +1135,11 @@
       "newTitle": "Nieuw sjabloon aanmaken",
       "showingOf": "Toont sjablonen {start} tot {end} van {total}",
       "subject": "Onderwerp",
-      "title": "E-mailsjablonen"
+      "title": "E-mailsjablonen",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "Nog geen contacten toegevoegd",
     "noResults": "Geen contacten gevonden",

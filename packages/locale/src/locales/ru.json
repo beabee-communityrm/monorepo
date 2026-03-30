@@ -1136,7 +1136,11 @@
       "newTitle": "Создать новый шаблон",
       "showingOf": "Показано шаблонов {start} – {end} из {total}",
       "subject": "Тема",
-      "title": "Шаблоны писем"
+      "title": "Шаблоны писем",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "",
     "noResults": "",

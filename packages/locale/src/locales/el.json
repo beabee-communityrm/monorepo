@@ -1135,7 +1135,11 @@
       "newTitle": "Δημιουργία νέου προτύπου",
       "showingOf": "Εμφάνιση προτύπων {start} έως {end} από {total}",
       "subject": "Θέμα",
-      "title": "Πρότυπα email"
+      "title": "Πρότυπα email",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "",
     "noResults": "",

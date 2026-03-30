@@ -1135,7 +1135,11 @@
       "newTitle": "",
       "showingOf": "",
       "subject": "",
-      "title": ""
+      "title": "",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "",
     "noResults": "",

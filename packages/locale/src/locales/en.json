@@ -1135,7 +1135,11 @@
       "newTitle": "Create new template",
       "showingOf": "Showing {start} to {end} templates out of {total}",
       "subject": "Subject",
-      "title": "Email templates"
+      "title": "Email templates",
+      "toggleEnabled": {
+        "disabled": "Email template was disabled",
+        "enabled": "Email template was enabled"
+      }
     },
     "noContacts": "No contacts added yet",
     "noResults": "No contacts found",

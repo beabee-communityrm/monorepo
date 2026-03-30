@@ -23,7 +23,11 @@ meta:
       <AppApiAsyncButton
         v-if="email?.isOngoing"
         :icon="email.enabled ? faPause : faPlay"
-        :success-text="email.enabled ? t('disabled') : t('enabled')"
+        :success-text="
+          email.enabled
+            ? t('contacts.emailTemplates.toggleEnabled.disabled')
+            : t('contacts.emailTemplates.toggleEnabled.enabled')
+        "
         @click="handleToggleEnabled"
       >
         {{ email.enabled ? t('actions.disable') : t('actions.enable') }}

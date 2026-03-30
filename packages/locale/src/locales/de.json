@@ -1135,7 +1135,11 @@
       "newTitle": "Neue Vorlage erstellen",
       "showingOf": "{start} bis {end} von {total} Vorlagen werden angezeigt.",
       "subject": "Betreff",
-      "title": "E-Mail-Vorlagen"
+      "title": "E-Mail-Vorlagen",
+      "toggleEnabled": {
+        "disabled": "E-Mail-Vorlage wurde deaktiviert",
+        "enabled": "E-Mail-Vorlage wurde aktiviert"
+      }
     },
     "noContacts": "Keine Kontakte",
     "noResults": "Keine Kontakte gefunden",

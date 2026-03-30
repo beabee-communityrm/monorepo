@@ -1139,7 +1139,11 @@
       "newTitle": "Créer un nouveau modèle",
       "showingOf": "Affichage des modèles {start} à {end} sur {total}",
       "subject": "Objet",
-      "title": "Modèles d'e-mail"
+      "title": "Modèles d'e-mail",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "Aucun contact ajouté pour le moment",
     "noResults": "Aucun contact trouvé",
