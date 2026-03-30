@@ -14,7 +14,6 @@
         <AppInput
           v-model="email.name"
           :label="t('contacts.sendEmail.templateName')"
-          :placeholder="defaultNewTemplateName"
           :disabled="!isNewEmailSelected"
           required
         />
@@ -61,12 +60,10 @@ const props = withDefaults(
   defineProps<{
     showSelectTemplate?: boolean;
     contacts?: GetContactData[];
-    defaultNewTemplateName?: string;
   }>(),
   {
     showSelectTemplate: false,
     contacts: () => [],
-    defaultNewTemplateName: '',
   }
 );
 
@@ -101,7 +98,13 @@ async function loadTemplates() {
 function onTemplateChange(value: string) {
   if (value === NEW_EMAIL_VALUE) {
     selectedEmailId.value = undefined;
-    email.value = { name: props.defaultNewTemplateName, subject: '', body: '' };
+    email.value = {
+      name: '',
+      subject: '',
+      body: '',
+      fromEmail: null,
+      fromName: null,
+    };
     return;
   }
   const template = templates.value.find((e) => e.id === value);
@@ -111,6 +114,8 @@ function onTemplateChange(value: string) {
       name: template.name,
       subject: template.subject,
       body: template.body,
+      fromEmail: template.fromEmail,
+      fromName: template.fromName,
     };
   }
 }

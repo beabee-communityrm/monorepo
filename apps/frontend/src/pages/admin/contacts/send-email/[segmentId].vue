@@ -48,7 +48,6 @@ meta:
         v-model:selected-email-id="selectedEmailId"
         show-select-template
         :contacts="segmentContacts"
-        :default-new-template-name="defaultNewTemplateName"
       />
       <template v-if="isOngoing">
         <AppRadioGroup
@@ -182,10 +181,6 @@ const successText = computed(() =>
     : t('emails.notifications.created')
 );
 
-const defaultNewTemplateName = computed(() =>
-  segment.value ? `${t('contacts.sendEmail.title')}: ${segment.value.name}` : ''
-);
-
 async function handleSubmit() {
   const emailId = await ensureSavedEmailId();
 
@@ -251,6 +246,7 @@ onMounted(async () => {
     ] as const);
     segment.value = segmentRes;
     segmentContacts.value = contactsRes.items;
+    formData.value.name = `${t('contacts.sendEmail.title')}: ${segment.value.name}`;
   } catch (err) {
     addNotification({
       variant: 'error',
