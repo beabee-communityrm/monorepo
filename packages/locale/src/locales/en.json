@@ -795,6 +795,7 @@
       "label": "Dates",
       "starts": "Starts"
     },
+    "savedDraft": "Saved draft",
     "settings": {
       "answers": {
         "editable": "Can be updated",

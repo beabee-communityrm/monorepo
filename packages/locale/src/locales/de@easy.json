@@ -796,6 +796,7 @@
       "label": "Betreff",
       "starts": ""
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "",

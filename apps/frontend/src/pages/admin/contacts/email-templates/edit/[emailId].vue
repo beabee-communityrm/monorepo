@@ -20,13 +20,13 @@ meta:
 
   <PageTitle :title="pageTitle" border>
     <div class="flex flex-wrap gap-2">
-      <ActionButton
+      <AppApiAsyncButton
         v-if="email?.isOngoing"
         :icon="ongoingEnabled ? faPause : faPlay"
-        @click="handleToggleEnabled(!ongoingEnabled)"
+        @click="handleToggleEnabled"
       >
         {{ ongoingEnabled ? t('actions.disable') : t('actions.enable') }}
-      </ActionButton>
+      </AppApiAsyncButton>
       <ActionButton :icon="faTrash" @click="showDeleteConfirm = true">
         {{ t('actions.delete') }}
       </ActionButton>
@@ -91,7 +91,7 @@ meta:
 
     <AppApiForm
       :button-text="t('actions.save')"
-      :success-message="t('form.saved')"
+      :success-text="t('form.saved')"
       inline-error
       @submit="handleSubmit"
     >
@@ -121,6 +121,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+import AppApiAsyncButton from '#components/button/AppApiAsyncButton.vue';
 import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
 import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
@@ -180,25 +181,19 @@ const pageTitle = computed(() => {
   });
 });
 
-async function handleToggleEnabled(value: boolean) {
-  const previous = ongoingEnabled.value;
-  ongoingEnabled.value = value;
-  try {
-    await client.email.update(emailId.value, {
-      ongoingEmail: {
-        isOngoing: email.value!.isOngoing,
-        segmentId: email.value!.segmentId,
-        trigger: email.value!.trigger,
-        enabled: value,
-      },
-    });
-    if (email.value) {
-      email.value = { ...email.value, enabled: value };
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (err) {
-    ongoingEnabled.value = previous;
-  }
+async function handleToggleEnabled() {
+  if (!email.value) return;
+  const newEnabled = !email.value.enabled;
+
+  await client.email.update(emailId.value, {
+    ongoingEmail: {
+      isOngoing: email.value.isOngoing,
+      segmentId: email.value.segmentId,
+      trigger: email.value.trigger,
+      enabled: newEnabled,
+    },
+  });
+  email.value = { ...email.value, enabled: newEnabled };
 }
 
 async function handleSubmit() {

@@ -796,6 +796,7 @@
       "label": "Termine",
       "starts": "Startdatum"
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "Können bearbeitet werden",

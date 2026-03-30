@@ -796,6 +796,7 @@
       "label": "Дати",
       "starts": "Починається"
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "Можна оновити",

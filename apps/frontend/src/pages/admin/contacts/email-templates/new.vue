@@ -11,7 +11,7 @@ meta:
   <AppApiForm
     :button-text="t('actions.save')"
     :reset-button-text="t('actions.back')"
-    :success-message="t('emails.notifications.created')"
+    :success-text="t('emails.notifications.created')"
     inline-error
     @submit="handleSubmit"
     @reset="handleBack"

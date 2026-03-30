@@ -796,6 +796,7 @@
       "label": "Date",
       "starts": "Inizio"
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "Modificabili",
