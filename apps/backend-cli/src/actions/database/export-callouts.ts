@@ -25,24 +25,30 @@ import {
   CALLOUT_EXPORT_FULL_ANONYMIZERS,
   CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS,
 } from '../../utils/anonymizers.js';
-import { withFileOutput } from '../../utils/file-output.js';
+import {
+  withFileOutput,
+  withTypeOrmQueryLoggingDisabled,
+} from '../../utils/file-output.js';
 
 /**
  * Build a prepareQuery function that filters by callout slugs.
  * For the Callout model itself, filters by slug; for related models, filters by calloutId subquery.
  */
-function buildSlugFilter(
-  model: ModelAnonymiser['model'],
+function buildSlugFilter<T extends ObjectLiteral>(
+  model: ModelAnonymiser<T>['model'],
   slugs: string[]
-): (
-  qb: SelectQueryBuilder<ObjectLiteral>
-) => SelectQueryBuilder<ObjectLiteral> {
-  if (slugs.length === 0) return (qb) => qb;
+): <Q extends ObjectLiteral>(
+  qb: SelectQueryBuilder<Q>
+) => SelectQueryBuilder<Q> {
+  if (slugs.length === 0) {
+    return <Q extends ObjectLiteral>(qb: SelectQueryBuilder<Q>) => qb;
+  }
 
   if (model === Callout) {
-    return (qb) => qb.where('item.slug IN (:...slugs)', { slugs });
+    return <Q extends ObjectLiteral>(qb: SelectQueryBuilder<Q>) =>
+      qb.where('item.slug IN (:...slugs)', { slugs });
   }
-  return (qb) =>
+  return <Q extends ObjectLiteral>(qb: SelectQueryBuilder<Q>) =>
     qb.where(
       'item."calloutId" IN (SELECT id FROM callout WHERE slug IN (:...slugs))',
       { slugs }
@@ -91,19 +97,22 @@ export const exportCalloutsDatabase = async (
     await withFileOutput(filePath, async () => {
       const valueMap = new Map<string, unknown>();
 
-      // When exporting specific callouts, skip DELETE statements —
-      // the user should import with --merge to add alongside existing data.
-      if (slugs.length === 0) {
-        clearModels(CALLOUT_EXPORT_CLEAR_MODELS);
-      }
+      // Keep setup logs visible and mute only SQL-emission phase to avoid file pollution.
+      await withTypeOrmQueryLoggingDisabled(async () => {
+        // When exporting specific callouts, skip DELETE statements —
+        // the user should import with --merge to add alongside existing data.
+        if (slugs.length === 0) {
+          clearModels(CALLOUT_EXPORT_CLEAR_MODELS);
+        }
 
-      for (const anonymiser of anonymisers) {
-        await anonymiseModel(
-          anonymiser,
-          buildSlugFilter(anonymiser.model, slugs),
-          valueMap
-        );
-      }
+        for (const anonymiser of anonymisers) {
+          await anonymiseModel(
+            anonymiser,
+            buildSlugFilter(anonymiser.model, slugs),
+            valueMap
+          );
+        }
+      });
     });
   });
 };

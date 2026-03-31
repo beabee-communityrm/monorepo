@@ -12,7 +12,10 @@ import {
 } from '@beabee/core/tools/database/anonymisers/index';
 
 import { getAnonymizers } from '../../utils/anonymizers.js';
-import { withFileOutput } from '../../utils/file-output.js';
+import {
+  withFileOutput,
+  withTypeOrmQueryLoggingDisabled,
+} from '../../utils/file-output.js';
 
 /**
  * Export database to SQL dump with configurable anonymization
@@ -51,12 +54,14 @@ export const exportDatabase = async (
   await runApp(async () => {
     await withFileOutput(filePath, async () => {
       const valueMap = new Map<string, unknown>();
+      // Limit query-log muting to the SQL emission phase so setup logs still appear.
+      await withTypeOrmQueryLoggingDisabled(async () => {
+        clearModels(anonymisers);
 
-      clearModels(anonymisers);
-
-      for (const anonymiser of anonymisers) {
-        await anonymiseModel(anonymiser, (qb) => qb, valueMap);
-      }
+        for (const anonymiser of anonymisers) {
+          await anonymiseModel(anonymiser, (qb) => qb, valueMap);
+        }
+      });
     });
   });
 };

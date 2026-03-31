@@ -160,19 +160,19 @@ export const getDemoClearModels = (): models.ModelAnonymiser[] => [
 /**
  * Returns the query filter for a demo anonymiser so only the demo subset is exported
  */
-export function getDemoPrepareQuery(
-  anonymiser: models.ModelAnonymiser,
+export function getDemoPrepareQuery<T extends ObjectLiteral>(
+  anonymiser: models.ModelAnonymiser<T>,
   context: DemoExportContext
-): (
-  qb: SelectQueryBuilder<ObjectLiteral>
-) => SelectQueryBuilder<ObjectLiteral> {
+): <Q extends ObjectLiteral>(
+  qb: SelectQueryBuilder<Q>
+) => SelectQueryBuilder<Q> {
   if (
     DEMO_CONTACT_ANONYMIZERS.includes(
       anonymiser as (typeof DEMO_CONTACT_ANONYMIZERS)[number]
     )
   ) {
     const pk = anonymiser === models.contactAnonymiser ? 'id' : 'contactId';
-    return (qb) =>
+    return <Q extends ObjectLiteral>(qb: SelectQueryBuilder<Q>) =>
       qb.where(`item.${pk} IN (:...contacts)`, {
         contacts: context.contactIds,
       });
@@ -183,7 +183,7 @@ export function getDemoPrepareQuery(
     )
   ) {
     const pk = anonymiser === models.calloutsAnonymiser ? 'id' : 'calloutId';
-    return (qb) =>
+    return <Q extends ObjectLiteral>(qb: SelectQueryBuilder<Q>) =>
       qb.where(`item.${pk} IN (:...ids)`, { ids: context.calloutIds });
   }
   if (
@@ -193,12 +193,12 @@ export function getDemoPrepareQuery(
   ) {
     const pk =
       anonymiser === models.calloutResponsesAnonymiser ? 'id' : 'responseId';
-    return (qb) =>
+    return <Q extends ObjectLiteral>(qb: SelectQueryBuilder<Q>) =>
       qb.where(`item.${pk} IN (:...responses)`, {
         responses: context.responseIds,
       });
   }
-  return (qb) => qb;
+  return <Q extends ObjectLiteral>(qb: SelectQueryBuilder<Q>) => qb;
 }
 
 // --- Callout export anonymizers ---
