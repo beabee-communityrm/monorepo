@@ -34,21 +34,20 @@ import {
  * Build a prepareQuery function that filters by callout slugs.
  * For the Callout model itself, filters by slug; for related models, filters by calloutId subquery.
  */
-function buildSlugFilter<T extends ObjectLiteral>(
-  model: ModelAnonymiser<T>['model'],
+function buildSlugFilter(
+  model: ModelAnonymiser['model'],
   slugs: string[]
-): <Q extends ObjectLiteral>(
-  qb: SelectQueryBuilder<Q>
-) => SelectQueryBuilder<Q> {
+): (
+  qb: SelectQueryBuilder<ObjectLiteral>
+) => SelectQueryBuilder<ObjectLiteral> {
   if (slugs.length === 0) {
-    return <Q extends ObjectLiteral>(qb: SelectQueryBuilder<Q>) => qb;
+    return (qb) => qb;
   }
 
   if (model === Callout) {
-    return <Q extends ObjectLiteral>(qb: SelectQueryBuilder<Q>) =>
-      qb.where('item.slug IN (:...slugs)', { slugs });
+    return (qb) => qb.where('item.slug IN (:...slugs)', { slugs });
   }
-  return <Q extends ObjectLiteral>(qb: SelectQueryBuilder<Q>) =>
+  return (qb) =>
     qb.where(
       'item."calloutId" IN (SELECT id FROM callout WHERE slug IN (:...slugs))',
       { slugs }
