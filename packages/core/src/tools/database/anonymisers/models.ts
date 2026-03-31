@@ -98,12 +98,17 @@ export type PropertyMap<T> =
   | [Symbol, (prop: T) => T]
   | ObjectMap<T>;
 
+export type ModelAnonymiserStrategy =
+  | 'default'
+  | 'calloutResponsesPerComponent';
+
 /**
  * A model anonymiser describes how to anonymise a given database model
  */
 export interface ModelAnonymiser<T extends ObjectLiteral = ObjectLiteral> {
   model: EntityTarget<T>;
   objectMap: ObjectMap<T>;
+  strategy?: ModelAnonymiserStrategy;
 }
 
 /**
@@ -116,9 +121,10 @@ export interface ModelAnonymiser<T extends ObjectLiteral = ObjectLiteral> {
  */
 function createModelAnonymiser<T extends ObjectLiteral>(
   model: EntityTarget<T>,
-  objectMap: ObjectMap<T> = {}
+  objectMap: ObjectMap<T> = {},
+  strategy: ModelAnonymiserStrategy = 'default'
 ): ModelAnonymiser<T> {
-  return { model, objectMap };
+  return { model, objectMap, strategy };
 }
 
 /**
@@ -259,7 +265,8 @@ export const calloutResponsesAnonymiser = createModelAnonymiser(
     assigneeId: () => uuidv4(),
     guestName: () => chance.name(),
     guestEmail: () => chance.email({ domain: 'example.com', length: 10 }),
-  }
+  },
+  'calloutResponsesPerComponent'
 );
 
 export const calloutResponseCommentsAnonymiser = createModelAnonymiser(
