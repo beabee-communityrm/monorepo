@@ -12,6 +12,10 @@ import {
 } from '@beabee/core/tools/database/anonymisers/index';
 
 import { getAnonymizers } from '../../utils/anonymizers.js';
+import {
+  withFileOutput,
+  withTypeOrmQueryLoggingDisabled,
+} from '../../utils/file-output.js';
 
 /**
  * Export database to SQL dump with configurable anonymization
@@ -19,13 +23,21 @@ import { getAnonymizers } from '../../utils/anonymizers.js';
  * @param dryRun If true, only logs what would be done
  * @param anonymize If true, anonymize all data (contacts are always anonymized)
  * @param skipAnonymizeTables If provided, skip anonymization for the given table names
+ * @param preserveCalloutAnswers If true, keep callout response answers intact (only anonymize FKs/guest data)
+ * @param filePath If set, write output to this file instead of stdout
  */
 export const exportDatabase = async (
   dryRun = false,
   anonymize = true,
-  skipAnonymizeTables: string[] = []
+  skipAnonymizeTables: string[] = [],
+  preserveCalloutAnswers = false,
+  filePath?: string
 ): Promise<void> => {
-  const anonymisers = getAnonymizers(anonymize, skipAnonymizeTables);
+  const anonymisers = getAnonymizers(
+    anonymize,
+    skipAnonymizeTables,
+    preserveCalloutAnswers
+  );
 
   if (dryRun) {
     const modelNames = anonymisers.map((a) =>
@@ -40,12 +52,16 @@ export const exportDatabase = async (
   }
 
   await runApp(async () => {
-    const valueMap = new Map<string, unknown>();
+    await withFileOutput(filePath, async () => {
+      const valueMap = new Map<string, unknown>();
+      // Limit query-log muting to the SQL emission phase so setup logs still appear.
+      await withTypeOrmQueryLoggingDisabled(async () => {
+        clearModels(anonymisers);
 
-    clearModels(anonymisers);
-
-    for (const anonymiser of anonymisers) {
-      await anonymiseModel(anonymiser, (qb) => qb, valueMap);
-    }
+        for (const anonymiser of anonymisers) {
+          await anonymiseModel(anonymiser, (qb) => qb, valueMap);
+        }
+      });
+    });
   });
 };

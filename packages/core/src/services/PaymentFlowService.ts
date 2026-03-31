@@ -1,424 +1,118 @@
 import {
-  Address,
-  ContributionPeriod,
-  PaymentForm,
+  PaymentFlowParams,
+  PaymentFlowResult,
   PaymentMethod,
-  RESET_SECURITY_FLOW_TYPE,
-  isContributionForm,
 } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
-import {
-  CantUpdateContribution,
-  DuplicateEmailError,
-  NotFoundError,
-} from '#errors/index';
+import { CantUpdateContribution, NotFoundError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Contact, JoinFlow, JoinForm, Password } from '#models/index';
+import { Contact, PaymentFlow } from '#models/index';
 import {
   gcFlowProvider,
   stripeFlowProvider,
 } from '#providers/payment-flow/index';
 import ContactsService from '#services/ContactsService';
-import EmailService from '#services/EmailService';
-import OptionsService from '#services/OptionsService';
 import PaymentService from '#services/PaymentService';
 import {
-  CompleteUrls,
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
-  PaymentFlow,
-  PaymentFlowData,
-  PaymentFlowParams,
+  PaymentFlowForm,
+  PaymentFlowSetup,
 } from '#type/index';
-
-import ResetSecurityFlowService from './ResetSecurityFlowService';
-
-const paymentProviders = {
-  [PaymentMethod.StripeCard]: stripeFlowProvider,
-  [PaymentMethod.StripeSEPA]: stripeFlowProvider,
-  [PaymentMethod.StripeBACS]: stripeFlowProvider,
-  [PaymentMethod.StripePayPal]: stripeFlowProvider,
-  [PaymentMethod.StripeIdeal]: stripeFlowProvider,
-  [PaymentMethod.GoCardlessDirectDebit]: gcFlowProvider,
-};
 
 const log = mainLogger.child({ app: 'payment-flow-service' });
 
 /**
  * Service that manages the complete payment flow process in beabee.
  * Coordinates between different payment providers and handles the setup of new payment methods.
- *
- * The flow typically consists of these steps:
- * 1. Join flow creation
- * 2. Provider-specific setup (Stripe/GoCardless)
- * 3. Payment completion
- * 4. Contact and subscription setup
  */
 class PaymentFlowService {
   /**
-   * Starts a simple registration flow without payment, sending a confirmation email
-   * @param form - Basic user information (email and password)
-   * @param urls - URLs for completion and cancellation handling
-   * @returns Promise that resolves when the flow is started
-   */
-  async startSimpleRegistration(
-    form: Pick<JoinForm, 'email' | 'password'>,
-    urls: CompleteUrls
-  ): Promise<void> {
-    const joinForm: JoinForm = {
-      ...form,
-      monthlyAmount: 0, // Currently used below to flag a no contribution join flow
-      // TODO: stubbed here, should be optional
-      period: ContributionPeriod.Monthly,
-      payFee: false,
-      prorate: false,
-      paymentMethod: PaymentMethod.StripeCard,
-    };
-    const joinFlow = await getRepository(JoinFlow).save({
-      ...urls,
-      joinForm,
-      paymentFlowId: '',
-    });
-
-    await this.sendConfirmationEmail(joinFlow);
-  }
-
-  /**
-   * Starts a payment registration flow with contribution details
-   * @param joinForm - Complete join form with payment details
-   * @param urls - Navigation URLs
+   * Starts a payment flow with contribution details
+   * @param form - Complete payment flow form with payment details
    * @param completeUrl - Provider-specific completion URL
-   * @param user - User data for the flow
+   * @param data - User data for the flow
    * @returns Promise resolving to payment flow parameters
    */
-  async startPaymentRegistration(
-    joinForm: JoinForm,
-    urls: CompleteUrls,
-    completeUrl: string,
-    user: { email: string; firstname?: string; lastname?: string }
-  ): Promise<PaymentFlowParams> {
-    const joinFlow = await getRepository(JoinFlow).save({
-      ...urls,
-      joinForm,
+  async startPaymentFlow(
+    form: PaymentFlowForm,
+    params: PaymentFlowParams
+  ): Promise<{ flow: PaymentFlow; result: PaymentFlowResult }> {
+    const flow = await getRepository(PaymentFlow).save({
+      form,
+      params,
       paymentFlowId: '',
     });
 
-    log.info('Creating payment registration flow ' + joinFlow.id, { joinForm });
+    log.info('Creating payment registration flow ' + flow.id, { form });
 
-    const paymentFlow = await this.createPaymentFlow(
-      joinFlow,
-      completeUrl,
-      user
-    );
-    await getRepository(JoinFlow).update(joinFlow.id, {
-      paymentFlowId: paymentFlow.id,
+    const setup = await this.setupPaymentFlow(flow);
+    await getRepository(PaymentFlow).update(flow.id, {
+      paymentFlowId: setup.id,
     });
-    return paymentFlow.params;
+
+    return { flow, result: setup.result };
   }
 
   /**
-   * Advances a payment registration after payment provider setup is complete.
-   * Merges additional user data and sends confirmation email. For one-time payments,
-   * immediately finalizes the registration.
-   * @param paymentFlowId - ID of the payment flow to advance
-   * @param data - Additional user data from the payment provider
-   */
-  async advancePaymentRegistration(
-    paymentFlowId: string,
-    data: Partial<JoinForm>
-  ): Promise<void> {
-    const joinFlow = await getRepository(JoinFlow).findOneBy({ paymentFlowId });
-    if (!joinFlow) {
-      throw new NotFoundError();
-    }
-
-    // Merge additional data into the join form
-    if (data.firstname || data.lastname || data.vatNumber) {
-      Object.assign(joinFlow.joinForm, data);
-      await getRepository(JoinFlow).save(joinFlow);
-    }
-
-    if (!isContributionForm(joinFlow.joinForm)) {
-      log.info(
-        'Payment join flow is for one-time payment, finalizing immediately ' +
-          joinFlow.id
-      );
-      await this.finalizeRegistration(joinFlow.id, true);
-    }
-
-    await this.sendConfirmationEmail(joinFlow);
-  }
-
-  /**
-   * Finalizes a registration flow after email confirmation, creating or updating
-   * the contact. For payment flows, also completes payment setup and processes
-   * the payment or contribution setup.
+   * Finalizes a payment flow after payment provider confirms the
+   * new payment method is set up, updating the contact's payment details.
    *
-   * @param joinFlowId - The ID of the join flow to finalize
-   * @param keepFlow - Whether to keep the join flow record after finalization
-   * @returns The created or updated contact
+   * @param contact - The contact
+   * @param paymentFlowId - The ID of the payment flow to finalize
    */
-  async finalizeRegistration(
-    joinFlowId: string,
-    keepFlow: boolean = false
-  ): Promise<Contact | undefined> {
-    const joinFlow = await getRepository(JoinFlow).findOne({
-      where: { id: joinFlowId },
-      relations: { contact: true },
+  async completePaymentFlowAndProcess(
+    contact: Contact,
+    paymentFlowId: string
+  ): Promise<void> {
+    const flow = await getRepository(PaymentFlow).findOneBy({
+      paymentFlowId,
     });
-    if (!joinFlow) {
+    if (!flow) {
       throw new NotFoundError();
-    }
-
-    if (joinFlow.contact) {
-      if (!keepFlow) {
-        await getRepository(JoinFlow).delete(joinFlow.id);
-      }
-
-      return joinFlow.contact;
     }
 
     // Use atomic update to prevent multiple simultaneous attempts to finalize
     // the same flow
-    const res = await getRepository(JoinFlow).update(
-      { id: joinFlow.id, processing: false },
+    const res = await getRepository(PaymentFlow).update(
+      { id: flow.id, processing: false },
       { processing: true }
     );
     if (res.affected === 0) {
       return;
     }
 
-    let contact = await ContactsService.findOne({
-      where: { email: joinFlow.joinForm.email },
-      relations: { profile: true },
-    });
-
-    const isRecurringForm = isContributionForm(joinFlow.joinForm);
-
-    // If this flow is trying to setup a recurring contribution then check if
-    // the contact is already an active member first. This should never really
-    // happen as sendConfirmationEmail should have already handled this case by
-    // sending a login or set password email instead of a confirm email.
-    if (contact?.membership?.isActive && isRecurringForm) {
-      throw new DuplicateEmailError();
-    }
-
-    const completedPaymentFlow = await this.completePaymentFlow(joinFlow);
-
-    // If new contact or they don't have an active membership then update their
-    // details, otherwise we leave them alone to avoid overwriting information
-    // that is already in use.
-    if (!contact?.membership?.isActive) {
-      let deliveryAddress: Address | undefined;
-
-      const partialContact = {
-        email: joinFlow.joinForm.email,
-        password: joinFlow.joinForm.password,
-        firstname: joinFlow.joinForm.firstname || '',
-        lastname: joinFlow.joinForm.lastname || '',
-      };
-
-      // Prefill contact data from payment provider if possible
-      if (completedPaymentFlow) {
-        const paymentData =
-          await this.getCompletedPaymentFlowData(completedPaymentFlow);
-
-        partialContact.firstname ||= paymentData.firstname || '';
-        partialContact.lastname ||= paymentData.lastname || '';
-        deliveryAddress = OptionsService.getBool('show-mail-opt-in')
-          ? paymentData.billingAddress
-          : undefined;
-      }
-
-      if (contact) {
-        await ContactsService.updateContact(contact, partialContact);
-      } else {
-        contact = await ContactsService.createContact(partialContact, {
-          newsletterStatus: OptionsService.getText('newsletter-default-status'),
-          deliveryAddress: deliveryAddress || null,
-        });
-      }
-    }
-
-    if (completedPaymentFlow) {
-      await this.executePaymentActions(contact, completedPaymentFlow);
-    }
-
-    if (keepFlow) {
-      await getRepository(JoinFlow).update(joinFlow.id, {
-        contactId: contact.id,
-      });
-    } else {
-      await getRepository(JoinFlow).delete(joinFlow.id);
-    }
-
-    // If this is a one-off payment join flow, skip the welcome email
-    if (!completedPaymentFlow || isRecurringForm) {
-      await EmailService.sendTemplateToContact('welcome', contact);
-    }
-
-    return contact;
+    const completedPaymentFlow = await this.completePaymentFlow(flow);
+    await this.processCompletedFlow(contact, completedPaymentFlow);
   }
 
   /**
-   * Starts a contribution update flow for existing contacts to change their
-   * payment method and/or contribution details (amount, period, etc.).
-   *
-   * @param contact - The contact updating their contribution
-   * @param paymentMethod - The new payment method to use
-   * @param completeUrl - URL to redirect to after payment setup
-   * @param form - Optional form data for contribution changes
-   * @returns The payment flow parameters
+   * Completes a payment flow and returns additional contact data from the provider
+   * @param flow - The payment flow entity to complete
+   * @returns Payment flow data and additional contact information
    */
-  async startContributionUpdate(
-    contact: Contact,
-    paymentMethod: PaymentMethod,
-    completeUrl: string,
-    form?: PaymentForm
-  ): Promise<PaymentFlowParams> {
-    // TODO: if it's just a payment method update then these should be optional
-    if (!form) {
-      form = {
-        monthlyAmount: 0, // Stub to indicate no contribution update
-        period: ContributionPeriod.Monthly,
-        payFee: false,
-        prorate: false,
-      };
-    }
-
-    if (
-      isContributionForm(form) &&
-      !(await PaymentService.canChangeContribution(contact, false, form))
-    ) {
-      throw new CantUpdateContribution();
-    }
-
-    // TODO: rework this to not reuse startPaymentRegistration so that we don't
-    // have to stub so many fielsd
-    return await this.startPaymentRegistration(
-      {
-        paymentMethod,
-        ...form,
-        password: Password.none,
-        email: contact.email,
-      },
-      { confirmUrl: '', loginUrl: '', setPasswordUrl: '' },
-      completeUrl,
-      contact
+  async completePaymentFlowAndGetData(flow: PaymentFlow): Promise<
+    | {
+        flow: CompletedPaymentFlow;
+        data: CompletedPaymentFlowData;
+      }
+    | undefined
+  > {
+    // Use atomic update to prevent multiple simultaneous attempts to finalize
+    // the same flow
+    const res = await getRepository(PaymentFlow).update(
+      { id: flow.id, processing: false },
+      { processing: true }
     );
-  }
-
-  /**
-   * Finalizes a contribution update flow after payment provider confirms the
-   * new payment method is set up, updating the contact's payment details.
-   *
-   * @param contact - The contact whose contribution is being updated
-   * @param paymentFlowId - The ID of the payment flow to finalize
-   * @returns True if the contribution update was finalized, false otherwise
-   */
-  async finalizeContributionUpdate(
-    contact: Contact,
-    paymentFlowId: string
-  ): Promise<boolean> {
-    const joinFlow = await getRepository(JoinFlow).findOneBy({ paymentFlowId });
-    if (joinFlow) {
-      // Use atomic update to prevent multiple simultaneous attempts to finalize
-      // the same flow
-      const res = await getRepository(JoinFlow).update(
-        { id: joinFlow.id, processing: false },
-        { processing: true }
-      );
-      if (res.affected === 0) {
-        return true;
-      }
-
-      const completedFlow = await this.completePaymentFlow(joinFlow);
-      if (completedFlow) {
-        await this.executePaymentActions(contact, completedFlow);
-        await getRepository(JoinFlow).delete(joinFlow.id);
-        return true;
-      }
+    if (res.affected === 0) {
+      return;
     }
 
-    return false;
-  }
+    const completedPaymentFlow = await this.completePaymentFlow(flow);
+    const data = await this.getCompletedPaymentFlowData(completedPaymentFlow);
 
-  /**
-   * Permanently deletes all join flows associated with a contact
-   *
-   * @param contact The contact
-   */
-  async permanentlyDeleteContact(contact: Contact): Promise<void> {
-    // Delete any join flows associated with this contact
-    await getRepository(JoinFlow).delete({ contactId: contact.id });
-  }
-
-  /**
-   * Sends the appropriate email for the given join flow based on the contact's
-   * status and the type of contribution they are setting up.
-   *
-   * Email logic:
-   * - One-time contributions:
-   *   - Contact with password set: sends login email
-   *   - No contact or no password: sends setup account email
-   * - Recurring contributions:
-   *   - Contact with active membership: sends login email
-   *   - Contact with active membership but no password: sends set password email
-   *   - No contact or inactive membership: confirm email
-   *
-   * @param joinFlow The join flow
-   */
-  private async sendConfirmationEmail(joinFlow: JoinFlow): Promise<void> {
-    log.info('Send confirm email for join flow ' + joinFlow.id);
-
-    const contact = await ContactsService.findOneBy({
-      email: joinFlow.joinForm.email,
-    });
-
-    const isRecurring = isContributionForm(joinFlow.joinForm);
-
-    if (
-      // Contact already exists with an active contribution
-      contact?.membership?.isActive ||
-      // One-time contribution and their account was previously setup
-      (!isRecurring && contact?.password.hash)
-    ) {
-      if (contact.password.hash) {
-        await EmailService.sendTemplateToContact(
-          'email-exists-login',
-          contact,
-          {
-            loginLink: joinFlow.loginUrl,
-          }
-        );
-      } else {
-        const rpFlow = await ResetSecurityFlowService.create(
-          contact,
-          RESET_SECURITY_FLOW_TYPE.PASSWORD
-        );
-        await EmailService.sendTemplateToContact(
-          'email-exists-set-password',
-          contact,
-          {
-            spLink: joinFlow.setPasswordUrl + '/' + rpFlow.id,
-          }
-        );
-      }
-    } else {
-      // User doesn't exist, their membership is inactive or they are not
-      // starting a recurring contribution, ask them to confirm their email
-      // address so they can continue the join flow
-      await EmailService.sendTemplateTo(
-        isRecurring ? 'confirm-email' : 'setup-account',
-        { email: joinFlow.joinForm.email },
-        {
-          firstName: joinFlow.joinForm.firstname || '',
-          lastName: joinFlow.joinForm.lastname || '',
-          confirmLink: joinFlow.confirmUrl + '/' + joinFlow.id,
-        }
-      );
-    }
+    return { flow: completedPaymentFlow, data };
   }
 
   /**
@@ -429,70 +123,74 @@ class PaymentFlowService {
    * @param contact - The contact receiving the payment actions
    * @param completedFlow - The completed payment flow data
    */
-  private async executePaymentActions(
+  async processCompletedFlow(
     contact: Contact,
     completedFlow: CompletedPaymentFlow
   ): Promise<void> {
-    const joinForm = completedFlow.joinForm;
-    if (isContributionForm(joinForm)) {
-      const canChange = await PaymentService.canChangeContribution(
-        contact,
-        false,
-        joinForm
-      );
+    const form = completedFlow.form;
 
-      if (!canChange) {
-        throw new CantUpdateContribution();
-      }
+    const canChange = await PaymentService.canProcessPaymentFlow(contact, form);
+    if (!canChange) {
+      throw new CantUpdateContribution();
+    }
 
-      await PaymentService.updatePaymentMethod(contact, completedFlow);
-      if (joinForm.monthlyAmount > 0) {
-        await ContactsService.updateContactContribution(contact, joinForm);
-      }
-    } else {
-      await PaymentService.createOneTimePayment(contact, completedFlow);
+    const result = await PaymentService.processPaymentFlow(
+      contact,
+      completedFlow
+    );
+    if (result) {
+      await ContactsService.handleUpdateContributionResult(contact, result);
     }
   }
 
   /**
-   * Create a new payment flow for the given join flow, dispatching to the
+   * Create a new payment flow for the given payment flow, dispatching to the
    * appropriate provider and returning the created payment flow.
    *
-   * @param joinFlow The join flow
+   * @param flow The payment flow
    * @param completeUrl The completion URL for the payment flow
    * @param data The payment flow data
    * @returns The created payment flow
    */
-  private async createPaymentFlow(
-    joinFlow: JoinFlow,
-    completeUrl: string,
-    data: PaymentFlowData
-  ): Promise<PaymentFlow> {
-    log.info('Create payment flow for join flow ' + joinFlow.id);
-    return paymentProviders[joinFlow.joinForm.paymentMethod].createPaymentFlow(
-      joinFlow,
-      completeUrl,
-      data
-    );
+  private async setupPaymentFlow(flow: PaymentFlow): Promise<PaymentFlowSetup> {
+    log.info('Create payment flow for payment flow ' + flow.id);
+
+    // There is probably a nicer way to narrow the type and dispatch to the
+    // correct provider, but this is straightforward and works for now
+    if (flow.params.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+      return gcFlowProvider.setupPaymentFlow({ ...flow, params: flow.params });
+    } else {
+      return stripeFlowProvider.setupPaymentFlow({
+        ...flow,
+        params: flow.params,
+      });
+    }
   }
 
   /**
-   * Complete the payment flow for the given join flow, dispatching to the
+   * Complete the payment flow for the given payment flow, dispatching to the
    * appropriate provider and returning the completed payment flow
    *
-   * @param joinFlow  The join flow
+   * @param flow  The payment flow
    * @returns The completed payment flow
    */
   private async completePaymentFlow(
-    joinFlow: JoinFlow
-  ): Promise<CompletedPaymentFlow | undefined> {
-    if (joinFlow.paymentFlowId) {
-      log.info('Complete payment flow for join flow ' + joinFlow.id);
-      return paymentProviders[
-        joinFlow.joinForm.paymentMethod
-      ].completePaymentFlow(joinFlow);
+    flow: PaymentFlow
+  ): Promise<CompletedPaymentFlow> {
+    log.info('Complete payment flow for payment flow ' + flow.id);
+
+    // There is probably a nicer way to narrow the type and dispatch to the
+    // correct provider, but this is straightforward and works for now
+    if (flow.params.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+      return gcFlowProvider.completePaymentFlow({
+        ...flow,
+        params: flow.params,
+      });
     } else {
-      return undefined;
+      return stripeFlowProvider.completePaymentFlow({
+        ...flow,
+        params: flow.params,
+      });
     }
   }
 
@@ -507,9 +205,22 @@ class PaymentFlowService {
   private async getCompletedPaymentFlowData(
     completedPaymentFlow: CompletedPaymentFlow
   ): Promise<CompletedPaymentFlowData> {
-    return paymentProviders[
-      completedPaymentFlow.joinForm.paymentMethod
-    ].getCompletedPaymentFlowData(completedPaymentFlow);
+    // There is probably a nicer way to narrow the type and dispatch to the
+    // correct provider, but this is straightforward and works for now
+    if (
+      completedPaymentFlow.params.paymentMethod ===
+      PaymentMethod.GoCardlessDirectDebit
+    ) {
+      return gcFlowProvider.getCompletedPaymentFlowData({
+        ...completedPaymentFlow,
+        params: completedPaymentFlow.params,
+      });
+    } else {
+      return stripeFlowProvider.getCompletedPaymentFlowData({
+        ...completedPaymentFlow,
+        params: completedPaymentFlow.params,
+      });
+    }
   }
 }
 

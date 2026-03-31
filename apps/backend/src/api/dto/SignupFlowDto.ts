@@ -1,6 +1,3 @@
-import type { JoinForm } from '@beabee/core/models';
-import { CompleteUrls } from '@beabee/core/type';
-
 import { Type } from 'class-transformer';
 import {
   IsEmail,
@@ -11,14 +8,14 @@ import {
 } from 'class-validator';
 
 import { StartContributionDto } from '#api/dto/ContributionDto';
-import { CompleteJoinFlowDto } from '#api/dto/JoinFlowDto';
 import IsPassword from '#api/validators/IsPassword';
 import IsUrl from '#api/validators/IsUrl';
 import IsVatNumber from '#api/validators/IsVatNumber';
 
 import { CreatePaymentDto } from './PaymentDto';
+import { CompletePaymentFlowDto } from './PaymentFlowDto';
 
-export class StartSignupFlowDto implements CompleteUrls {
+export class StartSignupFlowDto {
   @IsUrl()
   loginUrl!: string;
 
@@ -46,10 +43,7 @@ export class StartSignupFlowDto implements CompleteUrls {
   oneTimePayment?: CreatePaymentDto;
 }
 
-export class CompleteSignupFlowDto
-  extends CompleteJoinFlowDto
-  implements Pick<JoinForm, 'firstname' | 'lastname' | 'vatNumber'>
-{
+export class CompleteSignupFlowDto extends CompletePaymentFlowDto {
   @IsOptional()
   @IsString()
   firstname?: string;

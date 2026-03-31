@@ -1,7 +1,5 @@
 import {
-  ContributionForm,
   ContributionPeriod,
-  PaymentForm,
   PaymentMethod,
   PaymentSource,
   PaymentStatus,
@@ -16,6 +14,10 @@ import { currentLocale } from '#locale';
 import { log as mainLogger } from '#logging';
 import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
+import {
+  PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
+} from '#type/index';
 import { getChargeableAmount } from '#utils/payment';
 
 // Stripe webhook events that we handle
@@ -92,7 +94,7 @@ export async function updateSalesTaxRate(
  * @returns A Stripe price data object
  */
 export function getPriceData(
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod
 ): Stripe.SubscriptionCreateParams.Item.PriceData {
   return {
@@ -143,14 +145,15 @@ async function calculateProrationParams(
     // Only prorate amounts above 100 cents. This aligns with GoCardless's minimum
     // amount and is much simpler than trying to calculate the minimum payment per
     // payment method
-    prorationAmount: prorationAmount < 100 ? 0 : prorationAmount,
+    prorationAmount:
+      prorationAmount >= 0 && prorationAmount < 100 ? 0 : prorationAmount,
     prorationTime,
   };
 }
 
 export const getCreateSubscriptionParams = (
   customerId: string,
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod,
   renewalDate?: Date
 ): Stripe.SubscriptionCreateParams => {
@@ -171,14 +174,14 @@ export const getCreateSubscriptionParams = (
  * Create a new subscription in Stripe, optionally starting at a specific date.
  *
  * @param customerId The Stripe customer ID
- * @param paymentForm The payment form data
+ * @param form The payment form data
  * @param paymentMethod The payment method to use
  * @param renewalDate The date the subscription should start
  * @returns The new Stripe subscription
  */
 export async function createSubscription(
   customerId: string,
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod,
   renewalDate?: Date
 ): Promise<Stripe.Subscription> {
@@ -195,13 +198,13 @@ export async function createSubscription(
  * Update a subscription with a new payment method or amount.
  *
  * @param subscriptionId
- * @param paymentForm
+ * @param form
  * @param paymentMethod
  * @returns
  */
 export async function updateSubscription(
   subscriptionId: string,
-  form: ContributionForm,
+  form: UpdateContributionForm,
   paymentMethod: PaymentMethod
 ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
@@ -235,7 +238,8 @@ export async function updateSubscription(
     await stripe.subscriptionSchedules.release(oldSchedule.id);
   }
 
-  const startNow = prorationAmount === 0 || form.prorate;
+  const startNow =
+    prorationAmount === 0 || (prorationAmount > 0 && form.prorate);
 
   if (startNow) {
     const params: Stripe.SubscriptionUpdateParams = {
@@ -347,7 +351,7 @@ export async function ensureCustomerAndAttachPayment(
 export async function chargeOneTimePayment(
   customerId: string,
   mandateId: string,
-  form: PaymentForm,
+  form: PaymentFlowFormCreateOneTimePayment,
   paymentMethod: PaymentMethod
 ): Promise<void> {
   log.info('Creating one-time payment on ' + customerId);

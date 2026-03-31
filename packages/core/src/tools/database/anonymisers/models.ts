@@ -29,12 +29,12 @@ import {
   Export,
   ExportItem,
   GiftFlow,
-  JoinFlow,
   Notice,
   Option,
   PageSettings,
   Password,
   Payment,
+  PaymentFlow,
   Project,
   ProjectContact,
   ProjectEngagement,
@@ -44,6 +44,7 @@ import {
   Segment,
   SegmentContact,
   SegmentOngoingEmail,
+  SignupFlow,
 } from '@beabee/core/models';
 
 import { Chance } from 'chance';
@@ -98,12 +99,17 @@ export type PropertyMap<T> =
   | [Symbol, (prop: T) => T]
   | ObjectMap<T>;
 
+export type ModelAnonymiserStrategy =
+  | 'default'
+  | 'calloutResponsesPerComponent';
+
 /**
  * A model anonymiser describes how to anonymise a given database model
  */
 export interface ModelAnonymiser<T extends ObjectLiteral = ObjectLiteral> {
   model: EntityTarget<T>;
   objectMap: ObjectMap<T>;
+  strategy?: ModelAnonymiserStrategy;
 }
 
 /**
@@ -116,9 +122,10 @@ export interface ModelAnonymiser<T extends ObjectLiteral = ObjectLiteral> {
  */
 function createModelAnonymiser<T extends ObjectLiteral>(
   model: EntityTarget<T>,
-  objectMap: ObjectMap<T> = {}
+  objectMap: ObjectMap<T> = {},
+  strategy: ModelAnonymiserStrategy = 'default'
 ): ModelAnonymiser<T> {
-  return { model, objectMap };
+  return { model, objectMap, strategy };
 }
 
 /**
@@ -286,7 +293,8 @@ export const calloutResponsesAnonymiser = createModelAnonymiser(
     assigneeId: () => uuidv4(),
     guestName: () => chance.name(),
     guestEmail: () => chance.email({ domain: 'example.com', length: 10 }),
-  }
+  },
+  'calloutResponsesPerComponent'
 );
 
 export const calloutResponseCommentsAnonymiser = createModelAnonymiser(
@@ -522,22 +530,21 @@ export const calloutReviewerAnonymiser = createModelAnonymiser(
   }
 );
 
-//Ignore Content as pre-filled by migration
-
-export const joinFlowAnonymiser = createModelAnonymiser(JoinFlow, {
+export const paymentFlowAnonymiser = createModelAnonymiser(PaymentFlow, {
   id: () => uuidv4(),
   paymentFlowId: () => uuidv4(),
+  params: {
+    firstname: () => chance.first(),
+    lastname: () => chance.last(),
+    vatNumber: () => 'DE123456789',
+  },
+});
+
+export const signupFlowAnonymiser = createModelAnonymiser(SignupFlow, {
+  id: () => uuidv4(),
+  email: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
+  password: () => Password.none,
   loginUrl: () => 'https://fake.beabee.io/login',
   setPasswordUrl: () => 'https://fake.beabee.io/set-password',
   confirmUrl: () => 'https://fake.beabee.io/confirm',
-  joinForm: {
-    email: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
-    password: () => Password.none,
-    firstname: () => chance.first(),
-    lastname: () => chance.last(),
-    vatNumber: () => null,
-    referralCode: () => null,
-    referralGift: () => null,
-    referralGiftOptions: () => null,
-  },
 });

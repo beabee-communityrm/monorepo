@@ -256,7 +256,7 @@ export const config = {
 
   // Grace period for expired memberships
   gracePeriod: {
-    days: 7, // Number of days in grace period after expiry
+    days: 14, // Number of days in grace period after expiry
   },
 
   // Logging configuration

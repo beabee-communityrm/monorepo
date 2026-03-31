@@ -2,15 +2,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { Contact } from './Contact';
-import { JoinForm } from './JoinForm';
+import { Password } from './Password';
+import { PaymentFlow } from './PaymentFlow';
 
 @Entity()
-export class JoinFlow {
+export class SignupFlow {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -18,7 +21,10 @@ export class JoinFlow {
   date!: Date;
 
   @Column()
-  paymentFlowId!: string;
+  email!: string;
+
+  @Column(() => Password)
+  password!: Password;
 
   @Column()
   loginUrl!: string;
@@ -29,8 +35,11 @@ export class JoinFlow {
   @Column()
   confirmUrl!: string;
 
-  @Column(() => JoinForm)
-  joinForm!: JoinForm;
+  @Column({ type: String, nullable: true })
+  paymentFlowId!: string | null;
+  @OneToOne(() => PaymentFlow, { nullable: true })
+  @JoinColumn()
+  paymentFlow!: PaymentFlow | null;
 
   @Column({ type: String, nullable: true })
   contactId!: string | null;

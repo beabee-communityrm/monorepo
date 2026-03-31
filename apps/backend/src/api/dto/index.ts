@@ -20,7 +20,6 @@ export * from './ContentTelegramDto.js';
 export * from './ContributionDto.js';
 export * from './EmailDto.js';
 export * from './HealthDto.js';
-export * from './JoinFlowDto.js';
 export * from './LinkDto.js';
 export * from './LoginDto.js';
 export * from './NewsletterDto.js';

@@ -1,8 +1,10 @@
-import { PaymentFlowParams } from '@beabee/core/type';
+import { PaymentFlowResult, PaymentMethod } from '@beabee/beabee-common';
 
-import { IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 
-export class GetPaymentFlowDto implements PaymentFlowParams {
+import IsUrl from '#api/validators/IsUrl';
+
+export class PaymentFlowResultDto implements PaymentFlowResult {
   @IsOptional()
   @IsString()
   clientSecret?: string;
@@ -10,4 +12,18 @@ export class GetPaymentFlowDto implements PaymentFlowParams {
   @IsOptional()
   @IsString()
   redirectUrl?: string;
+}
+
+export class StartPaymentFlowDto {
+  @IsUrl()
+  completeUrl!: string;
+
+  @IsEnum(PaymentMethod)
+  @IsOptional()
+  paymentMethod?: PaymentMethod;
+}
+
+export class CompletePaymentFlowDto {
+  @IsString()
+  paymentFlowId!: string;
 }
