@@ -167,9 +167,7 @@ function writeItems<T extends ObjectLiteral>(
  */
 export async function anonymiseModel<T extends ObjectLiteral>(
   anonymiser: ModelAnonymiser<T>,
-  prepareQuery: <Q extends ObjectLiteral>(
-    qb: SelectQueryBuilder<Q>
-  ) => SelectQueryBuilder<Q>,
+  prepareQuery: (qb: SelectQueryBuilder<T>) => SelectQueryBuilder<T>,
   valueMap: Map<string, unknown>
 ): Promise<void> {
   const metadata = getRepository(anonymiser.model).metadata;
@@ -177,8 +175,11 @@ export async function anonymiseModel<T extends ObjectLiteral>(
 
   // Callout responses are handled separately
   if (anonymiser.strategy === 'calloutResponsesPerComponent') {
+    const calloutPrepareQuery = prepareQuery as unknown as (
+      qb: SelectQueryBuilder<CalloutResponse>
+    ) => SelectQueryBuilder<CalloutResponse>;
     return await anonymiseCalloutResponses(
-      prepareQuery,
+      calloutPrepareQuery,
       valueMap,
       anonymiser.objectMap as ObjectMap<CalloutResponse>
     );

@@ -22,7 +22,10 @@ import {
   getDemoClearModels,
   getDemoPrepareQuery,
 } from '../../utils/anonymizers.js';
-import { withFileOutput } from '../../utils/file-output.js';
+import {
+  withFileOutput,
+  withTypeOrmQueryLoggingDisabled,
+} from '../../utils/file-output.js';
 
 /**
  * Fetch the subset of IDs used for demo export (must be called inside runApp)
@@ -100,14 +103,17 @@ export const exportDemoDatabase = async (
 
     await withFileOutput(filePath, async () => {
       const valueMap = new Map<string, unknown>();
-      clearModels(modelsToClear);
-      for (const anonymiser of anonymisers) {
-        await anonymiseModel(
-          anonymiser,
-          getDemoPrepareQuery(anonymiser, context),
-          valueMap
-        );
-      }
+      // Only mute query logs while writing export SQL into the output file.
+      await withTypeOrmQueryLoggingDisabled(async () => {
+        clearModels(modelsToClear);
+        for (const anonymiser of anonymisers) {
+          await anonymiseModel(
+            anonymiser,
+            getDemoPrepareQuery(anonymiser, context),
+            valueMap
+          );
+        }
+      });
     });
   });
 };
