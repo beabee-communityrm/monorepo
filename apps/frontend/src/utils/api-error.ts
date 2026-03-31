@@ -12,6 +12,9 @@ const t = i18n.global.t;
 const defaultErrorMessages = computed<Record<string, string>>(() => ({
   unknown: t('form.errorMessages.generic'),
   'account-locked': t('form.errorMessages.api.account-locked'),
+  'cant-update-contribution': t(
+    'form.errorMessages.api.cant-update-contribution'
+  ),
   'duplicate-email': t('form.errorMessages.api.duplicate-email'),
   'duplicate-tag-name': t('form.errorMessages.api.duplicate-tag-name'),
   'invalid-token': t('form.errorMessages.api.invalid-token'),
