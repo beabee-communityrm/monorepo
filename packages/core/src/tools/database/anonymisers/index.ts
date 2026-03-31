@@ -14,7 +14,6 @@ import {
   ModelAnonymiser,
   ObjectMap,
   PropertyMap,
-  calloutResponsesAnonymiser,
   createAnswersAnonymiser,
 } from './models';
 
@@ -39,7 +38,8 @@ async function anonymiseCalloutResponses(
   prepareQuery: (
     qb: SelectQueryBuilder<CalloutResponse>
   ) => SelectQueryBuilder<CalloutResponse>,
-  valueMap: Map<string, unknown>
+  valueMap: Map<string, unknown>,
+  responseObjectMap: ObjectMap<CalloutResponse>
 ): Promise<void> {
   const callouts = await createQueryBuilder(Callout, 'callout').getMany();
   for (const callout of callouts) {
@@ -59,11 +59,7 @@ async function anonymiseCalloutResponses(
     log.info('-- ' + callout.slug);
 
     const newResponses = responses.map((response) => ({
-      ...anonymiseItem(
-        response,
-        calloutResponsesAnonymiser.objectMap,
-        valueMap
-      ),
+      ...anonymiseItem(response, responseObjectMap, valueMap),
       answers: anonymiseItem(response.answers, answersMap, undefined, false),
     }));
 
@@ -171,15 +167,21 @@ function writeItems<T extends ObjectLiteral>(
  */
 export async function anonymiseModel<T extends ObjectLiteral>(
   anonymiser: ModelAnonymiser<T>,
-  prepareQuery: (qb: SelectQueryBuilder<T>) => SelectQueryBuilder<T>,
+  prepareQuery: <Q extends ObjectLiteral>(
+    qb: SelectQueryBuilder<Q>
+  ) => SelectQueryBuilder<Q>,
   valueMap: Map<string, unknown>
 ): Promise<void> {
   const metadata = getRepository(anonymiser.model).metadata;
   log.info(`Anonymising ${metadata.tableName}`);
 
   // Callout responses are handled separately
-  if (anonymiser === calloutResponsesAnonymiser) {
-    return await anonymiseCalloutResponses(prepareQuery as any, valueMap);
+  if (anonymiser.strategy === 'calloutResponsesPerComponent') {
+    return await anonymiseCalloutResponses(
+      prepareQuery,
+      valueMap,
+      anonymiser.objectMap as ObjectMap<CalloutResponse>
+    );
   }
 
   // Order by primary keys for predictable pagination
