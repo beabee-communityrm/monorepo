@@ -1,4 +1,7 @@
-import { EmailTemplateType } from '@beabee/beabee-common';
+import {
+  EmailTemplateType,
+  type SegmentOngoingEmailTrigger,
+} from '@beabee/beabee-common';
 import {
   AdminEmailTemplateId,
   ContactEmailTemplateId,
@@ -6,16 +9,22 @@ import {
   GeneralEmailTemplateId,
 } from '@beabee/core/type';
 
+import { Type } from 'class-transformer';
 import {
-  Allow,
   IsArray,
+  IsBoolean,
+  IsIn,
   IsObject,
   IsOptional,
   IsString,
+  IsUUID,
+  ValidateIf,
+  ValidateNested,
 } from 'class-validator';
 
 import { GetPaginatedQuery } from '#api/dto/BaseDto';
 import IsEmailTemplateId from '#api/validators/IsEmailTemplateId';
+import IsFromEmail from '#api/validators/IsFromEmail';
 
 /**
  * DTO for email preview responses
@@ -54,6 +63,27 @@ export class DeleteEmailTemplateParams extends UpdateEmailTemplateParams {}
 export class GetEmailTemplateParams extends UpdateEmailTemplateParams {}
 
 /**
+ * Shared ongoing email fields for create/update DTOs.
+ */
+export class OngoingEmailFieldsDto {
+  @IsOptional()
+  @IsBoolean()
+  isOngoing?: boolean;
+
+  @ValidateIf((o) => o.isOngoing)
+  @IsIn(['onJoin', 'onLeave'])
+  trigger?: SegmentOngoingEmailTrigger;
+
+  @ValidateIf((o) => o.isOngoing)
+  @IsUUID()
+  segmentId?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  enabled?: boolean;
+}
+
+/**
  * DTO for creating custom emails
  */
 export class CreateEmailDto {
@@ -62,17 +92,22 @@ export class CreateEmailDto {
 
   @IsOptional()
   @IsString()
-  fromName?: string;
+  fromName!: string | null;
 
   @IsOptional()
-  @IsString()
-  fromEmail?: string;
+  @IsFromEmail()
+  fromEmail!: string | null;
 
   @IsString()
   subject!: string;
 
   @IsString()
   body!: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OngoingEmailFieldsDto)
+  ongoingEmail?: OngoingEmailFieldsDto;
 }
 
 /**
@@ -93,11 +128,16 @@ export class UpdateEmailDto {
 
   @IsOptional()
   @IsString()
-  fromName?: string;
+  fromName?: string | null;
 
   @IsOptional()
-  @IsString()
-  fromEmail?: string;
+  @IsFromEmail()
+  fromEmail?: string | null;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OngoingEmailFieldsDto)
+  ongoingEmail?: OngoingEmailFieldsDto;
 }
 
 /**
@@ -109,7 +149,43 @@ export class ListEmailsDto extends GetPaginatedQuery {}
  * DTO for email entity with full metadata
  * Used for CRUD operations on email entities
  */
-export class GetEmailDto extends CreateEmailDto {
+export class GetEmailDto {
+  @IsString()
+  name!: string;
+
+  @IsOptional()
+  @IsString()
+  fromName!: string | null;
+
+  @IsOptional()
+  @IsFromEmail()
+  fromEmail!: string | null;
+
+  @IsString()
+  subject!: string;
+
+  @IsString()
+  body!: string;
+
+  @IsBoolean()
+  isOngoing!: boolean;
+
+  @IsOptional()
+  @IsString()
+  segmentId?: string;
+
+  @IsOptional()
+  @IsString()
+  segmentName?: string;
+
+  @IsOptional()
+  @IsIn(['onJoin', 'onLeave'])
+  trigger?: SegmentOngoingEmailTrigger;
+
+  @IsOptional()
+  @IsBoolean()
+  enabled?: boolean;
+
   @IsString()
   id!: string;
 

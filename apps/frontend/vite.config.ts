@@ -38,6 +38,7 @@ export default ({ command, mode }) => {
   // Keep this in sync with tsconfig.build.json -> compilerOptions.paths (# subpath imports)
   const alias = {
     '#components/': `${resolve(__dirname, './src/components')}/`,
+    '#composables/': `${resolve(__dirname, './src/composables')}/`,
     '#layouts/': `${resolve(__dirname, './src/layouts')}/`,
     '#lib/': `${resolve(__dirname, './src/lib')}/`,
     '#pages/': `${resolve(__dirname, './src/pages')}/`,

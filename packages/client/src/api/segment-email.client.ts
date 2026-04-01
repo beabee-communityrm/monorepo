@@ -21,7 +21,12 @@ export class SegmentEmailClient extends BaseClient {
    */
   async send(
     segmentId: string,
-    data: { subject: string; body: string; emailId?: string }
+    data: {
+      subject: string;
+      body: string;
+      emailId?: string;
+      ongoingDirectSend?: boolean;
+    }
   ): Promise<void> {
     await this.fetch.post(`/${segmentId}/email/send`, data);
   }

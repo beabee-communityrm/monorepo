@@ -19,63 +19,117 @@ meta:
   </AppConfirmDialog>
 
   <PageTitle :title="pageTitle" border>
-    <router-link :to="LIST_ROUTE">{{ t('actions.back') }}</router-link>
+    <div class="flex flex-wrap gap-2">
+      <AppApiAsyncButton
+        v-if="email?.isOngoing"
+        :icon="email.enabled ? faPause : faPlay"
+        :success-text="
+          email.enabled
+            ? t('contacts.emailTemplates.toggleEnabled.enabled')
+            : t('contacts.emailTemplates.toggleEnabled.disabled')
+        "
+        @click="handleToggleEnabled"
+      >
+        {{ email.enabled ? t('actions.disable') : t('actions.enable') }}
+      </AppApiAsyncButton>
+      <ActionButton :icon="faTrash" @click="showDeleteConfirm = true">
+        {{ t('actions.delete') }}
+      </ActionButton>
+    </div>
   </PageTitle>
 
-  <div v-if="loading">
+  <div v-if="!email">
     <p>{{ t('common.loading') }}...</p>
   </div>
 
-  <AppApiForm
-    v-else-if="email"
-    :button-text="t('actions.save')"
-    class="flex flex-col gap-6"
-    inline-error
-    @submit="handleSubmit"
-  >
-    <AppInput
-      v-model="form.name"
-      :label="t('contacts.emailTemplates.name')"
-      required
+  <template v-else>
+    <OngoingEmailSummary
+      class="mb-4"
+      :email="email"
+      :segment-id="email.segmentId"
+      :segment-name="email.segmentName"
+      mode="edit"
     />
 
-    <EmailEditor v-model:subject="form.subject" v-model:content="form.body" />
-
-    <template #buttons>
-      <div class="order-first">
-        <AppButton
-          type="button"
-          variant="dangerOutlined"
-          :icon="faTrash"
-          @click="showDeleteConfirm = true"
+    <AppInfoList v-if="email" class="mb-4">
+      <AppInfoListItem
+        :name="t('emails.isOngoing')"
+        :value="
+          !email.isOngoing
+            ? t('emails.sendType.oneOff')
+            : email.enabled
+              ? t('emails.sendType.ongoing')
+              : t('emails.sendType.paused')
+        "
+      />
+      <AppInfoListItem
+        v-if="email.isOngoing && email.segmentId"
+        :name="t('adminSettings.email.contactTemplates.segment')"
+      >
+        <router-link
+          :to="`/admin/contacts?segment=${email.segmentId}`"
+          class="text-link"
         >
-          {{ t('actions.delete') }}
-        </AppButton>
-      </div>
-    </template>
-  </AppApiForm>
+          {{ email.segmentName }}
+        </router-link>
+      </AppInfoListItem>
+      <AppInfoListItem
+        v-if="email.isOngoing"
+        :name="t('adminSettings.email.contactTemplates.titleSendTime')"
+        :value="
+          email.trigger === 'onLeave'
+            ? t('adminSettings.email.contactTemplates.contactLeaves')
+            : t('adminSettings.email.contactTemplates.contactJoins')
+        "
+      />
+      <AppInfoListItem
+        :name="t('emails.mailingCount')"
+        :value="email.mailingCount ?? 0"
+      />
+      <AppInfoListItem
+        :name="t('contacts.emailTemplates.date')"
+        :value="formatLocale(new Date(email.date), 'PP')"
+      />
+    </AppInfoList>
+
+    <AppApiForm
+      :button-text="t('actions.save')"
+      :success-text="t('form.saved')"
+      inline-error
+      @submit="handleSubmit"
+    >
+      <EmailTemplateEditor v-model:email="form" />
+    </AppApiForm>
+  </template>
 </template>
 
 <script lang="ts" setup>
-import type { GetEmailData, UpdateEmailData } from '@beabee/beabee-common';
+import type { GetEmailData } from '@beabee/beabee-common';
 import {
-  AppButton,
+  ActionButton,
   AppConfirmDialog,
-  AppInput,
+  AppInfoList,
+  AppInfoListItem,
   PageTitle,
-  addNotification,
+  formatLocale,
 } from '@beabee/vue';
 
-import { faTrash, faUsers } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPause,
+  faPlay,
+  faTrash,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-import EmailEditor from '#components/EmailEditor.vue';
+import AppApiAsyncButton from '#components/button/AppApiAsyncButton.vue';
+import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
+import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
-import { extractErrorText } from '#utils/api-error';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
@@ -102,11 +156,12 @@ addBreadcrumb(
   ])
 );
 
-const loading = ref(true);
 const showDeleteConfirm = ref(false);
 const email = ref<GetEmailData | null>(null);
-const form = ref<UpdateEmailData>({
+const form = ref({
   name: '',
+  fromName: null as string | null,
+  fromEmail: null as string | null,
   subject: '',
   body: '',
 });
@@ -118,69 +173,39 @@ const pageTitle = computed(() => {
   });
 });
 
+async function handleToggleEnabled() {
+  if (!email.value) return;
+
+  email.value = await client.email.update(emailId.value, {
+    ongoingEmail: {
+      isOngoing: email.value.isOngoing,
+      segmentId: email.value.segmentId,
+      trigger: email.value.trigger,
+      enabled: !email.value.enabled,
+    },
+  });
+}
+
 async function handleSubmit() {
-  if (!emailId.value || !email.value) return;
-  try {
-    const payload: UpdateEmailData = {
-      name: form.value.name,
-      subject: form.value.subject,
-      body: form.value.body,
-    };
-    await client.email.update(emailId.value, payload);
-    addNotification({ variant: 'success', title: t('form.saved') });
-    await router.push(LIST_ROUTE);
-  } catch (err) {
-    addNotification({
-      variant: 'error',
-      title: extractErrorText(err),
-    });
-  }
+  if (!email.value) return;
+  email.value = await client.email.update(emailId.value, form.value);
 }
 
 async function confirmDeleteEmail() {
-  if (!emailId.value) return;
   showDeleteConfirm.value = false;
-  try {
-    await client.email.delete(emailId.value);
-    addNotification({
-      variant: 'success',
-      title: t('emails.notifications.deleted'),
-    });
-    await router.push(LIST_ROUTE);
-  } catch (err) {
-    addNotification({
-      variant: 'error',
-      title: extractErrorText(err),
-    });
-  }
+  await client.email.delete(emailId.value);
+  await router.push(LIST_ROUTE);
 }
 
-async function loadEmail() {
-  if (!emailId.value) return;
+onMounted(async () => {
   const data = await client.email.get(emailId.value);
   email.value = data;
   form.value = {
+    fromName: data.fromName,
+    fromEmail: data.fromEmail,
     name: data.name,
     subject: data.subject,
     body: data.body,
   };
-}
-
-onMounted(async () => {
-  if (!emailId.value) {
-    await router.replace(LIST_ROUTE);
-    return;
-  }
-  try {
-    await loadEmail();
-  } catch (err) {
-    addNotification({
-      variant: 'error',
-      title: extractErrorText(err),
-    });
-    await router.replace(LIST_ROUTE);
-  } finally {
-    loading.value = false;
-  }
 });
 </script>

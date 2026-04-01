@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  IsBoolean,
   IsEnum,
   IsIn,
   IsNumber,
@@ -55,7 +56,7 @@ export class ListSegmentsDto extends GetPaginatedQuery {
   sort?: string;
 }
 
-/** Body for POST /segments/:id/email/send (one-off email to all segment contacts). */
+/** Body for POST /segments/:id/email/send (email to all segment contacts). */
 export class SendSegmentEmailBodyDto {
   /** When set, use this saved template (subject/body ignored) and create an EmailMailing for tracking. */
   @IsOptional()
@@ -67,4 +68,13 @@ export class SendSegmentEmailBodyDto {
 
   @IsString()
   body!: string;
+
+  /**
+   * When true, this send is the initial delivery of a newly created ongoing
+   * email. The backend will record sent contacts in segment_contact so
+   * process-segments won't treat them as "new" and re-send.
+   */
+  @IsOptional()
+  @IsBoolean()
+  ongoingDirectSend?: boolean;
 }

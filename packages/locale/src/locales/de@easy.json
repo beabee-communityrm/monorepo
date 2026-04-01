@@ -180,11 +180,41 @@
       "showingOf": ""
     },
     "email": {
+      "contactTemplates": {
+        "button": "",
+        "contactJoins": "Kontakt kommt in die Gruppe",
+        "contactLeaves": "Kontakt verlässt die Gruppe",
+        "create": "",
+        "description": "Hier kannst du E-Mail-Vorlagen erstellen und ändern. Du kannst einmalige oder regelmäßige E-Mails verwalten.",
+        "directSendDisabled": "Nur neue Kontakte bekommen die E-Mail",
+        "directSendEnabled": "Alle aktuellen Kontakte bekommen die E-Mail sofort",
+        "ongoing": "Regelmäßig",
+        "ongoingDisabled": "Die E-Mail wird einmal an alle Kontakte geschickt",
+        "ongoingEnabled": "Die E-Mail wird automatisch bei Änderungen geschickt",
+        "segment": "Gruppe",
+        "send": "",
+        "sendSettings": "",
+        "sendTypes": {
+          "oneOffLabel": "",
+          "ongoingLabel": "",
+          "title": ""
+        },
+        "summaryOnceOnly": "Diese E-Mail wird einmal an alle Kontakte in der Gruppe geschickt.",
+        "summaryOngoingJoin": "Diese E-Mail wird jeden Tag an Kontakte geschickt, die neu in der Gruppe „{segment}“ sind.",
+        "summaryOngoingJoinDirectSend": "Diese E-Mail wird jeden Tag an neue Kontakte in der Gruppe „{segment}“ geschickt. Alle anderen Kontakte bekommen sie sofort.",
+        "summaryOngoingLeave": "Diese E-Mail wird jeden Tag an Kontakte geschickt, die die Gruppe „{segment}“ verlassen haben.",
+        "summaryOngoingPaused": "Diese E-Mail für die Gruppe „{segment}“ ist gerade pausiert. Sie wird nicht verschickt.",
+        "summaryTemplate": "Diese E-Mail wird nicht automatisch verschickt. Du kannst sie als Vorlage für neue E-Mails benutzen.",
+        "title": "Gruppenbasiert",
+        "titleDirectSend": "Sofort an alle Kontakte schicken",
+        "titleSendTime": ""
+      },
       "fromEmail": "",
       "fromName": "",
       "label": "Betreff",
       "templates": {
         "description": "Hier kannst du Betreff und Text der E-Mails ändern, die die App verschickt. Die Farbe zeigt dir: grün = angepasst, gelb = Standardvorlage, rot = nicht eingerichtet (wird nicht gesendet).",
+        "subtitle": "",
         "title": "E-Mails einrichten"
       },
       "text": "",
@@ -228,7 +258,7 @@
       "showOneTimeDonation": "",
       "taxRate": "",
       "taxRateLabelOneTime": "",
-      "taxRateLabelRecurring": ""
+      "taxRateLabelRecurring": "Mehrwertsteuersatz für regelmäßige Beiträge aktivieren"
     },
     "theme": {
       "bodyFont": "",
@@ -261,7 +291,7 @@
       "all": "",
       "any": ""
     },
-    "createdSegment": "",
+    "createdSegment": "Erstellte Gruppe „{segment}“",
     "invalidRuleError": "",
     "matchWord": {
       "AND": "",
@@ -322,18 +352,18 @@
     },
     "saveSegment": {
       "createOrUpdate": {
-        "create": "",
+        "create": "Neue Gruppe erstellen",
         "label": "Betreff",
-        "update": ""
+        "update": "Gruppe „{segment}“ aktualisieren"
       },
-      "createSegment": "",
-      "segmentName": "",
-      "text": "",
-      "title": "",
-      "updateSegment": ""
+      "createSegment": "Gruppe erstellen",
+      "segmentName": "Name der Gruppe",
+      "text": "Eine Gruppe ist eine Sammlung von Kontakten, auf die bestimmte Filter zutreffen. Neue Kontakte, auf die die Filter auch zutreffen, kommen automatisch in die Gruppe.",
+      "title": "Gruppe speichern",
+      "updateSegment": "Gruppe aktualisieren"
     },
     "selectFilter": "",
-    "updatedSegment": ""
+    "updatedSegment": "Aktualisierte Gruppe „{segment}“"
   },
   "apiKey": {
     "data": {
@@ -766,6 +796,7 @@
       "label": "Betreff",
       "starts": ""
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "",
@@ -952,7 +983,7 @@
     "paymentType": {
       "oneTime": "",
       "prorated": "",
-      "recurring": "",
+      "recurring": "Regelmäßig",
       "unknown": ""
     },
     "perMonth": "",
@@ -1020,7 +1051,7 @@
     "overview": "",
     "pickTag": "",
     "profile": "",
-    "recurring": "Wiederkehrend",
+    "recurring": "Regelmäßig",
     "roles": "",
     "security": {
       "instructions": "",
@@ -1052,11 +1083,11 @@
       "amount": "",
       "annotationsCopy": "",
       "averageDonationAmount": "Durchschnitt einmaliger Beiträge",
-      "contribution": "",
-      "contributionCancelled": "",
-      "contributionMonthlyAmount": "",
-      "contributionPeriod": "",
-      "contributionType": "",
+      "contribution": "Regelmäßiger Beitrag",
+      "contributionCancelled": "Regelmäßiger Beitrag beendet",
+      "contributionMonthlyAmount": "Regelmäßiger monatlicher Beitrag",
+      "contributionPeriod": "Regelmäßiger Beitragsintervall",
+      "contributionType": "Regelmäßiger Beitragstyp",
       "deliveryOptIn": "",
       "description": "",
       "donationDate": "",
@@ -1086,7 +1117,7 @@
       "callout": "",
       "contact": "",
       "oneTimeContributions": "",
-      "recurringContributions": "",
+      "recurringContributions": "Regelmäßige Beiträge",
       "role": ""
     },
     "emailTemplates": {
@@ -1094,17 +1125,21 @@
         "text": "",
         "title": ""
       },
+      "create": "",
       "date": "",
-      "edit": "",
       "editTitle": "",
       "editTitleWithName": "",
       "empty": "",
       "manage": "",
       "name": "",
+      "newTitle": "",
       "showingOf": "",
       "subject": "",
       "title": "",
-      "use": ""
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "",
     "noResults": "",
@@ -1113,16 +1148,11 @@
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "Neue E-Mail",
-      "saveAndBack": "Speichern und zurück",
-      "saveAndBackSuccess": "Vorlage gespeichert.",
-      "saveAndSend": "Speichern und schicken",
-      "send": "Schicken",
-      "sent": "Die E-Mail wurde an das Segment geschickt.",
-      "sentTimes": "{n}-mal geschickt",
+      "sent": "Die E-Mail wurde an die Gruppe geschickt.",
       "templateLabel": "Vorlage",
-      "templateName": "Name der neuen Vorlage",
+      "templateName": "Name der Vorlage",
       "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
-      "title": "E-Mail an Segment schicken"
+      "title": "E-Mail an Gruppe schicken"
     },
     "showingOf": ""
   },
@@ -1182,8 +1212,12 @@
     "body": {
       "label": "Betreff"
     },
+    "from": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "Kontakt für Vorschau",
+      "from": "",
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
     },
@@ -1218,6 +1252,7 @@
     },
     "fromEmail": "",
     "fromName": "",
+    "isOngoing": "",
     "list": {
       "showingOf": ""
     },
@@ -1232,6 +1267,11 @@
       "templatesAssigned": "",
       "updated": ""
     },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "Regelmäßig",
+      "paused": ""
+    },
     "status": "",
     "tabs": {
       "custom": "",
@@ -1240,13 +1280,13 @@
     "templates": {
       "availableFields": "",
       "description": {
-        "cancelled-contribution": "",
+        "cancelled-contribution": "Wird an Personen geschickt, wenn ihr regelmäßiger Beitrag gekündigt wird. Enthält Infos, wann der Beitrag endet.",
         "cancelled-member": "",
         "confirm-email": "",
-        "contribution-didnt-start": "",
+        "contribution-didnt-start": "Wird an Personen geschickt, wenn ihre Zahlung nicht gestartet werden konnte. Informiert darüber, dass der regelmäßige Beitrag wegen eines Zahlungsfehlers nicht aktiv ist.",
         "email-exists-login": "",
         "email-exists-set-password": "",
-        "manual-to-automatic": "",
+        "manual-to-automatic": "Wird an Personen geschickt, wenn ihre Zahlung erfolgreich auf automatisch regelmäßig umgestellt wurde.",
         "new-callout-response": "",
         "new-member": "",
         "one-time-donation": "",

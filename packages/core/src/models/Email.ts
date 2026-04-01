@@ -3,10 +3,11 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { type EmailMailing } from './index';
+import { type EmailMailing, type SegmentOngoingEmail } from './index';
 
 @Entity()
 export class Email {
@@ -44,4 +45,7 @@ export class Email {
   mailings!: EmailMailing[];
 
   mailingCount?: number;
+
+  @OneToOne('SegmentOngoingEmail', 'email')
+  ongoingEmail!: SegmentOngoingEmail | null;
 }

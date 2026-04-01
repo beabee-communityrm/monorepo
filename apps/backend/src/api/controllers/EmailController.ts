@@ -29,6 +29,7 @@ import {
   GetEmailTemplateInfoDto,
   GetEmailTemplateParams,
   ListEmailsDto,
+  OngoingEmailFieldsDto,
   PreviewAdminEmailParams,
   PreviewContactEmailParams,
   PreviewEmailDto,
@@ -83,9 +84,10 @@ export class EmailController {
     @Params() { templateId }: UpdateEmailTemplateParams,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto> {
+    const { ongoingEmail, ...emailData } = data;
     const updated = await EmailService.createOrUpdateTemplateOverride(
       templateId,
-      data
+      emailData
     );
 
     return EmailTransformer.convert(updated);
@@ -113,7 +115,17 @@ export class EmailController {
     @CurrentAuth() auth: AuthInfo,
     @Body() data: CreateEmailDto
   ): Promise<GetEmailDto> {
-    return await EmailTransformer.createOne(auth, data);
+    const { ongoingEmail, ...emailData } = data;
+    const email = await EmailTransformer.createOne(auth, emailData);
+    try {
+      await this.syncOngoingEmail(email.id, ongoingEmail);
+    } catch (err) {
+      // Clean up the email if linking the ongoing email fails
+      await EmailService.deleteEmail(email.id);
+      throw err;
+    }
+    // Re-fetch to include ongoing email fields in the response
+    return (await EmailTransformer.fetchOneById(auth, email.id))!;
   }
 
   /**
@@ -136,9 +148,13 @@ export class EmailController {
     @Param('id') id: string,
     @Body() data: UpdateEmailDto
   ): Promise<GetEmailDto | undefined> {
-    if (!(await EmailTransformer.updateById(auth, id, data))) {
-      throw new NotFoundError();
+    const { ongoingEmail, ...emailData } = data;
+    if (Object.keys(emailData).length > 0) {
+      if (!(await EmailTransformer.updateById(auth, id, emailData))) {
+        throw new NotFoundError();
+      }
     }
+    await this.syncOngoingEmail(id, ongoingEmail);
     return await EmailTransformer.fetchOneById(auth, id);
   }
 
@@ -211,6 +227,33 @@ export class EmailController {
     @Body() data: PreviewEmailDto
   ): Promise<EmailPreviewDto> {
     return await this.getPreview(contact, { ...data, templateId });
+  }
+
+  /**
+   * Add, update, or remove an ongoing email link based on the isOngoing flag.
+   * - true  → upsert the SegmentOngoingEmail row
+   * - false → remove any existing row
+   * - undefined → no change
+   */
+  private async syncOngoingEmail(
+    emailId: string,
+    ongoingEmail?: OngoingEmailFieldsDto
+  ): Promise<void> {
+    if (!ongoingEmail) return;
+
+    const { isOngoing, segmentId, trigger, enabled } = ongoingEmail;
+    if (isOngoing && segmentId && trigger) {
+      await EmailService.addOngoingEmail(
+        segmentId,
+        emailId,
+        trigger,
+        enabled ?? true
+      );
+    } else if (isOngoing === true) {
+      throw new Error('isOngoing is true but segmentId or trigger is missing');
+    } else if (isOngoing === false) {
+      await EmailService.removeOngoingEmailByEmailId(emailId);
+    }
   }
 
   /**
