@@ -31,7 +31,7 @@
 <script lang="ts" setup>
 import {
   type ContentPaymentData,
-  type PaymentFlowParams,
+  type PaymentFlowSetupParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 import { addNotification } from '@beabee/vue';
@@ -67,7 +67,7 @@ const paymentFlowData = computed(() => ({
   paymentMethod: formData.paymentMethod,
 }));
 
-async function startDonationFlow(params: PaymentFlowParams) {
+async function startDonationFlow(params: PaymentFlowSetupParams) {
   return await client.contact.payment.create({
     amount: formData.amount,
     payFee: formData.payFee,

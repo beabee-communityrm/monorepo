@@ -160,6 +160,7 @@ onBeforeMount(async () => {
   const stripe = await loadStripe(props.publicKey);
   if (stripe && divRef.value) {
     const elements = stripe.elements({
+      // TODO: mode setup
       mode:
         props.paymentData.period === 'one-time' ? 'payment' : 'subscription',
       amount: props.paymentData.amount * 100,

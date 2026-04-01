@@ -1,6 +1,7 @@
 import {
-  PaymentFlowParams,
+  PaymentFlowAdvanceParams,
   PaymentFlowResult,
+  PaymentFlowSetupParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
@@ -31,23 +32,23 @@ class PaymentFlowService {
   /**
    * Starts a payment flow with contribution details
    * @param form - Complete payment flow form with payment details
-   * @param completeUrl - Provider-specific completion URL
-   * @param data - User data for the flow
+   * @param params - Initial payment flow parameters
    * @returns Promise resolving to payment flow parameters
    */
   async startPaymentFlow(
     form: PaymentFlowForm,
-    params: PaymentFlowParams
+    params: PaymentFlowSetupParams
   ): Promise<{ flow: PaymentFlow; result: PaymentFlowResult }> {
     const flow = await getRepository(PaymentFlow).save({
       form,
-      params,
+      method: params.paymentMethod,
       paymentFlowId: '',
+      params: {}, // TODO:
     });
 
     log.info('Creating payment registration flow ' + flow.id, { form });
 
-    const setup = await this.setupPaymentFlow(flow);
+    const setup = await this.setupPaymentFlow(flow, params);
     await getRepository(PaymentFlow).update(flow.id, {
       paymentFlowId: setup.id,
     });
@@ -56,11 +57,33 @@ class PaymentFlowService {
   }
 
   /**
-   * Finalizes a payment flow after payment provider confirms the
+   * Advances a payment flow with additional user data
+   * @param flowId - The ID of the payment flow to advance
+   * @param params - Additional parameters for the payment flow
+   * @returns Promise resolving to updated payment flow
+   */
+  async advancePaymentFlow(
+    flowId: string,
+    params: PaymentFlowAdvanceParams
+  ): Promise<void> {
+    // Update the flow with advance parameters
+    const result = await getRepository(PaymentFlow).update(flowId, {
+      params,
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundError();
+    }
+
+    log.info('Advanced payment flow ' + flowId);
+  }
+
+  /**
+   * Completes a payment flow after payment provider confirms the
    * new payment method is set up, updating the contact's payment details.
    *
    * @param contact - The contact
-   * @param paymentFlowId - The ID of the payment flow to finalize
+   * @param paymentFlowId - The ID of the payment flow to complete
    */
   async completePaymentFlowAndProcess(
     contact: Contact,
@@ -127,14 +150,14 @@ class PaymentFlowService {
     contact: Contact,
     completedFlow: CompletedPaymentFlow
   ): Promise<void> {
-    const form = completedFlow.form;
+    const form = completedFlow.flow.form;
 
     const canChange = await PaymentService.canProcessPaymentFlow(contact, form);
     if (!canChange) {
       throw new CantUpdateContribution();
     }
 
-    const result = await PaymentService.processPaymentFlow(
+    const result = await PaymentService.processCompletedFlow(
       contact,
       completedFlow
     );
@@ -152,18 +175,18 @@ class PaymentFlowService {
    * @param data The payment flow data
    * @returns The created payment flow
    */
-  private async setupPaymentFlow(flow: PaymentFlow): Promise<PaymentFlowSetup> {
+  private async setupPaymentFlow(
+    flow: PaymentFlow,
+    params: PaymentFlowSetupParams
+  ): Promise<PaymentFlowSetup> {
     log.info('Create payment flow for payment flow ' + flow.id);
 
     // There is probably a nicer way to narrow the type and dispatch to the
     // correct provider, but this is straightforward and works for now
-    if (flow.params.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
-      return gcFlowProvider.setupPaymentFlow({ ...flow, params: flow.params });
+    if (flow.method === PaymentMethod.GoCardlessDirectDebit) {
+      return gcFlowProvider.setupPaymentFlow(flow, params as any);
     } else {
-      return stripeFlowProvider.setupPaymentFlow({
-        ...flow,
-        params: flow.params,
-      });
+      return stripeFlowProvider.setupPaymentFlow(flow, params as any);
     }
   }
 
@@ -181,16 +204,13 @@ class PaymentFlowService {
 
     // There is probably a nicer way to narrow the type and dispatch to the
     // correct provider, but this is straightforward and works for now
-    if (flow.params.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+    if (flow.method === PaymentMethod.GoCardlessDirectDebit) {
       return gcFlowProvider.completePaymentFlow({
         ...flow,
-        params: flow.params,
+        method: flow.method,
       });
     } else {
-      return stripeFlowProvider.completePaymentFlow({
-        ...flow,
-        params: flow.params,
-      });
+      return stripeFlowProvider.completePaymentFlow(flow);
     }
   }
 
@@ -208,18 +228,13 @@ class PaymentFlowService {
     // There is probably a nicer way to narrow the type and dispatch to the
     // correct provider, but this is straightforward and works for now
     if (
-      completedPaymentFlow.params.paymentMethod ===
-      PaymentMethod.GoCardlessDirectDebit
+      completedPaymentFlow.flow.method === PaymentMethod.GoCardlessDirectDebit
     ) {
-      return gcFlowProvider.getCompletedPaymentFlowData({
-        ...completedPaymentFlow,
-        params: completedPaymentFlow.params,
-      });
+      return gcFlowProvider.getCompletedPaymentFlowData(completedPaymentFlow);
     } else {
-      return stripeFlowProvider.getCompletedPaymentFlowData({
-        ...completedPaymentFlow,
-        params: completedPaymentFlow.params,
-      });
+      return stripeFlowProvider.getCompletedPaymentFlowData(
+        completedPaymentFlow as CompletedPaymentFlow<PaymentMethod.StripeCard>
+      );
     }
   }
 }

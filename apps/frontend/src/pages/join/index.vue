@@ -32,7 +32,7 @@ import {
   type ContentJoinData,
   type ContentPaymentData,
   ContributionPeriod,
-  type PaymentFlowParams,
+  type PaymentFlowSetupParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
@@ -51,6 +51,7 @@ const route = useRoute();
 const router = useRouter();
 
 const showStripeStep = ref(false);
+const currentFlowId = ref<string | null>(null);
 
 const joinContent = ref<ContentJoinData>({
   initialAmount: 5,
@@ -94,7 +95,7 @@ function goToConfirmEmailPage() {
   }
 }
 
-async function startSignupFlow(params: PaymentFlowParams) {
+async function startSignupWithPaymentFlow(params: PaymentFlowSetupParams) {
   return await client.signup.start({
     email: formData.email,
     ...(formData.period === 'one-time'
@@ -124,7 +125,7 @@ async function handleSubmitStep1() {
       await client.signup.start({ email: formData.email });
       goToConfirmEmailPage();
     } else if (formData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
-      const data = await startSignupFlow({
+      const data = await startSignupWithPaymentFlow({
         paymentMethod: PaymentMethod.GoCardlessDirectDebit,
         completeUrl: client.signup.completeUrl,
       });
@@ -133,7 +134,16 @@ async function handleSubmitStep1() {
       const topWindow = window.top || window;
       topWindow.location.href = data.redirectUrl;
     } else {
-      showStripeStep.value = true;
+      // For Stripe, start the payment flow first
+      const data = await startSignupWithPaymentFlow({
+        paymentMethod: formData.paymentMethod,
+      });
+
+      // Store the flow ID for the advance step
+      if (data?.flowId) {
+        currentFlowId.value = data.flowId;
+        showStripeStep.value = true;
+      }
     }
   } catch (err) {
     if (isApiError(err, undefined, [429])) {
@@ -155,14 +165,19 @@ async function handleStripeConfirmFlow(
   }
 
   try {
-    await startSignupFlow({
-      paymentMethod: formData.paymentMethod,
+    if (!currentFlowId.value) {
+      throw new Error('Missing payment flow ID');
+    }
+
+    // Advance the payment flow with token and user details
+    await client.signup.advance({
+      paymentFlowId: currentFlowId.value,
       token,
       firstname,
       lastname,
     });
 
-    await client.signup.complete({ paymentFlowId: token });
+    await client.signup.complete({ paymentFlowId: currentFlowId.value });
 
     goToConfirmEmailPage();
   } catch (err) {

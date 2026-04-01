@@ -1,7 +1,7 @@
 import {
   type ContributionInfo,
-  type PaymentFlowParams,
   type PaymentFlowResult,
+  type PaymentFlowSetupParams,
   Serial,
 } from '@beabee/beabee-common';
 
@@ -32,7 +32,7 @@ export class ContactPaymentMethodClient extends BaseClient {
    * change payment source but keep the same method (e.g. new card)
    * @returns Payment flow parameters for client-side handling
    */
-  async update(params: PaymentFlowParams): Promise<PaymentFlowResult> {
+  async update(params: PaymentFlowSetupParams): Promise<PaymentFlowResult> {
     const { data } = await this.fetch.put<Serial<PaymentFlowResult>>(
       '/me/payment-method',
       { params }

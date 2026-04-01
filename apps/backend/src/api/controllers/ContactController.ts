@@ -1,9 +1,5 @@
-import { ContributionPeriod, GetContactWith } from '@beabee/beabee-common';
-import {
-  CantUpdateContribution,
-  NoPaymentMethod,
-  UnauthorizedError,
-} from '@beabee/core/errors';
+import { GetContactWith } from '@beabee/beabee-common';
+import { CantUpdateContribution, UnauthorizedError } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
@@ -14,7 +10,7 @@ import { AuthInfo } from '@beabee/core/type';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
-import { Transform, plainToInstance } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { Response } from 'express';
 import {
   Authorized,
@@ -69,10 +65,9 @@ import {
   UpdatePaymentMethodDto,
 } from '#api/dto/PaymentDto';
 import {
+  AdvancePaymentFlowDto,
   CompletePaymentFlowDto,
-  PaymentFlowParamsDto,
   PaymentFlowResultDto,
-  transformPaymentFlowParams,
 } from '#api/dto/PaymentFlowDto';
 import { ContactRoleParams } from '#api/params/ContactRoleParams';
 import ContactExporter from '#api/transformers/ContactExporter';
@@ -326,6 +321,17 @@ export class ContactController {
     await ContactsService.cancelContactContribution(
       target,
       'cancelled-contribution-no-survey'
+    );
+  }
+
+  @Post('/:id/contribution/advance')
+  async advanceStartContribution(
+    @TargetUser() target: Contact,
+    @Body() data: AdvancePaymentFlowDto
+  ): Promise<void> {
+    await PaymentFlowService.advancePaymentFlow(
+      data.paymentFlowId,
+      data.advanceParams
     );
   }
 

@@ -1,6 +1,6 @@
 import {
   type CompleteSignupData,
-  ContributionPeriod,
+  PaymentFlowAdvanceParams,
   type PaymentFlowResult,
   type Serial,
   type SignupData,
@@ -48,6 +48,10 @@ export class SignupClient extends BaseClient {
     return responseData;
   }
 
+  async advance(data: PaymentFlowAdvanceParams): Promise<void> {
+    await this.fetch.post('/advance', data);
+  }
+
   /**
    * Completes the signup process with user details
    * @param data - The completion data including name and payment details
@@ -55,9 +59,6 @@ export class SignupClient extends BaseClient {
   async complete(data: CompleteSignupData): Promise<void> {
     await this.fetch.post('/complete', {
       paymentFlowId: data.paymentFlowId,
-      firstname: data.firstname,
-      lastname: data.lastname,
-      vatNumber: data.vatNumber,
     });
   }
 

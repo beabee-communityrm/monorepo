@@ -43,8 +43,9 @@
 
 <script setup lang="ts">
 import {
-  type PaymentFlowParams,
+  type PaymentFlowAdvanceParams,
   type PaymentFlowResult,
+  type PaymentFlowSetupParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 import { AppModal, addNotification } from '@beabee/vue';
@@ -77,8 +78,13 @@ const props = defineProps<{
   /** The payment data to use for the payment flow */
   flowData: PaymentFlowFormData;
   /** A method which calls the API to start a payment flow*/
-  startFlow: (params: PaymentFlowParams) => Promise<PaymentFlowResult>;
-  /** A method which calls the API to complete a payment flow */
+  startFlow: (params: PaymentFlowSetupParams) => Promise<PaymentFlowResult>;
+  /** A method which calls the API to advance a payment flow with additional data */
+  advanceFlow?: (
+    flowId: string,
+    params: PaymentFlowAdvanceParams
+  ) => Promise<void>;
+  /** A method which calls the API to finalize a payment flow */
   completeFlow: (paymentFlowId: string) => Promise<void>;
 }>();
 
@@ -87,6 +93,7 @@ const props = defineProps<{
  */
 const stripeHasLoaded = ref(false);
 const showModal = ref(false);
+const currentFlowId = ref<string | null>(null);
 
 /**
  * The URL to return to after completing the payment flow. The page will return
@@ -130,6 +137,13 @@ async function handleSubmit() {
       window.location.href = data.redirectUrl;
     }
   } else {
+    // For Stripe, start the flow first to get a flow ID
+    const data = await props.startFlow({
+      paymentMethod: props.flowData.paymentMethod,
+    });
+
+    // Store the flow ID for later use
+    currentFlowId.value = data.flowId; // This assumes the API returns the flow ID
     showModal.value = true;
   }
 }
@@ -139,19 +153,23 @@ async function handleStripeConfirm(
   firstname: string,
   lastname: string
 ) {
-  // Shouldn't be possible
-  if (props.flowData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
+  if (!currentFlowId.value) {
+    addNotification({
+      variant: 'error',
+      title: t('payment.flow.error.missing_flow_id'),
+    });
     return;
   }
 
-  await props.startFlow({
-    paymentMethod: props.flowData.paymentMethod,
+  // Update the flow with the token and user details
+  await props.advanceFlow?.(currentFlowId.value, {
+    paymentFlowId: currentFlowId.value,
     token,
     firstname,
     lastname,
   });
 
-  await props.completeFlow(token);
+  await props.completeFlow(currentFlowId.value);
   showModal.value = false;
 }
 

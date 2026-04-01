@@ -1,7 +1,9 @@
 import {
-  PaymentFlowParamsGoCardless,
-  PaymentFlowParamsStripe,
+  PaymentFlowAdvanceParamsGoCardless,
+  PaymentFlowAdvanceParamsStripe,
   PaymentFlowResult,
+  PaymentFlowSetupParamsGoCardless,
+  PaymentFlowSetupParamsStripe,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
@@ -25,7 +27,17 @@ export class CompletePaymentFlowDto {
   paymentFlowId!: string;
 }
 
-class PaymentFlowParamsGoCardlessDto implements PaymentFlowParamsGoCardless {
+export class AdvancePaymentFlowDto {
+  @IsString()
+  paymentFlowId!: string;
+
+  @Transform(transformPaymentFlowAdvanceParams)
+  advanceParams!: PaymentFlowAdvanceParamsDto;
+}
+
+class PaymentFlowParamsGoCardlessDto
+  implements PaymentFlowSetupParamsGoCardless
+{
   @Equals(PaymentMethod.GoCardlessDirectDebit)
   paymentMethod!: PaymentMethod.GoCardlessDirectDebit;
 
@@ -33,7 +45,7 @@ class PaymentFlowParamsGoCardlessDto implements PaymentFlowParamsGoCardless {
   completeUrl!: string;
 }
 
-class PaymentFlowParamsStripeDto implements PaymentFlowParamsStripe {
+class PaymentFlowParamsStripeDto implements PaymentFlowSetupParamsStripe {
   @IsEnum([
     PaymentMethod.StripeCard,
     PaymentMethod.StripeBACS,
@@ -47,6 +59,20 @@ class PaymentFlowParamsStripeDto implements PaymentFlowParamsStripe {
     | PaymentMethod.StripeSEPA
     | PaymentMethod.StripePayPal
     | PaymentMethod.StripeIdeal;
+}
+
+class PaymentFlowAdvanceParamsGoCardlessDto
+  implements PaymentFlowAdvanceParamsGoCardless
+{
+  @IsString()
+  paymentFlowId!: string;
+}
+
+class PaymentFlowAdvanceParamsStripeDto
+  implements PaymentFlowAdvanceParamsStripe
+{
+  @IsString()
+  paymentFlowId!: string;
 
   @IsString()
   token!: string;
@@ -62,6 +88,21 @@ class PaymentFlowParamsStripeDto implements PaymentFlowParamsStripe {
   @IsString()
   @IsOptional()
   vatNumber?: string;
+}
+
+export type PaymentFlowAdvanceParamsDto =
+  | PaymentFlowAdvanceParamsGoCardlessDto
+  | PaymentFlowAdvanceParamsStripeDto;
+
+export function transformPaymentFlowAdvanceParams(
+  params: TransformFnParams
+): PaymentFlowAdvanceParamsDto {
+  return plainToInstance<PaymentFlowAdvanceParamsDto, unknown>(
+    params.value.paymentMethod === PaymentMethod.GoCardlessDirectDebit
+      ? PaymentFlowAdvanceParamsGoCardlessDto
+      : PaymentFlowAdvanceParamsStripeDto,
+    params.value
+  );
 }
 
 export type PaymentFlowParamsDto =

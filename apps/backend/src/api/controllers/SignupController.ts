@@ -18,7 +18,7 @@ import {
 
 import { GetContactDto } from '#api/dto/ContactDto';
 import {
-  CompletePaymentFlowDto,
+  AdvancePaymentFlowDto,
   PaymentFlowResultDto,
 } from '#api/dto/PaymentFlowDto';
 import { StartSignupFlowDto } from '#api/dto/SignupFlowDto';
@@ -92,18 +92,21 @@ export class SignupController {
   }
 
   @OnUndefined(204)
-  @Post('/complete')
+  @Post('/advance')
   @UseBefore(
     RateLimit({
-      guest: { points: 5, duration: 60 }, // 5 completions per minute per IP
+      guest: { points: 5, duration: 60 }, // 5 advances per minute per IP
       user: { points: 5, duration: 60 }, // Same limit for consistency (though authenticated users don't use this endpoint)
     })
   )
-  async completeSignup(@Body() data: CompletePaymentFlowDto): Promise<void> {
-    await SignupService.advanceSignupWithPayment(data.paymentFlowId);
+  async advanceSignup(@Body() data: AdvancePaymentFlowDto): Promise<void> {
+    await SignupService.advanceSignupWithPayment(
+      data.paymentFlowId,
+      data.advanceParams
+    );
   }
 
-  @Post('/confirm-email')
+  @Post('/complete')
   @UseBefore(
     RateLimit({
       guest: { points: 5, duration: 60 }, // 5 confirmations per minute per IP
@@ -114,7 +117,7 @@ export class SignupController {
     @Req() req: Request,
     @Body() { joinFlowId }: SignupConfirmEmailParams
   ): Promise<GetContactDto> {
-    const contact = await SignupService.finalizeSignup(joinFlowId);
+    const contact = await SignupService.completeSignup(joinFlowId);
     if (!contact) {
       throw new NotFoundError();
     }

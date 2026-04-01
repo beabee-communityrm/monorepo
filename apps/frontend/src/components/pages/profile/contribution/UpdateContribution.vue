@@ -98,8 +98,8 @@ import {
   ContributionPeriod,
   ContributionType,
   MembershipStatus,
-  type PaymentFlowParams,
   type PaymentFlowResult,
+  type PaymentFlowSetupParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 import { AppHeading, AppNotification, formatLocale } from '@beabee/vue';
@@ -188,27 +188,20 @@ async function handleUpdateContribution() {
 }
 
 async function handleStartFlow(
-  params: PaymentFlowParams
+  params: PaymentFlowSetupParams
 ): Promise<PaymentFlowResult> {
-  if (isAutoActiveMember.value) {
-    addNotification({
-      variant: 'success',
-      title: t('contribution.updatedContribution'),
-    });
-    return {};
-  } else {
-    return await client.contact.contribution.start({
-      amount: newContribution.amount,
-      period: newContribution.period,
-      payFee:
-        newContribution.payFee &&
-        newContribution.period === ContributionPeriod.Monthly,
-      prorate:
-        newContribution.prorate &&
-        newContribution.period === ContributionPeriod.Annually,
-      params,
-    });
-  }
+  // TODO: Think about manual contributions
+  return await client.contact.contribution.start({
+    amount: newContribution.amount,
+    period: newContribution.period,
+    payFee:
+      newContribution.payFee &&
+      newContribution.period === ContributionPeriod.Monthly,
+    prorate:
+      newContribution.prorate &&
+      newContribution.period === ContributionPeriod.Annually,
+    params,
+  });
 }
 
 async function handleCompleteFlow(paymentFlowId: string) {

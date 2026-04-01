@@ -1,7 +1,8 @@
 import {
-  PaymentFlowParams,
-  PaymentFlowParamsStripe,
+  PaymentFlowAdvanceParams,
+  PaymentFlowAdvanceParamsStripe,
   PaymentFlowResult,
+  PaymentFlowSetupParams,
   PaymentMethod,
   RESET_SECURITY_FLOW_TYPE,
 } from '@beabee/beabee-common';
@@ -9,7 +10,7 @@ import {
 import { getRepository } from '#database';
 import { DuplicateEmailError, NotFoundError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Contact, Password, PaymentFlow, SignupFlow } from '#models/index';
+import { Contact, Password, SignupFlow } from '#models/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import OptionsService from '#services/OptionsService';
@@ -57,7 +58,7 @@ class SignupService {
   async startSignupWithPayment(
     signupData: SignupData,
     form: PaymentFlowForm,
-    params: PaymentFlowParams
+    params: PaymentFlowSetupParams
   ): Promise<PaymentFlowResult> {
     const setup = await PaymentFlowService.startPaymentFlow(form, params);
 
@@ -75,7 +76,10 @@ class SignupService {
    *
    * @param paymentFlowId - The ID of the payment flow to advance
    */
-  async advanceSignupWithPayment(paymentFlowId: string): Promise<void> {
+  async advanceSignupWithPayment(
+    paymentFlowId: string,
+    advanceParams: PaymentFlowAdvanceParams
+  ): Promise<void> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { paymentFlow: { paymentFlowId } },
       relations: { paymentFlow: true },
@@ -85,9 +89,14 @@ class SignupService {
       throw new NotFoundError();
     }
 
+    await PaymentFlowService.advancePaymentFlow(
+      signupFlow.paymentFlow.id,
+      advanceParams
+    );
+
     // Finalise one-time payments early
     if (signupFlow.paymentFlow.form.action === 'create-one-time-payment') {
-      const contact = await this.finalizeSignup(signupFlow.id);
+      const contact = await this.completeSignup(signupFlow.id);
       // Ignore a failure to create a contact here. This means this flow is
       // being processed elsewhere, probably because the user opened the URL
       // twice accidentally. Don't send the confirmation email though as
@@ -147,13 +156,14 @@ class SignupService {
         lastName = '';
 
       // TODO: remove once payment flow logic is reworked
+      const paymentFlow = signupFlow.paymentFlow;
       if (
-        signupFlow.paymentFlow &&
-        signupFlow.paymentFlow.params.paymentMethod !==
-          PaymentMethod.GoCardlessDirectDebit
+        paymentFlow &&
+        paymentFlow.method !== PaymentMethod.GoCardlessDirectDebit
       ) {
-        firstName = signupFlow.paymentFlow.params.firstname || '';
-        lastName = signupFlow.paymentFlow.params.lastname || '';
+        const params = paymentFlow.params as PaymentFlowAdvanceParamsStripe;
+        firstName = params.firstname || '';
+        lastName = params.lastname || '';
       }
 
       // User doesn't exist, their membership is inactive or they are not
@@ -175,7 +185,7 @@ class SignupService {
    * @param signupFlowId - The ID of the signup flow to finalize
    * @returns The created contact
    */
-  async finalizeSignup(signupFlowId: string): Promise<Contact | undefined> {
+  async completeSignup(signupFlowId: string): Promise<Contact | undefined> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { id: signupFlowId },
       relations: { contact: true, paymentFlow: true },

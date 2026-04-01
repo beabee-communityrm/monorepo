@@ -1,4 +1,7 @@
-import { PaymentFlowParamsGoCardless } from '@beabee/beabee-common';
+import {
+  PaymentFlowSetupParamsGoCardless,
+  PaymentMethod,
+} from '@beabee/beabee-common';
 
 import gocardless from '#lib/gocardless';
 import { log as mainLogger } from '#logging';
@@ -26,11 +29,12 @@ class GCFlowProvider implements PaymentFlowProvider {
    * @returns Promise resolving to payment flow with redirect URL
    */
   async setupPaymentFlow(
-    flow: PaymentFlow<PaymentFlowParamsGoCardless>
+    flow: PaymentFlow,
+    params: PaymentFlowSetupParamsGoCardless
   ): Promise<PaymentFlowSetup> {
     const redirectFlow = await gocardless.redirectFlows.create({
       session_token: flow.id,
-      success_redirect_url: flow.params.completeUrl,
+      success_redirect_url: params.completeUrl,
     });
     log.info('Created redirect flow ' + redirectFlow.id);
 
@@ -48,7 +52,7 @@ class GCFlowProvider implements PaymentFlowProvider {
    * @returns Promise resolving to completed payment flow with mandate ID
    */
   async completePaymentFlow(
-    flow: PaymentFlow<PaymentFlowParamsGoCardless>
+    flow: PaymentFlow<PaymentMethod.GoCardlessDirectDebit>
   ): Promise<CompletedPaymentFlow> {
     const redirectFlow = await gocardless.redirectFlows.complete(
       flow.paymentFlowId,
@@ -59,8 +63,7 @@ class GCFlowProvider implements PaymentFlowProvider {
     log.info('Completed redirect flow ' + redirectFlow.id);
 
     return {
-      params: flow.params,
-      form: flow.form,
+      flow,
       customerId: redirectFlow.links!.customer!,
       mandateId: redirectFlow.links!.mandate!,
     };

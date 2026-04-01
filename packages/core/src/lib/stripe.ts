@@ -1,6 +1,5 @@
 import {
   ContributionPeriod,
-  PaymentFlowParamsStripe,
   PaymentMethod,
   PaymentSource,
   PaymentStatus,
@@ -14,10 +13,10 @@ import Stripe from 'stripe';
 import config from '#config/config';
 import { currentLocale } from '#locale';
 import { log as mainLogger } from '#logging';
+import { PaymentFlow } from '#models';
 import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
 import {
-  CompletedPaymentFlow,
   PaymentFlowFormCreateOneTimePayment,
   UpdateContributionForm,
 } from '#type/index';
@@ -311,8 +310,8 @@ export async function deleteSubscription(
  */
 export async function chargeOneTimePayment(
   customerId: string,
-  flow: CompletedPaymentFlow<
-    PaymentFlowParamsStripe,
+  flow: PaymentFlow<
+    PaymentMethod.StripeCard,
     PaymentFlowFormCreateOneTimePayment
   >
 ): Promise<void> {
@@ -332,7 +331,7 @@ export async function chargeOneTimePayment(
   await stripe.invoiceItems.create({
     customer: customerId,
     invoice: invoice.id,
-    amount: getChargeableAmount(flow.form, flow.params.paymentMethod),
+    amount: getChargeableAmount(flow.form, flow.method),
     description: 'One-time payment',
   });
 

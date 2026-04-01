@@ -1,7 +1,7 @@
-import { PaymentFlowParams } from './payment-flow-params';
+import { PaymentFlowSetupParams } from './payment-flow-params';
 
 export interface CreatePaymentData {
   amount: number;
   payFee: boolean;
-  params: PaymentFlowParams;
+  params: PaymentFlowSetupParams;
 }

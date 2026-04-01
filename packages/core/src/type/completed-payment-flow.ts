@@ -1,13 +1,14 @@
-import { PaymentFlowParams } from '@beabee/beabee-common';
+import { PaymentMethod } from '@beabee/beabee-common';
 
-import type { PaymentFlowForm } from '#type/payment-flow-form';
+import { PaymentFlow } from '#models';
+
+import { PaymentFlowForm } from './payment-flow-form';
 
 export interface CompletedPaymentFlow<
-  TParams extends PaymentFlowParams = PaymentFlowParams,
+  TPaymentMethod extends PaymentMethod = PaymentMethod,
   TForm extends PaymentFlowForm = PaymentFlowForm,
 > {
-  params: TParams;
-  form: TForm;
+  flow: PaymentFlow<TPaymentMethod, TForm>;
   customerId: string;
   mandateId: string;
 }

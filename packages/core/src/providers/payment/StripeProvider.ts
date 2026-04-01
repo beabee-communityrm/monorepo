@@ -1,6 +1,5 @@
 import {
   ContributionType,
-  PaymentFlowParamsStripe,
   PaymentMethod,
   PaymentSource,
 } from '@beabee/beabee-common';
@@ -23,7 +22,7 @@ import {
   updateSubscription,
 } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
-import { Contact } from '#models/index';
+import { Contact, PaymentFlow } from '#models/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
@@ -48,9 +47,11 @@ export class StripeProvider extends PaymentProvider {
     return true;
   }
 
-  async processPaymentFlow(
-    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
-  ): Promise<UpdateContributionResult | undefined> {
+  async processPaymentFlow({
+    flow,
+  }: CompletedPaymentFlow<PaymentMethod.StripeCard>): Promise<
+    UpdateContributionResult | undefined
+  > {
     return await this.withDataUpdate(async () => {
       switch (flow.form.action) {
         case 'create-one-time-payment':
@@ -231,7 +232,7 @@ export class StripeProvider extends PaymentProvider {
    * @param flow The completed payment flow
    */
   private async updatePaymentMethod(
-    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
+    flow: PaymentFlow<PaymentMethod.StripeCard>
   ): Promise<void> {
     const customerId = await this.ensureCustomerForFlow(flow);
 
@@ -253,8 +254,8 @@ export class StripeProvider extends PaymentProvider {
    * @param form The payment form
    */
   private async createOneTimePayment(
-    flow: CompletedPaymentFlow<
-      PaymentFlowParamsStripe,
+    flow: PaymentFlow<
+      PaymentMethod.StripeCard,
       PaymentFlowFormCreateOneTimePayment
     >
   ): Promise<void> {
@@ -280,8 +281,8 @@ export class StripeProvider extends PaymentProvider {
    * @returns The result of the update
    */
   private async startContribution(
-    flow: CompletedPaymentFlow<
-      PaymentFlowParamsStripe,
+    flow: PaymentFlow<
+      PaymentMethod.StripeCard,
       PaymentFlowFormStartContribution
     >
   ): Promise<UpdateContributionResult> {
@@ -328,7 +329,7 @@ export class StripeProvider extends PaymentProvider {
    * @returns The customer ID
    */
   private async ensureCustomerForFlow(
-    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
+    flow: PaymentFlow<PaymentMethod.StripeCard> // TODO
   ): Promise<string> {
     let customerId = this.data.customerId;
 
@@ -356,7 +357,7 @@ export class StripeProvider extends PaymentProvider {
    */
   private async processConfirmedIntent(
     intent: Stripe.SetupIntent | Stripe.PaymentIntent,
-    flow: CompletedPaymentFlow<PaymentFlowParamsStripe>
+    flow: PaymentFlow<PaymentMethod.StripeCard> // TODO
   ): Promise<void> {
     // Save old mandate to remove afterwards
     const oldMandateId = this.data.mandateId;
@@ -368,7 +369,7 @@ export class StripeProvider extends PaymentProvider {
 
     // Handle iDEAL to SEPA conversion
     if (
-      flow.params.paymentMethod === PaymentMethod.StripeIdeal &&
+      (flow.method as any) === PaymentMethod.StripeIdeal &&
       // TODO: fix this properly
       'latest_attempt' in intent
     ) {
