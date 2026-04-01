@@ -241,7 +241,7 @@
       "label": "General",
       "language": "Idioma",
       "logo": "Logotipo",
-      "organisationName": "Nombre de la organización",
+      "organisationName": "Nombre de organización",
       "socialSharing": {
         "description": "Descripción para compartir",
         "image": "Imagen para compartir",
@@ -611,7 +611,7 @@
                 "label": "Texto"
               },
               "url": {
-                "label": "URL"
+                "label": "Url"
               }
             },
             "responseSettings": {
@@ -796,7 +796,7 @@
       "label": "Fechas",
       "starts": "Comienza"
     },
-    "savedDraft": "",
+    "savedDraft": "Borrador guardado",
     "settings": {
       "answers": {
         "editable": "Se puede actualizar",
@@ -872,7 +872,7 @@
       "addedTag": "Etiqueta \"{tag}\" añadida",
       "movedToBucket": "Movido a {bucket}",
       "removedAssignee": "Desasignado de \"{assignee}\"",
-      "removedTag": "Etiqueta \"{tag}\" eliminada"
+      "removedTag": "Etiqueta \"{tag}\" eliminada "
     },
     "responseOf": "Respuesta {no} de {total} en {bucket}",
     "selectedCount": "{n} respuesta seleccionada | {n} respuestas seleccionadas"
@@ -1140,8 +1140,8 @@
       "subject": "Asunto",
       "title": "Plantillas de correo",
       "toggleEnabled": {
-        "disabled": "",
-        "enabled": ""
+        "disabled": "Plantilla de correo-e fue inhabilitada",
+        "enabled": "La plantilla de correo-e fue habilitada"
       }
     },
     "noContacts": "Aún no se han añadido contactos",
@@ -1153,7 +1153,7 @@
       "newEmail": "Nuevo correo",
       "sent": "El correo ha sido enviado al segmento.",
       "templateLabel": "Plantilla",
-      "templateName": "Nombre de la nueva plantilla",
+      "templateName": "Nombre de plantilla",
       "templateNameRequired": "Introduce un nombre para la nueva plantilla.",
       "title": "Enviar correo al segmento"
     },
@@ -1216,11 +1216,11 @@
       "label": "Mensaje"
     },
     "from": {
-      "label": ""
+      "label": "Utiliza un nombre de cartero personal y dirección de correo-e"
     },
     "preview": {
       "asContactLabel": "Contacto para vista previa",
-      "from": "",
+      "from": "Remite:",
       "label": "Vista previa",
       "unavailable": "Vista previa no disponible"
     },
@@ -1299,14 +1299,14 @@
       },
       "names": {
         "cancelled-contribution": "Contribución cancelada",
-        "cancelled-member": "Admin: Miembro cancelado – Notificación",
-        "confirm-email": "Confirmar correo electrónico",
+        "cancelled-member": "Admin: miembro cancelado – notificación",
+        "confirm-email": "Confirmar correo-e",
         "contribution-didnt-start": "Contribución no iniciada",
-        "email-exists-login": "Correo existente – Iniciar sesión",
-        "email-exists-set-password": "Correo existente – Establecer contraseña",
+        "email-exists-login": "Correo-e existente – Iniciar sesión",
+        "email-exists-set-password": "Correo-e existente – establecer contraseña",
         "manual-to-automatic": "Contribución manual convertida a automática",
-        "new-callout-response": "Admin: Nuevo CrowdNewsroom – Notificación de respuesta",
-        "new-member": "Admin: Nuevo contacto – Notificación",
+        "new-callout-response": "Admin: nuevo CrowdNewsroom – notificación de respuesta",
+        "new-member": "Admin: contacto nuevo – notificación",
         "one-time-donation": "Confirmación de contribución única",
         "one-time-donation-failed": "Contribución única fallida",
         "reset-device": "Restablecer dispositivo",
@@ -1316,7 +1316,7 @@
       },
       "type": {
         "admin": "Notificaciones de administrador",
-        "contact": "Correos de contacto",
+        "contact": "Correos-e de contacto",
         "general": "General"
       }
     },
@@ -1904,7 +1904,7 @@
     "noTags": "Sin etiquetas",
     "notifications": {
       "addedTag": "Etiqueta \"{tag}\" añadida",
-      "removedTag": "Etiqueta \"{tag}\" eliminada"
+      "removedTag": "Etiqueta \"{tag}\" eliminada "
     },
     "searchTag": "Etiquetado con...",
     "toggleTag": "Alternar etiqueta"
