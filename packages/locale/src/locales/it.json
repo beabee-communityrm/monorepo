@@ -180,11 +180,41 @@
       "showingOf": "Chiavi API da {start} a {end} su {total}"
     },
     "email": {
+      "contactTemplates": {
+        "button": "Gestisci modelli e-mail",
+        "contactJoins": "Il contatto entra nel segmento",
+        "contactLeaves": "Il contatto lascia il segmento",
+        "create": "Crea",
+        "description": "Qui puoi creare e personalizzare modelli e-mail per diversi gruppi di destinatari. Hai la possibilità di gestire sia e-mail una tantum che ricorrenti.",
+        "directSendDisabled": "Solo i contatti futuri riceveranno l’e-mail",
+        "directSendEnabled": "Tutti i contatti attuali riceveranno l’e-mail immediatamente",
+        "ongoing": "Ricorrente",
+        "ongoingDisabled": "L’e-mail verrà inviata una sola volta a tutti i contatti attuali",
+        "ongoingEnabled": "L’e-mail verrà inviata automaticamente in caso di modifiche al segmento",
+        "segment": "Segmento",
+        "send": "Invia",
+        "sendSettings": "Impostazioni di invio",
+        "sendTypes": {
+          "oneOffLabel": "Email una tantum",
+          "ongoingLabel": "Email ricorrente",
+          "title": "Invia come"
+        },
+        "summaryOnceOnly": "Questa e-mail verrà inviata una sola volta a tutti i contatti attuali del segmento.",
+        "summaryOngoingJoin": "Questa e-mail viene inviata quotidianamente ai contatti che sono entrati di recente nel segmento “{segment}”.",
+        "summaryOngoingJoinDirectSend": "Questa e-mail viene inviata quotidianamente ai nuovi contatti del segmento “{segment}”. Inoltre, tutti i contatti esistenti la riceveranno immediatamente.",
+        "summaryOngoingLeave": "Questa e-mail viene inviata quotidianamente ai contatti che hanno lasciato il segmento “{segment}”.",
+        "summaryOngoingPaused": "Questa e-mail ricorrente per il segmento “{segment}” è attualmente in pausa e non viene inviata.",
+        "summaryTemplate": "Questa e-mail non viene inviata automaticamente e può essere utilizzata come modello per nuove e-mail ai segmenti.",
+        "title": "Basato sui segmenti",
+        "titleDirectSend": "Invia immediatamente ai contatti esistenti",
+        "titleSendTime": "Invia quando"
+      },
       "fromEmail": "E-mail del mittente",
       "fromName": "Nome del mittente",
       "label": "E-mail",
       "templates": {
         "description": "Gestisci oggetto e corpo delle email inviate dall'applicazione. Il colore dello stato indica se l'email è personalizzata (verde), usa il modello predefinito (giallo) o non è configurata e quindi non attiva (rosso).",
+        "subtitle": "Di sistema",
         "title": "Imposta i modelli email"
       },
       "text": "Tutte le comunicazioni via e-mail verranno inviate da questo indirizzo e-mail.",
@@ -766,6 +796,7 @@
       "label": "Date",
       "starts": "Inizio"
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "Modificabili",
@@ -1094,17 +1125,21 @@
         "text": "Sei sicuro di voler eliminare questo modello email? Questa azione non può essere annullata.",
         "title": "Eliminare il modello?"
       },
+      "create": "Crea modello",
       "date": "Creato",
-      "edit": "Modifica",
       "editTitle": "Modifica modello",
       "editTitleWithName": "Modifica modello: {name}",
       "empty": "Nessun modello email ancora.",
       "manage": "Gestisci modelli email",
       "name": "Nome",
+      "newTitle": "Crea nuovo modello",
       "showingOf": "Modelli da {start} a {end} su {total}",
       "subject": "Oggetto",
       "title": "Modelli email",
-      "use": "Usa"
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "Nessun contatto aggiunto ancora",
     "noResults": "Nessun contatto trovato",
@@ -1113,14 +1148,9 @@
     "selectedCount": "{n} contatto selezionato | {n} contatti selezionati",
     "sendEmail": {
       "newEmail": "Nuova email",
-      "saveAndBack": "Salva e torna",
-      "saveAndBackSuccess": "Modello salvato.",
-      "saveAndSend": "Salva e invia",
-      "send": "Invia",
       "sent": "L'email è stata inviata al segmento.",
-      "sentTimes": "Inviato {n} volte",
       "templateLabel": "Modello",
-      "templateName": "Nome del nuovo modello",
+      "templateName": "Nome del modello",
       "templateNameRequired": "Inserisci un nome per il nuovo modello.",
       "title": "Invia email al segmento"
     },
@@ -1182,8 +1212,12 @@
     "body": {
       "label": "Messaggio"
     },
+    "from": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "Contatto per anteprima",
+      "from": "",
       "label": "Anteprima",
       "unavailable": "Anteprima non disponibile"
     },
@@ -1218,6 +1252,7 @@
     },
     "fromEmail": "Email mittente",
     "fromName": "Nome mittente",
+    "isOngoing": "Tipo",
     "list": {
       "showingOf": "Visualizzazione da {start} a {end} email su {total}"
     },
@@ -1231,6 +1266,11 @@
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "Email aggiornata con successo"
+    },
+    "sendType": {
+      "oneOff": "Una tantum",
+      "ongoing": "Ricorrente",
+      "paused": "In pausa"
     },
     "status": "Stato",
     "tabs": {

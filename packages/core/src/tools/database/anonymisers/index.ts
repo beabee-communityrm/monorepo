@@ -14,7 +14,6 @@ import {
   ModelAnonymiser,
   ObjectMap,
   PropertyMap,
-  calloutResponsesAnonymiser,
   createAnswersAnonymiser,
 } from './models';
 
@@ -39,7 +38,8 @@ async function anonymiseCalloutResponses(
   prepareQuery: (
     qb: SelectQueryBuilder<CalloutResponse>
   ) => SelectQueryBuilder<CalloutResponse>,
-  valueMap: Map<string, unknown>
+  valueMap: Map<string, unknown>,
+  responseObjectMap: ObjectMap<CalloutResponse>
 ): Promise<void> {
   const callouts = await createQueryBuilder(Callout, 'callout').getMany();
   for (const callout of callouts) {
@@ -59,11 +59,7 @@ async function anonymiseCalloutResponses(
     log.info('-- ' + callout.slug);
 
     const newResponses = responses.map((response) => ({
-      ...anonymiseItem(
-        response,
-        calloutResponsesAnonymiser.objectMap,
-        valueMap
-      ),
+      ...anonymiseItem(response, responseObjectMap, valueMap),
       answers: anonymiseItem(response.answers, answersMap, undefined, false),
     }));
 
@@ -92,15 +88,30 @@ function anonymiseItem<T>(
     const propertyMap = objectMap[prop] as PropertyMap<unknown>;
     const oldValue = item[prop];
     if (oldValue && propertyMap) {
-      const valueKey = stringify(oldValue);
+      let valueKey, newValue;
 
-      const newValue =
-        typeof propertyMap === 'function'
-          ? valueMap.get(valueKey) || propertyMap(oldValue)
-          : anonymiseItem(oldValue, propertyMap, valueMap);
+      if (Array.isArray(propertyMap) && typeof propertyMap[0] === 'symbol') {
+        // PropertyMap is type [symbol, (prop: T) => T]
+        const [namespace, propertyFn] = propertyMap;
+        // Use the symbol to namespace the value key so that the new value is only
+        // remapped for other properties in this namespace
+        valueKey = `${namespace.toString()}-${stringify(oldValue)}`;
+        newValue = valueMap.get(valueKey) || propertyFn(oldValue);
+      } else if (typeof propertyMap === 'function') {
+        // PropertyMap is type (prop: T) => T
+        // No namespace, just map the value simply
+        valueKey = stringify(oldValue);
+        newValue = valueMap.get(valueKey) || propertyMap(oldValue);
+      } else {
+        // PropertyMap is type ObjectMap
+        // Nested property, anonymise the object recursively
+        valueKey = stringify(oldValue);
+        newValue = anonymiseItem(oldValue, propertyMap, valueMap);
+      }
 
       newItem[prop] = newValue;
 
+      // Remember the new value to apply the same mapping if that value is seen again
       valueMap.set(valueKey, newValue);
     }
   }
@@ -163,8 +174,15 @@ export async function anonymiseModel<T extends ObjectLiteral>(
   log.info(`Anonymising ${metadata.tableName}`);
 
   // Callout responses are handled separately
-  if (anonymiser === calloutResponsesAnonymiser) {
-    return await anonymiseCalloutResponses(prepareQuery as any, valueMap);
+  if (anonymiser.strategy === 'calloutResponsesPerComponent') {
+    const calloutPrepareQuery = prepareQuery as unknown as (
+      qb: SelectQueryBuilder<CalloutResponse>
+    ) => SelectQueryBuilder<CalloutResponse>;
+    return await anonymiseCalloutResponses(
+      calloutPrepareQuery,
+      valueMap,
+      anonymiser.objectMap as ObjectMap<CalloutResponse>
+    );
   }
 
   // Order by primary keys for predictable pagination

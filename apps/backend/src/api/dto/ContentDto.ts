@@ -31,6 +31,7 @@ import {
 import { GetContentTelegramDto } from '#api/dto/ContentTelegramDto';
 import { LinkDto } from '#api/dto/LinkDto';
 import { NewsletterGroupDto } from '#api/dto/NewsletterDto';
+import IsFromEmail from '#api/validators/IsFromEmail';
 
 export class GetContentContactsDto implements ContentContactsData {
   @IsString({ each: true })
@@ -41,7 +42,7 @@ export class GetContentContactsDto implements ContentContactsData {
 }
 
 export class GetContentEmailDto implements ContentEmailData {
-  @IsString()
+  @IsFromEmail()
   supportEmail!: string;
 
   @IsString()
@@ -61,7 +62,7 @@ export class GetContentGeneralDto implements ContentGeneralData<Locale> {
   @IsString()
   siteUrl!: string;
 
-  @IsString()
+  @IsFromEmail()
   supportEmail!: string;
 
   @IsString()

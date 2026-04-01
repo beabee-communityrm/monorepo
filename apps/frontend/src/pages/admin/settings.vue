@@ -6,7 +6,7 @@ meta:
 
 <template>
   <PageTitle :title="t('menu.adminSettings')" />
-  <AppTabs :items="tabs" :selected="(route.name as string) || ''" />
+  <AppTabs :items="tabs" :selected="selectedTab?.id || ''" />
   <router-view />
 </template>
 
@@ -48,7 +48,7 @@ const tabs = computed(() =>
 );
 
 const selectedTab = computed(() =>
-  tabs.value.find((tab) => tab.id === route.name)
+  tabs.value.find((tab) => route.name.startsWith(tab.id))
 );
 
 addBreadcrumb(

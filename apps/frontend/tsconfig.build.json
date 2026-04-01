@@ -4,6 +4,7 @@
     "allowImportingTsExtensions": true,
     "paths": {
       "#components/*": ["./src/components/*"],
+      "#composables/*": ["./src/composables/*"],
       "#layouts/*": ["./src/layouts/*"],
       "#lib/*": ["./src/lib/*"],
       "#pages/*": ["./src/pages/*"],

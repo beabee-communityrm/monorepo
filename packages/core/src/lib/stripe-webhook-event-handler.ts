@@ -36,7 +36,7 @@ export class StripeWebhookEventHandler {
     log.info(`Processing webhook ${event.id} ${event.type}`);
 
     if (!STRIPE_WEBHOOK_EVENTS.includes(event.type as any)) {
-      log.warn(`Unknown event type: ${event.type}`);
+      log.warning(`Unknown event type: ${event.type}`);
       return;
     }
 

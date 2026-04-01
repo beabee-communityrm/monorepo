@@ -4,10 +4,10 @@ import {
   Email,
   EmailMailing,
   Segment,
-  SegmentContact,
   SegmentOngoingEmail,
 } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
+import SegmentService from '@beabee/core/services/SegmentService';
 import { AuthInfo } from '@beabee/core/type';
 
 import {
@@ -98,7 +98,7 @@ export class SegmentController {
   @Delete('/:id')
   @OnUndefined(204)
   async deleteSegment(@Params() { id }: UUIDParams): Promise<void> {
-    await getRepository(SegmentContact).delete({ segment: { id } });
+    await SegmentService.removeAllContactsFromSegment(id);
     await getRepository(SegmentOngoingEmail).delete({ segment: { id } });
     const result = await getRepository(Segment).delete(id);
     if (result.affected === 0) {
@@ -123,7 +123,7 @@ export class SegmentController {
     });
   }
 
-  /** Send one-off email to all contacts in the segment (admin). */
+  /** Send email to all contacts in the segment (admin). */
   @OnUndefined(204)
   @Post('/:id/email/send')
   async sendEmail(
@@ -149,6 +149,16 @@ export class SegmentController {
         contactList,
         data.subject,
         data.body
+      );
+    }
+
+    // Only track contacts when explicitly requested (i.e. initial send of
+    // an ongoing email). Pure one-off sends must not pollute segment_contact,
+    // otherwise contacts would be skipped by future ongoing emails.
+    if (data.ongoingDirectSend) {
+      await SegmentService.addContactsToSegment(
+        id,
+        contactList.map((c) => c.id)
       );
     }
   }

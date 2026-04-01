@@ -1,7 +1,11 @@
 <template>
-  <AppForm full-button :button-text="buttonText" @submit.prevent="handleSubmit">
+  <AppApiForm
+    full-button
+    :button-text="buttonText"
+    @submit.prevent="handleSubmit"
+  >
     <slot />
-  </AppForm>
+  </AppApiForm>
 
   <AppModal v-if="showModal" open :title="title" class="w-full" @close="reset">
     <p v-if="!stripeHasLoaded" class="p-4 text-center">
@@ -43,13 +47,14 @@ import {
   type PaymentFlowResult,
   PaymentMethod,
 } from '@beabee/beabee-common';
-import { AppForm, AppModal, addNotification } from '@beabee/vue';
+import { AppModal, addNotification } from '@beabee/vue';
 
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+import AppApiForm from '#components/forms/AppApiForm.vue';
 import StripePaymentForm from '#components/forms/StripePaymentForm.vue';
 import env from '#env';
 import type { PaymentFlowFormData } from '#type/payment-flow-form-data';
