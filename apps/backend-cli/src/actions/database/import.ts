@@ -7,23 +7,36 @@ import { config } from '@beabee/core/config';
 import { dataSource } from '@beabee/core/database';
 import { runApp } from '@beabee/core/server';
 
-import { createReadStream } from 'node:fs';
-import readline from 'node:readline';
+import { createReadStream, readFileSync } from 'node:fs';
 import type { Readable } from 'node:stream';
 
-async function importFromStream(stream: Readable): Promise<void> {
-  await dataSource.manager.transaction(async (manager) => {
-    const rl = readline.createInterface({
-      input: stream,
-      output: process.stdout,
-      terminal: false,
-    });
+/**
+ * Read all lines from a stream without readline's internal line length limit.
+ * Node.js readline can silently split lines longer than ~1.8MB.
+ */
+async function readLines(stream: Readable): Promise<string[]> {
+  const chunks: Buffer[] = [];
+  for await (const chunk of stream) {
+    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+  }
+  return Buffer.concat(chunks).toString('utf8').split('\n');
+}
 
+async function importFromLines(lines: string[], merge = false): Promise<void> {
+  await dataSource.manager.transaction(async (manager) => {
     let query = '';
-    for await (const line of rl) {
+    for (const line of lines) {
       if (query) {
-        console.log('Running ' + query.substring(0, 100) + '...');
-        await manager.query(query, line !== '' ? JSON.parse(line) : undefined);
+        if (merge && query.startsWith('DELETE FROM')) {
+          console.log('Skipping ' + query.substring(0, 100) + ' (merge mode)');
+        } else {
+          let sql = query;
+          if (merge && sql.startsWith('INSERT INTO')) {
+            sql = sql.replace(/;\s*$/, ' ON CONFLICT DO NOTHING;');
+          }
+          console.log('Running ' + sql.substring(0, 100) + '...');
+          await manager.query(sql, line !== '' ? JSON.parse(line) : undefined);
+        }
         query = '';
       } else {
         query = line;
@@ -34,7 +47,8 @@ async function importFromStream(stream: Readable): Promise<void> {
 
 export const importDatabase = async (
   filePath: string | undefined,
-  dryRun = false
+  dryRun = false,
+  merge = false
 ): Promise<void> => {
   if (!config.dev) {
     console.error("Can't import to live database");
@@ -48,10 +62,11 @@ export const importDatabase = async (
 
   await runApp(async () => {
     if (filePath) {
-      const stream = createReadStream(filePath, 'utf8');
-      await importFromStream(stream);
+      const lines = readFileSync(filePath, 'utf8').split('\n');
+      await importFromLines(lines, merge);
     } else {
-      await importFromStream(process.stdin);
+      const lines = await readLines(process.stdin);
+      await importFromLines(lines, merge);
     }
   });
 };

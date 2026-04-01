@@ -1,5 +1,16 @@
+import {
+  Callout,
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutResponseSegment,
+  CalloutResponseTag,
+  CalloutReviewer,
+  CalloutTag,
+  CalloutVariant,
+} from '@beabee/core/models';
 import * as models from '@beabee/core/tools/database/anonymisers/models';
 
+import { Chance } from 'chance';
 import { type ObjectLiteral, type SelectQueryBuilder } from 'typeorm';
 
 /**
@@ -25,37 +36,43 @@ export const ALWAYS_ANONYMIZED_MODELS = [
  * Models that are only anonymised when anonymize=true
  * These contain less sensitive data that can optionally be exported as-is
  */
-export const OPTIONALLY_ANONYMIZED_MODELS = [
-  models.exportsAnonymiser,
-  models.giftFlowAnonymiser,
-  models.noticesAnonymiser,
-  models.optionsAnonymiser,
-  models.pageSettingsAnonymiser,
-  models.calloutsAnonymiser,
-  models.calloutTagsAnonymiser,
-  models.calloutResponsesAnonymiser,
-  models.calloutResponseCommentsAnonymiser,
-  models.calloutResponseTagsAnonymiser,
-  models.calloutReviewerAnonymiser,
-  models.calloutResponseSegmentsAnonymiser,
-  models.signupFlowAnonymiser,
-  models.paymentFlowAnonymiser,
-  models.calloutVariantAnonymiser,
-  models.projectsAnonymiser,
-  models.projectContactsAnonymiser,
-  models.projectEngagementsAnonymiser,
-  models.referralsGiftAnonymiser,
-  models.referralsAnonymiser,
-  models.resetSecurityFlowAnonymiser,
-  models.exportItemsAnonymiser,
-] as models.ModelAnonymiser[];
+function getOptionallyAnonymizedModels(
+  preserveCalloutAnswers = false
+): models.ModelAnonymiser[] {
+  return [
+    models.exportsAnonymiser,
+    models.giftFlowAnonymiser,
+    models.noticesAnonymiser,
+    models.optionsAnonymiser,
+    models.pageSettingsAnonymiser,
+    models.calloutsAnonymiser,
+    models.calloutTagsAnonymiser,
+    preserveCalloutAnswers
+      ? calloutResponseCalloutExportAnonymiser
+      : models.calloutResponsesAnonymiser,
+    models.calloutResponseCommentsAnonymiser,
+    models.calloutResponseTagsAnonymiser,
+    models.calloutReviewerAnonymiser,
+    models.calloutResponseSegmentsAnonymiser,
+    models.signupFlowAnonymiser,
+    models.paymentFlowAnonymiser,
+    models.calloutVariantAnonymiser,
+    models.projectsAnonymiser,
+    models.projectContactsAnonymiser,
+    models.projectEngagementsAnonymiser,
+    models.referralsGiftAnonymiser,
+    models.referralsAnonymiser,
+    models.resetSecurityFlowAnonymiser,
+    models.exportItemsAnonymiser,
+  ] as models.ModelAnonymiser[];
+}
 
 /**
  * Passthrough anonymisers: same models as OPTIONALLY_ANONYMIZED_MODELS but with
  * empty objectMap so the core exports rows as-is (no anonymisation).
  */
 function getOptionalPassthroughAnonymisers(): models.ModelAnonymiser[] {
-  return OPTIONALLY_ANONYMIZED_MODELS.map((a) => ({
+  return getOptionallyAnonymizedModels(false).map((a) => ({
     model: a.model,
     objectMap: {} as models.ObjectMap<unknown>,
   })) as models.ModelAnonymiser[];
@@ -184,15 +201,83 @@ export function getDemoPrepareQuery(
   return (qb) => qb;
 }
 
+// --- Callout export anonymizers ---
+
+const calloutExportChance = new Chance();
+
+/**
+ * Callout response anonymiser for callout export: keeps answers intact,
+ * NULLs contact FKs, anonymises guest personal data.
+ * This is intentionally a different object than calloutResponsesAnonymiser
+ * so anonymiseModel() uses the normal code path (no per-callout answer anonymisation).
+ */
+const calloutResponseCalloutExportAnonymiser: models.ModelAnonymiser = {
+  model: CalloutResponse,
+  objectMap: {
+    contactId: () => null,
+    assigneeId: () => null,
+    guestName: () => calloutExportChance.name(),
+    guestEmail: () =>
+      calloutExportChance.email({ domain: 'example.com', length: 10 }),
+  } as models.ObjectMap<unknown>,
+};
+
+/** Callout export: tables to insert with anonymisation (personal data only).
+ *  CalloutVariant and CalloutTag are passthrough (no personal data).
+ *  CalloutReviewer is excluded (non-nullable contactId FK). */
+export const CALLOUT_EXPORT_ANONYMIZERS: models.ModelAnonymiser[] = [
+  { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
+  calloutResponseCalloutExportAnonymiser,
+];
+
+/** Callout export: full anonymisation including per-component answer anonymisation */
+export const CALLOUT_EXPORT_FULL_ANONYMIZERS: models.ModelAnonymiser[] = [
+  { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
+  models.calloutResponsesAnonymiser,
+] as models.ModelAnonymiser[];
+
+/** Callout export: tables to insert without any anonymisation */
+export const CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS: models.ModelAnonymiser[] =
+  [
+    { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
+    { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
+    { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
+    { model: CalloutResponse, objectMap: {} as models.ObjectMap<unknown> },
+  ];
+
+/** Callout export: all tables to clear (FK dependencies), in insert order.
+ *  clearModels() reverses this to delete children before parents. */
+export const CALLOUT_EXPORT_CLEAR_MODELS: models.ModelAnonymiser[] = [
+  { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutReviewer, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutResponseSegment, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutResponse, objectMap: {} as models.ObjectMap<unknown> },
+  { model: CalloutResponseTag, objectMap: {} as models.ObjectMap<unknown> },
+  {
+    model: CalloutResponseComment,
+    objectMap: {} as models.ObjectMap<unknown>,
+  },
+];
+
 /**
  * Get anonymizers based on anonymization level
  */
 export const getAnonymizers = (
   anonymize: boolean,
-  skipAnonymizeTables: string[] = []
+  skipAnonymizeTables: string[] = [],
+  preserveCalloutAnswers = false
 ): models.ModelAnonymiser[] => {
-  const fullList = anonymize
-    ? [...ALWAYS_ANONYMIZED_MODELS, ...OPTIONALLY_ANONYMIZED_MODELS]
+  let fullList = anonymize
+    ? [
+        ...ALWAYS_ANONYMIZED_MODELS,
+        ...getOptionallyAnonymizedModels(preserveCalloutAnswers),
+      ]
     : [...ALWAYS_ANONYMIZED_MODELS, ...getOptionalPassthroughAnonymisers()];
 
   if (skipAnonymizeTables.length === 0) return fullList;
