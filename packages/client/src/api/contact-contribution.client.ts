@@ -2,7 +2,8 @@ import {
   type ContributionInfo,
   ContributionPeriod,
   type ForceUpdateContributionData,
-  type PaymentFlowResult,
+  PaymentFlowAdvanceParams,
+  type PaymentFlowSetupResult,
   type Serial,
   type SetContributionData,
   type StartContributionData,
@@ -80,8 +81,10 @@ export class ContactContributionClient extends BaseClient {
   /**
    * Start a new contribution
    */
-  async start(startData: StartContributionData): Promise<PaymentFlowResult> {
-    const { data } = await this.fetch.post<Serial<PaymentFlowResult>>(
+  async start(
+    startData: StartContributionData
+  ): Promise<PaymentFlowSetupResult> {
+    const { data } = await this.fetch.post<Serial<PaymentFlowSetupResult>>(
       '/me/contribution',
       startData
     );
@@ -91,12 +94,13 @@ export class ContactContributionClient extends BaseClient {
   /**
    * Complete starting a contribution
    */
-  async completeStart(paymentFlowId: string): Promise<ContributionInfo> {
+  async completeStart(
+    paymentFlowId: string,
+    params?: PaymentFlowAdvanceParams
+  ): Promise<ContributionInfo> {
     const { data } = await this.fetch.post<Serial<ContributionInfo>>(
       '/me/contribution/complete',
-      {
-        paymentFlowId,
-      }
+      { paymentFlowId, params }
     );
     return ContactContributionClient.deserialize(data);
   }

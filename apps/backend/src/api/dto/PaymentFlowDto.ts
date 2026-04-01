@@ -1,9 +1,8 @@
 import {
   PaymentFlowAdvanceParamsGoCardless,
   PaymentFlowAdvanceParamsStripe,
-  PaymentFlowResult,
-  PaymentFlowSetupParamsGoCardless,
-  PaymentFlowSetupParamsStripe,
+  PaymentFlowSetupParams,
+  PaymentFlowSetupResult,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
@@ -12,68 +11,49 @@ import {
   TransformFnParams,
   plainToInstance,
 } from 'class-transformer';
-import { Equals, IsEnum, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsOptional,
+  IsString,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
 
 import IsUrl from '#api/validators/IsUrl';
 
-export class PaymentFlowResultDto implements PaymentFlowResult {
-  @IsOptional()
-  @IsString()
-  redirectUrl?: string;
-}
-
 export class CompletePaymentFlowDto {
-  @IsString()
-  paymentFlowId!: string;
-}
-
-export class AdvancePaymentFlowDto {
-  @IsString()
+  @IsUUID('4')
   paymentFlowId!: string;
 
+  @IsOptional()
+  @ValidateNested()
   @Transform(transformPaymentFlowAdvanceParams)
-  advanceParams!: PaymentFlowAdvanceParamsDto;
+  params?: PaymentFlowAdvanceParamsDto;
 }
 
-class PaymentFlowParamsGoCardlessDto
-  implements PaymentFlowSetupParamsGoCardless
-{
-  @Equals(PaymentMethod.GoCardlessDirectDebit)
-  paymentMethod!: PaymentMethod.GoCardlessDirectDebit;
+export class PaymentFlowSetupParamsDto implements PaymentFlowSetupParams {
+  @IsEnum(PaymentMethod)
+  paymentMethod!: PaymentMethod;
 
   @IsUrl()
   completeUrl!: string;
 }
 
-class PaymentFlowParamsStripeDto implements PaymentFlowSetupParamsStripe {
-  @IsEnum([
-    PaymentMethod.StripeCard,
-    PaymentMethod.StripeBACS,
-    PaymentMethod.StripeSEPA,
-    PaymentMethod.StripePayPal,
-    PaymentMethod.StripeIdeal,
-  ])
-  paymentMethod!:
-    | PaymentMethod.StripeCard
-    | PaymentMethod.StripeBACS
-    | PaymentMethod.StripeSEPA
-    | PaymentMethod.StripePayPal
-    | PaymentMethod.StripeIdeal;
+export class PaymentFlowSetupResultDto implements PaymentFlowSetupResult {
+  @IsString()
+  id!: string;
+
+  @IsOptional()
+  @IsString()
+  redirectUrl?: string;
 }
 
 class PaymentFlowAdvanceParamsGoCardlessDto
-  implements PaymentFlowAdvanceParamsGoCardless
-{
-  @IsString()
-  paymentFlowId!: string;
-}
+  implements PaymentFlowAdvanceParamsGoCardless {}
 
 class PaymentFlowAdvanceParamsStripeDto
   implements PaymentFlowAdvanceParamsStripe
 {
-  @IsString()
-  paymentFlowId!: string;
-
   @IsString()
   token!: string;
 
@@ -101,21 +81,6 @@ export function transformPaymentFlowAdvanceParams(
     params.value.paymentMethod === PaymentMethod.GoCardlessDirectDebit
       ? PaymentFlowAdvanceParamsGoCardlessDto
       : PaymentFlowAdvanceParamsStripeDto,
-    params.value
-  );
-}
-
-export type PaymentFlowParamsDto =
-  | PaymentFlowParamsGoCardlessDto
-  | PaymentFlowParamsStripeDto;
-
-export function transformPaymentFlowParams(
-  params: TransformFnParams
-): PaymentFlowParamsDto {
-  return plainToInstance<PaymentFlowParamsDto, unknown>(
-    params.value.paymentMethod === PaymentMethod.GoCardlessDirectDebit
-      ? PaymentFlowParamsGoCardlessDto
-      : PaymentFlowParamsStripeDto,
     params.value
   );
 }

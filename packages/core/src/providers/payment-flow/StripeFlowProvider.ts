@@ -1,5 +1,10 @@
-import { PaymentFlowSetupParams, PaymentMethod } from '@beabee/beabee-common';
+import {
+  PaymentFlowSetupParams,
+  PaymentFlowSetupResult,
+  PaymentMethod,
+} from '@beabee/beabee-common';
 
+import { NoPaymentMethod } from '#errors/NoPaymentMethod';
 import { stripe } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
 import { PaymentFlow } from '#models/index';
@@ -26,12 +31,11 @@ class StripeFlowProvider implements PaymentFlowProvider {
   async setupPaymentFlow(
     flow: PaymentFlow,
     _params: PaymentFlowSetupParams
-  ): Promise<PaymentFlowSetup> {
+  ): Promise<PaymentFlowSetupResult> {
     // For Stripe, we don't need to create anything in the setup phase
     // The token will be provided in the advance phase
     return {
       id: flow.id, // Use the flow ID as the setup ID
-      result: {},
     };
   }
 
@@ -91,6 +95,10 @@ class StripeFlowProvider implements PaymentFlowProvider {
   async getCompletedPaymentFlowData({
     flow, // TODO
   }: CompletedPaymentFlow<PaymentMethod.StripeCard>): Promise<CompletedPaymentFlowData> {
+    if (!flow.params) {
+      throw new NoPaymentMethod();
+    }
+
     const token = await stripe.confirmationTokens.retrieve(flow.params.token);
 
     const address = token.payment_method_preview?.billing_details.address;

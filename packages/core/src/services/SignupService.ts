@@ -1,8 +1,8 @@
 import {
   PaymentFlowAdvanceParams,
   PaymentFlowAdvanceParamsStripe,
-  PaymentFlowResult,
   PaymentFlowSetupParams,
+  PaymentFlowSetupResult,
   PaymentMethod,
   RESET_SECURITY_FLOW_TYPE,
 } from '@beabee/beabee-common';
@@ -59,15 +59,15 @@ class SignupService {
     signupData: SignupData,
     form: PaymentFlowForm,
     params: PaymentFlowSetupParams
-  ): Promise<PaymentFlowResult> {
-    const setup = await PaymentFlowService.startPaymentFlow(form, params);
+  ): Promise<PaymentFlowSetupResult> {
+    const result = await PaymentFlowService.startPaymentFlow(form, params);
 
     await getRepository(SignupFlow).save({
       ...signupData,
-      paymentFlowId: setup.flow.id,
+      paymentFlowId: result.id,
     });
 
-    return setup.result;
+    return result;
   }
 
   /**
@@ -81,7 +81,7 @@ class SignupService {
     advanceParams: PaymentFlowAdvanceParams
   ): Promise<void> {
     const signupFlow = await getRepository(SignupFlow).findOne({
-      where: { paymentFlow: { paymentFlowId } },
+      where: { paymentFlow: { id: paymentFlowId } },
       relations: { paymentFlow: true },
     });
 

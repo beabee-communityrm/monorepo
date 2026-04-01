@@ -1,16 +1,13 @@
 import {
-  PaymentFlowSetupParamsGoCardless,
+  PaymentFlowSetupParams,
+  PaymentFlowSetupResult,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
 import gocardless from '#lib/gocardless';
 import { log as mainLogger } from '#logging';
 import { PaymentFlow } from '#models/index';
-import {
-  CompletedPaymentFlow,
-  CompletedPaymentFlowData,
-  PaymentFlowSetup,
-} from '#type/index';
+import { CompletedPaymentFlow, CompletedPaymentFlowData } from '#type/index';
 
 import { PaymentFlowProvider } from './PaymentFlowProvider';
 
@@ -30,19 +27,20 @@ class GCFlowProvider implements PaymentFlowProvider {
    */
   async setupPaymentFlow(
     flow: PaymentFlow,
-    params: PaymentFlowSetupParamsGoCardless
-  ): Promise<PaymentFlowSetup> {
+    params: PaymentFlowSetupParams
+  ): Promise<PaymentFlowSetupResult> {
+    const url = new URL(params.completeUrl);
+    url.searchParams.set('paymentFlowId', flow.id);
+
     const redirectFlow = await gocardless.redirectFlows.create({
       session_token: flow.id,
-      success_redirect_url: params.completeUrl,
+      success_redirect_url: url.toString(),
     });
     log.info('Created redirect flow ' + redirectFlow.id);
 
     return {
       id: redirectFlow.id!,
-      result: {
-        redirectUrl: redirectFlow.redirect_url!,
-      },
+      redirectUrl: redirectFlow.redirect_url!,
     };
   }
 
@@ -55,7 +53,7 @@ class GCFlowProvider implements PaymentFlowProvider {
     flow: PaymentFlow<PaymentMethod.GoCardlessDirectDebit>
   ): Promise<CompletedPaymentFlow> {
     const redirectFlow = await gocardless.redirectFlows.complete(
-      flow.paymentFlowId,
+      flow.providerFlowId,
       {
         session_token: flow.id,
       }

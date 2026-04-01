@@ -65,9 +65,8 @@ import {
   UpdatePaymentMethodDto,
 } from '#api/dto/PaymentDto';
 import {
-  AdvancePaymentFlowDto,
   CompletePaymentFlowDto,
-  PaymentFlowResultDto,
+  PaymentFlowSetupResultDto,
 } from '#api/dto/PaymentFlowDto';
 import { ContactRoleParams } from '#api/params/ContactRoleParams';
 import ContactExporter from '#api/transformers/ContactExporter';
@@ -248,7 +247,7 @@ export class ContactController {
   async startContribution(
     @TargetUser() target: Contact,
     @Body() data: StartContributionDto
-  ): Promise<PaymentFlowResultDto> {
+  ): Promise<PaymentFlowSetupResultDto> {
     const form = {
       action: 'start-contribution' as const,
       monthlyAmount: getMonthlyAmount(data.amount, data.period),
@@ -260,11 +259,8 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    const { result } = await PaymentFlowService.startPaymentFlow(
-      form,
-      data.params
-    );
-    return plainToInstance(PaymentFlowResultDto, result);
+    const result = await PaymentFlowService.startPaymentFlow(form, data.params);
+    return plainToInstance(PaymentFlowSetupResultDto, result);
   }
 
   /**
@@ -323,18 +319,6 @@ export class ContactController {
       'cancelled-contribution-no-survey'
     );
   }
-
-  @Post('/:id/contribution/advance')
-  async advanceStartContribution(
-    @TargetUser() target: Contact,
-    @Body() data: AdvancePaymentFlowDto
-  ): Promise<void> {
-    await PaymentFlowService.advancePaymentFlow(
-      data.paymentFlowId,
-      data.advanceParams
-    );
-  }
-
   @Post('/:id/contribution/complete')
   async completeStartContribution(
     @TargetUser() target: Contact,
@@ -342,7 +326,8 @@ export class ContactController {
   ): Promise<GetContributionInfoDto> {
     await PaymentFlowService.completePaymentFlowAndProcess(
       target,
-      data.paymentFlowId
+      data.paymentFlowId,
+      data.params
     );
     return await this.getContribution(target);
   }
@@ -368,7 +353,7 @@ export class ContactController {
   async createOneTimePayment(
     @TargetUser() target: Contact,
     @Body() data: CreatePaymentDto
-  ): Promise<PaymentFlowResultDto> {
+  ): Promise<PaymentFlowSetupResultDto> {
     const form = {
       action: 'create-one-time-payment' as const,
       amount: data.amount,
@@ -379,11 +364,8 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    const { result } = await PaymentFlowService.startPaymentFlow(
-      form,
-      data.params
-    );
-    return plainToInstance(PaymentFlowResultDto, result);
+    const result = await PaymentFlowService.startPaymentFlow(form, data.params);
+    return plainToInstance(PaymentFlowSetupResultDto, result);
   }
 
   @OnUndefined(204)
@@ -394,7 +376,8 @@ export class ContactController {
   ): Promise<void> {
     await PaymentFlowService.completePaymentFlowAndProcess(
       target,
-      data.paymentFlowId
+      data.paymentFlowId,
+      data.params
     );
   }
 
@@ -420,7 +403,7 @@ export class ContactController {
   async updatePaymentMethod(
     @TargetUser() target: Contact,
     @Body() { params }: UpdatePaymentMethodDto
-  ): Promise<PaymentFlowResultDto> {
+  ): Promise<PaymentFlowSetupResultDto> {
     const form = {
       action: 'update-payment-method' as const,
     };
@@ -429,8 +412,8 @@ export class ContactController {
       throw new CantUpdateContribution();
     }
 
-    const { result } = await PaymentFlowService.startPaymentFlow(form, params);
-    return plainToInstance(PaymentFlowResultDto, result);
+    const result = await PaymentFlowService.startPaymentFlow(form, params);
+    return plainToInstance(PaymentFlowSetupResultDto, result);
   }
 
   @Post('/:id/payment-method/complete')
@@ -440,7 +423,8 @@ export class ContactController {
   ): Promise<GetContributionInfoDto> {
     await PaymentFlowService.completePaymentFlowAndProcess(
       target,
-      data.paymentFlowId
+      data.paymentFlowId,
+      data.params
     );
     return await this.getContribution(target);
   }

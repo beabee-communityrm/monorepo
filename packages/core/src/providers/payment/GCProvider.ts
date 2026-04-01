@@ -55,12 +55,12 @@ export class GCProvider extends PaymentProvider {
   async processPaymentFlow(
     flow: CompletedPaymentFlow
   ): Promise<UpdateContributionResult | undefined> {
-    if (flow.form.action === 'create-one-time-payment') {
+    if (flow.flow.form.action === 'create-one-time-payment') {
       throw new Error('One-time payments are not supported with GoCardless');
     } else {
       await this.updatePaymentMethod(flow);
-      if (flow.form.action === 'start-contribution') {
-        return await this.processUpdateContribution(flow.form);
+      if (flow.flow.form.action === 'start-contribution') {
+        return await this.processUpdateContribution(flow.flow.form);
       }
     }
   }

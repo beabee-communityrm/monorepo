@@ -234,6 +234,10 @@ export class StripeProvider extends PaymentProvider {
   private async updatePaymentMethod(
     flow: PaymentFlow<PaymentMethod.StripeCard>
   ): Promise<void> {
+    if (!flow.params) {
+      throw new NoPaymentMethod();
+    }
+
     const customerId = await this.ensureCustomerForFlow(flow);
 
     // TODO: handle requires_action
@@ -292,6 +296,10 @@ export class StripeProvider extends PaymentProvider {
       throw new CantUpdateContribution();
     }
 
+    if (!flow.params) {
+      throw new NoPaymentMethod();
+    }
+
     const customerId = await this.ensureCustomerForFlow(flow);
 
     // TODO: check no mandate ID?
@@ -337,7 +345,7 @@ export class StripeProvider extends PaymentProvider {
       const customer = await stripe.customers.create({
         email: this.contact.email,
         name: `${this.contact.firstname} ${this.contact.lastname}`,
-        ...(flow.params.vatNumber && {
+        ...(flow.params?.vatNumber && {
           tax_id_data: [{ type: 'eu_vat', value: flow.params.vatNumber }],
         }),
       });

@@ -3,7 +3,8 @@ import type {
   GetPaymentData,
   GetPaymentsQuery,
   Paginated,
-  PaymentFlowResult,
+  PaymentFlowAdvanceParams,
+  PaymentFlowSetupResult,
   Serial,
 } from '@beabee/beabee-common';
 
@@ -27,8 +28,8 @@ export class ContactPaymentClient extends BaseClient {
     });
   }
 
-  async create(dataIn: CreatePaymentData): Promise<PaymentFlowResult> {
-    const { data } = await this.fetch.post<Serial<PaymentFlowResult>>(
+  async create(dataIn: CreatePaymentData): Promise<PaymentFlowSetupResult> {
+    const { data } = await this.fetch.post<Serial<PaymentFlowSetupResult>>(
       '/me/payment',
       {
         amount: dataIn.amount,
@@ -39,10 +40,11 @@ export class ContactPaymentClient extends BaseClient {
     return data;
   }
 
-  async complete(paymentFlowId: string): Promise<void> {
-    await this.fetch.post('/me/payment/complete', {
-      paymentFlowId,
-    });
+  async complete(
+    paymentFlowId: string,
+    params?: PaymentFlowAdvanceParams
+  ): Promise<void> {
+    await this.fetch.post('/me/payment/complete', { paymentFlowId, params });
   }
 
   /**

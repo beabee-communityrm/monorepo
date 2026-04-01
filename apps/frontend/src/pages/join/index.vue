@@ -9,11 +9,11 @@ meta:
 </route>
 <template>
   <JoinFormStep1
-    v-if="!showStripeStep"
+    v-if="!paymentFlowId"
     v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
-    @submit.prevent="handleSubmitStep1"
+    @submit="handleSubmitStep1"
   />
 
   <JoinFormStep2
@@ -21,9 +21,8 @@ meta:
     v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
-    :confirm-flow="handleStripeConfirmFlow"
-    @back="showStripeStep = false"
-    @completed="goToConfirmEmailPage"
+    @submit="handleSubmitStep2"
+    @back="paymentFlowId = null"
   />
 </template>
 
@@ -32,7 +31,6 @@ import {
   type ContentJoinData,
   type ContentPaymentData,
   ContributionPeriod,
-  type PaymentFlowSetupParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
@@ -50,8 +48,7 @@ import { notifyRateLimited } from '#utils/api-error';
 const route = useRoute();
 const router = useRouter();
 
-const showStripeStep = ref(false);
-const currentFlowId = ref<string | null>(null);
+const paymentFlowId = ref<string | null>(null);
 
 const joinContent = ref<ContentJoinData>({
   initialAmount: 5,
@@ -95,8 +92,13 @@ function goToConfirmEmailPage() {
   }
 }
 
-async function startSignupWithPaymentFlow(params: PaymentFlowSetupParams) {
-  return await client.signup.start({
+async function startSignupWithPaymentFlow() {
+  const params = {
+    paymentMethod: formData.paymentMethod,
+    completeUrl: client.signup.completeUrl,
+  };
+
+  const ret = await client.signup.start({
     email: formData.email,
     ...(formData.period === 'one-time'
       ? {
@@ -117,6 +119,8 @@ async function startSignupWithPaymentFlow(params: PaymentFlowSetupParams) {
           },
         }),
   });
+  if (!ret) throw new Error('Unexpected error'); // Can't happen for payment flows
+  return ret;
 }
 
 async function handleSubmitStep1() {
@@ -124,25 +128,13 @@ async function handleSubmitStep1() {
     if (formData.noContribution) {
       await client.signup.start({ email: formData.email });
       goToConfirmEmailPage();
-    } else if (formData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
-      const data = await startSignupWithPaymentFlow({
-        paymentMethod: PaymentMethod.GoCardlessDirectDebit,
-        completeUrl: client.signup.completeUrl,
-      });
-      if (!data?.redirectUrl) return; // Can't happen for GC flows
-
-      const topWindow = window.top || window;
-      topWindow.location.href = data.redirectUrl;
     } else {
-      // For Stripe, start the payment flow first
-      const data = await startSignupWithPaymentFlow({
-        paymentMethod: formData.paymentMethod,
-      });
-
-      // Store the flow ID for the advance step
-      if (data?.flowId) {
-        currentFlowId.value = data.flowId;
-        showStripeStep.value = true;
+      const data = await startSignupWithPaymentFlow();
+      if (data.redirectUrl) {
+        const topWindow = window.top || window;
+        topWindow.location.href = data.redirectUrl;
+      } else {
+        paymentFlowId.value = data.id;
       }
     }
   } catch (err) {
@@ -154,30 +146,20 @@ async function handleSubmitStep1() {
   }
 }
 
-async function handleStripeConfirmFlow(
+async function handleSubmitStep2(
   token: string,
   firstname: string,
   lastname: string
 ) {
-  // GC flows can't get here
-  if (formData.paymentMethod === PaymentMethod.GoCardlessDirectDebit) {
-    return;
-  }
+  if (!paymentFlowId.value) return;
 
   try {
-    if (!currentFlowId.value) {
-      throw new Error('Missing payment flow ID');
-    }
-
     // Advance the payment flow with token and user details
-    await client.signup.advance({
-      paymentFlowId: currentFlowId.value,
+    await client.signup.advance(paymentFlowId.value, {
       token,
       firstname,
       lastname,
     });
-
-    await client.signup.complete({ paymentFlowId: currentFlowId.value });
 
     goToConfirmEmailPage();
   } catch (err) {
@@ -190,7 +172,7 @@ async function handleStripeConfirmFlow(
 }
 
 onBeforeMount(async () => {
-  showStripeStep.value = false;
+  paymentFlowId.value = null;
 
   joinContent.value = await client.content.get('join');
   paymentContent.value = await client.content.get('payment');

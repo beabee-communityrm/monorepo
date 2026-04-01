@@ -30,7 +30,7 @@
       :public-key="paymentContent.stripePublicKey"
       :payment-data="data"
       :return-url="client.signup.completeUrl"
-      :confirm-flow="confirmFlow"
+      :confirm-flow="onSubmit"
       show-name-fields
     />
     <div
@@ -64,7 +64,7 @@ defineEmits<{ (e: 'back'): void }>();
 const props = defineProps<{
   joinContent: ContentJoinData;
   paymentContent: ContentPaymentData;
-  confirmFlow: (
+  onSubmit: (
     token: string,
     firstName: string,
     lastName: string

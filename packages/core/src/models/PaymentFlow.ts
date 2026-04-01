@@ -21,13 +21,13 @@ export class PaymentFlow<
   date!: Date;
 
   @Column()
-  paymentFlowId!: string;
+  providerFlowId!: string;
 
   @Column()
   method!: TMethod;
 
-  @Column({ type: 'jsonb' })
-  params!: PaymentFlowAdvanceParams<TMethod>;
+  @Column({ type: 'jsonb', nullable: true })
+  params!: PaymentFlowAdvanceParams<TMethod> | null;
 
   @Column({ type: 'jsonb' })
   form!: TForm;

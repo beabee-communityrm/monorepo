@@ -17,12 +17,12 @@ import {
 } from 'routing-controllers';
 
 import { GetContactDto } from '#api/dto/ContactDto';
+import { PaymentFlowSetupResultDto } from '#api/dto/PaymentFlowDto';
 import {
-  AdvancePaymentFlowDto,
-  PaymentFlowResultDto,
-} from '#api/dto/PaymentFlowDto';
-import { StartSignupFlowDto } from '#api/dto/SignupFlowDto';
-import { SignupConfirmEmailParams } from '#api/params/SignupConfirmEmailParams';
+  AdvanceSignupFlowDto,
+  SignupCompleteDto,
+  StartSignupFlowDto,
+} from '#api/dto/SignupFlowDto';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import { login } from '#api/utils/auth';
 
@@ -38,9 +38,9 @@ export class SignupController {
       user: { points: 5, duration: 60 }, // Same limit for consistency (though authenticated users don't use this endpoint)
     })
   )
-  async startSignup(
+  async start(
     @Body() data: StartSignupFlowDto
-  ): Promise<PaymentFlowResultDto | undefined> {
+  ): Promise<PaymentFlowSetupResultDto | undefined> {
     if (data.contribution && data.oneTimePayment) {
       throw new BadRequestError(
         'Cannot start signup with both contribution and one-time payment'
@@ -72,7 +72,7 @@ export class SignupController {
         },
         data.contribution.params
       );
-      return plainToInstance(PaymentFlowResultDto, result);
+      return plainToInstance(PaymentFlowSetupResultDto, result);
     } else if (data.oneTimePayment) {
       // Handle a one-time payment sign up
       const result = await SignupService.startSignupWithPayment(
@@ -84,7 +84,7 @@ export class SignupController {
         },
         data.oneTimePayment.params
       );
-      return plainToInstance(PaymentFlowResultDto, result);
+      return plainToInstance(PaymentFlowSetupResultDto, result);
     } else {
       // Handle a no-payment sign up
       await SignupService.startSimpleSignup(signupForm);
@@ -99,10 +99,10 @@ export class SignupController {
       user: { points: 5, duration: 60 }, // Same limit for consistency (though authenticated users don't use this endpoint)
     })
   )
-  async advanceSignup(@Body() data: AdvancePaymentFlowDto): Promise<void> {
+  async advance(@Body() data: AdvanceSignupFlowDto): Promise<void> {
     await SignupService.advanceSignupWithPayment(
       data.paymentFlowId,
-      data.advanceParams
+      data.params
     );
   }
 
@@ -113,11 +113,11 @@ export class SignupController {
       user: { points: 5, duration: 60 }, // Same limit for consistency (though authenticated users don't use this endpoint)
     })
   )
-  async confirmEmail(
+  async complete(
     @Req() req: Request,
-    @Body() { joinFlowId }: SignupConfirmEmailParams
+    @Body() data: SignupCompleteDto
   ): Promise<GetContactDto> {
-    const contact = await SignupService.completeSignup(joinFlowId);
+    const contact = await SignupService.completeSignup(data.id);
     if (!contact) {
       throw new NotFoundError();
     }

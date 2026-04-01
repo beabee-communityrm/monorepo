@@ -98,8 +98,9 @@ import {
   ContributionPeriod,
   ContributionType,
   MembershipStatus,
-  type PaymentFlowResult,
+  type PaymentFlowAdvanceParams,
   type PaymentFlowSetupParams,
+  type PaymentFlowSetupResult,
   PaymentMethod,
 } from '@beabee/beabee-common';
 import { AppHeading, AppNotification, formatLocale } from '@beabee/vue';
@@ -189,7 +190,7 @@ async function handleUpdateContribution() {
 
 async function handleStartFlow(
   params: PaymentFlowSetupParams
-): Promise<PaymentFlowResult> {
+): Promise<PaymentFlowSetupResult> {
   // TODO: Think about manual contributions
   return await client.contact.contribution.start({
     amount: newContribution.amount,
@@ -204,9 +205,14 @@ async function handleStartFlow(
   });
 }
 
-async function handleCompleteFlow(paymentFlowId: string) {
-  contribution.value =
-    await client.contact.contribution.completeStart(paymentFlowId);
+async function handleCompleteFlow(
+  paymentFlowId: string,
+  params?: PaymentFlowAdvanceParams
+) {
+  contribution.value = await client.contact.contribution.completeStart(
+    paymentFlowId,
+    params
+  );
 
   addNotification({
     variant: 'success',

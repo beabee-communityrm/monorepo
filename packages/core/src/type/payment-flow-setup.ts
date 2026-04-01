@@ -1,6 +1,6 @@
-import { PaymentFlowResult } from '@beabee/beabee-common';
+import { PaymentFlowSetupResult } from '@beabee/beabee-common';
 
 export interface PaymentFlowSetup {
   id: string;
-  result: PaymentFlowResult;
+  result: PaymentFlowSetupResult;
 }

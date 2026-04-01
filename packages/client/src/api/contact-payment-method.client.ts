@@ -1,7 +1,8 @@
 import {
   type ContributionInfo,
-  type PaymentFlowResult,
+  PaymentFlowAdvanceParams,
   type PaymentFlowSetupParams,
+  type PaymentFlowSetupResult,
   Serial,
 } from '@beabee/beabee-common';
 
@@ -32,8 +33,10 @@ export class ContactPaymentMethodClient extends BaseClient {
    * change payment source but keep the same method (e.g. new card)
    * @returns Payment flow parameters for client-side handling
    */
-  async update(params: PaymentFlowSetupParams): Promise<PaymentFlowResult> {
-    const { data } = await this.fetch.put<Serial<PaymentFlowResult>>(
+  async update(
+    params: PaymentFlowSetupParams
+  ): Promise<PaymentFlowSetupResult> {
+    const { data } = await this.fetch.put<Serial<PaymentFlowSetupResult>>(
       '/me/payment-method',
       { params }
     );
@@ -46,12 +49,13 @@ export class ContactPaymentMethodClient extends BaseClient {
    * @param paymentFlowId - The ID of the payment flow to complete
    * @returns Updated contribution information
    */
-  async completeUpdate(paymentFlowId: string): Promise<ContributionInfo> {
+  async completeUpdate(
+    paymentFlowId: string,
+    params?: PaymentFlowAdvanceParams
+  ): Promise<ContributionInfo> {
     const { data } = await this.fetch.post<Serial<ContributionInfo>>(
       '/me/payment-method/complete',
-      {
-        paymentFlowId,
-      }
+      { paymentFlowId, params }
     );
     return ContactContributionClient.deserialize(data);
   }

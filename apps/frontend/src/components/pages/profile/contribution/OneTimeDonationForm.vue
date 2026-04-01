@@ -31,6 +31,7 @@
 <script lang="ts" setup>
 import {
   type ContentPaymentData,
+  type PaymentFlowAdvanceParams,
   type PaymentFlowSetupParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
@@ -75,8 +76,11 @@ async function startDonationFlow(params: PaymentFlowSetupParams) {
   });
 }
 
-async function completeDonationFlow(paymentFlowId: string) {
-  await client.contact.payment.complete(paymentFlowId);
+async function completeDonationFlow(
+  paymentFlowId: string,
+  params?: PaymentFlowAdvanceParams
+) {
+  await client.contact.payment.complete(paymentFlowId, params);
 
   addNotification({
     variant: 'success',

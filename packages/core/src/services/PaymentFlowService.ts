@@ -1,7 +1,7 @@
 import {
   PaymentFlowAdvanceParams,
-  PaymentFlowResult,
   PaymentFlowSetupParams,
+  PaymentFlowSetupResult,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
@@ -38,22 +38,26 @@ class PaymentFlowService {
   async startPaymentFlow(
     form: PaymentFlowForm,
     params: PaymentFlowSetupParams
-  ): Promise<{ flow: PaymentFlow; result: PaymentFlowResult }> {
+  ): Promise<PaymentFlowSetupResult> {
     const flow = await getRepository(PaymentFlow).save({
       form,
       method: params.paymentMethod,
       paymentFlowId: '',
-      params: {}, // TODO:
     });
 
     log.info('Creating payment registration flow ' + flow.id, { form });
 
-    const setup = await this.setupPaymentFlow(flow, params);
+    const providerResult = await this.setupPaymentFlow(flow, params);
     await getRepository(PaymentFlow).update(flow.id, {
-      paymentFlowId: setup.id,
+      providerFlowId: providerResult.id,
     });
 
-    return { flow, result: setup.result };
+    return {
+      id: flow.id,
+      ...(providerResult.redirectUrl && {
+        redirectUrl: providerResult.redirectUrl,
+      }),
+    };
   }
 
   /**
@@ -83,14 +87,15 @@ class PaymentFlowService {
    * new payment method is set up, updating the contact's payment details.
    *
    * @param contact - The contact
-   * @param paymentFlowId - The ID of the payment flow to complete
+   * @param flowId - The ID of the payment flow to complete
    */
   async completePaymentFlowAndProcess(
     contact: Contact,
-    paymentFlowId: string
+    flowId: string,
+    params?: PaymentFlowAdvanceParams
   ): Promise<void> {
     const flow = await getRepository(PaymentFlow).findOneBy({
-      paymentFlowId,
+      id: flowId,
     });
     if (!flow) {
       throw new NotFoundError();
@@ -104,6 +109,11 @@ class PaymentFlowService {
     );
     if (res.affected === 0) {
       return;
+    }
+
+    if (params) {
+      await this.advancePaymentFlow(flowId, params);
+      flow.params = params;
     }
 
     const completedPaymentFlow = await this.completePaymentFlow(flow);
@@ -178,15 +188,13 @@ class PaymentFlowService {
   private async setupPaymentFlow(
     flow: PaymentFlow,
     params: PaymentFlowSetupParams
-  ): Promise<PaymentFlowSetup> {
+  ): Promise<PaymentFlowSetupResult> {
     log.info('Create payment flow for payment flow ' + flow.id);
 
-    // There is probably a nicer way to narrow the type and dispatch to the
-    // correct provider, but this is straightforward and works for now
     if (flow.method === PaymentMethod.GoCardlessDirectDebit) {
-      return gcFlowProvider.setupPaymentFlow(flow, params as any);
+      return gcFlowProvider.setupPaymentFlow(flow, params);
     } else {
-      return stripeFlowProvider.setupPaymentFlow(flow, params as any);
+      return stripeFlowProvider.setupPaymentFlow(flow, params);
     }
   }
 
@@ -202,8 +210,6 @@ class PaymentFlowService {
   ): Promise<CompletedPaymentFlow> {
     log.info('Complete payment flow for payment flow ' + flow.id);
 
-    // There is probably a nicer way to narrow the type and dispatch to the
-    // correct provider, but this is straightforward and works for now
     if (flow.method === PaymentMethod.GoCardlessDirectDebit) {
       return gcFlowProvider.completePaymentFlow({
         ...flow,
