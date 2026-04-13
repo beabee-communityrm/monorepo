@@ -316,7 +316,7 @@ export async function chargeOneTimePayment(
     PaymentFlowFormCreateOneTimePayment
   >
 ): Promise<void> {
-  if (!flow.params) {
+  if (!flow.params?.token) {
     throw new NoPaymentMethod();
   }
 

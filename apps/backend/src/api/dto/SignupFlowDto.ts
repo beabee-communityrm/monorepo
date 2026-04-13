@@ -12,10 +12,7 @@ import IsPassword from '#api/validators/IsPassword';
 import IsUrl from '#api/validators/IsUrl';
 
 import { CreatePaymentDto } from './PaymentDto';
-import {
-  PaymentFlowAdvanceParamsDto,
-  transformPaymentFlowAdvanceParams,
-} from './PaymentFlowDto';
+import { PaymentFlowAdvanceParamsDto } from './PaymentFlowDto';
 
 export class StartSignupFlowDto {
   @IsUrl()
@@ -50,7 +47,6 @@ export class AdvanceSignupFlowDto {
   paymentFlowId!: string;
 
   @ValidateNested()
-  @Transform(transformPaymentFlowAdvanceParams)
   params!: PaymentFlowAdvanceParamsDto;
 }
 

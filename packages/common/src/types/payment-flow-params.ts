@@ -5,17 +5,9 @@ export interface PaymentFlowSetupParams {
   completeUrl: string;
 }
 
-export interface PaymentFlowAdvanceParamsGoCardless {}
-
-export interface PaymentFlowAdvanceParamsStripe {
-  token: string;
+export interface PaymentFlowAdvanceParams {
+  token?: string;
   firstname?: string;
   lastname?: string;
   vatNumber?: string;
 }
-
-export type PaymentFlowAdvanceParams<
-  TPaymentMethod extends PaymentMethod = PaymentMethod,
-> = TPaymentMethod extends PaymentMethod.GoCardlessDirectDebit
-  ? PaymentFlowAdvanceParamsGoCardless
-  : PaymentFlowAdvanceParamsStripe;

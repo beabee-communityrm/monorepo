@@ -1,16 +1,10 @@
 import {
-  PaymentFlowAdvanceParamsGoCardless,
-  PaymentFlowAdvanceParamsStripe,
+  PaymentFlowAdvanceParams,
   PaymentFlowSetupParams,
   PaymentFlowSetupResult,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
-import {
-  Transform,
-  TransformFnParams,
-  plainToInstance,
-} from 'class-transformer';
 import {
   IsEnum,
   IsOptional,
@@ -27,7 +21,6 @@ export class CompletePaymentFlowDto {
 
   @IsOptional()
   @ValidateNested()
-  @Transform(transformPaymentFlowAdvanceParams)
   params?: PaymentFlowAdvanceParamsDto;
 }
 
@@ -48,14 +41,10 @@ export class PaymentFlowSetupResultDto implements PaymentFlowSetupResult {
   redirectUrl?: string;
 }
 
-class PaymentFlowAdvanceParamsGoCardlessDto
-  implements PaymentFlowAdvanceParamsGoCardless {}
-
-class PaymentFlowAdvanceParamsStripeDto
-  implements PaymentFlowAdvanceParamsStripe
-{
+export class PaymentFlowAdvanceParamsDto implements PaymentFlowAdvanceParams {
   @IsString()
-  token!: string;
+  @IsOptional()
+  token?: string;
 
   @IsString()
   @IsOptional()
@@ -68,19 +57,4 @@ class PaymentFlowAdvanceParamsStripeDto
   @IsString()
   @IsOptional()
   vatNumber?: string;
-}
-
-export type PaymentFlowAdvanceParamsDto =
-  | PaymentFlowAdvanceParamsGoCardlessDto
-  | PaymentFlowAdvanceParamsStripeDto;
-
-export function transformPaymentFlowAdvanceParams(
-  params: TransformFnParams
-): PaymentFlowAdvanceParamsDto {
-  return plainToInstance<PaymentFlowAdvanceParamsDto, unknown>(
-    params.value.paymentMethod === PaymentMethod.GoCardlessDirectDebit
-      ? PaymentFlowAdvanceParamsGoCardlessDto
-      : PaymentFlowAdvanceParamsStripeDto,
-    params.value
-  );
 }

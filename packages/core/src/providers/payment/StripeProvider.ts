@@ -234,7 +234,7 @@ export class StripeProvider extends PaymentProvider {
   private async updatePaymentMethod(
     flow: PaymentFlow<PaymentMethod.StripeCard>
   ): Promise<void> {
-    if (!flow.params) {
+    if (!flow.params?.token) {
       throw new NoPaymentMethod();
     }
 
@@ -296,7 +296,7 @@ export class StripeProvider extends PaymentProvider {
       throw new CantUpdateContribution();
     }
 
-    if (!flow.params) {
+    if (!flow.params?.token) {
       throw new NoPaymentMethod();
     }
 

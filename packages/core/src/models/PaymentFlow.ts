@@ -27,7 +27,7 @@ export class PaymentFlow<
   method!: TMethod;
 
   @Column({ type: 'jsonb', nullable: true })
-  params!: PaymentFlowAdvanceParams<TMethod> | null;
+  params!: PaymentFlowAdvanceParams | null;
 
   @Column({ type: 'jsonb' })
   form!: TForm;
