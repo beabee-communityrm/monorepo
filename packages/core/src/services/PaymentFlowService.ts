@@ -160,9 +160,10 @@ class PaymentFlowService {
     contact: Contact,
     completedFlow: CompletedPaymentFlow
   ): Promise<void> {
-    const form = completedFlow.flow.form;
-
-    const canChange = await PaymentService.canProcessPaymentFlow(contact, form);
+    const canChange = await PaymentService.canProcessPaymentFlow(
+      contact,
+      completedFlow.flow.form
+    );
     if (!canChange) {
       throw new CantUpdateContribution();
     }
@@ -239,7 +240,7 @@ class PaymentFlowService {
       return gcFlowProvider.getCompletedPaymentFlowData(completedPaymentFlow);
     } else {
       return stripeFlowProvider.getCompletedPaymentFlowData(
-        completedPaymentFlow as CompletedPaymentFlow<PaymentMethod.StripeCard>
+        completedPaymentFlow
       );
     }
   }

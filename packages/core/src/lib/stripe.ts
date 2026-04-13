@@ -311,10 +311,7 @@ export async function deleteSubscription(
  */
 export async function chargeOneTimePayment(
   customerId: string,
-  flow: PaymentFlow<
-    PaymentMethod.StripeCard,
-    PaymentFlowFormCreateOneTimePayment
-  >
+  flow: PaymentFlow<PaymentFlowFormCreateOneTimePayment>
 ): Promise<void> {
   if (!flow.params?.token) {
     throw new NoPaymentMethod();

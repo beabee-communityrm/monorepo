@@ -49,9 +49,7 @@ export class StripeProvider extends PaymentProvider {
 
   async processPaymentFlow({
     flow,
-  }: CompletedPaymentFlow<PaymentMethod.StripeCard>): Promise<
-    UpdateContributionResult | undefined
-  > {
+  }: CompletedPaymentFlow): Promise<UpdateContributionResult | undefined> {
     return await this.withDataUpdate(async () => {
       switch (flow.form.action) {
         case 'create-one-time-payment':
@@ -231,9 +229,7 @@ export class StripeProvider extends PaymentProvider {
    *
    * @param flow The completed payment flow
    */
-  private async updatePaymentMethod(
-    flow: PaymentFlow<PaymentMethod.StripeCard>
-  ): Promise<void> {
+  private async updatePaymentMethod(flow: PaymentFlow): Promise<void> {
     if (!flow.params?.token) {
       throw new NoPaymentMethod();
     }
@@ -258,10 +254,7 @@ export class StripeProvider extends PaymentProvider {
    * @param form The payment form
    */
   private async createOneTimePayment(
-    flow: PaymentFlow<
-      PaymentMethod.StripeCard,
-      PaymentFlowFormCreateOneTimePayment
-    >
+    flow: PaymentFlow<PaymentFlowFormCreateOneTimePayment>
   ): Promise<void> {
     log.info('Create one-time payment of amount ' + flow.form.amount);
 
@@ -285,10 +278,7 @@ export class StripeProvider extends PaymentProvider {
    * @returns The result of the update
    */
   private async startContribution(
-    flow: PaymentFlow<
-      PaymentMethod.StripeCard,
-      PaymentFlowFormStartContribution
-    >
+    flow: PaymentFlow<PaymentFlowFormStartContribution>
   ): Promise<UpdateContributionResult> {
     log.info('Start contribution for completed flow', flow);
 
@@ -336,9 +326,7 @@ export class StripeProvider extends PaymentProvider {
    * @param flow The payment flow
    * @returns The customer ID
    */
-  private async ensureCustomerForFlow(
-    flow: PaymentFlow<PaymentMethod.StripeCard> // TODO
-  ): Promise<string> {
+  private async ensureCustomerForFlow(flow: PaymentFlow): Promise<string> {
     let customerId = this.data.customerId;
 
     if (!customerId) {
@@ -365,7 +353,7 @@ export class StripeProvider extends PaymentProvider {
    */
   private async processConfirmedIntent(
     intent: Stripe.SetupIntent | Stripe.PaymentIntent,
-    flow: PaymentFlow<PaymentMethod.StripeCard> // TODO
+    flow: PaymentFlow
   ): Promise<void> {
     // Save old mandate to remove afterwards
     const oldMandateId = this.data.mandateId;

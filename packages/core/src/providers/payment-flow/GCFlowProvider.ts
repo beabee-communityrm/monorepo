@@ -50,7 +50,7 @@ class GCFlowProvider implements PaymentFlowProvider {
    * @returns Promise resolving to completed payment flow with mandate ID
    */
   async completePaymentFlow(
-    flow: PaymentFlow<PaymentMethod.GoCardlessDirectDebit>
+    flow: PaymentFlow
   ): Promise<CompletedPaymentFlow> {
     const redirectFlow = await gocardless.redirectFlows.complete(
       flow.providerFlowId,

@@ -10,10 +10,7 @@ import {
 import { PaymentFlowForm } from '#type/index';
 
 @Entity()
-export class PaymentFlow<
-  TMethod extends PaymentMethod = PaymentMethod,
-  TForm extends PaymentFlowForm = PaymentFlowForm,
-> {
+export class PaymentFlow<TForm extends PaymentFlowForm = PaymentFlowForm> {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -24,7 +21,7 @@ export class PaymentFlow<
   providerFlowId!: string;
 
   @Column()
-  method!: TMethod;
+  method!: PaymentMethod;
 
   @Column({ type: 'jsonb', nullable: true })
   params!: PaymentFlowAdvanceParams | null;

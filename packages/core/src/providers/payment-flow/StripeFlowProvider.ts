@@ -93,8 +93,8 @@ class StripeFlowProvider implements PaymentFlowProvider {
    * @returns Promise resolving to payment flow data including billing details
    */
   async getCompletedPaymentFlowData({
-    flow, // TODO
-  }: CompletedPaymentFlow<PaymentMethod.StripeCard>): Promise<CompletedPaymentFlowData> {
+    flow
+  }: CompletedPaymentFlow): Promise<CompletedPaymentFlowData> {
     if (!flow.params?.token) {
       throw new NoPaymentMethod();
     }
