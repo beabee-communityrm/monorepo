@@ -1,5 +1,6 @@
 import { PaymentStatus, PaymentType } from '@beabee/beabee-common';
 
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -24,6 +25,7 @@ export class CreatePaymentDto {
   @IsBoolean()
   payFee!: boolean;
 
+  @Type(() => PaymentFlowSetupParamsDto)
   @ValidateNested()
   params!: PaymentFlowSetupParamsDto;
 }
@@ -96,6 +98,7 @@ export interface ExportPaymentDto {
 }
 
 export class UpdatePaymentMethodDto {
+  @Type(() => PaymentFlowSetupParamsDto)
   @ValidateNested()
   params!: PaymentFlowSetupParamsDto;
 }

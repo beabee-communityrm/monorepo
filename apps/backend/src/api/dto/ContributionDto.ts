@@ -1,5 +1,6 @@
 import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
 
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsEnum,
@@ -31,6 +32,7 @@ export class UpdateContributionDto {
 
 export class StartContributionDto extends UpdateContributionDto {
   @ValidateNested()
+  @Type(() => PaymentFlowSetupParamsDto)
   params!: PaymentFlowSetupParamsDto;
 }
 

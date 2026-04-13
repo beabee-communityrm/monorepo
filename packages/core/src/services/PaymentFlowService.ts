@@ -41,7 +41,7 @@ class PaymentFlowService {
     const flow = await getRepository(PaymentFlow).save({
       form,
       method: params.paymentMethod,
-      paymentFlowId: '',
+      providerFlowId: '',
     });
 
     log.info('Creating payment registration flow ' + flow.id, { form });

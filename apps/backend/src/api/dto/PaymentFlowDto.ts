@@ -5,6 +5,7 @@ import {
   PaymentMethod,
 } from '@beabee/beabee-common';
 
+import { Type } from 'class-transformer';
 import {
   IsEnum,
   IsOptional,
@@ -14,15 +15,6 @@ import {
 } from 'class-validator';
 
 import IsUrl from '#api/validators/IsUrl';
-
-export class CompletePaymentFlowDto {
-  @IsUUID('4')
-  paymentFlowId!: string;
-
-  @IsOptional()
-  @ValidateNested()
-  params?: PaymentFlowAdvanceParamsDto;
-}
 
 export class PaymentFlowSetupParamsDto implements PaymentFlowSetupParams {
   @IsEnum(PaymentMethod)
@@ -48,13 +40,23 @@ export class PaymentFlowAdvanceParamsDto implements PaymentFlowAdvanceParams {
 
   @IsString()
   @IsOptional()
-  firstName?: string;
+  firstname?: string;
 
   @IsString()
   @IsOptional()
-  lastName?: string;
+  lastname?: string;
 
   @IsString()
   @IsOptional()
   vatNumber?: string;
+}
+
+export class CompletePaymentFlowDto {
+  @IsUUID('4')
+  paymentFlowId!: string;
+
+  @IsOptional()
+  @Type(() => PaymentFlowAdvanceParamsDto)
+  @ValidateNested()
+  params?: PaymentFlowAdvanceParamsDto;
 }

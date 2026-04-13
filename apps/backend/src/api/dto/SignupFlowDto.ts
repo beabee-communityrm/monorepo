@@ -46,6 +46,7 @@ export class AdvanceSignupFlowDto {
   @IsUUID('4')
   paymentFlowId!: string;
 
+  @Type(() => PaymentFlowAdvanceParamsDto)
   @ValidateNested()
   params!: PaymentFlowAdvanceParamsDto;
 }
