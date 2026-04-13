@@ -137,6 +137,7 @@ export class GCProvider extends PaymentProvider {
       expiryDate,
     });
 
+    this.data.cancelledAt = null;
     this.data.subscriptionId = subscription.id!;
     this.data.payFee = form.payFee;
     this.data.nextAmount = startNow

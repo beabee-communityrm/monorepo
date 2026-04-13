@@ -341,7 +341,7 @@ export async function chargeOneTimePayment(
 
   const paymentIntent = finalizedInvoice.payment_intent as string | null;
   if (!paymentIntent) {
-    throw new Error();
+    throw new Error('No intent found for invoice');
   }
 
   await stripe.paymentIntents.confirm(paymentIntent, {

@@ -138,7 +138,7 @@ class PaymentService {
 
     return await new PaymentProviders[flow.flow.method](
       contribution
-    ).processPaymentFlow(flow as any); // TODO: improve type
+    ).processPaymentFlow(flow);
   }
 
   async canUpdateContribution(
@@ -172,14 +172,9 @@ class PaymentService {
       throw new CantUpdateContribution();
     }
 
-    const ret = await this.provider(contact, (p) =>
+    return await this.provider(contact, (p) =>
       p.processUpdateContribution(form)
     );
-    await getRepository(ContactContribution).update(
-      { contactId: contact.id },
-      { cancelledAt: null }
-    );
-    return ret;
   }
 
   async getContributionInfo(contact: Contact): Promise<ContributionInfo> {
