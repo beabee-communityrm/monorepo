@@ -1,18 +1,13 @@
 import {
   PaymentFlowSetupParams,
   PaymentFlowSetupResult,
-  PaymentMethod,
 } from '@beabee/beabee-common';
 
 import { NoPaymentMethod } from '#errors/NoPaymentMethod';
 import { stripe } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
 import { PaymentFlow } from '#models/index';
-import {
-  CompletedPaymentFlow,
-  CompletedPaymentFlowData,
-  PaymentFlowSetup,
-} from '#type/index';
+import { CompletedPaymentFlow, CompletedPaymentFlowData } from '#type/index';
 
 import { PaymentFlowProvider } from './PaymentFlowProvider';
 
@@ -93,7 +88,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
    * @returns Promise resolving to payment flow data including billing details
    */
   async getCompletedPaymentFlowData({
-    flow
+    flow,
   }: CompletedPaymentFlow): Promise<CompletedPaymentFlowData> {
     if (!flow.params?.token) {
       throw new NoPaymentMethod();

@@ -19,7 +19,6 @@ import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlowForm,
-  PaymentFlowSetup,
 } from '#type/index';
 
 const log = mainLogger.child({ app: 'payment-flow-service' });

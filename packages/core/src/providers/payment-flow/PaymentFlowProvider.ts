@@ -4,11 +4,7 @@ import {
 } from '@beabee/beabee-common';
 
 import { PaymentFlow } from '#models/index';
-import {
-  CompletedPaymentFlow,
-  CompletedPaymentFlowData,
-  PaymentFlowSetup,
-} from '#type/index';
+import { CompletedPaymentFlow, CompletedPaymentFlowData } from '#type/index';
 
 /**
  * Interface for payment flow providers that handle the initial payment setup process.

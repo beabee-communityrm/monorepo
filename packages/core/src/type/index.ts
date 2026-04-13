@@ -33,7 +33,6 @@ export * from './passport-local-strategy-options';
 export * from './passport-local-verify-options';
 export * from './passport-login-info';
 export * from './payment-flow-form';
-export * from './payment-flow-setup';
 export * from './pg-error';
 export * from './rate-limiter';
 export * from './referral-gift-form';
