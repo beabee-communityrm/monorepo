@@ -1,7 +1,7 @@
 import {
   type CompleteSignupData,
-  ContributionPeriod,
-  type PaymentFlowResult,
+  PaymentFlowAdvanceParams,
+  type PaymentFlowSetupResult,
   type Serial,
   type SignupData,
 } from '@beabee/beabee-common';
@@ -36,9 +36,9 @@ export class SignupClient extends BaseClient {
    * @param data - The signup data including email and contribution details
    * @returns Payment flow parameters for completing signup
    */
-  async start(data: SignupData): Promise<PaymentFlowResult | undefined> {
+  async start(data: SignupData): Promise<PaymentFlowSetupResult | undefined> {
     const { data: responseData } = await this.fetch.post<
-      Serial<PaymentFlowResult> | undefined
+      Serial<PaymentFlowSetupResult> | undefined
     >('', {
       ...data,
       loginUrl: this.options.host + '/auth/login',
@@ -49,23 +49,21 @@ export class SignupClient extends BaseClient {
   }
 
   /**
-   * Completes the signup process with user details
-   * @param data - The completion data including name and payment details
+   * Advances the signup process with user details
+   * @param params - The completion data including name and payment details
    */
-  async complete(data: CompleteSignupData): Promise<void> {
-    await this.fetch.post('/complete', {
-      paymentFlowId: data.paymentFlowId,
-      firstname: data.firstname,
-      lastname: data.lastname,
-      vatNumber: data.vatNumber,
-    });
+  async advance(
+    paymentFlowId: string,
+    params?: PaymentFlowAdvanceParams
+  ): Promise<void> {
+    await this.fetch.post('/advance', { paymentFlowId, params });
   }
 
   /**
-   * Confirms a user's email address
-   * @param joinFlowId - The join flow ID from the confirmation email
+   * Completes the signup process for a user
+   * @param id - The signup ID
    */
-  async confirmEmail(joinFlowId: string | string[]): Promise<void> {
-    await this.fetch.post('/confirm-email', { joinFlowId });
+  async complete(id: string): Promise<void> {
+    await this.fetch.post('/complete', { id });
   }
 }

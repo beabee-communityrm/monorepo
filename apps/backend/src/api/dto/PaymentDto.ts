@@ -1,9 +1,6 @@
-import {
-  PaymentMethod,
-  PaymentStatus,
-  PaymentType,
-} from '@beabee/beabee-common';
+import { PaymentStatus, PaymentType } from '@beabee/beabee-common';
 
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -19,18 +16,18 @@ import {
 
 import { GetExportQuery, GetPaginatedQuery } from '#api/dto/BaseDto';
 import { GetContactDto } from '#api/dto/ContactDto';
+import { PaymentFlowSetupParamsDto } from '#api/dto/PaymentFlowDto';
 
-import { StartPaymentFlowDto } from './PaymentFlowDto';
-
-export class CreatePaymentDto extends StartPaymentFlowDto {
+export class CreatePaymentDto {
   @Min(1)
   amount!: number;
 
   @IsBoolean()
   payFee!: boolean;
 
-  @IsEnum(PaymentMethod)
-  paymentMethod!: PaymentMethod;
+  @Type(() => PaymentFlowSetupParamsDto)
+  @ValidateNested()
+  params!: PaymentFlowSetupParamsDto;
 }
 
 export class GetPaymentDto {
@@ -98,4 +95,10 @@ export interface ExportPaymentDto {
   ContactEmail: string;
   ContactFirstName: string;
   ContactLastName: string;
+}
+
+export class UpdatePaymentMethodDto {
+  @Type(() => PaymentFlowSetupParamsDto)
+  @ValidateNested()
+  params!: PaymentFlowSetupParamsDto;
 }

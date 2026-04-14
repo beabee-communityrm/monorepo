@@ -1,29 +1,62 @@
-import { PaymentFlowResult, PaymentMethod } from '@beabee/beabee-common';
+import {
+  PaymentFlowAdvanceParams,
+  PaymentFlowSetupParams,
+  PaymentFlowSetupResult,
+  PaymentMethod,
+} from '@beabee/beabee-common';
 
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsEnum,
+  IsOptional,
+  IsString,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
 
 import IsUrl from '#api/validators/IsUrl';
 
-export class PaymentFlowResultDto implements PaymentFlowResult {
-  @IsOptional()
+export class PaymentFlowSetupParamsDto implements PaymentFlowSetupParams {
+  @IsEnum(PaymentMethod)
+  paymentMethod!: PaymentMethod;
+
+  @IsUrl()
+  completeUrl!: string;
+}
+
+export class PaymentFlowSetupResultDto implements PaymentFlowSetupResult {
   @IsString()
-  clientSecret?: string;
+  id!: string;
 
   @IsOptional()
   @IsString()
   redirectUrl?: string;
 }
 
-export class StartPaymentFlowDto {
-  @IsUrl()
-  completeUrl!: string;
-
-  @IsEnum(PaymentMethod)
+export class PaymentFlowAdvanceParamsDto implements PaymentFlowAdvanceParams {
+  @IsString()
   @IsOptional()
-  paymentMethod?: PaymentMethod;
+  token?: string;
+
+  @IsString()
+  @IsOptional()
+  firstname?: string;
+
+  @IsString()
+  @IsOptional()
+  lastname?: string;
+
+  @IsString()
+  @IsOptional()
+  vatNumber?: string;
 }
 
 export class CompletePaymentFlowDto {
-  @IsString()
+  @IsUUID('4')
   paymentFlowId!: string;
+
+  @IsOptional()
+  @Type(() => PaymentFlowAdvanceParamsDto)
+  @ValidateNested()
+  params?: PaymentFlowAdvanceParamsDto;
 }

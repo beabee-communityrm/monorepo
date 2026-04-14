@@ -9,11 +9,11 @@ meta:
 </route>
 <template>
   <JoinFormStep1
-    v-if="!stripeClientSecret"
+    v-if="!paymentFlowId"
     v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
-    @submit.prevent="submitStep1"
+    @submit="handleSubmitStep1"
   />
 
   <JoinFormStep2
@@ -21,8 +21,8 @@ meta:
     v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
-    :stripe-client-secret="stripeClientSecret"
-    @back="stripeClientSecret = ''"
+    @submit="handleSubmitStep2"
+    @back="paymentFlowId = null"
   />
 </template>
 
@@ -49,7 +49,7 @@ import { notifyRateLimited } from '#utils/api-error';
 const route = useRoute();
 const router = useRouter();
 
-const stripeClientSecret = ref('');
+const paymentFlowId = ref<string | null>(null);
 
 const joinContent = ref<ContentJoinData>({
   initialAmount: 5,
@@ -84,47 +84,55 @@ const formData = reactive<JoinFormData>({
   noContribution: false,
 });
 
-async function submitStep1() {
-  try {
-    const clientData: SignupData = {
-      email: formData.email,
-      ...(formData.noContribution
-        ? {}
-        : formData.period === 'one-time'
-          ? {
-              oneTimePayment: {
-                amount: formData.amount,
-                paymentMethod: formData.paymentMethod,
-                payFee: formData.payFee,
-                completeUrl: client.signup.completeUrl,
-              },
-            }
-          : {
-              contribution: {
-                amount: formData.amount,
-                period: formData.period,
-                paymentMethod: formData.paymentMethod,
-                payFee:
-                  formData.period === ContributionPeriod.Monthly &&
-                  formData.payFee,
-                prorate: false,
-                completeUrl: client.signup.completeUrl,
-              },
-            }),
-    };
+function goToConfirmEmailPage() {
+  const topWindow = window.top || window;
+  if (isEmbed) {
+    topWindow.location.href = '/join/confirm-email';
+  } else {
+    router.push({ path: '/join/confirm-email' });
+  }
+}
 
+async function handleSubmitStep1() {
+  const params = {
+    paymentMethod: formData.paymentMethod,
+    completeUrl: client.signup.completeUrl,
+  };
+
+  const clientData: SignupData = {
+    email: formData.email,
+    ...(formData.noContribution
+      ? {}
+      : formData.period === 'one-time'
+        ? {
+            oneTimePayment: {
+              amount: formData.amount,
+              payFee: formData.payFee,
+              params,
+            },
+          }
+        : {
+            contribution: {
+              amount: formData.amount,
+              period: formData.period,
+              payFee:
+                formData.period === ContributionPeriod.Monthly &&
+                formData.payFee,
+              prorate: false,
+              params,
+            },
+          }),
+  };
+
+  try {
     const data = await client.signup.start(clientData);
-    const topWindow = window.top || window;
     if (data?.redirectUrl) {
+      const topWindow = window.top || window;
       topWindow.location.href = data.redirectUrl;
-    } else if (data?.clientSecret) {
-      stripeClientSecret.value = data.clientSecret;
+    } else if (data?.id) {
+      paymentFlowId.value = data.id;
     } else {
-      if (isEmbed) {
-        topWindow.location.href = '/join/confirm-email';
-      } else {
-        router.push({ path: '/join/confirm-email' });
-      }
+      goToConfirmEmailPage();
     }
   } catch (err) {
     if (isApiError(err, undefined, [429])) {
@@ -135,11 +143,35 @@ async function submitStep1() {
   }
 }
 
+async function handleSubmitStep2(
+  token: string,
+  firstname: string,
+  lastname: string
+) {
+  if (!paymentFlowId.value) return;
+
+  try {
+    // Advance the payment flow with token and user details
+    await client.signup.advance(paymentFlowId.value, {
+      token,
+      firstname,
+      lastname,
+    });
+
+    goToConfirmEmailPage();
+  } catch (err) {
+    if (isApiError(err, undefined, [429])) {
+      notifyRateLimited(err);
+      return;
+    }
+    throw err;
+  }
+}
+
 onBeforeMount(async () => {
-  stripeClientSecret.value = '';
+  paymentFlowId.value = null;
 
   joinContent.value = await client.content.get('join');
-
   paymentContent.value = await client.content.get('payment');
 
   formData.amount =

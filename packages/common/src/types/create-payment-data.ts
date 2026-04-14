@@ -1,8 +1,7 @@
-import { PaymentMethod } from '../data';
+import { PaymentFlowSetupParams } from './payment-flow-params';
 
 export interface CreatePaymentData {
   amount: number;
   payFee: boolean;
-  paymentMethod: PaymentMethod;
-  completeUrl: string;
+  params: PaymentFlowSetupParams;
 }

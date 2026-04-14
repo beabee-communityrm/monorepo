@@ -1,13 +1,13 @@
-import { PaymentFlowParamsGoCardless } from '@beabee/beabee-common';
+import {
+  PaymentFlowSetupParams,
+  PaymentFlowSetupResult,
+  PaymentMethod,
+} from '@beabee/beabee-common';
 
 import gocardless from '#lib/gocardless';
 import { log as mainLogger } from '#logging';
 import { PaymentFlow } from '#models/index';
-import {
-  CompletedPaymentFlow,
-  CompletedPaymentFlowData,
-  PaymentFlowSetup,
-} from '#type/index';
+import { CompletedPaymentFlow, CompletedPaymentFlowData } from '#type/index';
 
 import { PaymentFlowProvider } from './PaymentFlowProvider';
 
@@ -26,19 +26,21 @@ class GCFlowProvider implements PaymentFlowProvider {
    * @returns Promise resolving to payment flow with redirect URL
    */
   async setupPaymentFlow(
-    flow: PaymentFlow<PaymentFlowParamsGoCardless>
-  ): Promise<PaymentFlowSetup> {
+    flow: PaymentFlow,
+    params: PaymentFlowSetupParams
+  ): Promise<PaymentFlowSetupResult> {
+    const url = new URL(params.completeUrl);
+    url.searchParams.set('paymentFlowId', flow.id);
+
     const redirectFlow = await gocardless.redirectFlows.create({
       session_token: flow.id,
-      success_redirect_url: flow.params.completeUrl,
+      success_redirect_url: url.toString(),
     });
     log.info('Created redirect flow ' + redirectFlow.id);
 
     return {
       id: redirectFlow.id!,
-      result: {
-        redirectUrl: redirectFlow.redirect_url!,
-      },
+      redirectUrl: redirectFlow.redirect_url!,
     };
   }
 
@@ -47,11 +49,9 @@ class GCFlowProvider implements PaymentFlowProvider {
    * @param flow - Payment flow to complete
    * @returns Promise resolving to completed payment flow with mandate ID
    */
-  async completePaymentFlow(
-    flow: PaymentFlow<PaymentFlowParamsGoCardless>
-  ): Promise<CompletedPaymentFlow> {
+  async completePaymentFlow(flow: PaymentFlow): Promise<CompletedPaymentFlow> {
     const redirectFlow = await gocardless.redirectFlows.complete(
-      flow.paymentFlowId,
+      flow.providerFlowId,
       {
         session_token: flow.id,
       }
@@ -59,8 +59,7 @@ class GCFlowProvider implements PaymentFlowProvider {
     log.info('Completed redirect flow ' + redirectFlow.id);
 
     return {
-      params: flow.params,
-      form: flow.form,
+      flow,
       customerId: redirectFlow.links!.customer!,
       mandateId: redirectFlow.links!.mandate!,
     };

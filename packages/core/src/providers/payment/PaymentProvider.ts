@@ -27,9 +27,34 @@ export abstract class PaymentProvider {
 
   /**
    * Updates the contribution data in the database
+   * @deprecated Use withDataUpdate() instead for automatic error handling and state persistence
    */
   protected async updateData() {
     await getRepository(ContactContribution).update(this.contact.id, this.data);
+  }
+
+  /**
+   * Execute an operation that modifies contact data, ensuring updates are persisted.
+   * Provides a safety net to save state even if the operation fails.
+   *
+   * @param operation The async operation to execute
+   * @returns The result of the operation
+   */
+  protected async withDataUpdate<T>(operation: () => Promise<T>): Promise<T> {
+    try {
+      const result = await operation();
+      await this.updateData();
+      return result;
+    } catch (error) {
+      // Try to persist any changes made before the error
+      try {
+        await this.updateData();
+      } catch (updateError) {
+        // Log the update failure but preserve the original error
+        console.error('Failed to update data after error', updateError);
+      }
+      throw error;
+    }
   }
 
   /**

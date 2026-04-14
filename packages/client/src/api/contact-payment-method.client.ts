@@ -1,6 +1,9 @@
-import type {
-  ContributionInfo,
-  PaymentFlowResult,
+import {
+  type ContributionInfo,
+  PaymentFlowAdvanceParams,
+  type PaymentFlowSetupParams,
+  type PaymentFlowSetupResult,
+  Serial,
 } from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
@@ -31,13 +34,12 @@ export class ContactPaymentMethodClient extends BaseClient {
    * @returns Payment flow parameters for client-side handling
    */
   async update(
-    completeUrl: string,
-    paymentMethod?: string
-  ): Promise<PaymentFlowResult> {
-    const { data } = await this.fetch.put('/me/payment-method', {
-      completeUrl,
-      paymentMethod,
-    });
+    params: PaymentFlowSetupParams
+  ): Promise<PaymentFlowSetupResult> {
+    const { data } = await this.fetch.put<Serial<PaymentFlowSetupResult>>(
+      '/me/payment-method',
+      { params }
+    );
     return data;
   }
 
@@ -47,10 +49,14 @@ export class ContactPaymentMethodClient extends BaseClient {
    * @param paymentFlowId - The ID of the payment flow to complete
    * @returns Updated contribution information
    */
-  async completeUpdate(paymentFlowId: string): Promise<ContributionInfo> {
-    const { data } = await this.fetch.post('/me/payment-method/complete', {
-      paymentFlowId,
-    });
+  async completeUpdate(
+    paymentFlowId: string,
+    params?: PaymentFlowAdvanceParams
+  ): Promise<ContributionInfo> {
+    const { data } = await this.fetch.post<Serial<ContributionInfo>>(
+      '/me/payment-method/complete',
+      { paymentFlowId, params }
+    );
     return ContactContributionClient.deserialize(data);
   }
 }

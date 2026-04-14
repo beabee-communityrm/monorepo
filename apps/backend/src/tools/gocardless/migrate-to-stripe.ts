@@ -1,4 +1,8 @@
-import { PaymentMethod, PaymentStatus } from '@beabee/beabee-common';
+import {
+  PaymentMethod,
+  PaymentStatus,
+  StripePaymentMethod,
+} from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { stripe, stripeTypeToPaymentMethod } from '@beabee/core/lib/stripe';
@@ -8,7 +12,6 @@ import PaymentService from '@beabee/core/services/PaymentService';
 
 import { parse } from 'csv-parse';
 import { add, startOfDay } from 'date-fns';
-import Stripe from 'stripe';
 import { Equal, In } from 'typeorm';
 
 interface MigrationRow {
@@ -16,7 +19,7 @@ interface MigrationRow {
   customer_id: string;
   old_source_id: string;
   source_id: string;
-  type: Stripe.PaymentMethod.Type;
+  type: StripePaymentMethod;
 }
 
 const validTypes = ['sepa_debit', 'card', 'bacs_debit'];
