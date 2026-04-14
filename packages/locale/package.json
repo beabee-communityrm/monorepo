@@ -10,9 +10,9 @@
     "url": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale"
   },
   "scripts": {
-    "clear": "rm -rf dist/ tsconfig.build.tsbuildinfo",
+    "clear": "rm -rf dist/ tsconfig.tsbuildinfo",
     "build": "yarn build:types && yarn build:esbuild",
-    "build:types": "rm -f tsconfig.build.tsbuildinfo && tsc",
+    "build:types": "rm -f tsconfig.tsbuildinfo && tsc",
     "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings esbuild.ts",
     "check": "yarn check:tsc && yarn check:prettier",
     "check:tsc": "tsc --noEmit",
