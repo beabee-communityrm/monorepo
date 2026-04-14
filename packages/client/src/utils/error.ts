@@ -108,7 +108,7 @@ export function isApiError(
 export function isApiError(
   err: unknown,
   codes: string[] = [],
-  status: number[] = [400]
+  status: number[] = []
 ): err is ClientApiError {
   if (err instanceof ClientApiError) {
     const hasMatchingStatus =
