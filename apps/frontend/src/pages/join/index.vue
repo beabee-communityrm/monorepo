@@ -32,6 +32,7 @@ import {
   type ContentPaymentData,
   ContributionPeriod,
   PaymentMethod,
+  type SignupData,
 } from '@beabee/beabee-common';
 import { isApiError } from '@beabee/client';
 
@@ -92,50 +93,46 @@ function goToConfirmEmailPage() {
   }
 }
 
-async function startSignupWithPaymentFlow() {
+async function handleSubmitStep1() {
   const params = {
     paymentMethod: formData.paymentMethod,
     completeUrl: client.signup.completeUrl,
   };
 
-  const ret = await client.signup.start({
+  const clientData: SignupData = {
     email: formData.email,
-    ...(formData.period === 'one-time'
-      ? {
-          oneTimePayment: {
-            amount: formData.amount,
-            payFee: formData.payFee,
-            params,
-          },
-        }
-      : {
-          contribution: {
-            amount: formData.amount,
-            period: formData.period,
-            payFee:
-              formData.period === ContributionPeriod.Monthly && formData.payFee,
-            prorate: false,
-            params,
-          },
-        }),
-  });
-  if (!ret) throw new Error('Unexpected error'); // Can't happen for payment flows
-  return ret;
-}
+    ...(formData.noContribution
+      ? {}
+      : formData.period === 'one-time'
+        ? {
+            oneTimePayment: {
+              amount: formData.amount,
+              payFee: formData.payFee,
+              params,
+            },
+          }
+        : {
+            contribution: {
+              amount: formData.amount,
+              period: formData.period,
+              payFee:
+                formData.period === ContributionPeriod.Monthly &&
+                formData.payFee,
+              prorate: false,
+              params,
+            },
+          }),
+  };
 
-async function handleSubmitStep1() {
   try {
-    if (formData.noContribution) {
-      await client.signup.start({ email: formData.email });
-      goToConfirmEmailPage();
+    const data = await client.signup.start(clientData);
+    if (data?.redirectUrl) {
+      const topWindow = window.top || window;
+      topWindow.location.href = data.redirectUrl;
+    } else if (data?.id) {
+      paymentFlowId.value = data.id;
     } else {
-      const data = await startSignupWithPaymentFlow();
-      if (data.redirectUrl) {
-        const topWindow = window.top || window;
-        topWindow.location.href = data.redirectUrl;
-      } else {
-        paymentFlowId.value = data.id;
-      }
+      goToConfirmEmailPage();
     }
   } catch (err) {
     if (isApiError(err, undefined, [429])) {

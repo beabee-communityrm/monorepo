@@ -23,6 +23,15 @@ import {
 
 const log = mainLogger.child({ app: 'payment-flow-service' });
 
+const flowProviders = {
+  [PaymentMethod.GoCardlessDirectDebit]: gcFlowProvider,
+  [PaymentMethod.StripeBACS]: stripeFlowProvider,
+  [PaymentMethod.StripeCard]: stripeFlowProvider,
+  [PaymentMethod.StripeIdeal]: stripeFlowProvider,
+  [PaymentMethod.StripePayPal]: stripeFlowProvider,
+  [PaymentMethod.StripeSEPA]: stripeFlowProvider,
+} as const;
+
 /**
  * Service that manages the complete payment flow process in beabee.
  * Coordinates between different payment providers and handles the setup of new payment methods.
@@ -46,7 +55,10 @@ class PaymentFlowService {
 
     log.info('Creating payment registration flow ' + flow.id, { form });
 
-    const providerResult = await this.setupPaymentFlow(flow, params);
+    const providerResult = await flowProviders[flow.method].setupPaymentFlow(
+      flow,
+      params
+    );
     await getRepository(PaymentFlow).update(flow.id, {
       providerFlowId: providerResult.id,
     });
@@ -78,7 +90,7 @@ class PaymentFlowService {
       throw new NotFoundError();
     }
 
-    log.info('Advanced payment flow ' + flowId);
+    log.info('Advanced payment flow ' + flowId, { params });
   }
 
   /**
@@ -107,6 +119,7 @@ class PaymentFlowService {
       { processing: true }
     );
     if (res.affected === 0) {
+      log.info(`Not completing payment flow ${flow.id}, already processing`);
       return;
     }
 
@@ -115,7 +128,10 @@ class PaymentFlowService {
       flow.params = params;
     }
 
-    const completedPaymentFlow = await this.completePaymentFlow(flow);
+    log.info('Complete payment flow and process for payment flow ' + flow.id);
+    const completedPaymentFlow =
+      await flowProviders[flow.method].completePaymentFlow(flow);
+
     await this.processCompletedFlow(contact, completedPaymentFlow);
   }
 
@@ -141,8 +157,12 @@ class PaymentFlowService {
       return;
     }
 
-    const completedPaymentFlow = await this.completePaymentFlow(flow);
-    const data = await this.getCompletedPaymentFlowData(completedPaymentFlow);
+    log.info('Complete payment flow and get data for payment flow ' + flow.id);
+    const flowProvider = flowProviders[flow.method];
+    const completedPaymentFlow = await flowProvider.completePaymentFlow(flow);
+
+    const data =
+      await flowProvider.getCompletedPaymentFlowData(completedPaymentFlow);
 
     return { flow: completedPaymentFlow, data };
   }
@@ -173,74 +193,6 @@ class PaymentFlowService {
     );
     if (result) {
       await ContactsService.handleUpdateContributionResult(contact, result);
-    }
-  }
-
-  /**
-   * Create a new payment flow for the given payment flow, dispatching to the
-   * appropriate provider and returning the created payment flow.
-   *
-   * @param flow The payment flow
-   * @param completeUrl The completion URL for the payment flow
-   * @param data The payment flow data
-   * @returns The created payment flow
-   */
-  private async setupPaymentFlow(
-    flow: PaymentFlow,
-    params: PaymentFlowSetupParams
-  ): Promise<PaymentFlowSetupResult> {
-    log.info('Create payment flow for payment flow ' + flow.id);
-
-    if (flow.method === PaymentMethod.GoCardlessDirectDebit) {
-      return gcFlowProvider.setupPaymentFlow(flow, params);
-    } else {
-      return stripeFlowProvider.setupPaymentFlow(flow, params);
-    }
-  }
-
-  /**
-   * Complete the payment flow for the given payment flow, dispatching to the
-   * appropriate provider and returning the completed payment flow
-   *
-   * @param flow  The payment flow
-   * @returns The completed payment flow
-   */
-  private async completePaymentFlow(
-    flow: PaymentFlow
-  ): Promise<CompletedPaymentFlow> {
-    log.info('Complete payment flow for payment flow ' + flow.id);
-
-    if (flow.method === PaymentMethod.GoCardlessDirectDebit) {
-      return gcFlowProvider.completePaymentFlow({
-        ...flow,
-        method: flow.method,
-      });
-    } else {
-      return stripeFlowProvider.completePaymentFlow(flow);
-    }
-  }
-
-  /**
-   * Fetch data from the provider for the completed payment flow. This is used
-   * to fetch additional information filled in by the user such as billing
-   * address or name.
-   *
-   * @param completedPaymentFlow  The completed payment flow
-   * @returns The completed payment flow data
-   */
-  private async getCompletedPaymentFlowData(
-    completedPaymentFlow: CompletedPaymentFlow
-  ): Promise<CompletedPaymentFlowData> {
-    // There is probably a nicer way to narrow the type and dispatch to the
-    // correct provider, but this is straightforward and works for now
-    if (
-      completedPaymentFlow.flow.method === PaymentMethod.GoCardlessDirectDebit
-    ) {
-      return gcFlowProvider.getCompletedPaymentFlowData(completedPaymentFlow);
-    } else {
-      return stripeFlowProvider.getCompletedPaymentFlowData(
-        completedPaymentFlow
-      );
     }
   }
 }

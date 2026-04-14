@@ -5,81 +5,42 @@ import {
 
 import { NoPaymentMethod } from '#errors/NoPaymentMethod';
 import { stripe } from '#lib/stripe';
-import { log as mainLogger } from '#logging';
 import { PaymentFlow } from '#models/index';
 import { CompletedPaymentFlow, CompletedPaymentFlowData } from '#type/index';
 
 import { PaymentFlowProvider } from './PaymentFlowProvider';
 
-const log = mainLogger.child({ app: 'stripe-payment-flow-provider' });
-
 /**
  * Implements PaymentFlowProvider for Stripe payment methods.
- * Handles setup of card payments, SEPA Direct Debit, BACS, PayPal, and iDEAL.
+ * Stripe flows are handled almost entirely client-side using confirmation
+ * tokens so this provider doesn't do very much.
  */
 class StripeFlowProvider implements PaymentFlowProvider {
   /**
-   * Creates a Stripe SetupIntent for payment method setup
+   * Setup a Stripe payment flow. No server-side communication with Stripe
+   * is needed for this.
    * @param flow - Payment flow containing payment method selection
-   * @returns Promise resolving to payment flow with SetupIntent details
    */
   async setupPaymentFlow(
     flow: PaymentFlow,
     _params: PaymentFlowSetupParams
   ): Promise<PaymentFlowSetupResult> {
-    // For Stripe, we don't need to create anything in the setup phase
-    // The token will be provided in the advance phase
     return {
-      id: flow.id, // Use the flow ID as the setup ID
+      // There is no specific provider ID for Stripe payment flows so just
+      // return our own flow ID. In practice this won't be used.
+      id: flow.id,
     };
   }
 
   /**
-   * Completes a payment flow by retrieving and validating the SetupIntent
+   * Completes a payment flow. No server-side communication with Stripe is
+   * needed for this, the confirmation token is applied when processing the
+   * payment flow.
    * @param flow - Payment flow to complete
-   * @returns Promise resolving to completed payment flow with payment method ID
-   * @throws {BadRequestError} If SetupIntent status is not succeeded
+   * @returns The payment flow
    */
   async completePaymentFlow(flow: PaymentFlow): Promise<CompletedPaymentFlow> {
-    // const setupIntent = await stripe.setupIntents.retrieve(flow.paymentFlowId, {
-    //   expand: ['latest_attempt'],
-    // });
-
-    // let paymentMethod = flow.params.paymentMethod;
-    // let mandateId: string | null;
-
-    // log.info('Fetched setup intent ' + setupIntent.id);
-
-    // // iDEAL is a one time payment method, use setup intent to retrieve the SEPA
-    // // debit payment method instead
-    // // https://docs.stripe.com/payments/ideal/set-up-payment
-    // if (
-    //   paymentMethod === PaymentMethod.StripeIdeal &&
-    //   flow.form.action === 'start-contribution'
-    // ) {
-    //   const latestAttempt =
-    //     setupIntent.latest_attempt as Stripe.SetupAttempt | null;
-
-    //   paymentMethod = PaymentMethod.StripeSEPA;
-    //   mandateId = latestAttempt?.payment_method_details.ideal
-    //     ?.generated_sepa_debit as string | null;
-    // } else {
-    //   mandateId = setupIntent.payment_method as string | null;
-    // }
-
-    // if (!mandateId) {
-    //   log.error('Setup intent missing mandate or customer ID', {
-    //     flow,
-    //     setupIntent,
-    //   });
-    //   throw new BadRequestError({ message: 'Failed to complete payment flow' });
-    // }
-
-    return {
-      flow,
-      customerId: '', // Unused in the Stripe flow
-      mandateId: '', // Unused in the Stripe flow
-    };
+    return { flow, customerId: '', mandateId: '' };
   }
 
   /**
