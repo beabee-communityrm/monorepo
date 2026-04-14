@@ -428,10 +428,7 @@ const disableMfaAndNotify = async () => {
 
 /** Called when an error occurs while creating MFA */
 const onCreateError = (error: unknown) => {
-  if (
-    isApiError(error, undefined, [401]) &&
-    error.code === LOGIN_CODES.INVALID_TOKEN
-  ) {
+  if (isApiError(error, [LOGIN_CODES.INVALID_TOKEN])) {
     // If server says the token is invalid, set the token as invalid and go to the previous slide
     setValidationStates(false);
     appSliderCo.value?.prevSlide();
@@ -448,11 +445,7 @@ const onCreateError = (error: unknown) => {
 
 const onDeleteError = (error: unknown) => {
   if (
-    isApiError(
-      error,
-      [LOGIN_CODES.INVALID_TOKEN, LOGIN_CODES.MISSING_TOKEN],
-      [400, 401]
-    )
+    isApiError(error, [LOGIN_CODES.INVALID_TOKEN, LOGIN_CODES.MISSING_TOKEN])
   ) {
     // If server says the token is invalid, set the token as invalid
     setValidationStates(false);
