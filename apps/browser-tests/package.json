@@ -1,0 +1,13 @@
+{
+  "name": "@beabee/browser-tests",
+  "packageManager": "yarn@4.12.0",
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "playwright": "^1.59.1"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
+  }
+}
