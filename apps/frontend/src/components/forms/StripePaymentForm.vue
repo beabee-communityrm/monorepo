@@ -35,6 +35,7 @@ import {
   ContributionPeriod,
   paymentMethodToStripeType,
 } from '@beabee/beabee-common';
+import { PaymentRequiresActionError } from '@beabee/client';
 import { AppInput } from '@beabee/vue';
 import { AppButton, AppLabel, AppNotification } from '@beabee/vue';
 
@@ -212,23 +213,25 @@ onBeforeMount(async () => {
 
       if (result.error) {
         handleError(result.error);
-      } else {
+        return;
+      }
+
+      try {
         await props.confirmFlow(
           result.confirmationToken.id,
           firstName.value,
           lastName.value
         );
+      } catch (err) {
+        if (err instanceof PaymentRequiresActionError) {
+          const { error: actionError } = await stripe.handleNextAction({
+            clientSecret: err.clientSecret,
+          });
+          if (actionError) {
+            handleError(actionError);
+          }
+        }
       }
-      // if (clientSecret) {
-      //   const { error: actionError } = await stripe.handleNextAction({
-      //     clientSecret,
-      //   });
-      //   if (actionError) {
-      //     handleError(actionError);
-      //   } else {
-      //     emit('completed');
-      //   }
-      // }
     };
   }
 });

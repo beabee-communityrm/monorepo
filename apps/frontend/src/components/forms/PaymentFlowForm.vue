@@ -53,6 +53,7 @@ import {
   type PaymentFlowSetupParams,
   type PaymentFlowSetupResult,
 } from '@beabee/beabee-common';
+import { PaymentRequiresActionError } from '@beabee/client';
 import { AppModal, addNotification } from '@beabee/vue';
 
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
@@ -137,7 +138,17 @@ async function handleStripeConfirm(
 ) {
   if (!paymentFlowId.value) return; // Not possible
 
-  await props.completeFlow(paymentFlowId.value, { token, firstname, lastname });
+  try {
+    await props.completeFlow(paymentFlowId.value, {
+      token,
+      firstname,
+      lastname,
+    });
+  } catch (err) {
+    if (err instanceof PaymentRequiresActionError) {
+      // Do stuff
+    }
+  }
 
   paymentFlowId.value = null;
 }
@@ -174,10 +185,14 @@ onBeforeMount(async () => {
     try {
       await props.completeFlow(completePaymentFlowId.value);
     } catch (err) {
-      addNotification({
-        variant: 'error',
-        title: extractErrorText(err),
-      });
+      if (err instanceof PaymentRequiresActionError) {
+        // TODDO
+      } else {
+        addNotification({
+          variant: 'error',
+          title: extractErrorText(err),
+        });
+      }
     }
 
     router.replace({
