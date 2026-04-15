@@ -30,7 +30,7 @@ export function getErrorNameFromStatus(status: number): string {
 }
 
 export class ClientApiError extends Error implements ClientApiErrorData {
-  code: string;
+  code: ErrorCode;
   errors?: {
     [key: string]: unknown;
   };
@@ -41,7 +41,7 @@ export class ClientApiError extends Error implements ClientApiErrorData {
   constructor(
     message: string,
     data: {
-      code: string;
+      code: ErrorCode;
       httpCode: number;
       errors?: { [key: string]: unknown };
       retryAfterSeconds?: number;
@@ -55,39 +55,41 @@ export class ClientApiError extends Error implements ClientApiErrorData {
     this.retryAfterSeconds = data.retryAfterSeconds;
     this.name = data.name || getErrorNameFromStatus(this.httpCode);
   }
-}
 
-/**
- * Type guard to check if an object has the structure of an API error response from the backend
- * @param obj - The object to check
- * @param codes - Optional array of error codes to match against
- * @param status - Optional array of HTTP status codes to match against
- */
-export function isApiErrorResponse(
-  obj: unknown,
-  codes: string[] = [],
-  status: number[] = []
-): obj is ClientApiErrorData {
-  if (!obj || typeof obj !== 'object') {
-    return false;
+  /**
+   * Create a ClientApiError from error data
+   */
+  static fromData(data: ClientApiErrorData): ClientApiError {
+    return new ClientApiError(data.message, {
+      code: data.code,
+      httpCode: data.httpCode,
+      errors: data.errors,
+      retryAfterSeconds: 'retryAfter' in data ? data.retryAfter : undefined,
+      name: data.name,
+    });
   }
 
-  const errorObj = obj as Record<string, unknown>;
-
-  // Check for required properties
-  if (
-    typeof errorObj.code !== 'string' ||
-    typeof errorObj.httpCode !== 'number'
-  ) {
-    return false;
+  /**
+   * Type guard for PaymentFailedData
+   */
+  isPaymentFailed(): this is ClientApiError & PaymentFailedData {
+    return this.code === 'payment-failed' && 'subCode' in this;
   }
 
-  // Optional validation against specific codes and statuses
-  const hasMatchingStatus =
-    !status.length || status.includes(errorObj.httpCode);
-  const hasMatchingCode = !codes.length || codes.includes(errorObj.code);
+  /**
+   * Type guard for PaymentRequiresActionErrorData
+   */
+  isPaymentRequiresAction(): this is ClientApiError &
+    PaymentRequiresActionErrorData {
+    return this.code === 'payment-requires-action' && 'clientSecret' in this;
+  }
 
-  return hasMatchingStatus && hasMatchingCode;
+  /**
+   * Type guard for TooManyRequestsErrorData
+   */
+  isTooManyRequests(): this is ClientApiError & TooManyRequestsErrorData {
+    return this.code === 'too-many-requests' && 'retryAfter' in this;
+  }
 }
 
 /**

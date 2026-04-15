@@ -1,14 +1,11 @@
-import { ClientApiErrorData } from '@beabee/beabee-common';
+import { BaseApiErrorData } from '@beabee/beabee-common';
 
 import { NotFoundError as _NotFoundError } from 'routing-controllers';
 
 /**
  * NotFoundError with optional code
  */
-export class NotFoundError
-  extends _NotFoundError
-  implements ClientApiErrorData
-{
+export class NotFoundError extends _NotFoundError implements BaseApiErrorData {
   httpCode = 404;
   code = 'NOT_FOUND';
 

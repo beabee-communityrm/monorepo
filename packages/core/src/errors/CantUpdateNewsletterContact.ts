@@ -1,10 +1,10 @@
-import { ClientApiErrorData } from '@beabee/beabee-common';
+import { BaseApiErrorData } from '@beabee/beabee-common';
 
 import { InternalServerError } from 'routing-controllers';
 
 export class CantUpdateNewsletterContact
   extends InternalServerError
-  implements ClientApiErrorData
+  implements BaseApiErrorData
 {
   httpCode = 500;
   readonly code = 'cant-update-newsletter-contact';

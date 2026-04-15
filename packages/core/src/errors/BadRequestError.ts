@@ -1,4 +1,4 @@
-import { ClientApiErrorData } from '@beabee/beabee-common';
+import { BaseApiErrorData } from '@beabee/beabee-common';
 
 import { BadRequestError as _BadRequestError } from 'routing-controllers';
 
@@ -7,7 +7,7 @@ import { BadRequestError as _BadRequestError } from 'routing-controllers';
  */
 export class BadRequestError
   extends _BadRequestError
-  implements ClientApiErrorData
+  implements BaseApiErrorData
 {
   httpCode = 400;
   code = 'BAD_REQUEST';

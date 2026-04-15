@@ -1,8 +1,8 @@
-import { ClientApiErrorData } from '@beabee/beabee-common';
+import { BaseApiErrorData } from '@beabee/beabee-common';
 
 import { BadRequestError } from './BadRequestError';
 
-export class DuplicateId extends BadRequestError implements ClientApiErrorData {
+export class DuplicateId extends BadRequestError implements BaseApiErrorData {
   readonly code = 'duplicate-id';
 
   constructor(readonly id: string) {

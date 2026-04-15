@@ -1,4 +1,5 @@
 import type {
+  ClientApiErrorData,
   FetchOptions,
   FetchResponse,
   HttpMethod,
@@ -8,7 +9,6 @@ import {
   CookiePolyfill,
   cleanUrl,
   hasProtocol,
-  isApiErrorResponse,
   isJson,
   queryStringify,
 } from './index.js';
@@ -366,27 +366,23 @@ export class Fetch {
           ? Number.parseInt(retryAfterHeader, 10)
           : undefined;
 
-        // Ensure we have all required properties
-        const errorData = {
-          code: result.data.code,
-          httpCode: response.status,
-          errors: result.data.errors,
+        // Create ClientApiError using the fromData method
+        const error = ClientApiError.fromData({
+          ...result.data,
           retryAfterSeconds,
-        };
+        });
 
-        throw new ClientApiError(
-          result.data.message || 'Unknown error',
-          errorData
-        );
+        throw error;
       } else {
         // Handle non-API error responses
         const errorData = {
-          code: 'UNKNOWN_ERROR',
+          code: 'internal-server-error',
           httpCode: response.status,
+          message: 'Unknown error',
           errors: result.data,
         };
 
-        throw new ClientApiError('Unknown error', errorData);
+        throw ClientApiError.fromData(errorData);
       }
     }
 
@@ -407,4 +403,21 @@ export class Fetch {
    * Header name value pair to send on each request
    */
   protected _requestHeadersEachRequest: Record<string, string> = {};
+}
+
+/**
+ * Type guard to check if an object has the structure of an API error response from the backend
+ * @param obj - The object to check
+ * @param codes - Optional array of error codes to match against
+ * @param status - Optional array of HTTP status codes to match against
+ */
+function isApiErrorResponse(obj: unknown): obj is ClientApiErrorData {
+  return (
+    !!obj &&
+    typeof obj === 'object' &&
+    'code' in obj &&
+    typeof obj.code === 'string' &&
+    'httpCode' in obj &&
+    typeof obj.httpCode === 'number'
+  );
 }

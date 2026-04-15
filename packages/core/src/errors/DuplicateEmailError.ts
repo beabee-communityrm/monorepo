@@ -1,10 +1,10 @@
-import { ClientApiErrorData } from '@beabee/beabee-common';
+import { BaseApiErrorData } from '@beabee/beabee-common';
 
 import { BadRequestError } from './BadRequestError';
 
 export class DuplicateEmailError
   extends BadRequestError
-  implements ClientApiErrorData
+  implements BaseApiErrorData
 {
   readonly code = 'duplicate-email';
 

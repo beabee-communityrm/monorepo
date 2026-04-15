@@ -1,4 +1,4 @@
-import { ClientApiErrorData } from '@beabee/beabee-common';
+import { BaseApiErrorData } from '@beabee/beabee-common';
 
 import { BadRequestError } from './BadRequestError';
 
@@ -13,7 +13,7 @@ type InvalidCalloutResponseCode =
 
 export class InvalidCalloutResponse
   extends BadRequestError
-  implements ClientApiErrorData
+  implements BaseApiErrorData
 {
   readonly code = 'invalid-callout-response';
   constructor(readonly subCode: InvalidCalloutResponseCode) {

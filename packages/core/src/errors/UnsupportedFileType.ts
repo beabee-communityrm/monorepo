@@ -1,4 +1,4 @@
-import { ClientApiErrorData } from '@beabee/beabee-common';
+import { UnsupportedFileTypeErrorData } from '@beabee/beabee-common';
 
 import { HttpError } from 'routing-controllers';
 
@@ -7,13 +7,13 @@ import { HttpError } from 'routing-controllers';
  */
 export class UnsupportedFileType
   extends HttpError
-  implements ClientApiErrorData
+  implements UnsupportedFileTypeErrorData
 {
-  httpCode = 415;
-  code = 'UNSUPPORTED_FILE_TYPE';
-  constructor(options: { message?: string } = {}) {
-    super(415, options.message || 'Unsupported File Type');
+  httpCode = 415 as const;
+  code = 'unsupported-file-type' as const;
+
+  constructor(readonly allowedTypes: string[]) {
+    super(415);
     Object.setPrototypeOf(this, UnsupportedFileType.prototype);
-    this.name = 'UnsupportedFileType';
   }
 }

@@ -10,6 +10,7 @@ export * from './InvalidRuleError';
 export * from './NoPaymentMethod';
 export * from './NotFoundError';
 export * from './PaymentFailed';
+export * from './PaymentRequiresActionError';
 export * from './TooManyRequestsError';
 export * from './UnauthorizedError';
 export * from './UnsupportedFileType';

@@ -1,10 +1,10 @@
-import { ClientApiErrorData } from '@beabee/beabee-common';
+import { BaseApiErrorData } from '@beabee/beabee-common';
 
 import { BadRequestError } from './BadRequestError';
 
 export class NoPaymentMethod
   extends BadRequestError
-  implements ClientApiErrorData
+  implements BaseApiErrorData
 {
   readonly code = 'no-payment-method';
 

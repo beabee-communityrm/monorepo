@@ -1,4 +1,5 @@
 import {
+  ALLOWED_IMAGE_MIME_TYPES,
   MAX_FILE_SIZE_IN_BYTES,
   isSupportedImageType,
 } from '@beabee/beabee-common';
@@ -60,9 +61,7 @@ export class ImageController {
 
     // Verify file type is allowed - multer handles size but we still check type
     if (!isSupportedImageType(req.file.mimetype)) {
-      throw new UnsupportedFileType({
-        message: `Unsupported image type ${req.file.mimetype}. Please upload a JPEG, PNG, WebP or AVIF image.`,
-      });
+      throw new UnsupportedFileType(ALLOWED_IMAGE_MIME_TYPES);
     }
 
     // Use the ImageService to upload and process the file

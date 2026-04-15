@@ -1,4 +1,7 @@
-import { isSupportedDocumentType } from '@beabee/beabee-common';
+import {
+  ALLOWED_DOCUMENT_MIME_TYPES,
+  isSupportedDocumentType,
+} from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
 import { MAX_FILE_SIZE_IN_BYTES } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
@@ -58,9 +61,7 @@ export class DocumentController {
 
     // Verify file type is allowed - multer handles size but we still check type
     if (!isSupportedDocumentType(req.file.mimetype)) {
-      throw new UnsupportedFileType({
-        message: 'Unsupported document type. Please upload a PDF document.',
-      });
+      throw new UnsupportedFileType(ALLOWED_DOCUMENT_MIME_TYPES);
     }
 
     // Use the DocumentService to upload the file with owner information
