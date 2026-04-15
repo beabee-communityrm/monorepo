@@ -305,18 +305,13 @@ export async function deleteSubscription(
  * Create a one-time payment
  *
  * @param customerId The ID of the customer
- * @param token The confirmation token
- * @param form The payment form
- * @param paymentMethod The payment method
+ * @param flow The payment flow with a one-time payment form
+ * @returns The payment intent for the payment
  */
-export async function chargeOneTimePayment(
+export async function createOneTimePayment(
   customerId: string,
   flow: PaymentFlow<PaymentFlowFormCreateOneTimePayment>
-): Promise<void> {
-  if (!flow.params?.token) {
-    throw new NoPaymentMethod();
-  }
-
+): Promise<string> {
   log.info('Creating one-time payment on ' + customerId);
 
   const invoice = await stripe.invoices.create({
@@ -339,14 +334,12 @@ export async function chargeOneTimePayment(
 
   const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id);
 
-  const paymentIntent = finalizedInvoice.payment_intent as string | null;
-  if (!paymentIntent) {
+  const paymentIntentId = finalizedInvoice.payment_intent as string | null;
+  if (!paymentIntentId) {
     throw new Error('No intent found for invoice');
   }
 
-  await stripe.paymentIntents.confirm(paymentIntent, {
-    confirmation_token: flow.params.token,
-  });
+  return paymentIntentId;
 }
 
 export function isOneTimePaymentInvoice(

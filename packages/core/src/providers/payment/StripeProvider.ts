@@ -12,9 +12,10 @@ import {
   CantUpdateContribution,
   NoPaymentMethod,
   PaymentFailed,
+  PaymentRequiresActionError,
 } from '#errors/index';
 import {
-  chargeOneTimePayment,
+  createOneTimePayment,
   createSubscription,
   deleteSubscription,
   manadateToSource,
@@ -237,7 +238,6 @@ export class StripeProvider extends PaymentProvider {
 
     const customerId = await this.ensureCustomerForFlow(flow);
 
-    // TODO: handle requires_action
     const intent = await stripe.setupIntents.create({
       customer: customerId,
       confirm: true,
@@ -257,13 +257,26 @@ export class StripeProvider extends PaymentProvider {
   private async createOneTimePayment(
     flow: PaymentFlow<PaymentFlowFormCreateOneTimePayment>
   ): Promise<void> {
+    if (!flow.params?.token) {
+      throw new NoPaymentMethod();
+    }
+
     log.info('Create one-time payment of amount ' + flow.form.amount);
 
     const customerId = await this.ensureCustomerForFlow(flow);
 
     try {
-      // TODO: handle requires_action
-      await chargeOneTimePayment(customerId, flow);
+      const paymentIntentId = await createOneTimePayment(customerId, flow);
+      const confirmedIntent = await stripe.paymentIntents.confirm(
+        paymentIntentId,
+        { confirmation_token: flow.params.token }
+      );
+
+      if (confirmedIntent.status === 'requires_action') {
+        throw new PaymentRequiresActionError(
+          confirmedIntent.client_secret as string
+        );
+      }
     } catch (err) {
       if (err instanceof Stripe.errors.StripeCardError) {
         throw new PaymentFailed(err.decline_code);
@@ -369,6 +382,10 @@ export class StripeProvider extends PaymentProvider {
     flow: PaymentFlow
   ): Promise<void> {
     log.info('Processing confirmed intent ' + intent.id);
+
+    if (intent.status === 'requires_action') {
+      throw new PaymentRequiresActionError(intent.client_secret as string);
+    }
 
     // Save old mandate to remove afterwards
     const oldMandateId = this.data.mandateId;
