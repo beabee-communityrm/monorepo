@@ -21,10 +21,6 @@ vi.mock('@beabee/vue/store/notifications', () => ({
 describe('extractErrorText', () => {
   it('should return translated text for cant-update-contribution', () => {
     const error = new CantUpdateContributionError('Cannot update contribution');
-    // const error = new ClientApiError('Cannot update contribution', {
-    //   code: 'cant-update-contribution',
-    //   httpCode: 400,
-    // });
 
     const result = extractErrorText(error);
 

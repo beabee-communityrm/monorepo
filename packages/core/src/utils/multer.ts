@@ -32,7 +32,7 @@ import {
  * }
  * ```
  */
-export function convertMulterError(error: unknown): HttpError {
+export function convertMulterError(error: unknown, maxSize: number): HttpError {
   const message = error instanceof Error ? error.message : 'Unknown error';
 
   // If it's not a MulterError, return a generic BadRequestError
@@ -43,7 +43,7 @@ export function convertMulterError(error: unknown): HttpError {
   // Handle specific MulterError codes
   switch (error.code) {
     case 'LIMIT_FILE_SIZE':
-      return new FileTooLargeError(MAX_FILE_SIZE_IN_BYTES);
+      return new FileTooLargeError(maxSize);
 
     case 'LIMIT_UNEXPECTED_FILE':
       return new UnsupportedFileTypeError(error.field || 'unknown');

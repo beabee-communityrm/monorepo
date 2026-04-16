@@ -1,5 +1,6 @@
 import {
   ALLOWED_DOCUMENT_MIME_TYPES,
+  MAX_FILE_SIZE_IN_BYTES,
   isSupportedDocumentType,
 } from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
@@ -53,7 +54,7 @@ export class DocumentController {
       await uploadMiddleware(req, res);
     } catch (error) {
       // Convert MulterError to appropriate HttpError
-      throw convertMulterError(error);
+      throw convertMulterError(error, MAX_FILE_SIZE_IN_BYTES);
     }
 
     if (!req.file) {
