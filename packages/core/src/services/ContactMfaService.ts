@@ -1,9 +1,7 @@
 import { LOGIN_CODES } from '@beabee/beabee-common';
 
-import { NotFoundError } from 'routing-controllers';
-
 import { getRepository } from '#database';
-import { BadRequestError, UnauthorizedError } from '#errors/index';
+import { NotFoundError, UnauthorizedError } from '#errors/index';
 import { Contact, ContactMfa } from '#models/index';
 import {
   ContactMfaSecure,
@@ -48,7 +46,7 @@ class ContactMfaService {
     const { isValid } = validateTotpToken(data.secret, data.token, 2);
 
     if (!isValid) {
-      throw new UnauthorizedError({ code: LOGIN_CODES.INVALID_TOKEN });
+      throw new UnauthorizedError(LOGIN_CODES.INVALID_TOKEN);
     }
 
     const mfa = await getRepository(ContactMfa).save({
@@ -67,20 +65,10 @@ class ContactMfaService {
    * @param contact The contact
    * @param data The MFA type and the token (if the user is not an admin)
    */
-  async deleteSecure(contact: Contact, data: DeleteContactMfaData) {
-    if (!data.token) {
-      throw new BadRequestError({
-        code: LOGIN_CODES.MISSING_TOKEN,
-        message:
-          'The contact itself needs to enter the old code to delete its MFA',
-      });
-    }
-    const tokenValidation = await this.checkToken(contact, data.token, 2);
+  async deleteSecure(contact: Contact, token: string) {
+    const tokenValidation = await this.checkToken(contact, token, 2);
     if (!tokenValidation.isValid) {
-      throw new UnauthorizedError({
-        code: LOGIN_CODES.INVALID_TOKEN,
-        message: 'Invalid token',
-      });
+      throw new UnauthorizedError(LOGIN_CODES.INVALID_TOKEN);
     }
 
     return this.deleteUnsecure(contact);

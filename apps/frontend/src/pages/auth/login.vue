@@ -90,6 +90,7 @@ meta:
 <script lang="ts" setup>
 import { LOGIN_CODES } from '@beabee/beabee-common';
 import type { LoginData } from '@beabee/beabee-common';
+import { UnauthorizedError } from '@beabee/client';
 import { AppInput, AppNotification, AppTitle } from '@beabee/vue';
 
 import { reactive, ref, toRef, watch } from 'vue';
@@ -100,7 +101,7 @@ import AuthBox from '#components/AuthBox.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import env from '#env';
 import { updateCurrentUser } from '#store/index';
-import { client, isApiError } from '#utils/api';
+import { client } from '#utils/api';
 import { isInternalUrl } from '#utils/index';
 
 const { t } = useI18n();
@@ -123,7 +124,10 @@ async function submitLogin() {
     // TODO: use router when legacy app is gone
     window.location.href = isInternalUrl(redirectTo) ? redirectTo : '/';
   } catch (err) {
-    if (isApiError(err, [LOGIN_CODES.REQUIRES_2FA])) {
+    if (
+      err instanceof UnauthorizedError &&
+      err.subCode === LOGIN_CODES.REQUIRES_2FA
+    ) {
       hasMFAEnabled.value = true;
     } else {
       throw err;

@@ -1,9 +1,9 @@
 import { Rule } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
+import { BadRequestError } from '@beabee/core/errors';
 import { CalloutReviewer, Contact } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
-import { BadRequestError } from 'routing-controllers';
 import { Auth, In } from 'typeorm';
 
 export async function getReviewerRules(

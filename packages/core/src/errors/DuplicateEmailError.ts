@@ -1,15 +1,16 @@
-import { BaseApiErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode, DuplicateEmailErrorData } from '@beabee/beabee-common';
 
-import { BadRequestError } from './BadRequestError';
+import { BadRequestError } from 'routing-controllers';
 
 export class DuplicateEmailError
   extends BadRequestError
-  implements BaseApiErrorData
+  implements DuplicateEmailErrorData
 {
-  readonly code = 'duplicate-email';
+  readonly httpCode = 400;
+  readonly code = ApiErrorCode.DUPLICATE_EMAIL;
 
-  constructor() {
-    super();
+  constructor(readonly email: string) {
+    super('Email already exists: ' + email);
     Object.setPrototypeOf(this, DuplicateEmailError.prototype);
   }
 }

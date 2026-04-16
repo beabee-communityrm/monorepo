@@ -1,11 +1,12 @@
+import { ApiErrorCode, ApiErrorData } from '@beabee/beabee-common';
+
 import type {
-  ClientApiErrorData,
   FetchOptions,
   FetchResponse,
   HttpMethod,
 } from '../types/index.js';
 import {
-  ClientApiError,
+  ApiError,
   CookiePolyfill,
   cleanUrl,
   hasProtocol,
@@ -18,7 +19,7 @@ import {
  */
 export class Fetch {
   protected readonly options: FetchOptions;
-  protected errorHandlers: ((error: ClientApiError) => void)[] = [];
+  protected errorHandlers: ((error: ApiError) => void)[] = [];
 
   constructor(options: FetchOptions = {}) {
     if (options.token) {
@@ -175,7 +176,7 @@ export class Fetch {
    * Add a global error handler
    * @param handler Function to handle errors
    */
-  public onError(handler: (error: ClientApiError) => void): void {
+  public onError(handler: (error: ApiError) => void): void {
     this.errorHandlers.push(handler);
   }
 
@@ -206,7 +207,7 @@ export class Fetch {
     try {
       return await this.performFetch<T, D>(url, method, data, options);
     } catch (error) {
-      if (error instanceof ClientApiError) {
+      if (error instanceof ApiError) {
         // Notify all error handlers
         this.errorHandlers.forEach((handler) => handler(error));
       }
@@ -357,37 +358,12 @@ export class Fetch {
   protected handleErrorResponse<T>(
     result: FetchResponse<T>,
     response: Response
-  ): never {
-    if (result.data) {
-      if (isApiErrorResponse(result.data)) {
-        // Extract Retry-After header (seconds) if present
-        const retryAfterHeader = response.headers.get('Retry-After');
-        const retryAfterSeconds = retryAfterHeader
-          ? Number.parseInt(retryAfterHeader, 10)
-          : undefined;
-
-        // Create ClientApiError using the fromData method
-        const error = ClientApiError.fromData({
-          ...result.data,
-          retryAfterSeconds,
-        });
-
-        throw error;
-      } else {
-        // Handle non-API error responses
-        const errorData = {
-          code: 'internal-server-error',
-          httpCode: response.status,
-          message: 'Unknown error',
-          errors: result.data,
-        };
-
-        throw ClientApiError.fromData(errorData);
-      }
+  ): void {
+    if (isApiErrorResponse(result.data)) {
+      throw ApiError.fromData(result.data);
+    } else {
+      throw result;
     }
-
-    // If no data, throw the raw response
-    throw result;
   }
 
   /**
@@ -408,16 +384,15 @@ export class Fetch {
 /**
  * Type guard to check if an object has the structure of an API error response from the backend
  * @param obj - The object to check
- * @param codes - Optional array of error codes to match against
- * @param status - Optional array of HTTP status codes to match against
  */
-function isApiErrorResponse(obj: unknown): obj is ClientApiErrorData {
+function isApiErrorResponse(obj: unknown): obj is ApiErrorData {
   return (
     !!obj &&
     typeof obj === 'object' &&
+    'httpCode' in obj &&
+    typeof obj.httpCode === 'number' &&
     'code' in obj &&
     typeof obj.code === 'string' &&
-    'httpCode' in obj &&
-    typeof obj.httpCode === 'number'
+    Object.values(ApiErrorCode).includes(obj.code as ApiErrorCode)
   );
 }

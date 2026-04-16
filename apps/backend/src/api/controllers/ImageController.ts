@@ -1,11 +1,14 @@
 import {
   ALLOWED_IMAGE_MIME_TYPES,
-  MAX_FILE_SIZE_IN_BYTES,
   isSupportedImageType,
 } from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
-import { BadRequestError, UnsupportedFileType } from '@beabee/core/errors';
+import {
+  BadRequestError,
+  UnauthorizedError,
+  UnsupportedFileTypeError,
+} from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import { imageService } from '@beabee/core/services/ImageService';
 import { convertMulterError } from '@beabee/core/utils/multer';
@@ -22,7 +25,6 @@ import {
   QueryParam,
   Req,
   Res,
-  UnauthorizedError,
   UseBefore,
 } from 'routing-controllers';
 
@@ -52,16 +54,19 @@ export class ImageController {
       await uploadMiddleware(req, res);
     } catch (error) {
       // Convert MulterError to appropriate HttpError
-      throw convertMulterError(error, MAX_FILE_SIZE_IN_BYTES);
+      throw convertMulterError(error);
     }
 
     if (!req.file) {
-      throw new BadRequestError({ message: 'No image file provided' });
+      throw new BadRequestError('No image file provided');
     }
 
     // Verify file type is allowed - multer handles size but we still check type
     if (!isSupportedImageType(req.file.mimetype)) {
-      throw new UnsupportedFileType(ALLOWED_IMAGE_MIME_TYPES);
+      throw new UnsupportedFileTypeError(
+        req.file.mimetype,
+        ALLOWED_IMAGE_MIME_TYPES
+      );
     }
 
     // Use the ImageService to upload and process the file
@@ -136,9 +141,7 @@ export class ImageController {
       metadata.owner !== contact.email &&
       !contact.hasRole('admin')
     ) {
-      throw new UnauthorizedError(
-        "You don't have permission to delete this image"
-      );
+      throw new UnauthorizedError();
     }
 
     const success = await imageService.deleteImage(id);

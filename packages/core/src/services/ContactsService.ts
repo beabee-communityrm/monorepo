@@ -12,10 +12,10 @@ import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from 'typeorm';
 
 import { createQueryBuilder, getRepository, runTransaction } from '#database';
 import {
-  BadRequestError,
-  CantUpdateContribution,
+  CantUpdateContributionError,
   DuplicateEmailError,
   NotFoundError,
+  ResetSecurityFlowError,
   UnauthorizedError,
 } from '#errors/index';
 import { log as mainLogger } from '#logging';
@@ -142,7 +142,7 @@ class ContactsService {
       return contact;
     } catch (error) {
       if (isDuplicateIndex(error, 'email')) {
-        throw new DuplicateEmailError();
+        throw new DuplicateEmailError(partialContact.email);
       } else if (
         isDuplicateIndex(error, 'referralCode') ||
         isDuplicateIndex(error, 'pollsCode')
@@ -180,7 +180,9 @@ class ContactsService {
     try {
       await getRepository(Contact).update(contact.id, updates);
     } catch (err) {
-      throw isDuplicateIndex(err, 'email') ? new DuplicateEmailError() : err;
+      throw isDuplicateIndex(err, 'email')
+        ? new DuplicateEmailError(updates.email || '')
+        : err;
     }
 
     Object.assign(contact, updates);
@@ -472,7 +474,7 @@ class ContactsService {
     data: ForceUpdateContribution
   ): Promise<void> {
     if (contact.contributionType === ContributionType.Automatic) {
-      throw new CantUpdateContribution();
+      throw new CantUpdateContributionError();
     }
 
     const period = data.period && data.amount ? data.period : null;
@@ -562,15 +564,14 @@ class ContactsService {
     const rpFlow = await ResetSecurityFlowService.get(id);
 
     if (!rpFlow) {
-      throw new NotFoundError({
-        code: RESET_SECURITY_FLOW_ERROR_CODE.NOT_FOUND,
-      });
+      throw new NotFoundError();
     }
 
     if (rpFlow.type !== RESET_SECURITY_FLOW_TYPE.PASSWORD) {
-      throw new BadRequestError({
-        code: RESET_SECURITY_FLOW_ERROR_CODE.WRONG_TYPE,
-      });
+      throw new ResetSecurityFlowError(
+        RESET_SECURITY_FLOW_ERROR_CODE.WRONG_TYPE,
+        'Invalid reset flow type'
+      );
     }
 
     // Check if contact has MFA enabled, if so validate MFA
@@ -578,15 +579,17 @@ class ContactsService {
     if (mfa) {
       // In the future, we might want to add more types of reset flows
       if (mfa.type !== CONTACT_MFA_TYPE.TOTP) {
-        throw new BadRequestError({
-          code: RESET_SECURITY_FLOW_ERROR_CODE.WRONG_MFA_TYPE,
-        });
+        throw new ResetSecurityFlowError(
+          RESET_SECURITY_FLOW_ERROR_CODE.WRONG_MFA_TYPE,
+          'Invalid MFA type'
+        );
       }
 
       if (!data.token) {
-        throw new BadRequestError({
-          code: RESET_SECURITY_FLOW_ERROR_CODE.MFA_TOKEN_REQUIRED,
-        });
+        throw new ResetSecurityFlowError(
+          RESET_SECURITY_FLOW_ERROR_CODE.MFA_TOKEN_REQUIRED,
+          'MFA token required'
+        );
       }
 
       const { isValid } = await ContactMfaService.checkToken(
@@ -596,7 +599,7 @@ class ContactsService {
       );
 
       if (!isValid) {
-        throw new UnauthorizedError({ code: LOGIN_CODES.INVALID_TOKEN });
+        throw new UnauthorizedError(LOGIN_CODES.INVALID_TOKEN);
       }
     }
 
@@ -650,29 +653,28 @@ class ContactsService {
    * @returns The contact associated with the reset device flow
    *
    * @throws {NotFoundError} If the reset device flow doesn't exist
-   * @throws {BadRequestError} If the reset device flow type is not TOTP
+   * @throws {ResetSecurityFlowError} If the reset device flow type is not TOTP
    * @throws {UnauthorizedError} If the password is invalid
    */
   public async resetDeviceComplete(id: string, password: string) {
     const rdFlow = await ResetSecurityFlowService.get(id);
 
     if (!rdFlow) {
-      throw new NotFoundError({
-        code: RESET_SECURITY_FLOW_ERROR_CODE.NOT_FOUND,
-      });
+      throw new NotFoundError();
     }
 
     if (rdFlow.type !== RESET_SECURITY_FLOW_TYPE.TOTP) {
-      throw new BadRequestError({
-        code: RESET_SECURITY_FLOW_ERROR_CODE.WRONG_TYPE,
-      });
+      throw new ResetSecurityFlowError(
+        RESET_SECURITY_FLOW_ERROR_CODE.WRONG_TYPE,
+        'Invalid reset flow type'
+      );
     }
 
     // Validate password
     const code = await isValidPassword(rdFlow.contact.password, password);
     if (code !== LOGIN_CODES.LOGGED_IN) {
       await this.incrementPasswordTries(rdFlow.contact);
-      throw new UnauthorizedError({ code });
+      throw new UnauthorizedError(code);
     }
 
     // Reset password tries because the password was correct
