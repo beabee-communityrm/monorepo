@@ -431,7 +431,7 @@ const disableMfaAndNotify = async () => {
 const onCreateError = (error: unknown) => {
   if (
     error instanceof UnauthorizedError &&
-    error.subCode === LOGIN_CODES.INVALID_TOKEN
+    error.code === LOGIN_CODES.INVALID_TOKEN
   ) {
     // If server says the token is invalid, set the token as invalid and go to the previous slide
     setValidationStates(false);
@@ -450,8 +450,8 @@ const onCreateError = (error: unknown) => {
 const onDeleteError = (error: unknown) => {
   if (
     error instanceof UnauthorizedError &&
-    (error.subCode === LOGIN_CODES.INVALID_TOKEN ||
-      error.subCode === LOGIN_CODES.MISSING_TOKEN)
+    (error.code === LOGIN_CODES.INVALID_TOKEN ||
+      error.code === LOGIN_CODES.MISSING_TOKEN)
   ) {
     // If server says the token is invalid, set the token as invalid
     setValidationStates(false);

@@ -30,14 +30,17 @@ import {
 
 export abstract class ApiError extends Error {
   abstract readonly httpCode: number;
-  abstract readonly code: ApiErrorCode;
+  abstract readonly code: ApiErrorCode | LOGIN_CODES;
 
   static fromData(data: ApiErrorData): ApiError {
+    // Special handling for 401 to throw a specific error with the login code
+    if (data.httpCode === 401) {
+      throw new UnauthorizedError(data.message, data.code);
+    }
+
     switch (data.code) {
       case ApiErrorCode.BAD_REQUEST:
         return new BadRequestError(data.message);
-      case ApiErrorCode.UNAUTHORIZED:
-        return new UnauthorizedError(data.message, data.subCode);
       case ApiErrorCode.NOT_FOUND:
         return new NotFoundError(data.message);
       case ApiErrorCode.PAYMENT_FAILED:
@@ -103,11 +106,10 @@ export class UnauthorizedError
   implements UnauthorizedErrorData
 {
   readonly httpCode = 401;
-  readonly code = ApiErrorCode.UNAUTHORIZED;
 
   constructor(
     message: string,
-    public readonly subCode: LOGIN_CODES | undefined
+    public readonly code: LOGIN_CODES
   ) {
     super(message);
   }

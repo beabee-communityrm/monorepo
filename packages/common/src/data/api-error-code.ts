@@ -1,6 +1,5 @@
 export enum ApiErrorCode {
   BAD_REQUEST = 'bad-request',
-  UNAUTHORIZED = 'unauthorized',
   NOT_FOUND = 'not-found',
   PAYMENT_FAILED = 'payment-failed',
   PAYMENT_REQUIRES_ACTION = 'payment-requires-action',

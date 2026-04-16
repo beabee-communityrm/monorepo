@@ -126,7 +126,7 @@ async function submitLogin() {
   } catch (err) {
     if (
       err instanceof UnauthorizedError &&
-      err.subCode === LOGIN_CODES.REQUIRES_2FA
+      err.code === LOGIN_CODES.REQUIRES_2FA
     ) {
       hasMFAEnabled.value = true;
     } else {

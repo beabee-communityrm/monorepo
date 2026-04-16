@@ -1,4 +1,4 @@
-import { ApiErrorCode, ApiErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode, ApiErrorData, LOGIN_CODES } from '@beabee/beabee-common';
 
 import type {
   FetchOptions,
@@ -393,6 +393,8 @@ function isApiErrorResponse(obj: unknown): obj is ApiErrorData {
     typeof obj.httpCode === 'number' &&
     'code' in obj &&
     typeof obj.code === 'string' &&
-    Object.values(ApiErrorCode).includes(obj.code as ApiErrorCode)
+    (Object.values(ApiErrorCode).includes(obj.code as ApiErrorCode) ||
+      (obj.httpCode === 401 &&
+        Object.values(LOGIN_CODES).includes(obj.code as LOGIN_CODES)))
   );
 }

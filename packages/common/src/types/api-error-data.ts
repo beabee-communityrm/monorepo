@@ -7,7 +7,7 @@ import type { Rule } from './rule';
 
 interface BaseApiErrorData {
   httpCode: number;
-  code: ApiErrorCode;
+  code: ApiErrorCode | LOGIN_CODES;
   message: string;
 }
 
@@ -18,8 +18,7 @@ export interface BadRequestErrorData extends BaseApiErrorData {
 
 export interface UnauthorizedErrorData extends BaseApiErrorData {
   httpCode: 401;
-  code: ApiErrorCode.UNAUTHORIZED;
-  subCode: LOGIN_CODES | undefined;
+  code: LOGIN_CODES;
 }
 
 export interface NotFoundErrorData extends BaseApiErrorData {
