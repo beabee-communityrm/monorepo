@@ -2,7 +2,7 @@ import { CONTACT_MFA_TYPE, LOGIN_CODES } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { UnauthorizedError } from '@beabee/core/errors';
-import { log } from '@beabee/core/logging';
+import { log as mainLogger } from '@beabee/core/logging';
 import { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
@@ -14,6 +14,8 @@ import passportLocal from 'passport-local';
 
 import type { LoginData, PassportLocalDoneCallback } from '#type';
 import { normalizeEmailAddress } from '#utils/email';
+
+const log = mainLogger.child({ app: 'passport-lib' });
 
 // Add support for local authentication in Passport.js
 passport.use(
@@ -63,6 +65,8 @@ passport.use(
           await ContactsService.incrementPasswordTries(contact);
         }
       }
+
+      log.info(`Login attmpted failed for ${email} with code ${code}`);
 
       // Delay by 1 second to slow down password guessing
       await new Promise((resolve) => setTimeout(resolve, 1000));

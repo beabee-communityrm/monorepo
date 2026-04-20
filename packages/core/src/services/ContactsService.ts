@@ -526,6 +526,8 @@ class ContactsService {
     email: string,
     resetUrl: string
   ): Promise<void> {
+    log.info('Reset password begin attempt for ' + email);
+
     const contact = await this.findOneBy({ email });
 
     if (!contact) {
@@ -559,6 +561,8 @@ class ContactsService {
     id: string,
     data: { password: string; token?: string }
   ) {
+    log.info('Reset password complete attempt for ' + id);
+
     const rpFlow = await ResetSecurityFlowService.get(id);
 
     if (!rpFlow) {
@@ -622,6 +626,7 @@ class ContactsService {
     type: RESET_SECURITY_FLOW_TYPE,
     resetUrl: string
   ): Promise<void> {
+    log.info('Reset device begin attempt for ' + email);
     const contact = await this.findOneBy({ email });
 
     // We don't want to leak if the email exists or not
@@ -654,6 +659,8 @@ class ContactsService {
    * @throws {UnauthorizedError} If the password is invalid
    */
   public async resetDeviceComplete(id: string, password: string) {
+    log.info('Reset device complete attempt for ' + id);
+
     const rdFlow = await ResetSecurityFlowService.get(id);
 
     if (!rdFlow) {
