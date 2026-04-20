@@ -344,26 +344,14 @@ export class Fetch {
 
     // Throw an error if the response is not ok
     if (!result.ok) {
-      this.handleErrorResponse(result, response);
+      if (isApiErrorResponse(result.data)) {
+        throw ApiError.fromData(result.data);
+      } else {
+        throw result.data || result;
+      }
     }
 
     return result;
-  }
-
-  /**
-   * Handle error responses by throwing appropriate ClientApiError instances
-   * @param result The fetch response result
-   * @param response The original response object
-   */
-  protected handleErrorResponse<T>(
-    result: FetchResponse<T>,
-    response: Response
-  ): void {
-    if (isApiErrorResponse(result.data)) {
-      throw ApiError.fromData(result.data);
-    } else {
-      throw result;
-    }
   }
 
   /**
