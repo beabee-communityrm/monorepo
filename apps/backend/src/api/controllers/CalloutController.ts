@@ -210,8 +210,8 @@ export class CalloutController {
   @Post('/:id/responses')
   @UseBefore(
     RateLimit({
-      guest: { points: 3, duration: 60 }, // 5 entries per minute per IP
-      user: { points: 20, duration: 60 }, // Logged in users can edit their responses so we can allow more
+      guest: { points: 3, duration: 1140 }, // 3 entries per day per IP
+      user: { points: 5, duration: 60 }, // Logged in users can edit their responses so we need to allow more here
     })
   )
   async createCalloutResponse(
