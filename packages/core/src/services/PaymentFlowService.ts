@@ -5,7 +5,7 @@ import {
 } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
-import { CantUpdateContribution, NotFoundError } from '#errors/index';
+import { CantUpdateContributionError, NotFoundError } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Contact, PaymentFlow } from '#models/index';
 import {
@@ -131,7 +131,7 @@ class PaymentFlowService {
 
     const canChange = await PaymentService.canProcessPaymentFlow(contact, form);
     if (!canChange) {
-      throw new CantUpdateContribution();
+      throw new CantUpdateContributionError();
     }
 
     const result = await PaymentService.processPaymentFlow(

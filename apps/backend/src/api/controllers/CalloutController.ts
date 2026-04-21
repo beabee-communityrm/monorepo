@@ -1,6 +1,12 @@
 import { CalloutCaptcha } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
-import { InvalidCalloutResponse, UnauthorizedError } from '@beabee/core/errors';
+import {
+  BadRequestError,
+  CaptchaFailedError,
+  CaptchaRequiredError,
+  InvalidCalloutResponseError,
+  NotFoundError,
+} from '@beabee/core/errors';
 import { Callout, Contact } from '@beabee/core/models';
 import { calloutsService } from '@beabee/core/services/CalloutsService';
 import { AuthInfo } from '@beabee/core/type';
@@ -9,13 +15,11 @@ import { plainToInstance } from 'class-transformer';
 import { Response } from 'express';
 import {
   Authorized,
-  BadRequestError,
   Body,
   CurrentUser,
   Delete,
   Get,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Param,
   Patch,
@@ -227,7 +231,7 @@ export class CalloutController {
     }
 
     if (caller && data.guest) {
-      throw new InvalidCalloutResponse('logged-in-guest-fields');
+      throw new InvalidCalloutResponseError('logged-in-guest-fields');
     }
 
     if (
@@ -235,15 +239,12 @@ export class CalloutController {
       (callout.captcha === CalloutCaptcha.Guest && !caller)
     ) {
       if (!captchaToken) {
-        throw new UnauthorizedError({ code: 'captcha-required' });
+        throw new CaptchaRequiredError();
       }
 
       const error = await verify(captchaToken);
       if (error) {
-        throw new UnauthorizedError({
-          code: 'captcha-failed',
-          message: 'Captcha failed with error ' + error,
-        });
+        throw new CaptchaFailedError();
       }
     }
 

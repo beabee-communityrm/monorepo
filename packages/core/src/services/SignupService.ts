@@ -224,7 +224,7 @@ class SignupService {
       contact?.membership?.isActive &&
       signupFlow.paymentFlow?.form.action === 'start-contribution'
     ) {
-      throw new DuplicateEmailError();
+      throw new DuplicateEmailError(contact.email);
     }
 
     let completedFlow;

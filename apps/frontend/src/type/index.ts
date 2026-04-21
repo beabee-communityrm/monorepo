@@ -1,4 +1,3 @@
-export * from './api-error';
 export * from './app-qr-code-error-correction-level';
 export * from './app-qr-code-props';
 export * from './app-qr-code-type-number';

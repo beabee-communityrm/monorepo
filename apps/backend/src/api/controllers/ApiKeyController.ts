@@ -1,3 +1,4 @@
+import { NotFoundError } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import ApiKeyService from '@beabee/core/services/ApiKeyService';
 import { AuthInfo } from '@beabee/core/type';
@@ -10,7 +11,6 @@ import {
   Delete,
   Get,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Param,
   Post,

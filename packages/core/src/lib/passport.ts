@@ -98,10 +98,7 @@ const loginWithMfa = async (
 
   // If user has no token, notify client that 2FA is required
   if (!token) {
-    return done(
-      new UnauthorizedError({ code: LOGIN_CODES.REQUIRES_2FA }),
-      false
-    );
+    return done(new UnauthorizedError(LOGIN_CODES.REQUIRES_2FA), false);
   }
 
   // Check token..
@@ -114,10 +111,10 @@ const loginWithMfa = async (
   // .. if invalid notify client
   if (!isValid) {
     return done(
-      new UnauthorizedError({
-        code: LOGIN_CODES.INVALID_TOKEN,
-        message: 'Invalid 2FA token' + delta ? ` (delta: ${delta})` : '',
-      }),
+      new UnauthorizedError(
+        LOGIN_CODES.INVALID_TOKEN,
+        'Invalid 2FA token' + delta ? ` (delta: ${delta})` : ''
+      ),
       false
     );
   }

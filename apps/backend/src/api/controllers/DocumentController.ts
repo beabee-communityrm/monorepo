@@ -1,9 +1,15 @@
-import { isSupportedDocumentType } from '@beabee/beabee-common';
+import {
+  ALLOWED_DOCUMENT_MIME_TYPES,
+  MAX_FILE_SIZE_IN_BYTES,
+  isSupportedDocumentType,
+} from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
-import { MAX_FILE_SIZE_IN_BYTES } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
-import { BadRequestError } from '@beabee/core/errors';
-import { UnsupportedFileType } from '@beabee/core/errors';
+import {
+  BadRequestError,
+  UnauthorizedError,
+  UnsupportedFileTypeError,
+} from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import { documentService } from '@beabee/core/services';
 import { convertMulterError } from '@beabee/core/utils/multer';
@@ -19,7 +25,6 @@ import {
   Post,
   Req,
   Res,
-  UnauthorizedError,
   UseBefore,
 } from 'routing-controllers';
 
@@ -53,14 +58,15 @@ export class DocumentController {
     }
 
     if (!req.file) {
-      throw new BadRequestError({ message: 'No document file provided' });
+      throw new BadRequestError('No document file provided');
     }
 
     // Verify file type is allowed - multer handles size but we still check type
     if (!isSupportedDocumentType(req.file.mimetype)) {
-      throw new UnsupportedFileType({
-        message: 'Unsupported document type. Please upload a PDF document.',
-      });
+      throw new UnsupportedFileTypeError(
+        req.file.mimetype,
+        ALLOWED_DOCUMENT_MIME_TYPES
+      );
     }
 
     // Use the DocumentService to upload the file with owner information
@@ -136,9 +142,7 @@ export class DocumentController {
       metadata.owner !== contact.email &&
       !contact.hasRole('admin')
     ) {
-      throw new UnauthorizedError(
-        "You don't have permission to delete this document"
-      );
+      throw new UnauthorizedError();
     }
 
     const success = await documentService.deleteDocument(id);

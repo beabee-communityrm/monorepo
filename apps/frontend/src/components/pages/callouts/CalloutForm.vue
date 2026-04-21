@@ -90,6 +90,7 @@ import {
   type GetCalloutDataWith,
   type GetCalloutSlideSchema,
 } from '@beabee/beabee-common';
+import { ApiError } from '@beabee/client';
 import { AppButton, AppNotification } from '@beabee/vue';
 
 import useVuelidate from '@vuelidate/core';
@@ -100,7 +101,7 @@ import { useI18n } from 'vue-i18n';
 import FormRenderer from '#components/form-renderer/FormRenderer.vue';
 import AppNewsletterOptIn from '#components/newsletter/AppNewsletterOptIn.vue';
 import { currentUser } from '#store';
-import { client, isApiError } from '#utils/api';
+import { client } from '#utils/api';
 import { getDecisionComponent } from '#utils/callouts';
 
 import CalloutFormCaptcha from './CalloutFormCaptcha.vue';
@@ -269,7 +270,7 @@ async function handleSubmit() {
     emit('submitted');
   } catch (err) {
     formError.value = t('callout.form.submittingResponseError');
-    if (!isApiError(err)) throw err;
+    if (!(err instanceof ApiError)) throw err;
   } finally {
     isLoading.value = false;
   }

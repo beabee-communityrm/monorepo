@@ -81,7 +81,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
         flow,
         setupIntent,
       });
-      throw new BadRequestError({ message: 'Failed to complete payment flow' });
+      throw new BadRequestError('Failed to complete payment flow');
     }
 
     return {

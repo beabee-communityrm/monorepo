@@ -8,7 +8,7 @@ import { Subscription } from 'gocardless-nodejs';
 import moment from 'moment';
 
 import config from '#config/config';
-import { NoPaymentMethod } from '#errors/index';
+import { NoPaymentMethodError } from '#errors/index';
 import gocardless, {
   createSubscription,
   hasPendingPayment,
@@ -95,7 +95,7 @@ export class GCProvider extends PaymentProvider {
     });
 
     if (!this.data.mandateId) {
-      throw new NoPaymentMethod();
+      throw new NoPaymentMethodError();
     }
 
     let subscription: Subscription | undefined;
