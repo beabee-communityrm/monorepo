@@ -47,15 +47,6 @@ meta:
     </div>
   </PageTitle>
 
-  <AppNotification
-    v-if="isMissingTags"
-    variant="error"
-    :title="
-      'This Email is missing following mandatory merge tags: ' + missingTags
-    "
-    class="mb-4"
-  />
-
   <div v-if="loading">
     <p>{{ t('common.loading') }}...</p>
   </div>
@@ -83,12 +74,7 @@ import type {
   GetEmailData,
   GetEmailTemplateInfoData,
 } from '@beabee/beabee-common';
-import {
-  AppButton,
-  AppConfirmDialog,
-  AppNotification,
-  PageTitle,
-} from '@beabee/vue';
+import { AppButton, AppConfirmDialog, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import { computed, onMounted, ref } from 'vue';
@@ -159,47 +145,10 @@ onMounted(async () => {
   }
 });
 
-const requiredTagsMap: Record<string, string[]> = {
-  'reset-password': ['RPLINK'],
-  'confirm-email': ['CONFIRMLINK'],
-  'setup-account': ['CONFIRMLINK'],
-  'contribution-didnt-start': ['CONFIRMLINK'],
-  'email-exists-login': ['LOGINLINK'],
-  'reset-device': ['RPLINK'],
-};
-
-/**
- * Return merge fields.
- *
- * @param text The text containing merge field placeholders
- * @returns The merge field values
- */
-function getMergeFields(text: string): string[] {
-  const regex = /\*\|\w+\|\*/g;
-  const matches = text.match(regex) || [];
-  return matches.map((match) => match.slice(2, -2));
-}
-
-const requiredTags = computed(() => requiredTagsMap[templateId.value]);
-
-const missingTags = computed(() => {
-  if (!emailData.value || !requiredTags.value) return undefined;
-  const mergeTags = getMergeFields(emailData.value.body);
-  return requiredTags.value.filter((tag) => !mergeTags.includes(tag));
-});
-
-const isMissingTags = computed(() =>
-  missingTags.value?.length ? missingTags.value : undefined
-);
-
 async function handleSubmit() {
   if (!emailData.value) return;
 
   try {
-    if (isMissingTags.value) {
-      return;
-    }
-
     await client.email.template.update(templateId.value, emailData.value);
 
     addNotification({
@@ -245,7 +194,6 @@ async function handleReset() {
 }
 
 async function loadEmail(templateId: string): Promise<EmailFormData> {
-  console.log(templateId);
   try {
     const email = await client.email.template.get(templateId);
     return {
