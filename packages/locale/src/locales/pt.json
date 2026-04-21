@@ -1262,6 +1262,7 @@
     "notifications": {
       "created": "Email criado com sucesso",
       "deleted": "Email eliminado com sucesso",
+      "missingMergeTags": "Faltam as tags de mesclagem obrigatórias neste e-mail: {mergeTags}. As tags de mesclagem são marcadores de posição para conteúdo dinâmico (por exemplo, primeiro nome). Adicione as tags que estão faltando para garantir que seu e-mail funcione corretamente.",
       "resetToDefault": "Modelo reposto para predefinição com sucesso",
       "templateAssigned": "",
       "templatesAssigned": "",

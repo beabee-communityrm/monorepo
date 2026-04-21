@@ -1262,6 +1262,7 @@
     "notifications": {
       "created": "Το email δημιουργήθηκε επιτυχώς",
       "deleted": "Το email διαγράφηκε επιτυχώς",
+      "missingMergeTags": "Η ακόλουθη ηλεκτρονική επιστολή λείπουν τα απαιτούμενα merge tags: {mergeTags}. Τα merge tags είναι συντμήσεις για δυναμικό περιεχόμενο (π.χ. όνομα). Παρακαλώ προσθέστε τα λείποντα tags για να λειτουργεί σωστά το email σας.",
       "resetToDefault": "Το πρότυπο επαναφέρθηκε στα προεπιλεγμένα επιτυχώς",
       "templateAssigned": "",
       "templatesAssigned": "",

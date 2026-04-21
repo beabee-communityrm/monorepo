@@ -1262,6 +1262,7 @@
     "notifications": {
       "created": "E-mail succesvol aangemaakt",
       "deleted": "E-mail succesvol verwijderd",
+      "missingMergeTags": "De verplichte fusietags ontbreken in deze e-mail: {mergeTags}. Fusietags zijn plaatshouders voor dynamische inhoud (bijvoorbeeld voornaam). Voeg de ontbrekende tags toe om ervoor te zorgen dat je e-mail correct werkt.",
       "resetToDefault": "Sjabloon succesvol teruggezet naar standaard",
       "templateAssigned": "",
       "templatesAssigned": "",

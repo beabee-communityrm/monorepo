@@ -1262,6 +1262,7 @@
     "notifications": {
       "created": "Email creata con successo",
       "deleted": "Email eliminata con successo",
+      "missingMergeTags": "Mancano le etichette di fusione obbligatorie in questa e-mail: {mergeTags}. Le etichette di fusione sono segnaposto per contenuti dinamici (ad esempio, nome). Aggiungi le etichette mancanti per assicurarti che la tua e-mail funzioni correttamente.",
       "resetToDefault": "Modello ripristinato ai valori predefiniti con successo",
       "templateAssigned": "",
       "templatesAssigned": "",

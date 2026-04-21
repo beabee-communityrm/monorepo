@@ -1262,6 +1262,7 @@
     "notifications": {
       "created": "Correo creado correctamente",
       "deleted": "Correo eliminado correctamente",
+      "missingMergeTags": "Faltan las etiquetas de fusión obligatorias en este correo electrónico: {mergeTags}. Las etiquetas de fusión son marcadores de posición para contenido dinámico (por ejemplo, nombre de pila). Agregue las etiquetas que faltan para asegurarse de que su correo electrónico funcione correctamente.",
       "resetToDefault": "Plantilla restablecida correctamente",
       "updated": "Correo actualizado correctamente"
     },
