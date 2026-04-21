@@ -23,11 +23,13 @@ import {
   QueryParam,
   QueryParams,
   Res,
+  UseBefore,
 } from 'routing-controllers';
 
 import { CalloutId } from '#api/decorators/CalloutId';
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
+import { RateLimit } from '#api/decorators/RateLimit';
 import { ListTagsDto } from '#api/dto';
 import { GetExportQuery } from '#api/dto/BaseDto';
 import {
@@ -206,6 +208,12 @@ export class CalloutController {
   }
 
   @Post('/:id/responses')
+  @UseBefore(
+    RateLimit({
+      guest: { points: 3, duration: 60 }, // 5 entries per minute per IP
+      user: { points: 20, duration: 60 }, // Logged in users can edit their responses so we can allow more
+    })
+  )
   async createCalloutResponse(
     @CurrentUser({ required: false }) caller: Contact | undefined,
     @CurrentAuth() auth: AuthInfo,
