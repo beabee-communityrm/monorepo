@@ -35,22 +35,10 @@ import { createReadStream } from 'node:fs';
 import type { Readable } from 'node:stream';
 import { In } from 'typeorm';
 
-interface ResponseRow {
-  [key: string]: string;
-  contact_email?: string;
-  guest_name?: string;
-  guest_email?: string;
-  bucket?: string;
-  created_at?: string;
-}
-
-export interface ImportCalloutResponsesArgs {
-  slug: string;
-  file?: string;
-  dryRun: boolean;
-  failOnUnknown: boolean;
-  dateFormat: string;
-}
+import type {
+  ImportCalloutResponsesArgs,
+  ResponseRow,
+} from '../../types/database.js';
 
 const metadataHeaders = [
   'contact_email',
