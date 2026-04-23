@@ -13,6 +13,8 @@ import * as models from '@beabee/core/tools/database/anonymisers/models';
 import { Chance } from 'chance';
 import { type ObjectLiteral, type SelectQueryBuilder } from 'typeorm';
 
+import type { AnonymizationLevel } from '../types/index.js';
+
 /**
  * Models that must always be anonymised (contacts and their direct relations)
  * These contain sensitive personal data that should never be exported in plain text
@@ -73,6 +75,17 @@ function getOptionallyAnonymizedModels(
  */
 function getOptionalPassthroughAnonymisers(): models.ModelAnonymiser[] {
   return getOptionallyAnonymizedModels(false).map((a) => ({
+    model: a.model,
+    objectMap: {} as models.ObjectMap<unknown>,
+  })) as models.ModelAnonymiser[];
+}
+
+/**
+ * Passthrough anonymisers for ALWAYS_ANONYMIZED_MODELS (level='none' only).
+ * Exports contacts/payments/emails/segments as raw rows — for local migration testing.
+ */
+function getAlwaysPassthroughAnonymisers(): models.ModelAnonymiser[] {
+  return ALWAYS_ANONYMIZED_MODELS.map((a) => ({
     model: a.model,
     objectMap: {} as models.ObjectMap<unknown>,
   })) as models.ModelAnonymiser[];
@@ -266,19 +279,38 @@ export const CALLOUT_EXPORT_CLEAR_MODELS: models.ModelAnonymiser[] = [
 ];
 
 /**
- * Get anonymizers based on anonymization level
+ * Get anonymizers for the given level.
+ *
+ * - `full`: all models anonymised (default)
+ * - `safe`: contacts/payments/emails/segments anonymised, other tables passthrough
+ * - `none`: everything passthrough (raw rows, including PII)
  */
 export const getAnonymizers = (
-  anonymize: boolean,
+  level: AnonymizationLevel,
   skipAnonymizeTables: string[] = [],
   preserveCalloutAnswers = false
 ): models.ModelAnonymiser[] => {
-  let fullList = anonymize
-    ? [
+  let fullList: models.ModelAnonymiser[];
+  switch (level) {
+    case 'full':
+      fullList = [
         ...ALWAYS_ANONYMIZED_MODELS,
         ...getOptionallyAnonymizedModels(preserveCalloutAnswers),
-      ]
-    : [...ALWAYS_ANONYMIZED_MODELS, ...getOptionalPassthroughAnonymisers()];
+      ];
+      break;
+    case 'safe':
+      fullList = [
+        ...ALWAYS_ANONYMIZED_MODELS,
+        ...getOptionalPassthroughAnonymisers(),
+      ];
+      break;
+    case 'none':
+      fullList = [
+        ...getAlwaysPassthroughAnonymisers(),
+        ...getOptionalPassthroughAnonymisers(),
+      ];
+      break;
+  }
 
   if (skipAnonymizeTables.length === 0) return fullList;
 
