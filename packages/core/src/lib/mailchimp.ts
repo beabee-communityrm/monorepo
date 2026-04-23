@@ -274,7 +274,12 @@ export function nlContactToMCMember(
     throw new Error('NewsletterStatus = None for ' + nlContact.email);
   }
 
-  const groupIds = OptionsService.getList('mailchimp-newsletter-groups');
+  const groupIds = [
+    ...OptionsService.getList('mailchimp-newsletter-groups'),
+    ...OptionsService.getJSON('newsletter-groups').map(
+      (group: { id: string }) => group.id
+    ),
+  ];
 
   return {
     email_address: nlContact.email,
