@@ -1,3 +1,17 @@
+/**
+ * Import Callout Responses Module
+ *
+ * Imports callout responses from a CSV file (or stdin) into the database.
+ * CSV column headers must be `slideId.componentKey` (see `getCalloutComponents`
+ * for the expected fullKey format) plus optional metadata columns.
+ *
+ * Metadata columns:
+ *   - contact_email: if present and matches an existing contact, overrides guest_*
+ *   - guest_email
+ *   - guest_name
+ *   - bucket
+ *   - created_at: parsed with --date-format (default ISO)
+ */
 import {
   CalloutComponentSchema,
   CalloutComponentType,
@@ -6,6 +20,8 @@ import {
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
   getCalloutComponents,
+  getSelectableValueFromLabel,
+  parseSelectableMultiValue,
 } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
 import { getRepository, runTransaction } from '@beabee/core/database';
@@ -14,6 +30,9 @@ import { runApp } from '@beabee/core/server';
 
 import { isURL } from 'class-validator';
 import { parse } from 'csv-parse';
+import moment from 'moment';
+import { createReadStream } from 'node:fs';
+import type { Readable } from 'node:stream';
 import { In } from 'typeorm';
 
 interface ResponseRow {
@@ -25,17 +44,14 @@ interface ResponseRow {
   created_at?: string;
 }
 
-/**
- * Standard metadata headers
- * - contact_email: The contact's email address
- * - guest_email: The guest's email address
- * - guest_name: The guest's name
- * - bucket: The response bucket
- * - created_at: The response creation date
- *
- * Note if contact_email is non-empty and matches a valid contact, the
- * guest_name and guest_email fields will be ignored
- */
+export interface ImportCalloutResponsesArgs {
+  slug: string;
+  file?: string;
+  dryRun: boolean;
+  failOnUnknown: boolean;
+  dateFormat: string;
+}
+
 const metadataHeaders = [
   'contact_email',
   'guest_email',
@@ -44,18 +60,14 @@ const metadataHeaders = [
   'created_at',
 ];
 
-/**
- * Load rows from stdin and filter out invalid rows
- *
- * @param headers Allowed headers
- * @returns Valid rows
- */
-async function loadRows(headers: string[]): Promise<ResponseRow[]> {
-  return new Promise((resolve) => {
+async function loadRows(
+  stream: Readable,
+  headers: string[]
+): Promise<ResponseRow[]> {
+  return new Promise((resolve, reject) => {
     const rows: ResponseRow[] = [];
-
-    process.stdin
-      .pipe(parse({ columns: true, skipEmptyLines: true }))
+    stream
+      .pipe(parse({ columns: true, skip_empty_lines: true, bom: true }))
       .on('data', (row) => {
         if (Object.keys(row).every((key) => headers.includes(key))) {
           rows.push(row);
@@ -63,18 +75,11 @@ async function loadRows(headers: string[]): Promise<ResponseRow[]> {
           console.error('Invalid row', row);
         }
       })
-      .on('end', () => {
-        resolve(rows);
-      });
+      .on('end', () => resolve(rows))
+      .on('error', reject);
   });
 }
 
-/**
- * Loads contact IDs for the given contact emails
- *
- * @param rows CSV response rows
- * @returns A mapping from contact email to contact ID
- */
 async function loadContactIds(
   rows: ResponseRow[]
 ): Promise<Record<string, string>> {
@@ -82,6 +87,8 @@ async function loadContactIds(
     .map((r) => r.contact_email)
     .filter((s): s is string => !!s)
     .filter((s, i, a) => a.indexOf(s) === i);
+  if (contactEmails.length === 0) return {};
+
   const contacts = await getRepository(Contact).find({
     select: { id: true, email: true },
     where: { email: In(contactEmails) },
@@ -93,16 +100,10 @@ async function loadContactIds(
   );
 }
 
-/**
- * Parse the value pased on the component type
- *
- * @param component The component
- * @param value The value
- * @returns The parsed value
- */
 function parseValue(
   component: CalloutComponentSchema,
-  value: string
+  value: string,
+  onWarn: (msg: string) => void
 ): CalloutResponseAnswer {
   value = value.trim();
 
@@ -114,98 +115,93 @@ function parseValue(
       return value.toLowerCase() === 'true' || value === '1';
 
     case CalloutComponentType.INPUT_SELECT:
-      // Map labels to values or fallback to the original value
-      return (
-        component.data.values.find((v) => v.label === value)?.value || value
-      );
-
     case CalloutComponentType.INPUT_SELECTABLE_RADIO:
-      // Map labels to values or fallback to the original value
-      return component.values.find((v) => v.label === value)?.value || value;
+      return getSelectableValueFromLabel(component, value);
 
     case CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES:
-      return (
-        value
-          .split(',')
-          .map((v) => v.trim())
-          // Map labels to values or fallback to the original value
-          .map((v) => component.values.find((vv) => vv.label === v)?.value || v)
-          .reduce((acc, v) => ({ ...acc, [v]: true }), {})
+      return parseSelectableMultiValue(component, value, (unknown) =>
+        onWarn(
+          `unknown option "${unknown}" for ${component.key} — keeping raw value`
+        )
       );
 
-    case CalloutComponentType.INPUT_ADDRESS:
+    case CalloutComponentType.INPUT_ADDRESS: {
       const [lat, lng, ...rest] = value.split(',');
       return {
         geometry: { location: { lat: Number(lat), lng: Number(lng) } },
         formatted_address: rest.join(','),
       } satisfies CalloutResponseAnswerAddress;
+    }
 
-    // TODO: We need to upload the image or document
-    case CalloutComponentType.INPUT_FILE:
+    case CalloutComponentType.INPUT_FILE: {
       const isValueUrl = isURL(value);
       let path: string;
       let url: string;
 
       if (isValueUrl) {
-        // It's a URL, extract path
         url = value;
-        // Extract path by removing base URL parts
         const urlObj = new URL(value);
-        // Remove /api/1.0/ prefix if it exists
         path = urlObj.pathname.replace(/^\/api\/1\.0\//, '');
       } else {
-        // It's a path, construct URL
-        path = value;
-        // Ensure path doesn't start with slash
-        if (path.startsWith('/')) {
-          path = path.substring(1);
-        }
-        // Construct full URL
+        path = value.startsWith('/') ? value.substring(1) : value;
         url = `${config.audience}/api/1.0/${path}`;
       }
 
-      return {
-        url,
-        path,
-      } satisfies CalloutResponseAnswerFileUpload;
+      return { url, path } satisfies CalloutResponseAnswerFileUpload;
+    }
 
     default:
       return value;
   }
 }
 
-/**
- * Create a CalloutResponse from a row
- *
- * @param row The row
- * @param calloutId The associated callout ID
- * @param number The response number
- * @param contactIdsByEmail A mapping of contact emails to IDs
- * @param componentsByKey A mapping of component keys to schemas
- * @returns A CalloutResponse
- */
+function parseCreatedAt(
+  raw: string,
+  format: string,
+  onWarn: (msg: string) => void
+): Date | undefined {
+  if (!raw) return undefined;
+  const m = moment(raw, format, true);
+  if (m.isValid()) return m.toDate();
+
+  const fallback = new Date(raw);
+  if (!isNaN(fallback.getTime())) {
+    onWarn(
+      `created_at "${raw}" did not match --date-format "${format}"; fell back to Date()`
+    );
+    return fallback;
+  }
+
+  onWarn(`created_at "${raw}" could not be parsed; leaving unset`);
+  return undefined;
+}
+
 function createResponse(
   row: ResponseRow,
   calloutId: string,
   number: number,
   contactIdsByEmail: Record<string, string>,
-  componentsByKey: Record<string, CalloutComponentSchema>
+  componentsByKey: Record<string, CalloutComponentSchema>,
+  dateFormat: string,
+  onWarn: (msg: string) => void
 ): CalloutResponse {
   const answers: CalloutResponseAnswersSlide = {};
   for (const [key, value] of Object.entries(row)) {
-    if (metadataHeaders.includes(key)) {
-      continue;
-    }
+    if (metadataHeaders.includes(key)) continue;
 
     const [slideId, answerKey] = key.split('.');
-    if (!answers[slideId]) {
-      answers[slideId] = {};
-    }
-    answers[slideId][answerKey] = parseValue(componentsByKey[key], value);
+    if (!answers[slideId]) answers[slideId] = {};
+    answers[slideId][answerKey] = parseValue(
+      componentsByKey[key],
+      value,
+      onWarn
+    );
   }
 
   const contactId =
     (row.contact_email && contactIdsByEmail[row.contact_email]) || null;
+
+  const createdAt = parseCreatedAt(row.created_at || '', dateFormat, onWarn);
 
   return getRepository(CalloutResponse).create({
     calloutId,
@@ -215,58 +211,85 @@ function createResponse(
     guestEmail: (!contactId && row.guest_email) || null,
     answers,
     bucket: row.bucket || '',
-    ...(row.created_at && { createdAt: new Date(row.created_at) }),
+    ...(createdAt && { createdAt }),
   });
 }
 
-runApp(async () => {
-  if (!process.argv[2]) {
-    console.error('Usage: import-callout-responses <callout-slug>');
-    process.exit(1);
-  }
+export const importCalloutResponses = async (
+  args: ImportCalloutResponsesArgs
+): Promise<void> => {
+  await runApp(async () => {
+    const callout = await getRepository(Callout).findOneByOrFail({
+      slug: args.slug,
+    });
 
-  const callout = await getRepository(Callout).findOneByOrFail({
-    slug: process.argv[2],
+    console.error(`Importing responses for callout ${callout.slug}`);
+
+    const calloutComponents = getCalloutComponents(callout.formSchema);
+    const headers = [
+      ...calloutComponents.map((c) => c.fullKey),
+      ...metadataHeaders,
+    ];
+
+    console.error(`Possible headers: ${headers.join(', ')}`);
+
+    const stream: Readable = args.file
+      ? createReadStream(args.file)
+      : process.stdin;
+    const rows = await loadRows(stream, headers);
+
+    console.error(`Processing ${rows.length} rows`);
+
+    const contactIdByEmail = await loadContactIds(rows);
+    const calloutComponentsByKey: Record<string, CalloutComponentSchema> =
+      calloutComponents.reduce((acc, c) => ({ ...acc, [c.fullKey]: c }), {});
+
+    const lastResponseByNumber = await getRepository(CalloutResponse).findOne({
+      where: { calloutId: callout.id },
+      order: { number: 'DESC' },
+      select: { number: true },
+    });
+    const nextNumber = (lastResponseByNumber?.number || 0) + 1;
+
+    console.error(`Next response number: ${nextNumber}`);
+
+    const warnings: string[] = [];
+    const onWarn = (msg: string) => warnings.push(msg);
+
+    const calloutResponses: CalloutResponse[] = rows.map((row, i) =>
+      createResponse(
+        row,
+        callout.id,
+        nextNumber + i,
+        contactIdByEmail,
+        calloutComponentsByKey,
+        args.dateFormat,
+        onWarn
+      )
+    );
+
+    if (warnings.length > 0) {
+      console.error(`\n${warnings.length} warning(s):`);
+      for (const w of warnings) console.error(`  - ${w}`);
+    }
+
+    if (args.failOnUnknown && warnings.length > 0) {
+      throw new Error(
+        `Aborting: ${warnings.length} warning(s) with --fail-on-unknown set`
+      );
+    }
+
+    if (args.dryRun) {
+      console.error(
+        `\nDry run: would import ${calloutResponses.length} responses (no DB changes).`
+      );
+      return;
+    }
+
+    await runTransaction(async (manager) => {
+      await manager.save(calloutResponses);
+    });
+
+    console.error(`Imported ${calloutResponses.length} responses.`);
   });
-
-  console.error(`Importing responses for callout ${callout.slug}`);
-
-  const calloutComponents = getCalloutComponents(callout.formSchema);
-  const headers = [
-    ...calloutComponents.map((c) => c.fullKey),
-    ...metadataHeaders,
-  ];
-
-  console.error(`Possible headers: ${headers.join(', ')}`);
-
-  const rows = await loadRows(headers);
-
-  console.error(`Processing ${rows.length} rows`);
-
-  const contactIdByEmail = await loadContactIds(rows);
-  const calloutComponentsByKey: Record<string, CalloutComponentSchema> =
-    calloutComponents.reduce((acc, c) => ({ ...acc, [c.fullKey]: c }), {});
-
-  const lastResponseByNumber = await getRepository(CalloutResponse).findOne({
-    where: { calloutId: callout.id },
-    order: { number: 'DESC' },
-    select: { number: true },
-  });
-  const nextNumber = (lastResponseByNumber?.number || 0) + 1;
-
-  console.error(`Next response number: ${nextNumber}`);
-
-  const calloutResponses: CalloutResponse[] = rows.map((row, i) =>
-    createResponse(
-      row,
-      callout.id,
-      nextNumber + i,
-      contactIdByEmail,
-      calloutComponentsByKey
-    )
-  );
-
-  await runTransaction(async (manager) => {
-    await manager.save(calloutResponses);
-  });
-});
+};

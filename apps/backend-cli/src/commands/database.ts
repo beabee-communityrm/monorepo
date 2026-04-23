@@ -152,6 +152,52 @@ export const databaseCommand: CommandModule = {
         },
       })
       .command({
+        command: 'import-callout-responses <slug>',
+        describe:
+          'Import callout responses from CSV (headers must be slideId.componentKey).',
+        builder: (yargs) =>
+          yargs
+            .positional('slug', {
+              type: 'string',
+              demandOption: true,
+              description: 'Slug of the target callout',
+            })
+            .option('file', {
+              type: 'string',
+              description: 'Path to CSV file (default: read from stdin)',
+            })
+            .option('dryRun', {
+              type: 'boolean',
+              description:
+                'Parse and report what would be imported, but do not write to the database.',
+              default: false,
+            })
+            .option('failOnUnknown', {
+              type: 'boolean',
+              description:
+                'Abort on any unknown label rather than logging a warning and continuing.',
+              default: false,
+            })
+            .option('dateFormat', {
+              type: 'string',
+              description:
+                'Moment format string for the created_at column. Default ISO. Examples: "DD.MM.YYYY HH:mm:ss" (European), "M.D.YYYY H:mm:ss" (US Google Forms export).',
+              default: 'YYYY-MM-DDTHH:mm:ss',
+            }),
+        handler: async (argv) => {
+          const { importCalloutResponses } = await import(
+            '../actions/database/import-callout-responses.js'
+          );
+          return importCalloutResponses({
+            slug: argv.slug as string,
+            dryRun: argv.dryRun as boolean,
+            failOnUnknown: argv.failOnUnknown as boolean,
+            dateFormat: argv.dateFormat as string,
+            ...(argv.file ? { file: argv.file as string } : {}),
+          });
+        },
+      })
+      .command({
         command: 'clean',
         describe: 'Clean old data from the database',
         handler: async () => {
