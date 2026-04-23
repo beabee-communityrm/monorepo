@@ -274,8 +274,7 @@ export function nlContactToMCMember(
     throw new Error('NewsletterStatus = None for ' + nlContact.email);
   }
 
-  const groups: { id: string; label: string }[] =
-    OptionsService.getJSON('newsletter-groups');
+  const groupIds = OptionsService.getList('mailchimp-newsletter-groups');
 
   return {
     email_address: nlContact.email,
@@ -290,8 +289,8 @@ export function nlContactToMCMember(
     ...(nlContact.groups && {
       interests: Object.assign(
         {},
-        ...groups.map((group) => ({
-          [group.id]: nlContact.groups?.includes(group.id),
+        ...groupIds.map((groupId) => ({
+          [groupId]: nlContact.groups?.includes(groupId),
         }))
       ),
     }),
