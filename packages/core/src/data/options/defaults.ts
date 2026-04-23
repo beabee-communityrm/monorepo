@@ -50,7 +50,7 @@ export default {
   'tracking-code': '',
 
   /** List of valid Mailchimp newsletter group IDs */
-  'mailchimp-newsletter-groups': '[]',
+  'mailchimp-newsletter-groups': '',
 
   /** Stripe integration options */
   'stripe-tax-rate-one-time-id': '',
