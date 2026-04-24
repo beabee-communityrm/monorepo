@@ -28,7 +28,7 @@ test('Join Form', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Email' }).fill(emailAddress);
   await page.getByRole('button', { name: 'card' }).click();
 
-  expect(page.getByRole('button', { name: /contribute/i })).toBeEnabled(); // If the form was filled correctly, button should be enabled
+  expect(page.getByRole('button', { name: /contribute/i }), "Contribute button enabled").toBeEnabled(); // If the form was filled correctly, button should be enabled
 
   // Proceed to payment page
   await page.getByRole('button', { name: /contribute/i }).click();
@@ -40,7 +40,7 @@ test('Join Form', async ({ page }) => {
   await page.locator('iframe[src*="stripe.com"]').first().contentFrame().locator('#payment-expiryInput').fill('12/30');
   await page.locator('iframe[src*="stripe.com"]').first().contentFrame().locator('#payment-cvcInput').fill('111');
   
-  expect(page.getByRole('button', { name: /continue/i })).toBeEnabled();
+  expect(page.getByRole('button', { name: /continue/i }), "Continue button enabled").toBeEnabled();
   await page.getByRole('button', { name: /continue/i }).click();
 
   await page.waitForRequest(request =>
@@ -59,21 +59,21 @@ test('Confirmation email', async ({ page }) => {
   await page.goto('http://localhost:3025/');
 
   // Check that the page does not say 'no emails'
-  await expect(page.getByText('No emails')).not.toBeVisible();
+  await expect(page.getByText('No emails'), "Inbox not empty").not.toBeVisible();
 
   await page.locator('.email-item-link').filter({
     hasText: 'Do you want to setup an account?',
     has: page.locator(`span[title*="${emailAddress}"]`)
   }).first().click();
 
-  await expect(page.locator('iframe').first().contentFrame().getByRole('link', { name: 'Setup account' })).toBeVisible();
+  await expect(page.locator('iframe').first().contentFrame().getByRole('link', { name: 'Setup account' }), "Setup link visible").toBeVisible();
   
   let setupAccountLink = await page.locator('iframe').first().contentFrame().getByRole('link', { name: 'Setup account' })
   confirmationLink = await setupAccountLink.getAttribute('href');
 });
 
 test('Set password', async({ page, browserName }) => {
-  expect (confirmationLink).not.toHaveLength(0);
+  expect (confirmationLink, "Setup link is non-empty").not.toHaveLength(0);
 
   if (!confirmationLink) // This is here just as a sanity check
   {
@@ -86,7 +86,7 @@ test('Set password', async({ page, browserName }) => {
   await page.locator('input[name="password"]').fill(testPw);
 
   // Continue
-  await expect(page.getByRole('button', { name: /continue/i })).toBeEnabled();
+  await expect(page.getByRole('button', { name: /continue/i }), "Set password enabled").toBeEnabled();
   await page.getByRole('button', { name: /continue/i }).click();
 
   // Uncomment for survey page
@@ -103,7 +103,7 @@ test('Contribution', async ({ page }) => {
   await page.locator('input[name="password"]').fill(testPw);
 
 
-  await expect(page.getByRole('button', { name: /login/i })).toBeEnabled();
+  await expect(page.getByRole('button', { name: /login/i }), "Login button enabled").toBeEnabled();
   await page.getByRole('button', { name: /login/i }).click();
 
   await page.waitForURL(/\/profile/);
@@ -112,7 +112,7 @@ test('Contribution', async ({ page }) => {
   await page.getByRole('link', { name: 'Contribution' }).click();
   await page.waitForURL('/profile/contribution');
 
-  await expect(page.getByRole('heading', { name: 'Payment history' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Payment history' }), "Payment history visible").toBeVisible();
 
   // Locate row with one-time contribution
   const targetRow = page.locator('tr').filter({hasText: contributionDate})
@@ -120,5 +120,5 @@ test('Contribution', async ({ page }) => {
   .filter({hasText: 'one-time',});
 
   // Assert that the row is visible
-  await expect(targetRow).toBeVisible();
+  await expect(targetRow, "Payment date and amount visible").toBeVisible();
 });
