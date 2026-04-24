@@ -23,20 +23,46 @@ async function readLines(stream: Readable): Promise<string[]> {
 }
 
 async function importFromLines(lines: string[], merge = false): Promise<void> {
+  // In merge mode we run each statement independently (no transaction) so that
+  // FK violations (e.g. contactId referencing a contact absent in the local DB)
+  // only skip the affected row instead of aborting everything.
+  if (merge) {
+    let query = '';
+    for (const line of lines) {
+      if (query) {
+        if (query.startsWith('DELETE FROM')) {
+          console.log('Skipping ' + query.substring(0, 100) + ' (merge mode)');
+        } else {
+          const sql = query.startsWith('INSERT INTO')
+            ? query.replace(/;\s*$/, ' ON CONFLICT DO NOTHING;')
+            : query;
+          console.log('Running ' + sql.substring(0, 100) + '...');
+          try {
+            await dataSource.manager.query(
+              sql,
+              line !== '' ? JSON.parse(line) : undefined
+            );
+          } catch (err) {
+            console.error(
+              'Skipping failed statement:',
+              err instanceof Error ? err.message.split('\n')[0] : err
+            );
+          }
+        }
+        query = '';
+      } else {
+        query = line;
+      }
+    }
+    return;
+  }
+
   await dataSource.manager.transaction(async (manager) => {
     let query = '';
     for (const line of lines) {
       if (query) {
-        if (merge && query.startsWith('DELETE FROM')) {
-          console.log('Skipping ' + query.substring(0, 100) + ' (merge mode)');
-        } else {
-          let sql = query;
-          if (merge && sql.startsWith('INSERT INTO')) {
-            sql = sql.replace(/;\s*$/, ' ON CONFLICT DO NOTHING;');
-          }
-          console.log('Running ' + sql.substring(0, 100) + '...');
-          await manager.query(sql, line !== '' ? JSON.parse(line) : undefined);
-        }
+        console.log('Running ' + query.substring(0, 100) + '...');
+        await manager.query(query, line !== '' ? JSON.parse(line) : undefined);
         query = '';
       } else {
         query = line;
