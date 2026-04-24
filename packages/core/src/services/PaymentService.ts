@@ -6,7 +6,7 @@ import {
 } from '@beabee/beabee-common';
 
 import { getRepository, runTransaction } from '#database';
-import { CantUpdateContribution } from '#errors/CantUpdateContribution';
+import { CantUpdateContributionError } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Contact, ContactContribution, Payment } from '#models/index';
 import {
@@ -173,7 +173,7 @@ class PaymentService {
       contact.contributionPeriod === ContributionPeriod.Annually &&
       form.period !== ContributionPeriod.Annually
     ) {
-      throw new CantUpdateContribution();
+      throw new CantUpdateContributionError();
     }
 
     const ret = await this.provider(contact, (p) =>

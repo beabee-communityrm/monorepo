@@ -1,5 +1,5 @@
 import { ContentId, ContentJoinData } from '@beabee/beabee-common';
-import { ClientApiError, ContentClient } from '@beabee/client';
+import { ApiError, ContentClient } from '@beabee/client';
 import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
 import { beforeAll, describe, expect, it } from 'vitest';
@@ -19,7 +19,7 @@ describe('Content API', () => {
     try {
       await contentClient.get('non-existing-id' as ContentId);
     } catch (error) {
-      if (error instanceof ClientApiError) {
+      if (error instanceof ApiError) {
         expect(error.httpCode).toBe(400);
       }
     }

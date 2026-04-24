@@ -1,5 +1,6 @@
 import type { RuleGroup, TagData } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
+import { BadRequestError } from '@beabee/core/errors';
 import type {
   AuthInfo,
   FilterHandler,
@@ -8,7 +9,6 @@ import type {
 } from '@beabee/core/type';
 
 import { plainToInstance } from 'class-transformer';
-import { BadRequestError } from 'routing-controllers';
 
 import { GetTagDto } from '#api/dto/TagDto';
 

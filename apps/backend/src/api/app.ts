@@ -2,6 +2,7 @@ import 'reflect-metadata';
 
 import { RoleType } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
+import { InternalServerError } from '@beabee/core/errors';
 import {
   log as mainLogger,
   requestErrorLogger,
@@ -15,7 +16,6 @@ import cors from 'cors';
 import express, { ErrorRequestHandler, Request } from 'express';
 import {
   HttpError,
-  InternalServerError,
   NotFoundError,
   useExpressServer,
 } from 'routing-controllers';

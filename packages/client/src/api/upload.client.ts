@@ -5,7 +5,7 @@ import {
 } from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
-import { ClientApiError } from '../utils/index.js';
+import { ApiError, UnsupportedFileTypeError } from '../utils/index.js';
 import { UploadDocumentClient } from './upload-document.client.js';
 import { UploadImageClient } from './upload-image.client.js';
 
@@ -38,7 +38,7 @@ export class UploadClient {
    * Uploads a file by selecting the appropriate client based on file type
    * @param file - The file to upload
    * @returns The uploaded file ID and URL
-   * @throws {ClientApiError} If the file is too large, not supported, or rate limit is exceeded
+   * @throws {ApiError} If the file is too large, not supported, or rate limit is exceeded
    */
   async uploadFile(file: File): Promise<UploadFileResponse> {
     // Check if the file is an image or a document
@@ -47,10 +47,7 @@ export class UploadClient {
     } else if (isSupportedDocumentType(file.type)) {
       return this.documentClient.uploadFile(file);
     } else {
-      throw new ClientApiError('Unsupported file type', {
-        httpCode: 415,
-        code: 'UNSUPPORTED_FILE_TYPE',
-      });
+      throw new UnsupportedFileTypeError('Unsupported file type', file.type);
     }
   }
 }

@@ -24,15 +24,18 @@
 <template>
   <div class="grid max-w-[1400px] grid-cols-12 gap-6">
     <!-- First Column -->
-    <div class="col-span-12 md:col-span-6 xl:col-span-4">
+    <div class="col-span-12" :class="!stack && 'md:col-span-6 xl:col-span-4'">
       <slot name="col1" />
     </div>
 
     <!-- Second Column (conditional) -->
     <div
       v-if="$slots.col2"
-      class="col-span-12 md:col-span-6 xl:col-start-6"
-      :class="extended ? 'xl:col-end-13' : 'xl:col-end-10'"
+      class="col-span-12"
+      :class="[
+        !stack && 'md:col-span-6 xl:col-start-6',
+        extended ? 'xl:col-end-13' : 'xl:col-end-10',
+      ]"
     >
       <slot name="col2" />
     </div>
@@ -52,10 +55,13 @@
 export interface App2ColGridProps {
   /** Whether the second column should extend to the full width */
   extended?: boolean;
+  /** Whether the columsn should always stack */
+  stack?: boolean;
 }
 
 withDefaults(defineProps<App2ColGridProps>(), {
   extended: false,
+  stack: false,
 });
 
 /**

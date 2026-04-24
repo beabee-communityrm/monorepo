@@ -180,11 +180,41 @@
       "showingOf": ""
     },
     "email": {
+      "contactTemplates": {
+        "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "sendTypes": {
+          "oneOffLabel": "",
+          "ongoingLabel": "",
+          "title": ""
+        },
+        "summaryOnceOnly": "",
+        "summaryOngoingJoin": "",
+        "summaryOngoingJoinDirectSend": "",
+        "summaryOngoingLeave": "",
+        "summaryOngoingPaused": "",
+        "summaryTemplate": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "",
       "fromName": "",
       "label": "",
       "templates": {
         "description": "",
+        "subtitle": "",
         "title": ""
       },
       "text": "",
@@ -766,6 +796,7 @@
       "label": "",
       "starts": ""
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "",
@@ -1094,17 +1125,21 @@
         "text": "",
         "title": ""
       },
+      "create": "",
       "date": "",
-      "edit": "",
       "editTitle": "",
       "editTitleWithName": "",
       "empty": "",
       "manage": "",
       "name": "",
+      "newTitle": "",
       "showingOf": "",
       "subject": "",
       "title": "",
-      "use": ""
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "",
     "noResults": "",
@@ -1113,12 +1148,7 @@
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "",
-      "saveAndBack": "",
-      "saveAndBackSuccess": "",
-      "saveAndSend": "",
-      "send": "",
       "sent": "",
-      "sentTimes": "",
       "templateLabel": "",
       "templateName": "",
       "templateNameRequired": "",
@@ -1182,8 +1212,12 @@
     "body": {
       "label": ""
     },
+    "from": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "",
+      "from": "",
       "label": "",
       "unavailable": ""
     },
@@ -1218,6 +1252,7 @@
     },
     "fromEmail": "",
     "fromName": "",
+    "isOngoing": "",
     "list": {
       "showingOf": ""
     },
@@ -1229,6 +1264,11 @@
       "deleted": "",
       "resetToDefault": "",
       "updated": ""
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "",
     "tabs": {

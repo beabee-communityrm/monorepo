@@ -10,7 +10,7 @@ meta:
   <div v-if="tabs" class="flex max-h-full min-h-0 flex-1 flex-col">
     <PageTitle :title="pageTitle" border no-collapse>
       <div class="flex items-center gap-2">
-        <AppAsyncButton
+        <AppApiAsyncButton
           v-if="!isLive"
           variant="primaryOutlined"
           :icon="faEye"
@@ -18,19 +18,31 @@ meta:
           @click="handlePreview"
         >
           {{ t('actions.preview') }}
-        </AppAsyncButton>
-        <AppAsyncButton variant="primaryOutlined" @click="handleSaveDraft">
+        </AppApiAsyncButton>
+        <AppApiAsyncButton
+          variant="primaryOutlined"
+          :success-text="t('calloutAdminOverview.savedDraft')"
+          @click="handleSaveDraft"
+        >
           {{
             isNewOrDraft ? t('actions.saveDraft') : t('actions.revertToDraft')
           }}
-        </AppAsyncButton>
+        </AppApiAsyncButton>
         <div
           v-if="!isLive"
           class="mr-3 self-stretch border-r border-r-primary-40 pl-2"
         />
-        <AppAsyncButton :disabled="validation.$invalid" @click="handleUpdate">
+        <AppApiAsyncButton
+          :disabled="validation.$invalid"
+          :success-text="
+            props.id
+              ? t('calloutAdminOverview.updated')
+              : t('calloutAdminOverview.created')
+          "
+          @click="handleUpdate"
+        >
           {{ updateAction }}
-        </AppAsyncButton>
+        </AppApiAsyncButton>
       </div>
     </PageTitle>
     <CalloutHorizontalTabs :data="tabs" :status="status" />
@@ -39,8 +51,7 @@ meta:
 
 <script lang="ts" setup>
 import { ItemStatus } from '@beabee/beabee-common';
-import { AppAsyncButton, PageTitle } from '@beabee/vue';
-import { addNotification } from '@beabee/vue/store/notifications';
+import { PageTitle } from '@beabee/vue';
 
 import { faBullhorn, faEye } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
@@ -48,6 +59,7 @@ import { computed, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
+import AppApiAsyncButton from '#components/button/AppApiAsyncButton.vue';
 import type { CalloutHorizontalTabsData } from '#components/pages/admin/callouts/CalloutHorizontalTabs.interface';
 import CalloutHorizontalTabs from '#components/pages/admin/callouts/CalloutHorizontalTabs.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
@@ -170,12 +182,6 @@ async function saveCallout(asDraft = false) {
 
 async function handleUpdate() {
   const callout = await saveCallout();
-  addNotification({
-    title: props.id
-      ? t('calloutAdminOverview.updated')
-      : t('calloutAdminOverview.created'),
-    variant: 'success',
-  });
 
   if (!isUpdateAction.value) {
     router.push({ path: '/admin/crowdnewsroom/view/' + callout.slug });
@@ -184,10 +190,6 @@ async function handleUpdate() {
 
 async function handleSaveDraft() {
   const callout = await saveCallout(true);
-  addNotification({
-    title: 'Saved draft',
-    variant: 'success',
-  });
 
   router.push({ path: '/admin/crowdnewsroom/edit/' + callout.slug });
 
