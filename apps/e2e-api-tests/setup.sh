@@ -28,20 +28,15 @@ echo "✅ Test API key created: $API_KEY"
 # Output the API key so it can be captured by the calling script
 echo "API_KEY=$API_KEY"
 
+# Import test database
+echo "Importing test database..."
+if [ -f "/opt/packages/core/src/migrations/test-data-dump.sql" ]; then
+  yarn backend-cli database import --merge --file /opt/packages/core/src/migrations/test-data-dump.sql || {
+    echo "Failed to import test data"
+    exit 1
+  }
+else
+  echo "Test database not found at /opt/packages/core/src/migrations/test-data-dump.sql - skipping import"
+fi
+
 exit 0
-
-
-# Create test payments
-echo "Creating test payments..."
-for amount in 10 20 30 40 50 60 70 80 90 100; do
-    period="monthly"
-    if [ $amount -ge 60 ]; then
-        period="annually"
-    fi
-    yarn backend-cli payment create --email "$TEST_USER_EMAIL" --amount $amount --period $period
-done
-
-echo "✅ Test data setup completed successfully"
-
-# Output the API key so it can be captured by the calling script
-echo "API_KEY=$API_KEY"

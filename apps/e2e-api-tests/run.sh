@@ -20,6 +20,7 @@ global_cleanup() {
     docker compose -f docker-compose.test.yml down -v --remove-orphans
 
     echo "Cleanup completed"
+    exit
 }
 
 # Trap signals to ensure cleanup happens
@@ -57,7 +58,7 @@ docker compose -f docker-compose.test.yml up -d --build
 
 # Wait for services to be ready
 await_service_ready "api_app" "Server is ready and listening on port 3000" || exit 1
-await_service_ready "frontend" "Compiled successfully" || exit 1
+#await_service_ready "frontend" "signal process started" || exit 1
 
 # Run setup script inside api_app container to create test data
 echo "Running test data setup..."

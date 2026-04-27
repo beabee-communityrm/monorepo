@@ -28,6 +28,8 @@ services:
     env_file:
       - .env
       - .env.test
+    volumes:
+      - ./packages/core/src/migrations:/opt/packages/core/src/migrations
 
   webhook_app:
     extends:
