@@ -28,6 +28,8 @@ services:
     env_file:
       - .env
       - .env.test
+    volumes:
+      - ./packages/core/src/migrations:/opt/packages/core/src/migrations
 
   webhook_app:
     extends:
@@ -83,7 +85,7 @@ services:
     environment:
       - STRIPE_API_KEY=${BEABEE_STRIPE_SECRETKEY}
       - STRIPE_DEVICE_NAME=beabee-test-docker-container
-
+      
 volumes:
   db_data:
   upload_data:

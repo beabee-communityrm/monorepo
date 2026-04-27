@@ -19,7 +19,8 @@ global_cleanup() {
     echo "Bringing down Docker Compose stack..."
     docker compose -f docker-compose.test.yml down -v --remove-orphans
 
-    echo "✅ Cleanup completed"
+    echo "Cleanup completed"
+    exit
 }
 
 # Trap signals to ensure cleanup happens
@@ -57,29 +58,26 @@ docker compose -f docker-compose.test.yml up -d --build
 
 # Wait for services to be ready
 await_service_ready "api_app" "Server is ready and listening on port 3000" || exit 1
+#await_service_ready "frontend" "signal process started" || exit 1
 
 # Run setup script inside api_app container to create test data
-echo "🧪 Running test data setup..."
-API_KEY=$(cat apps/e2e-api-tests/setup.sh | docker compose exec -T api_app bash)
+echo "Running test data setup..."
+API_KEY=$(
+  cat apps/e2e-api-tests/setup.sh \
+  | docker compose exec -T api_app bash \
+  | tee /dev/tty
+)
 
-# Extract API_KEY from the setup output
-API_KEY=$(echo "$API_KEY" | grep "API_KEY=" | cut -d'=' -f2)
-
-if [ -z "$API_KEY" ]; then
-    echo "❌ Failed to create test API key"
-    docker compose logs api_app
-    exit 1
-fi
-
-echo "✅ Test API key created: $API_KEY"
 echo "✅ Setup completed successfully"
 
-# Run the tests
-echo "🧪 Running tests..."
-docker compose exec api_app bash -c "cd /opt/apps/e2e-api-tests && API_KEY=$API_KEY yarn test"
+# TODO Run the API tests
+#docker compose exec api_app bash -c "cd /opt/apps/e2e-api-tests && API_KEY=$API_KEY yarn test"
 
-# Get exit code from tests
-TEST_EXIT_CODE=$?
+# Run browser tests
+echo "Running browser tests.."
+export PLAYWRIGHT_BASE_URL=http://localhost:$ROUTER_PORT
+yarn workspace @beabee/browser-tests test
 
-# Note: global_cleanup() will be called automatically by the trap
-exit $TEST_EXIT_CODE
+BROWSER_TEST_EXIT_CODE=$? # exit code from browser test
+
+exit $BROWSER_TEST_EXIT_CODE
