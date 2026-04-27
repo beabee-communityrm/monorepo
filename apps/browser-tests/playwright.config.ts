@@ -6,7 +6,7 @@ export default defineConfig({
   reporter: 'list',
 
   use: {
-    baseURL: 'http://localhost:3000/', // URL to use when nothing is specified. Eg. page.goTo('/')
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:4002/',
     trace: 'on-first-retry',
   },
   
