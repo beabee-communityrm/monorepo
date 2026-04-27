@@ -56,7 +56,7 @@ test('Join Form', async ({ page }) => {
 });
 
 test('Confirmation email', async ({ page }) => {
-  await page.goto('http://localhost:3025/');
+  await page.goto(`http://localhost:${process.env.MAIL_PORT || 3025}/`);
 
   // Check that the page does not say 'no emails'
   await expect(page.getByText('No emails'), "Inbox not empty").not.toBeVisible();

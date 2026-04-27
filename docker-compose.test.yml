@@ -83,7 +83,7 @@ services:
     environment:
       - STRIPE_API_KEY=${BEABEE_STRIPE_SECRETKEY}
       - STRIPE_DEVICE_NAME=beabee-test-docker-container
-
+      
 volumes:
   db_data:
   upload_data:
