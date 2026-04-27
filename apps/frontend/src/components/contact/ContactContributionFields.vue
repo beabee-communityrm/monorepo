@@ -29,6 +29,7 @@
     />
 
     <AppSelect
+      v-if="manualPaymentSources.length > 1"
       v-model="modelValue.source"
       :label="t('contacts.data.paymentSource')"
       :items="manualPaymentSources"
@@ -81,8 +82,8 @@ const manualPaymentSources = ref<SelectItem<string>[]>([]);
 onBeforeMount(async () => {
   manualPaymentSources.value = [
     {
-      id: '',
-      label: '',
+      id: 'None',
+      label: 'None',
     },
     ...(await client.content.get('contacts')).manualPaymentSources.map((x) => {
       return { id: x, label: x };
