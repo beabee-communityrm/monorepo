@@ -19,31 +19,6 @@ interface CalloutFormSchema {
   }[];
 }
 
-interface SourceCalloutResponseAddressAnswer {
-  formatted_address: string;
-  geometry: { location: { lat: number; lng: number } };
-  features?: { text: string; types: [string] }[];
-}
-
-interface TargetCalloutResponseAddressAnswer {
-  id: string;
-  formatted_address: string;
-  geometry: { location: { lat: number; lng: number } };
-  components: {
-    type: string;
-    value: string;
-  }[];
-  source: 'maptiler';
-}
-
-interface CalloutResponse {
-  id: string;
-  answers: Record<
-    string,
-    Record<string, SourceCalloutResponseAddressAnswer | undefined>
-  >;
-}
-
 export class UpdateCalloutFormSchemaComponents1756466495968
   implements MigrationInterface
 {
@@ -72,24 +47,42 @@ export class UpdateCalloutFormSchemaComponents1756466495968
           .map((c) => ({ key: c.key, slideId: s.id }))
       );
       if (addressComponents.length > 0) {
-        const responses: CalloutResponse[] = await queryRunner.query(
-          `SELECT id, answers FROM callout_response WHERE "calloutId" = $1`,
-          [callout.id]
-        );
-
-        for (const response of responses) {
-          const updatedResponse = this.updateResponse(
-            response,
-            addressComponents
-          );
+        for (const { slideId, key } of addressComponents) {
+          // Use native JSONB SQL to transform answers in-database rather than
+          // fetching/mutating/writing in JS (TypeORM queryRunner JSONB results
+          // are not reliably mutable after deserialization).
           await queryRunner.query(
-            `UPDATE callout_response SET answers = $1 WHERE id = $2`,
-            [JSON.stringify(updatedResponse.answers), response.id]
+            `UPDATE callout_response
+             SET answers = jsonb_set(
+               answers,
+               '{${slideId},${key}}',
+               jsonb_build_object(
+                 'id', '',
+                 'formatted_address', answers->'${slideId}'->'${key}'->>'formatted_address',
+                 'geometry',          answers->'${slideId}'->'${key}'->'geometry',
+                 'components', COALESCE(
+                   (SELECT jsonb_agg(
+                      jsonb_build_object(
+                        'type', feat->'types'->0,
+                        'value', feat->>'text'
+                      )
+                    )
+                    FROM jsonb_array_elements(
+                      answers->'${slideId}'->'${key}'->'features'
+                    ) AS feat),
+                   '[]'::jsonb
+                 ),
+                 'source', 'maptiler'
+               )
+             )
+             WHERE "calloutId" = $1
+               AND answers->'${slideId}'->'${key}' ? 'geometry'`,
+            [callout.id]
+          );
+          console.log(
+            `  ✅ Updated responses for "${slideId}.${key}" in "${callout.slug}"`
           );
         }
-        console.log(
-          `  ✅ Updated ${responses.length} callout responses for callout "${callout.id}"`
-        );
       }
     }
 
@@ -128,28 +121,5 @@ export class UpdateCalloutFormSchemaComponents1756466495968
     }
 
     return schema;
-  }
-
-  private updateResponse(
-    response: CalloutResponse,
-    addressComponents: { slideId: string; key: string }[]
-  ): CalloutResponse {
-    for (const component of addressComponents) {
-      const answer = response.answers[component.slideId]?.[component.key];
-      if (answer) {
-        const updatedAnswer: TargetCalloutResponseAddressAnswer = {
-          id: '',
-          formatted_address: answer.formatted_address,
-          geometry: answer.geometry,
-          components: (answer.features || []).map((feature) => ({
-            type: feature.types[0],
-            value: feature.text,
-          })),
-          source: 'maptiler',
-        };
-        response.answers[component.slideId][component.key] = updatedAnswer;
-      }
-    }
-    return response;
   }
 }
