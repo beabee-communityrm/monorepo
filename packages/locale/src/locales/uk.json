@@ -958,6 +958,9 @@
     "label": "Мітка",
     "loading": "Завантаження...",
     "login": "Вхід",
+    "manualPaymentSource": {
+      "none": "немає"
+    },
     "newsletterStatus": {
       "cleaned": "Очищено",
       "none": "Жоден",

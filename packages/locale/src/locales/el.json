@@ -958,6 +958,9 @@
     "label": "",
     "loading": "Φορτία",
     "login": "",
+    "manualPaymentSource": {
+      "none": ""
+    },
     "newsletterStatus": {
       "cleaned": "",
       "none": "",

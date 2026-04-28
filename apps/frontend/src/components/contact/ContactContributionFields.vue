@@ -83,7 +83,7 @@ onBeforeMount(async () => {
   manualPaymentSources.value = [
     {
       id: 'None',
-      label: 'None',
+      label: t('common.manualPaymentSource.none'),
     },
     ...(await client.content.get('contacts')).manualPaymentSources.map((x) => {
       return { id: x, label: x };
