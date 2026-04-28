@@ -11,6 +11,7 @@ import { runApp } from '@beabee/core/server';
 
 interface FormSchemaComponent {
   id: string;
+  key: string;
   type: string;
   storage?: string;
   provider?: string;
@@ -139,24 +140,24 @@ export async function verifyAddressMigration(): Promise<void> {
       };
 
       // Collect address and file components from form schema
-      const addressComponents: { slideId: string; componentId: string }[] = [];
+      const addressComponents: { slideId: string; componentKey: string }[] = [];
 
       for (const slide of callout.formSchema.slides) {
         for (const component of slide.components) {
           if (component.type === 'address') {
             addressComponents.push({
               slideId: slide.id,
-              componentId: component.id,
+              componentKey: component.key,
             });
             if (component.provider !== 'maptiler') {
               result.schemaIssues.push(
-                `slide "${slide.id}" component "${component.id}": provider is "${component.provider}", expected "maptiler"`
+                `slide "${slide.id}" component "${component.key}": provider is "${component.provider}", expected "maptiler"`
               );
             }
           }
           if (component.type === 'file' && component.storage !== 'beabee') {
             result.schemaIssues.push(
-              `slide "${slide.id}" component "${component.id}": storage is "${component.storage}", expected "beabee"`
+              `slide "${slide.id}" component "${component.key}": storage is "${component.storage}", expected "beabee"`
             );
           }
         }
@@ -177,14 +178,14 @@ export async function verifyAddressMigration(): Promise<void> {
       result.totalResponses = responses.length;
 
       for (const response of responses) {
-        for (const { slideId, componentId } of addressComponents) {
+        for (const { slideId, componentKey } of addressComponents) {
           const slideAnswers = response.answers[slideId];
           if (!slideAnswers) continue;
-          const raw = slideAnswers[componentId];
+          const raw = slideAnswers[componentKey];
           if (raw == null) continue;
           checkAddressAnswer(
             raw as AddressAnswer,
-            `response ${response.id} [${slideId}.${componentId}]`,
+            `response ${response.id} [${slideId}.${componentKey}]`,
             result
           );
         }
