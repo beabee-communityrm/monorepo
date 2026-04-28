@@ -159,6 +159,10 @@ function writeItems<T extends ObjectLiteral>(
   console.log(stringify(params));
 }
 
+function isEmpty(obj: object): boolean {
+  return Object.keys(obj).length === 0;
+}
+
 /**
  * Anonymise the items for a model returned by a query builder
  * @param anonymiser The anonymiser for the model
@@ -171,7 +175,11 @@ export async function anonymiseModel<T extends ObjectLiteral>(
   valueMap: Map<string, unknown>
 ): Promise<void> {
   const metadata = getRepository(anonymiser.model).metadata;
-  log.info(`Anonymising ${metadata.tableName}`);
+  if (isEmpty(anonymiser.objectMap)) {
+    log.info(`Exporting ${metadata.tableName} without anonymising`);
+  } else {
+    log.info(`Anonymising ${metadata.tableName}`);
+  }
 
   // Callout responses are handled separately
   if (anonymiser.strategy === 'calloutResponsesPerComponent') {

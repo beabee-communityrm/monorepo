@@ -23,6 +23,7 @@ import {
   ContactRole,
   ContactTag,
   ContactTagAssignment,
+  Content,
   Email,
   EmailMailing,
   Export,
@@ -56,7 +57,6 @@ import { v4 as uuidv4 } from 'uuid';
  * - ApiKey: Not necessary for testing
  * - Migrations: Not necessary for testing
  *  - Sessions: Not necessary for testing
- * - Content: Pre-filled by migration
  * - ContactMfa: Not necessary for testing
  *
  *
@@ -254,6 +254,7 @@ function uniqueCode(): string {
 }
 
 // Model anonymisers
+export const contentAnonymiser = createModelAnonymiser(Content);
 
 export const calloutsAnonymiser = createModelAnonymiser(Callout);
 
