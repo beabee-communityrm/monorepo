@@ -11,6 +11,7 @@ interface CalloutFormSchema {
     id: string;
     components: {
       id: string;
+      key: string;
       type: string;
       storage?: string;
       provider?: string;
@@ -68,7 +69,7 @@ export class UpdateCalloutFormSchemaComponents1756466495968
       const addressComponents = callout.formSchema.slides.flatMap((s) =>
         s.components
           .filter((c) => c.type === 'address')
-          .map((c) => ({ id: c.id, slideId: s.id }))
+          .map((c) => ({ key: c.key, slideId: s.id }))
       );
       if (addressComponents.length > 0) {
         const responses: CalloutResponse[] = await queryRunner.query(
@@ -131,10 +132,10 @@ export class UpdateCalloutFormSchemaComponents1756466495968
 
   private updateResponse(
     response: CalloutResponse,
-    addressComponents: { slideId: string; id: string }[]
+    addressComponents: { slideId: string; key: string }[]
   ): CalloutResponse {
     for (const component of addressComponents) {
-      const answer = response.answers[component.slideId][component.id];
+      const answer = response.answers[component.slideId]?.[component.key];
       if (answer) {
         const updatedAnswer: TargetCalloutResponseAddressAnswer = {
           id: '',
@@ -146,7 +147,7 @@ export class UpdateCalloutFormSchemaComponents1756466495968
           })),
           source: 'maptiler',
         };
-        response.answers[component.slideId][component.id] = updatedAnswer;
+        response.answers[component.slideId][component.key] = updatedAnswer;
       }
     }
     return response;
