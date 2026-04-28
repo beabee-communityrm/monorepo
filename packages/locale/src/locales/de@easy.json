@@ -958,6 +958,9 @@
     "label": "Betreff",
     "loading": "Der Computer arbeitet.",
     "login": "",
+    "manualPaymentSource": {
+      "none": ""
+    },
     "newsletterStatus": {
       "cleaned": "",
       "none": "",

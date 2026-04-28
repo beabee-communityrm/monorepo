@@ -962,6 +962,9 @@
     "label": "Intitulé",
     "loading": "Chargement…",
     "login": "Se connecter",
+    "manualPaymentSource": {
+      "none": "Aucune"
+    },
     "newsletterStatus": {
       "cleaned": "Effacé",
       "none": "Aucun",
