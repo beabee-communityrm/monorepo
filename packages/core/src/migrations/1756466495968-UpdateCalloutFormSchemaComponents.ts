@@ -32,6 +32,7 @@ interface TargetCalloutResponseAddressAnswer {
     type: string;
     value: string;
   }[];
+  source: 'maptiler';
 }
 
 interface CalloutResponse {
@@ -136,13 +137,14 @@ export class UpdateCalloutFormSchemaComponents1756466495968
       const answer = response.answers[component.slideId][component.id];
       if (answer) {
         const updatedAnswer: TargetCalloutResponseAddressAnswer = {
-          id: '', // New field, set to empty string
+          id: '',
           formatted_address: answer.formatted_address,
           geometry: answer.geometry,
           components: (answer.features || []).map((feature) => ({
             type: feature.types[0],
             value: feature.text,
           })),
+          source: 'maptiler',
         };
         response.answers[component.slideId][component.id] = updatedAnswer;
       }
