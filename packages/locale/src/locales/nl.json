@@ -993,6 +993,9 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "/ jaar",
+    "refundReason": "Reden voor terugbetaling",
+    "refundStatus": "Status van terugbetaling",
+    "refundedLabel": "(Terugbetaald)",
     "role": {
       "admin": "Beheerder",
       "member": "Lid",

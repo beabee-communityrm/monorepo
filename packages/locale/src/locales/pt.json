@@ -993,6 +993,9 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "/ ano",
+    "refundReason": "Motivo do reembolso",
+    "refundStatus": "Estado do reembolso",
+    "refundedLabel": "(Reembolsado)",
     "role": {
       "admin": "Administrador",
       "member": "Membro",
