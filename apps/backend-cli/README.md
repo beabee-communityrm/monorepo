@@ -51,11 +51,16 @@ yarn backend-cli api-key delete <id>   Delete an API key
 # Export full database (SQL dump with anonymised data)
 yarn backend-cli database export \
   [--dryRun] \
-  [--anonymize=true|false] \
+  [--anonymize=full|safe|none] \
   [--skipAnonymizeTables contact segment ...]
 
 # Export demo subset (limited random contacts and latest callouts, anonymised)
 yarn backend-cli database export-demo [--dryRun]
+
+# Export callout data only
+yarn backend-cli database export-callouts \
+  [--dryRun] \
+  [--anonymize=full|none]
 
 # Import database from SQL dump (dev only)
 yarn backend-cli database import \
@@ -66,7 +71,13 @@ yarn backend-cli database import \
 Notes:
 
 - **Export format** is a SQL dump: each pair of lines is a SQL statement followed by a JSON array of parameters (or an empty line).
-- **Contacts and related models are always anonymised**; `--anonymize=false` only disables anonymisation for less sensitive tables.
+- **`--anonymize` levels for `database export`:**
+  - `full` (default) — all data anonymised including contacts, payments, emails and segments
+  - `safe` — contacts/payments/emails/segments anonymised, other tables exported as-is
+  - `none` — **everything raw including PII** — for local migration testing only. Emits a stderr warning.
+- **`--anonymize` levels for `database export-callouts`:**
+  - `full` (default) — personal data anonymised (guest names/emails, contact FKs)
+  - `none` — everything raw — for local migration testing only. Emits a stderr warning.
 - `--skipAnonymizeTables` lets you export specific tables without anonymisation while still keeping foreign keys consistent.
 - Database dumps are stored in the `exports/` directory at the monorepo root (git-ignored).
 
