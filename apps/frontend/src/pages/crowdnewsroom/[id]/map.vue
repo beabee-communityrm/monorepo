@@ -104,10 +104,7 @@ meta:
           :coordinates="newResponseAddress.geometry.location"
           color="black"
         />
-        <MglMarker
-          v-if="geocodeAddress"
-          :coordinates="geocodeAddress.geometry.location"
-        />
+        <MglMarker v-if="geocodeLocation" :coordinates="geocodeLocation" />
       </MglMap>
 
       <transition name="add-notice">
@@ -241,6 +238,7 @@ import {
   HASH_PREFIX,
   useCallout,
 } from '#components/pages/callouts/use-callout';
+import { AddressFormatter } from '#lib/address.formatter';
 import { currentLocaleConfig } from '#lib/i18n';
 import { isEmbed } from '#store';
 import type {
@@ -258,12 +256,7 @@ import {
   svgToDataURL,
 } from '#utils';
 import { client } from '#utils/api';
-import {
-  type GeocodeResult,
-  featureToAddress,
-  formatGeocodeResult,
-  reverseGeocode,
-} from '#utils/geocode';
+import { reverseGeocode } from '#utils/geocode';
 
 import env from '../../../env';
 
@@ -351,8 +344,8 @@ const newResponseAnswers = ref(
     : undefined
 );
 
-// Use the geocoding address to show a marker on the map
-const geocodeAddress = ref<CalloutResponseAnswerAddress>();
+// Use the geocoding location to show a marker on the map
+const geocodeLocation = ref<LngLatLike>();
 
 // Use the address from the new response to show a marker on the map
 const newResponseAddress = computed(() => {
@@ -576,11 +569,15 @@ async function handleAddClick(event: MapMouseEvent) {
 
   const geocodeResult = await reverseGeocode(coords.lat, coords.lng);
 
-  const address: GeocodeResult = {
-    formatted_address: geocodeResult?.formatted_address || '???',
-    features: geocodeResult?.features || [],
+  if (!geocodeResult) {
+    throw new Error('Failed to geocode address');
+  }
+
+  // Create address with click coordinates instead of geocode result coordinates
+  const resultWithClickCoords: CalloutResponseAnswerAddress = {
+    ...geocodeResult,
+    // Use click location rather than geocode result
     geometry: {
-      // Use click location rather than geocode result
       location: coords,
     },
   };
@@ -590,11 +587,11 @@ async function handleAddClick(event: MapMouseEvent) {
         JSON.stringify(newResponseAnswers.value)
       ) as CalloutResponseAnswersSlide)
     : {};
-  setKey(responseAnswers, mapSchema.addressProp, address);
+  setKey(responseAnswers, mapSchema.addressProp, resultWithClickCoords);
 
-  if (mapSchema.addressPatternProp && geocodeResult) {
-    const formattedAddress = formatGeocodeResult(
-      geocodeResult,
+  if (mapSchema.addressPatternProp) {
+    const formattedAddress = AddressFormatter.format(
+      resultWithClickCoords,
       mapSchema.addressPattern
     );
     setKey(responseAnswers, mapSchema.addressPatternProp, formattedAddress);
@@ -724,10 +721,14 @@ async function handleLoad({ map: mapInstance }: { map: Map }) {
       }
     );
 
+    /**
+     * Handle the pick event from the geocoding control
+     * The pick event is triggered when the user clicks on a address in the search results
+     */
     geocodeControl.addEventListener('pick', (e: Event) => {
       const event = e as GeocodePickEvent;
-      geocodeAddress.value = event.detail
-        ? featureToAddress(event.detail)
+      geocodeLocation.value = event.detail
+        ? [event.detail.center[0], event.detail.center[1]]
         : undefined;
     });
 
