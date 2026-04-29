@@ -3,10 +3,15 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 import packageJson from '../package.json' with { type: 'json' };
-import { esbuildCommand, generateIndexCommand } from './commands/index.ts';
+import {
+  esbuildCommand,
+  generateClassIndexCommand,
+  generateIndexCommand,
+} from './commands/index.ts';
 
 yargs(hideBin(process.argv))
   .command(generateIndexCommand)
+  .command(generateClassIndexCommand)
   .command(esbuildCommand)
   .demandCommand(1, 'You need at least one command before moving on')
   .version(packageJson.version)
