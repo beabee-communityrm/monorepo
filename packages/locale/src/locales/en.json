@@ -1265,6 +1265,7 @@
     "notifications": {
       "created": "Email created successfully",
       "deleted": "Email deleted successfully",
+      "missingMergeTags": "This email is missing the following required merge tags: {mergeTags}. Merge tags are placeholders for dynamic content (e.g., first name). Please add the missing tags to ensure your email works correctly.",
       "resetToDefault": "Template reset to default successfully",
       "updated": "Email updated successfully"
     },
