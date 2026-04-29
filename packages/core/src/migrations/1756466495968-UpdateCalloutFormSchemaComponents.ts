@@ -33,6 +33,10 @@ export class UpdateCalloutFormSchemaComponents1756466495968
     console.log(`📊 Found ${callouts.length} callouts with formSchema`);
 
     for (const callout of callouts) {
+      // queryRunner.query() may return JSONB columns as raw strings
+      if (typeof callout.formSchema === 'string') {
+        callout.formSchema = JSON.parse(callout.formSchema);
+      }
       const updatedFormSchema = this.updateFormSchema(callout.formSchema);
 
       await queryRunner.query(
