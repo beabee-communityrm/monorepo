@@ -140,9 +140,9 @@ class PaymentService {
       await getRepository(ContactContribution).save(contribution);
     }
 
-    return await new PaymentProviders[newMethod](
-      contribution
-    ).processPaymentFlow(flow as any); // TODO: improve type
+    return await new PaymentProviders[
+      newMethod as keyof typeof PaymentProviders
+    ](contribution).processPaymentFlow(flow as any); // TODO: improve type
   }
 
   async canUpdateContribution(

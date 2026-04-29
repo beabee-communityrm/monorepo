@@ -18,31 +18,31 @@ import sharp from 'sharp';
 import { Readable } from 'stream';
 import { optimize } from 'svgo';
 
-import config from '../config/config';
+import config from '../config/config.js';
 import {
   BadRequestError,
   NotFoundError,
   UnsupportedFileTypeError,
-} from '../errors';
-import { log as mainLogger } from '../logging';
+} from '../errors/index.js';
+import { log as mainLogger } from '../logging.js';
 import type {
   ImageFormat,
   ImageMetadata,
   ImageServiceConfig,
-} from '../type/index';
+} from '../type/index.js';
 import {
   getExtensionFromFilename,
   getMimetypeFromDecoderFormat,
   getMimetypeFromExtension,
   sanitizeFilename,
-} from '../utils/file';
+} from '../utils/file.js';
 import {
   checkConnection,
   fileExists,
   getFileBuffer,
   getFileHash,
   getFileStream,
-} from '../utils/s3';
+} from '../utils/s3.js';
 
 const log = mainLogger.child({ app: 'image-service' });
 

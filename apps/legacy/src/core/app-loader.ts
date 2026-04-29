@@ -9,8 +9,12 @@ import dot from 'dot';
 import express from 'express';
 import fs from 'fs';
 import moment from 'moment';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import templateLocals from '#core/template-locals';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let git = '';
 try {

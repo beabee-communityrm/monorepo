@@ -8,7 +8,7 @@ import OptionsService, {
 import PageSettingsService from '@beabee/core/services/PageSettingsService';
 import { isInvalidType } from '@beabee/core/utils/db';
 
-import cleanDeep from 'clean-deep';
+import cleanDeepLib from 'clean-deep';
 import cookie from 'cookie-parser';
 import csrf from 'csurf';
 // TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
@@ -16,11 +16,16 @@ import express, { ErrorRequestHandler } from 'express';
 import flash from 'express-flash';
 // TODO: Last release was 2013
 import helmet from 'helmet';
+import { fileURLToPath } from 'node:url';
 import path from 'path';
 
 import appLoader from '#core/app-loader';
 import quickflash from '#core/quickflash';
 import sessions from '#core/sessions';
+
+const cleanDeep = cleanDeepLib.default;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 if (!config.gocardless.sandbox && config.dev) {
   log.error(

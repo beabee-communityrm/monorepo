@@ -9,8 +9,8 @@ import type {
   DocumentServiceConfig,
   ImageServiceConfig,
   S3Config,
-} from '../type/index';
-import * as env from './env';
+} from '../type/index.js';
+import * as env from './env.js';
 
 /**
  * SMTP email provider configuration

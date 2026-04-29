@@ -5,7 +5,7 @@ import passport from '@beabee/core/lib/passport';
 import _pgSession from 'connect-pg-simple';
 import express from 'express';
 import session from 'express-session';
-import { PostgresDriver } from 'typeorm/driver/postgres/PostgresDriver';
+import type { Pool } from 'pg';
 
 const pgSession = _pgSession(session);
 
@@ -22,7 +22,7 @@ export default (app: express.Express): void => {
       },
       saveUninitialized: false,
       store: new pgSession({
-        pool: (dataSource.driver as PostgresDriver).master,
+        pool: (dataSource.driver as unknown as { master: Pool }).master,
       }),
       resave: false,
       rolling: true,

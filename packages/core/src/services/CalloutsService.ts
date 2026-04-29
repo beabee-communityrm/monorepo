@@ -12,8 +12,7 @@ import {
 } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
-import slugify from 'slugify';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import slugifyLib from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
 
 import config from '#config/config';
@@ -39,8 +38,12 @@ import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
+import { QueryDeepPartialEntity } from '#type/typeorm-utils';
 import { isDuplicateIndex } from '#utils/db';
 import { normalizeEmailAddress } from '#utils/email';
+
+// CJS/ESM interop: slugify sets module.exports.default, access it directly
+const slugify = slugifyLib.default;
 
 const log = mainLogger.child({ app: 'callouts-service' });
 

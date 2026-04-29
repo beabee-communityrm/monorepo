@@ -14,8 +14,8 @@ import {
 } from '#api/dto/CalloutResponseSegmentDto';
 import { TransformerOperation } from '#type/transformer-operation';
 
-import { BaseTransformer } from './BaseTransformer';
-import CalloutResponseTransformer from './CalloutResponseTransformer';
+import { BaseTransformer } from './BaseTransformer.js';
+import CalloutResponseTransformer from './CalloutResponseTransformer.js';
 
 class CalloutResponseSegmentTransformer extends BaseTransformer<
   CalloutResponseSegment,

@@ -4,10 +4,16 @@ import PageSettingsService from '@beabee/core/services/PageSettingsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express } from 'express';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import { hasNewModel, hasSchema, isAdmin } from '#core/middleware';
 
-import { createPageSchema } from './schema.json';
+import _schema from './schema.json' with { type: 'json' };
+
+const { createPageSchema } = _schema;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 interface CreatePageSchema {
   pattern: string;

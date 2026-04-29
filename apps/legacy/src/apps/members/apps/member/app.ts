@@ -9,9 +9,13 @@ import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express } from 'express';
 import moment from 'moment';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import { isAdmin } from '#core/middleware';
 import { canSuperAdmin, generateCode } from '#core/utils/auth';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 
