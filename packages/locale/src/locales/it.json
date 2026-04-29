@@ -990,6 +990,9 @@
     "perOneTime": "",
     "perOneTimeText": "una tantum",
     "perYear": "/ anno",
+    "refundReason": "Motivo del rimborso",
+    "refundStatus": "Stato del rimborso",
+    "refundedLabel": "(Rimborsato)",
     "role": {
       "admin": "Admin",
       "member": "Membro",

@@ -992,6 +992,9 @@
     "perOneTimeText": "одноразовий",
     "perYear": "/ рік",
     "perYearText": "рік",
+    "refundReason": "",
+    "refundStatus": "",
+    "refundedLabel": "",
     "role": {
       "admin": "Адміністратор",
       "member": "Член",

@@ -990,6 +990,9 @@
     "perOneTime": " one-time",
     "perOneTimeText": "one-time",
     "perYear": "/ year",
+    "refundReason": "Refund Reason",
+    "refundStatus": "Refund Status",
+    "refundedLabel": "(Refunded)",
     "role": {
       "admin": "Admin",
       "member": "Member",
