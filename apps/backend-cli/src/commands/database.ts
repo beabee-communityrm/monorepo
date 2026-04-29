@@ -1,5 +1,20 @@
 import type { CommandModule } from 'yargs';
 
+import type {
+  AnonymizationLevel,
+  CalloutAnonymizationLevel,
+} from '../types/index.js';
+
+const ANONYMIZATION_LEVELS: readonly AnonymizationLevel[] = [
+  'full',
+  'safe',
+  'none',
+] as const;
+const CALLOUT_ANONYMIZATION_LEVELS: readonly CalloutAnonymizationLevel[] = [
+  'full',
+  'none',
+] as const;
+
 export const databaseCommand: CommandModule = {
   command: 'database <action>',
   describe: 'Database management commands',
@@ -7,7 +22,7 @@ export const databaseCommand: CommandModule = {
     yargs
       .command({
         command: 'export',
-        describe: 'Export database to SQL dump (contacts always anonymized)',
+        describe: 'Export database to SQL dump (see --anonymize levels)',
         builder: (yargs) =>
           yargs
             .option('dryRun', {
@@ -16,10 +31,10 @@ export const databaseCommand: CommandModule = {
               default: false,
             })
             .option('anonymize', {
-              type: 'boolean',
+              choices: ANONYMIZATION_LEVELS,
               description:
-                'Anonymize all data (contacts are always anonymized). This includes a preset of tables that are always anonymized (contacts, etc.), when turning off anonymisation.',
-              default: true,
+                "Anonymisation level: 'full' (default, all data anonymised), 'safe' (contacts/payments/emails/segments anonymised, other tables raw), 'none' (DANGEROUS: everything raw, including PII — for local migration testing only).",
+              default: 'full' as AnonymizationLevel,
             })
             .option('skipAnonymizeTables', {
               type: 'array',
@@ -45,7 +60,7 @@ export const databaseCommand: CommandModule = {
           );
           return exportDatabase(
             argv.dryRun,
-            argv.anonymize,
+            argv.anonymize as AnonymizationLevel,
             argv.skipAnonymizeTables ?? [],
             argv.preserveCalloutAnswers,
             argv.file
@@ -87,10 +102,10 @@ export const databaseCommand: CommandModule = {
               default: false,
             })
             .option('anonymize', {
-              type: 'boolean',
+              choices: CALLOUT_ANONYMIZATION_LEVELS,
               description:
-                'Anonymize personal data (guest names/emails, contact FKs). Callout content and answers are always preserved.',
-              default: true,
+                "Anonymisation level: 'full' (default, personal data anonymised — guest names/emails, contact FKs) or 'none' (everything raw, for migration testing). Callout content and answers are always preserved.",
+              default: 'full' as CalloutAnonymizationLevel,
             })
             .option('preserveCalloutAnswers', {
               type: 'boolean',
@@ -116,7 +131,7 @@ export const databaseCommand: CommandModule = {
           );
           return exportCalloutsDatabase(
             argv.dryRun,
-            argv.anonymize,
+            argv.anonymize as CalloutAnonymizationLevel,
             argv.preserveCalloutAnswers,
             argv.file,
             argv.calloutSlug
