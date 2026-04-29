@@ -2,7 +2,7 @@ import type { TagData } from '@beabee/beabee-common';
 
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import type { Callout } from './index';
+import type { Callout } from './index.js';
 
 @Entity()
 export class CalloutTag implements TagData {

@@ -23,7 +23,6 @@ import {
   UpdateResult,
   WhereExpressionBuilder,
 } from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 import { createQueryBuilder } from '#database';
 import { BadRequestError } from '#errors/BadRequestError';
@@ -35,6 +34,7 @@ import type {
   RichRuleValue,
   SelectResult,
 } from '#type/index';
+import { QueryDeepPartialEntity } from '#type/typeorm-utils';
 
 // Operator definitions
 

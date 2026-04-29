@@ -3,7 +3,7 @@ import { Contact, Referral } from '@beabee/core/models';
 
 import { SelectQueryBuilder } from 'typeorm';
 
-import BaseExport, { ExportResult } from './BaseExport';
+import BaseExport, { ExportResult } from './BaseExport.js';
 
 function contactDetails(contact: Contact | null) {
   return contact

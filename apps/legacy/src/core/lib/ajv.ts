@@ -1,7 +1,10 @@
 import config from '@beabee/core/config';
 
-import Ajv from 'ajv';
-import addFormats from 'ajv-formats';
+import AjvLib from 'ajv';
+import addFormatsLib from 'ajv-formats';
+
+const Ajv = AjvLib.default;
+const addFormats = addFormatsLib.default;
 
 const ajv = new Ajv({
   allErrors: true,

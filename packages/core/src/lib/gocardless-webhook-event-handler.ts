@@ -1,8 +1,8 @@
+import type { Event } from 'gocardless-nodejs';
 import {
-  Event,
   EventResourceType,
   PaymentStatus,
-} from 'gocardless-nodejs/types/Types';
+} from 'gocardless-nodejs/types/Types.js';
 
 import { log as mainLogger } from '#logging';
 import {
@@ -12,7 +12,7 @@ import {
   updatePaymentStatus,
 } from '#utils/gocardless';
 
-import gocardless from './gocardless';
+import gocardless from './gocardless.js';
 
 const log = mainLogger.child({ app: 'gocardless-webhook-handler' });
 

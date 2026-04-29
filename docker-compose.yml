@@ -44,7 +44,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./packages:/opt/packages
+      - ./packages/core/dist:/opt/packages/core/dist
       - ./apps/legacy/dist:/opt/apps/legacy/dist
 
   # API app
@@ -57,7 +57,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./packages:/opt/packages
+      - ./packages/core/dist:/opt/packages/core/dist
       - ./apps/backend/dist:/opt/apps/backend/dist
       - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
       # Allow migrations to be written out from the container
@@ -75,7 +75,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./packages:/opt/packages
+      - ./packages/core/dist:/opt/packages/core/dist
       - ./apps/webhooks/dist:/opt/apps/webhooks/dist
 
   # Cron app

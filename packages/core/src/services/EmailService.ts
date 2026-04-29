@@ -6,9 +6,10 @@ import {
 import { Locale, isLocale } from '@beabee/locale';
 
 import fs from 'fs';
+import { fileURLToPath } from 'node:url';
 import path from 'path';
 import { IsNull, Not } from 'typeorm';
-import { loadFront } from 'yaml-front-matter';
+import yfm from 'yaml-front-matter';
 
 import config from '#config/config';
 import {
@@ -54,6 +55,8 @@ import {
 } from '#type/index';
 import { replaceMergeFields } from '#utils/email';
 
+const { loadFront } = yfm;
+
 const log = mainLogger.child({ app: 'email-service' });
 
 class EmailService {
@@ -69,7 +72,10 @@ class EmailService {
   > = {};
 
   constructor() {
-    const emailDir = path.join(__dirname, '../data/email');
+    const emailDir = path.join(
+      path.dirname(fileURLToPath(import.meta.url)),
+      '../data/email'
+    );
     const emailFiles = fs.readdirSync(emailDir);
     log.info('Loading default emails');
 

@@ -2,7 +2,7 @@ import { PaymentMethod } from '@beabee/beabee-common';
 
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 
-import { type Contact } from './index';
+import { type Contact } from './index.js';
 
 @Entity()
 export class ContactContribution {

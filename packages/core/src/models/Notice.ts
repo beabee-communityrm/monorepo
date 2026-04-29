@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { ItemWithStatus } from './ItemWithStatus';
+import { ItemWithStatus } from './ItemWithStatus.js';
 
 @Entity()
 export class Notice extends ItemWithStatus {

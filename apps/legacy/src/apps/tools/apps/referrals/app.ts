@@ -4,10 +4,16 @@ import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express, type Request, type Response } from 'express';
 import _ from 'lodash';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import { hasNewModel, hasSchema, isAdmin } from '#core/middleware';
 
-import { updateSchema } from './schemas.json';
+import _schemas from './schemas.json' with { type: 'json' };
+
+const { updateSchema } = _schemas;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 

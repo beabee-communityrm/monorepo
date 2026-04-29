@@ -4,7 +4,7 @@ import { MandrillEmailConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { EmailOptions, EmailRecipient, PreparedEmail } from '#type/index';
 
-import { BaseProvider } from './BaseProvider';
+import { BaseProvider } from './BaseProvider.js';
 
 const log = mainLogger.child({ app: 'mandrill-email-provider' });
 

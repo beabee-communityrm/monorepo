@@ -20,7 +20,7 @@ import {
 import { GetExportQuery, GetPaginatedQuery } from '#api/dto/BaseDto';
 import { GetContactDto } from '#api/dto/ContactDto';
 
-import { StartPaymentFlowDto } from './PaymentFlowDto';
+import { StartPaymentFlowDto } from './PaymentFlowDto.js';
 
 export class CreatePaymentDto extends StartPaymentFlowDto {
   @Min(1)

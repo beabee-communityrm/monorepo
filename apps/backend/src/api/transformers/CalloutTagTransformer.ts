@@ -10,7 +10,7 @@ import { AuthInfo } from '@beabee/core/type';
 import { GetCalloutTagDto } from '#api/dto';
 import { canCreateForCallout, getReviewerRules } from '#api/utils/callouts';
 
-import BaseTagTransformer from './BaseTagTransformer';
+import BaseTagTransformer from './BaseTagTransformer.js';
 
 class CalloutTagTransformer extends BaseTagTransformer<
   CalloutTag,

@@ -43,7 +43,7 @@
     "./locales-with-fallback/*": "./src/locales/*.json",
     "./locales": {
       "import": {
-        "types": "./src/locales/index.ts",
+        "types": "./dist/types/locales/index.d.ts",
         "default": "./src/locales/index.ts"
       },
       "require": {
@@ -53,7 +53,7 @@
     },
     ".": {
       "import": {
-        "types": "./src/index.ts",
+        "types": "./dist/types/index.d.ts",
         "default": "./src/index.ts"
       },
       "require": {

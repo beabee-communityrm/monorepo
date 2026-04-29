@@ -4,7 +4,7 @@ import {
   PaymentSource,
 } from '@beabee/beabee-common';
 
-import { Subscription } from 'gocardless-nodejs';
+import type { Subscription } from 'gocardless-nodejs';
 import moment from 'moment';
 
 import config from '#config/config';
@@ -26,7 +26,7 @@ import {
 } from '#type/index';
 import { calcRenewalDate } from '#utils/payment';
 
-import { PaymentProvider } from './PaymentProvider';
+import { PaymentProvider } from './PaymentProvider.js';
 
 const log = mainLogger.child({ app: 'gc-payment-provider' });
 

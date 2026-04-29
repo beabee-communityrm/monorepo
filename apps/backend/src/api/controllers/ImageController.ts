@@ -29,8 +29,8 @@ import {
   UseBefore,
 } from 'routing-controllers';
 
-import { RateLimit } from '../decorators';
-import { uploadMiddleware } from '../middlewares';
+import { RateLimit } from '../decorators/index.js';
+import { uploadMiddleware } from '../middlewares/index.js';
 
 @JsonController('/images')
 export class ImageController {

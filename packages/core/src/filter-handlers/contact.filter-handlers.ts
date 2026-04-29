@@ -11,8 +11,8 @@ import { getFilterHandler } from '@beabee/core/utils/rules';
 
 import { Brackets } from 'typeorm';
 
-import { calloutResponseFilterHandlers } from './callout-response.filter-handlers';
-import { contactTagFilterHandler } from './tag.filter-handlers';
+import { calloutResponseFilterHandlers } from './callout-response.filter-handlers.js';
+import { contactTagFilterHandler } from './tag.filter-handlers.js';
 
 /**
  * @fileoverview Contact filter handlers for managing contact-related queries and filters

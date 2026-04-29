@@ -4,7 +4,7 @@
   "description": "A community engagement system for community newsrooms",
   "private": true,
   "main": "dist/app.js",
-  "type": "commonjs",
+  "type": "module",
   "imports": {
     "#*": "./dist/*.js"
   },
@@ -16,7 +16,7 @@
     "format": "prettier --write .",
     "test": "echo 'The legacy test suite has no tests yet'",
     "check": "concurrently 'yarn:check:*'",
-    "check:tsc": "tsc --noEmit",
+    "check:tsc": "tsc -p ./tsconfig.build.json --noEmit",
     "check:prettier": "prettier -c .",
     "check:dependencies": "dpdm -T --no-warning --no-tree --exit-code circular:1 src/app.ts"
   },

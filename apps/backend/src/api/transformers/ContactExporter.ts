@@ -9,7 +9,7 @@ import { SelectQueryBuilder } from 'typeorm';
 import { GetExportQuery } from '#api/dto/BaseDto';
 import { ExportContactDto } from '#api/dto/ContactDto';
 
-import { BaseContactTransformer } from './BaseContactTransformer';
+import { BaseContactTransformer } from './BaseContactTransformer.js';
 
 class ContactExporter extends BaseContactTransformer<
   ExportContactDto,
