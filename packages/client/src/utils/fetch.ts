@@ -1,4 +1,8 @@
-import { ApiErrorCode, ApiErrorData, LOGIN_CODES } from '@beabee/beabee-common';
+import {
+  ApiErrorCode,
+  type ApiErrorData,
+  LOGIN_CODES,
+} from '@beabee/beabee-common';
 
 import type {
   FetchOptions,

@@ -4,7 +4,7 @@ Shared esbuild utilities and configurations for the Beabee monorepo.
 
 ## Features
 
-- Pre-configured ESM and CommonJS builds
+- Pre-configured ESM Node builds (flat `dist/`)
 - Watch mode support with logging
 - Locale-specific build tools
 - Common esbuild plugins
@@ -12,40 +12,22 @@ Shared esbuild utilities and configurations for the Beabee monorepo.
 
 ## Usage
 
-### Standard Build
-
-Most packages use the `buildStandard` function:
+### Node ESM Build
 
 ```typescript
-import { buildStandard } from '@beabee/esbuild';
+import { buildESM } from '@beabee/esbuild';
 
-await buildStandard({
+await buildESM({
   entryPoints: ['./src/index.ts', './src/**/*.ts'],
-  watch: false,
+  outdir: './dist',
 });
 ```
 
-This builds both ESM (`./dist/esm`) and CommonJS (`./dist/cjs`) formats.
+Most packages invoke this indirectly via the `dev-cli esbuild` command:
 
-### Custom Builds
-
-For individual formats:
-
-```typescript
-import { buildBrowser, buildCJS, buildESM } from '@beabee/esbuild';
-
-// ESM only
-await buildESM({
-  entryPoints: ['./src/index.ts'],
-  outdir: './dist/esm',
-});
-
-// Browser bundle
-await buildBrowser({
-  entryPoints: ['./src/index.ts'],
-  outdir: './dist/browser',
-  globalName: 'MyLibrary',
-});
+```jsonc
+// package.json
+"build:esbuild": "yarn workspace @beabee/dev-cli start esbuild --baseDir $(pwd)"
 ```
 
 ### Locale Tools
@@ -66,10 +48,7 @@ await generateTemplate('./src/locales', './src/template.json');
 
 ### Main Functions
 
-- `buildStandard(options)` - Builds both ESM and CommonJS
-- `buildESM(options)` - Builds ESM modules only
-- `buildCJS(options)` - Builds CommonJS modules only
-- `buildBrowser(options)` - Builds browser bundles
+- `buildESM(options)` - Build ESM modules
 
 ### Locale Functions
 
@@ -81,13 +60,13 @@ await generateTemplate('./src/locales', './src/template.json');
 
 Import types from `@beabee/esbuild/types`:
 
-- `BuildStandardOptions`, `BuildOptions`, `BuildIIFEOptions`
+- `BuildOptions`
 - `CopyPluginOptions`
 
 ## Examples
 
 Check the actual usage in:
 
-- `packages/common/package.json` - Standard package build
+- `packages/beabee-common/package.json` - Standard package build
 - `packages/client/package.json` - Build with watch mode
-- `packages/locale/esbuild.ts` - Locale-specific build
+- `packages/locale/esbuild.ts` - Locale-specific build (custom orchestration)

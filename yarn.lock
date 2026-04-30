@@ -1940,18 +1940,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@beabee/weblate-client@workspace:packages/weblate-client":
-  version: 0.0.0-use.local
-  resolution: "@beabee/weblate-client@workspace:packages/weblate-client"
-  dependencies:
-    "@beabee/prettier-config": "workspace:^"
-    openapi-fetch: "npm:^0.14.0"
-    openapi-typescript: "npm:^7.8.0"
-    prettier: "npm:^3.5.2"
-    typescript: "npm:~5.9.3"
-  languageName: unknown
-  linkType: soft
-
 "@captchafox/node@npm:^1.2.0":
   version: 1.2.0
   resolution: "@captchafox/node@npm:1.2.0"
@@ -14984,22 +14972,6 @@ __metadata:
   version: 0.0.2
   resolution: "only@npm:0.0.2"
   checksum: 10c0/d26b1347835a5a9b17afbd889ed60de3d3ae14cdeca5ba008d86e6bf055466a431adc731b82e1e8ab24a3b8be5b5c2cdbc16e652d231d18cc1a5752320aaf0a0
-  languageName: node
-  linkType: hard
-
-"openapi-fetch@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "openapi-fetch@npm:0.14.0"
-  dependencies:
-    openapi-typescript-helpers: "npm:^0.0.15"
-  checksum: 10c0/d23155edde61837a25896a2b201c890649ec8d16b37c3920dee940290ef6a66bd1b6f1df5ac68ec203f32d485ce16f7cf3557c13c183299e2e321d0a2eb62691
-  languageName: node
-  linkType: hard
-
-"openapi-typescript-helpers@npm:^0.0.15":
-  version: 0.0.15
-  resolution: "openapi-typescript-helpers@npm:0.0.15"
-  checksum: 10c0/5eb68d487b787e3e31266470b1a310726549dd45a1079655ab18066ab291b0b3c343fdf629991013706a2329b86964f8798d56ef0272b94b931fe6c19abd7a88
   languageName: node
   linkType: hard
 

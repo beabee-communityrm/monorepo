@@ -44,7 +44,6 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 | `@beabee/esbuild` | Build config/plugins |
 | `@beabee/docker` | Docker base config |
 | `@beabee/template-vanilla` | TS package template |
-| `@beabee/weblate-client` | Translation mgmt client |
 
 | App | Purpose |
 |---|---|
@@ -158,7 +157,7 @@ Migrate from `apps/frontend` → `packages/vue/src/components`.
 
 ## Task: Scaffold Vanilla Package
 
-Use `packages/template-vanilla` conventions. Read its `README.md` and follow instructions. Not suitable for backend/CommonJS packages.
+Use `packages/template-vanilla` conventions. Read its `README.md` and follow instructions. The template ships source TS with no build; not suitable for packages that need a published JS artifact.
 
 ## Prompt Compression
 
