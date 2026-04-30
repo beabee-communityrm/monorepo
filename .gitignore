@@ -20,3 +20,6 @@ dist/
 .DS_Store
 
 exports/
+# Claude Code local state
+.claude/
+.mcp.json
