@@ -1,4 +1,4 @@
-import type { PaymentMethod } from '../data';
+import type { PaymentMethod } from '../data/index.js';
 
 export interface PaymentFlowParamsGoCardless {
   paymentMethod: PaymentMethod.GoCardlessDirectDebit;

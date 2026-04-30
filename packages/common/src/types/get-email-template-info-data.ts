@@ -1,4 +1,4 @@
-import { EmailTemplateType } from './email-template-type';
+import { EmailTemplateType } from './email-template-type.js';
 
 /**
  * Email template metadata for the system templates list view

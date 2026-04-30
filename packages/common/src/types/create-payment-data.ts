@@ -1,4 +1,4 @@
-import { PaymentMethod } from '../data';
+import { PaymentMethod } from '../data/index.js';
 
 export interface CreatePaymentData {
   amount: number;
