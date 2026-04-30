@@ -23,7 +23,7 @@ export async function buildESM(options: BuildOptions) {
     outdir: options.outdir,
     bundle: options.bundle || false,
     platform: 'node',
-    target: 'es2020',
+    target: 'node24',
     format: 'esm',
     absWorkingDir: options.baseDir,
   });
