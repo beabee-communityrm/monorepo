@@ -71,11 +71,11 @@ If your package requires different capabilities, refer to these examples:
 
 ### Build System Required (ESBuild)
 
-For packages that need compiled outputs (e.g., CJS builds, browser bundles), refer to **`@beabee/client`**:
+For packages that need a compiled output for npm consumers (e.g., browser bundles, or simply a stable shipped artifact), refer to **`@beabee/client`** or **`@beabee/beabee-common`**:
 
-- ESBuild-based build configuration
-- Multiple output formats (ESM, CJS, browser)
+- ESBuild-based build (flat `dist/` ESM output)
 - TypeScript compilation with type declarations
+- `publishConfig` override so workspace consumers still read source TS
 
 ### Vue Components
 
