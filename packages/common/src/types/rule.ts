@@ -1,4 +1,4 @@
-import { RuleOperator, RuleValue } from './index.js';
+import { type RuleOperator, type RuleValue } from './index.js';
 
 export interface Rule {
   field: string;
