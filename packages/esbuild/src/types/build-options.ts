@@ -14,8 +14,3 @@ export interface BuildOptions {
   /** Base directory */
   baseDir?: string;
 }
-
-export interface BuildIIFEOptions extends BuildOptions {
-  /** Global name for IIFE builds */
-  globalName?: string;
-}
