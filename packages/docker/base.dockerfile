@@ -69,6 +69,21 @@ COPY apps/dev-cli /opt/apps/dev-cli
 # Build the applications
 RUN yarn build
 
+# Apply publishConfig overrides so workspace packages resolve to dist/ at runtime
+# (publishConfig is only applied by `npm publish`, not by Yarn workspaces)
+RUN node --input-type=module <<'EOF'
+import { readFileSync, writeFileSync } from 'node:fs';
+for (const dir of ['common', 'client', 'locale']) {
+  const path = `/opt/packages/${dir}/package.json`;
+  const pkg = JSON.parse(readFileSync(path, 'utf8'));
+  if (pkg.publishConfig) {
+    Object.assign(pkg, pkg.publishConfig);
+    delete pkg.publishConfig;
+  }
+  writeFileSync(path, JSON.stringify(pkg, null, 2));
+}
+EOF
+
 # Prune non-production dependencies
 RUN yarn workspaces focus -A --production
 
@@ -82,6 +97,7 @@ FROM base AS dist-common
 
 COPY --chown=node:node --from=builder /opt/node_modules /opt/node_modules
 COPY --chown=node:node --from=builder /opt/packages/core/dist /opt/packages/core/dist
+COPY --chown=node:node --from=builder /opt/packages/common/package.json /opt/packages/common/package.json
 COPY --chown=node:node --from=builder /opt/packages/common/dist /opt/packages/common/dist
 COPY --chown=node:node --from=builder /opt/packages/locale /opt/packages/locale
 
