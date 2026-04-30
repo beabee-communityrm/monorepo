@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import type { Contact, ReferralGift } from './index';
+import type { Contact, ReferralGift } from './index.js';
 
 @Entity()
 export class Referral {

@@ -6,7 +6,7 @@ import { SelectQueryBuilder } from 'typeorm';
 
 import { ExportPaymentDto, GetExportQuery } from '#api/dto';
 
-import { BasePaymentTransformer } from './BasePaymentTransformer';
+import { BasePaymentTransformer } from './BasePaymentTransformer.js';
 
 class PaymentExporter extends BasePaymentTransformer<
   ExportPaymentDto,

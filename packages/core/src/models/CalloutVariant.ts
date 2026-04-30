@@ -8,7 +8,7 @@ import {
   Unique,
 } from 'typeorm';
 
-import type { Callout } from './index';
+import type { Callout } from './index.js';
 
 @Entity()
 @Unique(['calloutId', 'name'])

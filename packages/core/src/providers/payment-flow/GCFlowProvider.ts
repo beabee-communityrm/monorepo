@@ -9,7 +9,7 @@ import {
   PaymentFlowSetup,
 } from '#type/index';
 
-import { PaymentFlowProvider } from './PaymentFlowProvider';
+import { PaymentFlowProvider } from './PaymentFlowProvider.js';
 
 const log = mainLogger.child({ app: 'gc-payment-flow-provider' });
 

@@ -22,9 +22,9 @@ import {
 
 import sessions from '#core/lib/sessions';
 
-import * as Controllers from './controllers';
-import { ValidateResponseInterceptor } from './interceptors/ValidateResponseInterceptor';
-import { AuthMiddleware } from './middlewares';
+import * as Controllers from './controllers/index.js';
+import { ValidateResponseInterceptor } from './interceptors/ValidateResponseInterceptor.js';
+import { AuthMiddleware } from './middlewares/index.js';
 
 function currentUserChecker(action: { request: Request }): Contact | undefined {
   return action.request.auth?.contact;

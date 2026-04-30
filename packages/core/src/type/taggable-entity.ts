@@ -1,6 +1,6 @@
 import type { TagData } from '@beabee/beabee-common';
 
-import type { TagAssignment } from './tag-assignment';
+import type { TagAssignment } from './tag-assignment.js';
 
 /**
  * Represents an entity that can have tags assigned to it.

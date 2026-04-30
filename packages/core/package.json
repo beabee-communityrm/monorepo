@@ -2,7 +2,7 @@
   "name": "@beabee/core",
   "description": "Core package for the beabee backend",
   "version": "0.28.1",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "clear": "rimraf dist/",
     "build": "tsc -p tsconfig.build.json && cp -r src/data dist/",
@@ -12,7 +12,8 @@
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc -p tsconfig.build.json --noEmit",
     "check:prettier": "prettier -c .",
-    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension none --baseDir $(pwd) -p ./src/errors ./src/models ./src/services ./src/type ./src/filter-handlers ./src/templates",
+    "check:typeorm-index": "yarn workspace @beabee/dev-cli start generate-class-index --baseDir $(pwd) --src ./src/models --out ./src/entities.ts --export-name entities --class-name-strategy filename --check && yarn workspace @beabee/dev-cli start generate-class-index --baseDir $(pwd) --src ./src/migrations --out ./src/migrations.ts --export-name migrations --class-name-strategy parse --check",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension js --baseDir $(pwd) -p ./src/errors ./src/models ./src/services ./src/type ./src/filter-handlers ./src/templates",
     "generate:typeorm-index": "yarn workspace @beabee/dev-cli start generate-class-index --baseDir $(pwd) --src ./src/models --out ./src/entities.ts --export-name entities --class-name-strategy filename && yarn workspace @beabee/dev-cli start generate-class-index --baseDir $(pwd) --src ./src/migrations --out ./src/migrations.ts --export-name migrations --class-name-strategy parse",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -21,41 +22,148 @@
     "dist/"
   ],
   "imports": {
-    "#locale": "./dist/locales/current.js",
-    "#filter-handlers": "./dist/filter-handlers/index.js",
-    "#filter-handlers/*": "./dist/filter-handlers/*.js",
-    "#lib": "./dist/lib/index.js",
-    "#lib/*": "./dist/lib/*.js",
-    "#models": "./dist/models/index.js",
-    "#models/*": "./dist/models/*.js",
-    "#services": "./dist/services/index.js",
-    "#services/*": "./dist/services/*.js",
-    "#providers/*": "./dist/providers/*.js",
-    "#templates": "./dist/templates/index.js",
-    "#templates/*": "./dist/templates/*.js",
-    "#*": "./dist/*.js"
+    "#locale": {
+      "types": "./src/locales/current.ts",
+      "default": "./dist/locales/current.js"
+    },
+    "#filter-handlers": {
+      "types": "./src/filter-handlers/index.ts",
+      "default": "./dist/filter-handlers/index.js"
+    },
+    "#filter-handlers/*": {
+      "types": "./src/filter-handlers/*.ts",
+      "default": "./dist/filter-handlers/*.js"
+    },
+    "#lib": {
+      "types": "./src/lib/index.ts",
+      "default": "./dist/lib/index.js"
+    },
+    "#lib/*": {
+      "types": "./src/lib/*.ts",
+      "default": "./dist/lib/*.js"
+    },
+    "#models": {
+      "types": "./src/models/index.ts",
+      "default": "./dist/models/index.js"
+    },
+    "#models/*": {
+      "types": "./src/models/*.ts",
+      "default": "./dist/models/*.js"
+    },
+    "#services": {
+      "types": "./src/services/index.ts",
+      "default": "./dist/services/index.js"
+    },
+    "#services/*": {
+      "types": "./src/services/*.ts",
+      "default": "./dist/services/*.js"
+    },
+    "#providers/*": {
+      "types": "./src/providers/*.ts",
+      "default": "./dist/providers/*.js"
+    },
+    "#templates": {
+      "types": "./src/templates/index.ts",
+      "default": "./dist/templates/index.js"
+    },
+    "#templates/*": {
+      "types": "./src/templates/*.ts",
+      "default": "./dist/templates/*.js"
+    },
+    "#type": {
+      "types": "./src/type/index.ts",
+      "default": "./dist/type/index.js"
+    },
+    "#type/*": {
+      "types": "./src/type/*.ts",
+      "default": "./dist/type/*.js"
+    },
+    "#*": {
+      "types": "./src/*.ts",
+      "default": "./dist/*.js"
+    }
   },
   "exports": {
-    "./config": "./dist/config/config.js",
-    "./database": "./dist/database.js",
-    "./errors": "./dist/errors/index.js",
-    "./filter-handlers": "./dist/filter-handlers/index.js",
-    "./filter-handlers/*": "./dist/filter-handlers/*.js",
-    "./locale": "./dist/locales/current.js",
-    "./logging": "./dist/logging.js",
-    "./models": "./dist/models/index.js",
-    "./models/*": "./dist/models/*.js",
-    "./type": "./dist/type/index.js",
-    "./server": "./dist/server.js",
-    "./lib/*": "./dist/lib/*.js",
-    "./services": "./dist/services/index.js",
-    "./services/*": "./dist/services/*.js",
-    "./providers/*": "./dist/providers/*.js",
-    "./templates": "./dist/templates/index.js",
-    "./templates/*": "./dist/templates/*.js",
-    "./utils": "./dist/utils/index.js",
-    "./utils/*": "./dist/utils/*.js",
-    "./tools/*": "./dist/tools/*.js"
+    "./config": {
+      "types": "./src/config/config.ts",
+      "default": "./dist/config/config.js"
+    },
+    "./database": {
+      "types": "./src/database.ts",
+      "default": "./dist/database.js"
+    },
+    "./errors": {
+      "types": "./src/errors/index.ts",
+      "default": "./dist/errors/index.js"
+    },
+    "./filter-handlers": {
+      "types": "./src/filter-handlers/index.ts",
+      "default": "./dist/filter-handlers/index.js"
+    },
+    "./filter-handlers/*": {
+      "types": "./src/filter-handlers/*.ts",
+      "default": "./dist/filter-handlers/*.js"
+    },
+    "./locale": {
+      "types": "./src/locales/current.ts",
+      "default": "./dist/locales/current.js"
+    },
+    "./logging": {
+      "types": "./src/logging.ts",
+      "default": "./dist/logging.js"
+    },
+    "./models": {
+      "types": "./src/models/index.ts",
+      "default": "./dist/models/index.js"
+    },
+    "./models/*": {
+      "types": "./src/models/*.ts",
+      "default": "./dist/models/*.js"
+    },
+    "./type": {
+      "types": "./src/type/index.ts",
+      "default": "./dist/type/index.js"
+    },
+    "./server": {
+      "types": "./src/server.ts",
+      "default": "./dist/server.js"
+    },
+    "./lib/*": {
+      "types": "./src/lib/*.ts",
+      "default": "./dist/lib/*.js"
+    },
+    "./services": {
+      "types": "./src/services/index.ts",
+      "default": "./dist/services/index.js"
+    },
+    "./services/*": {
+      "types": "./src/services/*.ts",
+      "default": "./dist/services/*.js"
+    },
+    "./providers/*": {
+      "types": "./src/providers/*.ts",
+      "default": "./dist/providers/*.js"
+    },
+    "./templates": {
+      "types": "./src/templates/index.ts",
+      "default": "./dist/templates/index.js"
+    },
+    "./templates/*": {
+      "types": "./src/templates/*.ts",
+      "default": "./dist/templates/*.js"
+    },
+    "./utils": {
+      "types": "./src/utils/index.ts",
+      "default": "./dist/utils/index.js"
+    },
+    "./utils/*": {
+      "types": "./src/utils/*.ts",
+      "default": "./dist/utils/*.js"
+    },
+    "./tools/*": {
+      "types": "./src/tools/*.ts",
+      "default": "./dist/tools/*.js"
+    }
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.525.0",

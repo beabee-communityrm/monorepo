@@ -4,7 +4,7 @@ import { GiftFlow } from '@beabee/core/models';
 
 import { SelectQueryBuilder } from 'typeorm';
 
-import BaseExport, { ExportResult } from './BaseExport';
+import BaseExport, { ExportResult } from './BaseExport.js';
 
 function addressFields(address: Address | null) {
   return {

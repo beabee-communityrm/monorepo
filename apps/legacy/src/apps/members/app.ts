@@ -6,10 +6,14 @@ import SegmentService from '@beabee/core/services/SegmentService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express, type Request } from 'express';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 import queryString from 'query-string';
 
 import { isAdmin } from '#core/middleware';
 import { userToAuth } from '#core/utils/index';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 

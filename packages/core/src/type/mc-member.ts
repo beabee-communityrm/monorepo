@@ -1,4 +1,4 @@
-import { MCStatus } from './mc-status';
+import { MCStatus } from './mc-status.js';
 
 export interface MCMember {
   email_address: string;

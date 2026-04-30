@@ -3,21 +3,21 @@ import Stripe from 'stripe';
 
 import { isDuplicateIndex } from '#utils/db';
 
-import config from '../config/config';
-import { getRepository } from '../database';
-import { log as mainLogger } from '../logging';
-import { ContactContribution, Payment } from '../models';
-import ContactsService from '../services/ContactsService';
-import EmailService from '../services/EmailService';
-import GiftService from '../services/GiftService';
-import PaymentService from '../services/PaymentService';
-import { STRIPE_WEBHOOK_EVENTS } from './stripe';
+import config from '../config/config.js';
+import { getRepository } from '../database.js';
+import { log as mainLogger } from '../logging.js';
+import { ContactContribution, Payment } from '../models/index.js';
+import ContactsService from '../services/ContactsService.js';
+import EmailService from '../services/EmailService.js';
+import GiftService from '../services/GiftService.js';
+import PaymentService from '../services/PaymentService.js';
+import { STRIPE_WEBHOOK_EVENTS } from './stripe.js';
 import {
   convertInvoiceToPayment,
   getSalesTaxRateObject,
   isOneTimePaymentInvoice,
   stripe,
-} from './stripe';
+} from './stripe.js';
 
 const log = mainLogger.child({ app: 'stripe-webhook-handler' });
 

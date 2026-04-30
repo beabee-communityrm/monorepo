@@ -14,27 +14,27 @@ import {
 import { randomUUID } from 'crypto';
 import { Readable } from 'stream';
 
-import config from '../config/config';
+import config from '../config/config.js';
 import {
   BadRequestError,
   NotFoundError,
   UnsupportedFileTypeError,
-} from '../errors';
-import { log as mainLogger } from '../logging';
-import type { DocumentMetadata, DocumentServiceConfig } from '../type/index';
+} from '../errors/index.js';
+import { log as mainLogger } from '../logging.js';
+import type { DocumentMetadata, DocumentServiceConfig } from '../type/index.js';
 import {
   getExtensionFromFilename,
   getExtensionFromMimetype,
   getMimetypeFromExtension,
   sanitizeFilename,
-} from '../utils/file';
+} from '../utils/file.js';
 import {
   checkConnection,
   fileExists,
   getFileBuffer,
   getFileHash,
   getFileStream,
-} from '../utils/s3';
+} from '../utils/s3.js';
 
 const log = mainLogger.child({ app: 'document-service' });
 

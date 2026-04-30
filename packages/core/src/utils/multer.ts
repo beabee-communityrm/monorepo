@@ -8,7 +8,7 @@ import {
   FileTooLargeError,
   FileUploadError,
   UnsupportedFileTypeError,
-} from '../errors';
+} from '../errors/index.js';
 
 /**
  * Converts multer upload errors into appropriate HTTP error responses

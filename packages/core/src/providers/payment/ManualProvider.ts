@@ -1,7 +1,7 @@
 import { Contact } from '#models/index';
 import { ContributionInfo, UpdateContributionResult } from '#type/index';
 
-import { PaymentProvider } from './PaymentProvider';
+import { PaymentProvider } from './PaymentProvider.js';
 
 /**
  * Implements PaymentProvider for manual payment methods.

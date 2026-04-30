@@ -8,14 +8,15 @@ import {
   OrderByCondition,
   SelectQueryBuilder,
 } from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+
+import { QueryDeepPartialEntity } from '#type/typeorm-utils';
 
 import {
   ModelAnonymiser,
   ObjectMap,
   PropertyMap,
   createAnswersAnonymiser,
-} from './models';
+} from './models.js';
 
 const log = mainLogger.child({ app: 'anonymisers' });
 

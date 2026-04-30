@@ -1,4 +1,4 @@
-import { UpdateNewsletterContact } from './update-newsletter-contact';
+import { UpdateNewsletterContact } from './update-newsletter-contact.js';
 
 export interface NewsletterContact extends UpdateNewsletterContact {
   joined: Date;

@@ -1,7 +1,7 @@
-import ActiveMembersExport from './ActiveMembersExport';
-import EditionExport from './EditionExport';
-import GiftsExport from './GiftsExport';
-import ReferralsExport from './ReferralsExport';
+import ActiveMembersExport from './ActiveMembersExport.js';
+import EditionExport from './EditionExport.js';
+import GiftsExport from './GiftsExport.js';
+import ReferralsExport from './ReferralsExport.js';
 
 export default {
   'active-members': ActiveMembersExport,
