@@ -12,8 +12,8 @@
     "check": "concurrently 'yarn:check:*'",
     "check:tsc": "tsc -p tsconfig.build.json --noEmit",
     "check:prettier": "prettier -c .",
-    "check:typeorm-index": "yarn workspace @beabee/dev-cli start generate-typeorm-index --baseDir $(pwd) --src ./src/models --out ./src/entities.ts --export-name entities --class-name-strategy filename --check && yarn workspace @beabee/dev-cli start generate-typeorm-index --baseDir $(pwd) --src ./src/migrations --out ./src/migrations.ts --export-name migrations --class-name-strategy parse --check",
-    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension none --baseDir $(pwd) -p ./src/errors ./src/models ./src/services ./src/type ./src/filter-handlers ./src/templates",
+    "check:typeorm-index": "yarn workspace @beabee/dev-cli start generate-class-index --baseDir $(pwd) --src ./src/models --out ./src/entities.ts --export-name entities --class-name-strategy filename --check && yarn workspace @beabee/dev-cli start generate-class-index --baseDir $(pwd) --src ./src/migrations --out ./src/migrations.ts --export-name migrations --class-name-strategy parse --check",
+    "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension js --baseDir $(pwd) -p ./src/errors ./src/models ./src/services ./src/type ./src/filter-handlers ./src/templates",
     "generate:typeorm-index": "yarn workspace @beabee/dev-cli start generate-class-index --baseDir $(pwd) --src ./src/models --out ./src/entities.ts --export-name entities --class-name-strategy filename && yarn workspace @beabee/dev-cli start generate-class-index --baseDir $(pwd) --src ./src/migrations --out ./src/migrations.ts --export-name migrations --class-name-strategy parse",
     "test": "vitest run",
     "test:watch": "vitest"
