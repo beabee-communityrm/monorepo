@@ -5,7 +5,6 @@ Shared esbuild utilities and configurations for the Beabee monorepo.
 ## Features
 
 - Pre-configured ESM Node builds (flat `dist/`)
-- Browser (IIFE) builds
 - Watch mode support with logging
 - Locale-specific build tools
 - Common esbuild plugins
@@ -31,18 +30,6 @@ Most packages invoke this indirectly via the `dev-cli esbuild` command:
 "build:esbuild": "yarn workspace @beabee/dev-cli start esbuild --baseDir $(pwd)"
 ```
 
-### Browser Bundle
-
-```typescript
-import { buildBrowser } from '@beabee/esbuild';
-
-await buildBrowser({
-  entryPoints: ['./src/index.ts'],
-  outdir: './dist/browser',
-  globalName: 'MyLibrary',
-});
-```
-
 ### Locale Tools
 
 For internationalization:
@@ -62,7 +49,6 @@ await generateTemplate('./src/locales', './src/template.json');
 ### Main Functions
 
 - `buildESM(options)` - Build ESM modules
-- `buildBrowser(options)` - Build IIFE browser bundles
 
 ### Locale Functions
 
@@ -74,7 +60,7 @@ await generateTemplate('./src/locales', './src/template.json');
 
 Import types from `@beabee/esbuild/types`:
 
-- `BuildOptions`, `BuildIIFEOptions`
+- `BuildOptions`
 - `CopyPluginOptions`
 
 ## Examples
