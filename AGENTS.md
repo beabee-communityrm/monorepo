@@ -41,7 +41,6 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 | `@beabee/prettier-config` | Formatting config |
 | `@beabee/tsconfig` | TS configs (frontend/server/vanilla) |
 | `@beabee/test-utils` | Test utilities |
-| `@beabee/esbuild` | Build config/plugins |
 | `@beabee/docker` | Docker base config |
 | `@beabee/template-vanilla` | TS package template |
 

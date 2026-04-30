@@ -1,6 +1,6 @@
 import type { LocaleContext } from '../locale-context.ts';
-import type { BaseLocale } from './base-locale.ts';
-import type { Locale } from './locale.ts';
+import type { BaseLocale } from './base-locale.js';
+import type { Locale } from './locale.js';
 
 /**
  * Configuration for a single locale

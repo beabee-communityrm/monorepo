@@ -34,7 +34,6 @@ COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/p
 # Copy dependencies with relevant content
 COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
 COPY --chown=node:node packages/tsconfig /opt/packages/tsconfig
-COPY --chown=node:node packages/esbuild /opt/packages/esbuild
 
 # Copy apps with relevant content
 COPY --chown=node:node apps/dev-cli /opt/apps/dev-cli

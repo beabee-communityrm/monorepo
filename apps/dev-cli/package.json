@@ -15,7 +15,6 @@
     "generate:index": "yarn start generate-index -p ./src/types ./src/actions ./src/commands --extension ts"
   },
   "dependencies": {
-    "@beabee/esbuild": "workspace:^",
     "typescript": "~5.9.3",
     "yargs": "^17.7.2"
   },

@@ -1,6 +1,6 @@
-import { config } from './config.ts';
-import type { LocaleContext } from './locale-context.ts';
-import type { Locale } from './types/locale.ts';
+import { config } from './config.js';
+import type { LocaleContext } from './locale-context.js';
+import type { Locale } from './types/locale.js';
 
 export function isLocale(s: string): s is Locale {
   return s in config;
