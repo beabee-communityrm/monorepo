@@ -2,8 +2,8 @@ import type {
   ApiErrorCode,
   LOGIN_CODES,
   RESET_SECURITY_FLOW_ERROR_CODE,
-} from '../data';
-import type { Rule } from './rule';
+} from '../data/index.js';
+import type { Rule } from './rule.js';
 
 interface BaseApiErrorData {
   httpCode: number;
