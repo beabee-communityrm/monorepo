@@ -221,6 +221,17 @@ export const databaseCommand: CommandModule = {
           );
           return cleanDatabase();
         },
+      })
+      .command({
+        command: 'verify-address-migration',
+        describe:
+          'One-off: verify PR #323 address migration converted all response answers correctly',
+        handler: async () => {
+          const { verifyAddressMigration } = await import(
+            '../actions/database/verify-address-migration.js'
+          );
+          return verifyAddressMigration();
+        },
       }),
   handler: () => {},
 };
