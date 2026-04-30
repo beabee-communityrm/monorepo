@@ -12,9 +12,9 @@ export COMPOSE_PROJECT_NAME
 
 # Global cleanup function - ALWAYS runs at the end
 global_cleanup() {
-    echo "🧹 Performing global cleanup..."
+    echo "-- 🧹 CLEANING UP --"
 
-    docker compose -f docker-compose.test.yml logs > last-e2e-api-run.log
+    docker compose -f docker-compose.test.yml logs > last-test-run.log
 
     echo "Bringing down Docker Compose stack..."
     docker compose -f docker-compose.test.yml down -v --remove-orphans
@@ -60,17 +60,11 @@ docker compose -f docker-compose.test.yml up -d --build
 await_service_ready "api_app" "Server is ready and listening on port 3000" || exit 1
 #await_service_ready "frontend" "signal process started" || exit 1
 
-# Run setup script inside api_app container to create test data
-echo "Running test data setup..."
-API_KEY=$(
-  cat apps/e2e-api-tests/setup.sh \
-  | docker compose exec -T api_app bash \
-  | tee /dev/tty
-)
+echo "🧪 Importing test data..."
 
-echo "✅ Setup completed successfully"
+cat ./apps/browser-tests/src/fixtures/test-db-default.sql | docker compose exec -T api_app yarn backend-cli database import
+cat ./apps/browser-tests/src/fixtures/test-db-custom.sql | docker compose exec -T api_app yarn backend-cli database import --merge
 
-# TODO Run the API tests
 #docker compose exec api_app bash -c "cd /opt/apps/e2e-api-tests && API_KEY=$API_KEY yarn test"
 
 # Run browser tests
