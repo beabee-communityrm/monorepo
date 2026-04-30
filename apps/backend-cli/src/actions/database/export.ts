@@ -11,21 +11,40 @@ import {
   clearModels,
 } from '@beabee/core/tools/database/anonymisers/index';
 
+import type { AnonymizationLevel } from '../../types/index.js';
 import { getAnonymizers } from '../../utils/anonymizers.js';
+import {
+  withFileOutput,
+  withTypeOrmQueryLoggingDisabled,
+} from '../../utils/file-output.js';
 
 /**
- * Export database to SQL dump with configurable anonymization
+ * Export database to SQL dump with configurable anonymization level
  *
  * @param dryRun If true, only logs what would be done
- * @param anonymize If true, anonymize all data (contacts are always anonymized)
+ * @param level Anonymisation level: 'full' (all data anonymised), 'safe' (contacts/payments/emails/segments anonymised, other tables raw) or 'none' (everything raw, including PII)
  * @param skipAnonymizeTables If provided, skip anonymization for the given table names
+ * @param preserveCalloutAnswers If true, keep callout response answers intact (only anonymize FKs/guest data)
+ * @param filePath If set, write output to this file instead of stdout
  */
 export const exportDatabase = async (
   dryRun = false,
-  anonymize = true,
-  skipAnonymizeTables: string[] = []
+  level: AnonymizationLevel = 'full',
+  skipAnonymizeTables: string[] = [],
+  preserveCalloutAnswers = false,
+  filePath?: string
 ): Promise<void> => {
-  const anonymisers = getAnonymizers(anonymize, skipAnonymizeTables);
+  if (level === 'none') {
+    console.error(
+      '[database export] WARNING: --anonymize=none — output contains raw PII (contacts, payments, emails). Do not share this dump.'
+    );
+  }
+
+  const anonymisers = getAnonymizers(
+    level,
+    skipAnonymizeTables,
+    preserveCalloutAnswers
+  );
 
   if (dryRun) {
     const modelNames = anonymisers.map((a) =>
@@ -40,12 +59,16 @@ export const exportDatabase = async (
   }
 
   await runApp(async () => {
-    const valueMap = new Map<string, unknown>();
+    await withFileOutput(filePath, async () => {
+      const valueMap = new Map<string, unknown>();
+      // Limit query-log muting to the SQL emission phase so setup logs still appear.
+      await withTypeOrmQueryLoggingDisabled(async () => {
+        clearModels(anonymisers);
 
-    clearModels(anonymisers);
-
-    for (const anonymiser of anonymisers) {
-      await anonymiseModel(anonymiser, (qb) => qb, valueMap);
-    }
+        for (const anonymiser of anonymisers) {
+          await anonymiseModel(anonymiser, (qb) => qb, valueMap);
+        }
+      });
+    });
   });
 };

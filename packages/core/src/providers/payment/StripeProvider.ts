@@ -8,7 +8,7 @@ import { add } from 'date-fns';
 import Stripe from 'stripe';
 
 import config from '#config/config';
-import { NoPaymentMethod, PaymentFailed } from '#errors/index';
+import { NoPaymentMethodError, PaymentFailedError } from '#errors/index';
 import {
   chargeOneTimePayment,
   createSubscription,
@@ -29,7 +29,7 @@ import {
 } from '#type/index';
 import { calcRenewalDate, getChargeableAmount } from '#utils/payment';
 
-import { PaymentProvider } from './PaymentProvider';
+import { PaymentProvider } from './PaymentProvider.js';
 
 const log = mainLogger.child({ app: 'stripe-payment-provider' });
 
@@ -79,7 +79,7 @@ export class StripeProvider extends PaymentProvider {
     form: UpdateContributionForm
   ): Promise<UpdateContributionResult> {
     if (!this.data.customerId || !this.data.mandateId) {
-      throw new NoPaymentMethod();
+      throw new NoPaymentMethodError();
     }
 
     // Manual contributors don't have a real subscription yet, create one on
@@ -285,7 +285,7 @@ export class StripeProvider extends PaymentProvider {
       );
     } catch (err) {
       if (err instanceof Stripe.errors.StripeCardError) {
-        throw new PaymentFailed(err.decline_code);
+        throw new PaymentFailedError(err.decline_code);
       } else {
         throw err;
       }

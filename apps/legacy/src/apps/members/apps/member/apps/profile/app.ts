@@ -4,10 +4,16 @@ import ContactsService from '@beabee/core/services/ContactsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express, type Request, type Response } from 'express';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import { hasSchema } from '#core/middleware';
 
-import { updateProfileSchema } from './schemas.json';
+import _schemas from './schemas.json' with { type: 'json' };
+
+const { updateProfileSchema } = _schemas;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 

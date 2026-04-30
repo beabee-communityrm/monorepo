@@ -7,8 +7,8 @@ import {
   Unique,
 } from 'typeorm';
 
-import type { Callout } from './Callout';
-import type { Contact } from './Contact';
+import type { Callout } from './Callout.js';
+import type { Contact } from './Contact.js';
 
 @Entity()
 @Unique(['callout', 'contact'])

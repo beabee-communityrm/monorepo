@@ -8,7 +8,7 @@ import {
 
 import { EmailMailingRecipient } from '#type/index';
 
-import { type Email } from './index';
+import { type Email } from './index.js';
 
 @Entity()
 export class EmailMailing {

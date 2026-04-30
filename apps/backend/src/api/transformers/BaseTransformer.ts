@@ -8,6 +8,7 @@ import {
 } from '@beabee/beabee-common';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import {
+  BadRequestError,
   InvalidRuleError,
   NotFoundError,
   UnauthorizedError,
@@ -16,7 +17,6 @@ import { AuthInfo, FilterHandlers } from '@beabee/core/type';
 import { convertRulesToWhereClause } from '@beabee/core/utils/rules';
 
 import { plainToInstance } from 'class-transformer';
-import { BadRequestError } from 'routing-controllers';
 import { Brackets, ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 
 import { PaginatedDto } from '#api/dto/PaginatedDto';

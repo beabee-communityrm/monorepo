@@ -2,7 +2,7 @@ import { PaymentFilterName, Rule, paymentFilters } from '@beabee/beabee-common';
 import { paymentFilterHandlers } from '@beabee/core/filter-handlers';
 import { Payment } from '@beabee/core/models';
 
-import { BaseTransformer } from './BaseTransformer';
+import { BaseTransformer } from './BaseTransformer.js';
 
 export abstract class BasePaymentTransformer<
   GetDto,

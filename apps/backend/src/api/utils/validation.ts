@@ -1,5 +1,6 @@
+import { BadRequestError } from '@beabee/core/errors';
+
 import { ValidatorOptions, validate } from 'class-validator';
-import { BadRequestError } from 'routing-controllers';
 
 /**
  * Validate an object using the same base options as the main API validator

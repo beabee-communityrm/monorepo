@@ -4,11 +4,11 @@ import {
   PaymentSource,
 } from '@beabee/beabee-common';
 
-import { Subscription } from 'gocardless-nodejs';
+import type { Subscription } from 'gocardless-nodejs';
 import moment from 'moment';
 
 import config from '#config/config';
-import { NoPaymentMethod } from '#errors/index';
+import { NoPaymentMethodError } from '#errors/index';
 import gocardless, {
   createSubscription,
   hasPendingPayment,
@@ -26,7 +26,7 @@ import {
 } from '#type/index';
 import { calcRenewalDate } from '#utils/payment';
 
-import { PaymentProvider } from './PaymentProvider';
+import { PaymentProvider } from './PaymentProvider.js';
 
 const log = mainLogger.child({ app: 'gc-payment-provider' });
 
@@ -95,7 +95,7 @@ export class GCProvider extends PaymentProvider {
     });
 
     if (!this.data.mandateId) {
-      throw new NoPaymentMethod();
+      throw new NoPaymentMethodError();
     }
 
     let subscription: Subscription | undefined;

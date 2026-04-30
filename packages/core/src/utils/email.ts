@@ -1,4 +1,4 @@
-import { escapeRegExp } from './string';
+import { escapeRegExp } from './string.js';
 
 /**
  * Normalize an email address to ensure emails are compared in a

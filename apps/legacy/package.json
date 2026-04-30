@@ -4,19 +4,19 @@
   "description": "A community engagement system for community newsrooms",
   "private": true,
   "main": "dist/app.js",
-  "type": "commonjs",
+  "type": "module",
   "imports": {
     "#*": "./dist/*.js"
   },
   "scripts": {
     "clear": "rimraf dist/",
-    "build": "gulp build && tsc -p ./tsconfig.build.json",
+    "build": "gulp --gulpfile ./gulpfile.cjs build && tsc -p ./tsconfig.build.json",
     "dev": "yarn watch",
     "watch": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
     "test": "echo 'The legacy test suite has no tests yet'",
     "check": "concurrently 'yarn:check:*'",
-    "check:tsc": "tsc --noEmit",
+    "check:tsc": "tsc -p ./tsconfig.build.json --noEmit",
     "check:prettier": "prettier -c .",
     "check:dependencies": "dpdm -T --no-warning --no-tree --exit-code circular:1 src/app.ts"
   },

@@ -49,6 +49,9 @@ export default {
   'newsletter-groups': '[]',
   'tracking-code': '',
 
+  /** List of valid Mailchimp newsletter group IDs */
+  'mailchimp-newsletter-groups': '',
+
   /** Stripe integration options */
   'stripe-tax-rate-one-time-id': '',
   'stripe-tax-rate-recurring-id': '',

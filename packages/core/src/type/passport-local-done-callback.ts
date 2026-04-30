@@ -3,7 +3,7 @@ import type { Contact } from '@beabee/core/models';
 
 import type { HttpError } from 'routing-controllers';
 
-import type { PassportLocalVerifyOptions } from './passport-local-verify-options';
+import type { PassportLocalVerifyOptions } from './passport-local-verify-options.js';
 
 export type PassportLocalDoneCallback = (
   error: null | HttpError | UnauthorizedError,

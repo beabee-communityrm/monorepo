@@ -3,22 +3,17 @@
   "version": "0.28.1",
   "description": "Shared code between Beabee projects",
   "type": "module",
-  "main": "./dist/cjs/index.cjs",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
   "files": [
-    "dist/"
+    "dist/",
+    "src/"
   ],
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/esm/index.js"
-      },
-      "require": {
-        "types": "./dist/types/index.d.cts",
-        "default": "./dist/cjs/index.cjs"
-      }
+      "types": "./src/index.ts",
+      "module": "./src/index.ts",
+      "default": "./dist/index.js"
     },
     "./package.json": "./package.json"
   },
@@ -29,10 +24,10 @@
     "build:types": "tsc --project ./tsconfig.build.json",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch",
-    "test": "yarn test:types && yarn test:esm && yarn test:cjs && yarn test:vitest",
+    "prepublishOnly": "yarn clear && yarn build",
+    "test": "yarn test:types && yarn test:esm && yarn test:vitest",
     "test:types": "tsc --noEmit",
     "test:esm": "node test/node/module-type/import.mjs",
-    "test:cjs": "node test/node/module-type/require.cjs",
     "test:vitest": "vitest run",
     "test:vitest:watch": "vitest",
     "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension js --baseDir $(pwd) -p ./src/data ./src/error ./src/search ./src/types ./src/utils ./src/validators",

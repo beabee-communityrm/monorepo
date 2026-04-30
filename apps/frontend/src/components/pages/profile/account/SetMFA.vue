@@ -227,6 +227,7 @@ import {
   GetContactWith,
   LOGIN_CODES,
 } from '@beabee/beabee-common';
+import { UnauthorizedError } from '@beabee/client';
 import type { AppSliderSlideEventDetails, AppStepperStep } from '@beabee/vue';
 import {
   AppButton,
@@ -257,7 +258,7 @@ import { useI18n } from 'vue-i18n';
 import { generalContent } from '#store/index';
 import type { SetMfaSteps } from '#type/set-mfa-steps';
 import type { SetMfaTotpIdentity } from '#type/set-mfa-totp-identity';
-import { client, isApiError } from '#utils/api';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 
@@ -429,7 +430,7 @@ const disableMfaAndNotify = async () => {
 /** Called when an error occurs while creating MFA */
 const onCreateError = (error: unknown) => {
   if (
-    isApiError(error, undefined, [401]) &&
+    error instanceof UnauthorizedError &&
     error.code === LOGIN_CODES.INVALID_TOKEN
   ) {
     // If server says the token is invalid, set the token as invalid and go to the previous slide
@@ -448,11 +449,9 @@ const onCreateError = (error: unknown) => {
 
 const onDeleteError = (error: unknown) => {
   if (
-    isApiError(
-      error,
-      [LOGIN_CODES.INVALID_TOKEN, LOGIN_CODES.MISSING_TOKEN],
-      [400, 401]
-    )
+    error instanceof UnauthorizedError &&
+    (error.code === LOGIN_CODES.INVALID_TOKEN ||
+      error.code === LOGIN_CODES.MISSING_TOKEN)
   ) {
     // If server says the token is invalid, set the token as invalid
     setValidationStates(false);

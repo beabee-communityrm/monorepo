@@ -2,12 +2,7 @@ import { log as mainLogger } from '@beabee/core/logging';
 
 import { Request } from 'express';
 import { ServerResponse } from 'node:http';
-import {
-  Action,
-  Interceptor,
-  InterceptorInterface,
-  InternalServerError,
-} from 'routing-controllers';
+import { Action, Interceptor, InterceptorInterface } from 'routing-controllers';
 
 import { validateOrReject } from '#api/utils';
 

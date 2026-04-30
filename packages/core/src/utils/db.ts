@@ -1,6 +1,6 @@
 import { QueryFailedError, QueryRunner } from 'typeorm';
 
-import type { PgError } from '../type';
+import type { PgError } from '../type/index.js';
 
 /**
  * Adds a new column to a table, sets default values, and makes it non-nullable

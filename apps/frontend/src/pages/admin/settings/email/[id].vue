@@ -74,6 +74,7 @@ import type {
   GetEmailData,
   GetEmailTemplateInfoData,
 } from '@beabee/beabee-common';
+import { NotFoundError } from '@beabee/client';
 import { AppButton, AppConfirmDialog, PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -84,7 +85,7 @@ import { useRoute, useRouter } from 'vue-router';
 import EmailEditor from '#components/emails/EmailEditor.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
-import { client, isApiError } from '#utils/api';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -203,7 +204,7 @@ async function loadEmail(templateId: string): Promise<EmailFormData> {
       body: email.body,
     };
   } catch (err) {
-    if (isApiError(err, undefined, [404])) {
+    if (err instanceof NotFoundError) {
       return { fromName: null, fromEmail: null, subject: '', body: '' };
     } else {
       throw err;

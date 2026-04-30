@@ -1,4 +1,9 @@
-import { isApiError } from '@beabee/client';
+import {
+  ApiError,
+  NotFoundError,
+  PaymentFailedError,
+  TooManyRequestsError,
+} from '@beabee/client';
 import { formatDistanceLocale } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -12,6 +17,9 @@ const t = i18n.global.t;
 const defaultErrorMessages = computed<Record<string, string>>(() => ({
   unknown: t('form.errorMessages.generic'),
   'account-locked': t('form.errorMessages.api.account-locked'),
+  'cant-update-contribution': t(
+    'form.errorMessages.api.cant-update-contribution'
+  ),
   'duplicate-email': t('form.errorMessages.api.duplicate-email'),
   'duplicate-tag-name': t('form.errorMessages.api.duplicate-tag-name'),
   'invalid-token': t('form.errorMessages.api.invalid-token'),
@@ -31,7 +39,7 @@ export function extractErrorText(
   error: unknown,
   errorMessages?: Record<string, string>
 ): string {
-  const code = isApiError(error) ? error.code : 'unknown';
+  const code = error instanceof ApiError ? error.code : 'unknown';
 
   return (
     errorMessages?.[code] ||
@@ -44,13 +52,11 @@ export function extractErrorText(
  * Show a localized rate-limit notification (429) with optional wait seconds
  * Uses notifications.rateLimit.withWait when seconds are available, otherwise .generic
  */
-export function notifyRateLimited(error: unknown): void {
-  if (!isApiError(error, undefined, [429])) return;
-  const seconds = error.retryAfterSeconds;
-  const title = seconds
+export function notifyRateLimited(error: TooManyRequestsError): void {
+  const title = error.retryAfter
     ? t('notifications.rateLimit.withWait', {
         time: formatDistanceLocale(
-          new Date(Date.now() + seconds * 1000),
+          new Date(Date.now() + error.retryAfter * 1000),
           new Date()
         ),
       })
@@ -59,12 +65,12 @@ export function notifyRateLimited(error: unknown): void {
 }
 
 export function handleJoinError(err: unknown, router: Router): void {
-  if (isApiError(err, ['payment-failed'])) {
+  if (err instanceof PaymentFailedError) {
     router.replace('/join/payment-failed');
-  } else if (isApiError(err, undefined, [404])) {
+  } else if (err instanceof NotFoundError) {
     router.replace('/join/not-found');
   } else {
-    if (isApiError(err, undefined, [429])) {
+    if (err instanceof TooManyRequestsError) {
       notifyRateLimited(err);
     }
 

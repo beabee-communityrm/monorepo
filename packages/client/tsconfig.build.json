@@ -5,7 +5,7 @@
     "target": "ESNext", // Should be ES2020 or newer for the fetch API and Response type
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "declarationDir": "./dist/types",
+    "declarationDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
     "emitDeclarationOnly": true,

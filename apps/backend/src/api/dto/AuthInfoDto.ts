@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-import { GetContactDto } from './ContactDto';
+import { GetContactDto } from './ContactDto.js';
 
 /**
  * DTO for authentication information response

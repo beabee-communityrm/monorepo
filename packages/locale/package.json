@@ -10,9 +10,9 @@
     "url": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale"
   },
   "scripts": {
-    "clear": "rm -rf dist/ tsconfig.build.tsbuildinfo",
+    "clear": "rm -rf dist/ tsconfig.tsbuildinfo",
     "build": "yarn build:types && yarn build:esbuild",
-    "build:types": "rm -f tsconfig.build.tsbuildinfo && tsc",
+    "build:types": "rm -f tsconfig.tsbuildinfo && tsc",
     "build:esbuild": "node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings esbuild.ts",
     "check": "yarn check:tsc && yarn check:prettier",
     "check:tsc": "tsc --noEmit",
@@ -20,6 +20,7 @@
     "format": "prettier --write .",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch",
+    "prepublishOnly": "yarn clear && yarn build",
     "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $(pwd) --extension js -p ./src/types"
   },
   "devDependencies": {
@@ -34,32 +35,19 @@
     "dist/",
     "src/"
   ],
-  "main": "./dist/cjs/index.cjs",
-  "module": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     "./locales/*": "./src/locales/*.json",
     "./locales-with-fallback/*": "./src/locales/*.json",
     "./locales": {
-      "import": {
-        "types": "./src/locales/index.ts",
-        "default": "./src/locales/index.ts"
-      },
-      "require": {
-        "types": "./dist/types/locales/index.d.cts",
-        "default": "./dist/cjs/locales/index.cjs"
-      }
+      "types": "./dist/locales/index.d.ts",
+      "default": "./dist/locales/index.js"
     },
     ".": {
-      "import": {
-        "types": "./src/index.ts",
-        "default": "./src/index.ts"
-      },
-      "require": {
-        "types": "./dist/types/index.d.cts",
-        "default": "./dist/cjs/index.cjs"
-      }
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     }
   }
 }

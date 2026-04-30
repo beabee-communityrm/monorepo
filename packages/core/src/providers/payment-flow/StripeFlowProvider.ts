@@ -10,7 +10,7 @@ import {
   PaymentFlowSetup,
 } from '#type/index';
 
-import { PaymentFlowProvider } from './PaymentFlowProvider';
+import { PaymentFlowProvider } from './PaymentFlowProvider.js';
 
 const log = mainLogger.child({ app: 'stripe-payment-flow-provider' });
 
@@ -81,7 +81,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
         flow,
         setupIntent,
       });
-      throw new BadRequestError({ message: 'Failed to complete payment flow' });
+      throw new BadRequestError('Failed to complete payment flow');
     }
 
     return {

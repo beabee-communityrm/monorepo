@@ -1,3 +1,4 @@
+import { BadRequestError, NotFoundError } from '@beabee/core/errors';
 import { Password } from '@beabee/core/models';
 import SignupService from '@beabee/core/services/SignupService';
 import { generatePassword } from '@beabee/core/utils/auth';
@@ -6,10 +7,8 @@ import { getMonthlyAmount } from '@beabee/core/utils/payment';
 import { plainToInstance } from 'class-transformer';
 import { Request } from 'express';
 import {
-  BadRequestError,
   Body,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Post,
   Req,
@@ -26,7 +25,7 @@ import { SignupConfirmEmailParams } from '#api/params/SignupConfirmEmailParams';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import { login } from '#api/utils/auth';
 
-import { RateLimit } from '../decorators';
+import { RateLimit } from '../decorators/index.js';
 
 @JsonController('/signup')
 export class SignupController {

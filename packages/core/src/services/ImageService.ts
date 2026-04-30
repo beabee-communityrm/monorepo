@@ -1,4 +1,8 @@
-import { S3Metadata, isSupportedImageType } from '@beabee/beabee-common';
+import {
+  ALLOWED_IMAGE_MIME_TYPES,
+  S3Metadata,
+  isSupportedImageType,
+} from '@beabee/beabee-common';
 
 import {
   DeleteObjectCommand,
@@ -14,27 +18,31 @@ import sharp from 'sharp';
 import { Readable } from 'stream';
 import { optimize } from 'svgo';
 
-import config from '../config/config';
-import { BadRequestError, NotFoundError } from '../errors';
-import { log as mainLogger } from '../logging';
+import config from '../config/config.js';
+import {
+  BadRequestError,
+  NotFoundError,
+  UnsupportedFileTypeError,
+} from '../errors/index.js';
+import { log as mainLogger } from '../logging.js';
 import type {
   ImageFormat,
   ImageMetadata,
   ImageServiceConfig,
-} from '../type/index';
+} from '../type/index.js';
 import {
   getExtensionFromFilename,
   getMimetypeFromDecoderFormat,
   getMimetypeFromExtension,
   sanitizeFilename,
-} from '../utils/file';
+} from '../utils/file.js';
 import {
   checkConnection,
   fileExists,
   getFileBuffer,
   getFileHash,
   getFileStream,
-} from '../utils/s3';
+} from '../utils/s3.js';
 
 const log = mainLogger.child({ app: 'image-service' });
 
@@ -74,9 +82,7 @@ export class ImageService {
   ): Promise<void> {
     // Validate MIME type if provided
     if (mimetype && !isSupportedImageType(mimetype)) {
-      throw new BadRequestError({
-        message: `Unsupported image type ${mimetype}. Please upload a JPEG, PNG, WebP or AVIF image.`,
-      });
+      throw new UnsupportedFileTypeError(mimetype, ALLOWED_IMAGE_MIME_TYPES);
     }
 
     try {
@@ -86,22 +92,23 @@ export class ImageService {
 
       // Check if it's actually a valid image
       if (!metadata.width || !metadata.height || !metadata.format) {
-        throw new BadRequestError({ message: 'Invalid image format' });
+        throw new BadRequestError('Invalid image format');
       }
 
       // Check if the detected format is allowed
       if (
         !isSupportedImageType(getMimetypeFromDecoderFormat(metadata.format))
       ) {
-        throw new BadRequestError({
-          message: `Unsupported image format ${metadata.format}. Please upload a JPEG, PNG, WebP or AVIF image.`,
-        });
+        throw new UnsupportedFileTypeError(
+          getMimetypeFromDecoderFormat(metadata.format),
+          ALLOWED_IMAGE_MIME_TYPES
+        );
       }
     } catch (error) {
       if (error instanceof HttpError) {
         throw error;
       }
-      throw new BadRequestError({ message: 'Invalid image file' });
+      throw new BadRequestError('Invalid image file');
     }
   }
 
@@ -122,7 +129,7 @@ export class ImageService {
     try {
       // If imageData is a ReadStream, convert it to a Buffer
       if (!Buffer.isBuffer(imageData)) {
-        throw new BadRequestError({ message: 'Invalid upload format' });
+        throw new BadRequestError('Invalid upload format');
       }
 
       const sanitizedFilename = sanitizeFilename(originalFilename);
@@ -137,7 +144,7 @@ export class ImageService {
       const metadata = await image.metadata();
 
       if (!metadata.width || !metadata.height || !metadata.format) {
-        throw new BadRequestError({ message: 'Invalid image format' });
+        throw new BadRequestError('Invalid image format');
       }
 
       // If the image format is already the target format or a vector graphic,
@@ -292,9 +299,7 @@ export class ImageService {
 
       const errorMessage = `Failed to upload image (${originalFilename})`;
       log.error(errorMessage, error);
-      throw new BadRequestError({
-        message: errorMessage,
-      });
+      throw new BadRequestError(errorMessage);
     }
   }
 
@@ -330,9 +335,7 @@ export class ImageService {
           }
           const errorMessage = `Failed to get SVG image (${id})`;
           log.error(errorMessage, error);
-          throw new BadRequestError({
-            message: errorMessage,
-          });
+          throw new BadRequestError(errorMessage);
         }
       }
 
@@ -386,9 +389,7 @@ export class ImageService {
           // Don't log HttpError like NotFoundError as error since it's expected behavior
           throw error;
         }
-        throw new BadRequestError({
-          message: `Failed to get image stream (${id})`,
-        });
+        throw new BadRequestError(`Failed to get image stream (${id})`);
       }
     } catch (error) {
       if (error instanceof HttpError) {
@@ -397,7 +398,7 @@ export class ImageService {
       }
       const errorMessage = `Failed to get image stream (${id})`;
       log.error(errorMessage, error);
-      throw new BadRequestError({ message: errorMessage });
+      throw new BadRequestError(errorMessage);
     }
   }
 
@@ -428,7 +429,7 @@ export class ImageService {
         throw error;
       }
       log.error('Failed to get image buffer:', error);
-      throw new BadRequestError({ message: 'Failed to get image buffer' });
+      throw new BadRequestError('Failed to get image buffer');
     }
   }
 
@@ -480,7 +481,7 @@ export class ImageService {
       }
       const errorMessage = `Failed to delete image (${id})`;
       log.error(errorMessage, error);
-      throw new BadRequestError({ message: errorMessage });
+      throw new BadRequestError(errorMessage);
     }
   }
 
@@ -516,7 +517,7 @@ export class ImageService {
       const metadata = await sharp(buffer).metadata();
 
       if (!metadata.width || !metadata.height) {
-        throw new BadRequestError({ message: 'Invalid image format' });
+        throw new BadRequestError('Invalid image format');
       }
 
       // Get file metadata
@@ -550,7 +551,7 @@ export class ImageService {
       }
       const errorMessage = `Failed to get image metadata (${id})`;
       log.error(errorMessage, error);
-      throw new BadRequestError({ message: errorMessage });
+      throw new BadRequestError(errorMessage);
     }
   }
 
@@ -570,7 +571,7 @@ export class ImageService {
       }
       const errorMessage = `Failed to get image hash (${id})`;
       log.error(errorMessage, error);
-      throw new BadRequestError({ message: errorMessage });
+      throw new BadRequestError(errorMessage);
     }
   }
 
@@ -684,9 +685,7 @@ export class ImageService {
       }
       const errorMessage = `Failed to generate resized image (${id}, ${width})`;
       log.error(errorMessage, error);
-      throw new BadRequestError({
-        message: errorMessage,
-      });
+      throw new BadRequestError(errorMessage);
     }
   }
 }

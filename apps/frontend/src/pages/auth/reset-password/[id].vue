@@ -89,6 +89,7 @@ meta:
 
 <script lang="ts" setup>
 import { RESET_SECURITY_FLOW_ERROR_CODE } from '@beabee/beabee-common';
+import { ResetSecurityFlowError } from '@beabee/client';
 import { AppInput, AppNotification, AppTitle } from '@beabee/vue';
 
 import { reactive, ref } from 'vue';
@@ -98,7 +99,7 @@ import { useRoute, useRouter } from 'vue-router';
 import AuthBox from '#components/AuthBox.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import { updateCurrentUser } from '#store/index';
-import { client, isApiError } from '#utils/api';
+import { client } from '#utils/api';
 import { isInternalUrl } from '#utils/index';
 
 const props = withDefaults(
@@ -135,11 +136,8 @@ async function handleSubmit() {
     }
   } catch (err) {
     if (
-      isApiError(
-        err,
-        [RESET_SECURITY_FLOW_ERROR_CODE.MFA_TOKEN_REQUIRED],
-        [400]
-      )
+      err instanceof ResetSecurityFlowError &&
+      err.subCode === RESET_SECURITY_FLOW_ERROR_CODE.MFA_TOKEN_REQUIRED
     ) {
       hasMFAEnabled.value = true;
       return false;

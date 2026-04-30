@@ -1,4 +1,8 @@
-import { S3Metadata, isSupportedDocumentType } from '@beabee/beabee-common';
+import {
+  ALLOWED_DOCUMENT_MIME_TYPES,
+  S3Metadata,
+  isSupportedDocumentType,
+} from '@beabee/beabee-common';
 
 import {
   DeleteObjectCommand,
@@ -10,23 +14,27 @@ import {
 import { randomUUID } from 'crypto';
 import { Readable } from 'stream';
 
-import config from '../config/config';
-import { BadRequestError, NotFoundError } from '../errors';
-import { log as mainLogger } from '../logging';
-import type { DocumentMetadata, DocumentServiceConfig } from '../type/index';
+import config from '../config/config.js';
+import {
+  BadRequestError,
+  NotFoundError,
+  UnsupportedFileTypeError,
+} from '../errors/index.js';
+import { log as mainLogger } from '../logging.js';
+import type { DocumentMetadata, DocumentServiceConfig } from '../type/index.js';
 import {
   getExtensionFromFilename,
   getExtensionFromMimetype,
   getMimetypeFromExtension,
   sanitizeFilename,
-} from '../utils/file';
+} from '../utils/file.js';
 import {
   checkConnection,
   fileExists,
   getFileBuffer,
   getFileHash,
   getFileStream,
-} from '../utils/s3';
+} from '../utils/s3.js';
 
 const log = mainLogger.child({ app: 'document-service' });
 
@@ -63,25 +71,19 @@ export class DocumentService {
   private validateDocument(documentData: Buffer, mimetype: string): void {
     // Validate mimetype if provided
     if (mimetype && !isSupportedDocumentType(mimetype)) {
-      throw new BadRequestError({
-        message:
-          'Unsupported document type. Please upload a PDF or Office document.',
-      });
+      throw new UnsupportedFileTypeError(mimetype, ALLOWED_DOCUMENT_MIME_TYPES);
     }
 
     // Basic PDF signature check for PDF files
     if (mimetype === 'application/pdf') {
       if (documentData.length < 4) {
-        throw new BadRequestError({
-          message: 'Invalid PDF format. File is too small.',
-        });
+        throw new BadRequestError('Invalid PDF format. File is too small.');
       }
       const pdfSignature = documentData.toString('ascii', 0, 4);
       if (pdfSignature !== '%PDF') {
-        throw new BadRequestError({
-          message:
-            'Invalid PDF format. The file does not appear to be a valid PDF.',
-        });
+        throw new BadRequestError(
+          'Invalid PDF format. The file does not appear to be a valid PDF.'
+        );
       }
     }
   }
@@ -103,7 +105,7 @@ export class DocumentService {
     try {
       // Validate input
       if (!Buffer.isBuffer(documentData)) {
-        throw new BadRequestError({ message: 'Invalid upload format' });
+        throw new BadRequestError('Invalid upload format');
       }
 
       // Sanitize original filename if provided
@@ -168,9 +170,7 @@ export class DocumentService {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';
       log.error('Failed to upload document:', error);
-      throw new BadRequestError({
-        message: 'Failed to upload document: ' + errorMessage,
-      });
+      throw new BadRequestError('Failed to upload document: ' + errorMessage);
     }
   }
 
@@ -193,7 +193,7 @@ export class DocumentService {
         throw error;
       }
       log.error('Failed to get document stream:', error);
-      throw new BadRequestError({ message: 'Failed to get document' });
+      throw new BadRequestError('Failed to get document');
     }
   }
 
@@ -216,7 +216,7 @@ export class DocumentService {
         throw error;
       }
       log.error('Failed to get document buffer:', error);
-      throw new BadRequestError({ message: 'Failed to get document' });
+      throw new BadRequestError('Failed to get document');
     }
   }
 
@@ -244,7 +244,7 @@ export class DocumentService {
         throw error;
       }
       log.error('Failed to delete document:', error);
-      throw new BadRequestError({ message: 'Failed to delete document' });
+      throw new BadRequestError('Failed to delete document');
     }
   }
 
