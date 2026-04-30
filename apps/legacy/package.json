@@ -10,7 +10,7 @@
   },
   "scripts": {
     "clear": "rimraf dist/",
-    "build": "gulp build && tsc -p ./tsconfig.build.json",
+    "build": "gulp --gulpfile ./gulpfile.cjs build && tsc -p ./tsconfig.build.json",
     "dev": "yarn watch",
     "watch": "tsc --watch --preserveWatchOutput -p tsconfig.build.json",
     "format": "prettier --write .",
