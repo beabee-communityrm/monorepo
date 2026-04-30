@@ -44,7 +44,6 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 | `@beabee/esbuild` | Build config/plugins |
 | `@beabee/docker` | Docker base config |
 | `@beabee/template-vanilla` | TS package template |
-| `@beabee/weblate-client` | Translation mgmt client |
 
 | App | Purpose |
 |---|---|
