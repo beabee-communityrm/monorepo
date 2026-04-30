@@ -20,6 +20,7 @@
     "format": "prettier --write .",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch",
+    "prepublishOnly": "yarn clear && yarn build",
     "generate:index": "yarn workspace @beabee/dev-cli start generate-index --baseDir $(pwd) --extension js -p ./src/types"
   },
   "devDependencies": {
@@ -34,31 +35,35 @@
     "dist/",
     "src/"
   ],
-  "main": "./dist/cjs/index.cjs",
-  "module": "./src/index.ts",
+  "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
     "./package.json": "./package.json",
     "./locales/*": "./src/locales/*.json",
     "./locales-with-fallback/*": "./src/locales/*.json",
     "./locales": {
-      "import": {
-        "types": "./dist/types/locales/index.d.ts",
-        "default": "./src/locales/index.ts"
-      },
-      "require": {
-        "types": "./dist/types/locales/index.d.cts",
-        "default": "./dist/cjs/locales/index.cjs"
-      }
+      "types": "./dist/locales/index.d.ts",
+      "default": "./src/locales/index.ts"
     },
     ".": {
-      "import": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./src/index.ts"
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      "./package.json": "./package.json",
+      "./locales/*": "./src/locales/*.json",
+      "./locales-with-fallback/*": "./src/locales/*.json",
+      "./locales": {
+        "types": "./dist/locales/index.d.ts",
+        "default": "./dist/locales/index.js"
       },
-      "require": {
-        "types": "./dist/types/index.d.cts",
-        "default": "./dist/cjs/index.cjs"
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       }
     }
   }

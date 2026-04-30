@@ -1,6 +1,6 @@
-// Build Node.js CJS module with esbuild.
+// Build Node.js ESM module with esbuild (flat dist/).
 import {
-  buildCJS,
+  buildESM,
   createCopyPlugin,
   generateFallbackTranslations,
   generateTemplate,
@@ -12,7 +12,7 @@ import * as esbuild from 'esbuild';
 
 import { config } from './src/config.ts';
 
-const OUTDIR_CJS = './dist/cjs';
+const OUTDIR = './dist';
 const SOURCE_LOCALES_DIR = './src/locales';
 const FALLBACK_LOCALES_DIR = './dist/locales-with-fallback';
 const TEMPLATE_PATH = './src/template.json';
@@ -20,8 +20,6 @@ const TEMPLATE_PATH = './src/template.json';
 const isWatch = isWatchMode();
 
 async function buildJSON(outdir: string, watch = false) {
-  const dirName = outdir.includes('cjs') ? 'JSON-CJS' : 'JSON-Types';
-
   const ctx = await esbuild.context({
     entryPoints: [], // No actual entry points needed, just using for the plugin system
     outdir,
@@ -31,7 +29,7 @@ async function buildJSON(outdir: string, watch = false) {
       createCopyPlugin({
         sourceDir: SOURCE_LOCALES_DIR,
         outdir,
-        dirName,
+        dirName: 'JSON',
         isWatch: watch,
       }),
     ],
@@ -60,22 +58,16 @@ async function main() {
   if (isWatch) {
     console.log('🚀 Starting watch mode...');
     await Promise.all([
-      buildCJS({ entryPoints, outdir: OUTDIR_CJS, watch: true }),
-      buildJSON(OUTDIR_CJS, true),
-      buildJSON('./dist/types', true),
+      buildESM({ entryPoints, outdir: OUTDIR, watch: true }),
+      buildJSON(OUTDIR, true),
     ]);
     console.log('👀 Watching for changes...');
     // Keep process alive
     process.stdin.resume();
   } else {
-    const cjs = await buildCJS({ entryPoints, outdir: OUTDIR_CJS });
-
-    for (const outdir of [OUTDIR_CJS, './dist/types']) {
-      const json = await buildJSON(outdir);
-      await json.dispose();
-    }
-
-    await cjs.dispose();
+    const esm = await buildESM({ entryPoints, outdir: OUTDIR });
+    const json = await buildJSON(OUTDIR);
+    await Promise.all([esm.dispose(), json.dispose()]);
     console.log('@beabee/locale build completed');
   }
 }

@@ -19,6 +19,7 @@
     "build:types": "tsc --project ./tsconfig.build.json",
     "watch": "yarn build:esbuild --watch",
     "dev": "yarn watch",
+    "prepublishOnly": "yarn clear && yarn build",
     "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension js --baseDir $(pwd) -p src/types src/api src/utils",
     "format": "prettier --write .",
     "check": "yarn check:tsc && yarn check:prettier",
@@ -48,19 +49,12 @@
     "./package.json": "./package.json"
   },
   "publishConfig": {
-    "main": "./dist/cjs/index.cjs",
-    "module": "./dist/esm/index.js",
-    "types": "./dist/types/index.d.ts",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "exports": {
       ".": {
-        "import": {
-          "types": "./dist/types/index.d.ts",
-          "default": "./dist/esm/index.js"
-        },
-        "require": {
-          "types": "./dist/types/index.d.ts",
-          "default": "./dist/cjs/index.cjs"
-        }
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       },
       "./package.json": "./package.json"
     }

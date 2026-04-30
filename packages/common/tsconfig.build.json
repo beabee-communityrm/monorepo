@@ -6,7 +6,7 @@
     "module": "ESNext",
     "rootDir": "./src",
     "moduleResolution": "bundler",
-    "declarationDir": "./dist/types",
+    "declarationDir": "./dist",
     "emitDeclarationOnly": true,
     "declaration": true,
     "isolatedModules": true,
