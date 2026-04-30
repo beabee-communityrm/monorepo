@@ -1,6 +1,6 @@
 import { deepEqual, strictEqual } from 'assert';
 
-import { parseDate } from '../../../dist/esm/index.js';
+import { parseDate } from '../../../dist/index.js';
 
 const green = (str) => '\x1b[32m' + str + '\x1b[0m';
 const red = (str) => '\x1b[31m' + str + '\x1b[0m';
