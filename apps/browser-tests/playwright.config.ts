@@ -1,27 +1,27 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-  testDir: '.',
+  testDir: "src/tests",
   fullyParallel: false, // tests in a single test file are always run in order. this parallelizes only multiple test files
-  reporter: 'list',
+  reporter: "list",
 
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:4002/',
-    trace: 'on-first-retry',
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://localhost:4002/",
+    trace: "on-first-retry",
   },
-  
+
   projects: [
     {
-      name: 'chromium',
-      use: devices['Desktop Chrome'],
+      name: "chromium",
+      use: devices["Desktop Chrome"],
     },
     {
-      name: 'firefox',
-      use: devices['Desktop Firefox'],
+      name: "firefox",
+      use: devices["Desktop Firefox"],
     },
     {
-      name: 'safari',
-      use: devices['Desktop Safari'],
-    }
-    ]
+      name: "safari",
+      use: devices["Desktop Safari"],
+    },
+  ],
 });
