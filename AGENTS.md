@@ -157,7 +157,7 @@ Migrate from `apps/frontend` → `packages/vue/src/components`.
 
 ## Task: Scaffold Vanilla Package
 
-Use `packages/template-vanilla` conventions. Read its `README.md` and follow instructions. Not suitable for backend/CommonJS packages.
+Use `packages/template-vanilla` conventions. Read its `README.md` and follow instructions. The template ships source TS with no build; not suitable for packages that need a published JS artifact.
 
 ## Prompt Compression
 
