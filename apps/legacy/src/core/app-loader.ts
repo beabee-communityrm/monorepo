@@ -56,7 +56,7 @@ async function loadAppConfig(
   try {
     appConfig = (
       await import(path + '/config.json', {
-        assert: { type: 'json' },
+        with: { type: 'json' },
       })
     ).default;
   } catch (e) {
