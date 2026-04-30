@@ -1437,7 +1437,7 @@ __metadata:
     dotenv: "npm:^16.4.7"
     moment: "npm:^2.30.1"
     prettier: "npm:^3.5.2"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
     vitest: "npm:^3.2.1"
     yargs: "npm:^17.7.2"
   bin:
@@ -1494,7 +1494,7 @@ __metadata:
     stripe: "npm:^15.9.0"
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.27"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
     uuid: "npm:^11.1.0"
   languageName: unknown
   linkType: soft
@@ -1506,7 +1506,7 @@ __metadata:
     "@beabee/prettier-config": "workspace:^"
     date-fns: "npm:^4.1.0"
     prettier: "npm:^3.5.2"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
     vitest: "npm:^3.2.1"
   languageName: unknown
   linkType: soft
@@ -1521,7 +1521,7 @@ __metadata:
     dotenv: "npm:^16.4.7"
     otpauth: "npm:^9.3.6"
     prettier: "npm:^3.5.2"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -1572,7 +1572,7 @@ __metadata:
     tar-stream: "npm:^3.1.7"
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.27"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
     uuid: "npm:^11.1.0"
     vitest: "npm:^3.2.1"
     winston: "npm:^3.17.0"
@@ -1589,7 +1589,7 @@ __metadata:
     "@types/node": "npm:^24.10.13"
     "@types/yargs": "npm:^17.0.33"
     prettier: "npm:^3.5.3"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
     yargs: "npm:^17.7.2"
   bin:
     dev-cli: ./bin/dev-cli.js
@@ -1611,7 +1611,7 @@ __metadata:
     "@beabee/test-utils": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
     prettier: "npm:^3.5.2"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
     vitest: "npm:^3.2.1"
   languageName: unknown
   linkType: soft
@@ -1626,7 +1626,7 @@ __metadata:
     "@types/node": "npm:^24.10.13"
     minisearch: "npm:^7.2.0"
     prettier: "npm:^3.5.3"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
     vitest: "npm:^3.2.3"
     yaml: "npm:^2.8.0"
   languageName: unknown
@@ -1674,7 +1674,7 @@ __metadata:
     prettier: "npm:^3.5.2"
     slugify: "npm:^1.6.6"
     tailwindcss: "npm:^3.4.17"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
     typescript-eslint: "npm:^8.34.0"
     unplugin-vue-router: "npm:^0.15.0"
     vite: "npm:^6.3.5"
@@ -1763,7 +1763,7 @@ __metadata:
     stripe: "npm:^15.9.0"
     tsconfig: "npm:^7.0.0"
     typeorm: "npm:^0.3.27"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
     uuid: "npm:^11.1.0"
   languageName: unknown
   linkType: soft
@@ -1774,7 +1774,7 @@ __metadata:
   dependencies:
     "@beabee/prettier-config": "workspace:^"
     prettier: "npm:^3.5.3"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -1811,7 +1811,7 @@ __metadata:
     "@beabee/tsconfig": "workspace:^"
     "@types/node": "npm:^24.10.13"
     prettier: "npm:^3.5.3"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -1823,7 +1823,7 @@ __metadata:
     openapi-typescript: "npm:^7.8.0"
     prettier: "npm:^3.5.2"
     testcontainers: "npm:^11.0.0"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -1833,7 +1833,7 @@ __metadata:
   dependencies:
     "@tsconfig/node24": "npm:^24.0.0"
     "@vue/tsconfig": "npm:^0.7.0"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
   peerDependencies:
     typescript: "*"
   languageName: unknown
@@ -1880,7 +1880,7 @@ __metadata:
     prettier: "npm:^3.5.2"
     qrcode-generator: "npm:^1.5.0"
     tailwindcss: "npm:^3.4.17"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
     vite: "npm:^6.3.5"
     vue: "npm:^3.5.16"
     vue-accessible-color-picker: "npm:^5.2.0"
@@ -1913,7 +1913,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     stripe: "npm:^15.9.0"
     typeorm: "npm:^0.3.27"
-    typescript: "npm:~5.9.3"
+    typescript: "npm:~6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -18928,13 +18928,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:~5.9.3":
-  version: 5.9.3
-  resolution: "typescript@npm:5.9.3"
+"typescript@npm:~6.0.3":
+  version: 6.0.3
+  resolution: "typescript@npm:6.0.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/6bd7552ce39f97e711db5aa048f6f9995b53f1c52f7d8667c1abdc1700c68a76a308f579cd309ce6b53646deb4e9a1be7c813a93baaf0a28ccd536a30270e1c5
+  checksum: 10c0/4a25ff5045b984370f48f196b3a0120779b1b343d40b9a68d114ea5e5fff099809b2bb777576991a63a5cd59cf7bffd96ff6fe10afcefbcb8bd6fb96ad4b6606
   languageName: node
   linkType: hard
 
@@ -18948,13 +18948,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A~5.9.3#optional!builtin<compat/typescript>":
-  version: 5.9.3
-  resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
+"typescript@patch:typescript@npm%3A~6.0.3#optional!builtin<compat/typescript>":
+  version: 6.0.3
+  resolution: "typescript@patch:typescript@npm%3A6.0.3#optional!builtin<compat/typescript>::version=6.0.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/ad09fdf7a756814dce65bc60c1657b40d44451346858eea230e10f2e95a289d9183b6e32e5c11e95acc0ccc214b4f36289dcad4bf1886b0adb84d711d336a430
+  checksum: 10c0/2f25c74e65663c248fa1ade2b8459d9ce5372ff9dad07067310f132966ebec1d93f6c42f0baf77a6b6a7a91460463f708e6887013aaade22111037457c6b25df
   languageName: node
   linkType: hard
 
