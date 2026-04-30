@@ -1,5 +1,5 @@
 import {
-  CalloutResponseAnswersSlide,
+  type CalloutResponseAnswersSlide,
   GetCalloutResponseWith,
 } from '../index.js';
 import type {
