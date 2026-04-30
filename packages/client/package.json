@@ -37,21 +37,33 @@
     "prettier": "^3.5.2",
     "typescript": "~5.9.3"
   },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "files": [
-    "dist/"
+    "dist/",
+    "src/"
   ],
   "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/esm/index.js"
-      },
-      "require": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/cjs/index.cjs"
-      }
-    },
+    ".": "./src/index.ts",
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "main": "./dist/cjs/index.cjs",
+    "module": "./dist/esm/index.js",
+    "types": "./dist/types/index.d.ts",
+    "exports": {
+      ".": {
+        "import": {
+          "types": "./dist/types/index.d.ts",
+          "default": "./dist/esm/index.js"
+        },
+        "require": {
+          "types": "./dist/types/index.d.ts",
+          "default": "./dist/cjs/index.cjs"
+        }
+      },
+      "./package.json": "./package.json"
+    }
   },
   "keywords": [
     "beabee",
