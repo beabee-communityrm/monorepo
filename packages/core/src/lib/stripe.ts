@@ -24,6 +24,8 @@ import {
 import { getChargeableAmount } from '#utils/payment';
 
 // Stripe webhook events that we handle
+// For local development, also update list of events in stripe-cli command in
+// docker-compose.yml when changing this
 export const STRIPE_WEBHOOK_EVENTS = [
   'checkout.session.completed',
   'customer.deleted',
