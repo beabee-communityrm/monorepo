@@ -3,7 +3,7 @@ import {
   PaymentFlowSetupResult,
 } from '@beabee/beabee-common';
 
-import { NoPaymentMethod } from '#errors/NoPaymentMethod';
+import { NoPaymentMethodError } from '#errors/index';
 import { stripe } from '#lib/stripe';
 import { PaymentFlow } from '#models/index';
 import { CompletedPaymentFlow, CompletedPaymentFlowData } from '#type/index';
@@ -52,7 +52,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
     flow,
   }: CompletedPaymentFlow): Promise<CompletedPaymentFlowData> {
     if (!flow.params?.token) {
-      throw new NoPaymentMethod();
+      throw new NoPaymentMethodError();
     }
 
     const token = await stripe.confirmationTokens.retrieve(flow.params.token);

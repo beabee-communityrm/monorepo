@@ -1,4 +1,4 @@
-import { bytesToHumanReadable } from '@beabee/beabee-common';
+import { MAX_FILE_SIZE_IN_BYTES } from '@beabee/beabee-common';
 
 import { MulterError } from 'multer';
 import { HttpError } from 'routing-controllers';
@@ -6,7 +6,8 @@ import { HttpError } from 'routing-controllers';
 import {
   BadRequestError,
   FileTooLargeError,
-  UnsupportedFileType,
+  FileUploadError,
+  UnsupportedFileTypeError,
 } from '../errors';
 
 /**
@@ -20,8 +21,6 @@ import {
  * - Other limits → BadRequestError (HTTP 400) with specific error codes
  *
  * @param error - The error object thrown during file upload (usually from multer middleware)
- * @param maxFileSizeBytes - The maximum file size in bytes. If provided, this will be
- *                          included in the error message for size limit errors
  * @returns An appropriate HttpError with status code and message based on the error type
  *
  * @example
@@ -33,72 +32,53 @@ import {
  * }
  * ```
  */
-export function convertMulterError(
-  error: unknown,
-  maxFileSizeBytes?: number
-): HttpError {
+export function convertMulterError(error: unknown, maxSize: number): HttpError {
   const message = error instanceof Error ? error.message : 'Unknown error';
-
-  // Format max file size for display if provided
-  const sizeDisplay = maxFileSizeBytes
-    ? bytesToHumanReadable(maxFileSizeBytes)
-    : undefined;
 
   // If it's not a MulterError, return a generic BadRequestError
   if (!(error instanceof MulterError)) {
-    return new BadRequestError({
-      message: `Upload error: ${message}`,
-      code: 'UPLOAD_ERROR',
-    });
+    return new BadRequestError(`Upload error: ${message}`);
   }
 
   // Handle specific MulterError codes
   switch (error.code) {
     case 'LIMIT_FILE_SIZE':
-      return new FileTooLargeError({
-        message: `File too large: ${message}`,
-        ...(sizeDisplay ? { maxSize: sizeDisplay } : {}),
-      });
+      return new FileTooLargeError(maxSize);
 
     case 'LIMIT_UNEXPECTED_FILE':
-      return new UnsupportedFileType({
-        message: `Unexpected file: ${error.field || 'unknown field'}: ${message}`,
-      });
+      return new UnsupportedFileTypeError(error.field || 'unknown');
 
     case 'LIMIT_FILE_COUNT':
-      return new BadRequestError({
-        message: `Too many files uploaded: ${message}`,
-        code: 'TOO_MANY_FILES',
-      });
+      return new FileUploadError(
+        'TOO_MANY_FILES',
+        `Too many files uploaded: ${message}`
+      );
 
     case 'LIMIT_PART_COUNT':
-      return new BadRequestError({
-        message: `Too many parts in multipart form: ${message}`,
-        code: 'TOO_MANY_PARTS',
-      });
+      return new FileUploadError(
+        'TOO_MANY_PARTS',
+        `Too many parts in multipart form: ${message}`
+      );
 
     case 'LIMIT_FIELD_KEY':
-      return new BadRequestError({
-        message: `Field name too long: ${message}`,
-        code: 'FIELD_KEY_TOO_LONG',
-      });
+      return new FileUploadError(
+        'FIELD_KEY_TOO_LONG',
+        `Field name too long: ${message}`
+      );
 
     case 'LIMIT_FIELD_VALUE':
-      return new BadRequestError({
-        message: `Field value too long: ${message}`,
-        code: 'FIELD_VALUE_TOO_LONG',
-      });
+      return new FileUploadError(
+        'FIELD_VALUE_TOO_LONG',
+        `Field value too long: ${message}`
+      );
 
     case 'LIMIT_FIELD_COUNT':
-      return new BadRequestError({
-        message: `Too many fields in form: ${message}`,
-        code: 'TOO_MANY_FIELDS',
-      });
+      return new FileUploadError(
+        'TOO_MANY_FIELDS',
+        `Too many fields in form: ${message}`
+      );
 
     default:
-      return new BadRequestError({
-        message: `Upload error: ${message}`,
-        code: 'UPLOAD_ERROR',
-      });
+      return new FileUploadError('UPLOAD_ERROR', `Upload error: ${message}`);
   }
 }

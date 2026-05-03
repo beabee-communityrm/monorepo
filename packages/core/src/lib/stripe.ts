@@ -11,7 +11,6 @@ import { differenceInMonths } from 'date-fns';
 import Stripe from 'stripe';
 
 import config from '#config/config';
-import { NoPaymentMethod } from '#errors/NoPaymentMethod';
 import { currentLocale } from '#locale';
 import { log as mainLogger } from '#logging';
 import { PaymentFlow } from '#models';

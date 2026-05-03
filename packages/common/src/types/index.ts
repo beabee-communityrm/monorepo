@@ -1,5 +1,6 @@
 export type * from './address.js';
 export type * from './allow-null.js';
+export type * from './api-error-data.js';
 export type * from './api-key-filter-name.js';
 export type * from './array-filter-args.js';
 export type * from './auth-info-data.js';
@@ -77,7 +78,6 @@ export type * from './callout-reviewer-filter-name.js';
 export type * from './callout-tag-filter-name.js';
 export type * from './callout-variant-data.js';
 export type * from './callout-variant-navigation-data.js';
-export type * from './client-api-error-data.js';
 export type * from './complete-signup-data.js';
 export type * from './contact-data.js';
 export type * from './contact-mfa-data.js';

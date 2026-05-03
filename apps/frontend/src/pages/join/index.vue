@@ -34,7 +34,7 @@ import {
   PaymentMethod,
   type SignupData,
 } from '@beabee/beabee-common';
-import { isApiError } from '@beabee/client';
+import { TooManyRequestsError } from '@beabee/client';
 
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -135,11 +135,11 @@ async function handleSubmitStep1() {
       goToConfirmEmailPage();
     }
   } catch (err) {
-    if (isApiError(err, undefined, [429])) {
+    if (err instanceof TooManyRequestsError) {
       notifyRateLimited(err);
-      return;
+    } else {
+      throw err;
     }
-    throw err;
   }
 }
 
@@ -160,11 +160,11 @@ async function handleSubmitStep2(
 
     goToConfirmEmailPage();
   } catch (err) {
-    if (isApiError(err, undefined, [429])) {
+    if (err instanceof TooManyRequestsError) {
       notifyRateLimited(err);
-      return;
+    } else {
+      throw err;
     }
-    throw err;
   }
 }
 

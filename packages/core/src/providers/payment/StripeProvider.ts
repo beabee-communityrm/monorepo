@@ -9,9 +9,9 @@ import Stripe from 'stripe';
 
 import config from '#config/config';
 import {
-  CantUpdateContribution,
-  NoPaymentMethod,
-  PaymentFailed,
+  CantUpdateContributionError,
+  NoPaymentMethodError,
+  PaymentFailedError,
   PaymentRequiresActionError,
 } from '#errors/index';
 import {
@@ -89,7 +89,7 @@ export class StripeProvider extends PaymentProvider {
   ): Promise<UpdateContributionResult> {
     return await this.withDataUpdate(async () => {
       if (!this.data.customerId || !this.data.subscriptionId) {
-        throw new CantUpdateContribution();
+        throw new CantUpdateContributionError();
       }
 
       log.info('Update subscription ' + this.data.subscriptionId);
@@ -233,7 +233,7 @@ export class StripeProvider extends PaymentProvider {
    */
   private async updatePaymentMethod(flow: PaymentFlow): Promise<void> {
     if (!flow.params?.token) {
-      throw new NoPaymentMethod();
+      throw new NoPaymentMethodError();
     }
 
     const customerId = await this.ensureCustomerForFlow(flow);
@@ -258,7 +258,7 @@ export class StripeProvider extends PaymentProvider {
     flow: PaymentFlow<PaymentFlowFormCreateOneTimePayment>
   ): Promise<void> {
     if (!flow.params?.token) {
-      throw new NoPaymentMethod();
+      throw new NoPaymentMethodError();
     }
 
     log.info('Create one-time payment of amount ' + flow.form.amount);
@@ -279,7 +279,7 @@ export class StripeProvider extends PaymentProvider {
       }
     } catch (err) {
       if (err instanceof Stripe.errors.StripeCardError) {
-        throw new PaymentFailed(err.decline_code);
+        throw new PaymentFailedError(err.decline_code);
       } else {
         throw err;
       }
@@ -297,11 +297,11 @@ export class StripeProvider extends PaymentProvider {
     log.info('Start contribution for completed flow', flow);
 
     if (this.data.subscriptionId) {
-      throw new CantUpdateContribution();
+      throw new CantUpdateContributionError();
     }
 
     if (!flow.params?.token) {
-      throw new NoPaymentMethod();
+      throw new NoPaymentMethodError();
     }
 
     const customerId = await this.ensureCustomerForFlow(flow);

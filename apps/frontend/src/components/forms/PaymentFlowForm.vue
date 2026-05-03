@@ -53,7 +53,7 @@ import {
   type PaymentFlowSetupParams,
   type PaymentFlowSetupResult,
 } from '@beabee/beabee-common';
-import { isApiError } from '@beabee/client';
+import { PaymentRequiresActionError } from '@beabee/client';
 import { AppModal, addNotification } from '@beabee/vue';
 
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
@@ -145,7 +145,7 @@ async function handleStripeConfirm(
       lastname,
     });
   } catch (err) {
-    if (isApiError(err, ['payment-requires-action'])) {
+    if (err instanceof PaymentRequiresActionError) {
       // Do stuff
     }
   }
@@ -185,7 +185,7 @@ onBeforeMount(async () => {
     try {
       await props.completeFlow(completePaymentFlowId.value);
     } catch (err) {
-      if (isApiError(err, ['payment-requires-action'])) {
+      if (err instanceof PaymentRequiresActionError) {
         // TODDO
       } else {
         addNotification({

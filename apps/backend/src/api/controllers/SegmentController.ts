@@ -1,4 +1,5 @@
 import { getRepository } from '@beabee/core/database';
+import { NotFoundError } from '@beabee/core/errors';
 import {
   Contact,
   Email,
@@ -16,7 +17,6 @@ import {
   Delete,
   Get,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Params,
   Patch,

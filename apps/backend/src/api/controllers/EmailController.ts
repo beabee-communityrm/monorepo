@@ -1,3 +1,4 @@
+import { NotFoundError } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import EmailService from '@beabee/core/services/EmailService';
@@ -11,7 +12,6 @@ import {
   Delete,
   Get,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Param,
   Params,

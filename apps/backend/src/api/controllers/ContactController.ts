@@ -1,5 +1,10 @@
 import { GetContactWith } from '@beabee/beabee-common';
-import { CantUpdateContribution, UnauthorizedError } from '@beabee/core/errors';
+import {
+  BadRequestError,
+  CantUpdateContributionError,
+  NotFoundError,
+  UnauthorizedError,
+} from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
@@ -14,12 +19,10 @@ import { plainToInstance } from 'class-transformer';
 import { Response } from 'express';
 import {
   Authorized,
-  BadRequestError,
   Body,
   Delete,
   Get,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Params,
   Patch,
@@ -234,7 +237,7 @@ export class ContactController {
     };
 
     if (!(await PaymentService.canUpdateContribution(target, form))) {
-      throw new CantUpdateContribution();
+      throw new CantUpdateContributionError();
     }
 
     const result = await PaymentService.processUpdateContribution(target, form);
@@ -256,7 +259,7 @@ export class ContactController {
     };
 
     if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
-      throw new CantUpdateContribution();
+      throw new CantUpdateContributionError();
     }
 
     const result = await PaymentFlowService.startPaymentFlow(form, data.params);
@@ -303,7 +306,10 @@ export class ContactController {
     @Params() { id }: { id: string }
   ): Promise<void> {
     if (id === 'me') {
-      await ContactMfaService.deleteSecure(target, data);
+      if (!data.token) {
+        throw new BadRequestError('Token is required to delete own MFA');
+      }
+      await ContactMfaService.deleteSecure(target, data.token);
     } else {
       // It's secure to call this unsecure method here because the user is an admin,
       // this is checked in the `@TargetUser()` decorator
@@ -361,7 +367,7 @@ export class ContactController {
     };
 
     if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
-      throw new CantUpdateContribution();
+      throw new CantUpdateContributionError();
     }
 
     const result = await PaymentFlowService.startPaymentFlow(form, data.params);
@@ -409,7 +415,7 @@ export class ContactController {
     };
 
     if (!(await PaymentService.canProcessPaymentFlow(target, form))) {
-      throw new CantUpdateContribution();
+      throw new CantUpdateContributionError();
     }
 
     const result = await PaymentFlowService.startPaymentFlow(form, params);
@@ -444,7 +450,7 @@ export class ContactController {
       data.dateAdded &&
       data.dateAdded >= data.dateExpires
     ) {
-      throw new BadRequestError();
+      throw new BadRequestError('dateExpires must be greater than dateAdded');
     }
 
     if (roleType === 'superadmin' && !auth.roles.includes('superadmin')) {

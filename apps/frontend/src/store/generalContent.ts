@@ -5,6 +5,8 @@ import { computed, ref } from 'vue';
 import { client } from '#utils/api';
 import { resolveImageUrl } from '#utils/url';
 
+const isInited = ref(false);
+
 export const generalContent = ref<ContentGeneralData>({
   organisationName: '',
   logoUrl: '',
@@ -23,11 +25,12 @@ export const generalContent = ref<ContentGeneralData>({
   enableOneTimeDonations: false,
 });
 
-export const initGeneralContent = () =>
-  client.content.get('general').then((content) => {
-    generalContent.value = content;
-    return content;
-  });
+export const initGeneralContent = async () => {
+  if (!isInited.value) {
+    generalContent.value = await client.content.get('general');
+    isInited.value = true;
+  }
+};
 
 export const backgroundStyle = computed(() => ({
   backgroundImage: `url(${resolveImageUrl(generalContent.value.backgroundUrl)})`,

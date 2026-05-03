@@ -35,7 +35,7 @@ import {
   ContributionPeriod,
   paymentMethodToStripeType,
 } from '@beabee/beabee-common';
-import { isApiError } from '@beabee/client';
+import { PaymentRequiresActionError } from '@beabee/client';
 import { AppInput } from '@beabee/vue';
 import { AppButton, AppLabel, AppNotification } from '@beabee/vue';
 
@@ -223,13 +223,15 @@ onBeforeMount(async () => {
           lastName.value
         );
       } catch (err) {
-        if (isApiError(err, ['payment-requires-action'])) {
+        if (err instanceof PaymentRequiresActionError) {
           const { error: actionError } = await stripe.handleNextAction({
-            err.clientSecret,
+            clientSecret: err.clientSecret,
           });
           if (actionError) {
             handleError(actionError);
           }
+        } else {
+          throw err;
         }
       }
     };

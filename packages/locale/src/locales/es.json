@@ -958,6 +958,9 @@
     "label": "Etiqueta",
     "loading": "Cargando...",
     "login": "Iniciar sesión",
+    "manualPaymentSource": {
+      "none": "Ninguna"
+    },
     "newsletterStatus": {
       "cleaned": "Limpiado",
       "none": "Ninguno",

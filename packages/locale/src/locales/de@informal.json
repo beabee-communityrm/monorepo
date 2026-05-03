@@ -958,6 +958,9 @@
     "label": "Label",
     "loading": "Lädt...",
     "login": "Login",
+    "manualPaymentSource": {
+      "none": "Keine"
+    },
     "newsletterStatus": {
       "cleaned": "Bereinigt",
       "none": "Kein Status",

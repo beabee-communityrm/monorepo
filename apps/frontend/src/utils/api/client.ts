@@ -1,4 +1,4 @@
-import { BeabeeClient, isApiError } from '@beabee/client';
+import { BeabeeClient } from '@beabee/client';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import env from '#env';
@@ -65,5 +65,3 @@ export async function waitForBackend(maxRetries: number = 60): Promise<void> {
 
   throw new Error('Backend failed to become healthy after maximum retries');
 }
-
-export { isApiError };
