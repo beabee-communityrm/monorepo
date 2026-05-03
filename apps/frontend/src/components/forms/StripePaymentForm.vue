@@ -50,6 +50,7 @@ import { useI18n } from 'vue-i18n';
 import env from '#env';
 import { generalContent } from '#store';
 import type { PaymentFlowFormData } from '#type/payment-flow-form-data';
+import { extractErrorText } from '#utils/api-error';
 
 const emit = defineEmits<{
   (event: 'loaded'): void;
@@ -148,7 +149,7 @@ const applePayOption = computed<ApplePayOption | undefined>(() => {
     : undefined;
 });
 
-function handleError(err: Stripe.StripeError) {
+function handleStripeError(err: Stripe.StripeError) {
   errorText.value =
     err.message &&
     (err.type === 'card_error' || err.type === 'validation_error')
@@ -192,7 +193,7 @@ onBeforeMount(async () => {
 
       const { error: submitError } = await elements.submit();
       if (submitError) {
-        handleError(submitError);
+        handleStripeError(submitError);
         return;
       }
 
@@ -212,7 +213,7 @@ onBeforeMount(async () => {
       });
 
       if (result.error) {
-        handleError(result.error);
+        handleStripeError(result.error);
         return;
       }
 
@@ -228,10 +229,13 @@ onBeforeMount(async () => {
             clientSecret: err.clientSecret,
           });
           if (actionError) {
-            handleError(actionError);
+            handleStripeError(actionError);
+          } else {
+            console.log('success??');
           }
         } else {
-          throw err;
+          errorText.value = extractErrorText(err);
+          loading.value = false;
         }
       }
     };

@@ -34,7 +34,6 @@ import {
   PaymentMethod,
   type SignupData,
 } from '@beabee/beabee-common';
-import { TooManyRequestsError } from '@beabee/client';
 
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -44,7 +43,6 @@ import JoinFormStep2 from '#components/pages/join/JoinFormStep2.vue';
 import { generalContent, isEmbed } from '#store';
 import type { JoinFormData } from '#type/join-form-data';
 import { client } from '#utils/api';
-import { notifyRateLimited } from '#utils/api-error';
 
 const route = useRoute();
 const router = useRouter();
@@ -124,22 +122,14 @@ async function handleSubmitStep1() {
           }),
   };
 
-  try {
-    const data = await client.signup.start(clientData);
-    if (data?.redirectUrl) {
-      const topWindow = window.top || window;
-      topWindow.location.href = data.redirectUrl;
-    } else if (data?.id) {
-      paymentFlowId.value = data.id;
-    } else {
-      goToConfirmEmailPage();
-    }
-  } catch (err) {
-    if (err instanceof TooManyRequestsError) {
-      notifyRateLimited(err);
-    } else {
-      throw err;
-    }
+  const data = await client.signup.start(clientData);
+  if (data?.redirectUrl) {
+    const topWindow = window.top || window;
+    topWindow.location.href = data.redirectUrl;
+  } else if (data?.id) {
+    paymentFlowId.value = data.id;
+  } else {
+    goToConfirmEmailPage();
   }
 }
 
@@ -150,22 +140,14 @@ async function handleSubmitStep2(
 ) {
   if (!paymentFlowId.value) return;
 
-  try {
-    // Advance the payment flow with token and user details
-    await client.signup.advance(paymentFlowId.value, {
-      token,
-      firstname,
-      lastname,
-    });
+  // Advance the payment flow with token and user details
+  await client.signup.advance(paymentFlowId.value, {
+    token,
+    firstname,
+    lastname,
+  });
 
-    goToConfirmEmailPage();
-  } catch (err) {
-    if (err instanceof TooManyRequestsError) {
-      notifyRateLimited(err);
-    } else {
-      throw err;
-    }
-  }
+  goToConfirmEmailPage();
 }
 
 onBeforeMount(async () => {
