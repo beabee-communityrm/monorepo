@@ -8,6 +8,8 @@ meta:
 <template><div /></template>
 
 <script lang="ts" setup>
+import { PaymentRequiresActionError } from '@beabee/client';
+
 import { onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
