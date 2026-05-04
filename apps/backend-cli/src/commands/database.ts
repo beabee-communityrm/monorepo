@@ -8,6 +8,7 @@ import type {
 const ANONYMIZATION_LEVELS: readonly AnonymizationLevel[] = [
   'full',
   'safe',
+  'test',
   'none',
 ] as const;
 const CALLOUT_ANONYMIZATION_LEVELS: readonly CalloutAnonymizationLevel[] = [
@@ -33,7 +34,7 @@ export const databaseCommand: CommandModule = {
             .option('anonymize', {
               choices: ANONYMIZATION_LEVELS,
               description:
-                "Anonymisation level: 'full' (default, all data anonymised), 'safe' (contacts/payments/emails/segments anonymised, other tables raw), 'none' (DANGEROUS: everything raw, including PII — for local migration testing only).",
+                "Anonymisation level: 'full' (default, all data anonymised), 'safe' (contacts/payments/emails/segments anonymised, other tables raw), 'test' (all data except email, content and options anonymized), 'none' (DANGEROUS: everything raw, including PII — for local migration testing only).",
               default: 'full' as AnonymizationLevel,
             })
             .option('skipAnonymizeTables', {

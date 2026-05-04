@@ -284,6 +284,7 @@ export const CALLOUT_EXPORT_CLEAR_MODELS: models.ModelAnonymiser[] = [
  *
  * - `full`: all models anonymised (default)
  * - `safe`: contacts/payments/emails/segments anonymised, other tables passthrough
+ * - `test`: email/content/options excluded, other tables anonymized
  * - `none`: everything passthrough (raw rows, including PII)
  */
 export const getAnonymizers = (
@@ -304,6 +305,17 @@ export const getAnonymizers = (
         ...ALWAYS_ANONYMIZED_MODELS,
         ...getOptionalPassthroughAnonymisers(),
       ];
+      break;
+    case 'test':
+      fullList = [
+        ...ALWAYS_ANONYMIZED_MODELS,
+        ...getOptionallyAnonymizedModels(preserveCalloutAnswers),
+      ].filter(
+        (anonymiser) =>
+          anonymiser !== models.contentAnonymiser &&
+          anonymiser !== models.optionsAnonymiser &&
+          anonymiser !== models.emailAnonymiser
+      );
       break;
     case 'none':
       fullList = [
