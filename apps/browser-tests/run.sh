@@ -63,7 +63,7 @@ await_service_ready "api_app" "Server is ready and listening on port 3000" || ex
 echo "🧪 Importing test data..."
 
 cat ./apps/browser-tests/src/fixtures/test-db-default.sql | docker compose exec -T api_app yarn backend-cli database import
-cat ./apps/browser-tests/src/fixtures/test-db-custom.sql | docker compose exec -T api_app yarn backend-cli database import --merge
+cat ./apps/browser-tests/src/fixtures/test-db-custom.sql | docker compose exec -T api_app yarn backend-cli database import
 
 #docker compose exec api_app bash -c "cd /opt/apps/e2e-api-tests && API_KEY=$API_KEY yarn test"
 
