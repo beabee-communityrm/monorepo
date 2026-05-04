@@ -21,6 +21,7 @@ meta:
     v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
+    :complete-url="`${env.appUrl}/join/complete?paymentFlowId=${paymentFlowId}`"
     @submit="handleSubmitStep2"
     @back="paymentFlowId = null"
   />
@@ -40,6 +41,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import JoinFormStep1 from '#components/pages/join/JoinFormStep1.vue';
 import JoinFormStep2 from '#components/pages/join/JoinFormStep2.vue';
+import env from '#env';
 import { generalContent, isEmbed } from '#store';
 import type { JoinFormData } from '#type/join-form-data';
 import { client } from '#utils/api';
@@ -95,7 +97,7 @@ function goToConfirmEmailPage() {
 async function handleSubmitStep1() {
   const params = {
     paymentMethod: formData.paymentMethod,
-    completeUrl: client.signup.completeUrl,
+    advanceUrl: `${env.appUrl}/join/advance`,
   };
 
   const clientData: SignupData = {

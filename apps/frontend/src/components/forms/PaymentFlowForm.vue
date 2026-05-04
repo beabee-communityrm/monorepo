@@ -121,7 +121,7 @@ const completeUrl = computed(() => {
 async function handleSubmit() {
   const data = await props.startFlow({
     paymentMethod: props.flowData.paymentMethod,
-    completeUrl: completeUrl.value,
+    advanceUrl: completeUrl.value,
   });
 
   if (data.redirectUrl) {

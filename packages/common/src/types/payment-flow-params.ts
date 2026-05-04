@@ -2,7 +2,7 @@ import type { PaymentMethod } from '../data/index.js';
 
 export interface PaymentFlowSetupParams {
   paymentMethod: PaymentMethod;
-  completeUrl: string;
+  advanceUrl: string;
 }
 
 export interface PaymentFlowAdvanceParams {

@@ -1,5 +1,5 @@
 <route lang="yaml">
-name: joinComplete
+name: joinAdvance
 meta:
   layout: Loading
   pageTitle: pageTitle.join
@@ -22,7 +22,7 @@ onBeforeMount(async () => {
   const paymentFlowId = route.query.paymentFlowId?.toString();
   if (paymentFlowId) {
     try {
-      await client.signup.complete(paymentFlowId);
+      await client.signup.advance(paymentFlowId, {});
       router.replace('/join/confirm-email');
     } catch (err) {
       handleJoinError(err, router);

@@ -29,7 +29,7 @@ class GCFlowProvider implements PaymentFlowProvider {
     flow: PaymentFlow,
     params: PaymentFlowSetupParams
   ): Promise<PaymentFlowSetupResult> {
-    const url = new URL(params.completeUrl);
+    const url = new URL(params.advanceUrl);
     url.searchParams.set('paymentFlowId', flow.id);
 
     const redirectFlow = await gocardless.redirectFlows.create({

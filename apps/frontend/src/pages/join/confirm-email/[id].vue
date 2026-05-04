@@ -28,7 +28,11 @@ onBeforeMount(async () => {
     await updateCurrentUser();
     router.replace('/join/setup');
   } catch (err) {
-    handleJoinError(err, router);
+    if (err instanceof PaymentRequiresActionError) {
+      // TODO: something here
+    } else {
+      handleJoinError(err, router);
+    }
   }
 });
 </script>

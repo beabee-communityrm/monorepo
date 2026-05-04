@@ -29,7 +29,7 @@
     <StripePaymentForm
       :public-key="paymentContent.stripePublicKey"
       :payment-data="data"
-      :return-url="client.signup.completeUrl"
+      :return-url="completeUrl"
       :confirm-flow="onSubmit"
       show-name-fields
     />
@@ -55,7 +55,6 @@ import { useI18n } from 'vue-i18n';
 import AuthBox from '#components/AuthBox.vue';
 import StripePaymentForm from '#components/forms/StripePaymentForm.vue';
 import type { JoinFormData } from '#type/join-form-data';
-import { client } from '#utils/api';
 import { calcJoinFormTotalAmount } from '#utils/payment';
 
 const { n, t } = useI18n();
@@ -64,6 +63,7 @@ defineEmits<{ (e: 'back'): void }>();
 const props = defineProps<{
   joinContent: ContentJoinData;
   paymentContent: ContentPaymentData;
+  completeUrl: string;
   onSubmit: (
     token: string,
     firstName: string,

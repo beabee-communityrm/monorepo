@@ -14,11 +14,6 @@ import { BaseClient } from './base.client.js';
  */
 export class SignupClient extends BaseClient {
   /**
-   * The URL to complete the signup process
-   */
-  readonly completeUrl: string;
-
-  /**
    * Creates a new signup client
    * @param options - The client options
    */
@@ -27,7 +22,6 @@ export class SignupClient extends BaseClient {
       ...options,
       path: cleanUrl(options.path + '/signup'),
     });
-    this.completeUrl = options.host + '/join/complete';
   }
 
   /**
@@ -53,7 +47,7 @@ export class SignupClient extends BaseClient {
    */
   async advance(
     paymentFlowId: string,
-    params?: PaymentFlowAdvanceParams
+    params: PaymentFlowAdvanceParams
   ): Promise<void> {
     await this.fetch.post('/advance', { paymentFlowId, params });
   }

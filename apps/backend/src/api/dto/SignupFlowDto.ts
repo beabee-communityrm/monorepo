@@ -1,6 +1,7 @@
 import { Transform, Type } from 'class-transformer';
 import {
   IsEmail,
+  IsObject,
   IsOptional,
   IsUUID,
   Validate,
@@ -46,6 +47,7 @@ export class AdvanceSignupFlowDto {
   @IsUUID('4')
   paymentFlowId!: string;
 
+  @IsObject()
   @Type(() => PaymentFlowAdvanceParamsDto)
   @ValidateNested()
   params!: PaymentFlowAdvanceParamsDto;

@@ -21,7 +21,7 @@ export class PaymentFlowSetupParamsDto implements PaymentFlowSetupParams {
   paymentMethod!: PaymentMethod;
 
   @IsUrl()
-  completeUrl!: string;
+  advanceUrl!: string;
 }
 
 export class PaymentFlowSetupResultDto implements PaymentFlowSetupResult {
