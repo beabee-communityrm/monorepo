@@ -36,10 +36,6 @@ DELETE FROM "callout";
 
 DELETE FROM "page_settings";
 
-DELETE FROM "content";
-
-DELETE FROM "option";
-
 DELETE FROM "notice";
 
 DELETE FROM "gift_flow";
@@ -55,8 +51,6 @@ DELETE FROM "segment_contact";
 DELETE FROM "segment";
 
 DELETE FROM "email_mailing";
-
-DELETE FROM "email";
 
 DELETE FROM "contact_tag_assignments";
 
@@ -82,8 +76,6 @@ INSERT INTO "segment"("id", "name", "description", "ruleGroup", "order", "newsle
 ["6a233a3b-74f6-4af8-b4cf-e5070a32746a","Expired last 3 months","","{\"rules\":[{\"field\":\"membershipExpires\",\"value\":[\"$now(M:-3)\",\"$now\"],\"operator\":\"between\"}],\"condition\":\"AND\"}",2,null,"81664449-adf2-4c3a-aee2-145a96d67726","Active members","","{\"rules\":[{\"field\":\"activeMembership\",\"value\":[true],\"operator\":\"equal\"}],\"condition\":\"AND\"}",0,null,"ce1b2919-85c1-4134-8231-df6b860c0ae2","Expires soon","Active members who expire in the next 4 weeks","{\"rules\":[{\"field\":\"membershipExpires\",\"value\":[\"$now(d:28)\"],\"operator\":\"less\"},{\"field\":\"contributionType\",\"value\":[\"Automatic\"],\"operator\":\"not_equal\"}],\"condition\":\"AND\"}",2,null,"f66f45bd-d406-45f6-87da-34d2cd55297a","Joined last 3 months","Contacts who joined in the last 3 months","{\"rules\":[{\"field\":\"joined\",\"value\":[\"$now(M:-3)\"],\"operator\":\"greater\"}],\"condition\":\"AND\"}",1,null]
 INSERT INTO "payment"("id", "subscriptionId", "contactId", "status", "type", "description", "amount", "amountRefunded", "chargeDate", "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11), ($12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22);
 ["88c48a5f-d29e-4acf-a3dd-46636962c193",null,"5f5d82ef-4b9a-4eb3-a69c-663116974202","successful","one-time","",28.21,null,"2026-04-30T14:11:10.240Z","2026-04-30T14:11:10.240Z","2026-04-30T14:11:10.240Z","5ac9fb00-4f31-412a-9d2a-1127371fbd6b",null,"5b19b8b5-1100-4f0c-809b-b9b9bdda4e12","successful","one-time","",43.74,null,"2026-04-30T14:11:10.240Z","2026-04-30T14:11:10.240Z","2026-04-30T14:11:10.240Z"]
-INSERT INTO "option"("key", "value") VALUES ($1, $2), ($3, $4), ($5, $6), ($7, $8), ($9, $10), ($11, $12), ($13, $14), ($15, $16);
-["mailchimp-newsletter-groups","","show-one-time-donation","true","stripe-membership-product-id","","stripe-tax-rate-one-time-id","","stripe-tax-rate-recurring-id","","stripe-webhook-secret","","support-email","support@beabee.io","switch-feature-one-time-donation","true"]
 INSERT INTO "callout_response_segment"("id", "name", "ruleGroup", "calloutId", "order") VALUES ($1, $2, $3, $4, $5), ($6, $7, $8, $9, $10), ($11, $12, $13, $14, $15);
 ["81664449-adf2-4c3a-aee2-145a96d67726","Inbox","{\"rules\":[{\"field\":\"bucket\",\"value\":[\"\"],\"operator\":\"equal\"}],\"condition\":\"AND\"}",null,0,"ce1b2919-85c1-4134-8231-df6b860c0ae2","Verified","{\"rules\":[{\"field\":\"bucket\",\"value\":[\"verified\"],\"operator\":\"equal\"}],\"condition\":\"AND\"}",null,1,"f66f45bd-d406-45f6-87da-34d2cd55297a","Trash","{\"rules\":[{\"field\":\"bucket\",\"value\":[\"trash\"],\"operator\":\"equal\"}],\"condition\":\"AND\"}",null,2]
 INSERT INTO "payment_flow"("id", "date", "paymentFlowId", "params", "form", "processing") VALUES ($1, $2, $3, $4, $5, $6), ($7, $8, $9, $10, $11, $12);
