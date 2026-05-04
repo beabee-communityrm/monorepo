@@ -1,24 +1,21 @@
 import { test, expect } from "@playwright/test";
+import userInfo from "../fixtures/user-info.json";
 
-let emailAddress: string;
+let emailAddress: string = userInfo.emailAddress;
+let firstName: string = userInfo.firstName;
+let lastName: string = userInfo.lastName;
+let testPw: string = userInfo.password;
+let contributionAmount = userInfo.contributionAmount;
 let confirmationLink: string | null;
-let firstName: string;
-let lastName: string;
-let testPw: string;
 let contributionDate: string;
-let contributionAmount = "3";
 
 test.describe.configure({ mode: "serial" }); // Run tests in serial mode since they're dependent on each other
 
-test.beforeAll(async (browserName) => {
-  emailAddress = "firefox_playwright@example.com";
-  firstName = browserName.browserName;
-  lastName = "Playwright";
+test.beforeAll(async () => {
   contributionDate = new Date().toLocaleString("en-US", {
     month: "long",
     year: "numeric",
   });
-  testPw = "";
 });
 
 test("Join Form", async ({ page }) => {
@@ -120,7 +117,7 @@ test("Confirmation email", async ({ page }) => {
   confirmationLink = await setupAccountLink.getAttribute("href");
 });
 
-test("Set password", async ({ page, browserName }) => {
+test("Set password", async ({ page }) => {
   expect(confirmationLink, "Setup link is non-empty").not.toHaveLength(0);
 
   if (!confirmationLink) {
