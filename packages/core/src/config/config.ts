@@ -263,6 +263,9 @@ export const config = {
   logging: env.ss('BEABEE_LOGGING', []), // Enable logging (default: false)
   logFormat: env.e('BEABEE_LOGFORMAT', ['json', 'simple'] as const, 'json'), // Log format (default: json)
 
+  // Rate limiting configuration
+  disableRateLimit: env.b('BEABEE_DISABLE_RATE_LIMIT', false), // Disable rate limiting in test mode (default: false)
+
   // App configuration overrides from environment
   appOverrides: env.json('BEABEE_APPOVERRIDES', {}) as AppConfigOverrides, // JSON of app configuration overrides
 

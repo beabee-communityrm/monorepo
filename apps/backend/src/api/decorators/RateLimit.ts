@@ -1,3 +1,4 @@
+import config from '@beabee/core/config';
 import { TooManyRequestsError } from '@beabee/core/errors';
 import { log as mainLogger } from '@beabee/core/logging';
 import type { RateLimitOptions } from '@beabee/core/type';
@@ -34,6 +35,11 @@ export function RateLimit(options: RateLimitOptions) {
     res: Response,
     next: NextFunction
   ) {
+    // Skip rate limiting in test mode
+    if (config.disableRateLimit) {
+      return next();
+    }
+
     const currentUser = req.user;
     let keyBase: string;
     let limiter;
