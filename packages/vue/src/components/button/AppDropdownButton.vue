@@ -10,7 +10,7 @@
     :variant="variant"
     :icon="icon"
     class="group"
-    :class="open ? '!rounded-b-none !bg-white' : ''"
+    :class="open ? 'rounded-b-none! bg-white!' : ''"
     :disabled="disabled"
     :title="title"
     :aria-label="title"

@@ -287,7 +287,7 @@ const isEditorEmpty = computed(() => editor.value?.isEmpty || false);
 
 <style lang="postcss">
 .ProseMirror {
-  @apply h-full min-h-[5rem] w-full rounded border border-primary-40 bg-white p-2 focus:shadow-input focus:outline-none;
+  @apply h-full min-h-20 w-full rounded border border-primary-40 bg-white p-2 focus:shadow-input focus:outline-none;
 
   .ProseMirror-hasError & {
     @apply border-danger-70 bg-danger-10;
