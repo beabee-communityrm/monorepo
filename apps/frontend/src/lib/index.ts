@@ -1,4 +1,3 @@
-export * from './address.formatter.test-data';
 export * from './address.formatter';
 export * from './appsignal';
 export * from './bootstrap';

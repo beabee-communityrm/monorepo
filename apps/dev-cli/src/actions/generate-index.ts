@@ -32,7 +32,8 @@ export const generateIndex = async (argv: GenerateIndexArgs): Promise<void> => {
         if (
           file.name.endsWith('.ts') &&
           file.name !== 'index.ts' &&
-          !file.name.endsWith('.test.ts')
+          !file.name.endsWith('.test.ts') &&
+          !file.name.endsWith('.test-data.ts')
         ) {
           const importName = basename(file.name, '.ts');
           const importExtension = getImportExtension(extension);
