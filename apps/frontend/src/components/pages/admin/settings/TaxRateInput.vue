@@ -2,7 +2,7 @@
   <div class="mb-4">
     <AppCheckbox v-model="enabled" :label="label" class="font-bold" />
   </div>
-  <div v-if="enabled" class="mb-4 max-w-[8rem] whitespace-nowrap">
+  <div v-if="enabled" class="mb-4 max-w-32 whitespace-nowrap">
     <AppInput
       v-model="taxRate"
       type="number"

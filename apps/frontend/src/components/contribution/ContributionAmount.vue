@@ -30,7 +30,7 @@
 <template>
   <div class="flex flex-wrap gap-2">
     <div
-      class="flex flex-grow basis-[250px] rounded border border-primary-40 text-sm"
+      class="border-primary-40 flex grow basis-62.5 rounded border text-sm"
       :class="
         disabled
           ? 'opacity-50'
@@ -39,7 +39,7 @@
             : 'bg-white'
       "
     >
-      <label class="flex flex-1 items-baseline px-6 font-bold text-body-60">
+      <label class="text-body-60 flex flex-1 items-baseline px-6 font-bold">
         <span>{{ generalContent.currencySymbol }}</span>
         <div class="relative mx-1 font-semibold">
           <div class="text-6xl/[7rem]">
@@ -47,7 +47,7 @@
           </div>
           <input
             :value="amount"
-            class="absolute inset-0 w-full border-0 text-6xl/[7rem] text-body outline-none"
+            class="text-body absolute inset-0 w-full border-0 text-6xl/[7rem] outline-none"
             :min="minAmount"
             :class="{ 'bg-danger-10': hasError }"
             :disabled="disabled"
@@ -102,7 +102,7 @@
     <div
       v-if="hasError"
       id="amount-error"
-      class="col-span-12 mt-0 text-sm font-semibold text-danger"
+      class="text-danger col-span-12 mt-0 text-sm font-semibold"
       role="alert"
     >
       {{ t('join.minimumContribution') }}
@@ -194,9 +194,9 @@ const validation = useVuelidate(rules, { amount });
 
 <style lang="postcss" scoped>
 .amount-button {
-  @apply h-1/2 border-primary-40 bg-white px-4 py-2 text-primary-70 enabled:hover:bg-primary-5 enabled:hover:text-primary;
+  @apply border-primary-40 text-primary-70 enabled:hover:bg-primary-5 enabled:hover:text-primary h-1/2 bg-white px-4 py-2;
   &.is-invalid {
-    @apply cursor-not-allowed text-grey;
+    @apply text-grey cursor-not-allowed;
   }
 }
 </style>

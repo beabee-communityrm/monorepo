@@ -1,6 +1,6 @@
 <template>
   <div
-    class="callout-card group w-full cursor-pointer overflow-hidden rounded bg-white shadow md:max-w-[19rem]"
+    class="callout-card group w-full cursor-pointer overflow-hidden rounded bg-white shadow md:max-w-76"
   >
     <router-link
       :to="`/crowdnewsroom/${callout.slug}`"
@@ -14,7 +14,7 @@
         />
       </div>
 
-      <div class="flex-grow p-4">
+      <div class="grow p-4">
         <AppSubHeading>{{ callout.title }}</AppSubHeading>
 
         <p class="mb-2 text-sm">{{ callout.excerpt }}</p>

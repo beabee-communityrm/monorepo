@@ -6,7 +6,7 @@ meta:
 </route>
 <template>
   <section class="my-5">
-    <h2 class="mb-2 font-title text-2xl">Colours</h2>
+    <h2 class="font-title mb-2 text-2xl">Colours</h2>
     <div class="flex bg-white p-4">
       <div class="flex-1">
         <AppColor name="bg-primary" shade="Primary" />
@@ -60,10 +60,10 @@ meta:
   </section>
 
   <section class="my-5">
-    <h2 class="mb-2 font-title text-2xl">Components</h2>
+    <h2 class="font-title mb-2 text-2xl">Components</h2>
 
     <section class="my-5">
-      <h3 class="mb-2 font-title text-xl">Buttons</h3>
+      <h3 class="font-title mb-2 text-xl">Buttons</h3>
       <div class="flex flex-wrap bg-white p-4">
         <div class="m-2">
           <AppButton variant="primary">primary</AppButton>
@@ -93,7 +93,7 @@ meta:
     </section>
 
     <section class="my-5">
-      <h3 class="mb-2 font-title text-xl">AppStepper</h3>
+      <h3 class="font-title mb-2 text-xl">AppStepper</h3>
       <div class="bg-white p-4">
         <AppStepper
           v-model="appStepper.selectedStepIndex"
@@ -104,7 +104,7 @@ meta:
           v-for="(step, index) in appStepper.steps"
           v-show="index === appStepper.selectedStepIndex"
           :key="index"
-          class="border-2 border-primary p-5"
+          class="border-primary border-2 p-5"
         >
           <p>{{ index }}: {{ step.name }}</p>
           <AppCheckbox
@@ -130,11 +130,11 @@ meta:
     </section>
 
     <section class="my-5">
-      <h3 class="mb-2 font-title text-xl">
+      <h3 class="font-title mb-2 text-xl">
         AppSlider <small>with custom navigation</small>
       </h3>
       <div class="bg-white p-4">
-        <div class="relative mx-auto max-w-[1200px]">
+        <div class="relative mx-auto max-w-300">
           <AppSlider :infinite="true">
             <template #slides>
               <!-- Put your slides here -->
@@ -164,20 +164,20 @@ meta:
               <span class="absolute top-0 flex h-full w-full justify-between">
                 <button class="" @click="prevSlide()">
                   <font-awesome-icon
-                    class="p-2 text-2xl text-white hover:text-link"
+                    class="hover:text-link p-2 text-2xl text-white"
                     :icon="faAngleLeft"
                   />
                 </button>
                 <button @click="nextSlide()">
                   <font-awesome-icon
-                    class="p-2 text-2xl text-white hover:text-link"
+                    class="hover:text-link p-2 text-2xl text-white"
                     :icon="faAngleRight"
                   />
                 </button>
               </span>
 
               <button
-                class="absolute left-0 top-0 p-2 text-2xl text-white hover:text-link"
+                class="hover:text-link absolute top-0 left-0 p-2 text-2xl text-white"
                 @click="toSlide(0)"
               >
                 <font-awesome-icon :icon="faRotateBack" />
@@ -189,11 +189,11 @@ meta:
     </section>
 
     <section class="my-5">
-      <h3 class="mb-2 font-title text-xl">
+      <h3 class="font-title mb-2 text-xl">
         AppSlider <small>with AppStepper</small>
       </h3>
       <div class="bg-white p-4">
-        <div class="relative mx-auto max-w-[1200px]">
+        <div class="relative mx-auto max-w-300">
           <AppSlider
             :infinite="true"
             :steps="[
@@ -230,7 +230,7 @@ meta:
     </section>
 
     <section class="my-5">
-      <h3 class="mb-2 font-title text-xl">AppQRCode</h3>
+      <h3 class="font-title mb-2 text-xl">AppQRCode</h3>
       <div class="w-64 bg-white p-4">
         <AppQRCode :qr-data="appQRCode.data" />
 

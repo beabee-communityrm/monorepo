@@ -56,7 +56,7 @@ meta:
         <div class="mb-4 flex gap-4">
           <div class="flex-1">
             <AppLabel :label="stepT('minAmount')" />
-            <div class="max-w-[12rem]">
+            <div class="max-w-48">
               <AppInput
                 v-model="joinContent.minMonthlyAmount"
                 type="number"
