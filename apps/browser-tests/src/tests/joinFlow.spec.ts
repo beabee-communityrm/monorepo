@@ -1,12 +1,15 @@
 import { test, expect } from "@playwright/test";
 import userInfo from "../fixtures/user-info.json";
 
-let emailAddress: string = userInfo.emailAddress;
 let firstName: string = userInfo.firstName;
 let lastName: string = userInfo.lastName;
 let testPw: string = userInfo.password;
 let contributionAmount = userInfo.contributionAmount;
 let contributionDate: string;
+
+function getUniqueEmailAddress(browserName: string): string {
+  return `${firstName}${lastName}_${browserName}@${userInfo.emailBase}`;
+}
 
 test.beforeAll(async () => {
   contributionDate = new Date().toLocaleString("en-US", {
@@ -15,8 +18,9 @@ test.beforeAll(async () => {
   });
 });
 
-test("Join Flow", async ({ page }) => {
+test("Join Flow", async ({ page, browserName }) => {
   let confirmationLink: string | null;
+  let emailAddress = getUniqueEmailAddress(browserName);
 
   await test.step("One-time payment", async () => {
     await page.goto("/join");
