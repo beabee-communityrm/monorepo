@@ -26,7 +26,7 @@
   </div>
 
   <div
-    class="w-menu lg:w-menu absolute bottom-0 z-30 flex flex-none -translate-x-full transform flex-col bg-white transition-transform md:static md:w-16 md:transform-none"
+    class="w-menu lg:w-menu absolute bottom-0 z-30 flex flex-none -translate-x-full transform flex-col bg-white transition-[transform,width] md:static md:w-16 md:translate-x-0 md:transform-none"
     :class="{ 'top-17 translate-x-0': isMenuVisible }"
   >
     <div class="my-2 hidden text-center md:block lg:my-10">
