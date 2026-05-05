@@ -131,7 +131,7 @@
       </div>
 
       <!-- Right Sidebar -->
-      <div class="flex-0 basis-[15rem] overflow-y-auto">
+      <div class="flex-0 basis-60 overflow-y-auto">
         <!-- Optional content for right sidebar -->
       </div>
     </div>

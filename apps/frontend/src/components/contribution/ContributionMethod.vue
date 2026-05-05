@@ -27,12 +27,12 @@
     >
       <div v-for="method in methods" :key="method">
         <button
-          class="h-full min-h-[2.5rem] w-full rounded border border-primary-40 p-1.5 text-left text-lg font-semibold enabled:cursor-pointer"
+          class="h-full min-h-10 w-full rounded border border-primary-40 p-1.5 text-left text-lg font-semibold enabled:cursor-pointer"
           :class="
             disabled
               ? ''
               : method === modelValue
-                ? '!border-link-110 bg-link text-white'
+                ? 'border-link-110! bg-link text-white'
                 : 'bg-white hover:border-link hover:bg-link-10'
           "
           type="button"
