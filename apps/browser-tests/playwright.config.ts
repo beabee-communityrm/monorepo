@@ -13,7 +13,17 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      use: devices["Desktop Chrome"],
+      use: {
+        ...devices["Desktop Chrome"],
+        launchOptions: {
+          args: [
+            // Disable autofill (addresses, cards, etc.)
+            "--disable-features=AutofillServerCommunication,AutofillEnableAccountWalletStorage,AutofillAddressProfileSavePrompt,AutofillCreditCardUpload",
+            "--disable-save-password-bubble",
+            "--no-default-browser-check",
+          ],
+        },
+      },
     },
     {
       name: "firefox",
