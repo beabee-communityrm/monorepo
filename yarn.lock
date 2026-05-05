@@ -19,13 +19,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@alloc/quick-lru@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "@alloc/quick-lru@npm:5.2.0"
-  checksum: 10c0/7b878c48b9d25277d0e1a9b8b2f2312a314af806b4129dc902f2bc29ab09b58236e53964689feec187b28c80d2203aff03829754773a707a8a5987f1b7682d92
-  languageName: node
-  linkType: hard
-
 "@ampproject/remapping@npm:^2.2.0":
   version: 2.3.0
   resolution: "@ampproject/remapping@npm:2.3.0"
@@ -1676,7 +1669,7 @@ __metadata:
     "@maptiler/geocoding-control": "npm:^1.2.4"
     "@rollup/plugin-replace": "npm:^6.0.2"
     "@stripe/stripe-js": "npm:^3.5.0"
-    "@tailwindcss/postcss": "npm:^4.2.4"
+    "@tailwindcss/vite": "npm:^4.2.4"
     "@types/body-scroll-lock": "npm:^3.1.2"
     "@vitejs/plugin-vue": "npm:^5.2.4"
     "@vuelidate/core": "npm:^2.0.3"
@@ -1690,7 +1683,6 @@ __metadata:
     maplibre-gl: "npm:^3.6.2"
     mitt: "npm:^3.0.1"
     otpauth: "npm:^9.3.6"
-    postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.2"
     slugify: "npm:^1.6.6"
     tailwindcss: "npm:^4.2.4"
@@ -1885,6 +1877,7 @@ __metadata:
     "@fortawesome/vue-fontawesome": "npm:^3.0.8"
     "@histoire/plugin-vue": "npm:^1.0.0-beta.1"
     "@intlify/unplugin-vue-i18n": "npm:^6.0.8"
+    "@tailwindcss/vite": "npm:^4.2.4"
     "@tiptap/core": "npm:^2.14.0"
     "@tiptap/extension-link": "npm:^2.14.0"
     "@tiptap/extension-typography": "npm:^2.14.0"
@@ -1899,7 +1892,6 @@ __metadata:
     dompurify: "npm:^3.3.0"
     histoire: "npm:^1.0.0-beta.1"
     import-meta-resolve: "npm:^4.1.0"
-    postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.2"
     qrcode-generator: "npm:^1.5.0"
     tailwindcss: "npm:^4.2.4"
@@ -5664,16 +5656,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/postcss@npm:^4.2.4":
+"@tailwindcss/vite@npm:^4.2.4":
   version: 4.2.4
-  resolution: "@tailwindcss/postcss@npm:4.2.4"
+  resolution: "@tailwindcss/vite@npm:4.2.4"
   dependencies:
-    "@alloc/quick-lru": "npm:^5.2.0"
     "@tailwindcss/node": "npm:4.2.4"
     "@tailwindcss/oxide": "npm:4.2.4"
-    postcss: "npm:^8.5.6"
     tailwindcss: "npm:4.2.4"
-  checksum: 10c0/e6abad7065558bf3c39d30f392100c934c3381a572df21d934dd5a9399e0a62e16ba3d74a51ec0b1d670b1990ae73d01dfc560db0bf0e24bad827e00be0e62c2
+  peerDependencies:
+    vite: ^5.2.0 || ^6 || ^7 || ^8
+  checksum: 10c0/dcd7f947e152d1cc05c560a7254d3fb8d4e0631a437778e30b929b2cdacdd9dc8672bba68867b5f0de0e1d09d07f3dcf91a30fd65ff91251f3063cd25d1675fb
   languageName: node
   linkType: hard
 

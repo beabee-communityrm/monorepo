@@ -1,4 +1,5 @@
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
+import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import path, { resolve } from 'path';
 import { defineConfig } from 'vite';
@@ -7,6 +8,7 @@ import theme from './src/plugins/theme';
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     vue(),
     vueI18n({
       include: path.resolve(__dirname, './locales/*'),
