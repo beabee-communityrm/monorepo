@@ -1,5 +1,5 @@
 {
-    "emailAddress": "harrypotter@hogwarts.co.uk",
+    "emailBase": "hogwarts.co.uk",
     "firstName": "Harry",
     "lastName": "Potter",
     "password": "IdenticalCobalt8",
