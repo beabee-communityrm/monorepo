@@ -3,12 +3,26 @@ x-service-app: &service-app
     # Wait for the database to be ready
     db:
       condition: service_healthy
+    # Wait for redis to be ready
+    mq:
+      condition: service_healthy
+  env_file:
+    - .env
+
+x-backend-app: &backend-app
+  depends_on:
+    # Wait for the database to be ready
+    db:
+      condition: service_healthy
+    # Wait for redis to be ready
+    mq:
+      condition: service_healthy
     # Wait for the migration to be completed
     migration:
       condition: service_completed_successfully
+  env_file:
+    - .env
 
-x-backend-app: &backend-app
-  <<: *service-app
   command: ["node", "--watch", "--watch-preserve-output", "./dist/app.js"]
 
 services:
@@ -20,7 +34,6 @@ services:
       POSTGRES_USER: membership_system
       POSTGRES_PASSWORD: membership_system
       POSTGRES_DB: membership_system
-    # Healthcheck for the database
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U membership_system"]
       interval: 5s
@@ -28,6 +41,14 @@ services:
       retries: 5
     ports:
       - ${DB_PORT}:5432
+
+  mq:
+    image: redis:8.2-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   mail:
     image: maildev/maildev:2.1.0
@@ -41,8 +62,6 @@ services:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: legacy_app
-    env_file:
-      - .env
     volumes:
       - ./packages:/opt/packages
       - ./apps/legacy/dist:/opt/apps/legacy/dist
@@ -54,8 +73,6 @@ services:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: api_app
-    env_file:
-      - .env
     volumes:
       - ./packages:/opt/packages
       - ./apps/backend/dist:/opt/apps/backend/dist
@@ -72,8 +89,6 @@ services:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: webhook_app
-    env_file:
-      - .env
     volumes:
       - ./packages:/opt/packages
       - ./apps/webhooks/dist:/opt/apps/webhooks/dist
@@ -85,8 +100,6 @@ services:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: cron_app
-    env_file:
-      - .env
 
   # MinIO service
   minio:
@@ -144,19 +157,14 @@ services:
 
   # Database migration service
   migration:
+    <<: *service-app
     build:
       context: .
       dockerfile: ./packages/docker/base.dockerfile
       target: api_app
     command: "yarn run typeorm migration:run"
-    # Wait for the database to be ready
-    depends_on:
-      db:
-        condition: service_healthy
     volumes:
       - ./packages/core/dist/migrations:/opt/packages/core/dist/migrations
-    env_file:
-      - .env
 
   # Stripe CLI for webhook forwarding
   # Only used in local development
