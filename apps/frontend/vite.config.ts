@@ -2,6 +2,7 @@ import theme from '@beabee/vue/plugins/theme';
 
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
 import replace from '@rollup/plugin-replace';
+import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import { createRequire } from 'node:module';
 import { dirname, resolve } from 'node:path';
@@ -18,6 +19,7 @@ export default ({ command, mode }) => {
   const env = loadEnv(mode, resolve(process.cwd(), '../../'), '');
 
   const plugins = [
+    tailwindcss(),
     // VueRouter must be placed before Vue plugin
     VueRouter({
       // Specify the pages directory
