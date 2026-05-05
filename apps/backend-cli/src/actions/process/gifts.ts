@@ -7,7 +7,7 @@ import { GiftService } from '@beabee/core/services/GiftService';
 import moment from 'moment';
 import { Between } from 'typeorm';
 
-import { ProcessGiftsArgs } from '../../types/process.js';
+import type { ProcessGiftsArgs } from '../../types/process.js';
 
 const log = mainLogger.child({ app: 'process-gifts' });
 

@@ -1,20 +1,21 @@
-import {
+import type {
   PaymentFlowParams,
   PaymentFlowResult,
-  PaymentMethod,
 } from '@beabee/beabee-common';
+import { PaymentMethod } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { CantUpdateContributionError, NotFoundError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Contact, PaymentFlow } from '#models/index';
+import type { Contact } from '#models/index';
+import { PaymentFlow } from '#models/index';
 import {
   gcFlowProvider,
   stripeFlowProvider,
 } from '#providers/payment-flow/index';
 import ContactsService from '#services/ContactsService';
 import PaymentService from '#services/PaymentService';
-import {
+import type {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlowForm,

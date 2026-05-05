@@ -1,4 +1,5 @@
-import { LOGIN_CODES, UnauthorizedErrorData } from '@beabee/beabee-common';
+import type { UnauthorizedErrorData } from '@beabee/beabee-common';
+import { LOGIN_CODES } from '@beabee/beabee-common';
 
 import { UnauthorizedError as _UnauthorizedError } from 'routing-controllers';
 

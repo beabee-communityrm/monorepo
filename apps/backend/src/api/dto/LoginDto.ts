@@ -1,4 +1,4 @@
-import { LoginData } from '@beabee/core/type';
+import type { LoginData } from '@beabee/core/type';
 
 import { IsEmail, IsOptional, IsString } from 'class-validator';
 

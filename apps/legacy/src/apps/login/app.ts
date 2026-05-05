@@ -1,4 +1,5 @@
-import { RoleType, RoleTypes } from '@beabee/beabee-common';
+import type { RoleType } from '@beabee/beabee-common';
+import { RoleTypes } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { ContactRole } from '@beabee/core/models';

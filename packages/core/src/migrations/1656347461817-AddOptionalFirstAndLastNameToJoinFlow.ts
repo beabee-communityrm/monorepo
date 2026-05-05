@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddOptionalFirstAndLastNameToJoinFlow1656347461817
   implements MigrationInterface

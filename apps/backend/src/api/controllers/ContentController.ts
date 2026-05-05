@@ -10,7 +10,7 @@ import {
 } from 'routing-controllers';
 
 import PartialBody from '#api/decorators/PartialBody';
-import {
+import type {
   GetContentContactsDto,
   GetContentDto,
   GetContentEmailDto,
@@ -22,7 +22,7 @@ import {
   GetContentShareDto,
   GetContentTelegramDto,
 } from '#api/dto';
-import { ContentParams } from '#api/params/ContentParams';
+import type { ContentParams } from '#api/params/ContentParams';
 import ContentTransformer from '#api/transformers/ContentTransformer';
 
 @JsonController('/content')

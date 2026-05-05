@@ -1,6 +1,6 @@
-import { Contact } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
 
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
 export function loginAndRedirect(
   req: Request,

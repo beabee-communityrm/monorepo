@@ -4,9 +4,10 @@ import config from '#config/config';
 import { getRepository } from '#database';
 import { CantUpdateNewsletterContactError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Contact, ContactProfile } from '#models/index';
+import type { Contact } from '#models/index';
+import { ContactProfile } from '#models/index';
 import { MailchimpProvider, NoneProvider } from '#providers/newsletter/index';
-import {
+import type {
   ContactNewsletterUpdates,
   NewsletterContact,
   NewsletterProvider,

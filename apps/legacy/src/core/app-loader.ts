@@ -1,12 +1,13 @@
-import config, {
+import type {
   AppConfig,
   AppConfigOverride,
   AppConfigOverrides,
 } from '@beabee/core/config';
+import config from '@beabee/core/config';
 import { log as mainLogger } from '@beabee/core/logging';
 
 import dot from 'dot';
-import express from 'express';
+import type express from 'express';
 import fs from 'fs';
 import moment from 'moment';
 import { fileURLToPath } from 'node:url';

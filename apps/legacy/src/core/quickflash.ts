@@ -1,6 +1,6 @@
 import OptionsService from '@beabee/core/services/OptionsService';
 
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
 export default function (
   req: Request,

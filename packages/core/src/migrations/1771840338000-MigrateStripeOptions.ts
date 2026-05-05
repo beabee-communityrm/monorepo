@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class MigrateStripeOptions1771840338000 implements MigrationInterface {
   name = 'MigrateStripeOptions1771840338000';

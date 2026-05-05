@@ -11,11 +11,10 @@ import type {
   Payment as GCPayment,
   Subscription as GCSubscription,
 } from 'gocardless-nodejs';
-import {
-  PaymentStatus as GCPaymentStatus,
-  SubscriptionIntervalUnit,
-} from 'gocardless-nodejs/types/Types.js';
-import moment, { DurationInputObject } from 'moment';
+import type { PaymentStatus as GCPaymentStatus } from 'gocardless-nodejs/types/Types.js';
+import { SubscriptionIntervalUnit } from 'gocardless-nodejs/types/Types.js';
+import type { DurationInputObject } from 'moment';
+import moment from 'moment';
 
 const log = mainLogger.child({ app: 'payment-webhook-utils' });
 

@@ -1,10 +1,10 @@
-import {
+import type {
   CalloutComponentInputSelectSchema,
   CalloutComponentInputSelectableRadioSchema,
   CalloutComponentInputSelectableSchema,
   CalloutComponentInputTextFieldSchema,
-  CalloutComponentType,
 } from '@beabee/beabee-common';
+import { CalloutComponentType } from '@beabee/beabee-common';
 
 import { describe, expect, test, vi } from 'vitest';
 

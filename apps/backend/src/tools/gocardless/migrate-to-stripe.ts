@@ -8,7 +8,7 @@ import PaymentService from '@beabee/core/services/PaymentService';
 
 import { parse } from 'csv-parse';
 import { add, startOfDay } from 'date-fns';
-import Stripe from 'stripe';
+import type Stripe from 'stripe';
 import { Equal, In } from 'typeorm';
 
 interface MigrationRow {

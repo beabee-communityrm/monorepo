@@ -6,13 +6,14 @@ import {
 } from '@beabee/core/lib/stripe';
 import { StripeWebhookEventHandler } from '@beabee/core/lib/stripe-webhook-event-handler';
 import { log as mainLogger } from '@beabee/core/logging';
-import { Contact, ContactContribution, Payment } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
+import { ContactContribution, Payment } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import { contactsService } from '@beabee/core/services';
 
 import { In, Like } from 'typeorm';
 
-import { SyncStripeArgs } from '../../types/sync.js';
+import type { SyncStripeArgs } from '../../types/sync.js';
 
 const log = mainLogger.child({ app: 'sync-stripe' });
 

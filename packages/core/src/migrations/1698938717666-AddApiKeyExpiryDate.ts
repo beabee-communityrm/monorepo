@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddApiKeyExpiryDate1698938717666 implements MigrationInterface {
   name = 'AddApiKeyExpiryDate1698938717666';

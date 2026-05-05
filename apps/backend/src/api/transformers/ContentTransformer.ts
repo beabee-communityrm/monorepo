@@ -1,17 +1,16 @@
-import { ContentData, ContentId } from '@beabee/beabee-common';
+import type { ContentData, ContentId } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { Content } from '@beabee/core/models';
-import OptionsService, {
-  OptionKey,
-} from '@beabee/core/services/OptionsService';
+import type { OptionKey } from '@beabee/core/services/OptionsService';
+import OptionsService from '@beabee/core/services/OptionsService';
 import { getEmailFooter } from '@beabee/core/templates/email';
 
 import { plainToInstance } from 'class-transformer';
 
+import type { GetContentDto } from '#api/dto/index';
 import {
   GetContentContactsDto,
-  GetContentDto,
   GetContentEmailDto,
   GetContentGeneralDto,
   GetContentJoinDto,

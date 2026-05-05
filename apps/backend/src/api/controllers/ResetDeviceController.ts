@@ -1,6 +1,6 @@
 import ContactsService from '@beabee/core/services/ContactsService';
 
-import { Request } from 'express';
+import type { Request } from 'express';
 import {
   Body,
   JsonController,
@@ -11,11 +11,11 @@ import {
   Req,
 } from 'routing-controllers';
 
-import {
+import type {
   CreateResetDeviceDto,
   UpdateResetDeviceDto,
 } from '#api/dto/ResetDeviceDto';
-import { UUIDParams } from '#api/params/UUIDParams';
+import type { UUIDParams } from '#api/params/UUIDParams';
 import { login } from '#api/utils/auth';
 
 @JsonController('/reset-device')

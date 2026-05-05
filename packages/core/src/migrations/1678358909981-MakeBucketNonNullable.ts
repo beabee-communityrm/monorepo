@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class MakeBucketNonNullable1678358909981 implements MigrationInterface {
   name = 'MakeBucketNonNullable1678358909981';

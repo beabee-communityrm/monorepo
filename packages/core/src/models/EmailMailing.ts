@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { EmailMailingRecipient } from '#type/index';
+import type { EmailMailingRecipient } from '#type/index';
 
 import { type Email } from './index.js';
 

@@ -1,16 +1,15 @@
+import type { PaymentMethod, PaymentPeriod } from '@beabee/beabee-common';
 import {
   ContributionPeriod,
   ContributionType,
-  PaymentMethod,
-  PaymentPeriod,
   calcPaymentFee,
 } from '@beabee/beabee-common';
 
 import { addMonths, getYear, setYear, sub } from 'date-fns';
 
 import config from '#config/config';
-import { Contact } from '#models/index';
-import { PaymentFlowForm, UpdateContributionForm } from '#type/index';
+import type { Contact } from '#models/index';
+import type { PaymentFlowForm, UpdateContributionForm } from '#type/index';
 
 /**
  * Calculate the equivalent monthly amount from a given amount and period

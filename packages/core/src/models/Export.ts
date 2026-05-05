@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { ExportTypeId, ParamValue } from '#type/index';
+import type { ExportTypeId, ParamValue } from '#type/index';
 
 @Entity()
 export class Export {

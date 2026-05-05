@@ -1,21 +1,19 @@
-import {
-  CalloutAccess,
-  CalloutCaptcha,
-  CalloutChannel,
+import type {
   CalloutData,
   CalloutMapSchema,
   CalloutMapSchemaIconStyling,
   CalloutNewsletterSchema,
   CalloutResponseViewSchema,
+} from '@beabee/beabee-common';
+import {
+  CalloutAccess,
+  CalloutCaptcha,
+  CalloutChannel,
   ItemStatus,
 } from '@beabee/beabee-common';
 
-import {
-  Transform,
-  TransformFnParams,
-  Type,
-  plainToInstance,
-} from 'class-transformer';
+import type { TransformFnParams } from 'class-transformer';
+import { Transform, Type, plainToInstance } from 'class-transformer';
 import {
   Equals,
   IsArray,

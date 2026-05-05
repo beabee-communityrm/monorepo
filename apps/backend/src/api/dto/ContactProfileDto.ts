@@ -10,7 +10,8 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-import { GetAddressDto, UpdateAddressDto } from '#api/dto/AddressDto';
+import type { GetAddressDto } from '#api/dto/AddressDto';
+import { UpdateAddressDto } from '#api/dto/AddressDto';
 
 export class GetContactProfileDto {
   @IsString()

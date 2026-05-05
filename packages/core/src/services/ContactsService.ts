@@ -1,3 +1,4 @@
+import type { RoleType } from '@beabee/beabee-common';
 import {
   CONTACT_MFA_TYPE,
   ContributionPeriod,
@@ -5,10 +6,14 @@ import {
   LOGIN_CODES,
   RESET_SECURITY_FLOW_ERROR_CODE,
   RESET_SECURITY_FLOW_TYPE,
-  RoleType,
 } from '@beabee/beabee-common';
 
-import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from 'typeorm';
+import type {
+  FindManyOptions,
+  FindOneOptions,
+  FindOptionsWhere,
+} from 'typeorm';
+import { In } from 'typeorm';
 
 import { createQueryBuilder, getRepository, runTransaction } from '#database';
 import {
@@ -45,8 +50,8 @@ import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
-import { UpdateContributionForm } from '#type/update-contribution-form';
-import { UpdateContributionResult } from '#type/update-contribution-result';
+import type { UpdateContributionForm } from '#type/update-contribution-form';
+import type { UpdateContributionResult } from '#type/update-contribution-result';
 import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
 import { isDuplicateIndex } from '#utils/db';

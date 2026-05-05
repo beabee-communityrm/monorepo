@@ -1,8 +1,8 @@
 import { NotFoundError, UnauthorizedError } from '@beabee/core/errors';
-import { Contact } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 
-import { Request } from 'express';
+import type { Request } from 'express';
 import { createParamDecorator } from 'routing-controllers';
 
 import { UUIDParams } from '#api/params/UUIDParams';

@@ -1,6 +1,6 @@
+import type { S3Metadata } from '@beabee/beabee-common';
 import {
   ALLOWED_DOCUMENT_MIME_TYPES,
-  S3Metadata,
   isSupportedDocumentType,
 } from '@beabee/beabee-common';
 
@@ -12,7 +12,7 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
-import { Readable } from 'stream';
+import type { Readable } from 'stream';
 
 import config from '../config/config.js';
 import {

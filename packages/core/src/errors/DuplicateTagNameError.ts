@@ -1,4 +1,5 @@
-import { ApiErrorCode, DuplicateTagNameErrorData } from '@beabee/beabee-common';
+import type { DuplicateTagNameErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
 

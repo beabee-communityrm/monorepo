@@ -1,4 +1,5 @@
-import { PaymentStatus, PaymentType } from '@beabee/beabee-common';
+import type { PaymentType } from '@beabee/beabee-common';
+import { PaymentStatus } from '@beabee/beabee-common';
 
 import {
   Column,

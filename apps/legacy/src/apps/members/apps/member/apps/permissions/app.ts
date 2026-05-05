@@ -1,5 +1,5 @@
-import { RoleType } from '@beabee/beabee-common';
-import { Contact } from '@beabee/core/models';
+import type { RoleType } from '@beabee/beabee-common';
+import type { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 

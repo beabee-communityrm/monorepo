@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 
 import { GetPaginatedQuery } from '#api/dto/BaseDto';
-import { GetContactDto } from '#api/dto/ContactDto';
+import type { GetContactDto } from '#api/dto/ContactDto';
 
 export class CreateApiKeyDto {
   @IsString()

@@ -2,9 +2,8 @@ import { resolveImageUrl } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
 import { initApp, startServer } from '@beabee/core/server';
-import OptionsService, {
-  OptionKey,
-} from '@beabee/core/services/OptionsService';
+import type { OptionKey } from '@beabee/core/services/OptionsService';
+import OptionsService from '@beabee/core/services/OptionsService';
 import PageSettingsService from '@beabee/core/services/PageSettingsService';
 import { isInvalidType } from '@beabee/core/utils/db';
 
@@ -12,7 +11,8 @@ import cleanDeepLib from 'clean-deep';
 import cookie from 'cookie-parser';
 import csrf from 'csurf';
 // TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
-import express, { ErrorRequestHandler } from 'express';
+import type { ErrorRequestHandler } from 'express';
+import express from 'express';
 import flash from 'express-flash';
 // TODO: Last release was 2013
 import helmet from 'helmet';
@@ -130,7 +130,7 @@ initApp()
     } as ErrorRequestHandler);
 
     // Error 404
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     app.use(function (req, res, next) {
       res.status(404);
       res.render('404');
@@ -139,7 +139,7 @@ initApp()
     app.use(requestErrorLogger);
 
     // Error 500
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     app.use(function (err, req, res, next) {
       res.status(500);
       res.render('500', { error: config.dev ? err.stack : undefined });

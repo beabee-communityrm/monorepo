@@ -1,5 +1,5 @@
-import { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
-import {
+import type { CONTACT_MFA_TYPE } from '@beabee/beabee-common';
+import type {
   ContactMfaSecure,
   CreateContactMfaData,
   DeleteContactMfaData,

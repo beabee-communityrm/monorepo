@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddResetPasswordFlow1634737662792 implements MigrationInterface {
   name = 'AddResetPasswordFlow1634737662792';

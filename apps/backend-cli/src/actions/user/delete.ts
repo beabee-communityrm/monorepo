@@ -1,4 +1,4 @@
-import { Contact } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import { contactsService } from '@beabee/core/services/ContactsService';
 

@@ -6,18 +6,18 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from '@beabee/core/errors';
-import { Contact } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
 import DispatchService from '@beabee/core/services/DispatchService';
 import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import PaymentService from '@beabee/core/services/PaymentService';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
 import { plainToInstance } from 'class-transformer';
-import { Response } from 'express';
+import type { Response } from 'express';
 import {
   Authorized,
   Body,
@@ -36,43 +36,45 @@ import {
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
 import { TargetUser } from '#api/decorators/TargetUser';
-import { GetExportQuery } from '#api/dto/BaseDto';
-import {
+import type { GetExportQuery } from '#api/dto/BaseDto';
+import type {
   BatchUpdateContactDto,
-  BatchUpdateContactResultDto,
   CreateContactDto,
   GetContactDto,
   GetContactOptsDto,
-  GetContributionInfoDto,
   ListContactsDto,
   UpdateContactDto,
 } from '#api/dto/ContactDto';
 import {
+  BatchUpdateContactResultDto,
+  GetContributionInfoDto,
+} from '#api/dto/ContactDto';
+import type {
   CreateContactMfaDto,
   DeleteContactMfaDto,
-  GetContactMfaDto,
 } from '#api/dto/ContactMfaDto';
-import {
+import { GetContactMfaDto } from '#api/dto/ContactMfaDto';
+import type {
   GetContactRoleDto,
   UpdateContactRoleDto,
 } from '#api/dto/ContactRoleDto';
-import {
+import type {
   ForceUpdateContributionDto,
   StartContributionDto,
   UpdateContributionDto,
 } from '#api/dto/ContributionDto';
-import { PaginatedDto } from '#api/dto/PaginatedDto';
-import {
+import type { PaginatedDto } from '#api/dto/PaginatedDto';
+import type {
   CreatePaymentDto,
   GetPaymentDto,
   ListPaymentsDto,
 } from '#api/dto/PaymentDto';
-import {
+import type {
   CompletePaymentFlowDto,
-  PaymentFlowResultDto,
   StartPaymentFlowDto,
 } from '#api/dto/PaymentFlowDto';
-import { ContactRoleParams } from '#api/params/ContactRoleParams';
+import { PaymentFlowResultDto } from '#api/dto/PaymentFlowDto';
+import type { ContactRoleParams } from '#api/params/ContactRoleParams';
 import ContactExporter from '#api/transformers/ContactExporter';
 import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
 import ContactTransformer from '#api/transformers/ContactTransformer';

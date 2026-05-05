@@ -1,14 +1,16 @@
+import type {
+  NewsletterStatus,
+  PaymentSource,
+  RoleType,
+} from '@beabee/beabee-common';
 import {
   ContributionPeriod,
   ContributionType,
   GetContactWith,
   MembershipStatus,
-  NewsletterStatus,
-  PaymentSource,
-  RoleType,
   RoleTypes,
 } from '@beabee/beabee-common';
-import { ContributionInfo } from '@beabee/core/type';
+import type { ContributionInfo } from '@beabee/core/type';
 
 import { Type } from 'class-transformer';
 import {
@@ -28,15 +30,11 @@ import {
 } from 'class-validator';
 
 import { GetPaginatedQuery, GetPaginatedRuleGroup } from '#api/dto/BaseDto';
-import {
-  GetContactProfileDto,
-  UpdateContactProfileDto,
-} from '#api/dto/ContactProfileDto';
-import {
-  CreateContactRoleDto,
-  GetContactRoleDto,
-} from '#api/dto/ContactRoleDto';
-import { GetContactTagDto } from '#api/dto/ContactTagDto';
+import type { GetContactProfileDto } from '#api/dto/ContactProfileDto';
+import { UpdateContactProfileDto } from '#api/dto/ContactProfileDto';
+import type { GetContactRoleDto } from '#api/dto/ContactRoleDto';
+import { CreateContactRoleDto } from '#api/dto/ContactRoleDto';
+import type { GetContactTagDto } from '#api/dto/ContactTagDto';
 import { ForceUpdateContributionDto } from '#api/dto/ContributionDto';
 import IsPassword from '#api/validators/IsPassword';
 

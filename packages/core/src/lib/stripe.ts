@@ -1,7 +1,7 @@
+import type { PaymentSource } from '@beabee/beabee-common';
 import {
   ContributionPeriod,
   PaymentMethod,
-  PaymentSource,
   PaymentStatus,
   PaymentType,
 } from '@beabee/beabee-common';
@@ -14,7 +14,7 @@ import { currentLocale } from '#locale';
 import { log as mainLogger } from '#logging';
 import { type Payment } from '#models/Payment';
 import OptionsService from '#services/OptionsService';
-import {
+import type {
   PaymentFlowFormCreateOneTimePayment,
   UpdateContributionForm,
 } from '#type/index';

@@ -5,6 +5,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
 
+    // Force explicit `import type` so Node's per-file ESM transpilation never
+    // emits a runtime require for a type-only symbol.
+    "verbatimModuleSyntax": true,
+
     // For strict type checking
     "exactOptionalPropertyTypes": true,
     "strictNullChecks": true,

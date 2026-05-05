@@ -1,4 +1,4 @@
-import { ContentId } from '@beabee/beabee-common';
+import type { ContentId } from '@beabee/beabee-common';
 
 import { Column, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 

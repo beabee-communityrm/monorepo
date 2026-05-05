@@ -1,11 +1,13 @@
 import { createQueryBuilder } from '@beabee/core/database';
 import { Contact, ContactContribution } from '@beabee/core/models';
 
-import { Brackets, SelectQueryBuilder } from 'typeorm';
+import type { SelectQueryBuilder } from 'typeorm';
+import { Brackets } from 'typeorm';
 
-import { Param } from '#core/utils/params';
+import type { Param } from '#core/utils/params';
 
-import BaseExport, { ExportResult } from './BaseExport.js';
+import type { ExportResult } from './BaseExport.js';
+import BaseExport from './BaseExport.js';
 
 export default class ActiveMembersExport extends BaseExport<Contact> {
   exportName = 'Active members export';

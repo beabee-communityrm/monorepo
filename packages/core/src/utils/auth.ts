@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 import { Secret, TOTP } from 'otpauth';
 
 import config from '#config/config';
-import { Password } from '#models/index';
+import type { Password } from '#models/index';
 
 export function generateApiKey(
   idLength: number = 16,

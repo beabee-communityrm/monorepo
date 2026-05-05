@@ -1,10 +1,11 @@
-import { Rule } from '@beabee/beabee-common';
+import type { Rule } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { BadRequestError } from '@beabee/core/errors';
-import { CalloutReviewer, Contact } from '@beabee/core/models';
-import { AuthInfo } from '@beabee/core/type';
+import type { Contact } from '@beabee/core/models';
+import { CalloutReviewer } from '@beabee/core/models';
+import type { AuthInfo } from '@beabee/core/type';
 
-import { Auth, In } from 'typeorm';
+import { In } from 'typeorm';
 
 export async function getReviewerRules(
   contact: Contact | undefined,

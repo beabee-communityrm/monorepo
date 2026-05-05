@@ -1,6 +1,7 @@
-import axios, { AxiosRequestTransformer } from 'axios';
+import type { AxiosRequestTransformer } from 'axios';
+import axios from 'axios';
 
-import { MandrillEmailConfig } from '#config/config';
+import type { MandrillEmailConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { EmailOptions, EmailRecipient, PreparedEmail } from '#type/index';
 

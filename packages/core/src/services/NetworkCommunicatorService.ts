@@ -1,8 +1,9 @@
 import axios from 'axios';
-import express, { type Express, Request, Response } from 'express';
+import type { Request, Response } from 'express';
+import express, { type Express } from 'express';
 import jwt from 'jsonwebtoken';
 import { EventEmitter } from 'node:events';
-import { Server } from 'node:http';
+import type { Server } from 'node:http';
 
 import config from '#config/config';
 import { log as mainLogger } from '#logging';

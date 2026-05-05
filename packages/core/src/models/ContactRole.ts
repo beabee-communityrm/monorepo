@@ -1,4 +1,4 @@
-import { RoleType } from '@beabee/beabee-common';
+import type { RoleType } from '@beabee/beabee-common';
 
 import {
   Column,

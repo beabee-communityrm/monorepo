@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class RenameListIdToTag1619099359790 implements MigrationInterface {
   name = 'RenameListIdToTag1619099359790';

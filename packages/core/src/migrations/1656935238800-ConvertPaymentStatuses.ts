@@ -1,5 +1,5 @@
 import { PaymentStatus } from 'gocardless-nodejs/types/Types.js';
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ConvertPaymentStatuses1656935238800 implements MigrationInterface {
   name = 'ConvertPaymentStatuses1656935238800';

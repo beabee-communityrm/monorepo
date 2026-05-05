@@ -3,10 +3,10 @@ import { NewsletterStatus } from '@beabee/beabee-common';
 import axios from 'axios';
 import crypto from 'crypto';
 
-import { MailchimpNewsletterConfig } from '#config/config';
+import type { MailchimpNewsletterConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import OptionsService from '#services/OptionsService';
-import {
+import type {
   MCBatch,
   MCMember,
   MCOperation,

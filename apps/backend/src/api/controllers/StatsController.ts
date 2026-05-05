@@ -11,7 +11,8 @@ import {
   QueryParams,
 } from 'routing-controllers';
 
-import { GetStatsDto, GetStatsOptsDto } from '#api/dto/StatsDto';
+import type { GetStatsOptsDto } from '#api/dto/StatsDto';
+import { GetStatsDto } from '#api/dto/StatsDto';
 
 @JsonController('/stats')
 export class StatsController {

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class RenameModelReferences1670257047310 implements MigrationInterface {
   name = 'RenameModelReferences1670257047310';

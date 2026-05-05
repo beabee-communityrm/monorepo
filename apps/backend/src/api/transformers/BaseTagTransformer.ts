@@ -10,7 +10,7 @@ import type {
 
 import { plainToInstance } from 'class-transformer';
 
-import { GetTagDto } from '#api/dto/TagDto';
+import type { GetTagDto } from '#api/dto/TagDto';
 
 import { BaseTransformer } from './BaseTransformer.js';
 

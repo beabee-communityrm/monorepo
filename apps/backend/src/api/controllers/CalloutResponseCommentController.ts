@@ -1,5 +1,5 @@
 import { BadRequestError, NotFoundError } from '@beabee/core/errors';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
 import {
   Body,
@@ -15,13 +15,13 @@ import {
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
-import {
+import type {
   CreateCalloutResponseCommentDto,
   GetCalloutResponseCommentDto,
   ListCalloutResponseCommentsDto,
 } from '#api/dto/CalloutResponseCommentDto';
-import { PaginatedDto } from '#api/dto/PaginatedDto';
-import { UUIDParams } from '#api/params/UUIDParams';
+import type { PaginatedDto } from '#api/dto/PaginatedDto';
+import type { UUIDParams } from '#api/params/UUIDParams';
 import CalloutResponseCommentTransformer from '#api/transformers/CalloutResponseCommentTransformer';
 
 @JsonController('/callout-response-comments')

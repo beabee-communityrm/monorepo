@@ -6,7 +6,7 @@ import {
   ContactRole,
   Payment,
 } from '@beabee/core/models';
-import { FilterHandler, FilterHandlers } from '@beabee/core/type';
+import type { FilterHandler, FilterHandlers } from '@beabee/core/type';
 import { getFilterHandler } from '@beabee/core/utils/rules';
 
 import { Brackets } from 'typeorm';

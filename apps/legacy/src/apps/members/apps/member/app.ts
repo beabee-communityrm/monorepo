@@ -1,7 +1,8 @@
 import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
-import { Contact, ResetSecurityFlow } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
+import { ResetSecurityFlow } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import OptionsService from '@beabee/core/services/OptionsService';
 import PaymentService from '@beabee/core/services/PaymentService';

@@ -1,7 +1,7 @@
 import { getRepository } from '@beabee/core/database';
 import { NotFoundError } from '@beabee/core/errors';
+import type { Contact } from '@beabee/core/models';
 import {
-  Contact,
   Email,
   EmailMailing,
   Segment,
@@ -9,7 +9,7 @@ import {
 } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
 import SegmentService from '@beabee/core/services/SegmentService';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
 import {
   Authorized,
@@ -26,17 +26,17 @@ import {
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
-import { GetContactDto, ListContactsDto } from '#api/dto/ContactDto';
-import { PaginatedDto } from '#api/dto/PaginatedDto';
-import {
+import type { GetContactDto, ListContactsDto } from '#api/dto/ContactDto';
+import type { PaginatedDto } from '#api/dto/PaginatedDto';
+import type {
   CreateSegmentDto,
   GetSegmentDto,
   GetSegmentOptsDto,
-  GetSegmentWith,
   ListSegmentsDto,
   SendSegmentEmailBodyDto,
 } from '#api/dto/SegmentDto';
-import { UUIDParams } from '#api/params/UUIDParams';
+import { GetSegmentWith } from '#api/dto/SegmentDto';
+import type { UUIDParams } from '#api/params/UUIDParams';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import SegmentTransformer from '#api/transformers/SegmentTransformer';
 

@@ -1,5 +1,5 @@
-import { CalloutFilterName } from '@beabee/beabee-common';
-import { FilterHandlers } from '@beabee/core/type';
+import type { CalloutFilterName } from '@beabee/beabee-common';
+import type { FilterHandlers } from '@beabee/core/type';
 
 import { statusFilterHandler } from './status.filter-handlers.js';
 

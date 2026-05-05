@@ -1,4 +1,5 @@
-import { PaymentFilterName, Rule, paymentFilters } from '@beabee/beabee-common';
+import type { PaymentFilterName, Rule } from '@beabee/beabee-common';
+import { paymentFilters } from '@beabee/beabee-common';
 import { paymentFilterHandlers } from '@beabee/core/filter-handlers';
 import { Payment } from '@beabee/core/models';
 

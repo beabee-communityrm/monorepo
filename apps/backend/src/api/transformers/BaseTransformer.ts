@@ -1,11 +1,10 @@
-import {
+import type {
   Filters,
-  InvalidRule,
   PaginatedQuery,
   Rule,
   RuleGroup,
-  validateRuleGroup,
 } from '@beabee/beabee-common';
+import { InvalidRule, validateRuleGroup } from '@beabee/beabee-common';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import {
   BadRequestError,
@@ -13,15 +12,15 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from '@beabee/core/errors';
-import { AuthInfo, FilterHandlers } from '@beabee/core/type';
+import type { AuthInfo, FilterHandlers } from '@beabee/core/type';
 import { convertRulesToWhereClause } from '@beabee/core/utils/rules';
 
 import { plainToInstance } from 'class-transformer';
-import { Brackets, ObjectLiteral, SelectQueryBuilder } from 'typeorm';
+import type { Brackets, ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 
 import { PaginatedDto } from '#api/dto/PaginatedDto';
-import { TransformerOperation } from '#type/index';
-import { FetchRawResult } from '#type/index';
+import type { TransformerOperation } from '#type/index';
+import type { FetchRawResult } from '#type/index';
 
 /**
  * Base transformer for querying and converting models to DTOs

@@ -1,13 +1,13 @@
 import { NotFoundError } from '@beabee/core/errors';
 import { log as mainLogger } from '@beabee/core/logging';
 
+import type { S3Client } from '@aws-sdk/client-s3';
 import {
   GetObjectCommand,
   HeadObjectCommand,
   ListObjectsV2Command,
-  S3Client,
 } from '@aws-sdk/client-s3';
-import { Readable } from 'stream';
+import type { Readable } from 'stream';
 
 const log = mainLogger.child({ app: 's3-utils' });
 

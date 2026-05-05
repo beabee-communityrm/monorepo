@@ -1,6 +1,7 @@
 import { IsString, IsUUID } from 'class-validator';
 
-import { CreateTagDto, GetTagDto, ListTagsDto } from './TagDto.js';
+import type { GetTagDto } from './TagDto.js';
+import { CreateTagDto, ListTagsDto } from './TagDto.js';
 
 /**
  * The contact tag DTO

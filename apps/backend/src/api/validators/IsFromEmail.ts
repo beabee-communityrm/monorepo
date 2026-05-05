@@ -1,11 +1,7 @@
 import OptionsService from '@beabee/core/services/OptionsService';
 
-import {
-  ValidateBy,
-  ValidationOptions,
-  buildMessage,
-  isEmail,
-} from 'class-validator';
+import type { ValidationOptions } from 'class-validator';
+import { ValidateBy, buildMessage, isEmail } from 'class-validator';
 
 export default function IsFromEmail(
   validationOptions?: ValidationOptions

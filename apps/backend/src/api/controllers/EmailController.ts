@@ -1,8 +1,8 @@
 import { NotFoundError } from '@beabee/core/errors';
-import { Contact } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import EmailService from '@beabee/core/services/EmailService';
-import { AuthInfo, PreviewEmailOptions } from '@beabee/core/type';
+import type { AuthInfo, PreviewEmailOptions } from '@beabee/core/type';
 
 import { plainToInstance } from 'class-transformer';
 import {
@@ -21,10 +21,9 @@ import {
 } from 'routing-controllers';
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
-import {
+import type {
   CreateEmailDto,
   DeleteEmailTemplateParams,
-  EmailPreviewDto,
   GetEmailDto,
   GetEmailTemplateInfoDto,
   GetEmailTemplateParams,
@@ -37,7 +36,8 @@ import {
   UpdateEmailDto,
   UpdateEmailTemplateParams,
 } from '#api/dto/EmailDto';
-import { PaginatedDto } from '#api/dto/PaginatedDto';
+import { EmailPreviewDto } from '#api/dto/EmailDto';
+import type { PaginatedDto } from '#api/dto/PaginatedDto';
 import EmailTransformer from '#api/transformers/EmailTransformer';
 
 @Authorized('admin')

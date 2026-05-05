@@ -1,7 +1,7 @@
-import { Response } from 'express';
+import type { Response } from 'express';
 import { Get, JsonController, Res } from 'routing-controllers';
 
-import { GetHealthDto } from '#api/dto/HealthDto';
+import type { GetHealthDto } from '#api/dto/HealthDto';
 import ContentTransformer from '#api/transformers/ContentTransformer';
 
 @JsonController('/health')

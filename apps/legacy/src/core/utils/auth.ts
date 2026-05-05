@@ -1,7 +1,7 @@
 import { getNextParam } from '@beabee/core/utils/url';
 
 import crypto from 'crypto';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
 export enum AuthenticationStatus {
   LOGGED_IN = 1,

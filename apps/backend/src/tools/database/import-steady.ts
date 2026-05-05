@@ -1,5 +1,5 @@
+import type { Address } from '@beabee/beabee-common';
 import {
-  Address,
   ContributionPeriod,
   ContributionType,
   NewsletterStatus,

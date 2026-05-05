@@ -1,5 +1,5 @@
-import { NewsletterContact } from './newsletter-contact.js';
-import { UpdateNewsletterContact } from './update-newsletter-contact.js';
+import type { NewsletterContact } from './newsletter-contact.js';
+import type { UpdateNewsletterContact } from './update-newsletter-contact.js';
 
 export interface NewsletterProvider {
   getContact(email: string): Promise<NewsletterContact | undefined>;

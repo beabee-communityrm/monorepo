@@ -1,5 +1,5 @@
 import { createQueryBuilder } from '@beabee/core/database';
-import { FilterHandler } from '@beabee/core/type';
+import type { FilterHandler } from '@beabee/core/type';
 
 const createTagFilterHandler = (entityIdField: string, tableName: string) => {
   /**

@@ -1,4 +1,5 @@
-import { GetContactWith, Paginated, RuleGroup } from '@beabee/beabee-common';
+import type { Paginated, RuleGroup } from '@beabee/beabee-common';
+import { GetContactWith } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { Contact, Project, Segment } from '@beabee/core/models';
 import OptionsService from '@beabee/core/services/OptionsService';

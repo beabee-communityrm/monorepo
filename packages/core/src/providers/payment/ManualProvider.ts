@@ -1,5 +1,5 @@
-import { Contact } from '#models/index';
-import { ContributionInfo, UpdateContributionResult } from '#type/index';
+import type { Contact } from '#models/index';
+import type { ContributionInfo, UpdateContributionResult } from '#type/index';
 
 import { PaymentProvider } from './PaymentProvider.js';
 

@@ -1,4 +1,4 @@
-import { Address } from '@beabee/beabee-common';
+import type { Address } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { GiftFlow, GiftForm } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';

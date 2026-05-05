@@ -1,11 +1,11 @@
-import { EmailTemplateType } from '@beabee/beabee-common';
+import type { EmailTemplateType } from '@beabee/beabee-common';
 
 import moment from 'moment';
 
 import config from '#config/config';
 import type { Contact } from '#models/index';
 import OptionsService from '#services/OptionsService';
-import { EmailTemplate } from '#type/email';
+import type { EmailTemplate } from '#type/email';
 
 /**
  * Email Merge Fields Documentation

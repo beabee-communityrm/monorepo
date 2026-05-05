@@ -1,4 +1,5 @@
-import { FormioFile, isFormioFileAnswer } from '@beabee/beabee-common';
+import type { FormioFile } from '@beabee/beabee-common';
+import { isFormioFileAnswer } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
 import { connect as connectToDatabase } from '@beabee/core/database';
 import { getRepository } from '@beabee/core/database';
@@ -13,7 +14,7 @@ import chalk from 'chalk';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import {
+import type {
   MigrateUploadsOptions,
   MigrationStats,
 } from '../../types/migrate-uploads.js';

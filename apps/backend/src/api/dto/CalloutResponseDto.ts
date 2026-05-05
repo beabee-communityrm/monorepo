@@ -1,4 +1,4 @@
-import {
+import type {
   CalloutComponentSchema,
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
@@ -11,7 +11,7 @@ import {
   PaginatedQuery,
 } from '@beabee/beabee-common';
 import { GetCalloutResponseWith } from '@beabee/beabee-common';
-import { Callout } from '@beabee/core/models';
+import type { Callout } from '@beabee/core/models';
 
 import { Type } from 'class-transformer';
 import {
@@ -32,15 +32,12 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-import {
-  GetExportQuery,
-  GetPaginatedQuery,
-  GetPaginatedRuleGroup,
-} from '#api/dto/BaseDto';
-import { GetCalloutDto } from '#api/dto/CalloutDto';
-import { GetCalloutResponseCommentDto } from '#api/dto/CalloutResponseCommentDto';
-import { GetCalloutTagDto } from '#api/dto/CalloutTagDto';
-import { GetContactDto } from '#api/dto/ContactDto';
+import type { GetExportQuery } from '#api/dto/BaseDto';
+import { GetPaginatedQuery, GetPaginatedRuleGroup } from '#api/dto/BaseDto';
+import type { GetCalloutDto } from '#api/dto/CalloutDto';
+import type { GetCalloutResponseCommentDto } from '#api/dto/CalloutResponseCommentDto';
+import type { GetCalloutTagDto } from '#api/dto/CalloutTagDto';
+import type { GetContactDto } from '#api/dto/ContactDto';
 import IsNonEmptyString from '#api/validators/IsNonEmptyString';
 
 export interface BaseGetCalloutResponseOptsDto {

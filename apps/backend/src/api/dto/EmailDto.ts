@@ -1,8 +1,6 @@
-import {
-  EmailTemplateType,
-  type SegmentOngoingEmailTrigger,
-} from '@beabee/beabee-common';
-import {
+import type { EmailTemplateType } from '@beabee/beabee-common';
+import { type SegmentOngoingEmailTrigger } from '@beabee/beabee-common';
+import type {
   AdminEmailTemplateId,
   ContactEmailTemplateId,
   EmailTemplateId,

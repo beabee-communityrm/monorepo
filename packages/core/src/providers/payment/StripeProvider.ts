@@ -1,8 +1,8 @@
-import {
-  ContributionType,
+import type {
   PaymentFlowParamsStripe,
   PaymentSource,
 } from '@beabee/beabee-common';
+import { ContributionType } from '@beabee/beabee-common';
 
 import { add } from 'date-fns';
 import Stripe from 'stripe';
@@ -19,8 +19,8 @@ import {
   updateSubscription,
 } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
-import { Contact } from '#models/index';
-import {
+import type { Contact } from '#models/index';
+import type {
   CompletedPaymentFlow,
   ContributionInfo,
   PaymentFlowFormCreateOneTimePayment,

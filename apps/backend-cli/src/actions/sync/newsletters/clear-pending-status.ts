@@ -5,7 +5,7 @@ import { Contact } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import { newsletterBulkService } from '@beabee/core/services';
 
-import { SyncClearPendingStatusArgs } from '../../../types/sync.js';
+import type { SyncClearPendingStatusArgs } from '../../../types/sync.js';
 
 const log = mainLogger.child({ app: 'sync-newsletter-clear-pending-status' });
 

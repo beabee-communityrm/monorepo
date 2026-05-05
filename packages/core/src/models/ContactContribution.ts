@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@beabee/beabee-common';
+import type { PaymentMethod } from '@beabee/beabee-common';
 
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 

@@ -10,11 +10,11 @@ import {
   UnauthorizedError,
   UnsupportedFileTypeError,
 } from '@beabee/core/errors';
-import { Contact } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
 import { imageService } from '@beabee/core/services/ImageService';
 import { convertMulterError } from '@beabee/core/utils/multer';
 
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import {
   Authorized,
   CurrentUser,

@@ -1,6 +1,6 @@
 import type { Rule, RuleGroup, RuleValue } from '@beabee/beabee-common';
 
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 import { ContactTag } from '../models/ContactTag.js';
 import { Segment } from '../models/Segment.js';

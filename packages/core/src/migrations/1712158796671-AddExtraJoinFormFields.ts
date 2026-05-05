@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddExtraJoinFormFields1712158796671 implements MigrationInterface {
   name = 'AddExtraJoinFormFields1712158796671';

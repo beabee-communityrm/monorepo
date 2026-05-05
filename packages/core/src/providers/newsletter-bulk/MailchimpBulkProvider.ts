@@ -1,11 +1,11 @@
-import { MailchimpNewsletterConfig } from '#config/config';
+import type { MailchimpNewsletterConfig } from '#config/config';
 import {
   createInstance,
   getMCMemberUrl,
   mcMemberToNlContact,
   nlContactToMCMember,
 } from '#lib/mailchimp';
-import {
+import type {
   MCMember,
   MCMemberList,
   MCOperation,

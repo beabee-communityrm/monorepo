@@ -1,4 +1,5 @@
-import { ApiErrorCode, PaymentFailedErrorData } from '@beabee/beabee-common';
+import type { PaymentFailedErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
 

@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { RoleType } from '@beabee/beabee-common';
+import type { RoleType } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { InternalServerError } from '@beabee/core/errors';
 import {
@@ -8,12 +8,13 @@ import {
   requestErrorLogger,
   requestLogger,
 } from '@beabee/core/logging';
-import { Contact } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
 import { initApp, startServer } from '@beabee/core/server';
 
 import cookie from 'cookie-parser';
 import cors from 'cors';
-import express, { ErrorRequestHandler, Request } from 'express';
+import type { ErrorRequestHandler, Request } from 'express';
+import express from 'express';
 import {
   HttpError,
   NotFoundError,

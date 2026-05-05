@@ -1,7 +1,9 @@
-import {
+import type {
   ContactFilterName,
   Filters,
   PaginatedQuery,
+} from '@beabee/beabee-common';
+import {
   calloutResponseFilters,
   contactCalloutFilters,
   contactFilters,
@@ -11,7 +13,7 @@ import {
 import { getRepository } from '@beabee/core/database';
 import { contactFilterHandlers } from '@beabee/core/filter-handlers';
 import { Callout, Contact } from '@beabee/core/models';
-import { FilterHandlers } from '@beabee/core/type';
+import type { FilterHandlers } from '@beabee/core/type';
 import { prefixKeys } from '@beabee/core/utils/objects';
 
 import { isUUID } from 'class-validator';

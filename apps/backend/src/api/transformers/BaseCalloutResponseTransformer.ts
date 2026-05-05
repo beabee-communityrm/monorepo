@@ -1,16 +1,18 @@
-import {
+import type {
   CalloutResponseFilterName,
   Filters,
   PaginatedQuery,
   RuleGroup,
+} from '@beabee/beabee-common';
+import {
   calloutResponseFilters,
   getCalloutFilters,
 } from '@beabee/beabee-common';
 import { calloutResponseFilterHandlers } from '@beabee/core/filter-handlers';
 import { CalloutResponse } from '@beabee/core/models';
-import { FilterHandlers } from '@beabee/core/type';
+import type { FilterHandlers } from '@beabee/core/type';
 
-import { BaseGetCalloutResponseOptsDto } from '#api/dto/CalloutResponseDto';
+import type { BaseGetCalloutResponseOptsDto } from '#api/dto/CalloutResponseDto';
 import { BaseTransformer } from '#api/transformers/BaseTransformer';
 
 export abstract class BaseCalloutResponseTransformer<

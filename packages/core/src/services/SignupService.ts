@@ -1,20 +1,20 @@
-import {
+import type {
   PaymentFlowParams,
   PaymentFlowParamsStripe,
   PaymentFlowResult,
-  PaymentMethod,
-  RESET_SECURITY_FLOW_TYPE,
 } from '@beabee/beabee-common';
+import { PaymentMethod, RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { DuplicateEmailError, NotFoundError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Contact, Password, PaymentFlow, SignupFlow } from '#models/index';
+import type { Contact, Password } from '#models/index';
+import { PaymentFlow, SignupFlow } from '#models/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import OptionsService from '#services/OptionsService';
 import PaymentFlowService from '#services/PaymentFlowService';
-import { PaymentFlowForm } from '#type/index';
+import type { PaymentFlowForm } from '#type/index';
 
 import ResetSecurityFlowService from './ResetSecurityFlowService.js';
 

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class UpdateApiKeyModel1686233596892 implements MigrationInterface {
   name = 'UpdateApiKeyModel1686233596892';

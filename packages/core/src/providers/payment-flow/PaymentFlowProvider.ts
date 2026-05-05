@@ -1,5 +1,5 @@
-import { PaymentFlow } from '#models/index';
-import {
+import type { PaymentFlow } from '#models/index';
+import type {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
   PaymentFlowSetup,

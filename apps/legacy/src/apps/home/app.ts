@@ -1,6 +1,5 @@
-import OptionsService, {
-  OptionKey,
-} from '@beabee/core/services/OptionsService';
+import type { OptionKey } from '@beabee/core/services/OptionsService';
+import OptionsService from '@beabee/core/services/OptionsService';
 
 import express, { type Express } from 'express';
 import { fileURLToPath } from 'node:url';

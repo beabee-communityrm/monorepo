@@ -1,6 +1,6 @@
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
-import { Response } from 'express';
+import type { Response } from 'express';
 import {
   Authorized,
   Get,
@@ -11,9 +11,9 @@ import {
 } from 'routing-controllers';
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
-import { GetExportQuery } from '#api/dto';
-import { PaginatedDto } from '#api/dto/PaginatedDto';
-import {
+import type { GetExportQuery } from '#api/dto';
+import type { PaginatedDto } from '#api/dto/PaginatedDto';
+import type {
   GetPaymentAggregationDto,
   GetPaymentAggregationOptsDto,
   GetPaymentDto,

@@ -3,7 +3,7 @@ import { Email, EmailMailing, SegmentOngoingEmail } from '@beabee/core/models';
 import { emailService } from '@beabee/core/services/EmailService';
 import OptionsService from '@beabee/core/services/OptionsService';
 import { formatEmailBody } from '@beabee/core/templates/email';
-import { EmailMailingRecipient, EmailTemplateId } from '@beabee/core/type';
+import type { EmailMailingRecipient, EmailTemplateId } from '@beabee/core/type';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import busboy from 'connect-busboy';

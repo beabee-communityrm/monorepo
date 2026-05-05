@@ -1,5 +1,5 @@
 import { PaymentType } from '@beabee/beabee-common';
-import { FilterHandler, FilterHandlers } from '@beabee/core/type';
+import type { FilterHandler, FilterHandlers } from '@beabee/core/type';
 
 /**
  * @fileoverview Payment filter handlers for managing payment-related queries and filters

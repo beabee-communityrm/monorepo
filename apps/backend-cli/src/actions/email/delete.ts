@@ -1,6 +1,6 @@
 import { runApp } from '@beabee/core/server';
 import { emailService } from '@beabee/core/services/EmailService';
-import { EmailTemplateId } from '@beabee/core/type';
+import type { EmailTemplateId } from '@beabee/core/type';
 
 import type { DeleteEmailOverrideArgs } from '../../types/email.js';
 

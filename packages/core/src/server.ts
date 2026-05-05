@@ -1,4 +1,4 @@
-import { Express } from 'express';
+import type { Express } from 'express';
 
 import * as db from '#database';
 import { log as mainLogger } from '#logging';

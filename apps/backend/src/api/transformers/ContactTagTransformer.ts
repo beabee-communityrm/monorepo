@@ -1,9 +1,9 @@
-import {
+import type {
   ContactTagFilterName,
   Filters,
   RoleType,
-  contactTagFilters,
 } from '@beabee/beabee-common';
+import { contactTagFilters } from '@beabee/beabee-common';
 import { ContactTag, ContactTagAssignment } from '@beabee/core/models';
 
 import { GetContactTagDto } from '#api/dto';

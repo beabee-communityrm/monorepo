@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddMailchimpNLGroups1776955640900 implements MigrationInterface {
   name = 'AddMailchimpNLGroups1776955640900';

@@ -5,7 +5,7 @@ import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
 import { plainToInstance } from 'class-transformer';
-import { Request } from 'express';
+import type { Request } from 'express';
 import {
   Body,
   JsonController,
@@ -15,13 +15,13 @@ import {
   UseBefore,
 } from 'routing-controllers';
 
-import { GetContactDto } from '#api/dto/ContactDto';
+import type { GetContactDto } from '#api/dto/ContactDto';
 import { PaymentFlowResultDto } from '#api/dto/PaymentFlowDto';
-import {
+import type {
   CompleteSignupFlowDto,
   StartSignupFlowDto,
 } from '#api/dto/SignupFlowDto';
-import { SignupConfirmEmailParams } from '#api/params/SignupConfirmEmailParams';
+import type { SignupConfirmEmailParams } from '#api/params/SignupConfirmEmailParams';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import { login } from '#api/utils/auth';
 

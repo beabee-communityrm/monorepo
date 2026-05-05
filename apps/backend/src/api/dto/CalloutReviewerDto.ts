@@ -2,7 +2,7 @@ import { IsBoolean, IsIn, IsString, ValidateNested } from 'class-validator';
 
 import { GetPaginatedQuery } from '#api/dto/BaseDto';
 
-import { GetContactDto } from './ContactDto.js';
+import type { GetContactDto } from './ContactDto.js';
 
 export class CreateCalloutReviewerDto {
   @IsString()

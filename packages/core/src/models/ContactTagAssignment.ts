@@ -10,7 +10,7 @@ import {
 
 import type { TagAssignment } from '#type';
 
-import { Contact } from './Contact.js';
+import type { Contact } from './Contact.js';
 import { ContactTag } from './ContactTag.js';
 
 @Entity('contact_tag_assignments')

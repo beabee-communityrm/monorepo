@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Contact } from './Contact.js';
+import type { Contact } from './Contact.js';
 import { Password } from './Password.js';
 import { PaymentFlow } from './PaymentFlow.js';
 

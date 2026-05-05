@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddSegmentOrder1616693016456 implements MigrationInterface {
   name = 'AddSegmentOrder1616693016456';

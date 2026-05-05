@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class RemoveRestartFlow1635350051303 implements MigrationInterface {
   name = 'RemoveRestartFlow1635350051303';

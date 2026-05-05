@@ -1,4 +1,4 @@
-import { PaymentFlowParams } from '@beabee/beabee-common';
+import type { PaymentFlowParams } from '@beabee/beabee-common';
 
 import {
   Column,
@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { PaymentFlowForm } from '#type/index';
+import type { PaymentFlowForm } from '#type/index';
 
 @Entity()
 export class PaymentFlow<

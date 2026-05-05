@@ -1,7 +1,8 @@
 import { In } from 'typeorm';
 
 import { getRepository } from '#database';
-import { Contact, Segment, SegmentContact } from '#models/index';
+import type { Contact } from '#models/index';
+import { Segment, SegmentContact } from '#models/index';
 
 class SegmentService {
   async createSegment(

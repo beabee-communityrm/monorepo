@@ -7,12 +7,8 @@ import {
 import { runApp } from '@beabee/core/server';
 
 import { subDays } from 'date-fns';
-import {
-  EntityTarget,
-  FindOptionsWhere,
-  LessThan,
-  ObjectLiteral,
-} from 'typeorm';
+import type { EntityTarget, FindOptionsWhere, ObjectLiteral } from 'typeorm';
+import { LessThan } from 'typeorm';
 
 /**
  * Clean old data from a specific entity

@@ -1,7 +1,5 @@
-import {
-  ApiErrorCode,
-  CantUpdateNewsletterContactErrorData,
-} from '@beabee/beabee-common';
+import type { CantUpdateNewsletterContactErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { InternalServerError } from 'routing-controllers';
 

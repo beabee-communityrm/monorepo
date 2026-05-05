@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 
-import {
-  DataSource,
+import type {
   EntityManager,
   EntityTarget,
   ObjectLiteral,
@@ -9,6 +8,7 @@ import {
   Repository,
   SelectQueryBuilder,
 } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 import config from './config/config.js';
 import { entities } from './entities.js';

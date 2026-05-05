@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddShareFieldsToPoll1652276361695 implements MigrationInterface {
   name = 'AddShareFieldsToPoll1652276361695';

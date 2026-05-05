@@ -1,7 +1,7 @@
 import { UnauthorizedError } from '@beabee/core/errors';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
-import { Request } from 'express';
+import type { Request } from 'express';
 import { createParamDecorator } from 'routing-controllers';
 
 export function CurrentAuth(options?: { required?: boolean }) {

@@ -1,7 +1,5 @@
-import {
-  ApiErrorCode,
-  UnsupportedFileTypeErrorData,
-} from '@beabee/beabee-common';
+import type { UnsupportedFileTypeErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { HttpError } from 'routing-controllers';
 

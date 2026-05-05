@@ -1,10 +1,12 @@
-import { EmailFilterName, emailFilters } from '@beabee/beabee-common';
+import type { EmailFilterName } from '@beabee/beabee-common';
+import { emailFilters } from '@beabee/beabee-common';
 import { Email } from '@beabee/core/models';
 
 import { TransformPlainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
+import type { SelectQueryBuilder } from 'typeorm';
 
-import { GetEmailDto, ListEmailsDto } from '#api/dto/EmailDto';
+import type { ListEmailsDto } from '#api/dto/EmailDto';
+import { GetEmailDto } from '#api/dto/EmailDto';
 
 import { BaseTransformer } from './BaseTransformer.js';
 

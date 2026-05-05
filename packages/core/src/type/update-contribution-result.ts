@@ -1,4 +1,4 @@
-import { UpdateContributionForm } from './update-contribution-form.js';
+import type { UpdateContributionForm } from './update-contribution-form.js';
 
 export interface UpdateContributionResult {
   startNow: boolean;

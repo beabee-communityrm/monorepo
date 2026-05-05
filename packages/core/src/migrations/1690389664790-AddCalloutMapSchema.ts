@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddCalloutMapSchema1690389664790 implements MigrationInterface {
   name = 'AddCalloutMapSchema1690389664790';

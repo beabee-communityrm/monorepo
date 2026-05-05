@@ -1,5 +1,5 @@
 import { ContactProfile } from '@beabee/core/models';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
 import { TransformPlainToInstance } from 'class-transformer';
 

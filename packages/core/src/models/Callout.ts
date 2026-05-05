@@ -1,11 +1,13 @@
+import type {
+  CalloutChannel,
+  CalloutData,
+  CalloutResponseViewSchema,
+  SetCalloutFormSchema,
+} from '@beabee/beabee-common';
 import {
   CalloutAccess,
   CalloutCaptcha,
-  CalloutChannel,
-  CalloutData,
   type CalloutNewsletterSchema,
-  CalloutResponseViewSchema,
-  SetCalloutFormSchema,
 } from '@beabee/beabee-common';
 
 import {

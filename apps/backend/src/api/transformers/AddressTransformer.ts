@@ -1,4 +1,4 @@
-import { Address } from '@beabee/beabee-common';
+import type { Address } from '@beabee/beabee-common';
 
 import { TransformPlainToInstance } from 'class-transformer';
 

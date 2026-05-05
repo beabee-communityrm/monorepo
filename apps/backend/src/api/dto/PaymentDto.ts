@@ -18,7 +18,7 @@ import {
 } from 'class-validator';
 
 import { GetExportQuery, GetPaginatedQuery } from '#api/dto/BaseDto';
-import { GetContactDto } from '#api/dto/ContactDto';
+import type { GetContactDto } from '#api/dto/ContactDto';
 
 import { StartPaymentFlowDto } from './PaymentFlowDto.js';
 

@@ -1,11 +1,11 @@
-import {
+import type {
   CalloutTagFilterName,
   Filters,
   Rule,
-  calloutTagFilters,
 } from '@beabee/beabee-common';
+import { calloutTagFilters } from '@beabee/beabee-common';
 import { CalloutResponseTag, CalloutTag } from '@beabee/core/models';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
 import { GetCalloutTagDto } from '#api/dto';
 import { canCreateForCallout, getReviewerRules } from '#api/utils/callouts';

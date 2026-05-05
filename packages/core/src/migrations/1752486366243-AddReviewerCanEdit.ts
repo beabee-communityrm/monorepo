@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddReviewerCanEdit1752486366243 implements MigrationInterface {
   name = 'AddReviewerCanEdit1752486366243';

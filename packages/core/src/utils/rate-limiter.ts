@@ -1,4 +1,5 @@
-import { IRateLimiterOptions, RateLimiterMemory } from 'rate-limiter-flexible';
+import type { IRateLimiterOptions } from 'rate-limiter-flexible';
+import { RateLimiterMemory } from 'rate-limiter-flexible';
 
 import config from '#config/config';
 import { optionsService } from '#services/OptionsService';

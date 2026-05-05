@@ -1,6 +1,6 @@
 import nodemailer, { type Transporter } from 'nodemailer';
 
-import { SMTPEmailConfig } from '#config/config';
+import type { SMTPEmailConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { EmailOptions, EmailRecipient, PreparedEmail } from '#type/index';
 

@@ -1,14 +1,16 @@
-import { LOGIN_CODES, RoleType, RoleTypes } from '@beabee/beabee-common';
+import type { RoleType } from '@beabee/beabee-common';
+import { LOGIN_CODES, RoleTypes } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { NotFoundError, UnauthorizedError } from '@beabee/core/errors';
 import passport from '@beabee/core/lib/passport';
-import { Contact, ContactRole } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
+import { ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
-import { AuthInfo, PassportLoginInfo } from '@beabee/core/type';
+import type { AuthInfo, PassportLoginInfo } from '@beabee/core/type';
 
 import { isUUID } from 'class-validator';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import {
   Body,
   Get,
@@ -22,7 +24,7 @@ import {
 } from 'routing-controllers';
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
-import { GetAuthInfoDto, LoginDto } from '#api/dto';
+import type { GetAuthInfoDto, LoginDto } from '#api/dto';
 import { authTransformer } from '#api/transformers';
 import { login } from '#api/utils/auth';
 

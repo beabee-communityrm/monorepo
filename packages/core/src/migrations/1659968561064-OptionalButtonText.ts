@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class OptionalButtonText1659968561064 implements MigrationInterface {
   name = 'OptionalButtonText1659968561064';

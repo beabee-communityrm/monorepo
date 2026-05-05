@@ -1,4 +1,4 @@
-import { NewsletterGroupData } from '@beabee/beabee-common';
+import type { NewsletterGroupData } from '@beabee/beabee-common';
 
 import { IsBoolean, IsString } from 'class-validator';
 

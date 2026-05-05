@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn, ValueTransformer } from 'typeorm';
+import type { ValueTransformer } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 interface ReferralGiftOptions {
   name: string;

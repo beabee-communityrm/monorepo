@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddCalloutCaptchaField1709217978680 implements MigrationInterface {
   name = 'AddCalloutCaptchaField1709217978680';

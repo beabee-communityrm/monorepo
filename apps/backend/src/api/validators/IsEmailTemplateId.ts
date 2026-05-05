@@ -1,7 +1,8 @@
-import { EmailTemplateType } from '@beabee/beabee-common';
+import type { EmailTemplateType } from '@beabee/beabee-common';
 import EmailService from '@beabee/core/services/EmailService';
 
-import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
+import type { ValidationOptions } from 'class-validator';
+import { ValidateBy, buildMessage } from 'class-validator';
 
 export default function IsEmailTemplateId(
   type?: EmailTemplateType,

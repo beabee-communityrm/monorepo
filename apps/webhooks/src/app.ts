@@ -1,10 +1,10 @@
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
 import { initApp, startServer } from '@beabee/core/server';
-import OptionsService, {
-  OptionKey,
-} from '@beabee/core/services/OptionsService';
+import type { OptionKey } from '@beabee/core/services/OptionsService';
+import OptionsService from '@beabee/core/services/OptionsService';
 
-import express, { Handler, Request, Response } from 'express';
+import type { Handler, Request, Response } from 'express';
+import express from 'express';
 
 import { gocardlessWebhookApp } from '#handlers/gocardless';
 import { mailchimpWebhookApp } from '#handlers/mailchimp';

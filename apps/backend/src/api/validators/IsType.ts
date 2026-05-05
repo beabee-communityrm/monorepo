@@ -1,7 +1,8 @@
 import { isType } from '@beabee/beabee-common';
 
-import { ValidateBy, ValidationOptions } from 'class-validator';
-import { ValidationArguments } from 'class-validator';
+import type { ValidationOptions } from 'class-validator';
+import { ValidateBy } from 'class-validator';
+import type { ValidationArguments } from 'class-validator';
 
 export function IsType(
   types: Array<

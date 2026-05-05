@@ -9,7 +9,7 @@ import { describe, expect, test } from 'vitest';
 
 import config from '#config/config';
 import { Contact, ContactRole, Password } from '#models/index';
-import {
+import type {
   PaymentFlowFormCreateOneTimePayment,
   UpdateContributionForm,
 } from '#type/index';

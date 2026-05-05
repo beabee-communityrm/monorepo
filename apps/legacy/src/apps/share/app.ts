@@ -1,9 +1,8 @@
 import config from '@beabee/core/config';
 import { createQueryBuilder } from '@beabee/core/database';
 import { Callout } from '@beabee/core/models';
-import PageSettingsService, {
-  JustPageSettings,
-} from '@beabee/core/services/PageSettingsService';
+import type { JustPageSettings } from '@beabee/core/services/PageSettingsService';
+import PageSettingsService from '@beabee/core/services/PageSettingsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express, type Request, type Response } from 'express';

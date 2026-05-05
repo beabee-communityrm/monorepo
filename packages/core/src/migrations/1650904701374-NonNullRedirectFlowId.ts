@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class NonNullRedirectFlowId1650904701374 implements MigrationInterface {
   name = 'NonNullRedirectFlowId1650904701374';

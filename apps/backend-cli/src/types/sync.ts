@@ -1,4 +1,4 @@
-import { SYNC_NEWSLETTER_RECONCILE_TESTS } from '../constants/sync.js';
+import type { SYNC_NEWSLETTER_RECONCILE_TESTS } from '../constants/sync.js';
 
 export interface SyncNewsletterActiveMemberTagArgs {
   since: Date;

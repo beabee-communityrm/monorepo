@@ -1,4 +1,4 @@
-import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
+import type { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
 
 import {
   Column,

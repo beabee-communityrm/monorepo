@@ -1,20 +1,23 @@
-import { GetPaymentAggregationData } from '@beabee/beabee-common';
+import type { GetPaymentAggregationData } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
 import { NotFoundError } from '@beabee/core/errors';
-import { Contact, Payment } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
+import { Payment } from '@beabee/core/models';
 import { paymentService } from '@beabee/core/services';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
 import { TransformPlainToInstance, plainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
+import type { SelectQueryBuilder } from 'typeorm';
 
+import type {
+  GetPaymentAggregationOptsDto,
+  GetPaymentOptsDto,
+  ListPaymentsDto,
+} from '#api/dto/PaymentDto';
 import {
   GetPaymentAggregationDto,
-  GetPaymentAggregationOptsDto,
   GetPaymentDto,
-  GetPaymentOptsDto,
   GetPaymentWith,
-  ListPaymentsDto,
 } from '#api/dto/PaymentDto';
 import { BasePaymentTransformer } from '#api/transformers/BasePaymentTransformer';
 import ContactTransformer, {

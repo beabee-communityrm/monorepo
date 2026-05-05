@@ -1,8 +1,8 @@
-import {
-  ApiErrorCode,
+import type {
   InvalidCalloutResponseCode,
   InvalidCalloutResponseErrorData,
 } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
 

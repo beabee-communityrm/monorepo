@@ -1,12 +1,14 @@
-import { RoleType, RoleTypes } from '@beabee/beabee-common';
+import type { RoleType } from '@beabee/beabee-common';
+import { RoleTypes } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { NotFoundError } from '@beabee/core/errors';
-import { Contact, ContactRole } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
+import { ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 
 import { isUUID } from 'class-validator';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import {
   Get,
   JsonController,

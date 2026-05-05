@@ -1,6 +1,6 @@
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
+import type { Contact } from '@beabee/core/models';
 import {
-  Contact,
   Project,
   ProjectContact,
   ProjectEngagement,

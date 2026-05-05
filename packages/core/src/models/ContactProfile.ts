@@ -1,4 +1,5 @@
-import { Address, NewsletterStatus } from '@beabee/beabee-common';
+import type { Address } from '@beabee/beabee-common';
+import { NewsletterStatus } from '@beabee/beabee-common';
 
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 

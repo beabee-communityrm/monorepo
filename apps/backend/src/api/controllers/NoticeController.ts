@@ -1,7 +1,7 @@
 import { getRepository } from '@beabee/core/database';
 import { NotFoundError } from '@beabee/core/errors';
 import { Notice } from '@beabee/core/models';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
 import {
   Authorized,
@@ -18,13 +18,13 @@ import {
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
-import {
+import type {
   CreateNoticeDto,
   GetNoticeDto,
   ListNoticesDto,
 } from '#api/dto/NoticeDto';
-import { PaginatedDto } from '#api/dto/PaginatedDto';
-import { UUIDParams } from '#api/params/UUIDParams';
+import type { PaginatedDto } from '#api/dto/PaginatedDto';
+import type { UUIDParams } from '#api/params/UUIDParams';
 import NoticeTransformer from '#api/transformers/NoticeTransformer';
 
 @JsonController('/notice')

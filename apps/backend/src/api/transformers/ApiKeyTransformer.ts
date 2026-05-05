@@ -1,13 +1,10 @@
-import {
-  ApiKeyFilterName,
-  RoleType,
-  apiKeyFilters,
-} from '@beabee/beabee-common';
+import type { ApiKeyFilterName, RoleType } from '@beabee/beabee-common';
+import { apiKeyFilters } from '@beabee/beabee-common';
 import { ApiKey } from '@beabee/core/models';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
 import { TransformPlainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
+import type { SelectQueryBuilder } from 'typeorm';
 
 import { GetApiKeyDto } from '#api/dto/ApiKeyDto';
 

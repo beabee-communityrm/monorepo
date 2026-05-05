@@ -1,5 +1,5 @@
 import { ContributionType } from '@beabee/beabee-common';
-import { Contact } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { wrapAsync } from '@beabee/core/utils/express';

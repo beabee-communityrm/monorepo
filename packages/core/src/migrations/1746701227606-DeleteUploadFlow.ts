@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class DeleteUploadFlow1746701227606 implements MigrationInterface {
   name = 'DeleteUploadFlow1746701227606';

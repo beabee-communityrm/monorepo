@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class UpdateCalloutTag1703247945472 implements MigrationInterface {
   name = 'UpdateCalloutTag1703247945472';

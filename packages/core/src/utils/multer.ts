@@ -1,7 +1,7 @@
 import { MAX_FILE_SIZE_IN_BYTES } from '@beabee/beabee-common';
 
 import { MulterError } from 'multer';
-import { HttpError } from 'routing-controllers';
+import type { HttpError } from 'routing-controllers';
 
 import {
   BadRequestError,

@@ -1,7 +1,7 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
 
-import { Contact } from '#models';
-import { ContactNewsletterUpdates, UpdateNewsletterContact } from '#type';
+import type { Contact } from '#models';
+import type { ContactNewsletterUpdates, UpdateNewsletterContact } from '#type';
 
 import { getContributionDescription } from './contact.js';
 

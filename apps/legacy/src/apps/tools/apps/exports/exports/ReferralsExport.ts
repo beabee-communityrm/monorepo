@@ -1,9 +1,11 @@
 import { createQueryBuilder } from '@beabee/core/database';
-import { Contact, Referral } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
+import { Referral } from '@beabee/core/models';
 
-import { SelectQueryBuilder } from 'typeorm';
+import type { SelectQueryBuilder } from 'typeorm';
 
-import BaseExport, { ExportResult } from './BaseExport.js';
+import type { ExportResult } from './BaseExport.js';
+import BaseExport from './BaseExport.js';
 
 function contactDetails(contact: Contact | null) {
   return contact

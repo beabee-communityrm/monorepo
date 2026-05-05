@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddNLToCaloutResponse1744644045273 implements MigrationInterface {
   name = 'AddNLToCaloutResponse1744644045273';

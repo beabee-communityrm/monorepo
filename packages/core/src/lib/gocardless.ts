@@ -7,7 +7,7 @@ import {
 import axios from 'axios';
 import crypto from 'crypto';
 import { differenceInMonths, format } from 'date-fns';
-import { Request } from 'express';
+import type { Request } from 'express';
 import type {
   Customer,
   CustomerBankAccount,
@@ -18,18 +18,18 @@ import type {
   Refund,
   Subscription,
 } from 'gocardless-nodejs';
+import type { PaymentCurrency } from 'gocardless-nodejs/types/Types.js';
 import {
   PaymentStatus as GCPaymentStatus,
-  PaymentCurrency,
   SubscriptionIntervalUnit,
 } from 'gocardless-nodejs/types/Types.js';
 import moment from 'moment';
-import { DeepPartial } from 'typeorm';
+import type { DeepPartial } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
 import config from '#config/config';
 import { log as mainLogger } from '#logging';
-import { UpdateContributionForm } from '#type/update-contribution-form';
+import type { UpdateContributionForm } from '#type/update-contribution-form';
 import { getChargeableAmount } from '#utils/payment';
 
 const log = mainLogger.child({ app: 'gocardless-api' });

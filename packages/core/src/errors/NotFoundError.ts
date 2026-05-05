@@ -1,4 +1,5 @@
-import { ApiErrorCode, NotFoundErrorData } from '@beabee/beabee-common';
+import type { NotFoundErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { NotFoundError as _NotFoundError } from 'routing-controllers';
 

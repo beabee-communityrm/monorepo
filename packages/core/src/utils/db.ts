@@ -1,4 +1,5 @@
-import { QueryFailedError, QueryRunner } from 'typeorm';
+import type { QueryRunner } from 'typeorm';
+import { QueryFailedError } from 'typeorm';
 
 import type { PgError } from '../type/index.js';
 

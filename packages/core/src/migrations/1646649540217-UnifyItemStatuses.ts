@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class UnifyItemStatuses1646649540217 implements MigrationInterface {
   name = 'UnifyItemStatuses1646649540217';

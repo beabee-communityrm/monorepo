@@ -1,18 +1,21 @@
-import { PaginatedQuery, segmentFilters } from '@beabee/beabee-common';
+import type { PaginatedQuery } from '@beabee/beabee-common';
+import { segmentFilters } from '@beabee/beabee-common';
 import { InvalidRuleError } from '@beabee/core/errors';
 import { CalloutResponseSegment } from '@beabee/core/models';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
 import { TransformPlainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
+import type { SelectQueryBuilder } from 'typeorm';
 
-import {
-  GetCalloutResponseSegmentDto,
+import type {
   GetCalloutResponseSegmentOptsDto,
-  GetCalloutResponseSegmentWith,
   ListCalloutResponseSegmentsDto,
 } from '#api/dto/CalloutResponseSegmentDto';
-import { TransformerOperation } from '#type/transformer-operation';
+import {
+  GetCalloutResponseSegmentDto,
+  GetCalloutResponseSegmentWith,
+} from '#api/dto/CalloutResponseSegmentDto';
+import type { TransformerOperation } from '#type/transformer-operation';
 
 import { BaseTransformer } from './BaseTransformer.js';
 import CalloutResponseTransformer from './CalloutResponseTransformer.js';

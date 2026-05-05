@@ -1,10 +1,10 @@
-import { Payment } from '@beabee/core/models';
-import { AuthInfo } from '@beabee/core/type';
+import type { Payment } from '@beabee/core/models';
+import type { AuthInfo } from '@beabee/core/type';
 
 import { stringify } from 'csv-stringify/sync';
-import { SelectQueryBuilder } from 'typeorm';
+import type { SelectQueryBuilder } from 'typeorm';
 
-import { ExportPaymentDto, GetExportQuery } from '#api/dto';
+import type { ExportPaymentDto, GetExportQuery } from '#api/dto';
 
 import { BasePaymentTransformer } from './BasePaymentTransformer.js';
 

@@ -3,12 +3,12 @@ import { createQueryBuilder } from '@beabee/core/database';
 import { Contact } from '@beabee/core/models';
 
 import _ from 'lodash';
-import { SelectQueryBuilder } from 'typeorm';
+import type { SelectQueryBuilder } from 'typeorm';
 
-import { Param } from '#core/utils/params';
+import type { Param } from '#core/utils/params';
 
 import ActiveMembersExport from './ActiveMembersExport.js';
-import { ExportResult } from './BaseExport.js';
+import type { ExportResult } from './BaseExport.js';
 
 export default class EditionExport extends ActiveMembersExport {
   exportName = 'Edition export';

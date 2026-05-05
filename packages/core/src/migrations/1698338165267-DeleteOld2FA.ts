@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class DeleteOld2FA1698338165267 implements MigrationInterface {
   name = 'DeleteOld2FA1698338165267';

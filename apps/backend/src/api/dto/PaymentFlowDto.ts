@@ -1,4 +1,5 @@
-import { PaymentFlowResult, PaymentMethod } from '@beabee/beabee-common';
+import type { PaymentFlowResult } from '@beabee/beabee-common';
+import { PaymentMethod } from '@beabee/beabee-common';
 
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 

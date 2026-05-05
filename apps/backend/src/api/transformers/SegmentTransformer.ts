@@ -1,16 +1,13 @@
-import { SegmentFilterName, segmentFilters } from '@beabee/beabee-common';
+import type { SegmentFilterName } from '@beabee/beabee-common';
+import { segmentFilters } from '@beabee/beabee-common';
 import { InvalidRuleError } from '@beabee/core/errors';
 import { Segment } from '@beabee/core/models';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
 import { TransformPlainToInstance } from 'class-transformer';
 
-import {
-  GetSegmentDto,
-  GetSegmentOptsDto,
-  GetSegmentWith,
-  ListSegmentsDto,
-} from '#api/dto/SegmentDto';
+import type { GetSegmentOptsDto, ListSegmentsDto } from '#api/dto/SegmentDto';
+import { GetSegmentDto, GetSegmentWith } from '#api/dto/SegmentDto';
 import { BaseTransformer } from '#api/transformers/BaseTransformer';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 

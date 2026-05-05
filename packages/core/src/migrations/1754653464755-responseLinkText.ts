@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ResponseLinkText1754653464755 implements MigrationInterface {
   name = 'ResponseLinkText1754653464755';

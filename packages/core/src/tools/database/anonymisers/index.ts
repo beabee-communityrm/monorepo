@@ -2,21 +2,17 @@ import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { log as mainLogger } from '@beabee/core/logging';
 import { Callout, CalloutResponse } from '@beabee/core/models';
 
-import {
+import type {
   EntityTarget,
   ObjectLiteral,
   OrderByCondition,
   SelectQueryBuilder,
 } from 'typeorm';
 
-import { QueryDeepPartialEntity } from '#type/typeorm-utils';
+import type { QueryDeepPartialEntity } from '#type/typeorm-utils';
 
-import {
-  ModelAnonymiser,
-  ObjectMap,
-  PropertyMap,
-  createAnswersAnonymiser,
-} from './models.js';
+import type { ModelAnonymiser, ObjectMap, PropertyMap } from './models.js';
+import { createAnswersAnonymiser } from './models.js';
 
 const log = mainLogger.child({ app: 'anonymisers' });
 

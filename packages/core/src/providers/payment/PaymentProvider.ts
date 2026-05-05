@@ -1,8 +1,9 @@
-import { PaymentMethod } from '@beabee/beabee-common';
+import type { PaymentMethod } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
-import { Contact, ContactContribution } from '#models/index';
-import {
+import type { Contact } from '#models/index';
+import { ContactContribution } from '#models/index';
+import type {
   CompletedPaymentFlow,
   ContributionInfo,
   PaymentFlowForm,

@@ -1,5 +1,5 @@
 import { DuplicateTagNameError, NotFoundError } from '@beabee/core/errors';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
 import {
   Body,
@@ -15,7 +15,11 @@ import {
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
-import { CreateContactTagDto, GetContactTagDto, ListTagsDto } from '#api/dto';
+import type {
+  CreateContactTagDto,
+  GetContactTagDto,
+  ListTagsDto,
+} from '#api/dto';
 import contactTagTransformer from '#api/transformers/ContactTagTransformer';
 
 /**

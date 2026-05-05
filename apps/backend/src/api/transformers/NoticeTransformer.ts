@@ -1,9 +1,5 @@
-import {
-  ItemStatus,
-  NoticeFilterName,
-  Rule,
-  noticeFilters,
-} from '@beabee/beabee-common';
+import type { NoticeFilterName, Rule } from '@beabee/beabee-common';
+import { ItemStatus, noticeFilters } from '@beabee/beabee-common';
 import { statusFilterHandler } from '@beabee/core/filter-handlers';
 import { Notice } from '@beabee/core/models';
 

@@ -1,19 +1,14 @@
-import {
+import type {
   PaginatedQuery,
   Rule,
   RuleGroup,
   RuleOperator,
   RuleValue,
-  isRuleGroup,
-  ruleOperators,
 } from '@beabee/beabee-common';
+import { isRuleGroup, ruleOperators } from '@beabee/beabee-common';
 
-import {
-  Transform,
-  TransformFnParams,
-  Type,
-  plainToInstance,
-} from 'class-transformer';
+import type { TransformFnParams } from 'class-transformer';
+import { Transform, Type, plainToInstance } from 'class-transformer';
 import {
   IsArray,
   IsIn,

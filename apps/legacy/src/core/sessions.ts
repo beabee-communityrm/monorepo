@@ -1,10 +1,11 @@
-import { RoleType } from '@beabee/beabee-common';
+import type { RoleType } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { dataSource } from '@beabee/core/database';
 import passport from '@beabee/core/lib/passport';
 
 import _pgSession from 'connect-pg-simple';
-import express, { RequestHandler, Response } from 'express';
+import type express from 'express';
+import type { RequestHandler, Response } from 'express';
 import session from 'express-session';
 import type { Pool } from 'pg';
 

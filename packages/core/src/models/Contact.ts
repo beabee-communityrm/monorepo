@@ -1,4 +1,4 @@
-import {
+import type {
   ContributionInfo,
   ContributionPeriod,
   ContributionType,
@@ -20,7 +20,7 @@ import type { TaggableEntity } from '#type';
 import { getContributionDescription } from '#utils/contact';
 import { getActualAmount } from '#utils/payment';
 
-import { ContactTagAssignment } from './ContactTagAssignment.js';
+import type { ContactTagAssignment } from './ContactTagAssignment.js';
 import { Password } from './Password.js';
 import type {
   ContactContribution,

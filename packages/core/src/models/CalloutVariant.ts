@@ -1,4 +1,4 @@
-import { CalloutVariantNavigationData } from '@beabee/beabee-common';
+import type { CalloutVariantNavigationData } from '@beabee/beabee-common';
 
 import {
   Column,

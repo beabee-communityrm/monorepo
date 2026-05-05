@@ -1,5 +1,6 @@
-import { ApiErrorCode, InvalidRuleErrorData } from '@beabee/beabee-common';
-import { Rule } from '@beabee/beabee-common';
+import type { InvalidRuleErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
+import type { Rule } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
 

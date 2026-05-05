@@ -1,6 +1,6 @@
-import { PaginatedQuery } from '@beabee/beabee-common';
+import type { PaginatedQuery } from '@beabee/beabee-common';
 
-import { ObjectLiteral } from 'typeorm';
+import type { ObjectLiteral } from 'typeorm';
 
 export interface FetchRawResult<
   Model extends ObjectLiteral,

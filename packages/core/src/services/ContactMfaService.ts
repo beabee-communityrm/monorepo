@@ -3,8 +3,9 @@ import { LOGIN_CODES } from '@beabee/beabee-common';
 import { getRepository } from '#database';
 import { NotFoundError, UnauthorizedError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Contact, ContactMfa } from '#models/index';
-import {
+import type { Contact } from '#models/index';
+import { ContactMfa } from '#models/index';
+import type {
   ContactMfaSecure,
   CreateContactMfaData,
   DeleteContactMfaData,

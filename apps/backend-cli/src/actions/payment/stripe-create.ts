@@ -4,11 +4,11 @@ import {
   getSalesTaxRateObject,
   stripe,
 } from '@beabee/core/lib/stripe';
-import { Contact } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
 import { paymentService } from '@beabee/core/services';
-import { UpdateContributionForm } from '@beabee/core/type';
+import type { UpdateContributionForm } from '@beabee/core/type';
 
-import Stripe from 'stripe';
+import type Stripe from 'stripe';
 
 import type { CreatePaymentArgs } from '../../types/index.js';
 

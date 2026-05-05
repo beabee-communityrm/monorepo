@@ -1,6 +1,6 @@
 import gunzip from 'gunzip-maybe';
 import type { FormatEnum } from 'sharp';
-import { Readable } from 'stream';
+import type { Readable } from 'stream';
 import tar from 'tar-stream';
 
 /**

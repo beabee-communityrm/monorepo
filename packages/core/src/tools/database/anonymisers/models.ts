@@ -1,6 +1,5 @@
-import {
+import type {
   CalloutComponentSchema,
-  CalloutComponentType,
   CalloutResponseAnswer,
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
@@ -8,6 +7,7 @@ import {
   CalloutResponseAnswersSlide,
   SetCalloutSlideSchema,
 } from '@beabee/beabee-common';
+import { CalloutComponentType } from '@beabee/beabee-common';
 import {
   Callout,
   CalloutResponse,
@@ -48,7 +48,7 @@ import {
 
 import { Chance } from 'chance';
 import crypto from 'crypto';
-import { EntityTarget, ObjectLiteral } from 'typeorm';
+import type { EntityTarget, ObjectLiteral } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
 /**

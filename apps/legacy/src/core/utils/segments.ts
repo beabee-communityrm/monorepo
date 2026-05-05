@@ -1,5 +1,5 @@
+import type { Filters } from '@beabee/beabee-common';
 import {
-  Filters,
   calloutResponseFilters,
   contactCalloutFilters,
   contactFilters,
@@ -9,7 +9,8 @@ import {
 } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { contactFilterHandlers } from '@beabee/core/filter-handlers';
-import { Callout, Contact, Segment } from '@beabee/core/models';
+import type { Segment } from '@beabee/core/models';
+import { Callout, Contact } from '@beabee/core/models';
 import { prefixKeys } from '@beabee/core/utils/objects';
 import { buildSelectQuery } from '@beabee/core/utils/rules';
 

@@ -1,12 +1,13 @@
 import config from '#config/config';
 import { getRepository } from '#database';
 import { log as mainLogger } from '#logging';
-import { Contact, ContactProfile } from '#models';
+import type { Contact } from '#models';
+import { ContactProfile } from '#models';
 import {
   MailchimpBulkProvider,
   NoneBulkProvider,
 } from '#providers/newsletter-bulk/index';
-import {
+import type {
   NewsletterBulkProvider,
   NewsletterContact,
   NewsletterFetchContactsOpts,

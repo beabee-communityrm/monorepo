@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class RenameModels1670242308699 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ConvertAllPollsToBuilderTemplate1648725496337
   implements MigrationInterface

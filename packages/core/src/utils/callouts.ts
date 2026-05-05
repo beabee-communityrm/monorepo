@@ -4,9 +4,9 @@
  * Frontend-relevant callout utilities live in `@beabee/beabee-common` — these
  * helpers exist here because they are only consumed by backend tooling today.
  */
+import type { CalloutComponentSchema } from '@beabee/beabee-common';
 import {
   CalloutComponentBaseType,
-  CalloutComponentSchema,
   CalloutComponentType,
   isCalloutComponentOfBaseType,
   isCalloutComponentOfType,

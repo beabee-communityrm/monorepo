@@ -1,12 +1,11 @@
-import {
+import type {
   CalloutFilterName,
   Filters,
-  ItemStatus,
   PaginatedQuery,
   Rule,
   RuleGroup,
-  calloutFilters,
 } from '@beabee/beabee-common';
+import { ItemStatus, calloutFilters } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
 import {
   BadRequestError,
@@ -20,22 +19,18 @@ import {
   CalloutReviewer,
   CalloutVariant,
 } from '@beabee/core/models';
-import { AuthInfo, FilterHandlers } from '@beabee/core/type';
+import type { AuthInfo, FilterHandlers } from '@beabee/core/type';
 import { groupBy } from '@beabee/core/utils/objects';
 
 import { TransformPlainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
+import type { SelectQueryBuilder } from 'typeorm';
 
-import {
-  GetCalloutDto,
-  GetCalloutOptsDto,
-  GetCalloutWith,
-  ListCalloutsDto,
-} from '#api/dto/CalloutDto';
+import type { GetCalloutOptsDto, ListCalloutsDto } from '#api/dto/CalloutDto';
+import { GetCalloutDto, GetCalloutWith } from '#api/dto/CalloutDto';
 import { BaseTransformer } from '#api/transformers/BaseTransformer';
 import CalloutVariantTransformer from '#api/transformers/CalloutVariantTransformer';
 import { getReviewerRules } from '#api/utils/callouts';
-import { TransformerOperation } from '#type/index';
+import type { TransformerOperation } from '#type/index';
 
 const isOpenOrEndedRule: RuleGroup = {
   condition: 'OR',

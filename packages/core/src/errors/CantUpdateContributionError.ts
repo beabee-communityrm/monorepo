@@ -1,7 +1,5 @@
-import {
-  ApiErrorCode,
-  CantUpdateContributionErrorData,
-} from '@beabee/beabee-common';
+import type { CantUpdateContributionErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
 

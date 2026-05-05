@@ -1,8 +1,8 @@
-import {
-  ApiErrorCode,
+import type {
   RESET_SECURITY_FLOW_ERROR_CODE,
   ResetSecurityFlowErrorData,
 } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
 

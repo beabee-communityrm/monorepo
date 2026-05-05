@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class RenameJoinFlowAmountToMonthlyAmount1624469115041
   implements MigrationInterface

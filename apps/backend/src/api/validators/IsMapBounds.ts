@@ -1,6 +1,7 @@
 import { isMapBounds } from '@beabee/beabee-common';
 
-import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
+import type { ValidationOptions } from 'class-validator';
+import { ValidateBy, buildMessage } from 'class-validator';
 
 export default function IsMapBounds(
   validationOptions?: ValidationOptions

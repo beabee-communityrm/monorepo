@@ -1,4 +1,4 @@
-import {
+import type {
   CalloutResponseAnswersSlide,
   CalloutResponseNewsletterData,
 } from '@beabee/beabee-common';

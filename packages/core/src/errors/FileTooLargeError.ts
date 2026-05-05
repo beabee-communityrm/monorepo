@@ -1,8 +1,5 @@
-import {
-  ApiErrorCode,
-  FileTooLargeErrorData,
-  bytesToHumanReadable,
-} from '@beabee/beabee-common';
+import type { FileTooLargeErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode, bytesToHumanReadable } from '@beabee/beabee-common';
 
 import { HttpError } from 'routing-controllers';
 

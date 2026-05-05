@@ -1,27 +1,24 @@
-import { GetCalloutResponseWith, Rule } from '@beabee/beabee-common';
+import type { Rule } from '@beabee/beabee-common';
+import { GetCalloutResponseWith } from '@beabee/beabee-common';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { NotFoundError } from '@beabee/core/errors';
-import {
-  Callout,
-  CalloutResponse,
-  CalloutResponseComment,
-  Contact,
-} from '@beabee/core/models';
-import { AuthInfo } from '@beabee/core/type';
+import type { CalloutResponse, Contact } from '@beabee/core/models';
+import { Callout, CalloutResponseComment } from '@beabee/core/models';
+import type { AuthInfo } from '@beabee/core/type';
 import { batchUpdate } from '@beabee/core/utils/rules';
 
 import { TransformPlainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
+import type { SelectQueryBuilder } from 'typeorm';
+import type { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
 
-import {
+import type {
   BatchUpdateCalloutResponseDto,
-  GetCalloutResponseDto,
   GetCalloutResponseOptsDto,
   ListCalloutResponsesDto,
   UpdateCalloutResponseDto,
 } from '#api/dto/CalloutResponseDto';
-import { PaginatedDto } from '#api/dto/PaginatedDto';
+import { GetCalloutResponseDto } from '#api/dto/CalloutResponseDto';
+import type { PaginatedDto } from '#api/dto/PaginatedDto';
 import { BaseCalloutResponseTransformer } from '#api/transformers/BaseCalloutResponseTransformer';
 import CalloutResponseCommentTransformer from '#api/transformers/CalloutResponseCommentTransformer';
 import calloutTagTransformer from '#api/transformers/CalloutTagTransformer';

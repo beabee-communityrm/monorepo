@@ -1,9 +1,5 @@
-import {
-  ValidateBy,
-  ValidationOptions,
-  buildMessage,
-  isString,
-} from 'class-validator';
+import type { ValidationOptions } from 'class-validator';
+import { ValidateBy, buildMessage, isString } from 'class-validator';
 
 export default function IsNonEmptyString(
   validationOptions?: ValidationOptions

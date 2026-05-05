@@ -1,6 +1,6 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
 
-import { MailchimpNewsletterConfig } from '#config/config';
+import type { MailchimpNewsletterConfig } from '#config/config';
 import { CantUpdateNewsletterContactError } from '#errors/index';
 import {
   createInstance,
@@ -10,7 +10,7 @@ import {
 } from '#lib/mailchimp';
 import { log as mainLogger } from '#logging';
 import OptionsService from '#services/OptionsService';
-import {
+import type {
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact,

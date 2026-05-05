@@ -1,8 +1,8 @@
-import {
+import type {
   CalloutResponseCommentFilterName,
   Rule,
-  calloutResponseCommentFilters,
 } from '@beabee/beabee-common';
+import { calloutResponseCommentFilters } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
 import { BadRequestError } from '@beabee/core/errors';
 import {
@@ -10,10 +10,10 @@ import {
   CalloutResponseComment,
   CalloutReviewer,
 } from '@beabee/core/models';
-import { AuthInfo, FilterHandlers } from '@beabee/core/type';
+import type { AuthInfo, FilterHandlers } from '@beabee/core/type';
 
 import { TransformPlainToInstance } from 'class-transformer';
-import { SelectQueryBuilder } from 'typeorm';
+import type { SelectQueryBuilder } from 'typeorm';
 
 import { GetCalloutResponseCommentDto } from '#api/dto/CalloutResponseCommentDto';
 import { BaseTransformer } from '#api/transformers/BaseTransformer';

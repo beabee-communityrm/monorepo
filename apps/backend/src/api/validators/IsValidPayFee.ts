@@ -1,7 +1,9 @@
-import { ContributionPeriod, isValidPayFee } from '@beabee/beabee-common';
+import type { ContributionPeriod } from '@beabee/beabee-common';
+import { isValidPayFee } from '@beabee/beabee-common';
 import OptionsService from '@beabee/core/services/OptionsService';
 
-import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
+import type { ValidationOptions } from 'class-validator';
+import { ValidateBy, buildMessage } from 'class-validator';
 
 export default function IsValidPayFee(
   validationOptions?: ValidationOptions

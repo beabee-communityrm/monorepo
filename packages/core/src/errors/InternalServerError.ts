@@ -1,4 +1,5 @@
-import { ApiErrorCode, InternalServerErrorData } from '@beabee/beabee-common';
+import type { InternalServerErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { InternalServerError as _InternalServerError } from 'routing-controllers';
 

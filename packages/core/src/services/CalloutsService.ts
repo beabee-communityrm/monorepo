@@ -1,13 +1,15 @@
-import {
-  CalloutAccess,
+import type {
   CalloutResponseAnswersSlide,
   CalloutResponseGuestData,
   CalloutResponseNewsletterData,
   CreateCalloutData,
   FormioFile,
   GetCalloutFormSchema,
-  NewsletterStatus,
   UpdateCalloutData,
+} from '@beabee/beabee-common';
+import {
+  CalloutAccess,
+  NewsletterStatus,
   isFileUploadAnswer,
 } from '@beabee/beabee-common';
 
@@ -24,6 +26,7 @@ import {
   NotFoundError,
 } from '#errors/index';
 import { log as mainLogger } from '#logging';
+import type { Contact } from '#models/index';
 import {
   Callout,
   CalloutResponse,
@@ -32,13 +35,12 @@ import {
   CalloutReviewer,
   CalloutTag,
   CalloutVariant,
-  Contact,
 } from '#models/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
-import { QueryDeepPartialEntity } from '#type/typeorm-utils';
+import type { QueryDeepPartialEntity } from '#type/typeorm-utils';
 import { isDuplicateIndex } from '#utils/db';
 import { normalizeEmailAddress } from '#utils/email';
 

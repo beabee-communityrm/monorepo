@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { createRequire } from 'node:module';
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 const require = createRequire(import.meta.url);
 

@@ -1,13 +1,8 @@
 import { ContributionPeriod, isPeriod } from '@beabee/beabee-common';
 import OptionsService from '@beabee/core/services/OptionsService';
 
-import {
-  ValidateBy,
-  ValidationArguments,
-  ValidationOptions,
-  buildMessage,
-  isNumber,
-} from 'class-validator';
+import type { ValidationArguments, ValidationOptions } from 'class-validator';
+import { ValidateBy, buildMessage, isNumber } from 'class-validator';
 
 function getMinAmount(period: ContributionPeriod) {
   const minMonthlyAmount = OptionsService.getInt(

@@ -1,14 +1,12 @@
-import {
+import type {
   CalloutComponentBaseInputSchema,
   CalloutComponentBaseInputSelectableSchema,
   CalloutComponentBaseNestableSchema,
   CalloutComponentBaseRules,
   CalloutComponentBaseSchema,
-  CalloutComponentBaseType,
   CalloutComponentContentSchema,
   CalloutComponentInputSelectSchema,
   CalloutComponentSchema,
-  CalloutComponentType,
   CalloutResponseAnswer,
   GetCalloutFormSchema,
   GetCalloutNavigationSchema,
@@ -16,6 +14,10 @@ import {
   SetCalloutFormSchema,
   SetCalloutNavigationSchema,
   SetCalloutSlideSchema,
+} from '@beabee/beabee-common';
+import {
+  CalloutComponentBaseType,
+  CalloutComponentType,
   calloutComponentInputSelectableTypes,
   calloutComponentInputTypes,
   calloutComponentNestableTypes,
@@ -24,6 +26,7 @@ import {
 import { log as mainLogger } from '@beabee/core/logging';
 
 import { Transform, Type, plainToInstance } from 'class-transformer';
+import type { ValidationOptions } from 'class-validator';
 import {
   Equals,
   IsBoolean,
@@ -33,7 +36,6 @@ import {
   IsString,
   ValidateBy,
   ValidateNested,
-  ValidationOptions,
   buildMessage,
   validate,
 } from 'class-validator';

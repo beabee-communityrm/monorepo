@@ -1,6 +1,6 @@
-import { AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
 
-import { MCMember } from './mc-member.js';
+import type { MCMember } from './mc-member.js';
 
 interface UpsertMCMemberResponseBadRequest extends AxiosResponse {
   status: 400;

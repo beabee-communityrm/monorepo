@@ -1,4 +1,4 @@
-import { PaymentFlowParams } from '@beabee/beabee-common';
+import type { PaymentFlowParams } from '@beabee/beabee-common';
 
 import type { PaymentFlowForm } from '#type/payment-flow-form';
 

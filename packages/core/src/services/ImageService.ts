@@ -1,6 +1,6 @@
+import type { S3Metadata } from '@beabee/beabee-common';
 import {
   ALLOWED_IMAGE_MIME_TYPES,
-  S3Metadata,
   isSupportedImageType,
 } from '@beabee/beabee-common';
 
@@ -15,7 +15,7 @@ import { randomUUID } from 'crypto';
 import { extname } from 'path';
 import { HttpError } from 'routing-controllers';
 import sharp from 'sharp';
-import { Readable } from 'stream';
+import type { Readable } from 'stream';
 import { optimize } from 'svgo';
 
 import config from '../config/config.js';

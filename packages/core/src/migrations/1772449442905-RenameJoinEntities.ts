@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class RenameJoinEntities1772449442905 implements MigrationInterface {
   name = 'RenameJoinEntities1772449442905';

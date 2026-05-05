@@ -1,7 +1,10 @@
-import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
+import type {
+  ContributionPeriod,
+  ContributionType,
+} from '@beabee/beabee-common';
 
 import config from '#config/config';
-import { Contact } from '#models/index';
+import type { Contact } from '#models/index';
 
 import { getActualAmount } from './payment.js';
 

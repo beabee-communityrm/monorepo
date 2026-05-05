@@ -1,5 +1,5 @@
 import { log as mainLogger } from '#logging';
-import { Contact } from '#models';
+import type { Contact } from '#models';
 import ApiKeyService from '#services/ApiKeyService';
 import CalloutsService from '#services/CalloutsService';
 import ContactMfaService from '#services/ContactMfaService';

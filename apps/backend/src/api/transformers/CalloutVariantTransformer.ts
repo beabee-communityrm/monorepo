@@ -1,16 +1,13 @@
-import {
-  PaginatedQuery,
-  Rule,
-  calloutVariantFilters,
-} from '@beabee/beabee-common';
+import type { PaginatedQuery, Rule } from '@beabee/beabee-common';
+import { calloutVariantFilters } from '@beabee/beabee-common';
 import { CalloutVariant } from '@beabee/core/models';
-import { AuthInfo } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
 
 import { TransformPlainToInstance } from 'class-transformer';
 
 import { CalloutVariantDto } from '#api/dto/CalloutVariantDto';
 import { canCreateForCallout, getReviewerRules } from '#api/utils';
-import { TransformerOperation } from '#type/transformer-operation';
+import type { TransformerOperation } from '#type/transformer-operation';
 
 import { BaseTransformer } from './BaseTransformer.js';
 

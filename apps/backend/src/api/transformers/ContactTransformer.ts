@@ -1,25 +1,28 @@
-import { GetContactWith, Rule, RuleGroup } from '@beabee/beabee-common';
+import type { Rule, RuleGroup } from '@beabee/beabee-common';
+import { GetContactWith } from '@beabee/beabee-common';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { UnauthorizedError } from '@beabee/core/errors';
-import { CalloutReviewer, Contact, ContactRole } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
+import { CalloutReviewer, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import PaymentService from '@beabee/core/services/PaymentService';
-import { AuthInfo } from '@beabee/core/type';
-import { QueryDeepPartialEntity } from '@beabee/core/type';
+import type { AuthInfo } from '@beabee/core/type';
+import type { QueryDeepPartialEntity } from '@beabee/core/type';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { batchSelect, batchUpdate } from '@beabee/core/utils/rules';
 
 import { TransformPlainToInstance } from 'class-transformer';
-import { In, SelectQueryBuilder } from 'typeorm';
+import type { SelectQueryBuilder } from 'typeorm';
+import { In } from 'typeorm';
 
-import {
+import type {
   BatchUpdateContactDto,
   BatchUpdateContactUpdatesDto,
-  GetContactDto,
   GetContactOptsDto,
   ListContactsDto,
   UpdateContactDto,
 } from '#api/dto/ContactDto';
+import { GetContactDto } from '#api/dto/ContactDto';
 import { BaseContactTransformer } from '#api/transformers/BaseContactTransformer';
 import ContactProfileTransformer from '#api/transformers/ContactProfileTransformer';
 import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';

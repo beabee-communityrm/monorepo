@@ -1,4 +1,5 @@
-import { ApiErrorCode, BadRequestErrorData } from '@beabee/beabee-common';
+import type { BadRequestErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { BadRequestError as _BadRequestError } from 'routing-controllers';
 

@@ -1,6 +1,7 @@
 import { BadRequestError } from '@beabee/core/errors';
 
-import { ValidatorOptions, validate } from 'class-validator';
+import type { ValidatorOptions } from 'class-validator';
+import { validate } from 'class-validator';
 
 /**
  * Validate an object using the same base options as the main API validator

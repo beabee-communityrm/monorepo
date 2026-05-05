@@ -1,9 +1,10 @@
+import type { EmailTemplateType } from '@beabee/beabee-common';
 import {
-  EmailTemplateType,
   type GetEmailTemplateInfoData,
   type SegmentOngoingEmailTrigger,
 } from '@beabee/beabee-common';
-import { Locale, isLocale } from '@beabee/locale';
+import type { Locale } from '@beabee/locale';
+import { isLocale } from '@beabee/locale';
 
 import fs from 'fs';
 import { fileURLToPath } from 'node:url';
@@ -22,12 +23,8 @@ import {
 } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import { log as mainLogger } from '#logging';
-import {
-  Contact,
-  Email,
-  EmailMailing,
-  SegmentOngoingEmail,
-} from '#models/index';
+import type { Contact } from '#models/index';
+import { Email, EmailMailing, SegmentOngoingEmail } from '#models/index';
 import {
   MandrillProvider,
   SMTPProvider,
@@ -35,7 +32,7 @@ import {
 } from '#providers/email/index';
 import OptionsService from '#services/OptionsService';
 import { formatEmailBody } from '#templates/email';
-import {
+import type {
   AdminEmailParams,
   AdminEmailTemplateId,
   ContactEmailOptions,

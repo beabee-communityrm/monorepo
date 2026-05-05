@@ -3,7 +3,7 @@ import { dataSource } from '@beabee/core/database';
 import passport from '@beabee/core/lib/passport';
 
 import _pgSession from 'connect-pg-simple';
-import express from 'express';
+import type express from 'express';
 import session from 'express-session';
 import type { Pool } from 'pg';
 

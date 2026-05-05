@@ -1,4 +1,5 @@
-import { ApiErrorCode, DuplicateEmailErrorData } from '@beabee/beabee-common';
+import type { DuplicateEmailErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
 

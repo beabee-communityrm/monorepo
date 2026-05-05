@@ -1,16 +1,15 @@
-import {
-  Address,
-  ContributionType,
-  NewsletterStatus,
-} from '@beabee/beabee-common';
+import type { Address } from '@beabee/beabee-common';
+import { ContributionType, NewsletterStatus } from '@beabee/beabee-common';
 
 import moment from 'moment';
 
 import config from '#config/config';
 import { getRepository } from '#database';
-import { Stripe, stripe } from '#lib/stripe';
+import type { Stripe } from '#lib/stripe';
+import { stripe } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
-import { ContactRole, GiftFlow, GiftForm } from '#models/index';
+import type { GiftForm } from '#models/index';
+import { ContactRole, GiftFlow } from '#models/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import OptionsService from '#services/OptionsService';

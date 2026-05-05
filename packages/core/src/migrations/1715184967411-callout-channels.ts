@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CalloutChannels1715184967411 implements MigrationInterface {
   name = 'CalloutChannels1715184967411';

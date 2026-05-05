@@ -1,4 +1,5 @@
-import { ApiErrorCode, CaptchaFailedErrorData } from '@beabee/beabee-common';
+import type { CaptchaFailedErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
 

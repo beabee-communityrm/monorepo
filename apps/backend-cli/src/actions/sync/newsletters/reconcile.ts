@@ -1,15 +1,15 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
 import { log as mainLogger } from '@beabee/core/logging';
-import { Contact } from '@beabee/core/models';
+import type { Contact } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import {
   contactsService,
   newsletterBulkService,
   optionsService,
 } from '@beabee/core/services';
-import { NewsletterContact } from '@beabee/core/type';
+import type { NewsletterContact } from '@beabee/core/type';
 
-import {
+import type {
   SyncNewsletterReconcileArgs,
   SyncNewsletterReconcileTestId,
 } from '../../../types/sync.js';

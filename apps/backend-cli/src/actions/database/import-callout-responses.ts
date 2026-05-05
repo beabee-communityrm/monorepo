@@ -12,13 +12,15 @@
  *   - bucket
  *   - created_at: parsed with --date-format (default ISO)
  */
-import {
+import type {
   CalloutComponentSchema,
-  CalloutComponentType,
   CalloutResponseAnswer,
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
+} from '@beabee/beabee-common';
+import {
+  CalloutComponentType,
   getCalloutComponents,
 } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';

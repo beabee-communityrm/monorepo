@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class FixContactProfileKeys1676623400914 implements MigrationInterface {
   name = 'FixContactProfileKeys1676623400914';

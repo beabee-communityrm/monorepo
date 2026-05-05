@@ -1,4 +1,4 @@
-import {
+import type {
   ContentContactsData,
   ContentEmailData,
   ContentGeneralData,
@@ -9,12 +9,11 @@ import {
   ContentPaymentData,
   ContentProfileData,
   ContentShareData,
-  ContributionPeriod,
-  PaymentMethod,
   PaymentPeriod,
   StripeFeeCountry,
 } from '@beabee/beabee-common';
-import { Locale } from '@beabee/locale';
+import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
+import type { Locale } from '@beabee/locale';
 
 import { Type } from 'class-transformer';
 import {
@@ -28,7 +27,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-import { GetContentTelegramDto } from '#api/dto/ContentTelegramDto';
+import type { GetContentTelegramDto } from '#api/dto/ContentTelegramDto';
 import { LinkDto } from '#api/dto/LinkDto';
 import { NewsletterGroupDto } from '#api/dto/NewsletterDto';
 import IsFromEmail from '#api/validators/IsFromEmail';

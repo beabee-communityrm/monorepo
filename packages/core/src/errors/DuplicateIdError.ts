@@ -1,4 +1,5 @@
-import { ApiErrorCode, DuplicateIdErrorData } from '@beabee/beabee-common';
+import type { DuplicateIdErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
 

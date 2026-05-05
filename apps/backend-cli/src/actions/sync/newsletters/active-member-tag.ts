@@ -7,7 +7,7 @@ import { newsletterBulkService, optionsService } from '@beabee/core/services';
 
 import { Between } from 'typeorm';
 
-import { SyncNewsletterActiveMemberTagArgs } from '../../../types/sync.js';
+import type { SyncNewsletterActiveMemberTagArgs } from '../../../types/sync.js';
 
 const log = mainLogger.child({ app: 'sync-newsletter-active-member-tag' });
 

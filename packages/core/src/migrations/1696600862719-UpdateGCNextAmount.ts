@@ -1,6 +1,7 @@
-import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
+import type { ContributionPeriod } from '@beabee/beabee-common';
+import { PaymentMethod } from '@beabee/beabee-common';
 
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 import { getChargeableAmount } from '#utils/payment';
 

@@ -1,6 +1,6 @@
-import { Argv } from 'yargs';
+import type { Argv } from 'yargs';
 
-import { MigrateUploadsArgs } from '../types/index.js';
+import type { MigrateUploadsArgs } from '../types/index.js';
 
 /**
  * This command is used to migrate images from local storage to our new Image and Document Services and MinIO storage.

@@ -1,4 +1,4 @@
-import { Paginated } from '@beabee/beabee-common';
+import type { Paginated } from '@beabee/beabee-common';
 
 import { IsNumber, ValidateNested } from 'class-validator';
 

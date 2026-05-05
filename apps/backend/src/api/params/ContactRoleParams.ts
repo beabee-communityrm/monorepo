@@ -1,4 +1,5 @@
-import { RoleType, RoleTypes } from '@beabee/beabee-common';
+import type { RoleType } from '@beabee/beabee-common';
+import { RoleTypes } from '@beabee/beabee-common';
 
 import { IsIn, IsUUID } from 'class-validator';
 

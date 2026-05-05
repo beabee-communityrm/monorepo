@@ -1,8 +1,5 @@
-import {
-  ContributionPeriod,
-  PaymentMethod,
-  PaymentSource,
-} from '@beabee/beabee-common';
+import type { PaymentSource } from '@beabee/beabee-common';
+import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
 
 import type { Subscription } from 'gocardless-nodejs';
 import moment from 'moment';
@@ -16,8 +13,8 @@ import gocardless, {
   updateSubscription,
 } from '#lib/gocardless';
 import { log as mainLogger } from '#logging';
-import { Contact } from '#models/index';
-import {
+import type { Contact } from '#models/index';
+import type {
   CompletedPaymentFlow,
   ContributionInfo,
   PaymentFlowForm,
