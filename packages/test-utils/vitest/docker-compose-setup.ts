@@ -83,6 +83,10 @@ export async function setup() {
       })
       .on('end', () => console.log('API app log stream closed'));
 
+    // Migrating database
+    console.log('Migrating database...');
+    await apiApp.exec(['yarn', 'typeorm', 'migration:run']);
+
     // Create test user
     console.log('Creating test user...');
     await apiApp.exec(createTestUserCommand.split(' '));
