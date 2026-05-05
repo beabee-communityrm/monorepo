@@ -45,6 +45,9 @@ services:
       - .env
     volumes:
       - ./packages/core/dist:/opt/packages/core/dist
+      - ./packages/common/dist:/opt/packages/common/dist
+      - ./packages/client/dist:/opt/packages/client/dist
+      - ./packages/locale/dist:/opt/packages/locale/dist
       - ./apps/legacy/dist:/opt/apps/legacy/dist
 
   # API app
@@ -58,6 +61,9 @@ services:
       - .env
     volumes:
       - ./packages/core/dist:/opt/packages/core/dist
+      - ./packages/common/dist:/opt/packages/common/dist
+      - ./packages/client/dist:/opt/packages/client/dist
+      - ./packages/locale/dist:/opt/packages/locale/dist
       - ./apps/backend/dist:/opt/apps/backend/dist
       - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
       # Allow migrations to be written out from the container
@@ -76,6 +82,9 @@ services:
       - .env
     volumes:
       - ./packages/core/dist:/opt/packages/core/dist
+      - ./packages/common/dist:/opt/packages/common/dist
+      - ./packages/client/dist:/opt/packages/client/dist
+      - ./packages/locale/dist:/opt/packages/locale/dist
       - ./apps/webhooks/dist:/opt/apps/webhooks/dist
 
   # Cron app
