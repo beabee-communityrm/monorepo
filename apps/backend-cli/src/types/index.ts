@@ -2,6 +2,7 @@ export * from './api-key.js';
 export * from './database.js';
 export * from './email.js';
 export * from './migrate-uploads.js';
+export * from './option.js';
 export * from './payment.js';
 export * from './process.js';
 export * from './setup.js';
