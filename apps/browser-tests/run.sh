@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Create directory for logs
+LOG_DIR="logs/e2e-test-$(date +%Y%m%d-%H%M%S)"
+mkdir -p "$LOG_DIR"
+
+exec > >(tee -a "$LOG_DIR/test.log") 2>&1
+
 # Load environment variables
 set -a
 source .env
@@ -14,12 +20,12 @@ export COMPOSE_PROJECT_NAME
 global_cleanup() {
     echo "-- 🧹 CLEANING UP --"
 
-    docker compose -f docker-compose.test.yml logs > last-test-run.log
+    docker compose -f docker-compose.test.yml logs >> "$LOG_DIR/docker-compose.log" # Export Docker log
 
     echo "Bringing down Docker Compose stack..."
     docker compose -f docker-compose.test.yml down -v --remove-orphans
 
-    echo "Cleanup completed"
+    echo "Finished cleanup. Log directory: $LOG_DIR"
     exit
 }
 
@@ -43,7 +49,7 @@ await_service_ready() {
         
         if [ $attempt -eq $max_attempts ]; then
             echo "❌ $service_name failed to become ready"
-            docker compose logs $service_name
+            docker compose logs $service_name >> "$LOG_DIR/docker-compose.log"
             return 1
         fi
         
@@ -61,9 +67,8 @@ await_service_ready "api_app" "Server is ready and listening on port 3000" || ex
 #await_service_ready "frontend" "signal process started" || exit 1
 
 echo "🧪 Importing test data..."
-
-cat ./apps/browser-tests/src/fixtures/test-db-default.sql | docker compose exec -T api_app yarn backend-cli database import
-cat ./apps/browser-tests/src/fixtures/test-db-custom.sql | docker compose exec -T api_app yarn backend-cli database import
+docker compose exec -T api_app yarn backend-cli database import < ./apps/browser-tests/src/fixtures/test-db-default.sql
+docker compose exec -T api_app yarn backend-cli database import < ./apps/browser-tests/src/fixtures/test-db-custom.sql
 
 #docker compose exec api_app bash -c "cd /opt/apps/e2e-api-tests && API_KEY=$API_KEY yarn test"
 
@@ -72,6 +77,13 @@ echo "Running browser tests.."
 export PLAYWRIGHT_BASE_URL=http://localhost:$ROUTER_PORT
 yarn workspace @beabee/browser-tests test
 
-BROWSER_TEST_EXIT_CODE=$? # exit code from browser test
+BROWSER_TEST_EXIT_CODE=$?
+
+# Copy Playwright logs to log directory
+if [ -d "apps/browser-tests/test-results" ]; then
+    cp -r apps/browser-tests/test-results "$LOG_DIR/"
+else
+    echo "Playwright test results not found"
+fi
 
 exit $BROWSER_TEST_EXIT_CODE
