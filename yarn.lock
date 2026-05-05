@@ -1582,7 +1582,7 @@ __metadata:
     postcss: "npm:^8.5.14"
     prettier: "npm:^3.8.3"
     qrcode-generator: "npm:1.5.0"
-    tailwindcss: "npm:^3.4.19"
+    tailwindcss: "npm:^4.2.4"
     typescript: "npm:~6.0.3"
     vite: "npm:^6.4.2"
     vue: "npm:^3.5.34"
@@ -18424,6 +18424,13 @@ __metadata:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
   checksum: 10c0/e1063daccb9e5a508b357ec73b0011354204b2366b56496d6f0cc822733a55a0551502cb85856a2257ef9b676d0026616daaaa176d391f3216df57fbd693c581
+  languageName: node
+  linkType: hard
+
+"tailwindcss@npm:^4.2.4":
+  version: 4.2.4
+  resolution: "tailwindcss@npm:4.2.4"
+  checksum: 10c0/1069304b6bf2855daa029ac4af382abb95ed26ae4d05bc09ea01a56e6af3de8b6fb1b4d508d8bbb39abf30a69766e6f2f75835e112ac6fc39ed94ae5d4901048
   languageName: node
   linkType: hard
 

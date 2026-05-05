@@ -7,8 +7,8 @@
   >
     <div>
       <WelcomeIcon
-        class="float-left mb-4 mr-4 h-auto w-[4.5rem] md:w-[7.5rem]"
-        :class="!small && 'lg:mb-8 lg:mr-8 lg:w-[17rem]'"
+        class="float-left mb-4 mr-4 h-auto w-18 md:w-30"
+        :class="!small && 'lg:mb-8 lg:mr-8 lg:w-68'"
       />
 
       <AppSubHeading :id="headingId">

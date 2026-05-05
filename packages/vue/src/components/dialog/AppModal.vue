@@ -14,7 +14,7 @@
       :aria-hidden="!open"
     >
       <div
-        class="relative flex max-h-full flex-col rounded bg-white p-6 shadow-lg md:max-w-[28rem] md:p-8 lg:w-[28rem]"
+        class="relative flex max-h-full flex-col rounded bg-white p-6 shadow-lg md:max-w-md md:p-8 lg:w-md"
         v-bind="$attrs"
         @click.stop
       >

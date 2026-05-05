@@ -142,7 +142,7 @@ function insertMergeField(editor: any, tag: string): void {
               <!-- Dropdown content -->
               <div
                 v-if="showMergeFieldsDropdown"
-                class="absolute right-0 top-full z-[100] mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
+                class="absolute right-0 top-full z-100 mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
                 @click.stop
               >
                 <AppMergeFields
