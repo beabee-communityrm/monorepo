@@ -140,9 +140,19 @@ class PaymentService {
       await getRepository(ContactContribution).save(contribution);
     }
 
-    return await new PaymentProviders[
-      newMethod as keyof typeof PaymentProviders
-    ](contribution).processPaymentFlow(flow as any); // TODO: improve type
+    const ret = await new PaymentProviders[newMethod](
+      contribution
+    ).processPaymentFlow(flow as any); // TODO: improve type
+
+    if (flow.form.action === 'start-contribution') {
+      // Clear any cancellation date as the contribution is being restarted
+      await getRepository(ContactContribution).update(
+        { contactId: contact.id },
+        { cancelledAt: null }
+      );
+    }
+
+    return ret;
   }
 
   async canUpdateContribution(
@@ -179,6 +189,8 @@ class PaymentService {
     const ret = await this.provider(contact, (p) =>
       p.processUpdateContribution(form)
     );
+
+    // Clear any cancellation date as the contribution is being updated
     await getRepository(ContactContribution).update(
       { contactId: contact.id },
       { cancelledAt: null }
