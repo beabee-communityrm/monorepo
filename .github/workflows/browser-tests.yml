@@ -1,0 +1,47 @@
+name: Browser tests
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  run-browser-tests:
+    if: >
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request_review' && github.event.review.state == 'approved')
+    runs-on: ubuntu-latest
+    env:
+      COMPOSE_PROJECT_NAME: beabee-e2e-tests
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+        with:
+          stripe_public_key: ${{ secrets.BEABEE_STRIPE_PUBLICKEY }}
+          stripe_secret_key: ${{ secrets.BEABEE_STRIPE_SECRETKEY }}
+
+      - name: Load environment variables
+        run: |
+          cat .env >> $GITHUB_ENV
+          cat .env.test >> $GITHUB_ENV
+
+      - name: Start Docker stack
+        run: docker compose -f docker-compose.test.yml up -d --build --wait
+
+      - name: Import test data
+        run: |
+          cat ./apps/browser-tests/src/fixtures/test-db-default.sql | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
+          sed -e "s|__stripeWebhookSecret__|${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}|" -e "s|__stripeProductId__|${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}|" \
+            ./apps/browser-tests/src/fixtures/test-db-custom.sql | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
+
+      - name: Run Playwright tests
+        env:
+          PLAYWRIGHT_BASE_URL: http://localhost:${{ env.ROUTER_PORT }}
+        run: yarn workspace @beabee/browser-tests test
