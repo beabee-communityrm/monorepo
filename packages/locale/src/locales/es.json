@@ -1632,6 +1632,7 @@
         "noticeText": "Aviso debajo del botón de pago",
         "noticeTextHelp": "Usa este campo para añadir un aviso debajo del botón de pago, por ejemplo explicando los períodos de pago o autorizaciones bancarias. También puedes dejarlo en blanco.",
         "showAbsorbFee": "Preguntar al usuario sobre absorber la comisión de pago",
+        "showGoogleApplePay": "",
         "showNoContribution": "Permitir al usuario unirse sin contribución",
         "suggestedAmounts": "Importes de contribución sugeridos",
         "text": "En esta sección puedes editar, ajustar y previsualizar tu formulario de registro de membresía.",

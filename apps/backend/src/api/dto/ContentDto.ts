@@ -137,6 +137,9 @@ export class GetContentJoinDto implements ContentJoinData {
   @IsBoolean()
   showAbsorbFee!: boolean;
 
+  @IsBoolean()
+  showGoogleApplePay!: boolean;
+
   /** @deprecated Use {@link GetContentPaymentDto.stripePublicKey} instead. */
   @IsString()
   stripePublicKey!: string;

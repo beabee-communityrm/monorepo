@@ -1634,6 +1634,7 @@
         "noticeText": "Hinweistext unter dem Zahlungsbutton",
         "noticeTextHelp": "Verwende dieses Feld, um einen Hinweis unter dem Zahlungsbutton hinzuzufügen, zum Beispiel zur Erklärung von Zahlungsperioden oder Bankeinzugsermächtigungen. Du kannst dieses Feld auch leer lassen.",
         "showAbsorbFee": "Nutzer um Ausgleich der Gebühren bitten",
+        "showGoogleApplePay": "",
         "showNoContribution": "Registrierung ohne Zahlung erlauben",
         "suggestedAmounts": "Beiträge vorschlagen",
         "text": "In diesem Abschnitt kannst du dein Registrierungsformular bearbeiten, optimieren und ansehen.",

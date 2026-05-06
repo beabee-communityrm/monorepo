@@ -1638,6 +1638,7 @@
         "noticeText": "",
         "noticeTextHelp": "",
         "showAbsorbFee": "Proposer aux utilisateurs de prendre en charge les frais de paiement",
+        "showGoogleApplePay": "",
         "showNoContribution": "Autoriser les utilisateurs à s'inscrire sans cotisation",
         "suggestedAmounts": "Montants de cotisation suggérés",
         "text": "Dans cette section, vous pouvez modifier, ajuster et prévisualiser votre formulaire d'adhésion.",

@@ -87,6 +87,11 @@ meta:
           :label="stepT('showAbsorbFee')"
           class="mb-4 font-semibold"
         />
+        <AppCheckbox
+          v-model="joinContent.showGoogleApplePay"
+          :label="stepT('showGoogleApplePay')"
+          class="mb-4 font-semibold"
+        />
         <AppRichTextEditor
           v-model="noticeText"
           controls="inline"
