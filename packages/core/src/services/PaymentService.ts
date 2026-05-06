@@ -145,11 +145,7 @@ class PaymentService {
     ).processPaymentFlow(flow as any); // TODO: improve type
 
     if (flow.form.action === 'start-contribution') {
-      // Clear any cancellation date as the contribution is being restarted
-      await getRepository(ContactContribution).update(
-        { contactId: contact.id },
-        { cancelledAt: null }
-      );
+      await this.handlePostContributionUpdate(contact);
     }
 
     return ret;
@@ -190,11 +186,8 @@ class PaymentService {
       p.processUpdateContribution(form)
     );
 
-    // Clear any cancellation date as the contribution is being updated
-    await getRepository(ContactContribution).update(
-      { contactId: contact.id },
-      { cancelledAt: null }
-    );
+    await this.handlePostContributionUpdate(contact);
+
     return ret;
   }
 
@@ -291,6 +284,20 @@ class PaymentService {
         .getRepository(Payment)
         .update({ contactId: contact.id }, { contactId: null });
     });
+  }
+
+  /**
+   * Handle a contribution being started, restarted or just updated.  This
+   * resets any cancellation status as the contribution is now assumed to be
+   * active again
+   *
+   * @param contact The contact
+   */
+  private async handlePostContributionUpdate(contact: Contact) {
+    await getRepository(ContactContribution).update(
+      { contactId: contact.id },
+      { cancelledAt: null }
+    );
   }
 }
 
