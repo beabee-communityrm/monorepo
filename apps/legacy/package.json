@@ -23,7 +23,7 @@
   "dependencies": {
     "@beabee/beabee-common": "workspace:^",
     "@beabee/core": "workspace:^",
-    "@captchafox/node": "^1.2.0",
+    "@captchafox/node": "1.4.0",
     "@inquirer/prompts": "^7.10.1",
     "ajv": "^8.20.0",
     "ajv-formats": "^2.1.1",
