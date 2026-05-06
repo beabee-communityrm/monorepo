@@ -30,8 +30,11 @@ jobs:
       - name: Load environment variables
         run: cat .env .env.test | sed -e 's/#.*$//' -e '/^[[:space:]]*$/d' >> $GITHUB_ENV
 
+      - name: Build Docker stack
+        run: docker compose -f docker-compose.test.yml --build
+
       - name: Start Docker stack
-        run: docker compose -f docker-compose.test.yml up -d --build --wait
+        run: docker compose -f docker-compose.test.yml up -d --wait
 
       - name: Import test data
         run: |
@@ -43,3 +46,14 @@ jobs:
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:${{ env.ROUTER_PORT }}
         run: yarn workspace @beabee/browser-tests test
+
+      - name: Export Docker logs
+        if: always()
+        run: docker compose -f docker-compose.test.yml logs >> "./docker-compose.log"
+
+      - name: Upload Docker logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-compose-logs
+          path: ./docker-compose.log
