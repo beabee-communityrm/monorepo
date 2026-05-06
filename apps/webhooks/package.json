@@ -4,7 +4,7 @@
   "description": "A community engagement system for community newsrooms",
   "private": true,
   "main": "dist/app.js",
-  "type": "commonjs",
+  "type": "module",
   "imports": {
     "#*": "./dist/*.js"
   },
@@ -41,7 +41,7 @@
     "dpdm": "^3.14.0",
     "prettier": "^3.5.2",
     "rimraf": "^6.0.1",
-    "typescript": "~5.9.3"
+    "typescript": "~6.0.3"
   },
   "repository": {
     "type": "git",

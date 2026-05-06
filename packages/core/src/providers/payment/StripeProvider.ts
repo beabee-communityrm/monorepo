@@ -29,7 +29,7 @@ import {
 } from '#type/index';
 import { calcRenewalDate, getChargeableAmount } from '#utils/payment';
 
-import { PaymentProvider } from './PaymentProvider';
+import { PaymentProvider } from './PaymentProvider.js';
 
 const log = mainLogger.child({ app: 'stripe-payment-provider' });
 

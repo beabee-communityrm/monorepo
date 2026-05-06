@@ -44,7 +44,9 @@ services:
     env_file:
       - .env
     volumes:
-      - ./packages:/opt/packages
+      - ./packages/core/dist:/opt/packages/core/dist
+      - ./packages/common/dist:/opt/packages/common/dist
+      - ./packages/locale/dist:/opt/packages/locale/dist
       - ./apps/legacy/dist:/opt/apps/legacy/dist
 
   # API app
@@ -57,7 +59,9 @@ services:
     env_file:
       - .env
     volumes:
-      - ./packages:/opt/packages
+      - ./packages/core/dist:/opt/packages/core/dist
+      - ./packages/common/dist:/opt/packages/common/dist
+      - ./packages/locale/dist:/opt/packages/locale/dist
       - ./apps/backend/dist:/opt/apps/backend/dist
       - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
       # Allow migrations to be written out from the container
@@ -75,7 +79,9 @@ services:
     env_file:
       - .env
     volumes:
-      - ./packages:/opt/packages
+      - ./packages/core/dist:/opt/packages/core/dist
+      - ./packages/common/dist:/opt/packages/common/dist
+      - ./packages/locale/dist:/opt/packages/locale/dist
       - ./apps/webhooks/dist:/opt/apps/webhooks/dist
 
   # Cron app
@@ -154,7 +160,9 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./packages/core/dist/migrations:/opt/packages/core/dist/migrations
+      # Mount the entire core dist so newly generated migrations and the
+      # regenerated migrations.js index are both visible to the runner
+      - ./packages/core/dist:/opt/packages/core/dist
     env_file:
       - .env
 

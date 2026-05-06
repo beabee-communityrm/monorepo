@@ -12,7 +12,7 @@ import { CalloutVariantDto } from '#api/dto/CalloutVariantDto';
 import { canCreateForCallout, getReviewerRules } from '#api/utils';
 import { TransformerOperation } from '#type/transformer-operation';
 
-import { BaseTransformer } from './BaseTransformer';
+import { BaseTransformer } from './BaseTransformer.js';
 
 class CalloutVariantTransformer extends BaseTransformer<
   CalloutVariant,

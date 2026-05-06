@@ -11,8 +11,8 @@ import { SelectQueryBuilder } from 'typeorm';
 
 import { GetApiKeyDto } from '#api/dto/ApiKeyDto';
 
-import { BaseTransformer } from './BaseTransformer';
-import ContactTransformer, { loadContactRoles } from './ContactTransformer';
+import { BaseTransformer } from './BaseTransformer.js';
+import ContactTransformer, { loadContactRoles } from './ContactTransformer.js';
 
 class ApiKeyTransformer extends BaseTransformer<
   ApiKey,

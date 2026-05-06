@@ -2,7 +2,7 @@ import { ApiErrorCode, DuplicateTagNameErrorData } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
 
-import { isDuplicateIndex } from '../utils/db';
+import { isDuplicateIndex } from '../utils/db.js';
 
 export class DuplicateTagNameError
   extends BadRequestError

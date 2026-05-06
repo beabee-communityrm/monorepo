@@ -20,7 +20,7 @@ import {
 
 import { login } from '#api/utils/auth';
 
-import { clearRateLimiterCache } from '../decorators/RateLimit';
+import { clearRateLimiterCache } from '../decorators/RateLimit.js';
 
 /**
  * Development-only controller for testing and debugging purposes.

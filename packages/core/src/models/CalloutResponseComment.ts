@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import type { CalloutResponse, Contact } from './index';
+import type { CalloutResponse, Contact } from './index.js';
 
 @Entity()
 export class CalloutResponseComment {

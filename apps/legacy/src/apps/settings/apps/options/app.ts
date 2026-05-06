@@ -2,8 +2,12 @@ import OptionsService from '@beabee/core/services/OptionsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express, type Request, type Response } from 'express';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import { isSuperAdmin } from '#core/middleware';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 

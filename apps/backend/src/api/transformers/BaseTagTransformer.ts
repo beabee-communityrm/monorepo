@@ -12,7 +12,7 @@ import { plainToInstance } from 'class-transformer';
 
 import { GetTagDto } from '#api/dto/TagDto';
 
-import { BaseTransformer } from './BaseTransformer';
+import { BaseTransformer } from './BaseTransformer.js';
 
 /**
  * Generic transformer for handling tag-related operations.

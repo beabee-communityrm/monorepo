@@ -1,12 +1,12 @@
 import fs from 'fs';
-import path from 'path';
+import { createRequire } from 'node:module';
 import { MigrationInterface, QueryRunner } from 'typeorm';
+
+const require = createRequire(import.meta.url);
 
 export class SessionTable1616677358190 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    // const sessionSql = await import('connect-pg-simple/table.sql');
     const sessionSqlPath = require.resolve('connect-pg-simple/table.sql');
-    // const sessionSqlPath = path.join(__dirname, "session.sql");
     const sessionSql = fs.readFileSync(sessionSqlPath).toString();
     await queryRunner.query(sessionSql);
   }

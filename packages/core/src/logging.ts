@@ -2,7 +2,7 @@ import type { ErrorRequestHandler } from 'express';
 import expressWinston from 'express-winston';
 import winston from 'winston';
 
-import config from './config/config';
+import config from './config/config.js';
 
 const appFormat = winston.format((info) => {
   const { app, ...rest } = info;

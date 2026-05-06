@@ -5,8 +5,12 @@ import PaymentService from '@beabee/core/services/PaymentService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express } from 'express';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import { calcMonthsLeft } from '#core/utils/payment';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 
