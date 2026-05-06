@@ -111,6 +111,7 @@ import { AddReviewerCanEdit1752486366243 } from './migrations/1752486366243-AddR
 import { ResponseLinkText1754653464755 } from './migrations/1754653464755-responseLinkText.js';
 import { AddCalloutResponseSegment1755526570609 } from './migrations/1755526570609-AddCalloutResponseSegment.js';
 import { AddDefaultCalloutResponseSegments1755526570700 } from './migrations/1755526570700-AddDefaultCalloutResponseSegments.js';
+import { UpdateCalloutFormSchemaComponents1756466495968 } from './migrations/1756466495968-UpdateCalloutFormSchemaComponents.js';
 import { AddCalloutResponseEmail1760107926234 } from './migrations/1760107926234-AddCalloutResponseEmail.js';
 import { AddEmailTemplateId1764325270075 } from './migrations/1764325270075-AddEmailTemplateId.js';
 import { AddInvoicePaymentType1769451523913 } from './migrations/1769451523913-AddInvoicePaymentType.js';
@@ -239,6 +240,7 @@ export const migrations = [
   ResponseLinkText1754653464755,
   AddCalloutResponseSegment1755526570609,
   AddDefaultCalloutResponseSegments1755526570700,
+  UpdateCalloutFormSchemaComponents1756466495968,
   AddCalloutResponseEmail1760107926234,
   AddEmailTemplateId1764325270075,
   AddInvoicePaymentType1769451523913,
