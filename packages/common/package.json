@@ -19,10 +19,8 @@
   },
   "scripts": {
     "clear": "rm -rf dist",
-    "build": "yarn build:types && yarn build:esbuild",
-    "build:esbuild": "yarn workspace @beabee/dev-cli start esbuild --baseDir $(pwd)",
-    "build:types": "tsc --project ./tsconfig.build.json",
-    "watch": "yarn build:esbuild --watch",
+    "build": "tsc -p ./tsconfig.build.json",
+    "watch": "tsc -p ./tsconfig.build.json --watch --preserveWatchOutput",
     "dev": "yarn watch",
     "prepublishOnly": "yarn clear && yarn build",
     "test": "yarn test:types && yarn test:esm && yarn test:vitest",
@@ -48,11 +46,8 @@
   "homepage": "https://github.com/beabee-communityrm/monorepo/blob/main/packages/common/README.md",
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
-    "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
-    "concurrently": "^9.1.2",
-    "esbuild": "^0.25.5",
     "prettier": "^3.5.2",
-    "typescript": "~5.9.3",
+    "typescript": "~6.0.3",
     "vitest": "^3.2.1"
   },
   "dependencies": {

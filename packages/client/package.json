@@ -14,10 +14,8 @@
   },
   "scripts": {
     "clear": "rm -rf dist",
-    "build": "yarn build:types && yarn build:esbuild",
-    "build:esbuild": "yarn workspace @beabee/dev-cli start esbuild --baseDir $(pwd)",
-    "build:types": "tsc --project ./tsconfig.build.json",
-    "watch": "yarn build:esbuild --watch",
+    "build": "tsc -p ./tsconfig.build.json",
+    "watch": "tsc -p ./tsconfig.build.json --watch --preserveWatchOutput",
     "dev": "yarn watch",
     "prepublishOnly": "yarn clear && yarn build",
     "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension js --baseDir $(pwd) -p src/types src/api src/utils",
@@ -32,11 +30,10 @@
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
     "@beabee/test-utils": "workspace:^",
-    "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "dotenv": "^16.4.7",
     "otpauth": "^9.3.6",
     "prettier": "^3.5.2",
-    "typescript": "~5.9.3"
+    "typescript": "~6.0.3"
   },
   "main": "./dist/index.js",
   "types": "./src/index.ts",
