@@ -55,9 +55,8 @@ export const databaseCommand: CommandModule = {
                 'Write output to this file instead of stdout (avoids TypeORM log pollution)',
             }),
         handler: async (argv) => {
-          const { exportDatabase } = await import(
-            '../actions/database/export.js'
-          );
+          const { exportDatabase } =
+            await import('../actions/database/export.js');
           return exportDatabase(
             argv.dryRun,
             argv.anonymize as AnonymizationLevel,
@@ -84,9 +83,8 @@ export const databaseCommand: CommandModule = {
                 'Write output to this file instead of stdout (avoids TypeORM log pollution)',
             }),
         handler: async (argv) => {
-          const { exportDemoDatabase } = await import(
-            '../actions/database/export-demo.js'
-          );
+          const { exportDemoDatabase } =
+            await import('../actions/database/export-demo.js');
           return exportDemoDatabase(argv.dryRun, argv.file);
         },
       })
@@ -126,9 +124,8 @@ export const databaseCommand: CommandModule = {
               default: [] as string[],
             }),
         handler: async (argv) => {
-          const { exportCalloutsDatabase } = await import(
-            '../actions/database/export-callouts.js'
-          );
+          const { exportCalloutsDatabase } =
+            await import('../actions/database/export-callouts.js');
           return exportCalloutsDatabase(
             argv.dryRun,
             argv.anonymize as CalloutAnonymizationLevel,
@@ -160,9 +157,8 @@ export const databaseCommand: CommandModule = {
               default: false,
             }),
         handler: async (argv) => {
-          const { importDatabase } = await import(
-            '../actions/database/import.js'
-          );
+          const { importDatabase } =
+            await import('../actions/database/import.js');
           return importDatabase(argv.file, argv.dryRun, argv.merge);
         },
       })
@@ -200,9 +196,8 @@ export const databaseCommand: CommandModule = {
               default: 'YYYY-MM-DDTHH:mm:ss',
             }),
         handler: async (argv) => {
-          const { importCalloutResponses } = await import(
-            '../actions/database/import-callout-responses.js'
-          );
+          const { importCalloutResponses } =
+            await import('../actions/database/import-callout-responses.js');
           return importCalloutResponses({
             slug: argv.slug as string,
             dryRun: argv.dryRun as boolean,
@@ -216,9 +211,8 @@ export const databaseCommand: CommandModule = {
         command: 'clean',
         describe: 'Clean old data from the database',
         handler: async () => {
-          const { cleanDatabase } = await import(
-            '../actions/database/clean.js'
-          );
+          const { cleanDatabase } =
+            await import('../actions/database/clean.js');
           return cleanDatabase();
         },
       }),

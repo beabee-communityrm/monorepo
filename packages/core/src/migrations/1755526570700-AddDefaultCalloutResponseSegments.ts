@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddDefaultCalloutResponseSegments1755526570700
-  implements MigrationInterface
-{
+export class AddDefaultCalloutResponseSegments1755526570700 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `INSERT INTO public.callout_response_segment (id, name, "ruleGroup", "order") VALUES ('81664449-adf2-4c3a-aee2-145a96d67726', 'Inbox', '{"rules": [{"field": "bucket", "value": [""], "operator": "equal"}], "condition": "AND"}', 0)`

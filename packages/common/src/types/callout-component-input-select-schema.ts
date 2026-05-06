@@ -5,8 +5,7 @@ import type {
 } from './index.js';
 
 /** Dropdown menu component schema */
-export interface CalloutComponentInputSelectSchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentInputSelectSchema extends CalloutComponentBaseInputSchema {
   type: CalloutComponentType.INPUT_SELECT;
   data: {
     values: { label: string; value: string }[];

@@ -5,8 +5,7 @@ import type {
   TextCase,
 } from './index.js';
 
-export interface CalloutComponentInputEmailSchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentInputEmailSchema extends CalloutComponentBaseInputSchema {
   type: CalloutComponentType.INPUT_EMAIL;
   /** Placeholder for the form */
   placeholder?: string;

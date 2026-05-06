@@ -14,9 +14,8 @@ export const emailCommand: CommandModule = {
             description: 'Filter by specific template ID',
           }),
         handler: async (argv) => {
-          const { listEmailOverrides } = await import(
-            '../actions/email/list.js'
-          );
+          const { listEmailOverrides } =
+            await import('../actions/email/list.js');
           return listEmailOverrides(argv);
         },
       })
@@ -61,9 +60,8 @@ export const emailCommand: CommandModule = {
             });
         },
         handler: async (argv) => {
-          const { createEmailOverride } = await import(
-            '../actions/email/create.js'
-          );
+          const { createEmailOverride } =
+            await import('../actions/email/create.js');
           return createEmailOverride(argv);
         },
       })
@@ -85,9 +83,8 @@ export const emailCommand: CommandModule = {
             });
         },
         handler: async (argv) => {
-          const { deleteEmailOverride } = await import(
-            '../actions/email/delete.js'
-          );
+          const { deleteEmailOverride } =
+            await import('../actions/email/delete.js');
           return deleteEmailOverride(argv);
         },
       });

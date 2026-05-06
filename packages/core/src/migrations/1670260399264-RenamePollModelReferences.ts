@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class RenamePollModelReferences1670260399264
-  implements MigrationInterface
-{
+export class RenamePollModelReferences1670260399264 implements MigrationInterface {
   name = 'RenamePollModelReferences1670260399264';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

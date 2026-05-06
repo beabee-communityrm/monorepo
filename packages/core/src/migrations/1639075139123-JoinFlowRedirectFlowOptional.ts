@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class JoinFlowRedirectFlowOptional1639075139123
-  implements MigrationInterface
-{
+export class JoinFlowRedirectFlowOptional1639075139123 implements MigrationInterface {
   name = 'JoinFlowRedirectFlowOptional1639075139123';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

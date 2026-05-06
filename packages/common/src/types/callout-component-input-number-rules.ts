@@ -1,7 +1,6 @@
 import type { CalloutComponentBaseRules } from './index.js';
 
-export interface CalloutComponentInputNumberRules
-  extends CalloutComponentBaseRules {
+export interface CalloutComponentInputNumberRules extends CalloutComponentBaseRules {
   /** TODO: For what is this property? */
   integer?: '';
   /** The maximum value that can be entered for this field. */

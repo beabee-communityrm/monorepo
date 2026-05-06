@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddAllowMultiplePollResponses1639760915487
-  implements MigrationInterface
-{
+export class AddAllowMultiplePollResponses1639760915487 implements MigrationInterface {
   name = 'AddAllowMultiplePollResponses1639760915487';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

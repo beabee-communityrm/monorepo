@@ -4,8 +4,7 @@ import type {
   CalloutComponentBaseRules,
 } from './index.js';
 
-export interface CalloutComponentBaseInputSelectableSchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentBaseInputSelectableSchema extends CalloutComponentBaseInputSchema {
   type:
     | CalloutComponentType.INPUT_SELECTABLE_RADIO
     | CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES;

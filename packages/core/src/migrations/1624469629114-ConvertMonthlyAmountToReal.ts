@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class ConvertMonthlyAmountToReal1624469629114
-  implements MigrationInterface
-{
+export class ConvertMonthlyAmountToReal1624469629114 implements MigrationInterface {
   name = 'ConvertMonthlyAmountToReal1624469629114';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

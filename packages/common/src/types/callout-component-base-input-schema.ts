@@ -4,8 +4,7 @@ import type {
   CalloutComponentBaseSchema,
 } from './index.js';
 
-export interface CalloutComponentBaseInputSchema
-  extends CalloutComponentBaseSchema {
+export interface CalloutComponentBaseInputSchema extends CalloutComponentBaseSchema {
   type:
     | CalloutComponentType.INPUT_ADDRESS
     | CalloutComponentType.INPUT_CHECKBOX

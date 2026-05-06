@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddMemberActivatedField1626344080098
-  implements MigrationInterface
-{
+export class AddMemberActivatedField1626344080098 implements MigrationInterface {
   name = 'AddMemberActivatedField1626344080098';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

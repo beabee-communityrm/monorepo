@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class RenameJoinFlowAmountToMonthlyAmount1624469115041
-  implements MigrationInterface
-{
+export class RenameJoinFlowAmountToMonthlyAmount1624469115041 implements MigrationInterface {
   name = 'RenameJoinFlowAmountToMonthlyAmount1624469115041';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

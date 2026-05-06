@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddNLOptInRemovePwCallouts1743001845903
-  implements MigrationInterface
-{
+export class AddNLOptInRemovePwCallouts1743001845903 implements MigrationInterface {
   name = 'AddNLOptInRemovePwCallouts1743001845903';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

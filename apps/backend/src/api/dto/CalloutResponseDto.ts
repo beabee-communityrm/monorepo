@@ -69,10 +69,8 @@ export class ListCalloutResponsesDto extends GetPaginatedQuery {
 }
 
 // TODO: this is a bit hacky
-export interface GetCalloutResponseOptsDto
-  extends BaseGetCalloutResponseOptsDto {}
-export interface ListCalloutResponsesDto
-  extends BaseGetCalloutResponseOptsDto {}
+export interface GetCalloutResponseOptsDto extends BaseGetCalloutResponseOptsDto {}
+export interface ListCalloutResponsesDto extends BaseGetCalloutResponseOptsDto {}
 
 export class GetCalloutResponseDto implements GetCalloutResponseData {
   @IsString()
@@ -145,9 +143,7 @@ export class CreateCalloutResponseGuestDto implements CalloutResponseGuestData {
   email!: string;
 }
 
-export class CreateCalloutResponseNewsletterDto
-  implements CalloutResponseNewsletterData
-{
+export class CreateCalloutResponseNewsletterDto implements CalloutResponseNewsletterData {
   @IsBoolean()
   optIn!: boolean;
 
@@ -183,9 +179,7 @@ export class CreateCalloutResponseDto implements CreateCalloutResponseData {
   assigneeId?: string | null;
 }
 
-export class UpdateCalloutResponseDto
-  implements Partial<CreateCalloutResponseData>
-{
+export class UpdateCalloutResponseDto implements Partial<CreateCalloutResponseData> {
   // TODO: validate
   @IsObject()
   @IsOptional()
@@ -240,8 +234,7 @@ export type ExportCalloutResponseDto = [
 ];
 
 export interface ExportCalloutResponsesOptsDto
-  extends GetExportQuery,
-    BaseGetCalloutResponseOptsDto {
+  extends GetExportQuery, BaseGetCalloutResponseOptsDto {
   callout: Callout;
   components: (CalloutComponentSchema & { slideId: string })[];
 }
@@ -266,8 +259,7 @@ export class GetCalloutResponseMapDto {
   address?: CalloutResponseAnswerAddress;
 }
 
-export interface GetCalloutResponseMapOptsDto
-  extends BaseGetCalloutResponseOptsDto {
+export interface GetCalloutResponseMapOptsDto extends BaseGetCalloutResponseOptsDto {
   callout: Callout & { responseViewSchema: CalloutResponseViewSchema };
 }
 

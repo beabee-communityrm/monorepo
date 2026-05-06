@@ -4,8 +4,7 @@ import type {
   CalloutComponentInputNumberRules,
 } from './index.js';
 
-export interface CalloutComponentInputNumberSchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentInputNumberSchema extends CalloutComponentBaseInputSchema {
   type: CalloutComponentType.INPUT_NUMBER;
   /** Placeholder for the form */
   placeholder?: string;
