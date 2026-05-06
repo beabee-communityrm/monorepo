@@ -1269,6 +1269,7 @@
     "notifications": {
       "created": "E-mail créé avec succès",
       "deleted": "E-mail supprimé avec succès",
+      "missingMergeTags": "Il manque les balises de fusion obligatoires dans cet e-mail : {mergeTags}. Les balises de fusion sont des marqueurs de position pour du contenu dynamique (par exemple, prénom). Ajoutez les balises manquantes pour vous assurer que votre e-mail fonctionne correctement.",
       "resetToDefault": "Modèle réinitialisé par défaut avec succès",
       "templateAssigned": "",
       "templatesAssigned": "",

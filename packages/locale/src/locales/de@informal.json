@@ -1265,6 +1265,7 @@
     "notifications": {
       "created": "E-Mail erfolgreich erstellt",
       "deleted": "E-Mail erfolgreich gelöscht",
+      "missingMergeTags": "In dieser E-Mail fehlen folgende Pflicht-Merge-Tags: {mergeTags}. Merge-Tags sind Platzhalter für dynamische Inhalte (z. B. Vorname). Bitte füge die fehlenden Tags hinzu, damit deine E-Mail korrekt funktioniert.",
       "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
       "templateAssigned": "",
       "templatesAssigned": "",

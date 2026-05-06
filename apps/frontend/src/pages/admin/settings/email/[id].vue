@@ -47,6 +47,17 @@ meta:
     </div>
   </PageTitle>
 
+  <AppNotification
+    v-if="hasMissingMergeTags"
+    variant="error"
+    :title="
+      t('emails.notifications.missingMergeTags', {
+        mergeTags: missingMergeTagString,
+      })
+    "
+    class="mb-4"
+  />
+
   <div v-if="loading">
     <p>{{ t('common.loading') }}...</p>
   </div>
@@ -75,7 +86,12 @@ import type {
   GetEmailTemplateInfoData,
 } from '@beabee/beabee-common';
 import { NotFoundError } from '@beabee/client';
-import { AppButton, AppConfirmDialog, PageTitle } from '@beabee/vue';
+import {
+  AppButton,
+  AppConfirmDialog,
+  AppNotification,
+  PageTitle,
+} from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
 import { computed, onMounted, ref } from 'vue';
@@ -115,6 +131,40 @@ const pageTitle = computed(() => {
 });
 
 const showResetConfirmDialog = ref(false);
+
+/**
+ * Allows extracting merge tags from a string.
+ * @param text String to extract merge tags from.
+ */
+function getMergeTag(text: string): string[] {
+  const regex = /\*\|\w+\|\*/g;
+  const matches = text.match(regex) || [];
+  return matches;
+}
+
+const missingMergeTags = computed(() => {
+  const requiredMergeTagMap: Record<string, string[]> = {
+    'reset-password': ['*|RPLINK|*'],
+    'confirm-email': ['*|CONFIRMLINK|*'],
+    'setup-account': ['*|CONFIRMLINK|*'],
+    'contribution-didnt-start': ['*|LOGINLINK|*'],
+    'email-exists-login': ['*|LOGINLINK|*'],
+    'email-exists-set-password': ['*|SPLINK|*'],
+    'reset-device': ['*|RPLINK|*'],
+  };
+  const requiredTags = requiredMergeTagMap[templateId.value];
+  if (!emailData.value || !requiredTags) return undefined;
+  const mergeTags = getMergeTag(emailData.value.body);
+  return requiredTags.filter((tag) => !mergeTags.includes(tag));
+});
+
+const missingMergeTagString = computed(() =>
+  missingMergeTags.value ? missingMergeTags.value.join(', ') : ''
+);
+
+const hasMissingMergeTags = computed(() =>
+  missingMergeTags.value?.length ? missingMergeTags.value : undefined
+);
 
 addBreadcrumb(computed(() => [{ title: 'Email' }, { title: pageTitle.value }]));
 
