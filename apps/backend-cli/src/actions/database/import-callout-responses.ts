@@ -118,6 +118,9 @@ function parseValue(
     case CalloutComponentType.INPUT_ADDRESS: {
       const [lat, lng, ...rest] = value.split(',');
       return {
+        id: '',
+        components: [],
+        source: 'maptiler',
         geometry: { location: { lat: Number(lat), lng: Number(lng) } },
         formatted_address: rest.join(','),
       } satisfies CalloutResponseAnswerAddress;
