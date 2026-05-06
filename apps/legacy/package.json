@@ -77,7 +77,7 @@
     "@types/dot": "^1.1.7",
     "@types/express": "^4.17.25",
     "@types/express-flash": "0.0.5",
-    "@types/express-session": "^1.18.1",
+    "@types/express-session": "^1.19.0",
     "@types/lodash": "^4.17.24",
     "@types/node": "^24.12.2",
     "@types/papaparse": "^5.5.2",
