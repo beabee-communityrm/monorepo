@@ -1,4 +1,4 @@
-import { CalloutMapSchemaIconStyling } from './callout-map-schema-icon-styling';
+import { type CalloutMapSchemaIconStyling } from './callout-map-schema-icon-styling.js';
 
 export interface CalloutMapSchema {
   style: string;

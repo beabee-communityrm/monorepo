@@ -46,42 +46,21 @@ yarn dev-cli generate-index -p packages/common/src/types packages/common/src/uti
 yarn dev-cli generate-index -p ./src/types ./src/api --baseDir packages/client
 ```
 
-### `esbuild`
+### `generate-class-index`
 
-Build packages using the shared esbuild configuration.
-
-```bash
-yarn dev-cli esbuild
-```
-
-**Options:**
-
-- `--entry, --entryPoints`: Entry points for build. Default: `["./src/index.ts", "./src/**/*.ts"]`
-- `-w, --watch`: Enable watch mode for continuous rebuilding. Default: `false`
-- `-b, --baseDir`: Base directory to resolve paths from. Default: current directory
-
-**Examples:**
+Generate an index file with explicit class imports plus an aggregated array export. Used to replace glob-based class loading (e.g. TypeORM entities/migrations) under ESM.
 
 ```bash
-# Build a package
-yarn dev-cli esbuild
-
-# Build with watch mode
-yarn dev-cli esbuild --watch
-
-# Build from specific directory
-yarn dev-cli esbuild --baseDir packages/vue
-
-# Custom entry points
-yarn dev-cli esbuild --entry ./src/main.ts ./src/helpers/**/*.ts
+yarn dev-cli generate-class-index --src <dir> --out <file> --export-name <name>
 ```
+
+See `yarn dev-cli generate-class-index --help` for all options.
 
 ## Technical Details
 
 - Runs TypeScript directly without compilation using Node.js experimental features
 - All operations are async for better performance
 - Generates sorted exports for consistent output
-- Integrates with the shared @beabee/esbuild configuration
 
 ## Extending the CLI
 
