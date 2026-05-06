@@ -28,7 +28,7 @@ jobs:
           stripe_secret_key: ${{ secrets.BEABEE_STRIPE_SECRETKEY }}
 
       - name: Load environment variables
-        run: cat .env .env.test | sed -e 's/#.*$//' -e '/^[[:space:]]*$/d' >> $GITHUB_ENV
+        run: cat .env .env.test | sed -e 's/[[:space:]]*#.*$//' -e '/^[[:space:]]*$/d' >> $GITHUB_ENV
 
       - name: Build Docker stack
         run: docker compose -f docker-compose.test.yml build
