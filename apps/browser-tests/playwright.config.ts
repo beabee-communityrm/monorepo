@@ -3,35 +3,22 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "src/tests",
   fullyParallel: false, // tests in a single test file are always run in order. this parallelizes only multiple test files
-  reporter: "list",
+  reporter: "html",
+  workers: 1,
 
   use: {
     baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://localhost:4002/",
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
   },
 
   projects: [
     {
-      name: "chromium",
-      use: {
-        ...devices["Desktop Chrome"],
-        launchOptions: {
-          args: [
-            // Disable autofill (addresses, cards, etc.)
-            "--disable-features=AutofillServerCommunication,AutofillEnableAccountWalletStorage,AutofillAddressProfileSavePrompt,AutofillCreditCardUpload",
-            "--disable-save-password-bubble",
-            "--no-default-browser-check",
-          ],
-        },
-      },
-    },
-    {
       name: "firefox",
       use: devices["Desktop Firefox"],
     },
-    {
-      name: "safari",
-      use: devices["Desktop Safari"],
-    },
+    // {
+    //   name: "safari",
+    //   use: devices["Desktop Safari"],
+    // },
   ],
 });

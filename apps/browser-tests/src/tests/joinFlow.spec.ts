@@ -36,7 +36,12 @@ test("Join Flow", async ({ page, browserName }) => {
     await page.getByRole("textbox", { name: "Email" }).fill(emailAddress);
     await page.getByRole("button", { name: "card" }).click();
 
-    expect(
+    await page.screenshot({
+      path: `test-results/screenshots/${browserName}/join-form-1.png`,
+      fullPage: true,
+    });
+
+    await expect(
       page.getByRole("button", { name: /contribute/i }),
       "Contribute button enabled",
     ).toBeEnabled(); // If the form was filled correctly, button should be enabled
@@ -66,7 +71,19 @@ test("Join Flow", async ({ page, browserName }) => {
       .locator("#payment-cvcInput")
       .fill("111");
 
-    expect(
+    await page
+      .locator('iframe[src*="stripe.com"]')
+      .first()
+      .contentFrame()
+      .locator("#payment-countryInput")
+      .selectOption("DE");
+
+    await page.screenshot({
+      path: `test-results/screenshots/${browserName}/join-form-payment.png`,
+      fullPage: true,
+    });
+
+    await expect(
       page.getByRole("button", { name: /continue/i }),
       "Continue button enabled",
     ).toBeEnabled();
@@ -89,6 +106,11 @@ test("Join Flow", async ({ page, browserName }) => {
 
   await test.step("Confirmation email", async () => {
     await page.goto(`http://localhost:${process.env.MAIL_PORT || 4025}/`);
+
+    await page.screenshot({
+      path: `test-results/screenshots/${browserName}/mail-catcher.png`,
+      fullPage: true,
+    });
 
     // Check that the page does not say 'no emails'
     await expect(
@@ -135,6 +157,11 @@ test("Join Flow", async ({ page, browserName }) => {
     // Set password
     await page.locator('input[name="password"]').fill(testPw);
 
+    await page.screenshot({
+      path: `test-results/screenshots/${browserName}/set-password.png`,
+      fullPage: true,
+    });
+
     // Continue
     await expect(
       page.getByRole("button", { name: /continue/i }),
@@ -155,6 +182,11 @@ test("Join Flow", async ({ page, browserName }) => {
     await page.locator('input[name="email"]').fill(emailAddress);
     await page.locator('input[name="password"]').fill(testPw);
 
+    await page.screenshot({
+      path: `test-results/screenshots/${browserName}/login.png`,
+      fullPage: true,
+    });
+
     await expect(
       page.getByRole("button", { name: /login/i }),
       "Login button enabled",
@@ -166,6 +198,11 @@ test("Join Flow", async ({ page, browserName }) => {
 
     await page.getByRole("link", { name: "Contribution" }).click();
     await page.waitForURL("/profile/contribution");
+
+    await page.screenshot({
+      path: `test-results/screenshots/${browserName}/contribution-page.png`,
+      fullPage: true,
+    });
 
     await expect(
       page.getByRole("heading", { name: "Payment history" }),
