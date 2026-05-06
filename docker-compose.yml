@@ -13,7 +13,7 @@ x-backend-app: &backend-app
 
 services:
   db:
-    image: postgres:13.9
+    image: postgres:16
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
@@ -30,7 +30,7 @@ services:
       - ${DB_PORT}:5432
 
   mail:
-    image: maildev/maildev:2.1.0
+    image: maildev/maildev:2.2.1
     ports:
       - ${MAIL_PORT}:1080
 

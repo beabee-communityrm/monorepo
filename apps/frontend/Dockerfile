@@ -1,5 +1,5 @@
 ARG DENO_VERSION=2.1.2
-ARG NODE_VERSION=22
+ARG NODE_VERSION=24
 
 FROM node:${NODE_VERSION}-bookworm-slim AS builder
 
@@ -51,7 +51,7 @@ COPY packages/locale /opt/packages/locale
 COPY apps/frontend /opt/apps/frontend
 RUN yarn workspaces foreach --recursive --topological-dev --from @beabee/frontend run build
 
-FROM nginx:1.27-alpine
+FROM nginx:1.30-alpine
 
 ARG REVISION
 ARG VERSION
