@@ -4,8 +4,6 @@ import vue from '@vitejs/plugin-vue';
 import path, { resolve } from 'path';
 import { defineConfig } from 'vite';
 
-import theme from './src/plugins/theme';
-
 export default defineConfig({
   plugins: [
     tailwindcss(),
@@ -14,7 +12,6 @@ export default defineConfig({
       include: path.resolve(__dirname, './locales/*'),
       strictMessage: false,
     }),
-    theme(),
   ],
   build: {
     lib: {

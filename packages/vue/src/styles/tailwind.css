@@ -1,1 +1,87 @@
 @import 'tailwindcss';
+
+@theme {
+  --radius: 3px;
+
+  /* Spacing and sizing */
+  --spacing-2: 0.5rem;
+  --spacing-menu: 240px;
+
+  /* Screens (breakpoints) */
+  --breakpoint-xs: 475px;
+  --breakpoint-sm: 768px;
+  --breakpoint-md: 1024px;
+  --breakpoint-lg: 1264px;
+  --breakpoint-xl: 1640px;
+
+  /* Box shadows */
+  --shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+  --shadow-input: 0 0 0 0.125rem rgba(var(--c-link), 0.25);
+  --shadow-auth-box: 0 0 1rem 0.125rem rgba(51, 51, 51, 0.4);
+
+  /* Font sizes */
+  --text-1_8xl: 1.375rem;
+  --text-2_2xl: 1.625rem;
+  --text-3_5xl: 2rem;
+
+  /* Transition properties??? i cant see where this is used */
+  --transition-width: width;
+
+  /* Typography */
+  --font-body: var(--ff-body);
+  --font-title: var(--ff-title);
+
+  /* Colors */
+  --color-primary: rgb(var(--c-primary));
+  --color-primary-5: rgb(var(--c-primary-5));
+  --color-primary-10: rgb(var(--c-primary-10));
+  --color-primary-20: rgb(var(--c-primary-20));
+  --color-primary-40: rgb(var(--c-primary-40));
+  --color-primary-70: rgb(var(--c-primary-70));
+  --color-primary-80: rgb(var(--c-primary-80));
+
+  --color-body: rgb(var(--c-body));
+  --color-body-60: rgb(var(--c-body-60));
+  --color-body-80: rgb(var(--c-body-80));
+
+  --color-link: rgb(var(--c-link));
+  --color-link-10: rgb(var(--c-link-10));
+  --color-link-30: rgb(var(--c-link-30));
+  --color-link-70: rgb(var(--c-link-70));
+  --color-link-110: rgb(var(--c-link-110));
+
+  --color-warning: rgb(var(--c-warning));
+  --color-warning-10: rgb(var(--c-warning-10));
+  --color-warning-30: rgb(var(--c-warning-30));
+  --color-warning-70: rgb(var(--c-warning-70));
+  --color-warning-110: rgb(var(--c-warning-110));
+
+  --color-success: rgb(var(--c-success));
+  --color-success-10: rgb(var(--c-success-10));
+  --color-success-30: rgb(var(--c-success-30));
+  --color-success-70: rgb(var(--c-success-70));
+  --color-success-110: rgb(var(--c-success-110));
+
+  --color-danger: rgb(var(--c-danger));
+  --color-danger-10: rgb(var(--c-danger-10));
+  --color-danger-30: rgb(var(--c-danger-30));
+  --color-danger-70: rgb(var(--c-danger-70));
+  --color-danger-110: rgb(var(--c-danger-110));
+
+  --color-white: rgb(var(--c-white));
+  --color-black: rgb(var(--c-black));
+
+  --color-grey-lighter: #eee;
+  --color-grey-light: #c7c7c7;
+  --color-grey: #a4a4a4;
+  --color-grey-dark: #5f5f5f;
+  --color-grey-darker: #434343;
+
+  /* For StripePaymentForm - Tailwind defaults */
+  /* --line-height-tight: 1.25;
+  --font-size-base: 1rem;
+  --font-size-sm: 0.875rem;
+  --font-size-xs: 0.75rem;
+  --spacing-2: 0.5rem;
+  --spacing-1.5: 0.375rem; */
+}

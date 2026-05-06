@@ -82,7 +82,6 @@
     "./types": "./src/types/index.ts",
     "./styles/*": "./src/styles/*.css",
     "./styles": "./src/styles/index.css",
-    "./assets/*": "./src/assets/*",
-    "./tailwind.config": "./tailwind.config.js"
+    "./assets/*": "./src/assets/*"
   }
 }
