@@ -1,2 +1,3 @@
 @import './multiselect.css';
 @import './tailwind.css';
+@source "../../packages/vue/src/**/*.{vue,js,ts}";

@@ -1,4 +1,6 @@
+@import 'tailwindcss';
 @import '@beabee/vue/styles';
+@source "../../../packages/vue/src/**/*.{vue,js,ts,jsx,tsx}";
 
 /* Apply link styles to i18n markdown text */
 .content-i18n {

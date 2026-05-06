@@ -34,7 +34,7 @@ import type { Appearance } from '@stripe/stripe-js';
 import type { ApplePayOption } from '@stripe/stripe-js/dist/stripe-js/elements/apple-pay';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import useVuelidate from '@vuelidate/core';
-import theme from 'virtual:theme';
+import defaultTheme from 'tailwindcss/defaultTheme';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -79,21 +79,22 @@ const appearance: Appearance = {
     colorPrimary: getColor('-c--primary'),
     colorText: getColor('--c-body'),
     colorBackground: getColor('--c-white'),
-    borderRadius: theme.borderRadius.DEFAULT,
-    fontLineHeight: theme.lineHeight.tight,
-    fontSizeBase: theme.fontSize.base[0],
-    fontSizeSm: theme.fontSize.sm[0],
-    fontSizeXs: theme.fontSize.xs[0],
+    borderRadius: style.getPropertyValue('--radius'),
+
+    fontLineHeight: style.getPropertyValue('--line-height-tight'),
+    fontSizeBase: style.getPropertyValue('--font-size-base'),
+    fontSizeSm: style.getPropertyValue('--font-size-sm'),
+    fontSizeXs: style.getPropertyValue('--font-size-xs'),
     fontFamily: style.getPropertyValue('--ff-body'),
   },
   rules: {
     '.Input': {
       border: '1px solid ' + getColor('--c-primary-40'),
-      padding: theme.spacing['2'],
-      lineHeight: theme.lineHeight.tight,
+      padding: defaultTheme.spacing['2'],
+      lineHeight: defaultTheme.lineHeight.tight,
     },
     '.Input:focus': {
-      boxShadow: style.getPropertyValue('--bs-input'),
+      boxShadow: style.getPropertyValue('--shadow-input'),
     },
     '.Input--invalid': {
       backgroundColor: getColor('--c-danger-10'),
@@ -102,11 +103,11 @@ const appearance: Appearance = {
       boxShadow: 'none',
     },
     '.Label': {
-      fontSize: theme.fontSize.base[0],
-      marginBottom: theme.spacing['1.5'],
+      fontSize: defaultTheme.fontSize.base[0] as string,
+      marginBottom: defaultTheme.spacing['1.5'],
     },
     '.Error': {
-      fontSize: theme.fontSize.xs[0],
+      fontSize: style.getPropertyValue('--font-size-xs'),
     },
   },
 };
