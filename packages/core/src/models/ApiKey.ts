@@ -8,7 +8,7 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 
-import { type Contact } from './index';
+import { type Contact } from './index.js';
 
 @Entity()
 export class ApiKey {

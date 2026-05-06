@@ -8,19 +8,21 @@ import axios from 'axios';
 import crypto from 'crypto';
 import { differenceInMonths, format } from 'date-fns';
 import { Request } from 'express';
-import {
+import type {
   Customer,
   CustomerBankAccount,
-  PaymentStatus as GCPaymentStatus,
   Mandate,
   Payment,
-  PaymentCurrency,
   RedirectFlow,
   RedirectFlowPrefilledCustomer,
   Refund,
   Subscription,
+} from 'gocardless-nodejs';
+import {
+  PaymentStatus as GCPaymentStatus,
+  PaymentCurrency,
   SubscriptionIntervalUnit,
-} from 'gocardless-nodejs/types/Types';
+} from 'gocardless-nodejs/types/Types.js';
 import moment from 'moment';
 import { DeepPartial } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';

@@ -8,8 +8,12 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "paths": {
-      "#locale": ["./src/locales/current"],
-      "#*": ["./src/*"]
+      "#locale": ["./src/locales/current.ts"],
+      "#models": ["./src/models/index.ts"],
+      "#models/*": ["./src/models/*.ts"],
+      "#type": ["./src/type/index.ts"],
+      "#type/*": ["./src/type/*.ts"],
+      "#*": ["./src/*.ts"]
     }
   }
 }

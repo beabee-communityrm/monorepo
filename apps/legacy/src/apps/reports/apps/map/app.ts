@@ -5,9 +5,13 @@ import { wrapAsync } from '@beabee/core/utils/express';
 
 import axios from 'axios';
 import express, { type Express } from 'express';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 import { Brackets } from 'typeorm';
 
 import { isAdmin } from '#core/middleware';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 

@@ -1,4 +1,4 @@
-import { ADDRESS_COMPONENT_TYPE } from '../constants';
+import { ADDRESS_COMPONENT_TYPE } from '../constants.js';
 
 export interface CalloutResponseAnswerAddressComponent {
   type: ADDRESS_COMPONENT_TYPE;

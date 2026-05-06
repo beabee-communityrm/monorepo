@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import type { Contact, Project } from './index';
+import type { Contact, Project } from './index.js';
 
 @Entity()
 export class ProjectEngagement {

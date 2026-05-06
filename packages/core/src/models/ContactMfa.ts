@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { type Contact } from './index';
+import { type Contact } from './index.js';
 
 /**
  * The **unsecure** contact multi factor authentication information with the `secret` key

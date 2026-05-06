@@ -25,7 +25,7 @@ import { SignupConfirmEmailParams } from '#api/params/SignupConfirmEmailParams';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import { login } from '#api/utils/auth';
 
-import { RateLimit } from '../decorators';
+import { RateLimit } from '../decorators/index.js';
 
 @JsonController('/signup')
 export class SignupController {
