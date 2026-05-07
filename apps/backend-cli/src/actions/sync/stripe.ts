@@ -187,7 +187,7 @@ async function syncPayments(
 
       // If the invoice is paid, we need to handle that too to ensure
       // membership roles are updated
-      if (invoice.paid) {
+      if (invoice.status === 'paid') {
         await StripeWebhookEventHandler.handleInvoicePaid(invoice, false);
       }
     }
