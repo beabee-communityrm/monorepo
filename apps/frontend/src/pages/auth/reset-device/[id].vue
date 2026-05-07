@@ -57,7 +57,7 @@ import { isInternalUrl } from '#utils/index';
 
 const { t } = useI18n();
 
-const route = useRoute('reset_device');
+const route = useRoute();
 const router = useRouter();
 
 const redirectTo = route.query.next as string | undefined;
@@ -66,7 +66,7 @@ const data = reactive({ password: '' });
 
 async function handleSubmit() {
   await client.resetSecurity.resetDeviceComplete(
-    route.params.id,
+    route.params.id as string,
     data.password
   );
   await updateCurrentUser();

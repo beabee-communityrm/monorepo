@@ -45,14 +45,15 @@
     "@tiptap/vue-3": "^2.27.2",
     "@vuelidate/core": "^2.0.3",
     "color2k": "^2.0.3",
+    "colorjs.io": "~0.6.0-beta.3",
     "dompurify": "^3.4.2",
     "import-meta-resolve": "^4.2.0",
     "qrcode-generator": "1.5.0",
     "vue": "^3.5.34",
-    "vue-accessible-color-picker": "^5.3.1",
+    "vue-accessible-color-picker": "^6.0.0",
     "vue-i18n": "^11.4.0",
     "vue-multiselect": "^3.5.0",
-    "vue-router": "^4.6.4"
+    "vue-router": "^5.0.6"
   },
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",

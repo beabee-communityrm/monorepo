@@ -23,7 +23,7 @@ import { useRoute } from 'vue-router';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 
-const route = useRoute('adminCalloutView');
+const route = useRoute();
 const { t } = useI18n();
 
 addBreadcrumb(
@@ -44,7 +44,7 @@ const callout =
   ref<GetCalloutDataWith<'form' | 'responseCount' | 'responseViewSchema'>>();
 
 onBeforeMount(async () => {
-  callout.value = await client.callout.get(route.params.id, [
+  callout.value = await client.callout.get(route.params.id as string, [
     'form',
     'responseCount',
     'responseViewSchema',
