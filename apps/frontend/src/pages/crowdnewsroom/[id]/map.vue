@@ -441,10 +441,19 @@ const selectedResponses = computed(() => {
 function findSelectedFeature(responseNo: number) {
   if (!map.value) return;
 
-  const feature = map.value.queryRenderedFeatures({
+  const queried = map.value.queryRenderedFeatures({
     layers: [LAYER_IDS.UNCLUSTERED_POINTS, LAYER_IDS.CLUSTERS],
     filter: ['in', `<${responseNo}>`, ['get', 'all_responses']],
-  })[0] as unknown as MapPointFeature | undefined;
+  })[0];
+
+  // maplibre-gl 5 tightened the worker-IPC serializer: the prototyped
+  // objects returned by queryRenderedFeatures can no longer be fed
+  // back into a GeoJSONSource without first stripping their class
+  // identity. Round-tripping through JSON gives us a plain GeoJSON
+  // feature.
+  const feature = queried
+    ? (JSON.parse(JSON.stringify(queried)) as MapPointFeature)
+    : undefined;
 
   if (
     // If feature wasn't found, it probably just isn't in the map's viewport,
