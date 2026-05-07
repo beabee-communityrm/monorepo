@@ -93,9 +93,23 @@ meta:
             :layer-id="LAYER_IDS.SELECTED_RESPONSE"
             :paint="{
               'circle-stroke-color': 'red',
-              'circle-stroke-width': 2,
+              'circle-stroke-width': 3,
               'circle-color': 'transparent',
-              'circle-radius': 20,
+              // The selected feature can be either an unclustered point or a
+              // cluster (queryRenderedFeatures returns whichever is on top).
+              // Size the ring to sit just outside both: a fixed 22px around
+              // the icon for unclustered points, and ~5px outside the
+              // cluster's circle-radius (which steps with the point count).
+              'circle-radius': [
+                'case',
+                ['has', 'point_count'],
+                [
+                  '+',
+                  ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
+                  5,
+                ],
+                22,
+              ],
             }"
           />
         </MglGeoJsonSource>
@@ -198,7 +212,6 @@ import { library } from '@beabee/vue/plugins/icons';
 
 import { faInfoCircle, faPlus, fas } from '@fortawesome/free-solid-svg-icons';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
-import '@maptiler/geocoding-control/style.css';
 import {
   type GeoJSONSource,
   type LngLatLike,
@@ -242,7 +255,6 @@ import { AddressFormatter } from '#lib/address.formatter';
 import { currentLocaleConfig } from '#lib/i18n';
 import { isEmbed } from '#store';
 import type {
-  GeocodePickEvent,
   GetCalloutResponseMapDataWithAddress,
   MapClusterFeature,
   MapPointFeature,
@@ -443,10 +455,32 @@ const selectedResponses = computed(() => {
 function findSelectedFeature(responseNo: number) {
   if (!map.value) return;
 
-  const feature = map.value.queryRenderedFeatures({
+  const queried = map.value.queryRenderedFeatures({
     layers: [LAYER_IDS.UNCLUSTERED_POINTS, LAYER_IDS.CLUSTERS],
     filter: ['in', `<${responseNo}>`, ['get', 'all_responses']],
-  })[0] as unknown as MapPointFeature | undefined;
+  })[0];
+
+  // eslint-disable-next-line no-console
+  console.debug('[map] findSelectedFeature', {
+    responseNo,
+    layerId: queried?.layer.id,
+    isCluster: !!queried?.properties.point_count,
+    geometry: queried?.geometry,
+    properties: queried?.properties,
+  });
+
+  // maplibre-gl 5 tightened the worker-IPC serializer: the prototyped
+  // objects returned by queryRenderedFeatures can no longer be fed
+  // back into a GeoJSONSource without first stripping their class
+  // identity. The feature also exposes `geometry` via a getter that
+  // JSON.stringify silently drops, so we reconstruct it explicitly.
+  const feature: MapPointFeature | undefined = queried
+    ? {
+        type: 'Feature',
+        geometry: queried.geometry as MapPointFeature['geometry'],
+        properties: queried.properties as MapPointFeature['properties'],
+      }
+    : undefined;
 
   if (
     // If feature wasn't found, it probably just isn't in the map's viewport,
@@ -457,6 +491,8 @@ function findSelectedFeature(responseNo: number) {
     feature.properties.all_responses !==
       selectedFeature.value?.properties.all_responses
   ) {
+    // eslint-disable-next-line no-console
+    console.debug('[map] selectedFeature →', feature);
     selectedFeature.value = feature;
   }
 }
@@ -611,12 +647,8 @@ function handleClusterClick(cluster: MapClusterFeature) {
   if (!map.value || !mapSchema) return; // Can't actually happen
 
   const source = map.value.getSource(SOURCE_IDS.RESPONSES) as GeoJSONSource;
-  source.getClusterExpansionZoom(cluster.properties.cluster_id, (err, zoom) => {
-    if (err || zoom == null) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to get cluster expansion zoom:', err);
-      return;
-    }
+  source.getClusterExpansionZoom(cluster.properties.cluster_id).then((zoom) => {
+    if (zoom == null) return;
 
     // Maximum zoom level, open first response
     if (zoom >= mapSchema.maxZoom) {
@@ -722,13 +754,15 @@ async function handleLoad({ map: mapInstance }: { map: Map }) {
     );
 
     /**
-     * Handle the pick event from the geocoding control
-     * The pick event is triggered when the user clicks on a address in the search results
+     * Handle the select event from the geocoding control. v3 of
+     * @maptiler/geocoding-control split the legacy `pick` event into
+     * a hover-style `pick` (fires while the user is highlighting
+     * suggestions) and a confirmed `select` (fires on click / Enter).
+     * The marker should follow the confirmed selection only.
      */
-    geocodeControl.addEventListener('pick', (e: Event) => {
-      const event = e as GeocodePickEvent;
-      geocodeLocation.value = event.detail
-        ? [event.detail.center[0], event.detail.center[1]]
+    geocodeControl.on('select', (event) => {
+      geocodeLocation.value = event.feature
+        ? [event.feature.center[0], event.feature.center[1]]
         : undefined;
     });
 
