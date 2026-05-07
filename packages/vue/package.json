@@ -58,15 +58,15 @@
     "@beabee/prettier-config": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
     "@histoire/plugin-vue": "^1.0.0-beta.1",
-    "@intlify/unplugin-vue-i18n": "^6.0.8",
+    "@intlify/unplugin-vue-i18n": "^11.0.0",
     "@types/dompurify": "^3.2.0",
-    "@vitejs/plugin-vue": "^5.2.4",
+    "@vitejs/plugin-vue": "^6.0.0",
     "histoire": "^1.0.0-beta.1",
     "postcss": "^8.5.14",
     "prettier": "^3.8.3",
     "tailwindcss": "^3.4.19",
     "typescript": "~6.0.3",
-    "vite": "^6.4.2",
+    "vite": "^8.0.0",
     "vue-tsc": "^2.2.12"
   },
   "files": [
