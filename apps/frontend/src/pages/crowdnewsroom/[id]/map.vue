@@ -570,7 +570,14 @@ async function handleAddClick(event: MapMouseEvent) {
   const geocodeResult = await reverseGeocode(coords.lat, coords.lng);
 
   if (!geocodeResult) {
-    throw new Error('Failed to geocode address');
+    // No address found for this location (e.g. water, missing maptiler key).
+    // Bail out quietly so the user can pick a different spot.
+    // eslint-disable-next-line no-console
+    console.error('Failed to geocode address', {
+      lat: coords.lat,
+      lng: coords.lng,
+    });
+    return;
   }
 
   // Create address with click coordinates instead of geocode result coordinates
