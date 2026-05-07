@@ -460,15 +460,6 @@ function findSelectedFeature(responseNo: number) {
     filter: ['in', `<${responseNo}>`, ['get', 'all_responses']],
   })[0];
 
-  // eslint-disable-next-line no-console
-  console.debug('[map] findSelectedFeature', {
-    responseNo,
-    layerId: queried?.layer.id,
-    isCluster: !!queried?.properties.point_count,
-    geometry: queried?.geometry,
-    properties: queried?.properties,
-  });
-
   // maplibre-gl 5 tightened the worker-IPC serializer: the prototyped
   // objects returned by queryRenderedFeatures can no longer be fed
   // back into a GeoJSONSource without first stripping their class
@@ -491,8 +482,6 @@ function findSelectedFeature(responseNo: number) {
     feature.properties.all_responses !==
       selectedFeature.value?.properties.all_responses
   ) {
-    // eslint-disable-next-line no-console
-    console.debug('[map] selectedFeature →', feature);
     selectedFeature.value = feature;
   }
 }
