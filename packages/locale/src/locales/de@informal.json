@@ -1630,6 +1630,7 @@
         "description": "Optimiere dein Registrierungsformular",
         "formSubtitle": "Untertitel",
         "formTitle": "Titel",
+        "googleApplePayNoticeText": "",
         "minAmount": "Mindestbeitrag",
         "noticeText": "Hinweistext unter dem Zahlungsbutton",
         "noticeTextHelp": "Verwende dieses Feld, um einen Hinweis unter dem Zahlungsbutton hinzuzufügen, zum Beispiel zur Erklärung von Zahlungsperioden oder Bankeinzugsermächtigungen. Du kannst dieses Feld auch leer lassen.",

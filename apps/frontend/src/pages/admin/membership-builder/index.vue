@@ -92,6 +92,11 @@ meta:
           :label="stepT('showGoogleApplePay')"
           class="mb-4 font-semibold"
         />
+        <AppInputHelp
+          class="mb-4 font-semibold"
+          v-if="joinContent.showGoogleApplePay"
+          :message="stepT('googleApplePayNoticeText')"
+        />
         <AppRichTextEditor
           v-model="noticeText"
           controls="inline"
@@ -122,6 +127,7 @@ import {
   App2ColGrid,
   AppCheckbox,
   AppInput,
+  AppInputHelp,
   AppLabel,
   AppRichTextEditor,
   AppSelect,

@@ -1630,6 +1630,7 @@
         "description": "",
         "formSubtitle": "",
         "formTitle": "",
+        "googleApplePayNoticeText": "",
         "minAmount": "",
         "noticeText": "",
         "noticeTextHelp": "",

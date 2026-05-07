@@ -1630,6 +1630,7 @@
         "description": "Personalizza il modulo di iscrizione",
         "formSubtitle": "Sottotitolo",
         "formTitle": "Titolo",
+        "googleApplePayNoticeText": "",
         "minAmount": "Importo minimo",
         "noticeText": "Avviso sotto il pulsante di pagamento",
         "noticeTextHelp": "Usa questo campo per aggiungere un avviso sotto il pulsante di pagamento, ad esempio per spiegare i periodi di pagamento o le autorizzazioni bancarie. Puoi anche lasciare il campo vuoto.",

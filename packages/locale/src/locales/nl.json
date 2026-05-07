@@ -1630,6 +1630,7 @@
         "description": "Verfijn je lidmaatschapsformulier",
         "formSubtitle": "Ondertitel",
         "formTitle": "Titel",
+        "googleApplePayNoticeText": "",
         "minAmount": "Minimum bedrag",
         "noticeText": "",
         "noticeTextHelp": "",

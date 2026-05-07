@@ -1634,6 +1634,7 @@
         "description": "Ajustez votre formulaire d'adhésion",
         "formSubtitle": "Sous-titre",
         "formTitle": "Titre",
+        "googleApplePayNoticeText": "",
         "minAmount": "Montant minimum",
         "noticeText": "",
         "noticeTextHelp": "",

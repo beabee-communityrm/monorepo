@@ -1628,6 +1628,7 @@
         "description": "Ajusta tu formulario de registro de membresía",
         "formSubtitle": "Subtítulo",
         "formTitle": "Título",
+        "googleApplePayNoticeText": "",
         "minAmount": "Importe mínimo",
         "noticeText": "Aviso debajo del botón de pago",
         "noticeTextHelp": "Usa este campo para añadir un aviso debajo del botón de pago, por ejemplo explicando los períodos de pago o autorizaciones bancarias. También puedes dejarlo en blanco.",
