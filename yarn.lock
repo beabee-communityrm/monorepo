@@ -8003,6 +8003,15 @@ __metadata:
 "beabee@workspace:.":
   version: 0.0.0-use.local
   resolution: "beabee@workspace:."
+  dependenciesMeta:
+    "@parcel/watcher":
+      built: true
+    esbuild:
+      built: true
+    sharp:
+      built: true
+    vue-demi:
+      built: true
   languageName: unknown
   linkType: soft
 
