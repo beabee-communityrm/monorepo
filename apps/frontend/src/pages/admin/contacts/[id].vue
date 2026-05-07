@@ -33,7 +33,7 @@ import { resolveTabNavigation } from '#utils/navigation';
 
 import env from '../../../env';
 
-const route = useRoute('adminContactsView');
+const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 
@@ -95,6 +95,6 @@ addBreadcrumb(
 );
 
 onBeforeMount(async () => {
-  contact.value = await client.contact.get(route.params.id);
+  contact.value = await client.contact.get(route.params.id as string);
 });
 </script>

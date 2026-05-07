@@ -33,7 +33,7 @@ import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 
 const { t } = useI18n();
-const route = useRoute('adminNoticeEdit');
+const route = useRoute();
 const router = useRouter();
 
 const notice = ref<GetNoticeData | undefined>();
@@ -54,7 +54,7 @@ addBreadcrumb(
 );
 
 onBeforeMount(async () => {
-  notice.value = await client.notice.get(route.params.id);
+  notice.value = await client.notice.get(route.params.id as string);
 });
 
 async function handleSubmit(formData: CreateNoticeData) {
