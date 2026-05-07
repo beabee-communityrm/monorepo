@@ -4,8 +4,7 @@ import type {
   CalloutComponentInputAddressRules,
 } from './index.js';
 
-export interface CalloutComponentInputAddressSchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentInputAddressSchema extends CalloutComponentBaseInputSchema {
   type: CalloutComponentType.INPUT_ADDRESS;
   /** The validation rules for the form */
   validate?: CalloutComponentInputAddressRules;

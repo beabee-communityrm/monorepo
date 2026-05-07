@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class JoinFlowContactManyToOne1770303560600
-  implements MigrationInterface
-{
+export class JoinFlowContactManyToOne1770303560600 implements MigrationInterface {
   name = 'JoinFlowContactManyToOne1770303560600';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

@@ -19,9 +19,7 @@ interface CalloutFormSchema {
   }[];
 }
 
-export class UpdateCalloutFormSchemaComponents1756466495968
-  implements MigrationInterface
-{
+export class UpdateCalloutFormSchemaComponents1756466495968 implements MigrationInterface {
   name = 'UpdateCalloutFormSchemaComponents1756466495968';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

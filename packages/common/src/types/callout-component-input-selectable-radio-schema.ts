@@ -4,8 +4,7 @@ import type {
   CalloutComponentInputSelectableRadioRules,
 } from './index.js';
 
-export interface CalloutComponentInputSelectableRadioSchema
-  extends CalloutComponentBaseInputSelectableSchema {
+export interface CalloutComponentInputSelectableRadioSchema extends CalloutComponentBaseInputSelectableSchema {
   type: CalloutComponentType.INPUT_SELECTABLE_RADIO;
   validate?: CalloutComponentInputSelectableRadioRules;
 }

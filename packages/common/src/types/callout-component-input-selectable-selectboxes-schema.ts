@@ -4,8 +4,7 @@ import type {
   CalloutComponentSelectboxesRules,
 } from './index.js';
 
-export interface CalloutComponentInputSelectableSelectboxesSchema
-  extends CalloutComponentBaseInputSelectableSchema {
+export interface CalloutComponentInputSelectableSelectboxesSchema extends CalloutComponentBaseInputSelectableSchema {
   type: CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES;
   validate?: CalloutComponentSelectboxesRules;
 }

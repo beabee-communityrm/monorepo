@@ -13,8 +13,7 @@ export interface FormioAddressProviderOptions {
 /**
  * MapTiler provider configuration options
  */
-export interface FormioMapTilerProviderOptions
-  extends FormioAddressProviderOptions {
+export interface FormioMapTilerProviderOptions extends FormioAddressProviderOptions {
   params: MapTilerGeocodingOptions & {
     query?: string; // Search query
   };

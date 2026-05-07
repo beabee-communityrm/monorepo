@@ -448,9 +448,7 @@ async function processOptionImage(
 
   if (!imageKey) {
     console.log(
-      chalk.yellow(
-        `⚠ Unsupported image format for ${optionLabel}: ${imageUrl}`
-      )
+      chalk.yellow(`⚠ Unsupported image format for ${optionLabel}: ${imageUrl}`)
     );
     stats.errorCount++;
     return;

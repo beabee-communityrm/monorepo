@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddOptionalFirstAndLastNameToJoinFlow1656347461817
-  implements MigrationInterface
-{
+export class AddOptionalFirstAndLastNameToJoinFlow1656347461817 implements MigrationInterface {
   name = 'AddOptionalFirstAndLastNameToJoinFlow1656347461817';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

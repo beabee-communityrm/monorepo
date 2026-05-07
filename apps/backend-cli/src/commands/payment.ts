@@ -52,9 +52,8 @@ export const paymentCommand: CommandModule = {
               default: false,
             }),
         handler: async (argv: ArgumentsCamelCase<CreatePaymentArgs>) => {
-          const { createPayment } = await import(
-            '../actions/payment/create.js'
-          );
+          const { createPayment } =
+            await import('../actions/payment/create.js');
           return createPayment(argv);
         },
       })

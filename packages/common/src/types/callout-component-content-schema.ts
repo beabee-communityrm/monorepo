@@ -2,8 +2,7 @@ import type { CalloutComponentType } from '../data/index.js';
 import type { CalloutComponentBaseSchema } from './index.js';
 
 /** A Callout content component only providing html content and accepts no answers. */
-export interface CalloutComponentContentSchema
-  extends CalloutComponentBaseSchema {
+export interface CalloutComponentContentSchema extends CalloutComponentBaseSchema {
   type: CalloutComponentType.CONTENT;
   /** The html content of the callout component. */
   html: string;

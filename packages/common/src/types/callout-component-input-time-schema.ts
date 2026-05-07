@@ -4,8 +4,7 @@ import type {
   CalloutComponentInputTimeRules,
 } from './index.js';
 
-export interface CalloutComponentInputTimeSchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentInputTimeSchema extends CalloutComponentBaseInputSchema {
   type: CalloutComponentType.INPUT_TIME;
   /** E.g. 99:99 */
   inputMask: string;

@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class ConvertChargeDateToDate1706113195469
-  implements MigrationInterface
-{
+export class ConvertChargeDateToDate1706113195469 implements MigrationInterface {
   name = 'ConvertChargeDateToDate1706113195469';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

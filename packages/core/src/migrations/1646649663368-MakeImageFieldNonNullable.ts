@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class MakeImageFieldNonNullable1646649663368
-  implements MigrationInterface
-{
+export class MakeImageFieldNonNullable1646649663368 implements MigrationInterface {
   name = 'MakeImageFieldNonNullable1646649663368';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
