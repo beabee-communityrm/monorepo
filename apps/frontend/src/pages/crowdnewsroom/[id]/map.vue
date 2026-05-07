@@ -241,7 +241,6 @@ import { AddressFormatter } from '#lib/address.formatter';
 import { currentLocaleConfig } from '#lib/i18n';
 import { isEmbed } from '#store';
 import type {
-  GeocodePickEvent,
   GetCalloutResponseMapDataWithAddress,
   MapClusterFeature,
   MapPointFeature,
@@ -610,25 +609,23 @@ function handleClusterClick(cluster: MapClusterFeature) {
   if (!map.value || !mapSchema) return; // Can't actually happen
 
   const source = map.value.getSource(SOURCE_IDS.RESPONSES) as GeoJSONSource;
-  source
-    .getClusterExpansionZoom(cluster.properties.cluster_id)
-    .then((zoom) => {
-      if (zoom == null) return;
+  source.getClusterExpansionZoom(cluster.properties.cluster_id).then((zoom) => {
+    if (zoom == null) return;
 
-      // Maximum zoom level, open first response
-      if (zoom >= mapSchema.maxZoom) {
-        router.push({
-          ...route,
-          hash: HASH_PREFIX + cluster.properties.first_response,
-        });
-        // Zoom to the cluster
-      } else {
-        map.value!.easeTo({
-          center: cluster.geometry.coordinates as LngLatLike,
-          zoom: zoom + 1,
-        });
-      }
-    });
+    // Maximum zoom level, open first response
+    if (zoom >= mapSchema.maxZoom) {
+      router.push({
+        ...route,
+        hash: HASH_PREFIX + cluster.properties.first_response,
+      });
+      // Zoom to the cluster
+    } else {
+      map.value!.easeTo({
+        center: cluster.geometry.coordinates as LngLatLike,
+        zoom: zoom + 1,
+      });
+    }
+  });
 }
 
 /**
