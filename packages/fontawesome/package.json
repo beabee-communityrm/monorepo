@@ -19,7 +19,7 @@
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
-    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@fortawesome/fontawesome-free": "^7.2.0",
     "@types/node": "^24.12.2",
     "prettier": "^3.8.3",
     "typescript": "~6.0.3",
