@@ -38,7 +38,7 @@
       v-model="paymentMethod"
       :methods="content.paymentMethods"
       :disabled="disabled"
-      :google-and-apple-pay-enabled="content.showGoogleApplePay"
+      :show-google-apple-pay="content.showGoogleApplePay"
       :title="t('join.paymentMethod')"
       class="mb-4"
     />

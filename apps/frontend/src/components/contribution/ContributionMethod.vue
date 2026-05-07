@@ -8,7 +8,7 @@
   - `methods` (PaymentMethod[]): Available payment methods to choose from
   - `disabled` (boolean): Whether the component is disabled
   - `title` (string): Title text for the payment method selection
-  - `googleAndApplePayEnabled` (boolean): Whether Google Pay and Apple Pay are enabled
+  - `showGoogleApplePay` (boolean): Whether Google Pay and Apple Pay are enabled
 
   ## Events
   - `update:modelValue` (PaymentMethod): Emitted when the selected method changes
@@ -44,9 +44,7 @@
         >
           <PaymentMethodIcon :method="method" />
           <span
-            v-if="
-              method === PaymentMethod.StripeCard && googleAndApplePayEnabled
-            "
+            v-if="method === PaymentMethod.StripeCard && showGoogleApplePay"
             class="mx-1"
           >
             <ApplePay class="mr-1" /><GooglePay class="h-4" />
@@ -87,7 +85,7 @@ export interface ContributionMethodProps {
   /** Title text for the payment method selection */
   title: string;
   /** Whether Google and Apple Pay are enabled */
-  googleAndApplePayEnabled: boolean;
+  showGoogleApplePay: boolean;
 }
 
 const emit = defineEmits(['update:modelValue']);
