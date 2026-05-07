@@ -95,13 +95,19 @@ export default ({ command, mode }) => {
     resolve: {
       alias,
     },
-    // maplibre-gl 5 ships native ESM. Letting Vite's dep-optimizer wrap it
-    // in a CJS-to-ESM shim creates inconsistent re-export names between
-    // the pre-bundled `maplibre-gl.js` and the consumers (vue-maplibre-gl,
-    // @maptiler/geocoding-control), which surfaces at runtime as
-    // `doesn't provide an export named: 't'` when the map is loaded.
+    // maplibre-gl ships UMD inside a `type: module` package shell, so it
+    // *must* go through Vite's dep-optimizer (loading it as native ESM
+    // explodes with `doesn't provide an export named: 'default'`). Force
+    // the optimizer to bundle it together with its two consumers in a
+    // single pass — otherwise the rolldown-renamed re-export symbol drifts
+    // between passes and surfaces as `doesn't provide an export named: 't'`
+    // when the map is loaded.
     optimizeDeps: {
-      exclude: ['maplibre-gl'],
+      include: [
+        'maplibre-gl',
+        'vue-maplibre-gl',
+        '@maptiler/geocoding-control/maplibregl',
+      ],
     },
     plugins,
     server: {
