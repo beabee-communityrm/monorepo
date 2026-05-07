@@ -6,13 +6,15 @@ meta:
 </route>
 
 <template>
-  <NewCalloutPage :id="route.params.id" />
+  <NewCalloutPage :id="id" />
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import NewCalloutPage from '../new.vue';
 
-const route = useRoute('adminCalloutEdit');
+const route = useRoute();
+const id = computed(() => route.params.id as string);
 </script>

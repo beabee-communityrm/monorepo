@@ -147,7 +147,7 @@ app.get(
     const items =
       req.params.status === 'new'
         ? await exportType.getNewItems()
-        : await exportType.getItems(req.params.status);
+        : await exportType.getItems(req.params.status as string | undefined);
 
     const exportData = await exportType.getExport(items as any);
 

@@ -48,7 +48,9 @@ const tabs = computed(() =>
 );
 
 const selectedTab = computed(() =>
-  tabs.value.find((tab) => route.name.startsWith(tab.id))
+  tabs.value.find(
+    (tab) => typeof route.name === 'string' && route.name.startsWith(tab.id)
+  )
 );
 
 addBreadcrumb(

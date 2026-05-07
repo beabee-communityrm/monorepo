@@ -210,7 +210,7 @@ const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;
 }>();
 
-const route = useRoute('adminCalloutViewResponsesItem');
+const route = useRoute();
 const { t, n } = useI18n();
 
 addBreadcrumb(
@@ -287,12 +287,15 @@ async function handleEditResponse(answers: CalloutResponseAnswersSlide) {
 }
 
 async function refreshResponse() {
-  const newResponse = await client.callout.response.get(route.params.rid, [
-    GetCalloutResponseWith.Answers,
-    GetCalloutResponseWith.Assignee,
-    GetCalloutResponseWith.Contact,
-    GetCalloutResponseWith.Tags,
-  ]);
+  const newResponse = await client.callout.response.get(
+    route.params.rid as string,
+    [
+      GetCalloutResponseWith.Answers,
+      GetCalloutResponseWith.Assignee,
+      GetCalloutResponseWith.Contact,
+      GetCalloutResponseWith.Tags,
+    ]
+  );
 
   const olderResponses = await client.callout.listResponses(
     props.callout.slug,
