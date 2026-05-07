@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 9
   cacheKey: 10c0
 
 "@acemir/cssom@npm:^0.9.28":
@@ -8003,6 +8003,15 @@ __metadata:
 "beabee@workspace:.":
   version: 0.0.0-use.local
   resolution: "beabee@workspace:."
+  dependenciesMeta:
+    "@parcel/watcher":
+      built: true
+    esbuild:
+      built: true
+    sharp:
+      built: true
+    vue-demi:
+      built: true
   languageName: unknown
   linkType: soft
 
