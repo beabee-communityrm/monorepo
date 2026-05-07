@@ -140,9 +140,15 @@ class PaymentService {
       await getRepository(ContactContribution).save(contribution);
     }
 
-    return await new PaymentProviders[
-      newMethod as keyof typeof PaymentProviders
-    ](contribution).processPaymentFlow(flow as any); // TODO: improve type
+    const ret = await new PaymentProviders[newMethod](
+      contribution
+    ).processPaymentFlow(flow as any); // TODO: improve type
+
+    if (flow.form.action === 'start-contribution') {
+      await this.handlePostContributionUpdate(contact);
+    }
+
+    return ret;
   }
 
   async canUpdateContribution(
@@ -179,10 +185,9 @@ class PaymentService {
     const ret = await this.provider(contact, (p) =>
       p.processUpdateContribution(form)
     );
-    await getRepository(ContactContribution).update(
-      { contactId: contact.id },
-      { cancelledAt: null }
-    );
+
+    await this.handlePostContributionUpdate(contact);
+
     return ret;
   }
 
@@ -279,6 +284,20 @@ class PaymentService {
         .getRepository(Payment)
         .update({ contactId: contact.id }, { contactId: null });
     });
+  }
+
+  /**
+   * Handle a contribution being started, restarted or just updated.  This
+   * resets any cancellation status as the contribution is now assumed to be
+   * active again
+   *
+   * @param contact The contact
+   */
+  private async handlePostContributionUpdate(contact: Contact) {
+    await getRepository(ContactContribution).update(
+      { contactId: contact.id },
+      { cancelledAt: null }
+    );
   }
 }
 
