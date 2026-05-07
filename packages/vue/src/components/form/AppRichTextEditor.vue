@@ -133,9 +133,7 @@ import {
   faStrikethrough,
   faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
-import Link from '@tiptap/extension-link';
 import Typography from '@tiptap/extension-typography';
-import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import { type ChainedCommands, EditorContent, useEditor } from '@tiptap/vue-3';
 import useVuelidate from '@vuelidate/core';
@@ -194,15 +192,15 @@ const { t } = useI18n();
 const editor = useEditor({
   content: props.modelValue as string,
   extensions: [
+    // TipTap 3 folded Link and Underline into StarterKit; configure them
+    // there instead of registering separate extensions to avoid the
+    // "Duplicate extension names found" runtime warning.
     StarterKit.configure({
       blockquote: false,
       codeBlock: false,
       heading: { levels: [3] },
       horizontalRule: false,
-    }),
-    Underline,
-    Link.configure({
-      openOnClick: false,
+      link: { openOnClick: false },
     }),
     Typography,
   ],
@@ -222,7 +220,7 @@ const editor = useEditor({
 
 watch(toRef(props, 'modelValue'), (value) => {
   if (editor.value && editor.value.getHTML() !== value) {
-    editor.value.commands.setContent(value as string, false);
+    editor.value.commands.setContent(value as string, { emitUpdate: false });
   }
 });
 
