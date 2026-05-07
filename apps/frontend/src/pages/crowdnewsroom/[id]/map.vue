@@ -716,10 +716,13 @@ async function handleLoad({ map: mapInstance }: { map: Map }) {
     );
 
     /**
-     * Handle the pick event from the geocoding control
-     * The pick event is triggered when the user clicks on a address in the search results
+     * Handle the select event from the geocoding control. v3 of
+     * @maptiler/geocoding-control split the legacy `pick` event into
+     * a hover-style `pick` (fires while the user is highlighting
+     * suggestions) and a confirmed `select` (fires on click / Enter).
+     * The marker should follow the confirmed selection only.
      */
-    geocodeControl.on('pick', (event) => {
+    geocodeControl.on('select', (event) => {
       geocodeLocation.value = event.feature
         ? [event.feature.center[0], event.feature.center[1]]
         : undefined;
