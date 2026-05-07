@@ -27,7 +27,10 @@ import ContentTransformer from '#api/transformers/ContentTransformer';
 
 @JsonController('/content')
 export class ContentController {
-  @Get('/:id(?:*)')
+  // path-to-regexp v8 (Express 5) requires `*id` for the multi-segment
+  // wildcard that the legacy `:id(?:*)` syntax used to express; the
+  // ContentParams transformer reassembles the captured segments.
+  @Get('/*id')
   async get(@Params() { id }: ContentParams): Promise<GetContentDto> {
     return await ContentTransformer.fetchOne(id);
   }

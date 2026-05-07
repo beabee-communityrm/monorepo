@@ -266,7 +266,7 @@ app.get(
   wrapAsync(async (req, res, next) => {
     const email = req.model as Email;
     const mailing = await getRepository(EmailMailing).findOneBy({
-      id: req.params.mailingId,
+      id: req.params.mailingId as string,
     });
     if (!mailing) return next('route');
 
@@ -302,7 +302,7 @@ app.post(
   wrapAsync(async (req, res, next) => {
     const email = req.model as Email;
     const mailing = await getRepository(EmailMailing).findOneBy({
-      id: req.params.mailingId,
+      id: req.params.mailingId as string,
     });
     if (!mailing) return next('route');
     if (!mailing.recipients?.length) {

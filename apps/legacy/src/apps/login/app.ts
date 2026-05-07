@@ -32,7 +32,9 @@ app.get(
   '/:code',
   wrapAsync(async function (req, res) {
     const nextParam = req.query.next as string;
-    const contact = await ContactsService.findByLoginOverride(req.params.code);
+    const contact = await ContactsService.findByLoginOverride(
+      req.params.code as string
+    );
     if (contact) {
       await ContactsService.updateContact(contact, { loginOverride: null });
       loginAndRedirect(
