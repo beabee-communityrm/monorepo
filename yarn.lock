@@ -1157,7 +1157,7 @@ __metadata:
     "@beabee/core": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
-    "@captchafox/node": "npm:^1.2.0"
+    "@captchafox/node": "npm:1.4.0"
     "@inquirer/prompts": "npm:^7.10.1"
     "@types/chance": "npm:^1.1.8"
     "@types/connect-pg-simple": "npm:^7.0.3"
@@ -1397,7 +1397,7 @@ __metadata:
     "@beabee/core": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
-    "@captchafox/node": "npm:^1.2.0"
+    "@captchafox/node": "npm:1.4.0"
     "@inquirer/prompts": "npm:^7.10.1"
     "@types/chance": "npm:^1.1.8"
     "@types/connect-busboy": "npm:^1.0.3"
@@ -1620,10 +1620,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@captchafox/node@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@captchafox/node@npm:1.2.0"
-  checksum: 10c0/46bdc5dca807c36cd9cdbeb2f91ed2f21a5822dc6a217a55356a7fcbdde5cf2a41a46db1af5c0c0ecfaadfd8fffdf15289768cfbcca67b0322fb29edbc9ed7f8
+"@captchafox/node@npm:1.4.0":
+  version: 1.4.0
+  resolution: "@captchafox/node@npm:1.4.0"
+  checksum: 10c0/888923b45fcde98785c62c34cee6a7a2974ccd0b54a48dd915fb5c90744eecd6e2c3ef4d115b35d4061dc474c747c6607e74f78e29879c0902764d1b66d93847
   languageName: node
   linkType: hard
 
