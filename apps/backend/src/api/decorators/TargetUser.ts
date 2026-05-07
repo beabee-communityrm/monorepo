@@ -25,7 +25,7 @@ export function TargetUser() {
         throw new UnauthorizedError();
       }
 
-      const id = request.params.id;
+      const id = request.params.id as string;
       if (id !== 'me' && auth.roles.includes('admin')) {
         const uuid = new UUIDParams();
         uuid.id = id;

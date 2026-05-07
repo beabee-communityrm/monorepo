@@ -31,7 +31,7 @@ app.use(
   wrapAsync(async (req, res, next) => {
     // Bit of a hack to get parent app params
     const contact = await ContactsService.findOne({
-      where: { id: req.allParams.uuid },
+      where: { id: req.allParams.uuid as string },
       relations: { profile: true },
     });
     if (contact) {
