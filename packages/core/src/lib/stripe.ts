@@ -151,7 +151,7 @@ export function isInvoicePaid(invoice: Stripe.Invoice): boolean {
 function isProrationLineItem(item: Stripe.InvoiceLineItem): boolean {
   return Boolean(
     item.parent?.invoice_item_details?.proration ||
-      item.parent?.subscription_item_details?.proration
+    item.parent?.subscription_item_details?.proration
   );
 }
 
