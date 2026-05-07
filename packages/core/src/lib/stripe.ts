@@ -108,6 +108,54 @@ export function getPriceData(
 }
 
 /**
+ * Stripe API v2025+ (`acacia` / `dahlia` API versions) moved
+ * `current_period_end/start` from the subscription onto each
+ * subscription item. We only ever create single-item subscriptions,
+ * so the first item carries the period information.
+ */
+export function getSubscriptionPeriodEnd(
+  subscription: Stripe.Subscription
+): number {
+  return subscription.items.data[0].current_period_end;
+}
+
+export function getSubscriptionPeriodStart(
+  subscription: Stripe.Subscription
+): number {
+  return subscription.items.data[0].current_period_start;
+}
+
+/**
+ * Stripe API v2025+ removed `Invoice.subscription` and `Invoice.paid`.
+ * The subscription that generated an invoice is now found via
+ * `invoice.parent.subscription_details.subscription`; the paid status
+ * via `invoice.status === 'paid'`.
+ */
+export function getInvoiceSubscriptionId(
+  invoice: Stripe.Invoice
+): string | null {
+  const sub = invoice.parent?.subscription_details?.subscription;
+  if (!sub) return null;
+  return typeof sub === 'string' ? sub : sub.id;
+}
+
+export function isInvoicePaid(invoice: Stripe.Invoice): boolean {
+  return invoice.status === 'paid';
+}
+
+/**
+ * Whether an invoice line item represents a proration. v2025+ moved
+ * the `proration` flag from the line item itself onto its `parent`
+ * descriptor.
+ */
+function isProrationLineItem(item: Stripe.InvoiceLineItem): boolean {
+  return Boolean(
+    item.parent?.invoice_item_details?.proration ||
+    item.parent?.subscription_item_details?.proration
+  );
+}
+
+/**
  * Calculate the proration amount and time for a subscription item.
  *
  * @param subscription The subscription to prorate
@@ -116,29 +164,31 @@ export function getPriceData(
  */
 async function calculateProrationParams(
   subscription: Stripe.Subscription,
-  subscriptionItem: Stripe.InvoiceRetrieveUpcomingParams.SubscriptionItem
+  subscriptionItem: Stripe.InvoiceCreatePreviewParams.SubscriptionDetails.Item
 ) {
+  const periodEnd = getSubscriptionPeriodEnd(subscription);
+  const periodStart = getSubscriptionPeriodStart(subscription);
   // Prorate by whole months
   const monthsLeft = Math.max(
     0,
-    differenceInMonths(subscription.current_period_end * 1000, new Date())
+    differenceInMonths(periodEnd * 1000, new Date())
   );
   // Calculate exact number of seconds to remove (rather than just "one month")
   // as this aligns with Stripe's calculations
   const prorationTime = Math.floor(
-    subscription.current_period_end -
-      (subscription.current_period_end - subscription.current_period_start) *
-        (monthsLeft / 12)
+    periodEnd - (periodEnd - periodStart) * (monthsLeft / 12)
   );
 
-  const invoice = await stripe.invoices.retrieveUpcoming({
+  const invoice = await stripe.invoices.createPreview({
     subscription: subscription.id,
-    subscription_items: [subscriptionItem],
-    subscription_proration_date: prorationTime,
+    subscription_details: {
+      items: [subscriptionItem],
+      proration_date: prorationTime,
+    },
   });
 
   const prorationAmount = invoice.lines.data
-    .filter((item) => item.proration)
+    .filter(isProrationLineItem)
     .reduce((total, item) => total + item.amount, 0);
 
   return {
@@ -221,7 +271,7 @@ export async function updateSubscription(
   );
 
   log.info('Preparing update subscription for ' + subscription.id, {
-    renewalDate: new Date(subscription.current_period_end * 1000),
+    renewalDate: new Date(getSubscriptionPeriodEnd(subscription) * 1000),
     prorationDate: new Date(prorationTime * 1000),
     prorationAmount,
     form,
@@ -254,7 +304,7 @@ export async function updateSubscription(
             // Force it to change at the start of the next period, this is
             // important when changing from monthly to annual as otherwise
             // Stripe starts the new billing cycle immediately
-            trial_end: subscription.current_period_end,
+            trial_end: getSubscriptionPeriodEnd(subscription),
           }),
     };
 
@@ -494,7 +544,7 @@ export function convertInvoiceToPayment(
     amount: invoice.total / 100,
     chargeDate: new Date(invoice.created * 1000),
     description: invoice.description || '',
-    subscriptionId: invoice.subscription as string | null,
+    subscriptionId: getInvoiceSubscriptionId(invoice),
     status: invoice.status
       ? convertStatus(invoice.status)
       : PaymentStatus.Draft,
@@ -533,7 +583,7 @@ export function convertStatus(status: Stripe.Invoice.Status): PaymentStatus {
  * @returns The payment type
  */
 export function getInvoiceType(invoice: Stripe.Invoice): PaymentType {
-  if (invoice.subscription) {
+  if (getInvoiceSubscriptionId(invoice)) {
     switch (invoice.billing_reason) {
       case 'subscription':
       case 'subscription_create':

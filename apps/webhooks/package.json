@@ -28,7 +28,7 @@
     "express": "^5.2.1",
     "gocardless-nodejs": "^4.8.2",
     "moment": "^2.30.1",
-    "stripe": "^15.12.0",
+    "stripe": "^22.1.0",
     "typeorm": "^0.3.28"
   },
   "devDependencies": {

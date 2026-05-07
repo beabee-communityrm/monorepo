@@ -14,6 +14,7 @@ import {
   createSubscription,
   deleteSubscription,
   ensureCustomerAndAttachPayment,
+  getSubscriptionPeriodEnd,
   manadateToSource,
   stripe,
   updateSubscription,
@@ -120,7 +121,7 @@ export class StripeProvider extends PaymentProvider {
       form,
       startNow,
       expiryDate: add(
-        new Date(subscription.current_period_end * 1000),
+        new Date(getSubscriptionPeriodEnd(subscription) * 1000),
         config.gracePeriod
       ),
     };
