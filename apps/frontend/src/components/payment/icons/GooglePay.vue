@@ -4,9 +4,9 @@
   Uses Font Awesome credit card icon.
 -->
 <template>
-  <font-awesome-icon :icon="faGooglePay" />
+  <font-awesome-icon :icon="faGoogle" />
 </template>
 
 <script lang="ts" setup>
-import { faGooglePay } from '@fortawesome/free-brands-svg-icons';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 </script>

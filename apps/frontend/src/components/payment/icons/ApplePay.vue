@@ -4,9 +4,9 @@
   Uses Font Awesome credit card icon.
 -->
 <template>
-  <font-awesome-icon :icon="faApplePay" />
+  <font-awesome-icon :icon="faApple" />
 </template>
 
 <script lang="ts" setup>
-import { faApplePay } from '@fortawesome/free-brands-svg-icons';
+import { faApple } from '@fortawesome/free-brands-svg-icons';
 </script>

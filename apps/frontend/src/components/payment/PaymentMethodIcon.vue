@@ -19,11 +19,9 @@
 <script lang="ts" setup>
 import { PaymentMethod } from '@beabee/beabee-common';
 
-import ApplePay from './icons/ApplePay.vue';
 import BACS from './icons/BACS.vue';
 import CreditCard from './icons/CreditCard.vue';
 import DirectDebit from './icons/DirectDebit.vue';
-import GooglePay from './icons/GooglePay.vue';
 import PayPal from './icons/PayPal.vue';
 import SEPA from './icons/SEPA.vue';
 import iDEAL from './icons/iDEAL.vue';
