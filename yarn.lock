@@ -1164,7 +1164,7 @@ __metadata:
     "@types/cookie-parser": "npm:^1.4.10"
     "@types/cors": "npm:^2.8.19"
     "@types/express": "npm:^4.17.25"
-    "@types/express-session": "npm:^1.18.1"
+    "@types/express-session": "npm:^1.19.0"
     "@types/multer": "npm:^1.4.13"
     "@types/node": "npm:^24.12.2"
     "@types/passport": "npm:^1.0.17"
@@ -1409,7 +1409,7 @@ __metadata:
     "@types/dot": "npm:^1.1.7"
     "@types/express": "npm:^4.17.25"
     "@types/express-flash": "npm:0.0.5"
-    "@types/express-session": "npm:^1.18.1"
+    "@types/express-session": "npm:^1.19.0"
     "@types/lodash": "npm:^4.17.24"
     "@types/node": "npm:^24.12.2"
     "@types/papaparse": "npm:^5.5.2"
@@ -5632,12 +5632,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-session@npm:*, @types/express-session@npm:^1.18.1":
-  version: 1.18.1
-  resolution: "@types/express-session@npm:1.18.1"
+"@types/express-session@npm:^1.19.0":
+  version: 1.19.0
+  resolution: "@types/express-session@npm:1.19.0"
   dependencies:
     "@types/express": "npm:*"
-  checksum: 10c0/df2d439239f5cc9947772452d1d86d47a8d3e33f90776ebcf602f0fb7801bc85f6410d17557f40cdde881816bc5a2804a7373addfd3a5dbd8c54e7af8aa27000
+  checksum: 10c0/523035f476c84623d6ee4ec81452066d0112f66a41ba9488003c8898f26c85c46951e093bb1cb81447571a467b4a7bba87bd52c08e519a2af254c9de48a25d5f
   languageName: node
   linkType: hard
 
