@@ -198,7 +198,6 @@ import { library } from '@beabee/vue/plugins/icons';
 
 import { faInfoCircle, faPlus, fas } from '@fortawesome/free-solid-svg-icons';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
-import '@maptiler/geocoding-control/style.css';
 import {
   type GeoJSONSource,
   type LngLatLike,
@@ -611,27 +610,25 @@ function handleClusterClick(cluster: MapClusterFeature) {
   if (!map.value || !mapSchema) return; // Can't actually happen
 
   const source = map.value.getSource(SOURCE_IDS.RESPONSES) as GeoJSONSource;
-  source.getClusterExpansionZoom(cluster.properties.cluster_id, (err, zoom) => {
-    if (err || zoom == null) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to get cluster expansion zoom:', err);
-      return;
-    }
+  source
+    .getClusterExpansionZoom(cluster.properties.cluster_id)
+    .then((zoom) => {
+      if (zoom == null) return;
 
-    // Maximum zoom level, open first response
-    if (zoom >= mapSchema.maxZoom) {
-      router.push({
-        ...route,
-        hash: HASH_PREFIX + cluster.properties.first_response,
-      });
-      // Zoom to the cluster
-    } else {
-      map.value!.easeTo({
-        center: cluster.geometry.coordinates as LngLatLike,
-        zoom: zoom + 1,
-      });
-    }
-  });
+      // Maximum zoom level, open first response
+      if (zoom >= mapSchema.maxZoom) {
+        router.push({
+          ...route,
+          hash: HASH_PREFIX + cluster.properties.first_response,
+        });
+        // Zoom to the cluster
+      } else {
+        map.value!.easeTo({
+          center: cluster.geometry.coordinates as LngLatLike,
+          zoom: zoom + 1,
+        });
+      }
+    });
 }
 
 /**
@@ -725,10 +722,9 @@ async function handleLoad({ map: mapInstance }: { map: Map }) {
      * Handle the pick event from the geocoding control
      * The pick event is triggered when the user clicks on a address in the search results
      */
-    geocodeControl.addEventListener('pick', (e: Event) => {
-      const event = e as GeocodePickEvent;
-      geocodeLocation.value = event.detail
-        ? [event.detail.center[0], event.detail.center[1]]
+    geocodeControl.on('pick', (event) => {
+      geocodeLocation.value = event.feature
+        ? [event.feature.center[0], event.feature.center[1]]
         : undefined;
     });
 
