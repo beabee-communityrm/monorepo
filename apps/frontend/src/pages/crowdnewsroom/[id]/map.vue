@@ -449,10 +449,14 @@ function findSelectedFeature(responseNo: number) {
   // maplibre-gl 5 tightened the worker-IPC serializer: the prototyped
   // objects returned by queryRenderedFeatures can no longer be fed
   // back into a GeoJSONSource without first stripping their class
-  // identity. Round-tripping through JSON gives us a plain GeoJSON
-  // feature.
-  const feature = queried
-    ? (JSON.parse(JSON.stringify(queried)) as MapPointFeature)
+  // identity. The feature also exposes `geometry` via a getter that
+  // JSON.stringify silently drops, so we reconstruct it explicitly.
+  const feature: MapPointFeature | undefined = queried
+    ? {
+        type: 'Feature',
+        geometry: queried.geometry as MapPointFeature['geometry'],
+        properties: queried.properties as MapPointFeature['properties'],
+      }
     : undefined;
 
   if (
