@@ -42,19 +42,17 @@
           :aria-label="`Select ${methodLabels[method]} payment method`"
           @click="emit('update:modelValue', method)"
         >
-          <PaymentMethodIcon :method="method" />
-          <span
+          <PaymentMethodIcon :method="method" /><span
             v-if="method === PaymentMethod.StripeCard && showGoogleApplePay"
             class="mx-1"
           >
-            <ApplePay class="mr-1" /><GooglePay class="h-4" />
-          </span>
-          <span
+            <ApplePay class="mr-1" /><GooglePay class="h-4" /> </span
+          ><span
             class="text-xs"
             :class="methods.length > 2 ? 'block' : 'm-2 inline'"
           >
-            {{ methodLabels[method] }}
-          </span>
+            {{ methodLabels[method] }}</span
+          >
         </button>
       </div>
     </div>
