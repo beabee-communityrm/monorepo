@@ -333,7 +333,7 @@ const { isOpen } = useCallout(toRef(props, 'callout'));
 const isAddMode = computed(() => route.hash === '#add');
 
 const showAddButton = computed(
-  () => isOpen.value && route.query.noadd === undefined
+  () => isOpen.value && route.query.noadd === undefined && !!env.maptilerKey
 );
 
 const newResponseAnswers = ref(
