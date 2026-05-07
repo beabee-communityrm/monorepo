@@ -161,8 +161,8 @@ __metadata:
   linkType: hard
 
 "@aws-sdk/client-s3@npm:^3.1043.0":
-  version: 3.1043.0
-  resolution: "@aws-sdk/client-s3@npm:3.1043.0"
+  version: 3.1044.0
+  resolution: "@aws-sdk/client-s3@npm:3.1044.0"
   dependencies:
     "@aws-crypto/sha1-browser": "npm:5.2.0"
     "@aws-crypto/sha256-browser": "npm:5.2.0"
@@ -219,7 +219,7 @@ __metadata:
     "@smithy/util-utf8": "npm:^4.2.2"
     "@smithy/util-waiter": "npm:^4.3.0"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/e7c6574895f689e62b0164b2908a5e140a183a60028e832a25837c0d950393bced72ebaf6689066b7158d823f403f93ea70a6484fc982bc916468080d027c4da
+  checksum: 10c0/a50c8b36e67bce016ade765626296d23c09b12b5eb432dc8ddfb635240ceeab13cac085d29a05ffa04c07938d4c4c78abb2e2f8aea6e1b57432cc68cbbce154c
   languageName: node
   linkType: hard
 
@@ -595,8 +595,8 @@ __metadata:
   linkType: hard
 
 "@aws-sdk/s3-request-presigner@npm:^3.1043.0":
-  version: 3.1043.0
-  resolution: "@aws-sdk/s3-request-presigner@npm:3.1043.0"
+  version: 3.1044.0
+  resolution: "@aws-sdk/s3-request-presigner@npm:3.1044.0"
   dependencies:
     "@aws-sdk/signature-v4-multi-region": "npm:^3.996.25"
     "@aws-sdk/types": "npm:^3.973.8"
@@ -606,7 +606,7 @@ __metadata:
     "@smithy/smithy-client": "npm:^4.12.13"
     "@smithy/types": "npm:^4.14.1"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/5d221d7e5b2e356026ad8eac6ec8d9df014c353453058aebe36983c417799991ca857ac7515702fb0ce086d7507159a00763119ed3684ebf3118994fc4721a2b
+  checksum: 10c0/e8f125fc643954257db8661c82f1b57c87b17d8e8b6a4b39f6757156fa6f5e6ad8bdb2b3ee2f731c58f126bef4e4b8d6f36c6c83c4e56e79b5e31fbdb30fcb06
   languageName: node
   linkType: hard
 
@@ -1157,7 +1157,7 @@ __metadata:
     "@beabee/core": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
-    "@captchafox/node": "npm:^1.2.0"
+    "@captchafox/node": "npm:1.4.0"
     "@inquirer/prompts": "npm:^7.10.1"
     "@types/chance": "npm:^1.1.8"
     "@types/connect-pg-simple": "npm:^7.0.3"
@@ -1397,7 +1397,7 @@ __metadata:
     "@beabee/core": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
-    "@captchafox/node": "npm:^1.2.0"
+    "@captchafox/node": "npm:1.4.0"
     "@inquirer/prompts": "npm:^7.10.1"
     "@types/chance": "npm:^1.1.8"
     "@types/connect-busboy": "npm:^1.0.3"
@@ -1620,10 +1620,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@captchafox/node@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@captchafox/node@npm:1.2.0"
-  checksum: 10c0/46bdc5dca807c36cd9cdbeb2f91ed2f21a5822dc6a217a55356a7fcbdde5cf2a41a46db1af5c0c0ecfaadfd8fffdf15289768cfbcca67b0322fb29edbc9ed7f8
+"@captchafox/node@npm:1.4.0":
+  version: 1.4.0
+  resolution: "@captchafox/node@npm:1.4.0"
+  checksum: 10c0/888923b45fcde98785c62c34cee6a7a2974ccd0b54a48dd915fb5c90744eecd6e2c3ef4d115b35d4061dc474c747c6607e74f78e29879c0902764d1b66d93847
   languageName: node
   linkType: hard
 
@@ -3166,24 +3166,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/core-base@npm:11.4.0":
-  version: 11.4.0
-  resolution: "@intlify/core-base@npm:11.4.0"
+"@intlify/core-base@npm:11.4.2":
+  version: 11.4.2
+  resolution: "@intlify/core-base@npm:11.4.2"
   dependencies:
-    "@intlify/devtools-types": "npm:11.4.0"
-    "@intlify/message-compiler": "npm:11.4.0"
-    "@intlify/shared": "npm:11.4.0"
-  checksum: 10c0/2b3123e75abd97fbee5d0f04b9b032a318b445c3df21712bb5192ef89dfcaa44be9e6480cdb4f982c48da8d9017a4d7ab1853f1c60e672b6e7be2eddc782b536
+    "@intlify/devtools-types": "npm:11.4.2"
+    "@intlify/message-compiler": "npm:11.4.2"
+    "@intlify/shared": "npm:11.4.2"
+  checksum: 10c0/cc1beb46da1bc9ccfe5b9f4162eabc324ce67b7103aa5398edf4088321d663cecd1a6e01c9229f03a132cdc99eda68aa9d867c286fe35249939b7e44f98de65a
   languageName: node
   linkType: hard
 
-"@intlify/devtools-types@npm:11.4.0":
-  version: 11.4.0
-  resolution: "@intlify/devtools-types@npm:11.4.0"
+"@intlify/devtools-types@npm:11.4.2":
+  version: 11.4.2
+  resolution: "@intlify/devtools-types@npm:11.4.2"
   dependencies:
-    "@intlify/core-base": "npm:11.4.0"
-    "@intlify/shared": "npm:11.4.0"
-  checksum: 10c0/b31ef7dae2c5a992cedd907e70f6e2cfa354be1ab91b944fd06ba4d913f6bd7f8aee9aece9819fd2ef68ac47b9c028aa70dd15f9671b65561be3c449ae98e699
+    "@intlify/core-base": "npm:11.4.2"
+    "@intlify/shared": "npm:11.4.2"
+  checksum: 10c0/21b10019c105cfb2e0dd7718b51b6733fe32c3332adf710fec937fe8ee7eececd86e8e58297021ea4f11a68e0ba340b6931cefd5ca1c05c29ff2180ba016e0e2
   languageName: node
   linkType: hard
 
@@ -3197,13 +3197,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/message-compiler@npm:11.4.0":
-  version: 11.4.0
-  resolution: "@intlify/message-compiler@npm:11.4.0"
+"@intlify/message-compiler@npm:11.4.2":
+  version: 11.4.2
+  resolution: "@intlify/message-compiler@npm:11.4.2"
   dependencies:
-    "@intlify/shared": "npm:11.4.0"
+    "@intlify/shared": "npm:11.4.2"
     source-map-js: "npm:^1.0.2"
-  checksum: 10c0/3685b5b8cd056d129cf7bb538e3c3fe3adb05ccdd90206d1cc1bf8b2f644298cd6a03d8f6a6389555aa6b7b928affa11337b7faea19a147eb2a0a7141182e844
+  checksum: 10c0/a5bb0b49e18f9963d90b2c69b03bcce061568f198316234e9eb2874e81e1bb9fc3de9c8fb3ac7d50beb362642dba3ec1a8ac009457addb8f69b79c3f723edaf9
   languageName: node
   linkType: hard
 
@@ -3231,10 +3231,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/shared@npm:11.4.0":
-  version: 11.4.0
-  resolution: "@intlify/shared@npm:11.4.0"
-  checksum: 10c0/769b3379907526a2c9951f6aa0c65bf30ec293efc9f337ff62daba95095b09a7ad144586a8a8e312420fedb2f9b7b7e9e51adfaf3b6fdbc51886a164937635d2
+"@intlify/shared@npm:11.4.2":
+  version: 11.4.2
+  resolution: "@intlify/shared@npm:11.4.2"
+  checksum: 10c0/3eea89f5a77d2a02111e04457735d269c76b0d9002299e2da5ad6de92449eb803cedd8fea8dd5ebec913c849535ab320c8693959fae0346835fb3d6c1abc4c28
   languageName: node
   linkType: hard
 
@@ -9756,9 +9756,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.328":
-  version: 1.5.351
-  resolution: "electron-to-chromium@npm:1.5.351"
-  checksum: 10c0/6f9193a2c49e6015768fe5bd7eaadafba4ab8486d5aeecb6e4fb9dd526ab43f8fc266f459784d3154dcc3501230531f54069d1d5009a489df78cbceb6bbf8a5d
+  version: 1.5.352
+  resolution: "electron-to-chromium@npm:1.5.352"
+  checksum: 10c0/d1672a327420ea0c5dffbd604c448e5bacf9238953f7ce464f3d31c98309bb5ebe82443fb2425de0a78db3ef89261356ee59967dbac866e16262b8bbc0a03209
   languageName: node
   linkType: hard
 
@@ -19649,16 +19649,16 @@ __metadata:
   linkType: hard
 
 "vue-i18n@npm:^11.4.0":
-  version: 11.4.0
-  resolution: "vue-i18n@npm:11.4.0"
+  version: 11.4.2
+  resolution: "vue-i18n@npm:11.4.2"
   dependencies:
-    "@intlify/core-base": "npm:11.4.0"
-    "@intlify/devtools-types": "npm:11.4.0"
-    "@intlify/shared": "npm:11.4.0"
+    "@intlify/core-base": "npm:11.4.2"
+    "@intlify/devtools-types": "npm:11.4.2"
+    "@intlify/shared": "npm:11.4.2"
     "@vue/devtools-api": "npm:^6.5.0"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10c0/4f997bdbc94a6f46856db2bf76919f66977f4d7ac1866a875a4877f89aa4666576c16b0ca4bb9d226dfc65e84be10f9a2fb40aa29dce5b0923a0dff563896bec
+  checksum: 10c0/fc48e3f48af2d0e179627bd79179ebb293d9cd8bd3c817389111bebbe2440c331d288dc47fed20e608c1de77f64521c23baee772d97ddcd1cc7d7243a2b89609
   languageName: node
   linkType: hard
 
