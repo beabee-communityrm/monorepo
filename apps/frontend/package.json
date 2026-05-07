@@ -67,7 +67,7 @@
     "typescript-eslint": "^8.59.2",
     "vite": "^6.4.2",
     "vitest": "^3.2.4",
-    "vue-tsc": "^2.2.12"
+    "vue-tsc": "^3.2.8"
   },
   "overrides": {
     "formiojs": "npm:@beabee/formiojs@^4.15.11"

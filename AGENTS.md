@@ -91,7 +91,7 @@ For all TypeScript, JavaScript, and Vue files:
 - English for comments/docs/code
 - Common, understandable naming
 - Use latest source versions (don't overwrite manual changes)
-- NEVER use `as any`
+- NEVER use `as any` | `as <T>` casts = warning sign of wrong types: double-check necessity, justify with comment
 - Read existing code first to stay consistent
 
 ## Frontend / Vue Components
