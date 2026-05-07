@@ -93,9 +93,23 @@ meta:
             :layer-id="LAYER_IDS.SELECTED_RESPONSE"
             :paint="{
               'circle-stroke-color': 'red',
-              'circle-stroke-width': 2,
+              'circle-stroke-width': 3,
               'circle-color': 'transparent',
-              'circle-radius': 20,
+              // The selected feature can be either an unclustered point or a
+              // cluster (queryRenderedFeatures returns whichever is on top).
+              // Size the ring to sit just outside both: a fixed 22px around
+              // the icon for unclustered points, and ~5px outside the
+              // cluster's circle-radius (which steps with the point count).
+              'circle-radius': [
+                'case',
+                ['has', 'point_count'],
+                [
+                  '+',
+                  ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
+                  5,
+                ],
+                22,
+              ],
             }"
           />
         </MglGeoJsonSource>
@@ -446,6 +460,15 @@ function findSelectedFeature(responseNo: number) {
     filter: ['in', `<${responseNo}>`, ['get', 'all_responses']],
   })[0];
 
+  // eslint-disable-next-line no-console
+  console.debug('[map] findSelectedFeature', {
+    responseNo,
+    layerId: queried?.layer.id,
+    isCluster: !!queried?.properties.point_count,
+    geometry: queried?.geometry,
+    properties: queried?.properties,
+  });
+
   // maplibre-gl 5 tightened the worker-IPC serializer: the prototyped
   // objects returned by queryRenderedFeatures can no longer be fed
   // back into a GeoJSONSource without first stripping their class
@@ -468,6 +491,8 @@ function findSelectedFeature(responseNo: number) {
     feature.properties.all_responses !==
       selectedFeature.value?.properties.all_responses
   ) {
+    // eslint-disable-next-line no-console
+    console.debug('[map] selectedFeature →', feature);
     selectedFeature.value = feature;
   }
 }
