@@ -31,7 +31,7 @@
     "@iframe-resizer/parent": "^5.5.9",
     "@maptiler/client": "^2.7.0",
     "@maptiler/geocoding-control": "^1.4.1",
-    "@stripe/stripe-js": "^3.5.0",
+    "@stripe/stripe-js": "^9.4.0",
     "@types/body-scroll-lock": "^3.1.2",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",

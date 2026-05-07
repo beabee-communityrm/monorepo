@@ -14,6 +14,7 @@ import PaymentService from '../services/PaymentService.js';
 import { STRIPE_WEBHOOK_EVENTS } from './stripe.js';
 import {
   convertInvoiceToPayment,
+  getInvoiceSubscriptionId,
   getSalesTaxRateObject,
   isOneTimePaymentInvoice,
   stripe,
@@ -252,7 +253,8 @@ export class StripeWebhookEventHandler {
 
     log.info(`Invoice ${invoice.id} was paid`);
 
-    if (invoice.subscription) {
+    const invoiceSubscriptionId = getInvoiceSubscriptionId(invoice);
+    if (invoiceSubscriptionId) {
       // Unlikely, just log for now
       if (invoice.lines.has_more) {
         log.error(`Invoice ${invoice.id} has too many lines`);
@@ -261,7 +263,11 @@ export class StripeWebhookEventHandler {
 
       // Stripe docs say the subscription will always be the last line in the invoice
       const line = invoice.lines.data.slice(-1)[0];
-      if (line.subscription !== invoice.subscription) {
+      const lineSubscriptionId =
+        typeof line.subscription === 'string'
+          ? line.subscription
+          : line.subscription?.id;
+      if (lineSubscriptionId !== invoiceSubscriptionId) {
         log.error(
           'Expected subscription to be last line on invoice' + invoice.id
         );
@@ -420,9 +426,10 @@ export class StripeWebhookEventHandler {
     });
 
     // Update the subscription if it exists
-    if (invoice.subscription) {
+    const invoiceSubscriptionId = getInvoiceSubscriptionId(invoice);
+    if (invoiceSubscriptionId) {
       await this.updateSubscriptionTaxRates(
-        invoice.subscription as string,
+        invoiceSubscriptionId,
         updateTaxRateObj
       );
     }

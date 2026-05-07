@@ -242,7 +242,7 @@ export const config = {
     publicKey: env.s('BEABEE_STRIPE_PUBLICKEY', ''), // Stripe publishable key (default: empty)
     secretKey: env.s('BEABEE_STRIPE_SECRETKEY', ''), // Stripe secret key (default: empty)
     country: env.e('BEABEE_STRIPE_COUNTRY', ['gb', 'eu', 'ca'] as const, 'gb'), // Stripe account country (default: gb)
-    version: '2024-04-10' as const, // Stripe API version to use
+    version: '2026-04-22.dahlia' as const, // Stripe API version to use
   },
 
   // Localization settings

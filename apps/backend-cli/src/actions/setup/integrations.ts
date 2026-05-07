@@ -4,6 +4,17 @@ import { currentLocale } from '@beabee/core/locale';
 import { runApp } from '@beabee/core/server';
 import { optionsService } from '@beabee/core/services/OptionsService';
 
+const PRIVATE_HOST_PATTERN =
+  /^(localhost|127\.|0\.0\.0\.0|::1|\[::1\]|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/i;
+
+function isPubliclyAccessibleUrl(rawUrl: string): boolean {
+  try {
+    return !PRIVATE_HOST_PATTERN.test(new URL(rawUrl).hostname);
+  } catch {
+    return false;
+  }
+}
+
 export const setupStripe = async (dryRun: boolean) => {
   if (!config.stripe.secretKey) {
     throw new Error(
@@ -42,6 +53,25 @@ export const setupStripe = async (dryRun: boolean) => {
         'stripe-webhook-secret'
       );
       const webhookUrl = `${config.webhookUrl}/webhook/stripe`;
+
+      // Stripe (since the 2025 API versions, enforced on `2026-04-22.dahlia`)
+      // rejects webhook endpoints whose URL is not publicly reachable. Local
+      // development uses the `stripe_cli` container's `stripe listen
+      // --forward-to webhook_app:3000/stripe` instead, so registering an
+      // endpoint here is both unnecessary and impossible.
+      if (!isPubliclyAccessibleUrl(webhookUrl)) {
+        console.log(
+          `⏭️  Skipping Stripe webhook setup — '${webhookUrl}' is not publicly reachable.`
+        );
+        console.log(
+          '   For local development the docker-compose `stripe_cli` service forwards events.'
+        );
+        console.log(
+          '   For staging/production, set BEABEE_WEBHOOKURL to a public HTTPS URL and re-run setup.'
+        );
+        console.log('\n🎉 Stripe integration setup completed successfully!');
+        return;
+      }
 
       let existingWebhook;
       if (existingWebhookSecret) {
