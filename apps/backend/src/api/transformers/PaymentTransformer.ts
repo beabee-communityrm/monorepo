@@ -36,6 +36,8 @@ class PaymentTransformer extends BasePaymentTransformer<
       amount: payment.amount,
       chargeDate: payment.chargeDate,
       status: payment.status,
+      refundStatus: payment.refundStatus,
+      refundReason: payment.refundReason,
       type: payment.type,
       ...(opts.with?.includes(GetPaymentWith.Contact) && {
         contact:

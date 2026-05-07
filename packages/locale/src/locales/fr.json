@@ -997,6 +997,9 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "/ an",
+    "refundReason": "Raison du remboursement",
+    "refundStatus": "Statut du remboursement",
+    "refundedLabel": "(Remboursé)",
     "role": {
       "admin": "Administrateur",
       "member": "Membre",
