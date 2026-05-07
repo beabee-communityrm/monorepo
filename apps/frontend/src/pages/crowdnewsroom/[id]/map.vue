@@ -570,20 +570,23 @@ async function handleAddClick(event: MapMouseEvent) {
   const geocodeResult = await reverseGeocode(coords.lat, coords.lng);
 
   if (!geocodeResult) {
-    // No address found for this location (e.g. water, missing maptiler key).
-    // Bail out quietly so the user can pick a different spot.
     // eslint-disable-next-line no-console
-    console.error('Failed to geocode address', {
+    console.warn('Could not reverse-geocode click location', {
       lat: coords.lat,
       lng: coords.lng,
     });
-    return;
   }
 
-  // Create address with click coordinates instead of geocode result coordinates
+  // Create address with click coordinates. Geocoded address details are used
+  // when available; otherwise we fall back to coordinates only so the user can
+  // still add a point at locations MapTiler can't resolve (e.g. water, no
+  // address) or when no maptiler key is configured.
   const resultWithClickCoords: CalloutResponseAnswerAddress = {
+    id: '',
+    formatted_address: '',
+    components: [],
+    source: 'maptiler',
     ...geocodeResult,
-    // Use click location rather than geocode result
     geometry: {
       location: coords,
     },
