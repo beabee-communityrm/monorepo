@@ -1,7 +1,8 @@
 {
   "name": "@beabee/fontawesome",
   "description": "Complete FontAwesome integration package with advanced search, filtering, and icon picker functionality",
-  "version": "0.28.1",
+  "version": "0.44.1",
+  "private": true,
   "type": "module",
   "exports": {
     ".": "./src/index.ts"

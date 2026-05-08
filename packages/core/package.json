@@ -1,7 +1,8 @@
 {
   "name": "@beabee/core",
   "description": "Core package for the beabee backend",
-  "version": "0.28.1",
+  "version": "0.44.1",
+  "private": true,
   "type": "module",
   "scripts": {
     "clear": "rimraf dist/",
