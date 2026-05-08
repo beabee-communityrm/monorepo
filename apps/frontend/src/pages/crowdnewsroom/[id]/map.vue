@@ -85,21 +85,15 @@ meta:
           />
         </MglGeoJsonSource>
         <MglGeoJsonSource
-          v-if="selectedFeature"
           :source-id="SOURCE_IDS.SELECTED_RESPONSE"
-          :data="selectedFeature"
+          :data="selectedFeatureCollection"
         >
           <MglCircleLayer
             :layer-id="LAYER_IDS.SELECTED_RESPONSE"
             :paint="{
               'circle-stroke-color': 'red',
               'circle-stroke-width': 3,
-              'circle-color': 'transparent',
-              // The selected feature can be either an unclustered point or a
-              // cluster (queryRenderedFeatures returns whichever is on top).
-              // Size the ring to sit just outside both: a fixed 22px around
-              // the icon for unclustered points, and ~5px outside the
-              // cluster's circle-radius (which steps with the point count).
+              'circle-color': 'rgba(0, 0, 0, 0)',
               'circle-radius': [
                 'case',
                 ['has', 'point_count'],
@@ -424,6 +418,15 @@ const responsesCollecton = computed<MapPointFeatureCollection>(() => {
 
 // The selected response or cluster GeoJSON Feature
 const selectedFeature = ref<MapPointFeature>();
+
+// Always-mounted FeatureCollection wrapper for the SELECTED_RESPONSE source.
+// Toggling the source via v-if causes the ring layer to flicker / fail to
+// render in vue-maplibre-gl 5; keeping the source mounted with an empty
+// collection avoids that.
+const selectedFeatureCollection = computed<MapPointFeatureCollection>(() => ({
+  type: 'FeatureCollection',
+  features: selectedFeature.value ? [selectedFeature.value] : [],
+}));
 // The selected response number (from the hash)
 const selectedResponseNumber = ref(-1);
 // The number of clusters in view. Just used to detect when the clusters are reclustered
