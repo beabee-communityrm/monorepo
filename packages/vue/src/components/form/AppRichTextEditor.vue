@@ -192,9 +192,6 @@ const { t } = useI18n();
 const editor = useEditor({
   content: props.modelValue as string,
   extensions: [
-    // TipTap 3 folded Link and Underline into StarterKit; configure them
-    // there instead of registering separate extensions to avoid the
-    // "Duplicate extension names found" runtime warning.
     StarterKit.configure({
       blockquote: false,
       codeBlock: false,
