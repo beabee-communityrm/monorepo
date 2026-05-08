@@ -196,7 +196,10 @@ watch(
       contribution.value.amount || props.content.initialAmount;
     newContribution.period =
       contribution.value.period ||
-      (props.content.initialPeriod as ContributionPeriod); // TODO
+      // Fallback to monthly if initial period is one-time
+      (props.content.initialPeriod === 'one-time'
+        ? ContributionPeriod.Monthly
+        : props.content.initialPeriod);
     newContribution.payFee = props.content.showAbsorbFee
       ? contribution.value.payFee === undefined
         ? true
