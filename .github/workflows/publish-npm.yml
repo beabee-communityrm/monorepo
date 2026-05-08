@@ -3,6 +3,12 @@ name: Publish to npm
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Verify auth and packaging without actually publishing'
+        type: boolean
+        default: true
 
 jobs:
   publish:
@@ -15,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ github.event.release.tag_name || github.ref }}
 
       - uses: actions/setup-node@v4
         with:
@@ -35,14 +41,29 @@ jobs:
         id: tag
         env:
           IS_PRERELEASE: ${{ github.event.release.prerelease }}
+          EVENT: ${{ github.event_name }}
         run: |
-          if [ "$IS_PRERELEASE" = "true" ]; then
+          if [ "$EVENT" = "workflow_dispatch" ] || [ "$IS_PRERELEASE" = "true" ]; then
             echo "value=next" >> "$GITHUB_OUTPUT"
           else
             echo "value=latest" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Verify npm auth (dry run)
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm whoami
+          echo "npm authentication OK"
+
+      - name: Pack workspaces (dry run)
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run
+        run: |
+          yarn workspaces foreach -v -W --no-private pack
+
       - name: Publish to npm
+        if: github.event_name != 'workflow_dispatch' || inputs.dry_run == false
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
