@@ -166,12 +166,8 @@ class SignupService {
         signupFlow.paymentFlow.params.paymentMethod !==
           PaymentMethod.GoCardlessDirectDebit
       ) {
-        firstName =
-          (signupFlow.paymentFlow.params as PaymentFlowParamsStripe)
-            .firstname || '';
-        lastName =
-          (signupFlow.paymentFlow.params as PaymentFlowParamsStripe).lastname ||
-          '';
+        firstName = signupFlow.paymentFlow.params.firstname || '';
+        lastName = signupFlow.paymentFlow.params.lastname || '';
       }
 
       // User doesn't exist, their membership is inactive or they are not
