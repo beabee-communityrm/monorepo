@@ -27,6 +27,7 @@
       :return-url="completeUrl"
       :confirm-flow="handleStripeConfirm"
       @loaded="stripeHasLoaded = true"
+      @completed="handleStripeCompleted"
     />
   </AppModal>
 
@@ -65,12 +66,13 @@ import StripePaymentForm from '#components/forms/StripePaymentForm.vue';
 import env from '#env';
 import type { PaymentFlowFormData } from '#type/payment-flow-form-data';
 import { extractErrorText } from '#utils/api-error';
-import { handlePossiblePaymentRequiresAction } from '#utils/payment';
 
 const { t } = useI18n();
 
 const route = useRoute();
 const router = useRouter();
+
+const emit = defineEmits<{ (event: 'completed'): void }>();
 
 const props = defineProps<{
   /** A site-wide unique identifier for the form */
@@ -139,8 +141,11 @@ async function handleStripeConfirm(
   if (!paymentFlowId.value) return; // Not possible
 
   await props.completeFlow(paymentFlowId.value, { token, firstname, lastname });
+}
 
-  paymentFlowId.value = null;
+async function handleStripeCompleted() {
+  reset();
+  emit('completed');
 }
 
 /**
@@ -174,10 +179,8 @@ onBeforeMount(async () => {
   const flowId = completePaymentFlowId.value;
   if (flowId) {
     try {
-      await handlePossiblePaymentRequiresAction(
-        () => props.completeFlow(flowId),
-        props.stripePublicKey
-      );
+      await props.completeFlow(flowId);
+      emit('completed');
     } catch (err) {
       addNotification({
         variant: 'error',

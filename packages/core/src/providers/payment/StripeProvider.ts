@@ -254,7 +254,9 @@ export class StripeProvider extends PaymentProvider {
       expand: ['latest_attempt', 'payment_method'],
     });
 
-    await this.processConfirmedIntent(intent, flow);
+    if (intent.status === 'requires_action') {
+      throw new PaymentRequiresActionError(intent.client_secret as string);
+    }
   }
 
   /**
@@ -327,8 +329,20 @@ export class StripeProvider extends PaymentProvider {
       flow.params.token
     );
 
-    await this.processConfirmedIntent(confirmedIntent, flow);
-    return await this.processSubscriptionResult(subscription, flow.form, true);
+    // TODO: move this to webhook to make async
+    const ret = await this.processSubscriptionResult(
+      subscription,
+      flow.form,
+      true
+    );
+
+    if (confirmedIntent.status === 'requires_action') {
+      throw new PaymentRequiresActionError(
+        confirmedIntent.client_secret as string
+      );
+    }
+
+    return ret;
   }
 
   /**
@@ -361,67 +375,6 @@ export class StripeProvider extends PaymentProvider {
 
     this.data.customerId = customerId;
     return customerId;
-  }
-
-  /**
-   * Process the result of a confirmed Stripe intent (setup or payment).
-   * Handles iDEAL to SEPA conversion, customer updates, and old payment method cleanup.
-   *
-   * @param intent The confirmed Stripe intent (setup or payment)
-   * @param flow The payment flow containing method information
-   */
-  private async processConfirmedIntent(
-    intent: Stripe.SetupIntent | Stripe.PaymentIntent,
-    flow: PaymentFlow
-  ): Promise<void> {
-    log.info('Processing confirmed intent ' + intent.id);
-
-    if (intent.status === 'requires_action') {
-      throw new PaymentRequiresActionError(intent.client_secret as string);
-    }
-
-    const paymentMethod = intent.payment_method as Stripe.PaymentMethod | null;
-    if (!paymentMethod) {
-      throw new Error('No payment method on confirmed intent');
-    }
-
-    // Save old mandate to remove afterwards
-    const oldMandateId = this.data.mandateId;
-
-    if (
-      flow.method === PaymentMethod.StripeIdeal &&
-      // TODO: How to handle iDEAL with payment intent?
-      intent.object === 'setup_intent'
-    ) {
-      this.data.mandateId = await fetchSepaMandateForIdealIntent(intent);
-      this.data.method = PaymentMethod.StripeSEPA;
-    } else {
-      this.data.mandateId = paymentMethod.id;
-    }
-
-    // Update customer with new payment method and address
-    const address = paymentMethod.billing_details.address;
-    await stripe.customers.update(this.data.customerId!, {
-      invoice_settings: {
-        default_payment_method: this.data.mandateId,
-      },
-      address: address
-        ? {
-            line1: address.line1 || '',
-            ...(address.city && { city: address.city }),
-            ...(address.country && { country: address.country }),
-            ...(address.line2 && { line2: address.line2 }),
-            ...(address.postal_code && { postal_code: address.postal_code }),
-            ...(address.state && { state: address.state }),
-          }
-        : null,
-    });
-
-    // Detach old payment method if it exists
-    if (oldMandateId) {
-      log.info('Detach old payment method ' + oldMandateId);
-      await stripe.paymentMethods.detach(oldMandateId);
-    }
   }
 
   /**

@@ -54,7 +54,7 @@ import { extractErrorText } from '#utils/api-error';
 
 const emit = defineEmits<{
   (event: 'loaded'): void;
-  // (event: 'completed'): void;
+  (event: 'completed'): void;
 }>();
 
 const props = defineProps<{
@@ -187,6 +187,7 @@ async function handleCompletePayment() {
       firstName.value,
       lastName.value
     );
+    emit('completed');
   } catch (err) {
     if (err instanceof PaymentRequiresActionError) {
       const { error: actionError } = await stripe.value.handleNextAction({
@@ -194,6 +195,8 @@ async function handleCompletePayment() {
       });
       if (actionError) {
         handleStripeError(actionError);
+      } else {
+        emit('completed');
       }
     } else {
       errorText.value = extractErrorText(err);

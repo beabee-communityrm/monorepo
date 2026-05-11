@@ -32,6 +32,7 @@
       :return-url="completeUrl"
       :confirm-flow="onSubmit"
       show-name-fields
+      @completed="$emit('completed')"
     />
     <div
       v-if="paymentContent.noticeText"
@@ -59,7 +60,7 @@ import { calcJoinFormTotalAmount } from '#utils/payment';
 
 const { n, t } = useI18n();
 
-defineEmits<{ (e: 'back'): void }>();
+defineEmits<{ (e: 'back'): void; (e: 'completed'): void }>();
 const props = defineProps<{
   joinContent: ContentJoinData;
   paymentContent: ContentPaymentData;

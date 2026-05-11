@@ -21,9 +21,10 @@ meta:
     v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
-    :complete-url="`${env.appUrl}/join/complete?paymentFlowId=${paymentFlowId}`"
+    :complete-url="`${env.appUrl}/join/setup`"
     @submit="handleSubmitStep2"
     @back="paymentFlowId = null"
+    @completed="goToConfirmEmailPage"
   />
 </template>
 
@@ -149,8 +150,6 @@ async function handleSubmitStep2(
     firstname,
     lastname,
   });
-
-  goToConfirmEmailPage();
 }
 
 onBeforeMount(async () => {
