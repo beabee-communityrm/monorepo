@@ -21,12 +21,12 @@
   />
 
   <AppButton
-    :disabled="!paymentReady || validation.$invalid"
-    :loading="loading"
+    :disabled="!isFormReady || validation.$invalid"
+    :loading="isCompletingPayment"
     variant="link"
     type="submit"
     class="mt-4 w-full"
-    @click="completePayment"
+    @click="handleCompletePayment"
     >{{ t('actions.continue') }}</AppButton
   >
 </template>
@@ -71,17 +71,18 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
+const stripe = ref<Stripe.Stripe>();
+const elements = ref<Stripe.StripeElements>();
 const divRef = ref<HTMLElement>();
-const paymentReady = ref(false);
-const loading = ref(false);
+
+const isFormReady = ref(false);
+const isCompletingPayment = ref(false);
 const errorText = ref('');
 
 const firstName = ref('');
 const lastName = ref('');
 
 const validation = useVuelidate();
-
-const completePayment = ref(() => {});
 
 // Fetch dynamic theming options, tailwind wraps colours in rgb()
 const style = getComputedStyle(document.body);
@@ -149,97 +150,100 @@ const applePayOption = computed<ApplePayOption | undefined>(() => {
     : undefined;
 });
 
+async function handleCompletePayment() {
+  if (!stripe.value || !elements.value) return;
+
+  isCompletingPayment.value = true;
+
+  const { error: submitError } = await elements.value.submit();
+  if (submitError) {
+    handleStripeError(submitError);
+    return;
+  }
+
+  const result = await stripe.value.createConfirmationToken({
+    elements: elements.value,
+    params: {
+      return_url: props.returnUrl,
+      payment_method_data: {
+        billing_details: {
+          email: props.paymentData.email,
+          ...(props.showNameFields && {
+            name: `${firstName.value} ${lastName.value}`,
+          }),
+        },
+      },
+    },
+  });
+
+  if (result.error) {
+    handleStripeError(result.error);
+    return;
+  }
+
+  try {
+    await props.confirmFlow(
+      result.confirmationToken.id,
+      firstName.value,
+      lastName.value
+    );
+  } catch (err) {
+    if (err instanceof PaymentRequiresActionError) {
+      const { error: actionError } = await stripe.value.handleNextAction({
+        clientSecret: err.clientSecret,
+      });
+      if (actionError) {
+        handleStripeError(actionError);
+      }
+    } else {
+      errorText.value = extractErrorText(err);
+      isCompletingPayment.value = false;
+    }
+  }
+}
+
 function handleStripeError(err: Stripe.StripeError) {
   errorText.value =
     err.message &&
     (err.type === 'card_error' || err.type === 'validation_error')
       ? (errorText.value = err.message)
       : t('joinPayment.genericError', { type: err.type });
-  loading.value = false;
+  isCompletingPayment.value = false;
 }
 
 onBeforeMount(async () => {
-  const stripe = await loadStripe(props.publicKey);
-  if (stripe && divRef.value) {
-    const elements = stripe.elements({
-      // TODO: mode setup
-      mode:
-        props.paymentData.period === 'one-time' ? 'payment' : 'subscription',
-      amount: props.paymentData.amount * 100,
-      currency: generalContent.value.currencyCode.toLowerCase(),
-      paymentMethodCreation: 'manual',
-      paymentMethodTypes: [
-        paymentMethodToStripeType(props.paymentData.paymentMethod),
-      ],
-      appearance,
-    });
-    const paymentElement = elements.create('payment', {
-      fields: {
-        billingDetails: {
-          email: 'never',
-          ...(props.showNameFields && { name: 'never' }),
-        },
-      },
-      applePay: applePayOption.value,
-    });
-    paymentElement.mount(divRef.value);
-    paymentElement.on('ready', () => emit('loaded'));
-    paymentElement.on('change', (evt: { complete: boolean }) => {
-      paymentReady.value = evt.complete;
-    });
+  stripe.value = (await loadStripe(props.publicKey)) || undefined;
 
-    completePayment.value = async () => {
-      loading.value = true;
-
-      const { error: submitError } = await elements.submit();
-      if (submitError) {
-        handleStripeError(submitError);
-        return;
-      }
-
-      const result = await stripe.createConfirmationToken({
-        elements,
-        params: {
-          return_url: props.returnUrl,
-          payment_method_data: {
-            billing_details: {
-              email: props.paymentData.email,
-              ...(props.showNameFields && {
-                name: `${firstName.value} ${lastName.value}`,
-              }),
-            },
-          },
-        },
-      });
-
-      if (result.error) {
-        handleStripeError(result.error);
-        return;
-      }
-
-      try {
-        await props.confirmFlow(
-          result.confirmationToken.id,
-          firstName.value,
-          lastName.value
-        );
-      } catch (err) {
-        if (err instanceof PaymentRequiresActionError) {
-          const { error: actionError } = await stripe.handleNextAction({
-            clientSecret: err.clientSecret,
-          });
-          if (actionError) {
-            handleStripeError(actionError);
-          } else {
-            console.log('success??');
-          }
-        } else {
-          errorText.value = extractErrorText(err);
-          loading.value = false;
-        }
-      }
-    };
+  if (!stripe.value || !divRef.value) {
+    return;
   }
+
+  elements.value = stripe.value.elements({
+    // TODO: mode setup?
+    mode: props.paymentData.period === 'one-time' ? 'payment' : 'subscription',
+    amount: props.paymentData.amount * 100,
+    currency: generalContent.value.currencyCode.toLowerCase(),
+    paymentMethodCreation: 'manual',
+    paymentMethodTypes: [
+      paymentMethodToStripeType(props.paymentData.paymentMethod),
+    ],
+    appearance,
+  });
+
+  const paymentElement = elements.value.create('payment', {
+    fields: {
+      billingDetails: {
+        email: 'never',
+        ...(props.showNameFields && { name: 'never' }),
+      },
+    },
+    applePay: applePayOption.value,
+  });
+  paymentElement.mount(divRef.value);
+  paymentElement.on('ready', () => emit('loaded'));
+  paymentElement.on('change', (evt: { complete: boolean }) => {
+    isFormReady.value = evt.complete;
+  });
 });
 </script>
 <style scoped>
