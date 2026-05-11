@@ -14,6 +14,7 @@ export interface ContentJoinData {
   periods: ContentJoinPeriodData[];
   showAbsorbFee: boolean;
   showNoContribution: boolean;
+  showGoogleApplePay: boolean;
   paymentMethods: PaymentMethod[];
   /** @deprecated Use {@link ContentPaymentData.stripePublicKey} instead. */
   stripePublicKey: string;
