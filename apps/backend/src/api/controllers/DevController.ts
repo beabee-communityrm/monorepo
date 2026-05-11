@@ -1,6 +1,7 @@
 import { RoleType, RoleTypes } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
+import { NotFoundError } from '@beabee/core/errors';
 import { Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 
@@ -9,7 +10,6 @@ import { Request, Response } from 'express';
 import {
   Get,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Param,
   Post,
@@ -20,7 +20,7 @@ import {
 
 import { login } from '#api/utils/auth';
 
-import { clearRateLimiterCache } from '../decorators/RateLimit';
+import { clearRateLimiterCache } from '../decorators/RateLimit.js';
 
 /**
  * Development-only controller for testing and debugging purposes.

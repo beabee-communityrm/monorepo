@@ -5,12 +5,12 @@ import { CalloutReviewer, Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
+import { QueryDeepPartialEntity } from '@beabee/core/type';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { batchSelect, batchUpdate } from '@beabee/core/utils/rules';
 
 import { TransformPlainToInstance } from 'class-transformer';
 import { In, SelectQueryBuilder } from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 import {
   BatchUpdateContactDto,
@@ -24,7 +24,7 @@ import { BaseContactTransformer } from '#api/transformers/BaseContactTransformer
 import ContactProfileTransformer from '#api/transformers/ContactProfileTransformer';
 import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
 
-import contactTagTransformer from './ContactTagTransformer';
+import contactTagTransformer from './ContactTagTransformer.js';
 
 /**
  * Transformer for Contact entities.

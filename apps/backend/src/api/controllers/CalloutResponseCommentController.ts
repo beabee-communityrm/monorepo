@@ -1,12 +1,11 @@
+import { BadRequestError, NotFoundError } from '@beabee/core/errors';
 import { AuthInfo } from '@beabee/core/type';
 
 import {
-  BadRequestError,
   Body,
   Delete,
   Get,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Params,
   Patch,

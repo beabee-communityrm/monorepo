@@ -19,6 +19,7 @@ import type { ModelAnonymiser } from '@beabee/core/tools/database/anonymisers/mo
 
 import type { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 
+import type { CalloutAnonymizationLevel } from '../../types/index.js';
 import {
   CALLOUT_EXPORT_ANONYMIZERS,
   CALLOUT_EXPORT_CLEAR_MODELS,
@@ -58,30 +59,37 @@ function buildSlugFilter(
  * Export callout data to SQL dump
  *
  * @param dryRun If true, only logs what would be done
- * @param anonymize If true, anonymize personal data (contact FKs, guest info)
+ * @param level Anonymisation level: 'full' (personal data anonymised) or 'none' (everything raw)
  * @param preserveCalloutAnswers If true, keep answers intact; if false, anonymize per component type
  * @param filePath If set, write output to this file instead of stdout
  * @param slugs If set, only export callouts with these slugs (no DELETE statements emitted; use --merge on import)
  */
 export const exportCalloutsDatabase = async (
   dryRun = false,
-  anonymize = true,
+  level: CalloutAnonymizationLevel = 'full',
   preserveCalloutAnswers = true,
   filePath?: string,
   slugs: string[] = []
 ): Promise<void> => {
-  const anonymisers = !anonymize
-    ? CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS
-    : preserveCalloutAnswers
-      ? CALLOUT_EXPORT_ANONYMIZERS
-      : CALLOUT_EXPORT_FULL_ANONYMIZERS;
+  if (level === 'none') {
+    console.error(
+      '[database export-callouts] WARNING: --anonymize=none — output contains raw guest names and emails. Do not share this dump.'
+    );
+  }
+
+  const anonymisers =
+    level === 'none'
+      ? CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS
+      : preserveCalloutAnswers
+        ? CALLOUT_EXPORT_ANONYMIZERS
+        : CALLOUT_EXPORT_FULL_ANONYMIZERS;
 
   if (dryRun) {
     const modelNames = anonymisers.map((a) =>
       typeof a.model === 'function' ? a.model.name : String(a.model)
     );
     console.log('Dry run: would export callout data');
-    console.log(`Anonymization: ${anonymize ? 'enabled' : 'disabled'}`);
+    console.log(`Anonymization level: ${level}`);
     console.log(
       `Would export ${anonymisers.length} models:`,
       modelNames.join(', ')

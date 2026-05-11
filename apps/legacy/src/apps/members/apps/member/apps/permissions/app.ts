@@ -9,11 +9,17 @@ import express, {
   type Request,
   type Response,
 } from 'express';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import { hasSchema } from '#core/middleware';
 import { createDateTime } from '#core/utils/index';
 
-import { createPermissionSchema, updatePermissionSchema } from './schemas.json';
+import _schemas from './schemas.json' with { type: 'json' };
+
+const { createPermissionSchema, updatePermissionSchema } = _schemas;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 interface CreateRoleSchema {
   type: RoleType;

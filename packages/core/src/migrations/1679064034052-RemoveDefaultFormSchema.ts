@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class RemoveDefaultFormSchema1679064034052
-  implements MigrationInterface
-{
+export class RemoveDefaultFormSchema1679064034052 implements MigrationInterface {
   name = 'RemoveDefaultFormSchema1679064034052';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

@@ -5,7 +5,7 @@ import {
 } from '@beabee/beabee-common';
 
 import { getRepository, runTransaction } from '#database';
-import { CantUpdateContribution } from '#errors/CantUpdateContribution';
+import { CantUpdateContributionError } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Contact, ContactContribution, Payment } from '#models/index';
 import {
@@ -138,9 +138,15 @@ class PaymentService {
       await getRepository(ContactContribution).save(contribution);
     }
 
-    return await new PaymentProviders[newMethod](
+    const ret = await new PaymentProviders[newMethod](
       contribution
     ).processPaymentFlow(flow);
+
+    if (flow.flow.form.action === 'start-contribution') {
+      await this.handlePostContributionUpdate(contact);
+    }
+
+    return ret;
   }
 
   async canUpdateContribution(
@@ -171,12 +177,16 @@ class PaymentService {
       contact.contributionPeriod === ContributionPeriod.Annually &&
       form.period !== ContributionPeriod.Annually
     ) {
-      throw new CantUpdateContribution();
+      throw new CantUpdateContributionError();
     }
 
-    return await this.provider(contact, (p) =>
+    const ret = await this.provider(contact, (p) =>
       p.processUpdateContribution(form)
     );
+
+    await this.handlePostContributionUpdate(contact);
+
+    return ret;
   }
 
   async getContributionInfo(contact: Contact): Promise<ContributionInfo> {
@@ -272,6 +282,20 @@ class PaymentService {
         .getRepository(Payment)
         .update({ contactId: contact.id }, { contactId: null });
     });
+  }
+
+  /**
+   * Handle a contribution being started, restarted or just updated.  This
+   * resets any cancellation status as the contribution is now assumed to be
+   * active again
+   *
+   * @param contact The contact
+   */
+  private async handlePostContributionUpdate(contact: Contact) {
+    await getRepository(ContactContribution).update(
+      { contactId: contact.id },
+      { cancelledAt: null }
+    );
   }
 }
 

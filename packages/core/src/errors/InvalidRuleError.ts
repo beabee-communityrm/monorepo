@@ -1,19 +1,20 @@
-import { ClientApiErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode, InvalidRuleErrorData } from '@beabee/beabee-common';
 import { Rule } from '@beabee/beabee-common';
 
-import { BadRequestError } from './BadRequestError';
+import { BadRequestError } from 'routing-controllers';
 
 export class InvalidRuleError
   extends BadRequestError
-  implements ClientApiErrorData
+  implements InvalidRuleErrorData
 {
-  readonly code = 'invalid-rule';
+  readonly httpCode = 400;
+  readonly code = ApiErrorCode.INVALID_RULE;
 
   constructor(
     readonly rule: Rule,
     readonly message: string
   ) {
-    super();
+    super(message);
     Object.setPrototypeOf(this, InvalidRuleError.prototype);
   }
 }

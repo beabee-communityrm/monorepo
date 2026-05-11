@@ -1,4 +1,4 @@
-import { ClientApiError } from '@beabee/client';
+import { CantUpdateContributionError } from '@beabee/client';
 
 import { describe, expect, it, vi } from 'vitest';
 
@@ -20,10 +20,7 @@ vi.mock('@beabee/vue/store/notifications', () => ({
 
 describe('extractErrorText', () => {
   it('should return translated text for cant-update-contribution', () => {
-    const error = new ClientApiError('Cannot update contribution', {
-      code: 'cant-update-contribution',
-      httpCode: 400,
-    });
+    const error = new CantUpdateContributionError('Cannot update contribution');
 
     const result = extractErrorText(error);
 

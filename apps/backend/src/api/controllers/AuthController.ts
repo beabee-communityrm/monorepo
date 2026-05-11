@@ -1,7 +1,7 @@
 import { LOGIN_CODES, RoleType, RoleTypes } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
-import { UnauthorizedError } from '@beabee/core/errors';
+import { NotFoundError, UnauthorizedError } from '@beabee/core/errors';
 import passport from '@beabee/core/lib/passport';
 import { Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
@@ -14,7 +14,6 @@ import {
   Get,
   HttpError,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Param,
   Post,
@@ -48,11 +47,6 @@ export class AuthController {
           // Forward HTTP errors
           if (err) {
             if (err instanceof HttpError) {
-              // Passport errors only have a `message` property, so we handle the message as code
-              if (err instanceof UnauthorizedError) {
-                err.code ||= err.message || LOGIN_CODES.LOGIN_FAILED;
-              }
-
               return reject(err);
             }
           }
@@ -60,10 +54,7 @@ export class AuthController {
           // Unknown errors
           if (err || !user) {
             return reject(
-              new UnauthorizedError({
-                code: info?.message || LOGIN_CODES.LOGIN_FAILED,
-                message: info?.message || LOGIN_CODES.LOGIN_FAILED,
-              })
+              new UnauthorizedError(LOGIN_CODES.LOGIN_FAILED, info?.message)
             );
           }
 

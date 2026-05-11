@@ -1,8 +1,8 @@
-import {
-  type ContributionInfo,
+import type {
+  ContributionInfo,
   PaymentFlowAdvanceParams,
-  type PaymentFlowSetupParams,
-  type PaymentFlowSetupResult,
+  PaymentFlowSetupParams,
+  PaymentFlowSetupResult,
   Serial,
 } from '@beabee/beabee-common';
 

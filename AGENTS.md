@@ -41,10 +41,8 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 | `@beabee/prettier-config` | Formatting config |
 | `@beabee/tsconfig` | TS configs (frontend/server/vanilla) |
 | `@beabee/test-utils` | Test utilities |
-| `@beabee/esbuild` | Build config/plugins |
 | `@beabee/docker` | Docker base config |
 | `@beabee/template-vanilla` | TS package template |
-| `@beabee/weblate-client` | Translation mgmt client |
 
 | App | Purpose |
 |---|---|
@@ -87,13 +85,13 @@ For all TypeScript, JavaScript, and Vue files:
 
 - Write complete code blocks
 - ESM imports/exports for TypeScript
-- Interfaces in separate `src/types/` files | Utils in `src/utils/`
+- Types/interfaces: package-local in `<pkg>/src/types/` (app or package) | shared across backend+frontend in `packages/common/src/types/` — NEVER inline in action/component/util files. Utils in `src/utils/`.
 - Modularize into smaller reusable pieces
 - Document in code (not separate docs) | Reference existing docs, don't rewrite
 - English for comments/docs/code
 - Common, understandable naming
 - Use latest source versions (don't overwrite manual changes)
-- NEVER use `as any`
+- NEVER use `as any` | `as <T>` casts = warning sign of wrong types: double-check necessity, justify with comment
 - Read existing code first to stay consistent
 
 ## Frontend / Vue Components
@@ -158,7 +156,7 @@ Migrate from `apps/frontend` → `packages/vue/src/components`.
 
 ## Task: Scaffold Vanilla Package
 
-Use `packages/template-vanilla` conventions. Read its `README.md` and follow instructions. Not suitable for backend/CommonJS packages.
+Use `packages/template-vanilla` conventions. Read its `README.md` and follow instructions. The template ships source TS with no build; not suitable for packages that need a published JS artifact.
 
 ## Prompt Compression
 

@@ -153,10 +153,7 @@ This provides hot module replacement (HMR) for rapid development.
 
 #### Common Package
 
-For the common package, `yarn dev` is an alias for `yarn watch`, which runs concurrent watch processes for:
-- Node.js ESM and CJS builds
-- Browser builds
-- TypeScript type definitions
+For the common package, `yarn dev` is an alias for `yarn watch`, which runs an esbuild watch process producing a flat ESM `dist/`. Workspace consumers don't need a build at all — they resolve `@beabee/beabee-common` to `./src/index.ts` directly. The dist is only needed for npm publish and for the `test:esm` Node smoke test.
 
 #### Core Package
 

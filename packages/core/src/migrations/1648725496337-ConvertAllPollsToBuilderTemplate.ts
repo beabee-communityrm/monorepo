@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class ConvertAllPollsToBuilderTemplate1648725496337
-  implements MigrationInterface
-{
+export class ConvertAllPollsToBuilderTemplate1648725496337 implements MigrationInterface {
   name = 'ConvertAllPollsToBuilderTemplate1648725496337';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

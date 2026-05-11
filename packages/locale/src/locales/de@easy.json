@@ -958,6 +958,9 @@
     "label": "Betreff",
     "loading": "Der Computer arbeitet.",
     "login": "",
+    "manualPaymentSource": {
+      "none": ""
+    },
     "newsletterStatus": {
       "cleaned": "",
       "none": "",
@@ -1262,6 +1265,7 @@
     "notifications": {
       "created": "",
       "deleted": "",
+      "missingMergeTags": "",
       "resetToDefault": "",
       "templateAssigned": "",
       "templatesAssigned": "",

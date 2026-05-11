@@ -1,4 +1,4 @@
-import { BeabeeClient, ClientApiError } from '@beabee/client';
+import { BeabeeClient, UnsupportedFileTypeError } from '@beabee/client';
 import { createTestFile } from '@beabee/test-utils/node';
 import {
   API_KEY,
@@ -96,11 +96,7 @@ describe('Upload API', () => {
         // If we reach this point, the test should fail
         expect(true).toBe(false);
       } catch (error) {
-        expect(error).toBeInstanceOf(ClientApiError);
-        if (error instanceof ClientApiError) {
-          expect(error.httpCode).toBe(415);
-          expect(error.code).toBe('UNSUPPORTED_FILE_TYPE');
-        }
+        expect(error).toBeInstanceOf(UnsupportedFileTypeError);
       }
     });
   });

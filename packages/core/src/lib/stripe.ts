@@ -11,7 +11,7 @@ import { differenceInMonths } from 'date-fns';
 import Stripe from 'stripe';
 
 import config from '#config/config';
-import { NoPaymentMethod } from '#errors/NoPaymentMethod';
+import { NoPaymentMethodError } from '#errors/index';
 import { currentLocale } from '#locale';
 import { log as mainLogger } from '#logging';
 import { PaymentFlow } from '#models';
@@ -314,7 +314,7 @@ export async function chargeOneTimePayment(
   flow: PaymentFlow<PaymentFlowFormCreateOneTimePayment>
 ): Promise<void> {
   if (!flow.params?.token) {
-    throw new NoPaymentMethod();
+    throw new NoPaymentMethodError();
   }
 
   log.info('Creating one-time payment on ' + customerId);

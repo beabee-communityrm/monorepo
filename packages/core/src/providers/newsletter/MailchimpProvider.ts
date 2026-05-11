@@ -1,7 +1,7 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
 
 import { MailchimpNewsletterConfig } from '#config/config';
-import { CantUpdateNewsletterContact } from '#errors/CantUpdateNewsletterContact';
+import { CantUpdateNewsletterContactError } from '#errors/index';
 import {
   createInstance,
   getMCMemberUrl,
@@ -98,7 +98,7 @@ export class MailchimpProvider implements NewsletterProvider {
       }
     }
 
-    throw new CantUpdateNewsletterContact(
+    throw new CantUpdateNewsletterContactError(
       contact.email,
       resp.status,
       resp.data

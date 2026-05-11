@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class RemoveResponseIsPartialFlag1729522899474
-  implements MigrationInterface
-{
+export class RemoveResponseIsPartialFlag1729522899474 implements MigrationInterface {
   name = 'RemoveResponseIsPartialFlag1729522899474';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

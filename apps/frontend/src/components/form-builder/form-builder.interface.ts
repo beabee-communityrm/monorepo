@@ -132,6 +132,8 @@ export const formOpts = {
           icon: 'home',
           schema: {
             type: 'address',
+            // We only support the maptiler provider for address lookups
+            provider: 'maptiler',
           },
         },
         phoneNumber: {
@@ -174,6 +176,8 @@ export const formOpts = {
           icon: 'cloud-upload',
           schema: {
             type: 'file',
+            // We only support the beabee storage provider for file uploads
+            storage: 'beabee',
           },
         },
         content: {

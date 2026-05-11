@@ -1,4 +1,5 @@
 import { getRepository } from '@beabee/core/database';
+import { NotFoundError } from '@beabee/core/errors';
 import { Notice } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
@@ -8,7 +9,6 @@ import {
   Delete,
   Get,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Params,
   Patch,

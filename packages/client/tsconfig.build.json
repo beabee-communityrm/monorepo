@@ -2,17 +2,18 @@
   "include": ["./src"],
   "exclude": ["src/**/*.test.ts"],
   "compilerOptions": {
-    "target": "ESNext", // Should be ES2020 or newer for the fetch API and Response type
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "declarationDir": "./dist/types",
-    "esModuleInterop": true,
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "declaration": true,
-    "emitDeclarationOnly": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "diagnostics": true,
     "skipLibCheck": true
   }
 }

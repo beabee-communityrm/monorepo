@@ -5,7 +5,7 @@ import { TransformPlainToInstance } from 'class-transformer';
 
 import { GetAuthInfoDto } from '#api/dto';
 
-import ContactTransformer, { loadContactRoles } from './ContactTransformer';
+import ContactTransformer, { loadContactRoles } from './ContactTransformer.js';
 
 class AuthTransformer {
   /**

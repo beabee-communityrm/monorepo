@@ -4,6 +4,7 @@ import {
   calloutResponseCommentFilters,
 } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
+import { BadRequestError } from '@beabee/core/errors';
 import {
   CalloutResponse,
   CalloutResponseComment,
@@ -12,7 +13,6 @@ import {
 import { AuthInfo, FilterHandlers } from '@beabee/core/type';
 
 import { TransformPlainToInstance } from 'class-transformer';
-import { BadRequestError } from 'routing-controllers';
 import { SelectQueryBuilder } from 'typeorm';
 
 import { GetCalloutResponseCommentDto } from '#api/dto/CalloutResponseCommentDto';

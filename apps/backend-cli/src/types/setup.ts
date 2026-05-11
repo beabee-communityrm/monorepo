@@ -14,6 +14,4 @@ export interface SetupAdminArgs {
 }
 
 export interface SetupAllArgs
-  extends SetupSupportEmailArgs,
-    SetupPaymentMethodsArgs,
-    SetupAdminArgs {}
+  extends SetupSupportEmailArgs, SetupPaymentMethodsArgs, SetupAdminArgs {}

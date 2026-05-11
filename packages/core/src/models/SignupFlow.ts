@@ -8,9 +8,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Contact } from './Contact';
-import { Password } from './Password';
-import { PaymentFlow } from './PaymentFlow';
+import { Contact } from './Contact.js';
+import { Password } from './Password.js';
+import { PaymentFlow } from './PaymentFlow.js';
 
 @Entity()
 export class SignupFlow {

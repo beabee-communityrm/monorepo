@@ -10,10 +10,16 @@ import { wrapAsync } from '@beabee/core/utils/express';
 import express, { type Express } from 'express';
 import _ from 'lodash';
 import moment from 'moment';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import { hasNewModel, hasSchema, isAdmin } from '#core/middleware';
 
-import { createProjectSchema } from './schemas.json';
+import _schemas from './schemas.json' with { type: 'json' };
+
+const { createProjectSchema } = _schemas;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 interface CreateProjectSchema {
   title: string;

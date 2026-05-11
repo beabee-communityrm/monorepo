@@ -9,9 +9,13 @@ import { wrapAsync } from '@beabee/core/utils/express';
 import busboy from 'connect-busboy';
 import express, { type Express } from 'express';
 import _ from 'lodash';
+import { fileURLToPath } from 'node:url';
 import Papa from 'papaparse';
+import path from 'path';
 
 import { hasNewModel, isAdmin } from '#core/middleware';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 

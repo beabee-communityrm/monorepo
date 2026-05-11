@@ -1,16 +1,15 @@
-import nodemailer from 'nodemailer';
-import Mail from 'nodemailer/lib/mailer';
+import nodemailer, { type Transporter } from 'nodemailer';
 
 import { SMTPEmailConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { EmailOptions, EmailRecipient, PreparedEmail } from '#type/index';
 
-import { BaseProvider } from './BaseProvider';
+import { BaseProvider } from './BaseProvider.js';
 
 const log = mainLogger.child({ app: 'smtp-email-provider' });
 
 export class SMTPProvider extends BaseProvider {
-  private readonly client: Mail;
+  private readonly client: Transporter;
 
   constructor(settings: SMTPEmailConfig['settings']) {
     super();

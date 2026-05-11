@@ -8,7 +8,7 @@ import { ContactTag, ContactTagAssignment } from '@beabee/core/models';
 
 import { GetContactTagDto } from '#api/dto';
 
-import BaseTagTransformer from './BaseTagTransformer';
+import BaseTagTransformer from './BaseTagTransformer.js';
 
 class ContactTagTransformer extends BaseTagTransformer<
   ContactTag,

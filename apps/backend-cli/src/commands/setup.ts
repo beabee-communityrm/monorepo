@@ -16,9 +16,8 @@ export const setupCommand: CommandModule = {
           });
         },
         handler: async (argv) => {
-          const { setupSupportEmail } = await import(
-            '../actions/setup/support-email.js'
-          );
+          const { setupSupportEmail } =
+            await import('../actions/setup/support-email.js');
           return setupSupportEmail(argv);
         },
       })
@@ -40,9 +39,8 @@ export const setupCommand: CommandModule = {
           });
         },
         handler: async (argv) => {
-          const { setupPaymentMethods } = await import(
-            '../actions/setup/payment-methods.js'
-          );
+          const { setupPaymentMethods } =
+            await import('../actions/setup/payment-methods.js');
           return setupPaymentMethods(argv);
         },
       })
@@ -92,9 +90,8 @@ export const setupCommand: CommandModule = {
                 default: false,
               }),
             handler: async (argv) => {
-              const { setupStripe } = await import(
-                '../actions/setup/integrations.js'
-              );
+              const { setupStripe } =
+                await import('../actions/setup/integrations.js');
               return setupStripe(argv.dryRun);
             },
           });

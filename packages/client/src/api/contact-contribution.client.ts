@@ -2,7 +2,7 @@ import {
   type ContributionInfo,
   ContributionPeriod,
   type ForceUpdateContributionData,
-  PaymentFlowAdvanceParams,
+  type PaymentFlowAdvanceParams,
   type PaymentFlowSetupResult,
   type Serial,
   type SetContributionData,

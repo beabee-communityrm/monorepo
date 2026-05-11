@@ -15,7 +15,7 @@ import OptionsService from '#services/OptionsService';
 import PaymentFlowService from '#services/PaymentFlowService';
 import { PaymentFlowForm } from '#type/index';
 
-import ResetSecurityFlowService from './ResetSecurityFlowService';
+import ResetSecurityFlowService from './ResetSecurityFlowService.js';
 
 const log = mainLogger.child({ app: 'signup-service' });
 
@@ -207,7 +207,7 @@ class SignupService {
       contact?.membership?.isActive &&
       signupFlow.paymentFlow?.form.action === 'start-contribution'
     ) {
-      throw new DuplicateEmailError();
+      throw new DuplicateEmailError(contact.email);
     }
 
     let completedFlow;

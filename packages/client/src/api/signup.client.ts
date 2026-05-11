@@ -1,9 +1,8 @@
-import {
-  type CompleteSignupData,
+import type {
   PaymentFlowAdvanceParams,
-  type PaymentFlowSetupResult,
-  type Serial,
-  type SignupData,
+  PaymentFlowSetupResult,
+  Serial,
+  SignupData,
 } from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';

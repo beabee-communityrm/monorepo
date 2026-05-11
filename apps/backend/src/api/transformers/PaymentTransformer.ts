@@ -1,11 +1,11 @@
 import { GetPaymentAggregationData } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
+import { NotFoundError } from '@beabee/core/errors';
 import { Contact, Payment } from '@beabee/core/models';
 import { paymentService } from '@beabee/core/services';
 import { AuthInfo } from '@beabee/core/type';
 
 import { TransformPlainToInstance, plainToInstance } from 'class-transformer';
-import { NotFoundError } from 'routing-controllers';
 import { SelectQueryBuilder } from 'typeorm';
 
 import {

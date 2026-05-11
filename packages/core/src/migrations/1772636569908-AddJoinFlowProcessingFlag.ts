@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddJoinFlowProcessingFlag1772636569908
-  implements MigrationInterface
-{
+export class AddJoinFlowProcessingFlag1772636569908 implements MigrationInterface {
   name = 'AddJoinFlowProcessingFlag1772636569908';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

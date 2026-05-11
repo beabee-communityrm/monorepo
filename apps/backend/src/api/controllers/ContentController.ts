@@ -2,7 +2,6 @@ import { updateSalesTaxRate } from '@beabee/core/lib/stripe';
 
 import {
   Authorized,
-  BadRequestError,
   Body,
   Get,
   JsonController,

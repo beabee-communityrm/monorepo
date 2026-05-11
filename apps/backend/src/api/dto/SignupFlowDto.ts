@@ -11,8 +11,8 @@ import { StartContributionDto } from '#api/dto/ContributionDto';
 import IsPassword from '#api/validators/IsPassword';
 import IsUrl from '#api/validators/IsUrl';
 
-import { CreatePaymentDto } from './PaymentDto';
-import { PaymentFlowAdvanceParamsDto } from './PaymentFlowDto';
+import { CreatePaymentDto } from './PaymentDto.js';
+import { PaymentFlowAdvanceParamsDto } from './PaymentFlowDto.js';
 
 export class StartSignupFlowDto {
   @IsUrl()

@@ -4,7 +4,7 @@ import { TransformPlainToInstance } from 'class-transformer';
 
 import { GetContactRoleDto } from '#api/dto/ContactRoleDto';
 
-import { BaseTransformer } from './BaseTransformer';
+import { BaseTransformer } from './BaseTransformer.js';
 
 class ContactRoleTransformer extends BaseTransformer<
   ContactRole,

@@ -66,11 +66,7 @@ export function RateLimit(options: RateLimitOptions) {
           });
 
           // Use routing-controllers error handling by throwing the error
-          next(
-            new TooManyRequestsError({
-              message: `Rate limit exceeded. Try again in ${retryAfter} seconds.`,
-            })
-          );
+          next(new TooManyRequestsError(retryAfter));
         } else {
           next(new Error('Internal server error during rate limiting.'));
         }

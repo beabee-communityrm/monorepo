@@ -12,16 +12,15 @@ import {
 } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
-import slugify from 'slugify';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import slugifyLib from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
 
 import config from '#config/config';
 import { contactEmailTemplates } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import {
-  DuplicateId,
-  InvalidCalloutResponse,
+  DuplicateIdError,
+  InvalidCalloutResponseError,
   NotFoundError,
 } from '#errors/index';
 import { log as mainLogger } from '#logging';
@@ -39,8 +38,12 @@ import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
+import { QueryDeepPartialEntity } from '#type/typeorm-utils';
 import { isDuplicateIndex } from '#utils/db';
 import { normalizeEmailAddress } from '#utils/email';
+
+// CJS/ESM interop: slugify sets module.exports.default, access it directly
+const slugify = slugifyLib.default;
 
 const log = mainLogger.child({ app: 'callouts-service' });
 
@@ -64,7 +67,7 @@ class CalloutsService {
       try {
         return await this.saveCallout({ ...data, slug });
       } catch (err) {
-        if (err instanceof DuplicateId && autoSlug !== false) {
+        if (err instanceof DuplicateIdError && autoSlug !== false) {
           autoSlug++;
         } else {
           throw err;
@@ -248,14 +251,14 @@ class CalloutsService {
     newsletter: CalloutResponseNewsletterData | undefined
   ): Promise<CalloutResponse> {
     if (callout.access === CalloutAccess.OnlyAnonymous) {
-      throw new InvalidCalloutResponse('only-anonymous');
+      throw new InvalidCalloutResponseError('only-anonymous');
     } else if (
       !contact.membership?.isActive &&
       callout.access === CalloutAccess.Member
     ) {
-      throw new InvalidCalloutResponse('expired-user');
+      throw new InvalidCalloutResponseError('expired-user');
     } else if (!callout.active) {
-      throw new InvalidCalloutResponse('closed');
+      throw new InvalidCalloutResponseError('closed');
     }
 
     let response = await this.getResponse(callout, contact);
@@ -264,7 +267,7 @@ class CalloutsService {
       response.callout = callout;
       response.contact = contact;
     } else if (!callout.allowUpdate) {
-      throw new InvalidCalloutResponse('cant-update');
+      throw new InvalidCalloutResponseError('cant-update');
     }
 
     response.answers = answers;
@@ -312,11 +315,11 @@ class CalloutsService {
     newsletter: CalloutResponseNewsletterData | undefined
   ): Promise<string> {
     if (callout.access === CalloutAccess.Guest && !guest) {
-      throw new InvalidCalloutResponse('guest-fields-missing');
+      throw new InvalidCalloutResponseError('guest-fields-missing');
     } else if (callout.access === CalloutAccess.OnlyAnonymous && guest) {
-      throw new InvalidCalloutResponse('only-anonymous');
+      throw new InvalidCalloutResponseError('only-anonymous');
     } else if (!callout.active || callout.access === CalloutAccess.Member) {
-      throw new InvalidCalloutResponse('closed');
+      throw new InvalidCalloutResponseError('closed');
     }
 
     if (guest) {
@@ -349,7 +352,7 @@ class CalloutsService {
         // Suppress errors from creating a response for a contact, this prevents
         // any potential information leaking about failures related to some
         // state of the contact
-        if (err instanceof InvalidCalloutResponse) {
+        if (err instanceof InvalidCalloutResponseError) {
           return uuidv4();
         } else {
           throw err;
@@ -425,7 +428,7 @@ class CalloutsService {
         }
       } catch (err) {
         throw isDuplicateIndex(err, 'slug')
-          ? new DuplicateId(data.slug || '') // Slug can't actually be undefined here
+          ? new DuplicateIdError(data.slug || '') // Slug can't actually be undefined here
           : err;
       }
 

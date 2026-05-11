@@ -1,18 +1,19 @@
 {
   "include": ["./src"],
-  "exclude": ["./test"],
+  "exclude": ["./test", "src/**/*.test.ts"],
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "rootDir": "./src",
-    "moduleResolution": "bundler",
-    "declarationDir": "./dist/types",
-    "emitDeclarationOnly": true,
+    "outDir": "./dist",
     "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
     "isolatedModules": true,
-    "isolatedDeclarations": true,
-    "skipLibCheck": true,
-    "preserveWatchOutput": true,
-    "diagnostics": true
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
   }
 }

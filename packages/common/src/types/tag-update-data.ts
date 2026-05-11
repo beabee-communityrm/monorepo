@@ -1,4 +1,4 @@
-import { TagCreateData } from './index.js';
+import { type TagCreateData } from './index.js';
 
 // Name is required, the rest is optional
 export type TagUpdateData = Partial<TagCreateData> &

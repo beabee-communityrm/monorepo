@@ -6,7 +6,7 @@ import { SelectQueryBuilder } from 'typeorm';
 
 import { GetEmailDto, ListEmailsDto } from '#api/dto/EmailDto';
 
-import { BaseTransformer } from './BaseTransformer';
+import { BaseTransformer } from './BaseTransformer.js';
 
 class EmailTransformer extends BaseTransformer<
   Email,

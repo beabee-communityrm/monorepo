@@ -7,9 +7,13 @@ import { wrapAsync } from '@beabee/core/utils/express';
 import { getNextParam, isValidNextUrl } from '@beabee/core/utils/url';
 
 import express, { type Express, type Request, type Response } from 'express';
+import { fileURLToPath } from 'node:url';
 import passport from 'passport';
+import path from 'path';
 
 import { loginAndRedirect } from '#core/utils/contact';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 

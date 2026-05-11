@@ -24,13 +24,11 @@ const __dirname = dirname(__filename);
 const CONFIG = {
   // FontAwesome metadata file paths
   METADATA_PATHS: {
-    iconFamilies: require.resolve(
-      '@fortawesome/fontawesome-free/metadata/icon-families.yml'
-    ),
+    iconFamilies:
+      require.resolve('@fortawesome/fontawesome-free/metadata/icon-families.yml'),
     icons: require.resolve('@fortawesome/fontawesome-free/metadata/icons.yml'),
-    categories: require.resolve(
-      '@fortawesome/fontawesome-free/metadata/categories.yml'
-    ),
+    categories:
+      require.resolve('@fortawesome/fontawesome-free/metadata/categories.yml'),
   },
   // Output directory
   OUTPUT_DIR: join(__dirname, '..', 'src', 'data'),

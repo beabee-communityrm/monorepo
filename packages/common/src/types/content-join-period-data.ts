@@ -1,4 +1,4 @@
-import { PaymentPeriod } from './payment-period.js';
+import { type PaymentPeriod } from './payment-period.js';
 
 export interface ContentJoinPeriodData {
   name: PaymentPeriod;

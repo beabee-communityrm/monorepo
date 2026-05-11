@@ -1,4 +1,4 @@
-import { PaymentFlowSetupParams } from './payment-flow-params';
+import { type PaymentFlowSetupParams } from '../index.js';
 
 export interface CreatePaymentData {
   amount: number;

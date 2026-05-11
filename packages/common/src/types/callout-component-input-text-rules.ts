@@ -1,7 +1,6 @@
 import type { CalloutComponentBaseRules } from './index.js';
 
-export interface CalloutComponentInputTextRules
-  extends CalloutComponentBaseRules {
+export interface CalloutComponentInputTextRules extends CalloutComponentBaseRules {
   /** The regular expression pattern test that the field value must pass before the form can be submitted. */
   pattern?: string;
   /** The maximum amount of words that can be added to this field. */

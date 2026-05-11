@@ -2,7 +2,7 @@ import { RuleGroup } from '@beabee/beabee-common';
 
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Callout } from './Callout';
+import { Callout } from './Callout.js';
 
 @Entity()
 export class CalloutResponseSegment {

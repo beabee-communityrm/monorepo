@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { type EmailMailing, type SegmentOngoingEmail } from './index';
+import { type EmailMailing, type SegmentOngoingEmail } from './index.js';
 
 @Entity()
 export class Email {

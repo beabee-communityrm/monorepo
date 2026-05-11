@@ -6,7 +6,7 @@ import {
   Unique,
 } from 'typeorm';
 
-import type { Contact, Project } from './index';
+import type { Contact, Project } from './index.js';
 
 @Entity()
 @Unique(['project', 'contact'])

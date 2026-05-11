@@ -23,7 +23,6 @@ COPY --chown=node:node packages/locale/package.json /opt/packages/locale/package
 COPY --chown=node:node packages/template-vanilla/package.json /opt/packages/template-vanilla/package.json
 COPY --chown=node:node packages/test-utils/package.json /opt/packages/test-utils/package.json
 COPY --chown=node:node packages/vue/package.json /opt/packages/vue/package.json
-COPY --chown=node:node packages/weblate-client/package.json /opt/packages/weblate-client/package.json
 
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
@@ -35,7 +34,6 @@ COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/p
 # Copy dependencies with relevant content
 COPY --chown=node:node packages/prettier-config /opt/packages/prettier-config
 COPY --chown=node:node packages/tsconfig /opt/packages/tsconfig
-COPY --chown=node:node packages/esbuild /opt/packages/esbuild
 
 # Copy apps with relevant content
 COPY --chown=node:node apps/dev-cli /opt/apps/dev-cli

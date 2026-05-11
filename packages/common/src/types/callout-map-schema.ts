@@ -1,4 +1,4 @@
-import { CalloutMapSchemaIconStyling } from './callout-map-schema-icon-styling';
+import { type CalloutMapSchemaIconStyling } from './callout-map-schema-icon-styling.js';
 
 export interface CalloutMapSchema {
   style: string;
@@ -10,6 +10,11 @@ export interface CalloutMapSchema {
   addressProp: string;
   addressPattern: string;
   addressPatternProp: string;
+  /**
+   * Restricts geocoding search results to specific countries. This configuration parameter
+   * can be set through the admin interface and is passed to the MapTiler GeocodingControl
+   * to limit search results to the specified countries.
+   */
   geocodeCountries?: string;
   mapIconProp?: string;
   mapIconStyling?: CalloutMapSchemaIconStyling;

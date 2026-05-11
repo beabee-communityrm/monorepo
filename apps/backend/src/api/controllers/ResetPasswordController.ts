@@ -1,4 +1,5 @@
 import ContactsService from '@beabee/core/services/ContactsService';
+import { normalizeEmailAddress } from '@beabee/core/utils';
 
 import { Request } from 'express';
 import {
@@ -23,7 +24,10 @@ export class ResetPasswordController {
   @OnUndefined(204)
   @Post()
   async create(@Body() data: CreateResetPasswordDto): Promise<void> {
-    await ContactsService.resetPasswordBegin(data.email, data.resetUrl);
+    await ContactsService.resetPasswordBegin(
+      normalizeEmailAddress(data.email),
+      data.resetUrl
+    );
   }
 
   @OnUndefined(204)

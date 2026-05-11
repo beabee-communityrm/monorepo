@@ -14,7 +14,7 @@ import {
 import IsValidPayFee from '#api/validators/IsValidPayFee';
 import MinContributionAmount from '#api/validators/MinContributionAmount';
 
-import { PaymentFlowSetupParamsDto } from './PaymentFlowDto';
+import { PaymentFlowSetupParamsDto } from './PaymentFlowDto.js';
 
 export class UpdateContributionDto {
   @MinContributionAmount()
