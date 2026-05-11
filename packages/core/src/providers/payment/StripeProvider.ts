@@ -2,6 +2,7 @@ import {
   ContributionType,
   PaymentMethod,
   PaymentSource,
+  paymentMethodToStripeType,
 } from '@beabee/beabee-common';
 
 import { add } from 'date-fns';
@@ -238,10 +239,16 @@ export class StripeProvider extends PaymentProvider {
 
     const customerId = await this.ensureCustomerForFlow(flow);
 
+    log.info(
+      'Creating setup intent to update payment method for customer ' +
+        customerId
+    );
+
     const intent = await stripe.setupIntents.create({
       customer: customerId,
       confirm: true,
       confirmation_token: flow.params.token,
+      payment_method_types: [paymentMethodToStripeType(flow.method)],
       expand: ['latest_attempt', 'payment_method'],
     });
 
@@ -355,7 +362,11 @@ export class StripeProvider extends PaymentProvider {
   private async ensureCustomerForFlow(flow: PaymentFlow): Promise<string> {
     let customerId = this.data.customerId;
 
-    if (!customerId) {
+    if (customerId) {
+      log.info(
+        `Contact ${this.contact.id} already has customer ID ${customerId}`
+      );
+    } else {
       const customer = await stripe.customers.create({
         email: this.contact.email,
         name: `${this.contact.firstname} ${this.contact.lastname}`,
@@ -364,6 +375,9 @@ export class StripeProvider extends PaymentProvider {
         }),
       });
       customerId = customer.id;
+      log.info(
+        `Created new customer with ID ${customerId} for contact ${this.contact.id}`
+      );
     }
 
     this.data.customerId = customerId;
