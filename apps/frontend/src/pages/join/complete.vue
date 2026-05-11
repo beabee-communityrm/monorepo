@@ -22,8 +22,8 @@ onBeforeMount(async () => {
   const paymentFlowId = route.query.paymentFlowId?.toString();
   if (paymentFlowId) {
     try {
-      await client.signup.complete(paymentFlowId);
-      router.replace('/join/confirm-email');
+      //await client.signup.complete(paymentFlowId);
+      //router.replace('/join/confirm-email');
     } catch (err) {
       handleJoinError(err, router);
     }

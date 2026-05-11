@@ -53,7 +53,6 @@ import {
   type PaymentFlowSetupParams,
   type PaymentFlowSetupResult,
 } from '@beabee/beabee-common';
-import { PaymentRequiresActionError } from '@beabee/client';
 import { AppModal, addNotification } from '@beabee/vue';
 
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
@@ -66,6 +65,7 @@ import StripePaymentForm from '#components/forms/StripePaymentForm.vue';
 import env from '#env';
 import type { PaymentFlowFormData } from '#type/payment-flow-form-data';
 import { extractErrorText } from '#utils/api-error';
+import { handlePossiblePaymentRequiresAction } from '#utils/payment';
 
 const { t } = useI18n();
 
@@ -171,18 +171,18 @@ const completePaymentFlowId = computed(
 onBeforeMount(async () => {
   reset();
 
-  if (completePaymentFlowId.value) {
+  const flowId = completePaymentFlowId.value;
+  if (flowId) {
     try {
-      await props.completeFlow(completePaymentFlowId.value);
+      await handlePossiblePaymentRequiresAction(
+        () => props.completeFlow(flowId),
+        props.stripePublicKey
+      );
     } catch (err) {
-      if (err instanceof PaymentRequiresActionError) {
-        // TODDO
-      } else {
-        addNotification({
-          variant: 'error',
-          title: extractErrorText(err),
-        });
-      }
+      addNotification({
+        variant: 'error',
+        title: extractErrorText(err),
+      });
     }
 
     router.replace({

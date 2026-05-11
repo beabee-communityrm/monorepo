@@ -16,9 +16,11 @@ import {
   PaymentRequiresActionError,
 } from '#errors/index';
 import {
+  confirmSubscriptionIntent,
   createOneTimePayment,
   createSubscription,
   deleteSubscription,
+  fetchSepaMandateForIdealIntent,
   manadateToSource,
   stripe,
   updateSubscription,
@@ -320,35 +322,12 @@ export class StripeProvider extends PaymentProvider {
       calcRenewalDate(this.contact)
     );
 
-    const latestInvoice = subscription.latest_invoice as Stripe.Invoice | null;
-    if (latestInvoice?.payment_intent) {
-      // Subscription is starting immediately so an invoice is immediately
-      // available. Confirm via the payment intent
-      log.info('Confirming subscription with payment intent');
-      const confirmedPaymentIntent = await stripe.paymentIntents.confirm(
-        latestInvoice.payment_intent as string,
-        {
-          confirmation_token: flow.params.token,
-          expand: ['payment_method'],
-        }
-      );
-      await this.processConfirmedIntent(confirmedPaymentIntent, flow);
-    } else if (subscription.pending_setup_intent) {
-      // The subscription will start in the future so there is no invoice
-      // In this case we can only confirm with the pending setup intent
-      log.info('Confirming subscription with setup intent');
-      const confirmedSetupIntent = await stripe.setupIntents.confirm(
-        subscription.pending_setup_intent as string,
-        {
-          confirmation_token: flow.params.token,
-          expand: ['latest_attempt', 'payment_method'],
-        }
-      );
-      await this.processConfirmedIntent(confirmedSetupIntent, flow);
-    } else {
-      throw new Error('No invoice or setup intent on subscription');
-    }
+    const confirmedIntent = await confirmSubscriptionIntent(
+      subscription,
+      flow.params.token
+    );
 
+    await this.processConfirmedIntent(confirmedIntent, flow);
     return await this.processSubscriptionResult(subscription, flow.form, true);
   }
 
@@ -401,30 +380,20 @@ export class StripeProvider extends PaymentProvider {
       throw new PaymentRequiresActionError(intent.client_secret as string);
     }
 
-    // Save old mandate to remove afterwards
-    const oldMandateId = this.data.mandateId;
-
     const paymentMethod = intent.payment_method as Stripe.PaymentMethod | null;
     if (!paymentMethod) {
       throw new Error('No payment method on confirmed intent');
     }
 
-    // Handle iDEAL to SEPA conversion
+    // Save old mandate to remove afterwards
+    const oldMandateId = this.data.mandateId;
+
     if (
       flow.method === PaymentMethod.StripeIdeal &&
-      // TODO: fix this properly
-      'latest_attempt' in intent
+      // TODO: How to handle iDEAL with payment intent?
+      intent.object === 'setup_intent'
     ) {
-      log.info('Converting iDEAL payment method to SEPA');
-      const latestAttempt = intent.latest_attempt as Stripe.SetupAttempt | null;
-      const newMandateId = latestAttempt?.payment_method_details?.ideal
-        ?.generated_sepa_debit as string | null;
-
-      if (!newMandateId) {
-        throw new Error('No SEPA mandate on iDEAL payment method');
-      }
-
-      this.data.mandateId = newMandateId;
+      this.data.mandateId = await fetchSepaMandateForIdealIntent(intent);
       this.data.method = PaymentMethod.StripeSEPA;
     } else {
       this.data.mandateId = paymentMethod.id;

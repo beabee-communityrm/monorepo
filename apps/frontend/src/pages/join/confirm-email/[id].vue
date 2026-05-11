@@ -8,8 +8,6 @@ meta:
 <template><div /></template>
 
 <script lang="ts" setup>
-import { PaymentRequiresActionError } from '@beabee/client';
-
 import { onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -17,22 +15,22 @@ import { client } from '#utils/api';
 import { handleJoinError } from '#utils/api-error';
 
 import { updateCurrentUser } from '../../../store';
+import { handlePossiblePaymentRequiresAction } from '#utils/payment';
 
 const route = useRoute('confirmEmailLoading');
 const router = useRouter();
 
 onBeforeMount(async () => {
   try {
-    await client.signup.complete(route.params.id);
+    await handlePossiblePaymentRequiresAction(() =>
+      client.signup.complete(route.params.id)
+    );
+
     // User has been logged in, update our current user to reflect this
     await updateCurrentUser();
     router.replace('/join/setup');
   } catch (err) {
-    if (err instanceof PaymentRequiresActionError) {
-      // TODO: something here
-    } else {
-      handleJoinError(err, router);
-    }
+    handleJoinError(err, router);
   }
 });
 </script>
