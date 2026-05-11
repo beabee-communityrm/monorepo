@@ -125,6 +125,7 @@ import { UpdatePaymentFlow1772473765054 } from './migrations/1772473765054-Updat
 import { AddJoinFlowProcessingFlag1772636569908 } from './migrations/1772636569908-AddJoinFlowProcessingFlag.js';
 import { UniqueEmailId1773823606137 } from './migrations/1773823606137-UniqueEmailId.js';
 import { ExtendMemberRoleExpiry1774540406786 } from './migrations/1774540406786-ExtendMemberRoleExpiry.js';
+import { UpdatePaymentFlow1776076677108 } from './migrations/1776076677108-UpdatePaymentFlow.js';
 import { AddMailchimpNLGroups1776955640900 } from './migrations/1776955640900-AddMailchimpNLGroups.js';
 
 export const migrations = [
@@ -254,5 +255,6 @@ export const migrations = [
   AddJoinFlowProcessingFlag1772636569908,
   UniqueEmailId1773823606137,
   ExtendMemberRoleExpiry1774540406786,
+  UpdatePaymentFlow1776076677108,
   AddMailchimpNLGroups1776955640900,
 ];
