@@ -83,11 +83,11 @@ function multiplyCssValue(cssValue: string, multiplier: number) {
     return trimmedValue;
   }
 
-  const numericPart= match[1];
+  const numericPart = match[1];
   const unit = match[2] || '';
-  
+
   const numericValue = parseFloat(numericPart);
-  const result = (numericValue * multiplier) + unit;
+  const result = numericValue * multiplier + unit;
 
   return result;
 }
@@ -110,7 +110,7 @@ const appearance: Appearance = {
   rules: {
     '.Input': {
       border: '1px solid ' + getColor('--c-primary-40'),
-      padding:  multiplyCssValue(style.getPropertyValue('--spacing'), 2),
+      padding: multiplyCssValue(style.getPropertyValue('--spacing'), 2),
       lineHeight: style.getPropertyValue('--leading-tight'),
     },
     '.Input:focus': {

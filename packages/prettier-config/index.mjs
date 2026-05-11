@@ -21,11 +21,12 @@ export const baseConfig = {
   importOrderSortSpecifiers: true,
   // Add parser plugins to support decorators and other TypeScript features
   importOrderParserPlugins: ["typescript", "decorators-legacy"],
+  tailwindStylesheet: "src/styles/tailwind.css",
 };
 
 // Frontend specific configuration
 export const frontendConfig = {
   ...baseConfig,
   plugins: [...baseConfig.plugins, "prettier-plugin-tailwindcss"],
-  tailwindConfig: null,
+  tailwindStylesheet: "../../packages/vue/src/styles/tailwind.css",
 };

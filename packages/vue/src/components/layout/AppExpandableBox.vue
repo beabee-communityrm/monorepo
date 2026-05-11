@@ -15,7 +15,7 @@
         <font-awesome-icon :icon="expanded ? faCaretUp : faCaretDown" />
         <div
           v-show="expanded"
-          class="absolute -left-px top-full box-content h-2 w-full border-x border-x-primary-40 bg-white py-px"
+          class="absolute top-full -left-px box-content h-2 w-full border-x border-x-primary-40 bg-white py-px"
         />
       </AppButton>
     </div>

@@ -106,7 +106,7 @@
       />
       <div
         v-if="copyable"
-        class="z-20 col-start-1 row-start-1 self-start justify-self-end pr-1 pt-1"
+        class="z-20 col-start-1 row-start-1 self-start justify-self-end pt-1 pr-1"
       >
         <AppCopyButton variant="float" :text="editor?.getHTML() || ''" />
       </div>

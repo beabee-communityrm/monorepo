@@ -55,7 +55,7 @@
             :href="`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}`"
             target="_blank"
             rel="nofollow noopener"
-            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
+            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:ring-2 focus:ring-primary-70 focus:ring-offset-2 focus:outline-none"
             :aria-label="`${t('callout.share.aria.facebook')}: ${fullUrl}`"
           >
             <font-awesome-icon
@@ -71,7 +71,7 @@
             :href="`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(fullUrl)}`"
             target="_blank"
             rel="nofollow noopener"
-            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
+            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:ring-2 focus:ring-primary-70 focus:ring-offset-2 focus:outline-none"
             :aria-label="`${t('callout.share.aria.linkedin')}: ${fullUrl}`"
           >
             <font-awesome-icon
@@ -87,7 +87,7 @@
             :href="`https://telegram.me/share/url?url=${encodeURIComponent(fullUrl)}`"
             target="_blank"
             rel="nofollow noopener"
-            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
+            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:ring-2 focus:ring-primary-70 focus:ring-offset-2 focus:outline-none"
             :aria-label="`${t('callout.share.aria.telegram')}: ${fullUrl}`"
           >
             <font-awesome-icon
@@ -103,7 +103,7 @@
             :href="`https://twitter.com/share?url=${encodeURIComponent(fullUrl)}`"
             target="_blank"
             rel="nofollow noopener"
-            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
+            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:ring-2 focus:ring-primary-70 focus:ring-offset-2 focus:outline-none"
             :aria-label="`${t('callout.share.aria.twitter')}: ${fullUrl}`"
           >
             <font-awesome-icon
@@ -119,7 +119,7 @@
             :href="`https://api.whatsapp.com/send?text=${encodeURIComponent(fullUrl)}`"
             target="_blank"
             rel="nofollow noopener"
-            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
+            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:ring-2 focus:ring-primary-70 focus:ring-offset-2 focus:outline-none"
             :aria-label="`${t('callout.share.aria.whatsapp')}: ${fullUrl}`"
           >
             <font-awesome-icon
@@ -135,7 +135,7 @@
             :href="`mailto:?body=${encodeURIComponent(fullUrl)}`"
             target="_blank"
             rel="nofollow noopener"
-            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2"
+            class="hover:bg-grey-lightest flex items-center rounded border border-grey-light bg-white px-3 py-2 text-sm text-body transition-colors focus:ring-2 focus:ring-primary-70 focus:ring-offset-2 focus:outline-none"
             :aria-label="`${t('callout.share.aria.email')}: ${fullUrl}`"
           >
             <font-awesome-icon

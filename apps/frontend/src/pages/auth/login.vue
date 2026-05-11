@@ -20,7 +20,7 @@ meta:
         <span>{{ t('login.notMember') }}</span>
         <router-link
           to="/join"
-          class="text-link ml-1 font-semibold underline"
+          class="ml-1 font-semibold text-link underline"
           >{{ t('login.joinNow') }}</router-link
         >
       </div>

@@ -91,7 +91,7 @@
 
               <div
                 v-if="props.data.openToEveryone"
-                class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
+                class="mt-4 ml-6 border-l-2 border-grey-light pl-6"
               >
                 <AppFormField>
                   <AppToggleField
@@ -152,7 +152,7 @@
 
             <div
               v-if="props.data.captchaEnabled && !env.cnrMode"
-              class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
+              class="mt-4 ml-6 border-l-2 border-grey-light pl-6"
             >
               <AppFormField>
                 <AppToggleField

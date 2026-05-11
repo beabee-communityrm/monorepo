@@ -177,7 +177,7 @@ async function handleItemDelete() {
             <div class="mb-4">
               <AppInput v-model="data.name" label="Tag Name" required />
             </div>
-            <p class="text-gray-600 text-sm">
+            <p class="text-sm text-gray-600">
               Current mode: <strong>{{ mode }}</strong>
             </p>
           </template>
@@ -215,7 +215,7 @@ async function handleItemDelete() {
         >
           <template #view>
             <strong class="font-bold text-body-80">{{ sampleTag.name }}</strong>
-            <span class="text-gray-500 ml-2 text-sm"
+            <span class="ml-2 text-sm text-gray-500"
               >(ID: {{ sampleTag.id }})</span
             >
           </template>
@@ -224,7 +224,7 @@ async function handleItemDelete() {
             <div class="mb-4">
               <AppInput v-model="data.name" label="Tag Name" required />
             </div>
-            <p class="text-gray-600 text-sm">
+            <p class="text-sm text-gray-600">
               Editing mode: <strong>{{ mode }}</strong>
             </p>
           </template>
@@ -251,7 +251,7 @@ async function handleItemDelete() {
         >
           <template #view>
             <strong class="font-bold text-body-80">{{ sampleTag.name }}</strong>
-            <span class="bg-gray-200 ml-2 rounded px-2 py-1 text-xs"
+            <span class="ml-2 rounded bg-gray-200 px-2 py-1 text-xs"
               >Read Only</span
             >
           </template>

@@ -5,12 +5,12 @@ meta:
 </route>
 <template>
   <PageTitle :title="t('menu.callouts')" border>
-    <div class="flex-0 ml-3 hidden md:block">
+    <div class="ml-3 hidden flex-0 md:block">
       <AppButton to="/admin/crowdnewsroom/new">{{
         t('calloutsAdmin.addCallout')
       }}</AppButton>
     </div>
-    <div class="fixed bottom-5 right-5 md:hidden">
+    <div class="fixed right-5 bottom-5 md:hidden">
       <AppButton
         :icon="faPlus"
         :title="t('calloutsAdmin.addCallout')"

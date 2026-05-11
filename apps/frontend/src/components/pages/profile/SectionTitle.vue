@@ -2,7 +2,7 @@
   <div class="mb-6 flex h-8 items-center md:hidden">
     <span class="h-px grow bg-primary-20" />
     <h2
-      class="px-3 text-center text-sm font-semibold uppercase text-primary-40"
+      class="px-3 text-center text-sm font-semibold text-primary-40 uppercase"
     >
       <slot />
     </h2>

@@ -11,11 +11,11 @@
     <Teleport to="body">
       <span
         v-if="showTooltip"
-        class="fixed z-50 whitespace-nowrap rounded bg-black px-2 py-1 text-sm text-white"
+        class="fixed z-50 rounded bg-black px-2 py-1 text-sm whitespace-nowrap text-white"
         :style="tooltipStyle"
       >
         <span
-          class="absolute right-full top-1/2 h-0 w-0 -translate-y-1/2 border-y-4 border-r-4 border-y-white/0 border-r-black"
+          class="absolute top-1/2 right-full h-0 w-0 -translate-y-1/2 border-y-4 border-r-4 border-y-white/0 border-r-black"
         />
         {{ title }}
       </span>

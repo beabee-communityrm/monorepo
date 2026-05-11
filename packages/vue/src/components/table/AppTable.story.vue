@@ -106,7 +106,7 @@ const state = reactive({
       >
         <template #value-name="{ item, value }">
           <strong>{{ value }}</strong>
-          <div class="text-gray-500 text-xs">ID: {{ item.id }}</div>
+          <div class="text-xs text-gray-500">ID: {{ item.id }}</div>
         </template>
 
         <template #value-status="{ value }">
@@ -123,7 +123,7 @@ const state = reactive({
         </template>
 
         <template #after="{ item }">
-          <div v-if="item.selected" class="text-blue-600 pl-2 text-xs">
+          <div v-if="item.selected" class="pl-2 text-xs text-blue-600">
             Additional info when selected: {{ item.email }}
           </div>
         </template>

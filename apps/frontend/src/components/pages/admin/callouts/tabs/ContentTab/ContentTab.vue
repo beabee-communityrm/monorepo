@@ -20,7 +20,7 @@
 
     <div class="flex min-h-0 gap-4">
       <!-- Left Sidebar -->
-      <div class="flex-0 basis-menu overflow-y-auto overflow-x-hidden">
+      <div class="flex-0 basis-menu overflow-x-hidden overflow-y-auto">
         <!-- Form Builder Options -->
         <SidebarTabsNavigation
           v-model:selected-tab="selectedSidebarTab"

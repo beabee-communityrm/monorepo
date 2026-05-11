@@ -70,7 +70,7 @@
         </template>
         <AppLabel :label="t('emailEditor.preview.label')" />
         <div
-          class="content-message border-primary-40 overflow-auto rounded border bg-white p-4"
+          class="content-message overflow-auto rounded border border-primary-40 bg-white p-4"
         >
           <p>
             <b>{{ t('emailEditor.preview.from') }}</b>
@@ -79,7 +79,7 @@
           <p></p>
           <div
             v-if="!serverPreviewResult"
-            class="text-body-80 flex min-h-24 items-center justify-center p-8"
+            class="flex min-h-24 items-center justify-center p-8 text-body-80"
           >
             <AppLoadingSpinner
               :loading="isLoadingPreview"
