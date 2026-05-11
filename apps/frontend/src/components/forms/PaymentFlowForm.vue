@@ -138,11 +138,7 @@ async function handleStripeConfirm(
 ) {
   if (!paymentFlowId.value) return; // Not possible
 
-  await props.completeFlow(paymentFlowId.value, {
-    token,
-    firstname,
-    lastname,
-  });
+  await props.completeFlow(paymentFlowId.value, { token, firstname, lastname });
 
   paymentFlowId.value = null;
 }
