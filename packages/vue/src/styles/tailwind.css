@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@source '../**/*.{vue,js,ts,jsx,tsx}';
 
 @theme {
   --radius: 3px;
