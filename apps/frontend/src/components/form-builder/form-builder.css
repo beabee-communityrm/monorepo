@@ -1,3 +1,5 @@
+@reference "../../index.css";
+
 .callout-form-builder {
   @apply flex h-full flex-col;
 
