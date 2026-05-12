@@ -152,4 +152,3 @@ const handleRemove = () => {
   }, 0);
 };
 </script>
-<style scoped></style>

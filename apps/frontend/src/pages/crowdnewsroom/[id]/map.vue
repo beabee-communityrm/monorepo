@@ -845,7 +845,9 @@ onBeforeMount(() =>
 );
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "../../../index.css";
+
 .add-notice-enter-active,
 .add-notice-leave-active {
   @apply transition;

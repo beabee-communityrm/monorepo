@@ -69,7 +69,7 @@ watch(
 );
 </script>
 
-<style lang="postcss">
+<style>
 @import url('vue-accessible-color-picker/styles');
 :root {
   --vacp-color-background: transparent;

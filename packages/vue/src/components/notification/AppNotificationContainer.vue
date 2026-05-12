@@ -43,7 +43,9 @@ function removeItem(id: number) {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "../../styles/index.css";
+
 .notification-move,
 .notification-enter-active,
 .notification-leave-active {

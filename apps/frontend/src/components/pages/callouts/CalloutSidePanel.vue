@@ -22,7 +22,8 @@ defineEmits<{ (e: 'close'): void }>();
 defineProps<{ show: boolean }>();
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "../../../index.css";
 .side-panel-enter-active,
 .side-panel-leave-active {
   @apply transition-transform;

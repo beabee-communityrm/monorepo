@@ -75,12 +75,4 @@
   --color-grey: #a4a4a4;
   --color-grey-dark: #5f5f5f;
   --color-grey-darker: #434343;
-
-  /* For StripePaymentForm - Tailwind defaults */
-  /* --line-height-tight: 1.25;
-  --font-size-base: 1rem;
-  --font-size-sm: 0.875rem;
-  --font-size-xs: 0.75rem;
-  --spacing-2: 0.5rem;
-  --spacing-1.5: 0.375rem; */
 }

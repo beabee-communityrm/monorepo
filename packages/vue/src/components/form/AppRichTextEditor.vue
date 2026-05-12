@@ -285,7 +285,8 @@ function setLink(): void {
 const isEditorEmpty = computed(() => editor.value?.isEmpty || false);
 </script>
 
-<style lang="postcss">
+<style>
+@reference '../../styles/index.css';
 .ProseMirror {
   @apply h-full min-h-20 w-full rounded border border-primary-40 bg-white p-2 focus:shadow-input focus:outline-none;
 
