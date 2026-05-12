@@ -38,7 +38,7 @@
     </AppButton>
 
     <AppButton
-      v-if="callout.status === ItemStatus.Open"
+      v-if="callout.status === ItemStatus.Open && env.maptilerKey"
       variant="link"
       class="hidden px-2 md:inline-block"
       @click="$emit('addnew')"
@@ -67,6 +67,8 @@ import {
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { type RouteLocationRaw, useRoute } from 'vue-router';
+
+import env from '#env';
 
 import { useCalloutVariants } from './use-callout';
 

@@ -1,5 +1,6 @@
 import { type CalloutComponentSchema } from '@beabee/beabee-common';
 
+import env from '#env';
 import type { LocaleProp } from '#type';
 
 /**
@@ -127,15 +128,17 @@ export const formOpts = {
     custom2: {
       title: 'Advanced',
       components: {
-        address: {
-          title: 'Address',
-          icon: 'home',
-          schema: {
-            type: 'address',
-            // We only support the maptiler provider for address lookups
-            provider: 'maptiler',
+        ...(env.maptilerKey && {
+          address: {
+            title: 'Address',
+            icon: 'home',
+            schema: {
+              type: 'address',
+              // We only support the maptiler provider for address lookups
+              provider: 'maptiler',
+            },
           },
-        },
+        }),
         phoneNumber: {
           title: 'Phone Number',
           icon: 'phone-square',
