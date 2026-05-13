@@ -264,13 +264,13 @@ async function handleUpdate(
   data: UpdateCalloutResponseData,
   successText: string
 ) {
-  const prevResponseId = prevResponse.value?.id;
-
   if (!response.value) return;
 
   doingAction.value = true;
   try {
     await client.callout.response.update(response.value.id, data);
+
+    const prevResponseId = prevResponse.value?.id;
     router.push(
       `/admin/crowdnewsroom/view/${props.callout.slug}/responses/${prevResponseId}`
     );
