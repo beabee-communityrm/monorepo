@@ -192,7 +192,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, toRef, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import CalloutResponseComments from '#components/callout/CalloutResponseComments.vue';
 import { useCalloutResponseFilters } from '#components/pages/admin/callout-responses.interface';
@@ -211,6 +211,7 @@ const props = defineProps<{
 }>();
 
 const route = useRoute('adminCalloutViewResponsesItem');
+const router = useRouter();
 const { t, n } = useI18n();
 
 addBreadcrumb(
@@ -263,12 +264,16 @@ async function handleUpdate(
   data: UpdateCalloutResponseData,
   successText: string
 ) {
+  const prevResponseId = prevResponse.value?.id;
+
   if (!response.value) return;
 
   doingAction.value = true;
   try {
     await client.callout.response.update(response.value.id, data);
-    await refreshResponse();
+    router.push(
+      `/admin/crowdnewsroom/view/${props.callout.slug}/responses/${prevResponseId}`
+    );
 
     addNotification({ variant: 'success', title: successText });
   } catch (err) {
