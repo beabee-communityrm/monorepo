@@ -16,7 +16,7 @@ jobs:
       (github.event_name == 'pull_request_review' && github.event.review.state == 'approved')
     runs-on: ubuntu-latest
     env:
-      COMPOSE_PROJECT_NAME: beabee-e2e-tests
+      COMPOSE_PROJECT_NAME: beabee-browser-tests
 
     steps:
       - name: Checkout repository
