@@ -40,9 +40,14 @@ jobs:
 
       - name: Import test data
         run: |
-          cat ./apps/browser-tests/src/fixtures/test-db-default.sql | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
-          sed -e "s|__stripeWebhookSecret__|${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}|" -e "s|__stripeProductId__|${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}|" \
-            ./apps/browser-tests/src/fixtures/test-db-custom.sql | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
+          cat ./apps/browser-tests/src/fixtures/test-db-default.sql \
+            | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
+
+          cat ./apps/browser-tests/src/fixtures/test-db-custom.sql \
+            | sed \
+                -e "s|__stripeWebhookSecret__|${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}|" \
+                -e "s|__stripeProductId__|${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}|" \
+            | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
 
       - name: Restart Docker stack
         id: docker_restart
