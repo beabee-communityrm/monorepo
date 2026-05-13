@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 import userInfo from "../fixtures/user-info.json";
 
-let firstName: string = userInfo.firstName;
-let lastName: string = userInfo.lastName;
-let testPw: string = userInfo.password;
-let contributionAmount = userInfo.contributionAmount;
+const firstName: string = userInfo.firstName;
+const lastName: string = userInfo.lastName;
+const testPw: string = userInfo.password;
+const contributionAmount = userInfo.contributionAmount;
 let contributionDate: string;
 
 function getUniqueEmailAddress(browserName: string): string {
@@ -20,7 +20,7 @@ test.beforeAll(async () => {
 
 test("Join Flow", async ({ page, browserName }) => {
   let confirmationLink: string | null;
-  let emailAddress = getUniqueEmailAddress(browserName);
+  const emailAddress = getUniqueEmailAddress(browserName);
 
   await test.step("One-time payment", async () => {
     await page.goto("/join");
@@ -52,31 +52,19 @@ test("Join Flow", async ({ page, browserName }) => {
     await page.locator('input[name="firstName"]').fill(firstName);
     await page.locator('input[name="lastName"]').fill(lastName);
 
-    await page
+    const stripeFrame = await page
       .locator('iframe[src*="stripe.com"]')
       .first()
-      .contentFrame()
+      .contentFrame();
+
+    await stripeFrame
       .locator("#payment-numberInput")
       .fill("4242 4242 4242 4242");
-    await page
-      .locator('iframe[src*="stripe.com"]')
-      .first()
-      .contentFrame()
-      .locator("#payment-expiryInput")
-      .fill("12/30");
-    await page
-      .locator('iframe[src*="stripe.com"]')
-      .first()
-      .contentFrame()
-      .locator("#payment-cvcInput")
-      .fill("111");
 
-    await page
-      .locator('iframe[src*="stripe.com"]')
-      .first()
-      .contentFrame()
-      .locator("#payment-countryInput")
-      .selectOption("DE");
+    await stripeFrame.locator("#payment-expiryInput").fill("12/30");
+    await stripeFrame.locator("#payment-cvcInput").fill("111");
+
+    await stripeFrame.locator("#payment-countryInput").selectOption("DE");
 
     await page.screenshot({
       path: `test-results/screenshots/${browserName}/join-form-payment.png`,
