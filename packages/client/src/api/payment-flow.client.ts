@@ -1,3 +1,5 @@
+import type { GetPaymentFlowData, Serial } from '@beabee/beabee-common';
+
 import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
 import { BaseClient } from './base.client.js';
@@ -18,8 +20,8 @@ export class PaymentFlowClient extends BaseClient {
    * @param id - The payment flow ID
    * @returns The payment flow status
    */
-  async get(id: string): Promise<string> {
-    const { data } = await this.fetch.get<string>(`/${id}`);
+  async get(id: string): Promise<GetPaymentFlowData> {
+    const { data } = await this.fetch.get<Serial<GetPaymentFlowData>>(`/${id}`);
     return data;
   }
 }

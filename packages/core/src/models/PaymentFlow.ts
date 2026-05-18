@@ -1,4 +1,8 @@
-import { PaymentFlowAdvanceParams, PaymentMethod } from '@beabee/beabee-common';
+import {
+  PaymentFlowAdvanceParams,
+  PaymentFlowStatus,
+  PaymentMethod,
+} from '@beabee/beabee-common';
 
 import {
   Column,
@@ -29,6 +33,6 @@ export class PaymentFlow<TForm extends PaymentFlowForm = PaymentFlowForm> {
   @Column({ type: 'jsonb' })
   form!: TForm;
 
-  @Column({ default: false })
-  processing!: boolean;
+  @Column({ default: PaymentFlowStatus.New })
+  status!: PaymentFlowStatus;
 }

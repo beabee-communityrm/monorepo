@@ -9,6 +9,7 @@ meta:
 <template><div /></template>
 
 <script lang="ts" setup>
+import { PaymentFlowStatus } from '@beabee/beabee-common';
 import { onBeforeMount, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -26,8 +27,8 @@ let checks = 0;
 
 async function checkComplete(paymentFlowId: string) {
   try {
-    const status = await client.paymentFlow.get(paymentFlowId);
-    if (status === 'complete') {
+    const { status } = await client.paymentFlow.get(paymentFlowId);
+    if (status === PaymentFlowStatus.Completed) {
       await updateCurrentUser();
       router.replace('/join/setup');
     } else if (++checks >= MAX_CHECKS) {

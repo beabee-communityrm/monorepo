@@ -1,7 +1,9 @@
 import {
+  GetPaymentFlowData,
   PaymentFlowAdvanceParams,
   PaymentFlowSetupParams,
   PaymentFlowSetupResult,
+  PaymentFlowStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
@@ -49,6 +51,11 @@ export class PaymentFlowAdvanceParamsDto implements PaymentFlowAdvanceParams {
   @IsString()
   @IsOptional()
   vatNumber?: string;
+}
+
+export class GetPaymentFlowDto implements GetPaymentFlowData {
+  @IsEnum(PaymentFlowStatus)
+  status!: PaymentFlowStatus;
 }
 
 export class CompletePaymentFlowDto {
