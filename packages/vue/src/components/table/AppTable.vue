@@ -37,7 +37,7 @@
     <thead v-if="!hideHeaders" class="text-sm">
       <tr class="align-bottom">
         <th v-if="selectable" class="w-0 p-2">
-          <AppCheckbox v-model="allSelected" class="h-5" />
+          <AppCheckbox v-model="allItemsOnPageSelected" class="h-5" />
         </th>
         <th
           v-for="(header, i) in headers"
@@ -87,7 +87,16 @@
           :class="rowClasses(item)"
         >
           <td v-if="selectable" class="p-2">
-            <AppCheckbox v-model="item.selected" />
+            <AppCheckbox
+              :model-value="selectedIds.includes(item.id)"
+              @update:model-value="
+                (selected) =>
+                  emit(
+                    'update:selectedIds',
+                    toggleSelectedItem(selectedIds, item.id, selected)
+                  )
+              "
+            />
           </td>
           <td
             v-for="(header, j) in headers"
@@ -158,6 +167,8 @@ export interface AppTableProps<I extends Item> {
   hideHeaders?: boolean;
   /** Function to add custom CSS classes to rows */
   rowClass?: (item: I) => string;
+  /** Array of selected item IDs */
+  selectedIds?: string[];
 }
 
 const props = withDefaults(defineProps<AppTableProps<I>>(), {
@@ -165,6 +176,7 @@ const props = withDefaults(defineProps<AppTableProps<I>>(), {
   selectable: false,
   hideHeaders: false,
   rowClass: undefined,
+  selectedIds: () => [] as string[],
 });
 
 const { t } = useI18n();
@@ -178,7 +190,60 @@ const emit = defineEmits<{
    * @param sort - The new sort configuration
    */
   'update:sort': [sort: Sort];
+  /**
+   * Emitted when selected IDs change
+   * @param ids - Array of selected item IDs
+   */
+  'update:selectedIds': [ids: string[]];
+
+  'toggle-select-all': [selected: boolean];
+  'toggle-select': [id: string, selected: boolean];
 }>();
+
+/**
+ * Toggles selection state for an item and returns new selected IDs array
+ */
+function toggleSelectedItem(
+  currentIds: string[],
+  itemId: string,
+  selected: boolean
+): string[] {
+  const newIds = new Set(currentIds);
+  if (selected) {
+    newIds.add(itemId);
+  } else {
+    newIds.delete(itemId);
+  }
+  return Array.from(newIds);
+}
+
+/**
+ * Toggles select all state and returns new selected IDs array
+ */
+function toggleSelectAll(
+  currentIds: string[],
+  items: Item[] | null,
+  selected: boolean
+): string[] {
+  if (!items) return currentIds;
+  if (selected) {
+    return Array.from(new Set([...currentIds, ...items.map((i) => i.id)]));
+  }
+  return currentIds.filter((id) => !items.some((item) => item.id === id));
+}
+
+// all on page selected computed property
+const allItemsOnPageSelected = computed({
+  get: () =>
+    props.items
+      ? props.items.every((item) => props.selectedIds.includes(item.id))
+      : false,
+  set: (value) =>
+    emit(
+      'update:selectedIds',
+      toggleSelectAll(props.selectedIds, props.items, value)
+    ),
+});
 
 // Computed properties
 const sort = computed({
@@ -186,24 +251,13 @@ const sort = computed({
   set: (value) => value && emit('update:sort', value),
 });
 
-const allSelected = computed({
-  get: () =>
-    props.selectable && props.items
-      ? props.items.every((i) => i.selected)
-      : false,
-  set: (newValue) => {
-    if (!props.items) return;
-    for (const item of props.items) {
-      item.selected = newValue;
-    }
-  },
-});
-
 // Methods
 function rowClasses(item: I): string {
   return (
     (props.rowClass ? props.rowClass(item) : '') +
-    (props.selectable && item.selected ? ' bg-primary-10' : '')
+    (props.selectable && props.selectedIds.includes(item.id)
+      ? ' bg-primary-10'
+      : '')
   );
 }
 

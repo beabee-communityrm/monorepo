@@ -39,6 +39,8 @@
     <div class="overflow-x-auto">
       <AppTable
         v-model:sort="query.sort"
+        :selected-ids="selectedIds"
+        @update:selected-ids="handleUpdateSelectedIds"
         :headers="headers"
         :items="result?.items || null"
         :selectable="selectable"
@@ -81,8 +83,13 @@ defineProps<{
     limit: number;
     sort?: Sort;
   };
+  selectedIds?: string[];
   selectable?: boolean;
   rowClass?: (item: I) => string;
+}>();
+
+const emit = defineEmits<{
+  'update:selectedIds': [ids: string[]];
 }>();
 
 // Slots are passed to AppTable, typing is handled by Vue's inference
@@ -90,4 +97,9 @@ const slotNames = computed(() => {
   const slots = useSlots();
   return Object.keys(slots).filter((name) => name !== 'actions');
 });
+
+// Forward update:selectedIds from AppTable
+function handleUpdateSelectedIds(ids: string[]): void {
+  emit('update:selectedIds', ids);
+}
 </script>

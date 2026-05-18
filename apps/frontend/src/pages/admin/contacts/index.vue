@@ -51,6 +51,7 @@ meta:
       keypath="contacts.showingOf"
       :headers="headers"
       :result="contactsTable"
+      v-model:selected-ids="selectedIdsArray"
       selectable
     >
       <template #actions>
@@ -183,6 +184,7 @@ import {
   type RuleGroup,
   type UpdateContactData,
 } from '@beabee/beabee-common';
+
 import {
   AppButton,
   AppButtonGroup,
@@ -222,6 +224,9 @@ import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';
 import { useTagFilter } from '../../../composables/useTagFilter';
 
+// Simple selection tracking for now
+const selectedIds = ref(new Set<string>());
+
 /**
  * Contact list page component
  * Provides functionality for:
@@ -238,22 +243,56 @@ const { t, n } = useI18n();
 const route = useRoute();
 
 /**
+ * Selection state
+ * @description Tracks selected contacts across all pages
+ */
+// TODO: Re-enable explicit/all mode later
+// const selectionState = ref<SelectionState>({
+//   mode: 'explicit',
+//   ids: new Set(),
+// });
+
+// Two-way binding for selectedIds as array (for AppPaginatedTable)
+const selectedIdsArray = computed({
+  get: () => Array.from(selectedIds.value),
+  set: (ids: string[]) => {
+    selectedIds.value = new Set(ids);
+  },
+});
+
+function isSelected(id: string): boolean {
+  return selectedIds.value.has(id);
+}
+
+// TODO: Re-enable explicit/all mode later
+// function debugSelectionState(state: SelectionState) {
+//   if (state.mode === 'explicit') {
+//     return {
+//       mode: state.mode,
+//       ids: Array.from(state.ids),
+//     };
+//   }
+//
+//   return {
+//     mode: state.mode,
+//     excludedIds: Array.from(state.excludedIds),
+//   };
+// }
+
+/**
  * Table state
- * @description Manages the paginated table data and selection state
+ * @description Manages the paginated table data
  */
 const contactsTable =
   ref<
     Paginated<
       GetContactDataWith<
         GetContactWith.Profile | GetContactWith.Roles | GetContactWith.Tags
-      > & { selected: boolean }
+      >
     >
   >();
 
-const selectedContactItems = computed(
-  () => contactsTable.value?.items.filter((ri) => ri.selected) || []
-);
-const selectedCount = computed(() => selectedContactItems.value.length);
+const selectedCount = computed(() => selectedIds.value.size);
 
 /**
  * Tag Management
@@ -266,14 +305,16 @@ const selectedTags = computed(() => {
     return [];
   }
 
+  const selectedItems =
+    contactsTable.value?.items.filter((item) => isSelected(item.id)) || [];
   const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
-  for (const item of selectedContactItems.value) {
+  for (const item of selectedItems) {
     for (const tag of item.tags || []) {
       tagCount[tag.id]++;
     }
   }
   return Object.entries(tagCount)
-    .filter((tc) => tc[1] === selectedCount.value)
+    .filter((tc) => tc[1] === selectedItems.length)
     .map(([tagId]) => tagId);
 });
 
@@ -390,12 +431,14 @@ function getSearchRules(): RuleGroup {
  * Gets rules for selected contacts
  */
 function getSelectedContactsRules(): RuleGroup {
+  const ids = Array.from(selectedIds.value);
+
   return {
     condition: 'OR',
-    rules: selectedContactItems.value.map((item) => ({
+    rules: ids.map((id) => ({
       field: 'id',
       operator: 'equal',
-      value: [item.id],
+      value: [id],
     })),
   };
 }
@@ -417,11 +460,6 @@ async function refreshResponses() {
 
   isRefreshing.value = true;
   try {
-    // Store currently selected IDs before refresh
-    const selectedIds = new Set(
-      selectedContactItems.value.map((item) => item.id)
-    );
-
     const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
     const newContacts = await client.contact.list(query, [
       GetContactWith.Profile,
@@ -429,14 +467,7 @@ async function refreshResponses() {
       GetContactWith.Tags,
     ]);
 
-    // Preserve selection state for existing contacts
-    contactsTable.value = {
-      ...newContacts,
-      items: newContacts.items.map((c) => ({
-        ...c,
-        selected: selectedIds.has(c.id),
-      })),
-    };
+    contactsTable.value = newContacts;
   } catch (err) {
     contactsTable.value = emptyTable();
     addNotification({
