@@ -301,6 +301,21 @@ export class StripeWebhookEventHandler {
       return;
     }
 
+    if (!invoice.payment_intent) {
+      log.error(`Invoice ${invoice.id} has no payment intent`);
+      return;
+    }
+
+    const intent = await stripe.paymentIntents.retrieve(
+      invoice.payment_intent as string
+    );
+    if (intent.status === 'requires_action') {
+      log.info(
+        `Invoice ${invoice.id} payment failed but requires action, not marking as uncollectible yet`
+      );
+      return;
+    }
+
     // At the moment just marks as uncollectible straight away and therefore
     // cancels any retry schedule. This could change in the future if it is
     // supported
