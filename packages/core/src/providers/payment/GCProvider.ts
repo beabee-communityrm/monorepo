@@ -149,7 +149,11 @@ export class GCProvider extends PaymentProvider {
 
     await this.updateData();
 
-    return { form, startNow, expiryDate: moment.utc(expiryDate).toDate() };
+    return {
+      period: form.period,
+      monthlyAmount: startNow ? form.monthlyAmount : undefined,
+      expiryDate: moment.utc(expiryDate).toDate(),
+    };
   }
 
   /**

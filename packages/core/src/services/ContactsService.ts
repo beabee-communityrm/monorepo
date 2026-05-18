@@ -323,7 +323,7 @@ class ContactsService {
    * Updates a contact's contribution and adjusts their role accordingly.
    *
    * @param contact  The contact
-   * @param form The new contribution
+   * @param result The result of the contribution update
    */
   async handleUpdateContributionResult(
     contact: Contact,
@@ -335,9 +335,9 @@ class ContactsService {
 
     await this.updateContact(contact, {
       contributionType: ContributionType.Automatic,
-      contributionPeriod: result.form.period,
-      ...(result.startNow && {
-        contributionMonthlyAmount: result.form.monthlyAmount,
+      contributionPeriod: result.period,
+      ...(result.monthlyAmount !== undefined && {
+        contributionMonthlyAmount: result.monthlyAmount,
       }),
     });
 

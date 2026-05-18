@@ -407,8 +407,8 @@ export class StripeProvider extends PaymentProvider {
       : null;
 
     return {
-      form,
-      startNow,
+      period: form.period,
+      monthlyAmount: startNow ? form.monthlyAmount : undefined,
       expiryDate: add(
         new Date(subscription.current_period_end * 1000),
         config.gracePeriod
