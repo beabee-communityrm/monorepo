@@ -21,7 +21,6 @@ meta:
     v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
-    :complete-url="`${env.appUrl}/join/setup`"
     @submit="handleSubmitStep2"
     @back="paymentFlowId = null"
     @completed="goToConfirmEmailPage"

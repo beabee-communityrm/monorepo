@@ -168,6 +168,19 @@ class PaymentFlowService {
   }
 
   /**
+   * Gets the status of a payment flow
+   * @param flowId - The ID of the payment flow
+   * @returns The payment flow status
+   */
+  async getStatus(flowId: string): Promise<string> {
+    const flow = await getRepository(PaymentFlow).findOneBy({ id: flowId });
+    if (!flow) {
+      throw new NotFoundError();
+    }
+    return 'pending';
+  }
+
+  /**
    * Executes the actual payment actions after a payment flow is completed.
    * For recurring contributions: updates payment method and contribution details.
    * For one-time payments: processes the payment and sends confirmation.

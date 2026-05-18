@@ -14,6 +14,7 @@ export * from './HealthController.js';
 export * from './ImageController.js';
 export * from './NoticeController.js';
 export * from './PaymentController.js';
+export * from './PaymentFlowController.js';
 export * from './ResetDeviceController.js';
 export * from './ResetPasswordController.js';
 export * from './RootController.js';
