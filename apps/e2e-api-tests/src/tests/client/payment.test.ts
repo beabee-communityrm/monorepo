@@ -1,6 +1,9 @@
 import type { GetPaymentsQuery } from '@beabee/beabee-common';
 import { PaymentClient } from '@beabee/client';
-import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
+import {
+  api,
+  testUser,
+} from '@beabee/e2e-api-tests/src/fixtures/api-test-info.json';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 
@@ -9,9 +12,9 @@ describe('PaymentClient', () => {
 
   beforeAll(() => {
     paymentClient = new PaymentClient({
-      host: HOST,
-      path: PATH,
-      token: API_KEY,
+      host: api.host,
+      path: api.path,
+      token: testUser.apiKey,
     });
   });
 

@@ -1,12 +1,9 @@
 import { BeabeeClient, UnsupportedFileTypeError } from '@beabee/client';
-import { createTestFile } from '@beabee/test-utils/node';
 import {
-  API_KEY,
-  HOST,
-  PATH,
-  TEST_USER_EMAIL,
-  TEST_USER_PASSWORD,
-} from '@beabee/test-utils/vitest/env';
+  api,
+  testUser,
+} from '@beabee/e2e-api-tests/src/fixtures/api-test-info.json';
+import { createTestFile } from '@beabee/test-utils/node';
 
 import { resolve } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -18,15 +15,15 @@ describe('Upload API', () => {
 
   beforeEach(async () => {
     client = new BeabeeClient({
-      host: HOST,
-      path: PATH,
-      token: API_KEY,
+      host: api.host,
+      path: api.path,
+      token: testUser.apiKey,
     });
 
     // Log in the user to not hit rate limits
     await client.auth.login({
-      email: TEST_USER_EMAIL,
-      password: TEST_USER_PASSWORD,
+      email: testUser.email,
+      password: testUser.password,
     });
   });
 

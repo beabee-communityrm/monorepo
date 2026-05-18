@@ -6,12 +6,9 @@ import {
 } from '@beabee/beabee-common';
 import { BeabeeClient } from '@beabee/client';
 import {
-  API_KEY,
-  HOST,
-  PATH,
-  TEST_USER_EMAIL,
-  TEST_USER_PASSWORD,
-} from '@beabee/test-utils/vitest/env';
+  api,
+  testUser,
+} from '@beabee/e2e-api-tests/src/fixtures/api-test-info.json';
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
@@ -30,9 +27,9 @@ describe('Callout API', () => {
   beforeAll(async () => {
     // Create authenticated client
     client = new BeabeeClient({
-      host: HOST,
-      path: PATH,
-      token: API_KEY,
+      host: api.host,
+      path: api.path,
+      token: testUser.apiKey,
     });
 
     // Create test callout
@@ -62,14 +59,14 @@ describe('Callout API', () => {
 
     // Create user client (requires login)
     userClient = new BeabeeClient({
-      host: HOST,
-      path: PATH,
+      host: api.host,
+      path: api.path,
     });
 
     // Login for comment operations
     await userClient.auth.login({
-      email: TEST_USER_EMAIL,
-      password: TEST_USER_PASSWORD,
+      email: testUser.email,
+      password: testUser.password,
     });
   });
 

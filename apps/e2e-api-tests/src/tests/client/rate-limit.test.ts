@@ -1,12 +1,10 @@
 import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
 import { BeabeeClient, TooManyRequestsError } from '@beabee/client';
-import { createTestFile } from '@beabee/test-utils/node';
 import {
-  HOST,
-  PATH,
-  TEST_RATE_LIMIT_USER_EMAIL,
-  TEST_RATE_LIMIT_USER_PASSWORD,
-} from '@beabee/test-utils/vitest/env';
+  api,
+  rateLimitedTestUser,
+} from '@beabee/e2e-api-tests/src/fixtures/api-test-info.json';
+import { createTestFile } from '@beabee/test-utils/node';
 
 import { resolve } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -19,8 +17,8 @@ describe('Rate Limits', () => {
   beforeEach(async () => {
     // Create a guest client (unauthenticated)
     client = new BeabeeClient({
-      host: HOST,
-      path: PATH,
+      host: api.host,
+      path: api.path,
     });
 
     // Ensure clean state for all rate limiter tests in this file
@@ -66,8 +64,8 @@ describe('Rate Limits', () => {
     it('should allow authenticated users to upload documents', async () => {
       // Log in the user specifically for this test
       await client.auth.login({
-        email: TEST_RATE_LIMIT_USER_EMAIL,
-        password: TEST_RATE_LIMIT_USER_PASSWORD,
+        email: rateLimitedTestUser.email,
+        password: rateLimitedTestUser.password,
       });
 
       const pdfPath = resolve(FIXTURE_PATH, 'Lorem-Ipsum.pdf');
