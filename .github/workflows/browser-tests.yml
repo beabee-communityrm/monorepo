@@ -75,7 +75,7 @@ jobs:
 
       - name: Export Docker logs
         if: failure()
-        run: docker compose -f docker-compose.test.yml logs >> "./docker-compose.log"
+        run: docker compose -f docker-compose.test.yml logs | tee docker-compose.log
 
       - name: Upload Docker logs
         if: failure()
