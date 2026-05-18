@@ -33,7 +33,7 @@ jobs:
           stripe_membership_product_id: ${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}
 
       - name: Run API tests
-        run: yarn vitest run src/tests/node/platform.test.ts # sample // this only runs fetch test
+        run: yarn workspace @beabee/e2e-api-tests test
 
       - name: Export database
         if: failure()

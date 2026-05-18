@@ -5,7 +5,10 @@ import {
   UpdateContactRoleData,
 } from '@beabee/beabee-common';
 import { ContactClient, ContactRoleClient } from '@beabee/client';
-import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
+import {
+  api,
+  testUser,
+} from '@beabee/e2e-api-tests/src/fixtures/api-test-info.json';
 
 import { addDays } from 'date-fns';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -16,9 +19,9 @@ describe('ContactRole API', () => {
 
   beforeAll(async () => {
     contactClient = new ContactClient({
-      host: HOST,
-      path: PATH,
-      token: API_KEY,
+      host: api.host,
+      path: api.path,
+      token: testUser.apiKey,
     });
 
     // Create a test contact
