@@ -51,8 +51,18 @@ meta:
       keypath="contacts.showingOf"
       :headers="headers"
       :result="contactsTable"
-      v-model:selected-ids="selectedIdsArray"
+      :selection-state="pageSelectionState"
+      :selected-ids="selectedIdsArray"
+      :show-select-all-banner="showSelectAllBanner"
+      :show-clear-selection-banner="showClearSelectAllBanner"
+      :selected-count="selectedCount"
+      :page-selected-count="selectedIdsArray.length"
+      :total-items="tableTotal"
       selectable
+      @select-all-matching="selectAllMatching"
+      @toggle-select="toggleSelection"
+      @toggle-select-all="toggleSelectAll"
+      @clear-selection="clearSelection"
     >
       <template #actions>
         <AppButtonGroup>
@@ -223,9 +233,7 @@ import { definePaginatedQuery, defineParam } from '#utils/pagination';
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';
 import { useTagFilter } from '../../../composables/useTagFilter';
-
-// Simple selection tracking for now
-const selectedIds = ref(new Set<string>());
+import { useSelectionState } from '../../../composables/useSelectionState';
 
 /**
  * Contact list page component
@@ -243,43 +251,6 @@ const { t, n } = useI18n();
 const route = useRoute();
 
 /**
- * Selection state
- * @description Tracks selected contacts across all pages
- */
-// TODO: Re-enable explicit/all mode later
-// const selectionState = ref<SelectionState>({
-//   mode: 'explicit',
-//   ids: new Set(),
-// });
-
-// Two-way binding for selectedIds as array (for AppPaginatedTable)
-const selectedIdsArray = computed({
-  get: () => Array.from(selectedIds.value),
-  set: (ids: string[]) => {
-    selectedIds.value = new Set(ids);
-  },
-});
-
-function isSelected(id: string): boolean {
-  return selectedIds.value.has(id);
-}
-
-// TODO: Re-enable explicit/all mode later
-// function debugSelectionState(state: SelectionState) {
-//   if (state.mode === 'explicit') {
-//     return {
-//       mode: state.mode,
-//       ids: Array.from(state.ids),
-//     };
-//   }
-//
-//   return {
-//     mode: state.mode,
-//     excludedIds: Array.from(state.excludedIds),
-//   };
-// }
-
-/**
  * Table state
  * @description Manages the paginated table data
  */
@@ -291,8 +262,28 @@ const contactsTable =
       >
     >
   >();
+const tableItems = computed(() => contactsTable.value?.items ?? []);
+const tableTotal = computed(() => contactsTable.value?.total ?? 0);
 
-const selectedCount = computed(() => selectedIds.value.size);
+const {
+  selectionState,
+
+  isSelected,
+
+  clearSelection,
+  selectAllMatching,
+
+  toggleSelection,
+  toggleSelectAll,
+
+  pageSelectionState,
+
+  selectedIdsArray,
+  selectedCount,
+
+  showSelectAllBanner,
+  showClearSelectAllBanner,
+} = useSelectionState(tableItems, tableTotal);
 
 /**
  * Tag Management
@@ -307,6 +298,7 @@ const selectedTags = computed(() => {
 
   const selectedItems =
     contactsTable.value?.items.filter((item) => isSelected(item.id)) || [];
+
   const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
   for (const item of selectedItems) {
     for (const tag of item.tags || []) {
@@ -431,15 +423,36 @@ function getSearchRules(): RuleGroup {
  * Gets rules for selected contacts
  */
 function getSelectedContactsRules(): RuleGroup {
-  const ids = Array.from(selectedIds.value);
+  if (selectionState.value.mode === 'explicit') {
+    return {
+      condition: 'OR',
+      rules: Array.from(selectionState.value.ids).map((id) => ({
+        field: 'id',
+        operator: 'equal',
+        value: [id],
+      })),
+    };
+  }
+
+  const baseRules = getSearchRules();
+
+  if (selectionState.value.excludedIds.size === 0) {
+    return baseRules;
+  }
 
   return {
-    condition: 'OR',
-    rules: ids.map((id) => ({
-      field: 'id',
-      operator: 'equal',
-      value: [id],
-    })),
+    condition: 'AND',
+    rules: [
+      baseRules,
+      {
+        condition: 'AND',
+        rules: Array.from(selectionState.value.excludedIds).map((id) => ({
+          field: 'id',
+          operator: 'not_equal',
+          value: [id],
+        })),
+      },
+    ],
   };
 }
 

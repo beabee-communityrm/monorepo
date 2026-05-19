@@ -37,14 +37,26 @@
       />
     </div>
     <div class="overflow-x-auto">
+      <SelectAllBanner
+        v-if="showSelectAllBanner || showClearSelectionBanner"
+        :show-select-all-banner="showSelectAllBanner"
+        :show-clear-selection-banner="showClearSelectionBanner"
+        :total="totalItems"
+        :page-selected-count="pageSelectedCount"
+        :selected-count="selectedCount"
+        @select-all-matching="emit('select-all-matching')"
+        @clear-selection="emit('clear-selection')"
+      />
       <AppTable
         v-model:sort="query.sort"
         :selected-ids="selectedIds"
-        @update:selected-ids="handleUpdateSelectedIds"
         :headers="headers"
         :items="result?.items || null"
         :selectable="selectable"
         :row-class="rowClass"
+        :selection-state="selectionState"
+        @toggle-select="(id, selected) => emit('toggle-select', id, selected)"
+        @toggle-select-all="(selected) => emit('toggle-select-all', selected)"
         class="mb-4 w-full"
       >
         <template v-for="name of slotNames" #[name]="slotData" :key="name">
@@ -74,6 +86,7 @@ import { computed, useSlots } from 'vue';
 import { type Paginated } from '../../type/paginated';
 import { type Header, type Item, type Sort } from '../../type/table';
 import AppPaginatedTableResult from './AppPaginatedTableResult.vue';
+import SelectAllBanner from './SelectAllBanner.vue';
 
 defineProps<{
   headers: Header[];
@@ -84,12 +97,21 @@ defineProps<{
     sort?: Sort;
   };
   selectedIds?: string[];
+  selectionState?: 'none' | 'partial' | 'all';
   selectable?: boolean;
   rowClass?: (item: I) => string;
+  showSelectAllBanner?: boolean;
+  showClearSelectionBanner?: boolean;
+  selectedCount: number;
+  pageSelectedCount: number;
+  totalItems: number;
 }>();
 
 const emit = defineEmits<{
-  'update:selectedIds': [ids: string[]];
+  'toggle-select': [id: string, selected: boolean];
+  'toggle-select-all': [selected: boolean];
+  'select-all-matching': [];
+  'clear-selection': [];
 }>();
 
 // Slots are passed to AppTable, typing is handled by Vue's inference
@@ -97,9 +119,4 @@ const slotNames = computed(() => {
   const slots = useSlots();
   return Object.keys(slots).filter((name) => name !== 'actions');
 });
-
-// Forward update:selectedIds from AppTable
-function handleUpdateSelectedIds(ids: string[]): void {
-  emit('update:selectedIds', ids);
-}
 </script>

@@ -37,7 +37,11 @@
     <thead v-if="!hideHeaders" class="text-sm">
       <tr class="align-bottom">
         <th v-if="selectable" class="w-0 p-2">
-          <AppCheckbox v-model="allItemsOnPageSelected" class="h-5" />
+          <AppCheckbox
+            :model-value="selectionState === 'all'"
+            :indeterminate="selectionState === 'partial'"
+            @change="onHeaderClick"
+          />
         </th>
         <th
           v-for="(header, i) in headers"
@@ -90,11 +94,7 @@
             <AppCheckbox
               :model-value="selectedIds.includes(item.id)"
               @update:model-value="
-                (selected) =>
-                  emit(
-                    'update:selectedIds',
-                    toggleSelectedItem(selectedIds, item.id, selected)
-                  )
+                (selected) => emit('toggle-select', item.id, selected)
               "
             />
           </td>
@@ -169,6 +169,7 @@ export interface AppTableProps<I extends Item> {
   rowClass?: (item: I) => string;
   /** Array of selected item IDs */
   selectedIds?: string[];
+  selectionState?: 'none' | 'partial' | 'all';
 }
 
 const props = withDefaults(defineProps<AppTableProps<I>>(), {
@@ -177,6 +178,7 @@ const props = withDefaults(defineProps<AppTableProps<I>>(), {
   hideHeaders: false,
   rowClass: undefined,
   selectedIds: () => [] as string[],
+  selectionState: 'none',
 });
 
 const { t } = useI18n();
@@ -194,56 +196,9 @@ const emit = defineEmits<{
    * Emitted when selected IDs change
    * @param ids - Array of selected item IDs
    */
-  'update:selectedIds': [ids: string[]];
-
-  'toggle-select-all': [selected: boolean];
   'toggle-select': [id: string, selected: boolean];
+  'toggle-select-all': [selected: boolean];
 }>();
-
-/**
- * Toggles selection state for an item and returns new selected IDs array
- */
-function toggleSelectedItem(
-  currentIds: string[],
-  itemId: string,
-  selected: boolean
-): string[] {
-  const newIds = new Set(currentIds);
-  if (selected) {
-    newIds.add(itemId);
-  } else {
-    newIds.delete(itemId);
-  }
-  return Array.from(newIds);
-}
-
-/**
- * Toggles select all state and returns new selected IDs array
- */
-function toggleSelectAll(
-  currentIds: string[],
-  items: Item[] | null,
-  selected: boolean
-): string[] {
-  if (!items) return currentIds;
-  if (selected) {
-    return Array.from(new Set([...currentIds, ...items.map((i) => i.id)]));
-  }
-  return currentIds.filter((id) => !items.some((item) => item.id === id));
-}
-
-// all on page selected computed property
-const allItemsOnPageSelected = computed({
-  get: () =>
-    props.items
-      ? props.items.every((item) => props.selectedIds.includes(item.id))
-      : false,
-  set: (value) =>
-    emit(
-      'update:selectedIds',
-      toggleSelectAll(props.selectedIds, props.items, value)
-    ),
-});
 
 // Computed properties
 const sort = computed({
@@ -271,5 +226,11 @@ function sortBy(header: Header): void {
         ? SortType.Desc
         : SortType.Asc,
   };
+}
+
+function onHeaderClick(e: Event) {
+  const target = e.target as HTMLInputElement;
+
+  emit('toggle-select-all', target.checked);
 }
 </script>

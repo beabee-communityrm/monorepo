@@ -28,6 +28,12 @@
           class="h-4 w-4"
           :class="iconVariantClasses[variant]"
         />
+        <font-awesome-icon
+          v-else-if="indeterminate"
+          :icon="faMinus"
+          class="h-4 w-4"
+          :class="iconVariantClasses[variant]"
+        />
       </div>
     </div>
     <span v-if="label || icon" class="ml-2 flex items-center">
@@ -47,7 +53,7 @@
  * <AppCheckbox v-model="isChecked" label="Accept terms" variant="primary" />
  */
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faMinus } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
@@ -58,6 +64,8 @@ import { computed, ref, toRef, watch } from 'vue';
 export interface AppCheckboxProps {
   /** Current checked state of the checkbox */
   modelValue?: boolean;
+  /** Whether the checkbox is indeterminate */
+  indeterminate?: boolean;
   /** Whether the checkbox is disabled */
   disabled?: boolean;
   /** Label text displayed next to the checkbox */
@@ -82,6 +90,7 @@ const emit = defineEmits<{
 }>();
 
 const props = withDefaults(defineProps<AppCheckboxProps>(), {
+  indeterminate: false,
   variant: 'link',
   disabled: false,
   required: false,
