@@ -150,6 +150,7 @@ import { useI18n } from 'vue-i18n';
 import { SortType } from '../../constants';
 import { type Header, type Item, type Sort } from '../../types/table';
 import { hasSlotContent } from '../../utils/slots';
+import type { PageSelectionState } from '../../../../../apps/frontend/src/composables/useSelectionState';
 
 /**
  * Props for the AppTable component
@@ -169,7 +170,8 @@ export interface AppTableProps<I extends Item> {
   rowClass?: (item: I) => string;
   /** Array of selected item IDs */
   selectedIds?: string[];
-  selectionState?: 'none' | 'partial' | 'all';
+  /** Current selection state */
+  selectionState?: PageSelectionState;
 }
 
 const props = withDefaults(defineProps<AppTableProps<I>>(), {

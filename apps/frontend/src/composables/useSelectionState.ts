@@ -1,8 +1,10 @@
 import { type Ref, computed, ref } from 'vue';
 
-type SelectionState =
+export type SelectionState =
   | { mode: 'explicit'; ids: Set<string> }
   | { mode: 'all'; excludedIds: Set<string> };
+
+export type PageSelectionState = 'none' | 'partial' | 'all';
 
 interface SelectableItem {
   id: string;
@@ -32,7 +34,7 @@ export function useSelectionState<T extends SelectableItem>(
     };
   }
 
-  function selectAllMatching() {
+  function selectAllGlobal() {
     selectionState.value = {
       mode: 'all',
       excludedIds: new Set(),
@@ -108,30 +110,6 @@ export function useSelectionState<T extends SelectableItem>(
     };
   }
 
-  const pageSelectionState = computed<'none' | 'partial' | 'all'>(() => {
-    if (items.value.length === 0) {
-      return 'none';
-    }
-
-    const selectedCount = items.value.filter((item) =>
-      isSelected(item.id)
-    ).length;
-
-    if (selectedCount === 0) {
-      return 'none';
-    }
-
-    if (selectedCount === items.value.length) {
-      return 'all';
-    }
-
-    return 'partial';
-  });
-
-  const selectedIdsArray = computed(() => {
-    return items.value.filter((i) => isSelected(i.id)).map((i) => i.id);
-  });
-
   const selectedCount = computed(() => {
     if (selectionState.value.mode === 'explicit') {
       return selectionState.value.ids.size;
@@ -140,35 +118,17 @@ export function useSelectionState<T extends SelectableItem>(
     return total.value - selectionState.value.excludedIds.size;
   });
 
-  const showSelectAllBanner = computed(() => {
-    return (
-      pageSelectionState.value === 'all' &&
-      selectionState.value.mode !== 'all' &&
-      total.value > items.value.length
-    );
-  });
-
-  const showClearSelectAllBanner = computed(() => {
-    return selectionState.value.mode === 'all';
-  });
-
   return {
     selectionState,
 
     isSelected,
 
     clearSelection,
-    selectAllMatching,
+    selectAllGlobal,
 
     toggleSelection,
     toggleSelectAll,
 
-    pageSelectionState,
-
-    selectedIdsArray,
     selectedCount,
-
-    showSelectAllBanner,
-    showClearSelectAllBanner,
   };
 }

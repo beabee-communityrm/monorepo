@@ -51,15 +51,11 @@ meta:
       keypath="contacts.showingOf"
       :headers="headers"
       :result="contactsTable"
-      :selection-state="pageSelectionState"
-      :selected-ids="selectedIdsArray"
-      :show-select-all-banner="showSelectAllBanner"
-      :show-clear-selection-banner="showClearSelectAllBanner"
       :selected-count="selectedCount"
-      :page-selected-count="selectedIdsArray.length"
       :total-items="tableTotal"
+      :selection-state="selectionState"
       selectable
-      @select-all-matching="selectAllMatching"
+      @select-all-global="selectAllGlobal"
       @toggle-select="toggleSelection"
       @toggle-select-all="toggleSelectAll"
       @clear-selection="clearSelection"
@@ -271,18 +267,12 @@ const {
   isSelected,
 
   clearSelection,
-  selectAllMatching,
+  selectAllGlobal,
 
   toggleSelection,
   toggleSelectAll,
 
-  pageSelectionState,
-
-  selectedIdsArray,
   selectedCount,
-
-  showSelectAllBanner,
-  showClearSelectAllBanner,
 } = useSelectionState(tableItems, tableTotal);
 
 /**

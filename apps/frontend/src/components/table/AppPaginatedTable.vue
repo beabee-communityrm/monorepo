@@ -38,23 +38,23 @@
     </div>
     <div class="overflow-x-auto">
       <SelectAllBanner
-        v-if="showSelectAllBanner || showClearSelectionBanner"
-        :show-select-all-banner="showSelectAllBanner"
-        :show-clear-selection-banner="showClearSelectionBanner"
         :total="totalItems"
-        :page-selected-count="pageSelectedCount"
+        :page-selected-count="pageSelectedIds?.length || 0"
         :selected-count="selectedCount"
-        @select-all-matching="emit('select-all-matching')"
+        :items-per-page="query.limit"
+        :selection-state="selectionState"
+        :page-selection-state="pageSelectionState"
+        @select-all-global="emit('select-all-global')"
         @clear-selection="emit('clear-selection')"
       />
       <AppTable
         v-model:sort="query.sort"
-        :selected-ids="selectedIds"
+        :selected-ids="pageSelectedIds"
         :headers="headers"
         :items="result?.items || null"
         :selectable="selectable"
         :row-class="rowClass"
-        :selection-state="selectionState"
+        :selection-state="pageSelectionState"
         @toggle-select="(id, selected) => emit('toggle-select', id, selected)"
         @toggle-select-all="(selected) => emit('toggle-select-all', selected)"
         class="mb-4 w-full"
@@ -87,8 +87,12 @@ import { type Paginated } from '../../type/paginated';
 import { type Header, type Item, type Sort } from '../../type/table';
 import AppPaginatedTableResult from './AppPaginatedTableResult.vue';
 import SelectAllBanner from './SelectAllBanner.vue';
+import type {
+  PageSelectionState,
+  SelectionState,
+} from '#composables/useSelectionState';
 
-defineProps<{
+const props = defineProps<{
   headers: Header[];
   result: Paginated<I> | undefined;
   query: {
@@ -96,21 +100,19 @@ defineProps<{
     limit: number;
     sort?: Sort;
   };
-  selectedIds?: string[];
-  selectionState?: 'none' | 'partial' | 'all';
+  selectionState: SelectionState;
   selectable?: boolean;
   rowClass?: (item: I) => string;
   showSelectAllBanner?: boolean;
   showClearSelectionBanner?: boolean;
   selectedCount: number;
-  pageSelectedCount: number;
   totalItems: number;
 }>();
 
 const emit = defineEmits<{
   'toggle-select': [id: string, selected: boolean];
   'toggle-select-all': [selected: boolean];
-  'select-all-matching': [];
+  'select-all-global': [];
   'clear-selection': [];
 }>();
 
@@ -118,5 +120,37 @@ const emit = defineEmits<{
 const slotNames = computed(() => {
   const slots = useSlots();
   return Object.keys(slots).filter((name) => name !== 'actions');
+});
+
+function isSelected(id: string): boolean {
+  if (props.selectionState.mode === 'explicit') {
+    return props.selectionState.ids.has(id);
+  }
+
+  return !props.selectionState.excludedIds.has(id);
+}
+
+const pageSelectionState = computed<PageSelectionState>(() => {
+  const pageItems = props.result?.items ?? [];
+
+  if (pageItems.length === 0) {
+    return 'none';
+  }
+
+  const selectedCount = pageItems.filter((item) => isSelected(item.id)).length;
+
+  if (selectedCount === 0) {
+    return 'none';
+  }
+
+  if (selectedCount === pageItems.length) {
+    return 'all';
+  }
+
+  return 'partial';
+});
+
+const pageSelectedIds = computed(() => {
+  return props.result?.items.filter((i) => isSelected(i.id)).map((i) => i.id);
 });
 </script>
