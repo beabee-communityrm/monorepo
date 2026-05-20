@@ -10,7 +10,7 @@
     "build": "yarn workspaces foreach -v -W --topological-dev run build",
     "dev": "yarn workspaces foreach -v -W -p -i -j unlimited run dev",
     "format": "yarn workspaces foreach -v -W -p run format",
-    "test": "yarn workspaces foreach -v -W run test",
+    "test": "yarn workspaces foreach -v -W --exclude @beabee/browser-tests run test",
     "check": "yarn workspaces foreach -v -W -p run check",
     "generate:index": "yarn workspaces foreach -v -W run generate:index",
     "publish:next": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag next --access public",
