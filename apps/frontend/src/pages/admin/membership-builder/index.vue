@@ -98,7 +98,7 @@ meta:
     </template>
     <template #col2>
       <JoinFormStep1
-        :model-value="formData"
+        v-model="formData"
         :join-content="joinContent"
         :payment-content="paymentContent"
         preview

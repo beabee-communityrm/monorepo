@@ -10,8 +10,7 @@ meta:
 <template>
   <JoinFormStep1
     v-if="!stripeClientSecret"
-    :model-value="formData"
-    @update:model-value="Object.assign(formData, $event)"
+    v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
     @submit.prevent="submitStep1"
@@ -19,8 +18,7 @@ meta:
 
   <JoinFormStep2
     v-else
-    :model-value="formData"
-    @update:model-value="Object.assign(formData, $event)"
+    v-model="formData"
     :join-content="joinContent"
     :payment-content="paymentContent"
     :stripe-client-secret="stripeClientSecret"
