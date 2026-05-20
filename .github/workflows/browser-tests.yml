@@ -38,7 +38,7 @@ jobs:
       - name: Run Playwright tests
         id: playwright_tests
         env:
-          PLAYWRIGHT_BASE_URL: http://localhost:${{ env.ROUTER_PORT }}
+          PLAYWRIGHT_BASE_URL: ${{ env.BEABEE_AUDIENCE }}
         run: yarn workspace @beabee/browser-tests test
 
       - name: Export database
