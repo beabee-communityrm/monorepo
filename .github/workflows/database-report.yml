@@ -38,7 +38,7 @@ jobs:
           docker run --rm --user root \
             --network beabee-db-schema_default \
             -v "$(pwd)/db-report:/output" \
-            schemaspy/schemaspy:latest \
+            schemaspy/schemaspy:7.0.2 \
             -t pgsql \
             -host db \
             -port 5432 \
