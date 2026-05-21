@@ -191,6 +191,7 @@ const contentData = {
     stripePublicKey: ['readonly', () => config.stripe.publicKey],
     subtitle: ['data', ''],
     title: ['data', ''],
+    showGoogleApplePay: ['data', false],
   }),
   'join/setup': withValue<'join/setup'>({
     mailOptIn: ['data', ''],

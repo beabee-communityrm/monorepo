@@ -1,7 +1,7 @@
 {
   "name": "@beabee/client",
   "description": "The Beabee API Client",
-  "version": "0.28.1",
+  "version": "0.44.2",
   "license": "AGPL-3.0",
   "type": "module",
   "engines": {
@@ -10,7 +10,8 @@
   "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/client",
   "repository": {
     "type": "git",
-    "url": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/client"
+    "url": "git+https://github.com/beabee-communityrm/monorepo.git",
+    "directory": "packages/client"
   },
   "scripts": {
     "clear": "rm -rf dist",
