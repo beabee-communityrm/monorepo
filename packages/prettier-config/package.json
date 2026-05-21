@@ -1,6 +1,7 @@
 {
   "name": "@beabee/prettier-config",
-  "version": "0.28.1",
+  "version": "0.44.2",
+  "private": true,
   "type": "module",
   "main": "index.mjs",
   "types": "index.d.ts",
