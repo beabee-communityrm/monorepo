@@ -1,0 +1,75 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Verify auth and packaging without actually publishing'
+        type: boolean
+        default: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          registry-url: https://registry.npmjs.org
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build
+        run: yarn build
+
+      - name: Determine npm dist-tag
+        id: tag
+        env:
+          IS_PRERELEASE: ${{ github.event.release.prerelease }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ] || [ "$IS_PRERELEASE" = "true" ]; then
+            echo "value=next" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=latest" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Verify npm auth (dry run)
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm whoami
+          echo "npm authentication OK"
+
+      - name: Pack workspaces (dry run)
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run
+        run: |
+          yarn workspaces foreach -v -W --no-private pack
+
+      - name: Publish to npm
+        if: github.event_name != 'workflow_dispatch' || inputs.dry_run == false
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'
+          DIST_TAG: ${{ steps.tag.outputs.value }}
+        run: |
+          yarn workspaces foreach -v -W --no-private npm publish \
+            --tolerate-republish \
+            --tag "$DIST_TAG" \
+            --access public

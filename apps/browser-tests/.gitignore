@@ -1,0 +1,7 @@
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/playwright/test-results/
+/playwright/videos/
+/playwright/trace/

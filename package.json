@@ -1,5 +1,6 @@
 {
   "name": "beabee",
+  "version": "0.44.2",
   "private": true,
   "engines": {
     "node": ">=24"
@@ -10,11 +11,15 @@
     "build": "yarn workspaces foreach -v -W --topological-dev run build",
     "dev": "yarn workspaces foreach -v -W -p -i -j unlimited run dev",
     "format": "yarn workspaces foreach -v -W -p run format",
-    "test": "yarn workspaces foreach -v -W run test",
+    "test": "yarn workspaces foreach -v -W --exclude @beabee/browser-tests run test",
     "check": "yarn workspaces foreach -v -W -p run check",
     "generate:index": "yarn workspaces foreach -v -W run generate:index",
-    "publish:next": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag next --access public",
-    "publish:latest": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag latest --access public",
+    "publish:next": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag next --access public --provenance",
+    "publish:latest": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag latest --access public --provenance",
+    "release": "release-it",
+    "release:rc": "release-it --preRelease=rc --github.preRelease",
+    "release:beta": "release-it --preRelease=beta --github.preRelease",
+    "release:dry": "release-it --dry-run",
     "setup": "yarn workspace @beabee/backend run setup",
     "typeorm": "yarn workspace @beabee/backend run typeorm",
     "bootstrap": "yarn workspaces foreach -v -W -p -i run bootstrap && yarn bootstrap:env",
@@ -45,5 +50,10 @@
       "built": true
     }
   },
-  "packageManager": "yarn@4.14.1"
+  "packageManager": "yarn@4.14.1",
+  "devDependencies": {
+    "@release-it/bumper": "^7.0.5",
+    "@release-it/conventional-changelog": "^11.0.0",
+    "release-it": "^20"
+  }
 }

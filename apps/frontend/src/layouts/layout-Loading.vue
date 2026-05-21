@@ -4,7 +4,7 @@
     :style="backgroundStyle"
   >
     <AuthBox class="text-center">
-      <div class="flex h-full flex-col justify-center text-center">
+      <div class="flex h-full flex-col items-center justify-center">
         <AppTitle big>{{ t('common.loading') }}</AppTitle>
 
         <font-awesome-icon
