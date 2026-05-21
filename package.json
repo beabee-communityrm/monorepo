@@ -1,6 +1,6 @@
 {
   "name": "beabee",
-  "version": "0.44.1",
+  "version": "0.44.2",
   "private": true,
   "engines": {
     "node": ">=24"

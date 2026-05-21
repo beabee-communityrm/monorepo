@@ -1,6 +1,6 @@
 {
   "name": "@beabee/webhooks",
-  "version": "0.44.1",
+  "version": "0.44.2",
   "description": "A community engagement system for community newsrooms",
   "private": true,
   "main": "dist/app.js",

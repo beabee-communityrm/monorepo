@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.44.2](https://github.com/beabee-communityrm/monorepo/compare/v0.44.1...v0.44.2) (2026-05-11)
+
+### What's Changed
+* feat (payment): Add Google Pay and Apple Pay icons to payment options by @aasthas9 in https://github.com/beabee-communityrm/monorepo/pull/587
+
+
+**Full Changelog**: https://github.com/beabee-communityrm/monorepo/compare/v0.44.1...v0.44.2
+
 ## [0.44.1](https://github.com/beabee-communityrm/monorepo/compare/v0.44.0...v0.44.1) (2026-05-08)
 
 ### What's Changed
