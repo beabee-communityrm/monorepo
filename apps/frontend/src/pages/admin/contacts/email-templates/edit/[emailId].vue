@@ -134,10 +134,10 @@ import { client } from '#utils/api';
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
 const { t } = useI18n();
-const route = useRoute();
+const route = useRoute('adminContactsEmailTemplatesEdit');
 const router = useRouter();
 
-const emailId = computed(() => route.params.emailId as string);
+const emailId = computed(() => route.params.emailId);
 
 addBreadcrumb(
   computed(() => [

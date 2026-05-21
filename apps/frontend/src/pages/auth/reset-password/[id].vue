@@ -111,7 +111,7 @@ const props = withDefaults(
 
 const { t } = useI18n();
 
-const route = useRoute();
+const route = useRoute('reset_password');
 const router = useRouter();
 
 const redirectTo = route.query.next as string | undefined;
@@ -122,7 +122,7 @@ const data = reactive({ password: '', repeatPassword: '', token: '' });
 async function handleSubmit() {
   try {
     await client.resetSecurity.resetPasswordComplete(
-      route.params.id as string,
+      route.params.id,
       data.password,
       data.token || undefined
     );
