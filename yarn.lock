@@ -5918,9 +5918,9 @@ __metadata:
   linkType: hard
 
 "@stripe/stripe-js@npm:^9.4.0":
-  version: 9.6.0
-  resolution: "@stripe/stripe-js@npm:9.6.0"
-  checksum: 10c0/d76b1139f01473824287be2938be9627ebf5990acc51f5a0c250976c61e506b95d492d4bc43d2032a127888d674cc5e36ca3df64d1e55a40cc01e0719609d178
+  version: 9.4.0
+  resolution: "@stripe/stripe-js@npm:9.4.0"
+  checksum: 10c0/68f7880b8f4e7f1bb5e0a4d135c766fcba46a2bdc3e04228d0ed327f0122222065140d4fa2e2727dbf43edebd2dd0016e6389d8ccce5ee8352a55eed92cef725
   languageName: node
   linkType: hard
 
@@ -18110,12 +18110,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.11.1, qs@npm:^6.14.0, qs@npm:^6.14.1":
+"qs@npm:^6.11.1, qs@npm:~6.15.1":
   version: 6.15.1
   resolution: "qs@npm:6.15.1"
   dependencies:
     side-channel: "npm:^1.1.0"
   checksum: 10c0/19ee504f0ebff72598503e38cd6d9bd7b52a8ab62ae18b1e6bee3d4db58469bd65871ef1893a881bafb0f80ef2f9ab586e1f255cf25cc8d816c0f5a704721d97
+  languageName: node
+  linkType: hard
+
+"qs@npm:^6.14.0, qs@npm:^6.14.1":
+  version: 6.15.2
+  resolution: "qs@npm:6.15.2"
+  dependencies:
+    side-channel: "npm:^1.1.0"
+  checksum: 10c0/e6fd5f6f0aab06d480fe9ab15cebfc4ce4235303e2f91dc69a8f7f4df1e668a61c11d1cfbabacf4295cbbeb7b670ed23db45307480726259761f98e5695e93a7
   languageName: node
   linkType: hard
 
@@ -18125,15 +18134,6 @@ __metadata:
   dependencies:
     side-channel: "npm:^1.0.6"
   checksum: 10c0/5ef527c0d62ffca5501322f0832d800ddc78eeb00da3b906f1b260ca0492721f8cdc13ee4b8fd8ac314a6ec37b948798c7b603ccc167e954088df392092f160c
-  languageName: node
-  linkType: hard
-
-"qs@npm:~6.15.1":
-  version: 6.15.2
-  resolution: "qs@npm:6.15.2"
-  dependencies:
-    side-channel: "npm:^1.1.0"
-  checksum: 10c0/e6fd5f6f0aab06d480fe9ab15cebfc4ce4235303e2f91dc69a8f7f4df1e668a61c11d1cfbabacf4295cbbeb7b670ed23db45307480726259761f98e5695e93a7
   languageName: node
   linkType: hard
 
@@ -20847,13 +20847,13 @@ __metadata:
   linkType: hard
 
 "type-is@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "type-is@npm:2.0.1"
+  version: 2.1.0
+  resolution: "type-is@npm:2.1.0"
   dependencies:
-    content-type: "npm:^1.0.5"
+    content-type: "npm:^2.0.0"
     media-typer: "npm:^1.1.0"
     mime-types: "npm:^3.0.0"
-  checksum: 10c0/7f7ec0a060b16880bdad36824ab37c26019454b67d73e8a465ed5a3587440fbe158bc765f0da68344498235c877e7dbbb1600beccc94628ed05599d667951b99
+  checksum: 10c0/a6018f8f509de48f2c7429305e3a920e73b374fa93127dd0877ae1c2df65a5d33907caac8afb0c37a9b9fc7c49f29e3f55d668963dc845d966930b667c07f50e
   languageName: node
   linkType: hard
 
