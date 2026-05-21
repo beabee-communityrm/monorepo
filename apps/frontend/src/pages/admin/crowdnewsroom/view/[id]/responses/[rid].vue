@@ -290,10 +290,9 @@ async function refreshResponse() {
   const newResponse = await client.callout.response.get(route.params.rid, [
     GetCalloutResponseWith.Answers,
     GetCalloutResponseWith.Assignee,
-      GetCalloutResponseWith.Contact,
-      GetCalloutResponseWith.Tags,
-    ]
-  );
+    GetCalloutResponseWith.Contact,
+    GetCalloutResponseWith.Tags,
+  ]);
 
   const olderResponses = await client.callout.listResponses(
     props.callout.slug,
