@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Verify auth and packaging without actually publishing'
+        description: 'Pack and verify without actually publishing'
         type: boolean
         default: true
 
@@ -49,27 +49,31 @@ jobs:
             echo "value=latest" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Verify npm auth (dry run)
+      - name: Pack workspaces
+        run: yarn workspaces foreach -v -W --no-private pack
+
+      - name: Publish to npm (dry run)
         if: github.event_name == 'workflow_dispatch' && inputs.dry_run
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          DIST_TAG: ${{ steps.tag.outputs.value }}
         run: |
-          npm whoami
-          echo "npm authentication OK"
-
-      - name: Pack workspaces (dry run)
-        if: github.event_name == 'workflow_dispatch' && inputs.dry_run
-        run: |
-          yarn workspaces foreach -v -W --no-private pack
+          set -euo pipefail
+          find packages apps -maxdepth 2 -name 'package.tgz' -print0 |
+            while IFS= read -r -d '' tarball; do
+              echo "::group::Dry-run publish $tarball"
+              npm publish "$tarball" --tag "$DIST_TAG" --access public --dry-run
+              echo "::endgroup::"
+            done
 
       - name: Publish to npm
         if: github.event_name != 'workflow_dispatch' || inputs.dry_run == false
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: 'true'
           DIST_TAG: ${{ steps.tag.outputs.value }}
         run: |
-          yarn workspaces foreach -v -W --no-private npm publish \
-            --tolerate-republish \
-            --tag "$DIST_TAG" \
-            --access public
+          set -euo pipefail
+          find packages apps -maxdepth 2 -name 'package.tgz' -print0 |
+            while IFS= read -r -d '' tarball; do
+              echo "::group::Publish $tarball"
+              npm publish "$tarball" --tag "$DIST_TAG" --access public
+              echo "::endgroup::"
+            done
