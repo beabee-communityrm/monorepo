@@ -1,7 +1,8 @@
 {
   "name": "@beabee/dev-cli",
   "description": "CLI for development",
-  "version": "0.28.1",
+  "version": "0.44.2",
+  "private": true,
   "type": "module",
   "main": "src/index.ts",
   "bin": "./bin/dev-cli.js",
