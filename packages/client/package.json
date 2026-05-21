@@ -10,7 +10,8 @@
   "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/client",
   "repository": {
     "type": "git",
-    "url": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/client"
+    "url": "git+https://github.com/beabee-communityrm/monorepo.git",
+    "directory": "packages/client"
   },
   "scripts": {
     "clear": "rm -rf dist",
