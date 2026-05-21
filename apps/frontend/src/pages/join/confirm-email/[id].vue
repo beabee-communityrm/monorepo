@@ -16,7 +16,7 @@ import { handleJoinError } from '#utils/api-error';
 
 import { updateCurrentUser } from '../../../store';
 
-const route = useRoute();
+const route = useRoute('confirmEmailLoading');
 const router = useRouter();
 
 onBeforeMount(async () => {

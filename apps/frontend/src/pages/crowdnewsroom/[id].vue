@@ -18,14 +18,14 @@ import {
 const callout =
   ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>>();
 
-const route = useRoute();
+const route = useRoute('/crowdnewsroom/[id]');
 
 watch(
   [() => route.params.id, () => route.query.lang],
   async () => {
     // Load callout with variants to get structured translation data
     const calloutWithVariants = await client.callout.get(
-      route.params.id as string,
+      route.params.id,
       ['form', 'responseViewSchema', 'variantNames', 'variants'],
       route.query.lang ? route.query.lang.toString() : undefined
     );

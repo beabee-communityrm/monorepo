@@ -1647,7 +1647,7 @@ __metadata:
     vue-accessible-color-picker: "npm:^6.0.0"
     vue-i18n: "npm:^11.4.0"
     vue-multiselect: "npm:^3.5.0"
-    vue-router: "npm:^5.0.6"
+    vue-router: "npm:^5.0.7"
     vue-tsc: "npm:^3.2.8"
   languageName: unknown
   linkType: soft
@@ -21963,7 +21963,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:^5.0.6":
+"vue-router@npm:^5.0.7":
   version: 5.0.7
   resolution: "vue-router@npm:5.0.7"
   dependencies:
