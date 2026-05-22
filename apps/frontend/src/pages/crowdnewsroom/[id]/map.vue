@@ -84,29 +84,13 @@ meta:
             }"
           />
         </MglGeoJsonSource>
-        <MglGeoJsonSource
-          :source-id="SOURCE_IDS.SELECTED_RESPONSE"
-          :data="selectedFeatureCollection"
-        >
-          <MglCircleLayer
-            :layer-id="LAYER_IDS.SELECTED_RESPONSE"
-            :paint="{
-              'circle-stroke-color': 'red',
-              'circle-stroke-width': 3,
-              'circle-color': 'rgba(0, 0, 0, 0)',
-              'circle-radius': [
-                'case',
-                ['has', 'point_count'],
-                [
-                  '+',
-                  ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
-                  5,
-                ],
-                22,
-              ],
-            }"
-          />
-        </MglGeoJsonSource>
+        <!--
+          Selection ring lives outside the maplibre-gl style stack: in v5 the
+          worker IPC pipeline silently drops dynamically-set features on a
+          non-clustered GeoJSON source (source reports the feature, GPU pass
+          paints nothing). Instead we attach a raw maplibre Marker with a
+          custom HTML element — see the `useSelectionRing` watch below.
+        -->
         <MglMarker
           v-if="newResponseAddress"
           :coordinates="newResponseAddress.geometry.location"
@@ -212,6 +196,7 @@ import {
   Map,
   type MapMouseEvent,
   type MapSourceDataEvent,
+  Marker,
 } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import {
@@ -269,12 +254,10 @@ import env from '../../../env';
 const LAYER_IDS = {
   CLUSTERS: 'clusters',
   UNCLUSTERED_POINTS: 'unclustered-points',
-  SELECTED_RESPONSE: 'selected-response',
 } as const;
 
 const SOURCE_IDS = {
   RESPONSES: 'responses',
-  SELECTED_RESPONSE: 'selected-response',
 } as const;
 
 const props = defineProps<{
@@ -419,14 +402,54 @@ const responsesCollecton = computed<MapPointFeatureCollection>(() => {
 // The selected response or cluster GeoJSON Feature
 const selectedFeature = ref<MapPointFeature>();
 
-// Always-mounted FeatureCollection wrapper for the SELECTED_RESPONSE source.
-// Toggling the source via v-if causes the ring layer to flicker / fail to
-// render in vue-maplibre-gl 5; keeping the source mounted with an empty
-// collection avoids that.
-const selectedFeatureCollection = computed<MapPointFeatureCollection>(() => ({
-  type: 'FeatureCollection',
-  features: selectedFeature.value ? [selectedFeature.value] : [],
-}));
+// DOM ring diameter (px). For unclustered points use a fixed 44px so the
+// 3px stroke sits just outside the 22-radius icon. For clusters mirror the
+// step expression we used to feed `circle-radius` and add 10px (= 2*5)
+// of margin around the cluster's filled circle.
+function getSelectionRingDiameter(
+  props: { point_count?: number } | undefined
+): number {
+  const count = props?.point_count;
+  if (typeof count !== 'number') return 44;
+  const baseRadius = count >= 750 ? 40 : count >= 100 ? 30 : 20;
+  return (baseRadius + 5) * 2;
+}
+
+// Manages a raw maplibre Marker with a custom HTML ring element. Lives
+// outside the style stack so it isn't affected by the v5 GeoJSON-source
+// rendering bug we hit with MglCircleLayer.
+const selectionRingMarker = ref<Marker | undefined>();
+
+watch([selectedFeature, mapLoaded], () => {
+  if (!map.value || !mapLoaded.value) return;
+
+  if (!selectedFeature.value) {
+    selectionRingMarker.value?.remove();
+    selectionRingMarker.value = undefined;
+    return;
+  }
+
+  const diameter = getSelectionRingDiameter(
+    selectedFeature.value.properties as unknown as { point_count?: number }
+  );
+  const coords = selectedFeature.value.geometry.coordinates as [number, number];
+
+  if (!selectionRingMarker.value) {
+    const el = document.createElement('div');
+    el.style.cssText =
+      'border: 3px solid red; border-radius: 50%; box-sizing: border-box; pointer-events: none; background: transparent;';
+    el.style.width = `${diameter}px`;
+    el.style.height = `${diameter}px`;
+    selectionRingMarker.value = new Marker({ element: el, anchor: 'center' })
+      .setLngLat(coords)
+      .addTo(map.value);
+  } else {
+    const el = selectionRingMarker.value.getElement();
+    el.style.width = `${diameter}px`;
+    el.style.height = `${diameter}px`;
+    selectionRingMarker.value.setLngLat(coords);
+  }
+});
 // The selected response number (from the hash)
 const selectedResponseNumber = ref(-1);
 // The number of clusters in view. Just used to detect when the clusters are reclustered
@@ -458,8 +481,18 @@ const selectedResponses = computed(() => {
 function findSelectedFeature(responseNo: number) {
   if (!map.value) return;
 
+  // The UNCLUSTERED_POINTS symbol layer mounts behind `v-if="mapLoaded"`,
+  // but this function can fire on the first cluster-source `sourcedata`
+  // event (when `map.value` is first assigned), before icons have loaded
+  // and the layer is registered. maplibre 5 throws on unknown layer ids
+  // in queryRenderedFeatures; filter to layers that actually exist.
+  const layers = [LAYER_IDS.UNCLUSTERED_POINTS, LAYER_IDS.CLUSTERS].filter(
+    (id) => map.value?.getLayer(id)
+  );
+  if (layers.length === 0) return;
+
   const queried = map.value.queryRenderedFeatures({
-    layers: [LAYER_IDS.UNCLUSTERED_POINTS, LAYER_IDS.CLUSTERS],
+    layers,
     filter: ['in', `<${responseNo}>`, ['get', 'all_responses']],
   })[0];
 
@@ -719,6 +752,7 @@ function handleMouseOver(e: { event: MapMouseEvent }) {
  * @param e The map load event
  */
 async function handleLoad({ map: mapInstance }: { map: Map }) {
+
   /**
    * Check if the responses source data is loaded
    * @param sourceDataEvent The source data event
