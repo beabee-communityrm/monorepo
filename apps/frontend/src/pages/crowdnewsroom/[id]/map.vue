@@ -339,7 +339,7 @@ const { isOpen } = useCallout(toRef(props, 'callout'));
 const isAddMode = computed(() => route.hash === '#add');
 
 const showAddButton = computed(
-  () => isOpen.value && route.query.noadd === undefined
+  () => isOpen.value && route.query.noadd === undefined && !!env.maptilerKey
 );
 
 const newResponseAnswers = ref(
@@ -598,13 +598,23 @@ async function handleAddClick(event: MapMouseEvent) {
   const geocodeResult = await reverseGeocode(coords.lat, coords.lng);
 
   if (!geocodeResult) {
-    throw new Error('Failed to geocode address');
+    // eslint-disable-next-line no-console
+    console.warn('Could not reverse-geocode click location', {
+      lat: coords.lat,
+      lng: coords.lng,
+    });
   }
 
-  // Create address with click coordinates instead of geocode result coordinates
+  // Create address with click coordinates. Geocoded address details are used
+  // when available; otherwise we fall back to coordinates only so the user can
+  // still add a point at locations MapTiler can't resolve (e.g. water, no
+  // address) or when no maptiler key is configured.
   const resultWithClickCoords: CalloutResponseAnswerAddress = {
+    id: '',
+    formatted_address: '',
+    components: [],
+    source: 'maptiler',
     ...geocodeResult,
-    // Use click location rather than geocode result
     geometry: {
       location: coords,
     },
