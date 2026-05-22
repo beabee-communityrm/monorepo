@@ -752,7 +752,6 @@ function handleMouseOver(e: { event: MapMouseEvent }) {
  * @param e The map load event
  */
 async function handleLoad({ map: mapInstance }: { map: Map }) {
-
   /**
    * Check if the responses source data is loaded
    * @param sourceDataEvent The source data event
