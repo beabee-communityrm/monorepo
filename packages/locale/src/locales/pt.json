@@ -180,15 +180,45 @@
       "showingOf": ""
     },
     "email": {
-      "fromEmail": "",
-      "fromName": "",
-      "label": "",
-      "templates": {
-        "description": "",
-        "title": ""
+      "contactTemplates": {
+        "button": "Gerir modelos de e-mail",
+        "contactJoins": "O contacto entra no segmento",
+        "contactLeaves": "O contacto sai do segmento",
+        "create": "Criar",
+        "description": "Aqui pode criar e personalizar modelos de e-mail para diferentes grupos-alvo. Tem a opção de gerir tanto e-mails pontuais como recorrentes.",
+        "directSendDisabled": "Apenas os contactos futuros receberão o e-mail",
+        "directSendEnabled": "Todos os contactos atuais receberão o e-mail imediatamente",
+        "ongoing": "Recorrente",
+        "ongoingDisabled": "O e-mail será enviado uma única vez a todos os contactos atuais",
+        "ongoingEnabled": "O e-mail será enviado automaticamente em caso de alterações no segmento",
+        "segment": "Segmento",
+        "send": "Enviar",
+        "sendSettings": "Configurações de envio",
+        "sendTypes": {
+          "oneOffLabel": "Email pontual",
+          "ongoingLabel": "Email recorrente",
+          "title": "Enviar como"
+        },
+        "summaryOnceOnly": "Este e-mail será enviado uma única vez a todos os contactos atuais do segmento.",
+        "summaryOngoingJoin": "Este e-mail é enviado diariamente aos contactos que entraram recentemente no segmento «{segment}».",
+        "summaryOngoingJoinDirectSend": "Este e-mail é enviado diariamente aos novos contactos no segmento «{segment}». Além disso, todos os contactos existentes o receberão imediatamente.",
+        "summaryOngoingLeave": "Este e-mail é enviado diariamente aos contactos que saíram do segmento «{segment}».",
+        "summaryOngoingPaused": "Este e-mail recorrente para o segmento «{segment}» está atualmente em pausa e não está a ser enviado.",
+        "summaryTemplate": "Este e-mail não é enviado automaticamente e pode ser utilizado como modelo para novos e-mails a segmentos.",
+        "title": "Baseado em segmentos",
+        "titleDirectSend": "Enviar imediatamente aos contactos existentes",
+        "titleSendTime": "Enviar quando"
       },
-      "text": "",
-      "title": ""
+      "fromEmail": "E-mail do remetente",
+      "fromName": "Nome do remetente",
+      "label": "E-mail",
+      "templates": {
+        "description": "Gira o assunto e o corpo dos e-mails enviados pela aplicação. A cor do estado indica se o e-mail está personalizado (verde), utiliza o modelo predefinido (amarelo) ou não está configurado e portanto não está ativo (vermelho).",
+        "subtitle": "De todo o sistema",
+        "title": "Definir modelos de e-mail"
+      },
+      "text": "Toda a comunicação por e-mail será enviada a partir deste endereço de e-mail.",
+      "title": "Definir um endereço de e-mail geral"
     },
     "general": {
       "footer": {
@@ -222,6 +252,8 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "",
       "showOneTimeDonation": "",
       "taxRate": "",
@@ -260,6 +292,7 @@
       "any": ""
     },
     "createdSegment": "",
+    "invalidRuleError": "",
     "matchWord": {
       "AND": "",
       "OR": ""
@@ -763,6 +796,7 @@
       "label": "",
       "starts": ""
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "",
@@ -924,6 +958,9 @@
     "label": "Label",
     "loading": "A carregar...",
     "login": "Login",
+    "manualPaymentSource": {
+      "none": "Nenhuma"
+    },
     "newsletterStatus": {
       "cleaned": "Limpo",
       "none": "Nenhum",
@@ -1086,6 +1123,27 @@
       "recurringContributions": "Contribuições recorrentes",
       "role": "Cargo"
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Tem a certeza de que deseja eliminar este modelo de e-mail? Esta ação não pode ser desfeita.",
+        "title": "Eliminar modelo?"
+      },
+      "create": "Criar modelo",
+      "date": "Criado",
+      "editTitle": "Editar modelo",
+      "editTitleWithName": "Editar modelo: {name}",
+      "empty": "Ainda não há modelos de e-mail.",
+      "manage": "Gerir modelos de e-mail",
+      "name": "Nome",
+      "newTitle": "Criar novo modelo",
+      "showingOf": "A mostrar modelos {start} a {end} de {total}",
+      "subject": "Assunto",
+      "title": "Modelos de e-mail",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
+    },
     "noContacts": "Nenhum contacto ainda adicionado",
     "noResults": "Nenhum contacto encontrado",
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
@@ -1093,14 +1151,9 @@
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "Novo e-mail",
-      "saveAndBack": "Guardar e voltar",
-      "saveAndBackSuccess": "Modelo guardado.",
-      "saveAndSend": "Guardar e enviar",
-      "send": "Enviar",
       "sent": "O e-mail foi enviado para o segmento.",
-      "sentTimes": "Enviado {n} vezes",
       "templateLabel": "Modelo",
-      "templateName": "Nome do novo modelo",
+      "templateName": "Nome do modelo",
       "templateNameRequired": "Introduza um nome para o novo modelo.",
       "title": "Enviar e-mail ao segmento"
     },
@@ -1162,8 +1215,12 @@
     "body": {
       "label": "Mensagem"
     },
+    "from": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "Contacto para pré-visualização",
+      "from": "",
       "label": "Pré-visualização",
       "unavailable": "Pré-visualização indisponível"
     },
@@ -1198,6 +1255,7 @@
     },
     "fromEmail": "Email do remetente",
     "fromName": "Nome do remetente",
+    "isOngoing": "Tipo",
     "list": {
       "showingOf": "A mostrar {start} a {end} emails de {total}"
     },
@@ -1207,10 +1265,16 @@
     "notifications": {
       "created": "Email criado com sucesso",
       "deleted": "Email eliminado com sucesso",
+      "missingMergeTags": "Faltam as tags de mesclagem obrigatórias neste e-mail: {mergeTags}. As tags de mesclagem são marcadores de posição para conteúdo dinâmico (por exemplo, primeiro nome). Adicione as tags que estão faltando para garantir que seu e-mail funcione corretamente.",
       "resetToDefault": "Modelo reposto para predefinição com sucesso",
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "Email atualizado com sucesso"
+    },
+    "sendType": {
+      "oneOff": "Pontual",
+      "ongoing": "Recorrente",
+      "paused": "Em pausa"
     },
     "status": "Estado",
     "tabs": {
@@ -1469,6 +1533,11 @@
         "message": "Houve um problema inesperado ao criar a tua conta. Entra em contacto connosco se o problema continuar, e diz-nos com detalhe o que aconteceu.",
         "title": "Houve aqui um problema."
       },
+      "notFound": {
+        "backToJoin": "Voltar à página de registo",
+        "message": "Este link de registo expirou ou já foi utilizado. Se acabou de se registar noutra aba, deve receber um e-mail de confirmação em breve. Se se registou há algum tempo, terá de iniciar um novo registo.",
+        "title": "Link de registo expirado"
+      },
       "paymentFailed": {
         "backToJoin": "Voltar à página de registo",
         "message": "O seu pagamento não foi bem-sucedido. Tente novamente ou utilize outro método de pagamento.",
@@ -1490,10 +1559,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Assinatura",
-      "recurringLabel": "Contribuição recorrente"
-    },
     "genericError": "Ups, houve aqui um erro ({type}). Fala connosco se isto voltar a acontecer.",
     "goBack": "Esqueceste-te de alguma coisa? {back}",
     "goBackButton": "Voltar ao passo anterior",
@@ -1569,10 +1634,12 @@
         "description": "",
         "formSubtitle": "",
         "formTitle": "",
+        "googleApplePayNoticeText": "",
         "minAmount": "",
         "noticeText": "",
         "noticeTextHelp": "",
         "showAbsorbFee": "",
+        "showGoogleApplePay": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
@@ -1703,6 +1770,11 @@
     "resetPassword": "Redefinir palavra-passe",
     "setPassword": "Definir uma palavra-passe",
     "setup": "Setup"
+  },
+  "paymentLabels": {
+    "membershipProductName": "Adesão",
+    "recurringContribution": "Contribuição recorrente",
+    "taxRateDisplayName": "IVA"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -1841,8 +1913,5 @@
     },
     "searchTag": "",
     "toggleTag": ""
-  },
-  "taxRate": {
-    "invoiceName": "???"
   }
 }

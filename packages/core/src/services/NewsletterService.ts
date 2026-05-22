@@ -2,7 +2,7 @@ import { NewsletterStatus } from '@beabee/beabee-common';
 
 import config from '#config/config';
 import { getRepository } from '#database';
-import { CantUpdateNewsletterContact } from '#errors/CantUpdateNewsletterContact';
+import { CantUpdateNewsletterContactError } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Contact, ContactProfile } from '#models/index';
 import { MailchimpProvider, NoneProvider } from '#providers/newsletter/index';
@@ -83,7 +83,7 @@ class NewsletterService {
       } catch (err) {
         // The newsletter provider rejected the update, set this contact's
         // newsletter status to None to prevent further updates
-        if (err instanceof CantUpdateNewsletterContact) {
+        if (err instanceof CantUpdateNewsletterContactError) {
           log.warning(
             `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
             err

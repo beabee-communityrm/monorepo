@@ -180,11 +180,41 @@
       "showingOf": "{start} tot {end} weergeven API-sleutels van {total}"
     },
     "email": {
+      "contactTemplates": {
+        "button": "E-mailsjablonen beheren",
+        "contactJoins": "Contact treedt toe tot segment",
+        "contactLeaves": "Contact verlaat segment",
+        "create": "Aanmaken",
+        "description": "Hier kunt u e-mailsjablonen voor verschillende doelgroepen aanmaken en aanpassen. U heeft de mogelijkheid om zowel eenmalige als terugkerende e-mails te beheren.",
+        "directSendDisabled": "Alleen toekomstige contacten ontvangen de e-mail",
+        "directSendEnabled": "Alle huidige contacten ontvangen de e-mail onmiddellijk",
+        "ongoing": "Terugkerend",
+        "ongoingDisabled": "E-mail wordt eenmalig naar alle huidige contacten verzonden",
+        "ongoingEnabled": "E-mail wordt automatisch verzonden bij segmentwijzigingen",
+        "segment": "Segment",
+        "send": "Verzenden",
+        "sendSettings": "Verzendinstellingen",
+        "sendTypes": {
+          "oneOffLabel": "Eenmalige e-mail",
+          "ongoingLabel": "Terugkerende e-mail",
+          "title": "Versturen als"
+        },
+        "summaryOnceOnly": "Deze e-mail wordt eenmalig naar alle huidige contacten in het segment verzonden.",
+        "summaryOngoingJoin": "Deze e-mail wordt dagelijks verzonden naar contacten die recent zijn toegetreden tot het segment „{segment}”.",
+        "summaryOngoingJoinDirectSend": "Deze e-mail wordt dagelijks verzonden naar nieuwe contacten in het segment „{segment}”. Daarnaast ontvangen alle bestaande contacten deze onmiddellijk.",
+        "summaryOngoingLeave": "Deze e-mail wordt dagelijks verzonden naar contacten die het segment „{segment}” hebben verlaten.",
+        "summaryOngoingPaused": "Deze terugkerende e-mail voor het segment „{segment}” is momenteel gepauzeerd en wordt niet verzonden.",
+        "summaryTemplate": "Deze e-mail wordt niet automatisch verzonden en kan als sjabloon voor nieuwe e-mails aan segmenten worden gebruikt.",
+        "title": "Segmentgebaseerd",
+        "titleDirectSend": "Direct naar bestaande contacten verzenden",
+        "titleSendTime": "Verzenden wanneer"
+      },
       "fromEmail": "Van e-mail",
       "fromName": "Van naam",
       "label": "E-mail",
       "templates": {
         "description": "Hier stel je het onderwerp en de tekst in van de e-mails die de app verstuurt. De kleur laat zien: groen = aangepast, geel = standaardtemplate, rood = niet ingesteld (wordt niet verzonden).",
+        "subtitle": "Systeembreed",
         "title": "E-mails instellen"
       },
       "text": "Alle e-mailcommunicatie wordt vanaf dit e-mailadres verzonden.",
@@ -222,11 +252,13 @@
       }
     },
     "payment": {
-      "paymentTitle": "Betaling",
-      "showOneTimeDonation": "Eenmalige bijdrageoptie op het startscherm weergeven",
-      "taxRate": "BTW-tarief",
-      "taxRateLabelOneTime": "BTW-tarief inschakelen voor eenmalige betalingen",
-      "taxRateLabelRecurring": "BTW-tarief inschakelen voor terugkerende betalingen"
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
+      "paymentTitle": "",
+      "showOneTimeDonation": "",
+      "taxRate": "",
+      "taxRateLabelOneTime": "",
+      "taxRateLabelRecurring": ""
     },
     "theme": {
       "bodyFont": "Tekst lichaam",
@@ -260,6 +292,7 @@
       "any": "elke"
     },
     "createdSegment": "Segment “{segment}” aangemaakt",
+    "invalidRuleError": "Er klopt iets niet in deze regel: \"{ rule }\". Werk bij!",
     "matchWord": {
       "AND": "en",
       "OR": "of"
@@ -763,6 +796,7 @@
       "label": "Data",
       "starts": "Begint"
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "Kan worden bijgewerkt",
@@ -924,6 +958,9 @@
     "label": "Label",
     "loading": "Aan het laden...",
     "login": "Inloggen",
+    "manualPaymentSource": {
+      "none": "Geen"
+    },
     "newsletterStatus": {
       "cleaned": "Opgeschoond",
       "none": "Geen",
@@ -1086,6 +1123,27 @@
       "recurringContributions": "Doorlopende bijdragen",
       "role": "Rol"
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Weet je zeker dat je dit e-mailsjabloon wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "title": "Sjabloon verwijderen?"
+      },
+      "create": "Sjabloon aanmaken",
+      "date": "Aangemaakt",
+      "editTitle": "Sjabloon bewerken",
+      "editTitleWithName": "Sjabloon bewerken: {name}",
+      "empty": "Nog geen e-mailsjablonen.",
+      "manage": "E-mailsjablonen beheren",
+      "name": "Naam",
+      "newTitle": "Nieuw sjabloon aanmaken",
+      "showingOf": "Toont sjablonen {start} tot {end} van {total}",
+      "subject": "Onderwerp",
+      "title": "E-mailsjablonen",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
+    },
     "noContacts": "Nog geen contacten toegevoegd",
     "noResults": "Geen contacten gevonden",
     "numResults": "{n} contact gevonden | {n} contacten gevonden",
@@ -1093,14 +1151,9 @@
     "selectedCount": "{n} contactpersoon geselecteerd | {n} contactpersonen geselecteerd",
     "sendEmail": {
       "newEmail": "Nieuwe e-mail",
-      "saveAndBack": "Opslaan en terugkeren",
-      "saveAndBackSuccess": "Sjabloon opgeslagen.",
-      "saveAndSend": "Opslaan en verzenden",
-      "send": "Verzenden",
       "sent": "De e-mail is naar het segment verzonden.",
-      "sentTimes": "{n} keer verzonden",
       "templateLabel": "Sjabloon",
-      "templateName": "Naam van het nieuwe sjabloon",
+      "templateName": "Naam van het sjabloon",
       "templateNameRequired": "Voer een naam in voor het nieuwe sjabloon.",
       "title": "E-mail verzenden naar segment"
     },
@@ -1162,8 +1215,12 @@
     "body": {
       "label": "Bericht"
     },
+    "from": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "Contact voor voorbeeld",
+      "from": "",
       "label": "Voorbeeld",
       "unavailable": "Voorbeeld niet beschikbaar"
     },
@@ -1198,6 +1255,7 @@
     },
     "fromEmail": "Afzender e-mail",
     "fromName": "Afzendernaam",
+    "isOngoing": "Type",
     "list": {
       "showingOf": "Toont {start} tot {end} e-mails van {total}"
     },
@@ -1207,10 +1265,16 @@
     "notifications": {
       "created": "E-mail succesvol aangemaakt",
       "deleted": "E-mail succesvol verwijderd",
+      "missingMergeTags": "De verplichte fusietags ontbreken in deze e-mail: {mergeTags}. Fusietags zijn plaatshouders voor dynamische inhoud (bijvoorbeeld voornaam). Voeg de ontbrekende tags toe om ervoor te zorgen dat je e-mail correct werkt.",
       "resetToDefault": "Sjabloon succesvol teruggezet naar standaard",
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "E-mail succesvol bijgewerkt"
+    },
+    "sendType": {
+      "oneOff": "Eenmalig",
+      "ongoing": "Terugkerend",
+      "paused": "Gepauzeerd"
     },
     "status": "Status",
     "tabs": {
@@ -1469,6 +1533,11 @@
         "message": "Er is een probleem opgetreden bij het opzetten van je account. Ons team is op de hoogte gebracht. Neem contact op met support als het probleem zich blijft voordoen.",
         "title": "Er is iets fout gegaan"
       },
+      "notFound": {
+        "backToJoin": "Terug naar de aanmeldpagina",
+        "message": "Deze registratielink is verlopen of al gebruikt. Als je zojuist hebt geregistreerd in een ander tabblad, ontvang je binnenkort een bevestigingsmail. Als je je een tijd geleden hebt geregistreerd, moet je een nieuwe registratie starten.",
+        "title": "Registratielink verlopen"
+      },
       "paymentFailed": {
         "backToJoin": "Terug naar de aanmeldpagina",
         "message": "Je betaling is niet gelukt. Probeer het opnieuw of gebruik een andere betaalmethode.",
@@ -1490,10 +1559,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Lidmaatschap",
-      "recurringLabel": "Periodieke bijdrage"
-    },
     "genericError": "Oeps, er is iets misgegaan ({type})! Neem contact op met support als dit weer gebeurt.",
     "goBack": "Heb je iets gemist? {back}",
     "goBackButton": "Terug naar het vorige scherm",
@@ -1569,10 +1634,12 @@
         "description": "Verfijn je lidmaatschapsformulier",
         "formSubtitle": "Ondertitel",
         "formTitle": "Titel",
+        "googleApplePayNoticeText": "",
         "minAmount": "Minimum bedrag",
         "noticeText": "",
         "noticeTextHelp": "",
         "showAbsorbFee": "Gebruiker vragen om de betalingskosten te absorberen",
+        "showGoogleApplePay": "",
         "showNoContribution": "Gebruiker toestaan mee te doen zonder bijdrage",
         "suggestedAmounts": "Voorgestelde contributiebedragen",
         "text": "In dit gedeelte kun je het lidmaatschapsformulier bewerken, verfijnen en een voorbeeld bekijken.",
@@ -1703,6 +1770,11 @@
     "resetPassword": "Wachtwoord opnieuw instellen",
     "setPassword": "Wachtwoord instellen",
     "setup": "Instellen"
+  },
+  "paymentLabels": {
+    "membershipProductName": "Lidmaatschap",
+    "recurringContribution": "Periodieke bijdrage",
+    "taxRateDisplayName": "BTW"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -1841,8 +1913,5 @@
     },
     "searchTag": "Tagged met...",
     "toggleTag": "Tag schakelen"
-  },
-  "taxRate": {
-    "invoiceName": "BTW"
   }
 }

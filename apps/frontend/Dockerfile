@@ -1,5 +1,5 @@
 ARG DENO_VERSION=2.1.2
-ARG NODE_VERSION=22
+ARG NODE_VERSION=24
 
 FROM node:${NODE_VERSION}-bookworm-slim AS builder
 
@@ -20,7 +20,6 @@ COPY packages/core/package.json /opt/packages/core/package.json
 COPY packages/docker/package.json /opt/packages/docker/package.json
 COPY packages/client/package.json /opt/packages/client/package.json
 COPY packages/locale/package.json /opt/packages/locale/package.json
-COPY packages/weblate-client/package.json /opt/packages/weblate-client/package.json
 COPY packages/test-utils/package.json /opt/packages/test-utils/package.json
 
 # Copy dependencies info from apps
@@ -35,7 +34,6 @@ COPY apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
 COPY packages/prettier-config /opt/packages/prettier-config
 COPY packages/tsconfig /opt/packages/tsconfig
 COPY packages/vue /opt/packages/vue
-COPY packages/esbuild /opt/packages/esbuild
 COPY packages/fontawesome /opt/packages/fontawesome
 
 # Copy apps with relevant content
@@ -53,7 +51,7 @@ COPY packages/locale /opt/packages/locale
 COPY apps/frontend /opt/apps/frontend
 RUN yarn workspaces foreach --recursive --topological-dev --from @beabee/frontend run build
 
-FROM nginx:1.27-alpine
+FROM nginx:1.30-alpine
 
 ARG REVISION
 ARG VERSION

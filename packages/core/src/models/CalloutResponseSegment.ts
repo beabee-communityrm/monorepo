@@ -2,7 +2,7 @@ import { RuleGroup } from '@beabee/beabee-common';
 
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Callout } from './Callout';
+import { Callout } from './Callout.js';
 
 @Entity()
 export class CalloutResponseSegment {
@@ -23,5 +23,5 @@ export class CalloutResponseSegment {
   @Column({ type: 'int', default: 0 })
   order!: number;
 
-  itemCount?: number;
+  itemCount?: number | undefined;
 }

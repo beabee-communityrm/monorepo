@@ -43,6 +43,8 @@ export async function runApp(fn: () => Promise<void>) {
     await fn();
   } catch (err) {
     log.error('Uncaught error', err);
+    console.error('Error:', err instanceof Error ? err.message : err);
+    process.exit(1);
   }
   await db.close();
 }

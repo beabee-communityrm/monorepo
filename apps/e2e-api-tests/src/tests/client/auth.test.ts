@@ -1,5 +1,5 @@
 import type { LoginData } from '@beabee/beabee-common';
-import { AuthClient, ClientApiError } from '@beabee/client';
+import { AuthClient, UnauthorizedError } from '@beabee/client';
 import {
   API_KEY,
   HOST,
@@ -62,10 +62,7 @@ describe('Auth API', () => {
         // If we reach this point, the test should fail
         expect(true).toBe(false);
       } catch (error) {
-        expect(error).toBeInstanceOf(ClientApiError);
-        if (error instanceof ClientApiError) {
-          expect(error.httpCode).toBe(401);
-        }
+        expect(error).toBeInstanceOf(UnauthorizedError);
       }
     });
   });

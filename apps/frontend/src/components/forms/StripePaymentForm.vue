@@ -30,15 +30,16 @@ import { ContributionPeriod } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
 import { AppButton, AppLabel, AppNotification } from '@beabee/vue';
 
-import env from '@env';
 import type { Appearance } from '@stripe/stripe-js';
 import type { ApplePayOption } from '@stripe/stripe-js/dist/stripe-js/elements/apple-pay';
 import { loadStripe } from '@stripe/stripe-js/pure';
-import type { PaymentFlowFormData } from '@type/payment-flow-form-data';
 import useVuelidate from '@vuelidate/core';
 import theme from 'virtual:theme';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import env from '#env';
+import type { PaymentFlowFormData } from '#type/payment-flow-form-data';
 
 const emit = defineEmits(['loaded']);
 
@@ -114,10 +115,10 @@ const applePayOption = computed<ApplePayOption | undefined>(() => {
   return props.paymentData.period !== 'one-time'
     ? {
         recurringPaymentRequest: {
-          paymentDescription: t('joinPayment.applePay.description'),
+          paymentDescription: t('paymentLabels.membershipProductName'),
           managementURL: env.appUrl + '/profile/contribution',
           regularBilling: {
-            label: t('joinPayment.applePay.recurringLabel'),
+            label: t('paymentLabels.recurringContribution'),
             amount: props.paymentData.amount * 100,
             recurringPaymentIntervalUnit:
               props.paymentData.period === ContributionPeriod.Monthly

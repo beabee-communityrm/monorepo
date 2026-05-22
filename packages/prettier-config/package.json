@@ -1,6 +1,7 @@
 {
   "name": "@beabee/prettier-config",
-  "version": "0.28.1",
+  "version": "0.44.2",
+  "private": true,
   "type": "module",
   "main": "index.mjs",
   "types": "index.d.ts",
@@ -16,10 +17,10 @@
   },
   "dependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "prettier-plugin-tailwindcss": "^0.6.11"
+    "prettier-plugin-tailwindcss": "^0.8.0"
   },
   "devDependencies": {
     "@types/prettier": "^3.0.0",
-    "prettier": "^3.5.2"
+    "prettier": "^3.8.3"
   }
 }

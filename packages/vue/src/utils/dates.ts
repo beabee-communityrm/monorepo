@@ -1,7 +1,18 @@
 import type { BaseLocale } from '@beabee/locale';
 
 import { type Locale, format, formatDistance } from 'date-fns';
-import { de, el, enGB as en, fr, it, nl, pt, ru, uk } from 'date-fns/locale';
+import {
+  de,
+  el,
+  enGB as en,
+  es,
+  fr,
+  it,
+  nl,
+  pt,
+  ru,
+  uk,
+} from 'date-fns/locale';
 
 import { i18n } from '../lib/i18n';
 
@@ -12,6 +23,7 @@ export const DateFnsLocales: Record<BaseLocale, Locale> = {
   pt,
   ru,
   uk,
+  es,
   it,
   fr,
   el,

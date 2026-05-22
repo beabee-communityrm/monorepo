@@ -23,12 +23,13 @@ import type { GetContactData } from '@beabee/beabee-common';
 import { AppTabs, PageTitle } from '@beabee/vue';
 
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
-import { resolveTabNavigation } from '@utils/navigation';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
+import { resolveTabNavigation } from '#utils/navigation';
 
 import env from '../../../env';
 

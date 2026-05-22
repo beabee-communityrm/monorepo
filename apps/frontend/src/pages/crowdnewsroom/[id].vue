@@ -4,15 +4,16 @@
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 
-import { generalContent } from '@store';
-import { client } from '@utils/api';
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+
+import { generalContent } from '#store';
+import { client } from '#utils/api';
 import {
   generateComponentText,
   generateResponseLinks,
   generateSlides,
-} from '@utils/callouts';
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+} from '#utils/callouts';
 
 const callout =
   ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>>();

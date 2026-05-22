@@ -14,8 +14,9 @@ import { Callout, Contact } from '@beabee/core/models';
 import { FilterHandlers } from '@beabee/core/type';
 import { prefixKeys } from '@beabee/core/utils/objects';
 
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
 import { isUUID } from 'class-validator';
+
+import { BaseTransformer } from '#api/transformers/BaseTransformer';
 
 export abstract class BaseContactTransformer<
   GetDto,

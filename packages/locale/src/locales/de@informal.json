@@ -180,11 +180,41 @@
       "showingOf": "API Keys {start} bis {end} von {total} werden angezeigt."
     },
     "email": {
-      "fromEmail": "E-Mail-Adresse",
-      "fromName": "Name",
+      "contactTemplates": {
+        "button": "E-Mail Vorlagen verwalten",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "Hier kannst du E-Mail-Vorlagen für verschiedene Zielgruppen erstellen und anpassen. Du kannst sowohl einmalige als auch wiederkehrende E-Mails verwalten.",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "sendTypes": {
+          "oneOffLabel": "",
+          "ongoingLabel": "",
+          "title": ""
+        },
+        "summaryOnceOnly": "",
+        "summaryOngoingJoin": "",
+        "summaryOngoingJoinDirectSend": "",
+        "summaryOngoingLeave": "",
+        "summaryOngoingPaused": "",
+        "summaryTemplate": "",
+        "title": "Segmentbasiert",
+        "titleDirectSend": "",
+        "titleSendTime": ""
+      },
+      "fromEmail": "Absender-E-Mail",
+      "fromName": "Absendername",
       "label": "E-Mail",
       "templates": {
         "description": "Hier legst du Betreff und Text der E-Mails fest, die die App rausschickt. Die Farbe zeigt dir: grün = selbst gemacht, gelb = Standard, rot = nicht aktiv (wird nicht gesendet).",
+        "subtitle": "Systemweite",
         "title": "E-Mails anpassen"
       },
       "text": "Alle E-Mails werden von dieser Adresse gesendet.",
@@ -222,11 +252,13 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "Einmalige Beiträge aktivieren",
+      "oneTimeDonationsTitle": "Einmalige Beiträge",
       "paymentTitle": "Zahlungen",
       "showOneTimeDonation": "Einmalige Beitragsoption auf Startbildschirm anzeigen",
       "taxRate": "Mehrwertsteuersatz",
-      "taxRateLabelOneTime": "Mehrwertsteuersatz für einmalige Zahlungen aktivieren",
-      "taxRateLabelRecurring": "Mehrwertsteuersatz für wiederkehrende Zahlungen aktivieren"
+      "taxRateLabelOneTime": "Mehrwertsteuersatz für einmalige Beiträge aktivieren",
+      "taxRateLabelRecurring": "Mehrwertsteuersatz für wiederkehrende Beiträge aktivieren"
     },
     "theme": {
       "bodyFont": "Text",
@@ -260,6 +292,7 @@
       "any": "einer dieser"
     },
     "createdSegment": "Erstelltes Segment \"{segment}\"",
+    "invalidRuleError": "In dieser Regel ist was kaputt: \"{ rule }\". Bitte aktualisieren!",
     "matchWord": {
       "AND": "und",
       "OR": "oder"
@@ -763,6 +796,7 @@
       "label": "Termine",
       "starts": "Startdatum"
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "Können bearbeitet werden",
@@ -924,6 +958,9 @@
     "label": "Label",
     "loading": "Lädt...",
     "login": "Login",
+    "manualPaymentSource": {
+      "none": "Keine"
+    },
     "newsletterStatus": {
       "cleaned": "Bereinigt",
       "none": "Kein Status",
@@ -1086,6 +1123,27 @@
       "recurringContributions": "Wiederkehrende Beiträge",
       "role": "Rolle"
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Möchtest du diese E-Mail-Vorlage wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
+        "title": "Vorlage löschen?"
+      },
+      "create": "",
+      "date": "Erstellt",
+      "editTitle": "Vorlage bearbeiten",
+      "editTitleWithName": "Vorlage bearbeiten: {name}",
+      "empty": "Noch keine E-Mail-Vorlagen.",
+      "manage": "E-Mail-Vorlagen verwalten",
+      "name": "Name",
+      "newTitle": "",
+      "showingOf": "{start} bis {end} von {total} Vorlagen werden angezeigt.",
+      "subject": "Betreff",
+      "title": "E-Mail-Vorlagen",
+      "toggleEnabled": {
+        "disabled": "E-Mail-Vorlage wurde deaktiviert",
+        "enabled": "E-Mail-Vorlage wurde aktiviert"
+      }
+    },
     "noContacts": "Keine Kontakte",
     "noResults": "Keine Kontakte gefunden",
     "numResults": "{n} Kontakt gefunden | {n} Kontakte gefunden",
@@ -1093,18 +1151,13 @@
     "selectedCount": "{n} Kontakt ausgewählt | {n} Kontakte ausgewählt",
     "sendEmail": {
       "newEmail": "Neue E-Mail",
-      "saveAndBack": "Speichern und zurück",
-      "saveAndBackSuccess": "Vorlage gespeichert.",
-      "saveAndSend": "Speichern und senden",
-      "send": "Senden",
       "sent": "Die E-Mail wurde an das Segment gesendet.",
-      "sentTimes": "{n}-mal verschickt",
       "templateLabel": "Vorlage",
-      "templateName": "Name der neuen Vorlage",
+      "templateName": "Name der Vorlage",
       "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
       "title": "E-Mail an Segment senden"
     },
-    "showingOf": "{start} to {end} von {total} Kontakten werden angezeigt."
+    "showingOf": "{start} bis {end} von {total} Kontakten werden angezeigt."
   },
   "contribution": {
     "adminCancelDescription": "Wenn du die Mitgliedschaft des Kontakts kündigst, endet sie am Ende des aktuellen Zahlungszyklus am {date}.",
@@ -1162,8 +1215,12 @@
     "body": {
       "label": "Nachricht"
     },
+    "from": {
+      "label": "Eigenen Absender verwenden"
+    },
     "preview": {
       "asContactLabel": "Kontakt für Vorschau",
+      "from": "Von:",
       "label": "Vorschau",
       "unavailable": "Vorschau nicht verfügbar"
     },
@@ -1198,6 +1255,7 @@
     },
     "fromEmail": "Absender-E-Mail",
     "fromName": "Absendername",
+    "isOngoing": "",
     "list": {
       "showingOf": "Zeige {start} bis {end} E-Mails von {total}"
     },
@@ -1207,10 +1265,16 @@
     "notifications": {
       "created": "E-Mail erfolgreich erstellt",
       "deleted": "E-Mail erfolgreich gelöscht",
+      "missingMergeTags": "In dieser E-Mail fehlen folgende Pflicht-Merge-Tags: {mergeTags}. Merge-Tags sind Platzhalter für dynamische Inhalte (z. B. Vorname). Bitte füge die fehlenden Tags hinzu, damit deine E-Mail korrekt funktioniert.",
       "resetToDefault": "Vorlage erfolgreich auf Standard zurückgesetzt",
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "E-Mail erfolgreich aktualisiert"
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "Status",
     "tabs": {
@@ -1469,6 +1533,11 @@
         "message": "Es gab ein Problem bei der Registrierung, unser Team wurde benachrichtigt. Bitte kontaktiere uns, wenn das Problem weiterhin auftritt.",
         "title": "Etwas ist schief gelaufen"
       },
+      "notFound": {
+        "backToJoin": "Zurück zur Registrierung",
+        "message": "Dieser Registrierungslink ist abgelaufen oder wurde bereits verwendet. Falls du dich gerade in einem anderen Tab registriert hast, solltest du in Kürze eine Bestätigungs-E-Mail erhalten. Falls du dich vor längerer Zeit registriert hast, musst du eine neue Registrierung starten.",
+        "title": "Registrierungslink abgelaufen"
+      },
       "paymentFailed": {
         "backToJoin": "Zurück zur Registrierung",
         "message": "Deine Zahlung war nicht erfolgreich. Bitte versuche es erneut oder verwende eine andere Zahlungsmethode.",
@@ -1490,10 +1559,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Mitgliedschaft",
-      "recurringLabel": "Regelmäßiger Beitrag"
-    },
     "genericError": "Upps! Etwas ist schiefgelaufen ({type}). Bitte wende dich an den Support, sollte das erneut passieren.",
     "goBack": "Möchtest du etwas ändern? {back}",
     "goBackButton": "Zurück zum letzten Schritt",
@@ -1569,10 +1634,12 @@
         "description": "Optimiere dein Registrierungsformular",
         "formSubtitle": "Untertitel",
         "formTitle": "Titel",
+        "googleApplePayNoticeText": "Du musst Google Pay und Apple Pay auch in Stripe aktivieren. Wende dich an Support, um Unterstützung zu erhalten.",
         "minAmount": "Mindestbeitrag",
         "noticeText": "Hinweistext unter dem Zahlungsbutton",
         "noticeTextHelp": "Verwende dieses Feld, um einen Hinweis unter dem Zahlungsbutton hinzuzufügen, zum Beispiel zur Erklärung von Zahlungsperioden oder Bankeinzugsermächtigungen. Du kannst dieses Feld auch leer lassen.",
         "showAbsorbFee": "Nutzer um Ausgleich der Gebühren bitten",
+        "showGoogleApplePay": "Apple Pay- und Google Pay-Zahlungsicons anzeigen",
         "showNoContribution": "Registrierung ohne Zahlung erlauben",
         "suggestedAmounts": "Beiträge vorschlagen",
         "text": "In diesem Abschnitt kannst du dein Registrierungsformular bearbeiten, optimieren und ansehen.",
@@ -1703,6 +1770,11 @@
     "resetPassword": "Passwort zurücksetzen",
     "setPassword": "Passwort vergeben",
     "setup": "Account fertigstellen"
+  },
+  "paymentLabels": {
+    "membershipProductName": "Mitgliedschaft",
+    "recurringContribution": "Regelmäßiger Beitrag",
+    "taxRateDisplayName": "MwSt"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -1841,8 +1913,5 @@
     },
     "searchTag": "Getaggt mit...",
     "toggleTag": "Tag hinzufügen / entfernen"
-  },
-  "taxRate": {
-    "invoiceName": "MwSt"
   }
 }

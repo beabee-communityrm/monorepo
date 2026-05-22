@@ -69,18 +69,19 @@ import {
   PageTitle,
 } from '@beabee/vue';
 
-import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
-import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
-import type { UpdateContribution } from '@components/contact/contact.interface';
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import AppRoleEditor from '@components/role/AppRoleEditor.vue';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+
+import ContactBasicFields from '#components/contact/ContactBasicFields.vue';
+import ContactContributionFields from '#components/contact/ContactContributionFields.vue';
+import type { UpdateContribution } from '#components/contact/contact.interface';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import AppRoleEditor from '#components/role/AppRoleEditor.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 const router = useRouter();

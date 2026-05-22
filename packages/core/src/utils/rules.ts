@@ -14,7 +14,6 @@ import {
   validateRuleGroup,
 } from '@beabee/beabee-common';
 
-import { BadRequestError } from 'routing-controllers';
 import {
   Brackets,
   EntityTarget,
@@ -24,9 +23,9 @@ import {
   UpdateResult,
   WhereExpressionBuilder,
 } from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 import { createQueryBuilder } from '#database';
+import { BadRequestError } from '#errors/BadRequestError';
 import { simpleFilterHandler } from '#filter-handlers/simple.filter-handlers';
 import { Contact } from '#models';
 import type {
@@ -35,6 +34,7 @@ import type {
   RichRuleValue,
   SelectResult,
 } from '#type/index';
+import { QueryDeepPartialEntity } from '#type/typeorm-utils';
 
 // Operator definitions
 

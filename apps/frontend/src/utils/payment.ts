@@ -1,6 +1,6 @@
 import { type StripeFeeCountry, calcPaymentFee } from '@beabee/beabee-common';
 
-import type { JoinFormData } from '@type/join-form-data';
+import type { JoinFormData } from '#type/join-form-data';
 
 /**
  * Calculate the total amount for the join form, including fees if applicable.

@@ -32,9 +32,9 @@ describe('CalloutResponseSegment API', () => {
     const response = await client.callout.createResponse(testCalloutSlug, {
       answers: createTestCalloutResponseAnswers('slide1'),
       guest: {
-        email: 'test1@example.com',
+        email: 'segment-test1@example.com',
         firstname: 'Test',
-        lastname: 'Guest 1',
+        lastname: 'Segment Guest 1',
       },
     });
     testResponseId = response.id;
@@ -42,9 +42,9 @@ describe('CalloutResponseSegment API', () => {
     await client.callout.createResponse(testCalloutSlug, {
       answers: createMinimalTestCalloutResponseAnswers('slide1'),
       guest: {
-        email: 'test2@example.com',
+        email: 'segment-test2@example.com',
         firstname: 'Test',
-        lastname: 'Guest 2',
+        lastname: 'Segment Guest 2',
       },
     });
   });

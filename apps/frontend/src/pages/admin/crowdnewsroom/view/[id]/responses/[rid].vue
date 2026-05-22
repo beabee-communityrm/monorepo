@@ -183,13 +183,6 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import CalloutResponseComments from '@components/callout/CalloutResponseComments.vue';
-import { useCalloutResponseFilters } from '@components/pages/admin/callout-responses.interface';
-import MoveBucketButton from '@components/pages/admin/callouts/MoveBucketButton.vue';
-import SetAssigneeButton from '@components/pages/admin/callouts/SetAssigneeButton.vue';
-import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import TagList from '@components/tag/TagList.vue';
-import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import {
   faCaretLeft,
   faCaretRight,
@@ -197,13 +190,21 @@ import {
   faPen,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
-import { extractErrorText } from '@utils/api-error';
-import { buckets } from '@utils/callouts';
 import { computed, ref, toRef, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+
+import CalloutResponseComments from '#components/callout/CalloutResponseComments.vue';
+import { useCalloutResponseFilters } from '#components/pages/admin/callout-responses.interface';
+import MoveBucketButton from '#components/pages/admin/callouts/MoveBucketButton.vue';
+import SetAssigneeButton from '#components/pages/admin/callouts/SetAssigneeButton.vue';
+import CalloutForm from '#components/pages/callouts/CalloutForm.vue';
+import TagList from '#components/tag/TagList.vue';
+import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
+import { buckets } from '#utils/callouts';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;

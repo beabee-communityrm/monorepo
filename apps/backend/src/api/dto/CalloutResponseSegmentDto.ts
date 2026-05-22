@@ -8,7 +8,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-import { GetPaginatedQuery, GetPaginatedRuleGroup } from './BaseDto';
+import { GetPaginatedQuery, GetPaginatedRuleGroup } from './BaseDto.js';
 
 export enum GetCalloutResponseSegmentWith {
   itemCount = 'itemCount',
@@ -33,7 +33,7 @@ export class GetCalloutResponseSegmentDto extends CreateCalloutResponseSegmentDt
 
   @IsOptional()
   @IsNumber()
-  itemCount?: number;
+  itemCount?: number | undefined;
 }
 
 export class GetCalloutResponseSegmentOptsDto {

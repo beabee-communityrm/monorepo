@@ -39,9 +39,8 @@ export const syncCommand: CommandModule = {
                     default: false,
                   }),
               handler: async (argv) => {
-                const { syncActiveMemberTag } = await import(
-                  '../actions/sync/newsletters/active-member-tag.js'
-                );
+                const { syncActiveMemberTag } =
+                  await import('../actions/sync/newsletters/active-member-tag.js');
                 return syncActiveMemberTag(argv);
               },
             })
@@ -91,9 +90,8 @@ export const syncCommand: CommandModule = {
                     coerce: coerceToDate,
                   }),
               handler: async (argv) => {
-                const { reconcile } = await import(
-                  '../actions/sync/newsletters/reconcile.js'
-                );
+                const { reconcile } =
+                  await import('../actions/sync/newsletters/reconcile.js');
                 return reconcile(argv);
               },
             })
@@ -108,9 +106,8 @@ export const syncCommand: CommandModule = {
                   default: false,
                 }),
               handler: async (argv) => {
-                const { clearPendingStatus } = await import(
-                  '../actions/sync/newsletters/clear-pending-status.js'
-                );
+                const { clearPendingStatus } =
+                  await import('../actions/sync/newsletters/clear-pending-status.js');
                 return clearPendingStatus(argv);
               },
             }),
@@ -140,14 +137,31 @@ export const syncCommand: CommandModule = {
         command: 'stripe',
         describe: 'Sync Stripe subscriptions and payments',
         builder: (yargs) =>
-          yargs.option('dryRun', {
-            type: 'boolean',
-            description: 'Run without making changes',
-            default: false,
-          }),
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes',
+              default: false,
+            })
+            .option('contactIds', {
+              type: 'array',
+              string: true,
+              description: 'Sync data for specific contact IDs',
+            })
+            .option('fix', {
+              type: 'array',
+              description: 'The data to fix',
+              choices: [
+                'subscriptions',
+                'payments',
+                'mandates',
+                'customers',
+              ] as const,
+              demandOption: true,
+            }),
         handler: async (argv) => {
           const { syncStripe } = await import('../actions/sync/stripe.js');
-          return syncStripe(argv.dryRun);
+          return syncStripe(argv);
         },
       }),
   handler: () => {},

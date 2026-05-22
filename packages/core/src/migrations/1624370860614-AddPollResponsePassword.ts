@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddPollResponsePassword1624370860614
-  implements MigrationInterface
-{
+export class AddPollResponsePassword1624370860614 implements MigrationInterface {
   name = 'AddPollResponsePassword1624370860614';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

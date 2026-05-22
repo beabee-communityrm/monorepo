@@ -1,5 +1,5 @@
 import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
-import { BeabeeClient, ClientApiError } from '@beabee/client';
+import { BeabeeClient, TooManyRequestsError } from '@beabee/client';
 import { createTestFile } from '@beabee/test-utils/node';
 import {
   HOST,
@@ -59,11 +59,7 @@ describe('Rate Limits', () => {
           'should enforce rate limits for guest users uploading images',
           error
         );
-        expect(error).toBeInstanceOf(ClientApiError);
-        if (error instanceof ClientApiError) {
-          expect(error.httpCode).toBe(429);
-          expect(error.code).toBe('TOO_MANY_REQUESTS');
-        }
+        expect(error).toBeInstanceOf(TooManyRequestsError);
       }
     });
 
@@ -119,11 +115,7 @@ describe('Rate Limits', () => {
         // If we reach this point, the test should fail
         expect(true).toBe(false);
       } catch (error) {
-        expect(error).toBeInstanceOf(ClientApiError);
-        if (error instanceof ClientApiError) {
-          expect(error.httpCode).toBe(429);
-          expect(error.code).toBe('TOO_MANY_REQUESTS');
-        }
+        expect(error).toBeInstanceOf(TooManyRequestsError);
       }
     });
 

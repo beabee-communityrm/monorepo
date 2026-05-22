@@ -5,8 +5,7 @@ import type {
   TextCase,
 } from './index.js';
 
-export interface CalloutComponentInputCurrencySchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentInputCurrencySchema extends CalloutComponentBaseInputSchema {
   type: CalloutComponentType.INPUT_CURRENCY;
   /** Placeholder for the form */
   placeholder?: string;

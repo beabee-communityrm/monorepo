@@ -4,8 +4,6 @@ import {
   PaymentType,
 } from '@beabee/beabee-common';
 
-import { GetExportQuery, GetPaginatedQuery } from '@api/dto/BaseDto';
-import { GetContactDto } from '@api/dto/ContactDto';
 import {
   IsArray,
   IsBoolean,
@@ -19,9 +17,12 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-import { StartJoinFlowDto } from './JoinFlowDto';
+import { GetExportQuery, GetPaginatedQuery } from '#api/dto/BaseDto';
+import { GetContactDto } from '#api/dto/ContactDto';
 
-export class CreatePaymentDto extends StartJoinFlowDto {
+import { StartPaymentFlowDto } from './PaymentFlowDto.js';
+
+export class CreatePaymentDto extends StartPaymentFlowDto {
   @Min(1)
   amount!: number;
 
@@ -84,4 +85,17 @@ export class GetPaymentAggregationDto {
   @IsNumber()
   @IsOptional()
   average!: number | null;
+}
+
+export interface ExportPaymentDto {
+  Id: string;
+  Amount: number;
+  ChargeDate: string;
+  Status: PaymentStatus;
+  Type: PaymentType;
+  SubscriptionId: string;
+  ContactId: string;
+  ContactEmail: string;
+  ContactFirstName: string;
+  ContactLastName: string;
 }

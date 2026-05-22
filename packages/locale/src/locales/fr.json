@@ -180,11 +180,41 @@
       "showingOf": "Affichage de {start} à {end} clés API sur {total}"
     },
     "email": {
+      "contactTemplates": {
+        "button": "Gérer les modèles d’e-mails",
+        "contactJoins": "Le contact rejoint le segment",
+        "contactLeaves": "Le contact quitte le segment",
+        "create": "Créer",
+        "description": "Ici, vous pouvez créer et personnaliser des modèles d’e-mails pour différents groupes cibles. Vous avez la possibilité de gérer des e-mails ponctuels et récurrents.",
+        "directSendDisabled": "Seuls les futurs contacts recevront l’e-mail",
+        "directSendEnabled": "Tous les contacts actuels recevront l’e-mail immédiatement",
+        "ongoing": "Récurrent",
+        "ongoingDisabled": "L’e-mail sera envoyé une seule fois à tous les contacts actuels",
+        "ongoingEnabled": "L’e-mail sera envoyé automatiquement lors des changements de segment",
+        "segment": "Segment",
+        "send": "Envoyer",
+        "sendSettings": "Paramètres d’envoi",
+        "sendTypes": {
+          "oneOffLabel": "Email ponctuel",
+          "ongoingLabel": "Email récurrent",
+          "title": "Envoyer en tant que"
+        },
+        "summaryOnceOnly": "Cet e-mail sera envoyé une seule fois à tous les contacts actuels du segment.",
+        "summaryOngoingJoin": "Cet e-mail est envoyé quotidiennement aux contacts qui ont récemment rejoint le segment « {segment} ».",
+        "summaryOngoingJoinDirectSend": "Cet e-mail est envoyé quotidiennement aux nouveaux contacts du segment « {segment} ». De plus, tous les contacts existants le recevront immédiatement.",
+        "summaryOngoingLeave": "Cet e-mail est envoyé quotidiennement aux contacts qui ont quitté le segment « {segment} ».",
+        "summaryOngoingPaused": "Cet e-mail récurrent pour le segment « {segment} » est actuellement en pause et n’est pas envoyé.",
+        "summaryTemplate": "Cet e-mail n’est pas envoyé automatiquement et peut être utilisé comme modèle pour de nouveaux e-mails aux segments.",
+        "title": "Basé sur les segments",
+        "titleDirectSend": "Envoyer immédiatement aux contacts existants",
+        "titleSendTime": "Envoyer quand"
+      },
       "fromEmail": "À partir de l'e-mail",
       "fromName": "À partir du nom",
       "label": "E-mail",
       "templates": {
         "description": "Ici, tu peux personnaliser l’objet et le contenu des emails envoyés par l’appli. La couleur t’indique : vert = personnalisé, jaune = modèle par défaut, rouge = non configuré (non envoyé).",
+        "subtitle": "À l’échelle du système",
         "title": "Configurer les emails"
       },
       "text": "Toute communication par e-mail sera envoyée à partir de cette adresse e-mail.",
@@ -222,11 +252,13 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "Activer les contributions ponctuelles",
+      "oneTimeDonationsTitle": "Contributions ponctuelles",
       "paymentTitle": "Paiement",
       "showOneTimeDonation": "Afficher l’option de don unique sur l’écran d’accueil",
       "taxRate": "Taux de la TVA",
-      "taxRateLabelOneTime": "Activer le taux de TVA pour les paiements ponctuels",
-      "taxRateLabelRecurring": "Activer le taux de TVA pour les paiements récurrents"
+      "taxRateLabelOneTime": "Activer le taux de TVA pour les contributions ponctuelles",
+      "taxRateLabelRecurring": "Activer le taux de TVA pour les contributions récurrentes"
     },
     "theme": {
       "bodyFont": "Corps de texte",
@@ -260,6 +292,7 @@
       "any": "peu importe"
     },
     "createdSegment": "Segment « {segment} » créé",
+    "invalidRuleError": "Quelque chose ne va pas dans cette règle : \"{ rule }\". Veuillez mettre à jour !",
     "matchWord": {
       "AND": "et",
       "OR": "ou"
@@ -767,6 +800,7 @@
       "label": "Dates",
       "starts": "Commence"
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "Peut être mis à jour",
@@ -928,6 +962,9 @@
     "label": "Intitulé",
     "loading": "Chargement…",
     "login": "Se connecter",
+    "manualPaymentSource": {
+      "none": "Aucune"
+    },
     "newsletterStatus": {
       "cleaned": "Effacé",
       "none": "Aucun",
@@ -1090,6 +1127,27 @@
       "recurringContributions": "Cotisations récurrentes",
       "role": "Rôle"
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "Êtes-vous sûr de vouloir supprimer ce modèle d'e-mail ? Cette action est irréversible.",
+        "title": "Supprimer le modèle ?"
+      },
+      "create": "Créer un modèle",
+      "date": "Créé",
+      "editTitle": "Modifier le modèle",
+      "editTitleWithName": "Modifier le modèle : {name}",
+      "empty": "Aucun modèle d'e-mail pour le moment.",
+      "manage": "Gérer les modèles d'e-mail",
+      "name": "Nom",
+      "newTitle": "Créer un nouveau modèle",
+      "showingOf": "Affichage des modèles {start} à {end} sur {total}",
+      "subject": "Objet",
+      "title": "Modèles d'e-mail",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
+    },
     "noContacts": "Aucun contact ajouté pour le moment",
     "noResults": "Aucun contact trouvé",
     "numResults": "{n} contact trouvé | {n} contacts trouvés",
@@ -1097,14 +1155,9 @@
     "selectedCount": "{n} contact sélectionné | {n} contacts sélectionnés",
     "sendEmail": {
       "newEmail": "Nouvel e-mail",
-      "saveAndBack": "Enregistrer et revenir",
-      "saveAndBackSuccess": "Modèle enregistré.",
-      "saveAndSend": "Enregistrer et envoyer",
-      "send": "Envoyer",
       "sent": "L'e-mail a été envoyé au segment.",
-      "sentTimes": "Envoyé {n} fois",
       "templateLabel": "Modèle",
-      "templateName": "Nom du nouveau modèle",
+      "templateName": "Nom du modèle",
       "templateNameRequired": "Veuillez saisir un nom pour le nouveau modèle.",
       "title": "Envoyer un e-mail au segment"
     },
@@ -1166,8 +1219,12 @@
     "body": {
       "label": "Message"
     },
+    "from": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "Contact pour aperçu",
+      "from": "",
       "label": "Aperçu",
       "unavailable": "Aperçu non disponible"
     },
@@ -1202,6 +1259,7 @@
     },
     "fromEmail": "E-mail de l'expéditeur",
     "fromName": "Nom de l'expéditeur",
+    "isOngoing": "Type",
     "list": {
       "showingOf": "Affichage de {start} à {end} e-mails sur {total}"
     },
@@ -1211,10 +1269,16 @@
     "notifications": {
       "created": "E-mail créé avec succès",
       "deleted": "E-mail supprimé avec succès",
+      "missingMergeTags": "Il manque les balises de fusion obligatoires dans cet e-mail : {mergeTags}. Les balises de fusion sont des marqueurs de position pour du contenu dynamique (par exemple, prénom). Ajoutez les balises manquantes pour vous assurer que votre e-mail fonctionne correctement.",
       "resetToDefault": "Modèle réinitialisé par défaut avec succès",
       "templateAssigned": "",
       "templatesAssigned": "",
       "updated": "E-mail mis à jour avec succès"
+    },
+    "sendType": {
+      "oneOff": "Ponctuel",
+      "ongoing": "Récurrent",
+      "paused": "En pause"
     },
     "status": "Statut",
     "tabs": {
@@ -1473,6 +1537,11 @@
         "message": "Une erreur s'est produite lors de votre adhésion, notre équipe en a été informée. Veuillez contacter l'assistance si le problème persiste.",
         "title": "Une erreur s'est produite"
       },
+      "notFound": {
+        "backToJoin": "Retour à la page d'inscription",
+        "message": "Ce lien d'inscription a expiré ou a déjà été utilisé. Si vous venez de vous inscrire dans un autre onglet, vous devriez recevoir un e-mail de confirmation sous peu. Si vous vous êtes inscrit il y a quelque temps, vous devrez recommencer une nouvelle inscription.",
+        "title": "Lien d'inscription expiré"
+      },
       "paymentFailed": {
         "backToJoin": "Retour à la page d’inscription",
         "message": "Votre paiement n’a pas abouti. Veuillez réessayer ou utiliser un autre moyen de paiement.",
@@ -1494,10 +1563,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "Adhésion",
-      "recurringLabel": "Cotisation récurrente"
-    },
     "genericError": "Oups, une erreur s'est produite ({type}) ! Contactez l'assistance si cela se produit à nouveau.",
     "goBack": "Avez-vous oublié quelque chose ? {back}",
     "goBackButton": "Revenir à l'écran précédent",
@@ -1573,10 +1638,12 @@
         "description": "Ajustez votre formulaire d'adhésion",
         "formSubtitle": "Sous-titre",
         "formTitle": "Titre",
+        "googleApplePayNoticeText": "",
         "minAmount": "Montant minimum",
         "noticeText": "",
         "noticeTextHelp": "",
         "showAbsorbFee": "Proposer aux utilisateurs de prendre en charge les frais de paiement",
+        "showGoogleApplePay": "",
         "showNoContribution": "Autoriser les utilisateurs à s'inscrire sans cotisation",
         "suggestedAmounts": "Montants de cotisation suggérés",
         "text": "Dans cette section, vous pouvez modifier, ajuster et prévisualiser votre formulaire d'adhésion.",
@@ -1707,6 +1774,11 @@
     "resetPassword": "Réinitialiser le mot de passe",
     "setPassword": "Définir le mot de passe",
     "setup": "Configuration"
+  },
+  "paymentLabels": {
+    "membershipProductName": "Adhésion",
+    "recurringContribution": "Cotisation récurrente",
+    "taxRateDisplayName": "TVA"
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -1845,8 +1917,5 @@
     },
     "searchTag": "Libellé par…",
     "toggleTag": "Activer/Désactiver le libellé"
-  },
-  "taxRate": {
-    "invoiceName": "TVA"
   }
 }

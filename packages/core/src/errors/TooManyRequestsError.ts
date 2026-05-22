@@ -1,4 +1,4 @@
-import { ClientApiErrorData } from '@beabee/beabee-common';
+import { ApiErrorCode, TooManyRequestsErrorData } from '@beabee/beabee-common';
 
 import { HttpError } from 'routing-controllers';
 
@@ -7,24 +7,13 @@ import { HttpError } from 'routing-controllers';
  */
 export class TooManyRequestsError
   extends HttpError
-  implements ClientApiErrorData
+  implements TooManyRequestsErrorData
 {
-  httpCode = 429;
-  code = 'TOO_MANY_REQUESTS';
-  errors?: Record<string, any>;
+  readonly httpCode = 429 as const;
+  readonly code = ApiErrorCode.TOO_MANY_REQUESTS;
 
-  constructor(
-    options: {
-      message?: string;
-      errors?: Record<string, any>;
-    } = {}
-  ) {
-    super(429, options.message || 'Too Many Requests');
+  constructor(readonly retryAfter: number) {
+    super(429, `Too many requests. Please retry after ${retryAfter} seconds.`);
     Object.setPrototypeOf(this, TooManyRequestsError.prototype);
-    this.name = 'TooManyRequestsError';
-
-    if (options.errors) {
-      this.errors = options.errors;
-    }
   }
 }

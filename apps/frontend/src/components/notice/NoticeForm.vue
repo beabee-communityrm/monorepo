@@ -61,10 +61,11 @@ import type { CreateNoticeData } from '@beabee/beabee-common';
 import type { GetNoticeData } from '@beabee/beabee-common';
 import { AppInput, AppLabel } from '@beabee/vue';
 
-import AppApiForm from '@components/forms/AppApiForm.vue';
 import { format } from 'date-fns';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
 
 /**
  * Form data structure for notice creation and editing

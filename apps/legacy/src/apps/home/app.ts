@@ -3,6 +3,10 @@ import OptionsService, {
 } from '@beabee/core/services/OptionsService';
 
 import express, { type Express } from 'express';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 

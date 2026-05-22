@@ -8,10 +8,11 @@ import {
 } from '@beabee/beabee-common';
 import { type Header, type SelectItem } from '@beabee/vue';
 
-import { i18n } from '@lib/i18n';
-import { generalContent } from '@store';
-import { client } from '@utils/api';
 import { computed, ref, watchEffect } from 'vue';
+
+import { i18n } from '#lib/i18n';
+import { generalContent } from '#store';
+import { client } from '#utils/api';
 
 import type { FilterGroups, FilterItems } from '../../../../type/search';
 import { withItems, withLabel } from '../../../../utils/filters';
@@ -245,16 +246,20 @@ export function useContactFilters() {
         'manualPaymentSource',
       ]),
     },
-    {
-      id: 'oneTimeContributions',
-      label: t('contacts.dataGroup.oneTimeContributions'),
-      items: withItems(filterItems, [
-        'hasDonated',
-        'donationDate',
-        'totalDonationAmount',
-        'averageDonationAmount',
-      ]),
-    },
+    ...(generalContent.value.enableOneTimeDonations
+      ? [
+          {
+            id: 'oneTimeContributions',
+            label: t('contacts.dataGroup.oneTimeContributions'),
+            items: withItems(filterItems, [
+              'hasDonated',
+              'donationDate',
+              'totalDonationAmount',
+              'averageDonationAmount',
+            ]),
+          },
+        ]
+      : []),
     {
       id: 'role',
       label: t('contacts.dataGroup.role'),

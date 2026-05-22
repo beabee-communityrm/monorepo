@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class RemoveNextContributionAmount1655199299904
-  implements MigrationInterface
-{
+export class RemoveNextContributionAmount1655199299904 implements MigrationInterface {
   name = 'RemoveNextContributionAmount1655199299904';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

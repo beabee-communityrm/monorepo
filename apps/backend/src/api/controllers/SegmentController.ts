@@ -1,19 +1,33 @@
 import { getRepository } from '@beabee/core/database';
+import { NotFoundError } from '@beabee/core/errors';
 import {
   Contact,
   Email,
   EmailMailing,
   Segment,
-  SegmentContact,
   SegmentOngoingEmail,
 } from '@beabee/core/models';
 import EmailService from '@beabee/core/services/EmailService';
+import SegmentService from '@beabee/core/services/SegmentService';
 import { AuthInfo } from '@beabee/core/type';
 
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import PartialBody from '@api/decorators/PartialBody';
-import { GetContactDto, ListContactsDto } from '@api/dto/ContactDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
+import {
+  Authorized,
+  Body,
+  Delete,
+  Get,
+  JsonController,
+  OnUndefined,
+  Params,
+  Patch,
+  Post,
+  QueryParams,
+} from 'routing-controllers';
+
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import PartialBody from '#api/decorators/PartialBody';
+import { GetContactDto, ListContactsDto } from '#api/dto/ContactDto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
 import {
   CreateSegmentDto,
   GetSegmentDto,
@@ -21,23 +35,10 @@ import {
   GetSegmentWith,
   ListSegmentsDto,
   SendSegmentEmailBodyDto,
-} from '@api/dto/SegmentDto';
-import { UUIDParams } from '@api/params/UUIDParams';
-import ContactTransformer from '@api/transformers/ContactTransformer';
-import SegmentTransformer from '@api/transformers/SegmentTransformer';
-import {
-  Authorized,
-  Body,
-  Delete,
-  Get,
-  JsonController,
-  NotFoundError,
-  OnUndefined,
-  Params,
-  Patch,
-  Post,
-  QueryParams,
-} from 'routing-controllers';
+} from '#api/dto/SegmentDto';
+import { UUIDParams } from '#api/params/UUIDParams';
+import ContactTransformer from '#api/transformers/ContactTransformer';
+import SegmentTransformer from '#api/transformers/SegmentTransformer';
 
 @JsonController('/segments')
 @Authorized('admin')
@@ -97,7 +98,7 @@ export class SegmentController {
   @Delete('/:id')
   @OnUndefined(204)
   async deleteSegment(@Params() { id }: UUIDParams): Promise<void> {
-    await getRepository(SegmentContact).delete({ segment: { id } });
+    await SegmentService.removeAllContactsFromSegment(id);
     await getRepository(SegmentOngoingEmail).delete({ segment: { id } });
     const result = await getRepository(Segment).delete(id);
     if (result.affected === 0) {
@@ -122,7 +123,7 @@ export class SegmentController {
     });
   }
 
-  /** Send one-off email to all contacts in the segment (admin). */
+  /** Send email to all contacts in the segment (admin). */
   @OnUndefined(204)
   @Post('/:id/email/send')
   async sendEmail(
@@ -148,6 +149,16 @@ export class SegmentController {
         contactList,
         data.subject,
         data.body
+      );
+    }
+
+    // Only track contacts when explicitly requested (i.e. initial send of
+    // an ongoing email). Pure one-off sends must not pollute segment_contact,
+    // otherwise contacts would be skipped by future ongoing emails.
+    if (data.ongoingDirectSend) {
+      await SegmentService.addContactsToSegment(
+        id,
+        contactList.map((c) => c.id)
       );
     }
   }

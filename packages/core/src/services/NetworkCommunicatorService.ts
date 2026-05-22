@@ -1,6 +1,6 @@
 import axios from 'axios';
 import express, { type Express, Request, Response } from 'express';
-import { JsonWebTokenError, sign, verify } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { EventEmitter } from 'node:events';
 import { Server } from 'node:http';
 
@@ -9,6 +9,8 @@ import { log as mainLogger } from '#logging';
 import type { NetworkServiceMap } from '#type/network-service-map';
 import { extractToken } from '#utils/auth';
 import { wrapAsync } from '#utils/express';
+
+const { JsonWebTokenError, sign, verify } = jwt;
 
 const log = mainLogger.child({ app: 'network-communicator-service' });
 

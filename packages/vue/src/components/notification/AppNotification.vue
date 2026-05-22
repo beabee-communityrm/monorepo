@@ -28,7 +28,9 @@
         <span v-if="icon" class="notification-icon" aria-hidden="true">
           <font-awesome-icon :icon="icon" />
         </span>
-        <span>{{ title }}</span>
+        <span
+          ><slot name="title">{{ title }}</slot></span
+        >
       </span>
       <template v-if="removeable !== false">
         <svg

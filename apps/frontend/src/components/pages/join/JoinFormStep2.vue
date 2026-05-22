@@ -48,14 +48,15 @@ import {
 } from '@beabee/beabee-common';
 import { AppNotification } from '@beabee/vue';
 
-import AuthBox from '@components/AuthBox.vue';
-import StripePaymentForm from '@components/forms/StripePaymentForm.vue';
 import { faHandSparkles } from '@fortawesome/free-solid-svg-icons';
-import type { JoinFormData } from '@type/join-form-data';
-import { client } from '@utils/api';
-import { calcJoinFormTotalAmount } from '@utils/payment';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AuthBox from '#components/AuthBox.vue';
+import StripePaymentForm from '#components/forms/StripePaymentForm.vue';
+import type { JoinFormData } from '#type/join-form-data';
+import { client } from '#utils/api';
+import { calcJoinFormTotalAmount } from '#utils/payment';
 
 const { n, t } = useI18n();
 

@@ -48,11 +48,12 @@
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { AppButton, AppSubHeading, ItemDateRange } from '@beabee/vue';
 
-import env from '@env';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
-import { resolveImageUrl } from '@utils/url';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import env from '#env';
+import { resolveImageUrl } from '#utils/url';
 
 import noImage from '../../assets/images/no-image.avif';
 import ItemStatusText from '../item/ItemStatusText.vue';

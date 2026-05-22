@@ -1,7 +1,11 @@
 <template>
-  <AppForm full-button :button-text="buttonText" @submit.prevent="handleSubmit">
+  <AppApiForm
+    full-button
+    :button-text="buttonText"
+    @submit.prevent="handleSubmit"
+  >
     <slot />
-  </AppForm>
+  </AppApiForm>
 
   <AppModal
     v-if="stripeClientSecret"
@@ -44,17 +48,19 @@
 </template>
 
 <script setup lang="ts">
-import type { PaymentFlowParams } from '@beabee/beabee-common';
-import { AppForm, AppModal, addNotification } from '@beabee/vue';
+import type { PaymentFlowResult } from '@beabee/beabee-common';
+import { AppModal, addNotification } from '@beabee/vue';
 
-import StripePaymentForm from '@components/forms/StripePaymentForm.vue';
-import env from '@env';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
-import type { PaymentFlowFormData } from '@type/payment-flow-form-data';
-import { extractErrorText } from '@utils/api-error';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import StripePaymentForm from '#components/forms/StripePaymentForm.vue';
+import env from '#env';
+import type { PaymentFlowFormData } from '#type/payment-flow-form-data';
+import { extractErrorText } from '#utils/api-error';
 
 const { t } = useI18n();
 
@@ -73,7 +79,7 @@ const props = defineProps<{
   /** The payment data to use for the payment flow */
   flowData: PaymentFlowFormData;
   /** A method which calls the API to start a payment flow*/
-  startFlow: (completeUrl: string) => Promise<PaymentFlowParams>;
+  startFlow: (completeUrl: string) => Promise<PaymentFlowResult>;
   /** A method which calls the API to complete a payment flow */
   completeFlow: (paymentFlowId: string) => Promise<void>;
 }>();

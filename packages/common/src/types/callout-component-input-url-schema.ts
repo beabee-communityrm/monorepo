@@ -4,8 +4,7 @@ import type {
   CalloutComponentInputUrlRules,
 } from './index.js';
 
-export interface CalloutComponentInputUrlSchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentInputUrlSchema extends CalloutComponentBaseInputSchema {
   type: CalloutComponentType.INPUT_URL;
   /** Placeholder for the form */
   placeholder?: string;

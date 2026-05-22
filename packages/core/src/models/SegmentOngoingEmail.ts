@@ -1,12 +1,16 @@
+import type { SegmentOngoingEmailTrigger } from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import type { Email, Segment } from './index';
+import type { Email, Segment } from './index.js';
 
 @Entity()
 export class SegmentOngoingEmail {
@@ -22,11 +26,12 @@ export class SegmentOngoingEmail {
   segment!: Segment;
 
   @Column()
-  trigger!: string;
+  trigger!: SegmentOngoingEmailTrigger;
 
   @Column()
   emailId!: string;
-  @ManyToOne('Email')
+  @OneToOne('Email', 'ongoingEmail')
+  @JoinColumn()
   email!: Email;
 
   @Column({ default: false })

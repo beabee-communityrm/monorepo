@@ -14,7 +14,6 @@
       :aria-hidden="!open"
     >
       <div
-        ref="divRef"
         class="relative flex max-h-full flex-col rounded bg-white p-6 shadow-lg md:max-w-[28rem] md:p-8 lg:w-[28rem]"
         v-bind="$attrs"
         @click.stop
@@ -33,7 +32,7 @@
             {{ title }}
           </span>
         </AppHeading>
-        <div class="overflow-auto">
+        <div ref="scrollContainerRef" class="min-h-0 flex-1 overflow-auto">
           <slot></slot>
         </div>
       </div>
@@ -106,17 +105,17 @@ const props = defineProps<AppModalProps>();
 // Generate unique ID for ARIA relationships
 const modalId = generateUniqueId('modal');
 
-const divRef = ref<HTMLElement>();
+const scrollContainerRef = ref<HTMLElement>();
 
 /**
  * Manages body scroll lock when modal opens/closes
  */
-watch([toRef(props, 'open'), divRef], ([open]) => {
-  if (divRef.value) {
+watch([toRef(props, 'open'), scrollContainerRef], ([open]) => {
+  if (scrollContainerRef.value) {
     if (open) {
-      disableBodyScroll(divRef.value);
+      disableBodyScroll(scrollContainerRef.value);
     } else {
-      enableBodyScroll(divRef.value);
+      enableBodyScroll(scrollContainerRef.value);
     }
   }
 });
@@ -125,8 +124,8 @@ watch([toRef(props, 'open'), divRef], ([open]) => {
  * Cleanup scroll lock on component unmount
  */
 onBeforeUnmount(() => {
-  if (divRef.value && props.open) {
-    enableBodyScroll(divRef.value);
+  if (scrollContainerRef.value && props.open) {
+    enableBodyScroll(scrollContainerRef.value);
   }
 });
 </script>

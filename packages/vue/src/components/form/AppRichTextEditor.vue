@@ -133,9 +133,7 @@ import {
   faStrikethrough,
   faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
-import Link from '@tiptap/extension-link';
 import Typography from '@tiptap/extension-typography';
-import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import { type ChainedCommands, EditorContent, useEditor } from '@tiptap/vue-3';
 import useVuelidate from '@vuelidate/core';
@@ -199,10 +197,7 @@ const editor = useEditor({
       codeBlock: false,
       heading: { levels: [3] },
       horizontalRule: false,
-    }),
-    Underline,
-    Link.configure({
-      openOnClick: false,
+      link: { openOnClick: false },
     }),
     Typography,
   ],
@@ -222,7 +217,7 @@ const editor = useEditor({
 
 watch(toRef(props, 'modelValue'), (value) => {
   if (editor.value && editor.value.getHTML() !== value) {
-    editor.value.commands.setContent(value as string, false);
+    editor.value.commands.setContent(value as string, { emitUpdate: false });
   }
 });
 
@@ -262,11 +257,13 @@ function setLink(): void {
   if (!editor.value || props.disabled) return;
 
   const previousUrl = editor.value.getAttributes('link').href;
-  const url = window.prompt('Set URL (blank to remove)', previousUrl);
+  let url = window.prompt('Set URL (blank to remove)', previousUrl);
 
   if (url === null) {
     return;
   }
+
+  url = url.trim();
 
   if (url === '') {
     editor.value.chain().focus().extendMarkRange('link').unsetLink().run();

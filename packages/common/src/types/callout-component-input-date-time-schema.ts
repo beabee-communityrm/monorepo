@@ -5,8 +5,7 @@ import type {
   TextCase,
 } from './index.js';
 
-export interface CalloutComponentInputDateTimeSchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentInputDateTimeSchema extends CalloutComponentBaseInputSchema {
   type: CalloutComponentType.INPUT_DATE_TIME;
   /** Placeholder for the form */
   placeholder?: string;

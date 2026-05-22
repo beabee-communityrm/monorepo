@@ -1,4 +1,4 @@
-import { ClientApiErrorData } from '@beabee/beabee-common';
+import { LOGIN_CODES, UnauthorizedErrorData } from '@beabee/beabee-common';
 
 import { UnauthorizedError as _UnauthorizedError } from 'routing-controllers';
 
@@ -7,16 +7,15 @@ import { UnauthorizedError as _UnauthorizedError } from 'routing-controllers';
  */
 export class UnauthorizedError
   extends _UnauthorizedError
-  implements ClientApiErrorData
+  implements UnauthorizedErrorData
 {
-  httpCode = 401;
-  code = 'UNAUTHORIZED';
+  readonly httpCode = 401;
 
-  constructor({ message, code }: { message?: string; code?: string } = {}) {
-    super(message);
+  constructor(
+    readonly code = LOGIN_CODES.UNAUTHORIZED,
+    message?: string
+  ) {
+    super(message || `Unauthorized with code ${code}`);
     Object.setPrototypeOf(this, UnauthorizedError.prototype);
-    if (code) {
-      this.code = code;
-    }
   }
 }

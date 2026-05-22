@@ -1,6 +1,14 @@
-import { EmailPreviewData } from './index.js';
+import type { OngoingEmailFields } from './ongoing-email-fields.js';
 
 /**
- * Data for updating an email (subject and body only)
+ * Data for updating an email.
+ * All fields are optional to support partial updates (e.g. toggling enabled).
  */
-export type UpdateEmailData = EmailPreviewData;
+export interface UpdateEmailData {
+  name?: string;
+  fromName?: string | null;
+  fromEmail?: string | null;
+  subject?: string;
+  body?: string;
+  ongoingEmail?: OngoingEmailFields;
+}

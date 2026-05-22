@@ -1,5 +1,5 @@
-import { LocaleContext } from './locale-context.ts';
-import type { LocaleOptions } from './types/locale-option.ts';
+import { LocaleContext } from './locale-context.js';
+import type { LocaleOptions } from './types/locale-option.js';
 
 export const config: LocaleOptions = {
   en: {
@@ -66,6 +66,13 @@ export const config: LocaleOptions = {
     displayName: 'Українська',
     adminLocale: 'uk',
     availableIn: [LocaleContext.Callout, LocaleContext.System],
+  },
+  es: {
+    baseLocale: 'es',
+    name: 'Español',
+    displayName: 'Español',
+    adminLocale: 'en',
+    availableIn: [LocaleContext.Callout],
   },
   fr: {
     baseLocale: 'fr',

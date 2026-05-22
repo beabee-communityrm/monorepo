@@ -4,8 +4,7 @@ import type {
   CalloutComponentSchema,
 } from './index.js';
 
-export interface CalloutComponentBaseNestableSchema
-  extends CalloutComponentBaseSchema {
+export interface CalloutComponentBaseNestableSchema extends CalloutComponentBaseSchema {
   type:
     | CalloutComponentType.NESTABLE_TABS
     | CalloutComponentType.NESTABLE_PANEL

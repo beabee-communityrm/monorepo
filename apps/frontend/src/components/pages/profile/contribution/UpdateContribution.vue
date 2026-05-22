@@ -78,13 +78,14 @@ import {
 import { AppHeading, AppNotification, formatLocale } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import AppContribution from '@components/contribution/AppContribution.vue';
-import PaymentFlowForm from '@components/forms/PaymentFlowForm.vue';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { currentUser } from '@store/currentUser';
-import { client } from '@utils/api';
 import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppContribution from '#components/contribution/AppContribution.vue';
+import PaymentFlowForm from '#components/forms/PaymentFlowForm.vue';
+import { currentUser } from '#store/currentUser';
+import { client } from '#utils/api';
 
 import type { ContributionContent } from '../../../../type/contribution';
 import ProrateContribution from './ProrateContribution.vue';
@@ -195,7 +196,10 @@ watch(
       contribution.value.amount || props.content.initialAmount;
     newContribution.period =
       contribution.value.period ||
-      (props.content.initialPeriod as ContributionPeriod); // TODO
+      // Fallback to monthly if initial period is one-time
+      (props.content.initialPeriod === 'one-time'
+        ? ContributionPeriod.Monthly
+        : props.content.initialPeriod);
     newContribution.payFee = props.content.showAbsorbFee
       ? contribution.value.payFee === undefined
         ? true

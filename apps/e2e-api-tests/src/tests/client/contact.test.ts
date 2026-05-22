@@ -1,5 +1,5 @@
 import { GetContactWith } from '@beabee/beabee-common';
-import { ClientApiError, ContactClient } from '@beabee/client';
+import { ApiError, ContactClient } from '@beabee/client';
 import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
 import { beforeAll, describe, expect, it } from 'vitest';
@@ -43,8 +43,10 @@ describe('Contact API', () => {
   it('should return 400 for non-existing contact id with client', async () => {
     try {
       await contactClient.get('non-existing-id');
+      // If we reach this point, the test should fail
+      expect(true).toBe(false);
     } catch (error) {
-      if (error instanceof ClientApiError) {
+      if (error instanceof ApiError) {
         expect(error.httpCode).toBe(400);
       }
     }

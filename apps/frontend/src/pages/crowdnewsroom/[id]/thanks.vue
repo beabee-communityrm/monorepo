@@ -17,14 +17,15 @@ meta:
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { AppShareBox, AppTitle } from '@beabee/vue';
 
-import CalloutThanksBox from '@components/pages/callouts/CalloutThanksBox.vue';
-import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
-import env from '@env';
 import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { currentUser, isEmbed } from '@store/index';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import CalloutThanksBox from '#components/pages/callouts/CalloutThanksBox.vue';
+import CalloutVariantsBox from '#components/pages/callouts/CalloutVariantsBox.vue';
+import env from '#env';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { currentUser, isEmbed } from '#store/index';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'variantNames'>;

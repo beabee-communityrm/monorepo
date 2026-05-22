@@ -1,4 +1,4 @@
-import { StripeFeeCountry } from './index.js';
+import { type StripeFeeCountry } from './index.js';
 
 export interface ContentPaymentData {
   stripePublicKey: string;

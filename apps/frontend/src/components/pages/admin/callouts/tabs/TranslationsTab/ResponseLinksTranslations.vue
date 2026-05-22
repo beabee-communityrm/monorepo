@@ -26,9 +26,10 @@
 <script lang="ts" setup>
 import { AppFormBox, AppInput } from '@beabee/vue';
 
-import type { LocaleProp } from '@type/locale-prop';
-import { getComponentText, updateComponentText } from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
+
+import type { LocaleProp } from '#type/locale-prop';
+import { getComponentText, updateComponentText } from '#utils/callouts';
 
 const props = defineProps<{
   responseLinks: { text: string; url: string }[];

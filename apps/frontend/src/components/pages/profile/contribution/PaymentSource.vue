@@ -19,18 +19,19 @@
 <script lang="ts" setup>
 import {
   type ContributionInfo,
-  type PaymentFlowParams,
+  type PaymentFlowResult,
   type PaymentSource,
   type PaymentSourceManual,
 } from '@beabee/beabee-common';
 import { AppHeading, addNotification } from '@beabee/vue';
 
-import PaymentFlowForm from '@components/forms/PaymentFlowForm.vue';
-import { PaymentMethod } from '@components/payment';
-import type { PaymentFlowFormData } from '@type/payment-flow-form-data';
-import { client } from '@utils/api';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import PaymentFlowForm from '#components/forms/PaymentFlowForm.vue';
+import { PaymentMethod } from '#components/payment';
+import type { PaymentFlowFormData } from '#type/payment-flow-form-data';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 
@@ -48,7 +49,7 @@ const changeLabel = computed(() =>
 
 async function handleStartPaymentUpdate(
   completeUrl: string
-): Promise<PaymentFlowParams> {
+): Promise<PaymentFlowResult> {
   return await client.contact.paymentMethod.update(completeUrl);
 }
 

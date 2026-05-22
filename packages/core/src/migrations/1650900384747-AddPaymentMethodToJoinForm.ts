@@ -2,9 +2,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 import { addThenSetNotNull } from '#utils/db';
 
-export class AddPaymentMethodToJoinForm1650900384747
-  implements MigrationInterface
-{
+export class AddPaymentMethodToJoinForm1650900384747 implements MigrationInterface {
   name = 'AddPaymentMethodToJoinForm1650900384747';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

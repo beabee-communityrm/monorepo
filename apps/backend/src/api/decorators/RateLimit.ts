@@ -1,3 +1,4 @@
+import config from '@beabee/core/config';
 import { TooManyRequestsError } from '@beabee/core/errors';
 import { log as mainLogger } from '@beabee/core/logging';
 import type { RateLimitOptions } from '@beabee/core/type';
@@ -34,6 +35,11 @@ export function RateLimit(options: RateLimitOptions) {
     res: Response,
     next: NextFunction
   ) {
+    // Skip rate limiting in test mode
+    if (config.disableRateLimit) {
+      return next();
+    }
+
     const currentUser = req.user;
     let keyBase: string;
     let limiter;
@@ -66,11 +72,7 @@ export function RateLimit(options: RateLimitOptions) {
           });
 
           // Use routing-controllers error handling by throwing the error
-          next(
-            new TooManyRequestsError({
-              message: `Rate limit exceeded. Try again in ${retryAfter} seconds.`,
-            })
-          );
+          next(new TooManyRequestsError(retryAfter));
         } else {
           next(new Error('Internal server error during rate limiting.'));
         }

@@ -1,8 +1,11 @@
 import type { ContentGeneralData } from '@beabee/beabee-common';
 
-import { client } from '@utils/api';
-import { resolveImageUrl } from '@utils/url';
 import { computed, ref } from 'vue';
+
+import { client } from '#utils/api';
+import { resolveImageUrl } from '#utils/url';
+
+const isInited = ref(false);
 
 export const generalContent = ref<ContentGeneralData>({
   organisationName: '',
@@ -19,13 +22,15 @@ export const generalContent = ref<ContentGeneralData>({
   theme: {},
   backgroundUrl: '',
   hideContribution: false,
+  enableOneTimeDonations: false,
 });
 
-export const initGeneralContent = () =>
-  client.content.get('general').then((content) => {
-    generalContent.value = content;
-    return content;
-  });
+export const initGeneralContent = async () => {
+  if (!isInited.value) {
+    generalContent.value = await client.content.get('general');
+    isInited.value = true;
+  }
+};
 
 export const backgroundStyle = computed(() => ({
   backgroundImage: `url(${resolveImageUrl(generalContent.value.backgroundUrl)})`,

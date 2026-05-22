@@ -261,12 +261,13 @@ import {
   type ScrollSection,
 } from '@beabee/vue';
 
-import AppNewsletterOptInSettings from '@components/newsletter/AppNewsletterOptInSettings.vue';
-import env from '@env';
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppNewsletterOptInSettings from '#components/newsletter/AppNewsletterOptInSettings.vue';
+import env from '#env';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 

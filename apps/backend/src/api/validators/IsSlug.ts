@@ -1,5 +1,7 @@
 import { ValidateBy, ValidationOptions, buildMessage } from 'class-validator';
-import slugify from 'slugify';
+import slugifyLib from 'slugify';
+
+const slugify = slugifyLib.default;
 
 export default function IsSlug(
   validationOptions?: ValidationOptions

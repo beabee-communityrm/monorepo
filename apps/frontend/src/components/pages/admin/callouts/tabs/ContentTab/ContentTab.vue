@@ -89,15 +89,16 @@
 import { ItemStatus } from '@beabee/beabee-common';
 import { AppButton, AppNotification } from '@beabee/vue';
 
-import FormBuilderNavigation from '@components/form-builder/FormBuilderNavigation.vue';
-import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getSlideSchema } from '@utils/callouts';
 import useVuelidate from '@vuelidate/core';
 import { computed, markRaw, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import Draggable from 'vuedraggable';
+
+import FormBuilderNavigation from '#components/form-builder/FormBuilderNavigation.vue';
+import type { FormBuilderSlide } from '#components/form-builder/form-builder.interface';
+import { getSlideSchema } from '#utils/callouts';
 
 import type { CalloutHorizontalTabs } from '../../CalloutHorizontalTabs.interface';
 import CalloutSlideItem from './CalloutSlideItem.vue';

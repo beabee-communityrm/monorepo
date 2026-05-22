@@ -1,8 +1,7 @@
-require('module-alias/register');
+import gocardless from '@beabee/core/lib/gocardless';
 
-const crypto = require('crypto');
-const moment = require('moment');
-const { default: gocardless } = require('@core/lib/gocardless');
+import crypto from 'crypto';
+import moment from 'moment';
 
 async function fetchCustomers(customerIds) {
   let customers = [],

@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class ApiKeyDescriptioNotNull1686233847551
-  implements MigrationInterface
-{
+export class ApiKeyDescriptioNotNull1686233847551 implements MigrationInterface {
   name = 'ApiKeyDescriptioNotNull1686233847551';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

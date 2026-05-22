@@ -9,8 +9,8 @@ import type {
   DocumentServiceConfig,
   ImageServiceConfig,
   S3Config,
-} from '../type/index';
-import * as env from './env';
+} from '../type/index.js';
+import * as env from './env.js';
 
 /**
  * SMTP email provider configuration
@@ -166,6 +166,8 @@ export const config = {
   serviceSecret: env.s('BEABEE_SERVICE_SECRET'), // Secret for internal service authentication
   session: env.s('BEABEE_SESSION', 'session'), // Session identifier (default: "session")
 
+  webhookUrl: env.s('BEABEE_WEBHOOKURL', env.s('BEABEE_AUDIENCE')), // Public URL for receiving webhooks
+
   // Cookie settings for authentication
   cookie: {
     domain: env.s('BEABEE_COOKIE_DOMAIN'), // Cookie domain (e.g., localhost)
@@ -239,9 +241,8 @@ export const config = {
   stripe: {
     publicKey: env.s('BEABEE_STRIPE_PUBLICKEY', ''), // Stripe publishable key (default: empty)
     secretKey: env.s('BEABEE_STRIPE_SECRETKEY', ''), // Stripe secret key (default: empty)
-    webhookSecret: env.s('BEABEE_STRIPE_WEBHOOKSECRET', ''), // Stripe webhook signing secret (default: empty)
-    membershipProductId: env.s('BEABEE_STRIPE_MEMBERSHIPPRODUCTID', ''), // Stripe product ID for memberships
     country: env.e('BEABEE_STRIPE_COUNTRY', ['gb', 'eu', 'ca'] as const, 'gb'), // Stripe account country (default: gb)
+    version: '2024-04-10' as const, // Stripe API version to use
   },
 
   // Localization settings
@@ -255,11 +256,15 @@ export const config = {
 
   // Grace period for expired memberships
   gracePeriod: {
-    days: 7, // Number of days in grace period after expiry
+    days: 14, // Number of days in grace period after expiry
   },
 
   // Logging configuration
+  logging: env.ss('BEABEE_LOGGING', []), // Enable logging (default: false)
   logFormat: env.e('BEABEE_LOGFORMAT', ['json', 'simple'] as const, 'json'), // Log format (default: json)
+
+  // Rate limiting configuration
+  disableRateLimit: env.b('BEABEE_DISABLERATELIMIT', false), // Disable rate limiting in test mode (default: false)
 
   // App configuration overrides from environment
   appOverrides: env.json('BEABEE_APPOVERRIDES', {}) as AppConfigOverrides, // JSON of app configuration overrides

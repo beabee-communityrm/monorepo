@@ -4,7 +4,7 @@
  * @returns Cleaned URL string with single forward slashes
  */
 export const cleanUrl = (url: string): string => {
-  return url.replaceAll('//', '/');
+  return url.replace(/\/\//g, '/');
 };
 
 /**

@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddUpdatedAtToCalloutResponseComment1678898590335
-  implements MigrationInterface
-{
+export class AddUpdatedAtToCalloutResponseComment1678898590335 implements MigrationInterface {
   name = 'AddUpdatedAtToCalloutResponseComment1678898590335';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

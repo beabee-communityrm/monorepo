@@ -1,7 +1,7 @@
-import config from '@beabee/core/config';
 import { stripe } from '@beabee/core/lib/stripe';
 import { StripeWebhookEventHandler } from '@beabee/core/lib/stripe-webhook-event-handler';
 import { log as mainLogger } from '@beabee/core/logging';
+import { optionsService } from '@beabee/core/services/OptionsService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import bodyParser from 'body-parser';
@@ -24,7 +24,7 @@ stripeWebhookApp.post(
       const evt = stripe.webhooks.constructEvent(
         req.body,
         sig,
-        config.stripe.webhookSecret
+        optionsService.getText('stripe-webhook-secret')
       );
 
       log.info(`Got webhook ${evt.id} ${evt.type}`);

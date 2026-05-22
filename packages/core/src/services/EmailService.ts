@@ -1,13 +1,15 @@
 import {
   EmailTemplateType,
   type GetEmailTemplateInfoData,
+  type SegmentOngoingEmailTrigger,
 } from '@beabee/beabee-common';
 import { Locale, isLocale } from '@beabee/locale';
 
 import fs from 'fs';
+import { fileURLToPath } from 'node:url';
 import path from 'path';
 import { IsNull, Not } from 'typeorm';
-import { loadFront } from 'yaml-front-matter';
+import yfm from 'yaml-front-matter';
 
 import config from '#config/config';
 import {
@@ -20,7 +22,12 @@ import {
 } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import { log as mainLogger } from '#logging';
-import { Contact, Email, EmailMailing } from '#models/index';
+import {
+  Contact,
+  Email,
+  EmailMailing,
+  SegmentOngoingEmail,
+} from '#models/index';
 import {
   MandrillProvider,
   SMTPProvider,
@@ -48,6 +55,8 @@ import {
 } from '#type/index';
 import { replaceMergeFields } from '#utils/email';
 
+const { loadFront } = yfm;
+
 const log = mainLogger.child({ app: 'email-service' });
 
 class EmailService {
@@ -63,7 +72,10 @@ class EmailService {
   > = {};
 
   constructor() {
-    const emailDir = path.join(__dirname, '../data/email');
+    const emailDir = path.join(
+      path.dirname(fileURLToPath(import.meta.url)),
+      '../data/email'
+    );
     const emailFiles = fs.readdirSync(emailDir);
     log.info('Loading default emails');
 
@@ -403,6 +415,7 @@ class EmailService {
   async deleteEmail(id: string): Promise<boolean> {
     const result = await runTransaction(async (em) => {
       await em.getRepository(EmailMailing).delete({ emailId: id });
+      await em.getRepository(SegmentOngoingEmail).delete({ emailId: id });
       return await em.getRepository(Email).delete(id);
     });
 
@@ -503,6 +516,32 @@ class EmailService {
         ...additionalMergeFields,
       },
     };
+  }
+
+  /**
+   * Add or update ongoing email for a segment (upsert).
+   * Uses INSERT ... ON CONFLICT to avoid race conditions.
+   */
+  async addOngoingEmail(
+    segmentId: string,
+    emailId: string,
+    trigger: SegmentOngoingEmailTrigger,
+    enabled = true
+  ): Promise<void> {
+    await getRepository(SegmentOngoingEmail)
+      .createQueryBuilder()
+      .insert()
+      .into(SegmentOngoingEmail)
+      .values({ segmentId, emailId, trigger, enabled })
+      .orUpdate(['segmentId', 'trigger', 'enabled'], ['emailId'])
+      .execute();
+  }
+
+  /**
+   * Remove all ongoing email entries for a given email.
+   */
+  async removeOngoingEmailByEmailId(emailId: string): Promise<void> {
+    await getRepository(SegmentOngoingEmail).delete({ emailId });
   }
 }
 

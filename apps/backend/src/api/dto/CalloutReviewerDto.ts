@@ -1,7 +1,8 @@
-import { GetPaginatedQuery } from '@api/dto/BaseDto';
 import { IsBoolean, IsIn, IsString, ValidateNested } from 'class-validator';
 
-import { GetContactDto } from './ContactDto';
+import { GetPaginatedQuery } from '#api/dto/BaseDto';
+
+import { GetContactDto } from './ContactDto.js';
 
 export class CreateCalloutReviewerDto {
   @IsString()

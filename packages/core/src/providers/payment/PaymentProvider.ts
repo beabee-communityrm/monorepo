@@ -1,14 +1,12 @@
-import {
-  ContributionForm,
-  PaymentForm,
-  PaymentMethod,
-} from '@beabee/beabee-common';
+import { PaymentMethod } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { Contact, ContactContribution } from '#models/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
+  PaymentFlowForm,
+  UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
 
@@ -35,21 +33,41 @@ export abstract class PaymentProvider {
   }
 
   /**
-   * Checks if contribution changes are allowed
-   * @param useExistingMandate - Whether to use existing payment mandate
-   * @param form - New contribution details
-   * @returns Promise resolving to boolean indicating if changes are allowed
+   * Can the provider process the given payment flow at the moment. This can be used by
+   * payment providers to block certain flows when the user is in a state where they can't
+   * be processed.
+   * @param form - The payment flow to be processed
+   * @returns Whether the payment flow can be processed
    */
-  abstract canChangeContribution(
-    useExistingMandate: boolean,
-    form: ContributionForm
+  abstract canProcessPaymentFlow(form: PaymentFlowForm): Promise<boolean>;
+
+  /**
+   * Process the payment flow and perform the necessary operations to complete it.
+   * @param form - The payment flow to be processed
+   */
+  abstract processPaymentFlow(
+    form: CompletedPaymentFlow
+  ): Promise<UpdateContributionResult | undefined>;
+
+  /**
+   * Checks if contribution updates are allowed. This can be used to block
+   * contribution updates when the user is in a state where they can't be
+   * processed (e.g. pending payments with GoCardless).
+   * @param form - New contribution details
+   * @returns Whether contribution updates are allowed
+   */
+  abstract canUpdateContribution(
+    form: UpdateContributionForm
   ): Promise<boolean>;
 
   /**
-   * Cancels an active contribution
-   * @param keepMandate - Whether to keep payment mandate for future use
+   * Updates contribution details
+   * @param form - New contribution form data
+   * @returns Promise resolving to update result
    */
-  abstract cancelContribution(keepMandate: boolean): Promise<void>;
+  abstract processUpdateContribution(
+    form: UpdateContributionForm
+  ): Promise<UpdateContributionResult>;
 
   /**
    * Gets current contribution information
@@ -58,35 +76,16 @@ export abstract class PaymentProvider {
   abstract getContributionInfo(): Promise<Partial<ContributionInfo>>;
 
   /**
+   * Cancels an active contribution
+   * @param keepMandate - Whether to keep payment mandate for future use
+   */
+  abstract cancelContribution(keepMandate: boolean): Promise<void>;
+
+  /**
    * Updates contact information with payment provider
    * @param updates - Contact fields to update
    */
   abstract updateContact(updates: Partial<Contact>): Promise<void>;
-
-  /**
-   * Updates contribution details
-   * @param form - New contribution form data
-   * @returns Promise resolving to update result
-   */
-  abstract updateContribution(
-    form: ContributionForm
-  ): Promise<UpdateContributionResult>;
-
-  /**
-   * Updates payment method using completed payment flow
-   * @param completedPaymentFlow - The completed payment flow with new method
-   */
-  abstract updatePaymentMethod(
-    completedPaymentFlow: CompletedPaymentFlow
-  ): Promise<void>;
-
-  /**
-   * Creates a one-time payment using a completed payment flow
-   * @param completedPaymentFlow - The completed payment flow
-   */
-  abstract createOneTimePayment(
-    completedPaymentFlow: CompletedPaymentFlow
-  ): Promise<void>;
 
   /**
    * Permanently deletes contact data from payment provider

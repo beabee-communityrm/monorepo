@@ -1,4 +1,5 @@
 import '@beabee/vue/lib/theme';
+// @ts-expect-error CSS side-effect import has no type declarations
 import '@beabee/vue/styles';
 
 import { fab } from '@fortawesome/free-brands-svg-icons';

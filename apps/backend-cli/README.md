@@ -4,7 +4,13 @@ Command line interface for managing Beabee backend operations.
 
 ## Usage
 
-> **Important**: This CLI tool can only be executed within the `api_app` Docker container and cannot be run locally.
+You can run the CLI from here or from the monorepo root:
+
+```bash
+yarn backend-cli <command>
+```
+
+> **Note**: When running against a remote database, make sure the `.env.remote` file is configured. See the [Environment Variables Documentation](../../docs/environment-variables.md) for details.
 
 The CLI provides several commands for managing different aspects of Beabee, you can see the list of commands by running `yarn backend-cli --help`:
 
@@ -14,6 +20,7 @@ yarn backend-cli <command>
 
 Commands:
   yarn backend-cli api-key <action>  Manage API keys
+  yarn backend-cli database <action>  Database management commands
   yarn backend-cli user <action>     Manage users
   yarn backend-cli setup <action>    Configure system settings
   yarn backend-cli payment <action>  Payment management commands
@@ -33,10 +40,46 @@ Options:
 ### API Key Management
 
 ```bash
-yarn backend-cli api-key list         List all API keys
-yarn backend-cli api-key create       Create a new API key
-yarn backend-cli api-key delete <id>  Delete an API key
+yarn backend-cli api-key list          List all API keys
+yarn backend-cli api-key create        Create a new API key
+yarn backend-cli api-key delete <id>   Delete an API key
 ```
+
+### Database Management
+
+```bash
+# Export full database (SQL dump with anonymised data)
+yarn backend-cli database export \
+  [--dryRun] \
+  [--anonymize=full|safe|none] \
+  [--skipAnonymizeTables contact segment ...]
+
+# Export demo subset (limited random contacts and latest callouts, anonymised)
+yarn backend-cli database export-demo [--dryRun]
+
+# Export callout data only
+yarn backend-cli database export-callouts \
+  [--dryRun] \
+  [--anonymize=full|none]
+
+# Import database from SQL dump (dev only)
+yarn backend-cli database import \
+  [--file path/to/dump.sql] \
+  [--dryRun]
+```
+
+Notes:
+
+- **Export format** is a SQL dump: each pair of lines is a SQL statement followed by a JSON array of parameters (or an empty line).
+- **`--anonymize` levels for `database export`:**
+  - `full` (default) — all data anonymised including contacts, payments, emails and segments
+  - `safe` — contacts/payments/emails/segments anonymised, other tables exported as-is
+  - `none` — **everything raw including PII** — for local migration testing only. Emits a stderr warning.
+- **`--anonymize` levels for `database export-callouts`:**
+  - `full` (default) — personal data anonymised (guest names/emails, contact FKs)
+  - `none` — everything raw — for local migration testing only. Emits a stderr warning.
+- `--skipAnonymizeTables` lets you export specific tables without anonymisation while still keeping foreign keys consistent.
+- Database dumps are stored in the `exports/` directory at the monorepo root (git-ignored).
 
 ### User Management
 

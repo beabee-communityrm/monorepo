@@ -7,12 +7,14 @@ import { Payment } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import PaymentService from '@beabee/core/services/PaymentService';
 
-import {
+import type {
   Payment as GCPayment,
-  PaymentStatus as GCPaymentStatus,
   Subscription as GCSubscription,
+} from 'gocardless-nodejs';
+import {
+  PaymentStatus as GCPaymentStatus,
   SubscriptionIntervalUnit,
-} from 'gocardless-nodejs/types/Types';
+} from 'gocardless-nodejs/types/Types.js';
 import moment, { DurationInputObject } from 'moment';
 
 const log = mainLogger.child({ app: 'payment-webhook-utils' });

@@ -11,7 +11,7 @@ import type { SetupPaymentMethodsArgs } from '../../types/setup.js';
  * Accepts command line arguments or prompts for missing information
  */
 export const setupPaymentMethods = async (
-  args: SetupPaymentMethodsArgs = {}
+  args: SetupPaymentMethodsArgs
 ): Promise<void> => {
   try {
     console.log('Setting up payment methods configuration...\n');
@@ -29,15 +29,9 @@ export const setupPaymentMethods = async (
           {
             name: 'GoCardless Direct Debit',
             value: 'gc_direct-debit',
-            checked: true,
+            checked: false,
           },
         ],
-        validate: (input: readonly any[]) => {
-          if (input.length === 0) {
-            return 'At least one payment method must be selected';
-          }
-          return true;
-        },
       }));
 
     await runApp(async () => {

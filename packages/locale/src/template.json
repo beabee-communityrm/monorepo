@@ -180,11 +180,41 @@
       "showingOf": ""
     },
     "email": {
+      "contactTemplates": {
+        "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "sendTypes": {
+          "oneOffLabel": "",
+          "ongoingLabel": "",
+          "title": ""
+        },
+        "summaryOnceOnly": "",
+        "summaryOngoingJoin": "",
+        "summaryOngoingJoinDirectSend": "",
+        "summaryOngoingLeave": "",
+        "summaryOngoingPaused": "",
+        "summaryTemplate": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "",
       "fromName": "",
       "label": "",
       "templates": {
         "description": "",
+        "subtitle": "",
         "title": ""
       },
       "text": "",
@@ -222,6 +252,8 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "",
       "showOneTimeDonation": "",
       "taxRate": "",
@@ -260,6 +292,7 @@
       "any": ""
     },
     "createdSegment": "",
+    "invalidRuleError": "",
     "matchWord": {
       "AND": "",
       "OR": ""
@@ -763,6 +796,7 @@
       "label": "",
       "starts": ""
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "",
@@ -924,6 +958,9 @@
     "label": "",
     "loading": "",
     "login": "",
+    "manualPaymentSource": {
+      "none": ""
+    },
     "newsletterStatus": {
       "cleaned": "",
       "none": "",
@@ -1086,6 +1123,27 @@
       "recurringContributions": "",
       "role": ""
     },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      },
+      "create": "",
+      "date": "",
+      "editTitle": "",
+      "editTitleWithName": "",
+      "empty": "",
+      "manage": "",
+      "name": "",
+      "newTitle": "",
+      "showingOf": "",
+      "subject": "",
+      "title": "",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
+    },
     "noContacts": "",
     "noResults": "",
     "numResults": "",
@@ -1093,12 +1151,7 @@
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "",
-      "saveAndBack": "",
-      "saveAndBackSuccess": "",
-      "saveAndSend": "",
-      "send": "",
       "sent": "",
-      "sentTimes": "",
       "templateLabel": "",
       "templateName": "",
       "templateNameRequired": "",
@@ -1162,8 +1215,12 @@
     "body": {
       "label": ""
     },
+    "from": {
+      "label": ""
+    },
     "preview": {
       "asContactLabel": "",
+      "from": "",
       "label": "",
       "unavailable": ""
     },
@@ -1198,6 +1255,7 @@
     },
     "fromEmail": "",
     "fromName": "",
+    "isOngoing": "",
     "list": {
       "showingOf": ""
     },
@@ -1207,8 +1265,14 @@
     "notifications": {
       "created": "",
       "deleted": "",
+      "missingMergeTags": "",
       "resetToDefault": "",
       "updated": ""
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
     },
     "status": "",
     "tabs": {
@@ -1467,6 +1531,11 @@
         "message": "",
         "title": ""
       },
+      "notFound": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
+      },
       "paymentFailed": {
         "backToJoin": "",
         "message": "",
@@ -1488,10 +1557,6 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "",
-      "recurringLabel": ""
-    },
     "genericError": "",
     "goBack": "",
     "goBackButton": "",
@@ -1567,10 +1632,12 @@
         "description": "",
         "formSubtitle": "",
         "formTitle": "",
+        "googleApplePayNoticeText": "",
         "minAmount": "",
         "noticeText": "",
         "noticeTextHelp": "",
         "showAbsorbFee": "",
+        "showGoogleApplePay": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
@@ -1701,6 +1768,11 @@
     "resetPassword": "",
     "setPassword": "",
     "setup": ""
+  },
+  "paymentLabels": {
+    "membershipProductName": "",
+    "recurringContribution": "",
+    "taxRateDisplayName": ""
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -1839,8 +1911,5 @@
     },
     "searchTag": "",
     "toggleTag": ""
-  },
-  "taxRate": {
-    "invoiceName": ""
   }
 }

@@ -4,14 +4,20 @@ import { ExportTypeId } from '@beabee/core/type';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express } from 'express';
+import { fileURLToPath } from 'node:url';
 import Papa from 'papaparse';
+import path from 'path';
 import { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 
 import { hasNewModel, hasSchema, isAdmin } from '#core/middleware';
 import { Param, parseParams } from '#core/utils/params';
 
-import ExportTypes from './exports';
-import { createSchema, updateSchema } from './schemas.json';
+import ExportTypes from './exports/index.js';
+import _schemas from './schemas.json' with { type: 'json' };
+
+const { createSchema, updateSchema } = _schemas;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export interface ExportType<T extends ObjectLiteral> {
   exportName: string;

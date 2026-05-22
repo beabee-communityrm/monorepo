@@ -47,6 +47,17 @@ meta:
     </div>
   </PageTitle>
 
+  <AppNotification
+    v-if="hasMissingMergeTags"
+    variant="error"
+    :title="
+      t('emails.notifications.missingMergeTags', {
+        mergeTags: missingMergeTagString,
+      })
+    "
+    class="mb-4"
+  />
+
   <div v-if="loading">
     <p>{{ t('common.loading') }}...</p>
   </div>
@@ -57,26 +68,40 @@ meta:
     @submit="handleSubmit"
   >
     <EmailEditor
+      v-model:from-name="emailData.fromName"
+      v-model:from-email="emailData.fromEmail"
       v-model:subject="emailData.subject"
       v-model:content="emailData.body"
       :template="{ type: templateType, id: templateId }"
       :heading="t('emailEditor.body.label')"
+      show-from-fields
+      class="mb-4"
     />
   </AppApiForm>
 </template>
 
 <script lang="ts" setup>
-import type { GetEmailTemplateInfoData } from '@beabee/beabee-common';
-import { AppButton, AppConfirmDialog, PageTitle } from '@beabee/vue';
+import type {
+  GetEmailData,
+  GetEmailTemplateInfoData,
+} from '@beabee/beabee-common';
+import { NotFoundError } from '@beabee/client';
+import {
+  AppButton,
+  AppConfirmDialog,
+  AppNotification,
+  PageTitle,
+} from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import EmailEditor from '@components/EmailEditor.vue';
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client, isApiError } from '@utils/api';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import EmailEditor from '#components/emails/EmailEditor.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -88,8 +113,13 @@ const templateId = computed(() => {
   return Array.isArray(param) ? param[0] : param;
 });
 
+type EmailFormData = Pick<
+  GetEmailData,
+  'fromName' | 'fromEmail' | 'subject' | 'body'
+>;
+
 const loading = ref(true);
-const emailData = ref<{ subject: string; body: string } | null>(null);
+const emailData = ref<EmailFormData | null>(null);
 const templateInfo = ref<GetEmailTemplateInfoData | null>(null);
 
 const hasOverride = computed(() => templateInfo.value?.hasOverride ?? false);
@@ -101,6 +131,40 @@ const pageTitle = computed(() => {
 });
 
 const showResetConfirmDialog = ref(false);
+
+/**
+ * Allows extracting merge tags from a string.
+ * @param text String to extract merge tags from.
+ */
+function getMergeTag(text: string): string[] {
+  const regex = /\*\|\w+\|\*/g;
+  const matches = text.match(regex) || [];
+  return matches;
+}
+
+const missingMergeTags = computed(() => {
+  const requiredMergeTagMap: Record<string, string[]> = {
+    'reset-password': ['*|RPLINK|*'],
+    'confirm-email': ['*|CONFIRMLINK|*'],
+    'setup-account': ['*|CONFIRMLINK|*'],
+    'contribution-didnt-start': ['*|LOGINLINK|*'],
+    'email-exists-login': ['*|LOGINLINK|*'],
+    'email-exists-set-password': ['*|SPLINK|*'],
+    'reset-device': ['*|RPLINK|*'],
+  };
+  const requiredTags = requiredMergeTagMap[templateId.value];
+  if (!emailData.value || !requiredTags) return undefined;
+  const mergeTags = getMergeTag(emailData.value.body);
+  return requiredTags.filter((tag) => !mergeTags.includes(tag));
+});
+
+const missingMergeTagString = computed(() =>
+  missingMergeTags.value ? missingMergeTags.value.join(', ') : ''
+);
+
+const hasMissingMergeTags = computed(() =>
+  missingMergeTags.value?.length ? missingMergeTags.value : undefined
+);
 
 addBreadcrumb(computed(() => [{ title: 'Email' }, { title: pageTitle.value }]));
 
@@ -136,10 +200,7 @@ async function handleSubmit() {
   if (!emailData.value) return;
 
   try {
-    await client.email.template.update(templateId.value, {
-      subject: emailData.value.subject,
-      body: emailData.value.body,
-    });
+    await client.email.template.update(templateId.value, emailData.value);
 
     addNotification({
       variant: 'success',
@@ -183,15 +244,18 @@ async function handleReset() {
   }
 }
 
-async function loadEmail(
-  templateId: string
-): Promise<{ subject: string; body: string }> {
+async function loadEmail(templateId: string): Promise<EmailFormData> {
   try {
     const email = await client.email.template.get(templateId);
-    return { subject: email.subject, body: email.body };
+    return {
+      fromName: email.fromName,
+      fromEmail: email.fromEmail,
+      subject: email.subject,
+      body: email.body,
+    };
   } catch (err) {
-    if (isApiError(err, undefined, [404])) {
-      return { subject: '', body: '' };
+    if (err instanceof NotFoundError) {
+      return { fromName: null, fromEmail: null, subject: '', body: '' };
     } else {
       throw err;
     }

@@ -3,7 +3,7 @@ import { NewsletterStatus } from '@beabee/beabee-common';
 import { Contact } from '#models';
 import { ContactNewsletterUpdates, UpdateNewsletterContact } from '#type';
 
-import { getContributionDescription } from './contact';
+import { getContributionDescription } from './contact.js';
 
 /**
  * Convert a contact to a newsletter update object that can be sent to the

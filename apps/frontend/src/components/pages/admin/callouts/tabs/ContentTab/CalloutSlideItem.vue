@@ -46,11 +46,12 @@
 <script lang="ts" setup>
 import { AppButton } from '@beabee/vue';
 
-import type { FormBuilderSlide } from '@components/form-builder/form-builder.interface';
 import { faGripVertical, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { getDecisionComponent } from '@utils/callouts';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import type { FormBuilderSlide } from '#components/form-builder/form-builder.interface';
+import { getDecisionComponent } from '#utils/callouts';
 
 const { t } = useI18n();
 

@@ -1,7 +1,8 @@
 {
   "name": "@beabee/template-vanilla",
   "description": "Vanilla template for TypeScript packages that export TypeScript directly",
-  "version": "0.28.1",
+  "version": "0.44.2",
+  "private": true,
   "type": "module",
   "exports": {
     ".": "./index.ts"
@@ -17,8 +18,8 @@
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
-    "@types/node": "^22.15.28",
-    "prettier": "^3.5.3",
-    "typescript": "~5.9.3"
+    "@types/node": "^24.12.2",
+    "prettier": "^3.8.3",
+    "typescript": "~6.0.3"
   }
 }

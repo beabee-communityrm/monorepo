@@ -6,8 +6,7 @@ import type {
 } from './index.js';
 
 /** The schema for input text forms */
-export interface CalloutComponentBaseInputTextSchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentBaseInputTextSchema extends CalloutComponentBaseInputSchema {
   type:
     | CalloutComponentType.INPUT_TEXT_FIELD
     | CalloutComponentType.INPUT_TEXT_AREA;

@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddCalloutResponseSegment1755526570609
-  implements MigrationInterface
-{
+export class AddCalloutResponseSegment1755526570609 implements MigrationInterface {
   name = 'AddCalloutResponseSegment1755526570609';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

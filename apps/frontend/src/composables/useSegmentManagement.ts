@@ -1,8 +1,9 @@
 import type { GetSegmentDataWith } from '@beabee/beabee-common';
 
-import { defineParam, defineRulesParam } from '@utils/pagination';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
+
+import { defineParam, defineRulesParam } from '#utils/pagination';
 
 export function useSegmentManagement(
   basePath: string,
@@ -17,6 +18,15 @@ export function useSegmentManagement(
   const segments = ref<GetSegmentDataWith<'itemCount'>[]>([]);
 
   const totalItems = ref<number | null>(null);
+
+  function emptyTable() {
+    return {
+      items: [],
+      total: 0,
+      offset: 0,
+      count: 0,
+    };
+  }
 
   const currentRules = defineRulesParam(
     computed(() => currentSegment.value?.ruleGroup)
@@ -75,6 +85,7 @@ export function useSegmentManagement(
     totalItems,
     currentRules,
     hasUnsavedSegment,
+    emptyTable,
     segmentItems,
     handleSavedSegment,
   };

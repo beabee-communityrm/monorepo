@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddCalloutResponseEmail1760107926234
-  implements MigrationInterface
-{
+export class AddCalloutResponseEmail1760107926234 implements MigrationInterface {
   name = 'AddCalloutResponseEmail1760107926234';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

@@ -96,22 +96,23 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import noImage from '@assets/images/no-image.avif';
-import CalloutForm from '@components/pages/callouts/CalloutForm.vue';
-import CalloutLoginPrompt from '@components/pages/callouts/CalloutLoginPrompt.vue';
-import CalloutMemberOnlyPrompt from '@components/pages/callouts/CalloutMemberOnlyPrompt.vue';
-import CalloutThanksBox from '@components/pages/callouts/CalloutThanksBox.vue';
-import CalloutVariantsBox from '@components/pages/callouts/CalloutVariantsBox.vue';
-import { useCallout } from '@components/pages/callouts/use-callout';
-import env from '@env';
 import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { currentUser, isEmbed } from '@store';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
-import { resolveImageUrl } from '@utils/url';
 import { computed, onBeforeMount, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import noImage from '#assets/images/no-image.avif';
+import CalloutForm from '#components/pages/callouts/CalloutForm.vue';
+import CalloutLoginPrompt from '#components/pages/callouts/CalloutLoginPrompt.vue';
+import CalloutMemberOnlyPrompt from '#components/pages/callouts/CalloutMemberOnlyPrompt.vue';
+import CalloutThanksBox from '#components/pages/callouts/CalloutThanksBox.vue';
+import CalloutVariantsBox from '#components/pages/callouts/CalloutVariantsBox.vue';
+import { useCallout } from '#components/pages/callouts/use-callout';
+import env from '#env';
+import { currentUser, isEmbed } from '#store';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
+import { resolveImageUrl } from '#utils/url';
 
 // Props: Receive the already processed callout from parent route
 const props = defineProps<{

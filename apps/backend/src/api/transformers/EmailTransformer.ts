@@ -1,11 +1,12 @@
 import { EmailFilterName, emailFilters } from '@beabee/beabee-common';
 import { Email } from '@beabee/core/models';
 
-import { GetEmailDto, ListEmailsDto } from '@api/dto/EmailDto';
 import { TransformPlainToInstance } from 'class-transformer';
 import { SelectQueryBuilder } from 'typeorm';
 
-import { BaseTransformer } from './BaseTransformer';
+import { GetEmailDto, ListEmailsDto } from '#api/dto/EmailDto';
+
+import { BaseTransformer } from './BaseTransformer.js';
 
 class EmailTransformer extends BaseTransformer<
   Email,
@@ -25,16 +26,24 @@ class EmailTransformer extends BaseTransformer<
    */
   @TransformPlainToInstance(GetEmailDto)
   convert(email: Email): GetEmailDto {
+    const ongoingEmail = email.ongoingEmail;
     return {
       id: email.id,
       ...(email.templateId && { templateId: email.templateId }),
       name: email.name,
-      ...(email.fromName && { fromName: email.fromName }),
-      ...(email.fromEmail && { fromEmail: email.fromEmail }),
+      fromName: email.fromName,
+      fromEmail: email.fromEmail,
       subject: email.subject,
       body: email.body,
       date: email.date.toISOString(),
       mailingCount: email.mailingCount || 0,
+      isOngoing: !!ongoingEmail,
+      ...(ongoingEmail && {
+        segmentId: ongoingEmail.segmentId,
+        segmentName: ongoingEmail.segment?.name,
+        trigger: ongoingEmail.trigger,
+        enabled: ongoingEmail.enabled,
+      }),
     };
   }
 
@@ -47,6 +56,12 @@ class EmailTransformer extends BaseTransformer<
       `${fieldPrefix}mailingCount`,
       `${fieldPrefix}mailings`
     );
+
+    // Load ongoing email with segment for detail data
+    qb.leftJoinAndSelect(
+      `${fieldPrefix}ongoingEmail`,
+      'ongoingEmail'
+    ).leftJoinAndSelect('ongoingEmail.segment', 'ongoingSegment');
   }
 }
 

@@ -1,6 +1,7 @@
 {
   "name": "@beabee/test-utils",
-  "version": "0.28.1",
+  "version": "0.44.2",
+  "private": true,
   "type": "module",
   "exports": {
     "./vitest/*": "./vitest/*.ts",
@@ -20,9 +21,9 @@
   },
   "dependencies": {
     "@beabee/prettier-config": "workspace:^",
-    "openapi-typescript": "^7.8.0",
-    "prettier": "^3.5.2",
-    "testcontainers": "^11.0.0",
-    "typescript": "~5.9.3"
+    "openapi-typescript": "^7.13.0",
+    "prettier": "^3.8.3",
+    "testcontainers": "^11.14.0",
+    "typescript": "~6.0.3"
   }
 }

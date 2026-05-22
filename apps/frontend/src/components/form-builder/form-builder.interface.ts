@@ -1,6 +1,7 @@
 import { type CalloutComponentSchema } from '@beabee/beabee-common';
 
-import type { LocaleProp } from '@type';
+import env from '#env';
+import type { LocaleProp } from '#type';
 
 /**
  * Reference interface for the Form Builder component
@@ -127,13 +128,17 @@ export const formOpts = {
     custom2: {
       title: 'Advanced',
       components: {
-        address: {
-          title: 'Address',
-          icon: 'home',
-          schema: {
-            type: 'address',
+        ...(env.maptilerKey && {
+          address: {
+            title: 'Address',
+            icon: 'home',
+            schema: {
+              type: 'address',
+              // We only support the maptiler provider for address lookups
+              provider: 'maptiler',
+            },
           },
-        },
+        }),
         phoneNumber: {
           title: 'Phone Number',
           icon: 'phone-square',
@@ -174,6 +179,8 @@ export const formOpts = {
           icon: 'cloud-upload',
           schema: {
             type: 'file',
+            // We only support the beabee storage provider for file uploads
+            storage: 'beabee',
           },
         },
         content: {

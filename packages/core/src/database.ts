@@ -10,17 +10,19 @@ import {
   SelectQueryBuilder,
 } from 'typeorm';
 
-import config from './config/config';
-import { log as mainLogger } from './logging';
+import config from './config/config.js';
+import { entities } from './entities.js';
+import { log as mainLogger } from './logging.js';
+import { migrations } from './migrations.js';
 
 const log = mainLogger.child({ app: 'database' });
 
 export const dataSource: DataSource = new DataSource({
   type: 'postgres',
   url: config.databaseUrl,
-  logging: config.dev,
-  entities: [__dirname + '/models/*.js'],
-  migrations: [__dirname + '/migrations/*.js'],
+  logging: config.logging.includes('database'),
+  entities,
+  migrations,
 });
 
 export function runTransaction<T>(

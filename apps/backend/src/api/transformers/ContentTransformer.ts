@@ -7,6 +7,8 @@ import OptionsService, {
 } from '@beabee/core/services/OptionsService';
 import { getEmailFooter } from '@beabee/core/templates/email';
 
+import { plainToInstance } from 'class-transformer';
+
 import {
   GetContentContactsDto,
   GetContentDto,
@@ -18,8 +20,7 @@ import {
   GetContentProfileDto,
   GetContentShareDto,
   GetContentTelegramDto,
-} from '@api/dto/index';
-import { plainToInstance } from 'class-transformer';
+} from '#api/dto/index';
 
 class ContentTransformer {
   convert<Id extends ContentId>(
@@ -172,6 +173,11 @@ const contentData = {
     privacyLink: ['option', 'footer-privacy-link-url', 'text'],
     impressumLink: ['option', 'footer-impressum-link-url', 'text'],
     locale: ['option', 'locale', 'text'],
+    enableOneTimeDonations: [
+      'option',
+      'switch-feature-one-time-donation',
+      'bool',
+    ],
   }),
   join: withValue<'join'>({
     initialAmount: ['data', 0],
@@ -185,6 +191,7 @@ const contentData = {
     stripePublicKey: ['readonly', () => config.stripe.publicKey],
     subtitle: ['data', ''],
     title: ['data', ''],
+    showGoogleApplePay: ['data', false],
   }),
   'join/setup': withValue<'join/setup'>({
     mailOptIn: ['data', ''],

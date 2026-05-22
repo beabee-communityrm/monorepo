@@ -1,6 +1,6 @@
 # Beabee Locale Package
 
-This package contains translations for the Beabee project. It provides locale data in JSON format and exports TypeScript sources directly for ESM environments, while building CJS modules for legacy CommonJS compatibility.
+This package contains translations for the Beabee project. It provides locale data in JSON format. Workspace consumers read TypeScript sources directly; npm consumers receive an ESM build (flat `dist/`).
 
 ## Package Structure
 
@@ -92,13 +92,7 @@ Weblate:
 
 ## Usage
 
-The package supports dual import formats:
-
-1. **ESM (TypeScript sources)** - Direct TypeScript import for modern environments
-2. **CJS (Built JavaScript)** - For legacy CommonJS environments
-
 ```typescript
-// ESM imports (uses TypeScript sources directly)
 import { type Locale, config, isLocale } from '@beabee/locale';
 import de from '@beabee/locale/locales/de';
 // Import specific locale data
@@ -112,20 +106,9 @@ if (isLocale(userLocale)) {
 }
 ```
 
-**ESM TypeScript imports** work with bundlers that support TypeScript (Vite, esbuild, etc.) or Node.js with TypeScript support:
+**Workspace consumers** resolve directly to the TypeScript sources — no rebuild needed when the locale source changes. Bundlers (Vite, esbuild) and Node.js 24+ with `--experimental-strip-types` handle this transparently.
 
-```bash
-# With Node.js TypeScript support
-node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings your-file.ts
-
-# With bundlers like Vite or esbuild - no special flags needed
-```
-
-**CJS imports** work with standard Node.js:
-
-```javascript
-const { config, isLocale } = require('@beabee/locale');
-```
+**npm consumers** receive an ESM build (flat `dist/`) via `publishConfig`.
 
 ## Development
 

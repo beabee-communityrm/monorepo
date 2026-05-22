@@ -10,6 +10,7 @@ The Beabee Monorepo is organized into the following directories:
 
   - `frontend/`: Contains the code for the frontend application. See [Frontend README](apps/frontend/README.md) for more information.
   - `backend/`: Contains the code for the backend API. See [Backend README](apps/backend/README.md) for more information.
+  - `backend-cli/`: Command line interface for managing Beabee backend operations. See [Backend CLI README](apps/backend-cli/README.md) for more information.
   - `router/`: Contains the code for the new frontend router. See [Router README](apps/router/README.md) for more information.
 
 - `packages/`
@@ -32,7 +33,7 @@ You need the following tools installed on your machine:
 
 - Docker >= 19.03.8
 - Docker Compose >= 2
-- Node.js >= 20.10.0
+- Node.js >= 24
 - Yarn >= 1.22.22 (automatically uses the Yarn version from the repo)
 
 ### Initial Setup
@@ -152,10 +153,7 @@ This provides hot module replacement (HMR) for rapid development.
 
 #### Common Package
 
-For the common package, `yarn dev` is an alias for `yarn watch`, which runs concurrent watch processes for:
-- Node.js ESM and CJS builds
-- Browser builds
-- TypeScript type definitions
+For the common package, `yarn dev` is an alias for `yarn watch`, which runs an esbuild watch process producing a flat ESM `dist/`. Workspace consumers don't need a build at all — they resolve `@beabee/beabee-common` to `./src/index.ts` directly. The dist is only needed for npm publish and for the `test:esm` Node smoke test.
 
 #### Core Package
 
@@ -193,6 +191,21 @@ Publish new versions of the library packages on NPM:
 
 ```bash
 yarn publish:latest # or yarn publish:next
+```
+
+Cut a new release (bumps versions, updates `CHANGELOG.md`, tags, and creates a GitHub release; the npm publish workflow is then triggered by the release event):
+
+```bash
+yarn release        # stable, marked latest on GitHub
+yarn release:rc     # pre-release, npm dist-tag next
+yarn release:beta   # pre-release, npm dist-tag next
+yarn release:dry    # preview without changing anything
+```
+
+`release-it` needs a `GITHUB_TOKEN` with `repo` scope in the environment to create the GitHub release. If you use the GitHub CLI, the simplest way is:
+
+```bash
+export GITHUB_TOKEN=$(gh auth token)
 ```
 
 Run the format command on all packages to format the code:

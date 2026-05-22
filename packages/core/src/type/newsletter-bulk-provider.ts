@@ -1,6 +1,6 @@
-import { NewsletterContact } from './newsletter-contact';
-import { NewsletterFetchContactsOpts } from './newsletter-fetch-contact-opts';
-import { UpdateNewsletterContact } from './update-newsletter-contact';
+import { NewsletterContact } from './newsletter-contact.js';
+import { NewsletterFetchContactsOpts } from './newsletter-fetch-contact-opts.js';
+import { UpdateNewsletterContact } from './update-newsletter-contact.js';
 
 export interface NewsletterBulkProvider {
   updateContactTags(

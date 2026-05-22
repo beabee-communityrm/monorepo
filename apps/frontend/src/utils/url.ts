@@ -1,6 +1,6 @@
 import { resolveImageUrl as resolveImageUrlCommon } from '@beabee/beabee-common';
 
-import env from '@env';
+import env from '#env';
 
 /**
  * Resolves an image URL to ensure it's absolute.

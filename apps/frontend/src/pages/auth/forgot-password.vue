@@ -52,12 +52,13 @@ meta:
 <script lang="ts" setup>
 import { AppButton, AppInput, AppTitle } from '@beabee/vue';
 
-import AuthBox from '@components/AuthBox.vue';
-import AppApiForm from '@components/forms/AppApiForm.vue';
-import { client } from '@utils/api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+
+import AuthBox from '#components/AuthBox.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 const route = useRoute();

@@ -1,14 +1,12 @@
+import { NotFoundError, UnauthorizedError } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 
-import { UUIDParams } from '@api/params/UUIDParams';
-import { validateOrReject } from '@api/utils/validation';
 import { Request } from 'express';
-import {
-  NotFoundError,
-  UnauthorizedError,
-  createParamDecorator,
-} from 'routing-controllers';
+import { createParamDecorator } from 'routing-controllers';
+
+import { UUIDParams } from '#api/params/UUIDParams';
+import { validateOrReject } from '#api/utils/validation';
 
 /**
  * The target user can either be the current user or for admins

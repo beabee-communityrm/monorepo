@@ -77,17 +77,18 @@ import {
 } from '@beabee/beabee-common';
 import { App2ColGrid, AppNotification, AppTabs, PageTitle } from '@beabee/vue';
 
-import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
-import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
-import ContributionBox from '@components/pages/profile/contribution/ContributionBox.vue';
-import OneTimeDonationForm from '@components/pages/profile/contribution/OneTimeDonationForm.vue';
-import PaymentSource from '@components/pages/profile/contribution/PaymentSource.vue';
-import UpdateContribution from '@components/pages/profile/contribution/UpdateContribution.vue';
-import { currentUser } from '@store';
-import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import ContactCancelContribution from '#components/contact/ContactCancelContribution.vue';
+import ContactPaymentsHistory from '#components/contact/ContactPaymentsHistory.vue';
+import ContributionBox from '#components/pages/profile/contribution/ContributionBox.vue';
+import OneTimeDonationForm from '#components/pages/profile/contribution/OneTimeDonationForm.vue';
+import PaymentSource from '#components/pages/profile/contribution/PaymentSource.vue';
+import UpdateContribution from '#components/pages/profile/contribution/UpdateContribution.vue';
+import { currentUser, generalContent } from '#store';
+import { client } from '#utils/api';
 
 import type { ContributionContent } from '../../../type/contribution';
 
@@ -110,6 +111,7 @@ const content = ref<ContributionContent>({
   minMonthlyAmount: 5,
   periods: [],
   showAbsorbFee: true,
+  showGoogleApplePay: false,
   paymentMethods: [PaymentMethod.StripeCard],
 });
 
@@ -136,6 +138,7 @@ const paymentSourceData = computed(() => ({
 
 const showOneTimeContribution = computed(
   () =>
+    generalContent.value.enableOneTimeDonations &&
     content.value?.periods.some((p) => p.name === 'one-time') &&
     paymentContent.value.showOneTimeDonation
 );

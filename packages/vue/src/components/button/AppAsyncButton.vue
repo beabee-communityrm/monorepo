@@ -35,10 +35,15 @@ const { t } = useI18n();
 export interface AppAsyncButtonProps extends AppButtonProps {
   /** Async handler called on click; errors trigger an error notification */
   onClick?: (evt: Event) => Promise<void>;
+  /** Success message shown when the async operation completes successfully */
+  successText?: string;
+  /** Function to extract error text from error object */
+  extractErrorText?: (error: unknown) => string;
 }
 
 const props = withDefaults(defineProps<AppAsyncButtonProps>(), {
   onClick: undefined,
+  successMessage: undefined,
 });
 
 /** Props passed to AppButton; excludes onClick which is handled internally */
@@ -55,12 +60,16 @@ async function handleClick(evt: Event) {
   isLoading.value = true;
   try {
     await props.onClick?.(evt);
-  } catch (_error: unknown) {
-    addNotification({
-      title: t('form.errorMessages.generic'),
-      variant: 'error',
-      description: t('form.errorMessages.asyncActionFailed'),
-    });
+    if (props.successText) {
+      addNotification({
+        title: props.successText,
+        variant: 'success',
+      });
+    }
+  } catch (err) {
+    const errorText =
+      props.extractErrorText?.(err) || t('form.errorMessages.generic');
+    addNotification({ title: errorText, variant: 'error' });
   } finally {
     isLoading.value = false;
   }

@@ -85,8 +85,9 @@ import {
   PageTitle,
 } from '@beabee/vue';
 
-import SectionTitle from '@components/pages/profile/SectionTitle.vue';
 import { useI18n } from 'vue-i18n';
+
+import SectionTitle from '#components/pages/profile/SectionTitle.vue';
 
 const { t } = useI18n();
 </script>

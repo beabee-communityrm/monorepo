@@ -59,7 +59,10 @@ const deepNestingCrumbs: BreadcrumbItem[] = [
           <div class="mt-4 rounded bg-grey-lighter p-3">
             <p class="text-sm">
               <strong>Current page:</strong>
-              {{ (state.showIcons ? iconCrumbs : simpleCrumbs).at(-1)?.title }}
+              {{
+                (state.showIcons ? iconCrumbs : simpleCrumbs).slice(-1)[0]
+                  ?.title
+              }}
             </p>
             <p class="mt-1 text-xs text-body-80">
               Breadcrumbs help users understand their current location and

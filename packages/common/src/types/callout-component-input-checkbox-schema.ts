@@ -4,8 +4,7 @@ import type {
   CalloutComponentInputCheckboxRules,
 } from './index.js';
 
-export interface CalloutComponentInputCheckboxSchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentInputCheckboxSchema extends CalloutComponentBaseInputSchema {
   type: CalloutComponentType.INPUT_CHECKBOX;
 
   /** Can not be set to true for checkboxes */

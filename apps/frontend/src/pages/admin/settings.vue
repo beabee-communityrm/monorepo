@@ -6,7 +6,7 @@ meta:
 
 <template>
   <PageTitle :title="t('menu.adminSettings')" />
-  <AppTabs :items="tabs" :selected="(route.name as string) || ''" />
+  <AppTabs :items="tabs" :selected="selectedTab?.id || ''" />
   <router-view />
 </template>
 
@@ -14,10 +14,11 @@ meta:
 import { AppTabs, PageTitle } from '@beabee/vue';
 
 import { faCog } from '@fortawesome/free-solid-svg-icons';
-import { resolveTabNavigation } from '@utils/navigation';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import { resolveTabNavigation } from '#utils/navigation';
 
 import { addBreadcrumb } from '../../store/breadcrumb';
 
@@ -47,7 +48,7 @@ const tabs = computed(() =>
 );
 
 const selectedTab = computed(() =>
-  tabs.value.find((tab) => tab.id === route.name)
+  tabs.value.find((tab) => route.name.startsWith(tab.id))
 );
 
 addBreadcrumb(

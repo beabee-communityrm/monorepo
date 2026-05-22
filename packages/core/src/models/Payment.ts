@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { type Contact } from './index';
+import { type Contact } from './index.js';
 
 @Entity()
 export class Payment {

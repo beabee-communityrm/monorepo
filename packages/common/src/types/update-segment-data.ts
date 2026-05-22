@@ -1,3 +1,3 @@
-import { CreateSegmentData } from './index.js';
+import { type CreateSegmentData } from './index.js';
 
 export type UpdateSegmentData = Partial<CreateSegmentData>;

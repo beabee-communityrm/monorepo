@@ -4,9 +4,6 @@ import {
   PaymentMethod,
 } from '@beabee/beabee-common';
 
-import IsUrl from '@api/validators/IsUrl';
-import IsValidPayFee from '@api/validators/IsValidPayFee';
-import MinContributionAmount from '@api/validators/MinContributionAmount';
 import {
   IsBoolean,
   IsEnum,
@@ -16,7 +13,11 @@ import {
   IsString,
 } from 'class-validator';
 
-import { StartJoinFlowDto } from './JoinFlowDto';
+import IsUrl from '#api/validators/IsUrl';
+import IsValidPayFee from '#api/validators/IsValidPayFee';
+import MinContributionAmount from '#api/validators/MinContributionAmount';
+
+import { StartPaymentFlowDto } from './PaymentFlowDto.js';
 
 export class UpdateContributionDto {
   @MinContributionAmount()
@@ -34,7 +35,7 @@ export class UpdateContributionDto {
 
 export class StartContributionDto
   extends UpdateContributionDto
-  implements StartJoinFlowDto
+  implements StartPaymentFlowDto
 {
   @IsUrl()
   completeUrl!: string;

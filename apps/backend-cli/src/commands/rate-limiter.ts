@@ -14,9 +14,8 @@ export const rateLimiterCommand = {
           });
         },
         handler: async (argv: any) => {
-          const { clearRateLimiterCache } = await import(
-            '../actions/rate-limiter/clear.js'
-          );
+          const { clearRateLimiterCache } =
+            await import('../actions/rate-limiter/clear.js');
           await clearRateLimiterCache(argv.force);
         },
       })

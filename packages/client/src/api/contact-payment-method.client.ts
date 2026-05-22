@@ -1,6 +1,6 @@
 import type {
   ContributionInfo,
-  PaymentFlowParams,
+  PaymentFlowResult,
 } from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
@@ -33,7 +33,7 @@ export class ContactPaymentMethodClient extends BaseClient {
   async update(
     completeUrl: string,
     paymentMethod?: string
-  ): Promise<PaymentFlowParams> {
+  ): Promise<PaymentFlowResult> {
     const { data } = await this.fetch.put('/me/payment-method', {
       completeUrl,
       paymentMethod,

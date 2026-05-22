@@ -28,14 +28,15 @@ import {
   faRemove,
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import {
-  activeUploadsCount,
-  resetActiveUploadsCount,
-} from '@lib/formio/providers/storage/beabee';
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import {
+  activeUploadsCount,
+  resetActiveUploadsCount,
+} from '#lib/formio/providers/storage/beabee';
 
 import { Form } from '../../lib/formio';
 import { type FormChangeEvent } from './form-renderer.interface';

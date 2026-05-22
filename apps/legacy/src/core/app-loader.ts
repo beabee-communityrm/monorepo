@@ -9,8 +9,12 @@ import dot from 'dot';
 import express from 'express';
 import fs from 'fs';
 import moment from 'moment';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import templateLocals from '#core/template-locals';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let git = '';
 try {
@@ -52,7 +56,7 @@ async function loadAppConfig(
   try {
     appConfig = (
       await import(path + '/config.json', {
-        assert: { type: 'json' },
+        with: { type: 'json' },
       })
     ).default;
   } catch (e) {
