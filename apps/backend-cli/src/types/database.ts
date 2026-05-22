@@ -1,4 +1,4 @@
-export type AnonymizationLevel = 'full' | 'safe' | 'none';
+export type AnonymizationLevel = 'full' | 'safe' | 'test' | 'none';
 
 /**
  * Callout export has no ALWAYS_ANONYMIZED_MODELS — 'safe' would be
