@@ -993,6 +993,9 @@
     "perOneTime": "einmalig",
     "perOneTimeText": "einmalig",
     "perYear": "/ Jahr",
+    "refundReason": "Rückerstattungsgrund",
+    "refundStatus": "Rückerstattungsstatus",
+    "refundedLabel": "(Erstattet)",
     "role": {
       "admin": "Admin",
       "member": "Mitglied",
