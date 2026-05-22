@@ -30,10 +30,10 @@ app.get('/', function (req: Request, res: Response) {
 
 app.get(
   '/:code',
-  wrapAsync(async function (req, res) {
+  wrapAsync<{ code: string }>(async function (req, res) {
     const nextParam = req.query.next as string;
     const contact = await ContactsService.findByLoginOverride(
-      req.params.code as string
+      req.params.code
     );
     if (contact) {
       await ContactsService.updateContact(contact, { loginOverride: null });

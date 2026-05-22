@@ -1,4 +1,8 @@
-import { NotFoundError, UnauthorizedError } from '@beabee/core/errors';
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,
+} from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 
@@ -25,7 +29,10 @@ export function TargetUser() {
         throw new UnauthorizedError();
       }
 
-      const id = request.params.id as string;
+      const id = request.params.id;
+      if (typeof id !== 'string') {
+        throw new BadRequestError('id param must be a string');
+      }
       if (id !== 'me' && auth.roles.includes('admin')) {
         const uuid = new UUIDParams();
         uuid.id = id;

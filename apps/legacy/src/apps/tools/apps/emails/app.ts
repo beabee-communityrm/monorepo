@@ -263,10 +263,10 @@ app.post('/:id/mailings', hasNewModel(Email, 'id'), busboy(), (req, res) => {
 app.get(
   '/:id/mailings/:mailingId',
   hasNewModel(Email, 'id'),
-  wrapAsync(async (req, res, next) => {
+  wrapAsync<{ id: string; mailingId: string }>(async (req, res, next) => {
     const email = req.model as Email;
     const mailing = await getRepository(EmailMailing).findOneBy({
-      id: req.params.mailingId as string,
+      id: req.params.mailingId,
     });
     if (!mailing) return next('route');
 
@@ -299,10 +299,10 @@ interface SendSchema {
 app.post(
   '/:id/mailings/:mailingId',
   hasNewModel(Email, 'id'),
-  wrapAsync(async (req, res, next) => {
+  wrapAsync<{ id: string; mailingId: string }>(async (req, res, next) => {
     const email = req.model as Email;
     const mailing = await getRepository(EmailMailing).findOneBy({
-      id: req.params.mailingId as string,
+      id: req.params.mailingId,
     });
     if (!mailing) return next('route');
     if (!mailing.recipients?.length) {
