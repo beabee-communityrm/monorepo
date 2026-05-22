@@ -20,7 +20,7 @@ const app: Express = express();
 app.set('views', __dirname + '/views');
 
 app.get('/', function (req: Request, res: Response) {
-  const nextParam = req.query.next as string;
+  const nextParam = typeof req.query.next === 'string' ? req.query.next : '';
   if (req.user) {
     res.redirect(isValidNextUrl(nextParam) ? nextParam : '/');
   } else {
@@ -31,7 +31,7 @@ app.get('/', function (req: Request, res: Response) {
 app.get(
   '/:code',
   wrapAsync<{ code: string }>(async function (req, res) {
-    const nextParam = req.query.next as string;
+    const nextParam = typeof req.query.next === 'string' ? req.query.next : '';
     const contact = await ContactsService.findByLoginOverride(req.params.code);
     if (contact) {
       await ContactsService.updateContact(contact, { loginOverride: null });
@@ -49,7 +49,7 @@ app.get(
 );
 
 app.post('/', (req, res) => {
-  const nextParam = req.query.next as string;
+  const nextParam = typeof req.query.next === 'string' ? req.query.next : '';
   passport.authenticate('local', {
     failureRedirect: '/login' + getNextParam(nextParam),
     failureFlash: true,
