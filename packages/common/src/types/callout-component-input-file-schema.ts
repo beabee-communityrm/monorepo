@@ -4,8 +4,7 @@ import type {
   CalloutComponentInputFileRules,
 } from './index.js';
 
-export interface CalloutComponentInputFileSchema
-  extends CalloutComponentBaseInputSchema {
+export interface CalloutComponentInputFileSchema extends CalloutComponentBaseInputSchema {
   type: CalloutComponentType.INPUT_FILE;
   filePattern?: string;
   /** E.g. `"0KB"` */

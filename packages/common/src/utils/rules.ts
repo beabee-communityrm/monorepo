@@ -9,12 +9,26 @@ import type {
 } from '../types/index.js';
 import { isValidDate } from './date.js';
 
+/**
+ * Type guard to check if a rule or group is a rule group
+ * @param ruleOrGroup The rule or group to check
+ * @returns True if the input is a rule group, false otherwise
+ */
 export function isRuleGroup(
   ruleOrGroup: Rule | RuleGroup
 ): ruleOrGroup is RuleGroup {
   return 'condition' in ruleOrGroup;
 }
 
+/**
+ * Validates a rule against a set of valid filters.  This method checks that the
+ * rule field exists, that it is using a valid operator for the field type, and
+ * that it has the correct number and type of arguments.
+ *
+ * @param filters The valid filters
+ * @param rule The rule to validate
+ * @returns The validated rule
+ */
 export function validateRule<Field extends string>(
   filters: Filters<Field>,
   rule: Rule
@@ -93,6 +107,14 @@ export function validateRule<Field extends string>(
   } as ValidatedRule<Field>;
 }
 
+/**
+ * Validates a rule group and its rules recursively against a set of valid
+ * filters
+ *
+ * @param filters The valid filters
+ * @param ruleGroup The rule group to validate
+ * @returns The validated rule group
+ */
 export function validateRuleGroup<Field extends string>(
   filters: Filters<Field>,
   ruleGroup: RuleGroup
@@ -109,4 +131,15 @@ export function validateRuleGroup<Field extends string>(
     validatedRuleGroup.rules.push(valid);
   }
   return validatedRuleGroup;
+}
+
+/**
+ * Flattens a rule group into an simple array of rules
+ * @param ruleGroup The rule group to flatten
+ * @returns An array of rules
+ */
+export function flattenRules(ruleGroup: RuleGroup): Rule[] {
+  return ruleGroup.rules.flatMap((rule) =>
+    isRuleGroup(rule) ? flattenRules(rule) : rule
+  );
 }

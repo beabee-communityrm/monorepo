@@ -1,4 +1,3 @@
-import env from '@env';
 import {
   faAddressCard,
   faBullhorn,
@@ -10,9 +9,11 @@ import {
   faSignHanging,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
-import { canAdmin, currentUser } from '@store/currentUser';
-import { generalContent } from '@store/generalContent';
 import { computed } from 'vue';
+
+import env from '#env';
+import { canAdmin, currentUser } from '#store/currentUser';
+import { generalContent } from '#store/generalContent';
 
 import type { MenuSection } from './menu-list.interface';
 

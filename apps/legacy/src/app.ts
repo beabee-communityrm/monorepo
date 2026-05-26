@@ -1,7 +1,4 @@
-import 'module-alias/register';
-
 import { resolveImageUrl } from '@beabee/beabee-common';
-//import specialUrlHandler from '@apps/tools/apps/special-urls/handler';
 import config from '@beabee/core/config';
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
 import { initApp, startServer } from '@beabee/core/server';
@@ -11,7 +8,6 @@ import OptionsService, {
 import PageSettingsService from '@beabee/core/services/PageSettingsService';
 import { isInvalidType } from '@beabee/core/utils/db';
 
-import cleanDeep from 'clean-deep';
 import cookie from 'cookie-parser';
 import csrf from 'csurf';
 // TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
@@ -19,11 +15,22 @@ import express, { ErrorRequestHandler } from 'express';
 import flash from 'express-flash';
 // TODO: Last release was 2013
 import helmet from 'helmet';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 import path from 'path';
 
 import appLoader from '#core/app-loader';
 import quickflash from '#core/quickflash';
 import sessions from '#core/sessions';
+
+// clean-deep ships CJS as `module.exports = function`, so its ESM-default
+// import shape is broken under nodenext. Use createRequire to grab the
+// function directly.
+const cleanDeep = createRequire(import.meta.url)(
+  'clean-deep'
+) as typeof import('clean-deep').default;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 if (!config.gocardless.sandbox && config.dev) {
   log.error(

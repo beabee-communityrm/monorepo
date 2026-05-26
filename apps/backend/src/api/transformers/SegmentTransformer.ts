@@ -1,16 +1,18 @@
 import { SegmentFilterName, segmentFilters } from '@beabee/beabee-common';
+import { InvalidRuleError } from '@beabee/core/errors';
 import { Segment } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
+
+import { TransformPlainToInstance } from 'class-transformer';
 
 import {
   GetSegmentDto,
   GetSegmentOptsDto,
   GetSegmentWith,
   ListSegmentsDto,
-} from '@api/dto/SegmentDto';
-import { BaseTransformer } from '@api/transformers/BaseTransformer';
-import ContactTransformer from '@api/transformers/ContactTransformer';
-import { TransformPlainToInstance } from 'class-transformer';
+} from '#api/dto/SegmentDto';
+import { BaseTransformer } from '#api/transformers/BaseTransformer';
+import ContactTransformer from '#api/transformers/ContactTransformer';
 
 class SegmentTransformer extends BaseTransformer<
   Segment,
@@ -33,8 +35,8 @@ class SegmentTransformer extends BaseTransformer<
       description: segment.description,
       ruleGroup: segment.ruleGroup,
       order: segment.order,
-      ...(opts.with?.includes(GetSegmentWith.contactCount) && {
-        contactCount: segment.contactCount,
+      ...(opts.with?.includes(GetSegmentWith.itemCount) && {
+        itemCount: segment.itemCount,
       }),
     };
   }
@@ -44,13 +46,23 @@ class SegmentTransformer extends BaseTransformer<
     query: ListSegmentsDto,
     auth: AuthInfo
   ): Promise<void> {
-    if (query.with?.includes(GetSegmentWith.contactCount)) {
+    if (query.with?.includes(GetSegmentWith.itemCount)) {
       for (const segment of segments) {
-        const result = await ContactTransformer.fetch(auth, {
-          limit: 0,
-          rules: segment.ruleGroup,
-        });
-        segment.contactCount = result.total;
+        try {
+          const result = await ContactTransformer.fetch(auth, {
+            limit: 0,
+            rules: segment.ruleGroup,
+          });
+          segment.itemCount = result.total;
+        } catch (err) {
+          // If rules are invalid, set itemCount to undefined so the segment
+          // can still be fetched and displayed in the frontend
+          if (err instanceof InvalidRuleError) {
+            segment.itemCount = undefined;
+          } else {
+            throw err;
+          }
+        }
       }
     }
   }

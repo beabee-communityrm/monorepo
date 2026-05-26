@@ -29,6 +29,7 @@
     />
 
     <AppSelect
+      v-if="manualPaymentSources.length > 1"
       v-model="modelValue.source"
       :label="t('contacts.data.paymentSource')"
       :items="manualPaymentSources"
@@ -53,9 +54,10 @@ import {
   type SelectItem,
 } from '@beabee/vue';
 
-import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { client } from '#utils/api';
 
 import { generalContent } from '../../store';
 import { type UpdateContribution } from './contact.interface';
@@ -80,8 +82,8 @@ const manualPaymentSources = ref<SelectItem<string>[]>([]);
 onBeforeMount(async () => {
   manualPaymentSources.value = [
     {
-      id: '',
-      label: '',
+      id: 'None',
+      label: t('common.manualPaymentSource.none'),
     },
     ...(await client.content.get('contacts')).manualPaymentSources.map((x) => {
       return { id: x, label: x };

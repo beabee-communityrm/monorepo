@@ -1,4 +1,4 @@
-import { CalloutMapSchemaIconStylingAnswerIcon } from './callout-map-schema-icon-styling-answer-icon';
+import { type CalloutMapSchemaIconStylingAnswerIcon } from './callout-map-schema-icon-styling-answer-icon.js';
 
 export type CalloutMapSchemaIconStylingAnswer = Record<
   string,

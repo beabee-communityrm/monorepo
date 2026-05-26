@@ -102,6 +102,18 @@
                   :selected-locale="selected"
                 />
               </AppScrollSection>
+
+              <!-- Response Links (Footer) Section -->
+              <AppScrollSection id="response-links">
+                <ResponseLinksTranslations
+                  :response-links="
+                    props.tabs.responseDisplay.data.responseLinks
+                  "
+                  :default-locale="defaultLocale"
+                  :selected-locale="selected"
+                  :response-link-text="data.responseLinkText"
+                />
+              </AppScrollSection>
             </template>
           </AppTabCard>
         </div>
@@ -130,14 +142,16 @@ import {
   getLocaleItemsForContext,
 } from '@beabee/vue';
 
-import { generalContent } from '@store';
-import type { LocaleProp } from '@type';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { generalContent } from '#store';
+import type { LocaleProp } from '#type';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 import ButtonTranslations from './TranslationsTab/ButtonTranslations.vue';
 import IntroductionTranslations from './TranslationsTab/IntroductionTranslations.vue';
+import ResponseLinksTranslations from './TranslationsTab/ResponseLinksTranslations.vue';
 import SlideTranslations from './TranslationsTab/SlideTranslations.vue';
 import ThankYouTranslations from './TranslationsTab/ThankYouTranslations.vue';
 import TitleAndDescriptionTranslations from './TranslationsTab/TitleAndDescriptionTranslations.vue';
@@ -152,6 +166,8 @@ export interface TranslationsTabData {
   locales: string[];
   /** Component text translations */
   componentText: Record<string, LocaleProp>;
+  /** Response link label translations (editor-side LocaleProp map) */
+  responseLinkText: Record<string, LocaleProp>;
 }
 
 export interface TranslationsTabProps {
@@ -249,6 +265,10 @@ const sections = computed<ScrollSection[]>(() => {
           },
           ...slidesSections,
           { id: 'introduction', label: t('callout.builder.tabs.intro.label') },
+          {
+            id: 'response-links',
+            label: t('callout.builder.tabs.translations.responseLinks.title'),
+          },
         ]
       : []),
   ];

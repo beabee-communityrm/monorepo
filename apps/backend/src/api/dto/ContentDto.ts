@@ -11,13 +11,11 @@ import {
   ContentShareData,
   ContributionPeriod,
   PaymentMethod,
+  PaymentPeriod,
   StripeFeeCountry,
 } from '@beabee/beabee-common';
 import { Locale } from '@beabee/locale';
 
-import { GetContentTelegramDto } from '@api/dto/ContentTelegramDto';
-import { LinkDto } from '@api/dto/LinkDto';
-import { NewsletterGroupDto } from '@api/dto/NewsletterDto';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
@@ -25,9 +23,15 @@ import {
   IsIn,
   IsNumber,
   IsObject,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
+
+import { GetContentTelegramDto } from '#api/dto/ContentTelegramDto';
+import { LinkDto } from '#api/dto/LinkDto';
+import { NewsletterGroupDto } from '#api/dto/NewsletterDto';
+import IsFromEmail from '#api/validators/IsFromEmail';
 
 export class GetContentContactsDto implements ContentContactsData {
   @IsString({ each: true })
@@ -38,7 +42,7 @@ export class GetContentContactsDto implements ContentContactsData {
 }
 
 export class GetContentEmailDto implements ContentEmailData {
-  @IsString()
+  @IsFromEmail()
   supportEmail!: string;
 
   @IsString()
@@ -58,7 +62,7 @@ export class GetContentGeneralDto implements ContentGeneralData<Locale> {
   @IsString()
   siteUrl!: string;
 
-  @IsString()
+  @IsFromEmail()
   supportEmail!: string;
 
   @IsString()
@@ -91,11 +95,14 @@ export class GetContentGeneralDto implements ContentGeneralData<Locale> {
   @ValidateNested({ each: true })
   @Type(() => LinkDto)
   footerLinks!: LinkDto[];
+
+  @IsBoolean()
+  enableOneTimeDonations!: boolean;
 }
 
 class GetContentJoinPeriodDto implements ContentJoinPeriodData {
-  @IsEnum(ContributionPeriod)
-  name!: ContributionPeriod;
+  @IsIn([ContributionPeriod.Monthly, ContributionPeriod.Annually, 'one-time'])
+  name!: PaymentPeriod;
 
   @IsNumber({}, { each: true })
   presetAmounts!: number[];
@@ -111,8 +118,8 @@ export class GetContentJoinDto implements ContentJoinData {
   @IsNumber()
   initialAmount!: number;
 
-  @IsEnum(ContributionPeriod)
-  initialPeriod!: ContributionPeriod;
+  @IsIn([ContributionPeriod.Monthly, ContributionPeriod.Annually, 'one-time'])
+  initialPeriod!: PaymentPeriod;
 
   @ValidateNested({ each: true })
   @Type(() => GetContentJoinPeriodDto)
@@ -129,6 +136,9 @@ export class GetContentJoinDto implements ContentJoinData {
 
   @IsBoolean()
   showAbsorbFee!: boolean;
+
+  @IsBoolean()
+  showGoogleApplePay!: boolean;
 
   /** @deprecated Use {@link GetContentPaymentDto.stripePublicKey} instead. */
   @IsString()
@@ -207,14 +217,19 @@ export class GetContentPaymentDto implements ContentPaymentData {
   @IsIn(['eu', 'gb', 'ca'])
   stripeCountry!: StripeFeeCountry;
 
-  @IsBoolean()
-  taxRateEnabled!: boolean;
-
+  @IsOptional()
   @IsNumber()
-  taxRate!: number;
+  taxRateRecurring!: number | null;
+
+  @IsOptional()
+  @IsNumber()
+  taxRateOneTime!: number | null;
 
   @IsString()
   noticeText!: string;
+
+  @IsBoolean()
+  showOneTimeDonation!: boolean;
 }
 
 export type GetContentDto<Id extends ContentId = ContentId> =

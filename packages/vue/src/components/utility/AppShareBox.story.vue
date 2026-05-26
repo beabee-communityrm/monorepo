@@ -25,7 +25,7 @@ const examples = [
 
 <template>
   <Story title="Utility/AppShareBox">
-    <Variant title="Default" :init-state="state">
+    <Variant title="Default" :init-state="() => state">
       <template #default="{ state }">
         <div class="max-w-md">
           <AppShareBox :url="state.url" />

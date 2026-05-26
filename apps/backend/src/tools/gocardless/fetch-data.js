@@ -1,6 +1,4 @@
-require('module-alias/register');
-
-const { default: gocardless } = require('@core/lib/gocardless');
+import gocardless from '@beabee/core/lib/gocardless';
 
 async function loadData() {
   console.error('# Loading data from GoCardless...');

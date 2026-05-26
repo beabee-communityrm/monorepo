@@ -1,6 +1,6 @@
 import { CreateDateColumn, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 
-import type { Contact, Segment } from './index';
+import type { Contact, Segment } from './index.js';
 
 @Entity()
 export class SegmentContact {

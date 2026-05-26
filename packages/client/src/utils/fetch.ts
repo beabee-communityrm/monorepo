@@ -1,10 +1,16 @@
+import {
+  ApiErrorCode,
+  type ApiErrorData,
+  LOGIN_CODES,
+} from '@beabee/beabee-common';
+
 import type {
   FetchOptions,
   FetchResponse,
   HttpMethod,
 } from '../types/index.js';
 import {
-  ClientApiError,
+  ApiError,
   CookiePolyfill,
   cleanUrl,
   hasProtocol,
@@ -17,7 +23,7 @@ import {
  */
 export class Fetch {
   protected readonly options: FetchOptions;
-  protected errorHandlers: ((error: ClientApiError) => void)[] = [];
+  protected errorHandlers: ((error: ApiError) => void)[] = [];
 
   constructor(options: FetchOptions = {}) {
     if (options.token) {
@@ -174,7 +180,7 @@ export class Fetch {
    * Add a global error handler
    * @param handler Function to handle errors
    */
-  public onError(handler: (error: ClientApiError) => void): void {
+  public onError(handler: (error: ApiError) => void): void {
     this.errorHandlers.push(handler);
   }
 
@@ -205,7 +211,7 @@ export class Fetch {
     try {
       return await this.performFetch<T, D>(url, method, data, options);
     } catch (error) {
-      if (error instanceof ClientApiError) {
+      if (error instanceof ApiError) {
         // Notify all error handlers
         this.errorHandlers.forEach((handler) => handler(error));
       }
@@ -340,22 +346,13 @@ export class Fetch {
       ok: response.status >= 200 && response.status < 400,
     };
 
-    // Makes it sense to throw an error if the response is not ok
+    // Throw an error if the response is not ok
     if (!result.ok) {
-      if (result.data) {
-        const data = result.data as any;
-        console.error('Error response', data);
-        if (Array.isArray(data.errors)) {
-          for (const error of data.errors) {
-            console.error(JSON.stringify(error, null, 2));
-          }
-        }
-        throw new ClientApiError(data.message || 'Unknown error', {
-          ...data,
-          status: response.status,
-        });
+      if (isApiErrorResponse(result.data)) {
+        throw ApiError.fromData(result.data);
+      } else {
+        throw result.data || result;
       }
-      throw result;
     }
 
     return result;
@@ -374,4 +371,22 @@ export class Fetch {
    * Header name value pair to send on each request
    */
   protected _requestHeadersEachRequest: Record<string, string> = {};
+}
+
+/**
+ * Type guard to check if an object has the structure of an API error response from the backend
+ * @param obj - The object to check
+ */
+function isApiErrorResponse(obj: unknown): obj is ApiErrorData {
+  return (
+    !!obj &&
+    typeof obj === 'object' &&
+    'httpCode' in obj &&
+    typeof obj.httpCode === 'number' &&
+    'code' in obj &&
+    typeof obj.code === 'string' &&
+    (Object.values(ApiErrorCode).includes(obj.code as ApiErrorCode) ||
+      (obj.httpCode === 401 &&
+        Object.values(LOGIN_CODES).includes(obj.code as LOGIN_CODES)))
+  );
 }

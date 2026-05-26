@@ -1,16 +1,12 @@
 import { LOGIN_CODES, RoleType, RoleTypes } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
-import { UnauthorizedError } from '@beabee/core/errors';
+import { NotFoundError, UnauthorizedError } from '@beabee/core/errors';
 import passport from '@beabee/core/lib/passport';
 import { Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import { AuthInfo, PassportLoginInfo } from '@beabee/core/type';
 
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import { GetAuthInfoDto, LoginDto } from '@api/dto';
-import { authTransformer } from '@api/transformers';
-import { login } from '@api/utils/auth';
 import { isUUID } from 'class-validator';
 import { Request, Response } from 'express';
 import {
@@ -18,13 +14,17 @@ import {
   Get,
   HttpError,
   JsonController,
-  NotFoundError,
   OnUndefined,
   Param,
   Post,
   Req,
   Res,
 } from 'routing-controllers';
+
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import { GetAuthInfoDto, LoginDto } from '#api/dto';
+import { authTransformer } from '#api/transformers';
+import { login } from '#api/utils/auth';
 
 @JsonController('/auth')
 export class AuthController {
@@ -47,11 +47,6 @@ export class AuthController {
           // Forward HTTP errors
           if (err) {
             if (err instanceof HttpError) {
-              // Passport errors only have a `message` property, so we handle the message as code
-              if (err instanceof UnauthorizedError) {
-                err.code ||= err.message || LOGIN_CODES.LOGIN_FAILED;
-              }
-
               return reject(err);
             }
           }
@@ -59,10 +54,7 @@ export class AuthController {
           // Unknown errors
           if (err || !user) {
             return reject(
-              new UnauthorizedError({
-                code: info?.message || LOGIN_CODES.LOGIN_FAILED,
-                message: info?.message || LOGIN_CODES.LOGIN_FAILED,
-              })
+              new UnauthorizedError(LOGIN_CODES.LOGIN_FAILED, info?.message)
             );
           }
 
@@ -74,32 +66,6 @@ export class AuthController {
 
     // If there is no error thrown, login
     await login(req, user); // Why do we have to login after authenticate?
-  }
-
-  @OnUndefined(204)
-  @Get('/login/as/:id')
-  async loginAs(@Req() req: Request, @Param('id') id: string): Promise<void> {
-    // IMPORTANT: This is only available in dev mode
-    if (!config.dev) {
-      throw new NotFoundError();
-    }
-
-    let contact: Contact | undefined;
-    if (RoleTypes.indexOf(id as RoleType) > -1) {
-      const role = await getRepository(ContactRole).findOne({
-        where: { type: id as RoleType },
-        relations: { contact: true },
-      });
-      contact = role?.contact;
-    } else if (isUUID(id, '4')) {
-      contact = await ContactsService.findOneBy({ id });
-    }
-
-    if (contact) {
-      await login(req, contact);
-    } else {
-      throw new NotFoundError();
-    }
   }
 
   @OnUndefined(204)

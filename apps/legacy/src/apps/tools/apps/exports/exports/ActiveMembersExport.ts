@@ -5,7 +5,7 @@ import { Brackets, SelectQueryBuilder } from 'typeorm';
 
 import { Param } from '#core/utils/params';
 
-import BaseExport, { ExportResult } from './BaseExport';
+import BaseExport, { ExportResult } from './BaseExport.js';
 
 export default class ActiveMembersExport extends BaseExport<Contact> {
   exportName = 'Active members export';

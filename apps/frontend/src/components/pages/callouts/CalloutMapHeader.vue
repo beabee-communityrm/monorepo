@@ -38,7 +38,7 @@
     </AppButton>
 
     <AppButton
-      v-if="callout.status === ItemStatus.Open"
+      v-if="callout.status === ItemStatus.Open && env.maptilerKey"
       variant="link"
       class="hidden px-2 md:inline-block"
       @click="$emit('addnew')"
@@ -66,7 +66,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { type RouteLocationRaw, useRoute } from 'vue-router';
+
+import env from '#env';
 
 import { useCalloutVariants } from './use-callout';
 
@@ -93,13 +95,19 @@ watch(currentVariant, () => {
 const viewLink = computed(() =>
   props.callout.responseViewSchema?.gallery && props.map
     ? {
-        to: { name: 'calloutGallery', query: { ...route.query, noIntro: 1 } },
+        to: <RouteLocationRaw>{
+          name: 'calloutGallery',
+          query: { ...route.query, noIntro: 1 },
+        },
         label: t('callout.views.gallery'),
         icon: faImages,
       }
     : props.callout.responseViewSchema?.map && !props.map
       ? {
-          to: { name: 'calloutMap', query: { ...route.query, noIntro: 1 } },
+          to: <RouteLocationRaw>{
+            name: 'calloutMap',
+            query: { ...route.query, noIntro: 1 },
+          },
           label: t('callout.views.map'),
           icon: faMap,
         }

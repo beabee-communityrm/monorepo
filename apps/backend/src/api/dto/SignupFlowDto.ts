@@ -1,11 +1,3 @@
-import type { JoinForm } from '@beabee/core/models';
-import { CompleteUrls } from '@beabee/core/type';
-
-import { StartContributionDto } from '@api/dto/ContributionDto';
-import { CompleteJoinFlowDto } from '@api/dto/JoinFlowDto';
-import IsPassword from '@api/validators/IsPassword';
-import IsUrl from '@api/validators/IsUrl';
-import IsVatNumber from '@api/validators/IsVatNumber';
 import { Type } from 'class-transformer';
 import {
   IsEmail,
@@ -15,7 +7,15 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-export class StartSignupFlowDto implements CompleteUrls {
+import { StartContributionDto } from '#api/dto/ContributionDto';
+import IsPassword from '#api/validators/IsPassword';
+import IsUrl from '#api/validators/IsUrl';
+import IsVatNumber from '#api/validators/IsVatNumber';
+
+import { CreatePaymentDto } from './PaymentDto.js';
+import { CompletePaymentFlowDto } from './PaymentFlowDto.js';
+
+export class StartSignupFlowDto {
   @IsUrl()
   loginUrl!: string;
 
@@ -36,12 +36,14 @@ export class StartSignupFlowDto implements CompleteUrls {
   @ValidateNested()
   @IsOptional()
   contribution?: StartContributionDto;
+
+  @Type(() => CreatePaymentDto)
+  @ValidateNested()
+  @IsOptional()
+  oneTimePayment?: CreatePaymentDto;
 }
 
-export class CompleteSignupFlowDto
-  extends CompleteJoinFlowDto
-  implements Pick<JoinForm, 'firstname' | 'lastname' | 'vatNumber'>
-{
+export class CompleteSignupFlowDto extends CompletePaymentFlowDto {
   @IsOptional()
   @IsString()
   firstname?: string;

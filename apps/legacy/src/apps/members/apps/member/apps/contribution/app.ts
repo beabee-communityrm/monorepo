@@ -5,8 +5,12 @@ import PaymentService from '@beabee/core/services/PaymentService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express } from 'express';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import { calcMonthsLeft } from '#core/utils/payment';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 
@@ -50,16 +54,6 @@ app.post(
     const contact = req.model as Contact;
 
     switch (req.body.action) {
-      case 'update-subscription':
-        await ContactsService.updateContactContribution(contact, {
-          monthlyAmount: Number(req.body.amount),
-          period: req.body.period,
-          prorate: req.body.prorate === 'true',
-          payFee: req.body.payFee === 'true',
-        });
-        req.flash('success', 'contribution-updated');
-        break;
-
       case 'cancel-subscription':
         await ContactsService.cancelContactContribution(
           contact,

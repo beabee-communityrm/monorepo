@@ -1,14 +1,21 @@
+import { LOGIN_CODES, UnauthorizedErrorData } from '@beabee/beabee-common';
+
 import { UnauthorizedError as _UnauthorizedError } from 'routing-controllers';
 
 /**
  * UnauthorizedError with optional code
  */
-export class UnauthorizedError extends _UnauthorizedError {
-  code?: string | undefined;
+export class UnauthorizedError
+  extends _UnauthorizedError
+  implements UnauthorizedErrorData
+{
+  readonly httpCode = 401;
 
-  constructor({ message, code }: { message?: string; code?: string } = {}) {
-    super(message);
+  constructor(
+    readonly code = LOGIN_CODES.UNAUTHORIZED,
+    message?: string
+  ) {
+    super(message || `Unauthorized with code ${code}`);
     Object.setPrototypeOf(this, UnauthorizedError.prototype);
-    this.code = code;
   }
 }

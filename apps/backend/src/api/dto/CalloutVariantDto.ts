@@ -38,4 +38,15 @@ export class CalloutVariantDto implements CalloutVariantData {
 
   @IsObject() // TODO
   componentText!: Record<string, string>;
+
+  @IsObject() // TODO
+  responseLinkText!: Record<string, string>;
+
+  @IsOptional()
+  @IsString()
+  responseEmailSubject!: string | null;
+
+  @IsOptional()
+  @IsString()
+  responseEmailBody!: string | null;
 }

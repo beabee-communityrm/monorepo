@@ -5,8 +5,8 @@
     :target="external ? '_blank' : undefined"
     :rel="external ? 'noopener noreferrer' : undefined"
     :class="buttonClasses"
-    :title="title || name"
-    :aria-label="name || title"
+    :title="title"
+    :aria-label="accessibleLabel"
     :aria-disabled="disabled"
     role="button"
   >
@@ -21,8 +21,8 @@
     v-else-if="to"
     :to="to"
     :class="buttonClasses"
-    :title="title || name"
-    :aria-label="name || title"
+    :title="title"
+    :aria-label="accessibleLabel"
     :aria-disabled="disabled"
     role="button"
   >
@@ -41,8 +41,8 @@
     :disabled="disabled || loading"
     :class="buttonClasses"
     :type="type"
-    :title="title || name"
-    :aria-label="name || title"
+    :title="title"
+    :aria-label="accessibleLabel"
     :aria-busy="loading"
     :aria-disabled="disabled"
   >
@@ -99,8 +99,8 @@
  * @props {('xs'|'sm'|'md'|'lg')} [size='md'] - Button size
  * @props {IconDefinition} [icon] - FontAwesome icon
  * @props {('button'|'label')} [is='button'] - Component element type
- * @props {string} [name] - For aria-label
- * @props {string} [title] - For tooltip
+ * @props {string} [title] - Tooltip; also used as aria-label fallback
+ * @props {string} [ariaLabel] - Accessible label (overrides title for aria-label)
  *
  * @exposes {Function} focus - Focuses the button element
  * @exposes {Ref<HTMLElement>} innerButton - Reference to the button element
@@ -127,20 +127,6 @@ export type ButtonVariant =
 
 // Define the size types
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
-
-// Define the component props interface
-export interface AppButtonProps {
-  disabled?: boolean;
-  loading?: boolean;
-  type?: 'button' | 'submit';
-  href?: string;
-  external?: boolean;
-  to?: RouteLocationRaw;
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  icon?: IconDefinition;
-  is?: 'button' | 'label';
-}
 
 // Variant classes for [base, hover, loading icon]
 const variantClasses = {
@@ -215,10 +201,10 @@ export interface AppButtonProps {
   icon?: IconDefinition;
   /** Component element type */
   is?: 'button' | 'label';
-  /** Accessible name */
-  name?: string;
-  /** Tooltip text */
+  /** Tooltip and fallback for aria-label when no ariaLabel is set */
   title?: string;
+  /** Accessible label (screen readers); falls back to title when not set */
+  ariaLabel?: string;
 }
 
 const props = withDefaults(defineProps<AppButtonProps>(), {
@@ -232,11 +218,14 @@ const props = withDefaults(defineProps<AppButtonProps>(), {
   size: 'md',
   icon: undefined,
   is: 'button',
-  name: undefined,
   title: undefined,
+  ariaLabel: undefined,
 });
 
 const innerButton = ref<HTMLElement | null>(null);
+
+/** Value for aria-label: explicit ariaLabel or title as fallback */
+const accessibleLabel = computed(() => props.ariaLabel || props.title);
 
 const focus = () => {
   if (innerButton.value) {

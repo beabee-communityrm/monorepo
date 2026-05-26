@@ -1,17 +1,21 @@
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { Email, EmailMailing, SegmentOngoingEmail } from '@beabee/core/models';
-import EmailService from '@beabee/core/services/EmailService';
+import { emailService } from '@beabee/core/services/EmailService';
 import OptionsService from '@beabee/core/services/OptionsService';
 import { formatEmailBody } from '@beabee/core/templates/email';
-import { EmailMailingRecipient } from '@beabee/core/type';
+import { EmailMailingRecipient, EmailTemplateId } from '@beabee/core/type';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import busboy from 'connect-busboy';
 import express, { type Express } from 'express';
 import _ from 'lodash';
+import { fileURLToPath } from 'node:url';
 import Papa from 'papaparse';
+import path from 'path';
 
 import { hasNewModel, isAdmin } from '#core/middleware';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 
@@ -34,19 +38,98 @@ export function schemaToEmail(data: EmailSchema): Email {
   return email;
 }
 
-const assignableSystemEmails = {
-  welcome: 'Welcome',
-  'reset-password': 'Reset password',
-  'reset-device': 'Reset device',
-  'cancelled-contribution': 'Cancelled contribution',
-  'cancelled-contribution-no-survey': 'Cancelled contribution - no survey',
-  'confirm-email': 'Confirm email',
-  'manual-to-automatic': 'Manual contributor converted to automatic',
-  'email-exists-login': 'Email exists - login',
-  'email-exists-set-password': 'Email exists - set password',
-  'new-member': 'New contact notification',
-  'cancelled-member': 'Cancelled member notification',
-  'new-callout-response': 'New callout response notification',
+interface EmailType {
+  name: string;
+  showContactFields?: true;
+  mergeFields: [string, string][];
+}
+
+const assignableSystemEmails: Partial<Record<EmailTemplateId, EmailType>> = {
+  // Member emails
+  welcome: {
+    name: 'Welcome',
+    showContactFields: true,
+    mergeFields: [],
+  },
+  'reset-password': {
+    name: 'Reset password',
+    showContactFields: true,
+    mergeFields: [],
+  },
+  'reset-device': {
+    name: 'Reset device',
+    showContactFields: true,
+    mergeFields: [],
+  },
+  'cancelled-contribution': {
+    name: 'Cancelled contribution',
+    showContactFields: true,
+    mergeFields: [
+      ['EXPIRES', 'Contribution expiry date'],
+      ['MEMBERSHIPID', 'Contact ID'],
+    ],
+  },
+  'cancelled-contribution-no-survey': {
+    name: 'Cancelled contribution - no survey',
+    showContactFields: true,
+    mergeFields: [['EXPIRES', 'Contribution expiry date']],
+  },
+  'manual-to-automatic': {
+    name: 'Manual contributor converted to automatic',
+    showContactFields: true,
+    mergeFields: [],
+  },
+  'email-exists-login': {
+    name: 'Email exists - login',
+    showContactFields: true,
+    mergeFields: [],
+  },
+  'email-exists-set-password': {
+    name: 'Email exists - set password',
+    showContactFields: true,
+    mergeFields: [],
+  },
+  'callout-response-answers': {
+    name: 'Callout response confirmation',
+    showContactFields: true,
+    mergeFields: [
+      ['CALLOUTTITLE', 'Callout title'],
+      ['CALLOUTLINK', 'Callout link'],
+      ['SUPPORTEMAIL', 'Support email address'],
+    ],
+  },
+  // General emails
+  'confirm-email': {
+    name: 'Confirm email',
+    mergeFields: [
+      ['FNAME', 'Contact first name'],
+      ['LNAME', 'Contact last name'],
+      ['CONFIRMLINK', 'Confirm email link'],
+    ],
+  },
+  // Admin emails
+  'new-member': {
+    name: 'Admin: New contact notification',
+    mergeFields: [
+      ['MEMBERID', 'Contact ID'],
+      ['MEMBERNAME', 'Contact name'],
+    ],
+  },
+  'cancelled-member': {
+    name: 'Admin: Cancelled member notification',
+    mergeFields: [
+      ['MEMBERID', 'Contact ID'],
+      ['MEMBERNAME', 'Contact name'],
+    ],
+  },
+  'new-callout-response': {
+    name: 'Admin: New callout response notification',
+    mergeFields: [
+      ['CALLOUTSLUG', 'Callout slug'],
+      ['CALLOUTTITLE', 'Callout title'],
+      ['RESPNAME', 'Responder name'],
+    ],
+  },
 };
 
 function providerTemplateMap() {
@@ -191,12 +274,17 @@ app.get(
     const mergeFields = _.uniq(
       matches.map((f) => f.substring(2, f.length - 2))
     );
+    const recipients = mailing.recipients ?? [];
+    const headers =
+      recipients[0] != null && typeof recipients[0] === 'object'
+        ? Object.keys(recipients[0])
+        : [];
     res.render('mailing', {
       email,
       emailBody: formatEmailBody(email.body),
-      mailing,
+      mailing: { ...mailing, recipients },
       mergeFields,
-      headers: Object.keys(mailing.recipients[0]),
+      headers,
       onlyPreview: req.query.preview !== undefined,
     });
   })
@@ -217,6 +305,10 @@ app.post(
       id: req.params.mailingId,
     });
     if (!mailing) return next('route');
+    if (!mailing.recipients?.length) {
+      req.flash('error', 'This mailing has no recipients.');
+      return res.redirect(`/tools/emails/${email.id}`);
+    }
 
     const { emailField, nameField, mergeFields }: SendSchema = req.body;
 
@@ -231,7 +323,7 @@ app.post(
       ),
     }));
 
-    await EmailService.sendEmail(email, recipients);
+    await emailService.sendEmail(email, recipients);
 
     await getRepository(EmailMailing).update(mailing.id, {
       sentDate: new Date(),

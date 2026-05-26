@@ -6,12 +6,13 @@ import {
 import { CalloutVariant } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
-import { CalloutVariantDto } from '@api/dto/CalloutVariantDto';
-import { canCreateForCallout, getReviewerRules } from '@api/utils';
-import { TransformerOperation } from '@type/transformer-operation';
 import { TransformPlainToInstance } from 'class-transformer';
 
-import { BaseTransformer } from './BaseTransformer';
+import { CalloutVariantDto } from '#api/dto/CalloutVariantDto';
+import { canCreateForCallout, getReviewerRules } from '#api/utils';
+import { TransformerOperation } from '#type/transformer-operation';
+
+import { BaseTransformer } from './BaseTransformer.js';
 
 class CalloutVariantTransformer extends BaseTransformer<
   CalloutVariant,
@@ -33,6 +34,9 @@ class CalloutVariantTransformer extends BaseTransformer<
       shareDescription: variant.shareDescription,
       slideNavigation: variant.slideNavigation,
       componentText: variant.componentText,
+      responseLinkText: variant.responseLinkText,
+      responseEmailSubject: variant.responseEmailSubject,
+      responseEmailBody: variant.responseEmailBody,
     };
   }
 

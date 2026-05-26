@@ -4,28 +4,28 @@
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 
-import { generalContent } from '@store';
-import { client } from '@utils/api';
-import {
-  generateComponentTextWithFallbacks,
-  generateSlidesWithNavigationFallbacks,
-} from '@utils/callouts';
-import { ref } from 'vue';
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
-const props = defineProps<{ id: string }>();
+import { generalContent } from '#store';
+import { client } from '#utils/api';
+import {
+  generateComponentText,
+  generateResponseLinks,
+  generateSlides,
+} from '#utils/callouts';
+
 const callout =
   ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>>();
 
-const route = useRoute();
+const route = useRoute('/crowdnewsroom/[id]');
 
 watch(
-  [() => props.id, () => route.query.lang],
+  [() => route.params.id, () => route.query.lang],
   async () => {
     // Load callout with variants to get structured translation data
     const calloutWithVariants = await client.callout.get(
-      props.id,
+      route.params.id,
       ['form', 'responseViewSchema', 'variantNames', 'variants'],
       route.query.lang ? route.query.lang.toString() : undefined
     );
@@ -35,21 +35,29 @@ watch(
     const defaultLocale = generalContent.value.locale || 'en';
 
     // Generate component text with fallback support
-    const componentTextWithFallbacks = generateComponentTextWithFallbacks(
+    const componentTextWithFallbacks = generateComponentText(
       calloutWithVariants.variants,
       currentLocale,
       defaultLocale
     );
 
     // Generate slides with navigation fallbacks
-    const slidesWithNavigationFallbacks = generateSlidesWithNavigationFallbacks(
+    const slidesWithNavigationFallbacks = generateSlides(
       calloutWithVariants.formSchema.slides,
       calloutWithVariants.variants,
       currentLocale,
       defaultLocale
     );
 
-    // Create the callout object with enhanced componentText and slide navigation
+    // Generate response links with fallback support
+    const responseLinksWithFallbacks = generateResponseLinks(
+      calloutWithVariants.responseViewSchema?.links || [],
+      calloutWithVariants.variants,
+      currentLocale,
+      defaultLocale
+    );
+
+    // Create the callout object with enhanced componentText, slide navigation, and response links
     callout.value = {
       ...calloutWithVariants,
       formSchema: {
@@ -57,6 +65,12 @@ watch(
         componentText: componentTextWithFallbacks,
         slides: slidesWithNavigationFallbacks,
       },
+      responseViewSchema: calloutWithVariants.responseViewSchema
+        ? {
+            ...calloutWithVariants.responseViewSchema,
+            links: responseLinksWithFallbacks,
+          }
+        : null,
     };
   },
   { immediate: true }

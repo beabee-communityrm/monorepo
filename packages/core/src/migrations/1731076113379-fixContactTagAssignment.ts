@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class FixContactTagAssignment1731076113379
-  implements MigrationInterface
-{
+export class FixContactTagAssignment1731076113379 implements MigrationInterface {
   name = 'FixContactTagAssignment1731076113379';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

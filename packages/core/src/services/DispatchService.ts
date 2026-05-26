@@ -9,6 +9,7 @@ import PaymentService from '#services/PaymentService';
 import ReferralsService from '#services/ReferralsService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
 import SegmentService from '#services/SegmentService';
+import SignupService from '#services/SignupService';
 
 const log = mainLogger.child({ app: 'dispatch-service' });
 
@@ -21,11 +22,12 @@ class DispatchService {
     log.info('Permanently deleting contact ' + contact.id);
 
     // Delete external data first, this is more likely to fail so we'd exit the process early
-    await NewsletterService.permanentlyDeleteContacts([contact]);
+    await NewsletterService.permanentlyDeleteContact(contact);
     await PaymentService.permanentlyDeleteContact(contact);
 
     // Delete internal data after the external services are done, this should really never fail
     await ResetSecurityFlowService.deleteAll(contact);
+    await SignupService.permanentlyDeleteContact(contact);
     await ApiKeyService.permanentlyDeleteContact(contact);
     await ReferralsService.permanentlyDeleteContact(contact);
     await SegmentService.permanentlyDeleteContact(contact);

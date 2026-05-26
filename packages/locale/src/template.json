@@ -67,6 +67,7 @@
     "cancel": "",
     "changePassword": "",
     "chooseFile": "",
+    "clearSearch": "",
     "close": "",
     "continue": "",
     "copy": "",
@@ -85,6 +86,7 @@
     "noBack": "",
     "participate": "",
     "preview": "",
+    "previous": "",
     "publish": "",
     "reopen": "",
     "replicate": "",
@@ -99,6 +101,8 @@
     "schedule": "",
     "search": "",
     "sendEmails": "",
+    "sendOneOffEmail": "",
+    "sendOngoingEmails": "",
     "share": "",
     "skip": "",
     "submit": "",
@@ -108,7 +112,8 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "yesReset": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -175,9 +180,43 @@
       "showingOf": ""
     },
     "email": {
+      "contactTemplates": {
+        "button": "",
+        "contactJoins": "",
+        "contactLeaves": "",
+        "create": "",
+        "description": "",
+        "directSendDisabled": "",
+        "directSendEnabled": "",
+        "ongoing": "",
+        "ongoingDisabled": "",
+        "ongoingEnabled": "",
+        "segment": "",
+        "send": "",
+        "sendSettings": "",
+        "sendTypes": {
+          "oneOffLabel": "",
+          "ongoingLabel": "",
+          "title": ""
+        },
+        "summaryOnceOnly": "",
+        "summaryOngoingJoin": "",
+        "summaryOngoingJoinDirectSend": "",
+        "summaryOngoingLeave": "",
+        "summaryOngoingPaused": "",
+        "summaryTemplate": "",
+        "title": "",
+        "titleDirectSend": "",
+        "titleSendTime": ""
+      },
       "fromEmail": "",
       "fromName": "",
       "label": "",
+      "templates": {
+        "description": "",
+        "subtitle": "",
+        "title": ""
+      },
       "text": "",
       "title": ""
     },
@@ -213,9 +252,13 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "",
+      "showOneTimeDonation": "",
       "taxRate": "",
-      "taxRateEnabled": ""
+      "taxRateLabelOneTime": "",
+      "taxRateLabelRecurring": ""
     },
     "theme": {
       "bodyFont": "",
@@ -249,6 +292,7 @@
       "any": ""
     },
     "createdSegment": "",
+    "invalidRuleError": "",
     "matchWord": {
       "AND": "",
       "OR": ""
@@ -364,6 +408,23 @@
       "startEndScreenTitle": "",
       "tabs": {
         "content": {
+          "title": ""
+        },
+        "email": {
+          "body": {
+            "default": ""
+          },
+          "collectInfoWarning": {
+            "description": "",
+            "title": ""
+          },
+          "sendEmail": {
+            "description": "",
+            "label": ""
+          },
+          "subject": {
+            "default": ""
+          },
           "title": ""
         },
         "endMessage": {
@@ -662,6 +723,9 @@
           "navigationButtons": {
             "title": ""
           },
+          "responseLinks": {
+            "title": ""
+          },
           "title": ""
         }
       },
@@ -732,6 +796,7 @@
       "label": "",
       "starts": ""
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "",
@@ -876,7 +941,6 @@
   },
   "common": {
     "backToHome": "",
-    "contributing": "",
     "contributionPeriod": {
       "annually": "",
       "monthly": ""
@@ -891,10 +955,12 @@
     "hello": "",
     "id": "",
     "itemsPerPage": "",
-    "joined": "",
     "label": "",
     "loading": "",
     "login": "",
+    "manualPaymentSource": {
+      "none": ""
+    },
     "newsletterStatus": {
       "cleaned": "",
       "none": "",
@@ -905,6 +971,11 @@
     "no": "",
     "noResults": "",
     "pageCount": "",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "",
       "draft": "",
@@ -912,10 +983,16 @@
       "pending": "",
       "successful": ""
     },
+    "paymentType": {
+      "oneTime": "",
+      "prorated": "",
+      "recurring": "",
+      "unknown": ""
+    },
     "perMonth": "",
-    "perMonthText": "",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "",
-    "perYearText": "",
     "role": {
       "admin": "",
       "member": "",
@@ -973,9 +1050,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "",
     "roles": "",
     "security": {
       "instructions": "",
@@ -988,6 +1067,10 @@
       "title": "",
       "whatDoTheButtonsDo": ""
     }
+  },
+  "contactSelector": {
+    "contactNOfTotal": "",
+    "selfOption": ""
   },
   "contacts": {
     "addContact": "",
@@ -1002,6 +1085,7 @@
       "activeUser": "",
       "amount": "",
       "annotationsCopy": "",
+      "averageDonationAmount": "",
       "contribution": "",
       "contributionCancelled": "",
       "contributionMonthlyAmount": "",
@@ -1009,8 +1093,10 @@
       "contributionType": "",
       "deliveryOptIn": "",
       "description": "",
+      "donationDate": "",
       "email": "",
       "firstname": "",
+      "hasDonated": "",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
@@ -1027,19 +1113,50 @@
       "period": "",
       "phone": "",
       "preferredChannel": "",
-      "tags": ""
+      "tags": "",
+      "totalDonationAmount": ""
     },
     "dataGroup": {
       "callout": "",
       "contact": "",
-      "contribution": "",
+      "oneTimeContributions": "",
+      "recurringContributions": "",
       "role": ""
+    },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      },
+      "create": "",
+      "date": "",
+      "editTitle": "",
+      "editTitleWithName": "",
+      "empty": "",
+      "manage": "",
+      "name": "",
+      "newTitle": "",
+      "showingOf": "",
+      "subject": "",
+      "title": "",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "",
     "noResults": "",
     "numResults": "",
     "search": "",
     "selectedCount": "",
+    "sendEmail": {
+      "newEmail": "",
+      "sent": "",
+      "templateLabel": "",
+      "templateName": "",
+      "templateNameRequired": "",
+      "title": ""
+    },
     "showingOf": ""
   },
   "contribution": {
@@ -1053,7 +1170,6 @@
     "changeBank": "",
     "changeBankInfo": "",
     "contributing": "",
-    "contributionUpdateError": "",
     "dueToRenew": "",
     "expired": "",
     "expiredText": "",
@@ -1066,7 +1182,8 @@
       "title": ""
     },
     "paymentMethod": "",
-    "paymentSourceUpdateError": "",
+    "perMonthText": "",
+    "perYearText": "",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
     "prorateIncreaseMessage": "",
@@ -1093,6 +1210,118 @@
   },
   "editNotice": {
     "title": ""
+  },
+  "emailEditor": {
+    "body": {
+      "label": ""
+    },
+    "from": {
+      "label": ""
+    },
+    "preview": {
+      "asContactLabel": "",
+      "from": "",
+      "label": "",
+      "unavailable": ""
+    },
+    "subject": {
+      "label": ""
+    }
+  },
+  "emails": {
+    "actions": {
+      "addCustom": "",
+      "deactivate": "",
+      "resetToDefault": ""
+    },
+    "add": {
+      "title": ""
+    },
+    "confirmDelete": {
+      "message": "",
+      "messageWithMailings": "",
+      "title": ""
+    },
+    "confirmResetToDefault": {
+      "message": "",
+      "title": ""
+    },
+    "customized": "",
+    "default": "",
+    "description": "",
+    "edit": {
+      "title": "",
+      "titleCustom": ""
+    },
+    "fromEmail": "",
+    "fromName": "",
+    "isOngoing": "",
+    "list": {
+      "showingOf": ""
+    },
+    "mailingCount": "",
+    "missingDefault": "",
+    "name": "",
+    "notifications": {
+      "created": "",
+      "deleted": "",
+      "missingMergeTags": "",
+      "resetToDefault": "",
+      "updated": ""
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "",
+      "paused": ""
+    },
+    "status": "",
+    "tabs": {
+      "custom": "",
+      "templates": ""
+    },
+    "templates": {
+      "availableFields": "",
+      "description": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "one-time-donation-failed": "",
+        "reset-device": "",
+        "reset-password": "",
+        "setup-account": "",
+        "welcome": ""
+      },
+      "names": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "one-time-donation-failed": "",
+        "reset-device": "",
+        "reset-password": "",
+        "setup-account": "",
+        "welcome": ""
+      },
+      "type": {
+        "admin": "",
+        "contact": "",
+        "general": ""
+      }
+    },
+    "type": ""
   },
   "footer": {
     "contactUs": "",
@@ -1123,11 +1352,13 @@
     "errorMessages": {
       "api": {
         "account-locked": "",
+        "cant-update-contribution": "",
         "duplicate-email": "",
         "duplicate-tag-name": "",
         "invalid-token": "",
         "login-failed": "",
-        "mfa-token-required": ""
+        "mfa-token-required": "",
+        "payment-failed": ""
       },
       "generic": "",
       "unauthorized": "",
@@ -1224,6 +1455,7 @@
       "heading": "",
       "italic": "",
       "link": "",
+      "mergeFields": "",
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
@@ -1251,8 +1483,11 @@
   },
   "homePage": {
     "editProfile": "",
+    "makeOneTimeDonationButton": "",
+    "makeOneTimeDonationTitle": "",
     "manageContribution": "",
     "newCallout": "",
+    "oneTimeContributionSuccessMessage": "",
     "openCallouts": "",
     "quickActions": "",
     "title": "",
@@ -1275,8 +1510,16 @@
   "join": {
     "absorbFeeForce": "",
     "absorbFeeOptIn": "",
-    "absorbFeeText": "",
+    "absorbFeeText": {
+      "monthly": "",
+      "one-time": ""
+    },
     "contribute": "",
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "errors": {
       "confirmEmail": {
         "message": "",
@@ -1284,6 +1527,16 @@
         "title": ""
       },
       "failed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
+      },
+      "notFound": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
+      },
+      "paymentFailed": {
         "backToJoin": "",
         "message": "",
         "title": ""
@@ -1304,18 +1557,14 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "",
-      "recurringLabel": ""
-    },
     "genericError": "",
     "goBack": "",
     "goBackButton": "",
     "note": "",
-    "willBeContributing": ""
+    "willBeContributing": "",
+    "willBeDonating": ""
   },
   "joinSetup": {
-    "confirmDetails": "",
     "continue": "",
     "welcome": ""
   },
@@ -1365,6 +1614,7 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
+        "oneTimeDonationEmail": "",
         "text": "",
         "title": "",
         "welcomeEmail": ""
@@ -1382,10 +1632,12 @@
         "description": "",
         "formSubtitle": "",
         "formTitle": "",
+        "googleApplePayNoticeText": "",
         "minAmount": "",
         "noticeText": "",
         "noticeTextHelp": "",
         "showAbsorbFee": "",
+        "showGoogleApplePay": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
@@ -1402,6 +1654,7 @@
     "contacts": "",
     "contribution": "",
     "dashboard": "",
+    "emails": "",
     "home": "",
     "legacyApp": "",
     "logout": "",
@@ -1410,6 +1663,51 @@
     "payments": "",
     "settings": "",
     "yourProfile": ""
+  },
+  "mergeFields": {
+    "copied": "",
+    "copy": "",
+    "copyTag": "",
+    "example": "",
+    "groups": {
+      "contact": "",
+      "magic": "",
+      "standard": "",
+      "template": ""
+    },
+    "insert": "",
+    "insertTag": "",
+    "tags": {
+      "ACTIVATELINK": "",
+      "ANSWERS": "",
+      "CALLOUTLINK": "",
+      "CALLOUTSLUG": "",
+      "CALLOUTTITLE": "",
+      "CONFIRMLINK": "",
+      "EMAIL": "",
+      "EXPIRES": "",
+      "FNAME": "",
+      "GIFTDATE": "",
+      "GIFTEE": "",
+      "ISELIGIBLE": "",
+      "LNAME": "",
+      "LOGINLINK": "",
+      "MEMBERID": "",
+      "MEMBERNAME": "",
+      "MEMBERSHIPID": "",
+      "MESSAGE": "",
+      "NAME": "",
+      "ORGNAME": "",
+      "PURCHASER": "",
+      "REFCODE": "",
+      "REFEREENAME": "",
+      "RESPNAME": "",
+      "RPLINK": "",
+      "SPLINK": "",
+      "SUPPORTEMAIL": "",
+      "URL": ""
+    },
+    "title": ""
   },
   "newsletterOptIn": {
     "groups": {
@@ -1451,6 +1749,10 @@
       "success": ""
     },
     "error": "",
+    "rateLimit": {
+      "generic": "",
+      "withWait": ""
+    },
     "remove": ""
   },
   "pageTitle": {
@@ -1466,6 +1768,11 @@
     "resetPassword": "",
     "setPassword": "",
     "setup": ""
+  },
+  "paymentLabels": {
+    "membershipProductName": "",
+    "recurringContribution": "",
+    "taxRateDisplayName": ""
   },
   "paymentMethods": {
     "gc_direct-debit": {
@@ -1504,13 +1811,18 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "",
+      "total": ""
+    },
     "filter": {
       "all": "",
       "cancelled": "",
@@ -1599,8 +1911,5 @@
     },
     "searchTag": "",
     "toggleTag": ""
-  },
-  "taxRate": {
-    "invoiceName": ""
   }
 }

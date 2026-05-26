@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddCalloutVariantFormTexts1709297783048
-  implements MigrationInterface
-{
+export class AddCalloutVariantFormTexts1709297783048 implements MigrationInterface {
   name = 'AddCalloutVariantFormTexts1709297783048';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

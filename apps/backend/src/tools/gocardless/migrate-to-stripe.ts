@@ -1,5 +1,3 @@
-import 'module-alias/register';
-
 import { PaymentMethod, PaymentStatus } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
@@ -154,7 +152,7 @@ runApp(async () => {
         });
 
         // Recreate the contribution
-        await PaymentService.updateContribution(contact, {
+        await PaymentService.processUpdateContribution(contact, {
           monthlyAmount: contact.contributionMonthlyAmount,
           period: contact.contributionPeriod,
           payFee: false,

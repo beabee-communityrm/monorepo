@@ -19,7 +19,7 @@ import type {
   CalloutResponseComment,
   CalloutResponseTag,
   Contact,
-} from './index';
+} from './index.js';
 
 @Entity()
 @Unique(['callout', 'number'])

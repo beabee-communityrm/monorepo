@@ -38,13 +38,14 @@
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
 import { AppButton, AppShareBox, AppTitle } from '@beabee/vue';
 
-import noImage from '@assets/images/no-image.avif';
-import env from '@env';
-import { generalContent } from '@store/generalContent';
-import { resolveImageUrl } from '@utils/url';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+
+import noImage from '#assets/images/no-image.avif';
+import env from '#env';
+import { generalContent } from '#store/generalContent';
+import { resolveImageUrl } from '#utils/url';
 
 import CalloutSidePanel from './CalloutSidePanel.vue';
 

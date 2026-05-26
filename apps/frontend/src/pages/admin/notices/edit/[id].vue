@@ -23,18 +23,19 @@ import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
 import { PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import NoticeForm from '@components/notice/NoticeForm.vue';
 import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+
+import NoticeForm from '#components/notice/NoticeForm.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
+const route = useRoute('adminNoticeEdit');
 const router = useRouter();
 
-const props = defineProps<{ id: string }>();
 const notice = ref<GetNoticeData | undefined>();
 
 addBreadcrumb(
@@ -44,7 +45,7 @@ addBreadcrumb(
       ? [
           {
             title: notice.value?.name || '',
-            to: '/admin/notices/view/' + props.id,
+            to: '/admin/notices/view/' + route.params.id,
           },
           { title: t('actions.edit') },
         ]
@@ -53,7 +54,7 @@ addBreadcrumb(
 );
 
 onBeforeMount(async () => {
-  notice.value = await client.notice.get(props.id);
+  notice.value = await client.notice.get(route.params.id);
 });
 
 async function handleSubmit(formData: CreateNoticeData) {

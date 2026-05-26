@@ -1,4 +1,4 @@
-import type { ArgumentsCamelCase, CommandModule } from 'yargs';
+import type { CommandModule } from 'yargs';
 
 import {
   checkTranslationKey,
@@ -39,9 +39,7 @@ const checkKeyCommand: CommandModule = {
         'Output in JSON format'
       );
   },
-  handler: async (
-    argv: ArgumentsCamelCase<{ key: string; format: 'json' | 'table' }>
-  ) => {
+  handler: async (argv: any) => {
     try {
       const result = await checkTranslationKey(argv.key);
 
@@ -105,9 +103,7 @@ const getTranslationsCommand: CommandModule = {
         'Get all translations for "actions.save"'
       );
   },
-  handler: async (
-    argv: ArgumentsCamelCase<{ key: string; format: 'json' | 'table' }>
-  ) => {
+  handler: async (argv: any) => {
     try {
       const translations = await getTranslations(argv.key);
 
@@ -170,13 +166,7 @@ const listKeysCommand: CommandModule = {
         'List first 100 keys'
       );
   },
-  handler: async (
-    argv: ArgumentsCamelCase<{
-      prefix?: string;
-      limit: number;
-      format: 'json' | 'list';
-    }>
-  ) => {
+  handler: async (argv: any) => {
     try {
       const options: ListTranslationKeysOptions = {
         prefix: argv.prefix,
@@ -237,9 +227,7 @@ const validateCommand: CommandModule = {
         'Validate invalid key and get suggestions'
       );
   },
-  handler: async (
-    argv: ArgumentsCamelCase<{ key: string; format: 'json' | 'detailed' }>
-  ) => {
+  handler: async (argv: any) => {
     try {
       const result = await validateTranslationUsage(argv.key);
 
@@ -318,14 +306,7 @@ const setTranslationCommand: CommandModule = {
         'Set translation for one locale'
       );
   },
-  handler: async (
-    argv: ArgumentsCamelCase<{
-      key: string;
-      locale: string[];
-      createMissingKeys: boolean;
-      format: 'json' | 'detailed';
-    }>
-  ) => {
+  handler: async (argv: any) => {
     try {
       // Parse locale arguments (format: locale=value)
       const translations: Record<string, string> = {};
@@ -413,7 +394,7 @@ const listLocalesCommand: CommandModule = {
       })
       .example('yarn dev-cli translation locales', 'List available locales');
   },
-  handler: async (argv: ArgumentsCamelCase<{ format: 'json' | 'list' }>) => {
+  handler: async (argv: any) => {
     try {
       const locales = getAvailableLocales();
 

@@ -1,15 +1,20 @@
-import type { ContributionPeriod, PaymentMethod } from '../data/index.js';
-import type { ContentJoinPeriodData, StripeFeeCountry } from './index.js';
+import type { PaymentMethod } from '../data/index.js';
+import type {
+  ContentJoinPeriodData,
+  PaymentPeriod,
+  StripeFeeCountry,
+} from './index.js';
 
 export interface ContentJoinData {
   title: string;
   subtitle: string;
   initialAmount: number;
-  initialPeriod: ContributionPeriod;
+  initialPeriod: PaymentPeriod;
   minMonthlyAmount: number;
   periods: ContentJoinPeriodData[];
   showAbsorbFee: boolean;
   showNoContribution: boolean;
+  showGoogleApplePay: boolean;
   paymentMethods: PaymentMethod[];
   /** @deprecated Use {@link ContentPaymentData.stripePublicKey} instead. */
   stripePublicKey: string;

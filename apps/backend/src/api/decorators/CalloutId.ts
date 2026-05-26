@@ -1,8 +1,9 @@
 import { getRepository } from '@beabee/core/database';
+import { NotFoundError } from '@beabee/core/errors';
 import { Callout } from '@beabee/core/models';
 
 import { isUUID } from 'class-validator';
-import { NotFoundError, createParamDecorator } from 'routing-controllers';
+import { createParamDecorator } from 'routing-controllers';
 
 /**
  * Allows the use of either a callout ID or slug in the route

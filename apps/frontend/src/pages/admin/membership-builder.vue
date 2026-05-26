@@ -17,9 +17,11 @@ meta:
 import { AppTabs, PageTitle } from '@beabee/vue';
 
 import { faHandsHelping } from '@fortawesome/free-solid-svg-icons';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import { resolveTabNavigation } from '#utils/navigation';
 
 import { addBreadcrumb } from '../../store/breadcrumb';
 
@@ -27,8 +29,8 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const tabs = ref(
-  [
+const tabs = computed(() =>
+  resolveTabNavigation(router, [
     {
       id: 'adminMembershipBuilderJoinForm',
       label: t('membershipBuilder.steps.joinForm.title'),
@@ -41,14 +43,7 @@ const tabs = ref(
       id: 'adminMembershipBuilderIntroMessages',
       label: t('membershipBuilder.steps.intro.title'),
     },
-    {
-      id: 'adminMembershipBuilderEmail',
-      label: t('membershipBuilder.steps.emails.title'),
-    },
-  ].map((item) => ({
-    ...item,
-    to: router.resolve({ name: item.id }).href,
-  }))
+  ])
 );
 
 const selectedTab = computed(() =>

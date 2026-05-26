@@ -1,8 +1,8 @@
 import {
   ContributionPeriod,
   ContributionType,
-  PaymentForm,
   PaymentMethod,
+  PaymentPeriod,
   calcPaymentFee,
 } from '@beabee/beabee-common';
 
@@ -10,10 +10,32 @@ import { addMonths, getYear, setYear, sub } from 'date-fns';
 
 import config from '#config/config';
 import { Contact } from '#models/index';
+import { PaymentFlowForm, UpdateContributionForm } from '#type/index';
 
+/**
+ * Calculate the equivalent monthly amount from a given amount and period
+ *
+ * @param amount The amount
+ * @param period The period
+ * @returns The equivalent monthly amount
+ */
+export function getMonthlyAmount(
+  amount: number,
+  period: ContributionPeriod
+): number {
+  return period === ContributionPeriod.Annually ? amount / 12 : amount;
+}
+
+/**
+ * Calculate the actual amount to charge based on the monthly amount and period
+ *
+ * @param monthlyAmount The monthly amount
+ * @param period The period
+ * @returns The actual amount
+ */
 export function getActualAmount(
   monthlyAmount: number,
-  period: ContributionPeriod
+  period: PaymentPeriod
 ): number {
   // TODO: fix this properly
   return Math.round(
@@ -24,20 +46,34 @@ export function getActualAmount(
 /**
  * Calculate the amount to charge including the payment fee if applicable
  *
- * @param paymentForm The payment form
+ * @param form The payment form
  * @param paymentMethod The payment method
  * @returns The chargeable amount in cents
  */
 export function getChargeableAmount(
-  paymentForm: PaymentForm,
-  paymentMethod: PaymentMethod
+  form: PaymentFlowForm | UpdateContributionForm,
+  paymentMethod: PaymentMethod,
+  country = config.stripe.country
 ): number {
-  const amount = getActualAmount(paymentForm.monthlyAmount, paymentForm.period);
-  const fee = paymentForm.payFee
-    ? calcPaymentFee(
-        { amount, period: paymentForm.period, paymentMethod },
-        config.stripe.country
-      )
+  // TODO: Remove once we've refactored UpdateContributionForm
+  if ('action' in form && form.action === 'update-payment-method') {
+    throw new Error(
+      'Cannot calculate chargeable amount for payment method update'
+    );
+  }
+
+  const amount =
+    'action' in form && form.action === 'create-one-time-payment'
+      ? form.amount
+      : getActualAmount(form.monthlyAmount, form.period);
+
+  const period =
+    'action' in form && form.action === 'create-one-time-payment'
+      ? ('one-time' as const)
+      : form.period;
+
+  const fee = form.payFee
+    ? calcPaymentFee({ amount, period, paymentMethod }, country)
     : 0;
   return Math.round((amount + fee) * 100);
 }

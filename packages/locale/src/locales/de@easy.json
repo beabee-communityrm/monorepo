@@ -7,7 +7,7 @@
     "mfa": {
       "codeInput": {
         "info": "",
-        "label": ""
+        "label": "Betreff"
       },
       "confirmDelete": {
         "desc": "",
@@ -34,11 +34,11 @@
       },
       "secretInput": {
         "desc": "",
-        "label": ""
+        "label": "Betreff"
       },
       "title": "",
       "validateButton": {
-        "label": ""
+        "label": "Betreff"
       }
     },
     "newsletter": {
@@ -67,6 +67,7 @@
     "cancel": "",
     "changePassword": "",
     "chooseFile": "",
+    "clearSearch": "Suche löschen",
     "close": "",
     "continue": "",
     "copy": "Hier kannst du es kopieren.",
@@ -85,6 +86,7 @@
     "noBack": "",
     "participate": "",
     "preview": "",
+    "previous": "",
     "publish": "",
     "reopen": "",
     "replicate": "",
@@ -99,6 +101,8 @@
     "schedule": "",
     "search": "",
     "sendEmails": "E-Mails schicken",
+    "sendOneOffEmail": "E-Mail schicken",
+    "sendOngoingEmails": "E-Mails die immer wieder gehen",
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
     "skip": "",
     "submit": "Hier wird deine Meldung weg-geschickt.",
@@ -108,7 +112,8 @@
     "view": "",
     "yesDelete": "",
     "yesDisable": "",
-    "yesRemove": ""
+    "yesRemove": "",
+    "yesReset": ""
   },
   "addContact": {
     "contactSaved": "",
@@ -171,13 +176,47 @@
       },
       "expiresHelp": "",
       "expiresNeverWarning": "",
-      "label": "",
+      "label": "Betreff",
       "showingOf": ""
     },
     "email": {
+      "contactTemplates": {
+        "button": "",
+        "contactJoins": "Kontakt kommt in die Gruppe",
+        "contactLeaves": "Kontakt verlässt die Gruppe",
+        "create": "",
+        "description": "Hier kannst du E-Mail-Vorlagen erstellen und ändern. Du kannst einmalige oder regelmäßige E-Mails verwalten.",
+        "directSendDisabled": "Nur neue Kontakte bekommen die E-Mail",
+        "directSendEnabled": "Alle aktuellen Kontakte bekommen die E-Mail sofort",
+        "ongoing": "Regelmäßig",
+        "ongoingDisabled": "Die E-Mail wird einmal an alle Kontakte geschickt",
+        "ongoingEnabled": "Die E-Mail wird automatisch bei Änderungen geschickt",
+        "segment": "Gruppe",
+        "send": "",
+        "sendSettings": "",
+        "sendTypes": {
+          "oneOffLabel": "",
+          "ongoingLabel": "",
+          "title": ""
+        },
+        "summaryOnceOnly": "Diese E-Mail wird einmal an alle Kontakte in der Gruppe geschickt.",
+        "summaryOngoingJoin": "Diese E-Mail wird jeden Tag an Kontakte geschickt, die neu in der Gruppe „{segment}“ sind.",
+        "summaryOngoingJoinDirectSend": "Diese E-Mail wird jeden Tag an neue Kontakte in der Gruppe „{segment}“ geschickt. Alle anderen Kontakte bekommen sie sofort.",
+        "summaryOngoingLeave": "Diese E-Mail wird jeden Tag an Kontakte geschickt, die die Gruppe „{segment}“ verlassen haben.",
+        "summaryOngoingPaused": "Diese E-Mail für die Gruppe „{segment}“ ist gerade pausiert. Sie wird nicht verschickt.",
+        "summaryTemplate": "Diese E-Mail wird nicht automatisch verschickt. Du kannst sie als Vorlage für neue E-Mails benutzen.",
+        "title": "Gruppenbasiert",
+        "titleDirectSend": "Sofort an alle Kontakte schicken",
+        "titleSendTime": ""
+      },
       "fromEmail": "",
       "fromName": "",
-      "label": "",
+      "label": "Betreff",
+      "templates": {
+        "description": "Hier kannst du Betreff und Text der E-Mails ändern, die die App verschickt. Die Farbe zeigt dir: grün = angepasst, gelb = Standardvorlage, rot = nicht eingerichtet (wird nicht gesendet).",
+        "subtitle": "",
+        "title": "E-Mails einrichten"
+      },
       "text": "",
       "title": ""
     },
@@ -199,7 +238,7 @@
         "text": "",
         "title": ""
       },
-      "label": "",
+      "label": "Betreff",
       "language": "",
       "logo": "",
       "organisationName": "",
@@ -213,9 +252,13 @@
       }
     },
     "payment": {
+      "enableOneTimeDonation": "",
+      "oneTimeDonationsTitle": "",
       "paymentTitle": "",
+      "showOneTimeDonation": "",
       "taxRate": "",
-      "taxRateEnabled": ""
+      "taxRateLabelOneTime": "",
+      "taxRateLabelRecurring": "Mehrwertsteuersatz für regelmäßige Beiträge aktivieren"
     },
     "theme": {
       "bodyFont": "",
@@ -231,7 +274,7 @@
       "customColors": "",
       "fontNotListed": "",
       "fonts": "",
-      "label": "",
+      "label": "Betreff",
       "presetColors": {
         "default": ""
       },
@@ -248,7 +291,8 @@
       "all": "",
       "any": ""
     },
-    "createdSegment": "",
+    "createdSegment": "Erstellte Gruppe „{segment}“",
+    "invalidRuleError": "",
     "matchWord": {
       "AND": "",
       "OR": ""
@@ -308,18 +352,18 @@
     },
     "saveSegment": {
       "createOrUpdate": {
-        "create": "",
-        "label": "",
-        "update": ""
+        "create": "Neue Gruppe erstellen",
+        "label": "Betreff",
+        "update": "Gruppe „{segment}“ aktualisieren"
       },
-      "createSegment": "",
-      "segmentName": "",
-      "text": "",
-      "title": "",
-      "updateSegment": ""
+      "createSegment": "Gruppe erstellen",
+      "segmentName": "Name der Gruppe",
+      "text": "Eine Gruppe ist eine Sammlung von Kontakten, auf die bestimmte Filter zutreffen. Neue Kontakte, auf die die Filter auch zutreffen, kommen automatisch in die Gruppe.",
+      "title": "Gruppe speichern",
+      "updateSegment": "Gruppe aktualisieren"
     },
     "selectFilter": "",
-    "updatedSegment": ""
+    "updatedSegment": "Aktualisierte Gruppe „{segment}“"
   },
   "apiKey": {
     "data": {
@@ -353,7 +397,7 @@
         "nextButton": "",
         "nextSlide": {
           "default": "",
-          "label": ""
+          "label": "Betreff"
         },
         "prevButton": "",
         "slideNo": "",
@@ -366,10 +410,27 @@
         "content": {
           "title": ""
         },
+        "email": {
+          "body": {
+            "default": ""
+          },
+          "collectInfoWarning": {
+            "description": "Um eine E-Mail an alle Teilnehmer zu senden, müssen Sie \"Kontaktinformationen erfassen\" in der Registerkarte Einstellungen aktivieren",
+            "title": "Kontaktinformationen werden nicht erfasst"
+          },
+          "sendEmail": {
+            "description": "E-Mail wird an alle Teilnehmer gesendet, die ihre Kontaktinformationen übermitteln",
+            "label": "Nach der Übermittlung eine E-Mail an alle Teilnehmer senden"
+          },
+          "subject": {
+            "default": ""
+          },
+          "title": "E-Mail"
+        },
         "endMessage": {
           "inputs": {
             "action": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "redirect": "",
                 "showMessage": ""
@@ -377,17 +438,17 @@
             },
             "text": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             },
             "title": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             },
             "url": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             }
           },
@@ -395,7 +456,7 @@
         },
         "intro": {
           "help": "",
-          "label": "",
+          "label": "Betreff",
           "title": ""
         },
         "mailchimp": {
@@ -417,14 +478,14 @@
           },
           "inputs": {
             "collectGuestInfo": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
               }
             },
             "collectMemberInfo": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
@@ -432,7 +493,7 @@
             },
             "expires": {
               "description": "",
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "never": "",
                 "schedule": ""
@@ -443,64 +504,64 @@
               "gallery": {
                 "disabledDescription": "",
                 "enabledDescription": "",
-                "label": ""
+                "label": "Betreff"
               },
               "map": {
                 "disabledDescription": "",
                 "enabledDescription": "",
-                "label": ""
+                "label": "Betreff"
               },
               "title": ""
             },
             "mapSchema": {
               "addressPattern": {
-                "label": ""
+                "label": "Betreff"
               },
               "addressPatternProp": {
-                "label": "",
+                "label": "Betreff",
                 "none": ""
               },
               "addressProp": {
-                "label": ""
+                "label": "Betreff"
               },
               "bounds": {
-                "label": ""
+                "label": "Betreff"
               },
               "center": {
-                "label": ""
+                "label": "Betreff"
               },
               "geocodeCountries": {
-                "label": ""
+                "label": "Betreff"
               },
               "initialZoom": {
-                "label": ""
-              },
-              "maxZoom": {
-                "label": ""
-              },
-              "minZoom": {
-                "label": ""
-              },
-              "style": {
-                "help": "",
-                "label": ""
-              },
-              "title": "",
-              "mapIconStylingSetting": {
-                "label": "",
-                "title": ""
+                "label": "Betreff"
               },
               "mapIconProp": {
-                "label": "",
+                "label": "Betreff",
                 "none": ""
               },
               "mapIconStylingProp": {
-                "label": ""
-              }
+                "label": "Betreff"
+              },
+              "mapIconStylingSetting": {
+                "label": "Betreff",
+                "title": ""
+              },
+              "maxZoom": {
+                "label": "Betreff"
+              },
+              "minZoom": {
+                "label": "Betreff"
+              },
+              "style": {
+                "help": "",
+                "label": "Betreff"
+              },
+              "title": ""
             },
             "newsletterSettings": {
               "disabled": "",
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
@@ -508,7 +569,7 @@
             },
             "openToEveryone": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
@@ -516,9 +577,9 @@
             },
             "requireCaptcha": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "members": {
-                "label": "",
+                "label": "Betreff",
                 "opts": {
                   "disabled": "",
                   "enabled": ""
@@ -532,29 +593,29 @@
             },
             "responseImageProp": {
               "description": "",
-              "label": ""
+              "label": "Betreff"
             },
             "responseLinks": {
               "add": "",
               "description": "",
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
               },
               "placeholder": {
-                "label": "",
+                "label": "Betreff",
                 "url": ""
               },
               "text": {
-                "label": ""
+                "label": "Betreff"
               },
               "url": {
-                "label": ""
+                "label": "Betreff"
               }
             },
             "responseSettings": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "multiple": "",
                 "singleEditable": "",
@@ -564,17 +625,17 @@
             },
             "responseTitleProp": {
               "description": "",
-              "label": ""
+              "label": "Betreff"
             },
             "showResponses": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "no": "",
                 "yes": ""
               }
             },
             "starts": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "now": "",
                 "schedule": ""
@@ -582,7 +643,7 @@
             },
             "visible": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
@@ -590,7 +651,7 @@
             },
             "whichResponseBuckets": {
               "description": "",
-              "label": ""
+              "label": "Betreff"
             }
           },
           "title": ""
@@ -599,7 +660,7 @@
           "inputs": {
             "description": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             },
             "general": {
@@ -608,10 +669,10 @@
             "image": {
               "description": "",
               "help": "",
-              "label": ""
+              "label": "Betreff"
             },
             "overrideShare": {
-              "label": "",
+              "label": "Betreff",
               "opts": {
                 "disabled": "",
                 "enabled": ""
@@ -619,12 +680,12 @@
             },
             "shareDescription": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             },
             "shareTitle": {
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             },
             "sharing": {
@@ -633,7 +694,7 @@
             "slug": {
               "boxTitle": "",
               "help": "",
-              "label": "",
+              "label": "Betreff",
               "locked": {
                 "title": ""
               },
@@ -643,7 +704,7 @@
               }
             },
             "title": {
-              "label": "",
+              "label": "Betreff",
               "placeholder": ""
             }
           },
@@ -662,6 +723,9 @@
           "navigationButtons": {
             "title": ""
           },
+          "responseLinks": {
+            "title": ""
+          },
           "title": ""
         }
       },
@@ -669,7 +733,7 @@
       "translationFields": {
         "description": "",
         "html": "",
-        "label": "",
+        "label": "Betreff",
         "option": "",
         "placeholder": ""
       },
@@ -729,29 +793,30 @@
     "created": "",
     "dates": {
       "ends": "",
-      "label": "",
+      "label": "Betreff",
       "starts": ""
     },
+    "savedDraft": "",
     "settings": {
       "answers": {
         "editable": "",
         "final": "",
-        "label": ""
+        "label": "Betreff"
       },
       "contactInfo": {
-        "label": "",
+        "label": "Betreff",
         "optional": "",
         "required": ""
       },
       "endsWith": {
-        "label": "",
+        "label": "Betreff",
         "message": "",
         "redirect": ""
       },
-      "label": "",
+      "label": "Betreff",
       "openTo": {
         "everyone": "",
-        "label": "",
+        "label": "Betreff",
         "membersOnly": ""
       }
     },
@@ -876,7 +941,6 @@
   },
   "common": {
     "backToHome": "",
-    "contributing": "",
     "contributionPeriod": {
       "annually": "",
       "monthly": ""
@@ -891,10 +955,12 @@
     "hello": "Hallo.",
     "id": "",
     "itemsPerPage": "",
-    "joined": "",
-    "label": "",
+    "label": "Betreff",
     "loading": "Der Computer arbeitet.",
     "login": "",
+    "manualPaymentSource": {
+      "none": ""
+    },
     "newsletterStatus": {
       "cleaned": "",
       "none": "",
@@ -905,6 +971,11 @@
     "no": "",
     "noResults": "Der Computer hat keine Ergebnisse gefunden.",
     "pageCount": "",
+    "paymentPeriod": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "paymentStatus": {
       "cancelled": "",
       "draft": "Hier ist ein erster Vorschlag.",
@@ -912,10 +983,16 @@
       "pending": "",
       "successful": ""
     },
+    "paymentType": {
+      "oneTime": "",
+      "prorated": "",
+      "recurring": "Regelmäßig",
+      "unknown": ""
+    },
     "perMonth": "",
-    "perMonthText": "",
+    "perOneTime": "",
+    "perOneTimeText": "",
     "perYear": "",
-    "perYearText": "",
     "role": {
       "admin": "",
       "member": "",
@@ -973,9 +1050,11 @@
       "status": "",
       "title": ""
     },
+    "oneTime": "Einmalig",
     "overview": "",
     "pickTag": "",
     "profile": "",
+    "recurring": "Regelmäßig",
     "roles": "",
     "security": {
       "instructions": "",
@@ -988,6 +1067,10 @@
       "title": "",
       "whatDoTheButtonsDo": ""
     }
+  },
+  "contactSelector": {
+    "contactNOfTotal": "Kontakt {current} von {total}",
+    "selfOption": "Du selbst"
   },
   "contacts": {
     "addContact": "",
@@ -1002,15 +1085,18 @@
       "activeUser": "",
       "amount": "",
       "annotationsCopy": "",
-      "contribution": "",
-      "contributionCancelled": "",
-      "contributionMonthlyAmount": "",
-      "contributionPeriod": "",
-      "contributionType": "",
+      "averageDonationAmount": "Durchschnitt einmaliger Beiträge",
+      "contribution": "Regelmäßiger Beitrag",
+      "contributionCancelled": "Regelmäßiger Beitrag beendet",
+      "contributionMonthlyAmount": "Regelmäßiger monatlicher Beitrag",
+      "contributionPeriod": "Regelmäßiger Beitragsintervall",
+      "contributionType": "Regelmäßiger Beitragstyp",
       "deliveryOptIn": "",
       "description": "",
+      "donationDate": "",
       "email": "",
       "firstname": "",
+      "hasDonated": "",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
@@ -1027,19 +1113,50 @@
       "period": "",
       "phone": "",
       "preferredChannel": "",
-      "tags": ""
+      "tags": "",
+      "totalDonationAmount": "Gesamtsumme einmaliger Beiträge"
     },
     "dataGroup": {
       "callout": "",
       "contact": "",
-      "contribution": "",
+      "oneTimeContributions": "",
+      "recurringContributions": "Regelmäßige Beiträge",
       "role": ""
+    },
+    "emailTemplates": {
+      "confirmDelete": {
+        "text": "",
+        "title": ""
+      },
+      "create": "",
+      "date": "",
+      "editTitle": "",
+      "editTitleWithName": "",
+      "empty": "",
+      "manage": "",
+      "name": "",
+      "newTitle": "",
+      "showingOf": "",
+      "subject": "",
+      "title": "",
+      "toggleEnabled": {
+        "disabled": "",
+        "enabled": ""
+      }
     },
     "noContacts": "",
     "noResults": "",
     "numResults": "",
     "search": "",
     "selectedCount": "",
+    "sendEmail": {
+      "newEmail": "Neue E-Mail",
+      "sent": "Die E-Mail wurde an die Gruppe geschickt.",
+      "templateLabel": "Vorlage",
+      "templateName": "Name der Vorlage",
+      "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
+      "title": "E-Mail an Gruppe schicken"
+    },
     "showingOf": ""
   },
   "contribution": {
@@ -1053,7 +1170,6 @@
     "changeBank": "",
     "changeBankInfo": "",
     "contributing": "",
-    "contributionUpdateError": "",
     "dueToRenew": "",
     "expired": "",
     "expiredText": "",
@@ -1066,7 +1182,8 @@
       "title": ""
     },
     "paymentMethod": "",
-    "paymentSourceUpdateError": "",
+    "perMonthText": "",
+    "perYearText": "",
     "prorateDecreaseMessage": "",
     "prorateDecreaseMessageWillStart": "",
     "prorateIncreaseMessage": "",
@@ -1092,7 +1209,121 @@
     "warning": ""
   },
   "editNotice": {
-    "title": ""
+    "title": "Bearbeiten: {title}"
+  },
+  "emailEditor": {
+    "body": {
+      "label": "Betreff"
+    },
+    "from": {
+      "label": ""
+    },
+    "preview": {
+      "asContactLabel": "Kontakt für Vorschau",
+      "from": "",
+      "label": "Vorschau",
+      "unavailable": "Vorschau nicht verfügbar"
+    },
+    "subject": {
+      "label": "Betreff"
+    }
+  },
+  "emails": {
+    "actions": {
+      "addCustom": "",
+      "deactivate": "",
+      "resetToDefault": ""
+    },
+    "add": {
+      "title": ""
+    },
+    "confirmDelete": {
+      "message": "",
+      "messageWithMailings": "",
+      "title": ""
+    },
+    "confirmResetToDefault": {
+      "message": "",
+      "title": ""
+    },
+    "customized": "",
+    "default": "",
+    "description": "",
+    "edit": {
+      "title": "",
+      "titleCustom": ""
+    },
+    "fromEmail": "",
+    "fromName": "",
+    "isOngoing": "",
+    "list": {
+      "showingOf": ""
+    },
+    "mailingCount": "",
+    "missingDefault": "",
+    "name": "",
+    "notifications": {
+      "created": "",
+      "deleted": "",
+      "missingMergeTags": "",
+      "resetToDefault": "",
+      "templateAssigned": "",
+      "templatesAssigned": "",
+      "updated": ""
+    },
+    "sendType": {
+      "oneOff": "",
+      "ongoing": "Regelmäßig",
+      "paused": ""
+    },
+    "status": "",
+    "tabs": {
+      "custom": "",
+      "templates": ""
+    },
+    "templates": {
+      "availableFields": "",
+      "description": {
+        "cancelled-contribution": "Wird an Personen geschickt, wenn ihr regelmäßiger Beitrag gekündigt wird. Enthält Infos, wann der Beitrag endet.",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "Wird an Personen geschickt, wenn ihre Zahlung nicht gestartet werden konnte. Informiert darüber, dass der regelmäßige Beitrag wegen eines Zahlungsfehlers nicht aktiv ist.",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "Wird an Personen geschickt, wenn ihre Zahlung erfolgreich auf automatisch regelmäßig umgestellt wurde.",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "one-time-donation-failed": "",
+        "reset-device": "",
+        "reset-password": "",
+        "setup-account": "",
+        "welcome": ""
+      },
+      "names": {
+        "cancelled-contribution": "",
+        "cancelled-member": "",
+        "confirm-email": "",
+        "contribution-didnt-start": "",
+        "email-exists-login": "",
+        "email-exists-set-password": "",
+        "manual-to-automatic": "",
+        "new-callout-response": "",
+        "new-member": "",
+        "one-time-donation": "",
+        "one-time-donation-failed": "",
+        "reset-device": "",
+        "reset-password": "",
+        "setup-account": "",
+        "welcome": ""
+      },
+      "type": {
+        "admin": "",
+        "contact": "",
+        "general": ""
+      }
+    },
+    "type": ""
   },
   "footer": {
     "contactUs": "Schreibe uns. Nutze diese Adresse:",
@@ -1123,11 +1354,13 @@
     "errorMessages": {
       "api": {
         "account-locked": "",
+        "cant-update-contribution": "",
         "duplicate-email": "",
         "duplicate-tag-name": "Diesen Tag gibt es schon",
         "invalid-token": "",
         "login-failed": "",
-        "mfa-token-required": ""
+        "mfa-token-required": "",
+        "payment-failed": ""
       },
       "generic": "Das ist nicht richtig. Hol dir Hilfe.",
       "unauthorized": "Sie haben daruf keinen Zugriff.",
@@ -1224,6 +1457,7 @@
       "heading": "",
       "italic": "",
       "link": "",
+      "mergeFields": "",
       "numberedlist": "",
       "strikethrough": "",
       "toolbar": "",
@@ -1251,8 +1485,11 @@
   },
   "homePage": {
     "editProfile": "",
+    "makeOneTimeDonationButton": "",
+    "makeOneTimeDonationTitle": "",
     "manageContribution": "",
     "newCallout": "",
+    "oneTimeContributionSuccessMessage": "",
     "openCallouts": "",
     "quickActions": "",
     "title": "",
@@ -1275,8 +1512,16 @@
   "join": {
     "absorbFeeForce": "",
     "absorbFeeOptIn": "",
-    "absorbFeeText": "",
+    "absorbFeeText": {
+      "monthly": "",
+      "one-time": ""
+    },
     "contribute": "",
+    "contribution": {
+      "annually": "",
+      "monthly": "",
+      "one-time": ""
+    },
     "errors": {
       "confirmEmail": {
         "message": "",
@@ -1284,6 +1529,16 @@
         "title": ""
       },
       "failed": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
+      },
+      "notFound": {
+        "backToJoin": "",
+        "message": "",
+        "title": ""
+      },
+      "paymentFailed": {
         "backToJoin": "",
         "message": "",
         "title": ""
@@ -1304,18 +1559,14 @@
     }
   },
   "joinPayment": {
-    "applePay": {
-      "description": "",
-      "recurringLabel": ""
-    },
     "genericError": "",
     "goBack": "",
     "goBackButton": "",
     "note": "",
-    "willBeContributing": ""
+    "willBeContributing": "",
+    "willBeDonating": ""
   },
   "joinSetup": {
-    "confirmDetails": "",
     "continue": "",
     "welcome": ""
   },
@@ -1365,6 +1616,7 @@
         "bigTitle": "",
         "cancellationEmail": "",
         "description": "",
+        "oneTimeDonationEmail": "",
         "text": "",
         "title": "",
         "welcomeEmail": ""
@@ -1382,10 +1634,12 @@
         "description": "",
         "formSubtitle": "",
         "formTitle": "",
+        "googleApplePayNoticeText": "",
         "minAmount": "",
         "noticeText": "",
         "noticeTextHelp": "",
         "showAbsorbFee": "",
+        "showGoogleApplePay": "",
         "showNoContribution": "",
         "suggestedAmounts": "",
         "text": "",
@@ -1402,6 +1656,7 @@
     "contacts": "",
     "contribution": "",
     "dashboard": "",
+    "emails": "",
     "home": "",
     "legacyApp": "",
     "logout": "",
@@ -1410,6 +1665,51 @@
     "payments": "",
     "settings": "",
     "yourProfile": ""
+  },
+  "mergeFields": {
+    "copied": "",
+    "copy": "",
+    "copyTag": "",
+    "example": "",
+    "groups": {
+      "contact": "",
+      "magic": "",
+      "standard": "",
+      "template": ""
+    },
+    "insert": "",
+    "insertTag": "",
+    "tags": {
+      "ACTIVATELINK": "",
+      "ANSWERS": "",
+      "CALLOUTLINK": "",
+      "CALLOUTSLUG": "",
+      "CALLOUTTITLE": "",
+      "CONFIRMLINK": "",
+      "EMAIL": "",
+      "EXPIRES": "",
+      "FNAME": "",
+      "GIFTDATE": "",
+      "GIFTEE": "",
+      "ISELIGIBLE": "",
+      "LNAME": "",
+      "LOGINLINK": "",
+      "MEMBERID": "",
+      "MEMBERNAME": "",
+      "MEMBERSHIPID": "",
+      "MESSAGE": "",
+      "NAME": "",
+      "ORGNAME": "",
+      "PURCHASER": "",
+      "REFCODE": "",
+      "REFEREENAME": "",
+      "RESPNAME": "",
+      "RPLINK": "",
+      "SPLINK": "",
+      "SUPPORTEMAIL": "",
+      "URL": ""
+    },
+    "title": ""
   },
   "newsletterOptIn": {
     "groups": {
@@ -1451,6 +1751,10 @@
       "success": ""
     },
     "error": "Das war nicht richtig. Probiere es noch mal.",
+    "rateLimit": {
+      "generic": "Zu viele Versuche. Warte kurz und versuche es nochmal.",
+      "withWait": "Zu viele Versuche. Warte {time} und versuche es nochmal."
+    },
     "remove": ""
   },
   "pageTitle": {
@@ -1467,35 +1771,40 @@
     "setPassword": "",
     "setup": ""
   },
+  "paymentLabels": {
+    "membershipProductName": "",
+    "recurringContribution": "",
+    "taxRateDisplayName": "MwSt"
+  },
   "paymentMethods": {
     "gc_direct-debit": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     },
     "s_bacs": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     },
     "s_card": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     },
     "s_ideal": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     },
     "s_paypal": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     },
     "s_sepa": {
       "changeLabel": "",
-      "label": "",
+      "label": "Betreff",
       "setLabel": ""
     }
   },
@@ -1504,13 +1813,18 @@
       "amount": "",
       "chargeDate": "",
       "contact": "",
-      "status": ""
+      "status": "",
+      "type": ""
     },
     "dataGroup": {
       "payment": ""
     }
   },
   "paymentsAdmin": {
+    "aggregation": {
+      "average": "",
+      "total": ""
+    },
     "filter": {
       "all": "",
       "cancelled": "",
@@ -1542,7 +1856,7 @@
       "title": ""
     },
     "expires": {
-      "label": "",
+      "label": "Betreff",
       "opts": {
         "never": "",
         "schedule": ""
@@ -1550,7 +1864,7 @@
     },
     "new": "",
     "starts": {
-      "label": "",
+      "label": "Betreff",
       "opts": {
         "now": "",
         "schedule": ""
@@ -1572,7 +1886,7 @@
   },
   "stepper": {
     "navigation": {
-      "label": ""
+      "label": "Betreff"
     },
     "screen": {
       "completed": "",
@@ -1599,8 +1913,5 @@
     },
     "searchTag": "",
     "toggleTag": ""
-  },
-  "taxRate": {
-    "invoiceName": "MwSt"
   }
 }

@@ -1,26 +1,27 @@
-import 'module-alias/register';
-
 // TODO: Port this to apps/backend-cli/src/actions/sync/segments.ts.
 // To do that, we have to package ContactTransformer e.g. to @beabee/transformers.
 import { GetContactWith } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { InvalidRuleError } from '@beabee/core/errors';
 import { log as mainLogger } from '@beabee/core/logging';
-import {
-  Segment,
-  SegmentContact,
-  SegmentOngoingEmail,
-} from '@beabee/core/models';
+import { Segment, SegmentOngoingEmail } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
+import { newsletterBulkService } from '@beabee/core/services';
 import ContactsService from '@beabee/core/services/ContactsService';
 import EmailService from '@beabee/core/services/EmailService';
-import NewsletterService from '@beabee/core/services/NewsletterService';
+import SegmentService from '@beabee/core/services/SegmentService';
 
-import ContactTransformer from '@api/transformers/ContactTransformer';
-import { In } from 'typeorm';
+import ContactTransformer from '#api/transformers/ContactTransformer';
 
 const log = mainLogger.child({ app: 'process-segments' });
 
+/**
+ * Update the contacts list for a segment, checking which contacts have been
+ * added or removed since the last run and triggering any relevant emails or
+ * updating associated newsletter tags.
+ *
+ * @param segment The segment to process
+ */
 async function processSegment(segment: Segment) {
   log.info('Process segment ' + segment.name);
 
@@ -33,27 +34,19 @@ async function processSegment(segment: Segment) {
     }
   );
 
-  const segmentContacts = await getRepository(SegmentContact).find({
-    where: { segmentId: segment.id },
-  });
-
-  const newContacts = matchedContacts.filter((m) =>
-    segmentContacts.every((sm) => sm.contactId !== m.id)
+  const existingContactIds = await SegmentService.getSegmentContactIds(
+    segment.id
   );
-  const oldSegmentContactIds = segmentContacts
-    .filter((sm) => matchedContacts.every((m) => m.id !== sm.contactId))
-    .map((sm) => sm.contactId);
+  const existingIdSet = new Set(existingContactIds);
+  const matchedIdSet = new Set(matchedContacts.map((m) => m.id));
+
+  const newContacts = matchedContacts.filter((m) => !existingIdSet.has(m.id));
+  const oldSegmentContactIds = existingContactIds.filter(
+    (id) => !matchedIdSet.has(id)
+  );
 
   log.info(
-    `Segment ${segment.name} has ${segmentContacts.length} existing contacts, ${newContacts.length} new contacts and ${oldSegmentContactIds.length} old contacts`
-  );
-
-  await getRepository(SegmentContact).delete({
-    segmentId: segment.id,
-    contactId: In(oldSegmentContactIds),
-  });
-  await getRepository(SegmentContact).insert(
-    newContacts.map((contact) => ({ segment, contact }))
+    `Segment ${segment.name} has ${existingContactIds.length} existing contacts, ${newContacts.length} new contacts and ${oldSegmentContactIds.length} old contacts`
   );
 
   const outgoingEmails = await getRepository(SegmentOngoingEmail).find({
@@ -65,8 +58,21 @@ async function processSegment(segment: Segment) {
   const oldContacts =
     segment.newsletterTag ||
     outgoingEmails.some((oe) => oe.trigger === 'onLeave')
-      ? await ContactsService.findByIds(oldSegmentContactIds)
+      ? await ContactsService.findByIds(oldSegmentContactIds, {
+          relations: { profile: true },
+        })
       : [];
+
+  if (segment.newsletterTag) {
+    await newsletterBulkService.addTagToContacts(
+      newContacts,
+      segment.newsletterTag
+    );
+    await newsletterBulkService.removeTagFromContacts(
+      oldContacts,
+      segment.newsletterTag
+    );
+  }
 
   for (const outgoingEmail of outgoingEmails) {
     const emailContacts =
@@ -80,18 +86,19 @@ async function processSegment(segment: Segment) {
     }
   }
 
-  if (segment.newsletterTag) {
-    await NewsletterService.addTagToContacts(
-      newContacts,
-      segment.newsletterTag
-    );
-    await NewsletterService.removeTagFromContacts(
-      oldContacts,
-      segment.newsletterTag
-    );
-  }
+  await SegmentService.removeContactsFromSegment(
+    segment.id,
+    oldSegmentContactIds
+  );
+  await SegmentService.addContactsToSegment(
+    segment.id,
+    newContacts.map((c) => c.id)
+  );
 }
 
+/**
+ * Process segments, either a specific one by ID or all segments.
+ */
 async function main(segmentId?: string) {
   let segments: Segment[];
   if (segmentId) {

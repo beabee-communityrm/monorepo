@@ -7,6 +7,10 @@ import PageSettingsService, {
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express, type Request, type Response } from 'express';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 

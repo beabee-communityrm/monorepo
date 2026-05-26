@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import type { Export } from './index';
+import type { Export } from './index.js';
 
 @Entity()
 @Index(['export', 'itemId'], { unique: true })

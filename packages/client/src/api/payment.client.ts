@@ -1,6 +1,8 @@
 import type {
+  GetPaymentAggregationData,
   GetPaymentDataWith,
   GetPaymentWith,
+  GetPaymentsAggregationQuery,
   GetPaymentsQuery,
   Paginated,
   Serial,
@@ -66,5 +68,31 @@ export class PaymentClient extends BaseClient {
       ...data,
       items: data.items.map((item) => PaymentClient.deserialize(item)),
     };
+  }
+
+  /**
+   * Aggregate payments with optional filtering
+   * @param query - Query parameters for filtering payments
+   * @returns A paginated list of payments
+   */
+  async aggregate(
+    query: GetPaymentsAggregationQuery = {}
+  ): Promise<GetPaymentAggregationData> {
+    const { data } = await this.fetch.get<GetPaymentAggregationData>(
+      '/aggregate',
+      query
+    );
+    return data;
+  }
+
+  /**
+   * Returns the URL for a payment's invoice. The backend redirects from this URL
+   * to the actual invoice (e.g. Stripe). Open it in a new tab to download/view:
+   * e.g. window.open(client.payment.getInvoiceUrl(id), '_blank')
+   * @param id - Payment id
+   * @returns The invoice endpoint URL (same-origin request will redirect with auth)
+   */
+  getInvoiceUrl(id: string): string {
+    return cleanUrl(this.options.path + '/payment/' + id + '/invoice');
   }
 }

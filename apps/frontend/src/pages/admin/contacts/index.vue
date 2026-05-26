@@ -43,7 +43,8 @@ meta:
       v-if="hasUnsavedSegment && currentRules"
       :segment="currentSegment"
       :rules="currentRules"
-      @saved="handleSavedSegment"
+      :save-segment="saveSegment"
+      :update-segment="updateSegment"
     />
     <AppPaginatedTable
       v-model:query="currentPaginatedQuery"
@@ -73,19 +74,39 @@ meta:
                 handleUpdateAction({ tags: [tagId] }, successText)
             "
           />
-          <!--
-          TODO:
-           * Add support for emailing selected contacts (instead of all contacts)
-           * This redirects to the legacy members app, we need to implement this in the new frontend
-          -->
-          <AppButton
+          <!-- TODO: Add support for emailing selected contacts (instead of all contacts) -->
+          <AppDropdownButton
             :icon="faMailBulk"
             variant="primaryOutlined"
             :title="t('actions.sendEmails')"
-            :disabled="!currentSegment || selectedCount > 0"
-            :href="`/members/segments/${currentSegment?.id}/email`"
-            external
-          />
+            :disabled="selectedCount > 0"
+          >
+            <router-link
+              v-if="currentSegment"
+              class="block px-3 py-2 hover:bg-primary-5"
+              role="menuitem"
+              :to="`/admin/contacts/send-email/${currentSegment.id}`"
+              @click.stop
+            >
+              {{ t('actions.sendOneOffEmail') }}
+            </router-link>
+            <span
+              v-else
+              role="menuitem"
+              aria-disabled="true"
+              class="block cursor-not-allowed px-3 py-2 opacity-60"
+            >
+              {{ t('actions.sendOneOffEmail') }}
+            </span>
+            <router-link
+              class="block border-t border-primary-40 px-3 py-2 hover:bg-primary-5"
+              role="menuitem"
+              :to="{ name: 'adminContactsEmailTemplates' }"
+              @click.stop
+            >
+              {{ t('contacts.emailTemplates.manage') }}
+            </router-link>
+          </AppDropdownButton>
         </AppButtonGroup>
         <p v-if="selectedCount > 0" class="self-center text-sm">
           <i18n-t keypath="contacts.selectedCount" :plural="selectedCount">
@@ -158,7 +179,6 @@ import {
   ContributionPeriod,
   type GetContactDataWith,
   GetContactWith,
-  type GetSegmentDataWith,
   type Paginated,
   type RuleGroup,
   type UpdateContactData,
@@ -166,6 +186,7 @@ import {
 import {
   AppButton,
   AppButtonGroup,
+  AppDropdownButton,
   AppFilterGrid,
   AppSearchInput,
   AppSelect,
@@ -174,32 +195,31 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import SaveSegment from '@components/pages/admin/contacts/SaveSegment.vue';
-import {
-  headers,
-  useContactFilters,
-} from '@components/pages/admin/contacts/contacts.interface';
-import AppSearch from '@components/search/AppSearch.vue';
-import TagList from '@components/tag/TagList.vue';
-import ToggleTagButton from '@components/tag/ToggleTagButton.vue';
 import {
   faDownload,
   faMailBulk,
   faPlus,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
-import {
-  definePaginatedQuery,
-  defineParam,
-  defineRulesParam,
-} from '@utils/pagination';
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
+import SaveSegment from '#components/pages/admin/contacts/SaveSegment.vue';
+import {
+  headers,
+  useContactFilters,
+} from '#components/pages/admin/contacts/contacts.interface';
+import AppSearch from '#components/search/AppSearch.vue';
+import TagList from '#components/tag/TagList.vue';
+import ToggleTagButton from '#components/tag/ToggleTagButton.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
+import { extractErrorText } from '#utils/api-error';
+import { definePaginatedQuery, defineParam } from '#utils/pagination';
+
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
+import { useSegmentManagement } from '../../../composables/useSegmentManagement';
 import { useTagFilter } from '../../../composables/useTagFilter';
 
 /**
@@ -258,52 +278,62 @@ const selectedTags = computed(() => {
 });
 
 /**
- * Segment Management
- * @description Handles segment filtering and saving
- */
-const currentSegmentId = defineParam('segment', (v) => v || '', 'replace');
-const segments = ref<GetSegmentDataWith<'contactCount'>[]>([]);
-const contactsTotal = ref<number | null>(null);
-
-const currentSegment = computed(() =>
-  currentSegmentId.value
-    ? segments.value.find((s) => s.id === currentSegmentId.value)
-    : undefined
-);
-
-const hasUnsavedSegment = computed(
-  () =>
-    !!route.query.r &&
-    !!currentRules.value &&
-    currentRules.value.rules.length > 0
-);
-
-const segmentItems = computed(() => [
-  {
-    id: '',
-    label: t('contacts.allContacts'),
-    ...(contactsTotal.value !== null && { count: contactsTotal.value }),
-    to: '/admin/contacts',
-  },
-  ...segments.value.map((segment) => ({
-    id: segment.id,
-    label: segment.name,
-    count: segment.contactCount,
-    to: '/admin/contacts?segment=' + segment.id,
-  })),
-]);
-
-/**
  * Search & Filter state
  * @description Manages search and filter parameters
  */
 const currentPaginatedQuery = definePaginatedQuery('joined');
 const currentSearch = defineParam('s', (v) => v || '');
-const currentRules = defineRulesParam(
-  computed(() => currentSegment.value?.ruleGroup)
-);
 
 const { filterGroups, tagItems } = useContactFilters();
+
+/**
+ * Segment Management
+ * @description Handles segment filtering and saving
+ */
+const {
+  currentSegmentId,
+  currentSegment,
+  currentRules,
+  hasUnsavedSegment,
+  emptyTable,
+  segmentItems,
+  handleSavedSegment,
+} = useSegmentManagement(
+  '/admin/contacts',
+  'All Contacts',
+  listSegments,
+  listTotalSegmentItems
+);
+
+async function saveSegment(name: string, rules: RuleGroup) {
+  const segment = await client.segments.create({
+    name,
+    ruleGroup: rules,
+  });
+  handleSavedSegment(segment);
+  return segment;
+}
+
+async function updateSegment(
+  segmentId: string,
+  name: string,
+  rules: RuleGroup
+) {
+  const segment = await client.segments.update(segmentId, {
+    name,
+    ruleGroup: rules,
+  });
+  handleSavedSegment(segment);
+  return segment;
+}
+
+async function listSegments() {
+  return await client.segments.list({ sort: 'order' }, ['itemCount']);
+}
+
+async function listTotalSegmentItems() {
+  return (await client.contact.list({ limit: 1 })).total;
+}
 
 /**
  * Action state
@@ -313,13 +343,6 @@ const doingAction = ref(false);
 /**
  * Lifecycle hooks
  */
-onBeforeMount(async () => {
-  contactsTotal.value = (await client.contact.list({ limit: 1 })).total;
-  segments.value = await client.segments.list({ sort: 'order' }, [
-    'contactCount',
-  ]);
-});
-
 addBreadcrumb(
   computed(() => [
     { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
@@ -414,6 +437,12 @@ async function refreshResponses() {
         selected: selectedIds.has(c.id),
       })),
     };
+  } catch (err) {
+    contactsTable.value = emptyTable();
+    addNotification({
+      variant: 'error',
+      title: extractErrorText(err),
+    });
   } finally {
     isRefreshing.value = false;
   }
@@ -424,7 +453,6 @@ watch(
   () => refreshResponses(),
   { deep: true }
 );
-
 refreshResponses();
 
 /**
@@ -434,19 +462,6 @@ function handleExport() {
   const rules = getSearchRules();
   const rulesQuery = encodeURIComponent(JSON.stringify(rules));
   window.open(`/api/1.0/contact.csv?rules=${rulesQuery}`, '_blank');
-}
-
-/**
- * Handles segment save events
- */
-function handleSavedSegment(segment: GetSegmentDataWith<'contactCount'>) {
-  const segmentIndex = segments.value.findIndex((s) => s.id === segment.id);
-  if (segmentIndex > -1) {
-    segments.value[segmentIndex] = segment;
-  } else {
-    segments.value.push(segment);
-  }
-  currentSegmentId.value = segment.id;
 }
 
 /**

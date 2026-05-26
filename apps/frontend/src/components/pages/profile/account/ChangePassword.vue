@@ -15,12 +15,11 @@
     {{ t('actions.changePassword') }}
   </AppButton>
 
-  <AppForm
+  <AppApiForm
     v-else
     :success-text="t('accountPage.savedPassword')"
     :button-text="t('actions.changePassword')"
     :reset-button-text="t('form.cancel')"
-    :extract-error-code="extractApiErrorCode"
     @submit="handleFormSubmit"
     @reset="showForm = false"
   >
@@ -46,16 +45,17 @@
         :label="t('form.newPasswordConfirm')"
       />
     </div>
-  </AppForm>
+  </AppApiForm>
 </template>
 <script lang="ts" setup>
-import { AppButton, AppForm, AppHeading, AppInput } from '@beabee/vue';
+import { AppButton, AppHeading, AppInput } from '@beabee/vue';
 
 import { faKey } from '@fortawesome/free-solid-svg-icons';
-import { client } from '@utils/api';
-import { extractApiErrorCode } from '@utils/api-error';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 

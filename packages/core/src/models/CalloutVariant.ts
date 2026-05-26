@@ -8,7 +8,7 @@ import {
   Unique,
 } from 'typeorm';
 
-import type { Callout } from './index';
+import type { Callout } from './index.js';
 
 @Entity()
 @Unique(['calloutId', 'name'])
@@ -53,4 +53,13 @@ export class CalloutVariant {
 
   @Column({ type: 'jsonb', default: '{}' })
   componentText!: Record<string, string>;
+
+  @Column({ type: 'jsonb', default: '{}' })
+  responseLinkText!: Record<string, string>;
+
+  @Column({ type: String, nullable: true })
+  responseEmailSubject!: string | null;
+
+  @Column({ type: 'text', nullable: true })
+  responseEmailBody!: string | null;
 }

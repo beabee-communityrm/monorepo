@@ -1,18 +1,16 @@
 <!--
-  # AppTemplate
-  This is a template component that demonstrates the standard patterns used in this Vue component library.
-  It serves as a reference for creating new components with consistent structure and best practices.
+  # AppTemplate (reference only)
+  Reference template for new Vue components. Not used in the application.
+  Copy this file when creating a new component; adapt props, slots, and styling to your needs.
+  See .cursor/rules/new-vue-component.mdc for the full workflow.
 
-  ## Patterns Demonstrated:
-  - TypeScript interfaces with JSDoc
-  - Props with defaults and validation
-  - Events with proper typing and TSDoc documentation
-  - Slots for flexible content
-  - Accessibility with ARIA attributes
-  - Semantic HTML elements
-  - Tailwind CSS styling with responsive design
-  - Focus management and keyboard navigation
-  - Mobile-first design approach
+  ## Patterns demonstrated
+  - TypeScript props interface with JSDoc, withDefaults()
+  - defineEmits<>() with typed events and TSDoc
+  - defineSlots<>() for slot documentation
+  - Optional id prop + generateUniqueId() for ARIA (per-instance IDs)
+  - Semantic HTML, ARIA attributes, keyboard support
+  - Tailwind: design tokens (primary-*, danger-*, etc.), mobile-first
 -->
 <template>
   <div
@@ -76,8 +74,7 @@
 
 <script lang="ts" setup>
 /**
- * Template component demonstrating standard patterns and best practices.
- * Use this as a reference when creating new components.
+ * Reference template for new components. Copy and adapt; see block comment above.
  *
  * @component AppTemplate
  */
@@ -85,26 +82,26 @@ import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 import { generateUniqueId } from '../../utils';
 
-/**
- * Props for the AppTemplate component
- */
+// --- Props
 export interface AppTemplateProps {
-  /** The main title displayed in the component */
+  /** Main title */
   title?: string;
-  /** Optional description text for additional context */
+  /** Optional description */
   description?: string;
-  /** Visual variant of the component */
+  /** Visual variant */
   variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
-  /** Size variant of the component */
+  /** Size variant */
   size?: 'sm' | 'md' | 'lg';
-  /** Optional icon to display in the header */
+  /** Optional header icon */
   icon?: IconDefinition;
-  /** Optional badge text to display in the header */
+  /** Optional badge text in header */
   badge?: string;
-  /** Whether the component is disabled */
+  /** Disabled state */
   disabled?: boolean;
-  /** Accessible label for screen readers */
+  /** Override for aria-label (defaults to title) */
   ariaLabel?: string;
+  /** Optional id for ARIA; fallback to generated id */
+  id?: string;
 }
 
 const props = withDefaults(defineProps<AppTemplateProps>(), {
@@ -116,44 +113,25 @@ const props = withDefaults(defineProps<AppTemplateProps>(), {
   badge: undefined,
   disabled: false,
   ariaLabel: undefined,
+  id: undefined,
 });
 
-/**
- * Events emitted by the AppTemplate component
- */
+// --- Events
 const emit = defineEmits<{
-  /**
-   * Emitted when the component is clicked
-   * @param event - The click event
-   */
   click: [event: Event];
-  /**
-   * Emitted when Enter or Space is pressed for keyboard activation
-   * @param event - The keyboard event
-   */
   activate: [event: KeyboardEvent];
 }>();
 
-/**
- * Slots available in the AppTemplate component
- */
+// --- Slots (documentation only)
 defineSlots<{
-  /**
-   * Default slot for the main content area
-   * @description Use this slot to provide the primary content of the component
-   */
-  default(): any;
-  /**
-   * Footer slot for action buttons or additional content
-   * @description Typically used for buttons, links, or other interactive elements
-   */
-  footer(): any;
+  default(): unknown;
+  footer(): unknown;
 }>();
 
-// Generate unique ID for ARIA relationships
-const componentId = generateUniqueId('template');
+// --- State (per-instance ID for ARIA)
+const componentId = props.id ?? generateUniqueId('template');
 
-// Variant-based styling classes
+// --- Styling maps (replace with your component’s variants)
 const variantClasses = {
   primary: 'border-primary-40 bg-primary-5 text-primary-80',
   secondary: 'border-grey-light bg-grey-lighter text-body',
@@ -162,25 +140,17 @@ const variantClasses = {
   danger: 'border-danger-30 bg-danger-10 text-danger-110',
 } as const;
 
-// Size-based styling classes
 const sizeClasses = {
   sm: 'p-3 text-sm',
   md: 'p-4',
   lg: 'p-6 text-lg',
 } as const;
 
-/**
- * Handles click events
- */
+// --- Handlers
 function handleClick(event: Event): void {
-  if (!props.disabled) {
-    emit('click', event);
-  }
+  if (!props.disabled) emit('click', event);
 }
 
-/**
- * Handles keyboard navigation (Enter and Space)
- */
 function handleKeydown(event: KeyboardEvent): void {
   if (!props.disabled && (event.key === 'Enter' || event.key === ' ')) {
     event.preventDefault();

@@ -87,11 +87,12 @@ import {
   faEyeSlash,
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
-import { definePaginatedQuery, defineParam } from '@utils/pagination';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
+import { definePaginatedQuery, defineParam } from '#utils/pagination';
 
 import ItemStatus from '../../../components/item/ItemStatus.vue';
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';

@@ -12,14 +12,15 @@ import {
 } from '@beabee/beabee-common';
 
 import { BadRequestError } from 'routing-controllers';
-import slugify from 'slugify';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import slugifyLib from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
 
+import config from '#config/config';
+import { contactEmailTemplates } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import {
-  DuplicateId,
-  InvalidCalloutResponse,
+  DuplicateIdError,
+  InvalidCalloutResponseError,
   NotFoundError,
 } from '#errors/index';
 import { log as mainLogger } from '#logging';
@@ -37,8 +38,12 @@ import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
+import { QueryDeepPartialEntity } from '#type/typeorm-utils';
 import { isDuplicateIndex } from '#utils/db';
 import { normalizeEmailAddress } from '#utils/email';
+
+// CJS/ESM interop: slugify sets module.exports.default, access it directly
+const slugify = slugifyLib.default;
 
 const log = mainLogger.child({ app: 'callouts-service' });
 
@@ -62,7 +67,7 @@ class CalloutsService {
       try {
         return await this.saveCallout({ ...data, slug });
       } catch (err) {
-        if (err instanceof DuplicateId && autoSlug !== false) {
+        if (err instanceof DuplicateIdError && autoSlug !== false) {
           autoSlug++;
         } else {
           throw err;
@@ -246,14 +251,14 @@ class CalloutsService {
     newsletter: CalloutResponseNewsletterData | undefined
   ): Promise<CalloutResponse> {
     if (callout.access === CalloutAccess.OnlyAnonymous) {
-      throw new InvalidCalloutResponse('only-anonymous');
+      throw new InvalidCalloutResponseError('only-anonymous');
     } else if (
       !contact.membership?.isActive &&
       callout.access === CalloutAccess.Member
     ) {
-      throw new InvalidCalloutResponse('expired-user');
+      throw new InvalidCalloutResponseError('expired-user');
     } else if (!callout.active) {
-      throw new InvalidCalloutResponse('closed');
+      throw new InvalidCalloutResponseError('closed');
     }
 
     let response = await this.getResponse(callout, contact);
@@ -262,7 +267,7 @@ class CalloutsService {
       response.callout = callout;
       response.contact = contact;
     } else if (!callout.allowUpdate) {
-      throw new InvalidCalloutResponse('cant-update');
+      throw new InvalidCalloutResponseError('cant-update');
     }
 
     response.answers = answers;
@@ -275,7 +280,7 @@ class CalloutsService {
       await ContactsService.updateContactProfile(
         contact,
         {
-          newsletterStatus: NewsletterStatus.Subscribed,
+          newsletterStatus: NewsletterStatus.Pending,
           newsletterGroups: newsletter.groups,
         },
         { mergeGroups: true }
@@ -288,6 +293,9 @@ class CalloutsService {
         [callout.mcMergeField]: answers[slideId]?.[answerKey]?.toString() || '',
       });
     }
+
+    // Send confirmation email to the contact
+    await this.sendResponseEmail(callout, contact);
 
     return savedResponse;
   }
@@ -307,11 +315,11 @@ class CalloutsService {
     newsletter: CalloutResponseNewsletterData | undefined
   ): Promise<string> {
     if (callout.access === CalloutAccess.Guest && !guest) {
-      throw new InvalidCalloutResponse('guest-fields-missing');
+      throw new InvalidCalloutResponseError('guest-fields-missing');
     } else if (callout.access === CalloutAccess.OnlyAnonymous && guest) {
-      throw new InvalidCalloutResponse('only-anonymous');
+      throw new InvalidCalloutResponseError('only-anonymous');
     } else if (!callout.active || callout.access === CalloutAccess.Member) {
-      throw new InvalidCalloutResponse('closed');
+      throw new InvalidCalloutResponseError('closed');
     }
 
     if (guest) {
@@ -319,8 +327,12 @@ class CalloutsService {
 
       let contact = await ContactsService.findOneBy({ email: guest.email });
 
-      // Create a contact if it doesn't exist
-      if (!contact) {
+      if (contact) {
+        log.info(
+          'Found existing contact for callout response with email ' +
+            guest.email
+        );
+      } else {
         log.info(
           'Creating new contact for callout response with email ' + guest.email
         );
@@ -335,19 +347,12 @@ class CalloutsService {
           newsletter
         );
 
-        // Let the contact know in case it wasn't them
-        const title = await this.getCalloutTitle(callout);
-        await EmailService.sendTemplateToContact(
-          'confirm-callout-response',
-          contact,
-          { calloutTitle: title, calloutSlug: callout.slug }
-        );
         return response.id;
       } catch (err) {
         // Suppress errors from creating a response for a contact, this prevents
         // any potential information leaking about failures related to some
         // state of the contact
-        if (err instanceof InvalidCalloutResponse) {
+        if (err instanceof InvalidCalloutResponseError) {
           return uuidv4();
         } else {
           throw err;
@@ -423,7 +428,7 @@ class CalloutsService {
         }
       } catch (err) {
         throw isDuplicateIndex(err, 'slug')
-          ? new DuplicateId(data.slug || '') // Slug can't actually be undefined here
+          ? new DuplicateIdError(data.slug || '') // Slug can't actually be undefined here
           : err;
       }
 
@@ -493,6 +498,16 @@ class CalloutsService {
    * @returns Callout title
    */
   private async getCalloutTitle(callout: Callout): Promise<string> {
+    const defaultVariant = await this.getDefaultVariant(callout);
+    return defaultVariant.title;
+  }
+
+  /**
+   * Get the default variant for a callout, fetching it if it's not already available
+   * @param callout The callout
+   * @returns Default variant
+   */
+  private async getDefaultVariant(callout: Callout): Promise<CalloutVariant> {
     const defaultVariant =
       callout.variants?.find((v) => v.name === 'default') ||
       (await getRepository(CalloutVariant).findOneByOrFail({
@@ -501,9 +516,52 @@ class CalloutsService {
       }));
 
     // Store for future use
-    callout.variants = [...(callout.variants || []), defaultVariant];
+    if (!callout.variants?.some((v) => v.name === 'default')) {
+      callout.variants = [...(callout.variants || []), defaultVariant];
+    }
 
-    return defaultVariant.title;
+    return defaultVariant;
+  }
+
+  /**
+   * Send a response confirmation email to a contact
+   * Only sends email if custom email is enabled and configured
+   * @param callout The callout
+   * @param contact The contact to send the email to
+   */
+  private async sendResponseEmail(
+    callout: Callout,
+    contact: Contact
+  ): Promise<void> {
+    // Only send email if custom email is enabled and configured
+    if (!callout.sendResponseEmail) {
+      return;
+    }
+
+    const variant = await this.getDefaultVariant(callout);
+
+    // Check if custom subject and body are configured
+    if (!variant.responseEmailSubject || !variant.responseEmailBody) {
+      log.warning(
+        `Callout ${callout.id} has sendResponseEmail enabled but no email content configured`
+      );
+      return;
+    }
+
+    await EmailService.sendCustomEmailToContact(
+      contact,
+      variant.responseEmailSubject,
+      variant.responseEmailBody,
+      {
+        mergeFields: contactEmailTemplates['callout-response-answers'].fn(
+          contact,
+          {
+            calloutSlug: callout.slug,
+            calloutTitle: variant.title,
+          }
+        ),
+      }
+    );
   }
 
   /**
@@ -580,19 +638,19 @@ class CalloutsService {
     });
 
     if (!response) {
-      log.warn(`Response ${responseId} not found`);
+      log.warning(`Response ${responseId} not found`);
       return false;
     }
 
     const slideAnswers = response.answers[slideId];
     if (!slideAnswers) {
-      log.warn(`Slide ${slideId} not found in response ${responseId}`);
+      log.warning(`Slide ${slideId} not found in response ${responseId}`);
       return false;
     }
 
     const answer = slideAnswers[componentKey];
     if (!answer) {
-      log.warn(`Component ${componentKey} not found in slide ${slideId}`);
+      log.warning(`Component ${componentKey} not found in slide ${slideId}`);
       return false;
     }
 
@@ -600,13 +658,13 @@ class CalloutsService {
     if (arrayIndex !== null && Array.isArray(answer)) {
       // Update an item in an array
       if (arrayIndex < 0 || arrayIndex >= answer.length) {
-        log.warn(`Array index ${arrayIndex} out of bounds`);
+        log.warning(`Array index ${arrayIndex} out of bounds`);
         return false;
       }
 
       const item = answer[arrayIndex];
       if (!isFileUploadAnswer(item)) {
-        log.warn(`Item at index ${arrayIndex} is not a file upload`);
+        log.warning(`Item at index ${arrayIndex} is not a file upload`);
         return false;
       }
 
@@ -615,7 +673,7 @@ class CalloutsService {
       // Update a direct answer
       slideAnswers[componentKey] = newFileUpload;
     } else {
-      log.warn(`Answer is not a file upload`);
+      log.warning(`Answer is not a file upload`);
       return false;
     }
 

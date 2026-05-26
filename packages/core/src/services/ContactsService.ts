@@ -3,8 +3,6 @@ import {
   ContributionPeriod,
   ContributionType,
   LOGIN_CODES,
-  NewsletterStatus,
-  PaymentForm,
   RESET_SECURITY_FLOW_ERROR_CODE,
   RESET_SECURITY_FLOW_TYPE,
   RoleType,
@@ -14,28 +12,41 @@ import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from 'typeorm';
 
 import { createQueryBuilder, getRepository, runTransaction } from '#database';
 import {
-  BadRequestError,
-  CantUpdateContribution,
+  CantUpdateContributionError,
   DuplicateEmailError,
   NotFoundError,
+  ResetSecurityFlowError,
   UnauthorizedError,
 } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import {
+  ApiKey,
+  CalloutResponse,
+  CalloutResponseComment,
+  CalloutReviewer,
   Contact,
+  ContactContribution,
+  ContactMfa,
   ContactProfile,
   ContactRole,
   ContactTagAssignment,
   GiftFlow,
   Password,
+  Payment,
   Project,
+  ProjectContact,
   ProjectEngagement,
+  Referral,
+  ResetSecurityFlow,
+  SegmentContact,
 } from '#models/index';
 import ContactMfaService from '#services/ContactMfaService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
+import { UpdateContributionForm } from '#type/update-contribution-form';
+import { UpdateContributionResult } from '#type/update-contribution-result';
 import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
 import { isDuplicateIndex } from '#utils/db';
@@ -131,7 +142,7 @@ class ContactsService {
       return contact;
     } catch (error) {
       if (isDuplicateIndex(error, 'email')) {
-        throw new DuplicateEmailError();
+        throw new DuplicateEmailError(partialContact.email);
       } else if (
         isDuplicateIndex(error, 'referralCode') ||
         isDuplicateIndex(error, 'pollsCode')
@@ -169,7 +180,9 @@ class ContactsService {
     try {
       await getRepository(Contact).update(contact.id, updates);
     } catch (err) {
-      throw isDuplicateIndex(err, 'email') ? new DuplicateEmailError() : err;
+      throw isDuplicateIndex(err, 'email')
+        ? new DuplicateEmailError(updates.email || '')
+        : err;
     }
 
     Object.assign(contact, updates);
@@ -307,76 +320,42 @@ class ContactsService {
   }
 
   /**
-   * Update a contact's newsletter status and groups, without syncing to the
-   * newsletter provider
+   * Updates a contact's contribution and adjusts their role accordingly.
    *
-   * @param contact The contact to update
-   * @param newsletterStatus The new newsletter status
-   * @param newsletterGroups The new newsletter groups
-
-   * @deprecated Only used by legacy app newsletter sync, do not use.
+   * @param contact  The contact
+   * @param form The new contribution
    */
-  async updateContactNLNoSync(
+  async handleUpdateContributionResult(
     contact: Contact,
-    newsletterStatus: NewsletterStatus,
-    newsletterGroups: string[]
+    result: UpdateContributionResult
   ): Promise<void> {
-    await getRepository(ContactProfile).update(contact.id, {
-      newsletterStatus,
-      newsletterGroups,
-    });
-    if (contact.profile) {
-      contact.profile.newsletterStatus = newsletterStatus;
-      contact.profile.newsletterGroups = newsletterGroups;
-    }
-  }
+    log.info('Updated contribution for ' + contact.id, result);
 
-  async updateContactContribution(
-    contact: Contact,
-    paymentForm: PaymentForm
-  ): Promise<void> {
-    log.info('Update contribution for ' + contact.id, { paymentForm });
-    // At the moment the only possibility is to go from whatever contribution
-    // type the user was before to an automatic contribution
     const wasManual = contact.contributionType === ContributionType.Manual;
-
-    // Some period changes on active members aren't allowed at the moment to
-    // prevent proration problems
-    if (
-      contact.membership?.isActive &&
-      // Annual contributors can't change their period
-      contact.contributionPeriod === ContributionPeriod.Annually &&
-      paymentForm.period !== ContributionPeriod.Annually
-    ) {
-      log.info("Can't update contribution for " + contact.id);
-      throw new CantUpdateContribution();
-    }
-
-    const { startNow, expiryDate } = await PaymentService.updateContribution(
-      contact,
-      paymentForm
-    );
-
-    log.info('Updated contribution for ' + contact.id, {
-      startNow,
-      expiryDate,
-    });
 
     await this.updateContact(contact, {
       contributionType: ContributionType.Automatic,
-      contributionPeriod: paymentForm.period,
-      ...(startNow && {
-        contributionMonthlyAmount: paymentForm.monthlyAmount,
+      contributionPeriod: result.form.period,
+      ...(result.startNow && {
+        contributionMonthlyAmount: result.form.monthlyAmount,
       }),
     });
 
-    await this.extendContactRole(contact, 'member', expiryDate);
+    await this.extendContactRole(contact, 'member', result.expiryDate);
 
+    // If this contribution update was a conversion from manual to automatic then
+    // send the user a confirmation email
     if (wasManual) {
       await EmailService.sendTemplateToContact('manual-to-automatic', contact);
     }
   }
 
+  /**
+   * Cancel a contact's contribution and send the cancellation email.
+   *
+   * @param contact The contact
+   * @param email The email template to send
+   */
   async cancelContactContribution(
     contact: Contact,
     email: 'cancelled-contribution' | 'cancelled-contribution-no-survey'
@@ -392,35 +371,94 @@ class ContactsService {
 
   /**
    * Permanently delete a contact and all associated data.
+   * This method cleans up all foreign key references before deleting the contact.
    *
-   * @param contact The contact
+   * @param contact The contact to delete
    */
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
     log.info('Permanently delete contact ' + contact.id);
     await runTransaction(async (em) => {
-      // Projects are only in the legacy app, so really no one should have any, but we'll delete them just in case
-      // TODO: Remove this when we've reworked projects
+      // 1. Reset security flows (password reset, MFA reset)
+      await em
+        .getRepository(ResetSecurityFlow)
+        .delete({ contactId: contact.id });
+
+      // 2. MFA settings
+      await em.getRepository(ContactMfa).delete({ contactId: contact.id });
+
+      // 3. API keys: set creator to NULL
+      await em
+        .getRepository(ApiKey)
+        .update({ creatorId: contact.id }, { creatorId: null });
+
+      // 4. Callout reviewers
+      await em.getRepository(CalloutReviewer).delete({ contactId: contact.id });
+
+      // 5. Callout response comments: set contact to NULL
+      await em
+        .getRepository(CalloutResponseComment)
+        .update(
+          { contactId: contact.id },
+          { contactId: null as unknown as string }
+        );
+
+      // 6. Callout responses: set contact and assignee to NULL
+      await em
+        .getRepository(CalloutResponse)
+        .update({ contactId: contact.id }, { contactId: null });
+      await em
+        .getRepository(CalloutResponse)
+        .update({ assigneeId: contact.id }, { assigneeId: null });
+
+      // 7. Payments: set contact to NULL
+      await em
+        .getRepository(Payment)
+        .update({ contactId: contact.id }, { contactId: null });
+
+      // 8. Contact contribution
+      await em
+        .getRepository(ContactContribution)
+        .delete({ contactId: contact.id });
+
+      // 9. Segment contacts
+      await em.getRepository(SegmentContact).delete({ contactId: contact.id });
+
+      // 10. Project engagements (legacy app)
       await em
         .getRepository(ProjectEngagement)
         .delete({ byContactId: contact.id });
       await em
         .getRepository(ProjectEngagement)
         .delete({ toContactId: contact.id });
+
+      // 11. Project contacts (legacy app)
+      await em.getRepository(ProjectContact).delete({ contactId: contact.id });
+
+      // 12. Projects: set owner to NULL (legacy app)
       await em
         .getRepository(Project)
         .update({ ownerId: contact.id }, { ownerId: null });
 
-      // Gifts are only in the legacy app, so really no one should have any, but we'll delete them just in case
-      // TODO: Remove this when we've reworked gifts
+      // 13. Gift flows: set giftee to NULL (legacy app)
       await em
         .getRepository(GiftFlow)
         .update({ gifteeId: contact.id }, { gifteeId: null });
 
+      // 14. Referrals: delete where contact is referee (legacy feature)
+      await em.getRepository(Referral).delete({ refereeId: contact.id });
+
+      // 15. Contact tag assignments (has CASCADE but explicit for safety)
       await em
         .getRepository(ContactTagAssignment)
         .delete({ contactId: contact.id });
+
+      // 16. Contact roles
       await em.getRepository(ContactRole).delete({ contactId: contact.id });
+
+      // 17. Contact profile
       await em.getRepository(ContactProfile).delete({ contactId: contact.id });
+
+      // 18. Finally delete the contact
       await em.getRepository(Contact).delete(contact.id);
     });
   }
@@ -436,7 +474,7 @@ class ContactsService {
     data: ForceUpdateContribution
   ): Promise<void> {
     if (contact.contributionType === ContributionType.Automatic) {
-      throw new CantUpdateContribution();
+      throw new CantUpdateContributionError();
     }
 
     const period = data.period && data.amount ? data.period : null;
@@ -460,22 +498,24 @@ class ContactsService {
   /**
    * Increment the number of password tries for a contact.
    * @param contact The contact to increment the password tries for
-   * @returns The new number of tries
    */
   async incrementPasswordTries(contact: Contact) {
-    contact.password.tries ||= 0;
-    contact.password.tries++;
-    await this.updateContact(contact, {
-      password: { ...contact.password },
-    });
-    return contact.password.tries;
+    await this.resetPasswordTries(contact, contact.password.tries + 1);
   }
 
-  async resetPasswordTries(contact: Contact) {
-    contact.password.tries = 0;
-    await this.updateContact(contact, {
-      password: { ...contact.password },
-    });
+  /**
+   * Reset the number of password tries for a contact.
+   * @param contact The contact to reset the password tries for
+   * @param tries The new number of password tries
+   */
+  async resetPasswordTries(contact: Contact, tries = 0): Promise<void> {
+    if (contact.password.tries !== tries) {
+      contact.password.tries = tries;
+      // Update directly on database to avoid syncing with external services (e.g. newsletter)
+      await getRepository(Contact).update(contact.id, {
+        password: { tries },
+      });
+    }
   }
 
   /**
@@ -488,6 +528,8 @@ class ContactsService {
     email: string,
     resetUrl: string
   ): Promise<void> {
+    log.info('Reset password begin attempt for ' + email);
+
     const contact = await this.findOneBy({ email });
 
     if (!contact) {
@@ -521,18 +563,19 @@ class ContactsService {
     id: string,
     data: { password: string; token?: string }
   ) {
+    log.info('Reset password complete attempt for ' + id);
+
     const rpFlow = await ResetSecurityFlowService.get(id);
 
     if (!rpFlow) {
-      throw new NotFoundError({
-        code: RESET_SECURITY_FLOW_ERROR_CODE.NOT_FOUND,
-      });
+      throw new NotFoundError();
     }
 
     if (rpFlow.type !== RESET_SECURITY_FLOW_TYPE.PASSWORD) {
-      throw new BadRequestError({
-        code: RESET_SECURITY_FLOW_ERROR_CODE.WRONG_TYPE,
-      });
+      throw new ResetSecurityFlowError(
+        RESET_SECURITY_FLOW_ERROR_CODE.WRONG_TYPE,
+        'Invalid reset flow type'
+      );
     }
 
     // Check if contact has MFA enabled, if so validate MFA
@@ -540,15 +583,17 @@ class ContactsService {
     if (mfa) {
       // In the future, we might want to add more types of reset flows
       if (mfa.type !== CONTACT_MFA_TYPE.TOTP) {
-        throw new BadRequestError({
-          code: RESET_SECURITY_FLOW_ERROR_CODE.WRONG_MFA_TYPE,
-        });
+        throw new ResetSecurityFlowError(
+          RESET_SECURITY_FLOW_ERROR_CODE.WRONG_MFA_TYPE,
+          'Invalid MFA type'
+        );
       }
 
       if (!data.token) {
-        throw new BadRequestError({
-          code: RESET_SECURITY_FLOW_ERROR_CODE.MFA_TOKEN_REQUIRED,
-        });
+        throw new ResetSecurityFlowError(
+          RESET_SECURITY_FLOW_ERROR_CODE.MFA_TOKEN_REQUIRED,
+          'MFA token required'
+        );
       }
 
       const { isValid } = await ContactMfaService.checkToken(
@@ -558,7 +603,7 @@ class ContactsService {
       );
 
       if (!isValid) {
-        throw new UnauthorizedError({ code: LOGIN_CODES.INVALID_TOKEN });
+        throw new UnauthorizedError(LOGIN_CODES.INVALID_TOKEN);
       }
     }
 
@@ -584,6 +629,7 @@ class ContactsService {
     type: RESET_SECURITY_FLOW_TYPE,
     resetUrl: string
   ): Promise<void> {
+    log.info('Reset device begin attempt for ' + email);
     const contact = await this.findOneBy({ email });
 
     // We don't want to leak if the email exists or not
@@ -612,29 +658,30 @@ class ContactsService {
    * @returns The contact associated with the reset device flow
    *
    * @throws {NotFoundError} If the reset device flow doesn't exist
-   * @throws {BadRequestError} If the reset device flow type is not TOTP
+   * @throws {ResetSecurityFlowError} If the reset device flow type is not TOTP
    * @throws {UnauthorizedError} If the password is invalid
    */
   public async resetDeviceComplete(id: string, password: string) {
+    log.info('Reset device complete attempt for ' + id);
+
     const rdFlow = await ResetSecurityFlowService.get(id);
 
     if (!rdFlow) {
-      throw new NotFoundError({
-        code: RESET_SECURITY_FLOW_ERROR_CODE.NOT_FOUND,
-      });
+      throw new NotFoundError();
     }
 
     if (rdFlow.type !== RESET_SECURITY_FLOW_TYPE.TOTP) {
-      throw new BadRequestError({
-        code: RESET_SECURITY_FLOW_ERROR_CODE.WRONG_TYPE,
-      });
+      throw new ResetSecurityFlowError(
+        RESET_SECURITY_FLOW_ERROR_CODE.WRONG_TYPE,
+        'Invalid reset flow type'
+      );
     }
 
     // Validate password
     const code = await isValidPassword(rdFlow.contact.password, password);
     if (code !== LOGIN_CODES.LOGGED_IN) {
       await this.incrementPasswordTries(rdFlow.contact);
-      throw new UnauthorizedError({ code });
+      throw new UnauthorizedError(code);
     }
 
     // Reset password tries because the password was correct

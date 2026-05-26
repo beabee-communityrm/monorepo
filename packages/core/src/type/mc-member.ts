@@ -1,4 +1,4 @@
-import { MCStatus } from './mc-status';
+import { MCStatus } from './mc-status.js';
 
 export interface MCMember {
   email_address: string;
@@ -9,4 +9,9 @@ export interface MCMember {
   timestamp_opt?: string;
   timestamp_signup?: string;
   last_changed: string;
+}
+
+export interface MCMemberList {
+  members: MCMember[];
+  total_items: number;
 }

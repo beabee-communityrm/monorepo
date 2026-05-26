@@ -20,9 +20,13 @@ import type { TaggableEntity } from '#type';
 import { getContributionDescription } from '#utils/contact';
 import { getActualAmount } from '#utils/payment';
 
-import { ContactTagAssignment } from './ContactTagAssignment';
-import { Password } from './Password';
-import type { ContactContribution, ContactProfile, ContactRole } from './index';
+import { ContactTagAssignment } from './ContactTagAssignment.js';
+import { Password } from './Password.js';
+import type {
+  ContactContribution,
+  ContactProfile,
+  ContactRole,
+} from './index.js';
 
 interface LoginOverride {
   code: string;

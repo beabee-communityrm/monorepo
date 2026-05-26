@@ -10,13 +10,11 @@
   >
     <template #header>
       <p class="mb-4">{{ setupContent.welcome }}</p>
-      <p>{{ t('joinSetup.confirmDetails') }}</p>
     </template>
 
-    <AppForm
+    <AppApiForm
       :button-text="t('joinSetup.continue')"
       full-button
-      :extract-error-code="extractApiErrorCode"
       @submit.prevent="onSubmit?.(data)"
     >
       <div class="mb-6">
@@ -61,7 +59,7 @@
         :groups="setupContent.newsletterGroups"
         class="mb-6"
       />
-    </AppForm>
+    </AppApiForm>
   </AuthBox>
 </template>
 <script lang="ts" setup>
@@ -70,17 +68,18 @@ import {
   GetContactWith,
   NewsletterStatus,
 } from '@beabee/beabee-common';
-import { AppAddress, AppForm, AppInput } from '@beabee/vue';
+import { AppAddress, AppInput } from '@beabee/vue';
 
-import AuthBox from '@components/AuthBox.vue';
-import ContactBasicFields from '@components/contact/ContactBasicFields.vue';
-import ContactMailOptIn from '@components/contact/ContactMailOptIn.vue';
-import AppNewsletterOptIn from '@components/newsletter/AppNewsletterOptIn.vue';
-import { client } from '@utils/api';
-import { extractApiErrorCode } from '@utils/api-error';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AuthBox from '#components/AuthBox.vue';
+import ContactBasicFields from '#components/contact/ContactBasicFields.vue';
+import ContactMailOptIn from '#components/contact/ContactMailOptIn.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import AppNewsletterOptIn from '#components/newsletter/AppNewsletterOptIn.vue';
+import { client } from '#utils/api';
 
 import { type SetupContactData } from './join.interface';
 

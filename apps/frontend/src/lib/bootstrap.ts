@@ -1,8 +1,9 @@
 import { AppStatusPage } from '@beabee/vue';
 import { icons } from '@beabee/vue/plugins/icons';
 
-import { waitForBackend } from '@utils/api/client';
 import { type App as VueApp, createApp, h } from 'vue';
+
+import { waitForBackend } from '#utils/api/client';
 
 import App from '../App.vue';
 import { init as initErrorHandler } from './appsignal';
@@ -78,20 +79,16 @@ function showStatusPage() {
     },
     render() {
       return h(AppStatusPage, {
-        title: 'Starting Beabee',
-        message: 'Please wait while we connect to our services...',
-        loadingText: 'Performing health checks',
         showProgress: false,
         showRetry: this.showRetry,
-        retryText: 'Try Again',
         showInfo: !this.showRetry,
-        infoText: 'This usually takes just a few seconds.',
         onRetry: this.handleRetry,
       });
     },
   });
 
   // Mount the status app
+  statusApp.use(i18n);
   statusApp.use(icons);
   statusApp.mount('#app');
 }

@@ -50,6 +50,14 @@ export const contactFilters = {
       ContributionPeriod.Annually,
     ] satisfies ContributionPeriod[] as ContributionPeriod[],
   },
+  donationDate: {
+    type: 'date',
+  },
+  hasDonated: {
+    type: 'boolean',
+  },
+  totalDonationAmount: { type: 'number' },
+  averageDonationAmount: { type: 'number' },
   deliveryOptIn: {
     type: 'boolean',
   },

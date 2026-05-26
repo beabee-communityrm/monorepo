@@ -1,4 +1,4 @@
-import { PaymentStatus } from '@beabee/beabee-common';
+import { PaymentStatus, PaymentType } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import gocardless, { convertStatus } from '@beabee/core/lib/gocardless';
@@ -7,12 +7,14 @@ import { Payment } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import PaymentService from '@beabee/core/services/PaymentService';
 
-import {
+import type {
   Payment as GCPayment,
-  PaymentStatus as GCPaymentStatus,
   Subscription as GCSubscription,
+} from 'gocardless-nodejs';
+import {
+  PaymentStatus as GCPaymentStatus,
   SubscriptionIntervalUnit,
-} from 'gocardless-nodejs/types/Types';
+} from 'gocardless-nodejs/types/Types.js';
 import moment, { DurationInputObject } from 'moment';
 
 const log = mainLogger.child({ app: 'payment-webhook-utils' });
@@ -32,6 +34,7 @@ export async function updatePayment(
     payment.amount = Number(gcPayment.amount) / 100;
     payment.amountRefunded = Number(gcPayment.amount_refunded) / 100;
     payment.chargeDate = moment.utc(gcPayment.charge_date).toDate();
+    payment.type = PaymentType.Recurring; // TODO: determine properly
 
     await getRepository(Payment).save(payment);
 

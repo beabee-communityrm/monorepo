@@ -74,21 +74,20 @@ import type {
   GetCalloutResponseMapData,
 } from '@beabee/beabee-common';
 
-import CalloutIntroPanel from '@components/pages/callouts/CalloutIntroPanel.vue';
-import CalloutMapHeader from '@components/pages/callouts/CalloutMapHeader.vue';
-import CalloutShowResponsePanel from '@components/pages/callouts/CalloutShowResponsePanel.vue';
-import { isEmbed } from '@store';
-import { client } from '@utils/api';
-import { resolveImageUrl } from '@utils/url';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+
+import CalloutIntroPanel from '#components/pages/callouts/CalloutIntroPanel.vue';
+import CalloutMapHeader from '#components/pages/callouts/CalloutMapHeader.vue';
+import CalloutShowResponsePanel from '#components/pages/callouts/CalloutShowResponsePanel.vue';
+import { isEmbed } from '#store';
+import { client } from '#utils/api';
+import { resolveImageUrl } from '#utils/url';
 
 const HASH_PREFIX = '#response-' as const;
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>;
-  // Suppress the warning about the ID prop being passed by the router
-  id: string;
 }>();
 
 const route = useRoute();

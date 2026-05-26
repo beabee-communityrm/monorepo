@@ -10,8 +10,12 @@ import express, {
   type Request,
   type Response,
 } from 'express';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import { isAdmin } from '#core/middleware';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 

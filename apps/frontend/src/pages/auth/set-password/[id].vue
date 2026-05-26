@@ -7,11 +7,13 @@ meta:
 </route>
 
 <template>
-  <ResetPasswordPage :id="id" mode="set" />
+  <ResetPasswordPage :id="route.params.id" mode="set" />
 </template>
 
 <script lang="ts" setup>
+import { useRoute } from 'vue-router';
+
 import ResetPasswordPage from '../reset-password/[id].vue';
 
-defineProps<{ id: string }>();
+const route = useRoute('set_password');
 </script>

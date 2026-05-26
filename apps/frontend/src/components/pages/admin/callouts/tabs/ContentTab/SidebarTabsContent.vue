@@ -2,15 +2,12 @@
 <template>
   <component
     :is="currentTab.component"
-    :data="currentTab.data"
-    :validated="currentTab.validated"
-    :error="currentTab.error"
-    :component="currentTab.component"
-    :name="currentTab.name"
+    v-bind="currentTab"
     :is-active="true"
-    :status="status"
     :slides="slides"
     :current-slide="currentSlide"
+    :status="status"
+    :tabs="tabs"
   />
 </template>
 

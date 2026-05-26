@@ -6,7 +6,7 @@ meta:
 
 <template>
   <PageTitle :title="t('menu.adminSettings')" />
-  <AppTabs :items="tabs" :selected="(route.name as string) || ''" />
+  <AppTabs :items="tabs" :selected="selectedTab?.id || ''" />
   <router-view />
 </template>
 
@@ -18,6 +18,8 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+import { resolveTabNavigation } from '#utils/navigation';
+
 import { addBreadcrumb } from '../../store/breadcrumb';
 
 const { t } = useI18n();
@@ -25,7 +27,7 @@ const route = useRoute();
 const router = useRouter();
 
 const tabs = computed(() =>
-  [
+  resolveTabNavigation(router, [
     {
       id: 'adminSettingsGeneral',
       label: t('adminSettings.general.label'),
@@ -42,14 +44,11 @@ const tabs = computed(() =>
       id: 'adminSettingsApikeys',
       label: t('adminSettings.apikey.label'),
     },
-  ].map((item) => ({
-    ...item,
-    to: router.resolve({ name: item.id }).href,
-  }))
+  ])
 );
 
 const selectedTab = computed(() =>
-  tabs.value.find((tab) => tab.id === route.name)
+  tabs.value.find((tab) => route.name.startsWith(tab.id))
 );
 
 addBreadcrumb(

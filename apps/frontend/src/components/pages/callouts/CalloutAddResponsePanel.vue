@@ -42,9 +42,10 @@ import {
 } from '@beabee/beabee-common';
 import { AppShareBox } from '@beabee/vue';
 
-import env from '@env';
 import { ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import env from '#env';
 
 import { generalContent } from '../../../store/generalContent';
 import CalloutForm from './CalloutForm.vue';
@@ -56,7 +57,7 @@ import { useCallout } from './use-callout';
 
 defineEmits<(e: 'close') => void>();
 const props = defineProps<{
-  callout: GetCalloutDataWith<'form' | 'variantNames'>;
+  callout: GetCalloutDataWith<'form'>;
   answers?: CalloutResponseAnswersSlide;
 }>();
 

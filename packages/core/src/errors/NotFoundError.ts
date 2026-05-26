@@ -1,14 +1,13 @@
+import { ApiErrorCode, NotFoundErrorData } from '@beabee/beabee-common';
+
 import { NotFoundError as _NotFoundError } from 'routing-controllers';
 
-/**
- * NotFoundError with optional code
- */
-export class NotFoundError extends _NotFoundError {
-  code?: string | undefined;
+export class NotFoundError extends _NotFoundError implements NotFoundErrorData {
+  readonly httpCode = 404;
+  readonly code = ApiErrorCode.NOT_FOUND;
 
-  constructor({ message, code }: { message?: string; code?: string } = {}) {
+  constructor(message?: string) {
     super(message);
     Object.setPrototypeOf(this, NotFoundError.prototype);
-    this.code = code;
   }
 }

@@ -4,9 +4,7 @@ interface Callout {
   slug: string;
 }
 
-export class AddCalloutResponseNumber1678287340165
-  implements MigrationInterface
-{
+export class AddCalloutResponseNumber1678287340165 implements MigrationInterface {
   name = 'AddCalloutResponseNumber1678287340165';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

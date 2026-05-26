@@ -1,18 +1,5 @@
 import { AuthInfo } from '@beabee/core/type';
 
-import { CurrentAuth } from '@api/decorators/CurrentAuth';
-import PartialBody from '@api/decorators/PartialBody';
-import {
-  BatchUpdateCalloutResponseDto,
-  BatchUpdateCalloutResponseResultDto,
-  GetCalloutResponseDto,
-  GetCalloutResponseOptsDto,
-  ListCalloutResponsesDto,
-  UpdateCalloutResponseDto,
-} from '@api/dto/CalloutResponseDto';
-import { PaginatedDto } from '@api/dto/PaginatedDto';
-import { UUIDParams } from '@api/params/UUIDParams';
-import CalloutResponseTransformer from '@api/transformers/CalloutResponseTransformer';
 import { plainToInstance } from 'class-transformer';
 import {
   Get,
@@ -21,6 +8,20 @@ import {
   Patch,
   QueryParams,
 } from 'routing-controllers';
+
+import { CurrentAuth } from '#api/decorators/CurrentAuth';
+import PartialBody from '#api/decorators/PartialBody';
+import {
+  BatchUpdateCalloutResponseDto,
+  BatchUpdateCalloutResponseResultDto,
+  GetCalloutResponseDto,
+  GetCalloutResponseOptsDto,
+  ListCalloutResponsesDto,
+  UpdateCalloutResponseDto,
+} from '#api/dto/CalloutResponseDto';
+import { PaginatedDto } from '#api/dto/PaginatedDto';
+import { UUIDParams } from '#api/params/UUIDParams';
+import CalloutResponseTransformer from '#api/transformers/CalloutResponseTransformer';
 
 @JsonController('/callout-responses')
 export class CalloutResponseController {

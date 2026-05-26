@@ -8,11 +8,17 @@ import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express } from 'express';
 import moment from 'moment';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 import { hasNewModel, hasSchema } from '#core/middleware';
 import { loginAndRedirect } from '#core/utils/contact';
 
-import { createGiftSchema, updateGiftAddressSchema } from './schema.json';
+import _schema from './schema.json' with { type: 'json' };
+
+const { createGiftSchema, updateGiftAddressSchema } = _schema;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 

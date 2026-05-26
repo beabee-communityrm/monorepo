@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class ImproveContactFieldTypes1715355140741
-  implements MigrationInterface
-{
+export class ImproveContactFieldTypes1715355140741 implements MigrationInterface {
   name = 'ImproveContactFieldTypes1715355140741';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

@@ -8,7 +8,7 @@ meta:
 
 <template>
   <AuthBox>
-    <AppForm
+    <AppApiForm
       :button-text="
         mode === 'set' ? t('common.login') : t('actions.changePassword')
       "
@@ -74,9 +74,9 @@ meta:
           />
         </div>
       </template>
-    </AppForm>
+    </AppApiForm>
 
-    <div v-if="mode === 'reset'" class="mt-4 text-center">
+    <div v-if="props.mode === 'reset'" class="mt-4 text-center">
       <router-link
         variant="link"
         to="/auth/login"
@@ -89,19 +89,21 @@ meta:
 
 <script lang="ts" setup>
 import { RESET_SECURITY_FLOW_ERROR_CODE } from '@beabee/beabee-common';
-import { AppForm, AppInput, AppNotification, AppTitle } from '@beabee/vue';
+import { ResetSecurityFlowError } from '@beabee/client';
+import { AppInput, AppNotification, AppTitle } from '@beabee/vue';
 
-import AuthBox from '@components/AuthBox.vue';
-import { updateCurrentUser } from '@store/index';
-import { client, isApiError } from '@utils/api';
-import { isInternalUrl } from '@utils/index';
 import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+import AuthBox from '#components/AuthBox.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { updateCurrentUser } from '#store/index';
+import { client } from '#utils/api';
+import { isInternalUrl } from '#utils/index';
+
 const props = withDefaults(
   defineProps<{
-    id: string;
     mode?: 'set' | 'reset';
   }>(),
   { mode: 'reset' }
@@ -109,7 +111,7 @@ const props = withDefaults(
 
 const { t } = useI18n();
 
-const route = useRoute();
+const route = useRoute('reset_password');
 const router = useRouter();
 
 const redirectTo = route.query.next as string | undefined;
@@ -120,7 +122,7 @@ const data = reactive({ password: '', repeatPassword: '', token: '' });
 async function handleSubmit() {
   try {
     await client.resetSecurity.resetPasswordComplete(
-      props.id,
+      route.params.id,
       data.password,
       data.token || undefined
     );
@@ -134,11 +136,8 @@ async function handleSubmit() {
     }
   } catch (err) {
     if (
-      isApiError(
-        err,
-        [RESET_SECURITY_FLOW_ERROR_CODE.MFA_TOKEN_REQUIRED],
-        [400]
-      )
+      err instanceof ResetSecurityFlowError &&
+      err.subCode === RESET_SECURITY_FLOW_ERROR_CODE.MFA_TOKEN_REQUIRED
     ) {
       hasMFAEnabled.value = true;
       return false;

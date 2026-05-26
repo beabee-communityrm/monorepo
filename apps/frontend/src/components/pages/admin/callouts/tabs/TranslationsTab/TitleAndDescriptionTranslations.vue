@@ -73,12 +73,9 @@
 <script lang="ts" setup>
 import { AppFormBox, AppInput, AppTextArea } from '@beabee/vue';
 
-import {
-  getLocalizedValueFallback,
-  getLocalizedValueNoFallback,
-  updateLocalizedValue,
-} from '@utils/callouts';
 import { useI18n } from 'vue-i18n';
+
+import { getLocalizedValue, updateLocalizedValue } from '#utils/callouts';
 
 import type { TitleAndImageTabData } from '../TitleAndImageTab.vue';
 
@@ -95,10 +92,13 @@ function getValue(
   field: 'title' | 'description' | 'shareTitle' | 'shareDescription',
   locale: string
 ): string {
-  return getLocalizedValueNoFallback(
+  return getLocalizedValue(
     props.titleAndImageData[field],
     locale,
-    props.defaultLocale
+    props.defaultLocale,
+    {
+      useFallback: false,
+    }
   );
 }
 
@@ -106,7 +106,7 @@ function getValue(
 function getPlaceholder(
   field: 'title' | 'description' | 'shareTitle' | 'shareDescription'
 ): string {
-  return getLocalizedValueFallback(
+  return getLocalizedValue(
     props.titleAndImageData[field],
     props.selectedLocale,
     props.defaultLocale

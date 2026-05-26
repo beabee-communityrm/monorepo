@@ -3,7 +3,7 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 import {
-  esbuildCommand,
+  generateClassIndexCommand,
   generateIndexCommand,
   mcpCommand,
   translationCommand,
@@ -12,7 +12,7 @@ import { packageJson } from './utils/package.ts';
 
 yargs(hideBin(process.argv))
   .command(generateIndexCommand)
-  .command(esbuildCommand)
+  .command(generateClassIndexCommand)
   .command(mcpCommand)
   .command(translationCommand)
   .demandCommand(1, 'You need at least one command before moving on')

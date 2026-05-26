@@ -56,7 +56,7 @@ function resetForm() {
 
 <template>
   <Story title="Form/AppForm">
-    <Variant title="Default Success Message" :init-state="state">
+    <Variant title="Default Success Message" :init-state="() => state">
       <template #default="{ state }">
         <div class="max-w-md">
           <AppForm

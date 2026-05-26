@@ -1,9 +1,8 @@
-import { JoinFlow } from '#models/index';
+import { PaymentFlow } from '#models/index';
 import {
   CompletedPaymentFlow,
   CompletedPaymentFlowData,
-  PaymentFlow,
-  PaymentFlowData,
+  PaymentFlowSetup,
 } from '#type/index';
 
 /**
@@ -13,24 +12,19 @@ import {
 export abstract class PaymentFlowProvider {
   /**
    * Creates a new payment flow with the provider
-   * @param joinFlow - The join flow containing user and payment information
-   * @param completeUrl - URL to redirect after successful setup
+   * @param flow - The payment flow containing user and payment information
    * @param data - Additional data needed for the flow
    * @returns Promise resolving to created payment flow
    */
-  abstract createPaymentFlow(
-    joinFlow: JoinFlow,
-    completeUrl: string,
-    data: PaymentFlowData
-  ): Promise<PaymentFlow>;
+  abstract setupPaymentFlow(flow: PaymentFlow): Promise<PaymentFlowSetup>;
 
   /**
    * Completes a payment flow after provider setup
-   * @param joinFlow - The join flow to complete
+   * @param flow - The payment flow to complete
    * @returns Promise resolving to completed payment flow
    */
   abstract completePaymentFlow(
-    joinFlow: JoinFlow
+    flow: PaymentFlow
   ): Promise<CompletedPaymentFlow>;
 
   /**

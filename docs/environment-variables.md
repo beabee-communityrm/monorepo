@@ -65,8 +65,6 @@ After bootstrapping, you must configure the following variables in your `.env` f
 ```bash
 BEABEE_STRIPE_PUBLICKEY=pk_test_...
 BEABEE_STRIPE_SECRETKEY=sk_test_...
-BEABEE_STRIPE_WEBHOOKSECRET=whsec_...
-BEABEE_STRIPE_MEMBERSHIPPRODUCTID=prod_...
 BEABEE_MAPTILER_KEY=your_maptiler_api_key
 ```
 
@@ -97,11 +95,7 @@ Follow these exact steps to obtain the Stripe values and make the local webhook 
 
      ![Stripe product ID](./assets/stripe-membership.png)
 
-   - Add it to `.env`:
-
-   ```bash
-   BEABEE_STRIPE_MEMBERSHIPPRODUCTID=prod_...
-   ```
+   - Set it as the value for the option `stripe-membership-product-id`
 
 4. Start Docker and retrieve the Webhook Signing Secret via Stripe CLI:
    - Start the stack (the Stripe CLI service uses your `BEABEE_STRIPE_SECRETKEY`):
@@ -111,10 +105,8 @@ Follow these exact steps to obtain the Stripe values and make the local webhook 
    - Read the webhook secret from the Stripe CLI logs and set it in `.env`:
    ```bash
    docker compose logs -f stripe_cli | grep -i "webhook signing secret"
-   # Example output: Your webhook signing secret is whsec_XXXX
-   # Then set:
-   BEABEE_STRIPE_WEBHOOKSECRET=whsec_...
    ```
+   - Set it as the value for the option `stripe-webhook-secret`
 
 Once all four variables are set, restart the stack if needed.
 

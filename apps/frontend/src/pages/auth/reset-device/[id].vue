@@ -8,7 +8,7 @@ meta:
 
 <template>
   <AuthBox>
-    <AppForm
+    <AppApiForm
       :button-text="t('actions.reset2FA')"
       :success-text="t('resetDevice.success')"
       :error-text="{
@@ -17,7 +17,6 @@ meta:
       }"
       inline-error
       full-button
-      :extract-error-code="extractApiErrorCode"
       @submit="handleSubmit"
     >
       <AppTitle>
@@ -38,28 +37,27 @@ meta:
           required
         />
       </div>
-    </AppForm>
+    </AppApiForm>
   </AuthBox>
 </template>
 
 <script lang="ts" setup>
 import { LOGIN_CODES } from '@beabee/beabee-common';
-import { AppForm, AppInput, AppTitle } from '@beabee/vue';
+import { AppInput, AppTitle } from '@beabee/vue';
 
-import AuthBox from '@components/AuthBox.vue';
-import { updateCurrentUser } from '@store/index';
-import { client } from '@utils/api';
-import { extractApiErrorCode } from '@utils/api-error';
-import { isInternalUrl } from '@utils/index';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-const props = defineProps<{ id: string }>();
+import AuthBox from '#components/AuthBox.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { updateCurrentUser } from '#store/index';
+import { client } from '#utils/api';
+import { isInternalUrl } from '#utils/index';
 
 const { t } = useI18n();
 
-const route = useRoute();
+const route = useRoute('reset_device');
 const router = useRouter();
 
 const redirectTo = route.query.next as string | undefined;
@@ -67,7 +65,10 @@ const redirectTo = route.query.next as string | undefined;
 const data = reactive({ password: '' });
 
 async function handleSubmit() {
-  await client.resetSecurity.resetDeviceComplete(props.id, data.password);
+  await client.resetSecurity.resetDeviceComplete(
+    route.params.id,
+    data.password
+  );
   await updateCurrentUser();
   if (isInternalUrl(redirectTo)) {
     // TODO: use router when legacy app is gone

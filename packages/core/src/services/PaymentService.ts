@@ -1,10 +1,12 @@
 import {
+  ContributionPeriod,
   MembershipStatus,
-  PaymentForm,
+  PaymentFlowParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
 import { getRepository, runTransaction } from '#database';
+import { CantUpdateContributionError } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Contact, ContactContribution, Payment } from '#models/index';
 import {
@@ -12,10 +14,13 @@ import {
   ManualProvider,
   PaymentProvider,
   StripeProvider,
-} from '#providers';
+} from '#providers/payment/index';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
+  PaymentFlowForm,
+  PaymentFlowFormCreateOneTimePayment,
+  UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
 import { calcRenewalDate, getActualAmount } from '#utils/payment';
@@ -87,17 +92,102 @@ class PaymentService {
     return await fn(new Provider(data), data);
   }
 
-  async canChangeContribution(
+  async canProcessPaymentFlow(
     contact: Contact,
-    useExistingPaymentSource: boolean,
-    paymentForm: PaymentForm
+    form: PaymentFlowForm
   ): Promise<boolean> {
     const ret = await this.provider(contact, (p) =>
-      p.canChangeContribution(useExistingPaymentSource, paymentForm)
+      p.canProcessPaymentFlow(form)
     );
     log.info(
-      `Contact ${contact.id} ${ret ? 'can' : 'cannot'} change contribution`
+      `Contact ${contact.id} ${ret ? 'can' : 'cannot'} process payment flow`,
+      { form }
     );
+    return ret;
+  }
+
+  async processPaymentFlow(
+    contact: Contact,
+    flow: CompletedPaymentFlow
+  ): Promise<UpdateContributionResult | undefined> {
+    log.info('Process payment flow for contact ' + contact.id, {
+      flow,
+    });
+
+    const contribution = await this.getContribution(contact);
+
+    const newMethod = flow.params.paymentMethod;
+
+    // If the saved payment method is changing then cancel the old one, except
+    // in the case of one-time payments as the payment method won't be saved
+    if (
+      flow.form.action !== 'create-one-time-payment' &&
+      contribution.method !== newMethod
+    ) {
+      log.info('Changing payment method, cancelling previous contribution', {
+        oldMethod: contribution.method,
+        newMethod,
+      });
+      await this.providerFromData(contribution, (p) =>
+        p.cancelContribution(false)
+      );
+
+      // Clear the old payment data, set the new method
+      Object.assign(contribution, {
+        ...ContactContribution.empty,
+        method: newMethod,
+      });
+      await getRepository(ContactContribution).save(contribution);
+    }
+
+    const ret = await new PaymentProviders[newMethod](
+      contribution
+    ).processPaymentFlow(flow as any); // TODO: improve type
+
+    if (flow.form.action === 'start-contribution') {
+      await this.handlePostContributionUpdate(contact);
+    }
+
+    return ret;
+  }
+
+  async canUpdateContribution(
+    contact: Contact,
+    form: UpdateContributionForm
+  ): Promise<boolean> {
+    const ret = await this.provider(contact, (p) =>
+      p.canUpdateContribution(form)
+    );
+    log.info(
+      `Contact ${contact.id} ${ret ? 'can' : 'cannot'} update contribution`
+    );
+    return ret;
+  }
+
+  async processUpdateContribution(
+    contact: Contact,
+    form: UpdateContributionForm
+  ): Promise<UpdateContributionResult> {
+    log.info('Update contribution for contact ' + contact.id);
+
+    // Active members can't change from annual to monthly contributions at the
+    // moment as the behaviour of the necessary proration is unclear (i.e. do
+    // they get a refund for time not used, does it only change in the next
+    // contribution period)
+    if (
+      contact.membership?.isActive &&
+      contact.contributionPeriod === ContributionPeriod.Annually &&
+      form.period !== ContributionPeriod.Annually
+    ) {
+      throw new CantUpdateContributionError();
+    }
+
+    const ret = await this.provider(contact, (p) =>
+      p.processUpdateContribution(form)
+    );
+
+    await this.handlePostContributionUpdate(contact);
+
     return ret;
   }
 
@@ -136,6 +226,18 @@ class PaymentService {
     });
   }
 
+  async cancelContribution(
+    contact: Contact,
+    keepMandate = false
+  ): Promise<void> {
+    log.info('Cancel contribution for contact ' + contact.id);
+    await this.provider(contact, (p) => p.cancelContribution(keepMandate));
+    await getRepository(ContactContribution).update(
+      { contactId: contact.id },
+      { cancelledAt: new Date() }
+    );
+  }
+
   async getPayments(contact: Contact): Promise<Payment[]> {
     return await getRepository(Payment).findBy({ contactId: contact.id });
   }
@@ -153,63 +255,15 @@ class PaymentService {
     await this.provider(contact, (p) => p.updateContact(updates));
   }
 
-  async updateContribution(
-    contact: Contact,
-    paymentForm: PaymentForm
-  ): Promise<UpdateContributionResult> {
-    log.info('Update contribution for contact ' + contact.id);
-    const ret = await this.provider(contact, (p) =>
-      p.updateContribution(paymentForm)
-    );
-    await getRepository(ContactContribution).update(
-      { contactId: contact.id },
-      { cancelledAt: null }
-    );
-    return ret;
-  }
+  async fetchInvoiceUrl(paymentId: string): Promise<string | null> {
+    log.info('Fetch invoice URL for payment ' + paymentId);
 
-  async updatePaymentMethod(
-    contact: Contact,
-    completedPaymentFlow: CompletedPaymentFlow
-  ): Promise<void> {
-    log.info('Update payment method for contact ' + contact.id, {
-      completedPaymentFlow,
-    });
-
-    const contribution = await this.getContribution(contact);
-    const newMethod = completedPaymentFlow.joinForm.paymentMethod;
-    if (contribution.method !== newMethod) {
-      log.info('Changing payment method, cancelling previous contribution', {
-        contribution,
-        newMethod,
-      });
-      await this.providerFromData(contribution, (p) =>
-        p.cancelContribution(false)
-      );
-
-      // Clear the old payment data, set the new method
-      Object.assign(contribution, {
-        ...ContactContribution.empty,
-        method: newMethod,
-      });
-      await getRepository(ContactContribution).save(contribution);
+    if (paymentId.startsWith('in_')) {
+      return await StripeProvider.fetchInvoiceUrl(paymentId);
+    } else {
+      // Currently only Stripe invoices are supported
+      return null;
     }
-
-    await this.providerFromData(contribution, (p) =>
-      p.updatePaymentMethod(completedPaymentFlow)
-    );
-  }
-
-  async cancelContribution(
-    contact: Contact,
-    keepMandate = false
-  ): Promise<void> {
-    log.info('Cancel contribution for contact ' + contact.id);
-    await this.provider(contact, (p) => p.cancelContribution(keepMandate));
-    await getRepository(ContactContribution).update(
-      { contactId: contact.id },
-      { cancelledAt: new Date() }
-    );
   }
 
   /**
@@ -230,6 +284,20 @@ class PaymentService {
         .getRepository(Payment)
         .update({ contactId: contact.id }, { contactId: null });
     });
+  }
+
+  /**
+   * Handle a contribution being started, restarted or just updated.  This
+   * resets any cancellation status as the contribution is now assumed to be
+   * active again
+   *
+   * @param contact The contact
+   */
+  private async handlePostContributionUpdate(contact: Contact) {
+    await getRepository(ContactContribution).update(
+      { contactId: contact.id },
+      { cancelledAt: null }
+    );
   }
 }
 

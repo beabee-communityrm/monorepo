@@ -1,0 +1,9 @@
+# Weblate CLI (wlc) config for this repo.
+# Used for: wlc commit, wlc lock, wlc unlock when resolving merge conflicts.
+# API key must be set in ~/.config/weblate in section [keys]:
+#   https://hosted.weblate.org/api/ = YOUR_API_KEY
+# Get your key: https://hosted.weblate.org/accounts/profile/#api
+
+[weblate]
+url = https://hosted.weblate.org/api/
+translation = beabee/platform

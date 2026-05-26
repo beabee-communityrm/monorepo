@@ -13,7 +13,7 @@ x-backend-app: &backend-app
 
 services:
   db:
-    image: postgres:13.9
+    image: postgres:16
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
@@ -30,7 +30,7 @@ services:
       - ${DB_PORT}:5432
 
   mail:
-    image: maildev/maildev:2.1.0
+    image: maildev/maildev:2.2.1
     ports:
       - ${MAIL_PORT}:1080
 
@@ -44,7 +44,9 @@ services:
     env_file:
       - .env
     volumes:
-      - ./packages:/opt/packages
+      - ./packages/core/dist:/opt/packages/core/dist
+      - ./packages/common/dist:/opt/packages/common/dist
+      - ./packages/locale/dist:/opt/packages/locale/dist
       - ./apps/legacy/dist:/opt/apps/legacy/dist
 
   # API app
@@ -57,7 +59,9 @@ services:
     env_file:
       - .env
     volumes:
-      - ./packages:/opt/packages
+      - ./packages/core/dist:/opt/packages/core/dist
+      - ./packages/common/dist:/opt/packages/common/dist
+      - ./packages/locale/dist:/opt/packages/locale/dist
       - ./apps/backend/dist:/opt/apps/backend/dist
       - ./apps/backend-cli/dist:/opt/apps/backend-cli/dist
       # Allow migrations to be written out from the container
@@ -75,7 +79,9 @@ services:
     env_file:
       - .env
     volumes:
-      - ./packages:/opt/packages
+      - ./packages/core/dist:/opt/packages/core/dist
+      - ./packages/common/dist:/opt/packages/common/dist
+      - ./packages/locale/dist:/opt/packages/locale/dist
       - ./apps/webhooks/dist:/opt/apps/webhooks/dist
 
   # Cron app
@@ -119,10 +125,9 @@ services:
       APP_BASE_URL: ${BEABEE_AUDIENCE}
       API_BASE_URL: /api/1.0/
       CNR_MODE: ${BEABEE_CNR_MODE:-false}
-      EXPERIMENTAL_FEATURES: ${BEABEE_EXPERIMENTAL_FEATURES:-false}
-      APPSIGNAL_KEY: ${BEABEE_APPSIGNAL_KEY:-""}
-      CAPTCHAFOX_KEY: ${BEABEE_CAPTCHAFOX_KEY:-""}
-      MAPTILER_KEY: ${BEABEE_MAPTILER_KEY:-""}
+      APPSIGNAL_KEY: ${BEABEE_APPSIGNAL_KEY:-}
+      CAPTCHAFOX_KEY: ${BEABEE_CAPTCHAFOX_KEY:-}
+      MAPTILER_KEY: ${BEABEE_MAPTILER_KEY:-}
 
   # Application router
   app_router:
@@ -155,7 +160,9 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./packages/core/dist/migrations:/opt/packages/core/dist/migrations
+      # Mount the entire core dist so newly generated migrations and the
+      # regenerated migrations.js index are both visible to the runner
+      - ./packages/core/dist:/opt/packages/core/dist
     env_file:
       - .env
 

@@ -1,16 +1,17 @@
 import { PaymentStatus } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
+import { InternalServerError } from '@beabee/core/errors';
 import { Contact, Payment } from '@beabee/core/models';
 
-import { GetStatsDto, GetStatsOptsDto } from '@api/dto/StatsDto';
 import { plainToInstance } from 'class-transformer';
 import {
   Authorized,
   Get,
-  InternalServerError,
   JsonController,
   QueryParams,
 } from 'routing-controllers';
+
+import { GetStatsDto, GetStatsOptsDto } from '#api/dto/StatsDto';
 
 @JsonController('/stats')
 export class StatsController {

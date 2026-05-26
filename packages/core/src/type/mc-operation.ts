@@ -1,7 +1,7 @@
 interface MCOperationNoBody {
   method: 'GET' | 'DELETE' | 'POST';
   path: string;
-  params?: string;
+  params?: Record<string, string>;
   operation_id: string;
   body?: undefined;
 }

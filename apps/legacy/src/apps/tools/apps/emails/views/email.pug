@@ -12,8 +12,8 @@ block prepend js
 				.col-md-6
 					select(name='systemEmails[0]').form-control
 						option(value='' selected disabled)
-						each name, id in assignableSystemEmails
-							option(value=id)= name
+						each email, id in assignableSystemEmails
+							option(value=id)= email.name
 				.col-md-3
 					button(type='button').btn.btn-danger.js-repeater-remove-item
 							i.glyphicon.glyphicon-trash
@@ -57,8 +57,8 @@ block contents
 								.col-md-6
 									select(name='systemEmails[' + i + ']').form-control
 										option(value='' selected disabled)
-										each name, id in assignableSystemEmails
-											option(value=id selected=systemEmail === id)= name
+										each email, id in assignableSystemEmails
+											option(value=id selected=systemEmail === id)= email.name
 								.col-md-3
 									button(type='button').btn.btn-danger.js-repeater-remove-item
 										i.glyphicon.glyphicon-trash

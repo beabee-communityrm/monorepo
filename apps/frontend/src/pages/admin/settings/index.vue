@@ -8,7 +8,7 @@ meta:
 <template>
   <App2ColGrid>
     <template #col1>
-      <AppForm
+      <AppApiForm
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
         @submit="handleSaveGeneral"
@@ -37,11 +37,11 @@ meta:
             required
           />
         </div>
-      </AppForm>
+      </AppApiForm>
 
       <div class="my-8 border-b border-b-primary-40" />
 
-      <AppForm
+      <AppApiForm
         v-if="shareContent"
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
@@ -83,45 +83,51 @@ meta:
             :label="t('adminSettings.general.socialSharing.twitterHandle')"
           />
         </div>
-      </AppForm>
+      </AppApiForm>
     </template>
     <template #col2>
       <div class="my-8 border-b border-b-primary-40 md:hidden" />
 
-      <AppForm
+      <AppApiForm
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
         @submit="handleSavePayment"
       >
+        <AppHeading>
+          {{ t('adminSettings.payment.paymentTitle') }}
+        </AppHeading>
+        <TaxRateInput
+          v-model="paymentData.taxRateRecurring"
+          :label="t('adminSettings.payment.taxRateLabelRecurring')"
+        />
+
         <AppSubHeading>
-          {{ t('adminSettings.payment.paymentTitle') }}</AppSubHeading
-        >
+          {{ t('adminSettings.payment.oneTimeDonationsTitle') }}
+        </AppSubHeading>
         <div class="mb-4">
           <AppCheckbox
-            v-model="paymentData.taxRateEnabled"
-            :label="t('adminSettings.payment.taxRateEnabled')"
-            class="font-bold"
+            v-model="paymentData.enableOneTimeDonation"
+            :label="t('adminSettings.payment.enableOneTimeDonation')"
           />
         </div>
-        <div
-          v-if="paymentData.taxRateEnabled"
-          class="mb-4 max-w-[8rem] whitespace-nowrap"
-        >
-          <AppInput
-            v-model="paymentData.taxRate"
-            type="number"
-            :label="t('adminSettings.payment.taxRate')"
-            :min="0"
-            :max="100"
-            suffix="%"
-            required
+        <template v-if="paymentData.enableOneTimeDonation">
+          <TaxRateInput
+            v-model="paymentData.taxRateOneTime"
+            :label="t('adminSettings.payment.taxRateLabelOneTime')"
           />
-        </div>
-      </AppForm>
+          <div class="mb-4">
+            <AppCheckbox
+              v-model="paymentData.showOneTimeDonation"
+              :label="t('adminSettings.payment.showOneTimeDonation')"
+              class="font-bold"
+            />
+          </div>
+        </template>
+      </AppApiForm>
 
       <div class="my-8 border-b border-b-primary-40" />
 
-      <AppForm
+      <AppApiForm
         :button-text="t('actions.update')"
         :success-text="t('form.saved')"
         @submit="handleSaveFooter"
@@ -175,20 +181,16 @@ meta:
           :url-label="t('adminSettings.general.footer.otherLinks.url')"
           :add-label="t('adminSettings.general.footer.otherLinks.add')"
         />
-      </AppForm>
+      </AppApiForm>
     </template>
   </App2ColGrid>
 </template>
 
 <script lang="ts" setup>
-import type {
-  ContentPaymentData,
-  ContentShareData,
-} from '@beabee/beabee-common';
+import type { ContentShareData } from '@beabee/beabee-common';
 import {
   App2ColGrid,
   AppCheckbox,
-  AppForm,
   AppHeading,
   AppInput,
   AppLinkList,
@@ -197,12 +199,15 @@ import {
   AppTextArea,
 } from '@beabee/vue';
 
-import AppImageUpload from '@components/forms/AppImageUpload.vue';
-import { localeItems } from '@lib/i18n';
-import { generalContent as storeGeneralContent } from '@store';
-import { client } from '@utils/api';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import AppImageUpload from '#components/forms/AppImageUpload.vue';
+import TaxRateInput from '#components/pages/admin/settings/TaxRateInput.vue';
+import { localeItems } from '#lib/i18n';
+import { generalContent as storeGeneralContent } from '#store';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 
@@ -218,13 +223,12 @@ const footerData = reactive({
   impressumLink: '',
   footerLinks: [] as { text: string; url: string }[],
 });
-
-const paymentData = ref<Pick<ContentPaymentData, 'taxRateEnabled' | 'taxRate'>>(
-  {
-    taxRateEnabled: false,
-    taxRate: 7,
-  }
-);
+const paymentData = reactive({
+  taxRateRecurring: null as number | null,
+  taxRateOneTime: null as number | null,
+  enableOneTimeDonation: false,
+  showOneTimeDonation: false,
+});
 
 const shareContent = ref<ContentShareData>();
 
@@ -258,7 +262,14 @@ async function handleSaveFooter() {
 }
 
 async function handleSavePayment() {
-  await client.content.update('payment', paymentData.value);
+  storeGeneralContent.value = await client.content.update('general', {
+    enableOneTimeDonations: paymentData.enableOneTimeDonation,
+  });
+  await client.content.update('payment', {
+    taxRateRecurring: paymentData.taxRateRecurring,
+    taxRateOneTime: paymentData.taxRateOneTime,
+    showOneTimeDonation: paymentData.showOneTimeDonation,
+  });
 }
 
 onBeforeMount(async () => {
@@ -276,9 +287,11 @@ onBeforeMount(async () => {
   shareContent.value = await client.content.get('share');
 
   const paymentContent = await client.content.get('payment');
-  paymentData.value = {
-    taxRateEnabled: paymentContent.taxRateEnabled,
-    taxRate: paymentContent.taxRate,
-  };
+
+  paymentData.taxRateRecurring = paymentContent.taxRateRecurring;
+  paymentData.taxRateOneTime = paymentContent.taxRateOneTime;
+  paymentData.showOneTimeDonation = paymentContent.showOneTimeDonation;
+  paymentData.enableOneTimeDonation =
+    storeGeneralContent.value.enableOneTimeDonations;
 });
 </script>

@@ -1,8 +1,9 @@
 import { ItemStatus } from '@beabee/beabee-common';
 
-import { GetPaginatedQuery } from '@api/dto/BaseDto';
 import { Type } from 'class-transformer';
 import { IsDate, IsEnum, IsIn, IsOptional, IsString } from 'class-validator';
+
+import { GetPaginatedQuery } from '#api/dto/BaseDto';
 
 const sortFields = ['createdAt', 'updatedAt', 'name', 'expires'] as const;
 

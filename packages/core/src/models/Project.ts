@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import type { Contact, ProjectContact } from './index';
+import type { Contact, ProjectContact } from './index.js';
 
 @Entity()
 export class Project {
@@ -37,5 +37,5 @@ export class Project {
   @OneToMany('ProjectContact', 'project')
   contacts!: ProjectContact[];
 
-  contactCount?: number;
+  itemCount?: number;
 }

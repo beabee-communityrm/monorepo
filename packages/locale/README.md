@@ -1,6 +1,6 @@
 # Beabee Locale Package
 
-This package contains translations for the Beabee project. It provides locale data in JSON format and exports TypeScript sources directly for ESM environments, while building CJS modules for legacy CommonJS compatibility.
+This package contains translations for the Beabee project. It provides locale data in JSON format. Workspace consumers read TypeScript sources directly; npm consumers receive an ESM build (flat `dist/`).
 
 ## Package Structure
 
@@ -22,6 +22,7 @@ The smallest translation set. These languages are only available on public-facin
 - Greek (el)
 
 Example `config.ts` configuration:
+
 ```ts
   "de@easy": {
     baseLocale: "de",
@@ -34,6 +35,7 @@ Example `config.ts` configuration:
 ```
 
 Weblate:
+
 - Tags: CNR, System
 - [Missing translations](https://hosted.weblate.org/search/beabee/platform/?q=state%3Aempty+AND+%28language%3Aru+OR+language%3Ade%40easy+OR+language%3Ael%29+AND+%28label%3Acnr+OR+label%3Asystem%29&sort_by=-priority%2Cposition&checksum=)
 
@@ -57,6 +59,7 @@ Example `config.ts` configuration:
 ```
 
 Weblate:
+
 - Tags: CNR, System, User
 - [Missing translations](https://hosted.weblate.org/search/beabee/platform/?q=state%3Aempty+AND+%28language%3Apt+OR+language%3Ait%29+AND+NOT+label%3Aadmin&sort_by=-priority%2Cposition&checksum=)
 
@@ -70,6 +73,7 @@ These languages are available throughout the entire platform, including admin da
 - Dutch (nl)
 
 Example `config.ts` configuration:
+
 ```ts
   "de": {
     baseLocale: "de",
@@ -81,25 +85,18 @@ Example `config.ts` configuration:
   },
 ```
 
-
 Weblate:
+
 - Tags: CNR, System, User, Admin
 - [Missing translations](https://hosted.weblate.org/search/beabee/platform/?page=1&limit=100&q=state%3Aempty+AND+%28language%3Ade+OR+language%3Ade%40informal+OR+language%3Aen+OR+language%3Afr+OR+language%3Anl%29&sort_by=-priority%2Cposition)
 
 ## Usage
 
-The package supports dual import formats:
-
-1. **ESM (TypeScript sources)** - Direct TypeScript import for modern environments
-2. **CJS (Built JavaScript)** - For legacy CommonJS environments
-
 ```typescript
-// ESM imports (uses TypeScript sources directly)
-import { config, isLocale, type Locale } from '@beabee/locale';
-
-// Import specific locale data 
-import en from '@beabee/locale/locales/en';
+import { type Locale, config, isLocale } from '@beabee/locale';
 import de from '@beabee/locale/locales/de';
+// Import specific locale data
+import en from '@beabee/locale/locales/en';
 
 // Check if a string is a valid locale
 const userLocale = 'de@informal';
@@ -109,18 +106,9 @@ if (isLocale(userLocale)) {
 }
 ```
 
-**ESM TypeScript imports** work with bundlers that support TypeScript (Vite, esbuild, etc.) or Node.js with TypeScript support:
-```bash
-# With Node.js TypeScript support
-node --experimental-specifier-resolution=node --experimental-strip-types --experimental-transform-types --no-warnings your-file.ts
+**Workspace consumers** resolve directly to the TypeScript sources — no rebuild needed when the locale source changes. Bundlers (Vite, esbuild) and Node.js 24+ with `--experimental-strip-types` handle this transparently.
 
-# With bundlers like Vite or esbuild - no special flags needed
-```
-
-**CJS imports** work with standard Node.js:
-```javascript
-const { config, isLocale } = require('@beabee/locale');
-```
+**npm consumers** receive an ESM build (flat `dist/`) via `publishConfig`.
 
 ## Development
 
@@ -146,6 +134,7 @@ Beabee is a community resource management system, and we welcome contributions t
 Beabee supports multiple languages to make the platform accessible to users worldwide. Our translation system stores strings in JSON format, which are then used throughout the application to provide a localized experience.
 
 We welcome translations in both directions:
+
 1. **Via Weblate**: Our recommended approach for non-developers, as it provides a user-friendly interface for translation.
 2. **Direct JSON Editing**: Preferred for developers who want to contribute translations directly in the codebase.
 
@@ -157,7 +146,7 @@ We welcome translations in both directions:
 
 #### Using Weblate
 
-[Weblate](https://weblate.org/) provides a user-friendly interface for translating strings without needing to understand the technical details:
+[Weblate](https://weblate.org/) provides a user-friendly interface for translating strings without needing to understand the technical details.
 
 For detailed instructions on how to use Weblate, check the [official Weblate documentation](https://docs.weblate.org/en/latest/user/translating.html). The documentation is available in many languages - you can change the language using the language selector.
 
@@ -167,6 +156,7 @@ For detailed instructions on how to use Weblate, check the [official Weblate doc
 4. **Submit Translations**: Once you've translated strings, submit them for review.
 
 Tips for using Weblate:
+
 - Use the "Suggestions" feature if you're unsure about a translation.
 - Add comments if you have questions or need clarification about a string.
 - Use the "Translation Memory" to maintain consistency across similar phrases.
@@ -197,6 +187,7 @@ For developers who prefer working directly with the code:
 ### Testing Your Translations
 
 To see your translations in action:
+
 1. Build the package (`yarn build`)
 2. Rebuild and start the Beabee application
 3. Switch to your language

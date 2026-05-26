@@ -1,6 +1,6 @@
-import { GetPaginatedQuery, GetPaginatedRuleGroup } from '@api/dto/BaseDto';
 import { Type } from 'class-transformer';
 import {
+  IsBoolean,
   IsEnum,
   IsIn,
   IsNumber,
@@ -9,8 +9,10 @@ import {
   ValidateNested,
 } from 'class-validator';
 
+import { GetPaginatedQuery, GetPaginatedRuleGroup } from '#api/dto/BaseDto';
+
 export enum GetSegmentWith {
-  contactCount = 'contactCount',
+  itemCount = 'itemCount',
 }
 
 export class CreateSegmentDto {
@@ -35,7 +37,7 @@ export class GetSegmentDto extends CreateSegmentDto {
 
   @IsOptional()
   @IsNumber()
-  contactCount?: number;
+  itemCount?: number | undefined;
 }
 
 export class GetSegmentOptsDto {
@@ -52,4 +54,27 @@ export class ListSegmentsDto extends GetPaginatedQuery {
   @IsOptional()
   @IsIn(['name', 'description', 'order'])
   sort?: string;
+}
+
+/** Body for POST /segments/:id/email/send (email to all segment contacts). */
+export class SendSegmentEmailBodyDto {
+  /** When set, use this saved template (subject/body ignored) and create an EmailMailing for tracking. */
+  @IsOptional()
+  @IsString()
+  emailId?: string;
+
+  @IsString()
+  subject!: string;
+
+  @IsString()
+  body!: string;
+
+  /**
+   * When true, this send is the initial delivery of a newly created ongoing
+   * email. The backend will record sent contacts in segment_contact so
+   * process-segments won't treat them as "new" and re-send.
+   */
+  @IsOptional()
+  @IsBoolean()
+  ongoingDirectSend?: boolean;
 }

@@ -2,6 +2,7 @@
  * Login codes
  */
 export enum LOGIN_CODES {
+  UNAUTHORIZED = 'unauthorized',
   LOCKED = 'account-locked',
   LOGGED_IN = 'logged-in',
   LOGIN_FAILED = 'login-failed',

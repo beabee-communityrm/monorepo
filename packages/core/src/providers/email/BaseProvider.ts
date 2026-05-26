@@ -11,7 +11,6 @@ import type {
   EmailOptions,
   EmailProvider,
   EmailRecipient,
-  EmailTemplate,
   PreparedEmail,
 } from '#type/index';
 
@@ -111,6 +110,7 @@ export abstract class BaseProvider implements EmailProvider {
         (email.fromEmail ? '' : OptionsService.getText('support-email-from')),
     };
 
+    // Process magic merge fields (e.g., SPLINK, RPLINK, LOGINLINK)
     let preparedRecipients = recipients;
     for (const mergeField of magicMergeFields) {
       if (email.body.includes(`*|${mergeField}|*`)) {
@@ -133,13 +133,8 @@ export abstract class BaseProvider implements EmailProvider {
     }
   }
 
-  async getTemplateEmail(templateId: string): Promise<false | Email | null> {
-    return (await getRepository(Email).findOneBy({ id: templateId })) || null;
-  }
-
-  async getTemplates(): Promise<EmailTemplate[]> {
-    const emails = await getRepository(Email).find();
-    return emails.map((email) => ({ id: email.id, name: email.name }));
+  async getTemplateEmail(templateId: string): Promise<Email | null> {
+    return await getRepository(Email).findOneBy({ id: templateId });
   }
 }
 

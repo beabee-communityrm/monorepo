@@ -7,9 +7,13 @@ import { wrapAsync } from '@beabee/core/utils/express';
 import { getNextParam, isValidNextUrl } from '@beabee/core/utils/url';
 
 import express, { type Express, type Request, type Response } from 'express';
+import { fileURLToPath } from 'node:url';
 import passport from 'passport';
+import path from 'path';
 
 import { loginAndRedirect } from '#core/utils/contact';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 
@@ -23,32 +27,6 @@ app.get('/', function (req: Request, res: Response) {
     res.render('index', { nextParam: getNextParam(nextParam) });
   }
 });
-
-if (config.dev) {
-  app.get(
-    '/as/:id',
-    wrapAsync(async (req, res) => {
-      let contact;
-      if (RoleTypes.indexOf(req.params.id as RoleType) > -1) {
-        const role = await getRepository(ContactRole).findOne({
-          where: {
-            type: req.params.id as RoleType,
-          },
-          relations: { contact: true },
-        });
-        contact = role?.contact;
-      } else {
-        contact = await ContactsService.findOneBy({ id: req.params.id });
-      }
-
-      if (contact) {
-        loginAndRedirect(req, res, contact);
-      } else {
-        res.redirect('/login');
-      }
-    })
-  );
-}
 
 app.get(
   '/:code',

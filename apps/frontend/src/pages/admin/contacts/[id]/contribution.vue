@@ -12,7 +12,7 @@ meta:
         {{ t('contribution.updateContribution') }}
       </AppHeading>
       <template v-if="contributionData && contributionInfo">
-        <AppForm
+        <AppApiForm
           v-if="
             contributionInfo.type === ContributionType.Manual ||
             contributionInfo.type === ContributionType.None
@@ -22,7 +22,7 @@ meta:
           @submit="handleUpdateContribution"
         >
           <ContactContributionFields v-model="contributionData" />
-        </AppForm>
+        </AppApiForm>
         <template v-else>
           <AppNotification
             variant="warning"
@@ -65,19 +65,20 @@ import {
 import {
   App2ColGrid,
   AppConfirmDialog,
-  AppForm,
   AppHeading,
   AppNotification,
 } from '@beabee/vue';
 
-import ContactCancelContribution from '@components/contact/ContactCancelContribution.vue';
-import ContactContributionFields from '@components/contact/ContactContributionFields.vue';
-import ContactPaymentsHistory from '@components/contact/ContactPaymentsHistory.vue';
-import type { UpdateContribution } from '@components/contact/contact.interface';
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+
+import ContactCancelContribution from '#components/contact/ContactCancelContribution.vue';
+import ContactContributionFields from '#components/contact/ContactContributionFields.vue';
+import ContactPaymentsHistory from '#components/contact/ContactPaymentsHistory.vue';
+import type { UpdateContribution } from '#components/contact/contact.interface';
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { client } from '#utils/api';
 
 const { t } = useI18n();
 

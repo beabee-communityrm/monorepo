@@ -12,9 +12,10 @@
   - Responsive design
   - Disabled state support
   - Touch-friendly interface
+  - Flex-friendly: use class="min-h-0 flex-1" in a flex container to let the editor fill available height.
 -->
 <template>
-  <div :class="hasError && 'ProseMirror-hasError'">
+  <div :class="['flex min-h-0 flex-col', hasError && 'ProseMirror-hasError']">
     <AppLabel v-if="label" :label="label" :required="required" />
 
     <div
@@ -81,21 +82,32 @@
         :disabled="disabled"
         @click="setLink"
       />
+      <!-- Toolbar extension slot for custom buttons (e.g., merge fields) -->
+      <slot name="toolbar" :editor="editor" :disabled="disabled" />
     </div>
-    <div class="relative">
+    <div class="grid min-h-0 w-full flex-1">
+      <div
+        v-if="isEditorEmpty && placeholder"
+        class="pointer-events-none invisible col-start-1 row-start-1 w-full self-start p-2"
+        v-html="placeholder"
+        aria-hidden="true"
+      />
       <EditorContent
         :editor="editor"
-        class="content-message"
+        class="content-message z-0 col-start-1 row-start-1 h-full"
         :class="disabled && 'ProseMirror-disabled'"
         :aria-label="t('form.richtext.editor')"
       />
       <div
         v-if="isEditorEmpty && placeholder"
-        class="pointer-events-none absolute inset-2 text-grey-dark"
+        class="pointer-events-none z-10 col-start-1 row-start-1 w-full self-start p-2 text-grey-dark"
         v-html="placeholder"
         aria-hidden="true"
       />
-      <div v-if="copyable" class="absolute right-1 top-1">
+      <div
+        v-if="copyable"
+        class="z-20 col-start-1 row-start-1 self-start justify-self-end pr-1 pt-1"
+      >
         <AppCopyButton variant="float" :text="editor?.getHTML() || ''" />
       </div>
     </div>
@@ -121,14 +133,12 @@ import {
   faStrikethrough,
   faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
-import Link from '@tiptap/extension-link';
 import Typography from '@tiptap/extension-typography';
-import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import { type ChainedCommands, EditorContent, useEditor } from '@tiptap/vue-3';
 import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf } from '@vuelidate/validators';
-import { computed, onBeforeUnmount, toRef, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { AppCopyButton, AppInputError, AppInputHelp, AppLabel } from '../index';
@@ -187,10 +197,7 @@ const editor = useEditor({
       codeBlock: false,
       heading: { levels: [3] },
       horizontalRule: false,
-    }),
-    Underline,
-    Link.configure({
-      openOnClick: false,
+      link: { openOnClick: false },
     }),
     Typography,
   ],
@@ -210,7 +217,7 @@ const editor = useEditor({
 
 watch(toRef(props, 'modelValue'), (value) => {
   if (editor.value && editor.value.getHTML() !== value) {
-    editor.value.commands.setContent(value as string, false);
+    editor.value.commands.setContent(value as string, { emitUpdate: false });
   }
 });
 
@@ -250,11 +257,13 @@ function setLink(): void {
   if (!editor.value || props.disabled) return;
 
   const previousUrl = editor.value.getAttributes('link').href;
-  const url = window.prompt('Set URL (blank to remove)', previousUrl);
+  let url = window.prompt('Set URL (blank to remove)', previousUrl);
 
   if (url === null) {
     return;
   }
+
+  url = url.trim();
 
   if (url === '') {
     editor.value.chain().focus().extendMarkRange('link').unsetLink().run();
@@ -273,7 +282,7 @@ const isEditorEmpty = computed(() => editor.value?.isEmpty || false);
 
 <style lang="postcss">
 .ProseMirror {
-  @apply h-auto min-h-[5rem] w-full rounded border border-primary-40 bg-white p-2 focus:shadow-input focus:outline-none;
+  @apply h-full min-h-[5rem] w-full rounded border border-primary-40 bg-white p-2 focus:shadow-input focus:outline-none;
 
   .ProseMirror-hasError & {
     @apply border-danger-70 bg-danger-10;

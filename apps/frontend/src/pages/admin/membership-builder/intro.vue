@@ -6,53 +6,53 @@ meta:
 </route>
 
 <template>
-  <App2ColGrid>
-    <template #col1>
-      <p class="mb-8">{{ stepT('text') }}</p>
-      <AppCheckbox
-        v-model="showIntroMessage"
-        :label="stepT('showWelcomeMessage')"
-        class="mb-4 font-semibold"
-      />
-    </template>
-  </App2ColGrid>
-  <App2ColGrid v-if="showIntroMessage" extended>
-    <template #col1>
-      <AppForm
-        :button-text="t('form.saveChanges')"
-        :success-text="t('form.saved')"
-        @submit="handleUpdate"
-      >
+  <AppApiForm
+    :button-text="t('form.saveChanges')"
+    :success-text="t('form.saved')"
+    @submit="handleUpdate"
+  >
+    <App2ColGrid>
+      <template #col1>
+        <p class="mb-8">{{ stepT('text') }}</p>
+        <AppCheckbox
+          v-model="showIntroMessage"
+          :label="stepT('showWelcomeMessage')"
+          class="mb-4 font-semibold"
+        />
+      </template>
+    </App2ColGrid>
+    <App2ColGrid v-if="showIntroMessage" class="mb-6" extended>
+      <template #col1>
         <AppRichTextEditor
           v-model="introMessage"
           :label="stepT('message')"
-          class="mb-4"
           required
         />
-      </AppForm>
-    </template>
-    <template #col2>
-      <WelcomeMessage
-        :first-name="currentUser?.firstname || ''"
-        :last-name="currentUser?.lastname || ''"
-        :text="introMessage"
-        small
-      />
-    </template>
-  </App2ColGrid>
+      </template>
+      <template #col2>
+        <WelcomeMessage
+          :first-name="currentUser?.firstname || ''"
+          :last-name="currentUser?.lastname || ''"
+          :text="introMessage"
+          small
+        />
+      </template>
+    </App2ColGrid>
+  </AppApiForm>
 </template>
 <script lang="ts" setup>
 import {
   App2ColGrid,
   AppCheckbox,
-  AppForm,
   AppRichTextEditor,
   WelcomeMessage,
 } from '@beabee/vue';
 
-import { client } from '@utils/api';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import AppApiForm from '#components/forms/AppApiForm.vue';
+import { client } from '#utils/api';
 
 import { currentUser } from '../../../store';
 

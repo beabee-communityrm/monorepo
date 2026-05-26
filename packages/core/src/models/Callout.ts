@@ -16,8 +16,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { ItemWithStatus } from './ItemWithStatus';
-import type { CalloutResponse, CalloutTag, CalloutVariant } from './index';
+import { ItemWithStatus } from './ItemWithStatus.js';
+import type { CalloutResponse, CalloutTag, CalloutVariant } from './index.js';
 
 @Entity()
 export class Callout extends ItemWithStatus implements CalloutData {
@@ -78,4 +78,7 @@ export class Callout extends ItemWithStatus implements CalloutData {
 
   @Column({ type: 'jsonb', nullable: true })
   channels!: CalloutChannel[] | null;
+
+  @Column({ default: false })
+  sendResponseEmail!: boolean;
 }

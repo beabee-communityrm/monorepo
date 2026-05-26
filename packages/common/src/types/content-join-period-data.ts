@@ -1,6 +1,6 @@
-import { ContributionPeriod } from '../data/index.js';
+import { type PaymentPeriod } from './payment-period.js';
 
 export interface ContentJoinPeriodData {
-  name: ContributionPeriod;
+  name: PaymentPeriod;
   presetAmounts: number[];
 }

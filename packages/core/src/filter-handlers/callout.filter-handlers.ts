@@ -1,7 +1,7 @@
 import { CalloutFilterName } from '@beabee/beabee-common';
 import { FilterHandlers } from '@beabee/core/type';
 
-import { statusFilterHandler } from './status.filter-handlers';
+import { statusFilterHandler } from './status.filter-handlers.js';
 
 /**
  * @fileoverview Filter handlers for callouts, managing status and title filtering

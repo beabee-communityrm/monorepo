@@ -54,21 +54,22 @@ import {
   PageTitle,
 } from '@beabee/vue';
 
-import AppNotice from '@components/notice/AppNotice.vue';
 import {
   faPencilAlt,
   faSignHanging,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
-import { addBreadcrumb } from '@store/breadcrumb';
-import { client } from '@utils/api';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+
+import AppNotice from '#components/notice/AppNotice.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
+import { client } from '#utils/api';
 
 import ItemStatusText from '../../../../components/item/ItemStatusText.vue';
 
-const props = defineProps<{ id: string }>();
+const route = useRoute('adminNoticeView');
 const { t } = useI18n();
 
 const notice = ref<GetNoticeData | undefined>();
@@ -84,11 +85,11 @@ addBreadcrumb(
 const showDeleteModal = ref(false);
 
 onBeforeMount(async () => {
-  notice.value = await client.notice.get(props.id);
+  notice.value = await client.notice.get(route.params.id);
 });
 
 async function confirmDeleteNotice() {
-  await client.notice.delete(props.id);
+  await client.notice.delete(route.params.id);
   router.push({
     path: '/admin/notices',
     query: { deleted: null },
