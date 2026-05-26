@@ -9,14 +9,14 @@
     "format": "prettier --write ."
   },
   "imports": {
-    "#fixtures/*": "./src/fixtures/*"
+    "#fixtures/*": "./src/fixtures/*",
+    "#utils/*": "./src/utils/*"
   },
   "dependencies": {
     "@beabee/client": "workspace:*"
   },
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
-    "@beabee/test-utils": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
     "prettier": "^3.8.3",
     "typescript": "~6.0.3",
