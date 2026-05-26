@@ -108,7 +108,14 @@ export async function setup() {
       `Creating ${createTestPaymentsCommands.length} test payments...`
     );
     for (const command of createTestPaymentsCommands) {
-      await apiApp.exec(command.split(' '));
+      const result = await apiApp.exec(command.split(' '));
+      // exec() swallows failures; a silently-skipped payment surfaces later
+      // as a confusing assertion error in the pagination test. Fail loudly.
+      if (result.exitCode !== 0) {
+        throw new Error(
+          `Seed command failed (exit ${result.exitCode}): ${command}\n${result.output}`
+        );
+      }
     }
     console.log('✅ Test payments created');
 
