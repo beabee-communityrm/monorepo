@@ -1632,7 +1632,7 @@ __metadata:
     "@vitejs/plugin-vue": "npm:^5.2.4"
     "@vuelidate/core": "npm:^2.0.3"
     color2k: "npm:^2.0.3"
-    colorjs.io: "npm:~0.6.0-beta.3"
+    colorjs.io: "npm:~0.6.1"
     dompurify: "npm:^3.4.2"
     histoire: "npm:^1.0.0-beta.1"
     import-meta-resolve: "npm:^4.2.0"
@@ -9371,7 +9371,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colorjs.io@npm:~0.6.0-beta.3":
+"colorjs.io@npm:~0.6.1":
   version: 0.6.1
   resolution: "colorjs.io@npm:0.6.1"
   checksum: 10c0/972aff12d88e86726898ff110aa15ea57a0348a3b958aeb93f4d6ae2d0ca91e487864e4d0d98b53943cc3ac3f747fb01b5ba3b6d922848d5c6888cb56e470b84
