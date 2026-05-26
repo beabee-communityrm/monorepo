@@ -8,6 +8,9 @@
     "test:watch": "vitest",
     "format": "prettier --write ."
   },
+  "imports": {
+    "#fixtures/*": "./src/fixtures/*"
+  },
   "dependencies": {
     "@beabee/client": "workspace:*"
   },

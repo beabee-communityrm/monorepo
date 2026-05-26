@@ -1,13 +1,11 @@
 import { ContributionPeriod, PaymentMethod } from '@beabee/beabee-common';
 import { BeabeeClient, TooManyRequestsError } from '@beabee/client';
-import {
-  api,
-  rateLimitedTestUser,
-} from '@beabee/e2e-api-tests/src/fixtures/api-test-info.json';
-import { createTestFile } from '@beabee/test-utils/node';
 
 import { resolve } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+
+import { api, rateLimitedTestUser } from '#fixtures/api-test-info.json';
+import { createTestFile } from '#utils/file.ts';
 
 import { FIXTURE_PATH } from '../../env';
 

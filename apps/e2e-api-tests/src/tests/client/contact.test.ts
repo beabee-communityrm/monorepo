@@ -1,11 +1,9 @@
 import { GetContactWith } from '@beabee/beabee-common';
 import { ApiError, ContactClient } from '@beabee/client';
-import {
-  api,
-  testUser,
-} from '@beabee/e2e-api-tests/src/fixtures/api-test-info.json';
 
 import { beforeAll, describe, expect, it } from 'vitest';
+
+import { api, testUser } from '#fixtures/api-test-info.json';
 
 describe('Contact API', () => {
   let contactClient: ContactClient;

@@ -5,12 +5,10 @@ import {
   ItemStatus,
 } from '@beabee/beabee-common';
 import { BeabeeClient } from '@beabee/client';
-import {
-  api,
-  testUser,
-} from '@beabee/e2e-api-tests/src/fixtures/api-test-info.json';
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
+import { api, testUser } from '#fixtures/api-test-info.json';
 
 import { createTestCallout } from '../../fixtures/callouts';
 import {
