@@ -1,11 +1,9 @@
 import { ContentId, ContentJoinData } from '@beabee/beabee-common';
 import { ApiError, ContentClient } from '@beabee/client';
-import {
-  api,
-  testUser,
-} from '@beabee/e2e-api-tests/src/fixtures/api-test-info.json';
 
 import { beforeAll, describe, expect, it } from 'vitest';
+
+import { api, testUser } from '#fixtures/api-test-info.json';
 
 describe('Content API', () => {
   let contentClient: ContentClient;

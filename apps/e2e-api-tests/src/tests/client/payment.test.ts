@@ -1,11 +1,9 @@
 import type { GetPaymentsQuery } from '@beabee/beabee-common';
 import { PaymentClient } from '@beabee/client';
-import {
-  api,
-  testUser,
-} from '@beabee/e2e-api-tests/src/fixtures/api-test-info.json';
 
 import { beforeAll, describe, expect, it } from 'vitest';
+
+import { api, testUser } from '#fixtures/api-test-info.json';
 
 describe('PaymentClient', () => {
   let paymentClient: PaymentClient;
