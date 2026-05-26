@@ -84,8 +84,6 @@ meta:
             }"
           />
         </MglGeoJsonSource>
-        <!-- The selection ring is rendered as a raw maplibre Marker in script
-             (see selectionRingMarker), not as a layer here. -->
         <MglMarker
           v-if="newResponseAddress"
           :coordinates="newResponseAddress.geometry.location"
@@ -397,10 +395,8 @@ const responsesCollecton = computed<MapPointFeatureCollection>(() => {
 // The selected response or cluster GeoJSON Feature
 const selectedFeature = ref<MapPointFeature>();
 
-// DOM ring diameter (px). For unclustered points use a fixed 44px so the
-// 3px stroke sits just outside the 22-radius icon. For clusters mirror the
-// step expression we used to feed `circle-radius` and add 10px (= 2*5)
-// of margin around the cluster's filled circle.
+// Ring diameter (px): fixed 44 for points (stroke just outside the icon);
+// for clusters, mirror the circle-radius step expression plus a 5px margin.
 function getSelectionRingDiameter(
   props: { point_count?: number } | undefined
 ): number {
@@ -410,11 +406,9 @@ function getSelectionRingDiameter(
   return (baseRadius + 5) * 2;
 }
 
-// Selection ring for the selected feature: a raw maplibre Marker with a custom
-// HTML element, kept out of the maplibre style stack. In v5 the worker IPC
-// silently drops dynamically-set features on a non-clustered GeoJSON source
-// (source reports the feature, nothing is painted), which broke the
-// MglCircleLayer approach.
+// Selection ring for the selected feature: a raw maplibre Marker, not an
+// MglCircleLayer — in v5 the worker IPC silently drops features set on a
+// non-clustered GeoJSON source (reported as present, but never painted).
 const selectionRingMarker = ref<Marker | undefined>();
 
 watch([selectedFeature, mapLoaded], () => {
@@ -478,11 +472,8 @@ const selectedResponses = computed(() => {
 function findSelectedFeature(responseNo: number) {
   if (!map.value) return;
 
-  // The UNCLUSTERED_POINTS symbol layer mounts behind `v-if="mapLoaded"`,
-  // but this function can fire on the first cluster-source `sourcedata`
-  // event (when `map.value` is first assigned), before icons have loaded
-  // and the layer is registered. maplibre 5 throws on unknown layer ids
-  // in queryRenderedFeatures; filter to layers that actually exist.
+  // maplibre 5 throws on unknown layer ids, and this can fire before the
+  // mapLoaded-gated UNCLUSTERED_POINTS layer exists; filter to live layers.
   const layers = [LAYER_IDS.UNCLUSTERED_POINTS, LAYER_IDS.CLUSTERS].filter(
     (id) => map.value?.getLayer(id)
   );
@@ -493,11 +484,8 @@ function findSelectedFeature(responseNo: number) {
     filter: ['in', `<${responseNo}>`, ['get', 'all_responses']],
   })[0];
 
-  // maplibre-gl 5 tightened the worker-IPC serializer: the prototyped
-  // objects returned by queryRenderedFeatures can no longer be fed
-  // back into a GeoJSONSource without first stripping their class
-  // identity. The feature also exposes `geometry` via a getter that
-  // JSON.stringify silently drops, so we reconstruct it explicitly.
+  // Rebuild as a plain object: maplibre 5 returns prototyped features whose
+  // `geometry` getter is dropped by structured-clone into the GeoJSONSource.
   const feature: MapPointFeature | undefined = queried
     ? {
         type: 'Feature',
@@ -785,13 +773,8 @@ async function handleLoad({ map: mapInstance }: { map: Map }) {
       }
     );
 
-    /**
-     * Handle the select event from the geocoding control. v3 of
-     * @maptiler/geocoding-control split the legacy `pick` event into
-     * a hover-style `pick` (fires while the user is highlighting
-     * suggestions) and a confirmed `select` (fires on click / Enter).
-     * The marker should follow the confirmed selection only.
-     */
+    // geocoding-control v3 split the old `pick` into hover-`pick` and
+    // confirmed `select`; the marker should follow the confirmed one.
     geocodeControl.on('select', (event) => {
       geocodeLocation.value = event.feature
         ? [event.feature.center[0], event.feature.center[1]]
