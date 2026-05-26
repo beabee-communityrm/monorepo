@@ -30,7 +30,6 @@
   },
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
-    "@beabee/test-utils": "workspace:^",
     "dotenv": "^17.0.0",
     "otpauth": "^9.5.1",
     "prettier": "^3.8.3",
