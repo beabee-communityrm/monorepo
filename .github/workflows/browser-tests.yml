@@ -41,31 +41,15 @@ jobs:
           PLAYWRIGHT_BASE_URL: ${{ env.BEABEE_AUDIENCE }}
         run: yarn workspace @beabee/browser-tests test
 
-      - name: Export database
-        if: failure()
-        run: docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database export --anonymize=none >> post-playwright-dump.sql
-
-      - name: Upload database dump
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: database
-          path: ./post-playwright-dump.sql
-
-      - name: Export Docker logs
-        if: failure()
-        run: docker compose -f docker-compose.test.yml logs | tee docker-compose.log
-
-      - name: Upload Docker logs
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: docker-compose-logs
-          path: ./docker-compose.log
-
       - name: Upload Playwright test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-test-results
           path: ./apps/browser-tests/test-results
+
+      - name: Teardown
+        if: failure()
+        uses: ./.github/actions/test-teardown
+        with:
+          db_name: "browser-test-dump"
