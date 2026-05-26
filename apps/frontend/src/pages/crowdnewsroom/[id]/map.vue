@@ -84,13 +84,8 @@ meta:
             }"
           />
         </MglGeoJsonSource>
-        <!--
-          Selection ring lives outside the maplibre-gl style stack: in v5 the
-          worker IPC pipeline silently drops dynamically-set features on a
-          non-clustered GeoJSON source (source reports the feature, GPU pass
-          paints nothing). Instead we attach a raw maplibre Marker with a
-          custom HTML element — see the `useSelectionRing` watch below.
-        -->
+        <!-- The selection ring is rendered as a raw maplibre Marker in script
+             (see selectionRingMarker), not as a layer here. -->
         <MglMarker
           v-if="newResponseAddress"
           :coordinates="newResponseAddress.geometry.location"
@@ -415,9 +410,11 @@ function getSelectionRingDiameter(
   return (baseRadius + 5) * 2;
 }
 
-// Manages a raw maplibre Marker with a custom HTML ring element. Lives
-// outside the style stack so it isn't affected by the v5 GeoJSON-source
-// rendering bug we hit with MglCircleLayer.
+// Selection ring for the selected feature: a raw maplibre Marker with a custom
+// HTML element, kept out of the maplibre style stack. In v5 the worker IPC
+// silently drops dynamically-set features on a non-clustered GeoJSON source
+// (source reports the feature, nothing is painted), which broke the
+// MglCircleLayer approach.
 const selectionRingMarker = ref<Marker | undefined>();
 
 watch([selectedFeature, mapLoaded], () => {
