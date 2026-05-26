@@ -270,10 +270,13 @@ async function handleUpdate(
   try {
     await client.callout.response.update(response.value.id, data);
 
-    const prevResponseId = prevResponse.value?.id;
-    router.push(
-      `/admin/crowdnewsroom/view/${props.callout.slug}/responses/${prevResponseId}`
-    );
+    const targetResponseId = prevResponse.value?.id ?? nextResponse.value?.id;
+
+    const targetPath = targetResponseId
+      ? `/admin/crowdnewsroom/view/${props.callout.slug}/responses/${targetResponseId}`
+      : `/admin/crowdnewsroom/view/${props.callout.slug}/responses`;
+
+    router.push(targetPath);
 
     addNotification({ variant: 'success', title: successText });
   } catch (err) {
