@@ -10,6 +10,10 @@
         "email": "api_ratelimittest@beabee.io",
         "password": "playWRIGHT09"
     },
+    "signInAdmin": {
+        "email": "api_test@beabee.io",
+        "password": "playWRIGHT09"
+    },  
     "cardInfo": {
         "number": "4242 4242 4242 4242",
         "cvv": "111",
