@@ -30,8 +30,10 @@ app.use(isAdmin);
 app.use(
   wrapAsync(async (req, res, next) => {
     // Bit of a hack to get parent app params
+    const uuid = req.allParams.uuid;
+    if (typeof uuid !== 'string') return next('route');
     const contact = await ContactsService.findOne({
-      where: { id: req.allParams.uuid },
+      where: { id: uuid },
       relations: { profile: true },
     });
     if (contact) {

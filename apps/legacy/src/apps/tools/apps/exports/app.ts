@@ -140,7 +140,7 @@ app.get(
 app.get(
   '/:id/items/:status',
   hasNewModel(Export, 'id'),
-  wrapAsync(async (req, res) => {
+  wrapAsync<{ id: string; status: string }>(async (req, res) => {
     const exportDetails = req.model as Export;
     const exportType = new ExportTypes[exportDetails.type](exportDetails);
 
