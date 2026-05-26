@@ -35,24 +35,8 @@ jobs:
       - name: Run API tests
         run: yarn workspace @beabee/e2e-api-tests test
 
-      - name: Export database
+      - name: Teardown
         if: failure()
-        run: docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database export --anonymize=none >> api-test-dump.sql
-
-      - name: Upload database dump
-        if: failure()
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/test-teardown
         with:
-          name: database
-          path: ./api-test-dump.sql
-
-      - name: Export Docker logs
-        if: failure()
-        run: docker compose -f docker-compose.test.yml logs >> "./docker-compose.log"
-
-      - name: Upload Docker logs
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: docker-compose-logs
-          path: ./docker-compose.log
+          db_name: "api-test-dump"
