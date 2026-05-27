@@ -1009,6 +1009,14 @@
       "scheduled": "προγραμματισμένο"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "",
+        "clearSelection": "",
+        "pageSelected": "",
+        "selectAll": ""
+      }
+    },
     "thankYou": "Ευχαριστώ πολύ!",
     "timeAgo": "πριν το {time}",
     "timeIn": "σε {time}",

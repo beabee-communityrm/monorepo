@@ -1009,6 +1009,14 @@
       "scheduled": "Agendado"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "",
+        "clearSelection": "",
+        "pageSelected": "",
+        "selectAll": ""
+      }
+    },
     "thankYou": "Obrigado!",
     "timeAgo": "há {time}",
     "timeIn": "em {time}",

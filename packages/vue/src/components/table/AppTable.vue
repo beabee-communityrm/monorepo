@@ -201,8 +201,9 @@ const emit = defineEmits<{
    */
   'update:sort': [sort: Sort];
   /**
-   * Emitted when selected IDs change
-   * @param ids - Array of selected item IDs
+   * Emitted when checkboxes clicked to select/deselect a row or all rows
+   * @param id - ID of the item
+   * @param selected - Whether the item is now selected
    */
   'toggle-select': [id: string, selected: boolean];
   'toggle-select-all': [selected: boolean];

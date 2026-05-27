@@ -1013,6 +1013,14 @@
       "scheduled": "Planifiée"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "",
+        "clearSelection": "",
+        "pageSelected": "",
+        "selectAll": ""
+      }
+    },
     "thankYou": "Merci !",
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
