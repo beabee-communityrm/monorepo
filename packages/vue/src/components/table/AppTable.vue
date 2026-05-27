@@ -40,7 +40,9 @@
           <AppCheckbox
             :model-value="selectionState === 'all'"
             :indeterminate="selectionState === 'partial'"
-            @change="onHeaderClick"
+            @update:model-value="
+              (checked) => emit('toggle-select-all', checked)
+            "
           />
         </th>
         <th
@@ -94,7 +96,11 @@
             <AppCheckbox
               :model-value="selectedIds.includes(item.id)"
               @update:model-value="
-                (selected) => emit('toggle-select', item.id, selected)
+                (checked) => {
+                  if (checked !== selectedIds.includes(item.id)) {
+                    emit('toggle-select', item.id, checked);
+                  }
+                }
               "
             />
           </td>
@@ -228,11 +234,5 @@ function sortBy(header: Header): void {
         ? SortType.Desc
         : SortType.Asc,
   };
-}
-
-function onHeaderClick(e: Event) {
-  const target = e.target as HTMLInputElement;
-
-  emit('toggle-select-all', target.checked);
 }
 </script>

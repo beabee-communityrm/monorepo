@@ -1,3 +1,5 @@
+import type { RuleGroup } from '@beabee/beabee-common';
+
 import { type Ref, computed, ref } from 'vue';
 
 export type SelectionState =
@@ -6,14 +8,7 @@ export type SelectionState =
 
 export type PageSelectionState = 'none' | 'partial' | 'all';
 
-interface SelectableItem {
-  id: string;
-}
-
-export function useSelectionState<T extends SelectableItem>(
-  items: Ref<T[]>,
-  total: Ref<number>
-) {
+export function useSelectionState(itemCount: Ref<number>) {
   const selectionState = ref<SelectionState>({
     mode: 'explicit',
     ids: new Set(),
@@ -27,86 +22,41 @@ export function useSelectionState<T extends SelectableItem>(
     return !selectionState.value.excludedIds.has(id);
   }
 
-  function clearSelection() {
-    selectionState.value = {
-      mode: 'explicit',
-      ids: new Set(),
-    };
-  }
-
-  function selectAllGlobal() {
-    selectionState.value = {
-      mode: 'all',
-      excludedIds: new Set(),
-    };
-  }
-
-  function toggleSelection(id: string, selected: boolean) {
+  function applySelectionToRules(baseRules: RuleGroup): RuleGroup {
     if (selectionState.value.mode === 'explicit') {
-      const next = new Set(selectionState.value.ids);
-
-      if (selected) {
-        next.add(id);
-      } else {
-        next.delete(id);
-      }
-
-      selectionState.value = {
-        mode: 'explicit',
-        ids: next,
+      return {
+        condition: 'AND',
+        rules: [
+          baseRules,
+          {
+            condition: 'OR',
+            rules: Array.from(selectionState.value.ids).map((id) => ({
+              field: 'id',
+              operator: 'equal',
+              value: [id],
+            })),
+          },
+        ],
       };
-
-      return;
     }
 
-    const excluded = new Set(selectionState.value.excludedIds);
-
-    if (selected) {
-      excluded.delete(id);
-    } else {
-      excluded.add(id);
+    if (selectionState.value.excludedIds.size === 0) {
+      return baseRules;
     }
 
-    selectionState.value = {
-      mode: 'all',
-      excludedIds: excluded,
-    };
-  }
-
-  function toggleSelectAll(selected: boolean) {
-    const ids = items.value.map((i) => i.id);
-
-    if (selectionState.value.mode === 'explicit') {
-      if (selected) {
-        selectionState.value = {
-          mode: 'explicit',
-          ids: new Set([...selectionState.value.ids, ...ids]),
-        };
-      } else {
-        const next = new Set(selectionState.value.ids);
-
-        ids.forEach((id) => next.delete(id));
-
-        selectionState.value = {
-          mode: 'explicit',
-          ids: next,
-        };
-      }
-
-      return;
-    }
-
-    const excluded = new Set(selectionState.value.excludedIds);
-
-    if (selected) {
-      ids.forEach((id) => excluded.delete(id));
-    } else {
-      ids.forEach((id) => excluded.add(id));
-    }
-
-    selectionState.value = {
-      mode: 'all',
-      excludedIds: excluded,
+    return {
+      condition: 'AND',
+      rules: [
+        baseRules,
+        {
+          condition: 'AND',
+          rules: Array.from(selectionState.value.excludedIds).map((id) => ({
+            field: 'id',
+            operator: 'not_equal',
+            value: [id],
+          })),
+        },
+      ],
     };
   }
 
@@ -115,20 +65,13 @@ export function useSelectionState<T extends SelectableItem>(
       return selectionState.value.ids.size;
     }
 
-    return total.value - selectionState.value.excludedIds.size;
+    return itemCount.value - selectionState.value.excludedIds.size;
   });
 
   return {
     selectionState,
-
-    isSelected,
-
-    clearSelection,
-    selectAllGlobal,
-
-    toggleSelection,
-    toggleSelectAll,
-
     selectedCount,
+    isSelected,
+    applySelectionToRules,
   };
 }

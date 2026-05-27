@@ -38,26 +38,23 @@
     </div>
     <div class="overflow-x-auto">
       <SelectAllBanner
-        :total="totalItems"
-        :page-selected-count="pageSelectedIds?.length || 0"
-        :selected-count="selectedCount"
-        :items-per-page="query.limit"
-        :selection-state="selectionState"
-        :page-selection-state="pageSelectionState"
-        @select-all-global="emit('select-all-global')"
-        @clear-selection="emit('clear-selection')"
+        v-model:mode="selection.bannerMode.value"
+        :page-selected-count="selection.pageSelectedIds.value.length"
+        :total="props.totalItems"
+        @select-all-global="selection.selectAllGlobal"
+        @clear-selection="selection.clearSelection"
       />
       <AppTable
         v-model:sort="query.sort"
-        :selected-ids="pageSelectedIds"
         :headers="headers"
-        :items="result?.items || null"
+        :items="result?.items ?? null"
         :selectable="selectable"
         :row-class="rowClass"
-        :selection-state="pageSelectionState"
-        @toggle-select="(id, selected) => emit('toggle-select', id, selected)"
-        @toggle-select-all="(selected) => emit('toggle-select-all', selected)"
+        :selection-state="selection.pageSelectionState.value"
+        :selected-ids="selection.pageSelectedIds.value"
         class="mb-4 w-full"
+        @toggle-select="selection.setSelection"
+        @toggle-select-all="selection.setPageSelection"
       >
         <template v-for="name of slotNames" #[name]="slotData" :key="name">
           <slot :name="name" v-bind="slotData || {}"></slot>
@@ -87,10 +84,8 @@ import { type Paginated } from '../../type/paginated';
 import { type Header, type Item, type Sort } from '../../type/table';
 import AppPaginatedTableResult from './AppPaginatedTableResult.vue';
 import SelectAllBanner from './SelectAllBanner.vue';
-import type {
-  PageSelectionState,
-  SelectionState,
-} from '#composables/useSelectionState';
+import type { SelectionState } from '#composables/useSelectionState';
+import { usePaginatedTableSelection } from '../../composables/usePaginatedTableSelection';
 
 const props = defineProps<{
   headers: Header[];
@@ -103,54 +98,29 @@ const props = defineProps<{
   selectionState: SelectionState;
   selectable?: boolean;
   rowClass?: (item: I) => string;
-  showSelectAllBanner?: boolean;
-  showClearSelectionBanner?: boolean;
-  selectedCount: number;
   totalItems: number;
 }>();
 
 const emit = defineEmits<{
-  'toggle-select': [id: string, selected: boolean];
-  'toggle-select-all': [selected: boolean];
-  'select-all-global': [];
-  'clear-selection': [];
+  'update:selectionState': [SelectionState];
 }>();
+
+const selectionStateModel = computed({
+  get: () => props.selectionState,
+  set: (value: SelectionState) => emit('update:selectionState', value),
+});
+
+const selection = usePaginatedTableSelection<I>({
+  selectable: props.selectable,
+  selectionState: selectionStateModel,
+  items: computed(() => props.result?.items ?? []),
+  totalItems: computed(() => props.totalItems),
+  limit: computed(() => props.query.limit),
+});
 
 // Slots are passed to AppTable, typing is handled by Vue's inference
 const slotNames = computed(() => {
   const slots = useSlots();
   return Object.keys(slots).filter((name) => name !== 'actions');
-});
-
-function isSelected(id: string): boolean {
-  if (props.selectionState.mode === 'explicit') {
-    return props.selectionState.ids.has(id);
-  }
-
-  return !props.selectionState.excludedIds.has(id);
-}
-
-const pageSelectionState = computed<PageSelectionState>(() => {
-  const pageItems = props.result?.items ?? [];
-
-  if (pageItems.length === 0) {
-    return 'none';
-  }
-
-  const selectedCount = pageItems.filter((item) => isSelected(item.id)).length;
-
-  if (selectedCount === 0) {
-    return 'none';
-  }
-
-  if (selectedCount === pageItems.length) {
-    return 'all';
-  }
-
-  return 'partial';
-});
-
-const pageSelectedIds = computed(() => {
-  return props.result?.items.filter((i) => isSelected(i.id)).map((i) => i.id);
 });
 </script>

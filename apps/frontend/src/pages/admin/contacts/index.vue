@@ -48,17 +48,12 @@ meta:
     />
     <AppPaginatedTable
       v-model:query="currentPaginatedQuery"
+      v-model:selection-state="selectionState"
       keypath="contacts.showingOf"
       :headers="headers"
       :result="contactsTable"
-      :selected-count="selectedCount"
-      :total-items="tableTotal"
-      :selection-state="selectionState"
+      :total-items="itemCount"
       selectable
-      @select-all-global="selectAllGlobal"
-      @toggle-select="toggleSelection"
-      @toggle-select-all="toggleSelectAll"
-      @clear-selection="clearSelection"
     >
       <template #actions>
         <AppButtonGroup>
@@ -258,22 +253,11 @@ const contactsTable =
       >
     >
   >();
-const tableItems = computed(() => contactsTable.value?.items ?? []);
-const tableTotal = computed(() => contactsTable.value?.total ?? 0);
 
-const {
-  selectionState,
+const itemCount = computed(() => contactsTable.value?.total ?? 0);
 
-  isSelected,
-
-  clearSelection,
-  selectAllGlobal,
-
-  toggleSelection,
-  toggleSelectAll,
-
-  selectedCount,
-} = useSelectionState(tableItems, tableTotal);
+const { selectionState, selectedCount, applySelectionToRules, isSelected } =
+  useSelectionState(itemCount);
 
 /**
  * Tag Management
@@ -412,40 +396,10 @@ function getSearchRules(): RuleGroup {
 /**
  * Gets rules for selected contacts
  */
-function getSelectedContactsRules(): RuleGroup {
-  if (selectionState.value.mode === 'explicit') {
-    return {
-      condition: 'OR',
-      rules: Array.from(selectionState.value.ids).map((id) => ({
-        field: 'id',
-        operator: 'equal',
-        value: [id],
-      })),
-    };
-  }
-
+function getFinalRules(): RuleGroup {
   const baseRules = getSearchRules();
-
-  if (selectionState.value.excludedIds.size === 0) {
-    return baseRules;
-  }
-
-  return {
-    condition: 'AND',
-    rules: [
-      baseRules,
-      {
-        condition: 'AND',
-        rules: Array.from(selectionState.value.excludedIds).map((id) => ({
-          field: 'id',
-          operator: 'not_equal',
-          value: [id],
-        })),
-      },
-    ],
-  };
+  return applySelectionToRules(baseRules);
 }
-
 /**
  * Action Handlers
  */
@@ -506,7 +460,7 @@ async function handleUpdateAction(
   successText: string
 ): Promise<void> {
   doingAction.value = true;
-  await client.contact.updateMany(getSelectedContactsRules(), updates);
+  await client.contact.updateMany(getFinalRules(), updates);
   await refreshResponses();
   addNotification({ variant: 'success', title: successText });
   doingAction.value = false;
