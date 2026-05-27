@@ -1,6 +1,5 @@
 import { config } from 'dotenv';
 import * as fs from 'fs';
-import { resolve } from 'node:path';
 import * as path from 'path';
 
 export const createTestFile = (filePath: string, mimeType: string): File => {
