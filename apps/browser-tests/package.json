@@ -9,5 +9,8 @@
   "scripts": {
     "test": "playwright test --trace on",
     "test:ui": "playwright test --ui"
+  },
+  "imports": {
+    "#fixtures/*": "./src/fixtures/*"
   }
 }

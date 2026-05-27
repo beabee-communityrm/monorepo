@@ -1,14 +1,14 @@
 import { test, expect } from "@playwright/test";
-import userInfo from "../fixtures/user-info.json";
+import { oneTimeSignUp, cardInfo } from "#fixtures/user-info.json";
 
-const firstName: string = userInfo.firstName;
-const lastName: string = userInfo.lastName;
-const testPw: string = userInfo.password;
-const contributionAmount = userInfo.contributionAmount;
+const firstName: string = oneTimeSignUp.firstName;
+const lastName: string = oneTimeSignUp.lastName;
+const testPw: string = oneTimeSignUp.password;
+const contributionAmount = oneTimeSignUp.contributionAmount;
 let contributionDate: string;
 
 function getUniqueEmailAddress(browserName: string): string {
-  return `${firstName}${lastName}_${browserName}@${userInfo.emailBase}`;
+  return `${firstName}${lastName}_${browserName}${oneTimeSignUp.email}`;
 }
 
 test.beforeAll(async () => {
@@ -57,12 +57,9 @@ test("Join Flow", async ({ page, browserName }) => {
       .first()
       .contentFrame();
 
-    await stripeFrame
-      .locator("#payment-numberInput")
-      .fill("4242 4242 4242 4242");
-
-    await stripeFrame.locator("#payment-expiryInput").fill("12/30");
-    await stripeFrame.locator("#payment-cvcInput").fill("111");
+    await stripeFrame.locator("#payment-numberInput").fill(cardInfo.number);
+    await stripeFrame.locator("#payment-expiryInput").fill(cardInfo.validUntil);
+    await stripeFrame.locator("#payment-cvcInput").fill(cardInfo.cvv);
 
     await stripeFrame.locator("#payment-countryInput").selectOption("DE");
 
