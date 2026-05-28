@@ -18,8 +18,11 @@ app.set('views', __dirname + '/views');
 
 app.use(isSuperAdmin);
 
+// path-to-regexp v8 (Express 5) replaced the `:name?` suffix syntax with
+// braced optional groups; `{/:year}{/:month}` matches `/`, `/:year` and
+// `/:year/:month` the same way the legacy `/:year?/:month?` did.
 app.get(
-  '/:year?/:month?',
+  '{/:year}{/:month}',
   wrapAsync(async function (req: Request, res: Response) {
     const start = moment.utc().startOf('month');
     if (req.params.month && req.params.year) {

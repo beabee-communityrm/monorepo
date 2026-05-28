@@ -22,7 +22,7 @@
     :id="id"
     alpha-channel="hide"
     :color="modelValue"
-    @color-change="changeColor($event.colors.hex)"
+    @color-change="changeColor($event.color.toString({ format: 'hex' }))"
     :class="rightAligned ? 'ml-8' : ''"
   >
     <template #format-switch-button>
