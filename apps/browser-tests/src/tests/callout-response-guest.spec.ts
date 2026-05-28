@@ -10,8 +10,11 @@ test("Answer callout as guest", async ({ page }) => {
 
     await page.getByRole("button", { name: /Get started/i }).click();
 
-    await page.locator('input[name="data[yourName]"]').fill(name.slice(0, 4));
+    await page
+      .locator('input[name="data[name]"]')
+      .pressSequentially(name.slice(0, 4), { delay: 100 });
     await page.locator('input[name="data[email]"]').fill(email);
+
     await page.getByRole("checkbox", { name: /playwright/i }).check();
 
     // Button should not be enabled. Name needs to be 5+ characters
@@ -20,7 +23,7 @@ test("Answer callout as guest", async ({ page }) => {
       "Submit button should not be enabled",
     ).toBeDisabled();
 
-    await page.locator('input[name="data[yourName]"]').fill(name);
+    await page.locator('input[name="data[name]"]').fill(name);
     await page.locator('input[name="data[email]"]').fill(email);
 
     // Submit becomes enabled
