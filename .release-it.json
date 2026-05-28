@@ -8,7 +8,7 @@
   "github": {
     "release": true,
     "releaseName": "v${version}",
-    "autoGenerate": false
+    "autoGenerate": true
   },
   "npm": {
     "publish": false
@@ -19,11 +19,6 @@
   "plugins": {
     "@release-it/bumper": {
       "out": ["package.json", "packages/*/package.json", "apps/*/package.json"]
-    },
-    "@release-it/conventional-changelog": {
-      "preset": { "name": "conventionalcommits" },
-      "infile": "CHANGELOG.md",
-      "header": "# Changelog"
     }
   }
 }
