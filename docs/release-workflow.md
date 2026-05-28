@@ -27,6 +27,8 @@ With the default `Default message`, merge commits look like `Merge pull request 
 
 Squash and rebase merges already use the PR title by default, so no extra setting needed if those are enabled.
 
+PR titles are validated against the same conventional-commit types by `.github/workflows/lint-pr-title.yml`, so a non-conventional title is caught before merge.
+
 ## Editing release notes after the fact
 
 The auto-generated section is grouped by type (Features, Bug Fixes, etc.). For larger releases (e.g. major migrations) you can hand-edit afterwards — add a `### Highlights` paragraph, regroup PRs into themed sections, the way `v0.44.0` is written. The npm publish has already fired by then.
