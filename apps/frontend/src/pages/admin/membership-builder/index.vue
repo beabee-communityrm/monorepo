@@ -93,8 +93,8 @@ meta:
           class="mb-4 font-semibold"
         />
         <AppInputHelp
-          class="mb-4 font-semibold"
           v-if="joinContent.showGoogleApplePay"
+          class="mb-4 font-semibold"
           :message="stepT('googleApplePayNoticeText')"
         />
         <AppRichTextEditor
