@@ -7,19 +7,36 @@
   },
   "github": {
     "release": true,
-    "releaseName": "v${version}",
-    "autoGenerate": true
+    "releaseName": "v${version}"
   },
   "npm": {
     "publish": false
   },
   "hooks": {
-    "before:init": ["yarn check", "yarn build"],
-    "before:bump": "node scripts/update-changelog.mjs ${version} ${latestVersion}"
+    "before:init": ["yarn check", "yarn build"]
   },
   "plugins": {
     "@release-it/bumper": {
       "out": ["package.json", "packages/*/package.json", "apps/*/package.json"]
+    },
+    "@release-it/conventional-changelog": {
+      "preset": {
+        "name": "conventionalcommits",
+        "types": [
+          { "type": "feat", "section": "Features" },
+          { "type": "fix", "section": "Bug Fixes" },
+          { "type": "perf", "section": "Performance" },
+          { "type": "revert", "section": "Reverts" },
+          { "type": "chore", "section": "Chores" },
+          { "type": "refactor", "section": "Refactors" },
+          { "type": "docs", "section": "Documentation" },
+          { "type": "test", "section": "Tests" },
+          { "type": "build", "section": "Build" },
+          { "type": "ci", "section": "CI" }
+        ]
+      },
+      "infile": "CHANGELOG.md",
+      "header": "# Changelog"
     }
   }
 }
