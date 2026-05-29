@@ -54,7 +54,7 @@ jobs:
         run: docker compose -f docker-compose.test.yml restart
 
       - name: Playwright setup
-        run: yarn workspace @beabee/browser-tests playwright install --with-deps
+        run: yarn workspace @beabee/browser-tests playwright install firefox --with-deps
 
       - name: Run Playwright tests
         id: playwright_tests
