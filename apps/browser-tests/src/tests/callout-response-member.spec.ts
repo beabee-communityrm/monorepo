@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { signInAdmin, signIn } from "#fixtures/user-info.json";
+import { signInAdmin, signIn } from "#fixtures/testData.json";
 
 const name = "member";
 
