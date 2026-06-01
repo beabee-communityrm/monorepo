@@ -252,8 +252,11 @@ const contactsTable =
     >
   >();
 
-const { selectionState, selectedItems, selectedCount, getSelectionRules } =
-  useSelectionState(computed(() => contactsTable.value?.items ?? []));
+const { selectionState, selectedPageItems, selectedCount, getSelectionRules } =
+  useSelectionState(
+    computed(() => contactsTable.value?.items ?? []),
+    computed(() => contactsTable.value?.total ?? 0)
+  );
 
 /**
  * Tag Management
@@ -267,13 +270,13 @@ const selectedTags = computed(() => {
   }
 
   const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
-  for (const item of selectedItems.value) {
+  for (const item of selectedPageItems.value) {
     for (const tag of item.tags || []) {
       tagCount[tag.id]++;
     }
   }
   return Object.entries(tagCount)
-    .filter((tc) => tc[1] === selectedItems.value.length)
+    .filter((tc) => tc[1] === selectedPageItems.value.length)
     .map(([tagId]) => tagId);
 });
 

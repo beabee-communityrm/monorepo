@@ -7,7 +7,8 @@ export type SelectionState =
   | { mode: 'all'; excludedIds: string[] };
 
 export function useSelectionState<I extends { id: string }>(
-  items: Ref<I[]> | ComputedRef<I[]>
+  items: Ref<I[]> | ComputedRef<I[]>,
+  totalItemCount: Ref<number>
 ) {
   const selectionState = ref<SelectionState>({
     mode: 'explicit',
@@ -44,15 +45,21 @@ export function useSelectionState<I extends { id: string }>(
     };
   }
 
-  const selectedItems = computed(() =>
+  const selectedPageItems = computed(() =>
     items.value.filter((item) => isSelected(item.id))
   );
 
-  const selectedCount = computed(() => selectedItems.value.length);
+  const selectedCount = computed(() => {
+    if (selectionState.value.mode === 'explicit') {
+      return selectionState.value.ids.length;
+    }
+
+    return totalItemCount.value - selectionState.value.excludedIds.length;
+  });
 
   return {
     selectionState,
-    selectedItems,
+    selectedPageItems,
     selectedCount,
     isSelected,
     getSelectionRules,
