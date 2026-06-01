@@ -5,8 +5,9 @@
     :title="t(`paymentMethods.${formData.paymentMethod}.setLabel`)"
     :stripe-public-key="paymentContent.stripePublicKey"
     :flow-data="paymentFlowData"
-    :start-flow="startDonationFlow"
-    :complete-flow="completeDonationFlow"
+    :start-flow="startOneTimePaymentFlow"
+    :complete-flow="completeOneTimePaymentFlow"
+    @completed="handleCompleted"
   >
     <SectionTitle>{{ t('homePage.makeOneTimeDonationTitle') }}</SectionTitle>
 
@@ -68,7 +69,7 @@ const paymentFlowData = computed(() => ({
   paymentMethod: formData.paymentMethod,
 }));
 
-async function startDonationFlow(params: PaymentFlowSetupParams) {
+async function startOneTimePaymentFlow(params: PaymentFlowSetupParams) {
   return await client.contact.payment.create({
     amount: formData.amount,
     payFee: formData.payFee,
@@ -76,12 +77,14 @@ async function startDonationFlow(params: PaymentFlowSetupParams) {
   });
 }
 
-async function completeDonationFlow(
+async function completeOneTimePaymentFlow(
   paymentFlowId: string,
   params?: PaymentFlowAdvanceParams
 ) {
   await client.contact.payment.complete(paymentFlowId, params);
+}
 
+async function handleCompleted() {
   addNotification({
     variant: 'success',
     title: t('homePage.oneTimeContributionSuccessMessage'),

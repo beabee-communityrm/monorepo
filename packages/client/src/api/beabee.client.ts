@@ -8,6 +8,7 @@ import { ContentClient } from './content.client.js';
 import { EmailClient } from './email.client.js';
 import { HealthClient } from './health.client.js';
 import { NoticeClient } from './notice.client.js';
+import { PaymentFlowClient } from './payment-flow.client.js';
 import { PaymentClient } from './payment.client.js';
 import { ResetSecurityClient } from './reset-security.client.js';
 import { SegmentsClient } from './segments.client.js';
@@ -59,6 +60,9 @@ export class BeabeeClient extends BaseClient {
   /** Client for managing payments */
   readonly payment: PaymentClient;
 
+  /** Client for managing payment flows */
+  readonly paymentFlow: PaymentFlowClient;
+
   /** Client for managing security reset flows */
   readonly resetSecurity: ResetSecurityClient;
 
@@ -92,6 +96,7 @@ export class BeabeeClient extends BaseClient {
     this.health = new HealthClient(options);
     this.notice = new NoticeClient(options);
     this.payment = new PaymentClient(options);
+    this.paymentFlow = new PaymentFlowClient(options);
     this.resetSecurity = new ResetSecurityClient(options);
     this.segments = new SegmentsClient(options);
     this.signup = new SignupClient(options);

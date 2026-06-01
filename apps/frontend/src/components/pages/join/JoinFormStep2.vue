@@ -29,9 +29,10 @@
     <StripePaymentForm
       :public-key="paymentContent.stripePublicKey"
       :payment-data="data"
-      :return-url="client.signup.completeUrl"
+      :return-url="stripeCompleteUrl"
       :confirm-flow="onSubmit"
       show-name-fields
+      @completed="$emit('completed')"
     />
     <div
       v-if="paymentContent.noticeText"
@@ -55,12 +56,12 @@ import { useI18n } from 'vue-i18n';
 import AuthBox from '#components/AuthBox.vue';
 import StripePaymentForm from '#components/forms/StripePaymentForm.vue';
 import type { JoinFormData } from '#type/join-form-data';
-import { client } from '#utils/api';
 import { calcJoinFormTotalAmount } from '#utils/payment';
+import env from '#env';
 
 const { n, t } = useI18n();
 
-defineEmits<{ (e: 'back'): void }>();
+defineEmits<{ (e: 'back'): void; (e: 'completed'): void }>();
 const props = defineProps<{
   joinContent: ContentJoinData;
   paymentContent: ContentPaymentData;
@@ -104,4 +105,10 @@ const notificationText = computed(() => {
       return '';
   }
 });
+
+const stripeCompleteUrl = computed(() =>
+  data.value.period === 'one-time'
+    ? `${env.appUrl}/join/confirm-email`
+    : `${env.appUrl}/join/complete`
+);
 </script>

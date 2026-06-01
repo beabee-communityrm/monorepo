@@ -10,8 +10,9 @@
       :button-text="changeLabel"
       :stripe-public-key="stripePublicKey"
       :flow-data="{ ...paymentData, paymentMethod: paymentSource.method }"
-      :start-flow="handleStartPaymentUpdate"
-      :complete-flow="handleCompletePaymentUpdate"
+      :start-flow="startUpdateFlow"
+      :complete-flow="completeUpdateFlow"
+      @completed="handleCompletedFlow"
     />
   </div>
 </template>
@@ -49,20 +50,21 @@ const changeLabel = computed(() =>
   t(`paymentMethods.${props.paymentSource.method}.changeLabel`)
 );
 
-async function handleStartPaymentUpdate(
+async function startUpdateFlow(
   params: PaymentFlowSetupParams
 ): Promise<PaymentFlowSetupResult> {
   return await client.contact.paymentMethod.update(params);
 }
 
-async function handleCompletePaymentUpdate(
+async function completeUpdateFlow(
   paymentFlowId: string,
   params?: PaymentFlowAdvanceParams
 ) {
-  contribution.value = await client.contact.paymentMethod.completeUpdate(
-    paymentFlowId,
-    params
-  );
+  await client.contact.paymentMethod.completeUpdate(paymentFlowId, params);
+}
+
+async function handleCompletedFlow() {
+  contribution.value = await client.contact.contribution.get();
 
   addNotification({
     title: t('contribution.updatedPaymentSource'),

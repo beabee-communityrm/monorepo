@@ -10,7 +10,11 @@ import { addMonths, getYear, setYear, sub } from 'date-fns';
 
 import config from '#config/config';
 import { Contact } from '#models/index';
-import { PaymentFlowForm, UpdateContributionForm } from '#type/index';
+import {
+  PaymentFlowFormCreateOneTimePayment,
+  PaymentFlowFormStartContribution,
+  UpdateContributionForm,
+} from '#type/index';
 
 /**
  * Calculate the equivalent monthly amount from a given amount and period
@@ -51,26 +55,22 @@ export function getActualAmount(
  * @returns The chargeable amount in cents
  */
 export function getChargeableAmount(
-  form: PaymentFlowForm | UpdateContributionForm,
+  form:
+    | PaymentFlowFormCreateOneTimePayment
+    | PaymentFlowFormStartContribution
+    | UpdateContributionForm,
   paymentMethod: PaymentMethod,
   country = config.stripe.country
 ): number {
-  // TODO: Remove once we've refactored UpdateContributionForm
-  if ('action' in form && form.action === 'update-payment-method') {
-    throw new Error(
-      'Cannot calculate chargeable amount for payment method update'
-    );
+  let amount, period;
+
+  if ('action' in form && form.action === 'create-one-time-payment') {
+    amount = form.amount;
+    period = 'one-time' as const;
+  } else {
+    amount = getActualAmount(form.monthlyAmount, form.period);
+    period = form.period;
   }
-
-  const amount =
-    'action' in form && form.action === 'create-one-time-payment'
-      ? form.amount
-      : getActualAmount(form.monthlyAmount, form.period);
-
-  const period =
-    'action' in form && form.action === 'create-one-time-payment'
-      ? ('one-time' as const)
-      : form.period;
 
   const fee = form.payFee
     ? calcPaymentFee({ amount, period, paymentMethod }, country)

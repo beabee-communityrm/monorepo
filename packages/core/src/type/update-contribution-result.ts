@@ -1,7 +1,7 @@
-import { UpdateContributionForm } from './update-contribution-form.js';
+import { ContributionPeriod } from '@beabee/beabee-common';
 
 export interface UpdateContributionResult {
-  startNow: boolean;
   expiryDate: Date;
-  form: UpdateContributionForm;
+  monthlyAmount: number | undefined;
+  period: ContributionPeriod;
 }

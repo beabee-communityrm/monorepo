@@ -417,6 +417,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    'joinAdvance': RouteRecordInfo<
+      'joinAdvance',
+      '/join/advance',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     'joinComplete': RouteRecordInfo<
       'joinComplete',
       '/join/complete',
@@ -856,6 +863,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/join/index.vue': {
       routes:
         | 'join'
+      views:
+        | never
+    }
+    'src/pages/join/advance.vue': {
+      routes:
+        | 'joinAdvance'
       views:
         | never
     }

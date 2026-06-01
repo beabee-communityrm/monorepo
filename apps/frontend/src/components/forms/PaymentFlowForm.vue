@@ -27,6 +27,7 @@
       :return-url="completeUrl"
       :confirm-flow="handleStripeConfirm"
       @loaded="stripeHasLoaded = true"
+      @completed="handleStripeCompleted"
     />
   </AppModal>
 
@@ -70,6 +71,8 @@ const { t } = useI18n();
 
 const route = useRoute();
 const router = useRouter();
+
+const emit = defineEmits<{ (event: 'completed'): void }>();
 
 const props = defineProps<{
   /** A site-wide unique identifier for the form */
@@ -120,7 +123,7 @@ const completeUrl = computed(() => {
 async function handleSubmit() {
   const data = await props.startFlow({
     paymentMethod: props.flowData.paymentMethod,
-    completeUrl: completeUrl.value,
+    advanceUrl: completeUrl.value,
   });
 
   if (data.redirectUrl) {
@@ -138,8 +141,11 @@ async function handleStripeConfirm(
   if (!paymentFlowId.value) return; // Not possible
 
   await props.completeFlow(paymentFlowId.value, { token, firstname, lastname });
+}
 
-  paymentFlowId.value = null;
+async function handleStripeCompleted() {
+  reset();
+  emit('completed');
 }
 
 /**
@@ -170,9 +176,11 @@ const completePaymentFlowId = computed(
 onBeforeMount(async () => {
   reset();
 
-  if (completePaymentFlowId.value) {
+  const flowId = completePaymentFlowId.value;
+  if (flowId) {
     try {
-      await props.completeFlow(completePaymentFlowId.value);
+      await props.completeFlow(flowId);
+      emit('completed');
     } catch (err) {
       addNotification({
         variant: 'error',

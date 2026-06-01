@@ -2,6 +2,7 @@ import {
   ContributionType,
   PaymentMethod,
   PaymentSource,
+  paymentMethodToStripeType,
 } from '@beabee/beabee-common';
 
 import { add } from 'date-fns';
@@ -12,11 +13,14 @@ import {
   CantUpdateContributionError,
   NoPaymentMethodError,
   PaymentFailedError,
+  PaymentRequiresActionError,
 } from '#errors/index';
 import {
-  chargeOneTimePayment,
+  confirmSubscriptionIntent,
+  createOneTimePayment,
   createSubscription,
   deleteSubscription,
+  fetchSepaMandateForIdealIntent,
   manadateToSource,
   stripe,
   updateSubscription,
@@ -237,15 +241,22 @@ export class StripeProvider extends PaymentProvider {
 
     const customerId = await this.ensureCustomerForFlow(flow);
 
-    // TODO: handle requires_action
+    log.info(
+      'Creating setup intent to update payment method for customer ' +
+        customerId
+    );
+
     const intent = await stripe.setupIntents.create({
       customer: customerId,
       confirm: true,
       confirmation_token: flow.params.token,
+      payment_method_types: [paymentMethodToStripeType(flow.method)],
       expand: ['latest_attempt', 'payment_method'],
     });
 
-    await this.processConfirmedIntent(intent, flow);
+    if (intent.status === 'requires_action') {
+      throw new PaymentRequiresActionError(intent.client_secret as string);
+    }
   }
 
   /**
@@ -257,13 +268,26 @@ export class StripeProvider extends PaymentProvider {
   private async createOneTimePayment(
     flow: PaymentFlow<PaymentFlowFormCreateOneTimePayment>
   ): Promise<void> {
+    if (!flow.params?.token) {
+      throw new NoPaymentMethodError();
+    }
+
     log.info('Create one-time payment of amount ' + flow.form.amount);
 
     const customerId = await this.ensureCustomerForFlow(flow);
 
     try {
-      // TODO: handle requires_action
-      await chargeOneTimePayment(customerId, flow);
+      const paymentIntentId = await createOneTimePayment(customerId, flow);
+      const confirmedIntent = await stripe.paymentIntents.confirm(
+        paymentIntentId,
+        { confirmation_token: flow.params.token }
+      );
+
+      if (confirmedIntent.status === 'requires_action') {
+        throw new PaymentRequiresActionError(
+          confirmedIntent.client_secret as string
+        );
+      }
     } catch (err) {
       if (err instanceof Stripe.errors.StripeCardError) {
         throw new PaymentFailedError(err.decline_code);
@@ -300,36 +324,25 @@ export class StripeProvider extends PaymentProvider {
       calcRenewalDate(this.contact)
     );
 
-    const latestInvoice = subscription.latest_invoice as Stripe.Invoice | null;
-    if (latestInvoice?.payment_intent) {
-      // Subscription is starting immediately so an invoice is immediately
-      // available. Confirm via the payment intent
-      log.info('Confirming subscription with payment intent');
-      const confirmedPaymentIntent = await stripe.paymentIntents.confirm(
-        latestInvoice.payment_intent as string,
-        {
-          confirmation_token: flow.params.token,
-          expand: ['payment_method'],
-        }
+    const confirmedIntent = await confirmSubscriptionIntent(
+      subscription,
+      flow.params.token
+    );
+
+    // TODO: move this to webhook to make async
+    const ret = await this.processSubscriptionResult(
+      subscription,
+      flow.form,
+      true
+    );
+
+    if (confirmedIntent.status === 'requires_action') {
+      throw new PaymentRequiresActionError(
+        confirmedIntent.client_secret as string
       );
-      await this.processConfirmedIntent(confirmedPaymentIntent, flow);
-    } else if (subscription.pending_setup_intent) {
-      // The subscription will start in the future so there is no invoice
-      // In this case we can only confirm with the pending setup intent
-      log.info('Confirming subscription with setup intent');
-      const confirmedSetupIntent = await stripe.setupIntents.confirm(
-        subscription.pending_setup_intent as string,
-        {
-          confirmation_token: flow.params.token,
-          expand: ['latest_attempt', 'payment_method'],
-        }
-      );
-      await this.processConfirmedIntent(confirmedSetupIntent, flow);
-    } else {
-      throw new Error('No invoice or setup intent on subscription');
     }
 
-    return await this.processSubscriptionResult(subscription, flow.form, true);
+    return ret;
   }
 
   /**
@@ -342,7 +355,11 @@ export class StripeProvider extends PaymentProvider {
   private async ensureCustomerForFlow(flow: PaymentFlow): Promise<string> {
     let customerId = this.data.customerId;
 
-    if (!customerId) {
+    if (customerId) {
+      log.info(
+        `Contact ${this.contact.id} already has customer ID ${customerId}`
+      );
+    } else {
       const customer = await stripe.customers.create({
         email: this.contact.email,
         name: `${this.contact.firstname} ${this.contact.lastname}`,
@@ -351,77 +368,13 @@ export class StripeProvider extends PaymentProvider {
         }),
       });
       customerId = customer.id;
+      log.info(
+        `Created new customer with ID ${customerId} for contact ${this.contact.id}`
+      );
     }
 
     this.data.customerId = customerId;
     return customerId;
-  }
-
-  /**
-   * Process the result of a confirmed Stripe intent (setup or payment).
-   * Handles iDEAL to SEPA conversion, customer updates, and old payment method cleanup.
-   *
-   * @param intent The confirmed Stripe intent (setup or payment)
-   * @param flow The payment flow containing method information
-   */
-  private async processConfirmedIntent(
-    intent: Stripe.SetupIntent | Stripe.PaymentIntent,
-    flow: PaymentFlow
-  ): Promise<void> {
-    log.info('Processing confirmed intent ' + intent.id);
-
-    // Save old mandate to remove afterwards
-    const oldMandateId = this.data.mandateId;
-
-    const paymentMethod = intent.payment_method as Stripe.PaymentMethod | null;
-    if (!paymentMethod) {
-      throw new Error('No payment method on confirmed intent');
-    }
-
-    // Handle iDEAL to SEPA conversion
-    if (
-      flow.method === PaymentMethod.StripeIdeal &&
-      // TODO: fix this properly
-      'latest_attempt' in intent
-    ) {
-      log.info('Converting iDEAL payment method to SEPA');
-      const latestAttempt = intent.latest_attempt as Stripe.SetupAttempt | null;
-      const newMandateId = latestAttempt?.payment_method_details?.ideal
-        ?.generated_sepa_debit as string | null;
-
-      if (!newMandateId) {
-        throw new Error('No SEPA mandate on iDEAL payment method');
-      }
-
-      this.data.mandateId = newMandateId;
-      this.data.method = PaymentMethod.StripeSEPA;
-    } else {
-      this.data.mandateId = paymentMethod.id;
-    }
-
-    // Update customer with new payment method and address
-    const address = paymentMethod.billing_details.address;
-    await stripe.customers.update(this.data.customerId!, {
-      invoice_settings: {
-        default_payment_method: this.data.mandateId,
-      },
-      address: address
-        ? {
-            line1: address.line1 || '',
-            ...(address.city && { city: address.city }),
-            ...(address.country && { country: address.country }),
-            ...(address.line2 && { line2: address.line2 }),
-            ...(address.postal_code && { postal_code: address.postal_code }),
-            ...(address.state && { state: address.state }),
-          }
-        : null,
-    });
-
-    // Detach old payment method if it exists
-    if (oldMandateId) {
-      log.info('Detach old payment method ' + oldMandateId);
-      await stripe.paymentMethods.detach(oldMandateId);
-    }
   }
 
   /**
@@ -454,8 +407,8 @@ export class StripeProvider extends PaymentProvider {
       : null;
 
     return {
-      form,
-      startNow,
+      period: form.period,
+      monthlyAmount: startNow ? form.monthlyAmount : undefined,
       expiryDate: add(
         new Date(subscription.current_period_end * 1000),
         config.gracePeriod

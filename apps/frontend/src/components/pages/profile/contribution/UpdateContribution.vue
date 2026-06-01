@@ -60,8 +60,9 @@
       :button-text="buttonText"
       :stripe-public-key="paymentContent.stripePublicKey"
       :flow-data="paymentData"
-      :start-flow="handleStartFlow"
-      :complete-flow="handleCompleteFlow"
+      :start-flow="startContributionFlow"
+      :complete-flow="completeContributionFlow"
+      @completed="handleCompletedContributionFlow"
     >
       <AppContribution
         v-model:amount="newContribution.amount"
@@ -188,7 +189,7 @@ async function handleUpdateContribution() {
   });
 }
 
-async function handleStartFlow(
+async function startContributionFlow(
   params: PaymentFlowSetupParams
 ): Promise<PaymentFlowSetupResult> {
   // TODO: Think about manual contributions
@@ -205,14 +206,15 @@ async function handleStartFlow(
   });
 }
 
-async function handleCompleteFlow(
+async function completeContributionFlow(
   paymentFlowId: string,
   params?: PaymentFlowAdvanceParams
 ) {
-  contribution.value = await client.contact.contribution.completeStart(
-    paymentFlowId,
-    params
-  );
+  await client.contact.contribution.completeStart(paymentFlowId, params);
+}
+
+async function handleCompletedContributionFlow() {
+  contribution.value = await client.contact.contribution.get();
 
   addNotification({
     variant: 'success',

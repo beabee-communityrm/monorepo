@@ -21,6 +21,7 @@ export * from './email-template.client.js';
 export * from './email.client.js';
 export * from './health.client.js';
 export * from './notice.client.js';
+export * from './payment-flow.client.js';
 export * from './payment.client.js';
 export * from './reset-security.client.js';
 export * from './segment-contact.client.js';

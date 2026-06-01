@@ -20,6 +20,7 @@ export * from './item-status.js';
 export * from './login-codes.js';
 export * from './membership-status.js';
 export * from './newsletter-status.js';
+export * from './payment-flow-status.js';
 export * from './payment-method.js';
 export * from './payment-status.js';
 export * from './payment-type.js';

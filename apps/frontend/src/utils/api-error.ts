@@ -27,6 +27,22 @@ const defaultErrorMessages = computed<Record<string, string>>(() => ({
   'mfa-token-required': t('form.errorMessages.api.mfa-token-required'),
   'payment-failed': t('form.errorMessages.api.payment-failed'),
 }));
+
+/**
+ * Show a localized rate-limit notification (429) with optional wait seconds
+ * Uses notifications.rateLimit.withWait when seconds are available, otherwise .generic
+ */
+function extractRateLimitText(error: TooManyRequestsError): string {
+  return error.retryAfter
+    ? t('notifications.rateLimit.withWait', {
+        time: formatDistanceLocale(
+          new Date(Date.now() + error.retryAfter * 1000),
+          new Date()
+        ),
+      })
+    : t('notifications.rateLimit.generic');
+}
+
 /**
  * Extract a nice error text from an API error
  *
@@ -39,6 +55,10 @@ export function extractErrorText(
   error: unknown,
   errorMessages?: Record<string, string>
 ): string {
+  if (error instanceof TooManyRequestsError) {
+    return extractRateLimitText(error);
+  }
+
   const code = error instanceof ApiError ? error.code : 'unknown';
 
   return (
@@ -48,22 +68,6 @@ export function extractErrorText(
   );
 }
 
-/**
- * Show a localized rate-limit notification (429) with optional wait seconds
- * Uses notifications.rateLimit.withWait when seconds are available, otherwise .generic
- */
-export function notifyRateLimited(error: TooManyRequestsError): void {
-  const title = error.retryAfter
-    ? t('notifications.rateLimit.withWait', {
-        time: formatDistanceLocale(
-          new Date(Date.now() + error.retryAfter * 1000),
-          new Date()
-        ),
-      })
-    : t('notifications.rateLimit.generic');
-  addNotification({ variant: 'warning', title, removeable: true });
-}
-
 export function handleJoinError(err: unknown, router: Router): void {
   if (err instanceof PaymentFailedError) {
     router.replace('/join/payment-failed');
@@ -71,7 +75,8 @@ export function handleJoinError(err: unknown, router: Router): void {
     router.replace('/join/not-found');
   } else {
     if (err instanceof TooManyRequestsError) {
-      notifyRateLimited(err);
+      const title = extractRateLimitText(err);
+      addNotification({ variant: 'warning', title, removeable: true });
     }
 
     router.replace('/join/failed');

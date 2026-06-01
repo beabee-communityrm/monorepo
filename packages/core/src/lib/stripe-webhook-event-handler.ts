@@ -1,3 +1,5 @@
+import { PaymentMethod } from '@beabee/beabee-common';
+
 import { add } from 'date-fns';
 import Stripe from 'stripe';
 
@@ -11,7 +13,10 @@ import ContactsService from '../services/ContactsService.js';
 import EmailService from '../services/EmailService.js';
 import GiftService from '../services/GiftService.js';
 import PaymentService from '../services/PaymentService.js';
-import { STRIPE_WEBHOOK_EVENTS } from './stripe.js';
+import {
+  STRIPE_WEBHOOK_EVENTS,
+  fetchSepaMandateForIdealIntent,
+} from './stripe.js';
 import {
   convertInvoiceToPayment,
   getSalesTaxRateObject,
@@ -64,6 +69,9 @@ export class StripeWebhookEventHandler {
         break;
       case 'invoice.payment_failed':
         await this.handleInvoicePaymentFailed(event.data.object);
+        break;
+      case 'payment_method.attached':
+        await this.handlePaymentMethodAttached(event.data.object);
         break;
       case 'payment_method.detached':
         await this.handlePaymentMethodDetached(event.data.object);
@@ -293,6 +301,21 @@ export class StripeWebhookEventHandler {
       return;
     }
 
+    if (!invoice.payment_intent) {
+      log.error(`Invoice ${invoice.id} has no payment intent`);
+      return;
+    }
+
+    const intent = await stripe.paymentIntents.retrieve(
+      invoice.payment_intent as string
+    );
+    if (intent.status === 'requires_action') {
+      log.info(
+        `Invoice ${invoice.id} payment failed but requires action, not marking as uncollectible yet`
+      );
+      return;
+    }
+
     // At the moment just marks as uncollectible straight away and therefore
     // cancels any retry schedule. This could change in the future if it is
     // supported
@@ -308,6 +331,68 @@ export class StripeWebhookEventHandler {
           { amount: invoice.total / 100 }
         );
       }
+    }
+  }
+
+  /**
+   * Sets the newly attached payment method as the default for the customer and
+   * updates the contact's mandate reference. We only ever keep one payment
+   * method around for a customer, so if there was a previous mandate it is
+   * detached.
+   *
+   * @param paymentMethod The Stripe payment method
+   */
+  private static async handlePaymentMethodAttached(
+    paymentMethod: Stripe.PaymentMethod
+  ): Promise<void> {
+    log.info('Attached payment method ' + paymentMethod.id);
+
+    const customerId = paymentMethod.customer as string;
+
+    const contribution = await PaymentService.getContributionBy(
+      'customerId',
+      customerId
+    );
+    if (!contribution) return;
+
+    const oldMandateId = contribution.mandateId;
+    // if (
+    //   paymentMethod.type === 'ideal' &&
+    //   // TODO: How to handle iDEAL with payment intent?
+    //   intent.object === 'setup_intent'
+    // ) {
+    //   this.data.mandateId = await fetchSepaMandateForIdealIntent(intent);
+    //   this.data.method = PaymentMethod.StripeSEPA;
+    // } else {
+    //   this.data.mandateId = paymentMethod.id;
+    // }
+
+    // Update customer with new payment method and address
+    const address = paymentMethod.billing_details.address;
+    await stripe.customers.update(customerId, {
+      invoice_settings: {
+        default_payment_method: paymentMethod.id,
+      },
+      address: address
+        ? {
+            line1: address.line1 || '',
+            ...(address.city && { city: address.city }),
+            ...(address.country && { country: address.country }),
+            ...(address.line2 && { line2: address.line2 }),
+            ...(address.postal_code && { postal_code: address.postal_code }),
+            ...(address.state && { state: address.state }),
+          }
+        : null,
+    });
+
+    await PaymentService.updateData(contribution.contact, {
+      mandateId: paymentMethod.id,
+    });
+
+    // Detach old payment method if it exists
+    if (oldMandateId) {
+      log.info('Detach old payment method ' + oldMandateId);
+      await stripe.paymentMethods.detach(oldMandateId);
     }
   }
 

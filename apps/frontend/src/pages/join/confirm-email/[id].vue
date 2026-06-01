@@ -15,13 +15,17 @@ import { client } from '#utils/api';
 import { handleJoinError } from '#utils/api-error';
 
 import { updateCurrentUser } from '../../../store';
+import { handlePossiblePaymentRequiresAction } from '#utils/payment';
 
 const route = useRoute('confirmEmailLoading');
 const router = useRouter();
 
 onBeforeMount(async () => {
   try {
-    await client.signup.complete(route.params.id);
+    await handlePossiblePaymentRequiresAction(() =>
+      client.signup.complete(route.params.id)
+    );
+
     // User has been logged in, update our current user to reflect this
     await updateCurrentUser();
     router.replace('/join/setup');

@@ -24,6 +24,8 @@ import {
 import { getChargeableAmount } from '#utils/payment';
 
 // Stripe webhook events that we handle
+// For local development, also update list of events in stripe-cli command in
+// docker-compose.yml when changing this
 export const STRIPE_WEBHOOK_EVENTS = [
   'checkout.session.completed',
   'customer.deleted',
@@ -33,6 +35,7 @@ export const STRIPE_WEBHOOK_EVENTS = [
   'invoice.updated',
   'invoice.paid',
   'invoice.payment_failed',
+  'payment_method.attached',
   'payment_method.detached',
 ] as const;
 
@@ -189,6 +192,49 @@ export async function createSubscription(
 }
 
 /**
+ * Confirms a subscription intent, either a payment intent for immediate
+ * subscriptions or a setup intent for subscriptions starting in the future.
+ *
+ * @param subscription The subscription with the intent to confirm
+ * @param confirmationToken The confirmation token to confirm the intent with
+ * @returns The confirmed payment or setup intent
+ */
+export async function confirmSubscriptionIntent(
+  subscription: Stripe.Subscription,
+  confirmationToken: string
+): Promise<Stripe.PaymentIntent | Stripe.SetupIntent> {
+  const latestInvoice = subscription.latest_invoice as Stripe.Invoice | null;
+
+  if (latestInvoice?.payment_intent) {
+    // Subscription is starting immediately so an invoice is immediately
+    // available. Confirm via the payment intent
+    log.info(`Confirming subscription ${subscription.id} with payment intent`);
+    return await stripe.paymentIntents.confirm(
+      latestInvoice.payment_intent as string,
+      {
+        confirmation_token: confirmationToken,
+        expand: ['payment_method'],
+      }
+    );
+  } else if (subscription.pending_setup_intent) {
+    // The subscription will start in the future so there is no invoice
+    // In this case we can only confirm with the pending setup intent
+    log.info(`Confirming subscription ${subscription.id} with setup intent`);
+    return await stripe.setupIntents.confirm(
+      subscription.pending_setup_intent as string,
+      {
+        confirmation_token: confirmationToken,
+        expand: ['latest_attempt', 'payment_method'],
+      }
+    );
+  } else {
+    throw new Error(
+      `No invoice or setup intent on subscription ${subscription.id}`
+    );
+  }
+}
+
+/**
  * Update a subscription with a new payment method or amount.
  *
  * @param subscriptionId
@@ -305,14 +351,13 @@ export async function deleteSubscription(
  * Create a one-time payment
  *
  * @param customerId The ID of the customer
- * @param token The confirmation token
- * @param form The payment form
- * @param paymentMethod The payment method
+ * @param flow The payment flow with a one-time payment form
+ * @returns The payment intent ID for the payment
  */
-export async function chargeOneTimePayment(
+export async function createOneTimePayment(
   customerId: string,
   flow: PaymentFlow<PaymentFlowFormCreateOneTimePayment>
-): Promise<void> {
+): Promise<string> {
   if (!flow.params?.token) {
     throw new NoPaymentMethodError();
   }
@@ -339,16 +384,44 @@ export async function chargeOneTimePayment(
 
   const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id);
 
-  const paymentIntent = finalizedInvoice.payment_intent as string | null;
-  if (!paymentIntent) {
+  const paymentIntentId = finalizedInvoice.payment_intent as string | null;
+  if (!paymentIntentId) {
     throw new Error('No intent found for invoice');
   }
 
-  await stripe.paymentIntents.confirm(paymentIntent, {
-    confirmation_token: flow.params.token,
-  });
+  return paymentIntentId;
 }
 
+/**
+ * Fetch the SEPA mandate ID from a confirmed iDEAL setup intent.
+ * https://docs.stripe.com/payments/ideal/set-up-payment
+ *
+ * @param intent The confirmed setup intent with an iDEAL payment method
+ * @returns The SEPA mandate ID generated from the iDEAL payment method
+ */
+export async function fetchSepaMandateForIdealIntent(
+  intent: Stripe.SetupIntent
+): Promise<string> {
+  log.info('Converting iDEAL payment method to SEPA');
+
+  const latestAttempt = intent.latest_attempt as Stripe.SetupAttempt | null;
+  const newMandateId = latestAttempt?.payment_method_details?.ideal
+    ?.generated_sepa_debit as string | null;
+
+  if (!newMandateId) {
+    throw new Error('No SEPA mandate on iDEAL payment method');
+  }
+
+  return newMandateId;
+}
+
+/**
+ * Check if an invoice corresponds to a one-time payment or not
+ *
+ * @param invoice The invoice to check
+ * @param detach Optionally only consider detachable one-time payments
+ * @returns True if the invoice is for a one-time payment, false otherwise
+ */
 export function isOneTimePaymentInvoice(
   invoice: Stripe.Invoice,
   detach?: true

@@ -2,6 +2,7 @@ import {
   PaymentFlowAdvanceParams,
   PaymentFlowSetupParams,
   PaymentFlowSetupResult,
+  PaymentFlowStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
@@ -115,8 +116,8 @@ class PaymentFlowService {
     // Use atomic update to prevent multiple simultaneous attempts to finalize
     // the same flow
     const res = await getRepository(PaymentFlow).update(
-      { id: flow.id, processing: false },
-      { processing: true }
+      { id: flow.id, status: PaymentFlowStatus.New },
+      { status: PaymentFlowStatus.Processing }
     );
     if (res.affected === 0) {
       log.info(`Not completing payment flow ${flow.id}, already processing`);
@@ -150,8 +151,8 @@ class PaymentFlowService {
     // Use atomic update to prevent multiple simultaneous attempts to finalize
     // the same flow
     const res = await getRepository(PaymentFlow).update(
-      { id: flow.id, processing: false },
-      { processing: true }
+      { id: flow.id, status: PaymentFlowStatus.New },
+      { status: PaymentFlowStatus.Processing }
     );
     if (res.affected === 0) {
       return;
@@ -165,6 +166,19 @@ class PaymentFlowService {
       await flowProvider.getCompletedPaymentFlowData(completedPaymentFlow);
 
     return { flow: completedPaymentFlow, data };
+  }
+
+  /**
+   * Gets the status of a payment flow
+   * @param flowId - The ID of the payment flow
+   * @returns The payment flow status
+   */
+  async getStatus(flowId: string): Promise<PaymentFlowStatus> {
+    const flow = await getRepository(PaymentFlow).findOneBy({ id: flowId });
+    if (!flow) {
+      throw new NotFoundError();
+    }
+    return flow.status;
   }
 
   /**

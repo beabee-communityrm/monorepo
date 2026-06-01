@@ -127,6 +127,7 @@ import { UniqueEmailId1773823606137 } from './migrations/1773823606137-UniqueEma
 import { ExtendMemberRoleExpiry1774540406786 } from './migrations/1774540406786-ExtendMemberRoleExpiry.js';
 import { UpdatePaymentFlow1776076677108 } from './migrations/1776076677108-UpdatePaymentFlow.js';
 import { AddMailchimpNLGroups1776955640900 } from './migrations/1776955640900-AddMailchimpNLGroups.js';
+import { AddPaymentFlowStatus1779115203313 } from './migrations/1779115203313-AddPaymentFlowStatus.js';
 
 export const migrations = [
   SessionTable1616677358190,
@@ -257,4 +258,5 @@ export const migrations = [
   ExtendMemberRoleExpiry1774540406786,
   UpdatePaymentFlow1776076677108,
   AddMailchimpNLGroups1776955640900,
+  AddPaymentFlowStatus1779115203313,
 ];

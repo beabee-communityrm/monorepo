@@ -23,6 +23,7 @@ meta:
     :payment-content="paymentContent"
     @submit="handleSubmitStep2"
     @back="paymentFlowId = null"
+    @completed="goToConfirmEmailPage"
   />
 </template>
 
@@ -34,17 +35,16 @@ import {
   PaymentMethod,
   type SignupData,
 } from '@beabee/beabee-common';
-import { TooManyRequestsError } from '@beabee/client';
 
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import JoinFormStep1 from '#components/pages/join/JoinFormStep1.vue';
 import JoinFormStep2 from '#components/pages/join/JoinFormStep2.vue';
+import env from '#env';
 import { generalContent, isEmbed } from '#store';
 import type { JoinFormData } from '#type/join-form-data';
 import { client } from '#utils/api';
-import { notifyRateLimited } from '#utils/api-error';
 
 const route = useRoute();
 const router = useRouter();
@@ -97,7 +97,7 @@ function goToConfirmEmailPage() {
 async function handleSubmitStep1() {
   const params = {
     paymentMethod: formData.paymentMethod,
-    completeUrl: client.signup.completeUrl,
+    advanceUrl: `${env.appUrl}/join/advance`,
   };
 
   const clientData: SignupData = {
@@ -125,22 +125,14 @@ async function handleSubmitStep1() {
           }),
   };
 
-  try {
-    const data = await client.signup.start(clientData);
-    if (data?.redirectUrl) {
-      const topWindow = window.top || window;
-      topWindow.location.href = data.redirectUrl;
-    } else if (data?.id) {
-      paymentFlowId.value = data.id;
-    } else {
-      goToConfirmEmailPage();
-    }
-  } catch (err) {
-    if (err instanceof TooManyRequestsError) {
-      notifyRateLimited(err);
-      return;
-    }
-    throw err;
+  const data = await client.signup.start(clientData);
+  if (data?.redirectUrl) {
+    const topWindow = window.top || window;
+    topWindow.location.href = data.redirectUrl;
+  } else if (data?.id) {
+    paymentFlowId.value = data.id;
+  } else {
+    goToConfirmEmailPage();
   }
 }
 
@@ -151,22 +143,12 @@ async function handleSubmitStep2(
 ) {
   if (!paymentFlowId.value) return;
 
-  try {
-    // Advance the payment flow with token and user details
-    await client.signup.advance(paymentFlowId.value, {
-      token,
-      firstname,
-      lastname,
-    });
-
-    goToConfirmEmailPage();
-  } catch (err) {
-    if (err instanceof TooManyRequestsError) {
-      notifyRateLimited(err);
-    } else {
-      throw err;
-    }
-  }
+  // Advance the payment flow with token and user details
+  await client.signup.advance(paymentFlowId.value, {
+    token,
+    firstname,
+    lastname,
+  });
 }
 
 onBeforeMount(async () => {

@@ -14,7 +14,7 @@ import {
   UpdateContributionForm,
 } from '#type/index';
 
-import { calcRenewalDate, getChargeableAmount } from './payment';
+import { calcRenewalDate, getChargeableAmount } from './payment.js';
 
 function createContact(contact?: Partial<Contact>): Contact {
   return Object.assign(new Contact(), {
