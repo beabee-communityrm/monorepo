@@ -142,18 +142,22 @@ const selectedIds = computed({
 
       selectionState.value = {
         mode: 'all',
-        excludedIds: currentExcludedIds
-          .filter((id) => !allIdsOnPage.value.includes(id))
-          .concat(newExcludedIds),
+        excludedIds: [
+          ...currentExcludedIds.filter(
+            (id) => !allIdsOnPage.value.includes(id)
+          ),
+          ...newExcludedIds,
+        ],
       };
     } else {
       const currentIds = selectionState.value.ids;
       const newIds = allIdsOnPage.value.filter((id) => val.includes(id));
       selectionState.value = {
         mode: 'explicit',
-        ids: currentIds
-          .filter((id) => !allIdsOnPage.value.includes(id))
-          .concat(newIds),
+        ids: [
+          ...currentIds.filter((id) => !allIdsOnPage.value.includes(id)),
+          ...newIds,
+        ],
       };
     }
   },
