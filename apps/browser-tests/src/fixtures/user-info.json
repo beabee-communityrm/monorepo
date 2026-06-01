@@ -6,7 +6,7 @@
         "password": "IdenticalCobalt8",
         "contributionAmount": "3"
     },
-    "login": {
+    "signIn": {
         "email": "api_ratelimittest@beabee.io",
         "password": "playWRIGHT09"
     },
