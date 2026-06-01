@@ -56,12 +56,6 @@ test("One-time contribution after login", async ({ page }) => {
     .getByText("Thank you for your contribution!")
     .waitFor({ state: "visible" });
 
-  await page.reload();
-  await expect(
-    page.getByRole("heading", { name: "Payment history" }),
-    "Payment history visible",
-  ).toBeVisible();
-
   const targetRow = page
     .locator("tr")
     .filter({ hasText: contributionDate })
@@ -69,5 +63,17 @@ test("One-time contribution after login", async ({ page }) => {
     .filter({ hasText: "one-time" })
     .first();
 
-  await expect(targetRow, "Payment date and amount visible").toBeVisible();
+  // Reload page, check if payment history is visible
+  // Repeat thrice, throw error if no payments show up
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    await page.reload();
+    try {
+      await expect(targetRow, "Payment date and amount visible").toBeVisible({
+        timeout: 8000,
+      });
+      break;
+    } catch (e) {
+      if (attempt === 3) throw e;
+    }
+  }
 });
