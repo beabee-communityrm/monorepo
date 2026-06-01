@@ -111,6 +111,7 @@ const content = ref<ContributionContent>({
   minMonthlyAmount: 5,
   periods: [],
   showAbsorbFee: true,
+  showGoogleApplePay: false,
   paymentMethods: [PaymentMethod.StripeCard],
 });
 
