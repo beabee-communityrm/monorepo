@@ -184,7 +184,6 @@ import {
   type RuleGroup,
   type UpdateContactData,
 } from '@beabee/beabee-common';
-
 import {
   AppButton,
   AppButtonGroup,
@@ -253,10 +252,8 @@ const contactsTable =
     >
   >();
 
-const itemCount = computed(() => contactsTable.value?.total ?? 0);
-
-const { selectionState, selectedCount, getSelectionRules, isSelected } =
-  useSelectionState(itemCount);
+const { selectionState, selectedItems, selectedCount, getSelectionRules } =
+  useSelectionState(computed(() => contactsTable.value?.items ?? []));
 
 /**
  * Tag Management
@@ -269,17 +266,14 @@ const selectedTags = computed(() => {
     return [];
   }
 
-  const selectedItems =
-    contactsTable.value?.items.filter((item) => isSelected(item.id)) || [];
-
   const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
-  for (const item of selectedItems) {
+  for (const item of selectedItems.value) {
     for (const tag of item.tags || []) {
       tagCount[tag.id]++;
     }
   }
   return Object.entries(tagCount)
-    .filter((tc) => tc[1] === selectedItems.length)
+    .filter((tc) => tc[1] === selectedItems.value.length)
     .map(([tagId]) => tagId);
 });
 
@@ -393,18 +387,6 @@ function getSearchRules(): RuleGroup {
 }
 
 /**
- * Gets rules for selected contacts
- */
-function getFinalRules(): RuleGroup {
-  const searchRules = getSearchRules();
-  const selectionRules = getSelectionRules();
-
-  return {
-    condition: 'AND',
-    rules: [searchRules, selectionRules],
-  };
-}
-/**
  * Action Handlers
  */
 
@@ -464,7 +446,7 @@ async function handleUpdateAction(
   successText: string
 ): Promise<void> {
   doingAction.value = true;
-  await client.contact.updateMany(getFinalRules(), updates);
+  await client.contact.updateMany(getSelectionRules(), updates);
   await refreshResponses();
   addNotification({ variant: 'success', title: successText });
   doingAction.value = false;

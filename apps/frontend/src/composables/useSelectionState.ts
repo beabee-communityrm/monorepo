@@ -1,14 +1,14 @@
 import type { RuleGroup } from '@beabee/beabee-common';
 
-import { type Ref, computed, ref } from 'vue';
+import { type ComputedRef, type Ref, computed, ref } from 'vue';
 
 export type SelectionState =
   | { mode: 'explicit'; ids: string[] }
   | { mode: 'all'; excludedIds: string[] };
 
-export type PageSelectionState = 'none' | 'partial' | 'all';
-
-export function useSelectionState(itemCount: Ref<number>) {
+export function useSelectionState<I extends { id: string }>(
+  items: Ref<I[]> | ComputedRef<I[]>
+) {
   const selectionState = ref<SelectionState>({
     mode: 'explicit',
     ids: [],
@@ -44,16 +44,15 @@ export function useSelectionState(itemCount: Ref<number>) {
     };
   }
 
-  const selectedCount = computed(() => {
-    if (selectionState.value.mode === 'explicit') {
-      return selectionState.value.ids.length;
-    }
+  const selectedItems = computed(() =>
+    items.value.filter((item) => isSelected(item.id))
+  );
 
-    return itemCount.value - selectionState.value.excludedIds.length;
-  });
+  const selectedCount = computed(() => selectedItems.value.length);
 
   return {
     selectionState,
+    selectedItems,
     selectedCount,
     isSelected,
     getSelectionRules,
