@@ -1,15 +1,14 @@
 import {
-  PaymentFlowParams,
-  PaymentFlowParamsStripe,
-  PaymentFlowResult,
-  PaymentMethod,
+  PaymentFlowAdvanceParams,
+  PaymentFlowSetupParams,
+  PaymentFlowSetupResult,
   RESET_SECURITY_FLOW_TYPE,
 } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { DuplicateEmailError, NotFoundError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Contact, Password, PaymentFlow, SignupFlow } from '#models/index';
+import { Contact, Password, SignupFlow } from '#models/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import OptionsService from '#services/OptionsService';
@@ -57,16 +56,16 @@ class SignupService {
   async startSignupWithPayment(
     signupData: SignupData,
     form: PaymentFlowForm,
-    params: PaymentFlowParams
-  ): Promise<PaymentFlowResult> {
-    const setup = await PaymentFlowService.startPaymentFlow(form, params);
+    params: PaymentFlowSetupParams
+  ): Promise<PaymentFlowSetupResult> {
+    const result = await PaymentFlowService.startPaymentFlow(form, params);
 
     await getRepository(SignupFlow).save({
       ...signupData,
-      paymentFlowId: setup.flow.id,
+      paymentFlowId: result.id,
     });
 
-    return setup.result;
+    return result;
   }
 
   /**
@@ -77,12 +76,10 @@ class SignupService {
    */
   async advanceSignupWithPayment(
     paymentFlowId: string,
-    data: Partial<
-      Pick<PaymentFlowParamsStripe, 'firstname' | 'lastname' | 'vatNumber'>
-    >
+    advanceParams: PaymentFlowAdvanceParams
   ): Promise<void> {
     const signupFlow = await getRepository(SignupFlow).findOne({
-      where: { paymentFlow: { paymentFlowId } },
+      where: { paymentFlow: { id: paymentFlowId } },
       relations: { paymentFlow: true },
     });
 
@@ -90,18 +87,14 @@ class SignupService {
       throw new NotFoundError();
     }
 
-    // TODO: remove once payment flow logic reworked
-    for (const key of ['firstname', 'lastname', 'vatNumber'] as const) {
-      if (data[key]) {
-        (signupFlow.paymentFlow.params as PaymentFlowParamsStripe)[key] =
-          data[key];
-      }
-    }
-    await getRepository(PaymentFlow).save(signupFlow.paymentFlow);
+    await PaymentFlowService.advancePaymentFlow(
+      signupFlow.paymentFlow.id,
+      advanceParams
+    );
 
     // Finalise one-time payments early
     if (signupFlow.paymentFlow.form.action === 'create-one-time-payment') {
-      const contact = await this.finalizeSignup(signupFlow.id);
+      const contact = await this.completeSignup(signupFlow.id);
       // Ignore a failure to create a contact here. This means this flow is
       // being processed elsewhere, probably because the user opened the URL
       // twice accidentally. Don't send the confirmation email though as
@@ -157,18 +150,8 @@ class SignupService {
         );
       }
     } else {
-      let firstName = '',
-        lastName = '';
-
-      // TODO: remove once payment flow logic is reworked
-      if (
-        signupFlow.paymentFlow &&
-        signupFlow.paymentFlow.params.paymentMethod !==
-          PaymentMethod.GoCardlessDirectDebit
-      ) {
-        firstName = signupFlow.paymentFlow.params.firstname || '';
-        lastName = signupFlow.paymentFlow.params.lastname || '';
-      }
+      const firstName = signupFlow.paymentFlow?.params?.firstname || '';
+      const lastName = signupFlow.paymentFlow?.params?.lastname || '';
 
       // User doesn't exist, their membership is inactive or they are not
       // starting a recurring contribution, ask them to confirm their email
@@ -189,7 +172,7 @@ class SignupService {
    * @param signupFlowId - The ID of the signup flow to finalize
    * @returns The created contact
    */
-  async finalizeSignup(signupFlowId: string): Promise<Contact | undefined> {
+  async completeSignup(signupFlowId: string): Promise<Contact | undefined> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { id: signupFlowId },
       relations: { contact: true, paymentFlow: true },

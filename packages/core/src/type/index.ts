@@ -34,7 +34,6 @@ export * from './passport-local-strategy-options.js';
 export * from './passport-local-verify-options.js';
 export * from './passport-login-info.js';
 export * from './payment-flow-form.js';
-export * from './payment-flow-setup.js';
 export * from './pg-error.js';
 export * from './rate-limiter.js';
 export * from './referral-gift-form.js';

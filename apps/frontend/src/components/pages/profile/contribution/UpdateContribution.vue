@@ -29,7 +29,32 @@
       class="mb-4"
     />
 
+    <AppApiForm
+      v-if="isAutoActiveMember"
+      :button-text="t('contribution.updateContribution')"
+      :success-text="t('contribution.updatedContribution')"
+      full-button
+      @submit="handleUpdateContribution"
+    >
+      <AppContribution
+        v-model:amount="newContribution.amount"
+        v-model:pay-fee="newContribution.payFee"
+        v-model:period="newContribution.period"
+        v-model:payment-method="newContribution.paymentMethod"
+        :content="content"
+        :payment-content="paymentContent"
+        :show-payment-method="!isAutoActiveMember"
+      />
+      <ProrateContribution
+        v-model="newContribution.prorate"
+        :new-amount="newContribution.amount"
+        :old-amount="contribution.amount || 0"
+        :renewal-date="contribution.renewalDate || new Date()"
+      />
+    </AppApiForm>
+
     <PaymentFlowForm
+      v-else
       id="profile-update-contribution"
       :title="t(`paymentMethods.${newContribution.paymentMethod}.setLabel`)"
       :button-text="buttonText"
@@ -46,7 +71,7 @@
         :content="content"
         :payment-content="paymentContent"
         :show-period="showChangePeriod"
-        :show-payment-method="!isAutoActiveMember"
+        show-payment-method
         mode="contribution"
       />
 
@@ -73,6 +98,9 @@ import {
   ContributionPeriod,
   ContributionType,
   MembershipStatus,
+  type PaymentFlowAdvanceParams,
+  type PaymentFlowSetupParams,
+  type PaymentFlowSetupResult,
   PaymentMethod,
 } from '@beabee/beabee-common';
 import { AppHeading, AppNotification, formatLocale } from '@beabee/vue';
@@ -83,6 +111,7 @@ import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppContribution from '#components/contribution/AppContribution.vue';
+import AppApiForm from '#components/forms/AppApiForm.vue';
 import PaymentFlowForm from '#components/forms/PaymentFlowForm.vue';
 import { currentUser } from '#store/currentUser';
 import { client } from '#utils/api';
@@ -111,6 +140,7 @@ const paymentData = computed(() => ({
   email: currentUser.value ? currentUser.value.email : '',
   amount: newContribution.amount,
   period: newContribution.period,
+  paymentMethod: newContribution.paymentMethod,
 }));
 
 const isActiveMember = computed(
@@ -149,39 +179,40 @@ const buttonText = computed(() =>
         : t('contribution.startContribution')
 );
 
-async function handleStartFlow(completeUrl: string) {
-  if (isAutoActiveMember.value) {
-    contribution.value = await client.contact.contribution.update({
-      amount: newContribution.amount,
-      period: newContribution.period,
-      payFee: newContribution.payFee,
-      prorate: newContribution.prorate,
-    });
-
-    addNotification({
-      variant: 'success',
-      title: t('contribution.updatedContribution'),
-    });
-    return {};
-  } else {
-    return await client.contact.contribution.start({
-      amount: newContribution.amount,
-      period: newContribution.period,
-      payFee:
-        newContribution.payFee &&
-        newContribution.period === ContributionPeriod.Monthly,
-      prorate:
-        newContribution.prorate &&
-        newContribution.period === ContributionPeriod.Annually,
-      paymentMethod: newContribution.paymentMethod,
-      completeUrl,
-    });
-  }
+async function handleUpdateContribution() {
+  contribution.value = await client.contact.contribution.update({
+    amount: newContribution.amount,
+    period: newContribution.period,
+    payFee: newContribution.payFee,
+    prorate: newContribution.prorate,
+  });
 }
 
-async function handleCompleteFlow(paymentFlowId: string) {
-  contribution.value =
-    await client.contact.contribution.completeStart(paymentFlowId);
+async function handleStartFlow(
+  params: PaymentFlowSetupParams
+): Promise<PaymentFlowSetupResult> {
+  // TODO: Think about manual contributions
+  return await client.contact.contribution.start({
+    amount: newContribution.amount,
+    period: newContribution.period,
+    payFee:
+      newContribution.payFee &&
+      newContribution.period === ContributionPeriod.Monthly,
+    prorate:
+      newContribution.prorate &&
+      newContribution.period === ContributionPeriod.Annually,
+    params,
+  });
+}
+
+async function handleCompleteFlow(
+  paymentFlowId: string,
+  params?: PaymentFlowAdvanceParams
+) {
+  contribution.value = await client.contact.contribution.completeStart(
+    paymentFlowId,
+    params
+  );
 
   addNotification({
     variant: 'success',

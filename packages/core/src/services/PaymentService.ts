@@ -1,7 +1,6 @@
 import {
   ContributionPeriod,
   MembershipStatus,
-  PaymentFlowParams,
   PaymentMethod,
 } from '@beabee/beabee-common';
 
@@ -19,7 +18,6 @@ import {
   CompletedPaymentFlow,
   ContributionInfo,
   PaymentFlowForm,
-  PaymentFlowFormCreateOneTimePayment,
   UpdateContributionForm,
   UpdateContributionResult,
 } from '#type/index';
@@ -106,7 +104,7 @@ class PaymentService {
     return ret;
   }
 
-  async processPaymentFlow(
+  async processCompletedFlow(
     contact: Contact,
     flow: CompletedPaymentFlow
   ): Promise<UpdateContributionResult | undefined> {
@@ -116,12 +114,12 @@ class PaymentService {
 
     const contribution = await this.getContribution(contact);
 
-    const newMethod = flow.params.paymentMethod;
+    const newMethod = flow.flow.method;
 
     // If the saved payment method is changing then cancel the old one, except
     // in the case of one-time payments as the payment method won't be saved
     if (
-      flow.form.action !== 'create-one-time-payment' &&
+      flow.flow.form.action !== 'create-one-time-payment' &&
       contribution.method !== newMethod
     ) {
       log.info('Changing payment method, cancelling previous contribution', {
@@ -142,9 +140,9 @@ class PaymentService {
 
     const ret = await new PaymentProviders[newMethod](
       contribution
-    ).processPaymentFlow(flow as any); // TODO: improve type
+    ).processPaymentFlow(flow);
 
-    if (flow.form.action === 'start-contribution') {
+    if (flow.flow.form.action === 'start-contribution') {
       await this.handlePostContributionUpdate(contact);
     }
 

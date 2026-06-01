@@ -9,7 +9,7 @@
       :title="changeLabel"
       :button-text="changeLabel"
       :stripe-public-key="stripePublicKey"
-      :flow-data="paymentData"
+      :flow-data="{ ...paymentData, paymentMethod: paymentSource.method }"
       :start-flow="handleStartPaymentUpdate"
       :complete-flow="handleCompletePaymentUpdate"
     />
@@ -19,7 +19,9 @@
 <script lang="ts" setup>
 import {
   type ContributionInfo,
-  type PaymentFlowResult,
+  type PaymentFlowAdvanceParams,
+  type PaymentFlowSetupParams,
+  type PaymentFlowSetupResult,
   type PaymentSource,
   type PaymentSourceManual,
 } from '@beabee/beabee-common';
@@ -38,7 +40,7 @@ const { t } = useI18n();
 const props = defineProps<{
   stripePublicKey: string;
   paymentSource: Exclude<PaymentSource, PaymentSourceManual>;
-  paymentData: PaymentFlowFormData;
+  paymentData: Omit<PaymentFlowFormData, 'paymentMethod'>;
 }>();
 
 const contribution = defineModel<ContributionInfo>({ required: true });
@@ -48,14 +50,19 @@ const changeLabel = computed(() =>
 );
 
 async function handleStartPaymentUpdate(
-  completeUrl: string
-): Promise<PaymentFlowResult> {
-  return await client.contact.paymentMethod.update(completeUrl);
+  params: PaymentFlowSetupParams
+): Promise<PaymentFlowSetupResult> {
+  return await client.contact.paymentMethod.update(params);
 }
 
-async function handleCompletePaymentUpdate(paymentFlowId: string) {
-  contribution.value =
-    await client.contact.paymentMethod.completeUpdate(paymentFlowId);
+async function handleCompletePaymentUpdate(
+  paymentFlowId: string,
+  params?: PaymentFlowAdvanceParams
+) {
+  contribution.value = await client.contact.paymentMethod.completeUpdate(
+    paymentFlowId,
+    params
+  );
 
   addNotification({
     title: t('contribution.updatedPaymentSource'),

@@ -21,7 +21,7 @@ const router = useRouter();
 
 onBeforeMount(async () => {
   try {
-    await client.signup.confirmEmail(route.params.id);
+    await client.signup.complete(route.params.id);
     // User has been logged in, update our current user to reflect this
     await updateCurrentUser();
     router.replace('/join/setup');

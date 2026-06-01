@@ -209,7 +209,7 @@ export class StripeWebhookEventHandler {
     if (!payment) return;
 
     if (
-      isOneTimePaymentInvoice(invoice) &&
+      isOneTimePaymentInvoice(invoice, true) &&
       (invoice.status === 'paid' ||
         invoice.status === 'void' ||
         invoice.status === 'uncollectible') &&
