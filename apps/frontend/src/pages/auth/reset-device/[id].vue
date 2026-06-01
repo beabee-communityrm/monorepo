@@ -57,7 +57,7 @@ import { isInternalUrl } from '#utils/index';
 
 const { t } = useI18n();
 
-const route = useRoute('reset_device');
+const route = useRoute();
 const router = useRouter();
 
 const redirectTo = route.query.next as string | undefined;
