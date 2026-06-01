@@ -38,8 +38,7 @@
       <tr class="align-bottom">
         <th v-if="selectable" class="w-0 p-2">
           <AppCheckbox
-            :model-value="allSelected"
-            :indeterminate="isIndeterminate"
+            :model-value="isIndeterminate ? 'indeterminate' : allSelected"
             @update:model-value="setAll"
           />
         </th>
@@ -146,6 +145,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { SortType } from '../../constants';
+import { type CheckboxValue } from '../../types';
 import { type Header, type Item, type Sort } from '../../types/table';
 import { hasSlotContent } from '../../utils/slots';
 
@@ -234,13 +234,14 @@ function sortBy(header: Header): void {
   };
 }
 
-function setOne(id: string, checked: boolean) {
-  selectedIds.value = checked
-    ? [...new Set([...selectedIds.value, id])]
-    : selectedIds.value.filter((selectedId) => selectedId !== id);
+function setOne(id: string, checked: CheckboxValue) {
+  selectedIds.value =
+    checked === true
+      ? [...new Set([...selectedIds.value, id])]
+      : selectedIds.value.filter((selectedId) => selectedId !== id);
 }
 
-function setAll(checked: boolean) {
-  selectedIds.value = checked ? [...allIds.value] : [];
+function setAll(checked: CheckboxValue) {
+  selectedIds.value = checked === true ? [...allIds.value] : [];
 }
 </script>

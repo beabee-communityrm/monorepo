@@ -80,7 +80,7 @@ import { type Paginated } from '../../type/paginated';
 import { type Header, type Item, type Sort } from '../../type/table';
 import AppPaginatedTableResult from './AppPaginatedTableResult.vue';
 import SelectAllBanner from './SelectAllBanner.vue';
-import type { SelectionState } from '#composables/useSelectionState';
+import type { SelectionState } from '../../type/selection-state';
 
 const props = defineProps<{
   headers: Header[];
