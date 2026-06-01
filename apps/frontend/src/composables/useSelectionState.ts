@@ -3,75 +3,59 @@ import type { RuleGroup } from '@beabee/beabee-common';
 import { type Ref, computed, ref } from 'vue';
 
 export type SelectionState =
-  | { mode: 'explicit'; ids: Set<string> }
-  | { mode: 'all'; excludedIds: Set<string> };
+  | { mode: 'explicit'; ids: string[] }
+  | { mode: 'all'; excludedIds: string[] };
 
 export type PageSelectionState = 'none' | 'partial' | 'all';
 
 export function useSelectionState(itemCount: Ref<number>) {
   const selectionState = ref<SelectionState>({
     mode: 'explicit',
-    ids: new Set(),
+    ids: [],
   });
 
   function isSelected(id: string): boolean {
     if (selectionState.value.mode === 'explicit') {
-      return selectionState.value.ids.has(id);
+      return selectionState.value.ids.includes(id);
     }
 
-    return !selectionState.value.excludedIds.has(id);
+    return !selectionState.value.excludedIds.includes(id);
   }
 
-  function applySelectionToRules(baseRules: RuleGroup): RuleGroup {
+  function getSelectionRules(): RuleGroup {
     if (selectionState.value.mode === 'explicit') {
       return {
-        condition: 'AND',
-        rules: [
-          baseRules,
-          {
-            condition: 'OR',
-            rules: Array.from(selectionState.value.ids).map((id) => ({
-              field: 'id',
-              operator: 'equal',
-              value: [id],
-            })),
-          },
-        ],
+        condition: 'OR',
+        rules: selectionState.value.ids.map((id) => ({
+          field: 'id',
+          operator: 'equal',
+          value: [id],
+        })),
       };
-    }
-
-    if (selectionState.value.excludedIds.size === 0) {
-      return baseRules;
     }
 
     return {
       condition: 'AND',
-      rules: [
-        baseRules,
-        {
-          condition: 'AND',
-          rules: Array.from(selectionState.value.excludedIds).map((id) => ({
-            field: 'id',
-            operator: 'not_equal',
-            value: [id],
-          })),
-        },
-      ],
+      rules: selectionState.value.excludedIds.map((id) => ({
+        field: 'id',
+        operator: 'not_equal',
+        value: [id],
+      })),
     };
   }
 
   const selectedCount = computed(() => {
     if (selectionState.value.mode === 'explicit') {
-      return selectionState.value.ids.size;
+      return selectionState.value.ids.length;
     }
 
-    return itemCount.value - selectionState.value.excludedIds.size;
+    return itemCount.value - selectionState.value.excludedIds.length;
   });
 
   return {
     selectionState,
     selectedCount,
     isSelected,
-    applySelectionToRules,
+    getSelectionRules,
   };
 }

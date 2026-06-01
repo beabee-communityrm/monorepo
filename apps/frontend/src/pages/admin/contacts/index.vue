@@ -52,7 +52,6 @@ meta:
       keypath="contacts.showingOf"
       :headers="headers"
       :result="contactsTable"
-      :total-items="itemCount"
       selectable
     >
       <template #actions>
@@ -256,7 +255,7 @@ const contactsTable =
 
 const itemCount = computed(() => contactsTable.value?.total ?? 0);
 
-const { selectionState, selectedCount, applySelectionToRules, isSelected } =
+const { selectionState, selectedCount, getSelectionRules, isSelected } =
   useSelectionState(itemCount);
 
 /**
@@ -397,8 +396,13 @@ function getSearchRules(): RuleGroup {
  * Gets rules for selected contacts
  */
 function getFinalRules(): RuleGroup {
-  const baseRules = getSearchRules();
-  return applySelectionToRules(baseRules);
+  const searchRules = getSearchRules();
+  const selectionRules = getSelectionRules();
+
+  return {
+    condition: 'AND',
+    rules: [searchRules, selectionRules],
+  };
 }
 /**
  * Action Handlers

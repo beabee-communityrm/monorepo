@@ -1,35 +1,29 @@
 <template>
-  <div
-    v-if="mode !== 'none'"
-    class="rounded bg-primary-10 p-2 text-center text-sm"
-  >
-    <div v-if="mode === 'select-all'">
+  <div class="rounded bg-primary-10 p-2 text-center text-sm">
+    <div v-if="mode === 'explicit'">
       {{
         t('common.table.selectAllBanner.pageSelected', {
           count: n(pageSelectedCount),
         })
       }}
 
-      <button
-        class="font-semibold text-link"
-        @click="$emit('select-all-global')"
-      >
+      <button class="font-semibold text-link" @click="mode = 'all'">
         {{
           t('common.table.selectAllBanner.selectAll', {
-            count: n(total),
+            count: n(totalTableItems),
           })
         }}
       </button>
     </div>
 
-    <div v-else-if="mode === 'clear-selection'">
+    <div v-else>
       {{
         t('common.table.selectAllBanner.allSelected', {
-          count: n(total),
+          count: n(totalTableItems),
         })
       }}
 
-      <button class="font-semibold text-link" @click="$emit('clear-selection')">
+      <button class="font-semibold text-link" @click="mode = 'explicit'">
         {{ t('common.table.selectAllBanner.clearSelection') }}
       </button>
     </div>
@@ -41,14 +35,12 @@ import { useI18n } from 'vue-i18n';
 
 const { t, n } = useI18n();
 
-defineProps<{
-  mode: 'none' | 'select-all' | 'clear-selection';
-  total: number;
-  pageSelectedCount: number;
-}>();
+const mode = defineModel<'all' | 'explicit'>('mode', {
+  required: true,
+});
 
-defineEmits<{
-  'select-all-global': [];
-  'clear-selection': [];
+defineProps<{
+  totalTableItems: number;
+  pageSelectedCount: number;
 }>();
 </script>

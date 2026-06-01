@@ -38,11 +38,9 @@
       <tr class="align-bottom">
         <th v-if="selectable" class="w-0 p-2">
           <AppCheckbox
-            :model-value="selectionState === 'all'"
-            :indeterminate="selectionState === 'partial'"
-            @update:model-value="
-              (checked) => emit('toggle-select-all', checked)
-            "
+            :model-value="allSelected"
+            :indeterminate="isIndeterminate"
+            @update:model-value="setAll"
           />
         </th>
         <th
@@ -95,13 +93,7 @@
           <td v-if="selectable" class="p-2">
             <AppCheckbox
               :model-value="selectedIds.includes(item.id)"
-              @update:model-value="
-                (checked) => {
-                  if (checked !== selectedIds.includes(item.id)) {
-                    emit('toggle-select', item.id, checked);
-                  }
-                }
-              "
+              @update:model-value="(checked) => setOne(item.id, checked)"
             />
           </td>
           <td
@@ -156,7 +148,6 @@ import { useI18n } from 'vue-i18n';
 import { SortType } from '../../constants';
 import { type Header, type Item, type Sort } from '../../types/table';
 import { hasSlotContent } from '../../utils/slots';
-import type { PageSelectionState } from '../../../../../apps/frontend/src/composables/useSelectionState';
 
 /**
  * Props for the AppTable component
@@ -176,17 +167,14 @@ export interface AppTableProps<I extends Item> {
   rowClass?: (item: I) => string;
   /** Array of selected item IDs */
   selectedIds?: string[];
-  /** Current selection state */
-  selectionState?: PageSelectionState;
 }
 
 const props = withDefaults(defineProps<AppTableProps<I>>(), {
   sort: undefined,
+  items: null,
   selectable: false,
   hideHeaders: false,
   rowClass: undefined,
-  selectedIds: () => [] as string[],
-  selectionState: 'none',
 });
 
 const { t } = useI18n();
@@ -200,14 +188,13 @@ const emit = defineEmits<{
    * @param sort - The new sort configuration
    */
   'update:sort': [sort: Sort];
-  /**
-   * Emitted when checkboxes clicked to select/deselect a row or all rows
-   * @param id - ID of the item
-   * @param selected - Whether the item is now selected
-   */
-  'toggle-select': [id: string, selected: boolean];
-  'toggle-select-all': [selected: boolean];
 }>();
+
+// Models
+const selectedIds = defineModel<string[]>('selectedIds', {
+  required: false,
+  default: () => [],
+});
 
 // Computed properties
 const sort = computed({
@@ -215,11 +202,21 @@ const sort = computed({
   set: (value) => value && emit('update:sort', value),
 });
 
+const allIds = computed(() => props.items?.map((i) => i.id) || []);
+
+const allSelected = computed(
+  () => allIds.value.length === selectedIds.value.length
+);
+
+const isIndeterminate = computed(
+  () => selectedIds.value.length > 0 && !allSelected.value
+);
+
 // Methods
 function rowClasses(item: I): string {
   return (
     (props.rowClass ? props.rowClass(item) : '') +
-    (props.selectable && props.selectedIds.includes(item.id)
+    (props.selectable && selectedIds.value.includes(item.id)
       ? ' bg-primary-10'
       : '')
   );
@@ -235,5 +232,15 @@ function sortBy(header: Header): void {
         ? SortType.Desc
         : SortType.Asc,
   };
+}
+
+function setOne(id: string, checked: boolean) {
+  selectedIds.value = checked
+    ? [...new Set([...selectedIds.value, id])]
+    : selectedIds.value.filter((selectedId) => selectedId !== id);
+}
+
+function setAll(checked: boolean) {
+  selectedIds.value = checked ? [...allIds.value] : [];
 }
 </script>

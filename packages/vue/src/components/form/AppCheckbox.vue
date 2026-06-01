@@ -89,6 +89,11 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
 }>();
 
+const value = computed({
+  get: () => props.modelValue ?? false,
+  set: (val: boolean) => emit('update:modelValue', val),
+});
+
 const props = withDefaults(defineProps<AppCheckboxProps>(), {
   indeterminate: false,
   variant: 'link',
@@ -115,16 +120,6 @@ const hoverVariantClasses = {
   link: 'hover:text-link-120 hover:border-link-120',
   danger: 'hover:text-danger-120 hover:border-danger-120',
 } as const;
-
-const value = ref(false);
-
-/**
- * Sync internal value with modelValue prop
- */
-watch(value, () => emit('update:modelValue', value.value));
-watch(toRef(props, 'modelValue'), (newValue) => (value.value = newValue), {
-  immediate: true,
-});
 
 /**
  * Vuelidate validation for required checkboxes
