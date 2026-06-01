@@ -390,6 +390,16 @@ function getSearchRules(): RuleGroup {
 }
 
 /**
+ * Gets rules for selected contacts
+ */
+function getSelectedContactsRules(): RuleGroup {
+  return {
+    condition: 'AND',
+    rules: [getSelectionRules(), getSearchRules()],
+  };
+}
+
+/**
  * Action Handlers
  */
 
@@ -449,7 +459,7 @@ async function handleUpdateAction(
   successText: string
 ): Promise<void> {
   doingAction.value = true;
-  await client.contact.updateMany(getSelectionRules(), updates);
+  await client.contact.updateMany(getSelectedContactsRules(), updates);
   await refreshResponses();
   addNotification({ variant: 'success', title: successText });
   doingAction.value = false;
