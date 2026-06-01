@@ -97,32 +97,20 @@ test("Join Flow", async ({ page, browserName }) => {
       .first()
       .click();
 
-    await expect(
-      page
-        .locator("iframe")
-        .first()
-        .contentFrame()
-        .getByRole("link", { name: "Setup account" }),
-      "Setup link visible",
-    ).toBeVisible();
-
-    let setupAccountLink = await page
+    const setupAccountLink = page
       .locator("iframe")
       .first()
       .contentFrame()
       .getByRole("link", { name: "Setup account" });
+
+    await expect(setupAccountLink, "Setup link visible").toBeVisible();
+
     confirmationLink = await setupAccountLink.getAttribute("href");
   });
 
   await test.step("Set password", async () => {
-    expect(confirmationLink, "Setup link is non-empty").not.toHaveLength(0);
-
-    if (!confirmationLink) {
-      // This is here just as a sanity check
-      console.log("Confirmation link not found");
-      return;
-    }
-    await page.goto(confirmationLink);
+    expect(confirmationLink, "Setup link is non-empty").not.toBeNull();
+    await page.goto(confirmationLink!);
 
     // Set password
     await page.locator('input[name="password"]').fill(testPw);

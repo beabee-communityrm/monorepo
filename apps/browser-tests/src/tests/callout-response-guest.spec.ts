@@ -58,7 +58,7 @@ test("Answer callout as guest", async ({ page }) => {
     await page.getByRole("button", { name: /see all/i }).click();
 
     // First row of the responses table is the latest response
-    const firstResponseRow = await page.locator("tbody tr:first-child");
+    const firstResponseRow = page.locator("tbody tr:first-child");
     await expect(firstResponseRow).toBeVisible();
 
     await firstResponseRow.getByRole("link").click();
