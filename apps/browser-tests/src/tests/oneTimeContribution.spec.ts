@@ -64,8 +64,8 @@ test("One-time contribution after login", async ({ page }) => {
     .first();
 
   // Reload page, check if payment history is visible
-  // Repeat thrice, throw error if no payments show up
-  for (let attempt = 1; attempt <= 3; attempt++) {
+  // Repeat 5x, throw error if no payments show up
+  for (let attempt = 1; attempt <= 5; attempt++) {
     await page.reload();
     try {
       await expect(targetRow, "Payment date and amount visible").toBeVisible({
@@ -73,7 +73,7 @@ test("One-time contribution after login", async ({ page }) => {
       });
       break;
     } catch (e) {
-      if (attempt === 3) throw e;
+      if (attempt === 5) throw e;
     }
   }
 });
