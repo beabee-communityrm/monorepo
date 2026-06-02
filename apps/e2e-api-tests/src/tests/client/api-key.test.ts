@@ -4,32 +4,28 @@ import type {
   Paginated,
 } from '@beabee/beabee-common';
 import { ApiKeyClient, AuthClient } from '@beabee/client';
-import {
-  HOST,
-  PATH,
-  TEST_USER_EMAIL,
-  TEST_USER_PASSWORD,
-} from '@beabee/test-utils/vitest/env';
 
 import { addDays } from 'date-fns';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
+import { api, testUser } from '#fixtures/api-test-info.json';
 
 describe('ApiKey API', () => {
   let apiKeyClient: ApiKeyClient;
   let authUserClient: AuthClient;
   beforeAll(async () => {
     authUserClient = new AuthClient({
-      host: HOST,
-      path: PATH,
+      host: api.host,
+      path: api.path,
     });
     // For testing api keys we need to login as user
     await authUserClient.login({
-      email: TEST_USER_EMAIL,
-      password: TEST_USER_PASSWORD,
+      email: testUser.email,
+      password: testUser.password,
     });
     apiKeyClient = new ApiKeyClient({
-      host: HOST,
-      path: PATH,
+      host: api.host,
+      path: api.path,
     });
   });
 

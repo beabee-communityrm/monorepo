@@ -1,4 +1,4 @@
-name: Test API
+name: API tests
 
 on:
   push:
@@ -10,9 +10,33 @@ on:
 
 jobs:
   run-api-tests:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.review.state == 'approved'
+    if: >
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request_review' && github.event.review.state == 'approved')
     runs-on: ubuntu-latest
+    env:
+      COMPOSE_PROJECT_NAME: beabee-api-tests-${{ github.run_id }}
 
     steps:
-      - name: Say hello
-        run: echo "Hello world"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+        with:
+          stripe_public_key: ${{ secrets.BEABEE_STRIPE_PUBLICKEY }}
+          stripe_secret_key: ${{ secrets.BEABEE_STRIPE_SECRETKEY }}
+
+      - uses: ./.github/actions/test-setup
+        with:
+          stripe_webhook_secret: ${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}
+          stripe_membership_product_id: ${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}
+
+      - name: Run API tests
+        run: yarn workspace @beabee/e2e-api-tests test
+
+      - name: Teardown
+        if: failure()
+        uses: ./.github/actions/test-teardown
+        with:
+          db_name: "api-test-dump"

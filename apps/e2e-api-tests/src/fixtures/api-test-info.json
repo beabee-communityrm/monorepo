@@ -1,0 +1,20 @@
+{
+  "api": {
+    "host": "http://localhost:4002",
+    "path": "/api/1.0"
+  },
+  "testUser": {
+    "firstName": "Test",
+    "lastName": "Test",
+    "email": "api_test@beabee.io",
+    "password": "playWRIGHT09",
+    "apiKey": "e987c4eddb30e70e_f849e415db77a2057930e546ac5d0ce50cc1cc7f0a075a3b"
+  },
+  "rateLimitedTestUser": {
+    "firstName": "Rate",
+    "lastName": "Limit",
+    "email": "api_ratelimittest@beabee.io",
+    "password": "playWRIGHT09",
+    "apiKey": "9bff5e02b1ab24eb_76013c4793774580edfcaa1991673938e6c670b5cea7be9e"
+  }
+}
