@@ -7,8 +7,7 @@
   },
   "github": {
     "release": true,
-    "releaseName": "v${version}",
-    "autoGenerate": false
+    "releaseName": "v${version}"
   },
   "npm": {
     "publish": false
@@ -21,7 +20,21 @@
       "out": ["package.json", "packages/*/package.json", "apps/*/package.json"]
     },
     "@release-it/conventional-changelog": {
-      "preset": { "name": "conventionalcommits" },
+      "preset": {
+        "name": "conventionalcommits",
+        "types": [
+          { "type": "feat", "section": "Features" },
+          { "type": "fix", "section": "Bug Fixes" },
+          { "type": "perf", "section": "Performance" },
+          { "type": "revert", "section": "Reverts" },
+          { "type": "chore", "section": "Chores" },
+          { "type": "refactor", "section": "Refactors" },
+          { "type": "docs", "section": "Documentation" },
+          { "type": "test", "section": "Tests" },
+          { "type": "build", "section": "Build" },
+          { "type": "ci", "section": "CI" }
+        ]
+      },
       "infile": "CHANGELOG.md",
       "header": "# Changelog"
     }
