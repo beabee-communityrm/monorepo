@@ -125,7 +125,7 @@ import { extractErrorText } from '#utils/api-error';
 const PREVIEW_CONTACTS_LIMIT = 50;
 
 const { t } = useI18n();
-const route = useRoute('adminContactsSendEmailSegmentId');
+const route = useRoute();
 const router = useRouter();
 
 const segmentId = computed(() => route.params.segmentId);

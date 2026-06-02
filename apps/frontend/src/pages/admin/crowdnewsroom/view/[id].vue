@@ -23,7 +23,7 @@ import { useRoute } from 'vue-router';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 
-const route = useRoute('adminCalloutView');
+const route = useRoute();
 const { t } = useI18n();
 
 addBreadcrumb(

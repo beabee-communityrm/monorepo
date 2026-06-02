@@ -134,7 +134,7 @@ import { client } from '#utils/api';
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
 const { t } = useI18n();
-const route = useRoute('adminContactsEmailTemplatesEdit');
+const route = useRoute();
 const router = useRouter();
 
 const emailId = computed(() => route.params.emailId);
