@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { oneTimeSignUp, cardInfo } from "#fixtures/user-info.json";
+import { oneTimeSignUp, cardInfo } from "#fixtures/testData.json";
 
 const firstName: string = oneTimeSignUp.firstName;
 const lastName: string = oneTimeSignUp.lastName;
@@ -36,11 +36,6 @@ test("Join Flow", async ({ page, browserName }) => {
     await page.getByRole("textbox", { name: "Email" }).fill(emailAddress);
     await page.getByRole("button", { name: "card" }).click();
 
-    await page.screenshot({
-      path: `test-results/screenshots/${browserName}/join-form-1.png`,
-      fullPage: true,
-    });
-
     await expect(
       page.getByRole("button", { name: /contribute/i }),
       "Contribute button enabled",
@@ -62,11 +57,6 @@ test("Join Flow", async ({ page, browserName }) => {
     await stripeFrame.locator("#payment-cvcInput").fill(cardInfo.cvv);
 
     await stripeFrame.locator("#payment-countryInput").selectOption("DE");
-
-    await page.screenshot({
-      path: `test-results/screenshots/${browserName}/join-form-payment.png`,
-      fullPage: true,
-    });
 
     await expect(
       page.getByRole("button", { name: /continue/i }),
@@ -92,11 +82,6 @@ test("Join Flow", async ({ page, browserName }) => {
   await test.step("Confirmation email", async () => {
     await page.goto(`http://localhost:${process.env.MAIL_PORT || 4025}/`);
 
-    await page.screenshot({
-      path: `test-results/screenshots/${browserName}/mail-catcher.png`,
-      fullPage: true,
-    });
-
     // Check that the page does not say 'no emails'
     await expect(
       page.getByText("No emails"),
@@ -112,40 +97,23 @@ test("Join Flow", async ({ page, browserName }) => {
       .first()
       .click();
 
-    await expect(
-      page
-        .locator("iframe")
-        .first()
-        .contentFrame()
-        .getByRole("link", { name: "Setup account" }),
-      "Setup link visible",
-    ).toBeVisible();
-
-    let setupAccountLink = await page
+    const setupAccountLink = page
       .locator("iframe")
       .first()
       .contentFrame()
       .getByRole("link", { name: "Setup account" });
+
+    await expect(setupAccountLink, "Setup link visible").toBeVisible();
+
     confirmationLink = await setupAccountLink.getAttribute("href");
   });
 
   await test.step("Set password", async () => {
-    expect(confirmationLink, "Setup link is non-empty").not.toHaveLength(0);
-
-    if (!confirmationLink) {
-      // This is here just as a sanity check
-      console.log("Confirmation link not found");
-      return;
-    }
-    await page.goto(confirmationLink);
+    expect(confirmationLink, "Setup link is non-empty").not.toBeNull();
+    await page.goto(confirmationLink!);
 
     // Set password
     await page.locator('input[name="password"]').fill(testPw);
-
-    await page.screenshot({
-      path: `test-results/screenshots/${browserName}/set-password.png`,
-      fullPage: true,
-    });
 
     // Continue
     await expect(
@@ -167,11 +135,6 @@ test("Join Flow", async ({ page, browserName }) => {
     await page.locator('input[name="email"]').fill(emailAddress);
     await page.locator('input[name="password"]').fill(testPw);
 
-    await page.screenshot({
-      path: `test-results/screenshots/${browserName}/login.png`,
-      fullPage: true,
-    });
-
     await expect(
       page.getByRole("button", { name: /login/i }),
       "Login button enabled",
@@ -183,11 +146,6 @@ test("Join Flow", async ({ page, browserName }) => {
 
     await page.getByRole("link", { name: "Contribution" }).click();
     await page.waitForURL("/profile/contribution");
-
-    await page.screenshot({
-      path: `test-results/screenshots/${browserName}/contribution-page.png`,
-      fullPage: true,
-    });
 
     await expect(
       page.getByRole("heading", { name: "Payment history" }),
