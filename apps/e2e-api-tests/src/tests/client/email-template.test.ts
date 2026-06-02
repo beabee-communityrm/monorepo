@@ -1,17 +1,18 @@
 import type { UpdateEmailData } from '@beabee/beabee-common';
 import { EmailClient, EmailTemplateClient } from '@beabee/client';
-import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
 import { beforeAll, describe, expect, it } from 'vitest';
+
+import { api, testUser } from '#fixtures/api-test-info.json';
 
 describe('Email Template API', () => {
   let client: EmailTemplateClient;
 
   beforeAll(() => {
     client = new EmailTemplateClient({
-      host: HOST,
-      path: PATH,
-      token: API_KEY,
+      host: api.host,
+      path: api.path,
+      token: testUser.apiKey,
     });
   });
 
@@ -109,8 +110,8 @@ describe('Email Template API', () => {
     it('should handle unauthorized access', async () => {
       // Create client without API key
       const unauthorizedClient = new EmailClient({
-        host: HOST,
-        path: PATH,
+        host: api.host,
+        path: api.path,
       });
 
       try {

@@ -1,0 +1,44 @@
+name: "Test setup"
+description: "Set test environment up"
+
+inputs:
+  stripe_webhook_secret:
+    description: "Stripe webhook secret"
+    required: true
+  stripe_membership_product_id:
+    description: "Stripe membership product ID"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Load environment variables
+      shell: bash
+      run: cat .env .env.test | sed -e 's/[[:space:]]*#.*$//' -e '/^[[:space:]]*$/d' >> $GITHUB_ENV
+
+    - name: Build Docker stack
+      shell: bash
+      id: docker_build
+      run: docker compose -f docker-compose.test.yml build
+
+    - name: Start Docker stack
+      shell: bash
+      id: docker_start
+      run: docker compose -f docker-compose.test.yml up -d
+
+    - name: Import test data
+      shell: bash
+      run: |
+        cat ./apps/browser-tests/src/fixtures/test-db-default.sql \
+          | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
+
+        cat ./apps/browser-tests/src/fixtures/test-db-custom.sql \
+          | sed \
+              -e "s|__stripeWebhookSecret__|${{ inputs.stripe_webhook_secret }}|" \
+              -e "s|__stripeProductId__|${{ inputs.stripe_membership_product_id }}|" \
+          | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
+
+    - name: Restart Docker stack
+      shell: bash
+      id: docker_restart
+      run: docker compose -f docker-compose.test.yml restart
