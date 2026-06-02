@@ -23,14 +23,8 @@
         ]"
       >
         <font-awesome-icon
-          v-if="value === true"
-          :icon="faCheck"
-          class="h-4 w-4"
-          :class="iconVariantClasses[variant]"
-        />
-        <font-awesome-icon
-          v-else-if="value === 'indeterminate'"
-          :icon="faMinus"
+          v-if="value"
+          :icon="value === 'indeterminate' ? faMinus : faCheck"
           class="h-4 w-4"
           :class="iconVariantClasses[variant]"
         />
