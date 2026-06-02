@@ -33,7 +33,7 @@ import { resolveTabNavigation } from '#utils/navigation';
 
 import env from '../../../env';
 
-const route = useRoute('adminContactsView');
+const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 

@@ -210,7 +210,7 @@ const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;
 }>();
 
-const route = useRoute('adminCalloutViewResponsesItem');
+const route = useRoute();
 const router = useRouter();
 const { t, n } = useI18n();
 

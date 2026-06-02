@@ -69,7 +69,7 @@ import { client } from '#utils/api';
 
 import ItemStatusText from '../../../../components/item/ItemStatusText.vue';
 
-const route = useRoute('adminNoticeView');
+const route = useRoute();
 const { t } = useI18n();
 
 const notice = ref<GetNoticeData | undefined>();
