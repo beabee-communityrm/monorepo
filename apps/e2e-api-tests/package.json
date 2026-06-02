@@ -6,7 +6,8 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "check": "npx tsc --noEmit"
   },
   "dependencies": {
     "@beabee/client": "workspace:*"
