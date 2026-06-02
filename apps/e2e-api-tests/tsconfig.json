@@ -10,8 +10,7 @@
     "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "target": "ESNext",
     "allowImportingTsExtensions": true,
-    "esModuleInterop": true
+    "types": ["node"]
   }
 }
