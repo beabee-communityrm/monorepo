@@ -1360,6 +1360,7 @@ __metadata:
     "@beabee/client": "workspace:*"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
+    "@types/node": "npm:^24.12.2"
     prettier: "npm:^3.8.3"
     typescript: "npm:~6.0.3"
     vitest: "npm:^4.1.5"
@@ -6531,16 +6532,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=8.1.0":
-  version: 22.10.2
-  resolution: "@types/node@npm:22.10.2"
-  dependencies:
-    undici-types: "npm:~6.20.0"
-  checksum: 10c0/2c7b71a040f1ef5320938eca8ebc946e6905caa9bbf3d5665d9b3774a8d15ea9fab1582b849a6d28c7fc80756a62c5666bc66b69f42f4d5dafd1ccb193cdb4ac
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^24.12.2":
+"@types/node@npm:*, @types/node@npm:>=8.1.0, @types/node@npm:^24.12.2":
   version: 24.12.2
   resolution: "@types/node@npm:24.12.2"
   dependencies:
@@ -20259,13 +20251,6 @@ __metadata:
     object.reduce: "npm:^1.0.0"
     undertaker-registry: "npm:^1.0.0"
   checksum: 10c0/3442616fca45767e667de467a690803751d57f952807643e29cf017d8bfdc5be2bbd13c888a0f0c0f64bf1583417ee13736605b899d482e0fec8dbe43dfa9ce8
-  languageName: node
-  linkType: hard
-
-"undici-types@npm:~6.20.0":
-  version: 6.20.0
-  resolution: "undici-types@npm:6.20.0"
-  checksum: 10c0/68e659a98898d6a836a9a59e6adf14a5d799707f5ea629433e025ac90d239f75e408e2e5ff086afc3cace26f8b26ee52155293564593fbb4a2f666af57fc59bf
   languageName: node
   linkType: hard
 
