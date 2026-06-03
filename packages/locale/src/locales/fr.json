@@ -251,6 +251,22 @@
         "twitterHandle": "Twitter"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Newsletters"
+      },
+      "label": "Intégrations",
+      "mailchimp": {
+        "audienceId": "ID d'audience",
+        "groups": "Groupes"
+      },
+      "refresh": "Actualiser",
+      "status": {
+        "connected": "Connecté",
+        "connectionLost": "Connexion perdue",
+        "disabled": "Désactivé"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "Activer les contributions ponctuelles",
       "oneTimeDonationsTitle": "Contributions ponctuelles",
