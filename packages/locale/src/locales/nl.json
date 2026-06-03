@@ -1009,6 +1009,14 @@
       "scheduled": "Gepland"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "",
+        "clearSelection": "",
+        "pageSelected": "",
+        "selectAll": ""
+      }
+    },
     "thankYou": "Bedankt!",
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",

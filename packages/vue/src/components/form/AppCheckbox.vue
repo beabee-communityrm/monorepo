@@ -28,6 +28,12 @@
           class="h-4 w-4"
           :class="iconVariantClasses[variant]"
         />
+        <font-awesome-icon
+          v-else-if="indeterminate"
+          :icon="faMinus"
+          class="h-4 w-4"
+          :class="iconVariantClasses[variant]"
+        />
       </div>
     </div>
     <span v-if="label || icon" class="ml-2 flex items-center">
@@ -47,7 +53,7 @@
  * <AppCheckbox v-model="isChecked" label="Accept terms" variant="primary" />
  */
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faMinus } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
 import { computed, ref, toRef, watch } from 'vue';
@@ -58,6 +64,8 @@ import { computed, ref, toRef, watch } from 'vue';
 export interface AppCheckboxProps {
   /** Current checked state of the checkbox */
   modelValue?: boolean;
+  /** Whether the checkbox is indeterminate */
+  indeterminate?: boolean;
   /** Whether the checkbox is disabled */
   disabled?: boolean;
   /** Label text displayed next to the checkbox */
@@ -81,7 +89,13 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
 }>();
 
+const value = computed({
+  get: () => props.modelValue ?? false,
+  set: (val: boolean) => emit('update:modelValue', val),
+});
+
 const props = withDefaults(defineProps<AppCheckboxProps>(), {
+  indeterminate: false,
   variant: 'link',
   disabled: false,
   required: false,
@@ -106,16 +120,6 @@ const hoverVariantClasses = {
   link: 'hover:text-link-120 hover:border-link-120',
   danger: 'hover:text-danger-120 hover:border-danger-120',
 } as const;
-
-const value = ref(false);
-
-/**
- * Sync internal value with modelValue prop
- */
-watch(value, () => emit('update:modelValue', value.value));
-watch(toRef(props, 'modelValue'), (newValue) => (value.value = newValue), {
-  immediate: true,
-});
 
 /**
  * Vuelidate validation for required checkboxes

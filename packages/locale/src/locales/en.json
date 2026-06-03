@@ -1009,6 +1009,14 @@
       "scheduled": "Scheduled"
     },
     "statusLabel": "Status: {status}",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "All {count} matching items are selected.",
+        "clearSelection": "Clear selection",
+        "pageSelected": "All {count} items on this page are selected.",
+        "selectAll": "Select all {count} items"
+      }
+    },
     "thankYou": "Thank you!",
     "timeAgo": "{time} ago",
     "timeIn": "in {time}",

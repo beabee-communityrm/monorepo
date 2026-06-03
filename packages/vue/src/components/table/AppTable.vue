@@ -37,7 +37,11 @@
     <thead v-if="!hideHeaders" class="text-sm">
       <tr class="align-bottom">
         <th v-if="selectable" class="w-0 p-2">
-          <AppCheckbox v-model="allSelected" class="h-5" />
+          <AppCheckbox
+            :model-value="allSelected"
+            :indeterminate="isIndeterminate"
+            @update:model-value="setAll"
+          />
         </th>
         <th
           v-for="(header, i) in headers"
@@ -87,7 +91,10 @@
           :class="rowClasses(item)"
         >
           <td v-if="selectable" class="p-2">
-            <AppCheckbox v-model="item.selected" />
+            <AppCheckbox
+              :model-value="selectedIds.includes(item.id)"
+              @update:model-value="(checked) => setOne(item.id, checked)"
+            />
           </td>
           <td
             v-for="(header, j) in headers"
@@ -158,10 +165,13 @@ export interface AppTableProps<I extends Item> {
   hideHeaders?: boolean;
   /** Function to add custom CSS classes to rows */
   rowClass?: (item: I) => string;
+  /** Array of selected item IDs */
+  selectedIds?: string[];
 }
 
 const props = withDefaults(defineProps<AppTableProps<I>>(), {
   sort: undefined,
+  items: null,
   selectable: false,
   hideHeaders: false,
   rowClass: undefined,
@@ -180,30 +190,35 @@ const emit = defineEmits<{
   'update:sort': [sort: Sort];
 }>();
 
+// Models
+const selectedIds = defineModel<string[]>('selectedIds', {
+  required: false,
+  default: () => [],
+});
+
 // Computed properties
 const sort = computed({
   get: () => props.sort,
   set: (value) => value && emit('update:sort', value),
 });
 
-const allSelected = computed({
-  get: () =>
-    props.selectable && props.items
-      ? props.items.every((i) => i.selected)
-      : false,
-  set: (newValue) => {
-    if (!props.items) return;
-    for (const item of props.items) {
-      item.selected = newValue;
-    }
-  },
-});
+const allIds = computed(() => props.items?.map((i) => i.id) || []);
+
+const allSelected = computed(
+  () => allIds.value.length === selectedIds.value.length
+);
+
+const isIndeterminate = computed(
+  () => selectedIds.value.length > 0 && !allSelected.value
+);
 
 // Methods
 function rowClasses(item: I): string {
   return (
     (props.rowClass ? props.rowClass(item) : '') +
-    (props.selectable && item.selected ? ' bg-primary-10' : '')
+    (props.selectable && selectedIds.value.includes(item.id)
+      ? ' bg-primary-10'
+      : '')
   );
 }
 
@@ -217,5 +232,15 @@ function sortBy(header: Header): void {
         ? SortType.Desc
         : SortType.Asc,
   };
+}
+
+function setOne(id: string, checked: boolean) {
+  selectedIds.value = checked
+    ? [...new Set([...selectedIds.value, id])]
+    : selectedIds.value.filter((selectedId) => selectedId !== id);
+}
+
+function setAll(checked: boolean) {
+  selectedIds.value = checked ? [...allIds.value] : [];
 }
 </script>
