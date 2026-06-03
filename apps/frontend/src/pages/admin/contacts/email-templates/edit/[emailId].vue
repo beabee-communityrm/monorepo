@@ -22,7 +22,7 @@ meta:
     <div class="flex flex-wrap gap-2">
       <AppApiAsyncButton
         v-if="email?.isOngoing"
-        :icon="email.enabled ? faPause : faPlay"
+        :icon="email.enabled ? 'fa6-solid:pause' : 'fa6-solid:play'"
         :success-text="
           email.enabled
             ? t('contacts.emailTemplates.toggleEnabled.enabled')
@@ -32,7 +32,7 @@ meta:
       >
         {{ email.enabled ? t('actions.disable') : t('actions.enable') }}
       </AppApiAsyncButton>
-      <ActionButton :icon="faTrash" @click="showDeleteConfirm = true">
+      <ActionButton icon="fa6-solid:trash" @click="showDeleteConfirm = true">
         {{ t('actions.delete') }}
       </ActionButton>
     </div>
@@ -114,12 +114,7 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import {
-  faPause,
-  faPlay,
-  faTrash,
-  faUsers,
-} from '@fortawesome/free-solid-svg-icons';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';

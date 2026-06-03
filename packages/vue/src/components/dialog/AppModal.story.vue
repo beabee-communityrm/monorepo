@@ -48,7 +48,7 @@ function closeModal() {
               The modal supports backdrop click prevention and includes proper
               accessibility features.
             </p>
-            <AppButton variant="text" @click="closeModal">
+            <AppButton color="link" variant="link" @click="closeModal">
               Close from inside
             </AppButton>
           </div>
@@ -100,7 +100,7 @@ function closeModal() {
       >
         <div class="space-y-4">
           <p>This modal demonstrates the {{ state.variant }} variant.</p>
-          <AppButton variant="text" @click="closeModal">
+          <AppButton color="link" variant="link" @click="closeModal">
             Close from inside
           </AppButton>
         </div>
@@ -128,7 +128,7 @@ function closeModal() {
       >
         <div class="space-y-4">
           <p>This modal has no title and demonstrates minimal setup.</p>
-          <AppButton variant="text" @click="closeModal">
+          <AppButton color="link" variant="link" @click="closeModal">
             Close from inside
           </AppButton>
         </div>

@@ -16,15 +16,17 @@
       <AppButtonGroup>
         <AppButton
           size="sm"
-          :icon="faPencil"
-          variant="primaryOutlined"
+          icon="fa6-solid:pencil"
+          color="primary"
+          variant="outline"
           :title="t('actions.edit')"
           @click="formVisible = !formVisible"
         />
         <AppButton
           size="sm"
-          :icon="faTrash"
-          variant="danger"
+          icon="fa6-solid:trash"
+          color="danger"
+          variant="solid"
           :title="t('actions.delete')"
           @click="showDeleteModal = true"
         />
@@ -65,7 +67,6 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 

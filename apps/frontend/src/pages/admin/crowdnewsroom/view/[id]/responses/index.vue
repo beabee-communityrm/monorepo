@@ -62,8 +62,9 @@ meta:
       <template #actions>
         <AppButtonGroup>
           <AppButton
-            :icon="faDownload"
-            variant="primaryOutlined"
+            icon="fa6-solid:download"
+            color="primary"
+            variant="outline"
             :title="t('actions.export')"
             @click="handleExport"
           />
@@ -227,7 +228,6 @@ import {
 
 import {
   faComment,
-  faDownload,
   faUser,
   faUserPen,
 } from '@fortawesome/free-solid-svg-icons';

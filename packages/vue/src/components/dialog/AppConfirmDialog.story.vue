@@ -136,7 +136,8 @@ async function handleAsyncConfirm() {
 
     <Variant title="Delete Confirmation">
       <AppButton
-        variant="danger"
+        color="danger"
+        variant="solid"
         @click="
           () => {
             state.title = 'Delete Item';

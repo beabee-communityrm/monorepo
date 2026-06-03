@@ -13,8 +13,9 @@
 
     <AppDropdownButton
       v-if="variantItems.length > 1"
-      :icon="faGlobe"
-      variant="greyOutlined"
+      icon="fa6-solid:globe"
+      color="neutral"
+      variant="outline"
       :title="variantItems.find((vi) => vi.id === currentVariant)?.label || ''"
       show-title
     >
@@ -29,7 +30,8 @@
 
     <AppButton
       v-if="viewLink"
-      variant="linkOutlined"
+      color="link"
+      variant="outline"
       :to="viewLink.to"
       :icon="viewLink.icon"
       class="self-end md:self-auto"
@@ -39,7 +41,8 @@
 
     <AppButton
       v-if="callout.status === ItemStatus.Open && env.maptilerKey"
-      variant="link"
+      color="link"
+      variant="solid"
       class="hidden px-2 md:inline-block"
       @click="$emit('addnew')"
     >
@@ -58,12 +61,7 @@ import {
   AppTitle,
 } from '@beabee/vue';
 
-import {
-  faGlobe,
-  faImages,
-  faMap,
-  faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { type RouteLocationRaw, useRoute } from 'vue-router';
@@ -100,7 +98,7 @@ const viewLink = computed(() =>
           query: { ...route.query, noIntro: 1 },
         },
         label: t('callout.views.gallery'),
-        icon: faImages,
+        icon: 'fa6-solid:images',
       }
     : props.callout.responseViewSchema?.map && !props.map
       ? {
@@ -109,7 +107,7 @@ const viewLink = computed(() =>
             query: { ...route.query, noIntro: 1 },
           },
           label: t('callout.views.map'),
-          icon: faMap,
+          icon: 'fa6-solid:map',
         }
       : undefined
 );

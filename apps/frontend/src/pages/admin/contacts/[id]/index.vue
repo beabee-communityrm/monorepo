@@ -218,9 +218,10 @@ meta:
 
           <AppButton
             type="button"
-            variant="primaryOutlined"
+            color="primary"
+            variant="outline"
             class="mt-4"
-            :icon="faMobileAlt"
+            icon="fa6-solid:mobile-screen-button"
             @click="mfa.showDisableConfirmModal = true"
           >
             {{ t(`actions.disable`) }}
@@ -237,12 +238,17 @@ meta:
         <section class="mt-4 hidden">
           <p>{{ t('contactOverview.security.whatDoTheButtonsDo') }}</p>
           <form @submit.prevent="handleSecurityAction">
-            <AppButton type="submit" variant="primaryOutlined" class="mt-4">{{
-              t('contactOverview.security.loginOverride')
-            }}</AppButton>
             <AppButton
               type="submit"
-              variant="primaryOutlined"
+              color="primary"
+              variant="outline"
+              class="mt-4"
+              >{{ t('contactOverview.security.loginOverride') }}</AppButton
+            >
+            <AppButton
+              type="submit"
+              color="primary"
+              variant="outline"
               class="mt-2 ml-6"
               >{{ t('contactOverview.security.resetPassword') }}</AppButton
             >
@@ -313,7 +319,6 @@ import {
 } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 

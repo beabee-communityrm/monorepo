@@ -12,13 +12,14 @@ meta:
   </h3>
 
   <div class="flex">
-    <AppButton to="/profile/contribution" variant="primaryOutlined">
+    <AppButton to="/profile/contribution" color="primary" variant="outline">
       {{ t('actions.goBack') }}
     </AppButton>
 
     <AppButton
       class="ml-4"
-      variant="danger"
+      color="danger"
+      variant="solid"
       :loading="loading"
       @click="submit"
       >{{ t('contribution.cancelContribution') }}</AppButton

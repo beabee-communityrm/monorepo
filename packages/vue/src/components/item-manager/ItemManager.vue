@@ -37,7 +37,8 @@
     <AppButton
       v-else
       class="w-full"
-      variant="primaryOutlined"
+      color="primary"
+      variant="outline"
       @click="formVisible = true"
     >
       {{ addButtonText }}

@@ -15,7 +15,12 @@
       }}
     </p>
 
-    <AppButton class="w-full" variant="dangerOutlined" @click="$emit('cancel')">
+    <AppButton
+      class="w-full"
+      color="danger"
+      variant="outline"
+      @click="$emit('cancel')"
+    >
       {{ t('contribution.cancelContribution') }}
     </AppButton>
   </div>

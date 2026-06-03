@@ -43,7 +43,7 @@ export interface AppAsyncButtonProps extends AppButtonProps {
 
 const props = withDefaults(defineProps<AppAsyncButtonProps>(), {
   onClick: undefined,
-  successMessage: undefined,
+  successText: undefined,
 });
 
 /** Props passed to AppButton; excludes onClick which is handled internally */

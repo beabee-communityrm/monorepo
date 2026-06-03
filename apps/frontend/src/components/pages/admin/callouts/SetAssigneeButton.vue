@@ -1,7 +1,8 @@
 <template>
   <AppDropdownButton
-    :icon="faUser"
-    variant="primaryOutlined"
+    icon="fa6-solid:user"
+    color="primary"
+    variant="outline"
     :title="t('calloutResponsePage.actions.assignTo')"
     :show-title="withText"
   >
@@ -30,7 +31,7 @@
 import { AppDropdownButton, AppSelectableList } from '@beabee/vue';
 import type { SelectItem } from '@beabee/vue/types';
 
-import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 
 const emit = defineEmits<{

@@ -1,10 +1,4 @@
 <script lang="ts" setup>
-import {
-  faBookmark,
-  faDownload,
-  faShare,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
 import { reactive, ref } from 'vue';
 
 import AppExpandableBox from './AppExpandableBox.vue';
@@ -16,10 +10,10 @@ const state = reactive({
 });
 
 const icons = [
-  { name: 'Share', icon: faShare },
-  { name: 'Download', icon: faDownload },
-  { name: 'Bookmark', icon: faBookmark },
-  { name: 'User', icon: faUser },
+  { name: 'Share', icon: 'fa6-solid:share-nodes' },
+  { name: 'Download', icon: 'fa6-solid:download' },
+  { name: 'Bookmark', icon: 'fa6-solid:bookmark' },
+  { name: 'User', icon: 'fa6-solid:user' },
 ];
 
 const expandedCount = ref(0);
@@ -35,7 +29,7 @@ function handleExpand() {
       <div class="max-w-lg">
         <AppExpandableBox
           v-model:expanded="state.expanded"
-          :button-icon="faShare"
+          button-icon="fa6-solid:share-nodes"
           :button-text="state.buttonText"
           @update:expanded="handleExpand"
         >
@@ -90,7 +84,10 @@ function handleExpand() {
 
     <Variant title="With Before Slot">
       <div class="max-w-lg">
-        <AppExpandableBox button-text="Advanced Settings" :button-icon="faUser">
+        <AppExpandableBox
+          button-text="Advanced Settings"
+          button-icon="fa6-solid:user"
+        >
           <template #before>
             <div
               class="text-warning-80 rounded bg-warning-10 px-2 py-1 text-xs"
@@ -119,7 +116,7 @@ function handleExpand() {
       <div class="space-y-2">
         <AppExpandableBox
           button-text="Personal Information"
-          :button-icon="faUser"
+          button-icon="fa6-solid:user"
         >
           <div class="space-y-2">
             <div class="flex justify-between">
@@ -133,7 +130,10 @@ function handleExpand() {
           </div>
         </AppExpandableBox>
 
-        <AppExpandableBox button-text="Share Options" :button-icon="faShare">
+        <AppExpandableBox
+          button-text="Share Options"
+          button-icon="fa6-solid:share-nodes"
+        >
           <div class="flex gap-2">
             <button class="rounded bg-blue-500 px-3 py-1 text-white">
               Twitter
@@ -149,18 +149,13 @@ function handleExpand() {
 
         <AppExpandableBox
           button-text="Download Options"
-          :button-icon="faDownload"
+          button-icon="fa6-solid:download"
         >
           <div class="space-y-2">
-            <a href="#" class="block text-link hover:underline">
-              Download PDF
-            </a>
-            <a href="#" class="block text-link hover:underline">
-              Download Excel
-            </a>
-            <a href="#" class="block text-link hover:underline">
-              Download CSV
-            </a>
+            <a href="#" class="block text-link hover:underline">Download PDF</a>
+            <a href="#" class="block text-link hover:underline"
+              >Download Excel</a
+            >
           </div>
         </AppExpandableBox>
       </div>

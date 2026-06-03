@@ -42,7 +42,8 @@ meta:
         <template #buttons="{ disabled }">
           <AppButton
             type="submit"
-            variant="linkOutlined"
+            color="link"
+            variant="outline"
             :disabled="disabled"
             @click="addAnother = true"
           >

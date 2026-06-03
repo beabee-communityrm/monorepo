@@ -29,9 +29,10 @@ meta:
     <div class="flex gap-2">
       <pre class="overflow-scroll text-sm">{{ newApiKeySecret }} </pre>
       <AppButton
-        :icon="faCopy"
+        icon="fa6-solid:copy"
         size="sm"
-        variant="primaryOutlined"
+        color="primary"
+        variant="outline"
         @click="copyToClipboard"
       />
     </div>
@@ -64,8 +65,9 @@ meta:
     <template #value-actions="{ item }">
       <AppButton
         :title="t('actions.delete')"
-        :icon="faTrash"
-        variant="dangerOutlined"
+        icon="fa6-solid:trash"
+        color="danger"
+        variant="outline"
         size="sm"
         @click="apiKeyToDelete = item.id"
       />
@@ -118,7 +120,7 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import { faCopy, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
+import { faWarning } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { addDays } from 'date-fns';
 import { computed, ref, watchEffect } from 'vue';

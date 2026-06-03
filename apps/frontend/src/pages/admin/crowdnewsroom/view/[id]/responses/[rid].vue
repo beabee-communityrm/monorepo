@@ -20,8 +20,9 @@ meta:
       <AppButtonGroup>
         <AppButton
           type="button"
-          variant="primaryOutlined"
-          :icon="faCaretLeft"
+          color="primary"
+          variant="outline"
+          icon="fa6-solid:caret-left"
           :disabled="!prevResponse"
           :to="
             prevResponse &&
@@ -30,8 +31,9 @@ meta:
         />
         <AppButton
           type="button"
-          variant="primaryOutlined"
-          :icon="faCaretRight"
+          color="primary"
+          variant="outline"
+          icon="fa6-solid:caret-right"
           :disabled="!nextResponse"
           :to="
             nextResponse &&
@@ -126,16 +128,17 @@ meta:
       <AppButton
         v-if="callout.responseViewSchema?.map"
         :to="`/crowdnewsroom/${callout.slug}/map#response-${response.number}`"
-        :icon="faMap"
+        icon="fa6-solid:map"
         size="sm"
       >
         {{ t('calloutResponsePage.actions.viewOnMap') }}
       </AppButton>
       <AppButton
         type="button"
-        :icon="faPen"
+        icon="fa6-solid:pen"
         size="sm"
-        variant="primaryOutlined"
+        color="primary"
+        variant="outline"
         class="ml-auto"
         @click="editMode = !editMode"
       >
@@ -183,13 +186,7 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import {
-  faCaretLeft,
-  faCaretRight,
-  faMap,
-  faPen,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, toRef, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';

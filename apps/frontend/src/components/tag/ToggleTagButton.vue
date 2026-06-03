@@ -1,7 +1,8 @@
 <template>
   <AppDropdownButton
-    :icon="faTag"
-    variant="primaryOutlined"
+    icon="fa6-solid:tag"
+    color="primary"
+    variant="outline"
     :title="t('tags.toggleTag')"
     :show-title="withText"
   >

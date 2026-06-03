@@ -37,7 +37,7 @@ meta:
       />
     </div>
 
-    <AppButton to="/crowdnewsroom" variant="primaryOutlined">{{
+    <AppButton to="/crowdnewsroom" color="primary" variant="outline">{{
       t('homePage.viewAllCallouts')
     }}</AppButton>
   </section>
@@ -52,7 +52,8 @@ meta:
     <AppButton
       v-if="!generalContent.hideContribution"
       to="/profile/contribution"
-      variant="primaryOutlined"
+      color="primary"
+      variant="outline"
       >{{ t('homePage.manageContribution') }}</AppButton
     >
   </section>

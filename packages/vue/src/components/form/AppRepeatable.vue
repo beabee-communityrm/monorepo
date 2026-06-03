@@ -14,9 +14,10 @@
       </div>
     </div>
     <AppButton
-      variant="primaryOutlined"
+      color="primary"
+      variant="outline"
       size="sm"
-      :icon="faPlus"
+      icon="fa6-solid:plus"
       @click="addItem"
     >
       {{ addLabel }}
@@ -26,7 +27,7 @@
 <script lang="ts" setup generic="T">
 import { AppButton } from '@beabee/vue';
 
-import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Props for the AppRepeatable component

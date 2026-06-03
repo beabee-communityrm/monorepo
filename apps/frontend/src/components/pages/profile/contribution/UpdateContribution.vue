@@ -76,9 +76,9 @@ import {
   PaymentMethod,
 } from '@beabee/beabee-common';
 import { AppHeading, AppNotification, formatLocale } from '@beabee/vue';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 

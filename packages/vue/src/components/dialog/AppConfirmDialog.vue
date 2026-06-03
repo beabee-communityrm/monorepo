@@ -21,7 +21,8 @@
       <AppButton
         v-if="cancel"
         class="mr-4"
-        variant="primaryOutlined"
+        color="primary"
+        variant="outline"
         @click="$emit('close')"
       >
         {{ cancel }}
@@ -29,7 +30,8 @@
       <AppButton
         :disabled="disableConfirm === true"
         :loading="isConfirming"
-        :variant="variant"
+        :color="variant || 'primary'"
+        variant="solid"
         @click="handleConfirm"
       >
         {{ confirm }}
@@ -54,7 +56,7 @@
  *   title="Delete Item"
  *   confirm="Delete"
  *   cancel="Cancel"
- *   variant="danger"
+ *   color="danger" variant="solid"
  *   @close="showConfirm = false"
  *   @confirm="deleteItem"
  * >

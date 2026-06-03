@@ -14,11 +14,12 @@
         }"
       />
       <AppButton
-        :icon="faPencil"
-        :variant="'dangerGhost'"
+        color="danger"
+        variant="ghost"
         size="sm"
         @click="isPickerOpen = !isPickerOpen"
-      ></AppButton>
+        ><font-awesome-icon :icon="faPencil"
+      /></AppButton>
     </div>
   </div>
   <AppModal

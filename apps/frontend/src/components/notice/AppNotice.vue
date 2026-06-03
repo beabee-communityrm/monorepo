@@ -4,7 +4,7 @@
       <div class="flex md:mt-1.5">
         <font-awesome-icon
           class="mr-2 self-start text-xl text-warning md:mt-1"
-          :icon="faBullhorn"
+          icon="fa6-solid:bullhorn"
         />
 
         <div class="pr-3 text-sm md:text-lg">
@@ -25,8 +25,6 @@
 <script lang="ts" setup>
 import type { GetNoticeData } from '@beabee/beabee-common';
 import { AppButton } from '@beabee/vue';
-
-import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Notice component for displaying promotional or informational notices

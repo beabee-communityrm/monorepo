@@ -34,7 +34,7 @@
             <template #toolbar="{ editor, disabled }">
               <div v-if="mergeFieldGroups" class="relative">
                 <AppRichTextEditorButton
-                  :icon="faTag"
+                  icon="fa6-solid:tag"
                   :title="t('form.richtext.mergeFields')"
                   :active="showMergeFieldsDropdown"
                   :disabled="disabled"
@@ -119,7 +119,6 @@ import {
   sanitizeHtml,
 } from '@beabee/vue';
 
-import { faTag } from '@fortawesome/free-solid-svg-icons';
 import type { Editor } from '@tiptap/vue-3';
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';

@@ -23,8 +23,9 @@
 
   <AppButton
     v-if="isEnabled"
-    variant="primaryOutlined"
-    :icon="faMobileAlt"
+    color="primary"
+    variant="outline"
+    icon="fa6-solid:mobile-screen-button"
     @click="showDisableConfirmModal = true"
   >
     {{ t(`actions.disable`) }}
@@ -32,8 +33,9 @@
 
   <AppButton
     v-else
-    variant="primaryOutlined"
-    :icon="faMobileAlt"
+    color="primary"
+    variant="outline"
+    icon="fa6-solid:mobile-screen-button"
     @click="showMFASettingsModal = !showMFASettingsModal"
   >
     {{ t(`actions.enable`) }}
@@ -174,12 +176,18 @@
           <section>
             <AppButton
               v-if="isFirstSlide"
-              variant="linkOutlined"
+              color="link"
+              variant="outline"
               @click="closeMFAModal()"
             >
               {{ t(`actions.close`) }}
             </AppButton>
-            <AppButton v-else variant="linkOutlined" @click="prevSlide()">
+            <AppButton
+              v-else
+              color="link"
+              variant="outline"
+              @click="prevSlide()"
+            >
               {{ t(`actions.back`) }}
             </AppButton>
           </section>
@@ -191,7 +199,8 @@
               v-if="isLastSlide"
               ref="saveButton"
               :disabled="!validationStepsDone"
-              variant="link"
+              color="link"
+              variant="solid"
               @click="createMfaAndNotify()"
             >
               {{ t(`actions.save`) }}
@@ -204,14 +213,15 @@
                 (!steps.enterCode.validated || steps.enterCode.error)
               "
               :disabled="!userTokenInputValid"
-              variant="link"
+              color="link"
+              variant="solid"
               @click="nextSlideIfValid()"
             >
               {{ t(`accountPage.mfa.validateButton.label`) }}
             </AppButton>
 
             <!-- Default next button -->
-            <AppButton v-else variant="link" @click="nextSlide()">
+            <AppButton v-else color="link" variant="solid" @click="nextSlide()">
               {{ t(`actions.next`) }}
             </AppButton>
           </section>
@@ -242,7 +252,6 @@ import {
   addNotification,
 } from '@beabee/vue';
 
-import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { Secret, TOTP } from 'otpauth';
 import {
   computed,

@@ -64,10 +64,12 @@ function handleActivate() {
 
           <template #footer>
             <div class="flex gap-2">
-              <AppButton size="sm" variant="primaryOutlined">
+              <AppButton size="sm" color="primary" variant="outline">
                 Action 1
               </AppButton>
-              <AppButton size="sm" variant="text"> Action 2 </AppButton>
+              <AppButton size="sm" color="link" variant="solid">
+                Action 2
+              </AppButton>
             </div>
           </template>
         </AppTemplate>
@@ -228,8 +230,10 @@ function handleActivate() {
 
           <template #footer>
             <div class="flex justify-between">
-              <AppButton size="sm" variant="text"> View Profile </AppButton>
-              <AppButton size="sm" variant="primaryOutlined">
+              <AppButton size="sm" color="link" variant="solid">
+                View Profile
+              </AppButton>
+              <AppButton size="sm" color="primary" variant="outline">
                 Edit Settings
               </AppButton>
             </div>

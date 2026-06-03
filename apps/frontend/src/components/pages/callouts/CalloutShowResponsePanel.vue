@@ -3,14 +3,16 @@
     <div v-if="responses.length > 1" class="mb-4 flex items-center gap-4">
       <AppButtonGroup>
         <AppButton
-          variant="link"
-          :icon="faArrowLeft"
+          color="link"
+          variant="solid"
+          icon="fa6-solid:arrow-left"
           :disabled="responseIndex === 0"
           @click="changeResponse(-1)"
         />
         <AppButton
-          variant="link"
-          :icon="faArrowRight"
+          color="link"
+          variant="solid"
+          icon="fa6-solid:arrow-right"
           :disabled="responseIndex === responses.length - 1"
           @click="changeResponse(1)"
         />
@@ -41,7 +43,6 @@ import {
 } from '@beabee/beabee-common';
 import { AppButton, AppButtonGroup } from '@beabee/vue';
 
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 

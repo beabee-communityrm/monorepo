@@ -32,10 +32,6 @@
 import type { RuleGroup } from '@beabee/beabee-common';
 import { AppExpandableBox } from '@beabee/vue';
 
-import {
-  type IconDefinition,
-  faFilter,
-} from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -59,7 +55,8 @@ interface Props {
   filterGroups: FilterGroups;
   modelValue: RuleGroup | undefined;
   hasChanged?: boolean;
-  buttonIcon?: IconDefinition;
+  /** Iconify icon string for the expand button, e.g. "fa6-solid:filter" */
+  buttonIcon?: string;
 }
 
 interface Emits {
@@ -69,7 +66,7 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   hasChanged: false,
-  buttonIcon: () => faFilter,
+  buttonIcon: 'fa6-solid:filter',
 });
 
 const emit = defineEmits<Emits>();

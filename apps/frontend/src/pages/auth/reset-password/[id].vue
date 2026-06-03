@@ -78,7 +78,8 @@ meta:
 
     <div v-if="props.mode === 'reset'" class="mt-4 text-center">
       <router-link
-        variant="link"
+        color="link"
+        variant="solid"
         to="/auth/login"
         class="font-semibold text-link underline"
         >{{ t('resetPassword.login') }}</router-link

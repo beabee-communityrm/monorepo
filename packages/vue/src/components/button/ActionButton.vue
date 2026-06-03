@@ -5,7 +5,8 @@
 -->
 <template>
   <AppButton
-    variant="primaryOutlined"
+    color="primary"
+    variant="outline"
     class="lg:justify-start"
     :icon="icon"
     :aria-label="ariaLabel || title"
@@ -26,20 +27,18 @@
  * @component ActionButton
  *
  * @example
- * <ActionButton :icon="faEdit">
+ * <ActionButton icon="fa6-solid:pen-to-square">
  *   Edit Item
  * </ActionButton>
  */
-import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-
 import AppButton from './AppButton.vue';
 
 /**
  * Props for the ActionButton component
  */
 export interface ActionButtonProps {
-  /** FontAwesome icon to display in the button (required) */
-  icon: IconDefinition;
+  /** Iconify icon string, e.g. "fa6-solid:pencil" */
+  icon: string;
   /** Accessible label for screen readers */
   ariaLabel?: string;
   /** Tooltip text displayed on hover */

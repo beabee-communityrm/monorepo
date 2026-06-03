@@ -12,15 +12,17 @@ meta:
       <div class="flex items-center gap-2">
         <AppApiAsyncButton
           v-if="!isLive"
-          variant="primaryOutlined"
-          :icon="faEye"
+          color="primary"
+          variant="outline"
+          icon="fa6-solid:eye"
           :disabled="!status"
           @click="handlePreview"
         >
           {{ t('actions.preview') }}
         </AppApiAsyncButton>
         <AppApiAsyncButton
-          variant="primaryOutlined"
+          color="primary"
+          variant="outline"
           :success-text="t('calloutAdminOverview.savedDraft')"
           @click="handleSaveDraft"
         >
@@ -53,7 +55,7 @@ meta:
 import { ItemStatus } from '@beabee/beabee-common';
 import { PageTitle } from '@beabee/vue';
 
-import { faBullhorn, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { computed, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

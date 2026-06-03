@@ -48,7 +48,8 @@
       <AppButton
         type="submit"
         class="mb-4 w-full"
-        variant="primary"
+        color="primary"
+        variant="solid"
         :disabled="validation.$invalid"
         :loading="isLoading"
         @click="handleSubmit"
@@ -61,7 +62,8 @@
         <AppButton
           v-if="currentSlide.navigation.prevText && slideIds.length > 1"
           type="button"
-          variant="primaryOutlined"
+          color="primary"
+          variant="outline"
           @click="handlePrevSlide"
         >
           {{ currentSlide.navigation.prevText }}
@@ -71,7 +73,8 @@
         <AppButton
           v-if="currentSlideNo < totalSlides - 1"
           type="button"
-          variant="primary"
+          color="primary"
+          variant="solid"
           :disabled="validation.$invalid"
           @click="handleNextSlide"
         >

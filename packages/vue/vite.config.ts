@@ -1,13 +1,17 @@
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
+import ui from '@nuxt/ui/vite';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import path, { resolve } from 'path';
 import { defineConfig } from 'vite';
 
+import { nuxtUiOptions } from './src/lib/nuxt-ui-options';
+
 export default defineConfig({
   plugins: [
     tailwindcss(),
     vue(),
+    ui(nuxtUiOptions),
     vueI18n({
       include: path.resolve(__dirname, './locales/*'),
       strictMessage: false,
@@ -23,6 +27,7 @@ export default defineConfig({
       external: [
         'vue',
         'vue-router',
+        '@nuxt/ui',
         '@fortawesome/vue-fontawesome',
         '@fortawesome/fontawesome-svg-core',
         '@fortawesome/free-solid-svg-icons',

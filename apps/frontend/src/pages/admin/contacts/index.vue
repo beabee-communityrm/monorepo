@@ -14,7 +14,7 @@ meta:
     </div>
     <div class="fixed right-5 bottom-5 md:hidden">
       <AppButton
-        :icon="faPlus"
+        icon="fa6-solid:plus"
         :title="t('contacts.addContact')"
         class="rounded-full drop-shadow-md"
         size="lg"
@@ -57,8 +57,9 @@ meta:
         <AppButtonGroup>
           <!-- TODO: Add support for exporting selected contacts (instead of all contacts) -->
           <AppButton
-            :icon="faDownload"
-            variant="primaryOutlined"
+            icon="fa6-solid:download"
+            color="primary"
+            variant="outline"
             :title="t('actions.export')"
             :disabled="selectedCount > 0"
             @click="handleExport"
@@ -76,8 +77,9 @@ meta:
           />
           <!-- TODO: Add support for emailing selected contacts (instead of all contacts) -->
           <AppDropdownButton
-            :icon="faMailBulk"
-            variant="primaryOutlined"
+            icon="fa6-solid:envelopes-bulk"
+            color="primary"
+            variant="outline"
             :title="t('actions.sendEmails')"
             :disabled="selectedCount > 0"
           >
@@ -195,12 +197,7 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import {
-  faDownload,
-  faMailBulk,
-  faPlus,
-  faUsers,
-} from '@fortawesome/free-solid-svg-icons';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';

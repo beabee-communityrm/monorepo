@@ -19,7 +19,8 @@
     >
       <AppButton
         size="xs"
-        :variant="'dangerGhost'"
+        color="danger"
+        variant="ghost"
         @click="setIcon(props.iconStyle, icon.name)"
       >
         <font-awesome-icon :icon="[props.iconStyle, icon.name]" />

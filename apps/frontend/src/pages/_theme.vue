@@ -66,28 +66,30 @@ meta:
       <h3 class="mb-2 font-title text-xl">Buttons</h3>
       <div class="flex flex-wrap bg-white p-4">
         <div class="m-2">
-          <AppButton variant="primary">primary</AppButton>
+          <AppButton color="primary" variant="solid">primary</AppButton>
         </div>
         <div class="m-2">
-          <AppButton variant="link">link</AppButton>
+          <AppButton color="link" variant="solid">link</AppButton>
         </div>
         <div class="m-2">
-          <AppButton variant="danger">danger</AppButton>
+          <AppButton color="danger" variant="solid">danger</AppButton>
         </div>
         <div class="m-2">
-          <AppButton variant="primaryOutlined">primaryOutlined</AppButton>
+          <AppButton color="primary" variant="outline"
+            >primaryOutlined</AppButton
+          >
         </div>
         <div class="m-2">
-          <AppButton variant="linkOutlined">linkOutlined</AppButton>
+          <AppButton color="link" variant="outline">linkOutlined</AppButton>
         </div>
         <div class="m-2">
-          <AppButton variant="dangerOutlined">dangerOutlined</AppButton>
+          <AppButton color="danger" variant="outline">dangerOutlined</AppButton>
         </div>
         <div class="m-2">
-          <AppButton variant="text">text</AppButton>
+          <AppButton color="link" variant="link">text</AppButton>
         </div>
         <div class="m-2">
-          <AppButton variant="dangerText">dangerText</AppButton>
+          <AppButton color="danger" variant="link">dangerText</AppButton>
         </div>
       </div>
     </section>
@@ -116,13 +118,15 @@ meta:
         </div>
         <AppButton
           class="m-2"
-          variant="primaryOutlined"
+          color="primary"
+          variant="outline"
           @click="appStepper.selectedStepIndex--"
           >Back</AppButton
         >
         <AppButton
           class="m-2"
-          variant="primary"
+          color="primary"
+          variant="solid"
           @click="appStepper.selectedStepIndex++"
           >Next</AppButton
         >

@@ -21,7 +21,7 @@
 -->
 <template>
   <AppExpandableBox
-    :button-icon="faShareNodes"
+    button-icon="fa6-solid:share-nodes"
     :button-text="t('actions.share')"
     role="region"
     :aria-label="t('actions.share')"
@@ -164,7 +164,7 @@ import {
   faTwitter,
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope, faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 

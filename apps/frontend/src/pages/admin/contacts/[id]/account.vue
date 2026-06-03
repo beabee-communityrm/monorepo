@@ -14,11 +14,7 @@ meta:
     </template>
     <template #col2>
       <div class="text-right">
-        <ActionButton
-          :icon="faTrash"
-          variant="danger"
-          @click="showDeleteModal = true"
-        >
+        <ActionButton icon="fa6-solid:trash" @click="showDeleteModal = true">
           {{ t('contactAccount.confirmDelete.title') }}
         </ActionButton>
       </div>
@@ -54,7 +50,6 @@ import { ActionButton, AppConfirmDialog } from '@beabee/vue';
 import { App2ColGrid } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';

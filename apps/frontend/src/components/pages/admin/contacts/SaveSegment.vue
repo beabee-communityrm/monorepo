@@ -1,9 +1,10 @@
 <template>
   <AppButton
     class="mb-3"
-    variant="link"
+    color="link"
+    variant="solid"
     size="sm"
-    :icon="faFloppyDisk"
+    icon="fa6-solid:floppy-disk"
     @click="handleOpen"
   >
     {{ t('advancedSearch.saveSegment.title') }}
@@ -62,7 +63,6 @@ import type { GetSegmentData, RuleGroup } from '@beabee/beabee-common';
 import { AppButton, AppInput, AppModal, AppRadioGroup } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';

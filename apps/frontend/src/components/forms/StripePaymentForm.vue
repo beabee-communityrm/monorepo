@@ -18,7 +18,8 @@
   <AppButton
     :disabled="!paymentReady || validation.$invalid"
     :loading="loading"
-    variant="link"
+    color="link"
+    variant="solid"
     type="submit"
     class="mt-4 w-full"
     @click="completePayment"

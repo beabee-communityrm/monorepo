@@ -37,8 +37,9 @@
       </ul>
       <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
         <AppButton
-          variant="primaryOutlined"
-          :icon="faPlus"
+          color="primary"
+          variant="outline"
+          icon="fa6-solid:plus"
           size="xs"
           @click="addRule"
         >
@@ -49,13 +50,19 @@
 
     <div class="flex gap-2">
       <AppButton
-        variant="link"
+        color="link"
+        variant="solid"
         :disabled="validation.$invalid || !hasChanged"
         type="submit"
       >
         {{ t('actions.search') }}
       </AppButton>
-      <AppButton v-if="hasChanged" variant="text" @click="handleReset">
+      <AppButton
+        v-if="hasChanged"
+        color="link"
+        variant="link"
+        @click="handleReset"
+      >
         {{ t('actions.reset') }}
       </AppButton>
     </div>
@@ -66,7 +73,6 @@
 import type { Rule, RuleGroup } from '@beabee/beabee-common';
 import { AppButton, AppSelect } from '@beabee/vue';
 
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';

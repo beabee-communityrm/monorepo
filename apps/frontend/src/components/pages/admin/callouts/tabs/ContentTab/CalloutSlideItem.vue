@@ -6,7 +6,7 @@
   >
     <div>
       <font-awesome-icon
-        :icon="faGripVertical"
+        icon="fa6-solid:grip-vertical"
         class="cursor-grab text-body-60 hover:text-body"
       />
     </div>
@@ -32,8 +32,9 @@
     </div>
     <div class="flex items-start">
       <AppButton
-        variant="dangerGhost"
-        :icon="faTrash"
+        color="danger"
+        variant="ghost"
+        icon="fa6-solid:trash"
         :disabled="slides.length === 1"
         :title="t('callout.builder.common.actions.remove')"
         class="p-1!"
@@ -46,7 +47,6 @@
 <script lang="ts" setup>
 import { AppButton } from '@beabee/vue';
 
-import { faGripVertical, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 

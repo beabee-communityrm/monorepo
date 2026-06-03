@@ -19,7 +19,11 @@ meta:
     <p class="mb-4">
       {{ t('adminSettings.email.contactTemplates.description') }}
     </p>
-    <AppButton to="/admin/contacts/email-templates" variant="primaryOutlined">
+    <AppButton
+      to="/admin/contacts/email-templates"
+      color="primary"
+      variant="outline"
+    >
       {{ t('adminSettings.email.contactTemplates.button') }}
     </AppButton>
   </section>

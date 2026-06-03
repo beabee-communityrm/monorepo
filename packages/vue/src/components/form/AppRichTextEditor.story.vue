@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { logEvent } from 'histoire/client';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -133,7 +132,7 @@ function insertMergeField(editor: any, tag: string): void {
           <template #toolbar="{ editor, disabled }">
             <div class="relative">
               <AppRichTextEditorButton
-                :icon="faTag"
+                icon="fa6-solid:tag"
                 :title="t('form.richtext.mergeFields')"
                 :active="showMergeFieldsDropdown"
                 :disabled="disabled"

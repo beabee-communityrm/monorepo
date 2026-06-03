@@ -1,42 +1,26 @@
 <script lang="ts" setup>
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import {
-  faCheck,
-  faEye,
-  faSave,
-  faSpinner,
-  faUpload,
-} from '@fortawesome/free-solid-svg-icons';
 import { reactive, ref } from 'vue';
 
 import AppAsyncButton from './AppAsyncButton.vue';
-import type { ButtonVariant } from './AppButton.vue';
+import type { ButtonColor, ButtonVariant } from './AppButton.vue';
 
-const variants: ButtonVariant[] = [
-  'primary',
-  'link',
-  'danger',
-  'primaryOutlined',
-  'linkOutlined',
-  'dangerOutlined',
-  'greyOutlined',
-  'text',
-  'dangerText',
-];
+const colors: ButtonColor[] = ['primary', 'link', 'danger', 'neutral'];
+const variants: ButtonVariant[] = ['solid', 'outline', 'ghost', 'link'];
 
-const icons = {
+const icons: Record<string, string | undefined> = {
   none: undefined,
-  eye: faEye,
-  save: faSave,
-  upload: faUpload,
-  check: faCheck,
-  spinner: faSpinner,
+  eye: 'fa6-solid:eye',
+  save: 'fa6-solid:floppy-disk',
+  upload: 'fa6-solid:upload',
+  check: 'fa6-solid:check',
 };
 
 const state = reactive({
-  variant: variants[0],
-  icon: icons.none,
+  color: colors[0] as ButtonColor,
+  variant: variants[0] as ButtonVariant,
+  icon: undefined as string | undefined,
   text: 'Submit',
   delay: 1000,
   shouldFail: false,
@@ -124,22 +108,25 @@ async function handleClick() {
     <Variant title="With Icons">
       <div class="flex gap-4">
         <AppAsyncButton
-          variant="primaryOutlined"
-          :icon="faEye"
+          color="primary"
+          variant="outline"
+          icon="fa6-solid:eye"
           :onClick="() => simulateAsyncOperation(false, 1000)"
         >
           Preview
         </AppAsyncButton>
         <AppAsyncButton
-          variant="primaryOutlined"
-          :icon="faSave"
+          color="primary"
+          variant="outline"
+          icon="fa6-solid:floppy-disk"
           :onClick="() => simulateAsyncOperation(false, 1000)"
         >
           Save Draft
         </AppAsyncButton>
         <AppAsyncButton
-          variant="primary"
-          :icon="faUpload"
+          color="primary"
+          variant="solid"
+          icon="fa6-solid:upload"
           :onClick="() => simulateAsyncOperation(false, 1000)"
         >
           Publish

@@ -6,14 +6,16 @@
         <AppButton
           v-if="!noUpdate"
           size="sm"
-          variant="text"
+          color="link"
+          variant="link"
           @click="formVisible = !formVisible"
         >
           {{ t('actions.edit') }}
         </AppButton>
         <AppButton
           size="sm"
-          variant="dangerText"
+          color="danger"
+          variant="link"
           @click="showDeleteModal = true"
         >
           {{ t('actions.delete') }}

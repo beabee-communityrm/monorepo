@@ -1,7 +1,8 @@
 <template>
   <AppDropdownButton
-    :icon="faFolder"
-    variant="primaryOutlined"
+    icon="fa6-solid:folder"
+    color="primary"
+    variant="outline"
     :title="t('calloutResponsePage.actions.moveBucket')"
     :show-title="withText"
   >
@@ -22,7 +23,6 @@
 <script lang="ts" setup>
 import { AppDropdownButton, AppSelectableList } from '@beabee/vue';
 
-import { faFolder } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 

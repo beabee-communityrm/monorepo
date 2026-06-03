@@ -5,40 +5,34 @@
 -->
 
 <template>
-  <AppButton
-    ref="buttonRef"
-    :variant="variant"
-    :icon="icon"
-    class="group"
-    :class="open ? 'rounded-b-none! bg-white!' : ''"
-    :disabled="disabled"
-    :title="title"
-    :aria-label="title"
-    :aria-expanded="open"
-    :aria-haspopup="true"
-    role="button"
-    @click="handleClick"
-  >
-    <span v-if="showTitle">{{ title }}</span>
+  <div ref="containerRef" class="relative inline-block">
+    <AppButton
+      :color="color"
+      :variant="variant"
+      :icon="icon"
+      class="group"
+      :disabled="disabled"
+      :title="title"
+      :aria-label="title"
+      :aria-expanded="open"
+      :aria-haspopup="true"
+      role="button"
+      @click="handleClick"
+    >
+      <span v-if="showTitle">{{ title }}</span>
+    </AppButton>
 
-    <template #after>
-      <div
-        class="border text-left text-sm font-normal text-body-80 shadow-lg"
-        :class="{ [sharedClasses]: true, hidden: !open }"
-        role="menu"
-        :aria-hidden="!open"
-        @click.stop
-      >
-        <slot />
-      </div>
-      <div
-        v-show="open"
-        :class="sharedClasses"
-        class="box-content w-full border-x pt-px"
-        aria-hidden="true"
-      />
-    </template>
-  </AppButton>
+    <div
+      v-show="open"
+      class="border text-left text-sm font-normal text-body-80 shadow-lg"
+      :class="[sharedClasses]"
+      role="menu"
+      :aria-hidden="!open"
+      @click.stop
+    >
+      <slot />
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -49,68 +43,60 @@
  * @component AppDropdownButton
  *
  * @example
- * <AppDropdownButton title="Actions" variant="primaryOutlined" :icon="faEllipsisV">
+ * <AppDropdownButton title="Actions" color="primary" variant="outline" icon="fa6-solid:ellipsis-vertical">
  *   <div role="menuitem" @click="editAction">Edit</div>
  *   <div role="menuitem" @click="deleteAction">Delete</div>
  * </AppDropdownButton>
  */
-import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { onBeforeMount, onBeforeUnmount, ref, toRef, watch } from 'vue';
-import { computed } from 'vue';
+import {
+  onBeforeMount,
+  onBeforeUnmount,
+  ref,
+  toRef,
+  watch,
+  computed,
+} from 'vue';
 
-import AppButton from './AppButton.vue';
+import AppButton, {
+  type ButtonColor,
+  type ButtonVariant,
+} from './AppButton.vue';
 
-// Define the allowed variants for the dropdown button
-export type DropdownButtonVariant =
-  | 'primaryOutlined'
-  | 'linkOutlined'
-  | 'dangerOutlined'
-  | 'greyOutlined';
-
-/**
- * Props for the AppDropdownButton component
- */
 export interface AppDropdownButtonProps {
-  /** FontAwesome icon to display in the button trigger */
-  icon: IconDefinition;
+  /** Iconify icon string for the button trigger, e.g. "fa6-solid:folder" */
+  icon: string;
   /** Button title and accessible label text */
   title: string;
-  /** Visual style variant for the button trigger */
-  variant: DropdownButtonVariant;
+  /** Button color */
+  color: ButtonColor;
+  /** Button variant */
+  variant: ButtonVariant;
   /** Whether to display the title text alongside the icon */
   showTitle?: boolean;
   /** Whether the dropdown button is disabled */
   disabled?: boolean;
 }
 
-/**
- * Slots available in the AppDropdownButton component
- */
 defineSlots<{
-  /**
-   * Default slot for dropdown menu content
-   * @description Menu items with role="menuitem" for accessibility
-   */
   default(): any;
 }>();
 
 const props = defineProps<AppDropdownButtonProps>();
 
-const baseClasses = 'absolute top-full min-w-full -left-px z-20 bg-white';
+const variantBorderClasses: Record<string, string> = {
+  'primary-outline': 'border-primary-40 hover:border-primary-70',
+  'link-outline': 'border-link',
+  'danger-outline': 'border-danger',
+  'neutral-outline': 'border-grey-light hover:border-grey',
+};
 
-// Border styles from AppButton
-const variantClasses = {
-  primaryOutlined: 'border-primary-40 group-hover:border-primary-70',
-  linkOutlined: 'border-link',
-  dangerOutlined: 'border-danger',
-  greyOutlined: 'border-grey-light group-hover:border-grey',
-} as const;
+const sharedClasses = computed(() => {
+  const key = `${props.color}-${props.variant}`;
+  const borderClass = variantBorderClasses[key] ?? 'border-grey-light';
+  return `absolute top-full min-w-full -left-px z-20 bg-white ${borderClass}`;
+});
 
-const sharedClasses = computed(
-  () => `${baseClasses} ${variantClasses[props.variant]}`
-);
-
-const buttonRef = ref<InstanceType<typeof AppButton>>();
+const containerRef = ref<HTMLElement | null>(null);
 const open = ref(false);
 
 watch(toRef(props, 'disabled'), (disabled) => {
@@ -124,18 +110,17 @@ function handleClick() {
 }
 
 function handleOutsideClick(evt: Event) {
-  if (!buttonRef.value?.$el.contains(evt.target as Node)) {
+  if (!containerRef.value?.contains(evt.target as Node)) {
     open.value = false;
   }
 }
 
-// Keyboard navigation
 function handleKeyDown(evt: KeyboardEvent) {
   if (open.value) {
     switch (evt.key) {
       case 'Escape':
         open.value = false;
-        buttonRef.value?.$el.focus();
+        containerRef.value?.querySelector('button')?.focus();
         break;
       case 'Tab':
         open.value = false;

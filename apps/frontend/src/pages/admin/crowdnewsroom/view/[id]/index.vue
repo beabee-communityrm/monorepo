@@ -52,7 +52,7 @@ meta:
     </div>
     <div class="flex flex-0 flex-wrap gap-2 lg:flex-col">
       <ActionButton
-        :icon="faEye"
+        icon="fa6-solid:eye"
         :to="`/crowdnewsroom/${callout.slug}?preview`"
       >
         {{
@@ -65,31 +65,31 @@ meta:
       <template v-if="canEdit">
         <ActionButton
           v-if="canEdit"
-          :icon="faPencilAlt"
+          icon="fa6-solid:pencil"
           :to="'/admin/crowdnewsroom/edit/' + callout.slug"
         >
           {{ t('actions.edit') }}
         </ActionButton>
         <ActionButton
           v-if="callout.status === ItemStatus.Open"
-          :icon="faHourglassEnd"
+          icon="fa6-solid:hourglass-end"
           @click="endThisCallout()"
         >
           {{ t('actions.endnow') }}
         </ActionButton>
         <ActionButton
           v-if="callout.status === ItemStatus.Ended"
-          :icon="faHourglassStart"
+          icon="fa6-solid:hourglass-start"
           @click="reopenThisCallout()"
         >
           {{ t('actions.reopen') }}
         </ActionButton>
       </template>
       <template v-if="canAdmin">
-        <ActionButton :icon="faClone" @click="replicateThisCallout()">
+        <ActionButton icon="fa6-solid:clone" @click="replicateThisCallout()">
           {{ t('actions.replicate') }}
         </ActionButton>
-        <ActionButton :icon="faTrash" @click="showDeleteModal = true">
+        <ActionButton icon="fa6-solid:trash" @click="showDeleteModal = true">
           {{ t('actions.delete') }}
         </ActionButton>
         <AppConfirmDialog
@@ -118,14 +118,6 @@ import {
   addNotification,
 } from '@beabee/vue';
 
-import {
-  faClone,
-  faEye,
-  faHourglassEnd,
-  faHourglassStart,
-  faPencilAlt,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';

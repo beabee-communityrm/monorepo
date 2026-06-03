@@ -24,8 +24,9 @@
       <template #value-downloadInvoice="{ item }">
         <AppButton
           size="xs"
-          :icon="faDownload"
-          variant="primaryOutlined"
+          icon="fa6-solid:download"
+          color="primary"
+          variant="outline"
           :href="client.payment.getInvoiceUrl(item.id)"
         />
       </template>
@@ -63,7 +64,6 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 

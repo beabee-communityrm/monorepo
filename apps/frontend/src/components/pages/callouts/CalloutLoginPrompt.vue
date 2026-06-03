@@ -4,10 +4,10 @@
       {{ t('callout.membersOnly') }}
     </p>
     <div class="mt-6 flex flex-col gap-4 sm:flex-row">
-      <AppButton class="w-full" variant="link" to="/join">
+      <AppButton class="w-full" color="link" variant="solid" to="/join">
         {{ t('callout.joinNow') }}
       </AppButton>
-      <AppButton class="w-full" variant="linkOutlined" to="/auth/login">
+      <AppButton class="w-full" color="link" variant="outline" to="/auth/login">
         {{ t('callout.loginToYourAccount') }}
       </AppButton>
     </div>

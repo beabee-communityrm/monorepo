@@ -2,29 +2,33 @@
   <AppButtonGroup>
     <AppButton
       type="button"
-      variant="primaryOutlined"
-      :icon="faStepBackward"
+      color="primary"
+      variant="outline"
+      icon="fa6-solid:backward-step"
       :disabled="isFirst"
       @click="emit('update:modelValue', 0)"
     />
     <AppButton
       type="button"
-      variant="primaryOutlined"
-      :icon="faCaretLeft"
+      color="primary"
+      variant="outline"
+      icon="fa6-solid:caret-left"
       :disabled="isFirst"
       @click="emit('update:modelValue', modelValue - 1)"
     />
     <AppButton
       type="button"
-      variant="primaryOutlined"
-      :icon="faCaretRight"
+      color="primary"
+      variant="outline"
+      icon="fa6-solid:caret-right"
       :disabled="isLast"
       @click="emit('update:modelValue', modelValue + 1)"
     />
     <AppButton
       type="button"
-      variant="primaryOutlined"
-      :icon="faStepForward"
+      color="primary"
+      variant="outline"
+      icon="fa6-solid:forward-step"
       :disabled="isLast"
       @click="emit('update:modelValue', totalPages - 1)"
     />
@@ -32,12 +36,6 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  faCaretLeft,
-  faCaretRight,
-  faStepBackward,
-  faStepForward,
-} from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 
 import { AppButton, AppButtonGroup } from '../button';

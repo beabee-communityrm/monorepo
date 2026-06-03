@@ -14,7 +14,7 @@ meta:
     </div>
     <div class="fixed right-5 bottom-5 md:hidden">
       <AppButton
-        :icon="faPlus"
+        icon="fa6-solid:plus"
         :title="t('notices.addNotice')"
         class="rounded-full drop-shadow-md"
         size="lg"
@@ -48,7 +48,7 @@ meta:
 import { type GetNoticeData, type Paginated } from '@beabee/beabee-common';
 import { AppButton, type Header, PageTitle, formatLocale } from '@beabee/vue';
 
-import { faPlus, faSignHanging } from '@fortawesome/free-solid-svg-icons';
+import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 

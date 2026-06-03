@@ -52,7 +52,12 @@
 
       <!-- Retry Button -->
       <div v-if="showRetry" class="mb-4">
-        <AppButton variant="primaryOutlined" size="sm" @click="handleRetry">
+        <AppButton
+          color="primary"
+          variant="outline"
+          size="sm"
+          @click="handleRetry"
+        >
           {{ t('actions.tryAgain') }}
         </AppButton>
       </div>

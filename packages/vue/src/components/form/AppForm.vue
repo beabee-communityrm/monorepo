@@ -19,14 +19,20 @@
     <div class="flex gap-2">
       <AppButton
         type="submit"
-        variant="link"
+        color="link"
+        variant="solid"
         :loading="isLoading"
         :disabled="validation.$invalid"
         :class="fullButton ? 'w-full' : ''"
       >
         {{ buttonText }}
       </AppButton>
-      <AppButton v-if="resetButtonText" variant="text" @click="emit('reset')">
+      <AppButton
+        v-if="resetButtonText"
+        color="link"
+        variant="link"
+        @click="emit('reset')"
+      >
         {{ resetButtonText }}
       </AppButton>
       <slot name="buttons" :disabled="validation.$invalid" />

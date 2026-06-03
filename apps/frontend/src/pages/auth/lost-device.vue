@@ -42,7 +42,7 @@ meta:
     </template>
 
     <div class="mt-2 text-center">
-      <AppButton to="/auth/login" variant="text" size="sm">
+      <AppButton to="/auth/login" color="link" variant="link" size="sm">
         {{ t('actions.backToLogin') }}
       </AppButton>
     </div>

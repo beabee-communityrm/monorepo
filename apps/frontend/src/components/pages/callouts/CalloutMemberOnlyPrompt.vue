@@ -6,7 +6,8 @@
     </p>
     <AppButton
       class="mt-4 w-full sm:w-1/2"
-      variant="link"
+      color="link"
+      variant="solid"
       to="/profile/contribution"
     >
       {{ t('callout.toContributionPage') }}

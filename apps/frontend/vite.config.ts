@@ -1,4 +1,7 @@
+import { nuxtUiOptions } from '@beabee/vue/lib/nuxt-ui-options';
+
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
+import ui from '@nuxt/ui/vite';
 import replace from '@rollup/plugin-replace';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
@@ -28,6 +31,7 @@ export default ({ command, mode }) => {
       routeBlockLang: 'yaml',
     }),
     vue(),
+    ui(nuxtUiOptions),
     vueI18n({
       include: LOCALE_PATH,
       strictMessage: false,

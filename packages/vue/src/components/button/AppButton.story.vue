@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { faEdit, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 
 import AppButton, {
+  type ButtonColor,
   type ButtonSize,
   type ButtonVariant,
 } from './AppButton.vue';
@@ -10,32 +10,29 @@ import AppButton, {
 const state = reactive({
   disabled: false,
   loading: false,
-  variant: 'primary' as ButtonVariant,
+  color: 'primary' as ButtonColor,
+  variant: 'solid' as ButtonVariant,
   size: 'md' as ButtonSize,
   text: 'Button Text',
-  icon: undefined,
+  icon: undefined as string | undefined,
 });
 
+const colors: ButtonColor[] = ['primary', 'link', 'danger', 'neutral'];
 const variants: ButtonVariant[] = [
-  'primary',
+  'solid',
+  'outline',
+  'ghost',
   'link',
-  'danger',
-  'primaryOutlined',
-  'linkOutlined',
-  'dangerOutlined',
-  'dangerGhost',
-  'greyOutlined',
-  'text',
-  'dangerText',
+  'soft',
+  'subtle',
 ];
+const sizes: ButtonSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
-const sizes: ButtonSize[] = ['xs', 'sm', 'md', 'lg'];
-
-const icons = {
+const icons: Record<string, string | undefined> = {
   none: undefined,
-  user: faUser,
-  edit: faEdit,
-  trash: faTrash,
+  user: 'fa6-solid:user',
+  edit: 'fa6-solid:pen-to-square',
+  trash: 'fa6-solid:trash',
 };
 </script>
 
@@ -46,6 +43,7 @@ const icons = {
         <AppButton
           :disabled="state.disabled"
           :loading="state.loading"
+          :color="state.color"
           :variant="state.variant"
           :size="state.size"
           :icon="state.icon"
@@ -56,6 +54,7 @@ const icons = {
 
       <template #controls>
         <HstText v-model="state.text" title="Button Text" />
+        <HstSelect v-model="state.color" title="Color" :options="colors" />
         <HstSelect
           v-model="state.variant"
           title="Variant"
@@ -77,11 +76,15 @@ const icons = {
     <Variant title="Variants">
       <div class="grid grid-cols-3 gap-4">
         <div
-          v-for="variant in variants"
-          :key="variant"
+          v-for="color in colors"
+          :key="color"
           class="flex flex-col items-center gap-2"
         >
-          <AppButton :variant="variant">{{ variant }}</AppButton>
+          <div v-for="variant in variants" :key="variant" class="flex gap-2">
+            <AppButton :color="color" :variant="variant"
+              >{{ color }}/{{ variant }}</AppButton
+            >
+          </div>
         </div>
       </div>
     </Variant>
@@ -100,9 +103,16 @@ const icons = {
 
     <Variant title="With Icons">
       <div class="flex gap-4">
-        <AppButton :icon="faUser">With Icon</AppButton>
-        <AppButton :icon="faEdit" variant="primaryOutlined">Edit</AppButton>
-        <AppButton :icon="faTrash" variant="danger">Delete</AppButton>
+        <AppButton icon="fa6-solid:user">With Icon</AppButton>
+        <AppButton
+          icon="fa6-solid:pen-to-square"
+          color="primary"
+          variant="outline"
+          >Edit</AppButton
+        >
+        <AppButton icon="fa6-solid:trash" color="danger" variant="solid"
+          >Delete</AppButton
+        >
       </div>
     </Variant>
 

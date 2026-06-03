@@ -3,7 +3,8 @@
     <div class="mb-2 flex gap-2">
       <slot name="before"></slot>
       <AppButton
-        variant="primaryOutlined"
+        color="primary"
+        variant="outline"
         size="sm"
         :icon="buttonIcon"
         :class="
@@ -27,7 +28,6 @@
 </template>
 
 <script setup lang="ts">
-import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 import { AppButton } from '../button';
@@ -47,8 +47,8 @@ import { AppButton } from '../button';
  */
 
 defineProps<{
-  /** Icon to display on the toggle button */
-  buttonIcon: IconDefinition;
+  /** Iconify icon string for the toggle button, e.g. "fa6-solid:share" */
+  buttonIcon: string;
   /** Text to display on the toggle button */
   buttonText: string;
 }>();

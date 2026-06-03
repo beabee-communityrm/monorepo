@@ -50,9 +50,10 @@
 
               <!-- Insert button -->
               <AppButton
-                variant="primary"
+                color="primary"
+                variant="solid"
                 size="xs"
-                :icon="faPlus"
+                icon="fa6-solid:plus"
                 :name="t('mergeFields.insertTag', { tag: tag.tag })"
                 :title="t('mergeFields.insert')"
                 class="h-7 w-7"

@@ -60,7 +60,9 @@ const state = reactive({
     <Variant title="With Slot Content">
       <PageTitle title="With Slot">
         <AppButton>Danger Action</AppButton>
-        <AppButton variant="dangerOutlined" class="ml-2">Danger</AppButton>
+        <AppButton color="danger" variant="outline" class="ml-2"
+          >Danger</AppButton
+        >
       </PageTitle>
     </Variant>
   </Story>

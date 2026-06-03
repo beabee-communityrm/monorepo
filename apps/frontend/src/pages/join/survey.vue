@@ -25,7 +25,7 @@ meta:
       @submitted="goToProfile"
     />
     <div v-if="!setupContent.surveyRequired" class="text-center">
-      <AppButton variant="text" @click="goToProfile">
+      <AppButton color="link" variant="link" @click="goToProfile">
         {{ t('actions.skip') }}
       </AppButton>
     </div>

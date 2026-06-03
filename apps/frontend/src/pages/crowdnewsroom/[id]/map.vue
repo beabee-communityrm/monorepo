@@ -127,7 +127,8 @@ meta:
       class="absolute right-8 bottom-8 hidden md:block"
     >
       <AppButton
-        variant="link"
+        color="link"
+        variant="solid"
         class="shadow-md"
         @click.prevent="handleStartAddMode"
       >
@@ -143,7 +144,8 @@ meta:
       <div>
         <AppButton
           v-if="showAddButton"
-          variant="link"
+          color="link"
+          variant="solid"
           class="px-2"
           @click.prevent="handleStartAddMode"
         >

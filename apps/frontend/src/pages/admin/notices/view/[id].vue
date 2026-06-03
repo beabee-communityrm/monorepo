@@ -18,13 +18,13 @@ meta:
 
       <div class="flex flex-0 flex-wrap gap-2 lg:flex-col">
         <ActionButton
-          :icon="faPencilAlt"
+          icon="fa6-solid:pencil"
           :to="`/admin/notices/edit/${notice.id}`"
         >
           {{ t('actions.edit') }}
         </ActionButton>
 
-        <ActionButton :icon="faTrash" @click="showDeleteModal = true">
+        <ActionButton icon="fa6-solid:trash" @click="showDeleteModal = true">
           {{ t('actions.delete') }}
         </ActionButton>
 
@@ -54,11 +54,7 @@ import {
   PageTitle,
 } from '@beabee/vue';
 
-import {
-  faPencilAlt,
-  faSignHanging,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';

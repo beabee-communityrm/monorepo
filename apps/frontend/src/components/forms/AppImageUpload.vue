@@ -20,7 +20,7 @@
         </span>
       </div>
       <div>
-        <AppButton is="label" class="mr-2">
+        <AppButton as="label" class="mr-2">
           <input
             ref="inputRef"
             type="file"

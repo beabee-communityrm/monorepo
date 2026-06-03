@@ -25,28 +25,28 @@
       :aria-label="t('form.richtext.toolbar')"
     >
       <AppRichTextEditorButton
-        :icon="faBold"
+        icon="fa6-solid:bold"
         :title="t('form.richtext.bold')"
         :active="editor.isActive('bold')"
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleBold())"
       />
       <AppRichTextEditorButton
-        :icon="faItalic"
+        icon="fa6-solid:italic"
         :title="t('form.richtext.italic')"
         :active="editor.isActive('italic')"
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleItalic())"
       />
       <AppRichTextEditorButton
-        :icon="faUnderline"
+        icon="fa6-solid:underline"
         :title="t('form.richtext.underline')"
         :active="editor.isActive('underline')"
         :disabled="disabled"
         @click="run((cmd) => cmd.toggleUnderline())"
       />
       <AppRichTextEditorButton
-        :icon="faStrikethrough"
+        icon="fa6-solid:strikethrough"
         :title="t('form.richtext.strikethrough')"
         :active="editor.isActive('strike')"
         :disabled="disabled"
@@ -54,21 +54,21 @@
       />
       <template v-if="controls !== 'inline'">
         <AppRichTextEditorButton
-          :icon="faHeading"
+          icon="fa6-solid:heading"
           :title="t('form.richtext.heading')"
           :active="editor.isActive('heading', { level: 3 })"
           :disabled="disabled"
           @click="run((cmd) => cmd.toggleHeading({ level: 3 }))"
         />
         <AppRichTextEditorButton
-          :icon="faList"
+          icon="fa6-solid:list"
           :title="t('form.richtext.bulletlist')"
           :active="editor.isActive('bulletList')"
           :disabled="disabled"
           @click="run((cmd) => cmd.toggleBulletList())"
         />
         <AppRichTextEditorButton
-          :icon="faListOl"
+          icon="fa6-solid:list-ol"
           :title="t('form.richtext.numberedlist')"
           :active="editor.isActive('orderedList')"
           :disabled="disabled"
@@ -76,7 +76,7 @@
         />
       </template>
       <AppRichTextEditorButton
-        :icon="faLink"
+        icon="fa6-solid:link"
         :title="t('form.richtext.link')"
         :active="editor.isActive('link')"
         :disabled="disabled"
@@ -123,16 +123,6 @@
  *
  * @component AppRichTextEditor
  */
-import {
-  faBold,
-  faHeading,
-  faItalic,
-  faLink,
-  faList,
-  faListOl,
-  faStrikethrough,
-  faUnderline,
-} from '@fortawesome/free-solid-svg-icons';
 import Typography from '@tiptap/extension-typography';
 import StarterKit from '@tiptap/starter-kit';
 import { type ChainedCommands, EditorContent, useEditor } from '@tiptap/vue-3';

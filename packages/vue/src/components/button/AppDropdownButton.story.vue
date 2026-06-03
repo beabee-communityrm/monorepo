@@ -1,42 +1,30 @@
 <script lang="ts" setup>
-import {
-  faCheck,
-  faCog,
-  faFolder,
-  faGlobe,
-  faTag,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { reactive, ref } from 'vue';
 
 import { AppSelectableList } from '../list';
-import AppDropdownButton, {
-  type DropdownButtonVariant,
-} from './AppDropdownButton.vue';
+import AppDropdownButton from './AppDropdownButton.vue';
+import type { ButtonColor, ButtonVariant } from './AppButton.vue';
 
 const state = reactive({
-  icon: faUser,
+  icon: 'fa6-solid:user',
   title: 'Select User',
-  variant: 'primaryOutlined' as DropdownButtonVariant,
+  color: 'primary' as ButtonColor,
+  variant: 'outline' as ButtonVariant,
   showTitle: true,
   disabled: false,
 });
 
-const variants: DropdownButtonVariant[] = [
-  'primaryOutlined',
-  'linkOutlined',
-  'dangerOutlined',
-  'greyOutlined',
-];
+const colors: ButtonColor[] = ['primary', 'link', 'danger', 'neutral'];
+const variants: ButtonVariant[] = ['solid', 'outline', 'ghost'];
 
-const icons = {
-  user: faUser,
-  tag: faTag,
-  folder: faFolder,
-  globe: faGlobe,
+const icons: Record<string, string> = {
+  user: 'fa6-solid:user',
+  tag: 'fa6-solid:tag',
+  folder: 'fa6-solid:folder',
+  globe: 'fa6-solid:globe',
 };
 
-// Sample data for examples
 const users = [
   { id: '1', label: 'John Doe' },
   { id: '2', label: 'Jane Smith' },
@@ -63,12 +51,10 @@ const languages = [
   { id: 'es', label: 'Español' },
 ];
 
-// Track selected items for interactive examples
 const selectedUserId = ref<string | null>(null);
 const selectedTagIds = ref<string[]>([]);
 const currentBucket = ref('inbox');
 
-// Handler functions
 function handleAssign(item: { id: string; label: string }, selected: boolean) {
   selectedUserId.value = selected ? null : item.id;
 }
@@ -89,7 +75,6 @@ function handleMoveBucket(item: { id: string; label: string }) {
 }
 
 function handleSelectLanguage(item: { id: string; label: string }) {
-  // Just for demonstration
   state.title = item.label;
 }
 </script>
@@ -100,6 +85,7 @@ function handleSelectLanguage(item: { id: string; label: string }) {
       <AppDropdownButton
         :icon="state.icon"
         :title="state.title"
+        :color="state.color"
         :variant="state.variant"
         :show-title="state.showTitle"
         :disabled="state.disabled"
@@ -120,6 +106,7 @@ function handleSelectLanguage(item: { id: string; label: string }) {
             Object.entries(icons).map(([key, value]) => ({ label: key, value }))
           "
         />
+        <HstSelect v-model="state.color" title="Color" :options="colors" />
         <HstSelect
           v-model="state.variant"
           title="Variant"
@@ -130,25 +117,12 @@ function handleSelectLanguage(item: { id: string; label: string }) {
       </template>
     </Variant>
 
-    <Variant title="Icon Only">
-      <AppDropdownButton
-        :icon="faUser"
-        title="Select User"
-        variant="primaryOutlined"
-      >
-        <div class="p-4">
-          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 1</div>
-          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 2</div>
-          <div class="cursor-pointer p-2 hover:bg-grey-lighter">User 3</div>
-        </div>
-      </AppDropdownButton>
-    </Variant>
-
     <Variant title="Assign User Example">
       <AppDropdownButton
-        :icon="faUser"
+        icon="fa6-solid:user"
         title="Assign To"
-        variant="primaryOutlined"
+        color="primary"
+        variant="outline"
         show-title
       >
         <AppSelectableList
@@ -164,9 +138,10 @@ function handleSelectLanguage(item: { id: string; label: string }) {
 
     <Variant title="Tag Selection Example">
       <AppDropdownButton
-        :icon="faTag"
+        icon="fa6-solid:tag"
         title="Toggle Tags"
-        variant="primaryOutlined"
+        color="primary"
+        variant="outline"
         show-title
       >
         <p v-if="tags.length === 0" class="px-3 py-2 italic">
@@ -179,9 +154,10 @@ function handleSelectLanguage(item: { id: string; label: string }) {
           :selected-item-ids="selectedTagIds"
           @click="handleToggleTag"
         >
-          <font-awesome-icon :icon="faTag" class="mr-2" />{{ item.label }}
+          <font-awesome-icon :icon="['fas', 'tag']" class="mr-2" />{{
+            item.label
+          }}
         </AppSelectableList>
-
         <router-link
           class="block border-t border-primary-40 px-3 py-2 font-semibold text-primary underline hover:bg-primary-5"
           to="#"
@@ -193,9 +169,10 @@ function handleSelectLanguage(item: { id: string; label: string }) {
 
     <Variant title="Move Bucket Example">
       <AppDropdownButton
-        :icon="faFolder"
+        icon="fa6-solid:folder"
         title="Move to Bucket"
-        variant="primaryOutlined"
+        color="primary"
+        variant="outline"
         show-title
       >
         <AppSelectableList
@@ -210,9 +187,10 @@ function handleSelectLanguage(item: { id: string; label: string }) {
 
     <Variant title="Language Selection Example">
       <AppDropdownButton
-        :icon="faGlobe"
+        icon="fa6-solid:globe"
         title="English"
-        variant="greyOutlined"
+        color="neutral"
+        variant="outline"
         show-title
       >
         <AppSelectableList
@@ -220,28 +198,11 @@ function handleSelectLanguage(item: { id: string; label: string }) {
           :items="languages"
           @click="handleSelectLanguage"
         >
-          <font-awesome-icon :icon="faGlobe" class="mr-2" />{{ item.label }}
+          <font-awesome-icon :icon="['fas', 'globe']" class="mr-2" />{{
+            item.label
+          }}
         </AppSelectableList>
       </AppDropdownButton>
-    </Variant>
-
-    <Variant title="Different Variants">
-      <div class="flex gap-4">
-        <AppDropdownButton
-          v-for="variant in variants"
-          :key="variant"
-          :icon="faUser"
-          :title="variant"
-          :variant="variant"
-          show-title
-        >
-          <div class="p-2">
-            <div class="cursor-pointer p-2 hover:bg-grey-lighter">Option 1</div>
-            <div class="cursor-pointer p-2 hover:bg-grey-lighter">Option 2</div>
-            <div class="cursor-pointer p-2 hover:bg-grey-lighter">Option 3</div>
-          </div>
-        </AppDropdownButton>
-      </div>
     </Variant>
   </Story>
 </template>

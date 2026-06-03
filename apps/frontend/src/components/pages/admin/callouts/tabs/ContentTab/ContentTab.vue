@@ -33,9 +33,10 @@
             {{ t('callout.builder.slidesTitle') }}
           </h2>
           <AppButton
-            variant="primary"
+            color="primary"
+            variant="solid"
             size="sm"
-            :icon="faPlus"
+            icon="fa6-solid:plus"
             :title="t('callout.builder.actions.addSlide')"
             @click="handleAddSlide"
           >
@@ -89,7 +90,6 @@
 import { ItemStatus } from '@beabee/beabee-common';
 import { AppButton, AppNotification } from '@beabee/vue';
 
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { computed, markRaw, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';

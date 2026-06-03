@@ -10,7 +10,12 @@
       <img class="mb-6 w-full" :src="imageUrl" />
       <div class="content-message mb-6 text-lg" v-html="callout.intro" />
 
-      <AppButton variant="primary" class="px-6" @click="$emit('close')">
+      <AppButton
+        color="primary"
+        variant="solid"
+        class="px-6"
+        @click="$emit('close')"
+      >
         {{ t('actions.getStarted') }}
       </AppButton>
       <ul class="mt-8 w-full border-t border-primary-40 pt-4 text-sm">

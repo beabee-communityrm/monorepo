@@ -12,7 +12,7 @@ meta:
     </div>
     <div class="fixed right-5 bottom-5 md:hidden">
       <AppButton
-        :icon="faPlus"
+        icon="fa6-solid:plus"
         :title="t('calloutsAdmin.addCallout')"
         class="rounded-full drop-shadow-md"
         size="lg"
@@ -85,7 +85,6 @@ import {
   faBullhorn,
   faEye,
   faEyeSlash,
-  faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';

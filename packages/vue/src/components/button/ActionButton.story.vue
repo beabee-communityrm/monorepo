@@ -1,56 +1,37 @@
 <script lang="ts" setup>
-import {
-  faClone,
-  faDownload,
-  faEdit,
-  faEye,
-  faHourglassEnd,
-  faHourglassStart,
-  faPencilAlt,
-  faPlus,
-  faTrash,
-  faUpload,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
 import { reactive } from 'vue';
 
 import ActionButton from './ActionButton.vue';
 
 const state = reactive({
-  icon: faEdit,
+  icon: 'fa6-solid:pen-to-square',
   text: 'Edit Item',
 });
 
-const icons = {
-  eye: faEye,
-  pencil: faPencilAlt,
-  clone: faClone,
-  trash: faTrash,
-  hourglassStart: faHourglassStart,
-  hourglassEnd: faHourglassEnd,
-  user: faUser,
-  plus: faPlus,
-  download: faDownload,
-  upload: faUpload,
+const icons: Record<string, string> = {
+  eye: 'fa6-solid:eye',
+  pencil: 'fa6-solid:pencil',
+  clone: 'fa6-solid:clone',
+  trash: 'fa6-solid:trash',
+  hourglassStart: 'fa6-solid:hourglass-start',
+  hourglassEnd: 'fa6-solid:hourglass-end',
+  user: 'fa6-solid:user',
+  plus: 'fa6-solid:plus',
+  download: 'fa6-solid:download',
+  upload: 'fa6-solid:upload',
 };
 
-// Common actions including callout actions and other general actions
 const commonActions = [
-  // Callout actions
-  { icon: faEye, text: 'View' },
-  { icon: faPencilAlt, text: 'Edit' },
-  { icon: faClone, text: 'Replicate' },
-  { icon: faHourglassEnd, text: 'End Now' },
-  { icon: faHourglassStart, text: 'Reopen' },
-  { icon: faTrash, text: 'Delete' },
-  // Other common actions
-  { icon: faPlus, text: 'Add New' },
-  { icon: faDownload, text: 'Download' },
-  { icon: faUpload, text: 'Upload' },
+  { icon: 'fa6-solid:eye', text: 'View' },
+  { icon: 'fa6-solid:pencil', text: 'Edit' },
+  { icon: 'fa6-solid:clone', text: 'Replicate' },
+  { icon: 'fa6-solid:hourglass-end', text: 'End Now' },
+  { icon: 'fa6-solid:hourglass-start', text: 'Reopen' },
+  { icon: 'fa6-solid:trash', text: 'Delete' },
+  { icon: 'fa6-solid:plus', text: 'Add New' },
+  { icon: 'fa6-solid:download', text: 'Download' },
+  { icon: 'fa6-solid:upload', text: 'Upload' },
 ];
-
-// Callout actions subset for specific examples
-const calloutActions = commonActions.slice(0, 6);
 </script>
 
 <template>

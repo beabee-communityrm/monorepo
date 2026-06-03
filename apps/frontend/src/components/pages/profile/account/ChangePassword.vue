@@ -5,8 +5,9 @@
 
   <AppButton
     v-if="!showForm"
-    variant="primaryOutlined"
-    :icon="faKey"
+    color="primary"
+    variant="outline"
+    icon="fa6-solid:key"
     @click="
       showForm = true;
       saved = false;
@@ -50,7 +51,6 @@
 <script lang="ts" setup>
 import { AppButton, AppHeading, AppInput } from '@beabee/vue';
 
-import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
