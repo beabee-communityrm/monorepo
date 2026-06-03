@@ -144,7 +144,7 @@ test("Join Flow", async ({ page, browserName }) => {
     await page.waitForURL(/\/profile/);
     console.log("Login successful");
 
-    await page.getByRole("link", { name: "Contribution" }).click();
+    await page.getByRole("link", { name: /contribution/i }).click();
     await page.waitForURL("/profile/contribution");
 
     await expect(
