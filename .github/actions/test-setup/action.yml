@@ -29,10 +29,10 @@ runs:
     - name: Import test data
       shell: bash
       run: |
-        cat ./test-utils/fixtures/test-db-default.sql \
+        cat ./packages/test-utils/fixtures/test-db-default.sql \
           | docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database import
 
-        cat ./test-utils/fixtures/test-db-custom.sql \
+        cat ./packages/test-utils/fixtures/test-db-custom.sql \
           | sed \
               -e "s|__stripeWebhookSecret__|${{ inputs.stripe_webhook_secret }}|" \
               -e "s|__stripeProductId__|${{ inputs.stripe_membership_product_id }}|" \
