@@ -16,7 +16,6 @@
     </div>
     <div class="min-w-0 flex-1">
       <p class="font-semibold">{{ integration.name }}</p>
-      <p class="text-sm text-body-80">{{ integration.description }}</p>
     </div>
     <div class="flex items-center gap-2">
       <StatusPill :type="statusType[integration.status]">
@@ -27,6 +26,7 @@
         variant="greyOutlined"
         size="sm"
         :icon="faRotate"
+        @click="$emit('refresh')"
       >
         {{ t('adminSettings.integrations.refresh') }}
       </AppButton>
@@ -43,6 +43,7 @@ import type { Integration, IntegrationStatus } from '#type/integration';
 import StatusPill from './StatusPill.vue';
 
 defineProps<{ integration: Integration }>();
+defineEmits<{ refresh: [] }>();
 
 const { t } = useI18n();
 

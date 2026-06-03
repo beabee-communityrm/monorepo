@@ -8,14 +8,13 @@ export interface IntegrationGroup {
 }
 
 export interface Integration {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
+  provider: string;
+  name: string;        // frontend-mapped from provider
+  category: string;    // frontend-mapped from endpoint
   status: IntegrationStatus;
-  color: string;
-  textColor?: string;
-  icon?: IconDefinition;
+  color: string;       // frontend-mapped
+  textColor?: string;  // frontend-mapped
+  icon?: IconDefinition; // frontend-mapped
   audienceId?: string;
   groups?: IntegrationGroup[];
 }
