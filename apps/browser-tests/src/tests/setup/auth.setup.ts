@@ -2,7 +2,8 @@ import { test as setup, expect } from "@playwright/test";
 import {
   rateLimitedTestUser as member,
   testUser as admin,
-} from "../../../../test-utils/fixtures/test-data.json";
+} from "@beabee/test-utils/test-data";
+
 import { nonAdminAuthFile, adminAuthFile } from "./auth-states";
 
 setup("authenticate as non-admin user", async ({ page }) => {
@@ -31,6 +32,6 @@ setup("authenticate as admin", async ({ page }) => {
   ).toBeEnabled();
   await page.getByRole("button", { name: /login/i }).click();
 
-  await page.waitForURL(/\/profile/);
+  await page.waitForURL(/\/admin/);
   await page.context().storageState({ path: adminAuthFile });
 });

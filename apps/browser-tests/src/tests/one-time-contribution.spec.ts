@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { cardInfo } from "../../../../test-utils/fixtures/test-data.json";
+import { cardInfo } from "@beabee/test-utils/test-data";
 import { nonAdminAuthFile } from "../setup/auth-states";
 
 const contributionAmount = "5";

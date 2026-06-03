@@ -1,12 +1,8 @@
 import type { UpdateEmailData } from '@beabee/beabee-common';
 import { EmailClient, EmailTemplateClient } from '@beabee/client';
+import { api, testUser } from '@beabee/test-utils/test-data';
 
 import { beforeAll, describe, expect, it } from 'vitest';
-
-import {
-  api,
-  testUser,
-} from '../../../../../test-utils/fixtures/test-data.json';
 
 describe('Email Template API', () => {
   let client: EmailTemplateClient;

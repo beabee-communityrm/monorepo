@@ -4,14 +4,10 @@ import type {
   Paginated,
 } from '@beabee/beabee-common';
 import { ApiKeyClient, AuthClient } from '@beabee/client';
+import { api, testUser } from '@beabee/test-utils/test-data';
 
 import { addDays } from 'date-fns';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-
-import {
-  api,
-  testUser,
-} from '../../../../../test-utils/fixtures/test-data.json';
 
 describe('ApiKey API', () => {
   let apiKeyClient: ApiKeyClient;
