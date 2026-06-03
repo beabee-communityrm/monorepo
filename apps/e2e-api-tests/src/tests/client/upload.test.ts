@@ -3,9 +3,12 @@ import { BeabeeClient, UnsupportedFileTypeError } from '@beabee/client';
 import { resolve } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { api, testUser } from '#fixtures/api-test-info.json';
 import { createTestFile } from '#utils/file.ts';
 
+import {
+  api,
+  testUser,
+} from '../../../../../test-utils/fixtures/test-data.json';
 import { FIXTURE_PATH } from '../../env';
 
 describe('Upload API', () => {

@@ -1,5 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { signInAdmin, signIn } from "#fixtures/testData.json";
+import {
+  rateLimitedTestUser as member,
+  testUser as admin,
+} from "../../../../test-utils/fixtures/test-data.json";
 
 const memberName = "member"; // at least 5 characters long
 const guestName = "guest"; // at least 5 characters long
@@ -39,8 +42,8 @@ test("Answer callout", async ({ page }) => {
 
   await test.step("Answer as member", async () => {
     await page.goto("/auth/login");
-    await page.locator('input[name="email"]').fill(signIn.email);
-    await page.locator('input[name="password"]').fill(signIn.password);
+    await page.locator('input[name="email"]').fill(member.email);
+    await page.locator('input[name="password"]').fill(member.password);
 
     const loginBtn = page.getByRole("button", { name: /login/i });
     await expect(loginBtn, "Login button enabled").toBeEnabled();
@@ -65,7 +68,7 @@ test("Answer callout", async ({ page }) => {
     const nameField = page.locator('input[name="data[name]"]');
     await nameField.pressSequentially(memberName.slice(0, 2), { delay: 100 }); // Fill name field to show checkbox
 
-    await page.locator('input[name="data[email]"]').fill(signIn.email);
+    await page.locator('input[name="data[email]"]').fill(member.email);
     await page.getByRole("checkbox", { name: /vitest/i }).check();
 
     await nameField.fill(memberName); // Displaying checkbox re-renders parts of the form. Fill name field properly here
@@ -90,8 +93,8 @@ test("Answer callout", async ({ page }) => {
   await test.step("Verify responses", async () => {
     await page.goto("/admin/crowdnewsroom");
 
-    await page.locator('input[name="email"]').fill(signInAdmin.email);
-    await page.locator('input[name="password"]').fill(signInAdmin.password);
+    await page.locator('input[name="email"]').fill(admin.email);
+    await page.locator('input[name="password"]').fill(admin.password);
     await page.getByRole("button", { name: /login/i }).click();
 
     await page.waitForURL(/\/crowdnewsroom/);
@@ -114,7 +117,7 @@ test("Answer callout", async ({ page }) => {
     ).toBeVisible();
 
     await expect(page.getByText(memberName, { exact: true })).toBeVisible();
-    await expect(page.getByText(signIn.email, { exact: true })).toBeVisible();
+    await expect(page.getByText(member.email, { exact: true })).toBeVisible();
     await expect(page.getByText(/vitest/i)).toBeVisible();
 
     await page.goBack();

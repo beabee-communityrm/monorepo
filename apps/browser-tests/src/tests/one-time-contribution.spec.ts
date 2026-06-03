@@ -1,8 +1,11 @@
 import { test, expect } from "@playwright/test";
-import { cardInfo, signIn } from "#fixtures/testData.json";
+import {
+  rateLimitedTestUser as member,
+  cardInfo,
+} from "../../../../test-utils/fixtures/test-data.json";
 
-const email: string = signIn.email;
-const testPw: string = signIn.password;
+const email: string = member.email;
+const testPw: string = member.password;
 const contributionAmount = "5";
 let contributionDate = new Date().toLocaleString("en-GB", {
   day: "numeric",

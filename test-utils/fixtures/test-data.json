@@ -16,5 +16,17 @@
     "email": "api_ratelimittest@beabee.io",
     "password": "playWRIGHT09",
     "apiKey": "9bff5e02b1ab24eb_76013c4793774580edfcaa1991673938e6c670b5cea7be9e"
+  },
+  "oneTimeSignUp": {
+    "email": "@hogwarts.co.uk",
+    "firstName": "Harry",
+    "lastName": "Potter",
+    "password": "IdenticalCobalt8",
+    "contributionAmount": "3"
+  },
+  "cardInfo": {
+    "number": "4242 4242 4242 4242",
+    "cvv": "111",
+    "validUntil": "12/35"
   }
 }

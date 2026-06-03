@@ -3,7 +3,10 @@ import { AuthClient, UnauthorizedError } from '@beabee/client';
 
 import { afterEach, beforeAll, describe, expect, it } from 'vitest';
 
-import { api, testUser } from '#fixtures/api-test-info.json';
+import {
+  api,
+  testUser,
+} from '../../../../../test-utils/fixtures/test-data.json';
 
 describe('Auth API', () => {
   let authTokenClient: AuthClient;
