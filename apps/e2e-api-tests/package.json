@@ -9,7 +9,6 @@
     "format": "prettier --write ."
   },
   "imports": {
-    "#fixtures/*": "./src/fixtures/*",
     "#utils/*": "./src/utils/*"
   },
   "dependencies": {

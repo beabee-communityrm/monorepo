@@ -4,9 +4,12 @@ import { BeabeeClient, TooManyRequestsError } from '@beabee/client';
 import { resolve } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { api, rateLimitedTestUser } from '#fixtures/api-test-info.json';
 import { createTestFile } from '#utils/file.ts';
 
+import {
+  api,
+  rateLimitedTestUser,
+} from '../../../../../test-utils/fixtures/test-data.json';
 import { FIXTURE_PATH } from '../../env';
 
 describe('Rate Limits', () => {

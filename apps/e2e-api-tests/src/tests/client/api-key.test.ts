@@ -8,7 +8,10 @@ import { ApiKeyClient, AuthClient } from '@beabee/client';
 import { addDays } from 'date-fns';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-import { api, testUser } from '#fixtures/api-test-info.json';
+import {
+  api,
+  testUser,
+} from '../../../../../test-utils/fixtures/test-data.json';
 
 describe('ApiKey API', () => {
   let apiKeyClient: ApiKeyClient;

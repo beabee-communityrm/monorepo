@@ -3,8 +3,10 @@ import { BeabeeClient, NoticeClient } from '@beabee/client';
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-import { api, testUser } from '#fixtures/api-test-info.json';
-
+import {
+  api,
+  testUser,
+} from '../../../../../test-utils/fixtures/test-data.json';
 import { testNotice, testNoticeUpdate } from '../../fixtures/notices.js';
 
 describe('Notice API', () => {

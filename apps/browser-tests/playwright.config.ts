@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: "src/tests",
   fullyParallel: false, // tests in a single test file are always run in order. this parallelizes only multiple test files
   reporter: "html",
-  workers: 1,
+  workers: 4,
 
   use: {
     baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://localhost:4002/",
