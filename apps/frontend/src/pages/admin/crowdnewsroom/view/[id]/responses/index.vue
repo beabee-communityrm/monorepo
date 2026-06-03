@@ -259,7 +259,7 @@ import {
 
 import { useSegmentManagement } from '../../../../../../composables/useSegmentManagement';
 import { useTagFilter } from '../../../../../../composables/useTagFilter';
-import { useSelectionState } from '../../../../../../composables/useSelectionState';
+import { usePaginatedSelectionState } from '../../../../../../composables/useSelectionState';
 
 /**
  * Callout Responses Table Component
@@ -297,10 +297,7 @@ const responses =
   >();
 
 const { selectionState, selectedPageItems, selectedCount, getSelectionRules } =
-  useSelectionState(
-    computed(() => responses.value?.items ?? []),
-    computed(() => responses.value?.total ?? 0)
-  );
+  usePaginatedSelectionState(responses);
 
 /**
  * Tag Management
@@ -526,7 +523,7 @@ async function refreshResponses() {
       _with.push(GetCalloutResponseWith.Answers);
     }
 
-    const newResponses = await client.callout.listResponses(
+    responses.value = await client.callout.listResponses(
       props.callout.slug,
       {
         ...currentPaginatedQuery.query,
@@ -534,8 +531,6 @@ async function refreshResponses() {
       },
       _with
     );
-
-    responses.value = newResponses;
   } catch (err) {
     responses.value = emptyTable();
     addNotification({

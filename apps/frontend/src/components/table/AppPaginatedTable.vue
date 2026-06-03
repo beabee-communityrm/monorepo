@@ -80,7 +80,7 @@ import { type Paginated } from '../../type/paginated';
 import { type Header, type Item, type Sort } from '../../type/table';
 import AppPaginatedTableResult from './AppPaginatedTableResult.vue';
 import SelectAllBanner from './SelectAllBanner.vue';
-import type { SelectionState } from '#composables/useSelectionState';
+import type { SelectionState } from '../../type/selection-state';
 
 const props = defineProps<{
   headers: Header[];
@@ -133,31 +133,27 @@ const selectedIds = computed({
       return allIdsOnPage.value.filter((id) => ids.includes(id));
     }
   },
-  set: (val) => {
+  set: (newSelectedIds) => {
+    // Preserves selections/exclusions from other pages and only replaces
+    // the selection state for IDs on the current page
     if (selectionState.value.mode === 'all') {
-      const currentExcludedIds = selectionState.value.excludedIds;
       const newExcludedIds = allIdsOnPage.value.filter(
-        (id) => !val.includes(id)
+        (id) => !newSelectedIds.includes(id)
       );
-
+      const otherExcludedIds = selectionState.value.excludedIds.filter(
+        (id) => !allIdsOnPage.value.includes(id)
+      );
       selectionState.value = {
         mode: 'all',
-        excludedIds: [
-          ...currentExcludedIds.filter(
-            (id) => !allIdsOnPage.value.includes(id)
-          ),
-          ...newExcludedIds,
-        ],
+        excludedIds: [...otherExcludedIds, ...newExcludedIds],
       };
     } else {
-      const currentIds = selectionState.value.ids;
-      const newIds = allIdsOnPage.value.filter((id) => val.includes(id));
+      const otherSelectedIds = selectionState.value.ids.filter(
+        (id) => !allIdsOnPage.value.includes(id)
+      );
       selectionState.value = {
         mode: 'explicit',
-        ids: [
-          ...currentIds.filter((id) => !allIdsOnPage.value.includes(id)),
-          ...newIds,
-        ],
+        ids: [...otherSelectedIds, ...newSelectedIds],
       };
     }
   },

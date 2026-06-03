@@ -222,7 +222,7 @@ import { definePaginatedQuery, defineParam } from '#utils/pagination';
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';
 import { useTagFilter } from '../../../composables/useTagFilter';
-import { useSelectionState } from '../../../composables/useSelectionState';
+import { usePaginatedSelectionState } from '../../../composables/useSelectionState';
 
 /**
  * Contact list page component
@@ -253,10 +253,7 @@ const contactsTable =
   >();
 
 const { selectionState, selectedPageItems, selectedCount, getSelectionRules } =
-  useSelectionState(
-    computed(() => contactsTable.value?.items ?? []),
-    computed(() => contactsTable.value?.total ?? 0)
-  );
+  usePaginatedSelectionState(contactsTable);
 
 /**
  * Tag Management
@@ -417,13 +414,11 @@ async function refreshResponses() {
   isRefreshing.value = true;
   try {
     const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
-    const newContacts = await client.contact.list(query, [
+    contactsTable.value = await client.contact.list(query, [
       GetContactWith.Profile,
       GetContactWith.Roles,
       GetContactWith.Tags,
     ]);
-
-    contactsTable.value = newContacts;
   } catch (err) {
     contactsTable.value = emptyTable();
     addNotification({

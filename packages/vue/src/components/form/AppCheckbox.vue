@@ -17,20 +17,14 @@
       <div
         class="flex h-5 w-5 items-center justify-center rounded border bg-white transition-colors focus:ring-2 focus:ring-primary-40 focus:ring-offset-2 focus:outline-none"
         :class="[
-          value ? borderVariantClasses[variant] : 'border-grey-dark',
-          !disabled && !value ? hoverVariantClasses[variant] : '',
+          value !== false ? borderVariantClasses[variant] : 'border-grey-dark',
+          !disabled && value === false ? hoverVariantClasses[variant] : '',
           disabled ? 'cursor-not-allowed opacity-50' : '',
         ]"
       >
         <font-awesome-icon
           v-if="value"
-          :icon="faCheck"
-          class="h-4 w-4"
-          :class="iconVariantClasses[variant]"
-        />
-        <font-awesome-icon
-          v-else-if="indeterminate"
-          :icon="faMinus"
+          :icon="value === 'indeterminate' ? faMinus : faCheck"
           class="h-4 w-4"
           :class="iconVariantClasses[variant]"
         />
@@ -53,19 +47,16 @@
  * <AppCheckbox v-model="isChecked" label="Accept terms" variant="primary" />
  */
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import type { CheckboxValue } from '../../types';
 import { faCheck, faMinus } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
-import { computed, ref, toRef, watch } from 'vue';
+import { computed } from 'vue';
 
 /**
  * Props for the AppCheckbox component
  */
 export interface AppCheckboxProps {
-  /** Current checked state of the checkbox */
-  modelValue?: boolean;
-  /** Whether the checkbox is indeterminate */
-  indeterminate?: boolean;
   /** Whether the checkbox is disabled */
   disabled?: boolean;
   /** Label text displayed next to the checkbox */
@@ -78,24 +69,11 @@ export interface AppCheckboxProps {
   variant?: 'primary' | 'link' | 'danger';
 }
 
-/**
- * Events emitted by the AppCheckbox component
- */
-const emit = defineEmits<{
-  /**
-   * Emitted when checkbox state changes
-   * @param value - The new boolean value
-   */
-  (e: 'update:modelValue', value: boolean): void;
-}>();
-
-const value = computed({
-  get: () => props.modelValue ?? false,
-  set: (val: boolean) => emit('update:modelValue', val),
+const value = defineModel<CheckboxValue>({
+  default: false,
 });
 
 const props = withDefaults(defineProps<AppCheckboxProps>(), {
-  indeterminate: false,
   variant: 'link',
   disabled: false,
   required: false,

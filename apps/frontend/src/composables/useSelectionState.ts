@@ -2,9 +2,17 @@ import type { RuleGroup } from '@beabee/beabee-common';
 
 import { type ComputedRef, type Ref, computed, ref } from 'vue';
 
-export type SelectionState =
-  | { mode: 'explicit'; ids: string[] }
-  | { mode: 'all'; excludedIds: string[] };
+import type { Paginated } from '../type/paginated';
+import type { SelectionState } from '../type/selection-state';
+
+export function usePaginatedSelectionState<I extends { id: string }>(
+  table: Ref<Paginated<I> | undefined>
+) {
+  return useSelectionState(
+    computed(() => table.value?.items ?? []),
+    computed(() => table.value?.total ?? 0)
+  );
+}
 
 export function useSelectionState<I extends { id: string }>(
   items: Ref<I[]> | ComputedRef<I[]>,
@@ -16,33 +24,35 @@ export function useSelectionState<I extends { id: string }>(
   });
 
   function isSelected(id: string): boolean {
-    if (selectionState.value.mode === 'explicit') {
-      return selectionState.value.ids.includes(id);
+    switch (selectionState.value.mode) {
+      case 'explicit':
+        return selectionState.value.ids.includes(id);
+      case 'all':
+        return !selectionState.value.excludedIds.includes(id);
     }
-
-    return !selectionState.value.excludedIds.includes(id);
   }
 
   function getSelectionRules(): RuleGroup {
-    if (selectionState.value.mode === 'explicit') {
-      return {
-        condition: 'OR',
-        rules: selectionState.value.ids.map((id) => ({
-          field: 'id',
-          operator: 'equal',
-          value: [id],
-        })),
-      };
+    switch (selectionState.value.mode) {
+      case 'explicit':
+        return {
+          condition: 'OR',
+          rules: selectionState.value.ids.map((id) => ({
+            field: 'id',
+            operator: 'equal',
+            value: [id],
+          })),
+        };
+      case 'all':
+        return {
+          condition: 'AND',
+          rules: selectionState.value.excludedIds.map((id) => ({
+            field: 'id',
+            operator: 'not_equal',
+            value: [id],
+          })),
+        };
     }
-
-    return {
-      condition: 'AND',
-      rules: selectionState.value.excludedIds.map((id) => ({
-        field: 'id',
-        operator: 'not_equal',
-        value: [id],
-      })),
-    };
   }
 
   const selectedPageItems = computed(() =>
@@ -50,11 +60,14 @@ export function useSelectionState<I extends { id: string }>(
   );
 
   const selectedCount = computed(() => {
-    if (selectionState.value.mode === 'explicit') {
-      return selectionState.value.ids.length;
+    switch (selectionState.value.mode) {
+      case 'explicit':
+        return selectionState.value.ids.length;
+      case 'all':
+        return totalItemCount.value - selectionState.value.excludedIds.length;
+      default:
+        return 0;
     }
-
-    return totalItemCount.value - selectionState.value.excludedIds.length;
   });
 
   return {

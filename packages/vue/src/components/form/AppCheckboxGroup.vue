@@ -19,7 +19,7 @@ import useVuelidate from '@vuelidate/core';
 import { minValue } from '@vuelidate/validators';
 import { computed } from 'vue';
 
-import type { SelectItem } from '../../types/form.interface';
+import type { CheckboxValue, SelectItem } from '../../types/form.interface';
 import AppCheckbox from './AppCheckbox.vue';
 import AppLabel from './AppLabel.vue';
 
@@ -48,12 +48,13 @@ useVuelidate(
   { v: computed(() => props.modelValue.length) }
 );
 
-function handleUpdate(value: T, checked: boolean) {
-  if (checked && props.modelValue.includes(value)) return;
+function handleUpdate(value: T, checked: CheckboxValue) {
+  if (checked === true && props.modelValue.includes(value)) return;
 
-  const newModelValue = checked
-    ? [...props.modelValue, value]
-    : props.modelValue.filter((v) => v !== value);
+  const newModelValue =
+    checked === true
+      ? [...props.modelValue, value]
+      : props.modelValue.filter((v) => v !== value);
   emit('update:modelValue', newModelValue);
 }
 </script>
