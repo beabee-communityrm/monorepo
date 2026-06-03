@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { cardInfo, signIn } from "#fixtures/user-info.json";
+import { cardInfo, signIn } from "#fixtures/testData.json";
 
 const email: string = signIn.email;
 const testPw: string = signIn.password;
