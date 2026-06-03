@@ -194,6 +194,21 @@ export class MailchimpProvider implements NewsletterProvider {
       }
     );
   }
+
+  /**
+   * Check the health of the Mailchimp integration by fetching the configured
+   * audience
+   *
+   * @returns 'healthy' if the audience is reachable, 'unhealthy' otherwise
+   */
+  async getHealthStatus(): Promise<'healthy' | 'unhealthy'> {
+    try {
+      await this.api.instance.get(`lists/${this.listId}`);
+      return 'healthy';
+    } catch (err) {
+      return 'unhealthy';
+    }
+  }
 }
 
 /** @deprecated Use named import MailchimpProvider instead */
