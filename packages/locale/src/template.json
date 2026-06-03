@@ -251,6 +251,22 @@
         "twitterHandle": ""
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": ""
+      },
+      "label": "",
+      "mailchimp": {
+        "audienceId": "",
+        "groups": ""
+      },
+      "refresh": "",
+      "status": {
+        "connected": "",
+        "connectionLost": "",
+        "disabled": ""
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",

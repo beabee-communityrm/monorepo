@@ -1,0 +1,54 @@
+<template>
+  <div class="flex items-center gap-4 p-4">
+    <div
+      class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg text-lg font-bold"
+      :style="{
+        backgroundColor: integration.color,
+        color: integration.textColor ?? '#000',
+      }"
+    >
+      <font-awesome-icon
+        v-if="integration.icon"
+        :icon="integration.icon"
+        class="text-3xl"
+      />
+      <span v-else>{{ integration.name[0] }}</span>
+    </div>
+    <div class="min-w-0 flex-1">
+      <p class="font-semibold">{{ integration.name }}</p>
+      <p class="text-sm text-body-80">{{ integration.description }}</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <StatusPill :type="statusType[integration.status]">
+        {{ t(`adminSettings.integrations.status.${integration.status}`) }}
+      </StatusPill>
+      <AppButton
+        v-if="integration.status === 'connected'"
+        variant="greyOutlined"
+        size="sm"
+        :icon="faRotate"
+      >
+        {{ t('adminSettings.integrations.refresh') }}
+      </AppButton>
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { AppButton } from '@beabee/vue';
+import { faRotate } from '@fortawesome/free-solid-svg-icons';
+import { useI18n } from 'vue-i18n';
+
+import type { Integration, IntegrationStatus } from '#type/integration';
+import StatusPill from './StatusPill.vue';
+
+defineProps<{ integration: Integration }>();
+
+const { t } = useI18n();
+
+const statusType: Record<IntegrationStatus, 'success' | 'warning' | 'danger'> = {
+  connected: 'success',
+  connectionLost: 'danger',
+  disabled: 'warning',
+};
+</script>

@@ -251,6 +251,22 @@
         "twitterHandle": ""
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Ενημερωτικά δελτία"
+      },
+      "label": "Ενσωματώσεις",
+      "mailchimp": {
+        "audienceId": "Αναγνωριστικό κοινού",
+        "groups": "Ομάδες"
+      },
+      "refresh": "Ανανέωση",
+      "status": {
+        "connected": "Συνδεδεμένο",
+        "connectionLost": "Απώλεια σύνδεσης",
+        "disabled": "Απενεργοποιημένο"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",

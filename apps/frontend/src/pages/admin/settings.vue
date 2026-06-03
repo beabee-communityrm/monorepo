@@ -44,6 +44,10 @@ const tabs = computed(() =>
       id: 'adminSettingsApikeys',
       label: t('adminSettings.apikey.label'),
     },
+    {
+      id: 'adminSettingsIntegrations',
+      label: t('adminSettings.integrations.label'),
+    },
   ])
 );
 

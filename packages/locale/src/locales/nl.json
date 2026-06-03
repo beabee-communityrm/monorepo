@@ -251,6 +251,22 @@
         "twitterHandle": "Twitter-handleiding"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Nieuwsbrieven"
+      },
+      "label": "Integraties",
+      "mailchimp": {
+        "audienceId": "Doelgroep-ID",
+        "groups": "Groepen"
+      },
+      "refresh": "Vernieuwen",
+      "status": {
+        "connected": "Verbonden",
+        "connectionLost": "Verbinding verbroken",
+        "disabled": "Uitgeschakeld"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",

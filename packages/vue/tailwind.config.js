@@ -45,6 +45,7 @@ const config = {
     fontFamily: {
       body: 'var(--ff-body)',
       title: 'var(--ff-title)',
+      mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
     },
     extend: {
       borderRadius: {
