@@ -14,12 +14,18 @@ export default defineConfig({
 
   projects: [
     {
+      name: "setup",
+      testMatch: /.*\.setup\.ts/,
+    },
+    {
       name: "firefox",
       use: devices["Desktop Firefox"],
+      dependencies: ["setup"],
     },
     // {
     //   name: "safari",
     //   use: devices["Desktop Safari"],
+    //   dependencies: ["setup"],
     // },
   ],
 });

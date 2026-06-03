@@ -32,21 +32,20 @@ jobs:
           stripe_webhook_secret: ${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}
           stripe_membership_product_id: ${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}
 
-      - name: Playwright setup
+      - name: Playwright Setup
         run: yarn workspace @beabee/browser-tests playwright install firefox --with-deps
 
-      - name: Run Playwright tests
-        id: playwright_tests
+      - name: Run browser tests
         env:
           PLAYWRIGHT_BASE_URL: ${{ env.BEABEE_AUDIENCE }}
         run: yarn workspace @beabee/browser-tests test
 
-      - name: Upload Playwright test results
+      - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-test-results
-          path: ./apps/browser-tests/test-results
+          name: playwright-report
+          path: ./apps/browser-tests/playwright-report
 
       - name: Teardown
         if: failure()
