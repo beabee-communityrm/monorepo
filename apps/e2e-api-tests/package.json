@@ -12,7 +12,8 @@
     "#utils/*": "./src/utils/*"
   },
   "dependencies": {
-    "@beabee/client": "workspace:*"
+    "@beabee/client": "workspace:*",
+    "@beabee/test-utils": "workspace:*"
   },
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",

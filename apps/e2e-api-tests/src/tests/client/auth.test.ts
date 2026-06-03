@@ -1,12 +1,8 @@
 import type { LoginData } from '@beabee/beabee-common';
 import { AuthClient, UnauthorizedError } from '@beabee/client';
+import { api, testUser } from '@beabee/test-utils/test-data';
 
 import { afterEach, beforeAll, describe, expect, it } from 'vitest';
-
-import {
-  api,
-  testUser,
-} from '../../../../../test-utils/fixtures/test-data.json';
 
 describe('Auth API', () => {
   let authTokenClient: AuthClient;
