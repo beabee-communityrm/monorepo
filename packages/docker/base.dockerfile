@@ -21,11 +21,13 @@ COPY --chown=node:node packages/docker/package.json /opt/packages/docker/package
 COPY --chown=node:node packages/fontawesome/package.json /opt/packages/fontawesome/package.json
 COPY --chown=node:node packages/locale/package.json /opt/packages/locale/package.json
 COPY --chown=node:node packages/template-vanilla/package.json /opt/packages/template-vanilla/package.json
+COPY --chown=node:node packages/test-utils/package.json /opt/packages/test-utils/package.json
 COPY --chown=node:node packages/vue/package.json /opt/packages/vue/package.json
 
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
 COPY --chown=node:node apps/backend-cli/package.json /opt/apps/backend-cli/package.json
+COPY --chown=node:node apps/browser-tests/package.json /opt/apps/browser-tests/package.json
 COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
 COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
