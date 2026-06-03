@@ -94,7 +94,8 @@
   }
 }
 
-.formio-dialog {
+/* Increase specificity to override form renderer styles */
+.formio-dialog.formio-dialog {
   @apply font-body! text-base! text-body!;
 
   .formio-dialog-content {
