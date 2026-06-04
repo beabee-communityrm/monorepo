@@ -21,12 +21,12 @@
       <StatusPill :type="statusType[integration.status]">
         {{ t(`adminSettings.integrations.status.${integration.status}`) }}
       </StatusPill>
+      <!-- TODO: refresh functionality not yet implemented -->
       <AppButton
-        v-if="integration.status === 'connected'"
+        v-if="false"
         variant="greyOutlined"
         size="sm"
         :icon="faRotate"
-        @click="$emit('refresh')"
       >
         {{ t('adminSettings.integrations.refresh') }}
       </AppButton>
@@ -43,7 +43,6 @@ import type { Integration, IntegrationStatus } from '#type/integration';
 import StatusPill from './StatusPill.vue';
 
 defineProps<{ integration: Integration }>();
-defineEmits<{ refresh: [] }>();
 
 const { t } = useI18n();
 

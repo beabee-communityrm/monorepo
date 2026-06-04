@@ -20,14 +20,4 @@ export class IntegrationsClient extends BaseClient {
     return data;
   }
 
-  /**
-   * Refreshes the newsletter integration for the given provider
-   * TODO: confirm endpoint with backend — POST /newsletter/:provider/refresh
-   */
-  async refreshNewsletter(provider: string): Promise<NewsletterIntegration> {
-    const { data } = await this.fetch.post<NewsletterIntegration>(
-      `/newsletter/${provider}/refresh`
-    );
-    return data;
-  }
 }
