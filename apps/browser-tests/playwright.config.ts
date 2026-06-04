@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-  testDir: "src/tests",
+  testDir: "src",
   fullyParallel: false, // tests in a single test file are always run in order. this parallelizes only multiple test files
   reporter: "html",
   workers: 4,
@@ -15,17 +15,15 @@ export default defineConfig({
   projects: [
     {
       name: "setup",
+      testDir: "src/setup",
       testMatch: /.*\.setup\.ts/,
+      use: devices["Desktop Firefox"],
     },
     {
       name: "firefox",
+      testDir: "src/tests",
       use: devices["Desktop Firefox"],
       dependencies: ["setup"],
     },
-    // {
-    //   name: "safari",
-    //   use: devices["Desktop Safari"],
-    //   dependencies: ["setup"],
-    // },
   ],
 });
