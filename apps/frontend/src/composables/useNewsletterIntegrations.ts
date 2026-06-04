@@ -3,7 +3,9 @@ import { ref } from 'vue';
 
 import env from '#env';
 import { client } from '#utils/api/client';
-import type { Integration, NewsletterIntegrationGroup } from '#type/integration';
+import { ApiHealthStatus } from '@beabee/beabee-common';
+import type { NewsletterGroupData } from '@beabee/beabee-common';
+import type { Integration } from '#type/integration';
 
 type ProviderDisplayConfig = Pick<Integration, 'name' | 'color' | 'textColor' | 'icon'>;
 
@@ -24,9 +26,9 @@ const CATEGORY = 'newsletters';
 
 function buildIntegration(
   provider: string,
-  status: Integration['status'],
+  status: ApiHealthStatus,
   audienceId?: string,
-  groups?: NewsletterIntegrationGroup[]
+  groups?: NewsletterGroupData[]
 ): Integration {
   return {
     ...providerMap[provider],
@@ -51,7 +53,7 @@ export function useNewsletterIntegrations() {
 
       // Build all known provider cards upfront as disabled
       const result = Object.keys(providerMap).map((provider) =>
-        buildIntegration(provider, 'disabled')
+        buildIntegration(provider, ApiHealthStatus.DISABLED)
       );
 
       // If a provider is configured, fetch its real status and merge it in

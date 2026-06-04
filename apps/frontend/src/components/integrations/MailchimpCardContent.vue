@@ -24,11 +24,11 @@ import { AppCategoryLabel, AppTable } from '@beabee/vue';
 import type { Header } from '@beabee/vue';
 import { useI18n } from 'vue-i18n';
 
-import type { NewsletterIntegrationGroup } from '#type/integration';
+import type { NewsletterGroupData } from '@beabee/beabee-common';
 
 defineProps<{
   audienceId?: string;
-  groups?: NewsletterIntegrationGroup[];
+  groups?: NewsletterGroupData[];
 }>();
 
 const { t } = useI18n();

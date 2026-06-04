@@ -157,7 +157,6 @@ export type * from './get-payment-data-with.js';
 export type * from './get-payment-data.js';
 export type * from './get-payment-with.js';
 export type * from './get-payments-aggregation-query.js';
-export type * from './get-newsletter-integration-data.js';
 export type * from './get-payments-query.js';
 export type * from './get-segment-data-with.js';
 export type * from './get-segment-data.js';

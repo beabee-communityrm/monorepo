@@ -39,16 +39,17 @@ import { AppButton } from '@beabee/vue';
 import { faRotate } from '@fortawesome/free-solid-svg-icons';
 import { useI18n } from 'vue-i18n';
 
-import type { Integration, IntegrationStatus } from '#type/integration';
+import { ApiHealthStatus } from '@beabee/beabee-common';
+import type { Integration } from '#type/integration';
 import StatusPill from './StatusPill.vue';
 
 defineProps<{ integration: Integration }>();
 
 const { t } = useI18n();
 
-const statusType: Record<IntegrationStatus, 'success' | 'warning' | 'danger'> = {
-  healthy: 'success',
-  unhealthy: 'danger',
-  disabled: 'warning',
+const statusType: Record<ApiHealthStatus, 'success' | 'warning' | 'danger'> = {
+  [ApiHealthStatus.HEALTHY]: 'success',
+  [ApiHealthStatus.UNHEALTHY]: 'danger',
+  [ApiHealthStatus.DISABLED]: 'warning',
 };
 </script>

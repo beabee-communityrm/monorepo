@@ -1,9 +1,9 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import type { NewsletterIntegrationGroup } from '@beabee/beabee-common';
+import { ApiHealthStatus } from '@beabee/beabee-common';
+import type { NewsletterGroupData } from '@beabee/beabee-common';
 
-export type { NewsletterIntegrationGroup };
-
-export type IntegrationStatus = 'healthy' | 'unhealthy' | 'disabled';
+export { ApiHealthStatus as IntegrationStatus };
+export type { NewsletterGroupData as IntegrationGroupData };
 
 /**
  * Display type used by integration card components.
@@ -13,10 +13,10 @@ export interface Integration {
   provider: string;
   name: string;           // frontend-mapped from provider
   category: string;       // frontend-mapped from endpoint
-  status: IntegrationStatus;
+  status: ApiHealthStatus;
   color: string;          // frontend-mapped
   textColor?: string;     // frontend-mapped
   icon?: IconDefinition;  // frontend-mapped
   audienceId?: string;
-  groups?: NewsletterIntegrationGroup[];
+  groups?: NewsletterGroupData[];
 }
