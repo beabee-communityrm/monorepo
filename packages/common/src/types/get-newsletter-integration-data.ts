@@ -3,10 +3,6 @@ export interface NewsletterIntegrationGroup {
   id: string;
 }
 
-/**
- * Response from GET /integrations/newsletter
- * Status is always healthy or unhealthy — disabled is frontend-determined
- */
 export interface NewsletterIntegration {
   provider: string;
   status: 'healthy' | 'unhealthy';

@@ -76,26 +76,5 @@ export function useNewsletterIntegrations() {
     }
   }
 
-  async function refresh(provider: string) {
-    loading.value = true;
-    error.value = null;
-    try {
-      const data = await client.integrations.refreshNewsletter(provider);
-      const index = integrations.value.findIndex((i) => i.provider === provider);
-      if (index !== -1) {
-        integrations.value[index] = buildIntegration(
-          data.provider,
-          data.status,
-          data.audienceId,
-          data.groups
-        );
-      }
-    } catch (e) {
-      error.value = e as Error;
-    } finally {
-      loading.value = false;
-    }
-  }
-
-  return { integrations, loading, error, load, refresh };
+  return { integrations, loading, error, load };
 }
