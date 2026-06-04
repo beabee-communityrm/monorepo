@@ -262,8 +262,8 @@
       },
       "refresh": "",
       "status": {
-        "connected": "",
-        "connectionLost": "",
+        "healthy": "",
+        "unhealthy": "",
         "disabled": ""
       }
     },

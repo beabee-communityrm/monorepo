@@ -263,8 +263,8 @@
       },
       "refresh": "Обновить",
       "status": {
-        "connected": "Подключено",
-        "connectionLost": "Соединение потеряно",
+        "healthy": "Подключено",
+        "unhealthy": "Соединение потеряно",
         "disabled": "Отключено"
       }
     },

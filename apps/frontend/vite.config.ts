@@ -77,6 +77,7 @@ export default ({ command, mode }) => {
           __captchafoxKey__: env.BEABEE_CAPTCHAFOX_KEY || '',
           __maptilerKey__: env.BEABEE_MAPTILER_KEY || '',
           __cnrMode__: env.BEABEE_CNR_MODE || '',
+          __newsletterProvider__: env.BEABEE_NEWSLETTER_PROVIDER || 'none',
         },
         preventAssignment: true,
       }) as Plugin

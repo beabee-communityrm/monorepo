@@ -1,6 +1,4 @@
-import type {
-  GetNewsletterIntegrationData,
-} from '@beabee/beabee-common';
+import type { NewsletterIntegration } from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
@@ -15,22 +13,19 @@ export class IntegrationsClient extends BaseClient {
   }
 
   /**
-   * Fetches all integrations for the newsletter category
+   * Fetches the newsletter integration for this instance
    */
-  async listNewsletter(): Promise<GetNewsletterIntegrationData[]> {
-    const { data } = await this.fetch.get<GetNewsletterIntegrationData[]>(
-      '/newsletter'
-    );
+  async getNewsletter(): Promise<NewsletterIntegration> {
+    const { data } = await this.fetch.get<NewsletterIntegration>('/newsletter');
     return data;
   }
 
   /**
-   * Refreshes a specific newsletter integration
-   * TODO: confirm endpoint with backend — either POST /newsletter/:provider/refresh
-   * or re-GET /newsletter/:provider depending on backend implementation
+   * Refreshes the newsletter integration for the given provider
+   * TODO: confirm endpoint with backend — POST /newsletter/:provider/refresh
    */
-  async refreshNewsletter(provider: string): Promise<GetNewsletterIntegrationData> {
-    const { data } = await this.fetch.post<GetNewsletterIntegrationData>(
+  async refreshNewsletter(provider: string): Promise<NewsletterIntegration> {
+    const { data } = await this.fetch.post<NewsletterIntegration>(
       `/newsletter/${provider}/refresh`
     );
     return data;

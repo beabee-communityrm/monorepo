@@ -48,8 +48,8 @@ defineEmits<{ refresh: [] }>();
 const { t } = useI18n();
 
 const statusType: Record<IntegrationStatus, 'success' | 'warning' | 'danger'> = {
-  connected: 'success',
-  connectionLost: 'danger',
+  healthy: 'success',
+  unhealthy: 'danger',
   disabled: 'warning',
 };
 </script>

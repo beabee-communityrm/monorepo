@@ -262,8 +262,8 @@
       },
       "refresh": "Aktualisieren",
       "status": {
-        "connected": "Verbunden",
-        "connectionLost": "Verbindung unterbrochen",
+        "healthy": "Verbunden",
+        "unhealthy": "Verbindung unterbrochen",
         "disabled": "Deaktiviert"
       }
     },

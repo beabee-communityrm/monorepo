@@ -262,8 +262,8 @@
       },
       "refresh": "Оновити",
       "status": {
-        "connected": "Підключено",
-        "connectionLost": "З'єднання втрачено",
+        "healthy": "Підключено",
+        "unhealthy": "З'єднання втрачено",
         "disabled": "Вимкнено"
       }
     },
