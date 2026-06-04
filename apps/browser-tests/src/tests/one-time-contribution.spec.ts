@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { cardInfo } from "@beabee/test-utils/test-data";
-import { nonAdminAuthFile } from "../setup/auth-states";
+import { nonAdminAuthFile } from "./setup/auth-states";
 
 const contributionAmount = "5";
 let contributionDate = new Date().toLocaleString("en-GB", {
