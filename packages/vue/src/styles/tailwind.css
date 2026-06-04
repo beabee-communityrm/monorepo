@@ -77,3 +77,14 @@
   --color-grey-dark: #5f5f5f;
   --color-grey-darker: #434343;
 }
+
+@layer utilities {
+  /**
+   * Fix sr-only causing unwated scroll
+   * https://github.com/tailwindlabs/tailwindcss/discussions/12429
+   */
+  .sr-only {
+    clip: rect(0 0 0 0);
+    clip-path: none;
+  }
+}
