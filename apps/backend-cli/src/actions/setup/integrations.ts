@@ -67,6 +67,20 @@ export const setupStripe = async (dryRun: boolean) => {
         }
       }
 
+      if (
+        existingWebhook &&
+        existingWebhook.api_version !== config.stripe.version
+      ) {
+        console.warn(
+          `⚠️ Webhook API version mismatch: expected ${config.stripe.version}, got ${existingWebhook.api_version}`
+        );
+        if (!dryRun) {
+          await stripe.webhookEndpoints.del(existingWebhook.id);
+        }
+        console.log(`🗑️ Deleted existing webhook with wrong API version`);
+        existingWebhook = undefined;
+      }
+
       if (existingWebhook) {
         if (!dryRun) {
           await stripe.webhookEndpoints.update(existingWebhook.id, {
