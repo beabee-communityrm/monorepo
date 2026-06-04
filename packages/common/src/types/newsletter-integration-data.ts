@@ -1,5 +1,5 @@
 import { ApiHealthStatus } from '../data/index.js';
-import { NewsletterGroupData } from './newsletter-group-data.js';
+import type { NewsletterGroupData } from './newsletter-group-data.js';
 
 export interface NewsletterIntegrationData {
   provider: string;
