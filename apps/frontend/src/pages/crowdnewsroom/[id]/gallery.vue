@@ -122,7 +122,8 @@ onBeforeMount(async () => {
 });
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "../../../index.css";
 .response-panel-bg-enter-active,
 .response-panel-bg-leave-active {
   @apply transition-opacity;

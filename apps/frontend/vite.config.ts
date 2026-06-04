@@ -1,7 +1,6 @@
-import theme from '@beabee/vue/plugins/theme';
-
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
 import replace from '@rollup/plugin-replace';
+import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import { createRequire } from 'node:module';
 import { dirname, resolve } from 'node:path';
@@ -18,6 +17,7 @@ export default ({ command, mode }) => {
   const env = loadEnv(mode, resolve(process.cwd(), '../../'), '');
 
   const plugins = [
+    tailwindcss(),
     // VueRouter must be placed before Vue plugin
     VueRouter({
       // Enable typed routes - generate in src/typings directory
@@ -30,7 +30,6 @@ export default ({ command, mode }) => {
       include: LOCALE_PATH,
       strictMessage: false,
     }),
-    theme(),
   ];
 
   // Keep this in sync with tsconfig.build.json -> compilerOptions.paths (# subpath imports)

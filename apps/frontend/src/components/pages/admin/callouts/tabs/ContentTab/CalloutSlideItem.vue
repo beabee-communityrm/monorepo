@@ -36,7 +36,7 @@
         :icon="faTrash"
         :disabled="slides.length === 1"
         :title="t('callout.builder.common.actions.remove')"
-        class="!p-1"
+        class="p-1!"
         @click.stop="handleRemoveSlide"
       />
     </div>

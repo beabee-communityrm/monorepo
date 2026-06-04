@@ -9,7 +9,7 @@
             <AppToggleField
               v-model="useCustomSender"
               :label="t('emailEditor.from.label')"
-              class="flex-0 mb-4"
+              class="mb-4 flex-0"
             />
             <FromEmailInput
               v-model:email="effectiveFromEmail"
@@ -18,7 +18,7 @@
               class="mb-4"
             />
           </template>
-          <div class="flex-0 mb-4">
+          <div class="mb-4 flex-0">
             <AppInput
               v-model="subject"
               :label="t('emailEditor.subject.label')"
@@ -42,7 +42,7 @@
                 />
                 <div
                   v-if="showMergeFieldsDropdown"
-                  class="absolute right-0 top-full z-[100] mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
+                  class="absolute top-full right-0 z-100 mt-1 max-h-96 w-80 overflow-y-auto shadow-xl"
                   @click.stop
                 >
                   <AppMergeFields
@@ -79,7 +79,7 @@
           <p></p>
           <div
             v-if="!serverPreviewResult"
-            class="flex min-h-[6rem] items-center justify-center p-8 text-body-80"
+            class="flex min-h-24 items-center justify-center p-8 text-body-80"
           >
             <AppLoadingSpinner
               :loading="isLoadingPreview"

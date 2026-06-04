@@ -134,7 +134,7 @@ meta:
         AppSlider <small>with custom navigation</small>
       </h3>
       <div class="bg-white p-4">
-        <div class="relative mx-auto max-w-[1200px]">
+        <div class="relative mx-auto max-w-300">
           <AppSlider :infinite="true">
             <template #slides>
               <!-- Put your slides here -->
@@ -177,7 +177,7 @@ meta:
               </span>
 
               <button
-                class="absolute left-0 top-0 p-2 text-2xl text-white hover:text-link"
+                class="absolute top-0 left-0 p-2 text-2xl text-white hover:text-link"
                 @click="toSlide(0)"
               >
                 <font-awesome-icon :icon="faRotateBack" />
@@ -193,7 +193,7 @@ meta:
         AppSlider <small>with AppStepper</small>
       </h3>
       <div class="bg-white p-4">
-        <div class="relative mx-auto max-w-[1200px]">
+        <div class="relative mx-auto max-w-300">
           <AppSlider
             :infinite="true"
             :steps="[

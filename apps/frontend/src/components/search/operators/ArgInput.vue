@@ -32,7 +32,7 @@
     :prefix="prefix"
     required
     hide-error-message
-    class="min-w-[10rem]"
+    class="min-w-40"
   />
 </template>
 

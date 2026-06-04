@@ -30,7 +30,7 @@
 <template>
   <div class="flex flex-wrap gap-2">
     <div
-      class="flex flex-grow basis-[250px] rounded border border-primary-40 text-sm"
+      class="flex grow basis-62.5 rounded border border-primary-40 text-sm"
       :class="
         disabled
           ? 'opacity-50'
@@ -64,7 +64,8 @@
 
       <div class="flex h-full flex-none flex-col">
         <button
-          class="amount-button border-b border-l"
+          class="border-b border-l"
+          :class="[amountButtonClasses]"
           type="button"
           :disabled="disabled"
           :aria-label="t('actions.increase')"
@@ -74,10 +75,13 @@
         </button>
 
         <button
-          class="amount-button border-l"
+          class="border-l"
           type="button"
           :disabled="disabled"
-          :class="{ 'is-invalid': amount <= minAmount }"
+          :class="[
+            amountButtonClasses,
+            { 'cursor-not-allowed text-grey': amount <= minAmount },
+          ]"
           :aria-label="t('actions.decrease')"
           @click="changeAmount(amount - 1)"
         >
@@ -143,6 +147,9 @@ export interface ContributionAmountProps {
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps<ContributionAmountProps>();
 
+const amountButtonClasses =
+  'h-1/2 border-primary-40 bg-white px-4 py-2 text-primary-70 enabled:hover:bg-primary-5 enabled:hover:text-primary';
+
 /**
  * Per period text based on contribution type
  */
@@ -191,12 +198,3 @@ const rules = computed(() =>
 
 const validation = useVuelidate(rules, { amount });
 </script>
-
-<style lang="postcss" scoped>
-.amount-button {
-  @apply h-1/2 border-primary-40 bg-white px-4 py-2 text-primary-70 enabled:hover:bg-primary-5 enabled:hover:text-primary;
-  &.is-invalid {
-    @apply cursor-not-allowed text-grey;
-  }
-}
-</style>

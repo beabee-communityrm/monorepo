@@ -35,7 +35,7 @@
               { id: '2', label: 'age-group' },
             ]"
           />
-          <span class="ml-3 mr-2">
+          <span class="mr-2 ml-3">
             <font-awesome-icon :icon="faLink" />
           </span>
           <AppSelect

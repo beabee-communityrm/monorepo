@@ -82,7 +82,7 @@
           </div>
 
           <!-- Default Checked -->
-          <div class="flex-0 flex h-10 items-center self-end">
+          <div class="flex h-10 flex-0 items-center self-end">
             <AppCheckbox v-model="item.checked" :label="t('common.default')" />
           </div>
         </template>

@@ -72,10 +72,3 @@ import { canAdmin, generalContent } from '../store';
 
 const { t } = useI18n();
 </script>
-
-/* TODO: fix relying on scoped */
-<style lang="postcss" scoped>
-a {
-  @apply text-link;
-}
-</style>

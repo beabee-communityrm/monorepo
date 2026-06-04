@@ -137,7 +137,8 @@ onBeforeUnmount(() => {
   noAuto();
 });
 </script>
-<style lang="postcss">
+
+<style>
 @import '../../lib/formio/formio.builder.css';
 @import '../form-renderer/form-renderer.css';
 @import './form-builder.css';

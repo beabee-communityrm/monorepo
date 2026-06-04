@@ -58,7 +58,7 @@
         v-bind="$attrs"
         @blur="validation.$touch"
       />
-      <div v-if="copyable" class="absolute right-1 top-1">
+      <div v-if="copyable" class="absolute top-1 right-1">
         <AppCopyButton
           variant="float"
           :text="value?.toString() || ''"

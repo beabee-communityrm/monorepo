@@ -16,7 +16,7 @@ meta:
         <ItemDateRange :item="notice" />
       </div>
 
-      <div class="flex-0 flex flex-wrap gap-2 lg:flex-col">
+      <div class="flex flex-0 flex-wrap gap-2 lg:flex-col">
         <ActionButton
           :icon="faPencilAlt"
           :to="`/admin/notices/edit/${notice.id}`"

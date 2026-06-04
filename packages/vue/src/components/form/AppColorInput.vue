@@ -6,7 +6,7 @@
 <template>
   <div class="mb-2 flex">
     <div
-      class="flex-0 mr-2 mt-1.5 h-7 w-7 rounded-full"
+      class="mt-1.5 mr-2 h-7 w-7 flex-0 rounded-full"
       :style="{ backgroundColor: modelValue }"
     />
     <div class="flex-1">
@@ -69,7 +69,7 @@ watch(
 );
 </script>
 
-<style lang="postcss">
+<style>
 @import url('vue-accessible-color-picker/styles');
 :root {
   --vacp-color-background: transparent;

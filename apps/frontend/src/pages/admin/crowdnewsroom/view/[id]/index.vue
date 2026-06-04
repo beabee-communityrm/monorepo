@@ -50,7 +50,7 @@ meta:
         />
       </AppInfoList>
     </div>
-    <div class="flex-0 flex flex-wrap gap-2 lg:flex-col">
+    <div class="flex flex-0 flex-wrap gap-2 lg:flex-col">
       <ActionButton
         :icon="faEye"
         :to="`/crowdnewsroom/${callout.slug}?preview`"

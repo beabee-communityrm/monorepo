@@ -54,3 +54,9 @@
     @apply font-title text-xl font-semibold;
   }
 }
+
+footer {
+  a {
+    @apply text-link;
+  }
+}

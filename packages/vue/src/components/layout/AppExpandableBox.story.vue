@@ -135,13 +135,13 @@ function handleExpand() {
 
         <AppExpandableBox button-text="Share Options" :button-icon="faShare">
           <div class="flex gap-2">
-            <button class="bg-blue-500 rounded px-3 py-1 text-white">
+            <button class="rounded bg-blue-500 px-3 py-1 text-white">
               Twitter
             </button>
-            <button class="bg-blue-600 rounded px-3 py-1 text-white">
+            <button class="rounded bg-blue-600 px-3 py-1 text-white">
               Facebook
             </button>
-            <button class="bg-green-600 rounded px-3 py-1 text-white">
+            <button class="rounded bg-green-600 px-3 py-1 text-white">
               WhatsApp
             </button>
           </div>

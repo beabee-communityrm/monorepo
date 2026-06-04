@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mb-[53px] flex-auto overflow-y-auto overflow-x-visible lg:mb-[61px]"
+    class="mb-13.25 flex-auto overflow-x-visible overflow-y-auto lg:mb-15.25"
   >
     <TheMenuListSection
       v-for="(section, index) in menu"

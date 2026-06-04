@@ -12,7 +12,7 @@
         :disabled="disabled"
       />
       <div
-        class="flex h-5 w-5 items-center justify-center rounded-full border transition-colors focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
+        class="flex h-5 w-5 items-center justify-center rounded-full border transition-colors focus:ring-2 focus:ring-primary-40 focus:ring-offset-2 focus:outline-none"
         :class="[
           selected === value
             ? borderVariantClasses[variant]

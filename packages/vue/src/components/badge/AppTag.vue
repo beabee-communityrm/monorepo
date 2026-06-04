@@ -1,6 +1,6 @@
 <template>
   <span
-    class="inline-block whitespace-nowrap rounded border border-white bg-white px-1 py-0.5 text-xs font-bold text-link"
+    class="inline-block rounded border border-white bg-white px-1 py-0.5 text-xs font-bold whitespace-nowrap text-link"
   >
     {{ tag }}
     <font-awesome-icon

@@ -9,7 +9,7 @@
       :key="option.id"
       :model-value="modelValue.includes(option.id)"
       :label="option.label"
-      class="!font-normal"
+      class="font-normal!"
       @update:model-value="handleUpdate(option.id, $event)"
     />
   </div>

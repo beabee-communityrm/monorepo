@@ -44,7 +44,7 @@
 
         <!-- Step indicator circle -->
         <span
-          class="relative mr-2 mt-px inline-block h-4 w-4 rounded-full border-2 transition-colors"
+          class="relative mt-px mr-2 inline-block h-4 w-4 rounded-full border-2 transition-colors"
           :class="
             step.validated
               ? 'border-link bg-link'
