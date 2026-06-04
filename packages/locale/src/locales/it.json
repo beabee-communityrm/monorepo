@@ -262,9 +262,9 @@
       },
       "refresh": "Aggiorna",
       "status": {
+        "disabled": "Disabilitato",
         "healthy": "Connesso",
-        "unhealthy": "Connessione persa",
-        "disabled": "Disabilitato"
+        "unhealthy": "Connessione persa"
       }
     },
     "payment": {

@@ -262,9 +262,9 @@
       },
       "refresh": "Vernieuwen",
       "status": {
+        "disabled": "Uitgeschakeld",
         "healthy": "Verbonden",
-        "unhealthy": "Verbinding verbroken",
-        "disabled": "Uitgeschakeld"
+        "unhealthy": "Verbinding verbroken"
       }
     },
     "payment": {
