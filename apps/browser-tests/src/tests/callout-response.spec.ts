@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { rateLimitedTestUser as member } from "@beabee/test-utils/test-data";
-import { nonAdminAuthFile, adminAuthFile } from "./setup/auth-states";
+import { nonAdminAuthFile, adminAuthFile } from "../setup/auth-states";
 
 test.use({ storageState: nonAdminAuthFile });
 
@@ -44,12 +44,7 @@ test("Answer callout", async ({ browser, page }) => {
     await expect(submitBtn, "Submit button enabled").toBeEnabled();
     await submitBtn.click();
 
-    await memberPage.waitForResponse(
-      (response) =>
-        response.request().method() === "POST" &&
-        response.request().url().includes("/responses") &&
-        response.status() === 200,
-    );
+    await expect(memberPage.getByText(/response submitted/i)).toBeVisible();
 
     await memberPage.close();
   });
@@ -77,12 +72,7 @@ test("Answer callout", async ({ browser, page }) => {
     await expect(submitBtn, "Submit button enabled").toBeEnabled();
     await submitBtn.click();
 
-    await page.waitForResponse(
-      (response) =>
-        response.request().method() === "POST" &&
-        response.request().url().includes("/responses") &&
-        response.status() === 200,
-    );
+    await expect(page.getByText(/response submitted/i)).toBeVisible();
   });
 
   await test.step("Verify responses", async () => {
