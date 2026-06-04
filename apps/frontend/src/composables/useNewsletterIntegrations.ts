@@ -1,17 +1,18 @@
 import { faMailchimp } from '@fortawesome/free-brands-svg-icons';
 import { ref } from 'vue';
 
+import env from '#env';
 import { client } from '#utils/api/client';
-import type { Integration } from '#type/integration';
+import type { Integration, NewsletterIntegrationGroup } from '#type/integration';
+
+type ProviderDisplayConfig = Pick<Integration, 'name' | 'color' | 'textColor' | 'icon'>;
 
 /**
- * Maps provider identifiers returned by the API to frontend display properties.
+ * Maps provider identifiers to frontend display properties.
  * Add an entry here when a new newsletter provider is supported.
+ * Cards are shown for every entry — those not configured show as disabled.
  */
-const providerMap: Record<
-  string,
-  Pick<Integration, 'name' | 'color' | 'textColor' | 'icon'>
-> = {
+const providerMap: Record<string, ProviderDisplayConfig> = {
   mailchimp: {
     name: 'Mailchimp',
     color: '#FFE01B',
@@ -20,6 +21,22 @@ const providerMap: Record<
 };
 
 const CATEGORY = 'newsletters';
+
+function buildIntegration(
+  provider: string,
+  status: Integration['status'],
+  audienceId?: string,
+  groups?: NewsletterIntegrationGroup[]
+): Integration {
+  return {
+    ...providerMap[provider],
+    provider,
+    category: CATEGORY,
+    status,
+    audienceId,
+    groups,
+  };
+}
 
 export function useNewsletterIntegrations() {
   const integrations = ref<Integration[]>([]);
@@ -30,15 +47,28 @@ export function useNewsletterIntegrations() {
     loading.value = true;
     error.value = null;
     try {
-      const data = await client.integrations.listNewsletter();
-      integrations.value = data.map((item) => ({
-        ...providerMap[item.provider],
-        provider: item.provider,
-        category: CATEGORY,
-        status: item.status,
-        audienceId: item.audienceId,
-        groups: item.groups,
-      }));
+      const configuredProvider = env.newsletterProvider;
+
+      // Build all known provider cards upfront as disabled
+      const result = Object.keys(providerMap).map((provider) =>
+        buildIntegration(provider, 'disabled')
+      );
+
+      // If a provider is configured, fetch its real status and merge it in
+      if (configuredProvider && configuredProvider !== 'none') {
+        const data = await client.integrations.getNewsletter();
+        const index = result.findIndex((i) => i.provider === data.provider);
+        if (index !== -1) {
+          result[index] = buildIntegration(
+            data.provider,
+            data.status,
+            data.audienceId,
+            data.groups
+          );
+        }
+      }
+
+      integrations.value = result;
     } catch (e) {
       error.value = e as Error;
     } finally {
@@ -51,18 +81,14 @@ export function useNewsletterIntegrations() {
     error.value = null;
     try {
       const data = await client.integrations.refreshNewsletter(provider);
-      const index = integrations.value.findIndex(
-        (i) => i.provider === provider
-      );
+      const index = integrations.value.findIndex((i) => i.provider === provider);
       if (index !== -1) {
-        integrations.value[index] = {
-          ...providerMap[data.provider],
-          provider: data.provider,
-          category: CATEGORY,
-          status: data.status,
-          audienceId: data.audienceId,
-          groups: data.groups,
-        };
+        integrations.value[index] = buildIntegration(
+          data.provider,
+          data.status,
+          data.audienceId,
+          data.groups
+        );
       }
     } catch (e) {
       error.value = e as Error;

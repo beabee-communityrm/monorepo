@@ -262,8 +262,8 @@
       },
       "refresh": "Vernieuwen",
       "status": {
-        "connected": "Verbonden",
-        "connectionLost": "Verbinding verbroken",
+        "healthy": "Verbonden",
+        "unhealthy": "Verbinding verbroken",
         "disabled": "Uitgeschakeld"
       }
     },

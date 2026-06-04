@@ -262,8 +262,8 @@
       },
       "refresh": "Actualizar",
       "status": {
-        "connected": "Conectado",
-        "connectionLost": "Conexión perdida",
+        "healthy": "Conectado",
+        "unhealthy": "Conexión perdida",
         "disabled": "Desactivado"
       }
     },

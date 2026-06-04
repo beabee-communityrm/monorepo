@@ -1,11 +1,15 @@
-export interface GetNewsletterIntegrationGroupData {
+export interface NewsletterIntegrationGroup {
+  label: string;
   id: string;
-  name: string;
 }
 
-export interface GetNewsletterIntegrationData {
+/**
+ * Response from GET /integrations/newsletter
+ * Status is always healthy or unhealthy — disabled is frontend-determined
+ */
+export interface NewsletterIntegration {
   provider: string;
-  status: 'connected' | 'connectionLost' | 'disabled';
-  audienceId: string;
-  groups: GetNewsletterIntegrationGroupData[];
+  status: 'healthy' | 'unhealthy';
+  audienceId?: string;
+  groups?: NewsletterIntegrationGroup[];
 }
