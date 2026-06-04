@@ -262,9 +262,9 @@
       },
       "refresh": "",
       "status": {
+        "disabled": "",
         "healthy": "",
-        "unhealthy": "",
-        "disabled": ""
+        "unhealthy": ""
       }
     },
     "payment": {

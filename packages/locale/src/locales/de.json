@@ -262,9 +262,9 @@
       },
       "refresh": "Aktualisieren",
       "status": {
+        "disabled": "Deaktiviert",
         "healthy": "Verbunden",
-        "unhealthy": "Verbindung unterbrochen",
-        "disabled": "Deaktiviert"
+        "unhealthy": "Verbindung unterbrochen"
       }
     },
     "payment": {

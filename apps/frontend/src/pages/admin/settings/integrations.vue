@@ -27,7 +27,7 @@ meta:
             <MailchimpCardContent
               v-if="
                 integration.provider === 'mailchimp' &&
-                integration.status === 'connected'
+                integration.status === 'healthy'
               "
               :audience-id="integration.audienceId"
               :groups="integration.groups"

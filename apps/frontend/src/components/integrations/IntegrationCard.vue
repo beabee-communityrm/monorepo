@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, useSlots } from 'vue';
+import { Comment, computed, useSlots } from 'vue';
 
 import type { Integration } from '#type/integration';
 import IntegrationCardHeader from './IntegrationCardHeader.vue';
@@ -17,5 +17,7 @@ defineProps<{ integration: Integration }>();
 
 const slots = useSlots();
 
-const hasBody = computed(() => !!slots.default?.().length);
+const hasBody = computed(
+  () => slots.default?.().some(({ type }) => type !== Comment) ?? false
+);
 </script>

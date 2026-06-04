@@ -262,9 +262,9 @@
       },
       "refresh": "Оновити",
       "status": {
+        "disabled": "Вимкнено",
         "healthy": "Підключено",
-        "unhealthy": "З'єднання втрачено",
-        "disabled": "Вимкнено"
+        "unhealthy": "З'єднання втрачено"
       }
     },
     "payment": {

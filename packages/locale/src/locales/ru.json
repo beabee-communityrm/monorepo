@@ -263,9 +263,9 @@
       },
       "refresh": "Обновить",
       "status": {
+        "disabled": "Отключено",
         "healthy": "Подключено",
-        "unhealthy": "Соединение потеряно",
-        "disabled": "Отключено"
+        "unhealthy": "Соединение потеряно"
       }
     },
     "payment": {
