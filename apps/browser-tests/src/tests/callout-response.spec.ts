@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { rateLimitedTestUser as member } from "@beabee/test-utils/test-data";
-import { nonAdminAuthFile, adminAuthFile } from "../setup/auth-states";
+import { nonAdminAuthFile, adminAuthFile } from "./setup/auth-states";
 
 test.use({ storageState: nonAdminAuthFile });
 
