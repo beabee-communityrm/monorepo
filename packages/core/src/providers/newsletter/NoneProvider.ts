@@ -23,6 +23,10 @@ export class NoneProvider implements NewsletterProvider {
     email: string,
     tags: Record<string, boolean>
   ): Promise<void> {}
+
+  async getHealthStatus(): Promise<'healthy' | 'unhealthy'> {
+    return 'healthy';
+  }
 }
 
 /** @deprecated Use named import NoneProvider instead */

@@ -2,6 +2,7 @@ import { NewsletterContact } from './newsletter-contact.js';
 import { UpdateNewsletterContact } from './update-newsletter-contact.js';
 
 export interface NewsletterProvider {
+  getHealthStatus(): Promise<'healthy' | 'unhealthy'>;
   getContact(email: string): Promise<NewsletterContact | undefined>;
   upsertContact(
     contact: UpdateNewsletterContact,

@@ -149,6 +149,15 @@ class NewsletterService {
   ): Promise<NewsletterContact | undefined> {
     return await this.provider.getContact(email);
   }
+
+  /**
+   * Check the health of the configured newsletter provider
+   *
+   * @returns 'healthy' if the provider's backend is reachable, 'unhealthy' otherwise
+   */
+  async getHealthStatus(): Promise<'healthy' | 'unhealthy'> {
+    return await this.provider.getHealthStatus();
+  }
 }
 
 export const newsletterService = new NewsletterService();
