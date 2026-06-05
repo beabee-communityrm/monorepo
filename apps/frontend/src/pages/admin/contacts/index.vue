@@ -7,12 +7,12 @@ meta:
 
 <template>
   <PageTitle :title="t('menu.contacts')" border>
-    <div class="flex-0 ml-3 hidden md:block">
+    <div class="ml-3 hidden flex-0 md:block">
       <AppButton to="/admin/contacts/add">
         {{ t('contacts.addContact') }}
       </AppButton>
     </div>
-    <div class="fixed bottom-5 right-5 md:hidden">
+    <div class="fixed right-5 bottom-5 md:hidden">
       <AppButton
         :icon="faPlus"
         :title="t('contacts.addContact')"
@@ -161,7 +161,7 @@ meta:
           >;
         }"
       >
-        <p v-if="item.profile.description" class="whitespace-normal text-xs">
+        <p v-if="item.profile.description" class="text-xs whitespace-normal">
           {{ item.profile.description }}
         </p>
         <div

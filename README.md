@@ -193,6 +193,23 @@ Publish new versions of the library packages on NPM:
 yarn publish:latest # or yarn publish:next
 ```
 
+Cut a new release (bumps versions, tags, and creates a GitHub release with auto-generated notes; the npm publish workflow is then triggered by the release event):
+
+```bash
+yarn release        # stable, marked latest on GitHub
+yarn release:rc     # pre-release, npm dist-tag next
+yarn release:beta   # pre-release, npm dist-tag next
+yarn release:dry    # preview without changing anything
+```
+
+`release-it` needs a `GITHUB_TOKEN` with `repo` scope in the environment to create the GitHub release. If you use the GitHub CLI, the simplest way is:
+
+```bash
+export GITHUB_TOKEN=$(gh auth token)
+```
+
+See the [Release Workflow Documentation](docs/release-workflow.md) for the full pipeline, how release notes are generated, and how to edit them for larger releases.
+
 Run the format command on all packages to format the code:
 
 ```bash
@@ -203,6 +220,7 @@ yarn format
 
 - [Environment Variables Guide](docs/environment-variables.md) - Setup and workflow guide
 - [Payment System](docs/payment/README.md) - Payment architecture and workflows
+- [Release Workflow](docs/release-workflow.md) - How releases and npm publishes work
 
 For environment variable reference, see the `.env.example` files.
 

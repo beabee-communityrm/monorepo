@@ -378,7 +378,7 @@
       "updateResponse": "Actualizar tu respuesta"
     },
     "addAPoint": "Haz clic en el mapa donde quieras añadir un punto",
-    "addLocation": "Añadir una nueva entrada",
+    "addLocation": "Añadir una entrada nueva",
     "builder": {
       "actions": {
         "addSlide": "Añadir diapositiva"
@@ -1640,12 +1640,12 @@
         "description": "Ajusta tu formulario de registro de membresía",
         "formSubtitle": "Subtítulo",
         "formTitle": "Título",
-        "googleApplePayNoticeText": "",
+        "googleApplePayNoticeText": "También debes habilitar Google Pay y Apple Pay en Stripe. Ponte en contacto con el servicio de asistencia para obtener ayuda.",
         "minAmount": "Importe mínimo",
         "noticeText": "Aviso debajo del botón de pago",
         "noticeTextHelp": "Usa este campo para añadir un aviso debajo del botón de pago, por ejemplo explicando los períodos de pago o autorizaciones bancarias. También puedes dejarlo en blanco.",
         "showAbsorbFee": "Preguntar al usuario sobre absorber la comisión de pago",
-        "showGoogleApplePay": "",
+        "showGoogleApplePay": "Mostrar iconos de pago de Apple Pay y Google Pay",
         "showNoContribution": "Permitir al usuario unirse sin contribución",
         "suggestedAmounts": "Importes de contribución sugeridos",
         "text": "En esta sección puedes editar, ajustar y previsualizar tu formulario de registro de membresía.",

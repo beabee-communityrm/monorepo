@@ -106,7 +106,7 @@
       />
       <div
         v-if="copyable"
-        class="z-20 col-start-1 row-start-1 self-start justify-self-end pr-1 pt-1"
+        class="z-20 col-start-1 row-start-1 self-start justify-self-end pt-1 pr-1"
       >
         <AppCopyButton variant="float" :text="editor?.getHTML() || ''" />
       </div>
@@ -133,9 +133,7 @@ import {
   faStrikethrough,
   faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
-import Link from '@tiptap/extension-link';
 import Typography from '@tiptap/extension-typography';
-import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import { type ChainedCommands, EditorContent, useEditor } from '@tiptap/vue-3';
 import useVuelidate from '@vuelidate/core';
@@ -199,10 +197,7 @@ const editor = useEditor({
       codeBlock: false,
       heading: { levels: [3] },
       horizontalRule: false,
-    }),
-    Underline,
-    Link.configure({
-      openOnClick: false,
+      link: { openOnClick: false },
     }),
     Typography,
   ],
@@ -222,7 +217,7 @@ const editor = useEditor({
 
 watch(toRef(props, 'modelValue'), (value) => {
   if (editor.value && editor.value.getHTML() !== value) {
-    editor.value.commands.setContent(value as string, false);
+    editor.value.commands.setContent(value as string, { emitUpdate: false });
   }
 });
 
@@ -285,9 +280,10 @@ function setLink(): void {
 const isEditorEmpty = computed(() => editor.value?.isEmpty || false);
 </script>
 
-<style lang="postcss">
+<style>
+@reference '../../styles/index.css';
 .ProseMirror {
-  @apply h-full min-h-[5rem] w-full rounded border border-primary-40 bg-white p-2 focus:shadow-input focus:outline-none;
+  @apply h-full min-h-20 w-full rounded border border-primary-40 bg-white p-2 focus:shadow-input focus:outline-none;
 
   .ProseMirror-hasError & {
     @apply border-danger-70 bg-danger-10;

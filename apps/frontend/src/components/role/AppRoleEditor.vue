@@ -33,7 +33,7 @@
   >
     <template #view="{ item }">
       <AppRoundBadge :type="isRoleCurrent(item) ? 'success' : 'danger'" />
-      <strong class="mx-2 font-bold uppercase text-body-80">
+      <strong class="mx-2 font-bold text-body-80 uppercase">
         {{ t(`common.role.${item.role}`) }}
       </strong>
       <span>

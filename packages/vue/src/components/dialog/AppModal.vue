@@ -6,7 +6,7 @@
 <template>
   <Teleport to="body">
     <div
-      class="fixed inset-0 z-40 flex h-full items-center justify-center bg-black bg-opacity-50 p-4"
+      class="bg-opacity-50 fixed inset-0 z-40 flex h-full items-center justify-center bg-black p-4"
       :class="{ hidden: !open }"
       role="dialog"
       :aria-labelledby="title ? modalId + '-title' : undefined"
@@ -14,13 +14,13 @@
       :aria-hidden="!open"
     >
       <div
-        class="relative flex max-h-full flex-col rounded bg-white p-6 shadow-lg md:max-w-[28rem] md:p-8 lg:w-[28rem]"
+        class="relative flex max-h-full flex-col rounded bg-white p-6 shadow-lg md:max-w-md md:p-8 lg:w-md"
         v-bind="$attrs"
         @click.stop
       >
         <button
           v-if="!noClose"
-          class="absolute right-0 top-0 h-8 w-8 hover:text-primary"
+          class="absolute top-0 right-0 h-8 w-8 hover:text-primary"
           type="button"
           :aria-label="t('actions.close')"
           @click="emit('close')"

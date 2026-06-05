@@ -1,0 +1,30 @@
+name: "Teardown and export logs"
+description: "Exports database and Docker logs"
+
+inputs:
+  db_name:
+    description: "Filename for exported database"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Export database
+      shell: bash
+      run: docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database export --anonymize=none >> ${{ inputs.db_name }}.sql
+
+    - name: Upload database dump
+      uses: actions/upload-artifact@v4
+      with:
+        name: database
+        path: ./${{ inputs.db_name }}.sql
+
+    - name: Export Docker logs
+      shell: bash
+      run: docker compose -f docker-compose.test.yml logs | tee docker-compose.log
+
+    - name: Upload Docker logs
+      uses: actions/upload-artifact@v4
+      with:
+        name: docker-compose-logs
+        path: ./docker-compose.log

@@ -1,8 +1,9 @@
 import { GetNoticesQuery, UpdateNoticeData } from '@beabee/beabee-common';
 import { BeabeeClient, NoticeClient } from '@beabee/client';
-import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
+import { api, testUser } from '#fixtures/api-test-info.json';
 
 import { testNotice, testNoticeUpdate } from '../../fixtures/notices.js';
 
@@ -13,9 +14,9 @@ describe('Notice API', () => {
 
   beforeAll(() => {
     client = new BeabeeClient({
-      host: HOST,
-      path: PATH,
-      token: API_KEY,
+      host: api.host,
+      path: api.path,
+      token: testUser.apiKey,
     });
     noticeClient = client.notice;
   });

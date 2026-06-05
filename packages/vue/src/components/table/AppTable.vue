@@ -45,7 +45,7 @@
         <th
           v-for="(header, i) in headers"
           :key="i"
-          class="relative whitespace-nowrap p-2 font-semibold text-body-80"
+          class="relative p-2 font-semibold whitespace-nowrap text-body-80"
           :class="{
             'cursor-pointer': header.sortable,
             'font-bold text-primary': header.value === sort?.by,

@@ -1,17 +1,18 @@
 import { ContentId, ContentJoinData } from '@beabee/beabee-common';
 import { ApiError, ContentClient } from '@beabee/client';
-import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
 
 import { beforeAll, describe, expect, it } from 'vitest';
+
+import { api, testUser } from '#fixtures/api-test-info.json';
 
 describe('Content API', () => {
   let contentClient: ContentClient;
 
   beforeAll(() => {
     contentClient = new ContentClient({
-      host: HOST,
-      path: PATH,
-      token: API_KEY,
+      host: api.host,
+      path: api.path,
+      token: testUser.apiKey,
     });
   });
 

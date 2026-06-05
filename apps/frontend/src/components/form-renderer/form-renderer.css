@@ -1,3 +1,5 @@
+@reference "../../index.css";
+
 /* Apply to form renderer */
 .callout-form-renderer,
 /* Apply to form builder form area */
@@ -68,7 +70,7 @@
 
   /* Button styling */
   .btn:not(.component-settings-button):not(.formcomponent) {
-    @apply relative inline-flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded bg-link px-2 text-center font-bold text-white;
+    @apply relative inline-flex h-10 cursor-pointer items-center justify-center rounded bg-link px-2 text-center font-bold whitespace-nowrap text-white;
 
     &[disabled] {
       @apply cursor-not-allowed opacity-50;
@@ -125,7 +127,7 @@
 
   /* Hide hidden controls */
   .formio-hidden {
-    @apply hidden !important;
+    display: none !important;
   }
 
   /* Standard spacing for questions and flex to manipulate order */

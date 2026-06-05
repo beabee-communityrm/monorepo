@@ -20,7 +20,7 @@
       sizeClasses[size],
       disabled
         ? 'cursor-not-allowed opacity-50'
-        : 'cursor-pointer hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2',
+        : 'hover:bg-opacity-80 cursor-pointer focus:ring-2 focus:ring-primary-70 focus:ring-offset-2 focus:outline-none',
     ]"
     role="button"
     :tabindex="disabled ? -1 : 0"
@@ -35,7 +35,7 @@
       <font-awesome-icon
         v-if="icon"
         :icon="icon"
-        class="text-current h-5 w-5"
+        class="h-5 w-5 text-current"
         aria-hidden="true"
       />
 

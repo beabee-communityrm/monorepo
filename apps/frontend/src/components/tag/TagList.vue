@@ -1,6 +1,6 @@
 <template>
   <div v-if="tags.length > 0" class="relative ml-4">
-    <font-awesome-icon :icon="faTag" class="absolute -ml-4 mt-1" />
+    <font-awesome-icon :icon="faTag" class="absolute mt-1 -ml-4" />
     <div class="flex flex-wrap items-center gap-2">
       <AppTag
         v-for="tag in tags"

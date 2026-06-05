@@ -294,7 +294,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
                   'flex-1 rounded p-3 text-left text-sm transition-colors',
                   activeSlide === index
                     ? 'border-2 border-primary bg-primary-10 text-primary-70'
-                    : 'border-transparent border-2 bg-grey-lighter text-grey-dark hover:bg-grey-light',
+                    : 'border-2 border-transparent bg-grey-lighter text-grey-dark hover:bg-grey-light',
                 ]"
               >
                 {{ title }}

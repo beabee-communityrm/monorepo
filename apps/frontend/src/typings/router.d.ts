@@ -1,7 +1,7 @@
 import { RoleType } from '@beabee/beabee-common';
 
 import 'vue-router';
-// Enable typed routes from unplugin-vue-router
+// Enable typed routes from vue-router file-based routing
 import 'vue-router/auto-routes';
 
 declare module 'vue-router' {

@@ -3,7 +3,7 @@
     role="radiogroup"
     :aria-label="ariaLabel"
     :aria-labelledby="ariaLabelledby"
-    class="flex flex-grow basis-[120px] flex-wrap overflow-hidden rounded p-[1px]"
+    class="flex grow basis-[120px] flex-wrap overflow-hidden rounded p-px"
     @keydown="handleKeydown"
   >
     <button
@@ -14,7 +14,7 @@
       role="radio"
       :aria-checked="item.value === modelValue"
       :tabindex="item.value === modelValue ? 0 : -1"
-      class="flex-grow basis-[90px] bg-white text-sm font-semibold outline outline-1 outline-primary-40"
+      class="grow basis-[90px] bg-white text-sm font-semibold outline outline-1 outline-primary-40"
       :class="[
         size === 'xs' ? 'p-2' : 'p-2.5',
         disabled

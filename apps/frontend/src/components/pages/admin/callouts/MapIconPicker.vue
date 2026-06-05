@@ -39,7 +39,7 @@
         right-aligned
       />
 
-      <div class="pb-4 pt-4">
+      <div class="pt-4 pb-4">
         <AppSubHeading class="text-m"> Icon: </AppSubHeading>
         <AppIconPicker
           :id="'mapIcon-' + props.answer.value"

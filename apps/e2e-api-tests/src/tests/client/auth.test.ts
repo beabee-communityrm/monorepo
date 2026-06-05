@@ -1,14 +1,9 @@
 import type { LoginData } from '@beabee/beabee-common';
 import { AuthClient, UnauthorizedError } from '@beabee/client';
-import {
-  API_KEY,
-  HOST,
-  PATH,
-  TEST_USER_EMAIL,
-  TEST_USER_PASSWORD,
-} from '@beabee/test-utils/vitest/env';
 
-import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it } from 'vitest';
+
+import { api, testUser } from '#fixtures/api-test-info.json';
 
 describe('Auth API', () => {
   let authTokenClient: AuthClient;
@@ -16,14 +11,14 @@ describe('Auth API', () => {
 
   beforeAll(() => {
     authTokenClient = new AuthClient({
-      host: HOST,
-      path: PATH,
-      token: API_KEY,
+      host: api.host,
+      path: api.path,
+      token: testUser.apiKey,
     });
 
     authUserClient = new AuthClient({
-      host: HOST,
-      path: PATH,
+      host: api.host,
+      path: api.path,
     });
   });
 
@@ -39,14 +34,14 @@ describe('Auth API', () => {
   describe('login (user authentication)', () => {
     it('should successfully login with user credentials', async () => {
       const validLoginData: LoginData = {
-        email: TEST_USER_EMAIL,
-        password: TEST_USER_PASSWORD,
+        email: testUser.email,
+        password: testUser.password,
       };
       await authUserClient.login(validLoginData);
 
       // Verify login was successful by checking auth info
       const authInfo = await authUserClient.info();
-      expect(authInfo.contact?.email).toBe(TEST_USER_EMAIL);
+      expect(authInfo.contact?.email).toBe(testUser.email);
       expect(authInfo.method).toBe('user');
     });
 
@@ -77,14 +72,14 @@ describe('Auth API', () => {
     it('should return user authentication status after login', async () => {
       // Login first
       await authUserClient.login({
-        email: TEST_USER_EMAIL,
-        password: TEST_USER_PASSWORD,
+        email: testUser.email,
+        password: testUser.password,
       });
 
       const authInfo = await authUserClient.info();
       expect(authInfo.method).toBe('user');
       expect(authInfo.contact).toBeDefined();
-      expect(authInfo.contact?.email).toBe(TEST_USER_EMAIL);
+      expect(authInfo.contact?.email).toBe(testUser.email);
       expect(authInfo.roles).toBeDefined();
       expect(Array.isArray(authInfo.roles)).toBe(true);
     });
@@ -94,8 +89,8 @@ describe('Auth API', () => {
     it('should clear user authentication state after logout', async () => {
       // First login
       await authUserClient.login({
-        email: TEST_USER_EMAIL,
-        password: TEST_USER_PASSWORD,
+        email: testUser.email,
+        password: testUser.password,
       });
 
       // Verify logged in state

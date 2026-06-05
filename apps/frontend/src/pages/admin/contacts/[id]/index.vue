@@ -243,7 +243,7 @@ meta:
             <AppButton
               type="submit"
               variant="primaryOutlined"
-              class="ml-6 mt-2"
+              class="mt-2 ml-6"
               >{{ t('contactOverview.security.resetPassword') }}</AppButton
             >
           </form>
