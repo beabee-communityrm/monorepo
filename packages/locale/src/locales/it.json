@@ -251,6 +251,22 @@
         "twitterHandle": "Handle Twitter"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Newsletter"
+      },
+      "label": "Integrazioni",
+      "mailchimp": {
+        "audienceId": "ID pubblico",
+        "groups": "Gruppi"
+      },
+      "refresh": "Aggiorna",
+      "status": {
+        "disabled": "Disabilitato",
+        "healthy": "Connesso",
+        "unhealthy": "Connessione persa"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",

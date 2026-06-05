@@ -251,6 +251,22 @@
         "twitterHandle": "Usuario de Twitter"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Boletines"
+      },
+      "label": "Integraciones",
+      "mailchimp": {
+        "audienceId": "ID de audiencia",
+        "groups": "Grupos"
+      },
+      "refresh": "Actualizar",
+      "status": {
+        "disabled": "Desactivado",
+        "healthy": "Conectado",
+        "unhealthy": "Conexión perdida"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "Activar contribuciones únicas",
       "oneTimeDonationsTitle": "Contribuciones únicas",

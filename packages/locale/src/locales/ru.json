@@ -252,6 +252,22 @@
         "twitterHandle": ""
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Рассылки"
+      },
+      "label": "Интеграции",
+      "mailchimp": {
+        "audienceId": "ID аудитории",
+        "groups": "Группы"
+      },
+      "refresh": "Обновить",
+      "status": {
+        "disabled": "Отключено",
+        "healthy": "Подключено",
+        "unhealthy": "Соединение потеряно"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",

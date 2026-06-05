@@ -251,6 +251,22 @@
         "twitterHandle": "Ім'я користувача в Твіттері"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Розсилки"
+      },
+      "label": "Інтеграції",
+      "mailchimp": {
+        "audienceId": "ID аудиторії",
+        "groups": "Групи"
+      },
+      "refresh": "Оновити",
+      "status": {
+        "disabled": "Вимкнено",
+        "healthy": "Підключено",
+        "unhealthy": "З'єднання втрачено"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",
