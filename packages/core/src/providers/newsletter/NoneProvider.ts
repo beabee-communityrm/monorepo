@@ -27,6 +27,10 @@ export class NoneProvider implements NewsletterProvider {
   async getHealthStatus(): Promise<'healthy' | 'unhealthy'> {
     return 'healthy';
   }
+
+  async getGroups(): Promise<{ id: string; label: string }[]> {
+    return [];
+  }
 }
 
 /** @deprecated Use named import NoneProvider instead */

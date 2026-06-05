@@ -158,6 +158,16 @@ class NewsletterService {
   async getHealthStatus(): Promise<'healthy' | 'unhealthy'> {
     return await this.provider.getHealthStatus();
   }
+
+  /**
+   * Get the list of newsletter groups configured on the newsletter provider's
+   * backend (e.g. Mailchimp interests on the configured audience).
+   *
+   * @returns The available groups as `{ id, label }` pairs
+   */
+  async getGroups(): Promise<{ id: string; label: string }[]> {
+    return await this.provider.getGroups();
+  }
 }
 
 export const newsletterService = new NewsletterService();
