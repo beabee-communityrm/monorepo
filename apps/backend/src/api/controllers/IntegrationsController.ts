@@ -12,15 +12,17 @@ export class IntegrationsController {
   @Get('/newsletter')
   async getNewsletter(): Promise<NewsletterIntegrationDto> {
     const provider = config.newsletter.provider;
+    const health = await NewsletterService.getHealthStatus();
+    const groups = await NewsletterService.getGroups();
 
     if (provider === 'none') {
       return {
         provider,
         status: ApiHealthStatus.DISABLED,
+        groups: groups.map((g) => ({ ...g, checked: false })),
       };
     }
 
-    const health = await NewsletterService.getHealthStatus();
     return {
       provider,
       status:
@@ -28,6 +30,7 @@ export class IntegrationsController {
           ? ApiHealthStatus.HEALTHY
           : ApiHealthStatus.UNHEALTHY,
       audienceId: config.newsletter.settings.listId,
+      groups: groups.map((g) => ({ ...g, checked: false })),
     };
   }
 }
