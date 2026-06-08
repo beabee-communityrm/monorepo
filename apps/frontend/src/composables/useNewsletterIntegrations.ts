@@ -1,13 +1,17 @@
+import { ApiHealthStatus } from '@beabee/beabee-common';
+import type { MailchimpNewsletterIntegrationData } from '@beabee/beabee-common';
+
 import { faMailchimp } from '@fortawesome/free-brands-svg-icons';
 import { ref } from 'vue';
 
 import env from '#env';
+import type { DisabledIntegration, Integration } from '#type/integration';
 import { client } from '#utils/api/client';
-import { ApiHealthStatus } from '@beabee/beabee-common';
-import type { NewsletterGroupData } from '@beabee/beabee-common';
-import type { Integration } from '#type/integration';
 
-type ProviderDisplayConfig = Pick<Integration, 'name' | 'color' | 'textColor' | 'icon'>;
+type ProviderDisplayConfig = Pick<
+  Integration,
+  'name' | 'color' | 'textColor' | 'icon'
+>;
 
 /**
  * Maps provider identifiers to frontend display properties.
@@ -24,19 +28,25 @@ const providerMap: Record<string, ProviderDisplayConfig> = {
 
 const CATEGORY = 'newsletters';
 
-function buildIntegration(
-  provider: string,
-  status: ApiHealthStatus,
-  audienceId?: string,
-  groups?: NewsletterGroupData[]
-): Integration {
+function buildDisabledIntegration(provider: string): DisabledIntegration {
   return {
     ...providerMap[provider],
     provider,
     category: CATEGORY,
-    status,
-    audienceId,
-    groups,
+    status: ApiHealthStatus.DISABLED,
+  };
+}
+
+function buildIntegration(
+  integrationData: MailchimpNewsletterIntegrationData
+): Integration {
+  return {
+    ...providerMap[integrationData.provider],
+    provider: integrationData.provider,
+    category: CATEGORY,
+    status: integrationData.status,
+    audienceId: integrationData.audienceId,
+    groups: integrationData.groups,
   };
 }
 
@@ -49,24 +59,17 @@ export function useNewsletterIntegrations() {
     loading.value = true;
     error.value = null;
     try {
-      const configuredProvider = env.newsletterProvider;
-
       // Build all known provider cards upfront as disabled
-      const result = Object.keys(providerMap).map((provider) =>
-        buildIntegration(provider, ApiHealthStatus.DISABLED)
-      );
+      const result: Integration[] = Object.keys(providerMap).map(buildDisabledIntegration);
 
-      // If a provider is configured, fetch its real status and merge it in
-      if (configuredProvider && configuredProvider !== 'none') {
+      // Fetch real status from API and merge in if provider is configured
+      if (env.newsletterProvider && env.newsletterProvider !== 'none') {
         const data = await client.integrations.getNewsletter();
-        const index = result.findIndex((i) => i.provider === data.provider);
-        if (index !== -1) {
-          result[index] = buildIntegration(
-            data.provider,
-            data.status,
-            data.audienceId,
-            data.groups
-          );
+        if (data.provider !== 'none') {
+          const index = result.findIndex((i) => i.provider === data.provider);
+          if (index !== -1) {
+            result[index] = buildIntegration(data);
+          }
         }
       }
 
