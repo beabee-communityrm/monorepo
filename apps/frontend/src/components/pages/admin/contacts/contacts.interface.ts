@@ -1,6 +1,5 @@
 import {
   type ContactFilterName,
-  type ContentJoinSetupData,
   ContributionPeriod,
   ContributionType,
   NewsletterStatus,
@@ -183,13 +182,10 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
  * @returns Filter groups and tag items for use in the contact list view
  */
 export function useContactFilters() {
-  /**
-   * Newsletter setup content
-   * @description Fetches and stores newsletter configuration
-   */
-  const setupContent = ref<ContentJoinSetupData | null>(null);
+  const newsletterGroups = ref<{ id: string; label: string }[]>([]);
   (async () => {
-    setupContent.value = await client.content.get('join/setup');
+    const data = await client.integrations.getNewsletter();
+    newsletterGroups.value = data.groups ?? [];
   })();
 
   /**
@@ -222,8 +218,8 @@ export function useContactFilters() {
         ]),
         newsletterGroups: {
           ...filterItems.value.newsletterGroups,
-          ...(setupContent.value?.newsletterGroups.length && {
-            options: setupContent.value.newsletterGroups,
+          ...(newsletterGroups.value.length && {
+            options: newsletterGroups.value,
           }),
         },
         tags: {
