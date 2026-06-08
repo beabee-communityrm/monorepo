@@ -20,7 +20,6 @@ export interface ResponseRow {
 
 export interface ImportCalloutResponsesArgs {
   slug: string;
-  file?: string;
   dryRun: boolean;
   failOnUnknown: boolean;
   dateFormat: string;

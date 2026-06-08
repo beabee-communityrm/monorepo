@@ -7,7 +7,6 @@ import { config } from '@beabee/core/config';
 import { dataSource } from '@beabee/core/database';
 import { runApp } from '@beabee/core/server';
 
-import { createReadStream, readFileSync } from 'node:fs';
 import type { Readable } from 'node:stream';
 
 /**
@@ -118,7 +117,6 @@ async function importFromLines(lines: string[], merge = false): Promise<void> {
 }
 
 export const importDatabase = async (
-  filePath: string | undefined,
   dryRun = false,
   merge = false
 ): Promise<void> => {
@@ -128,17 +126,12 @@ export const importDatabase = async (
   }
 
   if (dryRun) {
-    console.log('Dry run: would import from', filePath ?? 'stdin');
+    console.log('Dry run: would import from stdin');
     return;
   }
 
   await runApp(async () => {
-    if (filePath) {
-      const lines = readFileSync(filePath, 'utf8').split('\n');
-      await importFromLines(lines, merge);
-    } else {
-      const lines = await readLines(process.stdin);
-      await importFromLines(lines, merge);
-    }
+    const lines = await readLines(process.stdin);
+    await importFromLines(lines, merge);
   });
 };

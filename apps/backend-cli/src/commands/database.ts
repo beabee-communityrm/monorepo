@@ -49,11 +49,6 @@ export const databaseCommand: CommandModule = {
               description:
                 'Keep callout response answers intact instead of anonymizing per component. Contact FKs and guest data are still anonymized.',
               default: false,
-            })
-            .option('file', {
-              type: 'string',
-              description:
-                'Write output to this file instead of stdout (avoids TypeORM log pollution)',
             }),
         handler: async (argv) => {
           const { exportDatabase } =
@@ -62,8 +57,7 @@ export const databaseCommand: CommandModule = {
             argv.dryRun,
             argv.anonymize as AnonymizationLevel,
             argv.skipAnonymizeTables ?? [],
-            argv.preserveCalloutAnswers,
-            argv.file
+            argv.preserveCalloutAnswers
           );
         },
       })
@@ -77,16 +71,11 @@ export const databaseCommand: CommandModule = {
               type: 'boolean',
               description: 'Run without making changes',
               default: false,
-            })
-            .option('file', {
-              type: 'string',
-              description:
-                'Write output to this file instead of stdout (avoids TypeORM log pollution)',
             }),
         handler: async (argv) => {
           const { exportDemoDatabase } =
             await import('../actions/database/export-demo.js');
-          return exportDemoDatabase(argv.dryRun, argv.file);
+          return exportDemoDatabase(argv.dryRun);
         },
       })
       .command({
@@ -112,11 +101,6 @@ export const databaseCommand: CommandModule = {
                 'Keep callout response answers intact instead of anonymizing per component. Defaults to true for this command.',
               default: true,
             })
-            .option('file', {
-              type: 'string',
-              description:
-                'Write output to this file instead of stdout (avoids TypeORM log pollution)',
-            })
             .option('callout-slug', {
               type: 'array',
               string: true,
@@ -131,7 +115,6 @@ export const databaseCommand: CommandModule = {
             argv.dryRun,
             argv.anonymize as CalloutAnonymizationLevel,
             argv.preserveCalloutAnswers,
-            argv.file,
             argv.calloutSlug
           );
         },
@@ -142,10 +125,6 @@ export const databaseCommand: CommandModule = {
           'Import database from a SQL dump (dev only; use export output)',
         builder: (yargs) =>
           yargs
-            .option('file', {
-              type: 'string',
-              description: 'Path to dump file (default: read from stdin)',
-            })
             .option('dryRun', {
               type: 'boolean',
               description: 'Run without making changes',
@@ -160,7 +139,7 @@ export const databaseCommand: CommandModule = {
         handler: async (argv) => {
           const { importDatabase } =
             await import('../actions/database/import.js');
-          return importDatabase(argv.file, argv.dryRun, argv.merge);
+          return importDatabase(argv.dryRun, argv.merge);
         },
       })
       .command({
@@ -173,10 +152,6 @@ export const databaseCommand: CommandModule = {
               type: 'string',
               demandOption: true,
               description: 'Slug of the target callout',
-            })
-            .option('file', {
-              type: 'string',
-              description: 'Path to CSV file (default: read from stdin)',
             })
             .option('dryRun', {
               type: 'boolean',
@@ -204,7 +179,6 @@ export const databaseCommand: CommandModule = {
             dryRun: argv.dryRun as boolean,
             failOnUnknown: argv.failOnUnknown as boolean,
             dateFormat: argv.dateFormat as string,
-            ...(argv.file ? { file: argv.file as string } : {}),
           });
         },
       })

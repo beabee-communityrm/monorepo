@@ -26,10 +26,7 @@ import {
   CALLOUT_EXPORT_FULL_ANONYMIZERS,
   CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS,
 } from '../../utils/anonymizers.js';
-import {
-  withFileOutput,
-  withTypeOrmQueryLoggingDisabled,
-} from '../../utils/file-output.js';
+import { withTypeOrmQueryLoggingDisabled } from '../../utils/file-output.js';
 
 /**
  * Build a prepareQuery function that filters by callout slugs.
@@ -61,14 +58,12 @@ function buildSlugFilter(
  * @param dryRun If true, only logs what would be done
  * @param level Anonymisation level: 'full' (personal data anonymised) or 'none' (everything raw)
  * @param preserveCalloutAnswers If true, keep answers intact; if false, anonymize per component type
- * @param filePath If set, write output to this file instead of stdout
  * @param slugs If set, only export callouts with these slugs (no DELETE statements emitted; use --merge on import)
  */
 export const exportCalloutsDatabase = async (
   dryRun = false,
   level: CalloutAnonymizationLevel = 'full',
   preserveCalloutAnswers = true,
-  filePath?: string,
   slugs: string[] = []
 ): Promise<void> => {
   if (level === 'none') {
@@ -101,25 +96,23 @@ export const exportCalloutsDatabase = async (
   }
 
   await runApp(async () => {
-    await withFileOutput(filePath, async () => {
-      const valueMap = new Map<string, unknown>();
+    const valueMap = new Map<string, unknown>();
 
-      // Keep setup logs visible and mute only SQL-emission phase to avoid file pollution.
-      await withTypeOrmQueryLoggingDisabled(async () => {
-        // When exporting specific callouts, skip DELETE statements —
-        // the user should import with --merge to add alongside existing data.
-        if (slugs.length === 0) {
-          clearModels(CALLOUT_EXPORT_CLEAR_MODELS);
-        }
+    // Keep setup logs visible and mute only SQL-emission phase to avoid file pollution.
+    await withTypeOrmQueryLoggingDisabled(async () => {
+      // When exporting specific callouts, skip DELETE statements —
+      // the user should import with --merge to add alongside existing data.
+      if (slugs.length === 0) {
+        clearModels(CALLOUT_EXPORT_CLEAR_MODELS);
+      }
 
-        for (const anonymiser of anonymisers) {
-          await anonymiseModel(
-            anonymiser,
-            buildSlugFilter(anonymiser.model, slugs),
-            valueMap
-          );
-        }
-      });
+      for (const anonymiser of anonymisers) {
+        await anonymiseModel(
+          anonymiser,
+          buildSlugFilter(anonymiser.model, slugs),
+          valueMap
+        );
+      }
     });
   });
 };

@@ -13,10 +13,7 @@ import {
 
 import type { AnonymizationLevel } from '../../types/index.js';
 import { getAnonymizers } from '../../utils/anonymizers.js';
-import {
-  withFileOutput,
-  withTypeOrmQueryLoggingDisabled,
-} from '../../utils/file-output.js';
+import { withTypeOrmQueryLoggingDisabled } from '../../utils/file-output.js';
 
 /**
  * Export database to SQL dump with configurable anonymization level
@@ -25,14 +22,12 @@ import {
  * @param level Anonymisation level: 'full' (all data anonymised), 'safe' (contacts/payments/emails/segments anonymised, other tables raw) or 'none' (everything raw, including PII)
  * @param skipAnonymizeTables If provided, skip anonymization for the given table names
  * @param preserveCalloutAnswers If true, keep callout response answers intact (only anonymize FKs/guest data)
- * @param filePath If set, write output to this file instead of stdout
  */
 export const exportDatabase = async (
   dryRun = false,
   level: AnonymizationLevel = 'full',
   skipAnonymizeTables: string[] = [],
-  preserveCalloutAnswers = false,
-  filePath?: string
+  preserveCalloutAnswers = false
 ): Promise<void> => {
   if (level === 'none') {
     console.error(
@@ -59,16 +54,14 @@ export const exportDatabase = async (
   }
 
   await runApp(async () => {
-    await withFileOutput(filePath, async () => {
-      const valueMap = new Map<string, unknown>();
-      // Limit query-log muting to the SQL emission phase so setup logs still appear.
-      await withTypeOrmQueryLoggingDisabled(async () => {
-        clearModels(anonymisers);
+    const valueMap = new Map<string, unknown>();
+    // Limit query-log muting to the SQL emission phase so setup logs still appear.
+    await withTypeOrmQueryLoggingDisabled(async () => {
+      clearModels(anonymisers);
 
-        for (const anonymiser of anonymisers) {
-          await anonymiseModel(anonymiser, (qb) => qb, valueMap);
-        }
-      });
+      for (const anonymiser of anonymisers) {
+        await anonymiseModel(anonymiser, (qb) => qb, valueMap);
+      }
     });
   });
 };
