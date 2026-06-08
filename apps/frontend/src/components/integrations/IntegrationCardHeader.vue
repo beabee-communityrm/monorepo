@@ -46,9 +46,9 @@ defineProps<{ integration: Integration }>();
 
 const { t } = useI18n();
 
-const statusType: Record<ApiHealthStatus, 'success' | 'warning' | 'danger'> = {
+const statusType: Record<ApiHealthStatus, 'success' | 'disabled' | 'danger'> = {
   [ApiHealthStatus.HEALTHY]: 'success',
   [ApiHealthStatus.UNHEALTHY]: 'danger',
-  [ApiHealthStatus.DISABLED]: 'warning',
+  [ApiHealthStatus.DISABLED]: 'disabled',
 };
 </script>

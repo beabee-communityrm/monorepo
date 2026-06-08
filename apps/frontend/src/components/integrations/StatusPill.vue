@@ -11,13 +11,13 @@
 <script lang="ts" setup>
 import { AppRoundBadge } from '@beabee/vue';
 
-type PillType = 'success' | 'warning' | 'danger';
+type PillType = 'success' | 'disabled' | 'danger';
 
 defineProps<{ type: PillType }>();
 
 const config: Record<PillType, { classes: string }> = {
   success: { classes: 'border-success text-success' },
   danger: { classes: 'border-danger text-danger' },
-  warning: { classes: 'border-warning text-warning' },
+  disabled: { classes: 'border-grey-dark text-grey-dark' },
 };
 </script>

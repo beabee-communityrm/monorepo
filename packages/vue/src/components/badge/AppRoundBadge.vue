@@ -37,7 +37,7 @@ import { computed } from 'vue';
  */
 export interface AppRoundBadgeProps {
   /** Visual status type that determines the color */
-  type: 'success' | 'warning' | 'danger';
+  type: 'success' | 'warning' | 'danger' | 'disabled';
   /** Size variant of the badge */
   size?: 'large' | 'small';
   /** Accessible label for screen readers */
@@ -60,6 +60,7 @@ const colorClasses = {
   success: 'bg-success',
   warning: 'bg-warning',
   danger: 'bg-danger',
+  disabled: 'bg-grey-dark',
 } as const;
 
 // Generate accessible label if not provided
