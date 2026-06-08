@@ -80,21 +80,37 @@ export const setupCommand: CommandModule = {
         command: 'integrations <integration>',
         describe: 'Set up third-party integrations',
         builder: (yargs) => {
-          return yargs.command({
-            command: 'stripe',
-            describe: 'Set up Stripe integration',
-            builder: (yargs) =>
-              yargs.option('dry-run', {
-                type: 'boolean',
-                describe: 'Run setup without making changes',
-                default: false,
-              }),
-            handler: async (argv) => {
-              const { setupStripe } =
-                await import('../actions/setup/integrations.js');
-              return setupStripe(argv.dryRun);
-            },
-          });
+          return yargs
+            .command({
+              command: 'stripe',
+              describe: 'Set up Stripe integration',
+              builder: (yargs) =>
+                yargs.option('dry-run', {
+                  type: 'boolean',
+                  describe: 'Run setup without making changes',
+                  default: false,
+                }),
+              handler: async (argv) => {
+                const { setupStripe } =
+                  await import('../actions/setup/integrations.js');
+                return setupStripe(argv.dryRun);
+              },
+            })
+            .command({
+              command: 'mailchimp',
+              describe: 'Import groups from Mailchimp',
+              builder: (yargs) =>
+                yargs.option('dry-run', {
+                  type: 'boolean',
+                  describe: 'Run setup without making changes',
+                  default: false,
+                }),
+              handler: async (argv) => {
+                const { setupMailchimp } =
+                  await import('../actions/setup/integrations.js');
+                return setupMailchimp(argv.dryRun);
+              },
+            });
         },
         handler: () => {},
       })
