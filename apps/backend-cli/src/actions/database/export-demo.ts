@@ -17,7 +17,6 @@ import { Brackets } from 'typeorm';
 
 import type { ExportDemoArgs } from '../../types/index.js';
 import {
-  DEMO_EXPORT_CONFIG,
   type DemoExportContext,
   getDemoAnonymisers,
   getDemoClearModels,
@@ -28,13 +27,10 @@ import { withTypeOrmQueryLoggingDisabled } from '../../utils/file-output.js';
 /**
  * Fetch the subset of IDs used for demo export (must be called inside runApp)
  */
-async function fetchDemoContext(options: {
-  contacts?: number;
-  callouts?: number;
-}): Promise<DemoExportContext> {
-  const contactLimit = options.contacts ?? DEMO_EXPORT_CONFIG.contacts;
-  const calloutLimit = options.callouts ?? DEMO_EXPORT_CONFIG.callouts;
-
+async function fetchDemoContext(
+  contactLimit: number,
+  calloutLimit: number
+): Promise<DemoExportContext> {
   const contacts = await createQueryBuilder(Contact, 'item')
     .select('item.id')
     .orderBy('random()')
@@ -80,13 +76,16 @@ export const exportDemoDatabase = async (
   if (args.dryRun) {
     console.log('Dry run: would export database (demo subset)');
     console.log(
-      `Would export up to ${DEMO_EXPORT_CONFIG.contacts} random contacts, ${DEMO_EXPORT_CONFIG.callouts} latest callouts, and their responses (anonymized)`
+      `Would export up to ${args.contactLimit} random contacts, ${args.calloutLimit} latest callouts, and their responses (anonymized)`
     );
     return;
   }
 
   await runApp(async () => {
-    const context = await fetchDemoContext(DEMO_EXPORT_CONFIG);
+    const context = await fetchDemoContext(
+      args.contactLimit,
+      args.calloutLimit
+    );
     const anonymisers = getDemoAnonymisers();
     const modelsToClear = getDemoClearModels();
 

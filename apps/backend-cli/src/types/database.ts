@@ -35,6 +35,8 @@ export interface ExportCalloutsArgs {
 }
 
 export interface ExportDemoArgs {
+  contactLimit: number;
+  calloutLimit: number;
   dryRun: boolean;
 }
 

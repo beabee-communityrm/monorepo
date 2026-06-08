@@ -94,16 +94,6 @@ function getAlwaysPassthroughAnonymisers(): models.ModelAnonymiser[] {
 }
 
 /**
- * Demo export configuration
- * Defines how many records to include in demo exports
- */
-export const DEMO_EXPORT_CONFIG = {
-  contacts: 400,
-  callouts: 20,
-  // Additional limits can be added here
-} as const;
-
-/**
  * Demo subset: anonymisers for contact-related data (limited contacts)
  */
 export const DEMO_CONTACT_ANONYMIZERS = [

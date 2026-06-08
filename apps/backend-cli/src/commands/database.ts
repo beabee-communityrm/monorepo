@@ -70,11 +70,24 @@ export const databaseCommand: CommandModule = {
         describe:
           'Export demo subset (limited contacts, latest callouts, anonymized)',
         builder: (yargs) =>
-          yargs.option('dryRun', {
-            type: 'boolean',
-            description: 'Run without making changes',
-            default: false,
-          }),
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes',
+              default: false,
+            })
+            .option('contactLimit', {
+              type: 'number',
+              description:
+                'Maximum number of contacts to include in the demo export',
+              default: 400,
+            })
+            .option('calloutLimit', {
+              type: 'number',
+              description:
+                'Maximum number of callouts to include in the demo export',
+              default: 20,
+            }),
         handler: async (argv) => {
           const { exportDemoDatabase } =
             await import('../actions/database/export-demo.js');
