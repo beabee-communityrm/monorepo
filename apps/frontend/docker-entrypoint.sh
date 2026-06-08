@@ -17,6 +17,5 @@ if [ ! -f /.installed ]; then
     -e "s|__captchafoxKey__|$CAPTCHAFOX_KEY|g" \
     -e "s|__maptilerKey__|$MAPTILER_KEY|g" \
     -e "s|__cnrMode__|$CNR_MODE|g" \
-    -e "s|__newsletterProvider__|$BEABEE_NEWSLETTER_PROVIDER|g" \
     {} +
 fi
