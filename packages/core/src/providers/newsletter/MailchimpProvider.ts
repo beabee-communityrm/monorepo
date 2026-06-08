@@ -1,6 +1,6 @@
 import {
   ApiHealthStatus,
-  NewsletterIntegrationData,
+  MailchimpNewsletterIntegrationData,
   NewsletterStatus,
 } from '@beabee/beabee-common';
 
@@ -205,8 +205,8 @@ export class MailchimpProvider implements NewsletterProvider {
    *
    * @returns 'healthy' if the audience is reachable, 'unhealthy' otherwise
    */
-  async getProviderInfo(): Promise<NewsletterIntegrationData> {
-    let resp = {
+  async getProviderInfo(): Promise<MailchimpNewsletterIntegrationData> {
+    const resp: MailchimpNewsletterIntegrationData = {
       provider: 'mailchimp',
       audienceId: this.listId,
       status: ApiHealthStatus.UNHEALTHY,
@@ -216,10 +216,8 @@ export class MailchimpProvider implements NewsletterProvider {
     try {
       await this.api.instance.get(`lists/${this.listId}`);
       resp.status = ApiHealthStatus.HEALTHY;
-      return resp;
-    } catch (err) {
-      return resp;
-    }
+    } catch (err) {}
+    return resp;
   }
 
   /**

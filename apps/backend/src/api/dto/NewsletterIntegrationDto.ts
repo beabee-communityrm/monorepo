@@ -1,26 +1,41 @@
 import {
   ApiHealthStatus,
-  NewsletterIntegrationData,
+  MailchimpNewsletterIntegrationData,
+  NoneNewsletterIntegrationData,
 } from '@beabee/beabee-common';
 
 import { Type } from 'class-transformer';
-import { IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsEnum, IsIn, IsString, ValidateNested } from 'class-validator';
 
 import { NewsletterGroupDto } from './NewsletterDto.js';
 
-export class NewsletterIntegrationDto implements NewsletterIntegrationData {
-  @IsString()
-  provider!: string;
+export class NoneNewsletterIntegrationDto
+  implements NoneNewsletterIntegrationData
+{
+  @IsIn(['none'])
+  provider!: 'none';
+
+  @IsIn([ApiHealthStatus.DISABLED])
+  status!: ApiHealthStatus.DISABLED;
+}
+
+export class MailchimpNewsletterIntegrationDto
+  implements MailchimpNewsletterIntegrationData
+{
+  @IsIn(['mailchimp'])
+  provider!: 'mailchimp';
 
   @IsString()
-  @IsOptional()
-  audienceId?: string;
+  audienceId!: string;
 
   @IsEnum(ApiHealthStatus)
   status!: ApiHealthStatus;
 
-  @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => NewsletterGroupDto)
-  groups?: NewsletterGroupDto[];
+  groups!: NewsletterGroupDto[];
 }
+
+export type NewsletterIntegrationDto =
+  | NoneNewsletterIntegrationDto
+  | MailchimpNewsletterIntegrationDto;

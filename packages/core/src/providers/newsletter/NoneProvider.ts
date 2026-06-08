@@ -1,6 +1,6 @@
 import {
   ApiHealthStatus,
-  NewsletterIntegrationData,
+  NoneNewsletterIntegrationData,
 } from '@beabee/beabee-common';
 
 import {
@@ -33,7 +33,7 @@ export class NoneProvider implements NewsletterProvider {
     return [];
   }
 
-  async getProviderInfo(): Promise<NewsletterIntegrationData> {
+  async getProviderInfo(): Promise<NoneNewsletterIntegrationData> {
     return { provider: 'none', status: ApiHealthStatus.DISABLED };
   }
 }
