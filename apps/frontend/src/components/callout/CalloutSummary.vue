@@ -5,7 +5,7 @@
         <AppSubHeading>{{ callout.title }}</AppSubHeading>
         <p class="mb-3">{{ callout.excerpt }}</p>
       </div>
-      <div class="flex-0 ml-4">
+      <div class="ml-4 flex-0">
         <img class="w-[150px]" :src="imageUrl" />
       </div>
     </div>

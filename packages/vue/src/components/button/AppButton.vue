@@ -238,7 +238,7 @@ const buttonClasses = computed(() => {
     // Base styles
     'leading-tight inline-flex gap-2 justify-center items-center font-bold rounded whitespace-nowrap relative border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-70',
     // Styles for in a button group
-    'group-[]/btns:rounded-none group-[]/btns:last:rounded-r group-[]/btns:first:rounded-l group-[]/btns:-ml-px group-[]/btns:hover:z-10',
+    'group-[&]/btns:rounded-none group-[&]/btns:last:rounded-r group-[&]/btns:first:rounded-l group-[&]/btns:-ml-px group-[&]/btns:hover:z-10',
     // Size styles
     sizeClasses[props.size],
     // Variant styles

@@ -140,7 +140,7 @@
         <!-- Last result slide with save button -->
         <AppSlide>
           <div
-            class="flex h-full items-center justify-center whitespace-break-spaces text-center"
+            class="flex h-full items-center justify-center text-center whitespace-break-spaces"
           >
             <span class="flex h-full w-full flex-col justify-center px-4">
               <AppNotification

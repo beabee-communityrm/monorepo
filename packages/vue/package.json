@@ -59,14 +59,14 @@
     "@beabee/tsconfig": "workspace:^",
     "@histoire/plugin-vue": "^1.0.0-beta.1",
     "@intlify/unplugin-vue-i18n": "^11.0.0",
+    "@tailwindcss/vite": "^4.2.4",
     "@types/dompurify": "^3.2.0",
     "@vitejs/plugin-vue": "^6.0.0",
     "histoire": "^1.0.0-beta.1",
-    "postcss": "^8.5.14",
     "prettier": "^3.8.3",
-    "tailwindcss": "^3.4.19",
+    "tailwindcss": "^4.2.4",
     "typescript": "~6.0.3",
-    "vite": "^8.0.0",
+    "vite": "8.0.13",
     "vue-tsc": "^3.2.8"
   },
   "files": [
@@ -82,7 +82,6 @@
     "./types": "./src/types/index.ts",
     "./styles/*": "./src/styles/*.css",
     "./styles": "./src/styles/index.css",
-    "./assets/*": "./src/assets/*",
-    "./tailwind.config": "./tailwind.config.js"
+    "./assets/*": "./src/assets/*"
   }
 }

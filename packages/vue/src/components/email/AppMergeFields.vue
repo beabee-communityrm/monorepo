@@ -66,7 +66,7 @@
             </AppHelperText>
 
             <!-- Example value (if provided) -->
-            <AppHelperText v-if="tag.example" class="italic text-body-60">
+            <AppHelperText v-if="tag.example" class="text-body-60 italic">
               {{ t('mergeFields.example') }}: {{ tag.example }}
             </AppHelperText>
           </div>

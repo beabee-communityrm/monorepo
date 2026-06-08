@@ -34,7 +34,6 @@ import type { Appearance } from '@stripe/stripe-js';
 import type { ApplePayOption } from '@stripe/stripe-js/dist/stripe-js/elements/apple-pay';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import useVuelidate from '@vuelidate/core';
-import theme from 'virtual:theme';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -72,6 +71,27 @@ function getColor(name: string): string {
   return `rgb(${value})`;
 }
 
+function multiplyCssValue(cssValue: string, multiplier: number) {
+  if (typeof cssValue !== 'string') {
+    throw new Error('cssValue must be a string (e.g., "1rem", "16px").');
+  }
+
+  const trimmedValue = cssValue.trim();
+  const match = trimmedValue.match(/^([-+]?\d*\.?\d+)([a-z%]*)$/i);
+
+  if (!match) {
+    return trimmedValue;
+  }
+
+  const numericPart = match[1];
+  const unit = match[2] || '';
+
+  const numericValue = parseFloat(numericPart);
+  const result = numericValue * multiplier + unit;
+
+  return result;
+}
+
 const appearance: Appearance = {
   theme: 'flat',
   variables: {
@@ -79,21 +99,22 @@ const appearance: Appearance = {
     colorPrimary: getColor('-c--primary'),
     colorText: getColor('--c-body'),
     colorBackground: getColor('--c-white'),
-    borderRadius: theme.borderRadius.DEFAULT,
-    fontLineHeight: theme.lineHeight.tight,
-    fontSizeBase: theme.fontSize.base[0],
-    fontSizeSm: theme.fontSize.sm[0],
-    fontSizeXs: theme.fontSize.xs[0],
+    borderRadius: style.getPropertyValue('--radius'),
+
+    fontLineHeight: style.getPropertyValue('--leading-tight'),
+    fontSizeBase: style.getPropertyValue('--text-base'),
+    fontSizeSm: style.getPropertyValue('--text-sm'),
+    fontSizeXs: style.getPropertyValue('--text-xs'),
     fontFamily: style.getPropertyValue('--ff-body'),
   },
   rules: {
     '.Input': {
       border: '1px solid ' + getColor('--c-primary-40'),
-      padding: theme.spacing['2'],
-      lineHeight: theme.lineHeight.tight,
+      padding: multiplyCssValue(style.getPropertyValue('--spacing'), 2),
+      lineHeight: style.getPropertyValue('--leading-tight'),
     },
     '.Input:focus': {
-      boxShadow: style.getPropertyValue('--bs-input'),
+      boxShadow: style.getPropertyValue('--shadow-input'),
     },
     '.Input--invalid': {
       backgroundColor: getColor('--c-danger-10'),
@@ -102,11 +123,11 @@ const appearance: Appearance = {
       boxShadow: 'none',
     },
     '.Label': {
-      fontSize: theme.fontSize.base[0],
-      marginBottom: theme.spacing['1.5'],
+      fontSize: style.getPropertyValue('--text-base'),
+      marginBottom: multiplyCssValue(style.getPropertyValue('--spacing'), 1.5),
     },
     '.Error': {
-      fontSize: theme.fontSize.xs[0],
+      fontSize: style.getPropertyValue('--text-xs'),
     },
   },
 };

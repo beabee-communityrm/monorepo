@@ -124,7 +124,7 @@ meta:
     </div>
     <div
       v-if="showAddButton && !isAddMode && isEmbed"
-      class="absolute bottom-8 right-8 hidden md:block"
+      class="absolute right-8 bottom-8 hidden md:block"
     >
       <AppButton
         variant="link"
@@ -845,7 +845,9 @@ onBeforeMount(() =>
 );
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "../../../index.css";
+
 .add-notice-enter-active,
 .add-notice-leave-active {
   @apply transition;

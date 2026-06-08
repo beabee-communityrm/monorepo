@@ -16,14 +16,14 @@
         v-if="isRelative"
         v-model="relativeValue"
         type="text"
-        class="block w-[10rem] p-2 leading-tight focus:outline-none"
+        class="block w-40 p-2 leading-tight focus:outline-none"
         :placeholder="relativePlaceholder"
       />
       <input
         v-else
         v-model="dateValue"
         type="date"
-        class="block w-[10rem] p-2 leading-tight focus:outline-none"
+        class="block w-40 p-2 leading-tight focus:outline-none"
       />
     </div>
   </span>

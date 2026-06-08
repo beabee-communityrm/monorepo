@@ -7,12 +7,12 @@ meta:
 
 <template>
   <PageTitle :title="t('contacts.emailTemplates.title')" border>
-    <div class="flex-0 ml-3 hidden md:block">
+    <div class="ml-3 hidden flex-0 md:block">
       <AppButton to="/admin/contacts/email-templates/new">
         {{ t('contacts.emailTemplates.create') }}
       </AppButton>
     </div>
-    <div class="fixed bottom-5 right-5 md:hidden">
+    <div class="fixed right-5 bottom-5 md:hidden">
       <AppButton
         :icon="faPlus"
         :title="t('contacts.emailTemplates.create')"

@@ -4,18 +4,18 @@
     class="group relative my-0.5 flex w-auto items-center justify-start rounded px-1 py-2 font-semibold text-body-80 md:justify-center lg:w-auto lg:justify-start"
     :class="isActive ? 'bg-primary-20' : 'hover:bg-primary-5'"
   >
-    <font-awesome-icon class="fa-fw inline-block h-4" :icon="icon" size="lg" />
+    <font-awesome-icon class="fa-fw inline-block h-4" :icon="icon" />
 
     <span class="ml-2 md:hidden lg:inline-block">{{ title }}</span>
 
     <Teleport to="body">
       <span
         v-if="showTooltip"
-        class="fixed z-50 whitespace-nowrap rounded bg-black px-2 py-1 text-sm text-white"
+        class="fixed z-50 rounded bg-black px-2 py-1 text-sm whitespace-nowrap text-white"
         :style="tooltipStyle"
       >
         <span
-          class="absolute right-full top-1/2 h-0 w-0 -translate-y-1/2 border-y-4 border-r-4 border-y-white/0 border-r-black"
+          class="absolute top-1/2 right-full h-0 w-0 -translate-y-1/2 border-y-4 border-r-4 border-y-white/0 border-r-black"
         />
         {{ title }}
       </span>

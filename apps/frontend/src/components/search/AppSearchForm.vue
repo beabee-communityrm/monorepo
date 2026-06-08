@@ -22,7 +22,7 @@
         <li
           v-for="(_, i) in ruleGroup.rules"
           :key="i"
-          class="group relative -mx-4 gap-2 border-b border-t-4 border-white bg-primary-5 px-4 pb-5 pt-3 first:border-t"
+          class="group relative -mx-4 gap-2 border-t-4 border-b border-white bg-primary-5 px-4 pt-3 pb-5 first:border-t"
         >
           <AppSearchRuleOrGroup
             v-model:rule="ruleGroup.rules[i]"
@@ -30,7 +30,7 @@
             @remove="removeRule(i)"
           />
           <span
-            class="absolute bottom-full left-1/2 z-10 -translate-x-1/2 translate-y-1/2 rounded bg-primary-70 px-2 py-1 font-bold uppercase text-white group-first:hidden"
+            class="absolute bottom-full left-1/2 z-10 -translate-x-1/2 translate-y-1/2 rounded bg-primary-70 px-2 py-1 font-bold text-white uppercase group-first:hidden"
             >{{ t(`advancedSearch.matchWord.${ruleGroup.condition}`) }}</span
           >
         </li>

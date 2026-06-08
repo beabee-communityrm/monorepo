@@ -17,7 +17,7 @@
     :aria-label="`Color: ${name}, Shade: ${shade}`"
   >
     <span
-      class="h-10 w-10 flex-shrink-0 rounded-full border border-grey-light"
+      class="h-10 w-10 shrink-0 rounded-full border border-grey-light"
       :class="name"
       role="img"
       :aria-label="`Color swatch for ${name}`"

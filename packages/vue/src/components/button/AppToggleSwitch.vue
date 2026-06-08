@@ -6,7 +6,7 @@
 <template>
   <button
     type="button"
-    class="relative transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-40 focus:ring-offset-2"
+    class="relative transition-colors duration-200 focus:ring-2 focus:ring-primary-40 focus:ring-offset-2 focus:outline-none"
     :class="[
       modelValue
         ? activeVariantClasses[variant]
