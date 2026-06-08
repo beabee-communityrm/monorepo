@@ -34,7 +34,7 @@ defineProps<{
 const { t } = useI18n();
 
 const groupHeaders: Header[] = [
-  { value: 'label', text: 'Group name' },
-  { value: 'id', text: 'Group ID' },
+  { value: 'id', text: 'ID' },
+  { value: 'label', text: 'Name' },
 ];
 </script>

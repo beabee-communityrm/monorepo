@@ -185,7 +185,7 @@ export function useContactFilters() {
   const newsletterGroups = ref<{ id: string; label: string }[]>([]);
   (async () => {
     const data = await client.integrations.getNewsletter();
-    newsletterGroups.value = data.groups ?? [];
+    newsletterGroups.value = data.provider !== 'none' ? data.groups : [];
   })();
 
   /**
