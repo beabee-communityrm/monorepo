@@ -100,9 +100,7 @@ export type PropertyMap<T> =
   | [Symbol, (prop: T) => T]
   | ObjectMap<T>;
 
-export type ModelAnonymiserStrategy =
-  | 'default'
-  | 'calloutResponsesPerComponent';
+export type ModelAnonymiserStrategy = 'default' | 'calloutResponsePerCallout';
 
 /**
  * A model anonymiser describes how to anonymise a given database model
@@ -305,7 +303,7 @@ export const calloutResponsesAnonymiser = createModelAnonymiser(
     guestName: () => chance.name(),
     guestEmail: () => chance.email({ domain: 'example.com', length: 10 }),
   },
-  'calloutResponsesPerComponent'
+  'calloutResponsePerCallout'
 );
 
 export const calloutResponseCommentsAnonymiser = createModelAnonymiser(

@@ -35,7 +35,7 @@ function stringify(value: any): string {
  * @param prepareQuery A function which can modify the query builder before fetching the items
  * @param valueMap A map of old values to new values to use if the same value is encountered multiple times
  */
-async function anonymiseCalloutResponses(
+async function anonymiseCalloutResponsesModel(
   prepareQuery: (
     qb: SelectQueryBuilder<CalloutResponse>
   ) => SelectQueryBuilder<CalloutResponse>,
@@ -183,11 +183,11 @@ export async function anonymiseModel<T extends ObjectLiteral>(
   }
 
   // Callout responses are handled separately
-  if (anonymiser.strategy === 'calloutResponsesPerComponent') {
+  if (anonymiser.strategy === 'calloutResponsePerCallout') {
     const calloutPrepareQuery = prepareQuery as unknown as (
       qb: SelectQueryBuilder<CalloutResponse>
     ) => SelectQueryBuilder<CalloutResponse>;
-    return await anonymiseCalloutResponses(
+    return await anonymiseCalloutResponsesModel(
       calloutPrepareQuery,
       valueMap,
       anonymiser.objectMap as ObjectMap<CalloutResponse>
