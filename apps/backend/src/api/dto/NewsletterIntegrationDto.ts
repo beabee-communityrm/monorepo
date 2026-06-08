@@ -9,9 +9,7 @@ import { IsEnum, IsIn, IsString, ValidateNested } from 'class-validator';
 
 import { NewsletterGroupDto } from './NewsletterDto.js';
 
-export class NoneNewsletterIntegrationDto
-  implements NoneNewsletterIntegrationData
-{
+export class NoneNewsletterIntegrationDto implements NoneNewsletterIntegrationData {
   @IsIn(['none'])
   provider!: 'none';
 
@@ -19,9 +17,7 @@ export class NoneNewsletterIntegrationDto
   status!: ApiHealthStatus.DISABLED;
 }
 
-export class MailchimpNewsletterIntegrationDto
-  implements MailchimpNewsletterIntegrationData
-{
+export class MailchimpNewsletterIntegrationDto implements MailchimpNewsletterIntegrationData {
   @IsIn(['mailchimp'])
   provider!: 'mailchimp';
 

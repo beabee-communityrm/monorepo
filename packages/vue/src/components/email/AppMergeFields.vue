@@ -43,7 +43,7 @@
             <!-- Tag and actions -->
             <div class="flex items-center justify-between gap-2">
               <code
-                class="font-mono flex-1 rounded bg-grey-lighter px-2 py-1 text-sm text-body"
+                class="flex-1 rounded bg-grey-lighter px-2 py-1 font-mono text-sm text-body"
               >
                 *|{{ tag.tag }}|*
               </code>

@@ -1,3 +1,4 @@
+import { ApiHealthStatus } from '@beabee/beabee-common';
 import NewsletterService from '@beabee/core/services/NewsletterService';
 
 import { Authorized, Get, JsonController, Post } from 'routing-controllers';
