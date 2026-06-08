@@ -1,6 +1,6 @@
 import type { SetupAllArgs } from '../../types/setup.js';
 import { setupAdmin } from './admin.js';
-import { setupStripe } from './integrations.js';
+import { setupMailchimp, setupStripe } from './integrations.js';
 import { setupPaymentMethods } from './payment-methods.js';
 import { setupSupportEmail } from './support-email.js';
 
@@ -9,7 +9,8 @@ import { setupSupportEmail } from './support-email.js';
  * 1. Support email configuration
  * 2. Payment methods configuration
  * 3. Stripe integration setup
- * 4. Initial admin user creation
+ * 4. Mailchimp integration setup
+ * 5. Initial admin user creation
  *
  * Accepts command line arguments or prompts for missing information
  */
@@ -20,29 +21,36 @@ export async function setupAll(args: SetupAllArgs): Promise<void> {
     console.log('1. Support email');
     console.log('2. Payment methods');
     console.log('3. Stripe integration');
-    console.log('4. Initial admin user');
+    console.log('4. Mailchimp integration');
+    console.log('5. Initial admin user');
     console.log('');
 
     // Step 1: Support Email Setup
-    console.log('📧 Step 1/4: Setting up support email');
+    console.log('📧 Step 1/5: Setting up support email');
     console.log('='.repeat(50));
     await setupSupportEmail(args);
     console.log('✅ Support email setup completed!\n');
 
     // Step 2: Payment Methods Setup
-    console.log('💳 Step 2/4: Setting up payment methods');
+    console.log('💳 Step 2/5: Setting up payment methods');
     console.log('='.repeat(50));
     await setupPaymentMethods(args);
     console.log('✅ Payment methods setup completed!\n');
 
     // Step 3: Stripe Integration Setup
-    console.log('🔧 Step 3/4: Setting up Stripe integration');
+    console.log('🔧 Step 3/5: Setting up Stripe integration');
     console.log('='.repeat(50));
     await setupStripe(false);
     console.log('✅ Stripe integration setup completed!\n');
 
-    // Step 4: Admin User Setup
-    console.log('👤 Step 4/4: Setting up initial admin user');
+    // Step 4: Mailchimp integration setup
+    console.log('🔧 Step 4/5: Setting up Mailchimp integration');
+    console.log('='.repeat(50));
+    await setupMailchimp();
+    console.log('✅ Mailchimp integration setup completed!\n');
+
+    // Step 5: Admin User Setup
+    console.log('👤 Step 5/5: Setting up initial admin user');
     console.log('='.repeat(50));
     await setupAdmin(args);
     console.log('✅ Admin user setup completed!\n');

@@ -116,3 +116,7 @@ export const setupStripe = async (dryRun: boolean) => {
     throw error;
   }
 };
+
+export const setupMailchimp = async () => {
+  console.log('Setting up Mailchimp integration...\n');
+};
