@@ -18,6 +18,6 @@ defineProps<{ type: PillType }>();
 const config: Record<PillType, { classes: string }> = {
   success: { classes: 'border-success text-success' },
   danger: { classes: 'border-danger text-danger' },
-  warning: { classes: 'border-body-40 text-body-60' },
+  warning: { classes: 'border-warning text-warning' },
 };
 </script>
