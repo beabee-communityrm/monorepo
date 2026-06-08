@@ -66,12 +66,11 @@ export const databaseCommand: CommandModule = {
         describe:
           'Export demo subset (limited contacts, latest callouts, anonymized)',
         builder: (yargs) =>
-          yargs
-            .option('dryRun', {
-              type: 'boolean',
-              description: 'Run without making changes',
-              default: false,
-            }),
+          yargs.option('dryRun', {
+            type: 'boolean',
+            description: 'Run without making changes',
+            default: false,
+          }),
         handler: async (argv) => {
           const { exportDemoDatabase } =
             await import('../actions/database/export-demo.js');
@@ -124,22 +123,15 @@ export const databaseCommand: CommandModule = {
         describe:
           'Import database from a SQL dump (dev only; use export output)',
         builder: (yargs) =>
-          yargs
-            .option('dryRun', {
-              type: 'boolean',
-              description: 'Run without making changes',
-              default: false,
-            })
-            .option('merge', {
-              type: 'boolean',
-              description:
-                'Merge imported data with existing data instead of replacing. Skips DELETE statements and ignores duplicate key conflicts.',
-              default: false,
-            }),
+          yargs.option('dryRun', {
+            type: 'boolean',
+            description: 'Run without making changes',
+            default: false,
+          }),
         handler: async (argv) => {
           const { importDatabase } =
             await import('../actions/database/import.js');
-          return importDatabase(argv.dryRun, argv.merge);
+          return importDatabase(argv.dryRun);
         },
       })
       .command({
