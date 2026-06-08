@@ -13,7 +13,6 @@
     "publish": false
   },
   "hooks": {
-    "before:init": ["yarn check", "yarn build"]
   },
   "plugins": {
     "@release-it/bumper": {
@@ -23,20 +22,24 @@
       "preset": {
         "name": "conventionalcommits",
         "types": [
-          { "type": "feat", "section": "Features" },
-          { "type": "fix", "section": "Bug Fixes" },
-          { "type": "perf", "section": "Performance" },
-          { "type": "revert", "section": "Reverts" },
-          { "type": "chore", "section": "Chores" },
-          { "type": "refactor", "section": "Refactors" },
-          { "type": "docs", "section": "Documentation" },
-          { "type": "test", "section": "Tests" },
-          { "type": "build", "section": "Build" },
-          { "type": "ci", "section": "CI" }
+          { "type": "feat" },
+          { "type": "fix" },
+          { "type": "perf" },
+          { "type": "revert" },
+          { "type": "chore" },
+          { "type": "refactor" },
+          { "type": "docs" },
+          { "type": "test" },
+          { "type": "build" },
+          { "type": "ci" }
         ]
       },
       "infile": "CHANGELOG.md",
-      "header": "# Changelog"
+      "header": "# Changelog",
+      "gitRawCommitsOpts": {
+        "merges": true,
+        "no-merges": false
+      }
     }
   }
 }
