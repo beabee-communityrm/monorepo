@@ -1,36 +1,38 @@
 # Release Workflow
 
-```bash
-yarn release        # stable, marked latest on GitHub, npm dist-tag latest
-yarn release:rc     # pre-release, npm dist-tag next
-yarn release:beta   # pre-release, npm dist-tag next
-yarn release:dry    # preview without changing anything
-```
+Releases are automated by [release-please](https://github.com/googleapis/release-please).
 
-Run from a clean `main` with `GITHUB_TOKEN` exported (`export GITHUB_TOKEN=$(gh auth token)` is the simplest source).
+## How it works
 
-## What a release does
+1. Every push to `main` runs the `release-please` workflow.
+2. It scans conventional-commit titles since the previous release and opens (or updates) a single **Release PR** with:
+   - bumped `package.json` versions across all workspaces
+   - a generated `CHANGELOG.md` entry
+3. The Release PR stays open and is updated automatically as new commits land on `main` — nothing is released until you merge it. It also acts as a live preview of what the next release would contain.
+4. Merging the Release PR:
+   - creates a tag `vX.Y.Z` and a GitHub release
+   - fires the `Publish to npm` workflow on `release.published`, which publishes the public workspaces via npm OIDC trusted publishing (stable → `latest`, pre-release → `next`)
 
-1. `yarn check && yarn build` (release-it `before:init` hook).
-2. `@release-it/conventional-changelog` walks commits since the previous tag, groups them by conventional type, and prepends a new section to `CHANGELOG.md`. The same text becomes the GitHub release body.
-3. `@release-it/bumper` bumps the root and every workspace `package.json`.
-4. release-it commits the bumped manifests + the `CHANGELOG.md` entry, tags `vX.Y.Z`, pushes, creates the GitHub release.
-5. The `Publish to npm` workflow fires on the `release.published` event and publishes the non-private workspaces (`@beabee/beabee-common`, `@beabee/client`) via npm OIDC trusted publishing. Stable → `latest`, pre-release → `next`.
+No local release command is needed — everything runs in CI, and merging is gated by branch protection like any other PR.
+
+## How versions are decided
+
+release-please follows semver based on conventional-commit types since the last release:
+
+- `feat:` → minor bump
+- `fix:` / `perf:` / `refactor:` / etc. → patch bump
+- `feat!:` or a `BREAKING CHANGE:` footer → major bump
+
+If you need a specific version (e.g. cut a `0.x.0` even without a `feat:`), edit the version manually in the Release PR before merging.
 
 ## Required GitHub repo setting
 
-This setup only produces useful release notes if **merge commit subjects on `main` are the PR titles** (conventional commits). Configure once under `Settings → General → Pull Requests`:
+Release notes group correctly only if merge commit subjects on `main` are PR titles. Configure once under `Settings → General → Pull Requests`:
 
 - **Allow merge commits → Default commit message → "Pull request title"**
 
-With the default `Default message`, merge commits look like `Merge pull request #N from branch`, which conventional-changelog ignores — and the release notes come out empty (this is what happened for `v0.45.0-rc.1`).
+PR titles are validated against the same conventional types by `.github/workflows/lint-pr-title.yml`.
 
-Squash and rebase merges already use the PR title by default, so no extra setting needed if those are enabled.
+## Editing release notes after publish
 
-PR titles are validated against the same conventional-commit types by `.github/workflows/lint-pr-title.yml`, so a non-conventional title is caught before merge.
-
-## Editing release notes after the fact
-
-The auto-generated section is grouped by type (Features, Bug Fixes, etc.). For larger releases (e.g. major migrations) you can hand-edit afterwards — add a `### Highlights` paragraph, regroup PRs into themed sections, the way `v0.44.0` is written. The npm publish has already fired by then.
-
-If you edit the release body on GitHub, also update the matching section in `CHANGELOG.md` so the two stay in sync.
+You can hand-edit the GitHub release body and `CHANGELOG.md` entry after the release lands — release-please won't overwrite past entries.
