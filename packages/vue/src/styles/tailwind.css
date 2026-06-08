@@ -30,6 +30,7 @@
   /* Typography */
   --font-body: var(--ff-body);
   --font-title: var(--ff-title);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Colors */
   --color-primary: rgb(var(--c-primary));
