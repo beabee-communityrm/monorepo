@@ -154,9 +154,10 @@ class NewsletterService {
   }
 
   /**
-   * Check the health of the configured newsletter provider
-   *
-   * @returns 'healthy' if the provider's backend is reachable, 'unhealthy' otherwise
+   * Get newsletter integration information: provider (none/mailchimp), audience ID,
+   * configured groups (from options table -> newsletter-groups), and health
+   * status (healthy/unhealthy/disabled)
+   * @returns provider name, audience ID, groups, health status
    */
   async getProviderInfo(): Promise<NewsletterIntegrationData> {
     return await this.provider.getProviderInfo();
