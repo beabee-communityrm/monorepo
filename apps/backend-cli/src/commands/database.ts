@@ -3,7 +3,10 @@ import type { CommandModule } from 'yargs';
 import type {
   AnonymizationLevel,
   CalloutAnonymizationLevel,
+  DumpFormat,
 } from '../types/index.js';
+
+const DUMP_FORMATS: readonly DumpFormat[] = ['sql', 'json'] as const;
 
 const ANONYMIZATION_LEVELS: readonly AnonymizationLevel[] = [
   'full',
@@ -11,6 +14,7 @@ const ANONYMIZATION_LEVELS: readonly AnonymizationLevel[] = [
   'test',
   'none',
 ] as const;
+
 const CALLOUT_ANONYMIZATION_LEVELS: readonly CalloutAnonymizationLevel[] = [
   'full',
   'none',
@@ -49,16 +53,16 @@ export const databaseCommand: CommandModule = {
               description:
                 'Keep callout response answers intact instead of anonymizing per component. Contact FKs and guest data are still anonymized.',
               default: false,
+            })
+            .option('format', {
+              choices: DUMP_FORMATS,
+              description: 'Output format: sql (default) or json.',
+              default: 'sql' as DumpFormat,
             }),
         handler: async (argv) => {
           const { exportDatabase } =
             await import('../actions/database/export.js');
-          return exportDatabase(
-            argv.dryRun,
-            argv.anonymize as AnonymizationLevel,
-            argv.skipAnonymizeTables ?? [],
-            argv.preserveCalloutAnswers
-          );
+          return exportDatabase(argv);
         },
       })
       .command({
@@ -74,7 +78,7 @@ export const databaseCommand: CommandModule = {
         handler: async (argv) => {
           const { exportDemoDatabase } =
             await import('../actions/database/export-demo.js');
-          return exportDemoDatabase(argv.dryRun);
+          return exportDemoDatabase(argv);
         },
       })
       .command({
@@ -100,22 +104,17 @@ export const databaseCommand: CommandModule = {
                 'Keep callout response answers intact instead of anonymizing per component. Defaults to true for this command.',
               default: true,
             })
-            .option('callout-slug', {
+            .option('calloutSlug', {
               type: 'array',
               string: true,
               description:
-                'Export only specific callouts by slug (can be specified multiple times). No DELETE statements emitted; use --merge on import.',
+                'Export only specific callouts by slug (can be specified multiple times).',
               default: [] as string[],
             }),
         handler: async (argv) => {
           const { exportCalloutsDatabase } =
             await import('../actions/database/export-callouts.js');
-          return exportCalloutsDatabase(
-            argv.dryRun,
-            argv.anonymize as CalloutAnonymizationLevel,
-            argv.preserveCalloutAnswers,
-            argv.calloutSlug
-          );
+          return exportCalloutsDatabase(argv);
         },
       })
       .command({
@@ -123,15 +122,21 @@ export const databaseCommand: CommandModule = {
         describe:
           'Import database from a SQL dump (dev only; use export output)',
         builder: (yargs) =>
-          yargs.option('dryRun', {
-            type: 'boolean',
-            description: 'Run without making changes',
-            default: false,
-          }),
+          yargs
+            .option('dryRun', {
+              type: 'boolean',
+              description: 'Run without making changes',
+              default: false,
+            })
+            .option('format', {
+              choices: DUMP_FORMATS,
+              description: 'Input format: sql (default) or json.',
+              default: 'sql' as DumpFormat,
+            }),
         handler: async (argv) => {
           const { importDatabase } =
             await import('../actions/database/import.js');
-          return importDatabase(argv.dryRun);
+          return importDatabase(argv);
         },
       })
       .command({
@@ -166,12 +171,7 @@ export const databaseCommand: CommandModule = {
         handler: async (argv) => {
           const { importCalloutResponses } =
             await import('../actions/database/import-callout-responses.js');
-          return importCalloutResponses({
-            slug: argv.slug as string,
-            dryRun: argv.dryRun as boolean,
-            failOnUnknown: argv.failOnUnknown as boolean,
-            dateFormat: argv.dateFormat as string,
-          });
+          return importCalloutResponses(argv);
         },
       })
       .command({

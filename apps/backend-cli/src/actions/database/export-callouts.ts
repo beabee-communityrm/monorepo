@@ -19,7 +19,7 @@ import type { ModelAnonymiser } from '@beabee/core/tools/database/anonymisers/mo
 
 import type { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 
-import type { CalloutAnonymizationLevel } from '../../types/index.js';
+import type { ExportCalloutsArgs } from '../../types/index.js';
 import {
   CALLOUT_EXPORT_ANONYMIZERS,
   CALLOUT_EXPORT_CLEAR_MODELS,
@@ -52,45 +52,34 @@ function buildSlugFilter(
     );
 }
 
-/**
- * Export callout data to SQL dump
- *
- * @param dryRun If true, only logs what would be done
- * @param level Anonymisation level: 'full' (personal data anonymised) or 'none' (everything raw)
- * @param preserveCalloutAnswers If true, keep answers intact; if false, anonymize per component type
- * @param slugs If set, only export callouts with these slugs (no DELETE statements emitted; use --merge on import)
- */
 export const exportCalloutsDatabase = async (
-  dryRun = false,
-  level: CalloutAnonymizationLevel = 'full',
-  preserveCalloutAnswers = true,
-  slugs: string[] = []
+  args: ExportCalloutsArgs
 ): Promise<void> => {
-  if (level === 'none') {
+  if (args.anonymize === 'none') {
     console.error(
       '[database export-callouts] WARNING: --anonymize=none — output contains raw guest names and emails. Do not share this dump.'
     );
   }
 
   const anonymisers =
-    level === 'none'
+    args.anonymize === 'none'
       ? CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS
-      : preserveCalloutAnswers
+      : args.preserveCalloutAnswers
         ? CALLOUT_EXPORT_ANONYMIZERS
         : CALLOUT_EXPORT_FULL_ANONYMIZERS;
 
-  if (dryRun) {
+  if (args.dryRun) {
     const modelNames = anonymisers.map((a) =>
       typeof a.model === 'function' ? a.model.name : String(a.model)
     );
     console.log('Dry run: would export callout data');
-    console.log(`Anonymization level: ${level}`);
+    console.log(`Anonymization level: ${args.anonymize}`);
     console.log(
       `Would export ${anonymisers.length} models:`,
       modelNames.join(', ')
     );
-    if (slugs.length > 0) {
-      console.log(`Filtering by slugs: ${slugs.join(', ')}`);
+    if (args.calloutSlug.length > 0) {
+      console.log(`Filtering by slugs: ${args.calloutSlug.join(', ')}`);
     }
     return;
   }
@@ -101,15 +90,15 @@ export const exportCalloutsDatabase = async (
     // Keep setup logs visible and mute only SQL-emission phase to avoid file pollution.
     await withTypeOrmQueryLoggingDisabled(async () => {
       // When exporting specific callouts, skip DELETE statements —
-      // the user should import with --merge to add alongside existing data.
-      if (slugs.length === 0) {
+      // the user should import alongside existing data.
+      if (args.calloutSlug.length === 0) {
         clearModels(CALLOUT_EXPORT_CLEAR_MODELS);
       }
 
       for (const anonymiser of anonymisers) {
         await anonymiseModel(
           anonymiser,
-          buildSlugFilter(anonymiser.model, slugs),
+          buildSlugFilter(anonymiser.model, args.calloutSlug),
           valueMap
         );
       }

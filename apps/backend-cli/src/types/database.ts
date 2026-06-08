@@ -1,4 +1,5 @@
 export type AnonymizationLevel = 'full' | 'safe' | 'test' | 'none';
+export type DumpFormat = 'sql' | 'json';
 
 /**
  * Callout export has no ALWAYS_ANONYMIZED_MODELS — 'safe' would be
@@ -16,6 +17,30 @@ export interface ResponseRow {
   guest_email?: string;
   bucket?: string;
   created_at?: string;
+}
+
+export interface ExportDatabaseArgs {
+  dryRun: boolean;
+  anonymize: AnonymizationLevel;
+  skipAnonymizeTables: string[];
+  preserveCalloutAnswers: boolean;
+  format: DumpFormat;
+}
+
+export interface ExportCalloutsArgs {
+  dryRun: boolean;
+  anonymize: CalloutAnonymizationLevel;
+  preserveCalloutAnswers: boolean;
+  calloutSlug: string[];
+}
+
+export interface ExportDemoArgs {
+  dryRun: boolean;
+}
+
+export interface ImportDatabaseArgs {
+  dryRun: boolean;
+  format: DumpFormat;
 }
 
 export interface ImportCalloutResponsesArgs {

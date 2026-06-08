@@ -9,6 +9,8 @@ import { runApp } from '@beabee/core/server';
 
 import type { Readable } from 'node:stream';
 
+import type { ImportDatabaseArgs } from '../../types/index.js';
+
 /**
  * Read all lines from a stream without readline's internal line length limit.
  * Node.js readline can silently split lines longer than ~1.8MB.
@@ -36,13 +38,15 @@ async function importFromLines(lines: string[]): Promise<void> {
   });
 }
 
-export const importDatabase = async (dryRun = false): Promise<void> => {
+export const importDatabase = async (
+  args: ImportDatabaseArgs
+): Promise<void> => {
   if (!config.dev) {
     console.error("Can't import to live database");
     process.exit(1);
   }
 
-  if (dryRun) {
+  if (args.dryRun) {
     console.log('Dry run: would import from stdin');
     return;
   }

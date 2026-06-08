@@ -15,6 +15,7 @@ import {
 
 import { Brackets } from 'typeorm';
 
+import type { ExportDemoArgs } from '../../types/index.js';
 import {
   DEMO_EXPORT_CONFIG,
   type DemoExportContext,
@@ -73,13 +74,10 @@ async function fetchDemoContext(options: {
   return { contactIds, calloutIds, responseIds };
 }
 
-/**
- * Export a demo subset of the database (limited contacts, latest callouts, and responses).
- *
- * @param dryRun If true, only logs what would be done
- */
-export const exportDemoDatabase = async (dryRun = false): Promise<void> => {
-  if (dryRun) {
+export const exportDemoDatabase = async (
+  args: ExportDemoArgs
+): Promise<void> => {
+  if (args.dryRun) {
     console.log('Dry run: would export database (demo subset)');
     console.log(
       `Would export up to ${DEMO_EXPORT_CONFIG.contacts} random contacts, ${DEMO_EXPORT_CONFIG.callouts} latest callouts, and their responses (anonymized)`
