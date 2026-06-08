@@ -59,7 +59,9 @@ export function useNewsletterIntegrations() {
     error.value = null;
     try {
       // Build all known provider cards upfront as disabled
-      const result: Integration[] = Object.keys(providerMap).map(buildDisabledIntegration);
+      const result: Integration[] = Object.keys(providerMap).map(
+        buildDisabledIntegration
+      );
 
       // Fetch real status from API and merge in if provider is active
       const data = await client.integrations.getNewsletter();

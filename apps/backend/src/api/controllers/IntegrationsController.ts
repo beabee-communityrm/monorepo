@@ -1,3 +1,4 @@
+import { ApiHealthStatus } from '@beabee/beabee-common';
 import NewsletterService from '@beabee/core/services/NewsletterService';
 
 import { plainToInstance } from 'class-transformer';
