@@ -1,11 +1,5 @@
 <template>
   <div class="space-y-6">
-    <div v-if="audienceId" class="text-sm">
-      <AppCategoryLabel>
-        {{ t('adminSettings.integrations.mailchimp.audienceId') }}
-      </AppCategoryLabel>
-      <p class="font-mono">{{ audienceId }}</p>
-    </div>
     <div v-if="groups?.length">
       <AppCategoryLabel>
         {{ t('adminSettings.integrations.mailchimp.groups') }}
@@ -27,7 +21,6 @@ import { useI18n } from 'vue-i18n';
 import type { NewsletterGroupData } from '@beabee/beabee-common';
 
 defineProps<{
-  audienceId?: string;
   groups?: NewsletterGroupData[];
 }>();
 
