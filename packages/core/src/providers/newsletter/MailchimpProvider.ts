@@ -1,4 +1,8 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
+import {
+  ApiHealthStatus,
+  NewsletterIntegrationData,
+  NewsletterStatus,
+} from '@beabee/beabee-common';
 
 import { MailchimpNewsletterConfig } from '#config/config';
 import { CantUpdateNewsletterContactError } from '#errors/index';
@@ -201,12 +205,20 @@ export class MailchimpProvider implements NewsletterProvider {
    *
    * @returns 'healthy' if the audience is reachable, 'unhealthy' otherwise
    */
-  async getHealthStatus(): Promise<'healthy' | 'unhealthy'> {
+  async getProviderInfo(): Promise<NewsletterIntegrationData> {
+    let resp = {
+      provider: 'mailchimp',
+      audienceId: this.listId,
+      status: ApiHealthStatus.UNHEALTHY,
+      groups: [],
+    };
+
     try {
       await this.api.instance.get(`lists/${this.listId}`);
-      return 'healthy';
+      resp.status = ApiHealthStatus.HEALTHY;
+      return resp;
     } catch (err) {
-      return 'unhealthy';
+      return resp;
     }
   }
 
@@ -216,7 +228,7 @@ export class MailchimpProvider implements NewsletterProvider {
    * @returns groups as `{ id, label }` pairs, where `id` is the
    * Mailchimp interest ID and `label` is its display name
    */
-  async getGroups(): Promise<{ id: string; label: string }[]> {
+  async refreshGroups(): Promise<{ id: string; label: string }[]> {
     const interestCategories = await this.api.instance.get(
       `lists/${this.listId}/interest-categories`
     );

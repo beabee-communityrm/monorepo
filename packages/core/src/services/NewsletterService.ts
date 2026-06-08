@@ -1,4 +1,7 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
+import {
+  NewsletterIntegrationData,
+  NewsletterStatus,
+} from '@beabee/beabee-common';
 
 import config from '#config/config';
 import { getRepository } from '#database';
@@ -155,8 +158,8 @@ class NewsletterService {
    *
    * @returns 'healthy' if the provider's backend is reachable, 'unhealthy' otherwise
    */
-  async getHealthStatus(): Promise<'healthy' | 'unhealthy'> {
-    return await this.provider.getHealthStatus();
+  async getProviderInfo(): Promise<NewsletterIntegrationData> {
+    return await this.provider.getProviderInfo();
   }
 
   /**
@@ -165,8 +168,8 @@ class NewsletterService {
    *
    * @returns The available groups as `{ id, label }` pairs
    */
-  async getGroups(): Promise<{ id: string; label: string }[]> {
-    return await this.provider.getGroups();
+  async refreshNewsletterGroups(): Promise<{ id: string; label: string }[]> {
+    return await this.provider.refreshGroups();
   }
 }
 
