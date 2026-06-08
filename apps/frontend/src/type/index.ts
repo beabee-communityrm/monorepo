@@ -19,4 +19,5 @@ export * from './payment-flow-form-data';
 export * from './search';
 export * from './set-mfa-steps';
 export * from './set-mfa-totp-identity';
+export * from './selection-state';
 export * from './table';

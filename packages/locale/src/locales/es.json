@@ -1009,6 +1009,14 @@
       "scheduled": "Programado"
     },
     "statusLabel": "Estado: {status}",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "",
+        "clearSelection": "",
+        "pageSelected": "",
+        "selectAll": ""
+      }
+    },
     "thankYou": "¡Gracias!",
     "timeAgo": "hace {time}",
     "timeIn": "en {time}",
