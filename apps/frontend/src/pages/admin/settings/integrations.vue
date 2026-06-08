@@ -27,9 +27,8 @@ meta:
             <MailchimpCardContent
               v-if="
                 integration.provider === 'mailchimp' &&
-                integration.status === 'healthy'
+                integration.status === ApiHealthStatus.HEALTHY
               "
-              :audience-id="integration.audienceId"
               :groups="integration.groups"
             />
           </IntegrationCard>
@@ -47,6 +46,7 @@ import { useI18n } from 'vue-i18n';
 import IntegrationCard from '#components/integrations/IntegrationCard.vue';
 import MailchimpCardContent from '#components/integrations/MailchimpCardContent.vue';
 import { useNewsletterIntegrations } from '#composables/useNewsletterIntegrations';
+import { ApiHealthStatus } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 

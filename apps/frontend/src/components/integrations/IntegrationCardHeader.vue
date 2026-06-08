@@ -16,18 +16,17 @@
     </div>
     <div class="min-w-0 flex-1">
       <p class="font-semibold">{{ integration.name }}</p>
+      <p v-if="'audienceId' in integration" class="text-sm text-body-80">
+        {{ t('adminSettings.integrations.mailchimp.audienceId') }}:
+        <span class="font-mono">{{ integration.audienceId }}</span>
+      </p>
     </div>
     <div class="flex items-center gap-2">
       <StatusPill :type="statusType[integration.status]">
         {{ t(`adminSettings.integrations.status.${integration.status}`) }}
       </StatusPill>
       <!-- TODO: refresh functionality not yet implemented -->
-      <AppButton
-        v-if="false"
-        variant="greyOutlined"
-        size="sm"
-        :icon="faRotate"
-      >
+      <AppButton v-if="false" variant="greyOutlined" size="sm" :icon="faRotate">
         {{ t('adminSettings.integrations.refresh') }}
       </AppButton>
     </div>
