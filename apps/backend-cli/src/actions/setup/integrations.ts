@@ -131,13 +131,19 @@ export const setupMailchimp = async (dryRun: boolean) => {
   try {
     await runApp(async () => {
       // Step 1: Get groups from mailchimp
-      const mailchimpGroups = newsletterService.getAllNewsletterGroups();
+      const mailchimpGroups = await newsletterService.getAllNewsletterGroups();
 
       // Step 2: Update option table
       if (dryRun) {
-        console.log(`✅ Updated cached newsletter groups: [DRY RUN]`);
+        console.log(
+          `Added ${mailchimpGroups.length} newsletter groups: [DRY RUN]`
+        );
       } else {
-        optionsService.setJSON('mailchimp-newsletter-groups', mailchimpGroups);
+        await optionsService.setJSON(
+          'mailchimp-newsletter-groups',
+          mailchimpGroups
+        );
+        console.log(`✅ Cached ${mailchimpGroups.length} newsletter groups`);
         console.log('\n🎉 Mailchimp group import completed successfully!');
       }
     });

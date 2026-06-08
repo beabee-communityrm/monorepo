@@ -210,7 +210,7 @@ export class MailchimpProvider implements NewsletterProvider {
       provider: 'mailchimp',
       audienceId: this.listId,
       status: ApiHealthStatus.UNHEALTHY,
-      groups: OptionsService.getJSON('newsletter-groups'),
+      groups: OptionsService.getJSON('mailchimp-newsletter-groups'),
     };
 
     try {
