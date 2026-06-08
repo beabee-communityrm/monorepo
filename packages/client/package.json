@@ -1,7 +1,7 @@
 {
   "name": "@beabee/client",
   "description": "The Beabee API Client",
-  "version": "0.44.2",
+  "version": "0.45.0",
   "license": "AGPL-3.0",
   "type": "module",
   "engines": {

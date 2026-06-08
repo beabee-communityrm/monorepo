@@ -12,5 +12,6 @@
   },
   "imports": {
     "#fixtures/*": "./src/fixtures/*"
-  }
+  },
+  "version": "0.45.0"
 }
