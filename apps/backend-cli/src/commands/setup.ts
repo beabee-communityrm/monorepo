@@ -99,10 +99,16 @@ export const setupCommand: CommandModule = {
             .command({
               command: 'mailchimp',
               describe: 'Import groups from Mailchimp',
-              handler: async () => {
+              builder: (yargs) =>
+                yargs.option('dry-run', {
+                  type: 'boolean',
+                  describe: 'Run setup without making changes',
+                  default: false,
+                }),
+              handler: async (argv) => {
                 const { setupMailchimp } =
                   await import('../actions/setup/integrations.js');
-                return setupMailchimp();
+                return setupMailchimp(argv.dryRun);
               },
             });
         },

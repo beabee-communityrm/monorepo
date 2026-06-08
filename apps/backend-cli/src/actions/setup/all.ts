@@ -46,7 +46,7 @@ export async function setupAll(args: SetupAllArgs): Promise<void> {
     // Step 4: Mailchimp integration setup
     console.log('🔧 Step 4/5: Setting up Mailchimp integration');
     console.log('='.repeat(50));
-    await setupMailchimp();
+    await setupMailchimp(false);
     console.log('✅ Mailchimp integration setup completed!\n');
 
     // Step 5: Admin User Setup
@@ -66,6 +66,7 @@ export async function setupAll(args: SetupAllArgs): Promise<void> {
     console.error('- yarn start setup support-email');
     console.error('- yarn start setup payment-methods');
     console.error('- yarn start setup integrations stripe');
+    console.error('- yarn start setup integrations mailchimp');
     console.error('- yarn start setup admin');
     throw error;
   }

@@ -17,6 +17,8 @@ import {
 } from '#type/index';
 import { convertContactToNlUpdate } from '#utils/newsletter';
 
+import optionsService from './OptionsService.js';
+
 const log = mainLogger.child({ app: 'newsletter-service' });
 
 /**
@@ -169,8 +171,19 @@ class NewsletterService {
    *
    * @returns The available groups as `{ id, label }` pairs
    */
-  async getGroups(): Promise<{ id: string; label: string }[]> {
+  async getAllNewsletterGroups(): Promise<{ id: string; label: string }[]> {
     return await this.provider.getGroups();
+  }
+
+  /**
+   * Compare groups configured with the newsletter provider, with
+   * groups cached in the database
+   */
+  async refreshNewsletterGroups(): Promise<{ id: string; label: string }[]> {
+    const cachedGroups = optionsService.getJSON('mailchimp-newsletter-groups');
+    const providerGroups = await this.provider.getGroups();
+    // TODO: Compute diff
+    return providerGroups;
   }
 }
 
