@@ -4,7 +4,6 @@ import type { MailchimpNewsletterIntegrationData } from '@beabee/beabee-common';
 import { faMailchimp } from '@fortawesome/free-brands-svg-icons';
 import { ref } from 'vue';
 
-import env from '#env';
 import type { DisabledIntegration, Integration } from '#type/integration';
 import { client } from '#utils/api/client';
 
@@ -62,14 +61,12 @@ export function useNewsletterIntegrations() {
       // Build all known provider cards upfront as disabled
       const result: Integration[] = Object.keys(providerMap).map(buildDisabledIntegration);
 
-      // Fetch real status from API and merge in if provider is configured
-      if (env.newsletterProvider && env.newsletterProvider !== 'none') {
-        const data = await client.integrations.getNewsletter();
-        if (data.provider !== 'none') {
-          const index = result.findIndex((i) => i.provider === data.provider);
-          if (index !== -1) {
-            result[index] = buildIntegration(data);
-          }
+      // Fetch real status from API and merge in if provider is active
+      const data = await client.integrations.getNewsletter();
+      if (data.provider !== 'none') {
+        const index = result.findIndex((i) => i.provider === data.provider);
+        if (index !== -1) {
+          result[index] = buildIntegration(data);
         }
       }
 

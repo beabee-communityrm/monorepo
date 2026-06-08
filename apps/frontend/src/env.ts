@@ -86,14 +86,4 @@ export default {
    * Set to 'true' to enable
    */
   cnrMode: toBool('__cnrMode__'),
-
-  /**
-   * Newsletter provider configured for this instance
-   *
-   * Source: BEABEE_NEWSLETTER_PROVIDER environment variable
-   * Default: 'none' (no newsletter integration)
-   *
-   * When 'none', the newsletter API call is skipped and all providers show as disabled.
-   */
-  newsletterProvider: '__newsletterProvider__',
 };
