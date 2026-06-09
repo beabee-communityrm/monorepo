@@ -184,7 +184,7 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
 export function useContactFilters() {
   const newsletterGroups = ref<{ id: string; label: string }[]>([]);
   (async () => {
-    const data = await client.integrations.getNewsletter();
+    const data = await client.integrations.getNewsletterStatus();
     newsletterGroups.value = data.provider !== 'none' ? data.groups : [];
   })();
 

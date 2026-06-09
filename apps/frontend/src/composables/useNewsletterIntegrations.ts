@@ -64,7 +64,7 @@ export function useNewsletterIntegrations() {
       );
 
       // Fetch real status from API and merge in if provider is active
-      const data = await client.integrations.getNewsletter();
+      const data = await client.integrations.getNewsletterStatus();
       if (data.provider !== 'none') {
         const index = result.findIndex((i) => i.provider === data.provider);
         if (index !== -1) {
