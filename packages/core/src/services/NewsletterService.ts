@@ -186,11 +186,9 @@ class NewsletterService {
    * on the provider but not cached OR removed": cached but no longer on the provider)
    */
   async refreshNewsletterGroups(): Promise<NewsletterDiffData> {
-    const providerInfo = await this.getProviderInfo();
-
     // Groups cached in DB
     const cachedGroups: { id: string; label: string }[] =
-      'groups' in providerInfo ? providerInfo.groups : [];
+      optionsService.getJSON('mailchimp-newsletter-groups');
 
     // Groups configured with provider
     const providerGroups = await this.provider.getGroups();
@@ -206,6 +204,13 @@ class NewsletterService {
         .filter((g) => !providerIds.has(g.id))
         .map((g) => ({ ...g, action: 'removed' as const })),
     ];
+
+    // Update cache
+    if (diff.length > 0) {
+      optionsService.setJSON('mailchimp-newsletter-groups', providerGroups);
+    }
+
+    const providerInfo = await this.getProviderInfo();
     return { info: providerInfo, groupChanges: diff };
   }
 }
