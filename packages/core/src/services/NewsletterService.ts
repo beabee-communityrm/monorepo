@@ -206,6 +206,12 @@ class NewsletterService {
         .filter((g) => !providerIds.has(g.id))
         .map((g) => ({ ...g, action: 'removed' as const })),
     ];
+
+    // Update cache
+    if (diff.length > 0) {
+      optionsService.setJSON('mailchimp-newsletter-groups', providerGroups);
+    }
+
     return { info: providerInfo, groupChanges: diff };
   }
 }
