@@ -203,11 +203,13 @@
             <AppFormField
               v-if="canAddNewsletterOptIn && data.showNewsletterOptIn"
             >
+            <!-- TODO: Get group IDs from DB -->
               <AppNewsletterOptInSettings
                 v-model:title="data.newsletterSettings.title"
                 v-model:opt-in="data.newsletterSettings.optIn"
                 v-model:text="data.newsletterSettings.text"
                 v-model:groups="data.newsletterSettings.groups"
+                :available-groups="[]"
               />
             </AppFormField>
           </AppFormBox>

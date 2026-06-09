@@ -66,12 +66,14 @@ meta:
           :label="stepT('newsletter.showOptIn')"
           class="mb-4 font-semibold"
         />
+        <!-- TODO: Get group IDs from DB -->
         <AppNewsletterOptInSettings
           v-if="setupContent.showNewsletterOptIn"
           v-model:title="setupContent.newsletterTitle"
           v-model:text="setupContent.newsletterText"
           v-model:opt-in="setupContent.newsletterOptIn"
           v-model:groups="setupContent.newsletterGroups"
+          :available-groups="[]"
         />
 
         <AppSubHeading class="mt-6">
