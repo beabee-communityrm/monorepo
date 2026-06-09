@@ -2,6 +2,7 @@ import NewsletterService from '@beabee/core/services/NewsletterService';
 
 import { Authorized, Get, JsonController, Post } from 'routing-controllers';
 
+import { NewsletterDiffDto } from '#api/dto/NewsletterDiffDto';
 import { NewsletterIntegrationDto } from '#api/dto/NewsletterIntegrationDto';
 
 @JsonController('/integrations')
@@ -13,7 +14,7 @@ export class IntegrationsController {
   }
 
   @Post('/newsletter/refresh')
-  async refreshGroups(): Promise<void> {
-    await NewsletterService.refreshNewsletterGroups();
+  async refreshGroups(): Promise<NewsletterDiffDto> {
+    return await NewsletterService.refreshNewsletterGroups();
   }
 }
