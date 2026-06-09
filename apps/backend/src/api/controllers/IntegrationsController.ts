@@ -1,4 +1,3 @@
-import { ApiHealthStatus } from '@beabee/beabee-common';
 import NewsletterService from '@beabee/core/services/NewsletterService';
 
 import { Authorized, Get, JsonController, Post } from 'routing-controllers';
@@ -11,5 +10,10 @@ export class IntegrationsController {
   @Get('/newsletter')
   async getNewsletter(): Promise<NewsletterIntegrationDto> {
     return await NewsletterService.getProviderInfo();
+  }
+
+  @Post('/newsletter/refresh')
+  async refreshGroups(): Promise<void> {
+    await NewsletterService.refreshNewsletterGroups();
   }
 }
