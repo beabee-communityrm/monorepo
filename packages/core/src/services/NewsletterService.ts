@@ -169,8 +169,8 @@ class NewsletterService {
    *
    * @returns The available groups as `{ id, label }` pairs
    */
-  async refreshNewsletterGroups(): Promise<{ id: string; label: string }[]> {
-    return await this.provider.refreshGroups();
+  async getGroups(): Promise<{ id: string; label: string }[]> {
+    return await this.provider.getGroups();
   }
 }
 
