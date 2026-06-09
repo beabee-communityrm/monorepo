@@ -1,5 +1,7 @@
 import type {
   GetNewsletterWith,
+  NewsletterDiffData,
+  NewsletterIntegrationData,
   NewsletterIntegrationDataWith,
 } from '@beabee/beabee-common';
 
@@ -25,5 +27,16 @@ export class IntegrationsClient extends BaseClient {
       info: NewsletterIntegrationDataWith<With>;
     }>('/newsletter', { with: _with });
     return data.info;
+  }
+
+  /**
+   * Refreshes newsletter groups from the provider and returns the diff
+   */
+  async refreshNewsletterGroups(): Promise<NewsletterDiffData> {
+    const { data } = await this.fetch.post<NewsletterDiffData>(
+      '/newsletter/refresh'
+    );
+    console.log(data);
+    return data;
   }
 }

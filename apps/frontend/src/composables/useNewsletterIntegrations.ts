@@ -1,8 +1,10 @@
 import type { MailchimpNewsletterIntegrationDataWith } from '@beabee/beabee-common';
 import { ApiHealthStatus } from '@beabee/beabee-common';
+import { addNotification } from '@beabee/vue/store/notifications';
 
 import { faMailchimp } from '@fortawesome/free-brands-svg-icons';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { DisabledIntegration, Integration } from '#type/integration';
 import { client } from '#utils/api/client';
@@ -50,13 +52,12 @@ function buildNewsletterIntegration(
 }
 
 export function useNewsletterIntegrations() {
+  const { t } = useI18n();
   const integrations = ref<Integration[]>([]);
   const loading = ref(false);
-  const error = ref<Error | null>(null);
 
   async function load() {
     loading.value = true;
-    error.value = null;
     try {
       const data = await client.integrations.getNewsletter(['health']);
 
@@ -65,12 +66,87 @@ export function useNewsletterIntegrations() {
           ? buildNewsletterIntegration(data)
           : buildDisabledIntegration(provider);
       });
-    } catch (e) {
-      error.value = e as Error;
+    } catch {
     } finally {
       loading.value = false;
     }
   }
 
-  return { integrations, loading, error, load };
+  async function refresh(provider: string) {
+    const providerName = providerMap[provider]?.name ?? provider;
+    const previousStatus = integrations.value.find(
+      (i) => i.provider === provider
+    )?.status;
+
+    function tr(key: string, named?: Record<string, string>) {
+      return t(`adminSettings.integrations.refreshResult.${key}`, {
+        provider: providerName,
+        ...named,
+      });
+    }
+
+    function notify(variant: 'success' | 'info' | 'warning', title: string) {
+      addNotification({ variant, title, removeable: true });
+    }
+
+    function buildChangeParts(
+      added: { label: string }[],
+      removed: { label: string }[]
+    ): string[] {
+      const parts: string[] = [];
+      if (added.length > 0)
+        parts.push(
+          tr('added', { groups: added.map((g) => g.label).join(', ') })
+        );
+      if (removed.length > 0)
+        parts.push(
+          tr('removed', { groups: removed.map((g) => g.label).join(', ') })
+        );
+      return parts;
+    }
+
+    try {
+      const { info, groupChanges } =
+        await client.integrations.refreshNewsletterGroups();
+
+      if (info.provider !== 'none') {
+        const index = integrations.value.findIndex(
+          (i) => i.provider === info.provider
+        );
+        if (index !== -1) {
+          integrations.value[index] = buildIntegration(info);
+        }
+      }
+
+      if (info.status === ApiHealthStatus.UNHEALTHY) {
+        if (previousStatus === ApiHealthStatus.HEALTHY) {
+          notify('warning', tr('connectionLost'));
+        } else {
+          notify('warning', tr('couldNotConnect'));
+        }
+      } else {
+        // info.status === HEALTHY
+        const added = groupChanges.filter((g) => g.action === 'added');
+        const removed = groupChanges.filter((g) => g.action === 'removed');
+
+        if (previousStatus === ApiHealthStatus.UNHEALTHY) {
+          const parts = [
+            tr('reconnected'),
+            ...buildChangeParts(added, removed),
+          ];
+          notify('success', parts.join('. '));
+        } else {
+          if (groupChanges.length > 0) {
+            notify('success', buildChangeParts(added, removed).join('. '));
+          } else {
+            notify('success', tr('noChanges'));
+          }
+        }
+      }
+    } catch {
+      notify('warning', tr('error'));
+    }
+  }
+
+  return { integrations, loading, load, refresh };
 }

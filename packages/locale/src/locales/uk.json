@@ -266,6 +266,16 @@
         "disabled": "Вимкнено",
         "healthy": "Підключено",
         "unhealthy": "З'єднання втрачено"
+      },
+      "refreshing": "Оновлення...",
+      "refreshResult": {
+        "noChanges": "Групи {provider} актуальні",
+        "added": "Додано групи {provider}: {groups}",
+        "removed": "Видалено групи {provider}: {groups}",
+        "reconnected": "підключено",
+        "connectionLost": "з'єднання втрачено",
+        "couldNotConnect": "Не вдалося підключитися до {provider}",
+        "error": "Помилка оновлення {provider}. Будь ласка, спробуйте ще раз."
       }
     },
     "payment": {

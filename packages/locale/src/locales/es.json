@@ -266,6 +266,16 @@
         "disabled": "Desactivado",
         "healthy": "Conectado",
         "unhealthy": "Conexión perdida"
+      },
+      "refreshing": "Actualizando...",
+      "refreshResult": {
+        "noChanges": "Los grupos de {provider} están actualizados",
+        "added": "Grupos de {provider} añadidos: {groups}",
+        "removed": "Grupos de {provider} eliminados: {groups}",
+        "reconnected": "reconectado",
+        "connectionLost": "conexión perdida",
+        "couldNotConnect": "No se pudo conectar con {provider}",
+        "error": "Error al actualizar {provider}. Por favor, inténtalo de nuevo."
       }
     },
     "payment": {
