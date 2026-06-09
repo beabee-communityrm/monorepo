@@ -1,4 +1,5 @@
 import {
+  NewsletterDiffData,
   NewsletterIntegrationData,
   NewsletterStatus,
 } from '@beabee/beabee-common';
@@ -176,14 +177,36 @@ class NewsletterService {
   }
 
   /**
-   * Compare groups configured with the newsletter provider, with
-   * groups cached in the database
+   * Get newsletter provider's groups, compare them against
+   * groups cached in the database. Return diff alongside provider
+   * integration info
+   *
+   * @returns Newsletter integration info and a list of group changes, where each
+   * change contains group id, label, and an action (added: present
+   * on the provider but not cached OR removed": cached but no longer on the provider)
    */
-  async refreshNewsletterGroups(): Promise<{ id: string; label: string }[]> {
-    const cachedGroups = optionsService.getJSON('mailchimp-newsletter-groups');
+  async refreshNewsletterGroups(): Promise<NewsletterDiffData> {
+    const providerInfo = await this.getProviderInfo();
+
+    // Groups cached in DB
+    const cachedGroups: { id: string; label: string }[] =
+      'groups' in providerInfo ? providerInfo.groups : [];
+
+    // Groups configured with provider
     const providerGroups = await this.provider.getGroups();
-    // TODO: Compute diff
-    return providerGroups;
+
+    const cachedIds = new Set(cachedGroups.map((g) => g.id));
+    const providerIds = new Set(providerGroups.map((g) => g.id));
+
+    const diff = [
+      ...providerGroups
+        .filter((g) => !cachedIds.has(g.id))
+        .map((g) => ({ ...g, action: 'added' as const })),
+      ...cachedGroups
+        .filter((g) => !providerIds.has(g.id))
+        .map((g) => ({ ...g, action: 'removed' as const })),
+    ];
+    return { info: providerInfo, groupChanges: diff };
   }
 }
 
