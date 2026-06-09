@@ -73,12 +73,12 @@ function getOptionallyAnonymizedModels(
 
 /**
  * Passthrough anonymisers: same models as OPTIONALLY_ANONYMIZED_MODELS but with
- * empty objectMap so the core exports rows as-is (no anonymisation).
+ * empty map so the core exports rows as-is (no anonymisation).
  */
 function getOptionalPassthroughAnonymisers(): models.ModelAnonymiser[] {
   return getOptionallyAnonymizedModels(false).map((a) => ({
     model: a.model,
-    objectMap: {} as models.ObjectMap<unknown>,
+    map: {} as models.AnonymisationMap<unknown>,
   })) as models.ModelAnonymiser[];
 }
 
@@ -89,7 +89,7 @@ function getOptionalPassthroughAnonymisers(): models.ModelAnonymiser[] {
 function getAlwaysPassthroughAnonymisers(): models.ModelAnonymiser[] {
   return ALWAYS_ANONYMIZED_MODELS.map((a) => ({
     model: a.model,
-    objectMap: {} as models.ObjectMap<unknown>,
+    map: {} as models.AnonymisationMap<unknown>,
   })) as models.ModelAnonymiser[];
 }
 
@@ -218,55 +218,67 @@ const calloutExportChance = new Chance();
  */
 const calloutResponseCalloutExportAnonymiser: models.ModelAnonymiser = {
   model: CalloutResponse,
-  objectMap: {
+  map: {
     contactId: () => null,
     assigneeId: () => null,
     guestName: () => calloutExportChance.name(),
     guestEmail: () =>
       calloutExportChance.email({ domain: 'example.com', length: 10 }),
-  } as models.ObjectMap<unknown>,
+  } as models.AnonymisationMap<unknown>,
 };
 
 /** Callout export: tables to insert with anonymisation (personal data only).
  *  CalloutVariant and CalloutTag are passthrough (no personal data).
  *  CalloutReviewer is excluded (non-nullable contactId FK). */
 export const CALLOUT_EXPORT_ANONYMIZERS: models.ModelAnonymiser[] = [
-  { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
-  { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
-  { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
+  { model: Callout, map: {} as models.AnonymisationMap<unknown> },
+  { model: CalloutVariant, map: {} as models.AnonymisationMap<unknown> },
+  { model: CalloutTag, map: {} as models.AnonymisationMap<unknown> },
   calloutResponseCalloutExportAnonymiser,
 ];
 
 /** Callout export: full anonymisation including per-component answer anonymisation */
 export const CALLOUT_EXPORT_FULL_ANONYMIZERS: models.ModelAnonymiser[] = [
-  { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
-  { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
-  { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
+  { model: Callout, map: {} as models.AnonymisationMap<unknown> },
+  { model: CalloutVariant, map: {} as models.AnonymisationMap<unknown> },
+  { model: CalloutTag, map: {} as models.AnonymisationMap<unknown> },
   models.calloutResponsesAnonymiser,
 ] as models.ModelAnonymiser[];
 
 /** Callout export: tables to insert without any anonymisation */
 export const CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS: models.ModelAnonymiser[] =
   [
-    { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
-    { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
-    { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
-    { model: CalloutResponse, objectMap: {} as models.ObjectMap<unknown> },
+    { model: Callout, map: {} as models.AnonymisationMap<unknown> },
+    {
+      model: CalloutVariant,
+      map: {} as models.AnonymisationMap<unknown>,
+    },
+    { model: CalloutTag, map: {} as models.AnonymisationMap<unknown> },
+    {
+      model: CalloutResponse,
+      map: {} as models.AnonymisationMap<unknown>,
+    },
   ];
 
 /** Callout export: all tables to clear (FK dependencies), in insert order.
  *  clearModels() reverses this to delete children before parents. */
 export const CALLOUT_EXPORT_CLEAR_MODELS: models.ModelAnonymiser[] = [
-  { model: Callout, objectMap: {} as models.ObjectMap<unknown> },
-  { model: CalloutTag, objectMap: {} as models.ObjectMap<unknown> },
-  { model: CalloutVariant, objectMap: {} as models.ObjectMap<unknown> },
-  { model: CalloutReviewer, objectMap: {} as models.ObjectMap<unknown> },
-  { model: CalloutResponseSegment, objectMap: {} as models.ObjectMap<unknown> },
-  { model: CalloutResponse, objectMap: {} as models.ObjectMap<unknown> },
-  { model: CalloutResponseTag, objectMap: {} as models.ObjectMap<unknown> },
+  { model: Callout, map: {} as models.AnonymisationMap<unknown> },
+  { model: CalloutTag, map: {} as models.AnonymisationMap<unknown> },
+  { model: CalloutVariant, map: {} as models.AnonymisationMap<unknown> },
+  { model: CalloutReviewer, map: {} as models.AnonymisationMap<unknown> },
+  {
+    model: CalloutResponseSegment,
+    map: {} as models.AnonymisationMap<unknown>,
+  },
+  { model: CalloutResponse, map: {} as models.AnonymisationMap<unknown> },
+  {
+    model: CalloutResponseTag,
+    map: {} as models.AnonymisationMap<unknown>,
+  },
   {
     model: CalloutResponseComment,
-    objectMap: {} as models.ObjectMap<unknown>,
+    map: {} as models.AnonymisationMap<unknown>,
   },
 ];
 
@@ -278,6 +290,7 @@ export const CALLOUT_EXPORT_CLEAR_MODELS: models.ModelAnonymiser[] = [
  * - `test`: email/content/options excluded, other tables anonymized
  * - `none`: everything passthrough (raw rows, including PII)
  */
+// TODO: Use level as a proxy for skip, then everything will be nicer
 export const getAnonymizers = (
   level: AnonymizationLevel,
   skipAnonymizeTables: string[] = [],
@@ -310,9 +323,11 @@ export const getAnonymizers = (
       break;
     case 'none':
       fullList = [
-        ...getAlwaysPassthroughAnonymisers(),
+        ...ALWAYS_ANONYMIZED_MODELS,
         ...getOptionalPassthroughAnonymisers(),
-      ];
+      ]
+        // Remove all maps so no anonymisation occurs
+        .map((a) => ({ ...a, map: {} as models.AnonymisationMap<unknown> }));
       break;
   }
 
@@ -324,7 +339,10 @@ export const getAnonymizers = (
     const entityName =
       typeof a.model === 'function' ? a.model.name : String(a.model);
     if (skipSet.has(entityName.toLowerCase())) {
-      return { model: a.model, objectMap: {} as models.ObjectMap<unknown> };
+      return {
+        model: a.model,
+        map: {} as models.AnonymisationMap<unknown>,
+      };
     }
     return a;
   }) as models.ModelAnonymiser[];

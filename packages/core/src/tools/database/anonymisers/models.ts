@@ -67,10 +67,10 @@ import { v4 as uuidv4 } from 'uuid';
 /**
  * Generic types for object maps
  *
- * Object maps are used to describe how to anonymise each key on an object.
+ * Anonymisation maps are used to describe how to anonymise each key on an object.
  *
  * Each key can either be a function which returns the correct type or, if the
- * value is an object, it can be a nested object map. Leaf nodes should always
+ * value is an object, it can be a nested anonymisation map. Leaf nodes should always
  * be functions.
  *
  * For example, for an object with the shape:
@@ -94,11 +94,13 @@ import { v4 as uuidv4 } from 'uuid';
  *   "baz": () => ({"qux": "zzzz"})
  * }
  */
-export type ObjectMap<T> = { [K in keyof T]?: PropertyMap<T[K]> };
-export type PropertyMap<T> =
+export type AnonymisationMap<T> = {
+  [K in keyof T]?: AnonymisationPropertyMap<T[K]>;
+};
+export type AnonymisationPropertyMap<T> =
   | ((prop: T) => T)
   | [Symbol, (prop: T) => T]
-  | ObjectMap<T>;
+  | AnonymisationMap<T>;
 
 export type ModelAnonymiserStrategy = 'default' | 'calloutResponsePerCallout';
 
@@ -107,24 +109,24 @@ export type ModelAnonymiserStrategy = 'default' | 'calloutResponsePerCallout';
  */
 export interface ModelAnonymiser<T extends ObjectLiteral = ObjectLiteral> {
   model: EntityTarget<T>;
-  objectMap: ObjectMap<T>;
+  map: AnonymisationMap<T>;
   strategy?: ModelAnonymiserStrategy;
 }
 
 /**
  * Create a model anonymiser. This is a helper function to ensure that the
- * object map is correctly typed for the given model.
+ * anonymisation map is correctly typed for the given model.
  *
  * @param model The model to anonymise
- * @param objectMap The object map to use for anonymisation
+ * @param map The anonymisation map to use for anonymisation
  * @returns A model anonymiser
  */
 function createModelAnonymiser<T extends ObjectLiteral>(
   model: EntityTarget<T>,
-  objectMap: ObjectMap<T> = {},
+  map: AnonymisationMap<T> = {},
   strategy: ModelAnonymiserStrategy = 'default'
 ): ModelAnonymiser<T> {
-  return { model, objectMap, strategy };
+  return { model, map, strategy };
 }
 
 /**
@@ -241,11 +243,11 @@ function createComponentAnonymiser(
  */
 export function createAnswersAnonymiser(
   slides: SetCalloutSlideSchema[]
-): ObjectMap<CalloutResponseAnswersSlide> {
-  const ret: ObjectMap<CalloutResponseAnswersSlide> = {};
+): AnonymisationMap<CalloutResponseAnswersSlide> {
+  const ret: AnonymisationMap<CalloutResponseAnswersSlide> = {};
 
   for (const slide of slides) {
-    const slideMap: ObjectMap<CalloutResponseAnswers> = {};
+    const slideMap: AnonymisationMap<CalloutResponseAnswers> = {};
     for (const component of slide.components) {
       if (component.key) {
         slideMap[component.key] = createComponentAnonymiser(component);
