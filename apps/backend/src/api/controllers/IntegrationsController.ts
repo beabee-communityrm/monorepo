@@ -12,9 +12,4 @@ export class IntegrationsController {
   async getNewsletter(): Promise<NewsletterIntegrationDto> {
     return await NewsletterService.getProviderInfo();
   }
-
-  @Post('/newsletter/refresh')
-  async refreshGroups(): Promise<void> {
-    await NewsletterService.refreshNewsletterGroups();
-  }
 }

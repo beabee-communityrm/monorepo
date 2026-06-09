@@ -5,7 +5,6 @@ import { UpdateNewsletterContact } from './update-newsletter-contact.js';
 
 export interface NewsletterProvider {
   getProviderInfo(): Promise<NewsletterIntegrationData>;
-  refreshGroups(): Promise<{ id: string; label: string }[]>;
   getContact(email: string): Promise<NewsletterContact | undefined>;
   getGroups(): Promise<{ id: string; label: string }[]>;
   upsertContact(

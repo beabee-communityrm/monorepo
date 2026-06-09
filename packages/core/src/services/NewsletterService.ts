@@ -169,16 +169,6 @@ class NewsletterService {
    *
    * @returns The available groups as `{ id, label }` pairs
    */
-  async refreshNewsletterGroups(): Promise<{ id: string; label: string }[]> {
-    return await this.provider.refreshGroups();
-  }
-
-  /**
-   * Get the list of newsletter groups configured on the newsletter provider's
-   * backend (e.g. Mailchimp interests on the configured audience).
-   *
-   * @returns The available groups as `{ id, label }` pairs
-   */
   async getGroups(): Promise<{ id: string; label: string }[]> {
     return await this.provider.getGroups();
   }
