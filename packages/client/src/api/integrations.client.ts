@@ -15,7 +15,7 @@ export class IntegrationsClient extends BaseClient {
   /**
    * Fetches the newsletter integration for this instance
    */
-  async getNewsletter(): Promise<NewsletterIntegrationData> {
+  async getNewsletterStatus(): Promise<NewsletterIntegrationData> {
     const { data } =
       await this.fetch.get<NewsletterIntegrationData>('/newsletter');
     return data;

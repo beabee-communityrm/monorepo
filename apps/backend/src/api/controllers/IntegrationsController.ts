@@ -9,7 +9,7 @@ import { NewsletterIntegrationDto } from '#api/dto/NewsletterIntegrationDto';
 @Authorized('admin')
 export class IntegrationsController {
   @Get('/newsletter')
-  async getNewsletter(): Promise<NewsletterIntegrationDto> {
+  async getNewsletterStatus(): Promise<NewsletterIntegrationDto> {
     return await NewsletterService.getProviderInfo();
   }
 
