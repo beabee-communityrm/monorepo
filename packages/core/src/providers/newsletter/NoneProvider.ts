@@ -40,10 +40,6 @@ export class NoneProvider implements NewsletterProvider {
   async getGroups(): Promise<{ id: string; label: string }[]> {
     return [];
   }
-
-  async getGroups(): Promise<{ id: string; label: string }[]> {
-    return [];
-  }
 }
 
 /** @deprecated Use named import NoneProvider instead */
