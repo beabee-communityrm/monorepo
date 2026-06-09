@@ -1,4 +1,7 @@
-import type { NewsletterIntegrationData } from '@beabee/beabee-common';
+import type {
+  NewsletterDiffData,
+  NewsletterIntegrationData,
+} from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
@@ -18,6 +21,14 @@ export class IntegrationsClient extends BaseClient {
   async getNewsletterStatus(): Promise<NewsletterIntegrationData> {
     const { data } =
       await this.fetch.get<NewsletterIntegrationData>('/newsletter');
+    return data;
+  }
+
+  /**
+   * Refreshes newsletter groups from the provider and returns the diff
+   */
+  async refreshNewsletterGroups(): Promise<NewsletterDiffData> {
+    const { data } = await this.fetch.post<NewsletterDiffData>('/newsletter/refresh');
     return data;
   }
 }

@@ -259,13 +259,24 @@
       "label": "Интеграции",
       "mailchimp": {
         "audienceId": "ID аудитории",
-        "groups": "Группы"
+        "groups": "Группы",
+        "noGroups": "Группы не найдены"
       },
       "refresh": "Обновить",
       "status": {
         "disabled": "Отключено",
         "healthy": "Подключено",
         "unhealthy": "Соединение потеряно"
+      },
+      "refreshing": "Обновление...",
+      "refreshResult": {
+        "noChanges": "Группы {provider} актуальны",
+        "added": "Добавлены группы {provider}: {groups}",
+        "removed": "Удалены группы {provider}: {groups}",
+        "reconnected": "подключено",
+        "connectionLost": "соединение потеряно",
+        "couldNotConnect": "Не удалось подключиться к {provider}",
+        "error": "Ошибка обновления {provider}. Пожалуйста, повторите попытку."
       }
     },
     "payment": {

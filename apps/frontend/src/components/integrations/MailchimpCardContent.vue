@@ -1,14 +1,15 @@
 <template>
   <div class="space-y-6">
-    <div v-if="groups?.length">
+    <div>
       <AppCategoryLabel>
         {{ t('adminSettings.integrations.mailchimp.groups') }}
       </AppCategoryLabel>
-      <AppTable :headers="groupHeaders" :items="groups">
+      <AppTable v-if="groups?.length" :headers="groupHeaders" :items="groups">
         <template #value-id="{ item }">
           <span class="font-mono text-sm">{{ item.id }}</span>
         </template>
       </AppTable>
+      <div v-else class="text-xs text-gray-500">{{ t('adminSettings.integrations.mailchimp.noGroups') }}</div>
     </div>
   </div>
 </template>

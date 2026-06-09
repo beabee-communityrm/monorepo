@@ -1,6 +1,6 @@
 <template>
   <div class="rounded border border-primary-20 bg-white">
-    <IntegrationCardHeader :integration="integration" />
+    <IntegrationCardHeader :integration="integration" :on-refresh="onRefresh" />
     <div v-if="hasBody" class="border-t border-primary-20 p-4">
       <slot />
     </div>
@@ -13,7 +13,10 @@ import { Comment, computed, useSlots } from 'vue';
 import type { Integration } from '#type/integration';
 import IntegrationCardHeader from './IntegrationCardHeader.vue';
 
-defineProps<{ integration: Integration }>();
+defineProps<{
+  integration: Integration;
+  onRefresh?: () => Promise<void>;
+}>();
 
 const slots = useSlots();
 

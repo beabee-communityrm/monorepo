@@ -258,13 +258,24 @@
       "label": "Integrazioni",
       "mailchimp": {
         "audienceId": "ID pubblico",
-        "groups": "Gruppi"
+        "groups": "Gruppi",
+        "noGroups": "Nessun gruppo trovato"
       },
       "refresh": "Aggiorna",
       "status": {
         "disabled": "Disabilitato",
         "healthy": "Connesso",
         "unhealthy": "Connessione persa"
+      },
+      "refreshing": "Aggiornamento...",
+      "refreshResult": {
+        "noChanges": "I gruppi {provider} sono aggiornati",
+        "added": "Gruppi {provider} aggiunti: {groups}",
+        "removed": "Gruppi {provider} rimossi: {groups}",
+        "reconnected": "riconnesso",
+        "connectionLost": "connessione persa",
+        "couldNotConnect": "Impossibile connettersi a {provider}",
+        "error": "Aggiornamento di {provider} non riuscito. Riprova."
       }
     },
     "payment": {

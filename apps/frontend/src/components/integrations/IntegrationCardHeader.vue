@@ -25,9 +25,19 @@
       <StatusPill :type="statusType[integration.status]">
         {{ t(`adminSettings.integrations.status.${integration.status}`) }}
       </StatusPill>
-      <!-- TODO: refresh functionality not yet implemented -->
-      <AppButton v-if="false" variant="greyOutlined" size="sm" :icon="faRotate">
-        {{ t('adminSettings.integrations.refresh') }}
+      <AppButton
+        v-if="integration.status !== ApiHealthStatus.DISABLED"
+        variant="greyOutlined"
+        size="sm"
+        :icon="faRotate"
+        :disabled="refreshing"
+        @click="handleRefresh"
+      >
+        {{
+          refreshing
+            ? t('adminSettings.integrations.refreshing')
+            : t('adminSettings.integrations.refresh')
+        }}
       </AppButton>
     </div>
   </div>
@@ -36,15 +46,30 @@
 <script lang="ts" setup>
 import { AppButton } from '@beabee/vue';
 import { faRotate } from '@fortawesome/free-solid-svg-icons';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { ApiHealthStatus } from '@beabee/beabee-common';
 import type { Integration } from '#type/integration';
 import StatusPill from './StatusPill.vue';
 
-defineProps<{ integration: Integration }>();
+const props = defineProps<{
+  integration: Integration;
+  onRefresh?: () => Promise<void>;
+}>();
 
 const { t } = useI18n();
+
+const refreshing = ref(false);
+
+async function handleRefresh() {
+  refreshing.value = true;
+  try {
+    await props.onRefresh?.();
+  } finally {
+    refreshing.value = false;
+  }
+}
 
 const statusType: Record<ApiHealthStatus, 'success' | 'disabled' | 'danger'> = {
   [ApiHealthStatus.HEALTHY]: 'success',

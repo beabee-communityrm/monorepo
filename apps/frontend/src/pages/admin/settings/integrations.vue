@@ -23,6 +23,7 @@ meta:
             v-for="integration in items"
             :key="integration.provider"
             :integration="integration"
+            :on-refresh="() => refresh(integration.provider)"
           >
             <MailchimpCardContent
               v-if="
@@ -50,7 +51,7 @@ import { ApiHealthStatus } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 
-const { integrations, loading, load } = useNewsletterIntegrations();
+const { integrations, loading, load, refresh } = useNewsletterIntegrations();
 
 const integrationsByCategory = computed(() =>
   integrations.value.reduce<Record<string, typeof integrations.value>>(

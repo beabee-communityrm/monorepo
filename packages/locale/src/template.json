@@ -258,9 +258,20 @@
       "label": "",
       "mailchimp": {
         "audienceId": "",
-        "groups": ""
+        "groups": "",
+        "noGroups": ""
       },
       "refresh": "",
+      "refreshing": "",
+      "refreshResult": {
+        "noChanges": "",
+        "added": "",
+        "removed": "",
+        "reconnected": "",
+        "connectionLost": "",
+        "couldNotConnect": "",
+        "error": ""
+      },
       "status": {
         "disabled": "",
         "healthy": "",

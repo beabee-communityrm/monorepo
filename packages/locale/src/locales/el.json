@@ -258,13 +258,24 @@
       "label": "Ενσωματώσεις",
       "mailchimp": {
         "audienceId": "Αναγνωριστικό κοινού",
-        "groups": "Ομάδες"
+        "groups": "Ομάδες",
+        "noGroups": "Δεν βρέθηκαν ομάδες"
       },
       "refresh": "Ανανέωση",
       "status": {
         "disabled": "Απενεργοποιημένο",
         "healthy": "Συνδεδεμένο",
         "unhealthy": "Απώλεια σύνδεσης"
+      },
+      "refreshing": "Ανανέωση...",
+      "refreshResult": {
+        "noChanges": "Οι ομάδες {provider} είναι ενημερωμένες",
+        "added": "Προστέθηκαν ομάδες {provider}: {groups}",
+        "removed": "Αφαιρέθηκαν ομάδες {provider}: {groups}",
+        "reconnected": "επανασυνδέθηκε",
+        "connectionLost": "η σύνδεση χάθηκε",
+        "couldNotConnect": "Δεν ήταν δυνατή η σύνδεση με τον {provider}",
+        "error": "Η ανανέωση του {provider} απέτυχε. Παρακαλώ δοκιμάστε ξανά."
       }
     },
     "payment": {

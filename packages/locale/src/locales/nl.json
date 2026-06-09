@@ -258,13 +258,24 @@
       "label": "Integraties",
       "mailchimp": {
         "audienceId": "Doelgroep-ID",
-        "groups": "Groepen"
+        "groups": "Groepen",
+        "noGroups": "Geen groepen gevonden"
       },
       "refresh": "Vernieuwen",
       "status": {
         "disabled": "Uitgeschakeld",
         "healthy": "Verbonden",
         "unhealthy": "Verbinding verbroken"
+      },
+      "refreshing": "Vernieuwen...",
+      "refreshResult": {
+        "noChanges": "{provider} groepen zijn up-to-date",
+        "added": "{provider} groepen toegevoegd: {groups}",
+        "removed": "{provider} groepen verwijderd: {groups}",
+        "reconnected": "opnieuw verbonden",
+        "connectionLost": "verbinding verbroken",
+        "couldNotConnect": "Kan geen verbinding maken met {provider}",
+        "error": "{provider} vernieuwen mislukt. Probeer het opnieuw."
       }
     },
     "payment": {
