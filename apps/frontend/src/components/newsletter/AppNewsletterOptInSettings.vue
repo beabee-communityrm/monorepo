@@ -69,7 +69,12 @@
         <template #default="{ item }">
           <!-- Group ID -->
           <div class="flex-1">
-            <AppInput v-model="item.id" :label="t('common.id')" required />
+            <AppSelect
+              v-model="item.id"
+              :label="t('common.id')"
+              :items="availableGroups"
+              required
+            />
           </div>
 
           <!-- Group Label -->
@@ -105,11 +110,19 @@ import {
   AppRepeatable,
   AppRichTextEditor,
   AppSectionHeading,
+  AppSelect,
 } from '@beabee/vue';
 
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
+
+/**
+ * Groups configured with the newsletter provider
+ */
+defineProps<{
+  availableGroups: Omit<NewsletterGroupData, 'checked'>[];
+}>();
 
 /**
  * Model values for the component configuration
