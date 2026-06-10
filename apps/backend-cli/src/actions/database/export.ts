@@ -24,32 +24,25 @@ export const exportDatabase = async (
     );
   }
 
-  const anonymisers = getAnonymizers(
-    args.anonymize,
-    args.skipAnonymizeTables,
-    args.preserveCalloutAnswers
-  );
+  const anonymisers = getAnonymizers(args.anonymize, args.skipAnonymizeTables);
 
   if (args.dryRun) {
-    const modelNames = anonymisers.map((a) =>
-      typeof a.model === 'function' ? a.model.name : String(a.model)
-    );
     console.log('Dry run: would export database (full)');
     console.log(
       `Would clear and anonymise ${anonymisers.length} models:`,
-      modelNames.join(', ')
+      anonymisers.map((a) => a.name).join(', ')
     );
     return;
   }
 
   await runApp(async () => {
-    const valueMap = new Map<string, unknown>();
+    const anonymisedValueCache = new Map<string, unknown>();
     // Limit query-log muting to the SQL emission phase so setup logs still appear.
     await withTypeOrmQueryLoggingDisabled(async () => {
       clearModels(anonymisers);
 
       for (const anonymiser of anonymisers) {
-        await anonymiseModel(anonymiser, (qb) => qb, valueMap);
+        await anonymiseModel(anonymiser, (qb) => qb, anonymisedValueCache);
       }
     });
   });

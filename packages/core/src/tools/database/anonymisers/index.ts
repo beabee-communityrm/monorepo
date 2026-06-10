@@ -210,13 +210,13 @@ export async function anonymiseModel<T extends ObjectLiteral>(
     const calloutPrepareQuery = prepareQuery as unknown as (
       qb: SelectQueryBuilder<CalloutResponse>
     ) => SelectQueryBuilder<CalloutResponse>;
-    return await anonymiseCalloutResponsesModel(
+    await anonymiseCalloutResponsesModel(
       calloutPrepareQuery,
       anonymisedValueCache,
       anonymiser.map as AnonymisationMap<CalloutResponse>
     );
   } else {
-    return await anonymiseStandardModel(
+    await anonymiseStandardModel(
       anonymiser,
       prepareQuery,
       anonymisedValueCache

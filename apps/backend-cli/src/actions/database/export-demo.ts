@@ -12,20 +12,79 @@ import {
   anonymiseModel,
   clearModels,
 } from '@beabee/core/tools/database/anonymisers/index';
+import * as models from '@beabee/core/tools/database/anonymisers/models';
 
 import { Brackets } from 'typeorm';
+import { type ObjectLiteral, type SelectQueryBuilder } from 'typeorm';
 
 import type { ExportDemoArgs } from '../../types/index.js';
-import {
-  type DemoExportContext,
-  getDemoAnonymisers,
-  getDemoClearModels,
-  getDemoPrepareQuery,
-} from '../../utils/anonymizers.js';
 import { withTypeOrmQueryLoggingDisabled } from '../../utils/file-output.js';
 
 /**
- * Fetch the subset of IDs used for demo export (must be called inside runApp)
+ * Context for demo export: IDs of the subset to export
+ */
+interface DemoExportContext {
+  contactIds: string[];
+  calloutIds: string[];
+  responseIds: string[];
+}
+
+/**
+ * Demo subset: anonymisers for contact-related data (limited contacts)
+ */
+export const DEMO_CONTACT_ANONYMIZERS = [
+  models.contactAnonymiser,
+  models.contactRoleAnonymiser,
+  models.contactProfileAnonymiser,
+  models.paymentsAnonymiser,
+  models.contactContributionAnonymiser,
+] as models.ModelAnonymiser[];
+
+/**
+ * Demo subset: anonymisers for callout-related data (latest callouts)
+ */
+export const DEMO_CALLOUT_ANONYMIZERS = [
+  models.calloutsAnonymiser,
+  models.calloutTagsAnonymiser,
+  models.calloutVariantAnonymiser,
+  models.calloutReviewerAnonymiser,
+  models.calloutResponseSegmentsAnonymiser,
+] as models.ModelAnonymiser[];
+
+/**
+ * Demo subset: anonymisers for callout response data
+ */
+export const DEMO_CALLOUT_RESPONSE_ANONYMIZERS = [
+  models.calloutResponsesAnonymiser,
+  models.calloutResponseTagsAnonymiser,
+] as models.ModelAnonymiser[];
+
+/**
+ * Demo subset: all anonymisers to apply (contacts, callouts, responses)
+ */
+export const DEMO_ANONYMISERS = [
+  ...DEMO_CONTACT_ANONYMIZERS,
+  ...DEMO_CALLOUT_ANONYMIZERS,
+  ...DEMO_CALLOUT_RESPONSE_ANONYMIZERS,
+] as models.ModelAnonymiser[];
+
+/**
+ * Models cleared in demo export but not repopulated (link tables / dependent data)
+ */
+export const DEMO_CLEAR_ANONYMIZERS = [
+  ...DEMO_ANONYMISERS,
+  models.calloutResponseCommentsAnonymiser,
+  models.projectContactsAnonymiser,
+  models.projectEngagementsAnonymiser,
+  models.segmentContactsAnonymiser,
+  models.referralsAnonymiser,
+  models.resetSecurityFlowAnonymiser,
+  models.signupFlowAnonymiser,
+] as models.ModelAnonymiser[];
+
+/**
+ * Fetches the IDs for a random subset of contacts, the latest callouts, and
+ * their responses to use as the context for the demo export
  */
 async function fetchDemoContext(
   contactLimit: number,
@@ -45,6 +104,8 @@ async function fetchDemoContext(
     .getMany();
   const calloutIds = callouts.map((c) => c.id);
 
+  // Fetch only responses for given callouts and where they only refer to
+  // existing contacts (or no contact at all)
   const responses = await createQueryBuilder(CalloutResponse, 'item')
     .select('item.id')
     .where('item.calloutId IN (:...ids)', { ids: calloutIds })
@@ -70,6 +131,44 @@ async function fetchDemoContext(
   return { contactIds, calloutIds, responseIds };
 }
 
+/**
+ * Returns a query filter which restricts the export to the demo subset based on
+ * which model is being anonymized.
+ *
+ * This is a fairly hacky way to:
+ * - Return the right filter for each anonymiser based on which table it
+ *   operates on (contact, callout, response)
+ * - Select the key name based on if it's the main entity table or a related
+ *   table (e.g. contactId vs id)
+ */
+export function getDemoPrepareQuery(
+  anonymiser: models.ModelAnonymiser,
+  context: DemoExportContext
+): (
+  qb: SelectQueryBuilder<ObjectLiteral>
+) => SelectQueryBuilder<ObjectLiteral> {
+  if (DEMO_CONTACT_ANONYMIZERS.includes(anonymiser)) {
+    const pk = anonymiser === models.contactAnonymiser ? 'id' : 'contactId';
+    return (qb) =>
+      qb.where(`item.${pk} IN (:...contacts)`, {
+        contacts: context.contactIds,
+      });
+  } else if (DEMO_CALLOUT_ANONYMIZERS.includes(anonymiser)) {
+    const pk = anonymiser === models.calloutsAnonymiser ? 'id' : 'calloutId';
+    return (qb) =>
+      qb.where(`item.${pk} IN (:...ids)`, { ids: context.calloutIds });
+  } else if (DEMO_CALLOUT_RESPONSE_ANONYMIZERS.includes(anonymiser)) {
+    const pk =
+      anonymiser === models.calloutResponsesAnonymiser ? 'id' : 'responseId';
+    return (qb) =>
+      qb.where(`item.${pk} IN (:...responses)`, {
+        responses: context.responseIds,
+      });
+  } else {
+    return (qb) => qb;
+  }
+}
+
 export const exportDemoDatabase = async (
   args: ExportDemoArgs
 ): Promise<void> => {
@@ -86,17 +185,17 @@ export const exportDemoDatabase = async (
       args.contactLimit,
       args.calloutLimit
     );
-    const anonymisers = getDemoAnonymisers();
-    const modelsToClear = getDemoClearModels();
 
-    const valueMap = new Map<string, unknown>();
+    const anonymisedValueCache = new Map<string, unknown>();
+
     await withTypeOrmQueryLoggingDisabled(async () => {
-      clearModels(modelsToClear);
-      for (const anonymiser of anonymisers) {
+      clearModels(DEMO_CLEAR_ANONYMIZERS);
+
+      for (const anonymiser of DEMO_ANONYMISERS) {
         await anonymiseModel(
           anonymiser,
           getDemoPrepareQuery(anonymiser, context),
-          valueMap
+          anonymisedValueCache
         );
       }
     });

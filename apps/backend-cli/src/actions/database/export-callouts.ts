@@ -15,25 +15,45 @@ import {
   anonymiseModel,
   clearModels,
 } from '@beabee/core/tools/database/anonymisers/index';
-import type { ModelAnonymiser } from '@beabee/core/tools/database/anonymisers/models';
+import * as models from '@beabee/core/tools/database/anonymisers/models';
 
 import type { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 
 import type { ExportCalloutsArgs } from '../../types/index.js';
-import {
-  CALLOUT_EXPORT_ANONYMIZERS,
-  CALLOUT_EXPORT_CLEAR_MODELS,
-  CALLOUT_EXPORT_FULL_ANONYMIZERS,
-  CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS,
-} from '../../utils/anonymizers.js';
+import { getAnonymizers } from '../../utils/anonymizers.js';
 import { withTypeOrmQueryLoggingDisabled } from '../../utils/file-output.js';
 
 /**
- * Build a prepareQuery function that filters by callout slugs.
- * For the Callout model itself, filters by slug; for related models, filters by calloutId subquery.
+ * Callout subset
  */
-function buildSlugFilter(
-  model: ModelAnonymiser['model'],
+export const CALLOUT_ANONYMIZERS = [
+  models.calloutsAnonymiser,
+  models.calloutTagsAnonymiser,
+  models.calloutVariantAnonymiser,
+  models.calloutResponsesAnonymiser,
+] as models.ModelAnonymiser[];
+
+/**
+ * Models cleared in callout export but not repopulated (link tables / dependent data)
+ */
+export const CALLOUT_CLEAR_ANONYMIZERS: models.ModelAnonymiser[] = [
+  ...CALLOUT_ANONYMIZERS,
+  models.calloutReviewerAnonymiser,
+  models.calloutResponseSegmentsAnonymiser,
+  models.calloutResponseTagsAnonymiser,
+  models.calloutResponseCommentsAnonymiser,
+] as models.ModelAnonymiser[];
+
+/**
+ * Returns a query filter which restricts the export to the callout slugs
+ * specified by the user (if any).
+ *
+ * This is a fairly hacky way to:
+ * - Select based on "slug" for callouts
+ * - Select based on "calloutId" for related models
+ */
+function getExportPrepareQuery(
+  anonymiser: models.ModelAnonymiser,
   slugs: string[]
 ): (
   qb: SelectQueryBuilder<ObjectLiteral>
@@ -42,14 +62,12 @@ function buildSlugFilter(
     return (qb) => qb;
   }
 
-  if (model === Callout) {
-    return (qb) => qb.where('item.slug IN (:...slugs)', { slugs });
-  }
-  return (qb) =>
-    qb.where(
-      'item."calloutId" IN (SELECT id FROM callout WHERE slug IN (:...slugs))',
-      { slugs }
-    );
+  const whereClause =
+    anonymiser === models.calloutsAnonymiser
+      ? 'item.slug IN (:...slugs)'
+      : 'item."calloutId" IN (SELECT id FROM callout WHERE slug IN (:...slugs))';
+
+  return (qb) => qb.where(whereClause, { slugs });
 }
 
 export const exportCalloutsDatabase = async (
@@ -61,22 +79,15 @@ export const exportCalloutsDatabase = async (
     );
   }
 
-  const anonymisers =
-    args.anonymize === 'none'
-      ? CALLOUT_EXPORT_PASSTHROUGH_ANONYMIZERS
-      : args.preserveCalloutAnswers
-        ? CALLOUT_EXPORT_ANONYMIZERS
-        : CALLOUT_EXPORT_FULL_ANONYMIZERS;
+  // TODO: args.preserveCalloutAnswers
+  const anonymisers = getAnonymizers(args.anonymize, [], CALLOUT_ANONYMIZERS);
 
   if (args.dryRun) {
-    const modelNames = anonymisers.map((a) =>
-      typeof a.model === 'function' ? a.model.name : String(a.model)
-    );
     console.log('Dry run: would export callout data');
     console.log(`Anonymization level: ${args.anonymize}`);
     console.log(
       `Would export ${anonymisers.length} models:`,
-      modelNames.join(', ')
+      anonymisers.map((a) => a.name).join(', ')
     );
     if (args.calloutSlug.length > 0) {
       console.log(`Filtering by slugs: ${args.calloutSlug.join(', ')}`);
@@ -85,21 +96,22 @@ export const exportCalloutsDatabase = async (
   }
 
   await runApp(async () => {
-    const valueMap = new Map<string, unknown>();
+    const anonymisedValueCache = new Map<string, unknown>();
 
     // Keep setup logs visible and mute only SQL-emission phase to avoid file pollution.
     await withTypeOrmQueryLoggingDisabled(async () => {
       // When exporting specific callouts, skip DELETE statements —
       // the user should import alongside existing data.
+      // TODO: could be cleaner with a --clear/--no-clear option instead of overloading --calloutSlug
       if (args.calloutSlug.length === 0) {
-        clearModels(CALLOUT_EXPORT_CLEAR_MODELS);
+        clearModels(CALLOUT_CLEAR_ANONYMIZERS);
       }
 
       for (const anonymiser of anonymisers) {
         await anonymiseModel(
           anonymiser,
-          buildSlugFilter(anonymiser.model, args.calloutSlug),
-          valueMap
+          getExportPrepareQuery(anonymiser, args.calloutSlug),
+          anonymisedValueCache
         );
       }
     });

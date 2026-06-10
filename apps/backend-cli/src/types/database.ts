@@ -1,14 +1,12 @@
 export type AnonymizationLevel = 'full' | 'safe' | 'test' | 'none';
-export type DumpFormat = 'sql' | 'json';
 
 /**
  * Callout export has no ALWAYS_ANONYMIZED_MODELS — 'safe' would be
  * indistinguishable from 'full' and is deliberately excluded.
  */
-export type CalloutAnonymizationLevel = Extract<
-  AnonymizationLevel,
-  'full' | 'none'
->;
+export type CalloutAnonymizationLevel = 'full' | 'none';
+
+export type DumpFormat = 'sql' | 'json';
 
 export interface ResponseRow {
   [key: string]: string;

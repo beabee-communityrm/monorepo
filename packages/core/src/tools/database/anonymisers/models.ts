@@ -54,6 +54,8 @@ import crypto from 'crypto';
 import { EntityTarget, ObjectLiteral } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
+import { getRepository } from '#database';
+
 /**
  * Note: Following models are not added to the anonymiser
  * - ApiKey: Not necessary for testing
@@ -108,6 +110,7 @@ export type ModelAnonymiserStrategy = 'default' | 'calloutResponsePerCallout';
  * A model anonymiser describes how to anonymise a given database model
  */
 export interface ModelAnonymiser<T extends ObjectLiteral = ObjectLiteral> {
+  name: string;
   model: EntityTarget<T>;
   map: AnonymisationMap<T>;
   strategy?: ModelAnonymiserStrategy;
@@ -126,7 +129,8 @@ function createModelAnonymiser<T extends ObjectLiteral>(
   map: AnonymisationMap<T> = {},
   strategy: ModelAnonymiserStrategy = 'default'
 ): ModelAnonymiser<T> {
-  return { model, map, strategy };
+  const metadata = getRepository(model).metadata;
+  return { name: metadata.name, model, map, strategy };
 }
 
 /**
