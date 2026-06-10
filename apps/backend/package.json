@@ -29,11 +29,9 @@
     "check:dependencies": "dpdm -T --no-warning --no-tree --exit-code circular:1 src/api/app.ts",
     "setup": "yarn setup:db && yarn setup:system",
     "setup:system": "docker compose run --rm api_app yarn backend-cli setup all",
-    "setup:db": "yarn typeorm:migrate",
+    "setup:db": "yarn typeorm-cli migration:run",
     "typeorm": "typeorm -d ./dist/core/lib/typeorm.js",
-    "typeorm:migrate": "docker compose up -d db && docker compose run --rm api_app npm run typeorm migration:run",
-    "typeorm:revert": "docker compose up -d db && docker compose run --rm api_app npm run typeorm migration:revert",
-    "typeorm:generate": "docker compose up -d db && docker compose run --rm api_app npm run typeorm migration:generate --check"
+    "typeorm-cli": "./scripts/typeorm.sh"
   },
   "dependencies": {
     "@beabee/backend-cli": "workspace:^",
