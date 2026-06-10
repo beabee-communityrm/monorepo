@@ -93,7 +93,9 @@ meta:
         :current-bucket="response.bucket"
         :disabled="doingAction"
         :loading="doingAction"
-        @move="(bucket, successText) => handleUpdate({ bucket }, successText)"
+        @move="
+          (bucket, successText) => handleUpdate({ bucket }, successText, true)
+        "
       />
       <ToggleTagButton
         size="sm"
@@ -262,7 +264,8 @@ const { reviewerItems, tagItems } = useCalloutResponseFilters(
 
 async function handleUpdate(
   data: UpdateCalloutResponseData,
-  successText: string
+  successText: string,
+  reroute = false
 ) {
   if (!response.value) return;
 
@@ -270,13 +273,17 @@ async function handleUpdate(
   try {
     await client.callout.response.update(response.value.id, data);
 
-    const targetResponseId = prevResponse.value?.id ?? nextResponse.value?.id;
+    if (reroute) {
+      const targetResponseId = prevResponse.value?.id ?? nextResponse.value?.id;
 
-    const targetPath = targetResponseId
-      ? `/admin/crowdnewsroom/view/${props.callout.slug}/responses/${targetResponseId}`
-      : `/admin/crowdnewsroom/view/${props.callout.slug}/responses`;
+      const targetPath = targetResponseId
+        ? `/admin/crowdnewsroom/view/${props.callout.slug}/responses/${targetResponseId}`
+        : `/admin/crowdnewsroom/view/${props.callout.slug}/responses`;
 
-    router.push(targetPath);
+      router.push(targetPath);
+    } else {
+      await refreshResponse();
+    }
 
     addNotification({ variant: 'success', title: successText });
   } catch (err) {
