@@ -70,10 +70,11 @@
           <!-- Group ID -->
           <div class="flex-1">
             <AppSelect
-              v-model="item.id"
+              :model-value="item.id"
               :label="t('common.id')"
               :items="availableGroups"
               required
+              @update:model-value="onSelectionChange(item, $event)"
             />
           </div>
 
@@ -120,9 +121,17 @@ const { t } = useI18n();
 /**
  * Groups configured with the newsletter provider
  */
-defineProps<{
+const props = defineProps<{
   availableGroups: Omit<NewsletterGroupData, 'checked'>[];
 }>();
+
+function onSelectionChange(item: NewsletterGroupData, newId: string) {
+  item.id = newId;
+  const group = props.availableGroups.find((g) => g.id === newId);
+  if (group) {
+    item.label = group.label;
+  }
+}
 
 /**
  * Model values for the component configuration
