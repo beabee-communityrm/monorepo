@@ -6,6 +6,7 @@ import {
 
 import { Type } from 'class-transformer';
 import {
+  Equals,
   IsEnum,
   IsIn,
   IsOptional,
@@ -26,7 +27,7 @@ export class GetNewsletterIntegrationOptsDto {
 }
 
 export class NoneNewsletterIntegrationDto implements NoneNewsletterIntegrationData {
-  @IsIn(['none'])
+  @Equals('none')
   provider!: 'none';
 
   @IsOptional()
@@ -35,7 +36,7 @@ export class NoneNewsletterIntegrationDto implements NoneNewsletterIntegrationDa
 }
 
 export class MailchimpNewsletterIntegrationDto implements MailchimpNewsletterIntegrationData {
-  @IsIn(['mailchimp'])
+  @Equals('mailchimp')
   provider!: 'mailchimp';
 
   @IsString()
