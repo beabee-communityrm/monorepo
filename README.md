@@ -193,22 +193,9 @@ Publish new versions of the library packages on NPM:
 yarn publish:latest # or yarn publish:next
 ```
 
-Cut a new release (bumps versions, tags, and creates a GitHub release with auto-generated notes; the npm publish workflow is then triggered by the release event):
+Releases are automated by [release-please](https://github.com/googleapis/release-please). Every push to `main` keeps a single "Release PR" open and up to date with the next version's bumps and changelog. Merging that PR creates the tag and GitHub release, which triggers the npm publish workflow. Nothing is released until you merge.
 
-```bash
-yarn release        # stable, marked latest on GitHub
-yarn release:rc     # pre-release, npm dist-tag next
-yarn release:beta   # pre-release, npm dist-tag next
-yarn release:dry    # preview without changing anything
-```
-
-`release-it` needs a `GITHUB_TOKEN` with `repo` scope in the environment to create the GitHub release. If you use the GitHub CLI, the simplest way is:
-
-```bash
-export GITHUB_TOKEN=$(gh auth token)
-```
-
-See the [Release Workflow Documentation](docs/release-workflow.md) for the full pipeline, how release notes are generated, and how to edit them for larger releases.
+See the [Release Workflow Documentation](docs/release-workflow.md) for details.
 
 Run the format command on all packages to format the code:
 
