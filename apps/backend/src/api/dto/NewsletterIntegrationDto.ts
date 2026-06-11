@@ -5,24 +5,26 @@ import {
 } from '@beabee/beabee-common';
 
 import { Type } from 'class-transformer';
-import { IsEnum, IsIn, IsString, ValidateNested } from 'class-validator';
+import {
+  Equals,
+  IsEnum,
+  IsIn,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
 import { NewsletterGroupDto } from './NewsletterDto.js';
 
-export class NoneNewsletterIntegrationDto
-  implements NoneNewsletterIntegrationData
-{
-  @IsIn(['none'])
+export class NoneNewsletterIntegrationDto implements NoneNewsletterIntegrationData {
+  @Equals('none')
   provider!: 'none';
 
   @IsIn([ApiHealthStatus.DISABLED])
   status!: ApiHealthStatus.DISABLED;
 }
 
-export class MailchimpNewsletterIntegrationDto
-  implements MailchimpNewsletterIntegrationData
-{
-  @IsIn(['mailchimp'])
+export class MailchimpNewsletterIntegrationDto implements MailchimpNewsletterIntegrationData {
+  @Equals('mailchimp')
   provider!: 'mailchimp';
 
   @IsString()
