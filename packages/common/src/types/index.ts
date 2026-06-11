@@ -168,6 +168,7 @@ export type * from './health-check-data.js';
 export type * from './list-emails-query.js';
 export type * from './login-data.js';
 export type * from './newsletter-group-data.js';
+export type * from './newsletter-integration-data.js';
 export type * from './noop.js';
 export type * from './notice-data.js';
 export type * from './notice-filter-name.js';

@@ -1,4 +1,8 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
+import {
+  ApiHealthStatus,
+  MailchimpNewsletterIntegrationData,
+  NewsletterStatus,
+} from '@beabee/beabee-common';
 
 import { MailchimpNewsletterConfig } from '#config/config';
 import { CantUpdateNewsletterContactError } from '#errors/index';
@@ -192,6 +196,52 @@ export class MailchimpProvider implements NewsletterProvider {
         validateStatus: (status) =>
           status < 400 || status === 404 || status === 405,
       }
+    );
+  }
+
+  /**
+   * Get information about the Mailchimp integration: audience ID, the available
+   * newsletter groups (from options table -> newsletter-groups),
+   * and the health status (healthy if the audience is reachable on Mailchimp,
+   * unhealthy otherwise).
+   */
+  async getProviderInfo(): Promise<MailchimpNewsletterIntegrationData> {
+    const resp: MailchimpNewsletterIntegrationData = {
+      provider: 'mailchimp',
+      audienceId: this.listId,
+      status: ApiHealthStatus.UNHEALTHY,
+      groups: OptionsService.getJSON('newsletter-groups'),
+    };
+
+    try {
+      await this.api.instance.get(`lists/${this.listId}`);
+      resp.status = ApiHealthStatus.HEALTHY;
+    } catch (err) {}
+    return resp;
+  }
+
+  /**
+   * Get list of available newsletter groups
+   *
+   * @returns groups as `{ id, label }` pairs, where `id` is the
+   * Mailchimp interest ID and `label` is its display name
+   */
+  async getGroups(): Promise<{ id: string; label: string }[]> {
+    const interestCategories = await this.api.instance.get(
+      `lists/${this.listId}/interest-categories`
+    );
+    const results = await Promise.all(
+      interestCategories.data.categories.map((c: { id: string }) =>
+        this.api.instance.get(
+          `lists/${this.listId}/interest-categories/${c.id}/interests`
+        )
+      )
+    );
+    return results.flatMap((r) =>
+      r.data.interests.map((i: { id: string; name: string }) => ({
+        id: i.id,
+        label: i.name,
+      }))
     );
   }
 }

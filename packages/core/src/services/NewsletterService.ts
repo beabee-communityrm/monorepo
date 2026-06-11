@@ -1,4 +1,7 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
+import {
+  NewsletterIntegrationData,
+  NewsletterStatus,
+} from '@beabee/beabee-common';
 
 import config from '#config/config';
 import { getRepository } from '#database';
@@ -148,6 +151,26 @@ class NewsletterService {
     email: string
   ): Promise<NewsletterContact | undefined> {
     return await this.provider.getContact(email);
+  }
+
+  /**
+   * Get newsletter integration information: provider (none/mailchimp), audience ID,
+   * configured groups (from options table -> newsletter-groups), and health
+   * status (healthy/unhealthy/disabled)
+   * @returns provider name, audience ID, groups, health status
+   */
+  async getProviderInfo(): Promise<NewsletterIntegrationData> {
+    return await this.provider.getProviderInfo();
+  }
+
+  /**
+   * Get the list of newsletter groups configured on the newsletter provider's
+   * backend (e.g. Mailchimp interests on the configured audience).
+   *
+   * @returns The available groups as `{ id, label }` pairs
+   */
+  async getGroups(): Promise<{ id: string; label: string }[]> {
+    return await this.provider.getGroups();
   }
 }
 
