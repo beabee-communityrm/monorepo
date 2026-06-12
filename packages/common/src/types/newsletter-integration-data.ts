@@ -3,12 +3,12 @@ import type { NewsletterGroupData } from './newsletter-group-data.js';
 
 export interface NoneNewsletterIntegrationData {
   provider: 'none';
-  status: ApiHealthStatus.DISABLED;
+  status?: ApiHealthStatus.DISABLED;
 }
 
 export interface MailchimpNewsletterIntegrationData {
   provider: 'mailchimp';
-  status: ApiHealthStatus;
+  status?: ApiHealthStatus;
   audienceId: string;
   groups: NewsletterGroupData[];
 }

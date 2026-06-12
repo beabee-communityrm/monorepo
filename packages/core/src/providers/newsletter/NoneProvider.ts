@@ -29,8 +29,16 @@ export class NoneProvider implements NewsletterProvider {
     tags: Record<string, boolean>
   ): Promise<void> {}
 
-  async getProviderInfo(): Promise<NoneNewsletterIntegrationData> {
-    return { provider: 'none', status: ApiHealthStatus.DISABLED };
+  async getProviderInfo(
+    withHealth = false
+  ): Promise<NoneNewsletterIntegrationData> {
+    return withHealth
+      ? { provider: 'none', status: ApiHealthStatus.DISABLED }
+      : { provider: 'none' };
+  }
+
+  async getGroups(): Promise<{ id: string; label: string }[]> {
+    return [];
   }
 }
 
