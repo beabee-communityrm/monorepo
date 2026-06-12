@@ -158,12 +158,12 @@ class NewsletterService {
 
   /**
    * Get newsletter integration information: provider (none/mailchimp), audience ID,
-   * configured groups (from options table -> newsletter-groups), and health
-   * status (healthy/unhealthy/disabled)
-   * @returns provider name, audience ID, groups, health status
+   * and configured groups (from options table -> newsletter-groups). If
+   * `withHealth` is set, also include the health status (healthy/unhealthy/disabled)
+   * @returns provider name, audience ID, groups, and optionally health status
    */
-  async getProviderInfo(): Promise<NewsletterIntegrationData> {
-    return await this.provider.getProviderInfo();
+  async getProviderInfo(withHealth = false): Promise<NewsletterIntegrationData> {
+    return await this.provider.getProviderInfo(withHealth);
   }
 
   /**

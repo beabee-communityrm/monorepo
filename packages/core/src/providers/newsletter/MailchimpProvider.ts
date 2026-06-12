@@ -200,23 +200,27 @@ export class MailchimpProvider implements NewsletterProvider {
   }
 
   /**
-   * Get information about the Mailchimp integration: audience ID, the available
-   * newsletter groups (from options table -> newsletter-groups),
-   * and the health status (healthy if the audience is reachable on Mailchimp,
-   * unhealthy otherwise).
+   * Get information about the Mailchimp integration: audience ID and the available
+   * newsletter groups (from options table -> newsletter-groups).
+   * If `withHealth` is set, also include the health status (healthy if the
+   * audience is reachable on Mailchimp, unhealthy otherwise).
    */
-  async getProviderInfo(): Promise<MailchimpNewsletterIntegrationData> {
+  async getProviderInfo(
+    withHealth = false
+  ): Promise<MailchimpNewsletterIntegrationData> {
     const resp: MailchimpNewsletterIntegrationData = {
       provider: 'mailchimp',
       audienceId: this.listId,
-      status: ApiHealthStatus.UNHEALTHY,
       groups: OptionsService.getJSON('mailchimp-newsletter-groups'),
     };
 
-    try {
-      await this.api.instance.get(`lists/${this.listId}`);
-      resp.status = ApiHealthStatus.HEALTHY;
-    } catch (err) {}
+    if (withHealth) {
+      resp.status = ApiHealthStatus.UNHEALTHY;
+      try {
+        await this.api.instance.get(`lists/${this.listId}`);
+        resp.status = ApiHealthStatus.HEALTHY;
+      } catch (err) {}
+    }
     return resp;
   }
 
