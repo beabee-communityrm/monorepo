@@ -126,6 +126,7 @@ import { AddJoinFlowProcessingFlag1772636569908 } from './migrations/17726365699
 import { UniqueEmailId1773823606137 } from './migrations/1773823606137-UniqueEmailId.js';
 import { ExtendMemberRoleExpiry1774540406786 } from './migrations/1774540406786-ExtendMemberRoleExpiry.js';
 import { AddMailchimpNLGroups1776955640900 } from './migrations/1776955640900-AddMailchimpNLGroups.js';
+import { RemoveMailchimpNLGroups1781533044882 } from './migrations/1781533044882-RemoveMailchimpNLGroups.js';
 
 export const migrations = [
   SessionTable1616677358190,
@@ -255,4 +256,5 @@ export const migrations = [
   UniqueEmailId1773823606137,
   ExtendMemberRoleExpiry1774540406786,
   AddMailchimpNLGroups1776955640900,
+  RemoveMailchimpNLGroups1781533044882,
 ];
