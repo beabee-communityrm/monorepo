@@ -211,7 +211,7 @@ export class MailchimpProvider implements NewsletterProvider {
     const resp: MailchimpNewsletterIntegrationData = {
       provider: 'mailchimp',
       audienceId: this.listId,
-      groups: OptionsService.getJSON('mailchimp-newsletter-groups'),
+      groups: OptionsService.getJSON('newsletter-groups'),
     };
 
     if (withHealth) {

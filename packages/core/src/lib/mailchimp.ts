@@ -275,9 +275,6 @@ export function nlContactToMCMember(
   }
 
   const groupIds = [
-    ...OptionsService.getJSON('mailchimp-newsletter-groups').map(
-      (group: { id: string }) => group.id
-    ),
     ...OptionsService.getJSON('newsletter-groups').map(
       (group: { id: string }) => group.id
     ),

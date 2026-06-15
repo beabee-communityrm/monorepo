@@ -190,7 +190,7 @@ class NewsletterService {
   async refreshNewsletterGroups(): Promise<NewsletterDiffData> {
     // Groups cached in DB
     const cachedGroups: { id: string; label: string }[] =
-      optionsService.getJSON('mailchimp-newsletter-groups');
+      optionsService.getJSON('newsletter-groups');
 
     // Groups configured with provider
     const providerGroups = await this.provider.getGroups();
@@ -209,7 +209,7 @@ class NewsletterService {
 
     // Update cache
     if (diff.length > 0) {
-      optionsService.setJSON('mailchimp-newsletter-groups', providerGroups);
+      optionsService.setJSON('newsletter-groups', providerGroups);
     }
 
     const providerInfo = await this.getProviderInfo();
