@@ -1,8 +1,12 @@
+import { NewsletterIntegrationData } from '@beabee/beabee-common';
+
 import { NewsletterContact } from './newsletter-contact.js';
 import { UpdateNewsletterContact } from './update-newsletter-contact.js';
 
 export interface NewsletterProvider {
+  getProviderInfo(withHealth?: boolean): Promise<NewsletterIntegrationData>;
   getContact(email: string): Promise<NewsletterContact | undefined>;
+  getGroups(): Promise<{ id: string; label: string }[]>;
   upsertContact(
     contact: UpdateNewsletterContact,
     oldEmail?: string

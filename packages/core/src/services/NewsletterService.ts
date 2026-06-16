@@ -1,4 +1,8 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
+import {
+  NewsletterDiffData,
+  NewsletterIntegrationData,
+  NewsletterStatus,
+} from '@beabee/beabee-common';
 
 import config from '#config/config';
 import { getRepository } from '#database';
@@ -13,6 +17,8 @@ import {
   UpdateNewsletterContact,
 } from '#type/index';
 import { convertContactToNlUpdate } from '#utils/newsletter';
+
+import optionsService from './OptionsService.js';
 
 const log = mainLogger.child({ app: 'newsletter-service' });
 
@@ -148,6 +154,66 @@ class NewsletterService {
     email: string
   ): Promise<NewsletterContact | undefined> {
     return await this.provider.getContact(email);
+  }
+
+  /**
+   * Get newsletter integration information: provider (none/mailchimp), audience ID,
+   * and configured groups (from options table -> newsletter-groups). If
+   * `withHealth` is set, also include the health status (healthy/unhealthy/disabled)
+   * @returns provider name, audience ID, groups, and optionally health status
+   */
+  async getProviderInfo(
+    withHealth = false
+  ): Promise<NewsletterIntegrationData> {
+    return await this.provider.getProviderInfo(withHealth);
+  }
+
+  /**
+   * Get the list of newsletter groups configured on the newsletter provider's
+   * backend (e.g. Mailchimp interests on the configured audience).
+   *
+   * @returns The available groups as `{ id, label }` pairs
+   */
+  async getAllNewsletterGroups(): Promise<{ id: string; label: string }[]> {
+    return await this.provider.getGroups();
+  }
+
+  /**
+   * Get newsletter provider's groups, compare them against
+   * groups cached in the database. Return diff alongside provider
+   * integration info
+   *
+   * @returns Newsletter integration info and a list of group changes, where each
+   * change contains group id, label, and an action (added: present
+   * on the provider but not cached OR removed": cached but no longer on the provider)
+   */
+  async refreshNewsletterGroups(): Promise<NewsletterDiffData> {
+    // Groups cached in DB
+    const cachedGroups: { id: string; label: string }[] =
+      optionsService.getJSON('newsletter-groups');
+
+    // Groups configured with provider
+    const providerGroups = await this.provider.getGroups();
+
+    const cachedIds = new Set(cachedGroups.map((g) => g.id));
+    const providerIds = new Set(providerGroups.map((g) => g.id));
+
+    const diff = [
+      ...providerGroups
+        .filter((g) => !cachedIds.has(g.id))
+        .map((g) => ({ ...g, action: 'added' as const })),
+      ...cachedGroups
+        .filter((g) => !providerIds.has(g.id))
+        .map((g) => ({ ...g, action: 'removed' as const })),
+    ];
+
+    // Update cache
+    if (diff.length > 0) {
+      optionsService.setJSON('newsletter-groups', providerGroups);
+    }
+
+    const providerInfo = await this.getProviderInfo();
+    return { info: providerInfo, groupChanges: diff };
   }
 }
 

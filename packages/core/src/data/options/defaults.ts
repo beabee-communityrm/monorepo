@@ -46,11 +46,10 @@ export default {
   'newsletter-active-member-tag': 'Active member',
   'newsletter-active-user-tag': 'Active user',
   'newsletter-default-status': NewsletterStatus.None,
-  'newsletter-groups': '[]',
   'tracking-code': '',
 
-  /** List of valid Mailchimp newsletter group IDs */
-  'mailchimp-newsletter-groups': '',
+  /** list of newsletter groups as `{id, label}[]` cached from the newsletter provider */
+  'newsletter-groups': '[]',
 
   /** Stripe integration options */
   'stripe-tax-rate-one-time-id': '',

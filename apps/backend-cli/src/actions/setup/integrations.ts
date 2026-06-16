@@ -2,6 +2,7 @@ import { config } from '@beabee/core/config';
 import { STRIPE_WEBHOOK_EVENTS, Stripe, stripe } from '@beabee/core/lib/stripe';
 import { currentLocale } from '@beabee/core/locale';
 import { runApp } from '@beabee/core/server';
+import { newsletterService } from '@beabee/core/services/NewsletterService';
 import { optionsService } from '@beabee/core/services/OptionsService';
 
 export const setupStripe = async (dryRun: boolean) => {
@@ -112,6 +113,39 @@ export const setupStripe = async (dryRun: boolean) => {
     });
   } catch (error) {
     console.error('❌ Stripe integration setup failed:');
+    console.error(error);
+    throw error;
+  }
+};
+
+export const setupMailchimp = async (dryRun: boolean) => {
+  if (config.newsletter.provider !== 'mailchimp') {
+    throw new Error('BEABEE_NEWSLETTER_PROVIDER must be mailchimp');
+  }
+  console.log('Setting up Mailchimp integration...\n');
+
+  if (dryRun) {
+    console.log('⚠️ Running in dry-run mode. No changes will be made.');
+  }
+
+  try {
+    await runApp(async () => {
+      // Step 1: Get groups from mailchimp
+      const mailchimpGroups = await newsletterService.getAllNewsletterGroups();
+
+      // Step 2: Update option table
+      if (dryRun) {
+        console.log(
+          `Added ${mailchimpGroups.length} newsletter groups: [DRY RUN]`
+        );
+      } else {
+        await optionsService.setJSON('newsletter-groups', mailchimpGroups);
+        console.log(`✅ Cached ${mailchimpGroups.length} newsletter groups`);
+        console.log('\n🎉 Mailchimp group import completed successfully!');
+      }
+    });
+  } catch (error) {
+    console.error('❌ Mailchimp group import failed');
     console.error(error);
     throw error;
   }
