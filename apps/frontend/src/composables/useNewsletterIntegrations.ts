@@ -114,7 +114,7 @@ export function useNewsletterIntegrations() {
           (i) => i.provider === info.provider
         );
         if (index !== -1) {
-          integrations.value[index] = buildIntegration(info);
+          integrations.value[index] = buildNewsletterIntegration(info);
         }
       }
 

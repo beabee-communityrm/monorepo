@@ -23,10 +23,11 @@ export class IntegrationsClient extends BaseClient {
   async getNewsletter<With extends GetNewsletterWith = void>(
     _with?: readonly With[]
   ): Promise<NewsletterIntegrationDataWith<With>> {
-    const { data } = await this.fetch.get<{
-      info: NewsletterIntegrationDataWith<With>;
-    }>('/newsletter', { with: _with });
-    return data.info;
+    const { data } = await this.fetch.get<NewsletterIntegrationDataWith<With>>(
+      '/newsletter',
+      { with: _with }
+    );
+    return data;
   }
 
   /**
@@ -36,7 +37,6 @@ export class IntegrationsClient extends BaseClient {
     const { data } = await this.fetch.post<NewsletterDiffData>(
       '/newsletter/refresh'
     );
-    console.log(data);
     return data;
   }
 }
