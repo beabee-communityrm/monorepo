@@ -257,9 +257,10 @@
         "newsletters": "Рассылки"
       },
       "label": "Интеграции",
-      "mailchimp": {
+      "newsletter": {
         "audienceId": "ID аудитории",
-        "groups": "Группы"
+        "groups": "Группы",
+        "noGroups": "Группы не найдены"
       },
       "refresh": "Обновить",
       "status": {

@@ -24,9 +24,9 @@ meta:
             :key="integration.provider"
             :integration="integration"
           >
-            <MailchimpCardContent
+            <NewsletterCardContent
               v-if="
-                integration.provider === 'mailchimp' &&
+                category === 'newsletters' &&
                 integration.status === ApiHealthStatus.HEALTHY
               "
               :groups="integration.groups"
@@ -43,8 +43,10 @@ import { AppLoadingSpinner, AppSectionHeading } from '@beabee/vue';
 import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { groupBy } from '@beabee/core/utils/objects';
+
 import IntegrationCard from '#components/integrations/IntegrationCard.vue';
-import MailchimpCardContent from '#components/integrations/MailchimpCardContent.vue';
+import NewsletterCardContent from '#components/integrations/NewsletterCardContent.vue';
 import { useNewsletterIntegrations } from '#composables/useNewsletterIntegrations';
 import { ApiHealthStatus } from '@beabee/beabee-common';
 
@@ -53,13 +55,7 @@ const { t } = useI18n();
 const { integrations, loading, load } = useNewsletterIntegrations();
 
 const integrationsByCategory = computed(() =>
-  integrations.value.reduce<Record<string, typeof integrations.value>>(
-    (acc, integration) => {
-      (acc[integration.category] ??= []).push(integration);
-      return acc;
-    },
-    {}
-  )
+  groupBy(integrations.value, ({ category }) => category)
 );
 
 onMounted(load);

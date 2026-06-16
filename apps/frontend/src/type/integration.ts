@@ -19,11 +19,11 @@ export interface DisabledIntegration extends IntegrationDisplayProps {
 }
 
 /** Mailchimp provider, active with full audience/group data */
-export interface MailchimpIntegration extends IntegrationDisplayProps {
-  provider: 'mailchimp';
+export interface NewsletterIntegration extends IntegrationDisplayProps {
+  provider: string;
   status: ApiHealthStatus;
   audienceId: string;
   groups: NewsletterGroupData[];
 }
 
-export type Integration = DisabledIntegration | MailchimpIntegration;
+export type Integration = DisabledIntegration | NewsletterIntegration;

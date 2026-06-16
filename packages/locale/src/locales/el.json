@@ -256,9 +256,10 @@
         "newsletters": "Ενημερωτικά δελτία"
       },
       "label": "Ενσωματώσεις",
-      "mailchimp": {
+      "newsletter": {
         "audienceId": "Αναγνωριστικό κοινού",
-        "groups": "Ομάδες"
+        "groups": "Ομάδες",
+        "noGroups": "Δεν βρέθηκαν ομάδες"
       },
       "refresh": "Ανανέωση",
       "status": {

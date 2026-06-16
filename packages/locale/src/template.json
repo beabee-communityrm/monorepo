@@ -256,9 +256,10 @@
         "newsletters": ""
       },
       "label": "",
-      "mailchimp": {
+      "newsletter": {
         "audienceId": "",
-        "groups": ""
+        "groups": "",
+        "noGroups": ""
       },
       "refresh": "",
       "status": {

@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center gap-4 p-4">
     <div
-      class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg text-lg font-bold"
+      class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg text-lg font-bold"
       :style="{
         backgroundColor: integration.color,
         color: integration.textColor ?? '#000',
@@ -17,7 +17,7 @@
     <div class="min-w-0 flex-1">
       <p class="font-semibold">{{ integration.name }}</p>
       <p v-if="'audienceId' in integration" class="text-sm text-body-80">
-        {{ t('adminSettings.integrations.mailchimp.audienceId') }}:
+        {{ t('adminSettings.integrations.newsletter.audienceId') }}:
         <span class="font-mono">{{ integration.audienceId }}</span>
       </p>
     </div>

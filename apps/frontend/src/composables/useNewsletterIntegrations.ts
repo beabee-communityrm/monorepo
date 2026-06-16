@@ -36,7 +36,7 @@ function buildDisabledIntegration(provider: string): DisabledIntegration {
   };
 }
 
-function buildIntegration(
+function buildNewsletterIntegration(
   integrationData: MailchimpNewsletterIntegrationData
 ): Integration {
   return {
@@ -58,21 +58,13 @@ export function useNewsletterIntegrations() {
     loading.value = true;
     error.value = null;
     try {
-      // Build all known provider cards upfront as disabled
-      const result: Integration[] = Object.keys(providerMap).map(
-        buildDisabledIntegration
-      );
-
-      // Fetch real status from API and merge in if provider is active
       const data = await client.integrations.getNewsletter();
-      if (data.provider !== 'none') {
-        const index = result.findIndex((i) => i.provider === data.provider);
-        if (index !== -1) {
-          result[index] = buildIntegration(data);
-        }
-      }
 
-      integrations.value = result;
+      integrations.value = Object.keys(providerMap).map((provider) => {
+        return data.provider !== 'none' && data.provider === provider
+          ? buildNewsletterIntegration(data)
+          : buildDisabledIntegration(provider);
+      });
     } catch (e) {
       error.value = e as Error;
     } finally {

@@ -256,9 +256,10 @@
         "newsletters": "Boletines"
       },
       "label": "Integraciones",
-      "mailchimp": {
+      "newsletter": {
         "audienceId": "ID de audiencia",
-        "groups": "Grupos"
+        "groups": "Grupos",
+        "noGroups": "No se encontraron grupos"
       },
       "refresh": "Actualizar",
       "status": {

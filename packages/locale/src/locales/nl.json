@@ -256,9 +256,10 @@
         "newsletters": "Nieuwsbrieven"
       },
       "label": "Integraties",
-      "mailchimp": {
+      "newsletter": {
         "audienceId": "Doelgroep-ID",
-        "groups": "Groepen"
+        "groups": "Groepen",
+        "noGroups": "Geen groepen gevonden"
       },
       "refresh": "Vernieuwen",
       "status": {

@@ -256,9 +256,10 @@
         "newsletters": "Розсилки"
       },
       "label": "Інтеграції",
-      "mailchimp": {
+      "newsletter": {
         "audienceId": "ID аудиторії",
-        "groups": "Групи"
+        "groups": "Групи",
+        "noGroups": "Групи не знайдено"
       },
       "refresh": "Оновити",
       "status": {
