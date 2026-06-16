@@ -1,5 +1,6 @@
 import {
   ALLOWED_IMAGE_MIME_TYPES,
+  ApiHealthStatus,
   S3Metadata,
   isSupportedImageType,
 } from '@beabee/beabee-common';
@@ -578,14 +579,14 @@ export class ImageService {
   /**
    * Check the health of the storage integration by verifying that the
    * configured credentials can read from the bucket.
-   * @returns 'healthy' if the bucket is reachable, 'unhealthy' otherwise
+   * @returns HEALTHY if the bucket is reachable, UNHEALTHY otherwise
    */
-  async getHealthStatus(): Promise<'healthy' | 'unhealthy'> {
+  async getHealthStatus(): Promise<ApiHealthStatus> {
     const connected = await checkConnection(
       this.s3Client,
       this.config.s3.bucket
     );
-    return connected ? 'healthy' : 'unhealthy';
+    return connected ? ApiHealthStatus.HEALTHY : ApiHealthStatus.UNHEALTHY;
   }
 
   /**

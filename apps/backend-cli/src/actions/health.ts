@@ -1,3 +1,4 @@
+import { ApiHealthStatus } from '@beabee/beabee-common';
 import { documentService } from '@beabee/core/services/DocumentService';
 import { imageService } from '@beabee/core/services/ImageService';
 
@@ -6,10 +7,7 @@ import chalk from 'chalk';
 import type { HealthIntegration } from '../types/health.js';
 
 /** Health check function per integration */
-const checks: Record<
-  HealthIntegration,
-  () => Promise<'healthy' | 'unhealthy'>
-> = {
+const checks: Record<HealthIntegration, () => Promise<ApiHealthStatus>> = {
   document: () => documentService.getHealthStatus(),
   image: () => imageService.getHealthStatus(),
 };
@@ -26,14 +24,14 @@ export const checkHealth = async (
   let allHealthy = true;
 
   for (const name of integrations) {
-    let status: 'healthy' | 'unhealthy';
+    let status: ApiHealthStatus;
     try {
       status = await checks[name]();
     } catch {
-      status = 'unhealthy';
+      status = ApiHealthStatus.UNHEALTHY;
     }
 
-    if (status === 'healthy') {
+    if (status === ApiHealthStatus.HEALTHY) {
       console.log(`${chalk.green('✓')} ${name.padEnd(10)} healthy`);
     } else {
       allHealthy = false;
