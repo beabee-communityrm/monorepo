@@ -215,16 +215,6 @@ class NewsletterService {
     const providerInfo = await this.getProviderInfo();
     return { info: providerInfo, groupChanges: diff };
   }
-
-  /**
-   * Get the list of newsletter groups configured on the newsletter provider's
-   * backend (e.g. Mailchimp interests on the configured audience).
-   *
-   * @returns The available groups as `{ id, label }` pairs
-   */
-  async getGroups(): Promise<{ id: string; label: string }[]> {
-    return await this.provider.getGroups();
-  }
 }
 
 export const newsletterService = new NewsletterService();
