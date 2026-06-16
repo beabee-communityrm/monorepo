@@ -72,7 +72,7 @@
             <AppSelect
               :model-value="item.id"
               :label="t('common.id')"
-              :items="availableGroups"
+              :items="cachedGroups"
               required
               @update:model-value="onSelectionChange(item, $event)"
             />
@@ -122,14 +122,17 @@ const { t } = useI18n();
  * Groups configured with the newsletter provider
  */
 const props = defineProps<{
-  availableGroups: Omit<NewsletterGroupData, 'checked'>[];
+  cachedGroups: Omit<NewsletterGroupData, 'checked'>[];
 }>();
 
 function onSelectionChange(item: NewsletterGroupData, newId: string) {
+  const isNew = !item.id;
   item.id = newId;
-  const group = props.availableGroups.find((g) => g.id === newId);
-  if (group) {
-    item.label = group.label;
+  if (isNew) {
+    const group = props.cachedGroups.find((g) => g.id === newId);
+    if (group) {
+      item.label = group.label;
+    }
   }
 }
 

@@ -66,14 +66,13 @@ meta:
           :label="stepT('newsletter.showOptIn')"
           class="mb-4 font-semibold"
         />
-        <!-- TODO: Get group IDs from DB -->
         <AppNewsletterOptInSettings
           v-if="setupContent.showNewsletterOptIn"
           v-model:title="setupContent.newsletterTitle"
           v-model:text="setupContent.newsletterText"
           v-model:opt-in="setupContent.newsletterOptIn"
           v-model:groups="setupContent.newsletterGroups"
-          :available-groups="[]"
+          :cached-groups="cachedGroups"
         />
 
         <AppSubHeading class="mt-6">
@@ -121,6 +120,7 @@ import {
   type ContentJoinSetupData,
   type GetCalloutData,
   ItemStatus,
+  type NewsletterGroupData,
 } from '@beabee/beabee-common';
 import {
   App2ColGrid,
@@ -141,6 +141,7 @@ import { client } from '#utils/api';
 
 const setupContent = ref<ContentJoinSetupData>();
 const openCallouts = ref<GetCalloutData[]>([]);
+const cachedGroups = ref<NewsletterGroupData[]>([]);
 
 const { t } = useI18n();
 
@@ -155,6 +156,8 @@ async function handleUpdate() {
 
 onBeforeMount(async () => {
   setupContent.value = await client.content.get('join/setup');
+
+  cachedGroups.value = await client.integrations.getNewsletterGroups();
 
   openCallouts.value = (
     await client.callout.list({

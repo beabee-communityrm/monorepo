@@ -1,6 +1,7 @@
 import type {
   GetNewsletterWith,
   NewsletterDiffData,
+  NewsletterGroupData,
   NewsletterIntegrationData,
   NewsletterIntegrationDataWith,
 } from '@beabee/beabee-common';
@@ -38,5 +39,14 @@ export class IntegrationsClient extends BaseClient {
       '/newsletter/refresh'
     );
     return data;
+  }
+
+  /**
+   * Get newsletter group cache
+   */
+  async getNewsletterGroups(): Promise<NewsletterGroupData[]> {
+    const { data } =
+      await this.fetch.get<NewsletterIntegrationData>('/newsletter');
+    return data.provider !== 'none' ? data.groups : [];
   }
 }
