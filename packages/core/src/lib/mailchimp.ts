@@ -274,11 +274,9 @@ export function nlContactToMCMember(
     throw new Error('NewsletterStatus = None for ' + nlContact.email);
   }
 
-  const groupIds = [
-    ...OptionsService.getJSON('newsletter-groups').map(
-      (group: { id: string }) => group.id
-    ),
-  ];
+  const groupIds = OptionsService.getJSON('newsletter-groups').map(
+    (group: { id: string }) => group.id
+  );
 
   return {
     email_address: nlContact.email,
@@ -293,7 +291,7 @@ export function nlContactToMCMember(
     ...(nlContact.groups && {
       interests: Object.assign(
         {},
-        ...groupIds.map((groupId) => ({
+        ...groupIds.map((groupId: string) => ({
           [groupId]: nlContact.groups?.includes(groupId),
         }))
       ),
