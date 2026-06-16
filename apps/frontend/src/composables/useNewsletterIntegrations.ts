@@ -1,5 +1,5 @@
+import type { MailchimpNewsletterIntegrationDataWith } from '@beabee/beabee-common';
 import { ApiHealthStatus } from '@beabee/beabee-common';
-import type { MailchimpNewsletterIntegrationData } from '@beabee/beabee-common';
 
 import { faMailchimp } from '@fortawesome/free-brands-svg-icons';
 import { ref } from 'vue';
@@ -37,7 +37,7 @@ function buildDisabledIntegration(provider: string): DisabledIntegration {
 }
 
 function buildNewsletterIntegration(
-  integrationData: MailchimpNewsletterIntegrationData
+  integrationData: MailchimpNewsletterIntegrationDataWith<'health'>
 ): Integration {
   return {
     ...providerMap[integrationData.provider],
@@ -58,7 +58,7 @@ export function useNewsletterIntegrations() {
     loading.value = true;
     error.value = null;
     try {
-      const data = await client.integrations.getNewsletter();
+      const data = await client.integrations.getNewsletter(['health']);
 
       integrations.value = Object.keys(providerMap).map((provider) => {
         return data.provider !== 'none' && data.provider === provider

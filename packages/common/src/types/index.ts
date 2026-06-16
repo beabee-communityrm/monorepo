@@ -145,6 +145,8 @@ export type * from './get-callout-slide-schema.js';
 export type * from './get-callout-with.js';
 export type * from './get-callouts-query.js';
 export type * from './get-contact-data-with.js';
+export type * from './get-newsletter-integration-data-with.js';
+export type * from './get-newsletter-with.js';
 export type * from './get-contact-data.js';
 export type * from './get-contact-mfa-data.js';
 export type * from './get-contacts-query.js';

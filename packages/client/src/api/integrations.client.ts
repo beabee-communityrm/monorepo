@@ -1,4 +1,7 @@
-import type { NewsletterIntegrationData } from '@beabee/beabee-common';
+import type {
+  GetNewsletterWith,
+  NewsletterIntegrationDataWith,
+} from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
@@ -15,9 +18,13 @@ export class IntegrationsClient extends BaseClient {
   /**
    * Fetches the newsletter integration for this instance
    */
-  async getNewsletter(): Promise<NewsletterIntegrationData> {
-    const { data } =
-      await this.fetch.get<NewsletterIntegrationData>('/newsletter');
+  async getNewsletter<With extends GetNewsletterWith = void>(
+    _with?: readonly With[]
+  ): Promise<NewsletterIntegrationDataWith<With>> {
+    const { data } = await this.fetch.get<NewsletterIntegrationDataWith<With>>(
+      '/newsletter',
+      { with: _with }
+    );
     return data;
   }
 }
