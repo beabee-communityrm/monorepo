@@ -21,10 +21,9 @@ export class IntegrationsClient extends BaseClient {
   async getNewsletter<With extends GetNewsletterWith = void>(
     _with?: readonly With[]
   ): Promise<NewsletterIntegrationDataWith<With>> {
-    const { data } = await this.fetch.get<NewsletterIntegrationDataWith<With>>(
-      '/newsletter',
-      { with: _with }
-    );
-    return data;
+    const { data } = await this.fetch.get<{
+      info: NewsletterIntegrationDataWith<With>;
+    }>('/newsletter', { with: _with });
+    return data.info;
   }
 }
