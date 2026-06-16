@@ -1,4 +1,8 @@
-import { FormioFile, isFormioFileAnswer } from '@beabee/beabee-common';
+import {
+  ApiHealthStatus,
+  FormioFile,
+  isFormioFileAnswer,
+} from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
 import { connect as connectToDatabase } from '@beabee/core/database';
 import { getRepository } from '@beabee/core/database';
@@ -103,8 +107,8 @@ export async function migrateUploads(
 
     // Check the connection to MinIO via ImageService
     console.log('Checking MinIO connection...');
-    const connectionTest = await imageService.checkConnection();
-    if (!connectionTest) {
+    const health = await imageService.getHealthStatus();
+    if (health !== ApiHealthStatus.HEALTHY) {
       throw new Error('Failed to connect to MinIO. Check your configuration.');
     }
 

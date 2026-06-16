@@ -1,6 +1,7 @@
 export * from './api-key.js';
 export * from './database.js';
 export * from './email.js';
+export * from './health.js';
 export * from './migrate-uploads.js';
 export * from './payment.js';
 export * from './process.js';

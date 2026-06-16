@@ -1,5 +1,6 @@
 import {
   ALLOWED_DOCUMENT_MIME_TYPES,
+  ApiHealthStatus,
   S3Metadata,
   isSupportedDocumentType,
 } from '@beabee/beabee-common';
@@ -309,11 +310,16 @@ export class DocumentService {
   }
 
   /**
-   * Check connection to S3/MinIO
-   * @returns True if connection is successful
+   * Check the health of the storage integration by verifying that the
+   * configured credentials can read from the bucket.
+   * @returns HEALTHY if the bucket is reachable, UNHEALTHY otherwise
    */
-  async checkConnection(): Promise<boolean> {
-    return checkConnection(this.s3Client, this.config.s3.bucket);
+  async getHealthStatus(): Promise<ApiHealthStatus> {
+    const connected = await checkConnection(
+      this.s3Client,
+      this.config.s3.bucket
+    );
+    return connected ? ApiHealthStatus.HEALTHY : ApiHealthStatus.UNHEALTHY;
   }
 
   /**
