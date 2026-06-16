@@ -1,6 +1,7 @@
 import { ApiHealthStatus } from '@beabee/beabee-common';
 import { documentService } from '@beabee/core/services/DocumentService';
 import { imageService } from '@beabee/core/services/ImageService';
+import { newsletterService } from '@beabee/core/services/NewsletterService';
 
 import chalk from 'chalk';
 
@@ -10,6 +11,9 @@ import type { HealthIntegration } from '../types/health.js';
 const checks: Record<HealthIntegration, () => Promise<ApiHealthStatus>> = {
   document: () => documentService.getHealthStatus(),
   image: () => imageService.getHealthStatus(),
+  newsletter: async () =>
+    (await newsletterService.getProviderInfo(true)).status ??
+    ApiHealthStatus.DISABLED,
 };
 
 /**
@@ -33,6 +37,10 @@ export const checkHealth = async (
 
     if (status === ApiHealthStatus.HEALTHY) {
       console.log(`${chalk.green('✓')} ${name.padEnd(10)} healthy`);
+    } else if (status === ApiHealthStatus.DISABLED) {
+      console.log(
+        `${chalk.gray('-')} ${name.padEnd(10)} ${chalk.gray('disabled')}`
+      );
     } else {
       allHealthy = false;
       console.log(

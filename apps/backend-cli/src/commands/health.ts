@@ -22,6 +22,14 @@ export const healthCommand: CommandModule = {
         },
       })
       .command({
+        command: 'newsletter',
+        describe: 'Check the newsletter integration',
+        handler: async () => {
+          const { checkHealth } = await import('../actions/health.js');
+          return checkHealth(['newsletter']);
+        },
+      })
+      .command({
         command: 'all',
         describe: 'Check all integrations',
         handler: async () => {
