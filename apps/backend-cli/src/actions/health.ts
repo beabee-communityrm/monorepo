@@ -1,0 +1,49 @@
+import { documentService } from '@beabee/core/services/DocumentService';
+import { imageService } from '@beabee/core/services/ImageService';
+
+import chalk from 'chalk';
+
+import type { HealthIntegration } from '../types/health.js';
+
+/** Health check function per integration */
+const checks: Record<
+  HealthIntegration,
+  () => Promise<'healthy' | 'unhealthy'>
+> = {
+  document: () => documentService.getHealthStatus(),
+  image: () => imageService.getHealthStatus(),
+};
+
+/**
+ * Run the health checks for the given integrations, printing the status of
+ * each. Defaults to all integrations. Exits with a non-zero code if any
+ * integration is unhealthy.
+ * @param integrations The integrations to check
+ */
+export const checkHealth = async (
+  integrations: HealthIntegration[] = Object.keys(checks) as HealthIntegration[]
+): Promise<void> => {
+  let allHealthy = true;
+
+  for (const name of integrations) {
+    let status: 'healthy' | 'unhealthy';
+    try {
+      status = await checks[name]();
+    } catch {
+      status = 'unhealthy';
+    }
+
+    if (status === 'healthy') {
+      console.log(`${chalk.green('✓')} ${name.padEnd(10)} healthy`);
+    } else {
+      allHealthy = false;
+      console.log(
+        `${chalk.red('✗')} ${name.padEnd(10)} ${chalk.red('unhealthy')}`
+      );
+    }
+  }
+
+  if (!allHealthy) {
+    process.exit(1);
+  }
+};
