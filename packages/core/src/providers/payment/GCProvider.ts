@@ -330,12 +330,24 @@ export class GCProvider extends PaymentProvider {
   }
 
   /**
-   * Check the health of the GoCardless integration.
-   * @returns HEALTHY if the GoCardless API is reachable, UNHEALTHY otherwise
+   * Check the health of the GoCardless integration. As GoCardless is a
+   * deprecated payment method, this is just a basic connectivity check that
+   * lists a customer to verify the credentials work.
+   * @returns DISABLED if GoCardless isn't configured, HEALTHY if the API is
+   * reachable, UNHEALTHY otherwise
    */
   static async getHealthStatus(): Promise<ApiHealthStatus> {
-    // TODO: verify credentials against the GoCardless API
-    return ApiHealthStatus.DISABLED;
+    if (!config.gocardless.accessToken) {
+      return ApiHealthStatus.DISABLED;
+    }
+
+    try {
+      await gocardless.customers.list({ limit: 1 });
+      return ApiHealthStatus.HEALTHY;
+    } catch (err) {
+      log.error('GoCardless health check failed', err);
+      return ApiHealthStatus.UNHEALTHY;
+    }
   }
 }
 
