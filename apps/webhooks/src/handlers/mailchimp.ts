@@ -1,6 +1,7 @@
 import { ContributionType, NewsletterStatus } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { log as mainLogger } from '@beabee/core/logging';
+import { KNOWN_WEBHOOK_EVENTS } from '@beabee/core/providers/newsletter/MailchimpProvider';
 import ContactsService from '@beabee/core/services/ContactsService';
 import NewsletterService from '@beabee/core/services/NewsletterService';
 import { normalizeEmailAddress } from '@beabee/core/utils/email';
@@ -49,14 +50,6 @@ interface MCCleanedEmailWebhook {
   data: MCCleanedEmailData;
 }
 
-const knownWebhookTypes = [
-  'subscribe',
-  'unsubscribe',
-  'profile',
-  'upemail',
-  'cleaned',
-];
-
 type MCWebhook =
   | MCProfileWebhook
   | MCUpdateEmailWebhook
@@ -68,7 +61,7 @@ function isKnownWebhook(body: unknown): body is MCWebhook {
     body !== null &&
     'type' in body &&
     typeof body.type === 'string' &&
-    knownWebhookTypes.includes(body.type)
+    KNOWN_WEBHOOK_EVENTS.includes(body.type)
   );
 }
 
