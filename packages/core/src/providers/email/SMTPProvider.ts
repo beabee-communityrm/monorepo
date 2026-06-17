@@ -63,8 +63,14 @@ export class SMTPProvider extends BaseProvider {
   }
 
   async getHealthStatus(): Promise<ApiHealthStatus> {
-    // TODO: verify the SMTP connection (e.g. transporter.verify())
-    return ApiHealthStatus.DISABLED;
+    try {
+      // Opens a connection and verifies the SMTP credentials
+      await this.client.verify();
+      return ApiHealthStatus.HEALTHY;
+    } catch (err) {
+      log.error('SMTP health check failed', err);
+      return ApiHealthStatus.UNHEALTHY;
+    }
   }
 }
 

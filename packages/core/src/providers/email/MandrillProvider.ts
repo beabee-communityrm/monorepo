@@ -76,8 +76,14 @@ export class MandrillProvider extends BaseProvider {
   }
 
   async getHealthStatus(): Promise<ApiHealthStatus> {
-    // TODO: verify the Mandrill API key (e.g. /users/ping)
-    return ApiHealthStatus.DISABLED;
+    try {
+      // A valid API key responds with "PONG!", an invalid one errors
+      await this.instance.post('/users/ping');
+      return ApiHealthStatus.HEALTHY;
+    } catch (err) {
+      log.error('Mandrill health check failed', err);
+      return ApiHealthStatus.UNHEALTHY;
+    }
   }
 }
 
