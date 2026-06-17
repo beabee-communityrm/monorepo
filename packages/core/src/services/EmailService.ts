@@ -31,6 +31,7 @@ import {
 } from '#models/index';
 import {
   MandrillProvider,
+  NoneProvider,
   SMTPProvider,
   SendGridProvider,
 } from '#providers/email/index';
@@ -66,7 +67,9 @@ class EmailService {
       ? new MandrillProvider(config.email.settings)
       : config.email.provider === 'sendgrid'
         ? new SendGridProvider(config.email.settings)
-        : new SMTPProvider(config.email.settings);
+        : config.email.provider === 'smtp'
+          ? new SMTPProvider(config.email.settings)
+          : new NoneProvider();
 
   private defaultEmails: Partial<
     Record<Locale, Partial<Record<EmailTemplateId, Email>>>
