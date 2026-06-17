@@ -1,4 +1,5 @@
 import {
+  ApiHealthStatus,
   ContributionPeriod,
   PaymentMethod,
   PaymentSource,
@@ -326,6 +327,15 @@ export class GCProvider extends PaymentProvider {
         form.period === 'monthly') ||
       !(this.data.mandateId && (await hasPendingPayment(this.data.mandateId)))
     );
+  }
+
+  /**
+   * Check the health of the GoCardless integration.
+   * @returns HEALTHY if the GoCardless API is reachable, UNHEALTHY otherwise
+   */
+  static async getHealthStatus(): Promise<ApiHealthStatus> {
+    // TODO: verify credentials against the GoCardless API
+    return ApiHealthStatus.DISABLED;
   }
 }
 

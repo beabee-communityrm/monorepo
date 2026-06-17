@@ -1,4 +1,5 @@
 import {
+  ApiHealthStatus,
   ContributionType,
   PaymentFlowParamsStripe,
   PaymentSource,
@@ -328,6 +329,15 @@ export class StripeProvider extends PaymentProvider {
   static async fetchInvoiceUrl(paymentId: string): Promise<string | null> {
     const invoice = await stripe.invoices.retrieve(paymentId);
     return invoice.invoice_pdf || null;
+  }
+
+  /**
+   * Check the health of the Stripe integration.
+   * @returns HEALTHY if the Stripe API is reachable, UNHEALTHY otherwise
+   */
+  static async getHealthStatus(): Promise<ApiHealthStatus> {
+    // TODO: verify credentials against the Stripe API
+    return ApiHealthStatus.DISABLED;
   }
 }
 

@@ -1,3 +1,5 @@
+import { ApiHealthStatus } from '@beabee/beabee-common';
+
 import { Contact } from '#models/index';
 import { ContributionInfo, UpdateContributionResult } from '#type/index';
 
@@ -75,6 +77,13 @@ export class ManualProvider extends PaymentProvider {
    * No-op as manual payments don't store external data
    */
   async permanentlyDeleteContact(): Promise<void> {}
+
+  /**
+   * Manual payments have no external integration, so they are always healthy.
+   */
+  static async getHealthStatus(): Promise<ApiHealthStatus> {
+    return ApiHealthStatus.HEALTHY;
+  }
 }
 
 /** @deprecated Use named import ManualProvider instead */
