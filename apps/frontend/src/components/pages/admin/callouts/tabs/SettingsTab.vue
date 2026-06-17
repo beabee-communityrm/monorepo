@@ -364,5 +364,4 @@ const cachedGroups = ref<NewsletterGroupData[]>([]);
 onBeforeMount(async () => {
   cachedGroups.value = await client.integrations.getNewsletterGroups();
 });
-
 </script>
