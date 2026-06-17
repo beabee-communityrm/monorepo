@@ -15,6 +15,7 @@ import {
 import { log as mainLogger } from '#logging';
 import OptionsService from '#services/OptionsService';
 import {
+  MCWebhook,
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact,
@@ -22,12 +23,6 @@ import {
 } from '#type/index';
 
 const log = mainLogger.child({ app: 'mailchimp-provider' });
-
-interface MCWebhook {
-  url: string;
-  sources: { user: boolean; admin: boolean; api: boolean };
-  events: Record<string, boolean>;
-}
 
 /**
  * Mailchimp webhook events that the webhook handler in apps/webhooks processes
