@@ -264,7 +264,6 @@ class PaymentService {
    * @returns The combined payment health status
    */
   async getHealthStatus(): Promise<ApiHealthStatus> {
-    // TODO: implement real provider connectivity checks
     const statuses = [
       await StripeProvider.getHealthStatus(),
       await GCProvider.getHealthStatus(),
