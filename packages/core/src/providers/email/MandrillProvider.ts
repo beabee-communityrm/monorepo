@@ -1,3 +1,5 @@
+import { ApiHealthStatus } from '@beabee/beabee-common';
+
 import axios, { AxiosRequestTransformer } from 'axios';
 
 import { MandrillEmailConfig } from '#config/config';
@@ -71,6 +73,11 @@ export class MandrillProvider extends BaseProvider {
       })),
       ...(opts?.attachments && { attachments: opts.attachments }),
     };
+  }
+
+  async getHealthStatus(): Promise<ApiHealthStatus> {
+    // TODO: verify the Mandrill API key (e.g. /users/ping)
+    return ApiHealthStatus.DISABLED;
   }
 }
 

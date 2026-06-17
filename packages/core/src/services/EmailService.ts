@@ -1,4 +1,5 @@
 import {
+  ApiHealthStatus,
   EmailTemplateType,
   type GetEmailTemplateInfoData,
   type SegmentOngoingEmailTrigger,
@@ -542,6 +543,14 @@ class EmailService {
    */
   async removeOngoingEmailByEmailId(emailId: string): Promise<void> {
     await getRepository(SegmentOngoingEmail).delete({ emailId });
+  }
+
+  /**
+   * Check the health of the configured email provider.
+   * @returns The email provider health status
+   */
+  async getHealthStatus(): Promise<ApiHealthStatus> {
+    return await this.provider.getHealthStatus();
   }
 }
 

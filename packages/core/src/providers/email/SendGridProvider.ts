@@ -1,3 +1,5 @@
+import { ApiHealthStatus } from '@beabee/beabee-common';
+
 import sgMail from '@sendgrid/mail';
 
 import { SendGridEmailConfig } from '#config/config';
@@ -59,5 +61,10 @@ export class SendGridProvider extends BaseProvider {
         { resp }
       );
     }
+  }
+
+  async getHealthStatus(): Promise<ApiHealthStatus> {
+    // TODO: verify the SendGrid API key
+    return ApiHealthStatus.DISABLED;
   }
 }

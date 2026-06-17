@@ -1,3 +1,5 @@
+import { ApiHealthStatus } from '@beabee/beabee-common';
+
 import nodemailer, { type Transporter } from 'nodemailer';
 
 import { SMTPEmailConfig } from '#config/config';
@@ -58,6 +60,11 @@ export class SMTPProvider extends BaseProvider {
         }),
       });
     }
+  }
+
+  async getHealthStatus(): Promise<ApiHealthStatus> {
+    // TODO: verify the SMTP connection (e.g. transporter.verify())
+    return ApiHealthStatus.DISABLED;
   }
 }
 
