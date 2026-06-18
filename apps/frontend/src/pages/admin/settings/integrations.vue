@@ -44,7 +44,7 @@ import { AppLoadingSpinner, AppSectionHeading } from '@beabee/vue';
 import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { groupBy } from '@beabee/core/utils/objects';
+import { groupBy } from '#utils/objects';
 
 import IntegrationCard from '#components/integrations/IntegrationCard.vue';
 import NewsletterCardContent from '#components/integrations/NewsletterCardContent.vue';
