@@ -1,5 +1,6 @@
 import { AppStatusPage } from '@beabee/vue';
 import { icons } from '@beabee/vue/plugins/icons';
+import ui from '@nuxt/ui/vue-plugin';
 
 import { type App as VueApp, createApp, h } from 'vue';
 
@@ -35,6 +36,7 @@ export async function startMainApp() {
   app.use({ ...router });
   app.use(i18n);
   app.use(icons);
+  app.use(ui);
 
   app.mount('#app');
 }

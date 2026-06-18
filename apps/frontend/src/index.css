@@ -1,4 +1,5 @@
 @import '@beabee/vue/styles';
+@import '@nuxt/ui';
 
 /* Apply link styles to i18n markdown text */
 .content-i18n {
