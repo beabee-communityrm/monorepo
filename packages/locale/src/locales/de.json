@@ -256,26 +256,27 @@
         "newsletters": "Newsletter"
       },
       "label": "Integrationen",
+      "loadError": "Integrationen konnten nicht geladen werden. Bitte die Seite neu laden.",
       "newsletter": {
         "audienceId": "Audience-ID",
         "groups": "Gruppen",
         "noGroups": "Keine Gruppen gefunden"
       },
       "refresh": "Aktualisieren",
+      "refreshResult": {
+        "added": "{provider} Gruppen hinzugefügt: {groups}",
+        "connectionLost": "Verbindung unterbrochen",
+        "couldNotConnect": "Verbindung zu {provider} fehlgeschlagen",
+        "error": "{provider} Aktualisierung fehlgeschlagen. Bitte erneut versuchen.",
+        "noChanges": "{provider} Gruppen sind aktuell",
+        "reconnected": "Verbunden",
+        "removed": "{provider} Gruppen entfernt: {groups}"
+      },
       "refreshing": "Wird aktualisiert...",
       "status": {
         "disabled": "Deaktiviert",
         "healthy": "Verbunden",
         "unhealthy": "Verbindung unterbrochen"
-      },
-      "refreshResult": {
-        "noChanges": "{provider} Gruppen sind aktuell",
-        "added": "{provider} Gruppen hinzugefügt: {groups}",
-        "removed": "{provider} Gruppen entfernt: {groups}",
-        "reconnected": "Verbunden",
-        "connectionLost": "Verbindung unterbrochen",
-        "couldNotConnect": "Verbindung zu {provider} fehlgeschlagen",
-        "error": "{provider} Aktualisierung fehlgeschlagen. Bitte erneut versuchen."
       }
     },
     "payment": {

@@ -256,26 +256,27 @@
         "newsletters": "Newsletters"
       },
       "label": "Integrations",
+      "loadError": "Failed to load integrations. Please refresh the page.",
       "newsletter": {
         "audienceId": "Audience ID",
         "groups": "Groups",
         "noGroups": "No groups found"
       },
       "refresh": "Refresh",
+      "refreshResult": {
+        "added": "{provider} groups added: {groups}",
+        "connectionLost": "connection lost",
+        "couldNotConnect": "Could not connect to {provider}",
+        "error": "{provider} refresh failed. Please try again.",
+        "noChanges": "{provider} groups are up to date",
+        "reconnected": "reconnected",
+        "removed": "{provider} groups removed: {groups}"
+      },
       "refreshing": "Refreshing...",
       "status": {
         "disabled": "Disabled",
         "healthy": "Connected",
         "unhealthy": "Connection lost"
-      },
-      "refreshResult": {
-        "noChanges": "{provider} groups are up to date",
-        "added": "{provider} groups added: {groups}",
-        "removed": "{provider} groups removed: {groups}",
-        "reconnected": "reconnected",
-        "connectionLost": "connection lost",
-        "couldNotConnect": "Could not connect to {provider}",
-        "error": "{provider} refresh failed. Please try again."
       }
     },
     "payment": {

@@ -256,22 +256,23 @@
         "newsletters": ""
       },
       "label": "",
+      "loadError": "",
       "newsletter": {
         "audienceId": "",
         "groups": "",
         "noGroups": ""
       },
       "refresh": "",
-      "refreshing": "",
       "refreshResult": {
-        "noChanges": "",
         "added": "",
-        "removed": "",
-        "reconnected": "",
         "connectionLost": "",
         "couldNotConnect": "",
-        "error": ""
+        "error": "",
+        "noChanges": "",
+        "reconnected": "",
+        "removed": ""
       },
+      "refreshing": "",
       "status": {
         "disabled": "",
         "healthy": "",

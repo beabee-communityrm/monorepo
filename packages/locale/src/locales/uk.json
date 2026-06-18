@@ -256,26 +256,27 @@
         "newsletters": "Розсилки"
       },
       "label": "Інтеграції",
+      "loadError": "Не вдалося завантажити інтеграції. Будь ласка, оновіть сторінку.",
       "newsletter": {
         "audienceId": "ID аудиторії",
         "groups": "Групи",
         "noGroups": "Групи не знайдено"
       },
       "refresh": "Оновити",
+      "refreshResult": {
+        "added": "Додано групи {provider}: {groups}",
+        "connectionLost": "з'єднання втрачено",
+        "couldNotConnect": "Не вдалося підключитися до {provider}",
+        "error": "Помилка оновлення {provider}. Будь ласка, спробуйте ще раз.",
+        "noChanges": "Групи {provider} актуальні",
+        "reconnected": "підключено",
+        "removed": "Видалено групи {provider}: {groups}"
+      },
+      "refreshing": "Оновлення...",
       "status": {
         "disabled": "Вимкнено",
         "healthy": "Підключено",
         "unhealthy": "З'єднання втрачено"
-      },
-      "refreshing": "Оновлення...",
-      "refreshResult": {
-        "noChanges": "Групи {provider} актуальні",
-        "added": "Додано групи {provider}: {groups}",
-        "removed": "Видалено групи {provider}: {groups}",
-        "reconnected": "підключено",
-        "connectionLost": "з'єднання втрачено",
-        "couldNotConnect": "Не вдалося підключитися до {provider}",
-        "error": "Помилка оновлення {provider}. Будь ласка, спробуйте ще раз."
       }
     },
     "payment": {
