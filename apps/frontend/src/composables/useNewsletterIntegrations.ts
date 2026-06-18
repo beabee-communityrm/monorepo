@@ -86,10 +86,10 @@ export function useNewsletterIntegrations() {
       (integration) => integration.provider === provider
     )?.status;
 
-    function tNotif(key: string, named?: Record<string, string>) {
+    function tNotif(key: string, groupChangeInfo?: Record<string, string>) {
       return t(`adminSettings.integrations.refreshResult.${key}`, {
         provider: providerName,
-        ...named,
+        ...groupChangeInfo,
       });
     }
 
