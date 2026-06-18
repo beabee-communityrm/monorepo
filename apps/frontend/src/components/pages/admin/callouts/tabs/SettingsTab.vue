@@ -208,7 +208,6 @@
                 v-model:opt-in="data.newsletterSettings.optIn"
                 v-model:text="data.newsletterSettings.text"
                 v-model:groups="data.newsletterSettings.groups"
-                :cached-groups="cachedGroups"
               />
             </AppFormField>
           </AppFormBox>
@@ -249,7 +248,6 @@ import {
   type CalloutChannel,
   type CalloutNewsletterSchema,
   ItemStatus,
-  type NewsletterGroupData,
 } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
 import {
@@ -265,12 +263,11 @@ import {
 
 import useVuelidate from '@vuelidate/core';
 import { sameAs } from '@vuelidate/validators';
-import { computed, onBeforeMount, ref, toRef, watch } from 'vue';
+import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppNewsletterOptInSettings from '#components/newsletter/AppNewsletterOptInSettings.vue';
 import env from '#env';
-import { client } from '#utils/api';
 
 import type { CalloutHorizontalTabs } from '../CalloutHorizontalTabs.interface';
 
@@ -358,10 +355,4 @@ const canStartNow = computed(
     props.status === ItemStatus.Draft ||
     props.status === ItemStatus.Scheduled
 );
-
-const cachedGroups = ref<NewsletterGroupData[]>([]);
-
-onBeforeMount(async () => {
-  cachedGroups.value = await client.integrations.getNewsletterGroups();
-});
 </script>

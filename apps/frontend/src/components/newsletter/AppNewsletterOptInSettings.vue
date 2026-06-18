@@ -114,26 +114,25 @@ import {
   AppSelect,
 } from '@beabee/vue';
 
+import { client } from '#utils/api';
+
+import { onBeforeMount } from 'vue';
+
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-/**
- * Groups configured with the newsletter provider
- */
-const props = defineProps<{
-  cachedGroups: Omit<NewsletterGroupData, 'checked'>[];
-}>();
-
+// When drop-down selection changes, auto-fill group label only for newly added groups
 function onSelectionChange(item: NewsletterGroupData, newId: string) {
-  const isNew = !item.id;
-  item.id = newId;
-  if (isNew) {
-    const group = props.cachedGroups.find((g) => g.id === newId);
-    if (group) {
-      item.label = group.label;
+  // New group
+  if (!item.id) {
+    // Get correct group label from the list of cached groups
+    const cacheGroupMatch = cachedGroups.value.find((g) => g.id === newId);
+    if (cacheGroupMatch) {
+      item.label = cacheGroupMatch.label;
     }
   }
+  item.id = newId;
 }
 
 /**
@@ -144,5 +143,15 @@ const optIn = defineModel<string>('optIn', { default: '' });
 const text = defineModel<string>('text', { default: '' });
 const groups = defineModel<NewsletterGroupData[]>('groups', {
   default: () => [],
+});
+const cachedGroups = defineModel<Omit<NewsletterGroupData, 'checked'>[]>(
+  'cachedGroups',
+  {
+    default: () => [],
+  }
+);
+
+onBeforeMount(async () => {
+  cachedGroups.value = await client.integrations.getNewsletterGroups();
 });
 </script>
