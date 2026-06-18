@@ -97,25 +97,25 @@ export function useNewsletterIntegrations() {
       addNotification({ variant, title, removeable: true });
     }
 
-    function buildChangeInfo(groupChanges: GroupChanges[]): string[] {
+    function buildChangeInfo(groupChanges: GroupChanges[]): string {
       const addedGroups = groupChanges.filter((g) => g.action === 'added');
       const removedGroups = groupChanges.filter((g) => g.action === 'removed');
 
-      const info: string[] = [];
+      const parts: string[] = [];
 
       if (addedGroups.length > 0)
-        info.push(
+        parts.push(
           tNotif('added', {
             groups: addedGroups.map((g) => g.label).join(', '),
           })
         );
       if (removedGroups.length > 0)
-        info.push(
+        parts.push(
           tNotif('removed', {
             groups: removedGroups.map((g) => g.label).join(', '),
           })
         );
-      return info;
+      return parts.join('\n');
     }
 
     try {
@@ -138,14 +138,14 @@ export function useNewsletterIntegrations() {
       const nowUnhealthy = info.status === ApiHealthStatus.UNHEALTHY;
 
       if (wasHealthy && nowHealthy) {
-        notify(
-          'success',
-          groupChanges.length > 0 ? changeInfo.join('. ') : tNotif('noChanges')
-        );
+        notify('success', changeInfo || tNotif('noChanges'));
       } else if (wasHealthy && nowUnhealthy) {
         notify('warning', tNotif('connectionLost'));
       } else if (wasUnhealthy && nowHealthy) {
-        notify('success', [tNotif('reconnected'), ...changeInfo].join('. '));
+        notify(
+          'success',
+          `${tNotif('reconnected')}${changeInfo ? `\n${changeInfo}` : ''}`
+        );
       } else if (wasUnhealthy && nowUnhealthy) {
         notify('warning', tNotif('couldNotConnect'));
       }
