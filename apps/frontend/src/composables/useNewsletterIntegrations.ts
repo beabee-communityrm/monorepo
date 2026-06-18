@@ -1,4 +1,7 @@
-import type { MailchimpNewsletterIntegrationDataWith } from '@beabee/beabee-common';
+import type {
+  GroupChanges,
+  MailchimpNewsletterIntegrationDataWith,
+} from '@beabee/beabee-common';
 import { ApiHealthStatus } from '@beabee/beabee-common';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -67,6 +70,11 @@ export function useNewsletterIntegrations() {
           : buildDisabledIntegration(provider);
       });
     } catch {
+      addNotification({
+        variant: 'warning',
+        title: t('adminSettings.integrations.loadError'),
+        removeable: true,
+      });
     } finally {
       loading.value = false;
     }
@@ -75,10 +83,10 @@ export function useNewsletterIntegrations() {
   async function refresh(provider: string) {
     const providerName = providerMap[provider]?.name ?? provider;
     const previousStatus = integrations.value.find(
-      (i) => i.provider === provider
+      (integration) => integration.provider === provider
     )?.status;
 
-    function tr(key: string, named?: Record<string, string>) {
+    function tNotif(key: string, named?: Record<string, string>) {
       return t(`adminSettings.integrations.refreshResult.${key}`, {
         provider: providerName,
         ...named,
@@ -89,20 +97,25 @@ export function useNewsletterIntegrations() {
       addNotification({ variant, title, removeable: true });
     }
 
-    function buildChangeParts(
-      added: { label: string }[],
-      removed: { label: string }[]
-    ): string[] {
-      const parts: string[] = [];
-      if (added.length > 0)
-        parts.push(
-          tr('added', { groups: added.map((g) => g.label).join(', ') })
+    function buildChangeInfo(groupChanges: GroupChanges[]): string[] {
+      const addedGroups = groupChanges.filter((g) => g.action === 'added');
+      const removedGroups = groupChanges.filter((g) => g.action === 'removed');
+
+      const info: string[] = [];
+
+      if (addedGroups.length > 0)
+        info.push(
+          tNotif('added', {
+            groups: addedGroups.map((g) => g.label).join(', '),
+          })
         );
-      if (removed.length > 0)
-        parts.push(
-          tr('removed', { groups: removed.map((g) => g.label).join(', ') })
+      if (removedGroups.length > 0)
+        info.push(
+          tNotif('removed', {
+            groups: removedGroups.map((g) => g.label).join(', '),
+          })
         );
-      return parts;
+      return info;
     }
 
     try {
@@ -110,41 +123,34 @@ export function useNewsletterIntegrations() {
         await client.integrations.refreshNewsletterGroups();
 
       if (info.provider !== 'none') {
-        const index = integrations.value.findIndex(
-          (i) => i.provider === info.provider
+        integrations.value = integrations.value.map((integration) =>
+          integration.provider === info.provider
+            ? buildNewsletterIntegration(info)
+            : integration
         );
-        if (index !== -1) {
-          integrations.value[index] = buildNewsletterIntegration(info);
-        }
       }
 
-      if (info.status === ApiHealthStatus.UNHEALTHY) {
-        if (previousStatus === ApiHealthStatus.HEALTHY) {
-          notify('warning', tr('connectionLost'));
-        } else {
-          notify('warning', tr('couldNotConnect'));
-        }
-      } else {
-        // info.status === HEALTHY
-        const added = groupChanges.filter((g) => g.action === 'added');
-        const removed = groupChanges.filter((g) => g.action === 'removed');
+      const changeInfo = buildChangeInfo(groupChanges);
 
-        if (previousStatus === ApiHealthStatus.UNHEALTHY) {
-          const parts = [
-            tr('reconnected'),
-            ...buildChangeParts(added, removed),
-          ];
-          notify('success', parts.join('. '));
-        } else {
-          if (groupChanges.length > 0) {
-            notify('success', buildChangeParts(added, removed).join('. '));
-          } else {
-            notify('success', tr('noChanges'));
-          }
-        }
+      const wasHealthy = previousStatus === ApiHealthStatus.HEALTHY;
+      const wasUnhealthy = previousStatus === ApiHealthStatus.UNHEALTHY;
+      const nowHealthy = info.status === ApiHealthStatus.HEALTHY;
+      const nowUnhealthy = info.status === ApiHealthStatus.UNHEALTHY;
+
+      if (wasHealthy && nowHealthy) {
+        notify(
+          'success',
+          groupChanges.length > 0 ? changeInfo.join('. ') : tNotif('noChanges')
+        );
+      } else if (wasHealthy && nowUnhealthy) {
+        notify('warning', tNotif('connectionLost'));
+      } else if (wasUnhealthy && nowHealthy) {
+        notify('success', [tNotif('reconnected'), ...changeInfo].join('. '));
+      } else if (wasUnhealthy && nowUnhealthy) {
+        notify('warning', tNotif('couldNotConnect'));
       }
     } catch {
-      notify('warning', tr('error'));
+      notify('warning', tNotif('error'));
     }
   }
 
