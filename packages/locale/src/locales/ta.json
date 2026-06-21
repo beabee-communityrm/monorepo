@@ -1,1915 +1,1915 @@
 {
   "accountPage": {
-    "contactInformation": "",
-    "deliveryAddress": "",
-    "deliveryOptIn": "",
-    "loginDetail": "",
+    "contactInformation": "தொடர்பு செய்தி",
+    "deliveryAddress": "டெலிவரி முகவரி",
+    "deliveryOptIn": "டெலிவரி தேர்வு",
+    "loginDetail": "உள்நுழைவு விவரங்கள்",
     "mfa": {
       "codeInput": {
-        "info": "",
-        "label": ""
+        "info": "உங்கள் 2FA சாதனத்தை இழந்திருந்தால், ஆதரவைத் தொடர்பு கொள்ளவும்",
+        "label": "குறியீடு"
       },
       "confirmDelete": {
-        "desc": "",
-        "descToken": "",
-        "title": ""
+        "desc": "பல காரணி அங்கீகாரத்தை நிச்சயமாக முடக்க விரும்புகிறீர்களா? அப்போதிருந்து, உள்நுழைய உங்கள் கடவுச்சொல் மட்டுமே தேவைப்படும். உங்கள் அங்கீகரிப்பு பயன்பாட்டிலிருந்து உள்ளீட்டை நீக்க நினைவில் கொள்ளுங்கள். நீங்கள் எப்போது வேண்டுமானாலும் அதை மீண்டும் இயக்கலாம்.",
+        "descToken": "2FA ஐ செயலிழக்கச் செய்ய, உங்கள் தற்போதைய 2FA குறியீட்டை உள்ளிடவும்:",
+        "title": "2FA ஐ முடக்கு"
       },
-      "createUnknownErrorNotification": "",
-      "deleteUnknownErrorNotification": "",
-      "disabledNotification": "",
-      "enabledNotification": "",
+      "createUnknownErrorNotification": "அறியப்படாத பிழையின் காரணமாக 2-காரணி அங்கீகாரத்தைச் சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும் அல்லது ஆதரவைத் தொடர்பு கொள்ளவும்.",
+      "deleteUnknownErrorNotification": "அறியப்படாத பிழையின் காரணமாக 2-காரணி அங்கீகாரத்தை நீக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும் அல்லது ஆதரவைத் தொடர்பு கொள்ளவும்.",
+      "disabledNotification": "இரண்டு காரணி ஏற்பு வெற்றிகரமாக செயலிழக்கப்பட்டது",
+      "enabledNotification": "இரண்டு காரணி ஏற்பு வெற்றிகரமாக செயல்படுத்தப்பட்டது",
       "enterCode": {
-        "desc": "",
-        "title": ""
+        "desc": "உங்கள் அங்கீகரிப்பு பயன்பாட்டில் காட்டப்படும் குறியீட்டை உள்ளிடவும்.",
+        "title": "சரிபார்ப்பு"
       },
-      "modalTitle": "",
+      "modalTitle": "2-காரணி அங்கீகாரத்தை இயக்கு",
       "result": {
-        "invalidCode": "",
-        "successful": "",
-        "title": ""
+        "invalidCode": "குறியீட்டை உறுதிப்படுத்த முடியவில்லை, மீண்டும் முயற்சிக்கவும் அல்லது ஆதரவைத் தொடர்பு கொள்ளவும்.",
+        "successful": "2-காரணி ஏற்பு வெற்றிகரமாக அமைக்கப்பட்டது.",
+        "title": "முடிந்தது"
       },
       "scan": {
-        "desc": "",
-        "title": ""
+        "desc": "உங்கள் அங்கீகரிப்பு ஆப் மூலம் கீழே உள்ள QR குறியீட்டை வருடு செய்யவும்.",
+        "title": "QR குறியீடு"
       },
       "secretInput": {
-        "desc": "",
-        "label": ""
+        "desc": "மாற்றாக, உங்கள் அங்கீகரிப்பு பயன்பாட்டில் பின்வரும் குறியீட்டை உள்ளிடலாம்.",
+        "label": "ரகசிய குறியீடு"
       },
-      "title": "",
+      "title": "2-காரணி ஏற்பு",
       "validateButton": {
-        "label": ""
+        "label": "கிள்ளாக்கை சரிபார்க்கவும்"
       }
     },
     "newsletter": {
-      "cantUpdate": "",
+      "cantUpdate": "இந்த தொடர்பின் செய்திமடல் நிலையை மாற்ற, support{'@'}beabee.ioஐத் தொடர்பு கொள்ளவும்.",
       "currentStatus": {
-        "cleaned": "",
-        "none": "",
-        "pending": "",
-        "subscribed": "",
-        "unsubscribed": ""
+        "cleaned": "இந்த தொடர்பு உங்கள் செய்திமடல் பட்டியலிலிருந்து தூய்மை செய்யப்பட்டுள்ளது, அவர்களின் மின்னஞ்சல் முகவரி எதிர்க்கிறது.",
+        "none": "இந்த தொடர்பு உங்கள் செய்திமடல் பட்டியலில் குழுசேரவில்லை.",
+        "pending": "இந்த தொடர்பு உங்கள் செய்திமடல் பட்டியலுக்கான விருப்பத்தேர்வு அனுப்பப்பட்டுள்ளது, அவர்கள் குழுசேர அதை ஏற்க வேண்டும்.",
+        "subscribed": "இந்த தொடர்பு உங்கள் செய்திமடல் பட்டியலில் குழுசேர்ந்துள்ளது.",
+        "unsubscribed": "இந்த தொடர்பு உங்கள் செய்திமடல் பட்டியலில் குழுசேரவில்லை."
       },
-      "subscribe": "",
-      "title": "",
-      "unsubscribe": ""
+      "subscribe": "அவர்களை செய்திமடலுக்கு குழுசேரவும்",
+      "title": "செய்திமடல்",
+      "unsubscribe": "செய்திமடலில் இருந்து அவர்களை குழுவிலகவும்"
     },
-    "phoneInfo": "",
-    "phoneInfoAdmin": "",
-    "savedPassword": "",
-    "subTitle": "",
-    "title": ""
+    "phoneInfo": "உங்கள் தொலைபேசி எண்ணை வழங்குவதன் மூலம் நீங்கள் தொலைபேசியில் தொடர்பு கொள்ள ஒப்புக்கொள்கிறீர்கள்",
+    "phoneInfoAdmin": "கணினியில் தொலைபேசி எண்ணைச் சேர்ப்பதற்கு முன், அந்த நபரின் சம்மதத்தைப் பெற்றிருக்க வேண்டும்",
+    "savedPassword": "புதிய கடவுச்சொல் சேமிக்கப்பட்டது",
+    "subTitle": "தேவையான புலங்கள் நட்சத்திரக் குறியீட்டால் குறிக்கப்பட்டுள்ளன. இங்கே சமர்ப்பிக்கப்பட்ட அனைத்து தகவல்களும் தனிப்பட்டவை.",
+    "title": "கணக்கு"
   },
   "actions": {
-    "add": "",
-    "back": "",
-    "backToLogin": "",
-    "cancel": "",
-    "changePassword": "",
-    "chooseFile": "",
-    "clearSearch": "",
-    "close": "",
-    "continue": "",
-    "copy": "",
-    "create": "",
-    "decrease": "",
-    "delete": "",
-    "disable": "",
-    "edit": "",
-    "enable": "",
-    "endnow": "",
-    "export": "",
-    "getStarted": "",
-    "goBack": "",
-    "increase": "",
-    "next": "",
-    "noBack": "",
-    "participate": "",
-    "preview": "",
-    "previous": "",
-    "publish": "",
-    "reopen": "",
-    "replicate": "",
-    "reset": "",
-    "reset2FA": "",
-    "resetPassword": "",
-    "respond": "",
-    "revertToDraft": "",
-    "save": "",
-    "saveAndAnother": "",
-    "saveDraft": "",
-    "schedule": "",
-    "search": "",
-    "sendEmails": "",
-    "sendOneOffEmail": "",
-    "sendOngoingEmails": "",
-    "share": "",
-    "skip": "",
-    "submit": "",
-    "tryAgain": "",
-    "unpublish": "",
-    "update": "",
-    "view": "",
-    "yesDelete": "",
-    "yesDisable": "",
-    "yesRemove": "",
-    "yesReset": ""
+    "add": "கூட்டு",
+    "back": "பின்",
+    "backToLogin": "உள்நுழைவு பக்கத்திற்குத் திரும்பு",
+    "cancel": "ரத்துசெய்",
+    "changePassword": "கடவுச்சொல்லை மாற்றவும்",
+    "chooseFile": "கோப்பைத் தேர்ந்தெடுக்கவும்",
+    "clearSearch": "தேடலை அழி",
+    "close": "மூடு",
+    "continue": "தொடரவும்",
+    "copy": "நகலெடு",
+    "create": "உருவாக்கு",
+    "decrease": "குறைக்கவும்",
+    "delete": "நீக்கு",
+    "disable": "முடக்கு",
+    "edit": "தொகு",
+    "enable": "இயக்கு",
+    "endnow": "இப்போது முடி",
+    "export": "ஏற்றுமதி",
+    "getStarted": "தொடங்குங்கள்",
+    "goBack": "திரும்பி போ",
+    "increase": "அதிகரிக்கவும்",
+    "next": "அடுத்தது",
+    "noBack": "இல்லை, திரும்பிப் போ",
+    "participate": "பங்கேற்கவும்",
+    "preview": "முன்னோட்டம்",
+    "previous": "முந்தைய",
+    "publish": "வெளியிடு",
+    "reopen": "மீண்டும் திறக்கவும்",
+    "replicate": "பிரதி வெற்றி",
+    "reset": "மீட்டமை",
+    "reset2FA": "2FA ஐ மீட்டமைக்கவும்",
+    "resetPassword": "கடவுச்சொல்லை மீட்டமைக்கவும்",
+    "respond": "பதிலளிக்கவும்",
+    "revertToDraft": "வரைவுக்குத் திரும்பு",
+    "save": "சேமி",
+    "saveAndAnother": "சேமித்து இன்னொன்றைச் சேர்க்கவும்",
+    "saveDraft": "வரைவைச் சேமிக்கவும்",
+    "schedule": "அட்டவணை",
+    "search": "தேடல்",
+    "sendEmails": "மின்னஞ்சல்களை அனுப்பவும்",
+    "sendOneOffEmail": "மின்னஞ்சல் அனுப்பவும்",
+    "sendOngoingEmails": "நடந்துகொண்டிருக்கும் மின்னஞ்சல்கள்",
+    "share": "பங்கு",
+    "skip": "தவிர்",
+    "submit": "சமர்ப்பிக்கவும்",
+    "tryAgain": "மீண்டும் முயற்சிக்கவும்",
+    "unpublish": "வெளியிட வேண்டாம்",
+    "update": "புதுப்பிப்பு",
+    "view": "பார்வை",
+    "yesDelete": "ஆம், அதை நீக்கவும்",
+    "yesDisable": "ஆம், அதை முடக்கு",
+    "yesRemove": "ஆம், அதை அகற்று",
+    "yesReset": "ஆம், அதை மீட்டமைக்கவும்"
   },
   "addContact": {
-    "contactSaved": "",
+    "contactSaved": "தொடர்பு சேமிக்கப்பட்டது",
     "errors": {
-      "duplicateEmail": ""
+      "duplicateEmail": "மின்னஞ்சல் முகவரி ஏற்கனவே உள்ளது"
     },
-    "subscribeToNewsletter": "",
-    "title": ""
+    "subscribeToNewsletter": "செய்திமடல் கருவியுடன் ஒத்திசைக்கவும்",
+    "title": "தொடர்பைச் சேர்க்கவும்"
   },
   "addNotice": {
     "form": {
-      "buttonText": "",
-      "expirationDateAndTime": "",
-      "name": "",
-      "startDateAndTime": "",
-      "text": "",
-      "url": ""
+      "buttonText": "பட்டன் உரை",
+      "expirationDateAndTime": "காலாவதி தேதி மற்றும் நேரம்",
+      "name": "பெயர்",
+      "startDateAndTime": "தொடக்க தேதி மற்றும் நேரம்",
+      "text": "உரை",
+      "url": "முகவரி"
     },
-    "title": ""
+    "title": "அறிவிப்பைச் சேர்க்கவும்"
   },
   "adminDashboard": {
-    "hint1": "",
-    "hint2": "",
-    "hint3": "",
-    "joinSlack": "",
+    "hint1": "<p>CrowdNewsroomகளை இறுதித் தேதி இல்லாமல் உருவாக்க முடியும் என்பது உங்களுக்குத் தெரியுமா? மேலும் தகவலுக்கு எங்கள் <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">அம்ச காட்சிப் பெட்டியைப்</a> பார்க்கவும்.</p>\n",
+    "hint2": "<p>சமூக ஈடுபாடு மற்றும் உங்கள் பார்வையாளர்களுடன் அர்த்தமுள்ள உறவுகளைச் சுற்றி <a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">பீபீ பார்வை</a> பற்றி மேலும் அறிக.</p>\n",
+    "hint3": "<p>Our <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> addresses common கேள்விகள் about getting started and use cases. If the answer you're looking க்கு isn't there, get in touch.</p>\n",
+    "joinSlack": "ச்லாக்கில் பீபீ சமூகத்தில் சேரவும்!",
     "latestCallout": {
-      "createNew": "",
-      "empty": "",
-      "title": ""
+      "createNew": "புதிய ஒன்றை உருவாக்கவா?",
+      "empty": "செயலில் உள்ள CrowdNewsroomகள் இல்லை",
+      "title": "உங்கள் CrowdNewsroom"
     },
     "mostRecentMembers": {
-      "title": ""
+      "title": "அண்மைக் காலத்தில் இணைந்த உறுப்பினர்"
     },
     "numbers": {
-      "averageContribution": "",
-      "newMembers": "",
-      "revenue": "",
-      "title": ""
+      "averageContribution": "சராசரி மாதாந்திர பங்களிப்பு",
+      "newMembers": "புதிய உறுப்பினர்கள்",
+      "revenue": "வருவாய்",
+      "title": "கடந்த 30 நாட்களுக்கான எண்கள்"
     },
-    "responsesSoFar": "",
-    "seeAllResponses": "",
-    "supportInbox": "",
-    "welcomeBack": ""
+    "responsesSoFar": "இதுவரை {n} பதில் | இதுவரை {n} பதில்கள்",
+    "seeAllResponses": "அனைத்து பதில்களையும் பார்க்கவும்",
+    "supportInbox": "<p>உதவி வேண்டுமா? தயவுசெய்து <a href=\"https://wiki.beabee.io/help-center-english/\" target=\"_blank\" rel=\"noopener noreferrer\">beabee உதவி மையத்தைப்</a> பார்வையிடவும் அல்லது எங்கள் உதவி இன்பாக்சைப் பயன்படுத்தவும்: <a href=\"mailto:support{'@'}beabee.io\">support{@></pee.'>\n",
+    "welcomeBack": "மீண்டும் வரவேற்கிறோம் {firstName}!"
   },
   "adminSettings": {
     "apikey": {
       "confirmCreate": {
-        "text": "",
-        "title": ""
+        "text": "பின்வரும் கிள்ளாக்கை சேமிக்கவும். பின்னர் அதை மீட்டெடுக்க முடியாது.",
+        "title": "பநிஇ விசை உருவாக்கப்பட்டது"
       },
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "இது மீள முடியாதது. இந்த பநிஇ விசையைப் பயன்படுத்தும் எதுவும் வேலை செய்வதை நிறுத்தும்.",
+        "title": "பநிஇ விசையை நீக்கவா?"
       },
-      "copied": "",
-      "create": "",
+      "copied": "பநிஇ விசை இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்டது",
+      "create": "புதிய பநிஇ விசையை உருவாக்கவும்",
       "expires": {
-        "days": "",
-        "never": ""
+        "days": "{n} நாட்களில்",
+        "never": "ஒருபோதும்"
       },
-      "expiresHelp": "",
-      "expiresNeverWarning": "",
-      "label": "",
-      "showingOf": ""
+      "expiresHelp": "சிறந்த பாதுகாப்பிற்காக, உங்கள் கணினியில் நீண்டகாலமாக அங்கீகரிக்கப்படாததைத் தடுக்க உதவும் காலாவதி தேதியை எப்போதும் அமைக்க வேண்டும்.",
+      "expiresNeverWarning": "காலாவதி தேதியை அமைக்காததால் ஏற்படும் அபாயங்களை நான் புரிந்துகொள்கிறேன்",
+      "label": "பநிஇ விசைகள்",
+      "showingOf": "{total} இல் {start} முதல் {end} பநிஇ விசைகளைக் காட்டுகிறது"
     },
     "email": {
       "contactTemplates": {
-        "button": "",
-        "contactJoins": "",
-        "contactLeaves": "",
-        "create": "",
-        "description": "",
-        "directSendDisabled": "",
-        "directSendEnabled": "",
-        "ongoing": "",
-        "ongoingDisabled": "",
-        "ongoingEnabled": "",
-        "segment": "",
-        "send": "",
-        "sendSettings": "",
+        "button": "மின்னஞ்சல் டெம்ப்ளேட்களை நிர்வகிக்கவும்",
+        "contactJoins": "தொடர்பு சேரும் பிரிவு",
+        "contactLeaves": "தொடர்பு இலைகள் பிரிவு",
+        "create": "உருவாக்கு",
+        "description": "வெவ்வேறு இலக்கு குழுக்களுக்கான மின்னஞ்சல் டெம்ப்ளேட்களை இங்கே நீங்கள் உருவாக்கலாம் மற்றும் தனிப்பயனாக்கலாம். ஒரு முறை மற்றும் தொடர்ச்சியான மின்னஞ்சல்களை நிர்வகிக்க உங்களுக்கு விருப்பம் உள்ளது.",
+        "directSendDisabled": "எதிர்கால தொடர்புகளுக்கு மட்டுமே மின்னஞ்சலைப் பெறுவார்கள்",
+        "directSendEnabled": "தற்போதைய அனைத்து தொடர்புகளும் உடனடியாக மின்னஞ்சலைப் பெறும்",
+        "ongoing": "நடந்து கொண்டிருக்கிறது",
+        "ongoingDisabled": "தற்போதைய அனைத்து தொடர்புகளுக்கும் ஒருமுறை மின்னஞ்சல் அனுப்பப்படும்",
+        "ongoingEnabled": "பிரிவு மாற்றங்களில் மின்னஞ்சல் தானாகவே அனுப்பப்படும்",
+        "segment": "பிரிவு",
+        "send": "அனுப்பு",
+        "sendSettings": "அமைப்புகள்",
         "sendTypes": {
-          "oneOffLabel": "",
-          "ongoingLabel": "",
-          "title": ""
+          "oneOffLabel": "ஒரு முறை மின்னஞ்சல்",
+          "ongoingLabel": "தற்போதைய மின்னஞ்சல்",
+          "title": "என அனுப்பவும்"
         },
-        "summaryOnceOnly": "",
-        "summaryOngoingJoin": "",
-        "summaryOngoingJoinDirectSend": "",
-        "summaryOngoingLeave": "",
-        "summaryOngoingPaused": "",
-        "summaryTemplate": "",
-        "title": "",
-        "titleDirectSend": "",
-        "titleSendTime": ""
+        "summaryOnceOnly": "இந்த மின்னஞ்சல் பிரிவில் உள்ள அனைத்து தற்போதைய தொடர்புகளுக்கும் ஒருமுறை அனுப்பப்படும்.",
+        "summaryOngoingJoin": "This email is sent daily பெறுநர் contacts who have newly joined the segment \"{segment}\".",
+        "summaryOngoingJoinDirectSend": "\"{segment}\" பிரிவில் உள்ள புதிய தொடர்புகளுக்கு இந்த மின்னஞ்சல் தினமும் அனுப்பப்படும். கூடுதலாக, ஏற்கனவே உள்ள அனைத்து தொடர்புகளும் உடனடியாக அதைப் பெறும்.",
+        "summaryOngoingLeave": "\"{segment}\" பிரிவில் இருந்து வெளியேறிய தொடர்புகளுக்கு இந்த மின்னஞ்சல் தினமும் அனுப்பப்படும்.",
+        "summaryOngoingPaused": "இந்த மின்னஞ்சல் தற்போது இடைநிறுத்தப்பட்டுள்ளது மற்றும் தானாக அனுப்பப்படாது.",
+        "summaryTemplate": "இந்த மின்னஞ்சல் தானாக அனுப்பப்படவில்லை மற்றும் பிரிவுகளுக்கான புதிய மின்னஞ்சல்களுக்கான டெம்ப்ளேட்டாகப் பயன்படுத்தலாம்.",
+        "title": "பிரிவு அடிப்படையிலானது",
+        "titleDirectSend": "ஏற்கனவே உள்ள தொடர்புகளுக்கு உடனடியாக அனுப்பவும்",
+        "titleSendTime": "எப்போது அனுப்பு"
       },
-      "fromEmail": "",
-      "fromName": "",
-      "label": "",
+      "fromEmail": "மின்னஞ்சலில் இருந்து",
+      "fromName": "பெயரிலிருந்து",
+      "label": "மின்னஞ்சல்",
       "templates": {
-        "description": "",
-        "subtitle": "",
-        "title": ""
+        "description": "விண்ணப்பம் அனுப்பிய மின்னஞ்சல்களின் பொருள் மற்றும் உள்ளடக்கத்தை நிர்வகிக்கவும். இயல்புநிலை டெம்ப்ளேட்டைப் பயன்படுத்தி (மஞ்சள்) மின்னஞ்சல் தனிப்பயனாக்கப்பட்டதா (பச்சை) என்பதை நிலை வண்ணம் காட்டுகிறது, அல்லது உள்ளமைக்கப்படவில்லை, எனவே செயலில் இல்லை (சிவப்பு).",
+        "subtitle": "கணினி முழுவதும்",
+        "title": "மின்னஞ்சல் டெம்ப்ளேட்களை அமைக்கவும்"
       },
-      "text": "",
-      "title": ""
+      "text": "அனைத்து மின்னஞ்சல் தொடர்புகளும் இந்த மின்னஞ்சல் முகவரியிலிருந்து அனுப்பப்படும்.",
+      "title": "பொதுவான மின்னஞ்சல் முகவரியை அமைக்கவும்"
     },
     "general": {
       "footer": {
         "dataPrivacy": {
-          "impressumUrl": "",
-          "privacyUrl": "",
-          "termsUrl": "",
-          "title": ""
+          "impressumUrl": "முத்திரை முகவரி",
+          "privacyUrl": "தனியுரிமைக் கொள்கை முகவரி",
+          "termsUrl": "பணி விதிமுறைகள் முகவரி",
+          "title": "தரவு தனியுரிமை"
         },
         "otherLinks": {
-          "add": "",
-          "linkText": "",
-          "title": "",
-          "url": ""
+          "add": "மற்றொரு இணைப்பைச் சேர்க்கவும்",
+          "linkText": "இணைப்பு உரை",
+          "title": "பிற இணைப்புகள்",
+          "url": "முகவரி"
         },
-        "siteUrl": "",
-        "text": "",
-        "title": ""
+        "siteUrl": "முக்கிய இணையதள முகவரி",
+        "text": "இந்த இணைப்புகள் பீபியின் அடிக்குறிப்பிலும் மின்னஞ்சல்களிலும் தோன்றும்",
+        "title": "அடிக்குறிப்பு"
       },
-      "label": "",
-      "language": "",
-      "logo": "",
-      "organisationName": "",
+      "label": "பொது",
+      "language": "மொழி",
+      "logo": "சின்னம்",
+      "organisationName": "அமைப்பின் பெயர்",
       "socialSharing": {
-        "description": "",
-        "image": "",
-        "shareTitle": "",
-        "text": "",
-        "title": "",
-        "twitterHandle": ""
+        "description": "பகிர்வு விளக்கம்",
+        "image": "படத்தைப் பகிரவும்",
+        "shareTitle": "தலைப்பைப் பகிரவும்",
+        "text": "உங்கள் பீபி சமூகத்திற்கான இணைப்பு பகிரப்படும்போது சமூக ஊடகங்களில் தோன்றுவதை உள்ளமைக்கவும்",
+        "title": "சமூக பகிர்வு",
+        "twitterHandle": "ட்விட்டர் கைப்பிடி"
       }
     },
     "payment": {
-      "enableOneTimeDonation": "",
-      "oneTimeDonationsTitle": "",
-      "paymentTitle": "",
-      "showOneTimeDonation": "",
-      "taxRate": "",
-      "taxRateLabelOneTime": "",
-      "taxRateLabelRecurring": ""
+      "enableOneTimeDonation": "ஒரு முறை பங்களிப்புகளை இயக்கு",
+      "oneTimeDonationsTitle": "ஒரு முறை பங்களிப்புகள்",
+      "paymentTitle": "கட்டணம்",
+      "showOneTimeDonation": "முகப்புத் திரையில் ஒரு முறை பங்களிப்புகளைக் காட்டு",
+      "taxRate": "VAT விகிதம்",
+      "taxRateLabelOneTime": "ஒரு முறை பங்களிப்புகளுக்கு VAT விகிதத்தை இயக்கவும்",
+      "taxRateLabelRecurring": "தொடர்ச்சியான பங்களிப்புகளுக்கு VAT விகிதத்தை இயக்கவும்"
     },
     "theme": {
-      "bodyFont": "",
+      "bodyFont": "உடல் உரை",
       "colorNames": {
-        "body": "",
-        "danger": "",
-        "link": "",
-        "primary": "",
-        "success": "",
-        "warning": ""
+        "body": "உரை",
+        "danger": "இடர்",
+        "link": "இணைப்புகள்",
+        "primary": "முக்கிய",
+        "success": "செய்",
+        "warning": "எச்சரிக்கை"
       },
-      "colors": "",
-      "customColors": "",
-      "fontNotListed": "",
-      "fonts": "",
-      "label": "",
+      "colors": "நிறங்கள்",
+      "customColors": "தனிப்பயன்",
+      "fontNotListed": "<p>உங்கள் எழுத்துரு பட்டியலிடப்பட்டதைக் காணவில்லையா? அதைச் சேர்க்க, <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> ஐத் தொடர்பு கொள்ளவும்.</p>\n",
+      "fonts": "எழுத்துருக்கள்",
+      "label": "கருப்பொருள்",
       "presetColors": {
-        "default": ""
+        "default": "இயல்புநிலை"
       },
-      "titleFont": ""
+      "titleFont": "தலைப்பு எழுத்துரு"
     },
-    "title": ""
+    "title": "அமைப்புகள்"
   },
   "advancedSearch": {
-    "addRule": "",
-    "button": "",
-    "createFiltersAfter": "",
-    "createFiltersBefore": "",
+    "addRule": "விதியைச் சேர்க்கவும்",
+    "button": "வடிப்பான்கள்",
+    "createFiltersAfter": "விதிகள்",
+    "createFiltersBefore": "முடிவுகள் பொருந்துவதை மட்டும் காட்டு",
     "createFiltersType": {
-      "all": "",
-      "any": ""
+      "all": "அனைத்தும்",
+      "any": "ஏதேனும்"
     },
-    "createdSegment": "",
-    "invalidRuleError": "",
+    "createdSegment": "\"{segment}\" பிரிவு உருவாக்கப்பட்டது",
+    "invalidRuleError": "இந்த விதியில் ஏதோ உடைக்கப்பட்டுள்ளது: \"{ rule }\". தயவுசெய்து புதுப்பிக்கவும்!",
     "matchWord": {
-      "AND": "",
-      "OR": ""
+      "AND": "மற்றும்",
+      "OR": "அல்லது"
     },
-    "nestedRules": "",
-    "noNestedRules": "",
+    "nestedRules": "உள்ளமைக்கப்பட்ட விதிகள்",
+    "noNestedRules": "மேம்பட்ட தேடல் திருத்தியைப் பயன்படுத்தி திருத்த முடியாத உள்ளமை விதிகளை இந்த வடிப்பான் கொண்டுள்ளது.",
     "operators": {
       "all": {
-        "is_empty": "",
-        "is_not_empty": ""
+        "is_empty": "காலியாக உள்ளது",
+        "is_not_empty": "காலியாக இல்லை"
       },
       "array": {
-        "contains": "",
-        "not_contains": ""
+        "contains": "அடங்கும்",
+        "not_contains": "சேர்க்கவில்லை"
       },
       "blob": {
-        "contains": "",
-        "not_contains": ""
+        "contains": "கொண்டுள்ளது",
+        "not_contains": "கொண்டிருக்கவில்லை"
       },
       "boolean": {
-        "equal": ""
+        "equal": "உள்ளது"
       },
       "date": {
-        "between": "",
-        "equal": "",
-        "greater": "",
-        "greater_or_equal": "",
-        "less": "",
-        "less_or_equal": "",
-        "not_between": "",
-        "not_equal": ""
+        "between": "இடையே",
+        "equal": "உள்ளது",
+        "greater": "பிறகு",
+        "greater_or_equal": "பிறகு அல்லது",
+        "less": "முன்",
+        "less_or_equal": "முன் அல்லது",
+        "not_between": "இடையில் இல்லை",
+        "not_equal": "அன்று இல்லை"
       },
       "enum": {
-        "equal": "",
-        "not_equal": ""
+        "equal": "உள்ளது",
+        "not_equal": "இல்லை"
       },
       "number": {
-        "between": "",
-        "equal": "",
-        "greater": "",
-        "greater_or_equal": "",
-        "less": "",
-        "less_or_equal": "",
-        "not_between": "",
-        "not_equal": ""
+        "between": "இடையே",
+        "equal": "உள்ளது",
+        "greater": "விட அதிகமாக",
+        "greater_or_equal": "குறைந்தபட்சம்",
+        "less": "விட குறைவாக",
+        "less_or_equal": "அதிகபட்சம்",
+        "not_between": "இடையில் இல்லை",
+        "not_equal": "இல்லை"
       },
       "text": {
-        "begins_with": "",
-        "contains": "",
-        "ends_with": "",
-        "equal": "",
-        "not_begins_with": "",
-        "not_contains": "",
-        "not_ends_with": "",
-        "not_equal": ""
+        "begins_with": "தொடங்குகிறது",
+        "contains": "கொண்டுள்ளது",
+        "ends_with": "உடன் முடிகிறது",
+        "equal": "உள்ளது",
+        "not_begins_with": "தொடங்குவதில்லை",
+        "not_contains": "கொண்டிருக்கவில்லை",
+        "not_ends_with": "உடன் முடிவதில்லை",
+        "not_equal": "இல்லை"
       }
     },
     "saveSegment": {
       "createOrUpdate": {
-        "create": "",
-        "label": "",
-        "update": ""
+        "create": "புதிய பிரிவை உருவாக்கவும்",
+        "label": "புதிய பிரிவை உருவாக்க விரும்புகிறீர்களா?",
+        "update": "\"{segment}\" பிரிவைப் புதுப்பிக்கவும்"
       },
-      "createSegment": "",
-      "segmentName": "",
-      "text": "",
-      "title": "",
-      "updateSegment": ""
+      "createSegment": "பிரிவை உருவாக்கவும்",
+      "segmentName": "பிரிவின் பெயர்",
+      "text": "ஒரு பிரிவு என்பது நீங்கள் உருவாக்கிய வடிப்பான்கள் போன்றவற்றுடன் பொருந்தக்கூடிய தொடர்புகளின் குழுவாகும். இந்த வடிப்பான்களுடன் பொருந்தக்கூடிய புதிய தொடர்புகள் தானாகவே பிரிவில் சேர்க்கப்படும்.",
+      "title": "பகுதியை சேமிக்கவும்",
+      "updateSegment": "பிரிவைப் புதுப்பிக்கவும்"
     },
-    "selectFilter": "",
-    "updatedSegment": ""
+    "selectFilter": "வடிகட்டியைத் தேர்ந்தெடுக்கவும்",
+    "updatedSegment": "\"{segment}\" பிரிவு புதுப்பிக்கப்பட்டது"
   },
   "apiKey": {
     "data": {
-      "createdAt": "",
-      "description": "",
-      "expires": "",
-      "token": ""
+      "createdAt": "உருவாக்கப்பட்டது",
+      "description": "விவரம்",
+      "expires": "காலாவதி தேதி",
+      "token": "கிள்ளாக்கு"
     }
   },
   "callout": {
     "actions": {
-      "updateResponse": ""
+      "updateResponse": "உங்கள் பதிலைப் புதுப்பிக்கவும்"
     },
-    "addAPoint": "",
-    "addLocation": "",
+    "addAPoint": "நீங்கள் புள்ளியைச் சேர்க்க விரும்பும் வரைபடத்தில் சொடுக்கு செய்யவும்",
+    "addLocation": "புதிய பதிவைச் சேர்க்கவும்",
     "builder": {
       "actions": {
-        "addSlide": ""
+        "addSlide": "ச்லைடைச் சேர்க்கவும்"
       },
       "common": {
         "actions": {
-          "add": "",
-          "remove": ""
+          "add": "கூட்டு",
+          "remove": "அகற்று"
         },
-        "internalTitle": "",
-        "showAdvancedOptions": "",
-        "slides": "",
-        "startEndScreens": ""
+        "internalTitle": "உள் தலைப்பு",
+        "showAdvancedOptions": "மேம்பட்ட விருப்பங்களைக் காட்டு",
+        "slides": "ச்லைடுகள்",
+        "startEndScreens": "தொடக்க மற்றும் முடிவு திரைகள்"
       },
       "navigation": {
-        "nextButton": "",
+        "nextButton": "அடுத்த பொத்தான் உரை",
         "nextSlide": {
-          "default": "",
-          "label": ""
+          "default": "– இயல்புநிலை –",
+          "label": "அடுத்தது slide"
         },
-        "prevButton": "",
-        "slideNo": "",
-        "submitButton": ""
+        "prevButton": "பின் பொத்தான் உரை",
+        "slideNo": "ச்லைடு {no}",
+        "submitButton": "பொத்தான் உரையைச் சமர்ப்பிக்கவும்"
       },
-      "showAdvancedOptions": "",
-      "slidesTitle": "",
-      "startEndScreenTitle": "",
+      "showAdvancedOptions": "மேம்பட்ட விருப்பங்களைக் காட்டு",
+      "slidesTitle": "ச்லைடுகள்",
+      "startEndScreenTitle": "தொடக்க மற்றும் முடிவு திரைகள்",
       "tabs": {
         "content": {
-          "title": ""
+          "title": "உள்ளடக்கம்"
         },
         "email": {
           "body": {
-            "default": ""
+            "default": "<p>வணக்கம் {'*|FNAME|*'},</p><p></p><p>இந்த மின்னஞ்சல் உங்கள் {'*|EMAIL|*'} என்ற மின்னஞ்சல் முகவரியைப் பயன்படுத்தி <a href=\"{'*|CALLOUTLINK|*'}\">\"{'*|CALLOUTTITLE|*'}\"</a>க்கான உங்கள் பதிலை உறுதிப்படுத்துகிறது.</p><p></p><p>உங்கள் ஆதரவுக் குழுவைத் தொடர்பு கொள்ளவும். href=\"mailto:{'*|SUPPORTEMAIL|*'}\">{'*|SUPPORTEMAIL|*'}</a>.</p><p></p><p>நல்வாழ்த்துக்கள்</p>"
           },
           "collectInfoWarning": {
-            "description": "",
-            "title": ""
+            "description": "அனைத்து பங்கேற்பாளர்களுக்கும் மின்னஞ்சலை அனுப்ப, நீங்கள் அமைப்புகள் தாவலில் \"தொடர்புத் தகவலைச் சேகரிக்க\" என்பதை இயக்க வேண்டும்",
+            "title": "தொடர்பு செய்தி சேகரிக்கப்படவில்லை"
           },
           "sendEmail": {
-            "description": "",
-            "label": ""
+            "description": "தங்கள் தொடர்புத் தகவலைச் சமர்ப்பிக்கும் அனைத்து பங்கேற்பாளர்களுக்கும் மின்னஞ்சல் அனுப்பப்படும்",
+            "label": "சமர்ப்பித்த பிறகு அனைத்து பங்கேற்பாளர்களுக்கும் மின்னஞ்சல் அனுப்பவும்"
           },
           "subject": {
-            "default": ""
+            "default": "உங்கள் பதிலுக்கு நன்றி"
           },
-          "title": ""
+          "title": "மின்னஞ்சல்"
         },
         "endMessage": {
           "inputs": {
             "action": {
-              "label": "",
+              "label": "பதில் சமர்ப்பிக்கப்பட்ட பிறகு:",
               "opts": {
-                "redirect": "",
-                "showMessage": ""
+                "redirect": "அவற்றை வேறு பக்கத்திற்குத் திருப்பிவிடவும்",
+                "showMessage": "நன்றி செய்தியைக் காட்டு"
               }
             },
             "text": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "<p>இங்கே நீங்கள் பயனர்களுக்கு இன்னும் விரிவாக நன்றி தெரிவிக்கலாம் மற்றும் புதுப்பிப்புகள் அல்லது பின்தொடர்தல்களை எப்போது எதிர்பார்க்கலாம் என்பதை அவர்களுக்குத் தெரிவிக்கலாம்.</p>",
+              "label": "நன்றி உரை",
+              "placeholder": "அவர்களின் உள்ளீடு எவ்வளவு மதிப்புமிக்கது என்பது பற்றிய கூடுதல் விவரங்களைச் சேர்க்கவும்…"
             },
             "title": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "<p>CrowdNewsroom க்கு பதிலளித்து முடித்தவுடன், <strong>நன்றி என்ற தலைப்பைப்</strong> வாசகர்கள் காண்பீர்கள்.</p>",
+              "label": "நன்றி தலைப்பு",
+              "placeholder": "நன்றி!"
             },
             "url": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "பதிலைச் சமர்ப்பித்த பிறகு பயனர்கள் தானாகவே இந்தப் பக்கத்திற்கு அழைத்துச் செல்லப்படுவார்கள்",
+              "label": "திருப்பிவிடுவதற்கான முகவரி",
+              "placeholder": "https://example.com"
             }
           },
-          "title": ""
+          "title": "இறுதி செய்தி"
         },
         "intro": {
-          "help": "",
-          "label": "",
-          "title": ""
+          "help": "அறிமுக உரையானது, பதிலளிப்பதற்கு முன் பயனருக்குத் தேவையான எந்த சூழலையும் கொடுக்க வேண்டும்",
+          "label": "அறிமுக உரை",
+          "title": "அறிமுகம்"
         },
         "mailchimp": {
-          "title": ""
+          "title": "Mailchimp ஒத்திசைவு"
         },
         "responseDisplay": {
-          "title": ""
+          "title": "பதில் காட்சி"
         },
         "settings": {
           "access": {
-            "title": ""
+            "title": "அணுகல் மற்றும் பாதுகாப்பு"
           },
           "dates": {
-            "title": ""
+            "title": "திட்டமிடல்"
           },
           "displayOptions": {
-            "description": "",
-            "title": ""
+            "description": "எந்த பதில் விருப்பங்கள் பயனர்களுக்குத் தெரிய வேண்டும் என்பதைத் தேர்வுசெய்யவும்",
+            "title": "காட்சி விருப்பங்கள்"
           },
           "inputs": {
             "collectGuestInfo": {
-              "label": "",
+              "label": "விருந்தினர்களிடமிருந்து தொடர்புத் செய்தி தேவை",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "விருந்தினர்கள் அநாமதேயமாக பதிலளிக்கலாம்",
+                "enabled": "விருந்தினர்களின் தொடர்புத் தகவலும் கேட்கப்படும்"
               }
             },
             "collectMemberInfo": {
-              "label": "",
+              "label": "தொடர்பு தகவலை சேகரிக்கவும்",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "அனைத்து பதில்களும் அநாமதேயமாக இருக்கும்",
+                "enabled": "உறுப்பினர்களின் தொடர்புத் தகவல்கள் சேகரிக்கப்படும்"
               }
             },
             "expires": {
-              "description": "",
-              "label": "",
+              "description": "முடிவுத் தேதியை அமைக்கவும்",
+              "label": "முடிவுத் தேதியை அமைக்கவும்",
               "opts": {
-                "never": "",
-                "schedule": ""
+                "never": "CrowdNewsroom கைமுறையாக மூடப்படும் வரை இயங்கும்",
+                "schedule": "CrowdNewsroom ஒரு குறிப்பிட்ட தேதியில் தானாகவே மூடப்படும்."
               }
             },
             "mapAndGallery": {
-              "description": "",
+              "description": "பயனர்களுக்கு எந்த மறுமொழி காட்சிகள் இருக்க வேண்டும் என்பதைத் தேர்வுசெய்யவும்",
               "gallery": {
-                "disabledDescription": "",
-                "enabledDescription": "",
-                "label": ""
+                "disabledDescription": "படத்தின் அடிப்படையிலான பதில்கள் பொதுவில் கிடைக்காது",
+                "enabledDescription": "படத்தின் அடிப்படையிலான பதில்கள் பொதுவில் கிடைக்கும்",
+                "label": "பொது பதில்களின் கேலரி காட்சியை இயக்கவும்"
               },
               "map": {
-                "disabledDescription": "",
-                "enabledDescription": "",
-                "label": ""
+                "disabledDescription": "இருப்பிடக் குறியிடப்பட்ட வரைபடக் கண்ணோட்டம் பொதுவில் கிடைக்காது",
+                "enabledDescription": "இருப்பிடக் குறியிடப்பட்ட வரைபடக் கண்ணோட்டம் பொதுவில் கிடைக்கும்",
+                "label": "பொது பதில்களின் வரைபடக் காட்சியை இயக்கவும்"
               },
-              "title": ""
+              "title": "வரைபடம் மற்றும் கேலரி காட்சிகள்"
             },
             "mapSchema": {
               "addressPattern": {
-                "label": ""
+                "label": "நீங்கள் எந்த வடிவமைப்பைப் பயன்படுத்த விரும்புகிறீர்கள்?"
               },
               "addressPatternProp": {
-                "label": "",
-                "none": ""
+                "label": "முகவரியுடன் ஒரு புலத்தை நிரப்ப விரும்புகிறீர்களா?",
+                "none": "– ஒரு துறையில் நிரப்ப வேண்டாம் –"
               },
               "addressProp": {
-                "label": ""
+                "label": "வரைபடத்தில் பதில்களைத் திட்டமிட எந்த படிவப் புலத்தைப் பயன்படுத்த வேண்டும்?"
               },
               "bounds": {
-                "label": ""
+                "label": "அதிகபட்ச வரைபட எல்லைகள்"
               },
               "center": {
-                "label": ""
+                "label": "ஆரம்ப வரைபட நடுவண்"
               },
               "geocodeCountries": {
-                "label": ""
+                "label": "குறிப்பிட்ட நாடுகளுக்கு இருப்பிடத் தேடல் முடிவுகளைக் கட்டுப்படுத்தவா?"
               },
               "initialZoom": {
-                "label": ""
+                "label": "ஆரம்ப சூம் நிலை"
               },
               "mapIconProp": {
-                "label": "",
-                "none": ""
+                "label": "வரைபடத்தில் வகை ஐகான்களைக் காட்ட கேள்வியைத் தேர்ந்தெடுக்கவும்",
+                "none": "- எல்லா பதில்களுக்கும் இயல்புநிலை ஐகான்களைப் பயன்படுத்தவும் -"
               },
               "mapIconStylingProp": {
-                "label": ""
+                "label": "வகை"
               },
               "mapIconStylingSetting": {
-                "label": "",
-                "title": ""
+                "label": "பதிலுக்கு வண்ணம் மற்றும் ஐகானைத் தேர்ந்தெடுக்கவும்: ",
+                "title": "வரைபடத்தில் படவுரு பாணி"
               },
               "maxZoom": {
-                "label": ""
+                "label": "அதிகபட்ச சூம் நிலை"
               },
               "minZoom": {
-                "label": ""
+                "label": "குறைந்தபட்ச சூம் நிலை"
               },
               "style": {
-                "help": "",
-                "label": ""
+                "help": "<p>வரைபடக் காட்சிக்கு <strong>மூன்றாம் தரப்பு வரைபடக் கருவி தேவை</strong> போன்ற <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">மேப்டைலர்</a> அல்லது <a href=\"https://www.mapbox.com\" target=\"reflank\">Maper. அந்தக் கருவிகள் நீங்கள் இங்கே ஒட்ட வேண்டிய வரைபட நடை முகவரி ஐ உங்களுக்கு வழங்குகிறது.</p>",
+                "label": "வரைபட நடை முகவரி"
               },
-              "title": ""
+              "title": "வரைபட அமைப்புகள்"
             },
             "newsletterSettings": {
-              "disabled": "",
-              "label": "",
+              "disabled": "நீங்கள் தொடர்புத் தகவலைச் சேகரிக்கவில்லை என்றால், செய்திமடல் பதிவுகளை நீங்கள் கேட்க முடியாது",
+              "label": "தொடர்பு படிவத்தில் செய்திமடல் கையொப்பத்தைச் சேர்க்கவும்",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "பங்கேற்பாளர்கள் செய்திமடலில் பதிவு செய்ய விரும்புகிறீர்களா என்று கேட்கப்பட மாட்டார்கள்",
+                "enabled": "பங்கேற்பாளர்கள் செய்திமடலில் பதிவு செய்ய விரும்புகிறீர்களா என்று கேட்கப்படும்"
               }
             },
             "openToEveryone": {
-              "help": "",
-              "label": "",
+              "help": "<p>CrowdNewsrooms <strong>அனைவருக்கும்</strong> வழங்கப்படலாம் அல்லது <strong>உறுப்பினர்கள் மட்டும்</strong> பங்கேற்பதற்கு</p>",
+              "label": "அனைவருக்கும் திறந்திருக்கும்",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "இந்த CrowdNewsroomஐ உறுப்பினர்கள் மட்டுமே அணுகவும் பங்கேற்கவும் முடியும்",
+                "enabled": "இந்த CrowdNewsroomஐ எவரும் அணுகலாம் மற்றும் பங்கேற்கலாம்"
               }
             },
             "requireCaptcha": {
-              "help": "",
-              "label": "",
+              "help": "<p>நீங்கள் <strong>போட் ச்பேம் பாதுகாப்பை</strong> இயக்கினால், பயனர்கள் தாங்கள் மனிதர்கள் என்பதை உறுதிப்படுத்த கேப்ட்சாவை முடிக்க வேண்டும். உங்கள் CrowdNewsroom bots</p> மூலம் ச்பேம் செய்யப்படுவதைத் தடுக்க இது பயனுள்ளதாக இருக்கும்",
+              "label": "போட் ச்பேம் பாதுகாப்பை இயக்கு",
               "members": {
-                "label": "",
+                "label": "உறுப்பினர்களுக்கும் செயல்படுத்தவும்",
                 "opts": {
-                  "disabled": "",
-                  "enabled": ""
+                  "disabled": "உங்கள் உறுப்பினர்களுக்கு CAPTCHA கேட்கப்படவில்லை",
+                  "enabled": "உங்கள் உறுப்பினர்களுக்கு கூட CAPTCHA கேட்கப்பட்டது"
                 }
               },
               "opts": {
-                "all": "",
-                "guests": "",
-                "none": ""
+                "all": "அனைத்து பயனர்களும் CAPTCHA ஐ நிரப்புமாறு கேட்கப்படுவார்கள்",
+                "guests": "உறுப்பினர்கள் அல்லாதவர்கள் CAPTCHA ஐ நிரப்பும்படி கேட்கப்படுவார்கள்",
+                "none": "CAPTCHA தேவையில்லை"
               }
             },
             "responseImageProp": {
-              "description": "",
-              "label": ""
+              "description": "வரைபடம் அல்லது கேலரி பார்வையில் பதிலைக் காட்சிப்படுத்த படம் பயன்படுத்தப்படும்",
+              "label": "பதில் படம்"
             },
             "responseLinks": {
-              "add": "",
-              "description": "",
-              "label": "",
+              "add": "கூட்டு",
+              "description": "எடுத்துக்காட்டாக, பிழை அல்லது தொடர்பு மின்னஞ்சலைப் புகாரளிப்பதற்கான இணைப்பைச் சேர்க்க மறுமொழி அடிக்குறிப்பைப் பயன்படுத்தவும். மின்னஞ்சல் முகவரியுடன் இணைக்க, முகவரி புலத்தில் மின்னஞ்சல் முகவரியைத் தொடர்ந்து mailto: என தட்டச்சு செய்யவும்.",
+              "label": "பதில்களின் கீழே அடிக்குறிப்பைச் சேர்க்கவும்",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "பதில்களில் எந்த அடிக்குறிப்பு இணைப்புகளையும் காட்ட வேண்டாம்",
+                "enabled": "தொடர்பு அல்லது பிழை அறிக்கையிடலுக்கான பதில்களில் அடிக்குறிப்பு இணைப்புகளைக் காட்டு"
               },
               "placeholder": {
-                "label": "",
-                "url": ""
+                "label": "எடுத்துக்காட்டு: பிழையைப் புகாரளிக்கவும்",
+                "url": "mailto:error{'@'}mail.com"
               },
               "text": {
-                "label": ""
+                "label": "உரை"
               },
               "url": {
-                "label": ""
+                "label": "முகவரி"
               }
             },
             "responseSettings": {
-              "label": "",
+              "label": "பதில் நடத்தை",
               "opts": {
-                "multiple": "",
-                "singleEditable": "",
-                "singleNonEditable": ""
+                "multiple": "பல பதில்கள், திருத்த முடியாதவை",
+                "singleEditable": "ஒரே பதில் ஆனால் CrowdNewsroom திறந்திருக்கும் போது திருத்தலாம்",
+                "singleNonEditable": "ஒற்றை பதில், திருத்த முடியாதது"
               },
-              "title": ""
+              "title": "பதில் அமைப்புகள்"
             },
             "responseTitleProp": {
-              "description": "",
-              "label": ""
+              "description": "வரைபடம் அல்லது கேலரி பார்வையில் ஒவ்வொரு பதிலின் மேல் தலைப்பு தோன்றும்",
+              "label": "பதில் தலைப்பு"
             },
             "showResponses": {
-              "label": "",
+              "label": "பதில்களை பொதுவில் காண்பி",
               "opts": {
-                "no": "",
-                "yes": ""
+                "no": "சேகரிக்கப்பட்ட பதில்கள் பொதுவில் கிடைக்காது",
+                "yes": "சேகரிக்கப்பட்ட பதில்களை பொதுவில் காட்டு"
               }
             },
             "starts": {
-              "label": "",
+              "label": "தொடக்க தேதியை அமைக்கவும்",
               "opts": {
-                "now": "",
-                "schedule": ""
+                "now": "CrowdNewsroom உடனடியாகக் கிடைக்கும்.",
+                "schedule": "CrowdNewsroom ஒரு குறிப்பிட்ட தேதியில் கிடைக்கும்."
               }
             },
             "visible": {
-              "help": "",
-              "label": "",
+              "help": "இணைப்பைப் பெறுபவர்களுக்கு மட்டுமே CrowdNewsroom தெரியும்",
+              "label": "உறுப்பினர் டாச்போர்டில் க்ரவுட் நியூச்ரூமைக் காட்டு",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "உறுப்பினர் டாச்போர்டில் CrowdNewsroom தோன்றாது",
+                "enabled": "க்ரவுட் நியூச்ரூம் உறுப்பினர் டாச்போர்டில் தோன்றும்"
               }
             },
             "whichResponseBuckets": {
-              "description": "",
-              "label": ""
+              "description": "தேர்வு செய்யப்படாத வாளிகளில் உள்ள பதில்கள் பொது பார்வையில் இருந்து மறைக்கப்படும்",
+              "label": "காணக்கூடிய பதில் வாளிகள்"
             }
           },
-          "title": ""
+          "title": "அமைப்புகள்"
         },
         "titleAndImage": {
           "inputs": {
             "description": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "இந்த விளக்கம் உறுப்பினர் டாச்போர்டில் காட்டப்பட்டுள்ளது. இது பகிர்வுக்கும் பயன்படுகிறது.",
+              "label": "சுருக்கமான விளக்கம்",
+              "placeholder": "மக்கள் ஏன் பங்கேற்க வேண்டும் என்பதை விரைவாக விளக்கவும்"
             },
             "general": {
-              "title": ""
+              "title": "பொதுவான செய்தி"
             },
             "image": {
-              "description": "",
-              "help": "",
-              "label": ""
+              "description": "படத்தைப் பதிவேற்றிய பிறகு சேமிக்க மறக்காதீர்கள்!",
+              "help": "அட்டைப் படம் சிறு உருவங்கள் மற்றும் பகிர்வு இணைப்புகளில் காட்டப்படும்",
+              "label": "அட்டைப் படம்"
             },
             "overrideShare": {
-              "label": "",
+              "label": "பகிர்வதற்கு தனிப்பயன் தலைப்பு மற்றும் விளக்கத்தைப் பயன்படுத்தவா?",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "சமூக வலைப்பின்னல்களில் பகிரப்பட்ட இணைப்புகள் ஒரே தலைப்பு மற்றும் விளக்கத்தைக் கொண்டிருக்கும்.",
+                "enabled": "சமூக வலைப்பின்னல்களில் பகிரப்படும் இணைப்புகள் தனிப்பயன் தலைப்பு மற்றும் விளக்கத்தைக் கொண்டிருக்கும்."
               }
             },
             "shareDescription": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "<p><strong>பகிர்வு விளக்கம்</strong> புலமானது சமூக ஊடக அட்டைகளில் தோன்றும் வகையில் குறுகிய விளக்கத்தை அமைக்கிறது.</p>",
+              "label": "பகிர்வு விளக்கம்",
+              "placeholder": "மக்கள் ஏன் பங்கேற்க வேண்டும் என்பதை விரைவாக விளக்கவும்"
             },
             "shareTitle": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "<p><strong>பகிர்வு தலைப்பு</strong> புலம் சமூக ஊடக அட்டைகளில் தோன்றும் வகையில் தலைப்பை அமைக்கிறது.</p>",
+              "label": "தலைப்பைப் பகிரவும்",
+              "placeholder": "உங்கள் CrowdNewsroom இன் பெயர்"
             },
             "sharing": {
-              "title": ""
+              "title": "பகிர்தல் விருப்பங்கள்"
             },
             "slug": {
-              "boxTitle": "",
-              "help": "",
-              "label": "",
+              "boxTitle": "பெர்மாலின்க்",
+              "help": "CrowdNewsroomஐப் பகிர இந்த இணைப்பைப் பயன்படுத்தவும்",
+              "label": "தலைப்பிலிருந்து ச்லக்கை தானாக உருவாக்கவும்",
               "locked": {
-                "title": ""
+                "title": "CrowdNewsroom ஏற்கனவே வெளியிடப்பட்டதால் பெர்மாலின்க் பூட்டப்பட்டுள்ளது."
               },
               "opts": {
-                "auto": "",
-                "manual": ""
+                "auto": "பெர்மாலின்க் CrowdNewsroom தலைப்பிலிருந்து உருவாக்கப்பட்டது. நீங்கள் தலைப்பை மாற்றினால் இணைப்பு தானாகவே புதுப்பிக்கப்படும்.",
+                "manual": "பெர்மாலின்க் கைமுறையாக அமைக்கப்பட்டுள்ளது"
               }
             },
             "title": {
-              "label": "",
-              "placeholder": ""
+              "label": "தலைப்பு",
+              "placeholder": "உங்கள் CrowdNewsroom இன் பெயர்."
             }
           },
-          "title": "",
-          "urlWillBe": ""
+          "title": "தலைப்பு மற்றும் படம்",
+          "urlWillBe": "பெர்மாலின்க் இருக்கும்"
         },
         "translations": {
           "language": {
-            "description": "",
-            "enableLanguages": "",
-            "title": ""
+            "description": "நீங்கள் CrowdNewsroomஐ பல மொழிகளில் மொழிபெயர்க்கலாம். மொழிபெயர்ப்பு விடுபட்டால், முதன்மை மொழியில் உரையைக் காண்பிப்போம்.",
+            "enableLanguages": "மொழிபெயர்ப்பு ஆதரவை இயக்கவும்",
+            "title": "மொழி"
           },
           "languageSettings": {
-            "title": ""
+            "title": "மொழி"
           },
           "navigationButtons": {
-            "title": ""
+            "title": "பொத்தான்கள்"
           },
           "responseLinks": {
-            "title": ""
+            "title": "அடிக்குறிப்பு உரை"
           },
-          "title": ""
+          "title": "மொழிபெயர்ப்புகள்"
         }
       },
-      "title": "",
+      "title": "CrowdNewsroom கட்டுபவர்",
       "translationFields": {
-        "description": "",
-        "html": "",
-        "label": "",
-        "option": "",
-        "placeholder": ""
+        "description": "விவரம்",
+        "html": "உள்ளடக்கம்",
+        "label": "சிட்டை",
+        "option": "விருப்பம் {n}",
+        "placeholder": "ப்ளாச்ஓல்டர்"
       },
-      "untitledCallout": ""
+      "untitledCallout": "பெயரிடப்படாத க்ரவுட் நியூச்ரூம்"
     },
-    "confirmHuman": "",
-    "contactDetails": "",
-    "ended": "",
-    "entryOf": "",
+    "confirmHuman": "நீங்கள் ஒரு மனிதர் என்பதை உறுதிப்படுத்தவும்",
+    "contactDetails": "தொடர்பு விவரங்கள்",
+    "ended": "இந்த CrowdNewsroom {date} அன்று முடிந்தது",
+    "entryOf": "{total} இல் {no} நுழைவு",
     "form": {
-      "email": "",
-      "guestFieldsMissing": "",
-      "name": "",
-      "submittingResponseError": ""
+      "email": "உங்கள் மின்னஞ்சல்",
+      "guestFieldsMissing": "உங்கள் தொடர்பு விவரங்களை எங்களிடம் கூறுங்கள்",
+      "name": "உங்கள் பெயர்",
+      "submittingResponseError": "உங்கள் பதிலைச் சமர்ப்பிப்பதில் சிக்கல் உள்ளது, மீண்டும் முயற்சிக்கவும்"
     },
-    "getStarted": "",
-    "joinNow": "",
-    "loginToYourAccount": "",
-    "membersOnly": "",
-    "responseSubmitted": "",
+    "getStarted": "தொடங்குங்கள்",
+    "joinNow": "இப்போது சேரவும்",
+    "loginToYourAccount": "உங்கள் கணக்கில் உள்நுழைக",
+    "membersOnly": "இந்த CrowdNewsroom உறுப்பினர்களுக்கு மட்டுமே திறந்திருக்கும். பங்கேற்க",
+    "responseSubmitted": "பதில் சமர்ப்பிக்கப்பட்டது",
     "share": {
-      "address": "",
+      "address": "பின்வரும் இணைப்பைப் பயன்படுத்தி பகிரவும்:",
       "aria": {
-        "email": "",
-        "facebook": "",
-        "linkedin": "",
-        "telegram": "",
-        "twitter": "",
-        "whatsapp": ""
+        "email": "மின்னஞ்சல் மூலம் பகிரவும்",
+        "facebook": "Facebook இல் பகிரவும்",
+        "linkedin": "LinkedIn இல் பகிரவும்",
+        "telegram": "டெலிகிராமில் பகிரவும்",
+        "twitter": "Twitter இல் பகிரவும்",
+        "whatsapp": "வாட்ச்அப்பில் பகிரவும்"
       },
-      "services": ""
+      "services": "அல்லது இந்தச் சேவைகளில் ஒன்றைப் பயன்படுத்தி விரைவாகப் பகிரவும்:"
     },
-    "showingPreview": "",
-    "toContributionPage": "",
-    "updateContribution": "",
+    "showingPreview": "முன்னோட்ட முறையில் பதிலைச் சமர்ப்பிக்க முடியாது",
+    "toContributionPage": "எனது பங்களிப்பைத் திருத்தவும்",
+    "updateContribution": "உங்கள் பங்களிப்பைப் புதுப்பிக்கவும்",
     "views": {
-      "gallery": "",
-      "map": ""
+      "gallery": "தொகுப்பு",
+      "map": "வரைபடம்"
     },
-    "youResponded": "",
-    "yourResponse": ""
+    "youResponded": "இந்த CrowdNewsroom ♥க்குப் பதிலளித்துள்ளீர்கள்",
+    "yourResponse": "உங்கள் பதில்"
   },
   "calloutAdmin": {
-    "deleted": "",
-    "ended": "",
-    "overview": "",
-    "reopened": "",
-    "responses": ""
+    "deleted": "CrowdNewsroom நீக்கப்பட்டது.",
+    "ended": "CrowdNewsroom முடிந்தது. அதைத் திருத்துவதன் மூலம் மீண்டும் திறக்கலாம்.",
+    "overview": "கண்ணோட்டம்",
+    "reopened": "கூட்ட செய்தி அறை மீண்டும் திறக்கப்பட்டது. மற்றொரு முடிவுத் தேதியை அமைக்க வேண்டும் என்றால், கூட்ட செய்தி அறையைத் திருத்தவும்.",
+    "responses": "பதில்கள்"
   },
   "calloutAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "இந்த CrowdNewsroomமை நிச்சயமாக நீக்க விரும்புகிறீர்களா?",
+        "title": "CrowdNewsroom ஐ நீக்கவா?"
       }
     },
-    "created": "",
+    "created": "உங்கள் புதிய CrowdNewsroom வெற்றிகரமாக உருவாக்கப்பட்டது.",
     "dates": {
-      "ends": "",
-      "label": "",
-      "starts": ""
+      "ends": "முடிவடைகிறது",
+      "label": "தேதிகள்",
+      "starts": "தொடங்குகிறது"
     },
-    "savedDraft": "",
+    "savedDraft": "வரைவு சேமிக்கப்பட்டது",
     "settings": {
       "answers": {
-        "editable": "",
-        "final": "",
-        "label": ""
+        "editable": "புதுப்பிக்க முடியும்",
+        "final": "புதுப்பிக்க முடியாது",
+        "label": "பதில்கள்"
       },
       "contactInfo": {
-        "label": "",
-        "optional": "",
-        "required": ""
+        "label": "தொடர்பு செய்தி",
+        "optional": "விரும்பினால்",
+        "required": "தேவை"
       },
       "endsWith": {
-        "label": "",
-        "message": "",
-        "redirect": ""
+        "label": "உடன் முடிகிறது",
+        "message": "நன்றி செய்தி",
+        "redirect": "வழிமாற்று"
       },
-      "label": "",
+      "label": "அமைப்புகள்",
       "openTo": {
-        "everyone": "",
-        "label": "",
-        "membersOnly": ""
+        "everyone": "அனைவரும்",
+        "label": "திறந்திருக்கும்",
+        "membersOnly": "உறுப்பினர்கள் மட்டுமே"
       }
     },
-    "summary": "",
-    "updated": ""
+    "summary": "சுருக்கம்",
+    "updated": "உங்கள் CrowdNewsroom வெற்றிகரமாக புதுப்பிக்கப்பட்டது."
   },
   "calloutResponse": {
     "data": {
-      "answers": "",
-      "assignee": "",
-      "bucket": "",
-      "callout": "",
-      "contact": "",
-      "createdAt": "",
-      "tags": "",
-      "updatedAt": ""
+      "answers": "பதில்கள்",
+      "assignee": "க்கு ஒதுக்கப்பட்டது",
+      "bucket": "வாளி",
+      "callout": "க்ரவுட் நியூச்ரூம்",
+      "contact": "தொடர்பு",
+      "createdAt": "சமர்ப்பிக்கப்பட்ட தேதி",
+      "tags": "குறிச்சொற்கள்",
+      "updatedAt": "தேதி புதுப்பிக்கப்பட்டது"
     },
     "dataGroup": {
-      "answers": "",
-      "response": ""
+      "answers": "பதில் பதில்கள்",
+      "response": "பதில் செய்தி"
     }
   },
   "calloutResponseBuckets": {
-    "inbox": "",
-    "trash": "",
-    "verified": ""
+    "inbox": "இன்பாக்ச்",
+    "trash": "குப்பை",
+    "verified": "சரிபார்க்கப்பட்டது"
   },
   "calloutResponseComments": {
     "actions": {
-      "addComment": "",
-      "updateComment": ""
+      "addComment": "கருத்தைச் சேர்க்கவும்",
+      "updateComment": "கருத்தைப் புதுப்பிக்கவும்"
     },
-    "addComment": "",
-    "comments": "",
+    "addComment": "கருத்தைச் சேர்க்கவும்",
+    "comments": "கருத்துகள்",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "இந்தக் கருத்தை நிச்சயமாக நீக்க விரும்புகிறீர்களா?",
+      "title": "கருத்தை நீக்கவா?"
     }
   },
   "calloutResponsePage": {
     "actions": {
-      "assignTo": "",
-      "moveBucket": "",
-      "toggleTag": "",
-      "viewOnMap": ""
+      "assignTo": "ஒதுக்குங்கள்",
+      "moveBucket": "வாளியை நகர்த்தவும்",
+      "toggleTag": "குறிச்சொல்லை மாற்றவும்",
+      "viewOnMap": "வரைபடத்தில் பார்க்கவும்"
     },
-    "editMode": "",
-    "manageFolders": "",
-    "manageReviewers": "",
-    "manageTags": "",
+    "editMode": "நீங்கள் திருத்த பயன்முறையில் உள்ளீர்கள், கவனமாக இருங்கள்!",
+    "manageFolders": "கோப்புறைகளை நிர்வகிக்கவும்",
+    "manageReviewers": "மதிப்பாய்வாளர்களை நிர்வகிக்கவும்",
+    "manageTags": "குறிச்சொற்களை நிர்வகிக்கவும்",
     "notifications": {
-      "addedAssignee": "",
-      "addedTag": "",
-      "movedToBucket": "",
-      "removedAssignee": "",
-      "removedTag": ""
+      "addedAssignee": "\"{assignee}\"க்கு ஒதுக்கப்பட்டது",
+      "addedTag": "\"{tag}\" குறிச்சொல் சேர்க்கப்பட்டது",
+      "movedToBucket": "{bucket}க்கு நகர்த்தப்பட்டது",
+      "removedAssignee": "\"{assignee}\" இடமிருந்து ஒதுக்கப்படவில்லை",
+      "removedTag": "\"{tag}\" குறிச்சொல் அகற்றப்பட்டது "
     },
-    "responseOf": "",
-    "selectedCount": ""
+    "responseOf": "{bucket} இல் உள்ள {total} {no} பதில்",
+    "selectedCount": "{n} பதில் தேர்ந்தெடுக்கப்பட்டது | {n} பதில்கள் தேர்ந்தெடுக்கப்பட்டன"
   },
   "calloutResponsesPage": {
-    "moveToBucket": "",
-    "noTags": "",
-    "response": "",
-    "responseNo": "",
-    "searchAssignee": "",
-    "searchTag": "",
-    "showAnswer": "",
-    "showLatestComment": "",
-    "showingOf": ""
+    "moveToBucket": "{bucket}க்கு நகர்த்து",
+    "noTags": "குறிச்சொற்கள் இல்லை",
+    "response": "பதில்",
+    "responseNo": "பதில் {no}",
+    "searchAssignee": "ஒதுக்கப்பட்டது...",
+    "searchTag": "குறியிடப்பட்டது...",
+    "showAnswer": "பதில்",
+    "showLatestComment": "அண்மைக் கால கருத்து",
+    "showingOf": "{total} இல் {start} பெறுநர் {end} பதில்களைக் காட்டுகிறது"
   },
   "calloutReviewerManager": {
-    "add": "",
-    "canEdit": "",
+    "add": "மதிப்பாய்வாளரைச் சேர்க்கவும்",
+    "canEdit": "மதிப்பாய்வாளர் CrowdNewsroomஐயும் திருத்தலாம்",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "{reviewerName} நிச்சயமாக அகற்ற விரும்புகிறீர்களா? இந்த Crowd Newsroomஐ இனி அவர்களால் மதிப்பாய்வு செய்ய முடியாது.",
+      "title": "மதிப்பாய்வாளரை அகற்று"
     },
-    "contact": "",
-    "editorTag": "",
+    "contact": "தொடர்பு அடையாளம்",
+    "editorTag": "திருத்தி",
     "search": {
       "error": {
-        "message": "",
-        "title": ""
+        "message": "மின்னஞ்சல் முகவரி உள்ளதா என்பதையும் எழுத்துப்பிழைகள் இல்லாதது என்பதையும் உறுதி செய்து கொள்ளவும்.",
+        "title": "தொடர்பு கிடைக்கவில்லை"
       },
-      "placeholder": "",
-      "successMessage": ""
+      "placeholder": "மின்னஞ்சல் முகவரியைத் தேடுங்கள்",
+      "successMessage": "மின்னஞ்சல் செல்லுபடியாகும்"
     },
-    "title": ""
+    "title": "விமர்சகர்கள்"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": ""
+    "oneResponseWarning": "ஒரு நபருக்கு ஒரு பதில் மட்டுமே அனுமதிக்கப்படும் என்பதை நினைவில் கொள்ளவும். நீங்கள் ஏற்கனவே பங்களித்திருந்தால், கூடுதல் பதில்கள் பதிவு செய்யப்படாது."
   },
   "callouts": {
-    "archive": "",
+    "archive": "காப்பகம்",
     "data": {
-      "callout": "",
-      "endDate": ""
+      "callout": "க்ரவுட் நியூச்ரூம்",
+      "endDate": "முடிவு தேதி"
     },
-    "noArchivedCallouts": "",
-    "search": "",
-    "showAll": "",
-    "showAnswered": "",
-    "showingOf": ""
+    "noArchivedCallouts": "இங்கே பார்க்க எதுவும் இல்லை",
+    "search": "தேடல்",
+    "showAll": "அனைத்தும்",
+    "showAnswered": "பதிலளித்தார்",
+    "showingOf": "{total} இல் {start} முதல் {end} வரை காட்டுகிறது"
   },
   "calloutsAdmin": {
-    "addCallout": "",
+    "addCallout": "உருவாக்கு",
     "data": {
-      "expires": "",
-      "responses": "",
-      "starts": "",
-      "status": "",
-      "title": ""
+      "expires": "காலாவதி தேதி",
+      "responses": "பதில்கள்",
+      "starts": "தொடக்க தேதி",
+      "status": "நிலை",
+      "title": "தலைப்பு"
     },
     "filter": {
-      "all": "",
-      "draft": "",
-      "ended": "",
-      "open": "",
-      "scheduled": ""
+      "all": "அனைத்தும்",
+      "draft": "வரைவுகள்",
+      "ended": "முடிந்தது",
+      "open": "திற",
+      "scheduled": "திட்டமிடப்பட்டது"
     }
   },
   "common": {
-    "backToHome": "",
+    "backToHome": "வீட்டுக்குத் திரும்பு",
     "contributionPeriod": {
-      "annually": "",
-      "monthly": ""
+      "annually": "ஆண்டுதோறும்",
+      "monthly": "மாதாந்திர"
     },
     "contributionType": {
-      "automatic": "",
-      "gift": "",
-      "manual": "",
-      "none": ""
+      "automatic": "தானியங்கி",
+      "gift": "பரிசு",
+      "manual": "கையேடு",
+      "none": "எதுவுமில்லை"
     },
-    "default": "",
-    "hello": "",
-    "id": "",
-    "itemsPerPage": "",
-    "label": "",
-    "loading": "",
-    "login": "",
+    "default": "இயல்புநிலை",
+    "hello": "வணக்கம்",
+    "id": "ஐடி",
+    "itemsPerPage": "ஒரு பக்கத்திற்கு {items} உருப்படிகள்",
+    "label": "சிட்டை",
+    "loading": "ஏற்றுகிறது...",
+    "login": "புகுபதிவு",
     "manualPaymentSource": {
-      "none": ""
+      "none": "எதுவுமில்லை"
     },
     "newsletterStatus": {
-      "cleaned": "",
-      "none": "",
-      "pending": "",
-      "subscribed": "",
-      "unsubscribed": ""
+      "cleaned": "தூய்மை செய்யப்பட்டது",
+      "none": "எதுவுமில்லை",
+      "pending": "நிலுவையில் உள்ளது",
+      "subscribed": "குழுசேர்ந்தார்",
+      "unsubscribed": "குழுவிலகப்பட்டது"
     },
-    "no": "",
-    "noResults": "",
-    "pageCount": "",
+    "no": "இல்லை",
+    "noResults": "முடிவுகள் எதுவும் கிடைக்கவில்லை",
+    "pageCount": "{pageTotal} இல் {pageNumber} பக்கம்",
     "paymentPeriod": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "ஆண்டுதோறும்",
+      "monthly": "மாதாந்திர",
+      "one-time": "ஒரு முறை"
     },
     "paymentStatus": {
-      "cancelled": "",
-      "draft": "",
-      "failed": "",
-      "pending": "",
-      "successful": ""
+      "cancelled": "ரத்து செய்யப்பட்டது",
+      "draft": "வரைவு",
+      "failed": "தோல்வியடைந்தது",
+      "pending": "நிலுவையில் உள்ளது",
+      "successful": "வெற்றியடைந்தது"
     },
     "paymentType": {
-      "oneTime": "",
-      "prorated": "",
-      "recurring": "",
-      "unknown": ""
+      "oneTime": "ஒரு முறை",
+      "prorated": "ப்ரோரேட்டட்",
+      "recurring": "மறுநிகழ்வு",
+      "unknown": "தெரியவில்லை"
     },
-    "perMonth": "",
-    "perOneTime": "",
-    "perOneTimeText": "",
-    "perYear": "",
+    "perMonth": "/ மாதம்",
+    "perOneTime": " ஒரு முறை",
+    "perOneTimeText": "ஒரு முறை",
+    "perYear": "/ வருடம்",
     "role": {
-      "admin": "",
-      "member": "",
-      "superadmin": ""
+      "admin": "நிர்வாகி",
+      "member": "உறுப்பினர்",
+      "superadmin": "சூப்பர் அட்மின்"
     },
-    "selectNone": "",
-    "selectOne": "",
-    "show": "",
-    "showingOf": "",
+    "selectNone": "-- இல்லை --",
+    "selectOne": "ஒன்றைத் தேர்ந்தெடு...",
+    "show": "காட்டு",
+    "showingOf": "{total} முடிவுகளில் {start} முதல் {end} வரை காட்டுகிறது",
     "status": {
-      "draft": "",
-      "ended": "",
-      "open": "",
-      "scheduled": ""
+      "draft": "வரைவு",
+      "ended": "முடிந்தது",
+      "open": "திற",
+      "scheduled": "திட்டமிடப்பட்டது"
     },
-    "statusLabel": "",
-    "thankYou": "",
-    "timeAgo": "",
-    "timeIn": "",
-    "until": "",
-    "yes": ""
+    "statusLabel": "நிலை: {status}",
+    "thankYou": "நன்றி!",
+    "timeAgo": "{time} முன்பு",
+    "timeIn": "{time}",
+    "until": "வரை",
+    "yes": "ஆம்"
   },
   "contactAccount": {
     "confirmDelete": {
-      "text": "",
-      "title": "",
-      "warning": ""
+      "text": "இது {email} உடன் தொடர்புடைய எல்லா தரவையும் நீக்கும். அவர்கள் செயலில் பங்களிப்பு இருந்தால், இது ரத்து செய்யப்படும்.",
+      "title": "தொடர்பை நீக்கு",
+      "warning": "இது மீள முடியாதது. நீங்கள் நிச்சயமாக தொடர விரும்புகிறீர்களா?"
     },
-    "contactDeleted": ""
+    "contactDeleted": "தொடர்பு நீக்கப்பட்டது."
   },
   "contactContribution": {
     "confirmCancel": {
-      "confirm": "",
-      "text": "",
-      "title": ""
+      "confirm": "ஆம், அதை ரத்து வெற்றி",
+      "text": "இந்தத் தொடர்பின் பங்களிப்பை நிச்சயமாக ரத்துசெய்ய விரும்புகிறீர்களா? இதை செயல்தவிர்க்க முடியாது.",
+      "title": "பங்களிப்பை ரத்து செய்யவா?"
     },
     "updateNotice": {
-      "text": "",
-      "title": ""
+      "text": "நீங்கள் தற்போது ஒரு தொடர்பின் பங்களிப்பைப் புதுப்பிக்க முடியாது, ஆதரவுக்கு{'@'}beabee.ioஐத் தொடர்பு கொள்ளவும்.",
+      "title": "தற்போது கிடைக்கவில்லை"
     }
   },
   "contactOverview": {
-    "about": "",
-    "account": "",
+    "about": "பற்றி",
+    "account": "கணக்கு",
     "annotation": {
-      "copy": ""
+      "copy": "<p>இந்தப் பிரிவில் சேர்க்கப்பட்ட அனைத்துத் தகவல்களும் <strong>நிர்வாகிகளுக்கு மட்டுமே தெரியும்</strong>. உறுப்பினர்கள் தங்கள் சுயவிவரத்தில் அல்லது உறுப்பினர் பகுதியில் இவற்றைப் பார்க்க மாட்டார்கள்.</p>\n"
     },
-    "callouts": "",
-    "cancellationDate": "",
-    "contribution": "",
-    "contributionType": "",
-    "joinSurvey": "",
+    "callouts": "க்ரவுட் நியூச்ரூம்",
+    "cancellationDate": "அன்று ரத்து செய்யப்பட்டது",
+    "contribution": "பங்களிப்பு",
+    "contributionType": "வகை",
+    "joinSurvey": "கணக்கெடுப்பில் சேரவும்",
     "newsletter": {
-      "groups": "",
-      "status": "",
-      "title": ""
+      "groups": "குழுக்கள்",
+      "status": "நிலை",
+      "title": "செய்திமடல்"
     },
-    "oneTime": "",
-    "overview": "",
-    "pickTag": "",
-    "profile": "",
-    "recurring": "",
-    "roles": "",
+    "oneTime": "ஒரு முறை",
+    "overview": "கண்ணோட்டம்",
+    "pickTag": "கீழே உள்ள பட்டியலில் இருந்து ஒரு குறிச்சொல்லைத் தேர்ந்தெடுக்கவும்",
+    "profile": "சுயவிவரம்",
+    "recurring": "மறுநிகழ்வு",
+    "roles": "பாத்திரங்கள்",
     "security": {
-      "instructions": "",
-      "loginOverride": "",
+      "instructions": "இந்த இணைப்பை நகலெடுத்து பகிரவும்:",
+      "loginOverride": "உள்நுழைவு மேலெழுதுதல்",
       "mfa": {
-        "desc": "",
-        "disabledDesc": ""
+        "desc": "இந்த தொடர்பில் 2FA இயக்கப்பட்டுள்ளது. அதை முடக்க \"{ disableLabel }\" பொத்தானைக் சொடுக்கு செய்யவும்.",
+        "disabledDesc": "இந்த தொடர்புக்கு 2FA இயக்கப்படவில்லை."
       },
-      "resetPassword": "",
-      "title": "",
-      "whatDoTheButtonsDo": ""
+      "resetPassword": "கடவுச்சொல்லை மீட்டமைக்கவும்",
+      "title": "பாதுகாப்பு",
+      "whatDoTheButtonsDo": "அவசரகால இணைப்பை உருவாக்க பொத்தானைக் சொடுக்கு செய்யவும்:"
     }
   },
   "contactSelector": {
-    "contactNOfTotal": "",
-    "selfOption": ""
+    "contactNOfTotal": "{current} இல் {total} தொடர்பு",
+    "selfOption": "உங்களைப் போலவே"
   },
   "contacts": {
-    "addContact": "",
+    "addContact": "தொடர்பைச் சேர்க்கவும்",
     "advancedSearch": {
-      "hasAnswered": "",
-      "selectCallout": ""
+      "hasAnswered": "பங்கேற்றாரா?",
+      "selectCallout": "தேர்ந்தெடு"
     },
-    "allContacts": "",
+    "allContacts": "அனைத்து தொடர்புகளும்",
     "data": {
-      "activeMembership": "",
-      "activePermission": "",
-      "activeUser": "",
-      "amount": "",
-      "annotationsCopy": "",
-      "averageDonationAmount": "",
-      "contribution": "",
-      "contributionCancelled": "",
-      "contributionMonthlyAmount": "",
-      "contributionPeriod": "",
-      "contributionType": "",
-      "deliveryOptIn": "",
-      "description": "",
-      "donationDate": "",
-      "email": "",
-      "firstname": "",
-      "hasDonated": "",
-      "joined": "",
-      "lastSeen": "",
-      "lastname": "",
-      "manualPaymentSource": "",
-      "membershipExpires": "",
-      "membershipStarts": "",
-      "name": "",
-      "newsletterGroups": "",
-      "newsletterStatus": "",
-      "notes": "",
-      "payingFee": "",
-      "paymentReference": "",
-      "paymentSource": "",
-      "period": "",
-      "phone": "",
-      "preferredChannel": "",
-      "tags": "",
-      "totalDonationAmount": ""
+      "activeMembership": "செயலில் உள்ள உறுப்பினர்",
+      "activePermission": "செயலில் பங்கு",
+      "activeUser": "செயலில் உள்ள பயனர்",
+      "amount": "தொகை",
+      "annotationsCopy": "தொடர்பு வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
+      "averageDonationAmount": "ஒரு முறை பங்களிப்புகளின் சராசரி தொகை (எல்லா நேரத்திலும்)",
+      "contribution": "தொடர்ச்சியான பங்களிப்பு",
+      "contributionCancelled": "தொடர் பங்களிப்பு ரத்து செய்யப்பட்டது",
+      "contributionMonthlyAmount": "தொடர் பங்களிப்பு மாதாந்திர தொகை",
+      "contributionPeriod": "தொடர்ச்சியான பங்களிப்பு காலம்",
+      "contributionType": "தொடர்ச்சியான பங்களிப்பு வகை",
+      "deliveryOptIn": "டெலிவரி தேர்வு",
+      "description": "விவரம்",
+      "donationDate": "ஒரு முறை பங்களிப்பு தேதி",
+      "email": "மின்னஞ்சல்",
+      "firstname": "முதல் பெயர்",
+      "hasDonated": "ஒருமுறை பங்களிப்பு செய்துள்ளார்",
+      "joined": "சேர்ந்தார்",
+      "lastSeen": "கடைசியாக பார்த்தது",
+      "lastname": "கடைசி பெயர்",
+      "manualPaymentSource": "கைமுறையாக பணம் செலுத்துவதற்கான சான்று",
+      "membershipExpires": "உறுப்பினர் வரை",
+      "membershipStarts": "முதல் உறுப்பினர்",
+      "name": "பெயர்",
+      "newsletterGroups": "செய்திமடல் குழுக்கள்",
+      "newsletterStatus": "செய்திமடல் நிலை",
+      "notes": "குறிப்புகள்",
+      "payingFee": "கட்டணம் செலுத்துகிறீர்களா?",
+      "paymentReference": "கட்டண குறிப்பு",
+      "paymentSource": "கட்டண சான்று",
+      "period": "காலசுழற்சி",
+      "phone": "தொலைபேசி எண்",
+      "preferredChannel": "விருப்பமான சேனல்",
+      "tags": "குறிச்சொற்கள்",
+      "totalDonationAmount": "ஒரு முறை பங்களிப்புகளின் மொத்த தொகை (எல்லா நேரத்திலும்)"
     },
     "dataGroup": {
-      "callout": "",
-      "contact": "",
-      "oneTimeContributions": "",
-      "recurringContributions": "",
-      "role": ""
+      "callout": "க்ரவுட் நியூச்ரூம்",
+      "contact": "தொடர்பு செய்தி",
+      "oneTimeContributions": "ஒரு முறை பங்களிப்புகள்",
+      "recurringContributions": "தொடர்ச்சியான பங்களிப்புகள்",
+      "role": "பங்கு"
     },
     "emailTemplates": {
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "இந்த மின்னஞ்சல் டெம்ப்ளேட்டை நிச்சயமாக நீக்க விரும்புகிறீர்களா? இதை செயல்தவிர்க்க முடியாது.",
+        "title": "டெம்ப்ளேட்டை நீக்கவா?"
       },
-      "create": "",
-      "date": "",
-      "editTitle": "",
-      "editTitleWithName": "",
-      "empty": "",
-      "manage": "",
-      "name": "",
-      "newTitle": "",
-      "showingOf": "",
-      "subject": "",
-      "title": "",
+      "create": "டெம்ப்ளேட்டை உருவாக்கவும்",
+      "date": "உருவாக்கப்பட்டது",
+      "editTitle": "டெம்ப்ளேட்டைத் திருத்து",
+      "editTitleWithName": "டெம்ப்ளேட்டைத் திருத்து: {name}",
+      "empty": "இதுவரை மின்னஞ்சல் டெம்ப்ளேட்கள் எதுவும் இல்லை.",
+      "manage": "மின்னஞ்சல் டெம்ப்ளேட்களை நிர்வகிக்கவும்",
+      "name": "பெயர்",
+      "newTitle": "புதிய டெம்ப்ளேட்டை உருவாக்கவும்",
+      "showingOf": "{total} இல் {start} பெறுநர் {end} டெம்ப்ளேட்களைக் காட்டுகிறது",
+      "subject": "பொருள்",
+      "title": "மின்னஞ்சல் டெம்ப்ளேட்கள்",
       "toggleEnabled": {
-        "disabled": "",
-        "enabled": ""
+        "disabled": "மின்னஞ்சல் டெம்ப்ளேட் முடக்கப்பட்டது",
+        "enabled": "மின்னஞ்சல் டெம்ப்ளேட் இயக்கப்பட்டது"
       }
     },
-    "noContacts": "",
-    "noResults": "",
-    "numResults": "",
-    "search": "",
-    "selectedCount": "",
+    "noContacts": "இதுவரை தொடர்புகள் எதுவும் சேர்க்கப்படவில்லை",
+    "noResults": "தொடர்புகள் எதுவும் இல்லை",
+    "numResults": "{n} தொடர்பு கண்டறியப்பட்டது | {n} தொடர்புகள் கண்டறியப்பட்டன",
+    "search": "தொடர்புகளைத் தேடு...",
+    "selectedCount": "{n} தொடர்பு தேர்ந்தெடுக்கப்பட்டது | {n} தொடர்புகள் தேர்ந்தெடுக்கப்பட்டன",
     "sendEmail": {
-      "newEmail": "",
-      "sent": "",
-      "templateLabel": "",
-      "templateName": "",
-      "templateNameRequired": "",
-      "title": ""
+      "newEmail": "புதிய மின்னஞ்சல்",
+      "sent": "பிரிவுக்கு மின்னஞ்சல் அனுப்பப்பட்டது.",
+      "templateLabel": "டெம்ப்ளேட்",
+      "templateName": "டெம்ப்ளேட்டின் பெயர்",
+      "templateNameRequired": "புதிய டெம்ப்ளேட்டுக்கான பெயரை உள்ளிடவும்.",
+      "title": "பிரிவுக்கு மின்னஞ்சல் அனுப்பவும்"
     },
-    "showingOf": ""
+    "showingOf": "{total} இல் {start} பெறுநர் {end} தொடர்புகளைக் காட்டுகிறது"
   },
   "contribution": {
-    "adminCancelDescription": "",
-    "bankAccount": "",
-    "billing": "",
-    "cancelContribution": "",
-    "cancelDescription": "",
-    "cancelMessage": "",
-    "cancelledContribution": "",
-    "changeBank": "",
-    "changeBankInfo": "",
-    "contributing": "",
-    "dueToRenew": "",
-    "expired": "",
-    "expiredText": "",
-    "hasPendingPayment": "",
-    "manualPayment": "",
-    "manualPaymentSource": "",
-    "nextAmountChanging": "",
+    "adminCancelDescription": "தொடர்பின் பங்களிப்பை நீங்கள் ரத்துசெய்தால், அவர்களின் தற்போதைய கட்டணச் சுழற்சியின் முடிவில் {date} அன்று அவரது உறுப்பினர் முடிவடையும்.",
+    "bankAccount": "வங்கி கணக்கு",
+    "billing": "பட்டியலிடல்",
+    "cancelContribution": "பங்களிப்பை நீக்கறல்",
+    "cancelDescription": "உங்கள் பங்களிப்பை நீங்கள் ரத்துசெய்தால், உங்களின் தற்போதைய கட்டணச் சுழற்சியின் முடிவில் {date} அன்று உங்கள் மெம்பர்சிப் முடிவடையும்.",
+    "cancelMessage": "நீங்கள் செல்வதைக் கண்டு வருந்துகிறோம்.",
+    "cancelledContribution": "உங்கள் பங்களிப்பு ரத்துசெய்யப்பட்டது.",
+    "changeBank": "வேறு வங்கிக் கணக்கிற்கு மாற்றவும்",
+    "changeBankInfo": "அடுத்த கட்டத்தில் உங்கள் புதிய வங்கிக் கணக்கின் விவரங்கள் கேட்கப்படும்.",
+    "contributing": "நீங்கள் பங்களிக்கிறீர்கள்",
+    "dueToRenew": "உங்கள் பங்களிப்பு {renewalDate} அன்று புதுப்பிக்கப்பட உள்ளது.",
+    "expired": "உங்கள் பங்களிப்பு காலாவதியானது.",
+    "expiredText": "தயவு செய்து புதுப்பிப்பதைக் கருத்தில் கொள்ளுங்கள், மிகக் குறைந்த தொகையில் அது எங்களுக்கு பெரிதும் உதவும். நன்றி!",
+    "hasPendingPayment": "உங்கள் கட்டணம் தற்போது செயல்படுத்தப்படுகிறது.",
+    "manualPayment": "தற்போது உங்கள் உறுப்பினர் பங்களிப்பை {source} மூலம் செலுத்துகிறீர்கள். எங்கள் உறுப்பினர் அமைப்பு மூலம் பணம் செலுத்துவதன் மூலம், எங்கள் உறுப்பினர்களிடமிருந்து எவ்வளவு பணத்தை நாங்கள் மாதந்தோறும் நம்பலாம் என்பதை அறிய எங்களுக்கு உதவுவீர்கள், மேலும் உங்கள் பங்களிப்பை நிர்வகிப்பது உங்களுக்கு எளிதாக இருக்கும்.",
+    "manualPaymentSource": "மூன்றாம் தரப்பு கருவி",
+    "nextAmountChanging": "உங்கள் பங்களிப்பு {nextAmount} அன்று {renewalDate} மாறும்.",
     "paymentHistory": {
-      "empty": "",
-      "title": ""
+      "empty": "கடந்த கால பேமெண்ட்கள் மற்றும் அவற்றின் இன்வாய்ச்கள் இங்கே காட்டப்படும்.",
+      "title": "கட்டண வரலாறு"
     },
-    "paymentMethod": "",
-    "perMonthText": "",
-    "perYearText": "",
-    "prorateDecreaseMessage": "",
-    "prorateDecreaseMessageWillStart": "",
-    "prorateIncreaseMessage": "",
-    "prorateIncreaseMessageOneOff": "",
-    "prorateNoText": "",
-    "prorateNoTitle": "",
-    "prorateYesText": "",
-    "prorateYesTitle": "",
-    "restartContribution": "",
-    "startContribution": "",
-    "startedContribution": "",
-    "updateContribution": "",
-    "updatePaymentType": "",
-    "updatedContribution": "",
-    "updatedPaymentSource": "",
-    "willExpire": "",
-    "willRenew": "",
-    "willRenewWithNewAmount": ""
+    "paymentMethod": "பணம் செலுத்தும் முறை",
+    "perMonthText": "ஒரு மாதம்",
+    "perYearText": "ஒரு வருடம்",
+    "prorateDecreaseMessage": "உங்கள் தற்போதைய பங்களிப்பில் இன்னும் ஒரு மாதம் உள்ளது. | உங்கள் தற்போதைய பங்களிப்பில் இன்னும் {n} மாதங்கள் உள்ளன.",
+    "prorateDecreaseMessageWillStart": "உங்கள் புதிய பங்களிப்பு {renewalDate} அன்று தொடங்கும்.",
+    "prorateIncreaseMessage": "உங்கள் தற்போதைய பங்களிப்பில் இன்னும் ஒரு மாதம் உள்ளது. | உங்கள் தற்போதைய பங்களிப்பில் இன்னும் {n} மாதங்கள் உள்ளன.",
+    "prorateIncreaseMessageOneOff": "உங்களின் புதிய பங்களிப்பை உடனடியாகத் தொடங்க, {oneOffPayment}ஐ ஒருமுறை செலுத்தலாம்.",
+    "prorateNoText": "அதுவரை உங்கள் தற்போதைய பங்களிப்பில் தொடர்ந்து இருப்பீர்கள்.",
+    "prorateNoTitle": "எனது பங்களிப்பை {renewalDate} அன்று புதுப்பிக்கவும்",
+    "prorateYesText": "உங்களிடமிருந்து இப்போது {oneOffPayment} இன் ஒருமுறை கட்டணம் வசூலிக்கப்படும், மேலும் உங்கள் பங்களிப்பு உடனடியாக புதுப்பிக்கப்படும்",
+    "prorateYesTitle": "எனது பங்களிப்பை இப்போதே புதுப்பிக்கவும்",
+    "restartContribution": "பங்களிப்பை மீண்டும் தொடங்கவும்",
+    "startContribution": "பங்களிப்பைத் தொடங்கவும்",
+    "startedContribution": "உங்கள் பங்களிப்பு தொடங்கிவிட்டது.",
+    "updateContribution": "புதுப்பிப்பு பங்களிப்பு",
+    "updatePaymentType": "கட்டண முறையைப் புதுப்பிக்கவும்",
+    "updatedContribution": "உங்கள் பங்களிப்பு புதுப்பிக்கப்பட்டது.",
+    "updatedPaymentSource": "உங்கள் கட்டண முறை புதுப்பிக்கப்பட்டது.",
+    "willExpire": "உங்கள் பங்களிப்பு {expires} இல் காலாவதியாகும்.",
+    "willRenew": "உங்கள் பங்களிப்பு தானாகவே {renewalDate} அன்று புதுப்பிக்கப்படும்.",
+    "willRenewWithNewAmount": "உங்கள் பங்களிப்பு தானாகவே {renewalDate} புதுப்பிக்கப்பட்டு, நீங்கள் தேர்ந்தெடுத்த {nextAmount} மாறும்."
   },
   "editCallout": {
-    "replicated": "",
-    "title": "",
-    "warning": ""
+    "replicated": "உங்கள் CrowdNewsroom வெற்றிகரமாக நகலெடுக்கப்பட்டது, இப்போது புதிய நகலைத் திருத்துகிறீர்கள். \"தலைப்பு மற்றும் படம்\" தாவலில் தலைப்பைத் திருத்துவதை உறுதிசெய்யவும்.",
+    "title": "திருத்து: {title}",
+    "warning": "கவனமாக! நேரலை CrowdNewsroomஐத் திருத்துகிறீர்கள். படிவ பண்புகளை மாற்றுவது முந்தைய பதில்களைப் பயன்படுத்த முடியாததாக மாற்றும் அபாயத்தைக் கொண்டுள்ளது."
   },
   "editNotice": {
-    "title": ""
+    "title": "திருத்து: {title}"
   },
   "emailEditor": {
     "body": {
-      "label": ""
+      "label": "செய்தி"
     },
     "from": {
-      "label": ""
+      "label": "தனிப்பயன் அனுப்புநரின் பெயர் மற்றும் மின்னஞ்சல் முகவரியைப் பயன்படுத்தவும்"
     },
     "preview": {
-      "asContactLabel": "",
-      "from": "",
-      "label": "",
-      "unavailable": ""
+      "asContactLabel": "முன்னோட்டத்திற்கு தொடர்பு கொள்ளவும்",
+      "from": "இருந்து:",
+      "label": "முன்னோட்டம்",
+      "unavailable": "முன்னோட்டம் கிடைக்கவில்லை"
     },
     "subject": {
-      "label": ""
+      "label": "பொருள்"
     }
   },
   "emails": {
     "actions": {
-      "addCustom": "",
-      "deactivate": "",
-      "resetToDefault": ""
+      "addCustom": "தனிப்பயன் மின்னஞ்சலைச் சேர்க்கவும்",
+      "deactivate": "செயலிழக்கச் வெற்றி",
+      "resetToDefault": "இயல்புநிலைக்கு மீட்டமைக்கவும்"
     },
     "add": {
-      "title": ""
+      "title": "தனிப்பயன் மின்னஞ்சலை உருவாக்கவும்"
     },
     "confirmDelete": {
-      "message": "",
-      "messageWithMailings": "",
-      "title": ""
+      "message": "இந்த மின்னஞ்சலை முடக்க வேண்டுமா? இந்தச் செயலைச் செயல்தவிர்க்க முடியாது.",
+      "messageWithMailings": "இந்த மின்னஞ்சல் {count} முறை(கள்) அனுப்பப்பட்டது. நிச்சயமாக அதை நீக்க வேண்டுமா? இந்தச் செயலைச் செயல்தவிர்க்க முடியாது.",
+      "title": "மின்னஞ்சலை செயலிழக்கச் செய்யவும்"
     },
     "confirmResetToDefault": {
-      "message": "",
-      "title": ""
+      "message": "இந்த டெம்ப்ளேட்டை அதன் இயல்புநிலைக்கு மீட்டமைக்க விரும்புகிறீர்களா? உங்கள் விருப்ப மாற்றங்கள் இழக்கப்படும்.",
+      "title": "இயல்புநிலைக்கு மீட்டமைக்கவும்"
     },
-    "customized": "",
-    "default": "",
-    "description": "",
+    "customized": "தனிப்பயனாக்கப்பட்டது",
+    "default": "இயல்புநிலை",
+    "description": "விவரம்",
     "edit": {
-      "title": "",
-      "titleCustom": ""
+      "title": "மின்னஞ்சலைத் திருத்தவும்",
+      "titleCustom": "திருத்து: {name}"
     },
-    "fromEmail": "",
-    "fromName": "",
-    "isOngoing": "",
+    "fromEmail": "மின்னஞ்சலில் இருந்து",
+    "fromName": "இருந்து பெயர்",
+    "isOngoing": "வகை",
     "list": {
-      "showingOf": ""
+      "showingOf": "{total} இல் {start} பெறுநர் {end} மின்னஞ்சல்களைக் காட்டுகிறது"
     },
-    "mailingCount": "",
-    "missingDefault": "",
-    "name": "",
+    "mailingCount": "அஞ்சல்கள் அனுப்பப்பட்டன",
+    "missingDefault": "செயலில் இல்லை",
+    "name": "மின்னஞ்சல் பெயர்",
     "notifications": {
-      "created": "",
-      "deleted": "",
-      "missingMergeTags": "",
-      "resetToDefault": "",
-      "updated": ""
+      "created": "மின்னஞ்சல் வெற்றிகரமாக உருவாக்கப்பட்டது",
+      "deleted": "மின்னஞ்சல் வெற்றிகரமாக நீக்கப்பட்டது",
+      "missingMergeTags": "இந்த மின்னஞ்சலில் பின்வரும் தேவையான ஒன்றிணைப்பு குறிச்சொற்கள் இல்லை: {mergeTags}. ஒன்றிணைக்கும் குறிச்சொற்கள் மாறும் உள்ளடக்கத்திற்கான ஒதுக்கிடங்களாகும் (எ.கா. முதல் பெயர்). உங்கள் மின்னஞ்சல் சரியாகச் செயல்படுவதை உறுதிசெய்ய, விடுபட்ட குறிச்சொற்களைச் சேர்க்கவும்.",
+      "resetToDefault": "டெம்ப்ளேட் வெற்றிகரமாக இயல்புநிலைக்கு மீட்டமைக்கப்பட்டது",
+      "updated": "மின்னஞ்சல் வெற்றிகரமாக புதுப்பிக்கப்பட்டது"
     },
     "sendType": {
-      "oneOff": "",
-      "ongoing": "",
-      "paused": ""
+      "oneOff": "ஒருமுறை",
+      "ongoing": "நடந்து கொண்டிருக்கிறது",
+      "paused": "இடைநிறுத்தப்பட்டது"
     },
-    "status": "",
+    "status": "நிலை",
     "tabs": {
-      "custom": "",
-      "templates": ""
+      "custom": "தனிப்பயன் மின்னஞ்சல்கள்",
+      "templates": "கணினி வார்ப்புருக்கள்"
     },
     "templates": {
-      "availableFields": "",
+      "availableFields": "கிடைக்கும் புலங்கள்",
       "description": {
-        "cancelled-contribution": "",
-        "cancelled-member": "",
-        "confirm-email": "",
-        "contribution-didnt-start": "",
-        "email-exists-login": "",
-        "email-exists-set-password": "",
-        "manual-to-automatic": "",
-        "new-callout-response": "",
-        "new-member": "",
-        "one-time-donation": "",
-        "one-time-donation-failed": "",
-        "reset-device": "",
-        "reset-password": "",
-        "setup-account": "",
-        "welcome": ""
+        "cancelled-contribution": "உறுப்பினர்களின் தொடர்ச்சியான பங்களிப்பு ரத்து செய்யப்படும் போது அவர்களுக்கு அனுப்பப்படும். பொதுவாக மெம்பர்சிப் எப்போது முடிவடைகிறது என்பது பற்றிய செய்தி மற்றும் உறுப்பினர் அடையாளம் ஆகியவை அடங்கும். கருத்துக்கணிப்புக்கான இணைப்பு இருக்கலாம்.",
+        "cancelled-member": "ஒரு உறுப்பினர் அவர்களின் பங்களிப்பை ரத்து செய்யும் போது நிர்வாகிகளுக்கு அனுப்பப்படும். பொதுவாக, ரத்துசெய்யப்பட்ட உறுப்பினரின் அடையாளம் மற்றும் பெயருடன் கூடிய அறிவிப்பு இருக்கும்.",
+        "confirm-email": "பதிவு செய்யும் போது புதிய பயனர்களுக்கு அவர்களின் மின்னஞ்சல் முகவரியைச் சரிபார்க்க அனுப்பப்பட்டது. பதிவை முடிக்க அவர்கள் சொடுக்கு செய்ய வேண்டிய உறுதிப்படுத்தல் இணைப்பு உள்ளது.",
+        "contribution-didnt-start": "உறுப்பினர்களின் ச்ட்ரைப் சந்தா செலுத்துதலைத் தொடங்க முடியாதபோது அவர்களுக்கு அனுப்பப்பட்டது (எ.கா., நிராகரிக்கப்பட்ட கட்டண முறை, போதுமான பொருள் இல்லை). பணம் செலுத்தத் தவறியதால் அவர்களின் உறுப்பினர் ரத்து செய்யப்பட்டதாக அவர்களுக்குத் தெரிவிக்கிறது.",
+        "email-exists-login": "ஏற்கனவே உள்ள மற்றும் கடவுச்சொல் அமைக்கப்பட்ட செயலில் உள்ள உறுப்பினருக்கு சொந்தமான மின்னஞ்சல் முகவரியுடன் யாராவது பதிவு செய்ய முயற்சிக்கும்போது அனுப்பப்பட்டது. உள்நுழைவு இணைப்பை வழங்குவதால், அவர்கள் ஏற்கனவே இருக்கும் கணக்கை அணுக முடியும்.",
+        "email-exists-set-password": "ஏற்கனவே உள்ள மற்றும் கடவுச்சொல்லை அமைக்காத செயலில் உள்ள உறுப்பினருக்குச் சொந்தமான மின்னஞ்சல் முகவரியுடன் யாராவது பதிவு செய்ய முயற்சிக்கும் போது அனுப்பப்பட்டது. கடவுச்சொல்லை அமைப்பதற்கான இணைப்பை வழங்குகிறது.",
+        "manual-to-automatic": "உறுப்பினர்களின் கட்டண முறை வெற்றிகரமாக கைமுறையிலிருந்து தானாகத் திரும்பத் திரும்பக் கட்டணமாக மாற்றப்படும்போது அவர்களுக்கு அனுப்பப்படும். வெற்றிகரமான மாற்றத்தை உறுதிப்படுத்துகிறது.",
+        "new-callout-response": "CrowdNewsroomக்கு புதிய பதில் சமர்ப்பிக்கப்படும்போது நிர்வாகிகளுக்கு அனுப்பப்படும். பொதுவாக CrowdNewsroom விவரங்கள் மற்றும் பதிலளிக்கும் நபரின் பெயருடன் ஒரு அறிவிப்பு இருக்கும்.",
+        "new-member": "ஒரு புதிய உறுப்பினர் வெற்றிகரமாக சமூகத்தில் சேரும்போது நிர்வாகிகளுக்கு அனுப்பப்படும். பொதுவாக புதிய உறுப்பினரின் அடையாளம் மற்றும் பெயருடன் கூடிய அறிவிப்பு இருக்கும்.",
+        "one-time-donation": "ஒரு முறை பங்களிப்பை முடித்த பிறகு பயனர்களுக்கு அனுப்பப்படும்.",
+        "one-time-donation-failed": "பயனர்களின் ஒரு முறை பங்களிப்பு கட்டணம் தோல்வியடையும் போது அவர்களுக்கு அனுப்பப்படும்.",
+        "reset-device": "இரண்டு-காரணி அங்கீகாரத்திற்காக ஒரு பயனர் தங்கள் நம்பகமான சாதனத்தை மீட்டமைக்கக் கோரும்போது அனுப்பப்பட்டது. சாதனத்தை மீட்டமைக்க பாதுகாப்பான இணைப்பு உள்ளது.",
+        "reset-password": "ஒரு பயனர் தங்கள் கடவுச்சொல்லை மீட்டமைக்கக் கோரும்போது அனுப்பப்பட்டது. கடவுச்சொல்லை மீட்டமைக்க பாதுகாப்பான இணைப்பு உள்ளது.",
+        "setup-account": "ஒரு முறை பங்களிப்பை முடித்து இன்னும் கணக்கு இல்லாத பயனர்களுக்கு அனுப்பப்பட்டது.",
+        "welcome": "பதிவு செயல்முறையை முடித்த பிறகு புதிய உறுப்பினர்களுக்கு அனுப்பப்படும். இந்த மின்னஞ்சல் அவர்களை சமூகத்திற்கு வரவேற்கிறது."
       },
       "names": {
-        "cancelled-contribution": "",
-        "cancelled-member": "",
-        "confirm-email": "",
-        "contribution-didnt-start": "",
-        "email-exists-login": "",
-        "email-exists-set-password": "",
-        "manual-to-automatic": "",
-        "new-callout-response": "",
-        "new-member": "",
-        "one-time-donation": "",
-        "one-time-donation-failed": "",
-        "reset-device": "",
-        "reset-password": "",
-        "setup-account": "",
-        "welcome": ""
+        "cancelled-contribution": "பங்களிப்பு ரத்து செய்யப்பட்டது",
+        "cancelled-member": "நிர்வாகம்: ரத்து செய்யப்பட்ட உறுப்பினர் - அறிவிப்பு",
+        "confirm-email": "மின்னஞ்சலை உறுதிப்படுத்தவும்",
+        "contribution-didnt-start": "பங்களிப்பு தொடங்கவில்லை",
+        "email-exists-login": "மின்னஞ்சல் உள்ளது - உள்நுழைக",
+        "email-exists-set-password": "மின்னஞ்சல் உள்ளது - கடவுச்சொல்லை அமைக்கவும்",
+        "manual-to-automatic": "கைமுறை பங்களிப்பு தானாக மாற்றப்பட்டது",
+        "new-callout-response": "நிர்வாகம்: புதிய CrowdNewsroom - பதில் அறிவிப்பு",
+        "new-member": "நிர்வாகம்: புதிய தொடர்பு - அறிவிப்பு",
+        "one-time-donation": "ஒரு முறை பங்களிப்பு உறுதிப்படுத்தல்",
+        "one-time-donation-failed": "ஒரு முறை பங்களிப்பு தோல்வியடைந்தது",
+        "reset-device": "சாதனத்தை மீட்டமைக்கவும்",
+        "reset-password": "கடவுச்சொல்லை மீட்டமைக்கவும்",
+        "setup-account": "கணக்கை அமைக்கவும்",
+        "welcome": "வரவேற்கிறோம்"
       },
       "type": {
-        "admin": "",
-        "contact": "",
-        "general": ""
+        "admin": "நிர்வாக அறிவிப்புகள்",
+        "contact": "தொடர்பு மின்னஞ்சல்கள்",
+        "general": "பொது"
       }
     },
-    "type": ""
+    "type": "வகை"
   },
   "footer": {
-    "contactUs": "",
-    "handbookResources": "",
-    "impressum": "",
-    "joinCommunity": "",
-    "poweredBy": "",
-    "privacyPolicy": "",
-    "terms": ""
+    "contactUs": "எங்களை தொடர்பு கொள்ளவும்",
+    "handbookResources": "கையேடு & வளங்கள்",
+    "impressum": "முத்திரை",
+    "joinCommunity": "சமூகத்தில் சேரவும்",
+    "poweredBy": "சுதந்திரமான உள்ளக செய்தி அறைகளை இயக்குகிறது",
+    "privacyPolicy": "தனியுரிமைக் கொள்கை",
+    "terms": "விதிமுறைகள் மற்றும் நிபந்தனைகள்"
   },
   "forgotPassword": {
-    "backToLogin": "",
-    "description": "",
-    "message": "",
-    "title": ""
+    "backToLogin": "உள்நுழைவு பக்கத்திற்குத் திரும்பு",
+    "description": "உங்கள் மின்னஞ்சல் முகவரியை உள்ளிடவும், கடவுச்சொல் மீட்டமைப்பு வழிமுறைகளை உங்களுக்கு அனுப்புவோம்.",
+    "message": "{email} உடன் தொடர்புடைய கணக்கு இருந்தால், விரைவில் மின்னஞ்சலைப் பெறுவீர்கள். உங்கள் ச்பேம் கோப்புறை தோன்றவில்லை என்றால் அதைச் சரிபார்க்கவும்.",
+    "title": "உங்கள் கடவுச்சொல்லை மறந்துவிட்டீர்களா?"
   },
   "form": {
-    "addressLine1": "",
-    "addressLine2": "",
-    "cancel": "",
+    "addressLine1": "முகவரி வரி 1",
+    "addressLine2": "முகவரி வரி 2",
+    "cancel": "ரத்துசெய்",
     "characters": {
-      "remaining": ""
+      "remaining": "{remaining} எழுத்துக்கள் மீதமுள்ளன."
     },
-    "cityOrTown": "",
-    "deliveryOptIn": "",
-    "description": "",
-    "email": "",
+    "cityOrTown": "நகரம்/நகரம்",
+    "deliveryOptIn": "டெலிவரி தேர்வு",
+    "description": "விவரம்",
+    "email": "மின்னஞ்சல்",
     "errorMessages": {
       "api": {
-        "account-locked": "",
-        "cant-update-contribution": "",
-        "duplicate-email": "",
-        "duplicate-tag-name": "",
-        "invalid-token": "",
-        "login-failed": "",
-        "mfa-token-required": "",
-        "payment-failed": ""
+        "account-locked": "பல உள்நுழைவு முயற்சிகள் தோல்வியடைந்ததால் கணக்கு பூட்டப்பட்டது. உங்கள் கடவுச்சொல்லை மீட்டமைக்கவும் அல்லது உதவிக்கு ஆதரவைத் தொடர்பு கொள்ளவும்.",
+        "cant-update-contribution": "உங்களிடம் பணம் நிலுவையில் உள்ளதால், உங்கள் பங்களிப்பை தற்போது புதுப்பிக்க முடியாது",
+        "duplicate-email": "மின்னஞ்சல் முகவரி ஏற்கனவே உள்ளது",
+        "duplicate-tag-name": "இந்தப் பெயரில் ஒரு குறிச்சொல் ஏற்கனவே உள்ளது",
+        "invalid-token": "தவறான 2FA கிள்ளாக்கு",
+        "login-failed": "தவறான கடவுச்சொல்/மின்னஞ்சல் சேர்க்கை",
+        "mfa-token-required": "உங்களிடம் 2FA இயக்கப்பட்டுள்ளது, தொடர உங்கள் அங்கீகரிப்பு பயன்பாட்டிலிருந்து கிள்ளாக்கை உள்ளிடவும்",
+        "payment-failed": "உங்கள் பணம் செலுத்த முடியவில்லை. மீண்டும் முயற்சிக்கவும் அல்லது வேறு கட்டண முறையைப் பயன்படுத்தவும்."
       },
-      "generic": "",
-      "unauthorized": "",
-      "validation": ""
+      "generic": "அச்சச்சோ, ஏதோ தவறாகிவிட்டது! இது மீண்டும் நடந்தால் ஆதரவைத் தொடர்புகொள்ளவும்.",
+      "unauthorized": "அதற்கான அணுகல் உங்களிடம் இல்லை.",
+      "validation": "ஏதோ காணவில்லை. மேலே உள்ள புலங்களைச் சரிபார்க்கவும்."
     },
     "errors": {
       "address": {
-        "required": ""
+        "required": "நீங்கள் முகவரியைச் சேர்க்க விரும்பினால் இந்தப் புலம் தேவை"
       },
       "addressLine1": {
-        "required": ""
+        "required": "முகவரி வரி 1 தேவை"
       },
       "cityOrTown": {
-        "required": ""
+        "required": "நகரம்/நகரம் தேவை"
       },
       "color": {
-        "pattern": "",
-        "required": ""
+        "pattern": "தவறான நிறம்",
+        "required": "நிறம் தேவை"
       },
       "confirmPassword": {
-        "password": "",
-        "required": "",
-        "sameAs": ""
+        "password": "தவறான கடவுச்சொல்",
+        "required": "கடவுச்சொல் தேவை",
+        "sameAs": "கடவுச்சொற்கள் பொருந்தவில்லை"
       },
       "description": {
-        "maxLength": "",
-        "required": ""
+        "maxLength": "{max} எழுத்துகளின் அதிகபட்ச நீளம் அதிகமாக உள்ளது",
+        "required": "விளக்கம் தேவை"
       },
       "email": {
-        "email": "",
-        "required": ""
+        "email": "தவறான மின்னஞ்சல் முகவரி",
+        "required": "மின்னஞ்சல் தேவை"
       },
       "file": {
-        "rateLimited": "",
-        "tooBig": "",
-        "unsupportedType": ""
+        "rateLimited": "பதிவேற்றம் தோல்வியடைந்தது: நீங்கள் அண்மைக் காலத்தில் பல கோப்புகளைப் பதிவேற்றியுள்ளீர்கள், மீண்டும் முயற்சிக்கும் முன் சில நிமிடங்கள் காத்திருக்கவும்",
+        "tooBig": "பதிவேற்றம் தோல்வியடைந்தது: கோப்பின் அளவு 20Mbக்குக் குறைவாக இருக்க வேண்டும்",
+        "unsupportedType": "பதிவேற்றம் தோல்வி: கோப்பு வகை ஆதரிக்கப்படவில்லை"
       },
       "firstName": {
-        "required": ""
+        "required": "முதல் பெயர் தேவை"
       },
       "lastName": {
-        "required": ""
+        "required": "கடைசி பெயர் தேவை"
       },
       "name": {
-        "required": ""
+        "required": "பெயர் தேவை"
       },
       "password": {
-        "password": "",
-        "required": "",
-        "sameAs": ""
+        "password": "தவறான கடவுச்சொல்",
+        "required": "கடவுச்சொல் தேவை",
+        "sameAs": "கடவுச்சொற்கள் பொருந்தவில்லை"
       },
       "postCode": {
-        "required": ""
+        "required": "அஞ்சல் குறியீடு தேவை"
       },
       "shareDescription": {
-        "maxLength": "",
-        "required": ""
+        "maxLength": "{max} எழுத்துகளின் அதிகபட்ச நீளம் அதிகமாக உள்ளது, {remaining} எழுத்துக்கள் மீதமுள்ளன",
+        "required": "விளக்கம் தேவை"
       },
       "unknown": {
-        "email": "",
-        "max": "",
-        "maxLength": "",
-        "min": "",
-        "required": "",
-        "url": ""
+        "email": "தவறான மின்னஞ்சல் முகவரி",
+        "max": "இந்தப் புலம் அதிகபட்சம் {max} ஆக இருக்க வேண்டும்",
+        "maxLength": "{max} எழுத்துகளின் அதிகபட்ச நீளம் அதிகமாக உள்ளது",
+        "min": "இந்தப் புலம் குறைந்தது {min} இருக்க வேண்டும்",
+        "required": "இந்த புலம் தேவை",
+        "url": "தவறான முகவரி"
       },
       "url": {
-        "required": "",
-        "url": ""
+        "required": "முகவரி தேவை",
+        "url": "தவறான முகவரி"
       },
       "verifyCode": {
-        "max": "",
-        "min": "",
-        "required": ""
+        "max": "குறியீடு அதிகபட்சம் {max} எழுத்துகள் மட்டுமே நீளமாக இருக்கலாம்.",
+        "min": "குறியீடு குறைந்தது {min} எழுத்துகள் நீளமாக இருக்க வேண்டும்.",
+        "required": "குறியீடு தேவை"
       }
     },
     "errorsFormio": {
-      "maxLength": "",
-      "minLength": ""
+      "maxLength": "{'{{length}}'} எழுத்துகளின் அதிகபட்ச நீளம் அதிகமாக உள்ளது",
+      "minLength": "இந்த புலம் குறைந்தபட்சம் {'{{length}}'} எழுத்துக்கள் நீளமாக இருக்க வேண்டும்"
     },
-    "firstName": "",
-    "lastName": "",
-    "newPassword": "",
-    "newPasswordConfirm": "",
-    "notes": "",
-    "password": "",
-    "passwordInfo": "",
-    "phone": "",
-    "postCode": "",
+    "firstName": "முதல் பெயர்",
+    "lastName": "கடைசி பெயர்",
+    "newPassword": "புதிய கடவுச்சொல்",
+    "newPasswordConfirm": "புதிய கடவுச்சொல்லை உறுதிப்படுத்தவும்",
+    "notes": "குறிப்புகள்",
+    "password": "கடவுச்சொல்",
+    "passwordInfo": "பாதுகாப்பான கடவுச்சொல்லை அமைக்கவும்: 8+ எழுத்துகள் அல்லது அதற்கு மேல், அதில் எண், பெரிய எழுத்து மற்றும் சிறிய எழுத்துக்கள் இருக்க வேண்டும்.",
+    "phone": "தொலைபேசி எண்",
+    "postCode": "அஞ்சல் குறியீடு",
     "richtext": {
-      "bold": "",
-      "bulletlist": "",
-      "editor": "",
-      "heading": "",
-      "italic": "",
-      "link": "",
-      "mergeFields": "",
-      "numberedlist": "",
-      "strikethrough": "",
-      "toolbar": "",
-      "underline": ""
+      "bold": "தடிமான",
+      "bulletlist": "புல்லட் பட்டியல்",
+      "editor": "பணக்கார உரை ஆசிரியர்",
+      "heading": "தலைப்பு",
+      "italic": "சாய்வு",
+      "link": "இணைப்பு",
+      "mergeFields": "ப்ளாச்ஓல்டர்கள்",
+      "numberedlist": "எண்ணிடப்பட்ட பட்டியல்",
+      "strikethrough": "வேலைநிறுத்தம்",
+      "toolbar": "பணக்கார உரை வடிவமைப்பு கருவிப்பட்டி",
+      "underline": "அடிக்கோடிட்டு"
     },
-    "saveChanges": "",
-    "saved": "",
-    "unsavedChanges": "",
-    "updated": ""
+    "saveChanges": "மாற்றங்களைச் சேமிக்கவும்",
+    "saved": "சேமிக்கப்பட்டது!",
+    "unsavedChanges": "சேமிக்கப்படாத மாற்றங்கள்",
+    "updated": "புதுப்பிக்கப்பட்டது"
   },
   "formRenderer": {
     "components": {
       "file": {
-        "browse": "",
-        "dropFiles": "",
-        "or": "",
-        "switchToFileUpload": "",
-        "takePicture": "",
-        "useCamera": ""
+        "browse": "சாதனத்திலிருந்து பதிவேற்றவும்",
+        "dropFiles": "இணைக்க கோப்புகளை கைவிடவும்",
+        "or": "அல்லது",
+        "switchToFileUpload": "கோப்பு பதிவேற்றத்திற்கு மாறவும்",
+        "takePicture": "படம் எடு",
+        "useCamera": "கேமரா பயன்படுத்த"
       },
       "multiple": {
-        "addAnother": ""
+        "addAnother": "இன்னொன்றைச் சேர்க்கவும்"
       }
     }
   },
   "homePage": {
-    "editProfile": "",
-    "makeOneTimeDonationButton": "",
-    "makeOneTimeDonationTitle": "",
-    "manageContribution": "",
-    "newCallout": "",
-    "oneTimeContributionSuccessMessage": "",
-    "openCallouts": "",
-    "quickActions": "",
-    "title": "",
-    "viewAllCallouts": "",
-    "viewOpenCallouts": "",
-    "welcome": "",
-    "yourProfile": ""
+    "editProfile": "உங்கள் சமூக சுயவிவரத்தை திருத்தவும்",
+    "makeOneTimeDonationButton": "பங்களிப்பு செய்யுங்கள்",
+    "makeOneTimeDonationTitle": "ஒரு முறை பங்களிப்பு செய்யுங்கள்",
+    "manageContribution": "உங்கள் பங்களிப்பை நிர்வகிக்கவும்",
+    "newCallout": "புதிய க்ரவுட் நியூச்ரூம்!",
+    "oneTimeContributionSuccessMessage": "உங்கள் பங்களிப்பிற்கு நன்றி!",
+    "openCallouts": "க்ரவுட் நியூச்ரூம்",
+    "quickActions": "விரைவான செயல்கள்",
+    "title": "வீடு",
+    "viewAllCallouts": "CrowdNewsroomஐத் திறக்கவும்",
+    "viewOpenCallouts": "CrowdNewsroomஐத் திறக்கவும்",
+    "welcome": "{firstName} கப்பலுக்கு வரவேற்கிறோம்!",
+    "yourProfile": "உங்கள் சுயவிவரம்"
   },
   "icons": {
     "welcome": {
-      "ariaLabel": ""
+      "ariaLabel": "வரவேற்பு படவுரு"
     }
   },
   "item": {
     "status": {
-      "endsIn": "",
-      "startsIn": ""
+      "endsIn": "{duration} இல் முடியும்",
+      "startsIn": "{duration} இல் தொடங்கும்"
     }
   },
   "join": {
-    "absorbFeeForce": "",
-    "absorbFeeOptIn": "",
+    "absorbFeeForce": "{amount} பங்களிப்புகள் {fee} கட்டணத்தை ஏற்றுக்கொள்ள வேண்டும்.",
+    "absorbFeeOptIn": "ஆம், நான் {fee} கட்டணத்தை ஏற்றுக்கொள்கிறேன்.",
     "absorbFeeText": {
-      "monthly": "",
-      "one-time": ""
+      "monthly": "எங்கள் கட்டணச் செயலி ஒரு பரிவர்த்தனைக்கு எங்களிடம் கட்டணம் வசூலிக்கிறது, அதாவது மாதாந்திர பங்களிப்புகளிலிருந்து நாங்கள் குறைவாகப் பெறுகிறோம். {fee} பரிவர்த்தனை கட்டணத்தை ஏற்றுக்கொள்ள விரும்புகிறீர்களா? மாற்றாக நீங்கள் ஆண்டுதோறும் செலுத்தலாம்.",
+      "one-time": "எங்கள் கட்டணச் செயலி ஒரு பரிவர்த்தனைக்கு எங்களிடம் கட்டணம் வசூலிக்கிறது, அதாவது ஒரு முறை பங்களிப்புகளிலிருந்து நாங்கள் குறைவாகப் பெறுகிறோம். {fee} பரிவர்த்தனை கட்டணத்தை ஏற்றுக்கொள்ள விரும்புகிறீர்களா?"
     },
-    "contribute": "",
+    "contribute": "பங்களிப்பு {contribution}",
     "contribution": {
-      "annually": "",
-      "monthly": "",
-      "one-time": ""
+      "annually": "வருடத்திற்கு {amount}",
+      "monthly": "மாதத்திற்கு {amount}",
+      "one-time": "{amount} ஒரு முறை"
     },
     "errors": {
       "confirmEmail": {
-        "message": "",
-        "proceed": "",
-        "title": ""
+        "message": "நீங்கள் வழங்கிய முகவரிக்கு உறுதிப்படுத்தல் மின்னஞ்சலை அனுப்பியுள்ளோம்.",
+        "proceed": "உங்கள் கணக்கை அமைப்பதை முடிக்க மறக்காதீர்கள்! உங்கள் இன்பாக்சில் அடுத்த படிகளைக் காணலாம்.",
+        "title": "நன்றி!"
       },
       "failed": {
-        "backToJoin": "",
-        "message": "",
-        "title": ""
+        "backToJoin": "சேர் பக்கத்திற்குத் திரும்பு",
+        "message": "உங்கள் கணக்கை அமைப்பதில் சிக்கல் ஏற்பட்டது, எங்கள் குழுவுக்குத் தெரிவிக்கப்பட்டது. சிக்கல் தொடர்ந்தால், ஆதரவைத் தொடர்பு கொள்ளவும்.",
+        "title": "ஏதோ தவறாகிவிட்டது"
       },
       "notFound": {
-        "backToJoin": "",
-        "message": "",
-        "title": ""
+        "backToJoin": "சேர் பக்கத்திற்குத் திரும்பு",
+        "message": "இந்த பதிவு இணைப்பு காலாவதியானது அல்லது ஏற்கனவே பயன்படுத்தப்பட்டது. நீங்கள் வேறொரு தாவலில் பதிவுசெய்திருந்தால், விரைவில் உறுதிப்படுத்தல் மின்னஞ்சலைப் பெறுவீர்கள். நீங்கள் சிறிது காலத்திற்கு முன்பு பதிவுசெய்திருந்தால், நீங்கள் புதிய பதிவைத் தொடங்க வேண்டும்.",
+        "title": "பதிவு இணைப்பு காலாவதியானது"
       },
       "paymentFailed": {
-        "backToJoin": "",
-        "message": "",
-        "title": ""
+        "backToJoin": "சேர் பக்கத்திற்குத் திரும்பு",
+        "message": "உங்கள் பணம் செலுத்த முடியவில்லை. மீண்டும் முயற்சிக்கவும் அல்லது வேறு கட்டண முறையைப் பயன்படுத்தவும்.",
+        "title": "பணம் செலுத்த முடியவில்லை"
       }
     },
-    "login": "",
-    "memberAccount": "",
-    "memberAlready": "",
-    "minimumContribution": "",
-    "noContribution": "",
-    "notice": "",
-    "now": "",
-    "paymentMethod": "",
-    "poweredBy": "",
-    "privacy": "",
+    "login": "புகுபதிகை",
+    "memberAccount": "உறுப்பினர் கணக்கு",
+    "memberAlready": "நீங்கள் ஏற்கனவே உறுப்பினரா?",
+    "minimumContribution": "குறைந்தபட்ச பங்களிப்பு",
+    "noContribution": "நான் இப்போது பங்களிக்க விரும்பவில்லை",
+    "notice": "தொடர்வதன் மூலம் நீங்கள் ஏற்றுக்கொள்கிறீர்கள்",
+    "now": "இப்போது சேரவும்!",
+    "paymentMethod": "பணம் செலுத்தும் முறை",
+    "poweredBy": "பீபி மூலம் இயக்கப்படுகிறது",
+    "privacy": "தனியுரிமைக் கொள்கை",
     "tax": {
-      "included": ""
+      "included": "பங்களிப்பில் {taxRate}% VAT அடங்கும்."
     }
   },
   "joinPayment": {
-    "genericError": "",
-    "goBack": "",
-    "goBackButton": "",
-    "note": "",
-    "willBeContributing": "",
-    "willBeDonating": ""
+    "genericError": "Oops, something went wrong ({type})! தொடர்பு support if this happens again.",
+    "goBack": "நீங்கள் எதையாவது தவறவிட்டீர்களா? {back}",
+    "goBackButton": "முந்தைய திரைக்குத் திரும்பு",
+    "note": "You'll be able to புதுப்பிப்பு your details and access your கட்டணம் வரலாறு at any time in your account",
+    "willBeContributing": "நீங்கள் பங்களிப்பீர்கள் {contribution}",
+    "willBeDonating": "நீங்கள் ஒரு முறை பங்களிப்பாக {amount} செய்வீர்கள்"
   },
   "joinSetup": {
-    "continue": "",
-    "welcome": ""
+    "continue": "எல்லாம் நல்லது! தொடரவும்",
+    "welcome": "வரவேற்கிறோம் {firstName}!"
   },
   "login": {
-    "backTo": "",
-    "forgotPassword": "",
-    "joinNow": "",
-    "lostMfaDevice": "",
-    "notMember": "",
-    "title": ""
+    "backTo": "{newsroomName} க்குத் திரும்பு",
+    "forgotPassword": "உங்கள் கடவுச்சொல்லை மறந்துவிட்டீர்களா?",
+    "joinNow": "இப்போது சேரவும்!",
+    "lostMfaDevice": "உங்கள் 2FA சாதனம் தொலைந்துவிட்டதா?",
+    "notMember": "உறுப்பினர் இல்லையா?",
+    "title": "உங்கள் கணக்கில் உள்நுழையவும்"
   },
   "lostDevice": {
-    "description": "",
-    "message": "",
-    "title": ""
+    "description": "உங்கள் மின்னஞ்சல் முகவரியை உள்ளிடவும், உங்கள் 2FA ஐ எவ்வாறு மீட்டமைப்பது என்பது குறித்த வழிமுறைகளை நாங்கள் உங்களுக்கு அனுப்புவோம்.",
+    "message": "{email} உடன் தொடர்புடைய கணக்கு இருந்தால், விரைவில் மின்னஞ்சலைப் பெறுவீர்கள். உங்கள் ச்பேம் கோப்புறை தோன்றவில்லை என்றால் அதைச் சரிபார்க்கவும்.",
+    "title": "உங்கள் 2FA சாதனம் தொலைந்துவிட்டதா?"
   },
   "mailOptIn": {
-    "optInLabel": "",
-    "text": "",
-    "title": ""
+    "optInLabel": "தேர்வுப்பெட்டி சிட்டை",
+    "text": "உரை",
+    "title": "தலைப்பு"
   },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
         "deliveryAddress": {
-          "showOptIn": "",
-          "title": ""
+          "showOptIn": "அஞ்சல் முகவரியைக் கேளுங்கள்",
+          "title": "அஞ்சல் முகவரி"
         },
-        "description": "",
+        "description": "உங்கள் உறுதிப்படுத்தல் திரையை உருவாக்கவும்",
         "joinSurvey": {
-          "required": "",
-          "slug": "",
-          "slugHelp": "",
-          "text": "",
-          "textIntro": "",
-          "title": ""
+          "required": "பயனர்கள் தொடர்வதற்கு முன் கணக்கெடுப்பை முடிக்க வேண்டும்",
+          "slug": "க்ரவுட் நியூச்ரூம்",
+          "slugHelp": "You can use any திற CrowdNewsroom that doesn't have an expiry date.",
+          "text": "சேர்வதற்கான ஒரு பகுதியாக CrowdNewsroom ஐ முடிக்க உங்கள் புதிய பயனர்களைக் கேட்கலாம். அவர்கள் ஏன் சேர்ந்தார்கள் என்று அவர்களிடம் கேட்க இது ஒரு சிறந்த வழியாகும் அல்லது அவர்கள் சமூகத்தில் பொருந்துவதற்கு அவர்களுக்கு உதவ சில கூடுதல் தகவல்களை நீங்கள் விரும்பலாம்.",
+          "textIntro": "நீங்கள் ஏன் இந்தத் தகவலைக் கேட்கிறீர்கள் என்பதைப் பற்றி உங்கள் பயனர்களுக்குக் கூறவும்",
+          "title": "கணக்கெடுப்பில் சேரவும்"
         },
         "newsletter": {
-          "showOptIn": "",
-          "title": ""
+          "showOptIn": "செய்திமடலுக்கு குழுசேரச் சொல்லுங்கள்",
+          "title": "செய்திமடல்"
         },
-        "text": "",
-        "title": "",
-        "welcomeMessage": ""
+        "text": "சேர்ந்த பிறகு, பயனர்கள் தங்கள் பதிவை உறுதிப்படுத்தும்படி கேட்கப்படுவார்கள். உறுதிப்படுத்தல் திரையின் விவரங்களை இங்கே அமைக்கலாம்.",
+        "title": "கணக்கு உறுதிப்படுத்தல்",
+        "welcomeMessage": "வரவேற்பு செய்தி"
       },
       "emails": {
-        "bigTitle": "",
-        "cancellationEmail": "",
-        "description": "",
-        "oneTimeDonationEmail": "",
-        "text": "",
-        "title": "",
-        "welcomeEmail": ""
+        "bigTitle": "வரவேற்பு & ரத்து மின்னஞ்சல்கள்",
+        "cancellationEmail": "ரத்துசெய்தல் மின்னஞ்சல்",
+        "description": "உங்கள் வரவேற்பு மற்றும் ரத்துசெய்தல் மின்னஞ்சல்களைத் தனிப்பயனாக்குங்கள்",
+        "oneTimeDonationEmail": "ஒரு முறை பங்களிப்பு மின்னஞ்சல்",
+        "text": "அனைத்து மின்னஞ்சல்களும் உங்கள் உதவி மின்னஞ்சல் முகவரியிலிருந்து அனுப்பப்படுகின்றன, மேலும் நிலையான கையொப்பத்தையும் உள்ளடக்கியது, உங்கள் மின்னஞ்சல் அமைப்புகளில் இவற்றை மாற்றலாம்.",
+        "title": "மின்னஞ்சல்கள்",
+        "welcomeEmail": "வரவேற்கிறோம் மின்னஞ்சல்"
       },
       "intro": {
-        "description": "",
-        "message": "",
-        "showWelcomeMessage": "",
-        "text": "",
-        "title": ""
+        "description": "உங்கள் புதிய உறுப்பினர்களுக்கு வணக்கம் சொல்லுங்கள்",
+        "message": "செய்தி",
+        "showWelcomeMessage": "வரவேற்பு செய்தியைக் காட்டு",
+        "text": "உங்கள் உறுப்பினர்கள் பதிவுசெய்து முடித்தவுடன், அவர்கள் ஒரு செய்தியுடன் வரவேற்கப்படுவார்கள். அதை உன்னுடையதாக ஆக்கு!",
+        "title": "வரவேற்பு செய்தி"
       },
       "joinForm": {
-        "backgroundImage": "",
-        "defaultAmount": "",
-        "description": "",
-        "formSubtitle": "",
-        "formTitle": "",
-        "googleApplePayNoticeText": "",
-        "minAmount": "",
-        "noticeText": "",
-        "noticeTextHelp": "",
-        "showAbsorbFee": "",
-        "showGoogleApplePay": "",
-        "showNoContribution": "",
-        "suggestedAmounts": "",
-        "text": "",
-        "title": ""
+        "backgroundImage": "பின்னணி படம்",
+        "defaultAmount": "இயல்புநிலை தொகை",
+        "description": "உங்கள் உறுப்பினர் சேர்க்கை படிவத்தை நன்றாக மாற்றவும்",
+        "formSubtitle": "உரையாடல்",
+        "formTitle": "தலைப்பு",
+        "googleApplePayNoticeText": "நீங்கள் ச்ட்ரைப்பில் Google மற்றும் அரத்திப்பழம், குமளிப்பழம் Payஐயும் இயக்க வேண்டும். வழிகாட்டுதலுக்கு ஆதரவைத் தொடர்பு கொள்ளவும்.",
+        "minAmount": "குறைந்தபட்ச தொகை",
+        "noticeText": "கட்டணம் செலுத்தும் பொத்தானுக்கு கீழே உள்ள அறிவிப்பு",
+        "noticeTextHelp": "பணம் செலுத்தும் பொத்தானின் கீழே ஒரு அறிவிப்பைச் சேர்க்க இந்தப் புலத்தைப் பயன்படுத்தவும், எடுத்துக்காட்டாக, கட்டணக் காலங்கள் அல்லது வங்கி அங்கீகாரங்களை விளக்குதல். நீங்கள் இந்த புலத்தை காலியாக விடலாம்.",
+        "showAbsorbFee": "கட்டணக் கட்டணத்தை உள்வாங்குவது பற்றி பயனரிடம் கேளுங்கள்",
+        "showGoogleApplePay": "அரத்திப்பழம், குமளிப்பழம் மற்றும் Google Pay கட்டண ஐகான்களைக் காட்டு",
+        "showNoContribution": "பங்களிப்பு இல்லாமல் சேர பயனரை அனுமதிக்கவும்",
+        "suggestedAmounts": "பரிந்துரைக்கப்பட்ட பங்களிப்பு தொகைகள்",
+        "text": "இந்தப் பிரிவில் உங்கள் உறுப்பினர் சேர்க்கை படிவத்தைத் திருத்தலாம், நன்றாக மாற்றலாம் மற்றும் முன்னோட்டமிடலாம்.",
+        "title": "படிவத்தில் சேரவும்"
       }
     },
-    "title": ""
+    "title": "உறுப்பினர்களை உருவாக்குபவர்"
   },
   "menu": {
-    "account": "",
-    "admin": "",
-    "adminSettings": "",
-    "callouts": "",
-    "contacts": "",
-    "contribution": "",
-    "dashboard": "",
-    "emails": "",
-    "home": "",
-    "legacyApp": "",
-    "logout": "",
-    "membershipBuilder": "",
-    "notices": "",
-    "payments": "",
-    "settings": "",
-    "yourProfile": ""
+    "account": "கணக்கு",
+    "admin": "நிர்வாகம்",
+    "adminSettings": "அமைப்புகள்",
+    "callouts": "க்ரவுட் நியூச்ரூம்",
+    "contacts": "தொடர்புகள்",
+    "contribution": "பங்களிப்பு",
+    "dashboard": "முகப்புப்பெட்டி",
+    "emails": "மின்னஞ்சல்கள்",
+    "home": "வீடு",
+    "legacyApp": "பழைய டாச்போர்டு",
+    "logout": "விடுபதிகை",
+    "membershipBuilder": "உறுப்பினர்களை உருவாக்குபவர்",
+    "notices": "அறிவிப்புகள்",
+    "payments": "கட்டணங்கள்",
+    "settings": "அமைப்புகள்",
+    "yourProfile": "உங்கள் சுயவிவரம்"
   },
   "mergeFields": {
-    "copied": "",
-    "copy": "",
-    "copyTag": "",
-    "example": "",
+    "copied": "நகலெடுக்கப்பட்டது!",
+    "copy": "நகலெடு",
+    "copyTag": "நகலெடு {tag}",
+    "example": "சான்று",
     "groups": {
-      "contact": "",
-      "magic": "",
-      "standard": "",
-      "template": ""
+      "contact": "தொடர்பு புலங்கள்",
+      "magic": "மேசிக் இணைப்புகள்",
+      "standard": "நிலையான புலங்கள்",
+      "template": "டெம்ப்ளேட் புலங்கள்"
     },
-    "insert": "",
-    "insertTag": "",
+    "insert": "செருகவும்",
+    "insertTag": "{tag} ஐச் செருகு",
     "tags": {
-      "ACTIVATELINK": "",
-      "ANSWERS": "",
-      "CALLOUTLINK": "",
-      "CALLOUTSLUG": "",
-      "CALLOUTTITLE": "",
-      "CONFIRMLINK": "",
-      "EMAIL": "",
-      "EXPIRES": "",
-      "FNAME": "",
-      "GIFTDATE": "",
-      "GIFTEE": "",
-      "ISELIGIBLE": "",
-      "LNAME": "",
-      "LOGINLINK": "",
-      "MEMBERID": "",
-      "MEMBERNAME": "",
-      "MEMBERSHIPID": "",
-      "MESSAGE": "",
-      "NAME": "",
-      "ORGNAME": "",
-      "PURCHASER": "",
-      "REFCODE": "",
-      "REFEREENAME": "",
-      "RESPNAME": "",
-      "RPLINK": "",
-      "SPLINK": "",
-      "SUPPORTEMAIL": "",
-      "URL": ""
+      "ACTIVATELINK": "பரிசு செயல்படுத்தும் இணைப்பு",
+      "ANSWERS": "வடிவமைக்கப்பட்ட பதில் பதில்கள்",
+      "CALLOUTLINK": "CrowdNewsroomக்கான இணைப்பு",
+      "CALLOUTSLUG": "CrowdNewsroom ச்லக்",
+      "CALLOUTTITLE": "CrowdNewsroom தலைப்பு",
+      "CONFIRMLINK": "மின்னஞ்சல் உறுதிப்படுத்தல் இணைப்பு",
+      "EMAIL": "தொடர்பு மின்னஞ்சல் முகவரி",
+      "EXPIRES": "உறுப்பினர் காலாவதி தேதி",
+      "FNAME": "முதல் பெயரைத் தொடர்பு கொள்ளவும்",
+      "GIFTDATE": "பரிசு தொடங்கும் தேதி",
+      "GIFTEE": "பரிசு பெறுபவரின் பெயர்",
+      "ISELIGIBLE": "பரிந்துரை தகுதியானதா",
+      "LNAME": "கடைசி பெயரை தொடர்பு கொள்ளவும்",
+      "LOGINLINK": "உள்நுழைவு இணைப்பு",
+      "MEMBERID": "உறுப்பினர் அடையாளம்",
+      "MEMBERNAME": "Member பெயர்",
+      "MEMBERSHIPID": "உறுப்பினர் ஐடியைத் தொடர்பு கொள்ளவும்",
+      "MESSAGE": "தனிப்பயன் செய்தி உள்ளடக்கம்",
+      "NAME": "முழுப் பெயரைத் தொடர்பு கொள்ளவும்",
+      "ORGNAME": "அமைப்பின் பெயர்",
+      "PURCHASER": "பரிசு வாங்குபவரின் பெயர்",
+      "REFCODE": "பரிந்துரை குறியீட்டை தொடர்பு கொள்ளவும்",
+      "REFEREENAME": "குறிப்பிடப்பட்ட நபரின் பெயர்",
+      "RESPNAME": "பதிலளிப்பவர் பெயர்",
+      "RPLINK": "கடவுச்சொல் மீட்டமைப்பு இணைப்பு",
+      "SPLINK": "கடவுச்சொல் இணைப்பை அமைக்கவும்",
+      "SUPPORTEMAIL": "உதவி மின்னஞ்சல் முகவரி",
+      "URL": "சிறப்பு முகவரி"
     },
-    "title": ""
+    "title": "ப்ளாச்ஓல்டர்கள்"
   },
   "newsletterOptIn": {
     "groups": {
-      "add": "",
-      "help": "",
-      "title": ""
+      "add": "புதிய குழுவைச் சேர்க்கவும்",
+      "help": "<p>பயனர்கள் எந்த செய்திமடல் குழுக்களில் சேர வேண்டும் என்பதைத் தேர்வுசெய்ய நீங்கள் அனுமதிக்கலாம். இந்தக் குழுக்கள் ஏற்கனவே Mailchimp இல் உள்ளமைக்கப்பட்டிருக்க வேண்டும், இந்த அம்சத்தை எவ்வாறு பயன்படுத்துவது என்று உங்களுக்குத் தெரியாவிட்டால், <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a> ஐத் தொடர்புகொள்ளவும்.</p>\n",
+      "title": "செய்திமடல் குழுக்கள்"
     },
-    "optInDisabled": "",
-    "optInLabel": "",
-    "text": "",
-    "title": ""
+    "optInDisabled": "செய்திமடல் குழுக்கள் தெரியும் போது சிட்டை பயன்படுத்தப்படாது",
+    "optInLabel": "தேர்வுப்பெட்டி சிட்டை",
+    "text": "உரை",
+    "title": "தலைப்பு"
   },
   "notFound": {
-    "goBack": "",
-    "text": ""
+    "goBack": "வீட்டிற்குத் திரும்பு",
+    "text": "இந்தப் பக்கம் இல்லை. இது தவறு என நீங்கள் நினைத்தால், {support}ஐத் தொடர்பு கொள்ளவும்."
   },
   "noticeAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "இந்த அறிவிப்பை நிச்சயமாக நீக்க விரும்புகிறீர்களா?",
+        "title": "அறிவிப்பை நீக்கவா?"
       }
     },
-    "created": "",
-    "summary": "",
-    "updated": ""
+    "created": "உங்கள் புதிய அறிவிப்பு வெற்றிகரமாக உருவாக்கப்பட்டது.",
+    "summary": "சுருக்கம்",
+    "updated": "உங்கள் அறிவிப்பு வெற்றிகரமாக புதுப்பிக்கப்பட்டது."
   },
   "notices": {
-    "addNotice": "",
+    "addNotice": "அறிவிப்பைச் சேர்க்கவும்",
     "data": {
-      "createdAt": "",
-      "name": "",
-      "status": ""
+      "createdAt": "உருவாக்கப்பட்டது",
+      "name": "பெயர்",
+      "status": "நிலை"
     },
-    "showingOf": ""
+    "showingOf": "{total} இல் {start} பெறுநர் {end} அறிவிப்புகளைக் காட்டுகிறது"
   },
   "notifications": {
     "copy": {
-      "success": ""
+      "success": "இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்டது"
     },
-    "error": "",
+    "error": "ஏதோ தவறாகிவிட்டது. பக்கத்தை மீண்டும் ஏற்ற முயற்சிக்கவும்.",
     "rateLimit": {
-      "generic": "",
-      "withWait": ""
+      "generic": "பல கோரிக்கைகள். சிறிது நேரம் காத்திருந்து மீண்டும் முயற்சிக்கவும்.",
+      "withWait": "பல கோரிக்கைகள். {time} காத்திருந்து மீண்டும் முயற்சிக்கவும்."
     },
-    "remove": ""
+    "remove": "அறிவிப்பை மூடு"
   },
   "pageTitle": {
-    "confirmEmail": "",
-    "duplicateEmail": "",
-    "failed": "",
-    "forgotPassword": "",
-    "join": "",
-    "login": "",
-    "lostDevice": "",
-    "notFound": "",
-    "resetDevice": "",
-    "resetPassword": "",
-    "setPassword": "",
-    "setup": ""
+    "confirmEmail": "மின்னஞ்சலை உறுதிப்படுத்தவும்",
+    "duplicateEmail": "நகல் மின்னஞ்சல்",
+    "failed": "தோல்வியடைந்தது",
+    "forgotPassword": "கடவுச்சொல் மறந்துவிட்டது",
+    "join": "சேருங்கள்",
+    "login": "புகுபதிவு",
+    "lostDevice": "உங்கள் 2FA சாதனம் தொலைந்துவிட்டதா?",
+    "notFound": "பக்கம் கிடைக்கவில்லை",
+    "resetDevice": "2FA சாதனத்தை மீட்டமைக்கவும்",
+    "resetPassword": "மீட்டமை password",
+    "setPassword": "கடவுச்சொல்லை அமைக்கவும்",
+    "setup": "அமைவு"
   },
   "paymentLabels": {
-    "membershipProductName": "",
-    "recurringContribution": "",
-    "taxRateDisplayName": ""
+    "membershipProductName": "உறுப்பினர்",
+    "recurringContribution": "தொடர்ச்சியான பங்களிப்பு",
+    "taxRateDisplayName": "VAT"
   },
   "paymentMethods": {
     "gc_direct-debit": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "நேரடி பற்றுவை மாற்றவும்",
+      "label": "நேரடி பற்று",
+      "setLabel": "உங்கள் நேரடி பற்று விவரங்கள்"
     },
     "s_bacs": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "நேரடி பற்றுவை மாற்றவும்",
+      "label": "நேரடி பற்று",
+      "setLabel": "உங்கள் நேரடி பற்று விவரங்கள்"
     },
     "s_card": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "அட்டை விவரங்களை மாற்றவும்",
+      "label": "அட்டை",
+      "setLabel": "உங்கள் அட்டை விவரங்கள்"
     },
     "s_ideal": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "கருதியல் விவரங்களை மாற்றவும்",
+      "label": "கருதியல்",
+      "setLabel": "உங்கள் கருதியல் விவரங்கள்"
     },
     "s_paypal": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "பேபால் விவரங்களை மாற்றவும்",
+      "label": "பேபால்",
+      "setLabel": "உங்கள் PayPal விவரங்கள்"
     },
     "s_sepa": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "நேரடி பற்றுவை மாற்றவும்",
+      "label": "நேரடி பற்று",
+      "setLabel": "உங்கள் நேரடி பற்று விவரங்கள்"
     }
   },
   "payments": {
     "data": {
-      "amount": "",
-      "chargeDate": "",
-      "contact": "",
-      "status": "",
-      "type": ""
+      "amount": "தொகை",
+      "chargeDate": "கட்டணம் வசூலிக்கும் தேதி",
+      "contact": "தொடர்பு",
+      "status": "நிலை",
+      "type": "வகை"
     },
     "dataGroup": {
-      "payment": ""
+      "payment": "கட்டணம்"
     }
   },
   "paymentsAdmin": {
     "aggregation": {
-      "average": "",
-      "total": ""
+      "average": "சராசரி தொகை",
+      "total": "மொத்த தொகை"
     },
     "filter": {
-      "all": "",
-      "cancelled": "",
-      "failed": "",
-      "pending": "",
-      "successful": ""
+      "all": "அனைத்து கொடுப்பனவுகள்",
+      "cancelled": "ரத்து செய்யப்பட்ட பணம்",
+      "failed": "பணம் செலுத்துவதில் தோல்வி",
+      "pending": "நிலுவையில் உள்ள பணம்",
+      "successful": "வெற்றிகரமான பணம்"
     },
-    "showingOf": ""
+    "showingOf": "Showing {start} பெறுநர் {end} கட்டணங்கள் out of {total}"
   },
   "resetDevice": {
-    "description": "",
-    "failed": "",
-    "invalidPassword": "",
-    "success": "",
-    "title": ""
+    "description": "2FA பாதுகாப்பை மீட்டமைக்க உங்கள் கடவுச்சொல்லை உள்ளிடவும், நீங்கள் உள்நுழைந்தவுடன் புதிய சாதனத்தை அமைக்க முடியும்.",
+    "failed": "சாதனத்தை மீட்டமைக்க முடியவில்லை, இணைப்பு காலாவதியாகியிருக்கலாம்.",
+    "invalidPassword": "தவறான கடவுச்சொல்",
+    "success": "உங்கள் 2FA சாதனம் வெற்றிகரமாக மீட்டமைக்கப்பட்டது",
+    "title": "உங்கள் 2FA சாதனத்தை மீட்டமைக்கவா?"
   },
   "resetPassword": {
-    "description": "",
-    "failed": "",
-    "login": "",
-    "lostDevice": "",
-    "success": "",
-    "title": ""
+    "description": "உள்நுழைய புதிய கடவுச்சொல்லை அமைக்கவும்.",
+    "failed": "கடவுச்சொல் மீட்டமைப்பு தோல்வியடைந்தது, இணைப்பு காலாவதியாகியிருக்கலாம்.",
+    "login": "உங்கள் கணக்கில் உள்நுழைக",
+    "lostDevice": "உங்கள் 2FA சாதனத்தை இழந்திருந்தால், ஆதரவைத் தொடர்பு கொள்ளவும்",
+    "success": "உங்கள் கடவுச்சொல் மீட்டமைக்கப்பட்டது.",
+    "title": "உங்கள் கடவுச்சொல்லை மீட்டமைக்கவா?"
   },
   "roleEditor": {
-    "add": "",
+    "add": "பங்கு சேர்க்கவும்",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "இந்தப் பாத்திரத்தை நிச்சயமாக அகற்ற விரும்புகிறீர்களா?",
+      "title": "பாத்திரத்தை அகற்று"
     },
     "expires": {
-      "label": "",
+      "label": "இந்த பாத்திரத்திற்கான காலாவதி தேதி",
       "opts": {
-        "never": "",
-        "schedule": ""
+        "never": "ஒருபோதும்",
+        "schedule": "காலாவதி தேதியை அமைக்கவும்"
       }
     },
-    "new": "",
+    "new": "புதிய பாத்திரம்",
     "starts": {
-      "label": "",
+      "label": "இந்த பாத்திரத்திற்கான தொடக்க தேதி",
       "opts": {
-        "now": "",
-        "schedule": ""
+        "now": "இப்போது",
+        "schedule": "தொடக்க தேதியை அமைக்கவும்"
       }
     },
-    "title": "",
-    "today": ""
+    "title": "பாத்திரங்கள்",
+    "today": "தற்போது"
   },
   "setPassword": {
-    "description": "",
-    "title": ""
+    "description": "உள்நுழைய புதிய கடவுச்சொல்லை அமைக்கவும்.",
+    "title": "கடவுச்சொல்லை அமைக்கவும்"
   },
   "status": {
-    "connectingToServer": "",
-    "initializing": "",
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "usuallyTakesSeconds": ""
+    "connectingToServer": "Connecting பெறுநர் server...",
+    "initializing": "துவக்குகிறது...",
+    "loadingApplication": "விண்ணப்பத்தை ஏற்றுகிறது",
+    "pleaseWait": "தயவுசெய்து காத்திருங்கள்...",
+    "usuallyTakesSeconds": "இதற்கு பொதுவாக சில வினாடிகள் ஆகும்"
   },
   "stepper": {
     "navigation": {
-      "label": ""
+      "label": "படி முன்னேற்றம்"
     },
     "screen": {
-      "completed": "",
-      "currentStep": "",
-      "hasError": ""
+      "completed": ", முடிந்தது",
+      "currentStep": ", தற்போதைய படி",
+      "hasError": ", பிழை உள்ளது"
     }
   },
   "tagEditor": {
-    "add": "",
+    "add": "குறியைச் சேர்க்கவும்",
     "confirmDelete": {
-      "text_contact": "",
-      "text_global": "",
-      "text_response": "",
-      "title": ""
+      "text_contact": "இந்தக் குறிச்சொல்லை நிச்சயமாக அகற்ற விரும்புகிறீர்களா? \"{tagName}\" உடன் குறியிடப்பட்ட ஒவ்வொரு தொடர்பும் குறிச்சொல்லை இழக்கும்.",
+      "text_global": "\"{tagName}\" குறிச்சொல்லை நிச்சயமாக அகற்ற விரும்புகிறீர்களா?",
+      "text_response": "இந்தக் குறிச்சொல்லை நிச்சயமாக அகற்ற விரும்புகிறீர்களா? \"{tagName}\" எனக் குறியிடப்பட்ட ஒவ்வொரு பதிலும் குறிச்சொல்லை இழக்கும்",
+      "title": "குறிச்சொல்லை அகற்று"
     },
-    "name": ""
+    "name": "பெயர்"
   },
   "tags": {
-    "manageTags": "",
-    "noTags": "",
+    "manageTags": "குறிச்சொற்களை நிர்வகிக்கவும்",
+    "noTags": "குறிச்சொற்கள் இல்லை",
     "notifications": {
-      "addedTag": "",
-      "removedTag": ""
+      "addedTag": "\"{tag}\" குறிச்சொல் சேர்க்கப்பட்டது",
+      "removedTag": "\"{tag}\" குறிச்சொல் அகற்றப்பட்டது "
     },
-    "searchTag": "",
-    "toggleTag": ""
+    "searchTag": "குறியிடப்பட்டது...",
+    "toggleTag": "குறிச்சொல்லை மாற்றவும்"
   }
 }
