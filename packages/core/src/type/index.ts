@@ -22,6 +22,7 @@ export * from './mc-member.js';
 export * from './mc-operation-response.js';
 export * from './mc-operation.js';
 export * from './mc-status.js';
+export * from './mc-webhook.js';
 export * from './network-service-map.js';
 export * from './network-service.js';
 export * from './newsletter-bulk-provider.js';
