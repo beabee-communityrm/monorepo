@@ -11,6 +11,6 @@ export type NewsletterIntegrationDataWith<With extends GetNewsletterWith> =
     ('health' extends With ? { status: ApiHealthStatus } : Noop);
 
 export type MailchimpNewsletterIntegrationDataWith<
-  With extends GetNewsletterWith
+  With extends GetNewsletterWith,
 > = MailchimpNewsletterIntegrationData &
   ('health' extends With ? { status: ApiHealthStatus } : Noop);
