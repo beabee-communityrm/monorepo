@@ -7,7 +7,10 @@
         })
       }}
 
-      <button class="font-semibold text-link" @click="mode = 'all'">
+      <button
+        class="cursor-pointer font-semibold text-link"
+        @click="mode = 'all'"
+      >
         {{
           t('common.table.selectAllBanner.selectAll', {
             count: n(totalTableItems),
@@ -27,7 +30,10 @@
             })
       }}
 
-      <button class="font-semibold text-link" @click="mode = 'explicit'">
+      <button
+        class="cursor-pointer font-semibold text-link"
+        @click="mode = 'explicit'"
+      >
         {{ t('common.table.selectAllBanner.clearSelection') }}
       </button>
     </div>
