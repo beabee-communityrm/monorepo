@@ -6,13 +6,16 @@ subject: Group(s) Deleted
 <p><br /></p>
 <p>
   The following group(s) were deleted from newsletter provider and are no longer
-  available in Beabee. They have been removed from any subscribed contacts and
+  available in beabee. They have been removed from any subscribed contacts and
   are no longer visible in the Join Form or CrowdNewsroom.
 </p>
 <p><br /></p>
-<ul>*|GROUPS|*</ul>
+<ul>
+  *|GROUPS|*
+</ul>
 <p>
-  <b>Note:</b> If you believe this was an error, please contact your newsletter provider administrator or support@beabee.io.
+  <b>Note:</b> If you believe this was an error, please contact your newsletter
+  provider administrator or support@beabee.io.
 </p>
 <p><br /></p>
 <p>Best wishes</p>

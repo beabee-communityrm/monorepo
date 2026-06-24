@@ -18,6 +18,7 @@ import {
 } from '#type/index';
 import { convertContactToNlUpdate } from '#utils/newsletter';
 
+import emailService from './EmailService.js';
 import optionsService from './OptionsService.js';
 
 const log = mainLogger.child({ app: 'newsletter-service' });
@@ -213,6 +214,15 @@ class NewsletterService {
       // Update cache
       if (diff.length > 0) {
         optionsService.setJSON('newsletter-groups', providerGroups);
+
+        // Notify admin of any deleted groups
+        const removedGroups = diff.filter((g) => g.action === 'removed');
+
+        if (removedGroups.length > 0) {
+          await emailService.sendTemplateToAdmin('deleted-group', {
+            groups: removedGroups,
+          });
+        }
       }
     }
 
