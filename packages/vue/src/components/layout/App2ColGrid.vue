@@ -48,6 +48,7 @@
  *
  * @component App2ColGrid
  */
+import type { VNode } from 'vue';
 
 /**
  * Props for the App2ColGrid component
@@ -72,11 +73,11 @@ defineSlots<{
    * Content for the first column
    * @description Always visible column that takes 4/12 columns on xl+ screens
    */
-  col1(): any;
+  col1(): VNode[];
   /**
    * Content for the second column (optional)
    * @description Second column that can be extended based on the extended prop
    */
-  col2(): any;
+  col2(): VNode[];
 }>();
 </script>

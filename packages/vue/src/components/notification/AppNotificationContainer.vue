@@ -25,14 +25,9 @@
  *
  * @component AppNotificationContainer
  */
-import { useI18n } from 'vue-i18n';
-
 import { useNotifications } from '../../store/notifications';
 import AppNotification from './AppNotification.vue';
 
-defineProps();
-
-const { t } = useI18n();
 const { notifications, removeNotification } = useNotifications();
 
 /**

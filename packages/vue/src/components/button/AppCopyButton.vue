@@ -88,7 +88,7 @@ const handleCopy = async () => {
       removeable: 'auto',
     });
     emit('copy');
-  } catch (error) {
+  } catch {
     addNotification({
       title: t('notifications.error'),
       variant: 'error',

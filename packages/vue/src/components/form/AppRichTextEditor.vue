@@ -138,7 +138,7 @@ import StarterKit from '@tiptap/starter-kit';
 import { type ChainedCommands, EditorContent, useEditor } from '@tiptap/vue-3';
 import useVuelidate from '@vuelidate/core';
 import { helpers, requiredIf } from '@vuelidate/validators';
-import { computed, onBeforeUnmount, ref, toRef, watch } from 'vue';
+import { computed, onBeforeUnmount, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { AppCopyButton, AppInputError, AppInputHelp, AppLabel } from '../index';

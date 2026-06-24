@@ -58,6 +58,7 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { onBeforeUnmount, ref, toRef, watch } from 'vue';
+import type { VNode } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { generateUniqueId } from '../../utils';
@@ -97,7 +98,7 @@ defineSlots<{
    * Default slot for modal content
    * @description The main content area of the modal
    */
-  default(): any;
+  default(): VNode[];
 }>();
 
 const props = defineProps<AppModalProps>();

@@ -23,6 +23,14 @@ export default typescriptEslint.config(
     rules: {
       'vue/no-v-html': 'off',
       'no-console': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
     },
   },
   {

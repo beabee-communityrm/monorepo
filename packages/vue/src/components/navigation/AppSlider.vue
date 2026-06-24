@@ -93,7 +93,7 @@
  *
  * @component AppSlider
  */
-import type { Ref } from 'vue';
+import type { Ref, VNode } from 'vue';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 import type {
@@ -140,7 +140,7 @@ defineSlots<{
    * Required slot for the slides to display in the slider
    * @description Place AppSlide components here
    */
-  slides(): any;
+  slides(): VNode[];
   /**
    * Optional slot for custom navigation buttons
    * @description Receives navigation functions as props
@@ -153,7 +153,7 @@ defineSlots<{
     isLastSlide: boolean;
     slideCount: number;
     activeSlide: number;
-  }): any;
+  }): VNode[];
 }>();
 
 // Reactive state
