@@ -212,7 +212,7 @@ class NewsletterService {
       optionsService.setJSON('newsletter-groups', providerGroups);
     }
 
-    const providerInfo = await this.getProviderInfo();
+    const providerInfo = await this.getProviderInfo(true);
     return { info: providerInfo, groupChanges: diff };
   }
 }

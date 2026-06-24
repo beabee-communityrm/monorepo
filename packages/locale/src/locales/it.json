@@ -251,6 +251,34 @@
         "twitterHandle": "Handle Twitter"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Newsletter"
+      },
+      "label": "Integrazioni",
+      "loadError": "Impossibile caricare le integrazioni. Aggiorna la pagina.",
+      "newsletter": {
+        "audienceId": "ID pubblico",
+        "groups": "Gruppi",
+        "noGroups": "Nessun gruppo trovato"
+      },
+      "refresh": "Aggiorna",
+      "refreshResult": {
+        "added": "Gruppi {provider} aggiunti: {groups}",
+        "connectionLost": "connessione persa",
+        "couldNotConnect": "Impossibile connettersi a {provider}",
+        "error": "Aggiornamento di {provider} non riuscito. Riprova.",
+        "noChanges": "I gruppi {provider} sono aggiornati",
+        "reconnected": "riconnesso",
+        "removed": "Gruppi {provider} rimossi: {groups}"
+      },
+      "refreshing": "Aggiornamento...",
+      "status": {
+        "disabled": "Disabilitato",
+        "healthy": "Connesso",
+        "unhealthy": "Connessione persa"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",

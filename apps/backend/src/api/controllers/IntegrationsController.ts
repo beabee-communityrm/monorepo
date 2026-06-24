@@ -27,12 +27,12 @@ export class IntegrationsController {
     const info = await NewsletterService.getProviderInfo(
       query.with?.includes(GetNewsletterIntegrationWith.Health)
     );
-    return plainToInstance(NoneNewsletterIntegrationDto, { info });
+    return plainToInstance(NoneNewsletterIntegrationDto, info);
   }
 
   @Post('/newsletter/refresh')
   async refreshGroups(): Promise<NewsletterDiffDto> {
     const groupDiff = await NewsletterService.refreshNewsletterGroups();
-    return plainToInstance(NewsletterDiffDto, { groupDiff });
+    return plainToInstance(NewsletterDiffDto, groupDiff);
   }
 }

@@ -251,6 +251,34 @@
         "twitterHandle": "Twitter"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Newsletters"
+      },
+      "label": "Intégrations",
+      "loadError": "Impossible de charger les intégrations. Veuillez actualiser la page.",
+      "newsletter": {
+        "audienceId": "ID d'audience",
+        "groups": "Groupes",
+        "noGroups": "Aucun groupe trouvé"
+      },
+      "refresh": "Actualiser",
+      "refreshResult": {
+        "added": "Groupes {provider} ajoutés : {groups}",
+        "connectionLost": "connexion perdue",
+        "couldNotConnect": "Impossible de se connecter à {provider}",
+        "error": "Échec de l'actualisation de {provider}. Veuillez réessayer.",
+        "noChanges": "Les groupes {provider} sont à jour",
+        "reconnected": "reconnecté",
+        "removed": "Groupes {provider} supprimés : {groups}"
+      },
+      "refreshing": "Actualisation...",
+      "status": {
+        "disabled": "Désactivé",
+        "healthy": "Connecté",
+        "unhealthy": "Connexion perdue"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "Activer les contributions ponctuelles",
       "oneTimeDonationsTitle": "Contributions ponctuelles",

@@ -1,4 +1,4 @@
-import type { NewsletterIntegrationData } from './newsletter-integration-data.js';
+import type { NewsletterIntegrationDataWith } from './get-newsletter-integration-data-with.js';
 
 export interface GroupChanges {
   id: string;
@@ -7,6 +7,6 @@ export interface GroupChanges {
 }
 
 export interface NewsletterDiffData {
-  info: NewsletterIntegrationData;
+  info: NewsletterIntegrationDataWith<'health'>;
   groupChanges: GroupChanges[];
 }

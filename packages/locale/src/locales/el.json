@@ -251,6 +251,34 @@
         "twitterHandle": ""
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Ενημερωτικά δελτία"
+      },
+      "label": "Ενσωματώσεις",
+      "loadError": "Αποτυχία φόρτωσης ενσωματώσεων. Παρακαλώ ανανεώστε τη σελίδα.",
+      "newsletter": {
+        "audienceId": "Αναγνωριστικό κοινού",
+        "groups": "Ομάδες",
+        "noGroups": "Δεν βρέθηκαν ομάδες"
+      },
+      "refresh": "Ανανέωση",
+      "refreshResult": {
+        "added": "Προστέθηκαν ομάδες {provider}: {groups}",
+        "connectionLost": "η σύνδεση χάθηκε",
+        "couldNotConnect": "Δεν ήταν δυνατή η σύνδεση με τον {provider}",
+        "error": "Η ανανέωση του {provider} απέτυχε. Παρακαλώ δοκιμάστε ξανά.",
+        "noChanges": "Οι ομάδες {provider} είναι ενημερωμένες",
+        "reconnected": "επανασυνδέθηκε",
+        "removed": "Αφαιρέθηκαν ομάδες {provider}: {groups}"
+      },
+      "refreshing": "Ανανέωση...",
+      "status": {
+        "disabled": "Απενεργοποιημένο",
+        "healthy": "Συνδεδεμένο",
+        "unhealthy": "Απώλεια σύνδεσης"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",
