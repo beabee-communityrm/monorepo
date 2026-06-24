@@ -225,7 +225,7 @@ export const adminEmailTemplates = {
     ['GROUPS'],
     (params: { groups: { id: string; label: string }[] }) => ({
       GROUPS: params.groups
-        .map((g) => `<li>${g.label} (${g.id})</li>`)
+        .map((group) => `<li>${group.label} (${group.id})</li>`)
         .join(''),
     })
   ),
