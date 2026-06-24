@@ -1010,6 +1010,15 @@
       "scheduled": "Запланировано"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "Выбраны все {count} совпадающих элемента.",
+        "clearSelection": "Снять выделение",
+        "pageSelected": "Выбраны все {count} элементов на этой странице.",
+        "selectAll": "Выбрать все {count} элементов",
+        "someSelected": "Выбрано {count} совпадающих элементов."
+      }
+    },
     "thankYou": "Большое cпасибо!",
     "timeAgo": "до {time}",
     "timeIn": "в {time}",

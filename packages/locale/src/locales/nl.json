@@ -1009,6 +1009,15 @@
       "scheduled": "Gepland"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "Alle {count} overeenkomende items zijn geselecteerd.",
+        "clearSelection": "Selectie wissen",
+        "pageSelected": "Alle {count} items op deze pagina zijn geselecteerd.",
+        "selectAll": "Alle {count} items selecteren",
+        "someSelected": "{count} overeenkomende items zijn geselecteerd."
+      }
+    },
     "thankYou": "Bedankt!",
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",

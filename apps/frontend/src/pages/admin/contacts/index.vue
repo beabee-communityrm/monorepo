@@ -48,6 +48,7 @@ meta:
     />
     <AppPaginatedTable
       v-model:query="currentPaginatedQuery"
+      v-model:selection-state="selectionState"
       keypath="contacts.showingOf"
       :headers="headers"
       :result="contactsTable"
@@ -68,7 +69,7 @@ meta:
             :selected-tags="selectedTags"
             :manage-url="`${route.path}/tags`"
             :loading="doingAction"
-            :disable-tags="selectedCount === 0"
+            :disabled="selectedCount === 0"
             @toggle="
               (tagId, successText) =>
                 handleUpdateAction({ tags: [tagId] }, successText)
@@ -221,6 +222,7 @@ import { definePaginatedQuery, defineParam } from '#utils/pagination';
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';
 import { useTagFilter } from '../../../composables/useTagFilter';
+import { usePaginatedSelectionState } from '../../../composables/useSelectionState';
 
 /**
  * Contact list page component
@@ -239,21 +241,19 @@ const route = useRoute();
 
 /**
  * Table state
- * @description Manages the paginated table data and selection state
+ * @description Manages the paginated table data
  */
 const contactsTable =
   ref<
     Paginated<
       GetContactDataWith<
         GetContactWith.Profile | GetContactWith.Roles | GetContactWith.Tags
-      > & { selected: boolean }
+      >
     >
   >();
 
-const selectedContactItems = computed(
-  () => contactsTable.value?.items.filter((ri) => ri.selected) || []
-);
-const selectedCount = computed(() => selectedContactItems.value.length);
+const { selectionState, selectedPageItems, selectedCount, getSelectionRules } =
+  usePaginatedSelectionState(contactsTable);
 
 /**
  * Tag Management
@@ -267,13 +267,13 @@ const selectedTags = computed(() => {
   }
 
   const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
-  for (const item of selectedContactItems.value) {
+  for (const item of selectedPageItems.value) {
     for (const tag of item.tags || []) {
       tagCount[tag.id]++;
     }
   }
   return Object.entries(tagCount)
-    .filter((tc) => tc[1] === selectedCount.value)
+    .filter((tc) => tc[1] === selectedPageItems.value.length)
     .map(([tagId]) => tagId);
 });
 
@@ -391,12 +391,8 @@ function getSearchRules(): RuleGroup {
  */
 function getSelectedContactsRules(): RuleGroup {
   return {
-    condition: 'OR',
-    rules: selectedContactItems.value.map((item) => ({
-      field: 'id',
-      operator: 'equal',
-      value: [item.id],
-    })),
+    condition: 'AND',
+    rules: [getSelectionRules(), getSearchRules()],
   };
 }
 
@@ -417,26 +413,12 @@ async function refreshResponses() {
 
   isRefreshing.value = true;
   try {
-    // Store currently selected IDs before refresh
-    const selectedIds = new Set(
-      selectedContactItems.value.map((item) => item.id)
-    );
-
     const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
-    const newContacts = await client.contact.list(query, [
+    contactsTable.value = await client.contact.list(query, [
       GetContactWith.Profile,
       GetContactWith.Roles,
       GetContactWith.Tags,
     ]);
-
-    // Preserve selection state for existing contacts
-    contactsTable.value = {
-      ...newContacts,
-      items: newContacts.items.map((c) => ({
-        ...c,
-        selected: selectedIds.has(c.id),
-      })),
-    };
   } catch (err) {
     contactsTable.value = emptyTable();
     addNotification({

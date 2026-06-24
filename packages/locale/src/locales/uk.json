@@ -1011,6 +1011,15 @@
       "scheduled": "Заплановано"
     },
     "statusLabel": "Статус: {status}",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "Вибрано всі {count} відповідних елементів.",
+        "clearSelection": "Зняти вибір",
+        "pageSelected": "Вибрано всі {count} елементи на цій сторінці.",
+        "selectAll": "Вибрати всі {count} елементів",
+        "someSelected": "Вибрано {count} відповідних елементів."
+      }
+    },
     "thankYou": "Дякую!",
     "timeAgo": "{time} тому",
     "timeIn": "в {time}",

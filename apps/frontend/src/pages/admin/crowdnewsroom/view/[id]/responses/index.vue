@@ -54,6 +54,7 @@ meta:
     </div>
     <AppPaginatedTable
       v-model:query="currentPaginatedQuery"
+      v-model:selection-state="selectionState"
       keypath="calloutResponsesPage.showingOf"
       :headers="headers"
       :result="responses"
@@ -258,6 +259,7 @@ import {
 
 import { useSegmentManagement } from '../../../../../../composables/useSegmentManagement';
 import { useTagFilter } from '../../../../../../composables/useTagFilter';
+import { usePaginatedSelectionState } from '../../../../../../composables/useSelectionState';
 
 /**
  * Callout Responses Table Component
@@ -279,26 +281,23 @@ const route = useRoute();
 
 /**
  * Table State
- * @description Manages the paginated table data and selection state
+ * @description Manages the paginated table data
  */
-const responses = ref<
-  Paginated<
-    GetCalloutResponseDataWith<
-      | GetCalloutResponseWith.Answers
-      | GetCalloutResponseWith.Assignee
-      | GetCalloutResponseWith.Contact
-      | GetCalloutResponseWith.LatestComment
-      | GetCalloutResponseWith.Tags
-    > & {
-      selected: boolean;
-    }
-  >
->();
+const responses =
+  ref<
+    Paginated<
+      GetCalloutResponseDataWith<
+        | GetCalloutResponseWith.Answers
+        | GetCalloutResponseWith.Assignee
+        | GetCalloutResponseWith.Contact
+        | GetCalloutResponseWith.LatestComment
+        | GetCalloutResponseWith.Tags
+      >
+    >
+  >();
 
-const selectedResponseItems = computed(
-  () => responses.value?.items.filter((ri) => ri.selected) || []
-);
-const selectedCount = computed(() => selectedResponseItems.value.length);
+const { selectionState, selectedPageItems, selectedCount, getSelectionRules } =
+  usePaginatedSelectionState(responses);
 
 /**
  * Tag Management
@@ -312,7 +311,7 @@ const selectedTags = computed(() => {
   }
 
   const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
-  for (const item of selectedResponseItems.value) {
+  for (const item of selectedPageItems.value) {
     for (const tag of item.tags) {
       tagCount[tag.id]++;
     }
@@ -329,8 +328,8 @@ const selectedTags = computed(() => {
 const currentAssignee = defineParam('assignee', (v) => v || '');
 
 const selectedAssigneeId = computed(() => {
-  const assigneeId = selectedResponseItems.value[0]?.assignee?.id;
-  for (const item of selectedResponseItems.value) {
+  const assigneeId = selectedPageItems.value[0]?.assignee?.id;
+  for (const item of selectedPageItems.value) {
     if (assigneeId !== item.assignee?.id) {
       return '';
     }
@@ -490,12 +489,8 @@ function getSearchRules(): RuleGroup {
  */
 function getSelectedResponseRules(): RuleGroup {
   return {
-    condition: 'OR',
-    rules: selectedResponseItems.value.map((item) => ({
-      field: 'id',
-      operator: 'equal',
-      value: [item.id],
-    })),
+    condition: 'AND',
+    rules: [getSelectionRules(), getSearchRules()],
   };
 }
 
@@ -528,12 +523,7 @@ async function refreshResponses() {
       _with.push(GetCalloutResponseWith.Answers);
     }
 
-    // Store currently selected IDs before refresh
-    const selectedIds = new Set(
-      selectedResponseItems.value.map((item) => item.id)
-    );
-
-    const newResponses = await client.callout.listResponses(
+    responses.value = await client.callout.listResponses(
       props.callout.slug,
       {
         ...currentPaginatedQuery.query,
@@ -541,14 +531,6 @@ async function refreshResponses() {
       },
       _with
     );
-
-    responses.value = {
-      ...newResponses,
-      items: newResponses.items.map((r) => ({
-        ...r,
-        selected: selectedIds.has(r.id),
-      })),
-    };
   } catch (err) {
     responses.value = emptyTable();
     addNotification({
@@ -582,9 +564,7 @@ refreshResponses();
  */
 function handleExport() {
   const rules: RuleGroup =
-    selectedResponseItems.value.length > 0
-      ? getSelectedResponseRules()
-      : getSearchRules();
+    selectedCount.value > 0 ? getSelectionRules() : getSearchRules();
 
   const rulesQuery = encodeURIComponent(JSON.stringify(rules));
 

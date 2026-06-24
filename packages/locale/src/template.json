@@ -1009,6 +1009,15 @@
       "scheduled": ""
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "",
+        "clearSelection": "",
+        "pageSelected": "",
+        "selectAll": "",
+        "someSelected": ""
+      }
+    },
     "thankYou": "",
     "timeAgo": "",
     "timeIn": "",

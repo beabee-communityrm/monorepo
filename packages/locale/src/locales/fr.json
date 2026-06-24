@@ -1013,6 +1013,15 @@
       "scheduled": "Planifiée"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "Les {count} éléments correspondants sont tous sélectionnés.",
+        "clearSelection": "Effacer la sélection",
+        "pageSelected": "Tous les {count} éléments de cette page sont sélectionnés.",
+        "selectAll": "Sélectionner les {count} éléments",
+        "someSelected": "{count} éléments correspondants sont sélectionnés."
+      }
+    },
     "thankYou": "Merci !",
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",

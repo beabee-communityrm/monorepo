@@ -1009,6 +1009,15 @@
       "scheduled": "Programmato"
     },
     "statusLabel": "Stato: {status}",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "Tutti i {count} elementi corrispondenti sono selezionati.",
+        "clearSelection": "Cancella selezione",
+        "pageSelected": "Tutti i {count} elementi di questa pagina sono selezionati.",
+        "selectAll": "Seleziona tutti i {count} elementi",
+        "someSelected": "{count} elementi corrispondenti sono selezionati."
+      }
+    },
     "thankYou": "Grazie!",
     "timeAgo": "{time} fa",
     "timeIn": "in {time}",

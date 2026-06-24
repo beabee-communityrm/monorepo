@@ -1009,6 +1009,15 @@
       "scheduled": "προγραμματισμένο"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "Όλα τα {count} αντίστοιχα στοιχεία είναι επιλεγμένα.",
+        "clearSelection": "Εκκαθάριση επιλογής",
+        "pageSelected": "Όλα τα {count} στοιχεία αυτής της σελίδας είναι επιλεγμένα.",
+        "selectAll": "Επιλογή όλων των {count} στοιχείων",
+        "someSelected": "{count} αντίστοιχα στοιχεία είναι επιλεγμένα."
+      }
+    },
     "thankYou": "Ευχαριστώ πολύ!",
     "timeAgo": "πριν το {time}",
     "timeIn": "σε {time}",
