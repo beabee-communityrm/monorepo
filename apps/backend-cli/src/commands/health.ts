@@ -30,6 +30,22 @@ export const healthCommand: CommandModule = {
         },
       })
       .command({
+        command: 'payment',
+        describe: 'Check the payment integrations',
+        handler: async () => {
+          const { checkHealth } = await import('../actions/health.js');
+          return checkHealth(['payment']);
+        },
+      })
+      .command({
+        command: 'email',
+        describe: 'Check the email integration',
+        handler: async () => {
+          const { checkHealth } = await import('../actions/health.js');
+          return checkHealth(['email']);
+        },
+      })
+      .command({
         command: 'all',
         describe: 'Check all integrations',
         handler: async () => {

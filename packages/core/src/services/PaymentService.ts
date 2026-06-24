@@ -1,4 +1,5 @@
 import {
+  ApiHealthStatus,
   ContributionPeriod,
   MembershipStatus,
   PaymentFlowParams,
@@ -253,6 +254,28 @@ class PaymentService {
   ): Promise<void> {
     log.info('Update contact for contact ' + contact.id);
     await this.provider(contact, (p) => p.updateContact(updates));
+  }
+
+  /**
+   * Check the health of the payment integration. As it's rare for a single
+   * instance to use both providers, the providers are combined into one
+   * status: unhealthy if either is unhealthy, disabled if both are disabled,
+   * otherwise healthy.
+   * @returns The combined payment health status
+   */
+  async getHealthStatus(): Promise<ApiHealthStatus> {
+    const statuses = [
+      await StripeProvider.getHealthStatus(),
+      await GCProvider.getHealthStatus(),
+    ];
+
+    if (statuses.includes(ApiHealthStatus.UNHEALTHY)) {
+      return ApiHealthStatus.UNHEALTHY;
+    }
+    if (statuses.every((s) => s === ApiHealthStatus.DISABLED)) {
+      return ApiHealthStatus.DISABLED;
+    }
+    return ApiHealthStatus.HEALTHY;
   }
 
   async fetchInvoiceUrl(paymentId: string): Promise<string | null> {

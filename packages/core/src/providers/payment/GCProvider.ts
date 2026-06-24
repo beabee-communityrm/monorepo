@@ -1,4 +1,5 @@
 import {
+  ApiHealthStatus,
   ContributionPeriod,
   PaymentMethod,
   PaymentSource,
@@ -326,6 +327,27 @@ export class GCProvider extends PaymentProvider {
         form.period === 'monthly') ||
       !(this.data.mandateId && (await hasPendingPayment(this.data.mandateId)))
     );
+  }
+
+  /**
+   * Check the health of the GoCardless integration. As GoCardless is a
+   * deprecated payment method, this is just a basic connectivity check that
+   * lists a customer to verify the credentials work.
+   * @returns DISABLED if GoCardless isn't configured, HEALTHY if the API is
+   * reachable, UNHEALTHY otherwise
+   */
+  static async getHealthStatus(): Promise<ApiHealthStatus> {
+    if (!config.gocardless.accessToken) {
+      return ApiHealthStatus.DISABLED;
+    }
+
+    try {
+      await gocardless.customers.list({ limit: 1 });
+      return ApiHealthStatus.HEALTHY;
+    } catch (err) {
+      log.error('GoCardless health check failed', err);
+      return ApiHealthStatus.UNHEALTHY;
+    }
   }
 }
 

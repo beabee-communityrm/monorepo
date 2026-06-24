@@ -98,7 +98,7 @@ export const setupCommand: CommandModule = {
             })
             .command({
               command: 'mailchimp',
-              describe: 'Import groups from Mailchimp',
+              describe: 'Set up Mailchimp integration',
               builder: (yargs) =>
                 yargs.option('dry-run', {
                   type: 'boolean',

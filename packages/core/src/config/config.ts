@@ -52,14 +52,28 @@ export interface SendGridEmailConfig {
   };
 }
 
+/**
+ * Empty email provider (when email sending is disabled)
+ * Used when BEABEE_EMAIL_PROVIDER=none
+ */
+interface NoneEmailConfig {
+  provider: 'none';
+  settings: Record<string, never>;
+}
+
 // Union type for email configuration - only one provider can be used at a time
-type EmailConfig = SMTPEmailConfig | MandrillEmailConfig | SendGridEmailConfig;
+type EmailConfig =
+  | SMTPEmailConfig
+  | MandrillEmailConfig
+  | SendGridEmailConfig
+  | NoneEmailConfig;
 
 // Get email provider from environment, with validation for allowed values
 const emailProvider = env.e('BEABEE_EMAIL_PROVIDER', [
   'mandrill',
   'sendgrid',
   'smtp',
+  'none',
 ] as const);
 
 /**
@@ -209,10 +223,12 @@ export const config = {
           ? {
               apiKey: env.s('BEABEE_EMAIL_SETTINGS_APIKEY'), // Mandrill API key
             }
-          : {
-              apiKey: env.s('BEABEE_EMAIL_SETTINGS_APIKEY'), // SendGrid API key
-              testMode: env.b('BEABEE_EMAIL_SETTIGS_TESTMODE', false), // SendGrid test mode (default: false)
-            },
+          : emailProvider === 'sendgrid'
+            ? {
+                apiKey: env.s('BEABEE_EMAIL_SETTINGS_APIKEY'), // SendGrid API key
+                testMode: env.b('BEABEE_EMAIL_SETTIGS_TESTMODE', false), // SendGrid test mode (default: false)
+              }
+            : {}, // none: email sending disabled
   } as EmailConfig,
 
   // Newsletter integration configuration

@@ -1,7 +1,9 @@
 import { ApiHealthStatus } from '@beabee/beabee-common';
 import { documentService } from '@beabee/core/services/DocumentService';
+import { emailService } from '@beabee/core/services/EmailService';
 import { imageService } from '@beabee/core/services/ImageService';
 import { newsletterService } from '@beabee/core/services/NewsletterService';
+import { paymentService } from '@beabee/core/services/PaymentService';
 
 import chalk from 'chalk';
 
@@ -14,6 +16,8 @@ const checks: Record<HealthIntegration, () => Promise<ApiHealthStatus>> = {
   newsletter: async () =>
     (await newsletterService.getProviderInfo(true)).status ??
     ApiHealthStatus.DISABLED,
+  payment: () => paymentService.getHealthStatus(),
+  email: () => emailService.getHealthStatus(),
 };
 
 /**
