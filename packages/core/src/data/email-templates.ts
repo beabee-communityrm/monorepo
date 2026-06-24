@@ -221,6 +221,14 @@ export const adminEmailTemplates = {
       MEMBERNAME: params.contact.fullname,
     })
   ),
+  'deleted-group': withMergeFields(
+    ['GROUPS'],
+    (params: { groups: { id: string; label: string }[] }) => ({
+      GROUPS: params.groups
+        .map((g) => `<li>${g.label} (${g.id})</li>`)
+        .join(''),
+    })
+  ),
   'new-callout-response': withMergeFields(
     ['CALLOUTSLUG', 'CALLOUTTITLE', 'RESPNAME'],
     (params: {
