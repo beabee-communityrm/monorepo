@@ -91,6 +91,16 @@ class NewsletterService {
         // The newsletter provider rejected the update, set this contact's
         // newsletter status to None to prevent further updates
         if (err instanceof CantUpdateNewsletterContactError) {
+          // Tried to add contact to an invalid group. Trigger group refresh and update
+          if (
+            err.status === 400 &&
+            err.data.title.toLowerCase().includes('invalid interest id')
+          ) {
+            log.info(
+              `Tried to subscribe ${contact.email} to invalid group. ${err.data.detail}\nGroups will be refreshed.`
+            );
+            this.refreshNewsletterGroups();
+          }
           log.warning(
             `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
             err
