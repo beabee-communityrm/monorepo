@@ -1014,7 +1014,8 @@
         "allSelected": "All {count} matching items are selected.",
         "clearSelection": "Clear selection",
         "pageSelected": "All {count} items on this page are selected.",
-        "selectAll": "Select all {count} items"
+        "selectAll": "Select all {count} items",
+        "someSelected": "{count} matching items are selected."
       }
     },
     "thankYou": "Thank you!",

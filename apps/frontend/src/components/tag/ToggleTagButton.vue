@@ -4,6 +4,7 @@
     variant="primaryOutlined"
     :title="t('tags.toggleTag')"
     :show-title="withText"
+    :disabled="disabled"
   >
     <p v-if="tagItems.length === 0" class="px-3 py-2 italic">
       {{ t('tags.noTags') }}
@@ -42,6 +43,7 @@ interface Props {
   manageUrl: string;
   withText?: boolean;
   selectable?: boolean;
+  disabled?: boolean;
 }
 withDefaults(defineProps<Props>(), { selectable: true });
 

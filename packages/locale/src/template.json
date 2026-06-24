@@ -1014,7 +1014,8 @@
         "allSelected": "",
         "clearSelection": "",
         "pageSelected": "",
-        "selectAll": ""
+        "selectAll": "",
+        "someSelected": ""
       }
     },
     "thankYou": "",

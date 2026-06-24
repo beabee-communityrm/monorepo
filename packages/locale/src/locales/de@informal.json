@@ -1011,10 +1011,11 @@
     "statusLabel": "Status: {status}",
     "table": {
       "selectAllBanner": {
-        "allSelected": "",
-        "clearSelection": "",
-        "pageSelected": "",
-        "selectAll": ""
+        "allSelected": "Alle {count} übereinstimmenden Einträge sind ausgewählt.",
+        "clearSelection": "Auswahl aufheben",
+        "pageSelected": "Alle {count} Einträge auf dieser Seite sind ausgewählt.",
+        "selectAll": "Alle {count} Einträge auswählen",
+        "someSelected": "{count} übereinstimmende Einträge sind ausgewählt."
       }
     },
     "thankYou": "Vielen Dank!",

@@ -18,9 +18,13 @@
 
     <div v-else>
       {{
-        t('common.table.selectAllBanner.allSelected', {
-          count: n(totalTableItems),
-        })
+        selectedCount < totalTableItems
+          ? t('common.table.selectAllBanner.someSelected', {
+              count: n(selectedCount),
+            })
+          : t('common.table.selectAllBanner.allSelected', {
+              count: n(totalTableItems),
+            })
       }}
 
       <button class="font-semibold text-link" @click="mode = 'explicit'">
@@ -42,5 +46,6 @@ const mode = defineModel<'all' | 'explicit'>('mode', {
 defineProps<{
   totalTableItems: number;
   pageSelectedCount: number;
+  selectedCount: number;
 }>();
 </script>

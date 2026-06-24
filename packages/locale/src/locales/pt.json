@@ -1011,10 +1011,11 @@
     "statusLabel": "",
     "table": {
       "selectAllBanner": {
-        "allSelected": "",
-        "clearSelection": "",
-        "pageSelected": "",
-        "selectAll": ""
+        "allSelected": "Todos os {count} itens correspondentes estão selecionados.",
+        "clearSelection": "Limpar seleção",
+        "pageSelected": "Todos os {count} itens desta página estão selecionados.",
+        "selectAll": "Selecionar todos os {count} itens",
+        "someSelected": "{count} itens correspondentes estão selecionados."
       }
     },
     "thankYou": "Obrigado!",

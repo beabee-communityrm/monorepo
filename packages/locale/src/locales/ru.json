@@ -1012,10 +1012,11 @@
     "statusLabel": "",
     "table": {
       "selectAllBanner": {
-        "allSelected": "",
-        "clearSelection": "",
-        "pageSelected": "",
-        "selectAll": ""
+        "allSelected": "Выбраны все {count} совпадающих элемента.",
+        "clearSelection": "Снять выделение",
+        "pageSelected": "Выбраны все {count} элементов на этой странице.",
+        "selectAll": "Выбрать все {count} элементов",
+        "someSelected": "Выбрано {count} совпадающих элементов."
       }
     },
     "thankYou": "Большое cпасибо!",
