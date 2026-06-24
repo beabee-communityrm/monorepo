@@ -2,13 +2,22 @@ import { log as mainLogger } from '@beabee/core/logging';
 import { runApp } from '@beabee/core/server';
 import { newsletterService } from '@beabee/core/services';
 
+import { SyncClearPendingStatusArgs } from '../../../types/sync.js';
+
 const log = mainLogger.child({ app: 'sync-newsletter-refresh-cached-groups' });
 
-export const refreshCachedGroups = async (): Promise<void> => {
+export const refreshCachedGroups = async ({
+  dryRun,
+}: SyncClearPendingStatusArgs): Promise<void> => {
   await runApp(async () => {
     log.info('Refreshing cached newsletter groups');
 
-    const { groupChanges } = await newsletterService.refreshNewsletterGroups();
+    if (dryRun) {
+      log.info('DRY RUN - No changes will actually be made');
+    }
+
+    const { groupChanges } =
+      await newsletterService.refreshNewsletterGroups(dryRun);
 
     if (groupChanges.length === 0) {
       log.info('✅ Newsletter group cache is up to date, no changes required');

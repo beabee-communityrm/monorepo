@@ -115,10 +115,16 @@ export const syncCommand: CommandModule = {
               command: 'refresh-cached-groups',
               describe:
                 'Refresh the newsletter groups cached in the database from the newsletter service',
-              handler: async () => {
+              builder: (yargs) =>
+                yargs.option('dryRun', {
+                  type: 'boolean',
+                  description: 'Run without making changes',
+                  default: false,
+                }),
+              handler: async (argv) => {
                 const { refreshCachedGroups } =
                   await import('../actions/sync/newsletters/refresh-cached-groups.js');
-                return refreshCachedGroups();
+                return refreshCachedGroups(argv);
               },
             }),
         handler: () => {},
