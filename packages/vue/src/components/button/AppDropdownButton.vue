@@ -56,6 +56,7 @@
  */
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, onBeforeUnmount, ref, toRef, watch } from 'vue';
+import type { VNode } from 'vue';
 import { computed } from 'vue';
 
 import AppButton from './AppButton.vue';
@@ -91,7 +92,7 @@ defineSlots<{
    * Default slot for dropdown menu content
    * @description Menu items with role="menuitem" for accessibility
    */
-  default(): any;
+  default(): VNode[];
 }>();
 
 const props = defineProps<AppDropdownButtonProps>();

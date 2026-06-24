@@ -109,7 +109,7 @@ export interface AppStatusPageProps {
   showInfo?: boolean;
 }
 
-const props = withDefaults(defineProps<AppStatusPageProps>(), {
+withDefaults(defineProps<AppStatusPageProps>(), {
   showProgress: false,
   progress: 0,
   showRetry: false,

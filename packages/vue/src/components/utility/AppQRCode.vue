@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-// @ts-ignore
+// @ts-expect-error: qrcode-generator lacks ESM type declarations
 import { qrcode } from 'qrcode-generator/qrcode.mjs';
 import { onMounted, ref, watch } from 'vue';
 

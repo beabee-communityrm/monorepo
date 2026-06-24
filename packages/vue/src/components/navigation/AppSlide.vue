@@ -35,7 +35,7 @@ export interface AppSlideProps {
   ariaRoleDescription?: string;
 }
 
-const props = withDefaults(defineProps<AppSlideProps>(), {
+withDefaults(defineProps<AppSlideProps>(), {
   ariaLabel: undefined,
   ariaRoleDescription: 'slide',
 });

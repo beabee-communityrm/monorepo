@@ -5,7 +5,7 @@ import vueA11y from 'eslint-plugin-vuejs-accessibility';
 import typescriptEslint from 'typescript-eslint';
 
 export default typescriptEslint.config(
-  { ignores: ['*.d.ts', '**/coverage', '**/dist', '**/vite.config.*'] },
+  { ignores: ['*.d.ts', '**/coverage', '**/dist', '**/*.story.vue'] },
   {
     extends: [
       eslint.configs.recommended,
@@ -23,6 +23,14 @@ export default typescriptEslint.config(
     rules: {
       'vue/no-v-html': 'off',
       'no-console': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
     },
   },
   {
@@ -34,12 +42,6 @@ export default typescriptEslint.config(
         'warn',
       ])
     ),
-  },
-  {
-    files: ['src/pages/**/*.vue'],
-    rules: {
-      'vue/multi-word-component-names': 'off',
-    },
   },
   eslintConfigPrettier
 );

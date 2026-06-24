@@ -35,6 +35,7 @@
  * @component AppInfoListItem
  */
 import { computed } from 'vue';
+import type { VNode } from 'vue';
 
 /**
  * Props for the AppInfoListItem component
@@ -61,6 +62,6 @@ defineSlots<{
    * Custom value content
    * @description Override the default value display with custom content
    */
-  default(): any;
+  default(): VNode[];
 }>();
 </script>
