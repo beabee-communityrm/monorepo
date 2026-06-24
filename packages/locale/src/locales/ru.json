@@ -1010,6 +1010,14 @@
       "scheduled": "Запланировано"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "",
+        "clearSelection": "",
+        "pageSelected": "",
+        "selectAll": ""
+      }
+    },
     "thankYou": "Большое cпасибо!",
     "timeAgo": "до {time}",
     "timeIn": "в {time}",

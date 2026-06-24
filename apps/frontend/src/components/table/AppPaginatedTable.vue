@@ -37,10 +37,17 @@
       />
     </div>
     <div class="overflow-x-auto">
+      <SelectAllBanner
+        v-if="showSelectAllBanner"
+        v-model:mode="mode"
+        :page-selected-count="selectedIds.length"
+        :total-table-items="result?.total ?? 0"
+      />
       <AppTable
         v-model:sort="query.sort"
+        v-model:selected-ids="selectedIds"
         :headers="headers"
-        :items="result?.items || null"
+        :items="result?.items ?? null"
         :selectable="selectable"
         :row-class="rowClass"
         class="mb-4 w-full"
@@ -72,8 +79,10 @@ import { computed, useSlots } from 'vue';
 import { type Paginated } from '../../type/paginated';
 import { type Header, type Item, type Sort } from '../../type/table';
 import AppPaginatedTableResult from './AppPaginatedTableResult.vue';
+import SelectAllBanner from './SelectAllBanner.vue';
+import type { SelectionState } from '../../type/selection-state';
 
-defineProps<{
+const props = defineProps<{
   headers: Header[];
   result: Paginated<I> | undefined;
   query: {
@@ -84,6 +93,86 @@ defineProps<{
   selectable?: boolean;
   rowClass?: (item: I) => string;
 }>();
+
+const selectionState = defineModel<SelectionState>('selectionState', {
+  required: false,
+  default: () => ({
+    mode: 'explicit',
+    ids: [],
+  }),
+});
+
+const mode = computed({
+  get: () => selectionState.value.mode,
+  set: (val) => {
+    if (val === 'all') {
+      selectionState.value = {
+        mode: 'all',
+        excludedIds: [],
+      };
+    } else {
+      selectionState.value = {
+        mode: 'explicit',
+        ids: [],
+      };
+    }
+  },
+});
+
+const allIdsOnPage = computed(
+  () => props.result?.items?.map((i) => i.id) || []
+);
+
+const selectedIds = computed({
+  get: () => {
+    if (selectionState.value.mode === 'all') {
+      const excludedIds = selectionState.value.excludedIds;
+      return allIdsOnPage.value.filter((id) => !excludedIds.includes(id));
+    } else {
+      const ids = selectionState.value.ids;
+      return allIdsOnPage.value.filter((id) => ids.includes(id));
+    }
+  },
+  set: (newSelectedIds) => {
+    // Preserves selections/exclusions from other pages and only replaces
+    // the selection state for IDs on the current page
+    if (selectionState.value.mode === 'all') {
+      const newExcludedIds = allIdsOnPage.value.filter(
+        (id) => !newSelectedIds.includes(id)
+      );
+      const otherExcludedIds = selectionState.value.excludedIds.filter(
+        (id) => !allIdsOnPage.value.includes(id)
+      );
+      selectionState.value = {
+        mode: 'all',
+        excludedIds: [...otherExcludedIds, ...newExcludedIds],
+      };
+    } else {
+      const otherSelectedIds = selectionState.value.ids.filter(
+        (id) => !allIdsOnPage.value.includes(id)
+      );
+      selectionState.value = {
+        mode: 'explicit',
+        ids: [...otherSelectedIds, ...newSelectedIds],
+      };
+    }
+  },
+});
+
+const showSelectAllBanner = computed(() => {
+  if (selectionState.value.mode === 'all') {
+    return selectionState.value.excludedIds.length === 0;
+  }
+
+  const allOnPageSelected =
+    allIdsOnPage.value.length === selectedIds.value.length;
+
+  const isSinglePage = props.result
+    ? props.result.total <= props.result.count
+    : false;
+
+  return allOnPageSelected && !isSinglePage;
+});
 
 // Slots are passed to AppTable, typing is handled by Vue's inference
 const slotNames = computed(() => {
