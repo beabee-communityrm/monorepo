@@ -1,0 +1,45 @@
+name: A11y tests
+
+on:
+  pull_request:
+
+jobs:
+  run-a11y-tests:
+    runs-on: ubuntu-latest
+    env:
+      COMPOSE_PROJECT_NAME: beabee-a11y-tests-${{ github.run_id }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+        with:
+          stripe_public_key: ${{ secrets.BEABEE_STRIPE_PUBLICKEY }}
+          stripe_secret_key: ${{ secrets.BEABEE_STRIPE_SECRETKEY }}
+
+      - uses: ./.github/actions/test-setup
+        with:
+          stripe_webhook_secret: ${{ secrets.BEABEE_STRIPE_WEBHOOKSECRET }}
+          stripe_membership_product_id: ${{ secrets.BEABEE_STRIPE_MEMBERSHIPPRODUCTID }}
+
+      - name: Playwright setup
+        run: yarn workspace @beabee/browser-tests playwright install firefox --with-deps
+
+      - name: Run a11y tests
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ env.BEABEE_AUDIENCE }}
+        run: yarn workspace @beabee/browser-tests test:a11y
+
+      - name: Upload a11y test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-test-results
+          path: ./apps/browser-tests/test-results
+
+      - name: Teardown
+        if: failure()
+        uses: ./.github/actions/test-teardown
+        with:
+          db_name: "a11y-test-dump"

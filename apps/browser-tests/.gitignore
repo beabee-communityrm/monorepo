@@ -2,6 +2,7 @@
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/playwright/.auth.json
 /playwright/test-results/
 /playwright/videos/
 /playwright/trace/
