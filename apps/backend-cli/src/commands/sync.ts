@@ -110,6 +110,16 @@ export const syncCommand: CommandModule = {
                   await import('../actions/sync/newsletters/clear-pending-status.js');
                 return clearPendingStatus(argv);
               },
+            })
+            .command({
+              command: 'refresh-cached-groups',
+              describe:
+                'Refresh the newsletter groups cached in the database from the newsletter service',
+              handler: async () => {
+                const { refreshCachedGroups } =
+                  await import('../actions/sync/newsletters/refresh-cached-groups.js');
+                return refreshCachedGroups();
+              },
             }),
         handler: () => {},
       })
