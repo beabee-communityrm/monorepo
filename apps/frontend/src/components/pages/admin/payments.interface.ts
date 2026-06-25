@@ -57,6 +57,18 @@ export const headers = computed<Header[]>(() => [
     align: 'right',
     sortable: true,
   },
+  {
+    value: 'refundStatus',
+    text: t('common.refundStatus'),
+    align: 'right',
+    sortable: true,
+  },
+  {
+    value: 'refundReason',
+    text: t('common.refundReason'),
+    align: 'right',
+    sortable: true,
+  },
 ]);
 
 const filterItems = computed<FilterItems<PaymentFilterName>>(() => ({
