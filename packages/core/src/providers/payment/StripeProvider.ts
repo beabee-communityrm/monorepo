@@ -1,4 +1,5 @@
 import {
+  ApiHealthStatus,
   ContributionType,
   PaymentFlowParamsStripe,
   PaymentSource,
@@ -20,6 +21,7 @@ import {
 } from '#lib/stripe';
 import { log as mainLogger } from '#logging';
 import { Contact } from '#models/index';
+import optionsService from '#services/OptionsService';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
@@ -328,6 +330,59 @@ export class StripeProvider extends PaymentProvider {
   static async fetchInvoiceUrl(paymentId: string): Promise<string | null> {
     const invoice = await stripe.invoices.retrieve(paymentId);
     return invoice.invoice_pdf || null;
+  }
+
+  /**
+   * Check the health of the Stripe integration by verifying that the
+   * configured membership product still exists and the webhook endpoint we
+   * rely on is registered.
+   * @returns DISABLED if Stripe isn't configured, HEALTHY if the product and
+   * webhook are present, UNHEALTHY otherwise
+   */
+  static async getHealthStatus(): Promise<ApiHealthStatus> {
+    if (!config.stripe.secretKey) {
+      return ApiHealthStatus.DISABLED;
+    }
+
+    try {
+      // Check the configured membership product still exists in Stripe
+      const productId = optionsService.getText('stripe-membership-product-id');
+      if (!productId) {
+        log.warning(
+          'Stripe health check failed: no membership product configured'
+        );
+        return ApiHealthStatus.UNHEALTHY;
+      }
+      // Throws if the product no longer exists in Stripe; we only care that
+      // the lookup succeeds, not about the returned product
+      await stripe.products.retrieve(productId);
+
+      // Check the webhook endpoint we rely on is registered
+      const webhookUrl = `${config.webhookUrl}/webhook/stripe`;
+      const { data: webhookEndpoints } = await stripe.webhookEndpoints.list();
+      const webhook = webhookEndpoints.find(
+        (endpoint) => endpoint.url === webhookUrl
+      );
+      if (!webhook) {
+        log.warning(
+          `Stripe health check failed: no webhook found for ${webhookUrl}`
+        );
+        return ApiHealthStatus.UNHEALTHY;
+      }
+
+      // Check the webhook is on the expected API version
+      if (webhook.api_version !== config.stripe.version) {
+        log.warning(
+          `Stripe health check failed: webhook API version mismatch, expected ${config.stripe.version}, got ${webhook.api_version}`
+        );
+        return ApiHealthStatus.UNHEALTHY;
+      }
+
+      return ApiHealthStatus.HEALTHY;
+    } catch (err) {
+      log.error('Stripe health check failed', err);
+      return ApiHealthStatus.UNHEALTHY;
+    }
   }
 }
 

@@ -1,9 +1,8 @@
 import { GetNoticesQuery, UpdateNoticeData } from '@beabee/beabee-common';
 import { BeabeeClient, NoticeClient } from '@beabee/client';
+import { api, testUser } from '@beabee/test-utils/test-data';
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-
-import { api, testUser } from '#fixtures/api-test-info.json';
 
 import { testNotice, testNoticeUpdate } from '../../fixtures/notices.js';
 

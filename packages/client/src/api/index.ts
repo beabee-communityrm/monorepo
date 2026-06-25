@@ -20,6 +20,7 @@ export * from './content.client.js';
 export * from './email-template.client.js';
 export * from './email.client.js';
 export * from './health.client.js';
+export * from './integrations.client.js';
 export * from './notice.client.js';
 export * from './payment.client.js';
 export * from './reset-security.client.js';

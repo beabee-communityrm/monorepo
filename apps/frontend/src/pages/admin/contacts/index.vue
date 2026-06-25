@@ -69,7 +69,7 @@ meta:
             :selected-tags="selectedTags"
             :manage-url="`${route.path}/tags`"
             :loading="doingAction"
-            :disable-tags="selectedCount === 0"
+            :disabled="selectedCount === 0"
             @toggle="
               (tagId, successText) =>
                 handleUpdateAction({ tags: [tagId] }, successText)

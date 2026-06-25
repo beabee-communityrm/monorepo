@@ -279,6 +279,7 @@ declare module 'vue-router/auto-routes' {
       | 'adminSettingsEmail'
       | 'adminSettingsEmailEdit'
       | 'adminSettingsGeneral'
+      | 'adminSettingsIntegrations'
       | 'adminSettingsTheme'
     >,
     'adminSettingsGeneral': RouteRecordInfo<
@@ -305,6 +306,13 @@ declare module 'vue-router/auto-routes' {
     'adminSettingsEmail': RouteRecordInfo<
       'adminSettingsEmail',
       '/admin/settings/emails',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    'adminSettingsIntegrations': RouteRecordInfo<
+      'adminSettingsIntegrations',
+      '/admin/settings/integrations',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -738,6 +746,7 @@ declare module 'vue-router/auto-routes' {
         | 'adminSettingsEmail'
         | 'adminSettingsEmailEdit'
         | 'adminSettingsGeneral'
+        | 'adminSettingsIntegrations'
         | 'adminSettingsTheme'
       views:
         | 'default'
@@ -763,6 +772,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/admin/settings/emails.vue': {
       routes:
         | 'adminSettingsEmail'
+      views:
+        | never
+    }
+    'src/pages/admin/settings/integrations.vue': {
+      routes:
+        | 'adminSettingsIntegrations'
       views:
         | never
     }

@@ -40,12 +40,13 @@
       <SelectAllBanner
         v-if="showSelectAllBanner"
         v-model:mode="mode"
-        :page-selected-count="selectedIds.length"
+        :page-selected-count="selectedIdsOnPage.length"
         :total-table-items="result?.total ?? 0"
+        :selected-count="tableSelectedCount"
       />
       <AppTable
         v-model:sort="query.sort"
-        v-model:selected-ids="selectedIds"
+        v-model:selected-ids="selectedIdsOnPage"
         :headers="headers"
         :items="result?.items ?? null"
         :selectable="selectable"
@@ -123,7 +124,7 @@ const allIdsOnPage = computed(
   () => props.result?.items?.map((i) => i.id) || []
 );
 
-const selectedIds = computed({
+const selectedIdsOnPage = computed({
   get: () => {
     if (selectionState.value.mode === 'all') {
       const excludedIds = selectionState.value.excludedIds;
@@ -133,19 +134,19 @@ const selectedIds = computed({
       return allIdsOnPage.value.filter((id) => ids.includes(id));
     }
   },
-  set: (newSelectedIds) => {
+  set: (selectedIdsOnPage) => {
     // Preserves selections/exclusions from other pages and only replaces
     // the selection state for IDs on the current page
     if (selectionState.value.mode === 'all') {
-      const newExcludedIds = allIdsOnPage.value.filter(
-        (id) => !newSelectedIds.includes(id)
+      const excludedIdsOnPage = allIdsOnPage.value.filter(
+        (id) => !selectedIdsOnPage.includes(id)
       );
       const otherExcludedIds = selectionState.value.excludedIds.filter(
         (id) => !allIdsOnPage.value.includes(id)
       );
       selectionState.value = {
         mode: 'all',
-        excludedIds: [...otherExcludedIds, ...newExcludedIds],
+        excludedIds: [...otherExcludedIds, ...excludedIdsOnPage],
       };
     } else {
       const otherSelectedIds = selectionState.value.ids.filter(
@@ -153,23 +154,30 @@ const selectedIds = computed({
       );
       selectionState.value = {
         mode: 'explicit',
-        ids: [...otherSelectedIds, ...newSelectedIds],
+        ids: [...otherSelectedIds, ...selectedIdsOnPage],
       };
     }
   },
 });
 
+const tableSelectedCount = computed(() => {
+  if (selectionState.value.mode === 'explicit')
+    return selectionState.value.ids.length;
+  return (props.result?.total ?? 0) - selectionState.value.excludedIds.length;
+});
+
 const showSelectAllBanner = computed(() => {
+  const pageCount = props.result?.count ?? 0;
+  const tableCount = props.result?.total ?? 0;
+
   if (selectionState.value.mode === 'all') {
-    return selectionState.value.excludedIds.length === 0;
+    return tableSelectedCount.value !== 0;
   }
 
   const allOnPageSelected =
-    allIdsOnPage.value.length === selectedIds.value.length;
+    allIdsOnPage.value.length === selectedIdsOnPage.value.length;
 
-  const isSinglePage = props.result
-    ? props.result.total <= props.result.count
-    : false;
+  const isSinglePage = props.result ? tableCount <= pageCount : false;
 
   return allOnPageSelected && !isSinglePage;
 });

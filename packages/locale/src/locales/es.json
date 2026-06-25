@@ -251,6 +251,34 @@
         "twitterHandle": "Usuario de Twitter"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Boletines"
+      },
+      "label": "Integraciones",
+      "loadError": "Error al cargar las integraciones. Por favor, actualiza la página.",
+      "newsletter": {
+        "audienceId": "ID de audiencia",
+        "groups": "Grupos",
+        "noGroups": "No se encontraron grupos"
+      },
+      "refresh": "Actualizar",
+      "refreshResult": {
+        "added": "Grupos de {provider} añadidos: {groups}",
+        "connectionLost": "conexión perdida",
+        "couldNotConnect": "No se pudo conectar con {provider}",
+        "error": "Error al actualizar {provider}. Por favor, inténtalo de nuevo.",
+        "noChanges": "Los grupos de {provider} están actualizados",
+        "reconnected": "reconectado",
+        "removed": "Grupos de {provider} eliminados: {groups}"
+      },
+      "refreshing": "Actualizando...",
+      "status": {
+        "disabled": "Desactivado",
+        "healthy": "Conectado",
+        "unhealthy": "Conexión perdida"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "Activar contribuciones únicas",
       "oneTimeDonationsTitle": "Contribuciones únicas",
@@ -1011,10 +1039,11 @@
     "statusLabel": "Estado: {status}",
     "table": {
       "selectAllBanner": {
-        "allSelected": "",
-        "clearSelection": "",
-        "pageSelected": "",
-        "selectAll": ""
+        "allSelected": "Todos los {count} elementos coincidentes están seleccionados.",
+        "clearSelection": "Borrar selección",
+        "pageSelected": "Todos los {count} elementos de esta página están seleccionados.",
+        "selectAll": "Seleccionar todos los {count} elementos",
+        "someSelected": "{count} elementos coincidentes están seleccionados."
       }
     },
     "thankYou": "¡Gracias!",

@@ -5,11 +5,10 @@ import {
   UpdateContactRoleData,
 } from '@beabee/beabee-common';
 import { ContactClient, ContactRoleClient } from '@beabee/client';
+import { api, testUser } from '@beabee/test-utils/test-data';
 
 import { addDays } from 'date-fns';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-
-import { api, testUser } from '#fixtures/api-test-info.json';
 
 describe('ContactRole API', () => {
   let contactClient: ContactClient;

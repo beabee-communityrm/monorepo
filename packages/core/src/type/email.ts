@@ -1,3 +1,5 @@
+import type { ApiHealthStatus } from '@beabee/beabee-common';
+
 import type {
   adminEmailTemplates,
   contactEmailTemplates,
@@ -69,6 +71,7 @@ export interface EmailProvider {
     opts?: EmailOptions
   ): Promise<void>;
   getTemplateEmail(templateId: string): Promise<Email | null>;
+  getHealthStatus(): Promise<ApiHealthStatus>;
 }
 
 /**

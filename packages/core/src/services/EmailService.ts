@@ -1,4 +1,5 @@
 import {
+  ApiHealthStatus,
   EmailTemplateType,
   type GetEmailTemplateInfoData,
   type SegmentOngoingEmailTrigger,
@@ -30,6 +31,7 @@ import {
 } from '#models/index';
 import {
   MandrillProvider,
+  NoneProvider,
   SMTPProvider,
   SendGridProvider,
 } from '#providers/email/index';
@@ -65,7 +67,9 @@ class EmailService {
       ? new MandrillProvider(config.email.settings)
       : config.email.provider === 'sendgrid'
         ? new SendGridProvider(config.email.settings)
-        : new SMTPProvider(config.email.settings);
+        : config.email.provider === 'smtp'
+          ? new SMTPProvider(config.email.settings)
+          : new NoneProvider();
 
   private defaultEmails: Partial<
     Record<Locale, Partial<Record<EmailTemplateId, Email>>>
@@ -542,6 +546,14 @@ class EmailService {
    */
   async removeOngoingEmailByEmailId(emailId: string): Promise<void> {
     await getRepository(SegmentOngoingEmail).delete({ emailId });
+  }
+
+  /**
+   * Check the health of the configured email provider.
+   * @returns The email provider health status
+   */
+  async getHealthStatus(): Promise<ApiHealthStatus> {
+    return await this.provider.getHealthStatus();
   }
 }
 

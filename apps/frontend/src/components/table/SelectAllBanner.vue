@@ -7,7 +7,10 @@
         })
       }}
 
-      <button class="font-semibold text-link" @click="mode = 'all'">
+      <button
+        class="cursor-pointer font-semibold text-link"
+        @click="mode = 'all'"
+      >
         {{
           t('common.table.selectAllBanner.selectAll', {
             count: n(totalTableItems),
@@ -18,12 +21,19 @@
 
     <div v-else>
       {{
-        t('common.table.selectAllBanner.allSelected', {
-          count: n(totalTableItems),
-        })
+        selectedCount < totalTableItems
+          ? t('common.table.selectAllBanner.someSelected', {
+              count: n(selectedCount),
+            })
+          : t('common.table.selectAllBanner.allSelected', {
+              count: n(totalTableItems),
+            })
       }}
 
-      <button class="font-semibold text-link" @click="mode = 'explicit'">
+      <button
+        class="cursor-pointer font-semibold text-link"
+        @click="mode = 'explicit'"
+      >
         {{ t('common.table.selectAllBanner.clearSelection') }}
       </button>
     </div>
@@ -42,5 +52,6 @@ const mode = defineModel<'all' | 'explicit'>('mode', {
 defineProps<{
   totalTableItems: number;
   pageSelectedCount: number;
+  selectedCount: number;
 }>();
 </script>

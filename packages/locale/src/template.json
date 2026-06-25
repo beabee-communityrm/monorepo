@@ -251,6 +251,34 @@
         "twitterHandle": ""
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": ""
+      },
+      "label": "",
+      "loadError": "",
+      "newsletter": {
+        "audienceId": "",
+        "groups": "",
+        "noGroups": ""
+      },
+      "refresh": "",
+      "refreshResult": {
+        "added": "",
+        "connectionLost": "",
+        "couldNotConnect": "",
+        "error": "",
+        "noChanges": "",
+        "reconnected": "",
+        "removed": ""
+      },
+      "refreshing": "",
+      "status": {
+        "disabled": "",
+        "healthy": "",
+        "unhealthy": ""
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",
@@ -1014,7 +1042,8 @@
         "allSelected": "",
         "clearSelection": "",
         "pageSelected": "",
-        "selectAll": ""
+        "selectAll": "",
+        "someSelected": ""
       }
     },
     "thankYou": "",

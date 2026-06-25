@@ -251,6 +251,34 @@
         "twitterHandle": "Twitter-handleiding"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Nieuwsbrieven"
+      },
+      "label": "Integraties",
+      "loadError": "Laden van integraties mislukt. Ververs de pagina.",
+      "newsletter": {
+        "audienceId": "Doelgroep-ID",
+        "groups": "Groepen",
+        "noGroups": "Geen groepen gevonden"
+      },
+      "refresh": "Vernieuwen",
+      "refreshResult": {
+        "added": "{provider} groepen toegevoegd: {groups}",
+        "connectionLost": "verbinding verbroken",
+        "couldNotConnect": "Kan geen verbinding maken met {provider}",
+        "error": "{provider} vernieuwen mislukt. Probeer het opnieuw.",
+        "noChanges": "{provider} groepen zijn up-to-date",
+        "reconnected": "opnieuw verbonden",
+        "removed": "{provider} groepen verwijderd: {groups}"
+      },
+      "refreshing": "Vernieuwen...",
+      "status": {
+        "disabled": "Uitgeschakeld",
+        "healthy": "Verbonden",
+        "unhealthy": "Verbinding verbroken"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",
@@ -1011,10 +1039,11 @@
     "statusLabel": "",
     "table": {
       "selectAllBanner": {
-        "allSelected": "",
-        "clearSelection": "",
-        "pageSelected": "",
-        "selectAll": ""
+        "allSelected": "Alle {count} overeenkomende items zijn geselecteerd.",
+        "clearSelection": "Selectie wissen",
+        "pageSelected": "Alle {count} items op deze pagina zijn geselecteerd.",
+        "selectAll": "Alle {count} items selecteren",
+        "someSelected": "{count} overeenkomende items zijn geselecteerd."
       }
     },
     "thankYou": "Bedankt!",

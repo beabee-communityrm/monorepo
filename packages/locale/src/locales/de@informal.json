@@ -251,6 +251,34 @@
         "twitterHandle": "Twitter-Handle"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Newsletter"
+      },
+      "label": "Integrationen",
+      "loadError": "Integrationen konnten nicht geladen werden. Bitte die Seite neu laden.",
+      "newsletter": {
+        "audienceId": "Audience-ID",
+        "groups": "Gruppen",
+        "noGroups": "Keine Gruppen gefunden"
+      },
+      "refresh": "Aktualisieren",
+      "refreshResult": {
+        "added": "{provider} Gruppen hinzugefügt: {groups}",
+        "connectionLost": "Verbindung unterbrochen",
+        "couldNotConnect": "Verbindung zu {provider} fehlgeschlagen",
+        "error": "{provider} Aktualisierung fehlgeschlagen. Bitte erneut versuchen.",
+        "noChanges": "{provider} Gruppen sind aktuell",
+        "reconnected": "Verbunden",
+        "removed": "{provider} Gruppen entfernt: {groups}"
+      },
+      "refreshing": "Wird aktualisiert...",
+      "status": {
+        "disabled": "Deaktiviert",
+        "healthy": "Verbunden",
+        "unhealthy": "Verbindung unterbrochen"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "Einmalige Beiträge aktivieren",
       "oneTimeDonationsTitle": "Einmalige Beiträge",
@@ -1011,10 +1039,11 @@
     "statusLabel": "Status: {status}",
     "table": {
       "selectAllBanner": {
-        "allSelected": "",
-        "clearSelection": "",
-        "pageSelected": "",
-        "selectAll": ""
+        "allSelected": "Alle {count} übereinstimmenden Einträge sind ausgewählt.",
+        "clearSelection": "Auswahl aufheben",
+        "pageSelected": "Alle {count} Einträge auf dieser Seite sind ausgewählt.",
+        "selectAll": "Alle {count} Einträge auswählen",
+        "someSelected": "{count} übereinstimmende Einträge sind ausgewählt."
       }
     },
     "thankYou": "Vielen Dank!",

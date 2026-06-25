@@ -252,6 +252,34 @@
         "twitterHandle": ""
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Рассылки"
+      },
+      "label": "Интеграции",
+      "loadError": "Не удалось загрузить интеграции. Пожалуйста, обновите страницу.",
+      "newsletter": {
+        "audienceId": "ID аудитории",
+        "groups": "Группы",
+        "noGroups": "Группы не найдены"
+      },
+      "refresh": "Обновить",
+      "refreshResult": {
+        "added": "Добавлены группы {provider}: {groups}",
+        "connectionLost": "соединение потеряно",
+        "couldNotConnect": "Не удалось подключиться к {provider}",
+        "error": "Ошибка обновления {provider}. Пожалуйста, повторите попытку.",
+        "noChanges": "Группы {provider} актуальны",
+        "reconnected": "подключено",
+        "removed": "Удалены группы {provider}: {groups}"
+      },
+      "refreshing": "Обновление...",
+      "status": {
+        "disabled": "Отключено",
+        "healthy": "Подключено",
+        "unhealthy": "Соединение потеряно"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",
@@ -1012,10 +1040,11 @@
     "statusLabel": "",
     "table": {
       "selectAllBanner": {
-        "allSelected": "",
-        "clearSelection": "",
-        "pageSelected": "",
-        "selectAll": ""
+        "allSelected": "Выбраны все {count} совпадающих элемента.",
+        "clearSelection": "Снять выделение",
+        "pageSelected": "Выбраны все {count} элементов на этой странице.",
+        "selectAll": "Выбрать все {count} элементов",
+        "someSelected": "Выбрано {count} совпадающих элементов."
       }
     },
     "thankYou": "Большое cпасибо!",
