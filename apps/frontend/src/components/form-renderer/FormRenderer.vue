@@ -71,7 +71,7 @@ useVuelidate(
 function handleChange(evt: FormChangeEvent, changes?: { noValidate: boolean }) {
   // This handler gets lots of different change events. Use the second argument to
   // differentiate for the ones we care about.
-  if (changes && !changes.noValidate && !props.readonly) {
+  if (changes && !changes.noValidate) {
     isValid.value = evt.isValid;
     emit('update:modelValue', evt.data);
   }
