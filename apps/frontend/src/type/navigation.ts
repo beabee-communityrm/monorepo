@@ -8,6 +8,8 @@ export interface NavigationTabItem {
   id: keyof RouteNamedMap;
   /** Display label for the tab */
   label: string;
+  /** Whether to hide the tab from the UI (route remains accessible) */
+  hidden?: boolean;
 }
 
 /**

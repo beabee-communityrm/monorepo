@@ -47,6 +47,7 @@ const tabs = computed(() =>
     {
       id: 'adminSettingsIntegrations',
       label: t('adminSettings.integrations.label'),
+      hidden: true,
     },
   ])
 );
