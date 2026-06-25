@@ -142,32 +142,36 @@ export const setupMailchimp = async (dryRun: boolean) => {
   try {
     await runApp(async () => {
       // Step 1: Check/create webhook
-      const webhookUrl = `${config.webhookUrl}/webhook/mailchimp?secret=${webhookSecret}`;
+      const webhookUrl = `${config.webhookUrl}/webhook/mailchimp`;
+      const webhookUrlWithSecret = `${webhookUrl}?secret=${webhookSecret}`;
+
       const { data } = await mailchimp.instance.get<{ webhooks: MCWebhook[] }>(
         `lists/${listId}/webhooks`
       );
 
-      const existingWebhook = data.webhooks.find((w) => w.url === webhookUrl);
+      let existingWebhook = data.webhooks.find((w) =>
+        w.url.startsWith(webhookUrl)
+      );
 
       /** @deprecated One-time migration for old webhook URLs */
       if (!existingWebhook) {
-        const oldWebhookUrl = `${config.audience}/webhook/mailchimp?secret=${webhookSecret}`;
-        const oldWebhook = data.webhooks.find((w) => w.url === oldWebhookUrl);
-        if (oldWebhook) {
-          if (!dryRun) {
-            await mailchimp.instance.delete(
-              `lists/${listId}/webhooks/${oldWebhook.id}`
-            );
-          }
-          console.log(`🗑️ Deleted old webhook with URL ${oldWebhookUrl}`);
+        const oldWebhookUrl = `${config.audience}/webhook/mailchimp`;
+        existingWebhook = data.webhooks.find((w) =>
+          w.url.startsWith(oldWebhookUrl)
+        );
+        if (existingWebhook) {
+          console.log(
+            `🗑️ Found old webhook with URL ${oldWebhookUrl}, will override it`
+          );
         }
       }
 
       if (existingWebhook) {
+        // Always update the URL in case the secret changed or something
         if (!dryRun) {
           await mailchimp.instance.patch(
             `lists/${listId}/webhooks/${existingWebhook.id}`,
-            { events, sources }
+            { url: webhookUrlWithSecret, events, sources }
           );
         }
         console.log(`✅ Updated existing webhook: ${existingWebhook.id}`);
@@ -178,7 +182,7 @@ export const setupMailchimp = async (dryRun: boolean) => {
         } else {
           const { data: webhook } = await mailchimp.instance.post(
             `lists/${listId}/webhooks`,
-            { url: webhookUrl, events, sources }
+            { url: webhookUrlWithSecret, events, sources }
           );
           console.log(`✅ Created webhook: ${webhook.id}`);
         }
