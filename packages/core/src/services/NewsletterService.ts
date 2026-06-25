@@ -188,9 +188,7 @@ class NewsletterService {
    * on the provider but not cached OR removed": cached but no longer on the provider)
    */
   async refreshNewsletterGroups(dryRun = false): Promise<NewsletterDiffData> {
-    if (dryRun) {
-      log.info('DRY RUN - No changes will be made');
-    }
+    log.info('Refreshing newsletter groups' + (dryRun ? ' - DRY RUN' : ''));
 
     // Groups cached in DB
     const cachedGroups: { id: string; label: string }[] =
