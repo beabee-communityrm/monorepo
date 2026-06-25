@@ -1,4 +1,5 @@
 import { ApiHealthStatus } from '@beabee/beabee-common';
+import { runApp } from '@beabee/core/server';
 import { documentService } from '@beabee/core/services/DocumentService';
 import { emailService } from '@beabee/core/services/EmailService';
 import { imageService } from '@beabee/core/services/ImageService';
@@ -29,31 +30,33 @@ const checks: Record<HealthIntegration, () => Promise<ApiHealthStatus>> = {
 export const checkHealth = async (
   integrations: HealthIntegration[] = Object.keys(checks) as HealthIntegration[]
 ): Promise<void> => {
-  let allHealthy = true;
+  await runApp(async () => {
+    let allHealthy = true;
 
-  for (const name of integrations) {
-    let status: ApiHealthStatus;
-    try {
-      status = await checks[name]();
-    } catch {
-      status = ApiHealthStatus.UNHEALTHY;
+    for (const name of integrations) {
+      let status: ApiHealthStatus;
+      try {
+        status = await checks[name]();
+      } catch {
+        status = ApiHealthStatus.UNHEALTHY;
+      }
+
+      if (status === ApiHealthStatus.HEALTHY) {
+        console.log(`${chalk.green('✓')} ${name.padEnd(10)} healthy`);
+      } else if (status === ApiHealthStatus.DISABLED) {
+        console.log(
+          `${chalk.gray('-')} ${name.padEnd(10)} ${chalk.gray('disabled')}`
+        );
+      } else {
+        allHealthy = false;
+        console.log(
+          `${chalk.red('✗')} ${name.padEnd(10)} ${chalk.red('unhealthy')}`
+        );
+      }
     }
 
-    if (status === ApiHealthStatus.HEALTHY) {
-      console.log(`${chalk.green('✓')} ${name.padEnd(10)} healthy`);
-    } else if (status === ApiHealthStatus.DISABLED) {
-      console.log(
-        `${chalk.gray('-')} ${name.padEnd(10)} ${chalk.gray('disabled')}`
-      );
-    } else {
-      allHealthy = false;
-      console.log(
-        `${chalk.red('✗')} ${name.padEnd(10)} ${chalk.red('unhealthy')}`
-      );
+    if (!allHealthy) {
+      process.exit(1);
     }
-  }
-
-  if (!allHealthy) {
-    process.exit(1);
-  }
+  });
 };
