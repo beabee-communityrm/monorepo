@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { oneTimeSignUp, cardInfo } from "#fixtures/testData.json";
+import { cardInfo, oneTimeSignUp } from "@beabee/test-utils/test-data";
 
 const firstName: string = oneTimeSignUp.firstName;
 const lastName: string = oneTimeSignUp.lastName;

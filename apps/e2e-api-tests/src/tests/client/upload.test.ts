@@ -1,9 +1,9 @@
 import { BeabeeClient, UnsupportedFileTypeError } from '@beabee/client';
+import { api, testUser } from '@beabee/test-utils/test-data';
 
 import { resolve } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { api, testUser } from '#fixtures/api-test-info.json';
 import { createTestFile } from '#utils/file.ts';
 
 import { FIXTURE_PATH } from '../../env';

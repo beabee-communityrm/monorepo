@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { cardInfo, signIn } from "#fixtures/testData.json";
+import { cardInfo } from "@beabee/test-utils/test-data";
+import { nonAdminAuthFile } from "../setup/auth-states";
 
-const email: string = signIn.email;
-const testPw: string = signIn.password;
 const contributionAmount = "5";
 let contributionDate = new Date().toLocaleString("en-GB", {
   day: "numeric",
@@ -10,22 +9,10 @@ let contributionDate = new Date().toLocaleString("en-GB", {
   year: "numeric",
 });
 
+test.use({ storageState: nonAdminAuthFile });
+
 test("One-time contribution after login", async ({ page }) => {
-  // 1. Log in
-  await page.goto("/auth/login");
-  await page.locator('input[name="email"]').fill(email);
-  await page.locator('input[name="password"]').fill(testPw);
-
-  await expect(
-    page.getByRole("button", { name: /login/i }),
-    "Login button enabled",
-  ).toBeEnabled();
-  await page.getByRole("button", { name: /login/i }).click();
-
-  await page.waitForURL(/\/profile/);
-  console.log("Login successful");
-
-  // 2. make one-time contribution
+  await page.goto("/profile");
   await page.getByRole("link", { name: /contribution/i }).click();
   await page.waitForURL("/profile/contribution");
   await page.getByRole("button", { name: /one-time/i }).click();

@@ -4,11 +4,10 @@ import {
   DeleteContactMfaData,
 } from '@beabee/beabee-common';
 import { BeabeeClient } from '@beabee/client';
+import { api, testUser } from '@beabee/test-utils/test-data';
 
 import { Secret, TOTP } from 'otpauth';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-
-import { api, testUser } from '#fixtures/api-test-info.json';
 
 describe('ContactMfa API', () => {
   let client: BeabeeClient;

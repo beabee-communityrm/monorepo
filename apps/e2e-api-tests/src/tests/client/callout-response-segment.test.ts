@@ -1,8 +1,7 @@
 import { BeabeeClient } from '@beabee/client';
+import { api, testUser } from '@beabee/test-utils/test-data';
 
 import { beforeAll, describe, expect, it } from 'vitest';
-
-import { api, testUser } from '#fixtures/api-test-info.json';
 
 import { CreateCalloutResponseSegmentData } from '../../../../../packages/common/src/types';
 import {
