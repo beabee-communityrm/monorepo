@@ -113,9 +113,9 @@ const normalizedComponents = computed(() =>
     ) {
       return {
         ...component,
-        values: component.values.map((value: Record<string, unknown>) => ({
-          ...value,
-          value: normalizeOptionValue(value.value),
+        values: component.values.map(({ value, ...rest }) => ({
+          ...rest,
+          value: normalizeOptionValue(value),
         })),
       };
     }
