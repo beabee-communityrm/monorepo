@@ -2,13 +2,13 @@ import { log as mainLogger } from '@beabee/core/logging';
 import { runApp } from '@beabee/core/server';
 import { newsletterService } from '@beabee/core/services';
 
-import { SyncClearPendingStatusArgs } from '../../../types/sync.js';
+import { SyncDryRunArgs } from '../../../types/sync.js';
 
 const log = mainLogger.child({ app: 'sync-newsletter-refresh-cached-groups' });
 
 export const refreshCachedGroups = async ({
   dryRun,
-}: SyncClearPendingStatusArgs): Promise<void> => {
+}: SyncDryRunArgs): Promise<void> => {
   await runApp(async () => {
     log.info('Refreshing cached newsletter groups');
 
