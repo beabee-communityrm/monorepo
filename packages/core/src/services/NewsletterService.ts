@@ -87,13 +87,28 @@ class NewsletterService {
           { groups: newState.groups }
         );
       } catch (err) {
-        // The newsletter provider rejected the update, set this contact's
-        // newsletter status to None to prevent further updates
         if (err instanceof CantUpdateNewsletterContactError) {
-          log.warning(
-            `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
-            err
-          );
+          // Tried to add contact to an invalid group. Refresh cached groups and retry upsert
+          if (
+            err.status === 400 &&
+            err.data.detail.toLowerCase().includes('invalid interest id')
+          ) {
+            log.info(
+              `Tried to subscribe ${contact.email} to invalid group. ${err.data.detail}\nGroups will be refreshed and the upsert retried.`
+            );
+            await this.refreshNewsletterGroups();
+            newState = await this.provider.upsertContact(
+              nlUpdate,
+              opts?.oldEmail
+            );
+          } else {
+            // The newsletter provider rejected the update, set this contact's
+            // newsletter status to None to prevent further updates
+            log.warning(
+              `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
+              err
+            );
+          }
         } else {
           throw err;
         }
