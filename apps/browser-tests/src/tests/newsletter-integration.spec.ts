@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { adminAuthFile } from "../setup/auth-states";
 import {
   ApiHealthStatus,
+  NewsletterDiffData,
   NewsletterIntegrationDataWith,
 } from "@beabee/beabee-common";
 
@@ -28,7 +29,7 @@ test("Integration health status and group refresh", async ({ page }) => {
     ).toBeVisible();
   });
 
-  await test.step("Integration Enabled but Unhealthy", async () => {
+  await test.step("Integration becomes Healthy", async () => {
     let response: NewsletterIntegrationDataWith<"health"> = {
       provider: "mailchimp",
       audienceId: "1a2b3c4d",
@@ -49,6 +50,41 @@ test("Integration health status and group refresh", async ({ page }) => {
     await expect(
       page.getByText(/connection lost/i),
       "Disconnected status visible",
+    ).toBeVisible();
+
+    // Change status to healthy
+    let refreshResponse = {
+      info: { ...response, status: ApiHealthStatus.HEALTHY },
+      groupChanges: [],
+    };
+
+    await page.route("/api/1.0/integrations/newsletter/refresh", (route) =>
+      route.fulfill({ json: refreshResponse }),
+    );
+
+    const refreshBtn = page.getByRole("button", { name: /refresh/i });
+    await refreshBtn.click();
+
+    await expect(
+      page.getByText(/connected/i),
+      "Connected status visible",
+    ).toBeVisible();
+
+    await expect(
+      page.getByText(/reconnected/i),
+      "Reconnected notification visible",
+    ).toBeVisible();
+
+    // Change status back to unhealthy
+    refreshResponse = {
+      info: { ...response, status: ApiHealthStatus.UNHEALTHY },
+      groupChanges: [],
+    };
+    await refreshBtn.click();
+
+    await expect(
+      page.getByRole("alert").getByText(/connection lost/i),
+      "Connection lost notification visible",
     ).toBeVisible();
   });
 
