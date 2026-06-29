@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 import { adminAuthFile } from "../setup/auth-states";
 import {
   ApiHealthStatus,
-  NewsletterDiffData,
   NewsletterIntegrationDataWith,
 } from "@beabee/beabee-common";
 
@@ -66,7 +65,7 @@ test("Integration health status and group refresh", async ({ page }) => {
     await refreshBtn.click();
 
     await expect(
-      page.getByText(/connected/i),
+      page.getByText("Connected", { exact: true }),
       "Connected status visible",
     ).toBeVisible();
 
