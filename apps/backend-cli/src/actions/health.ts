@@ -1,4 +1,5 @@
 import { ApiHealthStatus } from '@beabee/beabee-common';
+import { log as mainLogger } from '@beabee/core/logging';
 import { runApp } from '@beabee/core/server';
 import { documentService } from '@beabee/core/services/DocumentService';
 import { emailService } from '@beabee/core/services/EmailService';
@@ -9,6 +10,8 @@ import { paymentService } from '@beabee/core/services/PaymentService';
 import chalk from 'chalk';
 
 import type { HealthIntegration } from '../types/health.js';
+
+const log = mainLogger.child({ app: 'health-check' });
 
 /** Health check function per integration */
 const checks: Record<HealthIntegration, () => Promise<ApiHealthStatus>> = {
@@ -35,15 +38,23 @@ export const checkHealth = async (
 
     for (const name of integrations) {
       let status: ApiHealthStatus;
+      let logged = false;
       try {
         status = await checks[name]();
-      } catch {
+      } catch (err) {
         status = ApiHealthStatus.UNHEALTHY;
+        logged = true;
+        log.error(`Health check failed for ${name}`, {
+          integration: name,
+          error: err instanceof Error ? err.message : String(err),
+        });
       }
 
       if (status === ApiHealthStatus.HEALTHY) {
         console.log(`${chalk.green('✓')} ${name.padEnd(10)} healthy`);
+        log.info(`Integration healthy: ${name}`);
       } else if (status === ApiHealthStatus.DISABLED) {
+        log.info(`Integration disabled: ${name}`);
         console.log(
           `${chalk.gray('-')} ${name.padEnd(10)} ${chalk.gray('disabled')}`
         );
@@ -52,6 +63,9 @@ export const checkHealth = async (
         console.log(
           `${chalk.red('✗')} ${name.padEnd(10)} ${chalk.red('unhealthy')}`
         );
+        if (!logged) {
+          log.error(`Integration unhealthy: ${name}`);
+        }
       }
     }
 
