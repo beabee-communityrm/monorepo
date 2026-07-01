@@ -1,109 +1,106 @@
-import {
-  faAddressCard,
-  faBullhorn,
-  faChartLine,
-  faCog,
-  faCreditCard,
-  faHandsHelping,
-  faHouse,
-  faSignHanging,
-  faUsers,
-} from '@fortawesome/free-solid-svg-icons';
+import type { NavigationMenuItem } from '@nuxt/ui';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import env from '#env';
 import { canAdmin, currentUser } from '#store/currentUser';
 import { generalContent } from '#store/generalContent';
 
-import type { MenuSection } from './menu-list.interface';
+type MenuItem = NavigationMenuItem & { visible: boolean };
 
-export const menu = computed<MenuSection[]>(() => [
-  {
-    items: [
-      {
-        title: 'menu.home',
-        href: '/profile',
-        icon: faHouse,
-        visible: !env.cnrMode,
-      },
-      {
-        title: 'menu.callouts',
-        href: '/crowdnewsroom',
-        icon: faBullhorn,
-        isActive: /^\/crowdnewsroom/,
-        visible: !env.cnrMode,
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        title: 'menu.account',
-        href: '/profile/account',
-        icon: faAddressCard,
-        visible: !!currentUser.value,
-      },
-      {
-        title: 'menu.contribution',
-        href: '/profile/contribution',
-        icon: faCreditCard,
-        visible:
-          !!currentUser.value &&
-          !generalContent.value.hideContribution &&
-          !env.cnrMode,
-      },
-    ],
-  },
-]);
+function filterVisible(groups: MenuItem[][]): NavigationMenuItem[][] {
+  return groups
+    .map((group) =>
+      group
+        .filter((item) => item.visible)
+        .map((item): NavigationMenuItem => item)
+    )
+    .filter((group) => group.length > 0);
+}
 
-export const adminMenu = computed<MenuSection[]>(() => [
-  {
-    title: 'menu.admin',
-    items: [
-      {
-        title: 'menu.dashboard',
-        href: '/admin',
-        icon: faChartLine,
-        visible: canAdmin.value,
-      },
-      {
-        title: 'menu.contacts',
-        href: '/admin/contacts',
-        icon: faUsers,
-        isActive: /^\/admin\/contacts.*/,
-        visible: canAdmin.value,
-      },
-      {
-        title: 'menu.callouts',
-        href: '/admin/crowdnewsroom',
-        icon: faBullhorn,
-        isActive: /^\/admin\/crowdnewsroom.*/,
-        visible: canAdmin.value || !!currentUser.value?.isReviewer,
-      },
-      {
-        title: 'menu.notices',
-        href: '/admin/notices',
-        icon: faSignHanging,
-        isActive: /^\/admin\/notices.*/,
-        visible: canAdmin.value && !env.cnrMode,
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        title: 'menu.membershipBuilder',
-        href: '/admin/membership-builder',
-        icon: faHandsHelping,
-        visible: canAdmin.value && !env.cnrMode,
-      },
-      {
-        title: 'menu.adminSettings',
-        href: '/admin/settings',
-        icon: faCog,
-        isActive: /^\/admin\/settings.*/,
-        visible: canAdmin.value,
-      },
-    ],
-  },
-]);
+export function useMenu() {
+  const { t } = useI18n();
+
+  const items = computed<NavigationMenuItem[][]>(() => [
+    ...filterVisible([
+      [
+        {
+          label: t('menu.home'),
+          icon: 'i-lucide-house',
+          to: '/profile',
+          visible: !env.cnrMode,
+          exact: true,
+        },
+        {
+          label: t('menu.callouts'),
+          icon: 'i-lucide-megaphone',
+          to: '/crowdnewsroom',
+          visible: !env.cnrMode,
+        },
+        {
+          label: t('menu.account'),
+          icon: 'i-lucide-contact',
+          to: '/profile/account',
+          visible: !!currentUser.value,
+        },
+        {
+          label: t('menu.contribution'),
+          icon: 'i-lucide-credit-card',
+          to: '/profile/contribution',
+          visible:
+            !!currentUser.value &&
+            !generalContent.value.hideContribution &&
+            !env.cnrMode,
+        },
+      ],
+    ]),
+    ...filterVisible([
+      [
+        {
+          label: t('menu.admin'),
+          type: 'label' as const,
+          visible: canAdmin.value || !!currentUser.value?.isReviewer,
+        },
+        {
+          label: t('menu.dashboard'),
+          icon: 'i-lucide-chart-line',
+          to: '/admin',
+          visible: canAdmin.value,
+          exact: true,
+        },
+        {
+          label: t('menu.contacts'),
+          icon: 'i-lucide-users',
+          to: '/admin/contacts',
+          visible: canAdmin.value,
+        },
+        {
+          label: t('menu.callouts'),
+          icon: 'i-lucide-megaphone',
+          to: '/admin/crowdnewsroom',
+          visible: canAdmin.value || !!currentUser.value?.isReviewer,
+        },
+        {
+          label: t('menu.notices'),
+          icon: 'i-lucide-bell',
+          to: '/admin/notices',
+          visible: canAdmin.value && !env.cnrMode,
+        },
+        {
+          label: t('menu.membershipBuilder'),
+          icon: 'i-lucide-handshake',
+          to: '/admin/membership-builder',
+          visible: canAdmin.value && !env.cnrMode,
+        },
+        {
+          label: t('menu.adminSettings'),
+          icon: 'i-lucide-settings',
+          to: '/admin/settings',
+          visible: canAdmin.value,
+        },
+      ],
+    ]),
+  ]);
+
+  return { items };
+}

@@ -2,19 +2,24 @@
   <div v-if="isEmbed" class="w-full">
     <router-view />
   </div>
-  <div v-else class="relative flex h-screen w-full flex-col md:flex-row">
+  <UDashboardGroup v-else unit="rem">
     <TheMenu />
-    <main id="top" class="flex w-full flex-1 flex-col bg-main-5">
-      <TheBreadcrumb
-        v-if="items.length > 0"
-        :items="items"
-        class="flex-none p-4 md:p-5"
-      />
+    <main id="top" class="flex w-full flex-1 flex-col bg-neutral-40">
+      <UDashboardNavbar :ui="{ root: 'bg-white' }">
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+        <template #title>
+          <UBreadcrumb :items="breadcrumbs">
+            <template #separator>/</template>
+          </UBreadcrumb>
+        </template>
+      </UDashboardNavbar>
       <div class="flex min-h-0 flex-1 flex-col p-4 pb-0 md:p-5 md:pb-0">
         <router-view />
       </div>
     </main>
-  </div>
+  </UDashboardGroup>
 </template>
 
 <script lang="ts" setup>
@@ -25,13 +30,24 @@
  *
  * @component
  */
-import { TheBreadcrumb } from '@beabee/vue';
-
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 import { isEmbed } from '../store';
 import { breadcrumbItems } from '../store/breadcrumb';
 import TheMenu from './menu/TheMenu.vue';
 
+const { t } = useI18n();
+const route = useRoute();
+
 const items = computed(() => breadcrumbItems.flatMap((bi) => bi.value));
+
+const breadcrumbs = computed(() => {
+  if (items.value.length > 0) {
+    return items.value.map(({ title, to }) => ({ label: title, to }));
+  }
+  const pageTitle = route.meta.pageTitle as string | undefined;
+  return pageTitle ? [{ label: t(pageTitle) }] : [];
+});
 </script>

@@ -63,14 +63,6 @@ addBreadcrumb(
       to: '/admin/settings',
       icon: faCog,
     },
-    ...(selectedTab.value
-      ? [
-          {
-            title: selectedTab.value.label,
-            to: selectedTab.value.to,
-          },
-        ]
-      : []),
   ])
 );
 </script>
