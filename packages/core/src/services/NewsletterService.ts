@@ -5,10 +5,10 @@ import {
 } from '@beabee/beabee-common';
 
 import config from '#config/config';
-import { getRepository } from '#database';
+import { createQueryBuilder, getRepository } from '#database';
 import { CantUpdateNewsletterContactError } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Contact, ContactProfile } from '#models/index';
+import { Callout, Contact, ContactProfile, Content } from '#models/index';
 import { MailchimpProvider, NoneProvider } from '#providers/newsletter/index';
 import {
   ContactNewsletterUpdates,
@@ -18,6 +18,7 @@ import {
 } from '#type/index';
 import { convertContactToNlUpdate } from '#utils/newsletter';
 
+import emailService from './EmailService.js';
 import optionsService from './OptionsService.js';
 
 const log = mainLogger.child({ app: 'newsletter-service' });
@@ -180,8 +181,10 @@ class NewsletterService {
 
   /**
    * Get newsletter provider's groups, compare them against
-   * groups cached in the database. Return diff alongside provider
-   * integration info
+   * groups cached in the database, and update cache if needed.
+   * If any groups were deleted, remove them from contact profiles, callouts
+   * and join content. Finally, return diff alongside provider
+   * integration info.
    *
    * @returns Newsletter integration info and a list of group changes, where each
    * change contains group id, label, and an action (added: present
@@ -207,9 +210,70 @@ class NewsletterService {
         .map((g) => ({ ...g, action: 'removed' as const })),
     ];
 
-    // Update cache
     if (diff.length > 0) {
+      // Update cache
       optionsService.setJSON('newsletter-groups', providerGroups);
+
+      const removedGroups = diff.filter((g) => g.action === 'removed');
+
+      // Clean up if any groups were deleted by the provider
+      if (removedGroups.length > 0) {
+        log.info(
+          `🧹 Deleted groups detected during refresh: ${removedGroups.map((group) => group.label).join(', ')}. Cleaning up..`
+        );
+        const removedIds = removedGroups.map((g) => g.id);
+
+        log.info('Removing deleted groups from contact_profile');
+        // 1. Remove from contacts
+        await createQueryBuilder()
+          .update(ContactProfile)
+          .set({
+            newsletterGroups: () => `COALESCE((
+              SELECT jsonb_agg(elem)
+              FROM jsonb_array_elements_text("newsletterGroups") elem
+              WHERE elem != ALL(:removedIds)
+            ), '[]'::jsonb)`,
+          })
+          .where(`"newsletterGroups" ?| :removedIds`)
+          .setParameters({ removedIds })
+          .execute();
+
+        // 2. Remove from join flow (join/setup content)
+        log.info('Removing deleted groups from join/setup content');
+        await createQueryBuilder()
+          .update(Content)
+          .set({
+            data: () => `jsonb_set(data, '{newsletterGroups}', COALESCE((
+              SELECT jsonb_agg(elem)
+              FROM jsonb_array_elements(data->'newsletterGroups') elem
+              WHERE elem->>'id' != ALL(:removedIds)
+            ), '[]'::jsonb))`,
+          })
+          .where(`id = :id`)
+          .setParameters({ id: 'join/setup', removedIds })
+          .execute();
+
+        // 3. Remove from callouts
+        log.info('Removing deleted groups from callout newsletter schemas');
+        await createQueryBuilder()
+          .update(Callout)
+          .set({
+            newsletterSchema:
+              () => `jsonb_set("newsletterSchema", '{groups}', COALESCE((
+              SELECT jsonb_agg(elem)
+              FROM jsonb_array_elements("newsletterSchema"->'groups') elem
+              WHERE elem->>'id' != ALL(:removedIds)
+            ), '[]'::jsonb))`,
+          })
+          .where(`"newsletterSchema" IS NOT NULL`)
+          .setParameters({ removedIds })
+          .execute();
+
+        // 4. Notify admin
+        await emailService.sendTemplateToAdmin('deleted-group', {
+          groups: removedGroups,
+        });
+      }
     }
 
     const providerInfo = await this.getProviderInfo(true);
