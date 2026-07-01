@@ -79,15 +79,11 @@ addBreadcrumb(
       to: '/admin/contacts',
       icon: faUsers,
     },
-    ...(contact.value && selectedTab.value
+    ...(contact.value
       ? [
           {
             title: contact.value.displayName,
             to: '/admin/contacts/' + contact.value.id,
-          },
-          {
-            title: selectedTab.value.label,
-            to: selectedTab.value.to,
           },
         ]
       : []),
