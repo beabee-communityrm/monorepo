@@ -1,5 +1,6 @@
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
 import ui from '@nuxt/ui/vite';
+import { nuxtUiConfig } from '../../nuxt-ui.config';
 import replace from '@rollup/plugin-replace';
 import vue from '@vitejs/plugin-vue';
 import { createRequire } from 'node:module';
@@ -17,7 +18,7 @@ export default ({ command, mode }) => {
   const env = loadEnv(mode, resolve(process.cwd(), '../../'), '');
 
   const plugins = [
-    ui(),
+    ui(nuxtUiConfig),
     // VueRouter must be placed before Vue plugin
     VueRouter({
       // Enable typed routes - generate in src/typings directory

@@ -3,6 +3,7 @@
 
 @theme {
   --radius: 3px;
+  --color-neutral-40: color-mix(in srgb, var(--color-neutral-50) 80%, white);
 
   /* Spacing and sizing */
   --spacing-menu: 240px;

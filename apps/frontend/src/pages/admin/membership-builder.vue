@@ -57,14 +57,6 @@ addBreadcrumb(
       to: '/admin/membership-builder',
       icon: faHandsHelping,
     },
-    ...(selectedTab.value
-      ? [
-          {
-            title: selectedTab.value.label,
-            to: selectedTab.value.to,
-          },
-        ]
-      : []),
   ])
 );
 </script>
