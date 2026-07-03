@@ -907,6 +907,7 @@
     "selectedCount": ""
   },
   "calloutResponsesPage": {
+    "allResponses": "Все ответы",
     "moveToBucket": "Перенести в {bucket}",
     "noTags": "Нет тегов",
     "response": "Ответ",

@@ -906,6 +906,7 @@
     "selectedCount": ""
   },
   "calloutResponsesPage": {
+    "allResponses": "",
     "moveToBucket": "",
     "noTags": "",
     "response": "",

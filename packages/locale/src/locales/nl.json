@@ -906,6 +906,7 @@
     "selectedCount": "{n} reactie geselecteerd | {n} reacties geselecteerd"
   },
   "calloutResponsesPage": {
+    "allResponses": "Alle antwoorden",
     "moveToBucket": "Verplaats naar {bucket}",
     "noTags": "Geen tags",
     "response": "Reactie",

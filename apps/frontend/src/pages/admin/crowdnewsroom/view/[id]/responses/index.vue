@@ -387,7 +387,7 @@ const {
   currentSegment,
 } = useSegmentManagement(
   `/admin/crowdnewsroom/view/${props.callout.slug}/responses`,
-  'All Responses',
+  t('calloutResponsesPage.allResponses'),
   listSegments,
   listTotalSegmentItems
 );
