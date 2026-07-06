@@ -8,7 +8,7 @@
       id="top"
       class="bg-neutral-40 flex h-screen w-full flex-col overflow-y-auto"
     >
-      <UDashboardNavbar :ui="{ root: 'bg-white' }">
+      <UDashboardNavbar :ui="{ root: 'sticky top-0 z-10 bg-white' }">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
