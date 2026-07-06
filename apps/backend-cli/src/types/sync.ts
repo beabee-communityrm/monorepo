@@ -19,7 +19,7 @@ export interface SyncNewsletterReconcileArgs {
   until: Date | undefined;
 }
 
-export interface SyncClearPendingStatusArgs {
+export interface SyncDryRunArgs {
   dryRun: boolean;
 }
 

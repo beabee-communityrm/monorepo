@@ -187,7 +187,9 @@ class NewsletterService {
    * change contains group id, label, and an action (added: present
    * on the provider but not cached OR removed": cached but no longer on the provider)
    */
-  async refreshNewsletterGroups(): Promise<NewsletterDiffData> {
+  async refreshNewsletterGroups(dryRun = false): Promise<NewsletterDiffData> {
+    log.info('Refreshing newsletter groups' + (dryRun ? ' - DRY RUN' : ''));
+
     // Groups cached in DB
     const cachedGroups: { id: string; label: string }[] =
       optionsService.getJSON('newsletter-groups');
@@ -207,9 +209,11 @@ class NewsletterService {
         .map((g) => ({ ...g, action: 'removed' as const })),
     ];
 
-    // Update cache
-    if (diff.length > 0) {
-      optionsService.setJSON('newsletter-groups', providerGroups);
+    if (!dryRun) {
+      // Update cache
+      if (diff.length > 0) {
+        optionsService.setJSON('newsletter-groups', providerGroups);
+      }
     }
 
     const providerInfo = await this.getProviderInfo(true);
