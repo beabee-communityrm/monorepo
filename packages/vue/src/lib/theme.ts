@@ -26,7 +26,7 @@ type FontId = keyof typeof allFonts;
 export type Theme = {
   colors: {
     _name: string;
-    primary: string;
+    main: string;
     link: string;
     body: string;
     success: string;
@@ -42,7 +42,10 @@ export type Theme = {
 };
 
 export type PartialTheme = {
-  colors?: Partial<Theme['colors']>;
+  colors?: Partial<Theme['colors']> & {
+    /** @deprecated use main */
+    primary?: string;
+  };
   fonts?: {
     title?: string;
     body?: string;
@@ -53,7 +56,7 @@ export const colorPresets = [
   {
     name: 'default',
     colors: {
-      primary: '#262453',
+      main: '#262453',
       link: '#43a796',
       body: '#262453',
       warning: '#f5cc5b',
@@ -66,7 +69,7 @@ export const colorPresets = [
 const defaultColorPreset = colorPresets[0];
 
 export const visibleCustomColors = [
-  'primary',
+  'main',
   'link',
   'body',
   'success',
@@ -146,7 +149,7 @@ function setShades(
     setColorVar(`--c-${colorName}-${level}`, computeShade(colorValue, level));
   }
 
-  if (colorName === 'primary') return; // Don't generate Nuxt shades for primary colour, as is a naming conflict
+  if (colorName === 'main') return; // Don't generate Nuxt shades for main colour, as is a naming conflict
   // with Nuxt UI's primary colour, for which we are using the 'link' colour instead.
 
   // Set standard Tailwind 50–950 scale for Nuxt UI compatibility
@@ -161,14 +164,14 @@ function setShades(
 }
 
 export function getFullTheme(theme: PartialTheme): Theme {
-  const primaryColor =
-    theme.colors?.primary ?? defaultColorPreset.colors.primary;
+  const mainColor =
+    theme.colors?.main ?? theme.colors?.primary ?? defaultColorPreset.colors.main;
   const bodyFont = getFont(theme.fonts?.body);
 
   const colors = {
     _name: theme.colors?._name ?? 'custom',
-    primary: primaryColor,
-    body: theme.colors?.body ?? primaryColor,
+    main: mainColor,
+    body: theme.colors?.body ?? mainColor,
     link: theme.colors?.link ?? defaultColorPreset.colors.link,
     warning: theme.colors?.warning ?? defaultColorPreset.colors.warning,
     success: theme.colors?.success ?? defaultColorPreset.colors.success,
@@ -202,7 +205,7 @@ watch(
     const { colors, fonts } = getFullTheme(newTheme);
 
     // Set colors
-    setShades('primary', colors.primary, [5, 10, 20, 40, 70, 80]);
+    setShades('main', colors.main, [5, 10, 20, 40, 70, 80]);
     setShades('body', colors.body, [60, 80]);
     // Nuxt UI's neutral scale expects a lighter base than our (often very dark)
     // body colour, so derive a lightened variant for it to use instead.

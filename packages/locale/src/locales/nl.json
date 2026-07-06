@@ -294,7 +294,7 @@
         "body": "Tekst",
         "danger": "Gevaar",
         "link": "Links",
-        "primary": "Hoofd",
+        "main": "Hoofd",
         "success": "Succes",
         "warning": "Waarschuwing"
       },

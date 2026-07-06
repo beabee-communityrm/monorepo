@@ -32,7 +32,7 @@ meta:
     </template>
 
     <template v-else>
-      <p class="rounded bg-primary-10 p-4">
+      <p class="rounded bg-main-10 p-4">
         <i18n-t keypath="forgotPassword.message">
           <template #email>
             <b>{{ email }}</b>

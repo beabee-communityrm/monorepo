@@ -28,14 +28,14 @@ import AppInfoListItem from './AppInfoListItem.vue';
         <AppInfoListItem name="Progress">
           <div class="space-y-1">
             <div class="text-sm">75% Complete</div>
-            <div class="h-2 w-20 rounded bg-primary-20">
-              <div class="h-full w-3/4 rounded bg-primary"></div>
+            <div class="h-2 w-20 rounded bg-main-20">
+              <div class="h-full w-3/4 rounded bg-main"></div>
             </div>
           </div>
         </AppInfoListItem>
         <AppInfoListItem name="Tags">
           <div class="flex gap-1">
-            <span class="rounded bg-primary-10 px-2 py-1 text-xs"
+            <span class="rounded bg-main-10 px-2 py-1 text-xs"
               >Important</span
             >
             <span class="rounded bg-success-10 px-2 py-1 text-xs"

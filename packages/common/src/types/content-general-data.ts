@@ -13,6 +13,8 @@ export interface ContentGeneralData<L = string> {
   theme: {
     colors?: {
       _name?: string;
+      main?: string;
+      /** @deprecated use main */
       primary?: string;
       link?: string;
       body?: string;

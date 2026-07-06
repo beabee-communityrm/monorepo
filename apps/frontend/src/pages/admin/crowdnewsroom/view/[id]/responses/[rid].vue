@@ -122,7 +122,7 @@ meta:
       />
     </div>
 
-    <hr class="my-10 border-t border-primary-40" />
+    <hr class="my-10 border-t border-main-40" />
 
     <div class="mb-4 flex gap-2">
       <AppButton
@@ -160,7 +160,7 @@ meta:
       @submit="handleEditResponse"
     />
 
-    <hr class="my-10 border-t border-primary-40" />
+    <hr class="my-10 border-t border-main-40" />
 
     <CalloutResponseComments :response-id="response.id" />
   </div>

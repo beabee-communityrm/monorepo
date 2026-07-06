@@ -33,7 +33,7 @@
   - common.loading: "Loading..."
 -->
 <template>
-  <table class="border-b border-primary-20">
+  <table class="border-b border-main-20">
     <thead v-if="!hideHeaders" class="text-sm">
       <tr class="align-bottom">
         <th v-if="selectable" class="w-0 p-2">
@@ -48,7 +48,7 @@
           class="relative p-2 font-semibold whitespace-nowrap text-body-80"
           :class="{
             'cursor-pointer': header.sortable,
-            'font-bold text-primary': header.value === sort?.by,
+            'font-bold text-main': header.value === sort?.by,
           }"
           :align="header.align || 'left'"
           :style="{ width: header.width }"
@@ -74,7 +74,7 @@
     <tbody class="text-xs lg:text-sm">
       <tr
         v-if="!items || items.length === 0"
-        class="border-t border-primary-20"
+        class="border-t border-main-20"
       >
         <td v-if="selectable" />
         <td :colspan="headers.length" class="p-2">
@@ -86,7 +86,7 @@
 
       <template v-for="(item, i) in items" :key="i">
         <tr
-          class="border-t border-primary-20 align-top"
+          class="border-t border-main-20 align-top"
           :class="rowClasses(item)"
         >
           <td v-if="selectable" class="p-2">
@@ -217,7 +217,7 @@ function rowClasses(item: I): string {
   return (
     (props.rowClass ? props.rowClass(item) : '') +
     (props.selectable && selectedIds.value.includes(item.id)
-      ? ' bg-primary-10'
+      ? ' bg-main-10'
       : '')
   );
 }

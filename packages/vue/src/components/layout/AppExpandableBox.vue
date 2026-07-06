@@ -15,12 +15,12 @@
         <font-awesome-icon :icon="expanded ? faCaretUp : faCaretDown" />
         <div
           v-show="expanded"
-          class="absolute top-full -left-px box-content h-2 w-full border-x border-x-primary-40 bg-white py-px"
+          class="absolute top-full -left-px box-content h-2 w-full border-x border-x-main-40 bg-white py-px"
         />
       </AppButton>
     </div>
 
-    <div v-if="expanded" class="rounded border border-primary-40 bg-white p-4">
+    <div v-if="expanded" class="rounded border border-main-40 bg-white p-4">
       <slot />
     </div>
   </div>

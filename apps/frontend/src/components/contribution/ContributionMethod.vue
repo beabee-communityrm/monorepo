@@ -28,7 +28,7 @@
     >
       <div v-for="method in methods" :key="method">
         <button
-          class="h-full min-h-10 w-full rounded border border-primary-40 p-1.5 text-left text-lg font-semibold enabled:cursor-pointer"
+          class="h-full min-h-10 w-full rounded border border-main-40 p-1.5 text-left text-lg font-semibold enabled:cursor-pointer"
           :class="
             disabled
               ? ''

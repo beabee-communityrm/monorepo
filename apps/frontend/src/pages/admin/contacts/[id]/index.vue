@@ -123,7 +123,7 @@ meta:
         />
         <div
           v-if="changingRoles"
-          class="absolute inset-0 flex items-center justify-center bg-primary-5/50"
+          class="absolute inset-0 flex items-center justify-center bg-main-5/50"
         >
           <AppLoadingSpinner />
         </div>

@@ -84,7 +84,7 @@ meta:
           >
             <router-link
               v-if="currentSegment"
-              class="block px-3 py-2 hover:bg-primary-5"
+              class="block px-3 py-2 hover:bg-main-5"
               role="menuitem"
               :to="`/admin/contacts/send-email/${currentSegment.id}`"
               @click.stop
@@ -100,7 +100,7 @@ meta:
               {{ t('actions.sendOneOffEmail') }}
             </span>
             <router-link
-              class="block border-t border-primary-40 px-3 py-2 hover:bg-primary-5"
+              class="block border-t border-main-40 px-3 py-2 hover:bg-main-5"
               role="menuitem"
               :to="{ name: 'adminContactsEmailTemplates' }"
               @click.stop

@@ -34,13 +34,13 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Colors */
-  --color-primary: rgb(var(--c-primary));
-  --color-primary-5: rgb(var(--c-primary-5));
-  --color-primary-10: rgb(var(--c-primary-10));
-  --color-primary-20: rgb(var(--c-primary-20));
-  --color-primary-40: rgb(var(--c-primary-40));
-  --color-primary-70: rgb(var(--c-primary-70));
-  --color-primary-80: rgb(var(--c-primary-80));
+  --color-main: rgb(var(--c-main));
+  --color-main-5: rgb(var(--c-main-5));
+  --color-main-10: rgb(var(--c-main-10));
+  --color-main-20: rgb(var(--c-main-20));
+  --color-main-40: rgb(var(--c-main-40));
+  --color-main-70: rgb(var(--c-main-70));
+  --color-main-80: rgb(var(--c-main-80));
 
   --color-body: rgb(var(--c-body));
   --color-body-60: rgb(var(--c-body-60));

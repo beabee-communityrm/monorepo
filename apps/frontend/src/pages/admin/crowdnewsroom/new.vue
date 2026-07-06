@@ -30,7 +30,7 @@ meta:
         </AppApiAsyncButton>
         <div
           v-if="!isLive"
-          class="mr-3 self-stretch border-r border-r-primary-40 pl-2"
+          class="mr-3 self-stretch border-r border-r-main-40 pl-2"
         />
         <AppApiAsyncButton
           :disabled="validation.$invalid"

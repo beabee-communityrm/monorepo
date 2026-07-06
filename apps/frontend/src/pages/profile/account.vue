@@ -6,7 +6,7 @@ meta:
 
 <template>
   <PageTitle border :title="t('accountPage.title')" />
-  <p class="mb-5 text-sm text-primary-80">{{ t('accountPage.subTitle') }}</p>
+  <p class="mb-5 text-sm text-main-80">{{ t('accountPage.subTitle') }}</p>
 
   <App2ColGrid>
     <template #col1>

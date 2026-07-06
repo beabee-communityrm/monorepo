@@ -223,7 +223,7 @@ A community platform for engagement</textarea
             <AppLabel label="Email" required />
             <input
               type="email"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter email"
               required
             />
@@ -233,7 +233,7 @@ A community platform for engagement</textarea
             <AppLabel label="Password" required />
             <input
               type="password"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter password"
               required
             />
@@ -249,7 +249,7 @@ A community platform for engagement</textarea
             <AppLabel label="Display Name" />
             <input
               type="text"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter display name"
             />
           </AppFormField>
@@ -257,7 +257,7 @@ A community platform for engagement</textarea
           <AppFormField>
             <AppLabel label="Bio" />
             <textarea
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               rows="3"
               placeholder="Tell us about yourself"
             ></textarea>
@@ -277,7 +277,7 @@ A community platform for engagement</textarea
               <AppLabel label="Full Name" required />
               <input
                 type="text"
-                class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+                class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
                 placeholder="Enter your full name"
                 required
               />
@@ -287,7 +287,7 @@ A community platform for engagement</textarea
               <AppLabel label="Email" required />
               <input
                 type="email"
-                class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+                class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
                 placeholder="Enter your email"
                 required
               />
@@ -301,7 +301,7 @@ A community platform for engagement</textarea
               <AppLabel label="Password" required />
               <input
                 type="password"
-                class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+                class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
                 placeholder="Enter password"
                 required
               />
@@ -311,7 +311,7 @@ A community platform for engagement</textarea
               <AppLabel label="Confirm Password" required />
               <input
                 type="password"
-                class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+                class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
                 placeholder="Confirm password"
                 required
               />
@@ -328,7 +328,7 @@ A community platform for engagement</textarea
             <AppLabel label="Email" required />
             <input
               type="email"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter email"
               required
             />
@@ -338,7 +338,7 @@ A community platform for engagement</textarea
             <AppLabel label="Password" required />
             <input
               type="password"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter password"
               required
             />
