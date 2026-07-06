@@ -70,7 +70,7 @@
         </template>
         <AppLabel :label="t('emailEditor.preview.label')" />
         <div
-          class="content-message overflow-auto rounded border border-primary-40 bg-white p-4"
+          class="content-message overflow-auto rounded border border-main-40 bg-white p-4"
         >
           <p>
             <b>{{ t('emailEditor.preview.from') }}</b>

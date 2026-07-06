@@ -28,7 +28,7 @@ const interactiveSlides = [
   {
     title: 'First Slide',
     content: 'This is the first interactive slide.',
-    bgClass: 'bg-primary',
+    bgClass: 'bg-main',
   },
   {
     title: 'Second Slide',
@@ -63,7 +63,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
         <template #slides>
           <AppSlide>
             <div
-              class="flex min-h-[200px] items-center justify-center rounded-lg bg-primary p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-main p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Slide 1</h3>
@@ -125,7 +125,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
         <template #slides>
           <AppSlide>
             <div
-              class="flex min-h-[200px] items-center justify-center rounded-lg bg-primary-70 p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-main-70 p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Introduction</h3>
@@ -161,14 +161,14 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
             <button
               @click="() => prevSlide()"
               :disabled="activeSlide === 0"
-              class="rounded bg-primary px-4 py-2 text-white hover:bg-primary-70 disabled:cursor-not-allowed disabled:bg-grey-light"
+              class="rounded bg-main px-4 py-2 text-white hover:bg-main-70 disabled:cursor-not-allowed disabled:bg-grey-light"
             >
               Back
             </button>
             <button
               @click="() => nextSlide()"
               :disabled="activeSlide === slideCount - 1"
-              class="rounded bg-primary px-4 py-2 text-white hover:bg-primary-70 disabled:cursor-not-allowed disabled:bg-grey-light"
+              class="rounded bg-main px-4 py-2 text-white hover:bg-main-70 disabled:cursor-not-allowed disabled:bg-grey-light"
             >
               Continue
             </button>
@@ -293,7 +293,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
                 :class="[
                   'flex-1 rounded p-3 text-left text-sm transition-colors',
                   activeSlide === index
-                    ? 'border-2 border-primary bg-primary-10 text-primary-70'
+                    ? 'border-2 border-main bg-main-10 text-main-70'
                     : 'border-2 border-transparent bg-grey-lighter text-grey-dark hover:bg-grey-light',
                 ]"
               >
@@ -318,7 +318,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
             >
               <div class="text-center">
                 <div
-                  class="mx-auto mb-4 flex h-32 w-32 items-center justify-center rounded-lg bg-primary text-xl font-bold text-white"
+                  class="mx-auto mb-4 flex h-32 w-32 items-center justify-center rounded-lg bg-main text-xl font-bold text-white"
                 >
                   IMG 1
                 </div>
@@ -373,9 +373,9 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
                 :class="[
                   'flex h-12 w-16 cursor-pointer items-center justify-center rounded border-2 text-xs font-bold text-white transition-colors',
                   activeSlide === n - 1
-                    ? 'border-primary opacity-100'
+                    ? 'border-main opacity-100'
                     : 'border-grey-light opacity-60 hover:opacity-80',
-                  n === 1 ? 'bg-primary' : n === 2 ? 'bg-success' : 'bg-danger',
+                  n === 1 ? 'bg-main' : n === 2 ? 'bg-success' : 'bg-danger',
                 ]"
               >
                 {{ n }}
@@ -652,7 +652,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
         <template #slides>
           <AppSlide>
             <div
-              class="flex min-h-[200px] items-center justify-center rounded-lg bg-primary p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-main p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Slide 1</h3>
@@ -686,7 +686,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
         >
           <div class="mt-4 flex justify-center space-x-2">
             <button
-              class="hover:bg-primary-dark rounded bg-primary px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+              class="hover:bg-main-dark rounded bg-main px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
               :disabled="activeSlide === 0"
               @click="() => prevSlide()"
             >
@@ -696,7 +696,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
               >{{ activeSlide + 1 }} / {{ slideCount }}</span
             >
             <button
-              class="hover:bg-primary-dark rounded bg-primary px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+              class="hover:bg-main-dark rounded bg-main px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
               :disabled="activeSlide === slideCount - 1"
               @click="() => nextSlide()"
             >

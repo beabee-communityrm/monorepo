@@ -51,7 +51,7 @@ const addTestNotification = (
             Add Error
           </button>
           <button
-            class="rounded bg-primary-70 px-3 py-1 font-semibold text-white shadow-sm"
+            class="rounded bg-main-70 px-3 py-1 font-semibold text-white shadow-sm"
             @click="addTestNotification('info')"
           >
             Add Info

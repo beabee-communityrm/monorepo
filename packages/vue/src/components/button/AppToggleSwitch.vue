@@ -6,7 +6,7 @@
 <template>
   <button
     type="button"
-    class="relative transition-colors duration-200 focus:ring-2 focus:ring-primary-40 focus:ring-offset-2 focus:outline-none"
+    class="relative transition-colors duration-200 focus:ring-2 focus:ring-main-40 focus:ring-offset-2 focus:outline-none"
     :class="[
       modelValue
         ? activeVariantClasses[variant]
@@ -72,7 +72,7 @@ const props = withDefaults(defineProps<AppToggleSwitchProps>(), {
 });
 
 const activeVariantClasses = {
-  primary: 'bg-primary hover:bg-primary-110',
+  primary: 'bg-main hover:bg-main-110',
   link: 'bg-link hover:bg-link-110',
   danger: 'bg-danger hover:bg-danger-110',
 } as const;

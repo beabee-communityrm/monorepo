@@ -25,7 +25,7 @@
     <div class="clear-left" />
 
     <button
-      class="absolute top-4 right-4 cursor-pointer rounded text-2xl hover:text-body-60 focus:ring-2 focus:ring-primary-40 focus:ring-offset-2 focus:outline-none"
+      class="absolute top-4 right-4 cursor-pointer rounded text-2xl hover:text-body-60 focus:ring-2 focus:ring-main-40 focus:ring-offset-2 focus:outline-none"
       :aria-label="t('actions.close')"
       type="button"
       @click="$emit('close')"

@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded bg-primary-10 p-2 text-center text-sm">
+  <div class="rounded bg-main-10 p-2 text-center text-sm">
     <div v-if="mode === 'explicit'">
       {{
         t('common.table.selectAllBanner.pageSelected', {

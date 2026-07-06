@@ -20,7 +20,7 @@
       >
         <button
           v-if="!noClose"
-          class="absolute top-0 right-0 h-8 w-8 hover:text-primary"
+          class="absolute top-0 right-0 h-8 w-8 hover:text-main"
           type="button"
           :aria-label="t('actions.close')"
           @click="emit('close')"

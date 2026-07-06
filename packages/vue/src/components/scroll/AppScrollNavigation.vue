@@ -13,8 +13,8 @@
             activeSection === section.id
               ? // TODO: reintroduce when scroll detection is fixed
                 // ? 'bg-white font-medium text-primary shadow-sm'
-                'text-body-80 hover:bg-primary-10 hover:text-body'
-              : 'text-body-80 hover:bg-primary-10 hover:text-body'
+                'text-body-80 hover:bg-main-10 hover:text-body'
+              : 'text-body-80 hover:bg-main-10 hover:text-body'
           "
           :title="section.label"
           @click="scrollToSection(section.id)"

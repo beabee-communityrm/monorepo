@@ -9,13 +9,13 @@ meta:
     <h2 class="mb-2 font-title text-2xl">Colours</h2>
     <div class="flex bg-white p-4">
       <div class="flex-1">
-        <AppColor name="bg-primary" shade="Primary" />
-        <AppColor name="bg-primary-5" shade="5" />
-        <AppColor name="bg-primary-10" shade="10" />
-        <AppColor name="bg-primary-20" shade="20" />
-        <AppColor name="bg-primary-40" shade="40" />
-        <AppColor name="bg-primary-70" shade="70" />
-        <AppColor name="bg-primary-80" shade="80" />
+        <AppColor name="bg-main" shade="Primary" />
+        <AppColor name="bg-main-5" shade="5" />
+        <AppColor name="bg-main-10" shade="10" />
+        <AppColor name="bg-main-20" shade="20" />
+        <AppColor name="bg-main-40" shade="40" />
+        <AppColor name="bg-main-70" shade="70" />
+        <AppColor name="bg-main-80" shade="80" />
       </div>
       <div class="flex-1">
         <AppColor name="bg-body" shade="Body" />
@@ -104,7 +104,7 @@ meta:
           v-for="(step, index) in appStepper.steps"
           v-show="index === appStepper.selectedStepIndex"
           :key="index"
-          class="border-2 border-primary p-5"
+          class="border-2 border-main p-5"
         >
           <p>{{ index }}: {{ step.name }}</p>
           <AppCheckbox

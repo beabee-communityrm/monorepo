@@ -1,5 +1,5 @@
 <template>
-  <ul class="mb-4 flex flex-wrap items-baseline gap-2 text-primary">
+  <ul class="mb-4 flex flex-wrap items-baseline gap-2 text-main">
     <template v-for="(item, i) in items" :key="i">
       <li class="text-xs first:hidden">
         <font-awesome-icon :icon="faAngleRight" />

@@ -15,7 +15,7 @@
 
 /* Apply same border and focus shadow as AppInput */
 .multiselect__tags {
-  @apply rounded border border-primary-40 bg-white;
+  @apply rounded border border-main-40 bg-white;
 
   .multiselect--active > & {
     @apply shadow-input;
@@ -34,7 +34,7 @@
 
   /* Increase specificity to force consistent border */
   .multiselect > & {
-    @apply border border-solid border-primary-40;
+    @apply border border-solid border-main-40;
   }
 
   .multiselect:not(.multiselect--above) > & {

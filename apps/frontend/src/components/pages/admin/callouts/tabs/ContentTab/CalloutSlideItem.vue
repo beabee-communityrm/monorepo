@@ -1,7 +1,7 @@
 <template>
   <div
     class="mb-4 flex gap-2 rounded p-3"
-    :class="active ? 'bg-white' : 'cursor-pointer bg-primary-10'"
+    :class="active ? 'bg-white' : 'cursor-pointer bg-main-10'"
     @click="emit('select', slide.id)"
   >
     <div>

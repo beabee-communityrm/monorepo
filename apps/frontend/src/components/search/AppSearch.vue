@@ -17,7 +17,7 @@
 
     <div
       v-if="!showExpanded && hasRules && modelValue /* narrow type */"
-      class="rounded border border-primary-40 px-4 py-3"
+      class="rounded border border-main-40 px-4 py-3"
     >
       <AppSearchSummary
         :model-value="modelValue"
