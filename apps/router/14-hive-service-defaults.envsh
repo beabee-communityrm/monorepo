@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Provide default upstream hosts for the service variables used in nginx.conf.
+# These HIVE_ variables abstract the Docker stack hostnames so they can be
+# overridden per stack (e.g. production). The defaults match the existing
+# stack names to aid migration.
+# It must be ahead of 20-envsubst-on-templates.sh
+
+export HIVE_SERVICE_APP=${HIVE_SERVICE_APP:-http://app}
+export HIVE_SERVICE_API_APP=${HIVE_SERVICE_API_APP:-http://api_app}
+export HIVE_SERVICE_WEBHOOK_APP=${HIVE_SERVICE_WEBHOOK_APP:-http://webhook_app}
+export HIVE_SERVICE_FRONTEND=${HIVE_SERVICE_FRONTEND:-http://frontend}
