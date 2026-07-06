@@ -7,7 +7,7 @@ import type { NuxtUIOptions } from "@nuxt/ui/vite";
 export const nuxtUiConfig: NuxtUIOptions = {
   ui: {
     colors: {
-      primary: "primary",
+      primary: "link",
       neutral: "nuxt-text",
     },
     navigationMenu: {
