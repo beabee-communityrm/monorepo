@@ -96,7 +96,7 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -132,7 +132,7 @@ addBreadcrumb(
             {
               title: t('menu.callouts'),
               to: '/admin/crowdnewsroom',
-              icon: faBullhorn,
+              icon: 'i-lucide-megaphone',
             },
             {
               title: props.callout.title,
@@ -144,7 +144,7 @@ addBreadcrumb(
             {
               title: t('menu.callouts'),
               to: '/crowdnewsroom',
-              icon: faBullhorn,
+              icon: 'i-lucide-megaphone',
             },
             {
               title: props.callout.title,

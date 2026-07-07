@@ -17,7 +17,6 @@ meta:
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { AppShareBox, AppTitle } from '@beabee/vue';
 
-import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -40,7 +39,7 @@ addBreadcrumb(
           {
             title: t('menu.callouts'),
             to: '/crowdnewsroom',
-            icon: faBullhorn,
+            icon: 'i-lucide-megaphone',
           },
           {
             title: props.callout.title,

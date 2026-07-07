@@ -10,9 +10,11 @@
           <UDashboardSidebarCollapse />
         </template>
         <template #title>
-          <UBreadcrumb :items="breadcrumbs">
-            <template #separator>/</template>
-          </UBreadcrumb>
+          <UBreadcrumb
+            :items="breadcrumbs"
+            class="p-1.5"
+            :ui="{ link: breadcrumbs.length > 1 ? 'text-base' : 'text-xl' }"
+          />
         </template>
       </UDashboardNavbar>
       <div class="flex min-h-0 flex-1 flex-col p-4 pb-0 md:p-5 md:pb-0">
@@ -45,9 +47,13 @@ const items = computed(() => breadcrumbItems.flatMap((bi) => bi.value));
 
 const breadcrumbs = computed(() => {
   if (items.value.length > 0) {
-    return items.value.map(({ title, to }) => ({ label: title, to }));
+    return items.value.map(({ title, to, icon }) => ({
+      label: title,
+      to,
+      icon,
+    }));
   }
   const pageTitle = route.meta.pageTitle as string | undefined;
-  return pageTitle ? [{ label: t(pageTitle) }] : [];
+  return pageTitle ? [{ label: t(pageTitle), icon: route.meta.icon }] : [];
 });
 </script>

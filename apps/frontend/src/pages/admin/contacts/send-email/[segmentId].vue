@@ -110,7 +110,6 @@ import {
   addNotification,
 } from '@beabee/vue';
 
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -132,7 +131,11 @@ const segmentId = computed(() => route.params.segmentId);
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
+    {
+      title: t('menu.contacts'),
+      to: '/admin/contacts',
+      icon: 'i-lucide-users',
+    },
     {
       title: segment.value
         ? `${t('contacts.sendEmail.title')}: ${segment.value.name}`

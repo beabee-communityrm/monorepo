@@ -69,7 +69,7 @@ meta:
 import type { GetEmailData, Paginated } from '@beabee/beabee-common';
 import { AppButton, type Header, PageTitle, formatLocale } from '@beabee/vue';
 
-import { faPlus, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -82,7 +82,11 @@ const { t } = useI18n();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
+    {
+      title: t('menu.contacts'),
+      to: '/admin/contacts',
+      icon: 'i-lucide-users',
+    },
     { title: t('contacts.emailTemplates.title') },
   ])
 );

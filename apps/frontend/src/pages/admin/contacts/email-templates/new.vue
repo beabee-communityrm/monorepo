@@ -24,7 +24,6 @@ meta:
 import type { CreateEmailData } from '@beabee/beabee-common';
 import { PageTitle } from '@beabee/vue';
 
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
@@ -41,7 +40,11 @@ const router = useRouter();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
+    {
+      title: t('menu.contacts'),
+      to: '/admin/contacts',
+      icon: 'i-lucide-users',
+    },
     {
       title: t('contacts.emailTemplates.title'),
       to: router.resolve(LIST_ROUTE).href,

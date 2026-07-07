@@ -16,7 +16,6 @@ meta:
 <script lang="ts" setup>
 import { AppTabs, PageTitle } from '@beabee/vue';
 
-import { faHandsHelping } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -55,7 +54,7 @@ addBreadcrumb(
     {
       title: t('membershipBuilder.title'),
       to: '/admin/membership-builder',
-      icon: faHandsHelping,
+      icon: 'i-lucide-handshake',
     },
   ])
 );

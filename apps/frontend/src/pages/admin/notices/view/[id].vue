@@ -54,11 +54,7 @@ import {
   PageTitle,
 } from '@beabee/vue';
 
-import {
-  faPencilAlt,
-  faSignHanging,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -77,7 +73,7 @@ const router = useRouter();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.notices'), to: '/admin/notices', icon: faSignHanging },
+    { title: t('menu.notices'), to: '/admin/notices', icon: 'i-lucide-bell' },
     { title: notice.value?.name || '' },
   ])
 );

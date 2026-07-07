@@ -74,7 +74,7 @@ import type {
 import { PaymentStatus as PaymentStatusEnum } from '@beabee/beabee-common';
 import { AppButton, AppFilterGrid, PageTitle, formatLocale } from '@beabee/vue';
 
-import { faChartLine, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -102,7 +102,7 @@ addBreadcrumb(
     {
       title: t('menu.dashboard'),
       to: '/admin',
-      icon: faChartLine,
+      icon: 'i-lucide-chart-line',
     },
     { title: t('menu.payments') },
   ])

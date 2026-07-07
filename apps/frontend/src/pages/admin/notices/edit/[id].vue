@@ -23,7 +23,6 @@ import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
 import { PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -40,7 +39,7 @@ const notice = ref<GetNoticeData | undefined>();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.notices'), to: '/admin/notices', icon: faSignHanging },
+    { title: t('menu.notices'), to: '/admin/notices', icon: 'i-lucide-bell' },
     ...(notice.value
       ? [
           {

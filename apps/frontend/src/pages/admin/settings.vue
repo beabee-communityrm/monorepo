@@ -13,7 +13,6 @@ meta:
 <script lang="ts" setup>
 import { AppTabs, PageTitle } from '@beabee/vue';
 
-import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -61,7 +60,7 @@ addBreadcrumb(
     {
       title: t('menu.adminSettings'),
       to: '/admin/settings',
-      icon: faCog,
+      icon: 'i-lucide-settings',
     },
   ])
 );

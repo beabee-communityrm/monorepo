@@ -53,7 +53,7 @@ meta:
 import { ItemStatus } from '@beabee/beabee-common';
 import { PageTitle } from '@beabee/vue';
 
-import { faBullhorn, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { computed, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -132,7 +132,7 @@ addBreadcrumb(
       ? [
           {
             title: t('menu.callouts'),
-            icon: faBullhorn,
+            icon: 'i-lucide-megaphone',
             to: '/admin/crowdnewsroom',
           },
           ...(props.id

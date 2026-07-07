@@ -81,12 +81,7 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import {
-  faBullhorn,
-  faEye,
-  faEyeSlash,
-  faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -103,7 +98,7 @@ addBreadcrumb(
   computed(() => [
     {
       title: t('menu.callouts'),
-      icon: faBullhorn,
+      icon: 'i-lucide-megaphone',
       to: '/admin/crowdnewsroom',
     },
   ])
