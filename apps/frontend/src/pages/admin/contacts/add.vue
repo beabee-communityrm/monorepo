@@ -81,6 +81,7 @@ import AppApiForm from '#components/forms/AppApiForm.vue';
 import AppRoleEditor from '#components/role/AppRoleEditor.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons } from '#utils/route-icons';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -90,7 +91,7 @@ addBreadcrumb(
     {
       title: t('menu.contacts'),
       to: '/admin/contacts',
-      icon: 'i-lucide-users',
+      icon: routeIcons.adminContacts,
     },
     { title: t('contacts.addContact'), to: '/admin/contacts/new' },
   ])

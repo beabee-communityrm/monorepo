@@ -88,6 +88,7 @@ import { useI18n } from 'vue-i18n';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { definePaginatedQuery, defineParam } from '#utils/pagination';
+import { routeIcons } from '#utils/route-icons';
 
 import ItemStatus from '../../../components/item/ItemStatus.vue';
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
@@ -98,7 +99,7 @@ addBreadcrumb(
   computed(() => [
     {
       title: t('menu.callouts'),
-      icon: 'i-lucide-megaphone',
+      icon: routeIcons.adminCallouts,
       to: '/admin/crowdnewsroom',
     },
   ])

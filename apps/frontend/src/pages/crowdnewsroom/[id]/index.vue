@@ -112,6 +112,7 @@ import env from '#env';
 import { currentUser, isEmbed } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons } from '#utils/route-icons';
 import { resolveImageUrl } from '#utils/url';
 
 // Props: Receive the already processed callout from parent route
@@ -132,7 +133,7 @@ addBreadcrumb(
             {
               title: t('menu.callouts'),
               to: '/admin/crowdnewsroom',
-              icon: 'i-lucide-megaphone',
+              icon: routeIcons.adminCallouts,
             },
             {
               title: props.callout.title,
@@ -144,7 +145,7 @@ addBreadcrumb(
             {
               title: t('menu.callouts'),
               to: '/crowdnewsroom',
-              icon: 'i-lucide-megaphone',
+              icon: routeIcons.callouts,
             },
             {
               title: props.callout.title,

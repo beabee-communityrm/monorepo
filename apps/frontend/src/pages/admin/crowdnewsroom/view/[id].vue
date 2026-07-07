@@ -21,6 +21,7 @@ import { useRoute } from 'vue-router';
 
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons } from '#utils/route-icons';
 
 const route = useRoute();
 const { t } = useI18n();
@@ -29,7 +30,7 @@ addBreadcrumb(
   computed(() => [
     {
       title: t('menu.callouts'),
-      icon: 'i-lucide-megaphone',
+      icon: routeIcons.adminCallouts,
       to: '/admin/crowdnewsroom',
     },
     {

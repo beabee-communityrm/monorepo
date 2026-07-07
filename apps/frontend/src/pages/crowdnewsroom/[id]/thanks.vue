@@ -25,6 +25,7 @@ import CalloutVariantsBox from '#components/pages/callouts/CalloutVariantsBox.vu
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { currentUser, isEmbed } from '#store/index';
+import { routeIcons } from '#utils/route-icons';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'variantNames'>;
@@ -39,7 +40,7 @@ addBreadcrumb(
           {
             title: t('menu.callouts'),
             to: '/crowdnewsroom',
-            icon: 'i-lucide-megaphone',
+            icon: routeIcons.callouts,
           },
           {
             title: props.callout.title,
