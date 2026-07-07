@@ -6,7 +6,7 @@
     <TheMenu />
     <main
       id="top"
-      class="bg-neutral-40 flex h-screen w-full flex-col overflow-y-auto"
+      class="flex h-screen w-full flex-col overflow-y-auto bg-neutral-40"
     >
       <UDashboardNavbar :ui="{ root: 'sticky top-0 z-10 bg-white' }">
         <template #leading>
@@ -22,7 +22,7 @@
           </UBreadcrumb>
         </template>
       </UDashboardNavbar>
-      <div class="flex flex-col p-4 pb-0 md:p-5 md:pb-0">
+      <div class="flex flex-col p-4 md:p-5">
         <router-view />
       </div>
       <TheFooter class="mt-auto flex-none" />
