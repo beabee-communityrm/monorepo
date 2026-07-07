@@ -1,43 +1,54 @@
 <template>
-  <footer class="border-t border-default p-4">
-    <div class="flex items-center justify-between gap-6 text-sm">
-      <!-- Left: org info -->
-      <div class="flex items-center gap-3">
-        <AppLogo class="h-8 w-auto" />
-        <div>
-          <a :href="generalContent.siteUrl" class="font-semibold">
-            {{ generalContent.organisationName }}
-          </a>
-          <p class="text-muted">
-            {{ t('footer.contactUs') }}
-            <a :href="'mailto:' + generalContent.supportEmail" class="text-primary">
-              {{ generalContent.supportEmail }}
-            </a>
-          </p>
-        </div>
-      </div>
+  <UFooter :ui="{ root: 'border-t border-default', left: 'text-sm', right: 'text-sm gap-x-6' }">
+    <template #left>
+      <AppLogo class="size-5 shrink-0 rounded-xs" />
+      <span class="text-muted">
+        <a :href="generalContent.siteUrl" class="font-semibold text-highlighted">{{
+          generalContent.organisationName
+        }}</a>
+        · {{ t('footer.contactUs') }}
+        <a :href="'mailto:' + generalContent.supportEmail" class="text-primary">{{
+          generalContent.supportEmail
+        }}</a>
+      </span>
+    </template>
 
-      <!-- Center: legal links -->
-      <div class="flex gap-6">
-        <a v-if="generalContent.privacyLink" :href="generalContent.privacyLink">{{ t('footer.privacyPolicy') }}</a>
-        <a v-if="generalContent.termsLink" :href="generalContent.termsLink">{{ t('footer.terms') }}</a>
-        <a v-if="generalContent.impressumLink" :href="generalContent.impressumLink">{{ t('footer.impressum') }}</a>
-        <a v-for="item in generalContent.footerLinks" :key="item.url" :href="item.url">{{ item.text }}</a>
-      </div>
-
-      <!-- Right: beabee -->
-      <div class="text-right">
-        <a href="https://beabee.io" class="font-bold flex items-center gap-1 justify-end">
-          beabee
-          <UIcon name="i-lucide-external-link" class="size-3" />
-        </a>
-        <a v-if="canAdmin" href="https://beabee.io/#Newsletter" class="text-primary block">
-          {{ t('footer.joinCommunity') }}
-        </a>
-        <span v-else class="text-muted">{{ t('footer.poweredBy') }}</span>
-      </div>
-    </div>
-  </footer>
+    <template #right>
+      <a
+        v-if="generalContent.privacyLink"
+        :href="generalContent.privacyLink"
+        class="text-muted hover:text-default"
+        >{{ t('footer.privacyPolicy') }}</a
+      >
+      <a
+        v-if="generalContent.termsLink"
+        :href="generalContent.termsLink"
+        class="text-muted hover:text-default"
+        >{{ t('footer.terms') }}</a
+      >
+      <a
+        v-if="generalContent.impressumLink"
+        :href="generalContent.impressumLink"
+        class="text-muted hover:text-default"
+        >{{ t('footer.impressum') }}</a
+      >
+      <a
+        v-for="item in generalContent.footerLinks"
+        :key="item.url"
+        :href="item.url"
+        class="text-muted hover:text-default"
+        >{{ item.text }}</a
+      >
+      <a href="https://beabee.io" class="font-bold flex items-center gap-1 text-highlighted">
+        beabee
+        <UIcon name="i-lucide-external-link" class="size-3" />
+      </a>
+      <a v-if="canAdmin" href="https://beabee.io/#Newsletter" class="text-primary">
+        {{ t('footer.joinCommunity') }}
+      </a>
+      <span v-else class="text-muted">{{ t('footer.poweredBy') }}</span>
+    </template>
+  </UFooter>
 </template>
 
 <script lang="ts" setup>
