@@ -109,7 +109,7 @@ import KeyStat from '#components/pages/admin/KeyStat.vue';
 import { currentUser } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
-import { routeIcons } from '#utils/route-icons';
+import { routeIcons } from '#utils/route-nav';
 
 import env from '../../env';
 
@@ -118,7 +118,7 @@ const { n, t } = useI18n();
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.dashboard'),
+      label: t('menu.dashboard'),
       to: '/admin',
       icon: routeIcons.admin,
     },

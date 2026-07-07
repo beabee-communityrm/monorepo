@@ -166,7 +166,7 @@ const hasMissingMergeTags = computed(() =>
   missingMergeTags.value?.length ? missingMergeTags.value : undefined
 );
 
-addBreadcrumb(computed(() => [{ title: 'Email' }, { title: pageTitle.value }]));
+addBreadcrumb(computed(() => [{ label: 'Email' }, { label: pageTitle.value }]));
 
 onMounted(async () => {
   try {

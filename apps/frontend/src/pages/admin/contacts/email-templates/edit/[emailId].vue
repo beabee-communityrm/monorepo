@@ -125,7 +125,7 @@ import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
-import { routeIcons } from '#utils/route-icons';
+import { routeIcons } from '#utils/route-nav';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
@@ -138,16 +138,16 @@ const emailId = computed(() => route.params.emailId);
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.contacts'),
+      label: t('menu.contacts'),
       to: '/admin/contacts',
       icon: routeIcons.adminContacts,
     },
     {
-      title: t('contacts.emailTemplates.title'),
+      label: t('contacts.emailTemplates.title'),
       to: router.resolve(LIST_ROUTE).href,
     },
     {
-      title: email.value
+      label: email.value
         ? t('contacts.emailTemplates.editTitleWithName', {
             name: email.value.name,
           })

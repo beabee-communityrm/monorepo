@@ -443,11 +443,11 @@ const doingAction = ref(false);
 addBreadcrumb(
   computed(() => [
     {
-      title: t('calloutAdmin.responses'),
+      label: t('calloutAdmin.responses'),
       to: `/admin/crowdnewsroom/view/${props.callout.slug}/responses`,
     },
     {
-      title:
+      label:
         segmentItems.value.find((e) => e.id === currentSegmentId.value)
           ?.label || '',
     },

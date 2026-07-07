@@ -29,7 +29,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { resolveTabNavigation } from '#utils/navigation';
-import { routeIcons } from '#utils/route-icons';
+import { routeIcons } from '#utils/route-nav';
 
 import env from '../../../env';
 
@@ -75,14 +75,14 @@ const selectedTab = computed(() =>
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.contacts'),
+      label: t('menu.contacts'),
       to: '/admin/contacts',
       icon: routeIcons.adminContacts,
     },
     ...(contact.value
       ? [
           {
-            title: contact.value.displayName,
+            label: contact.value.displayName,
             to: '/admin/contacts/' + contact.value.id,
           },
         ]

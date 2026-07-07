@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import env from '#env';
 import { canAdmin, currentUser } from '#store/currentUser';
 import { generalContent } from '#store/generalContent';
-import { routeIcons } from '#utils/route-icons';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 type MenuItem = NavigationMenuItem & { visible: boolean };
 
@@ -26,26 +26,26 @@ export function useMenu() {
     ...filterVisible([
       [
         {
-          label: t('menu.home'),
+          label: t(routeLabels.profile),
           icon: routeIcons.profile,
           to: '/profile',
           visible: !env.cnrMode,
           exact: true,
         },
         {
-          label: t('menu.callouts'),
+          label: t(routeLabels.callouts),
           icon: routeIcons.callouts,
           to: '/crowdnewsroom',
           visible: !env.cnrMode,
         },
         {
-          label: t('menu.account'),
+          label: t(routeLabels.profileAccount),
           icon: routeIcons.profileAccount,
           to: '/profile/account',
           visible: !!currentUser.value,
         },
         {
-          label: t('menu.contribution'),
+          label: t(routeLabels.profileContribution),
           icon: routeIcons.profileContribution,
           to: '/profile/contribution',
           visible:
@@ -63,38 +63,38 @@ export function useMenu() {
           visible: canAdmin.value || !!currentUser.value?.isReviewer,
         },
         {
-          label: t('menu.dashboard'),
+          label: t(routeLabels.admin),
           icon: routeIcons.admin,
           to: '/admin',
           visible: canAdmin.value,
           exact: true,
         },
         {
-          label: t('menu.contacts'),
+          label: t(routeLabels.adminContacts),
           icon: routeIcons.adminContacts,
           to: '/admin/contacts',
           visible: canAdmin.value,
         },
         {
-          label: t('menu.callouts'),
+          label: t(routeLabels.adminCallouts),
           icon: routeIcons.adminCallouts,
           to: '/admin/crowdnewsroom',
           visible: canAdmin.value || !!currentUser.value?.isReviewer,
         },
         {
-          label: t('menu.notices'),
+          label: t(routeLabels.adminNotices),
           icon: routeIcons.adminNotices,
           to: '/admin/notices',
           visible: canAdmin.value && !env.cnrMode,
         },
         {
-          label: t('menu.membershipBuilder'),
+          label: t(routeLabels.adminMembershipBuilder),
           icon: routeIcons.adminMembershipBuilder,
           to: '/admin/membership-builder',
           visible: canAdmin.value && !env.cnrMode,
         },
         {
-          label: t('menu.adminSettings'),
+          label: t(routeLabels.adminSettings),
           icon: routeIcons.adminSettings,
           to: '/admin/settings',
           visible: canAdmin.value,

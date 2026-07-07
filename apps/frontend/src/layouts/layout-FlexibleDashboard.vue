@@ -32,32 +32,9 @@
  *
  * @component
  */
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
-
-import { getRouteIcon } from '#utils/route-icons';
-
 import { isEmbed } from '../store';
-import { breadcrumbItems } from '../store/breadcrumb';
+import { useBreadcrumbs } from '../store/breadcrumb';
 import TheMenu from './menu/TheMenu.vue';
 
-const { t } = useI18n();
-const route = useRoute();
-
-const items = computed(() => breadcrumbItems.flatMap((bi) => bi.value));
-
-const breadcrumbs = computed(() => {
-  if (items.value.length > 0) {
-    return items.value.map(({ title, to, icon }) => ({
-      label: title,
-      to,
-      icon,
-    }));
-  }
-  const pageTitle = route.meta.pageTitle as string | undefined;
-  return pageTitle
-    ? [{ label: t(pageTitle), icon: getRouteIcon(route.name) }]
-    : [];
-});
+const breadcrumbs = useBreadcrumbs();
 </script>

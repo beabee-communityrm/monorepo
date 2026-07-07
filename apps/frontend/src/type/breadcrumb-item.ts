@@ -1,5 +1,5 @@
 export interface BreadcrumbItem {
-  title: string;
+  label: string;
   to?: string;
   icon?: string;
 }
