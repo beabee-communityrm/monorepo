@@ -8,9 +8,13 @@
     }"
   >
     <template #header="{ collapsed }">
-      <router-link to="/" :class="!collapsed && 'pl-2.5'">
+      <component
+        :is="logoLink.is"
+        v-bind="logoLink.props"
+        :class="!collapsed && 'pl-2.5'"
+      >
         <AppLogo class="h-10 w-auto max-w-full object-contain" />
-      </router-link>
+      </component>
     </template>
 
     <template #default="{ collapsed }">
@@ -43,18 +47,32 @@
 
 <script lang="ts" setup>
 import type { NavigationMenuItem } from '@nuxt/ui';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
 import { client } from '#utils/api';
 
 import AppLogo from '../../components/AppLogo.vue';
+import { currentUser, generalContent } from '../../store';
 import { useMenu } from './menu-list';
 
 const router = useRouter();
 const { t } = useI18n();
 
 const { items } = useMenu();
+
+const logoLink = computed(() => {
+  return currentUser.value
+    ? {
+        is: 'router-link',
+        props: { to: '/' },
+      }
+    : {
+        is: 'a',
+        props: { href: generalContent.value.siteUrl },
+      };
+});
 
 const logoutItem: NavigationMenuItem = {
   label: t('menu.logout'),
