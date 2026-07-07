@@ -68,10 +68,6 @@ const tabs = computed(() =>
   )
 );
 
-const selectedTab = computed(() =>
-  tabs.value.find((tab) => tab.id === route.name)
-);
-
 addBreadcrumb(
   computed(() => [
     {
