@@ -96,10 +96,7 @@
       >
         <slot name="suffixAction" />
       </div>
-      <div
-        v-if="copyable"
-        class="h-10 flex-0 shrink-0 border-l border-main-40"
-      >
+      <div v-if="copyable" class="h-10 flex-0 shrink-0 border-l border-main-40">
         <AppCopyButton
           :text="prefix ? `${prefix}${value}` : value?.toString() || ''"
           :disabled="copyButtonDisabled"

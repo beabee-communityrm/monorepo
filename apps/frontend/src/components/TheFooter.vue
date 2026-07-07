@@ -1,15 +1,25 @@
 <template>
-  <UFooter :ui="{ root: 'border-t border-default', left: 'text-sm', right: 'text-sm gap-x-6' }">
+  <UFooter
+    :ui="{
+      root: 'border-t border-default',
+      left: 'text-sm',
+      right: 'text-sm gap-x-6',
+    }"
+  >
     <template #left>
       <AppLogo class="size-5 shrink-0 rounded-xs" />
       <span class="text-muted">
-        <a :href="generalContent.siteUrl" class="font-semibold text-highlighted">{{
-          generalContent.organisationName
-        }}</a>
+        <a
+          :href="generalContent.siteUrl"
+          class="text-highlighted font-semibold"
+          >{{ generalContent.organisationName }}</a
+        >
         · {{ t('footer.contactUs') }}
-        <a :href="'mailto:' + generalContent.supportEmail" class="text-primary">{{
-          generalContent.supportEmail
-        }}</a>
+        <a
+          :href="'mailto:' + generalContent.supportEmail"
+          class="text-primary"
+          >{{ generalContent.supportEmail }}</a
+        >
       </span>
     </template>
 
@@ -39,11 +49,18 @@
         class="text-muted hover:text-default"
         >{{ item.text }}</a
       >
-      <a href="https://beabee.io" class="font-bold flex items-center gap-1 text-highlighted">
+      <a
+        href="https://beabee.io"
+        class="text-highlighted flex items-center gap-1 font-bold"
+      >
         beabee
         <UIcon name="i-lucide-external-link" class="size-3" />
       </a>
-      <a v-if="canAdmin" href="https://beabee.io/#Newsletter" class="text-primary">
+      <a
+        v-if="canAdmin"
+        href="https://beabee.io/#Newsletter"
+        class="text-primary"
+      >
         {{ t('footer.joinCommunity') }}
       </a>
       <span v-else class="text-muted">{{ t('footer.poweredBy') }}</span>

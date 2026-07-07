@@ -1,12 +1,13 @@
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
 import ui from '@nuxt/ui/vite';
-import { nuxtUiConfig } from '../../nuxt-ui.config';
 import replace from '@rollup/plugin-replace';
 import vue from '@vitejs/plugin-vue';
 import { createRequire } from 'node:module';
 import { dirname, resolve } from 'node:path';
 import { type Plugin, defineConfig, loadEnv } from 'vite';
 import VueRouter from 'vue-router/vite';
+
+import { nuxtUiConfig } from '../../nuxt-ui.config';
 
 const require = createRequire(import.meta.url);
 const LOCALE_PATH = resolve(
