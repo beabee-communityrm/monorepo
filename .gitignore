@@ -24,6 +24,7 @@ exports/
 # Nuxt UI auto-generated type declarations
 auto-imports.d.ts
 components.d.ts
+
 # Claude Code local state
 .claude/
 .mcp.json

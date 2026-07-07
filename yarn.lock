@@ -1385,8 +1385,6 @@ __metadata:
     "@captchafox/vue": "npm:^1.6.0"
     "@eslint/js": "npm:^9.39.4"
     "@formio/vue": "npm:5.0.0"
-    "@iconify-json/fa6-regular": "npm:^1.2.4"
-    "@iconify-json/fa6-solid": "npm:^1.2.4"
     "@iframe-resizer/child": "npm:^5.5.9"
     "@iframe-resizer/parent": "npm:^5.5.9"
     "@intlify/unplugin-vue-i18n": "npm:^11.0.0"
@@ -2933,24 +2931,6 @@ __metadata:
   version: 3.0.0
   resolution: "@iarna/toml@npm:3.0.0"
   checksum: 10c0/419506f8d8183eb34e3d8d632dacbaf40790d20d56290acf3ad90765e20111140335e682b02e9fe76713fbf35dc652b2b482dbfd752c0aa890e6ef39b8f1c421
-  languageName: node
-  linkType: hard
-
-"@iconify-json/fa6-regular@npm:^1.2.4":
-  version: 1.2.4
-  resolution: "@iconify-json/fa6-regular@npm:1.2.4"
-  dependencies:
-    "@iconify/types": "npm:*"
-  checksum: 10c0/c092b2f28041487dfaa18d0ae889c9563171cdeedf1e9af0ba5cc1b3f00c694d5686f80ccc4f5b145e5f658b425a332dbd334bc0c0db5c5b5a6000afce633d60
-  languageName: node
-  linkType: hard
-
-"@iconify-json/fa6-solid@npm:^1.2.4":
-  version: 1.2.4
-  resolution: "@iconify-json/fa6-solid@npm:1.2.4"
-  dependencies:
-    "@iconify/types": "npm:*"
-  checksum: 10c0/367f45b87f83344dde8ed520e4aa123b94b6499fcdcf50ffe3b7b6495c04f2d3bb1b3ab9f6465bed1ba58dd65a0f5822808f7961a24d3eee210101ac2aec9eb3
   languageName: node
   linkType: hard
 

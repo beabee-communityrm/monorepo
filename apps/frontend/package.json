@@ -27,8 +27,6 @@
     "@beabee/vue": "workspace:^",
     "@captchafox/vue": "^1.6.0",
     "@formio/vue": "5.0.0",
-    "@iconify-json/fa6-regular": "^1.2.4",
-    "@iconify-json/fa6-solid": "^1.2.4",
     "@iframe-resizer/child": "^5.5.9",
     "@iframe-resizer/parent": "^5.5.9",
     "@maptiler/client": "^2.7.0",
