@@ -1,4 +1,4 @@
-import type { NuxtUIOptions } from "@nuxt/ui/vite";
+import type { NuxtUIOptions } from '@nuxt/ui/vite';
 
 /**
  * Shared Nuxt UI configuration for both apps/frontend and packages/vue.
@@ -7,14 +7,14 @@ import type { NuxtUIOptions } from "@nuxt/ui/vite";
 export const nuxtUiConfig: NuxtUIOptions = {
   ui: {
     colors: {
-      primary: "nuxt-primary",
-      neutral: "nuxt-neutral",
+      primary: 'nuxt-primary',
+      neutral: 'nuxt-neutral',
     },
     navigationMenu: {
       variants: {
         active: {
           false: {
-            linkLeadingIcon: "text-muted group-hover:text-highlighted",
+            linkLeadingIcon: 'text-muted group-hover:text-highlighted',
           },
         },
       },

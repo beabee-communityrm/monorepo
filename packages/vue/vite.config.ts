@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import path, { resolve } from 'path';
 import { defineConfig } from 'vite';
 
-import { nuxtUiConfig } from '../../nuxt-ui.config';
+import { nuxtUiConfig } from './src/lib/nuxt-ui.config';
 
 export default defineConfig({
   plugins: [
