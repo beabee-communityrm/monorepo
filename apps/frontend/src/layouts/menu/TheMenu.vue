@@ -1,5 +1,12 @@
 <template>
-  <UDashboardSidebar collapsible resizable :ui="{ header: 'border-b border-default', footer: 'border-t border-default' }">
+  <UDashboardSidebar
+    collapsible
+    resizable
+    :ui="{
+      header: 'border-b border-default',
+      footer: 'border-t border-default',
+    }"
+  >
     <template #header="{ collapsed }">
       <router-link to="/" :class="!collapsed && 'pl-2.5'">
         <AppLogo class="h-10 w-auto max-w-full object-contain" />
@@ -11,7 +18,11 @@
         :items="items"
         orientation="vertical"
         :collapsed="collapsed"
-        :ui="{ link: 'py-2.5', linkLeadingIcon: 'size-4.5', label: '[font-variant:small-caps] text-sm text-muted' }"
+        :ui="{
+          link: 'py-2.5',
+          linkLeadingIcon: 'size-4.5',
+          label: '[font-variant:small-caps] text-sm text-muted',
+        }"
         tooltip
       />
     </template>
