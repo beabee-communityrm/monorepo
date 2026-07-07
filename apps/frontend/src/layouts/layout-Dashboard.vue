@@ -22,7 +22,7 @@
           </UBreadcrumb>
         </template>
       </UDashboardNavbar>
-      <div class="flex flex-col p-4 pb-0 md:p-5 md:pb-0">
+      <div class="flex flex-col p-4 md:p-5">
         <router-view />
       </div>
       <TheFooter class="mt-auto flex-none" />
