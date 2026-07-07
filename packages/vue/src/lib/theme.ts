@@ -139,7 +139,7 @@ const TAILWIND_SHADE_LEVELS: [shade: number, level: number][] = [
   [950, 145],
 ];
 
-function setShades(
+function setCustomShades(
   colorName: string,
   colorValue: string,
   levels: number[] = []
@@ -148,11 +148,12 @@ function setShades(
   for (const level of levels) {
     setColorVar(`--c-${colorName}-${level}`, computeShade(colorValue, level));
   }
+}
 
-  if (colorName === 'main') return; // Don't generate Nuxt shades for main colour, as is a naming conflict
-  // with Nuxt UI's primary colour, for which we are using the 'link' colour instead.
-
-  // Set standard Tailwind 50–950 scale for Nuxt UI compatibility
+// Set standard Tailwind 50–950 scale for a colour, for Nuxt UI compatibility.
+// Only needed for the colours mapped to Nuxt UI tokens in nuxt-ui.config.ts,
+// ('nuxt-primary' and 'nuxt-neutral').
+function setNuxtShades(colorName: string, colorValue: string) {
   for (const [shade, level] of TAILWIND_SHADE_LEVELS) {
     const [r, g, b] = parseToRgba(computeShade(colorValue, level));
 
@@ -165,7 +166,9 @@ function setShades(
 
 export function getFullTheme(theme: PartialTheme): Theme {
   const mainColor =
-    theme.colors?.main ?? theme.colors?.primary ?? defaultColorPreset.colors.main;
+    theme.colors?.main ??
+    theme.colors?.primary ??
+    defaultColorPreset.colors.main;
   const bodyFont = getFont(theme.fonts?.body);
 
   const colors = {
@@ -205,17 +208,20 @@ watch(
     const { colors, fonts } = getFullTheme(newTheme);
 
     // Set colors
-    setShades('main', colors.main, [5, 10, 20, 40, 70, 80]);
-    setShades('body', colors.body, [60, 80]);
-    // Nuxt UI's neutral scale expects a lighter base than our (often very dark)
+    setCustomShades('main', colors.main, [5, 10, 20, 40, 70, 80]);
+    setCustomShades('body', colors.body, [60, 80]);
+    setCustomShades('link', colors.link, [10, 70, 110]);
+    setCustomShades('warning', colors.warning || '#f5cc5b', [10, 30, 70]);
+    setCustomShades('success', colors.success || '#86a960', [10, 30, 70, 110]);
+    setCustomShades('danger', colors.danger || '#ce3d3d', [10, 30, 70, 110]);
+    setCustomShades('white', colors.white || '#ffffff');
+    setCustomShades('black', colors.black || '#000000');
+
+    // Nuxt UI colour tokens (see nuxt-ui.config.ts): 'primary' uses the link
+    // colour, 'neutral' expects a lighter base than our (often very dark)
     // body colour, so derive a lightened variant for it to use instead.
-    setShades('nuxt-neutral', mix(colors.body, 'white', 0.35));
-    setShades('link', colors.link, [10, 70, 110]);
-    setShades('warning', colors.warning || '#f5cc5b', [10, 30, 70]);
-    setShades('success', colors.success || '#86a960', [10, 30, 70, 110]);
-    setShades('danger', colors.danger || '#ce3d3d', [10, 30, 70, 110]);
-    setShades('white', colors.white || '#ffffff');
-    setShades('black', colors.black || '#000000');
+    setNuxtShades('nuxt-primary', colors.link);
+    setNuxtShades('nuxt-neutral', mix(colors.body, 'white', 0.35));
 
     // Load fonts
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));
