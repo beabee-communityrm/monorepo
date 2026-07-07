@@ -2,7 +2,6 @@
 name: profile
 meta:
   pageTitle: homePage.title
-  icon: i-lucide-house
 </route>
 
 <template>

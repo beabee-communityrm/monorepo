@@ -109,6 +109,7 @@ import KeyStat from '#components/pages/admin/KeyStat.vue';
 import { currentUser } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons } from '#utils/route-icons';
 
 import env from '../../env';
 
@@ -119,7 +120,7 @@ addBreadcrumb(
     {
       title: t('menu.dashboard'),
       to: '/admin',
-      icon: 'i-lucide-chart-line',
+      icon: routeIcons.admin,
     },
   ])
 );

@@ -217,6 +217,7 @@ import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 import { definePaginatedQuery, defineParam } from '#utils/pagination';
+import { routeIcons } from '#utils/route-icons';
 
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';
@@ -347,7 +348,7 @@ addBreadcrumb(
     {
       title: t('menu.contacts'),
       to: '/admin/contacts',
-      icon: 'i-lucide-users',
+      icon: routeIcons.adminContacts,
     },
   ])
 );

@@ -125,6 +125,7 @@ import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons } from '#utils/route-icons';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
@@ -139,7 +140,7 @@ addBreadcrumb(
     {
       title: t('menu.contacts'),
       to: '/admin/contacts',
-      icon: 'i-lucide-users',
+      icon: routeIcons.adminContacts,
     },
     {
       title: t('contacts.emailTemplates.title'),

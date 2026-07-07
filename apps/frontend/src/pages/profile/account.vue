@@ -2,7 +2,6 @@
 name: profileAccount
 meta:
   pageTitle: accountPage.title
-  icon: i-lucide-contact
 </route>
 
 <template>

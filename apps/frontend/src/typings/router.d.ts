@@ -7,7 +7,6 @@ import 'vue-router/auto-routes';
 declare module 'vue-router' {
   interface RouteMeta {
     pageTitle: string;
-    icon?: string;
     layout?: 'Auth' | 'Dashboard' | 'Loading';
     noAuth?: boolean;
     role?: RoleType;

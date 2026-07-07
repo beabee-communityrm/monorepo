@@ -65,6 +65,7 @@ import CalloutHorizontalTabs from '#components/pages/admin/callouts/CalloutHoriz
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { convertCalloutToTabs, convertStepsToCallout } from '#utils/callouts';
+import { routeIcons } from '#utils/route-icons';
 
 /**
  * Props for the CalloutNew component
@@ -132,7 +133,7 @@ addBreadcrumb(
       ? [
           {
             title: t('menu.callouts'),
-            icon: 'i-lucide-megaphone',
+            icon: routeIcons.adminCallouts,
             to: '/admin/crowdnewsroom',
           },
           ...(props.id

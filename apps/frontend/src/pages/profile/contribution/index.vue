@@ -2,7 +2,6 @@
 name: profileContribution
 meta:
   pageTitle: menu.contribution
-  icon: i-lucide-credit-card
 </route>
 
 <template>

@@ -40,6 +40,8 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
+import { getRouteIcon } from '#utils/route-icons';
+
 import TheFooter from '../components/TheFooter.vue';
 import { isEmbed } from '../store';
 import { breadcrumbItems } from '../store/breadcrumb';
@@ -59,6 +61,8 @@ const breadcrumbs = computed(() => {
     }));
   }
   const pageTitle = route.meta.pageTitle as string | undefined;
-  return pageTitle ? [{ label: t(pageTitle), icon: route.meta.icon }] : [];
+  return pageTitle
+    ? [{ label: t(pageTitle), icon: getRouteIcon(route.name) }]
+    : [];
 });
 </script>

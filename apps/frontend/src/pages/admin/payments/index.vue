@@ -94,6 +94,7 @@ import {
   defineParam,
   defineRulesParam,
 } from '#utils/pagination';
+import { routeIcons } from '#utils/route-icons';
 
 const { t, n } = useI18n();
 
@@ -102,7 +103,7 @@ addBreadcrumb(
     {
       title: t('menu.dashboard'),
       to: '/admin',
-      icon: 'i-lucide-chart-line',
+      icon: routeIcons.admin,
     },
     { title: t('menu.payments') },
   ])

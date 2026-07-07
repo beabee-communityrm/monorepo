@@ -22,6 +22,7 @@ import { useI18n } from 'vue-i18n';
 import TagManager from '#components/tag/TagManager.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons } from '#utils/route-icons';
 
 const { t } = useI18n();
 
@@ -30,7 +31,7 @@ addBreadcrumb(
     {
       title: t('menu.contacts'),
       to: '/admin/contacts',
-      icon: 'i-lucide-users',
+      icon: routeIcons.adminContacts,
     },
     { title: t('tags.manageTags') },
   ])

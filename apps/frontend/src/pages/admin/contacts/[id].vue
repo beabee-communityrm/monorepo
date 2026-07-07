@@ -29,6 +29,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { resolveTabNavigation } from '#utils/navigation';
+import { routeIcons } from '#utils/route-icons';
 
 import env from '../../../env';
 
@@ -76,7 +77,7 @@ addBreadcrumb(
     {
       title: t('menu.contacts'),
       to: '/admin/contacts',
-      icon: 'i-lucide-users',
+      icon: routeIcons.adminContacts,
     },
     ...(contact.value
       ? [

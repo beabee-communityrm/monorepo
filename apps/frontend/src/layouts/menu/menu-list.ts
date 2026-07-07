@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import env from '#env';
 import { canAdmin, currentUser } from '#store/currentUser';
 import { generalContent } from '#store/generalContent';
+import { routeIcons } from '#utils/route-icons';
 
 type MenuItem = NavigationMenuItem & { visible: boolean };
 
@@ -26,26 +27,26 @@ export function useMenu() {
       [
         {
           label: t('menu.home'),
-          icon: 'i-lucide-house',
+          icon: routeIcons.profile,
           to: '/profile',
           visible: !env.cnrMode,
           exact: true,
         },
         {
           label: t('menu.callouts'),
-          icon: 'i-lucide-megaphone',
+          icon: routeIcons.callouts,
           to: '/crowdnewsroom',
           visible: !env.cnrMode,
         },
         {
           label: t('menu.account'),
-          icon: 'i-lucide-contact',
+          icon: routeIcons.profileAccount,
           to: '/profile/account',
           visible: !!currentUser.value,
         },
         {
           label: t('menu.contribution'),
-          icon: 'i-lucide-credit-card',
+          icon: routeIcons.profileContribution,
           to: '/profile/contribution',
           visible:
             !!currentUser.value &&
@@ -63,38 +64,38 @@ export function useMenu() {
         },
         {
           label: t('menu.dashboard'),
-          icon: 'i-lucide-chart-line',
+          icon: routeIcons.admin,
           to: '/admin',
           visible: canAdmin.value,
           exact: true,
         },
         {
           label: t('menu.contacts'),
-          icon: 'i-lucide-users',
+          icon: routeIcons.adminContacts,
           to: '/admin/contacts',
           visible: canAdmin.value,
         },
         {
           label: t('menu.callouts'),
-          icon: 'i-lucide-megaphone',
+          icon: routeIcons.adminCallouts,
           to: '/admin/crowdnewsroom',
           visible: canAdmin.value || !!currentUser.value?.isReviewer,
         },
         {
           label: t('menu.notices'),
-          icon: 'i-lucide-bell',
+          icon: routeIcons.adminNotices,
           to: '/admin/notices',
           visible: canAdmin.value && !env.cnrMode,
         },
         {
           label: t('menu.membershipBuilder'),
-          icon: 'i-lucide-handshake',
+          icon: routeIcons.adminMembershipBuilder,
           to: '/admin/membership-builder',
           visible: canAdmin.value && !env.cnrMode,
         },
         {
           label: t('menu.adminSettings'),
-          icon: 'i-lucide-settings',
+          icon: routeIcons.adminSettings,
           to: '/admin/settings',
           visible: canAdmin.value,
         },

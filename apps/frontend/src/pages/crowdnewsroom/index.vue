@@ -2,7 +2,6 @@
 name: callouts
 meta:
   pageTitle: menu.callouts
-  icon: i-lucide-megaphone
 </route>
 
 <template>

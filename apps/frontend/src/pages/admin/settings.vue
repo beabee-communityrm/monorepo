@@ -18,6 +18,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import { resolveTabNavigation } from '#utils/navigation';
+import { routeIcons } from '#utils/route-icons';
 
 import { addBreadcrumb } from '../../store/breadcrumb';
 
@@ -60,7 +61,7 @@ addBreadcrumb(
     {
       title: t('menu.adminSettings'),
       to: '/admin/settings',
-      icon: 'i-lucide-settings',
+      icon: routeIcons.adminSettings,
     },
   ])
 );
