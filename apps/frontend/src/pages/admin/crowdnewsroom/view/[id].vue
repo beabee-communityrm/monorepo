@@ -15,7 +15,6 @@ meta:
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { PageTitle } from '@beabee/vue';
 
-import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
@@ -30,7 +29,7 @@ addBreadcrumb(
   computed(() => [
     {
       title: t('menu.callouts'),
-      icon: faBullhorn,
+      icon: 'i-lucide-megaphone',
       to: '/admin/crowdnewsroom',
     },
     {

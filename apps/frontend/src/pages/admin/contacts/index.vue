@@ -200,7 +200,6 @@ import {
   faDownload,
   faMailBulk,
   faPlus,
-  faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -345,7 +344,11 @@ const doingAction = ref(false);
  */
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
+    {
+      title: t('menu.contacts'),
+      to: '/admin/contacts',
+      icon: 'i-lucide-users',
+    },
   ])
 );
 

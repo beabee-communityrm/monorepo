@@ -114,12 +114,7 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import {
-  faPause,
-  faPlay,
-  faTrash,
-  faUsers,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -141,7 +136,11 @@ const emailId = computed(() => route.params.emailId);
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
+    {
+      title: t('menu.contacts'),
+      to: '/admin/contacts',
+      icon: 'i-lucide-users',
+    },
     {
       title: t('contacts.emailTemplates.title'),
       to: router.resolve(LIST_ROUTE).href,

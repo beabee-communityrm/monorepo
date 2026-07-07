@@ -17,9 +17,7 @@
             :items="breadcrumbs"
             class="p-1.5"
             :ui="{ link: breadcrumbs.length > 1 ? 'text-base' : 'text-xl' }"
-          >
-            <template #separator>/</template>
-          </UBreadcrumb>
+          />
         </template>
       </UDashboardNavbar>
       <div class="flex flex-col p-4 md:p-5">
@@ -54,9 +52,13 @@ const items = computed(() => breadcrumbItems.flatMap((bi) => bi.value));
 
 const breadcrumbs = computed(() => {
   if (items.value.length > 0) {
-    return items.value.map(({ title, to }) => ({ label: title, to }));
+    return items.value.map(({ title, to, icon }) => ({
+      label: title,
+      to,
+      icon,
+    }));
   }
   const pageTitle = route.meta.pageTitle as string | undefined;
-  return pageTitle ? [{ label: t(pageTitle) }] : [];
+  return pageTitle ? [{ label: t(pageTitle), icon: route.meta.icon }] : [];
 });
 </script>

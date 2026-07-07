@@ -22,7 +22,6 @@ meta:
 import type { GetContactData } from '@beabee/beabee-common';
 import { AppTabs, PageTitle } from '@beabee/vue';
 
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -77,7 +76,7 @@ addBreadcrumb(
     {
       title: t('menu.contacts'),
       to: '/admin/contacts',
-      icon: faUsers,
+      icon: 'i-lucide-users',
     },
     ...(contact.value
       ? [
