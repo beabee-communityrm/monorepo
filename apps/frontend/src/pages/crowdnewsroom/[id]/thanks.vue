@@ -25,7 +25,7 @@ import CalloutVariantsBox from '#components/pages/callouts/CalloutVariantsBox.vu
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { currentUser, isEmbed } from '#store/index';
-import { routeIcons } from '#utils/route-icons';
+import { routeIcons } from '#utils/route-nav';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'variantNames'>;
@@ -38,12 +38,12 @@ addBreadcrumb(
     currentUser.value
       ? [
           {
-            title: t('menu.callouts'),
+            label: t('menu.callouts'),
             to: '/crowdnewsroom',
             icon: routeIcons.callouts,
           },
           {
-            title: props.callout.title,
+            label: props.callout.title,
             to: '/crowdnewsroom/' + props.callout.slug,
           },
         ]

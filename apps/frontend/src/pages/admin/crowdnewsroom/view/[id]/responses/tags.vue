@@ -38,5 +38,5 @@ defineProps<{
 
 const { t } = useI18n();
 
-addBreadcrumb(computed(() => [{ title: t('tags.manageTags') }]));
+addBreadcrumb(computed(() => [{ label: t('tags.manageTags') }]));
 </script>

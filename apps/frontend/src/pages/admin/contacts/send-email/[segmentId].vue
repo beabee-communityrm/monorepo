@@ -120,7 +120,7 @@ import AppApiForm from '#components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
-import { routeIcons } from '#utils/route-icons';
+import { routeIcons } from '#utils/route-nav';
 
 const PREVIEW_CONTACTS_LIMIT = 50;
 
@@ -133,12 +133,12 @@ const segmentId = computed(() => route.params.segmentId);
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.contacts'),
+      label: t('menu.contacts'),
       to: '/admin/contacts',
       icon: routeIcons.adminContacts,
     },
     {
-      title: segment.value
+      label: segment.value
         ? `${t('contacts.sendEmail.title')}: ${segment.value.name}`
         : t('contacts.sendEmail.title'),
     },

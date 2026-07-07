@@ -18,7 +18,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import { resolveTabNavigation } from '#utils/navigation';
-import { routeIcons } from '#utils/route-icons';
+import { routeIcons } from '#utils/route-nav';
 
 import { addBreadcrumb } from '../../store/breadcrumb';
 
@@ -59,7 +59,7 @@ const selectedTab = computed(() =>
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.adminSettings'),
+      label: t('menu.adminSettings'),
       to: '/admin/settings',
       icon: routeIcons.adminSettings,
     },
