@@ -209,7 +209,7 @@ watch(
     setShades('body', colors.body, [60, 80]);
     // Nuxt UI's neutral scale expects a lighter base than our (often very dark)
     // body colour, so derive a lightened variant for it to use instead.
-    setShades('nuxt-text', mix(colors.body, 'white', 0.35));
+    setShades('nuxt-neutral', mix(colors.body, 'white', 0.35));
     setShades('link', colors.link, [10, 70, 110]);
     setShades('warning', colors.warning || '#f5cc5b', [10, 30, 70]);
     setShades('success', colors.success || '#86a960', [10, 30, 70, 110]);
