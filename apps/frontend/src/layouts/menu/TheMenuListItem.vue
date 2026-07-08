@@ -2,7 +2,7 @@
   <div
     ref="menuItemRef"
     class="group relative my-0.5 flex w-auto items-center justify-start rounded px-1 py-2 font-semibold text-body-80 md:justify-center lg:w-auto lg:justify-start"
-    :class="isActive ? 'bg-primary-20' : 'hover:bg-primary-5'"
+    :class="isActive ? 'bg-main-20' : 'hover:bg-main-5'"
   >
     <font-awesome-icon class="fa-fw inline-block h-4" :icon="icon" />
 

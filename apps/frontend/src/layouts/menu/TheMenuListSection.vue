@@ -5,7 +5,7 @@
     </div>
     <ul
       class="flex flex-col"
-      :class="!isFirst && 'my-2 border-t border-primary-40'"
+      :class="!isFirst && 'my-2 border-t border-main-40'"
     >
       <template v-for="item in section.items" :key="item.href">
         <li v-if="item.visible">
