@@ -225,8 +225,8 @@ export const adminEmailTemplates = {
     ['GROUPS'],
     (params: { groups: { id: string; label: string }[] }) => ({
       GROUPS: params.groups
-        .map((group) => `<li>${group.label} (${group.id})</li>`)
-        .join(''),
+        .map((group) => `${group.label} (${group.id})`)
+        .join(', '),
     })
   ),
   'new-callout-response': withMergeFields(
