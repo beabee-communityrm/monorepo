@@ -2,6 +2,7 @@
 export * from './BadRequestError.js';
 export * from './CantUpdateContributionError.js';
 export * from './CantUpdateNewsletterContactError.js';
+export * from './CantUpdateNewsletterGroupsError.js';
 export * from './CaptchaFailedError.js';
 export * from './CaptchaRequiredError.js';
 export * from './DuplicateEmailError.js';

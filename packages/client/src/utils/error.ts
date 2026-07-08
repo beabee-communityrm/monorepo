@@ -4,6 +4,7 @@ import {
   type BadRequestErrorData,
   type CantUpdateContributionErrorData,
   type CantUpdateNewsletterContactErrorData,
+  type CantUpdateNewsletterGroupsErrorData,
   type CaptchaFailedErrorData,
   type CaptchaRequiredErrorData,
   type DuplicateEmailErrorData,
@@ -88,6 +89,8 @@ export abstract class ApiError extends Error {
           data.status,
           data.data
         );
+      case ApiErrorCode.CANT_UPDATE_NEWSLETTER_GROUPS:
+        return new CantUpdateNewsletterGroupsError(data.message);
       case ApiErrorCode.FILE_UPLOAD_ERROR:
         return new FileUploadError(data.message, data.subCode);
       case ApiErrorCode.RESET_SECURITY_FLOW_ERROR:
@@ -253,6 +256,14 @@ export class CantUpdateContributionError
 {
   readonly httpCode = 400;
   readonly code = ApiErrorCode.CANT_UPDATE_CONTRIBUTION;
+}
+
+export class CantUpdateNewsletterGroupsError
+  extends ApiError
+  implements CantUpdateNewsletterGroupsErrorData
+{
+  readonly httpCode = 400;
+  readonly code = ApiErrorCode.CANT_UPDATE_NEWSLETTER_GROUPS;
 }
 
 export class InvalidCalloutResponseError
