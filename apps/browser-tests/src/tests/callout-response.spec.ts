@@ -33,7 +33,7 @@ test("Answer callout", async ({ browser, page }) => {
     await memberPage.getByRole("button", { name: /Get started/i }).click();
 
     const nameField = memberPage.locator('input[name="data[name]"]');
-    await nameField.pressSequentially(memberName.slice(0, 2), { delay: 100 }); // Fill name field to show checkbox
+    await nameField.pressSequentially(memberName, { delay: 100 }); // Fill name field to show checkbox
 
     await memberPage.locator('input[name="data[email]"]').fill(member.email);
     await memberPage.getByRole("checkbox", { name: /vitest/i }).check();
