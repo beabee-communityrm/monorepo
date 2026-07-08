@@ -99,6 +99,12 @@ export function useMenu() {
           to: '/admin/settings',
           visible: canAdmin.value,
         },
+        {
+          label: t('menu.legacyApp'),
+          icon: 'i-lucide-app-window',
+          to: '/members',
+          visible: canAdmin.value && !env.cnrMode,
+        },
       ],
     ]),
   ]);
