@@ -35,9 +35,7 @@ import AppInfoListItem from './AppInfoListItem.vue';
         </AppInfoListItem>
         <AppInfoListItem name="Tags">
           <div class="flex gap-1">
-            <span class="rounded bg-main-10 px-2 py-1 text-xs"
-              >Important</span
-            >
+            <span class="rounded bg-main-10 px-2 py-1 text-xs">Important</span>
             <span class="rounded bg-success-10 px-2 py-1 text-xs"
               >Verified</span
             >

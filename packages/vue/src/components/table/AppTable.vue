@@ -72,10 +72,7 @@
     </thead>
 
     <tbody class="text-xs lg:text-sm">
-      <tr
-        v-if="!items || items.length === 0"
-        class="border-t border-main-20"
-      >
+      <tr v-if="!items || items.length === 0" class="border-t border-main-20">
         <td v-if="selectable" />
         <td :colspan="headers.length" class="p-2">
           <slot :name="items ? 'empty' : 'loading'">
@@ -85,10 +82,7 @@
       </tr>
 
       <template v-for="(item, i) in items" :key="i">
-        <tr
-          class="border-t border-main-20 align-top"
-          :class="rowClasses(item)"
-        >
+        <tr class="border-t border-main-20 align-top" :class="rowClasses(item)">
           <td v-if="selectable" class="p-2">
             <AppCheckbox
               :model-value="selectedIds.includes(item.id)"
