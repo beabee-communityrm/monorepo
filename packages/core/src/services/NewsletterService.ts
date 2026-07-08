@@ -273,7 +273,7 @@ class NewsletterService {
           .execute();
 
         // 4. Notify admin
-        await emailService.sendTemplateToAdmin('deleted-group', {
+        await emailService.sendTemplateToAdmin('deleted-newsletter-group', {
           groups: removedGroups,
         });
       }

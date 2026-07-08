@@ -221,7 +221,7 @@ export const adminEmailTemplates = {
       MEMBERNAME: params.contact.fullname,
     })
   ),
-  'deleted-group': withMergeFields(
+  'deleted-newsletter-group': withMergeFields(
     ['GROUPS'],
     (params: { groups: { id: string; label: string }[] }) => ({
       GROUPS: params.groups
