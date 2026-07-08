@@ -211,71 +211,71 @@ class NewsletterService {
         .filter((g) => !providerIds.has(g.id))
         .map((g) => ({ ...g, action: 'removed' as const })),
     ];
-
     if (!dryRun) {
-      // Update cache
       if (diff.length > 0) {
+        // Update cache
         optionsService.setJSON('newsletter-groups', providerGroups);
 
-      const removedGroups = diff.filter((g) => g.action === 'removed');
+        const removedGroups = diff.filter((g) => g.action === 'removed');
 
-      // Clean up if any groups were deleted by the provider
-      if (removedGroups.length > 0) {
-        log.info(
-          `🧹 Deleted groups detected during refresh: ${removedGroups.map((group) => group.label).join(', ')}. Cleaning up..`
-        );
-        const removedIds = removedGroups.map((g) => g.id);
+        // Clean up if any groups were deleted by the provider
+        if (removedGroups.length > 0) {
+          log.info(
+            `🧹 Deleted groups detected during refresh: ${removedGroups.map((group) => group.label).join(', ')}. Cleaning up..`
+          );
+          const removedIds = removedGroups.map((g) => g.id);
 
-        log.info('Removing deleted groups from contact_profile');
-        // 1. Remove from contacts
-        await createQueryBuilder()
-          .update(ContactProfile)
-          .set({
-            newsletterGroups: () => `COALESCE((
+          log.info('Removing deleted groups from contact_profile');
+          // 1. Remove from contacts
+          await createQueryBuilder()
+            .update(ContactProfile)
+            .set({
+              newsletterGroups: () => `COALESCE((
               SELECT jsonb_agg(elem)
               FROM jsonb_array_elements_text("newsletterGroups") elem
               WHERE elem != ALL(:removedIds)
             ), '[]'::jsonb)`,
-          })
-          .where(`"newsletterGroups" ?| :removedIds`)
-          .setParameters({ removedIds })
-          .execute();
+            })
+            .where(`"newsletterGroups" ?| :removedIds`)
+            .setParameters({ removedIds })
+            .execute();
 
-        // 2. Remove from join flow (join/setup content)
-        log.info('Removing deleted groups from join/setup content');
-        await createQueryBuilder()
-          .update(Content)
-          .set({
-            data: () => `jsonb_set(data, '{newsletterGroups}', COALESCE((
+          // 2. Remove from join flow (join/setup content)
+          log.info('Removing deleted groups from join/setup content');
+          await createQueryBuilder()
+            .update(Content)
+            .set({
+              data: () => `jsonb_set(data, '{newsletterGroups}', COALESCE((
               SELECT jsonb_agg(elem)
               FROM jsonb_array_elements(data->'newsletterGroups') elem
               WHERE elem->>'id' != ALL(:removedIds)
             ), '[]'::jsonb))`,
-          })
-          .where(`id = :id`)
-          .setParameters({ id: 'join/setup', removedIds })
-          .execute();
+            })
+            .where(`id = :id`)
+            .setParameters({ id: 'join/setup', removedIds })
+            .execute();
 
-        // 3. Remove from callouts
-        log.info('Removing deleted groups from callout newsletter schemas');
-        await createQueryBuilder()
-          .update(Callout)
-          .set({
-            newsletterSchema:
-              () => `jsonb_set("newsletterSchema", '{groups}', COALESCE((
+          // 3. Remove from callouts
+          log.info('Removing deleted groups from callout newsletter schemas');
+          await createQueryBuilder()
+            .update(Callout)
+            .set({
+              newsletterSchema:
+                () => `jsonb_set("newsletterSchema", '{groups}', COALESCE((
               SELECT jsonb_agg(elem)
               FROM jsonb_array_elements("newsletterSchema"->'groups') elem
               WHERE elem->>'id' != ALL(:removedIds)
             ), '[]'::jsonb))`,
-          })
-          .where(`"newsletterSchema" IS NOT NULL`)
-          .setParameters({ removedIds })
-          .execute();
+            })
+            .where(`"newsletterSchema" IS NOT NULL`)
+            .setParameters({ removedIds })
+            .execute();
 
-        // 4. Notify admin
-        await emailService.sendTemplateToAdmin('deleted-newsletter-group', {
-          groups: removedGroups,
-        });
+          // 4. Notify admin
+          await emailService.sendTemplateToAdmin('deleted-newsletter-group', {
+            groups: removedGroups,
+          });
+        }
       }
     }
 
