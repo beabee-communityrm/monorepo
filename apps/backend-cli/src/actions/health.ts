@@ -29,7 +29,7 @@ const checks: Record<HealthIntegration, () => Promise<ApiHealthStatus>> = {
  * each. Defaults to all integrations. Exits with a non-zero code if any
  * integration is unhealthy.
  * @param integrations The integrations to check
- * @param notify Whether to send log notifications (triggers error alerts)
+ * @param notify Whether to send log notifications
  */
 export const checkHealth = async (
   integrations: HealthIntegration[] = Object.keys(

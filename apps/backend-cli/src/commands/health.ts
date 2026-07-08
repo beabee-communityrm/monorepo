@@ -7,7 +7,7 @@ export const healthCommand: CommandModule = {
     yargs
       .option('notify', {
         type: 'boolean',
-        describe: 'Send log notifications (triggers error alerts)',
+        describe: 'Send log notifications',
         default: false,
       })
       .command({
