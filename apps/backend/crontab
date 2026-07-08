@@ -4,7 +4,7 @@ PATH=/usr/local/bin:/usr/bin:/bin
 # Spread the jobs out over a few minutes to avoid overloading the server
 
 # Every 10 minutes
-*/10 * * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && yarn backend-cli health all' > /proc/1/fd/1 2>&1
+*/10 * * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && yarn backend-cli health all --notify' > /proc/1/fd/1 2>&1
 
 # Hourly cron jobs
 30 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service active-member-tag --since PT1H10M' > /proc/1/fd/1 2>&1

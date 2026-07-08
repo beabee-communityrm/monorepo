@@ -29,9 +29,13 @@ const checks: Record<HealthIntegration, () => Promise<ApiHealthStatus>> = {
  * each. Defaults to all integrations. Exits with a non-zero code if any
  * integration is unhealthy.
  * @param integrations The integrations to check
+ * @param notify Whether to send log notifications (triggers error alerts)
  */
 export const checkHealth = async (
-  integrations: HealthIntegration[] = Object.keys(checks) as HealthIntegration[]
+  integrations: HealthIntegration[] = Object.keys(
+    checks
+  ) as HealthIntegration[],
+  notify = false
 ): Promise<void> => {
   await runApp(async () => {
     let allHealthy = true;
@@ -44,17 +48,19 @@ export const checkHealth = async (
       } catch (err) {
         status = ApiHealthStatus.UNHEALTHY;
         logged = true;
-        log.error(`Health check failed for ${name}`, {
-          integration: name,
-          error: err instanceof Error ? err.message : String(err),
-        });
+        if (notify) {
+          log.error(`Health check failed for ${name}`, {
+            integration: name,
+            error: err instanceof Error ? err.message : String(err),
+          });
+        }
       }
 
       if (status === ApiHealthStatus.HEALTHY) {
         console.log(`${chalk.green('✓')} ${name.padEnd(10)} healthy`);
-        log.info(`Integration healthy: ${name}`);
+        if (notify) log.info(`Integration healthy: ${name}`);
       } else if (status === ApiHealthStatus.DISABLED) {
-        log.info(`Integration disabled: ${name}`);
+        if (notify) log.info(`Integration disabled: ${name}`);
         console.log(
           `${chalk.gray('-')} ${name.padEnd(10)} ${chalk.gray('disabled')}`
         );
@@ -63,7 +69,7 @@ export const checkHealth = async (
         console.log(
           `${chalk.red('✗')} ${name.padEnd(10)} ${chalk.red('unhealthy')}`
         );
-        if (!logged) {
+        if (!logged && notify) {
           log.error(`Integration unhealthy: ${name}`);
         }
       }
