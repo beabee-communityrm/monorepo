@@ -97,6 +97,7 @@ onMounted(async () => {
   const hiddenEmails = [
     // Todo: remove these emails as soon as we deprecated the legacy app and clean them up
     'welcome-post-gift',
+    'deleted-newsletter-group',
     'cancelled-contribution-no-survey',
     'callout-response-answers',
     'successful-referral',
