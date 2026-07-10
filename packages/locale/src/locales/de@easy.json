@@ -16,6 +16,7 @@
       },
       "createUnknownErrorNotification": "",
       "deleteUnknownErrorNotification": "",
+      "description": "",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
@@ -36,6 +37,8 @@
         "desc": "",
         "label": "Betreff"
       },
+      "statusDisabled": "",
+      "statusEnabled": "",
       "title": "",
       "validateButton": {
         "label": "Betreff"
@@ -54,11 +57,19 @@
       "title": "",
       "unsubscribe": ""
     },
+    "passwordStrength": {
+      "fair": "",
+      "strong": "",
+      "weak": ""
+    },
     "phoneInfo": "",
     "phoneInfoAdmin": "",
+    "requiredFields": "",
+    "requiredFieldsHint": "",
     "savedPassword": "",
     "subTitle": "",
-    "title": ""
+    "title": "",
+    "unsavedChanges": ""
   },
   "actions": {
     "add": "",
@@ -81,6 +92,7 @@
     "export": "",
     "getStarted": "Hier kannst du starten.",
     "goBack": "",
+    "hidePassword": "",
     "increase": "",
     "next": "Hier kommst du auf die nächste Seite.",
     "noBack": "",
@@ -104,6 +116,7 @@
     "sendOneOffEmail": "E-Mail schicken",
     "sendOngoingEmails": "E-Mails die immer wieder gehen",
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
+    "showPassword": "",
     "skip": "",
     "submit": "Hier wird deine Meldung weg-geschickt.",
     "tryAgain": "",
@@ -1455,6 +1468,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": ""
       },
       "unknown": {
         "email": "",

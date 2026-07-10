@@ -11,12 +11,38 @@ export const nuxtUiConfig: NuxtUIOptions = {
       neutral: 'nuxt-neutral',
     },
     navigationMenu: {
+      slots: {
+        link: 'py-2.5!',
+        linkLeadingIcon: 'size-4.5!',
+      },
       variants: {
         active: {
           false: {
             linkLeadingIcon: 'text-muted group-hover:text-highlighted',
           },
         },
+      },
+    },
+    formField: {
+      slots: {
+        label: 'text-black!',
+      },
+      variants: {
+        required: {
+          true: {
+            label: 'after:text-primary!',
+          },
+        },
+      },
+    },
+    input: {
+      slots: {
+        base: 'py-2.5!',
+      },
+    },
+    button: {
+      slots: {
+        base: 'py-2.5! cursor-pointer',
       },
     },
   },

@@ -23,8 +23,6 @@
         orientation="vertical"
         :collapsed="collapsed"
         :ui="{
-          link: 'py-2.5',
-          linkLeadingIcon: 'size-4.5',
           label: '[font-variant:small-caps] text-sm text-muted',
         }"
         tooltip
@@ -36,7 +34,6 @@
         :items="[[logoutItem]]"
         orientation="vertical"
         :collapsed="collapsed"
-        :ui="{ link: 'py-2.5', linkLeadingIcon: 'size-4.5' }"
         class="w-full"
         tooltip
         @select="doLogout"
