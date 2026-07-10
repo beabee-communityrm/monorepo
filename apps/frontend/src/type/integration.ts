@@ -1,4 +1,7 @@
-import type { MailchimpNewsletterIntegrationDataWith } from '@beabee/beabee-common';
+import type {
+  MailchimpNewsletterIntegrationDataWith,
+  TestNewsletterIntegrationDataWith,
+} from '@beabee/beabee-common';
 import { ApiHealthStatus } from '@beabee/beabee-common';
 
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -24,4 +27,13 @@ export interface MailchimpIntegration
     IntegrationDisplayProps,
     MailchimpNewsletterIntegrationDataWith<'health'> {}
 
-export type Integration = DisabledIntegration | MailchimpIntegration;
+/** Test provider, always healthy and has audience/group data */
+export interface TestProviderIntegration
+  extends
+    IntegrationDisplayProps,
+    TestNewsletterIntegrationDataWith<'health'> {}
+
+export type Integration =
+  | DisabledIntegration
+  | MailchimpIntegration
+  | TestProviderIntegration;

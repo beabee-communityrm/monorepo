@@ -1,3 +1,4 @@
+import { ApiHealthStatus } from '@beabee/beabee-common';
 import { IntegrationsClient } from '@beabee/client';
 import { api, testUser } from '@beabee/test-utils/test-data';
 
@@ -18,9 +19,9 @@ describe('Newsletter integrations API', () => {
     it('should return newsletter provider info', async () => {
       try {
         const providerInfo = await client.getNewsletter(['health']);
-
         expect(providerInfo).toBeDefined();
-        expect(providerInfo.provider).toBe('none');
+        expect(providerInfo.provider).toBe('test');
+        expect(providerInfo.status).toBe(ApiHealthStatus.HEALTHY);
       } catch (error) {
         throw error;
       }
@@ -29,6 +30,7 @@ describe('Newsletter integrations API', () => {
       try {
         const newsletterGroups = await client.getNewsletterGroups();
         expect(newsletterGroups).toBeDefined();
+        expect(newsletterGroups.length).not.toBe(0);
       } catch (error) {
         throw error;
       }

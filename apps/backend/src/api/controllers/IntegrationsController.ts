@@ -13,8 +13,10 @@ import { NewsletterDiffDto } from '#api/dto/NewsletterDiffDto';
 import {
   GetNewsletterIntegrationOptsDto,
   GetNewsletterIntegrationWith,
+  MailchimpNewsletterIntegrationDto,
   NewsletterIntegrationDto,
   NoneNewsletterIntegrationDto,
+  TestNewsletterIntegrationDto,
 } from '#api/dto/NewsletterIntegrationDto';
 
 @JsonController('/integrations')
@@ -27,7 +29,14 @@ export class IntegrationsController {
     const info = await NewsletterService.getProviderInfo(
       query.with?.includes(GetNewsletterIntegrationWith.Health)
     );
-    return plainToInstance(NoneNewsletterIntegrationDto, info);
+    switch (info.provider) {
+      case 'mailchimp':
+        return plainToInstance(MailchimpNewsletterIntegrationDto, info);
+      case 'test':
+        return plainToInstance(TestNewsletterIntegrationDto, info);
+      default:
+        return plainToInstance(NoneNewsletterIntegrationDto, info);
+    }
   }
 
   @Post('/newsletter/refresh')

@@ -2,6 +2,7 @@ import {
   ApiHealthStatus,
   MailchimpNewsletterIntegrationData,
   NoneNewsletterIntegrationData,
+  TestNewsletterIntegrationData,
 } from '@beabee/beabee-common';
 
 import { Type } from 'class-transformer';
@@ -51,6 +52,23 @@ export class MailchimpNewsletterIntegrationDto implements MailchimpNewsletterInt
   groups!: NewsletterGroupDto[];
 }
 
+export class TestNewsletterIntegrationDto implements TestNewsletterIntegrationData {
+  @Equals('test')
+  provider!: 'test';
+
+  @IsString()
+  audienceId!: string;
+
+  @IsOptional()
+  @IsEnum(ApiHealthStatus)
+  status?: ApiHealthStatus;
+
+  @ValidateNested({ each: true })
+  @Type(() => NewsletterGroupDto)
+  groups!: NewsletterGroupDto[];
+}
+
 export type NewsletterIntegrationDto =
   | NoneNewsletterIntegrationDto
-  | MailchimpNewsletterIntegrationDto;
+  | MailchimpNewsletterIntegrationDto
+  | TestNewsletterIntegrationDto;

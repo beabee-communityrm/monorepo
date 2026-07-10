@@ -1,6 +1,7 @@
 import type {
   GroupChanges,
   MailchimpNewsletterIntegrationDataWith,
+  TestNewsletterIntegrationDataWith,
 } from '@beabee/beabee-common';
 import { ApiHealthStatus } from '@beabee/beabee-common';
 import { addNotification } from '@beabee/vue/store/notifications';
@@ -42,7 +43,9 @@ function buildDisabledIntegration(provider: string): DisabledIntegration {
 }
 
 function buildNewsletterIntegration(
-  integrationData: MailchimpNewsletterIntegrationDataWith<'health'>
+  integrationData:
+    | MailchimpNewsletterIntegrationDataWith<'health'>
+    | TestNewsletterIntegrationDataWith<'health'>
 ): Integration {
   return {
     ...providerMap[integrationData.provider],

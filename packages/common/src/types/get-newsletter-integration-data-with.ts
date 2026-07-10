@@ -4,6 +4,7 @@ import type {
   MailchimpNewsletterIntegrationData,
   NewsletterIntegrationData,
   Noop,
+  TestNewsletterIntegrationData,
 } from './index.js';
 
 export type NewsletterIntegrationDataWith<With extends GetNewsletterWith> =
@@ -14,3 +15,7 @@ export type MailchimpNewsletterIntegrationDataWith<
   With extends GetNewsletterWith,
 > = MailchimpNewsletterIntegrationData &
   ('health' extends With ? { status: ApiHealthStatus } : Noop);
+
+export type TestNewsletterIntegrationDataWith<With extends GetNewsletterWith> =
+  TestNewsletterIntegrationData &
+    ('health' extends With ? { status: ApiHealthStatus } : Noop);
