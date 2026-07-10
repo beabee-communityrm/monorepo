@@ -16,6 +16,7 @@
       },
       "createUnknownErrorNotification": "No se pudo guardar la autenticación en dos pasos debido a un error desconocido. Inténtalo de nuevo o contacta con el soporte.",
       "deleteUnknownErrorNotification": "No se pudo eliminar la autenticación en dos pasos debido a un error desconocido. Inténtalo de nuevo o contacta con el soporte.",
+      "description": "",
       "disabledNotification": "Autenticación en dos pasos desactivada correctamente",
       "enabledNotification": "Autenticación en dos pasos activada correctamente",
       "enterCode": {
@@ -36,6 +37,8 @@
         "desc": "También puedes introducir el siguiente código en tu aplicación de autenticación.",
         "label": "Código secreto"
       },
+      "statusDisabled": "",
+      "statusEnabled": "",
       "title": "Autenticación en dos pasos",
       "validateButton": {
         "label": "Verificar código"
@@ -54,11 +57,19 @@
       "title": "Boletín",
       "unsubscribe": "Cancelar suscripción al boletín"
     },
+    "passwordStrength": {
+      "fair": "",
+      "strong": "",
+      "weak": ""
+    },
     "phoneInfo": "Al proporcionar tu número de teléfono, aceptas ser contactado por teléfono",
     "phoneInfoAdmin": "Debes contar con el consentimiento de la persona antes de añadir su número de teléfono al sistema",
+    "requiredFields": "",
+    "requiredFieldsHint": "",
     "savedPassword": "Nueva contraseña guardada",
     "subTitle": "Los campos obligatorios están marcados con un asterisco. Toda la información enviada aquí es privada.",
-    "title": "Cuenta"
+    "title": "Cuenta",
+    "unsavedChanges": ""
   },
   "actions": {
     "add": "Añadir",
@@ -81,6 +92,7 @@
     "export": "Exportar",
     "getStarted": "Empezar",
     "goBack": "Volver",
+    "hidePassword": "",
     "increase": "Aumentar",
     "next": "Siguiente",
     "noBack": "No, volver",
@@ -104,6 +116,7 @@
     "sendOneOffEmail": "Enviar correo",
     "sendOngoingEmails": "Correos continuos",
     "share": "Compartir",
+    "showPassword": "",
     "skip": "Omitir",
     "submit": "Enviar",
     "tryAgain": "Intentar de nuevo",
@@ -1453,6 +1466,9 @@
       "shareDescription": {
         "maxLength": "Se ha superado la longitud máxima de {max} caracteres, {remaining} caracteres restantes",
         "required": "La descripción es obligatoria"
+      },
+      "telephone": {
+        "phone": ""
       },
       "unknown": {
         "email": "Dirección de correo no válida",

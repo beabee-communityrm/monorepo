@@ -16,6 +16,7 @@
       },
       "createUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata attivata a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
       "deleteUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata rimossa a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
+      "description": "",
       "disabledNotification": "Autenticazione a due fattori disattivata correttamente",
       "enabledNotification": "Autenticazione a due fattori attivata correttamente",
       "enterCode": {
@@ -36,6 +37,8 @@
         "desc": "In alternativa, puoi inserire il seguente codice nella tua app Authenticator.",
         "label": "Codice segreto"
       },
+      "statusDisabled": "",
+      "statusEnabled": "",
       "title": "Autenticazione a 2 fattori",
       "validateButton": {
         "label": "Verifica token"
@@ -54,11 +57,19 @@
       "title": "Newsletter",
       "unsubscribe": "Cancellarli dalla newsletter"
     },
+    "passwordStrength": {
+      "fair": "",
+      "strong": "",
+      "weak": ""
+    },
     "phoneInfo": "Fornendo il tuo numero di telefono acconsenti ad essere contattato telefonicamente",
     "phoneInfoAdmin": "È necessario avere il consenso della persona prima di aggiungere il suo numero di telefono al sistema",
+    "requiredFields": "",
+    "requiredFieldsHint": "",
     "savedPassword": "Nuova password salvata",
     "subTitle": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
-    "title": "Account"
+    "title": "Account",
+    "unsavedChanges": ""
   },
   "actions": {
     "add": "Aggiungi",
@@ -81,6 +92,7 @@
     "export": "Esporta",
     "getStarted": "Inizia",
     "goBack": "Indietro",
+    "hidePassword": "",
     "increase": "Aumenta",
     "next": "Prossimo",
     "noBack": "No, torna indietro",
@@ -104,6 +116,7 @@
     "sendOneOffEmail": "Invia e-mail",
     "sendOngoingEmails": "E-mail ricorrenti",
     "share": "Condividi",
+    "showPassword": "",
     "skip": "Salta",
     "submit": "Invia",
     "tryAgain": "Riprova",
@@ -1455,6 +1468,9 @@
       "shareDescription": {
         "maxLength": "Lunghezza massima di {max} caratteri superata, {remaining} caratteri rimanenti",
         "required": "La descrizione è obbligatoria"
+      },
+      "telephone": {
+        "phone": ""
       },
       "unknown": {
         "email": "Indirizzo email non valido",

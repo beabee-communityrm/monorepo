@@ -16,6 +16,7 @@
       },
       "createUnknownErrorNotification": "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers\n nicht gespeichert werden. Bitte versuchen Sie es erneut oder \nkontaktieren Sie den Support.",
       "deleteUnknownErrorNotification": "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers\n nicht entfernt werden. Bitte versuchen Sie es erneut oder \nkontaktieren Sie den Support.",
+      "description": "",
       "disabledNotification": "Zwei-Faktor Authentifizierung erfolgreich deaktiviert",
       "enabledNotification": "Zwei-Faktor Authentifizierung erfolgreich aktiviert",
       "enterCode": {
@@ -36,6 +37,8 @@
         "desc": "Alternativ können Sie den nachstehenden Code in Ihre Authenticator-App eingeben.",
         "label": "Secret"
       },
+      "statusDisabled": "",
+      "statusEnabled": "",
       "title": "2-Faktor Authentifizierung",
       "validateButton": {
         "label": "Token überprüfen"
@@ -54,11 +57,19 @@
       "title": "Newsletter",
       "unsubscribe": "Vom Newsletter abmelden"
     },
+    "passwordStrength": {
+      "fair": "",
+      "strong": "",
+      "weak": ""
+    },
     "phoneInfo": "Mit der Angabe Ihrer Telefonnummer erklären Sie sich damit einverstanden, telefonisch kontaktiert zu werden.",
     "phoneInfoAdmin": "Sie müssen die Zustimmung der Person einholen, bevor Sie ihre Telefonnummer in das System eingeben.",
+    "requiredFields": "",
+    "requiredFieldsHint": "",
     "savedPassword": "Das neue Passwort wurde gespeichert.",
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
-    "title": "Account"
+    "title": "Account",
+    "unsavedChanges": ""
   },
   "actions": {
     "add": "Hinzufügen",
@@ -81,6 +92,7 @@
     "export": "Exportieren",
     "getStarted": "Starten",
     "goBack": "Zurück",
+    "hidePassword": "",
     "increase": "Erhöhen",
     "next": "Weiter",
     "noBack": "Nein, gehe zurück",
@@ -104,6 +116,7 @@
     "sendOneOffEmail": "E-Mail senden",
     "sendOngoingEmails": "Laufende E-Mails",
     "share": "Teilen",
+    "showPassword": "",
     "skip": "Überspringen",
     "submit": "Abschicken",
     "tryAgain": "Erneut versuchen",
@@ -1453,6 +1466,9 @@
       "shareDescription": {
         "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten, {remaining} Zeichen verbleiben",
         "required": "Beschreibung benötigt"
+      },
+      "telephone": {
+        "phone": ""
       },
       "unknown": {
         "email": "Ungültige E-Mail-Adresse",

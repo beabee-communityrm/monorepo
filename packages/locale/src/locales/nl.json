@@ -16,6 +16,7 @@
       },
       "createUnknownErrorNotification": "De 2FA kon niet worden opgeslagen vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
       "deleteUnknownErrorNotification": "De 2FA kon niet worden verwijderd vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
+      "description": "",
       "disabledNotification": "2FA succesvol gedeactiveerd",
       "enabledNotification": "2FA succesvol geactiveerd",
       "enterCode": {
@@ -36,6 +37,8 @@
         "desc": "Je kunt ook de volgende code invoeren in je Authenticator app.",
         "label": "Geheime code"
       },
+      "statusDisabled": "",
+      "statusEnabled": "",
       "title": "2-factor authenticatie",
       "validateButton": {
         "label": "Token verifiëren"
@@ -54,11 +57,19 @@
       "title": "Nieuwsbrief",
       "unsubscribe": "Schrijf ze uit voor de nieuwsbrief"
     },
+    "passwordStrength": {
+      "fair": "",
+      "strong": "",
+      "weak": ""
+    },
     "phoneInfo": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden",
     "phoneInfoAdmin": "Je moet toestemming van de persoon hebben voordat je hun telefoonnummer aan het systeem toevoegt",
+    "requiredFields": "",
+    "requiredFieldsHint": "",
     "savedPassword": "Nieuw wachtwoord opgeslagen",
     "subTitle": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
-    "title": "Account"
+    "title": "Account",
+    "unsavedChanges": ""
   },
   "actions": {
     "add": "Toevoegen",
@@ -81,6 +92,7 @@
     "export": "Exporteer",
     "getStarted": "Beginnen",
     "goBack": "Terug",
+    "hidePassword": "",
     "increase": "",
     "next": "Volgende",
     "noBack": "“Nee, ga terug”.",
@@ -104,6 +116,7 @@
     "sendOneOffEmail": "E-mail verzenden",
     "sendOngoingEmails": "Doorlopende e-mails",
     "share": "Delen",
+    "showPassword": "",
     "skip": "Sla over",
     "submit": "Verzenden",
     "tryAgain": "",
@@ -1455,6 +1468,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": ""
       },
       "unknown": {
         "email": "Ongeldig e-mailadres",

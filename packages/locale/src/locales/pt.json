@@ -16,6 +16,7 @@
       },
       "createUnknownErrorNotification": "A autenticação de dois fatores não pôde ser salva devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
       "deleteUnknownErrorNotification": "A autenticação de dois fatores não pôde ser eliminada devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
+      "description": "",
       "disabledNotification": "Autenticação de dois factores desativada com sucesso",
       "enabledNotification": "Autenticação de dois factores ativada com sucesso",
       "enterCode": {
@@ -36,6 +37,8 @@
         "desc": "Alternativamente podes inserir o seguinte código na tua app de autenticação.",
         "label": "Código secreto"
       },
+      "statusDisabled": "",
+      "statusEnabled": "",
       "title": "Autenticação de dois factores",
       "validateButton": {
         "label": "Verificar token"
@@ -54,11 +57,19 @@
       "title": "Newsletter",
       "unsubscribe": "Suspender inscrição na newsletter"
     },
+    "passwordStrength": {
+      "fair": "",
+      "strong": "",
+      "weak": ""
+    },
     "phoneInfo": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
     "phoneInfoAdmin": "",
+    "requiredFields": "",
+    "requiredFieldsHint": "",
     "savedPassword": "Nova palavra-passe gravada",
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
-    "title": "Conta"
+    "title": "Conta",
+    "unsavedChanges": ""
   },
   "actions": {
     "add": "Adicionar",
@@ -81,6 +92,7 @@
     "export": "Exportar",
     "getStarted": "Começar",
     "goBack": "Voltar atrás",
+    "hidePassword": "",
     "increase": "",
     "next": "Próxima",
     "noBack": "Não, voltar atrás",
@@ -104,6 +116,7 @@
     "sendOneOffEmail": "Enviar e-mail",
     "sendOngoingEmails": "E-mails contínuos",
     "share": "Partilhar",
+    "showPassword": "",
     "skip": "Saltar",
     "submit": "Enviar",
     "tryAgain": "",
@@ -1455,6 +1468,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": ""
       },
       "unknown": {
         "email": "Endereço de email inválido",

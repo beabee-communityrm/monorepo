@@ -17,208 +17,242 @@
 -->
 
 <template>
-  <AppHeading class="mt-6">
-    {{ t('accountPage.mfa.title') }}
-  </AppHeading>
-
-  <AppButton
-    v-if="isEnabled"
-    variant="primaryOutlined"
-    :icon="faMobileAlt"
-    @click="showDisableConfirmModal = true"
+  <AppSectionCard
+    icon="i-lucide-shield-check"
+    :title="t('accountPage.mfa.title')"
+    :description="t('accountPage.mfa.description')"
   >
-    {{ t(`actions.disable`) }}
-  </AppButton>
+    <div class="flex items-start justify-between gap-4">
+      <div class="space-y-1">
+        <p class="text-highlighted text-sm font-medium">
+          {{
+            isEnabled
+              ? t('accountPage.mfa.statusEnabled.title')
+              : t('accountPage.mfa.statusDisabled.title')
+          }}
+        </p>
+        <p class="text-muted text-xs">
+          {{
+            isEnabled
+              ? t('accountPage.mfa.statusEnabled.description')
+              : t('accountPage.mfa.statusDisabled.description')
+          }}
+        </p>
+      </div>
+      <USwitch
+        :model-value="isEnabled"
+        :aria-label="t('accountPage.mfa.title')"
+        @update:model-value="onSwitchToggle"
+      />
+    </div>
+  </AppSectionCard>
 
-  <AppButton
-    v-else
-    variant="primaryOutlined"
-    :icon="faMobileAlt"
-    @click="showMFASettingsModal = !showMFASettingsModal"
-  >
-    {{ t(`actions.enable`) }}
-  </AppButton>
-
-  <AppConfirmDialog
+  <UModal
     :open="showDisableConfirmModal"
     :title="t('accountPage.mfa.confirmDelete.title')"
-    :cancel="t('actions.noBack')"
-    :confirm="t('actions.yesDisable')"
-    :disable-confirm="!userTokenInputValid"
-    variant="danger"
-    @close="closeDisableConfirmModal"
-    @confirm="disableMfaAndNotify"
+    @update:open="(open: boolean) => !open && closeDisableConfirmModal()"
   >
-    <p class="mb-3">{{ t('accountPage.mfa.confirmDelete.desc') }}</p>
-    <p class="mb-5">{{ t('accountPage.mfa.confirmDelete.descToken') }}</p>
-    <AppInput
-      v-model="userToken"
-      type="text"
-      :label="t(`accountPage.mfa.codeInput.label`)"
-      name="verifyCode"
-      required
-      min="6"
-      max="6"
-      @keyup.enter="disableMfaAndNotify()"
-      @update:validation="onUserTokenInputValidationChanged"
-    />
+    <template #body>
+      <p class="text-muted mb-3 text-sm">
+        {{ t('accountPage.mfa.confirmDelete.desc') }}
+      </p>
+      <p class="text-muted mb-5 text-sm">
+        {{ t('accountPage.mfa.confirmDelete.descToken') }}
+      </p>
 
-    <AppNotification
-      v-if="disableMfaValidated && !userTokenValid"
-      class="my-4"
-      variant="error"
-      :title="t('accountPage.mfa.result.invalidCode')"
-    />
-  </AppConfirmDialog>
+      <UFormField :label="t('accountPage.mfa.codeInput.label')" required>
+        <UInput
+          v-model="userToken"
+          class="w-full"
+          maxlength="6"
+          @keyup.enter="disableMfaAndNotify()"
+          @update:model-value="onUserTokenInputChanged"
+        />
+      </UFormField>
 
-  <AppModal
-    :open="showMFASettingsModal"
-    :title="t(`accountPage.mfa.modalTitle`)"
-    class="w-full"
-    @close="onCloseMFAModal"
-  >
-    <AppSlider
-      ref="appSliderCo"
-      :steps="stepsInOrder"
-      disable-keyboard-navigation
-      @slide="onSlideChange"
-    >
-      <template #slides>
-        <!-- QR code and secret slide -->
-        <AppSlide>
-          <div class="whitespace-break-spaces">
-            <p class="text-center">
-              {{ t(`accountPage.mfa.scan.desc`) }}
-            </p>
-            <AppQRCode v-if="totpUrl" :qr-data="totpUrl" />
-            <p class="text-center">
-              {{ t(`accountPage.mfa.secretInput.desc`) }}
-            </p>
-            <div class="p-4">
-              <AppInput
-                readonly
-                type="text"
-                :value="totpSecret.base32"
-                :label="t(`accountPage.mfa.secretInput.label`)"
-              ></AppInput>
-            </div>
-          </div>
-        </AppSlide>
-        <!-- User token verification slide -->
-        <AppSlide>
-          <div
-            class="flex h-full flex-col items-center justify-between whitespace-break-spaces"
-          >
-            <p class="text-center">
-              {{ t(`accountPage.mfa.enterCode.desc`) }}
-            </p>
-            <span class="flex h-full w-full flex-col justify-center px-4">
-              <AppInput
-                v-model="userToken"
-                type="text"
-                :label="t(`accountPage.mfa.codeInput.label`)"
-                name="verifyCode"
-                required
-                min="6"
-                max="6"
-                @keyup.enter="nextSlideIfValid()"
-                @update:validation="onUserTokenInputValidationChanged"
-              />
+      <UAlert
+        v-if="disableMfaValidated && !userTokenValid"
+        class="mt-4"
+        color="error"
+        variant="soft"
+        icon="i-lucide-circle-alert"
+        :title="t('accountPage.mfa.result.invalidCode')"
+      />
+    </template>
 
-              <AppNotification
-                :class="{
-                  'opacity-1': steps.enterCode.error,
-                  'opacity-0': !steps.enterCode.error,
-                }"
-                class="my-4"
-                variant="error"
-                :title="t('accountPage.mfa.result.invalidCode')"
-              />
-            </span>
-          </div>
-        </AppSlide>
-        <!-- Last result slide with save button -->
-        <AppSlide>
-          <div
-            class="flex h-full items-center justify-center text-center whitespace-break-spaces"
-          >
-            <span class="flex h-full w-full flex-col justify-center px-4">
-              <AppNotification
-                v-if="userTokenValid"
-                class="my-4"
-                variant="success"
-                :title="t('accountPage.mfa.result.successful')"
-              />
-              <AppNotification
-                v-else
-                class="my-4"
-                variant="error"
-                :title="t('accountPage.mfa.result.invalidCode')"
-              />
-            </span>
-          </div>
-        </AppSlide>
-      </template>
-
-      <template
-        #navigation="{
-          nextSlide,
-          prevSlide,
-          isFirstSlide,
-          isLastSlide,
-          activeSlide,
-        }"
+    <template #footer>
+      <UButton
+        variant="outline"
+        color="neutral"
+        @click="closeDisableConfirmModal"
       >
-        <span class="mt-3 flex justify-between">
-          <!-- Back buttons -->
-          <section>
-            <AppButton
-              v-if="isFirstSlide"
-              variant="linkOutlined"
-              @click="closeMFAModal()"
-            >
-              {{ t(`actions.close`) }}
-            </AppButton>
-            <AppButton v-else variant="linkOutlined" @click="prevSlide()">
-              {{ t(`actions.back`) }}
-            </AppButton>
-          </section>
+        {{ t('actions.noBack') }}
+      </UButton>
+      <UButton
+        color="error"
+        :disabled="!userTokenInputValid"
+        :loading="disabling"
+        @click="handleDisableClick"
+      >
+        {{ t('actions.yesDisable') }}
+      </UButton>
+    </template>
+  </UModal>
 
-          <!-- Next button variants -->
-          <section>
-            <!-- Last save button -->
-            <AppButton
-              v-if="isLastSlide"
-              ref="saveButton"
-              :disabled="!validationStepsDone"
-              variant="link"
-              @click="createMfaAndNotify()"
+  <UModal
+    :open="showMFASettingsModal"
+    :title="t('accountPage.mfa.modalTitle')"
+    @update:open="(open: boolean) => !open && onCloseMFAModal()"
+  >
+    <template #body>
+      <AppSlider
+        ref="appSliderCo"
+        :steps="stepsInOrder"
+        disable-keyboard-navigation
+        @slide="onSlideChange"
+      >
+        <template #slides>
+          <!-- QR code and secret slide -->
+          <AppSlide>
+            <div class="whitespace-break-spaces">
+              <p class="text-center">
+                {{ t(`accountPage.mfa.scan.desc`) }}
+              </p>
+              <AppQRCode v-if="totpUrl" :qr-data="totpUrl" />
+              <p class="text-center">
+                {{ t(`accountPage.mfa.secretInput.desc`) }}
+              </p>
+              <div class="p-4">
+                <UFormField :label="t(`accountPage.mfa.secretInput.label`)">
+                  <UInput
+                    :model-value="totpSecret.base32"
+                    readonly
+                    class="w-full"
+                  />
+                </UFormField>
+              </div>
+            </div>
+          </AppSlide>
+          <!-- User token verification slide -->
+          <AppSlide>
+            <div
+              class="flex h-full flex-col items-center justify-between whitespace-break-spaces"
             >
-              {{ t(`actions.save`) }}
-            </AppButton>
+              <p class="text-center">
+                {{ t(`accountPage.mfa.enterCode.desc`) }}
+              </p>
+              <span class="flex h-full w-full flex-col justify-center px-4">
+                <UFormField :label="t(`accountPage.mfa.codeInput.label`)">
+                  <UInput
+                    v-model="userToken"
+                    class="w-full"
+                    maxlength="6"
+                    @keyup.enter="nextSlideIfValid()"
+                    @update:model-value="onUserTokenInputChanged"
+                  />
+                </UFormField>
 
-            <!-- Verify token next button -->
-            <AppButton
-              v-else-if="
-                activeSlide === 1 &&
-                (!steps.enterCode.validated || steps.enterCode.error)
-              "
-              :disabled="!userTokenInputValid"
-              variant="link"
-              @click="nextSlideIfValid()"
+                <UAlert
+                  v-if="steps.enterCode.error"
+                  class="my-4"
+                  color="error"
+                  variant="soft"
+                  icon="i-lucide-circle-alert"
+                  :title="t('accountPage.mfa.result.invalidCode')"
+                />
+              </span>
+            </div>
+          </AppSlide>
+          <!-- Last result slide with save button -->
+          <AppSlide>
+            <div
+              class="flex h-full items-center justify-center text-center whitespace-break-spaces"
             >
-              {{ t(`accountPage.mfa.validateButton.label`) }}
-            </AppButton>
+              <span class="flex h-full w-full flex-col justify-center px-4">
+                <UAlert
+                  v-if="userTokenValid"
+                  class="my-4"
+                  color="success"
+                  variant="soft"
+                  icon="i-lucide-check"
+                  :title="t('accountPage.mfa.result.successful')"
+                />
+                <UAlert
+                  v-else
+                  class="my-4"
+                  color="error"
+                  variant="soft"
+                  icon="i-lucide-circle-alert"
+                  :title="t('accountPage.mfa.result.invalidCode')"
+                />
+              </span>
+            </div>
+          </AppSlide>
+        </template>
 
-            <!-- Default next button -->
-            <AppButton v-else variant="link" @click="nextSlide()">
-              {{ t(`actions.next`) }}
-            </AppButton>
-          </section>
-        </span>
-      </template>
-    </AppSlider>
-  </AppModal>
+        <template
+          #navigation="{
+            nextSlide,
+            prevSlide,
+            isFirstSlide,
+            isLastSlide,
+            activeSlide,
+          }"
+        >
+          <span class="mt-3 flex justify-between">
+            <!-- Back buttons -->
+            <section>
+              <UButton
+                v-if="isFirstSlide"
+                variant="outline"
+                color="neutral"
+                @click="closeMFAModal()"
+              >
+                {{ t(`actions.close`) }}
+              </UButton>
+              <UButton
+                v-else
+                variant="outline"
+                color="neutral"
+                @click="prevSlide()"
+              >
+                {{ t(`actions.back`) }}
+              </UButton>
+            </section>
+
+            <!-- Next button variants -->
+            <section>
+              <!-- Last save button -->
+              <UButton
+                v-if="isLastSlide"
+                :disabled="!validationStepsDone"
+                @click="createMfaAndNotify()"
+              >
+                {{ t(`actions.save`) }}
+              </UButton>
+
+              <!-- Verify token next button -->
+              <UButton
+                v-else-if="
+                  activeSlide === 1 &&
+                  (!steps.enterCode.validated || steps.enterCode.error)
+                "
+                :disabled="!userTokenInputValid"
+                @click="nextSlideIfValid()"
+              >
+                {{ t(`accountPage.mfa.validateButton.label`) }}
+              </UButton>
+
+              <!-- Default next button -->
+              <UButton v-else @click="nextSlide()">
+                {{ t(`actions.next`) }}
+              </UButton>
+            </section>
+          </span>
+        </template>
+      </AppSlider>
+    </template>
+  </UModal>
 </template>
 
 <script lang="ts" setup>
@@ -230,29 +264,15 @@ import {
 import { UnauthorizedError } from '@beabee/client';
 import type { AppSliderSlideEventDetails, AppStepperStep } from '@beabee/vue';
 import {
-  AppButton,
-  AppConfirmDialog,
-  AppHeading,
-  AppInput,
-  AppModal,
-  AppNotification,
   AppQRCode,
+  AppSectionCard,
   AppSlide,
   AppSlider,
   addNotification,
 } from '@beabee/vue';
 
-import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { Secret, TOTP } from 'otpauth';
-import {
-  computed,
-  nextTick,
-  onBeforeMount,
-  reactive,
-  ref,
-  toRef,
-  watch,
-} from 'vue';
+import { computed, onBeforeMount, reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { generalContent } from '#store/index';
@@ -269,9 +289,6 @@ const appSliderCo = ref<InstanceType<typeof AppSlider> | null>(null);
 const showMFASettingsModal = ref(false);
 
 const showDisableConfirmModal = ref(false);
-
-/** Reference to the save button */
-const saveButton = ref<typeof AppButton | null>(null);
 
 /** Is multi factor authentication enabled? */
 const isEnabled = ref(false);
@@ -329,8 +346,20 @@ const userTokenInputValid = ref(false);
 
 const disableMfaValidated = ref(false);
 
+/** Loading state while confirming the disable-2FA dialog */
+const disabling = ref(false);
+
 /** TOTP instance */
 let totp: TOTP | null = null;
+
+/** Called when the status switch is toggled by the user */
+const onSwitchToggle = () => {
+  if (isEnabled.value) {
+    showDisableConfirmModal.value = true;
+  } else {
+    showMFASettingsModal.value = true;
+  }
+};
 
 /** Called when the modal is closed */
 const onCloseMFAModal = () => {
@@ -427,6 +456,13 @@ const disableMfaAndNotify = async () => {
   });
 };
 
+/** Called when the disable confirm button is clicked (adds a loading state) */
+const handleDisableClick = async () => {
+  disabling.value = true;
+  await disableMfaAndNotify();
+  disabling.value = false;
+};
+
 /** Called when an error occurs while creating MFA */
 const onCreateError = (error: unknown) => {
   if (
@@ -469,15 +505,6 @@ const onSlideChange = (details: AppSliderSlideEventDetails) => {
   // Reset state if the user goes back to the first slide
   if (details.slideNumber === 0) {
     resetState();
-  }
-
-  // Focus the save button on the last slide, to allow the user to save with enter
-  if (details.slideNumber === stepsInOrder.value.length - 1) {
-    nextTick(() => {
-      if (saveButton.value) {
-        saveButton.value.focus();
-      }
-    });
   }
 
   // Validate previous steps
@@ -526,11 +553,12 @@ const onUserTokenChanged = () => {
 };
 
 /**
- * Called when the user token input validation changes. This is not the same as the token validation, this is just the validation of the input.
- * @param isValid Is the input valid?
+ * Called when the user token input changes. Validates the input format
+ * (this is not the same as validating the token against the TOTP secret).
+ * @param value The new input value
  */
-const onUserTokenInputValidationChanged = (isValid: boolean) => {
-  userTokenInputValid.value = isValid;
+const onUserTokenInputChanged = (value: string | number) => {
+  userTokenInputValid.value = String(value).length === 6;
 };
 
 /** Validate the **T**imed **O**ne **T**ime **P**assword token / user input code */
