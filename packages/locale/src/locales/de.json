@@ -4,6 +4,7 @@
     "deliveryAddress": "Adresse",
     "deliveryOptIn": "Postsendung",
     "loginDetail": "Anmeldedaten",
+    "manageAccount": "Anmeldedaten verwalten",
     "mfa": {
       "codeInput": {
         "info": "Wenn Sie Ihr 2FA-Gerät verloren haben, wenden Sie sich bitte an den Support.",
@@ -1607,6 +1608,10 @@
   },
   "login": {
     "backTo": "Zurück zu {newsroomName}",
+    "errors": {
+      "login-failed": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+      "unlinked-account": "Dein Login ist mit keinem Konto auf dieser Plattform verknüpft. Bitte wende dich an den Support."
+    },
     "forgotPassword": "Passwort vergessen?",
     "joinNow": "Jetzt Mitglied werden!",
     "lostMfaDevice": "2FA-Gerät verloren?",

@@ -4,6 +4,7 @@
     "deliveryAddress": "Delivery address",
     "deliveryOptIn": "Delivery opt-in",
     "loginDetail": "Login details",
+    "manageAccount": "Manage login details",
     "mfa": {
       "codeInput": {
         "info": "If you have lost your 2FA device please contact support",
@@ -1607,6 +1608,10 @@
   },
   "login": {
     "backTo": "Back to {newsroomName}",
+    "errors": {
+      "login-failed": "Login failed. Please try again.",
+      "unlinked-account": "Your login is not linked to an account on this platform. Please contact support."
+    },
     "forgotPassword": "Forgot your password?",
     "joinNow": "Join now!",
     "lostMfaDevice": "Lost your 2FA device?",

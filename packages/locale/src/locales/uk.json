@@ -4,6 +4,7 @@
     "deliveryAddress": "Адреса доставки",
     "deliveryOptIn": "Підписка на доставку",
     "loginDetail": "Дані для входу",
+    "manageAccount": "",
     "mfa": {
       "codeInput": {
         "info": "Якщо ви втратили свій пристрій 2FA, зверніться до служби підтримки",
@@ -1613,6 +1614,10 @@
   },
   "login": {
     "backTo": "Назад до {newsroomName}",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "Забули пароль?",
     "joinNow": "Приєднуйтесь зараз!",
     "lostMfaDevice": "Втратили свій пристрій 2FA?",

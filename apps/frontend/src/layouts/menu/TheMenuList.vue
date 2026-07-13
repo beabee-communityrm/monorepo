@@ -42,9 +42,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
-
-import { client } from '#utils/api';
 
 import env from '../../env';
 import { canAdmin } from '../../store';
@@ -54,10 +51,9 @@ import { adminMenu, menu } from './menu-list';
 
 const { t } = useI18n();
 
-const router = useRouter();
 const doLogout = () => {
-  client.auth.logout();
-  router.push('/auth/login');
+  // Full-page navigation so the API can end the IdP session too
+  window.location.href = `${env.apiUrl}auth/logout`;
 };
 
 const adminMenuVisible = computed(() =>

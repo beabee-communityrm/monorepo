@@ -23,15 +23,6 @@
           v-model:first-name="data.firstName"
           v-model:last-name="data.lastName"
         />
-
-        <AppInput
-          v-model="data.password"
-          :label="t('form.password')"
-          type="password"
-          name="password"
-          required
-          :info-message="t('form.passwordInfo')"
-        />
       </div>
 
       <section v-if="setupContent.showMailOptIn" class="mb-6">
@@ -68,7 +59,7 @@ import {
   GetContactWith,
   NewsletterStatus,
 } from '@beabee/beabee-common';
-import { AppAddress, AppInput } from '@beabee/vue';
+import { AppAddress } from '@beabee/vue';
 
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive } from 'vue';
@@ -99,7 +90,6 @@ const data = reactive<SetupContactData>({
   email: contact.email,
   firstName: contact.firstname,
   lastName: contact.lastname,
-  password: '',
   profile: {
     newsletterOptIn:
       contact.profile.newsletterStatus === NewsletterStatus.Subscribed,

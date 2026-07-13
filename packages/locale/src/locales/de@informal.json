@@ -4,6 +4,7 @@
     "deliveryAddress": "Adresse",
     "deliveryOptIn": "Postsendung",
     "loginDetail": "Anmeldedaten",
+    "manageAccount": "",
     "mfa": {
       "codeInput": {
         "info": "Wenn du dein 2FA-Gerät verloren hast, wende dich bitte an den Support.",
@@ -1609,6 +1610,10 @@
   },
   "login": {
     "backTo": "Zurück zu {newsroomName}",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "Passwort vergessen?",
     "joinNow": "Jetzt Mitglied werden!",
     "lostMfaDevice": "2FA-Gerät verloren?",

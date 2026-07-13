@@ -4,6 +4,7 @@
     "deliveryAddress": "",
     "deliveryOptIn": "",
     "loginDetail": "",
+    "manageAccount": "",
     "mfa": {
       "codeInput": {
         "info": "",
@@ -1607,6 +1608,10 @@
   },
   "login": {
     "backTo": "",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "",
     "joinNow": "",
     "lostMfaDevice": "",

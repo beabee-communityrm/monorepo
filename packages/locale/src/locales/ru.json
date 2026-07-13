@@ -4,6 +4,7 @@
     "deliveryAddress": "Адрес",
     "deliveryOptIn": "Разрешение на доставку",
     "loginDetail": "Данные для входа",
+    "manageAccount": "",
     "mfa": {
       "codeInput": {
         "info": "Если вы потеряли доступ к устройству для аутентификации, свяжитесь со службой поддержки",
@@ -1614,6 +1615,10 @@
   },
   "login": {
     "backTo": "Назад к {newsroomName}",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "Забыли пароль?",
     "joinNow": "Присоединяйся к нам!",
     "lostMfaDevice": "Потеряли устройство для двухфакторной аутентификации?",

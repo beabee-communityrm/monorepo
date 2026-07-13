@@ -4,6 +4,7 @@
     "deliveryAddress": "Afleveradres",
     "deliveryOptIn": "Opt-in voor bezorging",
     "loginDetail": "Inloggegevens",
+    "manageAccount": "",
     "mfa": {
       "codeInput": {
         "info": "Als je je 2FA-apparaat kwijt bent, neem dan contact op met support.",
@@ -1609,6 +1610,10 @@
   },
   "login": {
     "backTo": "Terug naar {newsroomName}",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "Wachtwoord vergeten?",
     "joinNow": "Word nu lid!",
     "lostMfaDevice": "Ben je je 2FA-apparaat kwijt?",

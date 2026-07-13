@@ -4,6 +4,7 @@
     "deliveryAddress": "Adresse de livraison",
     "deliveryOptIn": "",
     "loginDetail": "Informations de connexion",
+    "manageAccount": "",
     "mfa": {
       "codeInput": {
         "info": "Si vous avez perdu votre appareil A2F, veuillez contacter l'assistance",
@@ -1613,6 +1614,10 @@
   },
   "login": {
     "backTo": "Revenir à {newsroomName}",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "Mot de passe oublié ?",
     "joinNow": "S'inscrire maintenant !",
     "lostMfaDevice": "Vous avez perdu votre appareil d'A2F ?",

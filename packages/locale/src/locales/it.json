@@ -4,6 +4,7 @@
     "deliveryAddress": "Indirizzo",
     "deliveryOptIn": "Opt-in per la consegna",
     "loginDetail": "Credenziali",
+    "manageAccount": "",
     "mfa": {
       "codeInput": {
         "info": "Se hai perso il tuo dispositivo 2FA, contatta l'assistenza",
@@ -1609,6 +1610,10 @@
   },
   "login": {
     "backTo": "Torna a  {newsroomName}",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "Hai dimenticato la password?",
     "joinNow": "Iscriviti!",
     "lostMfaDevice": "Hai perso il tuo dispositivo 2FA?",
