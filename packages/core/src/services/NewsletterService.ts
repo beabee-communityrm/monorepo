@@ -6,7 +6,10 @@ import {
 
 import config from '#config/config';
 import { createQueryBuilder, getRepository } from '#database';
-import { CantUpdateNewsletterContactError } from '#errors/index';
+import {
+  CantUpdateNewsletterContactError,
+  CantUpdateNewsletterGroupsError,
+} from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Callout, Contact, ContactProfile, Content } from '#models/index';
 import { MailchimpProvider, NoneProvider } from '#providers/newsletter/index';
@@ -95,6 +98,15 @@ class NewsletterService {
             `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
             err
           );
+        } else if (err instanceof CantUpdateNewsletterGroupsError) {
+          // Tried to add contact to an invalid group. Refresh cached groups and retry upsert
+          log.warning(
+            `Failed to subscribe ${contact.email} to group. ${err.detail}\nGroups will be refreshed and the upsert retried.`
+          );
+
+          await this.refreshNewsletterGroups();
+          await this.upsertContact(contact, updates, opts);
+          return;
         } else {
           throw err;
         }

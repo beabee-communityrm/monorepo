@@ -17,6 +17,7 @@ export enum ApiErrorCode {
   INTERNAL_SERVER_ERROR = 'internal-server-error',
   CANT_UPDATE_CONTRIBUTION = 'cant-update-contribution',
   CANT_UPDATE_NEWSLETTER_CONTACT = 'cant-update-newsletter-contact',
+  CANT_UPDATE_NEWSLETTER_GROUPS = 'cant-update-newsletter-groups',
   CAPTCHA_FAILED = 'captcha-failed',
   CAPTCHA_REQUIRED = 'captcha-required',
 }

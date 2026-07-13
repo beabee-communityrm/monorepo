@@ -5,7 +5,10 @@ import {
 } from '@beabee/beabee-common';
 
 import config, { MailchimpNewsletterConfig } from '#config/config';
-import { CantUpdateNewsletterContactError } from '#errors/index';
+import {
+  CantUpdateNewsletterContactError,
+  CantUpdateNewsletterGroupsError,
+} from '#errors/index';
 import {
   createInstance,
   getMCMemberUrl,
@@ -94,6 +97,11 @@ export class MailchimpProvider implements NewsletterProvider {
     if (resp.status === 200) {
       log.info('Updated member ' + contact.email);
       return mcMemberToNlContact(resp.data);
+    } else if (
+      resp.status === 400 &&
+      resp.data?.detail.toLowerCase().includes('invalid interest id')
+    ) {
+      throw new CantUpdateNewsletterGroupsError(resp.data.detail);
 
       // Try to put the user into pending state if they're in a compliance state
       // This can happen if they previously unsubscribed or were cleaned
