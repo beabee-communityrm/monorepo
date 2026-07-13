@@ -17,3 +17,8 @@ export interface DeleteUserArgs {
   withoutPassword?: boolean | undefined;
   force?: boolean | undefined;
 }
+
+export interface LinkUserArgs {
+  csv?: string | undefined;
+  fromIdp?: boolean | undefined;
+}
