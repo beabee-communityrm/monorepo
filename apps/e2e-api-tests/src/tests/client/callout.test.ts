@@ -9,6 +9,8 @@ import { api, testUser } from '@beabee/test-utils/test-data';
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
+import { devLogin } from '#utils/auth.ts';
+
 import { createTestCallout } from '../../fixtures/callouts';
 import {
   createMinimalTestCalloutResponseAnswers,
@@ -61,10 +63,7 @@ describe('Callout API', () => {
     });
 
     // Login for comment operations
-    await userClient.auth.login({
-      email: testUser.email,
-      password: testUser.password,
-    });
+    await devLogin(userClient.auth, testUser.email);
   });
 
   afterAll(async () => {
