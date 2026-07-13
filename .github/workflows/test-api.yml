@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       COMPOSE_PROJECT_NAME: beabee-api-tests-${{ github.run_id }}
+      BEABEE_NEWSLETTER_PROVIDER: test
 
     steps:
       - name: Checkout repository
