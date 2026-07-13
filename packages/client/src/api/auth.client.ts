@@ -1,4 +1,4 @@
-import type { AuthInfoData, LoginData } from '@beabee/beabee-common';
+import type { AuthInfoData } from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
@@ -7,7 +7,8 @@ import { ContactClient } from './contact.client.js';
 
 /**
  * Client for managing authentication operations
- * Handles login and logout
+ * Login happens via the identity provider: navigate the browser to
+ * `getLoginUrl()`, which starts the OIDC flow
  * @extends BaseClient
  */
 export class AuthClient extends BaseClient {
@@ -23,23 +24,22 @@ export class AuthClient extends BaseClient {
   }
 
   /**
-   * Authenticates a user with credentials
-   * @param data Login credentials including email, password and optional 2FA token
-   * @returns Promise that resolves when login is successful
-   * @throws ClientApiError with code REQUIRES_2FA if 2FA is required
+   * The URL that starts the OIDC login flow, for use in full-page navigation
+   * @param next Optional internal path to redirect to after login
    */
-  async login(data: LoginData): Promise<void> {
-    await this.fetch.post(
-      'login',
-      {
-        email: data.email,
-        password: data.password,
-        token: data.token,
-      },
-      {
-        credentials: 'include',
-      }
+  getLoginUrl(next?: string): string {
+    return (
+      cleanUrl(`${this.options.host}/${this.options.path}/auth/login`) +
+      (next ? '?next=' + encodeURIComponent(next) : '')
     );
+  }
+
+  /**
+   * The URL that logs the user out of beabee and the identity provider, for
+   * use in full-page navigation
+   */
+  getLogoutUrl(): string {
+    return cleanUrl(`${this.options.host}/${this.options.path}/auth/logout`);
   }
 
   /**
@@ -59,12 +59,15 @@ export class AuthClient extends BaseClient {
 
   /**
    * Logs out the current user
-   * Ends the user session and removes authentication
+   * Ends the user session without navigating through the identity provider,
+   * for browser logout prefer a full-page navigation to `getLogoutUrl()`
    * @returns Promise that resolves when logout is complete
    */
   async logout(): Promise<void> {
-    await this.fetch.post('logout', undefined, {
+    await this.fetch.get('logout', undefined, {
       credentials: 'include',
+      // The endpoint responds with a redirect to the identity provider
+      redirect: 'manual',
     });
     // Clear stored cookies after logout
     this.fetch.clearCookies();

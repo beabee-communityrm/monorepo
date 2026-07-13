@@ -20,8 +20,6 @@ import {
   type NotFoundErrorData,
   type PaymentFailedErrorData,
   type PaymentRequiresActionErrorData,
-  RESET_SECURITY_FLOW_ERROR_CODE,
-  type ResetSecurityFlowErrorData,
   type Rule,
   type TooManyRequestsErrorData,
   type UnauthorizedErrorData,
@@ -90,8 +88,6 @@ export abstract class ApiError extends Error {
         );
       case ApiErrorCode.FILE_UPLOAD_ERROR:
         return new FileUploadError(data.message, data.subCode);
-      case ApiErrorCode.RESET_SECURITY_FLOW_ERROR:
-        return new ResetSecurityFlowError(data.message, data.subCode);
     }
   }
 }
@@ -314,21 +310,6 @@ class FileUploadError extends ApiError implements FileUploadErrorData {
   constructor(
     message: string,
     public readonly subCode: string
-  ) {
-    super(message);
-  }
-}
-
-export class ResetSecurityFlowError
-  extends ApiError
-  implements ResetSecurityFlowErrorData
-{
-  readonly httpCode = 400;
-  readonly code = ApiErrorCode.RESET_SECURITY_FLOW_ERROR;
-
-  constructor(
-    message: string,
-    public readonly subCode: RESET_SECURITY_FLOW_ERROR_CODE
   ) {
     super(message);
   }

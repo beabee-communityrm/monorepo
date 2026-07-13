@@ -42,7 +42,6 @@ export class SignupClient extends BaseClient {
     >('', {
       ...data,
       loginUrl: this.options.host + '/auth/login',
-      setPasswordUrl: this.options.host + '/auth/set-password',
       confirmUrl: this.options.host + '/join/confirm-email',
     });
     return responseData;

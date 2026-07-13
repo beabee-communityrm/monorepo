@@ -15,7 +15,6 @@ import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
 import { BaseClient } from './base.client.js';
 import { ContactContributionClient } from './contact-contribution.client.js';
-import { ContactMfaClient } from './contact-mfa.client.js';
 import { ContactPaymentMethodClient } from './contact-payment-method.client.js';
 import { ContactPaymentClient } from './contact-payment.client.js';
 import { ContactRoleClient } from './contact-role.client.js';
@@ -27,9 +26,6 @@ import { ContactTagClient } from './contact-tag.client.js';
  * @extends BaseClient
  */
 export class ContactClient extends BaseClient {
-  /** Client for managing multi-factor authentication */
-  readonly mfa: ContactMfaClient;
-
   /** Client for managing contact contributions */
   readonly contribution: ContactContributionClient;
 
@@ -54,7 +50,6 @@ export class ContactClient extends BaseClient {
       ...options,
       path: cleanUrl(options.path + '/contact'),
     });
-    this.mfa = new ContactMfaClient(options);
     this.contribution = new ContactContributionClient(options);
     this.role = new ContactRoleClient(options);
     this.tag = new ContactTagClient(options);
