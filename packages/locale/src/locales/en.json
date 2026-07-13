@@ -68,8 +68,7 @@
     "requiredFields": "Required fields",
     "savedPassword": "New password saved",
     "subTitle": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
-    "title": "Account",
-    "unsavedChanges": "You have unsaved changes"
+    "title": "Account"
   },
   "actions": {
     "add": "Add",
@@ -1516,7 +1515,7 @@
     },
     "saveChanges": "Save Changes",
     "saved": "Saved!",
-    "unsavedChanges": "Unsaved changes",
+    "unsavedChanges": "You have unsaved changes",
     "updated": "Updated"
   },
   "formRenderer": {
