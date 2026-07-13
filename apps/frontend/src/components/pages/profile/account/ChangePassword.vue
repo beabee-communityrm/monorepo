@@ -14,13 +14,13 @@
               variant="link"
               color="neutral"
               size="sm"
-              :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+              :icon="showPassword ? 'i-lucide-eye' : 'i-lucide-eye-off'"
               :aria-label="
                 showPassword
                   ? t('actions.hidePassword')
                   : t('actions.showPassword')
               "
-              @click="showPassword = !showPassword"
+              @click="toggleShowPassword"
             />
           </template>
         </UInput>
@@ -48,13 +48,13 @@
               variant="link"
               color="neutral"
               size="sm"
-              :icon="showConfirmPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+              :icon="showConfirmPassword ? 'i-lucide-eye' : 'i-lucide-eye-off'"
               :aria-label="
                 showConfirmPassword
                   ? t('actions.hidePassword')
                   : t('actions.showPassword')
               "
-              @click="showConfirmPassword = !showConfirmPassword"
+              @click="toggleShowConfirmPassword"
             />
           </template>
         </UInput>
@@ -103,6 +103,17 @@ const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const saving = ref(false);
 const saved = ref(false);
+
+// Plain assignment expressions (`@click="showPassword = !showPassword"`)
+// type-check as returning `boolean`, which doesn't satisfy UButton's
+// `onClick: (event) => void | Promise<void>` — small toggle functions avoid
+// that mismatch.
+function toggleShowPassword() {
+  showPassword.value = !showPassword.value;
+}
+function toggleShowConfirmPassword() {
+  showConfirmPassword.value = !showConfirmPassword.value;
+}
 
 function isValidPassword(value: string): boolean {
   if (!value) return true;
