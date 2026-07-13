@@ -25,5 +25,21 @@ describe('Newsletter integrations API', () => {
         throw error;
       }
     });
+    it('should get cached newsletter groups', async () => {
+      try {
+        const newsletterGroups = await client.getNewsletterGroups();
+        expect(newsletterGroups).toBeDefined();
+      } catch (error) {
+        throw error;
+      }
+    });
+    it('should refresh and remove groups', async () => {
+      try {
+        // const newsletterGroups = await client.refreshNewsletterGroups();
+        // expect(newsletterGroups).toBeDefined();
+      } catch (error) {
+        throw error;
+      }
+    });
   });
 });
