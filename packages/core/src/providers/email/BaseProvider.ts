@@ -1,14 +1,9 @@
-import {
-  ApiHealthStatus,
-  RESET_SECURITY_FLOW_TYPE,
-} from '@beabee/beabee-common';
+import { ApiHealthStatus } from '@beabee/beabee-common';
 
 import config from '#config/config';
-import { createQueryBuilder, getRepository } from '#database';
-import { log as mainLogger } from '#logging';
-import { Contact, Email } from '#models/index';
+import { getRepository } from '#database';
+import { Email } from '#models/index';
 import OptionsService from '#services/OptionsService';
-import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
 import { formatEmailBody } from '#templates/email';
 import type {
   EmailOptions,
@@ -17,79 +12,29 @@ import type {
   PreparedEmail,
 } from '#type/index';
 
-const log = mainLogger.child({ app: 'base-email-provider' });
-
-function generateResetPasswordLinks(type: 'set' | 'reset') {
-  const mergeField = type === 'set' ? 'SPLINK' : 'RPLINK';
-  const baseUrl = `${config.audience}/auth/${type}-password`;
-  const fallbackUrl = `${config.audience}/auth/login`;
-
-  return async (recipients: EmailRecipient[]): Promise<EmailRecipient[]> => {
-    // Filter for those with no merge field value
-    const emails = recipients
-      .filter((r) => !r.mergeFields?.[mergeField])
-      .map((r) => r.to.email);
-
-    // Nothing to do
-    if (emails.length === 0) {
-      return recipients;
-    }
-
-    log.info(`Creating ${emails.length} links for ${mergeField}`);
-
-    // Get list of contacts who match the recipients
-    const contacts = await createQueryBuilder(Contact, 'c')
-      .select(['id', 'email'])
-      .where('c.email IN (:...emails)', { emails })
-      .getRawMany<{ id: string; email: string }>();
-
-    const contactIdsByEmail = Object.fromEntries(
-      contacts.map((m) => [m.email, m.id])
-    );
-
-    const rpFlowIdsByContactId = await ResetSecurityFlowService.createManyRaw(
-      Object.values(contactIdsByEmail),
-      RESET_SECURITY_FLOW_TYPE.PASSWORD
-    );
-
-    return recipients.map((recipient) => {
-      // Don't touch recipients with the merge field already set
-      if (recipient.mergeFields?.[mergeField]) {
-        return recipient;
-      } else {
-        const rpFlowId =
-          rpFlowIdsByContactId[contactIdsByEmail[recipient.to.email]];
-        return {
-          ...recipient,
-          mergeFields: {
-            ...recipient.mergeFields,
-            [mergeField]: rpFlowId ? `${baseUrl}/${rpFlowId}` : fallbackUrl,
-          },
-        };
-      }
-    });
-  };
-}
-
 const magicMergeFields = ['SPLINK', 'LOGINLINK', 'RPLINK'] as const;
 
-const magicMergeFieldsProcessors = {
-  SPLINK: generateResetPasswordLinks('set'),
-  RPLINK: generateResetPasswordLinks('reset'),
-  LOGINLINK: async (recipients: EmailRecipient[]) => {
-    // TODO: generate login override link
-    return recipients.map((recipient) =>
-      recipient.mergeFields?.LOGINLINK
+// Credentials are managed by the identity provider, so the legacy set/reset
+// password merge fields simply link to the login page like LOGINLINK
+function fillWithLoginLink(mergeField: (typeof magicMergeFields)[number]) {
+  return async (recipients: EmailRecipient[]): Promise<EmailRecipient[]> =>
+    recipients.map((recipient) =>
+      recipient.mergeFields?.[mergeField]
         ? recipient
         : {
             ...recipient,
             mergeFields: {
               ...recipient.mergeFields,
-              LOGINLINK: `${config.audience}/auth/login`,
+              [mergeField]: `${config.audience}/auth/login`,
             },
           }
     );
-  },
+}
+
+const magicMergeFieldsProcessors = {
+  SPLINK: fillWithLoginLink('SPLINK'),
+  RPLINK: fillWithLoginLink('RPLINK'),
+  LOGINLINK: fillWithLoginLink('LOGINLINK'),
 } as const;
 
 export abstract class BaseProvider implements EmailProvider {

@@ -1,84 +1,14 @@
-import { LOGIN_CODES, RoleType, RoleTypes } from '@beabee/beabee-common';
-import config from '@beabee/core/config';
-import { getRepository } from '@beabee/core/database';
-import { NotFoundError, UnauthorizedError } from '@beabee/core/errors';
-import passport from '@beabee/core/lib/passport';
-import { Contact, ContactRole } from '@beabee/core/models';
-import ContactsService from '@beabee/core/services/ContactsService';
-import { AuthInfo, PassportLoginInfo } from '@beabee/core/type';
+import { AuthInfo } from '@beabee/core/type';
 
-import { isUUID } from 'class-validator';
-import { Request, Response } from 'express';
-import {
-  Body,
-  Get,
-  HttpError,
-  JsonController,
-  OnUndefined,
-  Param,
-  Post,
-  Req,
-  Res,
-} from 'routing-controllers';
+import { Get, JsonController } from 'routing-controllers';
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
-import { GetAuthInfoDto, LoginDto } from '#api/dto';
+import { GetAuthInfoDto } from '#api/dto';
 import { authTransformer } from '#api/transformers';
-import { login } from '#api/utils/auth';
 
+// Login and logout are handled by the OIDC routes, see apps/backend/src/api/auth.ts
 @JsonController('/auth')
 export class AuthController {
-  @OnUndefined(204)
-  @Post('/login')
-  async login(
-    @Req() req: Request,
-    @Res() res: Response,
-    /** Just used for validation (`email`, `password` and `req.data.token` are in passport strategy) */
-    @Body() _: LoginDto
-  ): Promise<void> {
-    const user = await new Promise<Contact>((resolve, reject) => {
-      passport.authenticate(
-        'local',
-        async (
-          err: null | HttpError | UnauthorizedError,
-          user: Contact | false,
-          info?: PassportLoginInfo
-        ) => {
-          // Forward HTTP errors
-          if (err) {
-            if (err instanceof HttpError) {
-              return reject(err);
-            }
-          }
-
-          // Unknown errors
-          if (err || !user) {
-            return reject(
-              new UnauthorizedError(LOGIN_CODES.LOGIN_FAILED, info?.message)
-            );
-          }
-
-          // Looks good, return user
-          resolve(user);
-        }
-      )(req, res);
-    });
-
-    // If there is no error thrown, login
-    await login(req, user); // Why do we have to login after authenticate?
-  }
-
-  @OnUndefined(204)
-  @Post('/logout')
-  async logout(@Req() req: Request): Promise<void> {
-    await new Promise<void>((resolve, reject) =>
-      req.logout((err) => {
-        if (err) reject(err);
-        else resolve();
-      })
-    );
-  }
-
   @Get('/info')
   async getAuthInfo(
     @CurrentAuth({ required: false }) auth: AuthInfo

@@ -1176,7 +1176,6 @@ __metadata:
     "@types/multer": "npm:^2.1.0"
     "@types/node": "npm:^24.12.2"
     "@types/passport": "npm:^1.0.17"
-    "@types/passport-local": "npm:^1.0.38"
     chance: "npm:^1.1.13"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.15.1"
@@ -1195,7 +1194,6 @@ __metadata:
     moment: "npm:^2.30.1"
     multer: "npm:^2.1.1"
     passport: "npm:^0.7.0"
-    passport-local: "npm:^1.0.0"
     prettier: "npm:^3.8.3"
     reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^6.1.3"
@@ -1258,7 +1256,6 @@ __metadata:
     "@types/jsonwebtoken": "npm:^9.0.10"
     "@types/nodemailer": "npm:^6.4.23"
     "@types/passport": "npm:^1.0.17"
-    "@types/passport-local": "npm:^1.0.38"
     "@types/sharp": "npm:^0.32.0"
     "@types/tar-stream": "npm:^3.1.4"
     "@types/yaml-front-matter": "npm:^4.1.3"
@@ -1276,9 +1273,7 @@ __metadata:
     moment: "npm:^2.30.1"
     nodemailer: "npm:^6.10.1"
     openid-client: "npm:^6.8.4"
-    otpauth: "npm:^9.5.1"
     passport: "npm:^0.7.0"
-    passport-local: "npm:^1.0.0"
     prettier: "npm:^3.8.3"
     rate-limiter-flexible: "npm:^7.4.0"
     reflect-metadata: "npm:^0.2.2"
@@ -1430,7 +1425,6 @@ __metadata:
     "@types/node": "npm:^24.12.2"
     "@types/papaparse": "npm:^5.5.2"
     "@types/passport": "npm:^1.0.17"
-    "@types/passport-local": "npm:^1.0.38"
     "@types/pug": "npm:^2.0.10"
     ajv: "npm:^8.20.0"
     ajv-formats: "npm:^3.0.1"
@@ -1468,7 +1462,6 @@ __metadata:
     moment: "npm:^2.30.1"
     papaparse: "npm:^5.5.3"
     passport: "npm:^0.7.0"
-    passport-local: "npm:^1.0.0"
     postcss: "npm:^8.5.14"
     prettier: "npm:^3.8.3"
     pug: "npm:^3.0.4"
@@ -6711,28 +6704,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/passport-local@npm:^1.0.38":
-  version: 1.0.38
-  resolution: "@types/passport-local@npm:1.0.38"
-  dependencies:
-    "@types/express": "npm:*"
-    "@types/passport": "npm:*"
-    "@types/passport-strategy": "npm:*"
-  checksum: 10c0/a8464df03f073a4bb9aef7fa7cc9e76a355f149a1148330da88346d0e9c600f845601e99ed40949a13287eacae0a7ad01cd0eb5ca00d8b81da263b1dfc3aee60
-  languageName: node
-  linkType: hard
-
-"@types/passport-strategy@npm:*":
-  version: 0.2.38
-  resolution: "@types/passport-strategy@npm:0.2.38"
-  dependencies:
-    "@types/express": "npm:*"
-    "@types/passport": "npm:*"
-  checksum: 10c0/d7d2b1782a0845bd8914250aa9213a23c8d9c2225db46d854b77f2bf0129a789f46d4a5e9ad336eca277fc7e0a051c0a2942da5c864e7c6710763f102d9d4295
-  languageName: node
-  linkType: hard
-
-"@types/passport@npm:*, @types/passport@npm:^1.0.17":
+"@types/passport@npm:^1.0.17":
   version: 1.0.17
   resolution: "@types/passport@npm:1.0.17"
   dependencies:
@@ -16148,15 +16120,6 @@ __metadata:
   version: 0.1.1
   resolution: "pascalcase@npm:0.1.1"
   checksum: 10c0/48dfe90618e33810bf58211d8f39ad2c0262f19ad6354da1ba563935b5f429f36409a1fb9187c220328f7a4dc5969917f8e3e01ee089b5f1627b02aefe39567b
-  languageName: node
-  linkType: hard
-
-"passport-local@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "passport-local@npm:1.0.0"
-  dependencies:
-    passport-strategy: "npm:1.x.x"
-  checksum: 10c0/59becb988014921a5d6056470d9373c41db452fcf113323064f39d53baa6f184e72151bf269ca6770511f7f0260e13632dacc7b6afdbf60ebf63e90327e186d4
   languageName: node
   linkType: hard
 

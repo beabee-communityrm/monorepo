@@ -3,11 +3,6 @@
  */
 export enum LOGIN_CODES {
   UNAUTHORIZED = 'unauthorized',
-  LOCKED = 'account-locked',
-  LOGGED_IN = 'logged-in',
   LOGIN_FAILED = 'login-failed',
-  REQUIRES_2FA = 'requires-2fa',
-  UNSUPPORTED_2FA = 'unsupported-2fa',
-  INVALID_TOKEN = 'invalid-token',
-  MISSING_TOKEN = 'missing-token',
+  UNLINKED_ACCOUNT = 'unlinked-account',
 }

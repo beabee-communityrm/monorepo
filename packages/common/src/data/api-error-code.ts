@@ -7,7 +7,6 @@ export enum ApiErrorCode {
   FILE_TOO_LARGE = 'file-too-large',
   FILE_UPLOAD_ERROR = 'file-upload-error',
   UNSUPPORTED_FILE_TYPE = 'unsupported-file-type',
-  RESET_SECURITY_FLOW_ERROR = 'reset-security-flow-error',
   INVALID_CALLOUT_RESPONSE = 'invalid-callout-response',
   INVALID_RULE = 'invalid-rule',
   NO_PAYMENT_METHOD = 'no-payment-method',

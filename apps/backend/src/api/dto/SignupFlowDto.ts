@@ -1,14 +1,7 @@
 import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsOptional,
-  IsString,
-  Validate,
-  ValidateNested,
-} from 'class-validator';
+import { IsEmail, IsOptional, IsString, ValidateNested } from 'class-validator';
 
 import { StartContributionDto } from '#api/dto/ContributionDto';
-import IsPassword from '#api/validators/IsPassword';
 import IsUrl from '#api/validators/IsUrl';
 import IsVatNumber from '#api/validators/IsVatNumber';
 
@@ -20,17 +13,10 @@ export class StartSignupFlowDto {
   loginUrl!: string;
 
   @IsUrl()
-  setPasswordUrl!: string;
-
-  @IsUrl()
   confirmUrl!: string;
 
   @IsEmail()
   email!: string;
-
-  @Validate(IsPassword)
-  @IsOptional()
-  password?: string;
 
   @Type(() => StartContributionDto)
   @ValidateNested()

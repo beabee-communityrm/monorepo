@@ -138,8 +138,4 @@ export class Contact implements TaggableEntity<TagData> {
   get membership(): ContactRole | undefined {
     return this.roles.find((p) => p.type === 'member');
   }
-
-  get setupComplete(): boolean {
-    return this.password.hash !== '';
-  }
 }

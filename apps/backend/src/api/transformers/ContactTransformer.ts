@@ -6,7 +6,6 @@ import ContactsService from '@beabee/core/services/ContactsService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
 import { QueryDeepPartialEntity } from '@beabee/core/type';
-import { generatePassword } from '@beabee/core/utils/auth';
 import { batchSelect, batchUpdate } from '@beabee/core/utils/rules';
 
 import { TransformPlainToInstance } from 'class-transformer';
@@ -207,14 +206,11 @@ class ContactTransformer extends BaseContactTransformer<
     target: Contact,
     data: Partial<UpdateContactDto>
   ): Promise<GetContactDto | undefined> {
-    if (data.email || data.firstname || data.lastname || data.password) {
+    if (data.email || data.firstname || data.lastname) {
       await ContactsService.updateContact(target, {
         ...(data.email && { email: data.email }),
         ...(data.firstname !== undefined && { firstname: data.firstname }),
         ...(data.lastname !== undefined && { lastname: data.lastname }),
-        ...(data.password && {
-          password: await generatePassword(data.password),
-        }),
       });
     }
 

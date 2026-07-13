@@ -23,7 +23,6 @@ import {
   IsObject,
   IsOptional,
   IsString,
-  Validate,
   ValidateNested,
 } from 'class-validator';
 
@@ -38,7 +37,6 @@ import {
 } from '#api/dto/ContactRoleDto';
 import { GetContactTagDto } from '#api/dto/ContactTagDto';
 import { ForceUpdateContributionDto } from '#api/dto/ContributionDto';
-import IsPassword from '#api/validators/IsPassword';
 
 const contactSortFields = [
   'firstname',
@@ -169,10 +167,6 @@ export class GetContactDto extends BaseContactDto {
 }
 
 export class UpdateContactDto extends BaseContactDto {
-  @IsOptional()
-  @Validate(IsPassword)
-  password?: string;
-
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateContactProfileDto)

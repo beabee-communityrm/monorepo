@@ -24,6 +24,5 @@ export * from './newsletter-status.js';
 export * from './payment-method.js';
 export * from './payment-status.js';
 export * from './payment-type.js';
-export * from './reset-security-flow-error-code.js';
 export * from './reset-security-flow-type.js';
 export * from './role-type-data.js';

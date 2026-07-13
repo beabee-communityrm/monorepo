@@ -1,7 +1,5 @@
 import { BadRequestError, NotFoundError } from '@beabee/core/errors';
-import { Password } from '@beabee/core/models';
 import SignupService from '@beabee/core/services/SignupService';
-import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
 import { plainToInstance } from 'class-transformer';
@@ -48,12 +46,8 @@ export class SignupController {
 
     const signupForm = {
       email: data.email,
-      password: data.password
-        ? await generatePassword(data.password)
-        : Password.none,
       confirmUrl: data.confirmUrl,
       loginUrl: data.loginUrl,
-      setPasswordUrl: data.setPasswordUrl,
     };
 
     if (data.contribution) {

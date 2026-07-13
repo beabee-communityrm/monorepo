@@ -72,18 +72,6 @@ export const contactEmailTemplates = {
     REFCODE: contact.referralCode || '',
   })),
   'welcome-post-gift': withMergeFields([], () => ({})),
-  'reset-password': withMergeFields(
-    ['RPLINK'],
-    (_: Contact, params: { rpLink: string }) => ({
-      RPLINK: params.rpLink,
-    })
-  ),
-  'reset-device': withMergeFields(
-    ['RPLINK'],
-    (_: Contact, params: { rpLink: string }) => ({
-      RPLINK: params.rpLink,
-    })
-  ),
   'cancelled-contribution': withMergeFields(
     ['EXPIRES', 'MEMBERSHIPID'],
     (contact: Contact) => ({
@@ -106,12 +94,6 @@ export const contactEmailTemplates = {
     ['LOGINLINK'],
     (_: Contact, params: { loginLink: string }) => ({
       LOGINLINK: params.loginLink,
-    })
-  ),
-  'email-exists-set-password': withMergeFields(
-    ['SPLINK'],
-    (_: Contact, params: { spLink: string }) => ({
-      SPLINK: params.spLink,
     })
   ),
   'callout-response-answers': withMergeFields(

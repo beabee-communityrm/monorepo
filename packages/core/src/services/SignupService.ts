@@ -3,7 +3,6 @@ import {
   PaymentFlowParamsStripe,
   PaymentFlowResult,
   PaymentMethod,
-  RESET_SECURITY_FLOW_TYPE,
 } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
@@ -16,17 +15,20 @@ import OptionsService from '#services/OptionsService';
 import PaymentFlowService from '#services/PaymentFlowService';
 import { PaymentFlowForm } from '#type/index';
 
-import ResetSecurityFlowService from './ResetSecurityFlowService.js';
-
 const log = mainLogger.child({ app: 'signup-service' });
 
 interface SignupData {
   email: string;
-  password: Password;
   loginUrl: string;
-  setPasswordUrl: string;
   confirmUrl: string;
 }
+
+// Satisfy the not-null columns that remain in the signup_flow table until
+// they are dropped
+const legacySignupColumns = {
+  password: Password.none,
+  setPasswordUrl: '',
+};
 
 /**
  * Service that manages user signup and registration flows.
@@ -41,6 +43,7 @@ class SignupService {
   async startSimpleSignup(signupData: SignupData): Promise<void> {
     const signupFlow = await getRepository(SignupFlow).save({
       ...signupData,
+      ...legacySignupColumns,
       paymentFlowId: null,
     });
 
@@ -63,6 +66,7 @@ class SignupService {
 
     await getRepository(SignupFlow).save({
       ...signupData,
+      ...legacySignupColumns,
       paymentFlowId: setup.flow.id,
     });
 
@@ -132,30 +136,12 @@ class SignupService {
     if (
       // Contact already exists with an active contribution
       contact?.membership?.isActive ||
-      // One-time contribution and their account was previously setup
-      (isOneTime && contact?.password.hash)
+      // One-time contribution and their account already exists
+      (isOneTime && contact)
     ) {
-      if (contact.password.hash) {
-        await EmailService.sendTemplateToContact(
-          'email-exists-login',
-          contact,
-          {
-            loginLink: signupFlow.loginUrl,
-          }
-        );
-      } else {
-        const rpFlow = await ResetSecurityFlowService.create(
-          contact,
-          RESET_SECURITY_FLOW_TYPE.PASSWORD
-        );
-        await EmailService.sendTemplateToContact(
-          'email-exists-set-password',
-          contact,
-          {
-            spLink: signupFlow.setPasswordUrl + '/' + rpFlow.id,
-          }
-        );
-      }
+      await EmailService.sendTemplateToContact('email-exists-login', contact, {
+        loginLink: signupFlow.loginUrl,
+      });
     } else {
       let firstName = '',
         lastName = '';
@@ -230,7 +216,6 @@ class SignupService {
     let completedFlow;
     const partialContact: Partial<Contact> & { email: string } = {
       email: signupFlow.email,
-      password: signupFlow.password,
     };
 
     if (signupFlow.paymentFlow) {

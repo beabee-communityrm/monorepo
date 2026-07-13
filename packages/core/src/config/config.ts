@@ -327,10 +327,6 @@ export const config = {
   currencyCode: env.s('BEABEE_CURRENCYCODE'), // Currency code (e.g., GBP, EUR)
   currencySymbol: env.s('BEABEE_CURRENCYSYMBOL'), // Currency symbol (e.g., £, €)
 
-  // Password security settings
-  passwordTries: env.n('BEABEE_PASSWORDTRIES', 3), // Max password attempt tries before lockout (default: 3)
-  passwordIterations: env.n('BEABEE_PASSWORDITERATIONS', 50000), // PBKDF2 iterations for password hashing (default: 50000)
-
   // Grace period for expired memberships
   gracePeriod: {
     days: 14, // Number of days in grace period after expiry

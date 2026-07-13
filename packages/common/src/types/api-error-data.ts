@@ -1,8 +1,4 @@
-import type {
-  ApiErrorCode,
-  LOGIN_CODES,
-  RESET_SECURITY_FLOW_ERROR_CODE,
-} from '../data/index.js';
+import type { ApiErrorCode, LOGIN_CODES } from '../data/index.js';
 import type { Rule } from './rule.js';
 
 interface BaseApiErrorData {
@@ -136,12 +132,6 @@ export interface FileUploadErrorData extends BaseApiErrorData {
   subCode: string;
 }
 
-export interface ResetSecurityFlowErrorData extends BaseApiErrorData {
-  httpCode: 400;
-  code: ApiErrorCode.RESET_SECURITY_FLOW_ERROR;
-  subCode: RESET_SECURITY_FLOW_ERROR_CODE;
-}
-
 export type ApiErrorData =
   | BadRequestErrorData
   | UnauthorizedErrorData
@@ -162,5 +152,4 @@ export type ApiErrorData =
   | InternalServerErrorData
   | CantUpdateContributionErrorData
   | CantUpdateNewsletterContactErrorData
-  | FileUploadErrorData
-  | ResetSecurityFlowErrorData;
+  | FileUploadErrorData;

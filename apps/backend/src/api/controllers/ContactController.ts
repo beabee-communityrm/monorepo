@@ -7,13 +7,11 @@ import {
   UnauthorizedError,
 } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
-import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
 import DispatchService from '@beabee/core/services/DispatchService';
 import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
-import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
 import { plainToInstance } from 'class-transformer';
@@ -47,11 +45,6 @@ import {
   ListContactsDto,
   UpdateContactDto,
 } from '#api/dto/ContactDto';
-import {
-  CreateContactMfaDto,
-  DeleteContactMfaDto,
-  GetContactMfaDto,
-} from '#api/dto/ContactMfaDto';
 import {
   GetContactRoleDto,
   UpdateContactRoleDto,
@@ -92,9 +85,6 @@ export class ContactController {
         email: data.email,
         firstname: data.firstname,
         lastname: data.lastname,
-        ...(data.password && {
-          password: await generatePassword(data.password),
-        }),
       },
       data.profile
     );
@@ -268,57 +258,6 @@ export class ContactController {
       completeUrl: data.completeUrl,
     });
     return plainToInstance(PaymentFlowResultDto, result);
-  }
-
-  /**
-   * Get contact multi factor authentication if exists
-   * @param target The target contact
-   */
-  @Get('/:id/mfa')
-  async getContactMfa(
-    @TargetUser() target: Contact
-  ): Promise<GetContactMfaDto | null> {
-    const mfa = await ContactMfaService.get(target);
-    return mfa ? plainToInstance(GetContactMfaDto, mfa) : null;
-  }
-
-  /**
-   * Create contact multi factor authentication
-   * @param target The target contact
-   * @param data The data to create the contact multi factor authentication
-   */
-  @OnUndefined(201)
-  @Post('/:id/mfa')
-  async createContactMfa(
-    @Body() data: CreateContactMfaDto,
-    @TargetUser() target: Contact
-  ): Promise<void> {
-    await ContactMfaService.create(target, data);
-  }
-
-  /**
-   * Delete contact multi factor authentication
-   * @param target The target contact
-   * @param data The data to delete the contact multi factor authentication
-   * @param id The contact id
-   */
-  @OnUndefined(201)
-  @Delete('/:id/mfa')
-  async deleteContactMfa(
-    @TargetUser() target: Contact,
-    @Body() data: DeleteContactMfaDto,
-    @Params() { id }: { id: string }
-  ): Promise<void> {
-    if (id === 'me') {
-      if (!data.token) {
-        throw new BadRequestError('Token is required to delete own MFA');
-      }
-      await ContactMfaService.deleteSecure(target, data.token);
-    } else {
-      // It's secure to call this unsecure method here because the user is an admin,
-      // this is checked in the `@TargetUser()` decorator
-      await ContactMfaService.deleteUnsecure(target);
-    }
   }
 
   @OnUndefined(204)

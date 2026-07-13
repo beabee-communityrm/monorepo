@@ -15,8 +15,6 @@ export * from './ImageController.js';
 export * from './IntegrationsController.js';
 export * from './NoticeController.js';
 export * from './PaymentController.js';
-export * from './ResetDeviceController.js';
-export * from './ResetPasswordController.js';
 export * from './RootController.js';
 export * from './SegmentController.js';
 export * from './SignupController.js';

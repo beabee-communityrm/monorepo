@@ -22,7 +22,6 @@ declare global {
 
 declare module 'express-session' {
   interface SessionData {
-    method?: 'plain' | 'totp';
     answers: CalloutResponseAnswersSlide | undefined;
     oidc?: OidcLoginState;
     idToken?: string | undefined;
