@@ -27,4 +27,9 @@ export class GetAuthInfoDto {
   @IsArray()
   @IsString({ each: true })
   roles!: RoleType[];
+
+  /** URL of the identity provider's self-service account console */
+  @IsOptional()
+  @IsString()
+  accountUrl?: string | undefined;
 }
