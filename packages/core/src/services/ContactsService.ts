@@ -42,6 +42,7 @@ import {
 } from '#models/index';
 import ContactMfaService from '#services/ContactMfaService';
 import EmailService from '#services/EmailService';
+import IdpService from '#services/IdpService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
@@ -139,6 +140,16 @@ class ContactsService {
 
       await EmailService.sendTemplateToAdmin('new-member', { contact });
 
+      // Provision the contact at the identity provider (best-effort, unlinked
+      // contacts can be repaired later with the `user provision` CLI command)
+      if (!contact.idpSubject) {
+        const idpSubject = await IdpService.createUser(contact);
+        if (idpSubject) {
+          await getRepository(Contact).update(contact.id, { idpSubject });
+          contact.idpSubject = idpSubject;
+        }
+      }
+
       return contact;
     } catch (error) {
       if (isDuplicateIndex(error, 'email')) {
@@ -193,6 +204,10 @@ class ContactsService {
         undefined,
         oldEmail ? { oldEmail } : undefined
       );
+    }
+
+    if (oldEmail && oldEmail !== contact.email && contact.idpSubject) {
+      await IdpService.updateEmail(contact.idpSubject, contact.email);
     }
 
     await PaymentService.updateContact(contact, updates);
@@ -461,6 +476,11 @@ class ContactsService {
       // 18. Finally delete the contact
       await em.getRepository(Contact).delete(contact.id);
     });
+
+    // Delete the linked user at the identity provider (best-effort)
+    if (contact.idpSubject) {
+      await IdpService.deleteUser(contact.idpSubject);
+    }
   }
 
   /**
