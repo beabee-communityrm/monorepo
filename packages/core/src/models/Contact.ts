@@ -59,6 +59,10 @@ export class Contact implements TaggableEntity<TagData> {
   @Column({ type: 'jsonb', nullable: true })
   loginOverride!: LoginOverride | null;
 
+  /** Subject identifier of the linked user at the OIDC identity provider */
+  @Column({ type: String, unique: true, nullable: true })
+  idpSubject!: string | null;
+
   @Column()
   contributionType!: ContributionType;
 

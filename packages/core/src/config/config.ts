@@ -113,6 +113,41 @@ const newsletterProvider = env.e(
 );
 
 /**
+ * Zitadel identity provider configuration
+ * Used when BEABEE_IDP_PROVIDER=zitadel to provision users via the management API
+ */
+export interface ZitadelIdpConfig {
+  provider: 'zitadel';
+  settings: {
+    url: string; // BEABEE_IDP_ZITADEL_URL - Zitadel instance URL (default: OIDC issuer)
+    pat: string; // BEABEE_IDP_ZITADEL_PAT - Service user personal access token
+  };
+}
+
+/**
+ * Empty identity provider (when user provisioning is disabled)
+ * Used when BEABEE_IDP_PROVIDER=none (default)
+ */
+interface NoneIdpConfig {
+  provider: 'none';
+  settings: Record<string, never>;
+}
+
+// Union type for identity provider configuration
+type IdpConfig = ZitadelIdpConfig | NoneIdpConfig;
+
+// Get identity provider from environment, with validation for allowed values
+// Defaults to "none" if not specified
+const idpProvider = env.e(
+  'BEABEE_IDP_PROVIDER',
+  ['zitadel', 'none'] as const,
+  'none'
+);
+
+const audience = env.s('BEABEE_AUDIENCE');
+const oidcIssuer = env.s('BEABEE_OIDC_ISSUER', '');
+
+/**
  * Application configuration for an individual app module
  * Used for dynamic app loading and menu building
  */
@@ -187,6 +222,32 @@ export const config = {
     domain: env.s('BEABEE_COOKIE_DOMAIN'), // Cookie domain (e.g., localhost)
     secure: env.b('BEABEE_COOKIE_SECURE', true), // Require HTTPS for cookies (default: true)
   },
+
+  // OpenID Connect authentication against an external identity provider
+  oidc: {
+    issuer: oidcIssuer, // BEABEE_OIDC_ISSUER - OIDC issuer URL (empty: OIDC login disabled)
+    clientId: env.s('BEABEE_OIDC_CLIENTID', ''), // BEABEE_OIDC_CLIENTID - OIDC client ID
+    clientSecret: env.s('BEABEE_OIDC_CLIENTSECRET', ''), // BEABEE_OIDC_CLIENTSECRET - OIDC client secret
+    scopes: env.s('BEABEE_OIDC_SCOPES', 'openid profile email'), // BEABEE_OIDC_SCOPES - Requested scopes
+    redirectUri: env.s(
+      'BEABEE_OIDC_REDIRECTURI',
+      `${audience}/api/1.0/auth/callback`
+    ), // BEABEE_OIDC_REDIRECTURI - OAuth callback URL
+    postLogoutRedirectUri: env.s('BEABEE_OIDC_POSTLOGOUTREDIRECTURI', audience), // BEABEE_OIDC_POSTLOGOUTREDIRECTURI - Where the IdP redirects after logout
+    accountUrl: env.s('BEABEE_OIDC_ACCOUNTURL', ''), // BEABEE_OIDC_ACCOUNTURL - IdP self-service account console URL (empty: hidden)
+  },
+
+  // Identity provider user provisioning
+  idp: {
+    provider: idpProvider, // Identity provider type (zitadel or none)
+    settings:
+      idpProvider === 'zitadel'
+        ? {
+            url: env.s('BEABEE_IDP_ZITADEL_URL', oidcIssuer), // Zitadel instance URL (default: OIDC issuer)
+            pat: env.s('BEABEE_IDP_ZITADEL_PAT'), // Service user personal access token
+          }
+        : {},
+  } as IdpConfig,
 
   // CORS and security settings
   trustedOrigins: env.ss('BEABEE_TRUSTEDORIGINS', []), // Origins allowed to make authenticated requests
