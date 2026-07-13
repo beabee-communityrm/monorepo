@@ -30,15 +30,26 @@ describe('Newsletter integrations API', () => {
       try {
         const newsletterGroups = await client.getNewsletterGroups();
         expect(newsletterGroups).toBeDefined();
-        expect(newsletterGroups.length).not.toBe(0);
+        expect(newsletterGroups).not.toHaveLength(0);
       } catch (error) {
         throw error;
       }
     });
     it('should refresh and remove groups', async () => {
       try {
-        // const newsletterGroups = await client.refreshNewsletterGroups();
-        // expect(newsletterGroups).toBeDefined();
+        const { info, groupChanges } = await client.refreshNewsletterGroups();
+        expect(groupChanges.filter((g) => g.action === 'added')).toHaveLength(
+          1
+        );
+        expect(groupChanges.filter((g) => g.action === 'removed')).toHaveLength(
+          1
+        );
+
+        // Verify that cache was updated
+        const updatedGroups = await client.getNewsletterGroups();
+        expect(updatedGroups.map((g) => g.id).sort()).toEqual(
+          ['b8e4acb751', 'c0b1a133d1', 'd0g6ced973'].sort()
+        );
       } catch (error) {
         throw error;
       }

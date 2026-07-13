@@ -46,7 +46,13 @@ export class TestProvider implements NewsletterProvider {
   }
 
   async getGroups(): Promise<{ id: string; label: string }[]> {
-    return OptionsService.getJSON('newsletter-groups');
+    // remove group 'coffee'
+    const testGroups = [
+      { id: 'b8e4acb751', label: 'Kombucha' },
+      { id: 'c0b1a133d1', label: 'Tea' },
+      { id: 'd0g6ced973', label: 'Apfelschorle' },
+    ];
+    return testGroups;
   }
 }
 
