@@ -4,6 +4,7 @@ import { api, testUser } from '@beabee/test-utils/test-data';
 import { resolve } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
+import { devLogin } from '#utils/auth.ts';
 import { createTestFile } from '#utils/file.ts';
 
 import { FIXTURE_PATH } from '../../env';
@@ -19,10 +20,7 @@ describe('Upload API', () => {
     });
 
     // Log in the user to not hit rate limits
-    await client.auth.login({
-      email: testUser.email,
-      password: testUser.password,
-    });
+    await devLogin(client.auth, testUser.email);
   });
 
   // Add afterEach to logout after every test in this suite

@@ -5,6 +5,7 @@ import { api, rateLimitedTestUser } from '@beabee/test-utils/test-data';
 import { resolve } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
+import { devLogin } from '#utils/auth.ts';
 import { createTestFile } from '#utils/file.ts';
 
 import { FIXTURE_PATH } from '../../env';
@@ -61,10 +62,7 @@ describe('Rate Limits', () => {
 
     it('should allow authenticated users to upload documents', async () => {
       // Log in the user specifically for this test
-      await client.auth.login({
-        email: rateLimitedTestUser.email,
-        password: rateLimitedTestUser.password,
-      });
+      await devLogin(client.auth, rateLimitedTestUser.email);
 
       const pdfPath = resolve(FIXTURE_PATH, 'Lorem-Ipsum.pdf');
       const pdfFile = createTestFile(pdfPath, 'application/pdf');

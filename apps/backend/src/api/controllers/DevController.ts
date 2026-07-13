@@ -4,6 +4,7 @@ import { getRepository } from '@beabee/core/database';
 import { NotFoundError } from '@beabee/core/errors';
 import { Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
+import { normalizeEmailAddress } from '@beabee/core/utils';
 
 import { isUUID } from 'class-validator';
 import { Request, Response } from 'express';
@@ -50,6 +51,7 @@ export class DevController {
    * Usage:
    * - Login as role: /dev/login/as/superadmin
    * - Login as user: /dev/login/as/{uuid}
+   * - Login as email: /dev/login/as/{email}
    */
   @Get('/login/as/:id')
   @Redirect(`/`)
@@ -68,6 +70,10 @@ export class DevController {
       contact = role?.contact;
     } else if (isUUID(id, '4')) {
       contact = await ContactsService.findOneBy({ id });
+    } else if (id.includes('@')) {
+      contact = await ContactsService.findOneBy({
+        email: normalizeEmailAddress(id),
+      });
     }
 
     if (contact) {

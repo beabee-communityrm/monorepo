@@ -9,6 +9,8 @@ import { api, testUser } from '@beabee/test-utils/test-data';
 import { addDays } from 'date-fns';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
+import { devLogin } from '#utils/auth.ts';
+
 describe('ApiKey API', () => {
   let apiKeyClient: ApiKeyClient;
   let authUserClient: AuthClient;
@@ -18,10 +20,7 @@ describe('ApiKey API', () => {
       path: api.path,
     });
     // For testing api keys we need to login as user
-    await authUserClient.login({
-      email: testUser.email,
-      password: testUser.password,
-    });
+    await devLogin(authUserClient, testUser.email);
     apiKeyClient = new ApiKeyClient({
       host: api.host,
       path: api.path,
