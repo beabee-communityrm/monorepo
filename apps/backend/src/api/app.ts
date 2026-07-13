@@ -23,6 +23,7 @@ import {
 
 import sessions from '#core/lib/sessions';
 
+import authRouter from './auth.js';
 import * as Controllers from './controllers/index.js';
 import { ValidateResponseInterceptor } from './interceptors/ValidateResponseInterceptor.js';
 import { AuthMiddleware } from './middlewares/index.js';
@@ -49,6 +50,8 @@ app.use(cookie());
 initApp()
   .then(() => {
     sessions(app);
+
+    app.use('/1.0/auth', authRouter);
 
     useExpressServer(app, {
       routePrefix: '/1.0',

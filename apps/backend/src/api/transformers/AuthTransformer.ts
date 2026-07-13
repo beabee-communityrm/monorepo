@@ -1,3 +1,4 @@
+import config from '@beabee/core/config';
 import { Contact } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
@@ -15,15 +16,18 @@ class AuthTransformer {
    */
   @TransformPlainToInstance(GetAuthInfoDto)
   convert(auth: AuthInfo): GetAuthInfoDto {
+    const accountUrl = config.oidc.accountUrl || undefined;
     if (!auth.contact) {
       return {
         method: auth.method,
         roles: auth.roles,
+        accountUrl,
       };
     }
     return {
       ...auth,
       contact: ContactTransformer.convert(auth.contact, auth),
+      accountUrl,
     };
   }
 
