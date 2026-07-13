@@ -101,7 +101,7 @@ class NewsletterService {
         } else if (err instanceof CantUpdateNewsletterGroupsError) {
           // Tried to add contact to an invalid group. Refresh cached groups and retry upsert
           log.warning(
-            `Failed to subscribe ${contact.email} to group. ${err.data.detail}\nGroups will be refreshed and the upsert retried.`
+            `Failed to subscribe ${contact.email} to group. ${err.detail}\nGroups will be refreshed and the upsert retried.`
           );
 
           await this.refreshNewsletterGroups();

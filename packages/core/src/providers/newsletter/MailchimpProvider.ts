@@ -101,7 +101,7 @@ export class MailchimpProvider implements NewsletterProvider {
       resp.status === 400 &&
       resp.data?.detail.toLowerCase().includes('invalid interest id')
     ) {
-      throw new CantUpdateNewsletterGroupsError(resp.status, resp.data);
+      throw new CantUpdateNewsletterGroupsError(resp.data.detail);
 
       // Try to put the user into pending state if they're in a compliance state
       // This can happen if they previously unsubscribed or were cleaned
