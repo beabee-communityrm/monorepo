@@ -1412,6 +1412,7 @@ __metadata:
     tailwindcss: "npm:^4.2.4"
     typescript: "npm:~6.0.3"
     typescript-eslint: "npm:^8.59.2"
+    valibot: "npm:^1.4.2"
     vite: "npm:8.0.13"
     vitest: "npm:^4.1.5"
     vue: "npm:^3.5.34"
@@ -22272,6 +22273,18 @@ __metadata:
   dependencies:
     homedir-polyfill: "npm:^1.0.1"
   checksum: 10c0/aa0149384c1b75eee60f9e4339dbcc891d5a2154f51dbe41feb35a2227e88c0f30701234676c47b7887414c6a95bce23783931eeed52126842b7ba3a75984da7
+  languageName: node
+  linkType: hard
+
+"valibot@npm:^1.4.2":
+  version: 1.4.2
+  resolution: "valibot@npm:1.4.2"
+  peerDependencies:
+    typescript: ">=5"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/71b861de928fd5533b03fc4d84c619c07602f176d2bc6b12c5c80b2a6e889574c4126c843dd0771ce450bbb29566ca6df13d5b538ce5e4c39c2fccfb7623cf4e
   languageName: node
   linkType: hard
 
