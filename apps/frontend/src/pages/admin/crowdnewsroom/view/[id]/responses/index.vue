@@ -251,6 +251,7 @@ import { addBreadcrumb } from '#store/breadcrumb';
 import { canAdmin } from '#store/currentUser';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
+import { buckets } from '#utils/callouts';
 import {
   definePaginatedQuery,
   defineParam,
@@ -387,7 +388,7 @@ const {
   currentSegment,
 } = useSegmentManagement(
   `/admin/crowdnewsroom/view/${props.callout.slug}/responses`,
-  'All Responses',
+  t('calloutResponsesPage.allResponses'),
   listSegments,
   listTotalSegmentItems
 );
@@ -420,11 +421,18 @@ async function updateSegment(
 }
 
 async function listSegments() {
-  return await client.callout.segments.list(
+  const segments = await client.callout.segments.list(
     props.callout.slug,
     { sort: 'order' },
     ['itemCount']
   );
+  return segments.map((segment) => ({
+    ...segment,
+    name:
+      buckets.value.find(
+        (bucket) => bucket.id.toLowerCase() === segment.name.toLowerCase()
+      )?.label ?? segment.name,
+  }));
 }
 
 async function listTotalSegmentItems() {

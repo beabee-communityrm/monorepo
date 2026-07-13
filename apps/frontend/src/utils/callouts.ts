@@ -40,7 +40,7 @@ const { t } = i18n.global;
  * Predefined response buckets for callout responses
  */
 export const buckets = computed(() => [
-  { id: '', label: t('calloutResponseBuckets.inbox') },
+  { id: 'inbox', label: t('calloutResponseBuckets.inbox') },
   { id: 'verified', label: t('calloutResponseBuckets.verified') },
   { id: 'trash', label: t('calloutResponseBuckets.trash') },
 ]);

@@ -906,6 +906,7 @@
     "selectedCount": "{n} risposta selezionata | {n} risposte selezionate"
   },
   "calloutResponsesPage": {
+    "allResponses": "Tutte le risposte",
     "moveToBucket": "Sposta in {bucket}",
     "noTags": "Nessun tag",
     "response": "Risposta",

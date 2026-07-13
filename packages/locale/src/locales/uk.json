@@ -906,6 +906,7 @@
     "selectedCount": "{n} вибрано відповідь | {n} вибрано відповідей"
   },
   "calloutResponsesPage": {
+    "allResponses": "Усі відповіді",
     "moveToBucket": "Перемістити до {bucket}",
     "noTags": "Без тегів",
     "response": "Відповідь",
