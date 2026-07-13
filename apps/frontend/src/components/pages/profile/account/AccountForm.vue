@@ -132,7 +132,7 @@ import { GetContactWith, toPhoneNumber } from '@beabee/beabee-common';
 import { AppSectionCard, addNotification } from '@beabee/vue';
 
 import * as v from 'valibot';
-import { computed, nextTick, reactive, ref, watch } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { extractErrorText } from '#utils/api-error';
@@ -235,7 +235,7 @@ const formRef = ref<{ clear: () => void; submit: () => Promise<void> } | null>(
 watch(
   data,
   () => {
-    dirty.value = true;
+    dirty.value = JSON.stringify(data) !== JSON.stringify(savedData);
     saved.value = false;
   },
   { deep: true }
@@ -276,13 +276,8 @@ async function handleSave() {
   }
 }
 
-async function handleCancel() {
+function handleCancel() {
   Object.assign(data, savedData);
   formRef.value?.clear();
-  // Wait for the deep `watch(data, ...)` above to react to the assignment
-  // (and re-mark dirty) before clearing it, otherwise that watcher's queued
-  // update would run after this and flip dirty back to true.
-  await nextTick();
-  dirty.value = false;
 }
 </script>
