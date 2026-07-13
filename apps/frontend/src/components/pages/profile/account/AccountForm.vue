@@ -131,9 +131,9 @@
 import { GetContactWith, toPhoneNumber } from '@beabee/beabee-common';
 import { AppSectionCard, addNotification } from '@beabee/vue';
 
-import * as v from 'valibot';
 import { computed, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { z } from 'zod';
 
 import { extractErrorText } from '#utils/api-error';
 import { client } from '#utils/api';
@@ -166,55 +166,38 @@ function isValidPhone(value: string): boolean {
 }
 
 const schema = computed(() =>
-  v.pipe(
-    v.object({
-      emailAddress: v.pipe(
-        v.string(),
-        v.nonEmpty(t('form.errors.email.required')),
-        v.rfcEmail(t('form.errors.email.email'))
-      ),
-      firstName: v.pipe(
-        v.string(),
-        v.nonEmpty(t('form.errors.firstName.required'))
-      ),
-      lastName: v.pipe(
-        v.string(),
-        v.nonEmpty(t('form.errors.lastName.required'))
-      ),
-      telephone: v.pipe(
-        v.string(),
-        v.check(isValidPhone, t('form.errors.telephone.phone'))
-      ),
-      deliveryOptIn: v.boolean(),
-      addressLine1: v.string(),
-      cityOrTown: v.string(),
-      postCode: v.string(),
-    }),
-    v.forward(
-      v.partialCheck(
-        [['deliveryOptIn'], ['addressLine1']],
-        (input) => !input.deliveryOptIn || !!input.addressLine1,
-        t('form.errors.addressLine1.required')
-      ),
-      ['addressLine1']
-    ),
-    v.forward(
-      v.partialCheck(
-        [['deliveryOptIn'], ['cityOrTown']],
-        (input) => !input.deliveryOptIn || !!input.cityOrTown,
-        t('form.errors.cityOrTown.required')
-      ),
-      ['cityOrTown']
-    ),
-    v.forward(
-      v.partialCheck(
-        [['deliveryOptIn'], ['postCode']],
-        (input) => !input.deliveryOptIn || !!input.postCode,
-        t('form.errors.postCode.required')
-      ),
-      ['postCode']
-    )
-  )
+  z
+    .object({
+      emailAddress: z
+        .string()
+        .min(1, { error: t('form.errors.email.required'), abort: true })
+        .email({ error: t('form.errors.email.email') }),
+      firstName: z
+        .string()
+        .min(1, { error: t('form.errors.firstName.required') }),
+      lastName: z
+        .string()
+        .min(1, { error: t('form.errors.lastName.required') }),
+      telephone: z
+        .string()
+        .refine(isValidPhone, { error: t('form.errors.telephone.phone') }),
+      deliveryOptIn: z.boolean(),
+      addressLine1: z.string(),
+      cityOrTown: z.string(),
+      postCode: z.string(),
+    })
+    .refine((input) => !input.deliveryOptIn || !!input.addressLine1, {
+      error: t('form.errors.addressLine1.required'),
+      path: ['addressLine1'],
+    })
+    .refine((input) => !input.deliveryOptIn || !!input.cityOrTown, {
+      error: t('form.errors.cityOrTown.required'),
+      path: ['cityOrTown'],
+    })
+    .refine((input) => !input.deliveryOptIn || !!input.postCode, {
+      error: t('form.errors.postCode.required'),
+      path: ['postCode'],
+    })
 );
 
 const dirty = ref(false);
