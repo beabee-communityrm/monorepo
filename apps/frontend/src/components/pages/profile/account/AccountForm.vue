@@ -9,6 +9,7 @@
 -->
 <template>
   <UForm
+    id="account-form"
     ref="formRef"
     class="flex flex-col gap-6"
     :schema="schema"
@@ -91,51 +92,19 @@
       </div>
     </AppSectionCard>
 
-    <Teleport to="#account-page">
-      <div
-        v-if="dirty"
-        class="border-default bg-default sticky bottom-0 z-20 -mx-4 w-auto border-t md:-mx-5"
-      >
-        <div
-          class="mx-auto flex max-w-2xl items-center justify-between gap-4 px-4 py-3 sm:px-6"
-        >
-          <p class="text-muted text-sm">
-            {{ t('accountPage.unsavedChanges') }}
-          </p>
-          <div class="flex items-center gap-2">
-            <UButton
-              type="button"
-              variant="outline"
-              color="neutral"
-              @mousedown.prevent
-              @click="handleCancel"
-            >
-              {{ t('actions.cancel') }}
-            </UButton>
-            <UButton
-              type="button"
-              :loading="saving"
-              :icon="saved ? 'i-lucide-check' : undefined"
-              @click="formRef?.submit()"
-            >
-              {{ saved ? t('form.saved') : t('form.saveChanges') }}
-            </UButton>
-          </div>
-        </div>
-      </div>
-    </Teleport>
+    <AppStickySaveBar v-if="dirty" form="account-form" @cancel="handleCancel" />
   </UForm>
 </template>
 
 <script lang="ts" setup>
 import { GetContactWith, toPhoneNumber } from '@beabee/beabee-common';
-import { AppSectionCard, addNotification } from '@beabee/vue';
+import { AppSectionCard, AppStickySaveBar } from '@beabee/vue';
 
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, reactive, ref, useTemplateRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { z } from 'zod';
 
-import { extractErrorText } from '#utils/api-error';
+import { useApiSubmit } from '#composables/useApiSubmit';
 import { client } from '#utils/api';
 
 const { t } = useI18n();
@@ -158,8 +127,7 @@ const data = reactive({
 /** Snapshot of the last-saved (or initially loaded) values, for Cancel */
 let savedData = { ...data };
 
-// Kept exactly as-is (deferred improvement, see project memory note on the
-// known phone-validation gap) — not part of this validation-layer migration.
+// Incomplete phone number validation
 function isValidPhone(value: string): boolean {
   if (!value) return true; // Optional field
   return toPhoneNumber(value) !== false;
@@ -201,32 +169,23 @@ const schema = computed(() =>
 );
 
 const dirty = ref(false);
-const saving = ref(false);
-const saved = ref(false);
 
 // UForm validates in response to DOM events (input/blur/change), not
 // reactively off `:state` — a silent `Object.assign` (in handleCancel below)
 // doesn't fire those events, so any already-shown errors would otherwise
 // stay stuck on screen. `formRef.value.clear()` explicitly wipes them.
-// `formRef.value.submit()` is also used directly by the Save button: it's
-// Teleported out of the `<form>` DOM subtree for sticky positioning, so it
-// has no native form association for a real `type="submit"` click to reach.
-const formRef = ref<{ clear: () => void; submit: () => Promise<void> } | null>(
-  null
-);
+const formRef = useTemplateRef('formRef');
 
 watch(
   data,
   () => {
     dirty.value = JSON.stringify(data) !== JSON.stringify(savedData);
-    saved.value = false;
   },
   { deep: true }
 );
 
-async function handleSave() {
-  saving.value = true;
-  try {
+const { submit: handleSave } = useApiSubmit(
+  async () => {
     await client.contact.update('me', {
       email: data.emailAddress,
       firstname: data.firstName,
@@ -246,18 +205,10 @@ async function handleSave() {
       },
     });
     savedData = { ...data };
-    saved.value = true;
     dirty.value = false;
-    addNotification({ title: t('form.saved'), variant: 'success' });
-    setTimeout(() => {
-      saved.value = false;
-    }, 3000);
-  } catch (err) {
-    addNotification({ title: extractErrorText(err), variant: 'error' });
-  } finally {
-    saving.value = false;
-  }
-}
+  },
+  { successMessage: () => t('form.saved') }
+);
 
 function handleCancel() {
   Object.assign(data, savedData);

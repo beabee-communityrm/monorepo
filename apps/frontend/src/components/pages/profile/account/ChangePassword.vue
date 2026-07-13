@@ -71,27 +71,22 @@
         >
           {{ t('actions.cancel') }}
         </UButton>
-        <UButton
-          type="submit"
-          :loading="saving"
-          :icon="saved ? 'i-lucide-check' : undefined"
-        >
-          {{
-            saved ? t('accountPage.savedPassword') : t('actions.changePassword')
-          }}
+        <UButton type="submit" loading-auto>
+          {{ t('actions.changePassword') }}
         </UButton>
       </div>
     </AppSectionCard>
   </UForm>
 </template>
 <script lang="ts" setup>
-import { AppSectionCard, addNotification } from '@beabee/vue';
+import { isPassword } from '@beabee/beabee-common';
+import { AppSectionCard } from '@beabee/vue';
 
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { z } from 'zod';
 
-import { extractErrorText } from '#utils/api-error';
+import { useApiSubmit } from '#composables/useApiSubmit';
 import { client } from '#utils/api';
 
 const { t } = useI18n();
@@ -101,13 +96,7 @@ const confirmPassword = ref('');
 const state = reactive({ password, confirmPassword });
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
-const saving = ref(false);
-const saved = ref(false);
 
-// Plain assignment expressions (`@click="showPassword = !showPassword"`)
-// type-check as returning `boolean`, which doesn't satisfy UButton's
-// `onClick: (event) => void | Promise<void>` — small toggle functions avoid
-// that mismatch.
 function toggleShowPassword() {
   showPassword.value = !showPassword.value;
 }
@@ -116,36 +105,16 @@ function toggleShowConfirmPassword() {
 }
 
 function isValidPassword(value: string): boolean {
-  if (!value) return true;
-  return (
-    value.length >= 8 &&
-    /[0-9]/.test(value) &&
-    /[A-Z]/.test(value) &&
-    /[a-z]/.test(value)
-  );
+  return !value || isPassword(value);
 }
 
-// UForm validates in response to DOM events (input/blur/change), not
-// reactively off `:state` — a silent ref assignment (in handleCancel below)
-// doesn't fire those events, so an already-shown error would otherwise stay
-// stuck on screen. `formRef.value.clear()` explicitly wipes it.
-// `setErrors` is used directly by handleSubmit below — see the comment on
-// the "required" schema omission for why.
-const formRef = ref<{
-  clear: () => void;
-  setErrors: (errs: { name: string; message: string }[]) => void;
-} | null>(null);
+const formRef = useTemplateRef('formRef');
 
-// Deliberately no `v.nonEmpty(...)` "required" check here (unlike the other
-// fields on this page): Nuxt UI's `UFormField` has a quirk where passing
-// `:error="false"` to force-suppress a message still leaves the red border
-// showing (its internal `error` computed is `props.error || matchedError`,
-// and `false` is falsy so the `||` falls through). That made an empty
-// password/confirmPassword field turn red on a bare focus+blur, before the
-// user had even attempted to save. Since blur validates against this schema
-// directly, the only way to stop that is to not flag "empty" as invalid in
-// the schema at all — required-ness is instead checked manually in
-// handleSubmit below, only at actual submit time.
+// Deliberately no `v.nonEmpty(...)` "required" check here. The fields are initially
+// empty so validating "required" the moment the user focuses and blurs the field
+//  — even if they haven't typed anything at all — means showing an error for a
+//  field/form they are choosing not to fill out. Required-ness is instead checked
+//  manually in handleSubmit below, only at actual submit time.
 const schema = computed(() =>
   z
     .object({
@@ -155,9 +124,6 @@ const schema = computed(() =>
       confirmPassword: z.string(),
     })
     .refine(
-      // Skip the mismatch check while confirmPassword is still empty —
-      // same reasoning as above, don't nag about a field the user hasn't
-      // gotten to yet.
       (input) =>
         !input.confirmPassword || input.password === input.confirmPassword,
       {
@@ -165,6 +131,16 @@ const schema = computed(() =>
         path: ['confirmPassword'],
       }
     )
+);
+
+const { submit: doSubmit } = useApiSubmit(
+  async () => {
+    await client.contact.update('me', { password: password.value });
+    password.value = '';
+    confirmPassword.value = '';
+    formRef.value?.clear();
+  },
+  { successMessage: () => t('accountPage.savedPassword') }
 );
 
 async function handleSubmit() {
@@ -185,25 +161,7 @@ async function handleSubmit() {
     return;
   }
 
-  saving.value = true;
-  try {
-    await client.contact.update('me', { password: password.value });
-    saved.value = true;
-    password.value = '';
-    confirmPassword.value = '';
-    formRef.value?.clear();
-    addNotification({
-      title: t('accountPage.savedPassword'),
-      variant: 'success',
-    });
-    setTimeout(() => {
-      saved.value = false;
-    }, 3000);
-  } catch (err) {
-    addNotification({ title: extractErrorText(err), variant: 'error' });
-  } finally {
-    saving.value = false;
-  }
+  await doSubmit();
 }
 
 function handleCancel() {
