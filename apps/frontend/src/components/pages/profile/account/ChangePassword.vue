@@ -87,9 +87,9 @@
 <script lang="ts" setup>
 import { AppSectionCard, addNotification } from '@beabee/vue';
 
-import * as v from 'valibot';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { z } from 'zod';
 
 import { extractErrorText } from '#utils/api-error';
 import { client } from '#utils/api';
@@ -147,27 +147,24 @@ const formRef = ref<{
 // the schema at all — required-ness is instead checked manually in
 // handleSubmit below, only at actual submit time.
 const schema = computed(() =>
-  v.pipe(
-    v.object({
-      password: v.pipe(
-        v.string(),
-        v.check(isValidPassword, t('form.errors.password.password'))
-      ),
-      confirmPassword: v.string(),
-    }),
-    v.forward(
-      v.partialCheck(
-        [['password'], ['confirmPassword']],
-        // Skip the mismatch check while confirmPassword is still empty —
-        // same reasoning as above, don't nag about a field the user hasn't
-        // gotten to yet.
-        (input) =>
-          !input.confirmPassword || input.password === input.confirmPassword,
-        t('form.errors.confirmPassword.sameAs')
-      ),
-      ['confirmPassword']
+  z
+    .object({
+      password: z
+        .string()
+        .refine(isValidPassword, { error: t('form.errors.password.password') }),
+      confirmPassword: z.string(),
+    })
+    .refine(
+      // Skip the mismatch check while confirmPassword is still empty —
+      // same reasoning as above, don't nag about a field the user hasn't
+      // gotten to yet.
+      (input) =>
+        !input.confirmPassword || input.password === input.confirmPassword,
+      {
+        error: t('form.errors.confirmPassword.sameAs'),
+        path: ['confirmPassword'],
+      }
     )
-  )
 );
 
 async function handleSubmit() {
