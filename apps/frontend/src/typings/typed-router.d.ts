@@ -331,46 +331,11 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    'forgot-password': RouteRecordInfo<
-      'forgot-password',
-      '/auth/forgot-password',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     'login': RouteRecordInfo<
       'login',
       '/auth/login',
       Record<never, never>,
       Record<never, never>,
-      | never
-    >,
-    'lost-device': RouteRecordInfo<
-      'lost-device',
-      '/auth/lost-device',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    'reset_device': RouteRecordInfo<
-      'reset_device',
-      '/auth/reset-device/:id',
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
-      | never
-    >,
-    'reset_password': RouteRecordInfo<
-      'reset_password',
-      '/auth/reset-password/:id',
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
-      | never
-    >,
-    'set_password': RouteRecordInfo<
-      'set_password',
-      '/auth/set-password/:id',
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
       | never
     >,
     'callouts': RouteRecordInfo<
@@ -793,39 +758,9 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/auth/forgot-password.vue': {
-      routes:
-        | 'forgot-password'
-      views:
-        | never
-    }
     'src/pages/auth/login.vue': {
       routes:
         | 'login'
-      views:
-        | never
-    }
-    'src/pages/auth/lost-device.vue': {
-      routes:
-        | 'lost-device'
-      views:
-        | never
-    }
-    'src/pages/auth/reset-device/[id].vue': {
-      routes:
-        | 'reset_device'
-      views:
-        | never
-    }
-    'src/pages/auth/reset-password/[id].vue': {
-      routes:
-        | 'reset_password'
-      views:
-        | never
-    }
-    'src/pages/auth/set-password/[id].vue': {
-      routes:
-        | 'set_password'
       views:
         | never
     }

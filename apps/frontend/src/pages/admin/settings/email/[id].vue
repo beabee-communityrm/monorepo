@@ -144,13 +144,10 @@ function getMergeTag(text: string): string[] {
 
 const missingMergeTags = computed(() => {
   const requiredMergeTagMap: Record<string, string[]> = {
-    'reset-password': ['*|RPLINK|*'],
     'confirm-email': ['*|CONFIRMLINK|*'],
     'setup-account': ['*|CONFIRMLINK|*'],
     'contribution-didnt-start': ['*|LOGINLINK|*'],
     'email-exists-login': ['*|LOGINLINK|*'],
-    'email-exists-set-password': ['*|SPLINK|*'],
-    'reset-device': ['*|RPLINK|*'],
   };
   const requiredTags = requiredMergeTagMap[templateId.value];
   if (!emailData.value || !requiredTags) return undefined;

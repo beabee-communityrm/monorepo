@@ -22,7 +22,6 @@ describe('Contact API', () => {
         email: `test-${Date.now()}@example.com`,
         firstname: 'Test',
         lastname: 'User',
-        password: 'testPassword123!',
       };
 
       const response = await contactClient.create(newContact);

@@ -26,7 +26,6 @@ describe('ContactRole API', () => {
       email: `test-role-${Date.now()}@example.com`,
       firstname: 'Test',
       lastname: 'Role User',
-      password: 'testPassword123!',
     };
 
     const response = await contactClient.create(newContact);

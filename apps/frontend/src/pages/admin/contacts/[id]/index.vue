@@ -202,58 +202,6 @@ meta:
         </AppInfoList>
       </section>
 
-      <!-- Security -->
-      <section class="mb-6">
-        <AppHeading>{{ t('contactOverview.security.title') }}</AppHeading>
-
-        <!-- Multi factor authentication -->
-        <section v-if="mfa.isEnabled" class="mt-4">
-          <p>
-            {{
-              t('contactOverview.security.mfa.desc', {
-                disableLabel: t('actions.disable'),
-              })
-            }}
-          </p>
-
-          <AppButton
-            type="button"
-            variant="primaryOutlined"
-            class="mt-4"
-            :icon="faMobileAlt"
-            @click="mfa.showDisableConfirmModal = true"
-          >
-            {{ t(`actions.disable`) }}
-          </AppButton>
-        </section>
-
-        <section v-else class="mt-4">
-          <p>
-            {{ t('contactOverview.security.mfa.disabledDesc') }}
-          </p>
-        </section>
-
-        <!-- Not implemented yet -->
-        <section class="mt-4 hidden">
-          <p>{{ t('contactOverview.security.whatDoTheButtonsDo') }}</p>
-          <form @submit.prevent="handleSecurityAction">
-            <AppButton type="submit" variant="primaryOutlined" class="mt-4">{{
-              t('contactOverview.security.loginOverride')
-            }}</AppButton>
-            <AppButton
-              type="submit"
-              variant="primaryOutlined"
-              class="mt-2 ml-6"
-              >{{ t('contactOverview.security.resetPassword') }}</AppButton
-            >
-          </form>
-          <div v-if="securityLink" class="mt-4">
-            <p class="mt-4">{{ t('contactOverview.security.instructions') }}</p>
-            <AppInput readonly :value="securityLink" class="mt-2"></AppInput>
-          </div>
-        </section>
-      </section>
-
       <section v-if="joinSurvey && joinSurveyResponse" class="mb-6">
         <AppHeading>
           {{ t('contactOverview.joinSurvey') }}
@@ -268,23 +216,10 @@ meta:
       </section>
     </template>
   </App2ColGrid>
-
-  <AppConfirmDialog
-    :open="mfa.showDisableConfirmModal"
-    :title="t('accountPage.mfa.confirmDelete.title')"
-    :cancel="t('actions.noBack')"
-    :confirm="t('actions.yesDisable')"
-    variant="danger"
-    @close="mfa.showDisableConfirmModal = false"
-    @confirm="disableMfaAndNotify"
-  >
-    <p>{{ t('accountPage.mfa.confirmDelete.desc') }}</p>
-  </AppConfirmDialog>
 </template>
 
 <script lang="ts" setup>
 import {
-  CONTACT_MFA_TYPE,
   type ContactRoleData,
   type ContentJoinSetupData,
   ContributionType,
@@ -300,8 +235,6 @@ import {
 } from '@beabee/beabee-common';
 import {
   App2ColGrid,
-  AppButton,
-  AppConfirmDialog,
   AppHeading,
   AppInfoList,
   AppInfoListItem,
@@ -313,7 +246,6 @@ import {
 } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { onBeforeMount, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -343,50 +275,9 @@ const contact = ref<GetContactDataWith<
 > | null>(null);
 const contactTags = ref<string[]>([]);
 const contactAbout = reactive({ notes: '', description: '' });
-const securityLink = ref('');
 const changingRoles = ref(false);
 
 const paymentAggregations = ref<GetPaymentAggregationData>();
-
-/** Multi factor authentication state */
-const mfa = ref({
-  showDisableConfirmModal: false,
-  isEnabled: false,
-});
-
-/** Disable MFA and notify the admin */
-const disableMfaAndNotify = async () => {
-  mfa.value.showDisableConfirmModal = false;
-  await disableMfa();
-  addNotification({
-    title: t('accountPage.mfa.disabledNotification'),
-    variant: 'warning',
-  });
-};
-
-/** Disable MFA for the contact by the admin */
-const disableMfa = async () => {
-  try {
-    await client.contact.mfa.delete(props.contact.id, {
-      type: CONTACT_MFA_TYPE.TOTP,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (_err) {
-    onDeleteMfaError();
-    return false;
-  }
-
-  mfa.value.isEnabled = false;
-
-  return true;
-};
-
-const onDeleteMfaError = () => {
-  addNotification({
-    title: t('accountPage.mfa.deleteUnknownErrorNotification'),
-    variant: 'error',
-  });
-};
 
 const joinSurvey = ref<GetCalloutDataWith<'form'>>();
 const joinSurveyResponse =
@@ -394,11 +285,6 @@ const joinSurveyResponse =
 
 async function handleUpdateAbout() {
   await client.contact.update(props.contact.id, { profile: contactAbout });
-}
-
-async function handleSecurityAction() {
-  const response = await (() => 'https://reset-link.com')();
-  securityLink.value = response;
 }
 
 async function handleUpdateRole(roleName: RoleType, role: ContactRoleData) {
@@ -491,12 +377,6 @@ onBeforeMount(async () => {
       ],
     },
   });
-
-  // Fetch MFA information
-  const contactMfa = await client.contact.mfa.get(props.contact.id);
-  if (contactMfa && contactMfa.type === CONTACT_MFA_TYPE.TOTP) {
-    mfa.value.isEnabled = true;
-  }
 
   setupContent.value = await client.content.get('join/setup');
 
