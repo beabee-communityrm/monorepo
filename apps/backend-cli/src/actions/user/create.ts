@@ -1,14 +1,8 @@
-import {
-  ContributionType,
-  RESET_SECURITY_FLOW_TYPE,
-} from '@beabee/beabee-common';
-import { config } from '@beabee/core/config';
+import { ContributionType } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { ContactRole } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
 import { contactsService } from '@beabee/core/services/ContactsService';
-import { resetSecurityFlowService } from '@beabee/core/services/ResetSecurityFlowService';
-import { generatePassword } from '@beabee/core/utils/auth';
 
 import moment from 'moment';
 
@@ -48,28 +42,14 @@ export const createUser = async (argv: CreateUserArgs): Promise<void> => {
       roles.push(admin);
     }
 
-    const contact = await contactsService.createContact({
+    await contactsService.createContact({
       firstname: argv.firstname,
       lastname: argv.lastname,
       email: argv.email,
       contributionType: ContributionType.None,
       roles: roles,
-      ...(argv.password && {
-        password: await generatePassword(argv.password),
-      }),
     });
 
-    if (!argv.password) {
-      const rpFlow = await resetSecurityFlowService.create(
-        contact,
-        RESET_SECURITY_FLOW_TYPE.PASSWORD
-      );
-
-      console.log(
-        `Reset password link: ${config.audience}/auth/set-password/${rpFlow.id}`
-      );
-    } else {
-      console.log('User created successfully!');
-    }
+    console.log('User created successfully!');
   });
 };

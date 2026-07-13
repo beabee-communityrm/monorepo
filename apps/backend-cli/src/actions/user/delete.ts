@@ -78,8 +78,8 @@ async function deleteContact(contact: Contact): Promise<void> {
  * Returns appropriate message when no users are found
  */
 function getNoUsersMessage(args: DeleteUserArgs): string {
-  if (args.withoutPassword) {
-    return 'No users without password found';
+  if (args.unlinked) {
+    return 'No unlinked users found';
   }
   if (args.email) {
     return `No user found with email ${args.email}`;

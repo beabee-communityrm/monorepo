@@ -22,9 +22,10 @@ export const userCommand: CommandModule = {
               type: 'string',
               description: 'Filter by email',
             })
-            .option('without-password', {
+            .option('unlinked', {
               type: 'boolean',
-              description: 'Only show users without a password set',
+              description:
+                'Only show users not linked to the identity provider',
               default: false,
             }) as Argv<ListUserArgs>,
         handler: async (argv: ArgumentsCamelCase<ListUserArgs>) => {
@@ -54,13 +55,6 @@ export const userCommand: CommandModule = {
               type: 'string',
               describe: 'Email address',
               demandOption: true,
-            })
-            .option('password', {
-              alias: 'p',
-              type: 'string',
-              describe:
-                'Password (leave empty to generate reset password link)',
-              default: '',
             })
             .option('membership', {
               alias: 'm',
@@ -126,9 +120,10 @@ export const userCommand: CommandModule = {
               type: 'string',
               description: 'Email of the user to delete',
             })
-            .option('without-password', {
+            .option('unlinked', {
               type: 'boolean',
-              description: 'Delete all users without a password set',
+              description:
+                'Delete all users not linked to the identity provider',
               default: false,
             })
             .option('force', {
@@ -138,10 +133,8 @@ export const userCommand: CommandModule = {
               default: false,
             })
             .check((argv) => {
-              if (!argv.email && !argv.withoutPassword) {
-                throw new Error(
-                  'Either email or --without-password must be provided'
-                );
+              if (!argv.email && !argv.unlinked) {
+                throw new Error('Either email or --unlinked must be provided');
               }
               return true;
             }) as Argv<DeleteUserArgs>,

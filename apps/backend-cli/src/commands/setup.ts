@@ -63,12 +63,6 @@ export const setupCommand: CommandModule = {
               alias: 'e',
               type: 'string',
               describe: 'Email address of the admin user',
-            })
-            .option('password', {
-              alias: 'p',
-              type: 'string',
-              describe:
-                'Password for the admin user (leave empty to generate reset link)',
             });
         },
         handler: async (argv) => {
@@ -150,12 +144,6 @@ export const setupCommand: CommandModule = {
               alias: 'admin-email',
               type: 'string',
               describe: 'Email address of the admin user',
-            })
-            .option('password', {
-              alias: 'admin-password',
-              type: 'string',
-              describe:
-                'Password for the admin user (leave empty to generate reset link)',
             });
         },
         handler: async (argv) => {

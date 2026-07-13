@@ -1,4 +1,4 @@
-import { confirm, input, password } from '@inquirer/prompts';
+import { confirm, input } from '@inquirer/prompts';
 
 import type { CreateUserArgs } from '../../types/index.js';
 import type { SetupAdminArgs } from '../../types/setup.js';
@@ -55,36 +55,10 @@ export async function setupAdmin(args: SetupAdminArgs): Promise<void> {
         },
       }));
 
-    let userPassword = args.password || '';
-
-    // Only ask about password if not provided via command line
-    if (!args.password) {
-      const setPassword = await confirm({
-        message:
-          'Do you want to set a password now? (No = generate reset password link)',
-        default: false,
-      });
-
-      if (setPassword) {
-        userPassword = await password({
-          message: 'Password:',
-          validate: (input: string) => {
-            if (input.length < 8) {
-              return 'Password must be at least 8 characters long';
-            }
-            return true;
-          },
-        });
-      }
-    }
-
     // Show summary and confirm
     console.log('\n--- Admin User Summary ---');
     console.log(`Name: ${firstname} ${lastname}`);
     console.log(`Email: ${email}`);
-    console.log(
-      `Password: ${userPassword ? 'Set' : 'Will generate reset link'}`
-    );
     console.log(`Membership: none`);
     console.log(`Role: superadmin`);
 
@@ -103,7 +77,6 @@ export async function setupAdmin(args: SetupAdminArgs): Promise<void> {
       firstname,
       lastname,
       email,
-      password: userPassword,
       membership: 'none',
       role: 'superadmin',
     };
