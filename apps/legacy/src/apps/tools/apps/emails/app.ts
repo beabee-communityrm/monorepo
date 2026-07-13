@@ -51,16 +51,6 @@ const assignableSystemEmails: Partial<Record<EmailTemplateId, EmailType>> = {
     showContactFields: true,
     mergeFields: [],
   },
-  'reset-password': {
-    name: 'Reset password',
-    showContactFields: true,
-    mergeFields: [],
-  },
-  'reset-device': {
-    name: 'Reset device',
-    showContactFields: true,
-    mergeFields: [],
-  },
   'cancelled-contribution': {
     name: 'Cancelled contribution',
     showContactFields: true,
@@ -81,11 +71,6 @@ const assignableSystemEmails: Partial<Record<EmailTemplateId, EmailType>> = {
   },
   'email-exists-login': {
     name: 'Email exists - login',
-    showContactFields: true,
-    mergeFields: [],
-  },
-  'email-exists-set-password': {
-    name: 'Email exists - set password',
     showContactFields: true,
     mergeFields: [],
   },

@@ -1,7 +1,4 @@
-import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
-import config from '@beabee/core/config';
-import { getRepository } from '@beabee/core/database';
-import { Contact, ResetSecurityFlow } from '@beabee/core/models';
+import { Contact } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import OptionsService from '@beabee/core/services/OptionsService';
 import PaymentService from '@beabee/core/services/PaymentService';
@@ -55,16 +52,9 @@ app.get(
     const contact = req.model as Contact;
     const availableTags = await getAvailableTags();
 
-    const rpFlow = await getRepository(ResetSecurityFlow).findOne({
-      where: { contactId: contact.id },
-      order: { date: 'DESC' },
-    });
-
     res.render('index', {
       member: contact,
-      rpFlow,
       availableTags,
-      password_tries: config.passwordTries,
     });
   })
 );
@@ -115,13 +105,6 @@ app.post(
           },
         });
         req.flash('success', 'member-login-override-generated');
-        break;
-      case 'password-reset':
-        await getRepository(ResetSecurityFlow).save({
-          contact,
-          type: RESET_SECURITY_FLOW_TYPE.PASSWORD,
-        });
-        req.flash('success', 'member-password-reset-generated');
         break;
       case 'permanently-delete':
         await ContactsService.permanentlyDeleteContact(contact);
