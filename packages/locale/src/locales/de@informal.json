@@ -16,7 +16,7 @@
       },
       "createUnknownErrorNotification": "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht gespeichert werden. Bitte versuche es erneut oder kontaktiere den Support.",
       "deleteUnknownErrorNotification": "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht entfernt werden. Bitte versuche es erneut oder kontaktiere den Support.",
-      "description": "",
+      "description": "Füge deinem Konto eine zusätzliche Sicherheitsebene hinzu",
       "disabledNotification": "Zwei-Faktor Authentifizierung erfolgreich deaktiviert",
       "enabledNotification": "Zwei-Faktor Authentifizierung erfolgreich aktiviert",
       "enterCode": {
@@ -37,8 +37,14 @@
         "desc": "Oder gib einfach den folgenden Code in deine Authenticator-App ein.",
         "label": "Secret"
       },
-      "statusDisabled": "",
-      "statusEnabled": "",
+      "statusDisabled": {
+        "description": "Wenn aktiviert, wirst du bei jeder Anmeldung nach einem Code aus deiner Authenticator-App gefragt.",
+        "title": "Zwei-Faktor-Authentifizierung ist deaktiviert"
+      },
+      "statusEnabled": {
+        "description": "Dein Konto ist durch eine Authenticator-App geschützt. Deaktiviere dies nur, wenn du das Gerät wechselst.",
+        "title": "Zwei-Faktor-Authentifizierung ist aktiviert"
+      },
       "title": "2-Faktor Authentifizierung",
       "validateButton": {
         "label": "Token überprüfen"
@@ -57,19 +63,13 @@
       "title": "Newsletter",
       "unsubscribe": "Vom Newsletter abmelden"
     },
-    "passwordStrength": {
-      "fair": "",
-      "strong": "",
-      "weak": ""
-    },
     "phoneInfo": "Mit der Angabe deiner Telefonnummer erklärst du dich damit einverstanden, telefonisch kontaktiert zu werden.",
     "phoneInfoAdmin": "Du musst die Zustimmung der Person einholen, bevor du ihre Telefonnummer in das System eingibst.",
-    "requiredFields": "",
-    "requiredFieldsHint": "",
+    "requiredFields": "Pflichtfelder",
     "savedPassword": "Das neue Passwort wurde gespeichert. ",
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "title": "Account",
-    "unsavedChanges": ""
+    "unsavedChanges": "Du hast ungespeicherte Änderungen"
   },
   "actions": {
     "add": "Hinzufügen",
@@ -92,7 +92,7 @@
     "export": "Exportieren",
     "getStarted": "Starten",
     "goBack": "Zurück",
-    "hidePassword": "",
+    "hidePassword": "Passwort verbergen",
     "increase": "Erhöhen",
     "next": "Weiter",
     "noBack": "Nein, gehe zurück",
@@ -116,7 +116,7 @@
     "sendOneOffEmail": "E-Mail senden",
     "sendOngoingEmails": "Laufende E-Mails",
     "share": "Teilen",
-    "showPassword": "",
+    "showPassword": "Passwort anzeigen",
     "skip": "Überspringen",
     "submit": "Abschicken",
     "tryAgain": "Erneut versuchen",
@@ -1470,7 +1470,7 @@
         "required": "Beschreibung benötigt"
       },
       "telephone": {
-        "phone": ""
+        "phone": "Ungültige Telefonnummer"
       },
       "unknown": {
         "email": "Ungültige E-Mail-Adresse",

@@ -16,7 +16,7 @@
       },
       "createUnknownErrorNotification": "De 2FA kon niet worden opgeslagen vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
       "deleteUnknownErrorNotification": "De 2FA kon niet worden verwijderd vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
-      "description": "",
+      "description": "Voeg een extra beveiligingslaag toe aan uw account",
       "disabledNotification": "2FA succesvol gedeactiveerd",
       "enabledNotification": "2FA succesvol geactiveerd",
       "enterCode": {
@@ -37,8 +37,14 @@
         "desc": "Je kunt ook de volgende code invoeren in je Authenticator app.",
         "label": "Geheime code"
       },
-      "statusDisabled": "",
-      "statusEnabled": "",
+      "statusDisabled": {
+        "description": "Indien ingeschakeld, wordt u bij elke keer inloggen om een code uit uw authenticator-app gevraagd.",
+        "title": "Tweefactorauthenticatie is uitgeschakeld"
+      },
+      "statusEnabled": {
+        "description": "Uw account is beveiligd met een authenticator-app. Schakel dit alleen uit als u van apparaat wisselt.",
+        "title": "Tweefactorauthenticatie is ingeschakeld"
+      },
       "title": "2-factor authenticatie",
       "validateButton": {
         "label": "Token verifiëren"
@@ -57,19 +63,13 @@
       "title": "Nieuwsbrief",
       "unsubscribe": "Schrijf ze uit voor de nieuwsbrief"
     },
-    "passwordStrength": {
-      "fair": "",
-      "strong": "",
-      "weak": ""
-    },
     "phoneInfo": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden",
     "phoneInfoAdmin": "Je moet toestemming van de persoon hebben voordat je hun telefoonnummer aan het systeem toevoegt",
-    "requiredFields": "",
-    "requiredFieldsHint": "",
+    "requiredFields": "Verplichte velden",
     "savedPassword": "Nieuw wachtwoord opgeslagen",
     "subTitle": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "title": "Account",
-    "unsavedChanges": ""
+    "unsavedChanges": "U heeft niet-opgeslagen wijzigingen"
   },
   "actions": {
     "add": "Toevoegen",
@@ -92,7 +92,7 @@
     "export": "Exporteer",
     "getStarted": "Beginnen",
     "goBack": "Terug",
-    "hidePassword": "",
+    "hidePassword": "Wachtwoord verbergen",
     "increase": "",
     "next": "Volgende",
     "noBack": "“Nee, ga terug”.",
@@ -116,7 +116,7 @@
     "sendOneOffEmail": "E-mail verzenden",
     "sendOngoingEmails": "Doorlopende e-mails",
     "share": "Delen",
-    "showPassword": "",
+    "showPassword": "Wachtwoord tonen",
     "skip": "Sla over",
     "submit": "Verzenden",
     "tryAgain": "",
@@ -1470,7 +1470,7 @@
         "required": ""
       },
       "telephone": {
-        "phone": ""
+        "phone": "Ongeldig telefoonnummer"
       },
       "unknown": {
         "email": "Ongeldig e-mailadres",

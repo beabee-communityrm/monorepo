@@ -16,7 +16,7 @@
       },
       "createUnknownErrorNotification": "",
       "deleteUnknownErrorNotification": "",
-      "description": "",
+      "description": "Προσθέστε ένα επιπλέον επίπεδο ασφάλειας στον λογαριασμό σας",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
@@ -37,8 +37,14 @@
         "desc": "",
         "label": ""
       },
-      "statusDisabled": "",
-      "statusEnabled": "",
+      "statusDisabled": {
+        "description": "Όταν ενεργοποιηθεί, θα σας ζητείται κωδικός από την εφαρμογή Authenticator σε κάθε σύνδεση.",
+        "title": "Ο έλεγχος ταυτότητας δύο παραγόντων είναι απενεργοποιημένος"
+      },
+      "statusEnabled": {
+        "description": "Ο λογαριασμός σας προστατεύεται με μια εφαρμογή Authenticator. Απενεργοποιήστε το μόνο αν αλλάζετε συσκευή.",
+        "title": "Ο έλεγχος ταυτότητας δύο παραγόντων είναι ενεργοποιημένος"
+      },
       "title": "",
       "validateButton": {
         "label": ""
@@ -57,19 +63,13 @@
       "title": "",
       "unsubscribe": ""
     },
-    "passwordStrength": {
-      "fair": "",
-      "strong": "",
-      "weak": ""
-    },
     "phoneInfo": "",
     "phoneInfoAdmin": "",
-    "requiredFields": "",
-    "requiredFieldsHint": "",
+    "requiredFields": "Υποχρεωτικά πεδία",
     "savedPassword": "",
     "subTitle": "",
     "title": "",
-    "unsavedChanges": ""
+    "unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές"
   },
   "actions": {
     "add": "",
@@ -92,7 +92,7 @@
     "export": "",
     "getStarted": "αρχίζω",
     "goBack": "",
-    "hidePassword": "",
+    "hidePassword": "Απόκρυψη κωδικού πρόσβασης",
     "increase": "",
     "next": "επόμενος",
     "noBack": "",
@@ -116,7 +116,7 @@
     "sendOneOffEmail": "Αποστολή email",
     "sendOngoingEmails": "Επαναλαμβανόμενα email",
     "share": "Μοιραστείτε",
-    "showPassword": "",
+    "showPassword": "Εμφάνιση κωδικού πρόσβασης",
     "skip": "",
     "submit": "υποβάλετε",
     "tryAgain": "",
@@ -307,7 +307,7 @@
         "body": "",
         "danger": "",
         "link": "",
-        "main": "",
+        "main": "Κύριο",
         "success": "",
         "warning": ""
       },
@@ -1470,7 +1470,7 @@
         "required": ""
       },
       "telephone": {
-        "phone": ""
+        "phone": "Μη έγκυρος αριθμός τηλεφώνου"
       },
       "unknown": {
         "email": "",

@@ -16,7 +16,7 @@
       },
       "createUnknownErrorNotification": "",
       "deleteUnknownErrorNotification": "",
-      "description": "",
+      "description": "Machen Sie Ihr Konto sicherer",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
@@ -37,8 +37,14 @@
         "desc": "",
         "label": "Betreff"
       },
-      "statusDisabled": "",
-      "statusEnabled": "",
+      "statusDisabled": {
+        "description": "Wenn Sie sie einschalten, brauchen Sie bei jeder Anmeldung einen Code aus Ihrer Authenticator-App.",
+        "title": "Die 2-Faktor-Authentifizierung ist aus"
+      },
+      "statusEnabled": {
+        "description": "Ihr Konto ist mit einer Authenticator-App geschützt. Schalten Sie sie nur aus, wenn Sie ein neues Gerät haben.",
+        "title": "Die 2-Faktor-Authentifizierung ist an"
+      },
       "title": "",
       "validateButton": {
         "label": "Betreff"
@@ -57,19 +63,13 @@
       "title": "",
       "unsubscribe": ""
     },
-    "passwordStrength": {
-      "fair": "",
-      "strong": "",
-      "weak": ""
-    },
     "phoneInfo": "",
     "phoneInfoAdmin": "",
-    "requiredFields": "",
-    "requiredFieldsHint": "",
+    "requiredFields": "Pflicht-Felder",
     "savedPassword": "",
     "subTitle": "",
     "title": "",
-    "unsavedChanges": ""
+    "unsavedChanges": "Sie haben Änderungen, die noch nicht gespeichert sind"
   },
   "actions": {
     "add": "",
@@ -92,7 +92,7 @@
     "export": "",
     "getStarted": "Hier kannst du starten.",
     "goBack": "",
-    "hidePassword": "",
+    "hidePassword": "Passwort verstecken",
     "increase": "",
     "next": "Hier kommst du auf die nächste Seite.",
     "noBack": "",
@@ -116,7 +116,7 @@
     "sendOneOffEmail": "E-Mail schicken",
     "sendOngoingEmails": "E-Mails die immer wieder gehen",
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
-    "showPassword": "",
+    "showPassword": "Passwort zeigen",
     "skip": "",
     "submit": "Hier wird deine Meldung weg-geschickt.",
     "tryAgain": "",
@@ -307,7 +307,7 @@
         "body": "",
         "danger": "",
         "link": "",
-        "main": "",
+        "main": "Haupt-Farbe",
         "success": "",
         "warning": ""
       },
@@ -1470,7 +1470,7 @@
         "required": ""
       },
       "telephone": {
-        "phone": ""
+        "phone": "Die Telefon-Nummer ist falsch"
       },
       "unknown": {
         "email": "",

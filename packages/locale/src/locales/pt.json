@@ -16,7 +16,7 @@
       },
       "createUnknownErrorNotification": "A autenticação de dois fatores não pôde ser salva devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
       "deleteUnknownErrorNotification": "A autenticação de dois fatores não pôde ser eliminada devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
-      "description": "",
+      "description": "Adicione uma camada extra de segurança à sua conta",
       "disabledNotification": "Autenticação de dois factores desativada com sucesso",
       "enabledNotification": "Autenticação de dois factores ativada com sucesso",
       "enterCode": {
@@ -37,8 +37,14 @@
         "desc": "Alternativamente podes inserir o seguinte código na tua app de autenticação.",
         "label": "Código secreto"
       },
-      "statusDisabled": "",
-      "statusEnabled": "",
+      "statusDisabled": {
+        "description": "Quando ativada, ser-lhe-á pedido um código da sua aplicação de autenticação sempre que iniciar sessão.",
+        "title": "A autenticação de dois fatores está desativada"
+      },
+      "statusEnabled": {
+        "description": "A sua conta está protegida com uma aplicação de autenticação. Desative apenas se estiver a mudar de dispositivo.",
+        "title": "A autenticação de dois fatores está ativada"
+      },
       "title": "Autenticação de dois factores",
       "validateButton": {
         "label": "Verificar token"
@@ -57,19 +63,13 @@
       "title": "Newsletter",
       "unsubscribe": "Suspender inscrição na newsletter"
     },
-    "passwordStrength": {
-      "fair": "",
-      "strong": "",
-      "weak": ""
-    },
     "phoneInfo": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
     "phoneInfoAdmin": "",
-    "requiredFields": "",
-    "requiredFieldsHint": "",
+    "requiredFields": "Campos obrigatórios",
     "savedPassword": "Nova palavra-passe gravada",
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "title": "Conta",
-    "unsavedChanges": ""
+    "unsavedChanges": "Tem alterações não guardadas"
   },
   "actions": {
     "add": "Adicionar",
@@ -92,7 +92,7 @@
     "export": "Exportar",
     "getStarted": "Começar",
     "goBack": "Voltar atrás",
-    "hidePassword": "",
+    "hidePassword": "Ocultar palavra-passe",
     "increase": "",
     "next": "Próxima",
     "noBack": "Não, voltar atrás",
@@ -116,7 +116,7 @@
     "sendOneOffEmail": "Enviar e-mail",
     "sendOngoingEmails": "E-mails contínuos",
     "share": "Partilhar",
-    "showPassword": "",
+    "showPassword": "Mostrar palavra-passe",
     "skip": "Saltar",
     "submit": "Enviar",
     "tryAgain": "",
@@ -307,7 +307,7 @@
         "body": "",
         "danger": "",
         "link": "",
-        "main": "",
+        "main": "Principal",
         "success": "",
         "warning": ""
       },
@@ -1470,7 +1470,7 @@
         "required": ""
       },
       "telephone": {
-        "phone": ""
+        "phone": "Número de telefone inválido"
       },
       "unknown": {
         "email": "Endereço de email inválido",

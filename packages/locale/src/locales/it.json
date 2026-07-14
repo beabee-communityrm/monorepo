@@ -16,7 +16,7 @@
       },
       "createUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata attivata a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
       "deleteUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata rimossa a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
-      "description": "",
+      "description": "Aggiungi un ulteriore livello di sicurezza al tuo account",
       "disabledNotification": "Autenticazione a due fattori disattivata correttamente",
       "enabledNotification": "Autenticazione a due fattori attivata correttamente",
       "enterCode": {
@@ -37,8 +37,14 @@
         "desc": "In alternativa, puoi inserire il seguente codice nella tua app Authenticator.",
         "label": "Codice segreto"
       },
-      "statusDisabled": "",
-      "statusEnabled": "",
+      "statusDisabled": {
+        "description": "Se attivata, ti verrà richiesto un codice dalla tua app di autenticazione ad ogni accesso.",
+        "title": "L'autenticazione a due fattori è disattivata"
+      },
+      "statusEnabled": {
+        "description": "Il tuo account è protetto da un'app di autenticazione. Disattivala solo se stai cambiando dispositivo.",
+        "title": "L'autenticazione a due fattori è attivata"
+      },
       "title": "Autenticazione a 2 fattori",
       "validateButton": {
         "label": "Verifica token"
@@ -57,19 +63,13 @@
       "title": "Newsletter",
       "unsubscribe": "Cancellarli dalla newsletter"
     },
-    "passwordStrength": {
-      "fair": "",
-      "strong": "",
-      "weak": ""
-    },
     "phoneInfo": "Fornendo il tuo numero di telefono acconsenti ad essere contattato telefonicamente",
     "phoneInfoAdmin": "È necessario avere il consenso della persona prima di aggiungere il suo numero di telefono al sistema",
-    "requiredFields": "",
-    "requiredFieldsHint": "",
+    "requiredFields": "Campi obbligatori",
     "savedPassword": "Nuova password salvata",
     "subTitle": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
     "title": "Account",
-    "unsavedChanges": ""
+    "unsavedChanges": "Hai modifiche non salvate"
   },
   "actions": {
     "add": "Aggiungi",
@@ -92,7 +92,7 @@
     "export": "Esporta",
     "getStarted": "Inizia",
     "goBack": "Indietro",
-    "hidePassword": "",
+    "hidePassword": "Nascondi password",
     "increase": "Aumenta",
     "next": "Prossimo",
     "noBack": "No, torna indietro",
@@ -116,7 +116,7 @@
     "sendOneOffEmail": "Invia e-mail",
     "sendOngoingEmails": "E-mail ricorrenti",
     "share": "Condividi",
-    "showPassword": "",
+    "showPassword": "Mostra password",
     "skip": "Salta",
     "submit": "Invia",
     "tryAgain": "Riprova",
@@ -1470,7 +1470,7 @@
         "required": "La descrizione è obbligatoria"
       },
       "telephone": {
-        "phone": ""
+        "phone": "Numero di telefono non valido"
       },
       "unknown": {
         "email": "Indirizzo email non valido",
