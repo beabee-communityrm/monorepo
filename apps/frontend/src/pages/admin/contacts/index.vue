@@ -217,7 +217,7 @@ import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 import { definePaginatedQuery, defineParam } from '#utils/pagination';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';
@@ -346,7 +346,7 @@ const doingAction = ref(false);
 addBreadcrumb(
   computed(() => [
     {
-      label: t('menu.contacts'),
+      label: t(routeLabels.adminContacts),
       to: '/admin/contacts',
       icon: routeIcons.adminContacts,
     },

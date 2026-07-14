@@ -21,7 +21,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import { resolveTabNavigation } from '#utils/navigation';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import { addBreadcrumb } from '../../store/breadcrumb';
 
@@ -49,7 +49,7 @@ const tabs = computed(() =>
 addBreadcrumb(
   computed(() => [
     {
-      label: t('membershipBuilder.title'),
+      label: t(routeLabels.adminMembershipBuilder),
       to: '/admin/membership-builder',
       icon: routeIcons.adminMembershipBuilder,
     },

@@ -94,14 +94,14 @@ import {
   defineParam,
   defineRulesParam,
 } from '#utils/pagination';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t, n } = useI18n();
 
 addBreadcrumb(
   computed(() => [
     {
-      label: t('menu.dashboard'),
+      label: t(routeLabels.admin),
       to: '/admin',
       icon: routeIcons.admin,
     },

@@ -77,14 +77,14 @@ import AppPaginatedTable from '#components/table/AppPaginatedTable.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { definePaginatedQuery } from '#utils/pagination';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
 
 addBreadcrumb(
   computed(() => [
     {
-      label: t('menu.contacts'),
+      label: t(routeLabels.adminContacts),
       to: '/admin/contacts',
       icon: routeIcons.adminContacts,
     },

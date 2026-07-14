@@ -22,14 +22,14 @@ import { useI18n } from 'vue-i18n';
 import TagManager from '#components/tag/TagManager.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
 
 addBreadcrumb(
   computed(() => [
     {
-      label: t('menu.contacts'),
+      label: t(routeLabels.adminContacts),
       to: '/admin/contacts',
       icon: routeIcons.adminContacts,
     },

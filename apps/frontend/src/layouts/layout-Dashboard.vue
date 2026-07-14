@@ -38,8 +38,6 @@
  */
 import TheFooter from '../components/TheFooter.vue';
 import { isEmbed } from '../store';
-import { useBreadcrumbs } from '../store/breadcrumb';
+import { breadcrumbs } from '../store/breadcrumb';
 import TheMenu from './menu/TheMenu.vue';
-
-const breadcrumbs = useBreadcrumbs();
 </script>

@@ -30,7 +30,7 @@ import { useRoute, useRouter } from 'vue-router';
 import NoticeForm from '#components/notice/NoticeForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -41,7 +41,7 @@ const notice = ref<GetNoticeData | undefined>();
 addBreadcrumb(
   computed(() => [
     {
-      label: t('menu.notices'),
+      label: t(routeLabels.adminNotices),
       to: '/admin/notices',
       icon: routeIcons.adminNotices,
     },

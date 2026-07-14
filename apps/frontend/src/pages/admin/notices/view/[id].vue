@@ -62,7 +62,7 @@ import { useRoute, useRouter } from 'vue-router';
 import AppNotice from '#components/notice/AppNotice.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import ItemStatusText from '../../../../components/item/ItemStatusText.vue';
 
@@ -75,7 +75,7 @@ const router = useRouter();
 addBreadcrumb(
   computed(() => [
     {
-      label: t('menu.notices'),
+      label: t(routeLabels.adminNotices),
       to: '/admin/notices',
       icon: routeIcons.adminNotices,
     },

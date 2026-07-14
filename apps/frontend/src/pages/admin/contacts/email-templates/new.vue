@@ -32,7 +32,7 @@ import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
@@ -42,7 +42,7 @@ const router = useRouter();
 addBreadcrumb(
   computed(() => [
     {
-      label: t('menu.contacts'),
+      label: t(routeLabels.adminContacts),
       to: '/admin/contacts',
       icon: routeIcons.adminContacts,
     },

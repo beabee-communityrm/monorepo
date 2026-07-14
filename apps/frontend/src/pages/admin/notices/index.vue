@@ -57,12 +57,14 @@ import AppPaginatedTable from '#components/table/AppPaginatedTable.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { definePaginatedQuery } from '#utils/pagination';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
 
 addBreadcrumb(
-  computed(() => [{ label: t('menu.notices'), icon: routeIcons.adminNotices }])
+  computed(() => [
+    { label: t(routeLabels.adminNotices), icon: routeIcons.adminNotices },
+  ])
 );
 
 const headers: Header[] = [

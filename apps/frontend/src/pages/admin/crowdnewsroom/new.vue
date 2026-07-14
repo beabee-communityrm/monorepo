@@ -65,7 +65,7 @@ import CalloutHorizontalTabs from '#components/pages/admin/callouts/CalloutHoriz
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { convertCalloutToTabs, convertStepsToCallout } from '#utils/callouts';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 /**
  * Props for the CalloutNew component
@@ -132,7 +132,7 @@ addBreadcrumb(
     tabs.value
       ? [
           {
-            label: t('menu.callouts'),
+            label: t(routeLabels.adminCallouts),
             icon: routeIcons.adminCallouts,
             to: '/admin/crowdnewsroom',
           },

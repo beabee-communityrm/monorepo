@@ -88,7 +88,7 @@ import { useI18n } from 'vue-i18n';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { definePaginatedQuery, defineParam } from '#utils/pagination';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import ItemStatus from '../../../components/item/ItemStatus.vue';
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
@@ -98,7 +98,7 @@ const { t } = useI18n();
 addBreadcrumb(
   computed(() => [
     {
-      label: t('menu.callouts'),
+      label: t(routeLabels.adminCallouts),
       icon: routeIcons.adminCallouts,
       to: '/admin/crowdnewsroom',
     },

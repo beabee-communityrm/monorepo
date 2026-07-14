@@ -112,7 +112,7 @@ import env from '#env';
 import { currentUser, isEmbed } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 import { resolveImageUrl } from '#utils/url';
 
 // Props: Receive the already processed callout from parent route
@@ -131,7 +131,7 @@ addBreadcrumb(
       ? isPreview.value
         ? [
             {
-              label: t('menu.callouts'),
+              label: t(routeLabels.adminCallouts),
               to: '/admin/crowdnewsroom',
               icon: routeIcons.adminCallouts,
             },
@@ -143,7 +143,7 @@ addBreadcrumb(
           ]
         : [
             {
-              label: t('menu.callouts'),
+              label: t(routeLabels.callouts),
               to: '/crowdnewsroom',
               icon: routeIcons.callouts,
             },

@@ -21,7 +21,7 @@ import { useRoute } from 'vue-router';
 
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
-import { routeIcons } from '#utils/route-nav';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const route = useRoute();
 const { t } = useI18n();
@@ -29,7 +29,7 @@ const { t } = useI18n();
 addBreadcrumb(
   computed(() => [
     {
-      label: t('menu.callouts'),
+      label: t(routeLabels.adminCallouts),
       icon: routeIcons.adminCallouts,
       to: '/admin/crowdnewsroom',
     },
