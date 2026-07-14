@@ -16,6 +16,7 @@
       },
       "createUnknownErrorNotification": "Une erreur inconnue a empêché l'activation de l'authentification à 2 facteurs. Veuillez réessayer ou contacter l'assistance.",
       "deleteUnknownErrorNotification": "Une erreur inconnue a empêché la désactivation de l'authentification à 2 facteurs. Veuillez réessayer ou contacter l'assistance.",
+      "description": "",
       "disabledNotification": "L'authentification à deux facteurs a bien été désactivée",
       "enabledNotification": "L'authentification à deux facteurs à bien été activée",
       "enterCode": {
@@ -36,6 +37,8 @@
         "desc": "Vous pouvez également taper le code suivant dans votre application d'authentification.",
         "label": "Code secret"
       },
+      "statusDisabled": "",
+      "statusEnabled": "",
       "title": "Authentification à 2 facteurs",
       "validateButton": {
         "label": "Vérifier le jeton"
@@ -54,11 +57,19 @@
       "title": "Lettre d'information",
       "unsubscribe": "Désinscrire de la lettre d'information"
     },
+    "passwordStrength": {
+      "fair": "",
+      "strong": "",
+      "weak": ""
+    },
     "phoneInfo": "En indiquant votre numéro de téléphone, vous acceptez d'être contacté par téléphone",
     "phoneInfoAdmin": "Vous devez obtenir le consentement de la personne avant d'ajouter son numéro de téléphone dans le système",
+    "requiredFields": "",
+    "requiredFieldsHint": "",
     "savedPassword": "Nouveau mot de passe enregistré",
     "subTitle": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
-    "title": "Compte"
+    "title": "Compte",
+    "unsavedChanges": ""
   },
   "actions": {
     "add": "Ajouter",
@@ -81,6 +92,7 @@
     "export": "Exporter",
     "getStarted": "Commencer",
     "goBack": "Retour",
+    "hidePassword": "",
     "increase": "",
     "next": "Suivant",
     "noBack": "Non, revenir en arrière",
@@ -104,6 +116,7 @@
     "sendOneOffEmail": "Envoyer un e-mail",
     "sendOngoingEmails": "E-mails récurrents",
     "share": "Partager",
+    "showPassword": "",
     "skip": "Ignorer",
     "submit": "Soumettre",
     "tryAgain": "",
@@ -1459,6 +1472,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": ""
       },
       "unknown": {
         "email": "Adresse e-mail invalide",

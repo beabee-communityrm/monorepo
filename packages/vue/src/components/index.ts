@@ -11,6 +11,7 @@ export * from './layout';
 export * from './list';
 export * from './navigation';
 export * from './notification';
+export * from './nuxt-ui';
 export * from './scroll';
 export * from './status';
 export * from './table';

@@ -1,79 +1,172 @@
 <template>
-  <AppHeading>
-    {{ t('accountPage.loginDetail') }}
-  </AppHeading>
+  <UForm ref="formRef" :schema="schema" :state="state" @submit="handleSubmit">
+    <AppSectionCard icon="i-lucide-lock" :title="t('accountPage.loginDetail')">
+      <UFormField :label="t('form.newPassword')" required name="password">
+        <UInput
+          v-model="password"
+          :type="showPassword ? 'text' : 'password'"
+          autocomplete="new-password"
+          class="w-full"
+        >
+          <template #trailing>
+            <UButton
+              type="button"
+              variant="link"
+              color="neutral"
+              size="sm"
+              :icon="showPassword ? 'i-lucide-eye' : 'i-lucide-eye-off'"
+              :aria-label="
+                showPassword
+                  ? t('actions.hidePassword')
+                  : t('actions.showPassword')
+              "
+              @click="toggleShowPassword"
+            />
+          </template>
+        </UInput>
 
-  <AppButton
-    v-if="!showForm"
-    variant="primaryOutlined"
-    :icon="faKey"
-    @click="
-      showForm = true;
-      saved = false;
-    "
-  >
-    {{ t('actions.changePassword') }}
-  </AppButton>
+        <p class="text-muted mt-1.5 flex items-center gap-1 text-xs">
+          <UIcon name="i-lucide-info" class="size-3 shrink-0" />
+          {{ t('form.passwordInfo') }}
+        </p>
+      </UFormField>
 
-  <AppApiForm
-    v-else
-    :success-text="t('accountPage.savedPassword')"
-    :button-text="t('actions.changePassword')"
-    :reset-button-text="t('form.cancel')"
-    @submit="handleFormSubmit"
-    @reset="showForm = false"
-  >
-    <div class="mb-4">
-      <AppInput
-        v-model="password"
-        type="password"
-        name="password"
-        autocomplete="new-password"
-        required
-        :label="t('form.newPassword')"
-        :info-message="t('form.passwordInfo')"
-      />
-    </div>
-    <div class="mb-4">
-      <AppInput
-        v-model="confirmPassword"
-        type="password"
-        name="confirmPassword"
-        autocomplete="new-password"
-        required
-        :same-as="password"
+      <UFormField
         :label="t('form.newPasswordConfirm')"
-      />
-    </div>
-  </AppApiForm>
+        required
+        name="confirmPassword"
+      >
+        <UInput
+          v-model="confirmPassword"
+          :type="showConfirmPassword ? 'text' : 'password'"
+          autocomplete="new-password"
+          class="w-full"
+        >
+          <template #trailing>
+            <UButton
+              type="button"
+              variant="link"
+              color="neutral"
+              size="sm"
+              :icon="showConfirmPassword ? 'i-lucide-eye' : 'i-lucide-eye-off'"
+              :aria-label="
+                showConfirmPassword
+                  ? t('actions.hidePassword')
+                  : t('actions.showPassword')
+              "
+              @click="toggleShowConfirmPassword"
+            />
+          </template>
+        </UInput>
+      </UFormField>
+
+      <div class="flex items-center gap-2">
+        <UButton
+          v-if="password || confirmPassword"
+          type="button"
+          variant="outline"
+          color="neutral"
+          @mousedown.prevent
+          @click="handleCancel"
+        >
+          {{ t('actions.cancel') }}
+        </UButton>
+        <UButton type="submit" loading-auto>
+          {{ t('actions.changePassword') }}
+        </UButton>
+      </div>
+    </AppSectionCard>
+  </UForm>
 </template>
 <script lang="ts" setup>
-import { AppButton, AppHeading, AppInput } from '@beabee/vue';
+import { isPassword } from '@beabee/beabee-common';
+import { AppSectionCard } from '@beabee/vue';
 
-import { faKey } from '@fortawesome/free-solid-svg-icons';
-import { onBeforeMount, ref } from 'vue';
+import { computed, reactive, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { z } from 'zod';
 
-import AppApiForm from '#components/forms/AppApiForm.vue';
+import { useApiSubmit } from '#composables/useApiSubmit';
 import { client } from '#utils/api';
 
 const { t } = useI18n();
 
-const showForm = ref(false);
-const saved = ref(false);
 const password = ref('');
 const confirmPassword = ref('');
+const state = reactive({ password, confirmPassword });
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 
-async function handleFormSubmit() {
-  await client.contact.update('me', { password: password.value });
-  saved.value = true;
-  showForm.value = false;
+function toggleShowPassword() {
+  showPassword.value = !showPassword.value;
+}
+function toggleShowConfirmPassword() {
+  showConfirmPassword.value = !showConfirmPassword.value;
 }
 
-onBeforeMount(() => {
-  saved.value = false;
-  showForm.value = false;
+function isValidPassword(value: string): boolean {
+  return !value || isPassword(value);
+}
+
+const formRef = useTemplateRef('formRef');
+
+// Deliberately no `v.nonEmpty(...)` "required" check here. The fields are initially
+// empty so validating "required" the moment the user focuses and blurs the field
+//  — even if they haven't typed anything at all — means showing an error for a
+//  field/form they are choosing not to fill out. Required-ness is instead checked
+//  manually in handleSubmit below, only at actual submit time.
+const schema = computed(() =>
+  z
+    .object({
+      password: z
+        .string()
+        .refine(isValidPassword, { error: t('form.errors.password.password') }),
+      confirmPassword: z.string(),
+    })
+    .refine(
+      (input) =>
+        !input.confirmPassword || input.password === input.confirmPassword,
+      {
+        error: t('form.errors.confirmPassword.sameAs'),
+        path: ['confirmPassword'],
+      }
+    )
+);
+
+const { submit: doSubmit } = useApiSubmit(
+  async () => {
+    await client.contact.update('me', { password: password.value });
+    password.value = '';
+    confirmPassword.value = '';
+    formRef.value?.clear();
+  },
+  { successMessage: () => t('accountPage.savedPassword') }
+);
+
+async function handleSubmit() {
+  if (!password.value || !confirmPassword.value) {
+    formRef.value?.setErrors([
+      ...(!password.value
+        ? [{ name: 'password', message: t('form.errors.password.required') }]
+        : []),
+      ...(!confirmPassword.value
+        ? [
+            {
+              name: 'confirmPassword',
+              message: t('form.errors.confirmPassword.required'),
+            },
+          ]
+        : []),
+    ]);
+    return;
+  }
+
+  await doSubmit();
+}
+
+function handleCancel() {
   password.value = '';
   confirmPassword.value = '';
-});
+  formRef.value?.clear();
+}
 </script>

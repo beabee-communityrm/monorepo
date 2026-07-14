@@ -16,6 +16,7 @@
       },
       "createUnknownErrorNotification": "The 2-factor authentication could not be saved due to an unknown error. Please try again or contact support.",
       "deleteUnknownErrorNotification": "The 2-factor authentication could not be deleted due to an unknown error. Please try again or contact support.",
+      "description": "Add an extra layer of security to your account",
       "disabledNotification": "Two-factor authentication successfully deactivated",
       "enabledNotification": "Two-factor authentication successfully activated",
       "enterCode": {
@@ -35,6 +36,14 @@
       "secretInput": {
         "desc": "Alternatively, you can enter the following code into your Authenticator app.",
         "label": "Secret code"
+      },
+      "statusDisabled": {
+        "description": "When enabled, you'll be asked for a code from your authenticator app each time you log in.",
+        "title": "Two-factor authentication is disabled"
+      },
+      "statusEnabled": {
+        "description": "Your account is protected with an authenticator app. Disable this only if you are changing devices.",
+        "title": "Two-factor authentication is enabled"
       },
       "title": "2-factor authentication",
       "validateButton": {
@@ -56,8 +65,9 @@
     },
     "phoneInfo": "By providing your phone number you are consenting to being contacted by phone",
     "phoneInfoAdmin": "You must have the person's consent before adding their phone number to the system",
+    "requiredFields": "Required fields",
     "savedPassword": "New password saved",
-    "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
+    "subTitle": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
     "title": "Account"
   },
   "actions": {
@@ -81,6 +91,7 @@
     "export": "Export",
     "getStarted": "Get started",
     "goBack": "Go back",
+    "hidePassword": "Hide password",
     "increase": "Increase",
     "next": "Next",
     "noBack": "No, go back",
@@ -104,6 +115,7 @@
     "sendOneOffEmail": "Send email",
     "sendOngoingEmails": "Ongoing emails",
     "share": "Share",
+    "showPassword": "Show password",
     "skip": "Skip",
     "submit": "Submit",
     "tryAgain": "Try again",
@@ -1454,6 +1466,9 @@
         "maxLength": "Maximum length of {max} characters exceeded, {remaining} characters remaining",
         "required": "Description is required"
       },
+      "telephone": {
+        "phone": "Invalid phone number"
+      },
       "unknown": {
         "email": "Invalid email address",
         "max": "This field must be at most {max}",
@@ -1500,7 +1515,7 @@
     },
     "saveChanges": "Save Changes",
     "saved": "Saved!",
-    "unsavedChanges": "Unsaved changes",
+    "unsavedChanges": "You have unsaved changes",
     "updated": "Updated"
   },
   "formRenderer": {

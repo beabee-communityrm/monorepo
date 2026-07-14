@@ -23,6 +23,8 @@
       <div class="flex flex-col p-4 md:p-5">
         <router-view />
       </div>
+
+      <div id="sticky-bottom-banner" class="sticky bottom-0 z-20"></div>
       <TheFooter class="mt-auto flex-none" />
     </main>
   </UDashboardGroup>

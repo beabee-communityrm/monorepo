@@ -16,6 +16,7 @@
       },
       "createUnknownErrorNotification": "Не удалось создать двухфакторную аутентификацию. Пожалуйста, попробуйте ещё раз или свяжитесь со службой поддержки.",
       "deleteUnknownErrorNotification": "Не удалось удалить двухфакторную аутентификацию. Пожалуйста, попробуйте ещё раз или свяжитесь со службой поддержки.",
+      "description": "",
       "disabledNotification": "Двухфакторная аутентификация отключена",
       "enabledNotification": "Двухфакторная аутентификация успешно подключена",
       "enterCode": {
@@ -36,6 +37,8 @@
         "desc": "Также вы можете ввести этот код в ваше приложение для аутентификации.",
         "label": "Секретный код"
       },
+      "statusDisabled": "",
+      "statusEnabled": "",
       "title": "Двухфакторная аутентификация",
       "validateButton": {
         "label": "Проверьте токен для двухфакторной аутентификации"
@@ -54,11 +57,19 @@
       "title": "Рассылка",
       "unsubscribe": "Убрать из списка рассылки"
     },
+    "passwordStrength": {
+      "fair": "",
+      "strong": "",
+      "weak": ""
+    },
     "phoneInfo": "",
     "phoneInfoAdmin": "",
+    "requiredFields": "",
+    "requiredFieldsHint": "",
     "savedPassword": "Новый пароль сохранён",
     "subTitle": "Обязательные поля отмечены звёздочкой. Вся информация, которой вы делитесь, конфиденциальна.",
-    "title": "Профиль"
+    "title": "Профиль",
+    "unsavedChanges": ""
   },
   "actions": {
     "add": "Добавить",
@@ -81,6 +92,7 @@
     "export": "Экспортировать",
     "getStarted": "Начать",
     "goBack": "Назад",
+    "hidePassword": "",
     "increase": "",
     "next": "Дальше",
     "noBack": "Нет, вернуться назад",
@@ -104,6 +116,7 @@
     "sendOneOffEmail": "Отправить письмо",
     "sendOngoingEmails": "Регулярные рассылки",
     "share": "Поделиться",
+    "showPassword": "",
     "skip": "Пропустить",
     "submit": "Отправить",
     "tryAgain": "",
@@ -1456,6 +1469,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": ""
       },
       "unknown": {
         "email": "Некорректный почтовый адрес",

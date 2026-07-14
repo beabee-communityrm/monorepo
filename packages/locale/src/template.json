@@ -16,6 +16,7 @@
       },
       "createUnknownErrorNotification": "",
       "deleteUnknownErrorNotification": "",
+      "description": "",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
@@ -35,6 +36,14 @@
       "secretInput": {
         "desc": "",
         "label": ""
+      },
+      "statusDisabled": {
+        "description": "",
+        "title": ""
+      },
+      "statusEnabled": {
+        "description": "",
+        "title": ""
       },
       "title": "",
       "validateButton": {
@@ -56,6 +65,7 @@
     },
     "phoneInfo": "",
     "phoneInfoAdmin": "",
+    "requiredFields": "",
     "savedPassword": "",
     "subTitle": "",
     "title": ""
@@ -81,6 +91,7 @@
     "export": "",
     "getStarted": "",
     "goBack": "",
+    "hidePassword": "",
     "increase": "",
     "next": "",
     "noBack": "",
@@ -104,6 +115,7 @@
     "sendOneOffEmail": "",
     "sendOngoingEmails": "",
     "share": "",
+    "showPassword": "",
     "skip": "",
     "submit": "",
     "tryAgain": "",
@@ -1453,6 +1465,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": ""
       },
       "unknown": {
         "email": "",
