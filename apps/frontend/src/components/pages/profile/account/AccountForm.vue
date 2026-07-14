@@ -1,11 +1,6 @@
 <!--
   # AccountForm
-  Member-only ("me") contact info + delivery address form. This is a
-  deliberate fork of ContactUpdateAccount.vue: that component is shared with
-  the admin "edit contact" screen, and restyling it in place would change
-  the admin screen's look too. This component only ever edits the current
-  user's own contact, so it drops the admin-only branches (newsletter opt-in,
-  admin delivery-opt-in radio group) entirely.
+  Member-only ("me") contact info + delivery address form.
 -->
 <template>
   <UForm
