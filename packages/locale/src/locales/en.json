@@ -294,7 +294,7 @@
         "body": "Text",
         "danger": "Danger",
         "link": "Links",
-        "primary": "Main",
+        "main": "Main",
         "success": "Success",
         "warning": "Warning"
       },

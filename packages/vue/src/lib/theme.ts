@@ -26,7 +26,7 @@ type FontId = keyof typeof allFonts;
 export type Theme = {
   colors: {
     _name: string;
-    primary: string;
+    main: string;
     link: string;
     body: string;
     success: string;
@@ -42,7 +42,10 @@ export type Theme = {
 };
 
 export type PartialTheme = {
-  colors?: Partial<Theme['colors']>;
+  colors?: Partial<Theme['colors']> & {
+    /** @deprecated use main */
+    primary?: string;
+  };
   fonts?: {
     title?: string;
     body?: string;
@@ -53,7 +56,7 @@ export const colorPresets = [
   {
     name: 'default',
     colors: {
-      primary: '#262453',
+      main: '#262453',
       link: '#43a796',
       body: '#262453',
       warning: '#f5cc5b',
@@ -66,7 +69,7 @@ export const colorPresets = [
 const defaultColorPreset = colorPresets[0];
 
 export const visibleCustomColors = [
-  'primary',
+  'main',
   'link',
   'body',
   'success',
@@ -129,14 +132,16 @@ function setShades(
 }
 
 export function getFullTheme(theme: PartialTheme): Theme {
-  const primaryColor =
-    theme.colors?.primary ?? defaultColorPreset.colors.primary;
+  const mainColor =
+    theme.colors?.main ??
+    theme.colors?.primary ??
+    defaultColorPreset.colors.main;
   const bodyFont = getFont(theme.fonts?.body);
 
   const colors = {
     _name: theme.colors?._name ?? 'custom',
-    primary: primaryColor,
-    body: theme.colors?.body ?? primaryColor,
+    main: mainColor,
+    body: theme.colors?.body ?? mainColor,
     link: theme.colors?.link ?? defaultColorPreset.colors.link,
     warning: theme.colors?.warning ?? defaultColorPreset.colors.warning,
     success: theme.colors?.success ?? defaultColorPreset.colors.success,
@@ -170,7 +175,7 @@ watch(
     const { colors, fonts } = getFullTheme(newTheme);
 
     // Set colors
-    setShades('primary', colors.primary, [5, 10, 20, 40, 70, 80]);
+    setShades('main', colors.main, [5, 10, 20, 40, 70, 80]);
     setShades('body', colors.body, [60, 80]);
     setShades('link', colors.link, [10, 70, 110]);
     setShades('warning', colors.warning || '#f5cc5b', [10, 30, 70]);

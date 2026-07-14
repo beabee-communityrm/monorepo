@@ -1,6 +1,6 @@
 <template>
   <ul
-    class="-mx-4 mb-4 flex snap-x snap-mandatory overflow-x-scroll border-y border-primary-40 px-4 text-sm select-none md:mb-6"
+    class="-mx-4 mb-4 flex snap-x snap-mandatory overflow-x-scroll border-y border-main-40 px-4 text-sm select-none md:mb-6"
   >
     <li v-for="item in items" :key="item.id" class="flex-none snap-center">
       <AppTabsCompactItem

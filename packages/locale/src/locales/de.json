@@ -294,7 +294,7 @@
         "body": "Textfarbe",
         "danger": "Gefahren",
         "link": "Linkfarbe",
-        "primary": "Hauptfarbe",
+        "main": "Hauptfarbe",
         "success": "Erfolgsnachricht",
         "warning": "Warnungen"
       },

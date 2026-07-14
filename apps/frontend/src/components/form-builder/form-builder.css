@@ -4,7 +4,7 @@
   @apply flex h-full flex-col;
 
   .drag-and-drop-alert {
-    @apply mb-4 flex-none border border-dashed border-primary bg-primary-5 px-4 py-10;
+    @apply mb-4 flex-none border border-dashed border-main bg-main-5 px-4 py-10;
   }
 
   .formbuilder {
@@ -20,7 +20,7 @@
   }
 
   .formcomponent {
-    @apply m-0! block! w-full! cursor-pointer! rounded! border! border-primary-70! bg-white! px-2! text-sm! text-primary-80! hover:border-primary! hover:bg-primary-10! hover:text-primary!;
+    @apply m-0! block! w-full! cursor-pointer! rounded! border! border-main-70! bg-white! px-2! text-sm! text-main-80! hover:border-main! hover:bg-main-10! hover:text-main!;
     &.gu-transit {
       @apply mb-4! text-base!;
     }
@@ -31,7 +31,7 @@
       @apply mx-auto -my-2 max-w-3xl rounded border border-solid border-white px-4 py-4;
     }
     &:hover .formio-component {
-      @apply border-primary-20!;
+      @apply border-main-20!;
     }
 
     .form-group {
@@ -49,9 +49,9 @@
     @apply -right-4;
   }
   .component-settings-button {
-    @apply mr-0.5 h-auto w-8 rounded border border-primary-40 bg-primary-5 text-center text-base text-primary-80 shadow-md;
+    @apply mr-0.5 h-auto w-8 rounded border border-main-40 bg-main-5 text-center text-base text-main-80 shadow-md;
     &:hover {
-      @apply border-primary-70 text-primary;
+      @apply border-main-70 text-main;
     }
     &:not(:first-child) {
       @apply mr-1!;
@@ -67,7 +67,7 @@
   }
 
   .form-builder-group-header {
-    @apply cursor-pointer rounded bg-primary-20 text-sm font-semibold hover:bg-primary-40;
+    @apply cursor-pointer rounded bg-main-20 text-sm font-semibold hover:bg-main-40;
   }
 
   .builder-group-button {
@@ -81,7 +81,7 @@
   #group-container-custom,
   #group-container-custom2,
   #group-container-layout {
-    @apply flex w-full flex-col gap-1 border border-primary-10 p-2;
+    @apply flex w-full flex-col gap-1 border border-main-10 p-2;
   }
 
   .form-radio-nextslide {
@@ -99,11 +99,11 @@
   @apply font-body! text-base! text-body!;
 
   .formio-dialog-content {
-    @apply max-h-min! bg-primary-5! px-6! py-10!;
+    @apply max-h-min! bg-main-5! px-6! py-10!;
   }
 
   .nav {
-    @apply mb-4 flex flex-wrap border-b border-primary-40;
+    @apply mb-4 flex flex-wrap border-b border-main-40;
   }
   .nav-item {
     @apply p-3 text-sm leading-none;
@@ -155,7 +155,7 @@
   .table {
     @apply w-full border-collapse border-0;
     thead {
-      @apply border-b border-primary-20 text-sm;
+      @apply border-b border-main-20 text-sm;
     }
     th {
       @apply text-left;
@@ -230,10 +230,10 @@
       @apply rounded! px-3! py-2.5! font-body! text-base!;
 
       &.btn-success {
-        @apply mr-1! border-primary-70! bg-primary-70! text-white! hover:bg-primary-80!;
+        @apply mr-1! border-main-70! bg-main-70! text-white! hover:bg-main-80!;
       }
       &.btn-secondary {
-        @apply mr-1! border-primary-40! bg-white! text-primary-80! hover:border-primary-70! hover:bg-primary-10! hover:text-primary!;
+        @apply mr-1! border-main-40! bg-white! text-main-80! hover:border-main-70! hover:bg-main-10! hover:text-main!;
       }
       &.btn-danger {
         @apply border-danger! bg-white! text-danger! hover:bg-danger-10!;

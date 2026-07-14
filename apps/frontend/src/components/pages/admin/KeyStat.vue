@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-1 flex-col flex-col-reverse justify-between border-l border-primary-40 pl-2 text-body-80"
+    class="flex flex-1 flex-col flex-col-reverse justify-between border-l border-main-40 pl-2 text-body-80"
   >
     <router-link v-if="labelLink" :to="labelLink" class="text-link">
       {{ label }}

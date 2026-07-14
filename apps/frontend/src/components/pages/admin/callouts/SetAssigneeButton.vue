@@ -16,7 +16,7 @@
     </AppSelectableList>
     <router-link
       v-if="manageUrl"
-      class="block border-t border-primary-40 px-3 py-2 font-semibold text-primary underline group-hover:border-primary hover:bg-primary-5"
+      class="block border-t border-main-40 px-3 py-2 font-semibold text-main underline group-hover:border-main hover:bg-main-5"
       :to="manageUrl"
     >
       <font-awesome-icon class="mr-2" :icon="faCog" />{{

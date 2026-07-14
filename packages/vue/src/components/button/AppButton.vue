@@ -131,15 +131,15 @@ export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 // Variant classes for [base, hover, loading icon]
 const variantClasses = {
   primary: [
-    'bg-primary-70 text-white border-primary-70',
-    'hover:bg-primary-80',
-    'text-primary',
+    'bg-main-70 text-white border-main-70',
+    'hover:bg-main-80',
+    'text-main',
   ],
   link: ['bg-link text-white border-link', 'hover:bg-link-110', 'text-link'],
   primaryOutlined: [
-    'bg-white text-primary-80 border-primary-40',
-    'hover:bg-primary-10 hover:text-primary hover:border-primary-70',
-    'text-primary',
+    'bg-white text-main-80 border-main-40',
+    'hover:bg-main-10 hover:text-main hover:border-main-70',
+    'text-main',
   ],
   linkOutlined: [
     'bg-white text-link border-link',
@@ -236,7 +236,7 @@ const focus = () => {
 const buttonClasses = computed(() => {
   return [
     // Base styles
-    'leading-tight inline-flex gap-2 justify-center items-center font-bold rounded whitespace-nowrap relative border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-70',
+    'leading-tight inline-flex gap-2 justify-center items-center font-bold rounded whitespace-nowrap relative border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main-70',
     // Styles for in a button group
     'group-[&]/btns:rounded-none group-[&]/btns:last:rounded-r group-[&]/btns:first:rounded-l group-[&]/btns:-ml-px group-[&]/btns:hover:z-10',
     // Size styles

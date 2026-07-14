@@ -6,7 +6,7 @@
       :to="`/crowdnewsroom/${callout.slug}`"
       class="flex h-full flex-col"
     >
-      <div class="h-36 bg-primary-40">
+      <div class="h-36 bg-main-40">
         <img
           class="h-full w-full object-cover"
           :src="imageUrl"
@@ -30,7 +30,7 @@
       </div>
 
       <div
-        class="flex h-11 items-center bg-primary-10 px-5 text-primary-80 group-hover:bg-primary-20 group-hover:text-primary"
+        class="flex h-11 items-center bg-main-10 px-5 text-main-80 group-hover:bg-main-20 group-hover:text-main"
       >
         <span class="mary-80 ml-auto font-semibold">{{
           t('actions.participate')

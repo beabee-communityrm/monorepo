@@ -6,7 +6,7 @@
     <TheMenu />
     <main
       id="top"
-      class="flex h-screen w-full flex-col overflow-y-auto bg-primary-5"
+      class="flex h-screen w-full flex-col overflow-y-auto bg-main-5"
     >
       <TheBreadcrumb
         v-if="items.length > 0"

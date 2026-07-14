@@ -15,7 +15,7 @@
     :rule="rule"
     :filter-groups="filterGroupsWithExtras"
     :readonly="readonly"
-    :class="!readonly && 'mt-2 border-l border-primary-20 pl-2'"
+    :class="!readonly && 'mt-2 border-l border-main-20 pl-2'"
     @update:rule="emit('update:rule', $event)"
     @remove="emit('remove')"
   />

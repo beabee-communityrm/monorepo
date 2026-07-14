@@ -72,7 +72,7 @@ import AppScrollSection from './AppScrollSection.vue';
                 <label class="mb-1 block text-sm font-medium">Name</label>
                 <input
                   type="text"
-                  class="w-full rounded-md border border-primary-20 px-3 py-2"
+                  class="w-full rounded-md border border-main-20 px-3 py-2"
                   placeholder="Enter your name"
                 />
               </div>
@@ -80,14 +80,14 @@ import AppScrollSection from './AppScrollSection.vue';
                 <label class="mb-1 block text-sm font-medium">Email</label>
                 <input
                   type="email"
-                  class="w-full rounded-md border border-primary-20 px-3 py-2"
+                  class="w-full rounded-md border border-main-20 px-3 py-2"
                   placeholder="Enter your email"
                 />
               </div>
               <div>
                 <label class="mb-1 block text-sm font-medium">Message</label>
                 <textarea
-                  class="w-full rounded-md border border-primary-20 px-3 py-2"
+                  class="w-full rounded-md border border-main-20 px-3 py-2"
                   placeholder="Enter your message"
                   rows="3"
                 />

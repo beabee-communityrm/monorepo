@@ -141,7 +141,7 @@ const colorClass = computed(() => {
     case 'error':
       return ['border-danger', 'text-danger', 'stroke-danger'];
     default:
-      return ['border-primary', 'text-primary', 'stroke-primary'];
+      return ['border-main', 'text-main', 'stroke-main'];
   }
 });
 

@@ -21,7 +21,7 @@ meta:
       v-model="currentSearch"
       :placeholder="t('callouts.search')"
     />
-    <div class="my-2 text-sm font-semibold text-primary-80 uppercase lg:my-0">
+    <div class="my-2 text-sm font-semibold text-main-80 uppercase lg:my-0">
       <span>{{ t('common.show') }}</span>
       <AppToggle
         v-model="currentShow"

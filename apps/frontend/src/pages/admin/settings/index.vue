@@ -39,7 +39,7 @@ meta:
         </div>
       </AppApiForm>
 
-      <div class="my-8 border-b border-b-primary-40" />
+      <div class="my-8 border-b border-b-main-40" />
 
       <AppApiForm
         v-if="shareContent"
@@ -86,7 +86,7 @@ meta:
       </AppApiForm>
     </template>
     <template #col2>
-      <div class="my-8 border-b border-b-primary-40 md:hidden" />
+      <div class="my-8 border-b border-b-main-40 md:hidden" />
 
       <AppApiForm
         :button-text="t('actions.update')"
@@ -125,7 +125,7 @@ meta:
         </template>
       </AppApiForm>
 
-      <div class="my-8 border-b border-b-primary-40" />
+      <div class="my-8 border-b border-b-main-40" />
 
       <AppApiForm
         :button-text="t('actions.update')"

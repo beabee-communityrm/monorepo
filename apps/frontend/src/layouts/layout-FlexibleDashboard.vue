@@ -4,7 +4,7 @@
   </div>
   <div v-else class="relative flex h-screen w-full flex-col md:flex-row">
     <TheMenu />
-    <main id="top" class="flex w-full flex-1 flex-col bg-primary-5">
+    <main id="top" class="flex w-full flex-1 flex-col bg-main-5">
       <TheBreadcrumb
         v-if="items.length > 0"
         :items="items"

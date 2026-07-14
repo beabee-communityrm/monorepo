@@ -1,10 +1,10 @@
 <template>
   <span
-    class="inline-flex rounded border border-primary-40 focus-within:shadow-input"
+    class="inline-flex rounded border border-main-40 focus-within:shadow-input"
   >
     <button
       type="button"
-      class="flex-0 bg-primary-20 px-2"
+      class="flex-0 bg-main-20 px-2"
       @click="isRelative = !isRelative"
     >
       <font-awesome-icon

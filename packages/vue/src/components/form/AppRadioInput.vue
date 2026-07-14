@@ -12,7 +12,7 @@
         :disabled="disabled"
       />
       <div
-        class="flex h-5 w-5 items-center justify-center rounded-full border transition-colors focus:ring-2 focus:ring-primary-40 focus:ring-offset-2 focus:outline-none"
+        class="flex h-5 w-5 items-center justify-center rounded-full border transition-colors focus:ring-2 focus:ring-main-40 focus:ring-offset-2 focus:outline-none"
         :class="[
           selected === value
             ? borderVariantClasses[variant]
@@ -75,19 +75,19 @@ withDefaults(defineProps<AppRadioInputProps>(), {
 const selected = defineModel<AppRadioInputValue>();
 
 const borderVariantClasses = {
-  primary: 'border-primary border-2',
+  primary: 'border-main border-2',
   link: 'border-link border-2',
   danger: 'border-danger border-2',
 } as const;
 
 const dotVariantClasses = {
-  primary: 'bg-primary',
+  primary: 'bg-main',
   link: 'bg-link',
   danger: 'bg-danger',
 } as const;
 
 const hoverVariantClasses = {
-  primary: 'hover:text-primary-120 hover:border-primary-120',
+  primary: 'hover:text-main-120 hover:border-main-120',
   link: 'hover:text-link-120 hover:border-link-120',
   danger: 'hover:text-danger-120 hover:border-danger-120',
 } as const;

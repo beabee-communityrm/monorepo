@@ -36,9 +36,7 @@ const containerRef = ref<HTMLElement | null>(null);
           v-model:activeSection="state.activeSection"
         />
 
-        <div
-          class="h-[500px] flex-1 overflow-y-auto border border-primary-20 p-4"
-        >
+        <div class="h-[500px] flex-1 overflow-y-auto border border-main-20 p-4">
           <h1 class="mb-4 text-2xl font-bold">Scroll Content</h1>
           <p class="mb-4">
             Scroll down to see how the navigation highlights the current
@@ -104,7 +102,7 @@ const containerRef = ref<HTMLElement | null>(null);
 
         <div
           ref="containerRef"
-          class="h-[500px] flex-1 overflow-y-auto border border-primary-20 p-4"
+          class="h-[500px] flex-1 overflow-y-auto border border-main-20 p-4"
         >
           <h1 class="mb-4 text-2xl font-bold">Custom Container</h1>
           <p class="mb-4">This example uses a custom scroll container.</p>

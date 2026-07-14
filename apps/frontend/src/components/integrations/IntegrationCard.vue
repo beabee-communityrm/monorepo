@@ -1,9 +1,9 @@
 <template>
-  <div class="rounded border border-primary-20 bg-white">
+  <div class="rounded border border-main-20 bg-white">
     <IntegrationCardHeader :integration="integration" :on-refresh="onRefresh" />
     <div
       v-if="integration.status === ApiHealthStatus.HEALTHY"
-      class="border-t border-primary-20 p-4"
+      class="border-t border-main-20 p-4"
     >
       <slot />
     </div>

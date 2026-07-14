@@ -1,7 +1,7 @@
 <template>
   <ul class="flex flex-wrap items-center gap-2 text-sm text-body-80">
     <template v-for="(rule, i) in modelValue.rules" :key="i">
-      <li class="rounded-full border border-primary-70 bg-primary-10 px-2 py-1">
+      <li class="rounded-full border border-main-70 bg-main-10 px-2 py-1">
         <AppSearchRuleOrGroup
           :filter-groups="filterGroups"
           :rule="rule"

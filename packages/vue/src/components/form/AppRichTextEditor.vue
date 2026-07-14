@@ -283,7 +283,7 @@ const isEditorEmpty = computed(() => editor.value?.isEmpty || false);
 <style>
 @reference '../../styles/index.css';
 .ProseMirror {
-  @apply h-full min-h-20 w-full rounded border border-primary-40 bg-white p-2 focus:shadow-input focus:outline-none;
+  @apply h-full min-h-20 w-full rounded border border-main-40 bg-white p-2 focus:shadow-input focus:outline-none;
 
   .ProseMirror-hasError & {
     @apply border-danger-70 bg-danger-10;
@@ -291,6 +291,6 @@ const isEditorEmpty = computed(() => editor.value?.isEmpty || false);
 }
 
 .ProseMirror-disabled .ProseMirror {
-  @apply cursor-not-allowed border-primary-40 bg-grey-lighter opacity-60;
+  @apply cursor-not-allowed border-main-40 bg-grey-lighter opacity-60;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <footer class="mt-auto p-4">
     <div
-      class="mt-16 flex flex-col gap-4 border-t border-primary-40 pt-4 text-sm xs:flex-row xs:flex-wrap xs:gap-6"
+      class="mt-16 flex flex-col gap-4 border-t border-main-40 pt-4 text-sm xs:flex-row xs:flex-wrap xs:gap-6"
     >
       <div class="w-full lg:w-auto">
         <ul>

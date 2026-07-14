@@ -8,7 +8,7 @@
       :section="section"
       :is-first="index === 0"
     />
-    <div v-if="adminMenuVisible" class="mt-2 bg-primary-10 py-2">
+    <div v-if="adminMenuVisible" class="mt-2 bg-main-10 py-2">
       <TheMenuListSection
         v-for="(section, index) in adminMenu"
         :key="index"
@@ -16,7 +16,7 @@
         :is-first="index === 0"
       />
       <div v-if="canAdmin && !env.cnrMode" class="px-2 lg:px-4">
-        <div class="my-2 border-t border-primary-40" />
+        <div class="my-2 border-t border-main-40" />
         <a href="/members" class="block text-body-80">
           <TheMenuListItem
             :icon="faWindowRestore"

@@ -14,7 +14,7 @@
       role="radio"
       :aria-checked="item.value === modelValue"
       :tabindex="item.value === modelValue ? 0 : -1"
-      class="grow basis-[90px] bg-white text-sm font-semibold outline outline-1 outline-primary-40"
+      class="grow basis-[90px] bg-white text-sm font-semibold outline outline-1 outline-main-40"
       :class="[
         size === 'xs' ? 'p-2' : 'p-2.5',
         disabled

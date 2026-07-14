@@ -1,6 +1,6 @@
 <template>
-  <div class="mb-3 rounded border border-primary-20 bg-primary-10">
-    <div class="flex items-center bg-primary-5 px-4 py-1 text-sm">
+  <div class="mb-3 rounded border border-main-20 bg-main-10">
+    <div class="flex items-center bg-main-5 px-4 py-1 text-sm">
       <slot name="view" />
       <AppButtonGroup class="-mr-2 ml-auto">
         <AppButton

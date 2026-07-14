@@ -37,8 +37,8 @@
           hasError
             ? 'border-danger-70 bg-danger-10'
             : disabled
-              ? 'cursor-not-allowed border-primary-40 bg-grey-lighter'
-              : 'border-primary-40 bg-white',
+              ? 'cursor-not-allowed border-main-40 bg-grey-lighter'
+              : 'border-main-40 bg-white',
           disabled && 'opacity-60',
           copyable && 'pr-10',
         ]"

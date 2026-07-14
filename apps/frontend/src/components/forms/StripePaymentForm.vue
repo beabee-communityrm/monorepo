@@ -96,7 +96,7 @@ const appearance: Appearance = {
   theme: 'flat',
   variables: {
     colorDanger: getColor('--c-danger'),
-    colorPrimary: getColor('-c--primary'),
+    colorPrimary: getColor('--c-main'),
     colorText: getColor('--c-body'),
     colorBackground: getColor('--c-white'),
     borderRadius: style.getPropertyValue('--radius'),
@@ -109,7 +109,7 @@ const appearance: Appearance = {
   },
   rules: {
     '.Input': {
-      border: '1px solid ' + getColor('--c-primary-40'),
+      border: '1px solid ' + getColor('--c-main-40'),
       padding: multiplyCssValue(style.getPropertyValue('--spacing'), 2),
       lineHeight: style.getPropertyValue('--leading-tight'),
     },
