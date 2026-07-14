@@ -5,52 +5,57 @@ export const healthCommand: CommandModule = {
   describe: 'Check the health of the app and its integrations',
   builder: (yargs) =>
     yargs
+      .option('notify', {
+        type: 'boolean',
+        describe: 'Send log notifications',
+        default: false,
+      })
       .command({
         command: 'document',
         describe: 'Check the document storage integration',
-        handler: async () => {
+        handler: async (argv) => {
           const { checkHealth } = await import('../actions/health.js');
-          return checkHealth(['document']);
+          return checkHealth(['document'], argv.notify as boolean);
         },
       })
       .command({
         command: 'image',
         describe: 'Check the image storage integration',
-        handler: async () => {
+        handler: async (argv) => {
           const { checkHealth } = await import('../actions/health.js');
-          return checkHealth(['image']);
+          return checkHealth(['image'], argv.notify as boolean);
         },
       })
       .command({
         command: 'newsletter',
         describe: 'Check the newsletter integration',
-        handler: async () => {
+        handler: async (argv) => {
           const { checkHealth } = await import('../actions/health.js');
-          return checkHealth(['newsletter']);
+          return checkHealth(['newsletter'], argv.notify as boolean);
         },
       })
       .command({
         command: 'payment',
         describe: 'Check the payment integrations',
-        handler: async () => {
+        handler: async (argv) => {
           const { checkHealth } = await import('../actions/health.js');
-          return checkHealth(['payment']);
+          return checkHealth(['payment'], argv.notify as boolean);
         },
       })
       .command({
         command: 'email',
         describe: 'Check the email integration',
-        handler: async () => {
+        handler: async (argv) => {
           const { checkHealth } = await import('../actions/health.js');
-          return checkHealth(['email']);
+          return checkHealth(['email'], argv.notify as boolean);
         },
       })
       .command({
         command: 'all',
         describe: 'Check all integrations',
-        handler: async () => {
+        handler: async (argv) => {
           const { checkHealth } = await import('../actions/health.js');
-          return checkHealth();
+          return checkHealth(undefined, argv.notify as boolean);
         },
       }),
   handler: () => {},
