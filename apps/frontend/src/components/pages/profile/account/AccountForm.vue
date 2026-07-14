@@ -20,76 +20,82 @@
       icon="i-lucide-user-round"
       :title="t('accountPage.contactInformation')"
     >
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <UFormField :label="t('form.firstName')" required name="firstName">
-          <UInput v-model="data.firstName" class="w-full" />
-        </UFormField>
-        <UFormField :label="t('form.lastName')" required name="lastName">
-          <UInput v-model="data.lastName" class="w-full" />
-        </UFormField>
-      </div>
+      <AppFormSkeleton v-if="loading" :rows="3" />
+      <template v-else>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <UFormField :label="t('form.firstName')" required name="firstName">
+            <UInput v-model="data.firstName" class="w-full" />
+          </UFormField>
+          <UFormField :label="t('form.lastName')" required name="lastName">
+            <UInput v-model="data.lastName" class="w-full" />
+          </UFormField>
+        </div>
 
-      <UFormField :label="t('form.email')" required name="emailAddress">
-        <UInput v-model="data.emailAddress" type="email" class="w-full" />
-      </UFormField>
+        <UFormField :label="t('form.email')" required name="emailAddress">
+          <UInput v-model="data.emailAddress" type="email" class="w-full" />
+        </UFormField>
 
-      <UFormField :label="t('form.phone')" name="telephone">
-        <UInput v-model="data.telephone" type="tel" class="w-full" />
-        <p class="text-muted mt-1.5 flex items-center gap-1 text-xs">
-          <UIcon name="i-lucide-info" class="size-3 shrink-0" />
-          {{ t('accountPage.phoneInfo') }}
-        </p>
-      </UFormField>
+        <UFormField :label="t('form.phone')" name="telephone">
+          <UInput v-model="data.telephone" type="tel" class="w-full" />
+          <p class="text-muted mt-1.5 flex items-center gap-1 text-xs">
+            <UIcon name="i-lucide-info" class="size-3 shrink-0" />
+            {{ t('accountPage.phoneInfo') }}
+          </p>
+        </UFormField>
+      </template>
     </AppSectionCard>
 
     <AppSectionCard
       icon="i-lucide-map-pin"
       :title="t('accountPage.deliveryAddress')"
     >
-      <template v-if="accountContent.showMailOptIn">
-        <div class="flex items-center justify-between gap-4">
-          <div>
-            <p class="text-highlighted text-sm font-medium">
-              {{ accountContent.mailTitle }}
-            </p>
-            <div
-              class="content-message text-muted mt-0.5 text-xs"
-              v-html="accountContent.mailText"
+      <AppFormSkeleton v-if="loading" :rows="3" />
+      <template v-else>
+        <template v-if="accountContent?.showMailOptIn">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <p class="text-highlighted text-sm font-medium">
+                {{ accountContent.mailTitle }}
+              </p>
+              <div
+                class="content-message text-muted mt-0.5 text-xs"
+                v-html="accountContent.mailText"
+              />
+            </div>
+            <USwitch
+              v-model="data.deliveryOptIn"
+              :label="accountContent.mailOptIn"
             />
           </div>
-          <USwitch
-            v-model="data.deliveryOptIn"
-            :label="accountContent.mailOptIn"
-          />
+        </template>
+
+        <UFormField
+          :label="t('form.addressLine1')"
+          :required="data.deliveryOptIn"
+          name="addressLine1"
+        >
+          <UInput v-model="data.addressLine1" class="w-full" />
+        </UFormField>
+        <UFormField :label="t('form.addressLine2')">
+          <UInput v-model="data.addressLine2" class="w-full" />
+        </UFormField>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-[2fr_1fr]">
+          <UFormField
+            :label="t('form.cityOrTown')"
+            :required="data.deliveryOptIn"
+            name="cityOrTown"
+          >
+            <UInput v-model="data.cityOrTown" class="w-full" />
+          </UFormField>
+          <UFormField
+            :label="t('form.postCode')"
+            :required="data.deliveryOptIn"
+            name="postCode"
+          >
+            <UInput v-model="data.postCode" class="w-full" />
+          </UFormField>
         </div>
       </template>
-
-      <UFormField
-        :label="t('form.addressLine1')"
-        :required="data.deliveryOptIn"
-        name="addressLine1"
-      >
-        <UInput v-model="data.addressLine1" class="w-full" />
-      </UFormField>
-      <UFormField :label="t('form.addressLine2')">
-        <UInput v-model="data.addressLine2" class="w-full" />
-      </UFormField>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-[2fr_1fr]">
-        <UFormField
-          :label="t('form.cityOrTown')"
-          :required="data.deliveryOptIn"
-          name="cityOrTown"
-        >
-          <UInput v-model="data.cityOrTown" class="w-full" />
-        </UFormField>
-        <UFormField
-          :label="t('form.postCode')"
-          :required="data.deliveryOptIn"
-          name="postCode"
-        >
-          <UInput v-model="data.postCode" class="w-full" />
-        </UFormField>
-      </div>
     </AppSectionCard>
 
     <AppStickySaveBar v-if="dirty" form="account-form" @cancel="handleCancel" />
@@ -97,10 +103,11 @@
 </template>
 
 <script lang="ts" setup>
+import type { ContentData } from '@beabee/beabee-common';
 import { GetContactWith, toPhoneNumber } from '@beabee/beabee-common';
-import { AppSectionCard, AppStickySaveBar } from '@beabee/vue';
+import { AppFormSkeleton, AppSectionCard, AppStickySaveBar } from '@beabee/vue';
 
-import { computed, reactive, ref, useTemplateRef, watch } from 'vue';
+import { computed, onMounted, reactive, ref, useTemplateRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { z } from 'zod';
 
@@ -109,23 +116,45 @@ import { client } from '#utils/api';
 
 const { t } = useI18n();
 
-const accountContent = await client.content.get('join/setup');
-const contact = await client.contact.get('me', [GetContactWith.Profile]);
+const loading = ref(true);
+const accountContent = ref<ContentData<'join/setup'> | null>(null);
 
 const data = reactive({
-  emailAddress: contact.email,
-  firstName: contact.firstname,
-  lastName: contact.lastname,
-  telephone: contact.profile.telephone,
-  deliveryOptIn: contact.profile.deliveryOptIn,
-  addressLine1: contact.profile.deliveryAddress?.line1 || '',
-  addressLine2: contact.profile.deliveryAddress?.line2 as string | undefined,
-  cityOrTown: contact.profile.deliveryAddress?.city || '',
-  postCode: contact.profile.deliveryAddress?.postcode || '',
+  emailAddress: '',
+  firstName: '',
+  lastName: '',
+  telephone: '',
+  deliveryOptIn: false,
+  addressLine1: '',
+  addressLine2: undefined as string | undefined,
+  cityOrTown: '',
+  postCode: '',
 });
 
 /** Snapshot of the last-saved (or initially loaded) values, for Cancel */
 let savedData = { ...data };
+
+onMounted(async () => {
+  const [content, contact] = await Promise.all([
+    client.content.get('join/setup'),
+    client.contact.get('me', [GetContactWith.Profile]),
+  ]);
+  accountContent.value = content;
+  Object.assign(data, {
+    emailAddress: contact.email,
+    firstName: contact.firstname,
+    lastName: contact.lastname,
+    telephone: contact.profile.telephone,
+    deliveryOptIn: contact.profile.deliveryOptIn,
+    addressLine1: contact.profile.deliveryAddress?.line1 || '',
+    addressLine2: contact.profile.deliveryAddress?.line2 as string | undefined,
+    cityOrTown: contact.profile.deliveryAddress?.city || '',
+    postCode: contact.profile.deliveryAddress?.postcode || '',
+  });
+
+  savedData = { ...data };
+  loading.value = false;
+});
 
 // Incomplete phone number validation
 function isValidPhone(value: string): boolean {
@@ -193,7 +222,7 @@ const { submit: handleSave } = useApiSubmit(
       profile: {
         telephone: data.telephone,
         // Only update opt in if it's visible
-        ...(accountContent.showMailOptIn && {
+        ...(accountContent.value?.showMailOptIn && {
           deliveryOptIn: data.deliveryOptIn,
         }),
         deliveryAddress: {
