@@ -1,10 +1,7 @@
 <!--
   # AppFormSkeleton
   A stack of skeleton "field" bars, for placeholder content while a form's
-  real data is still loading (e.g. inside a <Suspense> `#fallback`). A
-  fragment (no wrapping element), so the bars become direct children of
-  whatever renders it — inside an AppSectionCard's body, that picks up its
-  `space-y-4` automatically, matching how the real fields would sit.
+  real data is still loading (e.g. inside a <Suspense> `#fallback`).
 
   ## Props
   - `rows` (number, default 3): how many skeleton bars to show.
