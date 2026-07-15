@@ -25,7 +25,7 @@ export const nuxtUiConfig: NuxtUIOptions = {
     },
     formField: {
       slots: {
-        label: 'text-black!',
+        help: 'text-xs',
       },
       variants: {
         required: {
@@ -42,8 +42,14 @@ export const nuxtUiConfig: NuxtUIOptions = {
     },
     button: {
       slots: {
-        base: 'py-2.5! cursor-pointer',
+        base: 'cursor-pointer',
       },
+      compoundVariants: [
+        {
+          square: false,
+          class: 'py-2.5!',
+        },
+      ],
     },
   },
 };

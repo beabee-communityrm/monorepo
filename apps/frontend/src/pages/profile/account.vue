@@ -5,7 +5,7 @@ meta:
 </route>
 
 <template>
-  <div class="mx-auto flex max-w-2xl flex-col gap-6">
+  <div class="text-default mx-auto flex max-w-2xl flex-col gap-6">
     <div
       class="bg-elevated text-muted flex items-start gap-3 rounded-xl px-4 py-3 text-xs"
     >

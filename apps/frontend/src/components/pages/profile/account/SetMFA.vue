@@ -24,7 +24,7 @@
   >
     <div class="flex items-start justify-between gap-4">
       <div class="space-y-1">
-        <p class="text-highlighted text-sm font-medium">
+        <p class="text-sm font-medium">
           {{
             isEnabled
               ? t('accountPage.mfa.statusEnabled.title')

@@ -125,18 +125,23 @@ function computeShade(colorValue: string, level: number): string {
 
 // Maps standard Tailwind shade numbers to the internal level system.
 // Used to generate --color-{name}-{shade} variables for Nuxt UI compatibility.
+// Levels calibrated against Nuxt UI's real neutral palettes (slate, gray,
+// zinc, neutral, stone, mist, taupe, mauve, olive) so a custom neutral looks
+// like those built-ins. Chromatic (non-neutral) base colours will still
+// diverge noticeably, since a plain white/black mix can't reproduce the
+// hue/chroma shifts Tailwind's hand-tuned scales use.
 const TAILWIND_SHADE_LEVELS: [shade: number, level: number][] = [
-  [50, 5],
-  [100, 10],
-  [200, 20],
-  [300, 30],
-  [400, 40],
+  [50, 3.5],
+  [100, 8.2],
+  [200, 17.9],
+  [300, 30.4],
+  [400, 66],
   [500, 100],
-  [600, 110],
-  [700, 120],
-  [800, 130],
-  [900, 140],
-  [950, 145],
+  [600, 126.8],
+  [700, 143.3],
+  [800, 165.4],
+  [900, 177.6],
+  [950, 190.9],
 ];
 
 function setCustomShades(
@@ -221,7 +226,7 @@ watch(
     // colour, 'neutral' expects a lighter base than our (often very dark)
     // body colour, so derive a lightened variant for it to use instead.
     setNuxtShades('nuxt-primary', colors.link);
-    setNuxtShades('nuxt-neutral', mix(colors.body, 'white', 0.35));
+    setNuxtShades('nuxt-neutral', mix(colors.body, 'white', 0.3));
 
     // Load fonts
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));
