@@ -55,9 +55,8 @@ test("One-time contribution after login", async ({ page }) => {
   for (let attempt = 1; attempt <= 5; attempt++) {
     await page.reload();
     try {
-      await expect(targetRow, "Payment date and amount visible").toBeVisible({
-        timeout: 8000,
-      });
+      console.log("Reloading after payment. Reload #", attempt);
+      await expect(targetRow, "Payment date and amount visible").toBeVisible();
       break;
     } catch (e) {
       if (attempt === 5) throw e;
