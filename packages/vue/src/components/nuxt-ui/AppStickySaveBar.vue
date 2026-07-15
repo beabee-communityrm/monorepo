@@ -44,8 +44,7 @@
 <script lang="ts" setup>
 /**
  * Sticky "unsaved changes" bar with Cancel/Save actions, for forms inside
- * the Dashboard layout. See the template comment above for the full
- * rationale.
+ * the Dashboard layout.
  *
  * @component AppStickySaveBar
  */
