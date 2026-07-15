@@ -1,7 +1,12 @@
 <template>
   <UForm ref="formRef" :schema="schema" :state="state" @submit="handleSubmit">
     <AppSectionCard icon="i-lucide-lock" :title="t('accountPage.loginDetail')">
-      <UFormField :label="t('form.newPassword')" required name="password">
+      <UFormField
+        :label="t('form.newPassword')"
+        required
+        name="password"
+        :help="t('form.passwordInfo')"
+      >
         <UInput
           v-model="password"
           :type="showPassword ? 'text' : 'password'"
@@ -24,11 +29,6 @@
             />
           </template>
         </UInput>
-
-        <p class="text-muted mt-1.5 flex items-center gap-1 text-xs">
-          <UIcon name="i-lucide-info" class="size-3 shrink-0" />
-          {{ t('form.passwordInfo') }}
-        </p>
       </UFormField>
 
       <UFormField

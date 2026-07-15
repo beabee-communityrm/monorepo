@@ -30,12 +30,12 @@
           <UInput v-model="data.emailAddress" type="email" class="w-full" />
         </UFormField>
 
-        <UFormField :label="t('form.phone')" name="telephone">
+        <UFormField
+          :label="t('form.phone')"
+          name="telephone"
+          :help="t('accountPage.phoneInfo')"
+        >
           <UInput v-model="data.telephone" type="tel" class="w-full" />
-          <p class="text-muted mt-1.5 flex items-center gap-1 text-xs">
-            <UIcon name="i-lucide-info" class="size-3 shrink-0" />
-            {{ t('accountPage.phoneInfo') }}
-          </p>
         </UFormField>
       </template>
     </AppSectionCard>
@@ -49,11 +49,8 @@
         <template v-if="accountContent?.showMailOptIn">
           <div class="flex items-center justify-between gap-4">
             <div>
-              <p class="text-highlighted text-sm font-medium">
-                {{ accountContent.mailTitle }}
-              </p>
               <div
-                class="content-message text-muted mt-0.5 text-xs"
+                class="text-default text-sm font-medium"
                 v-html="accountContent.mailText"
               />
             </div>
