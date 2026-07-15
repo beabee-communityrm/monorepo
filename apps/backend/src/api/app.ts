@@ -105,9 +105,7 @@ initApp()
   })
   .then(() => {
     // Cache newsletter groups in DB
-    if (config.newsletter.provider !== 'test') {
-      newsletterService.refreshNewsletterGroups();
-    }
+    newsletterService.refreshNewsletterGroups();
   })
   .catch((err) => {
     mainLogger.error('Error during initialization', err);

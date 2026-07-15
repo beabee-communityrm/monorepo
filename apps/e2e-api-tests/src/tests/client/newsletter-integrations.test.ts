@@ -45,6 +45,13 @@ describe('Newsletter integrations API', () => {
     it('should refresh and remove groups', async () => {
       try {
         const removedGroupId = '7bd89a737b';
+
+        await client.fetch.post('/dev/newsletter-groups', [
+          { id: 'b8e4acb751', label: 'Kombucha' },
+          { id: 'c0b1a133d1', label: 'Tea' },
+          { id: 'd0g6ced973', label: 'Apfelschorle' },
+        ]);
+
         // 1. Diff should compute that 1 group was added and 1 removed
         const { info, groupChanges } =
           await client.integrations.refreshNewsletterGroups();

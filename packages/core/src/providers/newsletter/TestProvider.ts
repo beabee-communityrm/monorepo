@@ -3,7 +3,6 @@ import {
   TestNewsletterIntegrationData,
 } from '@beabee/beabee-common';
 
-import OptionsService from '#services/OptionsService';
 import {
   NewsletterContact,
   NewsletterProvider,
@@ -11,6 +10,12 @@ import {
 } from '#type/index';
 
 export class TestProvider implements NewsletterProvider {
+  static testGroups: { id: string; label: string }[] = [
+    { id: 'b8e4acb751', label: 'Kombucha' },
+    { id: 'c0b1a133d1', label: 'Tea' },
+    { id: '7bd89a737b', label: 'Coffee' },
+  ];
+
   async getContact(email: string): Promise<NewsletterContact | undefined> {
     return;
   }
@@ -36,7 +41,10 @@ export class TestProvider implements NewsletterProvider {
     const resp: TestNewsletterIntegrationData = {
       provider: 'test',
       audienceId: 'testing-only',
-      groups: OptionsService.getJSON('newsletter-groups'),
+      groups: TestProvider.testGroups.map((group) => ({
+        ...group,
+        checked: false,
+      })),
     };
 
     if (withHealth) {
@@ -46,13 +54,7 @@ export class TestProvider implements NewsletterProvider {
   }
 
   async getGroups(): Promise<{ id: string; label: string }[]> {
-    // remove group 'coffee'
-    const testGroups = [
-      { id: 'b8e4acb751', label: 'Kombucha' },
-      { id: 'c0b1a133d1', label: 'Tea' },
-      { id: 'd0g6ced973', label: 'Apfelschorle' },
-    ];
-    return testGroups;
+    return TestProvider.testGroups;
   }
 }
 
