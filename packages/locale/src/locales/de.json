@@ -25,9 +25,7 @@
       },
       "modalTitle": "Aktivere 2-Faktor Authentifizierung",
       "result": {
-        "invalidCode": "Der Code konnte nicht bestätigt werden. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support.",
-        "successful": "Die 2-Faktor Authentifizierung wurde erfolgreich eingerichtet.",
-        "title": "Fertig"
+        "invalidCode": "Der Code konnte nicht bestätigt werden. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."
       },
       "scan": {
         "desc": "Scannen Sie den unten stehenden QR-Code mit Ihrer Authentifizierungs-App.",

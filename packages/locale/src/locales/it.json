@@ -25,9 +25,7 @@
       },
       "modalTitle": "Attiva autenticazione a 2 fattori",
       "result": {
-        "invalidCode": "Impossibile confermare il codice. Riprova o contatta l'assistenza.",
-        "successful": "L'autenticazione a 2 fattori è stata attivata",
-        "title": "Fatto"
+        "invalidCode": "Impossibile confermare il codice. Riprova o contatta l'assistenza."
       },
       "scan": {
         "desc": "Scansiona il codice QR qui sotto con la tua app di autenticazione.",

@@ -25,9 +25,7 @@
       },
       "modalTitle": "2-factor authenticatie inschakelen",
       "result": {
-        "invalidCode": "De code kon niet worden bevestigd, probeer het opnieuw of neem contact op met support.",
-        "successful": "2-factor authenticatie is met succes ingesteld.",
-        "title": "Gereed"
+        "invalidCode": "De code kon niet worden bevestigd, probeer het opnieuw of neem contact op met support."
       },
       "scan": {
         "desc": "Scan de QR-code hieronder met je authenticatie app.",
