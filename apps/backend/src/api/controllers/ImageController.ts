@@ -1,6 +1,5 @@
 import {
   ALLOWED_IMAGE_MIME_TYPES,
-  MAX_FILE_SIZE_IN_BYTES,
   isSupportedImageType,
 } from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
@@ -12,7 +11,6 @@ import {
 } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import { imageService } from '@beabee/core/services/ImageService';
-import { convertMulterError } from '@beabee/core/utils/multer';
 
 import { Request, Response } from 'express';
 import {
@@ -28,6 +26,7 @@ import {
   Res,
   UseBefore,
 } from 'routing-controllers';
+import { pipeline } from 'stream/promises';
 
 import { RateLimit } from '../decorators/index.js';
 import { uploadMiddleware } from '../middlewares/index.js';
@@ -47,33 +46,27 @@ export class ImageController {
   )
   async upload(
     @Req() req: Request,
-    @Res() res: Response,
     @CurrentUser({ required: false }) contact?: Contact
   ): Promise<UploadFileResponse> {
-    try {
-      // Apply multer middleware to handle file upload
-      await uploadMiddleware(req, res);
-    } catch (error) {
-      // Convert MulterError to appropriate HttpError
-      throw convertMulterError(error, MAX_FILE_SIZE_IN_BYTES);
-    }
+    const file = await uploadMiddleware(req);
 
-    if (!req.file) {
+    if (!file) {
       throw new BadRequestError('No image file provided');
     }
 
-    // Verify file type is allowed - multer handles size but we still check type
-    if (!isSupportedImageType(req.file.mimetype)) {
+    // Verify file type is allowed before consuming the stream
+    if (!isSupportedImageType(file.mimetype)) {
+      file.stream.resume(); // Drain the stream so the request completes
       throw new UnsupportedFileTypeError(
-        req.file.mimetype,
+        file.mimetype,
         ALLOWED_IMAGE_MIME_TYPES
       );
     }
 
     // Use the ImageService to upload and process the file
     const metadata = await imageService.uploadImage(
-      req.file.buffer,
-      req.file.originalname,
+      file.stream,
+      file.filename,
       contact?.email // Only add owner information if available
     );
 
@@ -102,13 +95,12 @@ export class ImageController {
     @Res() res: Response,
     @Param('id') id: string,
     @QueryParam('w', { required: false }) width?: number
-  ): Promise<Buffer> {
-    // First get image metadata to check if it exists and get filename
-    // This avoids duplicate existence checks in getImageBuffer
+  ): Promise<Response> {
+    // Get the filename first, this also throws if the image doesn't exist
     const metadata = await imageService.getImageMetadata(id);
 
-    // Get image as buffer
-    const imageData = await imageService.getImageBuffer(id, width);
+    // Get image as stream
+    const imageData = await imageService.getImageStream(id, width);
 
     // Set appropriate security headers
     res.set({
@@ -120,8 +112,20 @@ export class ImageController {
       'X-Frame-Options': 'SAMEORIGIN',
     });
 
-    // Return the buffer, routing-controllers will handle the rest
-    return imageData.buffer;
+    // Stream the image to the response
+    try {
+      await pipeline(imageData.stream, res);
+    } catch (error) {
+      if (!res.headersSent) {
+        throw new BadRequestError(`Failed to stream image (${id})`);
+      }
+      // Too late for an error response, abort the connection
+      res.destroy();
+    }
+
+    // Returning the response object tells routing-controllers the response
+    // has been handled
+    return res;
   }
 
   /**
