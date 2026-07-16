@@ -6,6 +6,7 @@ import {
 } from '@beabee/beabee-common';
 
 import {
+  CopyObjectCommand,
   DeleteObjectCommand,
   HeadObjectCommand,
   ListObjectsV2Command,
@@ -29,6 +30,7 @@ import {
 } from '../errors/index.js';
 import { log as mainLogger } from '../logging.js';
 import type {
+  ImageBackfillResult,
   ImageFormat,
   ImageMetadata,
   ImageServiceConfig,
@@ -555,6 +557,92 @@ export class ImageService {
       log.error('Failed to list images:', error);
       return [];
     }
+  }
+
+  /**
+   * Backfill width/height S3 metadata for images uploaded before dimensions
+   * were stored at upload time. Each image is downloaded once to probe its
+   * dimensions, the metadata is then rewritten with a server-side self-copy.
+   * Safe to re-run, images that already have dimensions are skipped.
+   * @param dryRun Only report what would be updated
+   * @returns Counts of updated, skipped and failed images
+   */
+  async backfillImageDimensions(dryRun = false): Promise<ImageBackfillResult> {
+    const result: ImageBackfillResult = { updated: 0, skipped: 0, failed: 0 };
+
+    let continuationToken: string | undefined;
+    do {
+      const response = await this.s3Client.send(
+        new ListObjectsV2Command({
+          Bucket: this.config.s3.bucket,
+          Prefix: 'originals/',
+          ContinuationToken: continuationToken,
+        })
+      );
+      continuationToken = response.NextContinuationToken;
+
+      for (const item of response.Contents || []) {
+        if (!item.Key) {
+          continue;
+        }
+
+        try {
+          const head = await this.s3Client.send(
+            new HeadObjectCommand({
+              Bucket: this.config.s3.bucket,
+              Key: item.Key,
+            })
+          );
+
+          const s3Metadata: S3Metadata = head.Metadata || {};
+          if (s3Metadata.width && s3Metadata.height) {
+            result.skipped++;
+            continue;
+          }
+
+          const { buffer } = await getFileBuffer(
+            this.s3Client,
+            this.config.s3.bucket,
+            item.Key
+          );
+          const metadata = await sharp(buffer).metadata();
+
+          if (!metadata.width || !metadata.height) {
+            log.warning(`No dimensions detected for ${item.Key}, skipping`);
+            result.failed++;
+            continue;
+          }
+
+          if (!dryRun) {
+            await this.s3Client.send(
+              new CopyObjectCommand({
+                Bucket: this.config.s3.bucket,
+                CopySource: `${this.config.s3.bucket}/${item.Key}`,
+                Key: item.Key,
+                MetadataDirective: 'REPLACE',
+                // REPLACE drops the content type unless set explicitly
+                ContentType: head.ContentType,
+                Metadata: {
+                  ...head.Metadata,
+                  width: String(metadata.width),
+                  height: String(metadata.height),
+                },
+              })
+            );
+          }
+
+          result.updated++;
+          log.info(
+            `${dryRun ? 'Would backfill' : 'Backfilled'} dimensions for ${item.Key} (${metadata.width}x${metadata.height})`
+          );
+        } catch (error) {
+          result.failed++;
+          log.error(`Failed to backfill dimensions for ${item.Key}`, error);
+        }
+      }
+    } while (continuationToken);
+
+    return result;
   }
 
   /**

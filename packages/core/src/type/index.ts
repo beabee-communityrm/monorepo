@@ -13,6 +13,7 @@ export * from './email-mailing-recipient.js';
 export * from './email.js';
 export * from './export-type-id.js';
 export * from './filter-handlers.js';
+export * from './image-backfill-result.js';
 export * from './image-format.js';
 export * from './image-metadata.js';
 export * from './image-service-config.js';
