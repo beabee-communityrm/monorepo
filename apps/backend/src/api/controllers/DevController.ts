@@ -3,19 +3,19 @@ import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { NotFoundError } from '@beabee/core/errors';
 import { Contact, ContactRole } from '@beabee/core/models';
+import { TestProvider } from '@beabee/core/providers/newsletter/TestProvider';
 import ContactsService from '@beabee/core/services/ContactsService';
 
 import { isUUID } from 'class-validator';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import {
+  Body,
   Get,
   JsonController,
-  OnUndefined,
   Param,
   Post,
   Redirect,
   Req,
-  Res,
 } from 'routing-controllers';
 
 import { login } from '#api/utils/auth';
@@ -41,6 +41,22 @@ export class DevController {
 
     await clearRateLimiterCache();
     return { message: 'Rate limiter cache cleared successfully' };
+  }
+
+  /**
+   * Set the groups returned by the test newsletter provider.
+   * Only available in development mode.
+   */
+  @Post('/newsletter-groups')
+  async setNewsletterGroups(
+    @Body({ validate: false }) groups: { id: string; label: string }[]
+  ): Promise<{ message: string }> {
+    if (!config.dev) {
+      throw new NotFoundError();
+    }
+
+    TestProvider.testGroups = groups;
+    return { message: 'Test newsletter groups updated' };
   }
 
   /**

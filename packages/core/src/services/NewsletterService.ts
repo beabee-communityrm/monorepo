@@ -12,7 +12,11 @@ import {
 } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import { Callout, Contact, ContactProfile, Content } from '#models/index';
-import { MailchimpProvider, NoneProvider } from '#providers/newsletter/index';
+import {
+  MailchimpProvider,
+  NoneProvider,
+  TestProvider,
+} from '#providers/newsletter/index';
 import {
   ContactNewsletterUpdates,
   NewsletterContact,
@@ -50,11 +54,19 @@ async function contactToNlUpdate(
   return convertContactToNlUpdate(contact, updates, opts);
 }
 
+function createProvider(): NewsletterProvider {
+  switch (config.newsletter.provider) {
+    case 'mailchimp':
+      return new MailchimpProvider(config.newsletter.settings);
+    case 'test':
+      return new TestProvider();
+    default:
+      return new NoneProvider();
+  }
+}
+
 class NewsletterService {
-  private readonly provider: NewsletterProvider =
-    config.newsletter.provider === 'mailchimp'
-      ? new MailchimpProvider(config.newsletter.settings)
-      : new NoneProvider();
+  private readonly provider: NewsletterProvider = createProvider();
 
   /**
    * Updates or inserts a contact in the newsletter provider and handles status
