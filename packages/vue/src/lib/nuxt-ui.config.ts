@@ -40,6 +40,12 @@ export const nuxtUiConfig: NuxtUIOptions = {
         base: 'py-2.5!',
       },
     },
+    modal: {
+      slots: {
+        content: 'text-default',
+        body: 'text-sm',
+      },
+    },
     button: {
       slots: {
         base: 'cursor-pointer',
