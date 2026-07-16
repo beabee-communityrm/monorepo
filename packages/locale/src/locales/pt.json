@@ -25,9 +25,7 @@
       },
       "modalTitle": "Ativar autenticação de dois factores",
       "result": {
-        "invalidCode": "O código não pode ser validado. Tenta de novo ou contacta-nos {support}",
-        "successful": "Autenticação de dois factores ativada com sucesso.",
-        "title": "Feito"
+        "invalidCode": "O código não pode ser validado. Tenta de novo ou contacta-nos {support}"
       },
       "scan": {
         "desc": "Faça scan do código QR abaixo, usando a sua app de autenticação.",
