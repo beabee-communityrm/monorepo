@@ -25,9 +25,7 @@
       },
       "modalTitle": "Activer l'authentification à 2 facteurs",
       "result": {
-        "invalidCode": "Le code n'a pas pu être vérifié, veuillez réessayer ou contacter l'assistance.",
-        "successful": "L'authentification à 2 facteurs a bien été configurée.",
-        "title": "Terminé"
+        "invalidCode": "Le code n'a pas pu être vérifié, veuillez réessayer ou contacter l'assistance."
       },
       "scan": {
         "desc": "Scannez le code QR ci-dessous avec votre application d'authentification.",

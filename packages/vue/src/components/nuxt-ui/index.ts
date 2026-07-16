@@ -1,4 +1,8 @@
 export {
+  default as AppCodeInput,
+  type AppCodeInputProps,
+} from './AppCodeInput.vue';
+export {
   default as AppFormSkeleton,
   type AppFormSkeletonProps,
 } from './AppFormSkeleton.vue';

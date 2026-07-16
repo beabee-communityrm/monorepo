@@ -25,9 +25,7 @@
       },
       "modalTitle": "Activar autenticación en dos pasos",
       "result": {
-        "invalidCode": "No se pudo confirmar el código. Inténtalo de nuevo o contacta con el soporte.",
-        "successful": "La autenticación en dos pasos se ha configurado correctamente.",
-        "title": "Listo"
+        "invalidCode": "No se pudo confirmar el código. Inténtalo de nuevo o contacta con el soporte."
       },
       "scan": {
         "desc": "Escanea el código QR con tu aplicación de autenticación.",
