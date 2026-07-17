@@ -54,8 +54,8 @@
       "title": "Рассылка",
       "unsubscribe": "Убрать из списка рассылки"
     },
-    "phoneInfo": "",
-    "phoneInfoAdmin": "",
+    "phoneInfo": "Предоставляя свой номер телефона, вы даёте согласие на получение звонков.",
+    "phoneInfoAdmin": "Вы должны получить согласие человека, прежде чем добавлять его номер телефона в систему.",
     "savedPassword": "Новый пароль сохранён",
     "subTitle": "Обязательные поля отмечены звёздочкой. Вся информация, которой вы делитесь, конфиденциальна.",
     "title": "Профиль"
@@ -72,7 +72,7 @@
     "continue": "Продолжить",
     "copy": "Скопировать",
     "create": "Создать",
-    "decrease": "",
+    "decrease": "Уменьшить",
     "delete": "Удалить",
     "disable": "Отключить",
     "edit": "Редактировать",
@@ -81,7 +81,7 @@
     "export": "Экспортировать",
     "getStarted": "Начать",
     "goBack": "Назад",
-    "increase": "",
+    "increase": "Увеличить",
     "next": "Дальше",
     "noBack": "Нет, вернуться назад",
     "participate": "Участвовать",
@@ -106,7 +106,7 @@
     "share": "Поделиться",
     "skip": "Пропустить",
     "submit": "Отправить",
-    "tryAgain": "",
+    "tryAgain": "Попробовать снова",
     "unpublish": "Снять с публикации",
     "update": "Обновить",
     "view": "Просмотреть",
@@ -116,26 +116,26 @@
     "yesReset": "Да, сбросить"
   },
   "addContact": {
-    "contactSaved": "",
+    "contactSaved": "Контакт сохранён",
     "errors": {
-      "duplicateEmail": ""
+      "duplicateEmail": "Такой адрес электронной почты уже существует"
     },
-    "subscribeToNewsletter": "",
-    "title": ""
+    "subscribeToNewsletter": "Синхронизировать с инструментом рассылки",
+    "title": "Добавить контакт"
   },
   "addNotice": {
     "form": {
-      "buttonText": "",
-      "expirationDateAndTime": "",
-      "name": "",
-      "startDateAndTime": "",
-      "text": "",
-      "url": ""
+      "buttonText": "Текст кнопки",
+      "expirationDateAndTime": "Дата и время окончания",
+      "name": "Название",
+      "startDateAndTime": "Дата и время начала",
+      "text": "Текст",
+      "url": "URL"
     },
-    "title": ""
+    "title": "Добавить объявление"
   },
   "adminDashboard": {
-    "hint1": "",
+    "hint1": "<p>Знаете ли вы, что CrowdNewsrooms можно создавать без даты окончания, и они будут работать постоянно? Подробнее в нашем <a href=\"https://beabee.io/en/beabee-full-feature-list/\" target=\"_blank\" rel=\"noopener noreferrer\">обзоре функций</a>.</p>\n",
     "hint2": "<p><a href=\"https://beabee.io/en/beabee-model/\" target=\"_blank\" rel=\"noopener noreferrer\">Узнайте больше</a> о том, как Beabee может помочь организовать комьюнити и поддерживать отношения с вашей аудиторией</p>\n",
     "hint3": "<p>Наш <a href=\"https://beabee.io/en/beabee-faq/\" target=\"_blank\" rel=\"noopener noreferrer\">FAQ</a> ответит на большинство вопросов, которые могут у вас возникнуть. Если какого-то ответа не хватает — напишите нам в поддержку.</p>\n",
     "joinSlack": "Присоединяйтесь к beabee в Slack!",
@@ -148,37 +148,37 @@
       "title": "Недавно присоединились"
     },
     "numbers": {
-      "averageContribution": "",
+      "averageContribution": "Средний ежемесячный взнос",
       "avgContribution": "Средний ежемесячный взнос",
       "newMembers": "Новые подписчики",
       "revenue": "Доход",
       "title": "За последние 30 дней"
     },
-    "responsesSoFar": "",
-    "seeAllResponses": "",
+    "responsesSoFar": "{n} ответ на данный момент | {n} ответа на данный момент | {n} ответов на данный момент",
+    "seeAllResponses": "Посмотреть все ответы",
     "supportInbox": "<p>Нужна помощь? Зайдите в <a href=\"https://wiki.beabee.io/help-center-english/\" target=\"_blank\" rel=\"noopener noreferrer\">Справочный центр</a> или напишите в поддержку: <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a></p>\n",
     "welcomeBack": "Рады снова вас видеть, {firstName}!"
   },
   "adminSettings": {
     "apikey": {
       "confirmCreate": {
-        "text": "",
-        "title": ""
+        "text": "Пожалуйста, сохраните следующий токен. Его НЕЛЬЗЯ будет восстановить позже.",
+        "title": "API-ключ создан"
       },
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "Это действие необратимо. Всё, что использует этот API-ключ, перестанет работать.",
+        "title": "Удалить API-ключ?"
       },
-      "copied": "",
-      "create": "",
+      "copied": "API-ключ скопирован в буфер обмена",
+      "create": "Создать новый API-ключ",
       "expires": {
-        "days": "",
-        "never": ""
+        "days": "Через {n} дней",
+        "never": "Никогда"
       },
-      "expiresHelp": "",
-      "expiresNeverWarning": "",
-      "label": "",
-      "showingOf": ""
+      "expiresHelp": "Для повышения безопасности всегда устанавливайте дату истечения срока действия, чтобы предотвратить долгосрочный несанкционированный доступ к вашей системе.",
+      "expiresNeverWarning": "Я понимаю риски, связанные с отсутствием даты истечения",
+      "label": "API-ключи",
+      "showingOf": "Показаны API-ключи с {start} по {end} из {total}"
     },
     "email": {
       "contactTemplates": {
@@ -224,32 +224,32 @@
     "general": {
       "footer": {
         "dataPrivacy": {
-          "impressumUrl": "",
-          "privacyUrl": "",
-          "termsUrl": "",
-          "title": ""
+          "impressumUrl": "URL страницы Impressum",
+          "privacyUrl": "URL политики конфиденциальности",
+          "termsUrl": "URL условий использования",
+          "title": "Конфиденциальность данных"
         },
         "otherLinks": {
-          "add": "",
-          "linkText": "",
-          "title": "",
-          "url": ""
+          "add": "Добавить ещё одну ссылку",
+          "linkText": "Текст ссылки",
+          "title": "Другие ссылки",
+          "url": "URL"
         },
-        "siteUrl": "",
-        "text": "",
-        "title": ""
+        "siteUrl": "URL основного сайта",
+        "text": "Эти ссылки отображаются в нижнем колонтитуле beabee и в письмах",
+        "title": "Нижний колонтитул"
       },
-      "label": "",
-      "language": "",
-      "logo": "",
-      "organisationName": "",
+      "label": "Основные",
+      "language": "Язык",
+      "logo": "Логотип",
+      "organisationName": "Название организации",
       "socialSharing": {
-        "description": "",
-        "image": "",
-        "shareTitle": "",
-        "text": "",
-        "title": "",
-        "twitterHandle": ""
+        "description": "Описание для публикации",
+        "image": "Изображение для публикации",
+        "shareTitle": "Заголовок для публикации",
+        "text": "Настройте, что будет отображаться в социальных сетях при публикации ссылки на ваше сообщество beabee",
+        "title": "Публикация в соцсетях",
+        "twitterHandle": "Аккаунт Twitter"
       }
     },
     "integrations": {
@@ -281,125 +281,125 @@
       }
     },
     "payment": {
-      "enableOneTimeDonation": "",
-      "oneTimeDonationsTitle": "",
-      "paymentTitle": "",
-      "showOneTimeDonation": "",
-      "taxRate": "",
-      "taxRateLabelOneTime": "",
-      "taxRateLabelRecurring": ""
+      "enableOneTimeDonation": "Включить разовые взносы",
+      "oneTimeDonationsTitle": "Разовые взносы",
+      "paymentTitle": "Оплата",
+      "showOneTimeDonation": "Показывать разовые взносы на главном экране",
+      "taxRate": "Ставка НДС",
+      "taxRateLabelOneTime": "Включить ставку НДС для разовых взносов",
+      "taxRateLabelRecurring": "Включить ставку НДС для регулярных взносов"
     },
     "theme": {
-      "bodyFont": "",
+      "bodyFont": "Основной текст",
       "colorNames": {
-        "body": "",
-        "danger": "",
-        "link": "",
-        "primary": "",
-        "success": "",
-        "warning": ""
+        "body": "Текст",
+        "danger": "Опасность",
+        "link": "Ссылки",
+        "primary": "Основной",
+        "success": "Успех",
+        "warning": "Предупреждение"
       },
-      "colors": "",
-      "customColors": "",
-      "fontNotListed": "",
-      "fonts": "",
-      "label": "",
+      "colors": "Цвета",
+      "customColors": "Пользовательские",
+      "fontNotListed": "<p>Не видите свой шрифт в списке? Свяжитесь с <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a>, чтобы мы его добавили.</p>\n",
+      "fonts": "Шрифты",
+      "label": "Тема оформления",
       "presetColors": {
-        "default": ""
+        "default": "По умолчанию"
       },
-      "titleFont": ""
+      "titleFont": "Шрифт заголовков"
     },
-    "title": ""
+    "title": "Настройки"
   },
   "advancedSearch": {
-    "addRule": "",
-    "button": "",
-    "createFiltersAfter": "",
-    "createFiltersBefore": "",
+    "addRule": "Добавить правило",
+    "button": "Фильтры",
+    "createFiltersAfter": "правил",
+    "createFiltersBefore": "Показывать только результаты, соответствующие",
     "createFiltersType": {
-      "all": "",
-      "any": ""
+      "all": "всем",
+      "any": "любому"
     },
-    "createdSegment": "",
-    "invalidRuleError": "",
+    "createdSegment": "Создан сегмент \"{segment}\"",
+    "invalidRuleError": "В этом правиле что-то не так: \"{ rule }\". Пожалуйста, обновите!",
     "matchWord": {
-      "AND": "",
-      "OR": ""
+      "AND": "и",
+      "OR": "или"
     },
-    "nestedRules": "",
-    "noNestedRules": "",
+    "nestedRules": "Вложенные правила",
+    "noNestedRules": "Этот фильтр содержит вложенные правила, которые нельзя редактировать с помощью редактора расширенного поиска.",
     "operators": {
       "all": {
-        "is_empty": "",
-        "is_not_empty": ""
+        "is_empty": "пусто",
+        "is_not_empty": "не пусто"
       },
       "array": {
-        "contains": "",
-        "not_contains": ""
+        "contains": "включает",
+        "not_contains": "не включает"
       },
       "blob": {
-        "contains": "",
-        "not_contains": ""
+        "contains": "содержит",
+        "not_contains": "не содержит"
       },
       "boolean": {
-        "equal": ""
+        "equal": "равно"
       },
       "date": {
-        "between": "",
-        "equal": "",
-        "greater": "",
-        "greater_or_equal": "",
-        "less": "",
-        "less_or_equal": "",
-        "not_between": "",
-        "not_equal": ""
+        "between": "между",
+        "equal": "приходится на",
+        "greater": "после",
+        "greater_or_equal": "после или в",
+        "less": "до",
+        "less_or_equal": "до или в",
+        "not_between": "не между",
+        "not_equal": "не приходится на"
       },
       "enum": {
-        "equal": "",
-        "not_equal": ""
+        "equal": "равно",
+        "not_equal": "не равно"
       },
       "number": {
-        "between": "",
-        "equal": "",
-        "greater": "",
-        "greater_or_equal": "",
-        "less": "",
-        "less_or_equal": "",
-        "not_between": "",
-        "not_equal": ""
+        "between": "между",
+        "equal": "равно",
+        "greater": "больше чем",
+        "greater_or_equal": "не менее",
+        "less": "меньше чем",
+        "less_or_equal": "не более",
+        "not_between": "не между",
+        "not_equal": "не равно"
       },
       "text": {
-        "begins_with": "",
-        "contains": "",
-        "ends_with": "",
-        "equal": "",
-        "not_begins_with": "",
-        "not_contains": "",
-        "not_ends_with": "",
-        "not_equal": ""
+        "begins_with": "начинается с",
+        "contains": "содержит",
+        "ends_with": "заканчивается на",
+        "equal": "равно",
+        "not_begins_with": "не начинается с",
+        "not_contains": "не содержит",
+        "not_ends_with": "не заканчивается на",
+        "not_equal": "не равно"
       }
     },
     "saveSegment": {
       "createOrUpdate": {
-        "create": "",
-        "label": "",
-        "update": ""
+        "create": "Создать новый сегмент",
+        "label": "Хотите создать новый сегмент?",
+        "update": "Обновить сегмент \"{segment}\""
       },
-      "createSegment": "",
-      "segmentName": "",
-      "text": "",
-      "title": "",
-      "updateSegment": ""
+      "createSegment": "Создать сегмент",
+      "segmentName": "Название сегмента",
+      "text": "Сегмент — это группа контактов, соответствующих набору фильтров, например, тем, которые вы только что создали. Новые контакты, соответствующие этим фильтрам, автоматически добавляются в сегмент.",
+      "title": "Сохранить сегмент",
+      "updateSegment": "Обновить сегмент"
     },
-    "selectFilter": "",
-    "updatedSegment": ""
+    "selectFilter": "Выберите фильтр",
+    "updatedSegment": "Сегмент \"{segment}\" обновлён"
   },
   "apiKey": {
     "data": {
-      "createdAt": "",
-      "description": "",
-      "expires": "",
-      "token": ""
+      "createdAt": "Создан",
+      "description": "Описание",
+      "expires": "Дата истечения",
+      "token": "Токен"
     }
   },
   "callout": {
@@ -410,34 +410,34 @@
     "addLocation": "Добавить новую локацию",
     "builder": {
       "actions": {
-        "addSlide": ""
+        "addSlide": "Добавить слайд"
       },
       "common": {
         "actions": {
-          "add": "",
-          "remove": ""
+          "add": "Добавить",
+          "remove": "Удалить"
         },
-        "internalTitle": "",
-        "showAdvancedOptions": "",
-        "slides": "",
-        "startEndScreens": ""
+        "internalTitle": "Внутренний заголовок",
+        "showAdvancedOptions": "Показать расширенные настройки",
+        "slides": "Слайды",
+        "startEndScreens": "Экраны начала и окончания"
       },
       "navigation": {
-        "nextButton": "",
+        "nextButton": "Текст кнопки \"Далее\"",
         "nextSlide": {
-          "default": "",
-          "label": ""
+          "default": "– По умолчанию –",
+          "label": "Следующий слайд"
         },
-        "prevButton": "",
-        "slideNo": "",
-        "submitButton": ""
+        "prevButton": "Текст кнопки \"Назад\"",
+        "slideNo": "Слайд {no}",
+        "submitButton": "Текст кнопки отправки"
       },
-      "showAdvancedOptions": "",
-      "slidesTitle": "",
-      "startEndScreenTitle": "",
+      "showAdvancedOptions": "Показать расширенные настройки",
+      "slidesTitle": "Слайды",
+      "startEndScreenTitle": "Экраны начала и окончания",
       "tabs": {
         "content": {
-          "title": ""
+          "title": "Содержание"
         },
         "email": {
           "body": {
@@ -459,111 +459,111 @@
         "endMessage": {
           "inputs": {
             "action": {
-              "label": "",
+              "label": "После отправки ответа:",
               "opts": {
-                "redirect": "",
-                "showMessage": ""
+                "redirect": "Перенаправить на другую страницу",
+                "showMessage": "Показать благодарственное сообщение"
               }
             },
             "text": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "<p>Здесь вы можете поблагодарить пользователей более подробно и сообщить им, когда ожидать обновлений или дальнейших действий.</p>",
+              "label": "Текст благодарности",
+              "placeholder": "Укажите более подробно, насколько ценен был их вклад…"
             },
             "title": {
               "help": "<p>Ваши читатели увидят <strong>заголовок благодарности</strong> после завершения CrowdNewsroom.</p>",
-              "label": "",
-              "placeholder": ""
+              "label": "Заголовок благодарности",
+              "placeholder": "Спасибо!"
             },
             "url": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "После отправки ответа пользователи будут автоматически перенаправлены на эту страницу",
+              "label": "URL для перенаправления",
+              "placeholder": "https://example.com"
             }
           },
-          "title": ""
+          "title": "Финальное сообщение"
         },
         "intro": {
-          "help": "",
-          "label": "",
-          "title": ""
+          "help": "Вводный текст должен дать пользователю необходимый контекст перед ответом",
+          "label": "Вводный текст",
+          "title": "Вступление"
         },
         "mailchimp": {
-          "title": ""
+          "title": "Синхронизация с Mailchimp"
         },
         "responseDisplay": {
-          "title": ""
+          "title": "Отображение ответов"
         },
         "settings": {
           "access": {
-            "title": ""
+            "title": "Доступ и безопасность"
           },
           "dates": {
-            "title": ""
+            "title": "Расписание"
           },
           "displayOptions": {
-            "description": "",
-            "title": ""
+            "description": "Выберите, какие параметры ответа должны быть видны пользователям",
+            "title": "Параметры отображения"
           },
           "inputs": {
             "collectGuestInfo": {
-              "label": "",
+              "label": "Требовать контактную информацию от гостей",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "Гости могут отвечать анонимно",
+                "enabled": "У гостей также будет запрошена контактная информация"
               }
             },
             "collectMemberInfo": {
-              "label": "",
+              "label": "Собирать контактную информацию",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "Все ответы будут анонимными",
+                "enabled": "У участников будет собрана контактная информация"
               }
             },
             "expires": {
-              "description": "",
-              "label": "",
+              "description": "Установить дату окончания",
+              "label": "Установить дату окончания",
               "opts": {
                 "never": "CrowdNewsroom будет работать до ручного завершения",
                 "schedule": "CrowdNewsroom автоматически завершится в указанную дату."
               }
             },
             "mapAndGallery": {
-              "description": "",
+              "description": "Выберите, какие представления ответов должны быть доступны пользователям",
               "gallery": {
-                "disabledDescription": "",
-                "enabledDescription": "",
-                "label": ""
+                "disabledDescription": "Доска ответов на основе изображений не будет общедоступной",
+                "enabledDescription": "Доска ответов на основе изображений будет общедоступной",
+                "label": "Включить галерейный просмотр публичных ответов"
               },
               "map": {
-                "disabledDescription": "",
-                "enabledDescription": "",
-                "label": ""
+                "disabledDescription": "Обзор карты с метками местоположения не будет общедоступным",
+                "enabledDescription": "Обзор карты с метками местоположения будет общедоступным",
+                "label": "Включить просмотр публичных ответов на карте"
               },
-              "title": ""
+              "title": "Просмотр на карте и в галерее"
             },
             "mapSchema": {
               "addressPattern": {
-                "label": ""
+                "label": "Какой формат вы хотите использовать?"
               },
               "addressPatternProp": {
-                "label": "",
-                "none": ""
+                "label": "Хотите заполнить поле адресом?",
+                "none": "– Не заполнять поле –"
               },
               "addressProp": {
-                "label": ""
+                "label": "Какое поле формы следует использовать для отображения ответов на карте?"
               },
               "bounds": {
-                "label": ""
+                "label": "Максимальные границы карты"
               },
               "center": {
-                "label": ""
+                "label": "Начальный центр карты"
               },
               "geocodeCountries": {
-                "label": ""
+                "label": "Ограничить результаты поиска местоположения конкретными странами?"
               },
               "initialZoom": {
-                "label": ""
+                "label": "Начальный уровень масштаба"
               },
               "mapIconProp": {
                 "label": "Выбрать вопрос для отображения значков на карте",
@@ -577,28 +577,28 @@
                 "title": "Стиль значка на карте"
               },
               "maxZoom": {
-                "label": ""
+                "label": "Максимальный уровень масштаба"
               },
               "minZoom": {
-                "label": ""
+                "label": "Минимальный уровень масштаба"
               },
               "style": {
-                "help": "",
-                "label": ""
+                "help": "<p>Для отображения карты <strong>требуется сторонний инструмент карт</strong>, например <a href=\"https://www.maptiler.com\" target=\"_blank\" rel=\"noopener noreferrer\">Maptiler</a> или <a href=\"https://www.mapbox.com\" target=\"_blank\" rel=\"noopener noreferrer\">Mapbox</a>. Эти инструменты предоставляют URL-адрес стиля карты, который нужно вставить сюда.</p>",
+                "label": "URL стиля карты"
               },
-              "title": ""
+              "title": "Настройки карты"
             },
             "newsletterSettings": {
-              "disabled": "",
-              "label": "",
+              "disabled": "Вы не можете запрашивать подписку на рассылку, если не собираете контактную информацию",
+              "label": "Добавить подписку на рассылку в контактную форму",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "Участников не будут спрашивать, хотят ли они подписаться на рассылку",
+                "enabled": "Участников спросят, хотят ли они подписаться на рассылку"
               }
             },
             "openToEveryone": {
               "help": "<p>CrowdNewsroom можно сделать доступной для <strong>всех</strong> или ограничить только <strong>членами</strong></p>",
-              "label": "",
+              "label": "Открыто для всех",
               "opts": {
                 "disabled": "Только члены смогут получить доступ и участвовать в этой CrowdNewsroom",
                 "enabled": "Любой сможет получить доступ и участвовать в этой CrowdNewsroom"
@@ -606,65 +606,65 @@
             },
             "requireCaptcha": {
               "help": "<p>Если включить <strong>защиту от ботов</strong>, пользователям потребуется пройти Captcha для подтверждения, что они не роботы. Это помогает защитить CrowdNewsroom от спама.</p>",
-              "label": "",
+              "label": "Включить защиту от ботов (CAPTCHA)",
               "members": {
-                "label": "",
+                "label": "Активировать и для участников",
                 "opts": {
-                  "disabled": "",
-                  "enabled": ""
+                  "disabled": "Ваши участники не проходят CAPTCHA",
+                  "enabled": "Даже ваши участники проходят CAPTCHA"
                 }
               },
               "opts": {
-                "all": "",
-                "guests": "",
-                "none": ""
+                "all": "Все пользователи будут проходить CAPTCHA",
+                "guests": "Не участники будут проходить CAPTCHA",
+                "none": "CAPTCHA не требуется"
               }
             },
             "responseImageProp": {
-              "description": "",
-              "label": ""
+              "description": "Изображение будет использоваться для визуализации ответа на карте или в галерее",
+              "label": "Изображение ответа"
             },
             "responseLinks": {
-              "add": "",
-              "description": "",
-              "label": "",
+              "add": "Добавить",
+              "description": "Например, используйте нижний колонтитул ответа, чтобы включить ссылку для сообщения об ошибке или контактный адрес электронной почты. Чтобы создать ссылку на адрес электронной почты, введите mailto: и адрес электронной почты в поле URL.",
+              "label": "Включить нижний колонтитул в конце ответов",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "Не показывать ссылки в колонтитуле ответов",
+                "enabled": "Показывать ссылки в колонтитуле ответов для связи или сообщения об ошибках"
               },
               "placeholder": {
-                "label": "",
-                "url": ""
+                "label": "Пример: Сообщить об ошибке",
+                "url": "mailto:error{'@'}mail.com"
               },
               "text": {
-                "label": ""
+                "label": "Текст"
               },
               "url": {
-                "label": ""
+                "label": "URL"
               }
             },
             "responseSettings": {
-              "label": "",
+              "label": "Поведение ответов",
               "opts": {
-                "multiple": "",
+                "multiple": "Несколько ответов, нельзя редактировать",
                 "singleEditable": "Один ответ, но его можно редактировать, пока CrowdNewsroom открыта",
-                "singleNonEditable": ""
+                "singleNonEditable": "Один ответ, нельзя редактировать"
               },
-              "title": ""
+              "title": "Настройки ответов"
             },
             "responseTitleProp": {
-              "description": "",
-              "label": ""
+              "description": "Заголовок будет отображаться над каждым ответом на карте или в галерее",
+              "label": "Заголовок ответа"
             },
             "showResponses": {
-              "label": "",
+              "label": "Показывать ответы публично",
               "opts": {
-                "no": "",
-                "yes": ""
+                "no": "Собранные ответы не являются общедоступными",
+                "yes": "Показывать собранные ответы публично"
               }
             },
             "starts": {
-              "label": "",
+              "label": "Установить дату начала",
               "opts": {
                 "now": "CrowdNewsroom будет доступна немедленно.",
                 "schedule": "CrowdNewsroom станет доступна в указанную дату."
@@ -679,99 +679,99 @@
               }
             },
             "whichResponseBuckets": {
-              "description": "",
-              "label": ""
+              "description": "Ответы в неотмеченных корзинах будут скрыты от публичного просмотра",
+              "label": "Видимые корзины ответов"
             }
           },
-          "title": ""
+          "title": "Настройки"
         },
         "titleAndImage": {
           "inputs": {
             "description": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "Это описание отображается в панели управления участника. Также используется для публикации.",
+              "label": "Краткое описание",
+              "placeholder": "Кратко объясните, почему людям стоит участвовать"
             },
             "general": {
-              "title": ""
+              "title": "Общая информация"
             },
             "image": {
-              "description": "",
-              "help": "",
-              "label": ""
+              "description": "Не забудьте сохранить после загрузки изображения!",
+              "help": "Обложка отображается в миниатюрах и ссылках для публикации",
+              "label": "Обложка"
             },
             "overrideShare": {
-              "label": "",
+              "label": "Использовать пользовательский заголовок и описание для публикации?",
               "opts": {
-                "disabled": "",
-                "enabled": ""
+                "disabled": "Ссылки, опубликованные в социальных сетях, будут иметь тот же заголовок и описание.",
+                "enabled": "Ссылки, опубликованные в социальных сетях, будут иметь пользовательский заголовок и описание."
               }
             },
             "shareDescription": {
-              "help": "",
-              "label": "",
-              "placeholder": ""
+              "help": "<p>Поле <strong>Описание для публикации</strong> задаёт краткое описание, которое будет отображаться в карточках социальных сетей.</p>",
+              "label": "Описание для публикации",
+              "placeholder": "Кратко объясните, почему людям стоит участвовать"
             },
             "shareTitle": {
-              "help": "",
-              "label": "",
+              "help": "<p>Поле <strong>Заголовок для публикации</strong> задаёт заголовок, который будет отображаться в карточках социальных сетей.</p>",
+              "label": "Заголовок для публикации",
               "placeholder": "Название вашей CrowdNewsroom"
             },
             "sharing": {
-              "title": ""
+              "title": "Настройки публикации"
             },
             "slug": {
-              "boxTitle": "",
+              "boxTitle": "Постоянная ссылка",
               "help": "Используйте эту ссылку, чтобы поделиться CrowdNewsroom",
-              "label": "",
+              "label": "Автоматически генерировать slug из заголовка",
               "locked": {
                 "title": "Постоянная ссылка заблокирована, так как CrowdNewsroom уже опубликована."
               },
               "opts": {
                 "auto": "Постоянная ссылка генерируется на основе названия CrowdNewsroom. Ссылка автоматически обновляется при изменении названия.",
-                "manual": ""
+                "manual": "Постоянная ссылка задаётся вручную"
               }
             },
             "title": {
-              "label": "",
+              "label": "Заголовок",
               "placeholder": "Название вашей CrowdNewsroom."
             }
           },
-          "title": "",
-          "urlWillBe": ""
+          "title": "Заголовок и изображение",
+          "urlWillBe": "Постоянная ссылка будет"
         },
         "translations": {
           "language": {
             "description": "Вы можете перевести CrowdNewsroom на несколько языков. Если перевода не будет, мы покажем текст на основном языке.",
-            "enableLanguages": "",
-            "title": ""
+            "enableLanguages": "Включить поддержку перевода",
+            "title": "Язык"
           },
           "languageSettings": {
-            "title": ""
+            "title": "Язык"
           },
           "navigationButtons": {
-            "title": ""
+            "title": "Кнопки"
           },
           "responseLinks": {
-            "title": ""
+            "title": "Текст в нижнем колонтитуле"
           },
-          "title": ""
+          "title": "Переводы"
         }
       },
-      "title": "",
+      "title": "Конструктор CrowdNewsroom",
       "translationFields": {
-        "description": "",
-        "html": "",
-        "label": "",
-        "option": "",
-        "placeholder": ""
+        "description": "Описание",
+        "html": "Содержание",
+        "label": "Метка",
+        "option": "Вариант {n}",
+        "placeholder": "Заполнитель"
       },
-      "untitledCallout": ""
+      "untitledCallout": "CrowdNewsroom без названия"
     },
     "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
     "ended": "Эта CrowdNewsroom завершилась {date}",
-    "entryOf": "",
+    "entryOf": "Запись {no} из {total}",
     "form": {
       "email": "Ваша почта",
       "guestFieldsMissing": "Пожалуйста, сообщите нам свои контактные данные",
@@ -784,14 +784,14 @@
     "membersOnly": "Эта CrowdNewsroom открыта только для членов. Чтобы участвовать",
     "responseSubmitted": "Ответ отправлен",
     "share": {
-      "address": "Отправить этот опрос на почту:",
+      "address": "Поделиться по следующей ссылке:",
       "aria": {
-        "email": "",
-        "facebook": "",
-        "linkedin": "",
-        "telegram": "",
-        "twitter": "",
-        "whatsapp": ""
+        "email": "Поделиться по электронной почте",
+        "facebook": "Поделиться в Facebook",
+        "linkedin": "Поделиться в LinkedIn",
+        "telegram": "Поделиться в Telegram",
+        "twitter": "Поделиться в Twitter",
+        "whatsapp": "Поделиться в WhatsApp"
       },
       "services": "Или поделитесь им с помощью одного из этих сервисов:"
     },
@@ -808,9 +808,9 @@
   "calloutAdmin": {
     "deleted": "CrowdNewsroom удалена.",
     "ended": "CrowdNewsroom завершена. Вы можете снова открыть её, отредактировав.",
-    "overview": "",
+    "overview": "Обзор",
     "reopened": "CrowdNewsroom снова открыта. Отредактируйте CrowdNewsroom, чтобы установить другую дату завершения.",
-    "responses": ""
+    "responses": "Ответы"
   },
   "calloutAdminOverview": {
     "actions": {
@@ -821,35 +821,35 @@
     },
     "created": "Ваша новая CrowdNewsroom успешно создана.",
     "dates": {
-      "ends": "",
-      "label": "",
-      "starts": ""
+      "ends": "Заканчивается",
+      "label": "Даты",
+      "starts": "Начинается"
     },
-    "savedDraft": "",
+    "savedDraft": "Сохранён черновик",
     "settings": {
       "answers": {
-        "editable": "",
-        "final": "",
-        "label": ""
+        "editable": "Можно обновить",
+        "final": "Нельзя обновить",
+        "label": "Ответы"
       },
       "contactInfo": {
-        "label": "",
-        "optional": "",
-        "required": ""
+        "label": "Контактная информация",
+        "optional": "Необязательно",
+        "required": "Обязательно"
       },
       "endsWith": {
-        "label": "",
-        "message": "",
-        "redirect": ""
+        "label": "Завершается",
+        "message": "Благодарственное сообщение",
+        "redirect": "Перенаправление"
       },
-      "label": "",
+      "label": "Настройки",
       "openTo": {
-        "everyone": "",
-        "label": "",
-        "membersOnly": ""
+        "everyone": "Все",
+        "label": "Открыто для",
+        "membersOnly": "Только участники"
       }
     },
-    "summary": "",
+    "summary": "Сводка",
     "updated": "Ваша CrowdNewsroom успешно обновлена."
   },
   "calloutResponse": {
@@ -864,80 +864,80 @@
       "updatedAt": "Обновлённая дата"
     },
     "dataGroup": {
-      "answers": "",
-      "response": ""
+      "answers": "Ответы на вопросы",
+      "response": "Информация об ответе"
     }
   },
   "calloutResponseBuckets": {
-    "inbox": "",
-    "trash": "",
-    "verified": ""
+    "inbox": "Входящие",
+    "trash": "Корзина",
+    "verified": "Проверено"
   },
   "calloutResponseComments": {
     "actions": {
-      "addComment": "",
-      "updateComment": ""
+      "addComment": "Добавить комментарий",
+      "updateComment": "Обновить комментарий"
     },
-    "addComment": "",
-    "comments": "",
+    "addComment": "Добавить комментарий",
+    "comments": "Комментарии",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "Вы уверены, что хотите удалить этот комментарий?",
+      "title": "Удалить комментарий?"
     }
   },
   "calloutResponsePage": {
     "actions": {
-      "assignTo": "",
-      "moveBucket": "",
-      "toggleTag": "",
-      "viewOnMap": ""
+      "assignTo": "Назначить",
+      "moveBucket": "Переместить в корзину",
+      "toggleTag": "Переключить метку",
+      "viewOnMap": "Посмотреть на карте"
     },
-    "editMode": "",
-    "manageFolders": "",
-    "manageReviewers": "",
-    "manageTags": "",
+    "editMode": "Вы находитесь в режиме редактирования, будьте осторожны!",
+    "manageFolders": "Управление папками",
+    "manageReviewers": "Управление рецензентами",
+    "manageTags": "Управление метками",
     "notifications": {
-      "addedAssignee": "",
-      "addedTag": "",
-      "movedToBucket": "",
-      "removedAssignee": "",
-      "removedTag": ""
+      "addedAssignee": "Назначено \"{assignee}\"",
+      "addedTag": "Добавлена метка \"{tag}\"",
+      "movedToBucket": "Перемещено в {bucket}",
+      "removedAssignee": "Назначение с \"{assignee}\" снято",
+      "removedTag": "Удалена метка \"{tag}\" "
     },
-    "responseOf": "",
-    "selectedCount": ""
+    "responseOf": "Ответ {no} из {total} в {bucket}",
+    "selectedCount": "Выбран {n} ответ | Выбрано {n} ответа | Выбрано {n} ответов"
   },
   "calloutResponsesPage": {
     "moveToBucket": "Перенести в {bucket}",
     "noTags": "Нет тегов",
     "response": "Ответ",
     "responseNo": "Ответ {no}",
-    "searchAssignee": "",
+    "searchAssignee": "Назначено...",
     "searchTag": "Теги:",
     "showAnswer": "Ответ",
     "showLatestComment": "Последний комментарий",
     "showingOf": "Показать ответы с {start} по {end} из общего количества {total}"
   },
   "calloutReviewerManager": {
-    "add": "",
-    "canEdit": "",
+    "add": "Добавить рецензента",
+    "canEdit": "Рецензент также может редактировать CrowdNewsroom",
     "confirmDelete": {
       "text": "Вы уверены, что хотите удалить {reviewerName}? Этот пользователь больше не сможет просматривать эту CrowdNewsroom.",
-      "title": ""
+      "title": "Удалить рецензента"
     },
-    "contact": "",
-    "editorTag": "",
+    "contact": "ID контакта",
+    "editorTag": "Редактор",
     "search": {
       "error": {
-        "message": "",
-        "title": ""
+        "message": "Пожалуйста, убедитесь, что адрес электронной почты существует и не содержит опечаток.",
+        "title": "Контакт не найден"
       },
-      "placeholder": "",
-      "successMessage": ""
+      "placeholder": "Поиск по адресу электронной почты",
+      "successMessage": "Адрес электронной почты действителен"
     },
-    "title": ""
+    "title": "Рецензенты"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": ""
+    "oneResponseWarning": "Обратите внимание, что разрешён только один ответ от одного человека. Если вы уже участвовали, дополнительные ответы не будут зафиксированы."
   },
   "callouts": {
     "archive": "Архив",
@@ -945,27 +945,27 @@
       "callout": "CrowdNewsroom",
       "endDate": "Дата окончания"
     },
-    "noArchivedCallouts": "Нет опросов",
-    "search": "Поиск опросов",
+    "noArchivedCallouts": "Здесь ничего нет",
+    "search": "Поиск",
     "showAll": "Все",
     "showAnswered": "Отвеченные",
-    "showingOf": "Показаны опросы с {start} до {end} из {total}"
+    "showingOf": "Показаны опросы с {start} по {end} из {total}"
   },
   "calloutsAdmin": {
-    "addCallout": "",
+    "addCallout": "Создать",
     "data": {
-      "expires": "",
-      "responses": "",
-      "starts": "",
-      "status": "",
-      "title": ""
+      "expires": "Дата окончания",
+      "responses": "Ответы",
+      "starts": "Дата начала",
+      "status": "Статус",
+      "title": "Заголовок"
     },
     "filter": {
-      "all": "",
-      "draft": "",
-      "ended": "",
-      "open": "",
-      "scheduled": ""
+      "all": "Все",
+      "draft": "Черновики",
+      "ended": "Завершённые",
+      "open": "Открытые",
+      "scheduled": "Запланированные"
     }
   },
   "common": {
@@ -980,11 +980,11 @@
       "manual": "Вручную",
       "none": "Отсутствует"
     },
-    "default": "",
+    "default": "По умолчанию",
     "hello": "Привет",
-    "id": "",
-    "itemsPerPage": "",
-    "label": "",
+    "id": "ID",
+    "itemsPerPage": "{items} элементов на страницу",
+    "label": "Метка",
     "loading": "Загрузка...",
     "login": "Войти",
     "manualPaymentSource": {
@@ -1003,7 +1003,7 @@
     "paymentPeriod": {
       "annually": "ежегодно",
       "monthly": "ежемесячно",
-      "one-time": ""
+      "one-time": "Разовый"
     },
     "paymentStatus": {
       "cancelled": "Отменён",
@@ -1019,8 +1019,8 @@
       "unknown": "Неизвестно"
     },
     "perMonth": "/ месяц",
-    "perOneTime": "",
-    "perOneTimeText": "",
+    "perOneTime": " разовый",
+    "perOneTimeText": "разовый",
     "perYear": "/ год",
     "role": {
       "admin": "Администратор",
@@ -1030,14 +1030,14 @@
     "selectNone": "Отсутствует",
     "selectOne": "Выбрать одну опцию",
     "show": "Показать",
-    "showingOf": "",
+    "showingOf": "Показаны результаты с {start} по {end} из {total}",
     "status": {
       "draft": "Черновик",
       "ended": "Закрыто",
       "open": "Открыто",
       "scheduled": "Запланировано"
     },
-    "statusLabel": "",
+    "statusLabel": "Статус: {status}",
     "table": {
       "selectAllBanner": {
         "allSelected": "Выбраны все {count} совпадающих элемента.",
@@ -1055,34 +1055,34 @@
   },
   "contactAccount": {
     "confirmDelete": {
-      "text": "",
-      "title": "",
-      "warning": ""
+      "text": "Это приведёт к удалению всех данных, связанных с {email}. Если у них есть активный взнос, он будет отменён.",
+      "title": "Удалить контакт",
+      "warning": "Это действие необратимо. Вы уверены, что хотите продолжить?"
     },
-    "contactDeleted": ""
+    "contactDeleted": "Контакт удалён."
   },
   "contactContribution": {
     "confirmCancel": {
-      "confirm": "",
-      "text": "",
-      "title": ""
+      "confirm": "Да, отменить",
+      "text": "Вы уверены, что хотите отменить взнос этого контакта? Это действие нельзя отменить.",
+      "title": "Отменить взнос?"
     },
     "updateNotice": {
-      "text": "",
-      "title": ""
+      "text": "В настоящее время вы не можете обновить взнос контакта, обратитесь в поддержку support{'@'}beabee.io.",
+      "title": "В настоящее время недоступно"
     }
   },
   "contactOverview": {
     "about": "О",
-    "account": "",
+    "account": "Аккаунт",
     "annotation": {
       "copy": "<p>Вся информация, добавленная в этот раздел, <strong>видна только администраторам</strong>. Участники никогда не увидят их в своем профиле или личном кабинете.</p>\n"
     },
     "callouts": "CrowdNewsroom",
-    "cancellationDate": "",
+    "cancellationDate": "Отменён",
     "contribution": "Взнос",
-    "contributionType": "",
-    "joinSurvey": "",
+    "contributionType": "Тип",
+    "joinSurvey": "Присоединиться к опросу",
     "newsletter": {
       "groups": "Группы",
       "status": "Статус",
@@ -1090,8 +1090,8 @@
     },
     "oneTime": "Единовременный",
     "overview": "Обзор",
-    "pickTag": "",
-    "profile": "",
+    "pickTag": "Выберите метку из списка ниже",
+    "profile": "Профиль",
     "recurring": "Повторяющийся",
     "roles": "Роль",
     "security": {
@@ -1111,18 +1111,18 @@
     "selfOption": "Вы сами"
   },
   "contacts": {
-    "addContact": "",
+    "addContact": "Добавить контакт",
     "advancedSearch": {
-      "hasAnswered": "",
-      "selectCallout": ""
+      "hasAnswered": "Участвовал?",
+      "selectCallout": "Выбрать"
     },
-    "allContacts": "",
+    "allContacts": "Все контакты",
     "data": {
-      "activeMembership": "",
-      "activePermission": "",
-      "activeUser": "",
+      "activeMembership": "Активное членство",
+      "activePermission": "Активная роль",
+      "activeUser": "Активный пользователь",
       "amount": "Сумма",
-      "annotationsCopy": "",
+      "annotationsCopy": "Контакт успешно обновлён",
       "averageDonationAmount": "Средняя сумма разовых взносов (за всё время)",
       "contribution": "Регулярный взнос",
       "contributionCancelled": "Регулярный взнос отменен",
@@ -1133,17 +1133,17 @@
       "description": "Описание",
       "donationDate": "Дата разового взноса",
       "email": "Почтовый ящик",
-      "firstname": "",
+      "firstname": "Имя",
       "hasDonated": "Сделал разовый взнос",
       "joined": "Участник с",
       "lastSeen": "Последний раз онлайн",
-      "lastname": "",
-      "manualPaymentSource": "",
-      "membershipExpires": "",
-      "membershipStarts": "",
+      "lastname": "Фамилия",
+      "manualPaymentSource": "Источник ручного платежа",
+      "membershipExpires": "Член до",
+      "membershipStarts": "Член с",
       "name": "Имя",
-      "newsletterGroups": "",
-      "newsletterStatus": "",
+      "newsletterGroups": "Группы рассылки",
+      "newsletterStatus": "Статус рассылки",
       "notes": "Примечания",
       "payingFee": "Оплачивает транзакционные издержки?",
       "paymentReference": "?",
@@ -1159,7 +1159,7 @@
       "contact": "Контакты",
       "oneTimeContributions": "Разовые взносы",
       "recurringContributions": "Регулярные взносы",
-      "role": ""
+      "role": "Роль"
     },
     "emailTemplates": {
       "confirmDelete": {
@@ -1178,15 +1178,15 @@
       "subject": "Тема",
       "title": "Шаблоны писем",
       "toggleEnabled": {
-        "disabled": "",
-        "enabled": ""
+        "disabled": "Шаблон письма отключён",
+        "enabled": "Шаблон письма включён"
       }
     },
-    "noContacts": "",
-    "noResults": "",
-    "numResults": "",
-    "search": "",
-    "selectedCount": "",
+    "noContacts": "Контакты ещё не добавлены",
+    "noResults": "Контакты не найдены",
+    "numResults": "Найден {n} контакт | Найдено {n} контакта | Найдено {n} контактов",
+    "search": "Поиск контактов...",
+    "selectedCount": "Выбран {n} контакт | Выбрано {n} контакта | Выбрано {n} контактов",
     "sendEmail": {
       "newEmail": "Новое письмо",
       "sent": "Письмо было отправлено сегменту.",
@@ -1195,7 +1195,7 @@
       "templateNameRequired": "Введите название нового шаблона.",
       "title": "Отправить письмо сегменту"
     },
-    "showingOf": ""
+    "showingOf": "Показаны контакты с {start} по {end} из {total}"
   },
   "contribution": {
     "adminCancelDescription": "Если вы отмените взнос этого контакта, он будет считаться членом клуба до завершения подписки {date}.",
@@ -1243,7 +1243,7 @@
   },
   "editCallout": {
     "replicated": "Ваша CrowdNewsroom успешно скопирована, и вы редактируете новую версию. Не забудьте изменить заголовок во вкладке «Заголовок и изображение».",
-    "title": "",
+    "title": "Редактировать: {title}",
     "warning": "Внимание! Вы редактируете активную CrowdNewsroom. Изменение свойств формы может сделать предыдущие ответы недействительными."
   },
   "editNotice": {
@@ -1254,11 +1254,11 @@
       "label": "Сообщение"
     },
     "from": {
-      "label": ""
+      "label": "Использовать имя отправителя и адрес электронной почты"
     },
     "preview": {
       "asContactLabel": "Контакт для предварительного просмотра",
-      "from": "",
+      "from": "От:",
       "label": "Предпросмотр",
       "unavailable": "Предпросмотр недоступен"
     },
@@ -1298,7 +1298,7 @@
       "showingOf": "Показано {start} - {end} писем из {total}"
     },
     "mailingCount": "Отправленных писем",
-    "missingDefault": "Не Активно",
+    "missingDefault": "Не активно",
     "name": "Название письма",
     "notifications": {
       "created": "Письмо успешно создано",
@@ -1331,33 +1331,33 @@
         "manual-to-automatic": "Отправляется участникам, когда их способ оплаты успешно изменён с ручного на автоматический регулярный платёж. Подтверждает успешное изменение.",
         "new-callout-response": "Отправляется администраторам, когда отправляется новый ответ на CrowdNewsroom. Обычно включает уведомление с деталями CrowdNewsroom и именем отвечающего человека.",
         "new-member": "Отправляется администраторам, когда новый участник успешно присоединяется к сообществу. Обычно включает уведомление с ID и именем нового участника.",
-        "one-time-donation": "Отправляется пользователям после того, как они завершили разовый взнос (нерегулярный платёж). Обычно подтверждает сумму взноса и служит квитанцией.",
-        "one-time-donation-failed": "",
+        "one-time-donation": "Отправляется пользователям после завершения разового взноса.",
+        "one-time-donation-failed": "Отправляется пользователям при неудачной оплате разового взноса.",
         "reset-device": "Отправляется, когда пользователь запрашивает сброс доверенного устройства для двухфакторной аутентификации. Содержит безопасную ссылку для сброса устройства.",
         "reset-password": "Отправляется, когда пользователь запрашивает сброс пароля. Содержит безопасную ссылку для сброса пароля.",
-        "setup-account": "",
-        "welcome": "Отправляется новым участникам после завершения процесса регистрации, чтобы они могли подтвердить свой адрес электронной почты. Это письмо приветствует их в сообществе."
+        "setup-account": "Отправляется пользователям, которые завершили разовый взнос и ещё не имеют аккаунта.",
+        "welcome": "Отправляется новым участникам после завершения процесса регистрации. Это письмо приветствует их в сообществе."
       },
       "names": {
-        "cancelled-contribution": "Отмена взноса",
-        "cancelled-member": "Админ: Отменённый участник",
-        "confirm-email": "Подтверждение email",
+        "cancelled-contribution": "Взнос отменён",
+        "cancelled-member": "Админ: отменённый участник – уведомление",
+        "confirm-email": "Подтвердить email",
         "contribution-didnt-start": "Взнос не начат",
-        "email-exists-login": "Email существует - вход",
-        "email-exists-set-password": "Email существует - установка пароля",
+        "email-exists-login": "Email существует – войти",
+        "email-exists-set-password": "Email существует – установить пароль",
         "manual-to-automatic": "Ручной взнос преобразован в автоматический",
-        "new-callout-response": "Админ: Новый ответ CrowdNewsroom",
-        "new-member": "Админ: Новый контакт",
+        "new-callout-response": "Админ: новый ответ в CrowdNewsroom – уведомление",
+        "new-member": "Админ: новый контакт – уведомление",
         "one-time-donation": "Подтверждение разового взноса",
-        "one-time-donation-failed": "",
+        "one-time-donation-failed": "Разовый взнос не удался",
         "reset-device": "Сброс устройства",
         "reset-password": "Сброс пароля",
-        "setup-account": "",
+        "setup-account": "Настройка аккаунта",
         "welcome": "Приветствие"
       },
       "type": {
         "admin": "Уведомления администратора",
-        "contact": "Контактные письма",
+        "contact": "Письма контактам",
         "general": "Общие"
       }
     },
@@ -1383,7 +1383,7 @@
     "addressLine2": "Вторая строчка адреса",
     "cancel": "Отменить",
     "characters": {
-      "remaining": ""
+      "remaining": "Осталось {remaining} символов."
     },
     "cityOrTown": "Город",
     "deliveryOptIn": "Согласие на рассылку",
@@ -1394,14 +1394,14 @@
         "account-locked": "Ваш аккаунт заблокирован из-за множества неудачных попыток входа. Попробуйте сбросить пароль или обратитесь в поддержку",
         "cant-update-contribution": "Вы не можете изменить сумму взноса, так как сейчас мы обрабатываем ваш платёж",
         "duplicate-email": "Этот E-mail уже зарегистрирован",
-        "duplicate-tag-name": "",
+        "duplicate-tag-name": "Метка с таким именем уже существует",
         "invalid-token": "Некорректный токен двухфакторной аутентификации",
         "login-failed": "Неправильная почта и/или пароль",
         "mfa-token-required": "У вас включена двухфакторная аутентификация, поэтому для сброса пароля вам нужно ввести токен из вашего приложения для аутентификации. Пожалуйста, введите его здесь",
-        "payment-failed": ""
+        "payment-failed": "Ваш платёж не прошёл. Пожалуйста, попробуйте ещё раз или используйте другой способ оплаты."
       },
       "generic": "Что-то пошло не так. Если ошибка повторится, обратитесь в поддержку",
-      "unauthorized": "",
+      "unauthorized": "У вас нет доступа к этому.",
       "validation": "Пожалуйста, заполните все поля"
     },
     "errors": {
@@ -1424,8 +1424,8 @@
         "sameAs": "Пароли не совпадают"
       },
       "description": {
-        "maxLength": "",
-        "required": ""
+        "maxLength": "Превышена максимальная длина в {max} символов",
+        "required": "Требуется описание"
       },
       "email": {
         "email": "Некорректный почтовый адрес",
@@ -1454,13 +1454,13 @@
         "required": "Введите почтовый индекс"
       },
       "shareDescription": {
-        "maxLength": "",
-        "required": ""
+        "maxLength": "Превышена максимальная длина в {max} символов, осталось {remaining} символов",
+        "required": "Требуется описание"
       },
       "unknown": {
         "email": "Некорректный почтовый адрес",
         "max": "В этом поле может быть {max} символов",
-        "maxLength": "",
+        "maxLength": "Превышена максимальная длина в {max} символов",
         "min": "В этом поле должно быть минимум {min} символов",
         "required": "Нужно заполнить это поле",
         "url": "Неверная ссылка"
@@ -1476,8 +1476,8 @@
       }
     },
     "errorsFormio": {
-      "maxLength": "",
-      "minLength": ""
+      "maxLength": "Превышена максимальная длина в {'{{length}}'} символов",
+      "minLength": "Это поле должно содержать не менее {'{{length}}'} символов"
     },
     "firstName": "Имя",
     "lastName": "Фамилия",
@@ -1491,20 +1491,20 @@
     "richtext": {
       "bold": "Жирный",
       "bulletlist": "Маркированный список",
-      "editor": "",
+      "editor": "Редактор форматированного текста",
       "heading": "Заголовок",
       "italic": "Курсив",
       "link": "Ссылка",
       "mergeFields": "Поля слияния",
       "numberedlist": "Нумерованный список",
       "strikethrough": "Перечёркнутый",
-      "toolbar": "",
+      "toolbar": "Панель инструментов форматирования",
       "underline": "Подчёркнутый"
     },
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
     "unsavedChanges": "Есть несохранённые изменения",
-    "updated": ""
+    "updated": "Обновлено"
   },
   "formRenderer": {
     "components": {
@@ -1538,7 +1538,7 @@
   },
   "icons": {
     "welcome": {
-      "ariaLabel": ""
+      "ariaLabel": "Иконка приветствия"
     }
   },
   "item": {
@@ -1568,7 +1568,7 @@
       },
       "failed": {
         "backToJoin": "Назад к странице регистрации",
-        "message": "При регистрации что-то пошло не так. Пожалуйста, попробуйте ещё раз: если проблема не решится, обратитесь в службу поддержки.",
+        "message": "При настройке вашего аккаунта возникла проблема, наша команда уже уведомлена. Пожалуйста, свяжитесь с поддержкой, если проблема не исчезнет.",
         "title": "Что-то пошло не так"
       },
       "notFound": {
@@ -1593,7 +1593,7 @@
     "poweredBy": "Технологии beabee",
     "privacy": "Политика конфиденциальности",
     "tax": {
-      "included": ""
+      "included": "Взнос включает НДС {taxRate}%."
     }
   },
   "joinPayment": {
@@ -1604,7 +1604,7 @@
     "genericError": "Что-то пошло не так ({type})! Если эта проблема возникнет снова, свяжитесь со службой поддержки.",
     "goBack": "Что-то пропустили? {back}",
     "goBackButton": "Назад",
-    "note": "Вы сможете в любое время поменять сумму взноса и посмотреть историю платежей в вашем личном профиле.",
+    "note": "Вы сможете обновить свои данные и просмотреть историю платежей в любое время в своем аккаунте.",
     "willBeContributing": "Вы будете платить {contribution}",
     "willBeDonating": "Вы сделаете разовый взнос в размере {amount}"
   },
@@ -1626,69 +1626,69 @@
     "title": "Потеряли устройство для двухфакторной аутентификации?"
   },
   "mailOptIn": {
-    "optInLabel": "",
-    "text": "",
-    "title": ""
+    "optInLabel": "Подпись флажка",
+    "text": "Текст",
+    "title": "Заголовок"
   },
   "membershipBuilder": {
     "steps": {
       "accountConfirmation": {
         "deliveryAddress": {
-          "showOptIn": "",
-          "title": ""
+          "showOptIn": "Запросить почтовый адрес",
+          "title": "Почтовый адрес"
         },
-        "description": "",
+        "description": "Составьте экран подтверждения",
         "joinSurvey": {
-          "required": "",
+          "required": "Пользователи должны пройти опрос перед продолжением",
           "slug": "CrowdNewsroom",
           "slugHelp": "Вы можете использовать любую открытую CrowdNewsroom без даты окончания.",
           "text": "Вы можете попросить новых пользователей заполнить CrowdNewsroom в рамках процесса регистрации. Это отличный способ узнать, почему они присоединились, или собрать дополнительную информацию для лучшей адаптации в сообществе.",
-          "textIntro": "",
-          "title": ""
+          "textIntro": "Расскажите пользователям, зачем вы запрашиваете эту информацию",
+          "title": "Присоединиться к опросу"
         },
         "newsletter": {
-          "showOptIn": "",
+          "showOptIn": "Предложить подписаться на рассылку",
           "title": "Рассылка"
         },
-        "text": "",
-        "title": "",
-        "welcomeMessage": ""
+        "text": "После присоединения пользователям будет предложено подтвердить регистрацию. Здесь вы можете настроить экран подтверждения.",
+        "title": "Подтверждение аккаунта",
+        "welcomeMessage": "Приветственное сообщение"
       },
       "emails": {
-        "bigTitle": "",
-        "cancellationEmail": "",
-        "description": "",
+        "bigTitle": "Письма приветствия и отмены",
+        "cancellationEmail": "Письмо об отмене",
+        "description": "Настройте письма приветствия и отмены",
         "oneTimeDonationEmail": "Email о разовом взносе",
-        "text": "",
-        "title": "",
-        "welcomeEmail": ""
+        "text": "Все письма отправляются с вашего адреса поддержки и содержат стандартную подпись, вы можете изменить это в настройках электронной почты.",
+        "title": "Письма",
+        "welcomeEmail": "Приветственное письмо"
       },
       "intro": {
-        "description": "",
-        "message": "",
-        "showWelcomeMessage": "",
-        "text": "",
-        "title": ""
+        "description": "Поприветствуйте новых участников",
+        "message": "Сообщение",
+        "showWelcomeMessage": "Показать приветственное сообщение",
+        "text": "После завершения регистрации участников встретит сообщение. Сделайте его своим!",
+        "title": "Приветственное сообщение"
       },
       "joinForm": {
-        "backgroundImage": "",
-        "defaultAmount": "",
-        "description": "",
-        "formSubtitle": "",
-        "formTitle": "",
-        "googleApplePayNoticeText": "",
-        "minAmount": "",
-        "noticeText": "",
-        "noticeTextHelp": "",
-        "showAbsorbFee": "",
-        "showGoogleApplePay": "",
-        "showNoContribution": "",
-        "suggestedAmounts": "",
-        "text": "",
-        "title": ""
+        "backgroundImage": "Фоновое изображение",
+        "defaultAmount": "Сумма по умолчанию",
+        "description": "Настройте форму присоединения",
+        "formSubtitle": "Подзаголовок",
+        "formTitle": "Заголовок",
+        "googleApplePayNoticeText": "Вы также должны включить Google и Apple Pay в Stripe. Обратитесь в поддержку за инструкциями.",
+        "minAmount": "Минимальная сумма",
+        "noticeText": "Примечание под кнопкой оплаты",
+        "noticeTextHelp": "Используйте это поле, чтобы добавить примечание под кнопкой оплаты, например, объясняющее периоды оплаты или банковские авторизации. Вы также можете оставить это поле пустым.",
+        "showAbsorbFee": "Спросить пользователя о включении комиссии в платёж",
+        "showGoogleApplePay": "Показывать иконки Apple Pay и Google Pay",
+        "showNoContribution": "Разрешить пользователю присоединиться без взноса",
+        "suggestedAmounts": "Рекомендуемые суммы взносов",
+        "text": "В этом разделе вы можете редактировать, настраивать и предпросматривать форму присоединения.",
+        "title": "Форма присоединения"
       }
     },
-    "title": ""
+    "title": "Конструктор членства"
   },
   "menu": {
     "account": "Аккаунт",
@@ -1755,14 +1755,14 @@
   },
   "newsletterOptIn": {
     "groups": {
-      "add": "",
-      "help": "",
-      "title": ""
+      "add": "Добавить новую группу",
+      "help": "<p>Вы можете позволить пользователям выбирать, в какие группы рассылки они хотят вступить. Эти группы уже должны быть настроены в Mailchimp, свяжитесь с <a href=\"mailto:support{'@'}beabee.io\">support{'@'}beabee.io</a>, если вы не уверены, как использовать эту функцию.</p>\n",
+      "title": "Группы рассылки"
     },
-    "optInDisabled": "",
-    "optInLabel": "",
-    "text": "",
-    "title": ""
+    "optInDisabled": "Метка не используется, когда видны группы рассылки",
+    "optInLabel": "Подпись флажка",
+    "text": "Текст",
+    "title": "Заголовок"
   },
   "notFound": {
     "goBack": "Вернуться на главную",
@@ -1771,13 +1771,13 @@
   "noticeAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "Вы уверены, что хотите удалить это объявление?",
+        "title": "Удалить объявление?"
       }
     },
-    "created": "",
-    "summary": "",
-    "updated": ""
+    "created": "Ваше новое объявление успешно создано.",
+    "summary": "Сводка",
+    "updated": "Ваше объявление успешно обновлено."
   },
   "notices": {
     "addNotice": "Добавить уведомление",
@@ -1786,18 +1786,18 @@
       "name": "Имя",
       "status": "Статус"
     },
-    "showingOf": ""
+    "showingOf": "Показаны объявления с {start} по {end} из {total}"
   },
   "notifications": {
     "copy": {
-      "success": ""
+      "success": "Скопировано в буфер обмена"
     },
     "error": "Что-то пошло не так. Перезагрузите страницу",
     "rateLimit": {
       "generic": "Слишком много запросов. Подождите немного и попробуйте снова.",
       "withWait": "Слишком много запросов. Подождите {time} и попробуйте снова."
     },
-    "remove": ""
+    "remove": "Закрыть уведомление"
   },
   "pageTitle": {
     "confirmEmail": "Подтвердить почту",
@@ -1835,14 +1835,14 @@
       "setLabel": "Данные вашей карты"
     },
     "s_ideal": {
-      "changeLabel": "",
-      "label": "",
-      "setLabel": ""
+      "changeLabel": "Изменить данные iDEAL",
+      "label": "iDEAL",
+      "setLabel": "Ваши данные iDEAL"
     },
     "s_paypal": {
-      "changeLabel": "",
+      "changeLabel": "Изменить данные PayPal",
       "label": "PayPal",
-      "setLabel": ""
+      "setLabel": "Ваши данные PayPal"
     },
     "s_sepa": {
       "changeLabel": "Поменять данные счёта",
@@ -1852,14 +1852,14 @@
   },
   "payments": {
     "data": {
-      "amount": "",
-      "chargeDate": "",
-      "contact": "",
-      "status": "",
-      "type": ""
+      "amount": "Сумма",
+      "chargeDate": "Дата списания",
+      "contact": "Контакт",
+      "status": "Статус",
+      "type": "Тип"
     },
     "dataGroup": {
-      "payment": ""
+      "payment": "Платёж"
     }
   },
   "paymentsAdmin": {
@@ -1868,13 +1868,13 @@
       "total": "Общая сумма"
     },
     "filter": {
-      "all": "",
-      "cancelled": "",
-      "failed": "",
-      "pending": "",
-      "successful": ""
+      "all": "Все платежи",
+      "cancelled": "Отменённые платежи",
+      "failed": "Неудачные платежи",
+      "pending": "Ожидающие платежи",
+      "successful": "Успешные платежи"
     },
-    "showingOf": ""
+    "showingOf": "Показаны платежи с {start} по {end} из {total}"
   },
   "resetDevice": {
     "description": "Введите пароль, чтобы сбросить двухфакторной аутентификации. После входа в систему вы сможете настроить новое устройство.",
@@ -1892,68 +1892,68 @@
     "title": "Сбросить пароль?"
   },
   "roleEditor": {
-    "add": "",
+    "add": "Добавить роль",
     "confirmDelete": {
-      "text": "",
-      "title": ""
+      "text": "Вы уверены, что хотите удалить эту роль?",
+      "title": "Удалить роль"
     },
     "expires": {
-      "label": "",
+      "label": "Дата окончания действия роли",
       "opts": {
-        "never": "",
-        "schedule": ""
+        "never": "Никогда",
+        "schedule": "Установить дату окончания"
       }
     },
-    "new": "",
+    "new": "Новая роль",
     "starts": {
-      "label": "",
+      "label": "Дата начала действия роли",
       "opts": {
-        "now": "",
-        "schedule": ""
+        "now": "Сейчас",
+        "schedule": "Установить дату начала"
       }
     },
-    "title": "",
-    "today": ""
+    "title": "Роли",
+    "today": "настоящее"
   },
   "setPassword": {
     "description": "Введите новый пароль",
     "title": "Установить пароль"
   },
   "status": {
-    "connectingToServer": "",
-    "initializing": "",
-    "loadingApplication": "",
-    "pleaseWait": "",
-    "usuallyTakesSeconds": ""
+    "connectingToServer": "Подключение к серверу...",
+    "initializing": "Инициализация...",
+    "loadingApplication": "Загрузка приложения",
+    "pleaseWait": "Пожалуйста, подождите...",
+    "usuallyTakesSeconds": "Обычно это занимает несколько секунд"
   },
   "stepper": {
     "navigation": {
-      "label": ""
+      "label": "Прогресс шага"
     },
     "screen": {
-      "completed": "",
-      "currentStep": "",
-      "hasError": ""
+      "completed": ", завершено",
+      "currentStep": ", текущий шаг",
+      "hasError": ", содержит ошибку"
     }
   },
   "tagEditor": {
-    "add": "",
+    "add": "Добавить метку",
     "confirmDelete": {
-      "text_contact": "",
-      "text_global": "",
-      "text_response": "",
-      "title": ""
+      "text_contact": "Вы уверены, что хотите удалить эту метку? Все контакты, помеченные \"{tagName}\", потеряют эту метку.",
+      "text_global": "Вы уверены, что хотите удалить метку \"{tagName}\"?",
+      "text_response": "Вы уверены, что хотите удалить эту метку? Все ответы, помеченные \"{tagName}\", потеряют эту метку.",
+      "title": "Удалить метку"
     },
-    "name": ""
+    "name": "Название"
   },
   "tags": {
-    "manageTags": "",
-    "noTags": "",
+    "manageTags": "Управление метками",
+    "noTags": "Нет меток",
     "notifications": {
-      "addedTag": "",
-      "removedTag": ""
+      "addedTag": "Добавлена метка \"{tag}\"",
+      "removedTag": "Удалена метка \"{tag}\" "
     },
-    "searchTag": "",
-    "toggleTag": ""
+    "searchTag": "Помечено...",
+    "toggleTag": "Переключить метку"
   }
 }
