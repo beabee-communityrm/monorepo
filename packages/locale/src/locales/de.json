@@ -639,7 +639,7 @@
                 "label": "Text"
               },
               "url": {
-                "label": "Url"
+                "label": "URL"
               }
             },
             "responseSettings": {
@@ -1095,7 +1095,7 @@
     "roles": "Rollen",
     "security": {
       "instructions": "Link kopieren und teilen:",
-      "loginOverride": "Automatischer Login",
+      "loginOverride": "Automatische Anmeldung",
       "mfa": {
         "desc": "Dieser Kontakt hat 2FA aktiviert. Klicken Sie auf \"{ disableLabel }\", um es zu deaktivieren.",
         "disabledDesc": "Dieser Kontakt hat keine 2FA aktiviert."
