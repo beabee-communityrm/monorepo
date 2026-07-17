@@ -72,7 +72,7 @@
     "continue": "Continuer",
     "copy": "Copier",
     "create": "Créer",
-    "decrease": "",
+    "decrease": "Réduire",
     "delete": "Supprimer",
     "disable": "Désactiver",
     "edit": "Modifier",
@@ -81,7 +81,7 @@
     "export": "Exporter",
     "getStarted": "Commencer",
     "goBack": "Retour",
-    "increase": "",
+    "increase": "Augmenter",
     "next": "Suivant",
     "noBack": "Non, revenir en arrière",
     "participate": "Participer",
@@ -106,7 +106,7 @@
     "share": "Partager",
     "skip": "Ignorer",
     "submit": "Soumettre",
-    "tryAgain": "",
+    "tryAgain": "Réessayer",
     "unpublish": "Dépublier",
     "update": "Mettre à jour",
     "view": "Visualiser",
@@ -628,7 +628,7 @@
               "label": "Image de réponse"
             },
             "responseLinks": {
-              "add": "",
+              "add": "Ajouter",
               "description": "Par exemple, utilisez le pied de page de réponse pour inclure un lien permettant de signaler une erreur ou un e-mail de contact. Pour lier une adresse e-mail, tapez mailto: suivi de l'adresse e-mail dans le champ URL.",
               "label": "Inclure un pied de page en bas des réponses",
               "opts": {
@@ -640,10 +640,10 @@
                 "url": "mailto:error{'@'}mail.com"
               },
               "text": {
-                "label": ""
+                "label": "Texte"
               },
               "url": {
-                "label": ""
+                "label": "URL"
               }
             },
             "responseSettings": {
@@ -789,12 +789,12 @@
     "share": {
       "address": "Partagez cette campagne avec l'adresse suivante :",
       "aria": {
-        "email": "",
-        "facebook": "",
-        "linkedin": "",
-        "telegram": "",
-        "twitter": "",
-        "whatsapp": ""
+        "email": "Partager par courriel",
+        "facebook": "Partager sur Facebook",
+        "linkedin": "Partager sur LinkedIn",
+        "telegram": "Partager sur Telegram",
+        "twitter": "Partager sur Twitter",
+        "whatsapp": "Partager sur WhastApp"
       },
       "services": "Ou partagez rapidement en utilisant l'un de ces services :"
     },
@@ -828,7 +828,7 @@
       "label": "Dates",
       "starts": "Commence"
     },
-    "savedDraft": "",
+    "savedDraft": "Brouillon enregistré",
     "settings": {
       "answers": {
         "editable": "Peut être mis à jour",
@@ -1006,7 +1006,7 @@
     "paymentPeriod": {
       "annually": "Annuellement",
       "monthly": "Mensuellement",
-      "one-time": ""
+      "one-time": "Une fois"
     },
     "paymentStatus": {
       "cancelled": "Annulé",
@@ -1022,8 +1022,8 @@
       "unknown": "Inconnu"
     },
     "perMonth": "/ mois",
-    "perOneTime": "",
-    "perOneTimeText": "",
+    "perOneTime": " une fois",
+    "perOneTimeText": "une fois",
     "perYear": "/ an",
     "role": {
       "admin": "Administrateur",
@@ -1033,14 +1033,14 @@
     "selectNone": "-- Aucun --",
     "selectOne": "Sélectionner…",
     "show": "Afficher",
-    "showingOf": "",
+    "showingOf": "Affichage de {start} à {end} sur {total} résultats",
     "status": {
       "draft": "Brouillon",
       "ended": "Terminée",
       "open": "Active",
       "scheduled": "Planifiée"
     },
-    "statusLabel": "",
+    "statusLabel": "État : {status}",
     "table": {
       "selectAllBanner": {
         "allSelected": "Les {count} éléments correspondants sont tous sélectionnés.",
@@ -1181,8 +1181,8 @@
       "subject": "Objet",
       "title": "Modèles d'e-mail",
       "toggleEnabled": {
-        "disabled": "",
-        "enabled": ""
+        "disabled": "Le modèle de courriel a été désactivé",
+        "enabled": "Le modèle de courriel a été activé"
       }
     },
     "noContacts": "Aucun contact ajouté pour le moment",
@@ -1233,7 +1233,7 @@
     "prorateNoTitle": "Mettre à jour ma cotisation le {renewalDate}",
     "prorateYesText": "Un paiement unique de {oneOffPayment} vous sera facturé et votre cotisation sera mise à jour immédiatement",
     "prorateYesTitle": "Mettre à jour ma cotisation maintenant",
-    "restartContribution": "",
+    "restartContribution": "Redémarrer la contribution",
     "startContribution": "Commencer à cotiser",
     "startedContribution": "Votre cotisation a commencé.",
     "updateContribution": "Mettre à jour la cotisation",
@@ -1257,11 +1257,11 @@
       "label": "Message"
     },
     "from": {
-      "label": ""
+      "label": "Utiliser un nom d'expéditeur personnalisé et une adresse courriel"
     },
     "preview": {
       "asContactLabel": "Contact pour aperçu",
-      "from": "",
+      "from": "De :",
       "label": "Aperçu",
       "unavailable": "Aperçu non disponible"
     },
@@ -1335,10 +1335,10 @@
         "new-callout-response": "Envoyé aux administrateurs lorsqu'une nouvelle réponse à un CrowdNewsroom est soumise. Contient généralement une notification avec les détails du CrowdNewsroom et le nom de la personne qui répond.",
         "new-member": "Envoyé aux administrateurs lorsqu'un nouveau membre rejoint avec succès la communauté. Contient généralement une notification avec l'ID et le nom du nouveau membre.",
         "one-time-donation": "Envoyé aux utilisateurs après qu'ils aient complété une contribution ponctuelle.",
-        "one-time-donation-failed": "",
+        "one-time-donation-failed": "Envoyé aux utilisateurs quand leur paiement ponctuel échoue.",
         "reset-device": "Envoyé lorsqu'un utilisateur demande à réinitialiser son appareil de confiance pour l'authentification à deux facteurs. Contient un lien sécurisé pour réinitialiser l'appareil.",
         "reset-password": "Envoyé lorsqu'un utilisateur demande à réinitialiser son mot de passe. Contient un lien sécurisé pour réinitialiser le mot de passe.",
-        "setup-account": "",
+        "setup-account": "Envoyé aux utilisateurs qui ont complété une contribution unique et qui n'ont pas encore de compte.",
         "welcome": "Envoyé aux nouveaux membres après qu'ils aient terminé le processus d'inscription. Cet e-mail les accueille dans la communauté."
       },
       "names": {
@@ -1352,10 +1352,10 @@
         "new-callout-response": "Admin : Nouvelle réponse CrowdNewsroom",
         "new-member": "Admin : Nouveau contact",
         "one-time-donation": "Confirmation de contribution unique",
-        "one-time-donation-failed": "",
+        "one-time-donation-failed": "Une contribution ponctuelle a échoué",
         "reset-device": "Réinitialiser l'appareil",
         "reset-password": "Réinitialiser le mot de passe",
-        "setup-account": "",
+        "setup-account": "Configurer le compte",
         "welcome": "Bienvenue"
       },
       "type": {
@@ -1770,16 +1770,16 @@
   "noticeAdminOverview": {
     "actions": {
       "confirmDelete": {
-        "text": "",
-        "title": ""
+        "text": "Voulez-vous vraiment supprimer cette notice ?",
+        "title": "Supprimer la notice ?"
       }
     },
-    "created": "",
+    "created": "Votre nouvelle campagne a bien été créée.",
     "summary": "Résumé",
-    "updated": ""
+    "updated": "Votre avis a été mis à jour."
   },
   "notices": {
-    "addNotice": "",
+    "addNotice": "Ajouter une notice",
     "data": {
       "createdAt": "Créé",
       "name": "Nom",
