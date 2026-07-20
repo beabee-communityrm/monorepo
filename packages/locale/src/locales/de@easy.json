@@ -11,7 +11,10 @@
       },
       "confirmDelete": {
         "desc": "",
+        "descDetail": "",
         "descToken": "",
+        "keepEnabled": "",
+        "remove": "",
         "title": ""
       },
       "createUnknownErrorNotification": "",
@@ -32,8 +35,9 @@
         "title": ""
       },
       "secretInput": {
-        "desc": "",
-        "label": "Betreff"
+        "label": "Betreff",
+        "toggleHide": "",
+        "toggleShow": ""
       },
       "statusDisabled": {
         "description": "Wenn Sie sie einschalten, brauchen Sie bei jeder Anmeldung einen Code aus Ihrer Authenticator-App.",
@@ -43,6 +47,7 @@
         "description": "Ihr Konto ist mit einer Authenticator-App geschützt. Schalten Sie sie nur aus, wenn Sie ein neues Gerät haben.",
         "title": "Die 2-Faktor-Authentifizierung ist an"
       },
+      "stepIndicator": "",
       "title": "",
       "validateButton": {
         "label": "Betreff"
