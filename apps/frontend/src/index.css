@@ -10,6 +10,16 @@ button:not(:disabled) {
   cursor: pointer;
 }
 
+.nuxt-page {
+  p {
+    @apply text-sm;
+  }
+
+  h2 {
+    @apply text-highlighted text-base font-semibold;
+  }
+}
+
 /* Apply link styles to i18n markdown text */
 .content-i18n {
   a {

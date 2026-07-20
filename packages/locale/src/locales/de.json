@@ -3,19 +3,22 @@
     "contactInformation": "Kontaktdaten",
     "deliveryAddress": "Adresse",
     "deliveryOptIn": "Postsendung",
-    "loginDetail": "Anmeldedaten",
+    "loginDetail": "Passwort ändern",
     "mfa": {
       "codeInput": {
         "info": "Wenn Sie Ihr 2FA-Gerät verloren haben, wenden Sie sich bitte an den Support.",
         "label": "Code"
       },
       "confirmDelete": {
-        "desc": "Möchten Sie die Multi-Faktor-Authentifizierung wirklich deaktivieren? \nDanach benötigen Sie nur noch Ihr Passwort zur Anmeldung. Bitte \nvergessen Sie nicht, den Eintrag aus Ihrer Authenticator-App zu \nentfernen. Sie können diese Funktion jederzeit wieder aktivieren.",
+        "desc": "Möchten Sie die Zwei-Faktor-Authentifizierung wirklich deaktivieren? \nDanach benötigen Sie nur noch Ihr Passwort zur Anmeldung. Bitte \nvergessen Sie nicht, den Eintrag aus Ihrer Authenticator-App zu \nentfernen. Sie können diese Funktion jederzeit wieder aktivieren.",
+        "descDetail": "Danach benötigen Sie nur noch Ihr Passwort zur Anmeldung. Vergessen Sie nicht, den Eintrag aus Ihrer Authenticator-App zu entfernen. Sie können diese Funktion jederzeit wieder aktivieren.",
         "descToken": "Um die 2FA zu deaktivieren, geben Sie bitte Ihren aktuellen 2FA-Code ein:",
+        "keepEnabled": "2FA aktiviert lassen",
+        "remove": "2FA entfernen",
         "title": "2FA deaktivieren"
       },
-      "createUnknownErrorNotification": "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers\n nicht gespeichert werden. Bitte versuchen Sie es erneut oder \nkontaktieren Sie den Support.",
-      "deleteUnknownErrorNotification": "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers\n nicht entfernt werden. Bitte versuchen Sie es erneut oder \nkontaktieren Sie den Support.",
+      "createUnknownErrorNotification": "Die Zwei-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers\n nicht gespeichert werden. Bitte versuchen Sie es erneut oder \nkontaktieren Sie den Support.",
+      "deleteUnknownErrorNotification": "Die Zwei-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers\n nicht entfernt werden. Bitte versuchen Sie es erneut oder \nkontaktieren Sie den Support.",
       "description": "Fügen Sie Ihrem Konto eine zusätzliche Sicherheitsebene hinzu",
       "disabledNotification": "Zwei-Faktor Authentifizierung erfolgreich deaktiviert",
       "enabledNotification": "Zwei-Faktor Authentifizierung erfolgreich aktiviert",
@@ -23,7 +26,7 @@
         "desc": "Geben Sie den Code ein, der in Ihrer Authentifizierungs-App angezeigt wird.",
         "title": "Überprüfung"
       },
-      "modalTitle": "Aktivere 2-Faktor Authentifizierung",
+      "modalTitle": "Aktivere Zwei-Faktor Authentifizierung",
       "result": {
         "invalidCode": "Der Code konnte nicht bestätigt werden. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."
       },
@@ -32,8 +35,9 @@
         "title": "QR-Code"
       },
       "secretInput": {
-        "desc": "Alternativ können Sie den nachstehenden Code in Ihre Authenticator-App eingeben.",
-        "label": "Secret"
+        "label": "Secret",
+        "toggleHide": "Verbergen",
+        "toggleShow": "Kann nicht scannen? Code manuell eingeben"
       },
       "statusDisabled": {
         "description": "Wenn aktiviert, werden Sie bei jeder Anmeldung nach einem Code aus Ihrer Authenticator-App gefragt.",
@@ -43,7 +47,8 @@
         "description": "Ihr Konto ist durch eine Authenticator-App geschützt. Deaktivieren Sie dies nur, wenn Sie das Gerät wechseln.",
         "title": "Zwei-Faktor-Authentifizierung ist aktiviert"
       },
-      "title": "2-Faktor Authentifizierung",
+      "stepIndicator": "Schritt {step} von {total}",
+      "title": "Zwei-Faktor-Authentifizierung",
       "validateButton": {
         "label": "Token überprüfen"
       }
