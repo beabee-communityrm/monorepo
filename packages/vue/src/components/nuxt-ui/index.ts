@@ -15,9 +15,9 @@ export {
   type AppModalActionsProps,
 } from './AppModalActions.vue';
 export {
-  default as AppModalDialog,
-  type AppModalDialogProps,
-} from './AppModalDialog.vue';
+  default as AppModalHeader,
+  type AppModalHeaderProps,
+} from './AppModalHeader.vue';
 export {
   default as AppSectionCard,
   type AppSectionCardProps,
