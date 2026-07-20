@@ -1,6 +1,13 @@
-import { BeabeeClient, UnsupportedFileTypeError } from '@beabee/client';
+import { MAX_FILE_SIZE_IN_BYTES } from '@beabee/beabee-common';
+import {
+  BadRequestError,
+  BeabeeClient,
+  FileTooLargeError,
+  UnsupportedFileTypeError,
+} from '@beabee/client';
 import { api, testUser } from '@beabee/test-utils/test-data';
 
+import * as fs from 'fs';
 import { resolve } from 'path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
@@ -93,6 +100,94 @@ describe('Upload API', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(UnsupportedFileTypeError);
       }
+    });
+  });
+
+  describe('Invalid file uploads', () => {
+    // These files are constructed in memory rather than committed as fixtures,
+    // both to avoid an oversized fixture in the repo and because content only
+    // needs to be "real" enough to trigger the specific validation path.
+
+    it('should reject an empty file', async () => {
+      const emptyFile = new File([], 'empty.png', { type: 'image/png' });
+
+      await expect(client.upload.uploadFile(emptyFile)).rejects.toBeInstanceOf(
+        BadRequestError
+      );
+    });
+
+    it('should reject random bytes with an image extension', async () => {
+      const randomBytes = new Uint8Array(2048).map((_, i) => i % 256);
+      const randomFile = new File([randomBytes], 'random-bytes.jpg', {
+        type: 'image/jpeg',
+      });
+
+      await expect(client.upload.uploadFile(randomFile)).rejects.toBeInstanceOf(
+        BadRequestError
+      );
+    });
+
+    it('should reject plain text content with an image extension', async () => {
+      const textFile = new File(
+        ['This is definitely not an image, just plain text.'],
+        'not-an-image.gif',
+        { type: 'image/gif' }
+      );
+
+      await expect(client.upload.uploadFile(textFile)).rejects.toBeInstanceOf(
+        BadRequestError
+      );
+    });
+
+    it('should reject a truncated image', async () => {
+      // Cut off a real PNG partway through, valid header but incomplete body
+      const pngPath = resolve(FIXTURE_PATH, '600x400.png');
+      const fullBuffer = fs.readFileSync(pngPath);
+      const truncatedBuffer = fullBuffer.subarray(
+        0,
+        Math.floor(fullBuffer.length * 0.4)
+      );
+      const truncatedFile = new File([truncatedBuffer], 'truncated.png', {
+        type: 'image/png',
+      });
+
+      await expect(
+        client.upload.uploadFile(truncatedFile)
+      ).rejects.toBeInstanceOf(BadRequestError);
+    });
+
+    it('should reject SVG content uploaded with a non-SVG extension', async () => {
+      const svgContent =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" fill="red"/></svg>';
+      const mislabeledFile = new File([svgContent], 'svg-content.png', {
+        type: 'image/png',
+      });
+
+      await expect(
+        client.upload.uploadFile(mislabeledFile)
+      ).rejects.toBeInstanceOf(BadRequestError);
+    });
+
+    it('should reject an unsupported image format', async () => {
+      const bmpFile = new File([new Uint8Array(16)], 'unsupported-format.bmp', {
+        type: 'image/bmp',
+      });
+
+      await expect(client.upload.uploadFile(bmpFile)).rejects.toBeInstanceOf(
+        UnsupportedFileTypeError
+      );
+    });
+
+    it('should reject a file over the size limit', async () => {
+      const oversizedFile = new File(
+        [new Uint8Array(MAX_FILE_SIZE_IN_BYTES + 1)],
+        'oversized.png',
+        { type: 'image/png' }
+      );
+
+      await expect(
+        client.upload.uploadFile(oversizedFile)
+      ).rejects.toBeInstanceOf(FileTooLargeError);
     });
   });
 
