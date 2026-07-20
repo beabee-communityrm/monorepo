@@ -20,14 +20,14 @@
   >
     <div class="flex items-start justify-between gap-4">
       <div class="space-y-1">
-        <p class="text-sm font-medium">
+        <p class="font-medium">
           {{
             isEnabled
               ? t('accountPage.mfa.statusEnabled.title')
               : t('accountPage.mfa.statusDisabled.title')
           }}
         </p>
-        <p class="text-muted text-xs">
+        <p class="text-muted">
           {{
             isEnabled
               ? t('accountPage.mfa.statusEnabled.description')
@@ -45,152 +45,196 @@
 
   <UModal
     :open="showDisableConfirmModal"
-    :title="t('accountPage.mfa.confirmDelete.title')"
+    :ui="{ header: 'min-h-[3rem]', close: 'top-2' }"
     @update:open="(open: boolean) => !open && closeDisableConfirmModal()"
     @after:leave="blurActiveElement"
   >
     <template #body>
-      <p class="mb-3">
-        {{ t('accountPage.mfa.confirmDelete.desc') }}
-      </p>
-      <p class="mb-5">
-        {{ t('accountPage.mfa.confirmDelete.descToken') }}
-      </p>
-
-      <div class="mt-4 flex h-32 flex-col justify-between">
-        <AppCodeInput v-model="disableToken" :error="disableError" />
+      <div class="flex flex-col gap-6">
+        <div class="space-y-2">
+          <h2>
+            {{ t('accountPage.mfa.confirmDelete.title') }}
+          </h2>
+          <p class="text-muted">
+            {{ t('accountPage.mfa.confirmDelete.descDetail') }}
+          </p>
+        </div>
+        <UFormField :label="t('accountPage.mfa.confirmDelete.descToken')">
+          <AppCodeInput
+            v-model="disableToken"
+            :error="disableError"
+            class="justify-start"
+            autofocus
+          />
+        </UFormField>
 
         <UAlert
-          v-if="disableError"
+          v-if="disableError || disableUnknownError"
           color="error"
           variant="soft"
           icon="i-lucide-circle-alert"
-          :title="t('accountPage.mfa.result.invalidCode')"
+          :title="
+            disableError
+              ? t('accountPage.mfa.result.invalidCode')
+              : t('accountPage.mfa.deleteUnknownErrorNotification')
+          "
+        />
+
+        <AppModalActions
+          :cancel-label="t('accountPage.mfa.confirmDelete.keepEnabled')"
+          :confirm-label="t('accountPage.mfa.confirmDelete.remove')"
+          confirm-color="error"
+          :confirm-disabled="disableToken.length < 6"
+          :confirm-loading="disabling"
+          @cancel="closeDisableConfirmModal"
+          @confirm="handleDisableClick"
         />
       </div>
     </template>
-
-    <template #footer
-      ><div class="flex w-full justify-between">
-        <UButton
-          variant="outline"
-          color="neutral"
-          @click="closeDisableConfirmModal"
-        >
-          {{ t('actions.noBack') }}
-        </UButton>
-        <UButton
-          color="error"
-          :disabled="disableToken.length < 6"
-          :loading="disabling"
-          @click="handleDisableClick"
-        >
-          {{ t('actions.yesDisable') }}
-        </UButton>
-      </div>
-    </template>
   </UModal>
 
-  <UModal
+  <AppModalDialog
     :open="showMFASettingsModal"
+    icon="i-lucide-shield-check"
     :title="t('accountPage.mfa.modalTitle')"
+    :description="
+      t('accountPage.mfa.stepIndicator', {
+        step: enableStep === 'scan' ? 1 : 2,
+        total: 2,
+      })
+    "
     @update:open="(open: boolean) => !open && onCloseMFAModal()"
     @after:leave="blurActiveElement"
   >
-    <template #body>
-      <div class="flex flex-col items-center gap-4 text-center">
-        <!-- Scan QR code step -->
-        <div v-if="enableStep === 'scan'" class="flex w-full flex-col gap-4">
-          <p>
+    <div class="flex gap-1">
+      <div class="bg-primary h-1 flex-1 rounded-full" />
+      <div
+        class="h-1 flex-1 rounded-full"
+        :class="enableStep === 'verify' ? 'bg-primary' : 'bg-elevated'"
+      />
+    </div>
+
+    <div class="flex flex-col items-center gap-6 text-center">
+      <!-- Scan QR code step -->
+      <div v-if="enableStep === 'scan'" class="flex w-full flex-col gap-6">
+        <div class="space-y-2">
+          <h3 class="font-medium">
+            {{ t('accountPage.mfa.scan.title') }}
+          </h3>
+          <p class="text-muted">
             {{ t('accountPage.mfa.scan.desc') }}
           </p>
-
-          <div class="flex min-h-84 flex-col justify-center gap-4">
-            <div v-if="totpUrl" class="mx-auto w-60">
-              <AppQRCode :qr-data="totpUrl" />
-            </div>
-            <p class="text-muted text-xs">
-              {{ t('accountPage.mfa.secretInput.desc') }}
-            </p>
-            <UFormField>
-              <UInput
-                :model-value="formattedTotpSecret"
-                readonly
-                class="w-full font-mono"
-                :ui="{ trailing: 'pr-0.5' }"
-              >
-                <template #trailing>
-                  <UTooltip
-                    :text="t('actions.copy')"
-                    :content="{ side: 'right' }"
-                  >
-                    <UButton
-                      :color="secretCopied ? 'success' : 'neutral'"
-                      variant="link"
-                      size="xs"
-                      :icon="
-                        secretCopied ? 'i-lucide-copy-check' : 'i-lucide-copy'
-                      "
-                      :aria-label="t('actions.copy')"
-                      @click="copySecret(totpSecret.base32)"
-                    />
-                  </UTooltip>
-                </template>
-              </UInput>
-            </UFormField>
-          </div>
-
-          <UButton
-            block
-            @click="
-              () => {
-                enableStep = 'verify';
-              }
-            "
-          >
-            {{ t('actions.continue') }}
-          </UButton>
         </div>
 
-        <!-- Verify code step -->
-        <div v-else class="flex w-full flex-col gap-4">
-          <p>
-            {{ t('accountPage.mfa.enterCode.desc') }}
-          </p>
-
-          <div class="flex min-h-84 flex-col justify-between">
-            <AppCodeInput v-model="pin" :error="createError" autofocus />
-
-            <UAlert
-              v-if="createError"
-              color="error"
-              variant="soft"
-              icon="i-lucide-circle-alert"
-              :title="t('accountPage.mfa.result.invalidCode')"
-            />
+        <div class="flex flex-col gap-4">
+          <div
+            v-if="totpUrl"
+            class="border-default mx-auto rounded-2xl border bg-white p-3 shadow-sm"
+          >
+            <div class="w-60">
+              <AppQRCode :qr-data="totpUrl" />
+            </div>
           </div>
 
-          <div class="flex gap-2">
+          <div>
             <UButton
-              variant="outline"
-              color="neutral"
-              @click="resetEnableState"
+              variant="link"
+              color="primary"
+              size="xs"
+              icon="i-lucide-key-round"
+              @click="showSecret = !showSecret"
             >
-              {{ t('actions.back') }}
+              {{
+                showSecret
+                  ? t('accountPage.mfa.secretInput.toggleHide')
+                  : t('accountPage.mfa.secretInput.toggleShow')
+              }}
             </UButton>
-            <UButton
-              block
-              :disabled="pin.length < 6"
-              :loading="creating"
-              @click="handleCompleteSetup"
-            >
-              {{ t('accountPage.mfa.validateButton.label') }}
-            </UButton>
+
+            <div v-if="showSecret" class="mt-2">
+              <UFormField>
+                <UInput
+                  :model-value="formattedTotpSecret"
+                  readonly
+                  class="w-full font-mono"
+                >
+                  <template #trailing>
+                    <UTooltip
+                      :text="t('actions.copy')"
+                      :content="{ side: 'right' }"
+                    >
+                      <UButton
+                        :color="secretCopied ? 'success' : 'neutral'"
+                        variant="link"
+                        size="xs"
+                        :icon="
+                          secretCopied ? 'i-lucide-copy-check' : 'i-lucide-copy'
+                        "
+                        :aria-label="t('actions.copy')"
+                        @click="copySecret(totpSecret.base32)"
+                      />
+                    </UTooltip>
+                  </template>
+                </UInput>
+              </UFormField>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- Verify code step -->
+      <div v-else class="flex w-full flex-col gap-6">
+        <div class="space-y-2">
+          <h3 id="mfa-enter-code-title" class="font-medium">
+            {{ t('accountPage.mfa.enterCode.title') }}
+          </h3>
+          <p id="mfa-enter-code-desc" class="text-muted">
+            {{ t('accountPage.mfa.enterCode.desc') }}
+          </p>
+        </div>
+
+        <AppCodeInput
+          v-model="pin"
+          :error="createError"
+          class="justify-center"
+          aria-labelledby="mfa-enter-code-title"
+          aria-describedby="mfa-enter-code-desc"
+          autofocus
+        />
+
+        <UAlert
+          v-if="createError || createUnknownError"
+          color="error"
+          variant="soft"
+          icon="i-lucide-circle-alert"
+          :title="
+            createError
+              ? t('accountPage.mfa.result.invalidCode')
+              : t('accountPage.mfa.createUnknownErrorNotification')
+          "
+        />
+      </div>
+    </div>
+
+    <template #actions>
+      <AppModalActions
+        v-if="enableStep === 'scan'"
+        :cancel-label="t('actions.cancel')"
+        :confirm-label="t('actions.next')"
+        @cancel="onCloseMFAModal"
+        @confirm="enableStep = 'verify'"
+      />
+      <AppModalActions
+        v-else
+        :cancel-label="t('actions.back')"
+        :confirm-label="t('accountPage.mfa.validateButton.label')"
+        :confirm-disabled="pin.length < 6"
+        :confirm-loading="creating"
+        @cancel="resetEnableState"
+        @confirm="handleCompleteSetup"
+      />
     </template>
-  </UModal>
+  </AppModalDialog>
 </template>
 
 <script lang="ts" setup>
@@ -202,6 +246,8 @@ import {
 import { UnauthorizedError } from '@beabee/client';
 import {
   AppCodeInput,
+  AppModalActions,
+  AppModalDialog,
   AppQRCode,
   AppSectionCard,
   addNotification,
@@ -229,6 +275,9 @@ const isEnabled = ref(false);
 /** Which step of the enable-MFA modal is showing */
 const enableStep = ref<'scan' | 'verify'>('scan');
 
+/** Whether the manual-entry secret code is expanded */
+const showSecret = ref(false);
+
 /** Code entered on the verify step, one digit per box */
 const pin = ref<string[]>([]);
 
@@ -237,6 +286,9 @@ const creating = ref(false);
 
 /** Shown when the server rejects the entered code */
 const createError = ref(false);
+
+/** Shown when creating MFA fails for a reason other than an invalid code */
+const createUnknownError = ref(false);
 
 const props = defineProps<{
   contactId: string;
@@ -267,6 +319,9 @@ const disableToken = ref<string[]>([]);
 
 /** Shown when the server rejects the entered disable token */
 const disableError = ref(false);
+
+/** Shown when disabling MFA fails for a reason other than an invalid token */
+const disableUnknownError = ref(false);
 
 /** Loading state while confirming the disable-2FA dialog */
 const disabling = ref(false);
@@ -388,6 +443,7 @@ const handleCompleteSetup = async () => {
   if (pin.value.length < 6 || creating.value) return;
 
   createError.value = false;
+  createUnknownError.value = false;
   creating.value = true;
   await createMfaAndNotify();
   creating.value = false;
@@ -402,15 +458,13 @@ const onCreateError = (error: unknown) => {
     // If server says the token is invalid, show an inline error and let the
     // user retry on the same step
     createError.value = true;
+    createUnknownError.value = false;
     return;
   }
 
-  // Start from the beginning on an unknown error
-  resetEnableState();
-  addNotification({
-    title: t('accountPage.mfa.createUnknownErrorNotification'),
-    variant: 'error',
-  });
+  // Show an inline error and let the user retry on the same step
+  createUnknownError.value = true;
+  createError.value = false;
 };
 
 const onDeleteError = (error: unknown) => {
@@ -421,13 +475,12 @@ const onDeleteError = (error: unknown) => {
   ) {
     // If server says the token is invalid, show an inline error
     disableError.value = true;
+    disableUnknownError.value = false;
     return;
   }
 
-  addNotification({
-    title: t('accountPage.mfa.deleteUnknownErrorNotification'),
-    variant: 'error',
-  });
+  disableUnknownError.value = true;
+  disableError.value = false;
 };
 
 /** Reset the enable-MFA modal back to its first step */
@@ -435,12 +488,15 @@ const resetEnableState = () => {
   enableStep.value = 'scan';
   pin.value = [];
   createError.value = false;
+  createUnknownError.value = false;
+  showSecret.value = false;
 };
 
 /** Reset the disable-MFA modal's form state */
 const resetDisableState = () => {
   disableToken.value = [];
   disableError.value = false;
+  disableUnknownError.value = false;
 };
 
 /** Called when the totp identity changes */
@@ -479,10 +535,12 @@ watch(totpIdentity, onTotpIdentityChanged, { deep: true });
 /** Hide the invalid-code error as soon as the user edits the token again */
 watch(disableToken, () => {
   disableError.value = false;
+  disableUnknownError.value = false;
 });
 
 /** Hide the invalid-code error as soon as the user edits the pin again */
 watch(pin, () => {
   createError.value = false;
+  createUnknownError.value = false;
 });
 </script>

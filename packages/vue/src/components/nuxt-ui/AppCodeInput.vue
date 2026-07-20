@@ -16,14 +16,23 @@
   - `autofocus` (boolean, default false): focus the first box on mount.
 -->
 <template>
+  <!--
+    `type="number"` restricts input to digits (numeric keyboard, rejects
+    non-digit chars). Reka UI's PinInput always stores/emits plain digit
+    strings at runtime regardless of `type` — the number[] typing it infers
+    from `type="number"` doesn't match its actual behavior, hence the casts.
+  -->
   <UPinInput
-    :model-value="modelValue"
-    class="mt-3 justify-center"
+    :model-value="modelValue as unknown as number[]"
     :length="length"
+    type="number"
     :color="error ? 'error' : undefined"
     :highlight="error"
     :autofocus="autofocus"
-    @update:model-value="emit('update:modelValue', $event)"
+    size="xl"
+    @update:model-value="
+      emit('update:modelValue', $event as unknown as string[])
+    "
   />
 </template>
 

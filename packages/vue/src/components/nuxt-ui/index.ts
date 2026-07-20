@@ -7,6 +7,18 @@ export {
   type AppFormSkeletonProps,
 } from './AppFormSkeleton.vue';
 export {
+  default as AppIconBadge,
+  type AppIconBadgeProps,
+} from './AppIconBadge.vue';
+export {
+  default as AppModalActions,
+  type AppModalActionsProps,
+} from './AppModalActions.vue';
+export {
+  default as AppModalDialog,
+  type AppModalDialogProps,
+} from './AppModalDialog.vue';
+export {
   default as AppSectionCard,
   type AppSectionCardProps,
 } from './AppSectionCard.vue';

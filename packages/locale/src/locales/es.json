@@ -3,15 +3,18 @@
     "contactInformation": "Información de contacto",
     "deliveryAddress": "Dirección de envío",
     "deliveryOptIn": "Aceptar envíos",
-    "loginDetail": "Datos de acceso",
+    "loginDetail": "Cambiar contraseña",
     "mfa": {
       "codeInput": {
         "info": "Si has perdido tu dispositivo 2FA, contacta con el soporte",
         "label": "Código"
       },
       "confirmDelete": {
-        "desc": "¿Seguro que deseas desactivar la autenticación multifactor? A partir de entonces solo necesitarás tu contraseña para iniciar sesión. Recuerda eliminar la entrada de tu aplicación de autenticación. Puedes volver a activarla en cualquier momento.",
+        "desc": "¿Seguro que deseas desactivar la autenticación en dos pasos? A partir de entonces solo necesitarás tu contraseña para iniciar sesión. Recuerda eliminar la entrada de tu aplicación de autenticación. Puedes volver a activarla en cualquier momento.",
+        "descDetail": "A partir de entonces solo necesitarás tu contraseña para iniciar sesión. Recuerda eliminar la entrada de tu aplicación de autenticación. Puedes volver a activarla en cualquier momento.",
         "descToken": "Para desactivar 2FA, introduce tu código 2FA actual:",
+        "keepEnabled": "Mantener 2FA activada",
+        "remove": "Eliminar 2FA",
         "title": "Desactivar 2FA"
       },
       "createUnknownErrorNotification": "No se pudo guardar la autenticación en dos pasos debido a un error desconocido. Inténtalo de nuevo o contacta con el soporte.",
@@ -32,8 +35,9 @@
         "title": "Código QR"
       },
       "secretInput": {
-        "desc": "También puedes introducir el siguiente código en tu aplicación de autenticación.",
-        "label": "Código secreto"
+        "label": "Código secreto",
+        "toggleHide": "Ocultar",
+        "toggleShow": "¿No puedes escanear? Introduce el código manualmente"
       },
       "statusDisabled": {
         "description": "Al activarla, se te pedirá un código de tu aplicación de autenticación cada vez que inicies sesión.",
@@ -43,6 +47,7 @@
         "description": "Tu cuenta está protegida con una aplicación de autenticación. Desactívala solo si estás cambiando de dispositivo.",
         "title": "La autenticación de dos factores está activada"
       },
+      "stepIndicator": "Paso {step} de {total}",
       "title": "Autenticación en dos pasos",
       "validateButton": {
         "label": "Verificar código"
@@ -61,7 +66,7 @@
       "title": "Boletín",
       "unsubscribe": "Cancelar suscripción al boletín"
     },
-    "phoneInfo": "Al proporcionar tu número de teléfono, aceptas ser contactado por teléfono",
+    "phoneInfo": "Al proporcionar tu número de teléfono, aceptas ser contactado por teléfono.",
     "phoneInfoAdmin": "Debes contar con el consentimiento de la persona antes de añadir su número de teléfono al sistema",
     "requiredFields": "Campos obligatorios",
     "savedPassword": "Nueva contraseña guardada",
