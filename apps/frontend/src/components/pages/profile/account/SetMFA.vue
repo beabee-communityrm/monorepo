@@ -93,9 +93,8 @@
     </template>
   </UModal>
 
-  <AppModalDialog
+  <UModal
     :open="showMFASettingsModal"
-    icon="i-lucide-shield-check"
     :title="t('accountPage.mfa.modalTitle')"
     :description="
       t('accountPage.mfa.stepIndicator', {
@@ -106,135 +105,144 @@
     @update:open="(open: boolean) => !open && onCloseMFAModal()"
     @after:leave="blurActiveElement"
   >
-    <div class="flex gap-1">
-      <div class="bg-primary h-1 flex-1 rounded-full" />
-      <div
-        class="h-1 flex-1 rounded-full"
-        :class="enableStep === 'verify' ? 'bg-primary' : 'bg-elevated'"
-      />
-    </div>
-
-    <div class="flex flex-col items-center gap-6 text-center">
-      <!-- Scan QR code step -->
-      <div v-if="enableStep === 'scan'" class="flex w-full flex-col gap-6">
-        <div class="space-y-2">
-          <h3 class="font-medium">
-            {{ t('accountPage.mfa.scan.title') }}
-          </h3>
-          <p class="text-muted">
-            {{ t('accountPage.mfa.scan.desc') }}
-          </p>
-        </div>
-
-        <div class="flex flex-col gap-4">
-          <div
-            v-if="totpUrl"
-            class="border-default mx-auto rounded-2xl border bg-white p-3 shadow-sm"
-          >
-            <div class="w-60">
-              <AppQRCode :qr-data="totpUrl" />
-            </div>
-          </div>
-
-          <div>
-            <UButton
-              variant="link"
-              color="primary"
-              size="xs"
-              icon="i-lucide-key-round"
-              @click="showSecret = !showSecret"
-            >
-              {{
-                showSecret
-                  ? t('accountPage.mfa.secretInput.toggleHide')
-                  : t('accountPage.mfa.secretInput.toggleShow')
-              }}
-            </UButton>
-
-            <div v-if="showSecret" class="mt-2">
-              <UFormField>
-                <UInput
-                  :model-value="formattedTotpSecret"
-                  readonly
-                  class="w-full font-mono"
-                >
-                  <template #trailing>
-                    <UTooltip
-                      :text="t('actions.copy')"
-                      :content="{ side: 'right' }"
-                    >
-                      <UButton
-                        :color="secretCopied ? 'success' : 'neutral'"
-                        variant="link"
-                        size="xs"
-                        :icon="
-                          secretCopied ? 'i-lucide-copy-check' : 'i-lucide-copy'
-                        "
-                        :aria-label="t('actions.copy')"
-                        @click="copySecret(totpSecret.base32)"
-                      />
-                    </UTooltip>
-                  </template>
-                </UInput>
-              </UFormField>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Verify code step -->
-      <div v-else class="flex w-full flex-col gap-6">
-        <div class="space-y-2">
-          <h3 id="mfa-enter-code-title" class="font-medium">
-            {{ t('accountPage.mfa.enterCode.title') }}
-          </h3>
-          <p id="mfa-enter-code-desc" class="text-muted">
-            {{ t('accountPage.mfa.enterCode.desc') }}
-          </p>
-        </div>
-
-        <AppCodeInput
-          v-model="pin"
-          :error="createError"
-          class="justify-center"
-          aria-labelledby="mfa-enter-code-title"
-          aria-describedby="mfa-enter-code-desc"
-          autofocus
-        />
-
-        <UAlert
-          v-if="createError || createUnknownError"
-          color="error"
-          variant="soft"
-          icon="i-lucide-circle-alert"
-          :title="
-            createError
-              ? t('accountPage.mfa.result.invalidCode')
-              : t('accountPage.mfa.createUnknownErrorNotification')
-          "
-        />
-      </div>
-    </div>
-
-    <template #actions>
-      <AppModalActions
-        v-if="enableStep === 'scan'"
-        :cancel-label="t('actions.cancel')"
-        :confirm-label="t('actions.next')"
-        @cancel="onCloseMFAModal"
-        @confirm="enableStep = 'verify'"
-      />
-      <AppModalActions
-        v-else
-        :cancel-label="t('actions.back')"
-        :confirm-label="t('accountPage.mfa.validateButton.label')"
-        :confirm-disabled="pin.length < 6"
-        :confirm-loading="creating"
-        @cancel="resetEnableState"
-        @confirm="handleCompleteSetup"
+    <template #header="{ close }">
+      <AppModalHeader
+        icon="i-lucide-shield-check"
+        :title="t('accountPage.mfa.modalTitle')"
+        :description="
+          t('accountPage.mfa.stepIndicator', {
+            step: enableStep === 'scan' ? 1 : 2,
+            total: 2,
+          })
+        "
+        @close="close"
       />
     </template>
-  </AppModalDialog>
+
+    <template #body>
+      <div class="flex flex-col gap-6">
+        <div class="flex gap-1">
+          <div class="bg-primary h-1 flex-1 rounded-full" />
+          <div
+            class="h-1 flex-1 rounded-full"
+            :class="enableStep === 'verify' ? 'bg-primary' : 'bg-elevated'"
+          />
+        </div>
+
+        <div class="flex flex-col items-center gap-6 text-center">
+          <div class="space-y-1">
+            <h3 id="mfa-step-title" class="font-medium">
+              {{ stepContent[enableStep].title }}
+            </h3>
+            <p id="mfa-step-desc" class="text-muted">
+              {{ stepContent[enableStep].desc }}
+            </p>
+          </div>
+
+          <!-- Scan QR code step -->
+          <div v-if="enableStep === 'scan'" class="flex w-full flex-col gap-6">
+            <div class="flex flex-col gap-4">
+              <div
+                v-if="totpUrl"
+                class="border-default mx-auto rounded-2xl border bg-white p-3 shadow-sm"
+              >
+                <div class="w-60">
+                  <AppQRCode :qr-data="totpUrl" />
+                </div>
+              </div>
+
+              <div>
+                <UButton
+                  variant="link"
+                  color="primary"
+                  size="xs"
+                  icon="i-lucide-key-round"
+                  @click="toggleSecret"
+                >
+                  {{
+                    showSecret
+                      ? t('accountPage.mfa.secretInput.toggleHide')
+                      : t('accountPage.mfa.secretInput.toggleShow')
+                  }}
+                </UButton>
+
+                <div v-if="showSecret" class="mt-2">
+                  <UFormField>
+                    <UInput
+                      :model-value="formattedTotpSecret"
+                      readonly
+                      class="w-full font-mono"
+                    >
+                      <template #trailing>
+                        <UTooltip
+                          :text="t('actions.copy')"
+                          :content="{ side: 'right' }"
+                        >
+                          <UButton
+                            :color="secretCopied ? 'success' : 'neutral'"
+                            variant="link"
+                            size="xs"
+                            :icon="
+                              secretCopied
+                                ? 'i-lucide-copy-check'
+                                : 'i-lucide-copy'
+                            "
+                            :aria-label="t('actions.copy')"
+                            @click="copySecret(totpSecret.base32)"
+                          />
+                        </UTooltip>
+                      </template>
+                    </UInput>
+                  </UFormField>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Verify code step -->
+          <div v-else class="flex w-full flex-col gap-6">
+            <AppCodeInput
+              v-model="pin"
+              :error="createError"
+              class="justify-center"
+              aria-labelledby="mfa-step-title"
+              aria-describedby="mfa-step-desc"
+              autofocus
+            />
+
+            <UAlert
+              v-if="createError || createUnknownError"
+              color="error"
+              variant="soft"
+              icon="i-lucide-circle-alert"
+              :title="
+                createError
+                  ? t('accountPage.mfa.result.invalidCode')
+                  : t('accountPage.mfa.createUnknownErrorNotification')
+              "
+            />
+          </div>
+        </div>
+
+        <AppModalActions
+          v-if="enableStep === 'scan'"
+          :cancel-label="t('actions.cancel')"
+          :confirm-label="t('actions.next')"
+          @cancel="onCloseMFAModal"
+          @confirm="enableStep = 'verify'"
+        />
+        <AppModalActions
+          v-else
+          :cancel-label="t('actions.back')"
+          :confirm-label="t('accountPage.mfa.validateButton.label')"
+          :confirm-disabled="pin.length < 6"
+          :confirm-loading="creating"
+          @cancel="resetEnableState"
+          @confirm="handleCompleteSetup"
+        />
+      </div>
+    </template>
+  </UModal>
 </template>
 
 <script lang="ts" setup>
@@ -247,7 +255,7 @@ import { UnauthorizedError } from '@beabee/client';
 import {
   AppCodeInput,
   AppModalActions,
-  AppModalDialog,
+  AppModalHeader,
   AppQRCode,
   AppSectionCard,
   addNotification,
@@ -275,8 +283,25 @@ const isEnabled = ref(false);
 /** Which step of the enable-MFA modal is showing */
 const enableStep = ref<'scan' | 'verify'>('scan');
 
+/** Title and description shown above each enable-MFA step's content */
+const stepContent = computed(() => ({
+  scan: {
+    title: t('accountPage.mfa.scan.title'),
+    desc: t('accountPage.mfa.scan.desc'),
+  },
+  verify: {
+    title: t('accountPage.mfa.enterCode.title'),
+    desc: t('accountPage.mfa.enterCode.desc'),
+  },
+}));
+
 /** Whether the manual-entry secret code is expanded */
 const showSecret = ref(false);
+
+/** Toggle the manual-entry secret code's visibility */
+const toggleSecret = () => {
+  showSecret.value = !showSecret.value;
+};
 
 /** Code entered on the verify step, one digit per box */
 const pin = ref<string[]>([]);
