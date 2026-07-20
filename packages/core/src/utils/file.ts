@@ -231,6 +231,24 @@ export const getExtensionFromFilename = (filename?: string): string => {
 };
 
 /**
+ * Get the final display dimensions of an image after EXIF auto-orientation
+ * is applied. EXIF orientations 5-8 involve a 90°/270° rotation, which swaps
+ * the width and height reported for the raw, undecoded pixel data.
+ * @param width Raw pixel width (as reported before auto-orientation)
+ * @param height Raw pixel height (as reported before auto-orientation)
+ * @param orientation EXIF orientation value (1-8), if any
+ * @returns The width/height after auto-orientation is applied
+ */
+export const getOrientedDimensions = (
+  width: number,
+  height: number,
+  orientation?: number
+): { width: number; height: number } => {
+  const isRotated90 = (orientation ?? 1) >= 5;
+  return isRotated90 ? { width: height, height: width } : { width, height };
+};
+
+/**
  * Sanitize filename to prevent path traversal attacks and ensure HTTP header compatibility
  * @param filename Original filename
  * @returns Sanitized filename

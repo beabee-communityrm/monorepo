@@ -39,6 +39,7 @@ import {
   getExtensionFromFilename,
   getMimetypeFromDecoderFormat,
   getMimetypeFromExtension,
+  getOrientedDimensions,
   sanitizeFilename,
 } from '../utils/file.js';
 import {
@@ -192,11 +193,19 @@ export class ImageService {
           ? getMimetypeFromExtension(metadata.format)
           : getMimetypeFromExtension(extension);
 
+      // `.rotate()` below auto-orients the image based on EXIF, so the
+      // stored dimensions must account for that rotation upfront
+      const orientedDimensions = getOrientedDimensions(
+        metadata.width,
+        metadata.height,
+        metadata.orientation
+      );
+
       // Prepare metadata for S3, storing the dimensions so they can be read
       // later without downloading the image
       const s3Metadata: S3Metadata = {
-        width: String(metadata.width),
-        height: String(metadata.height),
+        width: String(orientedDimensions.width),
+        height: String(orientedDimensions.height),
       };
       if (sanitizedFilename) {
         s3Metadata.originalfilename = sanitizedFilename;
