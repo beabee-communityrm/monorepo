@@ -11,7 +11,10 @@
       },
       "confirmDelete": {
         "desc": "",
+        "descDetail": "",
         "descToken": "",
+        "keepEnabled": "",
+        "remove": "",
         "title": ""
       },
       "createUnknownErrorNotification": "",
@@ -32,8 +35,9 @@
         "title": ""
       },
       "secretInput": {
-        "desc": "",
-        "label": ""
+        "label": "",
+        "toggleHide": "",
+        "toggleShow": ""
       },
       "statusDisabled": {
         "description": "",
@@ -43,6 +47,7 @@
         "description": "",
         "title": ""
       },
+      "stepIndicator": "",
       "title": "",
       "validateButton": {
         "label": ""

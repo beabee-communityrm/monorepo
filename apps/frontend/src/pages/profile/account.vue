@@ -5,9 +5,9 @@ meta:
 </route>
 
 <template>
-  <div class="text-default mx-auto flex max-w-2xl flex-col gap-6">
+  <div class="nuxt-page mx-auto flex max-w-2xl flex-col gap-6">
     <div
-      class="bg-elevated text-muted flex items-start gap-3 rounded-xl px-4 py-3 text-xs"
+      class="bg-elevated text-muted flex items-start gap-3 rounded-xl px-4 py-3"
     >
       <UIcon
         name="i-lucide-shield"
@@ -20,7 +20,7 @@ meta:
     <ChangePassword />
     <SetMFA contact-id="me" />
 
-    <p class="text-muted px-1 text-xs">
+    <p class="text-muted px-1">
       <span class="text-primary font-medium">*</span>
       {{ t('accountPage.requiredFields') }}
     </p>

@@ -3,37 +3,41 @@
     "contactInformation": "Contact information",
     "deliveryAddress": "Delivery address",
     "deliveryOptIn": "Delivery opt-in",
-    "loginDetail": "Login details",
+    "loginDetail": "Change password",
     "mfa": {
       "codeInput": {
         "info": "If you have lost your 2FA device please contact support",
         "label": "Code"
       },
       "confirmDelete": {
-        "desc": "Are you sure you want to disable Multi-Factor Authentication? From then on, you'll only need your password to log in. Remember to delete the entry from your Authenticator app. You can always enable it again.",
-        "descToken": "To deactivate 2FA, please enter your current 2FA code:",
-        "title": "Disable 2FA"
+        "desc": "Are you sure you want to disable two-factor authentication?",
+        "descDetail": "From then on, you'll only need your password to log in. Remember to delete the entry from your Authenticator app. You can always enable it again.",
+        "descToken": "Enter your current 2FA code to confirm",
+        "keepEnabled": "Keep 2FA enabled",
+        "remove": "Remove 2FA",
+        "title": "Are you sure you want to disable two-factor authentication?"
       },
-      "createUnknownErrorNotification": "The 2-factor authentication could not be saved due to an unknown error. Please try again or contact support.",
-      "deleteUnknownErrorNotification": "The 2-factor authentication could not be deleted due to an unknown error. Please try again or contact support.",
+      "createUnknownErrorNotification": "The two-factor authentication could not be saved due to an unknown error. Please try again or contact support.",
+      "deleteUnknownErrorNotification": "The two-factor authentication could not be deleted due to an unknown error. Please try again or contact support.",
       "description": "Add an extra layer of security to your account",
       "disabledNotification": "Two-factor authentication successfully deactivated",
       "enabledNotification": "Two-factor authentication successfully activated",
       "enterCode": {
-        "desc": "Enter the code that is displayed in your authenticator app.",
-        "title": "Verification"
+        "desc": "Enter the 6-digit code from your authenticator app to confirm setup.",
+        "title": "Enter the verification code"
       },
-      "modalTitle": "Enable 2-factor authentication",
+      "modalTitle": "Enable two-factor authentication",
       "result": {
         "invalidCode": "The code could not be confirmed, please try again or contact support."
       },
       "scan": {
-        "desc": "Scan the QR code below with your authenticator app.",
-        "title": "QR Code"
+        "desc": "Open your authenticator app and scan the code below.",
+        "title": "Scan this QR code"
       },
       "secretInput": {
-        "desc": "Alternatively, you can enter the following code into your authenticator app:",
-        "label": "Secret code"
+        "label": "Secret code",
+        "toggleHide": "Hide",
+        "toggleShow": "Can't scan? Enter the code manually"
       },
       "statusDisabled": {
         "description": "When enabled, you'll be asked for a code from your authenticator app each time you log in.",
@@ -43,9 +47,10 @@
         "description": "Your account is protected with an authenticator app. Disable this only if you are changing devices.",
         "title": "Two-factor authentication is enabled"
       },
-      "title": "2-factor authentication",
+      "stepIndicator": "Step {step} of {total}",
+      "title": "Two-factor authentication",
       "validateButton": {
-        "label": "Verify token"
+        "label": "Confirm"
       }
     },
     "newsletter": {
@@ -61,7 +66,7 @@
       "title": "Newsletter",
       "unsubscribe": "Unsubscribe them from the newsletter"
     },
-    "phoneInfo": "By providing your phone number you are consenting to being contacted by phone",
+    "phoneInfo": "By providing your phone number you are consenting to being contacted by phone.",
     "phoneInfoAdmin": "You must have the person's consent before adding their phone number to the system",
     "requiredFields": "Required fields",
     "savedPassword": "New password saved",
@@ -1495,7 +1500,7 @@
     "newPasswordConfirm": "Confirm new password",
     "notes": "Notes",
     "password": "Password",
-    "passwordInfo": "Set a secure password: 8+ characters or longer, and it must include a number, uppercase and lowercase letters.",
+    "passwordInfo": "Set a secure password: at least 8 characters, including a number, an uppercase letter, and a lowercase letter.",
     "phone": "Phone number",
     "postCode": "Postcode",
     "richtext": {

@@ -48,9 +48,12 @@
       <template v-else>
         <template v-if="accountContent?.showMailOptIn">
           <div class="flex items-center justify-between gap-4">
-            <div>
+            <div class="space-y-1">
+              <p class="text-default text-sm font-medium">
+                {{ accountContent.mailTitle }}
+              </p>
               <div
-                class="text-default text-sm font-medium"
+                class="text-muted text-sm"
                 v-html="accountContent.mailText"
               />
             </div>

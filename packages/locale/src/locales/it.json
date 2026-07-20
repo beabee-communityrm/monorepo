@@ -3,19 +3,22 @@
     "contactInformation": "Informazioni di contatto",
     "deliveryAddress": "Indirizzo",
     "deliveryOptIn": "Opt-in per la consegna",
-    "loginDetail": "Credenziali",
+    "loginDetail": "Modifica la password",
     "mfa": {
       "codeInput": {
         "info": "Se hai perso il tuo dispositivo 2FA, contatta l'assistenza",
         "label": "Codice"
       },
       "confirmDelete": {
-        "desc": "Sei sicuro di voler disattivare l'autenticazione a più fattori? Da quel momento ti basterà la password per accedere. Ricorda di rimuovere l'entry dalla tua app Authenticator. Potrai sempre riattivarla.",
+        "desc": "Sei sicuro di voler disattivare l'autenticazione a due fattori? Da quel momento ti basterà la password per accedere. Ricorda di rimuovere l'entry dalla tua app Authenticator. Potrai sempre riattivarla.",
+        "descDetail": "Da quel momento ti basterà la password per accedere. Ricorda di rimuovere l'entry dalla tua app Authenticator. Potrai sempre riattivarla.",
         "descToken": "Per disattivare la 2FA, inserisci il tuo attuale codice 2FA:",
+        "keepEnabled": "Mantieni la 2FA attiva",
+        "remove": "Rimuovi 2FA",
         "title": "Disabilitare 2FA"
       },
-      "createUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata attivata a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
-      "deleteUnknownErrorNotification": "L'autenticazione a 2 fattori non è stata rimossa a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
+      "createUnknownErrorNotification": "L'autenticazione a due fattori non è stata attivata a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
+      "deleteUnknownErrorNotification": "L'autenticazione a due fattori non è stata rimossa a causa di un errore sconosciuto. Prova di nuovo o contatta il supporto",
       "description": "Aggiungi un ulteriore livello di sicurezza al tuo account",
       "disabledNotification": "Autenticazione a due fattori disattivata correttamente",
       "enabledNotification": "Autenticazione a due fattori attivata correttamente",
@@ -23,7 +26,7 @@
         "desc": "Inserisci il codice visualizzato nella tua app di autenticazione.",
         "title": "Verifica"
       },
-      "modalTitle": "Attiva autenticazione a 2 fattori",
+      "modalTitle": "Attiva autenticazione a due fattori",
       "result": {
         "invalidCode": "Impossibile confermare il codice. Riprova o contatta l'assistenza."
       },
@@ -32,8 +35,9 @@
         "title": "Codice QR"
       },
       "secretInput": {
-        "desc": "In alternativa, puoi inserire il seguente codice nella tua app Authenticator.",
-        "label": "Codice segreto"
+        "label": "Codice segreto",
+        "toggleHide": "Nascondi",
+        "toggleShow": "Non riesci a scansionare? Inserisci il codice manualmente"
       },
       "statusDisabled": {
         "description": "Se attivata, ti verrà richiesto un codice dalla tua app di autenticazione ad ogni accesso.",
@@ -43,7 +47,8 @@
         "description": "Il tuo account è protetto da un'app di autenticazione. Disattivala solo se stai cambiando dispositivo.",
         "title": "L'autenticazione a due fattori è attivata"
       },
-      "title": "Autenticazione a 2 fattori",
+      "stepIndicator": "Passaggio {step} di {total}",
+      "title": "Autenticazione a due fattori",
       "validateButton": {
         "label": "Verifica token"
       }
@@ -61,7 +66,7 @@
       "title": "Newsletter",
       "unsubscribe": "Cancellarli dalla newsletter"
     },
-    "phoneInfo": "Fornendo il tuo numero di telefono acconsenti ad essere contattato telefonicamente",
+    "phoneInfo": "Fornendo il tuo numero di telefono acconsenti ad essere contattato telefonicamente.",
     "phoneInfoAdmin": "È necessario avere il consenso della persona prima di aggiungere il suo numero di telefono al sistema",
     "requiredFields": "Campi obbligatori",
     "savedPassword": "Nuova password salvata",

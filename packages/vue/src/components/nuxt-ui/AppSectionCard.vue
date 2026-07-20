@@ -15,14 +15,10 @@
 <template>
   <UCard :ui="{ header: 'flex items-center gap-3', body: 'space-y-4' }">
     <template #header>
-      <div
-        class="bg-primary/10 flex size-8 shrink-0 items-center justify-center rounded-lg"
-      >
-        <UIcon :name="icon" class="text-primary size-4" />
-      </div>
-      <div>
-        <h2 class="text-highlighted text-sm font-semibold">{{ title }}</h2>
-        <p v-if="description" class="text-muted mt-0.5 text-xs">
+      <AppIconBadge :icon="icon" />
+      <div class="space-y-1">
+        <h2>{{ title }}</h2>
+        <p v-if="description" class="text-muted">
           {{ description }}
         </p>
       </div>
@@ -39,6 +35,8 @@
  *
  * @component AppSectionCard
  */
+import AppIconBadge from './AppIconBadge.vue';
+
 export interface AppSectionCardProps {
   /** Iconify icon name, e.g. `i-lucide-user-circle` */
   icon: string;

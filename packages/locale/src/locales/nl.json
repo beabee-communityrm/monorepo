@@ -3,15 +3,18 @@
     "contactInformation": "Contactgegevens",
     "deliveryAddress": "Afleveradres",
     "deliveryOptIn": "Opt-in voor bezorging",
-    "loginDetail": "Inloggegevens",
+    "loginDetail": "Wijzig wachtwoord",
     "mfa": {
       "codeInput": {
         "info": "Als je je 2FA-apparaat kwijt bent, neem dan contact op met support.",
         "label": "Code"
       },
       "confirmDelete": {
-        "desc": "Weet je zeker dat je Multi-Factor Authenticatie wilt uitschakelen? Vanaf dan heb je alleen nog je wachtwoord nodig om in te loggen. Vergeet niet om de vermelding uit je Authenticator-app te verwijderen. Je kunt het altijd weer inschakelen.",
+        "desc": "Weet je zeker dat je tweefactorauthenticatie wilt uitschakelen? Vanaf dan heb je alleen nog je wachtwoord nodig om in te loggen. Vergeet niet om de vermelding uit je Authenticator-app te verwijderen. Je kunt het altijd weer inschakelen.",
+        "descDetail": "Vanaf dan heb je alleen nog je wachtwoord nodig om in te loggen. Vergeet niet om de vermelding uit je Authenticator-app te verwijderen. Je kunt het altijd weer inschakelen.",
         "descToken": "Voer je huidige 2FA-code in om 2FA uit te schakelen:",
+        "keepEnabled": "2FA ingeschakeld houden",
+        "remove": "2FA verwijderen",
         "title": "2FA uitschakelen"
       },
       "createUnknownErrorNotification": "De 2FA kon niet worden opgeslagen vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
@@ -23,7 +26,7 @@
         "desc": "Voer de code in die wordt weergegeven in je authenticator app.",
         "title": "Verificatie"
       },
-      "modalTitle": "2-factor authenticatie inschakelen",
+      "modalTitle": "Tweefactorauthenticatie inschakelen",
       "result": {
         "invalidCode": "De code kon niet worden bevestigd, probeer het opnieuw of neem contact op met support."
       },
@@ -32,8 +35,9 @@
         "title": "QR-code"
       },
       "secretInput": {
-        "desc": "Je kunt ook de volgende code invoeren in je Authenticator app.",
-        "label": "Geheime code"
+        "label": "Geheime code",
+        "toggleHide": "Verbergen",
+        "toggleShow": "Kun je niet scannen? Voer de code handmatig in"
       },
       "statusDisabled": {
         "description": "Indien ingeschakeld, wordt u bij elke keer inloggen om een code uit uw authenticator-app gevraagd.",
@@ -43,7 +47,8 @@
         "description": "Uw account is beveiligd met een authenticator-app. Schakel dit alleen uit als u van apparaat wisselt.",
         "title": "Tweefactorauthenticatie is ingeschakeld"
       },
-      "title": "2-factor authenticatie",
+      "stepIndicator": "Stap {step} van {total}",
+      "title": "Tweefactorauthenticatie",
       "validateButton": {
         "label": "Token verifiëren"
       }
@@ -61,7 +66,7 @@
       "title": "Nieuwsbrief",
       "unsubscribe": "Schrijf ze uit voor de nieuwsbrief"
     },
-    "phoneInfo": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden",
+    "phoneInfo": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden.",
     "phoneInfoAdmin": "Je moet toestemming van de persoon hebben voordat je hun telefoonnummer aan het systeem toevoegt",
     "requiredFields": "Verplichte velden",
     "savedPassword": "Nieuw wachtwoord opgeslagen",
@@ -1498,7 +1503,7 @@
     "newPasswordConfirm": "Nieuw wachtwoord bevestigen",
     "notes": "Opmerkingen",
     "password": "Wachtwoord",
-    "passwordInfo": "“Stel een veilig wachtwoord in: 8+ tekens of langer, en het moet een cijfer, hoofdletters en kleine letters bevatten.”",
+    "passwordInfo": "Stel een veilig wachtwoord in: minimaal 8 tekens, met een cijfer, een hoofdletter en een kleine letter.",
     "phone": "Telefoonnummer",
     "postCode": "Postcode",
     "richtext": {

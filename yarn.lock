@@ -1610,6 +1610,7 @@ __metadata:
     import-meta-resolve: "npm:^4.2.0"
     prettier: "npm:^3.8.3"
     qrcode-generator: "npm:1.5.0"
+    reka-ui: "npm:2.9.9"
     tailwindcss: "npm:^4.2.4"
     typescript: "npm:~6.0.3"
     vite: "npm:8.0.13"

@@ -11,6 +11,16 @@
   background-color: rgb(var(--c-link-10));
 }
 
+.nuxt-page {
+  p {
+    @apply text-sm;
+  }
+
+  h2 {
+    @apply text-highlighted text-base font-semibold;
+  }
+}
+
 /* Apply link styles to i18n markdown text */
 .content-i18n {
   a {

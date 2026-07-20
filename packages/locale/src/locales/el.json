@@ -11,7 +11,10 @@
       },
       "confirmDelete": {
         "desc": "",
+        "descDetail": "",
         "descToken": "",
+        "keepEnabled": "",
+        "remove": "",
         "title": ""
       },
       "createUnknownErrorNotification": "",
@@ -32,8 +35,9 @@
         "title": ""
       },
       "secretInput": {
-        "desc": "",
-        "label": ""
+        "label": "",
+        "toggleHide": "",
+        "toggleShow": ""
       },
       "statusDisabled": {
         "description": "Όταν ενεργοποιηθεί, θα σας ζητείται κωδικός από την εφαρμογή Authenticator σε κάθε σύνδεση.",
@@ -43,6 +47,7 @@
         "description": "Ο λογαριασμός σας προστατεύεται με μια εφαρμογή Authenticator. Απενεργοποιήστε το μόνο αν αλλάζετε συσκευή.",
         "title": "Ο έλεγχος ταυτότητας δύο παραγόντων είναι ενεργοποιημένος"
       },
+      "stepIndicator": "",
       "title": "",
       "validateButton": {
         "label": ""
