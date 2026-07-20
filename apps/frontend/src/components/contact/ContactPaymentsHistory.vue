@@ -16,6 +16,15 @@
         <span v-if="item.status !== PaymentStatus.Successful" class="mr-3">
           {{ t('common.paymentStatus.' + item.status) }}
         </span>
+        <span
+          v-if="
+            item.refundStatus != RefundStatus.Cancelled &&
+            item.refundStatus != RefundStatus.Failed
+          "
+          class="mr-3"
+        >
+          {{ t('common.refundedLabel') }}
+        </span>
         <b>{{ n(value, 'currency') }}</b>
       </template>
       <template #value-type="{ value }">
@@ -52,6 +61,7 @@ import {
   type GetPaymentsQuery,
   type Paginated,
   PaymentStatus,
+  RefundStatus,
 } from '@beabee/beabee-common';
 import {
   AppButton,

@@ -1022,6 +1022,9 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "",
+    "refundReason": "Λόγος επιστροφής χρημάτων",
+    "refundStatus": "Κατάσταση επιστροφής χρημάτων",
+    "refundedLabel": "(Επιστραμμένο)",
     "role": {
       "admin": "",
       "member": "",
