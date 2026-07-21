@@ -9,6 +9,7 @@ import {
   databaseCommand,
   emailCommand,
   healthCommand,
+  imageCommand,
   migrateUploadsCommand,
   paymentCommand,
   processCommand,
@@ -31,6 +32,7 @@ yargs(hideBin(process.argv))
   .command(userCommand)
   .command(setupCommand)
   .command(healthCommand)
+  .command(imageCommand)
   .command(paymentCommand)
   .command(processCommand)
   .command(rateLimiterCommand)
