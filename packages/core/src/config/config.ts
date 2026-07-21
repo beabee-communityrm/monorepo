@@ -91,6 +91,32 @@ export interface MailchimpNewsletterConfig {
 }
 
 /**
+ * Salesforce newsletter provider configuration
+ * Used when BEABEE_NEWSLETTER_PROVIDER=salesforce
+ *
+ * Newsletter preferences live as boolean fields directly on the Salesforce
+ * Contact object. The field names are org-specific, so all mappings are
+ * config-driven: the same code works against different org schemas.
+ */
+export interface SalesforceNewsletterConfig {
+  provider: 'salesforce';
+  settings: {
+    authUrl: string; // BEABEE_NEWSLETTER_SETTINGS_AUTHURL - OAuth2 token endpoint
+    username: string; // BEABEE_NEWSLETTER_SETTINGS_USERNAME - API service account
+    password: string; // BEABEE_NEWSLETTER_SETTINGS_PASSWORD - API service account password
+    clientId: string; // BEABEE_NEWSLETTER_SETTINGS_CLIENTID - connected app client ID
+    clientSecret: string; // BEABEE_NEWSLETTER_SETTINGS_CLIENTSECRET - connected app client secret
+    apiVersion: string; // BEABEE_NEWSLETTER_SETTINGS_APIVERSION - REST API version (e.g. v60.0)
+    subscriptionField: string; // BEABEE_NEWSLETTER_SETTINGS_SUBSCRIPTIONFIELD - master newsletter boolean (e.g. Newsletter__c)
+    groupFieldMap: Record<string, string>; // BEABEE_NEWSLETTER_SETTINGS_GROUPFIELDMAP - JSON { groupId: "SFBooleanField__c" }
+    mergeFieldMap: Record<string, string>; // BEABEE_NEWSLETTER_SETTINGS_MERGEFIELDMAP - JSON { mergeKey: "SFField__c" }
+    activeMemberField: string; // BEABEE_NEWSLETTER_SETTINGS_ACTIVEMEMBERFIELD - boolean field, empty to disable
+    activeUserField: string; // BEABEE_NEWSLETTER_SETTINGS_ACTIVEUSERFIELD - boolean field, empty to disable
+    webhookSecret: string; // BEABEE_NEWSLETTER_SETTINGS_WEBHOOKSECRET - reserved for future inbound sync
+  };
+}
+
+/**
  * Empty newsletter provider (when newsletter functionality is disabled)
  * Used when BEABEE_NEWSLETTER_PROVIDER=none (default)
  */
@@ -115,6 +141,7 @@ interface TestNewsletterConfig {
 // Union type for newsletter configuration
 type NewsletterConfig =
   | MailchimpNewsletterConfig
+  | SalesforceNewsletterConfig
   | NoneNewsletterConfig
   | TestNewsletterConfig;
 
@@ -122,7 +149,7 @@ type NewsletterConfig =
 // Defaults to "none" if not specified
 const newsletterProvider = env.e(
   'BEABEE_NEWSLETTER_PROVIDER',
-  ['mailchimp', 'none', 'test'] as const,
+  ['mailchimp', 'salesforce', 'none', 'test'] as const,
   'none'
 );
 
@@ -255,6 +282,35 @@ export const config = {
             apiKey: env.s('BEABEE_NEWSLETTER_SETTINGS_APIKEY'), // Mailchimp API key
             datacenter: env.s('BEABEE_NEWSLETTER_SETTINGS_DATACENTER'), // Mailchimp datacenter
             listId: env.s('BEABEE_NEWSLETTER_SETTINGS_LISTID'), // Mailchimp list/audience ID
+          }
+        : null),
+      ...(newsletterProvider === 'salesforce'
+        ? {
+            authUrl: env.s('BEABEE_NEWSLETTER_SETTINGS_AUTHURL'), // Salesforce OAuth2 token endpoint
+            username: env.s('BEABEE_NEWSLETTER_SETTINGS_USERNAME'), // Salesforce API user
+            password: env.s('BEABEE_NEWSLETTER_SETTINGS_PASSWORD'), // Salesforce API user password
+            clientId: env.s('BEABEE_NEWSLETTER_SETTINGS_CLIENTID'), // Connected app client ID
+            clientSecret: env.s('BEABEE_NEWSLETTER_SETTINGS_CLIENTSECRET'), // Connected app client secret
+            apiVersion: env.s('BEABEE_NEWSLETTER_SETTINGS_APIVERSION', 'v60.0'), // Salesforce REST API version
+            subscriptionField: env.s(
+              'BEABEE_NEWSLETTER_SETTINGS_SUBSCRIPTIONFIELD'
+            ), // Master newsletter boolean field
+            groupFieldMap: env.json(
+              'BEABEE_NEWSLETTER_SETTINGS_GROUPFIELDMAP',
+              {}
+            ), // { groupId: "SFBooleanField__c" }
+            mergeFieldMap: env.json(
+              'BEABEE_NEWSLETTER_SETTINGS_MERGEFIELDMAP',
+              {}
+            ), // { mergeKey: "SFField__c" }
+            activeMemberField: env.s(
+              'BEABEE_NEWSLETTER_SETTINGS_ACTIVEMEMBERFIELD',
+              ''
+            ), // Boolean field, empty to disable
+            activeUserField: env.s(
+              'BEABEE_NEWSLETTER_SETTINGS_ACTIVEUSERFIELD',
+              ''
+            ), // Boolean field, empty to disable
           }
         : null),
     },
