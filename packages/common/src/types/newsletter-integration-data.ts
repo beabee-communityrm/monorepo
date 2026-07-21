@@ -20,7 +20,15 @@ export interface MailchimpNewsletterIntegrationData {
   groups: NewsletterGroupData[];
 }
 
+export interface SalesforceNewsletterIntegrationData {
+  provider: 'salesforce';
+  status?: ApiHealthStatus;
+  audienceId: string;
+  groups: NewsletterGroupData[];
+}
+
 export type NewsletterIntegrationData =
   | NoneNewsletterIntegrationData
   | MailchimpNewsletterIntegrationData
+  | SalesforceNewsletterIntegrationData
   | TestNewsletterIntegrationData;
