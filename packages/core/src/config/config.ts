@@ -101,9 +101,7 @@ export interface MailchimpNewsletterConfig {
 export interface SalesforceNewsletterConfig {
   provider: 'salesforce';
   settings: {
-    authUrl: string; // BEABEE_NEWSLETTER_SETTINGS_AUTHURL - OAuth2 token endpoint
-    username: string; // BEABEE_NEWSLETTER_SETTINGS_USERNAME - API service account
-    password: string; // BEABEE_NEWSLETTER_SETTINGS_PASSWORD - API service account password
+    authUrl: string; // BEABEE_NEWSLETTER_SETTINGS_AUTHURL - OAuth2 token endpoint (My Domain URL)
     clientId: string; // BEABEE_NEWSLETTER_SETTINGS_CLIENTID - connected app client ID
     clientSecret: string; // BEABEE_NEWSLETTER_SETTINGS_CLIENTSECRET - connected app client secret
     apiVersion: string; // BEABEE_NEWSLETTER_SETTINGS_APIVERSION - REST API version (e.g. v60.0)
@@ -287,8 +285,6 @@ export const config = {
       ...(newsletterProvider === 'salesforce'
         ? {
             authUrl: env.s('BEABEE_NEWSLETTER_SETTINGS_AUTHURL'), // Salesforce OAuth2 token endpoint
-            username: env.s('BEABEE_NEWSLETTER_SETTINGS_USERNAME'), // Salesforce API user
-            password: env.s('BEABEE_NEWSLETTER_SETTINGS_PASSWORD'), // Salesforce API user password
             clientId: env.s('BEABEE_NEWSLETTER_SETTINGS_CLIENTID'), // Connected app client ID
             clientSecret: env.s('BEABEE_NEWSLETTER_SETTINGS_CLIENTSECRET'), // Connected app client secret
             apiVersion: env.s('BEABEE_NEWSLETTER_SETTINGS_APIVERSION', 'v60.0'), // Salesforce REST API version

@@ -48,7 +48,7 @@ function escapeSOQL(value: string): string {
 }
 
 /**
- * Create a Salesforce REST client. Handles OAuth2 password-grant token
+ * Create a Salesforce REST client. Handles OAuth2 client-credentials token
  * acquisition and in-memory caching, injecting the bearer token and the
  * instance base URL on every request. On a 401 the cached token is cleared and
  * the request is retried once.
@@ -62,9 +62,7 @@ export function createInstance(settings: SFSettings) {
   async function fetchToken(): Promise<SFTokenResponse> {
     log.info('Fetching Salesforce access token');
     const body = new URLSearchParams({
-      grant_type: 'password',
-      username: settings.username,
-      password: settings.password,
+      grant_type: 'client_credentials',
       client_id: settings.clientId,
       client_secret: settings.clientSecret,
     });
