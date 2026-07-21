@@ -18,9 +18,11 @@
 <template>
   <!--
     `type="number"` restricts input to digits (numeric keyboard, rejects
-    non-digit chars). Reka UI's PinInput always stores/emits plain digit
-    strings at runtime regardless of `type` — the number[] typing it infers
-    from `type="number"` doesn't match its actual behavior, hence the casts.
+    non-digit chars), but in this mode Reka UI's PinInput stores filled
+    boxes as actual numbers and, on backspace, `delete`s the array slot
+    instead of setting it to '' — leaving a sparse hole that doesn't
+    shrink `.length`. `handleUpdate` below normalizes both quirks back
+    into a plain, correctly-sized string[], hence the casts.
   -->
   <UPinInput
     :model-value="modelValue as unknown as number[]"
@@ -30,9 +32,7 @@
     :highlight="error"
     :autofocus="autofocus"
     size="xl"
-    @update:model-value="
-      emit('update:modelValue', $event as unknown as string[])
-    "
+    @update:model-value="handleUpdate"
   />
 </template>
 
@@ -62,4 +62,19 @@ withDefaults(defineProps<AppCodeInputProps>(), {
 const emit = defineEmits<{
   'update:modelValue': [value: string[]];
 }>();
+
+/**
+ * Converts filled boxes to strings and deleted (sparse-hole) boxes to '',
+ * then trims trailing empty boxes so `.length` reflects digits actually
+ * entered.
+ */
+const handleUpdate = (value: (number | undefined)[]) => {
+  const digits = [...value].map((digit) =>
+    digit === undefined ? '' : String(digit)
+  );
+  while (digits.at(-1) === '') {
+    digits.pop();
+  }
+  emit('update:modelValue', digits);
+};
 </script>

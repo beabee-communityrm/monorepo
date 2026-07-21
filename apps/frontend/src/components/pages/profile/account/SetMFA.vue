@@ -59,7 +59,12 @@
             {{ t('accountPage.mfa.confirmDelete.descDetail') }}
           </p>
         </div>
-        <UFormField :label="t('accountPage.mfa.confirmDelete.descToken')">
+        <UFormField
+          :label="t('accountPage.mfa.confirmDelete.descToken')"
+          :error="
+            disableError ? t('accountPage.mfa.result.invalidCode') : undefined
+          "
+        >
           <AppCodeInput
             v-model="disableToken"
             :error="disableError"
@@ -67,18 +72,6 @@
             autofocus
           />
         </UFormField>
-
-        <UAlert
-          v-if="disableError || disableUnknownError"
-          color="error"
-          variant="soft"
-          icon="i-lucide-circle-alert"
-          :title="
-            disableError
-              ? t('accountPage.mfa.result.invalidCode')
-              : t('accountPage.mfa.deleteUnknownErrorNotification')
-          "
-        />
 
         <AppModalActions
           :cancel-label="t('accountPage.mfa.confirmDelete.keepEnabled')"
@@ -103,7 +96,7 @@
       })
     "
     @update:open="(open: boolean) => !open && onCloseMFAModal()"
-    @after:leave="blurActiveElement"
+    @after:leave="onEnableModalAfterLeave"
   >
     <template #header="{ close }">
       <AppModalHeader
@@ -201,26 +194,22 @@
 
           <!-- Verify code step -->
           <div v-else class="flex w-full flex-col gap-6">
-            <AppCodeInput
-              v-model="pin"
-              :error="createError"
-              class="justify-center"
-              aria-labelledby="mfa-step-title"
-              aria-describedby="mfa-step-desc"
-              autofocus
-            />
-
-            <UAlert
-              v-if="createError || createUnknownError"
-              color="error"
-              variant="soft"
-              icon="i-lucide-circle-alert"
-              :title="
+            <UFormField
+              :error="
                 createError
                   ? t('accountPage.mfa.result.invalidCode')
-                  : t('accountPage.mfa.createUnknownErrorNotification')
+                  : undefined
               "
-            />
+            >
+              <AppCodeInput
+                v-model="pin"
+                :error="createError"
+                class="justify-center"
+                aria-labelledby="mfa-step-title"
+                aria-describedby="mfa-step-desc"
+                autofocus
+              />
+            </UFormField>
           </div>
         </div>
 
@@ -312,9 +301,6 @@ const creating = ref(false);
 /** Shown when the server rejects the entered code */
 const createError = ref(false);
 
-/** Shown when creating MFA fails for a reason other than an invalid code */
-const createUnknownError = ref(false);
-
 const props = defineProps<{
   contactId: string;
 }>();
@@ -345,9 +331,6 @@ const disableToken = ref<string[]>([]);
 /** Shown when the server rejects the entered disable token */
 const disableError = ref(false);
 
-/** Shown when disabling MFA fails for a reason other than an invalid token */
-const disableUnknownError = ref(false);
-
 /** Loading state while confirming the disable-2FA dialog */
 const disabling = ref(false);
 
@@ -363,6 +346,11 @@ const onSwitchToggle = () => {
 /** Called when the modal is closed */
 const onCloseMFAModal = () => {
   closeMFAModal();
+};
+
+/** Called after the enable-MFA modal's close transition finishes */
+const onEnableModalAfterLeave = () => {
+  blurActiveElement();
   resetEnableState();
 };
 
@@ -423,7 +411,6 @@ const createMfaAndNotify = async () => {
 
   isEnabled.value = true;
   closeMFAModal();
-  resetEnableState();
   addNotification({
     title: t('accountPage.mfa.enabledNotification'),
     variant: 'success',
@@ -468,7 +455,6 @@ const handleCompleteSetup = async () => {
   if (pin.value.length < 6 || creating.value) return;
 
   createError.value = false;
-  createUnknownError.value = false;
   creating.value = true;
   await createMfaAndNotify();
   creating.value = false;
@@ -483,13 +469,16 @@ const onCreateError = (error: unknown) => {
     // If server says the token is invalid, show an inline error and let the
     // user retry on the same step
     createError.value = true;
-    createUnknownError.value = false;
     return;
   }
 
-  // Show an inline error and let the user retry on the same step
-  createUnknownError.value = true;
-  createError.value = false;
+  // Unexpected error: close the modal first, since it's teleported above
+  // the toast container and would otherwise hide the notification
+  onCloseMFAModal();
+  addNotification({
+    title: t('accountPage.mfa.createUnknownErrorNotification'),
+    variant: 'error',
+  });
 };
 
 const onDeleteError = (error: unknown) => {
@@ -500,12 +489,16 @@ const onDeleteError = (error: unknown) => {
   ) {
     // If server says the token is invalid, show an inline error
     disableError.value = true;
-    disableUnknownError.value = false;
     return;
   }
 
-  disableUnknownError.value = true;
-  disableError.value = false;
+  // Unexpected error: close the modal first, since it's teleported above
+  // the toast container and would otherwise hide the notification
+  closeDisableConfirmModal();
+  addNotification({
+    title: t('accountPage.mfa.deleteUnknownErrorNotification'),
+    variant: 'error',
+  });
 };
 
 /** Reset the enable-MFA modal back to its first step */
@@ -513,7 +506,6 @@ const resetEnableState = () => {
   enableStep.value = 'scan';
   pin.value = [];
   createError.value = false;
-  createUnknownError.value = false;
   showSecret.value = false;
 };
 
@@ -521,7 +513,6 @@ const resetEnableState = () => {
 const resetDisableState = () => {
   disableToken.value = [];
   disableError.value = false;
-  disableUnknownError.value = false;
 };
 
 /** Called when the totp identity changes */
@@ -560,12 +551,10 @@ watch(totpIdentity, onTotpIdentityChanged, { deep: true });
 /** Hide the invalid-code error as soon as the user edits the token again */
 watch(disableToken, () => {
   disableError.value = false;
-  disableUnknownError.value = false;
 });
 
 /** Hide the invalid-code error as soon as the user edits the pin again */
 watch(pin, () => {
   createError.value = false;
-  createUnknownError.value = false;
 });
 </script>
