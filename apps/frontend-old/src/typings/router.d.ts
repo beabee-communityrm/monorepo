@@ -1,0 +1,16 @@
+import { RoleType } from '@beabee/beabee-common';
+
+import 'vue-router';
+// Enable typed routes from vue-router file-based routing
+import 'vue-router/auto-routes';
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    pageTitle: string;
+    layout?: 'Auth' | 'Dashboard' | 'Loading';
+    noAuth?: boolean;
+    role?: RoleType;
+    embeddable?: boolean;
+    noCnrMode?: boolean;
+  }
+}

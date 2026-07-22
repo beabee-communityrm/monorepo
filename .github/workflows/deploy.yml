@@ -123,13 +123,39 @@ jobs:
       - name: Build and push frontend app
         uses: docker/build-push-action@v5
         with:
-          file: ./apps/frontend/Dockerfile
+          file: ./apps/frontend-old/Dockerfile
           push: true
           build-args: |
             VERSION=${{ needs.init.outputs.version }}
             REVISION=${{ github.sha }}
           labels: ${{ needs.init.outputs.labels }}
           tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-frontend:${{ matrix.tag }}
+
+  build-push-frontend-new:
+    runs-on: ubuntu-latest
+    needs: [check, test, init]
+
+    strategy:
+      matrix:
+        tag: ${{ fromJSON(needs.init.outputs.json).tags }}
+
+    steps:
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push new frontend app
+        uses: docker/build-push-action@v5
+        with:
+          file: ./apps/frontend/Dockerfile
+          push: true
+          build-args: |
+            VERSION=${{ needs.init.outputs.version }}
+            REVISION=${{ github.sha }}
+          labels: ${{ needs.init.outputs.labels }}
+          tags: ${{ secrets.DOCKER_ORGANISATION }}/beabee-frontend-new:${{ matrix.tag }}
 
   build-push-router:
     runs-on: ubuntu-latest
@@ -189,6 +215,7 @@ jobs:
         init,
         build-push-backend,
         build-push-frontend,
+        build-push-frontend-new,
         build-push-router,
         build-push-minio,
       ]
@@ -221,6 +248,7 @@ jobs:
         init,
         build-push-backend,
         build-push-frontend,
+        build-push-frontend-new,
         build-push-router,
         build-push-minio,
       ]
