@@ -162,8 +162,6 @@ services:
     depends_on:
       - api_app
       - app
-      - frontend
-      - frontend-new
       - webhook_app
 
   # Database migration service
