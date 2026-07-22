@@ -1,12 +1,14 @@
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
-import tailwindcss from '@tailwindcss/vite';
+import ui from '@nuxt/ui/vite';
 import vue from '@vitejs/plugin-vue';
 import path, { resolve } from 'path';
 import { defineConfig } from 'vite';
 
+import { nuxtUiConfig } from './src/lib/nuxt-ui.config';
+
 export default defineConfig({
   plugins: [
-    tailwindcss(),
+    ui(nuxtUiConfig),
     vue(),
     vueI18n({
       include: path.resolve(__dirname, './locales/*'),

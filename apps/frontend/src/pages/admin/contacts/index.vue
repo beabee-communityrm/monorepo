@@ -200,7 +200,6 @@ import {
   faDownload,
   faMailBulk,
   faPlus,
-  faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -218,6 +217,7 @@ import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 import { definePaginatedQuery, defineParam } from '#utils/pagination';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';
@@ -347,7 +347,11 @@ const doingAction = ref(false);
  */
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
+    {
+      label: t(routeLabels.adminContacts),
+      to: '/admin/contacts',
+      icon: routeIcons.adminContacts,
+    },
   ])
 );
 

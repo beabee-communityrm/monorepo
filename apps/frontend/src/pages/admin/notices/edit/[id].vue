@@ -23,7 +23,6 @@ import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
 import { PageTitle } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -31,6 +30,7 @@ import { useRoute, useRouter } from 'vue-router';
 import NoticeForm from '#components/notice/NoticeForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -40,14 +40,18 @@ const notice = ref<GetNoticeData | undefined>();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.notices'), to: '/admin/notices', icon: faSignHanging },
+    {
+      label: t(routeLabels.adminNotices),
+      to: '/admin/notices',
+      icon: routeIcons.adminNotices,
+    },
     ...(notice.value
       ? [
           {
-            title: notice.value?.name || '',
+            label: notice.value?.name || '',
             to: '/admin/notices/view/' + route.params.id,
           },
-          { title: t('actions.edit') },
+          { label: t('actions.edit') },
         ]
       : []),
   ])

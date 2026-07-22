@@ -219,15 +219,15 @@ const { t, n } = useI18n();
 addBreadcrumb(
   computed(() => [
     {
-      title: t('calloutAdmin.responses'),
+      label: t('calloutAdmin.responses'),
       to: `/admin/crowdnewsroom/view/${props.callout.slug}/responses`,
     },
     {
-      title: bucketName.value,
+      label: bucketName.value,
       to: `/admin/crowdnewsroom/view/${props.callout.slug}/responses?bucket=${response.value?.bucket}`,
     },
     {
-      title: t('calloutResponsesPage.responseNo', {
+      label: t('calloutResponsesPage.responseNo', {
         no: response.value?.number ? n(response.value?.number) : '?',
       }),
     },

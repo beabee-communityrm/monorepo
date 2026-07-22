@@ -1,73 +1,77 @@
 <template>
-  <footer class="mt-auto p-4">
-    <div
-      class="mt-16 flex flex-col gap-4 border-t border-main-40 pt-4 text-sm xs:flex-row xs:flex-wrap xs:gap-6"
-    >
-      <div class="w-full lg:w-auto">
-        <ul>
-          <li>
-            <a class="text-base font-semibold" :href="generalContent.siteUrl">{{
-              generalContent.organisationName
-            }}</a>
-          </li>
-          <li>&mdash;</li>
-          <li>{{ t('footer.contactUs') }}</li>
-          <li>
-            <a :href="'mailto:' + generalContent.supportEmail">{{
-              generalContent.supportEmail
-            }}</a>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <ul>
-          <li>
-            <a :href="generalContent.privacyLink">{{
-              t('footer.privacyPolicy')
-            }}</a>
-          </li>
-          <li v-if="generalContent.termsLink">
-            <a :href="generalContent.termsLink">{{ t('footer.terms') }}</a>
-          </li>
-          <li v-if="generalContent.impressumLink">
-            <a :href="generalContent.impressumLink">{{
-              t('footer.impressum')
-            }}</a>
-          </li>
-        </ul>
-      </div>
-      <div v-if="generalContent.footerLinks?.length">
-        <ul>
-          <li v-for="item in generalContent.footerLinks" :key="item.url">
-            <a :href="item.url">{{ item.text }}</a>
-          </li>
-        </ul>
-      </div>
-      <div class="xs:ml-auto xs:w-1/5">
-        <ul>
-          <li><a class="font-bold" href="https://beabee.io">beabee</a></li>
-          <template v-if="canAdmin">
-            <li>
-              <a href="https://beabee.io/#Newsletter">{{
-                t('footer.joinCommunity')
-              }}</a>
-            </li>
-            <li class="hidden">
-              <a href="">{{ t('footer.handbookResources') }}</a>
-            </li>
-          </template>
-          <template v-else>
-            <li>{{ t('footer.poweredBy') }}</li>
-          </template>
-        </ul>
-      </div>
-    </div>
-  </footer>
+  <UFooter
+    :ui="{
+      root: 'border-t border-default',
+      left: 'text-sm',
+      right: 'text-sm gap-x-6',
+    }"
+  >
+    <template #left>
+      <AppLogo class="size-5 shrink-0 rounded-xs" />
+      <span class="text-muted">
+        <a
+          :href="generalContent.siteUrl"
+          class="text-highlighted font-semibold"
+          >{{ generalContent.organisationName }}</a
+        >
+        · {{ t('footer.contactUs') }}
+        <a
+          :href="'mailto:' + generalContent.supportEmail"
+          class="text-primary"
+          >{{ generalContent.supportEmail }}</a
+        >
+      </span>
+    </template>
+
+    <template #right>
+      <a
+        v-if="generalContent.privacyLink"
+        :href="generalContent.privacyLink"
+        class="text-muted hover:text-default"
+        >{{ t('footer.privacyPolicy') }}</a
+      >
+      <a
+        v-if="generalContent.termsLink"
+        :href="generalContent.termsLink"
+        class="text-muted hover:text-default"
+        >{{ t('footer.terms') }}</a
+      >
+      <a
+        v-if="generalContent.impressumLink"
+        :href="generalContent.impressumLink"
+        class="text-muted hover:text-default"
+        >{{ t('footer.impressum') }}</a
+      >
+      <a
+        v-for="item in generalContent.footerLinks"
+        :key="item.url"
+        :href="item.url"
+        class="text-muted hover:text-default"
+        >{{ item.text }}</a
+      >
+      <a
+        href="https://beabee.io"
+        class="text-highlighted flex items-center gap-1 font-bold"
+      >
+        beabee
+        <UIcon name="i-lucide-external-link" class="size-3" />
+      </a>
+      <a
+        v-if="canAdmin"
+        href="https://beabee.io/#Newsletter"
+        class="text-primary"
+      >
+        {{ t('footer.joinCommunity') }}
+      </a>
+      <span v-else class="text-muted">{{ t('footer.poweredBy') }}</span>
+    </template>
+  </UFooter>
 </template>
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 
+import AppLogo from './AppLogo.vue';
 import { canAdmin, generalContent } from '../store';
 
 const { t } = useI18n();

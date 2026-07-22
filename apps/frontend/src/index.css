@@ -1,4 +1,15 @@
 @import '@beabee/vue/styles';
+@import '@nuxt/ui';
+
+/* Nuxt UI configuration */
+:root {
+  --ui-radius: 3px;
+}
+
+/* Active nav item: replace neutral-100 background with primary tint */
+[data-slot='link'].text-primary::before {
+  background-color: rgb(var(--c-link-10));
+}
 
 /* Apply link styles to i18n markdown text */
 .content-i18n {

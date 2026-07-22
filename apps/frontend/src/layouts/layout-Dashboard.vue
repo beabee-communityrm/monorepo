@@ -2,23 +2,30 @@
   <div v-if="isEmbed" class="w-full">
     <router-view />
   </div>
-  <div v-else class="relative flex h-screen w-full flex-col md:flex-row">
+  <UDashboardGroup v-else unit="rem">
     <TheMenu />
     <main
       id="top"
-      class="flex h-screen w-full flex-col overflow-y-auto bg-main-5"
+      class="flex h-screen w-full flex-col overflow-y-auto bg-neutral-40"
     >
-      <TheBreadcrumb
-        v-if="items.length > 0"
-        :items="items"
-        class="flex-none p-4 md:p-5"
-      />
-      <div class="flex flex-col p-4 pb-0 md:p-5 md:pb-0">
+      <UDashboardNavbar :ui="{ root: 'sticky top-0 z-10 bg-white' }">
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+        <template #title>
+          <UBreadcrumb
+            :items="breadcrumbs"
+            class="p-1.5"
+            :ui="{ link: breadcrumbs.length > 1 ? 'text-base' : 'text-xl' }"
+          />
+        </template>
+      </UDashboardNavbar>
+      <div class="flex flex-col p-4 md:p-5">
         <router-view />
       </div>
       <TheFooter class="mt-auto flex-none" />
     </main>
-  </div>
+  </UDashboardGroup>
 </template>
 
 <script lang="ts" setup>
@@ -29,14 +36,8 @@
  *
  * @component
  */
-import { TheBreadcrumb } from '@beabee/vue';
-
-import { computed } from 'vue';
-
 import TheFooter from '../components/TheFooter.vue';
 import { isEmbed } from '../store';
-import { breadcrumbItems } from '../store/breadcrumb';
+import { breadcrumbs } from '../store/breadcrumb';
 import TheMenu from './menu/TheMenu.vue';
-
-const items = computed(() => breadcrumbItems.flatMap((bi) => bi.value));
 </script>

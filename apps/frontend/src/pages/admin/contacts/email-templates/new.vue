@@ -24,7 +24,6 @@ meta:
 import type { CreateEmailData } from '@beabee/beabee-common';
 import { PageTitle } from '@beabee/vue';
 
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
@@ -33,6 +32,7 @@ import EmailTemplateEditor from '#components/emails/EmailTemplateEditor.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
@@ -41,13 +41,17 @@ const router = useRouter();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
     {
-      title: t('contacts.emailTemplates.title'),
+      label: t(routeLabels.adminContacts),
+      to: '/admin/contacts',
+      icon: routeIcons.adminContacts,
+    },
+    {
+      label: t('contacts.emailTemplates.title'),
       to: router.resolve(LIST_ROUTE).href,
     },
     {
-      title: t('contacts.emailTemplates.newTitle'),
+      label: t('contacts.emailTemplates.newTitle'),
     },
   ])
 );

@@ -96,7 +96,7 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import { faBullhorn, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -112,6 +112,7 @@ import env from '#env';
 import { currentUser, isEmbed } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 import { resolveImageUrl } from '#utils/url';
 
 // Props: Receive the already processed callout from parent route
@@ -130,27 +131,27 @@ addBreadcrumb(
       ? isPreview.value
         ? [
             {
-              title: t('menu.callouts'),
+              label: t(routeLabels.adminCallouts),
               to: '/admin/crowdnewsroom',
-              icon: faBullhorn,
+              icon: routeIcons.adminCallouts,
             },
             {
-              title: props.callout.title,
+              label: props.callout.title,
               to: '/admin/crowdnewsroom/view/' + props.callout.slug,
             },
-            { title: t('actions.preview') },
+            { label: t('actions.preview') },
           ]
         : [
             {
-              title: t('menu.callouts'),
+              label: t(routeLabels.callouts),
               to: '/crowdnewsroom',
-              icon: faBullhorn,
+              icon: routeIcons.callouts,
             },
             {
-              title: props.callout.title,
+              label: props.callout.title,
               to: '/crowdnewsroom/' + props.callout.slug,
             },
-            ...(props.respond ? [{ title: t('actions.respond') }] : []),
+            ...(props.respond ? [{ label: t('actions.respond') }] : []),
           ]
       : []
   )

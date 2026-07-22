@@ -22,11 +22,24 @@ meta:
 <script lang="ts" setup>
 import { App2ColGrid, PageTitle } from '@beabee/vue';
 
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ContactUpdateAccount from '../../components/contact/ContactUpdateAccount.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
 import SetMFA from '../../components/pages/profile/account/SetMFA.vue';
+import { addBreadcrumb } from '../../store/breadcrumb';
+import { routeIcons, routeLabels } from '../../utils/route-nav';
 
 const { t } = useI18n();
+
+addBreadcrumb(
+  computed(() => [
+    {
+      label: t(routeLabels.profileAccount),
+      to: '/profile/account',
+      icon: routeIcons.profileAccount,
+    },
+  ])
+);
 </script>

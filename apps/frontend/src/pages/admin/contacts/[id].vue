@@ -22,7 +22,6 @@ meta:
 import type { GetContactData } from '@beabee/beabee-common';
 import { AppTabs, PageTitle } from '@beabee/vue';
 
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -30,6 +29,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { resolveTabNavigation } from '#utils/navigation';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import env from '../../../env';
 
@@ -68,26 +68,18 @@ const tabs = computed(() =>
   )
 );
 
-const selectedTab = computed(() =>
-  tabs.value.find((tab) => tab.id === route.name)
-);
-
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.contacts'),
+      label: t(routeLabels.adminContacts),
       to: '/admin/contacts',
-      icon: faUsers,
+      icon: routeIcons.adminContacts,
     },
-    ...(contact.value && selectedTab.value
+    ...(contact.value
       ? [
           {
-            title: contact.value.displayName,
+            label: contact.value.displayName,
             to: '/admin/contacts/' + contact.value.id,
-          },
-          {
-            title: selectedTab.value.label,
-            to: selectedTab.value.to,
           },
         ]
       : []),

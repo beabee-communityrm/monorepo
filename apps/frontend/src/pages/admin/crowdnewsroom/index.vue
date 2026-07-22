@@ -81,18 +81,14 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import {
-  faBullhorn,
-  faEye,
-  faEyeSlash,
-  faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { definePaginatedQuery, defineParam } from '#utils/pagination';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import ItemStatus from '../../../components/item/ItemStatus.vue';
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
@@ -102,8 +98,8 @@ const { t } = useI18n();
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.callouts'),
-      icon: faBullhorn,
+      label: t(routeLabels.adminCallouts),
+      icon: routeIcons.adminCallouts,
       to: '/admin/crowdnewsroom',
     },
   ])

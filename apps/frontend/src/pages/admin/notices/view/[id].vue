@@ -54,11 +54,7 @@ import {
   PageTitle,
 } from '@beabee/vue';
 
-import {
-  faPencilAlt,
-  faSignHanging,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -66,6 +62,7 @@ import { useRoute, useRouter } from 'vue-router';
 import AppNotice from '#components/notice/AppNotice.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import ItemStatusText from '../../../../components/item/ItemStatusText.vue';
 
@@ -77,8 +74,12 @@ const router = useRouter();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.notices'), to: '/admin/notices', icon: faSignHanging },
-    { title: notice.value?.name || '' },
+    {
+      label: t(routeLabels.adminNotices),
+      to: '/admin/notices',
+      icon: routeIcons.adminNotices,
+    },
+    { label: notice.value?.name || '' },
   ])
 );
 

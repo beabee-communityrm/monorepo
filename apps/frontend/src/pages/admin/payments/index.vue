@@ -74,7 +74,7 @@ import type {
 import { PaymentStatus as PaymentStatusEnum } from '@beabee/beabee-common';
 import { AppButton, AppFilterGrid, PageTitle, formatLocale } from '@beabee/vue';
 
-import { faChartLine, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -94,17 +94,18 @@ import {
   defineParam,
   defineRulesParam,
 } from '#utils/pagination';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t, n } = useI18n();
 
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.dashboard'),
+      label: t(routeLabels.admin),
       to: '/admin',
-      icon: faChartLine,
+      icon: routeIcons.admin,
     },
-    { title: t('menu.payments') },
+    { label: t('menu.payments') },
   ])
 );
 

@@ -15,13 +15,13 @@ meta:
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { PageTitle } from '@beabee/vue';
 
-import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const route = useRoute();
 const { t } = useI18n();
@@ -29,12 +29,12 @@ const { t } = useI18n();
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.callouts'),
-      icon: faBullhorn,
+      label: t(routeLabels.adminCallouts),
+      icon: routeIcons.adminCallouts,
       to: '/admin/crowdnewsroom',
     },
     {
-      title: callout.value?.title || '',
+      label: callout.value?.title || '',
       to: '/admin/crowdnewsroom/view/' + route.params.id,
     },
   ])
