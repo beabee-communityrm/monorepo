@@ -1,12 +1,13 @@
 import type {
   GroupChanges,
   MailchimpNewsletterIntegrationDataWith,
+  SalesforceNewsletterIntegrationDataWith,
   TestNewsletterIntegrationDataWith,
 } from '@beabee/beabee-common';
 import { ApiHealthStatus } from '@beabee/beabee-common';
 import { addNotification } from '@beabee/vue/store/notifications';
 
-import { faMailchimp } from '@fortawesome/free-brands-svg-icons';
+import { faMailchimp, faSalesforce } from '@fortawesome/free-brands-svg-icons';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -29,6 +30,12 @@ const providerMap: Record<string, ProviderDisplayConfig> = {
     color: '#FFE01B',
     icon: faMailchimp,
   },
+  salesforce: {
+    name: 'Salesforce',
+    color: '#00A1E0',
+    textColor: '#fff',
+    icon: faSalesforce,
+  },
 };
 
 const CATEGORY = 'newsletters';
@@ -45,6 +52,7 @@ function buildDisabledIntegration(provider: string): DisabledIntegration {
 function buildNewsletterIntegration(
   integrationData:
     | MailchimpNewsletterIntegrationDataWith<'health'>
+    | SalesforceNewsletterIntegrationDataWith<'health'>
     | TestNewsletterIntegrationDataWith<'health'>
 ): Integration {
   return {
