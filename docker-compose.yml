@@ -113,11 +113,12 @@ services:
       BEABEE_MINIO_BUCKET: ${BEABEE_MINIO_BUCKET:-uploads}
       BEABEE_MINIO_ENDPOINT: ${BEABEE_MINIO_ENDPOINT:-http://minio:9000}
 
-  # The new frontend
+  # The stable (snapshot) frontend that is released; the new frontend under
+  # development lives in apps/frontend and is run via `yarn dev`
   frontend:
     build:
       context: .
-      dockerfile: ./apps/frontend/Dockerfile
+      dockerfile: ./apps/frontend-old/Dockerfile
       args:
         - VERSION=${VERSION}
         - REVISION=${REVISION}
