@@ -113,12 +113,28 @@ services:
       BEABEE_MINIO_BUCKET: ${BEABEE_MINIO_BUCKET:-uploads}
       BEABEE_MINIO_ENDPOINT: ${BEABEE_MINIO_ENDPOINT:-http://minio:9000}
 
-  # The stable (snapshot) frontend that is released; the new frontend under
-  # development lives in apps/frontend and is run via `yarn dev`
+  # The stable (snapshot) frontend that is released by default
   frontend:
     build:
       context: .
       dockerfile: ./apps/frontend-old/Dockerfile
+      args:
+        - VERSION=${VERSION}
+        - REVISION=${REVISION}
+    environment:
+      APP_BASE_URL: ${BEABEE_AUDIENCE}
+      API_BASE_URL: /api/1.0/
+      CNR_MODE: ${BEABEE_CNR_MODE:-false}
+      APPSIGNAL_KEY: ${BEABEE_APPSIGNAL_KEY:-}
+      CAPTCHAFOX_KEY: ${BEABEE_CAPTCHAFOX_KEY:-}
+      MAPTILER_KEY: ${BEABEE_MAPTILER_KEY:-}
+
+  # The new frontend under development, hidden behind the beabee_frontend=new
+  # cookie (set via ?frontend=new); routed by app_router
+  frontend-new:
+    build:
+      context: .
+      dockerfile: ./apps/frontend/Dockerfile
       args:
         - VERSION=${VERSION}
         - REVISION=${REVISION}
@@ -138,6 +154,7 @@ services:
     environment:
       LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
       TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
+      HIVE_SERVICE_FRONTEND_NEW: http://frontend-new
     ports:
       - ${ROUTER_PORT}:80
     volumes:
@@ -147,6 +164,7 @@ services:
       - api_app
       - app
       - frontend
+      - frontend-new
       - webhook_app
 
   # Database migration service
