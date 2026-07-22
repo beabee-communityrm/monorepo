@@ -154,7 +154,6 @@ services:
     environment:
       LEGACY_APP_COOKIE_DOMAIN: ${BEABEE_COOKIE_DOMAIN}
       TRUSTED_ORIGINS: ${BEABEE_TRUSTEDORIGINS-}
-      HIVE_SERVICE_FRONTEND_NEW: http://frontend-new
     ports:
       - ${ROUTER_PORT}:80
     volumes:
