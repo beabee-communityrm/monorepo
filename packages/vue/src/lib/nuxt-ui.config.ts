@@ -27,6 +27,7 @@ export const nuxtUiConfig: NuxtUIOptions = {
       variants: {
         required: {
           true: {
+            // Colours the required-field `*` primary.
             label: 'after:text-primary!',
           },
         },
