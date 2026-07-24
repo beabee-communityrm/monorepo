@@ -1,11 +1,14 @@
 <template>
   <UForm ref="formRef" :schema="schema" :state="state" @submit="handleSubmit">
-    <AppSectionCard icon="i-lucide-lock" :title="t('accountPage.loginDetail')">
+    <AppSectionCard
+      icon="i-lucide-lock"
+      :title="t('accountPage.loginDetail-nuxt')"
+    >
       <UFormField
         :label="t('form.newPassword')"
         required
         name="password"
-        :help="t('form.passwordInfo')"
+        :help="t('form.passwordInfo-nuxt')"
       >
         <UInput
           v-model="password"

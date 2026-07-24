@@ -3,38 +3,52 @@
     "contactInformation": "Kontaktdaten",
     "deliveryAddress": "Adresse",
     "deliveryOptIn": "Postsendung",
-    "loginDetail": "Passwort ändern",
+    "loginDetail": "Anmeldedaten",
+    "loginDetail-nuxt": "Passwort ändern",
     "mfa": {
       "codeInput": {
         "info": "Wenn du dein 2FA-Gerät verloren hast, wende dich bitte an den Support.",
         "label": "Code"
       },
       "confirmDelete": {
-        "desc": "Möchtest du die Zwei-Faktor-Authentifizierung wirklich deaktivieren? \nDanach brauchst du nur noch dein Passwort zum Anmelden. Bitte vergiss \nnicht, den Eintrag in deiner Authenticator-App zu löschen. Du kannst \ndiese Funktion jederzeit wider einschalten.",
+        "desc": "Möchtest du die Multi-Faktor-Authentifizierung wirklich deaktivieren? \nDanach brauchst du nur noch dein Passwort zum Anmelden. Bitte vergiss \nnicht, den Eintrag in deiner Authenticator-App zu löschen. Du kannst \ndiese Funktion jederzeit wider einschalten.",
+        "desc-nuxt": "Möchtest du die Zwei-Faktor-Authentifizierung wirklich deaktivieren? \nDanach brauchst du nur noch dein Passwort zum Anmelden. Bitte vergiss \nnicht, den Eintrag in deiner Authenticator-App zu löschen. Du kannst \ndiese Funktion jederzeit wider einschalten.",
         "descDetail": "Danach brauchst du nur noch dein Passwort zum Anmelden. Vergiss nicht, den Eintrag in deiner Authenticator-App zu löschen. Du kannst diese Funktion jederzeit wieder einschalten.",
         "descToken": "Um 2FA zu deaktivieren, gib bitte deinen aktuellen 2FA-Code ein:",
+        "descToken-nuxt": "Um 2FA zu deaktivieren, gib bitte deinen aktuellen 2FA-Code ein:",
         "keepEnabled": "2FA aktiviert lassen",
         "remove": "2FA entfernen",
-        "title": "2FA deaktivieren"
+        "title": "2FA deaktivieren",
+        "title-nuxt": "2FA deaktivieren"
       },
-      "createUnknownErrorNotification": "Die Zwei-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht gespeichert werden. Bitte versuche es erneut oder kontaktiere den Support.",
-      "deleteUnknownErrorNotification": "Die Zwei-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht entfernt werden. Bitte versuche es erneut oder kontaktiere den Support.",
+      "createUnknownErrorNotification": "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht gespeichert werden. Bitte versuche es erneut oder kontaktiere den Support.",
+      "createUnknownErrorNotification-nuxt": "Die Zwei-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht gespeichert werden. Bitte versuche es erneut oder kontaktiere den Support.",
+      "deleteUnknownErrorNotification": "Die 2-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht entfernt werden. Bitte versuche es erneut oder kontaktiere den Support.",
+      "deleteUnknownErrorNotification-nuxt": "Die Zwei-Faktor-Authentifizierung konnte aufgrund eines unbekannten Fehlers nicht entfernt werden. Bitte versuche es erneut oder kontaktiere den Support.",
       "description": "Füge deinem Konto eine zusätzliche Sicherheitsebene hinzu",
       "disabledNotification": "Zwei-Faktor Authentifizierung erfolgreich deaktiviert",
       "enabledNotification": "Zwei-Faktor Authentifizierung erfolgreich aktiviert",
       "enterCode": {
         "desc": "Gebe den Code ein, der in deiner Authentifizierungs-App angezeigt wird.",
-        "title": "Überprüfung"
+        "desc-nuxt": "Gebe den Code ein, der in deiner Authentifizierungs-App angezeigt wird.",
+        "title": "Überprüfung",
+        "title-nuxt": "Überprüfung"
       },
-      "modalTitle": "Aktivere Zwei-Faktor Authentifizierung",
+      "modalTitle": "Aktivere 2-Faktor Authentifizierung",
+      "modalTitle-nuxt": "Aktivere Zwei-Faktor Authentifizierung",
       "result": {
-        "invalidCode": "Der Code konnte nicht bestätigt werden. Bitte versuche es erneut oder kontaktiere den Support."
+        "invalidCode": "Der Code konnte nicht bestätigt werden. Bitte versuche es erneut oder kontaktiere den Support.",
+        "successful": "Die 2-Faktor Authentifizierung wurde erfolgreich eingerichtet.",
+        "title": "Fertig"
       },
       "scan": {
         "desc": "Scanne den unten stehenden QR-Code mit deiner Authentifizierungs-App.",
-        "title": "QR-Code"
+        "desc-nuxt": "Scanne den unten stehenden QR-Code mit deiner Authentifizierungs-App.",
+        "title": "QR-Code",
+        "title-nuxt": "QR-Code"
       },
       "secretInput": {
+        "desc": "Oder gib einfach den folgenden Code in deine Authenticator-App ein.",
         "label": "Secret",
         "toggleHide": "Verbergen",
         "toggleShow": "Kannst du nicht scannen? Gib den Code manuell ein"
@@ -48,9 +62,11 @@
         "title": "Zwei-Faktor-Authentifizierung ist aktiviert"
       },
       "stepIndicator": "Schritt {step} von {total}",
-      "title": "Zwei-Faktor-Authentifizierung",
+      "title": "2-Faktor Authentifizierung",
+      "title-nuxt": "Zwei-Faktor-Authentifizierung",
       "validateButton": {
-        "label": "Token überprüfen"
+        "label": "Token überprüfen",
+        "label-nuxt": "Token überprüfen"
       }
     },
     "newsletter": {
@@ -67,10 +83,12 @@
       "unsubscribe": "Vom Newsletter abmelden"
     },
     "phoneInfo": "Mit der Angabe deiner Telefonnummer erklärst du dich damit einverstanden, telefonisch kontaktiert zu werden.",
+    "phoneInfo-nuxt": "Mit der Angabe deiner Telefonnummer erklärst du dich damit einverstanden, telefonisch kontaktiert zu werden.",
     "phoneInfoAdmin": "Du musst die Zustimmung der Person einholen, bevor du ihre Telefonnummer in das System eingibst.",
     "requiredFields": "Pflichtfelder",
     "savedPassword": "Das neue Passwort wurde gespeichert. ",
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
+    "subTitle-nuxt": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "title": "Account",
     "unsavedChanges": "Du hast ungespeicherte Änderungen"
   },
@@ -1506,6 +1524,7 @@
     "notes": "Anmerkungen",
     "password": "Passwort",
     "passwordInfo": "Das Passwort muss aus mindestens acht Zeichen bestehen und mindestens eine Zahl, einen Groß- und einen Kleinbuchstaben enthalten.",
+    "passwordInfo-nuxt": "Das Passwort muss aus mindestens acht Zeichen bestehen und mindestens eine Zahl, einen Groß- und einen Kleinbuchstaben enthalten.",
     "phone": "Telefon",
     "postCode": "Postleitzahl",
     "richtext": {

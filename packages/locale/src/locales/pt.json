@@ -3,38 +3,52 @@
     "contactInformation": "Informação de contacto",
     "deliveryAddress": "Endereço de entrega",
     "deliveryOptIn": "Optar por receber",
-    "loginDetail": "Mudar palavra-passe",
+    "loginDetail": "Detalhes de login",
+    "loginDetail-nuxt": "Mudar palavra-passe",
     "mfa": {
       "codeInput": {
         "info": "Caso tenhas perdido o teu disppositvo de 2FA entra em contacto connosco.",
         "label": "Código"
       },
       "confirmDelete": {
-        "desc": "Tens a certeza de que queres desativar a autenticação de dois fatores? A partir daí, passas a só precisar da tua palavra-passe para fazer login. Lembra-te de eliminar a entrada no tua app de autenticação. Podes sempre ativá-la novamente.",
+        "desc": "Tens a certeza de que queres desativar a autenticação de múltiplos fatores? A partir daí, passas a só precisar da tua palavra-passe para fazer login. Lembra-te de eliminar a entrada no tua app de autenticação. Podes sempre ativá-la novamente.",
+        "desc-nuxt": "Tens a certeza de que queres desativar a autenticação de dois fatores? A partir daí, passas a só precisar da tua palavra-passe para fazer login. Lembra-te de eliminar a entrada no tua app de autenticação. Podes sempre ativá-la novamente.",
         "descDetail": "A partir daí, passas a só precisar da tua palavra-passe para fazer login. Lembra-te de eliminar a entrada no tua app de autenticação. Podes sempre ativá-la novamente.",
         "descToken": "Para desativar o 2FA, por favor, insere o teu código 2FA atual:",
+        "descToken-nuxt": "Para desativar o 2FA, por favor, insere o teu código 2FA atual:",
         "keepEnabled": "Manter o 2FA ativado",
         "remove": "Remover 2FA",
-        "title": "Desativar 2FA"
+        "title": "Desativar 2FA",
+        "title-nuxt": "Desativar 2FA"
       },
       "createUnknownErrorNotification": "A autenticação de dois fatores não pôde ser salva devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
+      "createUnknownErrorNotification-nuxt": "A autenticação de dois fatores não pôde ser salva devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
       "deleteUnknownErrorNotification": "A autenticação de dois fatores não pôde ser eliminada devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
+      "deleteUnknownErrorNotification-nuxt": "A autenticação de dois fatores não pôde ser eliminada devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
       "description": "Adicione uma camada extra de segurança à sua conta",
       "disabledNotification": "Autenticação de dois factores desativada com sucesso",
       "enabledNotification": "Autenticação de dois factores ativada com sucesso",
       "enterCode": {
         "desc": "Introduz o código que vem na tua app de autenticação",
-        "title": "Verificação"
+        "desc-nuxt": "Introduz o código que vem na tua app de autenticação",
+        "title": "Verificação",
+        "title-nuxt": "Verificação"
       },
       "modalTitle": "Ativar autenticação de dois factores",
+      "modalTitle-nuxt": "Ativar autenticação de dois factores",
       "result": {
-        "invalidCode": "O código não pode ser validado. Tenta de novo ou contacta-nos {support}"
+        "invalidCode": "O código não pode ser validado. Tenta de novo ou contacta-nos {support}",
+        "successful": "Autenticação de dois factores ativada com sucesso.",
+        "title": "Feito"
       },
       "scan": {
         "desc": "Faça scan do código QR abaixo, usando a sua app de autenticação.",
-        "title": "Código QR"
+        "desc-nuxt": "Faça scan do código QR abaixo, usando a sua app de autenticação.",
+        "title": "Código QR",
+        "title-nuxt": "Código QR"
       },
       "secretInput": {
+        "desc": "Alternativamente podes inserir o seguinte código na tua app de autenticação.",
         "label": "Código secreto",
         "toggleHide": "Ocultar",
         "toggleShow": "Não consegues digitalizar? Insere o código manualmente"
@@ -49,8 +63,10 @@
       },
       "stepIndicator": "Passo {step} de {total}",
       "title": "Autenticação de dois factores",
+      "title-nuxt": "Autenticação de dois factores",
       "validateButton": {
-        "label": "Verificar token"
+        "label": "Verificar token",
+        "label-nuxt": "Verificar token"
       }
     },
     "newsletter": {
@@ -67,10 +83,12 @@
       "unsubscribe": "Suspender inscrição na newsletter"
     },
     "phoneInfo": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
+    "phoneInfo-nuxt": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
     "phoneInfoAdmin": "",
     "requiredFields": "Campos obrigatórios",
     "savedPassword": "Nova palavra-passe gravada",
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
+    "subTitle-nuxt": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "title": "Conta",
     "unsavedChanges": "Tem alterações não guardadas"
   },
@@ -1505,7 +1523,8 @@
     "newPasswordConfirm": "Confirmar nova palavra-passe",
     "notes": "Notas",
     "password": "Palavra-passe",
-    "passwordInfo": "Define uma palavra-passe segura: 8 ou mais caracteres, incluindo um número, uma letra maiúscula e uma letra minúscula.",
+    "passwordInfo": "Define uma palavra-passe segura: 8 ou mais caracteres, incluindo um número, letras maiúsculas e letras minúsculas.",
+    "passwordInfo-nuxt": "Define uma palavra-passe segura: 8 ou mais caracteres, incluindo um número, uma letra maiúscula e uma letra minúscula.",
     "phone": "Telefone",
     "postCode": "Código postal",
     "richtext": {

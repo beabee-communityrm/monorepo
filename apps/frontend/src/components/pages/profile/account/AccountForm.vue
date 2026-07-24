@@ -33,7 +33,7 @@
         <UFormField
           :label="t('form.phone')"
           name="telephone"
-          :help="t('accountPage.phoneInfo')"
+          :help="t('accountPage.phoneInfo-nuxt')"
         >
           <UInput v-model="data.telephone" type="tel" class="w-full" />
         </UFormField>

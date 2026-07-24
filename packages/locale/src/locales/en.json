@@ -3,38 +3,52 @@
     "contactInformation": "Contact information",
     "deliveryAddress": "Delivery address",
     "deliveryOptIn": "Delivery opt-in",
-    "loginDetail": "Change password",
+    "loginDetail": "Login details",
+    "loginDetail-nuxt": "Change password",
     "mfa": {
       "codeInput": {
         "info": "If you have lost your 2FA device please contact support",
         "label": "Code"
       },
       "confirmDelete": {
-        "desc": "Are you sure you want to disable two-factor authentication?",
+        "desc": "Are you sure you want to disable Multi-Factor Authentication? From then on, you'll only need your password to log in. Remember to delete the entry from your Authenticator app. You can always enable it again.",
+        "desc-nuxt": "Are you sure you want to disable two-factor authentication?",
         "descDetail": "From then on, you'll only need your password to log in. Remember to delete the entry from your Authenticator app. You can always enable it again.",
-        "descToken": "Enter your current 2FA code to confirm",
+        "descToken": "To deactivate 2FA, please enter your current 2FA code:",
+        "descToken-nuxt": "Enter your current 2FA code to confirm",
         "keepEnabled": "Keep 2FA enabled",
         "remove": "Remove 2FA",
-        "title": "Are you sure you want to disable two-factor authentication?"
+        "title": "Disable 2FA",
+        "title-nuxt": "Are you sure you want to disable two-factor authentication?"
       },
-      "createUnknownErrorNotification": "The two-factor authentication could not be saved due to an unknown error. Please try again or contact support.",
-      "deleteUnknownErrorNotification": "The two-factor authentication could not be deleted due to an unknown error. Please try again or contact support.",
+      "createUnknownErrorNotification": "The 2-factor authentication could not be saved due to an unknown error. Please try again or contact support.",
+      "createUnknownErrorNotification-nuxt": "The two-factor authentication could not be saved due to an unknown error. Please try again or contact support.",
+      "deleteUnknownErrorNotification": "The 2-factor authentication could not be deleted due to an unknown error. Please try again or contact support.",
+      "deleteUnknownErrorNotification-nuxt": "The two-factor authentication could not be deleted due to an unknown error. Please try again or contact support.",
       "description": "Add an extra layer of security to your account",
       "disabledNotification": "Two-factor authentication successfully deactivated",
       "enabledNotification": "Two-factor authentication successfully activated",
       "enterCode": {
-        "desc": "Enter the 6-digit code from your authenticator app to confirm setup.",
-        "title": "Enter the verification code"
+        "desc": "Enter the code that is displayed in your authenticator app.",
+        "desc-nuxt": "Enter the 6-digit code from your authenticator app to confirm setup.",
+        "title": "Verification",
+        "title-nuxt": "Enter the verification code"
       },
-      "modalTitle": "Enable two-factor authentication",
+      "modalTitle": "Enable 2-factor authentication",
+      "modalTitle-nuxt": "Enable two-factor authentication",
       "result": {
-        "invalidCode": "The code could not be confirmed, please try again or contact support."
+        "invalidCode": "The code could not be confirmed, please try again or contact support.",
+        "successful": "2-factor authentication has been successfully set up.",
+        "title": "Done"
       },
       "scan": {
-        "desc": "Open your authenticator app and scan the code below.",
-        "title": "Scan this QR code"
+        "desc": "Scan the QR code below with your authenticator app.",
+        "desc-nuxt": "Open your authenticator app and scan the code below.",
+        "title": "QR Code",
+        "title-nuxt": "Scan this QR code"
       },
       "secretInput": {
+        "desc": "Alternatively, you can enter the following code into your Authenticator app.",
         "label": "Secret code",
         "toggleHide": "Hide",
         "toggleShow": "Can't scan? Enter the code manually"
@@ -48,9 +62,11 @@
         "title": "Two-factor authentication is enabled"
       },
       "stepIndicator": "Step {step} of {total}",
-      "title": "Two-factor authentication",
+      "title": "2-factor authentication",
+      "title-nuxt": "Two-factor authentication",
       "validateButton": {
-        "label": "Confirm"
+        "label": "Verify token",
+        "label-nuxt": "Confirm"
       }
     },
     "newsletter": {
@@ -66,11 +82,13 @@
       "title": "Newsletter",
       "unsubscribe": "Unsubscribe them from the newsletter"
     },
-    "phoneInfo": "By providing your phone number you are consenting to being contacted by phone.",
+    "phoneInfo": "By providing your phone number you are consenting to being contacted by phone",
+    "phoneInfo-nuxt": "By providing your phone number you are consenting to being contacted by phone.",
     "phoneInfoAdmin": "You must have the person's consent before adding their phone number to the system",
     "requiredFields": "Required fields",
     "savedPassword": "New password saved",
-    "subTitle": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
+    "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
+    "subTitle-nuxt": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
     "title": "Account"
   },
   "actions": {
@@ -1502,7 +1520,8 @@
     "newPasswordConfirm": "Confirm new password",
     "notes": "Notes",
     "password": "Password",
-    "passwordInfo": "Set a secure password: at least 8 characters, including a number, an uppercase letter, and a lowercase letter.",
+    "passwordInfo": "Set a secure password: 8+ characters or longer, and it must include a number, uppercase and lowercase letters.",
+    "passwordInfo-nuxt": "Set a secure password: at least 8 characters, including a number, an uppercase letter, and a lowercase letter.",
     "phone": "Phone number",
     "postCode": "Postcode",
     "richtext": {

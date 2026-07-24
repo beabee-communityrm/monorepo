@@ -271,14 +271,14 @@ meta:
 
   <AppConfirmDialog
     :open="mfa.showDisableConfirmModal"
-    :title="t('accountPage.mfa.confirmDelete.title')"
+    :title="t('accountPage.mfa.confirmDelete.title-nuxt')"
     :cancel="t('actions.noBack')"
     :confirm="t('actions.yesDisable')"
     variant="danger"
     @close="mfa.showDisableConfirmModal = false"
     @confirm="disableMfaAndNotify"
   >
-    <p>{{ t('accountPage.mfa.confirmDelete.desc') }}</p>
+    <p>{{ t('accountPage.mfa.confirmDelete.desc-nuxt') }}</p>
   </AppConfirmDialog>
 </template>
 
@@ -383,7 +383,7 @@ const disableMfa = async () => {
 
 const onDeleteMfaError = () => {
   addNotification({
-    title: t('accountPage.mfa.deleteUnknownErrorNotification'),
+    title: t('accountPage.mfa.deleteUnknownErrorNotification-nuxt'),
     variant: 'error',
   });
 };

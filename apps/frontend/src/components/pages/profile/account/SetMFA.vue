@@ -15,7 +15,7 @@
 <template>
   <AppSectionCard
     icon="i-lucide-shield-check"
-    :title="t('accountPage.mfa.title')"
+    :title="t('accountPage.mfa.title-nuxt')"
     :description="t('accountPage.mfa.description')"
   >
     <div class="flex items-start justify-between gap-4">
@@ -37,7 +37,7 @@
       </div>
       <USwitch
         :model-value="isEnabled"
-        :aria-label="t('accountPage.mfa.title')"
+        :aria-label="t('accountPage.mfa.title-nuxt')"
         @update:model-value="onSwitchToggle"
       />
     </div>
@@ -53,14 +53,14 @@
       <div class="flex flex-col gap-6">
         <div class="space-y-2">
           <h2>
-            {{ t('accountPage.mfa.confirmDelete.title') }}
+            {{ t('accountPage.mfa.confirmDelete.title-nuxt') }}
           </h2>
           <p class="text-muted">
             {{ t('accountPage.mfa.confirmDelete.descDetail') }}
           </p>
         </div>
         <UFormField
-          :label="t('accountPage.mfa.confirmDelete.descToken')"
+          :label="t('accountPage.mfa.confirmDelete.descToken-nuxt')"
           :error="
             disableError ? t('accountPage.mfa.result.invalidCode') : undefined
           "
@@ -88,7 +88,7 @@
 
   <UModal
     :open="showMFASettingsModal"
-    :title="t('accountPage.mfa.modalTitle')"
+    :title="t('accountPage.mfa.modalTitle-nuxt')"
     :description="
       t('accountPage.mfa.stepIndicator', {
         step: enableStep === 'scan' ? 1 : 2,
@@ -209,7 +209,7 @@
         <AppModalActions
           v-else
           :cancel-label="t('actions.back')"
-          :confirm-label="t('accountPage.mfa.validateButton.label')"
+          :confirm-label="t('accountPage.mfa.validateButton.label-nuxt')"
           :confirm-disabled="pin.length < 6"
           :confirm-loading="creating"
           @cancel="resetEnableState"
@@ -260,12 +260,12 @@ const enableStep = ref<'scan' | 'verify'>('scan');
 /** Title and description shown above each enable-MFA step's content */
 const stepContent = computed(() => ({
   scan: {
-    title: t('accountPage.mfa.scan.title'),
-    desc: t('accountPage.mfa.scan.desc'),
+    title: t('accountPage.mfa.scan.title-nuxt'),
+    desc: t('accountPage.mfa.scan.desc-nuxt'),
   },
   verify: {
-    title: t('accountPage.mfa.enterCode.title'),
-    desc: t('accountPage.mfa.enterCode.desc'),
+    title: t('accountPage.mfa.enterCode.title-nuxt'),
+    desc: t('accountPage.mfa.enterCode.desc-nuxt'),
   },
 }));
 
@@ -461,7 +461,7 @@ const onCreateError = (error: unknown) => {
   // the toast container and would otherwise hide the notification
   onCloseMFAModal();
   addNotification({
-    title: t('accountPage.mfa.createUnknownErrorNotification'),
+    title: t('accountPage.mfa.createUnknownErrorNotification-nuxt'),
     variant: 'error',
   });
 };
@@ -481,7 +481,7 @@ const onDeleteError = (error: unknown) => {
   // the toast container and would otherwise hide the notification
   closeDisableConfirmModal();
   addNotification({
-    title: t('accountPage.mfa.deleteUnknownErrorNotification'),
+    title: t('accountPage.mfa.deleteUnknownErrorNotification-nuxt'),
     variant: 'error',
   });
 };
