@@ -25,7 +25,9 @@ const state = reactive({
 
     <Variant title="Error state">
       <div class="max-w-sm">
-        <AppCodeInput :model-value="[]" error />
+        <UFormField error="Invalid code, please try again">
+          <AppCodeInput :model-value="[]" error />
+        </UFormField>
       </div>
     </Variant>
   </Story>

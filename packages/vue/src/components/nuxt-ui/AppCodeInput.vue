@@ -5,9 +5,9 @@
   2FA setup/disable) where the code is validated by the server rather than
   client-side.
 
-  Deliberately doesn't render an error message itself — where that belongs
-  relative to surrounding content (e.g. right above action buttons, vs.
-  directly under the boxes) varies per layout, so that's left to the caller.
+  Doesn't render an error message itself — wrap it in a
+  `UFormField` and pass the message via its `error` prop, same as any other
+  field.
 
   ## Props
   - `modelValue` (string[]): the entered digits, one per box. Use with `v-model`.
