@@ -15,10 +15,6 @@ export {
   type AppModalActionsProps,
 } from './AppModalActions.vue';
 export {
-  default as AppModalHeader,
-  type AppModalHeaderProps,
-} from './AppModalHeader.vue';
-export {
   default as AppSectionCard,
   type AppSectionCardProps,
 } from './AppSectionCard.vue';
