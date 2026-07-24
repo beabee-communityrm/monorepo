@@ -13,7 +13,7 @@ meta:
         name="i-lucide-shield"
         class="text-primary mt-0.5 size-4 shrink-0"
       />
-      <p>{{ t('accountPage.subTitle') }}</p>
+      <p>{{ t('accountPage.subTitle-nuxt') }}</p>
     </div>
 
     <AccountForm />

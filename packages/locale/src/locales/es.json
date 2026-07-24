@@ -3,38 +3,52 @@
     "contactInformation": "Información de contacto",
     "deliveryAddress": "Dirección de envío",
     "deliveryOptIn": "Aceptar envíos",
-    "loginDetail": "Cambiar contraseña",
+    "loginDetail": "Datos de acceso",
+    "loginDetail-nuxt": "Cambiar contraseña",
     "mfa": {
       "codeInput": {
         "info": "Si has perdido tu dispositivo 2FA, contacta con el soporte",
         "label": "Código"
       },
       "confirmDelete": {
-        "desc": "¿Seguro que deseas desactivar la autenticación en dos pasos? A partir de entonces solo necesitarás tu contraseña para iniciar sesión. Recuerda eliminar la entrada de tu aplicación de autenticación. Puedes volver a activarla en cualquier momento.",
+        "desc": "¿Seguro que deseas desactivar la autenticación multifactor? A partir de entonces solo necesitarás tu contraseña para iniciar sesión. Recuerda eliminar la entrada de tu aplicación de autenticación. Puedes volver a activarla en cualquier momento.",
+        "desc-nuxt": "¿Seguro que deseas desactivar la autenticación en dos pasos? A partir de entonces solo necesitarás tu contraseña para iniciar sesión. Recuerda eliminar la entrada de tu aplicación de autenticación. Puedes volver a activarla en cualquier momento.",
         "descDetail": "A partir de entonces solo necesitarás tu contraseña para iniciar sesión. Recuerda eliminar la entrada de tu aplicación de autenticación. Puedes volver a activarla en cualquier momento.",
         "descToken": "Para desactivar 2FA, introduce tu código 2FA actual:",
+        "descToken-nuxt": "Para desactivar 2FA, introduce tu código 2FA actual:",
         "keepEnabled": "Mantener 2FA activada",
         "remove": "Eliminar 2FA",
-        "title": "Desactivar 2FA"
+        "title": "Desactivar 2FA",
+        "title-nuxt": "Desactivar 2FA"
       },
       "createUnknownErrorNotification": "No se pudo guardar la autenticación en dos pasos debido a un error desconocido. Inténtalo de nuevo o contacta con el soporte.",
+      "createUnknownErrorNotification-nuxt": "No se pudo guardar la autenticación en dos pasos debido a un error desconocido. Inténtalo de nuevo o contacta con el soporte.",
       "deleteUnknownErrorNotification": "No se pudo eliminar la autenticación en dos pasos debido a un error desconocido. Inténtalo de nuevo o contacta con el soporte.",
+      "deleteUnknownErrorNotification-nuxt": "No se pudo eliminar la autenticación en dos pasos debido a un error desconocido. Inténtalo de nuevo o contacta con el soporte.",
       "description": "Añade una capa adicional de seguridad a tu cuenta",
       "disabledNotification": "Autenticación en dos pasos desactivada correctamente",
       "enabledNotification": "Autenticación en dos pasos activada correctamente",
       "enterCode": {
         "desc": "Introduce el código que aparece en tu aplicación de autenticación.",
-        "title": "Verificación"
+        "desc-nuxt": "Introduce el código que aparece en tu aplicación de autenticación.",
+        "title": "Verificación",
+        "title-nuxt": "Verificación"
       },
       "modalTitle": "Activar autenticación en dos pasos",
+      "modalTitle-nuxt": "Activar autenticación en dos pasos",
       "result": {
-        "invalidCode": "No se pudo confirmar el código. Inténtalo de nuevo o contacta con el soporte."
+        "invalidCode": "No se pudo confirmar el código. Inténtalo de nuevo o contacta con el soporte.",
+        "successful": "La autenticación en dos pasos se ha configurado correctamente.",
+        "title": "Listo"
       },
       "scan": {
         "desc": "Escanea el código QR con tu aplicación de autenticación.",
-        "title": "Código QR"
+        "desc-nuxt": "Escanea el código QR con tu aplicación de autenticación.",
+        "title": "Código QR",
+        "title-nuxt": "Código QR"
       },
       "secretInput": {
+        "desc": "También puedes introducir el siguiente código en tu aplicación de autenticación.",
         "label": "Código secreto",
         "toggleHide": "Ocultar",
         "toggleShow": "¿No puedes escanear? Introduce el código manualmente"
@@ -49,8 +63,10 @@
       },
       "stepIndicator": "Paso {step} de {total}",
       "title": "Autenticación en dos pasos",
+      "title-nuxt": "Autenticación en dos pasos",
       "validateButton": {
-        "label": "Verificar código"
+        "label": "Verificar código",
+        "label-nuxt": "Verificar código"
       }
     },
     "newsletter": {
@@ -66,11 +82,13 @@
       "title": "Boletín",
       "unsubscribe": "Cancelar suscripción al boletín"
     },
-    "phoneInfo": "Al proporcionar tu número de teléfono, aceptas ser contactado por teléfono.",
+    "phoneInfo": "Al proporcionar tu número de teléfono, aceptas ser contactado por teléfono",
+    "phoneInfo-nuxt": "Al proporcionar tu número de teléfono, aceptas ser contactado por teléfono.",
     "phoneInfoAdmin": "Debes contar con el consentimiento de la persona antes de añadir su número de teléfono al sistema",
     "requiredFields": "Campos obligatorios",
     "savedPassword": "Nueva contraseña guardada",
     "subTitle": "Los campos obligatorios están marcados con un asterisco. Toda la información enviada aquí es privada.",
+    "subTitle-nuxt": "Los campos obligatorios están marcados con un asterisco. Toda la información enviada aquí es privada.",
     "title": "Cuenta",
     "unsavedChanges": "Tienes cambios sin guardar"
   },
@@ -1503,6 +1521,7 @@
     "notes": "Notas",
     "password": "Contraseña",
     "passwordInfo": "Establece una contraseña segura: 8 o más caracteres, con al menos un número, una mayúscula y una minúscula.",
+    "passwordInfo-nuxt": "Establece una contraseña segura: 8 o más caracteres, con al menos un número, una mayúscula y una minúscula.",
     "phone": "Teléfono",
     "postCode": "Código postal",
     "richtext": {
