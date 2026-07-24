@@ -30,7 +30,7 @@
           type="password"
           name="password"
           required
-          :info-message="t('form.passwordInfo-nuxt')"
+          :info-message="t('form.passwordInfo')"
         />
       </div>
 
