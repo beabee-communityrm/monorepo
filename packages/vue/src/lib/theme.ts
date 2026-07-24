@@ -151,8 +151,8 @@ function setCustomShades(
 }
 
 // Set standard Tailwind 50–950 scale for a colour, for Nuxt UI compatibility.
-// Only needed for the colours mapped to Nuxt UI tokens in nuxt-ui.config.ts,
-// ('nuxt-primary' and 'nuxt-neutral').
+// Only needed for the colours mapped to Nuxt UI tokens in nuxt-ui.config.ts
+// ('nuxt-primary').
 function setNuxtShades(colorName: string, colorValue: string) {
   for (const [shade, level] of TAILWIND_SHADE_LEVELS) {
     const [r, g, b] = parseToRgba(computeShade(colorValue, level));
@@ -217,11 +217,8 @@ watch(
     setCustomShades('white', colors.white || '#ffffff');
     setCustomShades('black', colors.black || '#000000');
 
-    // Nuxt UI colour tokens (see nuxt-ui.config.ts): 'primary' uses the link
-    // colour, 'neutral' expects a lighter base than our (often very dark)
-    // body colour, so derive a lightened variant for it to use instead.
+    // Nuxt UI colour token (see nuxt-ui.config.ts): 'primary' uses the link colour.
     setNuxtShades('nuxt-primary', colors.link);
-    setNuxtShades('nuxt-neutral', mix(colors.body, 'white', 0.35));
 
     // Load fonts
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));
