@@ -98,20 +98,6 @@
     @update:open="(open: boolean) => !open && onCloseMFAModal()"
     @after:leave="onEnableModalAfterLeave"
   >
-    <template #header="{ close }">
-      <AppModalHeader
-        icon="i-lucide-shield-check"
-        :title="t('accountPage.mfa.modalTitle')"
-        :description="
-          t('accountPage.mfa.stepIndicator', {
-            step: enableStep === 'scan' ? 1 : 2,
-            total: 2,
-          })
-        "
-        @close="close"
-      />
-    </template>
-
     <template #body>
       <div class="flex flex-col gap-6">
         <div class="flex gap-1">
@@ -244,7 +230,6 @@ import { UnauthorizedError } from '@beabee/client';
 import {
   AppCodeInput,
   AppModalActions,
-  AppModalHeader,
   AppQRCode,
   AppSectionCard,
   addNotification,
