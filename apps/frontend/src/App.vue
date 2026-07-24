@@ -1,9 +1,11 @@
 <template>
-  <LayoutApp />
+  <UApp>
+    <LayoutApp />
 
-  <AppNotificationContainer
-    :class="!isEmbed && 'fixed bottom-16 left-16 z-50 w-96'"
-  />
+    <AppNotificationContainer
+      :class="!isEmbed && 'fixed bottom-16 left-16 z-50 w-96'"
+    />
+  </UApp>
 </template>
 
 <script lang="ts" setup>

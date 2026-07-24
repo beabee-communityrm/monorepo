@@ -110,7 +110,6 @@ import {
   addNotification,
 } from '@beabee/vue';
 
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -121,6 +120,7 @@ import AppApiForm from '#components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const PREVIEW_CONTACTS_LIMIT = 50;
 
@@ -132,9 +132,13 @@ const segmentId = computed(() => route.params.segmentId);
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
     {
-      title: segment.value
+      label: t(routeLabels.adminContacts),
+      to: '/admin/contacts',
+      icon: routeIcons.adminContacts,
+    },
+    {
+      label: segment.value
         ? `${t('contacts.sendEmail.title')}: ${segment.value.name}`
         : t('contacts.sendEmail.title'),
     },

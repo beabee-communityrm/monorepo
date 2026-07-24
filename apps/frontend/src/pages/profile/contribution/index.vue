@@ -88,13 +88,25 @@ import OneTimeDonationForm from '#components/pages/profile/contribution/OneTimeD
 import PaymentSource from '#components/pages/profile/contribution/PaymentSource.vue';
 import UpdateContribution from '#components/pages/profile/contribution/UpdateContribution.vue';
 import { currentUser, generalContent } from '#store';
+import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import type { ContributionContent } from '../../../type/contribution';
 
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
+
+addBreadcrumb(
+  computed(() => [
+    {
+      label: t(routeLabels.profileContribution),
+      to: '/profile/contribution',
+      icon: routeIcons.profileContribution,
+    },
+  ])
+);
 
 const activeTab = computed({
   get: () => route.query.tab?.toString() || 'recurring',

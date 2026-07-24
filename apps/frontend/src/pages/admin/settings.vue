@@ -13,12 +13,12 @@ meta:
 <script lang="ts" setup>
 import { AppTabs, PageTitle } from '@beabee/vue';
 
-import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import { resolveTabNavigation } from '#utils/navigation';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import { addBreadcrumb } from '../../store/breadcrumb';
 
@@ -58,18 +58,10 @@ const selectedTab = computed(() =>
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.adminSettings'),
+      label: t(routeLabels.adminSettings),
       to: '/admin/settings',
-      icon: faCog,
+      icon: routeIcons.adminSettings,
     },
-    ...(selectedTab.value
-      ? [
-          {
-            title: selectedTab.value.label,
-            to: selectedTab.value.to,
-          },
-        ]
-      : []),
   ])
 );
 </script>

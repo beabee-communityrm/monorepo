@@ -92,10 +92,22 @@ import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import CalloutCard from '#components/callout/CalloutCard.vue';
+import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { defineParam } from '#utils/pagination';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
+
+addBreadcrumb(
+  computed(() => [
+    {
+      label: t(routeLabels.callouts),
+      to: '/crowdnewsroom',
+      icon: routeIcons.callouts,
+    },
+  ])
+);
 
 const headers: Header[] = [
   { value: 'name', text: t('callouts.data.callout') },

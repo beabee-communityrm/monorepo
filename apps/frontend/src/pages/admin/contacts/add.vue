@@ -69,7 +69,6 @@ import {
   PageTitle,
 } from '@beabee/vue';
 
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -82,14 +81,19 @@ import AppApiForm from '#components/forms/AppApiForm.vue';
 import AppRoleEditor from '#components/role/AppRoleEditor.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
 const router = useRouter();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
-    { title: t('contacts.addContact'), to: '/admin/contacts/new' },
+    {
+      label: t(routeLabels.adminContacts),
+      to: '/admin/contacts',
+      icon: routeIcons.adminContacts,
+    },
+    { label: t('contacts.addContact'), to: '/admin/contacts/new' },
   ])
 );
 
