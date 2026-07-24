@@ -18,7 +18,9 @@
         v-model="data.telephone"
         :label="t('form.phone')"
         :info-message="
-          isAdmin ? t('accountPage.phoneInfoAdmin') : t('accountPage.phoneInfo')
+          isAdmin
+            ? t('accountPage.phoneInfoAdmin')
+            : t('accountPage.phoneInfo-nuxt')
         "
       />
     </div>

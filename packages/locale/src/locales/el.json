@@ -4,6 +4,7 @@
     "deliveryAddress": "",
     "deliveryOptIn": "",
     "loginDetail": "",
+    "loginDetail-nuxt": "",
     "mfa": {
       "codeInput": {
         "info": "",
@@ -11,30 +12,43 @@
       },
       "confirmDelete": {
         "desc": "",
+        "desc-nuxt": "",
         "descDetail": "",
         "descToken": "",
+        "descToken-nuxt": "",
         "keepEnabled": "",
         "remove": "",
-        "title": ""
+        "title": "",
+        "title-nuxt": ""
       },
       "createUnknownErrorNotification": "",
+      "createUnknownErrorNotification-nuxt": "",
       "deleteUnknownErrorNotification": "",
+      "deleteUnknownErrorNotification-nuxt": "",
       "description": "Προσθέστε ένα επιπλέον επίπεδο ασφάλειας στον λογαριασμό σας",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "modalTitle": "",
+      "modalTitle-nuxt": "",
       "result": {
-        "invalidCode": ""
+        "invalidCode": "",
+        "successful": "",
+        "title": ""
       },
       "scan": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "secretInput": {
+        "desc": "",
         "label": "",
         "toggleHide": "",
         "toggleShow": ""
@@ -49,8 +63,10 @@
       },
       "stepIndicator": "",
       "title": "",
+      "title-nuxt": "",
       "validateButton": {
-        "label": ""
+        "label": "",
+        "label-nuxt": ""
       }
     },
     "newsletter": {
@@ -67,10 +83,12 @@
       "unsubscribe": ""
     },
     "phoneInfo": "",
+    "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
     "requiredFields": "Υποχρεωτικά πεδία",
     "savedPassword": "",
     "subTitle": "",
+    "subTitle-nuxt": "",
     "title": "",
     "unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές"
   },
@@ -1505,6 +1523,7 @@
     "notes": "",
     "password": "",
     "passwordInfo": "",
+    "passwordInfo-nuxt": "",
     "phone": "",
     "postCode": "",
     "richtext": {
