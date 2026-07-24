@@ -34,7 +34,7 @@ meta:
         <AppInput
           v-model="data.password"
           :label="t('form.newPassword')"
-          :info-message="t('form.passwordInfo-nuxt')"
+          :info-message="t('form.passwordInfo')"
           type="password"
           name="password"
           autocomplete="new-password"
