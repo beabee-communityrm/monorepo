@@ -11,6 +11,11 @@
   background-color: rgb(var(--c-link-10));
 }
 
+/*
+ * Page-level typography for Nuxt UI pages. Also applied
+ * to `UModal` content (see `modal.slots.content` in nuxt-ui.config.ts),
+ * since a modal's teleported DOM otherwise falls outside `.nuxt-page`.
+ */
 .nuxt-page {
   p {
     @apply text-sm;
