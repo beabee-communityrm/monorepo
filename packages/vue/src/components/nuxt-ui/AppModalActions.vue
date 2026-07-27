@@ -1,8 +1,7 @@
 <!--
   # AppModalActions
   A cancel/confirm button pair for modal footers, laid out full-width and
-  evenly split (`flex-1` each). Used for multi-step wizards (cancel/next,
-  back/save) and confirmation dialogs (keep/remove).
+  evenly split (`flex-1` each).
 
   ## Props
   - `cancelLabel` (string): Label for the secondary (outline) button.
