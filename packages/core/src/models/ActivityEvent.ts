@@ -1,3 +1,5 @@
+import { ActivityEventType } from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,
@@ -18,15 +20,15 @@ export class ActivityEvent {
   @Column({ type: String })
   contactId!: string;
 
-  @Column({ type: String, nullable: true })
+  @Column({ type: 'uuid', nullable: true })
   actorId!: string | null;
 
   @CreateDateColumn()
   createdAt!: Date;
 
   @Column({ type: String })
-  eventType!: string;
+  eventType!: ActivityEventType;
 
-  @Column({ type: 'jsonb' })
-  metadata!: Record<string, string>;
+  @Column({ type: 'jsonb', nullable: true })
+  metadata!: Record<string, string> | null;
 }
