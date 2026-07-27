@@ -4,7 +4,7 @@ import { reactive } from 'vue';
 import AppCodeInput from './AppCodeInput.vue';
 
 const state = reactive({
-  value: [] as string[],
+  value: [] as (number | undefined)[],
   error: false,
 });
 </script>

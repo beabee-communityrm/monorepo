@@ -10,19 +10,19 @@
   field.
 
   ## Props
-  - `modelValue` (string[]): the entered digits, one per box. Use with `v-model`.
+  - `modelValue` ((number | undefined)[]): the entered digits, one per box —
+    `undefined` for an empty box. Use with `v-model`.
   - `length` (number, default 6): how many boxes to show.
   - `error` (boolean, default false): show the invalid-code ring.
   - `autofocus` (boolean, default false): focus the first box on mount.
+
+  Use `isCodeComplete` (from `utils/pin-input`) instead of `.length` to
+  check the emitted `modelValue` for completeness.
 -->
 <template>
   <!--
-    `type="number"` restricts input to digits (numeric keyboard, rejects
-    non-digit chars), but in this mode Reka UI's PinInput stores filled
-    boxes as actual numbers and, on backspace, `delete`s the array slot
-    instead of setting it to '' — leaving a sparse hole that doesn't
-    shrink `.length`. `handleUpdate` below normalizes both quirks back
-    into a plain, correctly-sized string[], hence the casts.
+    Reka UI's PinInput emits/accepts `number[]`, but a box can actually be
+    `undefined` (backspaced) — hence the casts and `isCodeComplete` below.
   -->
   <UPinInput
     :model-value="modelValue as unknown as number[]"
@@ -32,7 +32,9 @@
     :highlight="error"
     :autofocus="autofocus"
     size="xl"
-    @update:model-value="handleUpdate"
+    @update:model-value="
+      (value: (number | undefined)[]) => (modelValue = value)
+    "
   />
 </template>
 
@@ -43,8 +45,6 @@
  * @component AppCodeInput
  */
 export interface AppCodeInputProps {
-  /** The entered digits, one per box */
-  modelValue: string[];
   /** How many boxes to show */
   length?: number;
   /** Show the invalid-code ring state */
@@ -59,22 +59,6 @@ withDefaults(defineProps<AppCodeInputProps>(), {
   autofocus: false,
 });
 
-const emit = defineEmits<{
-  'update:modelValue': [value: string[]];
-}>();
-
-/**
- * Converts filled boxes to strings and deleted (sparse-hole) boxes to '',
- * then trims trailing empty boxes so `.length` reflects digits actually
- * entered.
- */
-const handleUpdate = (value: (number | undefined)[]) => {
-  const digits = [...value].map((digit) =>
-    digit === undefined ? '' : String(digit)
-  );
-  while (digits.at(-1) === '') {
-    digits.pop();
-  }
-  emit('update:modelValue', digits);
-};
+/** The entered digits, one per box — `undefined` for an empty box */
+const modelValue = defineModel<(number | undefined)[]>({ default: () => [] });
 </script>
