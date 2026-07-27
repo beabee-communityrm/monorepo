@@ -2,7 +2,7 @@
   # SetMFA
   This component is used to set up MFA for a contact, via a two-step
   enable-MFA modal (scan QR code, then verify the code) and a separate
-  disable-MFA confirmation modal.
+  disable-MFA modal.
 
   ## Props
   - `contactId` (string): The id of the contact to set up MFA for.
@@ -44,10 +44,10 @@
   </AppSectionCard>
 
   <UModal
-    :open="showDisableConfirmModal"
+    :open="showDisableModal"
     :ui="{ header: 'min-h-[3rem]', close: 'top-2' }"
-    @update:open="(open: boolean) => !open && closeDisableConfirmModal()"
-    @after:leave="blurActiveElement"
+    @update:open="(open: boolean) => !open && closeDisableModal()"
+    @after:leave="onDisableModalAfterLeave"
   >
     <template #body>
       <div class="flex flex-col gap-6">
@@ -79,7 +79,7 @@
           confirm-color="error"
           :confirm-disabled="!isCodeComplete(disableToken)"
           :confirm-loading="disabling"
-          @cancel="closeDisableConfirmModal"
+          @cancel="closeDisableModal"
           @confirm="handleDisableClick"
         />
       </div>
@@ -87,7 +87,7 @@
   </UModal>
 
   <UModal
-    :open="showMFASettingsModal"
+    :open="showEnableModal"
     :title="t('accountPage.mfa.modalTitle-nuxt')"
     :description="
       t('accountPage.mfa.stepIndicator', {
@@ -95,7 +95,7 @@
         total: 2,
       })
     "
-    @update:open="(open: boolean) => !open && onCloseMFAModal()"
+    @update:open="(open: boolean) => !open && closeEnableModal()"
     @after:leave="onEnableModalAfterLeave"
   >
     <template #body>
@@ -166,14 +166,14 @@
           <div v-else class="flex w-full flex-col gap-6">
             <UFormField
               :error="
-                createError
+                enableError
                   ? t('accountPage.mfa.result.invalidCode')
                   : undefined
               "
             >
               <AppCodeInput
-                v-model="pin"
-                :error="createError"
+                v-model="enableToken"
+                :error="enableError"
                 class="justify-center"
                 aria-labelledby="mfa-step-title"
                 aria-describedby="mfa-step-desc"
@@ -187,17 +187,17 @@
           v-if="enableStep === 'scan'"
           :cancel-label="t('actions.cancel')"
           :confirm-label="t('actions.next')"
-          @cancel="onCloseMFAModal"
+          @cancel="closeEnableModal"
           @confirm="enableStep = 'verify'"
         />
         <AppModalActions
           v-else
           :cancel-label="t('actions.back')"
           :confirm-label="t('accountPage.mfa.validateButton.label-nuxt')"
-          :confirm-disabled="!isCodeComplete(pin)"
-          :confirm-loading="creating"
+          :confirm-disabled="!isCodeComplete(enableToken)"
+          :confirm-loading="enabling"
           @cancel="resetEnableState"
-          @confirm="handleCompleteSetup"
+          @confirm="handleEnableClick"
         />
       </div>
     </template>
@@ -231,10 +231,11 @@ import { client } from '#utils/api';
 
 const { t } = useI18n();
 
-/** Used to show/hide the modal */
-const showMFASettingsModal = ref(false);
+/** Used to show/hide the enable-MFA modal */
+const showEnableModal = ref(false);
 
-const showDisableConfirmModal = ref(false);
+/** Used to show/hide the disable-MFA modal */
+const showDisableModal = ref(false);
 
 /** Is multi factor authentication enabled? */
 const isEnabled = ref(false);
@@ -262,14 +263,14 @@ const toggleSecret = () => {
   showSecret.value = !showSecret.value;
 };
 
-/** Code entered on the verify step, one digit per box */
-const pin = ref<(number | undefined)[]>([]);
+/** Token entered to verify totp when enabling MFA, one digit per box */
+const enableToken = ref<(number | undefined)[]>([]);
 
 /** Loading state while confirming the enable-2FA code */
-const creating = ref(false);
+const enabling = ref(false);
 
-/** Shown when the server rejects the entered code */
-const createError = ref(false);
+/** Shown when the server rejects the entered enable token */
+const enableError = ref(false);
 
 const props = defineProps<{
   contactId: string;
@@ -298,21 +299,21 @@ const disableToken = ref<(number | undefined)[]>([]);
 /** Shown when the server rejects the entered disable token */
 const disableError = ref(false);
 
-/** Loading state while confirming the disable-2FA dialog */
+/** Loading state while confirming the disable-2FA code */
 const disabling = ref(false);
 
 /** Called when the status switch is toggled by the user */
 const onSwitchToggle = () => {
   if (isEnabled.value) {
-    showDisableConfirmModal.value = true;
+    showDisableModal.value = true;
   } else {
-    showMFASettingsModal.value = true;
+    showEnableModal.value = true;
   }
 };
 
-/** Called when the modal is closed */
-const onCloseMFAModal = () => {
-  closeMFAModal();
+/** Called when the enable-MFA modal is closed */
+const closeEnableModal = () => {
+  showEnableModal.value = false;
 };
 
 /** Called after the enable-MFA modal's close transition finishes */
@@ -321,30 +322,30 @@ const onEnableModalAfterLeave = () => {
   resetEnableState();
 };
 
-/** Called when the disable confirm modal is closed */
-const closeDisableConfirmModal = () => {
-  showDisableConfirmModal.value = false;
+/** Called when the disable-MFA modal is closed */
+const closeDisableModal = () => {
+  showDisableModal.value = false;
+};
+
+/** Called after the disable-MFA modal's close transition finishes */
+const onDisableModalAfterLeave = () => {
+  blurActiveElement();
   resetDisableState();
 };
 
-/** Close the modal */
-const closeMFAModal = () => {
-  showMFASettingsModal.value = false;
-};
-
 /**
- * Create MFA for the contact
- * @returns Was creating MFA successful?
+ * Enable MFA for the contact
+ * @returns Was enabling MFA successful?
  */
-const createMfa = async () => {
+const enableMfa = async () => {
   try {
     await client.contact.mfa.create(props.contactId, {
       secret: totpSecret.value.base32,
-      token: pin.value.join(''),
+      token: enableToken.value.join(''),
       type: CONTACT_MFA_TYPE.TOTP,
     });
   } catch (error) {
-    onCreateError(error);
+    onEnableError(error);
     return false;
   }
   return true;
@@ -361,23 +362,22 @@ const disableMfa = async () => {
       token: disableToken.value.join(''),
     });
   } catch (error) {
-    onDeleteError(error);
+    onDisableError(error);
     return false;
   }
   isEnabled.value = false;
-  resetDisableState();
   return true;
 };
 
-/** Save MFA on server and notify the user */
-const createMfaAndNotify = async () => {
-  const success = await createMfa();
+/** Enable MFA and notify the user */
+const enableMfaAndNotify = async () => {
+  const success = await enableMfa();
   if (!success) {
     return;
   }
 
   isEnabled.value = true;
-  closeMFAModal();
+  closeEnableModal();
   addNotification({
     title: t('accountPage.mfa.enabledNotification'),
     variant: 'success',
@@ -391,7 +391,7 @@ const disableMfaAndNotify = async () => {
     return;
   }
 
-  closeDisableConfirmModal();
+  closeDisableModal();
 
   addNotification({
     title: t('accountPage.mfa.disabledNotification'),
@@ -410,45 +410,55 @@ const blurActiveElement = () => {
   }
 };
 
-/** Called when the disable confirm button is clicked (adds a loading state) */
+/** Called when the disable confirm button is clicked */
 const handleDisableClick = async () => {
+  if (disabling.value) return;
+
+  disableError.value = false;
   disabling.value = true;
-  await disableMfaAndNotify();
-  disabling.value = false;
+  try {
+    await disableMfaAndNotify();
+  } finally {
+    disabling.value = false;
+  }
 };
 
 /** Called when the verify step's Confirm button is clicked */
-const handleCompleteSetup = async () => {
-  if (creating.value) return;
+const handleEnableClick = async () => {
+  if (enabling.value) return;
 
-  createError.value = false;
-  creating.value = true;
-  await createMfaAndNotify();
-  creating.value = false;
+  enableError.value = false;
+  enabling.value = true;
+  try {
+    await enableMfaAndNotify();
+  } finally {
+    enabling.value = false;
+  }
 };
 
-/** Called when an error occurs while creating MFA */
-const onCreateError = (error: unknown) => {
+/** Called when an error occurs while enabling MFA */
+const onEnableError = (error: unknown) => {
   if (
     error instanceof UnauthorizedError &&
     error.code === LOGIN_CODES.INVALID_TOKEN
   ) {
     // If server says the token is invalid, show an inline error and let the
     // user retry on the same step
-    createError.value = true;
+    enableError.value = true;
     return;
   }
 
   // Unexpected error: close the modal first, since it's teleported above
   // the toast container and would otherwise hide the notification
-  onCloseMFAModal();
+  closeEnableModal();
   addNotification({
     title: t('accountPage.mfa.createUnknownErrorNotification-nuxt'),
     variant: 'error',
   });
 };
 
-const onDeleteError = (error: unknown) => {
+/** Called when an error occurs while disabling MFA */
+const onDisableError = (error: unknown) => {
   if (
     error instanceof UnauthorizedError &&
     (error.code === LOGIN_CODES.INVALID_TOKEN ||
@@ -461,7 +471,7 @@ const onDeleteError = (error: unknown) => {
 
   // Unexpected error: close the modal first, since it's teleported above
   // the toast container and would otherwise hide the notification
-  closeDisableConfirmModal();
+  closeDisableModal();
   addNotification({
     title: t('accountPage.mfa.deleteUnknownErrorNotification-nuxt'),
     variant: 'error',
@@ -471,8 +481,8 @@ const onDeleteError = (error: unknown) => {
 /** Reset the enable-MFA modal back to its first step */
 const resetEnableState = () => {
   enableStep.value = 'scan';
-  pin.value = [];
-  createError.value = false;
+  enableToken.value = [];
+  enableError.value = false;
   showSecret.value = false;
 };
 
@@ -520,8 +530,8 @@ watch(disableToken, () => {
   disableError.value = false;
 });
 
-/** Hide the invalid-code error as soon as the user edits the pin again */
-watch(pin, () => {
-  createError.value = false;
+/** Hide the invalid-code error as soon as the user edits the token again */
+watch(enableToken, () => {
+  enableError.value = false;
 });
 </script>
