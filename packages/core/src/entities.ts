@@ -42,8 +42,8 @@ import { SegmentOngoingEmail } from './models/SegmentOngoingEmail.js';
 import { SignupFlow } from './models/SignupFlow.js';
 
 export const entities = [
-  ApiKey,
   ActivityEvent,
+  ApiKey,
   Callout,
   CalloutResponse,
   CalloutResponseComment,
