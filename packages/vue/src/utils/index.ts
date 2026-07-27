@@ -2,4 +2,5 @@
 export * from './dates.ts';
 export * from './html.ts';
 export * from './ids.ts';
+export * from './pin-input.ts';
 export * from './slots.ts';
