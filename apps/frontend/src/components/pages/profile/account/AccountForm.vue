@@ -121,7 +121,7 @@ const data = reactive({
   telephone: '',
   deliveryOptIn: false,
   addressLine1: '',
-  addressLine2: undefined as string | undefined,
+  addressLine2: '',
   cityOrTown: '',
   postCode: '',
 });
@@ -142,7 +142,7 @@ onMounted(async () => {
     telephone: contact.profile.telephone,
     deliveryOptIn: contact.profile.deliveryOptIn,
     addressLine1: contact.profile.deliveryAddress?.line1 || '',
-    addressLine2: contact.profile.deliveryAddress?.line2 as string | undefined,
+    addressLine2: contact.profile.deliveryAddress?.line2 || '',
     cityOrTown: contact.profile.deliveryAddress?.city || '',
     postCode: contact.profile.deliveryAddress?.postcode || '',
   });
