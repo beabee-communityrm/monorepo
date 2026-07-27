@@ -3,6 +3,10 @@ export {
   type AppCodeInputProps,
 } from './AppCodeInput.vue';
 export {
+  default as AppCopyIconButton,
+  type AppCopyIconButtonProps,
+} from './AppCopyIconButton.vue';
+export {
   default as AppFormSkeleton,
   type AppFormSkeletonProps,
 } from './AppFormSkeleton.vue';
