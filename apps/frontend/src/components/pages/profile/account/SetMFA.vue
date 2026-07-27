@@ -77,7 +77,7 @@
           :cancel-label="t('accountPage.mfa.confirmDelete.keepEnabled')"
           :confirm-label="t('accountPage.mfa.confirmDelete.remove')"
           confirm-color="error"
-          :confirm-disabled="disableToken.length < 6"
+          :confirm-disabled="!isCodeComplete(disableToken)"
           :confirm-loading="disabling"
           @cancel="closeDisableConfirmModal"
           @confirm="handleDisableClick"
@@ -194,7 +194,7 @@
           v-else
           :cancel-label="t('actions.back')"
           :confirm-label="t('accountPage.mfa.validateButton.label-nuxt')"
-          :confirm-disabled="pin.length < 6"
+          :confirm-disabled="!isCodeComplete(pin)"
           :confirm-loading="creating"
           @cancel="resetEnableState"
           @confirm="handleCompleteSetup"
@@ -218,6 +218,7 @@ import {
   AppQRCode,
   AppSectionCard,
   addNotification,
+  isCodeComplete,
 } from '@beabee/vue';
 
 import { Secret, TOTP } from 'otpauth';
@@ -262,7 +263,7 @@ const toggleSecret = () => {
 };
 
 /** Code entered on the verify step, one digit per box */
-const pin = ref<string[]>([]);
+const pin = ref<(number | undefined)[]>([]);
 
 /** Loading state while confirming the enable-2FA code */
 const creating = ref(false);
@@ -292,7 +293,7 @@ const formattedTotpSecret = computed(() =>
 );
 
 /** Token entered to verify totp when disabling MFA, one digit per box */
-const disableToken = ref<string[]>([]);
+const disableToken = ref<(number | undefined)[]>([]);
 
 /** Shown when the server rejects the entered disable token */
 const disableError = ref(false);
@@ -416,9 +417,9 @@ const handleDisableClick = async () => {
   disabling.value = false;
 };
 
-/** Called when the verify step's Save button is clicked, or the pin is completed */
+/** Called when the verify step's Confirm button is clicked */
 const handleCompleteSetup = async () => {
-  if (pin.value.length < 6 || creating.value) return;
+  if (creating.value) return;
 
   createError.value = false;
   creating.value = true;
