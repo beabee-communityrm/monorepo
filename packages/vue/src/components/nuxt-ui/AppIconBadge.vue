@@ -1,7 +1,7 @@
 <!--
   # AppIconBadge
   A small icon inside a rounded, tinted background badge — the leading
-  visual used in section/modal headers (e.g. AppSectionCard, modal titles).
+  visual used in `AppSectionCard`'s header.
 
   ## Props
   - `icon` (string): Iconify icon name, e.g. `i-lucide-shield-check`.

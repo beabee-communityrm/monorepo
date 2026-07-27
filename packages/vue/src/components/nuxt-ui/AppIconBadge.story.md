@@ -1,4 +1,3 @@
 # AppIconBadge
 
-The leading icon badge used in section/modal headers (`AppSectionCard`,
-modal titles).
+The leading icon badge used in `AppSectionCard`'s header.
