@@ -11,7 +11,7 @@
         :help="t('form.passwordInfo-nuxt')"
       >
         <UInput
-          v-model="password"
+          v-model="state.password"
           :type="showPassword ? 'text' : 'password'"
           autocomplete="new-password"
           class="w-full"
@@ -40,7 +40,7 @@
         name="confirmPassword"
       >
         <UInput
-          v-model="confirmPassword"
+          v-model="state.confirmPassword"
           :type="showConfirmPassword ? 'text' : 'password'"
           autocomplete="new-password"
           class="w-full"
@@ -65,7 +65,7 @@
 
       <div class="flex items-center gap-2">
         <UButton
-          v-if="password || confirmPassword"
+          v-if="state.password || state.confirmPassword"
           type="button"
           variant="outline"
           color="neutral"
@@ -94,9 +94,7 @@ import { client } from '#utils/api';
 
 const { t } = useI18n();
 
-const password = ref('');
-const confirmPassword = ref('');
-const state = reactive({ password, confirmPassword });
+const state = reactive({ password: '', confirmPassword: '' });
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
@@ -138,21 +136,21 @@ const schema = computed(() =>
 
 const { submit: doSubmit } = useApiSubmit(
   async () => {
-    await client.contact.update('me', { password: password.value });
-    password.value = '';
-    confirmPassword.value = '';
+    await client.contact.update('me', { password: state.password });
+    state.password = '';
+    state.confirmPassword = '';
     formRef.value?.clear();
   },
   { successMessage: () => t('accountPage.savedPassword') }
 );
 
 async function handleSubmit() {
-  if (!password.value || !confirmPassword.value) {
+  if (!state.password || !state.confirmPassword) {
     formRef.value?.setErrors([
-      ...(!password.value
+      ...(!state.password
         ? [{ name: 'password', message: t('form.errors.password.required') }]
         : []),
-      ...(!confirmPassword.value
+      ...(!state.confirmPassword
         ? [
             {
               name: 'confirmPassword',
@@ -168,8 +166,8 @@ async function handleSubmit() {
 }
 
 function handleCancel() {
-  password.value = '';
-  confirmPassword.value = '';
+  state.password = '';
+  state.confirmPassword = '';
   formRef.value?.clear();
 }
 </script>
