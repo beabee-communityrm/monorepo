@@ -2,7 +2,6 @@
   # AppIconBadge
   A small icon inside a rounded, tinted background badge — the leading
   visual used in section/modal headers (e.g. AppSectionCard, modal titles).
-  Uses the same `rounded-lg` radius as other page components, not a circle.
 
   ## Props
   - `icon` (string): Iconify icon name, e.g. `i-lucide-shield-check`.
