@@ -153,23 +153,7 @@
                       class="w-full font-mono"
                     >
                       <template #trailing>
-                        <UTooltip
-                          :text="t('actions.copy')"
-                          :content="{ side: 'right' }"
-                        >
-                          <UButton
-                            :color="secretCopied ? 'success' : 'neutral'"
-                            variant="link"
-                            size="xs"
-                            :icon="
-                              secretCopied
-                                ? 'i-lucide-copy-check'
-                                : 'i-lucide-copy'
-                            "
-                            :aria-label="t('actions.copy')"
-                            @click="copySecret(totpSecret.base32)"
-                          />
-                        </UTooltip>
+                        <AppCopyIconButton :text="totpSecret.base32" />
                       </template>
                     </UInput>
                   </UFormField>
@@ -229,13 +213,13 @@ import {
 import { UnauthorizedError } from '@beabee/client';
 import {
   AppCodeInput,
+  AppCopyIconButton,
   AppModalActions,
   AppQRCode,
   AppSectionCard,
   addNotification,
 } from '@beabee/vue';
 
-import { useClipboard } from '@vueuse/core';
 import { Secret, TOTP } from 'otpauth';
 import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -306,9 +290,6 @@ const totpSecret = ref(new Secret());
 const formattedTotpSecret = computed(() =>
   totpSecret.value.base32.match(/.{1,4}/g)?.join('-')
 );
-
-/** Copy the secret to the clipboard, with `secretCopied` as icon feedback */
-const { copy: copySecret, copied: secretCopied } = useClipboard();
 
 /** Token entered to verify totp when disabling MFA, one digit per box */
 const disableToken = ref<string[]>([]);
