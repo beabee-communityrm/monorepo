@@ -1,4 +1,5 @@
 import {
+  ActivityEventType,
   CONTACT_MFA_TYPE,
   ContributionPeriod,
   ContributionType,
@@ -40,12 +41,12 @@ import {
   ResetSecurityFlow,
   SegmentContact,
 } from '#models/index';
+import ActivityService from '#services/ActivityService';
 import ContactMfaService from '#services/ContactMfaService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
-import { UpdateContributionForm } from '#type/update-contribution-form';
 import { UpdateContributionResult } from '#type/update-contribution-result';
 import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
@@ -130,6 +131,17 @@ class ContactsService {
         contact: contact,
       });
       await getRepository(ContactProfile).save(contact.profile);
+
+      try {
+        await ActivityService.addEvent({
+          contactId: contact.id,
+          actorId: null,
+          eventType: ActivityEventType.ContactCreated,
+          metadata: null,
+        });
+      } catch (err) {
+        log.error('Failed to log event contact.created', err);
+      }
 
       await PaymentService.createContact(contact);
 
