@@ -1,4 +1,5 @@
 import {
+  ActivityEventType,
   CalloutAccess,
   CalloutResponseAnswersSlide,
   CalloutResponseGuestData,
@@ -15,7 +16,6 @@ import { BadRequestError } from 'routing-controllers';
 import slugifyLib from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
 
-import config from '#config/config';
 import { contactEmailTemplates } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import {
@@ -34,6 +34,7 @@ import {
   CalloutVariant,
   Contact,
 } from '#models/index';
+import ActivityService from '#services/ActivityService';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
@@ -274,6 +275,16 @@ class CalloutsService {
     response.newsletter = newsletter || null;
 
     const savedResponse = await this.saveResponse(response);
+    try {
+      await ActivityService.addEvent({
+        contactId: contact.id,
+        actorId: null,
+        eventType: ActivityEventType.CalloutAnswered,
+        metadata: null,
+      });
+    } catch (err) {
+      log.error('Failed to log event callout.answered', err);
+    }
 
     if (newsletter?.optIn) {
       log.info(`Opting contact ${contact.id} into newsletter`, { newsletter });

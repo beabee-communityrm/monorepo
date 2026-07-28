@@ -1,3 +1,5 @@
+import { InsertResult } from 'typeorm';
+
 import { getRepository } from '#database';
 import { ActivityEvent } from '#models/index';
 
@@ -6,8 +8,13 @@ class ActivityService {
    * Add new event to events table
    * @param event Event to add
    */
-  async addEvent(event: ActivityEvent): Promise<void> {
-    await getRepository(ActivityEvent).insert(event);
+  async addEvent(
+    event: Pick<
+      ActivityEvent,
+      'contactId' | 'actorId' | 'eventType' | 'metadata'
+    >
+  ): Promise<InsertResult> {
+    return await getRepository(ActivityEvent).insert(event);
   }
 
   /**
