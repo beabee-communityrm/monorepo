@@ -275,16 +275,6 @@ class CalloutsService {
     response.newsletter = newsletter || null;
 
     const savedResponse = await this.saveResponse(response);
-    try {
-      await ActivityService.addEvent({
-        contactId: contact.id,
-        actorId: null,
-        eventType: ActivityEventType.CalloutAnswered,
-        metadata: null,
-      });
-    } catch (err) {
-      log.error('Failed to log event callout.answered', err);
-    }
 
     if (newsletter?.optIn) {
       log.info(`Opting contact ${contact.id} into newsletter`, { newsletter });
