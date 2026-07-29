@@ -1,4 +1,4 @@
-import { ActivityEventType } from '@beabee/beabee-common';
+import { ActivityActorType, ActivityEventType } from '@beabee/beabee-common';
 
 import {
   Column,
@@ -19,6 +19,9 @@ export class ActivityEvent {
 
   @Column({ type: String })
   contactId!: string;
+
+  @Column({ type: String })
+  actorType!: ActivityActorType;
 
   @Column({ type: 'uuid', nullable: true })
   actorId!: string | null;

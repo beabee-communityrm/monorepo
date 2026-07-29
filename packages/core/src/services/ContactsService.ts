@@ -1,4 +1,5 @@
 import {
+  ActivityActorType,
   ActivityEventType,
   CONTACT_MFA_TYPE,
   ContributionPeriod,
@@ -135,6 +136,7 @@ class ContactsService {
       try {
         await ActivityService.addEvent({
           contactId: contact.id,
+          actorType: ActivityActorType.User,
           actorId: null,
           eventType: ActivityEventType.ContactCreated,
           metadata: null,
