@@ -11,7 +11,7 @@ class ActivityService {
   async addEvent(
     event: Pick<
       ActivityEvent,
-      'contactId' | 'actorId' | 'eventType' | 'metadata'
+      'contactId' | 'actorId' | 'actorType' | 'eventType' | 'metadata'
     >
   ): Promise<InsertResult> {
     return await getRepository(ActivityEvent).insert(event);
