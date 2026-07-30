@@ -1,10 +1,16 @@
 export enum ActivityEventType {
-  CalloutCreated = 'callout.created',
+  CalloutUpdated = 'callout.updated',
   CalloutAnswered = 'callout.answered',
   ContactCreated = 'contact.created',
   ContactDeleted = 'contact.removed',
+  ContactUpdated = 'contact.profile-updated',
+  ContactContributionChanged = 'contact.contribution-updated',
+  ContactContributionStarted = 'contact.contribution-started',
+  ContactContributionStopped = 'contact.contribution-stopped',
   PaymentInitiated = 'payment.initiated',
   PaymentFailed = 'payment.failed',
   PaymentSuccessful = 'payment.successful',
   PaymentCancelled = 'payment.cancelled',
+  PaymentRefunded = 'payment.refunded',
+  NewsletterGroupsChanged = 'newsletter.groups-updated',
 }
