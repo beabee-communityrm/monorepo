@@ -14,16 +14,25 @@ button:not(:disabled) {
  * Page-level typography for Nuxt UI pages. Also applied
  * to `UModal` content (see `modal.slots.content` in nuxt-ui.config.ts),
  * since a modal's teleported DOM otherwise falls outside `.nuxt-page`.
+ *
+ * Wrapped in `@layer components` so Tailwind's utility classes (e.g.
+ * `group-hover:text-primary`) can still override it — unlayered CSS
+ * always beats layered CSS regardless of specificity, and Tailwind's
+ * utilities live in the `utilities` layer.
  */
-.nuxt-page {
-  @apply text-default;
 
-  p {
-    @apply text-sm;
-  }
+@layer components {
+  .nuxt-page {
+    @apply text-default;
 
-  h2 {
-    @apply text-highlighted text-base font-semibold;
+    p {
+      @apply text-sm;
+    }
+
+    h2,
+    h3 {
+      @apply text-highlighted text-base font-semibold;
+    }
   }
 }
 

@@ -974,12 +974,23 @@
     "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, wordt extra reacties niet geregistreerd."
   },
   "callouts": {
+    "access": {
+      "everyone": "Open voor iedereen",
+      "member": "Alleen leden"
+    },
     "archive": "Archief",
+    "archiveRange": "{start}-{end} van {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "Einddatum"
+      "endDate": "Einddatum",
+      "responses": "{n} reactie | {n} reacties"
+    },
+    "daysLeft": "nog {n} dag | nog {n} dagen",
+    "empty": {
+      "active": "Op dit moment zijn er geen actieve oproepen."
     },
     "noArchivedCallouts": "Geen oproepen",
+    "openCallouts": "Open oproepen",
     "search": "Zoeken...",
     "showAll": "Alle",
     "showAnswered": "Beantwoord",

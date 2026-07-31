@@ -5,97 +5,168 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="t('menu.callouts')" />
-  <div v-if="activeCallouts" class="-mx-3 mb-6 flex flex-wrap">
-    <CalloutCard
-      v-for="callout in activeCallouts.items"
-      :key="callout.slug"
-      :callout="callout"
-      class="mx-3 mb-5"
-    />
-  </div>
-
-  <AppHeading>{{ t('callouts.archive') }}</AppHeading>
-  <div class="my-2 items-center justify-between lg:flex">
-    <AppSearchInput
-      v-model="currentSearch"
-      :placeholder="t('callouts.search')"
-    />
-    <div class="my-2 text-sm font-semibold text-main-80 uppercase lg:my-0">
-      <span>{{ t('common.show') }}</span>
-      <AppToggle
-        v-model="currentShow"
-        :items="[
-          { id: 'all', label: t('callouts.showAll') },
-          { id: 'answered', label: t('callouts.showAnswered') },
-        ]"
-      />
-    </div>
-  </div>
-
-  <AppTable
-    :headers="headers"
-    :items="archivedCallouts?.items || null"
-    class="mt-2 w-full whitespace-nowrap"
-  >
-    <template #empty>
-      <p>{{ t('callouts.noArchivedCallouts') }}</p>
-    </template>
-
-    <template #value-name="{ item }">
-      <router-link
-        :to="`/crowdnewsroom/${item.slug}`"
-        class="text-base font-bold text-link"
-        >{{ item.title }}</router-link
+  <div class="nuxt-page">
+    <template v-if="activeCallouts">
+      <h2 class="sr-only">{{ t('callouts.openCallouts') }}</h2>
+      <div
+        v-if="activeCallouts.items.length > 0"
+        class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
+        <CalloutCard
+          v-for="callout in activeCallouts.items"
+          :key="callout.slug"
+          :callout="callout"
+        />
+      </div>
+      <p v-else class="text-muted py-16 text-center">
+        {{ t('callouts.empty.active') }}
+      </p>
     </template>
 
-    <template #value-expires="{ item }">
-      <AppTime v-if="item.expires" :datetime="item.expires" />
-      <span v-else>-</span>
-    </template>
+    <div class="mt-10">
+      <UCard
+        :ui="{ root: 'divide-y-0', header: 'p-0 sm:p-0', body: 'p-0 sm:p-0' }"
+      >
+        <template #header>
+          <h2>
+            <UButton
+              variant="ghost"
+              color="neutral"
+              block
+              class="justify-between px-5 py-3.5"
+              @click="toggleArchive"
+            >
+              <span
+                class="text-highlighted flex items-center gap-2 text-base font-semibold"
+              >
+                <UIcon name="i-lucide-archive" class="text-muted size-4" />
+                {{ t('callouts.archive') }}
+                <UBadge color="neutral" variant="subtle" size="sm">
+                  {{ archivedTotal ?? 0 }}
+                </UBadge>
+              </span>
+              <UIcon
+                name="i-lucide-chevron-down"
+                class="text-muted size-4 transition-transform"
+                :class="archiveOpen && 'rotate-180'"
+              />
+            </UButton>
+          </h2>
+        </template>
 
-    <template #value-answered="{ item }">
-      <span v-if="item.hasAnswered">
-        <font-awesome-icon :icon="faCheckCircle" />
-        {{ t('callouts.showAnswered') }}
-      </span>
-    </template>
-  </AppTable>
+        <template v-if="archiveOpen">
+          <div
+            class="border-default flex flex-wrap items-center gap-3 border-t p-4"
+          >
+            <UInput
+              v-model="archiveSearchInput"
+              icon="i-lucide-search"
+              :placeholder="t('callouts.search')"
+              variant="subtle"
+              class="w-full sm:w-64"
+              @keyup.enter="archiveSearch = archiveSearchInput"
+              @blur="archiveSearch = archiveSearchInput"
+            >
+              <template v-if="archiveSearchInput" #trailing>
+                <UButton
+                  icon="i-lucide-x"
+                  color="neutral"
+                  variant="link"
+                  size="sm"
+                  :aria-label="t('actions.clearSearch')"
+                  @click="clearArchiveSearch"
+                />
+              </template>
+            </UInput>
 
-  <div class="mt-3 ml-auto">
-    <AppPagination v-model="currentPage" :total-pages="totalPages" />
+            <UButton
+              :aria-pressed="archiveRespondedOnly"
+              :color="archiveRespondedOnly ? 'primary' : 'neutral'"
+              :variant="archiveRespondedOnly ? 'subtle' : 'outline'"
+              class="shrink-0"
+              @click="toggleArchiveRespondedOnly"
+            >
+              <UIcon
+                name="i-lucide-check"
+                aria-hidden="true"
+                class="size-3.5 transition-opacity"
+                :class="archiveRespondedOnly ? 'opacity-100' : 'opacity-40'"
+              />
+              {{ t('callouts.showAnswered') }}
+            </UButton>
+          </div>
+
+          <div
+            v-if="archivedCallouts && archivedCallouts.items.length > 0"
+            class="border-default divide-default divide-y border-t"
+          >
+            <CalloutArchiveRow
+              v-for="callout in archivedCallouts.items"
+              :key="callout.slug"
+              :callout="callout"
+            />
+          </div>
+          <p
+            v-else
+            class="text-muted border-default border-t px-4 py-8 text-center"
+          >
+            {{ t('callouts.noArchivedCallouts') }}
+          </p>
+
+          <div
+            v-if="archiveTotalPages > 1"
+            class="border-default flex items-center justify-between border-t p-4"
+          >
+            <span class="text-muted text-sm">
+              {{
+                t('callouts.archiveRange', {
+                  start: archivePage * archivePageSize + 1,
+                  end: Math.min(
+                    (archivePage + 1) * archivePageSize,
+                    archivedCallouts?.total ?? 0
+                  ),
+                  total: archivedCallouts?.total ?? 0,
+                })
+              }}
+            </span>
+            <UPagination
+              variant="subtle"
+              :default-page="archivePage + 1"
+              :page="archivePage + 1"
+              :total="archivedCallouts?.total ?? 0"
+              :items-per-page="archivePageSize"
+              @update:page="(p: number) => (archivePage = p - 1)"
+            />
+          </div>
+        </template>
+      </UCard>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import {
-  type GetCalloutData,
-  type GetCalloutDataWith,
   type GetCalloutsQuery,
   ItemStatus,
   type Paginated,
 } from '@beabee/beabee-common';
-import {
-  AppHeading,
-  AppPagination,
-  AppSearchInput,
-  AppTable,
-  AppTime,
-  AppToggle,
-  type Header,
-  PageTitle,
-} from '@beabee/vue';
 
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import CalloutArchiveRow from '#components/callout/CalloutArchiveRow.vue';
 import CalloutCard from '#components/callout/CalloutCard.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { defineParam } from '#utils/pagination';
 import { routeIcons, routeLabels } from '#utils/route-nav';
+import type { CalloutCardData } from '#type';
+
+const calloutWiths = [
+  'hasAnswered',
+  'responseCount',
+  'responseViewSchema',
+] as const;
 
 const { t } = useI18n();
 
@@ -109,60 +180,82 @@ addBreadcrumb(
   ])
 );
 
-const headers: Header[] = [
-  { value: 'name', text: t('callouts.data.callout') },
-  { value: 'expires', text: t('callouts.data.endDate') },
-  { value: 'answered', text: '' },
-];
+const archiveSearch = defineParam('s', (v) => v || '');
+const archiveSearchInput = ref(archiveSearch.value);
+const archiveShow = defineParam('show', (v) => (v === 'answered' ? v : ''));
+const archiveRespondedOnly = computed({
+  get: () => archiveShow.value === 'answered',
+  set: (value: boolean) => {
+    archiveShow.value = value ? 'answered' : '';
+  },
+});
+const archivePage = defineParam('page', (v) => Number(v) || 0);
+const archiveOpen = ref(false);
 
-const currentPage = defineParam('page', (v) => Number(v) || 0);
-const currentSearch = defineParam('s', (v) => v || '');
-const currentShow = defineParam('show', (v) =>
-  v === 'answered' ? 'answered' : 'all'
-);
+function toggleArchive() {
+  archiveOpen.value = !archiveOpen.value;
+}
 
-const activeCallouts = ref<Paginated<GetCalloutData>>();
-const archivedCallouts = ref<Paginated<GetCalloutDataWith<'hasAnswered'>>>();
+function toggleArchiveRespondedOnly() {
+  archiveRespondedOnly.value = !archiveRespondedOnly.value;
+}
 
-const totalPages = computed(() =>
+function clearArchiveSearch() {
+  archiveSearchInput.value = '';
+  archiveSearch.value = '';
+}
+
+const archivePageSize = 15;
+
+const activeCallouts = ref<Paginated<CalloutCardData>>();
+const archivedCallouts = ref<Paginated<CalloutCardData>>();
+
+const archivedTotal = ref<number>();
+
+const archiveTotalPages = computed(() =>
   archivedCallouts.value
-    ? Math.ceil(archivedCallouts.value.total / pageSize)
+    ? Math.ceil(archivedCallouts.value.total / archivePageSize)
     : 0
 );
-watch(totalPages, (value) => {
-  if (currentPage.value > value) {
-    currentPage.value = Math.max(0, value - 1);
+watch(archiveTotalPages, (value) => {
+  if (archivePage.value > value) {
+    archivePage.value = Math.max(0, value - 1);
   }
 });
 
 onBeforeMount(async () => {
-  activeCallouts.value = await client.callout.list({
-    sort: 'starts',
-    order: 'DESC',
+  activeCallouts.value = await client.callout.list(
+    {
+      sort: 'starts',
+      order: 'DESC',
+      rules: {
+        condition: 'AND',
+        rules: [
+          { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
+          { field: 'hidden', operator: 'equal', value: [false] },
+        ],
+      },
+    },
+    calloutWiths
+  );
+
+  const archived = await client.callout.list({
+    limit: 1,
     rules: {
       condition: 'AND',
       rules: [
-        {
-          field: 'status',
-          operator: 'equal',
-          value: [ItemStatus.Open],
-        },
-        {
-          field: 'hidden',
-          operator: 'equal',
-          value: [false],
-        },
+        { field: 'status', operator: 'equal', value: [ItemStatus.Ended] },
+        { field: 'hidden', operator: 'equal', value: [false] },
       ],
     },
   });
+  archivedTotal.value = archived.total;
 });
-
-const pageSize = 15;
 
 watchEffect(async () => {
   const query: GetCalloutsQuery = {
-    offset: currentPage.value * pageSize,
-    limit: pageSize,
+    offset: archivePage.value * archivePageSize,
+    limit: archivePageSize,
     sort: 'expires',
     order: 'DESC',
     rules: {
@@ -171,22 +264,14 @@ watchEffect(async () => {
         {
           field: 'title',
           operator: 'contains',
-          value: [currentSearch.value],
+          value: [archiveSearch.value],
         },
-        {
-          field: 'hidden',
-          operator: 'equal',
-          value: [false],
-        },
-        {
-          field: 'status',
-          operator: 'equal',
-          value: [ItemStatus.Ended],
-        },
-        ...(currentShow.value === 'answered'
+        { field: 'hidden', operator: 'equal', value: [false] },
+        { field: 'status', operator: 'equal', value: [ItemStatus.Ended] },
+        ...(archiveRespondedOnly.value
           ? [
               {
-                field: 'answeredBy',
+                field: 'answeredBy' as const,
                 operator: 'equal' as const,
                 value: ['me'],
               },
@@ -196,6 +281,6 @@ watchEffect(async () => {
     },
   };
 
-  archivedCallouts.value = await client.callout.list(query, ['hasAnswered']);
+  archivedCallouts.value = await client.callout.list(query, calloutWiths);
 });
 </script>

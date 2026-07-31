@@ -974,12 +974,23 @@
     "oneResponseWarning": ""
   },
   "callouts": {
+    "access": {
+      "everyone": "",
+      "member": ""
+    },
     "archive": "",
+    "archiveRange": "",
     "data": {
       "callout": "",
-      "endDate": ""
+      "endDate": "",
+      "responses": ""
+    },
+    "daysLeft": "",
+    "empty": {
+      "active": ""
     },
     "noArchivedCallouts": "",
+    "openCallouts": "",
     "search": "",
     "showAll": "",
     "showAnswered": "",

@@ -974,12 +974,23 @@
     "oneResponseWarning": "Ten en cuenta que solo se permite una respuesta por persona. Si ya has contribuido, las respuestas adicionales no se registrarán."
   },
   "callouts": {
+    "access": {
+      "everyone": "Abierto a todos",
+      "member": "Solo miembros"
+    },
     "archive": "Archivo",
+    "archiveRange": "{start}-{end} de {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "Fecha de finalización"
+      "endDate": "Fecha de finalización",
+      "responses": "{n} respuesta | {n} respuestas"
+    },
+    "daysLeft": "queda {n} día | quedan {n} días",
+    "empty": {
+      "active": "No hay CrowdNewsrooms activos en este momento."
     },
     "noArchivedCallouts": "No hay nada que mostrar aquí",
+    "openCallouts": "CrowdNewsrooms abiertos",
     "search": "Buscar",
     "showAll": "Todos",
     "showAnswered": "Respondidos",

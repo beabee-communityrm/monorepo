@@ -978,12 +978,23 @@
     "oneResponseWarning": "Veuillez noter que cette campagne n'autorise qu'une seule réponse par personne. Si vous y avez déjà répondu, les réponses supplémentaires ne seront pas enregistrées."
   },
   "callouts": {
+    "access": {
+      "everyone": "Ouvert à tous",
+      "member": "Membres uniquement"
+    },
     "archive": "Archiver",
+    "archiveRange": "{start}-{end} sur {total}",
     "data": {
       "callout": "CrowdNewsrooms",
-      "endDate": "Date de fin"
+      "endDate": "Date de fin",
+      "responses": "{n} réponse | {n} réponses"
+    },
+    "daysLeft": "{n} jour restant | {n} jours restants",
+    "empty": {
+      "active": "Aucune campagne active pour le moment."
     },
     "noArchivedCallouts": "Aucune campagne",
+    "openCallouts": "CrowdNewsrooms ouvertes",
     "search": "Rechercher une campagne…",
     "showAll": "Tout",
     "showAnswered": "Avec réponses",
