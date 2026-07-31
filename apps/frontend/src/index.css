@@ -1,11 +1,6 @@
 @import '@beabee/vue/styles';
 @import '@nuxt/ui';
 
-/* Nuxt UI configuration */
-:root {
-  --ui-radius: 3px;
-}
-
 /* Active nav item: replace neutral-100 background with primary tint */
 [data-slot='link'].text-primary::before {
   background-color: rgb(var(--c-link-10));
@@ -15,14 +10,20 @@
  * Page-level typography for Nuxt UI pages. Also applied
  * to `UModal` content (see `modal.slots.content` in nuxt-ui.config.ts),
  * since a modal's teleported DOM otherwise falls outside `.nuxt-page`.
+ *
+ * Wrapped in `@layer components` so Tailwind's utility classes (e.g.
+ * `group-hover:text-primary`) can still override it — unlayered CSS
+ * always beats layered CSS regardless of specificity, and Tailwind's
+ * utilities live in the `utilities` layer.
  */
-.nuxt-page {
-  p {
+@layer components {
+  .nuxt-page {
     @apply text-sm;
-  }
 
-  h2 {
-    @apply text-highlighted text-base font-semibold;
+    h2,
+    h3 {
+      @apply text-highlighted text-base font-semibold;
+    }
   }
 }
 
