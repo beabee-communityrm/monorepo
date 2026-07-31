@@ -39,7 +39,6 @@
         :ui="{ link: 'py-2.5', linkLeadingIcon: 'size-4.5' }"
         class="w-full"
         tooltip
-        @select="doLogout"
       />
     </template>
   </UDashboardSidebar>
@@ -77,6 +76,7 @@ const logoLink = computed(() => {
 const logoutItem: NavigationMenuItem = {
   label: t('menu.logout'),
   icon: 'i-lucide-log-out',
+  onSelect: doLogout,
 };
 
 function doLogout() {
