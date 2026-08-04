@@ -6,7 +6,7 @@
     <TheMenu />
     <main
       id="top"
-      class="flex h-screen w-full flex-col overflow-y-auto bg-neutral-40"
+      class="flex h-screen w-full flex-col overflow-y-auto bg-background"
     >
       <UDashboardNavbar :ui="{ root: 'sticky top-0 z-10 bg-default' }">
         <template #leading>

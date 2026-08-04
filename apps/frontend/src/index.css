@@ -16,6 +16,8 @@ button:not(:disabled) {
  * since a modal's teleported DOM otherwise falls outside `.nuxt-page`.
  */
 .nuxt-page {
+  @apply text-default;
+
   p {
     @apply text-sm;
   }
