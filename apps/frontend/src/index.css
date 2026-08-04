@@ -6,6 +6,10 @@
   --ui-radius: 3px;
 }
 
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 /* Apply link styles to i18n markdown text */
 .content-i18n {
   a {

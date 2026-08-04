@@ -103,6 +103,7 @@ export function useMenu() {
           label: t('menu.legacyApp'),
           icon: 'i-lucide-app-window',
           to: '/members',
+          external: true,
           visible: canAdmin.value && !env.cnrMode,
         },
       ],
