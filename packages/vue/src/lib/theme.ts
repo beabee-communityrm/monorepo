@@ -1,5 +1,5 @@
 import { tailwindcssPaletteGenerator } from '@bobthered/tailwindcss-palette-generator';
-import { mix, parseToRgba, toHex } from 'color2k';
+import { mix, parseToRgba } from 'color2k';
 import { ref, watch } from 'vue';
 
 // [Font name, fallbacks]
