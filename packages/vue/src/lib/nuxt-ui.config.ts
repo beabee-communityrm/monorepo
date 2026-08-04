@@ -8,7 +8,7 @@ export const nuxtUiConfig: NuxtUIOptions = {
   ui: {
     colors: {
       primary: 'nuxt-primary',
-      neutral: 'nuxt-neutral',
+      neutral: 'gray',
     },
     navigationMenu: {
       variants: {
