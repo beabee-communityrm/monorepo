@@ -11,6 +11,10 @@
   background-color: rgb(var(--c-link-10));
 }
 
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 /* Apply link styles to i18n markdown text */
 .content-i18n {
   a {
