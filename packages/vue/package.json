@@ -22,6 +22,7 @@
     "generate:index": "yarn workspace @beabee/dev-cli start generate-index --extension ts --baseDir $(pwd) -p ./src/lib ./src/store ./src/types ./src/utils"
   },
   "dependencies": {
+    "@bobthered/tailwindcss-palette-generator": "^4.0.0",
     "@fontsource/fira-sans": "^5.2.7",
     "@fontsource/fira-sans-condensed": "^5.2.7",
     "@fontsource/libre-franklin": "^5.2.8",

@@ -1,7 +1,7 @@
 <template>
   <UFooter
     :ui="{
-      root: 'border-t border-default',
+      root: 'border-t border-default bg-default',
       left: 'text-sm',
       right: 'text-sm gap-x-6',
     }"
@@ -27,31 +27,31 @@
       <a
         v-if="generalContent.privacyLink"
         :href="generalContent.privacyLink"
-        class="text-muted hover:text-default"
+        class="text-muted hover:text-default text-center"
         >{{ t('footer.privacyPolicy') }}</a
       >
       <a
         v-if="generalContent.termsLink"
         :href="generalContent.termsLink"
-        class="text-muted hover:text-default"
+        class="text-muted hover:text-default text-center"
         >{{ t('footer.terms') }}</a
       >
       <a
         v-if="generalContent.impressumLink"
         :href="generalContent.impressumLink"
-        class="text-muted hover:text-default"
+        class="text-muted hover:text-default text-center"
         >{{ t('footer.impressum') }}</a
       >
       <a
         v-for="item in generalContent.footerLinks"
         :key="item.url"
         :href="item.url"
-        class="text-muted hover:text-default"
+        class="text-muted hover:text-default text-center"
         >{{ item.text }}</a
       >
       <a
         href="https://beabee.io"
-        class="text-highlighted flex items-center gap-1 font-bold"
+        class="text-highlighted flex items-center gap-1 text-center font-bold"
       >
         beabee
         <UIcon name="i-lucide-external-link" class="size-3" />
@@ -59,11 +59,13 @@
       <a
         v-if="canAdmin"
         href="https://beabee.io/#Newsletter"
-        class="text-primary"
+        class="text-primary text-center"
       >
         {{ t('footer.joinCommunity') }}
       </a>
-      <span v-else class="text-muted">{{ t('footer.poweredBy') }}</span>
+      <span v-else class="text-muted text-center">{{
+        t('footer.poweredBy')
+      }}</span>
     </template>
   </UFooter>
 </template>

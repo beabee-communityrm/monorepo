@@ -1,4 +1,5 @@
-import { mix, parseToRgba } from 'color2k';
+import { tailwindcssPaletteGenerator } from '@bobthered/tailwindcss-palette-generator';
+import { mix, parseToRgba, toHex } from 'color2k';
 import { ref, watch } from 'vue';
 
 // [Font name, fallbacks]
@@ -123,22 +124,6 @@ function computeShade(colorValue: string, level: number): string {
     : mix(colorValue, 'white', 1 - level / 100);
 }
 
-// Maps standard Tailwind shade numbers to the internal level system.
-// Used to generate --color-{name}-{shade} variables for Nuxt UI compatibility.
-const TAILWIND_SHADE_LEVELS: [shade: number, level: number][] = [
-  [50, 5],
-  [100, 10],
-  [200, 20],
-  [300, 30],
-  [400, 40],
-  [500, 100],
-  [600, 110],
-  [700, 120],
-  [800, 130],
-  [900, 140],
-  [950, 145],
-];
-
 function setCustomShades(
   colorName: string,
   colorValue: string,
@@ -151,16 +136,12 @@ function setCustomShades(
 }
 
 // Set standard Tailwind 50–950 scale for a colour, for Nuxt UI compatibility.
-// Only needed for the colours mapped to Nuxt UI tokens in nuxt-ui.config.ts,
-// ('nuxt-primary' and 'nuxt-neutral').
+// Only needed for the colours mapped to Nuxt UI tokens in nuxt-ui.config.ts
+// ('nuxt-primary').
 function setNuxtShades(colorName: string, colorValue: string) {
-  for (const [shade, level] of TAILWIND_SHADE_LEVELS) {
-    const [r, g, b] = parseToRgba(computeShade(colorValue, level));
-
-    setCSSVar(
-      `--color-${colorName}-${shade}`,
-      `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`
-    );
+  const shades = tailwindcssPaletteGenerator(colorValue).primary;
+  for (const [shade, hex] of Object.entries(shades)) {
+    setCSSVar(`--color-${colorName}-${shade}`, hex);
   }
 }
 
@@ -218,10 +199,8 @@ watch(
     setCustomShades('black', colors.black || '#000000');
 
     // Nuxt UI colour tokens (see nuxt-ui.config.ts): 'primary' uses the link
-    // colour, 'neutral' expects a lighter base than our (often very dark)
-    // body colour, so derive a lightened variant for it to use instead.
+    // colour.
     setNuxtShades('nuxt-primary', colors.link);
-    setNuxtShades('nuxt-neutral', mix(colors.body, 'white', 0.35));
 
     // Load fonts
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));

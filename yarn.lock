@@ -1627,6 +1627,7 @@ __metadata:
   dependencies:
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
+    "@bobthered/tailwindcss-palette-generator": "npm:^4.0.0"
     "@fontsource/fira-sans": "npm:^5.2.7"
     "@fontsource/fira-sans-condensed": "npm:^5.2.7"
     "@fontsource/libre-franklin": "npm:^5.2.8"
@@ -1697,6 +1698,13 @@ __metadata:
     typescript: "npm:~6.0.3"
   languageName: unknown
   linkType: soft
+
+"@bobthered/tailwindcss-palette-generator@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@bobthered/tailwindcss-palette-generator@npm:4.0.0"
+  checksum: 10c0/81f517d4b94d6b802d43d1a7d1591c58667c18736cb62fe6dec4647ce40264ca83bd7fddc8f67726888f0e938e08805c1e2183892051a8e136cd02160e71c885
+  languageName: node
+  linkType: hard
 
 "@capsizecss/unpack@npm:^4.0.0":
   version: 4.0.0
