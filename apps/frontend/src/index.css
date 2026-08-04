@@ -1,9 +1,26 @@
 @import '@beabee/vue/styles';
 @import '@nuxt/ui';
 
-/* Active nav item: replace neutral-100 background with primary tint */
-[data-slot='link'].text-primary::before {
-  background-color: rgb(var(--c-link-10));
+/* Nuxt UI configuration */
+:root {
+  --ui-radius: 3px;
+}
+
+/*
+ * Page-level typography for Nuxt UI pages. Also applied
+ * to `UModal` content (see `modal.slots.content` in nuxt-ui.config.ts),
+ * since a modal's teleported DOM otherwise falls outside `.nuxt-page`.
+ */
+.nuxt-page {
+  @apply text-default;
+
+  p {
+    @apply text-sm;
+  }
+
+  h2 {
+    @apply text-highlighted text-base font-semibold;
+  }
 }
 
 /*
@@ -79,11 +96,5 @@
   }
   h3 {
     @apply font-title text-xl font-semibold;
-  }
-}
-
-footer {
-  a {
-    @apply text-link;
   }
 }
