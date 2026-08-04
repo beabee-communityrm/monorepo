@@ -4,6 +4,7 @@
     "deliveryAddress": "",
     "deliveryOptIn": "",
     "loginDetail": "",
+    "loginDetail-nuxt": "",
     "mfa": {
       "codeInput": {
         "info": "",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "",
+        "desc-nuxt": "",
+        "descDetail": "",
         "descToken": "",
-        "title": ""
+        "descToken-nuxt": "",
+        "keepEnabled": "",
+        "remove": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "createUnknownErrorNotification": "",
+      "createUnknownErrorNotification-nuxt": "",
       "deleteUnknownErrorNotification": "",
+      "deleteUnknownErrorNotification-nuxt": "",
+      "description": "Προσθέστε ένα επιπλέον επίπεδο ασφάλειας στον λογαριασμό σας",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "modalTitle": "",
+      "modalTitle-nuxt": "",
       "result": {
         "invalidCode": "",
         "successful": "",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "secretInput": {
         "desc": "",
-        "label": ""
+        "label": "",
+        "toggleHide": "",
+        "toggleShow": ""
       },
+      "statusDisabled": {
+        "description": "Όταν ενεργοποιηθεί, θα σας ζητείται κωδικός από την εφαρμογή Authenticator σε κάθε σύνδεση.",
+        "title": "Ο έλεγχος ταυτότητας δύο παραγόντων είναι απενεργοποιημένος"
+      },
+      "statusEnabled": {
+        "description": "Ο λογαριασμός σας προστατεύεται με μια εφαρμογή Authenticator. Απενεργοποιήστε το μόνο αν αλλάζετε συσκευή.",
+        "title": "Ο έλεγχος ταυτότητας δύο παραγόντων είναι ενεργοποιημένος"
+      },
+      "stepIndicator": "",
       "title": "",
+      "title-nuxt": "",
       "validateButton": {
-        "label": ""
+        "label": "",
+        "label-nuxt": ""
       }
     },
     "newsletter": {
@@ -55,10 +83,14 @@
       "unsubscribe": ""
     },
     "phoneInfo": "",
+    "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
+    "requiredFields": "Υποχρεωτικά πεδία",
     "savedPassword": "",
     "subTitle": "",
-    "title": ""
+    "subTitle-nuxt": "",
+    "title": "",
+    "unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές"
   },
   "actions": {
     "add": "",
@@ -81,6 +113,7 @@
     "export": "",
     "getStarted": "αρχίζω",
     "goBack": "",
+    "hidePassword": "Απόκρυψη κωδικού πρόσβασης",
     "increase": "",
     "next": "επόμενος",
     "noBack": "",
@@ -104,6 +137,7 @@
     "sendOneOffEmail": "Αποστολή email",
     "sendOngoingEmails": "Επαναλαμβανόμενα email",
     "share": "Μοιραστείτε",
+    "showPassword": "Εμφάνιση κωδικού πρόσβασης",
     "skip": "",
     "submit": "υποβάλετε",
     "tryAgain": "",
@@ -294,7 +328,7 @@
         "body": "",
         "danger": "",
         "link": "",
-        "main": "",
+        "main": "Κύριο",
         "success": "",
         "warning": ""
       },
@@ -1457,6 +1491,9 @@
         "maxLength": "",
         "required": ""
       },
+      "telephone": {
+        "phone": "Μη έγκυρος αριθμός τηλεφώνου"
+      },
       "unknown": {
         "email": "",
         "max": "",
@@ -1486,6 +1523,7 @@
     "notes": "",
     "password": "",
     "passwordInfo": "",
+    "passwordInfo-nuxt": "",
     "phone": "",
     "postCode": "",
     "richtext": {

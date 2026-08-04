@@ -4,6 +4,7 @@
     "deliveryAddress": "",
     "deliveryOptIn": "",
     "loginDetail": "",
+    "loginDetail-nuxt": "",
     "mfa": {
       "codeInput": {
         "info": "",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "",
+        "desc-nuxt": "",
+        "descDetail": "",
         "descToken": "",
-        "title": ""
+        "descToken-nuxt": "",
+        "keepEnabled": "",
+        "remove": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "createUnknownErrorNotification": "",
+      "createUnknownErrorNotification-nuxt": "",
       "deleteUnknownErrorNotification": "",
+      "deleteUnknownErrorNotification-nuxt": "",
+      "description": "Machen Sie Ihr Konto sicherer",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "modalTitle": "",
+      "modalTitle-nuxt": "",
       "result": {
         "invalidCode": "",
         "successful": "",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "secretInput": {
         "desc": "",
-        "label": "Betreff"
+        "label": "Betreff",
+        "toggleHide": "",
+        "toggleShow": ""
       },
+      "statusDisabled": {
+        "description": "Wenn Sie sie einschalten, brauchen Sie bei jeder Anmeldung einen Code aus Ihrer Authenticator-App.",
+        "title": "Die 2-Faktor-Authentifizierung ist aus"
+      },
+      "statusEnabled": {
+        "description": "Ihr Konto ist mit einer Authenticator-App geschützt. Schalten Sie sie nur aus, wenn Sie ein neues Gerät haben.",
+        "title": "Die 2-Faktor-Authentifizierung ist an"
+      },
+      "stepIndicator": "",
       "title": "",
+      "title-nuxt": "",
       "validateButton": {
-        "label": "Betreff"
+        "label": "Betreff",
+        "label-nuxt": "Betreff"
       }
     },
     "newsletter": {
@@ -55,10 +83,14 @@
       "unsubscribe": ""
     },
     "phoneInfo": "",
+    "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
+    "requiredFields": "Pflicht-Felder",
     "savedPassword": "",
     "subTitle": "",
-    "title": ""
+    "subTitle-nuxt": "",
+    "title": "",
+    "unsavedChanges": "Sie haben Änderungen, die noch nicht gespeichert sind"
   },
   "actions": {
     "add": "",
@@ -81,6 +113,7 @@
     "export": "",
     "getStarted": "Hier kannst du starten.",
     "goBack": "",
+    "hidePassword": "Passwort verstecken",
     "increase": "",
     "next": "Hier kommst du auf die nächste Seite.",
     "noBack": "",
@@ -104,6 +137,7 @@
     "sendOneOffEmail": "E-Mail schicken",
     "sendOngoingEmails": "E-Mails die immer wieder gehen",
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
+    "showPassword": "Passwort zeigen",
     "skip": "",
     "submit": "Hier wird deine Meldung weg-geschickt.",
     "tryAgain": "",
@@ -294,7 +328,7 @@
         "body": "",
         "danger": "",
         "link": "",
-        "main": "",
+        "main": "Haupt-Farbe",
         "success": "",
         "warning": ""
       },
@@ -1457,6 +1491,9 @@
         "maxLength": "",
         "required": ""
       },
+      "telephone": {
+        "phone": "Die Telefon-Nummer ist falsch"
+      },
       "unknown": {
         "email": "",
         "max": "",
@@ -1486,6 +1523,7 @@
     "notes": "",
     "password": "",
     "passwordInfo": "",
+    "passwordInfo-nuxt": "",
     "phone": "",
     "postCode": "",
     "richtext": {

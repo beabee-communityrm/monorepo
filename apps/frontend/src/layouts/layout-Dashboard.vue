@@ -6,9 +6,9 @@
     <TheMenu />
     <main
       id="top"
-      class="flex h-screen w-full flex-col overflow-y-auto bg-neutral-40"
+      class="flex h-screen w-full flex-col overflow-y-auto bg-background"
     >
-      <UDashboardNavbar :ui="{ root: 'sticky top-0 z-10 bg-white' }">
+      <UDashboardNavbar :ui="{ root: 'sticky top-0 z-10 bg-default' }">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
@@ -23,6 +23,8 @@
       <div class="flex flex-col p-4 md:p-5">
         <router-view />
       </div>
+
+      <div id="sticky-bottom-banner" class="sticky bottom-0 z-20"></div>
       <TheFooter class="mt-auto flex-none" />
     </main>
   </UDashboardGroup>

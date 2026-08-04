@@ -4,6 +4,7 @@
     "deliveryAddress": "Adresse de livraison",
     "deliveryOptIn": "",
     "loginDetail": "Informations de connexion",
+    "loginDetail-nuxt": "Modifier le mot de passe",
     "mfa": {
       "codeInput": {
         "info": "Si vous avez perdu votre appareil A2F, veuillez contacter l'assistance",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "Voulez-vous vraiment l'authentification multifacteur ? Dès lors, vous n'aurez besoin que de votre mot de passe pour vous connecter. N'oubliez pas de supprimer l'entrée de votre application Authenticator. Vous pourrez toujours la réactiver.",
+        "desc-nuxt": "Voulez-vous vraiment désactiver l'authentification à deux facteurs ? Dès lors, vous n'aurez besoin que de votre mot de passe pour vous connecter. N'oubliez pas de supprimer l'entrée de votre application Authenticator. Vous pourrez toujours la réactiver.",
+        "descDetail": "Dès lors, vous n'aurez besoin que de votre mot de passe pour vous connecter. N'oubliez pas de supprimer l'entrée de votre application Authenticator. Vous pourrez toujours la réactiver.",
         "descToken": "Pour désactiver l'A2F, veuillez taper votre code d'A2F actuel :",
-        "title": "Désactiver l'A2F"
+        "descToken-nuxt": "Pour désactiver l'A2F, veuillez taper votre code d'A2F actuel :",
+        "keepEnabled": "Garder l'A2F activée",
+        "remove": "Supprimer l'A2F",
+        "title": "Désactiver l'A2F",
+        "title-nuxt": "Désactiver l'A2F"
       },
       "createUnknownErrorNotification": "Une erreur inconnue a empêché l'activation de l'authentification à 2 facteurs. Veuillez réessayer ou contacter l'assistance.",
+      "createUnknownErrorNotification-nuxt": "Une erreur inconnue a empêché l'activation de l'authentification à deux facteurs. Veuillez réessayer ou contacter l'assistance.",
       "deleteUnknownErrorNotification": "Une erreur inconnue a empêché la désactivation de l'authentification à 2 facteurs. Veuillez réessayer ou contacter l'assistance.",
+      "deleteUnknownErrorNotification-nuxt": "Une erreur inconnue a empêché la désactivation de l'authentification à deux facteurs. Veuillez réessayer ou contacter l'assistance.",
+      "description": "Ajoutez une couche de sécurité supplémentaire à votre compte",
       "disabledNotification": "L'authentification à deux facteurs a bien été désactivée",
       "enabledNotification": "L'authentification à deux facteurs à bien été activée",
       "enterCode": {
         "desc": "Tapez le code affiché dans votre application d'authentification.",
-        "title": "Vérification"
+        "desc-nuxt": "Tapez le code affiché dans votre application d'authentification.",
+        "title": "Vérification",
+        "title-nuxt": "Vérification"
       },
       "modalTitle": "Activer l'authentification à 2 facteurs",
+      "modalTitle-nuxt": "Activer l'authentification à deux facteurs",
       "result": {
         "invalidCode": "Le code n'a pas pu être vérifié, veuillez réessayer ou contacter l'assistance.",
         "successful": "L'authentification à 2 facteurs a bien été configurée.",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "Scannez le code QR ci-dessous avec votre application d'authentification.",
-        "title": "Code QR"
+        "desc-nuxt": "Scannez le code QR ci-dessous avec votre application d'authentification.",
+        "title": "Code QR",
+        "title-nuxt": "Code QR"
       },
       "secretInput": {
         "desc": "Vous pouvez également taper le code suivant dans votre application d'authentification.",
-        "label": "Code secret"
+        "label": "Code secret",
+        "toggleHide": "Masquer",
+        "toggleShow": "Vous ne pouvez pas scanner ? Saisissez le code manuellement"
       },
+      "statusDisabled": {
+        "description": "Une fois activée, un code de votre application d'authentification vous sera demandé à chaque connexion.",
+        "title": "L'authentification à deux facteurs est désactivée"
+      },
+      "statusEnabled": {
+        "description": "Votre compte est protégé par une application d'authentification. Ne la désactivez que si vous changez d'appareil.",
+        "title": "L'authentification à deux facteurs est activée"
+      },
+      "stepIndicator": "Étape {step} sur {total}",
       "title": "Authentification à 2 facteurs",
+      "title-nuxt": "Authentification à deux facteurs",
       "validateButton": {
-        "label": "Vérifier le jeton"
+        "label": "Vérifier le jeton",
+        "label-nuxt": "Vérifier le jeton"
       }
     },
     "newsletter": {
@@ -55,10 +83,14 @@
       "unsubscribe": "Désinscrire de la lettre d'information"
     },
     "phoneInfo": "En indiquant votre numéro de téléphone, vous acceptez d'être contacté par téléphone",
+    "phoneInfo-nuxt": "En indiquant votre numéro de téléphone, vous acceptez d'être contacté par téléphone.",
     "phoneInfoAdmin": "Vous devez obtenir le consentement de la personne avant d'ajouter son numéro de téléphone dans le système",
+    "requiredFields": "Champs obligatoires",
     "savedPassword": "Nouveau mot de passe enregistré",
     "subTitle": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
-    "title": "Compte"
+    "subTitle-nuxt": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
+    "title": "Compte",
+    "unsavedChanges": "Vous avez des modifications non enregistrées"
   },
   "actions": {
     "add": "Ajouter",
@@ -81,6 +113,7 @@
     "export": "Exporter",
     "getStarted": "Commencer",
     "goBack": "Retour",
+    "hidePassword": "Masquer le mot de passe",
     "increase": "",
     "next": "Suivant",
     "noBack": "Non, revenir en arrière",
@@ -104,6 +137,7 @@
     "sendOneOffEmail": "Envoyer un e-mail",
     "sendOngoingEmails": "E-mails récurrents",
     "share": "Partager",
+    "showPassword": "Afficher le mot de passe",
     "skip": "Ignorer",
     "submit": "Soumettre",
     "tryAgain": "",
@@ -294,7 +328,7 @@
         "body": "Texte",
         "danger": "Danger",
         "link": "Liens",
-        "main": "Principal",
+        "main": "Principale",
         "success": "Succès",
         "warning": "Avertissement"
       },
@@ -1461,6 +1495,9 @@
         "maxLength": "",
         "required": ""
       },
+      "telephone": {
+        "phone": "Numéro de téléphone invalide"
+      },
       "unknown": {
         "email": "Adresse e-mail invalide",
         "max": "Ce champ doit être au plus {max}",
@@ -1490,6 +1527,7 @@
     "notes": "Notes",
     "password": "Mot de passe",
     "passwordInfo": "Définissez un mot de passe sécurisé : au moins 8 caractères, un nombre, lettres majuscules et minuscules.",
+    "passwordInfo-nuxt": "Définissez un mot de passe sécurisé : au moins 8 caractères, un nombre, une lettre majuscule et une lettre minuscule.",
     "phone": "Numéro de téléphone",
     "postCode": "Code postal",
     "richtext": {

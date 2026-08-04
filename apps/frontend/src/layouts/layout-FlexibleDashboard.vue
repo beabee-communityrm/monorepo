@@ -4,8 +4,8 @@
   </div>
   <UDashboardGroup v-else unit="rem">
     <TheMenu />
-    <main id="top" class="flex w-full flex-1 flex-col bg-neutral-40">
-      <UDashboardNavbar :ui="{ root: 'sticky top-0 z-10 bg-white' }">
+    <main id="top" class="flex w-full flex-1 flex-col bg-background">
+      <UDashboardNavbar :ui="{ root: 'sticky top-0 z-10 bg-default' }">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
