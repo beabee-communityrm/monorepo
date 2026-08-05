@@ -178,6 +178,15 @@ meta:
       </section>
 
       <section class="mb-6">
+        <AppHeading>{{ t('contactOverview.origin.title') }}</AppHeading>
+        <AppInfoList>
+          <AppInfoListItem :name="t('contactOverview.origin.source')" />
+          <AppInfoListItem :name="t('contactOverview.origin.campaign')" />
+          <AppInfoListItem :name="t('contactOverview.origin.referrer')" />
+        </AppInfoList>
+      </section>
+
+      <section class="mb-6">
         <AppHeading>{{ t('contactOverview.newsletter.title') }}</AppHeading>
         <AppInfoList>
           <AppInfoListItem
