@@ -82,6 +82,7 @@ export type * from './callout-variant-navigation-data.js';
 export type * from './complete-signup-data.js';
 export type * from './contact-data.js';
 export type * from './contact-mfa-data.js';
+export type * from './contact-origin-data.js';
 export type * from './contact-profile-data.js';
 export type * from './contact-role-data.js';
 export type * from './contact-tag-filter-name.js';
