@@ -1093,6 +1093,12 @@
       "title": "Lettre d'information"
     },
     "oneTime": "Ponctuel",
+    "origin": {
+      "campaign": "Campagne",
+      "referrer": "Référent",
+      "source": "Source d'inscription",
+      "title": "Origine"
+    },
     "overview": "Vue d'ensemble",
     "pickTag": "Sélectionnez un libellé dans la liste ci-dessous",
     "profile": "Profil",

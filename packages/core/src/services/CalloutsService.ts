@@ -15,7 +15,6 @@ import { BadRequestError } from 'routing-controllers';
 import slugifyLib from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
 
-import config from '#config/config';
 import { contactEmailTemplates } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import {

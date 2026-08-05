@@ -178,6 +178,24 @@ meta:
       </section>
 
       <section class="mb-6">
+        <AppHeading>{{ t('contactOverview.origin.title') }}</AppHeading>
+        <AppInfoList>
+          <AppInfoListItem
+            :name="t('contactOverview.origin.source')"
+            :value="contact.origin.source"
+          />
+          <AppInfoListItem
+            :name="t('contactOverview.origin.campaign')"
+            :value="contact.origin.campaign"
+          />
+          <AppInfoListItem
+            :name="t('contactOverview.origin.referrer')"
+            :value="contact.origin.referrer"
+          />
+        </AppInfoList>
+      </section>
+
+      <section class="mb-6">
         <AppHeading>{{ t('contactOverview.newsletter.title') }}</AppHeading>
         <AppInfoList>
           <AppInfoListItem
@@ -340,6 +358,7 @@ const contact = ref<GetContactDataWith<
   | GetContactWith.Contribution
   | GetContactWith.Roles
   | GetContactWith.Tags
+  | GetContactWith.Origin
 > | null>(null);
 const contactTags = ref<string[]>([]);
 const contactAbout = reactive({ notes: '', description: '' });
@@ -421,6 +440,7 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
     GetContactWith.Contribution,
     GetContactWith.Roles,
     GetContactWith.Tags,
+    GetContactWith.Origin,
   ]);
   changingRoles.value = false;
 }
@@ -449,6 +469,7 @@ async function handleToggleTag(tagId: string, successText: string) {
       GetContactWith.Contribution,
       GetContactWith.Roles,
       GetContactWith.Tags,
+      GetContactWith.Origin,
     ]);
 
     addNotification({ title: successText, variant: 'success' });
@@ -463,6 +484,7 @@ onBeforeMount(async () => {
     GetContactWith.Contribution,
     GetContactWith.Roles,
     GetContactWith.Tags,
+    GetContactWith.Origin,
   ]);
   contactAbout.notes = contact.value.profile.notes || '';
   contactAbout.description = contact.value.profile.description || '';

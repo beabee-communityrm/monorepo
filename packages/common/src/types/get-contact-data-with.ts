@@ -1,5 +1,6 @@
 import { GetContactWith } from '../index.js';
 import type {
+  ContactOriginData,
   ContactProfileData,
   ContactRoleData,
   ContributionInfo,
@@ -19,4 +20,5 @@ export type GetContactDataWith<With extends GetContactWith | void> =
     (GetContactWith.Tags extends With
       ? { tags: { id: string; name: string }[] }
       : Noop) &
-    (GetContactWith.IsReviewer extends With ? { isReviewer: boolean } : Noop);
+    (GetContactWith.IsReviewer extends With ? { isReviewer: boolean } : Noop) &
+    (GetContactWith.Origin extends With ? { origin: ContactOriginData } : Noop);

@@ -2,6 +2,7 @@ import { GetContactWith, Rule, RuleGroup } from '@beabee/beabee-common';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
 import { UnauthorizedError } from '@beabee/core/errors';
 import { CalloutReviewer, Contact, ContactRole } from '@beabee/core/models';
+import ActivityService from '@beabee/core/services/ActivityService';
 import ContactsService from '@beabee/core/services/ContactsService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
@@ -80,6 +81,10 @@ class ContactTransformer extends BaseContactTransformer<
       ...(opts?.with?.includes(GetContactWith.IsReviewer) && {
         isReviewer: !!contact.isReviewer,
       }),
+      ...(opts?.with?.includes(GetContactWith.Origin) &&
+        contact.origin && {
+          origin: contact.origin,
+        }),
       ...(auth.roles.includes('admin') &&
         opts?.with?.includes(GetContactWith.Tags) && {
           tags: contact.tags.map((ct) => contactTagTransformer.convert(ct.tag)),
@@ -143,7 +148,7 @@ class ContactTransformer extends BaseContactTransformer<
 
   /**
    * Loads additional data for contacts after the main query.
-   * Handles roles, contribution info, and tags.
+   * Handles roles, contribution info, origin, and tags.
    *
    * @param contacts - The contacts to modify
    * @param query - The query containing include options
@@ -162,6 +167,16 @@ class ContactTransformer extends BaseContactTransformer<
 
         contacts[0].contributionInfo = await PaymentService.getContributionInfo(
           contacts[0]
+        );
+      }
+
+      if (query.with?.includes(GetContactWith.Origin)) {
+        if (contacts.length > 1) {
+          throw new Error('Cannot fetch origin for multiple contacts');
+        }
+
+        contacts[0].origin = await ActivityService.getContactOrigin(
+          contacts[0].id
         );
       }
 
