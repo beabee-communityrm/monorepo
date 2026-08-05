@@ -1,5 +1,4 @@
 import {
-  ActivityEventType,
   CalloutAccess,
   CalloutResponseAnswersSlide,
   CalloutResponseGuestData,
@@ -34,7 +33,6 @@ import {
   CalloutVariant,
   Contact,
 } from '#models/index';
-import ActivityService from '#services/ActivityService';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
