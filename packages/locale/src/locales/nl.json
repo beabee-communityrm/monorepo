@@ -1123,6 +1123,12 @@
       "title": "Nieuwsbrief"
     },
     "oneTime": "Eenmalig",
+    "origin": {
+      "campaign": "Campagne",
+      "referrer": "Verwijzer",
+      "source": "Aanmeldbron",
+      "title": "Herkomst"
+    },
     "overview": "Overzicht",
     "pickTag": "Kies een tag uit de onderstaande lijst",
     "profile": "Profiel",

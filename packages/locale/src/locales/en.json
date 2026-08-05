@@ -1122,6 +1122,12 @@
       "title": "Newsletter"
     },
     "oneTime": "One-time",
+    "origin": {
+      "campaign": "Campaign",
+      "referrer": "Referrer",
+      "source": "Signup Source",
+      "title": "Origin"
+    },
     "overview": "Overview",
     "pickTag": "Pick a tag from the list below",
     "profile": "Profile",

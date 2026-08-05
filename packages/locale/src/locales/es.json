@@ -1123,6 +1123,12 @@
       "title": "Boletín"
     },
     "oneTime": "Único",
+    "origin": {
+      "campaign": "Campaña",
+      "referrer": "Referente",
+      "source": "Origen de registro",
+      "title": "Origen"
+    },
     "overview": "Resumen",
     "pickTag": "Elige una etiqueta de la lista",
     "profile": "Perfil",
