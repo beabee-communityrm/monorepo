@@ -1,3 +1,5 @@
+import { ActivityEventType, ContactOriginData } from '@beabee/beabee-common';
+
 import { InsertResult } from 'typeorm';
 
 import { getRepository } from '#database';
@@ -31,6 +33,27 @@ class ActivityService {
    */
   async getAllEvents(): Promise<ActivityEvent[]> {
     return getRepository(ActivityEvent).find();
+  }
+
+  /**
+   * Get the origin (source, referrer, campaign) of a contact from their
+   * contact.created activity event
+   * Source is the actor type and referrer and campaign are obtained from
+   * the metadata
+   * @param contactId The contact ID
+   * @returns The contact's origin, or null if no creation event was recorded
+   */
+  async getContactOrigin(contactId: string): Promise<ContactOriginData | null> {
+    const event = await getRepository(ActivityEvent).findOne({
+      where: { contactId, eventType: ActivityEventType.ContactCreated },
+    });
+
+    // If event not found, return empty strings
+    return {
+      source: event ? event.actorType : '',
+      referrer: event ? (event.metadata?.referrer ?? '') : '',
+      campaign: event ? (event.metadata?.campaign ?? '') : '',
+    };
   }
 }
 
