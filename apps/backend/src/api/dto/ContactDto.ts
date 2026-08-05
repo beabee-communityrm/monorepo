@@ -28,6 +28,7 @@ import {
 } from 'class-validator';
 
 import { GetPaginatedQuery, GetPaginatedRuleGroup } from '#api/dto/BaseDto';
+import { GetContactOriginDto } from '#api/dto/ContactOriginDto';
 import {
   GetContactProfileDto,
   UpdateContactProfileDto,
@@ -166,6 +167,10 @@ export class GetContactDto extends BaseContactDto {
   @IsOptional()
   @IsBoolean()
   isReviewer?: boolean;
+
+  @IsOptional()
+  @ValidateNested()
+  origin?: GetContactOriginDto;
 }
 
 export class UpdateContactDto extends BaseContactDto {

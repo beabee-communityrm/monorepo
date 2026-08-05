@@ -134,6 +134,7 @@ export class ContactClient extends BaseClient {
     _with?: readonly With[]
   ): Promise<GetContactDataWith<With>> {
     const { data } = await this.fetch.get(`/${id}`, { with: _with });
+
     return ContactClient.deserialize<With>(data);
   }
 
