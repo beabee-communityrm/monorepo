@@ -1089,6 +1089,12 @@
       "title": ""
     },
     "oneTime": "Einmalig",
+    "origin": {
+      "campaign": "",
+      "referrer": "",
+      "source": "",
+      "title": ""
+    },
     "overview": "",
     "pickTag": "",
     "profile": "",
