@@ -436,6 +436,10 @@
     }
   },
   "callout": {
+    "about": {
+      "responses": "",
+      "title": ""
+    },
     "actions": {
       "updateResponse": ""
     },
@@ -814,7 +818,16 @@
     "getStarted": "Hier geht es los.",
     "joinNow": "",
     "loginToYourAccount": "",
+    "mapPreview": {
+      "title": "",
+      "viewFullMap": ""
+    },
     "membersOnly": "",
+    "responseCard": {
+      "notResponded": "",
+      "submitted": "",
+      "viewAnswers": ""
+    },
     "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
     "share": {
       "address": "Hier kannst du den Aufruf an andere schicken. Drücke dazu hier.",

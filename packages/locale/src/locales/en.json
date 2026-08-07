@@ -435,6 +435,10 @@
     }
   },
   "callout": {
+    "about": {
+      "responses": "{n} response so far | {n} responses so far",
+      "title": "About"
+    },
     "actions": {
       "updateResponse": "Update your response"
     },
@@ -813,7 +817,16 @@
     "getStarted": "Get started",
     "joinNow": "Join now",
     "loginToYourAccount": "Login to your account",
+    "mapPreview": {
+      "title": "Response locations",
+      "viewFullMap": "View full map"
+    },
     "membersOnly": "This CrowdNewsroom is open to members only. To participate",
+    "responseCard": {
+      "notResponded": "You haven't responded yet.",
+      "submitted": "Submitted {date}.",
+      "viewAnswers": "View your answers"
+    },
     "responseSubmitted": "Response submitted",
     "share": {
       "address": "Share using the following link:",

@@ -437,6 +437,10 @@
     }
   },
   "callout": {
+    "about": {
+      "responses": "",
+      "title": ""
+    },
     "actions": {
       "updateResponse": "Обновить ваш ответ"
     },
@@ -815,7 +819,16 @@
     "getStarted": "Начать",
     "joinNow": "Присоединиться",
     "loginToYourAccount": "Войти в мой профиль",
+    "mapPreview": {
+      "title": "",
+      "viewFullMap": ""
+    },
     "membersOnly": "Эта CrowdNewsroom открыта только для членов. Чтобы участвовать",
+    "responseCard": {
+      "notResponded": "",
+      "submitted": "",
+      "viewAnswers": ""
+    },
     "responseSubmitted": "Ответ отправлен",
     "share": {
       "address": "Отправить этот опрос на почту:",

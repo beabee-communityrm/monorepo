@@ -18,6 +18,14 @@ const LOCALE_PATH = resolve(
 export default ({ command, mode }) => {
   const env = loadEnv(mode, resolve(process.cwd(), '../../'), '');
 
+  const optimizeDeps = {
+    // vue-maplibre-gl's prebuilt dist expects a CJS-style interop import of
+    // maplibre-gl; without forcing it into the same optimize pass, Vite's
+    // dependency pre-bundler produces an incompatible ESM shape and imports
+    // fail with "does not provide an export named 't'".
+    include: ['maplibre-gl'],
+  };
+
   const plugins = [
     ui(nuxtUiConfig),
     // VueRouter must be placed before Vue plugin
@@ -94,6 +102,7 @@ export default ({ command, mode }) => {
     resolve: {
       alias,
     },
+    optimizeDeps,
     plugins,
     server: {
       port: Number(env.VITE_DEV_SERVER_PORT || 3000),

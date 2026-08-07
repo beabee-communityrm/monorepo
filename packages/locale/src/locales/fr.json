@@ -436,6 +436,10 @@
     }
   },
   "callout": {
+    "about": {
+      "responses": "",
+      "title": ""
+    },
     "actions": {
       "updateResponse": "Mettre à jour votre réponse"
     },
@@ -818,7 +822,16 @@
     "getStarted": "Commencer",
     "joinNow": "S'inscrire maintenant",
     "loginToYourAccount": "Connectez-vous à votre compte",
+    "mapPreview": {
+      "title": "",
+      "viewFullMap": ""
+    },
     "membersOnly": "Cette CrowdNewsrooms est ouverte aux membres uniquement. Pour participer",
+    "responseCard": {
+      "notResponded": "",
+      "submitted": "",
+      "viewAnswers": ""
+    },
     "responseSubmitted": "Réponse envoyée",
     "share": {
       "address": "Partagez cette campagne avec l'adresse suivante :",

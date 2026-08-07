@@ -63,6 +63,13 @@ export const nuxtUiConfig: NuxtUIOptions = {
         header: 'border-b border-default',
       },
     },
+    popover: {
+      slots: {
+        // Same reasoning as modal above — popover content is also teleported
+        // outside `.nuxt-page`.
+        content: 'nuxt-page',
+      },
+    },
     button: {
       slots: {
         // Nuxt UI's own default omits justify-center, so content packs to

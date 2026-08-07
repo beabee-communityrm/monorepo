@@ -436,6 +436,10 @@
     }
   },
   "callout": {
+    "about": {
+      "responses": "",
+      "title": ""
+    },
     "actions": {
       "updateResponse": "Antwort bearbeiten"
     },
@@ -814,7 +818,16 @@
     "getStarted": "Starten",
     "joinNow": "Mitglied werden",
     "loginToYourAccount": "Einloggen",
+    "mapPreview": {
+      "title": "",
+      "viewFullMap": ""
+    },
     "membersOnly": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen. Um teilzunehmen…",
+    "responseCard": {
+      "notResponded": "",
+      "submitted": "",
+      "viewAnswers": ""
+    },
     "responseSubmitted": "Antwort eingereicht",
     "share": {
       "address": "Diesen CrowdNewsroom per Link teilen:",

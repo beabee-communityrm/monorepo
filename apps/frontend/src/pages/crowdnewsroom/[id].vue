@@ -16,7 +16,11 @@ import {
 } from '#utils/callouts';
 
 const callout =
-  ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>>();
+  ref<
+    GetCalloutDataWith<
+      'form' | 'responseViewSchema' | 'variantNames' | 'responseCount'
+    >
+  >();
 
 const route = useRoute();
 
@@ -26,7 +30,13 @@ watch(
     // Load callout with variants to get structured translation data
     const calloutWithVariants = await client.callout.get(
       route.params.id,
-      ['form', 'responseViewSchema', 'variantNames', 'variants'],
+      [
+        'form',
+        'responseViewSchema',
+        'variantNames',
+        'variants',
+        'responseCount',
+      ],
       route.query.lang ? route.query.lang.toString() : undefined
     );
 
