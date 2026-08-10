@@ -6,6 +6,13 @@ export interface NoneNewsletterIntegrationData {
   status?: ApiHealthStatus.DISABLED;
 }
 
+export interface TestNewsletterIntegrationData {
+  provider: 'test';
+  status?: ApiHealthStatus;
+  audienceId: string;
+  groups: NewsletterGroupData[];
+}
+
 export interface MailchimpNewsletterIntegrationData {
   provider: 'mailchimp';
   status?: ApiHealthStatus;
@@ -15,4 +22,5 @@ export interface MailchimpNewsletterIntegrationData {
 
 export type NewsletterIntegrationData =
   | NoneNewsletterIntegrationData
-  | MailchimpNewsletterIntegrationData;
+  | MailchimpNewsletterIntegrationData
+  | TestNewsletterIntegrationData;

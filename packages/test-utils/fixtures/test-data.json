@@ -11,6 +11,7 @@
     "apiKey": "e987c4eddb30e70e_f849e415db77a2057930e546ac5d0ce50cc1cc7f0a075a3b"
   },
   "rateLimitedTestUser": {
+    "contactId": "824cd4eb-8888-45b4-8d27-5e96570d14e8",
     "firstName": "Rate",
     "lastName": "Limit",
     "email": "api_ratelimittest@beabee.io",

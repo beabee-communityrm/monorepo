@@ -114,12 +114,7 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import {
-  faPause,
-  faPlay,
-  faTrash,
-  faUsers,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -130,6 +125,7 @@ import OngoingEmailSummary from '#components/emails/OngoingEmailSummary.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const LIST_ROUTE = { name: 'adminContactsEmailTemplates' as const };
 
@@ -141,13 +137,17 @@ const emailId = computed(() => route.params.emailId);
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
     {
-      title: t('contacts.emailTemplates.title'),
+      label: t(routeLabels.adminContacts),
+      to: '/admin/contacts',
+      icon: routeIcons.adminContacts,
+    },
+    {
+      label: t('contacts.emailTemplates.title'),
       to: router.resolve(LIST_ROUTE).href,
     },
     {
-      title: email.value
+      label: email.value
         ? t('contacts.emailTemplates.editTitleWithName', {
             name: email.value.name,
           })

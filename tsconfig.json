@@ -5,6 +5,7 @@
     { "path": "./apps/backend" },
     { "path": "./apps/webhooks" },
     { "path": "./apps/frontend" },
+    { "path": "./apps/frontend-old" },
     { "path": "./packages/client" },
     { "path": "./packages/common" }
   ]

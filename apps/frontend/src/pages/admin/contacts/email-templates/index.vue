@@ -69,7 +69,7 @@ meta:
 import type { GetEmailData, Paginated } from '@beabee/beabee-common';
 import { AppButton, type Header, PageTitle, formatLocale } from '@beabee/vue';
 
-import { faPlus, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -77,13 +77,18 @@ import AppPaginatedTable from '#components/table/AppPaginatedTable.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { definePaginatedQuery } from '#utils/pagination';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
-    { title: t('contacts.emailTemplates.title') },
+    {
+      label: t(routeLabels.adminContacts),
+      to: '/admin/contacts',
+      icon: routeIcons.adminContacts,
+    },
+    { label: t('contacts.emailTemplates.title') },
   ])
 );
 

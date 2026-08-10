@@ -18,7 +18,6 @@ meta:
 import type { CreateNoticeData, GetNoticeData } from '@beabee/beabee-common';
 import { App2ColGrid, PageTitle, addNotification } from '@beabee/vue';
 
-import { faSignHanging } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
@@ -26,14 +25,19 @@ import { useRouter } from 'vue-router';
 import NoticeForm from '#components/notice/NoticeForm.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
 const router = useRouter();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.notices'), to: '/admin/notices', icon: faSignHanging },
-    { title: t('addNotice.title') },
+    {
+      label: t(routeLabels.adminNotices),
+      to: '/admin/notices',
+      icon: routeIcons.adminNotices,
+    },
+    { label: t('addNotice.title') },
   ])
 );
 

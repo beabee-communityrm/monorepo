@@ -101,14 +101,28 @@ interface NoneNewsletterConfig {
   };
 }
 
+/**
+ * Test newsletter provider configuration
+ * Used when BEABEE_NEWSLETTER_PROVIDER=test
+ */
+interface TestNewsletterConfig {
+  provider: 'test';
+  settings: {
+    webhookSecret: string; // BEABEE_NEWSLETTER_SETTINGS_WEBHOOKSECRET - Still available but unused
+  };
+}
+
 // Union type for newsletter configuration
-type NewsletterConfig = MailchimpNewsletterConfig | NoneNewsletterConfig;
+type NewsletterConfig =
+  | MailchimpNewsletterConfig
+  | NoneNewsletterConfig
+  | TestNewsletterConfig;
 
 // Get newsletter provider from environment, with validation for allowed values
 // Defaults to "none" if not specified
 const newsletterProvider = env.e(
   'BEABEE_NEWSLETTER_PROVIDER',
-  ['mailchimp', 'none'] as const,
+  ['mailchimp', 'none', 'test'] as const,
   'none'
 );
 

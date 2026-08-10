@@ -1,0 +1,64 @@
+ARG DENO_VERSION=2.1.2
+ARG NODE_VERSION=24
+
+FROM node:${NODE_VERSION}-bookworm-slim AS builder
+
+# Check versions
+RUN node --version
+RUN npm --version
+RUN yarn --version
+
+WORKDIR /opt/apps/frontend-old
+
+# Copy the workspace configuration
+COPY package.json yarn.lock .yarnrc.yml /opt/
+COPY .yarn /opt/.yarn
+
+# Copy dependencies info from packages
+COPY packages/common/package.json /opt/packages/common/package.json
+COPY packages/core/package.json /opt/packages/core/package.json
+COPY packages/docker/package.json /opt/packages/docker/package.json
+COPY packages/client/package.json /opt/packages/client/package.json
+COPY packages/locale/package.json /opt/packages/locale/package.json
+
+# Copy dependencies info from apps
+COPY apps/backend/package.json /opt/apps/backend/package.json
+COPY apps/backend-cli/package.json /opt/apps/backend-cli/package.json
+COPY apps/frontend-old/package.json /opt/apps/frontend-old/package.json
+COPY apps/legacy/package.json /opt/apps/legacy/package.json
+COPY apps/webhooks/package.json /opt/apps/webhooks/package.json
+COPY apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
+
+# Copy dependencies with relevant content
+COPY packages/prettier-config /opt/packages/prettier-config
+COPY packages/tsconfig /opt/packages/tsconfig
+COPY packages/vue /opt/packages/vue
+COPY packages/fontawesome /opt/packages/fontawesome
+
+# Copy apps with relevant content
+COPY apps/dev-cli /opt/apps/dev-cli
+
+# Install dependencies
+RUN yarn workspaces focus
+
+# Copy frontend dependencies
+COPY packages/common /opt/packages/common
+COPY packages/client /opt/packages/client
+COPY packages/locale /opt/packages/locale
+
+# Copy and build frontend and dependencies
+COPY apps/frontend-old /opt/apps/frontend-old
+RUN yarn workspaces foreach --recursive --topological-dev --from @beabee/frontend-old run build
+
+FROM nginx:1.30-alpine
+
+ARG REVISION
+ARG VERSION
+
+ENV APP_REVISION=${REVISION}
+ENV APP_VERSION=${VERSION}
+
+COPY apps/frontend-old/docker-entrypoint.sh /docker-entrypoint.d/30-beabee-frontend.sh
+COPY apps/frontend-old/nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=builder --chown=nginx:nginx /opt/apps/frontend-old/dist/ /usr/share/nginx/html
