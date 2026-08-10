@@ -1,7 +1,7 @@
 {
   "accountPage": {
     "contactInformation": "Contact information",
-    "deliveryAddress": "Delivery address",
+    "deliveryAddress": "Address",
     "deliveryOptIn": "Delivery opt-in",
     "loginDetail": "Login details",
     "loginDetail-nuxt": "Change password",
@@ -78,10 +78,13 @@
         "subscribed": "This contact is subscribed to your newsletter list.",
         "unsubscribed": "This contact isn't subscribed to your newsletter list."
       },
+      "description-nuxt": "Manage which newsletter groups you're subscribed to.",
+      "noGroups-nuxt": "You're not subscribed to any newsletter groups.",
       "subscribe": "Subscribe them to the newsletter",
       "title": "Newsletter",
       "unsubscribe": "Unsubscribe them from the newsletter"
     },
+    "personalDetails": "Personal details",
     "phoneInfo": "By providing your phone number you are consenting to being contacted by phone",
     "phoneInfo-nuxt": "By providing your phone number you are consenting to being contacted by phone.",
     "phoneInfoAdmin": "You must have the person's consent before adding their phone number to the system",
