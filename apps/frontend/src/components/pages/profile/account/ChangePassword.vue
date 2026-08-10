@@ -114,7 +114,9 @@ const formRef = useTemplateRef('formRef');
 // Deliberately no `v.nonEmpty(...)` "required" check here. The fields are initially
 // empty so validating "required" the moment the user focuses and blurs the field
 //  — even if they haven't typed anything at all — means showing an error for a
-//  field/form they are choosing not to fill out. Required-ness is instead checked
+// field/form they are choosing not to fill out. (This is opposed to AccountForm.vue
+// where the fields are pre-filled with the user's current data, so it's
+// appropriate to validate "required" immediately.) Required-ness is instead checked
 //  manually in handleSubmit below, only at actual submit time.
 const schema = computed(() =>
   z
