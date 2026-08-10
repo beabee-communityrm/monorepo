@@ -139,13 +139,6 @@ declare module 'vue-router/auto-routes' {
       { segmentId: ParamValue<false> },
       | never
     >,
-    'adminContactTags': RouteRecordInfo<
-      'adminContactTags',
-      '/admin/contacts/tags',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     'adminCallouts': RouteRecordInfo<
       'adminCallouts',
       '/admin/crowdnewsroom',
@@ -621,12 +614,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/admin/contacts/send-email/[segmentId].vue': {
       routes:
         | 'adminContactsSendEmailSegmentId'
-      views:
-        | never
-    }
-    'src/pages/admin/contacts/tags.vue': {
-      routes:
-        | 'adminContactTags'
       views:
         | never
     }

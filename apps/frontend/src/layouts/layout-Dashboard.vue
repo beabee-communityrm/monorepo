@@ -23,10 +23,14 @@
               {{ t(route.meta.pageTitle) }}
             </h1>
           </template>
+          <template #right>
+            <!-- Teleport target for page-level header actions -->
+            <div id="page-header-actions" class="flex items-center gap-2"></div>
+          </template>
         </UDashboardNavbar>
         <div id="sticky-top-banner" class="bg-default"></div>
       </div>
-      <div class="flex flex-col p-4 md:p-5">
+      <div :class="['flex flex-col', route.meta.fullBleed ? '' : 'p-4 md:p-5']">
         <router-view />
       </div>
 
