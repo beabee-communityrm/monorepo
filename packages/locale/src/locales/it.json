@@ -346,21 +346,41 @@
   },
   "advancedSearch": {
     "addRule": "Aggiungi regola",
+    "addRule-nuxt": "",
+    "allFields-nuxt": "",
     "button": "Filtri",
     "createFiltersAfter": "regole",
+    "createFiltersAfter-nuxt": "",
     "createFiltersBefore": "Mostra solo i risultati che corrispondono a",
+    "createFiltersBefore-nuxt": "",
     "createFiltersType": {
       "all": "tutte le",
       "any": "una delle"
     },
     "createdSegment": "Segmento creato \"{segment}\"",
+    "fieldType-nuxt": {
+      "array": "",
+      "blob": "",
+      "boolean": "",
+      "contact": "",
+      "date": "",
+      "enum": "",
+      "number": "",
+      "text": ""
+    },
     "invalidRuleError": "Qualcosa non va in questa regola: \"{ rule }\". Si prega di aggiornare!",
+    "matchCount-nuxt": "",
     "matchWord": {
       "AND": "e",
       "OR": "o"
     },
     "nestedRules": "Regole annidate",
+    "noFieldsMatch-nuxt": "",
     "noNestedRules": "Questo filtro contiene regole annidate che non possono essere modificate con l'editor di ricerca avanzata.",
+    "operatorGroup-nuxt": {
+      "blank": "",
+      "not": ""
+    },
     "operators": {
       "all": {
         "is_empty": "è vuoto",
@@ -412,6 +432,8 @@
         "not_equal": "non è"
       }
     },
+    "relativeDate-nuxt": "",
+    "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
         "create": "Crea nuovo segmento",
@@ -421,9 +443,11 @@
       "createSegment": "Crea segmento",
       "segmentName": "Nome del segmento",
       "text": "Un segmento è un gruppo di contatti che corrisponde a un insieme di filtri, come quelli che hai appena creato. I nuovi contatti che corrispondono a questi filtri vengono aggiunti automaticamente al segmento.",
+      "text-nuxt": "",
       "title": "Salva segmento",
       "updateSegment": "Aggiorna segmento"
     },
+    "searchFields-nuxt": "",
     "selectFilter": "Seleziona un filtro",
     "updatedSegment": "Segmento aggiornato \"{segment}\""
   },
@@ -1045,6 +1069,7 @@
     "no": "No",
     "noResults": "Nessun risultato",
     "pageCount": "Pagina {pageNumber} di {pageTotal}",
+    "pageCount-nuxt": "",
     "paymentPeriod": {
       "annually": "all'anno",
       "monthly": "al mese",
@@ -1072,6 +1097,8 @@
       "member": "Membro",
       "superadmin": "Super Admin"
     },
+    "rowsPerPage-nuxt": "",
+    "selectAll": "",
     "selectNone": "-- Nessuno --",
     "selectOne": "Seleziona",
     "show": "Mostra",
@@ -1201,6 +1228,7 @@
     },
     "dataGroup": {
       "callout": "Callout",
+      "callout-nuxt": "",
       "contact": "Informazioni di contatto",
       "oneTimeContributions": "Contributi una tantum",
       "recurringContributions": "Contributi ricorrenti",
@@ -1231,6 +1259,13 @@
     "noResults": "Nessun contatto trovato",
     "numResults": "{n} contatto trovato | {n} contatti trovati",
     "search": "Cerca contatti...",
+    "selectAllBanner-nuxt": {
+      "allSelected": "",
+      "clearSelection": "",
+      "pageSelected": "",
+      "selectAll": "",
+      "someSelected": ""
+    },
     "selectedCount": "{n} contatto selezionato | {n} contatti selezionati",
     "sendEmail": {
       "newEmail": "Nuova email",
@@ -1240,7 +1275,9 @@
       "templateNameRequired": "Inserisci un nome per il nuovo modello.",
       "title": "Invia email al segmento"
     },
-    "showingOf": "Contatti da {start} a {end} su {total}"
+    "sendEmailToSelected-nuxt": "",
+    "showingOf": "Contatti da {start} a {end} su {total}",
+    "showingOf-nuxt": ""
   },
   "contribution": {
     "adminCancelDescription": "Se annulli il contributo del contatto, la sua iscrizione terminerà alla fine del ciclo di pagamento corrente il {date}.",
@@ -1992,13 +2029,22 @@
     "name": "Nome"
   },
   "tags": {
+    "clearTags-nuxt": "",
+    "countOfSelected-nuxt": "",
     "manageTags": "Gestisci tag",
+    "manageTagsDescription-nuxt": "",
+    "newTagName-nuxt": "",
     "noTags": "Nessun tag",
     "notifications": {
       "addedTag": "Aggiunto tag \"{tag}\"",
-      "removedTag": "Rimosso tag \"{tag}\" "
+      "createdTag-nuxt": "",
+      "deletedTag-nuxt": "",
+      "removedTag": "Rimosso tag \"{tag}\" ",
+      "renamedTag-nuxt": ""
     },
     "searchTag": "Con tag...",
+    "selectToTag-nuxt": "",
+    "tagSelected-nuxt": "",
     "toggleTag": "Attiva/disattiva tag"
   }
 }

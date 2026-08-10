@@ -21,6 +21,7 @@
     </AppSelectableList>
 
     <router-link
+      v-if="manageUrl"
       class="block border-t border-main-40 px-3 py-2 font-semibold text-main underline group-hover:border-main hover:bg-main-5"
       :to="manageUrl"
     >
@@ -40,12 +41,16 @@ const emit = defineEmits<{
 interface Props {
   tagItems: { id: string; label: string }[];
   selectedTags: string[];
-  manageUrl: string;
+  /** Link to a tag management page, omit to hide the link */
+  manageUrl?: string;
   withText?: boolean;
   selectable?: boolean;
   disabled?: boolean;
 }
-withDefaults(defineProps<Props>(), { selectable: true });
+withDefaults(defineProps<Props>(), {
+  manageUrl: undefined,
+  selectable: true,
+});
 
 const { t } = useI18n();
 

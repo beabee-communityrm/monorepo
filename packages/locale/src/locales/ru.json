@@ -347,21 +347,41 @@
   },
   "advancedSearch": {
     "addRule": "",
+    "addRule-nuxt": "",
+    "allFields-nuxt": "",
     "button": "",
     "createFiltersAfter": "",
+    "createFiltersAfter-nuxt": "",
     "createFiltersBefore": "",
+    "createFiltersBefore-nuxt": "",
     "createFiltersType": {
       "all": "",
       "any": ""
     },
     "createdSegment": "",
+    "fieldType-nuxt": {
+      "array": "",
+      "blob": "",
+      "boolean": "",
+      "contact": "",
+      "date": "",
+      "enum": "",
+      "number": "",
+      "text": ""
+    },
     "invalidRuleError": "",
+    "matchCount-nuxt": "",
     "matchWord": {
       "AND": "",
       "OR": ""
     },
     "nestedRules": "",
+    "noFieldsMatch-nuxt": "",
     "noNestedRules": "",
+    "operatorGroup-nuxt": {
+      "blank": "",
+      "not": ""
+    },
     "operators": {
       "all": {
         "is_empty": "",
@@ -413,6 +433,8 @@
         "not_equal": ""
       }
     },
+    "relativeDate-nuxt": "",
+    "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
         "create": "",
@@ -422,9 +444,11 @@
       "createSegment": "",
       "segmentName": "",
       "text": "",
+      "text-nuxt": "",
       "title": "",
       "updateSegment": ""
     },
+    "searchFields-nuxt": "",
     "selectFilter": "",
     "updatedSegment": ""
   },
@@ -1046,6 +1070,7 @@
     "no": "Нет",
     "noResults": "Ничего не найдено",
     "pageCount": "Страница {pageNumber} из {pageTotal}",
+    "pageCount-nuxt": "",
     "paymentPeriod": {
       "annually": "ежегодно",
       "monthly": "ежемесячно",
@@ -1073,6 +1098,8 @@
       "member": "Участник",
       "superadmin": "Главный aдминистратор"
     },
+    "rowsPerPage-nuxt": "",
+    "selectAll": "",
     "selectNone": "Отсутствует",
     "selectOne": "Выбрать одну опцию",
     "show": "Показать",
@@ -1202,6 +1229,7 @@
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
+      "callout-nuxt": "",
       "contact": "Контакты",
       "oneTimeContributions": "Разовые взносы",
       "recurringContributions": "Регулярные взносы",
@@ -1232,6 +1260,13 @@
     "noResults": "",
     "numResults": "",
     "search": "",
+    "selectAllBanner-nuxt": {
+      "allSelected": "",
+      "clearSelection": "",
+      "pageSelected": "",
+      "selectAll": "",
+      "someSelected": ""
+    },
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "Новое письмо",
@@ -1241,7 +1276,9 @@
       "templateNameRequired": "Введите название нового шаблона.",
       "title": "Отправить письмо сегменту"
     },
-    "showingOf": ""
+    "sendEmailToSelected-nuxt": "",
+    "showingOf": "",
+    "showingOf-nuxt": ""
   },
   "contribution": {
     "adminCancelDescription": "Если вы отмените взнос этого контакта, он будет считаться членом клуба до завершения подписки {date}.",
@@ -1997,13 +2034,22 @@
     "name": ""
   },
   "tags": {
+    "clearTags-nuxt": "",
+    "countOfSelected-nuxt": "",
     "manageTags": "",
+    "manageTagsDescription-nuxt": "",
+    "newTagName-nuxt": "",
     "noTags": "",
     "notifications": {
       "addedTag": "",
-      "removedTag": ""
+      "createdTag-nuxt": "",
+      "deletedTag-nuxt": "",
+      "removedTag": "",
+      "renamedTag-nuxt": ""
     },
     "searchTag": "",
+    "selectToTag-nuxt": "",
+    "tagSelected-nuxt": "",
     "toggleTag": ""
   }
 }

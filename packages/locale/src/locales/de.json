@@ -346,21 +346,41 @@
   },
   "advancedSearch": {
     "addRule": "Filter hinzufügen",
+    "addRule-nuxt": "",
+    "allFields-nuxt": "",
     "button": "Filter",
     "createFiltersAfter": "Regeln entsprechen",
+    "createFiltersAfter-nuxt": "",
     "createFiltersBefore": "Nur Ergebnisse anzeigen, die",
+    "createFiltersBefore-nuxt": "",
     "createFiltersType": {
       "all": "allen",
       "any": "einer dieser"
     },
     "createdSegment": "Erstelltes Segment \"{segment}\"",
+    "fieldType-nuxt": {
+      "array": "",
+      "blob": "",
+      "boolean": "",
+      "contact": "",
+      "date": "",
+      "enum": "",
+      "number": "",
+      "text": ""
+    },
     "invalidRuleError": "In dieser Regel liegt ein Fehler vor: \"{ rule }\". Bitte nehmen Sie eine Aktualisierung vor.",
+    "matchCount-nuxt": "",
     "matchWord": {
       "AND": "und",
       "OR": "oder"
     },
     "nestedRules": "Verschachtelte Regeln",
+    "noFieldsMatch-nuxt": "",
     "noNestedRules": "Dieser Filter enthält verschachtelte Regeln, die nicht mit dem erweiterten Sucheditor bearbeitet werden können.",
+    "operatorGroup-nuxt": {
+      "blank": "",
+      "not": ""
+    },
     "operators": {
       "all": {
         "is_empty": "ist leer",
@@ -412,6 +432,8 @@
         "not_equal": "ist nicht"
       }
     },
+    "relativeDate-nuxt": "",
+    "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
         "create": "Neues Segment erstellen",
@@ -421,9 +443,11 @@
       "createSegment": "Segment erstellen",
       "segmentName": "Name des Segments",
       "text": "Ein Segment ist eine Gruppe von Kontakten, auf die ausgewählte Filter zutreffen. Genau wie die, die du gerade erstellt hast. Neue Kontakte, auf die die Filter ebenfalls zutreffen, werden dem Segment automatisch hinzugefügt.",
+      "text-nuxt": "",
       "title": "Segment speichern",
       "updateSegment": "Segment aktualisieren"
     },
+    "searchFields-nuxt": "",
     "selectFilter": "Filter auswählen",
     "updatedSegment": "Aktualisiertes Segment \"{segment}\""
   },
@@ -1045,6 +1069,7 @@
     "no": "Nein",
     "noResults": "Keine Ergebnisse gefunden",
     "pageCount": "Seite {pageNumber} von {pageTotal}",
+    "pageCount-nuxt": "",
     "paymentPeriod": {
       "annually": "Jährlich",
       "monthly": "Monatlich",
@@ -1072,6 +1097,8 @@
       "member": "Mitglied",
       "superadmin": "Überadmin"
     },
+    "rowsPerPage-nuxt": "",
+    "selectAll": "",
     "selectNone": "-- Keine --",
     "selectOne": "Auswählen",
     "show": "Anzeigen",
@@ -1201,6 +1228,7 @@
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
+      "callout-nuxt": "",
       "contact": "Kontaktdaten",
       "oneTimeContributions": "Einmalige Beiträge",
       "recurringContributions": "Wiederkehrende Beiträge",
@@ -1231,6 +1259,13 @@
     "noResults": "Keine Kontakte gefunden",
     "numResults": "{n} Kontakt gefunden | {n} Kontakte gefunden",
     "search": "Kontakte durchsuchen...",
+    "selectAllBanner-nuxt": {
+      "allSelected": "",
+      "clearSelection": "",
+      "pageSelected": "",
+      "selectAll": "",
+      "someSelected": ""
+    },
     "selectedCount": "{n} Kontakt ausgewählt | {n} Kontakte ausgewählt",
     "sendEmail": {
       "newEmail": "Neue E-Mail",
@@ -1240,7 +1275,9 @@
       "templateNameRequired": "Bitte gib einen Namen für die neue Vorlage ein.",
       "title": "E-Mail an Segment senden"
     },
-    "showingOf": "{start} bis {end} von {total} Kontakten werden angezeigt."
+    "sendEmailToSelected-nuxt": "",
+    "showingOf": "{start} bis {end} von {total} Kontakten werden angezeigt.",
+    "showingOf-nuxt": ""
   },
   "contribution": {
     "adminCancelDescription": "Wenn du die Mitgliedschaft des Kontakts kündigst, endet sie am Ende des aktuellen Zahlungszyklus am {date}.",
@@ -1990,13 +2027,22 @@
     "name": "Name"
   },
   "tags": {
+    "clearTags-nuxt": "",
+    "countOfSelected-nuxt": "",
     "manageTags": "Tags bearbeiten",
+    "manageTagsDescription-nuxt": "",
+    "newTagName-nuxt": "",
     "noTags": "Keine Tags",
     "notifications": {
       "addedTag": "Tag \"{tag}\" hinzugefügt",
-      "removedTag": "Tag \"{tag}\" entfernt"
+      "createdTag-nuxt": "",
+      "deletedTag-nuxt": "",
+      "removedTag": "Tag \"{tag}\" entfernt",
+      "renamedTag-nuxt": ""
     },
     "searchTag": "Getaggt mit...",
+    "selectToTag-nuxt": "",
+    "tagSelected-nuxt": "",
     "toggleTag": "Tag hinzufügen / entfernen"
   }
 }

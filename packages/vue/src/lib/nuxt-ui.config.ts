@@ -22,10 +22,14 @@ export const nuxtUiConfig: NuxtUIOptions = {
           xl: { base: 'rounded-full' },
         },
       },
+      compoundVariants: [
+        // One step darker than Nuxt UI's default bg-elevated.
+        { color: 'neutral', variant: 'soft', class: 'bg-accented' },
+      ],
     },
     navigationMenu: {
       slots: {
-        link: 'py-2.5!',
+        link: 'py-2!',
         linkLeadingIcon: 'size-4.5!',
       },
       variants: {
@@ -48,7 +52,7 @@ export const nuxtUiConfig: NuxtUIOptions = {
     },
     input: {
       slots: {
-        base: 'py-2.5!',
+        base: 'py-2!',
       },
     },
     modal: {
@@ -68,6 +72,8 @@ export const nuxtUiConfig: NuxtUIOptions = {
         // Nuxt UI's own default omits justify-center, so content packs to
         // the left on stretched (block/w-full/flex-1) buttons.
         base: 'cursor-pointer justify-center',
+        leadingIcon: 'size-4.5!',
+        trailingIcon: 'size-4.5!',
       },
       compoundVariants: [
         {
@@ -75,7 +81,7 @@ export const nuxtUiConfig: NuxtUIOptions = {
           // Exclude 'link' — it's styled as inline text, not a boxed button,
           // so it shouldn't get the same vertical padding as the rest.
           variant: ['solid', 'outline', 'soft', 'subtle', 'ghost'],
-          class: 'py-2.5!',
+          class: 'py-2!',
         },
       ],
     },

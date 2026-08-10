@@ -2,9 +2,9 @@
 @import '@nuxt/ui';
 
 /* Nuxt UI configuration */
-:root {
+/* :root {
   --ui-radius: 3px;
-}
+} */
 
 /*
  * Page-level typography for Nuxt UI pages. Also applied

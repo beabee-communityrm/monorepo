@@ -2,19 +2,26 @@ import {
   type ContactFilterName,
   ContributionPeriod,
   ContributionType,
+  type GetCalloutDataWith,
   NewsletterStatus,
+  contactCalloutFilters,
   contactFilters,
 } from '@beabee/beabee-common';
-import { type Header, type SelectItem } from '@beabee/vue';
+import { type SelectItem } from '@beabee/vue';
 
-import { computed, ref, watchEffect } from 'vue';
+import { type Ref, computed, ref, watchEffect } from 'vue';
 
 import { i18n } from '#lib/i18n';
 import { generalContent } from '#store';
 import { client } from '#utils/api';
 
-import type { FilterGroups, FilterItems } from '../../../../type/search';
+import type {
+  FilterGroups,
+  FilterItem,
+  FilterItems,
+} from '../../../../type/search';
 import { withItems, withLabel } from '../../../../utils/filters';
+import { useCalloutResponseFilters } from '../callout-responses.interface';
 import CalloutResponseFilterGroup from './CalloutResponseFilterGroup.vue';
 
 const { t } = i18n.global;
@@ -23,42 +30,6 @@ const { t } = i18n.global;
  * Contact List Interface Module
  * Provides configuration and utilities for the contact list view
  */
-
-/**
- * Table Headers Configuration
- * @description Defines the columns shown in the contacts table
- */
-export const headers = computed<Header[]>(() => [
-  {
-    value: 'firstname',
-    text: t('contacts.data.name'),
-    sortable: true,
-    width: '100%',
-  },
-  {
-    value: 'email',
-    text: t('contacts.data.email'),
-    sortable: true,
-  },
-  {
-    value: 'contributionMonthlyAmount',
-    text: t('contacts.data.contribution'),
-    align: 'right',
-    sortable: true,
-  },
-  {
-    value: 'joined',
-    text: t('contacts.data.joined'),
-    align: 'right',
-    sortable: true,
-  },
-  {
-    value: 'membershipStarts',
-    text: t('contacts.data.membershipStarts'),
-    align: 'right',
-    sortable: true,
-  },
-]);
 
 /**
  * Filter Items Configuration
@@ -193,11 +164,12 @@ export function useContactFilters() {
    * @description Fetches and manages available contact tags
    */
   const tagItems = ref<SelectItem<string>[]>([]);
-  watchEffect(async () => {
+  async function refreshTags() {
     const tags = await client.contact.tag.list();
     // TODO: Use tag id
     tagItems.value = tags.map((tag) => ({ id: tag.id, label: tag.name }));
-  });
+  }
+  refreshTags();
 
   /**
    * Filter Groups Configuration
@@ -276,5 +248,72 @@ export function useContactFilters() {
     },
   ]);
 
-  return { filterGroups, tagItems };
+  return { filterGroups, tagItems, refreshTags };
+}
+
+/** Prefix used for rule fields that filter on a crowdNewsroom response */
+export const calloutFilterPrefix = 'callouts.';
+
+/**
+ * Extracts the crowdNewsroom id from a rule field, if it filters on one
+ */
+export function getCalloutIdFromField(field: string): string | undefined {
+  return field.startsWith(calloutFilterPrefix)
+    ? field.split('.')[1]
+    : undefined;
+}
+
+/**
+ * Crowd Newsroom Contact Filters Hook
+ * @description Provides the filter items for a single crowdNewsroom, split into
+ * the participation filter and the response sub-groups
+ * @param calloutId - The crowdNewsroom to load filters for
+ */
+export function useCalloutContactFilters(calloutId: Ref<string | undefined>) {
+  const callout = ref<GetCalloutDataWith<'form'>>();
+
+  watchEffect(async () => {
+    callout.value = calloutId.value
+      ? await client.callout.get(calloutId.value, ['form'])
+      : undefined;
+  });
+
+  const prefix = computed(() =>
+    calloutId.value ? `${calloutFilterPrefix}${calloutId.value}.` : ''
+  );
+
+  const { filterGroups } = useCalloutResponseFilters(
+    callout,
+    computed(() => `${prefix.value}responses.`)
+  );
+
+  const participationItems = computed<FilterItems>(() =>
+    calloutId.value
+      ? {
+          [`${prefix.value}hasAnswered`]: withLabel(
+            contactCalloutFilters.hasAnswered,
+            t('contacts.advancedSearch.hasAnswered')
+          ),
+        }
+      : {}
+  );
+
+  /** Response information and response answer groups, empty until loaded */
+  const groups = computed<FilterGroups>(() =>
+    callout.value ? filterGroups.value : []
+  );
+
+  return { callout, participationItems, groups };
+}
+
+/**
+ * Finds the filter item for a rule field across the given groups
+ */
+export function findFilterItem(
+  groups: FilterGroups,
+  field: string
+): FilterItem | undefined {
+  for (const group of groups) {
+    if (group.items[field]) return group.items[field];
+  }
 }

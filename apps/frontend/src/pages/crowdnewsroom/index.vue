@@ -41,7 +41,7 @@ meta:
               >
                 <UIcon name="i-lucide-archive" class="text-muted size-4" />
                 {{ t('callouts.archive') }}
-                <UBadge color="neutral" variant="subtle" size="sm">
+                <UBadge color="neutral" variant="soft" size="sm">
                   {{ archivedTotal ?? 0 }}
                 </UBadge>
               </span>

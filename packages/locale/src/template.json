@@ -345,21 +345,41 @@
   },
   "advancedSearch": {
     "addRule": "",
+    "addRule-nuxt": "",
+    "allFields-nuxt": "",
     "button": "",
     "createFiltersAfter": "",
+    "createFiltersAfter-nuxt": "",
     "createFiltersBefore": "",
+    "createFiltersBefore-nuxt": "",
     "createFiltersType": {
       "all": "",
       "any": ""
     },
     "createdSegment": "",
+    "fieldType-nuxt": {
+      "array": "",
+      "blob": "",
+      "boolean": "",
+      "contact": "",
+      "date": "",
+      "enum": "",
+      "number": "",
+      "text": ""
+    },
     "invalidRuleError": "",
+    "matchCount-nuxt": "",
     "matchWord": {
       "AND": "",
       "OR": ""
     },
     "nestedRules": "",
+    "noFieldsMatch-nuxt": "",
     "noNestedRules": "",
+    "operatorGroup-nuxt": {
+      "blank": "",
+      "not": ""
+    },
     "operators": {
       "all": {
         "is_empty": "",
@@ -411,6 +431,8 @@
         "not_equal": ""
       }
     },
+    "relativeDate-nuxt": "",
+    "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
         "create": "",
@@ -420,9 +442,11 @@
       "createSegment": "",
       "segmentName": "",
       "text": "",
+      "text-nuxt": "",
       "title": "",
       "updateSegment": ""
     },
+    "searchFields-nuxt": "",
     "selectFilter": "",
     "updatedSegment": ""
   },
@@ -1044,6 +1068,7 @@
     "no": "",
     "noResults": "",
     "pageCount": "",
+    "pageCount-nuxt": "",
     "paymentPeriod": {
       "annually": "",
       "monthly": "",
@@ -1071,6 +1096,8 @@
       "member": "",
       "superadmin": ""
     },
+    "rowsPerPage-nuxt": "",
+    "selectAll": "",
     "selectNone": "",
     "selectOne": "",
     "show": "",
@@ -1200,6 +1227,7 @@
     },
     "dataGroup": {
       "callout": "",
+      "callout-nuxt": "",
       "contact": "",
       "oneTimeContributions": "",
       "recurringContributions": "",
@@ -1230,6 +1258,13 @@
     "noResults": "",
     "numResults": "",
     "search": "",
+    "selectAllBanner-nuxt": {
+      "allSelected": "",
+      "clearSelection": "",
+      "pageSelected": "",
+      "selectAll": "",
+      "someSelected": ""
+    },
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "",
@@ -1239,7 +1274,9 @@
       "templateNameRequired": "",
       "title": ""
     },
-    "showingOf": ""
+    "sendEmailToSelected-nuxt": "",
+    "showingOf": "",
+    "showingOf-nuxt": ""
   },
   "contribution": {
     "adminCancelDescription": "",
@@ -1989,13 +2026,22 @@
     "name": ""
   },
   "tags": {
+    "clearTags-nuxt": "",
+    "countOfSelected-nuxt": "",
     "manageTags": "",
+    "manageTagsDescription-nuxt": "",
+    "newTagName-nuxt": "",
     "noTags": "",
     "notifications": {
       "addedTag": "",
-      "removedTag": ""
+      "createdTag-nuxt": "",
+      "deletedTag-nuxt": "",
+      "removedTag": "",
+      "renamedTag-nuxt": ""
     },
     "searchTag": "",
+    "selectToTag-nuxt": "",
+    "tagSelected-nuxt": "",
     "toggleTag": ""
   }
 }

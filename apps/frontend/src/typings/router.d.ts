@@ -12,5 +12,6 @@ declare module 'vue-router' {
     role?: RoleType;
     embeddable?: boolean;
     noCnrMode?: boolean;
+    fullBleed?: boolean;
   }
 }

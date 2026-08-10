@@ -346,21 +346,41 @@
   },
   "advancedSearch": {
     "addRule": "Regel toevoegen",
+    "addRule-nuxt": "",
+    "allFields-nuxt": "",
     "button": "Filters",
     "createFiltersAfter": "regels",
+    "createFiltersAfter-nuxt": "",
     "createFiltersBefore": "Toon alleen resultaten die overeenkomen met",
+    "createFiltersBefore-nuxt": "",
     "createFiltersType": {
       "all": "allemaal",
       "any": "elke"
     },
     "createdSegment": "Segment “{segment}” aangemaakt",
+    "fieldType-nuxt": {
+      "array": "",
+      "blob": "",
+      "boolean": "",
+      "contact": "",
+      "date": "",
+      "enum": "",
+      "number": "",
+      "text": ""
+    },
     "invalidRuleError": "Er klopt iets niet in deze regel: \"{ rule }\". Werk bij!",
+    "matchCount-nuxt": "",
     "matchWord": {
       "AND": "en",
       "OR": "of"
     },
     "nestedRules": "Geneste regels",
+    "noFieldsMatch-nuxt": "",
     "noNestedRules": "Dit filter bevat geneste regels die niet kunnen worden bewerkt met de geavanceerde zoekeditor.",
+    "operatorGroup-nuxt": {
+      "blank": "",
+      "not": ""
+    },
     "operators": {
       "all": {
         "is_empty": "is leeg",
@@ -412,6 +432,8 @@
         "not_equal": "is niet"
       }
     },
+    "relativeDate-nuxt": "",
+    "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
         "create": "Nieuw segment maken",
@@ -421,9 +443,11 @@
       "createSegment": "Segment maken",
       "segmentName": "Naam segment",
       "text": "Een segment is een groep contactpersonen die voldoet aan een set filters, zoals de filters die je zojuist hebt gemaakt. Nieuwe contactpersonen die aan deze filters voldoen, worden automatisch aan het segment toegevoegd.",
+      "text-nuxt": "",
       "title": "Segment opslaan",
       "updateSegment": "Segment bijwerken"
     },
+    "searchFields-nuxt": "",
     "selectFilter": "Selecteer een filter",
     "updatedSegment": "Bijgewerkt segment “{segment}”"
   },
@@ -1045,6 +1069,7 @@
     "no": "Nee",
     "noResults": "Geen resultaten gevonden",
     "pageCount": "Pagina {pageNumber} van {pageTotal}",
+    "pageCount-nuxt": "",
     "paymentPeriod": {
       "annually": "Jaarlijks",
       "monthly": "Maandelijks",
@@ -1072,6 +1097,8 @@
       "member": "Lid",
       "superadmin": "Super beheerder"
     },
+    "rowsPerPage-nuxt": "",
+    "selectAll": "",
     "selectNone": "-- Geen",
     "selectOne": "Selecteer een...",
     "show": "Toon",
@@ -1201,6 +1228,7 @@
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
+      "callout-nuxt": "",
       "contact": "Contact informatie",
       "oneTimeContributions": "Eenmalige bijdragen",
       "recurringContributions": "Doorlopende bijdragen",
@@ -1231,6 +1259,13 @@
     "noResults": "Geen contacten gevonden",
     "numResults": "{n} contact gevonden | {n} contacten gevonden",
     "search": "Contacten zoeken...",
+    "selectAllBanner-nuxt": {
+      "allSelected": "",
+      "clearSelection": "",
+      "pageSelected": "",
+      "selectAll": "",
+      "someSelected": ""
+    },
     "selectedCount": "{n} contactpersoon geselecteerd | {n} contactpersonen geselecteerd",
     "sendEmail": {
       "newEmail": "Nieuwe e-mail",
@@ -1240,7 +1275,9 @@
       "templateNameRequired": "Voer een naam in voor het nieuwe sjabloon.",
       "title": "E-mail verzenden naar segment"
     },
-    "showingOf": "Toont {start} tot {end} contacten uit {total}"
+    "sendEmailToSelected-nuxt": "",
+    "showingOf": "Toont {start} tot {end} contacten uit {total}",
+    "showingOf-nuxt": ""
   },
   "contribution": {
     "adminCancelDescription": "Als je de bijdrage van de contactpersoon annuleert, zal hun lidmaatschap eindigen aan het einde van hun huidige betalingstermijn op {date}.",
@@ -1992,13 +2029,22 @@
     "name": "Naam"
   },
   "tags": {
+    "clearTags-nuxt": "",
+    "countOfSelected-nuxt": "",
     "manageTags": "Labels beheren",
+    "manageTagsDescription-nuxt": "",
+    "newTagName-nuxt": "",
     "noTags": "Geen tags",
     "notifications": {
       "addedTag": "Tag “{tag}” toegevoegd",
-      "removedTag": "Tag “{tag}” verwijderd"
+      "createdTag-nuxt": "",
+      "deletedTag-nuxt": "",
+      "removedTag": "Tag “{tag}” verwijderd",
+      "renamedTag-nuxt": ""
     },
     "searchTag": "Tagged met...",
+    "selectToTag-nuxt": "",
+    "tagSelected-nuxt": "",
     "toggleTag": "Tag schakelen"
   }
 }

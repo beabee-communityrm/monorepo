@@ -37,7 +37,6 @@ meta:
           with-text
           :tag-items="tagItems"
           :selected-tags="contact.tags.map((t) => t.id)"
-          :manage-url="'/admin/contacts/tags'"
           :loading="changingTags"
           @toggle="handleToggleTag"
         />

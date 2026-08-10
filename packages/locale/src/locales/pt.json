@@ -346,21 +346,41 @@
   },
   "advancedSearch": {
     "addRule": "",
+    "addRule-nuxt": "",
+    "allFields-nuxt": "",
     "button": "",
     "createFiltersAfter": "",
+    "createFiltersAfter-nuxt": "",
     "createFiltersBefore": "",
+    "createFiltersBefore-nuxt": "",
     "createFiltersType": {
       "all": "",
       "any": ""
     },
     "createdSegment": "",
+    "fieldType-nuxt": {
+      "array": "",
+      "blob": "",
+      "boolean": "",
+      "contact": "",
+      "date": "",
+      "enum": "",
+      "number": "",
+      "text": ""
+    },
     "invalidRuleError": "",
+    "matchCount-nuxt": "",
     "matchWord": {
       "AND": "",
       "OR": ""
     },
     "nestedRules": "",
+    "noFieldsMatch-nuxt": "",
     "noNestedRules": "",
+    "operatorGroup-nuxt": {
+      "blank": "",
+      "not": ""
+    },
     "operators": {
       "all": {
         "is_empty": "",
@@ -412,6 +432,8 @@
         "not_equal": ""
       }
     },
+    "relativeDate-nuxt": "",
+    "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
         "create": "",
@@ -421,9 +443,11 @@
       "createSegment": "",
       "segmentName": "",
       "text": "",
+      "text-nuxt": "",
       "title": "",
       "updateSegment": ""
     },
+    "searchFields-nuxt": "",
     "selectFilter": "",
     "updatedSegment": ""
   },
@@ -1045,6 +1069,7 @@
     "no": "Não",
     "noResults": "Nenhum resultado encontrado",
     "pageCount": "Página {pageNumber} de {pageTotal}",
+    "pageCount-nuxt": "",
     "paymentPeriod": {
       "annually": "Anualmente",
       "monthly": "Mensalmente",
@@ -1072,6 +1097,8 @@
       "member": "Membro",
       "superadmin": "Super Administrador"
     },
+    "rowsPerPage-nuxt": "",
+    "selectAll": "",
     "selectNone": "Nenhum",
     "selectOne": "Escolhe uma opção...",
     "show": "Mostrar",
@@ -1201,6 +1228,7 @@
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
+      "callout-nuxt": "",
       "contact": "Informação de contacto",
       "oneTimeContributions": "Contribuições únicas",
       "recurringContributions": "Contribuições recorrentes",
@@ -1231,6 +1259,13 @@
     "noResults": "Nenhum contacto encontrado",
     "numResults": "{n} contacto encontrado | {n} contactos encontrados",
     "search": "Pesquisar contactos...",
+    "selectAllBanner-nuxt": {
+      "allSelected": "",
+      "clearSelection": "",
+      "pageSelected": "",
+      "selectAll": "",
+      "someSelected": ""
+    },
     "selectedCount": "",
     "sendEmail": {
       "newEmail": "Novo e-mail",
@@ -1240,7 +1275,9 @@
       "templateNameRequired": "Introduza um nome para o novo modelo.",
       "title": "Enviar e-mail ao segmento"
     },
-    "showingOf": "Contactos {start} a {end} de um total de {total}"
+    "sendEmailToSelected-nuxt": "",
+    "showingOf": "Contactos {start} a {end} de um total de {total}",
+    "showingOf-nuxt": ""
   },
   "contribution": {
     "adminCancelDescription": "Se cancelares a contribuição deste contacto, a sua adesão terminará no fim deste ciclo de pagamento a {date}.",
@@ -1992,13 +2029,22 @@
     "name": "Nome"
   },
   "tags": {
+    "clearTags-nuxt": "",
+    "countOfSelected-nuxt": "",
     "manageTags": "",
+    "manageTagsDescription-nuxt": "",
+    "newTagName-nuxt": "",
     "noTags": "",
     "notifications": {
       "addedTag": "",
-      "removedTag": ""
+      "createdTag-nuxt": "",
+      "deletedTag-nuxt": "",
+      "removedTag": "",
+      "renamedTag-nuxt": ""
     },
     "searchTag": "",
+    "selectToTag-nuxt": "",
+    "tagSelected-nuxt": "",
     "toggleTag": ""
   }
 }

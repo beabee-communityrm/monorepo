@@ -346,21 +346,41 @@
   },
   "advancedSearch": {
     "addRule": "Додати правило",
+    "addRule-nuxt": "",
+    "allFields-nuxt": "",
     "button": "Фільтри",
     "createFiltersAfter": "правила",
+    "createFiltersAfter-nuxt": "",
     "createFiltersBefore": "Показувати лише відповідні результати",
+    "createFiltersBefore-nuxt": "",
     "createFiltersType": {
       "all": "всі",
       "any": "будь-який"
     },
     "createdSegment": "Створено сегмент \"{segment}\"",
+    "fieldType-nuxt": {
+      "array": "",
+      "blob": "",
+      "boolean": "",
+      "contact": "",
+      "date": "",
+      "enum": "",
+      "number": "",
+      "text": ""
+    },
     "invalidRuleError": "У цьому правилі щось не так: \"{ rule }\". Будь ласка, оновіть!",
+    "matchCount-nuxt": "",
     "matchWord": {
       "AND": "і",
       "OR": "або"
     },
     "nestedRules": "Вкладені правила",
+    "noFieldsMatch-nuxt": "",
     "noNestedRules": "Цей фільтр містить вкладені правила, які не можна редагувати за допомогою редактора розширеного пошуку.",
+    "operatorGroup-nuxt": {
+      "blank": "",
+      "not": ""
+    },
     "operators": {
       "all": {
         "is_empty": "порожній",
@@ -412,6 +432,8 @@
         "not_equal": "не є"
       }
     },
+    "relativeDate-nuxt": "",
+    "removeFilter-nuxt": "",
     "saveSegment": {
       "createOrUpdate": {
         "create": "Створити новий сегмент",
@@ -421,9 +443,11 @@
       "createSegment": "Створити сегмент",
       "segmentName": "Назва сегмента",
       "text": "Сегмент – це група контактів, яка відповідає набору фільтрів, подібних до тих, які ви щойно створили. Нові контакти, що відповідають цим фільтрам, автоматично додаються до сегмента.",
+      "text-nuxt": "",
       "title": "Зберегти сегмент",
       "updateSegment": "Оновити сегмент"
     },
+    "searchFields-nuxt": "",
     "selectFilter": "Виберіть фільтр",
     "updatedSegment": "Оновлений сегмент \"{segment}\""
   },
@@ -1045,6 +1069,7 @@
     "no": "Ні",
     "noResults": "Результатів не знайдено",
     "pageCount": "Сторінка {pageNumber} з {pageTotal}",
+    "pageCount-nuxt": "",
     "paymentPeriod": {
       "annually": "Щорічно",
       "monthly": "Щомісяця",
@@ -1074,6 +1099,8 @@
       "member": "Член",
       "superadmin": "Суперадміністратор"
     },
+    "rowsPerPage-nuxt": "",
+    "selectAll": "",
     "selectNone": "-- Жоден --",
     "selectOne": "Виберіть один...",
     "show": "Показати",
@@ -1203,6 +1230,7 @@
     },
     "dataGroup": {
       "callout": "CrowdNewsroom",
+      "callout-nuxt": "",
       "contact": "Контактна інформація",
       "oneTimeContributions": "Одноразові внески",
       "recurringContributions": "Регулярні внески",
@@ -1233,6 +1261,13 @@
     "noResults": "Контактів не знайдено",
     "numResults": "{n} контакт знайдено | {n} контактів знайдено",
     "search": "Пошук контактів...",
+    "selectAllBanner-nuxt": {
+      "allSelected": "",
+      "clearSelection": "",
+      "pageSelected": "",
+      "selectAll": "",
+      "someSelected": ""
+    },
     "selectedCount": "{n} контакт вибрано | {n} контактів вибрано",
     "sendEmail": {
       "newEmail": "Новий лист",
@@ -1242,7 +1277,9 @@
       "templateNameRequired": "Введіть назву нового шаблону.",
       "title": "Надіслати лист сегменту"
     },
-    "showingOf": "Показано контакти з {start} до {end} з {total}"
+    "sendEmailToSelected-nuxt": "",
+    "showingOf": "Показано контакти з {start} до {end} з {total}",
+    "showingOf-nuxt": ""
   },
   "contribution": {
     "adminCancelDescription": "Якщо ви скасуєте внесок контакту, його членство завершиться в кінці поточного платіжного циклу {date}.",
@@ -2001,13 +2038,22 @@
     "name": "Ім'я"
   },
   "tags": {
+    "clearTags-nuxt": "",
+    "countOfSelected-nuxt": "",
     "manageTags": "Керування тегами",
+    "manageTagsDescription-nuxt": "",
+    "newTagName-nuxt": "",
     "noTags": "Без тегів",
     "notifications": {
       "addedTag": "Додано тег \"{tag}\"",
-      "removedTag": "Вилучено тег \"{tag}\" "
+      "createdTag-nuxt": "",
+      "deletedTag-nuxt": "",
+      "removedTag": "Вилучено тег \"{tag}\" ",
+      "renamedTag-nuxt": ""
     },
     "searchTag": "Позначено тегом...",
+    "selectToTag-nuxt": "",
+    "tagSelected-nuxt": "",
     "toggleTag": "Перемкнути тег"
   }
 }

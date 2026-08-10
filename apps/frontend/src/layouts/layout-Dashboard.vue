@@ -19,8 +19,12 @@
             :ui="{ link: breadcrumbs.length > 1 ? 'text-base' : 'text-xl' }"
           />
         </template>
+        <template #right>
+          <!-- Teleport target for page-level header actions -->
+          <div id="page-header-actions" class="flex items-center gap-2"></div>
+        </template>
       </UDashboardNavbar>
-      <div class="flex flex-col p-4 md:p-5">
+      <div :class="['flex flex-col', route.meta.fullBleed ? '' : 'p-4 md:p-5']">
         <router-view />
       </div>
 
@@ -38,8 +42,12 @@
  *
  * @component
  */
+import { useRoute } from 'vue-router';
+
 import TheFooter from '../components/TheFooter.vue';
 import { isEmbed } from '../store';
 import { breadcrumbs } from '../store/breadcrumb';
 import TheMenu from './menu/TheMenu.vue';
+
+const route = useRoute();
 </script>
