@@ -102,7 +102,7 @@ import type { ContentData } from '@beabee/beabee-common';
 import { GetContactWith, toPhoneNumber } from '@beabee/beabee-common';
 import { AppFormSkeleton, AppSectionCard, AppStickySaveBar } from '@beabee/vue';
 
-import { computed, onMounted, reactive, ref, useTemplateRef, watch } from 'vue';
+import { computed, onMounted, reactive, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { z } from 'zod';
 
@@ -192,20 +192,23 @@ const schema = computed(() =>
     })
 );
 
-const dirty = ref(false);
-
 // UForm validates in response to DOM events (input/blur/change), not
 // reactively off `:state` — a silent `Object.assign` (in handleCancel below)
 // doesn't fire those events, so any already-shown errors would otherwise
 // stay stuck on screen. `formRef.value.clear()` explicitly wipes them.
 const formRef = useTemplateRef('formRef');
 
-watch(
-  data,
-  () => {
-    dirty.value = JSON.stringify(data) !== JSON.stringify(savedData);
-  },
-  { deep: true }
+const dirty = computed(
+  () =>
+    data.emailAddress !== savedData.emailAddress ||
+    data.firstName !== savedData.firstName ||
+    data.lastName !== savedData.lastName ||
+    data.telephone !== savedData.telephone ||
+    data.deliveryOptIn !== savedData.deliveryOptIn ||
+    data.addressLine1 !== savedData.addressLine1 ||
+    data.addressLine2 !== savedData.addressLine2 ||
+    data.cityOrTown !== savedData.cityOrTown ||
+    data.postCode !== savedData.postCode
 );
 
 const { submit: handleSave } = useApiSubmit(
@@ -229,7 +232,6 @@ const { submit: handleSave } = useApiSubmit(
       },
     });
     savedData = { ...data };
-    dirty.value = false;
   },
   { successMessage: () => t('form.saved') }
 );
