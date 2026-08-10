@@ -1,7 +1,7 @@
 {
   "accountPage": {
     "contactInformation": "Contactgegevens",
-    "deliveryAddress": "Afleveradres",
+    "deliveryAddress": "Adres",
     "deliveryOptIn": "Opt-in voor bezorging",
     "loginDetail": "Inloggegevens",
     "loginDetail-nuxt": "Wijzig wachtwoord",
@@ -82,6 +82,7 @@
       "title": "Nieuwsbrief",
       "unsubscribe": "Schrijf ze uit voor de nieuwsbrief"
     },
+    "personalDetails": "Persoonlijke gegevens",
     "phoneInfo": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden",
     "phoneInfo-nuxt": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden.",
     "phoneInfoAdmin": "Je moet toestemming van de persoon hebben voordat je hun telefoonnummer aan het systeem toevoegt",

@@ -82,6 +82,7 @@
       "title": "Newsletter",
       "unsubscribe": "Vom Newsletter abmelden"
     },
+    "personalDetails": "Persönliche Daten",
     "phoneInfo": "Mit der Angabe deiner Telefonnummer erklärst du dich damit einverstanden, telefonisch kontaktiert zu werden.",
     "phoneInfo-nuxt": "Mit der Angabe deiner Telefonnummer erklärst du dich damit einverstanden, telefonisch kontaktiert zu werden.",
     "phoneInfoAdmin": "Du musst die Zustimmung der Person einholen, bevor du ihre Telefonnummer in das System eingibst.",

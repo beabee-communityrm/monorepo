@@ -82,6 +82,7 @@
       "title": "Newsletter",
       "unsubscribe": "Cancellarli dalla newsletter"
     },
+    "personalDetails": "Dati personali",
     "phoneInfo": "Fornendo il tuo numero di telefono acconsenti ad essere contattato telefonicamente",
     "phoneInfo-nuxt": "Fornendo il tuo numero di telefono acconsenti ad essere contattato telefonicamente.",
     "phoneInfoAdmin": "È necessario avere il consenso della persona prima di aggiungere il suo numero di telefono al sistema",

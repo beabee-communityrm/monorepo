@@ -50,6 +50,11 @@ export const nuxtUiConfig: NuxtUIOptions = {
         header: 'border-b border-default',
       },
     },
+    tabs: {
+      slots: {
+        root: 'gap-4',
+      },
+    },
     button: {
       slots: {
         // Nuxt UI's own default omits justify-center, so content packs to

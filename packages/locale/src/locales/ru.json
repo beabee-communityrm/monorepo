@@ -82,6 +82,7 @@
       "title": "Рассылка",
       "unsubscribe": "Убрать из списка рассылки"
     },
+    "personalDetails": "Личные данные",
     "phoneInfo": "",
     "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",

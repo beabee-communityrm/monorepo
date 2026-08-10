@@ -1,7 +1,7 @@
 {
   "accountPage": {
     "contactInformation": "Informação de contacto",
-    "deliveryAddress": "Endereço de entrega",
+    "deliveryAddress": "Endereço",
     "deliveryOptIn": "Optar por receber",
     "loginDetail": "Detalhes de login",
     "loginDetail-nuxt": "Mudar palavra-passe",
@@ -82,6 +82,7 @@
       "title": "Newsletter",
       "unsubscribe": "Suspender inscrição na newsletter"
     },
+    "personalDetails": "Dados pessoais",
     "phoneInfo": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
     "phoneInfo-nuxt": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
     "phoneInfoAdmin": "",
