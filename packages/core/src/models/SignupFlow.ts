@@ -1,3 +1,5 @@
+import { ContactOriginData } from '@beabee/beabee-common';
+
 import {
   Column,
   CreateDateColumn,
@@ -48,4 +50,7 @@ export class SignupFlow {
 
   @Column({ default: false })
   processing!: boolean;
+
+  @Column({ type: 'jsonb', nullable: true })
+  source!: ContactOriginData | null;
 }
