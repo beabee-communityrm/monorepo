@@ -12,4 +12,14 @@ export interface S3Metadata {
    * Owner of the file, typically an email address
    */
   owner?: string;
+
+  /**
+   * Image width in pixels (S3 metadata values are always strings)
+   */
+  width?: string;
+
+  /**
+   * Image height in pixels (S3 metadata values are always strings)
+   */
+  height?: string;
 }

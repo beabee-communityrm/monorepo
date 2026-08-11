@@ -7,6 +7,7 @@ import {
   ListObjectsV2Command,
   S3Client,
 } from '@aws-sdk/client-s3';
+import { Upload } from '@aws-sdk/lib-storage';
 import { Readable } from 'stream';
 
 const log = mainLogger.child({ app: 's3-utils' });
@@ -160,6 +161,41 @@ export async function getFileStream(
     stream: Body as Readable,
     contentType: ContentType,
   };
+}
+
+/**
+ * Uploads a file to S3/MinIO from a stream without buffering it in memory
+ * Uses multipart upload to support streams of unknown length. Failed uploads
+ * are aborted automatically so no partial objects are left behind.
+ * @param s3Client The S3Client instance
+ * @param bucket The bucket to upload to
+ * @param key The key of the file
+ * @param body The file contents as a stream
+ * @param contentType The content type of the file
+ * @param metadata Optional metadata to store with the file
+ */
+export async function putFileStream(
+  s3Client: S3Client,
+  bucket: string,
+  key: string,
+  body: Readable,
+  contentType: string,
+  metadata?: Record<string, string>
+): Promise<void> {
+  const upload = new Upload({
+    client: s3Client,
+    params: {
+      Bucket: bucket,
+      Key: key,
+      Body: body,
+      ContentType: contentType,
+      Metadata: metadata,
+    },
+    // Limit concurrent parts to bound memory usage to one part (~5MB)
+    queueSize: 1,
+  });
+
+  await upload.done();
 }
 
 /**

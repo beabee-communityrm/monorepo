@@ -1,6 +1,5 @@
 import {
   ALLOWED_DOCUMENT_MIME_TYPES,
-  MAX_FILE_SIZE_IN_BYTES,
   isSupportedDocumentType,
 } from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
@@ -12,7 +11,6 @@ import {
 } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import { documentService } from '@beabee/core/services';
-import { convertMulterError } from '@beabee/core/utils/multer';
 
 import { Request, Response } from 'express';
 import {
@@ -27,6 +25,7 @@ import {
   Res,
   UseBefore,
 } from 'routing-controllers';
+import { pipeline } from 'stream/promises';
 
 import { RateLimit } from '../decorators/index.js';
 import { uploadMiddleware } from '../middlewares/index.js';
@@ -46,34 +45,28 @@ export class DocumentController {
   )
   async upload(
     @Req() req: Request,
-    @Res() res: Response,
     @CurrentUser({ required: false }) contact?: Contact
   ): Promise<UploadFileResponse> {
-    try {
-      // Apply multer middleware to handle file upload
-      await uploadMiddleware(req, res);
-    } catch (error) {
-      // Convert MulterError to appropriate HttpError
-      throw convertMulterError(error, MAX_FILE_SIZE_IN_BYTES);
-    }
+    const file = await uploadMiddleware(req);
 
-    if (!req.file) {
+    if (!file) {
       throw new BadRequestError('No document file provided');
     }
 
-    // Verify file type is allowed - multer handles size but we still check type
-    if (!isSupportedDocumentType(req.file.mimetype)) {
+    // Verify file type is allowed before consuming the stream
+    if (!isSupportedDocumentType(file.mimetype)) {
+      file.stream.resume(); // Drain the stream so the request completes
       throw new UnsupportedFileTypeError(
-        req.file.mimetype,
+        file.mimetype,
         ALLOWED_DOCUMENT_MIME_TYPES
       );
     }
 
     // Use the DocumentService to upload the file with owner information
     const metadata = await documentService.uploadDocument(
-      req.file.buffer,
-      req.file.originalname,
-      req.file.mimetype,
+      file.stream,
+      file.filename,
+      file.mimetype,
       contact?.email // Add the owner information if available
     );
 
@@ -102,12 +95,12 @@ export class DocumentController {
   async getDocument(
     @Res() res: Response,
     @Param('id') id: string
-  ): Promise<Buffer> {
-    // Get document as buffer
-    const documentData = await documentService.getDocumentBuffer(id);
-
-    // Get document metadata to check permissions if needed in the future
+  ): Promise<Response> {
+    // Get the filename first, this also throws if the document doesn't exist
     const metadata = await documentService.getDocumentMetadata(id);
+
+    // Get document as stream
+    const documentData = await documentService.getDocumentStream(id);
 
     // Set appropriate security headers
     res.set({
@@ -119,8 +112,20 @@ export class DocumentController {
       'X-Frame-Options': 'SAMEORIGIN',
     });
 
-    // Return the buffer, routing-controllers will handle the rest
-    return documentData.buffer;
+    // Stream the document to the response
+    try {
+      await pipeline(documentData.stream, res);
+    } catch (error) {
+      if (!res.headersSent) {
+        throw new BadRequestError(`Failed to stream document (${id})`);
+      }
+      // Too late for an error response, abort the connection
+      res.destroy();
+    }
+
+    // Returning the response object tells routing-controllers the response
+    // has been handled
+    return res;
   }
 
   /**

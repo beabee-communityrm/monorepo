@@ -231,6 +231,24 @@ export const getExtensionFromFilename = (filename?: string): string => {
 };
 
 /**
+ * Get the final display dimensions of an image after EXIF auto-orientation
+ * is applied. EXIF orientations 5-8 involve a 90°/270° rotation, which swaps
+ * the width and height reported for the raw, undecoded pixel data.
+ * @param width Raw pixel width (as reported before auto-orientation)
+ * @param height Raw pixel height (as reported before auto-orientation)
+ * @param orientation EXIF orientation value (1-8), if any
+ * @returns The width/height after auto-orientation is applied
+ */
+export const getOrientedDimensions = (
+  width: number,
+  height: number,
+  orientation?: number
+): { width: number; height: number } => {
+  const isRotated90 = (orientation ?? 1) >= 5;
+  return isRotated90 ? { width: height, height: width } : { width, height };
+};
+
+/**
  * Sanitize filename to prevent path traversal attacks and ensure HTTP header compatibility
  * @param filename Original filename
  * @returns Sanitized filename
@@ -250,6 +268,64 @@ export const sanitizeFilename = (filename: string): string => {
     .replace(/[^\w.-]/g, '_') // Replace any remaining non-alphanumeric chars except dots and hyphens
     .trim(); // Trim any leading/trailing spaces
 };
+
+/**
+ * Read the first `count` bytes of a stream and push them back so the stream
+ * can still be consumed from the start afterwards. May return fewer bytes if
+ * the stream ends early, in which case nothing is pushed back.
+ */
+export function peekStreamBytes(
+  stream: Readable,
+  count: number
+): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    let length = 0;
+    let ended = false;
+
+    const cleanup = () => {
+      stream.off('readable', onReadable);
+      stream.off('end', onEnd);
+      stream.off('error', onError);
+    };
+
+    const done = () => {
+      cleanup();
+      if (!ended) {
+        for (let i = chunks.length - 1; i >= 0; i--) {
+          stream.unshift(chunks[i]);
+        }
+      }
+      resolve(Buffer.concat(chunks).subarray(0, count));
+    };
+
+    const onReadable = () => {
+      let chunk: Buffer | null;
+      while (length < count && (chunk = stream.read()) !== null) {
+        chunks.push(chunk);
+        length += chunk.length;
+      }
+      if (length >= count) {
+        done();
+      }
+    };
+
+    const onEnd = () => {
+      ended = true;
+      done();
+    };
+
+    const onError = (error: Error) => {
+      cleanup();
+      reject(error);
+    };
+
+    stream.on('readable', onReadable);
+    stream.on('end', onEnd);
+    stream.on('error', onError);
+    onReadable();
+  });
+}
 
 export async function extractJsonArchive<T = unknown>(
   archive: Readable,

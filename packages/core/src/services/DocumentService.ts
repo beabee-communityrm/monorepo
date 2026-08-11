@@ -9,10 +9,10 @@ import {
   DeleteObjectCommand,
   HeadObjectCommand,
   ListObjectsV2Command,
-  PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
+import { HttpError } from 'routing-controllers';
 import { Readable } from 'stream';
 
 import config from '../config/config.js';
@@ -27,6 +27,7 @@ import {
   getExtensionFromFilename,
   getExtensionFromMimetype,
   getMimetypeFromExtension,
+  peekStreamBytes,
   sanitizeFilename,
 } from '../utils/file.js';
 import {
@@ -35,6 +36,7 @@ import {
   getFileBuffer,
   getFileHash,
   getFileStream,
+  putFileStream,
 } from '../utils/s3.js';
 
 const log = mainLogger.child({ app: 'document-service' });
@@ -66,10 +68,13 @@ export class DocumentService {
 
   /**
    * Validate document content
-   * @param documentData Document data
+   * @param documentData Document data stream
    * @param mimetype MIME type
    */
-  private validateDocument(documentData: Buffer, mimetype: string): void {
+  private async validateDocument(
+    documentData: Readable,
+    mimetype: string
+  ): Promise<void> {
     // Validate mimetype if provided
     if (mimetype && !isSupportedDocumentType(mimetype)) {
       throw new UnsupportedFileTypeError(mimetype, ALLOWED_DOCUMENT_MIME_TYPES);
@@ -77,11 +82,11 @@ export class DocumentService {
 
     // Basic PDF signature check for PDF files
     if (mimetype === 'application/pdf') {
-      if (documentData.length < 4) {
+      const pdfSignature = await peekStreamBytes(documentData, 4);
+      if (pdfSignature.length < 4) {
         throw new BadRequestError('Invalid PDF format. File is too small.');
       }
-      const pdfSignature = documentData.toString('ascii', 0, 4);
-      if (pdfSignature !== '%PDF') {
+      if (pdfSignature.toString('ascii') !== '%PDF') {
         throw new BadRequestError(
           'Invalid PDF format. The file does not appear to be a valid PDF.'
         );
@@ -91,23 +96,22 @@ export class DocumentService {
 
   /**
    * Upload a document to S3/MinIO
-   * @param documentData Binary document data
+   * @param documentData Document data as a stream or buffer
    * @param originalFilename Original filename (optional)
    * @param mimetype MIME type of the document
    * @param owner Owner's contact email (optional)
    * @returns Metadata for the uploaded document
    */
   async uploadDocument(
-    documentData: Buffer,
+    documentData: Readable | Buffer,
     originalFilename: string,
     mimetype?: string,
     owner?: string
   ): Promise<DocumentMetadata> {
     try {
-      // Validate input
-      if (!Buffer.isBuffer(documentData)) {
-        throw new BadRequestError('Invalid upload format');
-      }
+      const stream = Buffer.isBuffer(documentData)
+        ? Readable.from(documentData)
+        : documentData;
 
       // Sanitize original filename if provided
       const sanitizedFilename = sanitizeFilename(originalFilename);
@@ -120,7 +124,7 @@ export class DocumentService {
       mimetype ||= getMimetypeFromExtension(extWithDot);
 
       // Validate document content and type
-      this.validateDocument(documentData, mimetype);
+      await this.validateDocument(stream, mimetype);
 
       // Generate a unique ID for the document
       const fileId = randomUUID();
@@ -138,34 +142,21 @@ export class DocumentService {
       }
 
       // Upload the document
-      await this.s3Client.send(
-        new PutObjectCommand({
-          Bucket: this.config.s3.bucket,
-          Key: `documents/${id}`,
-          Body: documentData,
-          ContentType: contentType,
-          Metadata:
-            Object.keys(metadata).length > 0
-              ? (metadata as Record<string, string>)
-              : undefined,
-        })
+      await putFileStream(
+        this.s3Client,
+        this.config.s3.bucket,
+        `documents/${id}`,
+        stream,
+        contentType,
+        Object.keys(metadata).length > 0
+          ? (metadata as Record<string, string>)
+          : undefined
       );
 
-      // Get the hash (ETag) of the uploaded document
-      const hash = await this.getDocumentHash(id);
-
-      // Return metadata
-      return {
-        id,
-        mimetype: contentType,
-        createdAt: new Date(),
-        size: documentData.length,
-        filename: sanitizedFilename,
-        owner,
-        hash,
-      };
+      // Size, hash, createdAt etc. come from a single HeadObject request
+      return await this.getDocumentMetadata(id);
     } catch (error) {
-      if (error instanceof BadRequestError) {
+      if (error instanceof HttpError) {
         throw error;
       }
       const errorMessage =

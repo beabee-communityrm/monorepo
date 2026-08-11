@@ -6,6 +6,7 @@ import {
 } from '@beabee/beabee-common';
 
 import {
+  CopyObjectCommand,
   DeleteObjectCommand,
   HeadObjectCommand,
   ListObjectsV2Command,
@@ -17,6 +18,8 @@ import { extname } from 'path';
 import { HttpError } from 'routing-controllers';
 import sharp from 'sharp';
 import { Readable } from 'stream';
+import { buffer } from 'stream/consumers';
+import { pipeline } from 'stream/promises';
 import { optimize } from 'svgo';
 
 import config from '../config/config.js';
@@ -27,6 +30,7 @@ import {
 } from '../errors/index.js';
 import { log as mainLogger } from '../logging.js';
 import type {
+  ImageBackfillResult,
   ImageFormat,
   ImageMetadata,
   ImageServiceConfig,
@@ -35,6 +39,7 @@ import {
   getExtensionFromFilename,
   getMimetypeFromDecoderFormat,
   getMimetypeFromExtension,
+  getOrientedDimensions,
   sanitizeFilename,
 } from '../utils/file.js';
 import {
@@ -43,6 +48,7 @@ import {
   getFileBuffer,
   getFileHash,
   getFileStream,
+  putFileStream,
 } from '../utils/s3.js';
 
 const log = mainLogger.child({ app: 'image-service' });
@@ -73,23 +79,60 @@ export class ImageService {
   }
 
   /**
-   * Validate image file type, size and content
-   * @param imageData Image data buffer
-   * @param mimetype MIME type if known
+   * Upload an image to S3/MinIO
+   * @param imageData Image data as a stream or buffer
+   * @param originalFilename Original filename
+   * @param owner Owner's contact email (optional)
+   * @param format Output format (avif, webp, jpeg, png, or "original" to keep the original format)
+   * @returns Metadata for the uploaded image
    */
-  private async validateImage(
-    imageData: Buffer,
-    mimetype: string
-  ): Promise<void> {
-    // Validate MIME type if provided
-    if (mimetype && !isSupportedImageType(mimetype)) {
-      throw new UnsupportedFileTypeError(mimetype, ALLOWED_IMAGE_MIME_TYPES);
-    }
-
+  async uploadImage(
+    imageData: Readable | Buffer,
+    originalFilename: string,
+    owner?: string,
+    format?: ImageFormat
+  ): Promise<ImageMetadata> {
     try {
-      // Validate image content with sharp
-      const image = sharp(imageData);
-      const metadata = await image.metadata();
+      const stream = Buffer.isBuffer(imageData)
+        ? Readable.from(imageData)
+        : imageData;
+
+      const sanitizedFilename = sanitizeFilename(originalFilename);
+      const originalExtension = getExtensionFromFilename(originalFilename);
+      const originalMimetype = getMimetypeFromExtension(originalExtension);
+
+      // Validate MIME type before consuming the stream
+      if (originalMimetype && !isSupportedImageType(originalMimetype)) {
+        throw new UnsupportedFileTypeError(
+          originalMimetype,
+          ALLOWED_IMAGE_MIME_TYPES
+        );
+      }
+
+      // SVGs are buffered in full as SVGO needs the whole content
+      const isSvg = originalMimetype === 'image/svg+xml';
+
+      let image: sharp.Sharp;
+      let svgBuffer: Buffer | undefined;
+
+      if (isSvg) {
+        svgBuffer = await buffer(stream);
+        image = sharp(svgBuffer);
+      } else {
+        image = sharp();
+        // Sharp buffers the whole input internally and only processes it once
+        // the stream ends, so wait for the input to finish before probing the
+        // metadata (otherwise a failed stream would hang forever). Stream
+        // errors (e.g. FileTooLargeError) propagate from here.
+        await pipeline(stream, image);
+      }
+
+      let metadata: sharp.Metadata;
+      try {
+        metadata = await image.metadata();
+      } catch {
+        throw new BadRequestError('Invalid image file');
+      }
 
       // Check if it's actually a valid image
       if (!metadata.width || !metadata.height || !metadata.format) {
@@ -105,47 +148,11 @@ export class ImageService {
           ALLOWED_IMAGE_MIME_TYPES
         );
       }
-    } catch (error) {
-      if (error instanceof HttpError) {
-        throw error;
-      }
-      throw new BadRequestError('Invalid image file');
-    }
-  }
 
-  /**
-   * Upload an image to S3/MinIO
-   * @param imageData Binary image data or file stream
-   * @param originalFilename Original filename
-   * @param owner Owner's contact email (optional)
-   * @param format Output format (avif, webp, jpeg, png, or "original" to keep the original format)
-   * @returns Metadata for the uploaded image
-   */
-  async uploadImage(
-    imageData: Buffer,
-    originalFilename: string,
-    owner?: string,
-    format?: ImageFormat
-  ): Promise<ImageMetadata> {
-    try {
-      // If imageData is a ReadStream, convert it to a Buffer
-      if (!Buffer.isBuffer(imageData)) {
-        throw new BadRequestError('Invalid upload format');
-      }
-
-      const sanitizedFilename = sanitizeFilename(originalFilename);
-      const originalExtension = getExtensionFromFilename(originalFilename);
-      const originalMimetype = getMimetypeFromExtension(originalExtension);
-
-      // Validate image content, size and type
-      await this.validateImage(imageData, originalMimetype);
-
-      // Process the image with sharp to get metadata
-      const image = sharp(imageData).rotate(); // Auto-rotate based on EXIF orientation
-      const metadata = await image.metadata();
-
-      if (!metadata.width || !metadata.height || !metadata.format) {
-        throw new BadRequestError('Invalid image format');
+      // The raw bytes can't be recovered from a stream-fed sharp instance, so
+      // SVG content must be uploaded with an SVG extension
+      if (metadata.format === 'svg' && !isSvg) {
+        throw new BadRequestError('SVG uploads must use a .svg file extension');
       }
 
       // If the image format is already the target format or a vector graphic,
@@ -180,16 +187,37 @@ export class ImageService {
 
       const id = `${fileId}${extension}`;
 
-      // Process the image to the target format, but keep full resolution
-      let processedImageBuffer: Buffer;
+      // Correct MIME type for the output format
+      const outputMimetype =
+        outputFormat === 'original'
+          ? getMimetypeFromExtension(metadata.format)
+          : getMimetypeFromExtension(extension);
+
+      // `.rotate()` below auto-orients the image based on EXIF, so the
+      // stored dimensions must account for that rotation upfront
+      const orientedDimensions = getOrientedDimensions(
+        metadata.width,
+        metadata.height,
+        metadata.orientation
+      );
+
+      // Prepare metadata for S3, storing the dimensions so they can be read
+      // later without downloading the image
+      const s3Metadata: S3Metadata = {
+        width: String(orientedDimensions.width),
+        height: String(orientedDimensions.height),
+      };
+      if (sanitizedFilename) {
+        s3Metadata.originalfilename = sanitizedFilename;
+      }
+      if (owner) {
+        s3Metadata.owner = owner;
+      }
 
       // Handle SVG optimization
-      if (metadata.format === 'svg' && outputFormat === 'original') {
-        // Convert buffer to string for SVGO
-        const svgString = imageData.toString('utf8');
-
+      if (svgBuffer && outputFormat === 'original') {
         // Optimize SVG using SVGO
-        const result = optimize(svgString, {
+        const result = optimize(svgBuffer.toString('utf8'), {
           multipass: true,
           plugins: [
             {
@@ -204,95 +232,52 @@ export class ImageService {
           ],
         });
 
-        // Convert optimized SVG back to buffer
-        processedImageBuffer = Buffer.from(result.data, 'utf8');
-      } else if (outputFormat === 'original') {
-        // Keep the original format but strip metadata
-        processedImageBuffer = await image
-          .withMetadata({ orientation: undefined }) // Strip EXIF but keep orientation
-          .toBuffer();
+        // Upload the optimized SVG
+        await this.s3Client.send(
+          new PutObjectCommand({
+            Bucket: this.config.s3.bucket,
+            Key: `originals/${id}`,
+            Body: Buffer.from(result.data, 'utf8'),
+            ContentType: outputMimetype,
+            Metadata: s3Metadata as Record<string, string>,
+          })
+        );
       } else {
-        // Convert to the specified format
+        // Process the image to the target format at full resolution and
+        // stream the result to S3
+        image.rotate().withMetadata({ orientation: undefined }); // Strip EXIF but keep orientation
         switch (outputFormat) {
           case 'webp':
-            processedImageBuffer = await image
-              .withMetadata({ orientation: undefined })
-              .webp({ quality: this.config.quality })
-              .toBuffer();
+            image.webp({ quality: this.config.quality });
             break;
           case 'avif':
-            processedImageBuffer = await image
-              .withMetadata({ orientation: undefined })
-              .avif({ quality: this.config.quality })
-              .toBuffer();
+            image.avif({ quality: this.config.quality });
             break;
           case 'jpeg':
-            processedImageBuffer = await image
-              .withMetadata({ orientation: undefined })
-              .jpeg({ quality: this.config.quality })
-              .toBuffer();
+            image.jpeg({ quality: this.config.quality });
             break;
           case 'png':
-            processedImageBuffer = await image
-              .withMetadata({ orientation: undefined })
-              .png({
-                quality: this.config.quality
-                  ? Math.floor(this.config.quality / 10)
-                  : 8,
-              })
-              .toBuffer();
+            image.png({
+              quality: this.config.quality
+                ? Math.floor(this.config.quality / 10)
+                : 8,
+            });
             break;
-          default:
-            processedImageBuffer = await image
-              .withMetadata({ orientation: undefined })
-              .toBuffer();
+          // 'original' keeps the input format
         }
+
+        await putFileStream(
+          this.s3Client,
+          this.config.s3.bucket,
+          `originals/${id}`,
+          image,
+          outputMimetype,
+          s3Metadata as Record<string, string>
+        );
       }
 
-      // Correct MIME type for the output format
-      const outputMimetype =
-        outputFormat === 'original'
-          ? getMimetypeFromExtension(metadata.format)
-          : getMimetypeFromExtension(extension);
-
-      // Prepare metadata for S3
-      const s3Metadata: S3Metadata = {};
-      if (sanitizedFilename) {
-        s3Metadata.originalfilename = sanitizedFilename;
-      }
-      if (owner) {
-        s3Metadata.owner = owner;
-      }
-
-      // Upload the processed original image
-      await this.s3Client.send(
-        new PutObjectCommand({
-          Bucket: this.config.s3.bucket,
-          Key: `originals/${id}`,
-          Body: processedImageBuffer,
-          ContentType: outputMimetype,
-          Metadata:
-            Object.keys(s3Metadata).length > 0
-              ? (s3Metadata as Record<string, string>)
-              : undefined,
-        })
-      );
-
-      // Get the hash (ETag) of the uploaded image
-      const hash = await this.getImageHash(id);
-
-      // Return metadata
-      return {
-        id,
-        width: metadata.width,
-        height: metadata.height,
-        mimetype: outputMimetype,
-        createdAt: new Date(),
-        size: processedImageBuffer.length,
-        filename: sanitizedFilename,
-        owner,
-        hash,
-      };
+      // Size, hash, createdAt etc. come from a single HeadObject request
+      return await this.getImageMetadata(id);
     } catch (error) {
       if (error instanceof HttpError) {
         throw error;
@@ -315,12 +300,8 @@ export class ImageService {
     width?: number
   ): Promise<{ stream: Readable; contentType: string }> {
     try {
-      // Check if image exists first
-      if (!(await this.imageExists(id))) {
-        throw new NotFoundError();
-      }
-
-      // Get image metadata to check format
+      // Get image metadata to check format, throws NotFoundError if the
+      // image doesn't exist
       const metadata = await this.getImageMetadata(id);
       const isSvg = metadata.mimetype === 'image/svg+xml';
 
@@ -502,26 +483,6 @@ export class ImageService {
    */
   async getImageMetadata(id: string): Promise<ImageMetadata> {
     try {
-      // Check if the image exists
-      if (!(await this.imageExists(id))) {
-        throw new NotFoundError();
-      }
-
-      // Get the original image to extract width and height
-      const { buffer, contentType } = await getFileBuffer(
-        this.s3Client,
-        this.config.s3.bucket,
-        `originals/${id}`
-      );
-
-      // Get image dimensions using sharp
-      const metadata = await sharp(buffer).metadata();
-
-      if (!metadata.width || !metadata.height) {
-        throw new BadRequestError('Invalid image format');
-      }
-
-      // Get file metadata
       const response = await this.s3Client.send(
         new HeadObjectCommand({
           Bucket: this.config.s3.bucket,
@@ -529,30 +490,26 @@ export class ImageService {
         })
       );
 
-      const s3Metadata = response.Metadata || {};
-
-      // Get the hash (ETag) of the image
-      const hash = response.ETag ? response.ETag.replace(/"/g, '') : '';
+      const s3Metadata: S3Metadata = response.Metadata || {};
 
       return {
         id,
-        width: metadata.width,
-        height: metadata.height,
-        mimetype: contentType,
+        // Images uploaded before dimensions were stored in the S3 metadata
+        // fall back to 0
+        width: s3Metadata.width ? parseInt(s3Metadata.width, 10) : 0,
+        height: s3Metadata.height ? parseInt(s3Metadata.height, 10) : 0,
+        mimetype: response.ContentType || 'application/octet-stream',
         createdAt: response.LastModified || new Date(),
-        size: response.ContentLength || buffer.length,
+        size: response.ContentLength || 0,
         filename: s3Metadata.originalfilename,
         owner: s3Metadata.owner,
-        hash,
+        hash: response.ETag ? response.ETag.replace(/"/g, '') : '',
       };
     } catch (error) {
       if (error instanceof HttpError) {
-        // Don't log HttpError like NotFoundError as error since it's expected behavior
         throw error;
       }
-      const errorMessage = `Failed to get image metadata (${id})`;
-      log.error(errorMessage, error);
-      throw new BadRequestError(errorMessage);
+      throw new NotFoundError();
     }
   }
 
@@ -609,6 +566,92 @@ export class ImageService {
       log.error('Failed to list images:', error);
       return [];
     }
+  }
+
+  /**
+   * Backfill width/height S3 metadata for images uploaded before dimensions
+   * were stored at upload time. Each image is downloaded once to probe its
+   * dimensions, the metadata is then rewritten with a server-side self-copy.
+   * Safe to re-run, images that already have dimensions are skipped.
+   * @param dryRun Only report what would be updated
+   * @returns Counts of updated, skipped and failed images
+   */
+  async backfillImageDimensions(dryRun = false): Promise<ImageBackfillResult> {
+    const result: ImageBackfillResult = { updated: 0, skipped: 0, failed: 0 };
+
+    let continuationToken: string | undefined;
+    do {
+      const response = await this.s3Client.send(
+        new ListObjectsV2Command({
+          Bucket: this.config.s3.bucket,
+          Prefix: 'originals/',
+          ContinuationToken: continuationToken,
+        })
+      );
+      continuationToken = response.NextContinuationToken;
+
+      for (const item of response.Contents || []) {
+        if (!item.Key) {
+          continue;
+        }
+
+        try {
+          const head = await this.s3Client.send(
+            new HeadObjectCommand({
+              Bucket: this.config.s3.bucket,
+              Key: item.Key,
+            })
+          );
+
+          const s3Metadata: S3Metadata = head.Metadata || {};
+          if (s3Metadata.width && s3Metadata.height) {
+            result.skipped++;
+            continue;
+          }
+
+          const { buffer } = await getFileBuffer(
+            this.s3Client,
+            this.config.s3.bucket,
+            item.Key
+          );
+          const metadata = await sharp(buffer).metadata();
+
+          if (!metadata.width || !metadata.height) {
+            log.warning(`No dimensions detected for ${item.Key}, skipping`);
+            result.failed++;
+            continue;
+          }
+
+          if (!dryRun) {
+            await this.s3Client.send(
+              new CopyObjectCommand({
+                Bucket: this.config.s3.bucket,
+                CopySource: `${this.config.s3.bucket}/${item.Key}`,
+                Key: item.Key,
+                MetadataDirective: 'REPLACE',
+                // REPLACE drops the content type unless set explicitly
+                ContentType: head.ContentType,
+                Metadata: {
+                  ...head.Metadata,
+                  width: String(metadata.width),
+                  height: String(metadata.height),
+                },
+              })
+            );
+          }
+
+          result.updated++;
+          log.info(
+            `${dryRun ? 'Would backfill' : 'Backfilled'} dimensions for ${item.Key} (${metadata.width}x${metadata.height})`
+          );
+        } catch (error) {
+          result.failed++;
+          log.error(`Failed to backfill dimensions for ${item.Key}`, error);
+        }
+      }
+    } while (continuationToken);
+
+    return result;
   }
 
   /**
