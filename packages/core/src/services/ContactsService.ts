@@ -111,6 +111,9 @@ class ContactsService {
     log.info('Create contact', { partialContact, partialProfile });
 
     try {
+      // origin is not a column, it's recorded on the contact.created event
+      const { origin, ...contactData } = partialContact;
+
       const contact = getRepository(Contact).create({
         referralCode: generateContactCode(partialContact),
         pollsCode: generateContactCode(partialContact),
@@ -119,7 +122,7 @@ class ContactsService {
         firstname: '',
         lastname: '',
         contributionType: ContributionType.None,
-        ...partialContact,
+        ...contactData,
         email: normalizeEmailAddress(partialContact.email),
       });
       await getRepository(Contact).save(contact);

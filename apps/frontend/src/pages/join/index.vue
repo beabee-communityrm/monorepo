@@ -28,6 +28,7 @@ meta:
 
 <script lang="ts" setup>
 import {
+  type ContactOriginData,
   type ContentJoinData,
   type ContentPaymentData,
   ContributionPeriod,
@@ -37,7 +38,7 @@ import {
 import { TooManyRequestsError } from '@beabee/client';
 
 import { onBeforeMount, reactive, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { type LocationQueryValue, useRoute, useRouter } from 'vue-router';
 
 import JoinFormStep1 from '#components/pages/join/JoinFormStep1.vue';
 import JoinFormStep2 from '#components/pages/join/JoinFormStep2.vue';
@@ -50,6 +51,20 @@ const route = useRoute();
 const router = useRouter();
 
 const stripeClientSecret = ref('');
+
+// UTM parameters parsed form URL
+const origin = ref<ContactOriginData>({
+  source: '',
+  referrer: '',
+  campaign: '',
+});
+
+// Extract URL routes as strings from LocationQueryValue type provided by route.query
+function getUrlRouteAsString(
+  value: LocationQueryValue | LocationQueryValue[] | undefined
+): string {
+  return (Array.isArray(value) ? value[0] : value) || '';
+}
 
 const joinContent = ref<ContentJoinData>({
   initialAmount: 5,
@@ -89,6 +104,7 @@ async function submitStep1() {
   try {
     const clientData: SignupData = {
       email: formData.email,
+      origin: origin.value,
       ...(formData.noContribution
         ? {}
         : formData.period === 'one-time'
@@ -138,6 +154,12 @@ async function submitStep1() {
 
 onBeforeMount(async () => {
   stripeClientSecret.value = '';
+
+  origin.value = {
+    source: getUrlRouteAsString(route.query.utm_source),
+    referrer: getUrlRouteAsString(route.query.utm_medium),
+    campaign: getUrlRouteAsString(route.query.utm_campaign),
+  };
 
   joinContent.value = await client.content.get('join');
 
