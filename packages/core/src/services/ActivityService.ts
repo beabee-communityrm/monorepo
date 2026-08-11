@@ -38,9 +38,7 @@ class ActivityService {
 
   /**
    * Get the origin (source, referrer, campaign) of a contact from their
-   * contact.created activity event
-   * Source is the actor type and referrer and campaign are obtained from
-   * the metadata
+   * contact.created event metadata
    * @param contactId The contact ID
    * @returns The contact's origin, or null if no creation event was recorded
    */
@@ -51,7 +49,7 @@ class ActivityService {
 
     // If event not found, return empty strings
     return {
-      source: event ? event.actorType : '',
+      source: event ? (event.metadata?.source ?? '') : '',
       referrer: event ? (event.metadata?.referrer ?? '') : '',
       campaign: event ? (event.metadata?.campaign ?? '') : '',
     };
