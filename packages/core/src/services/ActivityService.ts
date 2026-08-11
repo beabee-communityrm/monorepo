@@ -16,7 +16,7 @@ class ActivityService {
    * @param event event containing contact ID, event type and metadata (if any)
    */
   async addEvent(
-    event: Pick<ActivityEvent, 'contactId' | 'eventType' | 'metadata'> &
+    event: Pick<ActivityEvent, 'targetId' | 'eventType' | 'metadata'> &
       Partial<ActivityActor>
   ): Promise<InsertResult> {
     return await getRepository(ActivityEvent).insert({
@@ -30,8 +30,8 @@ class ActivityService {
    * @param id The contact ID
    * @returns Events for this contact ID
    */
-  async getEventByContactId(contactId: string): Promise<ActivityEvent[]> {
-    return getRepository(ActivityEvent).findBy({ contactId });
+  async getEventByContactId(targetId: string): Promise<ActivityEvent[]> {
+    return getRepository(ActivityEvent).findBy({ targetId });
   }
 
   /**

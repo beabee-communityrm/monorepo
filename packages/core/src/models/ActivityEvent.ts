@@ -9,13 +9,13 @@ import {
 } from 'typeorm';
 
 @Entity()
-@Index(['contactId', 'createdAt'])
+@Index(['targetId', 'createdAt'])
 export class ActivityEvent {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column({ type: 'uuid', nullable: true })
-  contactId!: string | null;
+  targetId!: string | null;
 
   @Column({ type: String })
   actorType!: ActivityActorType;

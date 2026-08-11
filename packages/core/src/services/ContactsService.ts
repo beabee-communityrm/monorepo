@@ -135,7 +135,7 @@ class ContactsService {
 
       try {
         await ActivityService.addEvent({
-          contactId: contact.id,
+          targetId: contact.id,
           actorType: ActivityActorType.User,
           actorId: null,
           eventType: ActivityEventType.ContactCreated,
