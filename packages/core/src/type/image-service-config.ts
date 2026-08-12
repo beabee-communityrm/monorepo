@@ -25,4 +25,16 @@ export interface ImageServiceConfig {
    * Use 'original' to keep the original image format
    */
   format?: ImageFormat;
+
+  /**
+   * Maximum dimension (in pixels) for the longest side of the stored
+   * original, larger uploads are downscaled to fit
+   */
+  maxDimension?: number;
+
+  /**
+   * Maximum number of pixels (width x height) an uploaded image may have,
+   * larger images are rejected before decoding
+   */
+  maxInputPixels?: number;
 }

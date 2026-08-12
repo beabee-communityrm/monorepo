@@ -163,6 +163,12 @@ const s3: S3Config = {
   forcePathStyle: env.b('BEABEE_MINIO_FORCE_PATH_STYLE', true), // Force path style URLs for S3 compatibility
 };
 
+// Supported widths for image resizing
+const availableImageWidths = env.nn(
+  'BEABEE_IMAGE_AVAILABLE_WIDTHS',
+  [100, 300, 400, 600, 900, 1200, 1440, 1800]
+);
+
 // Image service configuration
 const image: ImageServiceConfig = {
   quality: env.n('BEABEE_IMAGE_QUALITY', 80), // Quality level for image compression (default: 80)
@@ -171,10 +177,13 @@ const image: ImageServiceConfig = {
     ['avif', 'webp', 'jpeg', 'png', 'original'] as const, // Allowed image formats
     'avif' // Default: avif
   ),
-  availableWidths: env.nn(
-    'BEABEE_IMAGE_AVAILABLE_WIDTHS',
-    [100, 300, 400, 600, 900, 1200, 1440, 1800]
-  ), // Supported widths for image resizing
+  availableWidths: availableImageWidths,
+  // Originals are never served larger than the biggest available width
+  maxDimension: env.n(
+    'BEABEE_IMAGE_MAX_DIMENSION',
+    Math.max(...availableImageWidths)
+  ),
+  maxInputPixels: env.n('BEABEE_IMAGE_MAX_INPUT_PIXELS', 40_000_000), // Decode guard, bounds peak memory during upload
   s3,
 };
 
