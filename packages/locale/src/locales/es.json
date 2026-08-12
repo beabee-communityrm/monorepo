@@ -1433,7 +1433,7 @@
         "rateLimited": "Error de subida: has subido demasiados archivos recientemente, espera unos minutos antes de intentarlo de nuevo",
         "tooBig": "Error de subida: el tamaño del archivo debe ser inferior a 20 Mb",
         "unsupportedType": "Error de subida: el tipo de archivo no es compatible",
-        "uploadFailed": ""
+        "uploadFailed": "Error de subida: no se ha podido procesar el archivo"
       },
       "firstName": {
         "required": "El nombre es obligatorio"

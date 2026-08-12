@@ -1435,7 +1435,7 @@
         "rateLimited": "Falha no upload: fizeste upload de demasiados ficheiros recentemente. Espera um pouco e volta a tentar.",
         "tooBig": "Falha no upload: o ficheiro deve ter menos de 20Mb.",
         "unsupportedType": "Falha no upload: o tipo de ficheiro não é suportado.",
-        "uploadFailed": ""
+        "uploadFailed": "Falha no upload: não foi possível processar o ficheiro."
       },
       "firstName": {
         "required": "O primeiro nome é obrigatório"
