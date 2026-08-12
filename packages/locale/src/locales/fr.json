@@ -1438,6 +1438,7 @@
       "file": {
         "rateLimited": "Échec de l'import : Le type de fichier n'est pas pris en charge",
         "tooBig": "Échec de l'import : La taille du fichier doit être inférieure à 20Mo",
+        "tooManyPixels": "",
         "unsupportedType": "Échec de l'import : Vous avez importé trop de fichiers récemment, veuillez patienter quelques minutes avant de réessayer"
       },
       "firstName": {

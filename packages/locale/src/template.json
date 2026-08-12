@@ -1432,6 +1432,7 @@
       "file": {
         "rateLimited": "",
         "tooBig": "",
+        "tooManyPixels": "",
         "unsupportedType": ""
       },
       "firstName": {

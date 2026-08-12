@@ -1434,6 +1434,7 @@
       "file": {
         "rateLimited": "Caricamento non riuscito: hai caricato troppi file di recente, attendi qualche minuto prima di riprovare",
         "tooBig": "Caricamento non riuscito: la dimensione del file deve essere inferiore a 20 MB",
+        "tooManyPixels": "",
         "unsupportedType": "Caricamento non riuscito: tipo di file non supportato"
       },
       "firstName": {

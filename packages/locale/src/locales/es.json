@@ -1432,6 +1432,7 @@
       "file": {
         "rateLimited": "Error de subida: has subido demasiados archivos recientemente, espera unos minutos antes de intentarlo de nuevo",
         "tooBig": "Error de subida: el tamaño del archivo debe ser inferior a 20 Mb",
+        "tooManyPixels": "",
         "unsupportedType": "Error de subida: el tipo de archivo no es compatible"
       },
       "firstName": {

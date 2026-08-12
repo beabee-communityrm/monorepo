@@ -1432,6 +1432,7 @@
       "file": {
         "rateLimited": "Upload failed: you have uploaded too many files recently, please wait a few minutes before trying again",
         "tooBig": "Upload failed: the file size must be under 20Mb",
+        "tooManyPixels": "Upload failed: the image resolution is too high",
         "unsupportedType": "Upload failed: the file type is not supported"
       },
       "firstName": {
