@@ -13,7 +13,6 @@ export const nuxtUiConfig: NuxtUIOptions = {
     navigationMenu: {
       slots: {
         link: 'py-2.5!',
-        linkLeadingIcon: 'size-4.5!',
       },
       variants: {
         active: {

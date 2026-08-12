@@ -78,9 +78,13 @@
         "subscribed": "",
         "unsubscribed": ""
       },
+      "description": "",
+      "noGroups": "",
       "subscribe": "",
       "title": "",
-      "unsubscribe": ""
+      "unsubscribe": "",
+      "unsubscribeButton": "",
+      "unsubscribedNotification": ""
     },
     "personalDetails": "",
     "phoneInfo": "",

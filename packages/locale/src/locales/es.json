@@ -78,9 +78,14 @@
         "subscribed": "Este contacto está suscrito a tu lista de boletín.",
         "unsubscribed": "Este contacto no está suscrito a tu lista de boletín."
       },
+      "description": "Gestiona a qué grupos de boletín estás suscrito.",
+      "noGroups": "No estás suscrito a ningún grupo de boletín.",
       "subscribe": "Suscribir al boletín",
       "title": "Boletín",
-      "unsubscribe": "Cancelar suscripción al boletín"
+      "unsubscribe": "Cancelar suscripción al boletín",
+      "unsubscribeButton": "Cancelar suscripción",
+      "unsubscribeInfo": "La cancelación de la suscripción se aplica de inmediato y no se puede deshacer aquí.",
+      "unsubscribedNotification": "Se ha cancelado tu suscripción a {group}"
     },
     "personalDetails": "Datos personales",
     "phoneInfo": "Al proporcionar tu número de teléfono, aceptas ser contactado por teléfono",

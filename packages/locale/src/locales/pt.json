@@ -78,9 +78,14 @@
         "subscribed": "Este contacto assina a newsletter.",
         "unsubscribed": "Este contacto não assina a newsletter."
       },
+      "description": "Faça a gestão dos grupos da newsletter aos quais está inscrito.",
+      "noGroups": "Não está inscrito em nenhum grupo da newsletter.",
       "subscribe": "Inscrever na newsletter",
       "title": "Newsletter",
-      "unsubscribe": "Suspender inscrição na newsletter"
+      "unsubscribe": "Suspender inscrição na newsletter",
+      "unsubscribeButton": "Cancelar inscrição",
+      "unsubscribeInfo": "O cancelamento da inscrição tem efeito imediato e não pode ser revertido aqui.",
+      "unsubscribedNotification": "A sua inscrição em {group} foi cancelada"
     },
     "personalDetails": "Dados pessoais",
     "phoneInfo": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",

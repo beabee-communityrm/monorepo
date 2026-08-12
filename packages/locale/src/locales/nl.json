@@ -78,9 +78,14 @@
         "subscribed": "Deze contactpersoon is ingeschreven op uw nieuwsbrieflijst.",
         "unsubscribed": "Dit contact is niet ingeschreven op uw nieuwsbrieflijst."
       },
+      "description": "Beheer bij welke nieuwsbriefgroepen je bent aangemeld.",
+      "noGroups": "Je bent bij geen enkele nieuwsbriefgroep aangemeld.",
       "subscribe": "Schrijf ze in voor de nieuwsbrief",
       "title": "Nieuwsbrief",
-      "unsubscribe": "Schrijf ze uit voor de nieuwsbrief"
+      "unsubscribe": "Schrijf ze uit voor de nieuwsbrief",
+      "unsubscribeButton": "Afmelden",
+      "unsubscribeInfo": "Afmelden gaat direct in en kan hier niet ongedaan worden gemaakt.",
+      "unsubscribedNotification": "Je bent afgemeld voor {group}"
     },
     "personalDetails": "Persoonlijke gegevens",
     "phoneInfo": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden",

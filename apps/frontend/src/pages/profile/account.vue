@@ -11,7 +11,7 @@ meta:
     >
       <UIcon
         name="i-lucide-shield"
-        class="text-primary mt-0.5 size-4 shrink-0"
+        class="text-primary mt-0.5 size-5 shrink-0"
       />
       <p>{{ t('accountPage.subTitle-nuxt') }}</p>
     </div>
@@ -26,7 +26,9 @@ meta:
           <SetMFA contact-id="me" />
         </div>
       </template>
-      <template #subscriptions> </template>
+      <template #subscriptions>
+        <AccountNewsletterSubscriptions />
+      </template>
     </UTabs>
 
     <p class="text-muted px-1">
@@ -40,6 +42,7 @@ meta:
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AccountForm from '../../components/pages/profile/account/AccountForm.vue';
+import AccountNewsletterSubscriptions from '../../components/pages/profile/account/AccountNewsletterSubscriptions.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
 import SetMFA from '../../components/pages/profile/account/SetMFA.vue';
 import { addBreadcrumb } from '../../store/breadcrumb';
@@ -49,6 +52,7 @@ import type { TabsItem } from '@nuxt/ui';
 const items = ref<TabsItem[]>([
   {
     label: 'Contact Information',
+    icon: 'i-lucide-contact',
     slot: 'contact',
   },
   {
@@ -58,7 +62,7 @@ const items = ref<TabsItem[]>([
   },
   {
     label: 'Subscriptions',
-    icon: 'i-lucide-shield',
+    icon: 'i-lucide-mail',
     slot: 'subscriptions',
   },
 ]);
