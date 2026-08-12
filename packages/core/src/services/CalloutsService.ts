@@ -342,7 +342,7 @@ class CalloutsService {
           origin: {
             source: 'callout',
             referrer: '',
-            campaign: '',
+            campaign: callout.slug,
           },
         });
       }
