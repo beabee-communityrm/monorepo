@@ -91,7 +91,7 @@ export default class BeabeeStorage {
         'too-many-requests': t('form.errors.file.rateLimited'),
         'file-too-large': t('form.errors.file.tooBig'),
         'unsupported-file-type': t('form.errors.file.unsupportedType'),
-        'file-upload-error': t('form.errors.file.tooManyPixels'),
+        'file-upload-error': t('form.errors.file.uploadFailed'),
       });
       throw new Error(errorText);
     } finally {
