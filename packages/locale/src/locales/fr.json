@@ -78,9 +78,14 @@
         "subscribed": "Ce contact est abonné à votre liste de lettres d'information.",
         "unsubscribed": "Ce contact n'est pas abonné à votre liste de lettres d'information."
       },
+      "description": "Gérez les groupes de lettres d'information auxquels vous êtes abonné(e).",
+      "noGroups": "Vous n'êtes abonné(e) à aucun groupe de lettres d'information.",
       "subscribe": "Inscrire à la lettre d'information",
       "title": "Lettre d'information",
-      "unsubscribe": "Désinscrire de la lettre d'information"
+      "unsubscribe": "Désinscrire de la lettre d'information",
+      "unsubscribeButton": "Se désinscrire",
+      "unsubscribeInfo": "La désinscription prend effet immédiatement et ne peut pas être annulée ici.",
+      "unsubscribedNotification": "Vous avez été désinscrit(e) de {group}"
     },
     "personalDetails": "Informations personnelles",
     "phoneInfo": "En indiquant votre numéro de téléphone, vous acceptez d'être contacté par téléphone",

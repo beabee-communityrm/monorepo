@@ -204,6 +204,29 @@ class NewsletterService {
   }
 
   /**
+   * Get the newsletter groups a contact is currently subscribed to
+   *
+   * @param contactId The contact's ID
+   * @returns The subscribed groups as `{ id, label }` pairs
+   */
+  async getContactNewsletterGroups(
+    contactId: string
+  ): Promise<{ id: string; label: string }[]> {
+    const contactProfile = await getRepository(ContactProfile).findOneByOrFail(
+      { contactId }
+    );
+    const newsletterGroups: { id: string; label: string }[] =
+      optionsService.getJSON('newsletter-groups');
+
+    const validGroupIds = new Set(newsletterGroups.map((g) => g.id));
+    return newsletterGroups.filter(
+      (g) =>
+        contactProfile.newsletterGroups.includes(g.id) &&
+        validGroupIds.has(g.id)
+    );
+  }
+
+  /**
    * Get newsletter provider's groups, compare them against
    * groups cached in the database, and update cache if needed.
    * If any groups were deleted, remove them from contact profiles, callouts

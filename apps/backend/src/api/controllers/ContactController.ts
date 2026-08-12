@@ -10,6 +10,7 @@ import { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
 import DispatchService from '@beabee/core/services/DispatchService';
+import NewsletterService from '@beabee/core/services/NewsletterService';
 import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
@@ -36,6 +37,7 @@ import {
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
 import { TargetUser } from '#api/decorators/TargetUser';
+import { GetContactNewsletterGroupDto } from '#api/dto';
 import { GetExportQuery } from '#api/dto/BaseDto';
 import {
   BatchUpdateContactDto,
@@ -499,5 +501,19 @@ export class ContactController {
     if (!revoked) {
       throw new NotFoundError();
     }
+  }
+
+  /**
+   * Get the newsletter groups a contact is currently subscribed to
+   * @param target The target contact
+   */
+  @Get('/:id/newsletter-groups')
+  async getNewsletterGroups(
+    @TargetUser() target: Contact
+  ): Promise<GetContactNewsletterGroupDto[]> {
+    const groups = await NewsletterService.getContactNewsletterGroups(
+      target.id
+    );
+    return plainToInstance(GetContactNewsletterGroupDto, groups);
   }
 }

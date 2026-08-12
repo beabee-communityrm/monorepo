@@ -78,9 +78,14 @@
         "subscribed": "Dieser Kontakt ist für deine Newsletterliste angemeldet.",
         "unsubscribed": "Dieser Kontakt ist nicht für deine Newsletterliste angemeldet."
       },
+      "description": "Verwalte, für welche Newsletter-Gruppen du angemeldet bist.",
+      "noGroups": "Du bist für keine Newsletter-Gruppen angemeldet.",
       "subscribe": "Für den Newsletter anmelden",
       "title": "Newsletter",
-      "unsubscribe": "Vom Newsletter abmelden"
+      "unsubscribe": "Vom Newsletter abmelden",
+      "unsubscribeButton": "Abmelden",
+      "unsubscribeInfo": "Die Abmeldung wird sofort wirksam und kann hier nicht widerrufen werden.",
+      "unsubscribedNotification": "Du wurdest von {group} abgemeldet"
     },
     "personalDetails": "Persönliche Daten",
     "phoneInfo": "Mit der Angabe deiner Telefonnummer erklärst du dich damit einverstanden, telefonisch kontaktiert zu werden.",

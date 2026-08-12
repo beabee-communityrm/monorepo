@@ -12,3 +12,11 @@ export class NewsletterGroupDto implements NewsletterGroupData {
   @IsBoolean()
   checked!: boolean;
 }
+
+export class GetContactNewsletterGroupDto {
+  @IsString()
+  id!: string;
+
+  @IsString()
+  label!: string;
+}

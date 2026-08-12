@@ -78,9 +78,14 @@
         "subscribed": "Questo contatto è iscritto alla tua newsletter.",
         "unsubscribed": "Questo contatto non è iscritto alla tua newsletter."
       },
+      "description": "Gestisci a quali gruppi della newsletter sei iscritto.",
+      "noGroups": "Non sei iscritto a nessun gruppo della newsletter.",
       "subscribe": "Iscrivili alla newsletter",
       "title": "Newsletter",
-      "unsubscribe": "Cancellarli dalla newsletter"
+      "unsubscribe": "Cancellarli dalla newsletter",
+      "unsubscribeButton": "Annulla iscrizione",
+      "unsubscribeInfo": "La disiscrizione ha effetto immediato e non può essere annullata qui.",
+      "unsubscribedNotification": "Sei stato disiscritto da {group}"
     },
     "personalDetails": "Dati personali",
     "phoneInfo": "Fornendo il tuo numero di telefono acconsenti ad essere contattato telefonicamente",
