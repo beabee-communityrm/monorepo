@@ -1434,7 +1434,7 @@
       "file": {
         "rateLimited": "Das war nicht richtig. Das waren zu viele Sachen auf einmal. Du musst etwas warten. Dann versuche es noch mal.",
         "tooBig": "Das war nicht richtig. Dein Text ist zu lang. Oder dein Bild ist zu groß. Man darf nur 20 MB hoch-laden.",
-        "tooManyPixels": "",
+        "tooManyPixels": "Das war nicht richtig. Dein Bild hat zu viele Bild-Punkte. Nimm ein kleineres Bild.",
         "unsupportedType": "Das war nicht richtig. Diese Art von Datei geht nicht."
       },
       "firstName": {

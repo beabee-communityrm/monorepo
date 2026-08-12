@@ -1434,7 +1434,7 @@
       "file": {
         "rateLimited": "Hochladen fehlgeschlagen: Der Dateityp ist nicht unterstützt.",
         "tooBig": "Hochladen fehlgeschlagen: Die Dateigröße darf max. 20 MB betragen.",
-        "tooManyPixels": "",
+        "tooManyPixels": "Hochladen fehlgeschlagen: Die Bildauflösung ist zu hoch.",
         "unsupportedType": "Hochladen fehlgeschlagen: Du hast in zu kurzer Zeit zu viele Dateien hochgeladen. Bitte warte ein paar Minuten, bevor du es erneut versuchst."
       },
       "firstName": {
