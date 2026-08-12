@@ -1432,10 +1432,10 @@
         "required": "E-Mail-Adresse benötigt"
       },
       "file": {
-        "rateLimited": "Hochladen fehlgeschlagen: Der Dateityp ist nicht unterstützt.",
+        "rateLimited": "Hochladen fehlgeschlagen: Du hast in zu kurzer Zeit zu viele Dateien hochgeladen. Bitte warte ein paar Minuten, bevor du es erneut versuchst.",
         "tooBig": "Hochladen fehlgeschlagen: Die Dateigröße darf max. 20 MB betragen.",
         "tooManyPixels": "Hochladen fehlgeschlagen: Die Bildauflösung ist zu hoch.",
-        "unsupportedType": "Hochladen fehlgeschlagen: Du hast in zu kurzer Zeit zu viele Dateien hochgeladen. Bitte warte ein paar Minuten, bevor du es erneut versuchst."
+        "unsupportedType": "Hochladen fehlgeschlagen: Der Dateityp ist nicht unterstützt."
       },
       "firstName": {
         "required": "Vorname benötigt"
