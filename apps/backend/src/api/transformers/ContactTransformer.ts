@@ -1,6 +1,7 @@
 import { GetContactWith, Rule, RuleGroup } from '@beabee/beabee-common';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
-import { UnauthorizedError } from '@beabee/core/errors';
+import { BadRequestError, UnauthorizedError } from '@beabee/core/errors';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { CalloutReviewer, Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import PaymentService from '@beabee/core/services/PaymentService';
@@ -207,6 +208,12 @@ class ContactTransformer extends BaseContactTransformer<
     target: Contact,
     data: Partial<UpdateContactDto>
   ): Promise<GetContactDto | undefined> {
+    if (data.password && isOidcEnabled()) {
+      throw new BadRequestError(
+        'Cannot set a password when OIDC login is enabled'
+      );
+    }
+
     if (data.email || data.firstname || data.lastname || data.password) {
       await ContactsService.updateContact(target, {
         ...(data.email && { email: data.email }),

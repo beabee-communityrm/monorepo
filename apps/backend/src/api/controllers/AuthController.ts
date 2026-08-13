@@ -24,7 +24,7 @@ import {
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import { GetAuthInfoDto, LoginDto } from '#api/dto';
 import { authTransformer } from '#api/transformers';
-import { login } from '#api/utils/auth';
+import { assertPasswordAuthEnabled, login } from '#api/utils/auth';
 
 @JsonController('/auth')
 export class AuthController {
@@ -36,6 +36,8 @@ export class AuthController {
     /** Just used for validation (`email`, `password` and `req.data.token` are in passport strategy) */
     @Body() _: LoginDto
   ): Promise<void> {
+    assertPasswordAuthEnabled();
+
     const user = await new Promise<Contact>((resolve, reject) => {
       passport.authenticate(
         'local',

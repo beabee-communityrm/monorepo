@@ -8,6 +8,7 @@ import {
 
 import { getRepository } from '#database';
 import { DuplicateEmailError, NotFoundError } from '#errors/index';
+import { isOidcEnabled } from '#lib/oidc';
 import { log as mainLogger } from '#logging';
 import { Contact, Password, PaymentFlow, SignupFlow } from '#models/index';
 import ContactsService from '#services/ContactsService';
@@ -129,13 +130,17 @@ class SignupService {
     const isOneTime =
       signupFlow.paymentFlow?.form.action === 'create-one-time-payment';
 
+    // On OIDC instances login is handled by the identity provider, so the
+    // contact never needs to set a password
+    const hasLogin = isOidcEnabled() || !!contact?.password.hash;
+
     if (
       // Contact already exists with an active contribution
       contact?.membership?.isActive ||
       // One-time contribution and their account was previously setup
-      (isOneTime && contact?.password.hash)
+      (isOneTime && contact && hasLogin)
     ) {
-      if (contact.password.hash) {
+      if (hasLogin) {
         await EmailService.sendTemplateToContact(
           'email-exists-login',
           contact,
