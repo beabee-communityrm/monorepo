@@ -193,6 +193,37 @@ services:
       - STRIPE_API_KEY=${BEABEE_STRIPE_SECRETKEY}
       - STRIPE_DEVICE_NAME=beabee-dev-docker-container
 
+  # Keycloak identity provider for testing OIDC login and user provisioning
+  # Only started with the "oidc" profile (COMPOSE_PROFILES=oidc), see
+  # docs/oidc-local-development.md
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7
+    profiles: ["oidc"]
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HTTP_PORT: ${KEYCLOAK_PORT:-3080}
+      # Pin the issuer so it is identical for the browser and the backend
+      KC_HOSTNAME: http://keycloak:${KEYCLOAK_PORT:-3080}
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - ${KEYCLOAK_PORT:-3080}:${KEYCLOAK_PORT:-3080}
+    volumes:
+      - ./packages/docker/keycloak:/opt/keycloak/data/import:ro
+    healthcheck:
+      # The image has no curl/wget, probe the management port with bash
+      test:
+        [
+          "CMD",
+          "bash",
+          "-c",
+          "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.0\\r\\n\\r\\n' >&3 && grep -q '\"UP\"' <&3",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
 volumes:
   db_data:
   minio_data:
