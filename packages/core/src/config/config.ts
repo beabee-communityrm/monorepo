@@ -140,6 +140,20 @@ export interface ZitadelIdpConfig {
 }
 
 /**
+ * Keycloak identity provider configuration
+ * Used when BEABEE_IDP_PROVIDER=keycloak to provision users via the admin REST API
+ */
+export interface KeycloakIdpConfig {
+  provider: 'keycloak';
+  settings: {
+    url: string; // BEABEE_IDP_KEYCLOAK_URL - Keycloak base URL (default: derived from OIDC issuer)
+    realm: string; // BEABEE_IDP_KEYCLOAK_REALM - Realm name (default: derived from OIDC issuer)
+    clientId: string; // BEABEE_IDP_KEYCLOAK_CLIENTID - Service account client ID
+    clientSecret: string; // BEABEE_IDP_KEYCLOAK_CLIENTSECRET - Service account client secret
+  };
+}
+
+/**
  * Empty identity provider (when user provisioning is disabled)
  * Used when BEABEE_IDP_PROVIDER=none (default)
  */
@@ -149,18 +163,20 @@ interface NoneIdpConfig {
 }
 
 // Union type for identity provider configuration
-type IdpConfig = ZitadelIdpConfig | NoneIdpConfig;
+type IdpConfig = ZitadelIdpConfig | KeycloakIdpConfig | NoneIdpConfig;
 
 // Get identity provider from environment, with validation for allowed values
 // Defaults to "none" if not specified
 const idpProvider = env.e(
   'BEABEE_IDP_PROVIDER',
-  ['zitadel', 'none'] as const,
+  ['zitadel', 'keycloak', 'none'] as const,
   'none'
 );
 
 const audience = env.s('BEABEE_AUDIENCE');
 const oidcIssuer = env.s('BEABEE_OIDC_ISSUER', '');
+// A Keycloak issuer has the form <base URL>/realms/<realm>
+const oidcIssuerParts = /^(.+)\/realms\/([^/]+)\/?$/.exec(oidcIssuer);
 
 /**
  * Application configuration for an individual app module
@@ -254,7 +270,7 @@ export const config = {
 
   // Identity provider user provisioning
   idp: {
-    provider: idpProvider, // Identity provider type (zitadel or none)
+    provider: idpProvider, // Identity provider type (zitadel, keycloak or none)
     settings:
       idpProvider === 'zitadel'
         ? {
@@ -262,7 +278,17 @@ export const config = {
             pat: env.s('BEABEE_IDP_ZITADEL_PAT'), // Service user personal access token
             orgId: env.s('BEABEE_IDP_ZITADEL_ORGID', ''), // Organization to provision users in (default: instance default org)
           }
-        : {},
+        : idpProvider === 'keycloak'
+          ? {
+              url: env.s('BEABEE_IDP_KEYCLOAK_URL', oidcIssuerParts?.[1] || ''), // Keycloak base URL (default: derived from OIDC issuer)
+              realm: env.s(
+                'BEABEE_IDP_KEYCLOAK_REALM',
+                oidcIssuerParts?.[2] || ''
+              ), // Realm name (default: derived from OIDC issuer)
+              clientId: env.s('BEABEE_IDP_KEYCLOAK_CLIENTID'), // Service account client ID
+              clientSecret: env.s('BEABEE_IDP_KEYCLOAK_CLIENTSECRET'), // Service account client secret
+            }
+          : {},
   } as IdpConfig,
 
   // CORS and security settings

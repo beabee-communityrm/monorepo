@@ -1,6 +1,10 @@
 import config from '#config/config';
 import { log as mainLogger } from '#logging';
-import { NoneProvider, ZitadelProvider } from '#providers/idp/index';
+import {
+  KeycloakProvider,
+  NoneProvider,
+  ZitadelProvider,
+} from '#providers/idp/index';
 import { IdpProvider, IdpUserData } from '#type/index';
 
 const log = mainLogger.child({ app: 'idp-service' });
@@ -15,7 +19,9 @@ class IdpService {
   private readonly provider: IdpProvider =
     config.idp.provider === 'zitadel'
       ? new ZitadelProvider(config.idp.settings)
-      : new NoneProvider();
+      : config.idp.provider === 'keycloak'
+        ? new KeycloakProvider(config.idp.settings)
+        : new NoneProvider();
 
   get isEnabled(): boolean {
     return config.idp.provider !== 'none';
