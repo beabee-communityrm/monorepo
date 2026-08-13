@@ -77,7 +77,7 @@ async function handleSubmitSetup(data: SetupContactData) {
     email: data.email,
     firstname: data.firstName,
     lastname: data.lastName,
-    password: data.password,
+    ...(data.password && { password: data.password }),
     ...(Object.keys(profile).length > 0 && { profile }),
   });
 

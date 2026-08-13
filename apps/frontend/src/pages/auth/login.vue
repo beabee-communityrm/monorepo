@@ -8,7 +8,21 @@ meta:
 
 <template>
   <AuthBox>
+    <template v-if="generalContent.oidcEnabled">
+      <AppTitle>{{ t('login.title') }}</AppTitle>
+      <template v-if="errorCode">
+        <AppNotification
+          class="mb-4"
+          variant="error"
+          :title="t(`login.errors.${errorCode}`)"
+        />
+        <AppButton class="w-full" @click="redirectToLogin">
+          {{ t('common.login') }}
+        </AppButton>
+      </template>
+    </template>
     <AppApiForm
+      v-else
       :button-text="t('common.login')"
       inline-error
       full-button
@@ -91,16 +105,16 @@ meta:
 import { LOGIN_CODES } from '@beabee/beabee-common';
 import type { LoginData } from '@beabee/beabee-common';
 import { UnauthorizedError } from '@beabee/client';
-import { AppInput, AppNotification, AppTitle } from '@beabee/vue';
+import { AppButton, AppInput, AppNotification, AppTitle } from '@beabee/vue';
 
-import { reactive, ref, toRef, watch } from 'vue';
+import { onMounted, reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import AuthBox from '#components/AuthBox.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import env from '#env';
-import { updateCurrentUser } from '#store/index';
+import { generalContent, updateCurrentUser } from '#store/index';
 import { client } from '#utils/api';
 import { isInternalUrl } from '#utils/index';
 
@@ -116,6 +130,22 @@ const data = reactive<LoginData>({
 });
 
 const hasMFAEnabled = ref(false);
+
+const errorCodes = ['unlinked-account', 'login-failed'] as const;
+const errorCode = errorCodes.find((code) => code === route.query.error);
+
+// The identity provider handles the login itself, this page just forwards
+// there via the API's OIDC login endpoint
+function redirectToLogin() {
+  const next = isInternalUrl(redirectTo) ? redirectTo : '/';
+  window.location.href = client.auth.getLoginUrl(next);
+}
+
+onMounted(() => {
+  if (generalContent.value.oidcEnabled && !errorCode) {
+    redirectToLogin();
+  }
+});
 
 async function submitLogin() {
   try {
