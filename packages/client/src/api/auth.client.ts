@@ -23,6 +23,27 @@ export class AuthClient extends BaseClient {
   }
 
   /**
+   * The URL that starts the OIDC login flow, for use in full-page navigation
+   * on instances where login is handled by an identity provider
+   * @param next Optional internal path to redirect to after login
+   */
+  getLoginUrl(next?: string): string {
+    return (
+      cleanUrl(`${this.options.host}/${this.options.path}/auth/login`) +
+      (next ? '?next=' + encodeURIComponent(next) : '')
+    );
+  }
+
+  /**
+   * The URL that logs the user out of beabee and the identity provider, for
+   * use in full-page navigation on instances where login is handled by an
+   * identity provider
+   */
+  getLogoutUrl(): string {
+    return cleanUrl(`${this.options.host}/${this.options.path}/auth/logout`);
+  }
+
+  /**
    * Authenticates a user with credentials
    * @param data Login credentials including email, password and optional 2FA token
    * @returns Promise that resolves when login is successful
