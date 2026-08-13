@@ -17,6 +17,7 @@ export * from './image-backfill-result.js';
 export * from './image-format.js';
 export * from './image-metadata.js';
 export * from './image-service-config.js';
+export * from './legacy-image-service-config.js';
 export * from './login-data.js';
 export * from './mc-batch.js';
 export * from './mc-member.js';

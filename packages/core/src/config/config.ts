@@ -8,6 +8,7 @@
 import type {
   DocumentServiceConfig,
   ImageServiceConfig,
+  LegacyImageServiceConfig,
   S3Config,
 } from '../type/index.js';
 import * as env from './env.js';
@@ -182,6 +183,10 @@ const document: DocumentServiceConfig = {
   s3,
 };
 
+const legacyImage: LegacyImageServiceConfig = {
+  s3,
+};
+
 /**
  * Main application configuration object
  * Contains all settings derived from environment variables
@@ -304,6 +309,9 @@ export const config = {
 
   // Document service configuration
   document,
+
+  // Legacy image service configuration
+  legacyImage,
 };
 
 export default config;
