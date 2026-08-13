@@ -38,7 +38,10 @@ export function getOidcConfig(): Promise<oidc.Configuration> {
       .discovery(
         new URL(config.oidc.issuer),
         config.oidc.clientId,
-        config.oidc.clientSecret
+        config.oidc.clientSecret,
+        undefined,
+        // Allow plain-http issuers (e.g. local Keycloak) in development only
+        config.dev ? { execute: [oidc.allowInsecureRequests] } : undefined
       )
       .catch((err) => {
         discoveryPromise = null;
