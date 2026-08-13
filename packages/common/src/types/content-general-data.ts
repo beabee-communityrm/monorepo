@@ -35,4 +35,6 @@ export interface ContentGeneralData<L = string> {
   hideContribution: boolean;
   footerLinks: FooterLink[];
   enableOneTimeDonations: boolean;
+  /** Whether login is handled by an external OIDC identity provider */
+  oidcEnabled: boolean;
 }

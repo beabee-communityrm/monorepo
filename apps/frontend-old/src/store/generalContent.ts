@@ -23,6 +23,7 @@ export const generalContent = ref<ContentGeneralData>({
   backgroundUrl: '',
   hideContribution: false,
   enableOneTimeDonations: false,
+  oidcEnabled: false,
 });
 
 export const initGeneralContent = async () => {
