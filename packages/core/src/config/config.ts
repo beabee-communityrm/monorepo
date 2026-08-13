@@ -135,6 +135,7 @@ export interface ZitadelIdpConfig {
   settings: {
     url: string; // BEABEE_IDP_ZITADEL_URL - Zitadel instance URL (default: OIDC issuer)
     pat: string; // BEABEE_IDP_ZITADEL_PAT - Service user personal access token
+    orgId: string; // BEABEE_IDP_ZITADEL_ORGID - Organization to provision users in (empty: instance default)
   };
 }
 
@@ -259,6 +260,7 @@ export const config = {
         ? {
             url: env.s('BEABEE_IDP_ZITADEL_URL', oidcIssuer), // Zitadel instance URL (default: OIDC issuer)
             pat: env.s('BEABEE_IDP_ZITADEL_PAT'), // Service user personal access token
+            orgId: env.s('BEABEE_IDP_ZITADEL_ORGID', ''), // Organization to provision users in (default: instance default org)
           }
         : {},
   } as IdpConfig,

@@ -41,6 +41,10 @@ export class ZitadelProvider implements IdpProvider {
         email: data.email,
         isVerified: true,
       },
+      // Without an organization users land in the instance's default org
+      ...(this.settings.orgId && {
+        organization: { orgId: this.settings.orgId },
+      }),
     });
     return resp.userId;
   }
@@ -54,6 +58,9 @@ export class ZitadelProvider implements IdpProvider {
             method: 'TEXT_QUERY_METHOD_EQUALS_IGNORE_CASE',
           },
         },
+        ...(this.settings.orgId
+          ? [{ organizationIdQuery: { organizationId: this.settings.orgId } }]
+          : []),
       ],
     });
     return resp.result?.[0]?.userId || null;
