@@ -1436,9 +1436,10 @@
         "required": "L'e-mail est obligatoire"
       },
       "file": {
-        "rateLimited": "Échec de l'import : Le type de fichier n'est pas pris en charge",
+        "rateLimited": "Échec de l'import : Vous avez importé trop de fichiers récemment, veuillez patienter quelques minutes avant de réessayer",
         "tooBig": "Échec de l'import : La taille du fichier doit être inférieure à 20Mo",
-        "unsupportedType": "Échec de l'import : Vous avez importé trop de fichiers récemment, veuillez patienter quelques minutes avant de réessayer"
+        "unsupportedType": "Échec de l'import : Le type de fichier n'est pas pris en charge",
+        "uploadFailed": "Échec de l'import : Le fichier n'a pas pu être traité"
       },
       "firstName": {
         "required": "Le prénom est obligatoire"

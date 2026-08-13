@@ -134,9 +134,10 @@ async function handleChange() {
     emit('update:modelValue', originalUrl);
   } catch (error) {
     formError.value = extractErrorText(error, {
-      TOO_MANY_REQUESTS: t('form.errors.file.rateLimited'),
-      LIMIT_FILE_SIZE: t('form.errors.file.tooBig'),
-      UNSUPPORTED_FILE_TYPE: t('form.errors.file.unsupportedType'),
+      'too-many-requests': t('form.errors.file.rateLimited'),
+      'file-too-large': t('form.errors.file.tooBig'),
+      'unsupported-file-type': t('form.errors.file.unsupportedType'),
+      'file-upload-error': t('form.errors.file.uploadFailed'),
     });
   }
 

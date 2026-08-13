@@ -25,6 +25,7 @@ import { optimize } from 'svgo';
 import config from '../config/config.js';
 import {
   BadRequestError,
+  FileUploadError,
   NotFoundError,
   UnsupportedFileTypeError,
 } from '../errors/index.js';
@@ -52,6 +53,11 @@ import {
 } from '../utils/s3.js';
 
 const log = mainLogger.child({ app: 'image-service' });
+
+// libvips would otherwise use a thread per core and keep a 50MB cache, which
+// multiplies peak memory when uploads overlap on a 2-CPU container
+sharp.concurrency(1);
+sharp.cache(false);
 
 /**
  * Service for handling image uploads, resizing, and storage in S3/MinIO
@@ -112,14 +118,20 @@ export class ImageService {
       // SVGs are buffered in full as SVGO needs the whole content
       const isSvg = originalMimetype === 'image/svg+xml';
 
+      // Bound decode memory: reject oversized inputs and avoid random access
+      const sharpOptions: sharp.SharpOptions = {
+        limitInputPixels: this.config.maxInputPixels,
+        sequentialRead: true,
+      };
+
       let image: sharp.Sharp;
       let svgBuffer: Buffer | undefined;
 
       if (isSvg) {
         svgBuffer = await buffer(stream);
-        image = sharp(svgBuffer);
+        image = sharp(svgBuffer, sharpOptions);
       } else {
-        image = sharp();
+        image = sharp(sharpOptions);
         // Sharp buffers the whole input internally and only processes it once
         // the stream ends, so wait for the input to finish before probing the
         // metadata (otherwise a failed stream would hang forever). Stream
@@ -130,13 +142,34 @@ export class ImageService {
       let metadata: sharp.Metadata;
       try {
         metadata = await image.metadata();
-      } catch {
+      } catch (error) {
+        // The limitInputPixels guard can already trip while reading the
+        // header, which is a rejection rather than a corrupt file
+        if (error instanceof Error && error.message.includes('pixel limit')) {
+          throw new FileUploadError(
+            'too-many-pixels',
+            'Image has too many pixels'
+          );
+        }
         throw new BadRequestError('Invalid image file');
       }
 
       // Check if it's actually a valid image
       if (!metadata.width || !metadata.height || !metadata.format) {
         throw new BadRequestError('Invalid image format');
+      }
+
+      // Fail fast on absurd pixel counts before any decoding happens
+      // (vectors are not rasterised, so SVGs are exempt)
+      if (
+        !isSvg &&
+        this.config.maxInputPixels &&
+        metadata.width * metadata.height > this.config.maxInputPixels
+      ) {
+        throw new FileUploadError(
+          'too-many-pixels',
+          'Image has too many pixels'
+        );
       }
 
       // Check if the detected format is allowed
@@ -201,11 +234,23 @@ export class ImageService {
         metadata.orientation
       );
 
+      // Rasters are downscaled to fit maxDimension (see the resize below),
+      // so the stored dimensions must be clamped to match. May differ by
+      // ±1px from libvips' rounding, which is fine for layout hints.
+      const scale =
+        !isSvg && this.config.maxDimension
+          ? Math.min(
+              1,
+              this.config.maxDimension /
+                Math.max(orientedDimensions.width, orientedDimensions.height)
+            )
+          : 1;
+
       // Prepare metadata for S3, storing the dimensions so they can be read
       // later without downloading the image
       const s3Metadata: S3Metadata = {
-        width: String(orientedDimensions.width),
-        height: String(orientedDimensions.height),
+        width: String(Math.round(orientedDimensions.width * scale)),
+        height: String(Math.round(orientedDimensions.height * scale)),
       };
       if (sanitizedFilename) {
         s3Metadata.originalfilename = sanitizedFilename;
@@ -243,15 +288,28 @@ export class ImageService {
           })
         );
       } else {
-        // Process the image to the target format at full resolution and
-        // stream the result to S3
-        image.rotate().withMetadata({ orientation: undefined }); // Strip EXIF but keep orientation
+        // Process the image to the target format, downscaled to fit
+        // maxDimension, and stream the result to S3
+        image
+          .rotate()
+          .resize({
+            width: this.config.maxDimension,
+            height: this.config.maxDimension,
+            fit: 'inside',
+            withoutEnlargement: true,
+          })
+          .withMetadata({ orientation: undefined }); // Strip EXIF but keep orientation
         switch (outputFormat) {
           case 'webp':
             image.webp({ quality: this.config.quality });
             break;
           case 'avif':
-            image.avif({ quality: this.config.quality });
+            image.avif({
+              quality: this.config.quality,
+              // effort >2 measurably costs 6x the CPU for no size gain
+              effort: 2,
+              chromaSubsampling: '4:2:0',
+            });
             break;
           case 'jpeg':
             image.jpeg({ quality: this.config.quality });
@@ -676,7 +734,12 @@ export class ImageService {
       // Use sharp to resize the image
       let resizedImageBuffer: Buffer;
 
-      const sharpInstance = sharp(buffer).resize({
+      // The decode guard also covers full-resolution originals uploaded
+      // before maxDimension clamping existed
+      const sharpInstance = sharp(buffer, {
+        limitInputPixels: this.config.maxInputPixels,
+        sequentialRead: true,
+      }).resize({
         width,
         withoutEnlargement: true,
       });
@@ -694,7 +757,12 @@ export class ImageService {
             break;
           case 'avif':
             resizedImageBuffer = await sharpInstance
-              .avif({ quality: this.config.quality })
+              .avif({
+                quality: this.config.quality,
+                // effort >2 measurably costs 6x the CPU for no size gain
+                effort: 2,
+                chromaSubsampling: '4:2:0',
+              })
               .toBuffer();
             break;
           case 'jpeg':

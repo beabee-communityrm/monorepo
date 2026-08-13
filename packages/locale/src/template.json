@@ -1432,7 +1432,8 @@
       "file": {
         "rateLimited": "",
         "tooBig": "",
-        "unsupportedType": ""
+        "unsupportedType": "",
+        "uploadFailed": ""
       },
       "firstName": {
         "required": ""
