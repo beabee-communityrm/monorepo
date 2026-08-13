@@ -26,6 +26,12 @@ export const userCommand: CommandModule = {
               type: 'boolean',
               description: 'Only show users without a password set',
               default: false,
+            })
+            .option('unlinked', {
+              type: 'boolean',
+              description:
+                'Only show users not linked to the identity provider',
+              default: false,
             }) as Argv<ListUserArgs>,
         handler: async (argv: ArgumentsCamelCase<ListUserArgs>) => {
           const { listUsers } = await import('../actions/user/list.js');
@@ -131,6 +137,12 @@ export const userCommand: CommandModule = {
               description: 'Delete all users without a password set',
               default: false,
             })
+            .option('unlinked', {
+              type: 'boolean',
+              description:
+                'Delete all users not linked to the identity provider',
+              default: false,
+            })
             .option('force', {
               alias: 'y',
               type: 'boolean',
@@ -138,9 +150,9 @@ export const userCommand: CommandModule = {
               default: false,
             })
             .check((argv) => {
-              if (!argv.email && !argv.withoutPassword) {
+              if (!argv.email && !argv.withoutPassword && !argv.unlinked) {
                 throw new Error(
-                  'Either email or --without-password must be provided'
+                  'Either email, --without-password or --unlinked must be provided'
                 );
               }
               return true;
