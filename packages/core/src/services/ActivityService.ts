@@ -1,9 +1,4 @@
-import { ActivityActor } from '@beabee/beabee-common';
-
-import { InsertResult } from 'typeorm';
-
 import { getRepository } from '#database';
-import { actorContext } from '#lib/actor-context';
 import { log as mainLogger } from '#logging';
 import { ActivityEvent } from '#models/index';
 
@@ -11,18 +6,16 @@ const log = mainLogger.child({ app: 'activity-service' });
 
 class ActivityService {
   /**
-   * Add event to activity events table
-   * Event actor type and ID are obtained from the current request
-   * @param event event containing contact ID, event type and metadata (if any)
+   * Add new event to events table
+   * @param event Event to add
    */
   async addEvent(
-    event: Pick<ActivityEvent, 'targetId' | 'eventType' | 'metadata'> &
-      Partial<ActivityActor>
-  ): Promise<InsertResult> {
-    return await getRepository(ActivityEvent).insert({
-      ...actorContext.get(),
-      ...event,
-    });
+    event: Pick<
+      ActivityEvent,
+      'targetId' | 'actorId' | 'actorType' | 'eventType' | 'metadata'
+    >
+  ): Promise<void> {
+    await getRepository(ActivityEvent).insert(event);
   }
 
   /**

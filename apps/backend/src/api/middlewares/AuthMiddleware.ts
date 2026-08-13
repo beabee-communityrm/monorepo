@@ -1,5 +1,4 @@
 import { getRepository } from '@beabee/core/database';
-import { actorContext, authInfoToActor } from '@beabee/core/lib/actor-context';
 import { ApiKey } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import { AuthInfo } from '@beabee/core/type';
@@ -17,8 +16,7 @@ export class AuthMiddleware implements ExpressMiddlewareInterface {
     next: (err?: any) => any
   ): Promise<void> {
     req.auth = await getAuth(req);
-    // Make the actor available to anything downstream that records activity
-    actorContext.run(authInfoToActor(req.auth), next);
+    next();
   }
 }
 
