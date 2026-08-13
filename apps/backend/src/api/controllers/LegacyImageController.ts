@@ -20,7 +20,7 @@ export class LegacyImageController {
     @Res() res: Response,
     @Param('filename') filename: string
   ): Promise<Response> {
-    const imageData = await legacyImageService.getLegacyImageStream(filename);
+    const imageData = await legacyImageService.getImageStream(filename);
 
     res.set({
       'Content-Type': imageData.contentType,

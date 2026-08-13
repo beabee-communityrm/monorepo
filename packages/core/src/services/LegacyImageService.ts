@@ -38,7 +38,7 @@ export class LegacyImageService {
    * @param filename Legacy image filename
    * @returns Stream of the image and content type
    */
-  async getLegacyImageStream(
+  async getImageStream(
     filename: string
   ): Promise<{ stream: Readable; contentType: string }> {
     if (
