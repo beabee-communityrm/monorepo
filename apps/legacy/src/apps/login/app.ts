@@ -1,6 +1,7 @@
 import { RoleType, RoleTypes } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import { wrapAsync } from '@beabee/core/utils/express';
@@ -23,6 +24,8 @@ app.get('/', function (req: Request, res: Response) {
   const nextParam = typeof req.query.next === 'string' ? req.query.next : '';
   if (req.user) {
     res.redirect(isValidNextUrl(nextParam) ? nextParam : '/');
+  } else if (isOidcEnabled()) {
+    res.redirect('/api/1.0/auth/login' + getNextParam(nextParam));
   } else {
     res.render('index', { nextParam: getNextParam(nextParam) });
   }
@@ -50,6 +53,9 @@ app.get(
 
 app.post('/', (req, res) => {
   const nextParam = typeof req.query.next === 'string' ? req.query.next : '';
+  if (isOidcEnabled()) {
+    return res.redirect('/login' + getNextParam(nextParam));
+  }
   passport.authenticate('local', {
     failureRedirect: '/login' + getNextParam(nextParam),
     failureFlash: true,
