@@ -4,6 +4,7 @@
     "deliveryAddress": "",
     "deliveryOptIn": "",
     "loginDetail": "",
+    "loginDetail-nuxt": "",
     "mfa": {
       "codeInput": {
         "info": "",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "",
+        "desc-nuxt": "",
+        "descDetail": "",
         "descToken": "",
-        "title": ""
+        "descToken-nuxt": "",
+        "keepEnabled": "",
+        "remove": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "createUnknownErrorNotification": "",
+      "createUnknownErrorNotification-nuxt": "",
       "deleteUnknownErrorNotification": "",
+      "deleteUnknownErrorNotification-nuxt": "",
+      "description": "",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "modalTitle": "",
+      "modalTitle-nuxt": "",
       "result": {
         "invalidCode": "",
         "successful": "",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "secretInput": {
         "desc": "",
-        "label": ""
+        "label": "",
+        "toggleHide": "",
+        "toggleShow": ""
       },
+      "statusDisabled": {
+        "description": "",
+        "title": ""
+      },
+      "statusEnabled": {
+        "description": "",
+        "title": ""
+      },
+      "stepIndicator": "",
       "title": "",
+      "title-nuxt": "",
       "validateButton": {
-        "label": ""
+        "label": "",
+        "label-nuxt": ""
       }
     },
     "newsletter": {
@@ -55,9 +83,12 @@
       "unsubscribe": ""
     },
     "phoneInfo": "",
+    "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
+    "requiredFields": "",
     "savedPassword": "",
     "subTitle": "",
+    "subTitle-nuxt": "",
     "title": ""
   },
   "actions": {
@@ -81,6 +112,7 @@
     "export": "",
     "getStarted": "",
     "goBack": "",
+    "hidePassword": "",
     "increase": "",
     "next": "",
     "noBack": "",
@@ -104,6 +136,7 @@
     "sendOneOffEmail": "",
     "sendOngoingEmails": "",
     "share": "",
+    "showPassword": "",
     "skip": "",
     "submit": "",
     "tryAgain": "",
@@ -1456,6 +1489,9 @@
         "maxLength": "",
         "required": ""
       },
+      "telephone": {
+        "phone": ""
+      },
       "unknown": {
         "email": "",
         "max": "",
@@ -1485,6 +1521,7 @@
     "notes": "",
     "password": "",
     "passwordInfo": "",
+    "passwordInfo-nuxt": "",
     "phone": "",
     "postCode": "",
     "richtext": {

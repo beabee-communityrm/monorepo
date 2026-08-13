@@ -33,7 +33,7 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Colors */
-  --color-neutral-40: color-mix(in srgb, var(--color-neutral-50) 80%, white);
+  --color-background: color-mix(in srgb, var(--color-neutral-50) 80%, white);
 
   --color-main: rgb(var(--c-main));
   --color-main-5: rgb(var(--c-main-5));
@@ -79,6 +79,12 @@
   --color-grey: #a4a4a4;
   --color-grey-dark: #5f5f5f;
   --color-grey-darker: #434343;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: color-mix(in srgb, var(--color-neutral-900) 80%, black);
+  }
 }
 
 @layer utilities {

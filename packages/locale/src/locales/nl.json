@@ -4,6 +4,7 @@
     "deliveryAddress": "Afleveradres",
     "deliveryOptIn": "Opt-in voor bezorging",
     "loginDetail": "Inloggegevens",
+    "loginDetail-nuxt": "Wijzig wachtwoord",
     "mfa": {
       "codeInput": {
         "info": "Als je je 2FA-apparaat kwijt bent, neem dan contact op met support.",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "Weet je zeker dat je Multi-Factor Authenticatie wilt uitschakelen? Vanaf dan heb je alleen nog je wachtwoord nodig om in te loggen. Vergeet niet om de vermelding uit je Authenticator-app te verwijderen. Je kunt het altijd weer inschakelen.",
+        "desc-nuxt": "Weet je zeker dat je tweefactorauthenticatie wilt uitschakelen? Vanaf dan heb je alleen nog je wachtwoord nodig om in te loggen. Vergeet niet om de vermelding uit je Authenticator-app te verwijderen. Je kunt het altijd weer inschakelen.",
+        "descDetail": "Vanaf dan heb je alleen nog je wachtwoord nodig om in te loggen. Vergeet niet om de vermelding uit je Authenticator-app te verwijderen. Je kunt het altijd weer inschakelen.",
         "descToken": "Voer je huidige 2FA-code in om 2FA uit te schakelen:",
-        "title": "2FA uitschakelen"
+        "descToken-nuxt": "Voer je huidige 2FA-code in om 2FA uit te schakelen:",
+        "keepEnabled": "2FA ingeschakeld houden",
+        "remove": "2FA verwijderen",
+        "title": "2FA uitschakelen",
+        "title-nuxt": "2FA uitschakelen"
       },
       "createUnknownErrorNotification": "De 2FA kon niet worden opgeslagen vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
+      "createUnknownErrorNotification-nuxt": "De 2FA kon niet worden opgeslagen vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
       "deleteUnknownErrorNotification": "De 2FA kon niet worden verwijderd vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
+      "deleteUnknownErrorNotification-nuxt": "De 2FA kon niet worden verwijderd vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
+      "description": "Voeg een extra beveiligingslaag toe aan uw account",
       "disabledNotification": "2FA succesvol gedeactiveerd",
       "enabledNotification": "2FA succesvol geactiveerd",
       "enterCode": {
         "desc": "Voer de code in die wordt weergegeven in je authenticator app.",
-        "title": "Verificatie"
+        "desc-nuxt": "Voer de code in die wordt weergegeven in je authenticator app.",
+        "title": "Verificatie",
+        "title-nuxt": "Verificatie"
       },
       "modalTitle": "2-factor authenticatie inschakelen",
+      "modalTitle-nuxt": "Tweefactorauthenticatie inschakelen",
       "result": {
         "invalidCode": "De code kon niet worden bevestigd, probeer het opnieuw of neem contact op met support.",
         "successful": "2-factor authenticatie is met succes ingesteld.",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "Scan de QR-code hieronder met je authenticatie app.",
-        "title": "QR-code"
+        "desc-nuxt": "Scan de QR-code hieronder met je authenticatie app.",
+        "title": "QR-code",
+        "title-nuxt": "QR-code"
       },
       "secretInput": {
         "desc": "Je kunt ook de volgende code invoeren in je Authenticator app.",
-        "label": "Geheime code"
+        "label": "Geheime code",
+        "toggleHide": "Verbergen",
+        "toggleShow": "Kun je niet scannen? Voer de code handmatig in"
       },
+      "statusDisabled": {
+        "description": "Indien ingeschakeld, wordt u bij elke keer inloggen om een code uit uw authenticator-app gevraagd.",
+        "title": "Tweefactorauthenticatie is uitgeschakeld"
+      },
+      "statusEnabled": {
+        "description": "Uw account is beveiligd met een authenticator-app. Schakel dit alleen uit als u van apparaat wisselt.",
+        "title": "Tweefactorauthenticatie is ingeschakeld"
+      },
+      "stepIndicator": "Stap {step} van {total}",
       "title": "2-factor authenticatie",
+      "title-nuxt": "Tweefactorauthenticatie",
       "validateButton": {
-        "label": "Token verifiëren"
+        "label": "Token verifiëren",
+        "label-nuxt": "Token verifiëren"
       }
     },
     "newsletter": {
@@ -55,10 +83,14 @@
       "unsubscribe": "Schrijf ze uit voor de nieuwsbrief"
     },
     "phoneInfo": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden",
+    "phoneInfo-nuxt": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden.",
     "phoneInfoAdmin": "Je moet toestemming van de persoon hebben voordat je hun telefoonnummer aan het systeem toevoegt",
+    "requiredFields": "Verplichte velden",
     "savedPassword": "Nieuw wachtwoord opgeslagen",
     "subTitle": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
-    "title": "Account"
+    "subTitle-nuxt": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
+    "title": "Account",
+    "unsavedChanges": "U heeft niet-opgeslagen wijzigingen"
   },
   "actions": {
     "add": "Toevoegen",
@@ -81,6 +113,7 @@
     "export": "Exporteer",
     "getStarted": "Beginnen",
     "goBack": "Terug",
+    "hidePassword": "Wachtwoord verbergen",
     "increase": "",
     "next": "Volgende",
     "noBack": "“Nee, ga terug”.",
@@ -104,6 +137,7 @@
     "sendOneOffEmail": "E-mail verzenden",
     "sendOngoingEmails": "Doorlopende e-mails",
     "share": "Delen",
+    "showPassword": "Wachtwoord tonen",
     "skip": "Sla over",
     "submit": "Verzenden",
     "tryAgain": "",
@@ -1458,6 +1492,9 @@
         "maxLength": "",
         "required": ""
       },
+      "telephone": {
+        "phone": "Ongeldig telefoonnummer"
+      },
       "unknown": {
         "email": "Ongeldig e-mailadres",
         "max": "Dit veld moet maximaal {max} zijn",
@@ -1487,6 +1524,7 @@
     "notes": "Opmerkingen",
     "password": "Wachtwoord",
     "passwordInfo": "“Stel een veilig wachtwoord in: 8+ tekens of langer, en het moet een cijfer, hoofdletters en kleine letters bevatten.”",
+    "passwordInfo-nuxt": "Stel een veilig wachtwoord in: minimaal 8 tekens, met een cijfer, een hoofdletter en een kleine letter.",
     "phone": "Telefoonnummer",
     "postCode": "Postcode",
     "richtext": {
