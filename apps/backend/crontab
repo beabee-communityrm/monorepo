@@ -2,17 +2,18 @@
 PATH=/usr/local/bin:/usr/bin:/bin
 
 # Spread the jobs out over a few minutes to avoid overloading the server
+# Specify actor type 'cron' for the activity feed
 
 # Every 10 minutes
-*/10 * * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli health all --notify' > /proc/1/fd/1 2>&1
+*/10 * * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli health all --notify --actor cron' > /proc/1/fd/1 2>&1
 
 # Hourly cron jobs
-30 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service active-member-tag --since PT1H10M' > /proc/1/fd/1 2>&1
-35 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service reconcile --report --since PT1H10M --fix status groups' > /proc/1/fd/1 2>&1
-40 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service refresh-cached-groups' > /proc/1/fd/1 2>&1
+30 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service active-member-tag --actor cron --since PT1H10M' > /proc/1/fd/1 2>&1
+35 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service reconcile --actor cron --report --since PT1H10M --fix status groups' > /proc/1/fd/1 2>&1
+40 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service refresh-cached-groups --actor cron' > /proc/1/fd/1 2>&1
 
 # Daily cron jobs
-0  1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli sync newsletter-service clear-pending-status' > /proc/1/fd/1 2>&1
-10 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli process gifts' > /proc/1/fd/1 2>&1
-15 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli database clean' > /proc/1/fd/1 2>&1
+0  1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli sync newsletter-service clear-pending-status --actor cron' > /proc/1/fd/1 2>&1
+10 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli process gifts --actor cron' > /proc/1/fd/1 2>&1
+15 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli database clean --actor cron' > /proc/1/fd/1 2>&1
 20 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && node ./dist/tools/process-segments.js' > /proc/1/fd/1 2>&1
