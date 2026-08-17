@@ -139,7 +139,7 @@ const activePermission: FilterHandler = (qb, args) => {
     .subQuery()
     .select(`cr.contactId`)
     .from(ContactRole, 'cr')
-    .where(`cr.type = '${roleType}'`)
+    .where(args.addParamSuffix('cr.type = :roleType'))
     .andWhere(`cr.dateAdded <= :now`)
     .andWhere(
       new Brackets((qb) => {
@@ -152,6 +152,8 @@ const activePermission: FilterHandler = (qb, args) => {
   } else {
     qb.where(`${args.fieldPrefix}id NOT IN ${subQb.getQuery()}`);
   }
+
+  return { roleType };
 };
 
 /**

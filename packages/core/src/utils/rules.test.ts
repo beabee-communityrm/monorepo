@@ -4,6 +4,7 @@ import {
   RuleGroup,
   calloutResponseFilters,
   contactCalloutFilters,
+  contactFilters,
   validateRuleGroup,
 } from '@beabee/beabee-common';
 
@@ -437,6 +438,32 @@ describe('contact callout filters', () => {
         'AND "response"."calloutId" = :calloutId_0 AND "response"."contactId" IS NOT NULL)' +
         '))'
     );
+  });
+});
+
+describe('rule values never reach the SQL as text', () => {
+  test('hostile values are bound as parameters', () => {
+    const { where, params } = ruleToQuery(
+      singleRule('name', 'equal', ["'; DROP TABLE contact;--"])
+    );
+    expect(where).toBe('(TRUE AND ("item"."name" = :valueA_0))');
+    expect(params.valueA_0).toBe("'; DROP TABLE contact;--");
+  });
+
+  test('activePermission binds the role type as a parameter', () => {
+    const { where, params } = ruleToQuery(
+      singleRule('activePermission', 'equal', ['admin']),
+      undefined,
+      contactFilterHandlers,
+      contactFilters
+    );
+    expect(where).toBe(
+      '(TRUE AND ("item"."id" IN ' +
+        '(SELECT "cr"."contactId" AS "cr_contactId" FROM "contact_role" "cr" ' +
+        'WHERE "cr"."type" = :roleType_0 AND "cr"."dateAdded" <= :now ' +
+        'AND ("cr"."dateExpires" IS NULL OR "cr"."dateExpires" > :now))))'
+    );
+    expect(params.roleType_0).toBe('admin');
   });
 });
 
