@@ -8,6 +8,11 @@ interface AuthInfoNoneData {
   roles: RoleType[]; // Should be empty
 }
 
+interface AuthInfoAccountData {
+  /** URL of the identity provider's self-service account console */
+  accountUrl?: string;
+}
+
 interface AuthInfoContactData {
   method: 'user';
   contact: GetContactData;
@@ -26,8 +31,10 @@ interface AuthInfoInternalData {
   roles: RoleType[];
 }
 
-export type AuthInfoData =
+export type AuthInfoData = (
   | AuthInfoNoneData
   | AuthInfoContactData
   | AuthInfoApiKeyData
-  | AuthInfoInternalData;
+  | AuthInfoInternalData
+) &
+  AuthInfoAccountData;

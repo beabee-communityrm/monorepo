@@ -83,6 +83,12 @@ router.beforeEach(async (to) => {
     return false;
   }
 
+  // Password auth routes don't exist when login is handled by an OIDC
+  // identity provider
+  if (to.meta.passwordAuth && generalContent.value.oidcEnabled) {
+    return { path: '/auth/login' };
+  }
+
   const user = currentUser.value;
   // Route requires authentication
   if (user == null && !to.meta.noAuth) {

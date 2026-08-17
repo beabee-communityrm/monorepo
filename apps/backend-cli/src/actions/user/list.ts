@@ -47,6 +47,10 @@ export async function findUsers(args: ListUserArgs = {}): Promise<Contact[]> {
     );
   }
 
+  if (args.unlinked) {
+    qb.andWhere('contact."idpSubject" IS NULL');
+  }
+
   return qb.getMany();
 }
 
@@ -60,6 +64,7 @@ function printContact(contact: Contact): void {
   console.log(`Joined: ${contact.joined.toISOString()}`);
   console.log(`Last seen: ${contact.lastSeen?.toISOString() || 'Never'}`);
   console.log(`Has password: ${contact.password.hash !== ''}`);
+  console.log(`Linked to IdP: ${!!contact.idpSubject}`);
 
   if (contact.roles.length > 0) {
     console.log('Roles:');
@@ -102,6 +107,9 @@ function printContact(contact: Contact): void {
 function getNoUsersMessage(args: ListUserArgs): string {
   if (args.withoutPassword) {
     return 'No users without password found';
+  }
+  if (args.unlinked) {
+    return 'No unlinked users found';
   }
   if (args.email) {
     return `No users found for ${args.email}`;

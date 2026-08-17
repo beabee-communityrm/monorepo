@@ -17,13 +17,14 @@ import {
   UpdateResetPasswordDto,
 } from '#api/dto/ResetPasswordDto';
 import { UUIDParams } from '#api/params/UUIDParams';
-import { login } from '#api/utils/auth';
+import { assertPasswordAuthEnabled, login } from '#api/utils/auth';
 
 @JsonController('/reset-password')
 export class ResetPasswordController {
   @OnUndefined(204)
   @Post()
   async create(@Body() data: CreateResetPasswordDto): Promise<void> {
+    assertPasswordAuthEnabled();
     await ContactsService.resetPasswordBegin(
       normalizeEmailAddress(data.email),
       data.resetUrl
@@ -37,6 +38,7 @@ export class ResetPasswordController {
     @Params() { id }: UUIDParams,
     @Body() data: UpdateResetPasswordDto
   ): Promise<void> {
+    assertPasswordAuthEnabled();
     const contact = await ContactsService.resetPasswordComplete(id, data);
     await login(req, contact);
   }

@@ -1,0 +1,62 @@
+{
+  "realm": "beabee",
+  "enabled": true,
+  "editUsernameAllowed": true,
+  "clients": [
+    {
+      "clientId": "beabee-login",
+      "name": "beabee login",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [
+        "http://localhost:3002/api/1.0/auth/callback",
+        "http://localhost:3000/api/1.0/auth/callback"
+      ],
+      "webOrigins": ["+"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:3002/*##http://localhost:3000/*"
+      }
+    },
+    {
+      "clientId": "beabee-provisioning",
+      "name": "beabee user provisioning",
+      "publicClient": false,
+      "secret": "beabee-dev-secret",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false
+    }
+  ],
+  "users": [
+    {
+      "id": "b0a2b1c4-0000-4000-8000-000000000001",
+      "username": "keycloak-test1@example.com",
+      "email": "keycloak-test1@example.com",
+      "firstName": "Kay",
+      "lastName": "Cloak",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "id": "b0a2b1c4-0000-4000-8000-000000000002",
+      "username": "keycloak-test2@example.com",
+      "email": "keycloak-test2@example.com",
+      "firstName": "Kim",
+      "lastName": "Cloak",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{ "type": "password", "value": "password" }]
+    },
+    {
+      "username": "service-account-beabee-provisioning",
+      "enabled": true,
+      "serviceAccountClientId": "beabee-provisioning",
+      "clientRoles": {
+        "realm-management": ["manage-users", "view-users", "query-users"]
+      }
+    }
+  ]
+}

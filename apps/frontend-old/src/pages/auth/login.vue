@@ -93,14 +93,14 @@ import type { LoginData } from '@beabee/beabee-common';
 import { UnauthorizedError } from '@beabee/client';
 import { AppInput, AppNotification, AppTitle } from '@beabee/vue';
 
-import { reactive, ref, toRef, watch } from 'vue';
+import { onMounted, reactive, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import AuthBox from '#components/AuthBox.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import env from '#env';
-import { updateCurrentUser } from '#store/index';
+import { generalContent, updateCurrentUser } from '#store/index';
 import { client } from '#utils/api';
 import { isInternalUrl } from '#utils/index';
 
@@ -116,6 +116,15 @@ const data = reactive<LoginData>({
 });
 
 const hasMFAEnabled = ref(false);
+
+// The identity provider handles the login itself, this page just forwards
+// there via the API's OIDC login endpoint
+onMounted(() => {
+  if (generalContent.value.oidcEnabled) {
+    const next = isInternalUrl(redirectTo) ? redirectTo : '/';
+    window.location.href = client.auth.getLoginUrl(next);
+  }
+});
 
 async function submitLogin() {
   try {

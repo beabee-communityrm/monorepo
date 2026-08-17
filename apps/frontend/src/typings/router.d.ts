@@ -9,6 +9,8 @@ declare module 'vue-router' {
     pageTitle: string;
     layout?: 'Auth' | 'Dashboard' | 'Loading';
     noAuth?: boolean;
+    /** Route only exists on instances with password login (not OIDC) */
+    passwordAuth?: boolean;
     role?: RoleType;
     embeddable?: boolean;
     noCnrMode?: boolean;

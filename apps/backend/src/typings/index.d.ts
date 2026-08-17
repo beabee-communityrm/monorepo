@@ -1,4 +1,5 @@
 import { CalloutResponseAnswersSlide } from '@beabee/beabee-common';
+import { OidcLoginState } from '@beabee/core/lib/oidc';
 import { ApiKey, Contact } from '@beabee/core/models';
 import { AuthInfo as AuthInfo2 } from '@beabee/core/type';
 
@@ -23,5 +24,7 @@ declare module 'express-session' {
   interface SessionData {
     method?: 'plain' | 'totp';
     answers: CalloutResponseAnswersSlide | undefined;
+    oidc?: OidcLoginState;
+    idToken?: string | undefined;
   }
 }

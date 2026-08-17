@@ -110,6 +110,13 @@ Follow these exact steps to obtain the Stripe values and make the local webhook 
 
 Once all four variables are set, restart the stack if needed.
 
+### OIDC login setup (development)
+
+The stack includes a Keycloak identity provider (the `auth` service) to test
+OIDC login and user provisioning. To use it, uncomment the "OIDC Login &
+Identity Provider" section in `.env` and follow the
+[Local OIDC Development guide](./oidc-local-development.md).
+
 ## Environment File Details
 
 ### `.env` - Main Development Environment

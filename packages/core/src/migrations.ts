@@ -127,6 +127,7 @@ import { UniqueEmailId1773823606137 } from './migrations/1773823606137-UniqueEma
 import { ExtendMemberRoleExpiry1774540406786 } from './migrations/1774540406786-ExtendMemberRoleExpiry.js';
 import { AddMailchimpNLGroups1776955640900 } from './migrations/1776955640900-AddMailchimpNLGroups.js';
 import { RemoveMailchimpNLGroups1781533044882 } from './migrations/1781533044882-RemoveMailchimpNLGroups.js';
+import { AddContactIdpSubject1783608429797 } from './migrations/1783608429797-AddContactIdpSubject.js';
 
 export const migrations = [
   SessionTable1616677358190,
@@ -257,4 +258,5 @@ export const migrations = [
   ExtendMemberRoleExpiry1774540406786,
   AddMailchimpNLGroups1776955640900,
   RemoveMailchimpNLGroups1781533044882,
+  AddContactIdpSubject1783608429797,
 ];

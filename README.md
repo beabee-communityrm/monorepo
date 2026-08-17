@@ -219,6 +219,7 @@ yarn format
 ### More Documentation
 
 - [Environment Variables Guide](docs/environment-variables.md) - Setup and workflow guide
+- [Local OIDC Development](docs/oidc-local-development.md) - Testing OIDC login with the bundled Keycloak
 - [Payment System](docs/payment/README.md) - Payment architecture and workflows
 - [Release Workflow](docs/release-workflow.md) - How releases and npm publishes work
 
