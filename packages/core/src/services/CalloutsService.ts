@@ -1,4 +1,5 @@
 import {
+  ActivityEventType,
   CalloutAccess,
   CalloutResponseAnswersSlide,
   CalloutResponseGuestData,
@@ -33,6 +34,7 @@ import {
   CalloutVariant,
   Contact,
 } from '#models/index';
+import ActivityService from '#services/ActivityService';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
@@ -64,7 +66,15 @@ class CalloutsService {
       const slug = baseSlug + (autoSlug ? '-' + autoSlug : '');
       log.info('Creating callout with slug ' + slug);
       try {
-        return await this.saveCallout({ ...data, slug });
+        var calloutId = await this.saveCallout({ ...data, slug });
+
+        await ActivityService.addEvent({
+          targetId: calloutId,
+          eventType: ActivityEventType.CalloutCreated,
+          metadata: null,
+        });
+
+        return calloutId;
       } catch (err) {
         if (err instanceof DuplicateIdError && autoSlug !== false) {
           autoSlug++;
@@ -114,6 +124,12 @@ class CalloutsService {
     }
 
     await this.saveCallout(data, id);
+
+    await ActivityService.addEvent({
+      targetId: id,
+      eventType: ActivityEventType.CalloutEdited,
+      metadata: null,
+    });
   }
 
   async duplicateCallout(id: string): Promise<string> {
@@ -204,6 +220,14 @@ class CalloutsService {
 
       const result = await em.getRepository(Callout).delete({ id });
 
+      if (result.affected === 1) {
+        ActivityService.addEvent({
+          targetId: id,
+          eventType: ActivityEventType.CalloutDeleted,
+          metadata: null,
+        });
+      }
+
       return result.affected === 1;
     });
   }
@@ -292,6 +316,12 @@ class CalloutsService {
         [callout.mcMergeField]: answers[slideId]?.[answerKey]?.toString() || '',
       });
     }
+
+    await ActivityService.addEvent({
+      targetId: callout.id,
+      eventType: ActivityEventType.CalloutAnswered,
+      metadata: null,
+    });
 
     // Send confirmation email to the contact
     await this.sendResponseEmail(callout, contact);

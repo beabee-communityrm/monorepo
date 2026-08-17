@@ -1,4 +1,5 @@
 import {
+  ActivityEventType,
   CONTACT_MFA_TYPE,
   ContactOriginData,
   ContributionPeriod,
@@ -41,6 +42,7 @@ import {
   ResetSecurityFlow,
   SegmentContact,
 } from '#models/index';
+import ActivityService from '#services/ActivityService';
 import ContactMfaService from '#services/ContactMfaService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
@@ -133,12 +135,17 @@ class ContactsService {
       await getRepository(ContactProfile).save(contact.profile);
 
       await PaymentService.createContact(contact);
-
       if (opts.sync) {
         await NewsletterService.upsertContact(contact);
       }
 
       await EmailService.sendTemplateToAdmin('new-member', { contact });
+
+      await ActivityService.addEvent({
+        targetId: contact.id,
+        eventType: ActivityEventType.ContactCreated,
+        metadata: null,
+      });
 
       return contact;
     } catch (error) {
@@ -323,6 +330,12 @@ class ContactsService {
         opts
       );
     }
+
+    await ActivityService.addEvent({
+      targetId: contact.id,
+      eventType: ActivityEventType.ContactUpdated,
+      metadata: null,
+    });
   }
 
   /**
