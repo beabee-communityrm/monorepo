@@ -80,19 +80,21 @@ function ruleToQuery(
   ruleGroup: RuleGroup,
   contact?: Contact,
   filterHandlers?: FilterHandlers<string>,
-  filters: Filters = testFilters
+  filters: Filters = testFilters,
+  // The regular search queries use "item", batchSelect uses "entity"
+  alias = 'item'
 ): { where: string; params: Record<string, unknown> } {
   const [where, params] = convertRulesToWhereClause(
     validateRuleGroup(filters, ruleGroup),
     contact,
     filterHandlers,
-    'item.'
+    `${alias}.`
   );
 
   const query = testDataSource
     .createQueryBuilder()
-    .select('item.id')
-    .from(TestItem, 'item')
+    .select(`${alias}.id`)
+    .from(TestItem, alias)
     .where(where, params)
     .getQuery();
 
@@ -400,12 +402,12 @@ describe('contact callout filters', () => {
 
     expect(where).toBe(
       '(FALSE OR ("item"."id" IN ' +
-        '(SELECT "item"."contactId" AS "item_contactId" FROM "callout_response" "item" ' +
-        'WHERE "item"."calloutId" = :calloutId_0 AND "item"."contactId" IS NOT NULL)' +
+        '(SELECT "response"."contactId" AS "response_contactId" FROM "callout_response" "response" ' +
+        'WHERE "response"."calloutId" = :calloutId_0 AND "response"."contactId" IS NOT NULL)' +
         ') OR ("item"."id" IN ' +
-        '(SELECT "item"."contactId" AS "item_contactId" FROM "callout_response" "item" ' +
-        'WHERE DATE_TRUNC(\'day\', "item"."createdAt") > :valueA_1 ' +
-        'AND "item"."calloutId" = :calloutId_1 AND "item"."contactId" IS NOT NULL)' +
+        '(SELECT "response"."contactId" AS "response_contactId" FROM "callout_response" "response" ' +
+        'WHERE DATE_TRUNC(\'day\', "response"."createdAt") > :valueA_1 ' +
+        'AND "response"."calloutId" = :calloutId_1 AND "response"."contactId" IS NOT NULL)' +
         '))'
     );
     expect(params).toEqual({
@@ -415,6 +417,26 @@ describe('contact callout filters', () => {
       calloutId_1: CALLOUT_2,
       valueA_1: new Date('2025-10-09T00:00:00'),
     });
+  });
+
+  test('responses rules work with a differently aliased outer query (batchSelect)', () => {
+    const { where } = ruleToQuery(
+      singleRule(`callouts.${CALLOUT_2}.responses.createdAt`, 'greater', [
+        '2025-10-09',
+      ]),
+      undefined,
+      contactFilterHandlers,
+      calloutFilters,
+      'entity'
+    );
+
+    expect(where).toBe(
+      '(TRUE AND ("entity"."id" IN ' +
+        '(SELECT "response"."contactId" AS "response_contactId" FROM "callout_response" "response" ' +
+        'WHERE DATE_TRUNC(\'day\', "response"."createdAt") > :valueA_0 ' +
+        'AND "response"."calloutId" = :calloutId_0 AND "response"."contactId" IS NOT NULL)' +
+        '))'
+    );
   });
 });
 
