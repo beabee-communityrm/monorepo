@@ -364,7 +364,6 @@ export async function batchUpdate<
  * @param ruleGroup - Rules to filter entities
  * @param contact - Optional contact for permission checks
  * @param filterHandlers - Optional custom filter handlers
- * @param queryCallback - Optional callback to modify the query
  * @returns SelectResult containing raw results and affected count
  *
  * @example
@@ -385,8 +384,7 @@ export async function batchSelect<
   filters: Filters<Field>,
   ruleGroup: RuleGroup,
   contact?: Contact,
-  filterHandlers?: FilterHandlers<Field>,
-  queryCallback?: (qb: SelectQueryBuilder<Entity>, fieldPrefix: string) => void
+  filterHandlers?: FilterHandlers<Field>
 ): Promise<SelectResult> {
   try {
     const validatedRuleGroup = validateRuleGroup(filters, ruleGroup);
@@ -401,8 +399,6 @@ export async function batchSelect<
           'entity.'
         )
       );
-
-    queryCallback?.(qb, 'entity.');
 
     const raw = await qb.getRawMany();
 
