@@ -73,7 +73,7 @@ async function getValidApiKey(key: string): Promise<ApiKey | undefined> {
 }
 
 // Use type of authentication to determine whether actor is user or API key
-// Default to system
+// Default to user with no actor ID
 function authInfoToActor(auth: AuthInfo): ActivityActor {
   switch (auth.method) {
     case 'api-key':
@@ -84,6 +84,6 @@ function authInfoToActor(auth: AuthInfo): ActivityActor {
     case 'user':
       return { actorType: ActivityActorType.User, actorId: auth.contact.id };
     default:
-      return { actorType: ActivityActorType.System, actorId: null };
+      return { actorType: ActivityActorType.User, actorId: null };
   }
 }
