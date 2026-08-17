@@ -1,8 +1,8 @@
 # Local OIDC Development with Keycloak
 
-The docker-compose stack includes an optional Keycloak identity provider for
-testing OIDC login and user provisioning. It is disabled by default and only
-starts with the `oidc` compose profile.
+The docker-compose stack includes a Keycloak identity provider (the `auth`
+service) for testing OIDC login and user provisioning. It always runs but is
+unused until OIDC is enabled via the environment.
 
 When `BEABEE_OIDC_ISSUER` is set, login is handled by the identity provider
 and password login is disabled on that instance (password, MFA and
@@ -15,13 +15,13 @@ it restores password login.
    and from inside the containers:
 
    ```sh
-   echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
+   echo "127.0.0.1 auth" | sudo tee -a /etc/hosts
    ```
 
 2. **Enable the env block**: uncomment the "OIDC Login & Identity Provider"
-   section in your `.env` (see `.env.example`). This sets
-   `COMPOSE_PROFILES=oidc` plus the `BEABEE_OIDC_*` and `BEABEE_IDP_*`
-   variables.
+   section in your `.env` (see `.env.example`). This sets the `BEABEE_OIDC_*`
+   and `BEABEE_IDP_*` variables. `KEYCLOAK_PORT` is required for the stack to
+   start regardless — existing `.env` files need it added from `.env.example`.
 
 3. **Rebuild the backend images** (dependencies, including `openid-client`,
    are baked into the image and are not picked up from the host):
@@ -34,12 +34,12 @@ it restores password login.
 
    ```sh
    docker compose up -d
-   docker compose logs -f keycloak   # wait for "Realm 'beabee' imported"
+   docker compose logs -f auth   # wait for "Realm 'beabee' imported"
    ```
 
 ## What you get
 
-- Keycloak admin console at http://keycloak:3080 (user `admin`, password
+- Keycloak admin console at http://auth:3080 (user `admin`, password
   `admin`), realm `beabee` imported from `packages/docker/keycloak/realm.json`
 - A public login client `beabee-login` (PKCE, no secret) and a service
   account client `beabee-provisioning` (secret `beabee-dev-secret`) with
@@ -87,5 +87,7 @@ container with `docker compose exec api_app node dist/index.js user ...`.
 3. Log out via the menu — this also ends the Keycloak session.
 
 The issuer must be identical from the browser and the backend, which is why
-Keycloak is addressed as `http://keycloak:3080` everywhere. HTTP (instead of
+Keycloak is addressed as `http://auth:3080` everywhere — `auth` resolves to the
+compose service inside the network and to 127.0.0.1 on the host via the hosts
+entry. HTTP (instead of
 HTTPS) issuers are only allowed when `BEABEE_DEV=true`.

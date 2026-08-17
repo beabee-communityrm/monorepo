@@ -112,8 +112,8 @@ Once all four variables are set, restart the stack if needed.
 
 ### OIDC login setup (development)
 
-An optional Keycloak identity provider can be enabled with the `oidc` compose
-profile to test OIDC login and user provisioning. Uncomment the "OIDC Login &
+The stack includes a Keycloak identity provider (the `auth` service) to test
+OIDC login and user provisioning. To use it, uncomment the "OIDC Login &
 Identity Provider" section in `.env` and follow the
 [Local OIDC Development guide](./oidc-local-development.md).
 

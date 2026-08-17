@@ -193,22 +193,22 @@ services:
       - STRIPE_API_KEY=${BEABEE_STRIPE_SECRETKEY}
       - STRIPE_DEVICE_NAME=beabee-dev-docker-container
 
-  # Keycloak identity provider for testing OIDC login and user provisioning
-  # Only started with the "oidc" profile (COMPOSE_PROFILES=oidc), see
-  # docs/oidc-local-development.md
-  keycloak:
+  # Keycloak identity provider for testing OIDC login and user provisioning,
+  # unused unless BEABEE_OIDC_ISSUER is set, see docs/oidc-local-development.md
+  auth:
     image: quay.io/keycloak/keycloak:26.7
-    profiles: ["oidc"]
     command: ["start-dev", "--import-realm"]
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KC_HTTP_PORT: ${KEYCLOAK_PORT:-3080}
-      # Pin the issuer so it is identical for the browser and the backend
-      KC_HOSTNAME: http://keycloak:${KEYCLOAK_PORT:-3080}
+      # The issuer must be identical for the browser (via a "127.0.0.1 auth"
+      # hosts entry) and the backend (via service DNS), so the container port
+      # has to match the published host port
+      KC_HTTP_PORT: ${KEYCLOAK_PORT}
+      KC_HOSTNAME: http://auth:${KEYCLOAK_PORT}
       KC_HEALTH_ENABLED: "true"
     ports:
-      - ${KEYCLOAK_PORT:-3080}:${KEYCLOAK_PORT:-3080}
+      - ${KEYCLOAK_PORT}:${KEYCLOAK_PORT}
     volumes:
       - ./packages/docker/keycloak:/opt/keycloak/data/import:ro
     healthcheck:
