@@ -52,6 +52,7 @@ export const nuxtUiConfig: NuxtUIOptions = {
     tabs: {
       slots: {
         root: 'gap-4',
+        trigger: 'cursor-pointer',
       },
     },
     button: {

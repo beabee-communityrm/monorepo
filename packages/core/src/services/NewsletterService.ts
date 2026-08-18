@@ -213,9 +213,9 @@ class NewsletterService {
   async getContactNewsletterGroups(
     contactId: string
   ): Promise<{ id: string; label: string }[]> {
-    const contactProfile = await getRepository(ContactProfile).findOneByOrFail(
-      { contactId }
-    );
+    const contactProfile = await getRepository(ContactProfile).findOneByOrFail({
+      contactId,
+    });
     const newsletterGroups: { id: string; label: string }[] =
       optionsService.getJSON('newsletter-groups');
 

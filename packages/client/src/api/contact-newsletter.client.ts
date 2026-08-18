@@ -18,9 +18,7 @@ export class ContactNewsletterClient extends BaseClient {
    * @param contactId - The ID of the contact.
    * @returns The groups the contact is subscribed to.
    */
-  async getGroups(
-    contactId: string
-  ): Promise<{ id: string; label: string }[]> {
+  async getGroups(contactId: string): Promise<{ id: string; label: string }[]> {
     const { data } = await this.fetch.get<{ id: string; label: string }[]>(
       `/${contactId}/newsletter-groups`
     );
