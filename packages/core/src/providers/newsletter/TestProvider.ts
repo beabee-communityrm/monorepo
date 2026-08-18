@@ -23,7 +23,12 @@ export class TestProvider implements NewsletterProvider {
     contact: UpdateNewsletterContact,
     oldEmail?: string
   ): Promise<NewsletterContact> {
-    return { ...contact, joined: new Date(), tags: [] };
+    return {
+      ...contact,
+      groups: contact.groups ?? [],
+      joined: new Date(),
+      tags: [],
+    };
   }
   async permanentlyDeleteContact(email: string): Promise<void> {}
   async updateContactFields(

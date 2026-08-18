@@ -43,19 +43,14 @@
 </template>
 
 <script lang="ts" setup>
-import { GetContactWith } from '@beabee/beabee-common';
 import { AppFormSkeleton, AppSectionCard } from '@beabee/vue';
 
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { useApiSubmit } from '#composables/useApiSubmit';
+import type { NewsletterGroup } from '#type/newsletter-group';
 import { client } from '#utils/api';
-
-interface NewsletterGroup {
-  id: string;
-  label: string;
-}
 
 const { t } = useI18n();
 
@@ -72,14 +67,7 @@ async function handleUnsubscribe(group: NewsletterGroup) {
   removingId.value = group.id;
   const { submit } = useApiSubmit(
     async () => {
-      // Base the write on the contact's full group list (not just the
-      // curated subset shown here), so groups outside that subset aren't
-      // silently dropped when we push the new list.
-      const contact = await client.contact.get('me', [GetContactWith.Profile]);
-      const newsletterGroups = contact.profile.newsletterGroups.filter(
-        (groupId) => groupId !== group.id
-      );
-      await client.contact.update('me', { profile: { newsletterGroups } });
+      await client.contact.newsletter.unsubscribe('me', group.id);
       groups.value = groups.value.filter((g) => g.id !== group.id);
     },
     {

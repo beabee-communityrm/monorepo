@@ -15,6 +15,7 @@ export * from './join-form-data';
 export * from './locale-prop';
 export * from './map';
 export * from './navigation';
+export * from './newsletter-group';
 export * from './notification';
 export * from './paginated';
 export * from './payment-flow-form-data';

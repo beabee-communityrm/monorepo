@@ -26,4 +26,13 @@ export class ContactNewsletterClient extends BaseClient {
     );
     return data;
   }
+
+  /**
+   * Unsubscribe a contact from a single newsletter group.
+   * @param contactId - The ID of the contact.
+   * @param groupId - The ID of the newsletter group to unsubscribe from.
+   */
+  async unsubscribe(contactId: string, groupId: string): Promise<void> {
+    await this.fetch.delete(`/${contactId}/newsletter-groups/${groupId}`);
+  }
 }
