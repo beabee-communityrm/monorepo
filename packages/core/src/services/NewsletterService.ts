@@ -20,6 +20,7 @@ import {
 import {
   ContactNewsletterUpdates,
   NewsletterContact,
+  NewsletterGroupChange,
   NewsletterProvider,
   UpdateNewsletterContact,
 } from '#type/index';
@@ -42,7 +43,7 @@ const log = mainLogger.child({ app: 'newsletter-service' });
 async function contactToNlUpdate(
   contact: Contact,
   updates?: ContactNewsletterUpdates,
-  opts?: { mergeGroups?: boolean }
+  opts?: { newsletterGroupChange?: NewsletterGroupChange }
 ): Promise<UpdateNewsletterContact | undefined> {
   // TODO: Fix that it relies on contact.profile being loaded
   if (!contact.profile) {
@@ -82,7 +83,7 @@ class NewsletterService {
     updates?: ContactNewsletterUpdates,
     opts?: {
       oldEmail?: string;
-      mergeGroups?: boolean;
+      newsletterGroupChange?: NewsletterGroupChange;
     }
   ): Promise<void> {
     const nlUpdate = await contactToNlUpdate(contact, updates, opts);

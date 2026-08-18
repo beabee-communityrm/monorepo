@@ -516,4 +516,18 @@ export class ContactController {
     );
     return plainToInstance(GetContactNewsletterGroupDto, groups);
   }
+
+  /**
+   * Unsubscribe a contact from a single newsletter group
+   * @param target The target contact
+   * @param groupId The newsletter group ID
+   */
+  @OnUndefined(204)
+  @Delete('/:id/newsletter-groups/:groupId')
+  async unsubscribeNewsletterGroup(
+    @TargetUser() target: Contact,
+    @Params() { groupId }: { groupId: string }
+  ): Promise<void> {
+    await ContactsService.unsubscribeFromNewsletterGroup(target, groupId);
+  }
 }

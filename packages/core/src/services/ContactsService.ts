@@ -45,6 +45,7 @@ import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
+import { NewsletterGroupChange } from '#type/newsletter-group-change';
 import { UpdateContributionResult } from '#type/update-contribution-result';
 import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
@@ -296,7 +297,7 @@ class ContactsService {
   async updateContactProfile(
     contact: Contact,
     updates: Partial<ContactProfile>,
-    opts: { mergeGroups?: boolean } = { mergeGroups: false }
+    opts: { newsletterGroupChange?: NewsletterGroupChange } = {}
   ): Promise<void> {
     const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
 
@@ -316,6 +317,24 @@ class ContactsService {
         opts
       );
     }
+  }
+
+  /**
+   * Unsubscribe a contact from a single newsletter group, without disturbing
+   * their subscription to any other group.
+   *
+   * @param contact The contact to update
+   * @param groupId The newsletter group ID to unsubscribe from
+   */
+  async unsubscribeFromNewsletterGroup(
+    contact: Contact,
+    groupId: string
+  ): Promise<void> {
+    await this.updateContactProfile(
+      contact,
+      { newsletterGroups: [groupId] },
+      { newsletterGroupChange: 'remove' }
+    );
   }
 
   /**
