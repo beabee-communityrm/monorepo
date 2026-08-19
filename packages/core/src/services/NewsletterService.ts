@@ -20,6 +20,7 @@ import {
 import {
   ContactNewsletterUpdates,
   NewsletterContact,
+  NewsletterGroupChange,
   NewsletterProvider,
   UpdateNewsletterContact,
 } from '#type/index';
@@ -42,7 +43,7 @@ const log = mainLogger.child({ app: 'newsletter-service' });
 async function contactToNlUpdate(
   contact: Contact,
   updates?: ContactNewsletterUpdates,
-  opts?: { mergeGroups?: boolean }
+  opts?: { newsletterGroupChange?: NewsletterGroupChange }
 ): Promise<UpdateNewsletterContact | undefined> {
   // TODO: Fix that it relies on contact.profile being loaded
   if (!contact.profile) {
@@ -82,8 +83,25 @@ class NewsletterService {
     updates?: ContactNewsletterUpdates,
     opts?: {
       oldEmail?: string;
-      mergeGroups?: boolean;
+      newsletterGroupChange?: NewsletterGroupChange;
     }
+  ): Promise<void> {
+    return this.upsertContactWithRetry(contact, updates, opts, 0);
+  }
+
+  /**
+   * Same as `upsertContact`, but tracks how many times an invalid-group
+   * failure has already been retried, so a group ID that's permanently
+   * invalid (not just stale in our cache) fails loudly instead of retrying
+   * forever.
+   */
+  private async upsertContactWithRetry(
+    contact: Contact,
+    updates: ContactNewsletterUpdates | undefined,
+    opts:
+      | { oldEmail?: string; newsletterGroupChange?: NewsletterGroupChange }
+      | undefined,
+    attempt: number
   ): Promise<void> {
     const nlUpdate = await contactToNlUpdate(contact, updates, opts);
     if (!nlUpdate) {
@@ -110,14 +128,22 @@ class NewsletterService {
             `Newsletter upsert failed, setting status to none for contact ${contact.id}`,
             err
           );
-        } else if (err instanceof CantUpdateNewsletterGroupsError) {
-          // Tried to add contact to an invalid group. Refresh cached groups and retry upsert
+        } else if (
+          err instanceof CantUpdateNewsletterGroupsError &&
+          attempt === 0
+        ) {
+          // Tried to add contact to an invalid group. Refresh cached groups and retry upsert once
           log.warning(
             `Failed to subscribe ${contact.email} to group. ${err.detail}\nGroups will be refreshed and the upsert retried.`
           );
 
           await this.refreshNewsletterGroups();
-          await this.upsertContact(contact, updates, opts);
+          await this.upsertContactWithRetry(
+            contact,
+            updates,
+            opts,
+            attempt + 1
+          );
           return;
         } else {
           throw err;
@@ -201,6 +227,29 @@ class NewsletterService {
    */
   async getAllNewsletterGroups(): Promise<{ id: string; label: string }[]> {
     return await this.provider.getGroups();
+  }
+
+  /**
+   * Get the newsletter groups a contact is currently subscribed to
+   *
+   * @param contactId The contact's ID
+   * @returns The subscribed groups as `{ id, label }` pairs
+   */
+  async getContactNewsletterGroups(
+    contactId: string
+  ): Promise<{ id: string; label: string }[]> {
+    const contactProfile = await getRepository(ContactProfile).findOneByOrFail({
+      contactId,
+    });
+    const newsletterGroups: { id: string; label: string }[] =
+      optionsService.getJSON('newsletter-groups');
+
+    const validGroupIds = new Set(newsletterGroups.map((g) => g.id));
+    return newsletterGroups.filter(
+      (g) =>
+        contactProfile.newsletterGroups.includes(g.id) &&
+        validGroupIds.has(g.id)
+    );
   }
 
   /**

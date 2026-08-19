@@ -78,10 +78,16 @@
         "subscribed": "",
         "unsubscribed": ""
       },
+      "description": "",
+      "noGroups": "",
       "subscribe": "",
       "title": "",
-      "unsubscribe": ""
+      "unsubscribe": "",
+      "unsubscribeButton": "",
+      "unsubscribeInfo": "",
+      "unsubscribedNotification": ""
     },
+    "personalDetails": "",
     "phoneInfo": "",
     "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
@@ -293,6 +299,7 @@
       "newsletter": {
         "audienceId": "",
         "groups": "",
+        "groupsNote": "",
         "noGroups": ""
       },
       "refresh": "",

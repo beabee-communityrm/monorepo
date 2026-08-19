@@ -78,10 +78,16 @@
         "subscribed": "",
         "unsubscribed": ""
       },
+      "description": "",
+      "noGroups": "",
       "subscribe": "",
       "title": "",
-      "unsubscribe": ""
+      "unsubscribe": "",
+      "unsubscribeButton": "",
+      "unsubscribeInfo": "",
+      "unsubscribedNotification": ""
     },
+    "personalDetails": "",
     "phoneInfo": "",
     "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
@@ -294,6 +300,7 @@
       "newsletter": {
         "audienceId": "Audience-ID",
         "groups": "Gruppen",
+        "groupsNote": "",
         "noGroups": "Keine Gruppen gefunden"
       },
       "refresh": "Aktualisieren",

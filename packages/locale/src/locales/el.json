@@ -78,10 +78,16 @@
         "subscribed": "",
         "unsubscribed": ""
       },
+      "description": "",
+      "noGroups": "",
       "subscribe": "",
       "title": "",
-      "unsubscribe": ""
+      "unsubscribe": "",
+      "unsubscribeButton": "",
+      "unsubscribeInfo": "",
+      "unsubscribedNotification": ""
     },
+    "personalDetails": "",
     "phoneInfo": "",
     "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
@@ -294,6 +300,7 @@
       "newsletter": {
         "audienceId": "Αναγνωριστικό κοινού",
         "groups": "Ομάδες",
+        "groupsNote": "",
         "noGroups": "Δεν βρέθηκαν ομάδες"
       },
       "refresh": "Ανανέωση",

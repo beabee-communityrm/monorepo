@@ -13,7 +13,6 @@ export const nuxtUiConfig: NuxtUIOptions = {
     navigationMenu: {
       slots: {
         link: 'py-2.5!',
-        linkLeadingIcon: 'size-4.5!',
       },
       variants: {
         active: {
@@ -48,6 +47,12 @@ export const nuxtUiConfig: NuxtUIOptions = {
         // just the header/body divider explicitly.
         content: 'nuxt-page divide-y-0',
         header: 'border-b border-default',
+      },
+    },
+    tabs: {
+      slots: {
+        root: 'gap-4',
+        trigger: 'cursor-pointer',
       },
     },
     button: {

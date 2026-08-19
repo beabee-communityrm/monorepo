@@ -11,14 +11,25 @@ meta:
     >
       <UIcon
         name="i-lucide-shield"
-        class="text-primary mt-0.5 size-4 shrink-0"
+        class="text-primary mt-0.5 size-5 shrink-0"
       />
       <p>{{ t('accountPage.subTitle-nuxt') }}</p>
     </div>
 
-    <AccountForm />
-    <ChangePassword />
-    <SetMFA contact-id="me" />
+    <UTabs :items="items" class="w-full">
+      <template #contact>
+        <AccountForm />
+      </template>
+      <template #security>
+        <div class="flex flex-col gap-4">
+          <ChangePassword />
+          <SetMFA contact-id="me" />
+        </div>
+      </template>
+      <template #subscriptions>
+        <AccountNewsletterSubscriptions />
+      </template>
+    </UTabs>
 
     <p class="text-muted px-1">
       <span class="text-primary font-medium">*</span>
@@ -28,13 +39,33 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AccountForm from '../../components/pages/profile/account/AccountForm.vue';
+import AccountNewsletterSubscriptions from '../../components/pages/profile/account/AccountNewsletterSubscriptions.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
 import SetMFA from '../../components/pages/profile/account/SetMFA.vue';
 import { addBreadcrumb } from '../../store/breadcrumb';
 import { routeIcons, routeLabels } from '../../utils/route-nav';
+import type { TabsItem } from '@nuxt/ui';
+
+const items = ref<TabsItem[]>([
+  {
+    label: 'Contact Information',
+    icon: 'i-lucide-contact',
+    slot: 'contact',
+  },
+  {
+    label: 'Security',
+    icon: 'i-lucide-shield',
+    slot: 'security',
+  },
+  {
+    label: 'Subscriptions',
+    icon: 'i-lucide-mail',
+    slot: 'subscriptions',
+  },
+]);
 
 const { t } = useI18n();
 

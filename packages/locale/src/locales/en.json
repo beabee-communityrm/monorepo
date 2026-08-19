@@ -1,7 +1,7 @@
 {
   "accountPage": {
     "contactInformation": "Contact information",
-    "deliveryAddress": "Delivery address",
+    "deliveryAddress": "Address",
     "deliveryOptIn": "Delivery opt-in",
     "loginDetail": "Login details",
     "loginDetail-nuxt": "Change password",
@@ -78,10 +78,16 @@
         "subscribed": "This contact is subscribed to your newsletter list.",
         "unsubscribed": "This contact isn't subscribed to your newsletter list."
       },
+      "description": "Manage which newsletter groups you're subscribed to.",
+      "noGroups": "You're not subscribed to any newsletter groups.",
       "subscribe": "Subscribe them to the newsletter",
       "title": "Newsletter",
-      "unsubscribe": "Unsubscribe them from the newsletter"
+      "unsubscribe": "Unsubscribe them from the newsletter",
+      "unsubscribeButton": "Unsubscribe",
+      "unsubscribeInfo": "Unsubscribing takes effect straight away and can't be undone here.",
+      "unsubscribedNotification": "You've been unsubscribed from {group}"
     },
+    "personalDetails": "Personal details",
     "phoneInfo": "By providing your phone number you are consenting to being contacted by phone",
     "phoneInfo-nuxt": "By providing your phone number you are consenting to being contacted by phone.",
     "phoneInfoAdmin": "You must have the person's consent before adding their phone number to the system",
@@ -293,6 +299,7 @@
       "newsletter": {
         "audienceId": "Audience ID",
         "groups": "Groups",
+        "groupsNote": "Group names will be displayed to members in the subscription management tab of the Account page.",
         "noGroups": "No groups found"
       },
       "refresh": "Refresh",

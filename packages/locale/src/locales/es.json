@@ -1,7 +1,7 @@
 {
   "accountPage": {
     "contactInformation": "Información de contacto",
-    "deliveryAddress": "Dirección de envío",
+    "deliveryAddress": "Dirección",
     "deliveryOptIn": "Aceptar envíos",
     "loginDetail": "Datos de acceso",
     "loginDetail-nuxt": "Cambiar contraseña",
@@ -78,10 +78,16 @@
         "subscribed": "Este contacto está suscrito a tu lista de boletín.",
         "unsubscribed": "Este contacto no está suscrito a tu lista de boletín."
       },
+      "description": "Gestiona a qué grupos de boletín estás suscrito.",
+      "noGroups": "No estás suscrito a ningún grupo de boletín.",
       "subscribe": "Suscribir al boletín",
       "title": "Boletín",
-      "unsubscribe": "Cancelar suscripción al boletín"
+      "unsubscribe": "Cancelar suscripción al boletín",
+      "unsubscribeButton": "Cancelar suscripción",
+      "unsubscribeInfo": "La cancelación de la suscripción se aplica de inmediato y no se puede deshacer aquí.",
+      "unsubscribedNotification": "Se ha cancelado tu suscripción a {group}"
     },
+    "personalDetails": "Datos personales",
     "phoneInfo": "Al proporcionar tu número de teléfono, aceptas ser contactado por teléfono",
     "phoneInfo-nuxt": "Al proporcionar tu número de teléfono, aceptas ser contactado por teléfono.",
     "phoneInfoAdmin": "Debes contar con el consentimiento de la persona antes de añadir su número de teléfono al sistema",
@@ -294,6 +300,7 @@
       "newsletter": {
         "audienceId": "ID de audiencia",
         "groups": "Grupos",
+        "groupsNote": "Los nombres de los grupos se mostrarán a los socios en la pestaña de gestión de suscripciones de la página de la cuenta.",
         "noGroups": "No se encontraron grupos"
       },
       "refresh": "Actualizar",
