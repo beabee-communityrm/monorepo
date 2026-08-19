@@ -19,11 +19,12 @@
   <Teleport to="#sticky-bottom-banner">
     <div class="border-default bg-default border-t">
       <div
-        class="mx-auto flex max-w-2xl items-center justify-between gap-4 px-4 py-3 sm:px-6"
+        class="mx-auto flex max-w-2xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6"
       >
         <p class="text-muted text-sm">{{ t('form.unsavedChanges') }}</p>
         <div class="flex items-center gap-2">
           <UButton
+            class="flex-1 justify-center sm:flex-none"
             type="button"
             variant="outline"
             color="neutral"
@@ -32,8 +33,13 @@
           >
             {{ t('actions.cancel') }}
           </UButton>
-          <UButton type="submit" :form="form" loading-auto>
-            {{ t('form.saveChanges') }}
+          <UButton
+            class="flex-1 justify-center sm:flex-none"
+            type="submit"
+            :form="form"
+            loading-auto
+          >
+            {{ t('actions.save') }}
           </UButton>
         </div>
       </div>
