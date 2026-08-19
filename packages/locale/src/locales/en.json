@@ -299,6 +299,7 @@
       "newsletter": {
         "audienceId": "Audience ID",
         "groups": "Groups",
+        "groupsNote": "Group names will be displayed to members in the subscription management tab of the Account page.",
         "noGroups": "No groups found"
       },
       "refresh": "Refresh",

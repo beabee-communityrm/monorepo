@@ -300,6 +300,7 @@
       "newsletter": {
         "audienceId": "ID pubblico",
         "groups": "Gruppi",
+        "groupsNote": "I nomi dei gruppi verranno mostrati ai soci nella scheda di gestione degli abbonamenti della pagina account.",
         "noGroups": "Nessun gruppo trovato"
       },
       "refresh": "Aggiorna",

@@ -84,6 +84,7 @@
       "title": "",
       "unsubscribe": "",
       "unsubscribeButton": "",
+      "unsubscribeInfo": "",
       "unsubscribedNotification": ""
     },
     "personalDetails": "",
@@ -299,6 +300,7 @@
       "newsletter": {
         "audienceId": "Audience-ID",
         "groups": "Gruppen",
+        "groupsNote": "",
         "noGroups": "Keine Gruppen gefunden"
       },
       "refresh": "Aktualisieren",
