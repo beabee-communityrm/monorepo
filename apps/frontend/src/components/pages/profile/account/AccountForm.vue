@@ -127,7 +127,7 @@ const data = reactive({
 });
 
 /** Snapshot of the last-saved (or initially loaded) values, for Cancel */
-let savedData = { ...data };
+const savedData = reactive({ ...data });
 
 onMounted(async () => {
   const [content, contact] = await Promise.all([
@@ -147,7 +147,7 @@ onMounted(async () => {
     postCode: contact.profile.deliveryAddress?.postcode || '',
   });
 
-  savedData = { ...data };
+  Object.assign(savedData, data);
   loading.value = false;
 });
 
@@ -231,7 +231,7 @@ const { submit: handleSave } = useApiSubmit(
         },
       },
     });
-    savedData = { ...data };
+    Object.assign(savedData, data);
   },
   { successMessage: () => t('form.saved') }
 );
