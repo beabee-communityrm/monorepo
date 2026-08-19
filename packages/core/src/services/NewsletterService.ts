@@ -138,7 +138,12 @@ class NewsletterService {
           );
 
           await this.refreshNewsletterGroups();
-          await this.upsertContactWithRetry(contact, updates, opts, attempt + 1);
+          await this.upsertContactWithRetry(
+            contact,
+            updates,
+            opts,
+            attempt + 1
+          );
           return;
         } else {
           throw err;
