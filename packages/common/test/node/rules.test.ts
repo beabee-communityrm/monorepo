@@ -1,4 +1,10 @@
-import { Filters, InvalidRule, validateRule } from '@beabee/beabee-common';
+import {
+  Filters,
+  InvalidRule,
+  flattenRules,
+  validateRule,
+  validateRuleGroup,
+} from '@beabee/beabee-common';
 
 import { describe, expect, test } from 'vitest';
 
@@ -193,5 +199,89 @@ describe('validateRule should fail for', () => {
         value: ['hockey'],
       })
     ).toThrow(InvalidRule);
+  });
+});
+
+describe('validateRuleGroup', () => {
+  test('validates nested groups recursively, preserving the structure', () => {
+    expect(
+      validateRuleGroup(testFilters, {
+        condition: 'AND',
+        rules: [
+          { field: 'name', operator: 'equal', value: ['foo'] },
+          {
+            condition: 'OR',
+            rules: [
+              { field: 'count', operator: 'less', value: [10] },
+              { field: 'count', operator: 'greater', value: [20] },
+            ],
+          },
+        ],
+      })
+    ).toEqual({
+      condition: 'AND',
+      rules: [
+        {
+          type: 'text',
+          field: 'name',
+          nullable: false,
+          operator: 'equal',
+          value: ['foo'],
+        },
+        {
+          condition: 'OR',
+          rules: [
+            {
+              type: 'number',
+              field: 'count',
+              nullable: false,
+              operator: 'less',
+              value: [10],
+            },
+            {
+              type: 'number',
+              field: 'count',
+              nullable: false,
+              operator: 'greater',
+              value: [20],
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  test('fails if a rule in a nested group is invalid', () => {
+    expect(() =>
+      validateRuleGroup(testFilters, {
+        condition: 'AND',
+        rules: [
+          {
+            condition: 'OR',
+            rules: [{ field: 'unknown', operator: 'equal', value: ['foo'] }],
+          },
+        ],
+      })
+    ).toThrow(InvalidRule);
+  });
+});
+
+describe('flattenRules', () => {
+  test('flattens nested groups into a single array of rules', () => {
+    expect(
+      flattenRules({
+        condition: 'AND',
+        rules: [
+          { field: 'name', operator: 'equal', value: ['foo'] },
+          {
+            condition: 'OR',
+            rules: [{ field: 'count', operator: 'less', value: [10] }],
+          },
+        ],
+      })
+    ).toEqual([
+      { field: 'name', operator: 'equal', value: ['foo'] },
+      { field: 'count', operator: 'less', value: [10] },
+    ]);
   });
 });

@@ -139,7 +139,7 @@ const activePermission: FilterHandler = (qb, args) => {
     .subQuery()
     .select(`cr.contactId`)
     .from(ContactRole, 'cr')
-    .where(`cr.type = '${roleType}'`)
+    .where(args.addParamSuffix('cr.type = :roleType'))
     .andWhere(`cr.dateAdded <= :now`)
     .andWhere(
       new Brackets((qb) => {
@@ -152,6 +152,8 @@ const activePermission: FilterHandler = (qb, args) => {
   } else {
     qb.where(`${args.fieldPrefix}id NOT IN ${subQb.getQuery()}`);
   }
+
+  return { roleType };
 };
 
 /**
@@ -176,19 +178,24 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
     case 'responses': {
       const subQb = createQueryBuilder()
         .subQuery()
-        .select('item.contactId')
-        .from(CalloutResponse, 'item');
+        .select('response.contactId')
+        .from(CalloutResponse, 'response');
 
       const responseField = restFields.join('.');
       const filterHandler = getFilterHandler(
         calloutResponseFilterHandlers,
         responseField
       );
-      params = filterHandler(subQb, { ...args, field: responseField });
+      // Pass the subquery's alias as the field prefix, not the outer query's
+      params = filterHandler(subQb, {
+        ...args,
+        fieldPrefix: 'response.',
+        field: responseField,
+      });
 
       subQb
-        .andWhere(args.addParamSuffix('item.calloutId = :calloutId'))
-        .andWhere('item.contactId IS NOT NULL');
+        .andWhere(args.addParamSuffix('response.calloutId = :calloutId'))
+        .andWhere('response.contactId IS NOT NULL');
 
       qb.where(`${args.fieldPrefix}id IN ${subQb.getQuery()}`);
       break;
@@ -202,10 +209,10 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
     case 'hasAnswered': {
       const subQb = createQueryBuilder()
         .subQuery()
-        .select('item.contactId')
-        .from(CalloutResponse, 'item')
-        .where(args.addParamSuffix(`item.calloutId = :calloutId`))
-        .andWhere('item.contactId IS NOT NULL');
+        .select('response.contactId')
+        .from(CalloutResponse, 'response')
+        .where(args.addParamSuffix(`response.calloutId = :calloutId`))
+        .andWhere('response.contactId IS NOT NULL');
 
       const operator = args.value[0] ? 'IN' : 'NOT IN';
 
