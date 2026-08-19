@@ -300,6 +300,7 @@
       "newsletter": {
         "audienceId": "ID d'audience",
         "groups": "Groupes",
+        "groupsNote": "Les noms des groupes seront affichés aux membres dans l'onglet de gestion des abonnements de la page de compte.",
         "noGroups": "Aucun groupe trouvé"
       },
       "refresh": "Actualiser",

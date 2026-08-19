@@ -300,6 +300,7 @@
       "newsletter": {
         "audienceId": "ID do público",
         "groups": "Grupos",
+        "groupsNote": "Os nomes dos grupos serão apresentados aos sócios no separador de gestão de subscrições da página de conta.",
         "noGroups": "Nenhum grupo encontrado"
       },
       "refresh": "Atualizar",

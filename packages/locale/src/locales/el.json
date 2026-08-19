@@ -84,6 +84,7 @@
       "title": "",
       "unsubscribe": "",
       "unsubscribeButton": "",
+      "unsubscribeInfo": "",
       "unsubscribedNotification": ""
     },
     "personalDetails": "",
@@ -299,6 +300,7 @@
       "newsletter": {
         "audienceId": "Αναγνωριστικό κοινού",
         "groups": "Ομάδες",
+        "groupsNote": "",
         "noGroups": "Δεν βρέθηκαν ομάδες"
       },
       "refresh": "Ανανέωση",

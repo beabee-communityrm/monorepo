@@ -300,6 +300,7 @@
       "newsletter": {
         "audienceId": "Doelgroep-ID",
         "groups": "Groepen",
+        "groupsNote": "Groepsnamen worden getoond aan leden op het tabblad abonnementenbeheer van de accountpagina.",
         "noGroups": "Geen groepen gevonden"
       },
       "refresh": "Vernieuwen",
