@@ -47,7 +47,9 @@
       <AppFormSkeleton v-if="loading" :rows="3" />
       <template v-else>
         <template v-if="accountContent?.showMailOptIn">
-          <div class="flex items-center justify-between gap-4">
+          <div
+            class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"
+          >
             <div class="space-y-1">
               <p class="text-default text-sm font-medium">
                 {{ accountContent.mailTitle }}
