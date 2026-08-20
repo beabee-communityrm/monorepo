@@ -472,6 +472,12 @@ class ContactsService {
 
       // 18. Finally delete the contact
       await em.getRepository(Contact).delete(contact.id);
+
+      await ActivityService.addEvent({
+        targetId: contact.id,
+        eventType: ActivityEventType.ContactDeleted,
+        metadata: null,
+      });
     });
   }
 
