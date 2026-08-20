@@ -1,5 +1,6 @@
 import {
   CONTACT_MFA_TYPE,
+  ContactOriginData,
   ContributionPeriod,
   ContributionType,
   LOGIN_CODES,
@@ -106,9 +107,10 @@ class ContactsService {
   async createContact(
     partialContact: Partial<Contact> & Pick<Contact, 'email'>,
     partialProfile: Partial<ContactProfile> = {},
+    origin: ContactOriginData | null = null,
     opts = { sync: true }
   ): Promise<Contact> {
-    log.info('Create contact', { partialContact, partialProfile });
+    log.info('Create contact', { partialContact, partialProfile, origin });
 
     try {
       const contact = getRepository(Contact).create({
@@ -146,7 +148,12 @@ class ContactsService {
         isDuplicateIndex(error, 'referralCode') ||
         isDuplicateIndex(error, 'pollsCode')
       ) {
-        return await this.createContact(partialContact, partialProfile, opts);
+        return await this.createContact(
+          partialContact,
+          partialProfile,
+          origin,
+          opts
+        );
       }
       throw error;
     }

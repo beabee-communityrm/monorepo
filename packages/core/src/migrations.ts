@@ -128,6 +128,7 @@ import { ExtendMemberRoleExpiry1774540406786 } from './migrations/1774540406786-
 import { AddMailchimpNLGroups1776955640900 } from './migrations/1776955640900-AddMailchimpNLGroups.js';
 import { RemoveMailchimpNLGroups1781533044882 } from './migrations/1781533044882-RemoveMailchimpNLGroups.js';
 import { AddActivityFeedTable1786436468486 } from './migrations/1786436468486-AddActivityFeedTable.js';
+import { AddSignUpSourceInfo1786450132129 } from './migrations/1786450132129-AddSignUpSourceInfo.js';
 
 export const migrations = [
   SessionTable1616677358190,
@@ -259,4 +260,5 @@ export const migrations = [
   AddMailchimpNLGroups1776955640900,
   RemoveMailchimpNLGroups1781533044882,
   AddActivityFeedTable1786436468486,
+  AddSignUpSourceInfo1786450132129,
 ];

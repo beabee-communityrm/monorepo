@@ -1123,6 +1123,12 @@
       "title": "Newsletter"
     },
     "oneTime": "Una tantum",
+    "origin": {
+      "campaign": "Campagna",
+      "referrer": "Referente",
+      "source": "Fonte di iscrizione",
+      "title": "Origine"
+    },
     "overview": "Panoramica",
     "pickTag": "Scegli un tag dall'elenco sottostante",
     "profile": "Profilo",

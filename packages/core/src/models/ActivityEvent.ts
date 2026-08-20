@@ -1,4 +1,8 @@
-import { ActivityActorType, ActivityEventType } from '@beabee/beabee-common';
+import {
+  ActivityActorType,
+  ActivityEventType,
+  ContactOriginData,
+} from '@beabee/beabee-common';
 
 import {
   Column,
@@ -30,5 +34,5 @@ export class ActivityEvent {
   eventType!: ActivityEventType;
 
   @Column({ type: 'jsonb', nullable: true })
-  metadata!: Record<string, string> | null;
+  metadata!: ContactOriginData | Record<string, string> | null;
 }

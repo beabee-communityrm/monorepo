@@ -54,6 +54,7 @@ export class SignupController {
       confirmUrl: data.confirmUrl,
       loginUrl: data.loginUrl,
       setPasswordUrl: data.setPasswordUrl,
+      origin: data.origin || null,
     };
 
     if (data.contribution) {

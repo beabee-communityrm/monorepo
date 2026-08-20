@@ -335,7 +335,17 @@ class CalloutsService {
         log.info(
           'Creating new contact for callout response with email ' + guest.email
         );
-        contact = await ContactsService.createContact(guest);
+
+        // campaign and referrer needed?
+        contact = await ContactsService.createContact(
+          guest,
+          {},
+          {
+            source: 'callout',
+            medium: '',
+            campaign: callout.slug,
+          }
+        );
       }
 
       try {

@@ -1123,6 +1123,12 @@
       "title": "Newsletter"
     },
     "oneTime": "Einmalig",
+    "origin": {
+      "campaign": "Kampagne",
+      "referrer": "Empfehlungsquelle",
+      "source": "Anmeldequelle",
+      "title": "Herkunft"
+    },
     "overview": "Überblick",
     "pickTag": "Tag aus der Liste wählen",
     "profile": "Profil",

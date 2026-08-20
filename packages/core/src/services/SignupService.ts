@@ -1,4 +1,5 @@
 import {
+  ContactOriginData,
   PaymentFlowParams,
   PaymentFlowParamsStripe,
   PaymentFlowResult,
@@ -26,6 +27,7 @@ interface SignupData {
   loginUrl: string;
   setPasswordUrl: string;
   confirmUrl: string;
+  origin: ContactOriginData | null;
 }
 
 /**
@@ -252,13 +254,17 @@ class SignupService {
     if (contact) {
       await ContactsService.updateContact(contact, partialContact);
     } else {
-      contact = await ContactsService.createContact(partialContact, {
-        newsletterStatus: OptionsService.getText('newsletter-default-status'),
-        ...(completedFlow?.data.billingAddress &&
-          OptionsService.getBool('show-mail-opt-in') && {
-            deliveryAddress: completedFlow.data.billingAddress,
-          }),
-      });
+      contact = await ContactsService.createContact(
+        partialContact,
+        {
+          newsletterStatus: OptionsService.getText('newsletter-default-status'),
+          ...(completedFlow?.data.billingAddress &&
+            OptionsService.getBool('show-mail-opt-in') && {
+              deliveryAddress: completedFlow.data.billingAddress,
+            }),
+        },
+        signupFlow.origin
+      );
     }
 
     if (completedFlow) {
