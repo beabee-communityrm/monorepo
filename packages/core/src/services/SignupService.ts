@@ -255,14 +255,15 @@ class SignupService {
       await ContactsService.updateContact(contact, partialContact);
     } else {
       contact = await ContactsService.createContact(
-        { ...partialContact, origin: signupFlow.origin },
+        partialContact,
         {
           newsletterStatus: OptionsService.getText('newsletter-default-status'),
           ...(completedFlow?.data.billingAddress &&
             OptionsService.getBool('show-mail-opt-in') && {
               deliveryAddress: completedFlow.data.billingAddress,
             }),
-        }
+        },
+        signupFlow.origin
       );
     }
 

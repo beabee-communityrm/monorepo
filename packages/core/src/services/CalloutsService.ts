@@ -337,14 +337,15 @@ class CalloutsService {
         );
 
         // campaign and referrer needed?
-        contact = await ContactsService.createContact({
-          ...guest,
-          origin: {
+        contact = await ContactsService.createContact(
+          guest,
+          {},
+          {
             source: 'callout',
             medium: '',
             campaign: callout.slug,
-          },
-        });
+          }
+        );
       }
 
       try {
