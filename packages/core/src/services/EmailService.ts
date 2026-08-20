@@ -1,4 +1,5 @@
 import {
+  ActivityEventType,
   ApiHealthStatus,
   EmailTemplateType,
   type GetEmailTemplateInfoData,
@@ -35,6 +36,7 @@ import {
   SMTPProvider,
   SendGridProvider,
 } from '#providers/email/index';
+import ActivityService from '#services/ActivityService';
 import OptionsService from '#services/OptionsService';
 import { formatEmailBody } from '#templates/email';
 import {
@@ -133,6 +135,17 @@ class EmailService {
     log.info('Sending email ' + email.id, { recipients });
     try {
       await this.provider.sendEmail(email, recipients, opts);
+
+      // Log email sent event for each recipient
+      await Promise.all(
+        recipients.map((recipient) =>
+          ActivityService.addEvent({
+            targetId: recipient.to.email,
+            eventType: ActivityEventType.EmailSent,
+            metadata: { email: email.templateId ?? email.id },
+          })
+        )
+      );
     } catch (error) {
       log.error('Unable to send email ' + email.id, error);
     }

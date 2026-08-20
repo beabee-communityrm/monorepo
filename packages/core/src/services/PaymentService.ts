@@ -1,4 +1,5 @@
 import {
+  ActivityEventType,
   ApiHealthStatus,
   ContributionPeriod,
   MembershipStatus,
@@ -16,6 +17,7 @@ import {
   PaymentProvider,
   StripeProvider,
 } from '#providers/payment/index';
+import ActivityService from '#services/ActivityService';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
@@ -147,6 +149,12 @@ class PaymentService {
 
     if (flow.form.action === 'start-contribution') {
       await this.handlePostContributionUpdate(contact);
+
+      await ActivityService.addEvent({
+        targetId: contact.id,
+        eventType: ActivityEventType.ContactContributionStarted,
+        metadata: null,
+      });
     }
 
     return ret;
@@ -237,6 +245,11 @@ class PaymentService {
       { contactId: contact.id },
       { cancelledAt: new Date() }
     );
+    await ActivityService.addEvent({
+      targetId: contact.id,
+      eventType: ActivityEventType.PaymentCancelled,
+      metadata: null,
+    });
   }
 
   async getPayments(contact: Contact): Promise<Payment[]> {
