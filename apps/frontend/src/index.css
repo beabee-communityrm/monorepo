@@ -10,6 +10,23 @@ button:not(:disabled) {
   cursor: pointer;
 }
 
+/*
+ * Page-level typography for Nuxt UI pages. Also applied
+ * to `UModal` content (see `modal.slots.content` in nuxt-ui.config.ts),
+ * since a modal's teleported DOM otherwise falls outside `.nuxt-page`.
+ */
+.nuxt-page {
+  @apply text-default;
+
+  p {
+    @apply text-sm;
+  }
+
+  h2 {
+    @apply text-highlighted text-base font-semibold;
+  }
+}
+
 /* Apply link styles to i18n markdown text */
 .content-i18n {
   a {

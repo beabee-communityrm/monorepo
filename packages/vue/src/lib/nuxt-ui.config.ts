@@ -11,6 +11,10 @@ export const nuxtUiConfig: NuxtUIOptions = {
       neutral: 'gray',
     },
     navigationMenu: {
+      slots: {
+        link: 'py-2.5!',
+        linkLeadingIcon: 'size-4.5!',
+      },
       variants: {
         active: {
           false: {
@@ -18,6 +22,49 @@ export const nuxtUiConfig: NuxtUIOptions = {
           },
         },
       },
+    },
+    formField: {
+      variants: {
+        required: {
+          true: {
+            // Colours the required-field `*` primary.
+            label: 'after:text-primary!',
+          },
+        },
+      },
+    },
+    input: {
+      slots: {
+        base: 'py-2.5!',
+      },
+    },
+    modal: {
+      slots: {
+        // `nuxt-page` applies the page-level typography rules (index.css)
+        // to modal content, since it's teleported outside `.nuxt-page`.
+        // Nuxt UI's divide-y also borders every child except the last
+        // (header and body both get a bottom border), which draws an
+        // unwanted line between the body and footer. Cancel it and restore
+        // just the header/body divider explicitly.
+        content: 'nuxt-page divide-y-0',
+        header: 'border-b border-default',
+      },
+    },
+    button: {
+      slots: {
+        // Nuxt UI's own default omits justify-center, so content packs to
+        // the left on stretched (block/w-full/flex-1) buttons.
+        base: 'cursor-pointer justify-center',
+      },
+      compoundVariants: [
+        {
+          square: false,
+          // Exclude 'link' — it's styled as inline text, not a boxed button,
+          // so it shouldn't get the same vertical padding as the rest.
+          variant: ['solid', 'outline', 'soft', 'subtle', 'ghost'],
+          class: 'py-2.5!',
+        },
+      ],
     },
   },
 };

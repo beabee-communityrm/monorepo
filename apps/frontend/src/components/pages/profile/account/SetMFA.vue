@@ -1,224 +1,207 @@
 <!--
   # SetMFA
-  This component is used to set up MFA for a contact.
-  It uses a slider to guide the user through the process.
-
-  Keyboard navigation is disabled for the slider because this is a complex
-  multi-step form where navigation should be controlled by the validation
-  logic and custom navigation buttons.
+  This component is used to set up MFA for a contact, via a two-step
+  enable-MFA modal (scan QR code, then verify the code) and a separate
+  disable-MFA modal.
 
   ## Props
   - `contactId` (string): The id of the contact to set up MFA for.
 
   ## Possible improvements
   - Add support for other MFA types (e.g. SMS)
-  - Transform this component into a general useable wizard component
 
 -->
 
 <template>
-  <AppHeading class="mt-6">
-    {{ t('accountPage.mfa.title') }}
-  </AppHeading>
-
-  <AppButton
-    v-if="isEnabled"
-    variant="primaryOutlined"
-    :icon="faMobileAlt"
-    @click="showDisableConfirmModal = true"
+  <AppSectionCard
+    icon="i-lucide-shield-check"
+    :title="t('accountPage.mfa.title-nuxt')"
+    :description="t('accountPage.mfa.description')"
   >
-    {{ t(`actions.disable`) }}
-  </AppButton>
+    <div class="flex items-start justify-between gap-4">
+      <div class="space-y-1">
+        <p class="font-medium">
+          {{
+            isEnabled
+              ? t('accountPage.mfa.statusEnabled.title')
+              : t('accountPage.mfa.statusDisabled.title')
+          }}
+        </p>
+        <p class="text-muted">
+          {{
+            isEnabled
+              ? t('accountPage.mfa.statusEnabled.description')
+              : t('accountPage.mfa.statusDisabled.description')
+          }}
+        </p>
+      </div>
+      <USwitch
+        :model-value="isEnabled"
+        :aria-label="t('accountPage.mfa.title-nuxt')"
+        @update:model-value="onSwitchToggle"
+      />
+    </div>
+  </AppSectionCard>
 
-  <AppButton
-    v-else
-    variant="primaryOutlined"
-    :icon="faMobileAlt"
-    @click="showMFASettingsModal = !showMFASettingsModal"
+  <UModal
+    :open="showDisableModal"
+    :ui="{ header: 'min-h-[3rem]', close: 'top-2' }"
+    @update:open="(open: boolean) => !open && closeDisableModal()"
+    @after:leave="onDisableModalAfterLeave"
   >
-    {{ t(`actions.enable`) }}
-  </AppButton>
+    <template #body>
+      <div class="flex flex-col gap-6">
+        <div class="space-y-2">
+          <h2>
+            {{ t('accountPage.mfa.confirmDelete.title-nuxt') }}
+          </h2>
+          <p class="text-muted">
+            {{ t('accountPage.mfa.confirmDelete.descDetail') }}
+          </p>
+        </div>
+        <UFormField
+          :label="t('accountPage.mfa.confirmDelete.descToken-nuxt')"
+          :error="
+            disableError ? t('accountPage.mfa.result.invalidCode') : undefined
+          "
+        >
+          <AppCodeInput
+            v-model="disableToken"
+            :error="disableError"
+            class="justify-start"
+            autofocus
+          />
+        </UFormField>
 
-  <AppConfirmDialog
-    :open="showDisableConfirmModal"
-    :title="t('accountPage.mfa.confirmDelete.title')"
-    :cancel="t('actions.noBack')"
-    :confirm="t('actions.yesDisable')"
-    :disable-confirm="!userTokenInputValid"
-    variant="danger"
-    @close="closeDisableConfirmModal"
-    @confirm="disableMfaAndNotify"
+        <AppModalActions
+          :cancel-label="t('accountPage.mfa.confirmDelete.keepEnabled')"
+          :confirm-label="t('accountPage.mfa.confirmDelete.remove')"
+          confirm-color="error"
+          :confirm-disabled="!isCodeComplete(disableToken)"
+          :confirm-loading="disabling"
+          @cancel="closeDisableModal"
+          @confirm="handleDisableClick"
+        />
+      </div>
+    </template>
+  </UModal>
+
+  <UModal
+    :open="showEnableModal"
+    :title="t('accountPage.mfa.modalTitle-nuxt')"
+    :description="
+      t('accountPage.mfa.stepIndicator', {
+        step: enableStep === 'scan' ? 1 : 2,
+        total: 2,
+      })
+    "
+    @update:open="(open: boolean) => !open && closeEnableModal()"
+    @after:leave="onEnableModalAfterLeave"
   >
-    <p class="mb-3">{{ t('accountPage.mfa.confirmDelete.desc') }}</p>
-    <p class="mb-5">{{ t('accountPage.mfa.confirmDelete.descToken') }}</p>
-    <AppInput
-      v-model="userToken"
-      type="text"
-      :label="t(`accountPage.mfa.codeInput.label`)"
-      name="verifyCode"
-      required
-      min="6"
-      max="6"
-      @keyup.enter="disableMfaAndNotify()"
-      @update:validation="onUserTokenInputValidationChanged"
-    />
+    <template #body>
+      <div class="flex flex-col gap-6">
+        <div class="flex gap-1">
+          <div class="bg-primary h-1 flex-1 rounded-full" />
+          <div
+            class="h-1 flex-1 rounded-full"
+            :class="enableStep === 'verify' ? 'bg-primary' : 'bg-elevated'"
+          />
+        </div>
 
-    <AppNotification
-      v-if="disableMfaValidated && !userTokenValid"
-      class="my-4"
-      variant="error"
-      :title="t('accountPage.mfa.result.invalidCode')"
-    />
-  </AppConfirmDialog>
-
-  <AppModal
-    :open="showMFASettingsModal"
-    :title="t(`accountPage.mfa.modalTitle`)"
-    class="w-full"
-    @close="onCloseMFAModal"
-  >
-    <AppSlider
-      ref="appSliderCo"
-      :steps="stepsInOrder"
-      disable-keyboard-navigation
-      @slide="onSlideChange"
-    >
-      <template #slides>
-        <!-- QR code and secret slide -->
-        <AppSlide>
-          <div class="whitespace-break-spaces">
-            <p class="text-center">
-              {{ t(`accountPage.mfa.scan.desc`) }}
+        <div class="flex flex-col items-center gap-6 text-center">
+          <div class="space-y-1">
+            <h3 id="mfa-step-title" class="font-medium">
+              {{ stepContent[enableStep].title }}
+            </h3>
+            <p id="mfa-step-desc" class="text-muted">
+              {{ stepContent[enableStep].desc }}
             </p>
-            <AppQRCode v-if="totpUrl" :qr-data="totpUrl" />
-            <p class="text-center">
-              {{ t(`accountPage.mfa.secretInput.desc`) }}
-            </p>
-            <div class="p-4">
-              <AppInput
-                readonly
-                type="text"
-                :value="totpSecret.base32"
-                :label="t(`accountPage.mfa.secretInput.label`)"
-              ></AppInput>
+          </div>
+
+          <!-- Scan QR code step -->
+          <div v-if="enableStep === 'scan'" class="flex w-full flex-col gap-6">
+            <div class="flex flex-col gap-4">
+              <div
+                v-if="totpUrl"
+                class="border-default mx-auto rounded-2xl border bg-white p-3 shadow-sm"
+              >
+                <div class="w-60">
+                  <AppQRCode :qr-data="totpUrl" />
+                </div>
+              </div>
+
+              <div>
+                <UButton
+                  variant="link"
+                  color="primary"
+                  size="xs"
+                  icon="i-lucide-key-round"
+                  @click="toggleSecret"
+                >
+                  {{
+                    showSecret
+                      ? t('accountPage.mfa.secretInput.toggleHide')
+                      : t('accountPage.mfa.secretInput.toggleShow')
+                  }}
+                </UButton>
+
+                <div v-if="showSecret" class="mt-2">
+                  <UFormField>
+                    <UInput
+                      :model-value="formattedTotpSecret"
+                      readonly
+                      class="w-full font-mono"
+                    >
+                      <template #trailing>
+                        <AppCopyIconButton :text="totpSecret.base32" />
+                      </template>
+                    </UInput>
+                  </UFormField>
+                </div>
+              </div>
             </div>
           </div>
-        </AppSlide>
-        <!-- User token verification slide -->
-        <AppSlide>
-          <div
-            class="flex h-full flex-col items-center justify-between whitespace-break-spaces"
-          >
-            <p class="text-center">
-              {{ t(`accountPage.mfa.enterCode.desc`) }}
-            </p>
-            <span class="flex h-full w-full flex-col justify-center px-4">
-              <AppInput
-                v-model="userToken"
-                type="text"
-                :label="t(`accountPage.mfa.codeInput.label`)"
-                name="verifyCode"
-                required
-                min="6"
-                max="6"
-                @keyup.enter="nextSlideIfValid()"
-                @update:validation="onUserTokenInputValidationChanged"
-              />
 
-              <AppNotification
-                :class="{
-                  'opacity-1': steps.enterCode.error,
-                  'opacity-0': !steps.enterCode.error,
-                }"
-                class="my-4"
-                variant="error"
-                :title="t('accountPage.mfa.result.invalidCode')"
-              />
-            </span>
-          </div>
-        </AppSlide>
-        <!-- Last result slide with save button -->
-        <AppSlide>
-          <div
-            class="flex h-full items-center justify-center text-center whitespace-break-spaces"
-          >
-            <span class="flex h-full w-full flex-col justify-center px-4">
-              <AppNotification
-                v-if="userTokenValid"
-                class="my-4"
-                variant="success"
-                :title="t('accountPage.mfa.result.successful')"
-              />
-              <AppNotification
-                v-else
-                class="my-4"
-                variant="error"
-                :title="t('accountPage.mfa.result.invalidCode')"
-              />
-            </span>
-          </div>
-        </AppSlide>
-      </template>
-
-      <template
-        #navigation="{
-          nextSlide,
-          prevSlide,
-          isFirstSlide,
-          isLastSlide,
-          activeSlide,
-        }"
-      >
-        <span class="mt-3 flex justify-between">
-          <!-- Back buttons -->
-          <section>
-            <AppButton
-              v-if="isFirstSlide"
-              variant="linkOutlined"
-              @click="closeMFAModal()"
-            >
-              {{ t(`actions.close`) }}
-            </AppButton>
-            <AppButton v-else variant="linkOutlined" @click="prevSlide()">
-              {{ t(`actions.back`) }}
-            </AppButton>
-          </section>
-
-          <!-- Next button variants -->
-          <section>
-            <!-- Last save button -->
-            <AppButton
-              v-if="isLastSlide"
-              ref="saveButton"
-              :disabled="!validationStepsDone"
-              variant="link"
-              @click="createMfaAndNotify()"
-            >
-              {{ t(`actions.save`) }}
-            </AppButton>
-
-            <!-- Verify token next button -->
-            <AppButton
-              v-else-if="
-                activeSlide === 1 &&
-                (!steps.enterCode.validated || steps.enterCode.error)
+          <!-- Verify code step -->
+          <div v-else class="flex w-full flex-col gap-6">
+            <UFormField
+              :error="
+                enableError
+                  ? t('accountPage.mfa.result.invalidCode')
+                  : undefined
               "
-              :disabled="!userTokenInputValid"
-              variant="link"
-              @click="nextSlideIfValid()"
             >
-              {{ t(`accountPage.mfa.validateButton.label`) }}
-            </AppButton>
+              <AppCodeInput
+                v-model="enableToken"
+                :error="enableError"
+                class="justify-center"
+                aria-labelledby="mfa-step-title"
+                aria-describedby="mfa-step-desc"
+                autofocus
+              />
+            </UFormField>
+          </div>
+        </div>
 
-            <!-- Default next button -->
-            <AppButton v-else variant="link" @click="nextSlide()">
-              {{ t(`actions.next`) }}
-            </AppButton>
-          </section>
-        </span>
-      </template>
-    </AppSlider>
-  </AppModal>
+        <AppModalActions
+          v-if="enableStep === 'scan'"
+          :cancel-label="t('actions.cancel')"
+          :confirm-label="t('actions.next')"
+          @cancel="closeEnableModal"
+          @confirm="enableStep = 'verify'"
+        />
+        <AppModalActions
+          v-else
+          :cancel-label="t('actions.back')"
+          :confirm-label="t('accountPage.mfa.validateButton.label-nuxt')"
+          :confirm-disabled="!isCodeComplete(enableToken)"
+          :confirm-loading="enabling"
+          @cancel="resetEnableState"
+          @confirm="handleEnableClick"
+        />
+      </div>
+    </template>
+  </UModal>
 </template>
 
 <script lang="ts" setup>
@@ -228,79 +211,66 @@ import {
   LOGIN_CODES,
 } from '@beabee/beabee-common';
 import { UnauthorizedError } from '@beabee/client';
-import type { AppSliderSlideEventDetails, AppStepperStep } from '@beabee/vue';
 import {
-  AppButton,
-  AppConfirmDialog,
-  AppHeading,
-  AppInput,
-  AppModal,
-  AppNotification,
+  AppCodeInput,
+  AppCopyIconButton,
+  AppModalActions,
   AppQRCode,
-  AppSlide,
-  AppSlider,
+  AppSectionCard,
   addNotification,
+  isCodeComplete,
 } from '@beabee/vue';
 
-import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { Secret, TOTP } from 'otpauth';
-import {
-  computed,
-  nextTick,
-  onBeforeMount,
-  reactive,
-  ref,
-  toRef,
-  watch,
-} from 'vue';
+import { computed, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { generalContent } from '#store/index';
-import type { SetMfaSteps } from '#type/set-mfa-steps';
 import type { SetMfaTotpIdentity } from '#type/set-mfa-totp-identity';
 import { client } from '#utils/api';
 
 const { t } = useI18n();
 
-/** Reference to slider component */
-const appSliderCo = ref<InstanceType<typeof AppSlider> | null>(null);
+/** Used to show/hide the enable-MFA modal */
+const showEnableModal = ref(false);
 
-/** Used to show/hide the modal */
-const showMFASettingsModal = ref(false);
-
-const showDisableConfirmModal = ref(false);
-
-/** Reference to the save button */
-const saveButton = ref<typeof AppButton | null>(null);
+/** Used to show/hide the disable-MFA modal */
+const showDisableModal = ref(false);
 
 /** Is multi factor authentication enabled? */
 const isEnabled = ref(false);
 
-/** Stepper steps */
-const steps = reactive<SetMfaSteps>({
-  qrCode: {
-    name: t(`accountPage.mfa.scan.title`),
-    validated: false,
-    error: false,
-  },
-  enterCode: {
-    name: t(`accountPage.mfa.enterCode.title`),
-    validated: false,
-    error: false,
-  },
-  result: {
-    name: t(`accountPage.mfa.result.title`),
-    validated: false,
-    error: false,
-  },
-});
+/** Which step of the enable-MFA modal is showing */
+const enableStep = ref<'scan' | 'verify'>('scan');
 
-/** Stepper steps as array */
-const stepsInOrder = ref<AppStepperStep[]>([
-  steps.qrCode,
-  steps.enterCode,
-  steps.result,
-]);
+/** Title and description shown above each enable-MFA step's content */
+const stepContent = computed(() => ({
+  scan: {
+    title: t('accountPage.mfa.scan.title-nuxt'),
+    desc: t('accountPage.mfa.scan.desc-nuxt'),
+  },
+  verify: {
+    title: t('accountPage.mfa.enterCode.title-nuxt'),
+    desc: t('accountPage.mfa.enterCode.desc-nuxt'),
+  },
+}));
+
+/** Whether the manual-entry secret code is expanded */
+const showSecret = ref(false);
+
+/** Toggle the manual-entry secret code's visibility */
+const toggleSecret = () => {
+  showSecret.value = !showSecret.value;
+};
+
+/** Token entered to verify totp when enabling MFA, one digit per box */
+const enableToken = ref<(number | undefined)[]>([]);
+
+/** Loading state while confirming the enable-2FA code */
+const enabling = ref(false);
+
+/** Shown when the server rejects the entered enable token */
+const enableError = ref(false);
 
 const props = defineProps<{
   contactId: string;
@@ -318,58 +288,64 @@ const totpIdentity = ref<SetMfaTotpIdentity>({
 /** Secret used to generate totp */
 const totpSecret = ref(new Secret());
 
-/** User token used to verify totp  */
-const userToken = ref('');
+/** Secret, displayed in groups of 4 characters for readability */
+const formattedTotpSecret = computed(() =>
+  totpSecret.value.base32.match(/.{1,4}/g)?.join('-')
+);
 
-/** Is the user token valid? */
-const userTokenValid = ref(false);
+/** Token entered to verify totp when disabling MFA, one digit per box */
+const disableToken = ref<(number | undefined)[]>([]);
 
-/** Is the user token input valid? */
-const userTokenInputValid = ref(false);
+/** Shown when the server rejects the entered disable token */
+const disableError = ref(false);
 
-const disableMfaValidated = ref(false);
+/** Loading state while confirming the disable-2FA code */
+const disabling = ref(false);
 
-/** TOTP instance */
-let totp: TOTP | null = null;
-
-/** Called when the modal is closed */
-const onCloseMFAModal = () => {
-  // If the user closes the modal on the last slide, save the MFA anyway
-  if (
-    appSliderCo.value &&
-    appSliderCo.value.activeSlide === appSliderCo.value.slideCount - 1
-  ) {
-    return createMfaAndNotify();
+/** Called when the status switch is toggled by the user */
+const onSwitchToggle = () => {
+  if (isEnabled.value) {
+    showDisableModal.value = true;
+  } else {
+    showEnableModal.value = true;
   }
-
-  closeMFAModal();
-  resetState();
 };
 
-/** Called when the disable confirm modal is closed */
-const closeDisableConfirmModal = () => {
-  showDisableConfirmModal.value = false;
-  resetState();
+/** Called when the enable-MFA modal is closed */
+const closeEnableModal = () => {
+  showEnableModal.value = false;
 };
 
-/** Close the modal */
-const closeMFAModal = () => {
-  showMFASettingsModal.value = false;
+/** Called after the enable-MFA modal's close transition finishes */
+const onEnableModalAfterLeave = () => {
+  blurActiveElement();
+  resetEnableState();
+};
+
+/** Called when the disable-MFA modal is closed */
+const closeDisableModal = () => {
+  showDisableModal.value = false;
+};
+
+/** Called after the disable-MFA modal's close transition finishes */
+const onDisableModalAfterLeave = () => {
+  blurActiveElement();
+  resetDisableState();
 };
 
 /**
- * Create MFA for the contact
- * @returns Was creating MFA successful?
+ * Enable MFA for the contact
+ * @returns Was enabling MFA successful?
  */
-const createMfa = async () => {
+const enableMfa = async () => {
   try {
     await client.contact.mfa.create(props.contactId, {
       secret: totpSecret.value.base32,
-      token: userToken.value,
+      token: enableToken.value.join(''),
       type: CONTACT_MFA_TYPE.TOTP,
     });
   } catch (error) {
-    onCreateError(error);
+    onEnableError(error);
     return false;
   }
   return true;
@@ -380,32 +356,28 @@ const createMfa = async () => {
  * @returns Was disabling MFA successful?
  */
 const disableMfa = async () => {
-  disableMfaValidated.value = true;
   try {
     await client.contact.mfa.delete(props.contactId, {
       type: CONTACT_MFA_TYPE.TOTP,
-      token: userToken.value,
+      token: disableToken.value.join(''),
     });
   } catch (error) {
-    onDeleteError(error);
+    onDisableError(error);
     return false;
   }
   isEnabled.value = false;
-  disableMfaValidated.value = false;
-  resetState();
   return true;
 };
 
-/** Save MFA on server and notify the user */
-const createMfaAndNotify = async () => {
-  const success = await createMfa();
+/** Enable MFA and notify the user */
+const enableMfaAndNotify = async () => {
+  const success = await enableMfa();
   if (!success) {
     return;
   }
 
   isEnabled.value = true;
-  closeMFAModal();
-  resetState();
+  closeEnableModal();
   addNotification({
     title: t('accountPage.mfa.enabledNotification'),
     variant: 'success',
@@ -419,7 +391,7 @@ const disableMfaAndNotify = async () => {
     return;
   }
 
-  closeDisableConfirmModal();
+  closeDisableModal();
 
   addNotification({
     title: t('accountPage.mfa.disabledNotification'),
@@ -427,164 +399,109 @@ const disableMfaAndNotify = async () => {
   });
 };
 
-/** Called when an error occurs while creating MFA */
-const onCreateError = (error: unknown) => {
+/**
+ * Reka UI's Dialog restores focus to whatever opened it (the status switch)
+ * once its close transition finishes, leaving it visibly focused. Blur it
+ * once that happens.
+ */
+const blurActiveElement = () => {
+  if (document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur();
+  }
+};
+
+/** Called when the disable confirm button is clicked */
+const handleDisableClick = async () => {
+  if (disabling.value) return;
+
+  disableError.value = false;
+  disabling.value = true;
+  try {
+    await disableMfaAndNotify();
+  } finally {
+    disabling.value = false;
+  }
+};
+
+/** Called when the verify step's Confirm button is clicked */
+const handleEnableClick = async () => {
+  if (enabling.value) return;
+
+  enableError.value = false;
+  enabling.value = true;
+  try {
+    await enableMfaAndNotify();
+  } finally {
+    enabling.value = false;
+  }
+};
+
+/** Called when an error occurs while enabling MFA */
+const onEnableError = (error: unknown) => {
   if (
     error instanceof UnauthorizedError &&
     error.code === LOGIN_CODES.INVALID_TOKEN
   ) {
-    // If server says the token is invalid, set the token as invalid and go to the previous slide
-    setValidationStates(false);
-    appSliderCo.value?.prevSlide();
+    // If server says the token is invalid, show an inline error and let the
+    // user retry on the same step
+    enableError.value = true;
     return;
   }
 
-  // Start from the beginning on an unknown error
-  resetState();
+  // Unexpected error: close the modal first, since it's teleported above
+  // the toast container and would otherwise hide the notification
+  closeEnableModal();
   addNotification({
-    title: t('accountPage.mfa.createUnknownErrorNotification'),
+    title: t('accountPage.mfa.createUnknownErrorNotification-nuxt'),
     variant: 'error',
   });
 };
 
-const onDeleteError = (error: unknown) => {
+/** Called when an error occurs while disabling MFA */
+const onDisableError = (error: unknown) => {
   if (
     error instanceof UnauthorizedError &&
     (error.code === LOGIN_CODES.INVALID_TOKEN ||
       error.code === LOGIN_CODES.MISSING_TOKEN)
   ) {
-    // If server says the token is invalid, set the token as invalid
-    setValidationStates(false);
+    // If server says the token is invalid, show an inline error
+    disableError.value = true;
     return;
   }
 
+  // Unexpected error: close the modal first, since it's teleported above
+  // the toast container and would otherwise hide the notification
+  closeDisableModal();
   addNotification({
-    title: t('accountPage.mfa.deleteUnknownErrorNotification'),
+    title: t('accountPage.mfa.deleteUnknownErrorNotification-nuxt'),
     variant: 'error',
   });
 };
 
-/** Called when the slider changes */
-const onSlideChange = (details: AppSliderSlideEventDetails) => {
-  // Reset state if the user goes back to the first slide
-  if (details.slideNumber === 0) {
-    resetState();
-  }
-
-  // Focus the save button on the last slide, to allow the user to save with enter
-  if (details.slideNumber === stepsInOrder.value.length - 1) {
-    nextTick(() => {
-      if (saveButton.value) {
-        saveButton.value.focus();
-      }
-    });
-  }
-
-  // Validate previous steps
-  validatePreviousSteps(details.slideNumber);
+/** Reset the enable-MFA modal back to its first step */
+const resetEnableState = () => {
+  enableStep.value = 'scan';
+  enableToken.value = [];
+  enableError.value = false;
+  showSecret.value = false;
 };
 
-/** Reset / init the state of the component */
-const resetState = () => {
-  appSliderCo.value?.toSlide(0);
-  stepsInOrder.value.forEach((step) => {
-    step.validated = false;
-    step.error = false;
-  });
-  userToken.value = '';
-  userTokenValid.value = false;
-  userTokenInputValid.value = false;
-};
-
-/** Validate all previous steps */
-const validatePreviousSteps = (slideNumber: number) => {
-  if (!stepsInOrder.value) return;
-  for (let i = 0; i < stepsInOrder.value.length; i++) {
-    const step = stepsInOrder.value[i];
-    step.validated = i < slideNumber;
-  }
+/** Reset the disable-MFA modal's form state */
+const resetDisableState = () => {
+  disableToken.value = [];
+  disableError.value = false;
 };
 
 /** Called when the totp identity changes */
 const onTotpIdentityChanged = (newValue: SetMfaTotpIdentity) => {
   totpSecret.value = new Secret();
-  totp = new TOTP({
+  const totp = new TOTP({
     issuer: newValue.issuer,
     label: newValue.label,
     secret: totpSecret.value,
   });
   totpUrl.value = totp.toString();
 };
-
-/**
- * Reset the user token validation state if the user token changes
- */
-const onUserTokenChanged = () => {
-  userTokenValid.value = false;
-  steps.enterCode.error = false;
-  steps.enterCode.validated = false;
-};
-
-/**
- * Called when the user token input validation changes. This is not the same as the token validation, this is just the validation of the input.
- * @param isValid Is the input valid?
- */
-const onUserTokenInputValidationChanged = (isValid: boolean) => {
-  userTokenInputValid.value = isValid;
-};
-
-/** Validate the **T**imed **O**ne **T**ime **P**assword token / user input code */
-const validateTotpToken = (window = 2) => {
-  if (!totp) {
-    throw new Error('totp is falsy!');
-  }
-
-  const delta = totp.validate({
-    token: userToken.value,
-    window,
-  });
-
-  userTokenValid.value = delta === 0;
-
-  return userTokenValid.value;
-};
-
-/**
- * Set the validation state of the slides
- * @param isValid Is the token valid?
- */
-const setValidationStates = (isValid: boolean) => {
-  userTokenValid.value = isValid;
-
-  steps.enterCode.error = !isValid;
-  steps.enterCode.validated = isValid;
-
-  if (isValid) {
-    steps.result.error = !isValid;
-    steps.result.validated = isValid;
-  }
-
-  return isValid;
-};
-
-/** Validate token and go to next slide if valid */
-const nextSlideIfValid = () => {
-  const isValid = setValidationStates(validateTotpToken());
-
-  if (isValid) {
-    appSliderCo.value?.nextSlide();
-  }
-};
-
-/** Are all steps done with no errors? */
-const validationStepsDone = computed(() => {
-  return (
-    steps.qrCode.validated &&
-    !steps.qrCode.error &&
-    steps.enterCode.validated &&
-    !steps.enterCode.error
-  );
-});
 
 /** Fetch the contact and set the TOTP identity */
 watch(
@@ -608,9 +525,13 @@ watch(
 /** Watch TOTP identity changes */
 watch(totpIdentity, onTotpIdentityChanged, { deep: true });
 
-watch(userToken, onUserTokenChanged);
+/** Hide the invalid-code error as soon as the user edits the token again */
+watch(disableToken, () => {
+  disableError.value = false;
+});
 
-onBeforeMount(() => {
-  resetState();
+/** Hide the invalid-code error as soon as the user edits the token again */
+watch(enableToken, () => {
+  enableError.value = false;
 });
 </script>
