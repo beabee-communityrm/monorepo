@@ -37,7 +37,7 @@ import {
 } from '@beabee/beabee-common';
 import { TooManyRequestsError } from '@beabee/client';
 
-import { onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { type LocationQueryValue, useRoute, useRouter } from 'vue-router';
 
 import JoinFormStep1 from '#components/pages/join/JoinFormStep1.vue';
@@ -52,19 +52,19 @@ const router = useRouter();
 
 const stripeClientSecret = ref('');
 
-// UTM parameters parsed form URL
-const origin = ref<ContactOriginData>({
-  source: '',
-  medium: '',
-  campaign: '',
-});
-
 // Extract URL routes as strings from LocationQueryValue type provided by route.query
 function getUrlRouteAsString(
   value: LocationQueryValue | LocationQueryValue[] | undefined
 ): string {
   return (Array.isArray(value) ? value[0] : value) || '';
 }
+
+// UTM parameters parsed form URL
+const origin = computed<ContactOriginData>(() => ({
+  source: getUrlRouteAsString(route.query.utm_source),
+  medium: getUrlRouteAsString(route.query.utm_medium),
+  campaign: getUrlRouteAsString(route.query.utm_campaign),
+}));
 
 const joinContent = ref<ContentJoinData>({
   initialAmount: 5,
@@ -154,12 +154,6 @@ async function submitStep1() {
 
 onBeforeMount(async () => {
   stripeClientSecret.value = '';
-
-  origin.value = {
-    source: getUrlRouteAsString(route.query.utm_source),
-    medium: getUrlRouteAsString(route.query.utm_medium),
-    campaign: getUrlRouteAsString(route.query.utm_campaign),
-  };
 
   joinContent.value = await client.content.get('join');
 
