@@ -5,7 +5,7 @@ export class GetContactOriginDto {
   source!: string;
 
   @IsString()
-  referrer!: string;
+  medium!: string;
 
   @IsString()
   campaign!: string;

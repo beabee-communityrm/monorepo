@@ -190,7 +190,7 @@ meta:
           />
           <AppInfoListItem
             :name="t('contactOverview.origin.referrer')"
-            :value="contact.origin.referrer"
+            :value="contact.origin.medium"
           />
         </AppInfoList>
       </section>

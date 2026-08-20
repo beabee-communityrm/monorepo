@@ -341,7 +341,7 @@ class CalloutsService {
           ...guest,
           origin: {
             source: 'callout',
-            referrer: '',
+            medium: '',
             campaign: callout.slug,
           },
         });

@@ -55,7 +55,7 @@ const stripeClientSecret = ref('');
 // UTM parameters parsed form URL
 const origin = ref<ContactOriginData>({
   source: '',
-  referrer: '',
+  medium: '',
   campaign: '',
 });
 
@@ -157,7 +157,7 @@ onBeforeMount(async () => {
 
   origin.value = {
     source: getUrlRouteAsString(route.query.utm_source),
-    referrer: getUrlRouteAsString(route.query.utm_medium),
+    medium: getUrlRouteAsString(route.query.utm_medium),
     campaign: getUrlRouteAsString(route.query.utm_campaign),
   };
 

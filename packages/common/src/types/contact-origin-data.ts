@@ -1,5 +1,5 @@
 export interface ContactOriginData {
   source: string;
-  referrer: string;
+  medium: string;
   campaign: string;
 }

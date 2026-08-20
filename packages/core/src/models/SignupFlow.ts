@@ -52,5 +52,5 @@ export class SignupFlow {
   processing!: boolean;
 
   @Column({ type: 'jsonb', nullable: true })
-  source!: ContactOriginData | null;
+  origin!: ContactOriginData | null;
 }

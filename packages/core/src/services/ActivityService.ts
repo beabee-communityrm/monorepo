@@ -50,7 +50,7 @@ class ActivityService {
     // If event not found, return empty strings
     return {
       source: event ? (event.metadata?.source ?? '') : '',
-      referrer: event ? (event.metadata?.referrer ?? '') : '',
+      medium: event ? (event.metadata?.medium ?? '') : '',
       campaign: event ? (event.metadata?.campaign ?? '') : '',
     };
   }
