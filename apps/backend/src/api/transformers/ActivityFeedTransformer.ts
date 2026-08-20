@@ -41,13 +41,13 @@ class ActivityFeedTransformer extends BaseTransformer<
   }
 
   /**
-   * Fetch the activity feed events for a contact
+   * Fetch activity feed events for a target
    * @param auth Authentication info
-   * @param contactId Contact whose events are requested
+   * @param targetId Target whose events are requested
    */
-  async fetchByContactId(
+  async fetchByTargetId(
     auth: AuthInfo,
-    contactId: string,
+    targetId: string,
     query: ListActivityEventsDto
   ): Promise<PaginatedDto<GetActivityEventDto>> {
     return await this.fetch(auth, {
@@ -58,7 +58,7 @@ class ActivityFeedTransformer extends BaseTransformer<
         condition: 'AND',
         rules: [
           ...(query.rules ? [query.rules] : []),
-          { field: 'targetId', operator: 'equal', value: [contactId] },
+          { field: 'targetId', operator: 'equal', value: [targetId] },
         ],
       },
     });

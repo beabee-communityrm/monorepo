@@ -35,6 +35,10 @@ import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
 import { RateLimit } from '#api/decorators/RateLimit';
 import { ListTagsDto } from '#api/dto';
+import {
+  GetActivityEventDto,
+  ListActivityEventsDto,
+} from '#api/dto/ActivityFeedDto';
 import { GetExportQuery } from '#api/dto/BaseDto';
 import {
   CreateCalloutDto,
@@ -62,6 +66,7 @@ import {
 } from '#api/dto/CalloutReviewerDto';
 import { CreateCalloutTagDto, GetCalloutTagDto } from '#api/dto/CalloutTagDto';
 import { PaginatedDto } from '#api/dto/PaginatedDto';
+import ActivityFeedTransformer from '#api/transformers/ActivityFeedTransformer';
 import CalloutResponseExporter from '#api/transformers/CalloutResponseExporter';
 import CalloutResponseMapTransformer from '#api/transformers/CalloutResponseMapTransformer';
 import CalloutResponseSegmentTransformer from '#api/transformers/CalloutResponseSegmentTransformer';
@@ -130,6 +135,15 @@ export class CalloutController {
       ...query,
       showHiddenForAll: true,
     });
+  }
+
+  @Get('/:id/activity')
+  async getCalloutActivity(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
+    @QueryParams() query: ListActivityEventsDto
+  ): Promise<PaginatedDto<GetActivityEventDto> | undefined> {
+    return await ActivityFeedTransformer.fetchByTargetId(auth, id, query);
   }
 
   @Patch('/:id')

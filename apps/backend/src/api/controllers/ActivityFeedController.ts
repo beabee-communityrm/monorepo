@@ -19,21 +19,4 @@ import ActivityFeedTransformer from '#api/transformers/ActivityFeedTransformer';
 
 @JsonController('/activity')
 @Authorized()
-export class ActivityFeedController {
-  /**
-   * List the activity events targeted at a contact, accessible to admins and
-   * the contact themselves
-   */
-  @Get('/:id')
-  async getContactEvents(
-    @CurrentAuth({ required: true }) auth: AuthInfo,
-    @TargetUser() target: Contact,
-    @QueryParams() query: ListActivityEventsDto
-  ): Promise<PaginatedDto<GetActivityEventDto>> {
-    return await ActivityFeedTransformer.fetchByContactId(
-      auth,
-      target.id,
-      query
-    );
-  }
-}
+export class ActivityFeedController {}
