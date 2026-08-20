@@ -27,7 +27,7 @@ interface SignupData {
   loginUrl: string;
   setPasswordUrl: string;
   confirmUrl: string;
-  source: ContactOriginData | null;
+  origin: ContactOriginData | null;
 }
 
 /**
