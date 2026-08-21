@@ -1,4 +1,3 @@
-import { Contact } from '@beabee/core/models';
 import { AuthInfo } from '@beabee/core/type';
 
 import {
@@ -9,7 +8,6 @@ import {
 } from 'routing-controllers';
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
-import { TargetUser } from '#api/decorators/TargetUser';
 import {
   GetActivityEventDto,
   ListActivityEventsDto,
@@ -19,4 +17,15 @@ import ActivityFeedTransformer from '#api/transformers/ActivityFeedTransformer';
 
 @JsonController('/activity')
 @Authorized()
-export class ActivityFeedController {}
+export class ActivityFeedController {
+  /**
+   * Get all activity feed events
+   */
+  @Get('/')
+  async getEvents(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @QueryParams() query: ListActivityEventsDto
+  ): Promise<PaginatedDto<GetActivityEventDto>> {
+    return await ActivityFeedTransformer.fetch(auth, query);
+  }
+}
