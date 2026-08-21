@@ -105,6 +105,14 @@ class NewsletterService {
   ): Promise<void> {
     const nlUpdate = await contactToNlUpdate(contact, updates, opts);
     if (!nlUpdate) {
+      // In case something's misconfigured (e.g. a stale newsletterStatus),
+      // don't silently report success for a group change that was requested
+      // but never actually happened.
+      if (updates?.newsletterGroups) {
+        throw new Error(
+          `Newsletter groups could not be updated for contact ${contact.id}: the update was skipped`
+        );
+      }
       log.info('Ignoring contact update for ' + contact.id);
       return;
     }
