@@ -15,6 +15,7 @@ import { Callout, Contact, ContactProfile, Content } from '#models/index';
 import {
   MailchimpProvider,
   NoneProvider,
+  SalesforceProvider,
   TestProvider,
 } from '#providers/newsletter/index';
 import {
@@ -58,6 +59,8 @@ function createProvider(): NewsletterProvider {
   switch (config.newsletter.provider) {
     case 'mailchimp':
       return new MailchimpProvider(config.newsletter.settings);
+    case 'salesforce':
+      return new SalesforceProvider(config.newsletter.settings);
     case 'test':
       return new TestProvider();
     default:

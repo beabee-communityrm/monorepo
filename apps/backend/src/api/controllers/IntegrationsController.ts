@@ -16,6 +16,7 @@ import {
   MailchimpNewsletterIntegrationDto,
   NewsletterIntegrationDto,
   NoneNewsletterIntegrationDto,
+  SalesforceNewsletterIntegrationDto,
   TestNewsletterIntegrationDto,
 } from '#api/dto/NewsletterIntegrationDto';
 
@@ -32,6 +33,8 @@ export class IntegrationsController {
     switch (info.provider) {
       case 'mailchimp':
         return plainToInstance(MailchimpNewsletterIntegrationDto, info);
+      case 'salesforce':
+        return plainToInstance(SalesforceNewsletterIntegrationDto, info);
       case 'test':
         return plainToInstance(TestNewsletterIntegrationDto, info);
       default:
