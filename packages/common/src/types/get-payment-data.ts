@@ -1,4 +1,9 @@
-import type { PaymentStatus, PaymentType } from '../data/index.js';
+import type {
+  PaymentStatus,
+  PaymentType,
+  RefundReason,
+  RefundStatus,
+} from '../data/index.js';
 
 export interface GetPaymentData {
   id: string;
@@ -6,4 +11,6 @@ export interface GetPaymentData {
   amount: number;
   status: PaymentStatus;
   type: PaymentType;
+  refundStatus: RefundStatus;
+  refundReason: RefundReason;
 }

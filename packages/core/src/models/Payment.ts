@@ -1,4 +1,9 @@
-import { PaymentStatus, PaymentType } from '@beabee/beabee-common';
+import {
+  PaymentStatus,
+  PaymentType,
+  RefundReason,
+  RefundStatus,
+} from '@beabee/beabee-common';
 
 import {
   Column,
@@ -38,6 +43,12 @@ export class Payment {
 
   @Column({ type: 'real', nullable: true })
   amountRefunded!: number | null;
+
+  @Column({ nullable: true })
+  refundStatus!: RefundStatus;
+
+  @Column({ nullable: true })
+  refundReason!: RefundReason;
 
   @Column()
   chargeDate!: Date;

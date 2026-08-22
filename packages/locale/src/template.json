@@ -1055,6 +1055,9 @@
     "perOneTime": "",
     "perOneTimeText": "",
     "perYear": "",
+    "refundReason": "",
+    "refundStatus": "",
+    "refundedLabel": "",
     "role": {
       "admin": "",
       "member": "",
