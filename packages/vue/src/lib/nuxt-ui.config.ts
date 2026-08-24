@@ -23,12 +23,6 @@ export const nuxtUiConfig: NuxtUIOptions = {
         },
       },
     },
-    tabs: {
-      slots: {
-        // Nuxt UI's own default omits cursor-pointer on the trigger buttons.
-        trigger: 'cursor-pointer',
-      },
-    },
     navigationMenu: {
       slots: {
         link: 'py-2.5!',
