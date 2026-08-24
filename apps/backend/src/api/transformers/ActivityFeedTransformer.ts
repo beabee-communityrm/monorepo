@@ -46,9 +46,12 @@ class ActivityFeedTransformer extends BaseTransformer<
     };
   }
 
-  // Non-admins only see their own events
+  // Non-admins only see events about them or caused by them
   protected async getNonAdminAuthRules(): Promise<Rule[]> {
-    return [{ field: 'targetId', operator: 'equal', value: ['me'] }];
+    return [
+      { field: 'targetId', operator: 'equal', value: ['me'] },
+      { field: 'actorId', operator: 'equal', value: ['me'] },
+    ];
   }
 
   /**

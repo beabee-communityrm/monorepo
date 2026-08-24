@@ -1,4 +1,8 @@
-import { ActivityActorType, ActivityEventType } from '@beabee/beabee-common';
+import {
+  ActivityActorType,
+  ActivityEventType,
+  ContactOriginData,
+} from '@beabee/beabee-common';
 
 import {
   IsDate,
@@ -34,7 +38,7 @@ export class GetActivityEventDto {
 
   @IsOptional()
   @IsObject()
-  metadata!: Record<string, string> | null;
+  metadata!: ContactOriginData | Record<string, string> | null;
 }
 
 export class ListActivityEventsDto extends GetPaginatedQuery {
