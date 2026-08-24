@@ -15,6 +15,10 @@ export class GetActivityEventDto {
   @IsString()
   id!: string;
 
+  @IsOptional()
+  @IsString()
+  targetId!: string | null;
+
   @IsDate()
   createdAt!: Date;
 

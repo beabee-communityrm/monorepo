@@ -28,6 +28,7 @@ class ActivityFeedTransformer extends BaseTransformer<
   convert(event: ActivityEvent): GetActivityEventDto {
     return {
       id: event.id,
+      targetId: event.targetId,
       createdAt: event.createdAt,
       eventType: event.eventType,
       actorType: event.actorType,
