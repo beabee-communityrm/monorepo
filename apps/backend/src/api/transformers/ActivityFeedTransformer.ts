@@ -1,5 +1,6 @@
 import {
   ActivityFilterName,
+  PaginatedQuery,
   Rule,
   activityFilters,
 } from '@beabee/beabee-common';
@@ -35,6 +36,15 @@ class ActivityFeedTransformer extends BaseTransformer<
     };
   }
 
+  // Sort by created at unless asked otherwise
+  protected transformQuery<T extends PaginatedQuery>(query: T): T {
+    return {
+      ...query,
+      sort: query.sort || 'createdAt',
+      order: query.order || 'DESC',
+    };
+  }
+
   // Non-admins only see their own events
   protected async getNonAdminAuthRules(): Promise<Rule[]> {
     return [{ field: 'targetId', operator: 'equal', value: ['me'] }];
@@ -52,8 +62,6 @@ class ActivityFeedTransformer extends BaseTransformer<
   ): Promise<PaginatedDto<GetActivityEventDto>> {
     return await this.fetch(auth, {
       ...query,
-      sort: query.sort || 'createdAt',
-      order: query.order || 'DESC',
       rules: {
         condition: 'AND',
         rules: [
