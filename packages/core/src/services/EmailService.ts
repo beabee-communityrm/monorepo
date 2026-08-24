@@ -135,20 +135,23 @@ class EmailService {
     log.info('Sending email ' + email.id, { recipients });
     try {
       await this.provider.sendEmail(email, recipients, opts);
-
-      // Log email sent event for each recipient
-      await Promise.all(
-        recipients.map((recipient) =>
-          ActivityService.addEvent({
-            targetId: recipient.to.email,
-            eventType: ActivityEventType.EmailSent,
-            metadata: { email: email.templateId ?? email.id },
-          })
-        )
-      );
     } catch (error) {
       log.error('Unable to send email ' + email.id, error);
+      return;
     }
+
+    await Promise.all(
+      recipients.map((recipient) =>
+        ActivityService.addEvent({
+          targetId: null,
+          eventType: ActivityEventType.EmailSent,
+          metadata: {
+            email: email.templateId ?? email.id,
+            recipient: recipient.to.email,
+          },
+        })
+      )
+    );
   }
 
   /**
