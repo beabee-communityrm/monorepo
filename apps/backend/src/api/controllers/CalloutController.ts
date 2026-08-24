@@ -137,6 +137,7 @@ export class CalloutController {
     });
   }
 
+  @Authorized('admin')
   @Get('/:id/activity')
   async getCalloutActivity(
     @CurrentAuth({ required: true }) auth: AuthInfo,
