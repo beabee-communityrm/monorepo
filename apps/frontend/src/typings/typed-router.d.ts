@@ -426,6 +426,27 @@ declare module 'vue-router/auto-routes' {
       { id: ParamValue<false> },
       | never
     >,
+    '/dev-callout-about-card': RouteRecordInfo<
+      '/dev-callout-about-card',
+      '/dev-callout-about-card',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/dev-callout-map-preview': RouteRecordInfo<
+      '/dev-callout-map-preview',
+      '/dev-callout-map-preview',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/dev-callout-response-card': RouteRecordInfo<
+      '/dev-callout-response-card',
+      '/dev-callout-response-card',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     'join': RouteRecordInfo<
       'join',
       '/join',
@@ -873,6 +894,24 @@ declare module 'vue-router/auto-routes' {
     'src/pages/crowdnewsroom/[id]/thanks.vue': {
       routes:
         | 'calloutThanks'
+      views:
+        | never
+    }
+    'src/pages/dev-callout-about-card.vue': {
+      routes:
+        | '/dev-callout-about-card'
+      views:
+        | never
+    }
+    'src/pages/dev-callout-map-preview.vue': {
+      routes:
+        | '/dev-callout-map-preview'
+      views:
+        | never
+    }
+    'src/pages/dev-callout-response-card.vue': {
+      routes:
+        | '/dev-callout-response-card'
       views:
         | never
     }
