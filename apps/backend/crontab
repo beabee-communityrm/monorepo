@@ -1,18 +1,26 @@
 # Add node to the PATH
 PATH=/usr/local/bin:/usr/bin:/bin
 
-# Spread the jobs out over a few minutes to avoid overloading the server
+# Every tenant's cron-app runs this same crontab, and each job spawns a full
+# backend-cli boot (~300Mi transient), so simultaneous jobs across co-located
+# tenants can stack into a node-level memory burst. Two mechanisms keep
+# spawns apart:
+#   1. Across tenants: every job sleeps a DETERMINISTIC per-pod offset
+#      (hash of the pod hostname % 300, stable between pod restarts).
+#   2. Within a tenant: job minutes form a 5-minute grid with no shared
+#      minutes, and every long-running job gets >=10 minutes before the next
+#      spawn. The shared offset (< 5 min) shifts the whole grid without
+#      reordering it.
 
-# Every 10 minutes
-*/10 * * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli health all --notify' > /proc/1/fd/1 2>&1
+# Health check every 15 minutes at :05/:20/:35/:50 (kept off the sync minutes)
+5-59/15 * * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $(($(cat /etc/hostname | cksum | cut -d" " -f1) \% 300)) && yarn backend-cli health all --notify' > /proc/1/fd/1 2>&1
 
 # Hourly cron jobs
-30 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service active-member-tag --since PT1H10M' > /proc/1/fd/1 2>&1
-35 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service reconcile --report --since PT1H10M --fix status groups' > /proc/1/fd/1 2>&1
-40 * * * *  su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 200)) && yarn backend-cli sync newsletter-service refresh-cached-groups' > /proc/1/fd/1 2>&1
+10 * * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $(($(cat /etc/hostname | cksum | cut -d" " -f1) \% 300)) && yarn backend-cli sync newsletter-service active-member-tag --since PT1H10M' > /proc/1/fd/1 2>&1
+25 * * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $(($(cat /etc/hostname | cksum | cut -d" " -f1) \% 300)) && yarn backend-cli sync newsletter-service reconcile --report --since PT1H10M --fix status groups' > /proc/1/fd/1 2>&1
+40 * * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $(($(cat /etc/hostname | cksum | cut -d" " -f1) \% 300)) && yarn backend-cli sync newsletter-service refresh-cached-groups' > /proc/1/fd/1 2>&1
 
 # Daily cron jobs
-0  1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli sync newsletter-service clear-pending-status' > /proc/1/fd/1 2>&1
-10 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli process gifts' > /proc/1/fd/1 2>&1
-15 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && yarn backend-cli database clean' > /proc/1/fd/1 2>&1
-20 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $((RANDOM \% 300)) && node ./dist/tools/process-segments.js' > /proc/1/fd/1 2>&1
+0  1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $(($(cat /etc/hostname | cksum | cut -d" " -f1) \% 300)) && yarn backend-cli sync newsletter-service clear-pending-status' > /proc/1/fd/1 2>&1
+15 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $(($(cat /etc/hostname | cksum | cut -d" " -f1) \% 300)) && yarn backend-cli database clean' > /proc/1/fd/1 2>&1
+30 1 * * * su node -c 'export HOME=/home/node && cd /opt/apps/backend/ && sleep $(($(cat /etc/hostname | cksum | cut -d" " -f1) \% 300)) && node ./dist/tools/process-segments.js' > /proc/1/fd/1 2>&1
