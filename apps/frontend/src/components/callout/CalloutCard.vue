@@ -1,6 +1,6 @@
 <template>
   <UCard
-    class="group relative flex flex-col overflow-hidden transition-shadow hover:ring-primary"
+    class="group hover:ring-primary relative flex flex-col overflow-hidden transition-shadow"
     :ui="{
       header: 'p-0 sm:p-0',
       body: 'flex flex-1 flex-col gap-3 p-4',

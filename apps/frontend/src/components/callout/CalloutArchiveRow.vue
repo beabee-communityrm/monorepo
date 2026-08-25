@@ -48,10 +48,7 @@
       {{ t('callouts.showAnswered') }}
     </UBadge>
 
-    <UIcon
-      name="i-lucide-chevron-right"
-      class="text-dimmed size-4 shrink-0"
-    />
+    <UIcon name="i-lucide-chevron-right" class="text-dimmed size-4 shrink-0" />
   </RouterLink>
 </template>
 
