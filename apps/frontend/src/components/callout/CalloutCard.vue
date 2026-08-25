@@ -1,6 +1,6 @@
 <template>
   <UCard
-    class="group relative flex flex-col overflow-hidden transition-shadow hover:shadow-md"
+    class="group relative flex flex-col overflow-hidden transition-shadow hover:ring-primary"
     :ui="{
       header: 'p-0 sm:p-0',
       body: 'flex flex-1 flex-col gap-3 p-4',
@@ -30,7 +30,7 @@
       :to="`/crowdnewsroom/${callout.slug}`"
       class="after:absolute after:inset-0 after:content-['']"
     >
-      <h3 class="group-hover:text-primary line-clamp-2 transition-colors">
+      <h3 class="line-clamp-2">
         {{ callout.title }}
       </h3>
     </RouterLink>

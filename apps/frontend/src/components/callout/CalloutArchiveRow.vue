@@ -4,9 +4,7 @@
     class="group hover:bg-elevated flex items-center gap-4 p-3 transition-colors"
   >
     <div class="min-w-0 flex-1">
-      <p
-        class="text-highlighted group-hover:text-primary truncate font-medium transition-colors"
-      >
+      <p class="text-highlighted truncate font-medium">
         {{ callout.title }}
       </p>
       <div class="text-muted mt-0.5 flex flex-wrap items-center gap-3">
@@ -52,7 +50,7 @@
 
     <UIcon
       name="i-lucide-chevron-right"
-      class="text-dimmed group-hover:text-primary size-4 shrink-0 transition-colors"
+      class="text-dimmed size-4 shrink-0"
     />
   </RouterLink>
 </template>
