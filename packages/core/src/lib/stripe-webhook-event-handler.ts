@@ -1,3 +1,5 @@
+import { ActivityEventType } from '@beabee/beabee-common';
+
 import { add } from 'date-fns';
 import Stripe from 'stripe';
 
@@ -7,6 +9,7 @@ import config from '../config/config.js';
 import { getRepository } from '../database.js';
 import { log as mainLogger } from '../logging.js';
 import { ContactContribution, Payment } from '../models/index.js';
+import ActivityService from '../services/ActivityService.js';
 import ContactsService from '../services/ContactsService.js';
 import EmailService from '../services/EmailService.js';
 import GiftService from '../services/GiftService.js';
@@ -276,6 +279,12 @@ export class StripeWebhookEventHandler {
         { amount: invoice.total / 100 }
       );
     }
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.PaymentSuccessful,
+      targetId: contribution.contact.id,
+      metadata: null,
+    });
   }
 
   /**
@@ -307,6 +316,12 @@ export class StripeWebhookEventHandler {
           contribution.contact,
           { amount: invoice.total / 100 }
         );
+
+        await ActivityService.addEvent({
+          eventType: ActivityEventType.PaymentFailed,
+          targetId: contribution.contact.id,
+          metadata: null,
+        });
       }
     }
   }

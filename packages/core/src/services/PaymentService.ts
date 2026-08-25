@@ -245,11 +245,6 @@ class PaymentService {
       { contactId: contact.id },
       { cancelledAt: new Date() }
     );
-    await ActivityService.addEvent({
-      targetId: contact.id,
-      eventType: ActivityEventType.PaymentCancelled,
-      metadata: null,
-    });
   }
 
   async getPayments(contact: Contact): Promise<Payment[]> {

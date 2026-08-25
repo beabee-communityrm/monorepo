@@ -21,10 +21,14 @@ class ActivityService {
     event: Pick<ActivityEvent<T>, 'targetId' | 'eventType' | 'metadata'> &
       Partial<ActivityActor>
   ): Promise<void> {
-    await getRepository(ActivityEvent).insert({
-      ...actorContext.get(),
-      ...event,
-    });
+    try {
+      await getRepository(ActivityEvent).insert({
+        ...actorContext.get(),
+        ...event,
+      });
+    } catch (err) {
+      log.error(`Failed to log event ${event.eventType}`, err);
+    }
   }
 
   /**

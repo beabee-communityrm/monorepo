@@ -382,6 +382,12 @@ class ContactsService {
     log.info('Cancel contribution for ' + contact.id);
     await PaymentService.cancelContribution(contact);
 
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactContributionStopped,
+      targetId: contact.id,
+      metadata: null,
+    });
+
     await EmailService.sendTemplateToContact(email, contact);
     await EmailService.sendTemplateToAdmin('cancelled-member', {
       contact: contact,
