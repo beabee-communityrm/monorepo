@@ -17,8 +17,8 @@ class ActivityService {
    * Event actor type and ID are obtained from the current request
    * @param event event containing contact ID, event type and metadata (if any)
    */
-  async addEvent(
-    event: Pick<ActivityEvent, 'targetId' | 'eventType' | 'metadata'> &
+  async addEvent<T extends ActivityEventType>(
+    event: Pick<ActivityEvent<T>, 'targetId' | 'eventType' | 'metadata'> &
       Partial<ActivityActor>
   ): Promise<void> {
     await getRepository(ActivityEvent).insert({
@@ -50,7 +50,9 @@ class ActivityService {
    * @returns The contact's origin, or null if no creation event was recorded
    */
   async getContactOrigin(targetId: string): Promise<ContactOriginData | null> {
-    const event = await getRepository(ActivityEvent).findOne({
+    const event = await getRepository<
+      ActivityEvent<ActivityEventType.ContactCreated>
+    >(ActivityEvent).findOne({
       where: { targetId, eventType: ActivityEventType.ContactCreated },
     });
 
