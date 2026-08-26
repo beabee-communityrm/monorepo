@@ -438,6 +438,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Участвовать снова",
       "updateResponse": "Обновить ваш ответ"
     },
     "addAPoint": "Кликните, чтобы добавить отметку на карту",

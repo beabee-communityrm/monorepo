@@ -437,6 +437,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Opnieuw deelnemen",
       "updateResponse": "Je reactie bijwerken"
     },
     "addAPoint": "Klik op de kaart waar je een punt wilt toevoegen",

@@ -437,6 +437,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Erneut teilnehmen",
       "updateResponse": "Antwort bearbeiten"
     },
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",

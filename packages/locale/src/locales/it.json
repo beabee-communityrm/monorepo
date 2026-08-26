@@ -437,6 +437,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Partecipa di nuovo",
       "updateResponse": "Aggiorna la tua risposta"
     },
     "addAPoint": "Clicca sulla mappa dove vuoi aggiungere un punto",

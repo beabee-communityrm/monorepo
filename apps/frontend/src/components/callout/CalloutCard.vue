@@ -61,12 +61,13 @@
           {{ t('callout.youResponded') }}
         </div>
         <RouterLink
+          v-if="respondAgainKey"
           :to="`/crowdnewsroom/${callout.slug}/respond`"
           class="group/respond relative z-10 inline-flex items-center gap-1.5 self-start hover:underline"
         >
           <span class="size-3 shrink-0" />
           <span class="flex items-center gap-1">
-            {{ t('callout.actions.updateResponse') }}
+            {{ t(respondAgainKey) }}
             <UIcon
               name="i-lucide-chevron-right"
               class="size-4 transition-transform group-hover/respond:translate-x-0.5"
@@ -98,6 +99,12 @@ const { t } = useI18n();
 const imageUrl = computed(() =>
   props.callout.image ? resolveImageUrl(props.callout.image, 900) : noImage
 );
+
+const respondAgainKey = computed(() => {
+  if (props.callout.allowUpdate) return 'callout.actions.updateResponse';
+  if (props.callout.allowMultiple) return 'callout.actions.participateAgain';
+  return null;
+});
 
 const daysLeft = computed(() => {
   if (!props.callout.expires) return null;

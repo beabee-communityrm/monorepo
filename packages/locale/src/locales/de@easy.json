@@ -437,6 +437,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "",
       "updateResponse": ""
     },
     "addAPoint": "Hier kannst du einen Ort rein-schreiben.",

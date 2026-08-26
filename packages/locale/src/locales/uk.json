@@ -437,6 +437,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Взяти участь ще раз",
       "updateResponse": "Оновіть свою відповідь"
     },
     "addAPoint": "Натисніть на карту, де ви хочете додати точку",

@@ -436,6 +436,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Participate again",
       "updateResponse": "Update your response"
     },
     "addAPoint": "Click on the map where you want to add a point",
