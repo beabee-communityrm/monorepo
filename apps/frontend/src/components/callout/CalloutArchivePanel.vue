@@ -153,7 +153,7 @@ function clearArchiveSearch() {
   archiveSearch.value = '';
 }
 
-const archivePageSize = 1;
+const archivePageSize = 10;
 
 const archivedCallouts = ref<Paginated<CalloutCardData>>();
 const archivedTotal = ref<number>();
