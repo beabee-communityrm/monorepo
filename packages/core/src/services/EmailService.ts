@@ -375,12 +375,22 @@ class EmailService {
   ): Promise<Email> {
     const existing = await getRepository(Email).findOneBy({ templateId });
 
-    return await getRepository(Email).save({
+    const email = await getRepository(Email).save({
       ...existing,
       ...data,
       templateId,
       name: data.name || existing?.name || `Override: ${templateId}`,
     });
+
+    await ActivityService.addEvent({
+      eventType: existing
+        ? ActivityEventType.EmailTemplateEdited
+        : ActivityEventType.EmailTemplateAdded,
+      targetId: email.id,
+      metadata: null,
+    });
+
+    return email;
   }
 
   /**
@@ -439,7 +449,16 @@ class EmailService {
       return await em.getRepository(Email).delete(id);
     });
 
-    return result.affected == null || result.affected > 0;
+    const deleted = result.affected == null || result.affected > 0;
+
+    if (deleted) {
+      ActivityService.addEvent({
+        eventType: ActivityEventType.EmailTemplateDeleted,
+        targetId: id,
+        metadata: null,
+      });
+    }
+    return deleted;
   }
 
   /**
