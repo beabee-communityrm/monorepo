@@ -126,6 +126,10 @@ class NewsletterService {
         }
       }
     }
+    const oldGroups = contact.profile.newsletterGroups;
+    const groupsChanged =
+      oldGroups.length !== newState.groups.length ||
+      oldGroups.some((g) => !newState.groups.includes(g));
 
     // TODO: remove dependency on ContactProfile
     await getRepository(ContactProfile).update(contact.id, {
@@ -134,6 +138,14 @@ class NewsletterService {
     });
     contact.profile.newsletterStatus = newState.status;
     contact.profile.newsletterGroups = newState.groups;
+
+    if (groupsChanged) {
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.ContactGroupSubscriptionUpdated,
+        targetId: contact.id,
+        metadata: null,
+      });
+    }
   }
 
   /**
