@@ -1,3 +1,9 @@
+import {
+  PaymentStatus,
+  RefundReason,
+  RefundStatus,
+} from '@beabee/beabee-common';
+
 import { add } from 'date-fns';
 import Stripe from 'stripe';
 
@@ -64,6 +70,9 @@ export class StripeWebhookEventHandler {
         break;
       case 'invoice.payment_failed':
         await this.handleInvoicePaymentFailed(event.data.object);
+        break;
+      case 'refund.updated':
+        await this.handleRefundUpdated(event.data.object);
         break;
       case 'payment_method.detached':
         await this.handlePaymentMethodDetached(event.data.object);
@@ -309,6 +318,57 @@ export class StripeWebhookEventHandler {
         );
       }
     }
+  }
+
+  /**
+   * Handles updates to a Stripe refund by syncing the refund status, reason, and amount
+   * to the associated payment record in the database.
+   *
+   * @param refund - The Stripe refund object containing refund details.
+   */
+  private static async handleRefundUpdated(
+    refund: Stripe.Refund
+  ): Promise<void> {
+    if (!refund.charge) {
+      log.info(`Refund ${refund.id} has no associated charge. Skipping.`);
+      return;
+    }
+
+    const charge = await stripe.charges
+      .retrieve(refund.charge as string)
+      .catch((err) => {
+        log.error(`Failed to retrieve charge ${refund.charge}: ${err.message}`);
+        return null;
+      });
+    if (!charge) return;
+
+    const invoiceId = charge.invoice;
+    if (!invoiceId) {
+      log.info(`Charge ${charge.id} has no associated invoice. Skipping.`);
+      return;
+    }
+
+    const payment = await getRepository(Payment).findOneBy({
+      id: invoiceId as string,
+    });
+    if (!payment) {
+      log.info(
+        `No payment record found for invoice ID: ${invoiceId}. Skipping.`
+      );
+      return;
+    }
+
+    log.info(`Updating payment ${payment.id} with refund details.`);
+    payment.refundReason =
+      (refund.reason as RefundReason) ?? payment.refundReason;
+    payment.refundStatus =
+      (refund.status as RefundStatus) ?? payment.refundStatus;
+    payment.amountRefunded = refund.amount
+      ? refund.amount / 100
+      : payment.amountRefunded;
+
+    // Save the updated payment
+    await getRepository(Payment).save(payment);
   }
 
   /**

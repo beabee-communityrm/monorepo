@@ -2,6 +2,8 @@ import {
   PaymentMethod,
   PaymentStatus,
   PaymentType,
+  RefundReason,
+  RefundStatus,
 } from '@beabee/beabee-common';
 
 import {
@@ -45,6 +47,14 @@ export class GetPaymentDto {
 
   @IsEnum(PaymentStatus)
   status!: PaymentStatus;
+
+  @IsOptional()
+  @IsEnum(RefundStatus)
+  refundStatus!: RefundStatus;
+
+  @IsOptional()
+  @IsEnum(RefundReason)
+  refundReason!: RefundReason;
 
   @IsEnum(PaymentType)
   type!: PaymentType;
