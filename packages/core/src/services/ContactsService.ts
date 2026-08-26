@@ -389,7 +389,7 @@ class ContactsService {
     await PaymentService.cancelContribution(contact);
 
     await ActivityService.addEvent({
-      eventType: ActivityEventType.ContactContributionStopped,
+      eventType: ActivityEventType.ContactContributionCancelled,
       targetId: contact.id,
       metadata: null,
     });

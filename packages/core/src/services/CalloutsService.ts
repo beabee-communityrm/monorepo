@@ -66,7 +66,7 @@ class CalloutsService {
       const slug = baseSlug + (autoSlug ? '-' + autoSlug : '');
       log.info('Creating callout with slug ' + slug);
       try {
-        var calloutId = await this.saveCallout({ ...data, slug });
+        const calloutId = await this.saveCallout({ ...data, slug });
 
         await ActivityService.addEvent({
           targetId: calloutId,
@@ -221,7 +221,7 @@ class CalloutsService {
       const result = await em.getRepository(Callout).delete({ id });
 
       if (result.affected === 1) {
-        ActivityService.addEvent({
+        await ActivityService.addEvent({
           targetId: id,
           eventType: ActivityEventType.CalloutDeleted,
           metadata: null,
