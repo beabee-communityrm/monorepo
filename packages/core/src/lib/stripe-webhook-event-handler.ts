@@ -296,6 +296,14 @@ export class StripeWebhookEventHandler {
   private static async handleInvoicePaymentFailed(
     invoice: Stripe.Invoice
   ): Promise<void> {
+    const contribution = await this.getContributionFromInvoice(invoice);
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.PaymentFailed,
+      targetId: contribution?.contact.id || null,
+      metadata: null,
+    });
+
     // For now only handle one-time payment invoices
     // TODO: Consider handling subscription invoices too
     if (!isOneTimePaymentInvoice(invoice)) {
@@ -309,19 +317,18 @@ export class StripeWebhookEventHandler {
       log.info(`Marking invoice ${invoice.id} as uncollectible `);
       await stripe.invoices.markUncollectible(invoice.id);
 
-      const contribution = await this.getContributionFromInvoice(invoice);
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.PaymentCancelled,
+        targetId: contribution?.contact.id || null,
+        metadata: null,
+      });
+
       if (contribution) {
         await EmailService.sendTemplateToContact(
           'one-time-donation-failed',
           contribution.contact,
           { amount: invoice.total / 100 }
         );
-
-        await ActivityService.addEvent({
-          eventType: ActivityEventType.PaymentFailed,
-          targetId: contribution.contact.id,
-          metadata: null,
-        });
       }
     }
   }

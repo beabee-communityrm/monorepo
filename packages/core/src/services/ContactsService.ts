@@ -406,13 +406,6 @@ class ContactsService {
     log.info('Cancel contribution for ' + contact.id);
     await PaymentService.cancelContribution(contact);
 
-    // TODO Move to cancel contribution method
-    await ActivityService.addEvent({
-      eventType: ActivityEventType.ContactContributionCancelled,
-      targetId: contact.id,
-      metadata: null,
-    });
-
     await EmailService.sendTemplateToContact(email, contact);
     await EmailService.sendTemplateToAdmin('cancelled-member', {
       contact: contact,

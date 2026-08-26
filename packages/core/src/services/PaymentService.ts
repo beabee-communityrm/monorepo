@@ -197,6 +197,12 @@ class PaymentService {
 
     await this.handlePostContributionUpdate(contact);
 
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactContributionUpdated,
+      targetId: contact.id,
+      metadata: null,
+    });
+
     return ret;
   }
 
@@ -245,6 +251,12 @@ class PaymentService {
       { contactId: contact.id },
       { cancelledAt: new Date() }
     );
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactContributionCancelled,
+      targetId: contact.id,
+      metadata: null,
+    });
   }
 
   async getPayments(contact: Contact): Promise<Payment[]> {
