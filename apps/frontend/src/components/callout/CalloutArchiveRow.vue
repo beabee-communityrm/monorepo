@@ -7,7 +7,7 @@
       <p class="text-highlighted truncate font-medium">
         {{ callout.title }}
       </p>
-      <CalloutMetaList :callout="callout" size="sm" class="mt-0.5">
+      <CalloutMetaList :callout="callout" class="mt-0.5">
         <span v-if="callout.expires">
           {{ t('common.status.ended') }}
           {{ formatLocale(callout.expires, 'd MMM yyyy') }}
