@@ -53,17 +53,17 @@
         </UInput>
 
         <UButton
-          :aria-pressed="archiveRespondedOnly"
-          :color="archiveRespondedOnly ? 'primary' : 'neutral'"
-          :variant="archiveRespondedOnly ? 'subtle' : 'outline'"
+          :aria-pressed="!!archiveAnsweredOnly"
+          :color="archiveAnsweredOnly ? 'primary' : 'neutral'"
+          :variant="archiveAnsweredOnly ? 'subtle' : 'outline'"
           class="shrink-0"
-          @click="toggleArchiveRespondedOnly"
+          @click="toggleArchiveAnsweredOnly"
         >
           <UIcon
             name="i-lucide-check"
             aria-hidden="true"
             class="size-3.5 transition-opacity"
-            :class="archiveRespondedOnly ? 'opacity-100' : 'opacity-40'"
+            :class="archiveAnsweredOnly ? 'opacity-100' : 'opacity-40'"
           />
           {{ t('callouts.showAnswered') }}
         </UButton>
@@ -134,13 +134,9 @@ const { t } = useI18n();
 
 const archiveSearch = defineParam('s', (v) => v || '');
 const archiveSearchInput = ref(archiveSearch.value);
-const archiveShow = defineParam('show', (v) => (v === 'answered' ? v : ''));
-const archiveRespondedOnly = computed({
-  get: () => archiveShow.value === 'answered',
-  set: (value: boolean) => {
-    archiveShow.value = value ? 'answered' : '';
-  },
-});
+const archiveAnsweredOnly = defineParam('show', (v) =>
+  v === 'answered' ? v : ''
+);
 const archivePage = defineParam('page', (v) => Number(v) || 0);
 const archiveOpen = ref(false);
 
@@ -148,8 +144,8 @@ function toggleArchive() {
   archiveOpen.value = !archiveOpen.value;
 }
 
-function toggleArchiveRespondedOnly() {
-  archiveRespondedOnly.value = !archiveRespondedOnly.value;
+function toggleArchiveAnsweredOnly() {
+  archiveAnsweredOnly.value = archiveAnsweredOnly.value ? '' : 'answered';
 }
 
 function clearArchiveSearch() {
@@ -203,7 +199,7 @@ watchEffect(async () => {
         },
         { field: 'hidden', operator: 'equal', value: [false] },
         { field: 'status', operator: 'equal', value: [ItemStatus.Ended] },
-        ...(archiveRespondedOnly.value
+        ...(archiveAnsweredOnly.value
           ? [
               {
                 field: 'answeredBy' as const,
