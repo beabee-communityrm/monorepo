@@ -14,20 +14,6 @@
         <template #n>{{ callout.responseCount }}</template>
       </i18n-t>
     </span>
-    <span
-      v-if="callout.responseViewSchema?.gallery"
-      class="flex items-center gap-1"
-    >
-      <UIcon name="i-lucide-image" :class="iconClass" />
-      {{ t('callout.views.gallery') }}
-    </span>
-    <span
-      v-if="callout.responseViewSchema?.map"
-      class="flex items-center gap-1"
-    >
-      <UIcon name="i-lucide-map-pin" :class="iconClass" />
-      {{ t('callout.views.map') }}
-    </span>
   </div>
 </template>
 

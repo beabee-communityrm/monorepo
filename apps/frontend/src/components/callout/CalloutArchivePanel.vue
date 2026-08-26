@@ -215,7 +215,6 @@ watchEffect(async () => {
   archivedCallouts.value = await client.callout.list(query, [
     'hasAnswered',
     'responseCount',
-    'responseViewSchema',
   ]);
 });
 </script>

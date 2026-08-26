@@ -69,7 +69,7 @@ onBeforeMount(async () => {
         ],
       },
     },
-    ['hasAnswered', 'responseCount', 'responseViewSchema']
+    ['hasAnswered', 'responseCount']
   );
 });
 </script>
