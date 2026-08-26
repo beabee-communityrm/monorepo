@@ -16,7 +16,7 @@ import {
 import { PaginatedDto } from '#api/dto/PaginatedDto';
 import { BaseTransformer } from '#api/transformers/BaseTransformer';
 
-class ActivityFeedTransformer extends BaseTransformer<
+class ActivityEventTransformer extends BaseTransformer<
   ActivityEvent,
   GetActivityEventDto,
   ActivityFilterName
@@ -77,4 +77,4 @@ class ActivityFeedTransformer extends BaseTransformer<
   }
 }
 
-export default new ActivityFeedTransformer();
+export default new ActivityEventTransformer();

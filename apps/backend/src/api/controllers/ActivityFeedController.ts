@@ -13,7 +13,7 @@ import {
   ListActivityEventsDto,
 } from '#api/dto/ActivityFeedDto';
 import { PaginatedDto } from '#api/dto/PaginatedDto';
-import ActivityFeedTransformer from '#api/transformers/ActivityFeedTransformer';
+import ActivityEventTransformer from '#api/transformers/ActivityEventTransformer';
 
 @JsonController('/activity')
 @Authorized()
@@ -26,6 +26,6 @@ export class ActivityFeedController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @QueryParams() query: ListActivityEventsDto
   ): Promise<PaginatedDto<GetActivityEventDto>> {
-    return await ActivityFeedTransformer.fetch(auth, query);
+    return await ActivityEventTransformer.fetch(auth, query);
   }
 }

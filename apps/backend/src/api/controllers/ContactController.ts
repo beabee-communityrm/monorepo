@@ -77,7 +77,7 @@ import {
   StartPaymentFlowDto,
 } from '#api/dto/PaymentFlowDto';
 import { ContactRoleParams } from '#api/params/ContactRoleParams';
-import ActivityFeedTransformer from '#api/transformers/ActivityFeedTransformer';
+import ActivityEventTransformer from '#api/transformers/ActivityEventTransformer';
 import ContactExporter from '#api/transformers/ContactExporter';
 import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
 import ContactTransformer from '#api/transformers/ContactTransformer';
@@ -191,7 +191,7 @@ export class ContactController {
     @TargetUser() target: Contact,
     @QueryParams() query: ListActivityEventsDto
   ): Promise<PaginatedDto<GetActivityEventDto> | undefined> {
-    return await ActivityFeedTransformer.fetchByTargetId(
+    return await ActivityEventTransformer.fetchByTargetId(
       auth,
       target.id,
       query

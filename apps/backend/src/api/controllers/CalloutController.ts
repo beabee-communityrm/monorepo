@@ -66,7 +66,7 @@ import {
 } from '#api/dto/CalloutReviewerDto';
 import { CreateCalloutTagDto, GetCalloutTagDto } from '#api/dto/CalloutTagDto';
 import { PaginatedDto } from '#api/dto/PaginatedDto';
-import ActivityFeedTransformer from '#api/transformers/ActivityFeedTransformer';
+import ActivityEventTransformer from '#api/transformers/ActivityEventTransformer';
 import CalloutResponseExporter from '#api/transformers/CalloutResponseExporter';
 import CalloutResponseMapTransformer from '#api/transformers/CalloutResponseMapTransformer';
 import CalloutResponseSegmentTransformer from '#api/transformers/CalloutResponseSegmentTransformer';
@@ -144,7 +144,7 @@ export class CalloutController {
     @CalloutId() id: string,
     @QueryParams() query: ListActivityEventsDto
   ): Promise<PaginatedDto<GetActivityEventDto> | undefined> {
-    return await ActivityFeedTransformer.fetchByTargetId(auth, id, query);
+    return await ActivityEventTransformer.fetchByTargetId(auth, id, query);
   }
 
   @Patch('/:id')
