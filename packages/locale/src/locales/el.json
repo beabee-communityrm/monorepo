@@ -815,8 +815,13 @@
       "name": "",
       "submittingResponseError": "Δεν λειτούργησε. Δοκιμάστε ξανά."
     },
+    "galleryPreview": {
+      "title": "",
+      "viewGallery": ""
+    },
     "getStarted": "Ξεκινήστε εδώ!",
     "joinNow": "",
+    "leavePreview": "",
     "loginToYourAccount": "",
     "mapPreview": {
       "title": "",

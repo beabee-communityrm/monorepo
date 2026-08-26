@@ -814,8 +814,13 @@
       "name": "",
       "submittingResponseError": ""
     },
+    "galleryPreview": {
+      "title": "",
+      "viewGallery": ""
+    },
     "getStarted": "",
     "joinNow": "",
+    "leavePreview": "",
     "loginToYourAccount": "",
     "mapPreview": {
       "title": "",

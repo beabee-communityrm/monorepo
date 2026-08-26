@@ -815,8 +815,13 @@
       "name": "",
       "submittingResponseError": "Das hat nicht geklappt. Versuche es noch mal."
     },
+    "galleryPreview": {
+      "title": "",
+      "viewGallery": ""
+    },
     "getStarted": "Hier geht es los.",
     "joinNow": "",
+    "leavePreview": "",
     "loginToYourAccount": "",
     "mapPreview": {
       "title": "",

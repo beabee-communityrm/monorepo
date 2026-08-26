@@ -3,7 +3,7 @@
 
 /* Nuxt UI configuration */
 :root {
-  --ui-radius: 3px;
+  --ui-radius: 6px;
 }
 
 button:not(:disabled) {

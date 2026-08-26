@@ -815,8 +815,13 @@
       "name": "Tu nombre",
       "submittingResponseError": "Hubo un problema al enviar tu respuesta, inténtalo de nuevo"
     },
+    "galleryPreview": {
+      "title": "",
+      "viewGallery": ""
+    },
     "getStarted": "Empezar",
     "joinNow": "Únete ahora",
+    "leavePreview": "",
     "loginToYourAccount": "Inicia sesión en tu cuenta",
     "mapPreview": {
       "title": "",

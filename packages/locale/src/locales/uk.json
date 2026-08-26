@@ -815,8 +815,13 @@
       "name": "Ваше ім'я",
       "submittingResponseError": "Виникла проблема з надсиланням вашої відповіді, спробуйте ще раз"
     },
+    "galleryPreview": {
+      "title": "",
+      "viewGallery": ""
+    },
     "getStarted": "Почати",
     "joinNow": "Приєднатися зараз",
+    "leavePreview": "",
     "loginToYourAccount": "Увійдіть до свого облікового запису",
     "mapPreview": {
       "title": "",

@@ -815,8 +815,13 @@
       "name": "Je naam",
       "submittingResponseError": "Er is een probleem opgetreden bij het indienen van je reactie, probeer het opnieuw"
     },
+    "galleryPreview": {
+      "title": "",
+      "viewGallery": ""
+    },
     "getStarted": "Aan de slag",
     "joinNow": "Nu meedoen",
+    "leavePreview": "",
     "loginToYourAccount": "Inloggen op je account",
     "mapPreview": {
       "title": "",

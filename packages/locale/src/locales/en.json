@@ -814,8 +814,13 @@
       "name": "Your name",
       "submittingResponseError": "There was a problem submitting your response, please try again"
     },
+    "galleryPreview": {
+      "title": "Recent photos",
+      "viewGallery": "See the gallery"
+    },
     "getStarted": "Get started",
     "joinNow": "Join now",
+    "leavePreview": "Leave preview",
     "loginToYourAccount": "Login to your account",
     "mapPreview": {
       "title": "Response locations",
@@ -840,7 +845,7 @@
       },
       "services": "Or quickly share using one of these services:"
     },
-    "showingPreview": "You can't submit a response in preview mode",
+    "showingPreview": "Preview mode — this is what contributors see. You can't submit a response from here.",
     "toContributionPage": "Edit my contribution",
     "updateContribution": "please update your contribution",
     "views": {

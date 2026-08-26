@@ -815,8 +815,13 @@
       "name": "Dein Name",
       "submittingResponseError": "Es gab ein Problem bei der Übermittlung deiner Antworten. Bitte versuche es erneut."
     },
+    "galleryPreview": {
+      "title": "",
+      "viewGallery": ""
+    },
     "getStarted": "Starten",
     "joinNow": "Mitglied werden",
+    "leavePreview": "",
     "loginToYourAccount": "Einloggen",
     "mapPreview": {
       "title": "",

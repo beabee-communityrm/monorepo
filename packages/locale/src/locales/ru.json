@@ -816,8 +816,13 @@
       "name": "Ваше имя",
       "submittingResponseError": "Не удалось отправить ответ. Попробуйте ещё раз"
     },
+    "galleryPreview": {
+      "title": "",
+      "viewGallery": ""
+    },
     "getStarted": "Начать",
     "joinNow": "Присоединиться",
+    "leavePreview": "",
     "loginToYourAccount": "Войти в мой профиль",
     "mapPreview": {
       "title": "",

@@ -53,11 +53,11 @@
   --color-link-70: rgb(var(--c-link-70));
   --color-link-110: rgb(var(--c-link-110));
 
-  --color-warning: rgb(var(--c-warning));
+  /* --color-warning: rgb(var(--c-warning));
   --color-warning-10: rgb(var(--c-warning-10));
   --color-warning-30: rgb(var(--c-warning-30));
   --color-warning-70: rgb(var(--c-warning-70));
-  --color-warning-110: rgb(var(--c-warning-110));
+  --color-warning-110: rgb(var(--c-warning-110)); */
 
   --color-success: rgb(var(--c-success));
   --color-success-10: rgb(var(--c-success-10));

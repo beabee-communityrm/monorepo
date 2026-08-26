@@ -1,24 +1,10 @@
 <template>
-  <UCard
-    :ui="{
-      header: 'flex flex-wrap items-center justify-between gap-2',
-      body: 'p-0 sm:p-0',
-    }"
+  <CalloutPreviewCard
+    icon="i-lucide-map-pin"
+    :title="t('callout.mapPreview.title')"
+    :view-all-to="mapTo"
+    :view-all-label="t('callout.mapPreview.viewFullMap')"
   >
-    <template #header>
-      <div class="flex flex-wrap items-center gap-2">
-        <UIcon name="i-lucide-map-pin" class="text-primary size-4 shrink-0" />
-        <h2>
-          {{ t('callout.mapPreview.title') }}
-          <span class="text-muted">({{ points.length }})</span>
-        </h2>
-      </div>
-
-      <UButton :to="mapTo" variant="link" trailing-icon="i-lucide-arrow-right">
-        {{ t('callout.mapPreview.viewFullMap') }}
-      </UButton>
-    </template>
-
     <MglMap
       style="height: 150px"
       :map-style="mapStyle"
@@ -40,7 +26,7 @@
         />
       </MglGeoJsonSource>
     </MglMap>
-  </UCard>
+  </CalloutPreviewCard>
 </template>
 
 <script lang="ts" setup>
@@ -51,6 +37,8 @@ import { computed } from 'vue';
 import { MglCircleLayer, MglGeoJsonSource, MglMap } from 'vue-maplibre-gl';
 import { useI18n } from 'vue-i18n';
 import type { RouteLocationRaw } from 'vue-router';
+
+import CalloutPreviewCard from '#components/callout/CalloutPreviewCard.vue';
 
 const { t } = useI18n();
 
