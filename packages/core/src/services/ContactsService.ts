@@ -208,6 +208,12 @@ class ContactsService {
       );
     }
 
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactUpdated,
+      targetId: contact.id,
+      metadata: null,
+    });
+
     await PaymentService.updateContact(contact, updates);
   }
 
@@ -252,6 +258,12 @@ class ContactsService {
     if (wasActive !== contact.membership?.isActive) {
       await NewsletterService.upsertContact(contact);
     }
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactRoleAdded,
+      targetId: contact.id,
+      metadata: null,
+    });
 
     return role;
   }
@@ -304,6 +316,12 @@ class ContactsService {
       await NewsletterService.upsertContact(contact);
     }
 
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactRoleRevoked,
+      targetId: contact.id,
+      metadata: null,
+    });
+
     return ret.affected !== 0;
   }
 
@@ -321,6 +339,12 @@ class ContactsService {
       if (contact.profile) {
         Object.assign(contact.profile, profileUpdates);
       }
+
+      await ActivityService.addEvent({
+        targetId: contact.id,
+        eventType: ActivityEventType.ContactProfileUpdated,
+        metadata: null,
+      });
     }
 
     if (newsletterStatus || newsletterGroups) {
@@ -330,12 +354,6 @@ class ContactsService {
         opts
       );
     }
-
-    await ActivityService.addEvent({
-      targetId: contact.id,
-      eventType: ActivityEventType.ContactUpdated,
-      metadata: null,
-    });
   }
 
   /**
@@ -388,6 +406,7 @@ class ContactsService {
     log.info('Cancel contribution for ' + contact.id);
     await PaymentService.cancelContribution(contact);
 
+    // TODO Move to cancel contribution method
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactContributionCancelled,
       targetId: contact.id,
