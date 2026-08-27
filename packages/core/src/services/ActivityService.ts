@@ -1,4 +1,8 @@
-import { ActivityEventType, ContactOriginData } from '@beabee/beabee-common';
+import {
+  ActivityActorType,
+  ActivityEventType,
+  ContactOriginData,
+} from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { log as mainLogger } from '#logging';
@@ -36,9 +40,25 @@ class ActivityService {
     return getRepository(ActivityEvent).find();
   }
 
+  private getContactAddedBy(event: ActivityEvent): string {
+    switch (event.actorType) {
+      case ActivityActorType.User:
+      case ActivityActorType.ApiKey:
+        return event.actorId ? 'admin' : 'self-signup'; // Admin ID != null implies the contact was added by admin
+      case ActivityActorType.System:
+      case ActivityActorType.Cron:
+      case ActivityActorType.BackendCLI:
+        return 'system';
+      case ActivityActorType.Webhook:
+        return 'webhook';
+      default:
+        return '';
+    }
+  }
+
   /**
-   * Get the origin (source, referrer, campaign) of a contact from their
-   * contact.created event metadata
+   * Get the origin (source, referrer, campaign, added by) of a contact from
+   * the corresponding contact.created event
    * @param contactId The contact ID
    * @returns The contact's origin, or null if no creation event was recorded
    */
@@ -52,6 +72,7 @@ class ActivityService {
       source: event ? (event.metadata?.source ?? '') : '',
       medium: event ? (event.metadata?.medium ?? '') : '',
       campaign: event ? (event.metadata?.campaign ?? '') : '',
+      addedBy: event ? this.getContactAddedBy(event) : '',
     };
   }
 }
