@@ -1123,6 +1123,7 @@
     },
     "oneTime": "One-time",
     "origin": {
+      "addedBy": "Added By",
       "campaign": "Campaign",
       "referrer": "Referrer",
       "source": "Signup Source",

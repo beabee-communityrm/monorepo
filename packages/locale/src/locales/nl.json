@@ -1124,6 +1124,7 @@
     },
     "oneTime": "Eenmalig",
     "origin": {
+      "addedBy": "Toegevoegd door",
       "campaign": "Campagne",
       "referrer": "Verwijzer",
       "source": "Aanmeldbron",

@@ -1124,6 +1124,7 @@
     },
     "oneTime": "Único",
     "origin": {
+      "addedBy": "",
       "campaign": "",
       "referrer": "",
       "source": "",

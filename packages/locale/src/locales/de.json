@@ -1124,6 +1124,7 @@
     },
     "oneTime": "Einmalig",
     "origin": {
+      "addedBy": "Hinzugefügt von",
       "campaign": "Kampagne",
       "referrer": "Empfehlungsquelle",
       "source": "Anmeldequelle",

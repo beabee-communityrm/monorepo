@@ -1124,6 +1124,7 @@
     },
     "oneTime": "Una tantum",
     "origin": {
+      "addedBy": "Aggiunto da",
       "campaign": "Campagna",
       "referrer": "Referente",
       "source": "Fonte di iscrizione",

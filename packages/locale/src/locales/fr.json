@@ -1128,6 +1128,7 @@
     },
     "oneTime": "Ponctuel",
     "origin": {
+      "addedBy": "Ajouté par",
       "campaign": "Campagne",
       "referrer": "Référent",
       "source": "Source d'inscription",
