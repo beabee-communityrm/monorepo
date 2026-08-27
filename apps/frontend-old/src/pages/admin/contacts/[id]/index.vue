@@ -192,6 +192,10 @@ meta:
             :name="t('contactOverview.origin.referrer')"
             :value="contact.origin.medium"
           />
+          <AppInfoListItem
+            :name="t('contactOverview.origin.addedBy')"
+            :value="contact.origin.addedBy"
+          />
         </AppInfoList>
       </section>
 
