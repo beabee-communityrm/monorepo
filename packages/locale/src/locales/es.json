@@ -1145,6 +1145,7 @@
     },
     "oneTime": "Único",
     "origin": {
+      "addedBy": "Añadido por",
       "campaign": "Campaña",
       "referrer": "Referente",
       "source": "Origen de registro",
