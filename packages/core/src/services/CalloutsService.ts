@@ -374,6 +374,7 @@ class CalloutsService {
             source: 'callout',
             medium: '',
             campaign: callout.slug,
+            addedBy: '',
           }
         );
       }
