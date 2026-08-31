@@ -93,8 +93,10 @@
     "phoneInfoAdmin": "Je moet toestemming van de persoon hebben voordat je hun telefoonnummer aan het systeem toevoegt",
     "requiredFields": "Verplichte velden",
     "savedPassword": "Nieuw wachtwoord opgeslagen",
+    "security": "Beveiliging",
     "subTitle": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "subTitle-nuxt": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
+    "subscriptions": "Abonnementen",
     "title": "Account",
     "unsavedChanges": "U heeft niet-opgeslagen wijzigingen"
   },

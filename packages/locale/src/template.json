@@ -93,8 +93,10 @@
     "phoneInfoAdmin": "",
     "requiredFields": "",
     "savedPassword": "",
+    "security": "",
     "subTitle": "",
     "subTitle-nuxt": "",
+    "subscriptions": "",
     "title": ""
   },
   "actions": {

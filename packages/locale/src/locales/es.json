@@ -93,8 +93,10 @@
     "phoneInfoAdmin": "Debes contar con el consentimiento de la persona antes de añadir su número de teléfono al sistema",
     "requiredFields": "Campos obligatorios",
     "savedPassword": "Nueva contraseña guardada",
+    "security": "Seguridad",
     "subTitle": "Los campos obligatorios están marcados con un asterisco. Toda la información enviada aquí es privada.",
     "subTitle-nuxt": "Los campos obligatorios están marcados con un asterisco. Toda la información enviada aquí es privada.",
+    "subscriptions": "Suscripciones",
     "title": "Cuenta",
     "unsavedChanges": "Tienes cambios sin guardar"
   },

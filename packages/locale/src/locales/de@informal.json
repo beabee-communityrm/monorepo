@@ -93,8 +93,10 @@
     "phoneInfoAdmin": "Du musst die Zustimmung der Person einholen, bevor du ihre Telefonnummer in das System eingibst.",
     "requiredFields": "Pflichtfelder",
     "savedPassword": "Das neue Passwort wurde gespeichert. ",
+    "security": "Sicherheit",
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subTitle-nuxt": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
+    "subscriptions": "Abonnements",
     "title": "Account",
     "unsavedChanges": "Du hast ungespeicherte Änderungen"
   },

@@ -39,7 +39,7 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AccountForm from '../../components/pages/profile/account/AccountForm.vue';
 import AccountNewsletterSubscriptions from '../../components/pages/profile/account/AccountNewsletterSubscriptions.vue';
@@ -49,25 +49,25 @@ import { addBreadcrumb } from '../../store/breadcrumb';
 import { routeIcons, routeLabels } from '../../utils/route-nav';
 import type { TabsItem } from '@nuxt/ui';
 
-const items = ref<TabsItem[]>([
+const { t } = useI18n();
+
+const items = computed<TabsItem[]>(() => [
   {
-    label: 'Contact Information',
+    label: t('accountPage.contactInformation'),
     icon: 'i-lucide-contact',
     slot: 'contact',
   },
   {
-    label: 'Security',
+    label: t('accountPage.security'),
     icon: 'i-lucide-shield',
     slot: 'security',
   },
   {
-    label: 'Subscriptions',
+    label: t('accountPage.subscriptions'),
     icon: 'i-lucide-mail',
     slot: 'subscriptions',
   },
 ]);
-
-const { t } = useI18n();
 
 addBreadcrumb(
   computed(() => [

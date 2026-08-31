@@ -93,8 +93,10 @@
     "phoneInfoAdmin": "",
     "requiredFields": "Υποχρεωτικά πεδία",
     "savedPassword": "",
+    "security": "",
     "subTitle": "",
     "subTitle-nuxt": "",
+    "subscriptions": "",
     "title": "",
     "unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές"
   },

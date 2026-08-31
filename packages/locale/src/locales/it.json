@@ -93,8 +93,10 @@
     "phoneInfoAdmin": "È necessario avere il consenso della persona prima di aggiungere il suo numero di telefono al sistema",
     "requiredFields": "Campi obbligatori",
     "savedPassword": "Nuova password salvata",
+    "security": "Sicurezza",
     "subTitle": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
     "subTitle-nuxt": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
+    "subscriptions": "Iscrizioni",
     "title": "Account",
     "unsavedChanges": "Hai modifiche non salvate"
   },
