@@ -1,4 +1,5 @@
 import {
+  BaseNewsletterGroupData,
   NewsletterDiffData,
   NewsletterIntegrationData,
   NewsletterStatus,
@@ -233,7 +234,7 @@ class NewsletterService {
    *
    * @returns The available groups as `{ id, label }` pairs
    */
-  async getAllNewsletterGroups(): Promise<{ id: string; label: string }[]> {
+  async getAllNewsletterGroups(): Promise<BaseNewsletterGroupData[]> {
     return await this.provider.getGroups();
   }
 
@@ -245,11 +246,11 @@ class NewsletterService {
    */
   async getContactNewsletterGroups(
     contactId: string
-  ): Promise<{ id: string; label: string }[]> {
+  ): Promise<BaseNewsletterGroupData[]> {
     const contactProfile = await getRepository(ContactProfile).findOneByOrFail({
       contactId,
     });
-    const newsletterGroups: { id: string; label: string }[] =
+    const newsletterGroups: BaseNewsletterGroupData[] =
       optionsService.getJSON('newsletter-groups');
 
     const validGroupIds = new Set(newsletterGroups.map((g) => g.id));
@@ -275,7 +276,7 @@ class NewsletterService {
     log.info('Refreshing newsletter groups' + (dryRun ? ' - DRY RUN' : ''));
 
     // Groups cached in DB
-    const cachedGroups: { id: string; label: string }[] =
+    const cachedGroups: BaseNewsletterGroupData[] =
       optionsService.getJSON('newsletter-groups');
 
     // Groups configured with provider

@@ -1,5 +1,6 @@
 import {
   ApiHealthStatus,
+  BaseNewsletterGroupData,
   MailchimpNewsletterIntegrationData,
   NewsletterStatus,
 } from '@beabee/beabee-common';
@@ -306,7 +307,7 @@ export class MailchimpProvider implements NewsletterProvider {
    * @returns groups as `{ id, label }` pairs, where `id` is the
    * Mailchimp interest ID and `label` is its display name
    */
-  async getGroups(): Promise<{ id: string; label: string }[]> {
+  async getGroups(): Promise<BaseNewsletterGroupData[]> {
     const interestCategories = await this.api.instance.get(
       `lists/${this.listId}/interest-categories`
     );

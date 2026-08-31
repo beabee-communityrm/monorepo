@@ -1,4 +1,7 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
+import {
+  BaseNewsletterGroupData,
+  NewsletterStatus,
+} from '@beabee/beabee-common';
 
 import axios from 'axios';
 import crypto from 'crypto';
@@ -284,7 +287,7 @@ function buildInterests(
   }
 
   const allGroupIds = OptionsService.getJSON('newsletter-groups').map(
-    (group: { id: string }) => group.id
+    (group: BaseNewsletterGroupData) => group.id
   );
   return Object.fromEntries(
     allGroupIds.map((id: string) => [id, groups.includes(id)])

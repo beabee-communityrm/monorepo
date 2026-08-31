@@ -104,7 +104,10 @@
  *
  * @component AppNewsletterOptInSettings
  */
-import type { NewsletterGroupData } from '@beabee/beabee-common';
+import type {
+  BaseNewsletterGroupData,
+  NewsletterGroupData,
+} from '@beabee/beabee-common';
 import {
   AppCheckbox,
   AppInput,
@@ -144,12 +147,9 @@ const text = defineModel<string>('text', { default: '' });
 const groups = defineModel<NewsletterGroupData[]>('groups', {
   default: () => [],
 });
-const cachedGroups = defineModel<Omit<NewsletterGroupData, 'checked'>[]>(
-  'cachedGroups',
-  {
-    default: () => [],
-  }
-);
+const cachedGroups = defineModel<BaseNewsletterGroupData[]>('cachedGroups', {
+  default: () => [],
+});
 
 onBeforeMount(async () => {
   cachedGroups.value = await client.integrations.getNewsletterGroups();

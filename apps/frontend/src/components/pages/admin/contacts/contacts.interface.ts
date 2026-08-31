@@ -1,4 +1,5 @@
 import {
+  type BaseNewsletterGroupData,
   type ContactFilterName,
   ContributionPeriod,
   ContributionType,
@@ -182,7 +183,7 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
  * @returns Filter groups and tag items for use in the contact list view
  */
 export function useContactFilters() {
-  const newsletterGroups = ref<{ id: string; label: string }[]>([]);
+  const newsletterGroups = ref<BaseNewsletterGroupData[]>([]);
   (async () => {
     const data = await client.integrations.getNewsletter();
     newsletterGroups.value = data.provider !== 'none' ? data.groups : [];

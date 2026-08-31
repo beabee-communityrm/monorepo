@@ -1,5 +1,6 @@
 import {
   ApiHealthStatus,
+  BaseNewsletterGroupData,
   TestNewsletterIntegrationData,
 } from '@beabee/beabee-common';
 
@@ -10,7 +11,7 @@ import {
 } from '#type/index';
 
 export class TestProvider implements NewsletterProvider {
-  static testGroups: { id: string; label: string }[] = [
+  static testGroups: BaseNewsletterGroupData[] = [
     { id: 'b8e4acb751', label: 'Kombucha' },
     { id: 'c0b1a133d1', label: 'Tea' },
     { id: '7bd89a737b', label: 'Coffee' },
@@ -58,7 +59,7 @@ export class TestProvider implements NewsletterProvider {
     return resp;
   }
 
-  async getGroups(): Promise<{ id: string; label: string }[]> {
+  async getGroups(): Promise<BaseNewsletterGroupData[]> {
     return TestProvider.testGroups;
   }
 }

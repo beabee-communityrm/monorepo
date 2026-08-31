@@ -1,5 +1,6 @@
 import {
   ApiHealthStatus,
+  BaseNewsletterGroupData,
   NoneNewsletterIntegrationData,
 } from '@beabee/beabee-common';
 
@@ -42,7 +43,7 @@ export class NoneProvider implements NewsletterProvider {
       : { provider: 'none' };
   }
 
-  async getGroups(): Promise<{ id: string; label: string }[]> {
+  async getGroups(): Promise<BaseNewsletterGroupData[]> {
     return [];
   }
 }

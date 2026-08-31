@@ -43,27 +43,27 @@
 </template>
 
 <script lang="ts" setup>
+import type { BaseNewsletterGroupData } from '@beabee/beabee-common';
 import { AppFormSkeleton, AppSectionCard } from '@beabee/vue';
 
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { useApiSubmit } from '#composables/useApiSubmit';
-import type { NewsletterGroup } from '#type/newsletter-group';
 import { client } from '#utils/api';
 
 const { t } = useI18n();
 
 const loading = ref(true);
 const removingId = ref<string | null>(null);
-const groups = ref<NewsletterGroup[]>([]);
+const groups = ref<BaseNewsletterGroupData[]>([]);
 
 onMounted(async () => {
   groups.value = await client.contact.newsletter.getGroups('me');
   loading.value = false;
 });
 
-async function handleUnsubscribe(group: NewsletterGroup) {
+async function handleUnsubscribe(group: BaseNewsletterGroupData) {
   removingId.value = group.id;
   const { submit } = useApiSubmit(
     async () => {
