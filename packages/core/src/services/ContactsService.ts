@@ -320,24 +320,6 @@ class ContactsService {
   }
 
   /**
-   * Unsubscribe a contact from a single newsletter group, without disturbing
-   * their subscription to any other group.
-   *
-   * @param contact The contact to update
-   * @param groupId The newsletter group ID to unsubscribe from
-   */
-  async unsubscribeFromNewsletterGroup(
-    contact: Contact,
-    groupId: string
-  ): Promise<void> {
-    await this.updateContactProfile(
-      contact,
-      { newsletterGroups: [groupId] },
-      { newsletterGroupChange: 'remove' }
-    );
-  }
-
-  /**
    * Updates a contact's contribution and adjusts their role accordingly.
    *
    * @param contact  The contact

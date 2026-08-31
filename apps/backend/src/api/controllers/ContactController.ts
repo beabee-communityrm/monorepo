@@ -528,6 +528,6 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Params() { groupId }: { groupId: string }
   ): Promise<void> {
-    await ContactsService.unsubscribeFromNewsletterGroup(target, groupId);
+    await NewsletterService.unsubscribeFromNewsletterGroup(target, groupId);
   }
 }

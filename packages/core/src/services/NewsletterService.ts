@@ -262,6 +262,24 @@ class NewsletterService {
   }
 
   /**
+   * Unsubscribe a contact from a single newsletter group, without disturbing
+   * their subscription to any other group.
+   *
+   * @param contact The contact to update
+   * @param groupId The newsletter group ID to unsubscribe from
+   */
+  async unsubscribeFromNewsletterGroup(
+    contact: Contact,
+    groupId: string
+  ): Promise<void> {
+    await this.upsertContact(
+      contact,
+      { newsletterGroups: [groupId] },
+      { newsletterGroupChange: 'remove' }
+    );
+  }
+
+  /**
    * Get newsletter provider's groups, compare them against
    * groups cached in the database, and update cache if needed.
    * If any groups were deleted, remove them from contact profiles, callouts
