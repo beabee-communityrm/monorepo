@@ -8,7 +8,7 @@ RUN node --version
 RUN npm --version
 RUN yarn --version
 
-WORKDIR /opt/apps/frontend
+WORKDIR /opt
 
 # Copy the workspace configuration
 COPY package.json yarn.lock .yarnrc.yml /opt/
@@ -25,6 +25,7 @@ COPY packages/locale/package.json /opt/packages/locale/package.json
 COPY apps/backend/package.json /opt/apps/backend/package.json
 COPY apps/backend-cli/package.json /opt/apps/backend-cli/package.json
 COPY apps/frontend/package.json /opt/apps/frontend/package.json
+COPY apps/frontend-old/package.json /opt/apps/frontend-old/package.json
 COPY apps/legacy/package.json /opt/apps/legacy/package.json
 COPY apps/webhooks/package.json /opt/apps/webhooks/package.json
 COPY apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
@@ -39,16 +40,18 @@ COPY packages/fontawesome /opt/packages/fontawesome
 COPY apps/dev-cli /opt/apps/dev-cli
 
 # Install dependencies
-RUN yarn workspaces focus
+RUN yarn workspaces focus @beabee/frontend @beabee/frontend-old
 
 # Copy frontend dependencies
 COPY packages/common /opt/packages/common
 COPY packages/client /opt/packages/client
 COPY packages/locale /opt/packages/locale
 
-# Copy and build frontend and dependencies
+# Copy and build both frontends and their shared dependencies
 COPY apps/frontend /opt/apps/frontend
-RUN yarn workspaces foreach --recursive --topological-dev --from @beabee/frontend run build
+COPY apps/frontend-old /opt/apps/frontend-old
+RUN yarn workspaces foreach --recursive --topological-dev \
+  --from @beabee/frontend --from @beabee/frontend-old run build
 
 FROM nginx:1.30-alpine
 
@@ -61,4 +64,6 @@ ENV APP_VERSION=${VERSION}
 COPY apps/frontend/docker-entrypoint.sh /docker-entrypoint.d/30-beabee-frontend.sh
 COPY apps/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=builder --chown=nginx:nginx /opt/apps/frontend/dist/ /usr/share/nginx/html
+# Both builds ship side by side, nginx.conf picks one per request
+COPY --from=builder --chown=nginx:nginx /opt/apps/frontend-old/dist/ /usr/share/nginx/html/stable
+COPY --from=builder --chown=nginx:nginx /opt/apps/frontend/dist/ /usr/share/nginx/html/new
