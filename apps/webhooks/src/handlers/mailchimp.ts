@@ -225,6 +225,11 @@ async function handleSubscribe(data: MCProfileData) {
         contributionType: ContributionType.None,
         firstname: data.merges.FNAME || '',
         lastname: data.merges.LNAME || '',
+        origin: {
+          source: 'newsletter',
+          campaign: '',
+          medium: '',
+        },
       },
       {
         newsletterStatus: NewsletterStatus.Subscribed,
