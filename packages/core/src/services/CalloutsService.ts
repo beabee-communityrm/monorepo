@@ -371,7 +371,7 @@ class CalloutsService {
           guest,
           {},
           {
-            source: 'callout',
+            source: 'Crowd Newsroom',
             medium: '',
             campaign: callout.slug,
             addedBy: '',
