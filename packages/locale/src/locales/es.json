@@ -1125,6 +1125,12 @@
     "oneTime": "Único",
     "origin": {
       "addedBy": "Añadido por",
+      "addedByValues": {
+        "admin": "Administrador",
+        "external": "Externo",
+        "self-signup": "Registro propio",
+        "system": "Sistema"
+      },
       "campaign": "Campaña",
       "referrer": "Referente",
       "source": "Origen de registro",

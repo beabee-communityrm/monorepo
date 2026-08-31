@@ -1125,6 +1125,12 @@
     "oneTime": "Einmalig",
     "origin": {
       "addedBy": "Hinzugefügt von",
+      "addedByValues": {
+        "admin": "Admin",
+        "external": "Extern",
+        "self-signup": "Selbstregistrierung",
+        "system": "System"
+      },
       "campaign": "Kampagne",
       "referrer": "Empfehlungsquelle",
       "source": "Anmeldequelle",
