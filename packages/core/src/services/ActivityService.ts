@@ -50,7 +50,7 @@ class ActivityService {
       case ActivityActorType.BackendCLI:
         return 'system';
       case ActivityActorType.Webhook:
-        return 'webhook';
+        return 'external';
       default:
         return '';
     }
