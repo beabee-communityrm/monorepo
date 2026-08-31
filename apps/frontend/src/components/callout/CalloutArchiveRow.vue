@@ -7,12 +7,7 @@
       <p class="text-highlighted truncate font-medium">
         {{ callout.title }}
       </p>
-      <CalloutMetaList :callout="callout" class="mt-0.5">
-        <span v-if="callout.expires">
-          {{ t('common.status.ended') }}
-          {{ formatLocale(callout.expires, 'd MMM yyyy') }}
-        </span>
-      </CalloutMetaList>
+      <CalloutMetaList :callout="callout" show-end-date class="mt-0.5" />
     </div>
 
     <UBadge
@@ -30,8 +25,6 @@
 </template>
 
 <script lang="ts" setup>
-import { formatLocale } from '@beabee/vue';
-
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 

@@ -1,6 +1,9 @@
 <template>
   <div class="text-muted flex flex-wrap items-center gap-x-3 gap-y-1">
-    <slot />
+    <span v-if="showEndDate && callout.expires">
+      {{ t('common.status.ended') }}
+      {{ formatLocale(callout.expires, 'd MMM yyyy') }}
+    </span>
     <span class="flex items-center gap-1">
       <UIcon :name="access.icon" class="size-3.5 shrink-0" />
       {{ t(access.labelKey) }}
@@ -19,6 +22,7 @@
 
 <script lang="ts" setup>
 import { CalloutAccess } from '@beabee/beabee-common';
+import { formatLocale } from '@beabee/vue';
 
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -27,6 +31,7 @@ import type { CalloutCardData } from '#type';
 
 const props = defineProps<{
   callout: CalloutCardData;
+  showEndDate?: boolean;
 }>();
 
 const { t } = useI18n();
