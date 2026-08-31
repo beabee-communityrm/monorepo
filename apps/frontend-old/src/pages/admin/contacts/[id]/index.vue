@@ -203,7 +203,14 @@ meta:
           />
           <AppInfoListItem
             :name="t('contactOverview.origin.addedBy')"
-            :value="contact.origin.addedBy"
+            :value="
+              contact.origin.addedBy
+                ? t(
+                    'contactOverview.origin.addedByValues.' +
+                      contact.origin.addedBy
+                  )
+                : ''
+            "
           />
         </AppInfoList>
       </section>
