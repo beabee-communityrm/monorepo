@@ -1,4 +1,5 @@
 import {
+  ActivityEventType,
   ApiHealthStatus,
   EmailTemplateType,
   type GetEmailTemplateInfoData,
@@ -35,6 +36,7 @@ import {
   SMTPProvider,
   SendGridProvider,
 } from '#providers/email/index';
+import ActivityService from '#services/ActivityService';
 import OptionsService from '#services/OptionsService';
 import { formatEmailBody } from '#templates/email';
 import {
@@ -124,17 +126,20 @@ class EmailService {
    * @param email The Email entity to send
    * @param recipients List of email recipients with merge fields
    * @param opts Optional email options (attachments, sendAt, etc.)
+   * @returns True if the email was sent successfully, false otherwise
    */
   async sendEmail(
     email: Email,
     recipients: EmailRecipient[],
     opts?: EmailOptions
-  ): Promise<void> {
+  ): Promise<boolean> {
     log.info('Sending email ' + email.id, { recipients });
     try {
       await this.provider.sendEmail(email, recipients, opts);
+      return true;
     } catch (error) {
       log.error('Unable to send email ' + email.id, error);
+      return false;
     }
   }
 
@@ -161,7 +166,20 @@ class EmailService {
     const recipients = contacts.map((contact) =>
       this.convertContactToRecipient(contact, opts?.mergeFields)
     );
-    await this.sendEmail(email, recipients, opts);
+
+    const sent = await this.sendEmail(email, recipients, opts);
+    if (!sent) return;
+
+    await ActivityService.addEvents(
+      contacts.map((contact) => ({
+        targetId: contact.id,
+        eventType: ActivityEventType.EmailSent,
+        metadata: {
+          email: email.templateId ?? email.id,
+          recipient: contact.email,
+        },
+      }))
+    );
   }
 
   /**
@@ -220,7 +238,22 @@ class EmailService {
       ...getBaseEmailMergeFields(),
       ...templateMergeFields,
     };
-    await this.sendTemplate(template, [{ to, mergeFields }], opts, true);
+
+    const sentEmail = await this.sendTemplate(
+      template,
+      [{ to, mergeFields }],
+      opts,
+      true
+    );
+    if (!sentEmail) {
+      return;
+    }
+
+    await ActivityService.addEvent({
+      targetId: null,
+      eventType: ActivityEventType.EmailSent,
+      metadata: { email: sentEmail, recipient: to.email },
+    });
   }
 
   /**
@@ -254,7 +287,21 @@ class EmailService {
       contactEmailTemplates[template].fn(contact, params as any) // https://github.com/microsoft/TypeScript/issues/30581
     );
 
-    await this.sendTemplate(template, [recipient], opts, true);
+    const sentEmail = await this.sendTemplate(
+      template,
+      [recipient],
+      opts,
+      true
+    );
+    if (!sentEmail) {
+      return;
+    }
+
+    await ActivityService.addEvent({
+      targetId: contact.id,
+      eventType: ActivityEventType.EmailSent,
+      metadata: { email: sentEmail, recipient: contact.email },
+    });
   }
 
   /**
@@ -286,7 +333,21 @@ class EmailService {
       },
     };
 
-    await this.sendTemplate(template, [recipient], opts, false);
+    const sentEmail = await this.sendTemplate(
+      template,
+      [recipient],
+      opts,
+      false
+    );
+    if (!sentEmail) {
+      return;
+    }
+
+    await ActivityService.addEvent({
+      targetId: null,
+      eventType: ActivityEventType.EmailSent,
+      metadata: { email: sentEmail, recipient: recipient.to.email },
+    });
   }
 
   /**
@@ -304,21 +365,24 @@ class EmailService {
    * @param recipients List of recipients with merge fields
    * @param opts Optional email options
    * @param required Whether the template is required (logs error if missing)
+   * @returns The identifier of the email sent (templateId or
+   *   id), or undefined if nothing was sent
    */
   private async sendTemplate(
     template: EmailTemplateId,
     recipients: EmailRecipient[],
     opts: EmailOptions | undefined,
     required: boolean
-  ): Promise<void> {
+  ): Promise<string | undefined> {
     const email = await this.getTemplateEmail(template);
 
     if (email) {
       log.info('Sending template ' + template, { template, recipients });
-      await this.sendEmail(email, recipients, opts);
+      const sent = await this.sendEmail(email, recipients, opts);
+      return sent ? (email.templateId ?? email.id) : undefined;
     } else if (template === 'cancelled-contribution-no-survey') {
       // Fallback to cancelled contribution email if no no-survey variant
-      await this.sendTemplate(
+      return await this.sendTemplate(
         'cancelled-contribution',
         recipients,
         opts,
@@ -359,12 +423,22 @@ class EmailService {
   ): Promise<Email> {
     const existing = await getRepository(Email).findOneBy({ templateId });
 
-    return await getRepository(Email).save({
+    const email = await getRepository(Email).save({
       ...existing,
       ...data,
       templateId,
       name: data.name || existing?.name || `Override: ${templateId}`,
     });
+
+    await ActivityService.addEvent({
+      eventType: existing
+        ? ActivityEventType.EmailTemplateEdited
+        : ActivityEventType.EmailTemplateAdded,
+      targetId: email.id,
+      metadata: null,
+    });
+
+    return email;
   }
 
   /**
@@ -423,7 +497,16 @@ class EmailService {
       return await em.getRepository(Email).delete(id);
     });
 
-    return result.affected == null || result.affected > 0;
+    const deleted = result.affected == null || result.affected > 0;
+
+    if (deleted) {
+      ActivityService.addEvent({
+        eventType: ActivityEventType.EmailTemplateDeleted,
+        targetId: id,
+        metadata: null,
+      });
+    }
+    return deleted;
   }
 
   /**
