@@ -306,7 +306,7 @@ class CalloutsService {
           newsletterStatus: NewsletterStatus.Pending,
           newsletterGroups: newsletter.groups,
         },
-        { mergeGroups: true }
+        { newsletterGroupChange: 'add' }
       );
     }
 

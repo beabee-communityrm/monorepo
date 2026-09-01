@@ -4,11 +4,17 @@
       <AppCategoryLabel>
         {{ t('adminSettings.integrations.newsletter.groups') }}
       </AppCategoryLabel>
-      <AppTable v-if="groups?.length" :headers="groupHeaders" :items="groups">
-        <template #value-id="{ item }">
-          <span class="font-mono text-sm">{{ item.id }}</span>
-        </template>
-      </AppTable>
+      <template v-if="groups?.length">
+        <AppTable :headers="groupHeaders" :items="groups">
+          <template #value-id="{ item }">
+            <span class="font-mono text-sm">{{ item.id }}</span>
+          </template>
+        </AppTable>
+        <AppInputHelp
+          class="mt-3"
+          :message="t('adminSettings.integrations.newsletter.groupsNote')"
+        />
+      </template>
       <p v-else class="text-sm text-body-80">
         {{ t('adminSettings.integrations.newsletter.noGroups') }}
       </p>
@@ -17,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppCategoryLabel, AppTable } from '@beabee/vue';
+import { AppCategoryLabel, AppInputHelp, AppTable } from '@beabee/vue';
 import type { Header } from '@beabee/vue';
 import { useI18n } from 'vue-i18n';
 
