@@ -89,44 +89,6 @@ class NewsletterService {
       newsletterGroupChange?: NewsletterGroupChange;
     }
   ): Promise<void> {
-    const newState = await this.upsertContactWithRetry(
-      contact,
-      updates,
-      opts,
-      0
-    );
-
-    // Nothing was sent to the provider, so there's no new state to store
-    if (!newState) {
-      return;
-    }
-
-    // TODO: remove dependency on ContactProfile
-    await getRepository(ContactProfile).update(contact.id, {
-      newsletterStatus: newState.status,
-      newsletterGroups: newState.groups,
-    });
-    contact.profile.newsletterStatus = newState.status;
-    contact.profile.newsletterGroups = newState.groups;
-  }
-
-  /**
-   * Syncs the contact to the newsletter provider and returns the resulting
-   * status and groups, or undefined if the update was skipped. Tracks how many
-   * times an invalid-group failure has already been retried, so a group ID
-   * that's permanently invalid (not just stale in our cache) fails loudly
-   * instead of retrying forever.
-   */
-  private async upsertContactWithRetry(
-    contact: Contact,
-    updates: ContactNewsletterUpdates | undefined,
-    opts:
-      | { oldEmail?: string; newsletterGroupChange?: NewsletterGroupChange }
-      | undefined,
-    attempt: number
-  ): Promise<Pick<NewsletterContact, 'status' | 'groups'> | undefined> {
-    const groupChange = opts?.newsletterGroupChange ?? 'replace';
-
     const nlUpdate = await contactToNlUpdate(contact, updates, opts);
     if (!nlUpdate) {
       // In case something's misconfigured (e.g. a stale newsletterStatus),
@@ -138,19 +100,39 @@ class NewsletterService {
         );
       }
       log.info('Ignoring contact update for ' + contact.id);
-      return undefined;
+      return;
     }
 
-    if (nlUpdate.status === NewsletterStatus.None) {
-      return { status: NewsletterStatus.None, groups: [] };
-    }
+    // A contact with no newsletter status isn't sent to the provider at all,
+    // their groups are just cleared
+    const newState: Pick<NewsletterContact, 'status' | 'groups'> =
+      nlUpdate.status === NewsletterStatus.None
+        ? { status: NewsletterStatus.None, groups: [] }
+        : await this.upsertContactToProvider(contact, nlUpdate, opts?.oldEmail);
 
+    // TODO: remove dependency on ContactProfile
+    await getRepository(ContactProfile).update(contact.id, {
+      newsletterStatus: newState.status,
+      newsletterGroups: newState.groups,
+    });
+    contact.profile.newsletterStatus = newState.status;
+    contact.profile.newsletterGroups = newState.groups;
+  }
+
+  /**
+   * Send a prepared update to the newsletter provider and return the status
+   * and groups it reports back. An invalid group ID is retried once, after
+   * refreshing the cached group list.
+   */
+  private async upsertContactToProvider(
+    contact: Contact,
+    nlUpdate: UpdateNewsletterContact,
+    oldEmail: string | undefined,
+    attempt = 0
+  ): Promise<Pick<NewsletterContact, 'status' | 'groups'>> {
     try {
       log.info('Upsert contact ' + contact.id);
-      const newState = await this.provider.upsertContact(
-        nlUpdate,
-        opts?.oldEmail
-      );
+      const newState = await this.provider.upsertContact(nlUpdate, oldEmail);
 
       log.info(
         `Got newsletter groups and status ${newState.status} for contact ${contact.id}`,
@@ -167,23 +149,35 @@ class NewsletterService {
           err
         );
         return { status: NewsletterStatus.None, groups: [] };
-      } else if (
+      }
+
+      const partialGroupUpdate =
+        nlUpdate.newsletterGroupChange === 'add' ||
+        nlUpdate.newsletterGroupChange === 'remove';
+
+      // A partial update scopes the payload to the given group IDs, so
+      // refreshing the cached group list can't change what gets sent. A group
+      // ID still invalid after one refresh is permanently invalid, so fail
+      // loudly rather than retrying forever.
+      if (
         err instanceof CantUpdateNewsletterGroupsError &&
         attempt === 0 &&
-        groupChange === 'replace'
+        !partialGroupUpdate
       ) {
-        // Only 'replace' builds the payload from the cached group list, so a
-        // refresh can only correct an invalid group ID on that path. Refresh
-        // the cache and retry the upsert once.
         log.warning(
           `Failed to subscribe ${contact.email} to group. ${err.detail}\nGroups will be refreshed and the upsert retried.`
         );
 
         await this.refreshNewsletterGroups();
-        return this.upsertContactWithRetry(contact, updates, opts, attempt + 1);
-      } else {
-        throw err;
+        return this.upsertContactToProvider(
+          contact,
+          nlUpdate,
+          oldEmail,
+          attempt + 1
+        );
       }
+
+      throw err;
     }
   }
 
