@@ -15,15 +15,15 @@ button:not(:disabled) {
  * to `UModal` content (see `modal.slots.content` in nuxt-ui.config.ts),
  * since a modal's teleported DOM otherwise falls outside `.nuxt-page`.
  */
-.nuxt-page {
-  @apply text-default;
 
-  p {
+@layer components {
+  .nuxt-page {
     @apply text-sm;
-  }
 
-  h2 {
-    @apply text-highlighted text-base font-semibold;
+    h2,
+    h3 {
+      @apply text-highlighted text-base font-semibold;
+    }
   }
 }
 

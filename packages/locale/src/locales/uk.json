@@ -437,6 +437,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Взяти участь ще раз",
       "updateResponse": "Оновіть свою відповідь"
     },
     "addAPoint": "Натисніть на карту, де ви хочете додати точку",
@@ -974,12 +975,23 @@
     "oneResponseWarning": "Зверніть увагу, що від однієї особи дозволено лише одну відповідь. Якщо ви вже зробили свій внесок, додаткові відповіді не будуть записані."
   },
   "callouts": {
+    "access": {
+      "everyone": "Відкрито для всіх",
+      "member": "Тільки для членів"
+    },
     "archive": "Архів",
+    "archiveRange": "{start}-{end} з {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "Дата завершення"
+      "endDate": "Дата завершення",
+      "responses": "{n} відповідь | {n} відповідей"
+    },
+    "daysLeft": "залишився {n} день | залишилося {n} днів",
+    "empty": {
+      "active": "Наразі немає активних CrowdNewsroom."
     },
     "noArchivedCallouts": "Тут нічого дивитися",
+    "openCallouts": "Відкриті CrowdNewsroom",
     "search": "Пошук",
     "showAll": "Усі",
     "showAnswered": "Відповів",

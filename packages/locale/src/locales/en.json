@@ -436,6 +436,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Participate again",
       "updateResponse": "Update your response"
     },
     "addAPoint": "Click on the map where you want to add a point",
@@ -973,12 +974,23 @@
     "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded."
   },
   "callouts": {
+    "access": {
+      "everyone": "Open to everyone",
+      "member": "Members only"
+    },
     "archive": "Archive",
+    "archiveRange": "{start}-{end} of {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "End date"
+      "endDate": "End date",
+      "responses": "{n} response | {n} responses"
+    },
+    "daysLeft": "{n} day left | {n} days left",
+    "empty": {
+      "active": "No active callouts right now."
     },
     "noArchivedCallouts": "Nothing to see here",
+    "openCallouts": "Open CrowdNewsrooms",
     "search": "Search",
     "showAll": "All",
     "showAnswered": "Answered",

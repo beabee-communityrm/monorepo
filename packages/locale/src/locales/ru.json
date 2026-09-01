@@ -438,6 +438,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Участвовать снова",
       "updateResponse": "Обновить ваш ответ"
     },
     "addAPoint": "Кликните, чтобы добавить отметку на карту",
@@ -975,12 +976,23 @@
     "oneResponseWarning": ""
   },
   "callouts": {
+    "access": {
+      "everyone": "Открыто для всех",
+      "member": "Только для участников"
+    },
     "archive": "Архив",
+    "archiveRange": "{start}-{end} из {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "Дата окончания"
+      "endDate": "Дата окончания",
+      "responses": "{n} ответ | {n} ответов"
+    },
+    "daysLeft": "остался {n} день | осталось {n} дней",
+    "empty": {
+      "active": "Сейчас нет активных CrowdNewsroom."
     },
     "noArchivedCallouts": "Нет опросов",
+    "openCallouts": "Открытые CrowdNewsroom",
     "search": "Поиск опросов",
     "showAll": "Все",
     "showAnswered": "Отвеченные",

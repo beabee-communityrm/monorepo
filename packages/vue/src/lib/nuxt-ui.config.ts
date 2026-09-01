@@ -10,6 +10,19 @@ export const nuxtUiConfig: NuxtUIOptions = {
       primary: 'nuxt-primary',
       neutral: 'gray',
     },
+    badge: {
+      // Each size variant bakes in its own rounded-sm/rounded-md, so the
+      // override needs to be per-size rather than a single shared class.
+      variants: {
+        size: {
+          xs: { base: 'rounded-full' },
+          sm: { base: 'rounded-full' },
+          md: { base: 'rounded-full' },
+          lg: { base: 'rounded-full' },
+          xl: { base: 'rounded-full' },
+        },
+      },
+    },
     navigationMenu: {
       slots: {
         link: 'py-2.5!',

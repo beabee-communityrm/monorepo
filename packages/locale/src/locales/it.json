@@ -437,6 +437,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Partecipa di nuovo",
       "updateResponse": "Aggiorna la tua risposta"
     },
     "addAPoint": "Clicca sulla mappa dove vuoi aggiungere un punto",
@@ -974,12 +975,23 @@
     "oneResponseWarning": "Nota: è consentita una sola risposta per persona. Se hai già contribuito, eventuali risposte aggiuntive non verranno registrate."
   },
   "callouts": {
+    "access": {
+      "everyone": "Aperto a tutti",
+      "member": "Solo membri"
+    },
     "archive": "Archivio",
+    "archiveRange": "{start}-{end} di {total}",
     "data": {
       "callout": "Callout",
-      "endDate": "Data fine"
+      "endDate": "Data fine",
+      "responses": "{n} risposta | {n} risposte"
+    },
+    "daysLeft": "{n} giorno rimanente | {n} giorni rimanenti",
+    "empty": {
+      "active": "Al momento non ci sono callout attivi."
     },
     "noArchivedCallouts": "Nessuna callout",
+    "openCallouts": "Callout aperte",
     "search": "Cerca un callout",
     "showAll": "Tutti",
     "showAnswered": "Completati",

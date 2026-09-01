@@ -437,6 +437,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Erneut teilnehmen",
       "updateResponse": "Antwort bearbeiten"
     },
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
@@ -974,12 +975,23 @@
     "oneResponseWarning": "Bitte beachte, dass nur eine Antwort pro Person möglich ist. Wenn du schon teilgenommen hast, werden weitere Antworten nicht berücksichtigt."
   },
   "callouts": {
+    "access": {
+      "everyone": "Offen für alle",
+      "member": "Nur Mitglieder"
+    },
     "archive": "Archiv",
+    "archiveRange": "{start}-{end} von {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "Enddatum"
+      "endDate": "Enddatum",
+      "responses": "{n} Antwort | {n} Antworten"
+    },
+    "daysLeft": "noch {n} Tag | noch {n} Tage",
+    "empty": {
+      "active": "Im Moment gibt es keine aktiven CrowdNewsrooms."
     },
     "noArchivedCallouts": "Keine CrowdNewsrooms",
+    "openCallouts": "Offene CrowdNewsrooms",
     "search": "CrowdNewsroom durchsuchen",
     "showAll": "Alle",
     "showAnswered": "Beantwortet",
