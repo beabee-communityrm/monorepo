@@ -78,17 +78,25 @@
         "subscribed": "",
         "unsubscribed": ""
       },
+      "description": "",
+      "noGroups": "",
       "subscribe": "",
       "title": "",
-      "unsubscribe": ""
+      "unsubscribe": "",
+      "unsubscribeButton": "",
+      "unsubscribeInfo": "",
+      "unsubscribedNotification": ""
     },
+    "personalDetails": "",
     "phoneInfo": "",
     "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
     "requiredFields": "",
     "savedPassword": "",
+    "security": "",
     "subTitle": "",
     "subTitle-nuxt": "",
+    "subscriptions": "",
     "title": ""
   },
   "actions": {
@@ -293,6 +301,7 @@
       "newsletter": {
         "audienceId": "",
         "groups": "",
+        "groupsNote": "",
         "noGroups": ""
       },
       "refresh": "",

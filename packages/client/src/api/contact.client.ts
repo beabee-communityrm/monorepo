@@ -16,6 +16,7 @@ import { cleanUrl } from '../utils/index.js';
 import { BaseClient } from './base.client.js';
 import { ContactContributionClient } from './contact-contribution.client.js';
 import { ContactMfaClient } from './contact-mfa.client.js';
+import { ContactNewsletterClient } from './contact-newsletter.client.js';
 import { ContactPaymentMethodClient } from './contact-payment-method.client.js';
 import { ContactPaymentClient } from './contact-payment.client.js';
 import { ContactRoleClient } from './contact-role.client.js';
@@ -45,6 +46,9 @@ export class ContactClient extends BaseClient {
   /** Client for managing contact payment methods */
   readonly paymentMethod: ContactPaymentMethodClient;
 
+  /** Client for a contact's newsletter group subscriptions */
+  readonly newsletter: ContactNewsletterClient;
+
   /**
    * Creates a new contact client with all sub-clients
    * @param options - The client options
@@ -60,6 +64,7 @@ export class ContactClient extends BaseClient {
     this.tag = new ContactTagClient(options);
     this.payment = new ContactPaymentClient(options);
     this.paymentMethod = new ContactPaymentMethodClient(options);
+    this.newsletter = new ContactNewsletterClient(options);
   }
 
   /**

@@ -46,6 +46,7 @@ import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
+import { NewsletterGroupChange } from '#type/newsletter-group-change';
 import { UpdateContributionResult } from '#type/update-contribution-result';
 import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
@@ -303,7 +304,7 @@ class ContactsService {
   async updateContactProfile(
     contact: Contact,
     updates: Partial<ContactProfile>,
-    opts: { mergeGroups?: boolean } = { mergeGroups: false }
+    opts: { newsletterGroupChange?: NewsletterGroupChange } = {}
   ): Promise<void> {
     const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
 

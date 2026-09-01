@@ -1,4 +1,7 @@
-import { NewsletterGroupData } from '@beabee/beabee-common';
+import {
+  BaseNewsletterGroupData,
+  NewsletterGroupData,
+} from '@beabee/beabee-common';
 
 import { IsBoolean, IsString } from 'class-validator';
 
@@ -11,4 +14,12 @@ export class NewsletterGroupDto implements NewsletterGroupData {
 
   @IsBoolean()
   checked!: boolean;
+}
+
+export class GetContactNewsletterGroupDto implements BaseNewsletterGroupData {
+  @IsString()
+  id!: string;
+
+  @IsString()
+  label!: string;
 }

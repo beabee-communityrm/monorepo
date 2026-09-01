@@ -1,4 +1,7 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
+import {
+  BaseNewsletterGroupData,
+  NewsletterStatus,
+} from '@beabee/beabee-common';
 
 import axios from 'axios';
 import crypto from 'crypto';
@@ -13,6 +16,7 @@ import {
   MCOperationResponse,
   MCStatus,
   NewsletterContact,
+  NewsletterGroupChange,
   UpdateNewsletterContact,
 } from '#type/index';
 import { normalizeEmailAddress } from '#utils/email';
@@ -262,6 +266,35 @@ export function getMCMemberUrl(listId: string, email: string) {
 }
 
 /**
+ * Build the Mailchimp `interests` payload for a groups update.
+ *
+ * - 'add'/'remove': only the listed group IDs are included, set to
+ *   true/false respectively — every other group is left untouched on
+ *   Mailchimp's side, regardless of what we locally think its state is.
+ * - 'replace' (default): every known group is included, set to true only if
+ *   it's in `groups` — a full declaration of membership.
+ *
+ * @param groups The group IDs the update concerns
+ * @param change How `groups` should be applied
+ * @returns The Mailchimp `interests` object
+ */
+function buildInterests(
+  groups: string[],
+  change: NewsletterGroupChange = 'replace'
+): Record<string, boolean> {
+  if (change === 'add' || change === 'remove') {
+    return Object.fromEntries(groups.map((id) => [id, change === 'add']));
+  }
+
+  const allGroupIds = OptionsService.getJSON('newsletter-groups').map(
+    (group: BaseNewsletterGroupData) => group.id
+  );
+  return Object.fromEntries(
+    allGroupIds.map((id: string) => [id, groups.includes(id)])
+  );
+}
+
+/**
  * Convert a NewsletterContact to a Mailchimp member object
  *
  * @param nlContact The newsletter contact
@@ -274,10 +307,6 @@ export function nlContactToMCMember(
     throw new Error('NewsletterStatus = None for ' + nlContact.email);
   }
 
-  const groupIds = OptionsService.getJSON('newsletter-groups').map(
-    (group: { id: string }) => group.id
-  );
-
   return {
     email_address: nlContact.email,
     status: nlContact.status,
@@ -289,11 +318,9 @@ export function nlContactToMCMember(
       },
     }),
     ...(nlContact.groups && {
-      interests: Object.assign(
-        {},
-        ...groupIds.map((groupId: string) => ({
-          [groupId]: nlContact.groups?.includes(groupId),
-        }))
+      interests: buildInterests(
+        nlContact.groups,
+        nlContact.newsletterGroupChange
       ),
     }),
   };
