@@ -344,7 +344,6 @@ class CalloutsService {
             source: 'CrowdNewsroom',
             medium: '',
             campaign: callout.slug,
-            addedBy: '',
           }
         );
       }
