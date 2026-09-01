@@ -1140,6 +1140,13 @@
     },
     "oneTime": "Ponctuel",
     "origin": {
+      "addedBy": "Ajouté par",
+      "addedByValues": {
+        "admin": "Administrateur",
+        "external": "Externe",
+        "self-signup": "Inscription autonome",
+        "system": "Système"
+      },
       "campaign": "Campagne",
       "referrer": "Référent",
       "source": "Source d'inscription",

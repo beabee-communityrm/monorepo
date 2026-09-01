@@ -1135,6 +1135,13 @@
     },
     "oneTime": "One-time",
     "origin": {
+      "addedBy": "Added By",
+      "addedByValues": {
+        "admin": "Admin",
+        "external": "External",
+        "self-signup": "Self signup",
+        "system": "System"
+      },
       "campaign": "Campaign",
       "referrer": "Referrer",
       "source": "Signup Source",
