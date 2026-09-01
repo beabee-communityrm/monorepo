@@ -1134,6 +1134,13 @@
     },
     "oneTime": "",
     "origin": {
+      "addedBy": "",
+      "addedByValues": {
+        "admin": "",
+        "external": "",
+        "self-signup": "",
+        "system": ""
+      },
       "campaign": "",
       "referrer": "",
       "source": "",

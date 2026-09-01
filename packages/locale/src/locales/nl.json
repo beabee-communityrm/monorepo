@@ -1136,6 +1136,13 @@
     },
     "oneTime": "Eenmalig",
     "origin": {
+      "addedBy": "Toegevoegd door",
+      "addedByValues": {
+        "admin": "Beheerder",
+        "external": "Extern",
+        "self-signup": "Zelfaanmelding",
+        "system": "Systeem"
+      },
       "campaign": "Campagne",
       "referrer": "Verwijzer",
       "source": "Aanmeldbron",

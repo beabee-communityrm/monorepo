@@ -1136,6 +1136,13 @@
     },
     "oneTime": "Una tantum",
     "origin": {
+      "addedBy": "Aggiunto da",
+      "addedByValues": {
+        "admin": "Amministratore",
+        "external": "Esterno",
+        "self-signup": "Iscrizione autonoma",
+        "system": "Sistema"
+      },
       "campaign": "Campagna",
       "referrer": "Referente",
       "source": "Fonte di iscrizione",
