@@ -32,6 +32,26 @@ class ActivityService {
   }
 
   /**
+   * Add multiple events to the activity events table in a single batch insert
+   * Event actor type and ID are obtained from the current request
+   * @param events events containing contact ID, event type and metadata (if any)
+   */
+  async addEvents<T extends ActivityEventType>(
+    events: (Pick<ActivityEvent<T>, 'targetId' | 'eventType' | 'metadata'> &
+      Partial<ActivityActor>)[]
+  ): Promise<void> {
+    if (events.length === 0) return;
+    try {
+      const actor = actorContext.get();
+      await getRepository(ActivityEvent).insert(
+        events.map((event) => ({ ...actor, ...event }))
+      );
+    } catch (err) {
+      log.error(`Failed to log ${events.length} events`, err);
+    }
+  }
+
+  /**
    * Get events for a particular contact
    * @param id The contact ID
    * @returns Events for this contact ID
