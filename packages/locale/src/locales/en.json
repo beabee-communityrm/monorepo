@@ -810,6 +810,7 @@
       },
       "untitledCallout": "Untitled CrowdNewsroom"
     },
+    "closedNoEdit": "This CrowdNewsroom has closed, so it can no longer be edited.",
     "closedOn": "Closed {date}",
     "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",
@@ -842,6 +843,7 @@
     },
     "showingPreview": "You can't submit a response in preview mode",
     "showingPreview-nuxt": "Preview mode — this is what contributors see. You can't submit a response from here.",
+    "submittedOn": "Submitted {date}.",
     "toContributionPage": "Edit my contribution",
     "updateContribution": "please update your contribution",
     "views": {

@@ -7,12 +7,10 @@ meta:
 </route>
 
 <template>
-  <div class="nuxt-page">
+  <div class="nuxt-page mx-auto flex w-full max-w-[720px] flex-col gap-6">
     <CalloutPreviewBar v-if="isPreview && !isEmbed" />
 
-    <div
-      class="mb-2 flex w-full flex-wrap items-center justify-between gap-4 md:max-w-2xl"
-    >
+    <div class="flex w-full flex-wrap items-center justify-between gap-4">
       <div class="flex flex-wrap items-center gap-2">
         <UBadge
           :color="isOpen ? 'success' : 'neutral'"
@@ -49,21 +47,24 @@ meta:
     <h2 v-if="!isEmbed" class="text-lg">{{ callout.title }}</h2>
 
     <template v-if="responses /* Avoids layout thrashing */">
-      <CalloutThanksBox v-if="latestResponse" :callout="callout" class="mb-6" />
+      <CalloutThankYouBanner
+        v-if="latestResponse"
+        :callout="callout"
+        :submitted-at="latestResponse.createdAt"
+      />
       <AppMessageBox
         v-else-if="!isOpen && callout.expires /* Type narrowing */"
         :title="
           t('callout.ended', { date: formatLocale(callout.expires, 'PPP') })
         "
         :icon="faInfoCircle"
-        class="mb-6"
         variant="info"
       />
 
-      <div class="w-full md:max-w-2xl">
+      <div class="flex flex-col gap-6">
         <template v-if="!isRespondPage">
-          <img class="mb-6 w-full" :src="imageUrl" />
-          <div class="content-message mb-6 text-lg" v-html="callout.intro" />
+          <img class="w-full" :src="imageUrl" />
+          <div class="content-message text-lg" v-html="callout.intro" />
         </template>
 
         <CalloutLoginPrompt v-if="showLoginPrompt" />
@@ -132,10 +133,10 @@ import noImage from '#assets/images/no-image.avif';
 import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
 import CalloutPreviewBar from '#components/callout/CalloutPreviewBar.vue';
 import CalloutSharePopover from '#components/callout/CalloutSharePopover.vue';
+import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue';
 import CalloutForm from '#components/pages/callouts/CalloutForm.vue';
 import CalloutLoginPrompt from '#components/pages/callouts/CalloutLoginPrompt.vue';
 import CalloutMemberOnlyPrompt from '#components/pages/callouts/CalloutMemberOnlyPrompt.vue';
-import CalloutThanksBox from '#components/pages/callouts/CalloutThanksBox.vue';
 import { useCallout } from '#components/pages/callouts/use-callout';
 import env from '#env';
 import { currentUser, isEmbed } from '#store';

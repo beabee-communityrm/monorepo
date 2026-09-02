@@ -6,10 +6,10 @@ meta:
   embeddable: true
 </route>
 <template>
-  <CalloutLanguageSelect :callout="callout" />
-  <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
-  <CalloutThanksBox :callout="callout" class="mb-6" />
-  <div class="w-full md:max-w-2xl">
+  <div class="nuxt-page mx-auto flex w-full max-w-[720px] flex-col gap-6">
+    <CalloutLanguageSelect :callout="callout" />
+    <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
+    <CalloutThankYouBanner :callout="callout" />
     <AppShareBox :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`" />
   </div>
 </template>
@@ -20,8 +20,8 @@ import { AppShareBox, AppTitle } from '@beabee/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import CalloutThanksBox from '#components/pages/callouts/CalloutThanksBox.vue';
 import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
+import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue';
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { currentUser, isEmbed } from '#store/index';

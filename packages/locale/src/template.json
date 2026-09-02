@@ -810,6 +810,7 @@
       },
       "untitledCallout": ""
     },
+    "closedNoEdit": "",
     "closedOn": "",
     "confirmHuman": "",
     "contactDetails": "",
@@ -842,6 +843,7 @@
     },
     "showingPreview": "",
     "showingPreview-nuxt": "",
+    "submittedOn": "",
     "toContributionPage": "",
     "updateContribution": "",
     "views": {
