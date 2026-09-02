@@ -1700,6 +1700,7 @@
           "showOptIn": "Ask to subscribe to newsletter",
           "title": "Newsletter"
         },
+        "showOrganisationName": "Ask for organisation name",
         "text": "After joining, users will be asked to confirm their registration. Here you can set the details of the confirmation screen.",
         "title": "Account confirmation",
         "welcomeMessage": "Welcome message"

@@ -1701,6 +1701,7 @@
           "showOptIn": "Nach Newsletterabonnement fragen",
           "title": "Newsletter"
         },
+        "showOrganisationName": "Nach Organisationsname fragen",
         "text": "Neue Mitglieder müssen ihre Registrierung in folgendem Bildschirm bestätigen. Außerdem werden hier persönliche Informationen abgefragt.",
         "title": "Persönliche Informationen abfragen",
         "welcomeMessage": "Willkommensnachricht"

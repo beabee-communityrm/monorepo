@@ -1703,6 +1703,7 @@
           "showOptIn": "Chiedi di iscriversi alla newsletter",
           "title": "Newsletter"
         },
+        "showOrganisationName": "Chiedere il nome dell'organizzazione",
         "text": "Dopo l'iscrizione, agli utenti verrà chiesto di confermare la registrazione. Qui puoi impostare i dettagli della schermata di conferma.",
         "title": "Conferma account",
         "welcomeMessage": "Messaggio di benvenuto"

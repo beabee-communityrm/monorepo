@@ -1707,6 +1707,7 @@
           "showOptIn": "Inviter à s'inscrire à la lettre d'information",
           "title": "Lettre d'information"
         },
+        "showOrganisationName": "Demander le nom de l'organisation",
         "text": "Les utilisateurs devront confirmer leur inscription. Ici vous pouvez définir les informations de l'écran de confirmation.",
         "title": "Confirmation du compte",
         "welcomeMessage": "Message de bienvenue"

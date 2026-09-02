@@ -1708,6 +1708,7 @@
           "showOptIn": "",
           "title": "Рассылка"
         },
+        "showOrganisationName": "Запрашивать название организации",
         "text": "",
         "title": "",
         "welcomeMessage": ""

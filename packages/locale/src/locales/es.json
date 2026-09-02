@@ -1701,6 +1701,7 @@
           "showOptIn": "Preguntar si desean suscribirse al boletín",
           "title": "Boletín"
         },
+        "showOrganisationName": "Pedir el nombre de la organización",
         "text": "Después de registrarse, se pedirá a los usuarios que confirmen su registro. Aquí puedes configurar los detalles de la pantalla de confirmación.",
         "title": "Confirmación de cuenta",
         "welcomeMessage": "Mensaje de bienvenida"

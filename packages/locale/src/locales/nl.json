@@ -1703,6 +1703,7 @@
           "showOptIn": "Vraag om in te schrijven voor nieuwsbrief",
           "title": "Nieuwsbrief"
         },
+        "showOrganisationName": "Vragen om organisatienaam",
         "text": "Nadat gebruikers lid zijn geworden, worden ze gevraagd om hun registratie te bevestigen. Hier kun je de details van het bevestigingsscherm instellen.",
         "title": "Account bevestiging",
         "welcomeMessage": "Welkomstbericht"
