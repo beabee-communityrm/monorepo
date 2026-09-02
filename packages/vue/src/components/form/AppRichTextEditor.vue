@@ -286,7 +286,7 @@ const isEditorEmpty = computed(() => editor.value?.isEmpty || false);
   @apply h-full min-h-20 w-full rounded border border-main-40 bg-white p-2 focus:shadow-input focus:outline-none;
 
   .ProseMirror-hasError & {
-    @apply border-danger-70 bg-danger-10;
+    @apply border-theme-danger-70 bg-theme-danger-10;
   }
 }
 

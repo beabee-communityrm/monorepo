@@ -21,7 +21,7 @@ import App2ColGrid from './App2ColGrid.vue';
           </div>
         </template>
         <template #col2>
-          <div class="rounded bg-success-10 p-4">
+          <div class="rounded bg-theme-success-10 p-4">
             <h3 class="mb-2 font-semibold">Second Column</h3>
             <p class="text-sm text-body-80">
               This is the second column content. Toggle the "Extended" option to
@@ -55,7 +55,7 @@ import App2ColGrid from './App2ColGrid.vue';
           </div>
         </template>
         <template #col2>
-          <div class="rounded bg-warning-10 p-4">
+          <div class="rounded bg-theme-warning-10 p-4">
             <h3 class="mb-2 font-semibold">Extended Second Column</h3>
             <p class="text-sm text-body-80">
               This second column extends to take more space (xl:col-end-13) when

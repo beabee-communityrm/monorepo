@@ -613,7 +613,7 @@ dialog.fixed {
   padding-right: 0px;
 }
 
-.has-error.bg-danger {
+.has-error.bg-theme-danger {
   padding: 4px;
 }
 

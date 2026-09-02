@@ -13,7 +13,7 @@
   ```vue
   <AppInfoListItem name="Status" value="Active" />
   <AppInfoListItem name="Description">
-    <span class="text-success">Custom content</span>
+    <span class="text-theme-success">Custom content</span>
   </AppInfoListItem>
   ```
 -->

@@ -122,7 +122,7 @@
   }
 
   .alert {
-    @apply border-t-[12px] border-danger-70 bg-white px-3 py-2 text-sm text-danger;
+    @apply border-t-[12px] border-theme-danger-70 bg-white px-3 py-2 text-sm text-theme-danger;
 
     &:not(:first-child) {
       @apply mt-4 border border-t-[12px];
@@ -236,7 +236,7 @@
         @apply mr-1! border-main-40! bg-white! text-main-80! hover:border-main-70! hover:bg-main-10! hover:text-main!;
       }
       &.btn-danger {
-        @apply border-danger! bg-white! text-danger! hover:bg-danger-10!;
+        @apply border-theme-danger! bg-white! text-theme-danger! hover:bg-theme-danger-10!;
       }
     }
   }

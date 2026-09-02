@@ -57,9 +57,9 @@ const sizeClasses = {
 
 // Type-based color classes mapping
 const colorClasses = {
-  success: 'bg-success',
-  warning: 'bg-warning',
-  danger: 'bg-danger',
+  success: 'bg-theme-success',
+  warning: 'bg-theme-warning',
+  danger: 'bg-theme-danger',
   disabled: 'bg-grey-dark',
 } as const;
 

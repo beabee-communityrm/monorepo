@@ -35,7 +35,7 @@
         disabled
           ? 'opacity-50'
           : hasError
-            ? 'border-danger bg-danger-10'
+            ? 'border-theme-danger bg-theme-danger-10'
             : 'bg-white'
       "
     >
@@ -49,7 +49,7 @@
             :value="amount"
             class="absolute inset-0 w-full border-0 text-6xl/[7rem] text-body outline-none"
             :min="minAmount"
-            :class="{ 'bg-danger-10': hasError }"
+            :class="{ 'bg-theme-danger-10': hasError }"
             :disabled="disabled"
             :aria-invalid="hasError"
             :aria-describedby="hasError ? 'amount-error' : undefined"
@@ -106,7 +106,7 @@
     <div
       v-if="hasError"
       id="amount-error"
-      class="col-span-12 mt-0 text-sm font-semibold text-danger"
+      class="col-span-12 mt-0 text-sm font-semibold text-theme-danger"
       role="alert"
     >
       {{ t('join.minimumContribution') }}

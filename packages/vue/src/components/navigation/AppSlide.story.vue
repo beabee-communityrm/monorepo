@@ -28,15 +28,17 @@ import AppSlide from './AppSlide.vue';
 
     <Variant title="Rich Content" description="Slide with mixed content types">
       <AppSlide aria-label="Rich content slide">
-        <div class="bg-success-10 p-6">
+        <div class="bg-theme-success-10 p-6">
           <div class="flex items-center justify-center">
             <div class="max-w-md text-center">
-              <h2 class="mb-4 text-2xl font-bold text-success-110">Success!</h2>
+              <h2 class="mb-4 text-2xl font-bold text-theme-success-110">
+                Success!
+              </h2>
               <p class="mb-4">
                 This slide contains rich content with multiple elements.
               </p>
               <button
-                class="rounded bg-success px-4 py-2 text-white hover:bg-success-70"
+                class="rounded bg-theme-success px-4 py-2 text-white hover:bg-theme-success-70"
               >
                 Action Button
               </button>

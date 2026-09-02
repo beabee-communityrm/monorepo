@@ -16,8 +16,8 @@ type PillType = 'success' | 'disabled' | 'danger';
 defineProps<{ type: PillType }>();
 
 const config: Record<PillType, { classes: string }> = {
-  success: { classes: 'border-success text-success' },
-  danger: { classes: 'border-danger text-danger' },
+  success: { classes: 'border-theme-success text-theme-success' },
+  danger: { classes: 'border-theme-danger text-theme-danger' },
   disabled: { classes: 'border-grey-dark text-grey-dark' },
 };
 </script>

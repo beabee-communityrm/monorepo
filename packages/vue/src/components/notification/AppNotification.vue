@@ -135,11 +135,19 @@ const circleStyle = computed(() => ({
 const colorClass = computed(() => {
   switch (props.variant) {
     case 'success':
-      return ['border-success', 'text-success', 'stroke-success'];
+      return [
+        'border-theme-success',
+        'text-theme-success',
+        'stroke-theme-success',
+      ];
     case 'warning':
-      return ['border-warning', '', 'stroke-warning'];
+      return ['border-theme-warning', '', 'stroke-theme-warning'];
     case 'error':
-      return ['border-danger', 'text-danger', 'stroke-danger'];
+      return [
+        'border-theme-danger',
+        'text-theme-danger',
+        'stroke-theme-danger',
+      ];
     default:
       return ['border-main', 'text-main', 'stroke-main'];
   }

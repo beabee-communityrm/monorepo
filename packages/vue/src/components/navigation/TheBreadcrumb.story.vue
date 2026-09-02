@@ -116,8 +116,8 @@ const deepNestingCrumbs: BreadcrumbItem[] = [
           <TheBreadcrumb :items="longCrumbs" />
         </div>
 
-        <div class="rounded bg-warning-10 p-3">
-          <p class="text-warning-80 text-sm">
+        <div class="rounded bg-theme-warning-10 p-3">
+          <p class="text-theme-warning-80 text-sm">
             <strong>Note:</strong> Long breadcrumb paths should be used
             carefully. Consider breaking down deep navigation structures for
             better UX.
@@ -133,8 +133,8 @@ const deepNestingCrumbs: BreadcrumbItem[] = [
           <TheBreadcrumb :items="deepNestingCrumbs" />
         </div>
 
-        <div class="rounded bg-warning-10 p-3">
-          <p class="text-warning-80 text-sm">
+        <div class="rounded bg-theme-warning-10 p-3">
+          <p class="text-theme-warning-80 text-sm">
             <strong>Warning:</strong> This example shows very deep nesting. In
             real applications, consider using abbreviated paths or different
             navigation patterns.

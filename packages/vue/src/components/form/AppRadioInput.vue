@@ -77,18 +77,18 @@ const selected = defineModel<AppRadioInputValue>();
 const borderVariantClasses = {
   primary: 'border-main border-2',
   link: 'border-link border-2',
-  danger: 'border-danger border-2',
+  danger: 'border-theme-danger border-2',
 } as const;
 
 const dotVariantClasses = {
   primary: 'bg-main',
   link: 'bg-link',
-  danger: 'bg-danger',
+  danger: 'bg-theme-danger',
 } as const;
 
 const hoverVariantClasses = {
   primary: 'hover:text-main-120 hover:border-main-120',
   link: 'hover:text-link-120 hover:border-link-120',
-  danger: 'hover:text-danger-120 hover:border-danger-120',
+  danger: 'hover:text-theme-danger-120 hover:border-theme-danger-120',
 } as const;
 </script>

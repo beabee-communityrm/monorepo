@@ -147,9 +147,9 @@ const variantClasses = {
     'text-link',
   ],
   dangerOutlined: [
-    'bg-white text-danger border-danger',
-    'hover:bg-danger-10',
-    'text-danger',
+    'bg-white text-theme-danger border-theme-danger',
+    'hover:bg-theme-danger-10',
+    'text-theme-danger',
   ],
   greyOutlined: [
     'bg-white text-body-80 border-grey-light',
@@ -158,14 +158,18 @@ const variantClasses = {
   ],
   text: ['underline text-link border-0', 'hover:text-link-110', ''],
   danger: [
-    'bg-danger text-white border-danger',
-    'hover:bg-danger-110',
-    'text-danger',
+    'bg-theme-danger text-white border-theme-danger',
+    'hover:bg-theme-danger-110',
+    'text-theme-danger',
   ],
-  dangerText: ['underline text-danger border-0', 'hover:text-danger-110', ''],
+  dangerText: [
+    'underline text-theme-danger border-0',
+    'hover:text-theme-danger-110',
+    '',
+  ],
   dangerGhost: [
     'bg-transparent border-0 text-body-60',
-    'hover:text-danger-70',
+    'hover:text-theme-danger-70',
     'text-body-60',
   ],
 } as const;

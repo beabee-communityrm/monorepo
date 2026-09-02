@@ -23,7 +23,7 @@
         <span v-if="item.hasOverride" class="text-body-80">
           {{ t('emails.customized') }}
         </span>
-        <span v-else-if="!item.hasDefaultTemplate" class="text-danger">
+        <span v-else-if="!item.hasDefaultTemplate" class="text-theme-danger">
           {{ t('emails.missingDefault') }}
         </span>
         <span v-else class="text-body-80">

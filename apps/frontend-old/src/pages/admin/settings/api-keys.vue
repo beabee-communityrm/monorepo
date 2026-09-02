@@ -44,7 +44,7 @@ meta:
     :result="apiKeyTable"
     :row-class="
       (item) =>
-        item.expires && item.expires < new Date() ? 'bg-danger-10' : ''
+        item.expires && item.expires < new Date() ? 'bg-theme-danger-10' : ''
     "
     class="mb-8"
   >
