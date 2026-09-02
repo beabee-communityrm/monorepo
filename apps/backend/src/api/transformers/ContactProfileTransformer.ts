@@ -19,6 +19,8 @@ class ContactProfileTransformer extends BaseTransformer<
     return {
       telephone: profile.telephone,
       twitter: profile.twitter,
+      organisation: profile.organisation,
+      vatNumber: profile.vatNumber,
       preferredContact: profile.preferredContact,
       deliveryOptIn: profile.deliveryOptIn,
       deliveryAddress:

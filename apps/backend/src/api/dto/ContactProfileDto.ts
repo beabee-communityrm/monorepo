@@ -20,6 +20,12 @@ export class GetContactProfileDto {
   twitter!: string;
 
   @IsString()
+  organisation!: string;
+
+  @IsString()
+  vatNumber!: string;
+
+  @IsString()
   preferredContact!: string;
 
   @IsBoolean()
@@ -51,6 +57,10 @@ export class UpdateContactProfileDto implements Partial<GetContactProfileDto> {
   @IsOptional()
   @IsString()
   twitter?: string;
+
+  @IsOptional()
+  @IsString()
+  organisation?: string;
 
   @IsOptional()
   @IsString()
