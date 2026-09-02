@@ -2,6 +2,7 @@ export interface SetupContactData {
   email: string;
   firstName: string;
   lastName: string;
+  organisationName: string;
   password: string;
   profile: {
     newsletterOptIn: boolean;

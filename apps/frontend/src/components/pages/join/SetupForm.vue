@@ -25,6 +25,12 @@
         />
 
         <AppInput
+          v-if="setupContent.showOrganisationName"
+          :label="t('adminSettings.general.organisationName')"
+          v-model:email="data.organisationName"
+        />
+
+        <AppInput
           v-model="data.password"
           :label="t('form.password')"
           type="password"
@@ -99,6 +105,7 @@ const data = reactive<SetupContactData>({
   email: contact.email,
   firstName: contact.firstname,
   lastName: contact.lastname,
+  organisationName: '',
   password: '',
   profile: {
     newsletterOptIn:
