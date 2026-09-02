@@ -154,6 +154,10 @@ Migrate from `apps/frontend` → `packages/vue/src/components`.
 
 **Completion:** Update `apps/frontend` imports to `@beabee/vue` | Create wrappers for repeated prop combos | Reuse existing import declarations | Remove translation prop drilling | Run `yarn generate:index && yarn format && yarn build && yarn check` | Verify stories exist | Suggest pages/routes to test | Provide commit msg + PR description
 
+## Task: Nuxt UI Page Migration
+
+Redesigning an `apps/frontend` page against a prototype using Nuxt UI → read `docs/nuxt-ui-migration.md` first and follow it. Covers block inventory, sandbox review loop, and the Nuxt UI / locale / styling conventions.
+
 ## Task: Scaffold Vanilla Package
 
 Use `packages/template-vanilla` conventions. Read its `README.md` and follow instructions. The template ships source TS with no build; not suitable for packages that need a published JS artifact.
