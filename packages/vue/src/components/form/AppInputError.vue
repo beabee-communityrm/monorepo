@@ -1,7 +1,7 @@
 <template>
   <p
     :id="id"
-    class="mt-1.5 text-xs font-semibold text-danger"
+    class="mt-1.5 text-xs font-semibold text-theme-danger"
     role="alert"
     aria-live="polite"
   >

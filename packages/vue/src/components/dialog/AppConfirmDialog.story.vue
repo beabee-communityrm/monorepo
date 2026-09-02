@@ -161,7 +161,7 @@ async function handleAsyncConfirm() {
       >
         <div class="space-y-2">
           <p><strong>Item:</strong> Important Document.pdf</p>
-          <p class="text-danger">
+          <p class="text-theme-danger">
             Are you sure you want to delete this item? This action cannot be
             undone.
           </p>

@@ -21,8 +21,8 @@ import AppInfoListItem from './AppInfoListItem.vue';
       <AppInfoList>
         <AppInfoListItem name="Status">
           <span class="flex items-center gap-2">
-            <span class="h-2 w-2 rounded-full bg-success"></span>
-            <span class="text-success">Online</span>
+            <span class="h-2 w-2 rounded-full bg-theme-success"></span>
+            <span class="text-theme-success">Online</span>
           </span>
         </AppInfoListItem>
         <AppInfoListItem name="Progress">
@@ -36,7 +36,7 @@ import AppInfoListItem from './AppInfoListItem.vue';
         <AppInfoListItem name="Tags">
           <div class="flex gap-1">
             <span class="rounded bg-main-10 px-2 py-1 text-xs">Important</span>
-            <span class="rounded bg-success-10 px-2 py-1 text-xs"
+            <span class="rounded bg-theme-success-10 px-2 py-1 text-xs"
               >Verified</span
             >
           </div>

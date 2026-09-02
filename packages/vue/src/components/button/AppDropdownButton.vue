@@ -102,7 +102,7 @@ const baseClasses = 'absolute top-full min-w-full -left-px z-20 bg-white';
 const variantClasses = {
   primaryOutlined: 'border-main-40 group-hover:border-main-70',
   linkOutlined: 'border-link',
-  dangerOutlined: 'border-danger',
+  dangerOutlined: 'border-theme-danger',
   greyOutlined: 'border-grey-light group-hover:border-grey',
 } as const;
 
