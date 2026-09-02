@@ -31,6 +31,13 @@
         </UFormField>
 
         <UFormField
+          :label="t('adminSettings.general.organisationName')"
+          name="organisation"
+        >
+          <UInput v-model="data.organisation" class="w-full" />
+        </UFormField>
+
+        <UFormField
           :label="t('form.phone')"
           name="telephone"
           :help="t('accountPage.phoneInfo-nuxt')"
@@ -118,6 +125,7 @@ const data = reactive({
   emailAddress: '',
   firstName: '',
   lastName: '',
+  organisation: '',
   telephone: '',
   deliveryOptIn: false,
   addressLine1: '',
@@ -139,6 +147,7 @@ onMounted(async () => {
     emailAddress: contact.email,
     firstName: contact.firstname,
     lastName: contact.lastname,
+    organisation: contact.profile.organisation,
     telephone: contact.profile.telephone,
     deliveryOptIn: contact.profile.deliveryOptIn,
     addressLine1: contact.profile.deliveryAddress?.line1 || '',
@@ -170,6 +179,7 @@ const schema = computed(() =>
       lastName: z
         .string()
         .min(1, { error: t('form.errors.lastName.required') }),
+      organisation: z.string(),
       telephone: z
         .string()
         .refine(isValidPhone, { error: t('form.errors.telephone.phone') }),
@@ -203,6 +213,7 @@ const dirty = computed(
     data.emailAddress !== savedData.emailAddress ||
     data.firstName !== savedData.firstName ||
     data.lastName !== savedData.lastName ||
+    data.organisation !== savedData.organisation ||
     data.telephone !== savedData.telephone ||
     data.deliveryOptIn !== savedData.deliveryOptIn ||
     data.addressLine1 !== savedData.addressLine1 ||
@@ -218,6 +229,7 @@ const { submit: handleSave } = useApiSubmit(
       firstname: data.firstName,
       lastname: data.lastName,
       profile: {
+        organisation: data.organisation,
         telephone: data.telephone,
         // Only update opt in if it's visible
         ...(accountContent.value?.showMailOptIn && {

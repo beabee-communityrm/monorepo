@@ -15,6 +15,10 @@
 
     <div class="mb-3">
       <AppInput
+        v-model="data.organisation"
+        :label="t('adminSettings.general.organisationName')"
+      />
+      <AppInput
         v-model="data.telephone"
         :label="t('form.phone')"
         :info-message="
@@ -126,6 +130,7 @@ const data = reactive({
   addressLine2: '' as string | undefined,
   cityOrTown: '',
   postCode: '',
+  organisation: '',
 });
 
 watch(
@@ -139,6 +144,7 @@ watch(
     data.telephone = contact.profile.telephone;
     data.newsletterToggle = false;
     data.deliveryOptIn = contact.profile.deliveryOptIn;
+    data.organisation = contact.profile.organisation;
 
     currentNewsletterStatus.value = contact.profile.newsletterStatus;
 
@@ -178,6 +184,7 @@ async function handleSubmit() {
         city: data.cityOrTown,
         postcode: data.postCode,
       },
+      organisation: data.organisation,
     },
   });
 

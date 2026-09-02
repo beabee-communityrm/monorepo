@@ -62,6 +62,10 @@ async function handleSubmitSetup(data: SetupContactData) {
         newsletterStatus: NewsletterStatus.Subscribed,
         newsletterGroups: data.profile.newsletterGroups,
       }),
+    // Only set the organisation name if the field was visible
+    ...(setupContent.value.showOrganisationName && {
+      organisation: data.organisationName,
+    }),
     // Only set mail opt-in if the opt-in was visible
     ...(setupContent.value.showMailOptIn && {
       deliveryOptIn: data.profile.deliveryOptIn,

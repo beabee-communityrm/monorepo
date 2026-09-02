@@ -105,7 +105,7 @@ const data = reactive<SetupContactData>({
   email: contact.email,
   firstName: contact.firstname,
   lastName: contact.lastname,
-  organisationName: '',
+  organisationName: contact.profile.organisation,
   password: '',
   profile: {
     newsletterOptIn:
