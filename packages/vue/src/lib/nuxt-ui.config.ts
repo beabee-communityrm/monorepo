@@ -64,6 +64,11 @@ export const nuxtUiConfig: NuxtUIOptions = {
         base: 'py-2!',
       },
     },
+    select: {
+      slots: {
+        base: 'py-2!',
+      },
+    },
     modal: {
       slots: {
         // `nuxt-page` applies the page-level typography rules (index.css)
