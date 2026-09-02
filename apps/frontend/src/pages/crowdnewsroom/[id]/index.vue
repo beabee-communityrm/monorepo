@@ -9,7 +9,20 @@ meta:
 <template>
   <CalloutPreviewBar v-if="isPreview && !isEmbed" />
 
-  <CalloutLanguageSelect :callout="callout" />
+  <div
+    class="mb-6 flex w-full flex-wrap items-center justify-between gap-4 md:max-w-2xl"
+  >
+    <CalloutLanguageSelect :callout="callout" />
+
+    <div
+      v-if="!isRespondPage && callout.status === ItemStatus.Open"
+      class="ml-auto"
+    >
+      <CalloutSharePopover
+        :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`"
+      />
+    </div>
+  </div>
 
   <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
 
@@ -27,9 +40,6 @@ meta:
 
     <div class="w-full md:max-w-2xl">
       <template v-if="!isRespondPage">
-        <div v-if="callout.status === ItemStatus.Open" class="mb-6">
-          <AppShareBox :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`" />
-        </div>
         <img class="mb-6 w-full" :src="imageUrl" />
         <div class="content-message mb-6 text-lg" v-html="callout.intro" />
       </template>
@@ -84,7 +94,6 @@ import {
   AppButton,
   AppHeading,
   AppMessageBox,
-  AppShareBox,
   AppTitle,
   addNotification,
   formatLocale,
@@ -96,12 +105,13 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import noImage from '#assets/images/no-image.avif';
+import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
 import CalloutPreviewBar from '#components/callout/CalloutPreviewBar.vue';
+import CalloutSharePopover from '#components/callout/CalloutSharePopover.vue';
 import CalloutForm from '#components/pages/callouts/CalloutForm.vue';
 import CalloutLoginPrompt from '#components/pages/callouts/CalloutLoginPrompt.vue';
 import CalloutMemberOnlyPrompt from '#components/pages/callouts/CalloutMemberOnlyPrompt.vue';
 import CalloutThanksBox from '#components/pages/callouts/CalloutThanksBox.vue';
-import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
 import { useCallout } from '#components/pages/callouts/use-callout';
 import env from '#env';
 import { currentUser, isEmbed } from '#store';
