@@ -822,6 +822,7 @@
     },
     "getStarted": "Get started",
     "joinNow": "Join now",
+    "leavePreview": "Leave preview",
     "loginToYourAccount": "Login to your account",
     "membersOnly": "This CrowdNewsroom is open to members only. To participate",
     "responseSubmitted": "Response submitted",
@@ -838,6 +839,7 @@
       "services": "Or quickly share using one of these services:"
     },
     "showingPreview": "You can't submit a response in preview mode",
+    "showingPreview-nuxt": "Preview mode — this is what contributors see. You can't submit a response from here.",
     "toContributionPage": "Edit my contribution",
     "updateContribution": "please update your contribution",
     "views": {

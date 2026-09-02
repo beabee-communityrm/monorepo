@@ -8,18 +8,21 @@
       id="top"
       class="flex h-screen w-full flex-col overflow-y-auto bg-background"
     >
-      <UDashboardNavbar :ui="{ root: 'sticky top-0 z-10 bg-default' }">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
-        <template #title>
-          <UBreadcrumb
-            :items="breadcrumbs"
-            class="p-1.5"
-            :ui="{ link: breadcrumbs.length > 1 ? 'text-base' : 'text-xl' }"
-          />
-        </template>
-      </UDashboardNavbar>
+      <div class="sticky top-0 z-10">
+        <UDashboardNavbar :ui="{ root: 'bg-default' }">
+          <template #leading>
+            <UDashboardSidebarCollapse />
+          </template>
+          <template #title>
+            <UBreadcrumb
+              :items="breadcrumbs"
+              class="p-1.5"
+              :ui="{ link: breadcrumbs.length > 1 ? 'text-base' : 'text-xl' }"
+            />
+          </template>
+        </UDashboardNavbar>
+        <div id="sticky-top-banner" class="bg-default"></div>
+      </div>
       <div class="flex flex-col p-4 md:p-5">
         <router-view />
       </div>

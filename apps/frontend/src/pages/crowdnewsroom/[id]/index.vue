@@ -7,6 +7,8 @@ meta:
 </route>
 
 <template>
+  <CalloutPreviewBar v-if="isPreview && !isEmbed" />
+
   <CalloutVariantsBox :callout="callout" />
 
   <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
@@ -51,13 +53,6 @@ meta:
         </AppButton>
 
         <template v-else>
-          <AppNotification
-            v-if="isPreview"
-            variant="warning"
-            :title="t('callout.showingPreview')"
-            class="mb-4"
-          />
-
           <AppHeading v-if="latestResponse" class="mt-6">
             {{ t('callout.yourResponse') }}
           </AppHeading>
@@ -89,7 +84,6 @@ import {
   AppButton,
   AppHeading,
   AppMessageBox,
-  AppNotification,
   AppShareBox,
   AppTitle,
   addNotification,
@@ -102,6 +96,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import noImage from '#assets/images/no-image.avif';
+import CalloutPreviewBar from '#components/callout/CalloutPreviewBar.vue';
 import CalloutForm from '#components/pages/callouts/CalloutForm.vue';
 import CalloutLoginPrompt from '#components/pages/callouts/CalloutLoginPrompt.vue';
 import CalloutMemberOnlyPrompt from '#components/pages/callouts/CalloutMemberOnlyPrompt.vue';
@@ -160,6 +155,7 @@ addBreadcrumb(
 const isPreview = computed(
   () => route.query.preview === null && currentUser.value?.isReviewer
 );
+
 const isRespondPage = computed(() => isEmbed || props.respond);
 const imageUrl = computed(() => {
   return props.callout.image ? resolveImageUrl(props.callout.image) : noImage;

@@ -445,6 +445,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "",
       "updateResponse": ""
     },
     "addAPoint": "",
@@ -821,6 +822,7 @@
     },
     "getStarted": "",
     "joinNow": "",
+    "leavePreview": "",
     "loginToYourAccount": "",
     "membersOnly": "",
     "responseSubmitted": "",
@@ -837,6 +839,7 @@
       "services": ""
     },
     "showingPreview": "",
+    "showingPreview-nuxt": "",
     "toContributionPage": "",
     "updateContribution": "",
     "views": {
