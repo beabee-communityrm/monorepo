@@ -141,7 +141,7 @@ class NewsletterService {
 
     if (groupsChanged) {
       await ActivityService.addEvent({
-        eventType: ActivityEventType.ContactGroupSubscriptionUpdated,
+        eventType: ActivityEventType.ContactNewsletterGroupsUpdated,
         targetId: contact.id,
         metadata: null,
       });
