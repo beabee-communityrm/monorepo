@@ -135,7 +135,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="flex min-h-[200px] items-center justify-center rounded-lg bg-warning p-8 text-center text-white"
+              class="bg-warning flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Information</h3>
@@ -264,7 +264,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="flex min-h-[200px] items-center justify-center rounded-lg bg-warning p-8 text-center text-white"
+              class="bg-warning flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Feature 3</h3>
@@ -619,7 +619,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="flex min-h-[200px] items-center justify-center rounded-lg bg-warning p-8 text-center text-white"
+              class="bg-warning flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Accessible</h3>
@@ -672,7 +672,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="flex min-h-[200px] items-center justify-center rounded-lg bg-warning p-8 text-center text-white"
+              class="bg-warning flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Slide 3</h3>
