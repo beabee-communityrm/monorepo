@@ -39,7 +39,7 @@ export const nuxtUiConfig: NuxtUIOptions = {
     },
     navigationMenu: {
       slots: {
-        link: 'py-2.5!',
+        link: 'py-2!',
       },
       variants: {
         active: {
@@ -61,7 +61,7 @@ export const nuxtUiConfig: NuxtUIOptions = {
     },
     input: {
       slots: {
-        base: 'py-2.5!',
+        base: 'py-2!',
       },
     },
     modal: {
@@ -94,7 +94,7 @@ export const nuxtUiConfig: NuxtUIOptions = {
           // Exclude 'link' — it's styled as inline text, not a boxed button,
           // so it shouldn't get the same vertical padding as the rest.
           variant: ['solid', 'outline', 'soft', 'subtle', 'ghost'],
-          class: 'py-2.5!',
+          class: 'py-2!',
         },
         {
           color: 'warning',
