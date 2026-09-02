@@ -46,6 +46,20 @@ export const buckets = computed(() => [
 ]);
 
 /**
+ * Whole days until a callout closes
+ *
+ * @param expires - When the callout expires, if it has an end date
+ * @returns The number of days left, or null if it has closed or never closes
+ */
+export function getDaysLeft(expires: Date | null): number | null {
+  if (!expires) return null;
+  const days = Math.ceil(
+    (expires.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+  );
+  return days > 0 ? days : null;
+}
+
+/**
  * Creates a new slide schema with a unique ID and default navigation
  *
  * @param no - The slide number to use in the title

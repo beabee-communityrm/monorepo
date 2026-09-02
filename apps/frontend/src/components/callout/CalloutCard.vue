@@ -85,6 +85,7 @@ import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 
 import CalloutMetaList from '#components/callout/CalloutMetaList.vue';
+import { getDaysLeft } from '#utils/callouts';
 import { resolveImageUrl } from '#utils/url';
 import type { CalloutCardData } from '#type';
 
@@ -106,11 +107,5 @@ const respondAgainKey = computed(() => {
   return null;
 });
 
-const daysLeft = computed(() => {
-  if (!props.callout.expires) return null;
-  const days = Math.ceil(
-    (props.callout.expires.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
-  );
-  return days > 0 ? days : null;
-});
+const daysLeft = computed(() => getDaysLeft(props.callout.expires));
 </script>

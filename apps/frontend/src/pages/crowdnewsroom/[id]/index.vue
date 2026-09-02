@@ -7,79 +7,104 @@ meta:
 </route>
 
 <template>
-  <CalloutPreviewBar v-if="isPreview && !isEmbed" />
-
-  <div
-    class="mb-6 flex w-full flex-wrap items-center justify-between gap-4 md:max-w-2xl"
-  >
-    <CalloutLanguageSelect :callout="callout" />
+  <div class="nuxt-page">
+    <CalloutPreviewBar v-if="isPreview && !isEmbed" />
 
     <div
-      v-if="!isRespondPage && callout.status === ItemStatus.Open"
-      class="ml-auto"
+      class="mb-2 flex w-full flex-wrap items-center justify-between gap-4 md:max-w-2xl"
     >
-      <CalloutSharePopover
-        :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`"
-      />
-    </div>
-  </div>
-
-  <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
-
-  <template v-if="responses /* Avoids layout thrashing */">
-    <CalloutThanksBox v-if="latestResponse" :callout="callout" class="mb-6" />
-    <AppMessageBox
-      v-else-if="!isOpen && callout.expires /* Type narrowing */"
-      :title="
-        t('callout.ended', { date: formatLocale(callout.expires, 'PPP') })
-      "
-      :icon="faInfoCircle"
-      class="mb-6"
-      variant="info"
-    />
-
-    <div class="w-full md:max-w-2xl">
-      <template v-if="!isRespondPage">
-        <img class="mb-6 w-full" :src="imageUrl" />
-        <div class="content-message mb-6 text-lg" v-html="callout.intro" />
-      </template>
-
-      <CalloutLoginPrompt v-if="showLoginPrompt" />
-      <CalloutMemberOnlyPrompt v-else-if="showMemberOnlyPrompt && !isPreview" />
-      <div v-else-if="canRespond || latestResponse">
-        <AppButton
-          v-if="canRespond && !isRespondPage"
-          class="w-full"
-          :to="{
-            path: '/crowdnewsroom/' + callout.slug + '/respond',
-            query: route.query,
-          }"
+      <div class="flex flex-wrap items-center gap-2">
+        <UBadge
+          :color="isOpen ? 'success' : 'neutral'"
+          variant="subtle"
+          size="lg"
         >
+          <span class="size-1.5 rounded-full bg-current" />
+          {{ t(`common.status.${callout.status}`) }}
+        </UBadge>
+        <span v-if="daysLeft !== null" class="text-muted">
+          <i18n-t keypath="callouts.daysLeft" :plural="daysLeft">
+            <template #n>{{ daysLeft }}</template>
+          </i18n-t>
+        </span>
+        <span v-else-if="callout.expires" class="text-muted">
           {{
-            latestResponse
-              ? t('callout.actions.updateResponse')
-              : t('actions.getStarted')
+            t('callout.closedOn', {
+              date: formatLocale(callout.expires, 'd MMM yyyy'),
+            })
           }}
-        </AppButton>
+        </span>
+      </div>
 
-        <template v-else>
-          <AppHeading v-if="latestResponse" class="mt-6">
-            {{ t('callout.yourResponse') }}
-          </AppHeading>
+      <div class="flex items-center gap-2">
+        <CalloutLanguageSelect :callout="callout" />
 
-          <CalloutForm
-            :callout="callout"
-            :answers="prefilledAnswers"
-            :preview="isPreview"
-            :readonly="!canRespond"
-            :all-slides="!canRespond"
-            :no-bg="isEmbed"
-            @submitted="handleSubmitResponse"
-          />
-        </template>
+        <CalloutSharePopover
+          v-if="!isRespondPage && callout.status === ItemStatus.Open"
+          :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`"
+        />
       </div>
     </div>
-  </template>
+
+    <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
+
+    <template v-if="responses /* Avoids layout thrashing */">
+      <CalloutThanksBox v-if="latestResponse" :callout="callout" class="mb-6" />
+      <AppMessageBox
+        v-else-if="!isOpen && callout.expires /* Type narrowing */"
+        :title="
+          t('callout.ended', { date: formatLocale(callout.expires, 'PPP') })
+        "
+        :icon="faInfoCircle"
+        class="mb-6"
+        variant="info"
+      />
+
+      <div class="w-full md:max-w-2xl">
+        <template v-if="!isRespondPage">
+          <img class="mb-6 w-full" :src="imageUrl" />
+          <div class="content-message mb-6 text-lg" v-html="callout.intro" />
+        </template>
+
+        <CalloutLoginPrompt v-if="showLoginPrompt" />
+        <CalloutMemberOnlyPrompt
+          v-else-if="showMemberOnlyPrompt && !isPreview"
+        />
+        <div v-else-if="canRespond || latestResponse">
+          <AppButton
+            v-if="canRespond && !isRespondPage"
+            class="w-full"
+            :to="{
+              path: '/crowdnewsroom/' + callout.slug + '/respond',
+              query: route.query,
+            }"
+          >
+            {{
+              latestResponse
+                ? t('callout.actions.updateResponse')
+                : t('actions.getStarted')
+            }}
+          </AppButton>
+
+          <template v-else>
+            <AppHeading v-if="latestResponse" class="mt-6">
+              {{ t('callout.yourResponse') }}
+            </AppHeading>
+
+            <CalloutForm
+              :callout="callout"
+              :answers="prefilledAnswers"
+              :preview="isPreview"
+              :readonly="!canRespond"
+              :all-slides="!canRespond"
+              :no-bg="isEmbed"
+              @submitted="handleSubmitResponse"
+            />
+          </template>
+        </div>
+      </div>
+    </template>
+  </div>
 </template>
 <script lang="ts" setup>
 import {
@@ -117,6 +142,7 @@ import env from '#env';
 import { currentUser, isEmbed } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { getDaysLeft } from '#utils/callouts';
 import { routeIcons, routeLabels } from '#utils/route-nav';
 import { resolveImageUrl } from '#utils/url';
 
@@ -174,6 +200,8 @@ const imageUrl = computed(() => {
 const { isOpen, showLoginPrompt, showMemberOnlyPrompt } = useCallout(
   toRef(props, 'callout')
 );
+
+const daysLeft = computed(() => getDaysLeft(props.callout.expires));
 
 const responses =
   ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>>>();
