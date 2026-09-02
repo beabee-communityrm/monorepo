@@ -122,7 +122,7 @@ class EmailService {
    * - Sending pre-configured Email entities from the database
    * - When you already have EmailRecipient objects ready
    * - For low-level email sending without template logic
-   *
+   * @deprecated This method is kept public only for the legacy app. Should be made private.
    * @param email The Email entity to send
    * @param recipients List of email recipients with merge fields
    * @param opts Optional email options (attachments, sendAt, etc.)
