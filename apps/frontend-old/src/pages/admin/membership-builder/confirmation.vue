@@ -25,6 +25,12 @@ meta:
           />
         </div>
 
+        <AppCheckbox
+          v-model="setupContent.showOrganisationName"
+          :label="stepT('showOrganisationName')"
+          class="mb-4 font-semibold"
+        />
+
         <AppSubHeading class="mt-6">
           {{ stepT('deliveryAddress.title') }}
         </AppSubHeading>
