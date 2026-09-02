@@ -163,6 +163,9 @@ export class GetContentJoinSetupDto implements ContentJoinSetupData {
   newsletterTitle!: string;
 
   @IsBoolean()
+  showOrganisationName!: boolean;
+
+  @IsBoolean()
   showNewsletterOptIn!: boolean;
 
   @ValidateNested({ each: true })

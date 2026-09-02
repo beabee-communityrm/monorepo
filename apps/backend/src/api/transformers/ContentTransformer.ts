@@ -203,6 +203,7 @@ const contentData = {
     newsletterGroups: ['data', []],
     showMailOptIn: ['option', 'show-mail-opt-in', 'bool'],
     showNewsletterOptIn: ['data', false],
+    showOrganisationName: ['data', false],
     surveyRequired: ['data', false],
     surveySlug: ['option', 'join-survey', 'text'],
     surveyText: ['data', ''],
