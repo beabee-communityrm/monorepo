@@ -6,7 +6,7 @@ meta:
   embeddable: true
 </route>
 <template>
-  <CalloutVariantsBox :callout="callout" />
+  <CalloutLanguageSelect :callout="callout" />
   <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
   <CalloutThanksBox :callout="callout" class="mb-6" />
   <div class="w-full md:max-w-2xl">
@@ -21,7 +21,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import CalloutThanksBox from '#components/pages/callouts/CalloutThanksBox.vue';
-import CalloutVariantsBox from '#components/pages/callouts/CalloutVariantsBox.vue';
+import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { currentUser, isEmbed } from '#store/index';

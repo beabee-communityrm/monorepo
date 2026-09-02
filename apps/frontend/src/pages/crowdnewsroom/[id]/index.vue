@@ -9,7 +9,7 @@ meta:
 <template>
   <CalloutPreviewBar v-if="isPreview && !isEmbed" />
 
-  <CalloutVariantsBox :callout="callout" />
+  <CalloutLanguageSelect :callout="callout" />
 
   <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
 
@@ -101,7 +101,7 @@ import CalloutForm from '#components/pages/callouts/CalloutForm.vue';
 import CalloutLoginPrompt from '#components/pages/callouts/CalloutLoginPrompt.vue';
 import CalloutMemberOnlyPrompt from '#components/pages/callouts/CalloutMemberOnlyPrompt.vue';
 import CalloutThanksBox from '#components/pages/callouts/CalloutThanksBox.vue';
-import CalloutVariantsBox from '#components/pages/callouts/CalloutVariantsBox.vue';
+import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
 import { useCallout } from '#components/pages/callouts/use-callout';
 import env from '#env';
 import { currentUser, isEmbed } from '#store';
