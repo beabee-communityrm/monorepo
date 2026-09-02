@@ -64,7 +64,7 @@ meta:
       <div class="flex flex-col gap-6">
         <template v-if="!isRespondPage">
           <img class="w-full" :src="imageUrl" />
-          <div class="content-message text-lg" v-html="callout.intro" />
+          <div class="nuxt-prose text-base" v-html="callout.intro" />
         </template>
 
         <CalloutLoginPrompt v-if="showLoginPrompt" />
