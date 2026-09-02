@@ -46,7 +46,7 @@ meta:
       </div>
     </div>
 
-    <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
+    <h2 v-if="!isEmbed" class="text-lg">{{ callout.title }}</h2>
 
     <template v-if="responses /* Avoids layout thrashing */">
       <CalloutThanksBox v-if="latestResponse" :callout="callout" class="mb-6" />
@@ -119,7 +119,6 @@ import {
   AppButton,
   AppHeading,
   AppMessageBox,
-  AppTitle,
   addNotification,
   formatLocale,
 } from '@beabee/vue';
