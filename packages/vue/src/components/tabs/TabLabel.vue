@@ -11,7 +11,7 @@
     <font-awesome-icon
       v-else-if="validated"
       :icon="faCheckCircle"
-      class="ml-2 text-success"
+      class="text-success ml-2"
       aria-label="Validated"
     />
   </span>
