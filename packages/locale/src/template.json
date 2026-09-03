@@ -827,8 +827,11 @@
     "joinNow": "",
     "language": "",
     "leavePreview": "",
+    "logInOrSignUp": "",
     "loginToYourAccount": "",
+    "loginToYourAccount-nuxt": "",
     "membersOnly": "",
+    "membersOnly-nuxt": "",
     "responseSubmitted": "",
     "share": {
       "address": "",
@@ -847,6 +850,7 @@
     "submittedOn": "",
     "toContributionPage": "",
     "updateContribution": "",
+    "updateContribution-nuxt": "",
     "views": {
       "gallery": "",
       "map": ""
