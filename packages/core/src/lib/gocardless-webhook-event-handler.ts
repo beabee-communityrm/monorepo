@@ -6,7 +6,9 @@ import {
   PaymentStatus,
 } from 'gocardless-nodejs/types/Types.js';
 
+import { getRepository } from '#database';
 import { log as mainLogger } from '#logging';
+import { Payment } from '#models';
 import ActivityService from '#services/ActivityService';
 import {
   cancelMandate,
@@ -146,9 +148,11 @@ export class GoCardlessWebhookEventHandler {
     const paymentId = refund.links!.payment!;
     await updatePayment(paymentId);
 
+    const payment = await getRepository(Payment).findOneBy({ id: paymentId });
+
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactPaymentRefunded,
-      targetId: paymentId,
+      targetId: payment?.contactId || null,
       metadata: null,
     });
   }
