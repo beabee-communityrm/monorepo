@@ -21,7 +21,7 @@ import AppInfoListItem from './AppInfoListItem.vue';
       <AppInfoList>
         <AppInfoListItem name="Status">
           <span class="flex items-center gap-2">
-            <span class="h-2 w-2 rounded-full bg-success"></span>
+            <span class="bg-success h-2 w-2 rounded-full"></span>
             <span class="text-success">Online</span>
           </span>
         </AppInfoListItem>

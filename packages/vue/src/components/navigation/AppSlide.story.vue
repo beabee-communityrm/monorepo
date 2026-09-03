@@ -36,7 +36,7 @@ import AppSlide from './AppSlide.vue';
                 This slide contains rich content with multiple elements.
               </p>
               <button
-                class="rounded bg-success px-4 py-2 text-white hover:bg-success-70"
+                class="bg-success rounded px-4 py-2 text-white hover:bg-success-70"
               >
                 Action Button
               </button>
