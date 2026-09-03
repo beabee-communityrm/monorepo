@@ -22,12 +22,18 @@ class ActivityService {
       Partial<ActivityActor>
   ): Promise<void> {
     try {
+      log.info(
+        `Added event of type ${event.eventType} for target ${event.targetId}`
+      );
       await getRepository(ActivityEvent).insert({
         ...actorContext.get(),
         ...event,
       });
     } catch (err) {
-      log.error(`Failed to log event ${event.eventType}`, err);
+      log.error(
+        `Failed to log event ${event.eventType} for target ${event.targetId}`,
+        err
+      );
     }
   }
 
@@ -42,6 +48,7 @@ class ActivityService {
   ): Promise<void> {
     if (events.length === 0) return;
     try {
+      log.info(`Added ${events.length} events`);
       const actor = actorContext.get();
       await getRepository(ActivityEvent).insert(
         events.map((event) => ({ ...actor, ...event }))
