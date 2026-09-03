@@ -8,8 +8,13 @@
   .nuxt-page {
     @apply text-sm;
 
+    /* Every level, not just h2/h3 — a component that takes a heading level
+       (AppNoticeCard) can render any of them. */
     h2,
-    h3 {
+    h3,
+    h4,
+    h5,
+    h6 {
       @apply text-highlighted text-base font-semibold;
     }
   }
@@ -52,5 +57,35 @@
     a {
       @apply text-primary underline;
     }
+  }
+}
+
+/*
+ * Nuxt UI points `text-{color}` at shade 500, which lands around 2:1 against
+ * its own `/10` tints in `soft` and `subtle` variants — see nuxt/ui#1284,
+ * open since 2024 and acknowledged upstream as a trade-off. Redefining the
+ * three semantic text utilities here fixes every component at once, including
+ * Nuxt UI's own, rather than needing a `compoundVariants` override per
+ * component. Dark mode keeps Nuxt UI's lighter 400.
+ */
+@layer utilities {
+  .text-success {
+    color: var(--ui-color-success-700);
+  }
+  .text-warning {
+    color: var(--ui-color-warning-700);
+  }
+  .text-error {
+    color: var(--ui-color-error-700);
+  }
+
+  .dark .text-success {
+    color: var(--ui-color-success-400);
+  }
+  .dark .text-warning {
+    color: var(--ui-color-warning-400);
+  }
+  .dark .text-error {
+    color: var(--ui-color-error-400);
   }
 }
