@@ -153,7 +153,7 @@ class PaymentService {
       await ActivityService.addEvent({
         targetId: contact.id,
         eventType: ActivityEventType.ContactContributionStarted,
-        metadata: null,
+        metadata: ret || null,
       });
     }
 
@@ -200,7 +200,7 @@ class PaymentService {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactContributionUpdated,
       targetId: contact.id,
-      metadata: null,
+      metadata: ret,
     });
 
     return ret;

@@ -1,8 +1,21 @@
-import type { ActivityEventType } from '../data/index.js';
+import type { ActivityEventType, ContributionPeriod } from '../data/index.js';
 import type { ContactOriginData } from './index.js';
+
+export interface ContributionUpdateData {
+  startNow: boolean;
+  expiryDate: Date;
+  form: {
+    monthlyAmount: number;
+    period: ContributionPeriod;
+    payFee: boolean;
+    prorate: boolean;
+  };
+}
 
 export interface ActivityEventMetadataMap {
   [ActivityEventType.ContactCreated]: ContactOriginData;
+  [ActivityEventType.ContactContributionStarted]: ContributionUpdateData;
+  [ActivityEventType.ContactContributionUpdated]: ContributionUpdateData;
   [ActivityEventType.EmailSent]: { email: string; recipient: string };
 }
 
