@@ -9,35 +9,26 @@
   response is submitted, where the stored response hasn't been loaded.
 -->
 <template>
-  <div class="bg-primary/5 border-primary/20 flex gap-3 rounded-md border p-4">
-    <UIcon
-      name="i-lucide-circle-check"
-      class="text-primary mt-0.5 size-5 shrink-0"
-      aria-hidden="true"
+  <AppNoticeCard
+    icon="i-lucide-circle-check"
+    :title="callout.thanksTitle || t('common.thankYou')"
+    color="success"
+  >
+    <div
+      v-if="callout.thanksText"
+      class="nuxt-prose"
+      v-html="callout.thanksText"
     />
 
-    <div class="flex min-w-0 flex-col gap-1.5">
-      <p class="text-primary text-base font-semibold">
-        {{ callout.thanksTitle || t('common.thankYou') }}
-      </p>
-      <div
-        v-if="callout.thanksText"
-        class="nuxt-prose"
-        v-html="callout.thanksText"
-      />
+    <p v-if="submittedAt" class="text-muted">
+      {{ t('callout.submittedOn', { date: formatLocale(submittedAt, 'PPP') }) }}
+      <template v-if="!isOpen">{{ t('callout.closedNoEdit') }}</template>
+    </p>
 
-      <p v-if="submittedAt" class="text-muted">
-        {{
-          t('callout.submittedOn', { date: formatLocale(submittedAt, 'PPP') })
-        }}
-        <template v-if="!isOpen">{{ t('callout.closedNoEdit') }}</template>
-      </p>
-
-      <p v-if="showOneResponseWarning" class="text-muted">
-        {{ t('calloutThanksPage.oneResponseWarning') }}
-      </p>
-    </div>
-  </div>
+    <p v-if="showOneResponseWarning" class="text-muted">
+      {{ t('calloutThanksPage.oneResponseWarning') }}
+    </p>
+  </AppNoticeCard>
 </template>
 
 <script lang="ts" setup>
@@ -46,7 +37,7 @@ import {
   type GetCalloutDataWith,
   ItemStatus,
 } from '@beabee/beabee-common';
-import { formatLocale } from '@beabee/vue';
+import { AppNoticeCard, formatLocale } from '@beabee/vue';
 
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
