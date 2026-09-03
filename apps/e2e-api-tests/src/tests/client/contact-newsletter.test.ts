@@ -14,8 +14,6 @@ import {
 const KOMBUCHA = { id: 'b8e4acb751', label: 'Kombucha' };
 const TEA = { id: 'c0b1a133d1', label: 'Tea' };
 
-const PASSWORD = 'testPassword123!';
-
 interface TestMember {
   id: string;
   client: BeabeeClient;
@@ -29,15 +27,17 @@ describe('Contact newsletter groups API', () => {
   let calloutSlug: string;
 
   /**
-   * Create a contact and log in as them. Groups are set with a separate
-   * profile update so they are pushed to the newsletter provider.
+   * Create a contact and a client acting as them. The client uses the admin
+   * API key with the `x-contact-id` header rather than a cookie login, as the
+   * client's cookie store is shared between all instances in a process.
+   * Groups are set with a separate profile update so they are pushed to the
+   * newsletter provider.
    */
   async function createMember(groups?: string[]): Promise<TestMember> {
     const contact = await admin.contact.create({
       email: `nl-${Date.now()}-${Math.random().toString(36).slice(2)}@example.com`,
       firstname: 'Newsletter',
       lastname: 'Tester',
-      password: PASSWORD,
     });
     createdContactIds.push(contact.id);
 
@@ -50,8 +50,12 @@ describe('Contact newsletter groups API', () => {
       });
     }
 
-    const client = new BeabeeClient({ host: api.host, path: api.path });
-    await client.auth.login({ email: contact.email, password: PASSWORD });
+    const client = new BeabeeClient({
+      host: api.host,
+      path: api.path,
+      token: testUser.apiKey,
+      headers: { 'x-contact-id': contact.id },
+    });
 
     return { id: contact.id, client };
   }
