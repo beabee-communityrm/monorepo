@@ -14,15 +14,6 @@ export const nuxtUiConfig: NuxtUIOptions = {
       slots: {
         root: 'py-3!',
       },
-      compoundVariants: [
-        {
-          color: 'warning',
-          variant: 'subtle',
-          // Nuxt UI's default warning text colour is too light for AA
-          // contrast against its own pale background.
-          class: { root: 'text-warning-700' },
-        },
-      ],
     },
     badge: {
       // Each size variant bakes in its own rounded-sm/rounded-md, so the
@@ -107,12 +98,6 @@ export const nuxtUiConfig: NuxtUIOptions = {
           // so it shouldn't get the same vertical padding as the rest.
           variant: ['solid', 'outline', 'soft', 'subtle', 'ghost'],
           class: 'py-2!',
-        },
-        {
-          color: 'warning',
-          variant: 'outline',
-          // Same low-contrast issue as the alert's warning/subtle text.
-          class: 'text-warning-700 ring-warning-700/50',
         },
       ],
     },
