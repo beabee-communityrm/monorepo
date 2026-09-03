@@ -44,7 +44,7 @@ meta:
       </div>
     </div>
 
-    <h2 v-if="!isEmbed" class="text-lg">{{ callout.title }}</h2>
+    <h2 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h2>
 
     <template v-if="responses /* Avoids layout thrashing */">
       <CalloutThankYouBanner
@@ -63,17 +63,19 @@ meta:
 
       <div class="flex flex-col gap-6">
         <template v-if="!isRespondPage">
-          <img class="w-full" :src="imageUrl" />
+          <img class="w-full" :src="imageUrl" alt="" />
           <div class="nuxt-prose text-base" v-html="callout.intro" />
         </template>
 
-        <CalloutLoginPrompt v-if="showLoginPrompt" />
-        <CalloutMemberOnlyPrompt
-          v-else-if="showMemberOnlyPrompt && !isPreview"
+        <CalloutLoginGate v-if="showLoginPrompt && isOpen" />
+
+        <CalloutContributionGate
+          v-else-if="showMemberOnlyPrompt && isOpen && !isPreview"
         />
         <div v-else-if="canRespond || latestResponse">
-          <AppButton
+          <UButton
             v-if="canRespond && !isRespondPage"
+            size="xl"
             class="w-full"
             :to="{
               path: '/crowdnewsroom/' + callout.slug + '/respond',
@@ -85,7 +87,7 @@ meta:
                 ? t('callout.actions.updateResponse')
                 : t('actions.getStarted')
             }}
-          </AppButton>
+          </UButton>
 
           <template v-else>
             <AppHeading v-if="latestResponse" class="mt-6">
@@ -117,7 +119,6 @@ import {
   type Paginated,
 } from '@beabee/beabee-common';
 import {
-  AppButton,
   AppHeading,
   AppMessageBox,
   addNotification,
@@ -130,13 +131,13 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import noImage from '#assets/images/no-image.avif';
+import CalloutContributionGate from '#components/callout/CalloutContributionGate.vue';
 import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
+import CalloutLoginGate from '#components/callout/CalloutLoginGate.vue';
 import CalloutPreviewBar from '#components/callout/CalloutPreviewBar.vue';
 import CalloutSharePopover from '#components/callout/CalloutSharePopover.vue';
 import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue';
 import CalloutForm from '#components/pages/callouts/CalloutForm.vue';
-import CalloutLoginPrompt from '#components/pages/callouts/CalloutLoginPrompt.vue';
-import CalloutMemberOnlyPrompt from '#components/pages/callouts/CalloutMemberOnlyPrompt.vue';
 import { useCallout } from '#components/pages/callouts/use-callout';
 import env from '#env';
 import { currentUser, isEmbed } from '#store';

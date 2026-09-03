@@ -826,8 +826,11 @@
     "joinNow": "Join now",
     "language": "Language",
     "leavePreview": "Leave preview",
+    "logInOrSignUp": "Log in or join to take part.",
     "loginToYourAccount": "Login to your account",
+    "loginToYourAccount-nuxt": "Log in",
     "membersOnly": "This CrowdNewsroom is open to members only. To participate",
+    "membersOnly-nuxt": "This CrowdNewsroom is open to members only.",
     "responseSubmitted": "Response submitted",
     "share": {
       "address": "Share using the following link:",
@@ -846,6 +849,7 @@
     "submittedOn": "Submitted {date}.",
     "toContributionPage": "Edit my contribution",
     "updateContribution": "please update your contribution",
+    "updateContribution-nuxt": "To participate, please update your contribution.",
     "views": {
       "gallery": "Gallery",
       "map": "Map"
