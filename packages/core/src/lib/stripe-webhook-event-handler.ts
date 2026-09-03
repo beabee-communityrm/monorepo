@@ -281,7 +281,7 @@ export class StripeWebhookEventHandler {
     }
 
     await ActivityService.addEvent({
-      eventType: ActivityEventType.PaymentSuccessful,
+      eventType: ActivityEventType.ContactPaymentSuccessful,
       targetId: contribution.contact.id,
       metadata: null,
     });
@@ -299,7 +299,7 @@ export class StripeWebhookEventHandler {
     const contribution = await this.getContributionFromInvoice(invoice);
 
     await ActivityService.addEvent({
-      eventType: ActivityEventType.PaymentFailed,
+      eventType: ActivityEventType.ContactPaymentFailed,
       targetId: contribution?.contact.id || null,
       metadata: null,
     });
@@ -318,7 +318,7 @@ export class StripeWebhookEventHandler {
       await stripe.invoices.markUncollectible(invoice.id);
 
       await ActivityService.addEvent({
-        eventType: ActivityEventType.PaymentCancelled,
+        eventType: ActivityEventType.ContactPaymentCancelled,
         targetId: contribution?.contact.id || null,
         metadata: null,
       });

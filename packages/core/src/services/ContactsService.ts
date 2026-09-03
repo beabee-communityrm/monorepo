@@ -378,12 +378,6 @@ class ContactsService {
       }),
     });
 
-    await ActivityService.addEvent({
-      eventType: ActivityEventType.ContactContributionUpdated,
-      targetId: contact.id,
-      metadata: null,
-    });
-
     await this.extendContactRole(contact, 'member', result.expiryDate);
 
     // If this contribution update was a conversion from manual to automatic then

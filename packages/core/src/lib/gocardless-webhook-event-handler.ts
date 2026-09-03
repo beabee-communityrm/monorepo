@@ -147,7 +147,7 @@ export class GoCardlessWebhookEventHandler {
     await updatePayment(paymentId);
 
     await ActivityService.addEvent({
-      eventType: ActivityEventType.PaymentRefunded,
+      eventType: ActivityEventType.ContactPaymentRefunded,
       targetId: paymentId,
       metadata: null,
     });
