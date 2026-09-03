@@ -12,7 +12,13 @@ test.use({ storageState: nonAdminAuthFile });
 const KOMBUCHA = { id: "b8e4acb751", label: "Kombucha" };
 const TEA = { id: "c0b1a133d1", label: "Tea" };
 
-test("Manage newsletter subscriptions", async ({ page, request }) => {
+test("Manage newsletter subscriptions", async ({ page, request, baseURL }) => {
+  // The account page with the subscriptions tab only exists in the new
+  // frontend, which the router serves when this cookie is set
+  await page.context().addCookies([
+    { name: "beabee_frontend", value: "new", url: baseURL! },
+  ]);
+
   await test.step("Give the member a known set of groups", async () => {
     // A full group update also pushes the groups to the newsletter provider,
     // which is what the unsubscribe below is applied against

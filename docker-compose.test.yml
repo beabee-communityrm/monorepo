@@ -58,6 +58,11 @@ services:
       file: docker-compose.yml
       service: frontend
 
+  frontend-new:
+    extends:
+      file: docker-compose.yml
+      service: frontend-new
+
   app_router:
     extends:
       file: docker-compose.yml
