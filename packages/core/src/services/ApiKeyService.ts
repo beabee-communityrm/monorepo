@@ -1,5 +1,8 @@
+import { ActivityEventType } from '@beabee/beabee-common';
+
 import { getRepository } from '#database';
 import { ApiKey, Contact } from '#models/index';
+import ActivityService from '#services/ActivityService';
 import { generateApiKey } from '#utils/auth';
 
 class ApiKeyService {

@@ -1,3 +1,5 @@
+import { ActivityActorType } from '@beabee/beabee-common';
+import { actorContext } from '@beabee/core/lib/actor-context';
 import { log, requestErrorLogger, requestLogger } from '@beabee/core/logging';
 import { initApp, startServer } from '@beabee/core/server';
 import OptionsService, {
@@ -27,6 +29,14 @@ app.use(requestLogger);
 app.get('/ping', function (req: Request, res: Response) {
   res.sendStatus(200);
 });
+
+// Run downstream actions with actor type 'webhook'
+app.use((req, res, next) =>
+  actorContext.run(
+    { actorType: ActivityActorType.Webhook, actorId: null },
+    next
+  )
+);
 
 app.use('/gc', checkOpt('switch-webhook-gc'), gocardlessWebhookApp);
 app.use(

@@ -1,10 +1,15 @@
+import { ActivityEventType } from '@beabee/beabee-common';
+
 import type { Event } from 'gocardless-nodejs';
 import {
   EventResourceType,
   PaymentStatus,
 } from 'gocardless-nodejs/types/Types.js';
 
+import { getRepository } from '#database';
 import { log as mainLogger } from '#logging';
+import { Payment } from '#models';
+import ActivityService from '#services/ActivityService';
 import {
   cancelMandate,
   cancelSubscription,
@@ -140,6 +145,15 @@ export class GoCardlessWebhookEventHandler {
    */
   private static async handleRefundResourceEvent(event: Event): Promise<void> {
     const refund = await gocardless.refunds.get(event.links!.refund!);
-    await updatePayment(refund.links!.payment!);
+    const paymentId = refund.links!.payment!;
+    await updatePayment(paymentId);
+
+    const payment = await getRepository(Payment).findOneBy({ id: paymentId });
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactPaymentRefunded,
+      targetId: payment?.contactId || null,
+      metadata: null,
+    });
   }
 }
