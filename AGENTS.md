@@ -75,8 +75,6 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 | `yarn publish:latest` | Publish packages to NPM (latest) |
 | `yarn publish:next` | Publish packages to NPM (next) |
 
-**Verify after changes:** `yarn check` → `yarn build` → `yarn test`
-
 Build follows topological order (deps first).
 
 ## General Code Standards
