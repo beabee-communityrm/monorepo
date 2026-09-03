@@ -24,7 +24,6 @@ export enum ActivityEventType {
   ContactContributionStarted = 'contact.contribution-started',
   ContactContributionCancelled = 'contact.contribution-cancelled',
   ContactNewsletterGroupsUpdated = 'contact.newsletter-groups.updated',
-  ContactApiKey = 'contact.api-key-configured',
   EmailTemplateAdded = 'email.template-added',
   EmailTemplateEdited = 'email.template-edited',
   EmailTemplateDeleted = 'email.template-deleted',

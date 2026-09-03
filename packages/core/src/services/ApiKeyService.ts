@@ -28,12 +28,6 @@ class ApiKeyService {
       expires,
     });
 
-    await ActivityService.addEvent({
-      targetId: null,
-      eventType: ActivityEventType.ContactApiKey,
-      metadata: { creator: creator.id, 'key-id': id },
-    });
-
     return token;
   }
 

@@ -3,7 +3,6 @@ import type { ContactOriginData } from './index.js';
 
 export interface ActivityEventMetadataMap {
   [ActivityEventType.ContactCreated]: ContactOriginData;
-  [ActivityEventType.ContactApiKey]: { creator: string; 'key-id': string };
   [ActivityEventType.EmailSent]: { email: string; recipient: string };
 }
 
