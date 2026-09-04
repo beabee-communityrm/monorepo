@@ -14,6 +14,18 @@ export class RemoveGiftMemberships1788528151186 implements MigrationInterface {
       `ALTER TABLE "gift_flow" DROP CONSTRAINT "FK_70cda2b5d560765e318bf3995b0"`
     );
     await queryRunner.query(`DROP TABLE "gift_flow"`);
+
+    // Template overrides for the removed gift emails are no longer reachable
+    const giftEmails = `SELECT "id" FROM "email" WHERE "templateId" IN ('purchased-gift', 'giftee-success', 'welcome-post-gift')`;
+    await queryRunner.query(
+      `DELETE FROM "email_mailing" WHERE "emailId" IN (${giftEmails})`
+    );
+    await queryRunner.query(
+      `DELETE FROM "segment_ongoing_email" WHERE "emailId" IN (${giftEmails})`
+    );
+    await queryRunner.query(
+      `DELETE FROM "email" WHERE "templateId" IN ('purchased-gift', 'giftee-success', 'welcome-post-gift')`
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
