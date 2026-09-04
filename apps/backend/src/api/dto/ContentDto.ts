@@ -140,6 +140,9 @@ export class GetContentJoinDto implements ContentJoinData {
   @IsBoolean()
   showGoogleApplePay!: boolean;
 
+  @IsBoolean()
+  showVatNumber!: boolean;
+
   /** @deprecated Use {@link GetContentPaymentDto.stripePublicKey} instead. */
   @IsString()
   stripePublicKey!: string;

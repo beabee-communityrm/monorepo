@@ -112,6 +112,7 @@ const content = ref<ContributionContent>({
   periods: [],
   showAbsorbFee: true,
   showGoogleApplePay: false,
+  showVatNumber: false,
   paymentMethods: [PaymentMethod.StripeCard],
 });
 

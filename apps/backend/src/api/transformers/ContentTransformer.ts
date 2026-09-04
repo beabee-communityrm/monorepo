@@ -192,6 +192,7 @@ const contentData = {
     subtitle: ['data', ''],
     title: ['data', ''],
     showGoogleApplePay: ['data', false],
+    showVatNumber: ['data', false],
   }),
   'join/setup': withValue<'join/setup'>({
     mailOptIn: ['data', ''],
