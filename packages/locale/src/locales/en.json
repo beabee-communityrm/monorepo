@@ -1558,7 +1558,8 @@
     "saveChanges": "Save Changes",
     "saved": "Saved!",
     "unsavedChanges": "You have unsaved changes",
-    "updated": "Updated"
+    "updated": "Updated",
+    "vatNumber": "VAT number"
   },
   "formRenderer": {
     "components": {
@@ -1734,6 +1735,7 @@
         "showAbsorbFee": "Ask user about absorbing the payment fee",
         "showGoogleApplePay": "Show Apple and Google Pay payment icons",
         "showNoContribution": "Allow user to join without a contribution",
+        "showVatNumber": "Ask user for VAT number",
         "suggestedAmounts": "Suggested contribution amounts",
         "text": "In this section you can edit, fine tune and preview your membership join form.",
         "title": "Join form"

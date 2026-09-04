@@ -1561,7 +1561,8 @@
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",
     "unsavedChanges": "Alterações não gravadas",
-    "updated": "Atualizado"
+    "updated": "Atualizado",
+    "vatNumber": "Número de IVA"
   },
   "formRenderer": {
     "components": {
@@ -1737,6 +1738,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""

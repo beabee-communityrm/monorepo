@@ -1559,7 +1559,8 @@
     "saveChanges": "Guardar cambios",
     "saved": "¡Guardado!",
     "unsavedChanges": "Cambios sin guardar",
-    "updated": "Actualizado"
+    "updated": "Actualizado",
+    "vatNumber": "Número de IVA"
   },
   "formRenderer": {
     "components": {
@@ -1735,6 +1736,7 @@
         "showAbsorbFee": "Preguntar al usuario sobre absorber la comisión de pago",
         "showGoogleApplePay": "Mostrar iconos de pago de Apple Pay y Google Pay",
         "showNoContribution": "Permitir al usuario unirse sin contribución",
+        "showVatNumber": "Solicitar al usuario el número de IVA",
         "suggestedAmounts": "Importes de contribución sugeridos",
         "text": "En esta sección puedes editar, ajustar y previsualizar tu formulario de registro de membresía.",
         "title": "Formulario de registro"

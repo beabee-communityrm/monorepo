@@ -1565,7 +1565,8 @@
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",
     "unsavedChanges": "Modifications non enregistrées",
-    "updated": "Mis à jour"
+    "updated": "Mis à jour",
+    "vatNumber": "Numéro de TVA"
   },
   "formRenderer": {
     "components": {
@@ -1741,6 +1742,7 @@
         "showAbsorbFee": "Proposer aux utilisateurs de prendre en charge les frais de paiement",
         "showGoogleApplePay": "",
         "showNoContribution": "Autoriser les utilisateurs à s'inscrire sans cotisation",
+        "showVatNumber": "Demander aux utilisateurs leur numéro de TVA",
         "suggestedAmounts": "Montants de cotisation suggérés",
         "text": "Dans cette section, vous pouvez modifier, ajuster et prévisualiser votre formulaire d'adhésion.",
         "title": "Formulaire d'inscription"

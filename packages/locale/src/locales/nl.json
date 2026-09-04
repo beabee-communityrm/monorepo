@@ -1561,7 +1561,8 @@
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",
     "unsavedChanges": "Niet-opgeslagen wijzigingen",
-    "updated": "Bijgewerkt"
+    "updated": "Bijgewerkt",
+    "vatNumber": "Btw-nummer"
   },
   "formRenderer": {
     "components": {
@@ -1737,6 +1738,7 @@
         "showAbsorbFee": "Gebruiker vragen om de betalingskosten te absorberen",
         "showGoogleApplePay": "",
         "showNoContribution": "Gebruiker toestaan mee te doen zonder bijdrage",
+        "showVatNumber": "Gebruiker vragen om btw-nummer",
         "suggestedAmounts": "Voorgestelde contributiebedragen",
         "text": "In dit gedeelte kun je het lidmaatschapsformulier bewerken, verfijnen en een voorbeeld bekijken.",
         "title": "Lidmaatschapsformulier"

@@ -1561,7 +1561,8 @@
     "saveChanges": "Salva modifiche",
     "saved": "Salvato!",
     "unsavedChanges": "Modifiche non salvate",
-    "updated": "Aggiornato"
+    "updated": "Aggiornato",
+    "vatNumber": "Partita IVA"
   },
   "formRenderer": {
     "components": {
@@ -1737,6 +1738,7 @@
         "showAbsorbFee": "Chiedi all'utente se assorbire le commissioni di pagamento",
         "showGoogleApplePay": "",
         "showNoContribution": "Consenti l'iscrizione senza contributo",
+        "showVatNumber": "Chiedi all'utente la partita IVA",
         "suggestedAmounts": "Importi di contributo suggeriti",
         "text": "In questa sezione puoi modificare, personalizzare e visualizzare in anteprima il modulo di iscrizione.",
         "title": "Modulo di iscrizione"

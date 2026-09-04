@@ -1561,7 +1561,8 @@
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
     "unsavedChanges": "Ungespeicherte Änderungen",
-    "updated": "Aktualisiert"
+    "updated": "Aktualisiert",
+    "vatNumber": "Umsatzsteuer-ID"
   },
   "formRenderer": {
     "components": {
@@ -1737,6 +1738,7 @@
         "showAbsorbFee": "Nutzer um Ausgleich der Gebühren bitten",
         "showGoogleApplePay": "Apple Pay- und Google Pay-Zahlungsicons anzeigen",
         "showNoContribution": "Registrierung ohne Zahlung erlauben",
+        "showVatNumber": "Nutzer um Umsatzsteuer-ID bitten",
         "suggestedAmounts": "Beiträge vorschlagen",
         "text": "In diesem Abschnitt kannst du dein Registrierungsformular bearbeiten, optimieren und ansehen.",
         "title": "Registrierung"

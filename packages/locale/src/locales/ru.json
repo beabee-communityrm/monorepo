@@ -1562,7 +1562,8 @@
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
     "unsavedChanges": "Есть несохранённые изменения",
-    "updated": ""
+    "updated": "",
+    "vatNumber": "Номер НДС"
   },
   "formRenderer": {
     "components": {
@@ -1742,6 +1743,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""
