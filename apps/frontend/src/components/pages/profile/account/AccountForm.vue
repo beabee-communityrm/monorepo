@@ -37,6 +37,10 @@
           <UInput v-model="data.organisation" class="w-full" />
         </UFormField>
 
+        <UFormField :label="t('form.vatNumber')" name="vatNumber">
+          <UInput v-model="data.vatNumber" class="w-full" />
+        </UFormField>
+
         <UFormField
           :label="t('form.phone')"
           name="telephone"
@@ -126,6 +130,7 @@ const data = reactive({
   firstName: '',
   lastName: '',
   organisation: '',
+  vatNumber: '',
   telephone: '',
   deliveryOptIn: false,
   addressLine1: '',
@@ -148,6 +153,7 @@ onMounted(async () => {
     firstName: contact.firstname,
     lastName: contact.lastname,
     organisation: contact.profile.organisation,
+    vatNumber: contact.profile.vatNumber,
     telephone: contact.profile.telephone,
     deliveryOptIn: contact.profile.deliveryOptIn,
     addressLine1: contact.profile.deliveryAddress?.line1 || '',
@@ -180,6 +186,7 @@ const schema = computed(() =>
         .string()
         .min(1, { error: t('form.errors.lastName.required') }),
       organisation: z.string(),
+      vatNumber: z.string(),
       telephone: z
         .string()
         .refine(isValidPhone, { error: t('form.errors.telephone.phone') }),
@@ -214,6 +221,7 @@ const dirty = computed(
     data.firstName !== savedData.firstName ||
     data.lastName !== savedData.lastName ||
     data.organisation !== savedData.organisation ||
+    data.vatNumber !== savedData.vatNumber ||
     data.telephone !== savedData.telephone ||
     data.deliveryOptIn !== savedData.deliveryOptIn ||
     data.addressLine1 !== savedData.addressLine1 ||
@@ -230,6 +238,7 @@ const { submit: handleSave } = useApiSubmit(
       lastname: data.lastName,
       profile: {
         organisation: data.organisation,
+        vatNumber: data.vatNumber,
         telephone: data.telephone,
         // Only update opt in if it's visible
         ...(accountContent.value?.showMailOptIn && {

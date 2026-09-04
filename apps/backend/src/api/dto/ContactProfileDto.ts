@@ -64,6 +64,10 @@ export class UpdateContactProfileDto implements Partial<GetContactProfileDto> {
 
   @IsOptional()
   @IsString()
+  vatNumber?: string;
+
+  @IsOptional()
+  @IsString()
   preferredContact?: string;
 
   @IsOptional()

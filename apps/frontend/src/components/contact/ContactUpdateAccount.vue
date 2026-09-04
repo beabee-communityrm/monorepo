@@ -18,6 +18,7 @@
         v-model="data.organisation"
         :label="t('adminSettings.general.organisationName')"
       />
+      <AppInput v-model="data.vatNumber" :label="t('form.vatNumber')" />
       <AppInput
         v-model="data.telephone"
         :label="t('form.phone')"
@@ -131,6 +132,7 @@ const data = reactive({
   cityOrTown: '',
   postCode: '',
   organisation: '',
+  vatNumber: '',
 });
 
 watch(
@@ -145,6 +147,7 @@ watch(
     data.newsletterToggle = false;
     data.deliveryOptIn = contact.profile.deliveryOptIn;
     data.organisation = contact.profile.organisation;
+    data.vatNumber = contact.profile.vatNumber;
 
     currentNewsletterStatus.value = contact.profile.newsletterStatus;
 
@@ -185,6 +188,7 @@ async function handleSubmit() {
         postcode: data.postCode,
       },
       organisation: data.organisation,
+      vatNumber: data.vatNumber,
     },
   });
 
