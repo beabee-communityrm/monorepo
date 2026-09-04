@@ -251,13 +251,27 @@ class SignupService {
       }
     }
 
+    // VAT number is only collected in Stripe payment flows
+    let vatNumber = '';
+    if (
+      signupFlow.paymentFlow &&
+      signupFlow.paymentFlow.params.paymentMethod !==
+        PaymentMethod.GoCardlessDirectDebit
+    ) {
+      vatNumber = signupFlow.paymentFlow.params.vatNumber || '';
+    }
+
     if (contact) {
       await ContactsService.updateContact(contact, partialContact);
+      if (vatNumber) {
+        await ContactsService.updateContactProfile(contact, { vatNumber });
+      }
     } else {
       contact = await ContactsService.createContact(
         partialContact,
         {
           newsletterStatus: OptionsService.getText('newsletter-default-status'),
+          ...(vatNumber && { vatNumber }),
           ...(completedFlow?.data.billingAddress &&
             OptionsService.getBool('show-mail-opt-in') && {
               deliveryAddress: completedFlow.data.billingAddress,

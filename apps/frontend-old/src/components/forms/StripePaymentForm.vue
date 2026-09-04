@@ -11,6 +11,11 @@
     </div>
   </template>
 
+  <div v-if="showVatNumber" class="mb-3">
+    <AppLabel :label="t('form.vatNumber')" class="font-normal" />
+    <AppInput v-model="vatNumber" name="vatNumber" />
+  </div>
+
   <div ref="divRef"></div>
 
   <AppNotification v-if="error" variant="error" class="mt-4" :title="error" />
@@ -48,6 +53,7 @@ const props = defineProps<{
   paymentData: PaymentFlowFormData;
   returnUrl: string;
   showNameFields?: boolean;
+  showVatNumber?: boolean;
 }>();
 
 const { t } = useI18n();
@@ -59,6 +65,7 @@ const error = ref('');
 
 const firstName = ref('');
 const lastName = ref('');
+const vatNumber = ref('');
 
 const validation = useVuelidate();
 
@@ -176,13 +183,20 @@ onBeforeMount(async () => {
 
     completePayment.value = async () => {
       loading.value = true;
+      const returnParams = [
+        ...(props.showNameFields
+          ? [
+              `firstName=${encodeURIComponent(firstName.value)}`,
+              `lastName=${encodeURIComponent(lastName.value)}`,
+            ]
+          : []),
+        ...(props.showVatNumber && vatNumber.value
+          ? [`vatNumber=${encodeURIComponent(vatNumber.value)}`]
+          : []),
+      ];
       const returnUrl =
         props.returnUrl +
-        (props.showNameFields
-          ? `?firstName=${encodeURIComponent(
-              firstName.value
-            )}&lastName=${encodeURIComponent(lastName.value)}`
-          : '');
+        (returnParams.length ? `?${returnParams.join('&')}` : '');
       const result = await stripe.confirmSetup({
         elements,
         confirmParams: {
