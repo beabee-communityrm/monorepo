@@ -449,6 +449,7 @@
       "updateResponse": "Update your response"
     },
     "addAPoint": "Click on the map where you want to add a point",
+    "addAnotherResponse": "Add another response",
     "addLocation": "Add a new entry",
     "builder": {
       "actions": {
@@ -814,6 +815,7 @@
     "closedOn": "Closed {date}",
     "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",
+    "editResponse": "Edit response",
     "ended": "This CrowdNewsroom ended on {date}",
     "entryOf": "Entry {no} of {total}",
     "form": {
@@ -831,6 +833,8 @@
     "loginToYourAccount-nuxt": "Log in",
     "membersOnly": "This CrowdNewsroom is open to members only. To participate",
     "membersOnly-nuxt": "This CrowdNewsroom is open to members only.",
+    "notAnswered": "Not answered",
+    "responseNumber": "Response {number}",
     "responseSubmitted": "Response submitted",
     "share": {
       "address": "Share using the following link:",
@@ -846,16 +850,19 @@
     },
     "showingPreview": "You can't submit a response in preview mode",
     "showingPreview-nuxt": "Preview mode — this is what contributors see. You can't submit a response from here.",
+    "signed": "Signed",
     "submittedOn": "Submitted {date}.",
     "toContributionPage": "Edit my contribution",
     "updateContribution": "please update your contribution",
     "updateContribution-nuxt": "To participate, please update your contribution.",
+    "viewFile": "View file",
     "views": {
       "gallery": "Gallery",
       "map": "Map"
     },
     "youResponded": "You replied to this CrowdNewsroom ♥",
-    "yourResponse": "Your response"
+    "yourResponse": "Your response",
+    "yourResponses": "Your responses ({count})"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom deleted.",
