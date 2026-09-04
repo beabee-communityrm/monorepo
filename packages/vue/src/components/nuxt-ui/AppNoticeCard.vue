@@ -14,7 +14,7 @@
   - `title` (string): Short label for the notice.
   - `level` (2 | 3 | 4 | 5 | 6, optional): Heading level for the title, so the
     page's outline stays correctly nested. Defaults to 3.
-  - `color` ('primary' | 'success', optional): Tints the icon, border and
+  - `color` ('primary' | 'success', optional): Tints the icon, edge and
     background. `success` also colours the title.
   - `fill` ('solid' | 'gradient', optional): Flat tint, or fading to
     transparent.
@@ -25,11 +25,8 @@
 -->
 <template>
   <div
-    class="flex flex-col gap-4 rounded-md border p-5"
-    :class="[
-      styles.border,
-      fill === 'gradient' ? styles.gradient : styles.solid,
-    ]"
+    class="flex flex-col gap-4 rounded-md p-5 ring"
+    :class="[styles.ring, fill === 'gradient' ? styles.gradient : styles.solid]"
   >
     <div class="flex flex-col gap-1.5">
       <div class="flex items-center gap-2">
@@ -68,7 +65,7 @@ export interface AppNoticeCardProps {
   title: string;
   /** Heading level for the title, so the page's outline stays nested */
   level?: 2 | 3 | 4 | 5 | 6;
-  /** Tints the icon, border and background; `success` also colours the title */
+  /** Tints the icon, edge and background; `success` also colours the title */
   color?: 'primary' | 'success';
   /** Flat tint, or fading to transparent */
   fill?: 'solid' | 'gradient';
@@ -87,14 +84,14 @@ defineSlots<{
 
 const stylesByColor = {
   primary: {
-    border: 'border-primary/20',
+    ring: 'ring-primary/20',
     solid: 'bg-primary/5',
     gradient: 'bg-linear-to-b from-primary/5 to-transparent to-70%',
     icon: 'text-primary',
     title: 'text-highlighted',
   },
   success: {
-    border: 'border-success/20',
+    ring: 'ring-success/20',
     solid: 'bg-success/5',
     gradient: 'bg-linear-to-b from-success/5 to-transparent to-70%',
     icon: 'text-success',
