@@ -1026,7 +1026,6 @@
     },
     "contributionType": {
       "automatic": "Automatique",
-      "gift": "Cadeau",
       "manual": "Manuel",
       "none": "Aucun"
     },
@@ -1779,7 +1778,6 @@
     "insert": "Insérer",
     "insertTag": "Insérer {tag}",
     "tags": {
-      "ACTIVATELINK": "Lien d'activation du cadeau",
       "ANSWERS": "Réponses formatées",
       "CALLOUTLINK": "Lien vers CrowdNewsroom",
       "CALLOUTSLUG": "Slug de CrowdNewsroom",
@@ -1788,8 +1786,6 @@
       "EMAIL": "Adresse e-mail du contact",
       "EXPIRES": "Date d'expiration de l'adhésion",
       "FNAME": "Prénom du contact",
-      "GIFTDATE": "Date de début du cadeau",
-      "GIFTEE": "Nom du bénéficiaire du cadeau",
       "ISELIGIBLE": "Si le parrainage est éligible",
       "LNAME": "Nom de famille du contact",
       "LOGINLINK": "Lien de connexion",
@@ -1799,7 +1795,6 @@
       "MESSAGE": "Contenu du message personnalisé",
       "NAME": "Nom complet du contact",
       "ORGNAME": "Nom de l'organisation",
-      "PURCHASER": "Nom de l'acheteur du cadeau",
       "REFCODE": "Code de parrainage du contact",
       "REFEREENAME": "Nom de la personne parrainée",
       "RESPNAME": "Nom du répondant",

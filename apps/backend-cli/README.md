@@ -108,12 +108,6 @@ yarn backend-cli payment create        Create a new payment
 yarn backend-cli payment list [email]  List payments
 ```
 
-### Processing Commands
-
-```bash
-yarn backend-cli process gifts  Process pending gifts
-```
-
 ### Rate Limiter Management
 
 ```bash

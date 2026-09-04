@@ -31,7 +31,6 @@ import {
   ContactProfile,
   ContactRole,
   ContactTagAssignment,
-  GiftFlow,
   Password,
   Payment,
   Project,
@@ -445,26 +444,21 @@ class ContactsService {
         .getRepository(Project)
         .update({ ownerId: contact.id }, { ownerId: null });
 
-      // 13. Gift flows: set giftee to NULL (legacy app)
-      await em
-        .getRepository(GiftFlow)
-        .update({ gifteeId: contact.id }, { gifteeId: null });
-
-      // 14. Referrals: delete where contact is referee (legacy feature)
+      // 13. Referrals: delete where contact is referee (legacy feature)
       await em.getRepository(Referral).delete({ refereeId: contact.id });
 
-      // 15. Contact tag assignments (has CASCADE but explicit for safety)
+      // 14. Contact tag assignments (has CASCADE but explicit for safety)
       await em
         .getRepository(ContactTagAssignment)
         .delete({ contactId: contact.id });
 
-      // 16. Contact roles
+      // 15. Contact roles
       await em.getRepository(ContactRole).delete({ contactId: contact.id });
 
-      // 17. Contact profile
+      // 16. Contact profile
       await em.getRepository(ContactProfile).delete({ contactId: contact.id });
 
-      // 18. Finally delete the contact
+      // 17. Finally delete the contact
       await em.getRepository(Contact).delete(contact.id);
     });
   }

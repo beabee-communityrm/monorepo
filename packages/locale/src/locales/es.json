@@ -1022,7 +1022,6 @@
     },
     "contributionType": {
       "automatic": "Automático",
-      "gift": "Regalo",
       "manual": "Manual",
       "none": "Ninguno"
     },
@@ -1773,7 +1772,6 @@
     "insert": "Insertar",
     "insertTag": "Insertar {tag}",
     "tags": {
-      "ACTIVATELINK": "Enlace de activación de regalo",
       "ANSWERS": "Respuestas formateadas",
       "CALLOUTLINK": "Enlace al CrowdNewsroom",
       "CALLOUTSLUG": "Slug del CrowdNewsroom",
@@ -1782,8 +1780,6 @@
       "EMAIL": "Dirección de correo del contacto",
       "EXPIRES": "Fecha de expiración de membresía",
       "FNAME": "Nombre del contacto",
-      "GIFTDATE": "Fecha de inicio del regalo",
-      "GIFTEE": "Nombre del destinatario del regalo",
       "ISELIGIBLE": "Si la referencia es elegible",
       "LNAME": "Apellido del contacto",
       "LOGINLINK": "Enlace de inicio de sesión",
@@ -1793,7 +1789,6 @@
       "MESSAGE": "Contenido del mensaje personalizado",
       "NAME": "Nombre completo del contacto",
       "ORGNAME": "Nombre de la organización",
-      "PURCHASER": "Nombre del comprador del regalo",
       "REFCODE": "Código de referencia del contacto",
       "REFEREENAME": "Nombre de la persona referida",
       "RESPNAME": "Nombre del encuestado",

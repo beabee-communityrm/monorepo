@@ -21,8 +21,6 @@ import { Email } from './models/Email.js';
 import { EmailMailing } from './models/EmailMailing.js';
 import { Export } from './models/Export.js';
 import { ExportItem } from './models/ExportItem.js';
-import { GiftFlow } from './models/GiftFlow.js';
-import { GiftForm } from './models/GiftForm.js';
 import { ItemWithStatus } from './models/ItemWithStatus.js';
 import { Notice } from './models/Notice.js';
 import { Option } from './models/Option.js';
@@ -64,8 +62,6 @@ export const entities = [
   EmailMailing,
   Export,
   ExportItem,
-  GiftFlow,
-  GiftForm,
   ItemWithStatus,
   Notice,
   Option,

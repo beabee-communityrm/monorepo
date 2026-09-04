@@ -12,7 +12,6 @@ import {
   imageCommand,
   migrateUploadsCommand,
   paymentCommand,
-  processCommand,
   rateLimiterCommand,
   setupCommand,
   syncCommand,
@@ -34,7 +33,6 @@ yargs(hideBin(process.argv))
   .command(healthCommand)
   .command(imageCommand)
   .command(paymentCommand)
-  .command(processCommand)
   .command(rateLimiterCommand)
   .command(syncCommand)
   .command(testCommand)
