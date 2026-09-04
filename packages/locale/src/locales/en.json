@@ -1021,7 +1021,6 @@
     },
     "contributionType": {
       "automatic": "Automatic",
-      "gift": "Gift",
       "manual": "Manual",
       "none": "None"
     },
@@ -1772,7 +1771,6 @@
     "insert": "Insert",
     "insertTag": "Insert {tag}",
     "tags": {
-      "ACTIVATELINK": "Gift activation link",
       "ANSWERS": "Formatted response answers",
       "CALLOUTLINK": "Link to CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom slug",
@@ -1781,8 +1779,6 @@
       "EMAIL": "Contact email address",
       "EXPIRES": "Membership expiration date",
       "FNAME": "Contact first name",
-      "GIFTDATE": "Gift start date",
-      "GIFTEE": "Gift recipient name",
       "ISELIGIBLE": "Whether referral is eligible",
       "LNAME": "Contact last name",
       "LOGINLINK": "Login link",
@@ -1792,7 +1788,6 @@
       "MESSAGE": "Custom message content",
       "NAME": "Contact full name",
       "ORGNAME": "Organization name",
-      "PURCHASER": "Gift purchaser name",
       "REFCODE": "Contact referral code",
       "REFEREENAME": "Name of referred person",
       "RESPNAME": "Responder name",

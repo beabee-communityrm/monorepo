@@ -21,8 +21,6 @@ export * from './Email.js';
 export * from './EmailMailing.js';
 export * from './Export.js';
 export * from './ExportItem.js';
-export * from './GiftFlow.js';
-export * from './GiftForm.js';
 export * from './ItemWithStatus.js';
 export * from './Notice.js';
 export * from './Option.js';

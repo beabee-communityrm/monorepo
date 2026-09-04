@@ -1022,7 +1022,6 @@
     },
     "contributionType": {
       "automatic": "Automatisch",
-      "gift": "Geschenk",
       "manual": "Manuell",
       "none": "None"
     },
@@ -1775,7 +1774,6 @@
     "insert": "Einfügen",
     "insertTag": "{tag} einfügen",
     "tags": {
-      "ACTIVATELINK": "Geschenk-Aktivierungslink",
       "ANSWERS": "Formatierte Antwort-Zusammenfassung",
       "CALLOUTLINK": "Link zur CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom-Slug",
@@ -1784,8 +1782,6 @@
       "EMAIL": "E-Mail-Adresse des Kontakts",
       "EXPIRES": "Ablaufdatum der Mitgliedschaft",
       "FNAME": "Vorname",
-      "GIFTDATE": "Startdatum des Geschenks",
-      "GIFTEE": "Name des Geschenkempfängers",
       "ISELIGIBLE": "Ob die Empfehlung berechtigt ist",
       "LNAME": "Nachname",
       "LOGINLINK": "Login-Link",
@@ -1795,7 +1791,6 @@
       "MESSAGE": "Benutzerdefinierte Nachricht",
       "NAME": "Vollständiger Name",
       "ORGNAME": "Name der Organisation",
-      "PURCHASER": "Name des Geschenkkäufers",
       "REFCODE": "Empfehlungs-Code des Kontakts",
       "REFEREENAME": "Name der geworbenen Person",
       "RESPNAME": "Name des Antwortenden",

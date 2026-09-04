@@ -22,7 +22,6 @@ import { getChargeableAmount } from '#utils/payment';
 
 // Stripe webhook events that we handle
 export const STRIPE_WEBHOOK_EVENTS = [
-  'checkout.session.completed',
   'customer.deleted',
   'customer.subscription.updated',
   'customer.subscription.deleted',

@@ -1022,7 +1022,6 @@
     },
     "contributionType": {
       "automatic": "Automatisch",
-      "gift": "Cadeau",
       "manual": "Handmatig",
       "none": "Geen"
     },
@@ -1775,7 +1774,6 @@
     "insert": "Invoegen",
     "insertTag": "Voeg {tag} in",
     "tags": {
-      "ACTIVATELINK": "Cadeau activatielink",
       "ANSWERS": "Geformatteerde antwoorden",
       "CALLOUTLINK": "Link naar de CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom slug",
@@ -1784,8 +1782,6 @@
       "EMAIL": "E-mailadres van contact",
       "EXPIRES": "Vervaldatum lidmaatschap",
       "FNAME": "Voornaam van contact",
-      "GIFTDATE": "Startdatum cadeau",
-      "GIFTEE": "Naam van cadeauontvanger",
       "ISELIGIBLE": "Of doorverwijzing in aanmerking komt",
       "LNAME": "Achternaam van contact",
       "LOGINLINK": "Loginlink",
@@ -1795,7 +1791,6 @@
       "MESSAGE": "Aangepaste berichtinhoud",
       "NAME": "Volledige naam van contact",
       "ORGNAME": "Organisatienaam",
-      "PURCHASER": "Naam van cadeauverkoper",
       "REFCODE": "Doorverwijzingscode van contact",
       "REFEREENAME": "Naam van doorverwezen persoon",
       "RESPNAME": "Naam van respondent",

@@ -149,7 +149,6 @@ export default {
   'flash-contribution-cancelled': 'Contribution cancelled',
   'flash-contribution-cancellation-err': 'Error cancelling contribution',
   'flash-contribution-updated': 'Contribution updated',
-  'flash-contribution-gift-updated': 'Thanks for starting your contribution',
   'flash-contribution-updating-not-allowed':
     "You can't change your contribution online at the moment, please contact membership@thebristolcable.org",
   'flash-contribution-updating-failed':
@@ -183,11 +182,6 @@ export default {
   'flash-exports-updated': 'Updated export status',
   'flash-exports-deleted': 'Export deleted',
   'flash-exports-ineligible': 'Item is not eligible to be in this export.',
-  'flash-gifts-date-in-the-past': "The gift start date can't be in the past",
-  'flash-gifts-email-duplicate':
-    "The giftee's email address is already registered",
-  'flash-gifts-already-activated':
-    'The gift has already been activated, please login to continue',
   'flash-migration-manual-to-auto-sent': 'Email sent to manual contributors',
   'flash-notices-created': 'Notice created',
   'flash-notices-updated': 'Notice updated',
