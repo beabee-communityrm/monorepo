@@ -145,7 +145,7 @@ class ContactsService {
       await ActivityService.addEvent({
         targetId: contact.id,
         eventType: ActivityEventType.ContactCreated,
-        metadata: null,
+        metadata: origin,
       });
 
       return contact;
