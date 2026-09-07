@@ -33,9 +33,9 @@ const { t } = useI18n();
 const colorMap = {
   [PaymentStatus.Draft]: 'text-body-60',
   [PaymentStatus.Pending]: 'text-body-60',
-  [PaymentStatus.Successful]: 'text-success',
-  [PaymentStatus.Cancelled]: 'text-danger',
-  [PaymentStatus.Failed]: 'text-danger',
+  [PaymentStatus.Successful]: 'text-theme-success',
+  [PaymentStatus.Cancelled]: 'text-theme-danger',
+  [PaymentStatus.Failed]: 'text-theme-danger',
 };
 
 /**

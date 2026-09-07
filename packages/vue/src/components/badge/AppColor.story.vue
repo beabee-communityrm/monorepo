@@ -30,9 +30,9 @@
       <div class="space-y-4">
         <h4 class="font-semibold text-body">Status Color Palette</h4>
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <AppColor name="bg-success" shade="Success" />
-          <AppColor name="bg-warning" shade="Warning" />
-          <AppColor name="bg-danger" shade="Danger" />
+          <AppColor name="bg-theme-success" shade="Success" />
+          <AppColor name="bg-theme-warning" shade="Warning" />
+          <AppColor name="bg-theme-danger" shade="Danger" />
           <AppColor name="bg-info" shade="Info" />
         </div>
       </div>
@@ -52,9 +52,9 @@
                 class="mt-1 block w-full rounded border border-grey-light p-2"
               >
                 <option value="bg-main">bg-main</option>
-                <option value="bg-success">bg-success</option>
-                <option value="bg-warning">bg-warning</option>
-                <option value="bg-danger">bg-danger</option>
+                <option value="bg-theme-success">bg-theme-success</option>
+                <option value="bg-theme-warning">bg-theme-warning</option>
+                <option value="bg-theme-danger">bg-theme-danger</option>
                 <option value="bg-grey">bg-grey</option>
               </select>
             </label>

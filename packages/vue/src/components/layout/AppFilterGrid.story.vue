@@ -180,7 +180,7 @@ const sampleContent: Record<string, { title: string; description: string }> = {
                       <td class="px-4 py-2">Item {{ i }}</td>
                       <td class="px-4 py-2">
                         <span
-                          class="text-success-80 rounded bg-success-10 px-2 py-1 text-xs"
+                          class="text-theme-success-80 rounded bg-theme-success-10 px-2 py-1 text-xs"
                         >
                           {{ state.currentFilter }}
                         </span>

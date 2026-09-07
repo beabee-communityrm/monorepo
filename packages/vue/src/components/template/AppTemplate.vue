@@ -135,9 +135,9 @@ const componentId = props.id ?? generateUniqueId('template');
 const variantClasses = {
   primary: 'border-main-40 bg-main-5 text-main-80',
   secondary: 'border-grey-light bg-grey-lighter text-body',
-  success: 'border-success-30 bg-success-10 text-success-110',
-  warning: 'border-warning-30 bg-warning-10 text-warning',
-  danger: 'border-danger-30 bg-danger-10 text-danger-110',
+  success: 'border-theme-success-30 bg-theme-success-10 text-theme-success-110',
+  warning: 'border-theme-warning-30 bg-theme-warning-10 text-theme-warning',
+  danger: 'border-theme-danger-30 bg-theme-danger-10 text-theme-danger-110',
 } as const;
 
 const sizeClasses = {

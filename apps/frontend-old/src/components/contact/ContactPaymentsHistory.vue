@@ -98,7 +98,7 @@ function getRowClass(item: GetPaymentData) {
   switch (item.status) {
     case PaymentStatus.Cancelled:
     case PaymentStatus.Failed:
-      return 'text-danger';
+      return 'text-theme-danger';
     case PaymentStatus.Pending:
     case PaymentStatus.Draft:
       return 'text-body-60';

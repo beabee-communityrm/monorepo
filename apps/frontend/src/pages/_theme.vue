@@ -30,24 +30,24 @@ meta:
         <AppColor name="bg-link-110" shade="110" />
       </div>
       <div class="flex-1">
-        <AppColor name="bg-warning" shade="Warning" />
-        <AppColor name="bg-warning-10" shade="10" />
-        <AppColor name="bg-warning-30" shade="30" />
-        <AppColor name="bg-warning-70" shade="70" />
+        <AppColor name="bg-theme-warning" shade="Warning" />
+        <AppColor name="bg-theme-warning-10" shade="10" />
+        <AppColor name="bg-theme-warning-30" shade="30" />
+        <AppColor name="bg-theme-warning-70" shade="70" />
       </div>
       <div class="flex-1">
-        <AppColor name="bg-success" shade="Success" />
-        <AppColor name="bg-success-10" shade="10" />
-        <AppColor name="bg-success-30" shade="30" />
-        <AppColor name="bg-success-70" shade="70" />
-        <AppColor name="bg-success-110" shade="110" />
+        <AppColor name="bg-theme-success" shade="Success" />
+        <AppColor name="bg-theme-success-10" shade="10" />
+        <AppColor name="bg-theme-success-30" shade="30" />
+        <AppColor name="bg-theme-success-70" shade="70" />
+        <AppColor name="bg-theme-success-110" shade="110" />
       </div>
       <div class="flex-1">
-        <AppColor name="bg-danger" shade="Danger" />
-        <AppColor name="bg-danger-10" shade="10" />
-        <AppColor name="bg-danger-30" shade="30" />
-        <AppColor name="bg-danger-70" shade="70" />
-        <AppColor name="bg-danger-110" shade="110" />
+        <AppColor name="bg-theme-danger" shade="Danger" />
+        <AppColor name="bg-theme-danger-10" shade="10" />
+        <AppColor name="bg-theme-danger-30" shade="30" />
+        <AppColor name="bg-theme-danger-70" shade="70" />
+        <AppColor name="bg-theme-danger-110" shade="110" />
       </div>
       <div class="flex-1">
         <AppColor name="bg-grey" shade="Grey" />
@@ -145,7 +145,7 @@ meta:
                   alt="Lorem Picsum"
                 />
               </AppSlide>
-              <AppSlide class="bg-success">
+              <AppSlide class="bg-theme-success">
                 <div class="flex h-full w-full items-center justify-center">
                   <p>You can put anything you want in here!</p>
                 </div>
@@ -211,7 +211,7 @@ meta:
                   alt="Lorem Picsum"
                 />
               </AppSlide>
-              <AppSlide class="bg-success">
+              <AppSlide class="bg-theme-success">
                 <div class="flex h-full w-full items-center justify-center">
                   <p>You can put anything you want in here!</p>
                 </div>

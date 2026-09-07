@@ -28,7 +28,7 @@
           <font-awesome-icon :icon="faTimes" />
         </button>
         <AppHeading v-if="title" :id="modalId + '-title'">
-          <span :class="{ 'text-danger': variant === 'danger' }">
+          <span :class="{ 'text-theme-danger': variant === 'danger' }">
             {{ title }}
           </span>
         </AppHeading>

@@ -13,7 +13,7 @@
       </button>
     </template>
     <template v-else>
-      <p class="text-sm font-semibold text-danger">
+      <p class="text-sm font-semibold text-theme-danger">
         {{ t('advancedSearch.invalidRuleError', { rule: rule }) }}
       </p>
     </template>

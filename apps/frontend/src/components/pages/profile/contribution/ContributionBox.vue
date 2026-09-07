@@ -34,7 +34,7 @@
               v-if="contribution.membershipExpiryDate"
               :datetime="contribution.membershipExpiryDate"
               time-only
-              class="font-bold text-danger"
+              class="font-bold text-theme-danger"
             />
           </template>
         </i18n-t>

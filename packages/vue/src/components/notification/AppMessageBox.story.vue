@@ -258,7 +258,7 @@ const sampleMessages = {
             Your data migration has been completed successfully!
           </p>
 
-          <div class="rounded bg-success-10 p-3">
+          <div class="rounded bg-theme-success-10 p-3">
             <p class="text-sm"><strong>Migration Summary:</strong></p>
             <ul class="mt-1 text-sm">
               <li>• 1,247 records migrated</li>

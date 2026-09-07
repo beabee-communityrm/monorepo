@@ -147,7 +147,7 @@ const variants = ['primary', 'success', 'warning', 'error', 'info'] as const;
             <div class="mt-2">
               <button
                 type="button"
-                class="rounded bg-danger px-4 py-2 text-white hover:bg-danger-110"
+                class="rounded bg-theme-danger px-4 py-2 text-white hover:bg-theme-danger-110"
               >
                 Delete My Account
               </button>

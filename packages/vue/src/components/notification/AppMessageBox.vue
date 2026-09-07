@@ -45,7 +45,7 @@ const props = defineProps<{
 const textColor = computed(() => {
   switch (props.variant) {
     case 'success':
-      return 'text-success';
+      return 'text-theme-success';
     case 'info':
       return 'text-body-80';
     default:

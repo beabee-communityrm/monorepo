@@ -5,13 +5,13 @@
     <font-awesome-icon
       v-if="error"
       :icon="faExclamationCircle"
-      class="ml-2 text-danger"
+      class="ml-2 text-theme-danger"
       aria-label="Error"
     />
     <font-awesome-icon
       v-else-if="validated"
       :icon="faCheckCircle"
-      class="ml-2 text-success"
+      class="ml-2 text-theme-success"
       aria-label="Validated"
     />
   </span>

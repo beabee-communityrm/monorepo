@@ -3,7 +3,7 @@
     <div class="mb-2 flex rounded bg-white p-4.5 shadow">
       <div class="flex md:mt-1.5">
         <font-awesome-icon
-          class="mr-2 self-start text-xl text-warning md:mt-1"
+          class="mr-2 self-start text-xl text-theme-warning md:mt-1"
           :icon="faBullhorn"
         />
 

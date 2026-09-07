@@ -26,7 +26,7 @@
           stepIndex === modelValue
             ? 'bg-white text-link'
             : 'text-main-60 cursor-pointer bg-main-5 hover:bg-main-10',
-          step.error ? '!text-danger' : '',
+          step.error ? '!text-theme-danger' : '',
           disabled ? 'cursor-not-allowed opacity-60' : '',
         ]"
         role="listitem"

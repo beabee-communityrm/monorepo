@@ -61,8 +61,8 @@ const props = withDefaults(defineProps<ItemStatusProps>(), {
  */
 const colorClasses = {
   [ItemStatus.Draft]: 'text-body-60',
-  [ItemStatus.Scheduled]: 'text-warning',
-  [ItemStatus.Open]: 'text-success',
+  [ItemStatus.Scheduled]: 'text-theme-warning',
+  [ItemStatus.Open]: 'text-theme-success',
   [ItemStatus.Ended]: 'text-body-80',
 } as const;
 </script>

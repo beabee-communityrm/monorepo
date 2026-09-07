@@ -35,7 +35,7 @@
         class="w-full rounded border p-2 focus:shadow-input focus:outline-none"
         :class="[
           hasError
-            ? 'border-danger-70 bg-danger-10'
+            ? 'border-theme-danger-70 bg-theme-danger-10'
             : disabled
               ? 'cursor-not-allowed border-main-40 bg-grey-lighter'
               : 'border-main-40 bg-white',

@@ -93,7 +93,7 @@ function handleExpand() {
         <AppExpandableBox button-text="Advanced Settings" :button-icon="faUser">
           <template #before>
             <div
-              class="text-warning-80 rounded bg-warning-10 px-2 py-1 text-xs"
+              class="text-theme-warning-80 rounded bg-theme-warning-10 px-2 py-1 text-xs"
             >
               Admin Only
             </div>

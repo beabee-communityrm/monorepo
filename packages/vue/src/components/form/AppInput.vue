@@ -38,7 +38,7 @@
       class="flex flex-1 items-center overflow-hidden rounded border focus-within:shadow-input"
       :class="
         hasError
-          ? 'border-danger-70 bg-danger-10'
+          ? 'border-theme-danger-70 bg-theme-danger-10'
           : disabled
             ? 'border-main-40 bg-grey-lighter'
             : 'border-main-40 bg-white'
@@ -57,7 +57,11 @@
         v-if="$slots.prefixAction"
         class="flex h-10 flex-0 shrink-0 items-center border-r border-main-40"
         :class="
-          hasError ? 'bg-danger-10' : disabled ? 'bg-grey-lighter' : 'bg-white'
+          hasError
+            ? 'bg-theme-danger-10'
+            : disabled
+              ? 'bg-grey-lighter'
+              : 'bg-white'
         "
       >
         <slot name="prefixAction" />
@@ -91,7 +95,11 @@
         v-if="$slots.suffixAction"
         class="flex h-10 flex-0 shrink-0 items-center border-l border-main-40"
         :class="
-          hasError ? 'bg-danger-10' : disabled ? 'bg-grey-lighter' : 'bg-white'
+          hasError
+            ? 'bg-theme-danger-10'
+            : disabled
+              ? 'bg-grey-lighter'
+              : 'bg-white'
         "
       >
         <slot name="suffixAction" />

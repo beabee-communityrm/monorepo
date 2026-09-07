@@ -33,19 +33,19 @@ const addTestNotification = (
         <!-- Control area -->
         <div class="absolute bottom-4 left-4 flex flex-wrap gap-2">
           <button
-            class="rounded bg-success-70 px-3 py-1 font-semibold text-white shadow-sm"
+            class="rounded bg-theme-success-70 px-3 py-1 font-semibold text-white shadow-sm"
             @click="addTestNotification('success')"
           >
             Add Success
           </button>
           <button
-            class="rounded bg-warning-70 px-3 py-1 font-semibold text-white shadow-sm"
+            class="rounded bg-theme-warning-70 px-3 py-1 font-semibold text-white shadow-sm"
             @click="addTestNotification('warning')"
           >
             Add Warning
           </button>
           <button
-            class="rounded bg-danger-70 px-3 py-1 font-semibold text-white shadow-sm"
+            class="rounded bg-theme-danger-70 px-3 py-1 font-semibold text-white shadow-sm"
             @click="addTestNotification('error')"
           >
             Add Error

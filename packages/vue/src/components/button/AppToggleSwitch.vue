@@ -74,7 +74,7 @@ const props = withDefaults(defineProps<AppToggleSwitchProps>(), {
 const activeVariantClasses = {
   primary: 'bg-main hover:bg-main-110',
   link: 'bg-link hover:bg-link-110',
-  danger: 'bg-danger hover:bg-danger-110',
+  danger: 'bg-theme-danger hover:bg-theme-danger-110',
 } as const;
 
 const sizeClasses = {

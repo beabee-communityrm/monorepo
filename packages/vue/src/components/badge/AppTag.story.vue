@@ -114,8 +114,8 @@ function handleRemove() {
           </div>
         </div>
 
-        <div class="rounded bg-warning-10 p-3">
-          <p class="text-warning-80 text-sm">
+        <div class="rounded bg-theme-warning-10 p-3">
+          <p class="text-theme-warning-80 text-sm">
             <strong>Accessibility:</strong> Each remove button includes proper
             focus management and keyboard navigation support for better
             accessibility.
