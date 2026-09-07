@@ -13,4 +13,5 @@ export interface SetupContactData {
   addressLine2: string;
   cityOrTown: string;
   postCode: string;
+  country: string;
 }

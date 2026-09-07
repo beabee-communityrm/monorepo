@@ -3,4 +3,5 @@ export interface Address {
   line2?: string | undefined;
   city: string;
   postcode: string;
+  country?: string | undefined;
 }
