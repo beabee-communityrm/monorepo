@@ -811,7 +811,7 @@
       },
       "untitledCallout": "Untitled CrowdNewsroom"
     },
-    "closedNoEdit": "This CrowdNewsroom has closed, so it can no longer be edited.",
+    "closedNoEdit": "This CrowdNewsroom has closed, so responses can no longer be added or edited.",
     "closedOn": "Closed {date}",
     "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",

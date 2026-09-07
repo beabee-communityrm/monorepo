@@ -816,7 +816,7 @@
       },
       "untitledCallout": ""
     },
-    "closedNoEdit": "Cette CrowdNewsrooms est terminée, elle ne peut donc plus être modifiée.",
+    "closedNoEdit": "Cette CrowdNewsrooms est terminée, les réponses ne peuvent plus être ajoutées ni modifiées.",
     "closedOn": "Terminée le {date}",
     "confirmHuman": "Veuillez confirmer que vous êtes humain",
     "contactDetails": "Informations de contact",
@@ -855,7 +855,7 @@
     },
     "showingPreview": "Vous ne pouvez pas envoyer de réponse en mode aperçu",
     "showingPreview-nuxt": "Mode aperçu — voici ce que voient les participants. Vous ne pouvez pas envoyer de réponse depuis cette page.",
-    "signed": "Signé",
+    "signed": "Signature",
     "submittedOn": "Envoyée le {date}.",
     "toContributionPage": "Modifier ma cotisation",
     "updateContribution": "veuillez mettre à jour votre cotisation",

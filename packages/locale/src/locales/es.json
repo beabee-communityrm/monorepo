@@ -812,7 +812,7 @@
       },
       "untitledCallout": "CrowdNewsroom sin título"
     },
-    "closedNoEdit": "Este CrowdNewsroom ha cerrado, por lo que ya no se puede editar.",
+    "closedNoEdit": "Este CrowdNewsroom ha cerrado, por lo que ya no se pueden añadir ni editar respuestas.",
     "closedOn": "Cerrado el {date}",
     "confirmHuman": "Confirma que eres humano",
     "contactDetails": "Datos de contacto",
@@ -851,7 +851,7 @@
     },
     "showingPreview": "No puedes enviar una respuesta en modo de vista previa",
     "showingPreview-nuxt": "Modo de vista previa: esto es lo que ven los participantes. No puedes enviar una respuesta desde aquí.",
-    "signed": "Firmado",
+    "signed": "Firma",
     "submittedOn": "Enviada el {date}.",
     "toContributionPage": "Editar mi contribución",
     "updateContribution": "actualiza tu contribución",

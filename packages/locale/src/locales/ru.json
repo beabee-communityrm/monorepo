@@ -813,7 +813,7 @@
       },
       "untitledCallout": ""
     },
-    "closedNoEdit": "Эта CrowdNewsroom завершилась, поэтому ответ больше нельзя изменить.",
+    "closedNoEdit": "Эта CrowdNewsroom завершилась, поэтому ответы больше нельзя добавлять или изменять.",
     "closedOn": "Завершилась {date}",
     "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
@@ -852,7 +852,7 @@
     },
     "showingPreview": "Вы не можете отправить ответ в режиме предварительного просмотра",
     "showingPreview-nuxt": "Режим предварительного просмотра — так это видят участники. Отправить ответ отсюда нельзя.",
-    "signed": "Подписано",
+    "signed": "Подпись",
     "submittedOn": "Отправлено {date}.",
     "toContributionPage": "Изменить мой уровень участия",
     "updateContribution": "пожалуйста обновите ваш уровень участия",

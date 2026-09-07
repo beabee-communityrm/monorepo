@@ -812,7 +812,7 @@
       },
       "untitledCallout": ""
     },
-    "closedNoEdit": "Deze CrowdNewsroom is gesloten en kan niet meer worden bijgewerkt.",
+    "closedNoEdit": "Deze CrowdNewsroom is gesloten, er kunnen geen reacties meer worden toegevoegd of bijgewerkt.",
     "closedOn": "Gesloten op {date}",
     "confirmHuman": "Bevestig dat u een mens bent",
     "contactDetails": "Contactgegevens",
@@ -851,7 +851,7 @@
     },
     "showingPreview": "Je kunt geen reactie indienen in de voorbeeldmodus",
     "showingPreview-nuxt": "Voorbeeldmodus — dit is wat deelnemers zien. Je kunt hier geen reactie indienen.",
-    "signed": "Ondertekend",
+    "signed": "Handtekening",
     "submittedOn": "Ingediend op {date}.",
     "toContributionPage": "Mijn bijdrage bewerken",
     "updateContribution": "Update uw bijdrage",

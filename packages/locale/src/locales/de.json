@@ -812,7 +812,7 @@
       },
       "untitledCallout": "Unbennater CrowdNewsroom"
     },
-    "closedNoEdit": "Dieser CrowdNewsroom ist beendet und kann nicht mehr bearbeitet werden.",
+    "closedNoEdit": "Dieser CrowdNewsroom ist beendet, es können keine Antworten mehr hinzugefügt oder bearbeitet werden.",
     "closedOn": "Beendet am {date}",
     "confirmHuman": "Bitte bestätigen Sie, dass Sie ein Mensch sind",
     "contactDetails": "Kontaktdaten",
@@ -851,7 +851,7 @@
     },
     "showingPreview": "Im Vorschaumodus sind Antworten deaktiviert.",
     "showingPreview-nuxt": "Vorschaumodus – so sehen es Teilnehmende. Antworten können hier nicht eingereicht werden.",
-    "signed": "Unterschrieben",
+    "signed": "Unterschrift",
     "submittedOn": "Eingereicht am {date}.",
     "toContributionPage": "Meinen Beitrag ändern",
     "updateContribution": "Bitte ändern Sie ihren Beitrag.",
