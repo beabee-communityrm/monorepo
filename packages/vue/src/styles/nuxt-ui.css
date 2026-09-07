@@ -15,7 +15,7 @@
     h4,
     h5,
     h6 {
-      @apply text-highlighted text-base font-semibold;
+      @apply text-base font-semibold text-highlighted;
     }
   }
 

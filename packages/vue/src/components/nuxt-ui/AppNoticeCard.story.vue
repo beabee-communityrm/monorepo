@@ -23,7 +23,7 @@ const state = reactive({
           :color="state.color"
           :fill="state.fill"
         >
-          <p class="text-muted text-sm">
+          <p class="text-sm text-muted">
             This CrowdNewsroom is open to members only. Log in or join to take
             part.
           </p>
@@ -67,7 +67,7 @@ const state = reactive({
           <p class="text-sm">
             Your answer joins over a hundred others from across the region.
           </p>
-          <p class="text-muted text-sm">Submitted 26 August 2026.</p>
+          <p class="text-sm text-muted">Submitted 26 August 2026.</p>
         </AppNoticeCard>
       </div>
     </Variant>
@@ -75,7 +75,7 @@ const state = reactive({
     <Variant title="Solid fill">
       <div class="max-w-xl">
         <AppNoticeCard icon="i-lucide-lock" title="Members only" fill="solid">
-          <p class="text-muted text-sm">
+          <p class="text-sm text-muted">
             This CrowdNewsroom is open to members only. To participate, please
             update your contribution.
           </p>
@@ -94,7 +94,7 @@ const state = reactive({
           title="A notice with a good deal more to say"
           fill="gradient"
         >
-          <p class="text-muted text-sm">
+          <p class="text-sm text-muted">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut

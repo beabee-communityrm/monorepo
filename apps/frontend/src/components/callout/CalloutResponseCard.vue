@@ -19,26 +19,26 @@
       body: 'p-0 sm:p-0',
     }"
   >
-    <dl class="divide-muted/50 divide-y">
+    <dl class="divide-y divide-muted/50">
       <div
         v-for="row in rows"
         :key="row.key"
         class="flex flex-col gap-1 px-4 py-4 sm:px-6"
       >
-        <dt class="text-highlighted font-medium">{{ row.label }}</dt>
+        <dt class="font-medium text-highlighted">{{ row.label }}</dt>
 
         <dd v-if="row.images" class="flex flex-wrap gap-2">
           <img
             v-for="(src, i) in row.images"
             :key="i"
-            class="ring-default max-h-40 rounded bg-white p-1 ring"
+            class="max-h-40 rounded bg-white p-1 ring ring-default"
             :src="src"
             :alt="row.imageAlt || ''"
           />
         </dd>
 
         <dd v-else-if="row.href" class="flex flex-wrap items-center gap-x-3">
-          <span v-if="row.value" class="text-muted wrap-break-word">
+          <span v-if="row.value" class="wrap-break-word text-muted">
             {{ row.value }}
           </span>
           <UButton
@@ -56,7 +56,7 @@
           {{ t('callout.notAnswered') }}
         </dd>
 
-        <dd v-else class="text-muted wrap-break-word whitespace-pre-line">
+        <dd v-else class="wrap-break-word whitespace-pre-line text-muted">
           {{ row.value }}
         </dd>
       </div>
