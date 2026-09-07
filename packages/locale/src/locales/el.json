@@ -78,17 +78,25 @@
         "subscribed": "",
         "unsubscribed": ""
       },
+      "description": "",
+      "noGroups": "",
       "subscribe": "",
       "title": "",
-      "unsubscribe": ""
+      "unsubscribe": "",
+      "unsubscribeButton": "",
+      "unsubscribeInfo": "",
+      "unsubscribedNotification": ""
     },
+    "personalDetails": "",
     "phoneInfo": "",
     "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
     "requiredFields": "Υποχρεωτικά πεδία",
     "savedPassword": "",
+    "security": "",
     "subTitle": "",
     "subTitle-nuxt": "",
+    "subscriptions": "",
     "title": "",
     "unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές"
   },
@@ -294,6 +302,7 @@
       "newsletter": {
         "audienceId": "Αναγνωριστικό κοινού",
         "groups": "Ομάδες",
+        "groupsNote": "",
         "noGroups": "Δεν βρέθηκαν ομάδες"
       },
       "refresh": "Ανανέωση",

@@ -100,7 +100,6 @@ describe('convertContactToNlUpdate', () => {
       expect(result).toEqual({
         email: 'test@example.com',
         status: NewsletterStatus.Subscribed,
-        groups: ['group1'],
         firstname: 'John',
         lastname: 'Doe',
         fields: {
@@ -126,7 +125,6 @@ describe('convertContactToNlUpdate', () => {
       expect(result).toEqual({
         email: 'test@example.com',
         status: NewsletterStatus.Pending,
-        groups: [],
         firstname: 'John',
         lastname: 'Doe',
         fields: {
@@ -208,7 +206,7 @@ describe('convertContactToNlUpdate', () => {
   });
 
   describe('Group handling', () => {
-    it('should use contact groups when no updates provided', () => {
+    it('should leave groups untouched when no group updates provided', () => {
       const contact = createMockContact({
         newsletterStatus: NewsletterStatus.Subscribed,
         newsletterGroups: ['group1', 'group2'],
@@ -216,10 +214,10 @@ describe('convertContactToNlUpdate', () => {
 
       const result = convertContactToNlUpdate(contact);
 
-      expect(result?.groups).toEqual(['group1', 'group2']);
+      expect(result?.groups).toBeUndefined();
     });
 
-    it('should replace groups when updates provided without merge option', () => {
+    it('should replace groups when updates provided without a change type', () => {
       const contact = createMockContact({
         newsletterStatus: NewsletterStatus.Subscribed,
         newsletterGroups: ['group1', 'group2'],
@@ -231,38 +229,22 @@ describe('convertContactToNlUpdate', () => {
       const result = convertContactToNlUpdate(contact, updates);
 
       expect(result?.groups).toEqual(['group3', 'group4']);
+      expect(result?.newsletterGroupChange).toBeUndefined();
     });
 
-    it('should merge groups when merge option is true', () => {
+    it('should pass newsletterGroupChange through to the update', () => {
       const contact = createMockContact({
         newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: ['group1', 'group2'],
       });
       const updates: ContactNewsletterUpdates = {
-        newsletterGroups: ['group2', 'group3'],
+        newsletterGroups: ['group1'],
       };
 
       const result = convertContactToNlUpdate(contact, updates, {
-        mergeGroups: true,
+        newsletterGroupChange: 'remove',
       });
 
-      expect(result?.groups).toEqual(['group1', 'group2', 'group3']);
-    });
-
-    it('should deduplicate groups when merging', () => {
-      const contact = createMockContact({
-        newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: ['group1', 'group2'],
-      });
-      const updates: ContactNewsletterUpdates = {
-        newsletterGroups: ['group2', 'group3'],
-      };
-
-      const result = convertContactToNlUpdate(contact, updates, {
-        mergeGroups: true,
-      });
-
-      expect(result?.groups).toEqual(['group1', 'group2', 'group3']);
+      expect(result?.newsletterGroupChange).toBe('remove');
     });
   });
 
@@ -356,7 +338,7 @@ describe('convertContactToNlUpdate', () => {
   });
 
   describe('Edge cases and complex scenarios', () => {
-    it('should handle complex status and group updates with merge', () => {
+    it('should handle complex status and group updates with add change', () => {
       const contact = createMockContact({
         newsletterStatus: NewsletterStatus.Pending,
         newsletterGroups: ['oldGroup1', 'oldGroup2'],
@@ -367,11 +349,11 @@ describe('convertContactToNlUpdate', () => {
       };
 
       const result = convertContactToNlUpdate(contact, updates, {
-        mergeGroups: true,
+        newsletterGroupChange: 'add',
       });
 
       expect(result?.status).toBe(NewsletterStatus.Subscribed);
-      expect(result?.groups).toEqual(['oldGroup1', 'oldGroup2', 'newGroup1']);
+      expect(result?.groups).toEqual(['newGroup1', 'oldGroup1']);
     });
 
     it('should handle contact with minimal data', () => {
@@ -397,7 +379,6 @@ describe('convertContactToNlUpdate', () => {
       expect(result).toEqual({
         email: 'min@test.com',
         status: NewsletterStatus.Subscribed,
-        groups: [],
         firstname: '',
         lastname: '',
         fields: {
