@@ -1,22 +1,50 @@
-import { ApiHealthStatus, GetContactWith } from '@beabee/beabee-common';
-import { BeabeeClient } from '@beabee/client';
 import {
-  api,
-  rateLimitedTestUser,
-  testUser,
-} from '@beabee/test-utils/test-data';
+  ApiHealthStatus,
+  GetContactWith,
+  NewsletterStatus,
+} from '@beabee/beabee-common';
+import { BeabeeClient } from '@beabee/client';
+import { api, testUser } from '@beabee/test-utils/test-data';
 
-import { beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
+const KOMBUCHA = { id: 'b8e4acb751', label: 'Kombucha' };
+const TEA = { id: 'c0b1a133d1', label: 'Tea' };
+const COFFEE = { id: '7bd89a737b', label: 'Coffee' };
 
 describe('Newsletter integrations API', () => {
   let client: BeabeeClient;
+  let contactId: string;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     client = new BeabeeClient({
       host: api.host,
       path: api.path,
       token: testUser.apiKey,
     });
+
+    // Configure the test newsletter provider's groups and sync the cache, so
+    // this file doesn't depend on what the provider or other files left behind
+    await client.fetch.post('/dev/newsletter-groups', [KOMBUCHA, TEA, COFFEE]);
+    await client.integrations.refreshNewsletterGroups();
+
+    // A contact subscribed to the group that gets removed below
+    const contact = await client.contact.create({
+      email: `nl-refresh-${Date.now()}@example.com`,
+      firstname: 'Newsletter',
+      lastname: 'Refresh',
+    });
+    contactId = contact.id;
+    await client.contact.update(contactId, {
+      profile: {
+        newsletterStatus: NewsletterStatus.Subscribed,
+        newsletterGroups: [KOMBUCHA.id, TEA.id, COFFEE.id],
+      },
+    });
+  });
+
+  afterAll(async () => {
+    await client.contact.delete(contactId);
   });
 
   describe('Provider Info', () => {
@@ -44,11 +72,11 @@ describe('Newsletter integrations API', () => {
     });
     it('should refresh and remove groups', async () => {
       try {
-        const removedGroupId = '7bd89a737b';
+        const removedGroupId = COFFEE.id;
 
         await client.fetch.post('/dev/newsletter-groups', [
-          { id: 'b8e4acb751', label: 'Kombucha' },
-          { id: 'c0b1a133d1', label: 'Tea' },
+          KOMBUCHA,
+          TEA,
           { id: 'd0g6ced973', label: 'Apfelschorle' },
         ]);
 
@@ -63,16 +91,15 @@ describe('Newsletter integrations API', () => {
         // 2. Database cache should be updated
         const updatedGroups = await client.integrations.getNewsletterGroups();
         expect(updatedGroups.map((g) => g.id).sort()).toEqual(
-          ['b8e4acb751', 'c0b1a133d1', 'd0g6ced973'].sort()
+          [KOMBUCHA.id, TEA.id, 'd0g6ced973'].sort()
         );
 
         // 3. Deleted group should be removed from contact profile
-        const contactProfile = await client.contact.get(
-          rateLimitedTestUser.contactId,
-          [GetContactWith.Profile]
-        );
-        expect(contactProfile.profile.newsletterGroups).not.toContain(
-          removedGroupId
+        const contactProfile = await client.contact.get(contactId, [
+          GetContactWith.Profile,
+        ]);
+        expect(contactProfile.profile.newsletterGroups.sort()).toEqual(
+          [KOMBUCHA.id, TEA.id].sort()
         );
 
         // 4. Deleted group should be removed from join/setup

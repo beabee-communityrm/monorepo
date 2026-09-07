@@ -9,10 +9,12 @@ import {
   createTestCalloutResponseAnswers,
 } from '../../fixtures/callouts.js';
 
-// Groups provided by the test newsletter provider. Coffee is deliberately
-// left out because the newsletter integrations test removes it.
+// Groups this file configures on the test newsletter provider. Coffee is only
+// there to keep the seeded data intact, as a refresh strips unknown groups
+// from every profile.
 const KOMBUCHA = { id: 'b8e4acb751', label: 'Kombucha' };
 const TEA = { id: 'c0b1a133d1', label: 'Tea' };
+const COFFEE = { id: '7bd89a737b', label: 'Coffee' };
 
 interface TestMember {
   id: string;
@@ -73,6 +75,9 @@ describe('Contact newsletter groups API', () => {
       path: api.path,
       token: testUser.apiKey,
     });
+
+    await admin.fetch.post('/dev/newsletter-groups', [KOMBUCHA, TEA, COFFEE]);
+    await admin.integrations.refreshNewsletterGroups();
 
     member = await createMember([KOMBUCHA.id, TEA.id]);
     unsubscribedMember = await createMember();
