@@ -10,9 +10,9 @@
           @click="toggleArchive"
         >
           <span
-            class="text-highlighted flex items-center gap-2 text-base font-semibold"
+            class="flex items-center gap-2 text-base font-semibold text-highlighted"
           >
-            <UIcon name="i-lucide-archive" class="text-muted size-4" />
+            <UIcon name="i-lucide-archive" class="size-4 text-muted" />
             {{ t('callouts.archive') }}
             <UBadge color="neutral" variant="subtle" size="sm">
               {{ archivedTotal ?? 0 }}
@@ -20,7 +20,7 @@
           </span>
           <UIcon
             name="i-lucide-chevron-down"
-            class="text-muted size-4 transition-transform"
+            class="size-4 text-muted transition-transform"
             :class="archiveOpen && 'rotate-180'"
           />
         </UButton>
@@ -29,7 +29,7 @@
 
     <template v-if="archiveOpen">
       <div
-        class="border-default flex flex-wrap items-center gap-3 border-t p-4"
+        class="flex flex-wrap items-center gap-3 border-t border-default p-4"
       >
         <UInput
           v-model="archiveSearchInput"
@@ -71,7 +71,7 @@
 
       <div
         v-if="archivedCallouts && archivedCallouts.items.length > 0"
-        class="border-default divide-default divide-y border-t"
+        class="divide-y divide-default border-t border-default"
       >
         <CalloutArchiveRow
           v-for="callout in archivedCallouts.items"
@@ -81,16 +81,16 @@
       </div>
       <p
         v-else
-        class="text-muted border-default border-t px-4 py-8 text-center"
+        class="border-t border-default px-4 py-8 text-center text-muted"
       >
         {{ t('callouts.noArchivedCallouts') }}
       </p>
 
       <div
         v-if="archiveTotalPages > 1"
-        class="border-default flex items-center justify-between border-t p-4"
+        class="flex items-center justify-between border-t border-default p-4"
       >
-        <span class="text-muted text-sm">
+        <span class="text-sm text-muted">
           {{
             t('callouts.archiveRange', {
               start: archivePage * archivePageSize + 1,
