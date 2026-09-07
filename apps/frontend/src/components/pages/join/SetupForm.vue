@@ -51,6 +51,7 @@
           v-model:line2="data.addressLine2"
           v-model:post-code="data.postCode"
           v-model:city-or-town="data.cityOrTown"
+          v-model:country="data.country"
           :required="data.profile.deliveryOptIn"
         />
       </section>
@@ -122,6 +123,7 @@ const data = reactive<SetupContactData>({
   addressLine2: contact.profile.deliveryAddress?.line2 || '',
   cityOrTown: contact.profile.deliveryAddress?.city || '',
   postCode: contact.profile.deliveryAddress?.postcode || '',
+  country: contact.profile.deliveryAddress?.country || '',
 });
 
 const hasNewsletterGroups = computed(

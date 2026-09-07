@@ -74,6 +74,7 @@ async function handleSubmitSetup(data: SetupContactData) {
         line2: data.addressLine2,
         city: data.cityOrTown,
         postcode: data.postCode,
+        country: data.country,
       },
     }),
   };

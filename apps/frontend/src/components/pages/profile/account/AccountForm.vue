@@ -101,6 +101,19 @@
             <UInput v-model="data.postCode" class="w-full" />
           </UFormField>
         </div>
+        <UFormField
+          :label="t('form.country')"
+          :required="data.deliveryOptIn"
+          name="country"
+        >
+          <USelectMenu
+            v-model="data.country"
+            :items="countryItems"
+            value-key="id"
+            :placeholder="t('common.selectOne')"
+            class="w-full"
+          />
+        </UFormField>
       </template>
     </AppSectionCard>
 
@@ -111,7 +124,12 @@
 <script lang="ts" setup>
 import type { ContentData } from '@beabee/beabee-common';
 import { GetContactWith, toPhoneNumber } from '@beabee/beabee-common';
-import { AppFormSkeleton, AppSectionCard, AppStickySaveBar } from '@beabee/vue';
+import {
+  AppFormSkeleton,
+  AppSectionCard,
+  AppStickySaveBar,
+  getCountryItems,
+} from '@beabee/vue';
 
 import { computed, onMounted, reactive, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -120,7 +138,7 @@ import { z } from 'zod';
 import { useApiSubmit } from '#composables/useApiSubmit';
 import { client } from '#utils/api';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const loading = ref(true);
 const accountContent = ref<ContentData<'join/setup'> | null>(null);
@@ -137,7 +155,10 @@ const data = reactive({
   addressLine2: '',
   cityOrTown: '',
   postCode: '',
+  country: '',
 });
+
+const countryItems = computed(() => getCountryItems(locale.value));
 
 /** Snapshot of the last-saved (or initially loaded) values, for Cancel */
 const savedData = reactive({ ...data });
@@ -160,6 +181,7 @@ onMounted(async () => {
     addressLine2: contact.profile.deliveryAddress?.line2 || '',
     cityOrTown: contact.profile.deliveryAddress?.city || '',
     postCode: contact.profile.deliveryAddress?.postcode || '',
+    country: contact.profile.deliveryAddress?.country || '',
   });
 
   Object.assign(savedData, data);
@@ -194,6 +216,7 @@ const schema = computed(() =>
       addressLine1: z.string(),
       cityOrTown: z.string(),
       postCode: z.string(),
+      country: z.string(),
     })
     .refine((input) => !input.deliveryOptIn || !!input.addressLine1, {
       error: t('form.errors.addressLine1.required'),
@@ -206,6 +229,10 @@ const schema = computed(() =>
     .refine((input) => !input.deliveryOptIn || !!input.postCode, {
       error: t('form.errors.postCode.required'),
       path: ['postCode'],
+    })
+    .refine((input) => !input.deliveryOptIn || !!input.country, {
+      error: t('form.errors.country.required'),
+      path: ['country'],
     })
 );
 
@@ -227,7 +254,8 @@ const dirty = computed(
     data.addressLine1 !== savedData.addressLine1 ||
     data.addressLine2 !== savedData.addressLine2 ||
     data.cityOrTown !== savedData.cityOrTown ||
-    data.postCode !== savedData.postCode
+    data.postCode !== savedData.postCode ||
+    data.country !== savedData.country
 );
 
 const { submit: handleSave } = useApiSubmit(
@@ -249,6 +277,7 @@ const { submit: handleSave } = useApiSubmit(
           line2: data.addressLine2,
           city: data.cityOrTown,
           postcode: data.postCode,
+          country: data.country,
         },
       },
     });

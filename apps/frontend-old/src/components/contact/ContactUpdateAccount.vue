@@ -18,7 +18,13 @@
         v-model="data.organisation"
         :label="t('adminSettings.general.organisationName')"
       />
+    </div>
+
+    <div class="mb-3">
       <AppInput v-model="data.vatNumber" :label="t('form.vatNumber')" />
+    </div>
+
+    <div class="mb-3">
       <AppInput
         v-model="data.telephone"
         :label="t('form.phone')"
@@ -89,6 +95,7 @@
       v-model:line2="data.addressLine2"
       v-model:post-code="data.postCode"
       v-model:city-or-town="data.cityOrTown"
+      v-model:country="data.country"
       :required="data.deliveryOptIn"
     />
   </AppApiForm>
@@ -131,6 +138,7 @@ const data = reactive({
   addressLine2: '' as string | undefined,
   cityOrTown: '',
   postCode: '',
+  country: '',
   organisation: '',
   vatNumber: '',
 });
@@ -156,6 +164,7 @@ watch(
     data.addressLine2 = address?.line2 || '';
     data.cityOrTown = address?.city || '';
     data.postCode = address?.postcode || '';
+    data.country = address?.country || '';
   },
   { immediate: true }
 );
@@ -186,6 +195,7 @@ async function handleSubmit() {
         line2: data.addressLine2,
         city: data.cityOrTown,
         postcode: data.postCode,
+        country: data.country,
       },
       organisation: data.organisation,
       vatNumber: data.vatNumber,
