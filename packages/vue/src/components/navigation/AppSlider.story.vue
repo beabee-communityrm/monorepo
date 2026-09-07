@@ -73,7 +73,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="bg-success flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-success p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Slide 2</h3>
@@ -135,7 +135,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="bg-warning flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-warning p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Information</h3>
@@ -145,7 +145,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="bg-success flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-success p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Conclusion</h3>
@@ -264,7 +264,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="bg-warning flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-warning p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Feature 3</h3>
@@ -332,7 +332,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
             >
               <div class="text-center">
                 <div
-                  class="bg-success mx-auto mb-4 flex h-32 w-32 items-center justify-center rounded-lg text-xl font-bold text-white"
+                  class="mx-auto mb-4 flex h-32 w-32 items-center justify-center rounded-lg bg-success text-xl font-bold text-white"
                 >
                   IMG 2
                 </div>
@@ -454,7 +454,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
                 <button
                   @click="() => prevSlide()"
                   :disabled="isDisabled"
-                  class="bg-success rounded px-4 py-2 text-white hover:bg-success-70 disabled:bg-grey-light"
+                  class="rounded bg-success px-4 py-2 text-white hover:bg-success-70 disabled:bg-grey-light"
                 >
                   Previous
                 </button>
@@ -478,7 +478,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
                 <button
                   @click="() => nextSlide()"
                   :disabled="isDisabled"
-                  class="bg-success rounded px-4 py-2 text-white hover:bg-success-70 disabled:bg-grey-light"
+                  class="rounded bg-success px-4 py-2 text-white hover:bg-success-70 disabled:bg-grey-light"
                 >
                   Next
                 </button>
@@ -609,7 +609,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="bg-success flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-success p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Home/End Keys</h3>
@@ -619,7 +619,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="bg-warning flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-warning p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Accessible</h3>
@@ -662,7 +662,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="bg-success flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-success p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Slide 2</h3>
@@ -672,7 +672,7 @@ const onInteractiveSlideChange = (details: AppSliderSlideEventDetails) => {
           </AppSlide>
           <AppSlide>
             <div
-              class="bg-warning flex min-h-[200px] items-center justify-center rounded-lg p-8 text-center text-white"
+              class="flex min-h-[200px] items-center justify-center rounded-lg bg-warning p-8 text-center text-white"
             >
               <div>
                 <h3 class="mb-4 text-2xl font-bold">Slide 3</h3>
