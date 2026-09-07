@@ -1,4 +1,7 @@
-import { EmailTemplateType } from '@beabee/beabee-common';
+import {
+  BaseNewsletterGroupData,
+  EmailTemplateType,
+} from '@beabee/beabee-common';
 
 import moment from 'moment';
 
@@ -223,7 +226,7 @@ export const adminEmailTemplates = {
   ),
   'deleted-newsletter-group': withMergeFields(
     ['GROUPS'],
-    (params: { groups: { id: string; label: string }[] }) => ({
+    (params: { groups: BaseNewsletterGroupData[] }) => ({
       GROUPS: params.groups
         .map((group) => `${group.label} (${group.id})`)
         .join(', '),

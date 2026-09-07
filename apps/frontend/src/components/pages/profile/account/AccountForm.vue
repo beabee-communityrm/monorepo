@@ -6,14 +6,14 @@
   <UForm
     id="account-form"
     ref="formRef"
-    class="flex flex-col gap-6"
+    class="flex flex-col gap-4"
     :schema="schema"
     :state="data"
     @submit="handleSave"
   >
     <AppSectionCard
       icon="i-lucide-user-round"
-      :title="t('accountPage.contactInformation')"
+      :title="t('accountPage.personalDetails')"
     >
       <AppFormSkeleton v-if="loading" :rows="3" />
       <template v-else>
