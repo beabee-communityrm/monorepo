@@ -450,6 +450,7 @@
       "updateResponse": "Оновіть свою відповідь"
     },
     "addAPoint": "Натисніть на карту, де ви хочете додати точку",
+    "addAnotherResponse": "Додати ще одну відповідь",
     "addLocation": "Додати новий запис",
     "builder": {
       "actions": {
@@ -811,8 +812,11 @@
       },
       "untitledCallout": "Без назви CrowdNewsroom"
     },
+    "closedNoEdit": "Цей CrowdNewsroom завершився, тому відповідь більше не можна змінити.",
+    "closedOn": "Завершився {date}",
     "confirmHuman": "Будь ласка, підтвердіть, що ви людина",
     "contactDetails": "Контактна інформація",
+    "editResponse": "Редагувати відповідь",
     "ended": "Цей CrowdNewsroom завершився {date}",
     "entryOf": "Вхід {no} з {total}",
     "form": {
@@ -823,8 +827,15 @@
     },
     "getStarted": "Почати",
     "joinNow": "Приєднатися зараз",
+    "language": "Мова",
+    "leavePreview": "Вийти з попереднього перегляду",
+    "logInOrSignUp": "Увійдіть або станьте учасником, щоб взяти участь.",
     "loginToYourAccount": "Увійдіть до свого облікового запису",
+    "loginToYourAccount-nuxt": "Увійти",
     "membersOnly": "Ця новинна кімната CrowdNews відкрита лише для учасників. Щоб взяти участь",
+    "membersOnly-nuxt": "Цей CrowdNewsroom відкритий лише для учасників.",
+    "notAnswered": "Без відповіді",
+    "responseNumber": "Відповідь {number}",
     "responseSubmitted": "Відповідь надіслано",
     "share": {
       "address": "Поділитися, використовуючи наступне посилання:",
@@ -839,14 +850,20 @@
       "services": "Або швидко поділіться, скориставшись однією з цих служб:"
     },
     "showingPreview": "Ви не можете надіслати відповідь у режимі попереднього перегляду",
+    "showingPreview-nuxt": "Режим попереднього перегляду — так це бачать учасники. Надіслати відповідь звідси неможливо.",
+    "signed": "Підписано",
+    "submittedOn": "Надіслано {date}.",
     "toContributionPage": "Редагувати мій внесок",
     "updateContribution": "будь ласка, оновіть свій внесок",
+    "updateContribution-nuxt": "Щоб взяти участь, оновіть свій внесок.",
+    "viewFile": "Переглянути файл",
     "views": {
       "gallery": "Галерея",
       "map": "Карта"
     },
     "youResponded": "Ви відповіли на це CrowdNewsroom ♥",
-    "yourResponse": "Ваша відповідь"
+    "yourResponse": "Ваша відповідь",
+    "yourResponses": "Ваші відповіді ({count})"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom видалено.",

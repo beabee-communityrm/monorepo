@@ -450,6 +450,7 @@
       "updateResponse": "Mettre à jour votre réponse"
     },
     "addAPoint": "Cliquez sur la carte à l'endroit où vous souhaitez ajouter un point",
+    "addAnotherResponse": "Ajouter une autre réponse",
     "addLocation": "Ajouter une nouvelle entrée",
     "builder": {
       "actions": {
@@ -815,8 +816,11 @@
       },
       "untitledCallout": ""
     },
+    "closedNoEdit": "Cette CrowdNewsrooms est terminée, elle ne peut donc plus être modifiée.",
+    "closedOn": "Terminée le {date}",
     "confirmHuman": "Veuillez confirmer que vous êtes humain",
     "contactDetails": "Informations de contact",
+    "editResponse": "Modifier la réponse",
     "ended": "Cette CrowdNewsrooms s'est terminée le {date}",
     "entryOf": "Entrée {no} sur {total}",
     "form": {
@@ -827,8 +831,15 @@
     },
     "getStarted": "Commencer",
     "joinNow": "S'inscrire maintenant",
+    "language": "Langue",
+    "leavePreview": "Quitter l’aperçu",
+    "logInOrSignUp": "Connectez-vous ou adhérez pour participer.",
     "loginToYourAccount": "Connectez-vous à votre compte",
+    "loginToYourAccount-nuxt": "Se connecter",
     "membersOnly": "Cette CrowdNewsrooms est ouverte aux membres uniquement. Pour participer",
+    "membersOnly-nuxt": "Cette CrowdNewsrooms est ouverte aux membres uniquement.",
+    "notAnswered": "Sans réponse",
+    "responseNumber": "Réponse {number}",
     "responseSubmitted": "Réponse envoyée",
     "share": {
       "address": "Partagez cette campagne avec l'adresse suivante :",
@@ -843,14 +854,20 @@
       "services": "Ou partagez rapidement en utilisant l'un de ces services :"
     },
     "showingPreview": "Vous ne pouvez pas envoyer de réponse en mode aperçu",
+    "showingPreview-nuxt": "Mode aperçu — voici ce que voient les participants. Vous ne pouvez pas envoyer de réponse depuis cette page.",
+    "signed": "Signé",
+    "submittedOn": "Envoyée le {date}.",
     "toContributionPage": "Modifier ma cotisation",
     "updateContribution": "veuillez mettre à jour votre cotisation",
+    "updateContribution-nuxt": "Pour participer, veuillez mettre à jour votre cotisation.",
+    "viewFile": "Voir le fichier",
     "views": {
       "gallery": "Galerie",
       "map": "Carte"
     },
     "youResponded": "Vous avez répondu à cette CrowdNewsrooms ♥",
-    "yourResponse": "Votre réponse"
+    "yourResponse": "Votre réponse",
+    "yourResponses": "Vos réponses ({count})"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsrooms supprimée.",

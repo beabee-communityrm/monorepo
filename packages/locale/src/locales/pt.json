@@ -450,6 +450,7 @@
       "updateResponse": "Actualiza a tua resposta"
     },
     "addAPoint": "Carrega no mapa no sítio onde queres adicionar o ponto.",
+    "addAnotherResponse": "Adicionar outra resposta",
     "addLocation": "Adicionar localização",
     "builder": {
       "actions": {
@@ -811,8 +812,11 @@
       },
       "untitledCallout": ""
     },
+    "closedNoEdit": "Esta CrowdNewsroom foi encerrada, por isso já não pode ser editada.",
+    "closedOn": "Encerrada a {date}",
     "confirmHuman": "",
     "contactDetails": "Detalhes de contacto",
+    "editResponse": "Editar resposta",
     "ended": "Este callout acabou a {date}",
     "entryOf": "",
     "form": {
@@ -823,8 +827,15 @@
     },
     "getStarted": "Começar",
     "joinNow": "Inscreve-te agora",
+    "language": "Idioma",
+    "leavePreview": "Sair da pré-visualização",
+    "logInOrSignUp": "Entra ou torna-te membro para participar.",
     "loginToYourAccount": "Entra na tua conta",
+    "loginToYourAccount-nuxt": "Entrar",
     "membersOnly": "Esta CrowdNewsroom está aberta apenas a membros. Para participar",
+    "membersOnly-nuxt": "Esta CrowdNewsroom está aberta apenas a membros.",
+    "notAnswered": "Sem resposta",
+    "responseNumber": "Resposta {number}",
     "responseSubmitted": "Resposta submetida",
     "share": {
       "address": "Podes partilhar esta chamada com este endereço:",
@@ -839,14 +850,20 @@
       "services": "Ou partilha rapidamente com uma destas plataformas:"
     },
     "showingPreview": "",
+    "showingPreview-nuxt": "Modo de pré-visualização — é isto que os participantes veem. Não podes submeter uma resposta a partir daqui.",
+    "signed": "Assinado",
+    "submittedOn": "Submetida a {date}.",
     "toContributionPage": "Editar a minha contribuição",
     "updateContribution": "Por favor atualiza a tua contribuição",
+    "updateContribution-nuxt": "Para participar, atualiza a tua contribuição.",
+    "viewFile": "Ver ficheiro",
     "views": {
       "gallery": "Galeria",
       "map": "Mapa"
     },
     "youResponded": "Já respondeste a esta CrowdNewsroom ♥",
-    "yourResponse": "A tua resposta"
+    "yourResponse": "A tua resposta",
+    "yourResponses": "As tuas respostas ({count})"
   },
   "calloutAdmin": {
     "deleted": "",

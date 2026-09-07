@@ -451,6 +451,7 @@
       "updateResponse": "Обновить ваш ответ"
     },
     "addAPoint": "Кликните, чтобы добавить отметку на карту",
+    "addAnotherResponse": "Добавить ещё один ответ",
     "addLocation": "Добавить новую локацию",
     "builder": {
       "actions": {
@@ -812,8 +813,11 @@
       },
       "untitledCallout": ""
     },
+    "closedNoEdit": "Эта CrowdNewsroom завершилась, поэтому ответ больше нельзя изменить.",
+    "closedOn": "Завершилась {date}",
     "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
+    "editResponse": "Изменить ответ",
     "ended": "Эта CrowdNewsroom завершилась {date}",
     "entryOf": "",
     "form": {
@@ -824,8 +828,15 @@
     },
     "getStarted": "Начать",
     "joinNow": "Присоединиться",
+    "language": "Язык",
+    "leavePreview": "Выйти из предварительного просмотра",
+    "logInOrSignUp": "Войдите или станьте членом, чтобы участвовать.",
     "loginToYourAccount": "Войти в мой профиль",
+    "loginToYourAccount-nuxt": "Войти",
     "membersOnly": "Эта CrowdNewsroom открыта только для членов. Чтобы участвовать",
+    "membersOnly-nuxt": "Эта CrowdNewsroom открыта только для членов.",
+    "notAnswered": "Без ответа",
+    "responseNumber": "Ответ {number}",
     "responseSubmitted": "Ответ отправлен",
     "share": {
       "address": "Отправить этот опрос на почту:",
@@ -840,14 +851,20 @@
       "services": "Или поделитесь им с помощью одного из этих сервисов:"
     },
     "showingPreview": "Вы не можете отправить ответ в режиме предварительного просмотра",
+    "showingPreview-nuxt": "Режим предварительного просмотра — так это видят участники. Отправить ответ отсюда нельзя.",
+    "signed": "Подписано",
+    "submittedOn": "Отправлено {date}.",
     "toContributionPage": "Изменить мой уровень участия",
     "updateContribution": "пожалуйста обновите ваш уровень участия",
+    "updateContribution-nuxt": "Чтобы участвовать, обновите ваш уровень участия.",
+    "viewFile": "Посмотреть файл",
     "views": {
       "gallery": "Галерея",
       "map": "Карта"
     },
     "youResponded": "Вы ответили на эту CrowdNewsroom ♥",
-    "yourResponse": "Ваш ответ"
+    "yourResponse": "Ваш ответ",
+    "yourResponses": "Ваши ответы ({count})"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom удалена.",
