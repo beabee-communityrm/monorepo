@@ -7,14 +7,53 @@ meta:
 </route>
 
 <template>
-  <div class="nuxt-page mx-auto flex w-full max-w-[720px] flex-col gap-6">
+  <!-- The respond route and embeds render this page too, via respond.vue and
+       `isEmbed`. For clarity they're split here rather than branching throughout. -->
+  <div
+    v-if="isRespondPage"
+    class="nuxt-page mx-auto flex w-full max-w-[720px] flex-col gap-6"
+  >
     <CalloutPreviewBar v-if="isPreview && !isEmbed" />
 
+    <div class="flex w-full justify-end">
+      <CalloutLanguageSelect :callout="callout" />
+    </div>
+
+    <h2 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h2>
+
+    <template v-if="responsesPaginated /* Avoids layout thrashing */">
+      <CalloutLoginGate v-if="showLoginPrompt && isOpen" />
+
+      <CalloutContributionGate
+        v-else-if="showMemberOnlyPrompt && isOpen && !isPreview"
+      />
+
+      <CalloutForm
+        v-else-if="canRespond"
+        :callout="callout"
+        :answers="prefilledAnswers"
+        :preview="isPreview"
+        :no-bg="isEmbed"
+        @submitted="handleSubmitResponse"
+      />
+
+      <!-- Landing here without being able to respond, so show what they sent -->
+      <CalloutResponseList
+        v-else-if="responses.length"
+        :form-schema="callout.formSchema"
+        :responses="responses"
+      />
+    </template>
+  </div>
+
+  <div
+    v-else
+    class="nuxt-page mx-auto flex w-full max-w-[720px] flex-col gap-6"
+  >
+    <CalloutPreviewBar v-if="isPreview" />
+
     <div class="flex w-full flex-wrap items-center justify-end gap-4">
-      <div
-        v-if="!isRespondPage"
-        class="mr-auto flex flex-wrap items-center gap-2"
-      >
+      <div class="mr-auto flex flex-wrap items-center gap-2">
         <UBadge
           :color="isOpen ? 'success' : 'neutral'"
           variant="subtle"
@@ -41,32 +80,32 @@ meta:
         <CalloutLanguageSelect :callout="callout" />
 
         <CalloutSharePopover
-          v-if="!isRespondPage && callout.status === ItemStatus.Open"
+          v-if="callout.status === ItemStatus.Open"
           :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`"
         />
       </div>
     </div>
 
-    <h2 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h2>
+    <h2 class="text-xl">{{ callout.title }}</h2>
 
-    <template v-if="responses /* Avoids layout thrashing */">
+    <template v-if="responsesPaginated /* Avoids layout thrashing */">
       <CalloutThankYouBanner
-        v-if="myResponses.length && !isRespondPage"
+        v-if="responses.length"
         :callout="callout"
-        :submitted-at="myResponses[0].createdAt"
+        :submitted-at="responses[0].createdAt"
       />
-      <template v-if="!isRespondPage">
-        <img class="w-full" :src="imageUrl" alt="" />
-        <div class="nuxt-prose text-base" v-html="callout.intro" />
-      </template>
+
+      <img class="w-full" :src="imageUrl" alt="" />
+      <div class="nuxt-prose text-base" v-html="callout.intro" />
 
       <CalloutLoginGate v-if="showLoginPrompt && isOpen" />
 
       <CalloutContributionGate
         v-else-if="showMemberOnlyPrompt && isOpen && !isPreview"
       />
+
       <UButton
-        v-else-if="canRespond && !isRespondPage && !myResponses.length"
+        v-else-if="canRespond && !responses.length"
         size="xl"
         class="w-full"
         :to="respondTo"
@@ -74,21 +113,10 @@ meta:
         {{ t('actions.getStarted') }}
       </UButton>
 
-      <!-- Before the response list: both match when someone who has already
-           responded is editing or adding another -->
-      <CalloutForm
-        v-else-if="isRespondPage && canRespond"
-        :callout="callout"
-        :answers="prefilledAnswers"
-        :preview="isPreview"
-        :no-bg="isEmbed"
-        @submitted="handleSubmitResponse"
-      />
-
       <CalloutResponseList
-        v-else-if="myResponses.length"
+        v-else-if="responses.length"
         :form-schema="callout.formSchema"
-        :responses="myResponses"
+        :responses="responses"
         :add-to="canAddAnother ? respondTo : undefined"
         :edit-to="canEditSingle ? respondTo : undefined"
       />
@@ -100,9 +128,9 @@ import {
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
+  type Paginated,
   GetCalloutResponseWith,
   ItemStatus,
-  type Paginated,
 } from '@beabee/beabee-common';
 import { addNotification, formatLocale } from '@beabee/vue';
 
@@ -185,18 +213,17 @@ const { isOpen, showLoginPrompt, showMemberOnlyPrompt } = useCallout(
 
 const daysLeft = computed(() => getDaysLeft(props.callout.expires));
 
-const responses =
+const responsesPaginated =
   ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>>>();
-// Guarded for allowMultiple because it also drives prefilling /respond and the
-// "update your response" label, neither of which applies when every response
-// is a new one. Use myResponses to display them.
-const latestResponse = computed(() =>
-  props.callout.allowMultiple ? undefined : responses.value?.items?.[0]
-);
 
 /** The current user's responses, newest first */
-const myResponses = computed(() => responses.value?.items ?? []);
+const responses = computed(() => responsesPaginated.value?.items ?? []);
 
+// Only feeds prefilling /respond, which doesn't apply when every response is
+// a new one
+const latestResponse = computed(() =>
+  props.callout.allowMultiple ? undefined : responses.value[0]
+);
 const respondTo = computed(() => ({
   path: '/crowdnewsroom/' + props.callout.slug + '/respond',
   query: route.query,
@@ -208,7 +235,7 @@ const canAddAnother = computed(
     canRespond.value &&
     !isRespondPage.value &&
     props.callout.allowMultiple &&
-    myResponses.value.length > 0
+    responses.value.length > 0
 );
 
 // A callout is either editable or multi-response, never both — they come from
@@ -218,7 +245,7 @@ const canEditSingle = computed(
     canRespond.value &&
     !isRespondPage.value &&
     !props.callout.allowMultiple &&
-    myResponses.value.length === 1
+    responses.value.length === 1
 );
 
 const prefilledAnswers = computed(() =>
@@ -258,7 +285,7 @@ function handleSubmitResponse() {
 }
 
 onBeforeMount(async () => {
-  responses.value =
+  responsesPaginated.value =
     !isPreview.value && currentUser.value
       ? await client.callout.listResponses(
           props.callout.slug,
