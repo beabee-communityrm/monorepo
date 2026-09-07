@@ -1436,6 +1436,7 @@
       "remaining": "{remaining} caracteres restantes."
     },
     "cityOrTown": "Ciudad/Localidad",
+    "country": "",
     "deliveryOptIn": "Aceptar envíos",
     "description": "Descripción",
     "email": "Correo electrónico",
@@ -1472,6 +1473,9 @@
         "password": "Contraseña no válida",
         "required": "La contraseña es obligatoria",
         "sameAs": "Las contraseñas no coinciden"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "Se ha superado la longitud máxima de {max} caracteres",

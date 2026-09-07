@@ -1439,6 +1439,7 @@
       "remaining": ""
     },
     "cityOrTown": "Город",
+    "country": "",
     "deliveryOptIn": "Согласие на рассылку",
     "description": "Описание",
     "email": "Почта",
@@ -1475,6 +1476,9 @@
         "password": "Некорректный пароль",
         "required": "Нужно установить пароль",
         "sameAs": "Пароли не совпадают"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",

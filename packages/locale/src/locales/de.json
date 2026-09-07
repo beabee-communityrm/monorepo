@@ -1436,6 +1436,7 @@
       "remaining": "Es verbleiben {remaining} Zeichen."
     },
     "cityOrTown": "Ort",
+    "country": "Land",
     "deliveryOptIn": "Einverständnis zur Postsendung",
     "description": "Bezeichnung",
     "email": "E-Mail",
@@ -1472,6 +1473,9 @@
         "password": "Passwort ungültig",
         "required": "Passwort benötigt",
         "sameAs": "Passwörter stimmen nicht überein"
+      },
+      "country": {
+        "required": "Land benötigt"
       },
       "description": {
         "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten",

@@ -1435,6 +1435,7 @@
       "remaining": ""
     },
     "cityOrTown": "",
+    "country": "",
     "deliveryOptIn": "",
     "description": "",
     "email": "",
@@ -1471,6 +1472,9 @@
         "password": "",
         "required": "",
         "sameAs": ""
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",

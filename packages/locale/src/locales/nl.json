@@ -1438,6 +1438,7 @@
       "remaining": ""
     },
     "cityOrTown": "Stad",
+    "country": "",
     "deliveryOptIn": "Opt-in levering",
     "description": "Beschrijving",
     "email": "E-mail",
@@ -1474,6 +1475,9 @@
         "password": "Ongeldig wachtwoord",
         "required": "Wachtwoord is vereist",
         "sameAs": "De wachtwoorden komen niet overeen"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",

@@ -1438,6 +1438,7 @@
       "remaining": ""
     },
     "cityOrTown": "Localidade",
+    "country": "",
     "deliveryOptIn": "Escolher inscrição",
     "description": "Descrição",
     "email": "Email",
@@ -1474,6 +1475,9 @@
         "password": "Palavra-passe inválida",
         "required": "A palavra-passe é obrigatória",
         "sameAs": "As palavras-passe não coincidem"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",

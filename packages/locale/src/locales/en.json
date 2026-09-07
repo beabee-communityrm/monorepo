@@ -1435,6 +1435,7 @@
       "remaining": "{remaining} characters remaining."
     },
     "cityOrTown": "City/Town",
+    "country": "Country",
     "deliveryOptIn": "Delivery opt-in",
     "description": "Description",
     "email": "Email",
@@ -1471,6 +1472,9 @@
         "password": "Invalid password",
         "required": "Password is required",
         "sameAs": "The passwords don't match"
+      },
+      "country": {
+        "required": "Country is required"
       },
       "description": {
         "maxLength": "Maximum length of {max} characters exceeded",

@@ -1442,6 +1442,7 @@
       "remaining": "{remaining} caractères restants."
     },
     "cityOrTown": "Ville",
+    "country": "",
     "deliveryOptIn": "",
     "description": "Description",
     "email": "E-mail",
@@ -1478,6 +1479,9 @@
         "password": "Mot de passe invalide",
         "required": "Le mot de passe est obligatoire",
         "sameAs": "Les mots de passe ne correspondent pas"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",

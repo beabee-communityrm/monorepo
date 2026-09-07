@@ -1438,6 +1438,7 @@
       "remaining": ""
     },
     "cityOrTown": "",
+    "country": "",
     "deliveryOptIn": "",
     "description": "",
     "email": "ηλεκτρονικό ταχυδρομείο",
@@ -1474,6 +1475,9 @@
         "password": "",
         "required": "",
         "sameAs": ""
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",

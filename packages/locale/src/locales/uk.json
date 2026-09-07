@@ -1438,6 +1438,7 @@
       "remaining": "Залишилося {remaining} символів."
     },
     "cityOrTown": "Місто/селище",
+    "country": "",
     "deliveryOptIn": "Підписка на доставку",
     "description": "Опис",
     "email": "Електронна пошта",
@@ -1474,6 +1475,9 @@
         "password": "Недійсний пароль",
         "required": "Потрібен пароль",
         "sameAs": "Паролі не збігаються"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "Перевищено максимальну довжину символів ({max})",
