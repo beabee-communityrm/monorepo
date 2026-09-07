@@ -18,6 +18,7 @@ import {
   type SetCalloutSlideSchema,
   flattenComponents,
   getCalloutComponents,
+  getCalloutResponseSettings,
   isAddressAnswer,
   isFileUploadAnswer,
   isFormioFileAnswer,
@@ -373,11 +374,7 @@ export function convertCalloutToTabs(
         newsletterSettings:
           callout?.newsletterSchema || defaultNewsletterSettings,
         showOnUserDashboards: !callout?.hidden,
-        responseSettings: callout?.allowMultiple
-          ? 'multiple'
-          : callout?.allowUpdate
-            ? 'singleEditable'
-            : 'singleNonEditable',
+        responseSettings: getCalloutResponseSettings(callout),
         hasStartDate: callout?.status === ItemStatus.Scheduled,
         hasEndDate: !!callout?.expires,
         startDate: callout?.starts ? format(callout.starts, 'yyyy-MM-dd') : '',

@@ -11,14 +11,25 @@ import type {
   CalloutComponentBaseSchema,
   CalloutComponentMap,
   CalloutComponentSchema,
+  CalloutData,
   CalloutResponseAnswer,
   CalloutResponseAnswerAddress,
   CalloutResponseAnswerFileUpload,
   CalloutResponseAnswersSlide,
+  CalloutResponseSettings,
   FilterArgs,
   FormioFile,
   SetCalloutFormSchema,
 } from '../types/index.js';
+
+/** The response setting an admin chose, as offered in the callout builder */
+export function getCalloutResponseSettings(
+  callout?: Pick<CalloutData, 'allowMultiple' | 'allowUpdate'>
+): CalloutResponseSettings {
+  if (callout?.allowMultiple) return 'multiple';
+  if (callout?.allowUpdate) return 'singleEditable';
+  return 'singleNonEditable';
+}
 
 function convertValuesToOptions(
   values: { value: string; label: string }[]
