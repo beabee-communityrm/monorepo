@@ -1,7 +1,7 @@
 import config from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
-import { NoneProvider } from '#providers/idp/index';
+import { KeycloakProvider, NoneProvider } from '#providers/idp/index';
 import type { IdpProvider } from '#type/index';
 
 const log = mainLogger.child({ app: 'idp-service' });
@@ -13,7 +13,10 @@ const log = mainLogger.child({ app: 'idp-service' });
  * is unreachable. Unlinked contacts are repaired with `user provision`.
  */
 class IdpService {
-  private readonly provider: IdpProvider = new NoneProvider();
+  private readonly provider: IdpProvider =
+    config.idp.provider === 'keycloak'
+      ? new KeycloakProvider(config.idp.settings)
+      : new NoneProvider();
 
   get isEnabled(): boolean {
     return config.idp.provider !== 'none';
