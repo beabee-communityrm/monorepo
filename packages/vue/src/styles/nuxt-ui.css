@@ -17,7 +17,7 @@
     }
   }
 
-  /* Apply standard styles to v-html content on Nuxt UI pages. Headings come from `.nuxt-page`. */
+  /* Standard styles for v-html content on Nuxt UI pages. */
   .nuxt-prose {
     p,
     ul,
@@ -58,14 +58,7 @@
   }
 }
 
-/*
- * Nuxt UI points `text-{color}` at shade 500, which lands around 2:1 against
- * its own `/10` tints in `soft` and `subtle` variants — see nuxt/ui#1284,
- * open since 2024 and acknowledged upstream as a trade-off. Redefining the
- * three semantic text utilities here fixes every component at once, including
- * Nuxt UI's own, rather than needing a `compoundVariants` override per
- * component. Dark mode keeps Nuxt UI's lighter 400.
- */
+/* Nuxt UI's shade 500 fails contrast on its own tints. See nuxt/ui#1284. */
 @layer utilities {
   .text-success {
     color: var(--ui-color-success-700);
