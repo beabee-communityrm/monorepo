@@ -4,7 +4,6 @@ import type { ArgumentsCamelCase } from 'yargs';
 import type {
   CreateUserArgs,
   DeleteUserArgs,
-  LinkUserArgs,
   ListUserArgs,
 } from '../types/index.js';
 
@@ -99,28 +98,11 @@ export const userCommand: CommandModule = {
       })
       .command({
         command: 'link',
-        describe: 'Link existing users to identity provider accounts',
-        builder: (yargs) =>
-          yargs
-            .option('csv', {
-              type: 'string',
-              description: 'CSV file of email,subject pairs to link',
-            })
-            .option('from-idp', {
-              type: 'boolean',
-              description:
-                'Look up each unlinked user by email at the identity provider',
-              default: false,
-            })
-            .check((argv) => {
-              if (!argv.csv && !argv.fromIdp) {
-                throw new Error('Either --csv or --from-idp must be provided');
-              }
-              return true;
-            }) as Argv<LinkUserArgs>,
-        handler: async (argv: ArgumentsCamelCase<LinkUserArgs>) => {
+        describe:
+          'Link unlinked users to existing identity provider accounts by email',
+        handler: async () => {
           const { linkUsers } = await import('../actions/user/link.js');
-          return linkUsers(argv);
+          return linkUsers();
         },
       })
       .command({
