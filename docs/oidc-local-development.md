@@ -5,20 +5,18 @@ service) for testing IdP Provisioning locally. It always runs but is unused
 until `BEABEE_IDP_PROVIDER=keycloak` is set. Keycloak is the development IdP
 only; production instances use Zitadel (see [OIDC login](./oidc-login.md)).
 
+Keycloak is addressed as `http://auth.localhost:3080` everywhere: browsers
+resolve `*.localhost` to loopback by themselves, and the compose network
+carries the same name as an alias for the containers, so no hosts entry is
+needed.
+
 ## Setup
 
-1. **Add a hosts entry** so Keycloak is reachable under the same name from
-   your browser, host-side CLI commands and the containers:
-
-   ```sh
-   echo "127.0.0.1 auth" | sudo tee -a /etc/hosts
-   ```
-
-2. **Enable the env block**: uncomment the "Identity Provider" section in your
+1. **Enable the env block**: uncomment the "Identity Provider" section in your
    `.env` (see `.env.example`). `KEYCLOAK_PORT` is required for the stack to
    start regardless — existing `.env` files need it added from `.env.example`.
 
-3. **Start the stack** and wait for the realm import:
+2. **Start the stack** and wait for the realm import:
 
    ```sh
    docker compose up -d
@@ -27,8 +25,9 @@ only; production instances use Zitadel (see [OIDC login](./oidc-login.md)).
 
 ## What you get
 
-- Keycloak admin console at http://auth:3080 (user `admin`, password
-  `admin`), realm `beabee` imported from `packages/docker/keycloak/realm.json`
+- Keycloak admin console at http://auth.localhost:3080 (user `admin`,
+  password `admin`), realm `beabee` imported from
+  `packages/docker/keycloak/realm.json`
 - A service account client `beabee-provisioning` (secret `beabee-dev-secret`)
   with user management permissions
 - Email is the username and cannot be changed by users themselves, matching
@@ -56,6 +55,8 @@ yarn backend-cli user provision   # create accounts for the remaining ones
 yarn backend-cli user list --unlinked
 ```
 
-Host-side CLI commands reach Keycloak via the `/etc/hosts` entry; alternatively
-run them inside the container with
+Host-side CLI commands rely on the operating system resolving
+`auth.localhost` (Linux with systemd-resolved does; macOS does not). Where it
+doesn't, either add `127.0.0.1 auth.localhost` to `/etc/hosts` or run the
+commands inside the container with
 `docker compose exec api_app node dist/index.js user ...`.

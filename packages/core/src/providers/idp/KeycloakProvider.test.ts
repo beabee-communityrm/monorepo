@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { KeycloakProvider } from './KeycloakProvider';
 
 const settings = {
-  url: 'http://auth:3080',
+  url: 'http://auth.localhost:3080',
   realm: 'beabee',
   clientId: 'beabee-provisioning',
   clientSecret: 'secret',
@@ -41,7 +41,8 @@ describe('KeycloakProvider', () => {
       new Response(null, {
         status: 201,
         headers: {
-          location: 'http://auth:3080/admin/realms/beabee/users/abc-123-def',
+          location:
+            'http://auth.localhost:3080/admin/realms/beabee/users/abc-123-def',
         },
       })
     );
@@ -49,7 +50,7 @@ describe('KeycloakProvider', () => {
     const provider = new KeycloakProvider(settings);
     expect(await provider.createUser(user)).toBe('abc-123-def');
     expect(fetch).toHaveBeenCalledWith(
-      'http://auth:3080/admin/realms/beabee/users',
+      'http://auth.localhost:3080/admin/realms/beabee/users',
       expect.objectContaining({
         method: 'POST',
         headers: expect.objectContaining({
@@ -110,7 +111,7 @@ describe('KeycloakProvider', () => {
     await provider.updateUser('sub-1', { ...user, email: 'new@example.com' });
 
     expect(fetch).toHaveBeenLastCalledWith(
-      'http://auth:3080/admin/realms/beabee/users/sub-1',
+      'http://auth.localhost:3080/admin/realms/beabee/users/sub-1',
       expect.objectContaining({
         method: 'PUT',
         body: JSON.stringify({
