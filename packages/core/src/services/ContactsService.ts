@@ -43,6 +43,7 @@ import {
 } from '#models/index';
 import ContactMfaService from '#services/ContactMfaService';
 import EmailService from '#services/EmailService';
+import IdpService from '#services/IdpService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
@@ -141,6 +142,14 @@ class ContactsService {
 
       await EmailService.sendTemplateToAdmin('new-member', { contact });
 
+      // Mirror the contact to the identity provider. Best-effort: an unlinked
+      // contact can be repaired later with `user provision`
+      const idpSubject = await IdpService.createUser(contact);
+      if (idpSubject) {
+        await getRepository(Contact).update(contact.id, { idpSubject });
+        contact.idpSubject = idpSubject;
+      }
+
       return contact;
     } catch (error) {
       if (isDuplicateIndex(error, 'email')) {
@@ -203,6 +212,13 @@ class ContactsService {
     }
 
     await PaymentService.updateContact(contact, updates);
+
+    if (
+      contact.idpSubject &&
+      (updates.email || updates.firstname || updates.lastname)
+    ) {
+      await IdpService.updateUser(contact.idpSubject, contact);
+    }
   }
 
   /**
@@ -468,6 +484,10 @@ class ContactsService {
       // 18. Finally delete the contact
       await em.getRepository(Contact).delete(contact.id);
     });
+
+    if (contact.idpSubject) {
+      await IdpService.deleteUser(contact.idpSubject);
+    }
   }
 
   /**
