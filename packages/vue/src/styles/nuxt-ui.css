@@ -8,8 +8,6 @@
   .nuxt-page {
     @apply text-sm;
 
-    /* Every level, not just h2/h3 — a component that takes a heading level
-       (AppNoticeCard) can render any of them. */
     h2,
     h3,
     h4,
