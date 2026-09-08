@@ -342,12 +342,16 @@ export class StripeWebhookEventHandler {
     invoice: Stripe.Invoice
   ): Promise<void> {
     const contribution = await this.getContributionFromInvoice(invoice);
-
-    await ActivityService.addEvent({
-      eventType: ActivityEventType.ContactPaymentCancelled,
-      targetId: contribution?.contact.id || null,
-      metadata: null,
-    });
+    if (contribution) {
+      log.info('Invoice marked voided by Stripe');
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.ContactPaymentCancelled,
+        targetId: contribution?.contact.id || null,
+        metadata: null,
+      });
+    } else {
+      log.info('Ignoring invoice with unknown customer ' + invoice.id);
+    }
   }
 
   /**
@@ -359,12 +363,16 @@ export class StripeWebhookEventHandler {
     invoice: Stripe.Invoice
   ): Promise<void> {
     const contribution = await this.getContributionFromInvoice(invoice);
-
-    await ActivityService.addEvent({
-      eventType: ActivityEventType.ContactPaymentCancelled,
-      targetId: contribution?.contact.id || null,
-      metadata: null,
-    });
+    if (contribution) {
+      log.info('Invoice marked uncollectible by Stripe');
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.ContactPaymentCancelled,
+        targetId: contribution?.contact.id || null,
+        metadata: null,
+      });
+    } else {
+      log.info('Ignoring invoice with unknown customer ' + invoice.id);
+    }
   }
 
   /**
