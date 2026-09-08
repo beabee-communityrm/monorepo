@@ -1,7 +1,7 @@
 {
   "accountPage": {
     "contactInformation": "Contactgegevens",
-    "deliveryAddress": "Afleveradres",
+    "deliveryAddress": "Adres",
     "deliveryOptIn": "Opt-in voor bezorging",
     "loginDetail": "Inloggegevens",
     "loginDetail-nuxt": "Wijzig wachtwoord",
@@ -78,17 +78,25 @@
         "subscribed": "Deze contactpersoon is ingeschreven op uw nieuwsbrieflijst.",
         "unsubscribed": "Dit contact is niet ingeschreven op uw nieuwsbrieflijst."
       },
+      "description": "Beheer bij welke nieuwsbriefgroepen je bent aangemeld.",
+      "noGroups": "Je bent bij geen enkele nieuwsbriefgroep aangemeld.",
       "subscribe": "Schrijf ze in voor de nieuwsbrief",
       "title": "Nieuwsbrief",
-      "unsubscribe": "Schrijf ze uit voor de nieuwsbrief"
+      "unsubscribe": "Schrijf ze uit voor de nieuwsbrief",
+      "unsubscribeButton": "Afmelden",
+      "unsubscribeInfo": "Afmelden gaat direct in en kan hier niet ongedaan worden gemaakt.",
+      "unsubscribedNotification": "Je bent afgemeld voor {group}"
     },
+    "personalDetails": "Persoonlijke gegevens",
     "phoneInfo": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden",
     "phoneInfo-nuxt": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden.",
     "phoneInfoAdmin": "Je moet toestemming van de persoon hebben voordat je hun telefoonnummer aan het systeem toevoegt",
     "requiredFields": "Verplichte velden",
     "savedPassword": "Nieuw wachtwoord opgeslagen",
+    "security": "Beveiliging",
     "subTitle": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "subTitle-nuxt": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
+    "subscriptions": "Abonnementen",
     "title": "Account",
     "unsavedChanges": "U heeft niet-opgeslagen wijzigingen"
   },
@@ -294,6 +302,7 @@
       "newsletter": {
         "audienceId": "Doelgroep-ID",
         "groups": "Groepen",
+        "groupsNote": "Groepsnamen worden getoond aan leden op het tabblad abonnementenbeheer van de accountpagina.",
         "noGroups": "Geen groepen gevonden"
       },
       "refresh": "Vernieuwen",
@@ -437,6 +446,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Opnieuw deelnemen",
       "updateResponse": "Je reactie bijwerken"
     },
     "addAPoint": "Klik op de kaart waar je een punt wilt toevoegen",
@@ -974,12 +984,23 @@
     "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, wordt extra reacties niet geregistreerd."
   },
   "callouts": {
+    "access": {
+      "everyone": "Open voor iedereen",
+      "member": "Alleen leden"
+    },
     "archive": "Archief",
+    "archiveRange": "{start}-{end} van {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "Einddatum"
+      "endDate": "Einddatum",
+      "responses": "{n} reactie | {n} reacties"
+    },
+    "daysLeft": "nog {n} dag | nog {n} dagen",
+    "empty": {
+      "active": "Op dit moment zijn er geen actieve oproepen."
     },
     "noArchivedCallouts": "Geen oproepen",
+    "openCallouts": "Open oproepen",
     "search": "Zoeken...",
     "showAll": "Alle",
     "showAnswered": "Beantwoord",

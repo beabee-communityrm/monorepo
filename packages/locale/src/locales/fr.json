@@ -1,7 +1,7 @@
 {
   "accountPage": {
     "contactInformation": "Coordonnées",
-    "deliveryAddress": "Adresse de livraison",
+    "deliveryAddress": "Adresse",
     "deliveryOptIn": "",
     "loginDetail": "Informations de connexion",
     "loginDetail-nuxt": "Modifier le mot de passe",
@@ -78,17 +78,25 @@
         "subscribed": "Ce contact est abonné à votre liste de lettres d'information.",
         "unsubscribed": "Ce contact n'est pas abonné à votre liste de lettres d'information."
       },
+      "description": "Gérez les groupes de lettres d'information auxquels vous êtes abonné(e).",
+      "noGroups": "Vous n'êtes abonné(e) à aucun groupe de lettres d'information.",
       "subscribe": "Inscrire à la lettre d'information",
       "title": "Lettre d'information",
-      "unsubscribe": "Désinscrire de la lettre d'information"
+      "unsubscribe": "Désinscrire de la lettre d'information",
+      "unsubscribeButton": "Se désinscrire",
+      "unsubscribeInfo": "La désinscription prend effet immédiatement et ne peut pas être annulée ici.",
+      "unsubscribedNotification": "Vous avez été désinscrit(e) de {group}"
     },
+    "personalDetails": "Informations personnelles",
     "phoneInfo": "En indiquant votre numéro de téléphone, vous acceptez d'être contacté par téléphone",
     "phoneInfo-nuxt": "En indiquant votre numéro de téléphone, vous acceptez d'être contacté par téléphone.",
     "phoneInfoAdmin": "Vous devez obtenir le consentement de la personne avant d'ajouter son numéro de téléphone dans le système",
     "requiredFields": "Champs obligatoires",
     "savedPassword": "Nouveau mot de passe enregistré",
+    "security": "Sécurité",
     "subTitle": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
     "subTitle-nuxt": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
+    "subscriptions": "Abonnements",
     "title": "Compte",
     "unsavedChanges": "Vous avez des modifications non enregistrées"
   },
@@ -294,6 +302,7 @@
       "newsletter": {
         "audienceId": "ID d'audience",
         "groups": "Groupes",
+        "groupsNote": "Les noms des groupes seront affichés aux membres dans l'onglet de gestion des abonnements de la page de compte.",
         "noGroups": "Aucun groupe trouvé"
       },
       "refresh": "Actualiser",
@@ -437,6 +446,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Participer à nouveau",
       "updateResponse": "Mettre à jour votre réponse"
     },
     "addAPoint": "Cliquez sur la carte à l'endroit où vous souhaitez ajouter un point",
@@ -978,12 +988,23 @@
     "oneResponseWarning": "Veuillez noter que cette campagne n'autorise qu'une seule réponse par personne. Si vous y avez déjà répondu, les réponses supplémentaires ne seront pas enregistrées."
   },
   "callouts": {
+    "access": {
+      "everyone": "Ouvert à tous",
+      "member": "Membres uniquement"
+    },
     "archive": "Archiver",
+    "archiveRange": "{start}-{end} sur {total}",
     "data": {
       "callout": "CrowdNewsrooms",
-      "endDate": "Date de fin"
+      "endDate": "Date de fin",
+      "responses": "{n} réponse | {n} réponses"
+    },
+    "daysLeft": "{n} jour restant | {n} jours restants",
+    "empty": {
+      "active": "Aucune campagne active pour le moment."
     },
     "noArchivedCallouts": "Aucune campagne",
+    "openCallouts": "CrowdNewsrooms ouvertes",
     "search": "Rechercher une campagne…",
     "showAll": "Tout",
     "showAnswered": "Avec réponses",

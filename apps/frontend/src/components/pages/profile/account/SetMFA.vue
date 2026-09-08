@@ -101,7 +101,7 @@
     <template #body>
       <div class="flex flex-col gap-6">
         <div class="flex gap-1">
-          <div class="bg-primary h-1 flex-1 rounded-full" />
+          <div class="h-1 flex-1 rounded-full bg-primary" />
           <div
             class="h-1 flex-1 rounded-full"
             :class="enableStep === 'verify' ? 'bg-primary' : 'bg-elevated'"
@@ -123,7 +123,7 @@
             <div class="flex flex-col gap-4">
               <div
                 v-if="totpUrl"
-                class="border-default mx-auto rounded-2xl border bg-white p-3 shadow-sm"
+                class="mx-auto rounded-2xl border border-default bg-white p-3 shadow-sm"
               >
                 <div class="w-60">
                   <AppQRCode :qr-data="totpUrl" />

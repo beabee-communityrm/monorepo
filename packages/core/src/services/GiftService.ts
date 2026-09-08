@@ -1,5 +1,6 @@
 import {
   Address,
+  BaseNewsletterGroupData,
   ContributionType,
   NewsletterStatus,
 } from '@beabee/beabee-common';
@@ -130,7 +131,7 @@ export class GiftService {
         deliveryAddress: deliveryAddress,
         newsletterStatus: NewsletterStatus.Subscribed,
         newsletterGroups: OptionsService.getJSON('newsletter-groups').map(
-          (group: { id: string }) => group.id
+          (group: BaseNewsletterGroupData) => group.id
         ),
       }
     );

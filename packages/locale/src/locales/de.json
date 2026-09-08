@@ -78,17 +78,25 @@
         "subscribed": "Dieser Kontakt ist für deine Newsletterliste angemeldet.",
         "unsubscribed": "Dieser Kontakt ist nicht für deine Newsletterliste angemeldet."
       },
+      "description": "Verwalten Sie, für welche Newsletter-Gruppen Sie angemeldet sind.",
+      "noGroups": "Sie sind für keine Newsletter-Gruppen angemeldet.",
       "subscribe": "Für den Newsletter anmelden",
       "title": "Newsletter",
-      "unsubscribe": "Vom Newsletter abmelden"
+      "unsubscribe": "Vom Newsletter abmelden",
+      "unsubscribeButton": "Abmelden",
+      "unsubscribeInfo": "Die Abmeldung wird sofort wirksam und kann hier nicht widerrufen werden.",
+      "unsubscribedNotification": "Sie wurden von {group} abgemeldet"
     },
+    "personalDetails": "Persönliche Daten",
     "phoneInfo": "Mit der Angabe Ihrer Telefonnummer erklären Sie sich damit einverstanden, telefonisch kontaktiert zu werden.",
     "phoneInfo-nuxt": "Mit der Angabe Ihrer Telefonnummer erklären Sie sich damit einverstanden, telefonisch kontaktiert zu werden.",
     "phoneInfoAdmin": "Sie müssen die Zustimmung der Person einholen, bevor Sie ihre Telefonnummer in das System eingeben.",
     "requiredFields": "Pflichtfelder",
     "savedPassword": "Das neue Passwort wurde gespeichert.",
+    "security": "Sicherheit",
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subTitle-nuxt": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
+    "subscriptions": "Abonnements",
     "title": "Account",
     "unsavedChanges": "Sie haben ungespeicherte Änderungen"
   },
@@ -294,6 +302,7 @@
       "newsletter": {
         "audienceId": "Audience-ID",
         "groups": "Gruppen",
+        "groupsNote": "Gruppennamen werden Mitgliedern im Tab „Abonnements“ der Kontoseite angezeigt.",
         "noGroups": "Keine Gruppen gefunden"
       },
       "refresh": "Aktualisieren",
@@ -437,6 +446,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Erneut teilnehmen",
       "updateResponse": "Antwort bearbeiten"
     },
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
@@ -974,12 +984,23 @@
     "oneResponseWarning": "Bitte beachten Sie, dass nur eine Antwort pro Person möglich ist. Wenn Sie bereits teilgenommen haben, werden weitere Antworten nicht berücksichtigt."
   },
   "callouts": {
+    "access": {
+      "everyone": "Offen für alle",
+      "member": "Nur Mitglieder"
+    },
     "archive": "Archiv",
+    "archiveRange": "{start}-{end} von {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "Enddatum"
+      "endDate": "Enddatum",
+      "responses": "{n} Antwort | {n} Antworten"
+    },
+    "daysLeft": "noch {n} Tag | noch {n} Tage",
+    "empty": {
+      "active": "Im Moment gibt es keine aktiven CrowdNewsrooms."
     },
     "noArchivedCallouts": "Keine CrowdNewsrooms",
+    "openCallouts": "Offene CrowdNewsrooms",
     "search": "CrowdNewsroom durchsuchen",
     "showAll": "Alle",
     "showAnswered": "Beantwortet",

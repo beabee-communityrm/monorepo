@@ -36,7 +36,7 @@ function handleCancel() {
       <template #default="{ state }">
         <div class="relative h-40 max-w-2xl border border-dashed">
           <UForm id="story-form" :state="{}" @submit="handleSubmit">
-            <p class="text-muted p-4 text-sm">
+            <p class="p-4 text-sm text-muted">
               Page content would go here — the bar below is Teleported to the
               bottom of the page, not rendered inline. Click "Save Changes" to
               see the loading state (simulated with a 1s delay), after which the

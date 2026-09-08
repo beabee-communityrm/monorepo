@@ -1,7 +1,7 @@
 {
   "accountPage": {
     "contactInformation": "Contact information",
-    "deliveryAddress": "Delivery address",
+    "deliveryAddress": "Address",
     "deliveryOptIn": "Delivery opt-in",
     "loginDetail": "Login details",
     "loginDetail-nuxt": "Change password",
@@ -78,17 +78,25 @@
         "subscribed": "This contact is subscribed to your newsletter list.",
         "unsubscribed": "This contact isn't subscribed to your newsletter list."
       },
+      "description": "Manage which newsletter groups you're subscribed to.",
+      "noGroups": "You're not subscribed to any newsletter groups.",
       "subscribe": "Subscribe them to the newsletter",
       "title": "Newsletter",
-      "unsubscribe": "Unsubscribe them from the newsletter"
+      "unsubscribe": "Unsubscribe them from the newsletter",
+      "unsubscribeButton": "Unsubscribe",
+      "unsubscribeInfo": "Unsubscribing takes effect straight away and can't be undone here.",
+      "unsubscribedNotification": "You've been unsubscribed from {group}"
     },
+    "personalDetails": "Personal details",
     "phoneInfo": "By providing your phone number you are consenting to being contacted by phone",
     "phoneInfo-nuxt": "By providing your phone number you are consenting to being contacted by phone.",
     "phoneInfoAdmin": "You must have the person's consent before adding their phone number to the system",
     "requiredFields": "Required fields",
     "savedPassword": "New password saved",
+    "security": "Security",
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
     "subTitle-nuxt": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
+    "subscriptions": "Subscriptions",
     "title": "Account"
   },
   "actions": {
@@ -293,6 +301,7 @@
       "newsletter": {
         "audienceId": "Audience ID",
         "groups": "Groups",
+        "groupsNote": "Group names will be displayed to members in the subscription management tab of the Account page.",
         "noGroups": "No groups found"
       },
       "refresh": "Refresh",
@@ -436,6 +445,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Participate again",
       "updateResponse": "Update your response"
     },
     "addAPoint": "Click on the map where you want to add a point",
@@ -973,12 +983,23 @@
     "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded."
   },
   "callouts": {
+    "access": {
+      "everyone": "Open to everyone",
+      "member": "Members only"
+    },
     "archive": "Archive",
+    "archiveRange": "{start}-{end} of {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "End date"
+      "endDate": "End date",
+      "responses": "{n} response | {n} responses"
+    },
+    "daysLeft": "{n} day left | {n} days left",
+    "empty": {
+      "active": "No active callouts right now."
     },
     "noArchivedCallouts": "Nothing to see here",
+    "openCallouts": "Open CrowdNewsrooms",
     "search": "Search",
     "showAll": "All",
     "showAnswered": "Answered",

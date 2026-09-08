@@ -3,6 +3,7 @@ export * from './app-qr-code-error-correction-level';
 export * from './app-qr-code-props';
 export * from './app-qr-code-type-number';
 export * from './breadcrumb-item';
+export * from './callout-card-data';
 export * from './content';
 export * from './contribution';
 export * from './email-editor';

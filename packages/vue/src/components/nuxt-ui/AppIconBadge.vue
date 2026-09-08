@@ -12,7 +12,7 @@
     class="flex size-8 shrink-0 items-center justify-center rounded-lg"
     :class="COLOR_CLASSES[color].bg"
   >
-    <UIcon :name="icon" class="size-4" :class="COLOR_CLASSES[color].icon" />
+    <UIcon :name="icon" class="size-5" :class="COLOR_CLASSES[color].icon" />
   </div>
 </template>
 
