@@ -445,6 +445,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "",
       "updateResponse": ""
     },
     "addAPoint": "",
@@ -1194,6 +1195,9 @@
       "email": "",
       "firstname": "",
       "hasDonated": "",
+      "idpAccount": "",
+      "idpLinked": "",
+      "idpUnlinked": "",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
