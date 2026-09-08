@@ -32,24 +32,17 @@ export class ZitadelProvider implements IdpProvider {
     return text ? (JSON.parse(text) as T) : undefined;
   }
 
-  /** Zitadel requires non-empty names, beabee doesn't */
-  private profile(data: IdpUserData): {
-    givenName: string;
-    familyName: string;
-  } {
-    return {
-      givenName: data.firstname || data.email,
-      familyName: data.lastname || '-',
-    };
-  }
-
   async createUser(data: IdpUserData): Promise<string> {
     const resp = await this.request<{ userId: string }>(
       'POST',
       '/v2/users/human',
       {
         username: data.email,
-        profile: this.profile(data),
+        profile: {
+          // Zitadel requires non-empty names, beabee doesn't
+          givenName: data.firstname || data.email,
+          familyName: data.lastname || '-',
+        },
         email: { email: data.email, isVerified: true },
       }
     );
@@ -84,7 +77,10 @@ export class ZitadelProvider implements IdpProvider {
   async updateUser(subject: string, data: IdpUserData): Promise<void> {
     await this.request('PUT', `/v2/users/human/${subject}`, {
       username: data.email,
-      profile: this.profile(data),
+      profile: {
+        givenName: data.firstname || data.email,
+        familyName: data.lastname || '-',
+      },
       email: { email: data.email, isVerified: true },
     });
   }
