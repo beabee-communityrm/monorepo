@@ -98,6 +98,9 @@ export class GetContentGeneralDto implements ContentGeneralData<Locale> {
 
   @IsBoolean()
   enableOneTimeDonations!: boolean;
+
+  @IsBoolean()
+  oidcEnabled!: boolean;
 }
 
 class GetContentJoinPeriodDto implements ContentJoinPeriodData {
