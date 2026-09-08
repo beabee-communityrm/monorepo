@@ -186,12 +186,17 @@ services:
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      # Keycloak must be addressed identically from the host (via a
-      # "127.0.0.1 auth" hosts entry) and from the containers (service DNS),
-      # so the container port has to match the published host port
+      # Keycloak must be addressed identically from the browser/host (where
+      # *.localhost resolves to loopback) and from the containers (via the
+      # network alias below), so the container port has to match the
+      # published host port
       KC_HTTP_PORT: ${KEYCLOAK_PORT}
-      KC_HOSTNAME: http://auth:${KEYCLOAK_PORT}
+      KC_HOSTNAME: http://auth.localhost:${KEYCLOAK_PORT}
       KC_HEALTH_ENABLED: 'true'
+    networks:
+      default:
+        aliases:
+          - auth.localhost
     ports:
       - ${KEYCLOAK_PORT}:${KEYCLOAK_PORT}
     volumes:
