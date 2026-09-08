@@ -10,9 +10,9 @@ backend, frontend and CLI.
 
 **Identity Provider (IdP)**:
 The external service that authenticates members and holds their credentials
-(password, MFA) on an OIDC-enabled instance. Each instance has its own
-logically separate IdP (a dedicated Zitadel organisation or Keycloak realm),
-even when several instances share one IdP server.
+(password, MFA) on an OIDC-enabled instance. Each beabee instance has its own
+logically separate IdP (a dedicated Zitadel virtual instance or Keycloak
+realm), even when several beabee instances share one IdP server.
 _Avoid_: auth server, SSO provider, "Keycloak"/"Zitadel" when meaning the role
 
 **OIDC Login**:
@@ -46,6 +46,21 @@ The period in which an instance still uses Local Login while IdP
 Provisioning mirrors contacts and their credentials to the IdP, so that OIDC
 Login can later be enforced without members losing access.
 _Avoid_: migration mode, hybrid mode, dual login
+
+### Roles
+
+**Admin**:
+A member with the admin role on a beabee instance. Admins configure their
+instance through its settings pages and have no access to the servers, the
+database or the CLI.
+_Avoid_: operator, superuser, "us"
+
+**Operator**:
+The beabee team running the hosting infrastructure. Operators run CLI commands,
+set environment variables and configure the IdP; clients never do.
+_Avoid_: admin, dev (when meaning the role rather than the people)
+
+### Joining
 
 **Signup Flow**:
 The record of one member's in-progress join, including the URLs the member is
