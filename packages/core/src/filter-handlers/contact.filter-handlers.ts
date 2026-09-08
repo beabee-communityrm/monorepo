@@ -240,11 +240,13 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
  * - manualPaymentSource: Filters by manual payment contributions
  * - callouts: Filters by callout responses and participation
  * - tags: Filters by contact tags
+ * - organisation: Filters by organisation name
  */
 export const contactFilterHandlers: FilterHandlers<string> = {
   deliveryOptIn: profileField('deliveryOptIn'),
   newsletterStatus: profileField('newsletterStatus'),
   newsletterGroups: profileField('newsletterGroups'),
+  organisation: profileField('organisation'),
   activePermission,
   activeMembership: activePermission,
   activeUser: (qb, args) => {

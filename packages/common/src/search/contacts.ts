@@ -94,6 +94,9 @@ export const contactFilters = {
     type: 'text',
     nullable: true,
   },
+  organisation: {
+    type: 'text',
+  },
   tags: {
     type: 'array',
   },

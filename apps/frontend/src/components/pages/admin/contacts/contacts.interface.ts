@@ -72,6 +72,10 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
   email: withLabel(contactFilters.email, t('contacts.data.email')),
   joined: withLabel(contactFilters.joined, t('contacts.data.joined')),
   lastSeen: withLabel(contactFilters.lastSeen, t('contacts.data.lastSeen')),
+  organisation: withLabel(
+    contactFilters.organisation,
+    t('adminSettings.general.organisationName')
+  ),
 
   // Newsletter Status Filters
   newsletterStatus: withLabel(
@@ -212,6 +216,7 @@ export function useContactFilters() {
           'firstname',
           'lastname',
           'email',
+          'organisation',
           'joined',
           'lastSeen',
           'newsletterStatus',
