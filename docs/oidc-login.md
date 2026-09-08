@@ -103,8 +103,8 @@ branch and is retargeted to `main` as its base merges.
 
 1. `feat/idp-provider` — contact link column, provider abstraction and
    service, provisioning triggers, linking CLI, admin link status
-2. `feat/idp-zitadel` — Zitadel provider
-3. `feat/idp-keycloak` — Keycloak provider and local development stack
+2. `feat/idp-keycloak` — Keycloak provider and local development stack
+3. `feat/idp-zitadel` — Zitadel provider
 4. `feat/oidc-login-backend` — login provider config, OIDC routes, local-auth
    404s, client helpers
 5. `feat/oidc-login-frontend` — login, logout and route guards in both
