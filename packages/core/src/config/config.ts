@@ -175,6 +175,53 @@ const idpProvider = env.e(
 );
 
 /**
+ * Login configuration
+ * Used when BEABEE_LOGIN_PROVIDER=oidc: members log in at the identity
+ * provider (OIDC Login); beabee's own password, MFA and reset endpoints are
+ * disabled
+ */
+export interface OidcLoginConfig {
+  provider: 'oidc';
+  settings: {
+    issuer: string; // BEABEE_LOGIN_SETTINGS_ISSUER - OIDC issuer URL
+    clientId: string; // BEABEE_LOGIN_SETTINGS_CLIENTID - OIDC client ID
+    clientSecret: string; // BEABEE_LOGIN_SETTINGS_CLIENTSECRET - OIDC client secret (empty: public client with PKCE only)
+    scopes: string; // BEABEE_LOGIN_SETTINGS_SCOPES - Requested scopes (default: openid profile email)
+    redirectUri: string; // BEABEE_LOGIN_SETTINGS_REDIRECTURI - OAuth callback URL (default: <audience>/api/1.0/auth/callback)
+    postLogoutRedirectUri: string; // BEABEE_LOGIN_SETTINGS_POSTLOGOUTREDIRECTURI - Where the IdP sends members after logout (default: audience)
+    accountUrl: string; // BEABEE_LOGIN_SETTINGS_ACCOUNTURL - IdP self-service account page (empty: not linked)
+  };
+}
+
+/**
+ * Used when BEABEE_LOGIN_PROVIDER=local (default): beabee checks passwords
+ * itself (Local Login)
+ */
+interface LocalLoginConfig {
+  provider: 'local';
+  settings: Record<string, never>;
+}
+
+// Union type for login configuration - only one provider can be used at a time
+type LoginConfig = OidcLoginConfig | LocalLoginConfig;
+
+// Get login provider from environment, with validation for allowed values
+// Defaults to "local" if not specified
+const loginProvider = env.e(
+  'BEABEE_LOGIN_PROVIDER',
+  ['local', 'oidc'] as const,
+  'local'
+);
+
+// OIDC Login only works for contacts linked to an IdP account, which requires
+// IdP Provisioning against the same identity provider
+if (loginProvider === 'oidc' && idpProvider === 'none') {
+  throw new Error(
+    'BEABEE_LOGIN_PROVIDER=oidc requires BEABEE_IDP_PROVIDER to be set'
+  );
+}
+
+/**
  * Application configuration for an individual app module
  * Used for dynamic app loading and menu building
  */
@@ -339,6 +386,32 @@ export const config = {
             }
           : {},
   } as IdpConfig,
+
+  // Login configuration
+  login: {
+    provider: loginProvider, // Login provider (local or oidc)
+    settings:
+      loginProvider === 'oidc'
+        ? {
+            issuer: env.s('BEABEE_LOGIN_SETTINGS_ISSUER'), // OIDC issuer URL
+            clientId: env.s('BEABEE_LOGIN_SETTINGS_CLIENTID'), // OIDC client ID
+            clientSecret: env.s('BEABEE_LOGIN_SETTINGS_CLIENTSECRET', ''), // OIDC client secret (empty: public client)
+            scopes: env.s(
+              'BEABEE_LOGIN_SETTINGS_SCOPES',
+              'openid profile email'
+            ), // Requested scopes
+            redirectUri: env.s(
+              'BEABEE_LOGIN_SETTINGS_REDIRECTURI',
+              env.s('BEABEE_AUDIENCE') + '/api/1.0/auth/callback'
+            ), // OAuth callback URL
+            postLogoutRedirectUri: env.s(
+              'BEABEE_LOGIN_SETTINGS_POSTLOGOUTREDIRECTURI',
+              env.s('BEABEE_AUDIENCE')
+            ), // Where the IdP sends members after logout
+            accountUrl: env.s('BEABEE_LOGIN_SETTINGS_ACCOUNTURL', ''), // IdP self-service account page
+          }
+        : {},
+  } as LoginConfig,
 
   // GoCardless payment integration
   gocardless: {
