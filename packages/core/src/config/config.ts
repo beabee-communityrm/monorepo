@@ -129,6 +129,20 @@ const newsletterProvider = env.e(
 
 /**
  * Identity provider configuration (IdP Provisioning)
+ * Used when BEABEE_IDP_PROVIDER=keycloak: contacts are mirrored into a
+ * Keycloak realm via the admin REST API (local development)
+ */
+export interface KeycloakIdpConfig {
+  provider: 'keycloak';
+  settings: {
+    url: string; // BEABEE_IDP_SETTINGS_URL - Keycloak base URL
+    realm: string; // BEABEE_IDP_SETTINGS_REALM - Realm name
+    clientId: string; // BEABEE_IDP_SETTINGS_CLIENTID - Service account client ID
+    clientSecret: string; // BEABEE_IDP_SETTINGS_CLIENTSECRET - Service account client secret
+  };
+}
+
+/**
  * Used when BEABEE_IDP_PROVIDER=none (default): contacts are not mirrored
  * to an identity provider
  */
@@ -138,11 +152,15 @@ interface NoneIdpConfig {
 }
 
 // Union type for identity provider configuration - only one provider can be used at a time
-type IdpConfig = NoneIdpConfig;
+type IdpConfig = KeycloakIdpConfig | NoneIdpConfig;
 
 // Get identity provider from environment, with validation for allowed values
 // Defaults to "none" if not specified
-const idpProvider = env.e('BEABEE_IDP_PROVIDER', ['none'] as const, 'none');
+const idpProvider = env.e(
+  'BEABEE_IDP_PROVIDER',
+  ['keycloak', 'none'] as const,
+  'none'
+);
 
 /**
  * Application configuration for an individual app module
@@ -293,8 +311,16 @@ export const config = {
 
   // Identity provider integration configuration
   idp: {
-    provider: idpProvider, // Identity provider (none)
-    settings: {},
+    provider: idpProvider, // Identity provider (keycloak or none)
+    settings:
+      idpProvider === 'keycloak'
+        ? {
+            url: env.s('BEABEE_IDP_SETTINGS_URL'), // Keycloak base URL
+            realm: env.s('BEABEE_IDP_SETTINGS_REALM'), // Realm name
+            clientId: env.s('BEABEE_IDP_SETTINGS_CLIENTID'), // Service account client ID
+            clientSecret: env.s('BEABEE_IDP_SETTINGS_CLIENTSECRET'), // Service account client secret
+          }
+        : {},
   } as IdpConfig,
 
   // GoCardless payment integration
