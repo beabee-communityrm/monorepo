@@ -473,12 +473,18 @@ export default class AudioRecorderComponent extends FileComponent {
 
     const row = document.createElement('div');
     row.className = 'audio-recorder-ready-row';
-    const badge = document.createElement('span');
-    badge.className = 'audio-recorder-badge';
-    badge.textContent = t('formRenderer.components.audioRecorder.attached');
+    // "Attached" only means something as a status relative to the other
+    // interactive states (idle/uploading/error) - viewing a past response
+    // read-only, there's nothing else it could be, so it's just noise there.
+    if (!this.options?.readOnly) {
+      const badge = document.createElement('span');
+      badge.className = 'audio-recorder-badge';
+      badge.textContent = t('formRenderer.components.audioRecorder.attached');
+      row.append(badge);
+    }
     this.readyMeta = document.createElement('span');
     this.readyMeta.className = 'audio-recorder-meta';
-    row.append(badge, this.readyMeta);
+    row.append(this.readyMeta);
 
     const playRow = document.createElement('div');
     playRow.className = 'audio-recorder-play-row';
