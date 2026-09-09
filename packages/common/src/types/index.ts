@@ -18,6 +18,7 @@ export type * from './callout-component-base-schema.js';
 export type * from './callout-component-content-schema.js';
 export type * from './callout-component-input-address-rules.js';
 export type * from './callout-component-input-address-schema.js';
+export type * from './callout-component-input-audio-recorder-schema.js';
 export type * from './callout-component-input-checkbox-rules.js';
 export type * from './callout-component-input-checkbox-schema.js';
 export type * from './callout-component-input-currency-rules.js';
