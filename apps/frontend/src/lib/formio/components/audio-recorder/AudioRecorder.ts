@@ -991,24 +991,33 @@ export default class AudioRecorderComponent extends FileComponent {
     if (!this.currentUrl) return;
     if (!this.playbackAudio) {
       this.playbackAudio = new Audio(this.currentUrl);
+      // Drive `playing` from the audio element's own play/pause events
+      // rather than setting it optimistically in the click handler - play()
+      // returns before playback actually starts, so a same-tick assumption
+      // can desync from reality (e.g. a quick pause() interrupting a still-
+      // pending play() left the button needing an extra click to recover).
+      this.playbackAudio.addEventListener('play', () => {
+        this.playing = true;
+        this.updateReadyDynamic();
+      });
+      this.playbackAudio.addEventListener('pause', () => {
+        this.playing = false;
+        this.updateReadyDynamic();
+      });
       this.playbackAudio.addEventListener('timeupdate', () => {
         this.playT = this.playbackAudio?.currentTime ?? 0;
         this.updateReadyDynamic();
       });
       this.playbackAudio.addEventListener('ended', () => {
-        this.playing = false;
         this.playT = 0;
         this.updateReadyDynamic();
       });
     }
-    if (this.playing) {
-      this.playbackAudio.pause();
-      this.playing = false;
-    } else {
+    if (this.playbackAudio.paused) {
       this.playbackAudio.play().catch(() => {});
-      this.playing = true;
+    } else {
+      this.playbackAudio.pause();
     }
-    this.updateReadyDynamic();
   }
 
   private discard() {
