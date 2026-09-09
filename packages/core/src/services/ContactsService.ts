@@ -1,4 +1,5 @@
 import {
+  ActivityEventType,
   CONTACT_MFA_TYPE,
   ContactOriginData,
   ContributionPeriod,
@@ -41,6 +42,7 @@ import {
   ResetSecurityFlow,
   SegmentContact,
 } from '#models/index';
+import ActivityService from '#services/ActivityService';
 import ContactMfaService from '#services/ContactMfaService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
@@ -134,12 +136,17 @@ class ContactsService {
       await getRepository(ContactProfile).save(contact.profile);
 
       await PaymentService.createContact(contact);
-
       if (opts.sync) {
         await NewsletterService.upsertContact(contact);
       }
 
       await EmailService.sendTemplateToAdmin('new-member', { contact });
+
+      await ActivityService.addEvent({
+        targetId: contact.id,
+        eventType: ActivityEventType.ContactCreated,
+        metadata: null,
+      });
 
       return contact;
     } catch (error) {
@@ -202,6 +209,12 @@ class ContactsService {
       );
     }
 
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactUpdated,
+      targetId: contact.id,
+      metadata: null,
+    });
+
     await PaymentService.updateContact(contact, updates);
   }
 
@@ -246,6 +259,12 @@ class ContactsService {
     if (wasActive !== contact.membership?.isActive) {
       await NewsletterService.upsertContact(contact);
     }
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactRoleAdded,
+      targetId: contact.id,
+      metadata: null,
+    });
 
     return role;
   }
@@ -298,6 +317,12 @@ class ContactsService {
       await NewsletterService.upsertContact(contact);
     }
 
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactRoleRevoked,
+      targetId: contact.id,
+      metadata: null,
+    });
+
     return ret.affected !== 0;
   }
 
@@ -315,6 +340,12 @@ class ContactsService {
       if (contact.profile) {
         Object.assign(contact.profile, profileUpdates);
       }
+
+      await ActivityService.addEvent({
+        targetId: contact.id,
+        eventType: ActivityEventType.ContactProfileUpdated,
+        metadata: null,
+      });
     }
 
     if (newsletterStatus || newsletterGroups) {
@@ -467,6 +498,12 @@ class ContactsService {
 
       // 18. Finally delete the contact
       await em.getRepository(Contact).delete(contact.id);
+
+      await ActivityService.addEvent({
+        targetId: contact.id,
+        eventType: ActivityEventType.ContactDeleted,
+        metadata: null,
+      });
     });
   }
 
