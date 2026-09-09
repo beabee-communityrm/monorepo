@@ -6,6 +6,7 @@
  * BEABEE_ to avoid conflicts with other applications.
  */
 import type {
+  AudioServiceConfig,
   DocumentServiceConfig,
   ImageServiceConfig,
   LegacyImageServiceConfig,
@@ -192,6 +193,10 @@ const document: DocumentServiceConfig = {
   s3,
 };
 
+const audio: AudioServiceConfig = {
+  s3,
+};
+
 const legacyImage: LegacyImageServiceConfig = {
   s3,
 };
@@ -318,6 +323,9 @@ export const config = {
 
   // Document service configuration
   document,
+
+  // Audio service configuration
+  audio,
 
   // Legacy image service configuration
   legacyImage,
