@@ -1476,6 +1476,15 @@
       "addressLine1": {
         "required": "L'adresse ligne 1 est obligatoire"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Votre navigateur a bloqué l'accès au microphone. Vérifiez les autorisations du site et réessayez, ou importez un enregistrement réalisé ailleurs.",
+        "micPermissionDeniedTitle": "Microphone non disponible",
+        "recordingNotSupportedBody": "Ce navigateur ne peut pas enregistrer l'audio. Veuillez importer un fichier audio à la place.",
+        "recordingNotSupportedTitle": "Enregistrement non pris en charge",
+        "tooLongBody": "Ce fichier dure {duration}. La durée maximale pour cette question est {max}. Veuillez le raccourcir ou enregistrer une réponse plus courte.",
+        "tooLongTitle": "Enregistrement trop long",
+        "uploadFailedTitle": "Échec de l'envoi"
+      },
       "cityOrTown": {
         "required": "La ville est obligatoire"
       },
@@ -1578,6 +1587,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Fichier joint",
+        "delete": "Supprimer",
+        "discard": "Annuler",
+        "pause": "Pause",
+        "paused": "En pause",
+        "playPause": "Lecture ou pause",
+        "reRecord": "Enregistrer à nouveau",
+        "record": "Démarrer l'enregistrement",
+        "recording": "Enregistrement en cours",
+        "remaining": "{time} restantes. L'enregistrement s'arrête automatiquement à la limite.",
+        "requestingPermission": "En attente de l'autorisation du microphone. Autorisez l'accès dans votre navigateur pour continuer.",
+        "resume": "Reprendre",
+        "stop": "Arrêter",
+        "tryAgain": "Réessayer",
+        "uploadFormats": "MP3, M4A, WAV ou OGG",
+        "uploadInstead": "Importer un fichier audio à la place",
+        "uploadLabel": "Importer un fichier audio",
+        "uploadingHint": "Envoi en cours — vous pouvez continuer à remplir le reste du formulaire."
+      },
       "file": {
         "browse": "importer depuis l'appareil",
         "dropFiles": "Déposez des fichiers",

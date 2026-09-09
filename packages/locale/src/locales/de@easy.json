@@ -1472,6 +1472,15 @@
       "addressLine1": {
         "required": ""
       },
+      "audio": {
+        "micPermissionDeniedBody": "Das hat nicht geklappt. Das Mikrofon durfte nicht benutzt werden. Prüfe die Einstellungen. Oder lade eine Aufnahme hoch.",
+        "micPermissionDeniedTitle": "Das Mikrofon geht nicht",
+        "recordingNotSupportedBody": "Dieser Browser kann keine Aufnahmen machen. Lade stattdessen eine Audio-Datei hoch.",
+        "recordingNotSupportedTitle": "Aufnehmen geht hier nicht",
+        "tooLongBody": "Die Datei ist {duration} lang. Erlaubt ist höchstens {max}. Mach die Datei kürzer.",
+        "tooLongTitle": "Die Aufnahme ist zu lang",
+        "uploadFailedTitle": "Hochladen hat nicht geklappt"
+      },
       "cityOrTown": {
         "required": ""
       },
@@ -1574,6 +1583,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Angehängt",
+        "delete": "Löschen",
+        "discard": "Nicht speichern",
+        "pause": "Pause",
+        "paused": "Pause",
+        "playPause": "Abspielen",
+        "reRecord": "Neu aufnehmen",
+        "record": "Aufnahme starten",
+        "recording": "Es wird aufgenommen.",
+        "remaining": "Noch {time}. Dann stoppt die Aufnahme von selbst.",
+        "requestingPermission": "Warte auf das Mikrofon. Erlaube den Zugriff in deinem Browser.",
+        "resume": "Weiter",
+        "stop": "Stopp",
+        "tryAgain": "Noch mal versuchen",
+        "uploadFormats": "MP3, M4A, WAV oder OGG",
+        "uploadInstead": "Lade stattdessen eine Audio-Datei hoch",
+        "uploadLabel": "Audio-Datei hochladen",
+        "uploadingHint": "Die Datei wird hochgeladen. Du kannst das Formular weiter ausfüllen."
+      },
       "file": {
         "browse": "Du musst warten: Bis sich das Rädchen nicht mehr dreht./ Bis der Balken blau ist.",
         "dropFiles": "Du musst die Datei mit dem Pfeil von der Mouse hier her ziehen.",

@@ -1470,6 +1470,15 @@
       "addressLine1": {
         "required": "La dirección línea 1 es obligatoria"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Tu navegador bloqueó el acceso al micrófono. Comprueba los permisos del sitio e inténtalo de nuevo, o sube una grabación hecha en otro lugar.",
+        "micPermissionDeniedTitle": "Micrófono no disponible",
+        "recordingNotSupportedBody": "Este navegador no puede grabar audio. Sube un archivo de audio en su lugar.",
+        "recordingNotSupportedTitle": "Grabación no compatible",
+        "tooLongBody": "Este archivo dura {duration}. El máximo para esta pregunta es {max}. Recórtalo o graba una respuesta más corta.",
+        "tooLongTitle": "Grabación demasiado larga",
+        "uploadFailedTitle": "Error al subir"
+      },
       "cityOrTown": {
         "required": "La ciudad/localidad es obligatoria"
       },
@@ -1572,6 +1581,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Adjuntado",
+        "delete": "Eliminar",
+        "discard": "Descartar",
+        "pause": "Pausar",
+        "paused": "En pausa",
+        "playPause": "Reproducir o pausar",
+        "reRecord": "Grabar de nuevo",
+        "record": "Empezar a grabar",
+        "recording": "Grabando",
+        "remaining": "Quedan {time}. La grabación se detiene automáticamente al llegar al límite.",
+        "requestingPermission": "Esperando permiso del micrófono. Permite el acceso en tu navegador para continuar.",
+        "resume": "Reanudar",
+        "stop": "Detener",
+        "tryAgain": "Intentar de nuevo",
+        "uploadFormats": "MP3, M4A, WAV u OGG",
+        "uploadInstead": "Subir un archivo de audio en su lugar",
+        "uploadLabel": "Subir un archivo de audio",
+        "uploadingHint": "Subiendo — puedes seguir rellenando el resto del formulario."
+      },
       "file": {
         "browse": "subir desde el dispositivo",
         "dropFiles": "Arrastra archivos para adjuntar",
