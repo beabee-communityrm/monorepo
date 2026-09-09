@@ -1,4 +1,6 @@
+import { ActivityActor, ActivityActorType } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
+import { actorContext } from '@beabee/core/lib/actor-context';
 import { ApiKey } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import { AuthInfo } from '@beabee/core/type';
@@ -16,7 +18,9 @@ export class AuthMiddleware implements ExpressMiddlewareInterface {
     next: (err?: any) => any
   ): Promise<void> {
     req.auth = await getAuth(req);
-    next();
+
+    // Run all downstream operations with the ActivityActor in context
+    actorContext.run(authInfoToActor(req.auth), next);
   }
 }
 
@@ -66,4 +70,20 @@ async function getValidApiKey(key: string): Promise<ApiKey | undefined> {
   return !!apiKey && (!apiKey.expires || apiKey.expires > new Date())
     ? apiKey
     : undefined;
+}
+
+// Use type of authentication to determine whether actor is user or API key
+// Default to user with no actor ID
+function authInfoToActor(auth: AuthInfo): ActivityActor {
+  switch (auth.method) {
+    case 'api-key':
+      return {
+        actorType: ActivityActorType.ApiKey,
+        actorId: auth.contact?.id ?? null,
+      };
+    case 'user':
+      return { actorType: ActivityActorType.User, actorId: auth.contact.id };
+    default:
+      return { actorType: ActivityActorType.User, actorId: null };
+  }
 }

@@ -49,11 +49,11 @@
         <template v-if="accountContent?.showMailOptIn">
           <div class="flex flex-col gap-4">
             <div class="space-y-1">
-              <p class="text-default text-sm font-medium">
+              <p class="text-sm font-medium text-default">
                 {{ accountContent.mailTitle }}
               </p>
               <div
-                class="text-muted text-sm"
+                class="text-sm text-muted"
                 v-html="accountContent.mailText"
               />
             </div>

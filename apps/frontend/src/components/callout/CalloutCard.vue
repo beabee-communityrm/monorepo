@@ -1,6 +1,6 @@
 <template>
   <UCard
-    class="group hover:ring-primary relative flex flex-col overflow-hidden transition-shadow"
+    class="group relative flex flex-col overflow-hidden transition-shadow hover:ring-primary"
     :ui="{
       header: 'p-0 sm:p-0',
       body: 'flex flex-1 flex-col gap-3 p-4',
@@ -8,7 +8,7 @@
     }"
   >
     <template #header>
-      <div class="bg-elevated h-36">
+      <div class="h-36 bg-elevated">
         <img
           class="h-full w-full object-cover"
           :src="imageUrl"
@@ -34,7 +34,7 @@
         {{ callout.title }}
       </h3>
     </RouterLink>
-    <p v-if="callout.excerpt" class="text-muted line-clamp-2">
+    <p v-if="callout.excerpt" class="line-clamp-2 text-muted">
       {{ callout.excerpt }}
     </p>
 
@@ -43,7 +43,7 @@
     <RouterLink
       v-if="!callout.hasAnswered"
       :to="`/crowdnewsroom/${callout.slug}/respond`"
-      class="group/respond text-primary relative z-10 mt-auto inline-flex items-center gap-1 self-start pt-1 font-medium hover:underline"
+      class="group/respond relative z-10 mt-auto inline-flex items-center gap-1 self-start pt-1 font-medium text-primary hover:underline"
     >
       {{ t('actions.participate') }}
       <UIcon
@@ -54,7 +54,7 @@
 
     <template v-if="callout.hasAnswered" #footer>
       <div
-        class="bg-primary/5 text-primary flex flex-col gap-1 px-4 py-2 font-medium"
+        class="flex flex-col gap-1 bg-primary/5 px-4 py-2 font-medium text-primary"
       >
         <div class="flex items-center gap-1.5">
           <UIcon name="i-lucide-check" class="size-3 shrink-0" />
