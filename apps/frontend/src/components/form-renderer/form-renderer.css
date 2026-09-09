@@ -432,14 +432,6 @@
     .audio-recorder-error-actions {
       @apply flex flex-wrap items-center gap-4;
     }
-
-    /* Read-only display (e.g. viewing a submitted response) */
-    .audio-recorder-readonly {
-      @apply flex flex-col items-start gap-2;
-    }
-    .audio-recorder-readonly-player {
-      @apply w-full max-w-sm;
-    }
   }
 
   /* Styles for signature component */

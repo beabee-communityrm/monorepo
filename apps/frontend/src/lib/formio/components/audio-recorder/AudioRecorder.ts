@@ -89,7 +89,11 @@ export default class AudioRecorderComponent extends FileComponent {
   declare upload: (files: File[]) => void;
   declare on: (event: string, handler: (...args: any[]) => void) => void;
   declare hasValue: () => boolean;
-  declare dataValue: FormioFileValue[];
+  // A `multiple: false` file component's value is an array ([fileInfo])
+  // while it's being built up by our own upload() flow, but the shape
+  // actually stored/reloaded as a callout answer is a single plain object -
+  // dataValue can legitimately be either depending on how it got there.
+  declare dataValue: FormioFileValue[] | FormioFileValue | undefined;
   declare statuses: Array<{ status: string; message?: string }>;
   declare refs: { fileProcessingLoader?: HTMLElement };
   declare options: { readOnly?: boolean };
@@ -155,9 +159,8 @@ export default class AudioRecorderComponent extends FileComponent {
 
   // FileComponent's own upload() calls this.redraw() several times over the
   // life of a single upload (destroy + render + attach on this same
-  // instance) - attach() must stay idempotent across those re-entries: only
-  // derive the initial phase once, and only register these listeners once.
-  private hasAttachedBefore = false;
+  // instance) - attach() must stay idempotent across those re-entries, and
+  // only register these listeners once.
   private listenersRegistered = false;
 
   static schema(...extend: any[]) {
@@ -195,11 +198,27 @@ export default class AudioRecorderComponent extends FileComponent {
   attach(element: HTMLElement) {
     const superAttach = super.attach(element);
 
-    // Read-only rendering (e.g. viewing a submitted response) shows the
-    // recorded/uploaded answer as a plain player, not the interactive
-    // record-or-upload UI.
+    // Read-only rendering (e.g. an admin viewing a submitted response, or
+    // this same component loaded read-only before an edit) reuses the same
+    // "attached" UI as the interactive form - just without the record/
+    // discard actions (buildReadyBlock omits those when readOnly) - for
+    // visual consistency, and shows nothing at all when there's no answer.
     if (this.options?.readOnly) {
-      element.prepend(this.buildReadOnlyUi());
+      element.prepend(this.buildUi());
+      if (this.hasFileValue()) {
+        this.enterReadyPhase();
+      } else {
+        for (const block of [
+          this.idleBlock,
+          this.requestingBlock,
+          this.liveBlock,
+          this.uploadingBlock,
+          this.readyBlock,
+          this.errorBlock,
+        ]) {
+          if (block) block.hidden = true;
+        }
+      }
       return superAttach;
     }
 
@@ -207,7 +226,7 @@ export default class AudioRecorderComponent extends FileComponent {
       this.listenersRegistered = true;
       this.on('fileUploadingStart', () => this.setPhase('uploading'));
       this.on('fileUploadingEnd', () => {
-        if (this.hasValue() && this.dataValue?.length) {
+        if (this.hasFileValue()) {
           this.enterReadyPhase();
         } else {
           const failed = this.statuses.find((s) => s.status === 'error');
@@ -221,18 +240,20 @@ export default class AudioRecorderComponent extends FileComponent {
 
     element.prepend(this.buildUi());
 
-    if (!this.hasAttachedBefore) {
-      this.hasAttachedBefore = true;
-      if (this.hasValue() && this.dataValue?.length) {
+    // attach() re-enters several times as formio settles (both on its own
+    // internal redraws mid-upload, and while the form's initial submission
+    // data is still loading in - dataValue can start out empty and only
+    // arrive on a later attach). idle/ready are always safe to re-derive
+    // from the current data; the transient states our own code explicitly
+    // drives into (requesting/recording/paused/uploading/error) are
+    // "sticky" and must survive a redraw's momentarily-empty dataValue.
+    if (this.phase === 'idle' || this.phase === 'ready') {
+      if (this.hasFileValue()) {
         this.enterReadyPhase();
       } else {
         this.setPhase('idle');
       }
     } else {
-      // Re-entered via a formio-internal redraw (e.g. mid-upload) - the DOM
-      // was just rebuilt from scratch, so re-apply whatever phase we were
-      // already in rather than re-deriving it (dataValue can be transiently
-      // empty mid-upload even though we're not back to idle).
       this.setPhase(this.phase);
     }
 
@@ -491,31 +512,37 @@ export default class AudioRecorderComponent extends FileComponent {
     footer.className = 'audio-recorder-ready-footer';
     this.readyFileName = document.createElement('span');
     this.readyFileName.className = 'audio-recorder-filename';
+    footer.append(this.readyFileName);
 
-    const reRecordButton = document.createElement('button');
-    reRecordButton.type = 'button';
-    reRecordButton.className = 'audio-recorder-link';
-    reRecordButton.textContent = t(
-      'formRenderer.components.audioRecorder.reRecord'
-    );
-    this.addEventListener(reRecordButton, 'click', (event) => {
-      event.preventDefault();
-      this.discard();
-      this.startRecording();
-    });
+    // Read-only rendering (e.g. an admin viewing a response) shows the
+    // answer as plain playback - editing/discarding only makes sense in
+    // the interactive form.
+    if (!this.options?.readOnly) {
+      const reRecordButton = document.createElement('button');
+      reRecordButton.type = 'button';
+      reRecordButton.className = 'audio-recorder-link';
+      reRecordButton.textContent = t(
+        'formRenderer.components.audioRecorder.reRecord'
+      );
+      this.addEventListener(reRecordButton, 'click', (event) => {
+        event.preventDefault();
+        this.discard();
+        this.startRecording();
+      });
 
-    const deleteButton = document.createElement('button');
-    deleteButton.type = 'button';
-    deleteButton.className = 'audio-recorder-link audio-recorder-discard';
-    deleteButton.textContent = t(
-      'formRenderer.components.audioRecorder.delete'
-    );
-    this.addEventListener(deleteButton, 'click', (event) => {
-      event.preventDefault();
-      this.discard();
-    });
+      const deleteButton = document.createElement('button');
+      deleteButton.type = 'button';
+      deleteButton.className = 'audio-recorder-link audio-recorder-discard';
+      deleteButton.textContent = t(
+        'formRenderer.components.audioRecorder.delete'
+      );
+      this.addEventListener(deleteButton, 'click', (event) => {
+        event.preventDefault();
+        this.discard();
+      });
 
-    footer.append(this.readyFileName, reRecordButton, deleteButton);
+      footer.append(reRecordButton, deleteButton);
+    }
 
     block.append(row, playRow, footer);
     return block;
@@ -571,26 +598,6 @@ export default class AudioRecorderComponent extends FileComponent {
 
     block.append(row, this.errorBodyEl, actions);
     return block;
-  }
-
-  private buildReadOnlyUi(): HTMLElement {
-    const container = document.createElement('div');
-    container.className = 'audio-recorder-readonly';
-
-    const value = this.dataValue?.[this.dataValue.length - 1];
-    if (!value?.url) return container;
-
-    const audio = document.createElement('audio');
-    audio.controls = true;
-    audio.src = value.url;
-    audio.className = 'audio-recorder-readonly-player';
-
-    const fileName = document.createElement('p');
-    fileName.className = 'audio-recorder-filename';
-    fileName.textContent = value.originalName || value.name || '';
-
-    container.append(audio, fileName);
-    return container;
   }
 
   private createBars(containerClass: string): {
@@ -926,8 +933,23 @@ export default class AudioRecorderComponent extends FileComponent {
   // Ready / playback
   // ---------------------------------------------------------------------
 
+  /** Normalizes dataValue's two possible shapes (see the field comment). */
+  private getCurrentFileValue(): FormioFileValue | undefined {
+    const raw = this.dataValue;
+    if (!raw) return undefined;
+    return Array.isArray(raw) ? raw[raw.length - 1] : raw;
+  }
+
+  private hasFileValue(): boolean {
+    return !!this.getCurrentFileValue()?.url;
+  }
+
   private enterReadyPhase() {
-    const value = this.dataValue[this.dataValue.length - 1];
+    const value = this.getCurrentFileValue();
+    if (!value) {
+      this.setPhase('idle');
+      return;
+    }
     this.fileName = value?.originalName || value?.name || '';
     this.currentUrl = value?.url;
     this.playT = 0;
