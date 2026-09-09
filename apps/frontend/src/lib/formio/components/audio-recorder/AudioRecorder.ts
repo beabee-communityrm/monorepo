@@ -92,6 +92,7 @@ export default class AudioRecorderComponent extends FileComponent {
   declare dataValue: FormioFileValue[];
   declare statuses: Array<{ status: string; message?: string }>;
   declare refs: { fileProcessingLoader?: HTMLElement };
+  declare options: { readOnly?: boolean };
 
   private phase: Phase = 'idle';
 
@@ -193,6 +194,14 @@ export default class AudioRecorderComponent extends FileComponent {
 
   attach(element: HTMLElement) {
     const superAttach = super.attach(element);
+
+    // Read-only rendering (e.g. viewing a submitted response) shows the
+    // recorded/uploaded answer as a plain player, not the interactive
+    // record-or-upload UI.
+    if (this.options?.readOnly) {
+      element.prepend(this.buildReadOnlyUi());
+      return superAttach;
+    }
 
     if (!this.listenersRegistered) {
       this.listenersRegistered = true;
@@ -562,6 +571,26 @@ export default class AudioRecorderComponent extends FileComponent {
 
     block.append(row, this.errorBodyEl, actions);
     return block;
+  }
+
+  private buildReadOnlyUi(): HTMLElement {
+    const container = document.createElement('div');
+    container.className = 'audio-recorder-readonly';
+
+    const value = this.dataValue?.[this.dataValue.length - 1];
+    if (!value?.url) return container;
+
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.src = value.url;
+    audio.className = 'audio-recorder-readonly-player';
+
+    const fileName = document.createElement('p');
+    fileName.className = 'audio-recorder-filename';
+    fileName.textContent = value.originalName || value.name || '';
+
+    container.append(audio, fileName);
+    return container;
   }
 
   private createBars(containerClass: string): {
