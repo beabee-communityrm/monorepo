@@ -39,19 +39,6 @@ const log = mainLogger.child({ app: 'auth-controller' });
 
 @JsonController('/auth')
 export class AuthController {
-  /**
-   * Redirect and return the response so routing-controllers treats it as
-   * handled instead of serialising it as JSON
-   */
-  private redirect(res: Response, url: string): Response {
-    res.redirect(url);
-    return res;
-  }
-
-  private redirectToLoginError(res: Response, code: LOGIN_CODES): Response {
-    return this.redirect(res, `${config.audience}/auth/login?error=${code}`);
-  }
-
   @OnUndefined(204)
   @Post('/login')
   async login(
@@ -106,7 +93,9 @@ export class AuthController {
   }
 
   /**
-   * Browser-facing OIDC login: redirects to the identity provider
+   * Browser-facing OIDC login: redirects to the identity provider. The GET
+   * routes below return the response so routing-controllers treats it as
+   * handled instead of serialising it as JSON.
    * @param next Internal path to continue to after login
    */
   @Get('/login')
@@ -124,10 +113,14 @@ export class AuthController {
         next && isValidNextUrl(next) ? next : undefined
       );
       req.session.oidc = loginState;
-      return this.redirect(res, url);
+      res.redirect(url);
+      return res;
     } catch (err) {
       log.error('OIDC login failed to start', err);
-      return this.redirectToLoginError(res, LOGIN_CODES.LOGIN_FAILED);
+      res.redirect(
+        `${config.audience}/auth/login?error=${LOGIN_CODES.LOGIN_FAILED}`
+      );
+      return res;
     }
   }
 
@@ -160,17 +153,24 @@ export class AuthController {
       const contact = await ContactsService.findOneBy({ idpSubject: subject });
       if (!contact) {
         log.info(`OIDC login for unlinked subject ${subject}`);
-        return this.redirectToLoginError(res, LOGIN_CODES.UNLINKED_ACCOUNT);
+        res.redirect(
+          `${config.audience}/auth/login?error=${LOGIN_CODES.UNLINKED_ACCOUNT}`
+        );
+        return res;
       }
 
       // Regenerates the session, dropping the pre-login state
       await login(req, contact);
       req.session.idToken = idToken;
 
-      return this.redirect(res, config.audience + (loginState.next || '/'));
+      res.redirect(config.audience + (loginState.next || '/'));
+      return res;
     } catch (err) {
       log.error('OIDC login failed', err);
-      return this.redirectToLoginError(res, LOGIN_CODES.LOGIN_FAILED);
+      res.redirect(
+        `${config.audience}/auth/login?error=${LOGIN_CODES.LOGIN_FAILED}`
+      );
+      return res;
     }
   }
 
@@ -194,7 +194,8 @@ export class AuthController {
     );
     await new Promise<void>((resolve) => req.session.destroy(() => resolve()));
 
-    return this.redirect(res, await getOidcLogoutUrl(idToken));
+    res.redirect(await getOidcLogoutUrl(idToken));
+    return res;
   }
 
   @Get('/info')
