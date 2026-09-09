@@ -37,16 +37,20 @@
           <UInput v-model="data.organisation" class="w-full" />
         </UFormField>
 
-        <UFormField :label="t('form.vatNumber')" name="vatNumber">
-          <UInput v-model="data.vatNumber" class="w-full" />
-        </UFormField>
-
         <UFormField
           :label="t('form.phone')"
           name="telephone"
           :help="t('accountPage.phoneInfo-nuxt')"
         >
           <UInput v-model="data.telephone" type="tel" class="w-full" />
+        </UFormField>
+
+        <UFormField
+          :label="t('form.vatNumber')"
+          name="vatNumber"
+          :help="t('accountPage.vatNumberInfo')"
+        >
+          <UInput v-model="data.vatNumber" class="w-full" disabled />
         </UFormField>
       </template>
     </AppSectionCard>
@@ -248,7 +252,6 @@ const dirty = computed(
     data.firstName !== savedData.firstName ||
     data.lastName !== savedData.lastName ||
     data.organisation !== savedData.organisation ||
-    data.vatNumber !== savedData.vatNumber ||
     data.telephone !== savedData.telephone ||
     data.deliveryOptIn !== savedData.deliveryOptIn ||
     data.addressLine1 !== savedData.addressLine1 ||
@@ -266,7 +269,6 @@ const { submit: handleSave } = useApiSubmit(
       lastname: data.lastName,
       profile: {
         organisation: data.organisation,
-        vatNumber: data.vatNumber,
         telephone: data.telephone,
         // Only update opt in if it's visible
         ...(accountContent.value?.showMailOptIn && {
