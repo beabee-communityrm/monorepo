@@ -1,5 +1,15 @@
 @import '@beabee/vue/styles';
 
+/*
+ * Restore the unshaded warning/success theme colours dropped from
+ * @beabee/vue/styles so Nuxt UI's own palette wins in the new frontend.
+ * The old frontend doesn't import Nuxt UI, so it needs these itself.
+ */
+@theme {
+  --color-warning: rgb(var(--c-warning));
+  --color-success: rgb(var(--c-success));
+}
+
 /* Apply link styles to i18n markdown text */
 .content-i18n {
   a {
