@@ -1,4 +1,5 @@
 import {
+  ActivityEventType,
   CONTACT_MFA_TYPE,
   ContactOriginData,
   ContributionPeriod,
@@ -31,7 +32,6 @@ import {
   ContactProfile,
   ContactRole,
   ContactTagAssignment,
-  GiftFlow,
   Password,
   Payment,
   Project,
@@ -41,11 +41,13 @@ import {
   ResetSecurityFlow,
   SegmentContact,
 } from '#models/index';
+import ActivityService from '#services/ActivityService';
 import ContactMfaService from '#services/ContactMfaService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
+import { NewsletterGroupChange } from '#type/newsletter-group-change';
 import { UpdateContributionResult } from '#type/update-contribution-result';
 import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
@@ -133,12 +135,17 @@ class ContactsService {
       await getRepository(ContactProfile).save(contact.profile);
 
       await PaymentService.createContact(contact);
-
       if (opts.sync) {
         await NewsletterService.upsertContact(contact);
       }
 
       await EmailService.sendTemplateToAdmin('new-member', { contact });
+
+      await ActivityService.addEvent({
+        targetId: contact.id,
+        eventType: ActivityEventType.ContactCreated,
+        metadata: null,
+      });
 
       return contact;
     } catch (error) {
@@ -201,6 +208,12 @@ class ContactsService {
       );
     }
 
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactUpdated,
+      targetId: contact.id,
+      metadata: null,
+    });
+
     await PaymentService.updateContact(contact, updates);
   }
 
@@ -245,6 +258,12 @@ class ContactsService {
     if (wasActive !== contact.membership?.isActive) {
       await NewsletterService.upsertContact(contact);
     }
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactRoleAdded,
+      targetId: contact.id,
+      metadata: null,
+    });
 
     return role;
   }
@@ -297,13 +316,19 @@ class ContactsService {
       await NewsletterService.upsertContact(contact);
     }
 
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactRoleRevoked,
+      targetId: contact.id,
+      metadata: null,
+    });
+
     return ret.affected !== 0;
   }
 
   async updateContactProfile(
     contact: Contact,
     updates: Partial<ContactProfile>,
-    opts: { mergeGroups?: boolean } = { mergeGroups: false }
+    opts: { newsletterGroupChange?: NewsletterGroupChange } = {}
   ): Promise<void> {
     const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
 
@@ -314,6 +339,12 @@ class ContactsService {
       if (contact.profile) {
         Object.assign(contact.profile, profileUpdates);
       }
+
+      await ActivityService.addEvent({
+        targetId: contact.id,
+        eventType: ActivityEventType.ContactProfileUpdated,
+        metadata: null,
+      });
     }
 
     if (newsletterStatus || newsletterGroups) {
@@ -445,27 +476,28 @@ class ContactsService {
         .getRepository(Project)
         .update({ ownerId: contact.id }, { ownerId: null });
 
-      // 13. Gift flows: set giftee to NULL (legacy app)
-      await em
-        .getRepository(GiftFlow)
-        .update({ gifteeId: contact.id }, { gifteeId: null });
-
-      // 14. Referrals: delete where contact is referee (legacy feature)
+      // 13. Referrals: delete where contact is referee (legacy feature)
       await em.getRepository(Referral).delete({ refereeId: contact.id });
 
-      // 15. Contact tag assignments (has CASCADE but explicit for safety)
+      // 14. Contact tag assignments (has CASCADE but explicit for safety)
       await em
         .getRepository(ContactTagAssignment)
         .delete({ contactId: contact.id });
 
-      // 16. Contact roles
+      // 15. Contact roles
       await em.getRepository(ContactRole).delete({ contactId: contact.id });
 
-      // 17. Contact profile
+      // 16. Contact profile
       await em.getRepository(ContactProfile).delete({ contactId: contact.id });
 
-      // 18. Finally delete the contact
+      // 17. Finally delete the contact
       await em.getRepository(Contact).delete(contact.id);
+
+      await ActivityService.addEvent({
+        targetId: contact.id,
+        eventType: ActivityEventType.ContactDeleted,
+        metadata: null,
+      });
     });
   }
 

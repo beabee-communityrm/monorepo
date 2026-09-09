@@ -1,6 +1,11 @@
-import { ActivityEventType, ContactOriginData } from '@beabee/beabee-common';
+import {
+  ActivityActor,
+  ActivityEventType,
+  ContactOriginData,
+} from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
+import { actorContext } from '#lib/actor-context';
 import { log as mainLogger } from '#logging';
 import { ActivityEvent } from '#models/index';
 
@@ -8,16 +13,49 @@ const log = mainLogger.child({ app: 'activity-service' });
 
 class ActivityService {
   /**
-   * Add new event to events table
-   * @param event Event to add
+   * Add event to activity events table
+   * Event actor type and ID are obtained from the current request
+   * @param event event containing contact ID, event type and metadata (if any)
    */
-  async addEvent(
-    event: Pick<
-      ActivityEvent,
-      'targetId' | 'actorId' | 'actorType' | 'eventType' | 'metadata'
-    >
+  async addEvent<T extends ActivityEventType>(
+    event: Pick<ActivityEvent<T>, 'targetId' | 'eventType' | 'metadata'> &
+      Partial<ActivityActor>
   ): Promise<void> {
-    await getRepository(ActivityEvent).insert(event);
+    try {
+      log.info(
+        `Added event of type ${event.eventType} for target ${event.targetId}`
+      );
+      await getRepository(ActivityEvent).insert({
+        ...actorContext.get(),
+        ...event,
+      });
+    } catch (err) {
+      log.error(
+        `Failed to log event ${event.eventType} for target ${event.targetId}`,
+        err
+      );
+    }
+  }
+
+  /**
+   * Add multiple events to the activity events table in a single batch insert
+   * Event actor type and ID are obtained from the current request
+   * @param events events containing contact ID, event type and metadata (if any)
+   */
+  async addEvents<T extends ActivityEventType>(
+    events: (Pick<ActivityEvent<T>, 'targetId' | 'eventType' | 'metadata'> &
+      Partial<ActivityActor>)[]
+  ): Promise<void> {
+    if (events.length === 0) return;
+    try {
+      log.info(`Added ${events.length} events`);
+      const actor = actorContext.get();
+      await getRepository(ActivityEvent).insert(
+        events.map((event) => ({ ...actor, ...event }))
+      );
+    } catch (err) {
+      log.error(`Failed to log ${events.length} events`, err);
+    }
   }
 
   /**
@@ -43,7 +81,9 @@ class ActivityService {
    * @returns The contact's origin, or null if no creation event was recorded
    */
   async getContactOrigin(targetId: string): Promise<ContactOriginData | null> {
-    const event = await getRepository(ActivityEvent).findOne({
+    const event = await getRepository<
+      ActivityEvent<ActivityEventType.ContactCreated>
+    >(ActivityEvent).findOne({
       where: { targetId, eventType: ActivityEventType.ContactCreated },
     });
 

@@ -1,7 +1,7 @@
 {
   "accountPage": {
     "contactInformation": "Contact information",
-    "deliveryAddress": "Delivery address",
+    "deliveryAddress": "Address",
     "deliveryOptIn": "Delivery opt-in",
     "loginDetail": "Login details",
     "loginDetail-nuxt": "Change password",
@@ -78,17 +78,25 @@
         "subscribed": "This contact is subscribed to your newsletter list.",
         "unsubscribed": "This contact isn't subscribed to your newsletter list."
       },
+      "description": "Manage which newsletter groups you're subscribed to.",
+      "noGroups": "You're not subscribed to any newsletter groups.",
       "subscribe": "Subscribe them to the newsletter",
       "title": "Newsletter",
-      "unsubscribe": "Unsubscribe them from the newsletter"
+      "unsubscribe": "Unsubscribe them from the newsletter",
+      "unsubscribeButton": "Unsubscribe",
+      "unsubscribeInfo": "Unsubscribing takes effect straight away and can't be undone here.",
+      "unsubscribedNotification": "You've been unsubscribed from {group}"
     },
+    "personalDetails": "Personal details",
     "phoneInfo": "By providing your phone number you are consenting to being contacted by phone",
     "phoneInfo-nuxt": "By providing your phone number you are consenting to being contacted by phone.",
     "phoneInfoAdmin": "You must have the person's consent before adding their phone number to the system",
     "requiredFields": "Required fields",
     "savedPassword": "New password saved",
+    "security": "Security",
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
     "subTitle-nuxt": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
+    "subscriptions": "Subscriptions",
     "title": "Account",
     "vatNumberInfo": "Contact support{'@'}beabee.io to update the VAT Number"
   },
@@ -294,6 +302,7 @@
       "newsletter": {
         "audienceId": "Audience ID",
         "groups": "Groups",
+        "groupsNote": "Group names will be displayed to members in the subscription management tab of the Account page.",
         "noGroups": "No groups found"
       },
       "refresh": "Refresh",
@@ -1022,7 +1031,6 @@
     },
     "contributionType": {
       "automatic": "Automatic",
-      "gift": "Gift",
       "manual": "Manual",
       "none": "None"
     },
@@ -1780,7 +1788,6 @@
     "insert": "Insert",
     "insertTag": "Insert {tag}",
     "tags": {
-      "ACTIVATELINK": "Gift activation link",
       "ANSWERS": "Formatted response answers",
       "CALLOUTLINK": "Link to CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom slug",
@@ -1789,8 +1796,6 @@
       "EMAIL": "Contact email address",
       "EXPIRES": "Membership expiration date",
       "FNAME": "Contact first name",
-      "GIFTDATE": "Gift start date",
-      "GIFTEE": "Gift recipient name",
       "ISELIGIBLE": "Whether referral is eligible",
       "LNAME": "Contact last name",
       "LOGINLINK": "Login link",
@@ -1800,7 +1805,6 @@
       "MESSAGE": "Custom message content",
       "NAME": "Contact full name",
       "ORGNAME": "Organization name",
-      "PURCHASER": "Gift purchaser name",
       "REFCODE": "Contact referral code",
       "REFEREENAME": "Name of referred person",
       "RESPNAME": "Responder name",

@@ -22,7 +22,7 @@ button:not(:disabled) {
 
     h2,
     h3 {
-      @apply text-highlighted text-base font-semibold;
+      @apply text-base font-semibold text-highlighted;
     }
   }
 }

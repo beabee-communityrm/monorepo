@@ -6,14 +6,14 @@
   <UForm
     id="account-form"
     ref="formRef"
-    class="flex flex-col gap-6"
+    class="flex flex-col gap-4"
     :schema="schema"
     :state="data"
     @submit="handleSave"
   >
     <AppSectionCard
       icon="i-lucide-user-round"
-      :title="t('accountPage.contactInformation')"
+      :title="t('accountPage.personalDetails')"
     >
       <AppFormSkeleton v-if="loading" :rows="3" />
       <template v-else>
@@ -64,11 +64,11 @@
         <template v-if="accountContent?.showMailOptIn">
           <div class="flex flex-col gap-4">
             <div class="space-y-1">
-              <p class="text-default text-sm font-medium">
+              <p class="text-sm font-medium text-default">
                 {{ accountContent.mailTitle }}
               </p>
               <div
-                class="text-muted text-sm"
+                class="text-sm text-muted"
                 v-html="accountContent.mailText"
               />
             </div>

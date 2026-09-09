@@ -1,4 +1,8 @@
-import { RoleType, RoleTypes } from '@beabee/beabee-common';
+import {
+  BaseNewsletterGroupData,
+  RoleType,
+  RoleTypes,
+} from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
 import { NotFoundError } from '@beabee/core/errors';
@@ -49,7 +53,7 @@ export class DevController {
    */
   @Post('/newsletter-groups')
   async setNewsletterGroups(
-    @Body({ validate: false }) groups: { id: string; label: string }[]
+    @Body({ validate: false }) groups: BaseNewsletterGroupData[]
   ): Promise<{ message: string }> {
     if (!config.dev) {
       throw new NotFoundError();

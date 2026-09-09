@@ -78,17 +78,25 @@
         "subscribed": "Dieser Kontakt ist für deine Newsletterliste angemeldet.",
         "unsubscribed": "Dieser Kontakt ist nicht für deine Newsletterliste angemeldet."
       },
+      "description": "Verwalte, für welche Newsletter-Gruppen du angemeldet bist.",
+      "noGroups": "Du bist für keine Newsletter-Gruppen angemeldet.",
       "subscribe": "Für den Newsletter anmelden",
       "title": "Newsletter",
-      "unsubscribe": "Vom Newsletter abmelden"
+      "unsubscribe": "Vom Newsletter abmelden",
+      "unsubscribeButton": "Abmelden",
+      "unsubscribeInfo": "Die Abmeldung wird sofort wirksam und kann hier nicht widerrufen werden.",
+      "unsubscribedNotification": "Du wurdest von {group} abgemeldet"
     },
+    "personalDetails": "Persönliche Daten",
     "phoneInfo": "Mit der Angabe deiner Telefonnummer erklärst du dich damit einverstanden, telefonisch kontaktiert zu werden.",
     "phoneInfo-nuxt": "Mit der Angabe deiner Telefonnummer erklärst du dich damit einverstanden, telefonisch kontaktiert zu werden.",
     "phoneInfoAdmin": "Du musst die Zustimmung der Person einholen, bevor du ihre Telefonnummer in das System eingibst.",
     "requiredFields": "Pflichtfelder",
     "savedPassword": "Das neue Passwort wurde gespeichert. ",
+    "security": "Sicherheit",
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subTitle-nuxt": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
+    "subscriptions": "Abonnements",
     "title": "Account",
     "unsavedChanges": "Du hast ungespeicherte Änderungen",
     "vatNumberInfo": "Wende dich an support{'@'}beabee.io, um die Umsatzsteuer-ID zu ändern"
@@ -295,6 +303,7 @@
       "newsletter": {
         "audienceId": "Audience-ID",
         "groups": "Gruppen",
+        "groupsNote": "Gruppennamen werden Mitgliedern im Tab „Abonnements“ der Kontoseite angezeigt.",
         "noGroups": "Keine Gruppen gefunden"
       },
       "refresh": "Aktualisieren",
@@ -1023,7 +1032,6 @@
     },
     "contributionType": {
       "automatic": "Automatisch",
-      "gift": "Geschenk",
       "manual": "Manuell",
       "none": "None"
     },
@@ -1783,7 +1791,6 @@
     "insert": "Einfügen",
     "insertTag": "{tag} einfügen",
     "tags": {
-      "ACTIVATELINK": "Geschenk-Aktivierungslink",
       "ANSWERS": "Formatierte Antwort-Zusammenfassung",
       "CALLOUTLINK": "Link zur CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom-Slug",
@@ -1792,8 +1799,6 @@
       "EMAIL": "E-Mail-Adresse des Kontakts",
       "EXPIRES": "Ablaufdatum der Mitgliedschaft",
       "FNAME": "Vorname",
-      "GIFTDATE": "Startdatum des Geschenks",
-      "GIFTEE": "Name des Geschenkempfängers",
       "ISELIGIBLE": "Ob die Empfehlung berechtigt ist",
       "LNAME": "Nachname",
       "LOGINLINK": "Login-Link",
@@ -1803,7 +1808,6 @@
       "MESSAGE": "Benutzerdefinierte Nachricht",
       "NAME": "Vollständiger Name",
       "ORGNAME": "Name der Organisation",
-      "PURCHASER": "Name des Geschenkkäufers",
       "REFCODE": "Empfehlungs-Code des Kontakts",
       "REFEREENAME": "Name der geworbenen Person",
       "RESPNAME": "Name des Antwortenden",

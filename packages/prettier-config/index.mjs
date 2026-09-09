@@ -27,5 +27,5 @@ export const baseConfig = {
 export const frontendConfig = {
   ...baseConfig,
   plugins: [...baseConfig.plugins, "prettier-plugin-tailwindcss"],
-  tailwindStylesheet: "../../packages/vue/src/styles/tailwind.css",
+  tailwindStylesheet: "../../packages/vue/src/styles/index.css",
 };

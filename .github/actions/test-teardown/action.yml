@@ -14,16 +14,19 @@ runs:
       run: docker compose -f docker-compose.test.yml exec -T api_app yarn backend-cli database export --anonymize=none >> ${{ inputs.db_name }}.sql
 
     - name: Upload database dump
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: database
         path: ./${{ inputs.db_name }}.sql
 
     - name: Export Docker logs
+      if: always()
       shell: bash
       run: docker compose -f docker-compose.test.yml logs | tee docker-compose.log
 
     - name: Upload Docker logs
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: docker-compose-logs

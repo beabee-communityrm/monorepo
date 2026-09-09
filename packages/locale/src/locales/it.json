@@ -78,17 +78,25 @@
         "subscribed": "Questo contatto è iscritto alla tua newsletter.",
         "unsubscribed": "Questo contatto non è iscritto alla tua newsletter."
       },
+      "description": "Gestisci a quali gruppi della newsletter sei iscritto.",
+      "noGroups": "Non sei iscritto a nessun gruppo della newsletter.",
       "subscribe": "Iscrivili alla newsletter",
       "title": "Newsletter",
-      "unsubscribe": "Cancellarli dalla newsletter"
+      "unsubscribe": "Cancellarli dalla newsletter",
+      "unsubscribeButton": "Annulla iscrizione",
+      "unsubscribeInfo": "La disiscrizione ha effetto immediato e non può essere annullata qui.",
+      "unsubscribedNotification": "Sei stato disiscritto da {group}"
     },
+    "personalDetails": "Dati personali",
     "phoneInfo": "Fornendo il tuo numero di telefono acconsenti ad essere contattato telefonicamente",
     "phoneInfo-nuxt": "Fornendo il tuo numero di telefono acconsenti ad essere contattato telefonicamente.",
     "phoneInfoAdmin": "È necessario avere il consenso della persona prima di aggiungere il suo numero di telefono al sistema",
     "requiredFields": "Campi obbligatori",
     "savedPassword": "Nuova password salvata",
+    "security": "Sicurezza",
     "subTitle": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
     "subTitle-nuxt": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
+    "subscriptions": "Iscrizioni",
     "title": "Account",
     "unsavedChanges": "Hai modifiche non salvate",
     "vatNumberInfo": "Contatta support{'@'}beabee.io per aggiornare la partita IVA"
@@ -295,6 +303,7 @@
       "newsletter": {
         "audienceId": "ID pubblico",
         "groups": "Gruppi",
+        "groupsNote": "I nomi dei gruppi verranno mostrati ai soci nella scheda di gestione degli abbonamenti della pagina account.",
         "noGroups": "Nessun gruppo trovato"
       },
       "refresh": "Aggiorna",
@@ -1023,7 +1032,6 @@
     },
     "contributionType": {
       "automatic": "Automatico",
-      "gift": "Regalo",
       "manual": "Manuale",
       "none": "Nessuno"
     },
@@ -1783,7 +1791,6 @@
     "insert": "Inserisci",
     "insertTag": "Inserisci {tag}",
     "tags": {
-      "ACTIVATELINK": "Link attivazione regalo",
       "ANSWERS": "Risposte formattate",
       "CALLOUTLINK": "Link a CrowdNewsroom",
       "CALLOUTSLUG": "Slug CrowdNewsroom",
@@ -1792,8 +1799,6 @@
       "EMAIL": "Indirizzo email del contatto",
       "EXPIRES": "Data scadenza iscrizione",
       "FNAME": "Nome del contatto",
-      "GIFTDATE": "Data inizio regalo",
-      "GIFTEE": "Nome destinatario regalo",
       "ISELIGIBLE": "Se il referral è idoneo",
       "LNAME": "Cognome del contatto",
       "LOGINLINK": "Link di accesso",
@@ -1803,7 +1808,6 @@
       "MESSAGE": "Contenuto messaggio personalizzato",
       "NAME": "Nome completo del contatto",
       "ORGNAME": "Nome organizzazione",
-      "PURCHASER": "Nome acquirente regalo",
       "REFCODE": "Codice referral del contatto",
       "REFEREENAME": "Nome della persona indicata",
       "RESPNAME": "Nome rispondente",

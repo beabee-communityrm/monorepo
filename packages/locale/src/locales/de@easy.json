@@ -78,17 +78,25 @@
         "subscribed": "",
         "unsubscribed": ""
       },
+      "description": "",
+      "noGroups": "",
       "subscribe": "",
       "title": "",
-      "unsubscribe": ""
+      "unsubscribe": "",
+      "unsubscribeButton": "",
+      "unsubscribeInfo": "",
+      "unsubscribedNotification": ""
     },
+    "personalDetails": "",
     "phoneInfo": "",
     "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
     "requiredFields": "Pflicht-Felder",
     "savedPassword": "",
+    "security": "",
     "subTitle": "",
     "subTitle-nuxt": "",
+    "subscriptions": "",
     "title": "",
     "unsavedChanges": "Sie haben Änderungen, die noch nicht gespeichert sind",
     "vatNumberInfo": ""
@@ -295,6 +303,7 @@
       "newsletter": {
         "audienceId": "Audience-ID",
         "groups": "Gruppen",
+        "groupsNote": "",
         "noGroups": "Keine Gruppen gefunden"
       },
       "refresh": "Aktualisieren",
@@ -1023,7 +1032,6 @@
     },
     "contributionType": {
       "automatic": "",
-      "gift": "",
       "manual": "",
       "none": ""
     },
@@ -1783,7 +1791,6 @@
     "insert": "",
     "insertTag": "",
     "tags": {
-      "ACTIVATELINK": "",
       "ANSWERS": "",
       "CALLOUTLINK": "",
       "CALLOUTSLUG": "",
@@ -1792,8 +1799,6 @@
       "EMAIL": "",
       "EXPIRES": "",
       "FNAME": "",
-      "GIFTDATE": "",
-      "GIFTEE": "",
       "ISELIGIBLE": "",
       "LNAME": "",
       "LOGINLINK": "",
@@ -1803,7 +1808,6 @@
       "MESSAGE": "",
       "NAME": "",
       "ORGNAME": "",
-      "PURCHASER": "",
       "REFCODE": "",
       "REFEREENAME": "",
       "RESPNAME": "",

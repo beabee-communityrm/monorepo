@@ -130,6 +130,7 @@ import { RemoveMailchimpNLGroups1781533044882 } from './migrations/1781533044882
 import { AddActivityFeedTable1786436468486 } from './migrations/1786436468486-AddActivityFeedTable.js';
 import { AddSignUpSourceInfo1786450132129 } from './migrations/1786450132129-AddSignUpSourceInfo.js';
 import { AddOrganisationAndVatNumber1788353071789 } from './migrations/1788353071789-AddOrganisationAndVatNumber.js';
+import { RemoveGiftMemberships1788528151186 } from './migrations/1788528151186-RemoveGiftMemberships.js';
 
 export const migrations = [
   SessionTable1616677358190,
@@ -263,4 +264,5 @@ export const migrations = [
   AddActivityFeedTable1786436468486,
   AddSignUpSourceInfo1786450132129,
   AddOrganisationAndVatNumber1788353071789,
+  RemoveGiftMemberships1788528151186,
 ];

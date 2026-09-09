@@ -4,7 +4,6 @@ export interface TestUserFilters {
   isActive: Brackets;
   isInactive: Brackets;
   isSuperAdmin: Brackets;
-  isGift: Brackets;
   hasSubscription: Brackets;
   hasCancelled: Brackets;
   isPayingFee: Brackets;

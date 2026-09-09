@@ -15,13 +15,11 @@ The webhooks system processes payment-related events from providers to update pa
 **Implementation:** See `apps/webhooks/src/handlers/stripe.ts`
 
 1. **Payment Events**
-   - Checkout session completion
    - Customer lifecycle (deletion, subscription changes)
    - Invoice lifecycle (creation, updates, payment)
    - Payment method changes
 
 2. **Key Workflows**
-   - Gift payment completion
    - Subscription status management
    - Invoice tax rate handling
    - Payment record synchronization
