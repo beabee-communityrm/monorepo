@@ -90,7 +90,8 @@
     "subTitle": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "subTitle-nuxt": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "title": "Account",
-    "unsavedChanges": "U heeft niet-opgeslagen wijzigingen"
+    "unsavedChanges": "U heeft niet-opgeslagen wijzigingen",
+    "vatNumberInfo": "Neem contact op met support{'@'}beabee.io om het btw-nummer te wijzigen"
   },
   "actions": {
     "add": "Toevoegen",

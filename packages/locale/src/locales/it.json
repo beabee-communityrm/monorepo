@@ -90,7 +90,8 @@
     "subTitle": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
     "subTitle-nuxt": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
     "title": "Account",
-    "unsavedChanges": "Hai modifiche non salvate"
+    "unsavedChanges": "Hai modifiche non salvate",
+    "vatNumberInfo": "Contatta support{'@'}beabee.io per aggiornare la partita IVA"
   },
   "actions": {
     "add": "Aggiungi",

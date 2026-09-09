@@ -21,16 +21,21 @@
     </div>
 
     <div class="mb-3">
-      <AppInput v-model="data.vatNumber" :label="t('form.vatNumber')" />
-    </div>
-
-    <div class="mb-3">
       <AppInput
         v-model="data.telephone"
         :label="t('form.phone')"
         :info-message="
           isAdmin ? t('accountPage.phoneInfoAdmin') : t('accountPage.phoneInfo')
         "
+      />
+    </div>
+
+    <div class="mb-3">
+      <AppInput
+        v-model="data.vatNumber"
+        :label="t('form.vatNumber')"
+        :info-message="t('accountPage.vatNumberInfo')"
+        disabled
       />
     </div>
 
@@ -198,7 +203,6 @@ async function handleSubmit() {
         country: data.country,
       },
       organisation: data.organisation,
-      vatNumber: data.vatNumber,
     },
   });
 

@@ -90,7 +90,8 @@
     "subTitle": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
     "subTitle-nuxt": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
     "title": "Compte",
-    "unsavedChanges": "Vous avez des modifications non enregistrées"
+    "unsavedChanges": "Vous avez des modifications non enregistrées",
+    "vatNumberInfo": "Contactez support{'@'}beabee.io pour mettre à jour le numéro de TVA"
   },
   "actions": {
     "add": "Ajouter",

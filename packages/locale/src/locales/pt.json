@@ -90,7 +90,8 @@
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "subTitle-nuxt": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "title": "Conta",
-    "unsavedChanges": "Tem alterações não guardadas"
+    "unsavedChanges": "Tem alterações não guardadas",
+    "vatNumberInfo": "Contacte support{'@'}beabee.io para atualizar o número de IVA"
   },
   "actions": {
     "add": "Adicionar",

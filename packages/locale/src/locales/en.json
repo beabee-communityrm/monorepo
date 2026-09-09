@@ -89,7 +89,8 @@
     "savedPassword": "New password saved",
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
     "subTitle-nuxt": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
-    "title": "Account"
+    "title": "Account",
+    "vatNumberInfo": "Contact support{'@'}beabee.io to update the VAT Number"
   },
   "actions": {
     "add": "Add",

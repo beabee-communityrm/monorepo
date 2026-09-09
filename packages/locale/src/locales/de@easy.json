@@ -90,7 +90,8 @@
     "subTitle": "",
     "subTitle-nuxt": "",
     "title": "",
-    "unsavedChanges": "Sie haben Änderungen, die noch nicht gespeichert sind"
+    "unsavedChanges": "Sie haben Änderungen, die noch nicht gespeichert sind",
+    "vatNumberInfo": ""
   },
   "actions": {
     "add": "",

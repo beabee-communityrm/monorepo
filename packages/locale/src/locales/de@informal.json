@@ -90,7 +90,8 @@
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subTitle-nuxt": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "title": "Account",
-    "unsavedChanges": "Du hast ungespeicherte Änderungen"
+    "unsavedChanges": "Du hast ungespeicherte Änderungen",
+    "vatNumberInfo": "Wende dich an support{'@'}beabee.io, um die Umsatzsteuer-ID zu ändern"
   },
   "actions": {
     "add": "Hinzufügen",

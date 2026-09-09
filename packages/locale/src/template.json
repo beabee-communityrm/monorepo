@@ -89,7 +89,8 @@
     "savedPassword": "",
     "subTitle": "",
     "subTitle-nuxt": "",
-    "title": ""
+    "title": "",
+    "vatNumberInfo": ""
   },
   "actions": {
     "add": "",
