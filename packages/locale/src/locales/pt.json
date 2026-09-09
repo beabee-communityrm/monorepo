@@ -1031,7 +1031,6 @@
     },
     "contributionType": {
       "automatic": "Automática",
-      "gift": "Presente",
       "manual": "Manual",
       "none": "Nenhuma"
     },
@@ -1784,7 +1783,6 @@
     "insert": "Inserir",
     "insertTag": "Inserir {tag}",
     "tags": {
-      "ACTIVATELINK": "Link de ativação do presente",
       "ANSWERS": "Respostas formatadas",
       "CALLOUTLINK": "Link para o CrowdNewsroom",
       "CALLOUTSLUG": "Slug do CrowdNewsroom",
@@ -1793,8 +1791,6 @@
       "EMAIL": "Endereço de email do contacto",
       "EXPIRES": "Data de expiração da adesão",
       "FNAME": "Primeiro nome do contacto",
-      "GIFTDATE": "Data de início do presente",
-      "GIFTEE": "Nome do destinatário do presente",
       "ISELIGIBLE": "Se a referência é elegível",
       "LNAME": "Apelido do contacto",
       "LOGINLINK": "Link de login",
@@ -1804,7 +1800,6 @@
       "MESSAGE": "Conteúdo de mensagem personalizado",
       "NAME": "Nome completo do contacto",
       "ORGNAME": "Nome da organização",
-      "PURCHASER": "Nome do comprador do presente",
       "REFCODE": "Código de referência do contacto",
       "REFEREENAME": "Nome da pessoa referida",
       "RESPNAME": "Nome do respondente",

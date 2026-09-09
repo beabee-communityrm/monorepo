@@ -12,7 +12,6 @@ import { ContactContribution, Payment } from '../models/index.js';
 import ActivityService from '../services/ActivityService.js';
 import ContactsService from '../services/ContactsService.js';
 import EmailService from '../services/EmailService.js';
-import GiftService from '../services/GiftService.js';
 import PaymentService from '../services/PaymentService.js';
 import { STRIPE_WEBHOOK_EVENTS } from './stripe.js';
 import {
@@ -44,9 +43,6 @@ export class StripeWebhookEventHandler {
     }
 
     switch (event.type) {
-      case 'checkout.session.completed':
-        await this.handleCheckoutSessionCompleted(event.data.object);
-        break;
       case 'customer.deleted':
         await this.handleCustomerDeleted(event.data.object);
         break;
@@ -78,16 +74,6 @@ export class StripeWebhookEventHandler {
         await this.handlePaymentMethodDetached(event.data.object);
         break;
     }
-  }
-
-  /**
-   * Processes a completed checkout session, typically used for gift flows
-   * @param session The completed Stripe checkout session
-   */
-  private static async handleCheckoutSessionCompleted(
-    session: Stripe.Checkout.Session
-  ): Promise<void> {
-    await GiftService.completeGiftFlow(session.id);
   }
 
   /**

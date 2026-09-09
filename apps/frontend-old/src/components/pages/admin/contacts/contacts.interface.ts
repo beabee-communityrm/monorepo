@@ -111,7 +111,6 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
       [ContributionType.Automatic]: t('common.contributionType.automatic'),
       [ContributionType.Manual]: t('common.contributionType.manual'),
       [ContributionType.None]: t('common.contributionType.none'),
-      [ContributionType.Gift]: t('common.contributionType.gift'),
     }
   ),
   contributionMonthlyAmount: withLabel(
