@@ -128,6 +128,23 @@ const newsletterProvider = env.e(
 );
 
 /**
+ * Identity provider configuration (IdP Provisioning)
+ * Used when BEABEE_IDP_PROVIDER=none (default): contacts are not mirrored
+ * to an identity provider
+ */
+interface NoneIdpConfig {
+  provider: 'none';
+  settings: Record<string, never>;
+}
+
+// Union type for identity provider configuration - only one provider can be used at a time
+type IdpConfig = NoneIdpConfig;
+
+// Get identity provider from environment, with validation for allowed values
+// Defaults to "none" if not specified
+const idpProvider = env.e('BEABEE_IDP_PROVIDER', ['none'] as const, 'none');
+
+/**
  * Application configuration for an individual app module
  * Used for dynamic app loading and menu building
  */
@@ -273,6 +290,12 @@ export const config = {
         : null),
     },
   } as NewsletterConfig,
+
+  // Identity provider integration configuration
+  idp: {
+    provider: idpProvider, // Identity provider (none)
+    settings: {},
+  } as IdpConfig,
 
   // GoCardless payment integration
   gocardless: {
