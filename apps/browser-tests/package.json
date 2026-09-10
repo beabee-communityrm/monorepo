@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "playwright test --trace on",
+    "test:old": "playwright test --trace on --project firefox-old",
     "test:ui": "playwright test --ui"
   }
 }
