@@ -8,3 +8,9 @@
 # It must be ahead of 20-envsubst-on-templates.sh
 
 export NGINX_RESOLVER=${NGINX_RESOLVER:-$(awk '/^nameserver/ {print $2; exit}' /etc/resolv.conf)}
+
+# nginx queries A and AAAA in parallel and waits for both. Both target environments
+# are IPv4-only -- Kubernetes Services here are SingleStack, and Docker's embedded DNS
+# returns an empty AAAA -- so the second query is wasted. Set to "on" for a stack with
+# enable_ipv6.
+export NGINX_RESOLVER_IPV6=${NGINX_RESOLVER_IPV6:-off}
