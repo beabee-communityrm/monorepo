@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import type { Contact } from '#models/index';
+
 import { ZitadelProvider } from './ZitadelProvider';
 
 const settings = {
@@ -27,11 +29,12 @@ describe('ZitadelProvider', () => {
     const fetch = mockFetch(new Response(JSON.stringify({ userId: 'u1' })));
 
     const provider = new ZitadelProvider(settings);
-    await provider.createUser({
+    // Only the mirrored fields matter to the provider
+    await provider.createContact({
       email: 'test@example.com',
       firstname: '',
       lastname: '',
-    });
+    } as Contact);
 
     const body = JSON.parse(fetch.mock.calls[0][1].body);
     expect(body.profile).toEqual({
@@ -49,15 +52,17 @@ describe('ZitadelProvider', () => {
     );
 
     const provider = new ZitadelProvider(settings);
-    await expect(provider.findUserByEmail('test@example.com')).rejects.toThrow(
-      'Multiple Zitadel users match'
-    );
+    await expect(
+      provider.findSubjectByEmail('test@example.com')
+    ).rejects.toThrow('Multiple Zitadel users match');
   });
 
   it('accepts responses without a body', async () => {
     mockFetch(new Response(null, { status: 200 }));
 
     const provider = new ZitadelProvider(settings);
-    await expect(provider.deleteUser('u1')).resolves.toBeUndefined();
+    await expect(
+      provider.permanentlyDeleteContact('u1')
+    ).resolves.toBeUndefined();
   });
 });
