@@ -1,6 +1,5 @@
 import {
   ALLOWED_IMAGE_MIME_TYPES,
-  ApiHealthStatus,
   S3Metadata,
   isSupportedImageType,
 } from '@beabee/beabee-common';
@@ -11,7 +10,6 @@ import {
   HeadObjectCommand,
   ListObjectsV2Command,
   PutObjectCommand,
-  S3Client,
 } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
 import { extname } from 'path';
@@ -29,7 +27,6 @@ import {
   NotFoundError,
   UnsupportedFileTypeError,
 } from '../errors/index.js';
-import { log as mainLogger } from '../logging.js';
 import type {
   ImageBackfillResult,
   ImageFormat,
@@ -44,15 +41,12 @@ import {
   sanitizeFilename,
 } from '../utils/file.js';
 import {
-  checkConnection,
   fileExists,
   getFileBuffer,
-  getFileHash,
   getFileStream,
   putFileStream,
 } from '../utils/s3.js';
-
-const log = mainLogger.child({ app: 'image-service' });
+import { FileService } from './FileService.js';
 
 // libvips would otherwise use a thread per core and keep a 50MB cache, which
 // multiplies peak memory when uploads overlap on a 2-CPU container
@@ -60,28 +54,44 @@ sharp.concurrency(1);
 sharp.cache(false);
 
 /**
- * Service for handling image uploads, resizing, and storage in S3/MinIO
+ * Service for handling image uploads, resizing, and storage in S3/MinIO.
+ *
+ * Extends FileService for the S3 client setup and the pieces that are
+ * identical to the other file services (exists/hash/list/health) - the
+ * upload/get/delete/metadata logic here is bespoke (multi-width resizing,
+ * format negotiation, SVG optimisation, EXIF orientation) and doesn't go
+ * through FileService's generic upload()/getMetadata() template.
  */
-export class ImageService {
-  private readonly s3Client: S3Client;
+export class ImageService extends FileService<
+  ImageMetadata,
+  ImageServiceConfig
+> {
+  protected readonly keyPrefix = 'originals';
+  protected readonly typeName = 'image';
+  protected readonly loggerName = 'image-service';
+  protected readonly allowedMimeTypes = ALLOWED_IMAGE_MIME_TYPES;
+  // Unused: uploadImage() below never calls the inherited upload() template
+  protected readonly defaultMimetype = 'application/octet-stream';
+
+  protected isSupportedType(mimetype: string): boolean {
+    return isSupportedImageType(mimetype);
+  }
+
+  // Existing public API for the pieces FileService's implementation matches
+  // exactly (same HeadObject/ListObjectsV2 calls against `originals/`).
+  imageExists = this.exists.bind(this);
+  getImageHash = this.getHash.bind(this);
+  listImages = this.list.bind(this);
+
   /**
    * Create a new ImageService
    * @param config Service configuration
    */
-  constructor(private readonly config: ImageServiceConfig) {
-    this.s3Client = new S3Client({
-      endpoint: this.config.s3.endpoint,
-      region: this.config.s3.region,
-      credentials: {
-        accessKeyId: this.config.s3.accessKey,
-        secretAccessKey: this.config.s3.secretKey,
-      },
-      forcePathStyle: this.config.s3.forcePathStyle !== false,
+  constructor(config: ImageServiceConfig) {
+    super({
+      ...config,
+      availableWidths: [...config.availableWidths].sort((a, b) => a - b),
     });
-
-    this.config.availableWidths = [...this.config.availableWidths].sort(
-      (a, b) => a - b
-    );
   }
 
   /**
@@ -210,7 +220,7 @@ export class ImageService {
       if (outputFormat === 'original') {
         extension = '.' + metadata.format;
         if (originalExtension !== extension) {
-          log.warning(
+          this.log.warning(
             `Original image extension (${originalExtension}) does not match detected format (${metadata.format}).`
           );
         }
@@ -342,7 +352,7 @@ export class ImageService {
       }
 
       const errorMessage = `Failed to upload image (${originalFilename})`;
-      log.error(errorMessage, error);
+      this.log.error(errorMessage, error);
       throw new BadRequestError(errorMessage);
     }
   }
@@ -374,7 +384,7 @@ export class ImageService {
             throw error;
           }
           const errorMessage = `Failed to get SVG image (${id})`;
-          log.error(errorMessage, error);
+          this.log.error(errorMessage, error);
           throw new BadRequestError(errorMessage);
         }
       }
@@ -404,7 +414,7 @@ export class ImageService {
         try {
           await this.generateResizedImage(id, bestWidth);
         } catch (error) {
-          log.error(
+          this.log.error(
             `Failed to generate resized image (${id}, ${bestWidth})`,
             error
           );
@@ -437,7 +447,7 @@ export class ImageService {
         throw error;
       }
       const errorMessage = `Failed to get image stream (${id})`;
-      log.error(errorMessage, error);
+      this.log.error(errorMessage, error);
       throw new BadRequestError(errorMessage);
     }
   }
@@ -468,7 +478,7 @@ export class ImageService {
         // Don't log HttpError like NotFoundError as error since it's expected behavior
         throw error;
       }
-      log.error('Failed to get image buffer:', error);
+      this.log.error('Failed to get image buffer:', error);
       throw new BadRequestError('Failed to get image buffer');
     }
   }
@@ -520,18 +530,9 @@ export class ImageService {
         throw error;
       }
       const errorMessage = `Failed to delete image (${id})`;
-      log.error(errorMessage, error);
+      this.log.error(errorMessage, error);
       throw new BadRequestError(errorMessage);
     }
-  }
-
-  /**
-   * Check if an image exists
-   * @param id Image ID
-   * @returns True if the image exists
-   */
-  async imageExists(id: string): Promise<boolean> {
-    return fileExists(this.s3Client, this.config.s3.bucket, `originals/${id}`);
   }
 
   /**
@@ -568,61 +569,6 @@ export class ImageService {
         throw error;
       }
       throw new NotFoundError();
-    }
-  }
-
-  /**
-   * Get the hash (ETag) of an image without downloading it
-   * @param id Image ID
-   * @returns Hash (ETag) of the image
-   */
-  async getImageHash(id: string): Promise<string> {
-    try {
-      const key = `originals/${id}`;
-      return await getFileHash(this.s3Client, this.config.s3.bucket, key);
-    } catch (error) {
-      if (error instanceof HttpError) {
-        // Don't log HttpError like NotFoundError as error since it's expected behavior
-        throw error;
-      }
-      const errorMessage = `Failed to get image hash (${id})`;
-      log.error(errorMessage, error);
-      throw new BadRequestError(errorMessage);
-    }
-  }
-
-  /**
-   * Check the health of the storage integration by verifying that the
-   * configured credentials can read from the bucket.
-   * @returns HEALTHY if the bucket is reachable, UNHEALTHY otherwise
-   */
-  async getHealthStatus(): Promise<ApiHealthStatus> {
-    const connected = await checkConnection(
-      this.s3Client,
-      this.config.s3.bucket
-    );
-    return connected ? ApiHealthStatus.HEALTHY : ApiHealthStatus.UNHEALTHY;
-  }
-
-  /**
-   * List all images
-   * @returns Array of image paths
-   */
-  async listImages(): Promise<string[]> {
-    try {
-      const response = await this.s3Client.send(
-        new ListObjectsV2Command({
-          Bucket: this.config.s3.bucket,
-          Prefix: 'originals/',
-        })
-      );
-
-      return (response.Contents || [])
-        .map((item) => item.Key || '')
-        .filter((key) => key.startsWith('originals/'));
-    } catch (error) {
-      log.error('Failed to list images:', error);
-      return [];
     }
   }
 
@@ -675,7 +621,9 @@ export class ImageService {
           const metadata = await sharp(buffer).metadata();
 
           if (!metadata.width || !metadata.height) {
-            log.warning(`No dimensions detected for ${item.Key}, skipping`);
+            this.log.warning(
+              `No dimensions detected for ${item.Key}, skipping`
+            );
             result.failed++;
             continue;
           }
@@ -699,12 +647,15 @@ export class ImageService {
           }
 
           result.updated++;
-          log.info(
+          this.log.info(
             `${dryRun ? 'Would backfill' : 'Backfilled'} dimensions for ${item.Key} (${metadata.width}x${metadata.height})`
           );
         } catch (error) {
           result.failed++;
-          log.error(`Failed to backfill dimensions for ${item.Key}`, error);
+          this.log.error(
+            `Failed to backfill dimensions for ${item.Key}`,
+            error
+          );
         }
       }
     } while (continuationToken);
@@ -801,7 +752,7 @@ export class ImageService {
         throw error;
       }
       const errorMessage = `Failed to generate resized image (${id}, ${width})`;
-      log.error(errorMessage, error);
+      this.log.error(errorMessage, error);
       throw new BadRequestError(errorMessage);
     }
   }
