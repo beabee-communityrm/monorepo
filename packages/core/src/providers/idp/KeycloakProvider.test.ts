@@ -39,8 +39,8 @@ describe('KeycloakProvider', () => {
     );
 
     const provider = new KeycloakProvider(settings);
-    await provider.findUserByEmail('a@example.com');
-    await provider.findUserByEmail('b@example.com');
+    await provider.findSubjectByEmail('a@example.com');
+    await provider.findSubjectByEmail('b@example.com');
 
     // One token request plus two API requests
     expect(fetch).toHaveBeenCalledTimes(3);
@@ -53,8 +53,8 @@ describe('KeycloakProvider', () => {
     );
 
     const provider = new KeycloakProvider(settings);
-    await expect(provider.findUserByEmail('test@example.com')).rejects.toThrow(
-      'Multiple Keycloak users match'
-    );
+    await expect(
+      provider.findSubjectByEmail('test@example.com')
+    ).rejects.toThrow('Multiple Keycloak users match');
   });
 });
