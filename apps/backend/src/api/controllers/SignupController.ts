@@ -1,4 +1,5 @@
 import { BadRequestError, NotFoundError } from '@beabee/core/errors';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { Password } from '@beabee/core/models';
 import SignupService from '@beabee/core/services/SignupService';
 import { generatePassword } from '@beabee/core/utils/auth';
@@ -43,6 +44,12 @@ export class SignupController {
     if (data.contribution && data.oneTimePayment) {
       throw new BadRequestError(
         'Cannot start signup with both contribution and one-time payment'
+      );
+    }
+
+    if (data.password && isOidcEnabled()) {
+      throw new BadRequestError(
+        'Cannot set a password when OIDC login is enabled'
       );
     }
 

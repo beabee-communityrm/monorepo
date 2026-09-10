@@ -33,6 +33,7 @@ export * from './newsletter-contact.js';
 export * from './newsletter-fetch-contact-opts.js';
 export * from './newsletter-group-change.js';
 export * from './newsletter-provider.js';
+export * from './oidc-login-state.js';
 export * from './param-value.js';
 export * from './passport-local-done-callback.js';
 export * from './passport-local-strategy-options.js';

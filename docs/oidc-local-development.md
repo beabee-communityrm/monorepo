@@ -55,6 +55,22 @@ yarn backend-cli user provision   # create accounts for the remaining ones
 yarn backend-cli user list --unlinked
 ```
 
+## Testing login
+
+The realm also contains a public login client `beabee-login` (PKCE, no
+secret) with callback URLs for the router (`:3002`) and the bare backend
+(`:3000`). Uncomment the "Login Configuration" block in `.env`
+(`BEABEE_LOGIN_PROVIDER=oidc`) and restart `api_app`. Then:
+
+- http://localhost:3002/api/1.0/auth/login forwards to the Keycloak login form;
+  sign in as a linked test account and you land back on beabee logged in. An
+  account that isn't linked to a contact is sent to
+  `/auth/login?error=unlinked-account`.
+- `POST /api/1.0/auth/login`, MFA and reset endpoints answer `404` while OIDC
+  login is enabled.
+- http://localhost:3002/api/1.0/auth/logout ends both the beabee and the
+  Keycloak session.
+
 Host-side CLI commands rely on the operating system resolving
 `auth.localhost` (Linux with systemd-resolved does; macOS does not). Where it
 doesn't, either add `127.0.0.1 auth.localhost` to `/etc/hosts` or run the

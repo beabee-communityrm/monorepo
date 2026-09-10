@@ -16,13 +16,14 @@ import {
   UpdateResetDeviceDto,
 } from '#api/dto/ResetDeviceDto';
 import { UUIDParams } from '#api/params/UUIDParams';
-import { login } from '#api/utils/auth';
+import { assertPasswordAuthEnabled, login } from '#api/utils/auth';
 
 @JsonController('/reset-device')
 export class ResetDeviceController {
   @OnUndefined(204)
   @Post()
   async create(@Body() data: CreateResetDeviceDto): Promise<void> {
+    assertPasswordAuthEnabled();
     await ContactsService.resetDeviceBegin(
       data.email,
       data.type,
@@ -37,6 +38,7 @@ export class ResetDeviceController {
     @Params() { id }: UUIDParams,
     @Body() data: UpdateResetDeviceDto
   ): Promise<void> {
+    assertPasswordAuthEnabled();
     const contact = await ContactsService.resetDeviceComplete(
       id,
       data.password
