@@ -37,6 +37,7 @@ describe('ZitadelProvider', () => {
     expect(body.profile).toEqual({
       givenName: 'test@example.com',
       familyName: '-',
+      displayName: 'test@example.com',
     });
   });
 

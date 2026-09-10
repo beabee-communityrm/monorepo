@@ -42,6 +42,10 @@ export class ZitadelProvider implements IdpProvider {
           // Zitadel requires non-empty names, beabee doesn't
           givenName: data.firstname || data.email,
           familyName: data.lastname || '-',
+          // Zitadel only derives the display name on creation, so always set it
+          displayName:
+            [data.firstname, data.lastname].filter(Boolean).join(' ') ||
+            data.email,
         },
         email: { email: data.email, isVerified: true },
       }
@@ -80,6 +84,9 @@ export class ZitadelProvider implements IdpProvider {
       profile: {
         givenName: data.firstname || data.email,
         familyName: data.lastname || '-',
+        displayName:
+          [data.firstname, data.lastname].filter(Boolean).join(' ') ||
+          data.email,
       },
       email: { email: data.email, isVerified: true },
     });
