@@ -1,7 +1,11 @@
 import config from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
-import { KeycloakProvider, NoneProvider } from '#providers/idp/index';
+import {
+  KeycloakProvider,
+  NoneProvider,
+  ZitadelProvider,
+} from '#providers/idp/index';
 import type { IdpProvider } from '#type/index';
 
 const log = mainLogger.child({ app: 'idp-service' });
@@ -14,9 +18,11 @@ const log = mainLogger.child({ app: 'idp-service' });
  */
 class IdpService {
   private readonly provider: IdpProvider =
-    config.idp.provider === 'keycloak'
-      ? new KeycloakProvider(config.idp.settings)
-      : new NoneProvider();
+    config.idp.provider === 'zitadel'
+      ? new ZitadelProvider(config.idp.settings)
+      : config.idp.provider === 'keycloak'
+        ? new KeycloakProvider(config.idp.settings)
+        : new NoneProvider();
 
   get isEnabled(): boolean {
     return config.idp.provider !== 'none';
