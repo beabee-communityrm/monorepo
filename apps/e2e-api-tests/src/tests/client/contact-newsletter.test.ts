@@ -1,6 +1,6 @@
 import { GetContactWith, NewsletterStatus } from '@beabee/beabee-common';
 import { BeabeeClient } from '@beabee/client';
-import { api, testUser } from '@beabee/test-utils/test-data';
+import { api, newsletterGroups, testUser } from '@beabee/test-utils/test-data';
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
@@ -12,9 +12,7 @@ import {
 // Groups this file configures on the test newsletter provider. Coffee is only
 // there to keep the seeded data intact, as a refresh strips unknown groups
 // from every profile.
-const KOMBUCHA = { id: 'b8e4acb751', label: 'Kombucha' };
-const TEA = { id: 'c0b1a133d1', label: 'Tea' };
-const COFFEE = { id: '7bd89a737b', label: 'Coffee' };
+const { kombucha: KOMBUCHA, tea: TEA, coffee: COFFEE } = newsletterGroups;
 
 interface TestMember {
   id: string;

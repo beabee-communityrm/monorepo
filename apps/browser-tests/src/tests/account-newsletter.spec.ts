@@ -3,14 +3,14 @@ import {
   api,
   rateLimitedTestUser as member,
   testUser as admin,
+  newsletterGroups,
 } from "@beabee/test-utils/test-data";
 import { nonAdminAuthFile } from "../setup/auth-states";
 
 test.use({ storageState: nonAdminAuthFile });
 
 // Groups provided by the test newsletter provider
-const KOMBUCHA = { id: "b8e4acb751", label: "Kombucha" };
-const TEA = { id: "c0b1a133d1", label: "Tea" };
+const { kombucha: KOMBUCHA, tea: TEA } = newsletterGroups;
 
 test("Manage newsletter subscriptions", async ({ page, request, baseURL }) => {
   // The account page with the subscriptions tab only exists in the new
