@@ -25,6 +25,11 @@
     "password": "IdenticalCobalt8",
     "contributionAmount": "3"
   },
+  "newsletterGroups": {
+    "kombucha": { "id": "b8e4acb751", "label": "Kombucha" },
+    "tea": { "id": "c0b1a133d1", "label": "Tea" },
+    "coffee": { "id": "7bd89a737b", "label": "Coffee" }
+  },
   "cardInfo": {
     "number": "4242 4242 4242 4242",
     "cvv": "111",
