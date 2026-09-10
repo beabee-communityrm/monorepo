@@ -253,11 +253,6 @@ class SignupService {
 
     if (contact) {
       await ContactsService.updateContact(contact, partialContact);
-      if (completedFlow?.data.vatNumber) {
-        await ContactsService.updateContactProfile(contact, {
-          vatNumber: completedFlow.data.vatNumber,
-        });
-      }
     } else {
       contact = await ContactsService.createContact(
         partialContact,
