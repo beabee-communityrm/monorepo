@@ -25,5 +25,11 @@ export default defineConfig({
       use: devices["Desktop Firefox"],
       dependencies: ["setup"],
     },
+    {
+      name: "firefox-old",
+      testDir: "src/tests-old",
+      use: devices["Desktop Firefox"],
+      dependencies: ["setup"],
+    },
   ],
 });

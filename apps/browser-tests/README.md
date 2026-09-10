@@ -2,6 +2,8 @@
 
 Playwright browser tests for the Beabee frontend. Tests run against Firefox (Desktop) by default. A setup project handles authentication before the test suite runs.
 
+Tests are split by frontend: `src/tests` targets `apps/frontend`, `src/tests-old` targets `apps/frontend-old`. The router serves the old frontend unless the `beabee_frontend=new` cookie is set, so tests for the new frontend set that cookie themselves.
+
 ## Prerequisites
 
 A running Beabee instance (default: `http://localhost:4002/`). Override by changing `playwright.config.ts`
@@ -11,6 +13,9 @@ A running Beabee instance (default: `http://localhost:4002/`). Override by chang
 ```sh
 # Run all tests (headless, with trace on failure)
 yarn workspace @beabee/browser-tests test
+
+# Run only the tests for the old frontend
+yarn workspace @beabee/browser-tests test:old
 
 # Run with interactive UI
 yarn workspace @beabee/browser-tests test:ui
@@ -43,7 +48,9 @@ src/
     auth.setup.ts       # Authenticates admin + non-admin users, stores auth state to .auth/
     auth-states.ts      # Exports paths to stored auth state files
   tests/
-    *.spec.ts           # Test files
+    *.spec.ts           # Tests for apps/frontend
+  tests-old/
+    *.spec.ts           # Tests for apps/frontend-old
 .auth/                  # Stored authentication state (git-ignored)
 playwright.config.ts
 ```

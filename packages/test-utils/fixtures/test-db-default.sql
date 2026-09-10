@@ -38,8 +38,6 @@ DELETE FROM "page_settings";
 
 DELETE FROM "notice";
 
-DELETE FROM "gift_flow";
-
 DELETE FROM "export";
 
 DELETE FROM "payment";

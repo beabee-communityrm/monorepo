@@ -1,4 +1,3 @@
-import { ContributionType } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
 import { Contact } from '@beabee/core/models';
 
@@ -74,7 +73,6 @@ export default class EditionExport extends ActiveMembersExport {
         City: deliveryAddress.city,
         Postcode: deliveryAddress.postcode.trim().toUpperCase(),
         ReferralCode: contact.referralCode,
-        IsGift: contact.contributionType === ContributionType.Gift,
         ContributionMonthlyAmount: contact.contributionMonthlyAmount,
       };
     });

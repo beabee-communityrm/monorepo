@@ -1031,7 +1031,6 @@
     },
     "contributionType": {
       "automatic": "Automatico",
-      "gift": "Regalo",
       "manual": "Manuale",
       "none": "Nessuno"
     },
@@ -1787,7 +1786,6 @@
     "insert": "Inserisci",
     "insertTag": "Inserisci {tag}",
     "tags": {
-      "ACTIVATELINK": "Link attivazione regalo",
       "ANSWERS": "Risposte formattate",
       "CALLOUTLINK": "Link a CrowdNewsroom",
       "CALLOUTSLUG": "Slug CrowdNewsroom",
@@ -1796,8 +1794,6 @@
       "EMAIL": "Indirizzo email del contatto",
       "EXPIRES": "Data scadenza iscrizione",
       "FNAME": "Nome del contatto",
-      "GIFTDATE": "Data inizio regalo",
-      "GIFTEE": "Nome destinatario regalo",
       "ISELIGIBLE": "Se il referral è idoneo",
       "LNAME": "Cognome del contatto",
       "LOGINLINK": "Link di accesso",
@@ -1807,7 +1803,6 @@
       "MESSAGE": "Contenuto messaggio personalizzato",
       "NAME": "Nome completo del contatto",
       "ORGNAME": "Nome organizzazione",
-      "PURCHASER": "Nome acquirente regalo",
       "REFCODE": "Codice referral del contatto",
       "REFEREENAME": "Nome della persona indicata",
       "RESPNAME": "Nome rispondente",

@@ -44,7 +44,6 @@ function getOptionallyAnonymizedModels(
   return [
     models.apiKeyAnonymiser,
     models.exportsAnonymiser,
-    models.giftFlowAnonymiser,
     models.noticesAnonymiser,
     models.optionsAnonymiser,
     models.contentAnonymiser,

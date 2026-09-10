@@ -18,9 +18,7 @@ export function getContributionDescription(
   monthlyAmount: number | null,
   period: ContributionPeriod | null
 ): string {
-  if (type === 'Gift') {
-    return 'Gift';
-  } else if (type === 'None' || !period || !monthlyAmount) {
+  if (type === 'None' || !period || !monthlyAmount) {
     return 'None';
   } else {
     return `${config.currencySymbol}${getActualAmount(monthlyAmount, period)}/${

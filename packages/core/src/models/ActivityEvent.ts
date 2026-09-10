@@ -1,7 +1,7 @@
 import {
   ActivityActorType,
+  ActivityEventMetadata,
   ActivityEventType,
-  ContactOriginData,
 } from '@beabee/beabee-common';
 
 import {
@@ -14,7 +14,7 @@ import {
 
 @Entity()
 @Index(['targetId', 'createdAt'])
-export class ActivityEvent {
+export class ActivityEvent<T extends ActivityEventType = ActivityEventType> {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -31,8 +31,8 @@ export class ActivityEvent {
   createdAt!: Date;
 
   @Column({ type: String })
-  eventType!: ActivityEventType;
+  eventType!: T;
 
   @Column({ type: 'jsonb', nullable: true })
-  metadata!: ContactOriginData | Record<string, string> | null;
+  metadata!: ActivityEventMetadata<T> | null;
 }

@@ -129,6 +129,7 @@ import { AddMailchimpNLGroups1776955640900 } from './migrations/1776955640900-Ad
 import { RemoveMailchimpNLGroups1781533044882 } from './migrations/1781533044882-RemoveMailchimpNLGroups.js';
 import { AddActivityFeedTable1786436468486 } from './migrations/1786436468486-AddActivityFeedTable.js';
 import { AddSignUpSourceInfo1786450132129 } from './migrations/1786450132129-AddSignUpSourceInfo.js';
+import { RemoveGiftMemberships1788528151186 } from './migrations/1788528151186-RemoveGiftMemberships.js';
 import { AddContactIdpSubject1788876714973 } from './migrations/1788876714973-AddContactIdpSubject.js';
 
 export const migrations = [
@@ -262,5 +263,6 @@ export const migrations = [
   RemoveMailchimpNLGroups1781533044882,
   AddActivityFeedTable1786436468486,
   AddSignUpSourceInfo1786450132129,
+  RemoveGiftMemberships1788528151186,
   AddContactIdpSubject1788876714973,
 ];

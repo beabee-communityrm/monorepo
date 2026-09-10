@@ -35,7 +35,6 @@ export const contactFilters = {
     type: 'enum',
     options: [
       ContributionType.Automatic,
-      ContributionType.Gift,
       ContributionType.Manual,
       ContributionType.None,
     ] satisfies ContributionType[] as ContributionType[],

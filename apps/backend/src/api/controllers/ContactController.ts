@@ -1,4 +1,4 @@
-import { ContributionPeriod, GetContactWith } from '@beabee/beabee-common';
+import { GetContactWith } from '@beabee/beabee-common';
 import {
   BadRequestError,
   CantUpdateContributionError,
@@ -38,6 +38,10 @@ import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
 import { TargetUser } from '#api/decorators/TargetUser';
 import { GetContactNewsletterGroupDto } from '#api/dto';
+import {
+  GetActivityEventDto,
+  ListActivityEventsDto,
+} from '#api/dto/ActivityFeedDto';
 import { GetExportQuery } from '#api/dto/BaseDto';
 import {
   BatchUpdateContactDto,
@@ -75,6 +79,7 @@ import {
   StartPaymentFlowDto,
 } from '#api/dto/PaymentFlowDto';
 import { ContactRoleParams } from '#api/params/ContactRoleParams';
+import ActivityEventTransformer from '#api/transformers/ActivityEventTransformer';
 import ContactExporter from '#api/transformers/ContactExporter';
 import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
 import ContactTransformer from '#api/transformers/ContactTransformer';
@@ -180,6 +185,19 @@ export class ContactController {
     @QueryParams() query: GetContactOptsDto
   ): Promise<GetContactDto | undefined> {
     return await ContactTransformer.fetchOneById(auth, target.id, query);
+  }
+
+  @Get('/:id/activity')
+  async getContactActivity(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @TargetUser() target: Contact,
+    @QueryParams() query: ListActivityEventsDto
+  ): Promise<PaginatedDto<GetActivityEventDto> | undefined> {
+    return await ActivityEventTransformer.fetchByTargetId(
+      auth,
+      target.id,
+      query
+    );
   }
 
   /**
