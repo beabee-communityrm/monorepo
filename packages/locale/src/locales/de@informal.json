@@ -450,6 +450,7 @@
       "updateResponse": "Antwort bearbeiten"
     },
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
+    "addAnotherResponse": "Weitere Antwort hinzufügen",
     "addLocation": "Neuen Eintrag eingeben",
     "builder": {
       "actions": {
@@ -811,8 +812,11 @@
       },
       "untitledCallout": "Unbennater CrowdNewsroom"
     },
+    "closedNoEdit": "Dieser CrowdNewsroom ist beendet, es können keine Antworten mehr hinzugefügt oder bearbeitet werden.",
+    "closedOn": "Beendet am {date}",
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",
+    "editResponse": "Antwort bearbeiten",
     "ended": "Dieser CrowdNewsroom ist seit dem {date} beendet.",
     "entryOf": "Eintrag {no} von {total}",
     "form": {
@@ -823,8 +827,15 @@
     },
     "getStarted": "Starten",
     "joinNow": "Mitglied werden",
+    "language": "Sprache",
+    "leavePreview": "Vorschau verlassen",
+    "logInOrSignUp": "Melde dich an oder werde Mitglied, um teilzunehmen.",
     "loginToYourAccount": "Einloggen",
+    "loginToYourAccount-nuxt": "Einloggen",
     "membersOnly": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen. Um teilzunehmen …",
+    "membersOnly-nuxt": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen.",
+    "notAnswered": "Nicht beantwortet",
+    "responseNumber": "Antwort {number}",
     "responseSubmitted": "Antwort eingereicht",
     "share": {
       "address": "Diesen CrowdNewsroom per Link teilen:",
@@ -839,14 +850,20 @@
       "services": "Diesen CrowdNewsroom auf einer der folgenden Plattformen teilen:"
     },
     "showingPreview": "Im Vorschaumodus sind Antworten deaktiviert.",
+    "showingPreview-nuxt": "Vorschaumodus – so sehen es Teilnehmende. Antworten können hier nicht eingereicht werden.",
+    "signed": "Unterschrift",
+    "submittedOn": "Eingereicht am {date}.",
     "toContributionPage": "Meinen Beitrag ändern",
     "updateContribution": "Bitte ändere deinen Beitrag. ",
+    "updateContribution-nuxt": "Um teilzunehmen, ändere bitte deinen Beitrag.",
+    "viewFile": "Datei ansehen",
     "views": {
       "gallery": "Galerie",
       "map": "Karte"
     },
     "youResponded": "Du hast geantwortet ♥",
-    "yourResponse": "Deine Antwort"
+    "yourResponse": "Deine Antwort",
+    "yourResponses": "Deine Antworten ({count})"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom gelöscht",

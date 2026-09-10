@@ -76,6 +76,7 @@ export type * from './callout-response-comment-filter-name.js';
 export type * from './callout-response-filter-name.js';
 export type * from './callout-response-guest-data.js';
 export type * from './callout-response-newsletter-data.js';
+export type * from './callout-response-settings.js';
 export type * from './callout-response-view-schema.js';
 export type * from './callout-reviewer-filter-name.js';
 export type * from './callout-tag-filter-name.js';

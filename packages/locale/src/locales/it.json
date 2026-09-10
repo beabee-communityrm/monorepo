@@ -450,6 +450,7 @@
       "updateResponse": "Aggiorna la tua risposta"
     },
     "addAPoint": "Clicca sulla mappa dove vuoi aggiungere un punto",
+    "addAnotherResponse": "Aggiungi un’altra risposta",
     "addLocation": "Aggiungi un nuovo elemento",
     "builder": {
       "actions": {
@@ -811,8 +812,11 @@
       },
       "untitledCallout": "CrowdNewsroom senza titolo"
     },
+    "closedNoEdit": "Questa CrowdNewsroom è terminata, quindi non è più possibile aggiungere o modificare risposte.",
+    "closedOn": "Terminata il {date}",
     "confirmHuman": "Conferma di essere una persona",
     "contactDetails": "Dati di contatto",
+    "editResponse": "Modifica risposta",
     "ended": "Questa CrowdNewsroom è terminata il {date}",
     "entryOf": "Elemento {no} di {total}",
     "form": {
@@ -823,8 +827,15 @@
     },
     "getStarted": "Iniziare",
     "joinNow": "Iscriviti ora",
+    "language": "Lingua",
+    "leavePreview": "Esci dall’anteprima",
+    "logInOrSignUp": "Accedi o iscriviti per partecipare.",
     "loginToYourAccount": "Accedi al tuo account",
+    "loginToYourAccount-nuxt": "Accedi",
     "membersOnly": "Questa CrowdNewsroom è aperta solo ai membri. Per partecipare",
+    "membersOnly-nuxt": "Questa CrowdNewsroom è aperta solo ai membri.",
+    "notAnswered": "Senza risposta",
+    "responseNumber": "Risposta {number}",
     "responseSubmitted": "Risposta inviata",
     "share": {
       "address": "Condividi con il seguente link:",
@@ -839,14 +850,20 @@
       "services": "Oppure condividi rapidamente con uno di questi servizi:"
     },
     "showingPreview": "Non puoi inviare una risposta in modalità anteprima",
+    "showingPreview-nuxt": "Modalità anteprima: questo è ciò che vedono i partecipanti. Non puoi inviare una risposta da qui.",
+    "signed": "Firma",
+    "submittedOn": "Inviata il {date}.",
     "toContributionPage": "Modifica il mio contributo",
     "updateContribution": "per favore aggiorna il tuo contributo",
+    "updateContribution-nuxt": "Per partecipare, aggiorna il tuo contributo.",
+    "viewFile": "Visualizza file",
     "views": {
       "gallery": "Galleria",
       "map": "Mappa"
     },
     "youResponded": "Hai risposto a questa CrowdNewsroom ♥",
-    "yourResponse": "La tua risposta"
+    "yourResponse": "La tua risposta",
+    "yourResponses": "Le tue risposte ({count})"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom eliminata.",

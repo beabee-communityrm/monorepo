@@ -449,6 +449,7 @@
       "updateResponse": ""
     },
     "addAPoint": "",
+    "addAnotherResponse": "",
     "addLocation": "",
     "builder": {
       "actions": {
@@ -810,8 +811,11 @@
       },
       "untitledCallout": ""
     },
+    "closedNoEdit": "",
+    "closedOn": "",
     "confirmHuman": "",
     "contactDetails": "",
+    "editResponse": "",
     "ended": "",
     "entryOf": "",
     "form": {
@@ -822,8 +826,15 @@
     },
     "getStarted": "",
     "joinNow": "",
+    "language": "",
+    "leavePreview": "",
+    "logInOrSignUp": "",
     "loginToYourAccount": "",
+    "loginToYourAccount-nuxt": "",
     "membersOnly": "",
+    "membersOnly-nuxt": "",
+    "notAnswered": "",
+    "responseNumber": "",
     "responseSubmitted": "",
     "share": {
       "address": "",
@@ -838,14 +849,20 @@
       "services": ""
     },
     "showingPreview": "",
+    "showingPreview-nuxt": "",
+    "signed": "",
+    "submittedOn": "",
     "toContributionPage": "",
     "updateContribution": "",
+    "updateContribution-nuxt": "",
+    "viewFile": "",
     "views": {
       "gallery": "",
       "map": ""
     },
     "youResponded": "",
-    "yourResponse": ""
+    "yourResponse": "",
+    "yourResponses": ""
   },
   "calloutAdmin": {
     "deleted": "",

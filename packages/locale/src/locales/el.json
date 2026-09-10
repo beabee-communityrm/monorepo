@@ -450,6 +450,7 @@
       "updateResponse": ""
     },
     "addAPoint": "Πρόσθεσε μια νέα τοποθεσία εδώ",
+    "addAnotherResponse": "Προσθήκη νέας απάντησης",
     "addLocation": "Πρόσθεσε μια νέα τοποθεσία εδώ",
     "builder": {
       "actions": {
@@ -811,8 +812,11 @@
       },
       "untitledCallout": ""
     },
+    "closedNoEdit": "Αυτό το CrowdNewsroom έχει κλείσει, γι’ αυτό δεν μπορούν πλέον να προστεθούν ή να τροποποιηθούν απαντήσεις.",
+    "closedOn": "Έκλεισε στις {date}",
     "confirmHuman": "Παρακαλώ επιβεβαιώστε ότι είστε άνθρωπος.",
     "contactDetails": "",
+    "editResponse": "Επεξεργασία απάντησης",
     "ended": "Αυτή η έρευνα έληξε στις {date}",
     "entryOf": "Καταχώρηση {no} από {total}",
     "form": {
@@ -823,8 +827,15 @@
     },
     "getStarted": "Ξεκινήστε εδώ!",
     "joinNow": "",
+    "language": "Γλώσσα",
+    "leavePreview": "Έξοδος από την προεπισκόπηση",
+    "logInOrSignUp": "Συνδεθείτε ή γίνετε μέλος για να συμμετάσχετε.",
     "loginToYourAccount": "",
+    "loginToYourAccount-nuxt": "Σύνδεση",
     "membersOnly": "",
+    "membersOnly-nuxt": "Αυτό το CrowdNewsroom είναι ανοιχτό μόνο για μέλη.",
+    "notAnswered": "Δεν απαντήθηκε",
+    "responseNumber": "Απάντηση {number}",
     "responseSubmitted": "Το μήνυμά σας έχει σταλεί.",
     "share": {
       "address": "Εδώ μπορείτε να προωθήσετε αυτήν τη φόρμα στην ακόλουθη διεύθυνση:",
@@ -839,14 +850,20 @@
       "services": "Μπορείτε επίσης να στείλετε αυτήν τη φόρμα σε άλλα άτομα, για παράδειγμα, μέσω Facebook, TikTok ή Instagram."
     },
     "showingPreview": "",
+    "showingPreview-nuxt": "Λειτουργία προεπισκόπησης — αυτό βλέπουν οι συμμετέχοντες. Δεν μπορείτε να υποβάλετε απάντηση από εδώ.",
+    "signed": "Υπογραφή",
+    "submittedOn": "Υποβλήθηκε στις {date}.",
     "toContributionPage": "",
     "updateContribution": "",
+    "updateContribution-nuxt": "Για να συμμετάσχετε, ενημερώστε τη συνδρομή σας.",
+    "viewFile": "Προβολή αρχείου",
     "views": {
       "gallery": "Φωτογραφίες",
       "map": "Χάρτης"
     },
     "youResponded": "",
-    "yourResponse": ""
+    "yourResponse": "",
+    "yourResponses": "Οι απαντήσεις σας ({count})"
   },
   "calloutAdmin": {
     "deleted": "",
