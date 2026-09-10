@@ -40,6 +40,7 @@ import {
   faLink,
   faList,
   faListAlt,
+  faMicrophone,
   faParagraph,
   faPencil,
   faPhoneSquare,
@@ -117,6 +118,7 @@ onBeforeMount(() => {
     faRefresh,
     faCloudUpload,
     faCamera,
+    faMicrophone,
 
     // Use different icon names so they match
     { ...faClock, iconName: 'clock-o' as IconName },

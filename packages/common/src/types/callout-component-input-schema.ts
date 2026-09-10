@@ -1,5 +1,6 @@
 import type {
   CalloutComponentInputAddressSchema,
+  CalloutComponentInputAudioRecorderSchema,
   CalloutComponentInputCheckboxSchema,
   CalloutComponentInputCurrencySchema,
   CalloutComponentInputDateTimeSchema,
@@ -19,6 +20,7 @@ import type {
 export type CalloutComponentInputSchema =
   | CalloutComponentInputSelectableSchema
   | CalloutComponentInputAddressSchema
+  | CalloutComponentInputAudioRecorderSchema
   | CalloutComponentInputCheckboxSchema
   | CalloutComponentInputCurrencySchema
   | CalloutComponentInputDateTimeSchema

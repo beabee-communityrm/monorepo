@@ -1468,6 +1468,15 @@
       "addressLine1": {
         "required": ""
       },
+      "audio": {
+        "micPermissionDeniedBody": "",
+        "micPermissionDeniedTitle": "",
+        "recordingNotSupportedBody": "",
+        "recordingNotSupportedTitle": "",
+        "tooLongBody": "",
+        "tooLongTitle": "",
+        "uploadFailedTitle": ""
+      },
       "cityOrTown": {
         "required": ""
       },
@@ -1570,6 +1579,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "",
+        "delete": "",
+        "discard": "",
+        "pause": "",
+        "paused": "",
+        "playPause": "",
+        "reRecord": "",
+        "record": "",
+        "recording": "",
+        "remaining": "",
+        "requestingPermission": "",
+        "resume": "",
+        "stop": "",
+        "tryAgain": "",
+        "uploadFormats": "",
+        "uploadInstead": "",
+        "uploadLabel": "",
+        "uploadingHint": ""
+      },
       "file": {
         "browse": "",
         "dropFiles": "",

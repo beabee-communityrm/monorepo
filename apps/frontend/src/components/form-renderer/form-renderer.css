@@ -261,6 +261,179 @@
     }
   }
 
+  /* Styles for audio recorder component - the stock file component's own
+     dropzone/list is fully replaced by this component's own UI */
+  .formio-component-audiorecorder {
+    .fileSelector,
+    .file,
+    .list-group {
+      @apply hidden;
+    }
+
+    .audio-recorder-panel {
+      @apply flex flex-wrap items-center gap-4 rounded border border-main-20 bg-white p-4;
+    }
+    .audio-recorder-live {
+      @apply flex-col items-stretch gap-4 border-main-70;
+    }
+    .audio-recorder-uploading,
+    .audio-recorder-ready {
+      @apply flex-col items-stretch gap-3;
+    }
+    .audio-recorder-error {
+      @apply flex-col items-stretch gap-2 border-danger-70 bg-danger-10;
+    }
+
+    /* Buttons and links */
+    .audio-recorder-btn-primary {
+      @apply inline-flex cursor-pointer items-center gap-3 rounded-full border-none bg-main-70 px-5 py-2.5 font-bold text-white;
+      &:hover {
+        @apply bg-main-80;
+      }
+    }
+    .audio-recorder-btn-outline {
+      @apply cursor-pointer rounded-full border border-main-20 bg-white px-4 py-2 font-bold text-main-70;
+      &:hover {
+        @apply border-main-70;
+      }
+    }
+    .audio-recorder-link {
+      @apply cursor-pointer font-bold text-link underline decoration-1 underline-offset-2;
+      &:hover {
+        @apply text-link-110;
+      }
+    }
+    .audio-recorder-discard:hover {
+      @apply text-danger no-underline;
+    }
+    .audio-recorder-file-input {
+      @apply hidden;
+    }
+    .audio-recorder-dot {
+      @apply inline-block h-3.5 w-3.5 rounded-full bg-danger-70;
+    }
+    .audio-recorder-stop-icon {
+      @apply inline-block h-2.5 w-2.5 rounded-sm bg-white;
+    }
+
+    .audio-recorder-or,
+    .audio-recorder-formats,
+    .audio-recorder-hint,
+    .audio-recorder-remaining {
+      @apply text-sm text-body-80;
+    }
+    .audio-recorder-formats {
+      @apply ml-auto;
+    }
+
+    /* Spinner */
+    .audio-recorder-spinner {
+      @apply inline-block h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-main-20 border-t-main-70;
+    }
+    .audio-recorder-spinner--small {
+      @apply h-4 w-4;
+    }
+
+    /* Live recording */
+    .audio-recorder-live-row {
+      @apply flex w-full items-center gap-3;
+    }
+    .audio-recorder-rec-dot {
+      @apply inline-block h-3 w-3 animate-pulse rounded-full bg-danger-70;
+    }
+    .audio-recorder-live-status {
+      @apply text-sm font-bold tracking-wide text-main-70 uppercase;
+    }
+    .audio-recorder-live-time {
+      @apply ml-auto font-bold text-main-70 tabular-nums;
+    }
+    .audio-recorder-live-max-time {
+      @apply text-sm text-body-80 tabular-nums;
+    }
+
+    .audio-recorder-live-bars,
+    .audio-recorder-review-bars {
+      @apply flex w-full items-end gap-0.5;
+    }
+    .audio-recorder-live-bars {
+      @apply h-16;
+    }
+    .audio-recorder-review-bars {
+      @apply h-[52px] flex-1;
+    }
+    .audio-recorder-bar {
+      @apply min-w-[2px] flex-1 rounded-sm bg-main-20;
+    }
+    .audio-recorder-live-bars .audio-recorder-bar {
+      @apply bg-main-70;
+    }
+    .audio-recorder-review-bars .audio-recorder-bar--played {
+      @apply bg-main-70;
+    }
+
+    .audio-recorder-live-controls {
+      @apply flex w-full flex-wrap items-center gap-3;
+    }
+
+    /* Uploading */
+    .audio-recorder-uploading-row {
+      @apply flex w-full items-baseline gap-3;
+    }
+    .audio-recorder-filename {
+      @apply font-bold text-main-70;
+    }
+
+    /* Attached / ready */
+    .audio-recorder-ready-row {
+      @apply flex w-full items-center gap-2;
+    }
+    .audio-recorder-badge {
+      @apply text-sm font-bold tracking-wide text-success-110 uppercase;
+      &::before {
+        content: '✓';
+        @apply mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-success text-[10px] text-white;
+      }
+    }
+    .audio-recorder-meta {
+      @apply ml-auto text-sm text-body-80;
+    }
+    .audio-recorder-play-row {
+      @apply flex w-full items-center gap-4;
+    }
+    .audio-recorder-play-button {
+      @apply flex h-12 w-12 flex-none cursor-pointer items-center justify-center rounded-full border-none bg-main-70 text-white;
+      &:hover {
+        @apply bg-main-80;
+      }
+    }
+    .audio-recorder-play-label {
+      @apply flex-none font-bold text-main-70 tabular-nums;
+    }
+    .audio-recorder-ready-footer {
+      @apply flex w-full items-center gap-4 border-t border-main-10 pt-3;
+      .audio-recorder-filename {
+        @apply overflow-hidden font-normal text-ellipsis whitespace-nowrap text-body-80;
+      }
+    }
+
+    /* Error */
+    .audio-recorder-error-row {
+      @apply flex items-center gap-2;
+    }
+    .audio-recorder-error-icon {
+      @apply flex h-5 w-5 flex-none items-center justify-center rounded-full bg-danger-70 text-xs font-bold text-white;
+    }
+    .audio-recorder-error-title {
+      @apply font-bold text-danger;
+    }
+    .audio-recorder-error-body {
+      @apply text-sm text-body-80;
+    }
+    .audio-recorder-error-actions {
+      @apply flex flex-wrap items-center gap-4;
+    }
+  }
+
   /* Styles for signature component */
   .signature-pad-refresh {
     @apply mb-2;

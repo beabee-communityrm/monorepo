@@ -31,6 +31,7 @@ export * from './segments.client.js';
 export * from './signup.client.js';
 export * from './stats.client.js';
 export * from './tag.client.js';
+export * from './upload-audio.client.js';
 export * from './upload-document.client.js';
 export * from './upload-image.client.js';
 export * from './upload.client.js';

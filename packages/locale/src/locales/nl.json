@@ -1471,6 +1471,15 @@
       "addressLine1": {
         "required": "Adresregel 1 is vereist"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Je browser heeft de toegang tot de microfoon geblokkeerd. Controleer de sitemachtigingen en probeer het opnieuw, of upload een opname die je elders hebt gemaakt.",
+        "micPermissionDeniedTitle": "Microfoon niet beschikbaar",
+        "recordingNotSupportedBody": "Deze browser kan geen audio opnemen. Upload in plaats daarvan een audiobestand.",
+        "recordingNotSupportedTitle": "Opnemen niet ondersteund",
+        "tooLongBody": "Dit bestand duurt {duration}. Het maximum voor deze vraag is {max}. Verkort het bestand of neem een kortere reactie op.",
+        "tooLongTitle": "Opname te lang",
+        "uploadFailedTitle": "Uploaden mislukt"
+      },
       "cityOrTown": {
         "required": "Stad/gemeente is vereist"
       },
@@ -1573,6 +1582,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Bijgevoegd",
+        "delete": "Verwijderen",
+        "discard": "Weggooien",
+        "pause": "Pauzeren",
+        "paused": "Gepauzeerd",
+        "playPause": "Afspelen of pauzeren",
+        "reRecord": "Opnieuw opnemen",
+        "record": "Opname starten",
+        "recording": "Bezig met opnemen",
+        "remaining": "Nog {time}. De opname stopt automatisch bij de limiet.",
+        "requestingPermission": "Wachten op microfoontoegang. Sta toegang toe in je browser om door te gaan.",
+        "resume": "Hervatten",
+        "stop": "Stoppen",
+        "tryAgain": "Opnieuw proberen",
+        "uploadFormats": "MP3, M4A, WAV of OGG",
+        "uploadInstead": "Upload in plaats daarvan een audiobestand",
+        "uploadLabel": "Audiobestand uploaden",
+        "uploadingHint": "Bezig met uploaden — je kunt de rest van het formulier blijven invullen."
+      },
       "file": {
         "browse": "uploaden vanaf apparaat",
         "dropFiles": "Sleep bestanden hierheen om bij te voegen",

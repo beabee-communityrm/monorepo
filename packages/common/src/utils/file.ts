@@ -1,4 +1,6 @@
 import {
+  ALLOWED_AUDIO_EXTENSIONS,
+  ALLOWED_AUDIO_MIME_TYPES,
   ALLOWED_DOCUMENT_EXTENSIONS,
   ALLOWED_DOCUMENT_MIME_TYPES,
   ALLOWED_IMAGE_EXTENSIONS,
@@ -47,6 +49,30 @@ export const isSupportedImageType = (mimetype?: string): boolean => {
 export const isSupportedImageExtension = (extension?: string): boolean => {
   if (!extension) return false;
   return ALLOWED_IMAGE_EXTENSIONS.includes(extension.toLowerCase().trim());
+};
+
+/**
+ * Check if a MIME type is a supported audio type.
+ * Example: "audio/webm", "audio/mp4", "audio/mpeg"
+ * @param mimetype MIME type to check
+ * @returns True if it's a supported audio type
+ */
+export const isSupportedAudioType = (mimetype?: string): boolean => {
+  if (!mimetype) return false;
+  // MediaRecorder's mimeType includes a codec, e.g. "audio/webm;codecs=opus"
+  const baseType = mimetype.toLowerCase().trim().split(';')[0].trim();
+  return ALLOWED_AUDIO_MIME_TYPES.includes(baseType);
+};
+
+/**
+ * Check if an extension is a supported audio extension.
+ * Example: "webm", "mp3", "wav"
+ * @param extension Extension to check
+ * @returns True if it's a supported audio extension
+ */
+export const isSupportedAudioExtension = (extension?: string): boolean => {
+  if (!extension) return false;
+  return ALLOWED_AUDIO_EXTENSIONS.includes(extension.toLowerCase().trim());
 };
 
 /**

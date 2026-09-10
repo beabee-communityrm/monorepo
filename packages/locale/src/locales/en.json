@@ -1468,6 +1468,15 @@
       "addressLine1": {
         "required": "Address line 1 is required"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Your browser blocked access to the microphone. Check the site permissions and try again, or upload a recording you made elsewhere.",
+        "micPermissionDeniedTitle": "Microphone not available",
+        "recordingNotSupportedBody": "This browser cannot record audio. Please upload an audio file instead.",
+        "recordingNotSupportedTitle": "Recording not supported",
+        "tooLongBody": "This file is {duration} long. The maximum for this question is {max}. Please trim it or record a shorter answer.",
+        "tooLongTitle": "Recording too long",
+        "uploadFailedTitle": "Upload failed"
+      },
       "cityOrTown": {
         "required": "City/Town is required"
       },
@@ -1570,6 +1579,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Attached",
+        "delete": "Delete",
+        "discard": "Discard",
+        "pause": "Pause",
+        "paused": "Paused",
+        "playPause": "Play or pause",
+        "reRecord": "Record again",
+        "record": "Start recording",
+        "recording": "Recording",
+        "remaining": "{time} remaining. Recording stops automatically at the limit.",
+        "requestingPermission": "Waiting for microphone permission. Allow access in your browser to continue.",
+        "resume": "Resume",
+        "stop": "Stop",
+        "tryAgain": "Try again",
+        "uploadFormats": "MP3, M4A, WAV or OGG",
+        "uploadInstead": "Upload an audio file instead",
+        "uploadLabel": "Upload an audio file",
+        "uploadingHint": "Uploading — you can keep filling in the rest of the form."
+      },
       "file": {
         "browse": "upload from device",
         "dropFiles": "Drop files to attach",

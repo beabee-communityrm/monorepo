@@ -1471,6 +1471,15 @@
       "addressLine1": {
         "required": "La riga 1 dell'indirizzo è obbligatoria"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Il browser ha bloccato l'accesso al microfono. Controlla i permessi del sito e riprova, oppure carica una registrazione fatta altrove.",
+        "micPermissionDeniedTitle": "Microfono non disponibile",
+        "recordingNotSupportedBody": "Questo browser non può registrare audio. Carica invece un file audio.",
+        "recordingNotSupportedTitle": "Registrazione non supportata",
+        "tooLongBody": "Questo file dura {duration}. Il massimo per questa domanda è {max}. Accorcialo oppure registra una risposta più breve.",
+        "tooLongTitle": "Registrazione troppo lunga",
+        "uploadFailedTitle": "Caricamento non riuscito"
+      },
       "cityOrTown": {
         "required": "Città/località obbligatoria"
       },
@@ -1573,6 +1582,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Allegato",
+        "delete": "Elimina",
+        "discard": "Scarta",
+        "pause": "Pausa",
+        "paused": "In pausa",
+        "playPause": "Riproduci o metti in pausa",
+        "reRecord": "Registra di nuovo",
+        "record": "Avvia registrazione",
+        "recording": "Registrazione in corso",
+        "remaining": "Mancano {time}. La registrazione si interrompe automaticamente al limite.",
+        "requestingPermission": "In attesa dell'autorizzazione al microfono. Consenti l'accesso nel browser per continuare.",
+        "resume": "Riprendi",
+        "stop": "Interrompi",
+        "tryAgain": "Riprova",
+        "uploadFormats": "MP3, M4A, WAV o OGG",
+        "uploadInstead": "Carica invece un file audio",
+        "uploadLabel": "Carica un file audio",
+        "uploadingHint": "Caricamento in corso — puoi continuare a compilare il resto del modulo."
+      },
       "file": {
         "browse": "carica dal dispositivo",
         "dropFiles": "Trascina i file da allegare",

@@ -1469,6 +1469,15 @@
       "addressLine1": {
         "required": "Adresse benötigt"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Ihr Browser hat den Zugriff auf das Mikrofon blockiert. Prüfen Sie die Website-Berechtigungen und versuchen Sie es erneut, oder laden Sie eine anderswo erstellte Aufnahme hoch.",
+        "micPermissionDeniedTitle": "Mikrofon nicht verfügbar",
+        "recordingNotSupportedBody": "Dieser Browser kann keine Audioaufnahmen erstellen. Bitte laden Sie stattdessen eine Audiodatei hoch.",
+        "recordingNotSupportedTitle": "Aufnahme nicht unterstützt",
+        "tooLongBody": "Diese Datei ist {duration} lang. Das Maximum für diese Frage beträgt {max}. Bitte kürzen Sie die Datei oder nehmen Sie eine kürzere Antwort auf.",
+        "tooLongTitle": "Aufnahme zu lang",
+        "uploadFailedTitle": "Hochladen fehlgeschlagen"
+      },
       "cityOrTown": {
         "required": "Ort benötigt"
       },
@@ -1571,6 +1580,26 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Angehängt",
+        "delete": "Löschen",
+        "discard": "Verwerfen",
+        "pause": "Pause",
+        "paused": "Pausiert",
+        "playPause": "Abspielen oder pausieren",
+        "reRecord": "Erneut aufnehmen",
+        "record": "Aufnahme starten",
+        "recording": "Aufnahme läuft",
+        "remaining": "{time} verbleibend. Die Aufnahme stoppt automatisch bei Erreichen des Limits.",
+        "requestingPermission": "Warten auf Mikrofonzugriff. Bitte erlauben Sie den Zugriff in Ihrem Browser, um fortzufahren.",
+        "resume": "Fortsetzen",
+        "stop": "Stopp",
+        "tryAgain": "Erneut versuchen",
+        "uploadFormats": "MP3, M4A, WAV oder OGG",
+        "uploadInstead": "Stattdessen eine Audiodatei hochladen",
+        "uploadLabel": "Audiodatei hochladen",
+        "uploadingHint": "Wird hochgeladen – Sie können den Rest des Formulars weiter ausfüllen."
+      },
       "file": {
         "browse": "Upload vom Gerät",
         "dropFiles": "Dateien hierher ziehen",

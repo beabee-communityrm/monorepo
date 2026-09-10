@@ -7,6 +7,7 @@
 import { Form, FormBuilder } from '@formio/vue';
 import { Formio } from 'formiojs';
 
+import AudioRecorderComponent from './formio/components/audio-recorder/AudioRecorder';
 import { MapTilerAddressProvider } from './formio/providers/address/map-tiler';
 import BeabeeStorage from './formio/providers/storage/beabee';
 
@@ -17,5 +18,15 @@ Formio.Providers.providers.storage = { beabee: BeabeeStorage };
 Formio.Providers.providers.address = {
   maptiler: MapTilerAddressProvider,
 };
+
+// Register the audio recorder component (record or upload audio, extends
+// the stock file component to reuse its upload/validation machinery).
+// formiojs types only declare `Formio.Providers`, not `Formio.Components`,
+// though it exists at runtime.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(Formio as any).Components.addComponent(
+  'audiorecorder',
+  AudioRecorderComponent
+);
 
 export { Form, FormBuilder };
