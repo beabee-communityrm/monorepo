@@ -28,7 +28,7 @@ export const provisionUsers = async (): Promise<void> => {
     let created = 0;
     let failed = 0;
     for (const contact of contacts) {
-      const idpSubject = await idpService.createUser(contact);
+      const idpSubject = await idpService.createContact(contact);
       if (idpSubject) {
         await getRepository(Contact).update(contact.id, { idpSubject });
         created++;

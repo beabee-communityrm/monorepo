@@ -150,7 +150,7 @@ class ContactsService {
 
       // Mirror the contact to the identity provider. Best-effort: an unlinked
       // contact can be repaired later with `user provision`
-      const idpSubject = await IdpService.createUser(contact);
+      const idpSubject = await IdpService.createContact(contact);
       if (idpSubject) {
         await getRepository(Contact).update(contact.id, { idpSubject });
         contact.idpSubject = idpSubject;
@@ -225,12 +225,7 @@ class ContactsService {
 
     await PaymentService.updateContact(contact, updates);
 
-    if (
-      contact.idpSubject &&
-      (updates.email || updates.firstname || updates.lastname)
-    ) {
-      await IdpService.updateUser(contact.idpSubject, contact);
-    }
+    await IdpService.updateContact(contact, updates);
   }
 
   /**
@@ -516,9 +511,7 @@ class ContactsService {
       });
     });
 
-    if (contact.idpSubject) {
-      await IdpService.deleteUser(contact.idpSubject);
-    }
+    await IdpService.permanentlyDeleteContact(contact);
   }
 
   /**

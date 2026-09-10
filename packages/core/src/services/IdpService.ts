@@ -1,7 +1,8 @@
 import config from '#config/config';
 import { log as mainLogger } from '#logging';
+import type { Contact } from '#models/index';
 import { NoneProvider } from '#providers/idp/index';
-import type { IdpProvider, IdpUserData } from '#type/index';
+import type { IdpProvider } from '#type/index';
 
 const log = mainLogger.child({ app: 'idp-service' });
 
@@ -22,12 +23,13 @@ class IdpService {
    * Create an account at the identity provider for a contact
    * @returns The subject identifier to link, or null if disabled or failed
    */
-  async createUser(data: IdpUserData): Promise<string | null> {
+  async createContact(contact: Contact): Promise<string | null> {
     if (!this.isEnabled) return null;
+    log.info('Create IdP account for contact ' + contact.id);
     try {
-      return await this.provider.createUser(data);
+      return await this.provider.createContact(contact);
     } catch (err) {
-      log.error(`Failed to create IdP account for ${data.email}`, err);
+      log.error(`Failed to create IdP account for ${contact.email}`, err);
       return null;
     }
   }
@@ -36,10 +38,11 @@ class IdpService {
    * Find an existing account at the identity provider by email address
    * @returns The subject identifier, or null if not found, disabled or failed
    */
-  async findUserByEmail(email: string): Promise<string | null> {
+  async findSubjectByEmail(email: string): Promise<string | null> {
     if (!this.isEnabled) return null;
+    log.info('Find IdP account for ' + email);
     try {
-      return await this.provider.findUserByEmail(email);
+      return await this.provider.findSubjectByEmail(email);
     } catch (err) {
       log.error(`Failed to find IdP account for ${email}`, err);
       return null;
@@ -47,26 +50,33 @@ class IdpService {
   }
 
   /**
-   * Update a linked account so it keeps mirroring the contact
+   * Update a linked contact's account so it keeps mirroring the contact
+   * @param contact The contact, with the updates already applied
+   * @param updates The updates that were applied
    */
-  async updateUser(subject: string, data: IdpUserData): Promise<void> {
-    if (!this.isEnabled) return;
+  async updateContact(
+    contact: Contact,
+    updates: Partial<Contact>
+  ): Promise<void> {
+    if (!this.isEnabled || !contact.idpSubject) return;
+    log.info('Update IdP account for contact ' + contact.id);
     try {
-      await this.provider.updateUser(subject, data);
+      await this.provider.updateContact(contact.idpSubject, contact, updates);
     } catch (err) {
-      log.error(`Failed to update IdP account ${subject}`, err);
+      log.error(`Failed to update IdP account ${contact.idpSubject}`, err);
     }
   }
 
   /**
-   * Delete a linked account
+   * Permanently delete a linked contact's account
    */
-  async deleteUser(subject: string): Promise<void> {
-    if (!this.isEnabled) return;
+  async permanentlyDeleteContact(contact: Contact): Promise<void> {
+    if (!this.isEnabled || !contact.idpSubject) return;
+    log.info('Delete IdP account for contact ' + contact.id);
     try {
-      await this.provider.deleteUser(subject);
+      await this.provider.permanentlyDeleteContact(contact.idpSubject);
     } catch (err) {
-      log.error(`Failed to delete IdP account ${subject}`, err);
+      log.error(`Failed to delete IdP account ${contact.idpSubject}`, err);
     }
   }
 }

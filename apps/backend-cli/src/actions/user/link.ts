@@ -27,7 +27,7 @@ export const linkUsers = async (): Promise<void> => {
 
     let failed = 0;
     for (const contact of contacts) {
-      const idpSubject = await idpService.findUserByEmail(contact.email);
+      const idpSubject = await idpService.findSubjectByEmail(contact.email);
       if (idpSubject) {
         await getRepository(Contact).update(contact.id, { idpSubject });
         console.log(`Linked ${contact.email} to subject ${idpSubject}`);

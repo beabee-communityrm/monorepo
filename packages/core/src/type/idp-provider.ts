@@ -1,11 +1,4 @@
-/**
- * The contact fields mirrored to the identity provider
- */
-export interface IdpUserData {
-  email: string;
-  firstname: string;
-  lastname: string;
-}
+import type { Contact } from '#models/index';
 
 /**
  * Mirrors contacts to the external identity provider (IdP Provisioning) so
@@ -13,21 +6,30 @@ export interface IdpUserData {
  */
 export interface IdpProvider {
   /**
-   * Create an account at the identity provider
+   * Create an account at the identity provider for a contact
    * @returns The subject identifier of the new account
    */
-  createUser(data: IdpUserData): Promise<string>;
+  createContact(contact: Contact): Promise<string>;
   /**
    * Find an existing account at the identity provider by email address
    * @returns The subject identifier, or null if not found
    */
-  findUserByEmail(email: string): Promise<string | null>;
+  findSubjectByEmail(email: string): Promise<string | null>;
   /**
-   * Update a linked account so it keeps mirroring the contact
+   * Update a linked account so it keeps mirroring the contact. The provider
+   * decides which updates are relevant to it.
+   * @param subject The linked account's subject identifier
+   * @param contact The contact, with the updates already applied
+   * @param updates The updates that were applied
    */
-  updateUser(subject: string, data: IdpUserData): Promise<void>;
+  updateContact(
+    subject: string,
+    contact: Contact,
+    updates: Partial<Contact>
+  ): Promise<void>;
   /**
-   * Delete a linked account
+   * Permanently delete a linked account
+   * @param subject The linked account's subject identifier
    */
-  deleteUser(subject: string): Promise<void>;
+  permanentlyDeleteContact(subject: string): Promise<void>;
 }
