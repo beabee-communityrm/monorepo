@@ -1,5 +1,9 @@
 import type { KeycloakIdpConfig } from '#config/config';
-import type { IdpProvider, IdpUserData } from '#type/index';
+import { log as mainLogger } from '#logging';
+import type { Contact } from '#models/index';
+import type { IdpProvider } from '#type/index';
+
+const log = mainLogger.child({ app: 'keycloak-idp-provider' });
 
 /**
  * Mirrors contacts into a Keycloak realm via the admin REST API, authenticated
@@ -17,6 +21,7 @@ export class KeycloakProvider implements IdpProvider {
       return this.accessToken;
     }
 
+    log.info('Fetch new Keycloak access token');
     const resp = await fetch(
       `${this.settings.url}/realms/${this.settings.realm}/protocol/openid-connect/token`,
       {
@@ -69,13 +74,13 @@ export class KeycloakProvider implements IdpProvider {
     return resp;
   }
 
-  async createUser(data: IdpUserData): Promise<string> {
+  async createContact(contact: Contact): Promise<string> {
     // Keycloak returns an empty 201 with the new user's URL in Location
     const resp = await this.request('POST', '/users', {
-      username: data.email,
-      email: data.email,
-      firstName: data.firstname,
-      lastName: data.lastname,
+      username: contact.email,
+      email: contact.email,
+      firstName: contact.firstname,
+      lastName: contact.lastname,
       enabled: true,
       emailVerified: true,
     });
@@ -86,7 +91,7 @@ export class KeycloakProvider implements IdpProvider {
     return subject;
   }
 
-  async findUserByEmail(email: string): Promise<string | null> {
+  async findSubjectByEmail(email: string): Promise<string | null> {
     const resp = await this.request(
       'GET',
       `/users?email=${encodeURIComponent(email)}&exact=true`
@@ -99,17 +104,23 @@ export class KeycloakProvider implements IdpProvider {
     return users[0]?.id || null;
   }
 
-  async updateUser(subject: string, data: IdpUserData): Promise<void> {
-    await this.request('PUT', `/users/${subject}`, {
-      username: data.email,
-      email: data.email,
-      firstName: data.firstname,
-      lastName: data.lastname,
-      emailVerified: true,
-    });
+  async updateContact(
+    subject: string,
+    contact: Contact,
+    updates: Partial<Contact>
+  ): Promise<void> {
+    if (updates.email || updates.firstname || updates.lastname) {
+      await this.request('PUT', `/users/${subject}`, {
+        username: contact.email,
+        email: contact.email,
+        firstName: contact.firstname,
+        lastName: contact.lastname,
+        emailVerified: true,
+      });
+    }
   }
 
-  async deleteUser(subject: string): Promise<void> {
+  async permanentlyDeleteContact(subject: string): Promise<void> {
     await this.request('DELETE', `/users/${subject}`);
   }
 }
