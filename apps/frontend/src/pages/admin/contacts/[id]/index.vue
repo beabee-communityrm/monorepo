@@ -177,29 +177,26 @@ meta:
         </AppInfoList>
       </section>
 
-      <section class="mb-6">
+      <section class="mb-6 hidden">
         <AppHeading>{{ t('contactOverview.origin.title') }}</AppHeading>
         <AppInfoList>
           <AppInfoListItem
             :name="t('contactOverview.origin.source')"
-            :value="contact.origin.source"
+            :value="origin?.source"
           />
           <AppInfoListItem
             :name="t('contactOverview.origin.campaign')"
-            :value="contact.origin.campaign"
+            :value="origin?.campaign"
           />
           <AppInfoListItem
             :name="t('contactOverview.origin.referrer')"
-            :value="contact.origin.medium"
+            :value="origin?.medium"
           />
           <AppInfoListItem
             :name="t('contactOverview.origin.addedBy')"
             :value="
-              contact.origin.addedBy
-                ? t(
-                    'contactOverview.origin.addedByValues.' +
-                      contact.origin.addedBy
-                  )
+              origin?.addedBy
+                ? t('contactOverview.origin.addedByValues.' + origin.addedBy)
                 : ''
             "
           />
@@ -314,6 +311,7 @@ meta:
 <script lang="ts" setup>
 import {
   CONTACT_MFA_TYPE,
+  type ContactOriginData,
   type ContactRoleData,
   type ContentJoinSetupData,
   ContributionType,
@@ -369,7 +367,6 @@ const contact = ref<GetContactDataWith<
   | GetContactWith.Contribution
   | GetContactWith.Roles
   | GetContactWith.Tags
-  | GetContactWith.Origin
 > | null>(null);
 const contactTags = ref<string[]>([]);
 const contactAbout = reactive({ notes: '', description: '' });
@@ -451,10 +448,12 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
     GetContactWith.Contribution,
     GetContactWith.Roles,
     GetContactWith.Tags,
-    GetContactWith.Origin,
   ]);
   changingRoles.value = false;
 }
+
+/** The contact's origin, taken from its creation event */
+const origin = ref<ContactOriginData>();
 
 const setupContent = ref<ContentJoinSetupData>();
 
@@ -480,7 +479,6 @@ async function handleToggleTag(tagId: string, successText: string) {
       GetContactWith.Contribution,
       GetContactWith.Roles,
       GetContactWith.Tags,
-      GetContactWith.Origin,
     ]);
 
     addNotification({ title: successText, variant: 'success' });
@@ -495,10 +493,11 @@ onBeforeMount(async () => {
     GetContactWith.Contribution,
     GetContactWith.Roles,
     GetContactWith.Tags,
-    GetContactWith.Origin,
   ]);
   contactAbout.notes = contact.value.profile.notes || '';
   contactAbout.description = contact.value.profile.description || '';
+
+  origin.value = await client.contact.getOrigin(props.contact.id);
 
   contactTags.value = (await client.content.get('contacts')).tags;
 

@@ -1,5 +1,4 @@
 import {
-  ContactOriginData,
   ContributionInfo,
   ContributionPeriod,
   ContributionType,
@@ -90,8 +89,6 @@ export class Contact implements TaggableEntity<TagData> {
   tags!: ContactTagAssignment[];
 
   isReviewer?: boolean;
-
-  origin?: ContactOriginData | null;
 
   get activeRoles(): RoleType[] {
     const ret = this.roles.filter((p) => p.isActive).map((p) => p.type);
