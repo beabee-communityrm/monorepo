@@ -177,7 +177,7 @@ meta:
         </AppInfoList>
       </section>
 
-      <section class="mb-6 hidden">
+      <section class="mb-6">
         <AppHeading>{{ t('contactOverview.origin.title') }}</AppHeading>
         <AppInfoList>
           <AppInfoListItem
