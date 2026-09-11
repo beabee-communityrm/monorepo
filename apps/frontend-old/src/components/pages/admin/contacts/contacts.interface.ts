@@ -5,11 +5,11 @@ import {
   NewsletterStatus,
   contactFilters,
 } from '@beabee/beabee-common';
-import { type Header, type SelectItem } from '@beabee/vue';
+import { type Header, type SelectItem, getCountryItems } from '@beabee/vue';
 
 import { computed, ref, watchEffect } from 'vue';
 
-import { i18n } from '#lib/i18n';
+import { currentLocaleConfig, i18n } from '#lib/i18n';
 import { generalContent } from '#store';
 import { client } from '#utils/api';
 
@@ -72,6 +72,15 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
   email: withLabel(contactFilters.email, t('contacts.data.email')),
   joined: withLabel(contactFilters.joined, t('contacts.data.joined')),
   lastSeen: withLabel(contactFilters.lastSeen, t('contacts.data.lastSeen')),
+  organisation: withLabel(
+    contactFilters.organisation,
+    t('adminSettings.general.organisationName')
+  ),
+  deliveryAddressCountry: {
+    ...contactFilters.deliveryAddressCountry,
+    label: t('form.country'),
+    options: getCountryItems(currentLocaleConfig.value.baseLocale),
+  },
 
   // Newsletter Status Filters
   newsletterStatus: withLabel(
@@ -211,6 +220,7 @@ export function useContactFilters() {
           'firstname',
           'lastname',
           'email',
+          'organisation',
           'joined',
           'lastSeen',
           'newsletterStatus',
@@ -227,7 +237,7 @@ export function useContactFilters() {
             options: tagItems.value,
           }),
         },
-        ...withItems(filterItems, ['deliveryOptIn']),
+        ...withItems(filterItems, ['deliveryAddressCountry', 'deliveryOptIn']),
       },
     },
     {

@@ -98,7 +98,8 @@
     "subTitle-nuxt": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "subscriptions": "Abonnementen",
     "title": "Account",
-    "unsavedChanges": "U heeft niet-opgeslagen wijzigingen"
+    "unsavedChanges": "U heeft niet-opgeslagen wijzigingen",
+    "vatNumberInfo": "Neem contact op met support{'@'}beabee.io om het btw-nummer te wijzigen"
   },
   "actions": {
     "add": "Toevoegen",
@@ -1446,6 +1447,7 @@
       "remaining": ""
     },
     "cityOrTown": "Stad",
+    "country": "",
     "deliveryOptIn": "Opt-in levering",
     "description": "Beschrijving",
     "email": "E-mail",
@@ -1482,6 +1484,9 @@
         "password": "Ongeldig wachtwoord",
         "required": "Wachtwoord is vereist",
         "sameAs": "De wachtwoorden komen niet overeen"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",
@@ -1569,7 +1574,8 @@
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",
     "unsavedChanges": "Niet-opgeslagen wijzigingen",
-    "updated": "Bijgewerkt"
+    "updated": "Bijgewerkt",
+    "vatNumber": "Btw-nummer"
   },
   "formRenderer": {
     "components": {
@@ -1711,6 +1717,7 @@
           "showOptIn": "Vraag om in te schrijven voor nieuwsbrief",
           "title": "Nieuwsbrief"
         },
+        "showOrganisationName": "Vragen om organisatienaam",
         "text": "Nadat gebruikers lid zijn geworden, worden ze gevraagd om hun registratie te bevestigen. Hier kun je de details van het bevestigingsscherm instellen.",
         "title": "Account bevestiging",
         "welcomeMessage": "Welkomstbericht"
@@ -1744,6 +1751,7 @@
         "showAbsorbFee": "Gebruiker vragen om de betalingskosten te absorberen",
         "showGoogleApplePay": "",
         "showNoContribution": "Gebruiker toestaan mee te doen zonder bijdrage",
+        "showVatNumber": "Gebruiker vragen om btw-nummer",
         "suggestedAmounts": "Voorgestelde contributiebedragen",
         "text": "In dit gedeelte kun je het lidmaatschapsformulier bewerken, verfijnen en een voorbeeld bekijken.",
         "title": "Lidmaatschapsformulier"

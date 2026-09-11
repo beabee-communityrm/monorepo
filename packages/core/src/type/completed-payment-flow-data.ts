@@ -4,4 +4,5 @@ export interface CompletedPaymentFlowData {
   firstname: string;
   lastname: string;
   billingAddress?: Address;
+  vatNumber?: string;
 }

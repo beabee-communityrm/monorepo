@@ -17,6 +17,12 @@ export class ContactProfile {
   description!: string;
 
   @Column({ type: 'text', default: '' })
+  organisation!: string;
+
+  @Column({ type: 'text', default: '' })
+  vatNumber!: string;
+
+  @Column({ type: 'text', default: '' })
   bio!: string;
 
   @Column({ type: 'text', default: '' })

@@ -97,7 +97,8 @@
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
     "subTitle-nuxt": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
     "subscriptions": "Subscriptions",
-    "title": "Account"
+    "title": "Account",
+    "vatNumberInfo": "Contact support{'@'}beabee.io to update the VAT Number"
   },
   "actions": {
     "add": "Add",
@@ -1443,6 +1444,7 @@
       "remaining": "{remaining} characters remaining."
     },
     "cityOrTown": "City/Town",
+    "country": "Country",
     "deliveryOptIn": "Delivery opt-in",
     "description": "Description",
     "email": "Email",
@@ -1479,6 +1481,9 @@
         "password": "Invalid password",
         "required": "Password is required",
         "sameAs": "The passwords don't match"
+      },
+      "country": {
+        "required": "Country is required"
       },
       "description": {
         "maxLength": "Maximum length of {max} characters exceeded",
@@ -1566,7 +1571,8 @@
     "saveChanges": "Save Changes",
     "saved": "Saved!",
     "unsavedChanges": "You have unsaved changes",
-    "updated": "Updated"
+    "updated": "Updated",
+    "vatNumber": "VAT number"
   },
   "formRenderer": {
     "components": {
@@ -1708,6 +1714,7 @@
           "showOptIn": "Ask to subscribe to newsletter",
           "title": "Newsletter"
         },
+        "showOrganisationName": "Ask for organisation name",
         "text": "After joining, users will be asked to confirm their registration. Here you can set the details of the confirmation screen.",
         "title": "Account confirmation",
         "welcomeMessage": "Welcome message"
@@ -1741,6 +1748,7 @@
         "showAbsorbFee": "Ask user about absorbing the payment fee",
         "showGoogleApplePay": "Show Apple and Google Pay payment icons",
         "showNoContribution": "Allow user to join without a contribution",
+        "showVatNumber": "Ask user for VAT number",
         "suggestedAmounts": "Suggested contribution amounts",
         "text": "In this section you can edit, fine tune and preview your membership join form.",
         "title": "Join form"

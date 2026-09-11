@@ -13,6 +13,7 @@ class AddressTransformer {
       line2: address.line2 || '',
       city: address.city,
       postcode: address.postcode,
+      country: address.country || '',
     };
   }
 }

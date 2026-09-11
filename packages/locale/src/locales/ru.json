@@ -98,7 +98,8 @@
     "subTitle-nuxt": "Обязательные поля отмечены звёздочкой. Вся информация, которой вы делитесь, конфиденциальна.",
     "subscriptions": "Подписки",
     "title": "Профиль",
-    "unsavedChanges": "У вас есть несохранённые изменения"
+    "unsavedChanges": "У вас есть несохранённые изменения",
+    "vatNumberInfo": "Чтобы изменить номер НДС, напишите на support{'@'}beabee.io"
   },
   "actions": {
     "add": "Добавить",
@@ -1447,6 +1448,7 @@
       "remaining": ""
     },
     "cityOrTown": "Город",
+    "country": "",
     "deliveryOptIn": "Согласие на рассылку",
     "description": "Описание",
     "email": "Почта",
@@ -1483,6 +1485,9 @@
         "password": "Некорректный пароль",
         "required": "Нужно установить пароль",
         "sameAs": "Пароли не совпадают"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",
@@ -1570,7 +1575,8 @@
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
     "unsavedChanges": "Есть несохранённые изменения",
-    "updated": ""
+    "updated": "",
+    "vatNumber": "Номер НДС"
   },
   "formRenderer": {
     "components": {
@@ -1716,6 +1722,7 @@
           "showOptIn": "",
           "title": "Рассылка"
         },
+        "showOrganisationName": "Запрашивать название организации",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1749,6 +1756,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""

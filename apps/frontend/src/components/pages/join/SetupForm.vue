@@ -25,6 +25,12 @@
         />
 
         <AppInput
+          v-if="setupContent.showOrganisationName"
+          v-model="data.organisationName"
+          :label="t('adminSettings.general.organisationName')"
+        />
+
+        <AppInput
           v-model="data.password"
           :label="t('form.password')"
           type="password"
@@ -45,6 +51,7 @@
           v-model:line2="data.addressLine2"
           v-model:post-code="data.postCode"
           v-model:city-or-town="data.cityOrTown"
+          v-model:country="data.country"
           :required="data.profile.deliveryOptIn"
         />
       </section>
@@ -99,6 +106,7 @@ const data = reactive<SetupContactData>({
   email: contact.email,
   firstName: contact.firstname,
   lastName: contact.lastname,
+  organisationName: contact.profile.organisation,
   password: '',
   profile: {
     newsletterOptIn:
@@ -115,6 +123,7 @@ const data = reactive<SetupContactData>({
   addressLine2: contact.profile.deliveryAddress?.line2 || '',
   cityOrTown: contact.profile.deliveryAddress?.city || '',
   postCode: contact.profile.deliveryAddress?.postcode || '',
+  country: contact.profile.deliveryAddress?.country || '',
 });
 
 const hasNewsletterGroups = computed(

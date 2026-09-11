@@ -192,6 +192,7 @@ const contentData = {
     subtitle: ['data', ''],
     title: ['data', ''],
     showGoogleApplePay: ['data', false],
+    showVatNumber: ['data', false],
   }),
   'join/setup': withValue<'join/setup'>({
     mailOptIn: ['data', ''],
@@ -203,6 +204,7 @@ const contentData = {
     newsletterGroups: ['data', []],
     showMailOptIn: ['option', 'show-mail-opt-in', 'bool'],
     showNewsletterOptIn: ['data', false],
+    showOrganisationName: ['data', false],
     surveyRequired: ['data', false],
     surveySlug: ['option', 'join-survey', 'text'],
     surveyText: ['data', ''],
