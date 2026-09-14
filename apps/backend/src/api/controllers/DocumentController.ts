@@ -3,14 +3,8 @@ import {
   isSupportedDocumentType,
 } from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
-import { config } from '@beabee/core/config';
-import {
-  BadRequestError,
-  UnauthorizedError,
-  UnsupportedFileTypeError,
-} from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
-import { documentService } from '@beabee/core/services';
+import { DocumentMetadata, documentService } from '@beabee/core/services';
 
 import { Request, Response } from 'express';
 import {
@@ -25,13 +19,23 @@ import {
   Res,
   UseBefore,
 } from 'routing-controllers';
-import { pipeline } from 'stream/promises';
 
 import { RateLimit } from '../decorators/index.js';
-import { uploadMiddleware } from '../middlewares/index.js';
+import { FileController } from './FileController.js';
 
 @JsonController('/documents')
-export class DocumentController {
+export class DocumentController extends FileController<DocumentMetadata> {
+  protected readonly typeName = 'document';
+  protected readonly pathPrefix = 'documents';
+  protected readonly allowedMimeTypes = ALLOWED_DOCUMENT_MIME_TYPES;
+  protected readonly contentSecurityPolicy = "default-src 'self'";
+
+  protected isSupportedType = isSupportedDocumentType;
+  protected uploadFile = documentService.upload.bind(documentService);
+  protected getFileMetadata = documentService.getMetadata.bind(documentService);
+  protected getFileStream = documentService.getStream.bind(documentService);
+  protected deleteFile = documentService.delete.bind(documentService);
+
   /**
    * Upload a new document
    */
@@ -43,89 +47,19 @@ export class DocumentController {
       user: { points: 50, duration: 60 * 60 },
     })
   )
-  async upload(
+  upload(
     @Req() req: Request,
     @CurrentUser({ required: false }) contact?: Contact
   ): Promise<UploadFileResponse> {
-    const file = await uploadMiddleware(req);
-
-    if (!file) {
-      throw new BadRequestError('No document file provided');
-    }
-
-    // Verify file type is allowed before consuming the stream
-    if (!isSupportedDocumentType(file.mimetype)) {
-      file.stream.resume(); // Drain the stream so the request completes
-      throw new UnsupportedFileTypeError(
-        file.mimetype,
-        ALLOWED_DOCUMENT_MIME_TYPES
-      );
-    }
-
-    // Use the DocumentService to upload the file with owner information
-    const metadata = await documentService.upload(
-      file.stream,
-      file.filename,
-      file.mimetype,
-      contact?.email // Add the owner information if available
-    );
-
-    const path = `documents/${metadata.id}`;
-
-    // Create response object
-    const response: UploadFileResponse = {
-      id: metadata.id,
-      url: `${config.audience}/api/1.0/${path}`,
-      path,
-      hash: metadata.hash,
-    };
-
-    // Only add filename if it exists
-    if (metadata.filename) {
-      response.filename = metadata.filename;
-    }
-
-    return response;
+    return this.handleUpload(req, contact?.email);
   }
 
   /**
    * Get a document
    */
   @Get('/:id')
-  async getDocument(
-    @Res() res: Response,
-    @Param('id') id: string
-  ): Promise<Response> {
-    // Get the filename first, this also throws if the document doesn't exist
-    const metadata = await documentService.getMetadata(id);
-
-    // Get document as stream
-    const documentData = await documentService.getStream(id);
-
-    // Set appropriate security headers
-    res.set({
-      'Content-Type': documentData.contentType,
-      'Content-Disposition': `inline; filename="${metadata.filename || id}"`,
-      'Cache-Control': 'public, max-age=86400',
-      'X-Content-Type-Options': 'nosniff',
-      'Content-Security-Policy': "default-src 'self'",
-      'X-Frame-Options': 'SAMEORIGIN',
-    });
-
-    // Stream the document to the response
-    try {
-      await pipeline(documentData.stream, res);
-    } catch (error) {
-      if (!res.headersSent) {
-        throw new BadRequestError(`Failed to stream document (${id})`);
-      }
-      // Too late for an error response, abort the connection
-      res.destroy();
-    }
-
-    // Returning the response object tells routing-controllers the response
-    // has been handled
-    return res;
+  get(@Res() res: Response, @Param('id') id: string): Promise<Response> {
+    return this.handleGet(res, id);
   }
 
   /**
@@ -133,24 +67,10 @@ export class DocumentController {
    */
   @Delete('/:id')
   @Authorized()
-  async deleteDocument(
+  delete(
     @Param('id') id: string,
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
-    // Get document metadata first to check ownership
-    const metadata = await documentService.getMetadata(id);
-
-    // Check if the user is the owner of the document
-    // Only allow the document owner or admins to delete documents
-    if (
-      metadata.owner &&
-      metadata.owner !== contact.email &&
-      !contact.hasRole('admin')
-    ) {
-      throw new UnauthorizedError();
-    }
-
-    const success = await documentService.delete(id);
-    return { success };
+    return this.handleDelete(id, contact);
   }
 }
