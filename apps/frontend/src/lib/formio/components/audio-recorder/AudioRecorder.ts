@@ -41,6 +41,37 @@ function formatSize(bytes: number): string {
   return kb > 999 ? (kb / 1024).toFixed(1) + ' MB' : kb + ' KB';
 }
 
+// MediaRecorder-produced webm/opus doesn't write a duration into the
+// container header, so Chrome/Firefox report `Infinity` for `.duration`
+// until the file has been scanned - seeking past the end forces that scan.
+// Used for both a freshly uploaded file and a reloaded/previously-recorded
+// answer, since either can be this exact webm/opus shape.
+function probeAudioDuration(url: string): Promise<number> {
+  return new Promise((resolve) => {
+    const probe = new Audio(url);
+    let settled = false;
+    const finish = (duration: number) => {
+      if (settled) return;
+      settled = true;
+      resolve(isFinite(duration) && duration > 0 ? duration : 0);
+    };
+
+    probe.addEventListener('error', () => finish(0));
+    probe.addEventListener('loadedmetadata', () => {
+      if (isFinite(probe.duration)) {
+        finish(probe.duration);
+        return;
+      }
+      const onScanned = () => finish(probe.duration);
+      probe.addEventListener('durationchange', onScanned, { once: true });
+      probe.addEventListener('timeupdate', onScanned, { once: true });
+      probe.currentTime = Number.MAX_SAFE_INTEGER;
+      // Don't leave the UI showing 0:00 forever if neither event fires.
+      setTimeout(() => finish(probe.duration), 2000);
+    });
+  });
+}
+
 // Deterministic pseudo-random waveform derived from a filename, used when we
 // have no real captured samples (an uploaded file, or a previously-saved
 // answer being reloaded).
@@ -67,6 +98,13 @@ interface FormioFileValue {
   name: string;
   originalName?: string;
   size: number;
+  // Not part of the stock FormioFile shape - stamped on after upload (see
+  // fileUploadingEnd below) so a reloaded answer never needs to re-derive
+  // duration from the file itself. The /api/1.0/audio endpoint doesn't
+  // support HTTP Range requests, so the usual "seek to force a duration
+  // scan" trick for header-less MediaRecorder webm/opus files errors out
+  // over the network (it only works against a local blob: URL).
+  duration?: number;
 }
 
 /**
@@ -227,6 +265,13 @@ export default class AudioRecorderComponent extends FileComponent {
       this.on('fileUploadingStart', () => this.setPhase('uploading'));
       this.on('fileUploadingEnd', () => {
         if (this.hasFileValue()) {
+          // Stamp the duration we already know (recording's elapsed timer,
+          // or the pre-upload blob: URL probe for an uploaded file) onto
+          // the answer itself - see the FormioFileValue.duration comment.
+          const value = this.getCurrentFileValue();
+          if (value && this.duration) {
+            value.duration = this.duration;
+          }
           this.enterReadyPhase();
         } else {
           const failed = this.statuses.find((s) => s.status === 'error');
@@ -900,9 +945,11 @@ export default class AudioRecorderComponent extends FileComponent {
     if (!file) return;
 
     const objectUrl = URL.createObjectURL(file);
-    const probe = new Audio(objectUrl);
-
-    const proceed = (duration: number) => {
+    // Not every audio file the browser accepts can also be decoded for a
+    // duration probe - probeAudioDuration resolves to 0 rather than
+    // rejecting, so we still attempt the upload and let server-side
+    // validation reject anything genuinely unsupported.
+    probeAudioDuration(objectUrl).then((duration) => {
       URL.revokeObjectURL(objectUrl);
       if (duration > MAX_RECORDING_DURATION_S) {
         this.showError(
@@ -917,15 +964,7 @@ export default class AudioRecorderComponent extends FileComponent {
       this.duration = duration;
       this.reviewPeaks = fakePeaks(file.name);
       this.beginUpload(file);
-    };
-
-    probe.addEventListener('loadedmetadata', () => {
-      proceed(isFinite(probe.duration) ? probe.duration : 0);
     });
-    // Not every audio file the browser accepts can also be decoded for a
-    // duration probe - still attempt the upload and let server-side
-    // validation reject anything genuinely unsupported.
-    probe.addEventListener('error', () => proceed(0));
   }
 
   private beginUpload(file: File) {
@@ -965,7 +1004,15 @@ export default class AudioRecorderComponent extends FileComponent {
       this.playbackAudio = null;
     }
 
-    if (this.duration && this.reviewPeaks.length) {
+    // Prefer a duration we already know: from this session's own recording/
+    // upload, or persisted on the answer (see FormioFileValue.duration)
+    // when reloading an existing one.
+    const knownDuration = this.duration || value.duration;
+    if (knownDuration) {
+      this.duration = knownDuration;
+      if (!this.reviewPeaks.length) {
+        this.reviewPeaks = fakePeaks(this.fileName || this.currentUrl || '');
+      }
       this.fileMeta =
         formatTime(this.duration) + ' · ' + formatSize(value.size);
       this.setPhase('ready');
@@ -977,9 +1024,11 @@ export default class AudioRecorderComponent extends FileComponent {
       return;
     }
 
-    const probe = new Audio(this.currentUrl);
-    probe.addEventListener('loadedmetadata', () => {
-      this.duration = isFinite(probe.duration) ? probe.duration : 0;
+    // Last resort for answers submitted before duration was persisted -
+    // only works if currentUrl happens to be locally seekable, which our
+    // own server URLs aren't (see the FormioFileValue.duration comment).
+    probeAudioDuration(this.currentUrl).then((duration) => {
+      this.duration = duration;
       this.reviewPeaks = fakePeaks(this.fileName || this.currentUrl || '');
       this.fileMeta =
         formatTime(this.duration) + ' · ' + formatSize(value.size);
