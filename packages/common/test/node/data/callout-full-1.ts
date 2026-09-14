@@ -7,8 +7,7 @@ export const calloutFull1 = {
   excerpt:
     'This survey serves as an introduction for a survey designed to explore the relationship between software development and personal life experiences. It invites participants from various backgrounds in the field of software development to share insights on both their professional challenges and personal lives. The survey aims to understand how these two aspects interconnect, contributing to a broader understanding of the software development community. The introduction emphasizes the value of diverse experiences and assures confidentiality, while outlining the structure and estimated time commitment for the survey.',
   image: 'http://localhost:3001/uploads/4ar8m0.png?w=1440&h=900',
-  allowUpdate: false,
-  allowMultiple: false,
+  responseMode: 'single',
   access: 'member',
   status: 'open',
   hidden: false,
