@@ -55,6 +55,17 @@ which starts an OIDC login that completes silently and continues to the
 Signup Flow's `confirmUrl`. Keycloak in development sends its own
 `execute-actions-email` instead.
 
+**Account management (OIDC state).** beabee's account page offers three
+actions — change password, add a passkey, set up an authenticator app — each
+a link to the matching Login v2 page (`/password/change`, `/passkey/set`,
+`/mfa/set`, derived from the issuer with the member's login name). They work
+off the member's existing login session, ask for the current password where
+needed, and return to beabee via the same fixed page as the join flow
+([ADR-0004](./adr/0004-link-to-login-v2-self-service-flows.md)). Removing an
+authenticator has no Login v2 page yet; the Zitadel Console security tab
+(`/ui/console/users/me?id=security`) stays reachable as the escape hatch, with
+its header link pointing back to beabee.
+
 **IdP Transition and cutover.** Existing password hashes cannot be imported
 into Zitadel ([ADR-0003](./adr/0003-migrate-passwords-by-capturing-at-login.md)).
 Instead, at transition start operators provision all contacts and clear all
@@ -83,7 +94,7 @@ file per instance and no per-instance background before v5).
 
 Login: `BEABEE_LOGIN_PROVIDER=local|oidc` with `BEABEE_LOGIN_SETTINGS_`
 `ISSUER`, `CLIENTID`, `CLIENTSECRET` (empty = public client), `SCOPES`,
-`REDIRECTURI`, `POSTLOGOUTREDIRECTURI`, `ACCOUNTURL`.
+`REDIRECTURI`, `POSTLOGOUTREDIRECTURI`.
 
 Provisioning: `BEABEE_IDP_PROVIDER=none|zitadel|keycloak` with
 `BEABEE_IDP_SETTINGS_` `URL`, `PAT`, `WEBHOOKSECRET` (Zitadel) or `URL`,
