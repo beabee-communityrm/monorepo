@@ -98,7 +98,8 @@
     "subTitle-nuxt": "",
     "subscriptions": "",
     "title": "",
-    "unsavedChanges": "Sie haben Änderungen, die noch nicht gespeichert sind"
+    "unsavedChanges": "Sie haben Änderungen, die noch nicht gespeichert sind",
+    "vatNumberInfo": ""
   },
   "actions": {
     "add": "",
@@ -1031,7 +1032,6 @@
     },
     "contributionType": {
       "automatic": "",
-      "gift": "",
       "manual": "",
       "none": ""
     },
@@ -1447,6 +1447,7 @@
       "remaining": ""
     },
     "cityOrTown": "",
+    "country": "",
     "deliveryOptIn": "",
     "description": "",
     "email": "E-Mail",
@@ -1492,6 +1493,9 @@
         "password": "",
         "required": "",
         "sameAs": ""
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",
@@ -1579,7 +1583,8 @@
     "saveChanges": "",
     "saved": "",
     "unsavedChanges": "",
-    "updated": ""
+    "updated": "",
+    "vatNumber": ""
   },
   "formRenderer": {
     "components": {
@@ -1740,6 +1745,7 @@
           "showOptIn": "",
           "title": ""
         },
+        "showOrganisationName": "",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1773,6 +1779,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""
@@ -1812,7 +1819,6 @@
     "insert": "",
     "insertTag": "",
     "tags": {
-      "ACTIVATELINK": "",
       "ANSWERS": "",
       "CALLOUTLINK": "",
       "CALLOUTSLUG": "",
@@ -1821,8 +1827,6 @@
       "EMAIL": "",
       "EXPIRES": "",
       "FNAME": "",
-      "GIFTDATE": "",
-      "GIFTEE": "",
       "ISELIGIBLE": "",
       "LNAME": "",
       "LOGINLINK": "",
@@ -1832,7 +1836,6 @@
       "MESSAGE": "",
       "NAME": "",
       "ORGNAME": "",
-      "PURCHASER": "",
       "REFCODE": "",
       "REFEREENAME": "",
       "RESPNAME": "",

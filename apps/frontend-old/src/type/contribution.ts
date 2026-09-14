@@ -11,6 +11,7 @@ export type ContributionContent = Pick<
   | 'minMonthlyAmount'
   | 'showAbsorbFee'
   | 'showGoogleApplePay'
+  | 'showVatNumber'
   | 'periods'
   | 'paymentMethods'
 >;

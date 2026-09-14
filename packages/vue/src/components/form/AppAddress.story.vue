@@ -8,6 +8,7 @@ const state = reactive({
   line2: '',
   cityOrTown: '',
   postCode: '',
+  country: '',
   required: false,
 });
 </script>
@@ -21,6 +22,7 @@ const state = reactive({
           v-model:line2="state.line2"
           v-model:city-or-town="state.cityOrTown"
           v-model:post-code="state.postCode"
+          v-model:country="state.country"
           :required="state.required"
         />
       </div>
@@ -30,6 +32,7 @@ const state = reactive({
         <HstText v-model="state.line2" title="Address Line 2" />
         <HstText v-model="state.cityOrTown" title="City/Town" />
         <HstText v-model="state.postCode" title="Post Code" />
+        <HstText v-model="state.country" title="Country" />
         <HstCheckbox v-model="state.required" title="Required" />
       </template>
     </Variant>
@@ -41,6 +44,7 @@ const state = reactive({
           v-model:line2="state.line2"
           v-model:city-or-town="state.cityOrTown"
           v-model:post-code="state.postCode"
+          v-model:country="state.country"
         />
       </div>
     </Variant>
@@ -52,6 +56,7 @@ const state = reactive({
           v-model:line2="state.line2"
           v-model:city-or-town="state.cityOrTown"
           v-model:post-code="state.postCode"
+          v-model:country="state.country"
           :required="true"
         />
       </div>

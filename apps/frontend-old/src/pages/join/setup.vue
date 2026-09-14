@@ -39,6 +39,7 @@ const setupContent = ref<ContentJoinSetupData>({
   newsletterTitle: '',
   newsletterGroups: [],
   showNewsletterOptIn: false,
+  showOrganisationName: false,
   showMailOptIn: false,
   mailTitle: '',
   mailText: '',
@@ -61,6 +62,10 @@ async function handleSubmitSetup(data: SetupContactData) {
         newsletterStatus: NewsletterStatus.Subscribed,
         newsletterGroups: data.profile.newsletterGroups,
       }),
+    // Only set the organisation name if the field was visible
+    ...(setupContent.value.showOrganisationName && {
+      organisation: data.organisationName,
+    }),
     // Only set mail opt-in if the opt-in was visible
     ...(setupContent.value.showMailOptIn && {
       deliveryOptIn: data.profile.deliveryOptIn,
@@ -69,6 +74,7 @@ async function handleSubmitSetup(data: SetupContactData) {
         line2: data.addressLine2,
         city: data.cityOrTown,
         postcode: data.postCode,
+        country: data.country,
       },
     }),
   };

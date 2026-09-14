@@ -98,7 +98,8 @@
     "subTitle-nuxt": "",
     "subscriptions": "",
     "title": "",
-    "unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές"
+    "unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές",
+    "vatNumberInfo": ""
   },
   "actions": {
     "add": "",
@@ -1031,7 +1032,6 @@
     },
     "contributionType": {
       "automatic": "",
-      "gift": "",
       "manual": "",
       "none": ""
     },
@@ -1447,6 +1447,7 @@
       "remaining": ""
     },
     "cityOrTown": "",
+    "country": "",
     "deliveryOptIn": "",
     "description": "",
     "email": "ηλεκτρονικό ταχυδρομείο",
@@ -1492,6 +1493,9 @@
         "password": "",
         "required": "",
         "sameAs": ""
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",
@@ -1579,7 +1583,8 @@
     "saveChanges": "",
     "saved": "",
     "unsavedChanges": "",
-    "updated": ""
+    "updated": "",
+    "vatNumber": ""
   },
   "formRenderer": {
     "components": {
@@ -1740,6 +1745,7 @@
           "showOptIn": "",
           "title": ""
         },
+        "showOrganisationName": "",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1773,6 +1779,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""
@@ -1812,7 +1819,6 @@
     "insert": "Εισαγωγή",
     "insertTag": "Εισαγωγή {tag}",
     "tags": {
-      "ACTIVATELINK": "Σύνδεσμος ενεργοποίησης δώρου",
       "ANSWERS": "Μορφοποιημένες απαντήσεις",
       "CALLOUTLINK": "Σύνδεσμος στο CrowdNewsroom",
       "CALLOUTSLUG": "Slug CrowdNewsroom",
@@ -1821,8 +1827,6 @@
       "EMAIL": "Διεύθυνση email επαφής",
       "EXPIRES": "Ημερομηνία λήξης συμμετοχής",
       "FNAME": "Μικρό όνομα",
-      "GIFTDATE": "Ημερομηνία έναρξης δώρου",
-      "GIFTEE": "Όνομα αποδέκτη δώρου",
       "ISELIGIBLE": "Εάν η παραπομπή είναι επιλέξιμη",
       "LNAME": "Επώνυμο",
       "LOGINLINK": "Σύνδεσμος σύνδεσης",
@@ -1832,7 +1836,6 @@
       "MESSAGE": "Προσαρμοσμένο περιεχόμενο μηνύματος",
       "NAME": "Πλήρες όνομα",
       "ORGNAME": "Όνομα οργανισμού",
-      "PURCHASER": "Όνομα αγοραστή δώρου",
       "REFCODE": "Κωδικός παραπομπής επαφής",
       "REFEREENAME": "Όνομα προσελκυόμενου ατόμου",
       "RESPNAME": "Όνομα απαντούμενου",

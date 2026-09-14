@@ -59,6 +59,7 @@ const setupContent = ref<ContentJoinSetupData>({
   newsletterTitle: '',
   newsletterGroups: [],
   showNewsletterOptIn: false,
+  showOrganisationName: false,
   showMailOptIn: false,
   mailTitle: '',
   mailText: '',

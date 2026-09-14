@@ -1,3 +1,5 @@
+import { ActivityEventType } from '@beabee/beabee-common';
+
 import { add } from 'date-fns';
 import Stripe from 'stripe';
 
@@ -7,9 +9,9 @@ import config from '../config/config.js';
 import { getRepository } from '../database.js';
 import { log as mainLogger } from '../logging.js';
 import { ContactContribution, Payment } from '../models/index.js';
+import ActivityService from '../services/ActivityService.js';
 import ContactsService from '../services/ContactsService.js';
 import EmailService from '../services/EmailService.js';
-import GiftService from '../services/GiftService.js';
 import PaymentService from '../services/PaymentService.js';
 import { STRIPE_WEBHOOK_EVENTS } from './stripe.js';
 import {
@@ -41,9 +43,6 @@ export class StripeWebhookEventHandler {
     }
 
     switch (event.type) {
-      case 'checkout.session.completed':
-        await this.handleCheckoutSessionCompleted(event.data.object);
-        break;
       case 'customer.deleted':
         await this.handleCustomerDeleted(event.data.object);
         break;
@@ -65,20 +64,16 @@ export class StripeWebhookEventHandler {
       case 'invoice.payment_failed':
         await this.handleInvoicePaymentFailed(event.data.object);
         break;
+      case 'invoice.voided':
+        await this.handleInvoiceVoided(event.data.object);
+        break;
+      case 'invoice.marked_uncollectible':
+        await this.handleInvoiceMarkedUncollectible(event.data.object);
+        break;
       case 'payment_method.detached':
         await this.handlePaymentMethodDetached(event.data.object);
         break;
     }
-  }
-
-  /**
-   * Processes a completed checkout session, typically used for gift flows
-   * @param session The completed Stripe checkout session
-   */
-  private static async handleCheckoutSessionCompleted(
-    session: Stripe.Checkout.Session
-  ): Promise<void> {
-    await GiftService.completeGiftFlow(session.id);
   }
 
   /**
@@ -276,6 +271,12 @@ export class StripeWebhookEventHandler {
         { amount: invoice.total / 100 }
       );
     }
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactPaymentSuccessful,
+      targetId: contribution.contact.id,
+      metadata: null,
+    });
   }
 
   /**
@@ -287,6 +288,14 @@ export class StripeWebhookEventHandler {
   private static async handleInvoicePaymentFailed(
     invoice: Stripe.Invoice
   ): Promise<void> {
+    const contribution = await this.getContributionFromInvoice(invoice);
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactPaymentFailed,
+      targetId: contribution?.contact.id || null,
+      metadata: null,
+    });
+
     // For now only handle one-time payment invoices
     // TODO: Consider handling subscription invoices too
     if (!isOneTimePaymentInvoice(invoice)) {
@@ -300,7 +309,6 @@ export class StripeWebhookEventHandler {
       log.info(`Marking invoice ${invoice.id} as uncollectible `);
       await stripe.invoices.markUncollectible(invoice.id);
 
-      const contribution = await this.getContributionFromInvoice(invoice);
       if (contribution) {
         await EmailService.sendTemplateToContact(
           'one-time-donation-failed',
@@ -308,6 +316,48 @@ export class StripeWebhookEventHandler {
           { amount: invoice.total / 100 }
         );
       }
+    }
+  }
+
+  /**
+   * Add payment cancelled event when an invoice is marked voided
+   *
+   * @param invoice The Stripe invoice
+   */
+  private static async handleInvoiceVoided(
+    invoice: Stripe.Invoice
+  ): Promise<void> {
+    const contribution = await this.getContributionFromInvoice(invoice);
+    if (contribution) {
+      log.info('Invoice marked voided by Stripe');
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.ContactPaymentCancelled,
+        targetId: contribution?.contact.id || null,
+        metadata: null,
+      });
+    } else {
+      log.info('Ignoring invoice with unknown customer ' + invoice.id);
+    }
+  }
+
+  /**
+   * Add payment cancelled event when an invoice is marked voided
+   *
+   * @param invoice The Stripe invoice
+   */
+  private static async handleInvoiceMarkedUncollectible(
+    invoice: Stripe.Invoice
+  ): Promise<void> {
+    const contribution = await this.getContributionFromInvoice(invoice);
+    if (contribution) {
+      log.info('Invoice marked uncollectible by Stripe');
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.ContactPaymentCancelled,
+        targetId: contribution?.contact.id || null,
+        metadata: null,
+      });
+    } else {
+      log.info('Ignoring invoice with unknown customer ' + invoice.id);
     }
   }
 
