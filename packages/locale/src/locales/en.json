@@ -1590,7 +1590,6 @@
         "reRecord": "Record again",
         "record": "Start recording",
         "recording": "Recording",
-        "remaining": "{time} remaining. Recording stops automatically at the limit.",
         "requestingPermission": "Waiting for microphone permission. Allow access in your browser to continue.",
         "resume": "Resume",
         "stop": "Stop",

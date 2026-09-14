@@ -1597,7 +1597,6 @@
         "reRecord": "Enregistrer à nouveau",
         "record": "Démarrer l'enregistrement",
         "recording": "Enregistrement en cours",
-        "remaining": "{time} restantes. L'enregistrement s'arrête automatiquement à la limite.",
         "requestingPermission": "En attente de l'autorisation du microphone. Autorisez l'accès dans votre navigateur pour continuer.",
         "resume": "Reprendre",
         "stop": "Arrêter",

@@ -1593,7 +1593,6 @@
         "reRecord": "Neu aufnehmen",
         "record": "Aufnahme starten",
         "recording": "Es wird aufgenommen.",
-        "remaining": "Noch {time}. Dann stoppt die Aufnahme von selbst.",
         "requestingPermission": "Warte auf das Mikrofon. Erlaube den Zugriff in deinem Browser.",
         "resume": "Weiter",
         "stop": "Stopp",

@@ -1593,7 +1593,6 @@
         "reRecord": "Registra di nuovo",
         "record": "Avvia registrazione",
         "recording": "Registrazione in corso",
-        "remaining": "Mancano {time}. La registrazione si interrompe automaticamente al limite.",
         "requestingPermission": "In attesa dell'autorizzazione al microfono. Consenti l'accesso nel browser per continuare.",
         "resume": "Riprendi",
         "stop": "Interrompi",

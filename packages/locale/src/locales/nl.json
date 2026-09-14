@@ -1593,7 +1593,6 @@
         "reRecord": "Opnieuw opnemen",
         "record": "Opname starten",
         "recording": "Bezig met opnemen",
-        "remaining": "Nog {time}. De opname stopt automatisch bij de limiet.",
         "requestingPermission": "Wachten op microfoontoegang. Sta toegang toe in je browser om door te gaan.",
         "resume": "Hervatten",
         "stop": "Stoppen",

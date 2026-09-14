@@ -1591,7 +1591,6 @@
         "reRecord": "Grabar de nuevo",
         "record": "Empezar a grabar",
         "recording": "Grabando",
-        "remaining": "Quedan {time}. La grabación se detiene automáticamente al llegar al límite.",
         "requestingPermission": "Esperando permiso del micrófono. Permite el acceso en tu navegador para continuar.",
         "resume": "Reanudar",
         "stop": "Detener",

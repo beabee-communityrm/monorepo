@@ -318,8 +318,7 @@
 
     .audio-recorder-or,
     .audio-recorder-formats,
-    .audio-recorder-hint,
-    .audio-recorder-remaining {
+    .audio-recorder-hint {
       @apply text-sm text-body-80;
     }
     .audio-recorder-formats {

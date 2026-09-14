@@ -1593,7 +1593,6 @@
         "reRecord": "Erneut aufnehmen",
         "record": "Aufnahme starten",
         "recording": "Aufnahme läuft",
-        "remaining": "{time} verbleibend. Die Aufnahme stoppt automatisch bei Erreichen des Limits.",
         "requestingPermission": "Warten auf Mikrofonzugriff. Bitte erlaube den Zugriff in deinem Browser, um fortzufahren.",
         "resume": "Fortsetzen",
         "stop": "Stopp",

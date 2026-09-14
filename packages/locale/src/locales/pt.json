@@ -1593,7 +1593,6 @@
         "reRecord": "Gravar novamente",
         "record": "Iniciar gravação",
         "recording": "A gravar",
-        "remaining": "Faltam {time}. A gravação para automaticamente ao atingir o limite.",
         "requestingPermission": "A aguardar permissão do microfone. Permite o acesso no teu navegador para continuar.",
         "resume": "Retomar",
         "stop": "Parar",

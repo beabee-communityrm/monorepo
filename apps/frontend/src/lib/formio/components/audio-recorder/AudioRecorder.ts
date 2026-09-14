@@ -181,7 +181,6 @@ export default class AudioRecorderComponent extends FileComponent {
   private liveBars: HTMLElement[] = [];
   private pauseButton: HTMLButtonElement | null = null;
   private resumeButton: HTMLButtonElement | null = null;
-  private remainingLabel: HTMLElement | null = null;
 
   private uploadingFileName: HTMLElement | null = null;
 
@@ -484,10 +483,7 @@ export default class AudioRecorderComponent extends FileComponent {
       discardButton
     );
 
-    this.remainingLabel = document.createElement('p');
-    this.remainingLabel.className = 'audio-recorder-remaining';
-
-    block.append(row, barsContainer, controls, this.remainingLabel);
+    block.append(row, barsContainer, controls);
     return block;
   }
 
@@ -923,15 +919,6 @@ export default class AudioRecorderComponent extends FileComponent {
     }
     if (this.pauseButton) this.pauseButton.hidden = paused;
     if (this.resumeButton) this.resumeButton.hidden = !paused;
-    if (this.remainingLabel) {
-      const remaining = formatTime(
-        (MAX_RECORDING_DURATION_MS - this.elapsedMs) / 1000
-      );
-      this.remainingLabel.textContent = t(
-        'formRenderer.components.audioRecorder.remaining',
-        { time: remaining }
-      );
-    }
   }
 
   // ---------------------------------------------------------------------
