@@ -1689,6 +1689,10 @@
   },
   "login": {
     "backTo": "Назад к {newsroomName}",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "Забыли пароль?",
     "joinNow": "Присоединяйся к нам!",
     "lostMfaDevice": "Потеряли устройство для двухфакторной аутентификации?",

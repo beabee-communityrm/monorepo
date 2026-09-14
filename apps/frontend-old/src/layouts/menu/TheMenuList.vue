@@ -47,7 +47,7 @@ import { useRouter } from 'vue-router';
 import { client } from '#utils/api';
 
 import env from '../../env';
-import { canAdmin } from '../../store';
+import { canAdmin, generalContent } from '../../store';
 import TheMenuListItem from './TheMenuListItem.vue';
 import TheMenuListSection from './TheMenuListSection.vue';
 import { adminMenu, menu } from './menu-list';
@@ -56,8 +56,13 @@ const { t } = useI18n();
 
 const router = useRouter();
 const doLogout = () => {
-  client.auth.logout();
-  router.push('/auth/login');
+  if (generalContent.value.oidcEnabled) {
+    // Full-page navigation so the identity provider session is ended too
+    window.location.href = client.auth.getLogoutUrl();
+  } else {
+    client.auth.logout();
+    router.push('/auth/login');
+  }
 };
 
 const adminMenuVisible = computed(() =>

@@ -1688,6 +1688,10 @@
   },
   "login": {
     "backTo": "Назад до {newsroomName}",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "Забули пароль?",
     "joinNow": "Приєднуйтесь зараз!",
     "lostMfaDevice": "Втратили свій пристрій 2FA?",
