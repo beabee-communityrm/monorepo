@@ -32,6 +32,7 @@
       :payment-data="data"
       :return-url="client.signup.completeUrl"
       show-name-fields
+      :show-vat-number="joinContent.showVatNumber"
     />
     <div
       v-if="paymentContent.noticeText"

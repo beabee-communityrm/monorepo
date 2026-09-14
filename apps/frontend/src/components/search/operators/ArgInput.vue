@@ -14,6 +14,7 @@
     v-else-if="item.type === 'enum' || (item.type === 'array' && item.options)"
     v-model="value"
     :items="item.options || []"
+    :searchable="(item.options?.length ?? 0) > 10"
     required
   />
   <DateInput

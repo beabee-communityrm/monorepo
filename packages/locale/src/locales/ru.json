@@ -98,7 +98,8 @@
     "subTitle-nuxt": "Обязательные поля отмечены звёздочкой. Вся информация, которой вы делитесь, конфиденциальна.",
     "subscriptions": "Подписки",
     "title": "Профиль",
-    "unsavedChanges": "У вас есть несохранённые изменения"
+    "unsavedChanges": "У вас есть несохранённые изменения",
+    "vatNumberInfo": "Чтобы изменить номер НДС, напишите на support{'@'}beabee.io"
   },
   "actions": {
     "add": "Добавить",
@@ -1032,7 +1033,6 @@
     },
     "contributionType": {
       "automatic": "Автоматически",
-      "gift": "Подарок",
       "manual": "Вручную",
       "none": "Отсутствует"
     },
@@ -1448,6 +1448,7 @@
       "remaining": ""
     },
     "cityOrTown": "Город",
+    "country": "",
     "deliveryOptIn": "Согласие на рассылку",
     "description": "Описание",
     "email": "Почта",
@@ -1493,6 +1494,9 @@
         "password": "Некорректный пароль",
         "required": "Нужно установить пароль",
         "sameAs": "Пароли не совпадают"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",
@@ -1580,7 +1584,8 @@
     "saveChanges": "Сохранить изменения",
     "saved": "Изменения сохранены",
     "unsavedChanges": "Есть несохранённые изменения",
-    "updated": ""
+    "updated": "",
+    "vatNumber": "Номер НДС"
   },
   "formRenderer": {
     "components": {
@@ -1745,6 +1750,7 @@
           "showOptIn": "",
           "title": "Рассылка"
         },
+        "showOrganisationName": "Запрашивать название организации",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1778,6 +1784,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""
@@ -1817,7 +1824,6 @@
     "insert": "Вставить",
     "insertTag": "Вставить {tag}",
     "tags": {
-      "ACTIVATELINK": "Ссылка активации подарка",
       "ANSWERS": "Форматированные ответы",
       "CALLOUTLINK": "Ссылка на CrowdNewsroom",
       "CALLOUTSLUG": "Slug CrowdNewsroom",
@@ -1826,8 +1832,6 @@
       "EMAIL": "Адрес электронной почты контакта",
       "EXPIRES": "Дата истечения членства",
       "FNAME": "Имя контакта",
-      "GIFTDATE": "Дата начала подарка",
-      "GIFTEE": "Имя получателя подарка",
       "ISELIGIBLE": "Является ли реферал правомочным",
       "LNAME": "Фамилия контакта",
       "LOGINLINK": "Ссылка входа",
@@ -1837,7 +1841,6 @@
       "MESSAGE": "Пользовательское содержимое сообщения",
       "NAME": "Полное имя контакта",
       "ORGNAME": "Название организации",
-      "PURCHASER": "Имя покупателя подарка",
       "REFCODE": "Реферальный код контакта",
       "REFEREENAME": "Имя рекомендуемого лица",
       "RESPNAME": "Имя респондента",

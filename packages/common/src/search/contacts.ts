@@ -1,4 +1,5 @@
 import {
+  COUNTRY_CODES,
   ContributionPeriod,
   ContributionType,
   NewsletterStatus,
@@ -35,7 +36,6 @@ export const contactFilters = {
     type: 'enum',
     options: [
       ContributionType.Automatic,
-      ContributionType.Gift,
       ContributionType.Manual,
       ContributionType.None,
     ] satisfies ContributionType[] as ContributionType[],
@@ -92,6 +92,14 @@ export const contactFilters = {
   },
   manualPaymentSource: {
     type: 'text',
+    nullable: true,
+  },
+  organisation: {
+    type: 'text',
+  },
+  deliveryAddressCountry: {
+    type: 'enum',
+    options: COUNTRY_CODES,
     nullable: true,
   },
   tags: {

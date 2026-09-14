@@ -10,7 +10,6 @@ export * from './ContactsService.js';
 export * from './DispatchService.js';
 export * from './DocumentService.js';
 export * from './EmailService.js';
-export * from './GiftService.js';
 export * from './ImageService.js';
 export * from './LegacyImageService.js';
 export * from './NetworkCommunicatorService.js';

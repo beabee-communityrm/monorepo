@@ -98,7 +98,8 @@
     "subTitle-nuxt": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subscriptions": "Abonnements",
     "title": "Account",
-    "unsavedChanges": "Sie haben ungespeicherte Änderungen"
+    "unsavedChanges": "Sie haben ungespeicherte Änderungen",
+    "vatNumberInfo": "Wenden Sie sich an support{'@'}beabee.io, um die Umsatzsteuer-ID zu ändern"
   },
   "actions": {
     "add": "Hinzufügen",
@@ -1031,7 +1032,6 @@
     },
     "contributionType": {
       "automatic": "Automatisch",
-      "gift": "Geschenk",
       "manual": "Manuell",
       "none": "None"
     },
@@ -1445,6 +1445,7 @@
       "remaining": "Es verbleiben {remaining} Zeichen."
     },
     "cityOrTown": "Ort",
+    "country": "Land",
     "deliveryOptIn": "Einverständnis zur Postsendung",
     "description": "Bezeichnung",
     "email": "E-Mail",
@@ -1490,6 +1491,9 @@
         "password": "Passwort ungültig",
         "required": "Passwort benötigt",
         "sameAs": "Passwörter stimmen nicht überein"
+      },
+      "country": {
+        "required": "Land benötigt"
       },
       "description": {
         "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten",
@@ -1577,7 +1581,8 @@
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
     "unsavedChanges": "Ungespeicherte Änderungen",
-    "updated": "Aktualisiert"
+    "updated": "Aktualisiert",
+    "vatNumber": "Umsatzsteuer-ID"
   },
   "formRenderer": {
     "components": {
@@ -1738,6 +1743,7 @@
           "showOptIn": "Nach Newsletterabonnement fragen",
           "title": "Newsletter"
         },
+        "showOrganisationName": "Nach Organisationsname fragen",
         "text": "Neue Mitglieder müssen ihre Registrierung in folgendem Bildschirm bestätigen. Außerdem werden hier persönliche Informationen abgefragt.",
         "title": "Persönliche Informationen abfragen",
         "welcomeMessage": "Willkommensnachricht"
@@ -1771,6 +1777,7 @@
         "showAbsorbFee": "Nutzer um Ausgleich der Gebühren bitten",
         "showGoogleApplePay": "Apple Pay- und Google Pay-Zahlungsicons anzeigen",
         "showNoContribution": "Registrierung ohne Zahlung erlauben",
+        "showVatNumber": "Nutzer um Umsatzsteuer-ID bitten",
         "suggestedAmounts": "Beiträge vorschlagen",
         "text": "In diesem Abschnitt kannst du dein Registrierungsformular bearbeiten, optimieren und ansehen.",
         "title": "Registrierung"
@@ -1810,7 +1817,6 @@
     "insert": "Einfügen",
     "insertTag": "{tag} einfügen",
     "tags": {
-      "ACTIVATELINK": "Geschenk-Aktivierungslink",
       "ANSWERS": "Formatierte Antwort-Zusammenfassung",
       "CALLOUTLINK": "Link zur CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom-Slug",
@@ -1819,8 +1825,6 @@
       "EMAIL": "E-Mail-Adresse des Kontakts",
       "EXPIRES": "Ablaufdatum der Mitgliedschaft",
       "FNAME": "Vorname",
-      "GIFTDATE": "Startdatum des Geschenks",
-      "GIFTEE": "Name des Geschenkempfängers",
       "ISELIGIBLE": "Ob die Empfehlung berechtigt ist",
       "LNAME": "Nachname",
       "LOGINLINK": "Login-Link",
@@ -1830,7 +1834,6 @@
       "MESSAGE": "Benutzerdefinierte Nachricht",
       "NAME": "Vollständiger Name",
       "ORGNAME": "Name der Organisation",
-      "PURCHASER": "Name des Geschenkkäufers",
       "REFCODE": "Empfehlungs-Code des Kontakts",
       "REFEREENAME": "Name der geworbenen Person",
       "RESPNAME": "Name des Antwortenden",

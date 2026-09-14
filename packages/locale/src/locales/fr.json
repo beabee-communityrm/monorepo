@@ -98,7 +98,8 @@
     "subTitle-nuxt": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
     "subscriptions": "Abonnements",
     "title": "Compte",
-    "unsavedChanges": "Vous avez des modifications non enregistrées"
+    "unsavedChanges": "Vous avez des modifications non enregistrées",
+    "vatNumberInfo": "Contactez support{'@'}beabee.io pour mettre à jour le numéro de TVA"
   },
   "actions": {
     "add": "Ajouter",
@@ -1035,7 +1036,6 @@
     },
     "contributionType": {
       "automatic": "Automatique",
-      "gift": "Cadeau",
       "manual": "Manuel",
       "none": "Aucun"
     },
@@ -1451,6 +1451,7 @@
       "remaining": "{remaining} caractères restants."
     },
     "cityOrTown": "Ville",
+    "country": "",
     "deliveryOptIn": "",
     "description": "Description",
     "email": "E-mail",
@@ -1496,6 +1497,9 @@
         "password": "Mot de passe invalide",
         "required": "Le mot de passe est obligatoire",
         "sameAs": "Les mots de passe ne correspondent pas"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",
@@ -1583,7 +1587,8 @@
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",
     "unsavedChanges": "Modifications non enregistrées",
-    "updated": "Mis à jour"
+    "updated": "Mis à jour",
+    "vatNumber": "Numéro de TVA"
   },
   "formRenderer": {
     "components": {
@@ -1744,6 +1749,7 @@
           "showOptIn": "Inviter à s'inscrire à la lettre d'information",
           "title": "Lettre d'information"
         },
+        "showOrganisationName": "Demander le nom de l'organisation",
         "text": "Les utilisateurs devront confirmer leur inscription. Ici vous pouvez définir les informations de l'écran de confirmation.",
         "title": "Confirmation du compte",
         "welcomeMessage": "Message de bienvenue"
@@ -1777,6 +1783,7 @@
         "showAbsorbFee": "Proposer aux utilisateurs de prendre en charge les frais de paiement",
         "showGoogleApplePay": "",
         "showNoContribution": "Autoriser les utilisateurs à s'inscrire sans cotisation",
+        "showVatNumber": "Demander aux utilisateurs leur numéro de TVA",
         "suggestedAmounts": "Montants de cotisation suggérés",
         "text": "Dans cette section, vous pouvez modifier, ajuster et prévisualiser votre formulaire d'adhésion.",
         "title": "Formulaire d'inscription"
@@ -1816,7 +1823,6 @@
     "insert": "Insérer",
     "insertTag": "Insérer {tag}",
     "tags": {
-      "ACTIVATELINK": "Lien d'activation du cadeau",
       "ANSWERS": "Réponses formatées",
       "CALLOUTLINK": "Lien vers CrowdNewsroom",
       "CALLOUTSLUG": "Slug de CrowdNewsroom",
@@ -1825,8 +1831,6 @@
       "EMAIL": "Adresse e-mail du contact",
       "EXPIRES": "Date d'expiration de l'adhésion",
       "FNAME": "Prénom du contact",
-      "GIFTDATE": "Date de début du cadeau",
-      "GIFTEE": "Nom du bénéficiaire du cadeau",
       "ISELIGIBLE": "Si le parrainage est éligible",
       "LNAME": "Nom de famille du contact",
       "LOGINLINK": "Lien de connexion",
@@ -1836,7 +1840,6 @@
       "MESSAGE": "Contenu du message personnalisé",
       "NAME": "Nom complet du contact",
       "ORGNAME": "Nom de l'organisation",
-      "PURCHASER": "Nom de l'acheteur du cadeau",
       "REFCODE": "Code de parrainage du contact",
       "REFEREENAME": "Nom de la personne parrainée",
       "RESPNAME": "Nom du répondant",

@@ -1,4 +1,5 @@
 import {
+  ActivityEventType,
   BaseNewsletterGroupData,
   NewsletterDiffData,
   NewsletterIntegrationData,
@@ -18,6 +19,7 @@ import {
   NoneProvider,
   TestProvider,
 } from '#providers/newsletter/index';
+import ActivityService from '#services/ActivityService';
 import {
   ContactNewsletterUpdates,
   NewsletterContact,
@@ -117,6 +119,19 @@ class NewsletterService {
     });
     contact.profile.newsletterStatus = newState.status;
     contact.profile.newsletterGroups = newState.groups;
+
+    const oldGroups = contact.profile.newsletterGroups;
+    const groupsChanged =
+      oldGroups.length !== newState.groups.length ||
+      oldGroups.some((g) => !newState.groups.includes(g));
+
+    if (groupsChanged) {
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.ContactNewsletterGroupsUpdated,
+        targetId: contact.id,
+        metadata: null,
+      });
+    }
   }
 
   /**
@@ -327,6 +342,12 @@ class NewsletterService {
       if (diff.length > 0) {
         // Update cache
         optionsService.setJSON('newsletter-groups', providerGroups);
+
+        await ActivityService.addEvent({
+          eventType: ActivityEventType.NewsletterGroupsUpdated,
+          targetId: null,
+          metadata: null,
+        });
 
         const removedGroups = diff.filter((g) => g.action === 'removed');
 
