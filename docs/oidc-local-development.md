@@ -32,12 +32,7 @@ needed.
   with user management permissions
 - Email is the username and cannot be changed by users themselves, matching
   how the production IdP is meant to behave
-- Two test accounts, password `password`, with fixed subject IDs:
-
-  | Email                      | Subject                                |
-  | -------------------------- | -------------------------------------- |
-  | keycloak-test1@example.com | `b0a2b1c4-0000-4000-8000-000000000001` |
-  | keycloak-test2@example.com | `b0a2b1c4-0000-4000-8000-000000000002` |
+- No accounts: they are created by beabee when contacts are provisioned
 
 The realm is re-imported from the JSON file whenever the container is
 recreated; changes made in the admin console are not persisted.
@@ -46,14 +41,16 @@ recreated; changes made in the admin console are not persisted.
 
 With the provider enabled, contacts created through the join flow or the admin
 UI appear in the Keycloak realm and get their `idpSubject` set; email and name
-changes and deletions follow. To link the two test accounts, create contacts
-with matching emails and run:
+changes and deletions follow. Contacts that existed before the provider was
+enabled are provisioned in bulk:
 
 ```sh
-yarn backend-cli user link        # match unlinked contacts by email
-yarn backend-cli user provision   # create accounts for the remaining ones
 yarn backend-cli user list --unlinked
+yarn backend-cli user provision
 ```
+
+To log in as a provisioned account, give it a password in the Keycloak admin
+console (Users → Credentials).
 
 Host-side CLI commands rely on the operating system resolving
 `auth.localhost` (Linux with systemd-resolved does; macOS does not). Where it

@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import type { Contact } from '#models/index';
+
 import { KeycloakProvider } from './KeycloakProvider';
 
 const settings = {
@@ -34,27 +36,29 @@ describe('KeycloakProvider', () => {
   it('caches the access token until it expires', async () => {
     const fetch = mockFetch(
       tokenResponse(),
-      new Response(JSON.stringify([])),
-      new Response(JSON.stringify([]))
+      new Response(null, { status: 204 }),
+      new Response(null, { status: 204 })
     );
 
     const provider = new KeycloakProvider(settings);
-    await provider.findSubjectByEmail('a@example.com');
-    await provider.findSubjectByEmail('b@example.com');
+    await provider.permanentlyDeleteContact('sub-1');
+    await provider.permanentlyDeleteContact('sub-2');
 
     // One token request plus two API requests
     expect(fetch).toHaveBeenCalledTimes(3);
   });
 
-  it('refuses to pick between multiple matches', async () => {
-    mockFetch(
-      tokenResponse(),
-      new Response(JSON.stringify([{ id: 'sub-1' }, { id: 'sub-2' }]))
-    );
+  it('rejects a creation response without the new user location', async () => {
+    mockFetch(tokenResponse(), new Response(null, { status: 201 }));
 
     const provider = new KeycloakProvider(settings);
+    // Only the mirrored fields matter to the provider
     await expect(
-      provider.findSubjectByEmail('test@example.com')
-    ).rejects.toThrow('Multiple Keycloak users match');
+      provider.createContact({
+        email: 'test@example.com',
+        firstname: '',
+        lastname: '',
+      } as Contact)
+    ).rejects.toThrow('did not return the new user location');
   });
 });

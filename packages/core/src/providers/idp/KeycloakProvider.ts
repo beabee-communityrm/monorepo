@@ -91,19 +91,6 @@ export class KeycloakProvider implements IdpProvider {
     return subject;
   }
 
-  async findSubjectByEmail(email: string): Promise<string | null> {
-    const resp = await this.request(
-      'GET',
-      `/users?email=${encodeURIComponent(email)}&exact=true`
-    );
-    // Shape defined by the Keycloak admin API user representation
-    const users = (await resp.json()) as { id: string }[];
-    if (users.length > 1) {
-      throw new Error(`Multiple Keycloak users match ${email}`);
-    }
-    return users[0]?.id || null;
-  }
-
   async updateContact(
     subject: string,
     contact: Contact,
