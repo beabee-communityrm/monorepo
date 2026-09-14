@@ -4,6 +4,7 @@ meta:
   pageTitle: pageTitle.setPassword
   layout: Auth
   noAuth: true
+  passwordAuth: true
 </route>
 
 <template>
