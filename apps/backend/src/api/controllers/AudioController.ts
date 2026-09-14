@@ -3,8 +3,14 @@ import {
   isSupportedAudioType,
 } from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
+import {
+  BadRequestError,
+  UnauthorizedError,
+  UnsupportedFileTypeError,
+} from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
-import { AudioMetadata, audioService } from '@beabee/core/services';
+import { audioService } from '@beabee/core/services';
 
 import { Request, Response } from 'express';
 import {
@@ -19,23 +25,13 @@ import {
   Res,
   UseBefore,
 } from 'routing-controllers';
+import { pipeline } from 'stream/promises';
 
 import { RateLimit } from '../decorators/index.js';
-import { FileController } from './FileController.js';
+import { uploadMiddleware } from '../middlewares/index.js';
 
 @JsonController('/audio')
-export class AudioController extends FileController<AudioMetadata> {
-  protected readonly typeName = 'audio';
-  protected readonly pathPrefix = 'audio';
-  protected readonly allowedMimeTypes = ALLOWED_AUDIO_MIME_TYPES;
-  protected readonly contentSecurityPolicy = "default-src 'self'";
-
-  protected isSupportedType = isSupportedAudioType;
-  protected uploadFile = audioService.upload.bind(audioService);
-  protected getFileMetadata = audioService.getMetadata.bind(audioService);
-  protected getFileStream = audioService.getStream.bind(audioService);
-  protected deleteFile = audioService.delete.bind(audioService);
-
+export class AudioController {
   /**
    * Upload a new audio file
    */
@@ -47,19 +43,89 @@ export class AudioController extends FileController<AudioMetadata> {
       user: { points: 50, duration: 60 * 60 },
     })
   )
-  upload(
+  async upload(
     @Req() req: Request,
     @CurrentUser({ required: false }) contact?: Contact
   ): Promise<UploadFileResponse> {
-    return this.handleUpload(req, contact?.email);
+    const file = await uploadMiddleware(req);
+
+    if (!file) {
+      throw new BadRequestError('No audio file provided');
+    }
+
+    // Verify file type is allowed before consuming the stream
+    if (!isSupportedAudioType(file.mimetype)) {
+      file.stream.resume(); // Drain the stream so the request completes
+      throw new UnsupportedFileTypeError(
+        file.mimetype,
+        ALLOWED_AUDIO_MIME_TYPES
+      );
+    }
+
+    // Use the AudioService to upload the file with owner information
+    const metadata = await audioService.upload(
+      file.stream,
+      file.filename,
+      file.mimetype,
+      contact?.email // Add the owner information if available
+    );
+
+    const path = `audio/${metadata.id}`;
+
+    // Create response object
+    const response: UploadFileResponse = {
+      id: metadata.id,
+      url: `${config.audience}/api/1.0/${path}`,
+      path,
+      hash: metadata.hash,
+    };
+
+    // Only add filename if it exists
+    if (metadata.filename) {
+      response.filename = metadata.filename;
+    }
+
+    return response;
   }
 
   /**
    * Get an audio file
    */
   @Get('/:id')
-  get(@Res() res: Response, @Param('id') id: string): Promise<Response> {
-    return this.handleGet(res, id);
+  async getAudio(
+    @Res() res: Response,
+    @Param('id') id: string
+  ): Promise<Response> {
+    // Get the filename first, this also throws if the audio file doesn't exist
+    const metadata = await audioService.getMetadata(id);
+
+    // Get audio as stream
+    const audioData = await audioService.getStream(id);
+
+    // Set appropriate security headers
+    res.set({
+      'Content-Type': audioData.contentType,
+      'Content-Disposition': `inline; filename="${metadata.filename || id}"`,
+      'Cache-Control': 'public, max-age=86400',
+      'X-Content-Type-Options': 'nosniff',
+      'Content-Security-Policy': "default-src 'self'",
+      'X-Frame-Options': 'SAMEORIGIN',
+    });
+
+    // Stream the audio file to the response
+    try {
+      await pipeline(audioData.stream, res);
+    } catch (error) {
+      if (!res.headersSent) {
+        throw new BadRequestError(`Failed to stream audio (${id})`);
+      }
+      // Too late for an error response, abort the connection
+      res.destroy();
+    }
+
+    // Returning the response object tells routing-controllers the response
+    // has been handled
+    return res;
   }
 
   /**
@@ -67,10 +133,24 @@ export class AudioController extends FileController<AudioMetadata> {
    */
   @Delete('/:id')
   @Authorized()
-  delete(
+  async deleteAudio(
     @Param('id') id: string,
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
-    return this.handleDelete(id, contact);
+    // Get audio metadata first to check ownership
+    const metadata = await audioService.getMetadata(id);
+
+    // Check if the user is the owner of the audio file
+    // Only allow the audio owner or admins to delete audio files
+    if (
+      metadata.owner &&
+      metadata.owner !== contact.email &&
+      !contact.hasRole('admin')
+    ) {
+      throw new UnauthorizedError();
+    }
+
+    const success = await audioService.delete(id);
+    return { success };
   }
 }

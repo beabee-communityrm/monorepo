@@ -3,9 +3,14 @@ import {
   isSupportedImageType,
 } from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
+import { config } from '@beabee/core/config';
+import {
+  BadRequestError,
+  UnauthorizedError,
+  UnsupportedFileTypeError,
+} from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
-import { imageService } from '@beabee/core/services';
-import type { ImageMetadata } from '@beabee/core/type';
+import { imageService } from '@beabee/core/services/ImageService';
 
 import { Request, Response } from 'express';
 import {
@@ -21,30 +26,13 @@ import {
   Res,
   UseBefore,
 } from 'routing-controllers';
-import { Readable } from 'stream';
+import { pipeline } from 'stream/promises';
 
 import { RateLimit } from '../decorators/index.js';
-import { FileController } from './FileController.js';
+import { uploadMiddleware } from '../middlewares/index.js';
 
 @JsonController('/images')
-export class ImageController extends FileController<ImageMetadata> {
-  protected readonly typeName = 'image';
-  protected readonly pathPrefix = 'images';
-  protected readonly allowedMimeTypes = ALLOWED_IMAGE_MIME_TYPES;
-  protected readonly contentSecurityPolicy = "img-src 'self'";
-
-  protected isSupportedType = isSupportedImageType;
-  // uploadImage doesn't take a mimetype - it detects the format itself
-  protected uploadFile = (
-    stream: Readable,
-    filename: string,
-    _mimetype: string,
-    owner?: string
-  ) => imageService.uploadImage(stream, filename, owner);
-  protected getFileMetadata = imageService.getImageMetadata.bind(imageService);
-  protected getFileStream = imageService.getImageStream.bind(imageService);
-  protected deleteFile = imageService.deleteImage.bind(imageService);
-
+export class ImageController {
   /**
    * Upload a new image
    */
@@ -56,23 +44,88 @@ export class ImageController extends FileController<ImageMetadata> {
       user: { points: 50, duration: 60 * 60 },
     })
   )
-  upload(
+  async upload(
     @Req() req: Request,
     @CurrentUser({ required: false }) contact?: Contact
   ): Promise<UploadFileResponse> {
-    return this.handleUpload(req, contact?.email);
+    const file = await uploadMiddleware(req);
+
+    if (!file) {
+      throw new BadRequestError('No image file provided');
+    }
+
+    // Verify file type is allowed before consuming the stream
+    if (!isSupportedImageType(file.mimetype)) {
+      file.stream.resume(); // Drain the stream so the request completes
+      throw new UnsupportedFileTypeError(
+        file.mimetype,
+        ALLOWED_IMAGE_MIME_TYPES
+      );
+    }
+
+    // Use the ImageService to upload and process the file
+    const metadata = await imageService.uploadImage(
+      file.stream,
+      file.filename,
+      contact?.email // Only add owner information if available
+    );
+
+    const path = `images/${metadata.id}`;
+
+    const response: UploadFileResponse = {
+      id: metadata.id,
+      url: `${config.audience}/api/1.0/${path}`,
+      path,
+      hash: metadata.hash,
+    };
+
+    // Only add filename if it exists
+    if (metadata.filename) {
+      response.filename = metadata.filename;
+    }
+
+    return response;
   }
 
   /**
    * Get an image with optional resizing
    */
   @Get('/:id')
-  get(
+  async getImage(
     @Res() res: Response,
     @Param('id') id: string,
     @QueryParam('w', { required: false }) width?: number
   ): Promise<Response> {
-    return this.handleGet(res, id, width);
+    // Get the filename first, this also throws if the image doesn't exist
+    const metadata = await imageService.getImageMetadata(id);
+
+    // Get image as stream
+    const imageData = await imageService.getImageStream(id, width);
+
+    // Set appropriate security headers
+    res.set({
+      'Content-Type': imageData.contentType,
+      'Content-Disposition': `inline; filename="${metadata.filename || id}"`,
+      'Cache-Control': 'public, max-age=86400',
+      'X-Content-Type-Options': 'nosniff',
+      'Content-Security-Policy': "img-src 'self'",
+      'X-Frame-Options': 'SAMEORIGIN',
+    });
+
+    // Stream the image to the response
+    try {
+      await pipeline(imageData.stream, res);
+    } catch (error) {
+      if (!res.headersSent) {
+        throw new BadRequestError(`Failed to stream image (${id})`);
+      }
+      // Too late for an error response, abort the connection
+      res.destroy();
+    }
+
+    // Returning the response object tells routing-controllers the response
+    // has been handled
+    return res;
   }
 
   /**
@@ -80,10 +133,23 @@ export class ImageController extends FileController<ImageMetadata> {
    */
   @Delete('/:id')
   @Authorized()
-  delete(
+  async deleteImage(
     @Param('id') id: string,
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
-    return this.handleDelete(id, contact);
+    // Get image metadata first to check ownership
+    const metadata = await imageService.getImageMetadata(id);
+
+    // Check if user is the owner of the image or an admin
+    if (
+      metadata.owner &&
+      metadata.owner !== contact.email &&
+      !contact.hasRole('admin')
+    ) {
+      throw new UnauthorizedError();
+    }
+
+    const success = await imageService.deleteImage(id);
+    return { success };
   }
 }
