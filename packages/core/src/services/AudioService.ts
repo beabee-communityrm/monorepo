@@ -22,17 +22,6 @@ export class AudioService extends FileService<AudioMetadata> {
   protected isSupportedType(mimetype: string): boolean {
     return isSupportedAudioType(mimetype);
   }
-
-  // Existing public API, kept unchanged for callers - delegates to the
-  // shared FileService implementation.
-  uploadAudio = this.upload.bind(this);
-  getAudioStream = this.getStream.bind(this);
-  getAudioBuffer = this.getBuffer.bind(this);
-  deleteAudio = this.delete.bind(this);
-  getAudioMetadata = this.getMetadata.bind(this);
-  getAudioHash = this.getHash.bind(this);
-  audioExists = this.exists.bind(this);
-  listAudio = this.list.bind(this);
 }
 
 export const audioService = new AudioService(config.audio);

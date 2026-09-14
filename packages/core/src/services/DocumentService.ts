@@ -45,17 +45,6 @@ export class DocumentService extends FileService<DocumentMetadata> {
       );
     }
   }
-
-  // Existing public API, kept unchanged for callers - delegates to the
-  // shared FileService implementation.
-  uploadDocument = this.upload.bind(this);
-  getDocumentStream = this.getStream.bind(this);
-  getDocumentBuffer = this.getBuffer.bind(this);
-  deleteDocument = this.delete.bind(this);
-  getDocumentMetadata = this.getMetadata.bind(this);
-  getDocumentHash = this.getHash.bind(this);
-  documentExists = this.exists.bind(this);
-  listDocuments = this.list.bind(this);
 }
 
 export const documentService = new DocumentService(config.document);

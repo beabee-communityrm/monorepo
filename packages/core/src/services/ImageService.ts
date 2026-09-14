@@ -77,12 +77,6 @@ export class ImageService extends FileService<
     return isSupportedImageType(mimetype);
   }
 
-  // Existing public API for the pieces FileService's implementation matches
-  // exactly (same HeadObject/ListObjectsV2 calls against `originals/`).
-  imageExists = this.exists.bind(this);
-  getImageHash = this.getHash.bind(this);
-  listImages = this.list.bind(this);
-
   /**
    * Create a new ImageService
    * @param config Service configuration
@@ -491,7 +485,7 @@ export class ImageService extends FileService<
   async deleteImage(id: string): Promise<boolean> {
     try {
       // Check if image exists
-      await this.imageExists(id);
+      await this.exists(id);
 
       // Delete the original image
       await this.s3Client.send(

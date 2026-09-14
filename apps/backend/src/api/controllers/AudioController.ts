@@ -63,7 +63,7 @@ export class AudioController {
     }
 
     // Use the AudioService to upload the file with owner information
-    const metadata = await audioService.uploadAudio(
+    const metadata = await audioService.upload(
       file.stream,
       file.filename,
       file.mimetype,
@@ -97,10 +97,10 @@ export class AudioController {
     @Param('id') id: string
   ): Promise<Response> {
     // Get the filename first, this also throws if the audio file doesn't exist
-    const metadata = await audioService.getAudioMetadata(id);
+    const metadata = await audioService.getMetadata(id);
 
     // Get audio as stream
-    const audioData = await audioService.getAudioStream(id);
+    const audioData = await audioService.getStream(id);
 
     // Set appropriate security headers
     res.set({
@@ -138,7 +138,7 @@ export class AudioController {
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
     // Get audio metadata first to check ownership
-    const metadata = await audioService.getAudioMetadata(id);
+    const metadata = await audioService.getMetadata(id);
 
     // Check if the user is the owner of the audio file
     // Only allow the audio owner or admins to delete audio files
@@ -150,7 +150,7 @@ export class AudioController {
       throw new UnauthorizedError();
     }
 
-    const success = await audioService.deleteAudio(id);
+    const success = await audioService.delete(id);
     return { success };
   }
 }
