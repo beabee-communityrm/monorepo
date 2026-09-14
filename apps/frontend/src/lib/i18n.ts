@@ -84,7 +84,7 @@ router.beforeEach(async (to) => {
   }
 
   // Password flow routes don't exist when the identity provider handles login
-  if (to.meta.passwordAuth && generalContent.value.oidcEnabled) {
+  if (to.meta.localLoginOnly && generalContent.value.oidcEnabled) {
     return { path: '/auth/login' };
   }
 

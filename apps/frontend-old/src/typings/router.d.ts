@@ -10,7 +10,7 @@ declare module 'vue-router' {
     layout?: 'Auth' | 'Dashboard' | 'Loading';
     noAuth?: boolean;
     /** Route only exists with local login, not with an identity provider */
-    passwordAuth?: boolean;
+    localLoginOnly?: boolean;
     role?: RoleType;
     embeddable?: boolean;
     noCnrMode?: boolean;
