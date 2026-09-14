@@ -189,7 +189,6 @@ export interface OidcLoginConfig {
     scopes: string; // BEABEE_LOGIN_SETTINGS_SCOPES - Requested scopes (default: openid profile email)
     redirectUri: string; // BEABEE_LOGIN_SETTINGS_REDIRECTURI - OAuth callback URL (default: <audience>/api/1.0/auth/callback)
     postLogoutRedirectUri: string; // BEABEE_LOGIN_SETTINGS_POSTLOGOUTREDIRECTURI - Where the IdP sends members after logout (default: audience)
-    accountUrl: string; // BEABEE_LOGIN_SETTINGS_ACCOUNTURL - IdP self-service account page (empty: not linked)
   };
 }
 
@@ -408,7 +407,6 @@ export const config = {
               'BEABEE_LOGIN_SETTINGS_POSTLOGOUTREDIRECTURI',
               env.s('BEABEE_AUDIENCE')
             ), // Where the IdP sends members after logout
-            accountUrl: env.s('BEABEE_LOGIN_SETTINGS_ACCOUNTURL', ''), // IdP self-service account page
           }
         : {},
   } as LoginConfig,
