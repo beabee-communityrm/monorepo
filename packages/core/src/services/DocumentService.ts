@@ -9,14 +9,14 @@ import config from '../config/config.js';
 import { BadRequestError } from '../errors/index.js';
 import type { FileMetadata } from '../type/index.js';
 import { peekStreamBytes } from '../utils/file.js';
-import { FileService } from './FileService.js';
+import { BaseFileService } from './BaseFileService.js';
 
 export type DocumentMetadata = FileMetadata;
 
 /**
  * Service for handling document uploads and storage in S3/MinIO
  */
-export class DocumentService extends FileService<DocumentMetadata> {
+export class DocumentService extends BaseFileService<DocumentMetadata> {
   protected readonly keyPrefix = 'documents';
   protected readonly typeName = 'document';
   protected readonly loggerName = 'document-service';

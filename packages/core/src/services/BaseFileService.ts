@@ -18,21 +18,21 @@ import {
   sanitizeFilename,
 } from '../utils/file.js';
 import { getFileBuffer, getFileStream, putFileStream } from '../utils/s3.js';
-import { S3ObjectService } from './S3ObjectService.js';
+import { BaseS3ObjectService } from './BaseS3ObjectService.js';
 
 /**
  * Base class for services that validate and store a single kind of file in
  * an S3/MinIO bucket under a fixed key prefix (documents, audio, ...).
  * Subclasses supply the type-specific bits (allowed MIME types, optional
  * extra content validation); upload, fetch and delete are identical
- * between them. Extends S3ObjectService for the S3 client and the
+ * between them. Extends BaseS3ObjectService for the S3 client and the
  * operations that don't need file-upload semantics (exists/hash/list/
  * health).
  */
-export abstract class FileService<
+export abstract class BaseFileService<
   TMetadata extends FileMetadata,
   TConfig extends FileServiceConfig = FileServiceConfig,
-> extends S3ObjectService<TConfig> {
+> extends BaseS3ObjectService<TConfig> {
   protected abstract readonly allowedMimeTypes: string[];
   protected abstract readonly defaultMimetype: string;
   protected abstract isSupportedType(mimetype: string): boolean;

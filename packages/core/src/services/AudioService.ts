@@ -5,14 +5,14 @@ import {
 
 import config from '../config/config.js';
 import type { FileMetadata } from '../type/index.js';
-import { FileService } from './FileService.js';
+import { BaseFileService } from './BaseFileService.js';
 
 export type AudioMetadata = FileMetadata;
 
 /**
  * Service for handling audio uploads and storage in S3/MinIO
  */
-export class AudioService extends FileService<AudioMetadata> {
+export class AudioService extends BaseFileService<AudioMetadata> {
   protected readonly keyPrefix = 'audio';
   protected readonly typeName = 'audio';
   protected readonly loggerName = 'audio-service';

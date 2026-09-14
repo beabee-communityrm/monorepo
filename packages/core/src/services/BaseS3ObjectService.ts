@@ -12,12 +12,12 @@ import { checkConnection, fileExists, getFileHash } from '../utils/s3.js';
  * fixed key prefix. Holds the S3 client and the operations that only care
  * about a keyed object in a bucket - exists, hash, list, health - with no
  * opinion about what the object is, how it's validated, or how it got
- * there. FileService extends this to add an upload/fetch/delete template
+ * there. BaseFileService extends this to add an upload/fetch/delete template
  * for Document and Audio; ImageService extends it directly, since its own
  * upload/get/delete pipeline (resizing, format negotiation, ...) doesn't
  * fit that template.
  */
-export abstract class S3ObjectService<
+export abstract class BaseS3ObjectService<
   TConfig extends FileServiceConfig = FileServiceConfig,
 > {
   protected readonly s3Client: S3Client;
