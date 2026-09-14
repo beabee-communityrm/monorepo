@@ -24,9 +24,9 @@ Standalone to OIDC always passes through the IdP Transition.
 
 - **beabee is the system of record.** Contacts are created in beabee and
   mirrored to the IdP (IdP Provisioning); the IdP, payment and newsletter
-  providers are all fed from the contact. Where a member can change their
-  email at the IdP, the change is accepted into beabee and propagated from
-  there ([ADR-0002](./adr/0002-idp-is-an-input-channel-for-email.md)).
+  providers are all fed from the contact. Members have no way to edit their
+  data at the IdP: its Console is hidden from them
+  ([ADR-0005](./adr/0005-hide-the-idp-console-from-members.md)).
 - **Linking is by IdP Subject only.** Login never matches by email and never
   creates a contact ([ADR-0001](./adr/0001-link-contacts-to-idp-by-subject-only.md)).
 - **One IdP per beabee instance.** Each tenant has a dedicated Zitadel
@@ -55,6 +55,17 @@ which starts an OIDC login that completes silently and continues to the
 Signup Flow's `confirmUrl`. Keycloak in development sends its own
 `execute-actions-email` instead.
 
+**Account management (OIDC state).** beabee's account page offers three
+actions — change password, add a passkey, set up an authenticator app — each
+a link to the matching Login v2 page (`/password/change`, `/passkey/set`,
+`/mfa/set`, derived from the issuer with the member's login name). They work
+off the member's existing login session, ask for the current password where
+needed, and return to beabee via the same fixed page as the join flow
+([ADR-0004](./adr/0004-link-to-login-v2-self-service-flows.md)). Removing a
+passkey or authenticator app has no Login v2 page; members ask support, and an
+operator removes it in the Console
+([ADR-0005](./adr/0005-hide-the-idp-console-from-members.md)).
+
 **IdP Transition and cutover.** Existing password hashes cannot be imported
 into Zitadel ([ADR-0003](./adr/0003-migrate-passwords-by-capturing-at-login.md)).
 Instead, at transition start operators provision all contacts and clear all
@@ -65,12 +76,6 @@ over by switching `BEABEE_LOGIN_PROVIDER` to `oidc`. Members who never
 logged in during the transition use the IdP's password reset. Local hashes
 are kept as the break-glass (revert the env var) and cleared later with the
 CLI once no longer needed.
-
-**Email change at the IdP (Zitadel).** A Zitadel Actions target posts
-`user.human.email.verified` events to `apps/webhooks`; when the verified
-address differs from the contact's, beabee updates the contact, which pushes
-the change everywhere else. beabee's own outbound update echoes back as an
-equal address and is ignored. Keycloak locks the email field instead.
 
 **Branding.** The instance's label policy is set from the beabee theme: the
 main, body, danger and white colours map to Zitadel's primary, font, warn and
@@ -83,18 +88,16 @@ file per instance and no per-instance background before v5).
 
 Login: `BEABEE_LOGIN_PROVIDER=local|oidc` with `BEABEE_LOGIN_SETTINGS_`
 `ISSUER`, `CLIENTID`, `CLIENTSECRET` (empty = public client), `SCOPES`,
-`REDIRECTURI`, `POSTLOGOUTREDIRECTURI`, `ACCOUNTURL`.
+`REDIRECTURI`, `POSTLOGOUTREDIRECTURI`.
 
 Provisioning: `BEABEE_IDP_PROVIDER=none|zitadel|keycloak` with
-`BEABEE_IDP_SETTINGS_` `URL`, `PAT`, `WEBHOOKSECRET` (Zitadel) or `URL`,
-`REALM`, `CLIENTID`, `CLIENTSECRET` (Keycloak).
+`BEABEE_IDP_SETTINGS_` `URL`, `PAT` (Zitadel) or `URL`, `REALM`, `CLIENTID`,
+`CLIENTSECRET` (Keycloak).
 
 IdP-side setup that beabee owns and applies idempotently via
-`backend-cli idp setup`: `defaultRedirectUri`, `ignoreUnknownUsernames`, the
-email-change Actions target (its signing key is printed once and becomes
-`WEBHOOKSECRET`), and branding. The virtual instance, project and OIDC
-client are created by the hosting infrastructure, which is expected to call
-the same command in future.
+`backend-cli idp setup`: `defaultRedirectUri`, `ignoreUnknownUsernames` and
+branding. The virtual instance, project and OIDC client are created by the
+hosting infrastructure, which is expected to call the same command in future.
 
 ## Operations
 
@@ -112,6 +115,13 @@ who haven't changed their password at the IdP since can log in as before. The
 OIDC discovery result is cached for the process lifetime; a restart picks up
 changed IdP metadata.
 
+**Hiding the Console.** The hosting infrastructure blocks `/ui/console` on
+the tenant's login domain and redirects it to the tenant's beabee URL;
+operators use the Console on the instance's generated domain instead, which
+is also where they remove a member's passkey or authenticator app on request.
+The IdP's password-change notification is switched off in its notification
+policy, as the mail would link to the Console.
+
 ## Pull request stack
 
 Branches stack on each other in this order; each PR targets the previous
@@ -126,13 +136,13 @@ branch and is retargeted to `main` as its base merges.
 5. `feat/oidc-login-frontend` — login, logout and route guards in both
    frontends
 6. `feat/oidc-signup` — join flow and account page
-7. `feat/idp-email-webhook` — email changes from the IdP
-8. `feat/idp-setup` — branding sync and `idp setup`
-9. `feat/idp-transition` — password mirroring, session clearing, unsynced
+7. `feat/idp-setup` — branding sync and `idp setup`
+8. `feat/idp-transition` — password mirroring, session clearing, unsynced
    count, hash clean-up
 
 ## Deliberately out of scope
 
 Password hash import; a cutover mail-out; offering both login methods at
 once; export for tenants leaving the hosting; font and background sync;
-Keycloak branding; the legacy frontend.
+Keycloak branding; the legacy frontend; self-service removal of passkeys and
+authenticator apps; enforcing multi-factor authentication.
