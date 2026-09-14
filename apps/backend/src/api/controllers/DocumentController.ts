@@ -1,7 +1,3 @@
-import {
-  ALLOWED_DOCUMENT_MIME_TYPES,
-  isSupportedDocumentType,
-} from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
 import {
@@ -54,11 +50,11 @@ export class DocumentController {
     }
 
     // Verify file type is allowed before consuming the stream
-    if (!isSupportedDocumentType(file.mimetype)) {
+    if (!documentService.isSupportedType(file.mimetype)) {
       file.stream.resume(); // Drain the stream so the request completes
       throw new UnsupportedFileTypeError(
         file.mimetype,
-        ALLOWED_DOCUMENT_MIME_TYPES
+        documentService.allowedMimeTypes
       );
     }
 

@@ -25,17 +25,15 @@ import { BaseS3ObjectService } from './BaseS3ObjectService.js';
  * an S3/MinIO bucket under a fixed key prefix (documents, audio, ...).
  * Subclasses supply the type-specific bits (allowed MIME types, optional
  * extra content validation); upload, fetch and delete are identical
- * between them. Extends BaseS3ObjectService for the S3 client and the
- * operations that don't need file-upload semantics (exists/hash/list/
- * health).
+ * between them. Extends BaseS3ObjectService for the S3 client, the type
+ * check, and the operations that don't need file-upload semantics
+ * (exists/hash/list/health).
  */
 export abstract class BaseFileService<
   TMetadata extends FileMetadata,
   TConfig extends FileServiceConfig = FileServiceConfig,
 > extends BaseS3ObjectService<TConfig> {
-  protected abstract readonly allowedMimeTypes: string[];
   protected abstract readonly defaultMimetype: string;
-  protected abstract isSupportedType(mimetype: string): boolean;
 
   /**
    * Optional extra validation beyond the MIME type check (e.g. a magic-byte

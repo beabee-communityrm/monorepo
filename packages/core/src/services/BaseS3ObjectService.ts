@@ -9,13 +9,12 @@ import { checkConnection, fileExists, getFileHash } from '../utils/s3.js';
 
 /**
  * Base class for services that store objects in an S3/MinIO bucket under a
- * fixed key prefix. Holds the S3 client and the operations that only care
- * about a keyed object in a bucket - exists, hash, list, health - with no
- * opinion about what the object is, how it's validated, or how it got
- * there. BaseFileService extends this to add an upload/fetch/delete template
- * for Document and Audio; ImageService extends it directly, since its own
- * upload/get/delete pipeline (resizing, format negotiation, ...) doesn't
- * fit that template.
+ * fixed key prefix. Holds the S3 client, the accepted MIME types, and the
+ * operations that only care about a keyed object in a bucket - exists,
+ * hash, list, health. BaseFileService extends this to add an
+ * upload/fetch/delete template for Document and Audio; ImageService
+ * extends it directly, since its own upload/get/delete pipeline (resizing,
+ * format negotiation, ...) doesn't fit that template.
  */
 export abstract class BaseS3ObjectService<
   TConfig extends FileServiceConfig = FileServiceConfig,
@@ -49,6 +48,20 @@ export abstract class BaseS3ObjectService<
   protected abstract readonly typeName: string;
   /** child logger app name, e.g. "document-service" */
   protected abstract readonly loggerName: string;
+  /** MIME types this service accepts, e.g. ALLOWED_DOCUMENT_MIME_TYPES */
+  abstract readonly allowedMimeTypes: string[];
+
+  /**
+   * Check if a MIME type is one this service accepts
+   * @param mimetype MIME type to check
+   * @returns True if the type is in {@link allowedMimeTypes}
+   */
+  isSupportedType(mimetype?: string): boolean {
+    if (!mimetype) return false;
+    // MediaRecorder's mimeType includes a codec, e.g. "audio/webm;codecs=opus"
+    const baseType = mimetype.toLowerCase().trim().split(';')[0].trim();
+    return this.allowedMimeTypes.includes(baseType);
+  }
 
   /**
    * Get the hash (ETag) of a file without downloading it

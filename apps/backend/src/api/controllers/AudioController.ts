@@ -1,7 +1,3 @@
-import {
-  ALLOWED_AUDIO_MIME_TYPES,
-  isSupportedAudioType,
-} from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
 import {
@@ -54,11 +50,11 @@ export class AudioController {
     }
 
     // Verify file type is allowed before consuming the stream
-    if (!isSupportedAudioType(file.mimetype)) {
+    if (!audioService.isSupportedType(file.mimetype)) {
       file.stream.resume(); // Drain the stream so the request completes
       throw new UnsupportedFileTypeError(
         file.mimetype,
-        ALLOWED_AUDIO_MIME_TYPES
+        audioService.allowedMimeTypes
       );
     }
 

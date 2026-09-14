@@ -1,8 +1,4 @@
-import {
-  ALLOWED_IMAGE_MIME_TYPES,
-  S3Metadata,
-  isSupportedImageType,
-} from '@beabee/beabee-common';
+import { ALLOWED_IMAGE_MIME_TYPES, S3Metadata } from '@beabee/beabee-common';
 
 import {
   CopyObjectCommand,
@@ -66,6 +62,7 @@ export class ImageService extends BaseS3ObjectService<ImageServiceConfig> {
   protected readonly keyPrefix = 'originals';
   protected readonly typeName = 'image';
   protected readonly loggerName = 'image-service';
+  readonly allowedMimeTypes = ALLOWED_IMAGE_MIME_TYPES;
 
   /**
    * Create a new ImageService
@@ -102,10 +99,10 @@ export class ImageService extends BaseS3ObjectService<ImageServiceConfig> {
       const originalMimetype = getMimetypeFromExtension(originalExtension);
 
       // Validate MIME type before consuming the stream
-      if (originalMimetype && !isSupportedImageType(originalMimetype)) {
+      if (originalMimetype && !this.isSupportedType(originalMimetype)) {
         throw new UnsupportedFileTypeError(
           originalMimetype,
-          ALLOWED_IMAGE_MIME_TYPES
+          this.allowedMimeTypes
         );
       }
 
@@ -168,11 +165,11 @@ export class ImageService extends BaseS3ObjectService<ImageServiceConfig> {
 
       // Check if the detected format is allowed
       if (
-        !isSupportedImageType(getMimetypeFromDecoderFormat(metadata.format))
+        !this.isSupportedType(getMimetypeFromDecoderFormat(metadata.format))
       ) {
         throw new UnsupportedFileTypeError(
           getMimetypeFromDecoderFormat(metadata.format),
-          ALLOWED_IMAGE_MIME_TYPES
+          this.allowedMimeTypes
         );
       }
 

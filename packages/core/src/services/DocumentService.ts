@@ -1,7 +1,4 @@
-import {
-  ALLOWED_DOCUMENT_MIME_TYPES,
-  isSupportedDocumentType,
-} from '@beabee/beabee-common';
+import { ALLOWED_DOCUMENT_MIME_TYPES } from '@beabee/beabee-common';
 
 import { Readable } from 'stream';
 
@@ -20,12 +17,8 @@ export class DocumentService extends BaseFileService<DocumentMetadata> {
   protected readonly keyPrefix = 'documents';
   protected readonly typeName = 'document';
   protected readonly loggerName = 'document-service';
-  protected readonly allowedMimeTypes = ALLOWED_DOCUMENT_MIME_TYPES;
+  readonly allowedMimeTypes = ALLOWED_DOCUMENT_MIME_TYPES;
   protected readonly defaultMimetype = 'application/pdf';
-
-  protected isSupportedType(mimetype: string): boolean {
-    return isSupportedDocumentType(mimetype);
-  }
 
   /** Basic PDF signature check for PDF files */
   protected override async validateContent(
