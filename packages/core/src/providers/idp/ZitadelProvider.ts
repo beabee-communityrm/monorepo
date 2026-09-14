@@ -64,28 +64,6 @@ export class ZitadelProvider implements IdpProvider {
     return resp.userId;
   }
 
-  async findSubjectByEmail(email: string): Promise<string | null> {
-    const resp = await this.request<{ result?: { userId: string }[] }>(
-      'POST',
-      '/v2/users',
-      {
-        queries: [
-          {
-            emailQuery: {
-              emailAddress: email,
-              method: 'TEXT_QUERY_METHOD_EQUALS_IGNORE_CASE',
-            },
-          },
-        ],
-      }
-    );
-    const users = resp?.result || [];
-    if (users.length > 1) {
-      throw new Error(`Multiple Zitadel users match ${email}`);
-    }
-    return users[0]?.userId || null;
-  }
-
   async updateContact(
     subject: string,
     contact: Contact,

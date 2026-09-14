@@ -44,19 +44,6 @@ describe('ZitadelProvider', () => {
     });
   });
 
-  it('refuses to pick between multiple matches', async () => {
-    mockFetch(
-      new Response(
-        JSON.stringify({ result: [{ userId: 'u1' }, { userId: 'u2' }] })
-      )
-    );
-
-    const provider = new ZitadelProvider(settings);
-    await expect(
-      provider.findSubjectByEmail('test@example.com')
-    ).rejects.toThrow('Multiple Zitadel users match');
-  });
-
   it('accepts responses without a body', async () => {
     mockFetch(new Response(null, { status: 200 }));
 
