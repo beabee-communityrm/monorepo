@@ -4,7 +4,7 @@ meta:
   layout: Auth
   pageTitle: pageTitle.lostDevice
   noAuth: true
-  passwordAuth: true
+  localLoginOnly: true
 </route>
 
 <template>
