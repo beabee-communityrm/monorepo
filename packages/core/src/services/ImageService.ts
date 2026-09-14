@@ -46,7 +46,7 @@ import {
   getFileStream,
   putFileStream,
 } from '../utils/s3.js';
-import { FileService } from './FileService.js';
+import { S3ObjectService } from './S3ObjectService.js';
 
 // libvips would otherwise use a thread per core and keep a 50MB cache, which
 // multiplies peak memory when uploads overlap on a 2-CPU container
@@ -56,26 +56,16 @@ sharp.cache(false);
 /**
  * Service for handling image uploads, resizing, and storage in S3/MinIO.
  *
- * Extends FileService for the S3 client setup and the pieces that are
+ * Extends S3ObjectService for the S3 client setup and the pieces that are
  * identical to the other file services (exists/hash/list/health) - the
  * upload/get/delete/metadata logic here is bespoke (multi-width resizing,
- * format negotiation, SVG optimisation, EXIF orientation) and doesn't go
- * through FileService's generic upload()/getMetadata() template.
+ * format negotiation, SVG optimisation, EXIF orientation), so it doesn't
+ * extend FileService, whose upload/get/delete template doesn't fit.
  */
-export class ImageService extends FileService<
-  ImageMetadata,
-  ImageServiceConfig
-> {
+export class ImageService extends S3ObjectService<ImageServiceConfig> {
   protected readonly keyPrefix = 'originals';
   protected readonly typeName = 'image';
   protected readonly loggerName = 'image-service';
-  protected readonly allowedMimeTypes = ALLOWED_IMAGE_MIME_TYPES;
-  // Unused: uploadImage() below never calls the inherited upload() template
-  protected readonly defaultMimetype = 'application/octet-stream';
-
-  protected isSupportedType(mimetype: string): boolean {
-    return isSupportedImageType(mimetype);
-  }
 
   /**
    * Create a new ImageService

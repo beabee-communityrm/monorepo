@@ -21,5 +21,6 @@ export * from './PaymentFlowService.js';
 export * from './PaymentService.js';
 export * from './ReferralsService.js';
 export * from './ResetSecurityFlowService.js';
+export * from './S3ObjectService.js';
 export * from './SegmentService.js';
 export * from './SignupService.js';
