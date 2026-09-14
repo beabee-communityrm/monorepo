@@ -19,6 +19,7 @@ import {
   Res,
   UseBefore,
 } from 'routing-controllers';
+import { Readable } from 'stream';
 
 import { RateLimit } from '../decorators/index.js';
 import { FileController } from './FileController.js';
@@ -30,11 +31,30 @@ export class AudioController extends FileController<AudioMetadata> {
   protected readonly allowedMimeTypes = ALLOWED_AUDIO_MIME_TYPES;
   protected readonly contentSecurityPolicy = "default-src 'self'";
 
-  protected isSupportedType = isSupportedAudioType;
-  protected uploadFile = audioService.upload.bind(audioService);
-  protected getFileMetadata = audioService.getMetadata.bind(audioService);
-  protected getFileStream = audioService.getStream.bind(audioService);
-  protected deleteFile = audioService.delete.bind(audioService);
+  protected isSupportedType(mimetype: string): boolean {
+    return isSupportedAudioType(mimetype);
+  }
+
+  protected uploadFile(
+    stream: Readable,
+    filename: string,
+    mimetype: string,
+    owner?: string
+  ): Promise<AudioMetadata> {
+    return audioService.upload(stream, filename, mimetype, owner);
+  }
+
+  protected getFileMetadata(id: string): Promise<AudioMetadata> {
+    return audioService.getMetadata(id);
+  }
+
+  protected getFileStream(id: string) {
+    return audioService.getStream(id);
+  }
+
+  protected deleteFile(id: string): Promise<boolean> {
+    return audioService.delete(id);
+  }
 
   /**
    * Upload a new audio file

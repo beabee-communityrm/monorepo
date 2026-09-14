@@ -19,6 +19,7 @@ import {
   Res,
   UseBefore,
 } from 'routing-controllers';
+import { Readable } from 'stream';
 
 import { RateLimit } from '../decorators/index.js';
 import { FileController } from './FileController.js';
@@ -30,11 +31,30 @@ export class DocumentController extends FileController<DocumentMetadata> {
   protected readonly allowedMimeTypes = ALLOWED_DOCUMENT_MIME_TYPES;
   protected readonly contentSecurityPolicy = "default-src 'self'";
 
-  protected isSupportedType = isSupportedDocumentType;
-  protected uploadFile = documentService.upload.bind(documentService);
-  protected getFileMetadata = documentService.getMetadata.bind(documentService);
-  protected getFileStream = documentService.getStream.bind(documentService);
-  protected deleteFile = documentService.delete.bind(documentService);
+  protected isSupportedType(mimetype: string): boolean {
+    return isSupportedDocumentType(mimetype);
+  }
+
+  protected uploadFile(
+    stream: Readable,
+    filename: string,
+    mimetype: string,
+    owner?: string
+  ): Promise<DocumentMetadata> {
+    return documentService.upload(stream, filename, mimetype, owner);
+  }
+
+  protected getFileMetadata(id: string): Promise<DocumentMetadata> {
+    return documentService.getMetadata(id);
+  }
+
+  protected getFileStream(id: string) {
+    return documentService.getStream(id);
+  }
+
+  protected deleteFile(id: string): Promise<boolean> {
+    return documentService.delete(id);
+  }
 
   /**
    * Upload a new document
