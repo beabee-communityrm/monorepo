@@ -98,7 +98,8 @@
     "subTitle-nuxt": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "subscriptions": "Inscrições",
     "title": "Conta",
-    "unsavedChanges": "Tem alterações não guardadas"
+    "unsavedChanges": "Tem alterações não guardadas",
+    "vatNumberInfo": "Contacte support{'@'}beabee.io para atualizar o número de IVA"
   },
   "actions": {
     "add": "Adicionar",
@@ -1449,6 +1450,7 @@
       "remaining": ""
     },
     "cityOrTown": "Localidade",
+    "country": "",
     "deliveryOptIn": "Escolher inscrição",
     "description": "Descrição",
     "email": "Email",
@@ -1485,6 +1487,9 @@
         "password": "Palavra-passe inválida",
         "required": "A palavra-passe é obrigatória",
         "sameAs": "As palavras-passe não coincidem"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",
@@ -1572,7 +1577,8 @@
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",
     "unsavedChanges": "Alterações não gravadas",
-    "updated": "Atualizado"
+    "updated": "Atualizado",
+    "vatNumber": "Número de IVA"
   },
   "formRenderer": {
     "components": {
@@ -1714,6 +1720,7 @@
           "showOptIn": "",
           "title": "Newsletter"
         },
+        "showOrganisationName": "",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1747,6 +1754,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""
