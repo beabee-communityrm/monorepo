@@ -1,0 +1,27 @@
+{
+  "realm": "beabee",
+  "enabled": true,
+  "registrationEmailAsUsername": true,
+  "editUsernameAllowed": false,
+  "clients": [
+    {
+      "clientId": "beabee-provisioning",
+      "name": "beabee IdP provisioning",
+      "publicClient": false,
+      "secret": "beabee-dev-secret",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false
+    }
+  ],
+  "users": [
+    {
+      "username": "service-account-beabee-provisioning",
+      "enabled": true,
+      "serviceAccountClientId": "beabee-provisioning",
+      "clientRoles": {
+        "realm-management": ["manage-users", "view-users", "query-users"]
+      }
+    }
+  ]
+}
