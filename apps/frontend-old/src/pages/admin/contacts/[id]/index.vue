@@ -229,8 +229,8 @@ meta:
         </AppInfoList>
       </section>
 
-      <!-- Security -->
-      <section class="mb-6">
+      <!-- Security (handled by the identity provider under OIDC login) -->
+      <section v-if="!generalContent.oidcEnabled" class="mb-6">
         <AppHeading>{{ t('contactOverview.security.title') }}</AppHeading>
 
         <!-- Multi factor authentication -->
@@ -523,10 +523,12 @@ onBeforeMount(async () => {
     },
   });
 
-  // Fetch MFA information
-  const contactMfa = await client.contact.mfa.get(props.contact.id);
-  if (contactMfa && contactMfa.type === CONTACT_MFA_TYPE.TOTP) {
-    mfa.value.isEnabled = true;
+  // Fetch MFA information (the endpoint is disabled under OIDC login)
+  if (!generalContent.value.oidcEnabled) {
+    const contactMfa = await client.contact.mfa.get(props.contact.id);
+    if (contactMfa && contactMfa.type === CONTACT_MFA_TYPE.TOTP) {
+      mfa.value.isEnabled = true;
+    }
   }
 
   setupContent.value = await client.content.get('join/setup');

@@ -1684,6 +1684,10 @@
   },
   "login": {
     "backTo": "Terug naar {newsroomName}",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "Wachtwoord vergeten?",
     "joinNow": "Word nu lid!",
     "lostMfaDevice": "Ben je je 2FA-apparaat kwijt?",
