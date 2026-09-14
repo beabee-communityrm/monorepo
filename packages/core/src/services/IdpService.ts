@@ -35,21 +35,6 @@ class IdpService {
   }
 
   /**
-   * Find an existing account at the identity provider by email address
-   * @returns The subject identifier, or null if not found, disabled or failed
-   */
-  async findSubjectByEmail(email: string): Promise<string | null> {
-    if (!this.isEnabled) return null;
-    log.info('Find IdP account for ' + email);
-    try {
-      return await this.provider.findSubjectByEmail(email);
-    } catch (err) {
-      log.error(`Failed to find IdP account for ${email}`, err);
-      return null;
-    }
-  }
-
-  /**
    * Update a linked contact's account so it keeps mirroring the contact
    * @param contact The contact, with the updates already applied
    * @param updates The updates that were applied

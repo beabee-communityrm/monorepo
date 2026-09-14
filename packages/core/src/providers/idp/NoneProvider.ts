@@ -7,9 +7,6 @@ export class NoneProvider implements IdpProvider {
   async createContact(): Promise<string> {
     throw new Error('No identity provider configured');
   }
-  async findSubjectByEmail(): Promise<string | null> {
-    return null;
-  }
   async updateContact(): Promise<void> {}
   async permanentlyDeleteContact(): Promise<void> {}
 }

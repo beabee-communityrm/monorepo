@@ -11,11 +11,6 @@ export interface IdpProvider {
    */
   createContact(contact: Contact): Promise<string>;
   /**
-   * Find an existing account at the identity provider by email address
-   * @returns The subject identifier, or null if not found
-   */
-  findSubjectByEmail(email: string): Promise<string | null>;
-  /**
    * Update a linked account so it keeps mirroring the contact. The provider
    * decides which updates are relevant to it.
    * @param subject The linked account's subject identifier

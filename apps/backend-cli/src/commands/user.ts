@@ -97,15 +97,6 @@ export const userCommand: CommandModule = {
         },
       })
       .command({
-        command: 'link',
-        describe:
-          'Link unlinked users to existing identity provider accounts by email',
-        handler: async () => {
-          const { linkUsers } = await import('../actions/user/link.js');
-          return linkUsers();
-        },
-      })
-      .command({
         command: 'delete [email]',
         describe: 'Permanently delete user(s)',
         builder: (yargs) =>
