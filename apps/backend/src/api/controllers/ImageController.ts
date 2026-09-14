@@ -33,31 +33,17 @@ export class ImageController extends FileController<ImageMetadata> {
   protected readonly allowedMimeTypes = ALLOWED_IMAGE_MIME_TYPES;
   protected readonly contentSecurityPolicy = "img-src 'self'";
 
-  protected isSupportedType(mimetype: string): boolean {
-    return isSupportedImageType(mimetype);
-  }
-
+  protected isSupportedType = isSupportedImageType;
   // uploadImage doesn't take a mimetype - it detects the format itself
-  protected uploadFile(
+  protected uploadFile = (
     stream: Readable,
     filename: string,
     _mimetype: string,
     owner?: string
-  ): Promise<ImageMetadata> {
-    return imageService.uploadImage(stream, filename, owner);
-  }
-
-  protected getFileMetadata(id: string): Promise<ImageMetadata> {
-    return imageService.getImageMetadata(id);
-  }
-
-  protected getFileStream(id: string, width?: number) {
-    return imageService.getImageStream(id, width);
-  }
-
-  protected deleteFile(id: string): Promise<boolean> {
-    return imageService.deleteImage(id);
-  }
+  ) => imageService.uploadImage(stream, filename, owner);
+  protected getFileMetadata = imageService.getImageMetadata.bind(imageService);
+  protected getFileStream = imageService.getImageStream.bind(imageService);
+  protected deleteFile = imageService.deleteImage.bind(imageService);
 
   /**
    * Upload a new image
