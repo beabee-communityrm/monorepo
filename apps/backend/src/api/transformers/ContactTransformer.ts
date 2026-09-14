@@ -4,6 +4,7 @@ import { UnauthorizedError } from '@beabee/core/errors';
 import { CalloutReviewer, Contact, ContactRole } from '@beabee/core/models';
 import ActivityService from '@beabee/core/services/ActivityService';
 import ContactsService from '@beabee/core/services/ContactsService';
+import IdpService from '@beabee/core/services/IdpService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
 import { QueryDeepPartialEntity } from '@beabee/core/type';
@@ -89,6 +90,9 @@ class ContactTransformer extends BaseContactTransformer<
         opts?.with?.includes(GetContactWith.Tags) && {
           tags: contact.tags.map((ct) => contactTagTransformer.convert(ct.tag)),
         }),
+      // Only meaningful while an identity provider is configured
+      ...(auth.roles.includes('admin') &&
+        IdpService.isEnabled && { idpSubject: contact.idpSubject }),
     };
   }
 

@@ -29,6 +29,15 @@ meta:
             contact.lastSeen ? formatLocale(contact.lastSeen, 'PPP') : '–'
           "
         />
+        <AppInfoListItem
+          v-if="contact.idpSubject !== undefined"
+          :name="t('contacts.data.idpAccount')"
+          :value="
+            contact.idpSubject
+              ? t('contacts.data.idpLinked')
+              : t('contacts.data.idpUnlinked')
+          "
+        />
       </AppInfoList>
 
       <div class="mb-4 flex gap-2">

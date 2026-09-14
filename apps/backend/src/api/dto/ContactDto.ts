@@ -148,6 +148,10 @@ export class GetContactDto extends BaseContactDto {
   activeRoles!: RoleType[];
 
   @IsOptional()
+  @IsString()
+  idpSubject?: string | null;
+
+  @IsOptional()
   @ValidateNested()
   @Type(() => GetContributionInfoDto)
   contribution?: GetContributionInfoDto;
