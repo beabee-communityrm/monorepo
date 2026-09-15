@@ -76,6 +76,38 @@ export const ALLOWED_DOCUMENT_EXTENSIONS: string[] = ['pdf'];
 export const ALLOWED_DOCUMENT_MIME_TYPES: string[] = ['application/pdf'];
 
 /**
+ * A list of all audio formats that are supported by our AudioService.
+ * Covers both what MediaRecorder emits in the browser (webm/opus on
+ * Chrome/Firefox, mp4 on Safari) and common uploaded audio files.
+ * @constant
+ * @name ALLOWED_AUDIO_EXTENSIONS
+ * @summary Allowed audio formats for upload (input formats)
+ */
+export const ALLOWED_AUDIO_EXTENSIONS: string[] = [
+  'webm',
+  'ogg',
+  'mp4',
+  'm4a',
+  'mp3',
+  'wav',
+];
+
+/**
+ * A list of all MIME types that are supported by our AudioService
+ * @constant
+ * @name ALLOWED_AUDIO_MIME_TYPES
+ * @summary Allowed MIME types
+ */
+export const ALLOWED_AUDIO_MIME_TYPES: string[] = [
+  'audio/webm',
+  'audio/ogg',
+  'audio/mp4',
+  'audio/x-m4a',
+  'audio/mpeg',
+  'audio/wav',
+];
+
+/**
  * Address component types for standardized parsing and placeholder replacement / formatting
  * Based on the MapTiler types, check `GeocodingPlaceType` in `@maptiler/client` for more possible types
  */

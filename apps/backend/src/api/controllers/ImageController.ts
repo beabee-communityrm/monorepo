@@ -1,7 +1,3 @@
-import {
-  ALLOWED_IMAGE_MIME_TYPES,
-  isSupportedImageType,
-} from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
 import {
@@ -55,11 +51,11 @@ export class ImageController {
     }
 
     // Verify file type is allowed before consuming the stream
-    if (!isSupportedImageType(file.mimetype)) {
+    if (!imageService.isSupportedType(file.mimetype)) {
       file.stream.resume(); // Drain the stream so the request completes
       throw new UnsupportedFileTypeError(
         file.mimetype,
-        ALLOWED_IMAGE_MIME_TYPES
+        imageService.allowedMimeTypes
       );
     }
 

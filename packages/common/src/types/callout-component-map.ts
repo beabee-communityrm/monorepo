@@ -2,6 +2,7 @@ import type { CalloutComponentType } from '../data/index.js';
 import type {
   CalloutComponentContentSchema,
   CalloutComponentInputAddressSchema,
+  CalloutComponentInputAudioRecorderSchema,
   CalloutComponentInputCheckboxSchema,
   CalloutComponentInputCurrencySchema,
   CalloutComponentInputDateTimeSchema,
@@ -26,6 +27,7 @@ type CalloutComponentSchemas = {
   [CalloutComponentType.CONTENT]: CalloutComponentContentSchema;
 
   [CalloutComponentType.INPUT_ADDRESS]: CalloutComponentInputAddressSchema;
+  [CalloutComponentType.INPUT_AUDIO_RECORDER]: CalloutComponentInputAudioRecorderSchema;
   [CalloutComponentType.INPUT_CHECKBOX]: CalloutComponentInputCheckboxSchema;
   [CalloutComponentType.INPUT_CURRENCY]: CalloutComponentInputCurrencySchema;
   [CalloutComponentType.INPUT_DATE_TIME]: CalloutComponentInputDateTimeSchema;
