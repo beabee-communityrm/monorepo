@@ -214,8 +214,8 @@
           <AppFormBox>
             <AppFormField>
               <AppRadioGroup
-                v-model="props.data.responseSettings"
-                name="responseSettings"
+                v-model="props.data.responseMode"
+                name="responseMode"
                 :label="inputT('responseSettings.label')"
                 :options="[
                   [
@@ -287,7 +287,7 @@ export interface SettingsTabData {
   showNewsletterOptIn: boolean;
   newsletterSettings: CalloutNewsletterSchema;
   showOnUserDashboards: boolean;
-  responseSettings: CalloutResponseMode;
+  responseMode: CalloutResponseMode;
   channels: CalloutChannel[] | null;
   hasStartDate: boolean;
   hasEndDate: boolean;

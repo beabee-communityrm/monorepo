@@ -202,7 +202,7 @@ export function convertCalloutToTabs(
         showNewsletterOptIn: false,
         newsletterSettings: defaultNewsletterSettings,
         showOnUserDashboards: false,
-        responseSettings: CalloutResponseMode.Multiple,
+        responseMode: CalloutResponseMode.Multiple,
         hasStartDate: false,
         hasEndDate: false,
         startDate: '',
@@ -219,7 +219,7 @@ export function convertCalloutToTabs(
         newsletterSettings:
           callout?.newsletterSchema || defaultNewsletterSettings,
         showOnUserDashboards: !callout?.hidden,
-        responseSettings: callout?.responseMode || CalloutResponseMode.Single,
+        responseMode: callout?.responseMode || CalloutResponseMode.Single,
         hasStartDate: callout?.status === ItemStatus.Scheduled,
         hasEndDate: !!callout?.expires,
         startDate: callout?.starts ? format(callout.starts, 'yyyy-MM-dd') : '',
@@ -493,7 +493,7 @@ export function convertStepsToCallout(
     expires: tabs.settings.hasEndDate
       ? new Date(tabs.settings.endDate + 'T' + tabs.settings.endTime)
       : null,
-    responseMode: tabs.settings.responseSettings,
+    responseMode: tabs.settings.responseMode,
     hidden: !tabs.settings.showOnUserDashboards,
     captcha: tabs.settings.captchaEnabled
       ? tabs.settings.captchaForMembers
