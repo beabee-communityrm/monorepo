@@ -9,6 +9,7 @@ import {
   GetCalloutFormSchema,
   NewsletterStatus,
   UpdateCalloutData,
+  getCalloutResponseSettings,
   isFileUploadAnswer,
 } from '@beabee/beabee-common';
 
@@ -284,12 +285,14 @@ class CalloutsService {
       throw new InvalidCalloutResponseError('closed');
     }
 
+    const responseSettings = getCalloutResponseSettings(callout);
+
     let response = await this.getResponse(callout, contact);
-    if (!response || callout.allowMultiple) {
+    if (!response || responseSettings === 'multiple') {
       response = new CalloutResponse();
       response.callout = callout;
       response.contact = contact;
-    } else if (!callout.allowUpdate) {
+    } else if (responseSettings === 'singleNonEditable') {
       throw new InvalidCalloutResponseError('cant-update');
     }
 

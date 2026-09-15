@@ -248,6 +248,7 @@ import {
   type CalloutChannel,
   type CalloutNewsletterSchema,
   ItemStatus,
+  type CalloutResponseSettings,
 } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
 import {
@@ -283,7 +284,7 @@ export interface SettingsTabData {
   showNewsletterOptIn: boolean;
   newsletterSettings: CalloutNewsletterSchema;
   showOnUserDashboards: boolean;
-  responseSettings: 'singleNonEditable' | 'singleEditable' | 'multiple';
+  responseSettings: CalloutResponseSettings;
   channels: CalloutChannel[] | null;
   hasStartDate: boolean;
   hasEndDate: boolean;
