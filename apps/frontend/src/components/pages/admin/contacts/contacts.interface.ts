@@ -73,6 +73,15 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
   email: withLabel(contactFilters.email, t('contacts.data.email')),
   joined: withLabel(contactFilters.joined, t('contacts.data.joined')),
   lastSeen: withLabel(contactFilters.lastSeen, t('contacts.data.lastSeen')),
+  campaign: withLabel(
+    contactFilters.campaign,
+    t('contactOverview.origin.campaign')
+  ),
+  medium: withLabel(
+    contactFilters.medium,
+    t('contactOverview.origin.referrer')
+  ),
+  source: withLabel(contactFilters.source, t('contactOverview.origin.source')),
   organisation: withLabel(
     contactFilters.organisation,
     t('adminSettings.general.organisationName')
@@ -225,6 +234,9 @@ export function useContactFilters() {
           'joined',
           'lastSeen',
           'newsletterStatus',
+          'campaign',
+          'medium',
+          'source',
         ]),
         newsletterGroups: {
           ...filterItems.value.newsletterGroups,

@@ -1,6 +1,8 @@
+import { ActivityEventType, ContactOriginData } from '@beabee/beabee-common';
 import type { Address } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
 import {
+  ActivityEvent,
   CalloutResponse,
   ContactContribution,
   ContactProfile,
@@ -176,6 +178,26 @@ const activePermission: FilterHandler = (qb, args) => {
 };
 
 /**
+ * Creates a filter handler for origin fields recorded on a contact's creation event
+ * @param field - The field from the event metadata to filter on
+ * @returns A filter handler function for the specified origin field
+ */
+function originField(field: keyof ContactOriginData): FilterHandler {
+  return (qb, args) => {
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select('ae.targetId')
+      .from(ActivityEvent, 'ae')
+      .where(args.addParamSuffix('ae.eventType = :eventType'))
+      .andWhere(args.convertToWhereClause(`ae.metadata ->> '${field}'`));
+
+    qb.where(`${args.fieldPrefix}id IN ${subQb.getQuery()}`);
+
+    return { eventType: ActivityEventType.ContactCreated };
+  };
+}
+
+/**
  * Filter handler for callout-related queries
  * Supports filtering by:
  * - callout responses (callout.<id>.responses.<restFields>)
@@ -259,6 +281,9 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
  * - manualPaymentSource: Filters by manual payment contributions
  * - callouts: Filters by callout responses and participation
  * - tags: Filters by contact tags
+ * - campaign: Filters by the campaign (utm_campaign) a contact signed up through
+ * - medium: Filters by the referrer (utm_medium) a contact signed up through
+ * - source: Filters by the source (utm_source/callout) a contact signed up through
  * - organisation: Filters by organisation name
  * - deliveryAddressCountry: Filters by the delivery address country code
  */
@@ -289,4 +314,7 @@ export const contactFilterHandlers: FilterHandlers<string> = {
   donationDate: oneTimePaymentField('chargeDate'),
   totalDonationAmount: oneTimePaymentStatistic('total'),
   averageDonationAmount: oneTimePaymentStatistic('avg'),
+  campaign: originField('campaign'),
+  medium: originField('medium'),
+  source: originField('source'),
 };

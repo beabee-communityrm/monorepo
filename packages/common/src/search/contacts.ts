@@ -105,6 +105,18 @@ export const contactFilters = {
   tags: {
     type: 'array',
   },
+  campaign: {
+    type: 'text',
+    nullable: true,
+  },
+  medium: {
+    type: 'text',
+    nullable: true,
+  },
+  source: {
+    type: 'text',
+    nullable: true,
+  },
 } as const;
 contactFilters satisfies Filters;
 
