@@ -1684,6 +1684,10 @@
   },
   "login": {
     "backTo": "",
+    "errors": {
+      "login-failed": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+      "unlinked-account": "Dein Login ist mit keinem Konto auf dieser Plattform verknüpft. Bitte wende dich an den Support."
+    },
     "forgotPassword": "",
     "joinNow": "",
     "lostMfaDevice": "",
