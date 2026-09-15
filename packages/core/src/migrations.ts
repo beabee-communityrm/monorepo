@@ -132,6 +132,7 @@ import { AddSignUpSourceInfo1786450132129 } from './migrations/1786450132129-Add
 import { AddOrganisationAndVatNumber1788353071789 } from './migrations/1788353071789-AddOrganisationAndVatNumber.js';
 import { RemoveGiftMemberships1788528151186 } from './migrations/1788528151186-RemoveGiftMemberships.js';
 import { AddContactIdpSubject1788876714973 } from './migrations/1788876714973-AddContactIdpSubject.js';
+import { AddCalloutResponseMode1789404005434 } from './migrations/1789404005434-AddCalloutResponseMode.js';
 
 export const migrations = [
   SessionTable1616677358190,
@@ -267,4 +268,5 @@ export const migrations = [
   AddOrganisationAndVatNumber1788353071789,
   RemoveGiftMemberships1788528151186,
   AddContactIdpSubject1788876714973,
+  AddCalloutResponseMode1789404005434,
 ];

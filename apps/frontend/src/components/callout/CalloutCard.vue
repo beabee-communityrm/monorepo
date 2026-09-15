@@ -80,6 +80,8 @@
 </template>
 
 <script lang="ts" setup>
+import { CalloutResponseMode } from '@beabee/beabee-common';
+
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
@@ -101,8 +103,12 @@ const imageUrl = computed(() =>
 );
 
 const respondAgainKey = computed(() => {
-  if (props.callout.allowUpdate) return 'callout.actions.updateResponse';
-  if (props.callout.allowMultiple) return 'callout.actions.participateAgain';
+  switch (props.callout.responseMode) {
+    case CalloutResponseMode.SingleEditable:
+      return 'callout.actions.updateResponse';
+    case CalloutResponseMode.Multiple:
+      return 'callout.actions.participateAgain';
+  }
   return null;
 });
 

@@ -35,7 +35,7 @@ meta:
         <AppInfoListItem
           :name="t('calloutAdminOverview.settings.answers.label')"
           :value="
-            callout.allowUpdate
+            callout.responseMode === CalloutResponseMode.SingleEditable
               ? t('calloutAdminOverview.settings.answers.editable')
               : t('calloutAdminOverview.settings.answers.final')
           "
@@ -108,7 +108,11 @@ meta:
   </div>
 </template>
 <script lang="ts" setup>
-import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
+import {
+  CalloutResponseMode,
+  type GetCalloutDataWith,
+  ItemStatus,
+} from '@beabee/beabee-common';
 import {
   ActionButton,
   AppConfirmDialog,
