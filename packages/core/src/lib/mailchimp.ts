@@ -24,6 +24,9 @@ import { extractJsonArchive } from '#utils/file';
 
 const log = mainLogger.child({ app: 'mailchimp' });
 
+const BATCH_POLL_INTERVAL_MS = 5000;
+const BATCH_STALL_TIMEOUT_MS = 5 * 60 * 1000;
+
 /**
  * Create a Mailchimp API instance
  *
@@ -83,21 +86,49 @@ export function createInstance(
 
   /**
    * Wait for the given batch to finish processing. Polls the batch status every
-   * 5 seconds until it is finished, then returns the finished batch.
+   * 5 seconds until it is finished, then returns the finished batch. Gives up
+   * if the batch stops making progress, so the wait scales with the number of
+   * operations rather than being unbounded.
    *
    * @param batch The batch
    * @returns The finished batch
+   * @throws If the batch makes no progress for BATCH_STALL_TIMEOUT_MS
    */
   async function waitForBatch(batch: MCBatch): Promise<MCBatch> {
-    while (batch.status !== 'finished') {
-      log.info(`Waiting for batch ${batch.id}`, {
-        finishedOperations: batch.finished_operations,
-        totalOperations: batch.total_operations,
-        erroredOperations: batch.errored_operations,
-      });
+    log.info(`Waiting for batch ${batch.id}`, {
+      totalOperations: batch.total_operations,
+    });
 
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+    let lastFinishedOperations = batch.finished_operations;
+    let lastProgressAt = Date.now();
+
+    while (batch.status !== 'finished') {
+      if (Date.now() - lastProgressAt > BATCH_STALL_TIMEOUT_MS) {
+        // Mailchimp can take hours to finalise a batch's response archive after
+        // the operations themselves have completed. Callers treat a missing
+        // contact as "not on the list", so returning a partial batch here would
+        // clear live data; abandon the run and let the next one redo the work.
+        throw new Error(
+          `Batch ${batch.id} made no progress for ${BATCH_STALL_TIMEOUT_MS}ms, ` +
+            `stopped at ${batch.finished_operations}/${batch.total_operations} operations`
+        );
+      }
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, BATCH_POLL_INTERVAL_MS)
+      );
       batch = (await instance.get('/batches/' + batch.id)).data;
+
+      if (batch.finished_operations !== lastFinishedOperations) {
+        lastFinishedOperations = batch.finished_operations;
+        lastProgressAt = Date.now();
+
+        log.info(`Batch ${batch.id} progress`, {
+          finishedOperations: batch.finished_operations,
+          totalOperations: batch.total_operations,
+          erroredOperations: batch.errored_operations,
+        });
+      }
     }
 
     return batch;
