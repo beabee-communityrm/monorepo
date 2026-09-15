@@ -15,6 +15,7 @@
 
     <div class="mb-3">
       <AppInput
+        v-if="accountContent.showOrganisationName"
         v-model="data.organisation"
         :label="t('adminSettings.general.organisationName')"
       />
@@ -32,6 +33,7 @@
 
     <div class="mb-3">
       <AppInput
+        v-if="joinContent.showVatNumber"
         v-model="data.vatNumber"
         :label="t('form.vatNumber')"
         :info-message="t('accountPage.vatNumberInfo')"
@@ -129,6 +131,7 @@ const { t } = useI18n();
 const isAdmin = computed(() => props.id !== 'me');
 
 const accountContent = await client.content.get('join/setup');
+const joinContent = await client.content.get('join');
 
 const currentNewsletterStatus = ref(NewsletterStatus.None);
 
