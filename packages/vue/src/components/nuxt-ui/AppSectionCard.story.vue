@@ -19,7 +19,7 @@ const state = reactive({
           :title="state.title"
           :description="state.description || undefined"
         >
-          <p class="text-muted text-sm">Section body content goes here.</p>
+          <p class="text-sm text-muted">Section body content goes here.</p>
         </AppSectionCard>
       </div>
 
@@ -33,7 +33,7 @@ const state = reactive({
     <Variant title="Without description">
       <div class="max-w-lg">
         <AppSectionCard icon="i-lucide-lock" title="Change password">
-          <p class="text-muted text-sm">Section body content goes here.</p>
+          <p class="text-sm text-muted">Section body content goes here.</p>
         </AppSectionCard>
       </div>
     </Variant>
@@ -45,14 +45,14 @@ const state = reactive({
           title="Contact information"
           description="Required fields are marked with *"
         >
-          <p class="text-muted text-sm">Name, email, phone fields.</p>
+          <p class="text-sm text-muted">Name, email, phone fields.</p>
         </AppSectionCard>
         <AppSectionCard
           icon="i-lucide-shield-check"
           title="Two-factor authentication"
           description="Add an extra layer of security to your account"
         >
-          <p class="text-muted text-sm">Enable/disable toggle.</p>
+          <p class="text-sm text-muted">Enable/disable toggle.</p>
         </AppSectionCard>
       </div>
     </Variant>

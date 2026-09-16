@@ -30,7 +30,6 @@ import {
   EmailMailing,
   Export,
   ExportItem,
-  GiftFlow,
   Notice,
   Option,
   PageSettings,
@@ -424,33 +423,6 @@ export const exportsAnonymiser = createModelAnonymiser(Export);
 
 export const exportItemsAnonymiser = createModelAnonymiser(ExportItem, {
   itemId: copy, // These will be mapped to values that have already been seen
-});
-
-export const giftFlowAnonymiser = createModelAnonymiser(GiftFlow, {
-  id: () => uuidv4(),
-  setupCode: uniqueCode,
-  sessionId: randomId(12),
-  giftForm: {
-    firstname: () => chance.first(),
-    lastname: () => chance.last(),
-    email: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
-    message: () => chance.sentence(),
-    fromName: () => chance.name(),
-    fromEmail: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
-    giftAddress: {
-      line1: () => chance.address(),
-      line2: () => chance.pickone(['Cabot', 'Easton', 'Southmead', 'Hanham']),
-      city: () => 'Bristol',
-      postcode: () => 'BS1 1AA',
-    },
-    deliveryAddress: {
-      line1: () => chance.address(),
-      line2: () => chance.pickone(['Cabot', 'Easton', 'Southmead', 'Hanham']),
-      city: () => 'Bristol',
-      postcode: () => 'BS1 1AA',
-    },
-  },
-  gifteeId: () => uuidv4(),
 });
 
 export const noticesAnonymiser = createModelAnonymiser(Notice);

@@ -18,7 +18,7 @@ meta:
           :callout="callout"
         />
       </div>
-      <p v-else class="text-muted py-16 text-center">
+      <p v-else class="py-16 text-center text-muted">
         {{ t('callouts.empty.active') }}
       </p>
     </template>

@@ -98,7 +98,8 @@
     "subTitle-nuxt": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "subscriptions": "Abonnementen",
     "title": "Account",
-    "unsavedChanges": "U heeft niet-opgeslagen wijzigingen"
+    "unsavedChanges": "U heeft niet-opgeslagen wijzigingen",
+    "vatNumberInfo": "Neem contact op met support{'@'}beabee.io om het btw-nummer te wijzigen"
   },
   "actions": {
     "add": "Toevoegen",
@@ -1031,7 +1032,6 @@
     },
     "contributionType": {
       "automatic": "Automatisch",
-      "gift": "Cadeau",
       "manual": "Handmatig",
       "none": "Geen"
     },
@@ -1454,6 +1454,7 @@
       "remaining": ""
     },
     "cityOrTown": "Stad",
+    "country": "",
     "deliveryOptIn": "Opt-in levering",
     "description": "Beschrijving",
     "email": "E-mail",
@@ -1479,6 +1480,15 @@
       "addressLine1": {
         "required": "Adresregel 1 is vereist"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Je browser heeft de toegang tot de microfoon geblokkeerd. Controleer de sitemachtigingen en probeer het opnieuw, of upload een opname die je elders hebt gemaakt.",
+        "micPermissionDeniedTitle": "Microfoon niet beschikbaar",
+        "recordingNotSupportedBody": "Deze browser kan geen audio opnemen. Upload in plaats daarvan een audiobestand.",
+        "recordingNotSupportedTitle": "Opnemen niet ondersteund",
+        "tooLongBody": "Dit bestand duurt {duration}. Het maximum voor deze vraag is {max}. Verkort het bestand of neem een kortere reactie op.",
+        "tooLongTitle": "Opname te lang",
+        "uploadFailedTitle": "Uploaden mislukt"
+      },
       "cityOrTown": {
         "required": "Stad/gemeente is vereist"
       },
@@ -1490,6 +1500,9 @@
         "password": "Ongeldig wachtwoord",
         "required": "Wachtwoord is vereist",
         "sameAs": "De wachtwoorden komen niet overeen"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",
@@ -1577,10 +1590,30 @@
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",
     "unsavedChanges": "Niet-opgeslagen wijzigingen",
-    "updated": "Bijgewerkt"
+    "updated": "Bijgewerkt",
+    "vatNumber": "Btw-nummer"
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Bijgevoegd",
+        "delete": "Verwijderen",
+        "discard": "Weggooien",
+        "pause": "Pauzeren",
+        "paused": "Gepauzeerd",
+        "playPause": "Afspelen of pauzeren",
+        "reRecord": "Opnieuw opnemen",
+        "record": "Opname starten",
+        "recording": "Bezig met opnemen",
+        "requestingPermission": "Wachten op microfoontoegang. Sta toegang toe in je browser om door te gaan.",
+        "resume": "Hervatten",
+        "stop": "Stoppen",
+        "tryAgain": "Opnieuw proberen",
+        "uploadFormats": "MP3, M4A, WAV of OGG",
+        "uploadInstead": "Upload in plaats daarvan een audiobestand",
+        "uploadLabel": "Audiobestand uploaden",
+        "uploadingHint": "Bezig met uploaden — je kunt de rest van het formulier blijven invullen."
+      },
       "file": {
         "browse": "uploaden vanaf apparaat",
         "dropFiles": "Sleep bestanden hierheen om bij te voegen",
@@ -1719,6 +1752,7 @@
           "showOptIn": "Vraag om in te schrijven voor nieuwsbrief",
           "title": "Nieuwsbrief"
         },
+        "showOrganisationName": "Vragen om organisatienaam",
         "text": "Nadat gebruikers lid zijn geworden, worden ze gevraagd om hun registratie te bevestigen. Hier kun je de details van het bevestigingsscherm instellen.",
         "title": "Account bevestiging",
         "welcomeMessage": "Welkomstbericht"
@@ -1752,6 +1786,7 @@
         "showAbsorbFee": "Gebruiker vragen om de betalingskosten te absorberen",
         "showGoogleApplePay": "",
         "showNoContribution": "Gebruiker toestaan mee te doen zonder bijdrage",
+        "showVatNumber": "Gebruiker vragen om btw-nummer",
         "suggestedAmounts": "Voorgestelde contributiebedragen",
         "text": "In dit gedeelte kun je het lidmaatschapsformulier bewerken, verfijnen en een voorbeeld bekijken.",
         "title": "Lidmaatschapsformulier"
@@ -1791,7 +1826,6 @@
     "insert": "Invoegen",
     "insertTag": "Voeg {tag} in",
     "tags": {
-      "ACTIVATELINK": "Cadeau activatielink",
       "ANSWERS": "Geformatteerde antwoorden",
       "CALLOUTLINK": "Link naar de CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom slug",
@@ -1800,8 +1834,6 @@
       "EMAIL": "E-mailadres van contact",
       "EXPIRES": "Vervaldatum lidmaatschap",
       "FNAME": "Voornaam van contact",
-      "GIFTDATE": "Startdatum cadeau",
-      "GIFTEE": "Naam van cadeauontvanger",
       "ISELIGIBLE": "Of doorverwijzing in aanmerking komt",
       "LNAME": "Achternaam van contact",
       "LOGINLINK": "Loginlink",
@@ -1811,7 +1843,6 @@
       "MESSAGE": "Aangepaste berichtinhoud",
       "NAME": "Volledige naam van contact",
       "ORGNAME": "Organisatienaam",
-      "PURCHASER": "Naam van cadeauverkoper",
       "REFCODE": "Doorverwijzingscode van contact",
       "REFEREENAME": "Naam van doorverwezen persoon",
       "RESPNAME": "Naam van respondent",

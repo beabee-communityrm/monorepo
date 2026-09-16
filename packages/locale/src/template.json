@@ -97,7 +97,8 @@
     "subTitle": "",
     "subTitle-nuxt": "",
     "subscriptions": "",
-    "title": ""
+    "title": "",
+    "vatNumberInfo": ""
   },
   "actions": {
     "add": "",
@@ -445,6 +446,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "",
       "updateResponse": ""
     },
     "addAPoint": "",
@@ -1029,7 +1031,6 @@
     },
     "contributionType": {
       "automatic": "",
-      "gift": "",
       "manual": "",
       "none": ""
     },
@@ -1444,6 +1445,7 @@
       "remaining": ""
     },
     "cityOrTown": "",
+    "country": "",
     "deliveryOptIn": "",
     "description": "",
     "email": "",
@@ -1469,6 +1471,15 @@
       "addressLine1": {
         "required": ""
       },
+      "audio": {
+        "micPermissionDeniedBody": "",
+        "micPermissionDeniedTitle": "",
+        "recordingNotSupportedBody": "",
+        "recordingNotSupportedTitle": "",
+        "tooLongBody": "",
+        "tooLongTitle": "",
+        "uploadFailedTitle": ""
+      },
       "cityOrTown": {
         "required": ""
       },
@@ -1480,6 +1491,9 @@
         "password": "",
         "required": "",
         "sameAs": ""
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",
@@ -1567,10 +1581,30 @@
     "saveChanges": "",
     "saved": "",
     "unsavedChanges": "",
-    "updated": ""
+    "updated": "",
+    "vatNumber": ""
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "",
+        "delete": "",
+        "discard": "",
+        "pause": "",
+        "paused": "",
+        "playPause": "",
+        "reRecord": "",
+        "record": "",
+        "recording": "",
+        "requestingPermission": "",
+        "resume": "",
+        "stop": "",
+        "tryAgain": "",
+        "uploadFormats": "",
+        "uploadInstead": "",
+        "uploadLabel": "",
+        "uploadingHint": ""
+      },
       "file": {
         "browse": "",
         "dropFiles": "",
@@ -1709,6 +1743,7 @@
           "showOptIn": "",
           "title": ""
         },
+        "showOrganisationName": "",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1742,6 +1777,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""
@@ -1781,7 +1817,6 @@
     "insert": "",
     "insertTag": "",
     "tags": {
-      "ACTIVATELINK": "",
       "ANSWERS": "",
       "CALLOUTLINK": "",
       "CALLOUTSLUG": "",
@@ -1790,8 +1825,6 @@
       "EMAIL": "",
       "EXPIRES": "",
       "FNAME": "",
-      "GIFTDATE": "",
-      "GIFTEE": "",
       "ISELIGIBLE": "",
       "LNAME": "",
       "LOGINLINK": "",
@@ -1801,7 +1834,6 @@
       "MESSAGE": "",
       "NAME": "",
       "ORGNAME": "",
-      "PURCHASER": "",
       "REFCODE": "",
       "REFEREENAME": "",
       "RESPNAME": "",

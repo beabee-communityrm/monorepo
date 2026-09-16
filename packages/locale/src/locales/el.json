@@ -98,7 +98,8 @@
     "subTitle-nuxt": "",
     "subscriptions": "",
     "title": "",
-    "unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές"
+    "unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές",
+    "vatNumberInfo": ""
   },
   "actions": {
     "add": "",
@@ -1031,7 +1032,6 @@
     },
     "contributionType": {
       "automatic": "",
-      "gift": "",
       "manual": "",
       "none": ""
     },
@@ -1454,6 +1454,7 @@
       "remaining": ""
     },
     "cityOrTown": "",
+    "country": "",
     "deliveryOptIn": "",
     "description": "",
     "email": "ηλεκτρονικό ταχυδρομείο",
@@ -1479,6 +1480,15 @@
       "addressLine1": {
         "required": ""
       },
+      "audio": {
+        "micPermissionDeniedBody": "Ο browser σας απέκλεισε την πρόσβαση στο μικρόφωνο. Ελέγξτε τις άδειες του ιστότοπου και δοκιμάστε ξανά, ή μεταφορτώστε μια εγγραφή που κάνατε αλλού.",
+        "micPermissionDeniedTitle": "Το μικρόφωνο δεν είναι διαθέσιμο",
+        "recordingNotSupportedBody": "Αυτός ο browser δεν μπορεί να εγγράψει ήχο. Μεταφορτώστε ένα αρχείο ήχου.",
+        "recordingNotSupportedTitle": "Η εγγραφή δεν υποστηρίζεται",
+        "tooLongBody": "Αυτό το αρχείο διαρκεί {duration}. Το μέγιστο για αυτή την ερώτηση είναι {max}. Περικόψτε το ή κάντε μια συντομότερη εγγραφή.",
+        "tooLongTitle": "Η εγγραφή είναι πολύ μεγάλη",
+        "uploadFailedTitle": "Η μεταφόρτωση απέτυχε"
+      },
       "cityOrTown": {
         "required": ""
       },
@@ -1490,6 +1500,9 @@
         "password": "",
         "required": "",
         "sameAs": ""
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "",
@@ -1577,10 +1590,30 @@
     "saveChanges": "",
     "saved": "",
     "unsavedChanges": "",
-    "updated": ""
+    "updated": "",
+    "vatNumber": ""
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Επισυνάφθηκε",
+        "delete": "Διαγραφή",
+        "discard": "Απόρριψη",
+        "pause": "Παύση",
+        "paused": "Σε παύση",
+        "playPause": "Αναπαραγωγή ή παύση",
+        "reRecord": "Νέα εγγραφή",
+        "record": "Έναρξη εγγραφής",
+        "recording": "Γίνεται εγγραφή",
+        "requestingPermission": "Αναμονή άδειας μικροφώνου. Επιτρέψτε την πρόσβαση στον browser σας για να συνεχίσετε.",
+        "resume": "Συνέχιση",
+        "stop": "Διακοπή",
+        "tryAgain": "Δοκιμάστε ξανά",
+        "uploadFormats": "MP3, M4A, WAV ή OGG",
+        "uploadInstead": "Μεταφόρτωση αρχείου ήχου",
+        "uploadLabel": "Μεταφόρτωση αρχείου ήχου",
+        "uploadingHint": "Μεταφόρτωση σε εξέλιξη — μπορείτε να συνεχίσετε να συμπληρώνετε τη φόρμα."
+      },
       "file": {
         "browse": "Πρέπει να περιμένετε: Μέχρι να σταματήσει να γυρίζει ο τροχός./ Μέχρι να γίνει μπλε η μπάρα.",
         "dropFiles": "Σύρετε αρχεία εδώ.",
@@ -1719,6 +1752,7 @@
           "showOptIn": "",
           "title": ""
         },
+        "showOrganisationName": "",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1752,6 +1786,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""
@@ -1791,7 +1826,6 @@
     "insert": "Εισαγωγή",
     "insertTag": "Εισαγωγή {tag}",
     "tags": {
-      "ACTIVATELINK": "Σύνδεσμος ενεργοποίησης δώρου",
       "ANSWERS": "Μορφοποιημένες απαντήσεις",
       "CALLOUTLINK": "Σύνδεσμος στο CrowdNewsroom",
       "CALLOUTSLUG": "Slug CrowdNewsroom",
@@ -1800,8 +1834,6 @@
       "EMAIL": "Διεύθυνση email επαφής",
       "EXPIRES": "Ημερομηνία λήξης συμμετοχής",
       "FNAME": "Μικρό όνομα",
-      "GIFTDATE": "Ημερομηνία έναρξης δώρου",
-      "GIFTEE": "Όνομα αποδέκτη δώρου",
       "ISELIGIBLE": "Εάν η παραπομπή είναι επιλέξιμη",
       "LNAME": "Επώνυμο",
       "LOGINLINK": "Σύνδεσμος σύνδεσης",
@@ -1811,7 +1843,6 @@
       "MESSAGE": "Προσαρμοσμένο περιεχόμενο μηνύματος",
       "NAME": "Πλήρες όνομα",
       "ORGNAME": "Όνομα οργανισμού",
-      "PURCHASER": "Όνομα αγοραστή δώρου",
       "REFCODE": "Κωδικός παραπομπής επαφής",
       "REFEREENAME": "Όνομα προσελκυόμενου ατόμου",
       "RESPNAME": "Όνομα απαντούμενου",

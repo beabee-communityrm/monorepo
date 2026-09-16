@@ -122,7 +122,7 @@ class EmailService {
    * - Sending pre-configured Email entities from the database
    * - When you already have EmailRecipient objects ready
    * - For low-level email sending without template logic
-   *
+   * @deprecated This method is kept public only for the legacy app. Should be made private.
    * @param email The Email entity to send
    * @param recipients List of email recipients with merge fields
    * @param opts Optional email options (attachments, sendAt, etc.)
@@ -210,13 +210,12 @@ class EmailService {
    * Send a general email template
    *
    * Sends emails from general templates that are not specific to contacts or admins.
-   * Used for system-wide notifications (e.g., email confirmation, gift purchases).
+   * Used for system-wide notifications (e.g., email confirmation).
    * Can be sent to any email address. See email-templates.ts for template parameters
    * and available merge fields.
    *
    * **When to use:**
    * - Email confirmation links (confirm-email)
-   * - Gift purchase notifications (purchased-gift)
    * - Expired special URL resends (expired-special-url-resend)
    * - Any email that doesn't require a Contact entity
    *
@@ -266,7 +265,7 @@ class EmailService {
    *
    * **When to use:**
    * - Welcome emails, password resets, contribution cancellations
-   * - Referral success, gift activation, and other member-facing emails
+   * - Referral success and other member-facing emails
    * - Any predefined template for contacts
    *
    * @param template The contact email template ID

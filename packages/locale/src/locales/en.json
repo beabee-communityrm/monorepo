@@ -97,7 +97,8 @@
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
     "subTitle-nuxt": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
     "subscriptions": "Subscriptions",
-    "title": "Account"
+    "title": "Account",
+    "vatNumberInfo": "Contact support{'@'}beabee.io to update the VAT Number"
   },
   "actions": {
     "add": "Add",
@@ -1030,7 +1031,6 @@
     },
     "contributionType": {
       "automatic": "Automatic",
-      "gift": "Gift",
       "manual": "Manual",
       "none": "None"
     },
@@ -1451,6 +1451,7 @@
       "remaining": "{remaining} characters remaining."
     },
     "cityOrTown": "City/Town",
+    "country": "Country",
     "deliveryOptIn": "Delivery opt-in",
     "description": "Description",
     "email": "Email",
@@ -1476,6 +1477,15 @@
       "addressLine1": {
         "required": "Address line 1 is required"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Your browser blocked access to the microphone. Check the site permissions and try again, or upload a recording you made elsewhere.",
+        "micPermissionDeniedTitle": "Microphone not available",
+        "recordingNotSupportedBody": "This browser cannot record audio. Please upload an audio file instead.",
+        "recordingNotSupportedTitle": "Recording not supported",
+        "tooLongBody": "This file is {duration} long. The maximum for this question is {max}. Please trim it or record a shorter answer.",
+        "tooLongTitle": "Recording too long",
+        "uploadFailedTitle": "Upload failed"
+      },
       "cityOrTown": {
         "required": "City/Town is required"
       },
@@ -1487,6 +1497,9 @@
         "password": "Invalid password",
         "required": "Password is required",
         "sameAs": "The passwords don't match"
+      },
+      "country": {
+        "required": "Country is required"
       },
       "description": {
         "maxLength": "Maximum length of {max} characters exceeded",
@@ -1574,10 +1587,30 @@
     "saveChanges": "Save Changes",
     "saved": "Saved!",
     "unsavedChanges": "You have unsaved changes",
-    "updated": "Updated"
+    "updated": "Updated",
+    "vatNumber": "VAT number"
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Attached",
+        "delete": "Delete",
+        "discard": "Discard",
+        "pause": "Pause",
+        "paused": "Paused",
+        "playPause": "Play or pause",
+        "reRecord": "Record again",
+        "record": "Start recording",
+        "recording": "Recording",
+        "requestingPermission": "Waiting for microphone permission. Allow access in your browser to continue.",
+        "resume": "Resume",
+        "stop": "Stop",
+        "tryAgain": "Try again",
+        "uploadFormats": "MP3, M4A, WAV or OGG",
+        "uploadInstead": "Upload an audio file instead",
+        "uploadLabel": "Upload an audio file",
+        "uploadingHint": "Uploading — you can keep filling in the rest of the form."
+      },
       "file": {
         "browse": "upload from device",
         "dropFiles": "Drop files to attach",
@@ -1716,6 +1749,7 @@
           "showOptIn": "Ask to subscribe to newsletter",
           "title": "Newsletter"
         },
+        "showOrganisationName": "Ask for organisation name",
         "text": "After joining, users will be asked to confirm their registration. Here you can set the details of the confirmation screen.",
         "title": "Account confirmation",
         "welcomeMessage": "Welcome message"
@@ -1749,6 +1783,7 @@
         "showAbsorbFee": "Ask user about absorbing the payment fee",
         "showGoogleApplePay": "Show Apple and Google Pay payment icons",
         "showNoContribution": "Allow user to join without a contribution",
+        "showVatNumber": "Ask user for VAT number",
         "suggestedAmounts": "Suggested contribution amounts",
         "text": "In this section you can edit, fine tune and preview your membership join form.",
         "title": "Join form"
@@ -1788,7 +1823,6 @@
     "insert": "Insert",
     "insertTag": "Insert {tag}",
     "tags": {
-      "ACTIVATELINK": "Gift activation link",
       "ANSWERS": "Formatted response answers",
       "CALLOUTLINK": "Link to CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom slug",
@@ -1797,8 +1831,6 @@
       "EMAIL": "Contact email address",
       "EXPIRES": "Membership expiration date",
       "FNAME": "Contact first name",
-      "GIFTDATE": "Gift start date",
-      "GIFTEE": "Gift recipient name",
       "ISELIGIBLE": "Whether referral is eligible",
       "LNAME": "Contact last name",
       "LOGINLINK": "Login link",
@@ -1808,7 +1840,6 @@
       "MESSAGE": "Custom message content",
       "NAME": "Contact full name",
       "ORGNAME": "Organization name",
-      "PURCHASER": "Gift purchaser name",
       "REFCODE": "Contact referral code",
       "REFEREENAME": "Name of referred person",
       "RESPNAME": "Responder name",

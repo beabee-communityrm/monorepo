@@ -1,3 +1,4 @@
+import type { Address } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
 import {
   CalloutResponse,
@@ -49,6 +50,24 @@ function profileField(field: keyof ContactProfile): FilterHandler {
       .select(`profile.contactId`)
       .from(ContactProfile, 'profile')
       .where(convertToWhereClause(`profile.${field}`));
+
+    qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
+  };
+}
+
+/**
+ * Creates a filter handler for a field inside the JSONB delivery address
+ * @param field - The field from Address to filter on
+ * @returns A filter handler function for the specified address field
+ */
+function deliveryAddressField(field: keyof Address): FilterHandler {
+  return (qb, { fieldPrefix, convertToWhereClause }) => {
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select(`profile.contactId`)
+      .from(ContactProfile, 'profile')
+      // Extract as text instead of JSONB (note ->> instead of ->)
+      .where(convertToWhereClause(`profile.deliveryAddress ->> '${field}'`));
 
     qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
   };
@@ -240,11 +259,15 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
  * - manualPaymentSource: Filters by manual payment contributions
  * - callouts: Filters by callout responses and participation
  * - tags: Filters by contact tags
+ * - organisation: Filters by organisation name
+ * - deliveryAddressCountry: Filters by the delivery address country code
  */
 export const contactFilterHandlers: FilterHandlers<string> = {
   deliveryOptIn: profileField('deliveryOptIn'),
   newsletterStatus: profileField('newsletterStatus'),
   newsletterGroups: profileField('newsletterGroups'),
+  organisation: profileField('organisation'),
+  deliveryAddressCountry: deliveryAddressField('country'),
   activePermission,
   activeMembership: activePermission,
   activeUser: (qb, args) => {

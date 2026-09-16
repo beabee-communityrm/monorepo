@@ -7,11 +7,11 @@ meta:
 <template>
   <div class="nuxt-page mx-auto flex max-w-2xl flex-col gap-6">
     <div
-      class="bg-elevated text-muted flex items-start gap-3 rounded-xl px-4 py-3"
+      class="flex items-start gap-3 rounded-xl bg-elevated px-4 py-3 text-muted"
     >
       <UIcon
         name="i-lucide-shield"
-        class="text-primary mt-0.5 size-5 shrink-0"
+        class="mt-0.5 size-5 shrink-0 text-primary"
       />
       <p>{{ t('accountPage.subTitle-nuxt') }}</p>
     </div>
@@ -31,8 +31,8 @@ meta:
       </template>
     </UTabs>
 
-    <p class="text-muted px-1">
-      <span class="text-primary font-medium">*</span>
+    <p class="px-1 text-muted">
+      <span class="font-medium text-primary">*</span>
       {{ t('accountPage.requiredFields') }}
     </p>
   </div>

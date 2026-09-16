@@ -1,5 +1,5 @@
 <template>
-  <div class="text-muted flex flex-wrap items-center gap-x-3 gap-y-1">
+  <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-muted">
     <span v-if="showEndDate && callout.expires">
       {{ t('common.status.ended') }}
       {{ formatLocale(callout.expires, 'd MMM yyyy') }}

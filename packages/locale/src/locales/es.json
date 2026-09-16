@@ -98,7 +98,8 @@
     "subTitle-nuxt": "Los campos obligatorios están marcados con un asterisco. Toda la información enviada aquí es privada.",
     "subscriptions": "Suscripciones",
     "title": "Cuenta",
-    "unsavedChanges": "Tienes cambios sin guardar"
+    "unsavedChanges": "Tienes cambios sin guardar",
+    "vatNumberInfo": "Escribe a support{'@'}beabee.io para actualizar el número de IVA"
   },
   "actions": {
     "add": "Añadir",
@@ -1031,7 +1032,6 @@
     },
     "contributionType": {
       "automatic": "Automático",
-      "gift": "Regalo",
       "manual": "Manual",
       "none": "Ninguno"
     },
@@ -1452,6 +1452,7 @@
       "remaining": "{remaining} caracteres restantes."
     },
     "cityOrTown": "Ciudad/Localidad",
+    "country": "",
     "deliveryOptIn": "Aceptar envíos",
     "description": "Descripción",
     "email": "Correo electrónico",
@@ -1477,6 +1478,15 @@
       "addressLine1": {
         "required": "La dirección línea 1 es obligatoria"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Tu navegador bloqueó el acceso al micrófono. Comprueba los permisos del sitio e inténtalo de nuevo, o sube una grabación hecha en otro lugar.",
+        "micPermissionDeniedTitle": "Micrófono no disponible",
+        "recordingNotSupportedBody": "Este navegador no puede grabar audio. Sube un archivo de audio en su lugar.",
+        "recordingNotSupportedTitle": "Grabación no compatible",
+        "tooLongBody": "Este archivo dura {duration}. El máximo para esta pregunta es {max}. Recórtalo o graba una respuesta más corta.",
+        "tooLongTitle": "Grabación demasiado larga",
+        "uploadFailedTitle": "Error al subir"
+      },
       "cityOrTown": {
         "required": "La ciudad/localidad es obligatoria"
       },
@@ -1488,6 +1498,9 @@
         "password": "Contraseña no válida",
         "required": "La contraseña es obligatoria",
         "sameAs": "Las contraseñas no coinciden"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "Se ha superado la longitud máxima de {max} caracteres",
@@ -1575,10 +1588,30 @@
     "saveChanges": "Guardar cambios",
     "saved": "¡Guardado!",
     "unsavedChanges": "Cambios sin guardar",
-    "updated": "Actualizado"
+    "updated": "Actualizado",
+    "vatNumber": "Número de IVA"
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Adjuntado",
+        "delete": "Eliminar",
+        "discard": "Descartar",
+        "pause": "Pausar",
+        "paused": "En pausa",
+        "playPause": "Reproducir o pausar",
+        "reRecord": "Grabar de nuevo",
+        "record": "Empezar a grabar",
+        "recording": "Grabando",
+        "requestingPermission": "Esperando permiso del micrófono. Permite el acceso en tu navegador para continuar.",
+        "resume": "Reanudar",
+        "stop": "Detener",
+        "tryAgain": "Intentar de nuevo",
+        "uploadFormats": "MP3, M4A, WAV u OGG",
+        "uploadInstead": "Subir un archivo de audio en su lugar",
+        "uploadLabel": "Subir un archivo de audio",
+        "uploadingHint": "Subiendo — puedes seguir rellenando el resto del formulario."
+      },
       "file": {
         "browse": "subir desde el dispositivo",
         "dropFiles": "Arrastra archivos para adjuntar",
@@ -1717,6 +1750,7 @@
           "showOptIn": "Preguntar si desean suscribirse al boletín",
           "title": "Boletín"
         },
+        "showOrganisationName": "Pedir el nombre de la organización",
         "text": "Después de registrarse, se pedirá a los usuarios que confirmen su registro. Aquí puedes configurar los detalles de la pantalla de confirmación.",
         "title": "Confirmación de cuenta",
         "welcomeMessage": "Mensaje de bienvenida"
@@ -1750,6 +1784,7 @@
         "showAbsorbFee": "Preguntar al usuario sobre absorber la comisión de pago",
         "showGoogleApplePay": "Mostrar iconos de pago de Apple Pay y Google Pay",
         "showNoContribution": "Permitir al usuario unirse sin contribución",
+        "showVatNumber": "Solicitar al usuario el número de IVA",
         "suggestedAmounts": "Importes de contribución sugeridos",
         "text": "En esta sección puedes editar, ajustar y previsualizar tu formulario de registro de membresía.",
         "title": "Formulario de registro"
@@ -1789,7 +1824,6 @@
     "insert": "Insertar",
     "insertTag": "Insertar {tag}",
     "tags": {
-      "ACTIVATELINK": "Enlace de activación de regalo",
       "ANSWERS": "Respuestas formateadas",
       "CALLOUTLINK": "Enlace al CrowdNewsroom",
       "CALLOUTSLUG": "Slug del CrowdNewsroom",
@@ -1798,8 +1832,6 @@
       "EMAIL": "Dirección de correo del contacto",
       "EXPIRES": "Fecha de expiración de membresía",
       "FNAME": "Nombre del contacto",
-      "GIFTDATE": "Fecha de inicio del regalo",
-      "GIFTEE": "Nombre del destinatario del regalo",
       "ISELIGIBLE": "Si la referencia es elegible",
       "LNAME": "Apellido del contacto",
       "LOGINLINK": "Enlace de inicio de sesión",
@@ -1809,7 +1841,6 @@
       "MESSAGE": "Contenido del mensaje personalizado",
       "NAME": "Nombre completo del contacto",
       "ORGNAME": "Nombre de la organización",
-      "PURCHASER": "Nombre del comprador del regalo",
       "REFCODE": "Código de referencia del contacto",
       "REFEREENAME": "Nombre de la persona referida",
       "RESPNAME": "Nombre del encuestado",

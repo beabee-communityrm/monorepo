@@ -258,6 +258,9 @@ class SignupService {
         partialContact,
         {
           newsletterStatus: OptionsService.getText('newsletter-default-status'),
+          ...(completedFlow?.data.vatNumber && {
+            vatNumber: completedFlow.data.vatNumber,
+          }),
           ...(completedFlow?.data.billingAddress &&
             OptionsService.getBool('show-mail-opt-in') && {
               deliveryAddress: completedFlow.data.billingAddress,

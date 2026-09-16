@@ -13,6 +13,7 @@ import type {
 import { isCalloutComponentOfBaseType } from '../utils/callouts.js';
 import { calloutComponentContentValidator } from './callout-component-content.validator.js';
 import { calloutComponentInputAddressValidator } from './callout-component-input-address.validator.js';
+import { calloutComponentInputAudioRecorderValidator } from './callout-component-input-audio-recorder.validator.js';
 import { calloutComponentInputCheckboxValidator } from './callout-component-input-checkbox.validator.js';
 import { calloutComponentInputCurrencyValidator } from './callout-component-input-currency.validator.js';
 import { calloutComponentInputDateTimeValidator } from './callout-component-input-date-time.validator.js';
@@ -50,6 +51,8 @@ const calloutInputValidatorsMap: Record<
   // Input
   [CalloutComponentType.INPUT_EMAIL]: calloutComponentInputEmailValidator,
   [CalloutComponentType.INPUT_ADDRESS]: calloutComponentInputAddressValidator,
+  [CalloutComponentType.INPUT_AUDIO_RECORDER]:
+    calloutComponentInputAudioRecorderValidator,
   [CalloutComponentType.INPUT_CHECKBOX]: calloutComponentInputCheckboxValidator,
   [CalloutComponentType.INPUT_CURRENCY]: calloutComponentInputCurrencyValidator,
   [CalloutComponentType.INPUT_DATE_TIME]:

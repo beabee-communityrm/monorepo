@@ -88,6 +88,11 @@ meta:
           class="mb-4 font-semibold"
         />
         <AppCheckbox
+          v-model="joinContent.showVatNumber"
+          :label="stepT('showVatNumber')"
+          class="mb-4 font-semibold"
+        />
+        <AppCheckbox
           v-model="joinContent.showGoogleApplePay"
           :label="stepT('showGoogleApplePay')"
           class="mb-4 font-semibold"

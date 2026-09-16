@@ -79,6 +79,7 @@ const joinContent = ref<ContentJoinData>({
   stripePublicKey: '',
   stripeCountry: 'eu',
   showGoogleApplePay: false,
+  showVatNumber: false,
 });
 
 const paymentContent = ref<ContentPaymentData>({

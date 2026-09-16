@@ -74,7 +74,6 @@ export const contactEmailTemplates = {
   welcome: withMergeFields(['REFCODE'], (contact: Contact) => ({
     REFCODE: contact.referralCode || '',
   })),
-  'welcome-post-gift': withMergeFields([], () => ({})),
   'reset-password': withMergeFields(
     ['RPLINK'],
     (_: Contact, params: { rpLink: string }) => ({
@@ -137,17 +136,6 @@ export const contactEmailTemplates = {
       ISELIGIBLE: params.isEligible.toString(),
     })
   ),
-  'giftee-success': withMergeFields(
-    ['PURCHASER', 'MESSAGE', 'ACTIVATELINK'],
-    (
-      _: Contact,
-      params: { fromName: string; message: string; giftCode: string }
-    ) => ({
-      PURCHASER: params.fromName,
-      MESSAGE: params.message,
-      ACTIVATELINK: config.audience + '/gift/' + params.giftCode,
-    })
-  ),
   'contribution-didnt-start': withMergeFields([], (_: Contact) => ({})),
   'one-time-donation': withMergeFields(
     ['AMOUNT'],
@@ -168,18 +156,6 @@ export const contactEmailTemplates = {
  * Each template contains both the function and metadata
  */
 export const generalEmailTemplates = {
-  'purchased-gift': withMergeFields(
-    ['PURCHASER', 'GIFTEE', 'GIFTDATE'],
-    (params: {
-      fromName: string;
-      gifteeFirstName: string;
-      giftStartDate: Date;
-    }) => ({
-      PURCHASER: params.fromName,
-      GIFTEE: params.gifteeFirstName,
-      GIFTDATE: moment.utc(params.giftStartDate).format('MMMM Do'),
-    })
-  ),
   'confirm-email': withMergeFields(
     ['FNAME', 'LNAME', 'CONFIRMLINK'],
     (params: { firstName: string; lastName: string; confirmLink: string }) => ({

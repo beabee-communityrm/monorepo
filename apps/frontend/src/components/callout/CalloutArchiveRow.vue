@@ -1,10 +1,10 @@
 <template>
   <RouterLink
     :to="`/crowdnewsroom/${callout.slug}`"
-    class="group hover:bg-elevated flex items-center gap-4 p-3 transition-colors"
+    class="group flex items-center gap-4 p-3 transition-colors hover:bg-elevated"
   >
     <div class="min-w-0 flex-1">
-      <p class="text-highlighted truncate font-medium">
+      <p class="truncate font-medium text-highlighted">
         {{ callout.title }}
       </p>
       <CalloutMetaList :callout="callout" show-end-date class="mt-0.5" />
@@ -20,7 +20,7 @@
       {{ t('callouts.showAnswered') }}
     </UBadge>
 
-    <UIcon name="i-lucide-chevron-right" class="text-dimmed size-4 shrink-0" />
+    <UIcon name="i-lucide-chevron-right" class="size-4 shrink-0 text-dimmed" />
   </RouterLink>
 </template>
 

@@ -98,7 +98,8 @@
     "subTitle-nuxt": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
     "subscriptions": "Iscrizioni",
     "title": "Account",
-    "unsavedChanges": "Hai modifiche non salvate"
+    "unsavedChanges": "Hai modifiche non salvate",
+    "vatNumberInfo": "Contatta support{'@'}beabee.io per aggiornare la partita IVA"
   },
   "actions": {
     "add": "Aggiungi",
@@ -1031,7 +1032,6 @@
     },
     "contributionType": {
       "automatic": "Automatico",
-      "gift": "Regalo",
       "manual": "Manuale",
       "none": "Nessuno"
     },
@@ -1454,6 +1454,7 @@
       "remaining": "{remaining} caratteri rimanenti."
     },
     "cityOrTown": "Città",
+    "country": "",
     "deliveryOptIn": "Consenso alla consegna",
     "description": "Descrizione",
     "email": "Email",
@@ -1479,6 +1480,15 @@
       "addressLine1": {
         "required": "La riga 1 dell'indirizzo è obbligatoria"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Il browser ha bloccato l'accesso al microfono. Controlla i permessi del sito e riprova, oppure carica una registrazione fatta altrove.",
+        "micPermissionDeniedTitle": "Microfono non disponibile",
+        "recordingNotSupportedBody": "Questo browser non può registrare audio. Carica invece un file audio.",
+        "recordingNotSupportedTitle": "Registrazione non supportata",
+        "tooLongBody": "Questo file dura {duration}. Il massimo per questa domanda è {max}. Accorcialo oppure registra una risposta più breve.",
+        "tooLongTitle": "Registrazione troppo lunga",
+        "uploadFailedTitle": "Caricamento non riuscito"
+      },
       "cityOrTown": {
         "required": "Città/località obbligatoria"
       },
@@ -1490,6 +1500,9 @@
         "password": "Password non valida",
         "required": "La password è obbligatoria",
         "sameAs": "Le password non coincidono"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "Lunghezza massima di {max} caratteri superata",
@@ -1577,10 +1590,30 @@
     "saveChanges": "Salva modifiche",
     "saved": "Salvato!",
     "unsavedChanges": "Modifiche non salvate",
-    "updated": "Aggiornato"
+    "updated": "Aggiornato",
+    "vatNumber": "Partita IVA"
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Allegato",
+        "delete": "Elimina",
+        "discard": "Scarta",
+        "pause": "Pausa",
+        "paused": "In pausa",
+        "playPause": "Riproduci o metti in pausa",
+        "reRecord": "Registra di nuovo",
+        "record": "Avvia registrazione",
+        "recording": "Registrazione in corso",
+        "requestingPermission": "In attesa dell'autorizzazione al microfono. Consenti l'accesso nel browser per continuare.",
+        "resume": "Riprendi",
+        "stop": "Interrompi",
+        "tryAgain": "Riprova",
+        "uploadFormats": "MP3, M4A, WAV o OGG",
+        "uploadInstead": "Carica invece un file audio",
+        "uploadLabel": "Carica un file audio",
+        "uploadingHint": "Caricamento in corso — puoi continuare a compilare il resto del modulo."
+      },
       "file": {
         "browse": "carica dal dispositivo",
         "dropFiles": "Trascina i file da allegare",
@@ -1719,6 +1752,7 @@
           "showOptIn": "Chiedi di iscriversi alla newsletter",
           "title": "Newsletter"
         },
+        "showOrganisationName": "Chiedere il nome dell'organizzazione",
         "text": "Dopo l'iscrizione, agli utenti verrà chiesto di confermare la registrazione. Qui puoi impostare i dettagli della schermata di conferma.",
         "title": "Conferma account",
         "welcomeMessage": "Messaggio di benvenuto"
@@ -1752,6 +1786,7 @@
         "showAbsorbFee": "Chiedi all'utente se assorbire le commissioni di pagamento",
         "showGoogleApplePay": "",
         "showNoContribution": "Consenti l'iscrizione senza contributo",
+        "showVatNumber": "Chiedi all'utente la partita IVA",
         "suggestedAmounts": "Importi di contributo suggeriti",
         "text": "In questa sezione puoi modificare, personalizzare e visualizzare in anteprima il modulo di iscrizione.",
         "title": "Modulo di iscrizione"
@@ -1791,7 +1826,6 @@
     "insert": "Inserisci",
     "insertTag": "Inserisci {tag}",
     "tags": {
-      "ACTIVATELINK": "Link attivazione regalo",
       "ANSWERS": "Risposte formattate",
       "CALLOUTLINK": "Link a CrowdNewsroom",
       "CALLOUTSLUG": "Slug CrowdNewsroom",
@@ -1800,8 +1834,6 @@
       "EMAIL": "Indirizzo email del contatto",
       "EXPIRES": "Data scadenza iscrizione",
       "FNAME": "Nome del contatto",
-      "GIFTDATE": "Data inizio regalo",
-      "GIFTEE": "Nome destinatario regalo",
       "ISELIGIBLE": "Se il referral è idoneo",
       "LNAME": "Cognome del contatto",
       "LOGINLINK": "Link di accesso",
@@ -1811,7 +1843,6 @@
       "MESSAGE": "Contenuto messaggio personalizzato",
       "NAME": "Nome completo del contatto",
       "ORGNAME": "Nome organizzazione",
-      "PURCHASER": "Nome acquirente regalo",
       "REFCODE": "Codice referral del contatto",
       "REFEREENAME": "Nome della persona indicata",
       "RESPNAME": "Nome rispondente",

@@ -98,7 +98,8 @@
     "subTitle-nuxt": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subscriptions": "Abonnements",
     "title": "Account",
-    "unsavedChanges": "Du hast ungespeicherte Änderungen"
+    "unsavedChanges": "Du hast ungespeicherte Änderungen",
+    "vatNumberInfo": "Wende dich an support{'@'}beabee.io, um die Umsatzsteuer-ID zu ändern"
   },
   "actions": {
     "add": "Hinzufügen",
@@ -1031,7 +1032,6 @@
     },
     "contributionType": {
       "automatic": "Automatisch",
-      "gift": "Geschenk",
       "manual": "Manuell",
       "none": "None"
     },
@@ -1454,6 +1454,7 @@
       "remaining": "Noch {remaining} Zeichen übrig."
     },
     "cityOrTown": "Ort",
+    "country": "",
     "deliveryOptIn": "Einverständnis zur Postsendung",
     "description": "Bezeichnung",
     "email": "E-Mail",
@@ -1479,6 +1480,15 @@
       "addressLine1": {
         "required": "Adresse benötigt"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Dein Browser hat den Zugriff auf das Mikrofon blockiert. Prüfe die Website-Berechtigungen und versuche es erneut, oder lade eine anderswo erstellte Aufnahme hoch.",
+        "micPermissionDeniedTitle": "Mikrofon nicht verfügbar",
+        "recordingNotSupportedBody": "Dieser Browser kann keine Audioaufnahmen erstellen. Bitte lade stattdessen eine Audiodatei hoch.",
+        "recordingNotSupportedTitle": "Aufnahme nicht unterstützt",
+        "tooLongBody": "Diese Datei ist {duration} lang. Das Maximum für diese Frage beträgt {max}. Bitte kürze die Datei oder nimm eine kürzere Antwort auf.",
+        "tooLongTitle": "Aufnahme zu lang",
+        "uploadFailedTitle": "Hochladen fehlgeschlagen"
+      },
       "cityOrTown": {
         "required": "Ort benötigt"
       },
@@ -1490,6 +1500,9 @@
         "password": "Passwort ungültig",
         "required": "Passwort benötigt",
         "sameAs": "Passwörter stimmen nicht überein"
+      },
+      "country": {
+        "required": ""
       },
       "description": {
         "maxLength": "Die maximale Länge von {max} Zeichen wurde überschritten",
@@ -1577,10 +1590,30 @@
     "saveChanges": "Änderungen speichern",
     "saved": "Gespeichert!",
     "unsavedChanges": "Ungespeicherte Änderungen",
-    "updated": "Aktualisiert"
+    "updated": "Aktualisiert",
+    "vatNumber": "Umsatzsteuer-ID"
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Angehängt",
+        "delete": "Löschen",
+        "discard": "Verwerfen",
+        "pause": "Pause",
+        "paused": "Pausiert",
+        "playPause": "Abspielen oder pausieren",
+        "reRecord": "Erneut aufnehmen",
+        "record": "Aufnahme starten",
+        "recording": "Aufnahme läuft",
+        "requestingPermission": "Warten auf Mikrofonzugriff. Bitte erlaube den Zugriff in deinem Browser, um fortzufahren.",
+        "resume": "Fortsetzen",
+        "stop": "Stopp",
+        "tryAgain": "Erneut versuchen",
+        "uploadFormats": "MP3, M4A, WAV oder OGG",
+        "uploadInstead": "Stattdessen eine Audiodatei hochladen",
+        "uploadLabel": "Audiodatei hochladen",
+        "uploadingHint": "Wird hochgeladen – du kannst den Rest des Formulars weiter ausfüllen."
+      },
       "file": {
         "browse": "Upload vom Gerät",
         "dropFiles": "Dateien hierher ziehen",
@@ -1719,6 +1752,7 @@
           "showOptIn": "Nach Newsletterabonnement fragen",
           "title": "Newsletter"
         },
+        "showOrganisationName": "Nach Organisationsname fragen",
         "text": "Neue Mitglieder müssen ihre Registrierung in folgendem Bildschirm bestätigen. Außerdem werden hier persönliche Informationen abgefragt.",
         "title": "Persönliche Informationen abfragen",
         "welcomeMessage": "Willkommensnachricht"
@@ -1752,6 +1786,7 @@
         "showAbsorbFee": "Nutzer um Ausgleich der Gebühren bitten",
         "showGoogleApplePay": "Apple Pay- und Google Pay-Zahlungsicons anzeigen",
         "showNoContribution": "Registrierung ohne Zahlung erlauben",
+        "showVatNumber": "Nutzer um Umsatzsteuer-ID bitten",
         "suggestedAmounts": "Beiträge vorschlagen",
         "text": "In diesem Abschnitt kannst du dein Registrierungsformular bearbeiten, optimieren und ansehen.",
         "title": "Registrierung"
@@ -1791,7 +1826,6 @@
     "insert": "Einfügen",
     "insertTag": "{tag} einfügen",
     "tags": {
-      "ACTIVATELINK": "Geschenk-Aktivierungslink",
       "ANSWERS": "Formatierte Antwort-Zusammenfassung",
       "CALLOUTLINK": "Link zur CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom-Slug",
@@ -1800,8 +1834,6 @@
       "EMAIL": "E-Mail-Adresse des Kontakts",
       "EXPIRES": "Ablaufdatum der Mitgliedschaft",
       "FNAME": "Vorname",
-      "GIFTDATE": "Startdatum des Geschenks",
-      "GIFTEE": "Name des Geschenkempfängers",
       "ISELIGIBLE": "Ob die Empfehlung berechtigt ist",
       "LNAME": "Nachname",
       "LOGINLINK": "Login-Link",
@@ -1811,7 +1843,6 @@
       "MESSAGE": "Benutzerdefinierte Nachricht",
       "NAME": "Vollständiger Name",
       "ORGNAME": "Name der Organisation",
-      "PURCHASER": "Name des Geschenkkäufers",
       "REFCODE": "Empfehlungs-Code des Kontakts",
       "REFEREENAME": "Name der geworbenen Person",
       "RESPNAME": "Name des Antwortenden",
