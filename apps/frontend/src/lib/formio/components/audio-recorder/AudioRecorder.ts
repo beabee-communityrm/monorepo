@@ -232,6 +232,19 @@ export default class AudioRecorderComponent extends FileComponent {
     };
   }
 
+  /**
+   * The element our UI belongs in. In the builder canvas formio calls attach()
+   * with its own `.builder-component` wrapper, so prepending straight to
+   * `element` would leave the UI a sibling of `.formio-component-audiorecorder`
+   * rather than inside it, and none of the component's styles would apply.
+   */
+  private uiRoot(element: HTMLElement): HTMLElement {
+    const selector = `.formio-component-${this.component.type}`;
+    return element.matches(selector)
+      ? element
+      : (element.querySelector<HTMLElement>(selector) ?? element);
+  }
+
   attach(element: HTMLElement) {
     const superAttach = super.attach(element);
 
@@ -241,7 +254,7 @@ export default class AudioRecorderComponent extends FileComponent {
     // discard actions (buildReadyBlock omits those when readOnly) - for
     // visual consistency, and shows nothing at all when there's no answer.
     if (this.options?.readOnly) {
-      element.prepend(this.buildUi());
+      this.uiRoot(element).prepend(this.buildUi());
       if (this.hasFileValue()) {
         this.enterReadyPhase();
       } else {
@@ -282,7 +295,7 @@ export default class AudioRecorderComponent extends FileComponent {
       });
     }
 
-    element.prepend(this.buildUi());
+    this.uiRoot(element).prepend(this.buildUi());
 
     // attach() re-enters several times as formio settles (both on its own
     // internal redraws mid-upload, and while the form's initial submission
