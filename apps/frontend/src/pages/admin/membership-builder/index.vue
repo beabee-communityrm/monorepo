@@ -90,7 +90,7 @@ meta:
         <AppCheckbox
           v-model="joinContent.showVatNumber"
           :label="stepT('showVatNumber')"
-          class="mb-4 font-semibold"
+          class="mb-4 hidden font-semibold"
         />
         <AppCheckbox
           v-model="joinContent.showGoogleApplePay"
