@@ -105,7 +105,7 @@ meta:
       />
 
       <UButton
-        v-else-if="canRespond && !responses.length"
+        v-else-if="respondAction === 'start'"
         size="xl"
         class="w-full"
         :to="respondTo"
@@ -117,8 +117,8 @@ meta:
         v-else-if="responses.length"
         :form-schema="callout.formSchema"
         :responses="responses"
-        :add-to="canAddAnother ? respondTo : undefined"
-        :edit-to="canEditSingle ? respondTo : undefined"
+        :add-to="respondAction === 'add' ? respondTo : undefined"
+        :edit-to="respondAction === 'edit' ? respondTo : undefined"
       />
     </template>
   </div>
@@ -220,43 +220,38 @@ const responsesPaginated =
 /** The current user's responses, newest first */
 const responses = computed(() => responsesPaginated.value?.items ?? []);
 
-// Only feeds prefilling /respond, which doesn't apply when every response is
-// a new one
-const latestResponse = computed(() =>
-  props.callout.responseMode === CalloutResponseMode.Multiple
-    ? undefined
-    : responses.value[0]
+const editableResponse = computed(() =>
+  props.callout.responseMode === CalloutResponseMode.SingleEditable
+    ? responses.value[0]
+    : undefined
 );
+
 const respondTo = computed(() => ({
   path: '/crowdnewsroom/' + props.callout.slug + '/respond',
   query: route.query,
 }));
 
-/** Responding again is a fresh response, not an edit of an existing one */
-const canAddAnother = computed(
-  () =>
-    canRespond.value &&
-    !isRespondPage.value &&
-    props.callout.responseMode === CalloutResponseMode.Multiple &&
-    responses.value.length > 0
-);
+/** Which respond action is open to them, if any */
+const respondAction = computed<'start' | 'add' | 'edit' | null>(() => {
+  if (!canRespond.value) return null;
+  if (!responses.value.length) return 'start';
 
-// A callout is either editable or multi-response, never both — they come from
-// one setting — so there's never more than one response to edit
-const canEditSingle = computed(
-  () =>
-    canRespond.value &&
-    !isRespondPage.value &&
-    props.callout.responseMode !== CalloutResponseMode.Multiple &&
-    responses.value.length === 1
-);
+  switch (props.callout.responseMode) {
+    case CalloutResponseMode.Multiple:
+      return 'add';
+    case CalloutResponseMode.SingleEditable:
+      return 'edit';
+    default:
+      return null;
+  }
+});
 
 const prefilledAnswers = computed(() =>
   route.query.answers
     ? (JSON.parse(
         route.query.answers.toString()
       ) as CalloutResponseAnswersSlide)
-    : latestResponse.value?.answers
+    : editableResponse.value?.answers
 );
 
 const canRespond = computed(
@@ -267,9 +262,9 @@ const canRespond = computed(
     (isOpen.value &&
       !showLoginPrompt.value &&
       !showMemberOnlyPrompt.value &&
-      // Current user hasn't responded or can update
-      (!latestResponse.value ||
-        props.callout.responseMode === CalloutResponseMode.SingleEditable))
+      // Only a non-editable single response is used up by responding
+      (props.callout.responseMode !== CalloutResponseMode.Single ||
+        !responses.value.length))
 );
 
 function handleSubmitResponse() {
