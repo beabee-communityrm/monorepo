@@ -2,6 +2,7 @@ import type {
   CalloutAccess,
   CalloutCaptcha,
   CalloutChannel,
+  CalloutResponseMode,
 } from '../data/index.js';
 import type {
   CalloutNewsletterSchema,
@@ -13,8 +14,7 @@ export interface CalloutData {
   image: string;
   starts: Date | null;
   expires: Date | null;
-  allowUpdate: boolean;
-  allowMultiple: boolean;
+  responseMode: CalloutResponseMode;
   access: CalloutAccess;
   captcha: CalloutCaptcha;
   hidden: boolean;
