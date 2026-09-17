@@ -83,6 +83,11 @@ router.beforeEach(async (to) => {
     return false;
   }
 
+  // Password flow routes don't exist when the identity provider handles login
+  if (to.meta.localLoginOnly && generalContent.value.oidcEnabled) {
+    return { path: '/auth/login' };
+  }
+
   const user = currentUser.value;
   // Route requires authentication
   if (user == null && !to.meta.noAuth) {

@@ -77,7 +77,12 @@ const logoutItem: NavigationMenuItem = {
 };
 
 function doLogout() {
-  client.auth.logout();
-  router.push('/auth/login');
+  if (generalContent.value.oidcEnabled) {
+    // Full-page navigation so the identity provider session is ended too
+    window.location.href = client.auth.getLogoutUrl();
+  } else {
+    client.auth.logout();
+    router.push('/auth/login');
+  }
 }
 </script>
