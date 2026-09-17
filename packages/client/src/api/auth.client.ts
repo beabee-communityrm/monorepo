@@ -28,10 +28,11 @@ export class AuthClient extends BaseClient {
    * @param next Internal path to continue to after login
    */
   getLoginUrl(next?: string): string {
-    return (
-      cleanUrl(`${this.options.host}/${this.options.path}/login`) +
-      (next ? '?next=' + encodeURIComponent(next) : '')
-    );
+    const url = this.authUrl('login');
+    if (next) {
+      url.searchParams.set('next', next);
+    }
+    return url.href;
   }
 
   /**
@@ -39,7 +40,19 @@ export class AuthClient extends BaseClient {
    * for full-page navigation on OIDC Login instances
    */
   getLogoutUrl(): string {
-    return cleanUrl(`${this.options.host}/${this.options.path}/logout`);
+    return this.authUrl('logout').href;
+  }
+
+  /**
+   * Absolute URL of an auth endpoint, resolved against the host the same way
+   * requests are. `this.options` holds the options as passed in, without the
+   * `/auth` segment the constructor adds for requests.
+   */
+  private authUrl(endpoint: string): URL {
+    return new URL(
+      cleanUrl(`${this.options.path}/auth/${endpoint}`),
+      this.options.host
+    );
   }
 
   /**
