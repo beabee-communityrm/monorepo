@@ -96,6 +96,22 @@ email-change Actions target (its signing key is printed once and becomes
 client are created by the hosting infrastructure, which is expected to call
 the same command in future.
 
+## Operations
+
+**Enabling OIDC Login** on an instance is the last step of the IdP
+Transition: with provisioning already running and the unsynced count
+acceptable, set `BEABEE_LOGIN_PROVIDER=oidc` plus the
+`BEABEE_LOGIN_SETTINGS_*` values and redeploy. The backend refuses to start
+if `BEABEE_IDP_PROVIDER` is `none` at that point. Existing beabee sessions
+stay valid until they expire; the next login goes through the IdP.
+
+**Break-glass.** If the IdP is unreachable or misconfigured nobody can log in,
+operators included. The way back is to set `BEABEE_LOGIN_PROVIDER=local` and
+redeploy: local password hashes are kept for exactly this reason, so members
+who haven't changed their password at the IdP since can log in as before. The
+OIDC discovery result is cached for the process lifetime; a restart picks up
+changed IdP metadata.
+
 ## Pull request stack
 
 Branches stack on each other in this order; each PR targets the previous

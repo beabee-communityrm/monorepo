@@ -23,6 +23,39 @@ export class AuthClient extends BaseClient {
   }
 
   /**
+   * The URL that starts OIDC login, for full-page navigation on instances
+   * where members log in at the identity provider
+   * @param next Internal path to continue to after login
+   */
+  getLoginUrl(next?: string): string {
+    const url = this.authUrl('login');
+    if (next) {
+      url.searchParams.set('next', next);
+    }
+    return url.href;
+  }
+
+  /**
+   * The URL that logs the member out of beabee and the identity provider,
+   * for full-page navigation on OIDC Login instances
+   */
+  getLogoutUrl(): string {
+    return this.authUrl('logout').href;
+  }
+
+  /**
+   * Absolute URL of an auth endpoint, resolved against the host the same way
+   * requests are. `this.options` holds the options as passed in, without the
+   * `/auth` segment the constructor adds for requests.
+   */
+  private authUrl(endpoint: string): URL {
+    return new URL(
+      cleanUrl(`${this.options.path}/auth/${endpoint}`),
+      this.options.host
+    );
+  }
+
+  /**
    * Authenticates a user with credentials
    * @param data Login credentials including email, password and optional 2FA token
    * @returns Promise that resolves when login is successful

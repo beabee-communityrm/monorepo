@@ -1,6 +1,6 @@
 import { CalloutResponseAnswersSlide } from '@beabee/beabee-common';
 import { ApiKey, Contact } from '@beabee/core/models';
-import { AuthInfo as AuthInfo2 } from '@beabee/core/type';
+import { AuthInfo as AuthInfo2, OidcLoginState } from '@beabee/core/type';
 
 import { ParamsDictionary } from 'express-serve-static-core';
 
@@ -23,5 +23,9 @@ declare module 'express-session' {
   interface SessionData {
     method?: 'plain' | 'totp';
     answers: CalloutResponseAnswersSlide | undefined;
+    /** OIDC login in progress, between redirect and callback */
+    oidc?: OidcLoginState;
+    /** ID token of the current OIDC login, used as logout hint */
+    idToken?: string | undefined;
   }
 }
