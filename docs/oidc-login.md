@@ -135,9 +135,10 @@ branch and is retargeted to `main` as its base merges.
    404s, client helpers
 5. `feat/oidc-login-frontend` — login, logout and route guards in both
    frontends
-6. `feat/oidc-signup` — join flow and account page
-7. `feat/idp-setup` — branding sync and `idp setup`
-8. `feat/idp-transition` — password mirroring, session clearing, unsynced
+6. `feat/oidc-account` — account page links to the IdP's self-service pages
+7. `feat/oidc-signup` — join flow
+8. `feat/idp-setup` — branding sync and `idp setup`
+9. `feat/idp-transition` — password mirroring, session clearing, unsynced
    count, hash clean-up
 
 ## Deliberately out of scope
