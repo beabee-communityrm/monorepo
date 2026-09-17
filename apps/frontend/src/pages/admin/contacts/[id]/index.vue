@@ -187,6 +187,32 @@ meta:
       </section>
 
       <section class="mb-6">
+        <AppHeading>{{ t('contactOverview.origin.title') }}</AppHeading>
+        <AppInfoList>
+          <AppInfoListItem
+            :name="t('contactOverview.origin.source')"
+            :value="origin?.source"
+          />
+          <AppInfoListItem
+            :name="t('contactOverview.origin.campaign')"
+            :value="origin?.campaign"
+          />
+          <AppInfoListItem
+            :name="t('contactOverview.origin.referrer')"
+            :value="origin?.medium"
+          />
+          <AppInfoListItem
+            :name="t('contactOverview.origin.addedBy')"
+            :value="
+              origin?.addedBy
+                ? t('contactOverview.origin.addedByValues.' + origin.addedBy)
+                : ''
+            "
+          />
+        </AppInfoList>
+      </section>
+
+      <section class="mb-6">
         <AppHeading>{{ t('contactOverview.newsletter.title') }}</AppHeading>
         <AppInfoList>
           <AppInfoListItem
@@ -294,6 +320,7 @@ meta:
 <script lang="ts" setup>
 import {
   CONTACT_MFA_TYPE,
+  type ContactOriginData,
   type ContactRoleData,
   type ContentJoinSetupData,
   ContributionType,
@@ -434,6 +461,9 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
   changingRoles.value = false;
 }
 
+/** The contact's origin, taken from its creation event */
+const origin = ref<ContactOriginData>();
+
 const setupContent = ref<ContentJoinSetupData>();
 
 const changingTags = ref(false);
@@ -475,6 +505,8 @@ onBeforeMount(async () => {
   ]);
   contactAbout.notes = contact.value.profile.notes || '';
   contactAbout.description = contact.value.profile.description || '';
+
+  origin.value = await client.contact.getOrigin(props.contact.id);
 
   contactTags.value = (await client.content.get('contacts')).tags;
 

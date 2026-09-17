@@ -145,7 +145,7 @@ class ContactsService {
       await ActivityService.addEvent({
         targetId: contact.id,
         eventType: ActivityEventType.ContactCreated,
-        metadata: null,
+        metadata: origin,
       });
 
       // Mirror the contact to the identity provider. Best-effort: an unlinked

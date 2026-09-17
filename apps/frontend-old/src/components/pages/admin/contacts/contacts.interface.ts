@@ -81,6 +81,25 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
     label: t('form.country'),
     options: getCountryItems(currentLocaleConfig.value.baseLocale),
   },
+  campaign: withLabel(
+    contactFilters.campaign,
+    t('contactOverview.origin.campaign')
+  ),
+  medium: withLabel(
+    contactFilters.medium,
+    t('contactOverview.origin.referrer')
+  ),
+  source: withLabel(contactFilters.source, t('contactOverview.origin.source')),
+  addedBy: withLabel(
+    contactFilters.addedBy,
+    t('contactOverview.origin.addedBy'),
+    {
+      admin: t('contactOverview.origin.addedByValues.admin'),
+      'self-signup': t('contactOverview.origin.addedByValues.self-signup'),
+      system: t('contactOverview.origin.addedByValues.system'),
+      external: t('contactOverview.origin.addedByValues.external'),
+    }
+  ),
 
   // Newsletter Status Filters
   newsletterStatus: withLabel(
@@ -224,6 +243,10 @@ export function useContactFilters() {
           'joined',
           'lastSeen',
           'newsletterStatus',
+          'campaign',
+          'medium',
+          'source',
+          'addedBy',
         ]),
         newsletterGroups: {
           ...filterItems.value.newsletterGroups,
