@@ -102,7 +102,7 @@ export class AuthController {
   async oidcLogin(
     @Req() req: Request,
     @Res() res: Response,
-    @QueryParam('next') next?: string
+    @QueryParam('next', { required: false }) next?: string
   ): Promise<Response> {
     if (!isOidcEnabled()) {
       throw new NotFoundError();
