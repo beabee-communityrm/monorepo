@@ -94,6 +94,13 @@
     "requiredFields": "Champs obligatoires",
     "savedPassword": "Nouveau mot de passe enregistré",
     "security": "Sécurité",
+    "selfService": {
+      "addPasskey": "",
+      "changePassword": "",
+      "intro": "",
+      "setupMfa": "",
+      "title": ""
+    },
     "subTitle": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
     "subTitle-nuxt": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
     "subscriptions": "Abonnements",

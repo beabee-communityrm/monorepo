@@ -21,7 +21,37 @@ meta:
         <AccountForm />
       </template>
       <template #security>
-        <div class="flex flex-col gap-4">
+        <!-- Login details are managed at the identity provider on OIDC instances -->
+        <div v-if="generalContent.oidcEnabled" class="flex flex-col gap-4">
+          <p class="text-muted">{{ t('accountPage.selfService.intro') }}</p>
+          <div v-if="selfService" class="flex flex-col gap-2 sm:flex-row">
+            <UButton
+              :to="selfService.changePassword"
+              external
+              icon="i-lucide-key-round"
+              variant="outline"
+            >
+              {{ t('accountPage.selfService.changePassword') }}
+            </UButton>
+            <UButton
+              :to="selfService.addPasskey"
+              external
+              icon="i-lucide-fingerprint"
+              variant="outline"
+            >
+              {{ t('accountPage.selfService.addPasskey') }}
+            </UButton>
+            <UButton
+              :to="selfService.setupMfa"
+              external
+              icon="i-lucide-smartphone"
+              variant="outline"
+            >
+              {{ t('accountPage.selfService.setupMfa') }}
+            </UButton>
+          </div>
+        </div>
+        <div v-else class="flex flex-col gap-4">
           <ChangePassword />
           <SetMFA contact-id="me" />
         </div>
@@ -39,17 +69,30 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import type { AuthInfoSelfServiceData } from '@beabee/beabee-common';
+
+import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AccountForm from '../../components/pages/profile/account/AccountForm.vue';
 import AccountNewsletterSubscriptions from '../../components/pages/profile/account/AccountNewsletterSubscriptions.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
 import SetMFA from '../../components/pages/profile/account/SetMFA.vue';
+import { generalContent } from '../../store';
 import { addBreadcrumb } from '../../store/breadcrumb';
+import { client } from '../../utils/api';
 import { routeIcons, routeLabels } from '../../utils/route-nav';
 import type { TabsItem } from '@nuxt/ui';
 
 const { t } = useI18n();
+
+const selfService = ref<AuthInfoSelfServiceData>();
+
+onBeforeMount(async () => {
+  if (generalContent.value.oidcEnabled) {
+    const auth = await client.auth.info();
+    if (auth.method === 'user') selfService.value = auth.selfService;
+  }
+});
 
 const items = computed<TabsItem[]>(() => [
   {

@@ -1,9 +1,10 @@
-import { RoleType } from '@beabee/beabee-common';
+import { AuthInfoSelfServiceData, RoleType } from '@beabee/beabee-common';
 
 import { Type } from 'class-transformer';
 import {
   IsArray,
   IsIn,
+  IsObject,
   IsOptional,
   IsString,
   ValidateNested,
@@ -27,4 +28,8 @@ export class GetAuthInfoDto {
   @IsArray()
   @IsString({ each: true })
   roles!: RoleType[];
+
+  @IsOptional()
+  @IsObject()
+  selfService?: AuthInfoSelfServiceData;
 }

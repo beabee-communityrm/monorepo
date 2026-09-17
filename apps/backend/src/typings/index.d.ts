@@ -27,5 +27,7 @@ declare module 'express-session' {
     oidc?: OidcLoginState;
     /** ID token of the current OIDC login, used as logout hint */
     idToken?: string | undefined;
+    /** The member's login name at the identity provider */
+    idpLoginName?: string | undefined;
   }
 }
