@@ -8,10 +8,21 @@ interface AuthInfoNoneData {
   roles: RoleType[]; // Should be empty
 }
 
+/**
+ * Pages at the identity provider where the member manages their login,
+ * only present when login is handled by an identity provider
+ */
+export interface AuthInfoSelfServiceData {
+  changePassword: string;
+  addPasskey: string;
+  setupMfa: string;
+}
+
 interface AuthInfoContactData {
   method: 'user';
   contact: GetContactData;
   roles: RoleType[];
+  selfService?: AuthInfoSelfServiceData;
 }
 
 interface AuthInfoApiKeyData {

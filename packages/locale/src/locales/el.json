@@ -94,6 +94,13 @@
     "requiredFields": "Υποχρεωτικά πεδία",
     "savedPassword": "",
     "security": "",
+    "selfService": {
+      "addPasskey": "",
+      "changePassword": "",
+      "intro": "",
+      "setupMfa": "",
+      "title": ""
+    },
     "subTitle": "",
     "subTitle-nuxt": "",
     "subscriptions": "",

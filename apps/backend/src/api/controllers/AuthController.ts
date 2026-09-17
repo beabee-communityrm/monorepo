@@ -145,7 +145,7 @@ export class AuthController {
         throw new Error('No OIDC login in progress for this session');
       }
 
-      const { subject, idToken } = await completeOidcLogin(
+      const { subject, loginName, idToken } = await completeOidcLogin(
         new URL(req.originalUrl, config.audience).search,
         loginState
       );
@@ -162,6 +162,7 @@ export class AuthController {
       // Regenerates the session, dropping the pre-login state
       await login(req, contact);
       req.session.idToken = idToken;
+      req.session.idpLoginName = loginName;
 
       res.redirect(config.audience + (loginState.next || '/'));
       return res;
@@ -200,8 +201,9 @@ export class AuthController {
 
   @Get('/info')
   async getAuthInfo(
+    @Req() req: Request,
     @CurrentAuth({ required: false }) auth: AuthInfo
   ): Promise<GetAuthInfoDto> {
-    return authTransformer.convert(auth);
+    return authTransformer.convert(auth, req.session.idpLoginName);
   }
 }

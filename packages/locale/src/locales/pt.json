@@ -94,6 +94,13 @@
     "requiredFields": "Campos obrigatórios",
     "savedPassword": "Nova palavra-passe gravada",
     "security": "Segurança",
+    "selfService": {
+      "addPasskey": "",
+      "changePassword": "",
+      "intro": "",
+      "setupMfa": "",
+      "title": ""
+    },
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "subTitle-nuxt": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "subscriptions": "Inscrições",

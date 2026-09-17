@@ -94,6 +94,13 @@
     "requiredFields": "Verplichte velden",
     "savedPassword": "Nieuw wachtwoord opgeslagen",
     "security": "Beveiliging",
+    "selfService": {
+      "addPasskey": "",
+      "changePassword": "",
+      "intro": "",
+      "setupMfa": "",
+      "title": ""
+    },
     "subTitle": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "subTitle-nuxt": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "subscriptions": "Abonnementen",

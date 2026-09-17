@@ -1,3 +1,5 @@
+import type { AuthInfoSelfServiceData } from '@beabee/beabee-common';
+
 import * as oidc from 'openid-client';
 
 import config from '#config/config';
@@ -83,12 +85,17 @@ export async function startOidcLogin(
  * validate state, nonce and PKCE verifier.
  * @param callbackSearch The query string the identity provider redirected with
  * @param loginState The login state stored in the session by startOidcLogin
- * @returns The IdP subject and the raw ID token (kept as the logout hint)
+ * @returns The IdP subject, the member's login name at the IdP and the raw ID
+ * token (kept as the logout hint)
  */
 export async function completeOidcLogin(
   callbackSearch: string,
   loginState: OidcLoginState
-): Promise<{ subject: string; idToken: string | undefined }> {
+): Promise<{
+  subject: string;
+  loginName: string | undefined;
+  idToken: string | undefined;
+}> {
   const oidcConfig = await getOidcConfig();
 
   // The redirect URI is registered at the IdP and must match exactly
@@ -107,7 +114,41 @@ export async function completeOidcLogin(
     throw new Error('OIDC token response did not include an ID token');
   }
 
-  return { subject: claims.sub, idToken: tokens.id_token };
+  // preferred_username is the login name Login v2 pages identify the session by
+  const loginName =
+    typeof claims.preferred_username === 'string'
+      ? claims.preferred_username
+      : undefined;
+
+  return { subject: claims.sub, loginName, idToken: tokens.id_token };
+}
+
+/**
+ * The identity provider's pages where a member changes their password, adds
+ * a passkey or sets up an authenticator app. Zitadel's Login v2 has one page
+ * per action and identifies the member's session by login name; Keycloak
+ * (development only) has a single account console.
+ * @param loginName The member's login name at the IdP
+ */
+export function getSelfServiceUrls(loginName: string): AuthInfoSelfServiceData {
+  const { issuer } = getSettings();
+
+  if (config.idp.provider === 'keycloak') {
+    const signingIn = `${issuer}/account/account-security/signing-in`;
+    return {
+      changePassword: signingIn,
+      addPasskey: signingIn,
+      setupMfa: signingIn,
+    };
+  }
+
+  const loginV2 = (path: string) =>
+    `${issuer}/ui/v2/login/${path}?loginName=${encodeURIComponent(loginName)}`;
+  return {
+    changePassword: loginV2('password/change'),
+    addPasskey: loginV2('passkey/set'),
+    setupMfa: loginV2('mfa/set'),
+  };
 }
 
 /**

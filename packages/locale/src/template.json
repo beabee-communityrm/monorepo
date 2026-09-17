@@ -94,6 +94,13 @@
     "requiredFields": "",
     "savedPassword": "",
     "security": "",
+    "selfService": {
+      "addPasskey": "",
+      "changePassword": "",
+      "intro": "",
+      "setupMfa": "",
+      "title": ""
+    },
     "subTitle": "",
     "subTitle-nuxt": "",
     "subscriptions": "",
