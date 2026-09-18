@@ -214,19 +214,22 @@
           <AppFormBox>
             <AppFormField>
               <AppRadioGroup
-                v-model="props.data.responseSettings"
-                name="responseSettings"
+                v-model="props.data.responseMode"
+                name="responseMode"
                 :label="inputT('responseSettings.label')"
                 :options="[
                   [
-                    'singleNonEditable',
+                    CalloutResponseMode.Single,
                     inputT('responseSettings.opts.singleNonEditable'),
                   ],
                   [
-                    'singleEditable',
+                    CalloutResponseMode.SingleEditable,
                     inputT('responseSettings.opts.singleEditable'),
                   ],
-                  ['multiple', inputT('responseSettings.opts.multiple')],
+                  [
+                    CalloutResponseMode.Multiple,
+                    inputT('responseSettings.opts.multiple'),
+                  ],
                 ]"
                 required
               />
@@ -247,6 +250,7 @@
 import {
   type CalloutChannel,
   type CalloutNewsletterSchema,
+  CalloutResponseMode,
   ItemStatus,
 } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
@@ -283,7 +287,7 @@ export interface SettingsTabData {
   showNewsletterOptIn: boolean;
   newsletterSettings: CalloutNewsletterSchema;
   showOnUserDashboards: boolean;
-  responseSettings: 'singleNonEditable' | 'singleEditable' | 'multiple';
+  responseMode: CalloutResponseMode;
   channels: CalloutChannel[] | null;
   hasStartDate: boolean;
   hasEndDate: boolean;

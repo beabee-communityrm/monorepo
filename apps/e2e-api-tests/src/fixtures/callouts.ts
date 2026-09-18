@@ -3,6 +3,7 @@ import {
   CalloutCaptcha,
   CalloutComponentType,
   type CalloutResponseAnswersSlide,
+  CalloutResponseMode,
   type CreateCalloutData,
 } from '@beabee/beabee-common';
 
@@ -16,8 +17,7 @@ export const createTestCallout = (
   channels: [],
   access: CalloutAccess.Anonymous,
   captcha: CalloutCaptcha.None,
-  allowUpdate: true,
-  allowMultiple: false,
+  responseMode: CalloutResponseMode.SingleEditable,
   hidden: false,
   sendResponseEmail: false,
   variants: {
@@ -130,8 +130,7 @@ export const createMinimalTestCallout = (
   channels: [],
   access: CalloutAccess.Anonymous,
   captcha: CalloutCaptcha.None,
-  allowUpdate: false,
-  allowMultiple: false,
+  responseMode: CalloutResponseMode.Single,
   hidden: false,
   sendResponseEmail: false,
   variants: {

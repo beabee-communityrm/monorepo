@@ -3,6 +3,7 @@ import {
   CalloutAccess,
   CalloutResponseAnswersSlide,
   CalloutResponseGuestData,
+  CalloutResponseMode,
   CalloutResponseNewsletterData,
   CreateCalloutData,
   FormioFile,
@@ -247,7 +248,7 @@ class CalloutsService {
         calloutId: callout.id,
         contactId: contact.id,
       },
-      // Get most recent response for callouts with allowMultiple
+      // Get most recent response for callouts that allow multiple responses
       order: { createdAt: 'DESC' },
     });
 
@@ -285,11 +286,11 @@ class CalloutsService {
     }
 
     let response = await this.getResponse(callout, contact);
-    if (!response || callout.allowMultiple) {
+    if (!response || callout.responseMode === CalloutResponseMode.Multiple) {
       response = new CalloutResponse();
       response.callout = callout;
       response.contact = contact;
-    } else if (!callout.allowUpdate) {
+    } else if (callout.responseMode !== CalloutResponseMode.SingleEditable) {
       throw new InvalidCalloutResponseError('cant-update');
     }
 
