@@ -1,9 +1,4 @@
-import {
-  ActivityActor,
-  ActivityActorType,
-  ActivityEventType,
-  ContactOriginData,
-} from '@beabee/beabee-common';
+import { ActivityActor, ActivityEventType } from '@beabee/beabee-common';
 
 import { getRepository } from '#database';
 import { actorContext } from '#lib/actor-context';
@@ -73,44 +68,6 @@ class ActivityService {
    */
   async getAllEvents(): Promise<ActivityEvent[]> {
     return getRepository(ActivityEvent).find();
-  }
-
-  private getContactAddedBy(event: ActivityEvent): string {
-    switch (event.actorType) {
-      case ActivityActorType.User:
-      case ActivityActorType.ApiKey:
-        return event.actorId ? 'admin' : 'self-signup'; // Admin ID != null implies the contact was added by admin
-      case ActivityActorType.System:
-      case ActivityActorType.Cron:
-      case ActivityActorType.BackendCLI:
-        return 'system';
-      case ActivityActorType.Webhook:
-        return 'external';
-      default:
-        return '';
-    }
-  }
-
-  /**
-   * Get the origin (source, referrer, campaign, added by) of a contact from
-   * the corresponding contact.created event
-   * @param contactId The contact ID
-   * @returns The contact's origin, or null if no creation event was recorded
-   */
-  async getContactOrigin(targetId: string): Promise<ContactOriginData | null> {
-    const event = await getRepository<
-      ActivityEvent<ActivityEventType.ContactCreated>
-    >(ActivityEvent).findOne({
-      where: { targetId, eventType: ActivityEventType.ContactCreated },
-    });
-
-    // If event not found, return empty strings
-    return {
-      source: event ? (event.metadata?.source ?? '') : '',
-      medium: event ? (event.metadata?.medium ?? '') : '',
-      campaign: event ? (event.metadata?.campaign ?? '') : '',
-      addedBy: event ? this.getContactAddedBy(event) : '',
-    };
   }
 }
 

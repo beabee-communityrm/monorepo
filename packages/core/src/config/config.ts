@@ -128,6 +128,53 @@ const newsletterProvider = env.e(
 );
 
 /**
+ * Identity provider configuration (IdP Provisioning)
+ * Used when BEABEE_IDP_PROVIDER=zitadel: contacts are mirrored into the
+ * instance's Zitadel virtual instance via the v2 user API
+ */
+export interface ZitadelIdpConfig {
+  provider: 'zitadel';
+  settings: {
+    url: string; // BEABEE_IDP_SETTINGS_URL - Zitadel instance URL
+    pat: string; // BEABEE_IDP_SETTINGS_PAT - Service user personal access token
+  };
+}
+
+/**
+ * Used when BEABEE_IDP_PROVIDER=keycloak: contacts are mirrored into a
+ * Keycloak realm via the admin REST API (local development)
+ */
+export interface KeycloakIdpConfig {
+  provider: 'keycloak';
+  settings: {
+    url: string; // BEABEE_IDP_SETTINGS_URL - Keycloak base URL
+    realm: string; // BEABEE_IDP_SETTINGS_REALM - Realm name
+    clientId: string; // BEABEE_IDP_SETTINGS_CLIENTID - Service account client ID
+    clientSecret: string; // BEABEE_IDP_SETTINGS_CLIENTSECRET - Service account client secret
+  };
+}
+
+/**
+ * Used when BEABEE_IDP_PROVIDER=none (default): contacts are not mirrored
+ * to an identity provider
+ */
+interface NoneIdpConfig {
+  provider: 'none';
+  settings: Record<string, never>;
+}
+
+// Union type for identity provider configuration - only one provider can be used at a time
+type IdpConfig = ZitadelIdpConfig | KeycloakIdpConfig | NoneIdpConfig;
+
+// Get identity provider from environment, with validation for allowed values
+// Defaults to "none" if not specified
+const idpProvider = env.e(
+  'BEABEE_IDP_PROVIDER',
+  ['zitadel', 'keycloak', 'none'] as const,
+  'none'
+);
+
+/**
  * Application configuration for an individual app module
  * Used for dynamic app loading and menu building
  */
@@ -277,6 +324,25 @@ export const config = {
         : null),
     },
   } as NewsletterConfig,
+
+  // Identity provider integration configuration
+  idp: {
+    provider: idpProvider, // Identity provider (zitadel, keycloak or none)
+    settings:
+      idpProvider === 'zitadel'
+        ? {
+            url: env.s('BEABEE_IDP_SETTINGS_URL'), // Zitadel instance URL
+            pat: env.s('BEABEE_IDP_SETTINGS_PAT'), // Service user personal access token
+          }
+        : idpProvider === 'keycloak'
+          ? {
+              url: env.s('BEABEE_IDP_SETTINGS_URL'), // Keycloak base URL
+              realm: env.s('BEABEE_IDP_SETTINGS_REALM'), // Realm name
+              clientId: env.s('BEABEE_IDP_SETTINGS_CLIENTID'), // Service account client ID
+              clientSecret: env.s('BEABEE_IDP_SETTINGS_CLIENTSECRET'), // Service account client secret
+            }
+          : {},
+  } as IdpConfig,
 
   // GoCardless payment integration
   gocardless: {

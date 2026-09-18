@@ -13,6 +13,7 @@ export * from './export-type-id.js';
 export * from './file-metadata.js';
 export * from './file-service-config.js';
 export * from './filter-handlers.js';
+export * from './idp-provider.js';
 export * from './image-backfill-result.js';
 export * from './image-format.js';
 export * from './image-metadata.js';

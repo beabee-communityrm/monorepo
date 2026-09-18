@@ -1145,6 +1145,12 @@
     "oneTime": "",
     "origin": {
       "addedBy": "",
+      "addedByValues": {
+        "admin": "",
+        "external": "",
+        "self-signup": "",
+        "system": ""
+      },
       "campaign": "",
       "referrer": "",
       "source": "",
@@ -1196,6 +1202,9 @@
       "email": "",
       "firstname": "",
       "hasDonated": "",
+      "idpAccount": "",
+      "idpLinked": "",
+      "idpUnlinked": "",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
