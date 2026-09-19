@@ -6,7 +6,7 @@ import {
   UnsupportedFileTypeError,
 } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
-import { documentService } from '@beabee/core/services';
+import { audioService } from '@beabee/core/services';
 
 import { Request, Response } from 'express';
 import {
@@ -26,10 +26,10 @@ import { pipeline } from 'stream/promises';
 import { RateLimit } from '../decorators/index.js';
 import { uploadMiddleware } from '../middlewares/index.js';
 
-@JsonController('/documents')
-export class DocumentController {
+@JsonController('/audio')
+export class AudioController {
   /**
-   * Upload a new document
+   * Upload a new audio file
    */
   @Post('/')
   @Authorized()
@@ -46,27 +46,27 @@ export class DocumentController {
     const file = await uploadMiddleware(req);
 
     if (!file) {
-      throw new BadRequestError('No document file provided');
+      throw new BadRequestError('No audio file provided');
     }
 
     // Verify file type is allowed before consuming the stream
-    if (!documentService.isSupportedType(file.mimetype)) {
+    if (!audioService.isSupportedType(file.mimetype)) {
       file.stream.resume(); // Drain the stream so the request completes
       throw new UnsupportedFileTypeError(
         file.mimetype,
-        documentService.allowedMimeTypes
+        audioService.allowedMimeTypes
       );
     }
 
-    // Use the DocumentService to upload the file with owner information
-    const metadata = await documentService.upload(
+    // Use the AudioService to upload the file with owner information
+    const metadata = await audioService.upload(
       file.stream,
       file.filename,
       file.mimetype,
       contact?.email // Add the owner information if available
     );
 
-    const path = `documents/${metadata.id}`;
+    const path = `audio/${metadata.id}`;
 
     // Create response object
     const response: UploadFileResponse = {
@@ -85,22 +85,22 @@ export class DocumentController {
   }
 
   /**
-   * Get a document
+   * Get an audio file
    */
   @Get('/:id')
-  async getDocument(
+  async getAudio(
     @Res() res: Response,
     @Param('id') id: string
   ): Promise<Response> {
-    // Get the filename first, this also throws if the document doesn't exist
-    const metadata = await documentService.getMetadata(id);
+    // Get the filename first, this also throws if the audio file doesn't exist
+    const metadata = await audioService.getMetadata(id);
 
-    // Get document as stream
-    const documentData = await documentService.getStream(id);
+    // Get audio as stream
+    const audioData = await audioService.getStream(id);
 
     // Set appropriate security headers
     res.set({
-      'Content-Type': documentData.contentType,
+      'Content-Type': audioData.contentType,
       'Content-Disposition': `inline; filename="${metadata.filename || id}"`,
       'Cache-Control': 'public, max-age=86400',
       'X-Content-Type-Options': 'nosniff',
@@ -108,12 +108,12 @@ export class DocumentController {
       'X-Frame-Options': 'SAMEORIGIN',
     });
 
-    // Stream the document to the response
+    // Stream the audio file to the response
     try {
-      await pipeline(documentData.stream, res);
+      await pipeline(audioData.stream, res);
     } catch (error) {
       if (!res.headersSent) {
-        throw new BadRequestError(`Failed to stream document (${id})`);
+        throw new BadRequestError(`Failed to stream audio (${id})`);
       }
       // Too late for an error response, abort the connection
       res.destroy();
@@ -125,19 +125,19 @@ export class DocumentController {
   }
 
   /**
-   * Delete a document
+   * Delete an audio file
    */
   @Delete('/:id')
   @Authorized()
-  async deleteDocument(
+  async deleteAudio(
     @Param('id') id: string,
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
-    // Get document metadata first to check ownership
-    const metadata = await documentService.getMetadata(id);
+    // Get audio metadata first to check ownership
+    const metadata = await audioService.getMetadata(id);
 
-    // Check if the user is the owner of the document
-    // Only allow the document owner or admins to delete documents
+    // Check if the user is the owner of the audio file
+    // Only allow the audio owner or admins to delete audio files
     if (
       metadata.owner &&
       metadata.owner !== contact.email &&
@@ -146,7 +146,7 @@ export class DocumentController {
       throw new UnauthorizedError();
     }
 
-    const success = await documentService.delete(id);
+    const success = await audioService.delete(id);
     return { success };
   }
 }
