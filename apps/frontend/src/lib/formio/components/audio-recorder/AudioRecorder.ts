@@ -2,6 +2,7 @@
 import {
   ALLOWED_AUDIO_EXTENSIONS,
   MAX_FILE_SIZE_IN_BYTES,
+  isSupportedAudioType,
 } from '@beabee/beabee-common';
 
 import { Formio } from 'formiojs';
@@ -33,6 +34,17 @@ const RECORDER_MIME_TYPES = [
   { mimeType: 'audio/ogg;codecs=opus', extension: 'ogg' },
   { mimeType: 'audio/mp4', extension: 'm4a' },
 ];
+
+// Browsers often label these as video/* or a non-standard audio type, which
+// the upload endpoint rejects
+const AUDIO_MIME_TYPE_BY_EXTENSION: Record<string, string> = {
+  webm: 'audio/webm',
+  ogg: 'audio/ogg',
+  mp4: 'audio/mp4',
+  m4a: 'audio/mp4',
+  mp3: 'audio/mpeg',
+  wav: 'audio/wav',
+};
 
 function extensionForMimeType(mimeType: string): string {
   const match = RECORDER_MIME_TYPES.find(({ mimeType: candidate }) =>
@@ -1024,9 +1036,16 @@ export default class AudioRecorderComponent extends FileComponent {
 
   private onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
+    const selected = input.files?.[0];
     input.value = '';
-    if (!file) return;
+    if (!selected) return;
+
+    const extension = selected.name.split('.').pop()?.toLowerCase() ?? '';
+    const audioType = AUDIO_MIME_TYPE_BY_EXTENSION[extension];
+    const file =
+      audioType && !isSupportedAudioType(selected.type)
+        ? new File([selected], selected.name, { type: audioType })
+        : selected;
 
     const objectUrl = URL.createObjectURL(file);
     // Not every audio file the browser accepts can also be decoded for a
