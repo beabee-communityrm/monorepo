@@ -125,6 +125,7 @@ export default class AudioRecorderComponent extends FileComponent {
     handler: (event: Event) => void
   ) => void;
   declare upload: (files: File[]) => void;
+  declare triggerChange: () => void;
   declare on: (event: string, handler: (...args: any[]) => void) => void;
   declare hasValue: () => boolean;
   // A `multiple: false` file component's value is an array ([fileInfo])
@@ -1116,6 +1117,7 @@ export default class AudioRecorderComponent extends FileComponent {
       this.playbackAudio = null;
     }
     this.dataValue = [];
+    this.triggerChange();
     this.livePeaks = [];
     this.reviewPeaks = [];
     this.duration = 0;
