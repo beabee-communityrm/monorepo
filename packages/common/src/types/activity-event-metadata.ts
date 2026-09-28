@@ -13,10 +13,12 @@ export interface ContributionUpdateData {
 }
 
 export interface ActivityEventMetadataMap {
+  [ActivityEventType.CalloutAnswered]: { responseId: string };
   [ActivityEventType.ContactCreated]: ContactOriginData;
   [ActivityEventType.ContactContributionStarted]: ContributionUpdateData;
   [ActivityEventType.ContactContributionUpdated]: ContributionUpdateData;
   [ActivityEventType.EmailSent]: { email: string; recipient: string };
+  [ActivityEventType.EmailTemplateAdded]: { templateId: string | null };
 }
 
 /**
