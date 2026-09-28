@@ -551,7 +551,7 @@ export default class AudioRecorderComponent extends FileComponent {
       t('formRenderer.components.audioRecorder.playPause')
     );
     this.playIcon = document.createElement('span');
-    this.playIcon.textContent = '▶';
+    this.playIcon.className = 'audio-recorder-play-icon';
     this.playButton.append(this.playIcon);
     this.addEventListener(this.playButton, 'click', (event) => {
       event.preventDefault();
@@ -1039,7 +1039,12 @@ export default class AudioRecorderComponent extends FileComponent {
   private updateReadyDynamic() {
     if (this.readyMeta) this.readyMeta.textContent = this.fileMeta;
     if (this.readyFileName) this.readyFileName.textContent = this.fileName;
-    if (this.playIcon) this.playIcon.textContent = this.playing ? '❚❚' : '▶';
+    if (this.playIcon) {
+      this.playIcon.classList.toggle(
+        'audio-recorder-play-icon--pause',
+        this.playing
+      );
+    }
 
     const dur = this.duration || 1;
     const played = this.playT / dur;

@@ -315,6 +315,13 @@
     .audio-recorder-stop-icon {
       @apply inline-block h-2.5 w-2.5 rounded-sm bg-white;
     }
+    /* Drawn rather than set as text: iOS renders ▶ as a colour emoji */
+    .audio-recorder-play-icon {
+      @apply ml-1 inline-block h-0 w-0 border-y-[7px] border-r-0 border-l-[12px] border-y-transparent border-l-white;
+    }
+    .audio-recorder-play-icon--pause {
+      @apply ml-0 h-3.5 w-3 border-x-[4px] border-y-0 border-white;
+    }
 
     .audio-recorder-or,
     .audio-recorder-formats,
@@ -358,10 +365,10 @@
       @apply h-16;
     }
     .audio-recorder-review-bars {
-      @apply h-[52px] flex-1;
+      @apply h-[52px] min-w-0 flex-1 overflow-hidden;
     }
     .audio-recorder-bar {
-      @apply min-w-[2px] flex-1 rounded-sm bg-main-20;
+      @apply min-w-px flex-1 rounded-sm bg-main-20;
     }
     .audio-recorder-live-bars .audio-recorder-bar {
       @apply bg-main-70;
