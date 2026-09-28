@@ -137,6 +137,7 @@ export default class AudioRecorderComponent extends FileComponent {
   declare refs: { fileProcessingLoader?: HTMLElement };
   declare options: { readOnly?: boolean };
   declare disabled: boolean;
+  declare parent: { beforeFocus?: (component: unknown) => void };
 
   private phase: Phase = 'idle';
 
@@ -335,6 +336,21 @@ export default class AudioRecorderComponent extends FileComponent {
     }
 
     return superAttach;
+  }
+
+  // Used for Initial Focus and clicking a validation error; the stock
+  // focus() targets the hidden file browse link
+  focus() {
+    this.parent?.beforeFocus?.(this);
+    const panel = [
+      this.idleBlock,
+      this.requestingBlock,
+      this.liveBlock,
+      this.uploadingBlock,
+      this.readyBlock,
+      this.errorBlock,
+    ].find((block) => block && !block.hidden);
+    panel?.querySelector<HTMLElement>('button:not([disabled])')?.focus();
   }
 
   destroy() {
