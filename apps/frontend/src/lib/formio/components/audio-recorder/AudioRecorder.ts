@@ -1,12 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ALLOWED_AUDIO_EXTENSIONS,
-  ALLOWED_AUDIO_MIME_TYPES,
+  MAX_FILE_SIZE_IN_BYTES,
 } from '@beabee/beabee-common';
 
 import { Formio } from 'formiojs';
 
 import { i18n } from '#lib/i18n';
+
+import editForm from './AudioRecorder.form';
+import {
+  DEFAULT_MAX_DURATION_S,
+  MAX_DURATION_LIMIT_S,
+  formatTime,
+  parseDuration,
+} from './duration';
 
 // formiojs doesn't ship a working ESM/CJS-interop deep import for individual
 // component classes, so we pull the file component off the same registry
@@ -16,16 +24,7 @@ const FileComponent = (Formio as any).Components.components.file;
 
 const { t } = i18n.global;
 
-const DEFAULT_MAX_DURATION_S = 3 * 60;
-// Comfortably under the 20MB global upload cap at typical opus bitrates.
-const MAX_DURATION_LIMIT_S = 15 * 60;
 const WAVEFORM_BAR_COUNT = 64;
-
-const ALLOWED_FILE_PATTERN_TYPES = [
-  'audio/*',
-  ...ALLOWED_AUDIO_EXTENSIONS.map((extension) => '.' + extension),
-  ...ALLOWED_AUDIO_MIME_TYPES,
-];
 
 // Checked in order of preference; the browser picks the first it supports.
 // Chrome/Firefox support webm/opus, Safari only supports mp4.
@@ -40,18 +39,6 @@ function extensionForMimeType(mimeType: string): string {
     mimeType.startsWith(candidate.split(';')[0])
   );
   return match?.extension ?? 'webm';
-}
-
-function formatTime(totalSeconds: number): string {
-  const s = Math.max(0, Math.floor(totalSeconds));
-  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
-}
-
-/** Parses "m:ss" into seconds */
-function parseDuration(value: unknown): number | undefined {
-  const match =
-    typeof value === 'string' && /^(\d{1,2}):([0-5]\d)$/.exec(value.trim());
-  return match ? Number(match[1]) * 60 + Number(match[2]) : undefined;
 }
 
 function formatSize(bytes: number): string {
@@ -246,63 +233,8 @@ export default class AudioRecorderComponent extends FileComponent {
     return AudioRecorderComponent.schema();
   }
 
-  // Builder settings, which are English-only like the rest of the builder
   static editForm(...extend: any[]) {
-    return FileComponent.editForm(
-      [
-        {
-          key: 'file',
-          components: [
-            {
-              type: 'textfield',
-              input: true,
-              key: 'maxDuration',
-              label: 'Maximum duration',
-              placeholder: formatTime(DEFAULT_MAX_DURATION_S),
-              description:
-                'Minutes and seconds (m:ss), up to ' +
-                formatTime(MAX_DURATION_LIMIT_S),
-              weight: 45,
-              validate: {
-                required: true,
-                custom: ({ input }: { input: string }) => {
-                  const seconds = parseDuration(input);
-                  return (
-                    (seconds !== undefined &&
-                      seconds > 0 &&
-                      seconds <= MAX_DURATION_LIMIT_S) ||
-                    'Maximum duration must be between 0:01 and ' +
-                      formatTime(MAX_DURATION_LIMIT_S) +
-                      ', written as m:ss'
-                  );
-                },
-              },
-            },
-            {
-              key: 'filePattern',
-              overrideEditForm: true,
-              placeholder: '.mp3,.wav',
-              tooltip: '',
-              description:
-                'Allowed types: ' + ALLOWED_FILE_PATTERN_TYPES.join(', '),
-              validate: {
-                required: true,
-                custom: ({ input }: { input: string }) =>
-                  input
-                    .replace(/\s/g, '')
-                    .split(',')
-                    .every((type) =>
-                      ALLOWED_FILE_PATTERN_TYPES.includes(type.toLowerCase())
-                    ) ||
-                  'File Pattern can only include audio types: ' +
-                    ALLOWED_FILE_PATTERN_TYPES.join(', '),
-              },
-            },
-          ],
-        },
-      ],
-      ...extend
-    );
+    return FileComponent.editForm(editForm, ...extend);
   }
 
   static get builderInfo() {
@@ -1128,12 +1060,15 @@ export default class AudioRecorderComponent extends FileComponent {
     // synchronously, without emitting fileUploadingEnd.
     const rejected = this.statuses.find((s) => s.status === 'error');
     if (rejected) {
-      this.showError(
-        t('form.errors.audio.uploadFailedTitle'),
-        this.validatePattern(file)
-          ? rejected.message || t('form.errors.file.uploadFailed')
-          : t('form.errors.audio.wrongTypeBody', { types: this.uploadFormats })
-      );
+      let body = rejected.message || t('form.errors.file.uploadFailed');
+      if (!this.validatePattern(file)) {
+        body = t('form.errors.audio.wrongTypeBody', {
+          types: this.uploadFormats,
+        });
+      } else if (file.size > MAX_FILE_SIZE_IN_BYTES) {
+        body = t('form.errors.file.tooBig');
+      }
+      this.showError(t('form.errors.audio.uploadFailedTitle'), body);
     }
   }
 
