@@ -16,9 +16,9 @@ const FileComponent = (Formio as any).Components.components.file;
 
 const { t } = i18n.global;
 
+const DEFAULT_MAX_DURATION_S = 3 * 60;
 // Comfortably under the 20MB global upload cap at typical opus bitrates.
-const MAX_RECORDING_DURATION_MS = 3 * 60 * 1000;
-const MAX_RECORDING_DURATION_S = MAX_RECORDING_DURATION_MS / 1000;
+const MAX_DURATION_LIMIT_S = 15 * 60;
 const WAVEFORM_BAR_COUNT = 64;
 
 const ALLOWED_FILE_PATTERN_TYPES = [
@@ -45,6 +45,13 @@ function extensionForMimeType(mimeType: string): string {
 function formatTime(totalSeconds: number): string {
   const s = Math.max(0, Math.floor(totalSeconds));
   return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+}
+
+/** Parses "m:ss" into seconds */
+function parseDuration(value: unknown): number | undefined {
+  const match =
+    typeof value === 'string' && /^(\d{1,2}):([0-5]\d)$/.exec(value.trim());
+  return match ? Number(match[1]) * 60 + Number(match[2]) : undefined;
 }
 
 function formatSize(bytes: number): string {
@@ -225,6 +232,7 @@ export default class AudioRecorderComponent extends FileComponent {
         storage: 'beabee',
         filePattern: 'audio/*',
         fileMaxSize: '20MB',
+        maxDuration: formatTime(DEFAULT_MAX_DURATION_S),
         multiple: false,
       },
       ...extend
@@ -245,6 +253,31 @@ export default class AudioRecorderComponent extends FileComponent {
         {
           key: 'file',
           components: [
+            {
+              type: 'textfield',
+              input: true,
+              key: 'maxDuration',
+              label: 'Maximum duration',
+              placeholder: formatTime(DEFAULT_MAX_DURATION_S),
+              description:
+                'Minutes and seconds (m:ss), up to ' +
+                formatTime(MAX_DURATION_LIMIT_S),
+              weight: 45,
+              validate: {
+                required: true,
+                custom: ({ input }: { input: string }) => {
+                  const seconds = parseDuration(input);
+                  return (
+                    (seconds !== undefined &&
+                      seconds > 0 &&
+                      seconds <= MAX_DURATION_LIMIT_S) ||
+                    'Maximum duration must be between 0:01 and ' +
+                      formatTime(MAX_DURATION_LIMIT_S) +
+                      ', written as m:ss'
+                  );
+                },
+              },
+            },
             {
               key: 'filePattern',
               overrideEditForm: true,
@@ -383,6 +416,12 @@ export default class AudioRecorderComponent extends FileComponent {
     }
 
     return superAttach;
+  }
+
+  private get maxDurationS(): number {
+    const seconds =
+      parseDuration(this.component.maxDuration) ?? DEFAULT_MAX_DURATION_S;
+    return Math.min(Math.max(seconds, 1), MAX_DURATION_LIMIT_S);
   }
 
   // audio/* is narrowed to the extensions the backend supports
@@ -542,8 +581,7 @@ export default class AudioRecorderComponent extends FileComponent {
     this.liveTimeLabel.className = 'audio-recorder-live-time';
     this.liveMaxTimeLabel = document.createElement('span');
     this.liveMaxTimeLabel.className = 'audio-recorder-live-max-time';
-    this.liveMaxTimeLabel.textContent =
-      '/ ' + formatTime(MAX_RECORDING_DURATION_S);
+    this.liveMaxTimeLabel.textContent = '/ ' + formatTime(this.maxDurationS);
     row.append(
       this.liveDot,
       this.liveStatusLabel,
@@ -903,7 +941,7 @@ export default class AudioRecorderComponent extends FileComponent {
 
     this.recordingTimeout = setTimeout(() => {
       this.stopRecording();
-    }, MAX_RECORDING_DURATION_MS);
+    }, this.maxDurationS * 1000);
   }
 
   private pauseRecording() {
@@ -981,12 +1019,9 @@ export default class AudioRecorderComponent extends FileComponent {
 
   private startElapsedTimer() {
     this.elapsedInterval = setInterval(() => {
-      this.elapsedMs = Math.min(
-        this.elapsedMs + 100,
-        MAX_RECORDING_DURATION_MS
-      );
+      this.elapsedMs = Math.min(this.elapsedMs + 100, this.maxDurationS * 1000);
       this.updateLiveDynamic();
-      if (this.elapsedMs >= MAX_RECORDING_DURATION_MS) {
+      if (this.elapsedMs >= this.maxDurationS * 1000) {
         this.stopRecording();
       }
     }, 100);
@@ -1067,12 +1102,12 @@ export default class AudioRecorderComponent extends FileComponent {
     // validation reject anything genuinely unsupported.
     probeAudioDuration(objectUrl).then((duration) => {
       URL.revokeObjectURL(objectUrl);
-      if (duration > MAX_RECORDING_DURATION_S) {
+      if (duration > this.maxDurationS) {
         this.showError(
           t('form.errors.audio.tooLongTitle'),
           t('form.errors.audio.tooLongBody', {
             duration: formatTime(duration),
-            max: formatTime(MAX_RECORDING_DURATION_S),
+            max: formatTime(this.maxDurationS),
           })
         );
         return;
