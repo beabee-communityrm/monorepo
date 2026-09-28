@@ -12,12 +12,22 @@ const noCreatedEvent = `
   )
 `;
 
+// Find cancelled contributions without cancellation event
+const noCancelledEvent = `
+  FROM contact_contribution cc
+  WHERE cc."cancelledAt" IS NOT NULL
+    AND NOT EXISTS (
+      SELECT 1 FROM activity_event e
+      WHERE e."targetId" = cc."contactId" AND e."eventType" = $1
+    )
+`;
+
 /**
  * Backfill contact.created events
  * Contact join dates are used as the event time
  * Contacts with pre-existing creation events are ignored
  */
-export const backfillContacts = async (dryRun: boolean): Promise<void> => {
+const backfillCreated = async (dryRun: boolean): Promise<void> => {
   const eventType = ActivityEventType.ContactCreated;
 
   if (dryRun) {
@@ -41,4 +51,46 @@ export const backfillContacts = async (dryRun: boolean): Promise<void> => {
   console.log(
     `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s)`
   );
+};
+
+/**
+ * Backfill contact.contribution-cancelled events
+ * The contact is both the target and the actor
+ * Contribution cancellation dates are used as the event time
+ * Contacts with pre-existing cancellation events are ignored
+ */
+const backfillContributionCancelled = async (
+  dryRun: boolean
+): Promise<void> => {
+  const eventType = ActivityEventType.ContactContributionCancelled;
+
+  if (dryRun) {
+    const [{ count }] = await dataSource.query(
+      `SELECT COUNT(*)::int AS count ${noCancelledEvent}`,
+      [eventType]
+    );
+    console.log(`${chalk.green('✓')} Would add ${count} ${eventType} event(s)`);
+    return;
+  }
+
+  const inserted = await dataSource.query(
+    `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
+     SELECT cc."contactId", $2, cc."contactId", cc."cancelledAt", $1, NULL
+     ${noCancelledEvent}
+     RETURNING id`,
+    [eventType, ActivityActorType.User]
+  );
+
+  console.log(
+    `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s)`
+  );
+};
+
+/**
+ * Backfill contact activity events that pre-date the activity feed.
+ * @param dryRun Only report what would be created
+ */
+export const backfillContacts = async (dryRun: boolean): Promise<void> => {
+  await backfillCreated(dryRun);
+  await backfillContributionCancelled(dryRun);
 };
