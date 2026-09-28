@@ -1480,7 +1480,8 @@
         "recordingNotSupportedTitle": "Aufnahme nicht unterstützt",
         "tooLongBody": "Diese Datei ist {duration} lang. Das Maximum für diese Frage beträgt {max}. Bitte kürze die Datei oder nimm eine kürzere Antwort auf.",
         "tooLongTitle": "Aufnahme zu lang",
-        "uploadFailedTitle": "Hochladen fehlgeschlagen"
+        "uploadFailedTitle": "Hochladen fehlgeschlagen",
+        "wrongTypeBody": "Bei dieser Frage sind nur {types}-Dateien möglich."
       },
       "cityOrTown": {
         "required": "Ort benötigt"
@@ -1602,7 +1603,6 @@
         "resume": "Fortsetzen",
         "stop": "Stopp",
         "tryAgain": "Erneut versuchen",
-        "uploadFormats": "MP3, M4A, WAV oder OGG",
         "uploadInstead": "Stattdessen eine Audiodatei hochladen",
         "uploadLabel": "Audiodatei hochladen",
         "uploadingHint": "Wird hochgeladen – du kannst den Rest des Formulars weiter ausfüllen."

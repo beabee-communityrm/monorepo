@@ -1480,7 +1480,8 @@
         "recordingNotSupportedTitle": "Opnemen niet ondersteund",
         "tooLongBody": "Dit bestand duurt {duration}. Het maximum voor deze vraag is {max}. Verkort het bestand of neem een kortere reactie op.",
         "tooLongTitle": "Opname te lang",
-        "uploadFailedTitle": "Uploaden mislukt"
+        "uploadFailedTitle": "Uploaden mislukt",
+        "wrongTypeBody": "Deze vraag accepteert alleen {types}-bestanden."
       },
       "cityOrTown": {
         "required": "Stad/gemeente is vereist"
@@ -1602,7 +1603,6 @@
         "resume": "Hervatten",
         "stop": "Stoppen",
         "tryAgain": "Opnieuw proberen",
-        "uploadFormats": "MP3, M4A, WAV of OGG",
         "uploadInstead": "Upload in plaats daarvan een audiobestand",
         "uploadLabel": "Audiobestand uploaden",
         "uploadingHint": "Bezig met uploaden — je kunt de rest van het formulier blijven invullen."

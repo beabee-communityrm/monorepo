@@ -1480,7 +1480,8 @@
         "recordingNotSupportedTitle": "Η εγγραφή δεν υποστηρίζεται",
         "tooLongBody": "Αυτό το αρχείο διαρκεί {duration}. Το μέγιστο για αυτή την ερώτηση είναι {max}. Περικόψτε το ή κάντε μια συντομότερη εγγραφή.",
         "tooLongTitle": "Η εγγραφή είναι πολύ μεγάλη",
-        "uploadFailedTitle": "Η μεταφόρτωση απέτυχε"
+        "uploadFailedTitle": "Η μεταφόρτωση απέτυχε",
+        "wrongTypeBody": "Αυτή η ερώτηση δέχεται μόνο αρχεία {types}."
       },
       "cityOrTown": {
         "required": ""
@@ -1602,7 +1603,6 @@
         "resume": "Συνέχιση",
         "stop": "Διακοπή",
         "tryAgain": "Δοκιμάστε ξανά",
-        "uploadFormats": "MP3, M4A, WAV ή OGG",
         "uploadInstead": "Μεταφόρτωση αρχείου ήχου",
         "uploadLabel": "Μεταφόρτωση αρχείου ήχου",
         "uploadingHint": "Μεταφόρτωση σε εξέλιξη — μπορείτε να συνεχίσετε να συμπληρώνετε τη φόρμα."

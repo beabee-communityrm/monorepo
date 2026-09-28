@@ -307,7 +307,11 @@
       @apply text-danger no-underline;
     }
     .audio-recorder-file-input {
-      @apply hidden;
+      @apply sr-only;
+    }
+    .audio-recorder-link:has(.audio-recorder-file-input:focus-visible) {
+      outline: auto;
+      outline-offset: 2px;
     }
     .audio-recorder--disabled
       :is(button, label):not(.audio-recorder-play-button) {

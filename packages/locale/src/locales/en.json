@@ -1477,7 +1477,8 @@
         "recordingNotSupportedTitle": "Recording not supported",
         "tooLongBody": "This file is {duration} long. The maximum for this question is {max}. Please trim it or record a shorter answer.",
         "tooLongTitle": "Recording too long",
-        "uploadFailedTitle": "Upload failed"
+        "uploadFailedTitle": "Upload failed",
+        "wrongTypeBody": "This question only accepts {types} files."
       },
       "cityOrTown": {
         "required": "City/Town is required"
@@ -1599,7 +1600,6 @@
         "resume": "Resume",
         "stop": "Stop",
         "tryAgain": "Try again",
-        "uploadFormats": "MP3, M4A, WAV or OGG",
         "uploadInstead": "Upload an audio file instead",
         "uploadLabel": "Upload an audio file",
         "uploadingHint": "Uploading — you can keep filling in the rest of the form."

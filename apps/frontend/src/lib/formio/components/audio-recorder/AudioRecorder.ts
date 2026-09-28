@@ -1,4 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  ALLOWED_AUDIO_EXTENSIONS,
+  ALLOWED_AUDIO_MIME_TYPES,
+} from '@beabee/beabee-common';
+
 import { Formio } from 'formiojs';
 
 import { i18n } from '#lib/i18n';
@@ -15,6 +20,12 @@ const { t } = i18n.global;
 const MAX_RECORDING_DURATION_MS = 3 * 60 * 1000;
 const MAX_RECORDING_DURATION_S = MAX_RECORDING_DURATION_MS / 1000;
 const WAVEFORM_BAR_COUNT = 64;
+
+const ALLOWED_FILE_PATTERN_TYPES = [
+  'audio/*',
+  ...ALLOWED_AUDIO_EXTENSIONS.map((extension) => '.' + extension),
+  ...ALLOWED_AUDIO_MIME_TYPES,
+];
 
 // Checked in order of preference; the browser picks the first it supports.
 // Chrome/Firefox support webm/opus, Safari only supports mp4.
@@ -161,6 +172,8 @@ export default class AudioRecorderComponent extends FileComponent {
   private fileName = '';
   private fileMeta = '';
   private currentUrl: string | undefined;
+  // Exempt from filePattern: recordings are webm, ogg or m4a regardless
+  private recordedFile: File | null = null;
   private playbackAudio: HTMLAudioElement | null = null;
   private playing = false;
   private playT = 0;
@@ -223,6 +236,40 @@ export default class AudioRecorderComponent extends FileComponent {
   // overrides (filePattern, label, ...) never get merged in at runtime.
   get defaultSchema() {
     return AudioRecorderComponent.schema();
+  }
+
+  // Builder settings, which are English-only like the rest of the builder
+  static editForm(...extend: any[]) {
+    return FileComponent.editForm(
+      [
+        {
+          key: 'file',
+          components: [
+            {
+              key: 'filePattern',
+              overrideEditForm: true,
+              placeholder: '.mp3,.wav',
+              tooltip: '',
+              description:
+                'Allowed types: ' + ALLOWED_FILE_PATTERN_TYPES.join(', '),
+              validate: {
+                required: true,
+                custom: ({ input }: { input: string }) =>
+                  input
+                    .replace(/\s/g, '')
+                    .split(',')
+                    .every((type) =>
+                      ALLOWED_FILE_PATTERN_TYPES.includes(type.toLowerCase())
+                    ) ||
+                  'File Pattern can only include audio types: ' +
+                    ALLOWED_FILE_PATTERN_TYPES.join(', '),
+              },
+            },
+          ],
+        },
+      ],
+      ...extend
+    );
   }
 
   static get builderInfo() {
@@ -338,6 +385,40 @@ export default class AudioRecorderComponent extends FileComponent {
     return superAttach;
   }
 
+  // audio/* is narrowed to the extensions the backend supports
+  private get uploadAccept(): string {
+    const pattern: string | undefined = this.component.filePattern?.replace(
+      /\s/g,
+      ''
+    );
+    const types = pattern && pattern !== '*' ? pattern.split(',') : ['audio/*'];
+    return [
+      ...new Set(
+        types.flatMap((type) =>
+          type === 'audio/*'
+            ? ALLOWED_AUDIO_EXTENSIONS.map((extension) => '.' + extension)
+            : type
+        )
+      ),
+    ].join(',');
+  }
+
+  private get uploadFormats(): string {
+    return this.uploadAccept
+      .split(',')
+      .map((type) =>
+        type.startsWith('.') ? type.slice(1).toUpperCase() : type
+      )
+      .join(', ');
+  }
+
+  validatePattern(file: File): boolean {
+    return (
+      file === this.recordedFile ||
+      super.validatePattern(file, this.uploadAccept)
+    );
+  }
+
   // Used for Initial Focus and clicking a validation error; the stock
   // focus() targets the hidden file browse link
   focus() {
@@ -418,7 +499,7 @@ export default class AudioRecorderComponent extends FileComponent {
     );
     const uploadInput = document.createElement('input');
     uploadInput.type = 'file';
-    uploadInput.accept = 'audio/*';
+    uploadInput.accept = this.uploadAccept;
     uploadInput.className = 'audio-recorder-file-input';
     this.addEventListener(uploadInput, 'change', (event) =>
       this.onFileSelected(event)
@@ -427,9 +508,7 @@ export default class AudioRecorderComponent extends FileComponent {
 
     const formats = document.createElement('span');
     formats.className = 'audio-recorder-formats';
-    formats.textContent = t(
-      'formRenderer.components.audioRecorder.uploadFormats'
-    );
+    formats.textContent = this.uploadFormats;
 
     block.append(startButton, or, uploadLabel, formats);
     return block;
@@ -683,7 +762,7 @@ export default class AudioRecorderComponent extends FileComponent {
     );
     const uploadInput = document.createElement('input');
     uploadInput.type = 'file';
-    uploadInput.accept = 'audio/*';
+    uploadInput.accept = this.uploadAccept;
     uploadInput.className = 'audio-recorder-file-input';
     this.addEventListener(uploadInput, 'change', (event) =>
       this.onFileSelected(event)
@@ -877,6 +956,7 @@ export default class AudioRecorderComponent extends FileComponent {
       ? this.resampleLivePeaks()
       : fakePeaks(file.name);
 
+    this.recordedFile = file;
     this.beginUpload(file);
   }
 
@@ -1015,7 +1095,9 @@ export default class AudioRecorderComponent extends FileComponent {
     if (rejected) {
       this.showError(
         t('form.errors.audio.uploadFailedTitle'),
-        rejected.message || t('form.errors.file.uploadFailed')
+        this.validatePattern(file)
+          ? rejected.message || t('form.errors.file.uploadFailed')
+          : t('form.errors.audio.wrongTypeBody', { types: this.uploadFormats })
       );
     }
   }

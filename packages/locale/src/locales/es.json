@@ -1478,7 +1478,8 @@
         "recordingNotSupportedTitle": "Grabación no compatible",
         "tooLongBody": "Este archivo dura {duration}. El máximo para esta pregunta es {max}. Recórtalo o graba una respuesta más corta.",
         "tooLongTitle": "Grabación demasiado larga",
-        "uploadFailedTitle": "Error al subir"
+        "uploadFailedTitle": "Error al subir",
+        "wrongTypeBody": "Esta pregunta solo acepta archivos {types}."
       },
       "cityOrTown": {
         "required": "La ciudad/localidad es obligatoria"
@@ -1600,7 +1601,6 @@
         "resume": "Reanudar",
         "stop": "Detener",
         "tryAgain": "Intentar de nuevo",
-        "uploadFormats": "MP3, M4A, WAV u OGG",
         "uploadInstead": "Subir un archivo de audio en su lugar",
         "uploadLabel": "Subir un archivo de audio",
         "uploadingHint": "Subiendo — puedes seguir rellenando el resto del formulario."
