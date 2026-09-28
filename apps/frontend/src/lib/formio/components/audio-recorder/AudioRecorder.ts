@@ -405,6 +405,7 @@ export default class AudioRecorderComponent extends FileComponent {
   }
 
   destroy() {
+    this.mediaRecorder = null;
     this.stopElapsedTimer();
     this.stopWaveformSampling();
     this.stopMediaStream();
@@ -851,7 +852,12 @@ export default class AudioRecorderComponent extends FileComponent {
       this.mediaRecorder.addEventListener('dataavailable', (event) => {
         if (event.data.size > 0) this.chunks.push(event.data);
       });
-      this.mediaRecorder.addEventListener('stop', () => this.finishRecording());
+      // Ignores a recorder that discard() or destroy() has let go of: it
+      // still fires 'stop' once its stream's tracks end
+      const recorder = this.mediaRecorder;
+      recorder.addEventListener('stop', () => {
+        if (this.mediaRecorder === recorder) this.finishRecording();
+      });
       this.mediaRecorder.start();
     } catch {
       this.stopMediaStream();
@@ -1196,6 +1202,7 @@ export default class AudioRecorderComponent extends FileComponent {
   }
 
   private discard() {
+    this.mediaRecorder = null;
     this.stopElapsedTimer();
     this.stopWaveformSampling();
     this.stopMediaStream();
