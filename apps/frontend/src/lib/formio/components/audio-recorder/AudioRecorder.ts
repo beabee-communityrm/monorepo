@@ -150,7 +150,6 @@ export default class AudioRecorderComponent extends FileComponent {
   private mediaStream: MediaStream | null = null;
   private mediaRecorder: MediaRecorder | null = null;
   private chunks: BlobPart[] = [];
-  private recordingTimeout: ReturnType<typeof setTimeout> | null = null;
   private elapsedInterval: ReturnType<typeof setInterval> | null = null;
   private elapsedMs = 0;
   private audioCtx: AudioContext | null = null;
@@ -410,7 +409,6 @@ export default class AudioRecorderComponent extends FileComponent {
     this.stopWaveformSampling();
     this.stopMediaStream();
     this.closeAudioContext();
-    if (this.recordingTimeout) clearTimeout(this.recordingTimeout);
     if (this.playbackAudio) this.playbackAudio.pause();
     super.destroy();
   }
@@ -870,10 +868,6 @@ export default class AudioRecorderComponent extends FileComponent {
     this.setPhase('recording');
     this.startElapsedTimer();
     this.sampleWaveform();
-
-    this.recordingTimeout = setTimeout(() => {
-      this.stopRecording();
-    }, this.maxDurationS * 1000);
   }
 
   private pauseRecording() {
@@ -898,10 +892,6 @@ export default class AudioRecorderComponent extends FileComponent {
 
   private stopRecording() {
     this.stopElapsedTimer();
-    if (this.recordingTimeout) {
-      clearTimeout(this.recordingTimeout);
-      this.recordingTimeout = null;
-    }
     try {
       this.mediaRecorder?.stop();
     } catch {
@@ -949,9 +939,14 @@ export default class AudioRecorderComponent extends FileComponent {
     this.analyser = null;
   }
 
+  // Measured from the clock, as interval ticks run late and would drift
   private startElapsedTimer() {
+    const startedAt = performance.now() - this.elapsedMs;
     this.elapsedInterval = setInterval(() => {
-      this.elapsedMs = Math.min(this.elapsedMs + 100, this.maxDurationS * 1000);
+      this.elapsedMs = Math.min(
+        performance.now() - startedAt,
+        this.maxDurationS * 1000
+      );
       this.updateLiveDynamic();
       if (this.elapsedMs >= this.maxDurationS * 1000) {
         this.stopRecording();
@@ -1205,10 +1200,6 @@ export default class AudioRecorderComponent extends FileComponent {
     this.stopWaveformSampling();
     this.stopMediaStream();
     this.closeAudioContext();
-    if (this.recordingTimeout) {
-      clearTimeout(this.recordingTimeout);
-      this.recordingTimeout = null;
-    }
     if (this.playbackAudio) {
       this.playbackAudio.pause();
       this.playbackAudio = null;
