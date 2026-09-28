@@ -17,17 +17,32 @@ meta:
 
     <h2 v-if="!isEmbed" class="text-lg">{{ callout.title }}</h2>
 
-    <CalloutThankYouBanner :callout="callout" />
+    <template v-if="responses /* Avoids layout thrashing */">
+      <CalloutThankYouBanner
+        :callout="callout"
+        :submitted-at="responses[0]?.createdAt"
+      />
+
+      <CalloutResponseList
+        v-if="responses.length"
+        :form-schema="callout.formSchema"
+        :responses="responses.slice(0, 1)"
+        :add-to="respondAction === 'add' ? respondTo : undefined"
+        :edit-to="respondAction === 'edit' ? respondTo : undefined"
+      />
+    </template>
   </div>
 </template>
 <script lang="ts" setup>
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
-import { computed } from 'vue';
+import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
+import CalloutResponseList from '#components/callout/CalloutResponseList.vue';
 import CalloutSharePopover from '#components/callout/CalloutSharePopover.vue';
 import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue';
+import { useCalloutResponse } from '#components/pages/callouts/use-callout';
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { currentUser, isEmbed } from '#store/index';
@@ -55,5 +70,9 @@ addBreadcrumb(
         ]
       : []
   )
+);
+
+const { responses, respondAction, respondTo } = useCalloutResponse(
+  toRef(props, 'callout')
 );
 </script>
