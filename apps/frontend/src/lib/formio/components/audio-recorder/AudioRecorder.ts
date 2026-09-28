@@ -973,6 +973,16 @@ export default class AudioRecorderComponent extends FileComponent {
     this.setPhase('uploading');
     if (this.uploadingFileName) this.uploadingFileName.textContent = file.name;
     this.upload([file]);
+
+    // upload() rejects a file failing filePattern/fileMinSize/fileMaxSize
+    // synchronously, without emitting fileUploadingEnd.
+    const rejected = this.statuses.find((s) => s.status === 'error');
+    if (rejected) {
+      this.showError(
+        t('form.errors.audio.uploadFailedTitle'),
+        rejected.message || t('form.errors.file.uploadFailed')
+      );
+    }
   }
 
   // ---------------------------------------------------------------------
