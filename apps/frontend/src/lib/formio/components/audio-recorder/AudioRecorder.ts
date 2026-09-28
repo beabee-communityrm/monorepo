@@ -276,8 +276,16 @@ export default class AudioRecorderComponent extends FileComponent {
 
     if (!this.listenersRegistered) {
       this.listenersRegistered = true;
-      this.on('fileUploadingStart', () => this.setPhase('uploading'));
+      // formio emits upload events form-wide, so skip ones for other
+      // fields: this field isn't uploading, or its own upload is still
+      // in flight
       this.on('fileUploadingEnd', () => {
+        if (
+          this.phase !== 'uploading' ||
+          this.statuses.some((s) => s.status !== 'error')
+        ) {
+          return;
+        }
         if (this.hasFileValue()) {
           // Stamp the duration we already know (recording's elapsed timer,
           // or the pre-upload blob: URL probe for an uploaded file) onto
