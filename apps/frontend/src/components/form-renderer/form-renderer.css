@@ -309,6 +309,10 @@
     .audio-recorder-file-input {
       @apply hidden;
     }
+    .audio-recorder--disabled
+      :is(button, label):not(.audio-recorder-play-button) {
+      @apply pointer-events-none opacity-50;
+    }
     .audio-recorder-dot {
       @apply inline-block h-3.5 w-3.5 rounded-full bg-danger-70;
     }

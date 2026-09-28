@@ -136,6 +136,7 @@ export default class AudioRecorderComponent extends FileComponent {
   declare statuses: Array<{ status: string; message?: string }>;
   declare refs: { fileProcessingLoader?: HTMLElement };
   declare options: { readOnly?: boolean };
+  declare disabled: boolean;
 
   private phase: Phase = 'idle';
 
@@ -296,7 +297,17 @@ export default class AudioRecorderComponent extends FileComponent {
       });
     }
 
-    this.uiRoot(element).prepend(this.buildUi());
+    const ui = this.buildUi();
+    // Playback doesn't change the answer, so it stays available
+    if (this.disabled) {
+      ui.classList.add('audio-recorder--disabled');
+      for (const control of ui.querySelectorAll<
+        HTMLButtonElement | HTMLInputElement
+      >('button, input')) {
+        if (control !== this.playButton) control.disabled = true;
+      }
+    }
+    this.uiRoot(element).prepend(ui);
 
     // attach() re-enters several times as formio settles (both on its own
     // internal redraws mid-upload, and while the form's initial submission
