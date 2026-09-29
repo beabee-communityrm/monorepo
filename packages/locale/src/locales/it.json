@@ -1490,7 +1490,8 @@
         "recordingNotSupportedTitle": "Registrazione non supportata",
         "tooLongBody": "Questo file dura {duration}. Il massimo per questa domanda è {max}. Accorcialo oppure registra una risposta più breve.",
         "tooLongTitle": "Registrazione troppo lunga",
-        "uploadFailedTitle": "Caricamento non riuscito"
+        "uploadFailedTitle": "Caricamento non riuscito",
+        "wrongTypeBody": "Questa domanda accetta solo file {types}."
       },
       "cityOrTown": {
         "required": "Città/località obbligatoria"
@@ -1612,7 +1613,6 @@
         "resume": "Riprendi",
         "stop": "Interrompi",
         "tryAgain": "Riprova",
-        "uploadFormats": "MP3, M4A, WAV o OGG",
         "uploadInstead": "Carica invece un file audio",
         "uploadLabel": "Carica un file audio",
         "uploadingHint": "Caricamento in corso — puoi continuare a compilare il resto del modulo."

@@ -1490,7 +1490,8 @@
         "recordingNotSupportedTitle": "Aufnehmen geht hier nicht",
         "tooLongBody": "Die Datei ist {duration} lang. Erlaubt ist höchstens {max}. Mach die Datei kürzer.",
         "tooLongTitle": "Die Aufnahme ist zu lang",
-        "uploadFailedTitle": "Hochladen hat nicht geklappt"
+        "uploadFailedTitle": "Hochladen hat nicht geklappt",
+        "wrongTypeBody": "Bei dieser Frage gehen nur {types}-Dateien."
       },
       "cityOrTown": {
         "required": ""
@@ -1517,7 +1518,7 @@
       },
       "file": {
         "rateLimited": "Das war nicht richtig. Das waren zu viele Sachen auf einmal. Du musst etwas warten. Dann versuche es noch mal.",
-        "tooBig": "Das war nicht richtig. Dein Text ist zu lang. Oder dein Bild ist zu groß. Man darf nur 20 MB hoch-laden.",
+        "tooBig": "Das war nicht richtig. Die Datei ist zu groß. Man darf nur 20 MB hoch-laden.",
         "unsupportedType": "Das war nicht richtig. Diese Art von Datei geht nicht.",
         "uploadFailed": "Das war nicht richtig. Das Hoch-laden hat nicht geklappt. Versuche es noch mal."
       },
@@ -1612,7 +1613,6 @@
         "resume": "Weiter",
         "stop": "Stopp",
         "tryAgain": "Noch mal versuchen",
-        "uploadFormats": "MP3, M4A, WAV oder OGG",
         "uploadInstead": "Lade stattdessen eine Audio-Datei hoch",
         "uploadLabel": "Audio-Datei hochladen",
         "uploadingHint": "Die Datei wird hochgeladen. Du kannst das Formular weiter ausfüllen."

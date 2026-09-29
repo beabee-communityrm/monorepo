@@ -1494,7 +1494,8 @@
         "recordingNotSupportedTitle": "Enregistrement non pris en charge",
         "tooLongBody": "Ce fichier dure {duration}. La durée maximale pour cette question est {max}. Veuillez le raccourcir ou enregistrer une réponse plus courte.",
         "tooLongTitle": "Enregistrement trop long",
-        "uploadFailedTitle": "Échec de l'envoi"
+        "uploadFailedTitle": "Échec de l'envoi",
+        "wrongTypeBody": "Cette question accepte uniquement les fichiers {types}."
       },
       "cityOrTown": {
         "required": "La ville est obligatoire"
@@ -1616,7 +1617,6 @@
         "resume": "Reprendre",
         "stop": "Arrêter",
         "tryAgain": "Réessayer",
-        "uploadFormats": "MP3, M4A, WAV ou OGG",
         "uploadInstead": "Importer un fichier audio à la place",
         "uploadLabel": "Importer un fichier audio",
         "uploadingHint": "Envoi en cours — vous pouvez continuer à remplir le reste du formulaire."

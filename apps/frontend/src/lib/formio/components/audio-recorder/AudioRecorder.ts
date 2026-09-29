@@ -1,7 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  ALLOWED_AUDIO_EXTENSIONS,
+  MAX_FILE_SIZE_IN_BYTES,
+  isSupportedAudioType,
+} from '@beabee/beabee-common';
+
 import { Formio } from 'formiojs';
 
 import { i18n } from '#lib/i18n';
+
+import editForm from './AudioRecorder.form';
+import {
+  DEFAULT_MAX_DURATION_S,
+  MAX_DURATION_LIMIT_S,
+  formatTime,
+  parseDuration,
+} from './duration';
 
 // formiojs doesn't ship a working ESM/CJS-interop deep import for individual
 // component classes, so we pull the file component off the same registry
@@ -11,9 +25,6 @@ const FileComponent = (Formio as any).Components.components.file;
 
 const { t } = i18n.global;
 
-// Comfortably under the 20MB global upload cap at typical opus bitrates.
-const MAX_RECORDING_DURATION_MS = 3 * 60 * 1000;
-const MAX_RECORDING_DURATION_S = MAX_RECORDING_DURATION_MS / 1000;
 const WAVEFORM_BAR_COUNT = 64;
 
 // Checked in order of preference; the browser picks the first it supports.
@@ -24,16 +35,22 @@ const RECORDER_MIME_TYPES = [
   { mimeType: 'audio/mp4', extension: 'm4a' },
 ];
 
+// Browsers often label these as video/* or a non-standard audio type, which
+// the upload endpoint rejects
+const AUDIO_MIME_TYPE_BY_EXTENSION: Record<string, string> = {
+  webm: 'audio/webm',
+  ogg: 'audio/ogg',
+  mp4: 'audio/mp4',
+  m4a: 'audio/mp4',
+  mp3: 'audio/mpeg',
+  wav: 'audio/wav',
+};
+
 function extensionForMimeType(mimeType: string): string {
   const match = RECORDER_MIME_TYPES.find(({ mimeType: candidate }) =>
     mimeType.startsWith(candidate.split(';')[0])
   );
   return match?.extension ?? 'webm';
-}
-
-function formatTime(totalSeconds: number): string {
-  const s = Math.max(0, Math.floor(totalSeconds));
-  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
 }
 
 function formatSize(bytes: number): string {
@@ -125,6 +142,7 @@ export default class AudioRecorderComponent extends FileComponent {
     handler: (event: Event) => void
   ) => void;
   declare upload: (files: File[]) => void;
+  declare triggerChange: () => void;
   declare on: (event: string, handler: (...args: any[]) => void) => void;
   declare hasValue: () => boolean;
   // A `multiple: false` file component's value is an array ([fileInfo])
@@ -135,6 +153,8 @@ export default class AudioRecorderComponent extends FileComponent {
   declare statuses: Array<{ status: string; message?: string }>;
   declare refs: { fileProcessingLoader?: HTMLElement };
   declare options: { readOnly?: boolean };
+  declare disabled: boolean;
+  declare parent: { beforeFocus?: (component: unknown) => void };
 
   private phase: Phase = 'idle';
 
@@ -142,7 +162,6 @@ export default class AudioRecorderComponent extends FileComponent {
   private mediaStream: MediaStream | null = null;
   private mediaRecorder: MediaRecorder | null = null;
   private chunks: BlobPart[] = [];
-  private recordingTimeout: ReturnType<typeof setTimeout> | null = null;
   private elapsedInterval: ReturnType<typeof setInterval> | null = null;
   private elapsedMs = 0;
   private audioCtx: AudioContext | null = null;
@@ -158,6 +177,8 @@ export default class AudioRecorderComponent extends FileComponent {
   private fileName = '';
   private fileMeta = '';
   private currentUrl: string | undefined;
+  // Exempt from filePattern: recordings are webm, ogg or m4a regardless
+  private recordedFile: File | null = null;
   private playbackAudio: HTMLAudioElement | null = null;
   private playing = false;
   private playT = 0;
@@ -209,6 +230,7 @@ export default class AudioRecorderComponent extends FileComponent {
         storage: 'beabee',
         filePattern: 'audio/*',
         fileMaxSize: '20MB',
+        maxDuration: formatTime(DEFAULT_MAX_DURATION_S),
         multiple: false,
       },
       ...extend
@@ -220,6 +242,10 @@ export default class AudioRecorderComponent extends FileComponent {
   // overrides (filePattern, label, ...) never get merged in at runtime.
   get defaultSchema() {
     return AudioRecorderComponent.schema();
+  }
+
+  static editForm(...extend: any[]) {
+    return FileComponent.editForm(editForm, ...extend);
   }
 
   static get builderInfo() {
@@ -274,8 +300,16 @@ export default class AudioRecorderComponent extends FileComponent {
 
     if (!this.listenersRegistered) {
       this.listenersRegistered = true;
-      this.on('fileUploadingStart', () => this.setPhase('uploading'));
+      // formio emits upload events form-wide, so skip ones for other
+      // fields: this field isn't uploading, or its own upload is still
+      // in flight
       this.on('fileUploadingEnd', () => {
+        if (
+          this.phase !== 'uploading' ||
+          this.statuses.some((s) => s.status !== 'error')
+        ) {
+          return;
+        }
         if (this.hasFileValue()) {
           // Stamp the duration we already know (recording's elapsed timer,
           // or the pre-upload blob: URL probe for an uploaded file) onto
@@ -295,7 +329,17 @@ export default class AudioRecorderComponent extends FileComponent {
       });
     }
 
-    this.uiRoot(element).prepend(this.buildUi());
+    const ui = this.buildUi();
+    // Playback doesn't change the answer, so it stays available
+    if (this.disabled) {
+      ui.classList.add('audio-recorder--disabled');
+      for (const control of ui.querySelectorAll<
+        HTMLButtonElement | HTMLInputElement
+      >('button, input')) {
+        if (control !== this.playButton) control.disabled = true;
+      }
+    }
+    this.uiRoot(element).prepend(ui);
 
     // attach() re-enters several times as formio settles (both on its own
     // internal redraws mid-upload, and while the form's initial submission
@@ -317,12 +361,67 @@ export default class AudioRecorderComponent extends FileComponent {
     return superAttach;
   }
 
+  private get maxDurationS(): number {
+    const seconds =
+      parseDuration(this.component.maxDuration) ?? DEFAULT_MAX_DURATION_S;
+    return Math.min(Math.max(seconds, 1), MAX_DURATION_LIMIT_S);
+  }
+
+  // audio/* is narrowed to the extensions the backend supports
+  private get uploadAccept(): string {
+    const pattern: string | undefined = this.component.filePattern?.replace(
+      /\s/g,
+      ''
+    );
+    const types = pattern && pattern !== '*' ? pattern.split(',') : ['audio/*'];
+    return [
+      ...new Set(
+        types.flatMap((type) =>
+          type === 'audio/*'
+            ? ALLOWED_AUDIO_EXTENSIONS.map((extension) => '.' + extension)
+            : type
+        )
+      ),
+    ].join(',');
+  }
+
+  private get uploadFormats(): string {
+    return this.uploadAccept
+      .split(',')
+      .map((type) =>
+        type.startsWith('.') ? type.slice(1).toUpperCase() : type
+      )
+      .join(', ');
+  }
+
+  validatePattern(file: File): boolean {
+    return (
+      file === this.recordedFile ||
+      super.validatePattern(file, this.uploadAccept)
+    );
+  }
+
+  // Used for Initial Focus and clicking a validation error; the stock
+  // focus() targets the hidden file browse link
+  focus() {
+    this.parent?.beforeFocus?.(this);
+    const panel = [
+      this.idleBlock,
+      this.requestingBlock,
+      this.liveBlock,
+      this.uploadingBlock,
+      this.readyBlock,
+      this.errorBlock,
+    ].find((block) => block && !block.hidden);
+    panel?.querySelector<HTMLElement>('button:not([disabled])')?.focus();
+  }
+
   destroy() {
+    this.mediaRecorder = null;
     this.stopElapsedTimer();
     this.stopWaveformSampling();
     this.stopMediaStream();
     this.closeAudioContext();
-    if (this.recordingTimeout) clearTimeout(this.recordingTimeout);
     if (this.playbackAudio) this.playbackAudio.pause();
     super.destroy();
   }
@@ -382,7 +481,7 @@ export default class AudioRecorderComponent extends FileComponent {
     );
     const uploadInput = document.createElement('input');
     uploadInput.type = 'file';
-    uploadInput.accept = 'audio/*';
+    uploadInput.accept = this.uploadAccept;
     uploadInput.className = 'audio-recorder-file-input';
     this.addEventListener(uploadInput, 'change', (event) =>
       this.onFileSelected(event)
@@ -391,9 +490,7 @@ export default class AudioRecorderComponent extends FileComponent {
 
     const formats = document.createElement('span');
     formats.className = 'audio-recorder-formats';
-    formats.textContent = t(
-      'formRenderer.components.audioRecorder.uploadFormats'
-    );
+    formats.textContent = this.uploadFormats;
 
     block.append(startButton, or, uploadLabel, formats);
     return block;
@@ -427,8 +524,7 @@ export default class AudioRecorderComponent extends FileComponent {
     this.liveTimeLabel.className = 'audio-recorder-live-time';
     this.liveMaxTimeLabel = document.createElement('span');
     this.liveMaxTimeLabel.className = 'audio-recorder-live-max-time';
-    this.liveMaxTimeLabel.textContent =
-      '/ ' + formatTime(MAX_RECORDING_DURATION_S);
+    this.liveMaxTimeLabel.textContent = '/ ' + formatTime(this.maxDurationS);
     row.append(
       this.liveDot,
       this.liveStatusLabel,
@@ -551,7 +647,7 @@ export default class AudioRecorderComponent extends FileComponent {
       t('formRenderer.components.audioRecorder.playPause')
     );
     this.playIcon = document.createElement('span');
-    this.playIcon.textContent = '▶';
+    this.playIcon.className = 'audio-recorder-play-icon';
     this.playButton.append(this.playIcon);
     this.addEventListener(this.playButton, 'click', (event) => {
       event.preventDefault();
@@ -647,7 +743,7 @@ export default class AudioRecorderComponent extends FileComponent {
     );
     const uploadInput = document.createElement('input');
     uploadInput.type = 'file';
-    uploadInput.accept = 'audio/*';
+    uploadInput.accept = this.uploadAccept;
     uploadInput.className = 'audio-recorder-file-input';
     this.addEventListener(uploadInput, 'change', (event) =>
       this.onFileSelected(event)
@@ -768,7 +864,12 @@ export default class AudioRecorderComponent extends FileComponent {
       this.mediaRecorder.addEventListener('dataavailable', (event) => {
         if (event.data.size > 0) this.chunks.push(event.data);
       });
-      this.mediaRecorder.addEventListener('stop', () => this.finishRecording());
+      // Ignores a recorder that discard() or destroy() has let go of: it
+      // still fires 'stop' once its stream's tracks end
+      const recorder = this.mediaRecorder;
+      recorder.addEventListener('stop', () => {
+        if (this.mediaRecorder === recorder) this.finishRecording();
+      });
       this.mediaRecorder.start();
     } catch {
       this.stopMediaStream();
@@ -785,10 +886,6 @@ export default class AudioRecorderComponent extends FileComponent {
     this.setPhase('recording');
     this.startElapsedTimer();
     this.sampleWaveform();
-
-    this.recordingTimeout = setTimeout(() => {
-      this.stopRecording();
-    }, MAX_RECORDING_DURATION_MS);
   }
 
   private pauseRecording() {
@@ -813,10 +910,6 @@ export default class AudioRecorderComponent extends FileComponent {
 
   private stopRecording() {
     this.stopElapsedTimer();
-    if (this.recordingTimeout) {
-      clearTimeout(this.recordingTimeout);
-      this.recordingTimeout = null;
-    }
     try {
       this.mediaRecorder?.stop();
     } catch {
@@ -841,6 +934,7 @@ export default class AudioRecorderComponent extends FileComponent {
       ? this.resampleLivePeaks()
       : fakePeaks(file.name);
 
+    this.recordedFile = file;
     this.beginUpload(file);
   }
 
@@ -863,14 +957,16 @@ export default class AudioRecorderComponent extends FileComponent {
     this.analyser = null;
   }
 
+  // Measured from the clock, as interval ticks run late and would drift
   private startElapsedTimer() {
+    const startedAt = performance.now() - this.elapsedMs;
     this.elapsedInterval = setInterval(() => {
       this.elapsedMs = Math.min(
-        this.elapsedMs + 100,
-        MAX_RECORDING_DURATION_MS
+        performance.now() - startedAt,
+        this.maxDurationS * 1000
       );
       this.updateLiveDynamic();
-      if (this.elapsedMs >= MAX_RECORDING_DURATION_MS) {
+      if (this.elapsedMs >= this.maxDurationS * 1000) {
         this.stopRecording();
       }
     }, 100);
@@ -940,9 +1036,16 @@ export default class AudioRecorderComponent extends FileComponent {
 
   private onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
+    const selected = input.files?.[0];
     input.value = '';
-    if (!file) return;
+    if (!selected) return;
+
+    const extension = selected.name.split('.').pop()?.toLowerCase() ?? '';
+    const audioType = AUDIO_MIME_TYPE_BY_EXTENSION[extension];
+    const file =
+      audioType && !isSupportedAudioType(selected.type)
+        ? new File([selected], selected.name, { type: audioType })
+        : selected;
 
     const objectUrl = URL.createObjectURL(file);
     // Not every audio file the browser accepts can also be decoded for a
@@ -951,12 +1054,12 @@ export default class AudioRecorderComponent extends FileComponent {
     // validation reject anything genuinely unsupported.
     probeAudioDuration(objectUrl).then((duration) => {
       URL.revokeObjectURL(objectUrl);
-      if (duration > MAX_RECORDING_DURATION_S) {
+      if (duration > this.maxDurationS) {
         this.showError(
           t('form.errors.audio.tooLongTitle'),
           t('form.errors.audio.tooLongBody', {
             duration: formatTime(duration),
-            max: formatTime(MAX_RECORDING_DURATION_S),
+            max: formatTime(this.maxDurationS),
           })
         );
         return;
@@ -972,6 +1075,21 @@ export default class AudioRecorderComponent extends FileComponent {
     this.setPhase('uploading');
     if (this.uploadingFileName) this.uploadingFileName.textContent = file.name;
     this.upload([file]);
+
+    // upload() rejects a file failing filePattern/fileMinSize/fileMaxSize
+    // synchronously, without emitting fileUploadingEnd.
+    const rejected = this.statuses.find((s) => s.status === 'error');
+    if (rejected) {
+      let body = rejected.message || t('form.errors.file.uploadFailed');
+      if (!this.validatePattern(file)) {
+        body = t('form.errors.audio.wrongTypeBody', {
+          types: this.uploadFormats,
+        });
+      } else if (file.size > MAX_FILE_SIZE_IN_BYTES) {
+        body = t('form.errors.file.tooBig');
+      }
+      this.showError(t('form.errors.audio.uploadFailedTitle'), body);
+    }
   }
 
   // ---------------------------------------------------------------------
@@ -1039,7 +1157,12 @@ export default class AudioRecorderComponent extends FileComponent {
   private updateReadyDynamic() {
     if (this.readyMeta) this.readyMeta.textContent = this.fileMeta;
     if (this.readyFileName) this.readyFileName.textContent = this.fileName;
-    if (this.playIcon) this.playIcon.textContent = this.playing ? '❚❚' : '▶';
+    if (this.playIcon) {
+      this.playIcon.classList.toggle(
+        'audio-recorder-play-icon--pause',
+        this.playing
+      );
+    }
 
     const dur = this.duration || 1;
     const played = this.playT / dur;
@@ -1098,19 +1221,17 @@ export default class AudioRecorderComponent extends FileComponent {
   }
 
   private discard() {
+    this.mediaRecorder = null;
     this.stopElapsedTimer();
     this.stopWaveformSampling();
     this.stopMediaStream();
     this.closeAudioContext();
-    if (this.recordingTimeout) {
-      clearTimeout(this.recordingTimeout);
-      this.recordingTimeout = null;
-    }
     if (this.playbackAudio) {
       this.playbackAudio.pause();
       this.playbackAudio = null;
     }
     this.dataValue = [];
+    this.triggerChange();
     this.livePeaks = [];
     this.reviewPeaks = [];
     this.duration = 0;

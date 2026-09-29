@@ -11,6 +11,8 @@ export interface CalloutComponentInputAudioRecorderSchema extends CalloutCompone
   fileMinSize?: string;
   /** E.g. `"1GB"` */
   fileMaxSize?: string;
+  /** Longest recording or uploaded file allowed, as `"m:ss"`, e.g. `"3:00"` */
+  maxDuration?: string;
   /** The storage target for the uploaded/recorded audio file */
   storage?: string;
   validate?: CalloutComponentBaseRules;

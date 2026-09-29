@@ -1487,7 +1487,8 @@
         "recordingNotSupportedTitle": "",
         "tooLongBody": "",
         "tooLongTitle": "",
-        "uploadFailedTitle": ""
+        "uploadFailedTitle": "",
+        "wrongTypeBody": ""
       },
       "cityOrTown": {
         "required": ""
@@ -1609,7 +1610,6 @@
         "resume": "",
         "stop": "",
         "tryAgain": "",
-        "uploadFormats": "",
         "uploadInstead": "",
         "uploadLabel": "",
         "uploadingHint": ""
