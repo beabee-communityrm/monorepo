@@ -18,15 +18,13 @@ meta:
     <h2 v-if="!isEmbed" class="text-lg">{{ callout.title }}</h2>
 
     <template v-if="responses /* Avoids layout thrashing */">
-      <CalloutThankYouBanner
-        :callout="callout"
-        :submitted-at="responses[0]?.createdAt"
-      />
+      <CalloutThankYouBanner :callout="callout" />
 
       <CalloutResponseList
         v-if="responses.length"
         :form-schema="callout.formSchema"
         :responses="responses.slice(0, 1)"
+        hide-date
         :add-to="respondAction === 'add' ? respondTo : undefined"
         :edit-to="respondAction === 'edit' ? respondTo : undefined"
       />

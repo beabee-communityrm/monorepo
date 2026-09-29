@@ -64,6 +64,8 @@ export interface CalloutResponseListProps {
   addTo?: RouteLocationRaw;
   /** Where editing goes, if the one response can still be edited */
   editTo?: RouteLocationRaw;
+  /** Leaves out the submission date */
+  hideDate?: boolean;
 }
 
 const props = defineProps<CalloutResponseListProps>();
@@ -78,7 +80,9 @@ const heading = computed(() =>
 
 /** Only shown here when there's one response; otherwise each card carries it */
 const submittedAt = computed(() =>
-  props.responses.length === 1 ? props.responses[0].createdAt : undefined
+  props.responses.length === 1 && !props.hideDate
+    ? props.responses[0].createdAt
+    : undefined
 );
 
 // Numbered from the oldest, so the numbers hold when another is added
