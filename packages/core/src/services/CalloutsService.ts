@@ -1,4 +1,5 @@
 import {
+  ActivityActorType,
   ActivityEventType,
   CalloutAccess,
   CalloutResponseAnswersSlide,
@@ -321,7 +322,7 @@ class CalloutsService {
     await ActivityService.addEvent({
       targetId: callout.id,
       eventType: ActivityEventType.CalloutAnswered,
-      metadata: null,
+      metadata: { responseId: savedResponse.id },
     });
 
     // Send confirmation email to the contact
@@ -406,6 +407,15 @@ class CalloutsService {
       response.answers = answers;
 
       const savedResponse = await this.saveResponse(response);
+
+      await ActivityService.addEvent({
+        targetId: callout.id,
+        eventType: ActivityEventType.CalloutAnswered,
+        metadata: { responseId: savedResponse.id },
+        actorType: ActivityActorType.User,
+        actorId: null,
+      });
+
       return savedResponse.id;
     }
   }
