@@ -1,3 +1,7 @@
+---
+status: superseded by ADR-0005
+---
+
 # The IdP is an input channel for email, not a second system of record
 
 beabee is the system of record for a contact's email and pushes changes to the
