@@ -7,12 +7,8 @@ meta:
 </route>
 <template>
   <div class="nuxt-page mx-auto flex w-full max-w-[720px] flex-col gap-6">
-    <div class="flex w-full flex-wrap items-center justify-end gap-2">
+    <div class="flex w-full justify-end">
       <CalloutLanguageSelect :callout="callout" />
-
-      <CalloutSharePopover
-        :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`"
-      />
     </div>
 
     <h2 v-if="!isEmbed" class="text-lg">{{ callout.title }}</h2>
@@ -29,10 +25,20 @@ meta:
         :edit-to="respondAction === 'edit' ? respondTo : undefined"
       />
     </template>
+
+    <UCard v-if="callout.status === ItemStatus.Open" variant="soft">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <p>{{ t('calloutThanksPage.sharePrompt') }}</p>
+        <CalloutSharePopover
+          :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`"
+          color="primary"
+        />
+      </div>
+    </UCard>
   </div>
 </template>
 <script lang="ts" setup>
-import type { GetCalloutDataWith } from '@beabee/beabee-common';
+import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
 import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 

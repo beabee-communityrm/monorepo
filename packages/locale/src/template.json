@@ -998,7 +998,8 @@
     "title": ""
   },
   "calloutThanksPage": {
-    "oneResponseWarning": ""
+    "oneResponseWarning": "",
+    "sharePrompt": ""
   },
   "callouts": {
     "access": {
