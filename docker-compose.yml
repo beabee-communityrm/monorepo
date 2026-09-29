@@ -96,9 +96,8 @@ services:
 
   # MinIO service
   minio:
-    build:
-      context: .
-      dockerfile: ./apps/minio/Dockerfile
+    image: beabee/beabee-minio
+    init: true
     ports:
       - "${BEABEE_MINIO_PORT_ADMIN:-9000}:9000" # Admin port for debugging, not for production
       - "${BEABEE_MINIO_PORT_CONSOLE:-9001}:9001" # Console port (Admin UI), not for production
