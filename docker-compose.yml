@@ -96,9 +96,8 @@ services:
 
   # MinIO service
   minio:
-    build:
-      context: .
-      dockerfile: ./apps/minio/Dockerfile
+    image: beabee/beabee-minio
+    init: true
     ports:
       - "${BEABEE_MINIO_PORT_ADMIN:-9000}:9000" # Admin port for debugging, not for production
       - "${BEABEE_MINIO_PORT_CONSOLE:-9001}:9001" # Console port (Admin UI), not for production
@@ -170,7 +169,7 @@ services:
   # Stripe CLI for webhook forwarding
   # Only used in local development
   stripe_cli:
-    image: stripe/stripe-cli:latest
+    image: stripe/stripe-cli:v1.50.11
     command: "listen --api-key ${BEABEE_STRIPE_SECRETKEY} --forward-to webhook_app:3000/stripe"
     depends_on:
       - webhook_app
