@@ -12,6 +12,15 @@ const noCreatedEvent = `
   )
 `;
 
+// Find response segments without added event
+const noSegmentsAddedEvent = `
+  FROM callout_response_segment s
+  WHERE NOT EXISTS (
+    SELECT 1 FROM activity_event e
+    WHERE e."targetId" = s.id AND e."eventType" = $1
+  )
+`;
+
 // Find responses without answered event
 const noAnsweredEvent = `
   FROM callout_response r
@@ -83,10 +92,41 @@ const backfillAnswered = async (dryRun: boolean): Promise<void> => {
 };
 
 /**
+ * Backfill callout.segments-added events
+ * The segment is the target, as for segments added through the API
+ * Segments carry no creation date, so a sentinel date is used as the event time
+ */
+const backfillSegmentsAdded = async (dryRun: boolean): Promise<void> => {
+  const eventType = ActivityEventType.CalloutSegmentsAdded;
+
+  if (dryRun) {
+    const [{ count }] = await dataSource.query(
+      `SELECT COUNT(*)::int AS count ${noSegmentsAddedEvent}`,
+      [eventType]
+    );
+    console.log(`${chalk.green('✓')} Would add ${count} ${eventType} event(s)`);
+    return;
+  }
+
+  const inserted = await dataSource.query(
+    `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
+     SELECT s.id, NULL, NULL, TIMESTAMP '0001-01-01 00:00:00', $1, NULL
+     ${noSegmentsAddedEvent}
+     RETURNING id`,
+    [eventType]
+  );
+
+  console.log(
+    `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s)`
+  );
+};
+
+/**
  * Backfill callout activity events that pre-date the activity feed.
  * @param dryRun Only report what would be created
  */
 export const backfillCallouts = async (dryRun: boolean): Promise<void> => {
   await backfillCreated(dryRun);
   await backfillAnswered(dryRun);
+  await backfillSegmentsAdded(dryRun);
 };
