@@ -429,13 +429,19 @@ class EmailService {
       name: data.name || existing?.name || `Override: ${templateId}`,
     });
 
-    await ActivityService.addEvent({
-      eventType: existing
-        ? ActivityEventType.EmailTemplateEdited
-        : ActivityEventType.EmailTemplateAdded,
-      targetId: email.id,
-      metadata: null,
-    });
+    if (existing) {
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.EmailTemplateEdited,
+        targetId: email.id,
+        metadata: null,
+      });
+    } else {
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.EmailTemplateAdded,
+        targetId: email.id,
+        metadata: { templateId },
+      });
+    }
 
     return email;
   }
