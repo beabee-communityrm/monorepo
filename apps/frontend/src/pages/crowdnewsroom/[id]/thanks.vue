@@ -11,10 +11,8 @@ meta:
       <CalloutLanguageSelect :callout="callout" />
     </div>
 
-    <h2 v-if="!isEmbed" class="text-lg">{{ callout.title }}</h2>
-
     <template v-if="responses /* Avoids layout thrashing */">
-      <CalloutThankYouBanner :callout="callout" />
+      <CalloutThankYouBanner :callout="callout" :level="2" size="lg" />
 
       <CalloutResponseList
         v-if="responses.length"
@@ -49,7 +47,7 @@ import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue
 import { useCalloutResponse } from '#components/pages/callouts/use-callout';
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
-import { currentUser, isEmbed } from '#store/index';
+import { currentUser } from '#store/index';
 import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const props = defineProps<{
