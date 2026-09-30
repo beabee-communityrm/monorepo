@@ -14,6 +14,7 @@ export * from './EmailController.js';
 export * from './HealthController.js';
 export * from './ImageController.js';
 export * from './IntegrationsController.js';
+export * from './JobController.js';
 export * from './LegacyImageController.js';
 export * from './NoticeController.js';
 export * from './PaymentController.js';

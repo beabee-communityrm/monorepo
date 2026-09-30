@@ -360,3 +360,14 @@ export class CaptchaRequiredError
   readonly httpCode = 400;
   readonly code = ApiErrorCode.CAPTCHA_REQUIRED;
 }
+
+/** A Job that ran on the server but reported an error in its result line */
+export class JobFailedError extends Error {
+  constructor(
+    readonly jobName: string,
+    message: string
+  ) {
+    super(message);
+    this.name = 'JobFailedError';
+  }
+}
