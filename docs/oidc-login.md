@@ -62,8 +62,11 @@ a link to the matching Login v2 page (`/password/change`, `/passkey/set`,
 off the member's existing login session, ask for the current password where
 needed, and return to beabee via the same fixed page as the join flow
 ([ADR-0004](./adr/0004-link-to-login-v2-self-service-flows.md)). Removing a
-passkey or authenticator app has no Login v2 page; members ask support, and an
-operator removes it in the Console
+passkey or authenticator app has no Login v2 page, so beabee's account page
+does it through the provider's API instead: it shows which methods are set
+up and removes one after a fresh login at the IdP (`prompt=login`, recent
+`auth_time`), so that a hijacked session cannot strip a second factor.
+Operators can still remove them in the Console
 ([ADR-0005](./adr/0005-hide-the-idp-console-from-members.md)).
 
 **IdP Transition and cutover.** Existing password hashes cannot be imported
@@ -137,13 +140,15 @@ branch and is retargeted to `main` as its base merges.
    frontends
 6. `feat/oidc-account` — account page links to the IdP's self-service pages
 7. `feat/oidc-signup` — join flow
-8. `feat/idp-setup` — branding sync and `idp setup`
-9. `feat/idp-transition` — password mirroring, session clearing, unsynced
+8. `feat/oidc-self-service-removal` — authentication method status and
+   removal on the account page, behind a fresh IdP login
+9. `feat/idp-setup` — branding sync and `idp setup`
+10. `feat/idp-transition` — password mirroring, session clearing, unsynced
    count, hash clean-up
 
 ## Deliberately out of scope
 
 Password hash import; a cutover mail-out; offering both login methods at
 once; export for tenants leaving the hosting; font and background sync;
-Keycloak branding; the legacy frontend; self-service removal of passkeys and
-authenticator apps; enforcing multi-factor authentication.
+Keycloak branding; the legacy frontend; enforcing multi-factor
+authentication.
