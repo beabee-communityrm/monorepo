@@ -15,7 +15,10 @@
 }
 
 /* Apply to form renderer */
-.callout-form.has-bg,
+.callout-form.has-bg {
+  @apply rounded-lg bg-white p-6 ring ring-default;
+}
+
 /* Apply to form builder form area */
 .callout-form-builder .formarea {
   @apply bg-white p-6 shadow-md;
