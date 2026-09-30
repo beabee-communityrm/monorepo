@@ -100,8 +100,21 @@ export class ZitadelProvider implements IdpProvider {
     authorizeUrl: string,
     action: IdpLoginAction
   ): Promise<string> {
+    const requestId = await this.startAuthRequest(authorizeUrl);
+
+    // The invite verify page lets the member choose a password or passkey
+    if (action.type === 'setupCredential') {
+      const params = new URLSearchParams({
+        requestId,
+        userId: action.subject,
+        code: await this.createInviteCode(action.subject),
+        invite: 'true',
+      });
+      return `${this.settings.url}/ui/v2/login/verify?${params}`;
+    }
+
     const params = new URLSearchParams({
-      requestId: await this.startAuthRequest(authorizeUrl),
+      requestId,
       loginName: await this.getLoginName(action.subject),
     });
     return `${this.settings.url}/ui/v2/login/${LOGIN_V2_PAGES[action.type]}?${params}`;
@@ -129,6 +142,18 @@ export class ZitadelProvider implements IdpProvider {
       );
     }
     return `oidc_${authRequest}`;
+  }
+
+  private async createInviteCode(subject: string): Promise<string> {
+    const resp = await this.request<{ inviteCode: string }>(
+      'POST',
+      `/v2/users/${subject}/invite_code`,
+      { returnCode: {} }
+    );
+    if (!resp?.inviteCode) {
+      throw new Error('Zitadel did not return the invite code');
+    }
+    return resp.inviteCode;
   }
 
   private async getLoginName(subject: string): Promise<string> {
