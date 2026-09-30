@@ -262,6 +262,11 @@ class ContactsService {
         dateExpires: updates.dateExpires ?? null,
       });
       contact.roles.push(role);
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.ContactRoleAdded,
+        targetId: contact.id,
+        metadata: { roleType },
+      });
     }
 
     await getRepository(Contact).save(contact);
@@ -269,12 +274,6 @@ class ContactsService {
     if (wasActive !== contact.membership?.isActive) {
       await NewsletterService.upsertContact(contact);
     }
-
-    await ActivityService.addEvent({
-      eventType: ActivityEventType.ContactRoleAdded,
-      targetId: contact.id,
-      metadata: null,
-    });
 
     return role;
   }
