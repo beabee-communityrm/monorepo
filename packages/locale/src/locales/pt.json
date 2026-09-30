@@ -94,6 +94,13 @@
     "requiredFields": "Campos obrigatórios",
     "savedPassword": "Nova palavra-passe gravada",
     "security": "Segurança",
+    "selfService": {
+      "addPasskey": "Adicionar uma chave de acesso",
+      "changePassword": "Alterar palavra-passe",
+      "intro": "A sua palavra-passe e os seus métodos de login são geridos pelo nosso serviço de login. Cada uma destas opções leva-o até lá e traz-o de volta depois.",
+      "setupMfa": "Configurar a aplicação de autenticação",
+      "title": "Detalhes de login"
+    },
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "subTitle-nuxt": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "subscriptions": "Inscrições",

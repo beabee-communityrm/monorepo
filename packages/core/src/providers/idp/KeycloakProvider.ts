@@ -1,9 +1,18 @@
+import type { LoginAction } from '@beabee/beabee-common';
+
 import type { KeycloakIdpConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
-import type { IdpProvider } from '#type/index';
+import type { IdpLoginAction, IdpProvider } from '#type/index';
 
 const log = mainLogger.child({ app: 'keycloak-idp-provider' });
+
+// Application Initiated Actions, run on the member's session during login
+const KC_ACTIONS: Record<LoginAction, string> = {
+  changePassword: 'UPDATE_PASSWORD',
+  addPasskey: 'webauthn-register-passwordless',
+  setupMfa: 'CONFIGURE_TOTP',
+};
 
 /**
  * Mirrors contacts into a Keycloak realm via the admin REST API, authenticated
@@ -109,5 +118,14 @@ export class KeycloakProvider implements IdpProvider {
 
   async permanentlyDeleteContact(subject: string): Promise<void> {
     await this.request('DELETE', `/users/${subject}`);
+  }
+
+  async resolveLoginUrl(
+    authorizeUrl: string,
+    action: IdpLoginAction
+  ): Promise<string> {
+    const url = new URL(authorizeUrl);
+    url.searchParams.set('kc_action', KC_ACTIONS[action.type]);
+    return url.href;
   }
 }

@@ -3,6 +3,7 @@ export * from './IsEmailTemplateId.js';
 export * from './IsFromEmail.js';
 export * from './IsLngLat.js';
 export * from './IsMapBounds.js';
+export * from './IsNextUrl.js';
 export * from './IsNonEmptyString.js';
 export * from './IsPassword.js';
 export * from './IsSlug.js';

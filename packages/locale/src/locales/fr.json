@@ -94,6 +94,13 @@
     "requiredFields": "Champs obligatoires",
     "savedPassword": "Nouveau mot de passe enregistré",
     "security": "Sécurité",
+    "selfService": {
+      "addPasskey": "Ajouter une clé d'accès",
+      "changePassword": "Changer le mot de passe",
+      "intro": "Votre mot de passe et vos méthodes de connexion sont gérés par notre service de connexion. Chacune de ces options vous y conduit, puis vous ramène ici.",
+      "setupMfa": "Configurer l'application d'authentification",
+      "title": "Informations de connexion"
+    },
     "subTitle": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
     "subTitle-nuxt": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
     "subscriptions": "Abonnements",
