@@ -47,20 +47,23 @@ account" error. Logout is RP-initiated and ends the IdP session as well.
 Local-auth endpoints (password, MFA, reset) return 404.
 
 **Joining (OIDC state).** The setup form has no password field. After the
-confirm-email link, beabee finalises the Signup Flow, then hands the member
-to the IdP's own credential setup screen (Zitadel invite code obtained via
-API, beabee's email carries the link; password or passkey). The IdP returns
-the member to one fixed beabee page (the instance's `defaultRedirectUri`),
-which starts an OIDC login that completes silently and continues to the
-Signup Flow's `confirmUrl`. Keycloak in development sends its own
-`execute-actions-email` instead.
+confirm-email link, beabee finalises the Signup Flow, starts an OIDC login
+that continues to the setup page, and hands the member to the IdP's
+credential setup page inside that login: Zitadel's Login v2 invite page
+with an invite code obtained via API (password or passkey), or in
+development a Keycloak magic link carrying the login's parameters. The IdP
+completes the login and the member arrives at the setup page through
+beabee's normal OIDC callback. Clicking the confirmation link again after an
+abandoned setup starts a fresh login and invite.
 
 **Account management (OIDC state).** beabee's account page offers three
 actions — change password, add a passkey, set up an authenticator app — each
-a link to the matching Login v2 page (`/password/change`, `/passkey/set`,
-`/mfa/set`, derived from the issuer with the member's login name). They work
-off the member's existing login session, ask for the current password where
-needed, and return to beabee via the same fixed page as the join flow
+an OIDC login that beabee starts with a Login Action
+(`GET /auth/login?action=…`). The provider enters the matching Login v2 page
+(`/password/change`, `/passkey/set`, `/mfa/set`) inside that login, or in
+development Keycloak's application initiated action. They work off the
+member's existing login session, ask for the current password where needed,
+and return to the account page through the OIDC callback
 ([ADR-0004](./adr/0004-link-to-login-v2-self-service-flows.md)). Removing a
 passkey or authenticator app has no Login v2 page, so beabee's account page
 does it through the provider's API instead: it shows which methods are set
@@ -98,8 +101,9 @@ Provisioning: `BEABEE_IDP_PROVIDER=none|zitadel|keycloak` with
 `CLIENTSECRET` (Keycloak).
 
 IdP-side setup that beabee owns and applies idempotently via
-`backend-cli idp setup`: `defaultRedirectUri`, `ignoreUnknownUsernames` and
-branding. The virtual instance, project and OIDC client are created by the
+`backend-cli idp setup`: `defaultRedirectUri` (beabee's login endpoint, the
+safety net for a member who finishes a Login v2 page outside a login beabee
+started), `ignoreUnknownUsernames` and branding. The virtual instance, project and OIDC client are created by the
 hosting infrastructure, which is expected to call the same command in future.
 
 ## Operations
@@ -117,6 +121,19 @@ redeploy: local password hashes are kept for exactly this reason, so members
 who haven't changed their password at the IdP since can log in as before. The
 OIDC discovery result is cached for the process lifetime; a restart picks up
 changed IdP metadata.
+
+**Upgrading Login v2.** beabee enters Login v2 pages with the ID of an
+authorization request it started, which Login v2's source supports but its
+documentation does not promise
+([ADR-0004](./adr/0004-link-to-login-v2-self-service-flows.md)). After a
+Login v2 upgrade, check that it still holds: request the instance's OIDC
+authorize URL with the tenant's client and read the `authRequest` ID from
+the redirect, open
+`/ui/v2/login/password/change?requestId=oidc_<id>&loginName=<login name>`
+in a browser logged in at the IdP, change the password, and confirm the
+browser lands on beabee's `/api/1.0/auth/callback` with `code` and the
+original `state`. If it doesn't, members finishing a page land on the
+`defaultRedirectUri` instead of where they started.
 
 **Hiding the Console.** The hosting infrastructure blocks `/ui/console` on
 the tenant's login domain and redirects it to the tenant's beabee URL;
