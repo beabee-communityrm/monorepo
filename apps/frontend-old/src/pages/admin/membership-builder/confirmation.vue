@@ -28,7 +28,7 @@ meta:
         <AppCheckbox
           v-model="setupContent.showOrganisationName"
           :label="stepT('showOrganisationName')"
-          class="mb-4 font-semibold"
+          class="mb-4 hidden font-semibold"
         />
 
         <AppSubHeading class="mt-6">

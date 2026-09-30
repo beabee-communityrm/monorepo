@@ -229,6 +229,11 @@ async function handleSubscribe(data: MCProfileData) {
       {
         newsletterStatus: NewsletterStatus.Subscribed,
         newsletterGroups: nlContact?.groups || [],
+      },
+      {
+        source: 'newsletter',
+        campaign: '',
+        medium: '',
       }
     );
   }
