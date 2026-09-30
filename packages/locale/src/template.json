@@ -1620,6 +1620,11 @@
   },
   "homePage": {
     "editProfile": "",
+    "greeting": {
+      "afternoon": "",
+      "evening": "",
+      "morning": ""
+    },
     "makeOneTimeDonationButton": "",
     "makeOneTimeDonationTitle": "",
     "manageContribution": "",

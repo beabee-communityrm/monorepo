@@ -5,57 +5,61 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="`${t('common.hello')} ${user.firstname}!`" no-collapse />
+  <div class="nuxt-page">
+    <h2 class="mb-6 text-2xl">
+      {{ t(greetingKey, { firstName: user.firstname }) }}
+    </h2>
 
-  <section
-    v-if="showWelcomeMessage && profileContent.introMessage"
-    class="mb-10"
-  >
-    <WelcomeMessage
-      :first-name="user.firstname"
-      :last-name="user.lastname"
-      :text="profileContent.introMessage"
-      @close="removeWelcomeMessage"
-    />
-  </section>
-
-  <NoticeContainer class="mb-10 md:mb-12" />
-
-  <section class="mb-8 md:hidden">
-    <QuickActions />
-  </section>
-
-  <section v-if="callouts.length" class="mb-6 lg:mr-6">
-    <SectionTitle>{{ t('homePage.openCallouts') }}</SectionTitle>
-
-    <div class="-mx-3 my-6 flex flex-wrap">
-      <CalloutCard
-        v-for="callout in callouts"
-        :key="callout.slug"
-        :callout="callout"
-        class="mx-3 mb-5"
-      />
-    </div>
-
-    <AppButton to="/crowdnewsroom" variant="primaryOutlined">{{
-      t('homePage.viewAllCallouts')
-    }}</AppButton>
-  </section>
-
-  <section class="mb-6 lg:mr-6">
-    <SectionTitle>{{ t('homePage.yourProfile') }}</SectionTitle>
-
-    <div class="mb-4 flex">
-      <ContributionInfo :contact="user" />
-    </div>
-
-    <AppButton
-      v-if="!generalContent.hideContribution"
-      to="/profile/contribution"
-      variant="primaryOutlined"
-      >{{ t('homePage.manageContribution') }}</AppButton
+    <section
+      v-if="showWelcomeMessage && profileContent.introMessage"
+      class="mb-10"
     >
-  </section>
+      <WelcomeMessage
+        :first-name="user.firstname"
+        :last-name="user.lastname"
+        :text="profileContent.introMessage"
+        @close="removeWelcomeMessage"
+      />
+    </section>
+
+    <NoticeContainer class="mb-10 md:mb-12" />
+
+    <section class="mb-8 md:hidden">
+      <QuickActions />
+    </section>
+
+    <section v-if="callouts.length" class="mb-6 lg:mr-6">
+      <SectionTitle>{{ t('homePage.openCallouts') }}</SectionTitle>
+
+      <div class="-mx-3 my-6 flex flex-wrap">
+        <CalloutCard
+          v-for="callout in callouts"
+          :key="callout.slug"
+          :callout="callout"
+          class="mx-3 mb-5"
+        />
+      </div>
+
+      <AppButton to="/crowdnewsroom" variant="primaryOutlined">{{
+        t('homePage.viewAllCallouts')
+      }}</AppButton>
+    </section>
+
+    <section class="mb-6 lg:mr-6">
+      <SectionTitle>{{ t('homePage.yourProfile') }}</SectionTitle>
+
+      <div class="mb-4 flex">
+        <ContributionInfo :contact="user" />
+      </div>
+
+      <AppButton
+        v-if="!generalContent.hideContribution"
+        to="/profile/contribution"
+        variant="primaryOutlined"
+        >{{ t('homePage.manageContribution') }}</AppButton
+      >
+    </section>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -65,7 +69,7 @@ import {
   type GetContactData,
   ItemStatus,
 } from '@beabee/beabee-common';
-import { AppButton, PageTitle, WelcomeMessage } from '@beabee/vue';
+import { AppButton, WelcomeMessage } from '@beabee/vue';
 
 import { type Ref, computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -88,6 +92,13 @@ addBreadcrumb(
     { label: t(routeLabels.profile), to: '/profile', icon: routeIcons.profile },
   ])
 );
+
+const greetingKey = computed(() => {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'homePage.greeting.morning';
+  if (hour < 18) return 'homePage.greeting.afternoon';
+  return 'homePage.greeting.evening';
+});
 
 const hasWelcomeMessageQuery = useRoute().query.welcomeMessage === 'true';
 

@@ -1620,6 +1620,11 @@
   },
   "homePage": {
     "editProfile": "Edit your community profile",
+    "greeting": {
+      "afternoon": "Good afternoon, {firstName}",
+      "evening": "Good evening, {firstName}",
+      "morning": "Good morning, {firstName}"
+    },
     "makeOneTimeDonationButton": "Make contribution",
     "makeOneTimeDonationTitle": "Make one-time contribution",
     "manageContribution": "Manage your contribution",
