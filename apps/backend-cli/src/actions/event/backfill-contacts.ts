@@ -22,23 +22,15 @@ const noCancelledEvent = `
     )
 `;
 
-// Find roles without added event
+// Find roles without added event, matched on contact and role type
 const noRoleAddedEvent = `
   FROM contact_role cr
   WHERE NOT EXISTS (
     SELECT 1 FROM activity_event e
-    WHERE e."targetId" = cr."contactId" AND e."eventType" = $1
+    WHERE e."targetId" = cr."contactId"
+      AND e."eventType" = $1
+      AND e.metadata->>'roleType' = cr.type
   )
-`;
-
-// Find roles due to expire without revoked event
-const noRoleRevokedEvent = `
-  FROM contact_role cr
-  WHERE cr."dateExpires" IS NOT NULL
-    AND NOT EXISTS (
-      SELECT 1 FROM activity_event e
-      WHERE e."targetId" = cr."contactId" AND e."eventType" = $1
-    )
 `;
 
 /**
@@ -108,6 +100,7 @@ const backfillContributionCancelled = async (
 /**
  * Backfill contact.role-added events
  * Roles added in the future are dated now, as they have yet to be granted
+ * Roles with a pre-existing added event are ignored
  */
 const backfillRoleAdded = async (dryRun: boolean): Promise<void> => {
   const eventType = ActivityEventType.ContactRoleAdded;
@@ -123,38 +116,9 @@ const backfillRoleAdded = async (dryRun: boolean): Promise<void> => {
 
   const inserted = await dataSource.query(
     `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
-     SELECT cr."contactId", NULL, NULL, LEAST(cr."dateAdded", now()), $1, NULL
+     SELECT cr."contactId", NULL, NULL, LEAST(cr."dateAdded", now()), $1,
+            jsonb_build_object('roleType', cr.type)
      ${noRoleAddedEvent}
-     RETURNING id`,
-    [eventType]
-  );
-
-  console.log(
-    `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s)`
-  );
-};
-
-/**
- * Backfill contact.role-revoked events
- * Roles expiring in the future are dated now, as they are already marked to go
- * Contacts with pre-existing role revoked events are ignored
- */
-const backfillRoleRevoked = async (dryRun: boolean): Promise<void> => {
-  const eventType = ActivityEventType.ContactRoleRevoked;
-
-  if (dryRun) {
-    const [{ count }] = await dataSource.query(
-      `SELECT COUNT(*)::int AS count ${noRoleRevokedEvent}`,
-      [eventType]
-    );
-    console.log(`${chalk.green('✓')} Would add ${count} ${eventType} event(s)`);
-    return;
-  }
-
-  const inserted = await dataSource.query(
-    `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
-     SELECT cr."contactId", NULL, NULL, LEAST(cr."dateExpires", now()), $1, NULL
-     ${noRoleRevokedEvent}
      RETURNING id`,
     [eventType]
   );
@@ -172,5 +136,4 @@ export const backfillContacts = async (dryRun: boolean): Promise<void> => {
   await backfillCreated(dryRun);
   await backfillContributionCancelled(dryRun);
   await backfillRoleAdded(dryRun);
-  await backfillRoleRevoked(dryRun);
 };

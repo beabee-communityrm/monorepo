@@ -1,5 +1,5 @@
 import type { ActivityEventType, ContributionPeriod } from '../data/index.js';
-import type { ContactOriginData } from './index.js';
+import type { ContactOriginData, RoleType } from './index.js';
 
 export interface ContributionUpdateData {
   startNow: boolean;
@@ -17,6 +17,7 @@ export interface ActivityEventMetadataMap {
   [ActivityEventType.ContactCreated]: ContactOriginData;
   [ActivityEventType.ContactContributionStarted]: ContributionUpdateData;
   [ActivityEventType.ContactContributionUpdated]: ContributionUpdateData;
+  [ActivityEventType.ContactRoleAdded]: { roleType: RoleType };
   [ActivityEventType.EmailSent]: { email: string; recipient: string };
   [ActivityEventType.EmailTemplateAdded]: { templateId: string | null };
 }
