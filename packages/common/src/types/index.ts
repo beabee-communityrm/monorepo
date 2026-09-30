@@ -214,6 +214,7 @@ export type * from './set-callout-form-schema.js';
 export type * from './set-callout-navigation-schema.js';
 export type * from './set-callout-slide-schema.js';
 export type * from './set-contribution-data.js';
+export type * from './signup-confirm-email-data.js';
 export type * from './signup-data.js';
 export type * from './start-contribution-data.js';
 export type * from './stripe-fee-country.js';

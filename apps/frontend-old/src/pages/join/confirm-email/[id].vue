@@ -21,7 +21,15 @@ const router = useRouter();
 
 onBeforeMount(async () => {
   try {
-    await client.signup.confirmEmail(route.params.id);
+    const { credentialSetupUrl } = await client.signup.confirmEmail(
+      route.params.id
+    );
+    // With OIDC login the member sets up their credential at the identity
+    // provider and comes back logged in
+    if (credentialSetupUrl) {
+      window.location.href = credentialSetupUrl;
+      return;
+    }
     // User has been logged in, update our current user to reflect this
     await updateCurrentUser();
     router.replace('/join/setup');
