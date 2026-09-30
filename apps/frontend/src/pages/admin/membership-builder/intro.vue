@@ -30,12 +30,14 @@ meta:
         />
       </template>
       <template #col2>
-        <WelcomeMessage
-          :first-name="currentUser?.firstname || ''"
-          :last-name="currentUser?.lastname || ''"
-          :text="introMessage"
-          small
-        />
+        <div class="nuxt-page">
+          <AppWelcomeCard
+            :first-name="currentUser?.firstname || ''"
+            :text="introMessage"
+            :level="2"
+            :dismissible="false"
+          />
+        </div>
       </template>
     </App2ColGrid>
   </AppApiForm>
@@ -45,7 +47,7 @@ import {
   App2ColGrid,
   AppCheckbox,
   AppRichTextEditor,
-  WelcomeMessage,
+  AppWelcomeCard,
 } from '@beabee/vue';
 
 import { onBeforeMount, ref } from 'vue';
