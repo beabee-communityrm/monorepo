@@ -24,7 +24,10 @@ meta:
       />
     </template>
 
-    <UCard v-if="callout.status === ItemStatus.Open" variant="soft">
+    <UCard
+      v-if="callout.status === ItemStatus.Open"
+      class="bg-linear-to-b from-primary/5 to-transparent to-70% ring-primary/20"
+    >
       <div class="flex flex-wrap items-center justify-between gap-4">
         <p>{{ t('calloutThanksPage.sharePrompt') }}</p>
         <CalloutSharePopover
