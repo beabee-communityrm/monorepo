@@ -1,5 +1,3 @@
-import { ActivityActorType } from '@beabee/beabee-common';
-import { NotFoundError } from '@beabee/core/errors';
 import { AuthInfo } from '@beabee/core/type';
 
 import { plainToInstance } from 'class-transformer';
@@ -9,17 +7,17 @@ import {
   Body,
   ForbiddenError,
   JsonController,
-  Param,
+  Params,
   Post,
   Res,
 } from 'routing-controllers';
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import { RunJobDto } from '#api/dto/JobDto';
+import { JobNameParams } from '#api/params/JobNameParams';
 import { validateOrReject } from '#api/utils';
-
-import { isJobName, jobs } from '../../jobs/index.js';
-import { lockJob, runJob } from '../../jobs/run.js';
+import { jobs } from '#jobs/index';
+import { lockJob, runJob } from '#jobs/run';
 
 @JsonController('/jobs')
 export class JobController {
@@ -32,17 +30,13 @@ export class JobController {
   @Authorized('superadmin')
   async runJob(
     @CurrentAuth({ required: true }) auth: AuthInfo,
-    @Param('name') name: string,
+    @Params() { name }: JobNameParams,
     @Body() data: RunJobDto,
     @Res() res: Response
   ): Promise<Response> {
     if (auth.method !== 'operator') {
       throw new ForbiddenError('Jobs require Operator Auth');
     }
-    if (!isJobName(name)) {
-      throw new NotFoundError();
-    }
-
     const job = jobs[name];
     // A job without arguments has an empty DTO, which class-validator would
     // otherwise refuse as an unknown value; unknown properties still fail
@@ -57,10 +51,7 @@ export class JobController {
         name,
         job,
         args,
-        {
-          actorType: data.actor ?? ActivityActorType.BackendCLI,
-          actorId: null,
-        },
+        { actorType: data.actor, actorId: null },
         (line) => res.write(JSON.stringify(line) + '\n')
       );
     } finally {

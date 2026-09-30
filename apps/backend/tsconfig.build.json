@@ -9,6 +9,7 @@
       "#core/*": ["./src/core/*"],
       "#api/*": ["./src/api/*"],
       "#apps/*": ["./src/apps/*"],
+      "#jobs/*": ["./src/jobs/*"],
       "#type": ["./src/type/index"],
       "#type/*": ["./src/type/*"]
     },

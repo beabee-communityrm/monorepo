@@ -1,5 +1,9 @@
-import { type JobLogLine, JobName } from '@beabee/beabee-common';
-import { JobClient, NotFoundError } from '@beabee/client';
+import {
+  ActivityActorType,
+  type JobLogLine,
+  JobName,
+} from '@beabee/beabee-common';
+import { JobClient } from '@beabee/client';
 import { api, testUser } from '@beabee/test-utils/test-data';
 
 import jwt from 'jsonwebtoken';
@@ -23,8 +27,10 @@ describe('Jobs API', () => {
       token: operatorToken(),
     });
     const lines: JobLogLine[] = [];
-    await jobClient.run(JobName.DatabaseClean, { args: {} }, (line) =>
-      lines.push(line)
+    await jobClient.run(
+      JobName.DatabaseClean,
+      { args: {}, actor: ActivityActorType.BackendCLI },
+      (line) => lines.push(line)
     );
     expect(lines.length).toBe(3);
     expect(lines.every((l) => l.level === 'info')).toBe(true);
@@ -39,8 +45,11 @@ describe('Jobs API', () => {
     });
     await expect(
       // Deliberately not a JobName, the server must refuse it
-      jobClient.run('no-such-job' as JobName, { args: {} })
-    ).rejects.toBeInstanceOf(NotFoundError);
+      jobClient.run('no-such-job' as JobName, {
+        args: {},
+        actor: ActivityActorType.BackendCLI,
+      })
+    ).rejects.toMatchObject({ httpCode: 400 });
   });
 
   it('refuses an API key, which is never an operator', async () => {
@@ -50,7 +59,10 @@ describe('Jobs API', () => {
       token: testUser.apiKey,
     });
     await expect(
-      jobClient.run(JobName.DatabaseClean, { args: {} })
+      jobClient.run(JobName.DatabaseClean, {
+        args: {},
+        actor: ActivityActorType.BackendCLI,
+      })
     ).rejects.toMatchObject({ httpCode: 403 });
   });
 });
