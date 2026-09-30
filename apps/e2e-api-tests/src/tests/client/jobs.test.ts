@@ -52,7 +52,7 @@ describe('Jobs API', () => {
     ).rejects.toMatchObject({ httpCode: 400 });
   });
 
-  it('refuses an API key, which is never an operator', async () => {
+  it('refuses an API key, which is never superadmin', async () => {
     const jobClient = new JobClient({
       host: api.host,
       path: api.path,
