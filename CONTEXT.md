@@ -81,3 +81,21 @@ contacts can log in.
 A contact without an IdP Subject. Exists legitimately during migration or
 after a failed provisioning, and must be linked before the member can log in.
 _Avoid_: orphan, unprovisioned
+
+### Operations
+
+**Job**:
+A maintenance operation that an Operator triggers through the API and that
+runs inside the backend, such as a newsletter reconcile or a payment sync.
+_Avoid_: task, cron command, script, sync (as a noun)
+
+**Tool**:
+An Operator program with direct database and file access that runs only
+inside the backend container, such as a database export.
+_Avoid_: script, fat CLI, command
+
+**Operator Auth**:
+Authentication of the CLI as an Operator using the secret shared by the
+services of one instance. Grants every role and exists only inside the
+instance's own infrastructure.
+_Avoid_: internal auth, service auth, localhost auth, machine login
