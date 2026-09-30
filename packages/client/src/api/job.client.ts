@@ -61,7 +61,7 @@ export class JobClient extends BaseClient {
       const line: JobStreamLine = JSON.parse(raw);
       if (line.type === 'log') {
         onLog?.(line);
-      } else {
+      } else if (line.type === 'result') {
         result = line;
       }
     };

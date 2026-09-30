@@ -39,6 +39,8 @@ export class JobController {
     const release = lockJob(name);
     try {
       res.setTimeout(0);
+      // Tells nginx not to buffer, should the stream ever pass the router
+      res.set('X-Accel-Buffering', 'no');
       res.status(200).type('application/x-ndjson').flushHeaders();
       await runJob(
         name,

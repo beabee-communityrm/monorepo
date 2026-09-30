@@ -7,9 +7,14 @@ export interface JobLogLine {
   message: string;
 }
 
+/** Sent while the job is silent so idle timeouts do not cut the stream */
+export interface JobPingLine {
+  type: 'ping';
+}
+
 export type JobResultLine =
   | { type: 'result'; status: 'ok' }
   | { type: 'result'; status: 'error'; message: string };
 
-/** One NDJSON line of a running Job's response: log lines, then one result */
-export type JobStreamLine = JobLogLine | JobResultLine;
+/** One NDJSON line of a running Job's response: log and ping lines, then one result */
+export type JobStreamLine = JobLogLine | JobPingLine | JobResultLine;

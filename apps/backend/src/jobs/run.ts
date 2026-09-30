@@ -13,6 +13,9 @@ import type { Job, JobLogger } from '#type/job';
 
 const running = new Set<JobName>();
 
+/** Below the 60 s nginx read timeout and the 300 s undici body timeout */
+const PING_INTERVAL = 30_000;
+
 /**
  * Reserve a job before streaming starts, so an overlapping run is refused
  * with a proper status code instead of mid-stream
@@ -53,6 +56,7 @@ export async function runJob<N extends JobName>(
     },
   };
 
+  const ping = setInterval(() => send({ type: 'ping' }), PING_INTERVAL);
   try {
     await actorContext.run(actor, () => job.run(args, jobLogger));
     send({ type: 'result', status: 'ok' });
@@ -60,5 +64,7 @@ export async function runJob<N extends JobName>(
     const message = err instanceof Error ? err.message : String(err);
     log.error(`Job failed: ${message}`, { error: err });
     send({ type: 'result', status: 'error', message });
+  } finally {
+    clearInterval(ping);
   }
 }
