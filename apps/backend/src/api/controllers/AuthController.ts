@@ -16,8 +16,8 @@ import passport from '@beabee/core/lib/passport';
 import { log as mainLogger } from '@beabee/core/logging';
 import { Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
+import IdpService from '@beabee/core/services/IdpService';
 import { AuthInfo, PassportLoginInfo } from '@beabee/core/type';
-import { isValidNextUrl } from '@beabee/core/utils/url';
 
 import { isUUID } from 'class-validator';
 import { Request, Response } from 'express';
@@ -29,13 +29,18 @@ import {
   OnUndefined,
   Param,
   Post,
-  QueryParam,
+  QueryParams,
   Req,
   Res,
 } from 'routing-controllers';
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
-import { GetAuthInfoDto, LoginDto, LogoutResultDto } from '#api/dto';
+import {
+  GetAuthInfoDto,
+  LoginDto,
+  LogoutResultDto,
+  OidcLoginOptsDto,
+} from '#api/dto';
 import { authTransformer } from '#api/transformers';
 import {
   assertOidcAuthEnabled,
@@ -121,22 +126,28 @@ export class AuthController {
    * Browser-facing OIDC login: redirects to the identity provider. The GET
    * routes below return the response so routing-controllers treats it as
    * handled instead of serialising it as JSON.
-   * @param next Internal path to continue to after login
    */
   @Get('/login')
   async oidcLogin(
     @Req() req: Request,
     @Res() res: Response,
-    @QueryParam('next', { required: false }) next?: string
+    @CurrentAuth({ required: false }) auth: AuthInfo,
+    @QueryParams() { next, action }: OidcLoginOptsDto
   ): Promise<Response> {
     assertOidcAuthEnabled();
+    const contact = auth.contact;
+    if (action && !contact) {
+      throw new UnauthorizedError();
+    }
 
     try {
-      const { url, loginState } = await startOidcLogin(
-        next && isValidNextUrl(next) ? next : undefined
-      );
+      const { url, loginState } = await startOidcLogin(next);
       req.session.oidc = loginState;
-      res.redirect(url);
+      res.redirect(
+        action && contact
+          ? await IdpService.resolveLoginUrl(url, contact, action)
+          : url
+      );
       return res;
     } catch (err) {
       log.error('OIDC login failed to start', err);
