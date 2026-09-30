@@ -110,4 +110,8 @@ export class KeycloakProvider implements IdpProvider {
   async permanentlyDeleteContact(subject: string): Promise<void> {
     await this.request('DELETE', `/users/${subject}`);
   }
+
+  // Keycloak is the development IdP only; branding is not synced to it
+  async setup(): Promise<void> {}
+  async updateBranding(): Promise<void> {}
 }

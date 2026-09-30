@@ -1,3 +1,5 @@
+import type { ContentGeneralData } from '@beabee/beabee-common';
+
 import type { Contact } from '#models/index';
 
 /**
@@ -27,4 +29,19 @@ export interface IdpProvider {
    * @param subject The linked account's subject identifier
    */
   permanentlyDeleteContact(subject: string): Promise<void>;
+  /**
+   * Apply the instance settings beabee owns. Safe to repeat.
+   */
+  setup(settings: IdpSetupSettings): Promise<void>;
+  /**
+   * Push the beabee theme to the identity provider's login pages
+   */
+  updateBranding(branding: IdpBranding): Promise<void>;
 }
+
+export interface IdpSetupSettings {
+  /** The fixed beabee page the IdP's self-service flows return to */
+  defaultRedirectUri: string;
+}
+
+export type IdpBranding = Pick<ContentGeneralData, 'theme' | 'logoUrl'>;

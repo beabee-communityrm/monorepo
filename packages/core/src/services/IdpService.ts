@@ -6,6 +6,7 @@ import {
   NoneProvider,
   ZitadelProvider,
 } from '#providers/idp/index';
+import { optionsService } from '#services/OptionsService';
 import type { IdpProvider } from '#type/index';
 
 const log = mainLogger.child({ app: 'idp-service' });
@@ -71,6 +72,43 @@ class IdpService {
       await this.provider.permanentlyDeleteContact(contact.idpSubject);
     } catch (err) {
       log.error(`Failed to delete IdP account ${contact.idpSubject}`, err);
+    }
+  }
+
+  /**
+   * Apply the IdP-side settings beabee owns, then push the branding
+   * @returns Whether everything was applied
+   */
+  async setup(): Promise<boolean> {
+    if (!this.isEnabled) return false;
+    log.info('Set up IdP');
+    try {
+      await this.provider.setup({
+        defaultRedirectUri: `${config.audience}/api/1.0/auth/login`,
+      });
+    } catch (err) {
+      log.error('Failed to set up IdP', err);
+      return false;
+    }
+    return this.updateBranding();
+  }
+
+  /**
+   * Push the current theme and logo to the IdP's login pages
+   * @returns Whether the branding was applied
+   */
+  async updateBranding(): Promise<boolean> {
+    if (!this.isEnabled) return false;
+    log.info('Update IdP branding');
+    try {
+      await this.provider.updateBranding({
+        theme: optionsService.getJSON('theme'),
+        logoUrl: optionsService.getText('logo'),
+      });
+      return true;
+    } catch (err) {
+      log.error('Failed to update IdP branding', err);
+      return false;
     }
   }
 }
