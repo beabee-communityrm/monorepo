@@ -130,6 +130,8 @@ export type * from './filters.js';
 export type * from './footer-link.js';
 export type * from './force-update-contribution-data.js';
 export type * from './formio-file.js';
+export type * from './get-activity-event-data.js';
+export type * from './get-activity-events-query.js';
 export type * from './get-api-key-data.js';
 export type * from './get-api-keys-query.js';
 export type * from './get-callout-data-with.js';
