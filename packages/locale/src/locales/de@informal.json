@@ -999,7 +999,9 @@
     "title": "Auswerter"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Bitte beachte, dass nur eine Antwort pro Person möglich ist. Wenn du schon teilgenommen hast, werden weitere Antworten nicht berücksichtigt."
+    "backTo": "Zurück zu {title}",
+    "oneResponseWarning": "Bitte beachte, dass nur eine Antwort pro Person möglich ist. Wenn du schon teilgenommen hast, werden weitere Antworten nicht berücksichtigt.",
+    "sharePrompt": "Hilf uns, mehr Menschen zu erreichen, indem du diesen CrowdNewsroom teilst."
   },
   "callouts": {
     "access": {
