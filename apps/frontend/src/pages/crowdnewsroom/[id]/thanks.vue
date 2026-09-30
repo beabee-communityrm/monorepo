@@ -36,12 +36,23 @@ meta:
         />
       </div>
     </UCard>
+
+    <div v-if="!isEmbed">
+      <UButton
+        variant="link"
+        icon="i-lucide-arrow-left"
+        :to="{ path: '/crowdnewsroom/' + callout.slug, query: route.query }"
+      >
+        {{ t('calloutThanksPage.backTo', { title: callout.title }) }}
+      </UButton>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
 import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
 import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
 import CalloutResponseList from '#components/callout/CalloutResponseList.vue';
@@ -50,7 +61,7 @@ import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue
 import { useCalloutResponse } from '#components/pages/callouts/use-callout';
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
-import { currentUser } from '#store/index';
+import { currentUser, isEmbed } from '#store/index';
 import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const props = defineProps<{
@@ -58,6 +69,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const route = useRoute();
 
 addBreadcrumb(
   computed(() =>
