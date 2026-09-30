@@ -12,6 +12,7 @@ import {
   databaseCommand,
   emailCommand,
   healthCommand,
+  idpCommand,
   imageCommand,
   migrateUploadsCommand,
   paymentCommand,
@@ -49,6 +50,7 @@ actorContext.run(actor, () =>
     .command(userCommand)
     .command(setupCommand)
     .command(healthCommand)
+    .command(idpCommand)
     .command(paymentCommand)
     .command(rateLimiterCommand)
     .command(syncCommand)
