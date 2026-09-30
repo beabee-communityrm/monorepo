@@ -2,6 +2,7 @@ import {
   type CreateResetDeviceData,
   type CreateResetPasswordData,
   RESET_SECURITY_FLOW_TYPE,
+  type ResetPasswordLinkData,
   type UpdateResetDeviceData,
   type UpdateResetPasswordData,
 } from '@beabee/beabee-common';
@@ -27,13 +28,20 @@ export class ResetSecurityClient extends BaseClient {
    * Starts the reset password flow
    * Used when a user has forgotten their password
    * @param email - The email of the user
+   * @returns The reset link when authenticated as an operator, otherwise nothing
    */
-  async resetPasswordBegin(email: string): Promise<void> {
+  async resetPasswordBegin(
+    email: string
+  ): Promise<ResetPasswordLinkData | undefined> {
     const data: CreateResetPasswordData = {
       email,
       resetUrl: this.options.host + '/auth/reset-password',
     };
-    await this.fetch.post('reset-password', data);
+    const { data: link } = await this.fetch.post<ResetPasswordLinkData | null>(
+      'reset-password',
+      data
+    );
+    return link ?? undefined;
   }
 
   /**

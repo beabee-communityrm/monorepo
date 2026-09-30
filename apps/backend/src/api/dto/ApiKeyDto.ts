@@ -4,6 +4,7 @@ import {
   IsIn,
   IsOptional,
   IsString,
+  IsUUID,
   ValidateNested,
 } from 'class-validator';
 
@@ -18,6 +19,10 @@ export class CreateApiKeyDto {
   @Type(() => Date)
   @IsDate()
   expires!: Date | null;
+
+  @IsOptional()
+  @IsUUID()
+  contactId?: string;
 }
 
 export class NewApiKeyDto {

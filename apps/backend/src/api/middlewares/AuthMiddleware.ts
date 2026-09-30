@@ -4,7 +4,11 @@ import { actorContext } from '@beabee/core/lib/actor-context';
 import { ApiKey } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import { AuthInfo } from '@beabee/core/type';
-import { extractToken } from '@beabee/core/utils/auth';
+import {
+  extractToken,
+  isOperatorToken,
+  verifyOperatorToken,
+} from '@beabee/core/utils/auth';
 
 import { Request, Response } from 'express';
 import crypto from 'node:crypto';
@@ -29,8 +33,14 @@ async function getAuth(request: Request): Promise<AuthInfo> {
   const authHeader = headers.authorization;
   const token = extractToken(authHeader);
 
-  // If there's a bearer key check API key
   if (token) {
+    // Operator tokens are signed with the service secret and grant every role
+    if (isOperatorToken(token)) {
+      return verifyOperatorToken(token)
+        ? { method: 'operator', roles: ['admin', 'superadmin'] }
+        : { method: 'none', roles: [] };
+    }
+
     const apiKey = await getValidApiKey(token);
     if (apiKey) {
       // API key can act as a user
@@ -83,6 +93,8 @@ function authInfoToActor(auth: AuthInfo): ActivityActor {
       };
     case 'user':
       return { actorType: ActivityActorType.User, actorId: auth.contact.id };
+    case 'operator':
+      return { actorType: ActivityActorType.BackendCLI, actorId: null };
     default:
       return { actorType: ActivityActorType.User, actorId: null };
   }

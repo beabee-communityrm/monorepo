@@ -1,13 +1,13 @@
-import { NotFoundError } from '@beabee/core/errors';
+import { BadRequestError, NotFoundError } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import ApiKeyService from '@beabee/core/services/ApiKeyService';
+import ContactsService from '@beabee/core/services/ContactsService';
 import { AuthInfo } from '@beabee/core/type';
 
 import { plainToInstance } from 'class-transformer';
 import {
   Authorized,
   Body,
-  CurrentUser,
   Delete,
   Get,
   JsonController,
@@ -49,11 +49,11 @@ export class ApiKeyController {
   @Post('/')
   @Authorized('superadmin')
   async createApiKey(
-    @CurrentUser({ required: true }) creator: Contact,
+    @CurrentAuth({ required: true }) auth: AuthInfo,
     @Body() data: CreateApiKeyDto
   ): Promise<NewApiKeyDto> {
     const token = await ApiKeyService.create(
-      creator,
+      await getCreator(auth, data.contactId),
       data.description,
       data.expires
     );
@@ -68,4 +68,32 @@ export class ApiKeyController {
       throw new NotFoundError();
     }
   }
+}
+
+/**
+ * Operators have no contact of their own, so they name the creator explicitly.
+ * Everyone else can only create keys for themselves.
+ */
+async function getCreator(
+  auth: AuthInfo,
+  contactId: string | undefined
+): Promise<Contact> {
+  if (auth.method === 'operator') {
+    if (!contactId) {
+      throw new BadRequestError('contactId is required with Operator Auth');
+    }
+    const contact = await ContactsService.findOneBy({ id: contactId });
+    if (!contact) {
+      throw new NotFoundError();
+    }
+    return contact;
+  }
+
+  if (contactId) {
+    throw new BadRequestError('contactId is only allowed with Operator Auth');
+  }
+  if (!auth.contact) {
+    throw new BadRequestError('No contact to create the API key for');
+  }
+  return auth.contact;
 }
