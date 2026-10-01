@@ -33,7 +33,6 @@ import {
 import { isURL } from 'class-validator';
 import { parse } from 'csv-parse';
 import moment from 'moment';
-import { createReadStream } from 'node:fs';
 import type { Readable } from 'node:stream';
 import { In } from 'typeorm';
 
@@ -226,10 +225,7 @@ export const importCalloutResponses = async (
 
     console.error(`Possible headers: ${headers.join(', ')}`);
 
-    const stream: Readable = args.file
-      ? createReadStream(args.file)
-      : process.stdin;
-    const rows = await loadRows(stream, headers);
+    const rows = await loadRows(process.stdin, headers);
 
     console.error(`Processing ${rows.length} rows`);
 
