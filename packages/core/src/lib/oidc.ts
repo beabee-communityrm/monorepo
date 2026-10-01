@@ -115,19 +115,23 @@ export async function completeOidcLogin(
  * the post-logout redirect URI if the IdP has no end session endpoint or is
  * unreachable.
  * @param idToken The ID token from login, used as logout hint
+ * @param postLogoutRedirectUri Where the IdP sends the browser afterwards;
+ * must be registered at the IdP. Defaults to the configured one.
  */
-export async function getOidcLogoutUrl(idToken?: string): Promise<string> {
-  const settings = getSettings();
+export async function getOidcLogoutUrl(
+  idToken?: string,
+  postLogoutRedirectUri = getSettings().postLogoutRedirectUri
+): Promise<string> {
   try {
     const oidcConfig = await getOidcConfig();
     if (oidcConfig.serverMetadata().end_session_endpoint) {
       return oidc.buildEndSessionUrl(oidcConfig, {
-        post_logout_redirect_uri: settings.postLogoutRedirectUri,
+        post_logout_redirect_uri: postLogoutRedirectUri,
         ...(idToken && { id_token_hint: idToken }),
       }).href;
     }
   } catch (err) {
     log.error('Failed to build OIDC logout URL', err);
   }
-  return settings.postLogoutRedirectUri;
+  return postLogoutRedirectUri;
 }

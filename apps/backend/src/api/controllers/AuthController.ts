@@ -166,8 +166,13 @@ export class AuthController {
       const contact = await ContactsService.findOneBy({ idpSubject: subject });
       if (!contact) {
         log.info(`OIDC login for unlinked subject ${subject}`);
+        // End the IdP session on the way to the error page, otherwise the
+        // next login attempt lands on the same error without a login form
         res.redirect(
-          `${config.audience}/auth/login?error=${LOGIN_CODES.UNLINKED_ACCOUNT}`
+          await getOidcLogoutUrl(
+            idToken,
+            `${config.audience}/auth/login?error=${LOGIN_CODES.UNLINKED_ACCOUNT}`
+          )
         );
         return res;
       }
