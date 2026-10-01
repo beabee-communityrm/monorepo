@@ -5,7 +5,7 @@
   <UDashboardGroup v-else unit="rem">
     <TheMenu />
     <main id="top" class="flex w-full flex-1 flex-col bg-background">
-      <UDashboardNavbar :ui="{ root: 'sticky top-0 z-10 bg-default' }">
+      <UDashboardNavbar :ui="{ root: 'sticky top-0 z-20 bg-default' }">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>

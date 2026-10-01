@@ -4,6 +4,7 @@ export * from './app-qr-code-props';
 export * from './app-qr-code-type-number';
 export * from './breadcrumb-item';
 export * from './callout-card-data';
+export * from './callout-response-answer-row';
 export * from './content';
 export * from './contribution';
 export * from './email-editor';
