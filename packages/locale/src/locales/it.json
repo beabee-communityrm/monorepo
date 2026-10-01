@@ -1691,6 +1691,10 @@
   },
   "login": {
     "backTo": "Torna a  {newsroomName}",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "Hai dimenticato la password?",
     "joinNow": "Iscriviti!",
     "lostMfaDevice": "Hai perso il tuo dispositivo 2FA?",
