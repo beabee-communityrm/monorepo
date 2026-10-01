@@ -94,6 +94,9 @@ export const contactFilters = {
   activeUser: {
     type: 'boolean',
   },
+  idpLinked: {
+    type: 'boolean',
+  },
   membershipStarts: {
     type: 'date',
   },
