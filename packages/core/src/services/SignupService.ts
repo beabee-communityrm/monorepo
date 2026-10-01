@@ -9,6 +9,7 @@ import {
 
 import { getRepository } from '#database';
 import { DuplicateEmailError, NotFoundError } from '#errors/index';
+import { isOidcEnabled } from '#lib/oidc';
 import { log as mainLogger } from '#logging';
 import { Contact, Password, PaymentFlow, SignupFlow } from '#models/index';
 import ContactsService from '#services/ContactsService';
@@ -137,7 +138,8 @@ class SignupService {
       // One-time contribution and their account was previously setup
       (isOneTime && contact?.password.hash)
     ) {
-      if (contact.password.hash) {
+      // Under OIDC login there is no local password to set
+      if (isOidcEnabled() || contact.password.hash) {
         await EmailService.sendTemplateToContact(
           'email-exists-login',
           contact,

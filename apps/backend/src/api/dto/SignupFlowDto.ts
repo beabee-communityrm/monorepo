@@ -1,3 +1,5 @@
+import { SignupConfirmEmailData } from '@beabee/beabee-common';
+
 import { Type } from 'class-transformer';
 import {
   IsEmail,
@@ -47,6 +49,12 @@ export class StartSignupFlowDto {
   @ValidateNested()
   @IsOptional()
   origin?: GetContactOriginDto;
+}
+
+export class SignupConfirmEmailDto implements SignupConfirmEmailData {
+  @IsOptional()
+  @IsUrl()
+  credentialSetupUrl?: string;
 }
 
 export class CompleteSignupFlowDto extends CompletePaymentFlowDto {

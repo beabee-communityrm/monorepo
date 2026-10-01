@@ -124,8 +124,60 @@ export class KeycloakProvider implements IdpProvider {
     authorizeUrl: string,
     action: IdpLoginAction
   ): Promise<string> {
+    if (action.type === 'setupCredential') {
+      return await this.createMagicLink(authorizeUrl, action.subject);
+    }
     const url = new URL(authorizeUrl);
     url.searchParams.set('kc_action', KC_ACTIONS[action.type]);
     return url.href;
+  }
+
+  /**
+   * A magic link (keycloak-magic-link extension, part of the development
+   * image) logs the member in with the parameters of beabee's authorization
+   * request, so the callback matches the login state. The required action
+   * makes them set a password on the way.
+   */
+  private async createMagicLink(
+    authorizeUrl: string,
+    subject: string
+  ): Promise<string> {
+    await this.request('PUT', `/users/${subject}`, {
+      requiredActions: ['UPDATE_PASSWORD'],
+    });
+    const user = (await (
+      await this.request('GET', `/users/${subject}`)
+    ).json()) as {
+      username: string;
+    };
+
+    const authorize = new URL(authorizeUrl).searchParams;
+    const resp = await fetch(
+      `${this.settings.url}/realms/${this.settings.realm}/magic-link`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${await this.getAccessToken()}`,
+        },
+        body: JSON.stringify({
+          username: user.username,
+          client_id: authorize.get('client_id'),
+          redirect_uri: authorize.get('redirect_uri'),
+          scope: authorize.get('scope'),
+          state: authorize.get('state'),
+          nonce: authorize.get('nonce'),
+          code_challenge: authorize.get('code_challenge'),
+          reusable: false,
+        }),
+      }
+    );
+    if (!resp.ok) {
+      throw new Error(
+        `Keycloak magic link error: ${resp.status}: ${await resp.text()}`
+      );
+    }
+    const { link } = (await resp.json()) as { link: string };
+    return link;
   }
 }
