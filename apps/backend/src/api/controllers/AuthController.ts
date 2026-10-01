@@ -201,16 +201,14 @@ export class AuthController {
   }
 
   /**
-   * Browser-facing logout: ends the beabee session and the identity provider
-   * session (RP-initiated logout)
+   * Browser-facing logout for plain links: ends the beabee session and,
+   * under OIDC login, the identity provider session (RP-initiated logout)
    */
   @Get('/logout')
-  async oidcLogout(
+  async browserLogout(
     @Req() req: Request,
     @Res() res: Response
   ): Promise<Response> {
-    assertOidcAuthEnabled();
-
     const idToken = req.session.idToken;
 
     await new Promise<void>((resolve, reject) =>
@@ -218,7 +216,9 @@ export class AuthController {
     );
     await new Promise<void>((resolve) => req.session.destroy(() => resolve()));
 
-    res.redirect(await getOidcLogoutUrl(idToken));
+    res.redirect(
+      isOidcEnabled() ? await getOidcLogoutUrl(idToken) : config.audience
+    );
     return res;
   }
 
