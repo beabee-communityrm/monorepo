@@ -2,6 +2,7 @@
 export enum CalloutComponentType {
   CONTENT = 'content',
   INPUT_ADDRESS = 'address',
+  INPUT_AUDIO_RECORDER = 'audiorecorder',
   INPUT_CHECKBOX = 'checkbox',
   INPUT_CURRENCY = 'currency',
   INPUT_DATE_TIME = 'datetime',
