@@ -1,4 +1,8 @@
-import type { AuthInfoData, LoginData } from '@beabee/beabee-common';
+import type {
+  AuthInfoData,
+  LoginData,
+  LogoutResultData,
+} from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
@@ -20,6 +24,39 @@ export class AuthClient extends BaseClient {
       ...options,
       path: cleanUrl(options.path + '/auth'),
     });
+  }
+
+  /**
+   * The URL that starts OIDC login, for full-page navigation on instances
+   * where members log in at the identity provider
+   * @param next Internal path to continue to after login
+   */
+  getLoginUrl(next?: string): string {
+    const url = this.authUrl('login');
+    if (next) {
+      url.searchParams.set('next', next);
+    }
+    return url.href;
+  }
+
+  /**
+   * The URL that logs the member out of beabee and the identity provider,
+   * for full-page navigation on OIDC Login instances
+   */
+  getLogoutUrl(): string {
+    return this.authUrl('logout').href;
+  }
+
+  /**
+   * Absolute URL of an auth endpoint, resolved against the host the same way
+   * requests are. `this.options` holds the options as passed in, without the
+   * `/auth` segment the constructor adds for requests.
+   */
+  private authUrl(endpoint: string): URL {
+    return new URL(
+      cleanUrl(`${this.options.path}/auth/${endpoint}`),
+      this.options.host
+    );
   }
 
   /**
@@ -60,13 +97,17 @@ export class AuthClient extends BaseClient {
   /**
    * Logs out the current user
    * Ends the user session and removes authentication
-   * @returns Promise that resolves when logout is complete
+   * @returns Where to send the browser next, if the identity provider's
+   * session has to be ended too
    */
-  async logout(): Promise<void> {
-    await this.fetch.post('logout', undefined, {
-      credentials: 'include',
-    });
+  async logout(): Promise<LogoutResultData> {
+    const { data } = await this.fetch.post<LogoutResultData | undefined>(
+      'logout',
+      undefined,
+      { credentials: 'include' }
+    );
     // Clear stored cookies after logout
     this.fetch.clearCookies();
+    return data || {};
   }
 }

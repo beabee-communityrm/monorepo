@@ -177,8 +177,9 @@ services:
       - STRIPE_API_KEY=${BEABEE_STRIPE_SECRETKEY}
       - STRIPE_DEVICE_NAME=beabee-dev-docker-container
 
-  # Keycloak identity provider for testing IdP provisioning, unused unless
-  # BEABEE_IDP_PROVIDER=keycloak is set, see docs/oidc-local-development.md
+  # Keycloak identity provider for testing IdP provisioning and OIDC login,
+  # unused unless BEABEE_IDP_PROVIDER=keycloak is set, see
+  # docs/oidc-local-development.md
   auth:
     image: quay.io/keycloak/keycloak:26.7
     command: ['start-dev', '--import-realm']
