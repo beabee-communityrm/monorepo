@@ -118,8 +118,10 @@ acceptable, set `BEABEE_LOGIN_PROVIDER=oidc` plus the
 `BEABEE_LOGIN_SETTINGS_*` values, clear all sessions and redeploy. The
 backend refuses to start if `BEABEE_IDP_PROVIDER` is `none` at that point.
 Clearing the sessions makes every member log in through the IdP, so each
-session carries the ID token that logout uses as its hint; a session from
-before the cutover would log out of beabee only.
+session carries the ID token that logout uses as its hint. A session from
+before the cutover has none: its logout still reaches the IdP's end-session
+endpoint, but without a hint the IdP asks the member to confirm instead of
+logging them out silently.
 
 **Break-glass.** If the IdP is unreachable or misconfigured nobody can log in,
 operators included. The way back is to set `BEABEE_LOGIN_PROVIDER=local` and
