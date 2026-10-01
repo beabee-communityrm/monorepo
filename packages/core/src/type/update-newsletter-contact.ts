@@ -1,4 +1,4 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
+import { Address, NewsletterStatus } from '@beabee/beabee-common';
 
 import { NewsletterGroupChange } from './newsletter-group-change.js';
 
@@ -21,4 +21,12 @@ export interface UpdateNewsletterContact {
   fields: Record<string, string>;
   isActiveMember: boolean;
   isActiveUser: boolean;
+  /**
+   * The beabee contact this update is for. Only set for updates that
+   * originate from beabee, not for contacts read back from the provider.
+   */
+  id?: string;
+  joined?: Date;
+  lastSeen?: Date | null;
+  deliveryAddress?: Address | null;
 }

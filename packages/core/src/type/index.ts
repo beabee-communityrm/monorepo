@@ -46,6 +46,7 @@ export * from './rate-limiter.js';
 export * from './referral-gift-form.js';
 export * from './s3-config.js';
 export * from './select-result.js';
+export * from './sf-profile.js';
 export * from './tag-assignment.js';
 export * from './taggable-entity.js';
 export * from './typeorm-utils.js';

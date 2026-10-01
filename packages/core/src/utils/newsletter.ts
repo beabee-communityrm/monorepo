@@ -57,5 +57,9 @@ export function convertContactToNlUpdate(
     },
     isActiveMember: contact.membership?.isActive || false,
     isActiveUser: !!contact.password.hash,
+    id: contact.id,
+    joined: contact.joined,
+    lastSeen: contact.lastSeen,
+    deliveryAddress: contact.profile.deliveryAddress,
   };
 }
