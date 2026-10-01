@@ -12,6 +12,8 @@
   <AppNoticeCard
     icon="i-lucide-circle-check"
     :title="callout.thanksTitle || t('common.thankYou')"
+    :level="level"
+    :size="size"
     color="success"
   >
     <div
@@ -53,9 +55,17 @@ export interface CalloutThankYouBannerProps {
   callout: GetCalloutDataWith<'form'>;
   /** When the response was submitted, if it has been loaded */
   submittedAt?: Date;
+  /** Heading level for the title */
+  level?: 2 | 3;
+  /** Title size */
+  size?: 'md' | 'lg';
 }
 
-const props = defineProps<CalloutThankYouBannerProps>();
+const props = withDefaults(defineProps<CalloutThankYouBannerProps>(), {
+  submittedAt: undefined,
+  level: 3,
+  size: 'md',
+});
 
 const isOpen = computed(() => props.callout.status === ItemStatus.Open);
 

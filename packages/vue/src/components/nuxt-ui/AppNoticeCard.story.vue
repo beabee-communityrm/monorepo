@@ -9,6 +9,7 @@ const state = reactive({
   level: 3 as 2 | 3 | 4 | 5 | 6,
   color: 'primary' as 'primary' | 'success',
   fill: 'gradient' as 'solid' | 'gradient',
+  size: 'md' as 'md' | 'lg',
 });
 </script>
 
@@ -22,6 +23,7 @@ const state = reactive({
           :level="state.level"
           :color="state.color"
           :fill="state.fill"
+          :size="state.size"
         >
           <p class="text-sm text-muted">
             This CrowdNewsroom is open to members only. Log in or join to take
@@ -54,6 +56,7 @@ const state = reactive({
           title="Fill"
           :options="['solid', 'gradient']"
         />
+        <HstSelect v-model="state.size" title="Size" :options="['md', 'lg']" />
       </template>
     </Variant>
 
@@ -68,6 +71,22 @@ const state = reactive({
             Your answer joins over a hundred others from across the region.
           </p>
           <p class="text-sm text-muted">Submitted 26 August 2026.</p>
+        </AppNoticeCard>
+      </div>
+    </Variant>
+
+    <Variant title="Success, large title">
+      <div class="max-w-xl">
+        <AppNoticeCard
+          icon="i-lucide-circle-check"
+          title="Thank you for mapping your high street"
+          :level="2"
+          color="success"
+          size="lg"
+        >
+          <p class="text-sm">
+            Your answer joins over a hundred others from across the region.
+          </p>
         </AppNoticeCard>
       </div>
     </Variant>

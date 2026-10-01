@@ -1003,7 +1003,9 @@
     "title": "Vérificateurs"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Veuillez noter que cette campagne n'autorise qu'une seule réponse par personne. Si vous y avez déjà répondu, les réponses supplémentaires ne seront pas enregistrées."
+    "backTo": "Revenir à {title}",
+    "oneResponseWarning": "Veuillez noter que cette campagne n'autorise qu'une seule réponse par personne. Si vous y avez déjà répondu, les réponses supplémentaires ne seront pas enregistrées.",
+    "sharePrompt": "Aidez-nous à toucher plus de monde en partageant cette CrowdNewsroom."
   },
   "callouts": {
     "access": {

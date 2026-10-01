@@ -999,7 +999,9 @@
     "title": "Revisores"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Ten en cuenta que solo se permite una respuesta por persona. Si ya has contribuido, las respuestas adicionales no se registrarán."
+    "backTo": "Volver a {title}",
+    "oneResponseWarning": "Ten en cuenta que solo se permite una respuesta por persona. Si ya has contribuido, las respuestas adicionales no se registrarán.",
+    "sharePrompt": "Ayúdanos a llegar a más gente compartiendo este CrowdNewsroom."
   },
   "callouts": {
     "access": {

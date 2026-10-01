@@ -999,7 +999,9 @@
     "title": "Recensenten"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, wordt extra reacties niet geregistreerd."
+    "backTo": "Terug naar {title}",
+    "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, wordt extra reacties niet geregistreerd.",
+    "sharePrompt": "Help ons meer mensen te bereiken door deze CrowdNewsroom te delen."
   },
   "callouts": {
     "access": {
