@@ -1163,7 +1163,6 @@
     "roles": "Roles",
     "security": {
       "instructions": "Copy and share this link:",
-      "loginOverride": "Login override",
       "mfa": {
         "desc": "This contact has 2FA enabled. Click on the \"{ disableLabel }\" button to disable it.",
         "disabledDesc": "2FA is not enabled for this contact."
