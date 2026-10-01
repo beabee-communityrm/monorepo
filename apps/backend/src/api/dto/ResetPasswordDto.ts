@@ -11,6 +11,11 @@ export class CreateResetPasswordDto {
   resetUrl!: string;
 }
 
+export class ResetPasswordLinkDto {
+  @IsUrl()
+  resetUrl!: string;
+}
+
 export class UpdateResetPasswordDto {
   @Validate(IsPassword)
   password!: string;

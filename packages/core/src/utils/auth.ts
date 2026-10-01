@@ -1,5 +1,6 @@
 import { LOGIN_CODES } from '@beabee/beabee-common';
 
+import jwt from 'jsonwebtoken';
 import crypto from 'node:crypto';
 import { Secret, TOTP } from 'otpauth';
 
@@ -102,6 +103,32 @@ export const validateTotpToken = (
     delta,
   };
 };
+
+export const OPERATOR_TOKEN_ISSUER = 'operator';
+
+/** Operator tokens are JWTs; API keys are `<id>_<secret>` and never contain dots */
+export function isOperatorToken(token: string): boolean {
+  return token.split('.').length === 3;
+}
+
+/**
+ * Verify an Operator Auth token: signed with the service secret, issued for
+ * operators and no older than a minute
+ * @param token The bearer token
+ * @returns Whether the token is valid
+ */
+export function verifyOperatorToken(token: string): boolean {
+  try {
+    jwt.verify(token, config.serviceSecret, {
+      algorithms: ['HS256'],
+      issuer: OPERATOR_TOKEN_ISSUER,
+      maxAge: '60s',
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export function extractToken(authHeader?: string): string | null {
   if (!authHeader) return null;

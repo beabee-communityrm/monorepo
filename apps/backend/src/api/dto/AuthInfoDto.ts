@@ -16,7 +16,7 @@ import { GetContactDto } from './ContactDto.js';
  * Contains user contact data and roles
  */
 export class GetAuthInfoDto {
-  @IsIn(['none', 'user', 'api-key', 'internal'])
+  @IsIn(['none', 'user', 'api-key', 'internal', 'operator'])
   method!: string;
 
   @IsOptional()

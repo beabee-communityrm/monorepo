@@ -26,8 +26,15 @@ interface AuthInfoInternalData {
   roles: RoleType[];
 }
 
+interface AuthInfoOperatorData {
+  method: 'operator';
+  contact?: undefined;
+  roles: RoleType[];
+}
+
 export type AuthInfoData =
   | AuthInfoNoneData
   | AuthInfoContactData
   | AuthInfoApiKeyData
-  | AuthInfoInternalData;
+  | AuthInfoInternalData
+  | AuthInfoOperatorData;

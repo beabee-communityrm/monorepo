@@ -198,6 +198,7 @@ export type * from './payment-source-stripe-card.js';
 export type * from './payment-source-stripe-paypal.js';
 export type * from './payment-source-stripe-sepa.js';
 export type * from './payment-source.js';
+export type * from './reset-password-link-data.js';
 export type * from './role-type.js';
 export type * from './rule-group.js';
 export type * from './rule-operator.js';

@@ -26,8 +26,16 @@ interface AuthInfoInternal {
   roles: RoleType[];
 }
 
+/** Operator Auth: a request signed with the instance's service secret */
+interface AuthInfoOperator {
+  method: 'operator';
+  contact?: undefined;
+  roles: RoleType[];
+}
+
 export type AuthInfo =
   | AuthInfoNone
   | AuthInfoContact
   | AuthInfoApiKey
-  | AuthInfoInternal;
+  | AuthInfoInternal
+  | AuthInfoOperator;
