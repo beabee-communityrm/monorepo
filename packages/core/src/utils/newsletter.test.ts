@@ -27,7 +27,6 @@ function createMockContact(
     password: Password.none,
     joined: new Date('2023-01-01'),
     lastSeen: new Date('2023-12-01'),
-    loginOverride: null,
     contributionType: ContributionType.None,
     contributionPeriod: null,
     contributionMonthlyAmount: null,

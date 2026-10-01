@@ -127,7 +127,6 @@ export default {
   'flash-member-added': 'Contact added',
   'flash-member-updated': 'Contact updated',
   'flash-member-permanently-deleted': 'Contact permanently deleted',
-  'flash-member-login-override-generated': 'Login override code generated',
   'flash-member-password-reset-generated': 'Password reset code generated',
   'flash-member-add-invalid-direct-debit':
     'Invalid direct debit, you must specify the first and last name',

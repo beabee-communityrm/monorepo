@@ -1164,7 +1164,6 @@
     "roles": "Rollen",
     "security": {
       "instructions": "Link kopieren und teilen:",
-      "loginOverride": "Automatischer Login",
       "mfa": {
         "desc": "Dieser Kontakt hat 2FA aktiviert. Klicken Sie auf \"{ disableLabel }\", um es zu deaktivieren.",
         "disabledDesc": "Dieser Kontakt hat keine 2FA aktiviert."

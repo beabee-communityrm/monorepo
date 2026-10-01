@@ -1164,7 +1164,6 @@
     "roles": "Ruoli",
     "security": {
       "instructions": "Copia e condividi questo link:",
-      "loginOverride": "Override accesso",
       "mfa": {
         "desc": "Questo contatto ha la 2FA attiva. Clicca sul pulsante \"{ disableLabel }\" per disattivarla.",
         "disabledDesc": "La 2FA non è attiva per questo contatto."

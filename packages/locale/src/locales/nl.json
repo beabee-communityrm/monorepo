@@ -1164,7 +1164,6 @@
     "roles": "Rollen",
     "security": {
       "instructions": "Kopieer en deel deze link:",
-      "loginOverride": "Inloggen opheffen",
       "mfa": {
         "desc": "Deze contactpersoon heeft 2FA ingeschakeld. Klik op de knop “{ disableLabel }” om deze uit te schakelen.",
         "disabledDesc": "2FA is niet ingeschakeld voor dit contact."

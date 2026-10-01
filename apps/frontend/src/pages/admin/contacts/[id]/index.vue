@@ -273,14 +273,8 @@ meta:
           <p>{{ t('contactOverview.security.whatDoTheButtonsDo') }}</p>
           <form @submit.prevent="handleSecurityAction">
             <AppButton type="submit" variant="primaryOutlined" class="mt-4">{{
-              t('contactOverview.security.loginOverride')
+              t('contactOverview.security.resetPassword')
             }}</AppButton>
-            <AppButton
-              type="submit"
-              variant="primaryOutlined"
-              class="mt-2 ml-6"
-              >{{ t('contactOverview.security.resetPassword') }}</AppButton
-            >
           </form>
           <div v-if="securityLink" class="mt-4">
             <p class="mt-4">{{ t('contactOverview.security.instructions') }}</p>

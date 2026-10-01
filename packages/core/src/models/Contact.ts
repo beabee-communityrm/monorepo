@@ -28,11 +28,6 @@ import type {
   ContactRole,
 } from './index.js';
 
-interface LoginOverride {
-  code: string;
-  expires: Date;
-}
-
 @Entity()
 export class Contact implements TaggableEntity<TagData> {
   @PrimaryGeneratedColumn('uuid')
@@ -55,9 +50,6 @@ export class Contact implements TaggableEntity<TagData> {
 
   @Column({ type: Date, nullable: true })
   lastSeen!: Date | null;
-
-  @Column({ type: 'jsonb', nullable: true })
-  loginOverride!: LoginOverride | null;
 
   /** Subject identifier of the linked account at the identity provider */
   @Column({ type: String, unique: true, nullable: true })
