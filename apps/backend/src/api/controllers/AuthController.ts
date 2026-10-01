@@ -137,7 +137,7 @@ export class AuthController {
     } catch (err) {
       log.error('OIDC login failed to start', err);
       res.redirect(
-        `${config.audience}/auth/login?error=${LOGIN_CODES.LOGIN_FAILED}`
+        `${config.audience}/auth/login?loginError=${LOGIN_CODES.LOGIN_FAILED}`
       );
       return res;
     }
@@ -175,7 +175,7 @@ export class AuthController {
         res.redirect(
           await getOidcLogoutUrl(
             idToken,
-            `${config.audience}/auth/login?error=${LOGIN_CODES.UNLINKED_ACCOUNT}`
+            `${config.audience}/auth/login?loginError=${LOGIN_CODES.UNLINKED_ACCOUNT}`
           )
         );
         return res;
@@ -194,7 +194,7 @@ export class AuthController {
         log.error('OIDC login failed', err);
       }
       res.redirect(
-        `${config.audience}/auth/login?error=${LOGIN_CODES.LOGIN_FAILED}`
+        `${config.audience}/auth/login?loginError=${LOGIN_CODES.LOGIN_FAILED}`
       );
       return res;
     }

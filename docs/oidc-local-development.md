@@ -70,7 +70,7 @@ Then:
 - http://localhost:3002/api/1.0/auth/login forwards to the Keycloak login form;
   sign in as a provisioned account and you land back on beabee logged in. An
   account that isn't linked to a contact is sent to
-  `/auth/login?error=unlinked-account`.
+  `/auth/login?loginError=unlinked-account`.
 - `POST /api/1.0/auth/login`, MFA and reset endpoints answer `404` while OIDC
   login is enabled.
 - http://localhost:3002/api/1.0/auth/logout ends both the beabee and the
