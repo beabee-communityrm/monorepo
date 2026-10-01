@@ -1,5 +1,6 @@
 import {
   ApiHealthStatus,
+  BaseNewsletterGroupData,
   SalesforceNewsletterIntegrationData,
 } from '@beabee/beabee-common';
 
@@ -191,7 +192,7 @@ export class SalesforceProvider implements NewsletterProvider {
    * are just the configured boolean fields — so the group IDs are returned
    * directly from the config.
    */
-  async getGroups(): Promise<{ id: string; label: string }[]> {
+  async getGroups(): Promise<BaseNewsletterGroupData[]> {
     return Object.keys(this.settings.groupFieldMap).map((id) => ({
       id,
       label: id,

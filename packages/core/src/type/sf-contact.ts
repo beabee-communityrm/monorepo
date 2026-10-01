@@ -13,7 +13,7 @@ export interface SFContactRecord {
   [field: string]: unknown;
 }
 
-/** Salesforce OAuth2 password-grant token response. */
+/** Salesforce OAuth2 token response. */
 export interface SFTokenResponse {
   access_token: string;
   instance_url: string;

@@ -6,6 +6,7 @@ import { SalesforceNewsletterConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import {
   NewsletterContact,
+  NewsletterGroupChange,
   SFContactRecord,
   SFTokenResponse,
   UpdateNewsletterContact,
@@ -152,9 +153,39 @@ export async function getContactById(
 }
 
 /**
+ * Build the group boolean fields for a groups update.
+ *
+ * - 'add'/'remove': only the listed groups are included, set true/false
+ *   respectively, every other group field is left untouched.
+ * - 'replace' (default): every configured group field is included, set to
+ *   true only if it's in `groups`.
+ *
+ * @param groups The group IDs the update concerns
+ * @param change How `groups` should be applied
+ * @param settings The Salesforce newsletter settings
+ * @returns A record of Salesforce field API names to booleans
+ */
+function buildGroupFields(
+  groups: string[],
+  change: NewsletterGroupChange = 'replace',
+  settings: SFSettings
+): Record<string, boolean> {
+  const fields: Record<string, boolean> = {};
+  for (const [groupId, sfField] of Object.entries(settings.groupFieldMap)) {
+    if (change === 'replace') {
+      fields[sfField] = groups.includes(groupId);
+    } else if (groups.includes(groupId)) {
+      fields[sfField] = change === 'add';
+    }
+  }
+  return fields;
+}
+
+/**
  * Map a NewsletterContact to a set of Salesforce Contact fields using the
- * configured field mappings. When the contact is not subscribed all group
- * booleans are set false (Salesforce has no pending/cleaned concept).
+ * configured field mappings. Status is collapsed to the master subscription
+ * boolean (Salesforce has no pending/cleaned concept). Group fields are only
+ * included when the update concerns groups.
  *
  * @param contact The newsletter contact
  * @param settings The Salesforce newsletter settings
@@ -164,18 +195,19 @@ export function nlContactToSFFields(
   contact: UpdateNewsletterContact,
   settings: SFSettings
 ): Record<string, unknown> {
-  const subscribed = contact.status === NewsletterStatus.Subscribed;
-
   const fields: Record<string, unknown> = {
     FirstName: contact.firstname,
     LastName: contact.lastname,
     Email: contact.email,
-    [settings.subscriptionField]: subscribed,
+    [settings.subscriptionField]:
+      contact.status === NewsletterStatus.Subscribed,
+    ...(contact.groups &&
+      buildGroupFields(
+        contact.groups,
+        contact.newsletterGroupChange,
+        settings
+      )),
   };
-
-  for (const [groupId, sfField] of Object.entries(settings.groupFieldMap)) {
-    fields[sfField] = subscribed && contact.groups.includes(groupId);
-  }
 
   for (const [key, sfField] of Object.entries(settings.mergeFieldMap)) {
     if (contact.fields[key] !== undefined) {
