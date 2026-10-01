@@ -2,6 +2,7 @@ import * as oidc from 'openid-client';
 
 import config from '#config/config';
 import type { OidcLoginConfig } from '#config/config';
+import { OidcLoginDeniedError } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import type { OidcLoginState } from '#type/index';
 
@@ -36,9 +37,11 @@ function getOidcConfig(): Promise<oidc.Configuration> {
       .discovery(
         new URL(settings.issuer),
         settings.clientId,
-        settings.clientSecret || undefined,
+        undefined,
         // A client without a secret is a public client relying on PKCE
-        settings.clientSecret ? undefined : oidc.None(),
+        settings.clientSecret
+          ? oidc.ClientSecretBasic(settings.clientSecret)
+          : oidc.None(),
         // Allow plain-http issuers (e.g. local Keycloak) in development only
         config.dev ? { execute: [oidc.allowInsecureRequests] } : undefined
       )
@@ -95,12 +98,20 @@ export async function completeOidcLogin(
   const callbackUrl = new URL(getSettings().redirectUri);
   callbackUrl.search = callbackSearch;
 
-  const tokens = await oidc.authorizationCodeGrant(oidcConfig, callbackUrl, {
-    pkceCodeVerifier: loginState.codeVerifier,
-    expectedState: loginState.state,
-    expectedNonce: loginState.nonce,
-    idTokenExpected: true,
-  });
+  let tokens: oidc.TokenEndpointResponse & oidc.TokenEndpointResponseHelpers;
+  try {
+    tokens = await oidc.authorizationCodeGrant(oidcConfig, callbackUrl, {
+      pkceCodeVerifier: loginState.codeVerifier,
+      expectedState: loginState.state,
+      expectedNonce: loginState.nonce,
+    });
+  } catch (err) {
+    // The IdP sent the browser back with an error instead of a code
+    if (err instanceof oidc.AuthorizationResponseError) {
+      throw new OidcLoginDeniedError(err.error, err.error_description);
+    }
+    throw err;
+  }
 
   const claims = tokens.claims();
   if (!claims) {

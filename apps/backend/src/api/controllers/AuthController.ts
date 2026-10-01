@@ -1,7 +1,11 @@
 import { LOGIN_CODES, RoleType, RoleTypes } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { getRepository } from '@beabee/core/database';
-import { NotFoundError, UnauthorizedError } from '@beabee/core/errors';
+import {
+  NotFoundError,
+  OidcLoginDeniedError,
+  UnauthorizedError,
+} from '@beabee/core/errors';
 import {
   completeOidcLogin,
   getOidcLogoutUrl,
@@ -184,7 +188,11 @@ export class AuthController {
       res.redirect(config.audience + (loginState.next || '/'));
       return res;
     } catch (err) {
-      log.error('OIDC login failed', err);
+      if (err instanceof OidcLoginDeniedError) {
+        log.info(err.message);
+      } else {
+        log.error('OIDC login failed', err);
+      }
       res.redirect(
         `${config.audience}/auth/login?error=${LOGIN_CODES.LOGIN_FAILED}`
       );
