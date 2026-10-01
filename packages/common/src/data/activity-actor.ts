@@ -9,6 +9,6 @@ export enum ActivityActorType {
 }
 
 export interface ActivityActor {
-  actorType: ActivityActorType;
+  actorType: ActivityActorType | null;
   actorId: string | null;
 }
