@@ -111,6 +111,10 @@ describe('convertContactToNlUpdate', () => {
         },
         isActiveMember: false,
         isActiveUser: false,
+        id: 'contact-1',
+        joined: new Date('2023-01-01'),
+        lastSeen: new Date('2023-12-01'),
+        deliveryAddress: null,
       });
     });
 
@@ -136,6 +140,10 @@ describe('convertContactToNlUpdate', () => {
         },
         isActiveMember: false,
         isActiveUser: false,
+        id: 'contact-1',
+        joined: new Date('2023-01-01'),
+        lastSeen: new Date('2023-12-01'),
+        deliveryAddress: null,
       });
     });
   });
@@ -390,6 +398,10 @@ describe('convertContactToNlUpdate', () => {
         },
         isActiveMember: false,
         isActiveUser: false,
+        id: 'contact-1',
+        joined: new Date('2023-01-01'),
+        lastSeen: new Date('2023-12-01'),
+        deliveryAddress: null,
       });
     });
   });
