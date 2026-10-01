@@ -11,6 +11,13 @@ export function assertPasswordAuthEnabled(): void {
   }
 }
 
+/** The browser-facing OIDC routes don't exist on Local Login instances */
+export function assertOidcAuthEnabled(): void {
+  if (!isOidcEnabled()) {
+    throw new NotFoundError();
+  }
+}
+
 export function login(req: Request, contact: Contact): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     req.login(contact, (error) => {

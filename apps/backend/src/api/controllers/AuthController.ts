@@ -33,7 +33,11 @@ import {
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import { GetAuthInfoDto, LoginDto, LogoutResultDto } from '#api/dto';
 import { authTransformer } from '#api/transformers';
-import { assertPasswordAuthEnabled, login } from '#api/utils/auth';
+import {
+  assertOidcAuthEnabled,
+  assertPasswordAuthEnabled,
+  login,
+} from '#api/utils/auth';
 
 const log = mainLogger.child({ app: 'auth-controller' });
 
@@ -117,9 +121,7 @@ export class AuthController {
     @Res() res: Response,
     @QueryParam('next', { required: false }) next?: string
   ): Promise<Response> {
-    if (!isOidcEnabled()) {
-      throw new NotFoundError();
-    }
+    assertOidcAuthEnabled();
 
     try {
       const { url, loginState } = await startOidcLogin(
@@ -146,9 +148,7 @@ export class AuthController {
     @Req() req: Request,
     @Res() res: Response
   ): Promise<Response> {
-    if (!isOidcEnabled()) {
-      throw new NotFoundError();
-    }
+    assertOidcAuthEnabled();
 
     const loginState = req.session.oidc;
     delete req.session.oidc;
@@ -201,9 +201,7 @@ export class AuthController {
     @Req() req: Request,
     @Res() res: Response
   ): Promise<Response> {
-    if (!isOidcEnabled()) {
-      throw new NotFoundError();
-    }
+    assertOidcAuthEnabled();
 
     const idToken = req.session.idToken;
 
