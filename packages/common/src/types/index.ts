@@ -173,6 +173,7 @@ export type * from './get-stats-data.js';
 export type * from './get-stats-query.js';
 export type * from './health-check-data.js';
 export type * from './list-emails-query.js';
+export type * from './login-action.js';
 export type * from './login-data.js';
 export type * from './logout-result-data.js';
 export type * from './newsletter-diff-data.js';

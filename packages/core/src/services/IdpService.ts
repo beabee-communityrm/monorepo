@@ -6,7 +6,7 @@ import {
   NoneProvider,
   ZitadelProvider,
 } from '#providers/idp/index';
-import type { IdpProvider } from '#type/index';
+import type { IdpLoginAction, IdpProvider } from '#type/index';
 
 const log = mainLogger.child({ app: 'idp-service' });
 
@@ -72,6 +72,27 @@ class IdpService {
     } catch (err) {
       log.error(`Failed to delete IdP account ${contact.idpSubject}`, err);
     }
+  }
+
+  /**
+   * The page to send a linked contact to for an action inside an OIDC login
+   * that beabee started. Not best-effort like provisioning: the member is
+   * waiting for it, so failures propagate.
+   * @param authorizeUrl The authorization request beabee started
+   */
+  async resolveLoginUrl(
+    authorizeUrl: string,
+    contact: Contact,
+    type: IdpLoginAction['type']
+  ): Promise<string> {
+    if (!contact.idpSubject) {
+      throw new Error(`Contact ${contact.id} has no IdP account`);
+    }
+    log.info(`Resolve IdP login for ${type} of contact ${contact.id}`);
+    return await this.provider.resolveLoginUrl(authorizeUrl, {
+      type,
+      subject: contact.idpSubject,
+    });
   }
 }
 
