@@ -1,8 +1,8 @@
 # Local identity provider development with Keycloak
 
 The docker-compose stack includes a Keycloak identity provider (the `auth`
-service) for testing IdP Provisioning locally. It always runs but is unused
-until `BEABEE_IDP_PROVIDER=keycloak` is set. Keycloak is the development IdP
+service) for testing IdP Provisioning and OIDC Login locally. It always
+runs but is unused until `BEABEE_IDP_PROVIDER=keycloak` is set. Keycloak is the development IdP
 only; production instances use Zitadel (see [OIDC login](./oidc-login.md)).
 
 Keycloak is addressed as `http://auth.localhost:3080` everywhere: browsers
@@ -55,9 +55,17 @@ console (Users → Credentials).
 ## Testing login
 
 The realm also contains a public login client `beabee-login` (PKCE, no
-secret) with callback URLs for the router (`:3002`) and the bare backend
-(`:3000`). Uncomment the "Login Configuration" block in `.env`
-(`BEABEE_LOGIN_PROVIDER=oidc`) and restart `api_app`. Then:
+secret) with the router's callback URL (`:3002`); the `:3000` entry only
+matters when `BEABEE_LOGIN_SETTINGS_REDIRECTURI` points at the bare
+backend. Uncomment the "Login Configuration" block in `.env`
+(`BEABEE_LOGIN_PROVIDER=oidc`) and recreate the containers so they pick up
+the new environment (a restart alone does not re-read `env_file`):
+
+```sh
+docker compose up -d api_app app
+```
+
+Then:
 
 - http://localhost:3002/api/1.0/auth/login forwards to the Keycloak login form;
   sign in as a provisioned account and you land back on beabee logged in. An
@@ -72,4 +80,4 @@ Host-side CLI commands rely on the operating system resolving
 `auth.localhost` (Linux with systemd-resolved does; macOS does not). Where it
 doesn't, either add `127.0.0.1 auth.localhost` to `/etc/hosts` or run the
 commands inside the container with
-`docker compose exec api_app node dist/index.js user ...`.
+`docker compose exec api_app node /opt/apps/backend-cli/dist/index.js user ...`.
