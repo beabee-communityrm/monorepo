@@ -96,6 +96,7 @@
     "#api/middlewares": "./dist/api/middlewares/index.js",
     "#api/*": "./dist/api/*.js",
     "#apps/*": "./dist/apps/*.js",
+    "#jobs/*": "./dist/jobs/*.js",
     "#type": "./dist/type/index.js",
     "#type/*": "./dist/type/*.js"
   }

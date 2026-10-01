@@ -8,6 +8,7 @@ import { ContentClient } from './content.client.js';
 import { EmailClient } from './email.client.js';
 import { HealthClient } from './health.client.js';
 import { IntegrationsClient } from './integrations.client.js';
+import { JobClient } from './job.client.js';
 import { NoticeClient } from './notice.client.js';
 import { PaymentClient } from './payment.client.js';
 import { ResetSecurityClient } from './reset-security.client.js';
@@ -57,6 +58,9 @@ export class BeabeeClient extends BaseClient {
   /** Client for managing integrations */
   readonly integrations: IntegrationsClient;
 
+  /** Client for running Jobs, needs Operator Auth */
+  readonly jobs: JobClient;
+
   /** Client for managing system notices */
   readonly notice: NoticeClient;
 
@@ -95,6 +99,7 @@ export class BeabeeClient extends BaseClient {
     this.email = new EmailClient(options);
     this.health = new HealthClient(options);
     this.integrations = new IntegrationsClient(options);
+    this.jobs = new JobClient(options);
     this.notice = new NoticeClient(options);
     this.payment = new PaymentClient(options);
     this.resetSecurity = new ResetSecurityClient(options);

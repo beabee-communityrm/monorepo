@@ -22,6 +22,7 @@ export * from './country-codes.js';
 export * from './get-callout-response-with.js';
 export * from './get-contact-with.js';
 export * from './item-status.js';
+export * from './job-name.js';
 export * from './login-codes.js';
 export * from './membership-status.js';
 export * from './newsletter-status.js';

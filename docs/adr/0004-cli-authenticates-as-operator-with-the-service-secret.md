@@ -28,5 +28,6 @@ the instance's infrastructure.
   instance's containers and is never placed on operator laptops.
 - Commands that need superadmin (`api-key create`, `setup admin`, granting the
   superadmin role) work only with Operator Auth, never with an API key.
-- Running a Job requires Operator Auth. With an API key the CLI is limited to
-  the same CRUD an admin can do through the API.
+- Jobs are superadmin operations, so an API key cannot run them and the CLI
+  needs Operator Auth for them. A job that exposes infrastructure secrets can
+  additionally be marked as operator-only when the need arises.

@@ -377,7 +377,7 @@ export class Fetch {
  * Type guard to check if an object has the structure of an API error response from the backend
  * @param obj - The object to check
  */
-function isApiErrorResponse(obj: unknown): obj is ApiErrorData {
+export function isApiErrorResponse(obj: unknown): obj is ApiErrorData {
   return (
     !!obj &&
     typeof obj === 'object' &&
