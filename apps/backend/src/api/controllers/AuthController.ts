@@ -31,7 +31,7 @@ import {
 } from 'routing-controllers';
 
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
-import { GetAuthInfoDto, LoginDto } from '#api/dto';
+import { GetAuthInfoDto, LoginDto, LogoutResultDto } from '#api/dto';
 import { authTransformer } from '#api/transformers';
 import { assertPasswordAuthEnabled, login } from '#api/utils/auth';
 
@@ -81,15 +81,28 @@ export class AuthController {
     await login(req, user); // Why do we have to login after authenticate?
   }
 
+  /**
+   * Ends the beabee session. Under OIDC login the response carries the
+   * identity provider's logout URL for the client to navigate to, because
+   * the IdP session would otherwise log the member straight back in.
+   */
   @OnUndefined(204)
   @Post('/logout')
-  async logout(@Req() req: Request): Promise<void> {
+  async logout(@Req() req: Request): Promise<LogoutResultDto | undefined> {
+    const idToken = req.session.idToken;
     await new Promise<void>((resolve, reject) =>
       req.logout((err) => {
         if (err) reject(err);
         else resolve();
       })
     );
+
+    if (isOidcEnabled()) {
+      await new Promise<void>((resolve) =>
+        req.session.destroy(() => resolve())
+      );
+      return { redirectUrl: await getOidcLogoutUrl(idToken) };
+    }
   }
 
   /**

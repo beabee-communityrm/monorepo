@@ -1,6 +1,9 @@
+import { LogoutResultData } from '@beabee/beabee-common';
 import { LoginData } from '@beabee/core/type';
 
 import { IsEmail, IsOptional, IsString } from 'class-validator';
+
+import IsUrl from '#api/validators/IsUrl';
 
 export class LoginDto implements LoginData {
   @IsEmail()
@@ -15,4 +18,9 @@ export class LoginDto implements LoginData {
   @IsString()
   @IsOptional()
   token?: string;
+}
+
+export class LogoutResultDto implements LogoutResultData {
+  @IsUrl()
+  redirectUrl!: string;
 }

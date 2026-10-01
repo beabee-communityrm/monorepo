@@ -1,4 +1,8 @@
-import type { AuthInfoData, LoginData } from '@beabee/beabee-common';
+import type {
+  AuthInfoData,
+  LoginData,
+  LogoutResultData,
+} from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
 import { cleanUrl } from '../utils/index.js';
@@ -93,13 +97,17 @@ export class AuthClient extends BaseClient {
   /**
    * Logs out the current user
    * Ends the user session and removes authentication
-   * @returns Promise that resolves when logout is complete
+   * @returns Where to send the browser next, if the identity provider's
+   * session has to be ended too
    */
-  async logout(): Promise<void> {
-    await this.fetch.post('logout', undefined, {
-      credentials: 'include',
-    });
+  async logout(): Promise<LogoutResultData> {
+    const { data } = await this.fetch.post<LogoutResultData | undefined>(
+      'logout',
+      undefined,
+      { credentials: 'include' }
+    );
     // Clear stored cookies after logout
     this.fetch.clearCookies();
+    return data || {};
   }
 }
