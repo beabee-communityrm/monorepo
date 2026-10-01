@@ -194,6 +194,7 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
     contactFilters.activeUser,
     t('contacts.data.activeUser')
   ),
+  idpLinked: withLabel(contactFilters.idpLinked, t('contacts.data.idpLinked')),
   membershipStarts: withLabel(
     contactFilters.membershipStarts,
     t('contacts.data.membershipStarts')
