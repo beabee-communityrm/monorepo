@@ -109,7 +109,11 @@ export class AuthController {
       await new Promise<void>((resolve) =>
         req.session.destroy(() => resolve())
       );
-      return { redirectUrl: await getOidcLogoutUrl(idToken) };
+      // Only a session that came through the OIDC callback has an IdP
+      // session to end; anything else is done with the 204
+      if (idToken) {
+        return { redirectUrl: await getOidcLogoutUrl(idToken) };
+      }
     }
   }
 
