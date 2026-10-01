@@ -132,7 +132,9 @@ const data = reactive<LoginData>({
 const hasMFAEnabled = ref(false);
 
 const oidcErrorCodes = [LOGIN_CODES.UNLINKED_ACCOUNT, LOGIN_CODES.LOGIN_FAILED];
-const errorCode = oidcErrorCodes.find((code) => code === route.query.error);
+const errorCode = oidcErrorCodes.find(
+  (code) => code === route.query.loginError
+);
 
 // The identity provider handles the login itself, this page only forwards
 // there via the API's OIDC login endpoint
