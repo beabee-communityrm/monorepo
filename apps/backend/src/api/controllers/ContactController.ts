@@ -6,6 +6,7 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from '@beabee/core/errors';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
@@ -95,6 +96,12 @@ export class ContactController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Body() data: CreateContactDto
   ): Promise<GetContactDto> {
+    if (data.password && isOidcEnabled()) {
+      throw new BadRequestError(
+        'Cannot set a password when OIDC login is enabled'
+      );
+    }
+
     const contact = await ContactsService.createContact(
       {
         email: data.email,
