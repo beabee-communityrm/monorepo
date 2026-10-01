@@ -76,12 +76,12 @@ const logoutItem: NavigationMenuItem = {
   onSelect: doLogout,
 };
 
-function doLogout() {
-  if (generalContent.value.oidcEnabled) {
-    // Full-page navigation so the identity provider session is ended too
-    window.location.href = client.auth.getLogoutUrl();
+async function doLogout() {
+  const { redirectUrl } = await client.auth.logout();
+  // Under OIDC login the identity provider session has to be ended too
+  if (redirectUrl) {
+    window.location.href = redirectUrl;
   } else {
-    client.auth.logout();
     router.push('/auth/login');
   }
 }

@@ -47,7 +47,7 @@ import { useRouter } from 'vue-router';
 import { client } from '#utils/api';
 
 import env from '../../env';
-import { canAdmin, generalContent } from '../../store';
+import { canAdmin } from '../../store';
 import TheMenuListItem from './TheMenuListItem.vue';
 import TheMenuListSection from './TheMenuListSection.vue';
 import { adminMenu, menu } from './menu-list';
@@ -55,12 +55,12 @@ import { adminMenu, menu } from './menu-list';
 const { t } = useI18n();
 
 const router = useRouter();
-const doLogout = () => {
-  if (generalContent.value.oidcEnabled) {
-    // Full-page navigation so the identity provider session is ended too
-    window.location.href = client.auth.getLogoutUrl();
+const doLogout = async () => {
+  const { redirectUrl } = await client.auth.logout();
+  // Under OIDC login the identity provider session has to be ended too
+  if (redirectUrl) {
+    window.location.href = redirectUrl;
   } else {
-    client.auth.logout();
     router.push('/auth/login');
   }
 };
