@@ -42,9 +42,13 @@ Standalone to OIDC always passes through the IdP Transition.
 
 **Login (OIDC state).** `GET /auth/login` starts an authorization-code flow
 with PKCE, state and nonce; the callback looks up the contact by IdP Subject
-and establishes the normal session. Unlinked Contacts see an "unlinked
-account" error. Logout is RP-initiated and ends the IdP session as well.
-Local-auth endpoints (password, MFA, reset) return 404.
+and establishes the normal session. Unlinked Contacts are logged out of the
+IdP again and see an "unlinked account" error, so their next attempt starts
+at the IdP's login form. Logout ends the IdP session as well (RP-initiated
+logout): `POST /auth/logout` ends the beabee session and answers with the
+IdP's logout URL for the client to navigate to, `GET /auth/logout` does the
+same in one step for plain links. Local-auth endpoints (password, MFA,
+reset) return 404.
 
 **Joining (OIDC state).** The setup form has no password field. After the
 confirm-email link, beabee finalises the Signup Flow, starts an OIDC login
@@ -111,9 +115,11 @@ hosting infrastructure, which is expected to call the same command in future.
 **Enabling OIDC Login** on an instance is the last step of the IdP
 Transition: with provisioning already running and the unsynced count
 acceptable, set `BEABEE_LOGIN_PROVIDER=oidc` plus the
-`BEABEE_LOGIN_SETTINGS_*` values and redeploy. The backend refuses to start
-if `BEABEE_IDP_PROVIDER` is `none` at that point. Existing beabee sessions
-stay valid until they expire; the next login goes through the IdP.
+`BEABEE_LOGIN_SETTINGS_*` values, clear all sessions and redeploy. The
+backend refuses to start if `BEABEE_IDP_PROVIDER` is `none` at that point.
+Clearing the sessions makes every member log in through the IdP, so each
+session carries the ID token that logout uses as its hint; a session from
+before the cutover would log out of beabee only.
 
 **Break-glass.** If the IdP is unreachable or misconfigured nobody can log in,
 operators included. The way back is to set `BEABEE_LOGIN_PROVIDER=local` and
