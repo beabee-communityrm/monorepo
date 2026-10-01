@@ -1,3 +1,5 @@
+import { JobName } from '@beabee/beabee-common';
+
 import { plainToInstance } from 'class-transformer';
 import { Response } from 'express';
 import {
@@ -14,6 +16,7 @@ import { JobNameParams } from '#api/params/JobNameParams';
 import { validateOrReject } from '#api/utils';
 import { jobs } from '#jobs/index';
 import { lockJob, runJob } from '#jobs/run';
+import type { Job } from '#type/job';
 
 @JsonController('/jobs')
 export class JobController {
@@ -30,7 +33,8 @@ export class JobController {
     @Body() data: RunJobDto,
     @Res() res: Response
   ): Promise<Response> {
-    const job = jobs[name];
+    // Widened so one code path serves every job; each entry is still typed
+    const job: Job<JobName> = jobs[name];
     // A job without arguments has an empty DTO, which class-validator would
     // otherwise refuse as an unknown value; unknown properties still fail
     const args = plainToInstance(job.argsDto, data.args);
