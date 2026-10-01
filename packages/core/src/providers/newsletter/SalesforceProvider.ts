@@ -9,12 +9,17 @@ import axios from 'axios';
 import { SalesforceNewsletterConfig } from '#config/config';
 import { CantUpdateNewsletterContactError } from '#errors/index';
 import {
+  PROFILE_ID_FIELD,
+  PROFILE_OBJECT,
+  createContact,
   createInstance,
-  findContactByEmail,
-  getContactById,
-  getContactFieldNames,
+  findContactIdByEmail,
+  findProfileByBeabeeId,
+  findProfileByEmail,
+  getProfileById,
+  getProfileFieldNames,
   nlContactToSFFields,
-  sfContactToNlContact,
+  sfProfileToNlContact,
 } from '#lib/salesforce';
 import { log as mainLogger } from '#logging';
 import OptionsService from '#services/OptionsService';
@@ -26,6 +31,11 @@ import {
 
 const log = mainLogger.child({ app: 'salesforce-provider' });
 
+/**
+ * Syncs beabee contacts to beabee_Profile__c records in Salesforce. Each
+ * profile is keyed on the beabee contact ID and is a master-detail child of a
+ * Contact, which is matched by email or created on first sync.
+ */
 export class SalesforceProvider implements NewsletterProvider {
   private readonly api;
   private readonly settings;
@@ -34,7 +44,7 @@ export class SalesforceProvider implements NewsletterProvider {
   constructor(settings: SalesforceNewsletterConfig['settings']) {
     this.api = createInstance(settings);
     this.settings = settings;
-    this.fieldNames = getContactFieldNames(settings);
+    this.fieldNames = getProfileFieldNames(settings);
   }
 
   /**
@@ -45,57 +55,74 @@ export class SalesforceProvider implements NewsletterProvider {
    */
   async getContact(email: string): Promise<NewsletterContact | undefined> {
     try {
-      const record = await findContactByEmail(
+      const record = await findProfileByEmail(
         this.api.instance,
         email,
         this.fieldNames
       );
-      return record ? sfContactToNlContact(record, this.settings) : undefined;
+      return record ? sfProfileToNlContact(record, this.settings) : undefined;
     } catch (err) {
-      log.error('Error fetching Salesforce contact ' + email, err);
+      log.error('Error fetching Salesforce profile ' + email, err);
       return undefined;
     }
   }
 
   /**
-   * Upsert a newsletter contact to Salesforce. Matches an existing Contact by
-   * email and patches it, otherwise creates a new Contact.
+   * Upsert a newsletter contact to Salesforce. Patches the profile with the
+   * matching beabee ID, otherwise creates one under the Contact with the same
+   * email, creating that Contact too if needed.
    *
    * @param contact The newsletter contact to upsert
-   * @param oldEmail The old email address of the contact, if it has changed
    * @returns The updated newsletter contact, read back from Salesforce
    */
   async upsertContact(
-    contact: UpdateNewsletterContact,
-    oldEmail = contact.email
+    contact: UpdateNewsletterContact
   ): Promise<NewsletterContact> {
     log.info('Upsert contact ' + contact.email);
+
+    if (!contact.id) {
+      throw new Error(
+        'Salesforce upsert needs a beabee ID for ' + contact.email
+      );
+    }
 
     const fields = nlContactToSFFields(contact, this.settings);
 
     try {
-      const existing = await findContactByEmail(this.api.instance, oldEmail, [
-        'Id',
-      ]);
+      const existing = await findProfileByBeabeeId(
+        this.api.instance,
+        contact.id,
+        ['Id']
+      );
 
       let id: string;
       if (existing) {
         id = existing.Id;
-        await this.api.instance.patch(`sobjects/Contact/${id}`, fields);
-      } else {
-        const resp = await this.api.instance.post<{ id: string }>(
-          'sobjects/Contact',
+        await this.api.instance.patch(
+          `sobjects/${PROFILE_OBJECT}/${id}`,
           fields
+        );
+      } else {
+        const contactId =
+          (await findContactIdByEmail(this.api.instance, contact.email)) ??
+          (await createContact(this.api.instance, contact));
+        const resp = await this.api.instance.post<{ id: string }>(
+          `sobjects/${PROFILE_OBJECT}`,
+          {
+            ...fields,
+            [PROFILE_ID_FIELD]: contact.id,
+            Contact_bee__c: contactId,
+          }
         );
         id = resp.data.id;
       }
 
-      const record = await getContactById(
+      const record = await getProfileById(
         this.api.instance,
         id,
         this.fieldNames
       );
-      return sfContactToNlContact(record, this.settings);
+      return sfProfileToNlContact(record, this.settings);
     } catch (err) {
       const status = axios.isAxiosError(err)
         ? (err.response?.status ?? 500)
@@ -150,20 +177,17 @@ export class SalesforceProvider implements NewsletterProvider {
   }
 
   /**
-   * "Delete" a contact by nulling their PII. Salesforce blocks hard-deleting a
-   * Contact that has linked Opportunity or Recurring Donation records, so the
-   * safe default is to anonymise rather than delete. Confirm the expected
-   * behaviour with the org admin.
+   * Delete the contact's profile record. The parent Contact is left as is.
    *
    * @param email The email address of the contact
    */
   async permanentlyDeleteContact(email: string): Promise<void> {
-    await this.patchByEmail(email, {
-      FirstName: null,
-      LastName: 'Deleted',
-      Email: null,
-      [this.settings.subscriptionField]: false,
-    });
+    const existing = await findProfileByEmail(this.api.instance, email, ['Id']);
+    if (!existing) {
+      log.info('No Salesforce profile found for ' + email);
+      return;
+    }
+    await this.api.instance.delete(`sobjects/${PROFILE_OBJECT}/${existing.Id}`);
   }
 
   /**
@@ -177,7 +201,7 @@ export class SalesforceProvider implements NewsletterProvider {
   ): Promise<SalesforceNewsletterIntegrationData> {
     const resp: SalesforceNewsletterIntegrationData = {
       provider: 'salesforce',
-      audienceId: this.settings.subscriptionField,
+      audienceId: PROFILE_OBJECT,
       groups: OptionsService.getJSON('newsletter-groups'),
     };
 
@@ -214,8 +238,8 @@ export class SalesforceProvider implements NewsletterProvider {
   }
 
   /**
-   * Find a Contact by email and patch it with the given fields. No-op if no
-   * matching Contact exists.
+   * Find a profile by email and patch it with the given fields. No-op if no
+   * matching profile exists.
    *
    * @param email The email address of the contact
    * @param fields The Salesforce fields to patch
@@ -224,11 +248,14 @@ export class SalesforceProvider implements NewsletterProvider {
     email: string,
     fields: Record<string, unknown>
   ): Promise<void> {
-    const existing = await findContactByEmail(this.api.instance, email, ['Id']);
+    const existing = await findProfileByEmail(this.api.instance, email, ['Id']);
     if (!existing) {
-      log.info('No Salesforce contact found for ' + email);
+      log.info('No Salesforce profile found for ' + email);
       return;
     }
-    await this.api.instance.patch(`sobjects/Contact/${existing.Id}`, fields);
+    await this.api.instance.patch(
+      `sobjects/${PROFILE_OBJECT}/${existing.Id}`,
+      fields
+    );
   }
 }

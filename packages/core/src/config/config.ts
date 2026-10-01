@@ -95,8 +95,8 @@ export interface MailchimpNewsletterConfig {
  * Salesforce newsletter provider configuration
  * Used when BEABEE_NEWSLETTER_PROVIDER=salesforce
  *
- * Newsletter preferences live as boolean fields directly on the Salesforce
- * Contact object. The field names are org-specific, so all mappings are
+ * Contacts are synced to beabee_Profile__c records. Newsletter preferences are
+ * boolean fields whose names are org-specific, so all mappings are
  * config-driven: the same code works against different org schemas.
  */
 export interface SalesforceNewsletterConfig {

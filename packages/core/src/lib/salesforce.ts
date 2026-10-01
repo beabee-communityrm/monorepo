@@ -1,13 +1,13 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
+import { Address, NewsletterStatus } from '@beabee/beabee-common';
 
 import axios, { AxiosInstance } from 'axios';
 
-import { SalesforceNewsletterConfig } from '#config/config';
+import { SalesforceNewsletterConfig, config } from '#config/config';
 import { log as mainLogger } from '#logging';
 import {
   NewsletterContact,
   NewsletterGroupChange,
-  SFContactRecord,
+  SFProfileRecord,
   SFTokenResponse,
   UpdateNewsletterContact,
 } from '#type/index';
@@ -17,17 +17,28 @@ const log = mainLogger.child({ app: 'salesforce' });
 
 type SFSettings = SalesforceNewsletterConfig['settings'];
 
-/** Standard Contact fields we always read back. */
-const BASE_FIELDS = ['Id', 'Email', 'FirstName', 'LastName', 'CreatedDate'];
+export const PROFILE_OBJECT = 'beabee_Profile__c';
+/** External ID on the profile object holding the beabee contact ID. */
+export const PROFILE_ID_FIELD = 'beabeeID_bee__c';
+
+/** Fixed profile fields we always read back. */
+const BASE_FIELDS = [
+  'Id',
+  'CreatedDate',
+  PROFILE_ID_FIELD,
+  'EMail_bee__c',
+  'FirstName_bee__c',
+  'LastName_bee__c',
+];
 
 /**
- * The Salesforce Contact field API names to select for a full NewsletterContact:
- * the standard fields plus every configured mapping.
+ * The profile field API names to select for a full NewsletterContact: the
+ * fixed fields plus every configured mapping.
  *
  * @param settings The Salesforce newsletter settings
  * @returns The de-duplicated list of field API names
  */
-export function getContactFieldNames(settings: SFSettings): string[] {
+export function getProfileFieldNames(settings: SFSettings): string[] {
   const fields = new Set(BASE_FIELDS);
   fields.add(settings.subscriptionField);
   Object.values(settings.groupFieldMap).forEach((f) => fields.add(f));
@@ -112,44 +123,110 @@ export function createInstance(settings: SFSettings) {
 }
 
 /**
- * Find a Salesforce Contact by email address, selecting the given fields.
+ * Find a profile by email address, selecting the given fields.
  *
  * @param instance The Salesforce axios instance
  * @param email The email address to look up
- * @param fields The Contact field API names to select
+ * @param fields The field API names to select
  * @returns The first matching record, or undefined if none
  */
-export async function findContactByEmail(
+export async function findProfileByEmail(
   instance: AxiosInstance,
   email: string,
   fields: string[]
-): Promise<SFContactRecord | undefined> {
+): Promise<SFProfileRecord | undefined> {
   const soql =
-    `SELECT ${fields.join(', ')} FROM Contact ` +
-    `WHERE Email = '${escapeSOQL(normalizeEmailAddress(email))}' LIMIT 1`;
-  const resp = await instance.get<{ records: SFContactRecord[] }>('query/', {
+    `SELECT ${fields.join(', ')} FROM ${PROFILE_OBJECT} ` +
+    `WHERE EMail_bee__c = '${escapeSOQL(normalizeEmailAddress(email))}' LIMIT 1`;
+  const resp = await instance.get<{ records: SFProfileRecord[] }>('query/', {
     params: { q: soql },
   });
   return resp.data.records[0];
 }
 
 /**
- * Read a single Salesforce Contact by record ID, selecting the given fields.
+ * Find a profile by its beabee contact ID (the external ID field).
  *
  * @param instance The Salesforce axios instance
- * @param id The Contact record ID
- * @param fields The Contact field API names to select
- * @returns The Contact record
+ * @param beabeeId The beabee contact ID
+ * @param fields The field API names to select
+ * @returns The record, or undefined if none
  */
-export async function getContactById(
+export async function findProfileByBeabeeId(
+  instance: AxiosInstance,
+  beabeeId: string,
+  fields: string[]
+): Promise<SFProfileRecord | undefined> {
+  try {
+    const resp = await instance.get<SFProfileRecord>(
+      `sobjects/${PROFILE_OBJECT}/${PROFILE_ID_FIELD}/${beabeeId}`,
+      { params: { fields: fields.join(',') } }
+    );
+    return resp.data;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.status === 404) {
+      return undefined;
+    }
+    throw err;
+  }
+}
+
+/**
+ * Read a single profile by record ID, selecting the given fields.
+ *
+ * @param instance The Salesforce axios instance
+ * @param id The profile record ID
+ * @param fields The field API names to select
+ * @returns The record
+ */
+export async function getProfileById(
   instance: AxiosInstance,
   id: string,
   fields: string[]
-): Promise<SFContactRecord> {
-  const resp = await instance.get<SFContactRecord>(`sobjects/Contact/${id}`, {
-    params: { fields: fields.join(',') },
-  });
+): Promise<SFProfileRecord> {
+  const resp = await instance.get<SFProfileRecord>(
+    `sobjects/${PROFILE_OBJECT}/${id}`,
+    { params: { fields: fields.join(',') } }
+  );
   return resp.data;
+}
+
+/**
+ * Find the Salesforce Contact with the given email address.
+ *
+ * @param instance The Salesforce axios instance
+ * @param email The email address to look up
+ * @returns The Contact record ID, or undefined if none
+ */
+export async function findContactIdByEmail(
+  instance: AxiosInstance,
+  email: string
+): Promise<string | undefined> {
+  const soql = `SELECT Id FROM Contact WHERE Email = '${escapeSOQL(normalizeEmailAddress(email))}' LIMIT 1`;
+  const resp = await instance.get<{ records: { Id: string }[] }>('query/', {
+    params: { q: soql },
+  });
+  return resp.data.records[0]?.Id;
+}
+
+/**
+ * Create a Salesforce Contact for a newsletter contact. LastName is mandatory
+ * on Contact, so the email address is used when beabee has no last name.
+ *
+ * @param instance The Salesforce axios instance
+ * @param contact The newsletter contact
+ * @returns The new Contact record ID
+ */
+export async function createContact(
+  instance: AxiosInstance,
+  contact: UpdateNewsletterContact
+): Promise<string> {
+  const resp = await instance.post<{ id: string }>('sobjects/Contact', {
+    FirstName: contact.firstname,
+    LastName: contact.lastname || contact.email,
+    Email: contact.email,
+  });
+  return resp.data.id;
 }
 
 /**
@@ -182,10 +259,29 @@ function buildGroupFields(
 }
 
 /**
- * Map a NewsletterContact to a set of Salesforce Contact fields using the
- * configured field mappings. Status is collapsed to the master subscription
- * boolean (Salesforce has no pending/cleaned concept). Group fields are only
- * included when the update concerns groups.
+ * Build the mailing address fields. A missing address clears them. The street
+ * field is capped at its Salesforce length so an overlong address can't fail
+ * the whole sync.
+ *
+ * @param address The delivery address
+ * @returns A record of Salesforce field API names to values
+ */
+function buildAddressFields(address: Address | null): Record<string, unknown> {
+  return {
+    MailingStreet_bee__c: address
+      ? [address.line1, address.line2].filter(Boolean).join('\n').slice(0, 100)
+      : null,
+    MailingCity_bee__c: address?.city ?? null,
+    MailingPostcode_bee__c: address?.postcode ?? null,
+    MailingCountry_bee__c: address?.country ?? null,
+  };
+}
+
+/**
+ * Map a NewsletterContact to a set of profile fields using the configured
+ * field mappings. Status is collapsed to the master subscription boolean
+ * (Salesforce has no pending/cleaned concept). Group fields are only included
+ * when the update concerns groups.
  *
  * @param contact The newsletter contact
  * @param settings The Salesforce newsletter settings
@@ -195,10 +291,25 @@ export function nlContactToSFFields(
   contact: UpdateNewsletterContact,
   settings: SFSettings
 ): Record<string, unknown> {
+  const name =
+    `${contact.firstname} ${contact.lastname}`.trim() || contact.email;
+
   const fields: Record<string, unknown> = {
-    FirstName: contact.firstname,
-    LastName: contact.lastname,
-    Email: contact.email,
+    Name: name.slice(0, 80),
+    EMail_bee__c: contact.email,
+    FirstName_bee__c: contact.firstname,
+    LastName_bee__c: contact.lastname,
+    ...(contact.id && {
+      beabeeProfileLink_bee__c: `${config.audience}/admin/contacts/${contact.id}`,
+    }),
+    ...(contact.joined && {
+      ProfileCreateDate_bee__c: contact.joined.toISOString(),
+    }),
+    ...(contact.lastSeen !== undefined && {
+      LastLogin_bee__c: contact.lastSeen?.toISOString() ?? null,
+    }),
+    ...(contact.deliveryAddress !== undefined &&
+      buildAddressFields(contact.deliveryAddress)),
     [settings.subscriptionField]:
       contact.status === NewsletterStatus.Subscribed,
     ...(contact.groups &&
@@ -226,16 +337,16 @@ export function nlContactToSFFields(
 }
 
 /**
- * Map a Salesforce Contact record back to a NewsletterContact. Salesforce only
- * expresses subscribed/unsubscribed, so status is derived from the master
- * subscription field.
+ * Map a profile record back to a NewsletterContact. Salesforce only expresses
+ * subscribed/unsubscribed, so status is derived from the master subscription
+ * field.
  *
- * @param record The Salesforce Contact record
+ * @param record The profile record
  * @param settings The Salesforce newsletter settings
  * @returns The newsletter contact
  */
-export function sfContactToNlContact(
-  record: SFContactRecord,
+export function sfProfileToNlContact(
+  record: SFProfileRecord,
   settings: SFSettings
 ): NewsletterContact {
   const groups = Object.entries(settings.groupFieldMap)
@@ -251,9 +362,9 @@ export function sfContactToNlContact(
   }
 
   return {
-    email: normalizeEmailAddress(record.Email || ''),
-    firstname: record.FirstName || '',
-    lastname: record.LastName || '',
+    email: normalizeEmailAddress(record.EMail_bee__c || ''),
+    firstname: record.FirstName_bee__c || '',
+    lastname: record.LastName_bee__c || '',
     joined: record.CreatedDate ? new Date(record.CreatedDate) : new Date(),
     status: record[settings.subscriptionField]
       ? NewsletterStatus.Subscribed
