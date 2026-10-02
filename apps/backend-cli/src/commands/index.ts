@@ -2,7 +2,6 @@ export * from './api-key.js';
 export * from './database.js';
 export * from './email.js';
 export * from './health.js';
-export * from './idp.js';
 export * from './image.js';
 export * from './migrate-uploads.js';
 export * from './payment.js';
