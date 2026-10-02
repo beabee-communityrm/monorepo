@@ -2,6 +2,20 @@ import type { ZitadelIdpConfig } from '#config/config';
 import type { Contact } from '#models/index';
 import type { IdpBranding, IdpProvider, IdpSetupSettings } from '#type/index';
 
+class ZitadelApiError extends Error {
+  /** gRPC status code from the response body, 9 = FAILED_PRECONDITION */
+  readonly code: number | undefined;
+
+  constructor(method: string, path: string, status: number, body: string) {
+    super(`Zitadel API error: ${method} ${path} returned ${status}: ${body}`);
+    try {
+      this.code = JSON.parse(body).code;
+    } catch {
+      this.code = undefined;
+    }
+  }
+}
+
 /**
  * Mirrors contacts into a Zitadel virtual instance via the v2 user API,
  * authenticated with a service user's personal access token. Each beabee
@@ -26,9 +40,7 @@ export class ZitadelProvider implements IdpProvider {
     });
     const text = await resp.text();
     if (!resp.ok) {
-      throw new Error(
-        `Zitadel API error: ${method} ${path} returned ${resp.status}: ${text}`
-      );
+      throw new ZitadelApiError(method, path, resp.status, text);
     }
     return text ? (JSON.parse(text) as T) : undefined;
   }
@@ -82,13 +94,13 @@ export class ZitadelProvider implements IdpProvider {
     await this.request('DELETE', `/v2/users/${subject}`);
   }
 
-  // Zitadel rejects a policy update that changes nothing, but setup must be
-  // re-runnable
+  // Zitadel rejects a policy update that changes nothing with a precondition
+  // failure whose message is localised, but setup must be re-runnable
   private async updatePolicy(path: string, body: object): Promise<void> {
     try {
       await this.request('PUT', path, body);
     } catch (err) {
-      if (!(err instanceof Error && err.message.includes('NotChanged'))) {
+      if (!(err instanceof ZitadelApiError && err.code === 9)) {
         throw err;
       }
     }
