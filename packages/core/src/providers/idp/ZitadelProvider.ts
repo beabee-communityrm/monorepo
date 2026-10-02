@@ -1,6 +1,20 @@
 import type { ZitadelIdpConfig } from '#config/config';
 import type { Contact } from '#models/index';
-import type { IdpProvider } from '#type/index';
+import type { IdpBranding, IdpProvider, IdpSetupSettings } from '#type/index';
+
+class ZitadelApiError extends Error {
+  /** gRPC status code from the response body, 9 = FAILED_PRECONDITION */
+  readonly code: number | undefined;
+
+  constructor(method: string, path: string, status: number, body: string) {
+    super(`Zitadel API error: ${method} ${path} returned ${status}: ${body}`);
+    try {
+      this.code = JSON.parse(body).code;
+    } catch {
+      this.code = undefined;
+    }
+  }
+}
 
 /**
  * Mirrors contacts into a Zitadel virtual instance via the v2 user API,
@@ -26,9 +40,7 @@ export class ZitadelProvider implements IdpProvider {
     });
     const text = await resp.text();
     if (!resp.ok) {
-      throw new Error(
-        `Zitadel API error: ${method} ${path} returned ${resp.status}: ${text}`
-      );
+      throw new ZitadelApiError(method, path, resp.status, text);
     }
     return text ? (JSON.parse(text) as T) : undefined;
   }
@@ -80,5 +92,78 @@ export class ZitadelProvider implements IdpProvider {
 
   async permanentlyDeleteContact(subject: string): Promise<void> {
     await this.request('DELETE', `/v2/users/${subject}`);
+  }
+
+  // Zitadel rejects a policy update that changes nothing with a precondition
+  // failure whose message is localised, but setup must be re-runnable
+  private async updatePolicy(path: string, body: object): Promise<void> {
+    try {
+      await this.request('PUT', path, body);
+    } catch (err) {
+      if (!(err instanceof ZitadelApiError && err.code === 9)) {
+        throw err;
+      }
+    }
+  }
+
+  private async uploadAsset(path: string, file: Blob): Promise<void> {
+    const body = new FormData();
+    body.append('file', file);
+    const resp = await fetch(this.settings.url + path, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${this.settings.pat}` },
+      body,
+    });
+    if (!resp.ok) {
+      throw new Error(
+        `Zitadel API error: POST ${path} returned ${resp.status}: ${await resp.text()}`
+      );
+    }
+  }
+
+  async setup(settings: IdpSetupSettings): Promise<void> {
+    const resp = await this.request<{ policy: object }>(
+      'GET',
+      '/admin/v1/policies/login'
+    );
+    if (!resp?.policy) {
+      throw new Error('Zitadel did not return the login policy');
+    }
+    await this.updatePolicy('/admin/v1/policies/login', {
+      ...resp.policy,
+      defaultRedirectUri: settings.defaultRedirectUri,
+      ignoreUnknownUsernames: true,
+    });
+    await this.updatePolicy('/admin/v1/policies/notification', {
+      passwordChange: false,
+    });
+  }
+
+  async updateBranding(branding: IdpBranding): Promise<void> {
+    const colors = branding.theme.colors || {};
+    const primary = colors.main || colors.primary;
+    await this.updatePolicy('/admin/v1/policies/label', {
+      primaryColor: primary,
+      primaryColorDark: primary,
+      fontColor: colors.body,
+      fontColorDark: colors.body,
+      warnColor: colors.danger,
+      warnColorDark: colors.danger,
+      backgroundColor: colors.white,
+      backgroundColorDark: colors.white,
+      themeMode: 'THEME_MODE_LIGHT',
+      hideLoginNameSuffix: true,
+      disableWatermark: true,
+    });
+    if (branding.logo) {
+      for (const asset of ['logo', 'logo/dark', 'icon', 'icon/dark']) {
+        await this.uploadAsset(
+          `/assets/v1/instance/policy/label/${asset}`,
+          branding.logo
+        );
+      }
+    }
+    // Colours and assets stay in the preview until activated
+    await this.request('POST', '/admin/v1/policies/label/_activate');
   }
 }

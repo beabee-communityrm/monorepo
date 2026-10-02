@@ -3,7 +3,7 @@ import { type Locale } from '@beabee/locale';
 
 export default {
   organisation: 'UK Makerspace',
-  logo: '',
+  logo: '' as string,
   'home-link-url': 'http://example.com/about',
 
   /** Application active locale */

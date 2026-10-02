@@ -105,7 +105,7 @@ Provisioning: `BEABEE_IDP_PROVIDER=none|zitadel|keycloak` with
 `CLIENTSECRET` (Keycloak).
 
 IdP-side setup that beabee owns and applies idempotently via
-`backend-cli idp setup`: `defaultRedirectUri` (beabee's login endpoint, the
+`backend-cli setup integrations idp`: `defaultRedirectUri` (beabee's login endpoint, the
 safety net for a member who finishes a Login v2 page outside a login beabee
 started), `ignoreUnknownUsernames` and branding. The virtual instance, project and OIDC client are created by the
 hosting infrastructure, which is expected to call the same command in future.
@@ -167,7 +167,7 @@ branch and is retargeted to `main` as its base merges.
 7. `feat/oidc-signup` — join flow
 8. `feat/oidc-self-service-removal` — authentication method status and
    removal on the account page, behind a fresh IdP login
-9. `feat/idp-setup` — branding sync and `idp setup`
+9. `feat/idp-setup` — branding sync and `setup integrations idp`
 10. `feat/idp-transition` — password mirroring, session clearing, unsynced
    count, hash clean-up
 
