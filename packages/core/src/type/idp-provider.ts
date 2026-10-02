@@ -40,8 +40,12 @@ export interface IdpProvider {
 }
 
 export interface IdpSetupSettings {
-  /** The fixed beabee page the IdP's self-service flows return to */
+  /** Where the IdP sends a member who finishes a Login v2 page outside a login beabee started */
   defaultRedirectUri: string;
 }
 
-export type IdpBranding = Pick<ContentGeneralData, 'theme' | 'logoUrl'>;
+export interface IdpBranding {
+  theme: ContentGeneralData['theme'];
+  /** Used as logo and icon, absent when the instance has no logo */
+  logo?: Blob | undefined;
+}

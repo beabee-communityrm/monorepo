@@ -6,6 +6,7 @@ import {
   NoneProvider,
   ZitadelProvider,
 } from '#providers/idp/index';
+import { imageService } from '#services/ImageService';
 import { optionsService } from '#services/OptionsService';
 import type { IdpProvider } from '#type/index';
 
@@ -94,6 +95,23 @@ class IdpService {
   }
 
   /**
+   * The logo option is the image's API path. Legacy uploads are skipped, as
+   * re-uploading the logo in the settings is the way to migrate them.
+   * Resized to stay under the IdP's asset size limit.
+   */
+  private async getLogo(): Promise<Blob | undefined> {
+    const logo = optionsService.getText('logo');
+    if (!logo) return undefined;
+    const id = logo.match(/^images\/(.+)$/)?.[1];
+    if (!id) {
+      log.warn(`Skipping IdP logo, legacy image path: ${logo}`);
+      return undefined;
+    }
+    const { buffer, contentType } = await imageService.getImageBuffer(id, 400);
+    return new Blob([buffer], { type: contentType });
+  }
+
+  /**
    * Push the current theme and logo to the IdP's login pages
    * @returns Whether the branding was applied
    */
@@ -103,7 +121,7 @@ class IdpService {
     try {
       await this.provider.updateBranding({
         theme: optionsService.getJSON('theme'),
-        logoUrl: optionsService.getText('logo'),
+        logo: await this.getLogo(),
       });
       return true;
     } catch (err) {

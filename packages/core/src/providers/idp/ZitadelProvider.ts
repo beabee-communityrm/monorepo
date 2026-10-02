@@ -143,12 +143,11 @@ export class ZitadelProvider implements IdpProvider {
       hideLoginNameSuffix: true,
       disableWatermark: true,
     });
-    if (branding.logoUrl) {
-      const logo = await (await fetch(branding.logoUrl)).blob();
+    if (branding.logo) {
       for (const asset of ['logo', 'logo/dark', 'icon', 'icon/dark']) {
         await this.uploadAsset(
           `/assets/v1/instance/policy/label/${asset}`,
-          logo
+          branding.logo
         );
       }
     }
