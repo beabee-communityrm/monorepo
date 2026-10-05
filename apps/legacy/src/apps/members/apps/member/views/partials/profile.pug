@@ -82,9 +82,9 @@ mixin memberTag(tag)
 		h4 Newsletter status
 		dl.dl-horizontal
 			dt Status
-			dd= member.profile.newsletterStatus
+			dd= member.newsletter.status
 			dt Groups
-			dd= member.profile.newsletterGroups.join(', ') || '–'
+			dd= member.newsletter.groups.join(', ') || '–'
 .row
 	.col-md-12
 		+editablePanel('About', 'about')
