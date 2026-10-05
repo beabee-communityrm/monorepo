@@ -24,7 +24,7 @@
     </div>
     <div class="min-w-60 flex-1 space-y-1.5">
       <component :is="`h${level}`">
-        {{ t('homePage.welcome', { firstName }) }}
+        {{ t('homePage.welcome', { firstName, lastName }) }}
       </component>
       <div class="nuxt-prose" v-html="text" />
     </div>
@@ -49,6 +49,8 @@ const { t } = useI18n();
 export interface WelcomeCardProps {
   /** The member's first name */
   firstName: string;
+  /** The member's last name */
+  lastName: string;
   /** Intro message HTML */
   text: string;
   /** Heading level for the title, so the page's outline stays nested */

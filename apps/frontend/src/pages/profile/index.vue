@@ -13,6 +13,7 @@ meta:
     <WelcomeCard
       v-if="showWelcomeMessage && profileContent.introMessage"
       :first-name="user.firstname"
+      :last-name="user.lastname"
       :text="profileContent.introMessage"
       @close="removeWelcomeMessage"
     />

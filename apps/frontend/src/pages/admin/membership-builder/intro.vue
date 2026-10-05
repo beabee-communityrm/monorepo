@@ -33,6 +33,7 @@ meta:
         <div class="nuxt-page">
           <WelcomeCard
             :first-name="currentUser?.firstname || ''"
+            :last-name="currentUser?.lastname || ''"
             :text="introMessage"
             :level="2"
             :dismissible="false"
