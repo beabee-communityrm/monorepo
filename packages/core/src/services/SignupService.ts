@@ -257,7 +257,6 @@ class SignupService {
       contact = await ContactsService.createContact(
         partialContact,
         {
-          newsletterStatus: OptionsService.getText('newsletter-default-status'),
           ...(completedFlow?.data.vatNumber && {
             vatNumber: completedFlow.data.vatNumber,
           }),
@@ -265,6 +264,9 @@ class SignupService {
             OptionsService.getBool('show-mail-opt-in') && {
               deliveryAddress: completedFlow.data.billingAddress,
             }),
+        },
+        {
+          newsletterStatus: OptionsService.getText('newsletter-default-status'),
         },
         signupFlow.origin
       );

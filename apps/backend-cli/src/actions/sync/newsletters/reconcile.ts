@@ -303,6 +303,7 @@ async function importNlContacts(
           lastname: nlContact.lastname,
           joined: nlContact.joined,
         },
+        {},
         {
           newsletterStatus: nlContact.status,
           newsletterGroups: nlContact.groups,
