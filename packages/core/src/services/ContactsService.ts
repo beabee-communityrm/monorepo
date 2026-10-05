@@ -139,7 +139,6 @@ class ContactsService {
       await PaymentService.createContact(contact);
       if (opts.sync) {
         await NewsletterService.upsertContact(contact);
-        await ContactSyncService.upsertContact(contact);
       }
 
       await EmailService.sendTemplateToAdmin('new-member', { contact });
@@ -157,6 +156,8 @@ class ContactsService {
         await getRepository(Contact).update(contact.id, { idpSubject });
         contact.idpSubject = idpSubject;
       }
+
+      await ContactSyncService.upsertContact(contact);
 
       return contact;
     } catch (error) {
@@ -217,7 +218,6 @@ class ContactsService {
         undefined,
         oldEmail ? { oldEmail } : undefined
       );
-      await ContactSyncService.upsertContact(contact);
     }
 
     await ActivityService.addEvent({
@@ -229,6 +229,7 @@ class ContactsService {
     await PaymentService.updateContact(contact, updates);
 
     await IdpService.updateContact(contact, updates);
+    await ContactSyncService.upsertContact(contact);
   }
 
   /**
