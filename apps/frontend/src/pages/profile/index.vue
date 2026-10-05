@@ -10,7 +10,7 @@ meta:
       {{ t(greetingKey, { firstName: user.firstname }) }}
     </h2>
 
-    <AppWelcomeCard
+    <WelcomeCard
       v-if="showWelcomeMessage && profileContent.introMessage"
       class="mb-10"
       :first-name="user.firstname"
@@ -65,7 +65,7 @@ import {
   type GetContactData,
   ItemStatus,
 } from '@beabee/beabee-common';
-import { AppButton, AppWelcomeCard } from '@beabee/vue';
+import { AppButton } from '@beabee/vue';
 
 import { type Ref, computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -76,6 +76,7 @@ import ContributionInfo from '#components/pages/profile/ContributionInfo.vue';
 import NoticeContainer from '#components/pages/profile/NoticeContainer.vue';
 import QuickActions from '#components/pages/profile/QuickActions.vue';
 import SectionTitle from '#components/pages/profile/SectionTitle.vue';
+import WelcomeCard from '#components/welcome/WelcomeCard.vue';
 import { currentUser, generalContent } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';

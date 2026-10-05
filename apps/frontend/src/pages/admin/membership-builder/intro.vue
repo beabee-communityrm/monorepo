@@ -31,7 +31,7 @@ meta:
       </template>
       <template #col2>
         <div class="nuxt-page">
-          <AppWelcomeCard
+          <WelcomeCard
             :first-name="currentUser?.firstname || ''"
             :text="introMessage"
             :level="2"
@@ -43,17 +43,13 @@ meta:
   </AppApiForm>
 </template>
 <script lang="ts" setup>
-import {
-  App2ColGrid,
-  AppCheckbox,
-  AppRichTextEditor,
-  AppWelcomeCard,
-} from '@beabee/vue';
+import { App2ColGrid, AppCheckbox, AppRichTextEditor } from '@beabee/vue';
 
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppApiForm from '#components/forms/AppApiForm.vue';
+import WelcomeCard from '#components/welcome/WelcomeCard.vue';
 import { client } from '#utils/api';
 
 import { currentUser } from '../../../store';

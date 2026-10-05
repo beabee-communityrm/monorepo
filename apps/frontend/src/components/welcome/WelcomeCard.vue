@@ -1,17 +1,8 @@
 <!--
-  # AppWelcomeCard
-  Greets a new member straight after they join, with the intro message set in
-  the membership builder. Also used as that message's preview.
-
-  ## Props
-  - `firstName` (string): The member's first name.
-  - `text` (string): Intro message HTML.
-  - `level` (2 | 3 | 4 | 5 | 6, optional): Heading level for the title.
-    Defaults to 3.
-  - `dismissible` (boolean, optional): Shows a close button. Defaults to true.
-
-  ## Events
-  - `close`: The close button was clicked.
+  # WelcomeCard
+  Greets a new member on the home page straight after they join, with the
+  intro message set in the membership builder. The membership builder uses it
+  for its preview too, with `dismissible` off.
 -->
 <template>
   <UCard
@@ -50,17 +41,12 @@
 </template>
 
 <script lang="ts" setup>
-/**
- * Welcome card for a new member, showing the membership builder's intro
- * message.
- *
- * @component AppWelcomeCard
- */
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-export interface AppWelcomeCardProps {
+/** Props for WelcomeCard */
+export interface WelcomeCardProps {
   /** The member's first name */
   firstName: string;
   /** Intro message HTML */
@@ -71,7 +57,7 @@ export interface AppWelcomeCardProps {
   dismissible?: boolean;
 }
 
-withDefaults(defineProps<AppWelcomeCardProps>(), {
+withDefaults(defineProps<WelcomeCardProps>(), {
   level: 3,
   dismissible: true,
 });
