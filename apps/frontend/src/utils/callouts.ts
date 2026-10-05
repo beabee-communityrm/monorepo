@@ -29,6 +29,7 @@ import { type LocaleOptions, config as localeConfig } from '@beabee/locale';
 import { format } from 'date-fns';
 import { computed } from 'vue';
 
+import noImage from '#assets/images/no-image.avif';
 import type {
   FormBuilderNavigation,
   FormBuilderSlide,
@@ -68,6 +69,20 @@ export function getDaysLeft(expires: Date | null): number | null {
     (expires.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
   );
   return days > 0 ? days : null;
+}
+
+/**
+ * A callout's image, or the placeholder when it has none
+ *
+ * @param callout - The callout
+ * @param width - Width to resize the image to
+ * @returns The image URL
+ */
+export function getCalloutImageUrl(
+  callout: { image: string },
+  width?: number
+): string {
+  return callout.image ? resolveImageUrl(callout.image, width) : noImage;
 }
 
 /**
