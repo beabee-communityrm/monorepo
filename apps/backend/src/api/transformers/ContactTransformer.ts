@@ -251,8 +251,8 @@ class ContactTransformer extends BaseContactTransformer<
       }
       if (newsletterStatus || newsletterGroups) {
         await NewsletterService.upsertContact(target, {
-          newsletterStatus,
-          newsletterGroups,
+          status: newsletterStatus,
+          groups: newsletterGroups,
         });
       }
     }

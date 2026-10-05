@@ -266,7 +266,7 @@ class SignupService {
             }),
         },
         {
-          newsletterStatus: OptionsService.getText('newsletter-default-status'),
+          status: OptionsService.getText('newsletter-default-status'),
         },
         signupFlow.origin
       );

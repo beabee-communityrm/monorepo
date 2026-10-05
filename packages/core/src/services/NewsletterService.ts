@@ -79,7 +79,7 @@ class NewsletterService {
    * @param contact The contact to update or insert
    * @param updates Optional updates to apply to the contact before syncing
    * @param opts.oldEmail Previous email address if the email is being updated
-   * @param opts.newsletterGroupChange How `updates.newsletterGroups` should be
+   * @param opts.newsletterGroupChange How `updates.groups` should be
    * applied
    */
   async upsertContact(
@@ -95,7 +95,7 @@ class NewsletterService {
       // In case something's misconfigured (e.g. a stale newsletterStatus),
       // don't silently report success for a group change that was requested
       // but never actually happened.
-      if (updates?.newsletterGroups) {
+      if (updates?.groups) {
         throw new Error(
           `Newsletter groups could not be updated for contact ${contact.id}: the update was skipped`
         );
@@ -297,7 +297,7 @@ class NewsletterService {
   ): Promise<void> {
     await this.upsertContact(
       contact,
-      { newsletterGroups: [groupId] },
+      { groups: [groupId] },
       { newsletterGroupChange: 'remove' }
     );
   }

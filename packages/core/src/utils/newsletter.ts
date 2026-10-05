@@ -21,7 +21,7 @@ export function convertContactToNlUpdate(
   updates?: ContactNewsletterUpdates,
   opts?: { newsletterGroupChange?: NewsletterGroupChange }
 ): UpdateNewsletterContact | undefined {
-  let newStatus = updates?.newsletterStatus || contact.newsletter.status;
+  let newStatus = updates?.status || contact.newsletter.status;
   if (
     newStatus === NewsletterStatus.None &&
     contact.newsletter.status === NewsletterStatus.None
@@ -40,7 +40,7 @@ export function convertContactToNlUpdate(
   return {
     email: contact.email,
     status: newStatus,
-    groups: updates?.newsletterGroups,
+    groups: updates?.groups,
     newsletterGroupChange: opts?.newsletterGroupChange,
     firstname: contact.firstname,
     lastname: contact.lastname,

@@ -142,11 +142,11 @@ class ContactsService {
       });
       await getRepository(ContactProfile).save(contact.profile);
 
-      const { newsletterStatus, newsletterGroups } = partialNewsletter;
+      const { status, groups } = partialNewsletter;
       contact.newsletter = getRepository(ContactNewsletter).create({
         contact: contact,
-        ...(newsletterStatus && { status: newsletterStatus }),
-        ...(newsletterGroups && { groups: newsletterGroups }),
+        ...(status && { status }),
+        ...(groups && { groups }),
       });
       await getRepository(ContactNewsletter).save(contact.newsletter);
 

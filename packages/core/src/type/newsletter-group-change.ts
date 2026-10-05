@@ -1,5 +1,5 @@
 /**
- * How `ContactNewsletterUpdates.newsletterGroups` should be applied.
+ * How `ContactNewsletterUpdates.groups` should be applied.
  *
  * - `add`: add these groups, leave every other group untouched
  * - `remove`: remove these groups, leave every other group untouched

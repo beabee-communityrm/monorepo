@@ -114,7 +114,7 @@ export class ContactController {
         }),
       },
       profile,
-      { newsletterStatus, newsletterGroups }
+      { status: newsletterStatus, groups: newsletterGroups }
     );
 
     if (data.roles) {

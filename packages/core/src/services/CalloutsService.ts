@@ -304,8 +304,8 @@ class CalloutsService {
       await NewsletterService.upsertContact(
         contact,
         {
-          newsletterStatus: NewsletterStatus.Pending,
-          newsletterGroups: newsletter.groups,
+          status: NewsletterStatus.Pending,
+          groups: newsletter.groups,
         },
         { newsletterGroupChange: 'add' }
       );
