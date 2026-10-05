@@ -34,7 +34,7 @@ app.use(
     if (typeof uuid !== 'string') return next('route');
     const contact = await ContactsService.findOne({
       where: { id: uuid },
-      relations: { profile: true },
+      relations: { profile: true, newsletter: true },
     });
     if (contact) {
       req.model = contact;
