@@ -313,8 +313,8 @@ class SignupService {
       // Only an explicit subscription may overwrite an existing contact's preferences
       if (signupFlow.newsletterStatus === NewsletterStatus.Subscribed) {
         await NewsletterService.upsertContact(contact, {
-          newsletterStatus: signupFlow.newsletterStatus,
-          ...(newsletterGroups && { newsletterGroups }),
+          status: signupFlow.newsletterStatus,
+          ...(newsletterGroups && { groups: newsletterGroups }),
         });
       }
     } else {
@@ -330,10 +330,10 @@ class SignupService {
             }),
         },
         {
-          newsletterStatus:
+          status:
             signupFlow.newsletterStatus ??
             OptionsService.getText('newsletter-default-status'),
-          ...(newsletterGroups && { newsletterGroups }),
+          ...(newsletterGroups && { groups: newsletterGroups }),
         },
         signupFlow.origin
       );
