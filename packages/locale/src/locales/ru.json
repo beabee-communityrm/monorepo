@@ -120,6 +120,7 @@
     "enable": "Активировать",
     "endnow": "Завершить",
     "export": "Экспортировать",
+    "findOutMore": "Подробнее",
     "getStarted": "Начать",
     "goBack": "Назад",
     "hidePassword": "Скрыть пароль",
@@ -837,6 +838,7 @@
     "membersOnly": "Эта CrowdNewsroom открыта только для членов. Чтобы участвовать",
     "membersOnly-nuxt": "Эта CrowdNewsroom открыта только для членов.",
     "notAnswered": "Без ответа",
+    "replied": "Отвечено",
     "responseNumber": "Ответ {number}",
     "responseSubmitted": "Ответ отправлен",
     "share": {
@@ -1623,19 +1625,65 @@
     }
   },
   "homePage": {
+    "contribution": {
+      "action": {
+        "cancelling": "Продолжить поддержку",
+        "oneOff": "Оформить регулярный взнос"
+      },
+      "amountOnDate": "{amount}, {date}",
+      "endsOn": "Заканчивается",
+      "headline": {
+        "cancelled": "Сейчас вы не делаете взносов",
+        "none": "Вы пока не делаете взносов",
+        "oneOff": "Спасибо за ваши взносы"
+      },
+      "lastContribution": "Последний взнос",
+      "lastPayment": "Последний платёж",
+      "nextPayment": "Следующий платёж",
+      "note": {
+        "cancelling": "Больше списаний не будет. Ваш взнос остаётся активным до окончания срока.",
+        "none": "Регулярные взносы, даже небольшие, поддерживают нашу работу.",
+        "oneOff": "Регулярный взнос, даже небольшой, помогает нам планировать."
+      },
+      "paymentEnding": "{method}, оканчивается на {digits}",
+      "status": {
+        "active": "Активен",
+        "cancelled": "Отменён",
+        "cancelling": "Отменяется",
+        "none": "Нет",
+        "oneOff": "Разовый"
+      },
+      "title": "Ваш взнос"
+    },
     "editProfile": "Настроить ваш профиль",
+    "greeting": {
+      "afternoon": "Добрый день, {firstName}",
+      "evening": "Добрый вечер, {firstName}",
+      "morning": "Доброе утро, {firstName}"
+    },
+    "groupCount": "{n} группа | {n} групп",
     "makeOneTimeDonationButton": "Взнос",
     "makeOneTimeDonationTitle": "Сделать разовый взнос сейчас",
     "manageContribution": "Изменить ваш взнос",
+    "manageSubscriptions": "Управлять подписками",
     "newCallout": "Новая CrowdNewsroom!",
+    "noOpenCallouts": "Сейчас ничего не открыто.",
+    "noResponses": "Вы ещё не ответили ни на одну CrowdNewsroom.",
     "oneTimeContributionSuccessMessage": "Спасибо за ваш взнос!",
     "openCallouts": "CrowdNewsroom",
+    "openCount": "Открыто: {n}",
     "quickActions": "Быстрые действия",
+    "seeAllOpen": "Все открытые CrowdNewsroom ({n})",
+    "showAllResponses": "Показать все ответы ({n})",
+    "showFewer": "Показать меньше",
+    "submittedOn": "Отправлено {date}",
     "title": "Главная страница",
     "viewAllCallouts": "Открыть CrowdNewsroom",
     "viewOpenCallouts": "Открыть CrowdNewsroom",
     "welcome": "Добро пожаловать, {firstName}!",
-    "yourProfile": "Ваш профиль"
+    "yourNewsletters": "Ваши рассылки",
+    "yourProfile": "Ваш профиль",
+    "yourResponses": "Ваши ответы"
   },
   "icons": {
     "welcome": {

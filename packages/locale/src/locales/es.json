@@ -120,6 +120,7 @@
     "enable": "Activar",
     "endnow": "Finalizar ahora",
     "export": "Exportar",
+    "findOutMore": "Más información",
     "getStarted": "Empezar",
     "goBack": "Volver",
     "hidePassword": "Ocultar contraseña",
@@ -836,6 +837,7 @@
     "membersOnly": "Este CrowdNewsroom es solo para miembros. Para participar",
     "membersOnly-nuxt": "Este CrowdNewsroom es solo para miembros.",
     "notAnswered": "Sin responder",
+    "replied": "Respondido",
     "responseNumber": "Respuesta {number}",
     "responseSubmitted": "Respuesta enviada",
     "share": {
@@ -1620,19 +1622,65 @@
     }
   },
   "homePage": {
+    "contribution": {
+      "action": {
+        "cancelling": "Seguir contribuyendo",
+        "oneOff": "Configurar una contribución periódica"
+      },
+      "amountOnDate": "{amount} el {date}",
+      "endsOn": "Finaliza el",
+      "headline": {
+        "cancelled": "No estás contribuyendo en este momento",
+        "none": "Todavía no estás contribuyendo",
+        "oneOff": "Gracias por tus contribuciones"
+      },
+      "lastContribution": "Última contribución",
+      "lastPayment": "Último pago",
+      "nextPayment": "Próximo pago",
+      "note": {
+        "cancelling": "No se te volverá a cobrar. Tu contribución seguirá activa hasta que finalice.",
+        "none": "Las contribuciones periódicas, por pequeñas que sean, mantienen vivo nuestro trabajo.",
+        "oneOff": "Una contribución periódica, por pequeña que sea, nos ayuda a planificar."
+      },
+      "paymentEnding": "{method} terminada en {digits}",
+      "status": {
+        "active": "Activa",
+        "cancelled": "Cancelada",
+        "cancelling": "En cancelación",
+        "none": "Ninguna",
+        "oneOff": "Puntual"
+      },
+      "title": "Tu contribución"
+    },
     "editProfile": "Editar tu perfil de comunidad",
+    "greeting": {
+      "afternoon": "Buenas tardes, {firstName}",
+      "evening": "Buenas noches, {firstName}",
+      "morning": "Buenos días, {firstName}"
+    },
+    "groupCount": "{n} grupo | {n} grupos",
     "makeOneTimeDonationButton": "Contribuir",
     "makeOneTimeDonationTitle": "Realizar contribución única",
     "manageContribution": "Gestionar tu contribución",
+    "manageSubscriptions": "Gestionar suscripciones",
     "newCallout": "¡Nuevo CrowdNewsroom!",
+    "noOpenCallouts": "No hay nada abierto ahora mismo.",
+    "noResponses": "Todavía no has respondido a ningún CrowdNewsroom.",
     "oneTimeContributionSuccessMessage": "¡Gracias por tu contribución!",
     "openCallouts": "CrowdNewsroom",
+    "openCount": "{n} abiertos",
     "quickActions": "Acciones rápidas",
+    "seeAllOpen": "Ver los {n} CrowdNewsrooms abiertos",
+    "showAllResponses": "Mostrar las {n} respuestas",
+    "showFewer": "Mostrar menos",
+    "submittedOn": "Enviada el {date}",
     "title": "Inicio",
     "viewAllCallouts": "Abrir el CrowdNewsroom",
     "viewOpenCallouts": "Abrir el CrowdNewsroom",
     "welcome": "¡Bienvenido/a, {firstName}!",
-    "yourProfile": "Tu perfil"
+    "yourNewsletters": "Tus newsletters",
+    "yourProfile": "Tu perfil",
+    "yourResponses": "Tus respuestas"
   },
   "icons": {
     "welcome": {

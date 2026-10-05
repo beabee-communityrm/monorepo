@@ -120,6 +120,7 @@
     "enable": "",
     "endnow": "",
     "export": "",
+    "findOutMore": "",
     "getStarted": "Hier kannst du starten.",
     "goBack": "",
     "hidePassword": "Passwort verstecken",
@@ -836,6 +837,7 @@
     "membersOnly": "",
     "membersOnly-nuxt": "",
     "notAnswered": "",
+    "replied": "",
     "responseNumber": "",
     "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
     "share": {
@@ -1622,19 +1624,65 @@
     }
   },
   "homePage": {
+    "contribution": {
+      "action": {
+        "cancelling": "",
+        "oneOff": ""
+      },
+      "amountOnDate": "",
+      "endsOn": "",
+      "headline": {
+        "cancelled": "",
+        "none": "",
+        "oneOff": ""
+      },
+      "lastContribution": "",
+      "lastPayment": "",
+      "nextPayment": "",
+      "note": {
+        "cancelling": "",
+        "none": "",
+        "oneOff": ""
+      },
+      "paymentEnding": "",
+      "status": {
+        "active": "",
+        "cancelled": "",
+        "cancelling": "",
+        "none": "",
+        "oneOff": ""
+      },
+      "title": ""
+    },
     "editProfile": "",
+    "greeting": {
+      "afternoon": "",
+      "evening": "",
+      "morning": ""
+    },
+    "groupCount": "",
     "makeOneTimeDonationButton": "",
     "makeOneTimeDonationTitle": "",
     "manageContribution": "",
+    "manageSubscriptions": "",
     "newCallout": "",
+    "noOpenCallouts": "",
+    "noResponses": "",
     "oneTimeContributionSuccessMessage": "",
     "openCallouts": "",
+    "openCount": "",
     "quickActions": "",
+    "seeAllOpen": "",
+    "showAllResponses": "",
+    "showFewer": "",
+    "submittedOn": "",
     "title": "",
     "viewAllCallouts": "",
     "viewOpenCallouts": "",
     "welcome": "",
-    "yourProfile": ""
+    "yourNewsletters": "",
+    "yourProfile": "",
+    "yourResponses": ""
   },
   "icons": {
     "welcome": {

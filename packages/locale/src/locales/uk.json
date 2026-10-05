@@ -120,6 +120,7 @@
     "enable": "Увімкнути",
     "endnow": "Кінець зараз",
     "export": "Експорт",
+    "findOutMore": "Дізнатися більше",
     "getStarted": "Почати",
     "goBack": "Повернутися назад",
     "hidePassword": "Приховати пароль",
@@ -836,6 +837,7 @@
     "membersOnly": "Ця новинна кімната CrowdNews відкрита лише для учасників. Щоб взяти участь",
     "membersOnly-nuxt": "Цей CrowdNewsroom відкритий лише для учасників.",
     "notAnswered": "Без відповіді",
+    "replied": "Відповідь надіслано",
     "responseNumber": "Відповідь {number}",
     "responseSubmitted": "Відповідь надіслано",
     "share": {
@@ -1622,19 +1624,65 @@
     }
   },
   "homePage": {
+    "contribution": {
+      "action": {
+        "cancelling": "Продовжити підтримку",
+        "oneOff": "Оформити регулярний внесок"
+      },
+      "amountOnDate": "{amount}, {date}",
+      "endsOn": "Завершується",
+      "headline": {
+        "cancelled": "Зараз ви не робите внесків",
+        "none": "Ви ще не робите внесків",
+        "oneOff": "Дякуємо за ваші внески"
+      },
+      "lastContribution": "Останній внесок",
+      "lastPayment": "Останній платіж",
+      "nextPayment": "Наступний платіж",
+      "note": {
+        "cancelling": "Більше списань не буде. Ваш внесок залишається активним до завершення.",
+        "none": "Регулярні внески, навіть невеликі, підтримують нашу роботу.",
+        "oneOff": "Регулярний внесок, навіть невеликий, допомагає нам планувати."
+      },
+      "paymentEnding": "{method}, закінчується на {digits}",
+      "status": {
+        "active": "Активний",
+        "cancelled": "Скасовано",
+        "cancelling": "Скасовується",
+        "none": "Немає",
+        "oneOff": "Разовий"
+      },
+      "title": "Ваш внесок"
+    },
     "editProfile": "Редагувати профіль вашої спільноти",
+    "greeting": {
+      "afternoon": "Добрий день, {firstName}",
+      "evening": "Добрий вечір, {firstName}",
+      "morning": "Доброго ранку, {firstName}"
+    },
+    "groupCount": "{n} група | {n} груп",
     "makeOneTimeDonationButton": "Внесок",
     "makeOneTimeDonationTitle": "Зробити одноразовий внесок зараз",
     "manageContribution": "Керуйте своїм внеском",
+    "manageSubscriptions": "Керувати підписками",
     "newCallout": "Новий CrowdNewsroom!",
+    "noOpenCallouts": "Зараз нічого не відкрито.",
+    "noResponses": "Ви ще не відповіли на жоден CrowdNewsroom.",
     "oneTimeContributionSuccessMessage": "Дякуємо за ваш внесок!",
     "openCallouts": "CrowdNewsroom",
+    "openCount": "Відкрито: {n}",
     "quickActions": "Швидкі дії",
+    "seeAllOpen": "Усі відкриті CrowdNewsroom ({n})",
+    "showAllResponses": "Показати всі відповіді ({n})",
+    "showFewer": "Показати менше",
+    "submittedOn": "Надіслано {date}",
     "title": "Дім",
     "viewAllCallouts": "Відкрийте CrowdNewsroom",
     "viewOpenCallouts": "Відкрийте CrowdNewsroom",
     "welcome": "Ласкаво просимо на борт {firstName}!",
-    "yourProfile": "Ваш профіль"
+    "yourNewsletters": "Ваші розсилки",
+    "yourProfile": "Ваш профіль",
+    "yourResponses": "Ваші відповіді"
   },
   "icons": {
     "welcome": {
