@@ -16,7 +16,7 @@ meta:
       <p>{{ t('accountPage.subTitle-nuxt') }}</p>
     </div>
 
-    <UTabs :items="items" class="w-full">
+    <UTabs v-model="activeTab" :items="items" class="w-full">
       <template #contact>
         <AccountForm />
       </template>
@@ -41,6 +41,7 @@ meta:
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
 import AccountForm from '../../components/pages/profile/account/AccountForm.vue';
 import AccountNewsletterSubscriptions from '../../components/pages/profile/account/AccountNewsletterSubscriptions.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
@@ -56,18 +57,35 @@ const items = computed<TabsItem[]>(() => [
     label: t('accountPage.contactInformation'),
     icon: 'i-lucide-contact',
     slot: 'contact',
+    value: 'contact',
   },
   {
     label: t('accountPage.security'),
     icon: 'i-lucide-shield',
     slot: 'security',
+    value: 'security',
   },
   {
     label: t('accountPage.subscriptions'),
     icon: 'i-lucide-mail',
     slot: 'subscriptions',
+    value: 'subscriptions',
   },
 ]);
+
+const route = useRoute();
+const router = useRouter();
+
+const activeTab = computed({
+  get: () => {
+    const tab = route.query.tab;
+    return typeof tab === 'string' && items.value.some((i) => i.value === tab)
+      ? tab
+      : 'contact';
+  },
+  set: (tab: string | number) =>
+    router.replace({ query: { ...route.query, tab: String(tab) } }),
+});
 
 addBreadcrumb(
   computed(() => [
