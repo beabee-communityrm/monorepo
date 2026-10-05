@@ -17,15 +17,6 @@
       </div>
     </template>
 
-    <div v-if="daysLeft !== null" class="flex items-center">
-      <UBadge color="neutral" variant="subtle">
-        <UIcon name="i-lucide-clock" class="size-3" />
-        <i18n-t keypath="callouts.daysLeft" :plural="daysLeft">
-          <template #n>{{ daysLeft }}</template>
-        </i18n-t>
-      </UBadge>
-    </div>
-
     <RouterLink
       :to="`/crowdnewsroom/${callout.slug}`"
       class="after:absolute after:inset-0 after:content-['']"
@@ -87,7 +78,6 @@ import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 
 import CalloutMetaList from '#components/callout/CalloutMetaList.vue';
-import { getDaysLeft } from '#utils/callouts';
 import { resolveImageUrl } from '#utils/url';
 import type { CalloutCardData } from '#type';
 
@@ -112,6 +102,4 @@ const respondAgainKey = computed(() => {
   }
   return null;
 });
-
-const daysLeft = computed(() => getDaysLeft(props.callout.expires));
 </script>
