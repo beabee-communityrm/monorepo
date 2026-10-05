@@ -145,8 +145,8 @@ async function saveContact() {
     roles: data.roles,
     contribution,
     ...(data.subscribeToNewsletter && {
-      profile: {
-        newsletterStatus: NewsletterStatus.Subscribed,
+      newsletter: {
+        status: NewsletterStatus.Subscribed,
       },
     }),
   });
