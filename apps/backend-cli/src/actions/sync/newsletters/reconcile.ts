@@ -66,14 +66,14 @@ const mismatchTests: Record<SyncNewsletterReconcileTestId, MismatchTest> = {
    * */
   status: {
     test: (contact, nlContact) =>
-      contact.profile.newsletterStatus !== nlContact.status,
+      contact.newsletter.status !== nlContact.status,
     print: (contact, nlContact) =>
-      `status=${contact.profile.newsletterStatus}→${nlContact.status}`,
+      `status=${contact.newsletter.status}→${nlContact.status}`,
     reconcile: async (mismatchedContacts) => {
       await newsletterBulkService.updateContactNlData(
         mismatchedContacts.map(([contact, nlContact]) => ({
           contact,
-          updates: { newsletterStatus: nlContact.status },
+          updates: { status: nlContact.status },
         }))
       );
     },
@@ -86,15 +86,14 @@ const mismatchTests: Record<SyncNewsletterReconcileTestId, MismatchTest> = {
    * */
   groups: {
     test: (contact, nlContact) =>
-      groupsList(contact.profile.newsletterGroups) !==
-      groupsList(nlContact.groups),
+      groupsList(contact.newsletter.groups) !== groupsList(nlContact.groups),
     print: (contact, nlContact) =>
-      `groups=[${groupsList(contact.profile.newsletterGroups)}]→[${groupsList(nlContact.groups)}]`,
+      `groups=[${groupsList(contact.newsletter.groups)}]→[${groupsList(nlContact.groups)}]`,
     reconcile: async (mismatchedContacts) => {
       await newsletterBulkService.updateContactNlData(
         mismatchedContacts.map(([contact, nlContact]) => ({
           contact,
-          updates: { newsletterGroups: nlContact.groups },
+          updates: { groups: nlContact.groups },
         }))
       );
     },
@@ -168,7 +167,9 @@ async function fetchContacts(
   argv: SyncNewsletterReconcileArgs
 ): Promise<ReconciliationData> {
   log.info('📡 Loading local contact list...');
-  const contacts = await contactsService.find({ relations: { profile: true } });
+  const contacts = await contactsService.find({
+    relations: { newsletter: true },
+  });
 
   if (argv.since || argv.until) {
     log.info(
@@ -205,8 +206,8 @@ async function fetchContacts(
     } else if (
       argv.uploadNew &&
       // Only consider active statuses for upload
-      (contact.profile.newsletterStatus === NewsletterStatus.Subscribed ||
-        contact.profile.newsletterStatus === NewsletterStatus.Pending)
+      (contact.newsletter.status === NewsletterStatus.Subscribed ||
+        contact.newsletter.status === NewsletterStatus.Pending)
     ) {
       contactsToUpload.push(contact);
     }
@@ -262,7 +263,7 @@ function printReport(
     }
     for (const c of data.contactsToUpload) {
       log.info(
-        `  • ${c.email}: status=${c.profile.newsletterStatus}, groups=[${groupsList(c.profile.newsletterGroups)}]`
+        `  • ${c.email}: status=${c.newsletter.status}, groups=[${groupsList(c.newsletter.groups)}]`
       );
     }
   }

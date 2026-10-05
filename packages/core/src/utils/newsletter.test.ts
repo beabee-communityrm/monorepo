@@ -7,14 +7,20 @@ import {
 import { sub } from 'date-fns/sub';
 import { describe, expect, it } from 'vitest';
 
-import { Contact, ContactProfile, ContactRole, Password } from '#models/index';
+import {
+  Contact,
+  ContactNewsletter,
+  ContactProfile,
+  ContactRole,
+  Password,
+} from '#models/index';
 import type { ContactNewsletterUpdates } from '#type/index';
 
 import { convertContactToNlUpdate } from './newsletter';
 
 // Helper function to create a mock contact
 function createMockContact(
-  profileOverrides: Partial<ContactProfile> = {},
+  newsletterOverrides: ContactNewsletterUpdates = {},
   overrides: Partial<Contact> = {},
   activeMembership: boolean = false
 ): Contact {
@@ -48,9 +54,13 @@ function createMockContact(
     preferredContact: '',
     deliveryOptIn: false,
     deliveryAddress: null,
-    newsletterStatus: NewsletterStatus.None,
-    newsletterGroups: [],
-    ...profileOverrides,
+  });
+
+  const mockNewsletter: ContactNewsletter = new ContactNewsletter();
+  Object.assign(mockNewsletter, {
+    contact,
+    status: newsletterOverrides.newsletterStatus ?? NewsletterStatus.None,
+    groups: newsletterOverrides.newsletterGroups ?? [],
   });
 
   const mockMembership = new ContactRole();
@@ -62,6 +72,7 @@ function createMockContact(
   });
 
   contact.profile = mockProfile;
+  contact.newsletter = mockNewsletter;
   contact.roles.push(mockMembership);
 
   return contact;
