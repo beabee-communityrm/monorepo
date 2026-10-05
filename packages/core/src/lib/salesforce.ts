@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 
 import { SalesforceContactSyncConfig, config } from '#config/config';
 import { log as mainLogger } from '#logging';
-import type { Contact } from '#models/index';
+import type { Contact, ContactProfile } from '#models/index';
 import type { SFTokenResponse } from '#type/index';
 
 const log = mainLogger.child({ app: 'salesforce' });
@@ -74,6 +74,26 @@ export function createInstance(settings: SFSettings): AxiosInstance {
   );
 
   return instance;
+}
+
+/** The contact and profile fields that feed `contactToProfileFields`. */
+const SYNCED_FIELDS: ReadonlySet<string> = new Set([
+  'email',
+  'firstname',
+  'lastname',
+  'lastSeen',
+  'deliveryAddress',
+]);
+
+/**
+ * Whether an update touches any field that is mirrored to Salesforce
+ *
+ * @param updates The updates that were applied to the contact or profile
+ */
+export function touchesProfileFields(
+  updates: Partial<Contact> | Partial<ContactProfile>
+): boolean {
+  return Object.keys(updates).some((key) => SYNCED_FIELDS.has(key));
 }
 
 /**

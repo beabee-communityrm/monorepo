@@ -6,8 +6,9 @@ import {
   PROFILE_OBJECT,
   contactToProfileFields,
   createInstance,
+  touchesProfileFields,
 } from '#lib/salesforce';
-import type { Contact } from '#models/index';
+import type { Contact, ContactProfile } from '#models/index';
 import type { ContactSyncProvider } from '#type/index';
 
 /**
@@ -22,7 +23,11 @@ export class SalesforceProvider implements ContactSyncProvider {
     this.api = createInstance(settings);
   }
 
-  async upsertContact(contact: Contact): Promise<void> {
+  async upsertContact(
+    contact: Contact,
+    updates?: Partial<Contact> | Partial<ContactProfile>
+  ): Promise<void> {
+    if (updates && !touchesProfileFields(updates)) return;
     await this.api.patch(
       `sobjects/${PROFILE_OBJECT}/${PROFILE_ID_FIELD}/${contact.id}`,
       contactToProfileFields(contact)
