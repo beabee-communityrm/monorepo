@@ -17,6 +17,7 @@ import { log as mainLogger } from '#logging';
 import { Contact, Password, PaymentFlow, SignupFlow } from '#models/index';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
+import NewsletterService from '#services/NewsletterService';
 import OptionsService from '#services/OptionsService';
 import PaymentFlowService from '#services/PaymentFlowService';
 import { PaymentFlowForm } from '#type/index';
@@ -311,7 +312,7 @@ class SignupService {
       await ContactsService.updateContact(contact, partialContact);
       // Only an explicit subscription may overwrite an existing contact's preferences
       if (signupFlow.newsletterStatus === NewsletterStatus.Subscribed) {
-        await ContactsService.updateContactProfile(contact, {
+        await NewsletterService.upsertContact(contact, {
           newsletterStatus: signupFlow.newsletterStatus,
           ...(newsletterGroups && { newsletterGroups }),
         });
@@ -320,10 +321,6 @@ class SignupService {
       contact = await ContactsService.createContact(
         partialContact,
         {
-          newsletterStatus:
-            signupFlow.newsletterStatus ??
-            OptionsService.getText('newsletter-default-status'),
-          ...(newsletterGroups && { newsletterGroups }),
           ...(completedFlow?.data.vatNumber && {
             vatNumber: completedFlow.data.vatNumber,
           }),
@@ -331,6 +328,12 @@ class SignupService {
             OptionsService.getBool('show-mail-opt-in') && {
               deliveryAddress: completedFlow.data.billingAddress,
             }),
+        },
+        {
+          newsletterStatus:
+            signupFlow.newsletterStatus ??
+            OptionsService.getText('newsletter-default-status'),
+          ...(newsletterGroups && { newsletterGroups }),
         },
         signupFlow.origin
       );

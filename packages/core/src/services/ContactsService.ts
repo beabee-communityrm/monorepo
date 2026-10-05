@@ -101,11 +101,17 @@ class ContactsService {
 
   async createContact(
     partialContact: Partial<Contact> & Pick<Contact, 'email'>,
-    partialProfile: Partial<ContactProfile> & ContactNewsletterUpdates = {},
+    partialProfile: Partial<ContactProfile> = {},
+    partialNewsletter: ContactNewsletterUpdates = {},
     origin: ContactOriginData | null = null,
     opts = { sync: true }
   ): Promise<Contact> {
-    log.info('Create contact', { partialContact, partialProfile, origin });
+    log.info('Create contact', {
+      partialContact,
+      partialProfile,
+      partialNewsletter,
+      origin,
+    });
 
     try {
       const contact = getRepository(Contact).create({
@@ -121,13 +127,13 @@ class ContactsService {
       });
       await getRepository(Contact).save(contact);
 
-      const { newsletterStatus, newsletterGroups, ...profile } = partialProfile;
       contact.profile = getRepository(ContactProfile).create({
-        ...profile,
+        ...partialProfile,
         contact: contact,
       });
       await getRepository(ContactProfile).save(contact.profile);
 
+      const { newsletterStatus, newsletterGroups } = partialNewsletter;
       contact.newsletter = getRepository(ContactNewsletter).create({
         contact: contact,
         ...(newsletterStatus && { status: newsletterStatus }),
@@ -137,10 +143,7 @@ class ContactsService {
 
       await PaymentService.createContact(contact);
       if (opts.sync) {
-        await NewsletterService.upsertContact(contact, {
-          newsletterStatus: partialProfile.newsletterStatus,
-          newsletterGroups: partialProfile.newsletterGroups,
-        });
+        await NewsletterService.upsertContact(contact, partialNewsletter);
       }
 
       await EmailService.sendTemplateToAdmin('new-member', { contact });
@@ -172,6 +175,7 @@ class ContactsService {
         return await this.createContact(
           partialContact,
           partialProfile,
+          partialNewsletter,
           origin,
           opts
         );

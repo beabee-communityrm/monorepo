@@ -2,7 +2,6 @@ import {
   Address,
   ContributionPeriod,
   ContributionType,
-  NewsletterStatus,
 } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { Contact, ContactRole } from '@beabee/core/models';
@@ -220,7 +219,6 @@ async function addNewContact(row: SteadyRow) {
     {
       deliveryOptIn,
       deliveryAddress,
-      newsletterStatus: NewsletterStatus.None,
     }
   );
 

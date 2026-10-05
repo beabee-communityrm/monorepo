@@ -111,6 +111,8 @@ export class ContactController {
       );
     }
 
+    const { newsletterStatus, newsletterGroups, ...profile } =
+      data.profile || {};
     const contact = await ContactsService.createContact(
       {
         email: data.email,
@@ -120,7 +122,8 @@ export class ContactController {
           password: await generatePassword(data.password),
         }),
       },
-      data.profile
+      profile,
+      { newsletterStatus, newsletterGroups }
     );
 
     if (data.roles) {

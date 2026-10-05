@@ -226,6 +226,7 @@ async function handleSubscribe(data: MCProfileData) {
         firstname: data.merges.FNAME || '',
         lastname: data.merges.LNAME || '',
       },
+      {},
       {
         newsletterStatus: NewsletterStatus.Subscribed,
         newsletterGroups: nlContact?.groups || [],
