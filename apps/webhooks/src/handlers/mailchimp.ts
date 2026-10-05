@@ -215,7 +215,7 @@ async function handleSubscribe(data: MCProfileData) {
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
     await NewsletterService.upsertContact(contact, {
-      newsletterStatus: NewsletterStatus.Subscribed,
+      status: NewsletterStatus.Subscribed,
     });
   } else {
     const nlContact = await NewsletterService.getNewsletterContact(email);
@@ -228,8 +228,8 @@ async function handleSubscribe(data: MCProfileData) {
       },
       {},
       {
-        newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: nlContact?.groups || [],
+        status: NewsletterStatus.Subscribed,
+        groups: nlContact?.groups || [],
       },
       {
         source: 'newsletter',
@@ -257,7 +257,7 @@ async function handleUnsubscribe(data: MCProfileData) {
     await NewsletterService.upsertContact(contact, {
       // Use the status from the newsletter system in case it has changed
       // since the webhook was sent
-      newsletterStatus: nlContact?.status || NewsletterStatus.Unsubscribed,
+      status: nlContact?.status || NewsletterStatus.Unsubscribed,
     });
   }
 }
@@ -275,7 +275,7 @@ async function handleCleaned(data: MCCleanedEmailData) {
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
     await NewsletterService.upsertContact(contact, {
-      newsletterStatus: NewsletterStatus.Cleaned,
+      status: NewsletterStatus.Cleaned,
     });
   }
 }
@@ -302,7 +302,7 @@ async function handleUpdateProfile(data: MCProfileData) {
     });
     // This will also overwrite any other changes made to merge tags
     await NewsletterService.upsertContact(contact, {
-      newsletterGroups: nlContact?.groups || [],
+      groups: nlContact?.groups || [],
     });
   } else {
     log.info('Contact not found for ' + email);

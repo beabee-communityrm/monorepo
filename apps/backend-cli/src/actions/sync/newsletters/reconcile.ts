@@ -305,8 +305,8 @@ async function importNlContacts(
         },
         {},
         {
-          newsletterStatus: nlContact.status,
-          newsletterGroups: nlContact.groups,
+          status: nlContact.status,
+          groups: nlContact.groups,
         },
         null,
         { sync: false }
