@@ -25,11 +25,11 @@
         {{ callout.title }}
       </h3>
     </RouterLink>
+    <CalloutMetaList :callout="callout" />
+
     <p v-if="callout.excerpt" class="line-clamp-2 text-muted">
       {{ callout.excerpt }}
     </p>
-
-    <CalloutMetaList :callout="callout" />
 
     <RouterLink
       v-if="!callout.hasAnswered"
