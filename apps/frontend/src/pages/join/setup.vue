@@ -19,6 +19,7 @@ meta:
 import {
   type ContentJoinSetupData,
   NewsletterStatus,
+  type UpdateContactNewsletterData,
   type UpdateContactProfileData,
 } from '@beabee/beabee-common';
 
@@ -54,14 +55,16 @@ const isSaving = ref(false);
 async function handleSubmitSetup(data: SetupContactData) {
   isSaving.value = true;
 
-  const profile: UpdateContactProfileData = {
-    // Subscribe the user if they've opted in or selected groups
+  // Subscribe the user if they've opted in or selected groups
+  const newsletter: UpdateContactNewsletterData = {
     ...(setupContent.value.showNewsletterOptIn &&
-      (data.profile.newsletterOptIn ||
-        data.profile.newsletterGroups.length > 0) && {
-        newsletterStatus: NewsletterStatus.Subscribed,
-        newsletterGroups: data.profile.newsletterGroups,
+      (data.newsletter.optIn || data.newsletter.groups.length > 0) && {
+        status: NewsletterStatus.Subscribed,
+        groups: data.newsletter.groups,
       }),
+  };
+
+  const profile: UpdateContactProfileData = {
     // Only set the organisation name if the field was visible
     ...(setupContent.value.showOrganisationName && {
       organisation: data.organisationName,
@@ -85,6 +88,7 @@ async function handleSubmitSetup(data: SetupContactData) {
     lastname: data.lastName,
     password: data.password,
     ...(Object.keys(profile).length > 0 && { profile }),
+    ...(Object.keys(newsletter).length > 0 && { newsletter }),
   });
 
   await updateCurrentUser();
