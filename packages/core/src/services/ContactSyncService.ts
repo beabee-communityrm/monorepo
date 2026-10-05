@@ -30,8 +30,12 @@ class ContactSyncService {
   /**
    * Create or update the external record for a contact
    * @param contact The contact, with the updates already applied
+   * @param updates The updates that were applied, omitted for a new contact
    */
-  async upsertContact(contact: Contact): Promise<void> {
+  async upsertContact(
+    contact: Contact,
+    updates?: Partial<Contact> | Partial<ContactProfile>
+  ): Promise<void> {
     if (!this.isEnabled) return;
     log.info('Sync contact ' + contact.id);
     try {
@@ -40,7 +44,7 @@ class ContactSyncService {
           contactId: contact.id,
         });
       }
-      await this.provider.upsertContact(contact);
+      await this.provider.upsertContact(contact, updates);
     } catch (err) {
       log.error(`Failed to sync contact ${contact.id}`, err);
     }

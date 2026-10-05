@@ -229,7 +229,7 @@ class ContactsService {
     await PaymentService.updateContact(contact, updates);
 
     await IdpService.updateContact(contact, updates);
-    await ContactSyncService.upsertContact(contact);
+    await ContactSyncService.upsertContact(contact, updates);
   }
 
   /**
@@ -361,7 +361,7 @@ class ContactsService {
         metadata: null,
       });
 
-      await ContactSyncService.upsertContact(contact);
+      await ContactSyncService.upsertContact(contact, profileUpdates);
     }
 
     if (newsletterStatus || newsletterGroups) {
