@@ -30,7 +30,11 @@ async function processSegment(segment: Segment) {
     {
       limit: -1,
       rules: segment.ruleGroup,
-      with: [GetContactWith.Profile, GetContactWith.Roles],
+      with: [
+        GetContactWith.Profile,
+        GetContactWith.Newsletter,
+        GetContactWith.Roles,
+      ],
     }
   );
 
