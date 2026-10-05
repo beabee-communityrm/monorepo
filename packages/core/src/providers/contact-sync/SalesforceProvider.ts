@@ -4,9 +4,10 @@ import { SalesforceContactSyncConfig } from '#config/config';
 import {
   PROFILE_ID_FIELD,
   PROFILE_OBJECT,
+  SYNCED_CONTACT_FIELDS,
+  SYNCED_PROFILE_FIELDS,
   contactToProfileFields,
   createInstance,
-  touchesProfileFields,
 } from '#lib/salesforce';
 import type { Contact, ContactProfile } from '#models/index';
 import type { ContactSyncProvider } from '#type/index';
@@ -23,15 +24,26 @@ export class SalesforceProvider implements ContactSyncProvider {
     this.api = createInstance(settings);
   }
 
-  async upsertContact(
+  async createContact(contact: Contact): Promise<void> {
+    await this.upsertProfile(contact);
+  }
+
+  async updateContact(
     contact: Contact,
-    updates?: Partial<Contact> | Partial<ContactProfile>
+    updates: Partial<Contact>
   ): Promise<void> {
-    if (updates && !touchesProfileFields(updates)) return;
-    await this.api.patch(
-      `sobjects/${PROFILE_OBJECT}/${PROFILE_ID_FIELD}/${contact.id}`,
-      contactToProfileFields(contact)
-    );
+    if (Object.keys(updates).some((key) => SYNCED_CONTACT_FIELDS.has(key))) {
+      await this.upsertProfile(contact);
+    }
+  }
+
+  async updateContactProfile(
+    contact: Contact,
+    updates: Partial<ContactProfile>
+  ): Promise<void> {
+    if (Object.keys(updates).some((key) => SYNCED_PROFILE_FIELDS.has(key))) {
+      await this.upsertProfile(contact);
+    }
   }
 
   async permanentlyDeleteContact(contact: Contact): Promise<void> {
@@ -45,5 +57,13 @@ export class SalesforceProvider implements ContactSyncProvider {
         throw err;
       }
     }
+  }
+
+  /** Create or update the profile with the contact's full current state */
+  private async upsertProfile(contact: Contact): Promise<void> {
+    await this.api.patch(
+      `sobjects/${PROFILE_OBJECT}/${PROFILE_ID_FIELD}/${contact.id}`,
+      contactToProfileFields(contact)
+    );
   }
 }

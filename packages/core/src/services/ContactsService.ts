@@ -157,7 +157,7 @@ class ContactsService {
         contact.idpSubject = idpSubject;
       }
 
-      await ContactSyncService.upsertContact(contact);
+      await ContactSyncService.createContact(contact);
 
       return contact;
     } catch (error) {
@@ -229,7 +229,7 @@ class ContactsService {
     await PaymentService.updateContact(contact, updates);
 
     await IdpService.updateContact(contact, updates);
-    await ContactSyncService.upsertContact(contact, updates);
+    await ContactSyncService.updateContact(contact, updates);
   }
 
   /**
@@ -361,7 +361,7 @@ class ContactsService {
         metadata: null,
       });
 
-      await ContactSyncService.upsertContact(contact, profileUpdates);
+      await ContactSyncService.updateContactProfile(contact, profileUpdates);
     }
 
     if (newsletterStatus || newsletterGroups) {
