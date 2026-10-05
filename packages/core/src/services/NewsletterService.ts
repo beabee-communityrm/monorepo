@@ -13,7 +13,7 @@ import {
   CantUpdateNewsletterGroupsError,
 } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Callout, Contact, ContactProfile, Content } from '#models/index';
+import { Callout, Contact, ContactNewsletter, Content } from '#models/index';
 import {
   MailchimpProvider,
   NoneProvider,
@@ -35,8 +35,8 @@ import optionsService from './OptionsService.js';
 const log = mainLogger.child({ app: 'newsletter-service' });
 
 /**
- * Ensure the contact profile is loaded then creates a newsletter update object
- * to be sent to the newsletter provider
+ * Ensure the contact's newsletter state is loaded then creates a newsletter
+ * update object to be sent to the newsletter provider
  *
  * @param contact The contact
  * @param updates Optional updates to apply
@@ -48,11 +48,10 @@ async function contactToNlUpdate(
   updates?: ContactNewsletterUpdates,
   opts?: { newsletterGroupChange?: NewsletterGroupChange }
 ): Promise<UpdateNewsletterContact | undefined> {
-  // TODO: Fix that it relies on contact.profile being loaded
-  if (!contact.profile) {
-    contact.profile = await getRepository(ContactProfile).findOneByOrFail({
-      contactId: contact.id,
-    });
+  if (!contact.newsletter) {
+    contact.newsletter = await getRepository(ContactNewsletter).findOneByOrFail(
+      { contactId: contact.id }
+    );
   }
 
   return convertContactToNlUpdate(contact, updates, opts);
@@ -112,15 +111,14 @@ class NewsletterService {
         ? { status: NewsletterStatus.None, groups: [] }
         : await this.upsertContactToProvider(contact, nlUpdate, opts?.oldEmail);
 
-    // TODO: remove dependency on ContactProfile
-    await getRepository(ContactProfile).update(contact.id, {
-      newsletterStatus: newState.status,
-      newsletterGroups: newState.groups,
+    await getRepository(ContactNewsletter).update(contact.id, {
+      status: newState.status,
+      groups: newState.groups,
     });
-    contact.profile.newsletterStatus = newState.status;
-    contact.profile.newsletterGroups = newState.groups;
+    contact.newsletter.status = newState.status;
+    contact.newsletter.groups = newState.groups;
 
-    const oldGroups = contact.profile.newsletterGroups;
+    const oldGroups = contact.newsletter.groups;
     const groupsChanged =
       oldGroups.length !== newState.groups.length ||
       oldGroups.some((g) => !newState.groups.includes(g));
@@ -274,17 +272,15 @@ class NewsletterService {
   async getContactNewsletterGroups(
     contactId: string
   ): Promise<BaseNewsletterGroupData[]> {
-    const contactProfile = await getRepository(ContactProfile).findOneByOrFail({
-      contactId,
-    });
+    const contactNewsletter = await getRepository(
+      ContactNewsletter
+    ).findOneByOrFail({ contactId });
     const newsletterGroups: BaseNewsletterGroupData[] =
       optionsService.getJSON('newsletter-groups');
 
     const validGroupIds = new Set(newsletterGroups.map((g) => g.id));
     return newsletterGroups.filter(
-      (g) =>
-        contactProfile.newsletterGroups.includes(g.id) &&
-        validGroupIds.has(g.id)
+      (g) => contactNewsletter.groups.includes(g.id) && validGroupIds.has(g.id)
     );
   }
 
@@ -358,18 +354,18 @@ class NewsletterService {
           );
           const removedIds = removedGroups.map((g) => g.id);
 
-          log.info('Removing deleted groups from contact_profile');
+          log.info('Removing deleted groups from contact_newsletter');
           // 1. Remove from contacts
           await createQueryBuilder()
-            .update(ContactProfile)
+            .update(ContactNewsletter)
             .set({
-              newsletterGroups: () => `COALESCE((
+              groups: () => `COALESCE((
               SELECT jsonb_agg(elem)
-              FROM jsonb_array_elements_text("newsletterGroups") elem
+              FROM jsonb_array_elements_text("groups") elem
               WHERE elem != ALL(:removedIds)
             ), '[]'::jsonb)`,
             })
-            .where(`"newsletterGroups" ?| :removedIds`)
+            .where(`"groups" ?| :removedIds`)
             .setParameters({ removedIds })
             .execute();
 

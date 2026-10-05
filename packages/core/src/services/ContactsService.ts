@@ -29,6 +29,7 @@ import {
   Contact,
   ContactContribution,
   ContactMfa,
+  ContactNewsletter,
   ContactProfile,
   ContactRole,
   ContactTagAssignment,
@@ -48,6 +49,7 @@ import IdpService from '#services/IdpService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
+import { ContactNewsletterUpdates } from '#type/contact-newsletter-updates';
 import { NewsletterGroupChange } from '#type/newsletter-group-change';
 import { UpdateContributionResult } from '#type/update-contribution-result';
 import { generatePassword, isValidPassword } from '#utils/auth';
@@ -109,7 +111,7 @@ class ContactsService {
 
   async createContact(
     partialContact: Partial<Contact> & Pick<Contact, 'email'>,
-    partialProfile: Partial<ContactProfile> = {},
+    partialProfile: Partial<ContactProfile> & ContactNewsletterUpdates = {},
     origin: ContactOriginData | null = null,
     opts = { sync: true }
   ): Promise<Contact> {
@@ -129,11 +131,19 @@ class ContactsService {
       });
       await getRepository(Contact).save(contact);
 
+      const { newsletterStatus, newsletterGroups, ...profile } = partialProfile;
       contact.profile = getRepository(ContactProfile).create({
-        ...partialProfile,
+        ...profile,
         contact: contact,
       });
       await getRepository(ContactProfile).save(contact.profile);
+
+      contact.newsletter = getRepository(ContactNewsletter).create({
+        contact: contact,
+        ...(newsletterStatus && { status: newsletterStatus }),
+        ...(newsletterGroups && { groups: newsletterGroups }),
+      });
+      await getRepository(ContactNewsletter).save(contact.newsletter);
 
       await PaymentService.createContact(contact);
       if (opts.sync) {
@@ -338,7 +348,7 @@ class ContactsService {
 
   async updateContactProfile(
     contact: Contact,
-    updates: Partial<ContactProfile>,
+    updates: Partial<ContactProfile> & ContactNewsletterUpdates,
     opts: { newsletterGroupChange?: NewsletterGroupChange } = {}
   ): Promise<void> {
     const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
@@ -501,7 +511,12 @@ class ContactsService {
       // 16. Contact profile
       await em.getRepository(ContactProfile).delete({ contactId: contact.id });
 
-      // 17. Finally delete the contact
+      // 17. Contact newsletter
+      await em
+        .getRepository(ContactNewsletter)
+        .delete({ contactId: contact.id });
+
+      // 18. Finally delete the contact
       await em.getRepository(Contact).delete(contact.id);
 
       await ActivityService.addEvent({

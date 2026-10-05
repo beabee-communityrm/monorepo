@@ -71,7 +71,11 @@ class ContactTransformer extends BaseContactTransformer<
       }),
       ...(opts?.with?.includes(GetContactWith.Profile) &&
         contact.profile && {
-          profile: ContactProfileTransformer.convert(contact.profile, auth),
+          profile: {
+            ...ContactProfileTransformer.convert(contact.profile, auth),
+            newsletterStatus: contact.newsletter.status,
+            newsletterGroups: contact.newsletter.groups,
+          },
         }),
       ...(opts?.with?.includes(GetContactWith.Roles) && {
         roles: contact.roles.map(ContactRoleTransformer.convert),
@@ -112,6 +116,7 @@ class ContactTransformer extends BaseContactTransformer<
   ): void {
     if (query.with?.includes(GetContactWith.Profile)) {
       qb.innerJoinAndSelect(`${fieldPrefix}profile`, 'profile');
+      qb.innerJoinAndSelect(`${fieldPrefix}newsletter`, 'newsletter');
     }
 
     switch (query.sort) {

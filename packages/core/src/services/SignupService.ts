@@ -218,7 +218,7 @@ class SignupService {
 
     let contact = await ContactsService.findOne({
       where: { email: signupFlow.email },
-      relations: { profile: true },
+      relations: { profile: true, newsletter: true },
     });
 
     // Check if contact already exists with active membership
