@@ -76,25 +76,18 @@ export function createInstance(settings: SFSettings): AxiosInstance {
   return instance;
 }
 
-/** The contact and profile fields that feed `contactToProfileFields`. */
-const SYNCED_FIELDS: ReadonlySet<string> = new Set([
+/** The contact fields that feed `contactToProfileFields`. */
+export const SYNCED_CONTACT_FIELDS: ReadonlySet<string> = new Set([
   'email',
   'firstname',
   'lastname',
   'lastSeen',
-  'deliveryAddress',
-]);
+] satisfies (keyof Contact)[]);
 
-/**
- * Whether an update touches any field that is mirrored to Salesforce
- *
- * @param updates The updates that were applied to the contact or profile
- */
-export function touchesProfileFields(
-  updates: Partial<Contact> | Partial<ContactProfile>
-): boolean {
-  return Object.keys(updates).some((key) => SYNCED_FIELDS.has(key));
-}
+/** The profile fields that feed `contactToProfileFields`. */
+export const SYNCED_PROFILE_FIELDS: ReadonlySet<string> = new Set([
+  'deliveryAddress',
+] satisfies (keyof ContactProfile)[]);
 
 /**
  * Map a contact to its beabee_Profile__c fields. Text values are cut to the

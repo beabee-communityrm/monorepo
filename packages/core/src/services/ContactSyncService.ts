@@ -14,7 +14,7 @@ const log = mainLogger.child({ app: 'contact-sync-service' });
  * Mirrors every contact to an external system, regardless of newsletter
  * status. All methods are best-effort: failures are logged but never thrown,
  * because contact management must keep working while the external system is
- * unreachable. Each upsert sends the full state, so a missed update is
+ * unreachable. Each write sends the full state, so a missed update is
  * repaired by the next one.
  */
 class ContactSyncService {
@@ -28,25 +28,57 @@ class ContactSyncService {
   }
 
   /**
-   * Create or update the external record for a contact
-   * @param contact The contact, with the updates already applied
-   * @param updates The updates that were applied, omitted for a new contact
+   * Create the external record for a new contact
    */
-  async upsertContact(
+  async createContact(contact: Contact): Promise<void> {
+    if (!this.isEnabled) return;
+    log.info('Sync new contact ' + contact.id);
+    try {
+      await this.provider.createContact(await this.withProfile(contact));
+    } catch (err) {
+      log.error(`Failed to sync new contact ${contact.id}`, err);
+    }
+  }
+
+  /**
+   * Update the external record after a contact update
+   * @param contact The contact, with the updates already applied
+   * @param updates The updates that were applied
+   */
+  async updateContact(
     contact: Contact,
-    updates?: Partial<Contact> | Partial<ContactProfile>
+    updates: Partial<Contact>
   ): Promise<void> {
     if (!this.isEnabled) return;
-    log.info('Sync contact ' + contact.id);
+    log.info('Sync contact update ' + contact.id);
     try {
-      if (!contact.profile) {
-        contact.profile = await getRepository(ContactProfile).findOneByOrFail({
-          contactId: contact.id,
-        });
-      }
-      await this.provider.upsertContact(contact, updates);
+      await this.provider.updateContact(
+        await this.withProfile(contact),
+        updates
+      );
     } catch (err) {
-      log.error(`Failed to sync contact ${contact.id}`, err);
+      log.error(`Failed to sync contact update ${contact.id}`, err);
+    }
+  }
+
+  /**
+   * Update the external record after a profile update
+   * @param contact The contact, with the updates already applied
+   * @param updates The updates that were applied
+   */
+  async updateContactProfile(
+    contact: Contact,
+    updates: Partial<ContactProfile>
+  ): Promise<void> {
+    if (!this.isEnabled) return;
+    log.info('Sync profile update ' + contact.id);
+    try {
+      await this.provider.updateContactProfile(
+        await this.withProfile(contact),
+        updates
+      );
+    } catch (err) {
+      log.error(`Failed to sync profile update ${contact.id}`, err);
     }
   }
 
@@ -61,6 +93,16 @@ class ContactSyncService {
     } catch (err) {
       log.error(`Failed to delete synced contact ${contact.id}`, err);
     }
+  }
+
+  /** Providers read from the profile, which isn't always loaded */
+  private async withProfile(contact: Contact): Promise<Contact> {
+    if (!contact.profile) {
+      contact.profile = await getRepository(ContactProfile).findOneByOrFail({
+        contactId: contact.id,
+      });
+    }
+    return contact;
   }
 }
 
