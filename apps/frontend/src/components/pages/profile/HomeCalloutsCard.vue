@@ -11,8 +11,8 @@
     :title="t('callouts.openCallouts')"
     :icon="routeIcons.callouts"
     :count="t('homePage.openCount', { n: total })"
-    :loading="!callouts"
-    :empty="callouts?.length === 0"
+    :items="callouts"
+    :item-key="(callout) => callout.slug"
     :empty-text="t('homePage.noOpenCallouts')"
     :footer-label="
       callouts && total > callouts.length
@@ -22,20 +22,14 @@
     footer-to="/crowdnewsroom"
   >
     <template #loading>
-      <li v-for="n in 2" :key="n" class="flex gap-4 p-4">
-        <USkeleton class="h-16.5 w-16 shrink-0 sm:w-22" />
-        <div class="flex-1 space-y-2">
-          <USkeleton class="h-4 w-2/3" />
-          <USkeleton class="h-4 w-1/2" />
-        </div>
-      </li>
+      <USkeleton class="h-16.5 w-16 shrink-0 sm:w-22" />
+      <div class="flex-1 space-y-2">
+        <USkeleton class="h-4 w-2/3" />
+        <USkeleton class="h-4 w-1/2" />
+      </div>
     </template>
 
-    <li
-      v-for="callout in callouts"
-      :key="callout.slug"
-      class="relative flex flex-wrap items-start gap-x-4 gap-y-3 p-4 transition-colors hover:bg-elevated"
-    >
+    <template #default="{ item: callout }">
       <img
         :src="getCalloutImageUrl(callout, 200)"
         alt=""
@@ -58,7 +52,7 @@
       </div>
 
       <CalloutRespondLinks :callout="callout" compact class="shrink-0" />
-    </li>
+    </template>
   </HomeListCard>
 </template>
 

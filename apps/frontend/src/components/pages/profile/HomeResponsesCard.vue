@@ -11,24 +11,20 @@
     :title="t('homePage.yourResponses')"
     icon="i-lucide-message-square-text"
     :count="t('callouts.data.responses', { n: total }, total)"
-    :loading="!responses"
-    :empty="responses?.length === 0"
+    :items="shown"
+    :item-key="(response) => response.id"
     :empty-text="t('homePage.noResponses')"
     :footer-label="footerLabel"
     :footer-icon="expanded ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
     @footer-click="toggle"
   >
-    <li
-      v-for="response in shown"
-      :key="response.id"
-      class="relative flex flex-wrap items-start gap-x-4 gap-y-2 p-4 transition-colors hover:bg-elevated"
-    >
+    <template #default="{ item: response }">
       <div class="flex min-w-0 flex-[1_1_12rem] flex-col gap-1">
         <RouterLink
           :to="`/crowdnewsroom/${response.callout.slug}`"
           class="after:absolute after:inset-0 after:content-['']"
         >
-          <h4 class="line-clamp-2">{{ response.callout.title }}</h4>
+          <h4 class="line-clamp-2 text-sm">{{ response.callout.title }}</h4>
         </RouterLink>
 
         <p class="text-muted">
@@ -52,7 +48,7 @@
           aria-hidden="true"
         />
       </RouterLink>
-    </li>
+    </template>
   </HomeListCard>
 </template>
 

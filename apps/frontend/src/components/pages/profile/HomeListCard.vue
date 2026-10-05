@@ -3,47 +3,55 @@
   The frame for a list card on the home page: a heading with an optional count,
   divided rows, and an optional footer link or button.
 
-  Rows go in the default slot as `li` elements. While `loading`, the `loading`
-  slot shows instead (two plain skeleton rows by default); with no rows,
-  `emptyText` does.
+  Renders a row per item, with the row's content from the default slot. While
+  `items` is undefined, two rows of the `loading` slot show instead (plain
+  skeleton lines by default); when it's empty, `emptyText` does.
 -->
 <template>
-  <UCard
-    :ui="{
-      header: 'flex items-center justify-between gap-3 sm:px-4',
-      body: 'p-0 sm:p-0',
-      footer: 'p-0 sm:p-0',
-    }"
-  >
+  <UCard :ui="{ body: 'p-0 sm:p-0', footer: 'p-0 sm:p-0' }">
     <template #header>
-      <div class="flex min-w-0 items-center gap-3">
-        <AppIconBadge v-if="icon" :icon="icon" />
-        <component :is="`h${level}`">{{ title }}</component>
-      </div>
-      <span v-if="count && !loading" class="text-muted">{{ count }}</span>
+      <AppCardHeader :icon="icon" :title="title" :level="level">
+        <template v-if="count && items" #aside>
+          <span class="shrink-0 text-muted">{{ count }}</span>
+        </template>
+      </AppCardHeader>
     </template>
 
-    <ul v-if="loading" class="divide-y divide-default">
-      <slot name="loading">
-        <li v-for="n in 2" :key="n" class="space-y-2 p-4">
-          <USkeleton class="h-4 w-2/3" />
-          <USkeleton class="h-4 w-1/3" />
-        </li>
-      </slot>
+    <ul v-if="!items" class="divide-y divide-default">
+      <li v-for="n in 2" :key="n" :class="rowClass">
+        <slot name="loading">
+          <div class="flex-1 space-y-2">
+            <USkeleton class="h-4 w-2/3" />
+            <USkeleton class="h-4 w-1/3" />
+          </div>
+        </slot>
+      </li>
     </ul>
 
-    <p v-else-if="empty" class="p-4 text-muted">{{ emptyText }}</p>
+    <p v-else-if="items.length === 0" class="p-4 text-muted sm:px-6">
+      {{ emptyText }}
+    </p>
 
     <ul v-else class="divide-y divide-default">
-      <slot />
+      <li
+        v-for="item in items"
+        :key="itemKey(item)"
+        :class="[
+          rowClass,
+          'relative',
+          interactive && 'transition-colors hover:bg-elevated',
+        ]"
+      >
+        <slot :item="item" />
+      </li>
     </ul>
 
-    <template v-if="footerLabel && !loading && !empty" #footer>
+    <template v-if="footerLabel && items?.length" #footer>
       <component
         :is="footerTo ? RouterLink : 'button'"
         :to="footerTo"
         :type="footerTo ? undefined : 'button'"
-        class="group/footer flex w-full cursor-pointer items-center gap-1 px-4 py-3 font-medium text-primary hover:bg-elevated focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
+        class="group/footer flex w-full cursor-pointer items-center gap-1 px-4 py-3 font-medium text-primary hover:bg-elevated focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary sm:px-6"
         @click="footerTo || emit('footerClick')"
       >
         {{ footerLabel }}
@@ -61,25 +69,27 @@
   </UCard>
 </template>
 
-<script lang="ts" setup>
-import { AppIconBadge } from '@beabee/vue';
+<script lang="ts" setup generic="T">
+import { AppCardHeader } from '@beabee/vue';
 
 import { RouterLink } from 'vue-router';
 
 /** Props for HomeListCard */
-export interface HomeListCardProps {
+export interface HomeListCardProps<T> {
+  /** Items to show a row for; undefined while loading */
+  items: T[] | undefined;
+  /** A unique key for an item */
+  itemKey: (item: T) => string;
   /** Card heading */
   title: string;
   /** Iconify icon name, shown in a badge before the heading */
-  icon?: string;
+  icon: string;
   /** Heading level, so the page's outline stays nested */
   level?: 2 | 3 | 4;
   /** Shown beside the heading, e.g. "4 open" */
   count?: string;
-  /** Shows the loading slot instead of the rows */
-  loading?: boolean;
-  /** Shows `emptyText` instead of the rows */
-  empty?: boolean;
+  /** Rows highlight on hover, for rows that are links */
+  interactive?: boolean;
   /** Text for when there are no rows */
   emptyText?: string;
   /** Footer label; no footer without it */
@@ -90,10 +100,10 @@ export interface HomeListCardProps {
   footerIcon?: string;
 }
 
-withDefaults(defineProps<HomeListCardProps>(), {
-  icon: undefined,
+withDefaults(defineProps<HomeListCardProps<T>>(), {
   level: 3,
   count: undefined,
+  interactive: true,
   emptyText: undefined,
   footerLabel: undefined,
   footerTo: undefined,
@@ -101,4 +111,11 @@ withDefaults(defineProps<HomeListCardProps>(), {
 });
 
 const emit = defineEmits<{ footerClick: [] }>();
+
+defineSlots<{
+  default(props: { item: T }): unknown;
+  loading?(): unknown;
+}>();
+
+const rowClass = 'flex flex-wrap items-start gap-x-4 gap-y-3 p-4 sm:px-6';
 </script>
