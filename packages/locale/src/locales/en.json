@@ -1621,6 +1621,36 @@
     }
   },
   "homePage": {
+    "contribution": {
+      "action": {
+        "cancelling": "Keep contributing",
+        "oneOff": "Set up a regular contribution"
+      },
+      "amountOnDate": "{amount} on {date}",
+      "endsOn": "Ends on",
+      "headline": {
+        "cancelled": "You're not contributing at the moment",
+        "none": "You're not contributing yet",
+        "oneOff": "Thank you for your contributions"
+      },
+      "lastContribution": "Last contribution",
+      "lastPayment": "Last payment",
+      "nextPayment": "Next payment",
+      "note": {
+        "cancelling": "You won't be charged again. Your contribution stays active until it ends.",
+        "none": "Regular contributions, however small, keep our work going.",
+        "oneOff": "A regular contribution, however small, helps us plan ahead."
+      },
+      "paymentEnding": "{method} ending {digits}",
+      "status": {
+        "active": "Active",
+        "cancelled": "Cancelled",
+        "cancelling": "Cancelling",
+        "none": "None",
+        "oneOff": "One-time"
+      },
+      "title": "Your contribution"
+    },
     "editProfile": "Edit your community profile",
     "greeting": {
       "afternoon": "Good afternoon, {firstName}",

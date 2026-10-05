@@ -33,20 +33,11 @@ meta:
       </div>
 
       <div class="flex w-full flex-col gap-5 md:w-80 md:shrink-0">
-        <section>
-          <SectionTitle>{{ t('homePage.yourProfile') }}</SectionTitle>
-
-          <div class="mb-4 flex">
-            <ContributionInfo :contact="user" />
-          </div>
-
-          <AppButton
-            v-if="!generalContent.hideContribution"
-            to="/profile/contribution"
-            variant="primaryOutlined"
-            >{{ t('homePage.manageContribution') }}</AppButton
-          >
-        </section>
+        <HomeContributionCard
+          v-if="!generalContent.hideContribution"
+          :contribution="contribution"
+          :last-payment="lastPayment"
+        />
       </div>
     </div>
   </div>
@@ -55,23 +46,23 @@ meta:
 <script lang="ts" setup>
 import {
   type ContentProfileData,
+  type ContributionInfo,
   type GetCalloutResponseDataWith,
   GetCalloutResponseWith,
   type GetContactData,
+  type GetPaymentData,
   ItemStatus,
   type Paginated,
+  PaymentStatus,
 } from '@beabee/beabee-common';
-import { AppButton } from '@beabee/vue';
-
 import { type Ref, computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
-import ContributionInfo from '#components/pages/profile/ContributionInfo.vue';
 import HomeCalloutsCard from '#components/pages/profile/HomeCalloutsCard.vue';
+import HomeContributionCard from '#components/pages/profile/HomeContributionCard.vue';
 import HomeResponsesCard from '#components/pages/profile/HomeResponsesCard.vue';
 import NoticeContainer from '#components/pages/profile/NoticeContainer.vue';
-import SectionTitle from '#components/pages/profile/SectionTitle.vue';
 import WelcomeCard from '#components/welcome/WelcomeCard.vue';
 import { currentUser, generalContent } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
@@ -107,6 +98,8 @@ const profileContent = ref<ContentProfileData>({
 });
 
 const callouts = ref<Paginated<CalloutCardData>>();
+const contribution = ref<ContributionInfo>();
+const lastPayment = ref<GetPaymentData | null>();
 const responses =
   ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>>();
 
@@ -129,8 +122,32 @@ async function loadResponses(limit: number) {
   );
 }
 
+async function loadContribution() {
+  const [info, payments] = await Promise.all([
+    client.contact.contribution.get(),
+    client.contact.payment.list('me', {
+      sort: 'chargeDate',
+      order: 'DESC',
+      limit: 1,
+      rules: {
+        condition: 'AND',
+        rules: [
+          {
+            field: 'status',
+            operator: 'equal',
+            value: [PaymentStatus.Successful],
+          },
+        ],
+      },
+    }),
+  ]);
+  lastPayment.value = payments.items[0] ?? null;
+  contribution.value = info;
+}
+
 onBeforeMount(async () => {
   loadResponses(3);
+  if (!generalContent.value.hideContribution) loadContribution();
 
   profileContent.value = await client.content.get('profile');
 

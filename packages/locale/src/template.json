@@ -1621,6 +1621,36 @@
     }
   },
   "homePage": {
+    "contribution": {
+      "action": {
+        "cancelling": "",
+        "oneOff": ""
+      },
+      "amountOnDate": "",
+      "endsOn": "",
+      "headline": {
+        "cancelled": "",
+        "none": "",
+        "oneOff": ""
+      },
+      "lastContribution": "",
+      "lastPayment": "",
+      "nextPayment": "",
+      "note": {
+        "cancelling": "",
+        "none": "",
+        "oneOff": ""
+      },
+      "paymentEnding": "",
+      "status": {
+        "active": "",
+        "cancelled": "",
+        "cancelling": "",
+        "none": "",
+        "oneOff": ""
+      },
+      "title": ""
+    },
     "editProfile": "",
     "greeting": {
       "afternoon": "",
