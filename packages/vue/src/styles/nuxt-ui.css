@@ -80,3 +80,12 @@
     color: var(--ui-color-error-400);
   }
 }
+
+/* Tinted surface for notices and highlighted cards, fading out downwards
+ * over the default surface colour. */
+@utility bg-tint-primary {
+  @apply bg-default bg-linear-to-b from-primary/10 to-primary/3;
+}
+@utility bg-tint-success {
+  @apply bg-default bg-linear-to-b from-success/10 to-success/3;
+}

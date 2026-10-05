@@ -94,14 +94,14 @@ const stylesByColor = {
   primary: {
     ring: 'ring-primary/20',
     solid: 'bg-primary/5',
-    gradient: 'bg-linear-to-b from-primary/5 to-transparent to-70%',
+    gradient: 'bg-tint-primary',
     icon: 'text-primary',
     title: 'text-highlighted',
   },
   success: {
     ring: 'ring-success/20',
     solid: 'bg-success/5',
-    gradient: 'bg-linear-to-b from-success/5 to-transparent to-70%',
+    gradient: 'bg-tint-success',
     icon: 'text-success',
     title: 'text-success',
   },
