@@ -7,21 +7,15 @@ import { GetContactProfileDto } from '#api/dto/ContactProfileDto';
 import AddressTransformer from '#api/transformers/AddressTransformer';
 import { BaseTransformer } from '#api/transformers/BaseTransformer';
 
-/** The profile's own fields; the newsletter fields are added by ContactTransformer */
-type GetContactProfileOwnDto = Omit<
-  GetContactProfileDto,
-  'newsletterStatus' | 'newsletterGroups'
->;
-
 class ContactProfileTransformer extends BaseTransformer<
   ContactProfile,
-  GetContactProfileOwnDto
+  GetContactProfileDto
 > {
   protected model = ContactProfile;
   protected filters = {};
 
   @TransformPlainToInstance(GetContactProfileDto)
-  convert(profile: ContactProfile, auth: AuthInfo): GetContactProfileOwnDto {
+  convert(profile: ContactProfile, auth: AuthInfo): GetContactProfileDto {
     return {
       telephone: profile.telephone,
       twitter: profile.twitter,

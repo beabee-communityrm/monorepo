@@ -72,10 +72,13 @@ class ContactTransformer extends BaseContactTransformer<
       }),
       ...(opts?.with?.includes(GetContactWith.Profile) &&
         contact.profile && {
-          profile: {
-            ...ContactProfileTransformer.convert(contact.profile, auth),
-            newsletterStatus: contact.newsletter.status,
-            newsletterGroups: contact.newsletter.groups,
+          profile: ContactProfileTransformer.convert(contact.profile, auth),
+        }),
+      ...(opts?.with?.includes(GetContactWith.Newsletter) &&
+        contact.newsletter && {
+          newsletter: {
+            status: contact.newsletter.status,
+            groups: contact.newsletter.groups,
           },
         }),
       ...(opts?.with?.includes(GetContactWith.Roles) && {
@@ -117,6 +120,8 @@ class ContactTransformer extends BaseContactTransformer<
   ): void {
     if (query.with?.includes(GetContactWith.Profile)) {
       qb.innerJoinAndSelect(`${fieldPrefix}profile`, 'profile');
+    }
+    if (query.with?.includes(GetContactWith.Newsletter)) {
       qb.innerJoinAndSelect(`${fieldPrefix}newsletter`, 'newsletter');
     }
 
@@ -236,29 +241,25 @@ class ContactTransformer extends BaseContactTransformer<
     }
 
     if (data.profile) {
-      const { newsletterStatus, newsletterGroups, ...profileUpdates } =
-        data.profile;
-
       if (
         !auth.roles.includes('admin') &&
-        (profileUpdates.notes || profileUpdates.description)
+        (data.profile.notes || data.profile.description)
       ) {
         throw new UnauthorizedError();
       }
 
-      if (Object.keys(profileUpdates).length > 0) {
-        await ContactsService.updateContactProfile(target, profileUpdates);
-      }
-      if (newsletterStatus || newsletterGroups) {
-        await NewsletterService.upsertContact(target, {
-          status: newsletterStatus,
-          groups: newsletterGroups,
-        });
-      }
+      await ContactsService.updateContactProfile(target, data.profile);
+    }
+
+    if (data.newsletter) {
+      await NewsletterService.upsertContact(target, data.newsletter);
     }
 
     return await this.fetchOneById(auth, target.id, {
-      with: data.profile ? [GetContactWith.Profile] : [],
+      with: [
+        ...(data.profile ? [GetContactWith.Profile] : []),
+        ...(data.newsletter ? [GetContactWith.Newsletter] : []),
+      ],
     });
   }
 

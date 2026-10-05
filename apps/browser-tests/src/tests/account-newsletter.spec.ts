@@ -27,9 +27,9 @@ test("Manage newsletter subscriptions", async ({ page, request, baseURL }) => {
       {
         headers: { Authorization: `Bearer ${admin.apiKey}` },
         data: {
-          profile: {
-            newsletterStatus: "subscribed",
-            newsletterGroups: [KOMBUCHA.id, TEA.id],
+          newsletter: {
+            status: "subscribed",
+            groups: [KOMBUCHA.id, TEA.id],
           },
         },
       },
