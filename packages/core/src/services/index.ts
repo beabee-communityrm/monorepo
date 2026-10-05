@@ -3,6 +3,7 @@ export * from './ActivityService.js';
 export * from './ApiKeyService.js';
 export * from './CalloutsService.js';
 export * from './ContactMfaService.js';
+export * from './ContactSyncBulkService.js';
 export * from './ContactSyncService.js';
 export * from './ContactsService.js';
 export * from './DispatchService.js';

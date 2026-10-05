@@ -4,6 +4,8 @@ export * from './completed-payment-flow-data.js';
 export * from './completed-payment-flow.js';
 export * from './contact-mfa-secure.js';
 export * from './contact-newsletter-updates.js';
+export * from './contact-sync-bulk-provider.js';
+export * from './contact-sync-failure.js';
 export * from './contact-sync-provider.js';
 export * from './contribution-info.js';
 export * from './create-contact-mfa-data.js';
