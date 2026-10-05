@@ -6,6 +6,7 @@ export * from './BaseFileService.js';
 export * from './BaseS3ObjectService.js';
 export * from './CalloutsService.js';
 export * from './ContactMfaService.js';
+export * from './ContactSyncBulkService.js';
 export * from './ContactSyncService.js';
 export * from './ContactsService.js';
 export * from './DispatchService.js';
