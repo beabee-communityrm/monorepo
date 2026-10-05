@@ -43,6 +43,7 @@ import {
 } from '#models/index';
 import ActivityService from '#services/ActivityService';
 import ContactMfaService from '#services/ContactMfaService';
+import ContactSyncService from '#services/ContactSyncService';
 import EmailService from '#services/EmailService';
 import IdpService from '#services/IdpService';
 import NewsletterService from '#services/NewsletterService';
@@ -138,6 +139,7 @@ class ContactsService {
       await PaymentService.createContact(contact);
       if (opts.sync) {
         await NewsletterService.upsertContact(contact);
+        await ContactSyncService.upsertContact(contact);
       }
 
       await EmailService.sendTemplateToAdmin('new-member', { contact });
@@ -215,6 +217,7 @@ class ContactsService {
         undefined,
         oldEmail ? { oldEmail } : undefined
       );
+      await ContactSyncService.upsertContact(contact);
     }
 
     await ActivityService.addEvent({
@@ -356,6 +359,8 @@ class ContactsService {
         eventType: ActivityEventType.ContactProfileUpdated,
         metadata: null,
       });
+
+      await ContactSyncService.upsertContact(contact);
     }
 
     if (newsletterStatus || newsletterGroups) {
@@ -512,6 +517,7 @@ class ContactsService {
     });
 
     await IdpService.permanentlyDeleteContact(contact);
+    await ContactSyncService.permanentlyDeleteContact(contact);
   }
 
   /**
