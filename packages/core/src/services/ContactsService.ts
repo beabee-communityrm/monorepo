@@ -50,7 +50,6 @@ import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
 import { ContactNewsletterUpdates } from '#type/contact-newsletter-updates';
-import { NewsletterGroupChange } from '#type/newsletter-group-change';
 import { UpdateContributionResult } from '#type/update-contribution-result';
 import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
@@ -348,33 +347,20 @@ class ContactsService {
 
   async updateContactProfile(
     contact: Contact,
-    updates: Partial<ContactProfile> & ContactNewsletterUpdates,
-    opts: { newsletterGroupChange?: NewsletterGroupChange } = {}
+    updates: Partial<ContactProfile>
   ): Promise<void> {
-    const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
+    log.info('Update contact profile for ' + contact.id, { updates });
 
-    if (Object.keys(profileUpdates).length > 0) {
-      log.info('Update contact profile for ' + contact.id, { profileUpdates });
-
-      await getRepository(ContactProfile).update(contact.id, profileUpdates);
-      if (contact.profile) {
-        Object.assign(contact.profile, profileUpdates);
-      }
-
-      await ActivityService.addEvent({
-        targetId: contact.id,
-        eventType: ActivityEventType.ContactProfileUpdated,
-        metadata: null,
-      });
+    await getRepository(ContactProfile).update(contact.id, updates);
+    if (contact.profile) {
+      Object.assign(contact.profile, updates);
     }
 
-    if (newsletterStatus || newsletterGroups) {
-      await NewsletterService.upsertContact(
-        contact,
-        { newsletterStatus, newsletterGroups },
-        opts
-      );
-    }
+    await ActivityService.addEvent({
+      targetId: contact.id,
+      eventType: ActivityEventType.ContactProfileUpdated,
+      metadata: null,
+    });
   }
 
   /**

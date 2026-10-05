@@ -305,7 +305,7 @@ class NewsletterService {
   /**
    * Get newsletter provider's groups, compare them against
    * groups cached in the database, and update cache if needed.
-   * If any groups were deleted, remove them from contact profiles, callouts
+   * If any groups were deleted, remove them from contacts, callouts
    * and join content. Finally, return diff alongside provider
    * integration info.
    *

@@ -214,7 +214,7 @@ async function handleSubscribe(data: MCProfileData) {
 
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
-    await ContactsService.updateContactProfile(contact, {
+    await NewsletterService.upsertContact(contact, {
       newsletterStatus: NewsletterStatus.Subscribed,
     });
   } else {
@@ -253,7 +253,7 @@ async function handleUnsubscribe(data: MCProfileData) {
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
     const nlContact = await NewsletterService.getNewsletterContact(email);
-    await ContactsService.updateContactProfile(contact, {
+    await NewsletterService.upsertContact(contact, {
       // Use the status from the newsletter system in case it has changed
       // since the webhook was sent
       newsletterStatus: nlContact?.status || NewsletterStatus.Unsubscribed,
@@ -273,7 +273,7 @@ async function handleCleaned(data: MCCleanedEmailData) {
 
   const contact = await ContactsService.findOneBy({ email });
   if (contact) {
-    await ContactsService.updateContactProfile(contact, {
+    await NewsletterService.upsertContact(contact, {
       newsletterStatus: NewsletterStatus.Cleaned,
     });
   }
@@ -300,7 +300,7 @@ async function handleUpdateProfile(data: MCProfileData) {
       lastname: data.merges.LNAME || contact.lastname,
     });
     // This will also overwrite any other changes made to merge tags
-    await ContactsService.updateContactProfile(contact, {
+    await NewsletterService.upsertContact(contact, {
       newsletterGroups: nlContact?.groups || [],
     });
   } else {
