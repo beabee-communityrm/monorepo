@@ -1632,16 +1632,21 @@
     "manageContribution": "",
     "newCallout": "",
     "noOpenCallouts": "",
+    "noResponses": "",
     "oneTimeContributionSuccessMessage": "",
     "openCallouts": "",
     "openCount": "",
     "quickActions": "",
     "seeAllOpen": "",
+    "showAllResponses": "",
+    "showFewer": "",
+    "submittedOn": "",
     "title": "",
     "viewAllCallouts": "",
     "viewOpenCallouts": "",
     "welcome": "",
-    "yourProfile": ""
+    "yourProfile": "",
+    "yourResponses": ""
   },
   "icons": {
     "welcome": {

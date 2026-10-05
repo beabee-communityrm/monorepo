@@ -1632,16 +1632,21 @@
     "manageContribution": "Manage your contribution",
     "newCallout": "New CrowdNewsroom!",
     "noOpenCallouts": "Nothing open right now.",
+    "noResponses": "You haven't responded to a CrowdNewsroom yet.",
     "oneTimeContributionSuccessMessage": "Thank you for your contribution!",
     "openCallouts": "CrowdNewsroom",
     "openCount": "{n} open",
     "quickActions": "Quick actions",
     "seeAllOpen": "See all {n} open CrowdNewsrooms",
+    "showAllResponses": "Show all {n} responses",
+    "showFewer": "Show fewer",
+    "submittedOn": "Submitted {date}",
     "title": "Home",
     "viewAllCallouts": "Open the CrowdNewsroom",
     "viewOpenCallouts": "Open the CrowdNewsroom",
     "welcome": "Welcome aboard {firstName}!",
-    "yourProfile": "Your profile"
+    "yourProfile": "Your profile",
+    "yourResponses": "Your responses"
   },
   "icons": {
     "welcome": {
