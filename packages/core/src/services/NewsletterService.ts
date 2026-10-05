@@ -217,7 +217,27 @@ class NewsletterService {
   }
 
   /**
-   * Permanently remove a contact from the newsletter provider
+   * Create the newsletter state for a new contact. This doesn't sync the
+   * contact to the provider, call upsertContact for that.
+   *
+   * @param contact The new contact
+   * @param partialNewsletter The initial status and groups
+   */
+  async createContact(
+    contact: Contact,
+    { status, groups }: ContactNewsletterUpdates = {}
+  ): Promise<void> {
+    contact.newsletter = getRepository(ContactNewsletter).create({
+      contact,
+      ...(status && { status }),
+      ...(groups && { groups }),
+    });
+    await getRepository(ContactNewsletter).save(contact.newsletter);
+  }
+
+  /**
+   * Permanently remove a contact from the newsletter provider and delete
+   * their newsletter state
    *
    * @param contact The contact to delete
    */
@@ -227,6 +247,7 @@ class NewsletterService {
     if (nlUpdate) {
       await this.provider.permanentlyDeleteContact(nlUpdate.email);
     }
+    await getRepository(ContactNewsletter).delete({ contactId: contact.id });
   }
 
   /**

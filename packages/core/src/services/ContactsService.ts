@@ -29,7 +29,6 @@ import {
   Contact,
   ContactContribution,
   ContactMfa,
-  ContactNewsletter,
   ContactProfile,
   ContactRole,
   ContactTagAssignment,
@@ -142,15 +141,8 @@ class ContactsService {
       });
       await getRepository(ContactProfile).save(contact.profile);
 
-      const { status, groups } = partialNewsletter;
-      contact.newsletter = getRepository(ContactNewsletter).create({
-        contact: contact,
-        ...(status && { status }),
-        ...(groups && { groups }),
-      });
-      await getRepository(ContactNewsletter).save(contact.newsletter);
-
       await PaymentService.createContact(contact);
+      await NewsletterService.createContact(contact, partialNewsletter);
       if (opts.sync) {
         await NewsletterService.upsertContact(contact);
       }
@@ -504,12 +496,7 @@ class ContactsService {
       // 16. Contact profile
       await em.getRepository(ContactProfile).delete({ contactId: contact.id });
 
-      // 17. Contact newsletter
-      await em
-        .getRepository(ContactNewsletter)
-        .delete({ contactId: contact.id });
-
-      // 18. Finally delete the contact
+      // 17. Finally delete the contact
       await em.getRepository(Contact).delete(contact.id);
 
       await ActivityService.addEvent({
