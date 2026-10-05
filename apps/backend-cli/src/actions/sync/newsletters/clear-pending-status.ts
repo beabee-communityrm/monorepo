@@ -14,8 +14,8 @@ export async function clearPendingStatus(args: SyncDryRunArgs): Promise<void> {
     log.info('📡 Fetching contact lists...');
 
     const pendingContacts = await createQueryBuilder(Contact, 'contact')
-      .innerJoin('contact.profile', 'profile')
-      .where('profile.newsletterStatus = :status', {
+      .innerJoin('contact.newsletter', 'newsletter')
+      .where('newsletter.status = :status', {
         status: NewsletterStatus.Pending,
       })
       .getMany();
@@ -49,10 +49,7 @@ export async function clearPendingStatus(args: SyncDryRunArgs): Promise<void> {
       await newsletterBulkService.updateContactNlData(
         contactsToUpdate.map((contact) => ({
           contact,
-          updates: {
-            newsletterStatus: NewsletterStatus.None,
-            newsletterGroups: [],
-          },
+          updates: { status: NewsletterStatus.None, groups: [] },
         }))
       );
     }

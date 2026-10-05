@@ -23,6 +23,7 @@ export const ALWAYS_ANONYMIZED_MODELS = [
   models.contactAnonymiser,
   models.contactRoleAnonymiser,
   models.contactProfileAnonymiser,
+  models.contactNewsletterAnonymiser,
   models.contactContributionAnonymiser,
   models.contactTagAnonymiser,
   models.contactTagAssignmentAnonymiser,
@@ -110,6 +111,7 @@ export const DEMO_CONTACT_ANONYMIZERS = [
   models.contactAnonymiser,
   models.contactRoleAnonymiser,
   models.contactProfileAnonymiser,
+  models.contactNewsletterAnonymiser,
   models.paymentsAnonymiser,
   models.contactContributionAnonymiser,
 ] as models.ModelAnonymiser[];

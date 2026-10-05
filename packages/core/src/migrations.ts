@@ -135,6 +135,7 @@ import { AddContactIdpSubject1788876714973 } from './migrations/1788876714973-Ad
 import { AddCalloutResponseMode1789404005434 } from './migrations/1789404005434-AddCalloutResponseMode.js';
 import { MakeActorTypeNullable1790585189483 } from './migrations/1790585189483-MakeActorTypeNullable.js';
 import { RemoveContactLoginOverride1790855215072 } from './migrations/1790855215072-RemoveContactLoginOverride.js';
+import { AddContactNewsletter1791213412132 } from './migrations/1791213412132-AddContactNewsletter.js';
 import { AddSignupFlowNewsletter1792506342771 } from './migrations/1792506342771-AddSignupFlowNewsletter.js';
 import { AddSignupFlowPostConfirmUrl1793892212089 } from './migrations/1793892212089-AddSignupFlowPostConfirmUrl.js';
 import { AddSignupFlowConfirmedAt1794578934541 } from './migrations/1794578934541-AddSignupFlowConfirmedAt.js';
@@ -278,6 +279,7 @@ export const migrations = [
   AddCalloutResponseMode1789404005434,
   MakeActorTypeNullable1790585189483,
   RemoveContactLoginOverride1790855215072,
+  AddContactNewsletter1791213412132,
   AddSignupFlowNewsletter1792506342771,
   AddSignupFlowPostConfirmUrl1793892212089,
   AddSignupFlowConfirmedAt1794578934541,
