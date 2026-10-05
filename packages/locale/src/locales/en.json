@@ -1657,9 +1657,11 @@
       "evening": "Good evening, {firstName}",
       "morning": "Good morning, {firstName}"
     },
+    "groupCount": "{n} group | {n} groups",
     "makeOneTimeDonationButton": "Make contribution",
     "makeOneTimeDonationTitle": "Make one-time contribution",
     "manageContribution": "Manage your contribution",
+    "manageSubscriptions": "Manage subscriptions",
     "newCallout": "New CrowdNewsroom!",
     "noOpenCallouts": "Nothing open right now.",
     "noResponses": "You haven't responded to a CrowdNewsroom yet.",
@@ -1675,6 +1677,7 @@
     "viewAllCallouts": "Open the CrowdNewsroom",
     "viewOpenCallouts": "Open the CrowdNewsroom",
     "welcome": "Welcome aboard {firstName}!",
+    "yourNewsletters": "Your newsletters",
     "yourProfile": "Your profile",
     "yourResponses": "Your responses"
   },

@@ -51,6 +51,7 @@
         :is="footerTo ? RouterLink : 'button'"
         :to="footerTo"
         :type="footerTo ? undefined : 'button'"
+        :aria-expanded="footerTo ? undefined : footerExpanded"
         class="group/footer flex w-full cursor-pointer items-center gap-1 px-4 py-3 font-medium text-primary hover:bg-elevated focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary sm:px-6"
         @click="footerTo || emit('footerClick')"
       >
@@ -98,6 +99,8 @@ export interface HomeListCardProps<T> {
   footerTo?: string;
   /** Icon after the footer label */
   footerIcon?: string;
+  /** For a footer button that expands the list: whether it's expanded */
+  footerExpanded?: boolean;
 }
 
 withDefaults(defineProps<HomeListCardProps<T>>(), {
@@ -108,6 +111,7 @@ withDefaults(defineProps<HomeListCardProps<T>>(), {
   footerLabel: undefined,
   footerTo: undefined,
   footerIcon: 'i-lucide-chevron-right',
+  footerExpanded: undefined,
 });
 
 const emit = defineEmits<{ footerClick: [] }>();

@@ -1657,9 +1657,11 @@
       "evening": "",
       "morning": ""
     },
+    "groupCount": "",
     "makeOneTimeDonationButton": "",
     "makeOneTimeDonationTitle": "",
     "manageContribution": "",
+    "manageSubscriptions": "",
     "newCallout": "",
     "noOpenCallouts": "",
     "noResponses": "",
@@ -1675,6 +1677,7 @@
     "viewAllCallouts": "",
     "viewOpenCallouts": "",
     "welcome": "",
+    "yourNewsletters": "",
     "yourProfile": "",
     "yourResponses": ""
   },

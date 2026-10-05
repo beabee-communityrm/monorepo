@@ -38,6 +38,10 @@ meta:
           :contribution="contribution"
           :last-payment="lastPayment"
         />
+        <HomeNewslettersCard
+          v-if="newsletterGroups.length"
+          :groups="newsletterGroups"
+        />
       </div>
     </div>
   </div>
@@ -45,6 +49,7 @@ meta:
 
 <script lang="ts" setup>
 import {
+  type BaseNewsletterGroupData,
   type ContentProfileData,
   type ContributionInfo,
   type GetCalloutResponseDataWith,
@@ -61,6 +66,7 @@ import { useRoute } from 'vue-router';
 
 import HomeCalloutsCard from '#components/pages/profile/HomeCalloutsCard.vue';
 import HomeContributionCard from '#components/pages/profile/HomeContributionCard.vue';
+import HomeNewslettersCard from '#components/pages/profile/HomeNewslettersCard.vue';
 import HomeResponsesCard from '#components/pages/profile/HomeResponsesCard.vue';
 import NoticeContainer from '#components/pages/profile/NoticeContainer.vue';
 import WelcomeCard from '#components/welcome/WelcomeCard.vue';
@@ -99,6 +105,7 @@ const profileContent = ref<ContentProfileData>({
 
 const callouts = ref<Paginated<CalloutCardData>>();
 const contribution = ref<ContributionInfo>();
+const newsletterGroups = ref<BaseNewsletterGroupData[]>([]);
 const lastPayment = ref<GetPaymentData | null>();
 const responses =
   ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>>();
@@ -147,6 +154,10 @@ async function loadContribution() {
 
 onBeforeMount(async () => {
   loadResponses(3);
+  client.contact.newsletter
+    .getGroups('me')
+    .then((groups) => (newsletterGroups.value = groups))
+    .catch(() => {});
   if (!generalContent.value.hideContribution) loadContribution();
 
   profileContent.value = await client.content.get('profile');

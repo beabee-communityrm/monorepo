@@ -16,6 +16,7 @@
     :empty-text="t('homePage.noResponses')"
     :footer-label="footerLabel"
     :footer-icon="expanded ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
+    :footer-expanded="expanded"
     @footer-click="toggle"
   >
     <template #default="{ item: response }">
