@@ -5,6 +5,7 @@ import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { CalloutReviewer, Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import IdpService from '@beabee/core/services/IdpService';
+import NewsletterService from '@beabee/core/services/NewsletterService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
 import { QueryDeepPartialEntity } from '@beabee/core/type';
@@ -235,14 +236,25 @@ class ContactTransformer extends BaseContactTransformer<
     }
 
     if (data.profile) {
+      const { newsletterStatus, newsletterGroups, ...profileUpdates } =
+        data.profile;
+
       if (
         !auth.roles.includes('admin') &&
-        (data.profile.notes || data.profile.description)
+        (profileUpdates.notes || profileUpdates.description)
       ) {
         throw new UnauthorizedError();
       }
 
-      await ContactsService.updateContactProfile(target, data.profile);
+      if (Object.keys(profileUpdates).length > 0) {
+        await ContactsService.updateContactProfile(target, profileUpdates);
+      }
+      if (newsletterStatus || newsletterGroups) {
+        await NewsletterService.upsertContact(target, {
+          newsletterStatus,
+          newsletterGroups,
+        });
+      }
     }
 
     return await this.fetchOneById(auth, target.id, {
