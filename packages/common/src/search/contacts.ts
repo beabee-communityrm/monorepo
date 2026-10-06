@@ -9,6 +9,16 @@ import type { TagFiltersType } from './tags.js';
 
 export const RoleTypes = ['member', 'admin', 'superadmin'] as const;
 
+/** Who added a contact, derived from the actor of their creation event */
+export const ContactAddedByTypes = [
+  'admin',
+  'self-signup',
+  'system',
+  'external',
+] as const;
+
+export type ContactAddedByType = (typeof ContactAddedByTypes)[number];
+
 export const contactFilters = {
   id: {
     type: 'contact',
@@ -84,6 +94,9 @@ export const contactFilters = {
   activeUser: {
     type: 'boolean',
   },
+  idpLinked: {
+    type: 'boolean',
+  },
   membershipStarts: {
     type: 'date',
   },
@@ -104,6 +117,23 @@ export const contactFilters = {
   },
   tags: {
     type: 'array',
+  },
+  campaign: {
+    type: 'text',
+    nullable: true,
+  },
+  medium: {
+    type: 'text',
+    nullable: true,
+  },
+  source: {
+    type: 'text',
+    nullable: true,
+  },
+  addedBy: {
+    type: 'enum',
+    options:
+      ContactAddedByTypes satisfies typeof ContactAddedByTypes as typeof ContactAddedByTypes,
   },
 } as const;
 contactFilters satisfies Filters;

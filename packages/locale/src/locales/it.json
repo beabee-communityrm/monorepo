@@ -1145,6 +1145,13 @@
     },
     "oneTime": "Una tantum",
     "origin": {
+      "addedBy": "Aggiunto da",
+      "addedByValues": {
+        "admin": "Amministratore",
+        "external": "Esterno",
+        "self-signup": "Iscrizione autonoma",
+        "system": "Sistema"
+      },
       "campaign": "Campagna",
       "referrer": "Referente",
       "source": "Fonte di iscrizione",
@@ -1196,6 +1203,9 @@
       "email": "Email",
       "firstname": "Nome",
       "hasDonated": "Ha effettuato un contributo una tantum",
+      "idpAccount": "",
+      "idpLinked": "",
+      "idpUnlinked": "",
       "joined": "Iscritto il",
       "lastSeen": "Ultimo accesso",
       "lastname": "Cognome",

@@ -1145,6 +1145,13 @@
     },
     "oneTime": "Eenmalig",
     "origin": {
+      "addedBy": "Toegevoegd door",
+      "addedByValues": {
+        "admin": "Beheerder",
+        "external": "Extern",
+        "self-signup": "Zelfaanmelding",
+        "system": "Systeem"
+      },
       "campaign": "Campagne",
       "referrer": "Verwijzer",
       "source": "Aanmeldbron",
@@ -1196,6 +1203,9 @@
       "email": "E-mail",
       "firstname": "Voornaam",
       "hasDonated": "Heeft eenmalige bijdrage gedaan",
+      "idpAccount": "",
+      "idpLinked": "",
+      "idpUnlinked": "",
       "joined": "Aangesloten bij",
       "lastSeen": "Laatst gezien",
       "lastname": "Achternaam",

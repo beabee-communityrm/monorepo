@@ -1,6 +1,7 @@
 import {
   CalloutAccess,
   CalloutCaptcha,
+  CalloutResponseMode,
   GetCalloutResponseDataWith,
   GetCalloutResponseWith,
   ItemStatus,
@@ -41,8 +42,7 @@ describe('CalloutResponse API', () => {
           image: '',
           starts: null,
           expires: null,
-          allowUpdate: true,
-          allowMultiple: false,
+          responseMode: CalloutResponseMode.SingleEditable,
           access: CalloutAccess.Anonymous,
           hidden: false,
           captcha: CalloutCaptcha.None,

@@ -1146,6 +1146,13 @@
     },
     "oneTime": "Единовременный",
     "origin": {
+      "addedBy": "Кем добавлен",
+      "addedByValues": {
+        "admin": "Администратор",
+        "external": "Внешний",
+        "self-signup": "Самостоятельная регистрация",
+        "system": "Система"
+      },
       "campaign": "Кампания",
       "referrer": "Источник перехода",
       "source": "Источник регистрации",
@@ -1197,6 +1204,9 @@
       "email": "Почтовый ящик",
       "firstname": "",
       "hasDonated": "Сделал разовый взнос",
+      "idpAccount": "",
+      "idpLinked": "",
+      "idpUnlinked": "",
       "joined": "Участник с",
       "lastSeen": "Последний раз онлайн",
       "lastname": "",

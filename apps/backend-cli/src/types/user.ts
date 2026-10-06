@@ -10,10 +10,12 @@ export interface CreateUserArgs {
 export interface ListUserArgs {
   email?: string | undefined;
   withoutPassword?: boolean | undefined;
+  unlinked?: boolean | undefined;
 }
 
 export interface DeleteUserArgs {
   email?: string | undefined;
   withoutPassword?: boolean | undefined;
+  unlinked?: boolean | undefined;
   force?: boolean | undefined;
 }

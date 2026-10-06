@@ -1147,6 +1147,13 @@
     },
     "oneTime": "Одноразовий",
     "origin": {
+      "addedBy": "Ким додано",
+      "addedByValues": {
+        "admin": "Адміністратор",
+        "external": "Зовнішній",
+        "self-signup": "Самостійна реєстрація",
+        "system": "Система"
+      },
       "campaign": "Кампанія",
       "referrer": "Джерело переходу",
       "source": "Джерело реєстрації",
@@ -1198,6 +1205,9 @@
       "email": "Електронна пошта",
       "firstname": "Основні ім'я",
       "hasDonated": "Зробив одноразовий внесок",
+      "idpAccount": "",
+      "idpLinked": "",
+      "idpUnlinked": "",
       "joined": "Приєднався",
       "lastSeen": "Бачили востаннє",
       "lastname": "Прізвище",

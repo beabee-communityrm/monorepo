@@ -79,6 +79,7 @@ meta:
 <script lang="ts" setup>
 import {
   type CalloutResponseAnswersSlide,
+  CalloutResponseMode,
   type GetCalloutDataWith,
   type GetCalloutResponseDataWith,
   GetCalloutResponseWith,
@@ -171,7 +172,9 @@ const { isOpen, showLoginPrompt, showMemberOnlyPrompt } = useCallout(
 const responses =
   ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Answers>>>();
 const latestResponse = computed(() =>
-  props.callout.allowMultiple ? undefined : responses.value?.items?.[0]
+  props.callout.responseMode === CalloutResponseMode.Multiple
+    ? undefined
+    : responses.value?.items?.[0]
 );
 
 const prefilledAnswers = computed(() =>
@@ -191,7 +194,8 @@ const canRespond = computed(
       !showLoginPrompt.value &&
       !showMemberOnlyPrompt.value &&
       // Current user hasn't responded or can update
-      (!latestResponse.value || props.callout.allowUpdate))
+      (!latestResponse.value ||
+        props.callout.responseMode === CalloutResponseMode.SingleEditable))
 );
 
 function handleSubmitResponse() {

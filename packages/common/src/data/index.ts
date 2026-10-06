@@ -13,6 +13,7 @@ export * from './callout-component-input-types.js';
 export * from './callout-component-nestable-types.js';
 export * from './callout-component-type.js';
 export * from './callout-component-types.js';
+export * from './callout-response-mode.js';
 export * from './contact-mfa-type.js';
 export * from './content-ids.js';
 export * from './contribution-period.js';

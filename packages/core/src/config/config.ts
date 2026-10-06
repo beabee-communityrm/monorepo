@@ -128,6 +128,99 @@ const newsletterProvider = env.e(
 );
 
 /**
+ * Identity provider configuration (IdP Provisioning)
+ * Used when BEABEE_IDP_PROVIDER=zitadel: contacts are mirrored into the
+ * instance's Zitadel virtual instance via the v2 user API
+ */
+export interface ZitadelIdpConfig {
+  provider: 'zitadel';
+  settings: {
+    url: string; // BEABEE_IDP_SETTINGS_URL - Zitadel instance URL
+    pat: string; // BEABEE_IDP_SETTINGS_PAT - Service user personal access token
+  };
+}
+
+/**
+ * Used when BEABEE_IDP_PROVIDER=keycloak: contacts are mirrored into a
+ * Keycloak realm via the admin REST API (local development)
+ */
+export interface KeycloakIdpConfig {
+  provider: 'keycloak';
+  settings: {
+    url: string; // BEABEE_IDP_SETTINGS_URL - Keycloak base URL
+    realm: string; // BEABEE_IDP_SETTINGS_REALM - Realm name
+    clientId: string; // BEABEE_IDP_SETTINGS_CLIENTID - Service account client ID
+    clientSecret: string; // BEABEE_IDP_SETTINGS_CLIENTSECRET - Service account client secret
+  };
+}
+
+/**
+ * Used when BEABEE_IDP_PROVIDER=none (default): contacts are not mirrored
+ * to an identity provider
+ */
+interface NoneIdpConfig {
+  provider: 'none';
+  settings: Record<string, never>;
+}
+
+// Union type for identity provider configuration - only one provider can be used at a time
+type IdpConfig = ZitadelIdpConfig | KeycloakIdpConfig | NoneIdpConfig;
+
+// Get identity provider from environment, with validation for allowed values
+// Defaults to "none" if not specified
+const idpProvider = env.e(
+  'BEABEE_IDP_PROVIDER',
+  ['zitadel', 'keycloak', 'none'] as const,
+  'none'
+);
+
+/**
+ * Login configuration
+ * Used when BEABEE_LOGIN_PROVIDER=oidc: members log in at the identity
+ * provider (OIDC Login); beabee's own password, MFA and reset endpoints are
+ * disabled
+ */
+export interface OidcLoginConfig {
+  provider: 'oidc';
+  settings: {
+    issuer: string; // BEABEE_LOGIN_SETTINGS_ISSUER - OIDC issuer URL
+    clientId: string; // BEABEE_LOGIN_SETTINGS_CLIENTID - OIDC client ID
+    clientSecret: string; // BEABEE_LOGIN_SETTINGS_CLIENTSECRET - OIDC client secret (empty: public client with PKCE only)
+    scopes: string; // BEABEE_LOGIN_SETTINGS_SCOPES - Requested scopes (default: openid profile email)
+    redirectUri: string; // BEABEE_LOGIN_SETTINGS_REDIRECTURI - OAuth callback URL (default: <audience>/api/1.0/auth/callback)
+    postLogoutRedirectUri: string; // BEABEE_LOGIN_SETTINGS_POSTLOGOUTREDIRECTURI - Where the IdP sends members after logout (default: audience)
+  };
+}
+
+/**
+ * Used when BEABEE_LOGIN_PROVIDER=local (default): beabee checks passwords
+ * itself (Local Login)
+ */
+interface LocalLoginConfig {
+  provider: 'local';
+  settings: Record<string, never>;
+}
+
+// Union type for login configuration - only one provider can be used at a time
+type LoginConfig = OidcLoginConfig | LocalLoginConfig;
+
+// Get login provider from environment, with validation for allowed values
+// Defaults to "local" if not specified
+const loginProvider = env.e(
+  'BEABEE_LOGIN_PROVIDER',
+  ['local', 'oidc'] as const,
+  'local'
+);
+
+// OIDC Login only works for contacts linked to an IdP account, which requires
+// IdP Provisioning against the same identity provider
+if (loginProvider === 'oidc' && idpProvider === 'none') {
+  throw new Error(
+    'BEABEE_LOGIN_PROVIDER=oidc requires BEABEE_IDP_PROVIDER to be set'
+  );
+}
+
+/**
  * Application configuration for an individual app module
  * Used for dynamic app loading and menu building
  */
@@ -277,6 +370,50 @@ export const config = {
         : null),
     },
   } as NewsletterConfig,
+
+  // Identity provider integration configuration
+  idp: {
+    provider: idpProvider, // Identity provider (zitadel, keycloak or none)
+    settings:
+      idpProvider === 'zitadel'
+        ? {
+            url: env.s('BEABEE_IDP_SETTINGS_URL'), // Zitadel instance URL
+            pat: env.s('BEABEE_IDP_SETTINGS_PAT'), // Service user personal access token
+          }
+        : idpProvider === 'keycloak'
+          ? {
+              url: env.s('BEABEE_IDP_SETTINGS_URL'), // Keycloak base URL
+              realm: env.s('BEABEE_IDP_SETTINGS_REALM'), // Realm name
+              clientId: env.s('BEABEE_IDP_SETTINGS_CLIENTID'), // Service account client ID
+              clientSecret: env.s('BEABEE_IDP_SETTINGS_CLIENTSECRET'), // Service account client secret
+            }
+          : {},
+  } as IdpConfig,
+
+  // Login configuration
+  login: {
+    provider: loginProvider, // Login provider (local or oidc)
+    settings:
+      loginProvider === 'oidc'
+        ? {
+            issuer: env.s('BEABEE_LOGIN_SETTINGS_ISSUER'), // OIDC issuer URL
+            clientId: env.s('BEABEE_LOGIN_SETTINGS_CLIENTID'), // OIDC client ID
+            clientSecret: env.s('BEABEE_LOGIN_SETTINGS_CLIENTSECRET', ''), // OIDC client secret (empty: public client)
+            scopes: env.s(
+              'BEABEE_LOGIN_SETTINGS_SCOPES',
+              'openid profile email'
+            ), // Requested scopes
+            redirectUri: env.s(
+              'BEABEE_LOGIN_SETTINGS_REDIRECTURI',
+              env.s('BEABEE_AUDIENCE') + '/api/1.0/auth/callback'
+            ), // OAuth callback URL
+            postLogoutRedirectUri: env.s(
+              'BEABEE_LOGIN_SETTINGS_POSTLOGOUTREDIRECTURI',
+              env.s('BEABEE_AUDIENCE')
+            ), // Where the IdP sends members after logout
+          }
+        : {},
+  } as LoginConfig,
 
   // GoCardless payment integration
   gocardless: {

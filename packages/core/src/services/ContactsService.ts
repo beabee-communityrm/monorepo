@@ -44,6 +44,7 @@ import {
 import ActivityService from '#services/ActivityService';
 import ContactMfaService from '#services/ContactMfaService';
 import EmailService from '#services/EmailService';
+import IdpService from '#services/IdpService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
@@ -144,8 +145,16 @@ class ContactsService {
       await ActivityService.addEvent({
         targetId: contact.id,
         eventType: ActivityEventType.ContactCreated,
-        metadata: null,
+        metadata: origin,
       });
+
+      // Mirror the contact to the identity provider. Best-effort: an unlinked
+      // contact can be repaired later with `user provision`
+      const idpSubject = await IdpService.createContact(contact);
+      if (idpSubject) {
+        await getRepository(Contact).update(contact.id, { idpSubject });
+        contact.idpSubject = idpSubject;
+      }
 
       return contact;
     } catch (error) {
@@ -215,6 +224,8 @@ class ContactsService {
     });
 
     await PaymentService.updateContact(contact, updates);
+
+    await IdpService.updateContact(contact, updates);
   }
 
   /**
@@ -499,6 +510,8 @@ class ContactsService {
         metadata: null,
       });
     });
+
+    await IdpService.permanentlyDeleteContact(contact);
   }
 
   /**

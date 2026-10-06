@@ -1145,6 +1145,13 @@
     },
     "oneTime": "Einmalig",
     "origin": {
+      "addedBy": "",
+      "addedByValues": {
+        "admin": "",
+        "external": "",
+        "self-signup": "",
+        "system": ""
+      },
       "campaign": "",
       "referrer": "",
       "source": "",
@@ -1196,6 +1203,9 @@
       "email": "",
       "firstname": "",
       "hasDonated": "",
+      "idpAccount": "Konto beim Identitätsanbieter",
+      "idpLinked": "Verknüpft",
+      "idpUnlinked": "Nicht verknüpft",
       "joined": "",
       "lastSeen": "",
       "lastname": "",

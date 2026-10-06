@@ -1,6 +1,11 @@
+import { ActivityActorType, ActivityEventType } from '@beabee/beabee-common';
 import type {
+  ActivityActor,
+  ContactOriginData,
   ContactRoleData,
   CreateContactData,
+  GetActivityEventData,
+  GetActivityEventsQuery,
   GetContactData,
   GetContactDataWith,
   GetContactWith,
@@ -141,6 +146,83 @@ export class ContactClient extends BaseClient {
     const { data } = await this.fetch.get(`/${id}`, { with: _with });
 
     return ContactClient.deserialize<With>(data);
+  }
+
+  /**
+   * Get a contact's activity from the activity feed API
+   * @param id - The contact ID
+   * @param query - Filtering parameters
+   * @returns Paginated list of activity events
+   */
+  async listActivity<T extends ActivityEventType = ActivityEventType>(
+    id: string,
+    query: GetActivityEventsQuery = {}
+  ): Promise<Paginated<GetActivityEventData<T>>> {
+    const { data } = await this.fetch.get<
+      Paginated<
+        Omit<GetActivityEventData<T>, 'createdAt'> & { createdAt: string }
+      >
+    >(`/${id}/activity`, query);
+    return {
+      ...data,
+      items: data.items.map((item) => ({
+        ...item,
+        createdAt: ContactClient.deserializeDate(item.createdAt),
+      })),
+    };
+  }
+
+  /**
+   * Gets a contact's origin (source, referrer, campaign, added by) from its
+   * creation event
+   * @param id - Contact ID
+   * @returns The contact's origin, or undefined if no creation event was recorded
+   */
+  async getOrigin(id: string): Promise<ContactOriginData | undefined> {
+    // Determine who added a contact based on the event's actor ID and type
+    function getContactAddedBy(actor: ActivityActor): string {
+      switch (actor.actorType) {
+        case ActivityActorType.User:
+        case ActivityActorType.ApiKey:
+          return actor.actorId ? 'admin' : 'self-signup'; // Actor ID != null implies the contact was added by admin
+        case ActivityActorType.System:
+        case ActivityActorType.Cron:
+        case ActivityActorType.BackendCLI:
+          return 'system';
+        case ActivityActorType.Webhook:
+          return 'external';
+        default:
+          return '';
+      }
+    }
+
+    // Filter contact's events for contact.created event type
+    const { items } = await this.listActivity<ActivityEventType.ContactCreated>(
+      id,
+      {
+        limit: 1,
+        rules: {
+          condition: 'AND',
+          rules: [
+            {
+              field: 'eventType',
+              operator: 'equal',
+              value: [ActivityEventType.ContactCreated],
+            },
+          ],
+        },
+      }
+    );
+
+    const event = items[0];
+    if (!event) return;
+
+    return {
+      source: event.metadata?.source ?? '',
+      medium: event.metadata?.medium ?? '',
+      campaign: event.metadata?.campaign ?? '',
+      addedBy: getContactAddedBy(event),
+    };
   }
 
   /**

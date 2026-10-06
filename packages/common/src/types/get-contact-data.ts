@@ -8,4 +8,6 @@ export interface GetContactData extends ContactData {
   contributionAmount?: number;
   contributionPeriod?: ContributionPeriod;
   activeRoles: RoleType[];
+  /** Identity provider subject, only present for admins when an IdP is configured */
+  idpSubject?: string | null;
 }

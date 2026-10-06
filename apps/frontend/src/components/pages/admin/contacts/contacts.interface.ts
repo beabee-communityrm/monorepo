@@ -73,6 +73,25 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
   email: withLabel(contactFilters.email, t('contacts.data.email')),
   joined: withLabel(contactFilters.joined, t('contacts.data.joined')),
   lastSeen: withLabel(contactFilters.lastSeen, t('contacts.data.lastSeen')),
+  campaign: withLabel(
+    contactFilters.campaign,
+    t('contactOverview.origin.campaign')
+  ),
+  medium: withLabel(
+    contactFilters.medium,
+    t('contactOverview.origin.referrer')
+  ),
+  source: withLabel(contactFilters.source, t('contactOverview.origin.source')),
+  addedBy: withLabel(
+    contactFilters.addedBy,
+    t('contactOverview.origin.addedBy'),
+    {
+      admin: t('contactOverview.origin.addedByValues.admin'),
+      'self-signup': t('contactOverview.origin.addedByValues.self-signup'),
+      system: t('contactOverview.origin.addedByValues.system'),
+      external: t('contactOverview.origin.addedByValues.external'),
+    }
+  ),
   organisation: withLabel(
     contactFilters.organisation,
     t('adminSettings.general.organisationName')
@@ -175,6 +194,7 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
     contactFilters.activeUser,
     t('contacts.data.activeUser')
   ),
+  idpLinked: withLabel(contactFilters.idpLinked, t('contacts.data.idpLinked')),
   membershipStarts: withLabel(
     contactFilters.membershipStarts,
     t('contacts.data.membershipStarts')
@@ -221,6 +241,7 @@ export function useContactFilters() {
           'firstname',
           'lastname',
           'email',
+          'deliveryAddressCountry',
           'organisation',
           'joined',
           'lastSeen',
@@ -238,7 +259,13 @@ export function useContactFilters() {
             options: tagItems.value,
           }),
         },
-        ...withItems(filterItems, ['deliveryAddressCountry', 'deliveryOptIn']),
+        ...withItems(filterItems, [
+          'campaign',
+          'medium',
+          'source',
+          'addedBy',
+          'deliveryOptIn',
+        ]),
       },
     },
     {

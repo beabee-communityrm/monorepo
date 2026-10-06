@@ -16,7 +16,7 @@ block contents
 				dt Created
 				dd= moment(poll.date).format('DD/MM/YYYY [at] HH:mm')
 				dt Update answers?
-				dd= poll.allowUpdate ? 'Yes' : 'No'
+				dd= poll.responseMode === 'single-editable' ? 'Yes' : 'No'
 				dt URL
 				dd
 					a(href='/polls/' + poll.slug)= '/polls/' + poll.slug

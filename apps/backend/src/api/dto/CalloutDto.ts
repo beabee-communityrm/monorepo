@@ -6,6 +6,7 @@ import {
   CalloutMapSchema,
   CalloutMapSchemaIconStyling,
   CalloutNewsletterSchema,
+  CalloutResponseMode,
   CalloutResponseViewSchema,
   ItemStatus,
 } from '@beabee/beabee-common';
@@ -196,11 +197,8 @@ abstract class BaseCalloutDto implements CalloutData {
   @IsDate()
   expires!: Date | null;
 
-  @IsBoolean()
-  allowUpdate!: boolean;
-
-  @IsBoolean()
-  allowMultiple!: boolean;
+  @IsEnum(CalloutResponseMode)
+  responseMode!: CalloutResponseMode;
 
   @IsEnum(CalloutAccess)
   access!: CalloutAccess;
