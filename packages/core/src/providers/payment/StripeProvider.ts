@@ -189,27 +189,23 @@ export class StripeProvider extends PaymentProvider {
       this.data.customerId
     ) {
       log.info('Update contact');
-      await stripe.customers.update(this.data.customerId, {
+      const updateData = {
         ...(updates.email && { email: updates.email }),
         ...((updates.firstname || updates.lastname) && {
           name: `${updates.firstname} ${updates.lastname}`,
         }),
-      });
+      };
+      await stripe.customers.update(this.data.customerId, updateData);
 
       // Some contact information is also stored on PaymentMethod.billing_details
       // Keep the name and email in sync
       log.info('Update billing details on payment methods');
-      const billingDetails: Stripe.PaymentMethodUpdateParams.BillingDetails = {
-        email: this.contact.email,
-        name: this.contact.fullname,
-      };
-
       const paymentMethods = await stripe.customers.listPaymentMethods(
         this.data.customerId
       );
       for (const paymentMethod of paymentMethods.data) {
         await stripe.paymentMethods.update(paymentMethod.id, {
-          billing_details: billingDetails,
+          billing_details: updateData,
         });
       }
     }
