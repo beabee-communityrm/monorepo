@@ -840,6 +840,7 @@
     "membersOnly": "Cette CrowdNewsrooms est ouverte aux membres uniquement. Pour participer",
     "membersOnly-nuxt": "Cette CrowdNewsrooms est ouverte aux membres uniquement.",
     "notAnswered": "Sans réponse",
+    "replied": "Répondu",
     "responseNumber": "Réponse {number}",
     "responseSubmitted": "Réponse envoyée",
     "share": {
@@ -1626,19 +1627,67 @@
     }
   },
   "homePage": {
+    "contribution": {
+      "action": {
+        "cancelling": "Continuer à cotiser",
+        "oneOff": "Mettre en place une cotisation régulière"
+      },
+      "amountOnDate": "{amount} le {date}",
+      "endsOn": "Prend fin le",
+      "headline": {
+        "cancelled": "Vous ne cotisez pas en ce moment",
+        "none": "Vous ne cotisez pas encore",
+        "oneOff": "Merci pour vos contributions"
+      },
+      "lastContribution": "Dernière contribution",
+      "lastPayment": "Dernier paiement",
+      "nextPayment": "Prochain paiement",
+      "note": {
+        "cancelling": "Aucun nouveau prélèvement ne sera effectué. Votre cotisation reste active jusqu'à son terme.",
+        "none": "Les cotisations régulières, même modestes, font vivre notre travail.",
+        "oneOff": "Une cotisation régulière, même modeste, nous aide à anticiper."
+      },
+      "paymentEnding": "{method} se terminant par {digits}",
+      "status": {
+        "active": "Active",
+        "cancelled": "Annulée",
+        "cancelling": "En cours d'annulation",
+        "none": "Aucune",
+        "oneOff": "Ponctuelle"
+      },
+      "title": "Votre cotisation"
+    },
     "editProfile": "Modifiez votre profil communautaire",
+    "greeting": {
+      "afternoon": "Bon après-midi, {firstName}",
+      "evening": "Bonsoir, {firstName}",
+      "morning": "Bonjour, {firstName}"
+    },
+    "groupCount": "{n} groupe | {n} groupes",
+    "loadAllResponsesError": "Impossible de charger toutes vos réponses. Veuillez réessayer.",
+    "loadError": "Échec du chargement. Rechargez la page et contactez {support} si le problème persiste.",
     "makeOneTimeDonationButton": "Contribution",
     "makeOneTimeDonationTitle": "Faire une contribution unique maintenant",
     "manageContribution": "Gérer votre cotisation",
+    "manageSubscriptions": "Gérer les abonnements",
     "newCallout": "Nouvelle CrowdNewsrooms !",
+    "noOpenCallouts": "Rien n'est ouvert pour le moment.",
+    "noResponses": "Vous n'avez encore répondu à aucune CrowdNewsroom.",
     "oneTimeContributionSuccessMessage": "Merci pour votre contribution !",
     "openCallouts": "CrowdNewsrooms actives",
+    "openCount": "{n} ouvertes",
     "quickActions": "Actions rapides",
+    "seeAllOpen": "Voir les {n} CrowdNewsrooms ouvertes",
+    "showAllResponses": "Afficher les {n} réponses",
+    "showFewer": "Afficher moins",
+    "submittedOn": "Envoyée le {date}",
     "title": "Accueil",
     "viewAllCallouts": "Voir toutes les CrowdNewsrooms",
     "viewOpenCallouts": "Voir les CrowdNewsrooms actives",
     "welcome": "Bienvenue à bord {firstName} !",
-    "yourProfile": "Votre profil"
+    "yourNewsletters": "Vos newsletters",
+    "yourProfile": "Votre profil",
+    "yourResponses": "Vos réponses"
   },
   "icons": {
     "welcome": {

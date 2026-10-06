@@ -836,6 +836,7 @@
     "membersOnly": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen. Um teilzunehmen…",
     "membersOnly-nuxt": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen.",
     "notAnswered": "Nicht beantwortet",
+    "replied": "Beantwortet",
     "responseNumber": "Antwort {number}",
     "responseSubmitted": "Antwort eingereicht",
     "share": {
@@ -1620,19 +1621,67 @@
     }
   },
   "homePage": {
+    "contribution": {
+      "action": {
+        "cancelling": "Beitrag fortsetzen",
+        "oneOff": "Regelmäßigen Beitrag einrichten"
+      },
+      "amountOnDate": "{amount} am {date}",
+      "endsOn": "Endet am",
+      "headline": {
+        "cancelled": "Sie leisten derzeit keinen Beitrag",
+        "none": "Sie leisten noch keinen Beitrag",
+        "oneOff": "Vielen Dank für Ihre Beiträge"
+      },
+      "lastContribution": "Letzter Beitrag",
+      "lastPayment": "Letzte Zahlung",
+      "nextPayment": "Nächste Zahlung",
+      "note": {
+        "cancelling": "Es wird nichts mehr abgebucht. Ihr Beitrag bleibt bis zum Ende aktiv.",
+        "none": "Regelmäßige Beiträge, auch kleine, halten unsere Arbeit am Laufen.",
+        "oneOff": "Ein regelmäßiger Beitrag, auch ein kleiner, hilft uns, vorauszuplanen."
+      },
+      "paymentEnding": "{method} mit Endung {digits}",
+      "status": {
+        "active": "Aktiv",
+        "cancelled": "Gekündigt",
+        "cancelling": "Wird gekündigt",
+        "none": "Keiner",
+        "oneOff": "Einmalig"
+      },
+      "title": "Ihr Beitrag"
+    },
     "editProfile": "Profil bearbeiten",
+    "greeting": {
+      "afternoon": "Guten Tag, {firstName}",
+      "evening": "Guten Abend, {firstName}",
+      "morning": "Guten Morgen, {firstName}"
+    },
+    "groupCount": "{n} Gruppe | {n} Gruppen",
+    "loadAllResponsesError": "Nicht alle Ihre Antworten konnten geladen werden. Bitte versuchen Sie es erneut.",
+    "loadError": "Laden fehlgeschlagen. Laden Sie die Seite neu und wenden Sie sich an {support}, wenn das Problem weiterhin besteht.",
     "makeOneTimeDonationButton": "Beitrag leisten",
     "makeOneTimeDonationTitle": "Jetzt einen einmaligen Beitrag leisten",
     "manageContribution": "Beitrag ändern",
+    "manageSubscriptions": "Abonnements verwalten",
     "newCallout": "Was Neues!",
+    "noOpenCallouts": "Gerade ist nichts offen.",
+    "noResponses": "Sie haben noch auf keinen CrowdNewsroom geantwortet.",
     "oneTimeContributionSuccessMessage": "Vielen Dank für Ihren Beitrag!",
     "openCallouts": "CrowdNewsroom",
+    "openCount": "{n} offen",
     "quickActions": "Schnellaktionen",
+    "seeAllOpen": "Alle {n} offenen CrowdNewsrooms anzeigen",
+    "showAllResponses": "Alle {n} Antworten anzeigen",
+    "showFewer": "Weniger anzeigen",
+    "submittedOn": "Eingereicht am {date}",
     "title": "Home",
     "viewAllCallouts": "Alle anzeigen",
     "viewOpenCallouts": "Alle anzeigen",
     "welcome": "Herzlich willkommen {firstName} {lastName}!",
-    "yourProfile": "Ihr Profil"
+    "yourNewsletters": "Ihre Newsletter",
+    "yourProfile": "Ihr Profil",
+    "yourResponses": "Ihre Antworten"
   },
   "icons": {
     "welcome": {

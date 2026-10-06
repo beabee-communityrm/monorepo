@@ -5,77 +5,47 @@ meta:
 </route>
 
 <template>
-  <PageTitle :title="`${t('common.hello')} ${user.firstname}!`" no-collapse />
+  <div class="nuxt-page flex flex-col gap-5">
+    <h2 class="text-2xl">
+      {{ t(greetingKey, { firstName: user.firstname }) }}
+    </h2>
 
-  <section
-    v-if="showWelcomeMessage && profileContent.introMessage"
-    class="mb-10"
-  >
-    <WelcomeMessage
+    <WelcomeCard
+      v-if="showWelcomeMessage && profileContent.introMessage"
       :first-name="user.firstname"
       :last-name="user.lastname"
       :text="profileContent.introMessage"
       @close="removeWelcomeMessage"
     />
-  </section>
 
-  <NoticeContainer class="mb-10 md:mb-12" />
+    <NoticeContainer />
 
-  <section class="mb-8 md:hidden">
-    <QuickActions />
-  </section>
+    <div class="flex flex-col items-start gap-5 md:flex-row">
+      <div class="flex w-full min-w-0 flex-1 flex-col gap-5">
+        <HomeCalloutsCard />
+        <HomeResponsesCard />
+      </div>
 
-  <section v-if="callouts.length" class="mb-6 lg:mr-6">
-    <SectionTitle>{{ t('homePage.openCallouts') }}</SectionTitle>
-
-    <div class="-mx-3 my-6 flex flex-wrap">
-      <CalloutCard
-        v-for="callout in callouts"
-        :key="callout.slug"
-        :callout="callout"
-        class="mx-3 mb-5"
-      />
+      <div class="flex w-full flex-col gap-5 md:w-80 md:shrink-0">
+        <HomeContributionCard v-if="!generalContent.hideContribution" />
+        <HomeNewslettersCard />
+      </div>
     </div>
-
-    <AppButton to="/crowdnewsroom" variant="primaryOutlined">{{
-      t('homePage.viewAllCallouts')
-    }}</AppButton>
-  </section>
-
-  <section class="mb-6 lg:mr-6">
-    <SectionTitle>{{ t('homePage.yourProfile') }}</SectionTitle>
-
-    <div class="mb-4 flex">
-      <ContributionInfo :contact="user" />
-    </div>
-
-    <AppButton
-      v-if="!generalContent.hideContribution"
-      to="/profile/contribution"
-      variant="primaryOutlined"
-      >{{ t('homePage.manageContribution') }}</AppButton
-    >
-  </section>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import {
-  type ContentProfileData,
-  type GetCalloutData,
-  type GetContactData,
-  ItemStatus,
-} from '@beabee/beabee-common';
-import { AppButton, PageTitle, WelcomeMessage } from '@beabee/vue';
-
+import type { ContentProfileData, GetContactData } from '@beabee/beabee-common';
 import { type Ref, computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
-import CalloutCard from '#components/callout/CalloutCard.vue';
-import ContributionInfo from '#components/pages/profile/ContributionInfo.vue';
+import HomeCalloutsCard from '#components/pages/profile/HomeCalloutsCard.vue';
+import HomeContributionCard from '#components/pages/profile/HomeContributionCard.vue';
+import HomeNewslettersCard from '#components/pages/profile/HomeNewslettersCard.vue';
+import HomeResponsesCard from '#components/pages/profile/HomeResponsesCard.vue';
 import NoticeContainer from '#components/pages/profile/NoticeContainer.vue';
-import QuickActions from '#components/pages/profile/QuickActions.vue';
-import SectionTitle from '#components/pages/profile/SectionTitle.vue';
+import WelcomeCard from '#components/welcome/WelcomeCard.vue';
 import { currentUser, generalContent } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
@@ -89,6 +59,13 @@ addBreadcrumb(
   ])
 );
 
+const greetingKey = computed(() => {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'homePage.greeting.morning';
+  if (hour < 18) return 'homePage.greeting.afternoon';
+  return 'homePage.greeting.evening';
+});
+
 const hasWelcomeMessageQuery = useRoute().query.welcomeMessage === 'true';
 
 const showWelcomeMessage = ref(hasWelcomeMessageQuery);
@@ -101,36 +78,11 @@ const profileContent = ref<ContentProfileData>({
   introMessage: '',
 });
 
-const callouts = ref<GetCalloutData[]>([]);
-
 // This page is behind auth so currentUser can't be null
 // TODO: is there a nicer way to handle this?
 const user = currentUser as Ref<GetContactData>;
 
 onBeforeMount(async () => {
   profileContent.value = await client.content.get('profile');
-
-  callouts.value = (
-    await client.callout.list({
-      order: 'DESC',
-      sort: 'starts',
-      limit: 3,
-      rules: {
-        condition: 'AND',
-        rules: [
-          {
-            field: 'status',
-            operator: 'equal',
-            value: [ItemStatus.Open],
-          },
-          {
-            field: 'hidden',
-            operator: 'equal',
-            value: [false],
-          },
-        ],
-      },
-    })
-  ).items;
 });
 </script>

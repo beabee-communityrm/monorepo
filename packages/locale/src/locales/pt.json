@@ -836,6 +836,7 @@
     "membersOnly": "Esta CrowdNewsroom está aberta apenas a membros. Para participar",
     "membersOnly-nuxt": "Esta CrowdNewsroom está aberta apenas a membros.",
     "notAnswered": "Sem resposta",
+    "replied": "Respondida",
     "responseNumber": "Resposta {number}",
     "responseSubmitted": "Resposta submetida",
     "share": {
@@ -1622,19 +1623,67 @@
     }
   },
   "homePage": {
+    "contribution": {
+      "action": {
+        "cancelling": "Continuar a contribuir",
+        "oneOff": "Configurar uma contribuição regular"
+      },
+      "amountOnDate": "{amount} a {date}",
+      "endsOn": "Termina a",
+      "headline": {
+        "cancelled": "Não estás a contribuir de momento",
+        "none": "Ainda não estás a contribuir",
+        "oneOff": "Obrigado pelas tuas contribuições"
+      },
+      "lastContribution": "Última contribuição",
+      "lastPayment": "Último pagamento",
+      "nextPayment": "Próximo pagamento",
+      "note": {
+        "cancelling": "Não haverá mais cobranças. A tua contribuição mantém-se ativa até terminar.",
+        "none": "As contribuições regulares, por mais pequenas que sejam, mantêm o nosso trabalho a funcionar.",
+        "oneOff": "Uma contribuição regular, por mais pequena que seja, ajuda-nos a planear."
+      },
+      "paymentEnding": "{method} terminado em {digits}",
+      "status": {
+        "active": "Ativa",
+        "cancelled": "Cancelada",
+        "cancelling": "A cancelar",
+        "none": "Nenhuma",
+        "oneOff": "Pontual"
+      },
+      "title": "A tua contribuição"
+    },
     "editProfile": "Editar o teu perfil de comunidade",
+    "greeting": {
+      "afternoon": "Boa tarde, {firstName}",
+      "evening": "Boa noite, {firstName}",
+      "morning": "Bom dia, {firstName}"
+    },
+    "groupCount": "{n} grupo | {n} grupos",
+    "loadAllResponsesError": "Não foi possível carregar todas as tuas respostas. Tenta novamente.",
+    "loadError": "Não foi possível carregar. Recarrega a página e contacta {support} se o problema continuar.",
     "makeOneTimeDonationButton": "Contribuição",
     "makeOneTimeDonationTitle": "Fazer uma contribuição única agora",
     "manageContribution": "Gerir o teu contributo",
+    "manageSubscriptions": "Gerir subscrições",
     "newCallout": "Nova CrowdNewsroom!",
+    "noOpenCallouts": "Não há nada aberto neste momento.",
+    "noResponses": "Ainda não respondeste a nenhuma CrowdNewsroom.",
     "oneTimeContributionSuccessMessage": "Obrigado pela tua contribuição!",
     "openCallouts": "CrowdNewsrooms abertas",
+    "openCount": "{n} abertas",
     "quickActions": "Ações rápidas",
+    "seeAllOpen": "Ver as {n} CrowdNewsrooms abertas",
+    "showAllResponses": "Mostrar as {n} respostas",
+    "showFewer": "Mostrar menos",
+    "submittedOn": "Submetida a {date}",
     "title": "Página inicial",
     "viewAllCallouts": "Ver todas as CrowdNewsrooms",
     "viewOpenCallouts": "Ver CrowdNewsrooms abertas",
     "welcome": "Damos-te as boas-vindas, {firstName}!",
-    "yourProfile": "O teu perfil"
+    "yourNewsletters": "As tuas newsletters",
+    "yourProfile": "O teu perfil",
+    "yourResponses": "As tuas respostas"
   },
   "icons": {
     "welcome": {

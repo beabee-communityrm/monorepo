@@ -1,4 +1,8 @@
 export {
+  default as AppCardHeader,
+  type AppCardHeaderProps,
+} from './AppCardHeader.vue';
+export {
   default as AppCodeInput,
   type AppCodeInputProps,
 } from './AppCodeInput.vue';

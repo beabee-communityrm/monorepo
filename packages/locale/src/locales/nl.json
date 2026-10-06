@@ -836,6 +836,7 @@
     "membersOnly": "Deze CrowdNewsroom is alleen toegankelijk voor leden. Deelnemen",
     "membersOnly-nuxt": "Deze CrowdNewsroom is alleen toegankelijk voor leden.",
     "notAnswered": "Niet beantwoord",
+    "replied": "Gereageerd",
     "responseNumber": "Reactie {number}",
     "responseSubmitted": "Reactie ingediend",
     "share": {
@@ -1622,19 +1623,67 @@
     }
   },
   "homePage": {
+    "contribution": {
+      "action": {
+        "cancelling": "Blijf bijdragen",
+        "oneOff": "Stel een vaste bijdrage in"
+      },
+      "amountOnDate": "{amount} op {date}",
+      "endsOn": "Eindigt op",
+      "headline": {
+        "cancelled": "Je draagt op dit moment niet bij",
+        "none": "Je draagt nog niet bij",
+        "oneOff": "Bedankt voor je bijdragen"
+      },
+      "lastContribution": "Laatste bijdrage",
+      "lastPayment": "Laatste betaling",
+      "nextPayment": "Volgende betaling",
+      "note": {
+        "cancelling": "Er wordt niets meer afgeschreven. Je bijdrage blijft actief tot de einddatum.",
+        "none": "Vaste bijdragen, hoe klein ook, houden ons werk gaande.",
+        "oneOff": "Een vaste bijdrage, hoe klein ook, helpt ons vooruit te plannen."
+      },
+      "paymentEnding": "{method} eindigend op {digits}",
+      "status": {
+        "active": "Actief",
+        "cancelled": "Opgezegd",
+        "cancelling": "Wordt opgezegd",
+        "none": "Geen",
+        "oneOff": "Eenmalig"
+      },
+      "title": "Je bijdrage"
+    },
     "editProfile": "Bewerk je community profiel",
+    "greeting": {
+      "afternoon": "Goedemiddag, {firstName}",
+      "evening": "Goedenavond, {firstName}",
+      "morning": "Goedemorgen, {firstName}"
+    },
+    "groupCount": "{n} groep | {n} groepen",
+    "loadAllResponsesError": "Niet al je reacties konden worden geladen. Probeer het opnieuw.",
+    "loadError": "Laden mislukt. Laad de pagina opnieuw en neem contact op met {support} als het probleem blijft.",
     "makeOneTimeDonationButton": "Bijdrage doen",
     "makeOneTimeDonationTitle": "Doe nu een eenmalige bijdrage",
     "manageContribution": "Je bijdrage beheren",
+    "manageSubscriptions": "Abonnementen beheren",
     "newCallout": "Nieuwe CrowdNewsroom!",
+    "noOpenCallouts": "Er staat nu niets open.",
+    "noResponses": "Je hebt nog niet op een CrowdNewsroom gereageerd.",
     "oneTimeContributionSuccessMessage": "Bedankt voor je bijdrage!",
     "openCallouts": "CrowdNewsroom openen",
+    "openCount": "{n} open",
     "quickActions": "Snelle acties",
+    "seeAllOpen": "Alle {n} open CrowdNewsrooms bekijken",
+    "showAllResponses": "Alle {n} reacties tonen",
+    "showFewer": "Minder tonen",
+    "submittedOn": "Ingediend op {date}",
     "title": "Home",
     "viewAllCallouts": "Alle CrowdNewsrooms bekijken",
     "viewOpenCallouts": "Open CrowdNewsrooms bekijken",
     "welcome": "Welkom bij ons {firstName}!",
-    "yourProfile": "Uw profiel"
+    "yourNewsletters": "Je nieuwsbrieven",
+    "yourProfile": "Uw profiel",
+    "yourResponses": "Je reacties"
   },
   "icons": {
     "welcome": {

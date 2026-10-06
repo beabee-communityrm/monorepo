@@ -1,6 +1,6 @@
 <template>
   <UCard
-    class="group relative flex flex-col overflow-hidden transition-shadow hover:ring-primary"
+    class="relative flex flex-col overflow-hidden transition-shadow hover:ring-primary"
     :ui="{
       header: 'p-0 sm:p-0',
       body: 'flex flex-1 flex-col gap-3 p-4',
@@ -9,22 +9,9 @@
   >
     <template #header>
       <div class="h-36 bg-elevated">
-        <img
-          class="h-full w-full object-cover"
-          :src="imageUrl"
-          :alt="callout.title"
-        />
+        <img class="h-full w-full object-cover" :src="imageUrl" alt="" />
       </div>
     </template>
-
-    <div v-if="daysLeft !== null" class="flex items-center">
-      <UBadge color="neutral" variant="subtle">
-        <UIcon name="i-lucide-clock" class="size-3" />
-        <i18n-t keypath="callouts.daysLeft" :plural="daysLeft">
-          <template #n>{{ daysLeft }}</template>
-        </i18n-t>
-      </UBadge>
-    </div>
 
     <RouterLink
       :to="`/crowdnewsroom/${callout.slug}`"
@@ -34,84 +21,36 @@
         {{ callout.title }}
       </h3>
     </RouterLink>
+    <CalloutMetaList :callout="callout" />
+
     <p v-if="callout.excerpt" class="line-clamp-2 text-muted">
       {{ callout.excerpt }}
     </p>
 
-    <CalloutMetaList :callout="callout" />
-
-    <RouterLink
+    <CalloutRespondLinks
       v-if="!callout.hasAnswered"
-      :to="`/crowdnewsroom/${callout.slug}/respond`"
-      class="group/respond relative z-10 mt-auto inline-flex items-center gap-1 self-start pt-1 font-medium text-primary hover:underline"
-    >
-      {{ t('actions.participate') }}
-      <UIcon
-        name="i-lucide-chevron-right"
-        class="size-4 transition-transform group-hover/respond:translate-x-0.5"
-      />
-    </RouterLink>
+      :callout="callout"
+      class="mt-auto pt-1"
+    />
 
     <template v-if="callout.hasAnswered" #footer>
-      <div
-        class="flex flex-col gap-1 bg-primary/5 px-4 py-2 font-medium text-primary"
-      >
-        <div class="flex items-center gap-1.5">
-          <UIcon name="i-lucide-check" class="size-3 shrink-0" />
-          {{ t('callout.youResponded') }}
-        </div>
-        <RouterLink
-          v-if="respondAgainKey"
-          :to="`/crowdnewsroom/${callout.slug}/respond`"
-          class="group/respond relative z-10 inline-flex items-center gap-1.5 self-start hover:underline"
-        >
-          <span class="size-3 shrink-0" />
-          <span class="flex items-center gap-1">
-            {{ t(respondAgainKey) }}
-            <UIcon
-              name="i-lucide-chevron-right"
-              class="size-4 transition-transform group-hover/respond:translate-x-0.5"
-            />
-          </span>
-        </RouterLink>
-      </div>
+      <CalloutRespondLinks :callout="callout" class="bg-primary/5 px-4 py-2" />
     </template>
   </UCard>
 </template>
 
 <script lang="ts" setup>
-import { CalloutResponseMode } from '@beabee/beabee-common';
-
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 
 import CalloutMetaList from '#components/callout/CalloutMetaList.vue';
-import { getDaysLeft } from '#utils/callouts';
-import { resolveImageUrl } from '#utils/url';
+import CalloutRespondLinks from '#components/callout/CalloutRespondLinks.vue';
+import { getCalloutImageUrl } from '#utils/callouts';
 import type { CalloutCardData } from '#type';
-
-import noImage from '../../assets/images/no-image.avif';
 
 const props = defineProps<{
   callout: CalloutCardData;
 }>();
 
-const { t } = useI18n();
-
-const imageUrl = computed(() =>
-  props.callout.image ? resolveImageUrl(props.callout.image, 900) : noImage
-);
-
-const respondAgainKey = computed(() => {
-  switch (props.callout.responseMode) {
-    case CalloutResponseMode.SingleEditable:
-      return 'callout.actions.updateResponse';
-    case CalloutResponseMode.Multiple:
-      return 'callout.actions.participateAgain';
-  }
-  return null;
-});
-
-const daysLeft = computed(() => getDaysLeft(props.callout.expires));
+const imageUrl = computed(() => getCalloutImageUrl(props.callout, 900));
 </script>

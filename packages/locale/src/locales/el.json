@@ -836,6 +836,7 @@
     "membersOnly": "",
     "membersOnly-nuxt": "Αυτό το CrowdNewsroom είναι ανοιχτό μόνο για μέλη.",
     "notAnswered": "Δεν απαντήθηκε",
+    "replied": "Απαντήθηκε",
     "responseNumber": "Απάντηση {number}",
     "responseSubmitted": "Το μήνυμά σας έχει σταλεί.",
     "share": {
@@ -1622,19 +1623,67 @@
     }
   },
   "homePage": {
+    "contribution": {
+      "action": {
+        "cancelling": "Συνεχίστε τη συνεισφορά",
+        "oneOff": "Ορίστε τακτική συνεισφορά"
+      },
+      "amountOnDate": "{amount} στις {date}",
+      "endsOn": "Λήγει στις",
+      "headline": {
+        "cancelled": "Δεν συνεισφέρετε αυτή τη στιγμή",
+        "none": "Δεν συνεισφέρετε ακόμη",
+        "oneOff": "Σας ευχαριστούμε για τις συνεισφορές σας"
+      },
+      "lastContribution": "Τελευταία συνεισφορά",
+      "lastPayment": "Τελευταία πληρωμή",
+      "nextPayment": "Επόμενη πληρωμή",
+      "note": {
+        "cancelling": "Δεν θα χρεωθείτε ξανά. Η συνεισφορά σας παραμένει ενεργή μέχρι να λήξει.",
+        "none": "Οι τακτικές συνεισφορές, όσο μικρές κι αν είναι, κρατούν τη δουλειά μας σε κίνηση.",
+        "oneOff": "Μια τακτική συνεισφορά, όσο μικρή κι αν είναι, μας βοηθά να προγραμματίζουμε."
+      },
+      "paymentEnding": "{method} που λήγει σε {digits}",
+      "status": {
+        "active": "Ενεργή",
+        "cancelled": "Ακυρώθηκε",
+        "cancelling": "Ακυρώνεται",
+        "none": "Καμία",
+        "oneOff": "Εφάπαξ"
+      },
+      "title": "Η συνεισφορά σας"
+    },
     "editProfile": "",
+    "greeting": {
+      "afternoon": "Καλό απόγευμα, {firstName}",
+      "evening": "Καλησπέρα, {firstName}",
+      "morning": "Καλημέρα, {firstName}"
+    },
+    "groupCount": "{n} ομάδα | {n} ομάδες",
+    "loadAllResponsesError": "Δεν ήταν δυνατή η φόρτωση όλων των απαντήσεών σας. Δοκιμάστε ξανά.",
+    "loadError": "Η φόρτωση απέτυχε. Ανανεώστε τη σελίδα και επικοινωνήστε με {support} αν το πρόβλημα συνεχιστεί.",
     "makeOneTimeDonationButton": "Συνεισφορά",
     "makeOneTimeDonationTitle": "Κάνε εφάπαξ συνεισφορά τώρα",
     "manageContribution": "",
+    "manageSubscriptions": "Διαχείριση συνδρομών",
     "newCallout": "",
+    "noOpenCallouts": "Δεν υπάρχει κάτι ανοιχτό αυτή τη στιγμή.",
+    "noResponses": "Δεν έχετε απαντήσει ακόμη σε κάποιο CrowdNewsroom.",
     "oneTimeContributionSuccessMessage": "Ευχαριστούμε για τη συνεισφορά σας!",
     "openCallouts": "",
+    "openCount": "{n} ανοιχτά",
     "quickActions": "",
+    "seeAllOpen": "Δείτε και τα {n} ανοιχτά CrowdNewsroom",
+    "showAllResponses": "Εμφάνιση και των {n} απαντήσεων",
+    "showFewer": "Εμφάνιση λιγότερων",
+    "submittedOn": "Υποβλήθηκε στις {date}",
     "title": "",
     "viewAllCallouts": "",
     "viewOpenCallouts": "",
     "welcome": "",
-    "yourProfile": ""
+    "yourNewsletters": "Τα newsletter σας",
+    "yourProfile": "",
+    "yourResponses": "Οι απαντήσεις σας"
   },
   "icons": {
     "welcome": {

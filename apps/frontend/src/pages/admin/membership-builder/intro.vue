@@ -30,28 +30,27 @@ meta:
         />
       </template>
       <template #col2>
-        <WelcomeMessage
-          :first-name="currentUser?.firstname || ''"
-          :last-name="currentUser?.lastname || ''"
-          :text="introMessage"
-          small
-        />
+        <div class="nuxt-page">
+          <WelcomeCard
+            :first-name="currentUser?.firstname || ''"
+            :last-name="currentUser?.lastname || ''"
+            :text="introMessage"
+            :level="2"
+            :dismissible="false"
+          />
+        </div>
       </template>
     </App2ColGrid>
   </AppApiForm>
 </template>
 <script lang="ts" setup>
-import {
-  App2ColGrid,
-  AppCheckbox,
-  AppRichTextEditor,
-  WelcomeMessage,
-} from '@beabee/vue';
+import { App2ColGrid, AppCheckbox, AppRichTextEditor } from '@beabee/vue';
 
 import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AppApiForm from '#components/forms/AppApiForm.vue';
+import WelcomeCard from '#components/welcome/WelcomeCard.vue';
 import { client } from '#utils/api';
 
 import { currentUser } from '../../../store';
