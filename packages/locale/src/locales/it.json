@@ -1692,8 +1692,8 @@
   "login": {
     "backTo": "Torna a  {newsroomName}",
     "errors": {
-      "login-failed": "",
-      "unlinked-account": ""
+      "login-failed": "Accesso non riuscito. Riprova.",
+      "unlinked-account": "Il tuo accesso non è collegato a nessun account su questa piattaforma. Contatta il supporto."
     },
     "forgotPassword": "Hai dimenticato la password?",
     "joinNow": "Iscriviti!",

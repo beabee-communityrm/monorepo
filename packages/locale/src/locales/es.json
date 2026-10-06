@@ -1690,8 +1690,8 @@
   "login": {
     "backTo": "Volver a {newsroomName}",
     "errors": {
-      "login-failed": "",
-      "unlinked-account": ""
+      "login-failed": "No se pudo iniciar sesión. Inténtalo de nuevo.",
+      "unlinked-account": "Tu acceso no está vinculado a ninguna cuenta en esta plataforma. Ponte en contacto con el soporte."
     },
     "forgotPassword": "¿Olvidaste tu contraseña?",
     "joinNow": "¡Únete ahora!",

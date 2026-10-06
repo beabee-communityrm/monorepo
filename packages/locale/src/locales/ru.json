@@ -1697,8 +1697,8 @@
   "login": {
     "backTo": "Назад к {newsroomName}",
     "errors": {
-      "login-failed": "",
-      "unlinked-account": ""
+      "login-failed": "Не удалось войти. Попробуйте ещё раз.",
+      "unlinked-account": "Ваш логин не связан ни с одним аккаунтом на этой платформе. Обратитесь в поддержку."
     },
     "forgotPassword": "Забыли пароль?",
     "joinNow": "Присоединяйся к нам!",

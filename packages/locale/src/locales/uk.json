@@ -1696,8 +1696,8 @@
   "login": {
     "backTo": "Назад до {newsroomName}",
     "errors": {
-      "login-failed": "",
-      "unlinked-account": ""
+      "login-failed": "Не вдалося увійти. Спробуйте ще раз.",
+      "unlinked-account": "Ваш логін не пов’язаний з жодним обліковим записом на цій платформі. Зверніться до підтримки."
     },
     "forgotPassword": "Забули пароль?",
     "joinNow": "Приєднуйтесь зараз!",

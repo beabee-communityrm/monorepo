@@ -1692,8 +1692,8 @@
   "login": {
     "backTo": "Terug naar {newsroomName}",
     "errors": {
-      "login-failed": "",
-      "unlinked-account": ""
+      "login-failed": "Inloggen is mislukt. Probeer het opnieuw.",
+      "unlinked-account": "Je login is niet gekoppeld aan een account op dit platform. Neem contact op met de support."
     },
     "forgotPassword": "Wachtwoord vergeten?",
     "joinNow": "Word nu lid!",
