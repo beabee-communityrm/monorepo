@@ -1661,6 +1661,7 @@
       "morning": "Доброго ранку, {firstName}"
     },
     "groupCount": "{n} група | {n} груп",
+    "loadError": "Не вдалося завантажити. Перезавантажте сторінку та напишіть на {support}, якщо проблема повториться.",
     "makeOneTimeDonationButton": "Внесок",
     "makeOneTimeDonationTitle": "Зробити одноразовий внесок зараз",
     "manageContribution": "Керуйте своїм внеском",

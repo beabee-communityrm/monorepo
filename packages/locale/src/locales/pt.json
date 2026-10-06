@@ -1661,6 +1661,7 @@
       "morning": "Bom dia, {firstName}"
     },
     "groupCount": "{n} grupo | {n} grupos",
+    "loadError": "Não foi possível carregar. Recarrega a página e contacta {support} se o problema continuar.",
     "makeOneTimeDonationButton": "Contribuição",
     "makeOneTimeDonationTitle": "Fazer uma contribuição única agora",
     "manageContribution": "Gerir o teu contributo",

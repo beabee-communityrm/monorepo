@@ -1661,6 +1661,7 @@
       "morning": "Καλημέρα, {firstName}"
     },
     "groupCount": "{n} ομάδα | {n} ομάδες",
+    "loadError": "Η φόρτωση απέτυχε. Ανανεώστε τη σελίδα και επικοινωνήστε με {support} αν το πρόβλημα συνεχιστεί.",
     "makeOneTimeDonationButton": "Συνεισφορά",
     "makeOneTimeDonationTitle": "Κάνε εφάπαξ συνεισφορά τώρα",
     "manageContribution": "",

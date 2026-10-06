@@ -1662,6 +1662,7 @@
       "morning": "Доброе утро, {firstName}"
     },
     "groupCount": "{n} группа | {n} групп",
+    "loadError": "Не удалось загрузить. Перезагрузите страницу и напишите на {support}, если проблема повторится.",
     "makeOneTimeDonationButton": "Взнос",
     "makeOneTimeDonationTitle": "Сделать разовый взнос сейчас",
     "manageContribution": "Изменить ваш взнос",

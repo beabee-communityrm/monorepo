@@ -1659,6 +1659,7 @@
       "morning": "Guten Morgen, {firstName}"
     },
     "groupCount": "{n} Gruppe | {n} Gruppen",
+    "loadError": "Laden fehlgeschlagen. Laden Sie die Seite neu und wenden Sie sich an {support}, wenn das Problem weiterhin besteht.",
     "makeOneTimeDonationButton": "Beitrag leisten",
     "makeOneTimeDonationTitle": "Jetzt einen einmaligen Beitrag leisten",
     "manageContribution": "Beitrag ändern",
