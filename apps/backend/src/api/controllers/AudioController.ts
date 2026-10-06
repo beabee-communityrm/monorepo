@@ -17,6 +17,7 @@ import {
   JsonController,
   Param,
   Post,
+  QueryParam,
   Req,
   Res,
   UseBefore,
@@ -90,7 +91,8 @@ export class AudioController {
   @Get('/:id')
   async getAudio(
     @Res() res: Response,
-    @Param('id') id: string
+    @Param('id') id: string,
+    @QueryParam('download', { required: false }) download?: boolean
   ): Promise<Response> {
     // Get the filename first, this also throws if the audio file doesn't exist
     const metadata = await audioService.getMetadata(id);
@@ -101,7 +103,7 @@ export class AudioController {
     // Set appropriate security headers
     res.set({
       'Content-Type': audioData.contentType,
-      'Content-Disposition': `inline; filename="${metadata.filename || id}"`,
+      'Content-Disposition': `${download ? 'attachment' : 'inline'}; filename="${metadata.filename || id}"`,
       'Cache-Control': 'public, max-age=86400',
       'X-Content-Type-Options': 'nosniff',
       'Content-Security-Policy': "default-src 'self'",
