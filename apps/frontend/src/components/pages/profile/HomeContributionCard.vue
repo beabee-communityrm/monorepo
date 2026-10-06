@@ -4,8 +4,8 @@
   cancelling (cancelled but still paid up), cancelled, one-off donations only,
   or never contributed.
 
-  Loads the member's most recent successful payment alongside the
-  contribution, for the cancelled and one-off states.
+  For the states that show it, also loads the member's most recent successful
+  payment. If that fails, the card shows what it can without it.
 -->
 <template>
   <UCard>
@@ -110,31 +110,43 @@ const contribution = ref<ContributionInfo>();
 const lastPayment = ref<GetPaymentData | null>();
 const error = ref(false);
 
-onBeforeMount(async () => {
-  try {
-    const [info, payments] = await Promise.all([
-      client.contact.contribution.get(),
-      client.contact.payment.list('me', {
-        sort: 'chargeDate',
-        order: 'DESC',
-        limit: 1,
-        rules: {
-          condition: 'AND',
-          rules: [
-            {
-              field: 'status',
-              operator: 'equal',
-              value: [PaymentStatus.Successful],
-            },
-          ],
+const fetchLastPayment = async () => {
+  const payments = await client.contact.payment.list('me', {
+    sort: 'chargeDate',
+    order: 'DESC',
+    limit: 1,
+    rules: {
+      condition: 'AND',
+      rules: [
+        {
+          field: 'status',
+          operator: 'equal',
+          value: [PaymentStatus.Successful],
         },
-      }),
-    ]);
-    lastPayment.value = payments.items[0] ?? null;
-    contribution.value = info;
+      ],
+    },
+  });
+  return payments.items[0] ?? null;
+};
+
+onBeforeMount(async () => {
+  let info: ContributionInfo;
+  try {
+    info = await client.contact.contribution.get();
   } catch {
     error.value = true;
+    return;
   }
+
+  const hasCurrentContribution =
+    info.membershipStatus === MembershipStatus.Expiring ||
+    (info.membershipStatus === MembershipStatus.Active &&
+      info.type !== ContributionType.None);
+  if (!hasCurrentContribution) {
+    lastPayment.value = await fetchLastPayment().catch(() => null);
+  }
+
+  contribution.value = info;
 });
 
 const formatDate = (date: Date) => formatLocale(date, 'd MMM yyyy');
