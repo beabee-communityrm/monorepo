@@ -81,8 +81,7 @@
   }
 }
 
-/* Tinted surface for notices and highlighted cards, fading out downwards
- * over the default surface colour. */
+/* Tinted gradient background for notices and highlighted cards. */
 @utility bg-tint-primary {
   @apply bg-default bg-linear-to-b from-primary/10 to-primary/3;
 }
