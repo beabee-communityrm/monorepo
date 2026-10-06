@@ -49,7 +49,7 @@
       </li>
     </ul>
 
-    <template v-if="footerLabel && items?.length && !error" #footer>
+    <template v-if="footerLabel && items && !error" #footer>
       <component
         :is="footerTo ? RouterLink : 'button'"
         :to="footerTo"

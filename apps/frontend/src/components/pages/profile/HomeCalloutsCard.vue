@@ -1,8 +1,8 @@
 <!--
   # HomeCalloutsCard
-  The open CrowdNewsrooms on the home page, newest first, with a link to the
-  full list when there are more than are shown. CrowdNewsrooms the member has
-  already responded to stay in the list, marked as such.
+  The open CrowdNewsrooms on the home page, newest first, always with a link to
+  the full list and its archive. CrowdNewsrooms the member has already
+  responded to stay in the list, marked as such.
 -->
 <template>
   <HomeListCard
@@ -16,7 +16,7 @@
     :footer-label="
       callouts && total > callouts.length
         ? t('homePage.seeAllOpen', { n: total })
-        : undefined
+        : t('homePage.viewAllCallouts')
     "
     footer-to="/crowdnewsroom"
   >
