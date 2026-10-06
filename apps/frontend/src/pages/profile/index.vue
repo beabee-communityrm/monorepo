@@ -22,49 +22,20 @@ meta:
 
     <div class="flex flex-col items-start gap-5 md:flex-row">
       <div class="flex w-full min-w-0 flex-1 flex-col gap-5">
-        <HomeCalloutsCard
-          :callouts="callouts?.items"
-          :total="callouts?.total ?? 0"
-          :error="calloutsError"
-        />
-        <HomeResponsesCard
-          :responses="responses?.items"
-          :total="responses?.total ?? 0"
-          :error="responsesError"
-          @load-all="loadResponses(Math.min(responses?.total ?? 0, 1000))"
-        />
+        <HomeCalloutsCard />
+        <HomeResponsesCard />
       </div>
 
       <div class="flex w-full flex-col gap-5 md:w-80 md:shrink-0">
-        <HomeContributionCard
-          v-if="!generalContent.hideContribution"
-          :contribution="contribution"
-          :last-payment="lastPayment"
-          :error="contributionError"
-        />
-        <HomeNewslettersCard
-          v-if="newsletterGroups?.length || newslettersError"
-          :groups="newsletterGroups"
-          :error="newslettersError"
-        />
+        <HomeContributionCard v-if="!generalContent.hideContribution" />
+        <HomeNewslettersCard />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {
-  type BaseNewsletterGroupData,
-  type ContentProfileData,
-  type ContributionInfo,
-  type GetCalloutResponseDataWith,
-  GetCalloutResponseWith,
-  type GetContactData,
-  type GetPaymentData,
-  ItemStatus,
-  type Paginated,
-  PaymentStatus,
-} from '@beabee/beabee-common';
+import type { ContentProfileData, GetContactData } from '@beabee/beabee-common';
 import { type Ref, computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
@@ -79,7 +50,6 @@ import { currentUser, generalContent } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { routeIcons, routeLabels } from '#utils/route-nav';
-import type { CalloutCardData } from '#type';
 
 const { t } = useI18n();
 
@@ -108,104 +78,11 @@ const profileContent = ref<ContentProfileData>({
   introMessage: '',
 });
 
-const callouts = ref<Paginated<CalloutCardData>>();
-const contribution = ref<ContributionInfo>();
-const newsletterGroups = ref<BaseNewsletterGroupData[]>();
-const lastPayment = ref<GetPaymentData | null>();
-const responses =
-  ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>>();
-
-const calloutsError = ref(false);
-const contributionError = ref(false);
-const newslettersError = ref(false);
-const responsesError = ref(false);
-
 // This page is behind auth so currentUser can't be null
 // TODO: is there a nicer way to handle this?
 const user = currentUser as Ref<GetContactData>;
 
-async function loadCallouts() {
-  try {
-    callouts.value = await client.callout.list(
-      {
-        order: 'DESC',
-        sort: 'starts',
-        limit: 3,
-        rules: {
-          condition: 'AND',
-          rules: [
-            { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
-            { field: 'hidden', operator: 'equal', value: [false] },
-          ],
-        },
-      },
-      ['hasAnswered', 'responseCount']
-    );
-  } catch {
-    calloutsError.value = true;
-  }
-}
-
-async function loadResponses(limit: number) {
-  try {
-    responses.value = await client.callout.response.list(
-      {
-        sort: 'createdAt',
-        order: 'DESC',
-        limit,
-        rules: {
-          condition: 'AND',
-          rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
-        },
-      },
-      [GetCalloutResponseWith.Callout]
-    );
-  } catch {
-    responsesError.value = true;
-  }
-}
-
-async function loadNewsletterGroups() {
-  try {
-    newsletterGroups.value = await client.contact.newsletter.getGroups('me');
-  } catch {
-    newslettersError.value = true;
-  }
-}
-
-async function loadContribution() {
-  try {
-    const [info, payments] = await Promise.all([
-      client.contact.contribution.get(),
-      client.contact.payment.list('me', {
-        sort: 'chargeDate',
-        order: 'DESC',
-        limit: 1,
-        rules: {
-          condition: 'AND',
-          rules: [
-            {
-              field: 'status',
-              operator: 'equal',
-              value: [PaymentStatus.Successful],
-            },
-          ],
-        },
-      }),
-    ]);
-    lastPayment.value = payments.items[0] ?? null;
-    contribution.value = info;
-  } catch {
-    contributionError.value = true;
-  }
-}
-
 onBeforeMount(async () => {
-  loadCallouts();
-  loadResponses(3);
-  loadNewsletterGroups();
-  if (!generalContent.value.hideContribution) loadContribution();
-
   profileContent.value = await client.content.get('profile');
 });
 </script>

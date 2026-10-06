@@ -1,10 +1,8 @@
 <!--
   # HomeResponsesCard
   The member's own responses on the home page, newest first. Shows the first
-  few, and expands in place to show them all.
-
-  `responses` is undefined while loading. Expanding emits `loadAll` so the
-  caller can fetch the rest; until they arrive, the card shows what it has.
+  few, and expands in place to show them all, fetching the rest; until they
+  arrive, the card shows what it has.
 -->
 <template>
   <HomeListCard
@@ -58,50 +56,67 @@
 import {
   CalloutResponseMode,
   type GetCalloutResponseDataWith,
-  type GetCalloutResponseWith,
+  GetCalloutResponseWith,
   ItemStatus,
+  type Paginated,
 } from '@beabee/beabee-common';
 import { formatLocale } from '@beabee/vue';
 
-import { computed, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
-
-const props = defineProps<{
-  /** The member's responses, newest first; undefined while loading */
-  responses:
-    | GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>[]
-    | undefined;
-  /** How many responses the member has in total */
-  total: number;
-  /** The responses, or the rest of them, couldn't be loaded */
-  error?: boolean;
-}>();
-
-const emit = defineEmits<{ loadAll: [] }>();
+import { client } from '#utils/api';
 
 const { t } = useI18n();
+
+const page =
+  ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>>();
+const error = ref(false);
+
+const responses = computed(() => page.value?.items);
+const total = computed(() => page.value?.total ?? 0);
+
+async function load(limit: number) {
+  try {
+    page.value = await client.callout.response.list(
+      {
+        sort: 'createdAt',
+        order: 'DESC',
+        limit,
+        rules: {
+          condition: 'AND',
+          rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
+        },
+      },
+      [GetCalloutResponseWith.Callout]
+    );
+  } catch {
+    error.value = true;
+  }
+}
+
+onBeforeMount(() => load(3));
 
 const collapsedCount = 3;
 const expanded = ref(false);
 
 const shown = computed(() =>
-  expanded.value ? props.responses : props.responses?.slice(0, collapsedCount)
+  expanded.value ? responses.value : responses.value?.slice(0, collapsedCount)
 );
 
 const footerLabel = computed(() => {
-  if (props.total <= collapsedCount) return undefined;
+  if (total.value <= collapsedCount) return undefined;
   return expanded.value
     ? t('homePage.showFewer')
-    : t('homePage.showAllResponses', { n: props.total });
+    : t('homePage.showAllResponses', { n: total.value });
 });
 
 function toggle() {
   expanded.value = !expanded.value;
-  if (expanded.value && (props.responses?.length ?? 0) < props.total) {
-    emit('loadAll');
+  if (expanded.value && (responses.value?.length ?? 0) < total.value) {
+    load(Math.min(total.value, 1000));
   }
 }
 

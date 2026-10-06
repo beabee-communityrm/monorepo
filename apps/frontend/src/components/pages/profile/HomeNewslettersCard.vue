@@ -2,10 +2,12 @@
   # HomeNewslettersCard
   The newsletter groups the member is subscribed to, on the home page, with a
   link to manage them on the account page. Members can't subscribe from inside
-  the app, so the page leaves this card out when there are no groups.
+  the app, so the card leaves itself out while loading and when there are no
+  groups.
 -->
 <template>
   <HomeListCard
+    v-if="groups?.length || error"
     :title="t('homePage.yourNewsletters')"
     icon="i-lucide-mail"
     :count="
@@ -27,16 +29,22 @@
 <script lang="ts" setup>
 import type { BaseNewsletterGroupData } from '@beabee/beabee-common';
 
+import { onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
-
-defineProps<{
-  /** The newsletter groups the member is subscribed to; undefined while loading */
-  groups: BaseNewsletterGroupData[] | undefined;
-  /** The groups couldn't be loaded */
-  error?: boolean;
-}>();
+import { client } from '#utils/api';
 
 const { t } = useI18n();
+
+const groups = ref<BaseNewsletterGroupData[]>();
+const error = ref(false);
+
+onBeforeMount(async () => {
+  try {
+    groups.value = await client.contact.newsletter.getGroups('me');
+  } catch {
+    error.value = true;
+  }
+});
 </script>

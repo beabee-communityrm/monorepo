@@ -3,8 +3,6 @@
   The open CrowdNewsrooms on the home page, newest first, with a link to the
   full list when there are more than are shown. CrowdNewsrooms the member has
   already responded to stay in the list, marked as such.
-
-  `callouts` is undefined while loading.
 -->
 <template>
   <HomeListCard
@@ -58,24 +56,47 @@
 </template>
 
 <script lang="ts" setup>
+import { ItemStatus, type Paginated } from '@beabee/beabee-common';
+
+import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 
 import CalloutMetaList from '#components/callout/CalloutMetaList.vue';
 import CalloutRespondLinks from '#components/callout/CalloutRespondLinks.vue';
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
+import { client } from '#utils/api';
 import { getCalloutImageUrl } from '#utils/callouts';
 import { routeIcons } from '#utils/route-nav';
 import type { CalloutCardData } from '#type';
 
-defineProps<{
-  /** Open CrowdNewsrooms to show; undefined while loading */
-  callouts: CalloutCardData[] | undefined;
-  /** How many CrowdNewsrooms are open in total */
-  total: number;
-  /** The CrowdNewsrooms couldn't be loaded */
-  error?: boolean;
-}>();
-
 const { t } = useI18n();
+
+const page = ref<Paginated<CalloutCardData>>();
+const error = ref(false);
+
+const callouts = computed(() => page.value?.items);
+const total = computed(() => page.value?.total ?? 0);
+
+onBeforeMount(async () => {
+  try {
+    page.value = await client.callout.list(
+      {
+        order: 'DESC',
+        sort: 'starts',
+        limit: 3,
+        rules: {
+          condition: 'AND',
+          rules: [
+            { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
+            { field: 'hidden', operator: 'equal', value: [false] },
+          ],
+        },
+      },
+      ['hasAnswered', 'responseCount']
+    );
+  } catch {
+    error.value = true;
+  }
+});
 </script>

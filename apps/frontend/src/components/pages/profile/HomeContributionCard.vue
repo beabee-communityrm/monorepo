@@ -4,8 +4,8 @@
   cancelling (cancelled but still paid up), cancelled, one-off donations only,
   or never contributed.
 
-  `contribution` is undefined while loading. `lastPayment` is the member's most
-  recent successful payment, which the cancelled and one-off states show.
+  Loads the member's most recent successful payment alongside the
+  contribution, for the cancelled and one-off states.
 -->
 <template>
   <UCard>
@@ -90,25 +90,49 @@ import {
   type GetPaymentData,
   MembershipStatus,
   type PaymentSource,
+  PaymentStatus,
 } from '@beabee/beabee-common';
 import { AppCardHeader, formatLocale } from '@beabee/vue';
 
-import { computed } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import HomeLoadError from '#components/pages/profile/HomeLoadError.vue';
+import { client } from '#utils/api';
 import { routeIcons } from '#utils/route-nav';
 
-const props = defineProps<{
-  /** The member's contribution; undefined while loading */
-  contribution: ContributionInfo | undefined;
-  /** The member's most recent successful payment, if any */
-  lastPayment?: GetPaymentData | null;
-  /** The contribution couldn't be loaded */
-  error?: boolean;
-}>();
-
 const { t, n } = useI18n();
+
+const contribution = ref<ContributionInfo>();
+const lastPayment = ref<GetPaymentData | null>();
+const error = ref(false);
+
+onBeforeMount(async () => {
+  try {
+    const [info, payments] = await Promise.all([
+      client.contact.contribution.get(),
+      client.contact.payment.list('me', {
+        sort: 'chargeDate',
+        order: 'DESC',
+        limit: 1,
+        rules: {
+          condition: 'AND',
+          rules: [
+            {
+              field: 'status',
+              operator: 'equal',
+              value: [PaymentStatus.Successful],
+            },
+          ],
+        },
+      }),
+    ]);
+    lastPayment.value = payments.items[0] ?? null;
+    contribution.value = info;
+  } catch {
+    error.value = true;
+  }
+});
 
 const formatDate = (date: Date) => formatLocale(date, 'd MMM yyyy');
 
@@ -134,7 +158,7 @@ const paidBy = (source: PaymentSource) => {
 };
 
 const view = computed(() => {
-  const c = props.contribution;
+  const c = contribution.value;
   if (!c) return undefined;
 
   const amount = c.amount ? n(c.amount, 'currency') : undefined;
@@ -142,7 +166,7 @@ const view = computed(() => {
     c.period === ContributionPeriod.Annually
       ? t('contribution.perYearText')
       : t('contribution.perMonthText');
-  const last = props.lastPayment;
+  const last = lastPayment.value;
 
   if (c.membershipStatus === MembershipStatus.Expiring) {
     return {
