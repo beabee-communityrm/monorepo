@@ -1660,6 +1660,7 @@
       "morning": "Guten Morgen, {firstName}"
     },
     "groupCount": "{n} Gruppe | {n} Gruppen",
+    "loadAllResponsesError": "Nicht alle deine Antworten konnten geladen werden. Versuch es bitte noch einmal.",
     "loadError": "Laden fehlgeschlagen. Lade die Seite neu und wende dich an {support}, wenn das Problem weiterhin besteht.",
     "makeOneTimeDonationButton": "Beitrag leisten",
     "makeOneTimeDonationTitle": "Jetzt einen einmaligen Beitrag leisten",

@@ -1660,6 +1660,7 @@
       "morning": "Goedemorgen, {firstName}"
     },
     "groupCount": "{n} groep | {n} groepen",
+    "loadAllResponsesError": "Niet al je reacties konden worden geladen. Probeer het opnieuw.",
     "loadError": "Laden mislukt. Laad de pagina opnieuw en neem contact op met {support} als het probleem blijft.",
     "makeOneTimeDonationButton": "Bijdrage doen",
     "makeOneTimeDonationTitle": "Doe nu een eenmalige bijdrage",

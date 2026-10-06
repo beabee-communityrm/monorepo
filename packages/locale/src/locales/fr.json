@@ -1664,6 +1664,7 @@
       "morning": "Bonjour, {firstName}"
     },
     "groupCount": "{n} groupe | {n} groupes",
+    "loadAllResponsesError": "Impossible de charger toutes vos réponses. Veuillez réessayer.",
     "loadError": "Échec du chargement. Rechargez la page et contactez {support} si le problème persiste.",
     "makeOneTimeDonationButton": "Contribution",
     "makeOneTimeDonationTitle": "Faire une contribution unique maintenant",

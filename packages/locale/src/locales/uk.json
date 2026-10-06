@@ -1660,6 +1660,7 @@
       "morning": "Доброго ранку, {firstName}"
     },
     "groupCount": "{n} група | {n} груп",
+    "loadAllResponsesError": "Не вдалося завантажити всі ваші відповіді. Спробуйте ще раз.",
     "loadError": "Не вдалося завантажити. Перезавантажте сторінку та напишіть на {support}, якщо проблема повториться.",
     "makeOneTimeDonationButton": "Внесок",
     "makeOneTimeDonationTitle": "Зробити одноразовий внесок зараз",

@@ -1660,6 +1660,7 @@
       "morning": "Buongiorno, {firstName}"
     },
     "groupCount": "{n} gruppo | {n} gruppi",
+    "loadAllResponsesError": "Non è stato possibile caricare tutte le tue risposte. Riprova.",
     "loadError": "Caricamento non riuscito. Ricarica la pagina e contatta {support} se il problema persiste.",
     "makeOneTimeDonationButton": "Fai un contributo",
     "makeOneTimeDonationTitle": "Fai un contributo una tantum",

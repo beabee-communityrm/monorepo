@@ -1658,6 +1658,7 @@
       "morning": "Buenos días, {firstName}"
     },
     "groupCount": "{n} grupo | {n} grupos",
+    "loadAllResponsesError": "No se han podido cargar todas tus respuestas. Inténtalo de nuevo.",
     "loadError": "No se ha podido cargar. Recarga la página y escribe a {support} si sigue pasando.",
     "makeOneTimeDonationButton": "Contribuir",
     "makeOneTimeDonationTitle": "Realizar contribución única",
