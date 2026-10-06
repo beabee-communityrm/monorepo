@@ -38,11 +38,11 @@
       </div>
 
       <RouterLink
-        v-if="isEditable(response)"
+        v-if="respondAgainKey(response)"
         :to="`/crowdnewsroom/${response.callout.slug}/respond`"
         class="group/respond relative z-10 inline-flex shrink-0 items-center gap-1 font-medium text-primary hover:underline"
       >
-        {{ t('callout.actions.updateResponse') }}
+        {{ t(respondAgainKey(response)!) }}
         <UIcon
           name="i-lucide-chevron-right"
           class="size-4 transition-transform group-hover/respond:translate-x-0.5"
@@ -55,7 +55,6 @@
 
 <script lang="ts" setup>
 import {
-  CalloutResponseMode,
   type GetCalloutResponseDataWith,
   GetCalloutResponseWith,
   ItemStatus,
@@ -70,6 +69,7 @@ import { RouterLink } from 'vue-router';
 
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
 import { client } from '#utils/api';
+import { getRespondAgainKey } from '#utils/callouts';
 
 const { t } = useI18n();
 const toast = useToast();
@@ -140,9 +140,10 @@ async function toggle() {
   expanded.value = !expanded.value;
 }
 
-const isEditable = (
+const respondAgainKey = (
   response: GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>
 ) =>
-  response.callout.status === ItemStatus.Open &&
-  response.callout.responseMode === CalloutResponseMode.SingleEditable;
+  response.callout.status === ItemStatus.Open
+    ? getRespondAgainKey(response.callout)
+    : null;
 </script>

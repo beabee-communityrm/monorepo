@@ -57,12 +57,11 @@
 </template>
 
 <script lang="ts" setup>
-import { CalloutResponseMode } from '@beabee/beabee-common';
-
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
 
+import { getRespondAgainKey } from '#utils/callouts';
 import type { CalloutCardData } from '#type';
 
 const props = defineProps<{
@@ -78,13 +77,5 @@ const respondUrl = computed(
   () => `/crowdnewsroom/${props.callout.slug}/respond`
 );
 
-const respondAgainKey = computed(() => {
-  switch (props.callout.responseMode) {
-    case CalloutResponseMode.SingleEditable:
-      return 'callout.actions.updateResponse';
-    case CalloutResponseMode.Multiple:
-      return 'callout.actions.participateAgain';
-  }
-  return null;
-});
+const respondAgainKey = computed(() => getRespondAgainKey(props.callout));
 </script>

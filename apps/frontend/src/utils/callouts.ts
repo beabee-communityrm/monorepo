@@ -72,6 +72,25 @@ export function getDaysLeft(expires: Date | null): number | null {
 }
 
 /**
+ * The link text for responding to a callout again, which depends on its
+ * response mode
+ *
+ * @param callout - The callout
+ * @returns The locale key, or null when its mode allows no further response
+ */
+export function getRespondAgainKey(callout: {
+  responseMode: CalloutResponseMode;
+}): string | null {
+  switch (callout.responseMode) {
+    case CalloutResponseMode.SingleEditable:
+      return 'callout.actions.updateResponse';
+    case CalloutResponseMode.Multiple:
+      return 'callout.actions.participateAgain';
+  }
+  return null;
+}
+
+/**
  * A callout's image, or the placeholder when it has none
  *
  * @param callout - The callout
