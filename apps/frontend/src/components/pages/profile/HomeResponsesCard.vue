@@ -1,8 +1,8 @@
 <!--
   # HomeResponsesCard
   The member's own responses on the home page, newest first. Shows the first
-  few, and expands in place to show them all, fetching the rest; until they
-  arrive, the card shows what it has.
+  few, and expands in place to show them all once the rest have loaded. If
+  they can't be loaded, a toast says so and the list stays as it was.
 -->
 <template>
   <HomeListCard
@@ -16,6 +16,7 @@
     :footer-label="footerLabel"
     :footer-icon="expanded ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
     :footer-expanded="expanded"
+    :footer-loading="loadingAll"
     @footer-click="toggle"
   >
     <template #default="{ item: response }">
@@ -61,6 +62,7 @@ import {
   type Paginated,
 } from '@beabee/beabee-common';
 import { formatLocale } from '@beabee/vue';
+import { useToast } from '@nuxt/ui/composables';
 
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -70,6 +72,7 @@ import HomeListCard from '#components/pages/profile/HomeListCard.vue';
 import { client } from '#utils/api';
 
 const { t } = useI18n();
+const toast = useToast();
 
 const page =
   ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>>();
@@ -78,29 +81,31 @@ const error = ref(false);
 const responses = computed(() => page.value?.items);
 const total = computed(() => page.value?.total ?? 0);
 
-async function load(limit: number) {
-  try {
-    page.value = await client.callout.response.list(
-      {
-        sort: 'createdAt',
-        order: 'DESC',
-        limit,
-        rules: {
-          condition: 'AND',
-          rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
-        },
+const fetchResponses = (limit: number) =>
+  client.callout.response.list(
+    {
+      sort: 'createdAt',
+      order: 'DESC',
+      limit,
+      rules: {
+        condition: 'AND',
+        rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
       },
-      [GetCalloutResponseWith.Callout]
-    );
+    },
+    [GetCalloutResponseWith.Callout]
+  );
+
+onBeforeMount(async () => {
+  try {
+    page.value = await fetchResponses(3);
   } catch {
     error.value = true;
   }
-}
-
-onBeforeMount(() => load(3));
+});
 
 const collapsedCount = 3;
 const expanded = ref(false);
+const loadingAll = ref(false);
 
 const shown = computed(() =>
   expanded.value ? responses.value : responses.value?.slice(0, collapsedCount)
@@ -113,11 +118,26 @@ const footerLabel = computed(() => {
     : t('homePage.showAllResponses', { n: total.value });
 });
 
-function toggle() {
-  expanded.value = !expanded.value;
-  if (expanded.value && (responses.value?.length ?? 0) < total.value) {
-    load(Math.min(total.value, 1000));
+async function toggle() {
+  if (loadingAll.value) return;
+
+  if (!expanded.value && (responses.value?.length ?? 0) < total.value) {
+    loadingAll.value = true;
+    try {
+      page.value = await fetchResponses(Math.min(total.value, 1000));
+    } catch {
+      toast.add({
+        title: t('homePage.loadAllResponsesError'),
+        color: 'error',
+        icon: 'i-lucide-circle-alert',
+      });
+      return;
+    } finally {
+      loadingAll.value = false;
+    }
   }
+
+  expanded.value = !expanded.value;
 }
 
 const isEditable = (

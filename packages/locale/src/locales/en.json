@@ -1657,6 +1657,7 @@
       "morning": "Good morning, {firstName}"
     },
     "groupCount": "{n} group | {n} groups",
+    "loadAllResponsesError": "Couldn't load all your responses. Try again.",
     "loadError": "Failed to load. Try reloading the page, and contact {support} if it keeps happening.",
     "makeOneTimeDonationButton": "Make contribution",
     "makeOneTimeDonationTitle": "Make one-time contribution",

@@ -5,9 +5,8 @@
 
   Renders a row per item, with the row's content from the default slot. While
   `items` is undefined, two rows of the `loading` slot show instead (plain
-  skeleton lines by default); when it's empty, `emptyText` does. With
-  `error`, a load error shows after any rows already loaded, and the footer
-  goes.
+  skeleton lines by default); when it's empty, `emptyText` does. With `error`,
+  a load error replaces the rows and the footer.
 -->
 <template>
   <UCard :ui="{ body: 'p-0 sm:p-0', footer: 'p-0 sm:p-0' }">
@@ -19,7 +18,9 @@
       </AppCardHeader>
     </template>
 
-    <ul v-if="!items && !error" class="divide-y divide-default">
+    <HomeLoadError v-if="error" class="p-4 sm:px-6" />
+
+    <ul v-else-if="!items" class="divide-y divide-default">
       <li v-for="n in 2" :key="n" :class="rowClass">
         <slot name="loading">
           <div class="flex-1 space-y-2">
@@ -30,11 +31,11 @@
       </li>
     </ul>
 
-    <p v-else-if="items?.length === 0 && !error" class="p-4 text-muted sm:px-6">
+    <p v-else-if="items.length === 0" class="p-4 text-muted sm:px-6">
       {{ emptyText }}
     </p>
 
-    <ul v-else-if="items?.length" class="divide-y divide-default">
+    <ul v-else class="divide-y divide-default">
       <li
         v-for="item in items"
         :key="itemKey(item)"
@@ -48,23 +49,25 @@
       </li>
     </ul>
 
-    <HomeLoadError
-      v-if="error"
-      class="p-4 sm:px-6"
-      :class="items?.length && 'border-t border-default'"
-    />
-
     <template v-if="footerLabel && items?.length && !error" #footer>
       <component
         :is="footerTo ? RouterLink : 'button'"
         :to="footerTo"
         :type="footerTo ? undefined : 'button'"
         :aria-expanded="footerTo ? undefined : footerExpanded"
+        :aria-busy="footerLoading || undefined"
         class="group/footer flex w-full cursor-pointer items-center gap-1 px-4 py-3 font-medium text-primary hover:bg-elevated focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary sm:px-6"
         @click="footerTo || emit('footerClick')"
       >
         {{ footerLabel }}
         <UIcon
+          v-if="footerLoading"
+          name="i-lucide-loader-circle"
+          class="size-4 animate-spin"
+          aria-hidden="true"
+        />
+        <UIcon
+          v-else
           :name="footerIcon"
           class="size-4 transition-transform"
           :class="
@@ -113,6 +116,8 @@ export interface HomeListCardProps<T> {
   footerIcon?: string;
   /** For a footer button that expands the list: whether it's expanded */
   footerExpanded?: boolean;
+  /** Shows a spinner in the footer while its action loads */
+  footerLoading?: boolean;
 }
 
 withDefaults(defineProps<HomeListCardProps<T>>(), {
@@ -125,6 +130,7 @@ withDefaults(defineProps<HomeListCardProps<T>>(), {
   footerTo: undefined,
   footerIcon: 'i-lucide-chevron-right',
   footerExpanded: undefined,
+  footerLoading: false,
 });
 
 const emit = defineEmits<{ footerClick: [] }>();
