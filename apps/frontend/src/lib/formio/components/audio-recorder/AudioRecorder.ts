@@ -211,6 +211,7 @@ export default class AudioRecorderComponent extends FileComponent {
   private reviewBars: HTMLElement[] = [];
   private playLabel: HTMLElement | null = null;
   private readyFileName: HTMLElement | null = null;
+  private downloadLink: HTMLAnchorElement | null = null;
 
   private errorTitleEl: HTMLElement | null = null;
   private errorBodyEl: HTMLElement | null = null;
@@ -698,6 +699,13 @@ export default class AudioRecorderComponent extends FileComponent {
       });
 
       footer.append(reRecordButton, deleteButton);
+    } else {
+      this.downloadLink = document.createElement('a');
+      this.downloadLink.className = 'audio-recorder-link';
+      this.downloadLink.textContent = t(
+        'formRenderer.components.audioRecorder.download'
+      );
+      footer.append(this.downloadLink);
     }
 
     block.append(row, playRow, footer);
@@ -1157,6 +1165,14 @@ export default class AudioRecorderComponent extends FileComponent {
   private updateReadyDynamic() {
     if (this.readyMeta) this.readyMeta.textContent = this.fileMeta;
     if (this.readyFileName) this.readyFileName.textContent = this.fileName;
+    if (this.downloadLink) {
+      this.downloadLink.hidden = !this.currentUrl;
+      if (this.currentUrl) {
+        const url = new URL(this.currentUrl, window.location.href);
+        url.searchParams.set('download', 'true');
+        this.downloadLink.href = url.href;
+      }
+    }
     if (this.playIcon) {
       this.playIcon.classList.toggle(
         'audio-recorder-play-icon--pause',
