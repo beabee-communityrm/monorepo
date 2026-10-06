@@ -70,7 +70,7 @@ meta:
         <span v-else-if="callout.expires" class="text-muted">
           {{
             t('callout.closedOn', {
-              date: formatLocale(callout.expires, 'd MMM yyyy'),
+              date: formatLocale(callout.expires, 'PPP'),
             })
           }}
         </span>
