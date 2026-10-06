@@ -181,6 +181,7 @@ function displayAnswer(
  *
  * Admin-only components are left out: their answers are reviewer-facing, and
  * the responses endpoint returns them to the contributor along with the rest.
+ * So are slides the contributor's answers skipped.
  *
  * @param formSchema - The form the response was submitted to
  * @param answers - The response's answers, by slide
@@ -191,9 +192,12 @@ export function getResponseAnswerRows(
   answers: CalloutResponseAnswersSlide
 ): CalloutResponseAnswerRow[] {
   const { componentText } = formSchema;
+  const visibleSlideIds = new Set(
+    getVisibleSlides(formSchema.slides, answers).map((s) => s.id)
+  );
 
   return getCalloutComponents(formSchema)
-    .filter((c) => c.input && !c.adminOnly)
+    .filter((c) => c.input && !c.adminOnly && visibleSlideIds.has(c.slideId))
     .map((c) => ({
       key: c.fullKey,
       label: (c.label && componentText[c.label]) || c.label || c.key,
@@ -734,6 +738,76 @@ export function getDecisionComponent(
   components: CalloutComponentSchema[]
 ): CalloutComponentInputSelectableRadioSchema | undefined {
   return flattenComponents(components).find(isDecisionComponent);
+}
+
+/**
+ * The slide that follows a slide, given the answers so far
+ *
+ * @param slides - The form's slides
+ * @param slideNo - The index of the current slide
+ * @param answersBySlide - The answers so far, by slide
+ * @returns The ID of the next slide
+ */
+export function getNextSlideId(
+  slides: GetCalloutSlideSchema[],
+  slideNo: number,
+  answersBySlide: CalloutResponseAnswersSlide
+): string {
+  const slide = slides[slideNo];
+  let nextSlideId;
+
+  // If there is a decision component check if the user has selected a value
+  const decisionComponent = getDecisionComponent(slide.components);
+  if (decisionComponent) {
+    const answers = answersBySlide[slide.id];
+    const value = answers
+      ? answers[decisionComponent.key as keyof typeof answers]
+      : undefined;
+
+    nextSlideId = decisionComponent.values.find(
+      (v) => v.value === value
+    )?.nextSlideId;
+  }
+
+  // Otherwise use the next slide ID from the navigation
+  if (!nextSlideId) {
+    nextSlideId = slide.navigation.nextSlideId || slides[slideNo + 1].id;
+  }
+  return nextSlideId;
+}
+
+/**
+ * Mimics the next slide navigation to collect the slides a set of answers
+ * passes through
+ *
+ * @param slides - The form's slides
+ * @param answersBySlide - The answers, by slide
+ * @returns The visible slides, in the order they are shown
+ */
+export function getVisibleSlides(
+  slides: GetCalloutSlideSchema[],
+  answersBySlide: CalloutResponseAnswersSlide
+): GetCalloutSlideSchema[] {
+  const visibleSlides: GetCalloutSlideSchema[] = [];
+  const visited = new Set<string>();
+  let i = 0;
+
+  while (i < slides.length) {
+    const slide = slides[i];
+    if (visited.has(slide.id)) break; // Prevent cycles
+    visibleSlides.push(slide);
+    visited.add(slide.id);
+
+    if (i === slides.length - 1) break; // Last slide
+
+    const nextSlideId = getNextSlideId(slides, i, answersBySlide);
+    const nextIndex = slides.findIndex((s) => s.id === nextSlideId);
+
+    if (nextIndex === -1 || nextIndex === i) break; // No next slide or stuck
+    i = nextIndex;
+  }
+
+  return visibleSlides;
 }
 
 /**
