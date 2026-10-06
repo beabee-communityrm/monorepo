@@ -8,8 +8,11 @@
   <HomeListCard
     :title="t('homePage.yourNewsletters')"
     icon="i-lucide-mail"
-    :count="t('homePage.groupCount', { n: groups.length }, groups.length)"
+    :count="
+      groups && t('homePage.groupCount', { n: groups.length }, groups.length)
+    "
     :items="groups"
+    :error="error"
     :item-key="(group) => group.id"
     :interactive="false"
     :footer-label="t('homePage.manageSubscriptions')"
@@ -29,8 +32,10 @@ import { useI18n } from 'vue-i18n';
 import HomeListCard from '#components/pages/profile/HomeListCard.vue';
 
 defineProps<{
-  /** The newsletter groups the member is subscribed to */
-  groups: BaseNewsletterGroupData[];
+  /** The newsletter groups the member is subscribed to; undefined while loading */
+  groups: BaseNewsletterGroupData[] | undefined;
+  /** The groups couldn't be loaded */
+  error?: boolean;
 }>();
 
 const { t } = useI18n();

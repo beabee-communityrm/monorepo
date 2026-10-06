@@ -12,6 +12,7 @@
     :icon="routeIcons.callouts"
     :count="t('homePage.openCount', { n: total })"
     :items="callouts"
+    :error="error"
     :item-key="(callout) => callout.slug"
     :empty-text="t('homePage.noOpenCallouts')"
     :footer-label="
@@ -72,6 +73,8 @@ defineProps<{
   callouts: CalloutCardData[] | undefined;
   /** How many CrowdNewsrooms are open in total */
   total: number;
+  /** The CrowdNewsrooms couldn't be loaded */
+  error?: boolean;
 }>();
 
 const { t } = useI18n();

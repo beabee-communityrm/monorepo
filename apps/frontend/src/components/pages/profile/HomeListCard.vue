@@ -5,7 +5,9 @@
 
   Renders a row per item, with the row's content from the default slot. While
   `items` is undefined, two rows of the `loading` slot show instead (plain
-  skeleton lines by default); when it's empty, `emptyText` does.
+  skeleton lines by default); when it's empty, `emptyText` does. With
+  `error`, a load error shows after any rows already loaded, and the footer
+  goes.
 -->
 <template>
   <UCard :ui="{ body: 'p-0 sm:p-0', footer: 'p-0 sm:p-0' }">
@@ -17,7 +19,7 @@
       </AppCardHeader>
     </template>
 
-    <ul v-if="!items" class="divide-y divide-default">
+    <ul v-if="!items && !error" class="divide-y divide-default">
       <li v-for="n in 2" :key="n" :class="rowClass">
         <slot name="loading">
           <div class="flex-1 space-y-2">
@@ -28,11 +30,11 @@
       </li>
     </ul>
 
-    <p v-else-if="items.length === 0" class="p-4 text-muted sm:px-6">
+    <p v-else-if="items?.length === 0 && !error" class="p-4 text-muted sm:px-6">
       {{ emptyText }}
     </p>
 
-    <ul v-else class="divide-y divide-default">
+    <ul v-else-if="items?.length" class="divide-y divide-default">
       <li
         v-for="item in items"
         :key="itemKey(item)"
@@ -46,7 +48,13 @@
       </li>
     </ul>
 
-    <template v-if="footerLabel && items?.length" #footer>
+    <HomeLoadError
+      v-if="error"
+      class="p-4 sm:px-6"
+      :class="items?.length && 'border-t border-default'"
+    />
+
+    <template v-if="footerLabel && items?.length && !error" #footer>
       <component
         :is="footerTo ? RouterLink : 'button'"
         :to="footerTo"
@@ -75,6 +83,8 @@ import { AppCardHeader } from '@beabee/vue';
 
 import { RouterLink } from 'vue-router';
 
+import HomeLoadError from '#components/pages/profile/HomeLoadError.vue';
+
 /** Props for HomeListCard */
 export interface HomeListCardProps<T> {
   /** Items to show a row for; undefined while loading */
@@ -93,6 +103,8 @@ export interface HomeListCardProps<T> {
   interactive?: boolean;
   /** Text for when there are no rows */
   emptyText?: string;
+  /** The items couldn't be loaded */
+  error?: boolean;
   /** Footer label; no footer without it */
   footerLabel?: string;
   /** Where the footer links to; without it the footer is a button */
@@ -108,6 +120,7 @@ withDefaults(defineProps<HomeListCardProps<T>>(), {
   count: undefined,
   interactive: true,
   emptyText: undefined,
+  error: false,
   footerLabel: undefined,
   footerTo: undefined,
   footerIcon: 'i-lucide-chevron-right',

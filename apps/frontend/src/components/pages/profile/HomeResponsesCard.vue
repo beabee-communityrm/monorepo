@@ -12,6 +12,7 @@
     icon="i-lucide-message-square-text"
     :count="t('callouts.data.responses', { n: total }, total)"
     :items="shown"
+    :error="error"
     :item-key="(response) => response.id"
     :empty-text="t('homePage.noResponses')"
     :footer-label="footerLabel"
@@ -75,6 +76,8 @@ const props = defineProps<{
     | undefined;
   /** How many responses the member has in total */
   total: number;
+  /** The responses, or the rest of them, couldn't be loaded */
+  error?: boolean;
 }>();
 
 const emit = defineEmits<{ loadAll: [] }>();

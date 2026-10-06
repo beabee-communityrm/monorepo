@@ -24,7 +24,9 @@
       </AppCardHeader>
     </template>
 
-    <div v-if="!view" class="space-y-3">
+    <HomeLoadError v-if="error" />
+
+    <div v-else-if="!view" class="space-y-3">
       <USkeleton class="h-8 w-1/3" />
       <USkeleton class="h-4 w-2/3" />
       <USkeleton class="h-4 w-1/2" />
@@ -94,6 +96,7 @@ import { AppCardHeader, formatLocale } from '@beabee/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import HomeLoadError from '#components/pages/profile/HomeLoadError.vue';
 import { routeIcons } from '#utils/route-nav';
 
 const props = defineProps<{
@@ -101,6 +104,8 @@ const props = defineProps<{
   contribution: ContributionInfo | undefined;
   /** The member's most recent successful payment, if any */
   lastPayment?: GetPaymentData | null;
+  /** The contribution couldn't be loaded */
+  error?: boolean;
 }>();
 
 const { t, n } = useI18n();

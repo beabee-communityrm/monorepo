@@ -25,10 +25,12 @@ meta:
         <HomeCalloutsCard
           :callouts="callouts?.items"
           :total="callouts?.total ?? 0"
+          :error="calloutsError"
         />
         <HomeResponsesCard
           :responses="responses?.items"
           :total="responses?.total ?? 0"
+          :error="responsesError"
           @load-all="loadResponses(Math.min(responses?.total ?? 0, 1000))"
         />
       </div>
@@ -38,10 +40,12 @@ meta:
           v-if="!generalContent.hideContribution"
           :contribution="contribution"
           :last-payment="lastPayment"
+          :error="contributionError"
         />
         <HomeNewslettersCard
-          v-if="newsletterGroups.length"
+          v-if="newsletterGroups?.length || newslettersError"
           :groups="newsletterGroups"
+          :error="newslettersError"
         />
       </div>
     </div>
@@ -106,77 +110,102 @@ const profileContent = ref<ContentProfileData>({
 
 const callouts = ref<Paginated<CalloutCardData>>();
 const contribution = ref<ContributionInfo>();
-const newsletterGroups = ref<BaseNewsletterGroupData[]>([]);
+const newsletterGroups = ref<BaseNewsletterGroupData[]>();
 const lastPayment = ref<GetPaymentData | null>();
 const responses =
   ref<Paginated<GetCalloutResponseDataWith<GetCalloutResponseWith.Callout>>>();
+
+const calloutsError = ref(false);
+const contributionError = ref(false);
+const newslettersError = ref(false);
+const responsesError = ref(false);
 
 // This page is behind auth so currentUser can't be null
 // TODO: is there a nicer way to handle this?
 const user = currentUser as Ref<GetContactData>;
 
-async function loadResponses(limit: number) {
-  responses.value = await client.callout.response.list(
-    {
-      sort: 'createdAt',
-      order: 'DESC',
-      limit,
-      rules: {
-        condition: 'AND',
-        rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
+async function loadCallouts() {
+  try {
+    callouts.value = await client.callout.list(
+      {
+        order: 'DESC',
+        sort: 'starts',
+        limit: 3,
+        rules: {
+          condition: 'AND',
+          rules: [
+            { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
+            { field: 'hidden', operator: 'equal', value: [false] },
+          ],
+        },
       },
-    },
-    [GetCalloutResponseWith.Callout]
-  );
+      ['hasAnswered', 'responseCount']
+    );
+  } catch {
+    calloutsError.value = true;
+  }
+}
+
+async function loadResponses(limit: number) {
+  try {
+    responses.value = await client.callout.response.list(
+      {
+        sort: 'createdAt',
+        order: 'DESC',
+        limit,
+        rules: {
+          condition: 'AND',
+          rules: [{ field: 'contact', operator: 'equal', value: ['me'] }],
+        },
+      },
+      [GetCalloutResponseWith.Callout]
+    );
+  } catch {
+    responsesError.value = true;
+  }
+}
+
+async function loadNewsletterGroups() {
+  try {
+    newsletterGroups.value = await client.contact.newsletter.getGroups('me');
+  } catch {
+    newslettersError.value = true;
+  }
 }
 
 async function loadContribution() {
-  const [info, payments] = await Promise.all([
-    client.contact.contribution.get(),
-    client.contact.payment.list('me', {
-      sort: 'chargeDate',
-      order: 'DESC',
-      limit: 1,
-      rules: {
-        condition: 'AND',
-        rules: [
-          {
-            field: 'status',
-            operator: 'equal',
-            value: [PaymentStatus.Successful],
-          },
-        ],
-      },
-    }),
-  ]);
-  lastPayment.value = payments.items[0] ?? null;
-  contribution.value = info;
+  try {
+    const [info, payments] = await Promise.all([
+      client.contact.contribution.get(),
+      client.contact.payment.list('me', {
+        sort: 'chargeDate',
+        order: 'DESC',
+        limit: 1,
+        rules: {
+          condition: 'AND',
+          rules: [
+            {
+              field: 'status',
+              operator: 'equal',
+              value: [PaymentStatus.Successful],
+            },
+          ],
+        },
+      }),
+    ]);
+    lastPayment.value = payments.items[0] ?? null;
+    contribution.value = info;
+  } catch {
+    contributionError.value = true;
+  }
 }
 
 onBeforeMount(async () => {
+  loadCallouts();
   loadResponses(3);
-  client.contact.newsletter
-    .getGroups('me')
-    .then((groups) => (newsletterGroups.value = groups))
-    .catch(() => {});
+  loadNewsletterGroups();
   if (!generalContent.value.hideContribution) loadContribution();
 
   profileContent.value = await client.content.get('profile');
-
-  callouts.value = await client.callout.list(
-    {
-      order: 'DESC',
-      sort: 'starts',
-      limit: 3,
-      rules: {
-        condition: 'AND',
-        rules: [
-          { field: 'status', operator: 'equal', value: [ItemStatus.Open] },
-          { field: 'hidden', operator: 'equal', value: [false] },
-        ],
-      },
-    },
-    ['hasAnswered', 'responseCount']
-  );
 });
 </script>
