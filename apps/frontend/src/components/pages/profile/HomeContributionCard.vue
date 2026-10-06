@@ -40,7 +40,10 @@
           </span>
           <span class="text-muted">{{ view.period }}</span>
         </p>
-        <p v-else class="text-base font-semibold text-highlighted">
+        <p
+          v-else-if="view.state !== 'active' && view.state !== 'cancelling'"
+          class="text-base font-semibold text-highlighted"
+        >
           {{ t(`homePage.contribution.headline.${view.state}`) }}
         </p>
 
