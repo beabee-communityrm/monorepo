@@ -88,6 +88,7 @@ meta:
           class="mb-4 font-semibold"
         />
         <AppCheckbox
+          v-model="joinContent.showVatNumber"
           :label="stepT('showVatNumber')"
           class="mb-4 font-semibold"
         />

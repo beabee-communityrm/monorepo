@@ -21,6 +21,12 @@ identity it asserts. Replaces Local Login for the whole instance; it is
 never offered alongside it.
 _Avoid_: SSO, external login, social login
 
+**Login Action**:
+Something a member does at the IdP inside an OIDC login that beabee started,
+such as changing their password or setting up their first credential. The
+member returns through the OIDC callback like any login.
+_Avoid_: self-service link, account action, deep link
+
 **Local Login**:
 Authentication where beabee itself stores and checks the member's credentials.
 The default for instances without an IdP. Named for where the credential is
@@ -35,10 +41,9 @@ Login and also runs during the IdP Transition.
 _Avoid_: sync, user export, federation
 
 **Email Change**:
-A member's email may be entered in beabee or, where the IdP allows it, at the
-IdP. Either way beabee records it on the contact first and then propagates it
-to all other services, so the IdP is an input channel for email, never a
-second system of record.
+A member's email is changed in beabee only; the IdP offers members no page to
+edit it. beabee records it on the contact and propagates it to all other
+services, the IdP included.
 _Avoid_: email sync, two-way sync
 
 **IdP Transition**:

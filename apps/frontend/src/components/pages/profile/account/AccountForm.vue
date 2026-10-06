@@ -31,6 +31,7 @@
         </UFormField>
 
         <UFormField
+          v-if="accountContent?.showOrganisationName"
           :label="t('adminSettings.general.organisationName')"
           name="organisation"
         >
@@ -46,6 +47,7 @@
         </UFormField>
 
         <UFormField
+          v-if="joinContent?.showVatNumber"
           :label="t('form.vatNumber')"
           name="vatNumber"
           :help="t('accountPage.vatNumberInfo')"
@@ -146,6 +148,7 @@ const { t, locale } = useI18n();
 
 const loading = ref(true);
 const accountContent = ref<ContentData<'join/setup'> | null>(null);
+const joinContent = ref<ContentData<'join'> | null>(null);
 
 const data = reactive({
   emailAddress: '',
@@ -168,11 +171,13 @@ const countryItems = computed(() => getCountryItems(locale.value));
 const savedData = reactive({ ...data });
 
 onMounted(async () => {
-  const [content, contact] = await Promise.all([
+  const [content, join, contact] = await Promise.all([
     client.content.get('join/setup'),
+    client.content.get('join'),
     client.contact.get('me', [GetContactWith.Profile]),
   ]);
   accountContent.value = content;
+  joinContent.value = join;
   Object.assign(data, {
     emailAddress: contact.email,
     firstName: contact.firstname,
