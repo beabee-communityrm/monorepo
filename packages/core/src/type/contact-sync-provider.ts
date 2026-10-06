@@ -1,3 +1,5 @@
+import type { ContactSyncIntegrationData } from '@beabee/beabee-common';
+
 import type { Contact, ContactProfile } from '#models/index';
 
 /**
@@ -6,6 +8,10 @@ import type { Contact, ContactProfile } from '#models/index';
  * provider decides which updates are relevant to it and may skip the rest.
  */
 export interface ContactSyncProvider {
+  /**
+   * Describe the configured provider, optionally with a live health check
+   */
+  getProviderInfo(withHealth?: boolean): Promise<ContactSyncIntegrationData>;
   /**
    * Create the external record for a new contact
    * @param contact The contact, with its profile loaded

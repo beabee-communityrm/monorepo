@@ -1,3 +1,5 @@
+import type { ContactSyncIntegrationData } from '@beabee/beabee-common';
+
 import config from '#config/config';
 import { getRepository } from '#database';
 import { log as mainLogger } from '#logging';
@@ -25,6 +27,15 @@ class ContactSyncService {
 
   get isEnabled(): boolean {
     return config.contactSync.provider !== 'none';
+  }
+
+  /**
+   * Describe the configured provider, optionally with a live health check
+   */
+  async getProviderInfo(
+    withHealth = false
+  ): Promise<ContactSyncIntegrationData> {
+    return this.provider.getProviderInfo(withHealth);
   }
 
   /**

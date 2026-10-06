@@ -1,3 +1,4 @@
+import ContactSyncService from '@beabee/core/services/ContactSyncService';
 import NewsletterService from '@beabee/core/services/NewsletterService';
 
 import { plainToInstance } from 'class-transformer';
@@ -9,6 +10,13 @@ import {
   QueryParams,
 } from 'routing-controllers';
 
+import {
+  ContactSyncIntegrationDto,
+  GetContactSyncIntegrationOptsDto,
+  GetContactSyncIntegrationWith,
+  NoneContactSyncIntegrationDto,
+  SalesforceContactSyncIntegrationDto,
+} from '#api/dto/ContactSyncIntegrationDto';
 import { NewsletterDiffDto } from '#api/dto/NewsletterDiffDto';
 import {
   GetNewsletterIntegrationOptsDto,
@@ -37,6 +45,18 @@ export class IntegrationsController {
       default:
         return plainToInstance(NoneNewsletterIntegrationDto, info);
     }
+  }
+
+  @Get('/contact-sync')
+  async getContactSyncStatus(
+    @QueryParams() query: GetContactSyncIntegrationOptsDto
+  ): Promise<ContactSyncIntegrationDto> {
+    const info = await ContactSyncService.getProviderInfo(
+      query.with?.includes(GetContactSyncIntegrationWith.Health)
+    );
+    return info.provider === 'salesforce'
+      ? plainToInstance(SalesforceContactSyncIntegrationDto, info)
+      : plainToInstance(NoneContactSyncIntegrationDto, info);
   }
 
   @Post('/newsletter/refresh')

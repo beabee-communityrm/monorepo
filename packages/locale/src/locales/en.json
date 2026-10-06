@@ -295,6 +295,7 @@
     },
     "integrations": {
       "categories": {
+        "contactSync": "Contact sync",
         "newsletters": "Newsletters"
       },
       "label": "Integrations",

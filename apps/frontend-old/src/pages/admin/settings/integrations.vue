@@ -23,11 +23,11 @@ meta:
             v-for="integration in items"
             :key="integration.provider"
             :integration="integration"
-            :on-refresh="() => refresh(integration.provider)"
+            :on-refresh="() => refresh(integration)"
           >
             <NewsletterCardContent
               v-if="
-                category === 'newsletters' &&
+                'groups' in integration &&
                 integration.status === ApiHealthStatus.HEALTHY
               "
               :groups="integration.groups"
@@ -48,16 +48,32 @@ import { groupBy } from '#utils/objects';
 
 import IntegrationCard from '#components/integrations/IntegrationCard.vue';
 import NewsletterCardContent from '#components/integrations/NewsletterCardContent.vue';
+import { useContactSyncIntegrations } from '#composables/useContactSyncIntegrations';
 import { useNewsletterIntegrations } from '#composables/useNewsletterIntegrations';
+import type { Integration } from '#type/integration';
 import { ApiHealthStatus } from '@beabee/beabee-common';
 
 const { t } = useI18n();
 
-const { integrations, loading, load, refresh } = useNewsletterIntegrations();
+const newsletter = useNewsletterIntegrations();
+const contactSync = useContactSyncIntegrations();
 
-const integrationsByCategory = computed(() =>
-  groupBy(integrations.value, ({ category }) => category)
+const loading = computed(
+  () => newsletter.loading.value || contactSync.loading.value
 );
 
-onMounted(load);
+const integrationsByCategory = computed(() =>
+  groupBy(
+    [...newsletter.integrations.value, ...contactSync.integrations.value],
+    ({ category }) => category
+  )
+);
+
+function refresh(integration: Integration): Promise<void> {
+  return integration.category === 'contactSync'
+    ? contactSync.refresh()
+    : newsletter.refresh(integration.provider);
+}
+
+onMounted(() => Promise.all([newsletter.load(), contactSync.load()]));
 </script>

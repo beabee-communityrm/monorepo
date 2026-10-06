@@ -1,3 +1,8 @@
+import {
+  ApiHealthStatus,
+  SalesforceContactSyncIntegrationData,
+} from '@beabee/beabee-common';
+
 import axios from 'axios';
 
 import { SalesforceContactSyncConfig } from '#config/config';
@@ -9,8 +14,11 @@ import {
   contactToProfileFields,
   createInstance,
 } from '#lib/salesforce';
+import { log as mainLogger } from '#logging';
 import type { Contact, ContactProfile } from '#models/index';
 import type { ContactSyncProvider } from '#type/index';
+
+const log = mainLogger.child({ app: 'salesforce-contact-sync' });
 
 /**
  * Mirrors contacts to beabee_Profile__c records, keyed on the beabee contact
@@ -22,6 +30,15 @@ export class SalesforceProvider implements ContactSyncProvider {
 
   constructor(settings: SalesforceContactSyncConfig['settings']) {
     this.api = createInstance(settings);
+  }
+
+  async getProviderInfo(
+    withHealth = false
+  ): Promise<SalesforceContactSyncIntegrationData> {
+    return {
+      provider: 'salesforce',
+      ...(withHealth && { status: await this.getHealthStatus() }),
+    };
   }
 
   async createContact(contact: Contact): Promise<void> {
@@ -56,6 +73,20 @@ export class SalesforceProvider implements ContactSyncProvider {
       if (!(axios.isAxiosError(err) && err.response?.status === 404)) {
         throw err;
       }
+    }
+  }
+
+  /**
+   * Check the connection by hitting the limits endpoint, which exercises
+   * authentication and reachability cheaply
+   */
+  private async getHealthStatus(): Promise<ApiHealthStatus> {
+    try {
+      await this.api.get('limits/');
+      return ApiHealthStatus.HEALTHY;
+    } catch (err) {
+      log.error('Salesforce health check failed', err);
+      return ApiHealthStatus.UNHEALTHY;
     }
   }
 

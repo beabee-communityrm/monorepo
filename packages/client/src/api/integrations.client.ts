@@ -1,4 +1,6 @@
 import type {
+  ContactSyncIntegrationDataWith,
+  GetContactSyncWith,
   GetNewsletterWith,
   NewsletterDiffData,
   NewsletterGroupData,
@@ -26,6 +28,19 @@ export class IntegrationsClient extends BaseClient {
   ): Promise<NewsletterIntegrationDataWith<With>> {
     const { data } = await this.fetch.get<NewsletterIntegrationDataWith<With>>(
       '/newsletter',
+      { with: _with }
+    );
+    return data;
+  }
+
+  /**
+   * Fetches the contact sync integration for this instance
+   */
+  async getContactSync<With extends GetContactSyncWith = void>(
+    _with?: readonly With[]
+  ): Promise<ContactSyncIntegrationDataWith<With>> {
+    const { data } = await this.fetch.get<ContactSyncIntegrationDataWith<With>>(
+      '/contact-sync',
       { with: _with }
     );
     return data;

@@ -16,6 +16,7 @@ export * from './ContactDto.js';
 export * from './ContactMfaDto.js';
 export * from './ContactProfileDto.js';
 export * from './ContactRoleDto.js';
+export * from './ContactSyncIntegrationDto.js';
 export * from './ContactTagDto.js';
 export * from './ContentDto.js';
 export * from './ContentTelegramDto.js';

@@ -11,6 +11,14 @@ export const healthCommand: CommandModule = {
         default: false,
       })
       .command({
+        command: 'contact-sync',
+        describe: 'Check the contact sync integration',
+        handler: async (argv) => {
+          const { checkHealth } = await import('../actions/health.js');
+          return checkHealth(['contact-sync'], argv.notify as boolean);
+        },
+      })
+      .command({
         command: 'document',
         describe: 'Check the document storage integration',
         handler: async (argv) => {

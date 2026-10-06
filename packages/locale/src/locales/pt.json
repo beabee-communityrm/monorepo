@@ -296,6 +296,7 @@
     },
     "integrations": {
       "categories": {
+        "contactSync": "Sincronização de contactos",
         "newsletters": "Newsletters"
       },
       "label": "Integrações",
