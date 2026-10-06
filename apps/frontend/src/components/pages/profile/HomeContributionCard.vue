@@ -188,7 +188,10 @@ const view = computed(() => {
     } as const;
   }
 
-  if (c.membershipStatus === MembershipStatus.Expired) {
+  if (
+    c.membershipStatus === MembershipStatus.Expired &&
+    c.type !== ContributionType.None
+  ) {
     return {
       state: 'cancelled',
       badgeColor: 'neutral',
