@@ -62,7 +62,13 @@
       </div>
 
       <p
-        v-if="view.state !== 'active' && view.state !== 'cancelled'"
+        v-if="view.state === 'active' && contribution?.hasPendingPayment"
+        class="rounded-md bg-muted px-3 py-2.5 text-toned"
+      >
+        {{ t('contribution.hasPendingPayment') }}
+      </p>
+      <p
+        v-else-if="view.state !== 'active' && view.state !== 'cancelled'"
         class="rounded-md bg-muted px-3 py-2.5 text-toned"
       >
         {{ t(`homePage.contribution.note.${view.state}`) }}
@@ -231,7 +237,7 @@ const view = computed(() => {
       amount,
       period,
       rows: [
-        ...(c.renewalDate
+        ...(c.renewalDate && !c.hasPendingPayment
           ? [
               {
                 label: t('homePage.contribution.nextPayment'),
