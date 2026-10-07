@@ -1163,7 +1163,6 @@
     "roles": "Roles",
     "security": {
       "instructions": "Copy and share this link:",
-      "loginOverride": "Login override",
       "mfa": {
         "desc": "This contact has 2FA enabled. Click on the \"{ disableLabel }\" button to disable it.",
         "disabledDesc": "2FA is not enabled for this contact."
@@ -1688,6 +1687,10 @@
   },
   "login": {
     "backTo": "Back to {newsroomName}",
+    "errors": {
+      "login-failed": "Login failed. Please try again.",
+      "unlinked-account": "Your login is not linked to an account on this platform. Please contact support."
+    },
     "forgotPassword": "Forgot your password?",
     "joinNow": "Join now!",
     "lostMfaDevice": "Lost your 2FA device?",

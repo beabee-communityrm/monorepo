@@ -1168,7 +1168,6 @@
     "roles": "Rôles",
     "security": {
       "instructions": "Copiez et partagez ce lien :",
-      "loginOverride": "",
       "mfa": {
         "desc": "Ce contact a activé l'A2F. Cliquez sur le bouton « {disableLabel} » pour la désactiver.",
         "disabledDesc": "L'A2F n'est pas activée pour ce contact."
@@ -1695,6 +1694,10 @@
   },
   "login": {
     "backTo": "Revenir à {newsroomName}",
+    "errors": {
+      "login-failed": "La connexion a échoué. Veuillez réessayer.",
+      "unlinked-account": "Votre connexion n'est liée à aucun compte sur cette plateforme. Veuillez contacter le support."
+    },
     "forgotPassword": "Mot de passe oublié ?",
     "joinNow": "S'inscrire maintenant !",
     "lostMfaDevice": "Vous avez perdu votre appareil d'A2F ?",

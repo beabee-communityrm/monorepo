@@ -12,7 +12,7 @@ import {
 
 import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from 'typeorm';
 
-import { createQueryBuilder, getRepository, runTransaction } from '#database';
+import { getRepository, runTransaction } from '#database';
 import {
   CantUpdateContributionError,
   DuplicateEmailError,
@@ -95,16 +95,6 @@ class ContactsService {
   ): Promise<Contact | undefined> {
     // TODO: check undefined
     return (await getRepository(Contact).findOneBy(where)) || undefined;
-  }
-
-  async findByLoginOverride(code: string): Promise<Contact | undefined> {
-    // TODO: check undefined
-    return (
-      (await createQueryBuilder(Contact, 'm')
-        .where("m.loginOverride ->> 'code' = :code", { code: code })
-        .andWhere("m.loginOverride ->> 'expires' > :now", { now: new Date() })
-        .getOne()) || undefined
-    );
   }
 
   async createContact(

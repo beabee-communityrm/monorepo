@@ -339,7 +339,6 @@ export const contactAnonymiser = createModelAnonymiser(Contact, {
   firstname: () => chance.first(),
   lastname: () => chance.last(),
   password: () => Password.none,
-  loginOverride: () => null,
   pollsCode: uniqueCode,
   referralCode: uniqueCode,
 });

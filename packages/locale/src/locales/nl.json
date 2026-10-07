@@ -1164,7 +1164,6 @@
     "roles": "Rollen",
     "security": {
       "instructions": "Kopieer en deel deze link:",
-      "loginOverride": "Inloggen opheffen",
       "mfa": {
         "desc": "Deze contactpersoon heeft 2FA ingeschakeld. Klik op de knop “{ disableLabel }” om deze uit te schakelen.",
         "disabledDesc": "2FA is niet ingeschakeld voor dit contact."
@@ -1691,6 +1690,10 @@
   },
   "login": {
     "backTo": "Terug naar {newsroomName}",
+    "errors": {
+      "login-failed": "Inloggen is mislukt. Probeer het opnieuw.",
+      "unlinked-account": "Je login is niet gekoppeld aan een account op dit platform. Neem contact op met de support."
+    },
     "forgotPassword": "Wachtwoord vergeten?",
     "joinNow": "Word nu lid!",
     "lostMfaDevice": "Ben je je 2FA-apparaat kwijt?",

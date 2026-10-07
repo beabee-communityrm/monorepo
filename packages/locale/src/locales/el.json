@@ -1164,7 +1164,6 @@
     "roles": "",
     "security": {
       "instructions": "",
-      "loginOverride": "",
       "mfa": {
         "desc": "",
         "disabledDesc": ""
@@ -1691,6 +1690,10 @@
   },
   "login": {
     "backTo": "",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "",
     "joinNow": "",
     "lostMfaDevice": "",

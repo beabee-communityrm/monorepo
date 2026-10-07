@@ -1164,7 +1164,6 @@
     "roles": "",
     "security": {
       "instructions": "",
-      "loginOverride": "",
       "mfa": {
         "desc": "Este contato ativou o 2FA. Clica no botão \"{ disableLabel }\" para desativar.",
         "disabledDesc": "Este contato não ativou o 2FA."
@@ -1691,6 +1690,10 @@
   },
   "login": {
     "backTo": "Voltar a {newsroomName}",
+    "errors": {
+      "login-failed": "O login falhou. Tente novamente.",
+      "unlinked-account": "O seu login não está associado a nenhuma conta nesta plataforma. Contacte o suporte."
+    },
     "forgotPassword": "Esqueceste-te da palavra-passe?",
     "joinNow": "Junta-te agora!",
     "lostMfaDevice": "Perdeste o teu dispositivo 2FA?",
