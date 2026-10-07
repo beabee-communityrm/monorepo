@@ -1,5 +1,7 @@
 import type { Contact } from '#models/index';
 
+import type { IdpLoginAction } from './idp-login-action.js';
+
 /**
  * Mirrors contacts to the external identity provider (IdP Provisioning) so
  * that they can be linked to IdP accounts by subject identifier
@@ -27,4 +29,15 @@ export interface IdpProvider {
    * @param subject The linked account's subject identifier
    */
   permanentlyDeleteContact(subject: string): Promise<void>;
+  /**
+   * The page to send the member to for an action inside an OIDC login that
+   * beabee started. The member completes the action and the login there,
+   * so they return through the OIDC callback like any login.
+   * @param authorizeUrl The authorization request beabee started
+   * @param action What the member does at the provider
+   */
+  resolveLoginUrl(
+    authorizeUrl: string,
+    action: IdpLoginAction
+  ): Promise<string>;
 }

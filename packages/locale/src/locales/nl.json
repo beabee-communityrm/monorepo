@@ -94,6 +94,13 @@
     "requiredFields": "Verplichte velden",
     "savedPassword": "Nieuw wachtwoord opgeslagen",
     "security": "Beveiliging",
+    "selfService": {
+      "addPasskey": "Passkey toevoegen",
+      "changePassword": "Wachtwoord wijzigen",
+      "intro": "Je wachtwoord en inlogmethoden worden beheerd door onze inlogdienst. Elk van deze opties brengt je daarheen en daarna weer terug.",
+      "setupMfa": "Authenticator-app instellen",
+      "title": "Inloggegevens"
+    },
     "subTitle": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "subTitle-nuxt": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "subscriptions": "Abonnementen",

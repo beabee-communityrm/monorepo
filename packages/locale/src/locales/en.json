@@ -94,6 +94,13 @@
     "requiredFields": "Required fields",
     "savedPassword": "New password saved",
     "security": "Security",
+    "selfService": {
+      "addPasskey": "Add a passkey",
+      "changePassword": "Change password",
+      "intro": "Your password and login methods are managed by our login service. Each of these takes you there and brings you back afterwards.",
+      "setupMfa": "Set up authenticator app",
+      "title": "Login details"
+    },
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
     "subTitle-nuxt": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
     "subscriptions": "Subscriptions",

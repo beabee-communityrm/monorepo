@@ -94,6 +94,13 @@
     "requiredFields": "Pflicht-Felder",
     "savedPassword": "",
     "security": "",
+    "selfService": {
+      "addPasskey": "Passkey hinzufügen",
+      "changePassword": "Passwort ändern",
+      "intro": "Dein Passwort und deine Anmeldemethoden werden von unserem Anmeldedienst verwaltet. Jeder dieser Schritte führt dich dorthin und anschließend wieder zurück.",
+      "setupMfa": "Authenticator-App einrichten",
+      "title": "Anmeldedaten"
+    },
     "subTitle": "",
     "subTitle-nuxt": "",
     "subscriptions": "",

@@ -1,5 +1,6 @@
 import type {
   AuthInfoData,
+  LoginAction,
   LoginData,
   LogoutResultData,
 } from '@beabee/beabee-common';
@@ -30,11 +31,16 @@ export class AuthClient extends BaseClient {
    * The URL that starts OIDC login, for full-page navigation on instances
    * where members log in at the identity provider
    * @param next Internal path to continue to after login
+   * @param action What the logged-in member does at the identity provider
+   * inside this login, e.g. change their password
    */
-  getLoginUrl(next?: string): string {
+  getLoginUrl(next?: string, action?: LoginAction): string {
     const url = this.authUrl('login');
     if (next) {
       url.searchParams.set('next', next);
+    }
+    if (action) {
+      url.searchParams.set('action', action);
     }
     return url.href;
   }

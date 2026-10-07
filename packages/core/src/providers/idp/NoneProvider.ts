@@ -9,4 +9,7 @@ export class NoneProvider implements IdpProvider {
   }
   async updateContact(): Promise<void> {}
   async permanentlyDeleteContact(): Promise<void> {}
+  async resolveLoginUrl(): Promise<never> {
+    throw new Error('No identity provider configured');
+  }
 }
