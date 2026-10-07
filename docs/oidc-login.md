@@ -90,9 +90,9 @@ CLI once no longer needed.
 **Branding.** The instance's label policy is set from the beabee theme: the
 main, body, danger and white colours map to Zitadel's primary, font, warn and
 background colours (light and dark alike, theme mode forced light) plus the
-logo as logo and icon. Pushed on every settings save and by the CLI. Fonts
-and the splash background image are not synced for now (Zitadel has one font
-file per instance and no per-instance background before v5).
+logo as logo and icon. Pushed when the theme or logo is saved and by the
+CLI. Fonts and the splash background image are not synced for now (Zitadel
+has one font file per instance and no per-instance background before v5).
 
 ## Configuration
 

@@ -60,7 +60,9 @@ export class ContentController {
     @PartialBody() data: GetContentGeneralDto
   ): Promise<GetContentGeneralDto> {
     await ContentTransformer.updateOne('general', data);
-    await idpService.updateBranding();
+    if (data.theme !== undefined || data.logoUrl !== undefined) {
+      await idpService.updateBranding();
+    }
     return ContentTransformer.fetchOne('general');
   }
 
