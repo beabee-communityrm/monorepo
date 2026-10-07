@@ -28,6 +28,11 @@ export interface SyncSegmentsArgs {
   dryRun: boolean;
 }
 
+export interface SyncContactSyncServicePushArgs {
+  contactIds: string[] | undefined;
+  dryRun: boolean;
+}
+
 export interface SyncStripeArgs {
   dryRun: boolean;
   contactIds: string[] | undefined;

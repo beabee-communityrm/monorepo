@@ -43,6 +43,7 @@ import {
 } from '#models/index';
 import ActivityService from '#services/ActivityService';
 import ContactMfaService from '#services/ContactMfaService';
+import ContactSyncService from '#services/ContactSyncService';
 import EmailService from '#services/EmailService';
 import IdpService from '#services/IdpService';
 import NewsletterService from '#services/NewsletterService';
@@ -146,6 +147,8 @@ class ContactsService {
         contact.idpSubject = idpSubject;
       }
 
+      await ContactSyncService.createContact(contact);
+
       return contact;
     } catch (error) {
       if (isDuplicateIndex(error, 'email')) {
@@ -216,6 +219,7 @@ class ContactsService {
     await PaymentService.updateContact(contact, updates);
 
     await IdpService.updateContact(contact, updates);
+    await ContactSyncService.updateContact(contact, updates);
   }
 
   /**
@@ -346,6 +350,8 @@ class ContactsService {
         eventType: ActivityEventType.ContactProfileUpdated,
         metadata: null,
       });
+
+      await ContactSyncService.updateContactProfile(contact, profileUpdates);
     }
 
     if (newsletterStatus || newsletterGroups) {
@@ -502,6 +508,7 @@ class ContactsService {
     });
 
     await IdpService.permanentlyDeleteContact(contact);
+    await ContactSyncService.permanentlyDeleteContact(contact);
   }
 
   /**

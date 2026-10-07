@@ -175,6 +175,38 @@ const idpProvider = env.e(
 );
 
 /**
+ * Contact sync configuration
+ * Used when BEABEE_CONTACTSYNC_PROVIDER=salesforce: every contact is mirrored
+ * to a beabee_Profile__c record in the Salesforce org
+ */
+export interface SalesforceContactSyncConfig {
+  provider: 'salesforce';
+  settings: {
+    authUrl: string; // BEABEE_CONTACTSYNC_SETTINGS_AUTHURL - OAuth2 token endpoint (My Domain URL + /services/oauth2/token)
+    clientId: string; // BEABEE_CONTACTSYNC_SETTINGS_CLIENTID - Connected app client ID
+    clientSecret: string; // BEABEE_CONTACTSYNC_SETTINGS_CLIENTSECRET - Connected app client secret
+    apiVersion: string; // BEABEE_CONTACTSYNC_SETTINGS_APIVERSION - REST API version (e.g. v60.0)
+  };
+}
+
+/**
+ * Used when BEABEE_CONTACTSYNC_PROVIDER=none (default): contacts are not
+ * mirrored to an external system
+ */
+interface NoneContactSyncConfig {
+  provider: 'none';
+  settings: Record<string, never>;
+}
+
+type ContactSyncConfig = SalesforceContactSyncConfig | NoneContactSyncConfig;
+
+const contactSyncProvider = env.e(
+  'BEABEE_CONTACTSYNC_PROVIDER',
+  ['salesforce', 'none'] as const,
+  'none'
+);
+
+/**
  * Login configuration
  * Used when BEABEE_LOGIN_PROVIDER=oidc: members log in at the identity
  * provider (OIDC Login); beabee's own password, MFA and reset endpoints are
@@ -385,6 +417,23 @@ export const config = {
             }
           : {},
   } as IdpConfig,
+
+  // Contact sync integration configuration
+  contactSync: {
+    provider: contactSyncProvider, // Contact sync provider (salesforce or none)
+    settings:
+      contactSyncProvider === 'salesforce'
+        ? {
+            authUrl: env.s('BEABEE_CONTACTSYNC_SETTINGS_AUTHURL'), // OAuth2 token endpoint
+            clientId: env.s('BEABEE_CONTACTSYNC_SETTINGS_CLIENTID'), // Connected app client ID
+            clientSecret: env.s('BEABEE_CONTACTSYNC_SETTINGS_CLIENTSECRET'), // Connected app client secret
+            apiVersion: env.s(
+              'BEABEE_CONTACTSYNC_SETTINGS_APIVERSION',
+              'v60.0'
+            ), // REST API version
+          }
+        : {},
+  } as ContactSyncConfig,
 
   // Login configuration
   login: {
