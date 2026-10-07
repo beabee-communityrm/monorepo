@@ -1,3 +1,8 @@
+import type { ContentGeneralData } from '@beabee/beabee-common';
+
+import fs from 'fs';
+import { createRequire } from 'module';
+
 import config from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
@@ -11,6 +16,23 @@ import { optionsService } from '#services/OptionsService';
 import type { IdpLoginAction, IdpProvider } from '#type/index';
 
 const log = mainLogger.child({ app: 'idp-service' });
+
+const require = createRequire(import.meta.url);
+
+// Fonts with a bundled file, the Fontsource packages the frontend ships; must
+// match validFonts in @beabee/vue's theme. Other theme fonts are skipped.
+const BUNDLED_FONTS = [
+  'fira-sans',
+  'fira-sans-condensed',
+  'libre-franklin',
+  'nunito-sans',
+  'open-sans',
+  'roboto',
+  'roboto-slab',
+  'rubik',
+  'ubuntu',
+  'work-sans',
+];
 
 /**
  * IdP Provisioning: mirrors contacts to the identity provider. All methods
@@ -112,16 +134,39 @@ class IdpService {
   }
 
   /**
-   * Push the current theme and logo to the IdP's login pages
+   * The body font as the IdP's one font file per instance, defaulting like
+   * the frontend does
+   */
+  private async getFont(
+    theme: ContentGeneralData['theme']
+  ): Promise<Blob | undefined> {
+    const font = theme.fonts?.body || 'open-sans';
+    if (!BUNDLED_FONTS.includes(font)) {
+      log.warn(`Skipping IdP font, no bundled file: ${font}`);
+      return undefined;
+    }
+    const file = require.resolve(
+      `@fontsource/${font}/files/${font}-latin-400-normal.woff2`
+    );
+    return new Blob([await fs.promises.readFile(file)], {
+      type: 'font/woff2',
+    });
+  }
+
+  /**
+   * Push the current theme, logo and font to the IdP's login pages
    * @returns Whether the branding was applied
    */
   async updateBranding(): Promise<boolean> {
     if (!this.isEnabled) return false;
     log.info('Update IdP branding');
     try {
+      const theme: ContentGeneralData['theme'] =
+        optionsService.getJSON('theme');
       await this.provider.updateBranding({
-        theme: optionsService.getJSON('theme'),
+        theme,
         logo: await this.getLogo(),
+        font: await this.getFont(theme),
       });
       return true;
     } catch (err) {

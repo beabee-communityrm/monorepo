@@ -61,4 +61,6 @@ export interface IdpBranding {
   theme: ContentGeneralData['theme'];
   /** Used as logo and icon, absent when the instance has no logo */
   logo?: Blob | undefined;
+  /** The body font file, absent when the theme's font ships no file */
+  font?: Blob | undefined;
 }
