@@ -1,0 +1,24 @@
+/*
+ * Stylesheet for the IdP's Login v2 pages. A proxy in front of the login
+ * injects it under /ui/v2/login/_beabee/, where the tenant's Ingress maps
+ * that prefix to the beabee root, so URLs here are relative to that prefix.
+ *
+ * Colours come from the login's own CSS variables, which the IdP branding
+ * sync sets from the beabee theme. Selectors target the login's Tailwind
+ * utility classes (BackgroundWrapper and Card), which upstream may rename;
+ * the login then falls back to its own look. Rules outside @layer win over
+ * the login's layered Tailwind rules without !important.
+ */
+
+.min-h-screen {
+  background-color: var(--theme-light-background-500);
+  background-image: url(api/1.0/images/login-background);
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-background-light-400 {
+  background-color: #ffffff;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
