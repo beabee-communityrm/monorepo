@@ -1164,7 +1164,6 @@
     "roles": "",
     "security": {
       "instructions": "",
-      "loginOverride": "",
       "mfa": {
         "desc": "Este contato ativou o 2FA. Clica no botão \"{ disableLabel }\" para desativar.",
         "disabledDesc": "Este contato não ativou o 2FA."

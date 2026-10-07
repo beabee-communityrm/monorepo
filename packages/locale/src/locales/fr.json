@@ -1168,7 +1168,6 @@
     "roles": "Rôles",
     "security": {
       "instructions": "Copiez et partagez ce lien :",
-      "loginOverride": "",
       "mfa": {
         "desc": "Ce contact a activé l'A2F. Cliquez sur le bouton « {disableLabel} » pour la désactiver.",
         "disabledDesc": "L'A2F n'est pas activée pour ce contact."
