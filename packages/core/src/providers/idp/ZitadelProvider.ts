@@ -1,6 +1,13 @@
+import type { LoginAction } from '@beabee/beabee-common';
+
 import type { ZitadelIdpConfig } from '#config/config';
 import type { Contact } from '#models/index';
-import type { IdpBranding, IdpProvider, IdpSetupSettings } from '#type/index';
+import type {
+  IdpBranding,
+  IdpLoginAction,
+  IdpProvider,
+  IdpSetupSettings,
+} from '#type/index';
 
 class ZitadelApiError extends Error {
   /** gRPC status code from the response body, 9 = FAILED_PRECONDITION */
@@ -15,6 +22,13 @@ class ZitadelApiError extends Error {
     }
   }
 }
+
+// Login v2 pages that work on the member's existing login session
+const LOGIN_V2_PAGES: Record<LoginAction, string> = {
+  changePassword: 'password/change',
+  addPasskey: 'passkey/set',
+  setupMfa: 'mfa/set',
+};
 
 /**
  * Mirrors contacts into a Zitadel virtual instance via the v2 user API,
@@ -165,5 +179,56 @@ export class ZitadelProvider implements IdpProvider {
     }
     // Colours and assets stay in the preview until activated
     await this.request('POST', '/admin/v1/policies/label/_activate');
+  }
+
+  /**
+   * Every Login v2 page accepts the ID of an authorization request and
+   * completes that request when the page is done, and identifies the
+   * member's session by login name
+   */
+  async resolveLoginUrl(
+    authorizeUrl: string,
+    action: IdpLoginAction
+  ): Promise<string> {
+    const params = new URLSearchParams({
+      requestId: await this.startAuthRequest(authorizeUrl),
+      loginName: await this.getLoginName(action.subject),
+    });
+    return `${this.settings.url}/ui/v2/login/${LOGIN_V2_PAGES[action.type]}?${params}`;
+  }
+
+  /**
+   * Zitadel creates the authorization request when the authorize endpoint
+   * redirects to Login v2, so following the redirect once yields its ID:
+   *
+   *   > GET /oauth/v2/authorize?client_id=…&redirect_uri=…&state=…&code_challenge=…
+   *   < 302 Location: /ui/v2/login/login?authRequest=V2_393061261941706295
+   *
+   * Login v2 pages take that ID as `requestId=oidc_V2_…` and complete the
+   * request when done, sending the browser to our callback with the code.
+   */
+  private async startAuthRequest(authorizeUrl: string): Promise<string> {
+    const resp = await fetch(authorizeUrl, { redirect: 'manual' });
+    const location = resp.headers.get('location') || '';
+    const authRequest = new URL(location, authorizeUrl).searchParams.get(
+      'authRequest'
+    );
+    if (!authRequest) {
+      throw new Error(
+        `Zitadel did not start an authorization request: ${resp.status} ${location}`
+      );
+    }
+    return `oidc_${authRequest}`;
+  }
+
+  private async getLoginName(subject: string): Promise<string> {
+    const resp = await this.request<{ user: { preferredLoginName: string } }>(
+      'GET',
+      `/v2/users/${subject}`
+    );
+    if (!resp?.user.preferredLoginName) {
+      throw new Error('Zitadel did not return the login name');
+    }
+    return resp.user.preferredLoginName;
   }
 }

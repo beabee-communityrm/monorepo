@@ -94,6 +94,13 @@
     "requiredFields": "Pflichtfelder",
     "savedPassword": "Das neue Passwort wurde gespeichert. ",
     "security": "Sicherheit",
+    "selfService": {
+      "addPasskey": "Passkey hinzufügen",
+      "changePassword": "Passwort ändern",
+      "intro": "Dein Passwort und deine Anmeldemethoden werden von unserem Anmeldedienst verwaltet. Jeder dieser Schritte führt dich dorthin und anschließend wieder zurück.",
+      "setupMfa": "Authenticator-App einrichten",
+      "title": "Anmeldedaten"
+    },
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subTitle-nuxt": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subscriptions": "Abonnements",

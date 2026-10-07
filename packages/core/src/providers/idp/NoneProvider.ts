@@ -15,4 +15,7 @@ export class NoneProvider implements IdpProvider {
   async updateBranding(): Promise<void> {
     throw new Error('No identity provider configured');
   }
+  async resolveLoginUrl(): Promise<never> {
+    throw new Error('No identity provider configured');
+  }
 }
