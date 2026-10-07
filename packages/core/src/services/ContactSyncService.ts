@@ -11,11 +11,10 @@ import type { ContactSyncProvider } from '#type/index';
 const log = mainLogger.child({ app: 'contact-sync-service' });
 
 /**
- * Mirrors every contact to an external system, regardless of newsletter
- * status. All methods are best-effort: failures are logged but never thrown,
- * because contact management must keep working while the external system is
- * unreachable. Each write sends the full state, so a missed update is
- * repaired by the next one.
+ * Mirrors every contact to an external system. All methods are best-effort:
+ * failures are logged but never thrown, because contact management must keep
+ * working while the external system is unreachable. Each write sends the
+ * full state, so a missed update is repaired by the next one.
  */
 class ContactSyncService {
   private readonly provider: ContactSyncProvider =
