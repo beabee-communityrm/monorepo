@@ -1167,11 +1167,7 @@ export default class AudioRecorderComponent extends FileComponent {
     if (this.readyFileName) this.readyFileName.textContent = this.fileName;
     if (this.downloadLink) {
       this.downloadLink.hidden = !this.currentUrl;
-      if (this.currentUrl) {
-        const url = new URL(this.currentUrl, window.location.href);
-        url.searchParams.set('download', 'true');
-        this.downloadLink.href = url.href;
-      }
+      this.downloadLink.href = this.currentUrl || '';
     }
     if (this.playIcon) {
       this.playIcon.classList.toggle(
