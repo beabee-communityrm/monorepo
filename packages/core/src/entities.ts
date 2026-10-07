@@ -12,6 +12,7 @@ import { CalloutVariant } from './models/CalloutVariant.js';
 import { Contact } from './models/Contact.js';
 import { ContactContribution } from './models/ContactContribution.js';
 import { ContactMfa } from './models/ContactMfa.js';
+import { ContactNewsletter } from './models/ContactNewsletter.js';
 import { ContactProfile } from './models/ContactProfile.js';
 import { ContactRole } from './models/ContactRole.js';
 import { ContactTag } from './models/ContactTag.js';
@@ -53,6 +54,7 @@ export const entities = [
   Contact,
   ContactContribution,
   ContactMfa,
+  ContactNewsletter,
   ContactProfile,
   ContactRole,
   ContactTag,

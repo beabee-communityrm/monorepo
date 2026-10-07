@@ -12,6 +12,7 @@ export * from './CalloutVariant.js';
 export * from './Contact.js';
 export * from './ContactContribution.js';
 export * from './ContactMfa.js';
+export * from './ContactNewsletter.js';
 export * from './ContactProfile.js';
 export * from './ContactRole.js';
 export * from './ContactTag.js';

@@ -13,7 +13,7 @@ import {
   CantUpdateNewsletterGroupsError,
 } from '#errors/index';
 import { log as mainLogger } from '#logging';
-import { Callout, Contact, ContactProfile, Content } from '#models/index';
+import { Callout, Contact, ContactNewsletter, Content } from '#models/index';
 import {
   MailchimpProvider,
   NoneProvider,
@@ -35,8 +35,8 @@ import optionsService from './OptionsService.js';
 const log = mainLogger.child({ app: 'newsletter-service' });
 
 /**
- * Ensure the contact profile is loaded then creates a newsletter update object
- * to be sent to the newsletter provider
+ * Ensure the contact's newsletter state is loaded then creates a newsletter
+ * update object to be sent to the newsletter provider
  *
  * @param contact The contact
  * @param updates Optional updates to apply
@@ -48,11 +48,10 @@ async function contactToNlUpdate(
   updates?: ContactNewsletterUpdates,
   opts?: { newsletterGroupChange?: NewsletterGroupChange }
 ): Promise<UpdateNewsletterContact | undefined> {
-  // TODO: Fix that it relies on contact.profile being loaded
-  if (!contact.profile) {
-    contact.profile = await getRepository(ContactProfile).findOneByOrFail({
-      contactId: contact.id,
-    });
+  if (!contact.newsletter) {
+    contact.newsletter = await getRepository(ContactNewsletter).findOneByOrFail(
+      { contactId: contact.id }
+    );
   }
 
   return convertContactToNlUpdate(contact, updates, opts);
@@ -80,7 +79,7 @@ class NewsletterService {
    * @param contact The contact to update or insert
    * @param updates Optional updates to apply to the contact before syncing
    * @param opts.oldEmail Previous email address if the email is being updated
-   * @param opts.newsletterGroupChange How `updates.newsletterGroups` should be
+   * @param opts.newsletterGroupChange How `updates.groups` should be
    * applied
    */
   async upsertContact(
@@ -96,7 +95,7 @@ class NewsletterService {
       // In case something's misconfigured (e.g. a stale newsletterStatus),
       // don't silently report success for a group change that was requested
       // but never actually happened.
-      if (updates?.newsletterGroups) {
+      if (updates?.groups) {
         throw new Error(
           `Newsletter groups could not be updated for contact ${contact.id}: the update was skipped`
         );
@@ -112,15 +111,14 @@ class NewsletterService {
         ? { status: NewsletterStatus.None, groups: [] }
         : await this.upsertContactToProvider(contact, nlUpdate, opts?.oldEmail);
 
-    // TODO: remove dependency on ContactProfile
-    await getRepository(ContactProfile).update(contact.id, {
-      newsletterStatus: newState.status,
-      newsletterGroups: newState.groups,
+    await getRepository(ContactNewsletter).update(contact.id, {
+      status: newState.status,
+      groups: newState.groups,
     });
-    contact.profile.newsletterStatus = newState.status;
-    contact.profile.newsletterGroups = newState.groups;
+    contact.newsletter.status = newState.status;
+    contact.newsletter.groups = newState.groups;
 
-    const oldGroups = contact.profile.newsletterGroups;
+    const oldGroups = contact.newsletter.groups;
     const groupsChanged =
       oldGroups.length !== newState.groups.length ||
       oldGroups.some((g) => !newState.groups.includes(g));
@@ -219,7 +217,27 @@ class NewsletterService {
   }
 
   /**
-   * Permanently remove a contact from the newsletter provider
+   * Create the newsletter state for a new contact. This doesn't sync the
+   * contact to the provider, call upsertContact for that.
+   *
+   * @param contact The new contact
+   * @param partialNewsletter The initial status and groups
+   */
+  async createContact(
+    contact: Contact,
+    { status, groups }: ContactNewsletterUpdates = {}
+  ): Promise<void> {
+    contact.newsletter = getRepository(ContactNewsletter).create({
+      contact,
+      ...(status && { status }),
+      ...(groups && { groups }),
+    });
+    await getRepository(ContactNewsletter).save(contact.newsletter);
+  }
+
+  /**
+   * Permanently remove a contact from the newsletter provider and delete
+   * their newsletter state
    *
    * @param contact The contact to delete
    */
@@ -229,6 +247,7 @@ class NewsletterService {
     if (nlUpdate) {
       await this.provider.permanentlyDeleteContact(nlUpdate.email);
     }
+    await getRepository(ContactNewsletter).delete({ contactId: contact.id });
   }
 
   /**
@@ -274,17 +293,15 @@ class NewsletterService {
   async getContactNewsletterGroups(
     contactId: string
   ): Promise<BaseNewsletterGroupData[]> {
-    const contactProfile = await getRepository(ContactProfile).findOneByOrFail({
-      contactId,
-    });
+    const contactNewsletter = await getRepository(
+      ContactNewsletter
+    ).findOneByOrFail({ contactId });
     const newsletterGroups: BaseNewsletterGroupData[] =
       optionsService.getJSON('newsletter-groups');
 
     const validGroupIds = new Set(newsletterGroups.map((g) => g.id));
     return newsletterGroups.filter(
-      (g) =>
-        contactProfile.newsletterGroups.includes(g.id) &&
-        validGroupIds.has(g.id)
+      (g) => contactNewsletter.groups.includes(g.id) && validGroupIds.has(g.id)
     );
   }
 
@@ -301,7 +318,7 @@ class NewsletterService {
   ): Promise<void> {
     await this.upsertContact(
       contact,
-      { newsletterGroups: [groupId] },
+      { groups: [groupId] },
       { newsletterGroupChange: 'remove' }
     );
   }
@@ -309,7 +326,7 @@ class NewsletterService {
   /**
    * Get newsletter provider's groups, compare them against
    * groups cached in the database, and update cache if needed.
-   * If any groups were deleted, remove them from contact profiles, callouts
+   * If any groups were deleted, remove them from contacts, callouts
    * and join content. Finally, return diff alongside provider
    * integration info.
    *
@@ -358,18 +375,18 @@ class NewsletterService {
           );
           const removedIds = removedGroups.map((g) => g.id);
 
-          log.info('Removing deleted groups from contact_profile');
+          log.info('Removing deleted groups from contact_newsletter');
           // 1. Remove from contacts
           await createQueryBuilder()
-            .update(ContactProfile)
+            .update(ContactNewsletter)
             .set({
-              newsletterGroups: () => `COALESCE((
+              groups: () => `COALESCE((
               SELECT jsonb_agg(elem)
-              FROM jsonb_array_elements_text("newsletterGroups") elem
+              FROM jsonb_array_elements_text("groups") elem
               WHERE elem != ALL(:removedIds)
             ), '[]'::jsonb)`,
             })
-            .where(`"newsletterGroups" ?| :removedIds`)
+            .where(`"groups" ?| :removedIds`)
             .setParameters({ removedIds })
             .execute();
 

@@ -29,6 +29,10 @@ import {
 
 import { GetPaginatedQuery, GetPaginatedRuleGroup } from '#api/dto/BaseDto';
 import {
+  GetContactNewsletterDto,
+  UpdateContactNewsletterDto,
+} from '#api/dto/ContactNewsletterDto';
+import {
   GetContactProfileDto,
   UpdateContactProfileDto,
 } from '#api/dto/ContactProfileDto';
@@ -161,6 +165,10 @@ export class GetContactDto extends BaseContactDto {
 
   @IsOptional()
   @ValidateNested()
+  newsletter?: GetContactNewsletterDto;
+
+  @IsOptional()
+  @ValidateNested()
   roles?: GetContactRoleDto[];
 
   @IsOptional()
@@ -181,6 +189,11 @@ export class UpdateContactDto extends BaseContactDto {
   @ValidateNested()
   @Type(() => UpdateContactProfileDto)
   profile?: UpdateContactProfileDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateContactNewsletterDto)
+  newsletter?: UpdateContactNewsletterDto;
 
   @IsOptional()
   @IsString({ each: true })

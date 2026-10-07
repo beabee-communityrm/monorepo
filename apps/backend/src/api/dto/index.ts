@@ -14,6 +14,7 @@ export * from './CalloutTagDto.js';
 export * from './CalloutVariantDto.js';
 export * from './ContactDto.js';
 export * from './ContactMfaDto.js';
+export * from './ContactNewsletterDto.js';
 export * from './ContactProfileDto.js';
 export * from './ContactRoleDto.js';
 export * from './ContactTagDto.js';

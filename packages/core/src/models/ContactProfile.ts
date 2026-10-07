@@ -1,4 +1,4 @@
-import { Address, NewsletterStatus } from '@beabee/beabee-common';
+import { Address } from '@beabee/beabee-common';
 
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 
@@ -42,10 +42,4 @@ export class ContactProfile {
 
   @Column({ type: 'jsonb', nullable: true })
   deliveryAddress!: Address | null;
-
-  @Column({ default: NewsletterStatus.None })
-  newsletterStatus!: NewsletterStatus;
-
-  @Column({ type: 'jsonb', default: '[]' })
-  newsletterGroups!: string[];
 }

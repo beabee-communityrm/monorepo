@@ -26,8 +26,6 @@ class ContactProfileTransformer extends BaseTransformer<
       deliveryAddress:
         profile.deliveryAddress &&
         AddressTransformer.convert(profile.deliveryAddress),
-      newsletterStatus: profile.newsletterStatus,
-      newsletterGroups: profile.newsletterGroups,
       ...(auth.roles.includes('admin') && {
         notes: profile.notes,
         description: profile.description,

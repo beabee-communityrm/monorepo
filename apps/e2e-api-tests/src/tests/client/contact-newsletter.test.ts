@@ -43,9 +43,9 @@ describe('Contact newsletter groups API', () => {
 
     if (groups) {
       await admin.contact.update(contact.id, {
-        profile: {
-          newsletterStatus: NewsletterStatus.Subscribed,
-          newsletterGroups: groups,
+        newsletter: {
+          status: NewsletterStatus.Subscribed,
+          groups: groups,
         },
       });
     }
@@ -60,11 +60,11 @@ describe('Contact newsletter groups API', () => {
     return { id: contact.id, client };
   }
 
-  async function getProfile(contactId: string) {
+  async function getNewsletter(contactId: string) {
     const contact = await admin.contact.get(contactId, [
-      GetContactWith.Profile,
+      GetContactWith.Newsletter,
     ]);
-    return contact.profile;
+    return contact.newsletter;
   }
 
   beforeAll(async () => {
@@ -153,9 +153,9 @@ describe('Contact newsletter groups API', () => {
       const groups = await member.client.contact.newsletter.getGroups('me');
       expect(groups).toEqual([KOMBUCHA]);
 
-      const profile = await getProfile(member.id);
-      expect(profile.newsletterGroups).toEqual([KOMBUCHA.id]);
-      expect(profile.newsletterStatus).toBe(NewsletterStatus.Subscribed);
+      const newsletter = await getNewsletter(member.id);
+      expect(newsletter.groups).toEqual([KOMBUCHA.id]);
+      expect(newsletter.status).toBe(NewsletterStatus.Subscribed);
     });
 
     it('should leave the contact subscribed with no groups after the last one', async () => {
@@ -164,9 +164,9 @@ describe('Contact newsletter groups API', () => {
       const groups = await member.client.contact.newsletter.getGroups('me');
       expect(groups).toEqual([]);
 
-      const profile = await getProfile(member.id);
-      expect(profile.newsletterGroups).toEqual([]);
-      expect(profile.newsletterStatus).toBe(NewsletterStatus.Subscribed);
+      const newsletter = await getNewsletter(member.id);
+      expect(newsletter.groups).toEqual([]);
+      expect(newsletter.status).toBe(NewsletterStatus.Subscribed);
     });
   });
 
@@ -180,19 +180,17 @@ describe('Contact newsletter groups API', () => {
     it('should keep groups when a contact is updated without group changes', async () => {
       await admin.contact.update(otherMember.id, { firstname: 'Renamed' });
 
-      const profile = await getProfile(otherMember.id);
-      expect(profile.newsletterGroups.sort()).toEqual(
-        [KOMBUCHA.id, TEA.id].sort()
-      );
+      const newsletter = await getNewsletter(otherMember.id);
+      expect(newsletter.groups.sort()).toEqual([KOMBUCHA.id, TEA.id].sort());
     });
 
     it('should replace groups when an admin sets them', async () => {
       await admin.contact.update(otherMember.id, {
-        profile: { newsletterGroups: [KOMBUCHA.id] },
+        newsletter: { groups: [KOMBUCHA.id] },
       });
 
-      const profile = await getProfile(otherMember.id);
-      expect(profile.newsletterGroups).toEqual([KOMBUCHA.id]);
+      const newsletter = await getNewsletter(otherMember.id);
+      expect(newsletter.groups).toEqual([KOMBUCHA.id]);
 
       const groups = await admin.contact.newsletter.getGroups(otherMember.id);
       expect(groups).toEqual([KOMBUCHA]);
@@ -204,12 +202,10 @@ describe('Contact newsletter groups API', () => {
         newsletter: { optIn: true, groups: [TEA.id] },
       });
 
-      const profile = await getProfile(otherMember.id);
-      expect(profile.newsletterGroups.sort()).toEqual(
-        [KOMBUCHA.id, TEA.id].sort()
-      );
+      const newsletter = await getNewsletter(otherMember.id);
+      expect(newsletter.groups.sort()).toEqual([KOMBUCHA.id, TEA.id].sort());
       // A subscribed contact must not be sent back to pending
-      expect(profile.newsletterStatus).toBe(NewsletterStatus.Subscribed);
+      expect(newsletter.status).toBe(NewsletterStatus.Subscribed);
     });
 
     it('should set pending status on callout opt-in for a contact without newsletter status', async () => {
@@ -218,9 +214,9 @@ describe('Contact newsletter groups API', () => {
         newsletter: { optIn: true, groups: [TEA.id] },
       });
 
-      const profile = await getProfile(unsubscribedMember.id);
-      expect(profile.newsletterGroups).toEqual([TEA.id]);
-      expect(profile.newsletterStatus).toBe(NewsletterStatus.Pending);
+      const newsletter = await getNewsletter(unsubscribedMember.id);
+      expect(newsletter.groups).toEqual([TEA.id]);
+      expect(newsletter.status).toBe(NewsletterStatus.Pending);
     });
   });
 });

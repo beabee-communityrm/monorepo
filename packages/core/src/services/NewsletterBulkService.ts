@@ -1,7 +1,7 @@
 import config from '#config/config';
 import { getRepository } from '#database';
 import { log as mainLogger } from '#logging';
-import { Contact, ContactProfile } from '#models';
+import { Contact, ContactNewsletter } from '#models';
 import {
   MailchimpBulkProvider,
   NoneBulkProvider,
@@ -121,15 +121,13 @@ class NewsletterBulkService {
   async updateContactNlData(
     contactUpdateRequests: {
       contact: Contact;
-      updates: Partial<
-        Pick<ContactProfile, 'newsletterStatus' | 'newsletterGroups'>
-      >;
+      updates: Partial<Pick<ContactNewsletter, 'status' | 'groups'>>;
     }[]
   ): Promise<void> {
     for (const { contact, updates } of contactUpdateRequests) {
-      await getRepository(ContactProfile).update(contact.id, updates);
-      if (contact.profile) {
-        Object.assign(contact.profile, updates);
+      await getRepository(ContactNewsletter).update(contact.id, updates);
+      if (contact.newsletter) {
+        Object.assign(contact.newsletter, updates);
       }
     }
   }

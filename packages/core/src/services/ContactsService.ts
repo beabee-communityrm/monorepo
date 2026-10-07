@@ -48,7 +48,7 @@ import IdpService from '#services/IdpService';
 import NewsletterService from '#services/NewsletterService';
 import PaymentService from '#services/PaymentService';
 import ResetSecurityFlowService from '#services/ResetSecurityFlowService';
-import { NewsletterGroupChange } from '#type/newsletter-group-change';
+import { ContactNewsletterUpdates } from '#type/contact-newsletter-updates';
 import { UpdateContributionResult } from '#type/update-contribution-result';
 import { generatePassword, isValidPassword } from '#utils/auth';
 import { generateContactCode } from '#utils/contact';
@@ -110,10 +110,16 @@ class ContactsService {
   async createContact(
     partialContact: Partial<Contact> & Pick<Contact, 'email'>,
     partialProfile: Partial<ContactProfile> = {},
+    partialNewsletter: ContactNewsletterUpdates = {},
     origin: ContactOriginData | null = null,
     opts = { sync: true }
   ): Promise<Contact> {
-    log.info('Create contact', { partialContact, partialProfile, origin });
+    log.info('Create contact', {
+      partialContact,
+      partialProfile,
+      partialNewsletter,
+      origin,
+    });
 
     try {
       const contact = getRepository(Contact).create({
@@ -136,6 +142,7 @@ class ContactsService {
       await getRepository(ContactProfile).save(contact.profile);
 
       await PaymentService.createContact(contact);
+      await NewsletterService.createContact(contact, partialNewsletter);
       if (opts.sync) {
         await NewsletterService.upsertContact(contact);
       }
@@ -167,6 +174,7 @@ class ContactsService {
         return await this.createContact(
           partialContact,
           partialProfile,
+          partialNewsletter,
           origin,
           opts
         );
@@ -338,33 +346,20 @@ class ContactsService {
 
   async updateContactProfile(
     contact: Contact,
-    updates: Partial<ContactProfile>,
-    opts: { newsletterGroupChange?: NewsletterGroupChange } = {}
+    updates: Partial<ContactProfile>
   ): Promise<void> {
-    const { newsletterStatus, newsletterGroups, ...profileUpdates } = updates;
+    log.info('Update contact profile for ' + contact.id, { updates });
 
-    if (Object.keys(profileUpdates).length > 0) {
-      log.info('Update contact profile for ' + contact.id, { profileUpdates });
-
-      await getRepository(ContactProfile).update(contact.id, profileUpdates);
-      if (contact.profile) {
-        Object.assign(contact.profile, profileUpdates);
-      }
-
-      await ActivityService.addEvent({
-        targetId: contact.id,
-        eventType: ActivityEventType.ContactProfileUpdated,
-        metadata: null,
-      });
+    await getRepository(ContactProfile).update(contact.id, updates);
+    if (contact.profile) {
+      Object.assign(contact.profile, updates);
     }
 
-    if (newsletterStatus || newsletterGroups) {
-      await NewsletterService.upsertContact(
-        contact,
-        { newsletterStatus, newsletterGroups },
-        opts
-      );
-    }
+    await ActivityService.addEvent({
+      targetId: contact.id,
+      eventType: ActivityEventType.ContactProfileUpdated,
+      metadata: null,
+    });
   }
 
   /**

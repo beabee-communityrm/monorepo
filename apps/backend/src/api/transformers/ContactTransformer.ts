@@ -5,6 +5,7 @@ import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { CalloutReviewer, Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import IdpService from '@beabee/core/services/IdpService';
+import NewsletterService from '@beabee/core/services/NewsletterService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
 import { QueryDeepPartialEntity } from '@beabee/core/type';
@@ -73,6 +74,13 @@ class ContactTransformer extends BaseContactTransformer<
         contact.profile && {
           profile: ContactProfileTransformer.convert(contact.profile, auth),
         }),
+      ...(opts?.with?.includes(GetContactWith.Newsletter) &&
+        contact.newsletter && {
+          newsletter: {
+            status: contact.newsletter.status,
+            groups: contact.newsletter.groups,
+          },
+        }),
       ...(opts?.with?.includes(GetContactWith.Roles) && {
         roles: contact.roles.map(ContactRoleTransformer.convert),
       }),
@@ -112,6 +120,9 @@ class ContactTransformer extends BaseContactTransformer<
   ): void {
     if (query.with?.includes(GetContactWith.Profile)) {
       qb.innerJoinAndSelect(`${fieldPrefix}profile`, 'profile');
+    }
+    if (query.with?.includes(GetContactWith.Newsletter)) {
+      qb.innerJoinAndSelect(`${fieldPrefix}newsletter`, 'newsletter');
     }
 
     switch (query.sort) {
@@ -240,8 +251,15 @@ class ContactTransformer extends BaseContactTransformer<
       await ContactsService.updateContactProfile(target, data.profile);
     }
 
+    if (data.newsletter) {
+      await NewsletterService.upsertContact(target, data.newsletter);
+    }
+
     return await this.fetchOneById(auth, target.id, {
-      with: data.profile ? [GetContactWith.Profile] : [],
+      with: [
+        ...(data.profile ? [GetContactWith.Profile] : []),
+        ...(data.newsletter ? [GetContactWith.Newsletter] : []),
+      ],
     });
   }
 

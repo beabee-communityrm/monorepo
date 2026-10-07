@@ -58,8 +58,8 @@
 
       <AppNewsletterOptIn
         v-if="showNewsletterOptIn"
-        v-model="data.profile.newsletterOptIn"
-        v-model:opt-in-groups="data.profile.newsletterGroups"
+        v-model="data.newsletter.optIn"
+        v-model:opt-in-groups="data.newsletter.groups"
         :title="setupContent.newsletterTitle"
         :text="setupContent.newsletterText"
         :opt-in="setupContent.newsletterOptIn"
@@ -100,7 +100,10 @@ const { t } = useI18n();
 
 useVuelidate({ $stopPropagation: true });
 
-const contact = await client.contact.get('me', [GetContactWith.Profile]);
+const contact = await client.contact.get('me', [
+  GetContactWith.Profile,
+  GetContactWith.Newsletter,
+]);
 
 const data = reactive<SetupContactData>({
   email: contact.email,
@@ -109,15 +112,16 @@ const data = reactive<SetupContactData>({
   organisationName: contact.profile.organisation,
   password: '',
   profile: {
-    newsletterOptIn:
-      contact.profile.newsletterStatus === NewsletterStatus.Subscribed,
-    newsletterGroups: [
-      ...contact.profile.newsletterGroups,
+    deliveryOptIn: contact.profile.deliveryOptIn,
+  },
+  newsletter: {
+    optIn: contact.newsletter.status === NewsletterStatus.Subscribed,
+    groups: [
+      ...contact.newsletter.groups,
       ...props.setupContent.newsletterGroups
         .filter((g) => g.checked)
         .map((g) => g.id),
     ].filter((v, i, a) => a.indexOf(v) === i),
-    deliveryOptIn: contact.profile.deliveryOptIn,
   },
   addressLine1: contact.profile.deliveryAddress?.line1 || '',
   addressLine2: contact.profile.deliveryAddress?.line2 || '',
@@ -133,7 +137,7 @@ const hasNewsletterGroups = computed(
 const showNewsletterOptIn = computed(
   () =>
     props.setupContent.showNewsletterOptIn &&
-    (contact.profile.newsletterStatus !== NewsletterStatus.Subscribed ||
+    (contact.newsletter.status !== NewsletterStatus.Subscribed ||
       hasNewsletterGroups.value)
 );
 </script>

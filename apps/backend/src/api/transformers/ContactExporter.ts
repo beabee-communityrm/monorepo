@@ -35,7 +35,7 @@ class ContactExporter extends BaseContactTransformer<
       MembershipStarts: contact.membership?.dateAdded.toISOString() || '',
       MembershipExpires: contact.membership?.dateExpires?.toISOString() || '',
       MembershipStatus: getMembershipStatus(contact),
-      NewsletterStatus: contact.profile.newsletterStatus,
+      NewsletterStatus: contact.newsletter.status,
       DeliveryOptIn: contact.profile.deliveryOptIn,
       DeliveryAddressLine1: contact.profile.deliveryAddress?.line1 || '',
       DeliveryAddressLine2: contact.profile.deliveryAddress?.line2 || '',
@@ -51,6 +51,7 @@ class ContactExporter extends BaseContactTransformer<
     qb.orderBy(`${fieldPrefix}joined`);
     qb.leftJoinAndSelect(`${fieldPrefix}roles`, 'roles');
     qb.leftJoinAndSelect(`${fieldPrefix}profile`, 'profile');
+    qb.leftJoinAndSelect(`${fieldPrefix}newsletter`, 'newsletter');
     qb.leftJoinAndSelect(`${fieldPrefix}contribution`, 'contribution');
     qb.leftJoinAndSelect(
       `${fieldPrefix}tags`,
