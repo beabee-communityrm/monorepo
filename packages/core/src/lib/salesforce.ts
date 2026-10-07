@@ -81,7 +81,6 @@ export const SYNCED_CONTACT_FIELDS: ReadonlySet<string> = new Set([
   'email',
   'firstname',
   'lastname',
-  'lastSeen',
 ] satisfies (keyof Contact)[]);
 
 /** The profile fields that feed `contactToProfileFields`. */
@@ -109,7 +108,7 @@ export function contactToProfileFields(
     FirstName_bee__c: contact.firstname.slice(0, 40),
     LastName_bee__c: contact.lastname.slice(0, 50),
     ProfileCreateDate_bee__c: contact.joined.toISOString(),
-    LastLogin_bee__c: contact.lastSeen?.toISOString() ?? null,
+    LastLogin_bee__c: null,
     beabeeProfileLink_bee__c: `${config.audience}/admin/contacts/${contact.id}`,
     MailingStreet_bee__c: address
       ? [address.line1, address.line2].filter(Boolean).join('\n').slice(0, 100)
