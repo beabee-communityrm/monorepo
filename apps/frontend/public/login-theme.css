@@ -1,6 +1,6 @@
 /*
- * Stylesheet for the IdP's Login v2 pages. The ingress injects it into the
- * login page under /ui/v2/login/_beabee/, where the tenant's Ingress maps
+ * Stylesheet for the IdP's Login v2 pages. A proxy in front of the login
+ * injects it under /ui/v2/login/_beabee/, where the tenant's Ingress maps
  * that prefix to the beabee root, so URLs here are relative to that prefix.
  *
  * Colours come from the login's own CSS variables, which the IdP branding

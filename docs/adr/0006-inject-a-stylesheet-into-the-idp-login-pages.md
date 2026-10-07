@@ -1,4 +1,4 @@
-# Theme the IdP's login pages with a stylesheet the ingress injects
+# Theme the IdP's login pages with a stylesheet a proxy injects
 
 Login v2 brands itself from the instance's branding settings: four colours
 per theme, logo, icon, a font file and, through hosted login translations,
@@ -8,17 +8,20 @@ show. beabee wants a tenant's login pages to look like the tenant's beabee,
 including the join page's background image, and Zitadel offers no per-tenant
 way to get there.
 
-beabee therefore ships one stylesheet for the login pages and the shared
-ingress-nginx injects it: on login hosts it fetches the login's HTML
-uncompressed and replaces `</head>` with a `<link>` to
-`/ui/v2/login/_beabee/login-theme.css`. The tenant's login Ingress maps the
-`_beabee` prefix to the tenant's beabee root, so the stylesheet is a static
-file of the frontend build and the background is `/images/login-background`,
-the join page's background served by the API. Everything is same-origin, so
-the login's content security policy stays as it is. The stylesheet reads the
-login's own colour variables, which the branding sync already sets from the
-beabee theme, so the file is the same for every tenant and only the colours
-and the background differ. Nothing in Zitadel is forked, patched or rebuilt.
+beabee therefore ships one stylesheet for the login pages and a small nginx
+proxy in the IdP's namespace injects it: it sits in front of Login v2,
+fetches the login's HTML uncompressed and replaces `</head>` with a `<link>`
+to `/ui/v2/login/_beabee/login-theme.css`. Every tenant's login-domain
+Ingress sends the login path through the proxy and maps the `_beabee` prefix
+to the tenant's beabee root, so the stylesheet is a static file of the
+frontend build and the background is
+`/images/login-background`, the join page's background served by the API.
+Everything is same-origin, so the login's content security policy stays as it
+is. The stylesheet reads the login's own colour variables, which the branding
+sync already sets from the beabee theme, so the file is the same for every
+tenant and only the colours and the background differ. Nothing in Zitadel is
+forked, patched or rebuilt, and nothing changes in the shared ingress
+controller.
 
 The stylesheet belongs to the beabee team and changes through pull requests;
 tenants do not edit it. Texts and the font file stay with the branding sync,
@@ -55,12 +58,13 @@ which is the only per-tenant lever Zitadel maintains for them.
   one, the affected element falls back to the login's own look and the login
   keeps working; a smoke test of the login page after each Zitadel upgrade
   catches it, and the fix is a CSS change on our side.
-- The rewrite runs in the shared ingress controller through its
-  admin-controlled configuration, not through per-Ingress snippets, which
-  stay disabled. The login is asked for uncompressed HTML so the rewrite can
-  see it; the controller compresses the response itself.
-- Rollback is a switch in the controller configuration; per tenant, removing
-  the tenant's theme Ingress turns the stylesheet into a silent 404.
+- The proxy is one more hop and one more component in the login path. If it
+  is down, login is down for every tenant, so it is monitored like the login
+  itself. The login is asked for uncompressed HTML
+  so the rewrite can see it; the proxy compresses the response itself.
+- Rollback is a chart change that points the login path back at the login
+  service; removing a tenant's theme Ingress alone turns the stylesheet into
+  a silent 404.
 - Per-tenant variation is limited to what the branding settings carry plus
   the background image. Anything else is the same for all tenants.
 - When Zitadel ships a background per theme, the background moves into the
