@@ -1,0 +1,82 @@
+/*
+ * Page-level typography for Nuxt UI pages. Also applied to `UModal` and
+ * `UPopover` content (see `modal.slots.content` and `popover.slots.content` in
+ * nuxt-ui.config.ts), since their teleported DOM falls outside `.nuxt-page`.
+ */
+
+@layer components {
+  .nuxt-page {
+    @apply text-sm;
+
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply text-base font-semibold text-highlighted;
+    }
+  }
+
+  /* Standard styles for v-html content on Nuxt UI pages. */
+  .nuxt-prose {
+    p,
+    ul,
+    ol {
+      margin: 0;
+    }
+
+    /* Force empty paragraphs to have height */
+    p:empty::after {
+      content: '\00A0';
+    }
+
+    /* List styles */
+    ul,
+    ol {
+      @apply relative ml-2 list-none pl-6;
+      li::before {
+        @apply absolute left-0;
+      }
+    }
+
+    ul li::before {
+      @apply pl-1 font-bold;
+      content: '•';
+    }
+
+    ol {
+      counter-reset: list;
+      li::before {
+        counter-increment: list;
+        content: counter(list) '.';
+      }
+    }
+
+    a {
+      @apply text-primary underline;
+    }
+  }
+}
+
+/* Nuxt UI's shade 500 fails contrast on its own tints. See nuxt/ui#1284. */
+@layer utilities {
+  .text-success {
+    color: var(--ui-color-success-700);
+  }
+  .text-warning {
+    color: var(--ui-color-warning-700);
+  }
+  .text-error {
+    color: var(--ui-color-error-700);
+  }
+
+  .dark .text-success {
+    color: var(--ui-color-success-400);
+  }
+  .dark .text-warning {
+    color: var(--ui-color-warning-400);
+  }
+  .dark .text-error {
+    color: var(--ui-color-error-400);
+  }
+}
