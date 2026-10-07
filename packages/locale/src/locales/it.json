@@ -999,7 +999,9 @@
     "title": "Verificatori"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Nota: è consentita una sola risposta per persona. Se hai già contribuito, eventuali risposte aggiuntive non verranno registrate."
+    "backTo": "Torna a {title}",
+    "oneResponseWarning": "Nota: è consentita una sola risposta per persona. Se hai già contribuito, eventuali risposte aggiuntive non verranno registrate.",
+    "sharePrompt": "Aiutaci a raggiungere più persone condividendo questa CrowdNewsroom."
   },
   "callouts": {
     "access": {

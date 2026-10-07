@@ -94,7 +94,6 @@ import { formatLocale } from '@beabee/vue';
 
 import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
 
 import noImage from '#assets/images/no-image.avif';
 import CalloutContributionGate from '#components/callout/CalloutContributionGate.vue';
@@ -122,7 +121,6 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
-const route = useRoute();
 const calloutRef = toRef(props, 'callout');
 
 const { isOpen, isPreview, showLoginPrompt, showMemberOnlyPrompt } =
@@ -165,14 +163,9 @@ const imageUrl = computed(() => {
 
 const daysLeft = computed(() => getDaysLeft(props.callout.expires));
 
-const respondTo = computed(() => ({
-  path: '/crowdnewsroom/' + props.callout.slug + '/respond',
-  query: route.query,
-}));
-
 // Embeds render CalloutRespond directly instead, which fetches its own
 // response state, so skip fetching it twice here.
-const { responses, respondAction } = useCalloutResponse(calloutRef, {
+const { responses, respondAction, respondTo } = useCalloutResponse(calloutRef, {
   fetchResponses: !isEmbed,
 });
 </script>

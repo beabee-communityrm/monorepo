@@ -998,7 +998,9 @@
     "title": "Reviewers"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded."
+    "backTo": "Back to {title}",
+    "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded.",
+    "sharePrompt": "Help us reach more people by sharing this CrowdNewsroom."
   },
   "callouts": {
     "access": {

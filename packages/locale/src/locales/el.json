@@ -999,7 +999,9 @@
     "title": ""
   },
   "calloutThanksPage": {
-    "oneResponseWarning": ""
+    "backTo": "Πίσω στο {title}",
+    "oneResponseWarning": "",
+    "sharePrompt": "Βοηθήστε μας να φτάσουμε σε περισσότερους ανθρώπους μοιράζοντας αυτό το CrowdNewsroom."
   },
   "callouts": {
     "access": {
