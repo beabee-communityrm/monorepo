@@ -4,6 +4,7 @@ meta:
   layout: Auth
   pageTitle: pageTitle.forgotPassword
   noAuth: true
+  localLoginOnly: true
 </route>
 
 <template>

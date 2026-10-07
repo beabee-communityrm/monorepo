@@ -21,5 +21,6 @@ export function resolveImageUrl(url: string | URL, width?: number): string {
  * @returns True if the URL is an internal URL, false otherwise.
  */
 export function isInternalUrl(url: string | undefined): url is string {
-  return !!url && /^\/([^/]|$)/.test(url);
+  // A second slash or a backslash would start a host, a line break ends a header
+  return !!url && /^\/(?![/\\])[^\r\n]*$/.test(url);
 }

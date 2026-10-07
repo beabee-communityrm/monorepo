@@ -1691,6 +1691,10 @@
   },
   "login": {
     "backTo": "Torna a  {newsroomName}",
+    "errors": {
+      "login-failed": "Accesso non riuscito. Riprova.",
+      "unlinked-account": "Il tuo accesso non è collegato a nessun account su questa piattaforma. Contatta il supporto."
+    },
     "forgotPassword": "Hai dimenticato la password?",
     "joinNow": "Iscriviti!",
     "lostMfaDevice": "Hai perso il tuo dispositivo 2FA?",
