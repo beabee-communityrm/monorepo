@@ -1,12 +1,9 @@
+import type { FileMetadata } from './file-metadata.js';
+
 /**
  * Image metadata
  */
-export interface ImageMetadata {
-  /**
-   * Image ID/filename
-   */
-  id: string;
-
+export interface ImageMetadata extends FileMetadata {
   /**
    * Original width
    */
@@ -16,34 +13,4 @@ export interface ImageMetadata {
    * Original height
    */
   height: number;
-
-  /**
-   * MIME type
-   */
-  mimetype: string;
-
-  /**
-   * Creation date
-   */
-  createdAt: Date;
-
-  /**
-   * File size in bytes
-   */
-  size: number;
-
-  /**
-   * Hash (ETag) of the file
-   */
-  hash: string;
-
-  /**
-   * Original filename, if available
-   */
-  filename?: string | undefined;
-
-  /**
-   * Owner's contact email, if available
-   */
-  owner?: string | undefined;
 }

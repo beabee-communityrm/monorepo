@@ -2,12 +2,11 @@ import type { UploadFileResponse } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
 import {
   BadRequestError,
-  NotFoundError,
   UnauthorizedError,
   UnsupportedFileTypeError,
 } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
-import { imageService } from '@beabee/core/services/ImageService';
+import { audioService } from '@beabee/core/services';
 
 import { Request, Response } from 'express';
 import {
@@ -18,7 +17,6 @@ import {
   JsonController,
   Param,
   Post,
-  QueryParam,
   Req,
   Res,
   UseBefore,
@@ -27,12 +25,11 @@ import { pipeline } from 'stream/promises';
 
 import { RateLimit } from '../decorators/index.js';
 import { uploadMiddleware } from '../middlewares/index.js';
-import ContentTransformer from '../transformers/ContentTransformer.js';
 
-@JsonController('/images')
-export class ImageController {
+@JsonController('/audio')
+export class AudioController {
   /**
-   * Upload a new image
+   * Upload a new audio file
    */
   @Post('/')
   @Authorized()
@@ -49,27 +46,29 @@ export class ImageController {
     const file = await uploadMiddleware(req);
 
     if (!file) {
-      throw new BadRequestError('No image file provided');
+      throw new BadRequestError('No audio file provided');
     }
 
     // Verify file type is allowed before consuming the stream
-    if (!imageService.isSupportedType(file.mimetype)) {
+    if (!audioService.isSupportedType(file.mimetype)) {
       file.stream.resume(); // Drain the stream so the request completes
       throw new UnsupportedFileTypeError(
         file.mimetype,
-        imageService.allowedMimeTypes
+        audioService.allowedMimeTypes
       );
     }
 
-    // Use the ImageService to upload and process the file
-    const metadata = await imageService.uploadImage(
+    // Use the AudioService to upload the file with owner information
+    const metadata = await audioService.upload(
       file.stream,
       file.filename,
-      contact?.email // Only add owner information if available
+      file.mimetype,
+      contact?.email // Add the owner information if available
     );
 
-    const path = `images/${metadata.id}`;
+    const path = `audio/${metadata.id}`;
 
+    // Create response object
     const response: UploadFileResponse = {
       id: metadata.id,
       url: `${config.audience}/api/1.0/${path}`,
@@ -86,51 +85,35 @@ export class ImageController {
   }
 
   /**
-   * The join page's background image, referenced from the stylesheet of the
-   * IdP's login pages. Declared before `/:id`, which would otherwise read
-   * `login-background` as an image ID.
-   */
-  @Get('/login-background')
-  async getLoginBackground(@Res() res: Response): Promise<Response> {
-    const { backgroundUrl } = await ContentTransformer.fetchOne('general');
-    const id = backgroundUrl.match(/^images\/(.+)$/)?.[1];
-    if (!id) {
-      throw new NotFoundError();
-    }
-    return this.getImage(res, id, 1800);
-  }
-
-  /**
-   * Get an image with optional resizing
+   * Get an audio file
    */
   @Get('/:id')
-  async getImage(
+  async getAudio(
     @Res() res: Response,
-    @Param('id') id: string,
-    @QueryParam('w', { required: false }) width?: number
+    @Param('id') id: string
   ): Promise<Response> {
-    // Get the filename first, this also throws if the image doesn't exist
-    const metadata = await imageService.getImageMetadata(id);
+    // Get the filename first, this also throws if the audio file doesn't exist
+    const metadata = await audioService.getMetadata(id);
 
-    // Get image as stream
-    const imageData = await imageService.getImageStream(id, width);
+    // Get audio as stream
+    const audioData = await audioService.getStream(id);
 
     // Set appropriate security headers
     res.set({
-      'Content-Type': imageData.contentType,
-      'Content-Disposition': `inline; filename="${metadata.filename || id}"`,
+      'Content-Type': audioData.contentType,
+      'Content-Disposition': `attachment; filename="${metadata.filename || id}"`,
       'Cache-Control': 'public, max-age=86400',
       'X-Content-Type-Options': 'nosniff',
-      'Content-Security-Policy': "img-src 'self'",
+      'Content-Security-Policy': "default-src 'self'",
       'X-Frame-Options': 'SAMEORIGIN',
     });
 
-    // Stream the image to the response
+    // Stream the audio file to the response
     try {
-      await pipeline(imageData.stream, res);
+      await pipeline(audioData.stream, res);
     } catch (error) {
       if (!res.headersSent) {
-        throw new BadRequestError(`Failed to stream image (${id})`);
+        throw new BadRequestError(`Failed to stream audio (${id})`);
       }
       // Too late for an error response, abort the connection
       res.destroy();
@@ -142,18 +125,19 @@ export class ImageController {
   }
 
   /**
-   * Delete an image
+   * Delete an audio file
    */
   @Delete('/:id')
   @Authorized()
-  async deleteImage(
+  async deleteAudio(
     @Param('id') id: string,
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
-    // Get image metadata first to check ownership
-    const metadata = await imageService.getImageMetadata(id);
+    // Get audio metadata first to check ownership
+    const metadata = await audioService.getMetadata(id);
 
-    // Check if user is the owner of the image or an admin
+    // Check if the user is the owner of the audio file
+    // Only allow the audio owner or admins to delete audio files
     if (
       metadata.owner &&
       metadata.owner !== contact.email &&
@@ -162,7 +146,7 @@ export class ImageController {
       throw new UnauthorizedError();
     }
 
-    const success = await imageService.deleteImage(id);
+    const success = await audioService.delete(id);
     return { success };
   }
 }

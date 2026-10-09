@@ -193,6 +193,11 @@ function createComponentAnonymiser(
           url: 'https://placehold.co/600x400',
           path: 'images/placeholder.avif',
         } satisfies CalloutResponseAnswerFileUpload;
+      case CalloutComponentType.INPUT_AUDIO_RECORDER:
+        return {
+          url: 'https://example.com/audio-placeholder.webm',
+          path: 'audio/placeholder.webm',
+        } satisfies CalloutResponseAnswerFileUpload;
       case CalloutComponentType.INPUT_NUMBER:
         return chance.integer();
       case CalloutComponentType.INPUT_PHONE_NUMBER:

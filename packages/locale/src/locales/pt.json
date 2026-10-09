@@ -1489,6 +1489,16 @@
       "addressLine1": {
         "required": "A primeira linha do endereço é obrigatória"
       },
+      "audio": {
+        "micPermissionDeniedBody": "O teu navegador bloqueou o acesso ao microfone. Verifica as permissões do site e tenta novamente, ou carrega uma gravação feita noutro sítio.",
+        "micPermissionDeniedTitle": "Microfone não disponível",
+        "recordingNotSupportedBody": "Este navegador não consegue gravar áudio. Carrega antes um ficheiro de áudio.",
+        "recordingNotSupportedTitle": "Gravação não suportada",
+        "tooLongBody": "Este ficheiro tem {duration}. O máximo para esta pergunta é {max}. Corta-o ou grava uma resposta mais curta.",
+        "tooLongTitle": "Gravação demasiado longa",
+        "uploadFailedTitle": "Falha no carregamento",
+        "wrongTypeBody": "Esta pergunta só aceita ficheiros {types}."
+      },
       "cityOrTown": {
         "required": "A localidade é obrigatória"
       },
@@ -1595,6 +1605,25 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Anexado",
+        "delete": "Eliminar",
+        "discard": "Descartar",
+        "download": "Transferir",
+        "pause": "Pausar",
+        "paused": "Em pausa",
+        "playPause": "Reproduzir ou pausar",
+        "reRecord": "Gravar novamente",
+        "record": "Iniciar gravação",
+        "recording": "A gravar",
+        "requestingPermission": "A aguardar permissão do microfone. Permite o acesso no teu navegador para continuar.",
+        "resume": "Retomar",
+        "stop": "Parar",
+        "tryAgain": "Tentar novamente",
+        "uploadInstead": "Carregar um ficheiro de áudio em vez disso",
+        "uploadLabel": "Carregar um ficheiro de áudio",
+        "uploadingHint": "A carregar — podes continuar a preencher o resto do formulário."
+      },
       "file": {
         "browse": "Fazer upload do dispositivo",
         "dropFiles": "Deixar ficheiros aqui para a anexar",

@@ -747,7 +747,7 @@ async function processFileUpload(
         }
       } else {
         // Handle as document using DocumentService
-        const uploadedDocument = await documentService.uploadDocument(
+        const uploadedDocument = await documentService.upload(
           fileBuffer,
           fileUpload.originalName || fileUpload.name
         );
