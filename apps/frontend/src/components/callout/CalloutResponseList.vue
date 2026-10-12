@@ -134,7 +134,7 @@ import { computed, nextTick, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { RouteLocationRaw } from 'vue-router';
 
-import { getResponseAnswerRows } from '#utils/callouts';
+import { getResponseAnswerRows } from '#utils/callout-responses';
 
 /** Props for CalloutResponseList */
 export interface CalloutResponseListProps {
