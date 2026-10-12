@@ -835,8 +835,10 @@
     "loginToYourAccount-nuxt": "Σύνδεση",
     "membersOnly": "",
     "membersOnly-nuxt": "Αυτό το CrowdNewsroom είναι ανοιχτό μόνο για μέλη.",
+    "nextResponse": "Επόμενη απάντηση",
     "notAnswered": "Δεν απαντήθηκε",
-    "responseNumber": "Απάντηση {number}",
+    "previousResponse": "Προηγούμενη απάντηση",
+    "responseNumber": "Απάντηση {number} από {total}",
     "responseSubmitted": "Το μήνυμά σας έχει σταλεί.",
     "share": {
       "address": "Εδώ μπορείτε να προωθήσετε αυτήν τη φόρμα στην ακόλουθη διεύθυνση:",

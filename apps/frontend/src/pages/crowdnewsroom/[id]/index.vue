@@ -41,7 +41,7 @@ meta:
       <CalloutResponseList
         v-else-if="responses.length"
         :form-schema="callout.formSchema"
-        :responses="responses"
+        :responses="responsesPaginated"
       />
     </template>
   </div>
@@ -116,7 +116,7 @@ meta:
       <CalloutResponseList
         v-else-if="responses.length"
         :form-schema="callout.formSchema"
-        :responses="responses"
+        :responses="responsesPaginated"
         :add-to="respondAction === 'add' ? respondTo : undefined"
         :edit-to="respondAction === 'edit' ? respondTo : undefined"
       />
