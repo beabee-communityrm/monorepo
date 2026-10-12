@@ -1400,6 +1400,7 @@
       "availableFields": "",
       "description": {
         "cancelled-contribution": "Wird an Personen geschickt, wenn ihr regelmäßiger Beitrag gekündigt wird. Enthält Infos, wann der Beitrag endet.",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "Wird an Personen geschickt, wenn ihre Zahlung nicht gestartet werden konnte. Informiert darüber, dass der regelmäßige Beitrag wegen eines Zahlungsfehlers nicht aktiv ist.",
@@ -1417,6 +1418,7 @@
       },
       "names": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",

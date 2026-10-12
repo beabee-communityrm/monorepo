@@ -1400,6 +1400,7 @@
       "availableFields": "Campos disponíveis",
       "description": {
         "cancelled-contribution": "Enviado aos membros quando a sua contribuição recorrente é cancelada. Normalmente inclui informações sobre quando termina a adesão, bem como o ID do membro. Pode conter uma ligação para um inquérito.",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Enviado aos administradores quando um membro cancela a sua contribuição. Normalmente inclui uma notificação com o ID e o nome do membro cancelado.",
         "confirm-email": "Enviado a novos utilizadores durante o processo de registo para verificar o seu endereço de email. Contém uma ligação de confirmação que devem clicar para concluir o registo.",
         "contribution-didnt-start": "Enviado aos membros quando o seu pagamento de subscrição Stripe não pôde ser iniciado (por exemplo, método de pagamento recusado, fundos insuficientes). Informa-os de que a sua adesão foi revogada devido à falha do pagamento.",
@@ -1417,6 +1418,7 @@
       },
       "names": {
         "cancelled-contribution": "Contribuição cancelada",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Admin: Membro cancelado",
         "confirm-email": "Confirmar email",
         "contribution-didnt-start": "Contribuição não iniciada",
