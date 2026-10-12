@@ -1,5 +1,7 @@
 import { ActivityActorType, ActivityEventType } from '@beabee/beabee-common';
 import { dataSource } from '@beabee/core/database';
+import gocardless from '@beabee/core/lib/gocardless';
+import { stripe } from '@beabee/core/lib/stripe';
 
 import chalk from 'chalk';
 
@@ -28,8 +30,20 @@ const noSegmentsAddedEvent = `
   WHERE NOT EXISTS (
     SELECT 1 FROM activity_event e
     WHERE e."targetId" = s.id AND e."eventType" = $1
-  )
-`;
+  )`;
+
+// Find each contact's charged subscriptions without start event. Contacts with
+// a start event lacking a subscriptionId (i.e. created live) are skipped
+const noStartedEvent = `
+  SELECT DISTINCT p."contactId", p."subscriptionId"
+  FROM payment p
+  WHERE p."contactId" IS NOT NULL AND p."subscriptionId" IS NOT NULL
+    AND NOT EXISTS (
+      SELECT 1 FROM activity_event e
+      WHERE e."targetId" = p."contactId" AND e."eventType" = $1
+        AND (e.metadata->>'subscriptionId' IS NULL
+          OR e.metadata->>'subscriptionId' = p."subscriptionId")
+    )`;
 
 // Find roles without added event, matched on contact and role type
 const noRoleAddedEvent = `
@@ -59,7 +73,6 @@ const backfillCreated = async (dryRun: boolean): Promise<void> => {
     return;
   }
 
-  // TODO: Decide actor type
   const inserted = await dataSource.query(
     `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
      SELECT c.id, NULL, NULL, c.joined, $1, NULL
@@ -70,6 +83,66 @@ const backfillCreated = async (dryRun: boolean): Promise<void> => {
 
   console.log(
     `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s)`
+  );
+};
+
+/**
+ * Get a subscription's creation date from its payment provider
+ */
+const getSubscriptionCreatedAt = async (
+  subscriptionId: string
+): Promise<Date> => {
+  if (subscriptionId.startsWith('sub_')) {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    return new Date(subscription.created * 1000); // convert from unix seconds
+  }
+  const subscription = await gocardless.subscriptions.get(subscriptionId);
+  return new Date(subscription.created_at!);
+};
+
+/**
+ * Backfill contact.contribution-started events
+ * The contact is both the target and the actor
+ * One event per subscription, dated by its creation date at the payment provider
+ */
+const backfillContributionStarted = async (dryRun: boolean): Promise<void> => {
+  const eventType = ActivityEventType.ContactContributionStarted;
+
+  const rows: { contactId: string; subscriptionId: string }[] =
+    await dataSource.query(noStartedEvent, [eventType]);
+
+  if (dryRun) {
+    console.log(
+      `${chalk.green('✓')} Would add ${rows.length} ${eventType} event(s)`
+    );
+    return;
+  }
+
+  let added = 0;
+  for (const { contactId, subscriptionId } of rows) {
+    try {
+      const createdAt = await getSubscriptionCreatedAt(subscriptionId);
+      await dataSource.query(
+        `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
+         VALUES ($1, $2, $1, $3, $4, jsonb_build_object('subscriptionId', $5::text))`,
+        [
+          contactId,
+          ActivityActorType.User,
+          createdAt,
+          eventType,
+          subscriptionId,
+        ]
+      );
+      added++;
+    } catch (err) {
+      console.log(
+        `${chalk.red('✗')} Failed ${eventType} for contact ${contactId} (${subscriptionId}): ${err}`
+      );
+    }
+  }
+
+  console.log(
+    `${chalk.green('✓')} Added ${added} of ${rows.length} ${eventType} event(s)`
   );
 };
 
@@ -173,6 +246,7 @@ const backfillSegmentsAdded = async (dryRun: boolean): Promise<void> => {
  */
 export const backfillContacts = async (dryRun: boolean): Promise<void> => {
   await backfillCreated(dryRun);
+  await backfillContributionStarted(dryRun);
   await backfillContributionCancelled(dryRun);
   await backfillRoleAdded(dryRun);
   await backfillSegmentsAdded(dryRun);

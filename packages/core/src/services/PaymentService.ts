@@ -153,7 +153,9 @@ class PaymentService {
       await ActivityService.addEvent({
         targetId: contact.id,
         eventType: ActivityEventType.ContactContributionStarted,
-        metadata: ret || null,
+        metadata: ret
+          ? { ...ret, subscriptionId: contribution.subscriptionId! }
+          : null,
       });
     }
 
@@ -191,7 +193,8 @@ class PaymentService {
       throw new CantUpdateContributionError();
     }
 
-    const ret = await this.provider(contact, (p) =>
+    const contribution = await this.getContribution(contact);
+    const ret = await this.providerFromData(contribution, (p) =>
       p.processUpdateContribution(form)
     );
 
@@ -200,7 +203,8 @@ class PaymentService {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactContributionUpdated,
       targetId: contact.id,
-      metadata: ret,
+      // The provider sets the updated subscription on the contribution
+      metadata: { ...ret, subscriptionId: contribution.subscriptionId! },
     });
 
     return ret;

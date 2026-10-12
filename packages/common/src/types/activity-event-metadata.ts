@@ -2,6 +2,7 @@ import type { ActivityEventType, ContributionPeriod } from '../data/index.js';
 import type { ContactOriginData, RoleType } from './index.js';
 
 export interface ContributionUpdateData {
+  subscriptionId: string;
   startNow: boolean;
   expiryDate: Date;
   form: {

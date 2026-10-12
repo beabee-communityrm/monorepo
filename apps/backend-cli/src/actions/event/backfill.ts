@@ -19,7 +19,6 @@ const backfillers: Record<
   email: backfillEmails,
   payment: backfillPayments,
 };
-
 /**
  * Backfill activity events for a single category, or for every category when
  * `all` is given.
