@@ -22,3 +22,10 @@
   border: none;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
+
+/* beabee starts every flow for one account, so the account switcher in the
+   user pill (a link to the accounts page) only confuses; the login has no
+   setting to drop it */
+a[href^='/ui/v2/login/accounts'] {
+  display: none;
+}
