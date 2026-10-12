@@ -275,7 +275,7 @@ export class StripeWebhookEventHandler {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactPaymentSuccessful,
       targetId: contribution.contact.id,
-      metadata: null,
+      metadata: { paymentId: invoice.id },
     });
   }
 

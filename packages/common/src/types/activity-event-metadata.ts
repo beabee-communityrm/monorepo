@@ -18,7 +18,10 @@ export interface ActivityEventMetadataMap {
   [ActivityEventType.ContactCreated]: ContactOriginData;
   [ActivityEventType.ContactContributionStarted]: ContributionUpdateData;
   [ActivityEventType.ContactContributionUpdated]: ContributionUpdateData;
-  [ActivityEventType.ContactContributionCancelled]: { subscriptionId: string | null };
+  [ActivityEventType.ContactContributionCancelled]: {
+    subscriptionId: string | null;
+  };
+  [ActivityEventType.ContactPaymentSuccessful]: { paymentId: string };
   [ActivityEventType.ContactRoleAdded]: { roleType: RoleType };
   [ActivityEventType.EmailSent]: { email: string; recipient: string };
   [ActivityEventType.EmailTemplateAdded]: { templateId: string | null };
