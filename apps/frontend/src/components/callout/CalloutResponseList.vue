@@ -54,20 +54,22 @@
 
           <div class="flex items-center gap-2">
             <UButton
+              ref="previousButton"
               color="neutral"
               variant="outline"
               icon="i-lucide-chevron-left"
               :aria-label="t('callout.previousResponse')"
               :disabled="index === count - 1"
-              @click="index++"
+              @click="showPrevious"
             />
             <UButton
+              ref="nextButton"
               color="neutral"
               variant="outline"
               icon="i-lucide-chevron-right"
               :aria-label="t('callout.nextResponse')"
               :disabled="index === 0"
-              @click="index--"
+              @click="showNext"
             />
           </div>
         </div>
@@ -128,7 +130,7 @@ import type {
 } from '@beabee/beabee-common';
 import { formatLocale } from '@beabee/vue';
 
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { RouteLocationRaw } from 'vue-router';
 
@@ -173,4 +175,24 @@ const submittedOn = computed(() =>
 const rows = computed(() =>
   getResponseAnswerRows(props.formSchema, response.value.answers)
 );
+
+const previousButton = useTemplateRef('previousButton');
+const nextButton = useTemplateRef('nextButton');
+
+// A button disabled under focus drops it to the page, so hand it to the other
+async function showPrevious() {
+  index.value++;
+  if (index.value === count.value - 1) {
+    await nextTick();
+    nextButton.value?.$el.focus();
+  }
+}
+
+async function showNext() {
+  index.value--;
+  if (index.value === 0) {
+    await nextTick();
+    previousButton.value?.$el.focus();
+  }
+}
 </script>
