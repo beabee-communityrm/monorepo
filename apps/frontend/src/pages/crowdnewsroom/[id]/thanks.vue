@@ -7,27 +7,58 @@ meta:
 </route>
 <template>
   <div class="nuxt-page mx-auto flex w-full max-w-[720px] flex-col gap-6">
-    <div class="flex w-full flex-wrap items-center justify-end gap-2">
+    <div class="flex w-full justify-end">
       <CalloutLanguageSelect :callout="callout" />
-
-      <CalloutSharePopover
-        :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`"
-      />
     </div>
 
-    <h2 v-if="!isEmbed" class="text-lg">{{ callout.title }}</h2>
+    <template v-if="responses /* Avoids layout thrashing */">
+      <CalloutThankYouBanner :callout="callout" :level="2" size="lg" />
 
-    <CalloutThankYouBanner :callout="callout" />
+      <CalloutResponseList
+        v-if="responses.length"
+        :form-schema="callout.formSchema"
+        :responses="responses.slice(0, 1)"
+        hide-date
+        :add-to="respondAction === 'add' ? respondTo : undefined"
+        :edit-to="respondAction === 'edit' ? respondTo : undefined"
+      />
+    </template>
+
+    <UCard
+      v-if="callout.status === ItemStatus.Open"
+      class="bg-linear-to-b from-primary/5 to-transparent to-70% ring-primary/20"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <p>{{ t('calloutThanksPage.sharePrompt') }}</p>
+        <CalloutSharePopover
+          :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`"
+          color="primary"
+        />
+      </div>
+    </UCard>
+
+    <div v-if="!isEmbed">
+      <UButton
+        variant="link"
+        icon="i-lucide-arrow-left"
+        :to="{ path: '/crowdnewsroom/' + callout.slug, query: route.query }"
+      >
+        {{ t('calloutThanksPage.backTo', { title: callout.title }) }}
+      </UButton>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
-import type { GetCalloutDataWith } from '@beabee/beabee-common';
-import { computed } from 'vue';
+import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
+import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
+import CalloutResponseList from '#components/callout/CalloutResponseList.vue';
 import CalloutSharePopover from '#components/callout/CalloutSharePopover.vue';
 import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue';
+import { useCalloutResponse } from '#components/pages/callouts/use-callout';
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { currentUser, isEmbed } from '#store/index';
@@ -38,6 +69,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const route = useRoute();
 
 addBreadcrumb(
   computed(() =>
@@ -55,5 +87,9 @@ addBreadcrumb(
         ]
       : []
   )
+);
+
+const { responses, respondAction, respondTo } = useCalloutResponse(
+  toRef(props, 'callout')
 );
 </script>

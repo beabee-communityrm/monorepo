@@ -50,12 +50,13 @@ export function useCallout(callout: Ref<GetCalloutData>) {
 
 /**
  * The current user's own responses, and what they can do about responding,
- * for both the callout details page and the respond page.
+ * for the callout details, respond and thanks pages.
  */
 export function useCalloutResponse(
   callout: Ref<GetCalloutData>,
   { fetchResponses = true }: { fetchResponses?: boolean } = {}
 ) {
+  const route = useRoute();
   const { isOpen, isPreview, showLoginPrompt, showMemberOnlyPrompt } =
     useCallout(callout);
 
@@ -87,6 +88,12 @@ export function useCalloutResponse(
 
   const canRespond = computed(() => respondAction.value !== null);
 
+  /** Where the respond action goes */
+  const respondTo = computed(() => ({
+    path: '/crowdnewsroom/' + callout.value.slug + '/respond',
+    query: route.query,
+  }));
+
   onBeforeMount(async () => {
     if (!fetchResponses) return;
 
@@ -114,6 +121,7 @@ export function useCalloutResponse(
     responses,
     canRespond,
     respondAction,
+    respondTo,
   };
 }
 

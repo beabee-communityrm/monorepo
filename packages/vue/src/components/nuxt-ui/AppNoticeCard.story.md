@@ -12,3 +12,6 @@ it's worth checking against the page it's used on.
 `color` tints the icon, border and background. `success` also colours the
 title, since a confirmation reads as affirmative; `primary` leaves the title
 neutral so it doesn't compete with surrounding content.
+
+`size="lg"` is for a notice that stands in for the page title, such as a
+confirmation page with no heading of its own.
