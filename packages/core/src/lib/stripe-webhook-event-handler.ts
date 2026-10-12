@@ -47,7 +47,10 @@ export class StripeWebhookEventHandler {
         await this.handleCustomerDeleted(event.data.object);
         break;
       case 'customer.subscription.updated':
-        await this.handleCustomerSubscriptionUpdated(event.data.object);
+        await this.handleCustomerSubscriptionUpdated(
+          event.data.object,
+          event.data.previous_attributes
+        );
         break;
       case 'customer.subscription.deleted':
         await this.handleCustomerSubscriptionDeleted(event.data.object);
@@ -99,12 +102,15 @@ export class StripeWebhookEventHandler {
   }
 
   /**
-   * Handles subscription updates, particularly focusing on failed subscription starts
-   * If a subscription becomes incomplete_expired, the membership is revoked
+   * Handles subscription updates: a subscription that never started revokes
+   * the membership, and a pending update that has been applied or expired
+   * resolves the contact's next amount
    * @param subscription The updated Stripe subscription
+   * @param previousAttributes The attributes changed by this update
    */
   private static async handleCustomerSubscriptionUpdated(
-    subscription: Stripe.Subscription
+    subscription: Stripe.Subscription,
+    previousAttributes?: Partial<Stripe.Subscription>
   ): Promise<void> {
     if (subscription.status === 'incomplete_expired') {
       const contribution = await PaymentService.getContributionBy(
@@ -123,6 +129,30 @@ export class StripeWebhookEventHandler {
           'contribution-didnt-start',
           contribution.contact
         );
+      }
+    }
+
+    if (previousAttributes?.pending_update && !subscription.pending_update) {
+      const contribution = await PaymentService.getContributionBy(
+        'subscriptionId',
+        subscription.id
+      );
+      if (contribution?.nextAmount) {
+        // Stripe only puts the new price on the items if the update was paid
+        const applied =
+          subscription.items.data[0]?.price.unit_amount ===
+          contribution.nextAmount.chargeable;
+        log.info(
+          `Pending update for subscription ${subscription.id} ${applied ? 'applied' : 'expired'}`
+        );
+        if (applied) {
+          await ContactsService.updateContact(contribution.contact, {
+            contributionMonthlyAmount: contribution.nextAmount.monthly,
+          });
+        }
+        await PaymentService.updateData(contribution.contact, {
+          nextAmount: null,
+        });
       }
     }
   }

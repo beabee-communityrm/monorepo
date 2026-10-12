@@ -9,7 +9,11 @@ import { add } from 'date-fns';
 import Stripe from 'stripe';
 
 import config from '#config/config';
-import { NoPaymentMethodError, PaymentFailedError } from '#errors/index';
+import {
+  NoPaymentMethodError,
+  PaymentFailedError,
+  PaymentRequiresActionError,
+} from '#errors/index';
 import {
   chargeOneTimePayment,
   createSubscription,
@@ -104,7 +108,7 @@ export class StripeProvider extends PaymentProvider {
       this.data.subscriptionId = newSubscription.id;
     }
 
-    const { subscription, startNow } =
+    const { subscription, startNow, pendingIntent } =
       await this.updateOrCreateSubscription(form);
 
     this.data.subscriptionId = subscription.id;
@@ -117,6 +121,15 @@ export class StripeProvider extends PaymentProvider {
         };
 
     await this.updateData();
+
+    // Stripe applies the new amount once the proration payment is
+    // authenticated, the webhook handler then activates the next amount
+    if (
+      pendingIntent?.status === 'requires_action' &&
+      pendingIntent.client_secret
+    ) {
+      throw new PaymentRequiresActionError(pendingIntent.client_secret);
+    }
 
     return {
       form,
@@ -326,14 +339,22 @@ export class StripeProvider extends PaymentProvider {
    */
   private async updateOrCreateSubscription(
     form: UpdateContributionForm
-  ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
+  ): Promise<Awaited<ReturnType<typeof updateSubscription>>> {
     if (this.data.subscriptionId && this.contact.membership?.isActive) {
       log.info('Update subscription ' + this.data.subscriptionId);
-      return await updateSubscription(
-        this.data.subscriptionId,
-        form,
-        this.method
-      );
+      try {
+        return await updateSubscription(
+          this.data.subscriptionId,
+          form,
+          this.method
+        );
+      } catch (err) {
+        if (err instanceof Stripe.errors.StripeCardError) {
+          throw new PaymentFailedError(err.decline_code);
+        } else {
+          throw err;
+        }
+      }
     } else {
       // Cancel any existing (failing) subscriptions
       await this.cancelContribution(true);
