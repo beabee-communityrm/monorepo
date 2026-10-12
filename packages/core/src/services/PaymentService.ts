@@ -250,6 +250,8 @@ class PaymentService {
     keepMandate = false
   ): Promise<void> {
     log.info('Cancel contribution for contact ' + contact.id);
+    // Keep subscription ID for activity feed event, the provider clears it
+    const subscriptionId = (await this.getContribution(contact)).subscriptionId;
     await this.provider(contact, (p) => p.cancelContribution(keepMandate));
     await getRepository(ContactContribution).update(
       { contactId: contact.id },
@@ -259,7 +261,7 @@ class PaymentService {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactContributionCancelled,
       targetId: contact.id,
-      metadata: null,
+      metadata: { subscriptionId },
     });
   }
 
