@@ -3,7 +3,7 @@
     <AppLabel v-if="label" :label="label" :required="required" />
     <div class="flex items-start gap-4">
       <div
-        class="relative flex-none basis-28 overflow-hidden rounded border border-primary-40 bg-primary-20"
+        class="relative flex-none basis-28 overflow-hidden rounded border border-main-40 bg-main-20"
       >
         <img
           :src="imageUrl"
@@ -134,9 +134,10 @@ async function handleChange() {
     emit('update:modelValue', originalUrl);
   } catch (error) {
     formError.value = extractErrorText(error, {
-      TOO_MANY_REQUESTS: t('form.errors.file.rateLimited'),
-      LIMIT_FILE_SIZE: t('form.errors.file.tooBig'),
-      UNSUPPORTED_FILE_TYPE: t('form.errors.file.unsupportedType'),
+      'too-many-requests': t('form.errors.file.rateLimited'),
+      'file-too-large': t('form.errors.file.tooBig'),
+      'unsupported-file-type': t('form.errors.file.unsupportedType'),
+      'file-upload-error': t('form.errors.file.uploadFailed'),
     });
   }
 

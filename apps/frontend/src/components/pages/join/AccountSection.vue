@@ -15,14 +15,14 @@
           v-if="isEmbed"
           href="/auth/login"
           target="_blank"
-          class="text-link underline hover:text-primary"
+          class="text-link underline hover:text-main"
         >
           {{ t('join.login') }}
         </a>
         <router-link
           v-else
           to="/auth/login"
-          class="text-link underline hover:text-primary"
+          class="text-link underline hover:text-main"
         >
           {{ t('join.login') }}
         </router-link>

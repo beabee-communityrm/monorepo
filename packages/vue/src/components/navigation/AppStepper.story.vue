@@ -36,7 +36,7 @@ const disabledStep = ref(0);
   <Story title="Navigation/AppStepper">
     <Variant title="Basic Usage" description="Default stepper with three steps">
       <AppStepper v-model="currentStep" :steps="basicSteps" />
-      <div class="text-gray-600 mt-4 text-sm">
+      <div class="mt-4 text-sm text-gray-600">
         Current step: {{ currentStep + 1 }} / {{ basicSteps.length }}
       </div>
     </Variant>
@@ -57,7 +57,7 @@ const disabledStep = ref(0);
 
     <Variant title="Disabled State" description="Stepper in disabled state">
       <AppStepper v-model="disabledStep" :steps="basicSteps" :disabled="true" />
-      <div class="text-gray-600 mt-4 text-sm">
+      <div class="mt-4 text-sm text-gray-600">
         This stepper is disabled and cannot be interacted with.
       </div>
     </Variant>
@@ -73,7 +73,7 @@ const disabledStep = ref(0);
           <button
             @click="currentStep = Math.max(0, currentStep - 1)"
             :disabled="currentStep === 0"
-            class="bg-blue-500 rounded px-4 py-2 text-white disabled:opacity-50"
+            class="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
           >
             Previous
           </button>
@@ -85,7 +85,7 @@ const disabledStep = ref(0);
               )
             "
             :disabled="currentStep === interactiveSteps.length - 1"
-            class="bg-blue-500 rounded px-4 py-2 text-white disabled:opacity-50"
+            class="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
           >
             Next
           </button>
@@ -114,7 +114,7 @@ const disabledStep = ref(0);
           </div>
         </div>
 
-        <div class="text-gray-600 text-sm">
+        <div class="text-sm text-gray-600">
           <strong>Current Step:</strong> {{ interactiveSteps[currentStep].name
           }}<br />
           <strong>Status:</strong>

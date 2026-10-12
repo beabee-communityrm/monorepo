@@ -35,7 +35,7 @@ meta:
         <AppInfoListItem
           :name="t('calloutAdminOverview.settings.answers.label')"
           :value="
-            callout.allowUpdate
+            callout.responseMode === CalloutResponseMode.SingleEditable
               ? t('calloutAdminOverview.settings.answers.editable')
               : t('calloutAdminOverview.settings.answers.final')
           "
@@ -50,7 +50,7 @@ meta:
         />
       </AppInfoList>
     </div>
-    <div class="flex-0 flex flex-wrap gap-2 lg:flex-col">
+    <div class="flex flex-0 flex-wrap gap-2 lg:flex-col">
       <ActionButton
         :icon="faEye"
         :to="`/crowdnewsroom/${callout.slug}?preview`"
@@ -108,7 +108,11 @@ meta:
   </div>
 </template>
 <script lang="ts" setup>
-import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
+import {
+  CalloutResponseMode,
+  type GetCalloutDataWith,
+  ItemStatus,
+} from '@beabee/beabee-common';
 import {
   ActionButton,
   AppConfirmDialog,

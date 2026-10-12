@@ -1,4 +1,5 @@
 import { BadRequestError, NotFoundError } from '@beabee/core/errors';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { Password } from '@beabee/core/models';
 import SignupService from '@beabee/core/services/SignupService';
 import { generatePassword } from '@beabee/core/utils/auth';
@@ -46,6 +47,12 @@ export class SignupController {
       );
     }
 
+    if (data.password && isOidcEnabled()) {
+      throw new BadRequestError(
+        'Cannot set a password when OIDC login is enabled'
+      );
+    }
+
     const signupForm = {
       email: data.email,
       password: data.password
@@ -54,6 +61,7 @@ export class SignupController {
       confirmUrl: data.confirmUrl,
       loginUrl: data.loginUrl,
       setPasswordUrl: data.setPasswordUrl,
+      origin: data.origin || null,
     };
 
     if (data.contribution) {

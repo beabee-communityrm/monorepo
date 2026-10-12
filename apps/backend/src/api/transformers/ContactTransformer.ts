@@ -1,8 +1,10 @@
 import { GetContactWith, Rule, RuleGroup } from '@beabee/beabee-common';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
-import { UnauthorizedError } from '@beabee/core/errors';
+import { BadRequestError, UnauthorizedError } from '@beabee/core/errors';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { CalloutReviewer, Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
+import IdpService from '@beabee/core/services/IdpService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
 import { QueryDeepPartialEntity } from '@beabee/core/type';
@@ -84,6 +86,9 @@ class ContactTransformer extends BaseContactTransformer<
         opts?.with?.includes(GetContactWith.Tags) && {
           tags: contact.tags.map((ct) => contactTagTransformer.convert(ct.tag)),
         }),
+      // Only meaningful while an identity provider is configured
+      ...(auth.roles.includes('admin') &&
+        IdpService.isEnabled && { idpSubject: contact.idpSubject }),
     };
   }
 
@@ -143,7 +148,7 @@ class ContactTransformer extends BaseContactTransformer<
 
   /**
    * Loads additional data for contacts after the main query.
-   * Handles roles, contribution info, and tags.
+   * Handles roles, contribution info and tags.
    *
    * @param contacts - The contacts to modify
    * @param query - The query containing include options
@@ -207,6 +212,12 @@ class ContactTransformer extends BaseContactTransformer<
     target: Contact,
     data: Partial<UpdateContactDto>
   ): Promise<GetContactDto | undefined> {
+    if (data.password && isOidcEnabled()) {
+      throw new BadRequestError(
+        'Cannot set a password when OIDC login is enabled'
+      );
+    }
+
     if (data.email || data.firstname || data.lastname || data.password) {
       await ContactsService.updateContact(target, {
         ...(data.email && { email: data.email }),

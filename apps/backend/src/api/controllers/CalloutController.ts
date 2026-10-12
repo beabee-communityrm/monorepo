@@ -1,4 +1,4 @@
-import { CalloutCaptcha } from '@beabee/beabee-common';
+import { ActivityEventType, CalloutCaptcha } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import {
   BadRequestError,
@@ -8,6 +8,7 @@ import {
   NotFoundError,
 } from '@beabee/core/errors';
 import { Callout, Contact } from '@beabee/core/models';
+import ActivityService from '@beabee/core/services/ActivityService';
 import { calloutsService } from '@beabee/core/services/CalloutsService';
 import { AuthInfo } from '@beabee/core/type';
 
@@ -35,6 +36,10 @@ import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
 import { RateLimit } from '#api/decorators/RateLimit';
 import { ListTagsDto } from '#api/dto';
+import {
+  GetActivityEventDto,
+  ListActivityEventsDto,
+} from '#api/dto/ActivityFeedDto';
 import { GetExportQuery } from '#api/dto/BaseDto';
 import {
   CreateCalloutDto,
@@ -62,6 +67,7 @@ import {
 } from '#api/dto/CalloutReviewerDto';
 import { CreateCalloutTagDto, GetCalloutTagDto } from '#api/dto/CalloutTagDto';
 import { PaginatedDto } from '#api/dto/PaginatedDto';
+import ActivityEventTransformer from '#api/transformers/ActivityEventTransformer';
 import CalloutResponseExporter from '#api/transformers/CalloutResponseExporter';
 import CalloutResponseMapTransformer from '#api/transformers/CalloutResponseMapTransformer';
 import CalloutResponseSegmentTransformer from '#api/transformers/CalloutResponseSegmentTransformer';
@@ -130,6 +136,16 @@ export class CalloutController {
       ...query,
       showHiddenForAll: true,
     });
+  }
+
+  @Authorized('admin')
+  @Get('/:id/activity')
+  async getCalloutActivity(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @CalloutId() id: string,
+    @QueryParams() query: ListActivityEventsDto
+  ): Promise<PaginatedDto<GetActivityEventDto> | undefined> {
+    return await ActivityEventTransformer.fetchByTargetId(auth, id, query);
   }
 
   @Patch('/:id')
@@ -432,6 +448,13 @@ export class CalloutController {
       calloutId: id,
       ...data,
     });
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.CalloutSegmentsAdded,
+      targetId: segment.id,
+      metadata: null,
+    });
+
     return await CalloutResponseSegmentTransformer.fetchOneByIdOrFail(
       auth,
       segment.id,
@@ -449,7 +472,20 @@ export class CalloutController {
     @Param('segmentId') segmentId: string,
     @Body() data: CreateCalloutResponseSegmentDto
   ): Promise<GetCalloutResponseSegmentDto | undefined> {
-    await CalloutResponseSegmentTransformer.updateById(auth, segmentId, data);
+    const updated = await CalloutResponseSegmentTransformer.updateById(
+      auth,
+      segmentId,
+      data
+    );
+
+    if (updated) {
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.CalloutSegmentsUpdated,
+        targetId: segmentId,
+        metadata: null,
+      });
+    }
+
     return CalloutResponseSegmentTransformer.fetchOneById(auth, segmentId, {
       calloutId: id,
       with: [GetCalloutResponseSegmentWith.itemCount],
@@ -469,5 +505,11 @@ export class CalloutController {
     if (!result) {
       throw new NotFoundError();
     }
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.CalloutSegmentsDeleted,
+      targetId: segmentId,
+      metadata: null,
+    });
   }
 }

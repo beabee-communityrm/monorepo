@@ -1,9 +1,10 @@
 {
   "accountPage": {
     "contactInformation": "Contactgegevens",
-    "deliveryAddress": "Afleveradres",
+    "deliveryAddress": "Adres",
     "deliveryOptIn": "Opt-in voor bezorging",
     "loginDetail": "Inloggegevens",
+    "loginDetail-nuxt": "Wijzig wachtwoord",
     "mfa": {
       "codeInput": {
         "info": "Als je je 2FA-apparaat kwijt bent, neem dan contact op met support.",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "Weet je zeker dat je Multi-Factor Authenticatie wilt uitschakelen? Vanaf dan heb je alleen nog je wachtwoord nodig om in te loggen. Vergeet niet om de vermelding uit je Authenticator-app te verwijderen. Je kunt het altijd weer inschakelen.",
+        "desc-nuxt": "Weet je zeker dat je tweefactorauthenticatie wilt uitschakelen? Vanaf dan heb je alleen nog je wachtwoord nodig om in te loggen. Vergeet niet om de vermelding uit je Authenticator-app te verwijderen. Je kunt het altijd weer inschakelen.",
+        "descDetail": "Vanaf dan heb je alleen nog je wachtwoord nodig om in te loggen. Vergeet niet om de vermelding uit je Authenticator-app te verwijderen. Je kunt het altijd weer inschakelen.",
         "descToken": "Voer je huidige 2FA-code in om 2FA uit te schakelen:",
-        "title": "2FA uitschakelen"
+        "descToken-nuxt": "Voer je huidige 2FA-code in om 2FA uit te schakelen:",
+        "keepEnabled": "2FA ingeschakeld houden",
+        "remove": "2FA verwijderen",
+        "title": "2FA uitschakelen",
+        "title-nuxt": "2FA uitschakelen"
       },
       "createUnknownErrorNotification": "De 2FA kon niet worden opgeslagen vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
+      "createUnknownErrorNotification-nuxt": "De 2FA kon niet worden opgeslagen vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
       "deleteUnknownErrorNotification": "De 2FA kon niet worden verwijderd vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
+      "deleteUnknownErrorNotification-nuxt": "De 2FA kon niet worden verwijderd vanwege een onbekende fout. Probeer het opnieuw of neem contact op met support.",
+      "description": "Voeg een extra beveiligingslaag toe aan uw account",
       "disabledNotification": "2FA succesvol gedeactiveerd",
       "enabledNotification": "2FA succesvol geactiveerd",
       "enterCode": {
         "desc": "Voer de code in die wordt weergegeven in je authenticator app.",
-        "title": "Verificatie"
+        "desc-nuxt": "Voer de code in die wordt weergegeven in je authenticator app.",
+        "title": "Verificatie",
+        "title-nuxt": "Verificatie"
       },
       "modalTitle": "2-factor authenticatie inschakelen",
+      "modalTitle-nuxt": "Tweefactorauthenticatie inschakelen",
       "result": {
         "invalidCode": "De code kon niet worden bevestigd, probeer het opnieuw of neem contact op met support.",
         "successful": "2-factor authenticatie is met succes ingesteld.",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "Scan de QR-code hieronder met je authenticatie app.",
-        "title": "QR-code"
+        "desc-nuxt": "Scan de QR-code hieronder met je authenticatie app.",
+        "title": "QR-code",
+        "title-nuxt": "QR-code"
       },
       "secretInput": {
         "desc": "Je kunt ook de volgende code invoeren in je Authenticator app.",
-        "label": "Geheime code"
+        "label": "Geheime code",
+        "toggleHide": "Verbergen",
+        "toggleShow": "Kun je niet scannen? Voer de code handmatig in"
       },
+      "statusDisabled": {
+        "description": "Indien ingeschakeld, wordt u bij elke keer inloggen om een code uit uw authenticator-app gevraagd.",
+        "title": "Tweefactorauthenticatie is uitgeschakeld"
+      },
+      "statusEnabled": {
+        "description": "Uw account is beveiligd met een authenticator-app. Schakel dit alleen uit als u van apparaat wisselt.",
+        "title": "Tweefactorauthenticatie is ingeschakeld"
+      },
+      "stepIndicator": "Stap {step} van {total}",
       "title": "2-factor authenticatie",
+      "title-nuxt": "Tweefactorauthenticatie",
       "validateButton": {
-        "label": "Token verifiëren"
+        "label": "Token verifiëren",
+        "label-nuxt": "Token verifiëren"
       }
     },
     "newsletter": {
@@ -50,15 +78,35 @@
         "subscribed": "Deze contactpersoon is ingeschreven op uw nieuwsbrieflijst.",
         "unsubscribed": "Dit contact is niet ingeschreven op uw nieuwsbrieflijst."
       },
+      "description": "Beheer bij welke nieuwsbriefgroepen je bent aangemeld.",
+      "noGroups": "Je bent bij geen enkele nieuwsbriefgroep aangemeld.",
       "subscribe": "Schrijf ze in voor de nieuwsbrief",
       "title": "Nieuwsbrief",
-      "unsubscribe": "Schrijf ze uit voor de nieuwsbrief"
+      "unsubscribe": "Schrijf ze uit voor de nieuwsbrief",
+      "unsubscribeButton": "Afmelden",
+      "unsubscribeInfo": "Afmelden gaat direct in en kan hier niet ongedaan worden gemaakt.",
+      "unsubscribedNotification": "Je bent afgemeld voor {group}"
     },
+    "personalDetails": "Persoonlijke gegevens",
     "phoneInfo": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden",
+    "phoneInfo-nuxt": "Door uw telefoonnummer op te geven geeft u toestemming om telefonisch gecontacteerd te worden.",
     "phoneInfoAdmin": "Je moet toestemming van de persoon hebben voordat je hun telefoonnummer aan het systeem toevoegt",
+    "requiredFields": "Verplichte velden",
     "savedPassword": "Nieuw wachtwoord opgeslagen",
+    "security": "Beveiliging",
+    "selfService": {
+      "addPasskey": "Passkey toevoegen",
+      "changePassword": "Wachtwoord wijzigen",
+      "intro": "Je wachtwoord en inlogmethoden worden beheerd door onze inlogdienst. Elk van deze opties brengt je daarheen en daarna weer terug.",
+      "setupMfa": "Authenticator-app instellen",
+      "title": "Inloggegevens"
+    },
     "subTitle": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
-    "title": "Account"
+    "subTitle-nuxt": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
+    "subscriptions": "Abonnementen",
+    "title": "Account",
+    "unsavedChanges": "U heeft niet-opgeslagen wijzigingen",
+    "vatNumberInfo": "Neem contact op met support{'@'}beabee.io om het btw-nummer te wijzigen"
   },
   "actions": {
     "add": "Toevoegen",
@@ -81,6 +129,7 @@
     "export": "Exporteer",
     "getStarted": "Beginnen",
     "goBack": "Terug",
+    "hidePassword": "Wachtwoord verbergen",
     "increase": "",
     "next": "Volgende",
     "noBack": "“Nee, ga terug”.",
@@ -104,6 +153,7 @@
     "sendOneOffEmail": "E-mail verzenden",
     "sendOngoingEmails": "Doorlopende e-mails",
     "share": "Delen",
+    "showPassword": "Wachtwoord tonen",
     "skip": "Sla over",
     "submit": "Verzenden",
     "tryAgain": "",
@@ -251,6 +301,35 @@
         "twitterHandle": "Twitter-handleiding"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Nieuwsbrieven"
+      },
+      "label": "Integraties",
+      "loadError": "Laden van integraties mislukt. Ververs de pagina.",
+      "newsletter": {
+        "audienceId": "Doelgroep-ID",
+        "groups": "Groepen",
+        "groupsNote": "Groepsnamen worden getoond aan leden op het tabblad abonnementenbeheer van de accountpagina.",
+        "noGroups": "Geen groepen gevonden"
+      },
+      "refresh": "Vernieuwen",
+      "refreshResult": {
+        "added": "{provider} groepen toegevoegd: {groups}",
+        "connectionLost": "verbinding verbroken",
+        "couldNotConnect": "Kan geen verbinding maken met {provider}",
+        "error": "{provider} vernieuwen mislukt. Probeer het opnieuw.",
+        "noChanges": "{provider} groepen zijn up-to-date",
+        "reconnected": "opnieuw verbonden",
+        "removed": "{provider} groepen verwijderd: {groups}"
+      },
+      "refreshing": "Vernieuwen...",
+      "status": {
+        "disabled": "Uitgeschakeld",
+        "healthy": "Verbonden",
+        "unhealthy": "Verbinding verbroken"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",
@@ -266,7 +345,7 @@
         "body": "Tekst",
         "danger": "Gevaar",
         "link": "Links",
-        "primary": "Hoofd",
+        "main": "Hoofd",
         "success": "Succes",
         "warning": "Waarschuwing"
       },
@@ -375,6 +454,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Opnieuw deelnemen",
       "updateResponse": "Je reactie bijwerken"
     },
     "addAPoint": "Klik op de kaart waar je een punt wilt toevoegen",
@@ -878,6 +958,7 @@
     "selectedCount": "{n} reactie geselecteerd | {n} reacties geselecteerd"
   },
   "calloutResponsesPage": {
+    "allResponses": "Alle antwoorden",
     "moveToBucket": "Verplaats naar {bucket}",
     "noTags": "Geen tags",
     "response": "Reactie",
@@ -911,12 +992,23 @@
     "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, wordt extra reacties niet geregistreerd."
   },
   "callouts": {
+    "access": {
+      "everyone": "Open voor iedereen",
+      "member": "Alleen leden"
+    },
     "archive": "Archief",
+    "archiveRange": "{start}-{end} van {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "Einddatum"
+      "endDate": "Einddatum",
+      "responses": "{n} reactie | {n} reacties"
+    },
+    "daysLeft": "nog {n} dag | nog {n} dagen",
+    "empty": {
+      "active": "Op dit moment zijn er geen actieve oproepen."
     },
     "noArchivedCallouts": "Geen oproepen",
+    "openCallouts": "Open oproepen",
     "search": "Zoeken...",
     "showAll": "Alle",
     "showAnswered": "Beantwoord",
@@ -947,7 +1039,6 @@
     },
     "contributionType": {
       "automatic": "Automatisch",
-      "gift": "Cadeau",
       "manual": "Handmatig",
       "none": "Geen"
     },
@@ -1009,6 +1100,15 @@
       "scheduled": "Gepland"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "Alle {count} overeenkomende items zijn geselecteerd.",
+        "clearSelection": "Selectie wissen",
+        "pageSelected": "Alle {count} items op deze pagina zijn geselecteerd.",
+        "selectAll": "Alle {count} items selecteren",
+        "someSelected": "{count} overeenkomende items zijn geselecteerd."
+      }
+    },
     "thankYou": "Bedankt!",
     "timeAgo": "{time} geleden",
     "timeIn": "in {time}",
@@ -1051,6 +1151,19 @@
       "title": "Nieuwsbrief"
     },
     "oneTime": "Eenmalig",
+    "origin": {
+      "addedBy": "Toegevoegd door",
+      "addedByValues": {
+        "admin": "Beheerder",
+        "external": "Extern",
+        "self-signup": "Zelfaanmelding",
+        "system": "Systeem"
+      },
+      "campaign": "Campagne",
+      "referrer": "Verwijzer",
+      "source": "Aanmeldbron",
+      "title": "Herkomst"
+    },
     "overview": "Overzicht",
     "pickTag": "Kies een tag uit de onderstaande lijst",
     "profile": "Profiel",
@@ -1058,7 +1171,6 @@
     "roles": "Rollen",
     "security": {
       "instructions": "Kopieer en deel deze link:",
-      "loginOverride": "Inloggen opheffen",
       "mfa": {
         "desc": "Deze contactpersoon heeft 2FA ingeschakeld. Klik op de knop “{ disableLabel }” om deze uit te schakelen.",
         "disabledDesc": "2FA is niet ingeschakeld voor dit contact."
@@ -1097,6 +1209,9 @@
       "email": "E-mail",
       "firstname": "Voornaam",
       "hasDonated": "Heeft eenmalige bijdrage gedaan",
+      "idpAccount": "",
+      "idpLinked": "",
+      "idpUnlinked": "",
       "joined": "Aangesloten bij",
       "lastSeen": "Laatst gezien",
       "lastname": "Achternaam",
@@ -1348,6 +1463,7 @@
       "remaining": ""
     },
     "cityOrTown": "Stad",
+    "country": "",
     "deliveryOptIn": "Opt-in levering",
     "description": "Beschrijving",
     "email": "E-mail",
@@ -1373,6 +1489,16 @@
       "addressLine1": {
         "required": "Adresregel 1 is vereist"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Je browser heeft de toegang tot de microfoon geblokkeerd. Controleer de sitemachtigingen en probeer het opnieuw, of upload een opname die je elders hebt gemaakt.",
+        "micPermissionDeniedTitle": "Microfoon niet beschikbaar",
+        "recordingNotSupportedBody": "Deze browser kan geen audio opnemen. Upload in plaats daarvan een audiobestand.",
+        "recordingNotSupportedTitle": "Opnemen niet ondersteund",
+        "tooLongBody": "Dit bestand duurt {duration}. Het maximum voor deze vraag is {max}. Verkort het bestand of neem een kortere reactie op.",
+        "tooLongTitle": "Opname te lang",
+        "uploadFailedTitle": "Uploaden mislukt",
+        "wrongTypeBody": "Deze vraag accepteert alleen {types}-bestanden."
+      },
       "cityOrTown": {
         "required": "Stad/gemeente is vereist"
       },
@@ -1385,6 +1511,9 @@
         "required": "Wachtwoord is vereist",
         "sameAs": "De wachtwoorden komen niet overeen"
       },
+      "country": {
+        "required": ""
+      },
       "description": {
         "maxLength": "",
         "required": ""
@@ -1396,7 +1525,8 @@
       "file": {
         "rateLimited": "Upload mislukt: u hebt onlangs te veel bestanden geüpload. Wacht een paar minuten voordat u het opnieuw probeert.",
         "tooBig": "Upload mislukt: de bestandsgrootte moet kleiner zijn dan 20Mb",
-        "unsupportedType": "Upload mislukt: het bestandstype wordt niet ondersteund"
+        "unsupportedType": "Upload mislukt: het bestandstype wordt niet ondersteund",
+        "uploadFailed": "Upload mislukt: het bestand kan niet worden verwerkt"
       },
       "firstName": {
         "required": "Voornaam is vereist"
@@ -1418,6 +1548,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": "Ongeldig telefoonnummer"
       },
       "unknown": {
         "email": "Ongeldig e-mailadres",
@@ -1448,6 +1581,7 @@
     "notes": "Opmerkingen",
     "password": "Wachtwoord",
     "passwordInfo": "“Stel een veilig wachtwoord in: 8+ tekens of langer, en het moet een cijfer, hoofdletters en kleine letters bevatten.”",
+    "passwordInfo-nuxt": "Stel een veilig wachtwoord in: minimaal 8 tekens, met een cijfer, een hoofdletter en een kleine letter.",
     "phone": "Telefoonnummer",
     "postCode": "Postcode",
     "richtext": {
@@ -1466,10 +1600,30 @@
     "saveChanges": "Wijzigingen opslaan",
     "saved": "Opgeslagen!",
     "unsavedChanges": "Niet-opgeslagen wijzigingen",
-    "updated": "Bijgewerkt"
+    "updated": "Bijgewerkt",
+    "vatNumber": "Btw-nummer"
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Bijgevoegd",
+        "delete": "Verwijderen",
+        "discard": "Weggooien",
+        "download": "Downloaden",
+        "pause": "Pauzeren",
+        "paused": "Gepauzeerd",
+        "playPause": "Afspelen of pauzeren",
+        "reRecord": "Opnieuw opnemen",
+        "record": "Opname starten",
+        "recording": "Bezig met opnemen",
+        "requestingPermission": "Wachten op microfoontoegang. Sta toegang toe in je browser om door te gaan.",
+        "resume": "Hervatten",
+        "stop": "Stoppen",
+        "tryAgain": "Opnieuw proberen",
+        "uploadInstead": "Upload in plaats daarvan een audiobestand",
+        "uploadLabel": "Audiobestand uploaden",
+        "uploadingHint": "Bezig met uploaden — je kunt de rest van het formulier blijven invullen."
+      },
       "file": {
         "browse": "uploaden vanaf apparaat",
         "dropFiles": "Sleep bestanden hierheen om bij te voegen",
@@ -1572,6 +1726,10 @@
   },
   "login": {
     "backTo": "Terug naar {newsroomName}",
+    "errors": {
+      "login-failed": "Inloggen is mislukt. Probeer het opnieuw.",
+      "unlinked-account": "Je login is niet gekoppeld aan een account op dit platform. Neem contact op met de support."
+    },
     "forgotPassword": "Wachtwoord vergeten?",
     "joinNow": "Word nu lid!",
     "lostMfaDevice": "Ben je je 2FA-apparaat kwijt?",
@@ -1608,6 +1766,7 @@
           "showOptIn": "Vraag om in te schrijven voor nieuwsbrief",
           "title": "Nieuwsbrief"
         },
+        "showOrganisationName": "Vragen om organisatienaam",
         "text": "Nadat gebruikers lid zijn geworden, worden ze gevraagd om hun registratie te bevestigen. Hier kun je de details van het bevestigingsscherm instellen.",
         "title": "Account bevestiging",
         "welcomeMessage": "Welkomstbericht"
@@ -1641,6 +1800,7 @@
         "showAbsorbFee": "Gebruiker vragen om de betalingskosten te absorberen",
         "showGoogleApplePay": "",
         "showNoContribution": "Gebruiker toestaan mee te doen zonder bijdrage",
+        "showVatNumber": "Gebruiker vragen om btw-nummer",
         "suggestedAmounts": "Voorgestelde contributiebedragen",
         "text": "In dit gedeelte kun je het lidmaatschapsformulier bewerken, verfijnen en een voorbeeld bekijken.",
         "title": "Lidmaatschapsformulier"
@@ -1680,7 +1840,6 @@
     "insert": "Invoegen",
     "insertTag": "Voeg {tag} in",
     "tags": {
-      "ACTIVATELINK": "Cadeau activatielink",
       "ANSWERS": "Geformatteerde antwoorden",
       "CALLOUTLINK": "Link naar de CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom slug",
@@ -1689,8 +1848,6 @@
       "EMAIL": "E-mailadres van contact",
       "EXPIRES": "Vervaldatum lidmaatschap",
       "FNAME": "Voornaam van contact",
-      "GIFTDATE": "Startdatum cadeau",
-      "GIFTEE": "Naam van cadeauontvanger",
       "ISELIGIBLE": "Of doorverwijzing in aanmerking komt",
       "LNAME": "Achternaam van contact",
       "LOGINLINK": "Loginlink",
@@ -1700,7 +1857,6 @@
       "MESSAGE": "Aangepaste berichtinhoud",
       "NAME": "Volledige naam van contact",
       "ORGNAME": "Organisatienaam",
-      "PURCHASER": "Naam van cadeauverkoper",
       "REFCODE": "Doorverwijzingscode van contact",
       "REFEREENAME": "Naam van doorverwezen persoon",
       "RESPNAME": "Naam van respondent",

@@ -127,6 +127,14 @@ import { UniqueEmailId1773823606137 } from './migrations/1773823606137-UniqueEma
 import { ExtendMemberRoleExpiry1774540406786 } from './migrations/1774540406786-ExtendMemberRoleExpiry.js';
 import { UpdatePaymentFlow1776076677108 } from './migrations/1776076677108-UpdatePaymentFlow.js';
 import { AddMailchimpNLGroups1776955640900 } from './migrations/1776955640900-AddMailchimpNLGroups.js';
+import { RemoveMailchimpNLGroups1781533044882 } from './migrations/1781533044882-RemoveMailchimpNLGroups.js';
+import { AddActivityFeedTable1786436468486 } from './migrations/1786436468486-AddActivityFeedTable.js';
+import { AddSignUpSourceInfo1786450132129 } from './migrations/1786450132129-AddSignUpSourceInfo.js';
+import { AddOrganisationAndVatNumber1788353071789 } from './migrations/1788353071789-AddOrganisationAndVatNumber.js';
+import { RemoveGiftMemberships1788528151186 } from './migrations/1788528151186-RemoveGiftMemberships.js';
+import { AddContactIdpSubject1788876714973 } from './migrations/1788876714973-AddContactIdpSubject.js';
+import { AddCalloutResponseMode1789404005434 } from './migrations/1789404005434-AddCalloutResponseMode.js';
+import { RemoveContactLoginOverride1790855215072 } from './migrations/1790855215072-RemoveContactLoginOverride.js';
 
 export const migrations = [
   SessionTable1616677358190,
@@ -257,4 +265,12 @@ export const migrations = [
   ExtendMemberRoleExpiry1774540406786,
   UpdatePaymentFlow1776076677108,
   AddMailchimpNLGroups1776955640900,
+  RemoveMailchimpNLGroups1781533044882,
+  AddActivityFeedTable1786436468486,
+  AddSignUpSourceInfo1786450132129,
+  AddOrganisationAndVatNumber1788353071789,
+  RemoveGiftMemberships1788528151186,
+  AddContactIdpSubject1788876714973,
+  AddCalloutResponseMode1789404005434,
+  RemoveContactLoginOverride1790855215072,
 ];

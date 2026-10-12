@@ -33,7 +33,7 @@ meta:
   </AppConfirmDialog>
 
   <PageTitle :title="pageTitle" back border>
-    <div v-if="hasOverride" class="flex-0 ml-3">
+    <div v-if="hasOverride" class="ml-3 flex-0">
       <AppButton
         variant="dangerOutlined"
         @click="showResetConfirmDialog = true"
@@ -166,7 +166,7 @@ const hasMissingMergeTags = computed(() =>
   missingMergeTags.value?.length ? missingMergeTags.value : undefined
 );
 
-addBreadcrumb(computed(() => [{ title: 'Email' }, { title: pageTitle.value }]));
+addBreadcrumb(computed(() => [{ label: 'Email' }, { label: pageTitle.value }]));
 
 onMounted(async () => {
   try {

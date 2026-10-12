@@ -32,6 +32,7 @@
       :return-url="client.signup.completeUrl"
       :confirm-flow="onSubmit"
       show-name-fields
+      :show-vat-number="joinContent.showVatNumber"
     />
     <div
       v-if="paymentContent.noticeText"
@@ -67,7 +68,8 @@ const props = defineProps<{
   onSubmit: (
     token: string,
     firstName: string,
-    lastName: string
+    lastName: string,
+    vatNumber: string
   ) => Promise<void>;
 }>();
 

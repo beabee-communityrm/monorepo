@@ -21,7 +21,7 @@
 
     <div
       v-if="formVisible"
-      class="rounded rounded-t-none border border-primary-20 bg-primary-10 p-4"
+      class="rounded rounded-t-none border border-main-20 bg-main-10 p-4"
     >
       <ItemManagerForm
         mode="add"

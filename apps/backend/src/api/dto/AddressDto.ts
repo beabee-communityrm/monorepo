@@ -18,6 +18,10 @@ export class UpdateAddressDto implements Address {
   @IsDefined()
   @IsString()
   postcode!: string;
+
+  @IsOptional()
+  @IsString()
+  country?: string;
 }
 
 export class GetAddressDto extends UpdateAddressDto {}

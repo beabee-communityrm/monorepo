@@ -7,12 +7,12 @@ meta:
 
 <template>
   <PageTitle :title="t('menu.notices')" border>
-    <div class="flex-0 ml-3 hidden md:block">
+    <div class="ml-3 hidden flex-0 md:block">
       <AppButton to="/admin/notices/add">{{
         t('notices.addNotice')
       }}</AppButton>
     </div>
-    <div class="fixed bottom-5 right-5 md:hidden">
+    <div class="fixed right-5 bottom-5 md:hidden">
       <AppButton
         :icon="faPlus"
         :title="t('notices.addNotice')"
@@ -48,7 +48,7 @@ meta:
 import { type GetNoticeData, type Paginated } from '@beabee/beabee-common';
 import { AppButton, type Header, PageTitle, formatLocale } from '@beabee/vue';
 
-import { faPlus, faSignHanging } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -57,11 +57,14 @@ import AppPaginatedTable from '#components/table/AppPaginatedTable.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { definePaginatedQuery } from '#utils/pagination';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
 
 addBreadcrumb(
-  computed(() => [{ title: t('menu.notices'), icon: faSignHanging }])
+  computed(() => [
+    { label: t(routeLabels.adminNotices), icon: routeIcons.adminNotices },
+  ])
 );
 
 const headers: Header[] = [

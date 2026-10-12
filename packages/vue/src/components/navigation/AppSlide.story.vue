@@ -6,7 +6,7 @@ import AppSlide from './AppSlide.vue';
   <Story title="Navigation/AppSlide">
     <Variant title="Basic Usage" description="Simple slide with text content">
       <AppSlide>
-        <div class="bg-primary-10 p-8 text-center">
+        <div class="bg-main-10 p-8 text-center">
           <h3 class="text-xl font-semibold">Slide Content</h3>
           <p>This is a basic slide with some content.</p>
         </div>
@@ -51,7 +51,7 @@ import AppSlide from './AppSlide.vue';
       description="Slide with custom background and styling"
     >
       <AppSlide aria-label="Custom styled slide">
-        <div class="bg-primary p-12 text-white">
+        <div class="bg-main p-12 text-white">
           <div class="text-center">
             <h2 class="mb-4 text-3xl font-bold">Custom Slide</h2>
             <p class="text-lg opacity-90">

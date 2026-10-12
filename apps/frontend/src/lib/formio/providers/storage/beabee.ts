@@ -2,6 +2,8 @@
 import type { FormioFile } from '@beabee/beabee-common';
 import {
   MAX_FILE_SIZE_IN_BYTES,
+  isSupportedAudioExtension,
+  isSupportedAudioType,
   isSupportedDocumentExtension,
   isSupportedDocumentType,
   isSupportedImageExtension,
@@ -56,7 +58,7 @@ export default class BeabeeStorage {
         throw new Error(t('form.errors.file.tooBig'));
       }
 
-      // Check file type and extension - must be either a supported document or image
+      // Check file type and extension - must be a supported document, image or audio file
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
       const isValidDocument =
         isSupportedDocumentType(file.type) ||
@@ -64,8 +66,11 @@ export default class BeabeeStorage {
       const isValidImage =
         isSupportedImageType(file.type) ||
         (fileExtension && isSupportedImageExtension(fileExtension));
+      const isValidAudio =
+        isSupportedAudioType(file.type) ||
+        (fileExtension && isSupportedAudioExtension(fileExtension));
 
-      if (!isValidDocument && !isValidImage) {
+      if (!isValidDocument && !isValidImage && !isValidAudio) {
         throw new Error(t('form.errors.file.unsupportedType'));
       }
 
@@ -88,9 +93,10 @@ export default class BeabeeStorage {
       };
     } catch (err) {
       const errorText = extractErrorText(err, {
-        TOO_MANY_REQUESTS: t('form.errors.file.rateLimited'),
-        LIMIT_FILE_SIZE: t('form.errors.file.tooBig'),
-        UNSUPPORTED_FILE_TYPE: t('form.errors.file.unsupportedType'),
+        'too-many-requests': t('form.errors.file.rateLimited'),
+        'file-too-large': t('form.errors.file.tooBig'),
+        'unsupported-file-type': t('form.errors.file.unsupportedType'),
+        'file-upload-error': t('form.errors.file.uploadFailed'),
       });
       throw new Error(errorText);
     } finally {

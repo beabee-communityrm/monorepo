@@ -25,7 +25,7 @@
         :class="[
           stepIndex === modelValue
             ? 'bg-white text-link'
-            : 'text-primary-60 cursor-pointer bg-primary-5 hover:bg-primary-10',
+            : 'text-main-60 cursor-pointer bg-main-5 hover:bg-main-10',
           step.error ? '!text-danger' : '',
           disabled ? 'cursor-not-allowed opacity-60' : '',
         ]"
@@ -44,13 +44,13 @@
 
         <!-- Step indicator circle -->
         <span
-          class="relative mr-2 mt-px inline-block h-4 w-4 rounded-full border-2 transition-colors"
+          class="relative mt-px mr-2 inline-block h-4 w-4 rounded-full border-2 transition-colors"
           :class="
             step.validated
               ? 'border-link bg-link'
               : stepIndex === modelValue
                 ? 'border-link bg-white'
-                : 'border-grey bg-primary-5'
+                : 'border-grey bg-main-5'
           "
           :aria-hidden="true"
         />

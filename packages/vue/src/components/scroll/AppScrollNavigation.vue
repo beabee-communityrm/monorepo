@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-0 basis-menu overflow-y-auto overflow-x-hidden">
+  <div class="flex-0 basis-menu overflow-x-hidden overflow-y-auto">
     <div class="mb-4">
       <h2 v-if="title" class="mb-2 text-lg font-semibold">
         {{ title }}
@@ -8,13 +8,13 @@
         <button
           v-for="section in sections.filter((s) => !s.hidden)"
           :key="section.id"
-          class="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md px-3 py-2 text-left font-semibold transition-colors"
+          class="w-full overflow-hidden rounded-md px-3 py-2 text-left font-semibold text-ellipsis whitespace-nowrap transition-colors"
           :class="
             activeSection === section.id
               ? // TODO: reintroduce when scroll detection is fixed
                 // ? 'bg-white font-medium text-primary shadow-sm'
-                'text-body-80 hover:bg-primary-10 hover:text-body'
-              : 'text-body-80 hover:bg-primary-10 hover:text-body'
+                'text-body-80 hover:bg-main-10 hover:text-body'
+              : 'text-body-80 hover:bg-main-10 hover:text-body'
           "
           :title="section.label"
           @click="scrollToSection(section.id)"

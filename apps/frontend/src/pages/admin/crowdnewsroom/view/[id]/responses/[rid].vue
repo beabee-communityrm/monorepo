@@ -93,7 +93,9 @@ meta:
         :current-bucket="response.bucket"
         :disabled="doingAction"
         :loading="doingAction"
-        @move="(bucket, successText) => handleUpdate({ bucket }, successText)"
+        @move="
+          (bucket, successText) => handleUpdate({ bucket }, successText, true)
+        "
       />
       <ToggleTagButton
         size="sm"
@@ -120,7 +122,7 @@ meta:
       />
     </div>
 
-    <hr class="my-10 border-t border-primary-40" />
+    <hr class="my-10 border-t border-main-40" />
 
     <div class="mb-4 flex gap-2">
       <AppButton
@@ -158,7 +160,7 @@ meta:
       @submit="handleEditResponse"
     />
 
-    <hr class="my-10 border-t border-primary-40" />
+    <hr class="my-10 border-t border-main-40" />
 
     <CalloutResponseComments :response-id="response.id" />
   </div>
@@ -210,22 +212,22 @@ const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'responseViewSchema'>;
 }>();
 
-const route = useRoute('adminCalloutViewResponsesItem');
+const route = useRoute();
 const router = useRouter();
 const { t, n } = useI18n();
 
 addBreadcrumb(
   computed(() => [
     {
-      title: t('calloutAdmin.responses'),
+      label: t('calloutAdmin.responses'),
       to: `/admin/crowdnewsroom/view/${props.callout.slug}/responses`,
     },
     {
-      title: bucketName.value,
+      label: bucketName.value,
       to: `/admin/crowdnewsroom/view/${props.callout.slug}/responses?bucket=${response.value?.bucket}`,
     },
     {
-      title: t('calloutResponsesPage.responseNo', {
+      label: t('calloutResponsesPage.responseNo', {
         no: response.value?.number ? n(response.value?.number) : '?',
       }),
     },
@@ -262,7 +264,8 @@ const { reviewerItems, tagItems } = useCalloutResponseFilters(
 
 async function handleUpdate(
   data: UpdateCalloutResponseData,
-  successText: string
+  successText: string,
+  reroute = false
 ) {
   if (!response.value) return;
 
@@ -270,13 +273,17 @@ async function handleUpdate(
   try {
     await client.callout.response.update(response.value.id, data);
 
-    const targetResponseId = prevResponse.value?.id ?? nextResponse.value?.id;
+    if (reroute) {
+      const targetResponseId = prevResponse.value?.id ?? nextResponse.value?.id;
 
-    const targetPath = targetResponseId
-      ? `/admin/crowdnewsroom/view/${props.callout.slug}/responses/${targetResponseId}`
-      : `/admin/crowdnewsroom/view/${props.callout.slug}/responses`;
+      const targetPath = targetResponseId
+        ? `/admin/crowdnewsroom/view/${props.callout.slug}/responses/${targetResponseId}`
+        : `/admin/crowdnewsroom/view/${props.callout.slug}/responses`;
 
-    router.push(targetPath);
+      router.push(targetPath);
+    } else {
+      await refreshResponse();
+    }
 
     addNotification({ variant: 'success', title: successText });
   } catch (err) {

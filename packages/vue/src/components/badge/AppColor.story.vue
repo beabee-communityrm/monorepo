@@ -8,9 +8,9 @@
       <div class="space-y-4">
         <h4 class="font-semibold text-body">Primary Color Palette</h4>
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
-          <AppColor name="bg-primary" shade="Primary" />
-          <AppColor name="bg-primary-40" shade="Primary 40" />
-          <AppColor name="bg-primary-70" shade="Primary 70" />
+          <AppColor name="bg-main" shade="Primary" />
+          <AppColor name="bg-main-40" shade="Primary 40" />
+          <AppColor name="bg-main-70" shade="Primary 70" />
         </div>
       </div>
     </Variant>
@@ -51,7 +51,7 @@
                 v-model="state.colorName"
                 class="mt-1 block w-full rounded border border-grey-light p-2"
               >
-                <option value="bg-primary">bg-primary</option>
+                <option value="bg-main">bg-main</option>
                 <option value="bg-success">bg-success</option>
                 <option value="bg-warning">bg-warning</option>
                 <option value="bg-danger">bg-danger</option>
@@ -95,7 +95,7 @@ import AppColor from './AppColor.vue';
 
 // State for interactive example
 const state = reactive({
-  colorName: 'bg-primary',
+  colorName: 'bg-main',
   colorShade: 'Primary Blue',
 });
 </script>

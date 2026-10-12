@@ -11,7 +11,7 @@
     <p
       v-if="
         callout.access === CalloutAccess.Guest &&
-        !callout.allowMultiple &&
+        callout.responseMode !== CalloutResponseMode.Multiple &&
         !currentUser
       "
       class="mt-4 text-body-80"
@@ -22,7 +22,11 @@
 </template>
 
 <script lang="ts" setup>
-import { CalloutAccess, type GetCalloutDataWith } from '@beabee/beabee-common';
+import {
+  CalloutAccess,
+  CalloutResponseMode,
+  type GetCalloutDataWith,
+} from '@beabee/beabee-common';
 import { AppMessageBox } from '@beabee/vue';
 
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';

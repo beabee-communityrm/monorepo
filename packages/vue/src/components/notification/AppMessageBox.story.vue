@@ -229,19 +229,19 @@ const sampleMessages = {
 
           <div class="space-y-2">
             <div class="flex items-center gap-2">
-              <span class="rounded bg-primary-20 px-2 py-1 text-xs font-medium"
+              <span class="rounded bg-main-20 px-2 py-1 text-xs font-medium"
                 >Step 1</span
               >
               <span class="text-sm">Complete your profile setup</span>
             </div>
             <div class="flex items-center gap-2">
-              <span class="rounded bg-primary-20 px-2 py-1 text-xs font-medium"
+              <span class="rounded bg-main-20 px-2 py-1 text-xs font-medium"
                 >Step 2</span
               >
               <span class="text-sm">Explore the dashboard features</span>
             </div>
             <div class="flex items-center gap-2">
-              <span class="rounded bg-primary-20 px-2 py-1 text-xs font-medium"
+              <span class="rounded bg-main-20 px-2 py-1 text-xs font-medium"
                 >Step 3</span
               >
               <span class="text-sm">Connect with your team</span>

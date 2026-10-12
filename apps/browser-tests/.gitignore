@@ -2,6 +2,6 @@
 /test-results/
 /playwright-report/
 /playwright/.cache/
-/playwright/test-results/
+.auth/
 /playwright/videos/
 /playwright/trace/

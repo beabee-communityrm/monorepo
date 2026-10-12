@@ -33,21 +33,21 @@
 <template>
   <AppLabel v-if="label" :label="label" :required="required" :for="inputId" />
   <div class="flex items-center">
-    <div v-if="$slots.before" class="flex-0 mr-2"><slot name="before" /></div>
+    <div v-if="$slots.before" class="mr-2 flex-0"><slot name="before" /></div>
     <div
       class="flex flex-1 items-center overflow-hidden rounded border focus-within:shadow-input"
       :class="
         hasError
           ? 'border-danger-70 bg-danger-10'
           : disabled
-            ? 'border-primary-40 bg-grey-lighter'
-            : 'border-primary-40 bg-white'
+            ? 'border-main-40 bg-grey-lighter'
+            : 'border-main-40 bg-white'
       "
     >
       <span
         v-if="prefix"
         :id="prefixId"
-        class="flex-0 shrink-0 border-r border-primary-40 bg-grey-lighter px-2 py-2"
+        class="flex-0 shrink-0 border-r border-main-40 bg-grey-lighter px-2 py-2"
         :class="disabled && 'opacity-60'"
         aria-hidden="true"
       >
@@ -55,7 +55,7 @@
       </span>
       <div
         v-if="$slots.prefixAction"
-        class="flex-0 flex h-10 shrink-0 items-center border-r border-primary-40"
+        class="flex h-10 flex-0 shrink-0 items-center border-r border-main-40"
         :class="
           hasError ? 'bg-danger-10' : disabled ? 'bg-grey-lighter' : 'bg-white'
         "
@@ -89,17 +89,14 @@
       </span>
       <div
         v-if="$slots.suffixAction"
-        class="flex-0 flex h-10 shrink-0 items-center border-l border-primary-40"
+        class="flex h-10 flex-0 shrink-0 items-center border-l border-main-40"
         :class="
           hasError ? 'bg-danger-10' : disabled ? 'bg-grey-lighter' : 'bg-white'
         "
       >
         <slot name="suffixAction" />
       </div>
-      <div
-        v-if="copyable"
-        class="flex-0 h-10 shrink-0 border-l border-primary-40"
-      >
+      <div v-if="copyable" class="h-10 flex-0 shrink-0 border-l border-main-40">
         <AppCopyButton
           :text="prefix ? `${prefix}${value}` : value?.toString() || ''"
           :disabled="copyButtonDisabled"
@@ -107,7 +104,7 @@
         />
       </div>
     </div>
-    <div v-if="$slots.after" class="flex-0 ml-2"><slot name="after" /></div>
+    <div v-if="$slots.after" class="ml-2 flex-0"><slot name="after" /></div>
   </div>
 
   <AppInputError

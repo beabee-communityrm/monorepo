@@ -14,7 +14,7 @@
   ```
 -->
 <template>
-  <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-body-80">
+  <p class="mb-3 text-xs font-semibold tracking-wide text-body-80 uppercase">
     <slot />
   </p>
 </template>

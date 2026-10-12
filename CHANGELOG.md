@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.45.0](https://github.com/beabee-communityrm/monorepo/compare/v0.44.2...v0.45.0) (2026-06-08)
+
+## What's Changed
+* fix(frontend): hide map add button when maptiler key is missing by @JumpLink in https://github.com/beabee-communityrm/monorepo/pull/590
+* test: Add new anonymisation level to create data dumps for testing  by @aasthas9 in https://github.com/beabee-communityrm/monorepo/pull/596
+* feat: Add environment variable to disable rate limiting by @aasthas9 in https://github.com/beabee-communityrm/monorepo/pull/598
+* Translations update from Hosted Weblate by @weblate in https://github.com/beabee-communityrm/monorepo/pull/524
+* test: Add new workflows for API tests and DB schema generation by @aasthas9 in https://github.com/beabee-communityrm/monorepo/pull/600
+* fix(frontend): move loading icon back to center by @wpf500 in https://github.com/beabee-communityrm/monorepo/pull/595
+* test: Set up browser testing by @aasthas9 in https://github.com/beabee-communityrm/monorepo/pull/597
+* feat(db-report): generate database reports using schemaspy by @aasthas9 in https://github.com/beabee-communityrm/monorepo/pull/601
+* chore: automated release workflow with release-it by @JumpLink in https://github.com/beabee-communityrm/monorepo/pull/593
+* chore(ci): publish to npm via OIDC trusted publishing by @JumpLink in https://github.com/beabee-communityrm/monorepo/pull/602
+* chore(deps): @tiptap/* 2 → 3 by @JumpLink in https://github.com/beabee-communityrm/monorepo/pull/578
+* chore(deps): routing-controllers 0.10 → 0.11 + class-validator 0.14 → 0.15 by @JumpLink in https://github.com/beabee-communityrm/monorepo/pull/583
+* chore(deps): Vite 6 → 8 cluster by @JumpLink in https://github.com/beabee-communityrm/monorepo/pull/579
+* chore(deps): Express 4 → 5 cluster (express, multer, helmet, body-parser) by @JumpLink in https://github.com/beabee-communityrm/monorepo/pull/584
+* chore(deps): vue-router 4 → 5 + vue-accessible-color-picker 5 → 6 by @JumpLink in https://github.com/beabee-communityrm/monorepo/pull/580
+* fix(frontend): stay in current bucket after changing a response's bucket by @libby-correctiv in https://github.com/beabee-communityrm/monorepo/pull/599
+* build(deps): remove prosemirror-* duplicates by @wpf500 in https://github.com/beabee-communityrm/monorepo/pull/612
+* test!: Update test data, add browser test by @aasthas9 in https://github.com/beabee-communityrm/monorepo/pull/611
+* Translations update from Hosted Weblate by @weblate in https://github.com/beabee-communityrm/monorepo/pull/604
+* chore: fix release notes by relying on conventional-changelog with PR-title merge commits by @JumpLink in https://github.com/beabee-communityrm/monorepo/pull/609
+* build(dep): remove unplugin-vue-router in favour of built in vue-router by @wpf500 in https://github.com/beabee-communityrm/monorepo/pull/613
+* test: Add combined callout test by @aasthas9 in https://github.com/beabee-communityrm/monorepo/pull/614
+* ci(api-tests): Add workflow to run end-to-end API tests by @aasthas9 in https://github.com/beabee-communityrm/monorepo/pull/603
+* test(browser-tests): Add browser test for one-time contribution by @aasthas9 in https://github.com/beabee-communityrm/monorepo/pull/608
+* build: tailwind upgrade v3 → v4 by @libby-correctiv in https://github.com/beabee-communityrm/monorepo/pull/552
+* fix(backend-cli): delete existing webhooks with wrong API version by @wpf500 in https://github.com/beabee-communityrm/monorepo/pull/616
+* fix(tailwind): fix sr-only causing scrolling problems by @wpf500 in https://github.com/beabee-communityrm/monorepo/pull/618
+
+
+**Full Changelog**: https://github.com/beabee-communityrm/monorepo/compare/v0.44.2...v0.45.0
+
 ## [0.44.2](https://github.com/beabee-communityrm/monorepo/compare/v0.44.1...v0.44.2) (2026-05-11)
 
 ### What's Changed

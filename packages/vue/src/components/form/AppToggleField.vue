@@ -10,7 +10,7 @@
       <p
         v-if="getDescription"
         v-html="getDescription"
-        class="mb-0.5 mt-1"
+        class="mt-1 mb-0.5"
         :class="
           size === 'small' ? 'text-xs text-body-80' : 'text-sm text-body-80'
         "

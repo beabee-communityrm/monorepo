@@ -17,7 +17,6 @@ meta:
 import type { GetCalloutDataWith } from '@beabee/beabee-common';
 import { AppShareBox, AppTitle } from '@beabee/vue';
 
-import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -26,6 +25,7 @@ import CalloutVariantsBox from '#components/pages/callouts/CalloutVariantsBox.vu
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { currentUser, isEmbed } from '#store/index';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const props = defineProps<{
   callout: GetCalloutDataWith<'form' | 'variantNames'>;
@@ -38,12 +38,12 @@ addBreadcrumb(
     currentUser.value
       ? [
           {
-            title: t('menu.callouts'),
+            label: t(routeLabels.callouts),
             to: '/crowdnewsroom',
-            icon: faBullhorn,
+            icon: routeIcons.callouts,
           },
           {
-            title: props.callout.title,
+            label: props.callout.title,
             to: '/crowdnewsroom/' + props.callout.slug,
           },
         ]

@@ -42,7 +42,7 @@ const variants = ['primary', 'success', 'warning', 'error', 'info'] as const;
             <AppLabel label="Username" required />
             <input
               type="text"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter username"
             />
           </AppFormField>
@@ -53,7 +53,7 @@ const variants = ['primary', 'success', 'warning', 'error', 'info'] as const;
             <AppLabel label="Password" required />
             <input
               type="password"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter password"
             />
           </AppFormField>
@@ -88,7 +88,7 @@ const variants = ['primary', 'success', 'warning', 'error', 'info'] as const;
             <AppLabel label="Full Name" required />
             <input
               type="text"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter your full name"
             />
           </AppFormField>
@@ -97,7 +97,7 @@ const variants = ['primary', 'success', 'warning', 'error', 'info'] as const;
             <AppLabel label="Email Address" required />
             <input
               type="email"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
               placeholder="Enter your email"
             />
           </AppFormField>
@@ -164,7 +164,7 @@ const variants = ['primary', 'success', 'warning', 'error', 'info'] as const;
             <AppLabel label="Name" required />
             <input
               type="text"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
             />
           </AppFormField>
         </AppFormBox>
@@ -174,7 +174,7 @@ const variants = ['primary', 'success', 'warning', 'error', 'info'] as const;
             <AppLabel label="Email" required />
             <input
               type="email"
-              class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
+              class="focus:border-main-500 focus:ring-main-500 mt-1 block w-full rounded-md border border-grey-light px-3 py-2 shadow-sm focus:outline-none"
             />
           </AppFormField>
         </AppFormBox>

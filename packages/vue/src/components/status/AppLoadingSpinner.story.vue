@@ -14,7 +14,7 @@ const state = reactive({
   <Story title="Status/AppLoadingSpinner">
     <Variant title="Playground">
       <div
-        class="flex min-h-[120px] items-center justify-center rounded border border-primary-40 bg-white p-6"
+        class="flex min-h-[120px] items-center justify-center rounded border border-main-40 bg-white p-6"
       >
         <AppLoadingSpinner
           v-if="state.loading"

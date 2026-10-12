@@ -4,6 +4,7 @@
     variant="primaryOutlined"
     :title="t('tags.toggleTag')"
     :show-title="withText"
+    :disabled="disabled"
   >
     <p v-if="tagItems.length === 0" class="px-3 py-2 italic">
       {{ t('tags.noTags') }}
@@ -20,7 +21,7 @@
     </AppSelectableList>
 
     <router-link
-      class="block border-t border-primary-40 px-3 py-2 font-semibold text-primary underline hover:bg-primary-5 group-hover:border-primary"
+      class="block border-t border-main-40 px-3 py-2 font-semibold text-main underline group-hover:border-main hover:bg-main-5"
       :to="manageUrl"
     >
       <font-awesome-icon class="mr-2" :icon="faCog" />{{ t('tags.manageTags') }}
@@ -42,6 +43,7 @@ interface Props {
   manageUrl: string;
   withText?: boolean;
   selectable?: boolean;
+  disabled?: boolean;
 }
 withDefaults(defineProps<Props>(), { selectable: true });
 

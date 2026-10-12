@@ -1,7 +1,11 @@
 import { NewsletterStatus } from '@beabee/beabee-common';
 
 import { Contact } from '#models';
-import { ContactNewsletterUpdates, UpdateNewsletterContact } from '#type';
+import {
+  ContactNewsletterUpdates,
+  NewsletterGroupChange,
+  UpdateNewsletterContact,
+} from '#type';
 
 import { getContributionDescription } from './contact.js';
 
@@ -15,7 +19,7 @@ import { getContributionDescription } from './contact.js';
 export function convertContactToNlUpdate(
   contact: Contact,
   updates?: ContactNewsletterUpdates,
-  opts?: { mergeGroups?: boolean }
+  opts?: { newsletterGroupChange?: NewsletterGroupChange }
 ): UpdateNewsletterContact | undefined {
   let newStatus = updates?.newsletterStatus || contact.profile.newsletterStatus;
   if (
@@ -33,19 +37,11 @@ export function convertContactToNlUpdate(
     newStatus = NewsletterStatus.Subscribed;
   }
 
-  const groups = updates?.newsletterGroups
-    ? opts?.mergeGroups
-      ? [
-          ...contact.profile.newsletterGroups,
-          ...updates.newsletterGroups,
-        ].filter((v, i, a) => a.indexOf(v) === i)
-      : updates.newsletterGroups
-    : contact.profile.newsletterGroups;
-
   return {
     email: contact.email,
     status: newStatus,
-    groups,
+    groups: updates?.newsletterGroups,
+    newsletterGroupChange: opts?.newsletterGroupChange,
     firstname: contact.firstname,
     lastname: contact.lastname,
     fields: {

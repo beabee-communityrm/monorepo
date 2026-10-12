@@ -12,6 +12,16 @@ export function normalizeEmailAddress(email: string): string {
 }
 
 /**
+ * Extract the domain part of an email address (the part after the @).
+ *
+ * @param email The email address
+ * @returns The domain, or undefined if the email has no domain part
+ */
+export function getEmailDomain(email: string): string | undefined {
+  return email.split('@')[1];
+}
+
+/**
  * Replace merge fields in a text string with their corresponding values.
  * Merge fields are in the format *|FIELD_NAME|*.
  *

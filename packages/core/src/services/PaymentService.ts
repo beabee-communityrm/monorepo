@@ -1,4 +1,6 @@
 import {
+  ActivityEventType,
+  ApiHealthStatus,
   ContributionPeriod,
   MembershipStatus,
   PaymentMethod,
@@ -14,6 +16,7 @@ import {
   PaymentProvider,
   StripeProvider,
 } from '#providers/payment/index';
+import ActivityService from '#services/ActivityService';
 import {
   CompletedPaymentFlow,
   ContributionInfo,
@@ -144,6 +147,12 @@ class PaymentService {
 
     if (flow.flow.form.action === 'start-contribution') {
       await this.handlePostContributionUpdate(contact);
+
+      await ActivityService.addEvent({
+        targetId: contact.id,
+        eventType: ActivityEventType.ContactContributionStarted,
+        metadata: ret || null,
+      });
     }
 
     return ret;
@@ -185,6 +194,12 @@ class PaymentService {
     );
 
     await this.handlePostContributionUpdate(contact);
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactContributionUpdated,
+      targetId: contact.id,
+      metadata: ret,
+    });
 
     return ret;
   }
@@ -234,6 +249,12 @@ class PaymentService {
       { contactId: contact.id },
       { cancelledAt: new Date() }
     );
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactContributionCancelled,
+      targetId: contact.id,
+      metadata: null,
+    });
   }
 
   async getPayments(contact: Contact): Promise<Payment[]> {
@@ -251,6 +272,28 @@ class PaymentService {
   ): Promise<void> {
     log.info('Update contact for contact ' + contact.id);
     await this.provider(contact, (p) => p.updateContact(updates));
+  }
+
+  /**
+   * Check the health of the payment integration. As it's rare for a single
+   * instance to use both providers, the providers are combined into one
+   * status: unhealthy if either is unhealthy, disabled if both are disabled,
+   * otherwise healthy.
+   * @returns The combined payment health status
+   */
+  async getHealthStatus(): Promise<ApiHealthStatus> {
+    const statuses = [
+      await StripeProvider.getHealthStatus(),
+      await GCProvider.getHealthStatus(),
+    ];
+
+    if (statuses.includes(ApiHealthStatus.UNHEALTHY)) {
+      return ApiHealthStatus.UNHEALTHY;
+    }
+    if (statuses.every((s) => s === ApiHealthStatus.DISABLED)) {
+      return ApiHealthStatus.DISABLED;
+    }
+    return ApiHealthStatus.HEALTHY;
   }
 
   async fetchInvoiceUrl(paymentId: string): Promise<string | null> {

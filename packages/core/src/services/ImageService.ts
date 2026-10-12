@@ -1,31 +1,30 @@
-import {
-  ALLOWED_IMAGE_MIME_TYPES,
-  S3Metadata,
-  isSupportedImageType,
-} from '@beabee/beabee-common';
+import { ALLOWED_IMAGE_MIME_TYPES, S3Metadata } from '@beabee/beabee-common';
 
 import {
+  CopyObjectCommand,
   DeleteObjectCommand,
   HeadObjectCommand,
   ListObjectsV2Command,
   PutObjectCommand,
-  S3Client,
 } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
 import { extname } from 'path';
 import { HttpError } from 'routing-controllers';
 import sharp from 'sharp';
 import { Readable } from 'stream';
+import { buffer } from 'stream/consumers';
+import { pipeline } from 'stream/promises';
 import { optimize } from 'svgo';
 
 import config from '../config/config.js';
 import {
   BadRequestError,
+  FileUploadError,
   NotFoundError,
   UnsupportedFileTypeError,
 } from '../errors/index.js';
-import { log as mainLogger } from '../logging.js';
 import type {
+  ImageBackfillResult,
   ImageFormat,
   ImageMetadata,
   ImageServiceConfig,
@@ -34,117 +33,150 @@ import {
   getExtensionFromFilename,
   getMimetypeFromDecoderFormat,
   getMimetypeFromExtension,
+  getOrientedDimensions,
   sanitizeFilename,
 } from '../utils/file.js';
 import {
-  checkConnection,
   fileExists,
   getFileBuffer,
-  getFileHash,
   getFileStream,
+  putFileStream,
 } from '../utils/s3.js';
+import { BaseS3ObjectService } from './BaseS3ObjectService.js';
 
-const log = mainLogger.child({ app: 'image-service' });
+// libvips would otherwise use a thread per core and keep a 50MB cache, which
+// multiplies peak memory when uploads overlap on a 2-CPU container
+sharp.concurrency(1);
+sharp.cache(false);
 
 /**
- * Service for handling image uploads, resizing, and storage in S3/MinIO
+ * Service for handling image uploads, resizing, and storage in S3/MinIO.
+ *
+ * Extends BaseS3ObjectService for the S3 client setup and the pieces that
+ * are identical to the other file services (exists/hash/list/health) - the
+ * upload/get/delete/metadata logic here is bespoke (multi-width resizing,
+ * format negotiation, SVG optimisation, EXIF orientation), so it doesn't
+ * extend BaseFileService, whose upload/get/delete template doesn't fit.
  */
-export class ImageService {
-  private readonly s3Client: S3Client;
+export class ImageService extends BaseS3ObjectService<ImageServiceConfig> {
+  protected readonly keyPrefix = 'originals';
+  protected readonly typeName = 'image';
+  protected readonly loggerName = 'image-service';
+  readonly allowedMimeTypes = ALLOWED_IMAGE_MIME_TYPES;
+
   /**
    * Create a new ImageService
    * @param config Service configuration
    */
-  constructor(private readonly config: ImageServiceConfig) {
-    this.s3Client = new S3Client({
-      endpoint: this.config.s3.endpoint,
-      region: this.config.s3.region,
-      credentials: {
-        accessKeyId: this.config.s3.accessKey,
-        secretAccessKey: this.config.s3.secretKey,
-      },
-      forcePathStyle: this.config.s3.forcePathStyle !== false,
+  constructor(config: ImageServiceConfig) {
+    super({
+      ...config,
+      availableWidths: [...config.availableWidths].sort((a, b) => a - b),
     });
-
-    this.config.availableWidths = [...this.config.availableWidths].sort(
-      (a, b) => a - b
-    );
-  }
-
-  /**
-   * Validate image file type, size and content
-   * @param imageData Image data buffer
-   * @param mimetype MIME type if known
-   */
-  private async validateImage(
-    imageData: Buffer,
-    mimetype: string
-  ): Promise<void> {
-    // Validate MIME type if provided
-    if (mimetype && !isSupportedImageType(mimetype)) {
-      throw new UnsupportedFileTypeError(mimetype, ALLOWED_IMAGE_MIME_TYPES);
-    }
-
-    try {
-      // Validate image content with sharp
-      const image = sharp(imageData);
-      const metadata = await image.metadata();
-
-      // Check if it's actually a valid image
-      if (!metadata.width || !metadata.height || !metadata.format) {
-        throw new BadRequestError('Invalid image format');
-      }
-
-      // Check if the detected format is allowed
-      if (
-        !isSupportedImageType(getMimetypeFromDecoderFormat(metadata.format))
-      ) {
-        throw new UnsupportedFileTypeError(
-          getMimetypeFromDecoderFormat(metadata.format),
-          ALLOWED_IMAGE_MIME_TYPES
-        );
-      }
-    } catch (error) {
-      if (error instanceof HttpError) {
-        throw error;
-      }
-      throw new BadRequestError('Invalid image file');
-    }
   }
 
   /**
    * Upload an image to S3/MinIO
-   * @param imageData Binary image data or file stream
+   * @param imageData Image data as a stream or buffer
    * @param originalFilename Original filename
    * @param owner Owner's contact email (optional)
    * @param format Output format (avif, webp, jpeg, png, or "original" to keep the original format)
    * @returns Metadata for the uploaded image
    */
   async uploadImage(
-    imageData: Buffer,
+    imageData: Readable | Buffer,
     originalFilename: string,
     owner?: string,
     format?: ImageFormat
   ): Promise<ImageMetadata> {
     try {
-      // If imageData is a ReadStream, convert it to a Buffer
-      if (!Buffer.isBuffer(imageData)) {
-        throw new BadRequestError('Invalid upload format');
-      }
+      const stream = Buffer.isBuffer(imageData)
+        ? Readable.from(imageData)
+        : imageData;
 
       const sanitizedFilename = sanitizeFilename(originalFilename);
       const originalExtension = getExtensionFromFilename(originalFilename);
       const originalMimetype = getMimetypeFromExtension(originalExtension);
 
-      // Validate image content, size and type
-      await this.validateImage(imageData, originalMimetype);
+      // Validate MIME type before consuming the stream
+      if (originalMimetype && !this.isSupportedType(originalMimetype)) {
+        throw new UnsupportedFileTypeError(
+          originalMimetype,
+          this.allowedMimeTypes
+        );
+      }
 
-      // Process the image with sharp to get metadata
-      const image = sharp(imageData).rotate(); // Auto-rotate based on EXIF orientation
-      const metadata = await image.metadata();
+      // SVGs are buffered in full as SVGO needs the whole content
+      const isSvg = originalMimetype === 'image/svg+xml';
 
+      // Bound decode memory: reject oversized inputs and avoid random access
+      const sharpOptions: sharp.SharpOptions = {
+        limitInputPixels: this.config.maxInputPixels,
+        sequentialRead: true,
+      };
+
+      let image: sharp.Sharp;
+      let svgBuffer: Buffer | undefined;
+
+      if (isSvg) {
+        svgBuffer = await buffer(stream);
+        image = sharp(svgBuffer, sharpOptions);
+      } else {
+        image = sharp(sharpOptions);
+        // Sharp buffers the whole input internally and only processes it once
+        // the stream ends, so wait for the input to finish before probing the
+        // metadata (otherwise a failed stream would hang forever). Stream
+        // errors (e.g. FileTooLargeError) propagate from here.
+        await pipeline(stream, image);
+      }
+
+      let metadata: sharp.Metadata;
+      try {
+        metadata = await image.metadata();
+      } catch (error) {
+        // The limitInputPixels guard can already trip while reading the
+        // header, which is a rejection rather than a corrupt file
+        if (error instanceof Error && error.message.includes('pixel limit')) {
+          throw new FileUploadError(
+            'too-many-pixels',
+            'Image has too many pixels'
+          );
+        }
+        throw new BadRequestError('Invalid image file');
+      }
+
+      // Check if it's actually a valid image
       if (!metadata.width || !metadata.height || !metadata.format) {
         throw new BadRequestError('Invalid image format');
+      }
+
+      // Fail fast on absurd pixel counts before any decoding happens
+      // (vectors are not rasterised, so SVGs are exempt)
+      if (
+        !isSvg &&
+        this.config.maxInputPixels &&
+        metadata.width * metadata.height > this.config.maxInputPixels
+      ) {
+        throw new FileUploadError(
+          'too-many-pixels',
+          'Image has too many pixels'
+        );
+      }
+
+      // Check if the detected format is allowed
+      if (
+        !this.isSupportedType(getMimetypeFromDecoderFormat(metadata.format))
+      ) {
+        throw new UnsupportedFileTypeError(
+          getMimetypeFromDecoderFormat(metadata.format),
+          this.allowedMimeTypes
+        );
+      }
+
+      // The raw bytes can't be recovered from a stream-fed sharp instance, so
+      // SVG content must be uploaded with an SVG extension
+      if (metadata.format === 'svg' && !isSvg) {
+        throw new BadRequestError('SVG uploads must use a .svg file extension');
       }
 
       // If the image format is already the target format or a vector graphic,
@@ -169,7 +201,7 @@ export class ImageService {
       if (outputFormat === 'original') {
         extension = '.' + metadata.format;
         if (originalExtension !== extension) {
-          log.warning(
+          this.log.warning(
             `Original image extension (${originalExtension}) does not match detected format (${metadata.format}).`
           );
         }
@@ -179,16 +211,49 @@ export class ImageService {
 
       const id = `${fileId}${extension}`;
 
-      // Process the image to the target format, but keep full resolution
-      let processedImageBuffer: Buffer;
+      // Correct MIME type for the output format
+      const outputMimetype =
+        outputFormat === 'original'
+          ? getMimetypeFromExtension(metadata.format)
+          : getMimetypeFromExtension(extension);
+
+      // `.rotate()` below auto-orients the image based on EXIF, so the
+      // stored dimensions must account for that rotation upfront
+      const orientedDimensions = getOrientedDimensions(
+        metadata.width,
+        metadata.height,
+        metadata.orientation
+      );
+
+      // Rasters are downscaled to fit maxDimension (see the resize below),
+      // so the stored dimensions must be clamped to match. May differ by
+      // ±1px from libvips' rounding, which is fine for layout hints.
+      const scale =
+        !isSvg && this.config.maxDimension
+          ? Math.min(
+              1,
+              this.config.maxDimension /
+                Math.max(orientedDimensions.width, orientedDimensions.height)
+            )
+          : 1;
+
+      // Prepare metadata for S3, storing the dimensions so they can be read
+      // later without downloading the image
+      const s3Metadata: S3Metadata = {
+        width: String(Math.round(orientedDimensions.width * scale)),
+        height: String(Math.round(orientedDimensions.height * scale)),
+      };
+      if (sanitizedFilename) {
+        s3Metadata.originalfilename = sanitizedFilename;
+      }
+      if (owner) {
+        s3Metadata.owner = owner;
+      }
 
       // Handle SVG optimization
-      if (metadata.format === 'svg' && outputFormat === 'original') {
-        // Convert buffer to string for SVGO
-        const svgString = imageData.toString('utf8');
-
+      if (svgBuffer && outputFormat === 'original') {
         // Optimize SVG using SVGO
-        const result = optimize(svgString, {
+        const result = optimize(svgBuffer.toString('utf8'), {
           multipass: true,
           plugins: [
             {
@@ -203,102 +268,72 @@ export class ImageService {
           ],
         });
 
-        // Convert optimized SVG back to buffer
-        processedImageBuffer = Buffer.from(result.data, 'utf8');
-      } else if (outputFormat === 'original') {
-        // Keep the original format but strip metadata
-        processedImageBuffer = await image
-          .withMetadata({ orientation: undefined }) // Strip EXIF but keep orientation
-          .toBuffer();
+        // Upload the optimized SVG
+        await this.s3Client.send(
+          new PutObjectCommand({
+            Bucket: this.config.s3.bucket,
+            Key: `originals/${id}`,
+            Body: Buffer.from(result.data, 'utf8'),
+            ContentType: outputMimetype,
+            Metadata: s3Metadata as Record<string, string>,
+          })
+        );
       } else {
-        // Convert to the specified format
+        // Process the image to the target format, downscaled to fit
+        // maxDimension, and stream the result to S3
+        image
+          .rotate()
+          .resize({
+            width: this.config.maxDimension,
+            height: this.config.maxDimension,
+            fit: 'inside',
+            withoutEnlargement: true,
+          })
+          .withMetadata({ orientation: undefined }); // Strip EXIF but keep orientation
         switch (outputFormat) {
           case 'webp':
-            processedImageBuffer = await image
-              .withMetadata({ orientation: undefined })
-              .webp({ quality: this.config.quality })
-              .toBuffer();
+            image.webp({ quality: this.config.quality });
             break;
           case 'avif':
-            processedImageBuffer = await image
-              .withMetadata({ orientation: undefined })
-              .avif({ quality: this.config.quality })
-              .toBuffer();
+            image.avif({
+              quality: this.config.quality,
+              // effort >2 measurably costs 6x the CPU for no size gain
+              effort: 2,
+              chromaSubsampling: '4:2:0',
+            });
             break;
           case 'jpeg':
-            processedImageBuffer = await image
-              .withMetadata({ orientation: undefined })
-              .jpeg({ quality: this.config.quality })
-              .toBuffer();
+            image.jpeg({ quality: this.config.quality });
             break;
           case 'png':
-            processedImageBuffer = await image
-              .withMetadata({ orientation: undefined })
-              .png({
-                quality: this.config.quality
-                  ? Math.floor(this.config.quality / 10)
-                  : 8,
-              })
-              .toBuffer();
+            image.png({
+              quality: this.config.quality
+                ? Math.floor(this.config.quality / 10)
+                : 8,
+            });
             break;
-          default:
-            processedImageBuffer = await image
-              .withMetadata({ orientation: undefined })
-              .toBuffer();
+          // 'original' keeps the input format
         }
+
+        await putFileStream(
+          this.s3Client,
+          this.config.s3.bucket,
+          `originals/${id}`,
+          image,
+          outputMimetype,
+          s3Metadata as Record<string, string>
+        );
       }
 
-      // Correct MIME type for the output format
-      const outputMimetype =
-        outputFormat === 'original'
-          ? getMimetypeFromExtension(metadata.format)
-          : getMimetypeFromExtension(extension);
-
-      // Prepare metadata for S3
-      const s3Metadata: S3Metadata = {};
-      if (sanitizedFilename) {
-        s3Metadata.originalfilename = sanitizedFilename;
-      }
-      if (owner) {
-        s3Metadata.owner = owner;
-      }
-
-      // Upload the processed original image
-      await this.s3Client.send(
-        new PutObjectCommand({
-          Bucket: this.config.s3.bucket,
-          Key: `originals/${id}`,
-          Body: processedImageBuffer,
-          ContentType: outputMimetype,
-          Metadata:
-            Object.keys(s3Metadata).length > 0
-              ? (s3Metadata as Record<string, string>)
-              : undefined,
-        })
-      );
-
-      // Get the hash (ETag) of the uploaded image
-      const hash = await this.getImageHash(id);
-
-      // Return metadata
-      return {
-        id,
-        width: metadata.width,
-        height: metadata.height,
-        mimetype: outputMimetype,
-        createdAt: new Date(),
-        size: processedImageBuffer.length,
-        filename: sanitizedFilename,
-        owner,
-        hash,
-      };
+      // Size, hash, createdAt etc. come from a single HeadObject request
+      return await this.getImageMetadata(id);
     } catch (error) {
       if (error instanceof HttpError) {
         throw error;
       }
 
       const errorMessage = `Failed to upload image (${originalFilename})`;
-      log.error(errorMessage, error);
+      this.log.error(errorMessage, error);
       throw new BadRequestError(errorMessage);
     }
   }
@@ -314,12 +349,8 @@ export class ImageService {
     width?: number
   ): Promise<{ stream: Readable; contentType: string }> {
     try {
-      // Check if image exists first
-      if (!(await this.imageExists(id))) {
-        throw new NotFoundError();
-      }
-
-      // Get image metadata to check format
+      // Get image metadata to check format, throws NotFoundError if the
+      // image doesn't exist
       const metadata = await this.getImageMetadata(id);
       const isSvg = metadata.mimetype === 'image/svg+xml';
 
@@ -334,7 +365,7 @@ export class ImageService {
             throw error;
           }
           const errorMessage = `Failed to get SVG image (${id})`;
-          log.error(errorMessage, error);
+          this.log.error(errorMessage, error);
           throw new BadRequestError(errorMessage);
         }
       }
@@ -364,7 +395,7 @@ export class ImageService {
         try {
           await this.generateResizedImage(id, bestWidth);
         } catch (error) {
-          log.error(
+          this.log.error(
             `Failed to generate resized image (${id}, ${bestWidth})`,
             error
           );
@@ -397,7 +428,7 @@ export class ImageService {
         throw error;
       }
       const errorMessage = `Failed to get image stream (${id})`;
-      log.error(errorMessage, error);
+      this.log.error(errorMessage, error);
       throw new BadRequestError(errorMessage);
     }
   }
@@ -428,7 +459,7 @@ export class ImageService {
         // Don't log HttpError like NotFoundError as error since it's expected behavior
         throw error;
       }
-      log.error('Failed to get image buffer:', error);
+      this.log.error('Failed to get image buffer:', error);
       throw new BadRequestError('Failed to get image buffer');
     }
   }
@@ -441,7 +472,7 @@ export class ImageService {
   async deleteImage(id: string): Promise<boolean> {
     try {
       // Check if image exists
-      await this.imageExists(id);
+      await this.exists(id);
 
       // Delete the original image
       await this.s3Client.send(
@@ -480,18 +511,9 @@ export class ImageService {
         throw error;
       }
       const errorMessage = `Failed to delete image (${id})`;
-      log.error(errorMessage, error);
+      this.log.error(errorMessage, error);
       throw new BadRequestError(errorMessage);
     }
-  }
-
-  /**
-   * Check if an image exists
-   * @param id Image ID
-   * @returns True if the image exists
-   */
-  async imageExists(id: string): Promise<boolean> {
-    return fileExists(this.s3Client, this.config.s3.bucket, `originals/${id}`);
   }
 
   /**
@@ -501,26 +523,6 @@ export class ImageService {
    */
   async getImageMetadata(id: string): Promise<ImageMetadata> {
     try {
-      // Check if the image exists
-      if (!(await this.imageExists(id))) {
-        throw new NotFoundError();
-      }
-
-      // Get the original image to extract width and height
-      const { buffer, contentType } = await getFileBuffer(
-        this.s3Client,
-        this.config.s3.bucket,
-        `originals/${id}`
-      );
-
-      // Get image dimensions using sharp
-      const metadata = await sharp(buffer).metadata();
-
-      if (!metadata.width || !metadata.height) {
-        throw new BadRequestError('Invalid image format');
-      }
-
-      // Get file metadata
       const response = await this.s3Client.send(
         new HeadObjectCommand({
           Bucket: this.config.s3.bucket,
@@ -528,81 +530,118 @@ export class ImageService {
         })
       );
 
-      const s3Metadata = response.Metadata || {};
-
-      // Get the hash (ETag) of the image
-      const hash = response.ETag ? response.ETag.replace(/"/g, '') : '';
+      const s3Metadata: S3Metadata = response.Metadata || {};
 
       return {
         id,
-        width: metadata.width,
-        height: metadata.height,
-        mimetype: contentType,
+        // Images uploaded before dimensions were stored in the S3 metadata
+        // fall back to 0
+        width: s3Metadata.width ? parseInt(s3Metadata.width, 10) : 0,
+        height: s3Metadata.height ? parseInt(s3Metadata.height, 10) : 0,
+        mimetype: response.ContentType || 'application/octet-stream',
         createdAt: response.LastModified || new Date(),
-        size: response.ContentLength || buffer.length,
+        size: response.ContentLength || 0,
         filename: s3Metadata.originalfilename,
         owner: s3Metadata.owner,
-        hash,
+        hash: response.ETag ? response.ETag.replace(/"/g, '') : '',
       };
     } catch (error) {
       if (error instanceof HttpError) {
-        // Don't log HttpError like NotFoundError as error since it's expected behavior
         throw error;
       }
-      const errorMessage = `Failed to get image metadata (${id})`;
-      log.error(errorMessage, error);
-      throw new BadRequestError(errorMessage);
+      throw new NotFoundError();
     }
   }
 
   /**
-   * Get the hash (ETag) of an image without downloading it
-   * @param id Image ID
-   * @returns Hash (ETag) of the image
+   * Backfill width/height S3 metadata for images uploaded before dimensions
+   * were stored at upload time. Each image is downloaded once to probe its
+   * dimensions, the metadata is then rewritten with a server-side self-copy.
+   * Safe to re-run, images that already have dimensions are skipped.
+   * @param dryRun Only report what would be updated
+   * @returns Counts of updated, skipped and failed images
    */
-  async getImageHash(id: string): Promise<string> {
-    try {
-      const key = `originals/${id}`;
-      return await getFileHash(this.s3Client, this.config.s3.bucket, key);
-    } catch (error) {
-      if (error instanceof HttpError) {
-        // Don't log HttpError like NotFoundError as error since it's expected behavior
-        throw error;
-      }
-      const errorMessage = `Failed to get image hash (${id})`;
-      log.error(errorMessage, error);
-      throw new BadRequestError(errorMessage);
-    }
-  }
+  async backfillImageDimensions(dryRun = false): Promise<ImageBackfillResult> {
+    const result: ImageBackfillResult = { updated: 0, skipped: 0, failed: 0 };
 
-  /**
-   * Check connection to S3/MinIO
-   * @returns True if connection is successful
-   */
-  async checkConnection(): Promise<boolean> {
-    return checkConnection(this.s3Client, this.config.s3.bucket);
-  }
-
-  /**
-   * List all images
-   * @returns Array of image paths
-   */
-  async listImages(): Promise<string[]> {
-    try {
+    let continuationToken: string | undefined;
+    do {
       const response = await this.s3Client.send(
         new ListObjectsV2Command({
           Bucket: this.config.s3.bucket,
           Prefix: 'originals/',
+          ContinuationToken: continuationToken,
         })
       );
+      continuationToken = response.NextContinuationToken;
 
-      return (response.Contents || [])
-        .map((item) => item.Key || '')
-        .filter((key) => key.startsWith('originals/'));
-    } catch (error) {
-      log.error('Failed to list images:', error);
-      return [];
-    }
+      for (const item of response.Contents || []) {
+        if (!item.Key) {
+          continue;
+        }
+
+        try {
+          const head = await this.s3Client.send(
+            new HeadObjectCommand({
+              Bucket: this.config.s3.bucket,
+              Key: item.Key,
+            })
+          );
+
+          const s3Metadata: S3Metadata = head.Metadata || {};
+          if (s3Metadata.width && s3Metadata.height) {
+            result.skipped++;
+            continue;
+          }
+
+          const { buffer } = await getFileBuffer(
+            this.s3Client,
+            this.config.s3.bucket,
+            item.Key
+          );
+          const metadata = await sharp(buffer).metadata();
+
+          if (!metadata.width || !metadata.height) {
+            this.log.warning(
+              `No dimensions detected for ${item.Key}, skipping`
+            );
+            result.failed++;
+            continue;
+          }
+
+          if (!dryRun) {
+            await this.s3Client.send(
+              new CopyObjectCommand({
+                Bucket: this.config.s3.bucket,
+                CopySource: `${this.config.s3.bucket}/${item.Key}`,
+                Key: item.Key,
+                MetadataDirective: 'REPLACE',
+                // REPLACE drops the content type unless set explicitly
+                ContentType: head.ContentType,
+                Metadata: {
+                  ...head.Metadata,
+                  width: String(metadata.width),
+                  height: String(metadata.height),
+                },
+              })
+            );
+          }
+
+          result.updated++;
+          this.log.info(
+            `${dryRun ? 'Would backfill' : 'Backfilled'} dimensions for ${item.Key} (${metadata.width}x${metadata.height})`
+          );
+        } catch (error) {
+          result.failed++;
+          this.log.error(
+            `Failed to backfill dimensions for ${item.Key}`,
+            error
+          );
+        }
+      }
+    } while (continuationToken);
+
+    return result;
   }
 
   /**
@@ -627,7 +666,12 @@ export class ImageService {
       // Use sharp to resize the image
       let resizedImageBuffer: Buffer;
 
-      const sharpInstance = sharp(buffer).resize({
+      // The decode guard also covers full-resolution originals uploaded
+      // before maxDimension clamping existed
+      const sharpInstance = sharp(buffer, {
+        limitInputPixels: this.config.maxInputPixels,
+        sequentialRead: true,
+      }).resize({
         width,
         withoutEnlargement: true,
       });
@@ -645,7 +689,12 @@ export class ImageService {
             break;
           case 'avif':
             resizedImageBuffer = await sharpInstance
-              .avif({ quality: this.config.quality })
+              .avif({
+                quality: this.config.quality,
+                // effort >2 measurably costs 6x the CPU for no size gain
+                effort: 2,
+                chromaSubsampling: '4:2:0',
+              })
               .toBuffer();
             break;
           case 'jpeg':
@@ -684,7 +733,7 @@ export class ImageService {
         throw error;
       }
       const errorMessage = `Failed to generate resized image (${id}, ${width})`;
-      log.error(errorMessage, error);
+      this.log.error(errorMessage, error);
       throw new BadRequestError(errorMessage);
     }
   }

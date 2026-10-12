@@ -4,6 +4,7 @@
     "deliveryAddress": "",
     "deliveryOptIn": "",
     "loginDetail": "",
+    "loginDetail-nuxt": "",
     "mfa": {
       "codeInput": {
         "info": "",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "",
+        "desc-nuxt": "",
+        "descDetail": "",
         "descToken": "",
-        "title": ""
+        "descToken-nuxt": "",
+        "keepEnabled": "",
+        "remove": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "createUnknownErrorNotification": "",
+      "createUnknownErrorNotification-nuxt": "",
       "deleteUnknownErrorNotification": "",
+      "deleteUnknownErrorNotification-nuxt": "",
+      "description": "Machen Sie Ihr Konto sicherer",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "modalTitle": "",
+      "modalTitle-nuxt": "",
       "result": {
         "invalidCode": "",
         "successful": "",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "secretInput": {
         "desc": "",
-        "label": "Betreff"
+        "label": "Betreff",
+        "toggleHide": "",
+        "toggleShow": ""
       },
+      "statusDisabled": {
+        "description": "Wenn Sie sie einschalten, brauchen Sie bei jeder Anmeldung einen Code aus Ihrer Authenticator-App.",
+        "title": "Die 2-Faktor-Authentifizierung ist aus"
+      },
+      "statusEnabled": {
+        "description": "Ihr Konto ist mit einer Authenticator-App geschützt. Schalten Sie sie nur aus, wenn Sie ein neues Gerät haben.",
+        "title": "Die 2-Faktor-Authentifizierung ist an"
+      },
+      "stepIndicator": "",
       "title": "",
+      "title-nuxt": "",
       "validateButton": {
-        "label": "Betreff"
+        "label": "Betreff",
+        "label-nuxt": "Betreff"
       }
     },
     "newsletter": {
@@ -50,15 +78,35 @@
         "subscribed": "",
         "unsubscribed": ""
       },
+      "description": "",
+      "noGroups": "",
       "subscribe": "",
       "title": "",
-      "unsubscribe": ""
+      "unsubscribe": "",
+      "unsubscribeButton": "",
+      "unsubscribeInfo": "",
+      "unsubscribedNotification": ""
     },
+    "personalDetails": "",
     "phoneInfo": "",
+    "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
+    "requiredFields": "Pflicht-Felder",
     "savedPassword": "",
+    "security": "",
+    "selfService": {
+      "addPasskey": "Passkey hinzufügen",
+      "changePassword": "Passwort ändern",
+      "intro": "Dein Passwort und deine Anmeldemethoden werden von unserem Anmeldedienst verwaltet. Jeder dieser Schritte führt dich dorthin und anschließend wieder zurück.",
+      "setupMfa": "Authenticator-App einrichten",
+      "title": "Anmeldedaten"
+    },
     "subTitle": "",
-    "title": ""
+    "subTitle-nuxt": "",
+    "subscriptions": "",
+    "title": "",
+    "unsavedChanges": "Sie haben Änderungen, die noch nicht gespeichert sind",
+    "vatNumberInfo": ""
   },
   "actions": {
     "add": "",
@@ -81,6 +129,7 @@
     "export": "",
     "getStarted": "Hier kannst du starten.",
     "goBack": "",
+    "hidePassword": "Passwort verstecken",
     "increase": "",
     "next": "Hier kommst du auf die nächste Seite.",
     "noBack": "",
@@ -104,6 +153,7 @@
     "sendOneOffEmail": "E-Mail schicken",
     "sendOngoingEmails": "E-Mails die immer wieder gehen",
     "share": "Hier schickst du den Text / die Datei / das Bild an andere.",
+    "showPassword": "Passwort zeigen",
     "skip": "",
     "submit": "Hier wird deine Meldung weg-geschickt.",
     "tryAgain": "",
@@ -251,6 +301,35 @@
         "twitterHandle": ""
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Newsletter"
+      },
+      "label": "Integrationen",
+      "loadError": "Integrationen konnten nicht geladen werden. Bitte die Seite neu laden.",
+      "newsletter": {
+        "audienceId": "Audience-ID",
+        "groups": "Gruppen",
+        "groupsNote": "",
+        "noGroups": "Keine Gruppen gefunden"
+      },
+      "refresh": "Aktualisieren",
+      "refreshResult": {
+        "added": "{provider} Gruppen hinzugefügt: {groups}",
+        "connectionLost": "Verbindung unterbrochen",
+        "couldNotConnect": "Verbindung zu {provider} fehlgeschlagen",
+        "error": "{provider} Aktualisierung fehlgeschlagen. Bitte erneut versuchen.",
+        "noChanges": "{provider} Gruppen sind aktuell",
+        "reconnected": "Verbunden",
+        "removed": "{provider} Gruppen entfernt: {groups}"
+      },
+      "refreshing": "Wird aktualisiert...",
+      "status": {
+        "disabled": "Deaktiviert",
+        "healthy": "Verbunden",
+        "unhealthy": "Verbindung unterbrochen"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",
@@ -266,7 +345,7 @@
         "body": "",
         "danger": "",
         "link": "",
-        "primary": "",
+        "main": "Haupt-Farbe",
         "success": "",
         "warning": ""
       },
@@ -375,6 +454,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "",
       "updateResponse": ""
     },
     "addAPoint": "Hier kannst du einen Ort rein-schreiben.",
@@ -878,6 +958,7 @@
     "selectedCount": ""
   },
   "calloutResponsesPage": {
+    "allResponses": "",
     "moveToBucket": "",
     "noTags": "",
     "response": "",
@@ -911,12 +992,23 @@
     "oneResponseWarning": ""
   },
   "callouts": {
+    "access": {
+      "everyone": "",
+      "member": ""
+    },
     "archive": "",
+    "archiveRange": "",
     "data": {
       "callout": "",
-      "endDate": ""
+      "endDate": "",
+      "responses": ""
+    },
+    "daysLeft": "",
+    "empty": {
+      "active": ""
     },
     "noArchivedCallouts": "",
+    "openCallouts": "",
     "search": "",
     "showAll": "",
     "showAnswered": "",
@@ -947,7 +1039,6 @@
     },
     "contributionType": {
       "automatic": "",
-      "gift": "",
       "manual": "",
       "none": ""
     },
@@ -1009,6 +1100,15 @@
       "scheduled": "Scheduled"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "Alle {count} Einträge sind ausgewählt.",
+        "clearSelection": "Auswahl aufheben",
+        "pageSelected": "Alle {count} Einträge auf dieser Seite sind ausgewählt.",
+        "selectAll": "Alle {count} Einträge auswählen",
+        "someSelected": "{count} Einträge sind ausgewählt."
+      }
+    },
     "thankYou": "Vielen Dank.",
     "timeAgo": "vor",
     "timeIn": "in",
@@ -1051,6 +1151,19 @@
       "title": ""
     },
     "oneTime": "Einmalig",
+    "origin": {
+      "addedBy": "",
+      "addedByValues": {
+        "admin": "",
+        "external": "",
+        "self-signup": "",
+        "system": ""
+      },
+      "campaign": "",
+      "referrer": "",
+      "source": "",
+      "title": ""
+    },
     "overview": "",
     "pickTag": "",
     "profile": "",
@@ -1058,7 +1171,6 @@
     "roles": "",
     "security": {
       "instructions": "",
-      "loginOverride": "",
       "mfa": {
         "desc": "",
         "disabledDesc": ""
@@ -1097,6 +1209,9 @@
       "email": "",
       "firstname": "",
       "hasDonated": "",
+      "idpAccount": "Konto beim Identitätsanbieter",
+      "idpLinked": "Verknüpft",
+      "idpUnlinked": "Nicht verknüpft",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
@@ -1348,6 +1463,7 @@
       "remaining": ""
     },
     "cityOrTown": "",
+    "country": "",
     "deliveryOptIn": "",
     "description": "",
     "email": "E-Mail",
@@ -1373,6 +1489,16 @@
       "addressLine1": {
         "required": ""
       },
+      "audio": {
+        "micPermissionDeniedBody": "Das hat nicht geklappt. Das Mikrofon durfte nicht benutzt werden. Prüfe die Einstellungen. Oder lade eine Aufnahme hoch.",
+        "micPermissionDeniedTitle": "Das Mikrofon geht nicht",
+        "recordingNotSupportedBody": "Dieser Browser kann keine Aufnahmen machen. Lade stattdessen eine Audio-Datei hoch.",
+        "recordingNotSupportedTitle": "Aufnehmen geht hier nicht",
+        "tooLongBody": "Die Datei ist {duration} lang. Erlaubt ist höchstens {max}. Mach die Datei kürzer.",
+        "tooLongTitle": "Die Aufnahme ist zu lang",
+        "uploadFailedTitle": "Hochladen hat nicht geklappt",
+        "wrongTypeBody": "Bei dieser Frage gehen nur {types}-Dateien."
+      },
       "cityOrTown": {
         "required": ""
       },
@@ -1385,6 +1511,9 @@
         "required": "",
         "sameAs": ""
       },
+      "country": {
+        "required": ""
+      },
       "description": {
         "maxLength": "",
         "required": ""
@@ -1395,8 +1524,9 @@
       },
       "file": {
         "rateLimited": "Das war nicht richtig. Das waren zu viele Sachen auf einmal. Du musst etwas warten. Dann versuche es noch mal.",
-        "tooBig": "Das war nicht richtig. Dein Text ist zu lang. Oder dein Bild ist zu groß. Man darf nur 20 MB hoch-laden.",
-        "unsupportedType": "Das war nicht richtig. Diese Art von Datei geht nicht."
+        "tooBig": "Das war nicht richtig. Die Datei ist zu groß. Man darf nur 20 MB hoch-laden.",
+        "unsupportedType": "Das war nicht richtig. Diese Art von Datei geht nicht.",
+        "uploadFailed": "Das war nicht richtig. Das Hoch-laden hat nicht geklappt. Versuche es noch mal."
       },
       "firstName": {
         "required": "Vorname benötigt"
@@ -1418,6 +1548,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": "Die Telefon-Nummer ist falsch"
       },
       "unknown": {
         "email": "",
@@ -1448,6 +1581,7 @@
     "notes": "",
     "password": "",
     "passwordInfo": "",
+    "passwordInfo-nuxt": "",
     "phone": "",
     "postCode": "",
     "richtext": {
@@ -1466,10 +1600,30 @@
     "saveChanges": "",
     "saved": "",
     "unsavedChanges": "",
-    "updated": ""
+    "updated": "",
+    "vatNumber": ""
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Angehängt",
+        "delete": "Löschen",
+        "discard": "Nicht speichern",
+        "download": "Herunterladen",
+        "pause": "Pause",
+        "paused": "Pause",
+        "playPause": "Abspielen",
+        "reRecord": "Neu aufnehmen",
+        "record": "Aufnahme starten",
+        "recording": "Es wird aufgenommen.",
+        "requestingPermission": "Warte auf das Mikrofon. Erlaube den Zugriff in deinem Browser.",
+        "resume": "Weiter",
+        "stop": "Stopp",
+        "tryAgain": "Noch mal versuchen",
+        "uploadInstead": "Lade stattdessen eine Audio-Datei hoch",
+        "uploadLabel": "Audio-Datei hochladen",
+        "uploadingHint": "Die Datei wird hochgeladen. Du kannst das Formular weiter ausfüllen."
+      },
       "file": {
         "browse": "Du musst warten: Bis sich das Rädchen nicht mehr dreht./ Bis der Balken blau ist.",
         "dropFiles": "Du musst die Datei mit dem Pfeil von der Mouse hier her ziehen.",
@@ -1572,6 +1726,10 @@
   },
   "login": {
     "backTo": "",
+    "errors": {
+      "login-failed": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+      "unlinked-account": "Dein Login ist mit keinem Konto auf dieser Plattform verknüpft. Bitte wende dich an den Support."
+    },
     "forgotPassword": "",
     "joinNow": "",
     "lostMfaDevice": "",
@@ -1608,6 +1766,7 @@
           "showOptIn": "",
           "title": ""
         },
+        "showOrganisationName": "",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1641,6 +1800,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""
@@ -1680,7 +1840,6 @@
     "insert": "",
     "insertTag": "",
     "tags": {
-      "ACTIVATELINK": "",
       "ANSWERS": "",
       "CALLOUTLINK": "",
       "CALLOUTSLUG": "",
@@ -1689,8 +1848,6 @@
       "EMAIL": "",
       "EXPIRES": "",
       "FNAME": "",
-      "GIFTDATE": "",
-      "GIFTEE": "",
       "ISELIGIBLE": "",
       "LNAME": "",
       "LOGINLINK": "",
@@ -1700,7 +1857,6 @@
       "MESSAGE": "",
       "NAME": "",
       "ORGNAME": "",
-      "PURCHASER": "",
       "REFCODE": "",
       "REFEREENAME": "",
       "RESPNAME": "",

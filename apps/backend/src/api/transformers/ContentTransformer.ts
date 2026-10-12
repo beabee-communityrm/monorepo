@@ -1,6 +1,7 @@
 import { ContentData, ContentId } from '@beabee/beabee-common';
 import config from '@beabee/core/config';
 import { createQueryBuilder, getRepository } from '@beabee/core/database';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { Content } from '@beabee/core/models';
 import OptionsService, {
   OptionKey,
@@ -165,6 +166,7 @@ const contentData = {
     footerLinks: ['data', []],
     hideContribution: ['data', false],
     logoUrl: ['option', 'logo', 'text'],
+    oidcEnabled: ['readonly', isOidcEnabled],
     organisationName: ['option', 'organisation', 'text'],
     siteUrl: ['option', 'home-link-url', 'text'],
     supportEmail: ['option', 'support-email', 'text'],
@@ -192,6 +194,7 @@ const contentData = {
     subtitle: ['data', ''],
     title: ['data', ''],
     showGoogleApplePay: ['data', false],
+    showVatNumber: ['data', false],
   }),
   'join/setup': withValue<'join/setup'>({
     mailOptIn: ['data', ''],
@@ -200,9 +203,10 @@ const contentData = {
     newsletterOptIn: ['data', ''],
     newsletterText: ['data', ''],
     newsletterTitle: ['data', ''],
-    newsletterGroups: ['option', 'newsletter-groups', 'json'],
+    newsletterGroups: ['data', []],
     showMailOptIn: ['option', 'show-mail-opt-in', 'bool'],
     showNewsletterOptIn: ['data', false],
+    showOrganisationName: ['data', false],
     surveyRequired: ['data', false],
     surveySlug: ['option', 'join-survey', 'text'],
     surveyText: ['data', ''],

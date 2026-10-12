@@ -62,6 +62,7 @@ class StripeFlowProvider implements PaymentFlowProvider {
     return {
       firstname: flow.params.firstname || '',
       lastname: flow.params.lastname || '',
+      ...(flow.params.vatNumber && { vatNumber: flow.params.vatNumber }),
       ...(address && {
         billingAddress: {
           line1: address.line1 || '',

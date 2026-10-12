@@ -314,54 +314,6 @@ $bp-join-why: 768px;
 	}
 }
 
-.join-gift-reasons {
-	list-style: none;
-	padding: 0;
-	margin: 0 0 1rem;
-	font-weight: bold;
-
-	& > li {
-		position: relative;
-		margin-bottom: 1.5rem;
-		padding-left: calc(24px + 1rem);
-
-		&:last-child {
-			margin-bottom: 0;
-		}
-
-		&::before {
-			content: "";
-			position: absolute;
-			left: 0;
-			vertical-align: middle;
-			margin-right: 0.5rem;
-			width: 24px;
-			height: 24px;
-			background: url(/static/imgs/gift.png);
-			background-size: 100% 100%;
-		}
-	}
-}
-
-.join-gift-submit {
-	position: absolute;
-	opacity: 0;
-}
-
-.join-gift-btn {
-	small {
-		display: block;
-		font-size: 2rem;
-		font-weight: normal;
-	}
-}
-
-.join-gift-mug {
-	float: right;
-	width: 100px;
-	margin-left: 1rem;
-}
-
 .join-link {
 	text-decoration: underline;
 	cursor: pointer;

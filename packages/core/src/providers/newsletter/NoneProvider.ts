@@ -1,4 +1,10 @@
 import {
+  ApiHealthStatus,
+  BaseNewsletterGroupData,
+  NoneNewsletterIntegrationData,
+} from '@beabee/beabee-common';
+
+import {
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact,
@@ -12,7 +18,12 @@ export class NoneProvider implements NewsletterProvider {
     contact: UpdateNewsletterContact,
     oldEmail?: string
   ): Promise<NewsletterContact> {
-    return { ...contact, joined: new Date(), tags: [] };
+    return {
+      ...contact,
+      groups: contact.groups ?? [],
+      joined: new Date(),
+      tags: [],
+    };
   }
   async permanentlyDeleteContact(email: string): Promise<void> {}
   async updateContactFields(
@@ -23,6 +34,18 @@ export class NoneProvider implements NewsletterProvider {
     email: string,
     tags: Record<string, boolean>
   ): Promise<void> {}
+
+  async getProviderInfo(
+    withHealth = false
+  ): Promise<NoneNewsletterIntegrationData> {
+    return withHealth
+      ? { provider: 'none', status: ApiHealthStatus.DISABLED }
+      : { provider: 'none' };
+  }
+
+  async getGroups(): Promise<BaseNewsletterGroupData[]> {
+    return [];
+  }
 }
 
 /** @deprecated Use named import NoneProvider instead */

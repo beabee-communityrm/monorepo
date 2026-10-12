@@ -5,7 +5,7 @@
       :key="item.id"
       class="flex items-center justify-between gap-4 px-3 py-2"
       :class="[
-        selectedByItemId[item.id] ? 'bg-primary-10' : 'hover:bg-primary-5',
+        selectedByItemId[item.id] ? 'bg-main-10' : 'hover:bg-main-5',
         disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
       ]"
       @click="!disabled && $emit('click', item, selectedByItemId[item.id])"

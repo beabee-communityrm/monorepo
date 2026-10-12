@@ -18,7 +18,7 @@
   ```
 -->
 <template>
-  <div class="mb-2 border-l border-primary-20 pl-2">
+  <div class="mb-2 border-l border-main-20 pl-2">
     <dt class="mb-1 block text-sm font-semibold text-body-80">{{ name }}</dt>
     <dd class="font-bold">
       <slot>

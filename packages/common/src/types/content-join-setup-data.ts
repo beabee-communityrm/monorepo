@@ -2,6 +2,7 @@ import type { NewsletterGroupData } from './index.js';
 
 export interface ContentJoinSetupData {
   welcome: string;
+  showOrganisationName: boolean;
   newsletterText: string;
   newsletterOptIn: string;
   newsletterTitle: string;

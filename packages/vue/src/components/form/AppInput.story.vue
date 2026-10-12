@@ -250,7 +250,7 @@ const timeValue = ref('');
           <template #prefixAction>
             <button
               type="button"
-              class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none"
+              class="flex h-10 w-10 shrink-0 items-center justify-center text-main-80 hover:bg-main-10 focus:outline-none"
               aria-label="Previous"
             >
               <font-awesome-icon :icon="faCaretLeft" aria-hidden="true" />
@@ -259,7 +259,7 @@ const timeValue = ref('');
           <template #suffixAction>
             <button
               type="button"
-              class="flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none"
+              class="flex h-10 w-10 shrink-0 items-center justify-center text-main-80 hover:bg-main-10 focus:outline-none"
               aria-label="Next"
             >
               <font-awesome-icon :icon="faCaretRight" aria-hidden="true" />

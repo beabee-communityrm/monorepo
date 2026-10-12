@@ -5,10 +5,12 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from '@beabee/core/errors';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
 import DispatchService from '@beabee/core/services/DispatchService';
+import NewsletterService from '@beabee/core/services/NewsletterService';
 import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import PaymentService from '@beabee/core/services/PaymentService';
 import { AuthInfo } from '@beabee/core/type';
@@ -35,6 +37,11 @@ import {
 import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import PartialBody from '#api/decorators/PartialBody';
 import { TargetUser } from '#api/decorators/TargetUser';
+import { GetContactNewsletterGroupDto } from '#api/dto';
+import {
+  GetActivityEventDto,
+  ListActivityEventsDto,
+} from '#api/dto/ActivityFeedDto';
 import { GetExportQuery } from '#api/dto/BaseDto';
 import {
   BatchUpdateContactDto,
@@ -72,10 +79,12 @@ import {
   PaymentFlowSetupResultDto,
 } from '#api/dto/PaymentFlowDto';
 import { ContactRoleParams } from '#api/params/ContactRoleParams';
+import ActivityEventTransformer from '#api/transformers/ActivityEventTransformer';
 import ContactExporter from '#api/transformers/ContactExporter';
 import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import PaymentTransformer from '#api/transformers/PaymentTransformer';
+import { assertPasswordAuthEnabled } from '#api/utils/auth';
 
 @JsonController('/contact')
 @Authorized()
@@ -86,6 +95,12 @@ export class ContactController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Body() data: CreateContactDto
   ): Promise<GetContactDto> {
+    if (data.password && isOidcEnabled()) {
+      throw new BadRequestError(
+        'Cannot set a password when OIDC login is enabled'
+      );
+    }
+
     const contact = await ContactsService.createContact(
       {
         email: data.email,
@@ -177,6 +192,19 @@ export class ContactController {
     @QueryParams() query: GetContactOptsDto
   ): Promise<GetContactDto | undefined> {
     return await ContactTransformer.fetchOneById(auth, target.id, query);
+  }
+
+  @Get('/:id/activity')
+  async getContactActivity(
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @TargetUser() target: Contact,
+    @QueryParams() query: ListActivityEventsDto
+  ): Promise<PaginatedDto<GetActivityEventDto> | undefined> {
+    return await ActivityEventTransformer.fetchByTargetId(
+      auth,
+      target.id,
+      query
+    );
   }
 
   /**
@@ -274,6 +302,7 @@ export class ContactController {
   async getContactMfa(
     @TargetUser() target: Contact
   ): Promise<GetContactMfaDto | null> {
+    assertPasswordAuthEnabled();
     const mfa = await ContactMfaService.get(target);
     return mfa ? plainToInstance(GetContactMfaDto, mfa) : null;
   }
@@ -289,6 +318,7 @@ export class ContactController {
     @Body() data: CreateContactMfaDto,
     @TargetUser() target: Contact
   ): Promise<void> {
+    assertPasswordAuthEnabled();
     await ContactMfaService.create(target, data);
   }
 
@@ -305,6 +335,7 @@ export class ContactController {
     @Body() data: DeleteContactMfaDto,
     @Params() { id }: { id: string }
   ): Promise<void> {
+    assertPasswordAuthEnabled();
     if (id === 'me') {
       if (!data.token) {
         throw new BadRequestError('Token is required to delete own MFA');
@@ -481,5 +512,33 @@ export class ContactController {
     if (!revoked) {
       throw new NotFoundError();
     }
+  }
+
+  /**
+   * Get the newsletter groups a contact is currently subscribed to
+   * @param target The target contact
+   */
+  @Get('/:id/newsletter-groups')
+  async getNewsletterGroups(
+    @TargetUser() target: Contact
+  ): Promise<GetContactNewsletterGroupDto[]> {
+    const groups = await NewsletterService.getContactNewsletterGroups(
+      target.id
+    );
+    return plainToInstance(GetContactNewsletterGroupDto, groups);
+  }
+
+  /**
+   * Unsubscribe a contact from a single newsletter group
+   * @param target The target contact
+   * @param groupId The newsletter group ID
+   */
+  @OnUndefined(204)
+  @Delete('/:id/newsletter-groups/:groupId')
+  async unsubscribeNewsletterGroup(
+    @TargetUser() target: Contact,
+    @Params() { groupId }: { groupId: string }
+  ): Promise<void> {
+    await NewsletterService.unsubscribeFromNewsletterGroup(target, groupId);
   }
 }

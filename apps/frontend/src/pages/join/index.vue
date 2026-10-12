@@ -28,6 +28,7 @@ meta:
 
 <script lang="ts" setup>
 import {
+  type ContactOriginData,
   type ContentJoinData,
   type ContentPaymentData,
   ContributionPeriod,
@@ -36,8 +37,8 @@ import {
 } from '@beabee/beabee-common';
 import { TooManyRequestsError } from '@beabee/client';
 
-import { onBeforeMount, reactive, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { type LocationQueryValue, useRoute, useRouter } from 'vue-router';
 
 import JoinFormStep1 from '#components/pages/join/JoinFormStep1.vue';
 import JoinFormStep2 from '#components/pages/join/JoinFormStep2.vue';
@@ -50,6 +51,20 @@ const route = useRoute();
 const router = useRouter();
 
 const paymentFlowId = ref<string | null>(null);
+
+// Extract URL routes as strings from LocationQueryValue type provided by route.query
+function getUrlRouteAsString(
+  value: LocationQueryValue | LocationQueryValue[] | undefined
+): string {
+  return (Array.isArray(value) ? value[0] : value) || '';
+}
+
+// UTM parameters parsed form URL
+const origin = computed<ContactOriginData>(() => ({
+  source: getUrlRouteAsString(route.query.utm_source),
+  medium: getUrlRouteAsString(route.query.utm_medium),
+  campaign: getUrlRouteAsString(route.query.utm_campaign),
+}));
 
 const joinContent = ref<ContentJoinData>({
   initialAmount: 5,
@@ -64,6 +79,7 @@ const joinContent = ref<ContentJoinData>({
   stripePublicKey: '',
   stripeCountry: 'eu',
   showGoogleApplePay: false,
+  showVatNumber: false,
 });
 
 const paymentContent = ref<ContentPaymentData>({
@@ -102,6 +118,7 @@ async function handleSubmitStep1() {
 
   const clientData: SignupData = {
     email: formData.email,
+    origin: origin.value,
     ...(formData.noContribution
       ? {}
       : formData.period === 'one-time'
@@ -147,7 +164,8 @@ async function handleSubmitStep1() {
 async function handleSubmitStep2(
   token: string,
   firstname: string,
-  lastname: string
+  lastname: string,
+  vatNumber: string
 ) {
   if (!paymentFlowId.value) return;
 
@@ -157,6 +175,7 @@ async function handleSubmitStep2(
       token,
       firstname,
       lastname,
+      ...(vatNumber && { vatNumber }),
     });
 
     goToConfirmEmailPage();

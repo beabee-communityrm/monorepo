@@ -7,6 +7,7 @@ interface UpsertMCMemberResponseBadRequest extends AxiosResponse {
   data:
     | {
         title: string;
+        detail: string;
       }
     | undefined;
 }

@@ -162,7 +162,7 @@ function logAction(item: { id: string; label: string }, selected: boolean) {
         >
           {{ item.label }}
         </AppSelectableList>
-        <p class="p-3 italic text-grey-dark">No items available</p>
+        <p class="p-3 text-grey-dark italic">No items available</p>
       </div>
     </Variant>
   </Story>

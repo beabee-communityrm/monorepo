@@ -91,7 +91,7 @@
 
               <div
                 v-if="props.data.openToEveryone"
-                class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
+                class="mt-4 ml-6 border-l-2 border-grey-light pl-6"
               >
                 <AppFormField>
                   <AppToggleField
@@ -152,7 +152,7 @@
 
             <div
               v-if="props.data.captchaEnabled && !env.cnrMode"
-              class="ml-6 mt-4 border-l-2 border-grey-light pl-6"
+              class="mt-4 ml-6 border-l-2 border-grey-light pl-6"
             >
               <AppFormField>
                 <AppToggleField
@@ -214,19 +214,22 @@
           <AppFormBox>
             <AppFormField>
               <AppRadioGroup
-                v-model="props.data.responseSettings"
-                name="responseSettings"
+                v-model="props.data.responseMode"
+                name="responseMode"
                 :label="inputT('responseSettings.label')"
                 :options="[
                   [
-                    'singleNonEditable',
+                    CalloutResponseMode.Single,
                     inputT('responseSettings.opts.singleNonEditable'),
                   ],
                   [
-                    'singleEditable',
+                    CalloutResponseMode.SingleEditable,
                     inputT('responseSettings.opts.singleEditable'),
                   ],
-                  ['multiple', inputT('responseSettings.opts.multiple')],
+                  [
+                    CalloutResponseMode.Multiple,
+                    inputT('responseSettings.opts.multiple'),
+                  ],
                 ]"
                 required
               />
@@ -236,7 +239,7 @@
       </div>
 
       <!-- Right Sidebar -->
-      <div class="flex-0 basis-[15rem] overflow-y-auto">
+      <div class="flex-0 basis-60 overflow-y-auto">
         <!-- Optional content for right sidebar -->
       </div>
     </div>
@@ -247,6 +250,7 @@
 import {
   type CalloutChannel,
   type CalloutNewsletterSchema,
+  CalloutResponseMode,
   ItemStatus,
 } from '@beabee/beabee-common';
 import { AppInput } from '@beabee/vue';
@@ -283,7 +287,7 @@ export interface SettingsTabData {
   showNewsletterOptIn: boolean;
   newsletterSettings: CalloutNewsletterSchema;
   showOnUserDashboards: boolean;
-  responseSettings: 'singleNonEditable' | 'singleEditable' | 'multiple';
+  responseMode: CalloutResponseMode;
   channels: CalloutChannel[] | null;
   hasStartDate: boolean;
   hasEndDate: boolean;

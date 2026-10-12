@@ -1,7 +1,7 @@
 {
   "name": "@beabee/locale",
   "description": "Beabee Locale Translations",
-  "version": "0.44.2",
+  "version": "0.45.0",
   "private": true,
   "type": "module",
   "homepage": "https://github.com/beabee-communityrm/monorepo/tree/main/packages/locale",

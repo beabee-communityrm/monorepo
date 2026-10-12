@@ -6,7 +6,7 @@
     aria-label="Help information"
   >
     <font-awesome-icon
-      class="font-primary-80 text-base"
+      class="font-main-80 text-base"
       :icon="faInfoCircle"
       aria-hidden="true"
     />

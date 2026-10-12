@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mb-2 grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded border border-primary-40 py-2 pl-4"
+    class="mb-2 grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded border border-main-40 py-2 pl-4"
   >
     <span>{{ props.answer.label }}</span>
     <div class="flex items-center gap-2">
@@ -39,7 +39,7 @@
         right-aligned
       />
 
-      <div class="pb-4 pt-4">
+      <div class="pt-4 pb-4">
         <AppSubHeading class="text-m"> Icon: </AppSubHeading>
         <AppIconPicker
           :id="'mapIcon-' + props.answer.value"

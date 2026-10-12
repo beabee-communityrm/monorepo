@@ -1,64 +1,62 @@
 <template>
-  <!-- menu container -->
-  <div class="flex justify-between px-6 py-3 md:hidden md:py-2">
-    <!-- menu background overlay -->
-    <div
-      class="fixed bottom-0 left-menu right-0 top-0 z-30 h-full w-full cursor-pointer bg-black opacity-30"
-      :class="isMenuVisible ? 'block' : 'hidden'"
-      @click="isMenuVisible = false"
-    />
-
-    <div class="flex cursor-pointer items-center" @click="toggleMenu">
-      <h1 class="text-2xl underline">
-        {{ t(route.meta.pageTitle) }}
-      </h1>
-
-      <font-awesome-icon
-        class="ml-2 inline-block"
-        :icon="isMenuVisible ? faCaretUp : faCaretDown"
-      />
-    </div>
-
-    <!-- logo on small screens -->
-    <component :is="logoLink.is" v-bind="logoLink.props">
-      <AppLogo class="w-11" />
-    </component>
-  </div>
-
-  <div
-    class="absolute bottom-0 z-30 flex w-menu flex-none -translate-x-full transform flex-col bg-white transition-transform transition-width md:static md:w-16 md:transform-none lg:w-menu"
-    :class="{ 'top-[68px] translate-x-0': isMenuVisible }"
+  <UDashboardSidebar
+    collapsible
+    resizable
+    :ui="{
+      header: 'border-b border-default',
+      footer: 'border-t border-default',
+    }"
   >
-    <div class="my-2 hidden text-center md:block lg:my-10">
-      <!-- logo on bigger screens -->
-
-      <component :is="logoLink.is" v-bind="logoLink.props">
-        <AppLogo class="mx-auto w-12 lg:w-20" />
+    <template #header="{ collapsed }">
+      <component
+        :is="logoLink.is"
+        v-bind="logoLink.props"
+        :class="!collapsed && 'pl-2.5'"
+      >
+        <AppLogo class="h-10 w-auto max-w-full object-contain" />
       </component>
-    </div>
+    </template>
 
-    <TheMenuList v-if="currentUser" />
-  </div>
+    <template #default="{ collapsed }">
+      <UNavigationMenu
+        :items="items"
+        orientation="vertical"
+        :collapsed="collapsed"
+        :ui="{
+          label: '[font-variant:small-caps] text-sm text-muted',
+        }"
+        tooltip
+      />
+    </template>
+
+    <template #footer="{ collapsed }">
+      <UNavigationMenu
+        :items="[[logoutItem]]"
+        orientation="vertical"
+        :collapsed="collapsed"
+        class="w-full"
+        tooltip
+      />
+    </template>
+  </UDashboardSidebar>
 </template>
 
 <script lang="ts" setup>
-import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
-import { computed, ref } from 'vue';
+import type { NavigationMenuItem } from '@nuxt/ui';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
+
+import { client } from '#utils/api';
 
 import AppLogo from '../../components/AppLogo.vue';
 import { currentUser, generalContent } from '../../store';
-import TheMenuList from './TheMenuList.vue';
+import { useMenu } from './menu-list';
 
-const route = useRoute();
+const router = useRouter();
 const { t } = useI18n();
 
-const isMenuVisible = ref(false);
-// Automatically hide menu on route change
-useRouter().afterEach(() => {
-  isMenuVisible.value = false;
-});
+const { items } = useMenu();
 
 const logoLink = computed(() => {
   return currentUser.value
@@ -72,7 +70,19 @@ const logoLink = computed(() => {
       };
 });
 
-function toggleMenu() {
-  isMenuVisible.value = !isMenuVisible.value;
+const logoutItem: NavigationMenuItem = {
+  label: t('menu.logout'),
+  icon: 'i-lucide-log-out',
+  onSelect: doLogout,
+};
+
+async function doLogout() {
+  const { redirectUrl } = await client.auth.logout();
+  // Under OIDC login the identity provider session has to be ended too
+  if (redirectUrl) {
+    window.location.href = redirectUrl;
+  } else {
+    router.push('/auth/login');
+  }
 }
 </script>

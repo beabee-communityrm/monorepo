@@ -42,8 +42,8 @@ function getOptionallyAnonymizedModels(
   preserveCalloutAnswers = false
 ): models.ModelAnonymiser[] {
   return [
+    models.apiKeyAnonymiser,
     models.exportsAnonymiser,
-    models.giftFlowAnonymiser,
     models.noticesAnonymiser,
     models.optionsAnonymiser,
     models.contentAnonymiser,

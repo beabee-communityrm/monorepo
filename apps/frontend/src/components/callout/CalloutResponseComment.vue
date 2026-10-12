@@ -1,7 +1,7 @@
 <template>
   <div class="mb-4 bg-white p-4">
     <div
-      class="mb-4 flex items-center justify-between border-b border-primary-40 pb-2"
+      class="mb-4 flex items-center justify-between border-b border-main-40 pb-2"
     >
       <span>
         <router-link

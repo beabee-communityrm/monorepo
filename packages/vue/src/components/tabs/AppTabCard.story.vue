@@ -60,7 +60,7 @@ const longContent = Array(20)
                   <label class="mb-1 block text-sm font-medium">Title</label>
                   <input
                     type="text"
-                    class="w-full rounded-md border border-primary-20 px-3 py-2"
+                    class="w-full rounded-md border border-main-20 px-3 py-2"
                     :placeholder="`Enter title in ${selected}`"
                   />
                 </div>
@@ -69,7 +69,7 @@ const longContent = Array(20)
                     >Description</label
                   >
                   <textarea
-                    class="w-full rounded-md border border-primary-20 px-3 py-2"
+                    class="w-full rounded-md border border-main-20 px-3 py-2"
                     :placeholder="`Enter description in ${selected}`"
                     rows="3"
                   />
@@ -104,7 +104,7 @@ const longContent = Array(20)
                   <label class="mb-1 block text-sm font-medium">Title</label>
                   <input
                     type="text"
-                    class="w-full rounded-md border border-primary-20 px-3 py-2"
+                    class="w-full rounded-md border border-main-20 px-3 py-2"
                     :placeholder="`Enter title in ${selected}`"
                   />
                 </div>
@@ -113,7 +113,7 @@ const longContent = Array(20)
                     >Description</label
                   >
                   <textarea
-                    class="w-full rounded-md border border-primary-20 px-3 py-2"
+                    class="w-full rounded-md border border-main-20 px-3 py-2"
                     :placeholder="`Enter description in ${selected}`"
                     rows="3"
                   />
@@ -162,7 +162,7 @@ const longContent = Array(20)
                       >
                       <input
                         type="text"
-                        class="w-full rounded-md border border-primary-20 px-3 py-2"
+                        class="w-full rounded-md border border-main-20 px-3 py-2"
                         :placeholder="`Enter title in ${selected}`"
                       />
                     </div>
@@ -171,7 +171,7 @@ const longContent = Array(20)
                         >Description</label
                       >
                       <textarea
-                        class="w-full rounded-md border border-primary-20 px-3 py-2"
+                        class="w-full rounded-md border border-main-20 px-3 py-2"
                         :placeholder="`Enter description in ${selected}`"
                         rows="3"
                       />

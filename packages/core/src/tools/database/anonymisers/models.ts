@@ -10,6 +10,7 @@ import {
   SetCalloutSlideSchema,
 } from '@beabee/beabee-common';
 import {
+  ApiKey,
   Callout,
   CalloutResponse,
   CalloutResponseComment,
@@ -29,7 +30,6 @@ import {
   EmailMailing,
   Export,
   ExportItem,
-  GiftFlow,
   Notice,
   Option,
   PageSettings,
@@ -193,6 +193,11 @@ function createComponentAnonymiser(
           url: 'https://placehold.co/600x400',
           path: 'images/placeholder.avif',
         } satisfies CalloutResponseAnswerFileUpload;
+      case CalloutComponentType.INPUT_AUDIO_RECORDER:
+        return {
+          url: 'https://example.com/audio-placeholder.webm',
+          path: 'audio/placeholder.webm',
+        } satisfies CalloutResponseAnswerFileUpload;
       case CalloutComponentType.INPUT_NUMBER:
         return chance.integer();
       case CalloutComponentType.INPUT_PHONE_NUMBER:
@@ -282,6 +287,15 @@ function uniqueCode(): string {
 }
 
 // Model anonymisers
+export const apiKeyAnonymiser = createModelAnonymiser(ApiKey, {
+  id: () => uuidv4(),
+  creatorId: () => uuidv4(),
+  createdAt: () => chance.date(),
+  description: () => chance.paragraph(),
+  expires: () => chance.date(),
+  secretHash: () => chance.hash(),
+});
+
 export const contentAnonymiser = createModelAnonymiser(Content);
 
 export const calloutsAnonymiser = createModelAnonymiser(Callout);
@@ -330,7 +344,6 @@ export const contactAnonymiser = createModelAnonymiser(Contact, {
   firstname: () => chance.first(),
   lastname: () => chance.last(),
   password: () => Password.none,
-  loginOverride: () => null,
   pollsCode: uniqueCode,
   referralCode: uniqueCode,
 });
@@ -414,33 +427,6 @@ export const exportsAnonymiser = createModelAnonymiser(Export);
 
 export const exportItemsAnonymiser = createModelAnonymiser(ExportItem, {
   itemId: copy, // These will be mapped to values that have already been seen
-});
-
-export const giftFlowAnonymiser = createModelAnonymiser(GiftFlow, {
-  id: () => uuidv4(),
-  setupCode: uniqueCode,
-  sessionId: randomId(12),
-  giftForm: {
-    firstname: () => chance.first(),
-    lastname: () => chance.last(),
-    email: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
-    message: () => chance.sentence(),
-    fromName: () => chance.name(),
-    fromEmail: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
-    giftAddress: {
-      line1: () => chance.address(),
-      line2: () => chance.pickone(['Cabot', 'Easton', 'Southmead', 'Hanham']),
-      city: () => 'Bristol',
-      postcode: () => 'BS1 1AA',
-    },
-    deliveryAddress: {
-      line1: () => chance.address(),
-      line2: () => chance.pickone(['Cabot', 'Easton', 'Southmead', 'Hanham']),
-      city: () => 'Bristol',
-      postcode: () => 'BS1 1AA',
-    },
-  },
-  gifteeId: () => uuidv4(),
 });
 
 export const noticesAnonymiser = createModelAnonymiser(Notice);

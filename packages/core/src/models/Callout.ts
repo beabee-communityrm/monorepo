@@ -4,6 +4,7 @@ import {
   CalloutChannel,
   CalloutData,
   type CalloutNewsletterSchema,
+  CalloutResponseMode,
   CalloutResponseViewSchema,
   SetCalloutFormSchema,
 } from '@beabee/beabee-common';
@@ -45,11 +46,8 @@ export class Callout extends ItemWithStatus implements CalloutData {
   @Column({ type: String, nullable: true })
   pollMergeField!: string | null;
 
-  @Column()
-  allowUpdate!: boolean;
-
-  @Column({ default: false })
-  allowMultiple!: boolean;
+  @Column({ default: CalloutResponseMode.Single })
+  responseMode!: CalloutResponseMode;
 
   @Column({ default: CalloutAccess.Member })
   access!: CalloutAccess;

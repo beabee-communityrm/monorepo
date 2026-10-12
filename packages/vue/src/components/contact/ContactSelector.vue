@@ -44,7 +44,7 @@ import { useI18n } from 'vue-i18n';
 import { AppInput } from '../form';
 
 const actionButtonClass =
-  'flex h-10 w-10 shrink-0 items-center justify-center text-primary-80 hover:bg-primary-10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50';
+  'flex h-10 w-10 shrink-0 items-center justify-center text-main-80 hover:bg-main-10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50';
 
 /**
  * Option for the selector. First item is often { id: '' } for "self" / current user.

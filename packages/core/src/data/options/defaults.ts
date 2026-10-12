@@ -3,7 +3,7 @@ import { type Locale } from '@beabee/locale';
 
 export default {
   organisation: 'UK Makerspace',
-  logo: '',
+  logo: '' as string,
   'home-link-url': 'http://example.com/about',
 
   /** Application active locale */
@@ -46,11 +46,10 @@ export default {
   'newsletter-active-member-tag': 'Active member',
   'newsletter-active-user-tag': 'Active user',
   'newsletter-default-status': NewsletterStatus.None,
-  'newsletter-groups': '[]',
   'tracking-code': '',
 
-  /** List of valid Mailchimp newsletter group IDs */
-  'mailchimp-newsletter-groups': '',
+  /** list of newsletter groups as `{id, label}[]` cached from the newsletter provider */
+  'newsletter-groups': '[]',
 
   /** Stripe integration options */
   'stripe-tax-rate-one-time-id': '',
@@ -128,7 +127,6 @@ export default {
   'flash-member-added': 'Contact added',
   'flash-member-updated': 'Contact updated',
   'flash-member-permanently-deleted': 'Contact permanently deleted',
-  'flash-member-login-override-generated': 'Login override code generated',
   'flash-member-password-reset-generated': 'Password reset code generated',
   'flash-member-add-invalid-direct-debit':
     'Invalid direct debit, you must specify the first and last name',
@@ -150,7 +148,6 @@ export default {
   'flash-contribution-cancelled': 'Contribution cancelled',
   'flash-contribution-cancellation-err': 'Error cancelling contribution',
   'flash-contribution-updated': 'Contribution updated',
-  'flash-contribution-gift-updated': 'Thanks for starting your contribution',
   'flash-contribution-updating-not-allowed':
     "You can't change your contribution online at the moment, please contact membership@thebristolcable.org",
   'flash-contribution-updating-failed':
@@ -184,11 +181,6 @@ export default {
   'flash-exports-updated': 'Updated export status',
   'flash-exports-deleted': 'Export deleted',
   'flash-exports-ineligible': 'Item is not eligible to be in this export.',
-  'flash-gifts-date-in-the-past': "The gift start date can't be in the past",
-  'flash-gifts-email-duplicate':
-    "The giftee's email address is already registered",
-  'flash-gifts-already-activated':
-    'The gift has already been activated, please login to continue',
   'flash-migration-manual-to-auto-sent': 'Email sent to manual contributors',
   'flash-notices-created': 'Notice created',
   'flash-notices-updated': 'Notice updated',

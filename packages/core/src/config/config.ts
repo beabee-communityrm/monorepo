@@ -6,8 +6,9 @@
  * BEABEE_ to avoid conflicts with other applications.
  */
 import type {
-  DocumentServiceConfig,
+  FileServiceConfig,
   ImageServiceConfig,
+  LegacyImageServiceConfig,
   S3Config,
 } from '../type/index.js';
 import * as env from './env.js';
@@ -52,14 +53,28 @@ export interface SendGridEmailConfig {
   };
 }
 
+/**
+ * Empty email provider (when email sending is disabled)
+ * Used when BEABEE_EMAIL_PROVIDER=none
+ */
+interface NoneEmailConfig {
+  provider: 'none';
+  settings: Record<string, never>;
+}
+
 // Union type for email configuration - only one provider can be used at a time
-type EmailConfig = SMTPEmailConfig | MandrillEmailConfig | SendGridEmailConfig;
+type EmailConfig =
+  | SMTPEmailConfig
+  | MandrillEmailConfig
+  | SendGridEmailConfig
+  | NoneEmailConfig;
 
 // Get email provider from environment, with validation for allowed values
 const emailProvider = env.e('BEABEE_EMAIL_PROVIDER', [
   'mandrill',
   'sendgrid',
   'smtp',
+  'none',
 ] as const);
 
 /**
@@ -87,16 +102,123 @@ interface NoneNewsletterConfig {
   };
 }
 
+/**
+ * Test newsletter provider configuration
+ * Used when BEABEE_NEWSLETTER_PROVIDER=test
+ */
+interface TestNewsletterConfig {
+  provider: 'test';
+  settings: {
+    webhookSecret: string; // BEABEE_NEWSLETTER_SETTINGS_WEBHOOKSECRET - Still available but unused
+  };
+}
+
 // Union type for newsletter configuration
-type NewsletterConfig = MailchimpNewsletterConfig | NoneNewsletterConfig;
+type NewsletterConfig =
+  | MailchimpNewsletterConfig
+  | NoneNewsletterConfig
+  | TestNewsletterConfig;
 
 // Get newsletter provider from environment, with validation for allowed values
 // Defaults to "none" if not specified
 const newsletterProvider = env.e(
   'BEABEE_NEWSLETTER_PROVIDER',
-  ['mailchimp', 'none'] as const,
+  ['mailchimp', 'none', 'test'] as const,
   'none'
 );
+
+/**
+ * Identity provider configuration (IdP Provisioning)
+ * Used when BEABEE_IDP_PROVIDER=zitadel: contacts are mirrored into the
+ * instance's Zitadel virtual instance via the v2 user API
+ */
+export interface ZitadelIdpConfig {
+  provider: 'zitadel';
+  settings: {
+    url: string; // BEABEE_IDP_SETTINGS_URL - Zitadel instance URL
+    pat: string; // BEABEE_IDP_SETTINGS_PAT - Service user personal access token
+  };
+}
+
+/**
+ * Used when BEABEE_IDP_PROVIDER=keycloak: contacts are mirrored into a
+ * Keycloak realm via the admin REST API (local development)
+ */
+export interface KeycloakIdpConfig {
+  provider: 'keycloak';
+  settings: {
+    url: string; // BEABEE_IDP_SETTINGS_URL - Keycloak base URL
+    realm: string; // BEABEE_IDP_SETTINGS_REALM - Realm name
+    clientId: string; // BEABEE_IDP_SETTINGS_CLIENTID - Service account client ID
+    clientSecret: string; // BEABEE_IDP_SETTINGS_CLIENTSECRET - Service account client secret
+  };
+}
+
+/**
+ * Used when BEABEE_IDP_PROVIDER=none (default): contacts are not mirrored
+ * to an identity provider
+ */
+interface NoneIdpConfig {
+  provider: 'none';
+  settings: Record<string, never>;
+}
+
+// Union type for identity provider configuration - only one provider can be used at a time
+type IdpConfig = ZitadelIdpConfig | KeycloakIdpConfig | NoneIdpConfig;
+
+// Get identity provider from environment, with validation for allowed values
+// Defaults to "none" if not specified
+const idpProvider = env.e(
+  'BEABEE_IDP_PROVIDER',
+  ['zitadel', 'keycloak', 'none'] as const,
+  'none'
+);
+
+/**
+ * Login configuration
+ * Used when BEABEE_LOGIN_PROVIDER=oidc: members log in at the identity
+ * provider (OIDC Login); beabee's own password, MFA and reset endpoints are
+ * disabled
+ */
+export interface OidcLoginConfig {
+  provider: 'oidc';
+  settings: {
+    issuer: string; // BEABEE_LOGIN_SETTINGS_ISSUER - OIDC issuer URL
+    clientId: string; // BEABEE_LOGIN_SETTINGS_CLIENTID - OIDC client ID
+    clientSecret: string; // BEABEE_LOGIN_SETTINGS_CLIENTSECRET - OIDC client secret (empty: public client with PKCE only)
+    scopes: string; // BEABEE_LOGIN_SETTINGS_SCOPES - Requested scopes (default: openid profile email)
+    redirectUri: string; // BEABEE_LOGIN_SETTINGS_REDIRECTURI - OAuth callback URL (default: <audience>/api/1.0/auth/callback)
+    postLogoutRedirectUri: string; // BEABEE_LOGIN_SETTINGS_POSTLOGOUTREDIRECTURI - Where the IdP sends members after logout (default: audience)
+  };
+}
+
+/**
+ * Used when BEABEE_LOGIN_PROVIDER=local (default): beabee checks passwords
+ * itself (Local Login)
+ */
+interface LocalLoginConfig {
+  provider: 'local';
+  settings: Record<string, never>;
+}
+
+// Union type for login configuration - only one provider can be used at a time
+type LoginConfig = OidcLoginConfig | LocalLoginConfig;
+
+// Get login provider from environment, with validation for allowed values
+// Defaults to "local" if not specified
+const loginProvider = env.e(
+  'BEABEE_LOGIN_PROVIDER',
+  ['local', 'oidc'] as const,
+  'local'
+);
+
+// OIDC Login only works for contacts linked to an IdP account, which requires
+// IdP Provisioning against the same identity provider
+if (loginProvider === 'oidc' && idpProvider === 'none') {
+  throw new Error(
+    'BEABEE_LOGIN_PROVIDER=oidc requires BEABEE_IDP_PROVIDER to be set'
+  );
+}
 
 /**
  * Application configuration for an individual app module
@@ -135,6 +257,12 @@ const s3: S3Config = {
   forcePathStyle: env.b('BEABEE_MINIO_FORCE_PATH_STYLE', true), // Force path style URLs for S3 compatibility
 };
 
+// Supported widths for image resizing
+const availableImageWidths = env.nn(
+  'BEABEE_IMAGE_AVAILABLE_WIDTHS',
+  [100, 300, 400, 600, 900, 1200, 1440, 1800]
+);
+
 // Image service configuration
 const image: ImageServiceConfig = {
   quality: env.n('BEABEE_IMAGE_QUALITY', 80), // Quality level for image compression (default: 80)
@@ -143,14 +271,25 @@ const image: ImageServiceConfig = {
     ['avif', 'webp', 'jpeg', 'png', 'original'] as const, // Allowed image formats
     'avif' // Default: avif
   ),
-  availableWidths: env.nn(
-    'BEABEE_IMAGE_AVAILABLE_WIDTHS',
-    [100, 300, 400, 600, 900, 1200, 1440, 1800]
-  ), // Supported widths for image resizing
+  availableWidths: availableImageWidths,
+  // Originals are never served larger than the biggest available width
+  maxDimension: env.n(
+    'BEABEE_IMAGE_MAX_DIMENSION',
+    Math.max(...availableImageWidths)
+  ),
+  maxInputPixels: env.n('BEABEE_IMAGE_MAX_INPUT_PIXELS', 40_000_000), // Decode guard, bounds peak memory during upload
   s3,
 };
 
-const document: DocumentServiceConfig = {
+const document: FileServiceConfig = {
+  s3,
+};
+
+const audio: FileServiceConfig = {
+  s3,
+};
+
+const legacyImage: LegacyImageServiceConfig = {
   s3,
 };
 
@@ -209,10 +348,12 @@ export const config = {
           ? {
               apiKey: env.s('BEABEE_EMAIL_SETTINGS_APIKEY'), // Mandrill API key
             }
-          : {
-              apiKey: env.s('BEABEE_EMAIL_SETTINGS_APIKEY'), // SendGrid API key
-              testMode: env.b('BEABEE_EMAIL_SETTIGS_TESTMODE', false), // SendGrid test mode (default: false)
-            },
+          : emailProvider === 'sendgrid'
+            ? {
+                apiKey: env.s('BEABEE_EMAIL_SETTINGS_APIKEY'), // SendGrid API key
+                testMode: env.b('BEABEE_EMAIL_SETTIGS_TESTMODE', false), // SendGrid test mode (default: false)
+              }
+            : {}, // none: email sending disabled
   } as EmailConfig,
 
   // Newsletter integration configuration
@@ -229,6 +370,50 @@ export const config = {
         : null),
     },
   } as NewsletterConfig,
+
+  // Identity provider integration configuration
+  idp: {
+    provider: idpProvider, // Identity provider (zitadel, keycloak or none)
+    settings:
+      idpProvider === 'zitadel'
+        ? {
+            url: env.s('BEABEE_IDP_SETTINGS_URL'), // Zitadel instance URL
+            pat: env.s('BEABEE_IDP_SETTINGS_PAT'), // Service user personal access token
+          }
+        : idpProvider === 'keycloak'
+          ? {
+              url: env.s('BEABEE_IDP_SETTINGS_URL'), // Keycloak base URL
+              realm: env.s('BEABEE_IDP_SETTINGS_REALM'), // Realm name
+              clientId: env.s('BEABEE_IDP_SETTINGS_CLIENTID'), // Service account client ID
+              clientSecret: env.s('BEABEE_IDP_SETTINGS_CLIENTSECRET'), // Service account client secret
+            }
+          : {},
+  } as IdpConfig,
+
+  // Login configuration
+  login: {
+    provider: loginProvider, // Login provider (local or oidc)
+    settings:
+      loginProvider === 'oidc'
+        ? {
+            issuer: env.s('BEABEE_LOGIN_SETTINGS_ISSUER'), // OIDC issuer URL
+            clientId: env.s('BEABEE_LOGIN_SETTINGS_CLIENTID'), // OIDC client ID
+            clientSecret: env.s('BEABEE_LOGIN_SETTINGS_CLIENTSECRET', ''), // OIDC client secret (empty: public client)
+            scopes: env.s(
+              'BEABEE_LOGIN_SETTINGS_SCOPES',
+              'openid profile email'
+            ), // Requested scopes
+            redirectUri: env.s(
+              'BEABEE_LOGIN_SETTINGS_REDIRECTURI',
+              env.s('BEABEE_AUDIENCE') + '/api/1.0/auth/callback'
+            ), // OAuth callback URL
+            postLogoutRedirectUri: env.s(
+              'BEABEE_LOGIN_SETTINGS_POSTLOGOUTREDIRECTURI',
+              env.s('BEABEE_AUDIENCE')
+            ), // Where the IdP sends members after logout
+          }
+        : {},
+  } as LoginConfig,
 
   // GoCardless payment integration
   gocardless: {
@@ -274,6 +459,12 @@ export const config = {
 
   // Document service configuration
   document,
+
+  // Audio service configuration
+  audio,
+
+  // Legacy image service configuration
+  legacyImage,
 };
 
 export default config;

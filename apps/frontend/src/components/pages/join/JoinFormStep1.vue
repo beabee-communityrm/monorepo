@@ -41,7 +41,7 @@
       <p class="mb-2">
         {{ t('join.notice') }}
         <a
-          class="text-link underline hover:text-primary"
+          class="text-link underline hover:text-main"
           :href="generalContent.privacyLink"
           target="_blank"
           rel="noreferrer"

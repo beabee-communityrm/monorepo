@@ -1,9 +1,10 @@
 {
   "accountPage": {
     "contactInformation": "Coordonnées",
-    "deliveryAddress": "Adresse de livraison",
+    "deliveryAddress": "Adresse",
     "deliveryOptIn": "",
     "loginDetail": "Informations de connexion",
+    "loginDetail-nuxt": "Modifier le mot de passe",
     "mfa": {
       "codeInput": {
         "info": "Si vous avez perdu votre appareil A2F, veuillez contacter l'assistance",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "Voulez-vous vraiment l'authentification multifacteur ? Dès lors, vous n'aurez besoin que de votre mot de passe pour vous connecter. N'oubliez pas de supprimer l'entrée de votre application Authenticator. Vous pourrez toujours la réactiver.",
+        "desc-nuxt": "Voulez-vous vraiment désactiver l'authentification à deux facteurs ? Dès lors, vous n'aurez besoin que de votre mot de passe pour vous connecter. N'oubliez pas de supprimer l'entrée de votre application Authenticator. Vous pourrez toujours la réactiver.",
+        "descDetail": "Dès lors, vous n'aurez besoin que de votre mot de passe pour vous connecter. N'oubliez pas de supprimer l'entrée de votre application Authenticator. Vous pourrez toujours la réactiver.",
         "descToken": "Pour désactiver l'A2F, veuillez taper votre code d'A2F actuel :",
-        "title": "Désactiver l'A2F"
+        "descToken-nuxt": "Pour désactiver l'A2F, veuillez taper votre code d'A2F actuel :",
+        "keepEnabled": "Garder l'A2F activée",
+        "remove": "Supprimer l'A2F",
+        "title": "Désactiver l'A2F",
+        "title-nuxt": "Désactiver l'A2F"
       },
       "createUnknownErrorNotification": "Une erreur inconnue a empêché l'activation de l'authentification à 2 facteurs. Veuillez réessayer ou contacter l'assistance.",
+      "createUnknownErrorNotification-nuxt": "Une erreur inconnue a empêché l'activation de l'authentification à deux facteurs. Veuillez réessayer ou contacter l'assistance.",
       "deleteUnknownErrorNotification": "Une erreur inconnue a empêché la désactivation de l'authentification à 2 facteurs. Veuillez réessayer ou contacter l'assistance.",
+      "deleteUnknownErrorNotification-nuxt": "Une erreur inconnue a empêché la désactivation de l'authentification à deux facteurs. Veuillez réessayer ou contacter l'assistance.",
+      "description": "Ajoutez une couche de sécurité supplémentaire à votre compte",
       "disabledNotification": "L'authentification à deux facteurs a bien été désactivée",
       "enabledNotification": "L'authentification à deux facteurs à bien été activée",
       "enterCode": {
         "desc": "Tapez le code affiché dans votre application d'authentification.",
-        "title": "Vérification"
+        "desc-nuxt": "Tapez le code affiché dans votre application d'authentification.",
+        "title": "Vérification",
+        "title-nuxt": "Vérification"
       },
       "modalTitle": "Activer l'authentification à 2 facteurs",
+      "modalTitle-nuxt": "Activer l'authentification à deux facteurs",
       "result": {
         "invalidCode": "Le code n'a pas pu être vérifié, veuillez réessayer ou contacter l'assistance.",
         "successful": "L'authentification à 2 facteurs a bien été configurée.",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "Scannez le code QR ci-dessous avec votre application d'authentification.",
-        "title": "Code QR"
+        "desc-nuxt": "Scannez le code QR ci-dessous avec votre application d'authentification.",
+        "title": "Code QR",
+        "title-nuxt": "Code QR"
       },
       "secretInput": {
         "desc": "Vous pouvez également taper le code suivant dans votre application d'authentification.",
-        "label": "Code secret"
+        "label": "Code secret",
+        "toggleHide": "Masquer",
+        "toggleShow": "Vous ne pouvez pas scanner ? Saisissez le code manuellement"
       },
+      "statusDisabled": {
+        "description": "Une fois activée, un code de votre application d'authentification vous sera demandé à chaque connexion.",
+        "title": "L'authentification à deux facteurs est désactivée"
+      },
+      "statusEnabled": {
+        "description": "Votre compte est protégé par une application d'authentification. Ne la désactivez que si vous changez d'appareil.",
+        "title": "L'authentification à deux facteurs est activée"
+      },
+      "stepIndicator": "Étape {step} sur {total}",
       "title": "Authentification à 2 facteurs",
+      "title-nuxt": "Authentification à deux facteurs",
       "validateButton": {
-        "label": "Vérifier le jeton"
+        "label": "Vérifier le jeton",
+        "label-nuxt": "Vérifier le jeton"
       }
     },
     "newsletter": {
@@ -50,15 +78,35 @@
         "subscribed": "Ce contact est abonné à votre liste de lettres d'information.",
         "unsubscribed": "Ce contact n'est pas abonné à votre liste de lettres d'information."
       },
+      "description": "Gérez les groupes de lettres d'information auxquels vous êtes abonné(e).",
+      "noGroups": "Vous n'êtes abonné(e) à aucun groupe de lettres d'information.",
       "subscribe": "Inscrire à la lettre d'information",
       "title": "Lettre d'information",
-      "unsubscribe": "Désinscrire de la lettre d'information"
+      "unsubscribe": "Désinscrire de la lettre d'information",
+      "unsubscribeButton": "Se désinscrire",
+      "unsubscribeInfo": "La désinscription prend effet immédiatement et ne peut pas être annulée ici.",
+      "unsubscribedNotification": "Vous avez été désinscrit(e) de {group}"
     },
+    "personalDetails": "Informations personnelles",
     "phoneInfo": "En indiquant votre numéro de téléphone, vous acceptez d'être contacté par téléphone",
+    "phoneInfo-nuxt": "En indiquant votre numéro de téléphone, vous acceptez d'être contacté par téléphone.",
     "phoneInfoAdmin": "Vous devez obtenir le consentement de la personne avant d'ajouter son numéro de téléphone dans le système",
+    "requiredFields": "Champs obligatoires",
     "savedPassword": "Nouveau mot de passe enregistré",
+    "security": "Sécurité",
+    "selfService": {
+      "addPasskey": "Ajouter une clé d'accès",
+      "changePassword": "Changer le mot de passe",
+      "intro": "Votre mot de passe et vos méthodes de connexion sont gérés par notre service de connexion. Chacune de ces options vous y conduit, puis vous ramène ici.",
+      "setupMfa": "Configurer l'application d'authentification",
+      "title": "Informations de connexion"
+    },
     "subTitle": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
-    "title": "Compte"
+    "subTitle-nuxt": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
+    "subscriptions": "Abonnements",
+    "title": "Compte",
+    "unsavedChanges": "Vous avez des modifications non enregistrées",
+    "vatNumberInfo": "Contactez support{'@'}beabee.io pour mettre à jour le numéro de TVA"
   },
   "actions": {
     "add": "Ajouter",
@@ -81,6 +129,7 @@
     "export": "Exporter",
     "getStarted": "Commencer",
     "goBack": "Retour",
+    "hidePassword": "Masquer le mot de passe",
     "increase": "",
     "next": "Suivant",
     "noBack": "Non, revenir en arrière",
@@ -104,6 +153,7 @@
     "sendOneOffEmail": "Envoyer un e-mail",
     "sendOngoingEmails": "E-mails récurrents",
     "share": "Partager",
+    "showPassword": "Afficher le mot de passe",
     "skip": "Ignorer",
     "submit": "Soumettre",
     "tryAgain": "",
@@ -251,6 +301,35 @@
         "twitterHandle": "Twitter"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Newsletters"
+      },
+      "label": "Intégrations",
+      "loadError": "Impossible de charger les intégrations. Veuillez actualiser la page.",
+      "newsletter": {
+        "audienceId": "ID d'audience",
+        "groups": "Groupes",
+        "groupsNote": "Les noms des groupes seront affichés aux membres dans l'onglet de gestion des abonnements de la page de compte.",
+        "noGroups": "Aucun groupe trouvé"
+      },
+      "refresh": "Actualiser",
+      "refreshResult": {
+        "added": "Groupes {provider} ajoutés : {groups}",
+        "connectionLost": "connexion perdue",
+        "couldNotConnect": "Impossible de se connecter à {provider}",
+        "error": "Échec de l'actualisation de {provider}. Veuillez réessayer.",
+        "noChanges": "Les groupes {provider} sont à jour",
+        "reconnected": "reconnecté",
+        "removed": "Groupes {provider} supprimés : {groups}"
+      },
+      "refreshing": "Actualisation...",
+      "status": {
+        "disabled": "Désactivé",
+        "healthy": "Connecté",
+        "unhealthy": "Connexion perdue"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "Activer les contributions ponctuelles",
       "oneTimeDonationsTitle": "Contributions ponctuelles",
@@ -266,7 +345,7 @@
         "body": "Texte",
         "danger": "Danger",
         "link": "Liens",
-        "primary": "Principal",
+        "main": "Principale",
         "success": "Succès",
         "warning": "Avertissement"
       },
@@ -375,6 +454,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Participer à nouveau",
       "updateResponse": "Mettre à jour votre réponse"
     },
     "addAPoint": "Cliquez sur la carte à l'endroit où vous souhaitez ajouter un point",
@@ -882,6 +962,7 @@
     "selectedCount": "{n} réponse sélectionnée | {n} réponses sélectionnées"
   },
   "calloutResponsesPage": {
+    "allResponses": "Toutes les réponses",
     "moveToBucket": "Déplacer vers {bucket}",
     "noTags": "Aucun libellé",
     "response": "Réponse",
@@ -915,12 +996,23 @@
     "oneResponseWarning": "Veuillez noter que cette campagne n'autorise qu'une seule réponse par personne. Si vous y avez déjà répondu, les réponses supplémentaires ne seront pas enregistrées."
   },
   "callouts": {
+    "access": {
+      "everyone": "Ouvert à tous",
+      "member": "Membres uniquement"
+    },
     "archive": "Archiver",
+    "archiveRange": "{start}-{end} sur {total}",
     "data": {
       "callout": "CrowdNewsrooms",
-      "endDate": "Date de fin"
+      "endDate": "Date de fin",
+      "responses": "{n} réponse | {n} réponses"
+    },
+    "daysLeft": "{n} jour restant | {n} jours restants",
+    "empty": {
+      "active": "Aucune campagne active pour le moment."
     },
     "noArchivedCallouts": "Aucune campagne",
+    "openCallouts": "CrowdNewsrooms ouvertes",
     "search": "Rechercher une campagne…",
     "showAll": "Tout",
     "showAnswered": "Avec réponses",
@@ -951,7 +1043,6 @@
     },
     "contributionType": {
       "automatic": "Automatique",
-      "gift": "Cadeau",
       "manual": "Manuel",
       "none": "Aucun"
     },
@@ -1013,6 +1104,15 @@
       "scheduled": "Planifiée"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "Les {count} éléments correspondants sont tous sélectionnés.",
+        "clearSelection": "Effacer la sélection",
+        "pageSelected": "Tous les {count} éléments de cette page sont sélectionnés.",
+        "selectAll": "Sélectionner les {count} éléments",
+        "someSelected": "{count} éléments correspondants sont sélectionnés."
+      }
+    },
     "thankYou": "Merci !",
     "timeAgo": "il y a {time}",
     "timeIn": "dans {time}",
@@ -1055,6 +1155,19 @@
       "title": "Lettre d'information"
     },
     "oneTime": "Ponctuel",
+    "origin": {
+      "addedBy": "Ajouté par",
+      "addedByValues": {
+        "admin": "Administrateur",
+        "external": "Externe",
+        "self-signup": "Inscription autonome",
+        "system": "Système"
+      },
+      "campaign": "Campagne",
+      "referrer": "Référent",
+      "source": "Source d'inscription",
+      "title": "Origine"
+    },
     "overview": "Vue d'ensemble",
     "pickTag": "Sélectionnez un libellé dans la liste ci-dessous",
     "profile": "Profil",
@@ -1062,7 +1175,6 @@
     "roles": "Rôles",
     "security": {
       "instructions": "Copiez et partagez ce lien :",
-      "loginOverride": "",
       "mfa": {
         "desc": "Ce contact a activé l'A2F. Cliquez sur le bouton « {disableLabel} » pour la désactiver.",
         "disabledDesc": "L'A2F n'est pas activée pour ce contact."
@@ -1101,6 +1213,9 @@
       "email": "E-mail",
       "firstname": "Prénom",
       "hasDonated": "A effectué une contribution unique",
+      "idpAccount": "",
+      "idpLinked": "",
+      "idpUnlinked": "",
       "joined": "Inscrit",
       "lastSeen": "Dernière connexion",
       "lastname": "Nom",
@@ -1352,6 +1467,7 @@
       "remaining": "{remaining} caractères restants."
     },
     "cityOrTown": "Ville",
+    "country": "",
     "deliveryOptIn": "",
     "description": "Description",
     "email": "E-mail",
@@ -1377,6 +1493,16 @@
       "addressLine1": {
         "required": "L'adresse ligne 1 est obligatoire"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Votre navigateur a bloqué l'accès au microphone. Vérifiez les autorisations du site et réessayez, ou importez un enregistrement réalisé ailleurs.",
+        "micPermissionDeniedTitle": "Microphone non disponible",
+        "recordingNotSupportedBody": "Ce navigateur ne peut pas enregistrer l'audio. Veuillez importer un fichier audio à la place.",
+        "recordingNotSupportedTitle": "Enregistrement non pris en charge",
+        "tooLongBody": "Ce fichier dure {duration}. La durée maximale pour cette question est {max}. Veuillez le raccourcir ou enregistrer une réponse plus courte.",
+        "tooLongTitle": "Enregistrement trop long",
+        "uploadFailedTitle": "Échec de l'envoi",
+        "wrongTypeBody": "Cette question accepte uniquement les fichiers {types}."
+      },
       "cityOrTown": {
         "required": "La ville est obligatoire"
       },
@@ -1389,6 +1515,9 @@
         "required": "Le mot de passe est obligatoire",
         "sameAs": "Les mots de passe ne correspondent pas"
       },
+      "country": {
+        "required": ""
+      },
       "description": {
         "maxLength": "",
         "required": ""
@@ -1398,9 +1527,10 @@
         "required": "L'e-mail est obligatoire"
       },
       "file": {
-        "rateLimited": "Échec de l'import : Le type de fichier n'est pas pris en charge",
+        "rateLimited": "Échec de l'import : Vous avez importé trop de fichiers récemment, veuillez patienter quelques minutes avant de réessayer",
         "tooBig": "Échec de l'import : La taille du fichier doit être inférieure à 20Mo",
-        "unsupportedType": "Échec de l'import : Vous avez importé trop de fichiers récemment, veuillez patienter quelques minutes avant de réessayer"
+        "unsupportedType": "Échec de l'import : Le type de fichier n'est pas pris en charge",
+        "uploadFailed": "Échec de l'import : Le fichier n'a pas pu être traité"
       },
       "firstName": {
         "required": "Le prénom est obligatoire"
@@ -1422,6 +1552,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": "Numéro de téléphone invalide"
       },
       "unknown": {
         "email": "Adresse e-mail invalide",
@@ -1452,6 +1585,7 @@
     "notes": "Notes",
     "password": "Mot de passe",
     "passwordInfo": "Définissez un mot de passe sécurisé : au moins 8 caractères, un nombre, lettres majuscules et minuscules.",
+    "passwordInfo-nuxt": "Définissez un mot de passe sécurisé : au moins 8 caractères, un nombre, une lettre majuscule et une lettre minuscule.",
     "phone": "Numéro de téléphone",
     "postCode": "Code postal",
     "richtext": {
@@ -1470,10 +1604,30 @@
     "saveChanges": "Enregistrer les modifications",
     "saved": "Enregistré !",
     "unsavedChanges": "Modifications non enregistrées",
-    "updated": "Mis à jour"
+    "updated": "Mis à jour",
+    "vatNumber": "Numéro de TVA"
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Fichier joint",
+        "delete": "Supprimer",
+        "discard": "Annuler",
+        "download": "Télécharger",
+        "pause": "Pause",
+        "paused": "En pause",
+        "playPause": "Lecture ou pause",
+        "reRecord": "Enregistrer à nouveau",
+        "record": "Démarrer l'enregistrement",
+        "recording": "Enregistrement en cours",
+        "requestingPermission": "En attente de l'autorisation du microphone. Autorisez l'accès dans votre navigateur pour continuer.",
+        "resume": "Reprendre",
+        "stop": "Arrêter",
+        "tryAgain": "Réessayer",
+        "uploadInstead": "Importer un fichier audio à la place",
+        "uploadLabel": "Importer un fichier audio",
+        "uploadingHint": "Envoi en cours — vous pouvez continuer à remplir le reste du formulaire."
+      },
       "file": {
         "browse": "importer depuis l'appareil",
         "dropFiles": "Déposez des fichiers",
@@ -1576,6 +1730,10 @@
   },
   "login": {
     "backTo": "Revenir à {newsroomName}",
+    "errors": {
+      "login-failed": "La connexion a échoué. Veuillez réessayer.",
+      "unlinked-account": "Votre connexion n'est liée à aucun compte sur cette plateforme. Veuillez contacter le support."
+    },
     "forgotPassword": "Mot de passe oublié ?",
     "joinNow": "S'inscrire maintenant !",
     "lostMfaDevice": "Vous avez perdu votre appareil d'A2F ?",
@@ -1612,6 +1770,7 @@
           "showOptIn": "Inviter à s'inscrire à la lettre d'information",
           "title": "Lettre d'information"
         },
+        "showOrganisationName": "Demander le nom de l'organisation",
         "text": "Les utilisateurs devront confirmer leur inscription. Ici vous pouvez définir les informations de l'écran de confirmation.",
         "title": "Confirmation du compte",
         "welcomeMessage": "Message de bienvenue"
@@ -1645,6 +1804,7 @@
         "showAbsorbFee": "Proposer aux utilisateurs de prendre en charge les frais de paiement",
         "showGoogleApplePay": "",
         "showNoContribution": "Autoriser les utilisateurs à s'inscrire sans cotisation",
+        "showVatNumber": "Demander aux utilisateurs leur numéro de TVA",
         "suggestedAmounts": "Montants de cotisation suggérés",
         "text": "Dans cette section, vous pouvez modifier, ajuster et prévisualiser votre formulaire d'adhésion.",
         "title": "Formulaire d'inscription"
@@ -1684,7 +1844,6 @@
     "insert": "Insérer",
     "insertTag": "Insérer {tag}",
     "tags": {
-      "ACTIVATELINK": "Lien d'activation du cadeau",
       "ANSWERS": "Réponses formatées",
       "CALLOUTLINK": "Lien vers CrowdNewsroom",
       "CALLOUTSLUG": "Slug de CrowdNewsroom",
@@ -1693,8 +1852,6 @@
       "EMAIL": "Adresse e-mail du contact",
       "EXPIRES": "Date d'expiration de l'adhésion",
       "FNAME": "Prénom du contact",
-      "GIFTDATE": "Date de début du cadeau",
-      "GIFTEE": "Nom du bénéficiaire du cadeau",
       "ISELIGIBLE": "Si le parrainage est éligible",
       "LNAME": "Nom de famille du contact",
       "LOGINLINK": "Lien de connexion",
@@ -1704,7 +1861,6 @@
       "MESSAGE": "Contenu du message personnalisé",
       "NAME": "Nom complet du contact",
       "ORGNAME": "Nom de l'organisation",
-      "PURCHASER": "Nom de l'acheteur du cadeau",
       "REFCODE": "Code de parrainage du contact",
       "REFEREENAME": "Nom de la personne parrainée",
       "RESPNAME": "Nom du répondant",

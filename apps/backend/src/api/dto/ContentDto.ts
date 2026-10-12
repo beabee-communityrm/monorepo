@@ -98,6 +98,9 @@ export class GetContentGeneralDto implements ContentGeneralData<Locale> {
 
   @IsBoolean()
   enableOneTimeDonations!: boolean;
+
+  @IsBoolean()
+  oidcEnabled!: boolean;
 }
 
 class GetContentJoinPeriodDto implements ContentJoinPeriodData {
@@ -140,6 +143,9 @@ export class GetContentJoinDto implements ContentJoinData {
   @IsBoolean()
   showGoogleApplePay!: boolean;
 
+  @IsBoolean()
+  showVatNumber!: boolean;
+
   /** @deprecated Use {@link GetContentPaymentDto.stripePublicKey} instead. */
   @IsString()
   stripePublicKey!: string;
@@ -161,6 +167,9 @@ export class GetContentJoinSetupDto implements ContentJoinSetupData {
 
   @IsString()
   newsletterTitle!: string;
+
+  @IsBoolean()
+  showOrganisationName!: boolean;
 
   @IsBoolean()
   showNewsletterOptIn!: boolean;

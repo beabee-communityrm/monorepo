@@ -1,0 +1,43 @@
+{
+  "realm": "beabee",
+  "enabled": true,
+  "registrationEmailAsUsername": true,
+  "editUsernameAllowed": false,
+  "clients": [
+    {
+      "clientId": "beabee-login",
+      "name": "beabee login",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [
+        "http://localhost:3002/api/1.0/auth/callback",
+        "http://localhost:3000/api/1.0/auth/callback"
+      ],
+      "webOrigins": ["+"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:3002/*##http://localhost:3000/*"
+      }
+    },
+    {
+      "clientId": "beabee-provisioning",
+      "name": "beabee IdP provisioning",
+      "publicClient": false,
+      "secret": "beabee-dev-secret",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false
+    }
+  ],
+  "users": [
+    {
+      "username": "service-account-beabee-provisioning",
+      "enabled": true,
+      "serviceAccountClientId": "beabee-provisioning",
+      "clientRoles": {
+        "realm-management": ["manage-users", "view-users", "query-users"]
+      }
+    }
+  ]
+}

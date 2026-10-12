@@ -1,6 +1,6 @@
 {
   "name": "beabee",
-  "version": "0.44.2",
+  "version": "0.45.0",
   "private": true,
   "engines": {
     "node": ">=24"
@@ -11,7 +11,7 @@
     "build": "yarn workspaces foreach -v -W --topological-dev run build",
     "dev": "yarn workspaces foreach -v -W -p -i -j unlimited run dev",
     "format": "yarn workspaces foreach -v -W -p run format",
-    "test": "yarn workspaces foreach -v -W --exclude @beabee/browser-tests run test",
+    "test": "yarn workspaces foreach -v -W --exclude @beabee/browser-tests --exclude @beabee/e2e-api-tests run test",
     "check": "yarn workspaces foreach -v -W -p run check",
     "generate:index": "yarn workspaces foreach -v -W run generate:index",
     "publish:next": "yarn workspaces foreach -v -W --no-private npm publish --tolerate-republish --tag next --access public",
@@ -35,7 +35,8 @@
     "@types/express-serve-static-core": "^5.1.0",
     "@types/express-session": "^1.19.0",
     "brace-expansion@^5.0.5": "^5.0.6",
-    "tar-fs": "^3.1.1"
+    "tar-fs": "^3.1.1",
+    "fontless@npm:0.2.1/esbuild": "^0.28.0"
   },
   "dependenciesMeta": {
     "@parcel/watcher": {

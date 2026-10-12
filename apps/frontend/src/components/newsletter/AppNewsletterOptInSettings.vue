@@ -69,7 +69,13 @@
         <template #default="{ item }">
           <!-- Group ID -->
           <div class="flex-1">
-            <AppInput v-model="item.id" :label="t('common.id')" required />
+            <AppSelect
+              :model-value="item.id"
+              :label="t('common.id')"
+              :items="cachedGroups"
+              required
+              @update:model-value="onSelectionChange(item, $event)"
+            />
           </div>
 
           <!-- Group Label -->
@@ -82,7 +88,7 @@
           </div>
 
           <!-- Default Checked -->
-          <div class="flex-0 flex h-10 items-center self-end">
+          <div class="flex h-10 flex-0 items-center self-end">
             <AppCheckbox v-model="item.checked" :label="t('common.default')" />
           </div>
         </template>
@@ -98,18 +104,39 @@
  *
  * @component AppNewsletterOptInSettings
  */
-import type { NewsletterGroupData } from '@beabee/beabee-common';
+import type {
+  BaseNewsletterGroupData,
+  NewsletterGroupData,
+} from '@beabee/beabee-common';
 import {
   AppCheckbox,
   AppInput,
   AppRepeatable,
   AppRichTextEditor,
   AppSectionHeading,
+  AppSelect,
 } from '@beabee/vue';
+
+import { client } from '#utils/api';
+
+import { onBeforeMount } from 'vue';
 
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
+
+// When drop-down selection changes, auto-fill group label only for newly added groups
+function onSelectionChange(item: NewsletterGroupData, newId: string) {
+  // New group
+  if (!item.id) {
+    // Get correct group label from the list of cached groups
+    const cacheGroupMatch = cachedGroups.value.find((g) => g.id === newId);
+    if (cacheGroupMatch) {
+      item.label = cacheGroupMatch.label;
+    }
+  }
+  item.id = newId;
+}
 
 /**
  * Model values for the component configuration
@@ -119,5 +146,12 @@ const optIn = defineModel<string>('optIn', { default: '' });
 const text = defineModel<string>('text', { default: '' });
 const groups = defineModel<NewsletterGroupData[]>('groups', {
   default: () => [],
+});
+const cachedGroups = defineModel<BaseNewsletterGroupData[]>('cachedGroups', {
+  default: () => [],
+});
+
+onBeforeMount(async () => {
+  cachedGroups.value = await client.integrations.getNewsletterGroups();
 });
 </script>

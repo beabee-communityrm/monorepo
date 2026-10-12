@@ -40,7 +40,7 @@
           aria-hidden="true"
         >
           <circle
-            class="fill-none stroke-[4] transition-[stroke-dasharray]"
+            class="fill-none stroke-4 transition-[stroke-dasharray]"
             :r="circleRadius"
             cx="12"
             cy="12"
@@ -141,7 +141,7 @@ const colorClass = computed(() => {
     case 'error':
       return ['border-danger', 'text-danger', 'stroke-danger'];
     default:
-      return ['border-primary', 'text-primary', 'stroke-primary'];
+      return ['border-main', 'text-main', 'stroke-main'];
   }
 });
 
@@ -152,4 +152,3 @@ const handleRemove = () => {
   }, 0);
 };
 </script>
-<style scoped></style>

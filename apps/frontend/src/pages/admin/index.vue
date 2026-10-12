@@ -72,7 +72,7 @@ meta:
       </div>
       <a
         href="https://join.slack.com/t/beabee-communityrm/shared_invite/zt-1ezksg2wz-uLgLv4FxmCepzBlvLzL6tQ"
-        class="block rounded bg-white bg-[url('/src/assets/images/slack-bg.png')] bg-auto bg-right-top p-10 text-center text-2xl font-light text-link md:bg-cover"
+        class="block rounded bg-white bg-[url('/src/assets/images/slack-bg.png')] bg-auto bg-top-right p-10 text-center text-2xl font-light text-link md:bg-cover"
       >
         <p class="m-auto w-72 max-w-72">
           {{ t('adminDashboard.joinSlack') }}
@@ -99,7 +99,6 @@ import {
 } from '@beabee/beabee-common';
 import { AppHeading, AppTime, PageTitle } from '@beabee/vue';
 
-import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { subDays } from 'date-fns';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -110,6 +109,7 @@ import KeyStat from '#components/pages/admin/KeyStat.vue';
 import { currentUser } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import env from '../../env';
 
@@ -118,9 +118,9 @@ const { n, t } = useI18n();
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.dashboard'),
+      label: t(routeLabels.admin),
       to: '/admin',
-      icon: faChartLine,
+      icon: routeIcons.admin,
     },
   ])
 );

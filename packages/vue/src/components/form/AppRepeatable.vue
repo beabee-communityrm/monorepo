@@ -5,7 +5,7 @@
       <slot :item="item" :index="i" />
       <div class="flex-0 self-end">
         <button
-          class="-ml-2 p-2 leading-tight text-primary-80 hover:text-primary"
+          class="-ml-2 p-2 leading-tight text-main-80 hover:text-main"
           type="button"
           @click="removeItem(i)"
         >

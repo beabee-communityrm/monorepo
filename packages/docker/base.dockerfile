@@ -1,4 +1,4 @@
-ARG NODE_VERSION=24-bookworm-slim
+ARG NODE_VERSION=24.19-bookworm-slim
 
 ##################################
 # The base stage
@@ -7,7 +7,7 @@ ARG NODE_VERSION=24-bookworm-slim
 FROM node:${NODE_VERSION} AS base
 
 # https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#handling-kernel-signals
-RUN apt-get update && apt-get install -y tini curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y tini curl libjemalloc2 && rm -rf /var/lib/apt/lists/*
 
 # Copy the workspace configuration
 COPY --chown=node:node package.json yarn.lock .yarnrc.yml /opt/
@@ -27,6 +27,7 @@ COPY --chown=node:node packages/vue/package.json /opt/packages/vue/package.json
 # Copy dependencies info from apps
 COPY --chown=node:node apps/backend/package.json /opt/apps/backend/package.json
 COPY --chown=node:node apps/backend-cli/package.json /opt/apps/backend-cli/package.json
+COPY --chown=node:node apps/browser-tests/package.json /opt/apps/browser-tests/package.json
 COPY --chown=node:node apps/legacy/package.json /opt/apps/legacy/package.json
 COPY --chown=node:node apps/webhooks/package.json /opt/apps/webhooks/package.json
 COPY --chown=node:node apps/e2e-api-tests/package.json /opt/apps/e2e-api-tests/package.json
@@ -40,6 +41,10 @@ COPY --chown=node:node apps/dev-cli /opt/apps/dev-cli
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--enable-source-maps
+# glibc's default allocator never returns fragmented arenas to the OS, so RSS
+# ratchets up permanently under sharp/libvips image processing (observed
+# +8-45MB retained per upload in production until the pod hits its memory limit).
+ENV LD_PRELOAD=libjemalloc.so.2
 
 WORKDIR /opt
 

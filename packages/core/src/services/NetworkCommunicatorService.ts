@@ -5,6 +5,7 @@ import { EventEmitter } from 'node:events';
 import { Server } from 'node:http';
 
 import config from '#config/config';
+import * as env from '#config/env';
 import { log as mainLogger } from '#logging';
 import type { NetworkServiceMap } from '#type/network-service-map';
 import { extractToken } from '#utils/auth';
@@ -20,10 +21,17 @@ class NetworkCommunicatorService {
 
   // TODO: remove hardcoded service references
   private services: NetworkServiceMap = {
-    app: { host: 'http://app:4000' },
-    api_app: { host: 'http://api_app:4000' },
-    webhook_app: { host: 'http://webhook_app:4000' },
-    telegram_bot: { host: 'http://telegram_bot:4000', optional: true },
+    app: { host: `${env.s('HIVE_SERVICE_APP', 'http://app')}:4000` },
+    api_app: {
+      host: `${env.s('HIVE_SERVICE_API_APP', 'http://api_app')}:4000`,
+    },
+    webhook_app: {
+      host: `${env.s('HIVE_SERVICE_WEBHOOK_APP', 'http://webhook_app')}:4000`,
+    },
+    telegram_bot: {
+      host: `${env.s('HIVE_SERVICE_TELEGRAM_BOT', 'http://telegram_bot')}:4000`,
+      optional: true,
+    },
   };
 
   /**

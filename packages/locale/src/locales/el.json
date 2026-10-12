@@ -4,6 +4,7 @@
     "deliveryAddress": "",
     "deliveryOptIn": "",
     "loginDetail": "",
+    "loginDetail-nuxt": "",
     "mfa": {
       "codeInput": {
         "info": "",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "",
+        "desc-nuxt": "",
+        "descDetail": "",
         "descToken": "",
-        "title": ""
+        "descToken-nuxt": "",
+        "keepEnabled": "",
+        "remove": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "createUnknownErrorNotification": "",
+      "createUnknownErrorNotification-nuxt": "",
       "deleteUnknownErrorNotification": "",
+      "deleteUnknownErrorNotification-nuxt": "",
+      "description": "Προσθέστε ένα επιπλέον επίπεδο ασφάλειας στον λογαριασμό σας",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "modalTitle": "",
+      "modalTitle-nuxt": "",
       "result": {
         "invalidCode": "",
         "successful": "",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "secretInput": {
         "desc": "",
-        "label": ""
+        "label": "",
+        "toggleHide": "",
+        "toggleShow": ""
       },
+      "statusDisabled": {
+        "description": "Όταν ενεργοποιηθεί, θα σας ζητείται κωδικός από την εφαρμογή Authenticator σε κάθε σύνδεση.",
+        "title": "Ο έλεγχος ταυτότητας δύο παραγόντων είναι απενεργοποιημένος"
+      },
+      "statusEnabled": {
+        "description": "Ο λογαριασμός σας προστατεύεται με μια εφαρμογή Authenticator. Απενεργοποιήστε το μόνο αν αλλάζετε συσκευή.",
+        "title": "Ο έλεγχος ταυτότητας δύο παραγόντων είναι ενεργοποιημένος"
+      },
+      "stepIndicator": "",
       "title": "",
+      "title-nuxt": "",
       "validateButton": {
-        "label": ""
+        "label": "",
+        "label-nuxt": ""
       }
     },
     "newsletter": {
@@ -50,15 +78,35 @@
         "subscribed": "",
         "unsubscribed": ""
       },
+      "description": "",
+      "noGroups": "",
       "subscribe": "",
       "title": "",
-      "unsubscribe": ""
+      "unsubscribe": "",
+      "unsubscribeButton": "",
+      "unsubscribeInfo": "",
+      "unsubscribedNotification": ""
     },
+    "personalDetails": "",
     "phoneInfo": "",
+    "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
+    "requiredFields": "Υποχρεωτικά πεδία",
     "savedPassword": "",
+    "security": "",
+    "selfService": {
+      "addPasskey": "",
+      "changePassword": "",
+      "intro": "",
+      "setupMfa": "",
+      "title": ""
+    },
     "subTitle": "",
-    "title": ""
+    "subTitle-nuxt": "",
+    "subscriptions": "",
+    "title": "",
+    "unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές",
+    "vatNumberInfo": ""
   },
   "actions": {
     "add": "",
@@ -81,6 +129,7 @@
     "export": "",
     "getStarted": "αρχίζω",
     "goBack": "",
+    "hidePassword": "Απόκρυψη κωδικού πρόσβασης",
     "increase": "",
     "next": "επόμενος",
     "noBack": "",
@@ -104,6 +153,7 @@
     "sendOneOffEmail": "Αποστολή email",
     "sendOngoingEmails": "Επαναλαμβανόμενα email",
     "share": "Μοιραστείτε",
+    "showPassword": "Εμφάνιση κωδικού πρόσβασης",
     "skip": "",
     "submit": "υποβάλετε",
     "tryAgain": "",
@@ -251,6 +301,35 @@
         "twitterHandle": ""
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Ενημερωτικά δελτία"
+      },
+      "label": "Ενσωματώσεις",
+      "loadError": "Αποτυχία φόρτωσης ενσωματώσεων. Παρακαλώ ανανεώστε τη σελίδα.",
+      "newsletter": {
+        "audienceId": "Αναγνωριστικό κοινού",
+        "groups": "Ομάδες",
+        "groupsNote": "",
+        "noGroups": "Δεν βρέθηκαν ομάδες"
+      },
+      "refresh": "Ανανέωση",
+      "refreshResult": {
+        "added": "Προστέθηκαν ομάδες {provider}: {groups}",
+        "connectionLost": "η σύνδεση χάθηκε",
+        "couldNotConnect": "Δεν ήταν δυνατή η σύνδεση με τον {provider}",
+        "error": "Η ανανέωση του {provider} απέτυχε. Παρακαλώ δοκιμάστε ξανά.",
+        "noChanges": "Οι ομάδες {provider} είναι ενημερωμένες",
+        "reconnected": "επανασυνδέθηκε",
+        "removed": "Αφαιρέθηκαν ομάδες {provider}: {groups}"
+      },
+      "refreshing": "Ανανέωση...",
+      "status": {
+        "disabled": "Απενεργοποιημένο",
+        "healthy": "Συνδεδεμένο",
+        "unhealthy": "Απώλεια σύνδεσης"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",
@@ -266,7 +345,7 @@
         "body": "",
         "danger": "",
         "link": "",
-        "primary": "",
+        "main": "Κύριο",
         "success": "",
         "warning": ""
       },
@@ -375,6 +454,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "",
       "updateResponse": ""
     },
     "addAPoint": "Πρόσθεσε μια νέα τοποθεσία εδώ",
@@ -878,6 +958,7 @@
     "selectedCount": ""
   },
   "calloutResponsesPage": {
+    "allResponses": "",
     "moveToBucket": "",
     "noTags": "",
     "response": "",
@@ -911,12 +992,23 @@
     "oneResponseWarning": ""
   },
   "callouts": {
+    "access": {
+      "everyone": "",
+      "member": ""
+    },
     "archive": "",
+    "archiveRange": "",
     "data": {
       "callout": "",
-      "endDate": ""
+      "endDate": "",
+      "responses": ""
+    },
+    "daysLeft": "",
+    "empty": {
+      "active": ""
     },
     "noArchivedCallouts": "",
+    "openCallouts": "",
     "search": "",
     "showAll": "",
     "showAnswered": "",
@@ -947,7 +1039,6 @@
     },
     "contributionType": {
       "automatic": "",
-      "gift": "",
       "manual": "",
       "none": ""
     },
@@ -1009,6 +1100,15 @@
       "scheduled": "προγραμματισμένο"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "Όλα τα {count} αντίστοιχα στοιχεία είναι επιλεγμένα.",
+        "clearSelection": "Εκκαθάριση επιλογής",
+        "pageSelected": "Όλα τα {count} στοιχεία αυτής της σελίδας είναι επιλεγμένα.",
+        "selectAll": "Επιλογή όλων των {count} στοιχείων",
+        "someSelected": "{count} αντίστοιχα στοιχεία είναι επιλεγμένα."
+      }
+    },
     "thankYou": "Ευχαριστώ πολύ!",
     "timeAgo": "πριν το {time}",
     "timeIn": "σε {time}",
@@ -1051,6 +1151,19 @@
       "title": ""
     },
     "oneTime": "Εφάπαξ",
+    "origin": {
+      "addedBy": "",
+      "addedByValues": {
+        "admin": "",
+        "external": "",
+        "self-signup": "",
+        "system": ""
+      },
+      "campaign": "",
+      "referrer": "",
+      "source": "",
+      "title": ""
+    },
     "overview": "",
     "pickTag": "",
     "profile": "",
@@ -1058,7 +1171,6 @@
     "roles": "",
     "security": {
       "instructions": "",
-      "loginOverride": "",
       "mfa": {
         "desc": "",
         "disabledDesc": ""
@@ -1097,6 +1209,9 @@
       "email": "",
       "firstname": "",
       "hasDonated": "Έκανε εφάπαξ συνεισφορά",
+      "idpAccount": "",
+      "idpLinked": "",
+      "idpUnlinked": "",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
@@ -1348,6 +1463,7 @@
       "remaining": ""
     },
     "cityOrTown": "",
+    "country": "",
     "deliveryOptIn": "",
     "description": "",
     "email": "ηλεκτρονικό ταχυδρομείο",
@@ -1373,6 +1489,16 @@
       "addressLine1": {
         "required": ""
       },
+      "audio": {
+        "micPermissionDeniedBody": "Ο browser σας απέκλεισε την πρόσβαση στο μικρόφωνο. Ελέγξτε τις άδειες του ιστότοπου και δοκιμάστε ξανά, ή μεταφορτώστε μια εγγραφή που κάνατε αλλού.",
+        "micPermissionDeniedTitle": "Το μικρόφωνο δεν είναι διαθέσιμο",
+        "recordingNotSupportedBody": "Αυτός ο browser δεν μπορεί να εγγράψει ήχο. Μεταφορτώστε ένα αρχείο ήχου.",
+        "recordingNotSupportedTitle": "Η εγγραφή δεν υποστηρίζεται",
+        "tooLongBody": "Αυτό το αρχείο διαρκεί {duration}. Το μέγιστο για αυτή την ερώτηση είναι {max}. Περικόψτε το ή κάντε μια συντομότερη εγγραφή.",
+        "tooLongTitle": "Η εγγραφή είναι πολύ μεγάλη",
+        "uploadFailedTitle": "Η μεταφόρτωση απέτυχε",
+        "wrongTypeBody": "Αυτή η ερώτηση δέχεται μόνο αρχεία {types}."
+      },
       "cityOrTown": {
         "required": ""
       },
@@ -1385,6 +1511,9 @@
         "required": "",
         "sameAs": ""
       },
+      "country": {
+        "required": ""
+      },
       "description": {
         "maxLength": "",
         "required": ""
@@ -1396,7 +1525,8 @@
       "file": {
         "rateLimited": "Η μεταφόρτωση απέτυχε: Ανεβάσατε πάρα πολλά αρχεία σε πολύ σύντομο χρονικό διάστημα. Περιμένετε λίγα λεπτά πριν προσπαθήσετε ξανά.",
         "tooBig": "Η μεταφόρτωση απέτυχε: Το μέγιστο μέγεθος αρχείου δεν μπορεί να υπερβαίνει τα 20 MB.",
-        "unsupportedType": ""
+        "unsupportedType": "",
+        "uploadFailed": "Η μεταφόρτωση απέτυχε: Δεν ήταν δυνατή η επεξεργασία του αρχείου."
       },
       "firstName": {
         "required": ""
@@ -1418,6 +1548,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": "Μη έγκυρος αριθμός τηλεφώνου"
       },
       "unknown": {
         "email": "",
@@ -1448,6 +1581,7 @@
     "notes": "",
     "password": "",
     "passwordInfo": "",
+    "passwordInfo-nuxt": "",
     "phone": "",
     "postCode": "",
     "richtext": {
@@ -1466,10 +1600,30 @@
     "saveChanges": "",
     "saved": "",
     "unsavedChanges": "",
-    "updated": ""
+    "updated": "",
+    "vatNumber": ""
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Επισυνάφθηκε",
+        "delete": "Διαγραφή",
+        "discard": "Απόρριψη",
+        "download": "Λήψη",
+        "pause": "Παύση",
+        "paused": "Σε παύση",
+        "playPause": "Αναπαραγωγή ή παύση",
+        "reRecord": "Νέα εγγραφή",
+        "record": "Έναρξη εγγραφής",
+        "recording": "Γίνεται εγγραφή",
+        "requestingPermission": "Αναμονή άδειας μικροφώνου. Επιτρέψτε την πρόσβαση στον browser σας για να συνεχίσετε.",
+        "resume": "Συνέχιση",
+        "stop": "Διακοπή",
+        "tryAgain": "Δοκιμάστε ξανά",
+        "uploadInstead": "Μεταφόρτωση αρχείου ήχου",
+        "uploadLabel": "Μεταφόρτωση αρχείου ήχου",
+        "uploadingHint": "Μεταφόρτωση σε εξέλιξη — μπορείτε να συνεχίσετε να συμπληρώνετε τη φόρμα."
+      },
       "file": {
         "browse": "Πρέπει να περιμένετε: Μέχρι να σταματήσει να γυρίζει ο τροχός./ Μέχρι να γίνει μπλε η μπάρα.",
         "dropFiles": "Σύρετε αρχεία εδώ.",
@@ -1572,6 +1726,10 @@
   },
   "login": {
     "backTo": "",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "",
     "joinNow": "",
     "lostMfaDevice": "",
@@ -1608,6 +1766,7 @@
           "showOptIn": "",
           "title": ""
         },
+        "showOrganisationName": "",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1641,6 +1800,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""
@@ -1680,7 +1840,6 @@
     "insert": "Εισαγωγή",
     "insertTag": "Εισαγωγή {tag}",
     "tags": {
-      "ACTIVATELINK": "Σύνδεσμος ενεργοποίησης δώρου",
       "ANSWERS": "Μορφοποιημένες απαντήσεις",
       "CALLOUTLINK": "Σύνδεσμος στο CrowdNewsroom",
       "CALLOUTSLUG": "Slug CrowdNewsroom",
@@ -1689,8 +1848,6 @@
       "EMAIL": "Διεύθυνση email επαφής",
       "EXPIRES": "Ημερομηνία λήξης συμμετοχής",
       "FNAME": "Μικρό όνομα",
-      "GIFTDATE": "Ημερομηνία έναρξης δώρου",
-      "GIFTEE": "Όνομα αποδέκτη δώρου",
       "ISELIGIBLE": "Εάν η παραπομπή είναι επιλέξιμη",
       "LNAME": "Επώνυμο",
       "LOGINLINK": "Σύνδεσμος σύνδεσης",
@@ -1700,7 +1857,6 @@
       "MESSAGE": "Προσαρμοσμένο περιεχόμενο μηνύματος",
       "NAME": "Πλήρες όνομα",
       "ORGNAME": "Όνομα οργανισμού",
-      "PURCHASER": "Όνομα αγοραστή δώρου",
       "REFCODE": "Κωδικός παραπομπής επαφής",
       "REFEREENAME": "Όνομα προσελκυόμενου ατόμου",
       "RESPNAME": "Όνομα απαντούμενου",

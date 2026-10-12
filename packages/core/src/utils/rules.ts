@@ -36,7 +36,11 @@ import type {
 } from '#type/index';
 import { QueryDeepPartialEntity } from '#type/typeorm-utils';
 
-// Operator definitions
+// Standard operator definitions
+//
+// These map each rule operator to an SQL condition template. `:valueA` and
+// `:valueB` are placeholders for the rule's values; they get a unique
+// per-rule suffix (e.g. :valueA_0) when the clause is built.
 
 const equalityOperatorsWhere = {
   equal: (field: string) => `${field} = :valueA`,
@@ -66,6 +70,11 @@ const numericOperatorsWhere = {
   not_between: (field: string) => `${field} NOT BETWEEN :valueA AND :valueB`,
 };
 
+/**
+ * Identity function that type-checks that every operator the type supports
+ * (as defined by operatorsByType) has an SQL template, so validation and SQL
+ * generation can't drift apart.
+ */
 function withOperators<T extends FilterType>(
   type: T,
   operators: Record<
@@ -131,43 +140,44 @@ function coalesceField(field: string): string {
 }
 
 /**
- * Takes a rule and returns a field mapping function and the values to compare
+ * Some filter types need normalizing before an operator template can be
+ * applied: the column may need wrapping in SQL and the values may need
+ * converting from their wire format.
  *
- * - For text and blob fields, we add COALESE to the field if it's nullable so
- *   NULL values are treated as empty strings
- * - For date fields, we DATE_TRUNC the field to the day or more specific unit if
- *   provided and turn the value into a Date object
- * - For contact fields, it maps "me" to the contact id
- * - Otherwise, it returns the field and value as is
  * @param rule The rule to prepare
- * @param contact
- * @returns a field mapping function and the values to compare
+ * @param contact The contact the rules are evaluated for, resolves "me"
+ * @returns transformField, which wraps the column expression the operator
+ *   will be applied to, and the prepared comparison values
  */
 function prepareRule(
   rule: ValidatedRule<string>,
   contact: Contact | undefined
-): [(field: string) => string, RichRuleValue[]] {
+): { transformField: (field: string) => string; values: RichRuleValue[] } {
   switch (rule.type) {
     case 'blob':
     case 'text':
-      // Make NULL an empty string for comparison
-      return [rule.nullable ? coalesceField : simpleField, rule.value];
+      // Nullable columns coalesce to '' so NULL behaves like an empty string
+      return {
+        transformField: rule.nullable ? coalesceField : simpleField,
+        values: rule.value,
+      };
 
     case 'date': {
-      // Compare dates by at least day, but more specific if H/m/s are provided
+      // Compare only as precisely as the values require: day by default, finer
+      // if any value carries a time (e.g. "2022-12-01T10:30" compares by minute)
       const values = rule.value.map((v) => parseDate(v));
       const minUnit = getMinDateUnit(['d', ...values.map(([_, unit]) => unit)]);
-      return [
-        (field) => `DATE_TRUNC('${dateUnitSql[minUnit]}', ${field})`,
-        values.map(([date]) => date),
-      ];
+      return {
+        transformField: (field) =>
+          `DATE_TRUNC('${dateUnitSql[minUnit]}', ${field})`,
+        values: values.map(([date]) => date),
+      };
     }
 
     case 'contact':
-      return [
-        simpleField,
-        rule.value.map((v) => {
-          // Map "me" to contact id
+      return {
+        transformField: simpleField,
+        values: rule.value.map((v) => {
           if (v === 'me') {
             if (!contact) {
               throw new BadRequestError(
@@ -179,10 +189,10 @@ function prepareRule(
             return v;
           }
         }),
-      ];
+      };
 
     default:
-      return [simpleField, rule.value];
+      return { transformField: simpleField, values: rule.value };
   }
 }
 
@@ -212,16 +222,26 @@ export function getFilterHandler(
 }
 
 /**
- * The query builder doesn't support having the same parameter names for
- * different parts of the query and subqueries, so we have to ensure each query
- * parameter has a unique name. We do this by appending a suffix "_<ruleNo>" to
- * the end of each parameter for each rule.
+ * Converts a validated rule group into a WHERE clause and its parameters,
+ * ready to be passed to a TypeORM query builder.
  *
- * @param ruleGroup The rule group
- * @param contact
- * @param filterHandlers
- * @param fieldPrefix
- * @returns
+ * Each rule is converted by its filter handler (see getFilterHandler); the
+ * default handler compares `<fieldPrefix><field>` against the rule's values
+ * using the operator SQL templates above. Groups become bracketed AND/OR
+ * chains and can be nested.
+ *
+ * The returned params contain:
+ * - `valueA_<n>` / `valueB_<n>`: the rule values, suffixed per rule because
+ *   the query builder doesn't allow reusing a parameter name across the
+ *   query and its subqueries
+ * - any extra suffixed params returned by filter handlers
+ * - `now`: the current date, available unsuffixed to any rule that needs it
+ *
+ * @param ruleGroup The validated rule group
+ * @param contact The contact the rules are evaluated for, resolves "me"
+ * @param filterHandlers Field-specific handlers, falls back to a simple comparison
+ * @param fieldPrefix The alias prefix of the outer query, e.g. "item."
+ * @returns A Brackets clause and the parameters it references
  */
 export function convertRulesToWhereClause(
   ruleGroup: ValidatedRuleGroup<string>,
@@ -233,40 +253,53 @@ export function convertRulesToWhereClause(
     // Some queries need a current date parameter
     now: new Date(),
   };
+  // Shared across nested groups so suffixes are unique query-wide
   let ruleNo = 0;
 
-  function parseRule(rule: ValidatedRule<string>) {
+  function buildRuleWhere(rule: ValidatedRule<string>) {
     return (qb: WhereExpressionBuilder): void => {
       const applyOperator = operatorsWhereByType[rule.type][rule.operator];
       if (!applyOperator) {
-        // Shouln't be able to happen as rule has been validated
+        // Shouldn't be able to happen as rule has been validated
         throw new Error('Invalid ValidatedRule');
       }
 
       const paramSuffix = '_' + ruleNo;
-      const [transformField, value] = prepareRule(rule, contact);
 
-      // Add values as params
-      params['valueA' + paramSuffix] = value[0];
-      params['valueB' + paramSuffix] = value[1];
+      const { transformField, values } = prepareRule(rule, contact);
 
-      // Add suffixes to parameters but avoid replacing casts e.g. ::boolean
+      // Apply a suffix to the parameters to ensure they are unique query-wide.
+      // They are always set, even if the operator uses fewer values; unused
+      // params are simply never referenced
+      params['valueA' + paramSuffix] = values[0];
+      params['valueB' + paramSuffix] = values[1];
+
+      // Suffixes any ":name" params in the given SQL, skipping casts like
+      // ::boolean
       const addParamSuffix = (field: string) =>
         field.replace(/[^:]:[a-zA-Z]+/g, '$&' + paramSuffix);
 
-      const newParams = getFilterHandler(filterHandlers, rule.field)(qb, {
+      // This is where the rule actually becomes SQL: the field's filter
+      // handler writes the WHERE condition onto the query builder. The default
+      // handler applies convertToWhereClause to the field; custom handlers can
+      // write anything, e.g. a subquery on a related table, and can return
+      // extra params
+      const extraParams = getFilterHandler(filterHandlers, rule.field)(qb, {
         fieldPrefix,
         field: rule.field,
         operator: rule.operator,
         type: rule.type,
-        value,
+        value: values,
+        // The full conversion for a column expression: field transform +
+        // operator template + param suffix
         convertToWhereClause: (field) =>
           addParamSuffix(applyOperator(transformField(field))),
         addParamSuffix,
       });
 
-      if (newParams) {
-        for (const [key, value] of Object.entries(newParams)) {
+      // Suffix any extra params from the handler, just like the rule values
+      if (extraParams) {
+        for (const [key, value] of Object.entries(extraParams)) {
           params[key + paramSuffix] = value;
         }
       }
@@ -275,16 +308,19 @@ export function convertRulesToWhereClause(
     };
   }
 
-  function parseRuleGroup(ruleGroup: ValidatedRuleGroup<string>) {
+  function buildGroupWhere(ruleGroup: ValidatedRuleGroup<string>) {
     return (qb: WhereExpressionBuilder): void => {
       if (ruleGroup.rules.length > 0) {
+        // Seed with the identity element of the condition (TRUE for AND,
+        // FALSE for OR) so every rule can then be chained uniformly with
+        // andWhere/orWhere
         qb.where(ruleGroup.condition === 'AND' ? 'TRUE' : 'FALSE');
         const conditionFn =
           ruleGroup.condition === 'AND' ? 'andWhere' : 'orWhere';
         for (const rule of ruleGroup.rules) {
           qb[conditionFn](
             new Brackets(
-              isRuleGroup(rule) ? parseRuleGroup(rule) : parseRule(rule)
+              isRuleGroup(rule) ? buildGroupWhere(rule) : buildRuleWhere(rule)
             )
           );
         }
@@ -292,11 +328,11 @@ export function convertRulesToWhereClause(
     };
   }
 
-  const where = new Brackets(parseRuleGroup(ruleGroup));
+  const where = new Brackets(buildGroupWhere(ruleGroup));
   return [where, params];
 }
 
-/** @depreciated remove once SegmentService has been cleaned up */
+/** @deprecated remove once SegmentService has been cleaned up */
 export function buildSelectQuery<
   Entity extends ObjectLiteral,
   Field extends string,
@@ -313,6 +349,15 @@ export function buildSelectQuery<
     );
   }
   return qb;
+}
+
+/** Rules come from user input, so invalid rules are client errors */
+function rethrowAsBadRequest(err: unknown): never {
+  if (err instanceof InvalidRule) {
+    // Attach the offending rule so the API can return it to the client
+    throw Object.assign(new BadRequestError(err.message), { rule: err.rule });
+  }
+  throw err;
 }
 
 export async function batchUpdate<
@@ -345,13 +390,7 @@ export async function batchUpdate<
 
     return await qb.execute();
   } catch (err) {
-    if (err instanceof InvalidRule) {
-      const err2: any = new BadRequestError(err.message);
-      err2.rule = err.rule;
-      throw err2;
-    } else {
-      throw err;
-    }
+    rethrowAsBadRequest(err);
   }
 }
 
@@ -364,7 +403,6 @@ export async function batchUpdate<
  * @param ruleGroup - Rules to filter entities
  * @param contact - Optional contact for permission checks
  * @param filterHandlers - Optional custom filter handlers
- * @param queryCallback - Optional callback to modify the query
  * @returns SelectResult containing raw results and affected count
  *
  * @example
@@ -385,8 +423,7 @@ export async function batchSelect<
   filters: Filters<Field>,
   ruleGroup: RuleGroup,
   contact?: Contact,
-  filterHandlers?: FilterHandlers<Field>,
-  queryCallback?: (qb: SelectQueryBuilder<Entity>, fieldPrefix: string) => void
+  filterHandlers?: FilterHandlers<Field>
 ): Promise<SelectResult> {
   try {
     const validatedRuleGroup = validateRuleGroup(filters, ruleGroup);
@@ -402,8 +439,6 @@ export async function batchSelect<
         )
       );
 
-    queryCallback?.(qb, 'entity.');
-
     const raw = await qb.getRawMany();
 
     return {
@@ -411,12 +446,6 @@ export async function batchSelect<
       affected: raw.length,
     };
   } catch (err) {
-    if (err instanceof InvalidRule) {
-      const err2: any = new BadRequestError(err.message);
-      err2.rule = err.rule;
-      throw err2;
-    } else {
-      throw err;
-    }
+    rethrowAsBadRequest(err);
   }
 }

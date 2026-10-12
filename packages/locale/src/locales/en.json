@@ -1,9 +1,10 @@
 {
   "accountPage": {
     "contactInformation": "Contact information",
-    "deliveryAddress": "Delivery address",
+    "deliveryAddress": "Address",
     "deliveryOptIn": "Delivery opt-in",
     "loginDetail": "Login details",
+    "loginDetail-nuxt": "Change password",
     "mfa": {
       "codeInput": {
         "info": "If you have lost your 2FA device please contact support",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "Are you sure you want to disable Multi-Factor Authentication? From then on, you'll only need your password to log in. Remember to delete the entry from your Authenticator app. You can always enable it again.",
+        "desc-nuxt": "Are you sure you want to disable two-factor authentication?",
+        "descDetail": "From then on, you'll only need your password to log in. Remember to delete the entry from your Authenticator app. You can always enable it again.",
         "descToken": "To deactivate 2FA, please enter your current 2FA code:",
-        "title": "Disable 2FA"
+        "descToken-nuxt": "Enter your current 2FA code to confirm",
+        "keepEnabled": "Keep 2FA enabled",
+        "remove": "Remove 2FA",
+        "title": "Disable 2FA",
+        "title-nuxt": "Are you sure you want to disable two-factor authentication?"
       },
       "createUnknownErrorNotification": "The 2-factor authentication could not be saved due to an unknown error. Please try again or contact support.",
+      "createUnknownErrorNotification-nuxt": "The two-factor authentication could not be saved due to an unknown error. Please try again or contact support.",
       "deleteUnknownErrorNotification": "The 2-factor authentication could not be deleted due to an unknown error. Please try again or contact support.",
+      "deleteUnknownErrorNotification-nuxt": "The two-factor authentication could not be deleted due to an unknown error. Please try again or contact support.",
+      "description": "Add an extra layer of security to your account",
       "disabledNotification": "Two-factor authentication successfully deactivated",
       "enabledNotification": "Two-factor authentication successfully activated",
       "enterCode": {
         "desc": "Enter the code that is displayed in your authenticator app.",
-        "title": "Verification"
+        "desc-nuxt": "Enter the 6-digit code from your authenticator app to confirm setup.",
+        "title": "Verification",
+        "title-nuxt": "Enter the verification code"
       },
       "modalTitle": "Enable 2-factor authentication",
+      "modalTitle-nuxt": "Enable two-factor authentication",
       "result": {
         "invalidCode": "The code could not be confirmed, please try again or contact support.",
         "successful": "2-factor authentication has been successfully set up.",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "Scan the QR code below with your authenticator app.",
-        "title": "QR Code"
+        "desc-nuxt": "Open your authenticator app and scan the code below.",
+        "title": "QR Code",
+        "title-nuxt": "Scan this QR code"
       },
       "secretInput": {
         "desc": "Alternatively, you can enter the following code into your Authenticator app.",
-        "label": "Secret code"
+        "label": "Secret code",
+        "toggleHide": "Hide",
+        "toggleShow": "Can't scan? Enter the code manually"
       },
+      "statusDisabled": {
+        "description": "When enabled, you'll be asked for a code from your authenticator app each time you log in.",
+        "title": "Two-factor authentication is disabled"
+      },
+      "statusEnabled": {
+        "description": "Your account is protected with an authenticator app. Disable this only if you are changing devices.",
+        "title": "Two-factor authentication is enabled"
+      },
+      "stepIndicator": "Step {step} of {total}",
       "title": "2-factor authentication",
+      "title-nuxt": "Two-factor authentication",
       "validateButton": {
-        "label": "Verify token"
+        "label": "Verify token",
+        "label-nuxt": "Confirm"
       }
     },
     "newsletter": {
@@ -50,15 +78,34 @@
         "subscribed": "This contact is subscribed to your newsletter list.",
         "unsubscribed": "This contact isn't subscribed to your newsletter list."
       },
+      "description": "Manage which newsletter groups you're subscribed to.",
+      "noGroups": "You're not subscribed to any newsletter groups.",
       "subscribe": "Subscribe them to the newsletter",
       "title": "Newsletter",
-      "unsubscribe": "Unsubscribe them from the newsletter"
+      "unsubscribe": "Unsubscribe them from the newsletter",
+      "unsubscribeButton": "Unsubscribe",
+      "unsubscribeInfo": "Unsubscribing takes effect straight away and can't be undone here.",
+      "unsubscribedNotification": "You've been unsubscribed from {group}"
     },
+    "personalDetails": "Personal details",
     "phoneInfo": "By providing your phone number you are consenting to being contacted by phone",
+    "phoneInfo-nuxt": "By providing your phone number you are consenting to being contacted by phone.",
     "phoneInfoAdmin": "You must have the person's consent before adding their phone number to the system",
+    "requiredFields": "Required fields",
     "savedPassword": "New password saved",
+    "security": "Security",
+    "selfService": {
+      "addPasskey": "Add a passkey",
+      "changePassword": "Change password",
+      "intro": "Your password and login methods are managed by our login service. Each of these takes you there and brings you back afterwards.",
+      "setupMfa": "Set up authenticator app",
+      "title": "Login details"
+    },
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
-    "title": "Account"
+    "subTitle-nuxt": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
+    "subscriptions": "Subscriptions",
+    "title": "Account",
+    "vatNumberInfo": "Contact support{'@'}beabee.io to update the VAT Number"
   },
   "actions": {
     "add": "Add",
@@ -81,6 +128,7 @@
     "export": "Export",
     "getStarted": "Get started",
     "goBack": "Go back",
+    "hidePassword": "Hide password",
     "increase": "Increase",
     "next": "Next",
     "noBack": "No, go back",
@@ -104,6 +152,7 @@
     "sendOneOffEmail": "Send email",
     "sendOngoingEmails": "Ongoing emails",
     "share": "Share",
+    "showPassword": "Show password",
     "skip": "Skip",
     "submit": "Submit",
     "tryAgain": "Try again",
@@ -251,6 +300,35 @@
         "twitterHandle": "Twitter handle"
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Newsletters"
+      },
+      "label": "Integrations",
+      "loadError": "Failed to load integrations. Please refresh the page.",
+      "newsletter": {
+        "audienceId": "Audience ID",
+        "groups": "Groups",
+        "groupsNote": "Group names will be displayed to members in the subscription management tab of the Account page.",
+        "noGroups": "No groups found"
+      },
+      "refresh": "Refresh",
+      "refreshResult": {
+        "added": "{provider} groups added: {groups}",
+        "connectionLost": "connection lost",
+        "couldNotConnect": "Could not connect to {provider}",
+        "error": "{provider} refresh failed. Please try again.",
+        "noChanges": "{provider} groups are up to date",
+        "reconnected": "reconnected",
+        "removed": "{provider} groups removed: {groups}"
+      },
+      "refreshing": "Refreshing...",
+      "status": {
+        "disabled": "Disabled",
+        "healthy": "Connected",
+        "unhealthy": "Connection lost"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "Enable one-time contributions",
       "oneTimeDonationsTitle": "One-time contributions",
@@ -266,7 +344,7 @@
         "body": "Text",
         "danger": "Danger",
         "link": "Links",
-        "primary": "Main",
+        "main": "Main",
         "success": "Success",
         "warning": "Warning"
       },
@@ -375,6 +453,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Participate again",
       "updateResponse": "Update your response"
     },
     "addAPoint": "Click on the map where you want to add a point",
@@ -878,6 +957,7 @@
     "selectedCount": "{n} response selected | {n} responses selected"
   },
   "calloutResponsesPage": {
+    "allResponses": "All Responses",
     "moveToBucket": "Move to {bucket}",
     "noTags": "No tags",
     "response": "Response",
@@ -911,12 +991,23 @@
     "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded."
   },
   "callouts": {
+    "access": {
+      "everyone": "Open to everyone",
+      "member": "Members only"
+    },
     "archive": "Archive",
+    "archiveRange": "{start}-{end} of {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "End date"
+      "endDate": "End date",
+      "responses": "{n} response | {n} responses"
+    },
+    "daysLeft": "{n} day left | {n} days left",
+    "empty": {
+      "active": "No active callouts right now."
     },
     "noArchivedCallouts": "Nothing to see here",
+    "openCallouts": "Open CrowdNewsrooms",
     "search": "Search",
     "showAll": "All",
     "showAnswered": "Answered",
@@ -947,7 +1038,6 @@
     },
     "contributionType": {
       "automatic": "Automatic",
-      "gift": "Gift",
       "manual": "Manual",
       "none": "None"
     },
@@ -1009,6 +1099,15 @@
       "scheduled": "Scheduled"
     },
     "statusLabel": "Status: {status}",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "All {count} matching items are selected.",
+        "clearSelection": "Clear selection",
+        "pageSelected": "All {count} items on this page are selected.",
+        "selectAll": "Select all {count} items",
+        "someSelected": "{count} matching items are selected."
+      }
+    },
     "thankYou": "Thank you!",
     "timeAgo": "{time} ago",
     "timeIn": "in {time}",
@@ -1051,6 +1150,19 @@
       "title": "Newsletter"
     },
     "oneTime": "One-time",
+    "origin": {
+      "addedBy": "Added By",
+      "addedByValues": {
+        "admin": "Admin",
+        "external": "External",
+        "self-signup": "Self signup",
+        "system": "System"
+      },
+      "campaign": "Campaign",
+      "referrer": "Referrer",
+      "source": "Signup Source",
+      "title": "Origin"
+    },
     "overview": "Overview",
     "pickTag": "Pick a tag from the list below",
     "profile": "Profile",
@@ -1058,7 +1170,6 @@
     "roles": "Roles",
     "security": {
       "instructions": "Copy and share this link:",
-      "loginOverride": "Login override",
       "mfa": {
         "desc": "This contact has 2FA enabled. Click on the \"{ disableLabel }\" button to disable it.",
         "disabledDesc": "2FA is not enabled for this contact."
@@ -1097,6 +1208,9 @@
       "email": "Email",
       "firstname": "First name",
       "hasDonated": "Made one-time contribution",
+      "idpAccount": "Identity provider account",
+      "idpLinked": "Linked",
+      "idpUnlinked": "Not linked",
       "joined": "Joined",
       "lastSeen": "Last seen",
       "lastname": "Last name",
@@ -1346,6 +1460,7 @@
       "remaining": "{remaining} characters remaining."
     },
     "cityOrTown": "City/Town",
+    "country": "Country",
     "deliveryOptIn": "Delivery opt-in",
     "description": "Description",
     "email": "Email",
@@ -1371,6 +1486,16 @@
       "addressLine1": {
         "required": "Address line 1 is required"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Your browser blocked access to the microphone. Check the site permissions and try again, or upload a recording you made elsewhere.",
+        "micPermissionDeniedTitle": "Microphone not available",
+        "recordingNotSupportedBody": "This browser cannot record audio. Please upload an audio file instead.",
+        "recordingNotSupportedTitle": "Recording not supported",
+        "tooLongBody": "This file is {duration} long. The maximum for this question is {max}. Please trim it or record a shorter answer.",
+        "tooLongTitle": "Recording too long",
+        "uploadFailedTitle": "Upload failed",
+        "wrongTypeBody": "This question only accepts {types} files."
+      },
       "cityOrTown": {
         "required": "City/Town is required"
       },
@@ -1383,6 +1508,9 @@
         "required": "Password is required",
         "sameAs": "The passwords don't match"
       },
+      "country": {
+        "required": "Country is required"
+      },
       "description": {
         "maxLength": "Maximum length of {max} characters exceeded",
         "required": "Description is required"
@@ -1394,7 +1522,8 @@
       "file": {
         "rateLimited": "Upload failed: you have uploaded too many files recently, please wait a few minutes before trying again",
         "tooBig": "Upload failed: the file size must be under 20Mb",
-        "unsupportedType": "Upload failed: the file type is not supported"
+        "unsupportedType": "Upload failed: the file type is not supported",
+        "uploadFailed": "Upload failed: the file could not be processed"
       },
       "firstName": {
         "required": "First name is required"
@@ -1416,6 +1545,9 @@
       "shareDescription": {
         "maxLength": "Maximum length of {max} characters exceeded, {remaining} characters remaining",
         "required": "Description is required"
+      },
+      "telephone": {
+        "phone": "Invalid phone number"
       },
       "unknown": {
         "email": "Invalid email address",
@@ -1446,6 +1578,7 @@
     "notes": "Notes",
     "password": "Password",
     "passwordInfo": "Set a secure password: 8+ characters or longer, and it must include a number, uppercase and lowercase letters.",
+    "passwordInfo-nuxt": "Set a secure password: at least 8 characters, including a number, an uppercase letter, and a lowercase letter.",
     "phone": "Phone number",
     "postCode": "Postcode",
     "richtext": {
@@ -1463,11 +1596,31 @@
     },
     "saveChanges": "Save Changes",
     "saved": "Saved!",
-    "unsavedChanges": "Unsaved changes",
-    "updated": "Updated"
+    "unsavedChanges": "You have unsaved changes",
+    "updated": "Updated",
+    "vatNumber": "VAT number"
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Attached",
+        "delete": "Delete",
+        "discard": "Discard",
+        "download": "Download",
+        "pause": "Pause",
+        "paused": "Paused",
+        "playPause": "Play or pause",
+        "reRecord": "Record again",
+        "record": "Start recording",
+        "recording": "Recording",
+        "requestingPermission": "Waiting for microphone permission. Allow access in your browser to continue.",
+        "resume": "Resume",
+        "stop": "Stop",
+        "tryAgain": "Try again",
+        "uploadInstead": "Upload an audio file instead",
+        "uploadLabel": "Upload an audio file",
+        "uploadingHint": "Uploading — you can keep filling in the rest of the form."
+      },
       "file": {
         "browse": "upload from device",
         "dropFiles": "Drop files to attach",
@@ -1570,6 +1723,10 @@
   },
   "login": {
     "backTo": "Back to {newsroomName}",
+    "errors": {
+      "login-failed": "Login failed. Please try again.",
+      "unlinked-account": "Your login is not linked to an account on this platform. Please contact support."
+    },
     "forgotPassword": "Forgot your password?",
     "joinNow": "Join now!",
     "lostMfaDevice": "Lost your 2FA device?",
@@ -1606,6 +1763,7 @@
           "showOptIn": "Ask to subscribe to newsletter",
           "title": "Newsletter"
         },
+        "showOrganisationName": "Ask for organisation name",
         "text": "After joining, users will be asked to confirm their registration. Here you can set the details of the confirmation screen.",
         "title": "Account confirmation",
         "welcomeMessage": "Welcome message"
@@ -1639,6 +1797,7 @@
         "showAbsorbFee": "Ask user about absorbing the payment fee",
         "showGoogleApplePay": "Show Apple and Google Pay payment icons",
         "showNoContribution": "Allow user to join without a contribution",
+        "showVatNumber": "Ask user for VAT number",
         "suggestedAmounts": "Suggested contribution amounts",
         "text": "In this section you can edit, fine tune and preview your membership join form.",
         "title": "Join form"
@@ -1678,7 +1837,6 @@
     "insert": "Insert",
     "insertTag": "Insert {tag}",
     "tags": {
-      "ACTIVATELINK": "Gift activation link",
       "ANSWERS": "Formatted response answers",
       "CALLOUTLINK": "Link to CrowdNewsroom",
       "CALLOUTSLUG": "CrowdNewsroom slug",
@@ -1687,8 +1845,6 @@
       "EMAIL": "Contact email address",
       "EXPIRES": "Membership expiration date",
       "FNAME": "Contact first name",
-      "GIFTDATE": "Gift start date",
-      "GIFTEE": "Gift recipient name",
       "ISELIGIBLE": "Whether referral is eligible",
       "LNAME": "Contact last name",
       "LOGINLINK": "Login link",
@@ -1698,7 +1854,6 @@
       "MESSAGE": "Custom message content",
       "NAME": "Contact full name",
       "ORGNAME": "Organization name",
-      "PURCHASER": "Gift purchaser name",
       "REFCODE": "Contact referral code",
       "REFEREENAME": "Name of referred person",
       "RESPNAME": "Responder name",

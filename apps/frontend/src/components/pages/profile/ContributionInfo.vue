@@ -40,13 +40,3 @@ const contributingText = computed(() => {
   }
 });
 </script>
-
-<style lang="postcss" scoped>
-.title {
-  @apply -mt-3 mb-3 text-sm font-semibold text-primary-80;
-}
-
-.content {
-  @apply font-bold;
-}
-</style>

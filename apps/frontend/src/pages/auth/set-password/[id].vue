@@ -4,6 +4,7 @@ meta:
   pageTitle: pageTitle.setPassword
   layout: Auth
   noAuth: true
+  localLoginOnly: true
 </route>
 
 <template>
@@ -15,5 +16,5 @@ import { useRoute } from 'vue-router';
 
 import ResetPasswordPage from '../reset-password/[id].vue';
 
-const route = useRoute('set_password');
+const route = useRoute();
 </script>

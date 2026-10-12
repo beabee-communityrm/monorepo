@@ -8,7 +8,7 @@
   />
   <div v-else class="flex items-center gap-2">
     <button
-      class="-ml-2 p-2 leading-tight text-primary-80 hover:text-primary"
+      class="-ml-2 p-2 leading-tight text-main-80 hover:text-main"
       type="button"
       @click="emit('remove')"
     >

@@ -1,3 +1,4 @@
+import { tailwindcssPaletteGenerator } from '@bobthered/tailwindcss-palette-generator';
 import { mix, parseToRgba } from 'color2k';
 import { ref, watch } from 'vue';
 
@@ -26,7 +27,7 @@ type FontId = keyof typeof allFonts;
 export type Theme = {
   colors: {
     _name: string;
-    primary: string;
+    main: string;
     link: string;
     body: string;
     success: string;
@@ -42,7 +43,10 @@ export type Theme = {
 };
 
 export type PartialTheme = {
-  colors?: Partial<Theme['colors']>;
+  colors?: Partial<Theme['colors']> & {
+    /** @deprecated use main */
+    primary?: string;
+  };
   fonts?: {
     title?: string;
     body?: string;
@@ -53,7 +57,7 @@ export const colorPresets = [
   {
     name: 'default',
     colors: {
-      primary: '#262453',
+      main: '#262453',
       link: '#43a796',
       body: '#262453',
       warning: '#f5cc5b',
@@ -66,7 +70,7 @@ export const colorPresets = [
 const defaultColorPreset = colorPresets[0];
 
 export const visibleCustomColors = [
-  'primary',
+  'main',
   'link',
   'body',
   'success',
@@ -113,30 +117,45 @@ function setColorVar(name: string, color: string) {
   setCSSVar(name, `${r}, ${g}, ${b}`);
 }
 
-function setShades(
+function computeShade(colorValue: string, level: number): string {
+  if (level === 100) return colorValue;
+  return level > 100
+    ? mix(colorValue, 'black', level / 100 - 1)
+    : mix(colorValue, 'white', 1 - level / 100);
+}
+
+function setCustomShades(
   colorName: string,
   colorValue: string,
   levels: number[] = []
 ) {
   setColorVar(`--c-${colorName}`, colorValue);
   for (const level of levels) {
-    const levelColor =
-      level > 100
-        ? mix(colorValue, 'black', level / 100 - 1)
-        : mix(colorValue, 'white', 1 - level / 100);
-    setColorVar(`--c-${colorName}-${level}`, levelColor);
+    setColorVar(`--c-${colorName}-${level}`, computeShade(colorValue, level));
+  }
+}
+
+// Set standard Tailwind 50–950 scale for a colour, for Nuxt UI compatibility.
+// Only needed for the colours mapped to Nuxt UI tokens in nuxt-ui.config.ts
+// ('nuxt-primary').
+function setNuxtShades(colorName: string, colorValue: string) {
+  const shades = tailwindcssPaletteGenerator(colorValue).primary;
+  for (const [shade, hex] of Object.entries(shades)) {
+    setCSSVar(`--color-${colorName}-${shade}`, hex);
   }
 }
 
 export function getFullTheme(theme: PartialTheme): Theme {
-  const primaryColor =
-    theme.colors?.primary ?? defaultColorPreset.colors.primary;
+  const mainColor =
+    theme.colors?.main ??
+    theme.colors?.primary ??
+    defaultColorPreset.colors.main;
   const bodyFont = getFont(theme.fonts?.body);
 
   const colors = {
     _name: theme.colors?._name ?? 'custom',
-    primary: primaryColor,
-    body: theme.colors?.body ?? primaryColor,
+    main: mainColor,
+    body: theme.colors?.body ?? mainColor,
     link: theme.colors?.link ?? defaultColorPreset.colors.link,
     warning: theme.colors?.warning ?? defaultColorPreset.colors.warning,
     success: theme.colors?.success ?? defaultColorPreset.colors.success,
@@ -170,14 +189,18 @@ watch(
     const { colors, fonts } = getFullTheme(newTheme);
 
     // Set colors
-    setShades('primary', colors.primary, [5, 10, 20, 40, 70, 80]);
-    setShades('body', colors.body, [60, 80]);
-    setShades('link', colors.link, [10, 70, 110]);
-    setShades('warning', colors.warning || '#f5cc5b', [10, 30, 70]);
-    setShades('success', colors.success || '#86a960', [10, 30, 70, 110]);
-    setShades('danger', colors.danger || '#ce3d3d', [10, 30, 70, 110]);
-    setShades('white', colors.white || '#ffffff');
-    setShades('black', colors.black || '#000000');
+    setCustomShades('main', colors.main, [5, 10, 20, 40, 70, 80]);
+    setCustomShades('body', colors.body, [60, 80]);
+    setCustomShades('link', colors.link, [10, 70, 110]);
+    setCustomShades('warning', colors.warning || '#f5cc5b', [10, 30, 70]);
+    setCustomShades('success', colors.success || '#86a960', [10, 30, 70, 110]);
+    setCustomShades('danger', colors.danger || '#ce3d3d', [10, 30, 70, 110]);
+    setCustomShades('white', colors.white || '#ffffff');
+    setCustomShades('black', colors.black || '#000000');
+
+    // Nuxt UI colour tokens (see nuxt-ui.config.ts): 'primary' uses the link
+    // colour.
+    setNuxtShades('nuxt-primary', colors.link);
 
     // Load fonts
     setCSSVar('--ff-body', allFonts[fonts.body].join(','));

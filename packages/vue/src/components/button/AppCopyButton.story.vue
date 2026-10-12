@@ -24,7 +24,7 @@ function handleCopy() {
             class="flex-1 border-none px-2 py-2 focus:outline-none"
             type="text"
           />
-          <div class="h-10 border-l border-primary-40">
+          <div class="h-10 border-l border-main-40">
             <AppCopyButton :text="state.text" @copy="handleCopy" />
           </div>
         </div>
@@ -43,7 +43,7 @@ function handleCopy() {
       <div class="flex flex-col gap-4">
         <div class="flex items-center rounded border">
           <span
-            class="flex-0 border-r border-primary-40 bg-grey-lighter px-2 py-2"
+            class="flex-0 border-r border-main-40 bg-grey-lighter px-2 py-2"
           >
             https://
           </span>
@@ -53,7 +53,7 @@ function handleCopy() {
             type="text"
             readonly
           />
-          <div class="h-10 border-l border-primary-40">
+          <div class="h-10 border-l border-main-40">
             <AppCopyButton text="https://example.com/my-page" />
           </div>
         </div>
@@ -69,7 +69,7 @@ function handleCopy() {
             type="text"
             readonly
           />
-          <div class="h-10 border-l border-primary-40">
+          <div class="h-10 border-l border-main-40">
             <AppCopyButton text="API Key: 1234-5678-9012-3456" />
           </div>
         </div>
@@ -84,7 +84,7 @@ This is a longer text
 that spans multiple lines
 and can be copied with a single click.</textarea
           >
-          <div class="h-full border-l border-primary-40">
+          <div class="h-full border-l border-main-40">
             <AppCopyButton
               text="This is a longer text
 that spans multiple lines

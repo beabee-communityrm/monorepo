@@ -10,6 +10,7 @@ import {
 } from '@beabee/core/logging';
 import { Contact } from '@beabee/core/models';
 import { initApp, startServer } from '@beabee/core/server';
+import { newsletterService, optionsService } from '@beabee/core/services';
 
 import cookie from 'cookie-parser';
 import cors from 'cors';
@@ -101,6 +102,10 @@ initApp()
     app.use(requestErrorLogger);
 
     startServer(app);
+  })
+  .then(() => {
+    // Cache newsletter groups in DB
+    newsletterService.refreshNewsletterGroups();
   })
   .catch((err) => {
     mainLogger.error('Error during initialization', err);

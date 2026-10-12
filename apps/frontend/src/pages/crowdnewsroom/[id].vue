@@ -18,7 +18,7 @@ import {
 const callout =
   ref<GetCalloutDataWith<'form' | 'responseViewSchema' | 'variantNames'>>();
 
-const route = useRoute('/crowdnewsroom/[id]');
+const route = useRoute();
 
 watch(
   [() => route.params.id, () => route.query.lang],

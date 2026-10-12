@@ -1,7 +1,0 @@
-{
-  "title": "Gift membership",
-  "path": "gift",
-  "permissions": ["loggedIn"],
-  "menu": "none",
-  "priority": 5
-}

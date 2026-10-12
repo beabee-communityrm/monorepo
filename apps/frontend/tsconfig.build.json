@@ -1,7 +1,16 @@
 {
   "extends": "@beabee/tsconfig/tsconfig.frontend.json",
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "auto-imports.d.ts",
+    "components.d.ts"
+  ],
   "compilerOptions": {
     "allowImportingTsExtensions": true,
+    "rootDir": ".",
     "paths": {
       "#components/*": ["./src/components/*"],
       "#composables/*": ["./src/composables/*"],
@@ -26,5 +35,10 @@
       "#assets/*": ["./src/assets/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "vueCompilerOptions": {
+    "plugins": [
+      "vue-router/volar/sfc-route-blocks",
+      "vue-router/volar/sfc-typed-router"
+    ]
+  }
 }

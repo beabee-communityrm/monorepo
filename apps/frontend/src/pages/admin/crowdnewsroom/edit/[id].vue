@@ -14,5 +14,5 @@ import { useRoute } from 'vue-router';
 
 import NewCalloutPage from '../new.vue';
 
-const route = useRoute('adminCalloutEdit');
+const route = useRoute();
 </script>

@@ -33,19 +33,22 @@
   - common.loading: "Loading..."
 -->
 <template>
-  <table class="border-b border-primary-20">
+  <table class="border-b border-main-20">
     <thead v-if="!hideHeaders" class="text-sm">
       <tr class="align-bottom">
         <th v-if="selectable" class="w-0 p-2">
-          <AppCheckbox v-model="allSelected" class="h-5" />
+          <AppCheckbox
+            :model-value="isIndeterminate ? 'indeterminate' : allSelected"
+            @update:model-value="setAll"
+          />
         </th>
         <th
           v-for="(header, i) in headers"
           :key="i"
-          class="relative whitespace-nowrap p-2 font-semibold text-body-80"
+          class="relative p-2 font-semibold whitespace-nowrap text-body-80"
           :class="{
             'cursor-pointer': header.sortable,
-            'font-bold text-primary': header.value === sort?.by,
+            'font-bold text-main': header.value === sort?.by,
           }"
           :align="header.align || 'left'"
           :style="{ width: header.width }"
@@ -69,10 +72,7 @@
     </thead>
 
     <tbody class="text-xs lg:text-sm">
-      <tr
-        v-if="!items || items.length === 0"
-        class="border-t border-primary-20"
-      >
+      <tr v-if="!items || items.length === 0" class="border-t border-main-20">
         <td v-if="selectable" />
         <td :colspan="headers.length" class="p-2">
           <slot :name="items ? 'empty' : 'loading'">
@@ -82,12 +82,12 @@
       </tr>
 
       <template v-for="(item, i) in items" :key="i">
-        <tr
-          class="border-t border-primary-20 align-top"
-          :class="rowClasses(item)"
-        >
+        <tr class="border-t border-main-20 align-top" :class="rowClasses(item)">
           <td v-if="selectable" class="p-2">
-            <AppCheckbox v-model="item.selected" />
+            <AppCheckbox
+              :model-value="selectedIds.includes(item.id)"
+              @update:model-value="(checked) => setOne(item.id, checked)"
+            />
           </td>
           <td
             v-for="(header, j) in headers"
@@ -139,6 +139,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { SortType } from '../../constants';
+import { type CheckboxValue } from '../../types';
 import { type Header, type Item, type Sort } from '../../types/table';
 import { hasSlotContent } from '../../utils/slots';
 
@@ -158,10 +159,13 @@ export interface AppTableProps<I extends Item> {
   hideHeaders?: boolean;
   /** Function to add custom CSS classes to rows */
   rowClass?: (item: I) => string;
+  /** Array of selected item IDs */
+  selectedIds?: string[];
 }
 
 const props = withDefaults(defineProps<AppTableProps<I>>(), {
   sort: undefined,
+  items: null,
   selectable: false,
   hideHeaders: false,
   rowClass: undefined,
@@ -180,30 +184,35 @@ const emit = defineEmits<{
   'update:sort': [sort: Sort];
 }>();
 
+// Models
+const selectedIds = defineModel<string[]>('selectedIds', {
+  required: false,
+  default: () => [],
+});
+
 // Computed properties
 const sort = computed({
   get: () => props.sort,
   set: (value) => value && emit('update:sort', value),
 });
 
-const allSelected = computed({
-  get: () =>
-    props.selectable && props.items
-      ? props.items.every((i) => i.selected)
-      : false,
-  set: (newValue) => {
-    if (!props.items) return;
-    for (const item of props.items) {
-      item.selected = newValue;
-    }
-  },
-});
+const allIds = computed(() => props.items?.map((i) => i.id) || []);
+
+const allSelected = computed(
+  () => allIds.value.length === selectedIds.value.length
+);
+
+const isIndeterminate = computed(
+  () => selectedIds.value.length > 0 && !allSelected.value
+);
 
 // Methods
 function rowClasses(item: I): string {
   return (
     (props.rowClass ? props.rowClass(item) : '') +
-    (props.selectable && item.selected ? ' bg-primary-10' : '')
+    (props.selectable && selectedIds.value.includes(item.id)
+      ? ' bg-main-10'
+      : '')
   );
 }
 
@@ -217,5 +226,16 @@ function sortBy(header: Header): void {
         ? SortType.Desc
         : SortType.Asc,
   };
+}
+
+function setOne(id: string, checked: CheckboxValue) {
+  selectedIds.value =
+    checked === true
+      ? [...new Set([...selectedIds.value, id])]
+      : selectedIds.value.filter((selectedId) => selectedId !== id);
+}
+
+function setAll(checked: CheckboxValue) {
+  selectedIds.value = checked === true ? [...allIds.value] : [];
 }
 </script>

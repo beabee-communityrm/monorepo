@@ -1,7 +1,9 @@
 import {
+  ActivityEventType,
   CalloutAccess,
   CalloutResponseAnswersSlide,
   CalloutResponseGuestData,
+  CalloutResponseMode,
   CalloutResponseNewsletterData,
   CreateCalloutData,
   FormioFile,
@@ -15,7 +17,6 @@ import { BadRequestError } from 'routing-controllers';
 import slugifyLib from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
 
-import config from '#config/config';
 import { contactEmailTemplates } from '#data/email-templates';
 import { getRepository, runTransaction } from '#database';
 import {
@@ -34,6 +35,7 @@ import {
   CalloutVariant,
   Contact,
 } from '#models/index';
+import ActivityService from '#services/ActivityService';
 import ContactsService from '#services/ContactsService';
 import EmailService from '#services/EmailService';
 import NewsletterService from '#services/NewsletterService';
@@ -65,7 +67,15 @@ class CalloutsService {
       const slug = baseSlug + (autoSlug ? '-' + autoSlug : '');
       log.info('Creating callout with slug ' + slug);
       try {
-        return await this.saveCallout({ ...data, slug });
+        const calloutId = await this.saveCallout({ ...data, slug });
+
+        await ActivityService.addEvent({
+          targetId: calloutId,
+          eventType: ActivityEventType.CalloutCreated,
+          metadata: null,
+        });
+
+        return calloutId;
       } catch (err) {
         if (err instanceof DuplicateIdError && autoSlug !== false) {
           autoSlug++;
@@ -115,6 +125,12 @@ class CalloutsService {
     }
 
     await this.saveCallout(data, id);
+
+    await ActivityService.addEvent({
+      targetId: id,
+      eventType: ActivityEventType.CalloutEdited,
+      metadata: null,
+    });
   }
 
   async duplicateCallout(id: string): Promise<string> {
@@ -205,6 +221,14 @@ class CalloutsService {
 
       const result = await em.getRepository(Callout).delete({ id });
 
+      if (result.affected === 1) {
+        await ActivityService.addEvent({
+          targetId: id,
+          eventType: ActivityEventType.CalloutDeleted,
+          metadata: null,
+        });
+      }
+
       return result.affected === 1;
     });
   }
@@ -224,7 +248,7 @@ class CalloutsService {
         calloutId: callout.id,
         contactId: contact.id,
       },
-      // Get most recent response for callouts with allowMultiple
+      // Get most recent response for callouts that allow multiple responses
       order: { createdAt: 'DESC' },
     });
 
@@ -262,11 +286,11 @@ class CalloutsService {
     }
 
     let response = await this.getResponse(callout, contact);
-    if (!response || callout.allowMultiple) {
+    if (!response || callout.responseMode === CalloutResponseMode.Multiple) {
       response = new CalloutResponse();
       response.callout = callout;
       response.contact = contact;
-    } else if (!callout.allowUpdate) {
+    } else if (callout.responseMode !== CalloutResponseMode.SingleEditable) {
       throw new InvalidCalloutResponseError('cant-update');
     }
 
@@ -283,7 +307,7 @@ class CalloutsService {
           newsletterStatus: NewsletterStatus.Pending,
           newsletterGroups: newsletter.groups,
         },
-        { mergeGroups: true }
+        { newsletterGroupChange: 'add' }
       );
     }
 
@@ -293,6 +317,12 @@ class CalloutsService {
         [callout.mcMergeField]: answers[slideId]?.[answerKey]?.toString() || '',
       });
     }
+
+    await ActivityService.addEvent({
+      targetId: callout.id,
+      eventType: ActivityEventType.CalloutAnswered,
+      metadata: null,
+    });
 
     // Send confirmation email to the contact
     await this.sendResponseEmail(callout, contact);
@@ -336,7 +366,17 @@ class CalloutsService {
         log.info(
           'Creating new contact for callout response with email ' + guest.email
         );
-        contact = await ContactsService.createContact(guest);
+
+        // campaign and referrer needed?
+        contact = await ContactsService.createContact(
+          guest,
+          {},
+          {
+            source: 'CrowdNewsroom',
+            medium: '',
+            campaign: callout.slug,
+          }
+        );
       }
 
       try {

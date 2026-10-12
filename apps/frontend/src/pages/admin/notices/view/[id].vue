@@ -16,7 +16,7 @@ meta:
         <ItemDateRange :item="notice" />
       </div>
 
-      <div class="flex-0 flex flex-wrap gap-2 lg:flex-col">
+      <div class="flex flex-0 flex-wrap gap-2 lg:flex-col">
         <ActionButton
           :icon="faPencilAlt"
           :to="`/admin/notices/edit/${notice.id}`"
@@ -54,11 +54,7 @@ import {
   PageTitle,
 } from '@beabee/vue';
 
-import {
-  faPencilAlt,
-  faSignHanging,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -66,10 +62,11 @@ import { useRoute, useRouter } from 'vue-router';
 import AppNotice from '#components/notice/AppNotice.vue';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import ItemStatusText from '../../../../components/item/ItemStatusText.vue';
 
-const route = useRoute('adminNoticeView');
+const route = useRoute();
 const { t } = useI18n();
 
 const notice = ref<GetNoticeData | undefined>();
@@ -77,8 +74,12 @@ const router = useRouter();
 
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.notices'), to: '/admin/notices', icon: faSignHanging },
-    { title: notice.value?.name || '' },
+    {
+      label: t(routeLabels.adminNotices),
+      to: '/admin/notices',
+      icon: routeIcons.adminNotices,
+    },
+    { label: notice.value?.name || '' },
   ])
 );
 

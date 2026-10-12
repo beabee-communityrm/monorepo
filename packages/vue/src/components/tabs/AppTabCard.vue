@@ -3,7 +3,7 @@
   <div
     :class="{
       '-mb-4': true,
-      'bg-primary-10 shadow-sm': variant === 'boxed',
+      'bg-main-10 shadow-sm': variant === 'boxed',
       'sticky top-0 z-50': stickyTabs,
     }"
   >

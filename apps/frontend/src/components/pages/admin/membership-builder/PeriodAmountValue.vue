@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-2 max-w-[8rem]">
+  <div class="mb-2 max-w-32">
     <AppInput
       v-model="amount"
       type="number"

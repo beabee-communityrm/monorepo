@@ -65,10 +65,6 @@
       "path": "../packages/tsconfig"
     },
     {
-      "name": "packages/test-utils",
-      "path": "../packages/test-utils"
-    },
-    {
       "name": "packages/esbuild",
       "path": "../packages/esbuild"
     },

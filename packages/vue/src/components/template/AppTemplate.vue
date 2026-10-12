@@ -20,7 +20,7 @@
       sizeClasses[size],
       disabled
         ? 'cursor-not-allowed opacity-50'
-        : 'cursor-pointer hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-primary-70 focus:ring-offset-2',
+        : 'hover:bg-opacity-80 cursor-pointer focus:ring-2 focus:ring-main-70 focus:ring-offset-2 focus:outline-none',
     ]"
     role="button"
     :tabindex="disabled ? -1 : 0"
@@ -35,7 +35,7 @@
       <font-awesome-icon
         v-if="icon"
         :icon="icon"
-        class="text-current h-5 w-5"
+        class="h-5 w-5 text-current"
         aria-hidden="true"
       />
 
@@ -45,7 +45,7 @@
 
       <span
         v-if="badge"
-        class="rounded-full bg-primary px-2 py-1 text-xs font-medium text-white"
+        class="rounded-full bg-main px-2 py-1 text-xs font-medium text-white"
       >
         {{ badge }}
       </span>
@@ -133,7 +133,7 @@ const componentId = props.id ?? generateUniqueId('template');
 
 // --- Styling maps (replace with your component’s variants)
 const variantClasses = {
-  primary: 'border-primary-40 bg-primary-5 text-primary-80',
+  primary: 'border-main-40 bg-main-5 text-main-80',
   secondary: 'border-grey-light bg-grey-lighter text-body',
   success: 'border-success-30 bg-success-10 text-success-110',
   warning: 'border-warning-30 bg-warning-10 text-warning',

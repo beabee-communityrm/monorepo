@@ -214,7 +214,7 @@ function handleActivate() {
         >
           <div class="space-y-3">
             <div class="flex items-center gap-3">
-              <div class="h-12 w-12 rounded-full bg-primary-20"></div>
+              <div class="h-12 w-12 rounded-full bg-main-20"></div>
               <div>
                 <p class="font-medium">John Doe</p>
                 <p class="text-sm text-body-80">john.doe@example.com</p>

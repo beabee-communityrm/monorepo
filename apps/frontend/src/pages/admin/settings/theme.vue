@@ -89,7 +89,7 @@ meta:
           <div
             v-for="name in visibleCustomColors"
             :key="name"
-            class="rounded border border-primary-20 p-2"
+            class="rounded border border-main-20 p-2"
           >
             <label class="mb-2 block text-sm">
               {{ t('adminSettings.theme.colorNames.' + name) }}

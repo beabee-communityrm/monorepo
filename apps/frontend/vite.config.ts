@@ -1,12 +1,13 @@
-import theme from '@beabee/vue/plugins/theme';
+import { nuxtUiConfig } from '@beabee/vue/lib/nuxt-ui.config';
 
 import vueI18n from '@intlify/unplugin-vue-i18n/vite';
+import ui from '@nuxt/ui/vite';
 import replace from '@rollup/plugin-replace';
 import vue from '@vitejs/plugin-vue';
 import { createRequire } from 'node:module';
 import { dirname, resolve } from 'node:path';
-import VueRouter from 'unplugin-vue-router/vite';
 import { type Plugin, defineConfig, loadEnv } from 'vite';
+import VueRouter from 'vue-router/vite';
 
 const require = createRequire(import.meta.url);
 const LOCALE_PATH = resolve(
@@ -18,10 +19,9 @@ export default ({ command, mode }) => {
   const env = loadEnv(mode, resolve(process.cwd(), '../../'), '');
 
   const plugins = [
+    ui(nuxtUiConfig),
     // VueRouter must be placed before Vue plugin
     VueRouter({
-      // Specify the pages directory
-      routesFolder: 'src/pages',
       // Enable typed routes - generate in src/typings directory
       dts: 'src/typings/typed-router.d.ts',
       // Configure route block lang (same as vite-plugin-pages default)
@@ -32,7 +32,6 @@ export default ({ command, mode }) => {
       include: LOCALE_PATH,
       strictMessage: false,
     }),
-    theme(),
   ];
 
   // Keep this in sync with tsconfig.build.json -> compilerOptions.paths (# subpath imports)

@@ -1,7 +1,15 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
+import {
+  ApiHealthStatus,
+  BaseNewsletterGroupData,
+  MailchimpNewsletterIntegrationData,
+  NewsletterStatus,
+} from '@beabee/beabee-common';
 
-import { MailchimpNewsletterConfig } from '#config/config';
-import { CantUpdateNewsletterContactError } from '#errors/index';
+import config, { MailchimpNewsletterConfig } from '#config/config';
+import {
+  CantUpdateNewsletterContactError,
+  CantUpdateNewsletterGroupsError,
+} from '#errors/index';
 import {
   createInstance,
   getMCMemberUrl,
@@ -11,6 +19,7 @@ import {
 import { log as mainLogger } from '#logging';
 import OptionsService from '#services/OptionsService';
 import {
+  MCWebhook,
   NewsletterContact,
   NewsletterProvider,
   UpdateNewsletterContact,
@@ -19,13 +28,28 @@ import {
 
 const log = mainLogger.child({ app: 'mailchimp-provider' });
 
+/**
+ * Mailchimp webhook events that the webhook handler in apps/webhooks processes
+ * and therefore must be enabled on the Mailchimp webhook. Source of truth for
+ * the handler's known webhook types.
+ */
+export const KNOWN_WEBHOOK_EVENTS: readonly string[] = [
+  'subscribe',
+  'unsubscribe',
+  'profile',
+  'upemail',
+  'cleaned',
+];
+
 export class MailchimpProvider implements NewsletterProvider {
   private readonly api;
   private readonly listId;
+  private readonly webhookSecret;
 
   constructor(settings: MailchimpNewsletterConfig['settings']) {
     this.api = createInstance(settings);
     this.listId = settings.listId;
+    this.webhookSecret = settings.webhookSecret;
   }
 
   /**
@@ -74,6 +98,11 @@ export class MailchimpProvider implements NewsletterProvider {
     if (resp.status === 200) {
       log.info('Updated member ' + contact.email);
       return mcMemberToNlContact(resp.data);
+    } else if (
+      resp.status === 400 &&
+      resp.data?.detail.toLowerCase().includes('invalid interest id')
+    ) {
+      throw new CantUpdateNewsletterGroupsError(resp.data.detail);
 
       // Try to put the user into pending state if they're in a compliance state
       // This can happen if they previously unsubscribed or were cleaned
@@ -192,6 +221,108 @@ export class MailchimpProvider implements NewsletterProvider {
         validateStatus: (status) =>
           status < 400 || status === 404 || status === 405,
       }
+    );
+  }
+
+  /**
+   * Get information about the Mailchimp integration: audience ID and the available
+   * newsletter groups (from options table -> newsletter-groups).
+   * If `withHealth` is set, also include the health status (healthy if the
+   * audience is reachable and our webhook is installed, unhealthy otherwise).
+   */
+  async getProviderInfo(
+    withHealth = false
+  ): Promise<MailchimpNewsletterIntegrationData> {
+    const resp: MailchimpNewsletterIntegrationData = {
+      provider: 'mailchimp',
+      audienceId: this.listId,
+      groups: OptionsService.getJSON('newsletter-groups'),
+    };
+
+    if (withHealth) {
+      resp.status = await this.getHealthStatus();
+    }
+    return resp;
+  }
+
+  /**
+   * Check the Mailchimp integration is healthy: the audience is reachable and
+   * our webhook is installed and correctly configured on the list.
+   *
+   * @returns HEALTHY if all checks pass, UNHEALTHY otherwise
+   */
+  private async getHealthStatus(): Promise<ApiHealthStatus> {
+    try {
+      // Check the audience/list is reachable
+      await this.api.instance.get(`lists/${this.listId}`);
+
+      // Find our webhook, matching the secret query param that the webhook
+      // handler validates against
+      const webhookUrl = `${config.webhookUrl}/webhook/mailchimp`;
+      const expectedWebhookUrl = `${webhookUrl}?secret=${this.webhookSecret}`;
+      const resp = await this.api.instance.get<{ webhooks: MCWebhook[] }>(
+        `lists/${this.listId}/webhooks`
+      );
+      const webhook = resp.data.webhooks.find(
+        (w) => w.url === expectedWebhookUrl
+      );
+      if (!webhook) {
+        log.warning(
+          `Mailchimp health check failed: no webhook found for ${webhookUrl}`
+        );
+        return ApiHealthStatus.UNHEALTHY;
+      }
+
+      // Triggered by member (user) and admin changes, but not by our own API
+      // changes (which would cause a sync loop)
+      if (
+        !webhook.sources.user ||
+        !webhook.sources.admin ||
+        webhook.sources.api
+      ) {
+        log.warning(
+          `Mailchimp health check failed: webhook sources misconfigured for ${webhookUrl}`
+        );
+        return ApiHealthStatus.UNHEALTHY;
+      }
+
+      // All events we handle must be enabled (we don't care about the rest)
+      if (!KNOWN_WEBHOOK_EVENTS.every((event) => webhook.events[event])) {
+        log.warning(
+          `Mailchimp health check failed: webhook events misconfigured for ${webhookUrl}`
+        );
+        return ApiHealthStatus.UNHEALTHY;
+      }
+
+      return ApiHealthStatus.HEALTHY;
+    } catch (err) {
+      log.error('Mailchimp health check failed', err);
+      return ApiHealthStatus.UNHEALTHY;
+    }
+  }
+
+  /**
+   * Get list of available newsletter groups
+   *
+   * @returns groups as `{ id, label }` pairs, where `id` is the
+   * Mailchimp interest ID and `label` is its display name
+   */
+  async getGroups(): Promise<BaseNewsletterGroupData[]> {
+    const interestCategories = await this.api.instance.get(
+      `lists/${this.listId}/interest-categories`
+    );
+    const results = await Promise.all(
+      interestCategories.data.categories.map((c: { id: string }) =>
+        this.api.instance.get(
+          `lists/${this.listId}/interest-categories/${c.id}/interests`
+        )
+      )
+    );
+    return results.flatMap((r) =>
+      r.data.interests.map((i: { id: string; name: string }) => ({
+        id: i.id,
+        label: i.name,
+      }))
     );
   }
 }

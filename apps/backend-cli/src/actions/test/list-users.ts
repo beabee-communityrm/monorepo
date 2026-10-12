@@ -1,4 +1,4 @@
-import { ContributionPeriod, ContributionType } from '@beabee/beabee-common';
+import { ContributionPeriod } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
 import { createQueryBuilder } from '@beabee/core/database';
 import { log as mainLogger } from '@beabee/core/logging';
@@ -14,7 +14,6 @@ interface TestUserFilters {
   isActive: Brackets;
   isInactive: Brackets;
   isSuperAdmin: Brackets;
-  isGift: Brackets;
   hasSubscription: Brackets;
   hasCancelled: Brackets;
   isPayingFee: Brackets;
@@ -69,17 +68,6 @@ export const listTestUsers = async (dryRun = false): Promise<void> => {
     await logContactVaryContributions('Cancelled inactive member', [
       filters.isInactive,
       filters.hasCancelled,
-    ]);
-
-    // Gift memberships
-    await logContact('Active, gift membership', [
-      filters.isActive,
-      filters.isGift,
-    ]);
-
-    await logContact('Inactive, gift membership', [
-      filters.isInactive,
-      filters.isGift,
     ]);
 
     // Special cases
@@ -189,11 +177,6 @@ async function getFilters(): Promise<TestUserFilters> {
       qb.where("mp.type = 'member' AND mp.dateExpires < :now", { now })
     ),
     isSuperAdmin: new Brackets((qb) => qb.where("mp.type = 'superadmin'")),
-    isGift: new Brackets((qb) =>
-      qb.where('m.contributionType = :gift', {
-        gift: ContributionType.Gift,
-      })
-    ),
     hasSubscription: new Brackets((qb) =>
       qb.where('m.id IN ' + hasSubscription.getQuery())
     ),

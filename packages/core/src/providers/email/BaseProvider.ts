@@ -1,4 +1,7 @@
-import { RESET_SECURITY_FLOW_TYPE } from '@beabee/beabee-common';
+import {
+  ApiHealthStatus,
+  RESET_SECURITY_FLOW_TYPE,
+} from '@beabee/beabee-common';
 
 import config from '#config/config';
 import { createQueryBuilder, getRepository } from '#database';
@@ -136,6 +139,12 @@ export abstract class BaseProvider implements EmailProvider {
   async getTemplateEmail(templateId: string): Promise<Email | null> {
     return await getRepository(Email).findOneBy({ id: templateId });
   }
+
+  /**
+   * Check the health of the email integration.
+   * @returns HEALTHY if the provider is reachable, UNHEALTHY otherwise
+   */
+  abstract getHealthStatus(): Promise<ApiHealthStatus>;
 }
 
 /** @deprecated Use named import BaseProvider instead */

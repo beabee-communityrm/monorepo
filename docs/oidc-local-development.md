@@ -1,0 +1,83 @@
+# Local identity provider development with Keycloak
+
+The docker-compose stack includes a Keycloak identity provider (the `auth`
+service) for testing IdP Provisioning and OIDC Login locally. It always
+runs but is unused until `BEABEE_IDP_PROVIDER=keycloak` is set. Keycloak is the development IdP
+only; production instances use Zitadel (see [OIDC login](./oidc-login.md)).
+
+Keycloak is addressed as `http://auth.localhost:3080` everywhere: browsers
+resolve `*.localhost` to loopback by themselves, and the compose network
+carries the same name as an alias for the containers, so no hosts entry is
+needed.
+
+## Setup
+
+1. **Enable the env block**: uncomment the "Identity Provider" section in your
+   `.env` (see `.env.example`). `KEYCLOAK_PORT` is required for the stack to
+   start regardless — existing `.env` files need it added from `.env.example`.
+
+2. **Start the stack** and wait for the realm import:
+
+   ```sh
+   docker compose up -d
+   docker compose logs -f auth   # wait for "Realm 'beabee' imported"
+   ```
+
+## What you get
+
+- Keycloak admin console at http://auth.localhost:3080 (user `admin`,
+  password `admin`), realm `beabee` imported from
+  `packages/docker/keycloak/realm.json`
+- A service account client `beabee-provisioning` (secret `beabee-dev-secret`)
+  with user management permissions
+- Email is the username and cannot be changed by users themselves, matching
+  how the production IdP is meant to behave
+- No accounts: they are created by beabee when contacts are provisioned
+
+The realm is re-imported from the JSON file whenever the container is
+recreated; changes made in the admin console are not persisted.
+
+## Testing provisioning
+
+With the provider enabled, contacts created through the join flow or the admin
+UI appear in the Keycloak realm and get their `idpSubject` set; email and name
+changes and deletions follow. Contacts that existed before the provider was
+enabled are provisioned in bulk:
+
+```sh
+yarn backend-cli user list --unlinked
+yarn backend-cli user provision
+```
+
+To log in as a provisioned account, give it a password in the Keycloak admin
+console (Users → Credentials).
+
+## Testing login
+
+The realm also contains a public login client `beabee-login` (PKCE, no
+secret) with the router's callback URL (`:3002`); the `:3000` entry only
+matters when `BEABEE_LOGIN_SETTINGS_REDIRECTURI` points at the bare
+backend. Uncomment the "Login Configuration" block in `.env`
+(`BEABEE_LOGIN_PROVIDER=oidc`) and recreate the containers so they pick up
+the new environment (a restart alone does not re-read `env_file`):
+
+```sh
+docker compose up -d api_app app
+```
+
+Then:
+
+- http://localhost:3002/api/1.0/auth/login forwards to the Keycloak login form;
+  sign in as a provisioned account and you land back on beabee logged in. An
+  account that isn't linked to a contact is sent to
+  `/auth/login?loginError=unlinked-account`.
+- `POST /api/1.0/auth/login`, MFA and reset endpoints answer `404` while OIDC
+  login is enabled.
+- http://localhost:3002/api/1.0/auth/logout ends both the beabee and the
+  Keycloak session.
+
+Host-side CLI commands rely on the operating system resolving
+`auth.localhost` (Linux with systemd-resolved does; macOS does not). Where it
+doesn't, either add `127.0.0.1 auth.localhost` to `/etc/hosts` or run the
+commands inside the container with
+`docker compose exec api_app node /opt/apps/backend-cli/dist/index.js user ...`.

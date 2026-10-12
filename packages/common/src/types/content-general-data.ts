@@ -13,6 +13,8 @@ export interface ContentGeneralData<L = string> {
   theme: {
     colors?: {
       _name?: string;
+      main?: string;
+      /** @deprecated use main */
       primary?: string;
       link?: string;
       body?: string;
@@ -33,4 +35,6 @@ export interface ContentGeneralData<L = string> {
   hideContribution: boolean;
   footerLinks: FooterLink[];
   enableOneTimeDonations: boolean;
+  /** Whether members log in at an external identity provider (OIDC Login) */
+  oidcEnabled: boolean;
 }

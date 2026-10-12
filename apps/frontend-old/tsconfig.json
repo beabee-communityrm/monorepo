@@ -1,0 +1,9 @@
+{
+  "extends": ["./tsconfig.build.json", "@beabee/tsconfig/tsconfig.dev.json"],
+  "exclude": [],
+  "references": [
+    { "path": "../../packages/common" },
+    { "path": "../../packages/client" },
+    { "path": "../../packages/locale" }
+  ]
+}

@@ -1,4 +1,5 @@
 import {
+  COUNTRY_CODES,
   ContributionPeriod,
   ContributionType,
   NewsletterStatus,
@@ -7,6 +8,16 @@ import type { Filters } from '../types/index.js';
 import type { TagFiltersType } from './tags.js';
 
 export const RoleTypes = ['member', 'admin', 'superadmin'] as const;
+
+/** Who added a contact, derived from the actor of their creation event */
+export const ContactAddedByTypes = [
+  'admin',
+  'self-signup',
+  'system',
+  'external',
+] as const;
+
+export type ContactAddedByType = (typeof ContactAddedByTypes)[number];
 
 export const contactFilters = {
   id: {
@@ -35,7 +46,6 @@ export const contactFilters = {
     type: 'enum',
     options: [
       ContributionType.Automatic,
-      ContributionType.Gift,
       ContributionType.Manual,
       ContributionType.None,
     ] satisfies ContributionType[] as ContributionType[],
@@ -84,6 +94,9 @@ export const contactFilters = {
   activeUser: {
     type: 'boolean',
   },
+  idpLinked: {
+    type: 'boolean',
+  },
   membershipStarts: {
     type: 'date',
   },
@@ -94,8 +107,33 @@ export const contactFilters = {
     type: 'text',
     nullable: true,
   },
+  organisation: {
+    type: 'text',
+  },
+  deliveryAddressCountry: {
+    type: 'enum',
+    options: COUNTRY_CODES,
+    nullable: true,
+  },
   tags: {
     type: 'array',
+  },
+  campaign: {
+    type: 'text',
+    nullable: true,
+  },
+  medium: {
+    type: 'text',
+    nullable: true,
+  },
+  source: {
+    type: 'text',
+    nullable: true,
+  },
+  addedBy: {
+    type: 'enum',
+    options:
+      ContactAddedByTypes satisfies typeof ContactAddedByTypes as typeof ContactAddedByTypes,
   },
 } as const;
 contactFilters satisfies Filters;

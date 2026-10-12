@@ -2,7 +2,7 @@ import { Readable } from 'stream';
 import tar from 'tar-stream';
 import { describe, expect, it, vi } from 'vitest';
 
-import { extractJsonArchive } from './file';
+import { extractJsonArchive, getOrientedDimensions } from './file';
 
 // Helper function to create a mock tar archive with JSON files
 function createTarArchive(files: { name: string; content: any }[]): Readable {
@@ -170,4 +170,30 @@ describe('extractJsonArchive', () => {
     );
     expect(processJson).not.toHaveBeenCalled();
   });
+});
+
+describe('getOrientedDimensions', () => {
+  it('should keep dimensions as-is when there is no orientation', () => {
+    expect(getOrientedDimensions(100, 50)).toEqual({ width: 100, height: 50 });
+  });
+
+  it.each([1, 2, 3, 4])(
+    'should keep dimensions as-is for orientation %i',
+    (orientation) => {
+      expect(getOrientedDimensions(100, 50, orientation)).toEqual({
+        width: 100,
+        height: 50,
+      });
+    }
+  );
+
+  it.each([5, 6, 7, 8])(
+    'should swap dimensions for orientation %i (90°/270° rotation)',
+    (orientation) => {
+      expect(getOrientedDimensions(100, 50, orientation)).toEqual({
+        width: 50,
+        height: 100,
+      });
+    }
+  );
 });

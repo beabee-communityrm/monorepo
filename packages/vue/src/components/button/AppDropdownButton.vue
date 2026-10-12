@@ -10,7 +10,7 @@
     :variant="variant"
     :icon="icon"
     class="group"
-    :class="open ? '!rounded-b-none !bg-white' : ''"
+    :class="open ? 'rounded-b-none! bg-white!' : ''"
     :disabled="disabled"
     :title="title"
     :aria-label="title"
@@ -100,7 +100,7 @@ const baseClasses = 'absolute top-full min-w-full -left-px z-20 bg-white';
 
 // Border styles from AppButton
 const variantClasses = {
-  primaryOutlined: 'border-primary-40 group-hover:border-primary-70',
+  primaryOutlined: 'border-main-40 group-hover:border-main-70',
   linkOutlined: 'border-link',
   dangerOutlined: 'border-danger',
   greyOutlined: 'border-grey-light group-hover:border-grey',

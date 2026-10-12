@@ -5,28 +5,115 @@ meta:
 </route>
 
 <template>
-  <PageTitle border :title="t('accountPage.title')" />
-  <p class="mb-5 text-sm text-primary-80">{{ t('accountPage.subTitle') }}</p>
+  <div class="nuxt-page mx-auto flex max-w-2xl flex-col gap-6">
+    <div
+      class="flex items-start gap-3 rounded-xl bg-elevated px-4 py-3 text-muted"
+    >
+      <UIcon
+        name="i-lucide-shield"
+        class="mt-0.5 size-5 shrink-0 text-primary"
+      />
+      <p>{{ t('accountPage.subTitle-nuxt') }}</p>
+    </div>
 
-  <App2ColGrid>
-    <template #col1>
-      <ChangePassword />
-      <SetMFA contact-id="me" />
-      <Suspense>
-        <ContactUpdateAccount id="me" class="mt-6" />
-      </Suspense>
-    </template>
-  </App2ColGrid>
+    <UTabs :items="items" class="w-full">
+      <template #contact>
+        <AccountForm />
+      </template>
+      <template #security>
+        <!-- Login details are managed at the identity provider on OIDC instances -->
+        <div v-if="generalContent.oidcEnabled" class="flex flex-col gap-4">
+          <p class="text-muted">{{ t('accountPage.selfService.intro') }}</p>
+          <div class="flex flex-col gap-2 sm:flex-row">
+            <UButton
+              :to="loginActionUrl('changePassword')"
+              external
+              icon="i-lucide-key-round"
+              variant="outline"
+            >
+              {{ t('accountPage.selfService.changePassword') }}
+            </UButton>
+            <UButton
+              :to="loginActionUrl('addPasskey')"
+              external
+              icon="i-lucide-fingerprint"
+              variant="outline"
+            >
+              {{ t('accountPage.selfService.addPasskey') }}
+            </UButton>
+            <UButton
+              :to="loginActionUrl('setupMfa')"
+              external
+              icon="i-lucide-smartphone"
+              variant="outline"
+            >
+              {{ t('accountPage.selfService.setupMfa') }}
+            </UButton>
+          </div>
+        </div>
+        <div v-else class="flex flex-col gap-4">
+          <ChangePassword />
+          <SetMFA contact-id="me" />
+        </div>
+      </template>
+      <template #subscriptions>
+        <AccountNewsletterSubscriptions />
+      </template>
+    </UTabs>
+
+    <p class="px-1 text-muted">
+      <span class="font-medium text-primary">*</span>
+      {{ t('accountPage.requiredFields') }}
+    </p>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { App2ColGrid, PageTitle } from '@beabee/vue';
+import type { LoginAction } from '@beabee/beabee-common';
 
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import ContactUpdateAccount from '../../components/contact/ContactUpdateAccount.vue';
+import AccountForm from '../../components/pages/profile/account/AccountForm.vue';
+import AccountNewsletterSubscriptions from '../../components/pages/profile/account/AccountNewsletterSubscriptions.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
 import SetMFA from '../../components/pages/profile/account/SetMFA.vue';
+import { generalContent } from '../../store';
+import { addBreadcrumb } from '../../store/breadcrumb';
+import { client } from '../../utils/api';
+import { routeIcons, routeLabels } from '../../utils/route-nav';
+import type { TabsItem } from '@nuxt/ui';
 
 const { t } = useI18n();
+
+// Each action runs at the identity provider inside a login that returns here
+const loginActionUrl = (action: LoginAction) =>
+  client.auth.getLoginUrl('/profile/account', action);
+
+const items = computed<TabsItem[]>(() => [
+  {
+    label: t('accountPage.contactInformation'),
+    icon: 'i-lucide-contact',
+    slot: 'contact',
+  },
+  {
+    label: t('accountPage.security'),
+    icon: 'i-lucide-shield',
+    slot: 'security',
+  },
+  {
+    label: t('accountPage.subscriptions'),
+    icon: 'i-lucide-mail',
+    slot: 'subscriptions',
+  },
+]);
+
+addBreadcrumb(
+  computed(() => [
+    {
+      label: t(routeLabels.profileAccount),
+      to: '/profile/account',
+      icon: routeIcons.profileAccount,
+    },
+  ])
+);
 </script>

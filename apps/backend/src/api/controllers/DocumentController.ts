@@ -1,8 +1,3 @@
-import {
-  ALLOWED_DOCUMENT_MIME_TYPES,
-  MAX_FILE_SIZE_IN_BYTES,
-  isSupportedDocumentType,
-} from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
 import {
@@ -12,7 +7,6 @@ import {
 } from '@beabee/core/errors';
 import { Contact } from '@beabee/core/models';
 import { documentService } from '@beabee/core/services';
-import { convertMulterError } from '@beabee/core/utils/multer';
 
 import { Request, Response } from 'express';
 import {
@@ -27,6 +21,7 @@ import {
   Res,
   UseBefore,
 } from 'routing-controllers';
+import { pipeline } from 'stream/promises';
 
 import { RateLimit } from '../decorators/index.js';
 import { uploadMiddleware } from '../middlewares/index.js';
@@ -46,34 +41,28 @@ export class DocumentController {
   )
   async upload(
     @Req() req: Request,
-    @Res() res: Response,
     @CurrentUser({ required: false }) contact?: Contact
   ): Promise<UploadFileResponse> {
-    try {
-      // Apply multer middleware to handle file upload
-      await uploadMiddleware(req, res);
-    } catch (error) {
-      // Convert MulterError to appropriate HttpError
-      throw convertMulterError(error, MAX_FILE_SIZE_IN_BYTES);
-    }
+    const file = await uploadMiddleware(req);
 
-    if (!req.file) {
+    if (!file) {
       throw new BadRequestError('No document file provided');
     }
 
-    // Verify file type is allowed - multer handles size but we still check type
-    if (!isSupportedDocumentType(req.file.mimetype)) {
+    // Verify file type is allowed before consuming the stream
+    if (!documentService.isSupportedType(file.mimetype)) {
+      file.stream.resume(); // Drain the stream so the request completes
       throw new UnsupportedFileTypeError(
-        req.file.mimetype,
-        ALLOWED_DOCUMENT_MIME_TYPES
+        file.mimetype,
+        documentService.allowedMimeTypes
       );
     }
 
     // Use the DocumentService to upload the file with owner information
-    const metadata = await documentService.uploadDocument(
-      req.file.buffer,
-      req.file.originalname,
-      req.file.mimetype,
+    const metadata = await documentService.upload(
+      file.stream,
+      file.filename,
+      file.mimetype,
       contact?.email // Add the owner information if available
     );
 
@@ -102,12 +91,12 @@ export class DocumentController {
   async getDocument(
     @Res() res: Response,
     @Param('id') id: string
-  ): Promise<Buffer> {
-    // Get document as buffer
-    const documentData = await documentService.getDocumentBuffer(id);
+  ): Promise<Response> {
+    // Get the filename first, this also throws if the document doesn't exist
+    const metadata = await documentService.getMetadata(id);
 
-    // Get document metadata to check permissions if needed in the future
-    const metadata = await documentService.getDocumentMetadata(id);
+    // Get document as stream
+    const documentData = await documentService.getStream(id);
 
     // Set appropriate security headers
     res.set({
@@ -119,8 +108,20 @@ export class DocumentController {
       'X-Frame-Options': 'SAMEORIGIN',
     });
 
-    // Return the buffer, routing-controllers will handle the rest
-    return documentData.buffer;
+    // Stream the document to the response
+    try {
+      await pipeline(documentData.stream, res);
+    } catch (error) {
+      if (!res.headersSent) {
+        throw new BadRequestError(`Failed to stream document (${id})`);
+      }
+      // Too late for an error response, abort the connection
+      res.destroy();
+    }
+
+    // Returning the response object tells routing-controllers the response
+    // has been handled
+    return res;
   }
 
   /**
@@ -133,7 +134,7 @@ export class DocumentController {
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
     // Get document metadata first to check ownership
-    const metadata = await documentService.getDocumentMetadata(id);
+    const metadata = await documentService.getMetadata(id);
 
     // Check if the user is the owner of the document
     // Only allow the document owner or admins to delete documents
@@ -145,7 +146,7 @@ export class DocumentController {
       throw new UnauthorizedError();
     }
 
-    const success = await documentService.deleteDocument(id);
+    const success = await documentService.delete(id);
     return { success };
   }
 }

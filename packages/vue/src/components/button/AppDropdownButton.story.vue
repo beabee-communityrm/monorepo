@@ -183,7 +183,7 @@ function handleSelectLanguage(item: { id: string; label: string }) {
         </AppSelectableList>
 
         <router-link
-          class="block border-t border-primary-40 px-3 py-2 font-semibold text-primary underline hover:bg-primary-5"
+          class="block border-t border-main-40 px-3 py-2 font-semibold text-main underline hover:bg-main-5"
           to="#"
         >
           <font-awesome-icon :icon="faCog" class="mr-2" />Manage Tags

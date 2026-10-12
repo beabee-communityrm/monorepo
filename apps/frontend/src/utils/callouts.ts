@@ -4,6 +4,7 @@ import {
   type CalloutComponentInputSelectableRadioSchema,
   type CalloutComponentSchema,
   type CalloutNewsletterSchema,
+  CalloutResponseMode,
   type CalloutVariantData,
   type CalloutVariantNavigationData,
   type CreateCalloutData,
@@ -40,7 +41,7 @@ const { t } = i18n.global;
  * Predefined response buckets for callout responses
  */
 export const buckets = computed(() => [
-  { id: '', label: t('calloutResponseBuckets.inbox') },
+  { id: 'inbox', label: t('calloutResponseBuckets.inbox') },
   { id: 'verified', label: t('calloutResponseBuckets.verified') },
   { id: 'trash', label: t('calloutResponseBuckets.trash') },
 ]);
@@ -201,7 +202,7 @@ export function convertCalloutToTabs(
         showNewsletterOptIn: false,
         newsletterSettings: defaultNewsletterSettings,
         showOnUserDashboards: false,
-        responseSettings: 'multiple',
+        responseMode: CalloutResponseMode.Multiple,
         hasStartDate: false,
         hasEndDate: false,
         startDate: '',
@@ -218,11 +219,7 @@ export function convertCalloutToTabs(
         newsletterSettings:
           callout?.newsletterSchema || defaultNewsletterSettings,
         showOnUserDashboards: !callout?.hidden,
-        responseSettings: callout?.allowMultiple
-          ? 'multiple'
-          : callout?.allowUpdate
-            ? 'singleEditable'
-            : 'singleNonEditable',
+        responseMode: callout?.responseMode || CalloutResponseMode.Single,
         hasStartDate: callout?.status === ItemStatus.Scheduled,
         hasEndDate: !!callout?.expires,
         startDate: callout?.starts ? format(callout.starts, 'yyyy-MM-dd') : '',
@@ -496,8 +493,7 @@ export function convertStepsToCallout(
     expires: tabs.settings.hasEndDate
       ? new Date(tabs.settings.endDate + 'T' + tabs.settings.endTime)
       : null,
-    allowMultiple: tabs.settings.responseSettings === 'multiple',
-    allowUpdate: tabs.settings.responseSettings === 'singleEditable',
+    responseMode: tabs.settings.responseMode,
     hidden: !tabs.settings.showOnUserDashboards,
     captcha: tabs.settings.captchaEnabled
       ? tabs.settings.captchaForMembers

@@ -166,7 +166,7 @@ const createNewsletter = () => ({
               <span
                 v-for="tag in tagState.tags.filter((t) => t.trim())"
                 :key="tag"
-                class="rounded bg-primary-20 px-2 py-1 text-xs text-primary-80"
+                class="rounded bg-main-20 px-2 py-1 text-xs text-main-80"
               >
                 {{ tag }}
               </span>

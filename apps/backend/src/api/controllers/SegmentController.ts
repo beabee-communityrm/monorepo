@@ -1,3 +1,4 @@
+import { ActivityEventType } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import { NotFoundError } from '@beabee/core/errors';
 import {
@@ -7,6 +8,7 @@ import {
   Segment,
   SegmentOngoingEmail,
 } from '@beabee/core/models';
+import ActivityService from '@beabee/core/services/ActivityService';
 import EmailService from '@beabee/core/services/EmailService';
 import SegmentService from '@beabee/core/services/SegmentService';
 import { AuthInfo } from '@beabee/core/type';
@@ -68,6 +70,12 @@ export class SegmentController {
     }
     const segment = await getRepository(Segment).save(data);
 
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactSegmentsAdded,
+      targetId: segment.id,
+      metadata: null,
+    });
+
     // Use fetchOne to ensure that the segment has a itemCount
     return await SegmentTransformer.fetchOneByIdOrFail(auth, segment.id, {
       with: [GetSegmentWith.itemCount],
@@ -89,7 +97,16 @@ export class SegmentController {
     @Params() { id }: UUIDParams,
     @PartialBody() data: CreateSegmentDto
   ): Promise<GetSegmentDto | undefined> {
-    await getRepository(Segment).update(id, data);
+    const result = await getRepository(Segment).update(id, data);
+
+    if (result.affected == null || result.affected > 0) {
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.ContactSegmentsUpdated,
+        targetId: id,
+        metadata: null,
+      });
+    }
+
     return await SegmentTransformer.fetchOneById(auth, id, {
       with: [GetSegmentWith.itemCount],
     });
@@ -104,6 +121,12 @@ export class SegmentController {
     if (result.affected === 0) {
       throw new NotFoundError();
     }
+
+    await ActivityService.addEvent({
+      eventType: ActivityEventType.ContactSegmentsDeleted,
+      targetId: id,
+      metadata: null,
+    });
   }
 
   @Get('/:id/contacts')

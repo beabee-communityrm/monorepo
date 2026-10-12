@@ -1,4 +1,5 @@
 import OptionsService from '@beabee/core/services/OptionsService';
+import { getEmailDomain } from '@beabee/core/utils/email';
 
 import {
   ValidateBy,
@@ -22,9 +23,10 @@ export default function IsFromEmail(
           return false;
         }
 
-        const supportEmail = OptionsService.getText('support-email');
-        const supportDomain = supportEmail.split('@')[1];
-        const valueDomain = value.split('@')[1];
+        const supportDomain = getEmailDomain(
+          OptionsService.getText('support-email')
+        );
+        const valueDomain = getEmailDomain(value);
 
         return valueDomain === supportDomain;
       },

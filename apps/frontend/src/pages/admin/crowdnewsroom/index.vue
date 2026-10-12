@@ -5,12 +5,12 @@ meta:
 </route>
 <template>
   <PageTitle :title="t('menu.callouts')" border>
-    <div class="flex-0 ml-3 hidden md:block">
+    <div class="ml-3 hidden flex-0 md:block">
       <AppButton to="/admin/crowdnewsroom/new">{{
         t('calloutsAdmin.addCallout')
       }}</AppButton>
     </div>
-    <div class="fixed bottom-5 right-5 md:hidden">
+    <div class="fixed right-5 bottom-5 md:hidden">
       <AppButton
         :icon="faPlus"
         :title="t('calloutsAdmin.addCallout')"
@@ -81,18 +81,14 @@ import {
   formatLocale,
 } from '@beabee/vue';
 
-import {
-  faBullhorn,
-  faEye,
-  faEyeSlash,
-  faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { definePaginatedQuery, defineParam } from '#utils/pagination';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import ItemStatus from '../../../components/item/ItemStatus.vue';
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
@@ -102,8 +98,8 @@ const { t } = useI18n();
 addBreadcrumb(
   computed(() => [
     {
-      title: t('menu.callouts'),
-      icon: faBullhorn,
+      label: t(routeLabels.adminCallouts),
+      icon: routeIcons.adminCallouts,
       to: '/admin/crowdnewsroom',
     },
   ])

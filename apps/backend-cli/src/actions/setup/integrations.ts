@@ -1,8 +1,13 @@
 import { config } from '@beabee/core/config';
+import { createInstance } from '@beabee/core/lib/mailchimp';
 import { STRIPE_WEBHOOK_EVENTS, Stripe, stripe } from '@beabee/core/lib/stripe';
 import { currentLocale } from '@beabee/core/locale';
+import { KNOWN_WEBHOOK_EVENTS } from '@beabee/core/providers/newsletter/MailchimpProvider';
 import { runApp } from '@beabee/core/server';
+import { idpService } from '@beabee/core/services/IdpService';
+import { newsletterService } from '@beabee/core/services/NewsletterService';
 import { optionsService } from '@beabee/core/services/OptionsService';
+import { MCWebhook } from '@beabee/core/type';
 
 export const setupStripe = async (dryRun: boolean) => {
   if (!config.stripe.secretKey) {
@@ -67,6 +72,20 @@ export const setupStripe = async (dryRun: boolean) => {
         }
       }
 
+      if (
+        existingWebhook &&
+        existingWebhook.api_version !== config.stripe.version
+      ) {
+        console.warn(
+          `⚠️ Webhook API version mismatch: expected ${config.stripe.version}, got ${existingWebhook.api_version}`
+        );
+        if (!dryRun) {
+          await stripe.webhookEndpoints.del(existingWebhook.id);
+        }
+        console.log(`🗑️ Deleted existing webhook with wrong API version`);
+        existingWebhook = undefined;
+      }
+
       if (existingWebhook) {
         if (!dryRun) {
           await stripe.webhookEndpoints.update(existingWebhook.id, {
@@ -101,4 +120,110 @@ export const setupStripe = async (dryRun: boolean) => {
     console.error(error);
     throw error;
   }
+};
+
+export const setupMailchimp = async (dryRun: boolean) => {
+  if (config.newsletter.provider !== 'mailchimp') {
+    throw new Error('BEABEE_NEWSLETTER_PROVIDER must be mailchimp');
+  }
+  console.log('Setting up Mailchimp integration...\n');
+
+  if (dryRun) {
+    console.log('⚠️ Running in dry-run mode. No changes will be made.');
+  }
+
+  const { listId, webhookSecret } = config.newsletter.settings;
+  const mailchimp = createInstance(config.newsletter.settings);
+
+  // Member and admin changes should trigger our webhook, but not our own API
+  // changes (which would cause a sync loop)
+  const sources = { user: true, admin: true, api: false };
+  const events = Object.fromEntries(KNOWN_WEBHOOK_EVENTS.map((e) => [e, true]));
+
+  try {
+    await runApp(async () => {
+      // Step 1: Check/create webhook
+      const webhookUrl = `${config.webhookUrl}/webhook/mailchimp`;
+      const webhookUrlWithSecret = `${webhookUrl}?secret=${webhookSecret}`;
+
+      const { data } = await mailchimp.instance.get<{ webhooks: MCWebhook[] }>(
+        `lists/${listId}/webhooks`
+      );
+
+      let existingWebhook = data.webhooks.find((w) =>
+        w.url.startsWith(webhookUrl)
+      );
+
+      /** @deprecated One-time migration for old webhook URLs */
+      if (!existingWebhook) {
+        const oldWebhookUrl = `${config.audience}/webhook/mailchimp`;
+        existingWebhook = data.webhooks.find((w) =>
+          w.url.startsWith(oldWebhookUrl)
+        );
+        if (existingWebhook) {
+          console.log(
+            `🗑️ Found old webhook with URL ${oldWebhookUrl}, will override it`
+          );
+        }
+      }
+
+      if (existingWebhook) {
+        // Always update the URL in case the secret changed or something
+        if (!dryRun) {
+          await mailchimp.instance.patch(
+            `lists/${listId}/webhooks/${existingWebhook.id}`,
+            { url: webhookUrlWithSecret, events, sources }
+          );
+        }
+        console.log(`✅ Updated existing webhook: ${existingWebhook.id}`);
+      } else {
+        console.log('Creating Mailchimp webhook...');
+        if (dryRun) {
+          console.log(`✅ Created webhook: [DRY RUN]`);
+        } else {
+          const { data: webhook } = await mailchimp.instance.post(
+            `lists/${listId}/webhooks`,
+            { url: webhookUrlWithSecret, events, sources }
+          );
+          console.log(`✅ Created webhook: ${webhook.id}`);
+        }
+      }
+
+      // Step 2: Cache newsletter groups
+      const mailchimpGroups = await newsletterService.getAllNewsletterGroups();
+      if (dryRun) {
+        console.log(
+          `Added ${mailchimpGroups.length} newsletter groups: [DRY RUN]`
+        );
+      } else {
+        await optionsService.setJSON('newsletter-groups', mailchimpGroups);
+        console.log(`✅ Cached ${mailchimpGroups.length} newsletter groups`);
+      }
+
+      console.log('\n🎉 Mailchimp integration setup completed successfully!');
+    });
+  } catch (error) {
+    console.error('❌ Mailchimp integration setup failed:');
+    console.error(error);
+    throw error;
+  }
+};
+
+export const setupIdp = async () => {
+  await runApp(async () => {
+    if (!idpService.isEnabled) {
+      console.error(
+        'No identity provider configured, set BEABEE_IDP_PROVIDER first'
+      );
+      process.exitCode = 1;
+      return;
+    }
+
+    if (await idpService.setup()) {
+      console.log('✅ Identity provider set up');
+    } else {
+      console.error('❌ Failed to set up identity provider');
+      process.exitCode = 1;
+    }
+  });
 };

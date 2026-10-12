@@ -4,6 +4,7 @@
     "deliveryAddress": "",
     "deliveryOptIn": "",
     "loginDetail": "",
+    "loginDetail-nuxt": "",
     "mfa": {
       "codeInput": {
         "info": "",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "",
+        "desc-nuxt": "",
+        "descDetail": "",
         "descToken": "",
-        "title": ""
+        "descToken-nuxt": "",
+        "keepEnabled": "",
+        "remove": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "createUnknownErrorNotification": "",
+      "createUnknownErrorNotification-nuxt": "",
       "deleteUnknownErrorNotification": "",
+      "deleteUnknownErrorNotification-nuxt": "",
+      "description": "",
       "disabledNotification": "",
       "enabledNotification": "",
       "enterCode": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "modalTitle": "",
+      "modalTitle-nuxt": "",
       "result": {
         "invalidCode": "",
         "successful": "",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "",
-        "title": ""
+        "desc-nuxt": "",
+        "title": "",
+        "title-nuxt": ""
       },
       "secretInput": {
         "desc": "",
-        "label": ""
+        "label": "",
+        "toggleHide": "",
+        "toggleShow": ""
       },
+      "statusDisabled": {
+        "description": "",
+        "title": ""
+      },
+      "statusEnabled": {
+        "description": "",
+        "title": ""
+      },
+      "stepIndicator": "",
       "title": "",
+      "title-nuxt": "",
       "validateButton": {
-        "label": ""
+        "label": "",
+        "label-nuxt": ""
       }
     },
     "newsletter": {
@@ -50,15 +78,34 @@
         "subscribed": "",
         "unsubscribed": ""
       },
+      "description": "",
+      "noGroups": "",
       "subscribe": "",
       "title": "",
-      "unsubscribe": ""
+      "unsubscribe": "",
+      "unsubscribeButton": "",
+      "unsubscribeInfo": "",
+      "unsubscribedNotification": ""
     },
+    "personalDetails": "",
     "phoneInfo": "",
+    "phoneInfo-nuxt": "",
     "phoneInfoAdmin": "",
+    "requiredFields": "",
     "savedPassword": "",
+    "security": "",
+    "selfService": {
+      "addPasskey": "",
+      "changePassword": "",
+      "intro": "",
+      "setupMfa": "",
+      "title": ""
+    },
     "subTitle": "",
-    "title": ""
+    "subTitle-nuxt": "",
+    "subscriptions": "",
+    "title": "",
+    "vatNumberInfo": ""
   },
   "actions": {
     "add": "",
@@ -81,6 +128,7 @@
     "export": "",
     "getStarted": "",
     "goBack": "",
+    "hidePassword": "",
     "increase": "",
     "next": "",
     "noBack": "",
@@ -104,6 +152,7 @@
     "sendOneOffEmail": "",
     "sendOngoingEmails": "",
     "share": "",
+    "showPassword": "",
     "skip": "",
     "submit": "",
     "tryAgain": "",
@@ -251,6 +300,35 @@
         "twitterHandle": ""
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": ""
+      },
+      "label": "",
+      "loadError": "",
+      "newsletter": {
+        "audienceId": "",
+        "groups": "",
+        "groupsNote": "",
+        "noGroups": ""
+      },
+      "refresh": "",
+      "refreshResult": {
+        "added": "",
+        "connectionLost": "",
+        "couldNotConnect": "",
+        "error": "",
+        "noChanges": "",
+        "reconnected": "",
+        "removed": ""
+      },
+      "refreshing": "",
+      "status": {
+        "disabled": "",
+        "healthy": "",
+        "unhealthy": ""
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",
@@ -266,7 +344,7 @@
         "body": "",
         "danger": "",
         "link": "",
-        "primary": "",
+        "main": "",
         "success": "",
         "warning": ""
       },
@@ -375,6 +453,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "",
       "updateResponse": ""
     },
     "addAPoint": "",
@@ -878,6 +957,7 @@
     "selectedCount": ""
   },
   "calloutResponsesPage": {
+    "allResponses": "",
     "moveToBucket": "",
     "noTags": "",
     "response": "",
@@ -911,12 +991,23 @@
     "oneResponseWarning": ""
   },
   "callouts": {
+    "access": {
+      "everyone": "",
+      "member": ""
+    },
     "archive": "",
+    "archiveRange": "",
     "data": {
       "callout": "",
-      "endDate": ""
+      "endDate": "",
+      "responses": ""
+    },
+    "daysLeft": "",
+    "empty": {
+      "active": ""
     },
     "noArchivedCallouts": "",
+    "openCallouts": "",
     "search": "",
     "showAll": "",
     "showAnswered": "",
@@ -947,7 +1038,6 @@
     },
     "contributionType": {
       "automatic": "",
-      "gift": "",
       "manual": "",
       "none": ""
     },
@@ -1009,6 +1099,15 @@
       "scheduled": ""
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "",
+        "clearSelection": "",
+        "pageSelected": "",
+        "selectAll": "",
+        "someSelected": ""
+      }
+    },
     "thankYou": "",
     "timeAgo": "",
     "timeIn": "",
@@ -1051,6 +1150,19 @@
       "title": ""
     },
     "oneTime": "",
+    "origin": {
+      "addedBy": "",
+      "addedByValues": {
+        "admin": "",
+        "external": "",
+        "self-signup": "",
+        "system": ""
+      },
+      "campaign": "",
+      "referrer": "",
+      "source": "",
+      "title": ""
+    },
     "overview": "",
     "pickTag": "",
     "profile": "",
@@ -1058,7 +1170,6 @@
     "roles": "",
     "security": {
       "instructions": "",
-      "loginOverride": "",
       "mfa": {
         "desc": "",
         "disabledDesc": ""
@@ -1097,6 +1208,9 @@
       "email": "",
       "firstname": "",
       "hasDonated": "",
+      "idpAccount": "",
+      "idpLinked": "",
+      "idpUnlinked": "",
       "joined": "",
       "lastSeen": "",
       "lastname": "",
@@ -1346,6 +1460,7 @@
       "remaining": ""
     },
     "cityOrTown": "",
+    "country": "",
     "deliveryOptIn": "",
     "description": "",
     "email": "",
@@ -1371,6 +1486,16 @@
       "addressLine1": {
         "required": ""
       },
+      "audio": {
+        "micPermissionDeniedBody": "",
+        "micPermissionDeniedTitle": "",
+        "recordingNotSupportedBody": "",
+        "recordingNotSupportedTitle": "",
+        "tooLongBody": "",
+        "tooLongTitle": "",
+        "uploadFailedTitle": "",
+        "wrongTypeBody": ""
+      },
       "cityOrTown": {
         "required": ""
       },
@@ -1383,6 +1508,9 @@
         "required": "",
         "sameAs": ""
       },
+      "country": {
+        "required": ""
+      },
       "description": {
         "maxLength": "",
         "required": ""
@@ -1394,7 +1522,8 @@
       "file": {
         "rateLimited": "",
         "tooBig": "",
-        "unsupportedType": ""
+        "unsupportedType": "",
+        "uploadFailed": ""
       },
       "firstName": {
         "required": ""
@@ -1416,6 +1545,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": ""
       },
       "unknown": {
         "email": "",
@@ -1446,6 +1578,7 @@
     "notes": "",
     "password": "",
     "passwordInfo": "",
+    "passwordInfo-nuxt": "",
     "phone": "",
     "postCode": "",
     "richtext": {
@@ -1464,10 +1597,30 @@
     "saveChanges": "",
     "saved": "",
     "unsavedChanges": "",
-    "updated": ""
+    "updated": "",
+    "vatNumber": ""
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "",
+        "delete": "",
+        "discard": "",
+        "download": "",
+        "pause": "",
+        "paused": "",
+        "playPause": "",
+        "reRecord": "",
+        "record": "",
+        "recording": "",
+        "requestingPermission": "",
+        "resume": "",
+        "stop": "",
+        "tryAgain": "",
+        "uploadInstead": "",
+        "uploadLabel": "",
+        "uploadingHint": ""
+      },
       "file": {
         "browse": "",
         "dropFiles": "",
@@ -1570,6 +1723,10 @@
   },
   "login": {
     "backTo": "",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "",
     "joinNow": "",
     "lostMfaDevice": "",
@@ -1606,6 +1763,7 @@
           "showOptIn": "",
           "title": ""
         },
+        "showOrganisationName": "",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1639,6 +1797,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""
@@ -1678,7 +1837,6 @@
     "insert": "",
     "insertTag": "",
     "tags": {
-      "ACTIVATELINK": "",
       "ANSWERS": "",
       "CALLOUTLINK": "",
       "CALLOUTSLUG": "",
@@ -1687,8 +1845,6 @@
       "EMAIL": "",
       "EXPIRES": "",
       "FNAME": "",
-      "GIFTDATE": "",
-      "GIFTEE": "",
       "ISELIGIBLE": "",
       "LNAME": "",
       "LOGINLINK": "",
@@ -1698,7 +1854,6 @@
       "MESSAGE": "",
       "NAME": "",
       "ORGNAME": "",
-      "PURCHASER": "",
       "REFCODE": "",
       "REFEREENAME": "",
       "RESPNAME": "",

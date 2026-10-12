@@ -1,6 +1,6 @@
 import { GetContactWith } from '@beabee/beabee-common';
 import { ApiError, ContactClient } from '@beabee/client';
-import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
+import { api, testUser } from '@beabee/test-utils/test-data';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 
@@ -10,9 +10,9 @@ describe('Contact API', () => {
 
   beforeAll(() => {
     contactClient = new ContactClient({
-      host: HOST,
-      path: PATH,
-      token: API_KEY,
+      host: api.host,
+      path: api.path,
+      token: testUser.apiKey,
     });
   });
 
@@ -75,6 +75,22 @@ describe('Contact API', () => {
       expect(firstContact).toHaveProperty('displayName');
       expect(Array.isArray(firstContact.activeRoles)).toBe(true);
     }
+  });
+
+  it('filters contacts by idpLinked', async () => {
+    const byLink = (value: boolean) =>
+      contactClient.list({
+        rules: {
+          condition: 'AND',
+          rules: [{ field: 'idpLinked', operator: 'equal', value: [value] }],
+        },
+      });
+    const [all, linked, unlinked] = await Promise.all([
+      contactClient.list({}),
+      byLink(true),
+      byLink(false),
+    ]);
+    expect(linked.total + unlinked.total).toBe(all.total);
   });
 
   describe('get', () => {

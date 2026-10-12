@@ -38,14 +38,31 @@
       />
     </div>
   </div>
+
+  <div class="mb-3">
+    <AppSelect
+      :model-value="country"
+      :label="t('form.country')"
+      :items="countryItems"
+      :placeholder="t('common.selectOne')"
+      searchable
+      :required="required"
+      @update:model-value="$emit('update:country', $event)"
+    />
+  </div>
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { getCountryItems } from '../../utils/countries';
 import AppInput from './AppInput.vue';
+import AppSelect from './AppSelect.vue';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+
+const countryItems = computed(() => getCountryItems(locale.value));
 
 /**
  * Address input component with structured address fields.
@@ -54,6 +71,7 @@ const { t } = useI18n();
  * - form.addressLine2: "Address line 2"
  * - form.cityOrTown: "City/Town"
  * - form.postCode: "Postcode"
+ * - form.country: "Country"
  *
  * @example
  * ```vue
@@ -62,6 +80,7 @@ const { t } = useI18n();
  *   v-model:line2="address.line2"
  *   v-model:city-or-town="address.city"
  *   v-model:post-code="address.postCode"
+ *   v-model:country="address.country"
  *   :required="true"
  * />
  * ```
@@ -76,6 +95,8 @@ defineProps<{
   cityOrTown: string;
   /** Post/zip code */
   postCode: string;
+  /** ISO 3166-1 alpha-2 country code */
+  country: string | undefined;
   /** Whether fields are required */
   required?: boolean;
 }>();
@@ -85,5 +106,6 @@ defineEmits<{
   (e: 'update:line2', value: string): void;
   (e: 'update:cityOrTown', value: string): void;
   (e: 'update:postCode', value: string): void;
+  (e: 'update:country', value: string): void;
 }>();
 </script>

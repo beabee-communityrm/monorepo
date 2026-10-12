@@ -1,6 +1,6 @@
 {
   "name": "@beabee/beabee-common",
-  "version": "0.44.2",
+  "version": "0.45.0",
   "description": "Shared code between Beabee projects",
   "type": "module",
   "main": "./dist/index.js",

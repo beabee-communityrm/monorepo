@@ -1,5 +1,5 @@
 import { HealthClient } from '@beabee/client';
-import { API_KEY, HOST, PATH } from '@beabee/test-utils/vitest/env';
+import { api, testUser } from '@beabee/test-utils/test-data';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 
@@ -8,9 +8,9 @@ describe('Health API', () => {
 
   beforeAll(() => {
     healthClient = new HealthClient({
-      host: HOST,
-      path: PATH,
-      token: API_KEY,
+      host: api.host,
+      path: api.path,
+      token: testUser.apiKey,
     });
   });
 

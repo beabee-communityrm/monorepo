@@ -13,7 +13,7 @@
 -->
 <template>
   <span
-    class="whitespace-nowrap text-sm font-bold uppercase"
+    class="text-sm font-bold whitespace-nowrap uppercase"
     :class="colorMap[status]"
     role="status"
     :aria-label="ariaLabel"

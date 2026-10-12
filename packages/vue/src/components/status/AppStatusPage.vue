@@ -6,11 +6,11 @@
       <!-- Logo/Icon -->
       <div class="mb-6">
         <div
-          class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary-10"
+          class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-main-10"
         >
           <font-awesome-icon
             :icon="faHeart"
-            class="h-8 w-8 animate-pulse text-primary"
+            class="h-8 w-8 animate-pulse text-main"
           />
         </div>
       </div>
@@ -29,7 +29,7 @@
       <div class="mb-6 flex items-center justify-center">
         <font-awesome-icon
           :icon="faCircleNotch"
-          class="h-6 w-6 animate-spin text-primary"
+          class="h-6 w-6 animate-spin text-main"
           spin
         />
         <span class="ml-3 text-sm text-body-60">
@@ -41,7 +41,7 @@
       <div v-if="showProgress" class="mb-6">
         <div class="h-2 w-full overflow-hidden rounded-full bg-grey-light">
           <div
-            class="h-full bg-primary transition-all duration-1000 ease-out"
+            class="h-full bg-main transition-all duration-1000 ease-out"
             :style="{ width: `${progress}%` }"
           />
         </div>

@@ -1,11 +1,11 @@
 <template>
   <div
     class="flex items-center justify-between"
-    :class="{ 'mb-5 border-b border-primary-40': border }"
+    :class="{ 'mb-5 border-b border-main-40': border }"
   >
     <AppTitle
       light
-      class="mr-4 text-primary-80"
+      class="mr-4 text-main-80"
       :class="{ 'hidden md:block': !noCollapse }"
     >
       {{ title }}

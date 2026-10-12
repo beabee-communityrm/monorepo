@@ -67,7 +67,7 @@ import {
 } from '@beabee/beabee-common';
 import { AppButton, PageTitle, WelcomeMessage } from '@beabee/vue';
 
-import { type Ref, onBeforeMount, ref } from 'vue';
+import { type Ref, computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
@@ -77,9 +77,17 @@ import NoticeContainer from '#components/pages/profile/NoticeContainer.vue';
 import QuickActions from '#components/pages/profile/QuickActions.vue';
 import SectionTitle from '#components/pages/profile/SectionTitle.vue';
 import { currentUser, generalContent } from '#store';
+import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 const { t } = useI18n();
+
+addBreadcrumb(
+  computed(() => [
+    { label: t(routeLabels.profile), to: '/profile', icon: routeIcons.profile },
+  ])
+);
 
 const hasWelcomeMessageQuery = useRoute().query.welcomeMessage === 'true';
 

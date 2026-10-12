@@ -54,7 +54,6 @@ When user explicitly asks ("add error handling", "refactor", "add tests"), do it
 | `@beabee/e2e-api-tests` | API tests |
 | `@beabee/dev-cli` | Dev tools (index gen, building) |
 | `@beabee/router` | Nginx routing |
-| `@beabee/minio` | Object storage |
 
 **Import rule:** Only `packages/` importable. Use package names for cross-package imports. Apps cannot be imported.
 

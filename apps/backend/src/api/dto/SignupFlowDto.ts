@@ -7,6 +7,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
+import { GetContactOriginDto } from '#api/dto/ContactOriginDto';
 import { StartContributionDto } from '#api/dto/ContributionDto';
 import IsPassword from '#api/validators/IsPassword';
 import IsUrl from '#api/validators/IsUrl';
@@ -40,6 +41,11 @@ export class StartSignupFlowDto {
   @ValidateNested()
   @IsOptional()
   oneTimePayment?: CreatePaymentDto;
+
+  @Type(() => GetContactOriginDto)
+  @ValidateNested()
+  @IsOptional()
+  origin?: GetContactOriginDto;
 }
 
 export class AdvanceSignupFlowDto {

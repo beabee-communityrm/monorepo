@@ -1,4 +1,7 @@
-import { NewsletterStatus } from '@beabee/beabee-common';
+import {
+  BaseNewsletterGroupData,
+  NewsletterStatus,
+} from '@beabee/beabee-common';
 
 import axios from 'axios';
 import crypto from 'crypto';
@@ -13,12 +16,16 @@ import {
   MCOperationResponse,
   MCStatus,
   NewsletterContact,
+  NewsletterGroupChange,
   UpdateNewsletterContact,
 } from '#type/index';
 import { normalizeEmailAddress } from '#utils/email';
 import { extractJsonArchive } from '#utils/file';
 
 const log = mainLogger.child({ app: 'mailchimp' });
+
+const BATCH_POLL_INTERVAL_MS = 5000;
+const BATCH_STALL_TIMEOUT_MS = 5 * 60 * 1000;
 
 /**
  * Create a Mailchimp API instance
@@ -79,21 +86,49 @@ export function createInstance(
 
   /**
    * Wait for the given batch to finish processing. Polls the batch status every
-   * 5 seconds until it is finished, then returns the finished batch.
+   * 5 seconds until it is finished, then returns the finished batch. Gives up
+   * if the batch stops making progress, so the wait scales with the number of
+   * operations rather than being unbounded.
    *
    * @param batch The batch
    * @returns The finished batch
+   * @throws If the batch makes no progress for BATCH_STALL_TIMEOUT_MS
    */
   async function waitForBatch(batch: MCBatch): Promise<MCBatch> {
-    while (batch.status !== 'finished') {
-      log.info(`Waiting for batch ${batch.id}`, {
-        finishedOperations: batch.finished_operations,
-        totalOperations: batch.total_operations,
-        erroredOperations: batch.errored_operations,
-      });
+    log.info(`Waiting for batch ${batch.id}`, {
+      totalOperations: batch.total_operations,
+    });
 
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+    let lastFinishedOperations = batch.finished_operations;
+    let lastProgressAt = Date.now();
+
+    while (batch.status !== 'finished') {
+      if (Date.now() - lastProgressAt > BATCH_STALL_TIMEOUT_MS) {
+        // Mailchimp can take hours to finalise a batch's response archive after
+        // the operations themselves have completed. Callers treat a missing
+        // contact as "not on the list", so returning a partial batch here would
+        // clear live data; abandon the run and let the next one redo the work.
+        throw new Error(
+          `Batch ${batch.id} made no progress for ${BATCH_STALL_TIMEOUT_MS}ms, ` +
+            `stopped at ${batch.finished_operations}/${batch.total_operations} operations`
+        );
+      }
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, BATCH_POLL_INTERVAL_MS)
+      );
       batch = (await instance.get('/batches/' + batch.id)).data;
+
+      if (batch.finished_operations !== lastFinishedOperations) {
+        lastFinishedOperations = batch.finished_operations;
+        lastProgressAt = Date.now();
+
+        log.info(`Batch ${batch.id} progress`, {
+          finishedOperations: batch.finished_operations,
+          totalOperations: batch.total_operations,
+          erroredOperations: batch.errored_operations,
+        });
+      }
     }
 
     return batch;
@@ -262,6 +297,35 @@ export function getMCMemberUrl(listId: string, email: string) {
 }
 
 /**
+ * Build the Mailchimp `interests` payload for a groups update.
+ *
+ * - 'add'/'remove': only the listed group IDs are included, set to
+ *   true/false respectively — every other group is left untouched on
+ *   Mailchimp's side, regardless of what we locally think its state is.
+ * - 'replace' (default): every known group is included, set to true only if
+ *   it's in `groups` — a full declaration of membership.
+ *
+ * @param groups The group IDs the update concerns
+ * @param change How `groups` should be applied
+ * @returns The Mailchimp `interests` object
+ */
+function buildInterests(
+  groups: string[],
+  change: NewsletterGroupChange = 'replace'
+): Record<string, boolean> {
+  if (change === 'add' || change === 'remove') {
+    return Object.fromEntries(groups.map((id) => [id, change === 'add']));
+  }
+
+  const allGroupIds = OptionsService.getJSON('newsletter-groups').map(
+    (group: BaseNewsletterGroupData) => group.id
+  );
+  return Object.fromEntries(
+    allGroupIds.map((id: string) => [id, groups.includes(id)])
+  );
+}
+
+/**
  * Convert a NewsletterContact to a Mailchimp member object
  *
  * @param nlContact The newsletter contact
@@ -274,13 +338,6 @@ export function nlContactToMCMember(
     throw new Error('NewsletterStatus = None for ' + nlContact.email);
   }
 
-  const groupIds = [
-    ...OptionsService.getList('mailchimp-newsletter-groups'),
-    ...OptionsService.getJSON('newsletter-groups').map(
-      (group: { id: string }) => group.id
-    ),
-  ];
-
   return {
     email_address: nlContact.email,
     status: nlContact.status,
@@ -292,11 +349,9 @@ export function nlContactToMCMember(
       },
     }),
     ...(nlContact.groups && {
-      interests: Object.assign(
-        {},
-        ...groupIds.map((groupId) => ({
-          [groupId]: nlContact.groups?.includes(groupId),
-        }))
+      interests: buildInterests(
+        nlContact.groups,
+        nlContact.newsletterGroupChange
       ),
     }),
   };

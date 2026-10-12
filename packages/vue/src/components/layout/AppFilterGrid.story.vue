@@ -138,7 +138,7 @@ const sampleContent: Record<string, { title: string; description: string }> = {
                 :key="i"
                 class="flex items-center gap-3 rounded border p-3"
               >
-                <div class="h-10 w-10 rounded bg-primary-20"></div>
+                <div class="h-10 w-10 rounded bg-main-20"></div>
                 <div>
                   <p class="font-medium">{{ state.currentFilter }} {{ i }}</p>
                   <p class="text-sm text-body-80">

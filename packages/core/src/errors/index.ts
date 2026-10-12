@@ -2,6 +2,7 @@
 export * from './BadRequestError.js';
 export * from './CantUpdateContributionError.js';
 export * from './CantUpdateNewsletterContactError.js';
+export * from './CantUpdateNewsletterGroupsError.js';
 export * from './CaptchaFailedError.js';
 export * from './CaptchaRequiredError.js';
 export * from './DuplicateEmailError.js';
@@ -14,6 +15,7 @@ export * from './InvalidCalloutResponseError.js';
 export * from './InvalidRuleError.js';
 export * from './NoPaymentMethodError.js';
 export * from './NotFoundError.js';
+export * from './OidcLoginDeniedError.js';
 export * from './PaymentFailedError.js';
 export * from './ResetSecurityFlowError.js';
 export * from './TooManyRequestsError.js';

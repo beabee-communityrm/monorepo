@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4 rounded-md bg-primary-10 p-4">
+  <div class="mb-4 rounded-md bg-main-10 p-4">
     <div :class="orientation === 'vertical' ? '' : 'overflow-x-auto'">
       <ul
         :class="[
@@ -11,11 +11,11 @@
           <router-link
             v-if="item.to"
             :to="item.to"
-            class="relative inline-block whitespace-nowrap rounded-md px-4 py-2 font-semibold transition-colors"
+            class="relative inline-block rounded-md px-4 py-2 font-semibold whitespace-nowrap transition-colors"
             :class="[
               selected === item.id
                 ? 'bg-white text-body shadow-sm'
-                : 'text-body-80 hover:bg-primary-5 hover:text-body',
+                : 'text-body-80 hover:bg-main-5 hover:text-body',
               orientation === 'vertical' ? 'w-full' : '',
             ]"
           >
@@ -29,11 +29,11 @@
           <button
             v-else
             type="button"
-            class="relative inline-block whitespace-nowrap rounded-md px-4 py-2 font-semibold transition-colors"
+            class="relative inline-block rounded-md px-4 py-2 font-semibold whitespace-nowrap transition-colors"
             :class="[
               selected === item.id
                 ? 'bg-white text-body shadow-sm'
-                : 'text-body-80 hover:bg-primary-5 hover:text-body',
+                : 'text-body-80 hover:bg-main-5 hover:text-body',
               orientation === 'vertical' ? 'w-full' : '',
             ]"
             @click="handleTabClick(item.id)"

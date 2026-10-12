@@ -15,11 +15,29 @@
 
     <div class="mb-3">
       <AppInput
+        v-if="accountContent.showOrganisationName"
+        v-model="data.organisation"
+        :label="t('adminSettings.general.organisationName')"
+      />
+    </div>
+
+    <div class="mb-3">
+      <AppInput
         v-model="data.telephone"
         :label="t('form.phone')"
         :info-message="
           isAdmin ? t('accountPage.phoneInfoAdmin') : t('accountPage.phoneInfo')
         "
+      />
+    </div>
+
+    <div class="mb-3">
+      <AppInput
+        v-if="joinContent.showVatNumber"
+        v-model="data.vatNumber"
+        :label="t('form.vatNumber')"
+        :info-message="t('accountPage.vatNumberInfo')"
+        disabled
       />
     </div>
 
@@ -84,6 +102,7 @@
       v-model:line2="data.addressLine2"
       v-model:post-code="data.postCode"
       v-model:city-or-town="data.cityOrTown"
+      v-model:country="data.country"
       :required="data.deliveryOptIn"
     />
   </AppApiForm>
@@ -112,6 +131,7 @@ const { t } = useI18n();
 const isAdmin = computed(() => props.id !== 'me');
 
 const accountContent = await client.content.get('join/setup');
+const joinContent = await client.content.get('join');
 
 const currentNewsletterStatus = ref(NewsletterStatus.None);
 
@@ -126,6 +146,9 @@ const data = reactive({
   addressLine2: '' as string | undefined,
   cityOrTown: '',
   postCode: '',
+  country: '',
+  organisation: '',
+  vatNumber: '',
 });
 
 watch(
@@ -139,6 +162,8 @@ watch(
     data.telephone = contact.profile.telephone;
     data.newsletterToggle = false;
     data.deliveryOptIn = contact.profile.deliveryOptIn;
+    data.organisation = contact.profile.organisation;
+    data.vatNumber = contact.profile.vatNumber;
 
     currentNewsletterStatus.value = contact.profile.newsletterStatus;
 
@@ -147,6 +172,7 @@ watch(
     data.addressLine2 = address?.line2 || '';
     data.cityOrTown = address?.city || '';
     data.postCode = address?.postcode || '';
+    data.country = address?.country || '';
   },
   { immediate: true }
 );
@@ -177,7 +203,9 @@ async function handleSubmit() {
         line2: data.addressLine2,
         city: data.cityOrTown,
         postcode: data.postCode,
+        country: data.country,
       },
+      organisation: data.organisation,
     },
   });
 

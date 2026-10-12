@@ -202,21 +202,6 @@ MAIL_PORT=4025              # Test email server
 DB_PORT=5432                # Test database (container port)
 ```
 
-**Test User Configuration**:
-
-```bash
-# Primary test user for API testing
-TEST_USER_EMAIL=test@beabee.io
-TEST_USER_FIRSTNAME=Test
-TEST_USER_LASTNAME=Test
-TEST_USER_PASSWORD=test1234
-TEST_USER_ROLE=superadmin
-
-# Rate limiting test user
-TEST_RATE_LIMIT_USER_EMAIL=rate-limit-test@beabee.io
-# ... additional test user configuration
-```
-
 ## Environment Variable Reference
 
 ### Primary Documentation Sources
@@ -235,7 +220,7 @@ Environment variables are comprehensively documented in the TypeScript source fi
    - Usage examples and legacy fallbacks
    - Integration with build tools
 
-3. **Test Variables**: [`packages/test-utils/vitest/env.ts`](../packages/test-utils/vitest/env.ts)
+3. **Test Variables**: [`/apps/e2e-api-tests/src/fixtures/api-test-info.json`](../apps/e2e-api-tests/src/fixtures/api-test-info.json)
    - Test user configuration
    - API key setup
    - Test environment specifics
@@ -258,6 +243,8 @@ Environment variables are organized into these main categories:
 - **Localization** - Language and currency settings
 - **Third-Party Services** - API keys and integration settings
 - **Email & Newsletter** - Communication providers
+- **Identity Provider** - IdP Provisioning (`BEABEE_IDP_PROVIDER`, see [OIDC login](./oidc-login.md))
+- **Login** - OIDC Login (`BEABEE_LOGIN_PROVIDER`, `BEABEE_LOGIN_SETTINGS_*`, see [OIDC login](./oidc-login.md))
 - **Payment Processing** - Stripe and GoCardless configuration
 - **Database** - Connection strings
 - **File Storage** - MinIO/S3 settings

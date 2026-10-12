@@ -94,14 +94,43 @@ watch(
   { deep: true }
 );
 
-const localizedComponents = computed(() => {
-  if (!props.componentI18nText) {
-    return props.components;
+// FormIO's radio normalizeValue converts numeric strings to numbers before
+// strict-equality matching against option values in the HTML template.
+// Coerce option values the same way so both sides always match.
+function normalizeOptionValue(v: unknown): unknown {
+  if (typeof v === 'string' && !isNaN(parseFloat(v))) {
+    return +v;
   }
+  return v;
+}
 
+const normalizedComponents = computed(() =>
+  props.components.map((component) => {
+    if (
+      component.type === 'radio' &&
+      'values' in component &&
+      Array.isArray(component.values)
+    ) {
+      return {
+        ...component,
+        values: component.values.map(({ value, ...rest }) => ({
+          ...rest,
+          value: normalizeOptionValue(value),
+        })),
+      };
+    }
+    return component;
+  })
+);
+
+const localizedComponents = computed(() => {
   const componentI18nText = props.componentI18nText;
 
-  return props.components.map((component) => {
+  if (!componentI18nText) {
+    return normalizedComponents.value;
+  }
+
+  return normalizedComponents.value.map((component) => {
     const localizedComponent = { ...component } as Record<string, unknown>;
 
     // Handle content components with HTML property

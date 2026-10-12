@@ -1,5 +1,13 @@
+import {
+  ActivityActorType,
+  ActivityEventType,
+  type ContactAddedByType,
+  ContactOriginData,
+} from '@beabee/beabee-common';
+import type { Address } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
 import {
+  ActivityEvent,
   CalloutResponse,
   ContactContribution,
   ContactProfile,
@@ -49,6 +57,24 @@ function profileField(field: keyof ContactProfile): FilterHandler {
       .select(`profile.contactId`)
       .from(ContactProfile, 'profile')
       .where(convertToWhereClause(`profile.${field}`));
+
+    qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
+  };
+}
+
+/**
+ * Creates a filter handler for a field inside the JSONB delivery address
+ * @param field - The field from Address to filter on
+ * @returns A filter handler function for the specified address field
+ */
+function deliveryAddressField(field: keyof Address): FilterHandler {
+  return (qb, { fieldPrefix, convertToWhereClause }) => {
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select(`profile.contactId`)
+      .from(ContactProfile, 'profile')
+      // Extract as text instead of JSONB (note ->> instead of ->)
+      .where(convertToWhereClause(`profile.deliveryAddress ->> '${field}'`));
 
     qb.where(`${fieldPrefix}id IN ${subQb.getQuery()}`);
   };
@@ -139,7 +165,7 @@ const activePermission: FilterHandler = (qb, args) => {
     .subQuery()
     .select(`cr.contactId`)
     .from(ContactRole, 'cr')
-    .where(`cr.type = '${roleType}'`)
+    .where(args.addParamSuffix('cr.type = :roleType'))
     .andWhere(`cr.dateAdded <= :now`)
     .andWhere(
       new Brackets((qb) => {
@@ -152,6 +178,60 @@ const activePermission: FilterHandler = (qb, args) => {
   } else {
     qb.where(`${args.fieldPrefix}id NOT IN ${subQb.getQuery()}`);
   }
+
+  return { roleType };
+};
+
+/**
+ * Creates a filter handler for origin fields recorded on a contact's creation event
+ * @param field - The field from the event metadata to filter on
+ * @returns A filter handler function for the specified origin field
+ */
+function originField(field: keyof ContactOriginData): FilterHandler {
+  return (qb, args) => {
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select('ae.targetId')
+      .from(ActivityEvent, 'ae')
+      .where(args.addParamSuffix('ae.eventType = :eventType'))
+      .andWhere(args.convertToWhereClause(`ae.metadata ->> '${field}'`));
+
+    qb.where(`${args.fieldPrefix}id IN ${subQb.getQuery()}`);
+
+    return { eventType: ActivityEventType.ContactCreated };
+  };
+}
+
+/**
+ * Filter handler for who added a contact, derived from the actor of their
+ * creation event
+ */
+const addedByField: FilterHandler = (qb, args) => {
+  // Define actor types
+  const userActorTypes = `('${ActivityActorType.User}', '${ActivityActorType.ApiKey}')`;
+  const systemActorTypes = `('${ActivityActorType.System}', '${ActivityActorType.Cron}', '${ActivityActorType.BackendCLI}')`;
+
+  // Map addedBy to event actor type
+  const addedByActorWhere: Record<ContactAddedByType, string> = {
+    // Actor ID != null implies the contact was added by an admin
+    admin: `ae.actorType IN ${userActorTypes} AND ae.actorId IS NOT NULL`,
+    'self-signup': `ae.actorType IN ${userActorTypes} AND ae.actorId IS NULL`,
+    system: `ae.actorType IN ${systemActorTypes}`,
+    external: `ae.actorType = '${ActivityActorType.Webhook}'`,
+  };
+
+  // Query activity feed events to compute 'added by'
+  const subQb = createQueryBuilder()
+    .subQuery()
+    .select('ae.targetId')
+    .from(ActivityEvent, 'ae')
+    .where(args.addParamSuffix('ae.eventType = :eventType'))
+    .andWhere(addedByActorWhere[args.value[0] as ContactAddedByType]);
+
+  const isIn = args.operator === 'equal' ? 'IN' : 'NOT IN';
+  qb.where(`${args.fieldPrefix}id ${isIn} ${subQb.getQuery()}`);
+
+  return { eventType: ActivityEventType.ContactCreated };
 };
 
 /**
@@ -176,19 +256,24 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
     case 'responses': {
       const subQb = createQueryBuilder()
         .subQuery()
-        .select('item.contactId')
-        .from(CalloutResponse, 'item');
+        .select('response.contactId')
+        .from(CalloutResponse, 'response');
 
       const responseField = restFields.join('.');
       const filterHandler = getFilterHandler(
         calloutResponseFilterHandlers,
         responseField
       );
-      params = filterHandler(subQb, { ...args, field: responseField });
+      // Pass the subquery's alias as the field prefix, not the outer query's
+      params = filterHandler(subQb, {
+        ...args,
+        fieldPrefix: 'response.',
+        field: responseField,
+      });
 
       subQb
-        .andWhere(args.addParamSuffix('item.calloutId = :calloutId'))
-        .andWhere('item.contactId IS NOT NULL');
+        .andWhere(args.addParamSuffix('response.calloutId = :calloutId'))
+        .andWhere('response.contactId IS NOT NULL');
 
       qb.where(`${args.fieldPrefix}id IN ${subQb.getQuery()}`);
       break;
@@ -202,10 +287,10 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
     case 'hasAnswered': {
       const subQb = createQueryBuilder()
         .subQuery()
-        .select('item.contactId')
-        .from(CalloutResponse, 'item')
-        .where(args.addParamSuffix(`item.calloutId = :calloutId`))
-        .andWhere('item.contactId IS NOT NULL');
+        .select('response.contactId')
+        .from(CalloutResponse, 'response')
+        .where(args.addParamSuffix(`response.calloutId = :calloutId`))
+        .andWhere('response.contactId IS NOT NULL');
 
       const operator = args.value[0] ? 'IN' : 'NOT IN';
 
@@ -233,17 +318,32 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
  * - manualPaymentSource: Filters by manual payment contributions
  * - callouts: Filters by callout responses and participation
  * - tags: Filters by contact tags
+ * - campaign: Filters by the campaign (utm_campaign) a contact signed up through
+ * - medium: Filters by the referrer (utm_medium) a contact signed up through
+ * - source: Filters by the source (utm_source/callout) a contact signed up through
+ * - addedBy: Filters by who added a contact
+ * - idpLinked: Filters by whether the contact is linked to an identity provider account
+ * - organisation: Filters by organisation name
+ * - deliveryAddressCountry: Filters by the delivery address country code
  */
 export const contactFilterHandlers: FilterHandlers<string> = {
   deliveryOptIn: profileField('deliveryOptIn'),
   newsletterStatus: profileField('newsletterStatus'),
   newsletterGroups: profileField('newsletterGroups'),
+  organisation: profileField('organisation'),
+  deliveryAddressCountry: deliveryAddressField('country'),
   activePermission,
   activeMembership: activePermission,
   activeUser: (qb, args) => {
     qb.where(
       // Convert password.hash to simple boolean field for simpler querying
       args.convertToWhereClause(`(${args.fieldPrefix}password.hash <> '')`)
+    );
+  },
+  idpLinked: (qb, args) => {
+    qb.where(
+      // A linked contact is one with an IdP Subject
+      args.convertToWhereClause(`(${args.fieldPrefix}idpSubject IS NOT NULL)`)
     );
   },
   membershipStarts: membershipField('dateAdded'),
@@ -259,4 +359,8 @@ export const contactFilterHandlers: FilterHandlers<string> = {
   donationDate: oneTimePaymentField('chargeDate'),
   totalDonationAmount: oneTimePaymentStatistic('total'),
   averageDonationAmount: oneTimePaymentStatistic('avg'),
+  campaign: originField('campaign'),
+  medium: originField('medium'),
+  source: originField('source'),
+  addedBy: addedByField,
 };

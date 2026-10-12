@@ -15,7 +15,7 @@
     <font-awesome-icon
       :icon="faCircleNotch"
       class="mr-2 h-6 w-6 shrink-0 animate-spin"
-      :class="inverted ? 'text-white' : 'text-primary'"
+      :class="inverted ? 'text-white' : 'text-main'"
       spin
       aria-hidden="true"
     />

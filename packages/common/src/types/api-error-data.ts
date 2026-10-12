@@ -86,6 +86,11 @@ export interface CantUpdateContributionErrorData extends BaseApiErrorData {
   code: ApiErrorCode.CANT_UPDATE_CONTRIBUTION;
 }
 
+export interface CantUpdateNewsletterGroupsErrorData extends BaseApiErrorData {
+  httpCode: 400;
+  code: ApiErrorCode.CANT_UPDATE_NEWSLETTER_GROUPS;
+}
+
 export type InvalidCalloutResponseCode =
   | 'only-anonymous'
   | 'expired-user'
@@ -162,5 +167,6 @@ export type ApiErrorData =
   | InternalServerErrorData
   | CantUpdateContributionErrorData
   | CantUpdateNewsletterContactErrorData
+  | CantUpdateNewsletterGroupsErrorData
   | FileUploadErrorData
   | ResetSecurityFlowErrorData;

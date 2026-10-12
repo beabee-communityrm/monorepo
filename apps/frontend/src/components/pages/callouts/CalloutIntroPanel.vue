@@ -13,7 +13,7 @@
       <AppButton variant="primary" class="px-6" @click="$emit('close')">
         {{ t('actions.getStarted') }}
       </AppButton>
-      <ul class="mt-8 w-full border-t border-primary-40 pt-4 text-sm">
+      <ul class="mt-8 w-full border-t border-main-40 pt-4 text-sm">
         <li>
           <a :href="generalContent.privacyLink" class="text-link">{{
             t('footer.privacyPolicy')

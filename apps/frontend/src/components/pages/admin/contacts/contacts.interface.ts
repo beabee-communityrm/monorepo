@@ -1,16 +1,16 @@
 import {
+  type BaseNewsletterGroupData,
   type ContactFilterName,
-  type ContentJoinSetupData,
   ContributionPeriod,
   ContributionType,
   NewsletterStatus,
   contactFilters,
 } from '@beabee/beabee-common';
-import { type Header, type SelectItem } from '@beabee/vue';
+import { type Header, type SelectItem, getCountryItems } from '@beabee/vue';
 
 import { computed, ref, watchEffect } from 'vue';
 
-import { i18n } from '#lib/i18n';
+import { currentLocaleConfig, i18n } from '#lib/i18n';
 import { generalContent } from '#store';
 import { client } from '#utils/api';
 
@@ -73,6 +73,34 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
   email: withLabel(contactFilters.email, t('contacts.data.email')),
   joined: withLabel(contactFilters.joined, t('contacts.data.joined')),
   lastSeen: withLabel(contactFilters.lastSeen, t('contacts.data.lastSeen')),
+  campaign: withLabel(
+    contactFilters.campaign,
+    t('contactOverview.origin.campaign')
+  ),
+  medium: withLabel(
+    contactFilters.medium,
+    t('contactOverview.origin.referrer')
+  ),
+  source: withLabel(contactFilters.source, t('contactOverview.origin.source')),
+  addedBy: withLabel(
+    contactFilters.addedBy,
+    t('contactOverview.origin.addedBy'),
+    {
+      admin: t('contactOverview.origin.addedByValues.admin'),
+      'self-signup': t('contactOverview.origin.addedByValues.self-signup'),
+      system: t('contactOverview.origin.addedByValues.system'),
+      external: t('contactOverview.origin.addedByValues.external'),
+    }
+  ),
+  organisation: withLabel(
+    contactFilters.organisation,
+    t('adminSettings.general.organisationName')
+  ),
+  deliveryAddressCountry: {
+    ...contactFilters.deliveryAddressCountry,
+    label: t('form.country'),
+    options: getCountryItems(currentLocaleConfig.value.baseLocale),
+  },
 
   // Newsletter Status Filters
   newsletterStatus: withLabel(
@@ -112,7 +140,6 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
       [ContributionType.Automatic]: t('common.contributionType.automatic'),
       [ContributionType.Manual]: t('common.contributionType.manual'),
       [ContributionType.None]: t('common.contributionType.none'),
-      [ContributionType.Gift]: t('common.contributionType.gift'),
     }
   ),
   contributionMonthlyAmount: withLabel(
@@ -167,6 +194,7 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
     contactFilters.activeUser,
     t('contacts.data.activeUser')
   ),
+  idpLinked: withLabel(contactFilters.idpLinked, t('contacts.data.idpLinked')),
   membershipStarts: withLabel(
     contactFilters.membershipStarts,
     t('contacts.data.membershipStarts')
@@ -183,13 +211,10 @@ const filterItems = computed<FilterItems<ContactFilterName>>(() => ({
  * @returns Filter groups and tag items for use in the contact list view
  */
 export function useContactFilters() {
-  /**
-   * Newsletter setup content
-   * @description Fetches and stores newsletter configuration
-   */
-  const setupContent = ref<ContentJoinSetupData | null>(null);
+  const newsletterGroups = ref<BaseNewsletterGroupData[]>([]);
   (async () => {
-    setupContent.value = await client.content.get('join/setup');
+    const data = await client.integrations.getNewsletter();
+    newsletterGroups.value = data.provider !== 'none' ? data.groups : [];
   })();
 
   /**
@@ -216,14 +241,16 @@ export function useContactFilters() {
           'firstname',
           'lastname',
           'email',
+          'deliveryAddressCountry',
+          'organisation',
           'joined',
           'lastSeen',
           'newsletterStatus',
         ]),
         newsletterGroups: {
           ...filterItems.value.newsletterGroups,
-          ...(setupContent.value?.newsletterGroups.length && {
-            options: setupContent.value.newsletterGroups,
+          ...(newsletterGroups.value.length && {
+            options: newsletterGroups.value,
           }),
         },
         tags: {
@@ -232,7 +259,13 @@ export function useContactFilters() {
             options: tagItems.value,
           }),
         },
-        ...withItems(filterItems, ['deliveryOptIn']),
+        ...withItems(filterItems, [
+          'campaign',
+          'medium',
+          'source',
+          'addedBy',
+          'deliveryOptIn',
+        ]),
       },
     },
     {

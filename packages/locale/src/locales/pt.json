@@ -1,9 +1,10 @@
 {
   "accountPage": {
     "contactInformation": "Informação de contacto",
-    "deliveryAddress": "Endereço de entrega",
+    "deliveryAddress": "Endereço",
     "deliveryOptIn": "Optar por receber",
     "loginDetail": "Detalhes de login",
+    "loginDetail-nuxt": "Mudar palavra-passe",
     "mfa": {
       "codeInput": {
         "info": "Caso tenhas perdido o teu disppositvo de 2FA entra em contacto connosco.",
@@ -11,18 +12,30 @@
       },
       "confirmDelete": {
         "desc": "Tens a certeza de que queres desativar a autenticação de múltiplos fatores? A partir daí, passas a só precisar da tua palavra-passe para fazer login. Lembra-te de eliminar a entrada no tua app de autenticação. Podes sempre ativá-la novamente.",
+        "desc-nuxt": "Tens a certeza de que queres desativar a autenticação de dois fatores? A partir daí, passas a só precisar da tua palavra-passe para fazer login. Lembra-te de eliminar a entrada no tua app de autenticação. Podes sempre ativá-la novamente.",
+        "descDetail": "A partir daí, passas a só precisar da tua palavra-passe para fazer login. Lembra-te de eliminar a entrada no tua app de autenticação. Podes sempre ativá-la novamente.",
         "descToken": "Para desativar o 2FA, por favor, insere o teu código 2FA atual:",
-        "title": "Desativar 2FA"
+        "descToken-nuxt": "Para desativar o 2FA, por favor, insere o teu código 2FA atual:",
+        "keepEnabled": "Manter o 2FA ativado",
+        "remove": "Remover 2FA",
+        "title": "Desativar 2FA",
+        "title-nuxt": "Desativar 2FA"
       },
       "createUnknownErrorNotification": "A autenticação de dois fatores não pôde ser salva devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
+      "createUnknownErrorNotification-nuxt": "A autenticação de dois fatores não pôde ser salva devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
       "deleteUnknownErrorNotification": "A autenticação de dois fatores não pôde ser eliminada devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
+      "deleteUnknownErrorNotification-nuxt": "A autenticação de dois fatores não pôde ser eliminada devido a um erro \ndesconhecido. Por favor, tenta novamente ou fala connosco.",
+      "description": "Adicione uma camada extra de segurança à sua conta",
       "disabledNotification": "Autenticação de dois factores desativada com sucesso",
       "enabledNotification": "Autenticação de dois factores ativada com sucesso",
       "enterCode": {
         "desc": "Introduz o código que vem na tua app de autenticação",
-        "title": "Verificação"
+        "desc-nuxt": "Introduz o código que vem na tua app de autenticação",
+        "title": "Verificação",
+        "title-nuxt": "Verificação"
       },
       "modalTitle": "Ativar autenticação de dois factores",
+      "modalTitle-nuxt": "Ativar autenticação de dois factores",
       "result": {
         "invalidCode": "O código não pode ser validado. Tenta de novo ou contacta-nos {support}",
         "successful": "Autenticação de dois factores ativada com sucesso.",
@@ -30,15 +43,30 @@
       },
       "scan": {
         "desc": "Faça scan do código QR abaixo, usando a sua app de autenticação.",
-        "title": "Código QR"
+        "desc-nuxt": "Faça scan do código QR abaixo, usando a sua app de autenticação.",
+        "title": "Código QR",
+        "title-nuxt": "Código QR"
       },
       "secretInput": {
         "desc": "Alternativamente podes inserir o seguinte código na tua app de autenticação.",
-        "label": "Código secreto"
+        "label": "Código secreto",
+        "toggleHide": "Ocultar",
+        "toggleShow": "Não consegues digitalizar? Insere o código manualmente"
       },
+      "statusDisabled": {
+        "description": "Quando ativada, ser-lhe-á pedido um código da sua aplicação de autenticação sempre que iniciar sessão.",
+        "title": "A autenticação de dois fatores está desativada"
+      },
+      "statusEnabled": {
+        "description": "A sua conta está protegida com uma aplicação de autenticação. Desative apenas se estiver a mudar de dispositivo.",
+        "title": "A autenticação de dois fatores está ativada"
+      },
+      "stepIndicator": "Passo {step} de {total}",
       "title": "Autenticação de dois factores",
+      "title-nuxt": "Autenticação de dois factores",
       "validateButton": {
-        "label": "Verificar token"
+        "label": "Verificar token",
+        "label-nuxt": "Verificar token"
       }
     },
     "newsletter": {
@@ -50,15 +78,35 @@
         "subscribed": "Este contacto assina a newsletter.",
         "unsubscribed": "Este contacto não assina a newsletter."
       },
+      "description": "Faça a gestão dos grupos da newsletter aos quais está inscrito.",
+      "noGroups": "Não está inscrito em nenhum grupo da newsletter.",
       "subscribe": "Inscrever na newsletter",
       "title": "Newsletter",
-      "unsubscribe": "Suspender inscrição na newsletter"
+      "unsubscribe": "Suspender inscrição na newsletter",
+      "unsubscribeButton": "Cancelar inscrição",
+      "unsubscribeInfo": "O cancelamento da inscrição tem efeito imediato e não pode ser revertido aqui.",
+      "unsubscribedNotification": "A sua inscrição em {group} foi cancelada"
     },
+    "personalDetails": "Dados pessoais",
     "phoneInfo": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
+    "phoneInfo-nuxt": "Ao fornecer o seu número de telefone, está a consentir ser contactado por telefone.",
     "phoneInfoAdmin": "",
+    "requiredFields": "Campos obrigatórios",
     "savedPassword": "Nova palavra-passe gravada",
+    "security": "Segurança",
+    "selfService": {
+      "addPasskey": "Adicionar uma chave de acesso",
+      "changePassword": "Alterar palavra-passe",
+      "intro": "A sua palavra-passe e os seus métodos de login são geridos pelo nosso serviço de login. Cada uma destas opções leva-o até lá e traz-o de volta depois.",
+      "setupMfa": "Configurar a aplicação de autenticação",
+      "title": "Detalhes de login"
+    },
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
-    "title": "Conta"
+    "subTitle-nuxt": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
+    "subscriptions": "Inscrições",
+    "title": "Conta",
+    "unsavedChanges": "Tem alterações não guardadas",
+    "vatNumberInfo": "Contacte support{'@'}beabee.io para atualizar o número de IVA"
   },
   "actions": {
     "add": "Adicionar",
@@ -81,6 +129,7 @@
     "export": "Exportar",
     "getStarted": "Começar",
     "goBack": "Voltar atrás",
+    "hidePassword": "Ocultar palavra-passe",
     "increase": "",
     "next": "Próxima",
     "noBack": "Não, voltar atrás",
@@ -104,6 +153,7 @@
     "sendOneOffEmail": "Enviar e-mail",
     "sendOngoingEmails": "E-mails contínuos",
     "share": "Partilhar",
+    "showPassword": "Mostrar palavra-passe",
     "skip": "Saltar",
     "submit": "Enviar",
     "tryAgain": "",
@@ -251,6 +301,35 @@
         "twitterHandle": ""
       }
     },
+    "integrations": {
+      "categories": {
+        "newsletters": "Newsletters"
+      },
+      "label": "Integrações",
+      "loadError": "Falha ao carregar integrações. Por favor, recarregue a página.",
+      "newsletter": {
+        "audienceId": "ID do público",
+        "groups": "Grupos",
+        "groupsNote": "Os nomes dos grupos serão apresentados aos sócios no separador de gestão de subscrições da página de conta.",
+        "noGroups": "Nenhum grupo encontrado"
+      },
+      "refresh": "Atualizar",
+      "refreshResult": {
+        "added": "Grupos do {provider} adicionados: {groups}",
+        "connectionLost": "conexão perdida",
+        "couldNotConnect": "Não foi possível conectar ao {provider}",
+        "error": "Falha ao atualizar {provider}. Por favor, tente novamente.",
+        "noChanges": "Os grupos do {provider} estão atualizados",
+        "reconnected": "reconectado",
+        "removed": "Grupos do {provider} removidos: {groups}"
+      },
+      "refreshing": "Atualizando...",
+      "status": {
+        "disabled": "Desativado",
+        "healthy": "Conectado",
+        "unhealthy": "Conexão perdida"
+      }
+    },
     "payment": {
       "enableOneTimeDonation": "",
       "oneTimeDonationsTitle": "",
@@ -266,7 +345,7 @@
         "body": "",
         "danger": "",
         "link": "",
-        "primary": "",
+        "main": "Principal",
         "success": "",
         "warning": ""
       },
@@ -375,6 +454,7 @@
   },
   "callout": {
     "actions": {
+      "participateAgain": "Participar novamente",
       "updateResponse": "Actualiza a tua resposta"
     },
     "addAPoint": "Carrega no mapa no sítio onde queres adicionar o ponto.",
@@ -878,6 +958,7 @@
     "selectedCount": "{n} resposta selecionada | {n} respostas selecionadas"
   },
   "calloutResponsesPage": {
+    "allResponses": "Todas as respostas",
     "moveToBucket": "Mover para {bucket}",
     "noTags": "Sem etiquetas",
     "response": "Resposta",
@@ -911,12 +992,23 @@
     "oneResponseWarning": "Por favor, note que este aviso permite apenas uma resposta por pessoa. Se você já contribuiu, respostas adicionais não serão registradas."
   },
   "callouts": {
+    "access": {
+      "everyone": "Aberto a todos",
+      "member": "Apenas membros"
+    },
     "archive": "Arquivo",
+    "archiveRange": "{start}-{end} de {total}",
     "data": {
       "callout": "CrowdNewsroom",
-      "endDate": "Data de conclusão"
+      "endDate": "Data de conclusão",
+      "responses": "{n} resposta | {n} respostas"
+    },
+    "daysLeft": "{n} dia restante | {n} dias restantes",
+    "empty": {
+      "active": "Não há CrowdNewsrooms ativas no momento."
     },
     "noArchivedCallouts": "Não há chamadas",
+    "openCallouts": "CrowdNewsrooms abertas",
     "search": "Pesquisar chamadas...",
     "showAll": "Todas",
     "showAnswered": "Respondidas",
@@ -947,7 +1039,6 @@
     },
     "contributionType": {
       "automatic": "Automática",
-      "gift": "Presente",
       "manual": "Manual",
       "none": "Nenhuma"
     },
@@ -1009,6 +1100,15 @@
       "scheduled": "Agendado"
     },
     "statusLabel": "",
+    "table": {
+      "selectAllBanner": {
+        "allSelected": "Todos os {count} itens correspondentes estão selecionados.",
+        "clearSelection": "Limpar seleção",
+        "pageSelected": "Todos os {count} itens desta página estão selecionados.",
+        "selectAll": "Selecionar todos os {count} itens",
+        "someSelected": "{count} itens correspondentes estão selecionados."
+      }
+    },
     "thankYou": "Obrigado!",
     "timeAgo": "há {time}",
     "timeIn": "em {time}",
@@ -1051,6 +1151,19 @@
       "title": ""
     },
     "oneTime": "Único",
+    "origin": {
+      "addedBy": "",
+      "addedByValues": {
+        "admin": "",
+        "external": "",
+        "self-signup": "",
+        "system": ""
+      },
+      "campaign": "",
+      "referrer": "",
+      "source": "",
+      "title": ""
+    },
     "overview": "",
     "pickTag": "",
     "profile": "",
@@ -1058,7 +1171,6 @@
     "roles": "",
     "security": {
       "instructions": "",
-      "loginOverride": "",
       "mfa": {
         "desc": "Este contato ativou o 2FA. Clica no botão \"{ disableLabel }\" para desativar.",
         "disabledDesc": "Este contato não ativou o 2FA."
@@ -1097,6 +1209,9 @@
       "email": "Email",
       "firstname": "Primeiro nome",
       "hasDonated": "Fez uma contribuição única",
+      "idpAccount": "",
+      "idpLinked": "",
+      "idpUnlinked": "",
       "joined": "Inscreveu-se em",
       "lastSeen": "Visto pela última vez em",
       "lastname": "Último nome",
@@ -1348,6 +1463,7 @@
       "remaining": ""
     },
     "cityOrTown": "Localidade",
+    "country": "",
     "deliveryOptIn": "Escolher inscrição",
     "description": "Descrição",
     "email": "Email",
@@ -1373,6 +1489,16 @@
       "addressLine1": {
         "required": "A primeira linha do endereço é obrigatória"
       },
+      "audio": {
+        "micPermissionDeniedBody": "O teu navegador bloqueou o acesso ao microfone. Verifica as permissões do site e tenta novamente, ou carrega uma gravação feita noutro sítio.",
+        "micPermissionDeniedTitle": "Microfone não disponível",
+        "recordingNotSupportedBody": "Este navegador não consegue gravar áudio. Carrega antes um ficheiro de áudio.",
+        "recordingNotSupportedTitle": "Gravação não suportada",
+        "tooLongBody": "Este ficheiro tem {duration}. O máximo para esta pergunta é {max}. Corta-o ou grava uma resposta mais curta.",
+        "tooLongTitle": "Gravação demasiado longa",
+        "uploadFailedTitle": "Falha no carregamento",
+        "wrongTypeBody": "Esta pergunta só aceita ficheiros {types}."
+      },
       "cityOrTown": {
         "required": "A localidade é obrigatória"
       },
@@ -1385,6 +1511,9 @@
         "required": "A palavra-passe é obrigatória",
         "sameAs": "As palavras-passe não coincidem"
       },
+      "country": {
+        "required": ""
+      },
       "description": {
         "maxLength": "",
         "required": ""
@@ -1396,7 +1525,8 @@
       "file": {
         "rateLimited": "Falha no upload: fizeste upload de demasiados ficheiros recentemente. Espera um pouco e volta a tentar.",
         "tooBig": "Falha no upload: o ficheiro deve ter menos de 20Mb.",
-        "unsupportedType": "Falha no upload: o tipo de ficheiro não é suportado."
+        "unsupportedType": "Falha no upload: o tipo de ficheiro não é suportado.",
+        "uploadFailed": "Falha no upload: não foi possível processar o ficheiro."
       },
       "firstName": {
         "required": "O primeiro nome é obrigatório"
@@ -1418,6 +1548,9 @@
       "shareDescription": {
         "maxLength": "",
         "required": ""
+      },
+      "telephone": {
+        "phone": "Número de telefone inválido"
       },
       "unknown": {
         "email": "Endereço de email inválido",
@@ -1448,6 +1581,7 @@
     "notes": "Notas",
     "password": "Palavra-passe",
     "passwordInfo": "Define uma palavra-passe segura: 8 ou mais caracteres, incluindo um número, letras maiúsculas e letras minúsculas.",
+    "passwordInfo-nuxt": "Define uma palavra-passe segura: 8 ou mais caracteres, incluindo um número, uma letra maiúscula e uma letra minúscula.",
     "phone": "Telefone",
     "postCode": "Código postal",
     "richtext": {
@@ -1466,10 +1600,30 @@
     "saveChanges": "Gravar alterações",
     "saved": "Gravado!",
     "unsavedChanges": "Alterações não gravadas",
-    "updated": "Atualizado"
+    "updated": "Atualizado",
+    "vatNumber": "Número de IVA"
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Anexado",
+        "delete": "Eliminar",
+        "discard": "Descartar",
+        "download": "Transferir",
+        "pause": "Pausar",
+        "paused": "Em pausa",
+        "playPause": "Reproduzir ou pausar",
+        "reRecord": "Gravar novamente",
+        "record": "Iniciar gravação",
+        "recording": "A gravar",
+        "requestingPermission": "A aguardar permissão do microfone. Permite o acesso no teu navegador para continuar.",
+        "resume": "Retomar",
+        "stop": "Parar",
+        "tryAgain": "Tentar novamente",
+        "uploadInstead": "Carregar um ficheiro de áudio em vez disso",
+        "uploadLabel": "Carregar um ficheiro de áudio",
+        "uploadingHint": "A carregar — podes continuar a preencher o resto do formulário."
+      },
       "file": {
         "browse": "Fazer upload do dispositivo",
         "dropFiles": "Deixar ficheiros aqui para a anexar",
@@ -1572,6 +1726,10 @@
   },
   "login": {
     "backTo": "Voltar a {newsroomName}",
+    "errors": {
+      "login-failed": "O login falhou. Tente novamente.",
+      "unlinked-account": "O seu login não está associado a nenhuma conta nesta plataforma. Contacte o suporte."
+    },
     "forgotPassword": "Esqueceste-te da palavra-passe?",
     "joinNow": "Junta-te agora!",
     "lostMfaDevice": "Perdeste o teu dispositivo 2FA?",
@@ -1608,6 +1766,7 @@
           "showOptIn": "",
           "title": "Newsletter"
         },
+        "showOrganisationName": "",
         "text": "",
         "title": "",
         "welcomeMessage": ""
@@ -1641,6 +1800,7 @@
         "showAbsorbFee": "",
         "showGoogleApplePay": "",
         "showNoContribution": "",
+        "showVatNumber": "",
         "suggestedAmounts": "",
         "text": "",
         "title": ""
@@ -1680,7 +1840,6 @@
     "insert": "Inserir",
     "insertTag": "Inserir {tag}",
     "tags": {
-      "ACTIVATELINK": "Link de ativação do presente",
       "ANSWERS": "Respostas formatadas",
       "CALLOUTLINK": "Link para o CrowdNewsroom",
       "CALLOUTSLUG": "Slug do CrowdNewsroom",
@@ -1689,8 +1848,6 @@
       "EMAIL": "Endereço de email do contacto",
       "EXPIRES": "Data de expiração da adesão",
       "FNAME": "Primeiro nome do contacto",
-      "GIFTDATE": "Data de início do presente",
-      "GIFTEE": "Nome do destinatário do presente",
       "ISELIGIBLE": "Se a referência é elegível",
       "LNAME": "Apelido do contacto",
       "LOGINLINK": "Link de login",
@@ -1700,7 +1857,6 @@
       "MESSAGE": "Conteúdo de mensagem personalizado",
       "NAME": "Nome completo do contacto",
       "ORGNAME": "Nome da organização",
-      "PURCHASER": "Nome do comprador do presente",
       "REFCODE": "Código de referência do contacto",
       "REFEREENAME": "Nome da pessoa referida",
       "RESPNAME": "Nome do respondente",

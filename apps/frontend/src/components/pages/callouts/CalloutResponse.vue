@@ -28,7 +28,7 @@
         <div>
           <button
             v-show="currentPhotoIndex > 0"
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-main text-white"
             @click="currentPhotoIndex--"
           >
             <font-awesome-icon :icon="faChevronLeft" />
@@ -37,7 +37,7 @@
         <div>
           <button
             v-show="currentPhotoIndex < response.photos.length - 1"
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-main text-white"
             @click="currentPhotoIndex++"
           >
             <font-awesome-icon :icon="faChevronRight" />
@@ -58,7 +58,7 @@
 
     <ul
       v-if="callout.responseViewSchema.links.length > 0"
-      class="mt-8 columns-2 gap-4 border-t border-t-primary pt-8"
+      class="mt-8 columns-2 gap-4 border-t border-t-main pt-8"
     >
       <li
         v-for="link in callout.responseViewSchema.links"

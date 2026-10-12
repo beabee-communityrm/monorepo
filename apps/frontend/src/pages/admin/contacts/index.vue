@@ -7,12 +7,12 @@ meta:
 
 <template>
   <PageTitle :title="t('menu.contacts')" border>
-    <div class="flex-0 ml-3 hidden md:block">
+    <div class="ml-3 hidden flex-0 md:block">
       <AppButton to="/admin/contacts/add">
         {{ t('contacts.addContact') }}
       </AppButton>
     </div>
-    <div class="fixed bottom-5 right-5 md:hidden">
+    <div class="fixed right-5 bottom-5 md:hidden">
       <AppButton
         :icon="faPlus"
         :title="t('contacts.addContact')"
@@ -48,6 +48,7 @@ meta:
     />
     <AppPaginatedTable
       v-model:query="currentPaginatedQuery"
+      v-model:selection-state="selectionState"
       keypath="contacts.showingOf"
       :headers="headers"
       :result="contactsTable"
@@ -68,7 +69,7 @@ meta:
             :selected-tags="selectedTags"
             :manage-url="`${route.path}/tags`"
             :loading="doingAction"
-            :disable-tags="selectedCount === 0"
+            :disabled="selectedCount === 0"
             @toggle="
               (tagId, successText) =>
                 handleUpdateAction({ tags: [tagId] }, successText)
@@ -83,7 +84,7 @@ meta:
           >
             <router-link
               v-if="currentSegment"
-              class="block px-3 py-2 hover:bg-primary-5"
+              class="block px-3 py-2 hover:bg-main-5"
               role="menuitem"
               :to="`/admin/contacts/send-email/${currentSegment.id}`"
               @click.stop
@@ -99,7 +100,7 @@ meta:
               {{ t('actions.sendOneOffEmail') }}
             </span>
             <router-link
-              class="block border-t border-primary-40 px-3 py-2 hover:bg-primary-5"
+              class="block border-t border-main-40 px-3 py-2 hover:bg-main-5"
               role="menuitem"
               :to="{ name: 'adminContactsEmailTemplates' }"
               @click.stop
@@ -160,7 +161,7 @@ meta:
           >;
         }"
       >
-        <p v-if="item.profile.description" class="whitespace-normal text-xs">
+        <p v-if="item.profile.description" class="text-xs whitespace-normal">
           {{ item.profile.description }}
         </p>
         <div
@@ -199,7 +200,6 @@ import {
   faDownload,
   faMailBulk,
   faPlus,
-  faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -217,10 +217,12 @@ import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { extractErrorText } from '#utils/api-error';
 import { definePaginatedQuery, defineParam } from '#utils/pagination';
+import { routeIcons, routeLabels } from '#utils/route-nav';
 
 import AppPaginatedTable from '../../../components/table/AppPaginatedTable.vue';
 import { useSegmentManagement } from '../../../composables/useSegmentManagement';
 import { useTagFilter } from '../../../composables/useTagFilter';
+import { usePaginatedSelectionState } from '../../../composables/useSelectionState';
 
 /**
  * Contact list page component
@@ -239,21 +241,19 @@ const route = useRoute();
 
 /**
  * Table state
- * @description Manages the paginated table data and selection state
+ * @description Manages the paginated table data
  */
 const contactsTable =
   ref<
     Paginated<
       GetContactDataWith<
         GetContactWith.Profile | GetContactWith.Roles | GetContactWith.Tags
-      > & { selected: boolean }
+      >
     >
   >();
 
-const selectedContactItems = computed(
-  () => contactsTable.value?.items.filter((ri) => ri.selected) || []
-);
-const selectedCount = computed(() => selectedContactItems.value.length);
+const { selectionState, selectedPageItems, selectedCount, getSelectionRules } =
+  usePaginatedSelectionState(contactsTable);
 
 /**
  * Tag Management
@@ -267,13 +267,13 @@ const selectedTags = computed(() => {
   }
 
   const tagCount = Object.fromEntries(tagItems.value.map((t) => [t.id, 0]));
-  for (const item of selectedContactItems.value) {
+  for (const item of selectedPageItems.value) {
     for (const tag of item.tags || []) {
       tagCount[tag.id]++;
     }
   }
   return Object.entries(tagCount)
-    .filter((tc) => tc[1] === selectedCount.value)
+    .filter((tc) => tc[1] === selectedPageItems.value.length)
     .map(([tagId]) => tagId);
 });
 
@@ -328,7 +328,9 @@ async function updateSegment(
 }
 
 async function listSegments() {
-  return await client.segments.list({ sort: 'order' }, ['itemCount']);
+  return await client.segments.list({ sort: 'order', limit: 100 }, [
+    'itemCount',
+  ]);
 }
 
 async function listTotalSegmentItems() {
@@ -345,7 +347,11 @@ const doingAction = ref(false);
  */
 addBreadcrumb(
   computed(() => [
-    { title: t('menu.contacts'), to: '/admin/contacts', icon: faUsers },
+    {
+      label: t(routeLabels.adminContacts),
+      to: '/admin/contacts',
+      icon: routeIcons.adminContacts,
+    },
   ])
 );
 
@@ -391,12 +397,8 @@ function getSearchRules(): RuleGroup {
  */
 function getSelectedContactsRules(): RuleGroup {
   return {
-    condition: 'OR',
-    rules: selectedContactItems.value.map((item) => ({
-      field: 'id',
-      operator: 'equal',
-      value: [item.id],
-    })),
+    condition: 'AND',
+    rules: [getSelectionRules(), getSearchRules()],
   };
 }
 
@@ -417,26 +419,12 @@ async function refreshResponses() {
 
   isRefreshing.value = true;
   try {
-    // Store currently selected IDs before refresh
-    const selectedIds = new Set(
-      selectedContactItems.value.map((item) => item.id)
-    );
-
     const query = { ...currentPaginatedQuery.query, rules: getSearchRules() };
-    const newContacts = await client.contact.list(query, [
+    contactsTable.value = await client.contact.list(query, [
       GetContactWith.Profile,
       GetContactWith.Roles,
       GetContactWith.Tags,
     ]);
-
-    // Preserve selection state for existing contacts
-    contactsTable.value = {
-      ...newContacts,
-      items: newContacts.items.map((c) => ({
-        ...c,
-        selected: selectedIds.has(c.id),
-      })),
-    };
   } catch (err) {
     contactsTable.value = emptyTable();
     addNotification({

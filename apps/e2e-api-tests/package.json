@@ -1,6 +1,6 @@
 {
   "name": "@beabee/e2e-api-tests",
-  "version": "0.44.2",
+  "version": "0.45.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,13 +8,17 @@
     "test:watch": "vitest",
     "format": "prettier --write ."
   },
+  "imports": {
+    "#utils/*": "./src/utils/*"
+  },
   "dependencies": {
-    "@beabee/client": "workspace:*"
+    "@beabee/client": "workspace:*",
+    "@beabee/test-utils": "workspace:*"
   },
   "devDependencies": {
     "@beabee/prettier-config": "workspace:^",
-    "@beabee/test-utils": "workspace:^",
     "@beabee/tsconfig": "workspace:^",
+    "@types/node": "^24.12.2",
     "prettier": "^3.8.3",
     "typescript": "~6.0.3",
     "vitest": "^4.1.5"
