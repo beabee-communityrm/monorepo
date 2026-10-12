@@ -1410,6 +1410,7 @@
       "availableFields": "Campos disponibles",
       "description": {
         "cancelled-contribution": "Se envía a los miembros cuando se cancela su contribución recurrente. Normalmente incluye información sobre cuándo finaliza la membresía y el ID del miembro. Puede contener un enlace a una encuesta.",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Se envía a los administradores cuando un miembro cancela su contribución. Normalmente incluye una notificación con el ID y nombre del miembro cancelado.",
         "confirm-email": "Se envía a los nuevos usuarios durante el proceso de registro para verificar su dirección de correo. Contiene un enlace de confirmación que deben pulsar para completar el registro.",
         "contribution-didnt-start": "Se envía a los miembros cuando su pago de suscripción de Stripe no se pudo iniciar (p. ej., método de pago rechazado, fondos insuficientes). Les informa que su membresía ha sido revocada por el fallo en el pago.",
@@ -1427,6 +1428,7 @@
       },
       "names": {
         "cancelled-contribution": "Contribución cancelada",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Admin: miembro cancelado – notificación",
         "confirm-email": "Confirmar correo-e",
         "contribution-didnt-start": "Contribución no iniciada",

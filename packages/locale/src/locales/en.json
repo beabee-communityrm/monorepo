@@ -1409,6 +1409,7 @@
       "availableFields": "Available fields",
       "description": {
         "cancelled-contribution": "Sent to members when their recurring contribution is cancelled. Typically includes information about when the membership ends, as well as the member ID. May contain a link to a survey.",
+        "cancelled-contribution-payment-failed": "Sent to members when Stripe cancels their recurring contribution because a payment repeatedly failed. Includes information about when the membership ends and a login link to set up a new payment method.",
         "cancelled-member": "Sent to administrators when a member cancels their contribution. Typically includes a notification with the ID and name of the cancelled member.",
         "confirm-email": "Sent to new users during the registration process to verify their email address. Contains a confirmation link they must click to complete registration.",
         "contribution-didnt-start": "Sent to members when their Stripe subscription payment could not be started (e.g., declined payment method, insufficient funds). Informs them that their membership has been revoked due to the payment failure.",
@@ -1426,6 +1427,7 @@
       },
       "names": {
         "cancelled-contribution": "Contribution cancelled",
+        "cancelled-contribution-payment-failed": "Contribution cancelled after failed payment",
         "cancelled-member": "Admin: cancelled member – notification",
         "confirm-email": "Confirm email",
         "contribution-didnt-start": "Contribution did not start",

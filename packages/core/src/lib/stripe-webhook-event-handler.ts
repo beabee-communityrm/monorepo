@@ -170,9 +170,12 @@ export class StripeWebhookEventHandler {
       subscription.id
     );
     if (contribution) {
+      // Stripe cancels the subscription itself once payment retries are exhausted
       await ContactsService.cancelContactContribution(
         contribution.contact,
-        'cancelled-contribution'
+        subscription.cancellation_details?.reason === 'payment_failed'
+          ? 'cancelled-contribution-payment-failed'
+          : 'cancelled-contribution'
       );
     }
   }
@@ -319,6 +322,19 @@ export class StripeWebhookEventHandler {
     invoice: Stripe.Invoice
   ): Promise<void> {
     const contribution = await this.getContributionFromInvoice(invoice);
+
+    const intent =
+      typeof invoice.payment_intent === 'string'
+        ? await stripe.paymentIntents.retrieve(invoice.payment_intent)
+        : invoice.payment_intent;
+    log.info(`Payment failed for invoice ${invoice.id}`, {
+      billingReason: invoice.billing_reason,
+      attemptCount: invoice.attempt_count,
+      nextPaymentAttempt: invoice.next_payment_attempt,
+      intentStatus: intent?.status,
+      errorCode: intent?.last_payment_error?.code,
+      declineCode: intent?.last_payment_error?.decline_code,
+    });
 
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactPaymentFailed,

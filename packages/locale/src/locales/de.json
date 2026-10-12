@@ -1410,6 +1410,7 @@
       "availableFields": "Verfügbare Felder",
       "description": {
         "cancelled-contribution": "Wird an Personen mit wiederkehrenden Beitrag gesendet, wenn ihr wiederkehrender Beitrag gekündigt wird. Enthält in der Regel Informationen darüber, wann der Beitrag endet, sowie die Mitglieds-ID. Kann einen Link zu einer Umfrage enthalten.",
+        "cancelled-contribution-payment-failed": "Wird an Personen gesendet, wenn Stripe ihren wiederkehrenden Beitrag beendet, weil eine Zahlung wiederholt fehlgeschlagen ist. Enthält Informationen darüber, wann der Beitrag endet, sowie einen Login-Link zum Hinterlegen einer neuen Zahlungsmethode.",
         "cancelled-member": "Wird an Admins gesendet, wenn eine Person den Beitrag kündigt. Enthält in der Regel eine Benachrichtigung mit der ID und dem Namen der gekündigten Person.",
         "confirm-email": "Wird während des Registrierungsprozesses an neue Nutzende gesendet, um ihre E-Mail-Adresse zu verifizieren. Enthält einen Bestätigungslink, der angeklickt werden muss, um die Registrierung abzuschließen.",
         "contribution-didnt-start": "Wird an Personen gesendet, wenn ihre Stripe-Abonnementzahlung nicht gestartet werden konnte (z. B. abgelehnte Zahlungsmethode, unzureichende Deckung). Informiert sie darüber, dass ihr wiederkehrender Beitrag aufgrund des Zahlungsfehlers widerrufen wurde.",
@@ -1427,6 +1428,7 @@
       },
       "names": {
         "cancelled-contribution": "Beitrag gekündigt",
+        "cancelled-contribution-payment-failed": "Beitrag nach fehlgeschlagener Zahlung beendet",
         "cancelled-member": "Admin: Gekündigtes Mitglied - Benachrichtigung",
         "confirm-email": "E-Mail bestätigen",
         "contribution-didnt-start": "Beitrag hat nicht begonnen",
