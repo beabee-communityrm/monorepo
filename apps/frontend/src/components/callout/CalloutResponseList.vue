@@ -36,7 +36,11 @@
     >
       <template v-if="count > 1" #header>
         <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
-          <div class="flex flex-col gap-1">
+          <div
+            class="flex flex-col gap-1"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             <h4>
               {{
                 t('callout.responseNumber', {
