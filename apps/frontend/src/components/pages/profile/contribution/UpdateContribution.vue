@@ -195,8 +195,24 @@ async function handleStartFlow(completeUrl: string) {
 }
 
 async function handleCompleteFlow(paymentFlowId: string) {
-  contribution.value =
-    await client.contact.contribution.completeStart(paymentFlowId);
+  try {
+    contribution.value =
+      await client.contact.contribution.completeStart(paymentFlowId);
+  } catch (err) {
+    if (!(err instanceof PaymentRequiresActionError)) {
+      throw err;
+    }
+    // The contribution has started, the first payment still needs
+    // authenticating. Stripe expires the subscription if this never completes
+    try {
+      await handlePaymentNextAction(
+        err.clientSecret,
+        props.paymentContent.stripePublicKey
+      );
+    } finally {
+      contribution.value = await client.contact.contribution.get();
+    }
+  }
 
   addNotification({
     variant: 'success',

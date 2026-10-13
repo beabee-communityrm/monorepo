@@ -190,9 +190,31 @@ export async function createSubscription(
     form,
     renewalDate,
   });
-  return await stripe.subscriptions.create(
-    getCreateSubscriptionParams(customerId, form, paymentMethod, renewalDate)
-  );
+  return await stripe.subscriptions.create({
+    ...getCreateSubscriptionParams(
+      customerId,
+      form,
+      paymentMethod,
+      renewalDate
+    ),
+    expand: ['latest_invoice.payment_intent'],
+  });
+}
+
+/**
+ * Get the client secret for a subscription whose latest payment needs the
+ * member's authentication
+ *
+ * @param subscription The subscription, expanded with its latest payment intent
+ * @returns The client secret, if the payment needs authentication
+ */
+export function getRequiresActionClientSecret(
+  subscription: Stripe.Subscription
+): string | undefined {
+  const intent = getInvoicePaymentIntent(subscription.latest_invoice);
+  return intent?.status === 'requires_action' && intent.client_secret
+    ? intent.client_secret
+    : undefined;
 }
 
 /**
