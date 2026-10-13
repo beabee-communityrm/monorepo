@@ -31,6 +31,7 @@
         />
 
         <AppInput
+          v-if="!generalContent.oidcEnabled"
           v-model="data.password"
           :label="t('form.password')"
           type="password"
@@ -87,6 +88,7 @@ import ContactMailOptIn from '#components/contact/ContactMailOptIn.vue';
 import AppApiForm from '#components/forms/AppApiForm.vue';
 import AppNewsletterOptIn from '#components/newsletter/AppNewsletterOptIn.vue';
 import { client } from '#utils/api';
+import { generalContent } from '../../../store';
 
 import { type SetupContactData } from './join.interface';
 
