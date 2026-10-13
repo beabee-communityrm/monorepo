@@ -307,39 +307,38 @@ export class ContactController {
   }
 
   /**
-   * The login methods the current member has at the identity provider
+   * The login methods a contact has at the identity provider
+   * @param target The target contact
    */
-  @Get('/me/auth-methods')
+  @Get('/:id/auth-methods')
   async getContactAuthMethods(
-    @CurrentAuth({ required: true }) auth: AuthInfo
+    @TargetUser() target: Contact
   ): Promise<GetContactAuthMethodDto[]> {
     assertOidcAuthEnabled();
-    if (!auth.contact) {
-      throw new UnauthorizedError();
-    }
-    const methods = await IdpService.listAuthMethods(auth.contact);
+    const methods = await IdpService.listAuthMethods(target);
     return methods.map((method) =>
       plainToInstance(GetContactAuthMethodDto, method)
     );
   }
 
   /**
-   * Remove one of the current member's login methods at the identity
-   * provider, after a fresh login there
+   * Remove one of a contact's login methods at the identity provider.
+   * Members need a fresh login there first; admins act on other contacts
+   * directly, as with MFA.
+   * @param target The target contact
    */
   @OnUndefined(204)
-  @Delete('/me/auth-methods/:methodId')
+  @Delete('/:id/auth-methods/:methodId')
   async deleteContactAuthMethod(
     @Req() req: Request,
-    @CurrentAuth({ required: true }) auth: AuthInfo,
-    @Params() { methodId }: ContactAuthMethodParams
+    @TargetUser() target: Contact,
+    @Params() { id, methodId }: ContactAuthMethodParams
   ): Promise<void> {
     assertOidcAuthEnabled();
-    if (!auth.contact) {
-      throw new UnauthorizedError();
+    if (id === 'me') {
+      assertFreshOidcLogin(req);
     }
-    assertFreshOidcLogin(req);
-    await IdpService.removeAuthMethod(auth.contact, methodId);
+    await IdpService.removeAuthMethod(target, methodId);
   }
 
   /**
