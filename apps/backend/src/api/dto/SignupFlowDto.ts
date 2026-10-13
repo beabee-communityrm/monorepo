@@ -1,8 +1,8 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsEmail,
   IsOptional,
-  IsString,
+  IsUUID,
   Validate,
   ValidateNested,
 } from 'class-validator';
@@ -11,10 +11,9 @@ import { GetContactOriginDto } from '#api/dto/ContactOriginDto';
 import { StartContributionDto } from '#api/dto/ContributionDto';
 import IsPassword from '#api/validators/IsPassword';
 import IsUrl from '#api/validators/IsUrl';
-import IsVatNumber from '#api/validators/IsVatNumber';
 
 import { CreatePaymentDto } from './PaymentDto.js';
-import { CompletePaymentFlowDto } from './PaymentFlowDto.js';
+import { PaymentFlowAdvanceParamsDto } from './PaymentFlowDto.js';
 
 export class StartSignupFlowDto {
   @IsUrl()
@@ -49,16 +48,16 @@ export class StartSignupFlowDto {
   origin?: GetContactOriginDto;
 }
 
-export class CompleteSignupFlowDto extends CompletePaymentFlowDto {
-  @IsOptional()
-  @IsString()
-  firstname?: string;
+export class AdvanceSignupFlowDto {
+  @IsUUID('4')
+  paymentFlowId!: string;
 
-  @IsOptional()
-  @IsString()
-  lastname?: string;
+  @Type(() => PaymentFlowAdvanceParamsDto)
+  @ValidateNested()
+  params!: PaymentFlowAdvanceParamsDto;
+}
 
-  @IsOptional()
-  @IsVatNumber()
-  vatNumber?: string;
+export class SignupCompleteDto {
+  @IsUUID('4')
+  id!: string;
 }

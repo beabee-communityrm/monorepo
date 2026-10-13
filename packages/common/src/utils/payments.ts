@@ -1,5 +1,9 @@
 import { ContributionPeriod, PaymentMethod } from '../data/index.js';
-import type { Feeable, StripeFeeCountry } from '../types/index.js';
+import type {
+  Feeable,
+  StripeFeeCountry,
+  StripePaymentMethod,
+} from '../types/index.js';
 
 const stripeFees = {
   gb: {
@@ -48,4 +52,29 @@ export function calcPaymentFee(
   return feeable.period === ContributionPeriod.Annually
     ? 0
     : feeFn(feeable.amount);
+}
+
+/**
+ * Convert a payment method to a Stripe payment type.
+ *
+ * @param method The payment method
+ * @returns The Stripe payment type
+ */
+export function paymentMethodToStripeType(
+  method: PaymentMethod
+): StripePaymentMethod {
+  switch (method) {
+    case PaymentMethod.StripeCard:
+      return 'card';
+    case PaymentMethod.StripeSEPA:
+      return 'sepa_debit';
+    case PaymentMethod.StripeBACS:
+      return 'bacs_debit';
+    case PaymentMethod.StripePayPal:
+      return 'paypal';
+    case PaymentMethod.StripeIdeal:
+      return 'ideal';
+    case PaymentMethod.GoCardlessDirectDebit:
+      return 'bacs_debit';
+  }
 }

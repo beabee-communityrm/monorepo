@@ -1,9 +1,10 @@
-import { PaymentFlow } from '#models/index';
 import {
-  CompletedPaymentFlow,
-  CompletedPaymentFlowData,
-  PaymentFlowSetup,
-} from '#type/index';
+  PaymentFlowSetupParams,
+  PaymentFlowSetupResult,
+} from '@beabee/beabee-common';
+
+import { PaymentFlow } from '#models/index';
+import { CompletedPaymentFlow, CompletedPaymentFlowData } from '#type/index';
 
 /**
  * Interface for payment flow providers that handle the initial payment setup process.
@@ -16,7 +17,10 @@ export abstract class PaymentFlowProvider {
    * @param data - Additional data needed for the flow
    * @returns Promise resolving to created payment flow
    */
-  abstract setupPaymentFlow(flow: PaymentFlow): Promise<PaymentFlowSetup>;
+  abstract setupPaymentFlow(
+    flow: PaymentFlow,
+    params: PaymentFlowSetupParams
+  ): Promise<PaymentFlowSetupResult>;
 
   /**
    * Completes a payment flow after provider setup

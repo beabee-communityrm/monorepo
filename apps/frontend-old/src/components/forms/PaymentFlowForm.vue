@@ -8,7 +8,7 @@
   </AppApiForm>
 
   <AppModal
-    v-if="stripeClientSecret"
+    v-if="paymentFlowId"
     open
     :title="title"
     class="w-full"
@@ -22,16 +22,16 @@
       />
     </p>
     <StripePaymentForm
-      :client-secret="stripeClientSecret"
       :public-key="stripePublicKey"
       :payment-data="flowData"
       :return-url="completeUrl"
+      :confirm-flow="handleStripeConfirm"
       @loaded="stripeHasLoaded = true"
     />
   </AppModal>
 
   <AppModal
-    v-if="paymentFlowId"
+    v-if="completePaymentFlowId"
     open
     no-close
     :title="t('common.loading')"
@@ -48,7 +48,11 @@
 </template>
 
 <script setup lang="ts">
-import type { PaymentFlowResult } from '@beabee/beabee-common';
+import {
+  type PaymentFlowAdvanceParams,
+  type PaymentFlowSetupParams,
+  type PaymentFlowSetupResult,
+} from '@beabee/beabee-common';
 import { AppModal, addNotification } from '@beabee/vue';
 
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
@@ -79,19 +83,21 @@ const props = defineProps<{
   /** The payment data to use for the payment flow */
   flowData: PaymentFlowFormData;
   /** A method which calls the API to start a payment flow*/
-  startFlow: (completeUrl: string) => Promise<PaymentFlowResult>;
-  /** A method which calls the API to complete a payment flow */
-  completeFlow: (paymentFlowId: string) => Promise<void>;
+  startFlow: (
+    params: PaymentFlowSetupParams
+  ) => Promise<PaymentFlowSetupResult>;
+  /** A method which calls the API to finalize a payment flow */
+  completeFlow: (
+    paymentFlowId: string,
+    params?: PaymentFlowAdvanceParams
+  ) => Promise<void>;
 }>();
 
-/**
- * The Stripe client secret to use to load the Stripe Elements form
- */
-const stripeClientSecret = ref('');
 /**
  * Show a spinner until the Stripe Elements form has loaded
  */
 const stripeHasLoaded = ref(false);
+const paymentFlowId = ref<string | null>(null);
 
 /**
  * The URL to return to after completing the payment flow. The page will return
@@ -99,49 +105,64 @@ const stripeHasLoaded = ref(false);
  * attached
  */
 const completeUrl = computed(() => {
-  const path = router.resolve({ query: { ...route.query, formId: props.id } });
+  const path = router.resolve({
+    query: { ...route.query, formId: props.id },
+  });
   return `${env.appUrl}${path.href}`;
 });
-
-/**
- * The external payment flow ID to use to complete the payment flow. Use the
- * form ID to ensure that this is the correct instance of PaymentFlowForm to use
- * for completing the flow. This allows multiple instances of PaymentFlowForm to
- * exist on the same page.
- */
-const paymentFlowId = computed(
-  () =>
-    // Check if this is the target form
-    route.query.formId === props.id &&
-    // GoCardless redirect flow param
-    (route.query.redirect_flow_id?.toString() ||
-      // Stripe SetupIntent param
-      route.query.setup_intent?.toString())
-);
 
 /**
  * Starts the payment flow and handles the response. A payment flow
  * can trigger one of:
  * - An redirect to an off-site payment confirmation page (e.g. GoCardless)
  * - An inline payment flow (using Stripe)
- * - No further action
  */
 async function handleSubmit() {
-  const data = await props.startFlow(completeUrl.value);
+  const data = await props.startFlow({
+    paymentMethod: props.flowData.paymentMethod,
+    completeUrl: completeUrl.value,
+  });
+
   if (data.redirectUrl) {
     window.location.href = data.redirectUrl;
-  } else if (data.clientSecret) {
-    stripeClientSecret.value = data.clientSecret;
+  } else {
+    paymentFlowId.value = data.id;
   }
+}
+
+async function handleStripeConfirm(
+  token: string,
+  firstname: string,
+  lastname: string
+) {
+  if (!paymentFlowId.value) return; // Not possible
+
+  await props.completeFlow(paymentFlowId.value, { token, firstname, lastname });
+
+  paymentFlowId.value = null;
 }
 
 /**
  * Resets the form state
  */
 function reset() {
-  stripeClientSecret.value = '';
+  paymentFlowId.value = null;
   stripeHasLoaded.value = false;
 }
+
+/**
+ * The payment flow ID to use to complete the payment flow. Use the form ID to
+ * ensure that this is the correct instance of PaymentFlowForm to use for
+ * completing the flow. This allows multiple instances of PaymentFlowForm to
+ * exist on the same page.
+ */
+const completePaymentFlowId = computed(
+  () =>
+    // Check if this is the target form
+    route.query.formId === props.id &&
+    // Get the payment flow Id
+    route.query.paymentFlowId?.toString()
+);
 
 /**
  * Completes the payment flow when redirected back to the form.
@@ -149,9 +170,9 @@ function reset() {
 onBeforeMount(async () => {
   reset();
 
-  if (paymentFlowId.value) {
+  if (completePaymentFlowId.value) {
     try {
-      await props.completeFlow(paymentFlowId.value);
+      await props.completeFlow(completePaymentFlowId.value);
     } catch (err) {
       addNotification({
         variant: 'error',
@@ -163,9 +184,10 @@ onBeforeMount(async () => {
       query: {
         ...route.query,
         formId: undefined,
-        // GoCardless redirect flow param
+        paymentFlowId: undefined,
+        // Clear GoCardless redirect flow param
         redirect_flow_id: undefined,
-        // Stripe SetupIntent params
+        // Clear Stripe SetupIntent params
         setup_intent: undefined,
         setup_intent_client_secret: undefined,
         redirect_status: undefined,

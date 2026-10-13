@@ -8,7 +8,7 @@ export interface ContributionUpdateData {
     monthlyAmount: number;
     period: ContributionPeriod;
     payFee: boolean;
-    prorate: boolean;
+    prorate?: boolean;
   };
 }
 

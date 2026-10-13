@@ -19,18 +19,10 @@ const route = useRoute();
 const router = useRouter();
 
 onBeforeMount(async () => {
-  const paymentFlowId = (
-    route.query.redirect_flow_id || route.query.setup_intent
-  )?.toString();
-
+  const paymentFlowId = route.query.paymentFlowId?.toString();
   if (paymentFlowId) {
     try {
-      await client.signup.complete({
-        paymentFlowId,
-        firstname: route.query.firstName?.toString(),
-        lastname: route.query.lastName?.toString(),
-        vatNumber: route.query.vatNumber?.toString(),
-      });
+      await client.signup.advance(paymentFlowId);
       router.replace('/join/confirm-email');
     } catch (err) {
       handleJoinError(err, router);

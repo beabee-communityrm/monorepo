@@ -1,4 +1,4 @@
-import { PaymentFlowParams } from '@beabee/beabee-common';
+import { PaymentFlowAdvanceParams, PaymentMethod } from '@beabee/beabee-common';
 
 import {
   Column,
@@ -10,9 +10,7 @@ import {
 import { PaymentFlowForm } from '#type/index';
 
 @Entity()
-export class PaymentFlow<
-  TParams extends PaymentFlowParams = PaymentFlowParams,
-> {
+export class PaymentFlow<TForm extends PaymentFlowForm = PaymentFlowForm> {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -20,13 +18,16 @@ export class PaymentFlow<
   date!: Date;
 
   @Column()
-  paymentFlowId!: string;
+  providerFlowId!: string;
+
+  @Column()
+  method!: PaymentMethod;
+
+  @Column({ type: 'jsonb', nullable: true })
+  params!: PaymentFlowAdvanceParams | null;
 
   @Column({ type: 'jsonb' })
-  params!: TParams;
-
-  @Column({ type: 'jsonb' })
-  form!: PaymentFlowForm;
+  form!: TForm;
 
   @Column({ default: false })
   processing!: boolean;

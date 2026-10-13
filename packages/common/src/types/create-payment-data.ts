@@ -1,8 +1,7 @@
-import { PaymentMethod } from '../data/index.js';
+import { type PaymentFlowSetupParams } from '../index.js';
 
 export interface CreatePaymentData {
   amount: number;
   payFee: boolean;
-  paymentMethod: PaymentMethod;
-  completeUrl: string;
+  params: PaymentFlowSetupParams;
 }

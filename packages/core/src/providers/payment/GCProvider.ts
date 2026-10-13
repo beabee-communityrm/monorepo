@@ -44,14 +44,10 @@ export class GCProvider extends PaymentProvider {
         return await this.canChangeContribution(false, {
           monthlyAmount: 0,
           period: ContributionPeriod.Monthly,
-          prorate: false,
           payFee: false,
         });
       case 'start-contribution':
-        return await this.canChangeContribution(false, {
-          ...form,
-          prorate: true,
-        });
+        return await this.canChangeContribution(false, form);
       default:
         return false;
     }
@@ -60,15 +56,12 @@ export class GCProvider extends PaymentProvider {
   async processPaymentFlow(
     flow: CompletedPaymentFlow
   ): Promise<UpdateContributionResult | undefined> {
-    if (flow.form.action === 'create-one-time-payment') {
+    if (flow.flow.form.action === 'create-one-time-payment') {
       throw new Error('One-time payments are not supported with GoCardless');
     } else {
       await this.updatePaymentMethod(flow);
-      if (flow.form.action === 'start-contribution') {
-        return await this.processUpdateContribution({
-          ...flow.form,
-          prorate: false,
-        });
+      if (flow.flow.form.action === 'start-contribution') {
+        return await this.processUpdateContribution(flow.flow.form);
       }
     }
   }
@@ -145,6 +138,7 @@ export class GCProvider extends PaymentProvider {
       expiryDate,
     });
 
+    this.data.cancelledAt = null;
     this.data.subscriptionId = subscription.id!;
     this.data.payFee = form.payFee;
     this.data.nextAmount = startNow
@@ -288,7 +282,6 @@ export class GCProvider extends PaymentProvider {
         monthlyAmount: this.contact.contributionMonthlyAmount,
         period: this.contact.contributionPeriod,
         payFee: !!this.data.payFee,
-        prorate: false,
       });
     }
   }

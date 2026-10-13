@@ -2,7 +2,6 @@ import { GetContactWith } from '@beabee/beabee-common';
 import {
   BadRequestError,
   CantUpdateContributionError,
-  NoPaymentMethodError,
   NotFoundError,
   UnauthorizedError,
 } from '@beabee/core/errors';
@@ -73,11 +72,11 @@ import {
   CreatePaymentDto,
   GetPaymentDto,
   ListPaymentsDto,
+  UpdatePaymentMethodDto,
 } from '#api/dto/PaymentDto';
 import {
   CompletePaymentFlowDto,
-  PaymentFlowResultDto,
-  StartPaymentFlowDto,
+  PaymentFlowSetupResultDto,
 } from '#api/dto/PaymentFlowDto';
 import { ContactRoleParams } from '#api/params/ContactRoleParams';
 import ActivityEventTransformer from '#api/transformers/ActivityEventTransformer';
@@ -279,7 +278,7 @@ export class ContactController {
   async startContribution(
     @TargetUser() target: Contact,
     @Body() data: StartContributionDto
-  ): Promise<PaymentFlowResultDto> {
+  ): Promise<PaymentFlowSetupResultDto> {
     const form = {
       action: 'start-contribution' as const,
       monthlyAmount: getMonthlyAmount(data.amount, data.period),
@@ -291,11 +290,8 @@ export class ContactController {
       throw new CantUpdateContributionError();
     }
 
-    const { result } = await PaymentFlowService.startPaymentFlow(form, {
-      paymentMethod: data.paymentMethod,
-      completeUrl: data.completeUrl,
-    });
-    return plainToInstance(PaymentFlowResultDto, result);
+    const result = await PaymentFlowService.startPaymentFlow(form, data.params);
+    return plainToInstance(PaymentFlowSetupResultDto, result);
   }
 
   /**
@@ -360,7 +356,6 @@ export class ContactController {
       'cancelled-contribution-no-survey'
     );
   }
-
   @Post('/:id/contribution/complete')
   async completeStartContribution(
     @TargetUser() target: Contact,
@@ -368,7 +363,8 @@ export class ContactController {
   ): Promise<GetContributionInfoDto> {
     await PaymentFlowService.completePaymentFlowAndProcess(
       target,
-      data.paymentFlowId
+      data.paymentFlowId,
+      data.params
     );
     return await this.getContribution(target);
   }
@@ -394,7 +390,7 @@ export class ContactController {
   async createOneTimePayment(
     @TargetUser() target: Contact,
     @Body() data: CreatePaymentDto
-  ): Promise<PaymentFlowResultDto> {
+  ): Promise<PaymentFlowSetupResultDto> {
     const form = {
       action: 'create-one-time-payment' as const,
       amount: data.amount,
@@ -405,11 +401,8 @@ export class ContactController {
       throw new CantUpdateContributionError();
     }
 
-    const { result } = await PaymentFlowService.startPaymentFlow(form, {
-      paymentMethod: data.paymentMethod,
-      completeUrl: data.completeUrl,
-    });
-    return plainToInstance(PaymentFlowResultDto, result);
+    const result = await PaymentFlowService.startPaymentFlow(form, data.params);
+    return plainToInstance(PaymentFlowSetupResultDto, result);
   }
 
   @OnUndefined(204)
@@ -420,7 +413,8 @@ export class ContactController {
   ): Promise<void> {
     await PaymentFlowService.completePaymentFlowAndProcess(
       target,
-      data.paymentFlowId
+      data.paymentFlowId,
+      data.params
     );
   }
 
@@ -445,18 +439,8 @@ export class ContactController {
   @Put('/:id/payment-method')
   async updatePaymentMethod(
     @TargetUser() target: Contact,
-    @Body() data: StartPaymentFlowDto
-  ): Promise<PaymentFlowResultDto> {
-    // Use existing payment method if one is not provided.
-    // This means the user is changing to the same payment method but with new
-    // payment details (e.g. new card)
-    const paymentMethod =
-      data.paymentMethod ||
-      (await PaymentService.getContribution(target)).method;
-    if (!paymentMethod) {
-      throw new NoPaymentMethodError();
-    }
-
+    @Body() { params }: UpdatePaymentMethodDto
+  ): Promise<PaymentFlowSetupResultDto> {
     const form = {
       action: 'update-payment-method' as const,
     };
@@ -465,11 +449,8 @@ export class ContactController {
       throw new CantUpdateContributionError();
     }
 
-    const { result } = await PaymentFlowService.startPaymentFlow(form, {
-      paymentMethod,
-      completeUrl: data.completeUrl,
-    });
-    return plainToInstance(PaymentFlowResultDto, result);
+    const result = await PaymentFlowService.startPaymentFlow(form, params);
+    return plainToInstance(PaymentFlowSetupResultDto, result);
   }
 
   @Post('/:id/payment-method/complete')
@@ -479,7 +460,8 @@ export class ContactController {
   ): Promise<GetContributionInfoDto> {
     await PaymentFlowService.completePaymentFlowAndProcess(
       target,
-      data.paymentFlowId
+      data.paymentFlowId,
+      data.params
     );
     return await this.getContribution(target);
   }
