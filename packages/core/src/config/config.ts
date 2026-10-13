@@ -10,6 +10,7 @@ import type {
   ImageServiceConfig,
   LegacyImageServiceConfig,
   S3Config,
+  SiteLoginConfig,
 } from '../type/index.js';
 import * as env from './env.js';
 
@@ -235,6 +236,22 @@ interface LocalLoginConfig {
 
 // Union type for login configuration - only one provider can be used at a time
 type LoginConfig = OidcLoginConfig | LocalLoginConfig;
+
+function siteLoginConfig(): SiteLoginConfig | undefined {
+  const key = env.s('BEABEE_SITELOGIN_KEY', '');
+  if (!key) return undefined;
+
+  const keyBytes = Buffer.from(key, 'base64');
+  if (keyBytes.length !== 32) {
+    throw new Error('BEABEE_SITELOGIN_KEY must be 32 bytes, base64 encoded');
+  }
+  return {
+    cookieName: env.s('BEABEE_SITELOGIN_COOKIE_NAME'),
+    cookieDomain: env.s('BEABEE_SITELOGIN_COOKIE_DOMAIN'),
+    cookieMaxAge: env.n('BEABEE_SITELOGIN_COOKIE_MAXAGE'),
+    key: keyBytes,
+  };
+}
 
 // Get login provider from environment, with validation for allowed values
 // Defaults to "local" if not specified
@@ -463,6 +480,9 @@ export const config = {
           }
         : {},
   } as LoginConfig,
+
+  // Website login, off unless BEABEE_SITELOGIN_KEY is set
+  siteLogin: siteLoginConfig(),
 
   // GoCardless payment integration
   gocardless: {
