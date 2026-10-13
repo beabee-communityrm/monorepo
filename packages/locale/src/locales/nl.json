@@ -98,6 +98,19 @@
       "addPasskey": "Passkey toevoegen",
       "changePassword": "Wachtwoord wijzigen",
       "intro": "Je wachtwoord en inlogmethoden worden beheerd door onze inlogdienst. Elk van deze opties brengt je daarheen en daarna weer terug.",
+      "methods": {
+        "authenticatorApp": "Authenticator-app",
+        "confirmRemove": {
+          "desc": "Mogelijk moet je eerst opnieuw inloggen. Je kunt de methode op elk moment opnieuw instellen.",
+          "title": "Deze inlogmethode verwijderen?"
+        },
+        "description": "De manieren waarop je kunt inloggen. Het wachtwoord kan niet worden verwijderd.",
+        "passkey": "Passkey",
+        "password": "Wachtwoord",
+        "removed": "Inlogmethode verwijderd",
+        "securityKey": "Beveiligingssleutel",
+        "title": "Je inlogmethoden"
+      },
       "setupMfa": "Authenticator-app instellen",
       "title": "Inloggegevens"
     },

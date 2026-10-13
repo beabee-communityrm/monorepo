@@ -33,14 +33,19 @@ export class AuthClient extends BaseClient {
    * @param next Internal path to continue to after login
    * @param action What the logged-in member does at the identity provider
    * inside this login, e.g. change their password
+   * @param prompt `login` makes the identity provider re-authenticate the
+   * member even if they are still logged in there
    */
-  getLoginUrl(next?: string, action?: LoginAction): string {
+  getLoginUrl(next?: string, action?: LoginAction, prompt?: 'login'): string {
     const url = this.authUrl('login');
     if (next) {
       url.searchParams.set('next', next);
     }
     if (action) {
       url.searchParams.set('action', action);
+    }
+    if (prompt) {
+      url.searchParams.set('prompt', prompt);
     }
     return url.href;
   }

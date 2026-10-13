@@ -11,4 +11,5 @@ export enum LOGIN_CODES {
   INVALID_TOKEN = 'invalid-token',
   MISSING_TOKEN = 'missing-token',
   UNLINKED_ACCOUNT = 'unlinked-account',
+  FRESH_LOGIN_REQUIRED = 'fresh-login-required',
 }

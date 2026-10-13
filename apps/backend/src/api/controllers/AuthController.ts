@@ -150,7 +150,7 @@ export class AuthController {
     @Req() req: Request,
     @Res() res: Response,
     @CurrentAuth({ required: false }) auth: AuthInfo,
-    @QueryParams() { next, action }: OidcLoginOptsDto
+    @QueryParams() { next, action, prompt }: OidcLoginOptsDto
   ): Promise<Response> {
     assertOidcAuthEnabled();
     const contact = auth.contact;
@@ -159,7 +159,7 @@ export class AuthController {
     }
 
     try {
-      const { url, loginState } = await startOidcLogin(next);
+      const { url, loginState } = await startOidcLogin(next, prompt);
       req.session.oidc = loginState;
       res.redirect(
         action && contact
@@ -190,7 +190,7 @@ export class AuthController {
     assertOidcAuthEnabled();
 
     try {
-      const { url, loginState } = await startOidcLogin(next, true);
+      const { url, loginState } = await startOidcLogin(next, 'none');
       req.session.oidc = loginState;
       res.redirect(url);
     } catch (err) {
@@ -221,7 +221,7 @@ export class AuthController {
         throw new Error('No OIDC login in progress for this session');
       }
 
-      const { subject, idToken } = await completeOidcLogin(
+      const { subject, idToken, authTime } = await completeOidcLogin(
         new URL(req.originalUrl, config.audience).search,
         loginState
       );
@@ -233,7 +233,7 @@ export class AuthController {
         // End the IdP session on the way to the error page, otherwise the
         // next login attempt lands on the same error without a login form
         res.redirect(
-          loginState.silent
+          loginState.prompt === 'none'
             ? resolveNext(loginState.next)
             : await getOidcLogoutUrl(
                 idToken,
@@ -249,6 +249,12 @@ export class AuthController {
       if (idToken) {
         setSiteLoginCookie(res, idToken);
       }
+      // An IdP that omits auth_time still re-authenticated on prompt=login
+      req.session.authTime =
+        authTime ??
+        (loginState.prompt === 'login'
+          ? Math.floor(Date.now() / 1000)
+          : undefined);
 
       res.redirect(resolveNext(loginState.next));
       return res;
@@ -260,7 +266,7 @@ export class AuthController {
       }
       clearSiteLoginCookie(res);
       res.redirect(
-        loginState?.silent
+        loginState?.prompt === 'none'
           ? resolveNext(loginState.next)
           : `${config.audience}/auth/login?loginError=${LOGIN_CODES.LOGIN_FAILED}`
       );

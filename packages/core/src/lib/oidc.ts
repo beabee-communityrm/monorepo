@@ -62,12 +62,14 @@ function getOidcConfig(): Promise<oidc.Configuration> {
  * Start an OIDC login: build the authorization URL with PKCE, state and nonce.
  * The returned state must be stored in the session for the callback.
  * @param next Validated internal path or allowed return URL to continue to after login
- * @param silent Ask the IdP for prompt=none: no login form, an error if the
- * IdP session is gone
+ * @param prompt `none` asks the IdP for a silent refresh: no login form, an
+ * error if the IdP session is gone. `login` makes it re-authenticate the
+ * member even with a live session there, for a fresh login before sensitive
+ * account changes.
  */
 export async function startOidcLogin(
   next?: string,
-  silent = false
+  prompt?: 'none' | 'login'
 ): Promise<{ url: string; loginState: OidcLoginState }> {
   const settings = getSettings();
   const oidcConfig = await getOidcConfig();
@@ -84,12 +86,12 @@ export async function startOidcLogin(
     code_challenge_method: 'S256',
     state,
     nonce,
-    ...(silent && { prompt: 'none' }),
+    ...(prompt && { prompt }),
   });
 
   return {
     url: url.href,
-    loginState: { state, nonce, codeVerifier, next, silent },
+    loginState: { state, nonce, codeVerifier, next, prompt },
   };
 }
 
@@ -98,12 +100,17 @@ export async function startOidcLogin(
  * validate state, nonce and PKCE verifier.
  * @param callbackSearch The query string the identity provider redirected with
  * @param loginState The login state stored in the session by startOidcLogin
- * @returns The IdP subject and the raw ID token (kept as the logout hint)
+ * @returns The IdP subject, the raw ID token (kept as the logout hint) and
+ * when the member authenticated at the IdP, as seconds since the epoch
  */
 export async function completeOidcLogin(
   callbackSearch: string,
   loginState: OidcLoginState
-): Promise<{ subject: string; idToken: string | undefined }> {
+): Promise<{
+  subject: string;
+  idToken: string | undefined;
+  authTime: number | undefined;
+}> {
   const oidcConfig = await getOidcConfig();
 
   // The redirect URI is registered at the IdP and must match exactly
@@ -130,7 +137,11 @@ export async function completeOidcLogin(
     throw new Error('OIDC token response did not include an ID token');
   }
 
-  return { subject: claims.sub, idToken: tokens.id_token };
+  return {
+    subject: claims.sub,
+    idToken: tokens.id_token,
+    authTime: claims.auth_time,
+  };
 }
 
 /**
