@@ -1400,6 +1400,7 @@
       "availableFields": "Verfügbare Felder",
       "description": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",
@@ -1417,6 +1418,7 @@
       },
       "names": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",

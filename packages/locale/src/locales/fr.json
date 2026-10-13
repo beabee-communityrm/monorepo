@@ -1404,6 +1404,7 @@
       "availableFields": "Champs disponibles",
       "description": {
         "cancelled-contribution": "Envoyé aux membres lorsque leur contribution récurrente est annulée. Contient généralement des informations sur la fin de l'adhésion, ainsi que l'ID du membre. Peut contenir un lien vers une enquête.",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Envoyé aux administrateurs lorsqu'un membre annule sa contribution. Contient généralement une notification avec l'ID et le nom du membre annulé.",
         "confirm-email": "Envoyé aux nouveaux utilisateurs pendant le processus d'inscription pour vérifier leur adresse e-mail. Contient un lien de confirmation qu'ils doivent cliquer pour terminer l'inscription.",
         "contribution-didnt-start": "Envoyé aux membres lorsque leur paiement d'abonnement Stripe n'a pas pu être démarré (par exemple, méthode de paiement refusée, fonds insuffisants). Les informe que leur adhésion a été révoquée en raison de l'échec du paiement.",
@@ -1421,6 +1422,7 @@
       },
       "names": {
         "cancelled-contribution": "Contribution annulée",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Admin : Membre annulé",
         "confirm-email": "Confirmer l'e-mail",
         "contribution-didnt-start": "La contribution n'a pas démarré",
