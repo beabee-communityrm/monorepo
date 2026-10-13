@@ -19,6 +19,7 @@ import {
   CompletedPaymentFlowData,
   PaymentFlowForm,
   PaymentFlowSetup,
+  UpdateContributionResult,
 } from '#type/index';
 
 const log = mainLogger.child({ app: 'payment-flow-service' });
@@ -65,7 +66,7 @@ class PaymentFlowService {
   async completePaymentFlowAndProcess(
     contact: Contact,
     paymentFlowId: string
-  ): Promise<void> {
+  ): Promise<UpdateContributionResult | undefined> {
     const flow = await getRepository(PaymentFlow).findOneBy({
       paymentFlowId,
     });
@@ -84,7 +85,7 @@ class PaymentFlowService {
     }
 
     const completedPaymentFlow = await this.completePaymentFlow(flow);
-    await this.processCompletedFlow(contact, completedPaymentFlow);
+    return await this.processCompletedFlow(contact, completedPaymentFlow);
   }
 
   /**
@@ -126,7 +127,7 @@ class PaymentFlowService {
   async processCompletedFlow(
     contact: Contact,
     completedFlow: CompletedPaymentFlow
-  ): Promise<void> {
+  ): Promise<UpdateContributionResult | undefined> {
     const form = completedFlow.form;
 
     const canChange = await PaymentService.canProcessPaymentFlow(contact, form);
@@ -141,6 +142,7 @@ class PaymentFlowService {
     if (result) {
       await ContactsService.handleUpdateContributionResult(contact, result);
     }
+    return result;
   }
 
   /**

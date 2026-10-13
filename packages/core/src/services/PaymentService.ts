@@ -153,7 +153,14 @@ class PaymentService {
       await ActivityService.addEvent({
         targetId: contact.id,
         eventType: ActivityEventType.ContactContributionStarted,
-        metadata: ret || null,
+        // The client secret must not be stored
+        metadata: ret
+          ? {
+              startNow: ret.startNow,
+              expiryDate: ret.expiryDate,
+              form: ret.form,
+            }
+          : null,
       });
     }
 
@@ -200,7 +207,12 @@ class PaymentService {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactContributionUpdated,
       targetId: contact.id,
-      metadata: ret,
+      // The client secret must not be stored
+      metadata: {
+        startNow: ret.startNow,
+        expiryDate: ret.expiryDate,
+        form: ret.form,
+      },
     });
 
     return ret;
