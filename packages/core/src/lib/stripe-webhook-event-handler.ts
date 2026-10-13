@@ -293,7 +293,7 @@ export class StripeWebhookEventHandler {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactPaymentFailed,
       targetId: contribution?.contact.id || null,
-      metadata: null,
+      metadata: { paymentId: invoice.id },
     });
 
     // For now only handle one-time payment invoices
@@ -355,7 +355,7 @@ export class StripeWebhookEventHandler {
       await ActivityService.addEvent({
         eventType: ActivityEventType.ContactPaymentFailed,
         targetId: contribution?.contact.id || null,
-        metadata: null,
+        metadata: { paymentId: invoice.id },
       });
     } else {
       log.info('Ignoring invoice with unknown customer ' + invoice.id);

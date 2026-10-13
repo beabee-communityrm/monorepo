@@ -21,6 +21,7 @@ export interface ActivityEventMetadataMap {
   [ActivityEventType.ContactContributionCancelled]: {
     subscriptionId: string | null;
   };
+  [ActivityEventType.ContactPaymentFailed]: { paymentId: string };
   [ActivityEventType.ContactPaymentSuccessful]: { paymentId: string };
   [ActivityEventType.ContactRoleAdded]: { roleType: RoleType };
   [ActivityEventType.EmailSent]: { email: string; recipient: string };
