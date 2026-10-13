@@ -98,6 +98,19 @@
       "addPasskey": "Ajouter une clé d'accès",
       "changePassword": "Changer le mot de passe",
       "intro": "Votre mot de passe et vos méthodes de connexion sont gérés par notre service de connexion. Chacune de ces options vous y conduit, puis vous ramène ici.",
+      "methods": {
+        "authenticatorApp": "Application d'authentification",
+        "confirmRemove": {
+          "desc": "Vous devrez peut-être d'abord vous reconnecter. Vous pouvez reconfigurer la méthode à tout moment.",
+          "title": "Supprimer cette méthode de connexion ?"
+        },
+        "description": "Les façons dont vous pouvez vous connecter. Le mot de passe ne peut pas être supprimé.",
+        "passkey": "Passkey",
+        "password": "Mot de passe",
+        "removed": "Méthode de connexion supprimée",
+        "securityKey": "Clé de sécurité",
+        "title": "Vos méthodes de connexion"
+      },
       "setupMfa": "Configurer l'application d'authentification",
       "title": "Informations de connexion"
     },

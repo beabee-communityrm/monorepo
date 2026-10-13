@@ -12,6 +12,7 @@ meta:
     <template #col1>
       <!-- Login details are managed at the identity provider on OIDC instances -->
       <template v-if="generalContent.oidcEnabled">
+        <LoginMethods />
         <AppHeading>{{ t('accountPage.selfService.title') }}</AppHeading>
         <p class="mb-4 text-sm text-main-80">
           {{ t('accountPage.selfService.intro') }}
@@ -64,6 +65,7 @@ import { useI18n } from 'vue-i18n';
 
 import ContactUpdateAccount from '../../components/contact/ContactUpdateAccount.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
+import LoginMethods from '../../components/pages/profile/account/LoginMethods.vue';
 import SetMFA from '../../components/pages/profile/account/SetMFA.vue';
 import { generalContent } from '../../store';
 import { client } from '../../utils/api';

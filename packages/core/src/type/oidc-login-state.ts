@@ -8,4 +8,6 @@ export interface OidcLoginState {
   codeVerifier: string;
   /** Validated internal path to continue to after login */
   next?: string | undefined;
+  /** Set when the IdP was asked to re-authenticate the member */
+  prompt?: 'login' | undefined;
 }

@@ -1,4 +1,8 @@
-import type { LoginAction } from '@beabee/beabee-common';
+import type {
+  ContactAuthMethodType,
+  GetContactAuthMethodData,
+  LoginAction,
+} from '@beabee/beabee-common';
 
 import type { KeycloakIdpConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
@@ -12,6 +16,14 @@ const KC_ACTIONS: Record<Exclude<LoginAction, 'setupCredential'>, string> = {
   changePassword: 'UPDATE_PASSWORD',
   addPasskey: 'webauthn-register-passwordless',
   setupMfa: 'CONFIGURE_TOTP',
+};
+
+// Keycloak credential types; the realm offers no other login methods
+const KC_CREDENTIAL_TYPES: Record<string, ContactAuthMethodType> = {
+  password: 'password',
+  'webauthn-passwordless': 'passkey',
+  otp: 'authenticatorApp',
+  webauthn: 'securityKey',
 };
 
 /**
@@ -118,6 +130,25 @@ export class KeycloakProvider implements IdpProvider {
 
   async permanentlyDeleteContact(subject: string): Promise<void> {
     await this.request('DELETE', `/users/${subject}`);
+  }
+
+  async listAuthMethods(subject: string): Promise<GetContactAuthMethodData[]> {
+    const resp = await this.request('GET', `/users/${subject}/credentials`);
+    const credentials = (await resp.json()) as {
+      id: string;
+      type: string;
+      userLabel?: string;
+    }[];
+    return credentials.flatMap(({ id, type, userLabel }) => {
+      const methodType = KC_CREDENTIAL_TYPES[type];
+      return methodType
+        ? [{ id, type: methodType, ...(userLabel && { name: userLabel }) }]
+        : [];
+    });
+  }
+
+  async removeAuthMethod(subject: string, id: string): Promise<void> {
+    await this.request('DELETE', `/users/${subject}/credentials/${id}`);
   }
 
   // Keycloak is the development IdP only; branding is not synced to it

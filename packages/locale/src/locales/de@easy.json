@@ -98,6 +98,19 @@
       "addPasskey": "Passkey hinzufügen",
       "changePassword": "Passwort ändern",
       "intro": "Dein Passwort und deine Anmeldemethoden werden von unserem Anmeldedienst verwaltet. Jeder dieser Schritte führt dich dorthin und anschließend wieder zurück.",
+      "methods": {
+        "authenticatorApp": "Authenticator-App",
+        "confirmRemove": {
+          "desc": "Vielleicht musst du dich zuerst noch einmal anmelden. Du kannst die Methode jederzeit wieder einrichten.",
+          "title": "Diese Anmelde-Methode entfernen?"
+        },
+        "description": "So kannst du dich anmelden. Das Passwort kannst du nicht entfernen.",
+        "passkey": "Passkey",
+        "password": "Passwort",
+        "removed": "Anmelde-Methode entfernt",
+        "securityKey": "Sicherheits-Schlüssel",
+        "title": "Deine Anmelde-Methoden"
+      },
       "setupMfa": "Authenticator-App einrichten",
       "title": "Anmeldedaten"
     },

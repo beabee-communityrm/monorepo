@@ -11,6 +11,7 @@ import { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
 import DispatchService from '@beabee/core/services/DispatchService';
+import IdpService from '@beabee/core/services/IdpService';
 import NewsletterService from '@beabee/core/services/NewsletterService';
 import PaymentFlowService from '@beabee/core/services/PaymentFlowService';
 import PaymentService from '@beabee/core/services/PaymentService';
@@ -19,7 +20,7 @@ import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
 
 import { plainToInstance } from 'class-transformer';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import {
   Authorized,
   Body,
@@ -32,6 +33,7 @@ import {
   Post,
   Put,
   QueryParams,
+  Req,
   Res,
 } from 'routing-controllers';
 
@@ -44,6 +46,7 @@ import {
   ListActivityEventsDto,
 } from '#api/dto/ActivityFeedDto';
 import { GetExportQuery } from '#api/dto/BaseDto';
+import { GetContactAuthMethodDto } from '#api/dto/ContactAuthMethodDto';
 import {
   BatchUpdateContactDto,
   BatchUpdateContactResultDto,
@@ -79,13 +82,18 @@ import {
   PaymentFlowResultDto,
   StartPaymentFlowDto,
 } from '#api/dto/PaymentFlowDto';
+import { ContactAuthMethodParams } from '#api/params/ContactAuthMethodParams';
 import { ContactRoleParams } from '#api/params/ContactRoleParams';
 import ActivityEventTransformer from '#api/transformers/ActivityEventTransformer';
 import ContactExporter from '#api/transformers/ContactExporter';
 import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import PaymentTransformer from '#api/transformers/PaymentTransformer';
-import { assertPasswordAuthEnabled } from '#api/utils/auth';
+import {
+  assertFreshOidcLogin,
+  assertOidcAuthEnabled,
+  assertPasswordAuthEnabled,
+} from '#api/utils/auth';
 
 @JsonController('/contact')
 @Authorized()
@@ -296,6 +304,42 @@ export class ContactController {
       completeUrl: data.completeUrl,
     });
     return plainToInstance(PaymentFlowResultDto, result);
+  }
+
+  /**
+   * The login methods the current member has at the identity provider
+   */
+  @Get('/me/auth-methods')
+  async getContactAuthMethods(
+    @CurrentAuth({ required: true }) auth: AuthInfo
+  ): Promise<GetContactAuthMethodDto[]> {
+    assertOidcAuthEnabled();
+    if (!auth.contact) {
+      throw new UnauthorizedError();
+    }
+    const methods = await IdpService.listAuthMethods(auth.contact);
+    return methods.map((method) =>
+      plainToInstance(GetContactAuthMethodDto, method)
+    );
+  }
+
+  /**
+   * Remove one of the current member's login methods at the identity
+   * provider, after a fresh login there
+   */
+  @OnUndefined(204)
+  @Delete('/me/auth-methods/:methodId')
+  async deleteContactAuthMethod(
+    @Req() req: Request,
+    @CurrentAuth({ required: true }) auth: AuthInfo,
+    @Params() { methodId }: ContactAuthMethodParams
+  ): Promise<void> {
+    assertOidcAuthEnabled();
+    if (!auth.contact) {
+      throw new UnauthorizedError();
+    }
+    assertFreshOidcLogin(req);
+    await IdpService.removeAuthMethod(auth.contact, methodId);
   }
 
   /**

@@ -57,9 +57,12 @@ function getOidcConfig(): Promise<oidc.Configuration> {
  * Start an OIDC login: build the authorization URL with PKCE, state and nonce.
  * The returned state must be stored in the session for the callback.
  * @param next Validated internal path to continue to after login
+ * @param prompt `login` makes the IdP re-authenticate the member even with a
+ * live session there, for a fresh login before sensitive account changes
  */
 export async function startOidcLogin(
-  next?: string
+  next?: string,
+  prompt?: 'login'
 ): Promise<{ url: string; loginState: OidcLoginState }> {
   const settings = getSettings();
   const oidcConfig = await getOidcConfig();
@@ -76,9 +79,13 @@ export async function startOidcLogin(
     code_challenge_method: 'S256',
     state,
     nonce,
+    ...(prompt && { prompt }),
   });
 
-  return { url: url.href, loginState: { state, nonce, codeVerifier, next } };
+  return {
+    url: url.href,
+    loginState: { state, nonce, codeVerifier, next, prompt },
+  };
 }
 
 /**
@@ -86,12 +93,17 @@ export async function startOidcLogin(
  * validate state, nonce and PKCE verifier.
  * @param callbackSearch The query string the identity provider redirected with
  * @param loginState The login state stored in the session by startOidcLogin
- * @returns The IdP subject and the raw ID token (kept as the logout hint)
+ * @returns The IdP subject, the raw ID token (kept as the logout hint) and
+ * when the member authenticated at the IdP, as seconds since the epoch
  */
 export async function completeOidcLogin(
   callbackSearch: string,
   loginState: OidcLoginState
-): Promise<{ subject: string; idToken: string | undefined }> {
+): Promise<{
+  subject: string;
+  idToken: string | undefined;
+  authTime: number | undefined;
+}> {
   const oidcConfig = await getOidcConfig();
 
   // The redirect URI is registered at the IdP and must match exactly
@@ -118,7 +130,11 @@ export async function completeOidcLogin(
     throw new Error('OIDC token response did not include an ID token');
   }
 
-  return { subject: claims.sub, idToken: tokens.id_token };
+  return {
+    subject: claims.sub,
+    idToken: tokens.id_token,
+    authTime: claims.auth_time,
+  };
 }
 
 /**
