@@ -112,9 +112,9 @@ services:
       BEABEE_MINIO_BUCKET: ${BEABEE_MINIO_BUCKET:-uploads}
       BEABEE_MINIO_ENDPOINT: ${BEABEE_MINIO_ENDPOINT:-http://minio:9000}
 
-  # Serves both frontend builds. The stable (snapshot) one is released by
-  # default; the new frontend under development is hidden behind the
-  # beabee_frontend=new cookie (set via ?frontend=new by app_router)
+  # Serves both frontend builds. BEABEE_DEFAULT_FRONTEND picks the default,
+  # the beabee_frontend cookie (set via ?frontend=new|old by app_router)
+  # overrides it per user
   frontend:
     build:
       context: .
@@ -126,6 +126,7 @@ services:
       APP_BASE_URL: ${BEABEE_AUDIENCE}
       API_BASE_URL: /api/1.0/
       CNR_MODE: ${BEABEE_CNR_MODE:-false}
+      DEFAULT_FRONTEND: ${BEABEE_DEFAULT_FRONTEND:-old}
       APPSIGNAL_KEY: ${BEABEE_APPSIGNAL_KEY:-}
       CAPTCHAFOX_KEY: ${BEABEE_CAPTCHAFOX_KEY:-}
       MAPTILER_KEY: ${BEABEE_MAPTILER_KEY:-}
