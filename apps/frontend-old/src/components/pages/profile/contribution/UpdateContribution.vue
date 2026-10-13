@@ -151,27 +151,41 @@ const buttonText = computed(() =>
         : t('contribution.startContribution')
 );
 
-async function handleStartFlow(completeUrl: string) {
-  if (isAutoActiveMember.value) {
+/**
+ * Apply a contribution change, authenticating its payment if Stripe asks for
+ * it. Stripe applies the change once the payment succeeds and expires it if
+ * it never does, so the contribution is refetched either way.
+ */
+async function applyContributionChange(
+  change: () => Promise<ContributionInfo>
+) {
+  try {
+    contribution.value = await change();
+  } catch (err) {
+    if (!(err instanceof PaymentRequiresActionError)) {
+      throw err;
+    }
     try {
-      contribution.value = await client.contact.contribution.update({
-        amount: newContribution.amount,
-        period: newContribution.period,
-        payFee: newContribution.payFee,
-        prorate: newContribution.prorate,
-      });
-    } catch (err) {
-      if (!(err instanceof PaymentRequiresActionError)) {
-        throw err;
-      }
-      // The proration payment needs authentication, Stripe applies the
-      // new amount once it succeeds
       await handlePaymentNextAction(
         err.clientSecret,
         props.paymentContent.stripePublicKey
       );
+    } finally {
       contribution.value = await client.contact.contribution.get();
     }
+  }
+}
+
+async function handleStartFlow(completeUrl: string) {
+  if (isAutoActiveMember.value) {
+    await applyContributionChange(() =>
+      client.contact.contribution.update({
+        amount: newContribution.amount,
+        period: newContribution.period,
+        payFee: newContribution.payFee,
+        prorate: newContribution.prorate,
+      })
+    );
 
     addNotification({
       variant: 'success',
@@ -195,8 +209,9 @@ async function handleStartFlow(completeUrl: string) {
 }
 
 async function handleCompleteFlow(paymentFlowId: string) {
-  contribution.value =
-    await client.contact.contribution.completeStart(paymentFlowId);
+  await applyContributionChange(() =>
+    client.contact.contribution.completeStart(paymentFlowId)
+  );
 
   addNotification({
     variant: 'success',

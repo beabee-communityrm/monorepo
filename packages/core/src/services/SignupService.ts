@@ -103,12 +103,11 @@ class SignupService {
 
     // Finalise one-time payments early
     if (signupFlow.paymentFlow.form.action === 'create-one-time-payment') {
-      const contact = await this.finalizeSignup(signupFlow.id);
       // Ignore a failure to create a contact here. This means this flow is
       // being processed elsewhere, probably because the user opened the URL
       // twice accidentally. Don't send the confirmation email though as
       // otherwise that will be sent twice
-      if (!contact) {
+      if (!(await this.finalizeSignup(signupFlow.id))) {
         return;
       }
     }
@@ -191,7 +190,9 @@ class SignupService {
    * @param signupFlowId - The ID of the signup flow to finalize
    * @returns The created contact
    */
-  async finalizeSignup(signupFlowId: string): Promise<Contact | undefined> {
+  async finalizeSignup(
+    signupFlowId: string
+  ): Promise<{ contact: Contact; clientSecret?: string } | undefined> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { id: signupFlowId },
       relations: { contact: true, paymentFlow: true },
@@ -203,7 +204,7 @@ class SignupService {
 
     // This flow has already been finalized
     if (signupFlow.contact) {
-      return signupFlow.contact;
+      return { contact: signupFlow.contact };
     }
 
     // Use atomic update to prevent multiple simultaneous attempts to finalize
@@ -270,12 +271,14 @@ class SignupService {
       );
     }
 
-    if (completedFlow) {
-      await PaymentFlowService.processCompletedFlow(
-        contact,
-        completedFlow.flow
-      );
-    }
+    const clientSecret = completedFlow
+      ? (
+          await PaymentFlowService.processCompletedFlow(
+            contact,
+            completedFlow.flow
+          )
+        )?.clientSecret
+      : undefined;
 
     // Only send welcome email to non-payment signups or those starting a
     // contribution. One-time contributors get a separate email
@@ -290,7 +293,7 @@ class SignupService {
       contactId: contact.id,
     });
 
-    return contact;
+    return { contact, ...(clientSecret && { clientSecret }) };
   }
 
   /**

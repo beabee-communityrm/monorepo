@@ -19,6 +19,7 @@ import {
   createSubscription,
   deleteSubscription,
   ensureCustomerAndAttachPayment,
+  getRequiresActionClientSecret,
   manadateToSource,
   stripe,
   updateSubscription,
@@ -131,6 +132,10 @@ export class StripeProvider extends PaymentProvider {
       throw new PaymentRequiresActionError(pendingIntent.client_secret);
     }
 
+    // A new subscription whose first payment needs authentication starts the
+    // membership anyway, Stripe expires it if the member never completes it
+    const clientSecret = getRequiresActionClientSecret(subscription);
+
     return {
       form,
       startNow,
@@ -138,6 +143,7 @@ export class StripeProvider extends PaymentProvider {
         new Date(subscription.current_period_end * 1000),
         config.gracePeriod
       ),
+      ...(clientSecret && { clientSecret }),
     };
   }
 

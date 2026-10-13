@@ -4,6 +4,7 @@ import {
   CantUpdateContributionError,
   NoPaymentMethodError,
   NotFoundError,
+  PaymentRequiresActionError,
   UnauthorizedError,
 } from '@beabee/core/errors';
 import { isOidcEnabled } from '@beabee/core/lib/oidc';
@@ -272,6 +273,10 @@ export class ContactController {
     const result = await PaymentService.processUpdateContribution(target, form);
     await ContactsService.handleUpdateContributionResult(target, result);
 
+    if (result.clientSecret) {
+      throw new PaymentRequiresActionError(result.clientSecret);
+    }
+
     return await this.getContribution(target);
   }
 
@@ -366,10 +371,15 @@ export class ContactController {
     @TargetUser() target: Contact,
     @Body() data: CompletePaymentFlowDto
   ): Promise<GetContributionInfoDto> {
-    await PaymentFlowService.completePaymentFlowAndProcess(
+    const result = await PaymentFlowService.completePaymentFlowAndProcess(
       target,
       data.paymentFlowId
     );
+
+    if (result?.clientSecret) {
+      throw new PaymentRequiresActionError(result.clientSecret);
+    }
+
     return await this.getContribution(target);
   }
 
