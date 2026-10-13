@@ -37,7 +37,7 @@ export class ContactClient extends BaseClient {
   /** Client for managing multi-factor authentication */
   readonly mfa: ContactMfaClient;
 
-  /** Client for the current member's login methods at the identity provider */
+  /** Client for a contact's login methods at the identity provider */
   readonly authMethod: ContactAuthMethodClient;
 
   /** Client for managing contact contributions */

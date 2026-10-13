@@ -95,12 +95,12 @@ const methods = ref<GetContactAuthMethodData[]>([]);
 const methodToRemove = ref<GetContactAuthMethodData>();
 
 async function load() {
-  methods.value = await client.contact.authMethod.list();
+  methods.value = await client.contact.authMethod.list('me');
 }
 
 async function remove(id: string, loginAgain = true) {
   try {
-    await client.contact.authMethod.delete(id);
+    await client.contact.authMethod.delete('me', id);
     methodToRemove.value = undefined;
     addNotification({
       variant: 'success',
