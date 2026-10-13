@@ -3,7 +3,6 @@ import {
   ContributionPeriod,
   type PaymentFlowResult,
   type Serial,
-  type SignupConfirmEmailData,
   type SignupData,
 } from '@beabee/beabee-common';
 
@@ -66,13 +65,7 @@ export class SignupClient extends BaseClient {
    * Confirms a user's email address
    * @param joinFlowId - The join flow ID from the confirmation email
    */
-  async confirmEmail(
-    joinFlowId: string | string[]
-  ): Promise<SignupConfirmEmailData> {
-    const { data } = await this.fetch.post<SignupConfirmEmailData>(
-      '/confirm-email',
-      { joinFlowId }
-    );
-    return data;
+  async confirmEmail(joinFlowId: string | string[]): Promise<void> {
+    await this.fetch.post('/confirm-email', { joinFlowId });
   }
 }

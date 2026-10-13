@@ -8,7 +8,7 @@ import type { IdpLoginAction, IdpProvider } from '#type/index';
 const log = mainLogger.child({ app: 'keycloak-idp-provider' });
 
 // Application Initiated Actions, run on the member's session during login
-const KC_ACTIONS: Record<LoginAction, string> = {
+const KC_ACTIONS: Record<Exclude<LoginAction, 'setupCredential'>, string> = {
   changePassword: 'UPDATE_PASSWORD',
   addPasskey: 'webauthn-register-passwordless',
   setupMfa: 'CONFIGURE_TOTP',

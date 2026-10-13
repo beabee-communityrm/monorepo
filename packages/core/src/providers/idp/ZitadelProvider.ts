@@ -5,7 +5,10 @@ import type { Contact } from '#models/index';
 import type { IdpLoginAction, IdpProvider } from '#type/index';
 
 // Login v2 pages that work on the member's existing login session
-const LOGIN_V2_PAGES: Record<LoginAction, string> = {
+const LOGIN_V2_PAGES: Record<
+  Exclude<LoginAction, 'setupCredential'>,
+  string
+> = {
   changePassword: 'password/change',
   addPasskey: 'passkey/set',
   setupMfa: 'mfa/set',

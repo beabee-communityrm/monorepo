@@ -1,7 +1,6 @@
 import { BadRequestError, NotFoundError } from '@beabee/core/errors';
-import { isOidcEnabled, startOidcLogin } from '@beabee/core/lib/oidc';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { Password } from '@beabee/core/models';
-import IdpService from '@beabee/core/services/IdpService';
 import SignupService from '@beabee/core/services/SignupService';
 import { generatePassword } from '@beabee/core/utils/auth';
 import { getMonthlyAmount } from '@beabee/core/utils/payment';
@@ -17,13 +16,14 @@ import {
   UseBefore,
 } from 'routing-controllers';
 
+import { GetContactDto } from '#api/dto/ContactDto';
 import { PaymentFlowResultDto } from '#api/dto/PaymentFlowDto';
 import {
   CompleteSignupFlowDto,
-  SignupConfirmEmailDto,
   StartSignupFlowDto,
 } from '#api/dto/SignupFlowDto';
 import { SignupConfirmEmailParams } from '#api/params/SignupConfirmEmailParams';
+import ContactTransformer from '#api/transformers/ContactTransformer';
 import { login } from '#api/utils/auth';
 
 import { RateLimit } from '../decorators/index.js';
@@ -126,26 +126,18 @@ export class SignupController {
   async confirmEmail(
     @Req() req: Request,
     @Body() { joinFlowId }: SignupConfirmEmailParams
-  ): Promise<SignupConfirmEmailDto> {
+  ): Promise<GetContactDto> {
     const contact = await SignupService.finalizeSignup(joinFlowId);
     if (!contact) {
       throw new NotFoundError();
     }
 
-    // Under OIDC login the member sets up their credential at the identity
-    // provider inside a login that continues to the setup page
-    if (isOidcEnabled()) {
-      const { url, loginState } = await startOidcLogin('/join/setup');
-      req.session.oidc = loginState;
-      const credentialSetupUrl = await IdpService.resolveLoginUrl(
-        url,
-        contact,
-        'setupCredential'
-      );
-      return { credentialSetupUrl };
-    }
-
     await login(req, contact);
-    return {};
+
+    return ContactTransformer.convert(contact, {
+      method: 'user',
+      contact,
+      roles: contact.activeRoles,
+    });
   }
 }

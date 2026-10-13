@@ -14,20 +14,21 @@ import { useRoute, useRouter } from 'vue-router';
 import { client } from '#utils/api';
 import { handleJoinError } from '#utils/api-error';
 
-import { updateCurrentUser } from '../../../store';
+import { generalContent, updateCurrentUser } from '../../../store';
 
 const route = useRoute();
 const router = useRouter();
 
 onBeforeMount(async () => {
   try {
-    const { credentialSetupUrl } = await client.signup.confirmEmail(
-      route.params.id
-    );
+    await client.signup.confirmEmail(route.params.id);
     // With OIDC login the member sets up their credential at the identity
-    // provider and comes back logged in
-    if (credentialSetupUrl) {
-      window.location.href = credentialSetupUrl;
+    // provider inside a login that returns to the setup page
+    if (generalContent.value.oidcEnabled) {
+      window.location.href = client.auth.getLoginUrl(
+        '/join/setup',
+        'setupCredential'
+      );
       return;
     }
     // User has been logged in, update our current user to reflect this
