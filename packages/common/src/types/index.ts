@@ -223,6 +223,7 @@ export type * from './tag-data.js';
 export type * from './tag-get-data.js';
 export type * from './tag-update-data.js';
 export type * from './text-case.js';
+export type * from './theme-font.js';
 export type * from './unit-matches.js';
 export type * from './update-callout-data.js';
 export type * from './update-callout-response-comment-data.js';

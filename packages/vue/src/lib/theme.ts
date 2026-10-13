@@ -1,3 +1,5 @@
+import type { ThemeFont } from '@beabee/beabee-common';
+
 import { tailwindcssPaletteGenerator } from '@bobthered/tailwindcss-palette-generator';
 import { mix, parseToRgba } from 'color2k';
 import { ref, watch } from 'vue';
@@ -22,7 +24,50 @@ const allFonts = {
   queue: ['Queue', 'sans-serif'],
 };
 
-type FontId = keyof typeof allFonts;
+export type FontId = keyof typeof allFonts;
+
+/**
+ * The regular cut of each preset font, uploaded with the theme so pages
+ * rendered outside the frontend can use the same typeface
+ */
+const presetFontFiles: Partial<
+  Record<FontId, () => Promise<{ default: string }>>
+> = {
+  'fira-sans': () =>
+    import('@fontsource/fira-sans/files/fira-sans-latin-400-normal.woff2?url'),
+  'fira-sans-condensed': () =>
+    import('@fontsource/fira-sans-condensed/files/fira-sans-condensed-latin-400-normal.woff2?url'),
+  'libre-franklin': () =>
+    import('@fontsource/libre-franklin/files/libre-franklin-latin-400-normal.woff2?url'),
+  'nunito-sans': () =>
+    import('@fontsource/nunito-sans/files/nunito-sans-latin-400-normal.woff2?url'),
+  'open-sans': () =>
+    import('@fontsource/open-sans/files/open-sans-latin-400-normal.woff2?url'),
+  roboto: () =>
+    import('@fontsource/roboto/files/roboto-latin-400-normal.woff2?url'),
+  'roboto-slab': () =>
+    import('@fontsource/roboto-slab/files/roboto-slab-latin-400-normal.woff2?url'),
+  rubik: () =>
+    import('@fontsource/rubik/files/rubik-latin-400-normal.woff2?url'),
+  ubuntu: () =>
+    import('@fontsource/ubuntu/files/ubuntu-latin-400-normal.woff2?url'),
+  'work-sans': () =>
+    import('@fontsource/work-sans/files/work-sans-latin-400-normal.woff2?url'),
+};
+
+/**
+ * Get a preset font's file for uploading
+ * @param id The font
+ * @returns The family name and file URL, or undefined for fonts without a
+ * bundled file
+ */
+export async function getPresetFontFile(
+  id: FontId
+): Promise<{ family: string; url: string } | undefined> {
+  const loadFile = presetFontFiles[id];
+  if (!loadFile) return undefined;
+  return { family: allFonts[id][0], url: (await loadFile()).default };
+}
 
 export type Theme = {
   colors: {
@@ -39,6 +84,7 @@ export type Theme = {
   fonts: {
     title: FontId;
     body: FontId;
+    bodyFont?: ThemeFont | undefined;
   };
 };
 
@@ -50,6 +96,7 @@ export type PartialTheme = {
   fonts?: {
     title?: string;
     body?: string;
+    bodyFont?: ThemeFont | undefined;
   };
 };
 
@@ -167,6 +214,7 @@ export function getFullTheme(theme: PartialTheme): Theme {
   const fonts = {
     body: bodyFont,
     title: getFont(theme.fonts?.title ?? bodyFont),
+    bodyFont: theme.fonts?.bodyFont,
   } satisfies Theme['fonts'];
 
   return { colors, fonts };

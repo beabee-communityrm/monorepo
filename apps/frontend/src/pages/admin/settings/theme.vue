@@ -110,11 +110,14 @@ import {
   AppRadioInput,
   AppSelect,
 } from '@beabee/vue';
+import type { ThemeFont } from '@beabee/beabee-common';
 import {
+  type FontId,
   type Theme,
   availableFonts,
   colorPresets,
   getFullTheme,
+  getPresetFontFile,
   visibleCustomColors,
 } from '@beabee/vue/lib/theme';
 
@@ -152,7 +155,27 @@ watch(
   { deep: true }
 );
 
+/**
+ * Upload the font's file for the pages rendered outside the frontend. Fonts
+ * without a bundled file, like hosted webfonts, have none.
+ */
+async function uploadBodyFont(id: FontId): Promise<ThemeFont | undefined> {
+  const font = await getPresetFontFile(id);
+  if (!font) return undefined;
+  const blob = await (await fetch(font.url)).blob();
+  const { path } = await client.upload.font.uploadFile(
+    new File([blob], `${id}.woff2`, { type: 'font/woff2' })
+  );
+  return { family: font.family, path };
+}
+
 async function handleSubmit() {
+  if (
+    fonts.value &&
+    (fonts.value.body !== currentTheme.fonts?.body || !fonts.value.bodyFont)
+  ) {
+    fonts.value.bodyFont = await uploadBodyFont(fonts.value.body);
+  }
   generalContent.value = await client.content.update('general', {
     theme: activeTheme.value,
   });

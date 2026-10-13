@@ -289,6 +289,10 @@ const audio: FileServiceConfig = {
   s3,
 };
 
+const font: FileServiceConfig = {
+  s3,
+};
+
 const legacyImage: LegacyImageServiceConfig = {
   s3,
 };
@@ -462,6 +466,9 @@ export const config = {
 
   // Audio service configuration
   audio,
+
+  // Font service configuration
+  font,
 
   // Legacy image service configuration
   legacyImage,

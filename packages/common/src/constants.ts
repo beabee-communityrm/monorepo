@@ -108,6 +108,20 @@ export const ALLOWED_AUDIO_MIME_TYPES: string[] = [
 ];
 
 /**
+ * @constant
+ * @name ALLOWED_FONT_MIME_TYPES
+ * @summary Allowed MIME types for theme fonts
+ */
+export const ALLOWED_FONT_MIME_TYPES: string[] = ['font/woff2'];
+
+/**
+ * @constant
+ * @name MAX_FONT_SIZE_IN_BYTES
+ * @summary Maximum theme font file size, the identity provider's asset limit
+ */
+export const MAX_FONT_SIZE_IN_BYTES: number = 512 * 1024;
+
+/**
  * Address component types for standardized parsing and placeholder replacement / formatting
  * Based on the MapTiler types, check `GeocodingPlaceType` in `@maptiler/client` for more possible types
  */

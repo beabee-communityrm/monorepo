@@ -1,4 +1,4 @@
-import type { FooterLink } from './index.js';
+import type { FooterLink, ThemeFont } from './index.js';
 
 export interface ContentGeneralData<L = string> {
   organisationName: string;
@@ -27,6 +27,8 @@ export interface ContentGeneralData<L = string> {
     fonts?: {
       body?: string;
       title?: string;
+      /** The body font's file, uploaded by the frontend when the theme is saved */
+      bodyFont?: ThemeFont | undefined;
     };
   };
   currencyCode: string;

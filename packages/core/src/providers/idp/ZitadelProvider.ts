@@ -177,6 +177,12 @@ export class ZitadelProvider implements IdpProvider {
         );
       }
     }
+    if (branding.font) {
+      await this.uploadAsset(
+        '/assets/v1/instance/policy/label/font',
+        branding.font
+      );
+    }
     // Colours and assets stay in the preview until activated
     await this.request('POST', '/admin/v1/policies/label/_activate');
   }

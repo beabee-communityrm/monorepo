@@ -88,6 +88,10 @@ export const getMimetypeFromExtension = (extension: string): string => {
     case 'wav':
       return 'audio/wav';
 
+    // Fonts
+    case 'woff2':
+      return 'font/woff2';
+
     default:
       return 'application/octet-stream';
   }
@@ -234,6 +238,10 @@ export const getExtensionFromMimetype = (mimetype?: string): string => {
       return '.mp3';
     case 'audio/wav':
       return '.wav';
+
+    // Fonts
+    case 'font/woff2':
+      return '.woff2';
 
     default:
       return '.bin';
