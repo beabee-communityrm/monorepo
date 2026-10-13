@@ -45,7 +45,9 @@ import { authTransformer } from '#api/transformers';
 import {
   assertOidcAuthEnabled,
   assertPasswordAuthEnabled,
+  clearSiteLoginCookie,
   login,
+  setSiteLoginCookie,
 } from '#api/utils/auth';
 
 const log = mainLogger.child({ app: 'auth-controller' });
@@ -101,7 +103,10 @@ export class AuthController {
    */
   @OnUndefined(204)
   @Post('/logout')
-  async logout(@Req() req: Request): Promise<LogoutResultDto | undefined> {
+  async logout(
+    @Req() req: Request,
+    @Res() res: Response
+  ): Promise<LogoutResultDto | undefined> {
     const idToken = req.session.idToken;
     await new Promise<void>((resolve, reject) =>
       req.logout((err) => {
@@ -109,6 +114,7 @@ export class AuthController {
         else resolve();
       })
     );
+    clearSiteLoginCookie(res);
 
     if (isOidcEnabled()) {
       await new Promise<void>((resolve) =>
@@ -185,6 +191,7 @@ export class AuthController {
       const contact = await ContactsService.findOneBy({ idpSubject: subject });
       if (!contact) {
         log.info(`OIDC login for unlinked subject ${subject}`);
+        clearSiteLoginCookie(res);
         // End the IdP session on the way to the error page, otherwise the
         // next login attempt lands on the same error without a login form
         res.redirect(
@@ -199,6 +206,9 @@ export class AuthController {
       // Regenerates the session, dropping the pre-login state
       await login(req, contact);
       req.session.idToken = idToken;
+      if (idToken) {
+        setSiteLoginCookie(res, idToken);
+      }
 
       res.redirect(config.audience + (loginState.next || '/'));
       return res;
@@ -208,6 +218,7 @@ export class AuthController {
       } else {
         log.error('OIDC login failed', err);
       }
+      clearSiteLoginCookie(res);
       res.redirect(
         `${config.audience}/auth/login?loginError=${LOGIN_CODES.LOGIN_FAILED}`
       );
@@ -230,6 +241,7 @@ export class AuthController {
       req.logout((err) => (err ? reject(err) : resolve()))
     );
     await new Promise<void>((resolve) => req.session.destroy(() => resolve()));
+    clearSiteLoginCookie(res);
 
     res.redirect(
       isOidcEnabled() ? await getOidcLogoutUrl(idToken) : config.audience
