@@ -3,13 +3,12 @@ import { dataSource } from '@beabee/core/database';
 
 import chalk from 'chalk';
 
-// Find successful Stripe payments without a successful event. Payments charged
+// Find successful payments without a successful event. Payments charged
 // after a contact's first event lacking a paymentId (i.e. created live) are skipped
 const noSuccessfulEvent = `
   FROM payment p
   WHERE p.status = $2
     AND p."contactId" IS NOT NULL
-    AND starts_with(p.id, 'in_')
     AND NOT EXISTS (
       SELECT 1 FROM activity_event e
       WHERE e."targetId" = p."contactId" AND e."eventType" = $1
@@ -21,7 +20,6 @@ const noSuccessfulEvent = `
 /**
  * Backfill contact.payment.successful events
  * Payment charge dates are used as the event time
- * Only Stripe payments are backfilled, as GoCardless emits no live event
  */
 const backfillPaymentSuccessful = async (dryRun: boolean): Promise<void> => {
   const eventType = ActivityEventType.ContactPaymentSuccessful;
