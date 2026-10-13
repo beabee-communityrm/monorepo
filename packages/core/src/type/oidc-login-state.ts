@@ -6,6 +6,6 @@ export interface OidcLoginState {
   state: string;
   nonce: string;
   codeVerifier: string;
-  /** Validated internal path to continue to after login */
+  /** Validated internal path or allowed return URL to continue to after login */
   next?: string | undefined;
 }

@@ -31,7 +31,7 @@ export class LogoutResultDto implements LogoutResultData {
 }
 
 export class OidcLoginOptsDto {
-  /** Internal path to continue to after login */
+  /** Internal path or allowed return URL to continue to after login */
   @IsOptional()
   @IsNextUrl()
   next?: string;

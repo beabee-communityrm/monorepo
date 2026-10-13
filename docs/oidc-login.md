@@ -108,7 +108,9 @@ Website login: `BEABEE_SITELOGIN_` `KEY` (32 bytes, base64, shared with the
 website's edge; unset = off), `COOKIE_NAME`, `COOKIE_DOMAIN` (the parent domain;
 `BEABEE_COOKIE_DOMAIN` stays the community host so the session cookie does not
 spread), `COOKIE_MAXAGE` (seconds, longer than the ID token lifetime). Requires
-`BEABEE_COOKIE_SECURE=true` for a `__Secure-` cookie name.
+`BEABEE_COOKIE_SECURE=true` for a `__Secure-` cookie name. The website links
+to `/api/1.0/auth/login?next=<absolute URL>`; `next` may be any URL on a
+`BEABEE_TRUSTEDORIGINS` origin.
 
 IdP-side setup that beabee owns and applies idempotently via
 `backend-cli setup integrations idp`: `defaultRedirectUri` (beabee's login endpoint, the

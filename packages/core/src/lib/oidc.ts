@@ -56,7 +56,7 @@ function getOidcConfig(): Promise<oidc.Configuration> {
 /**
  * Start an OIDC login: build the authorization URL with PKCE, state and nonce.
  * The returned state must be stored in the session for the callback.
- * @param next Validated internal path to continue to after login
+ * @param next Validated internal path or allowed return URL to continue to after login
  */
 export async function startOidcLogin(
   next?: string

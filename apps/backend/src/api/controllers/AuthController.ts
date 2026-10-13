@@ -18,6 +18,7 @@ import { Contact, ContactRole } from '@beabee/core/models';
 import ContactsService from '@beabee/core/services/ContactsService';
 import IdpService from '@beabee/core/services/IdpService';
 import { AuthInfo, PassportLoginInfo } from '@beabee/core/type';
+import { isValidNextUrl } from '@beabee/core/utils/url';
 
 import { isUUID } from 'class-validator';
 import { Request, Response } from 'express';
@@ -210,7 +211,10 @@ export class AuthController {
         setSiteLoginCookie(res, idToken);
       }
 
-      res.redirect(config.audience + (loginState.next || '/'));
+      // next was validated on /auth/login: either an internal path, which
+      // needs the audience, or an absolute URL on a trusted origin
+      const next = loginState.next || '/';
+      res.redirect(isValidNextUrl(next) ? config.audience + next : next);
       return res;
     } catch (err) {
       if (err instanceof OidcLoginDeniedError) {
