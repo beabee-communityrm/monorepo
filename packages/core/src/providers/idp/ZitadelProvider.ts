@@ -1,4 +1,7 @@
-import type { LoginAction } from '@beabee/beabee-common';
+import type {
+  GetContactAuthMethodData,
+  LoginAction,
+} from '@beabee/beabee-common';
 
 import type { ZitadelIdpConfig } from '#config/config';
 import type { Contact } from '#models/index';
@@ -247,6 +250,73 @@ export class ZitadelProvider implements IdpProvider {
       throw new Error('Zitadel did not return the invite code');
     }
     return resp.inviteCode;
+  }
+
+  /**
+   * Passkeys and security keys carry their own IDs, the password and the
+   * authenticator app do not, so the method ID names the removal endpoint
+   */
+  async listAuthMethods(subject: string): Promise<GetContactAuthMethodData[]> {
+    const [types, passkeys, factors] = await Promise.all([
+      this.request<{ authMethodTypes?: string[] }>(
+        'GET',
+        `/v2/users/${subject}/authentication_methods`
+      ),
+      this.request<{ result?: { id: string; state: string; name: string }[] }>(
+        'POST',
+        `/v2/users/${subject}/passkeys/_search`,
+        {}
+      ),
+      this.request<{
+        result?: { otp?: object; u2f?: { id: string; name: string } }[];
+      }>('POST', `/v2/users/${subject}/authentication_factors/_search`, {
+        states: ['AUTH_FACTOR_STATE_READY'],
+      }),
+    ]);
+
+    const methods: GetContactAuthMethodData[] = [];
+    if (
+      types?.authMethodTypes?.includes('AUTHENTICATION_METHOD_TYPE_PASSWORD')
+    ) {
+      methods.push({ id: 'password', type: 'password' });
+    }
+    for (const passkey of passkeys?.result || []) {
+      if (passkey.state === 'AUTH_FACTOR_STATE_READY') {
+        methods.push({
+          id: `passkey-${passkey.id}`,
+          type: 'passkey',
+          name: passkey.name,
+        });
+      }
+    }
+    for (const factor of factors?.result || []) {
+      if (factor.otp) {
+        methods.push({ id: 'totp', type: 'authenticatorApp' });
+      } else if (factor.u2f) {
+        methods.push({
+          id: `u2f-${factor.u2f.id}`,
+          type: 'securityKey',
+          name: factor.u2f.name,
+        });
+      }
+    }
+    return methods;
+  }
+
+  async removeAuthMethod(subject: string, id: string): Promise<void> {
+    const [kind, factorId] = id.split('-', 2);
+    const path =
+      kind === 'totp'
+        ? '/totp'
+        : kind === 'passkey' && factorId
+          ? `/passkeys/${factorId}`
+          : kind === 'u2f' && factorId
+            ? `/u2f/${factorId}`
+            : undefined;
+    if (!path) {
+      throw new Error(`Login method ${id} cannot be removed`);
+    }
+    await this.request('DELETE', `/v2/users/${subject}${path}`);
   }
 
   private async getLoginName(subject: string): Promise<string> {

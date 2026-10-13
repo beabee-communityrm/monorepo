@@ -10,6 +10,7 @@ export * from './callout-reviewer.client.js';
 export * from './callout-tag.client.js';
 export * from './callout.client.js';
 export * from './contact-contribution.client.js';
+export * from './contact-auth-method.client.js';
 export * from './contact-mfa.client.js';
 export * from './contact-newsletter.client.js';
 export * from './contact-payment-method.client.js';

@@ -1,4 +1,7 @@
+import type { GetContactAuthMethodData } from '@beabee/beabee-common';
+
 import config from '#config/config';
+import { BadRequestError, NotFoundError } from '#errors/index';
 import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
 import {
@@ -141,14 +144,46 @@ class IdpService {
     contact: Contact,
     type: IdpLoginAction['type']
   ): Promise<string> {
-    if (!contact.idpSubject) {
-      throw new Error(`Contact ${contact.id} has no IdP account`);
-    }
+    const subject = this.subjectOf(contact);
     log.info(`Resolve IdP login for ${type} of contact ${contact.id}`);
     return await this.provider.resolveLoginUrl(authorizeUrl, {
       type,
-      subject: contact.idpSubject,
+      subject,
     });
+  }
+
+  /**
+   * The login methods a linked contact has at the identity provider. Not
+   * best-effort: the member is waiting for it, so failures propagate.
+   */
+  async listAuthMethods(contact: Contact): Promise<GetContactAuthMethodData[]> {
+    return await this.provider.listAuthMethods(this.subjectOf(contact));
+  }
+
+  /**
+   * Remove one of a linked contact's login methods at the identity provider.
+   * The password stays: it is the method the others are added on top of.
+   * @param id The method's identifier from listAuthMethods
+   */
+  async removeAuthMethod(contact: Contact, id: string): Promise<void> {
+    const method = (await this.listAuthMethods(contact)).find(
+      (m) => m.id === id
+    );
+    if (!method) {
+      throw new NotFoundError();
+    }
+    if (method.type === 'password') {
+      throw new BadRequestError('The password cannot be removed');
+    }
+    log.info(`Remove ${method.type} ${id} of contact ${contact.id} at the IdP`);
+    await this.provider.removeAuthMethod(this.subjectOf(contact), id);
+  }
+
+  private subjectOf(contact: Contact): string {
+    if (!contact.idpSubject) {
+      throw new Error(`Contact ${contact.id} has no IdP account`);
+    }
+    return contact.idpSubject;
   }
 }
 

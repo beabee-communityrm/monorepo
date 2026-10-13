@@ -98,6 +98,19 @@
       "addPasskey": "Añadir una llave de acceso",
       "changePassword": "Cambiar contraseña",
       "intro": "Tu contraseña y tus métodos de acceso los gestiona nuestro servicio de inicio de sesión. Cada una de estas opciones te lleva allí y te trae de vuelta después.",
+      "methods": {
+        "authenticatorApp": "Aplicación de autenticación",
+        "confirmRemove": {
+          "desc": "Es posible que primero tengas que iniciar sesión de nuevo. Puedes volver a configurar el método en cualquier momento.",
+          "title": "¿Eliminar este método de inicio de sesión?"
+        },
+        "description": "Las formas en que puedes iniciar sesión. La contraseña no se puede eliminar.",
+        "passkey": "Passkey",
+        "password": "Contraseña",
+        "removed": "Método de inicio de sesión eliminado",
+        "securityKey": "Llave de seguridad",
+        "title": "Tus métodos de inicio de sesión"
+      },
       "setupMfa": "Configurar la aplicación de autenticación",
       "title": "Datos de acceso"
     },

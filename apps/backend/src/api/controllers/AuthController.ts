@@ -132,7 +132,7 @@ export class AuthController {
     @Req() req: Request,
     @Res() res: Response,
     @CurrentAuth({ required: false }) auth: AuthInfo,
-    @QueryParams() { next, action }: OidcLoginOptsDto
+    @QueryParams() { next, action, prompt }: OidcLoginOptsDto
   ): Promise<Response> {
     assertOidcAuthEnabled();
     const contact = auth.contact;
@@ -141,7 +141,7 @@ export class AuthController {
     }
 
     try {
-      const { url, loginState } = await startOidcLogin(next);
+      const { url, loginState } = await startOidcLogin(next, prompt);
       req.session.oidc = loginState;
       res.redirect(
         action && contact
@@ -177,7 +177,7 @@ export class AuthController {
         throw new Error('No OIDC login in progress for this session');
       }
 
-      const { subject, idToken } = await completeOidcLogin(
+      const { subject, idToken, authTime } = await completeOidcLogin(
         new URL(req.originalUrl, config.audience).search,
         loginState
       );
@@ -199,6 +199,10 @@ export class AuthController {
       // Regenerates the session, dropping the pre-login state
       await login(req, contact);
       req.session.idToken = idToken;
+      // An IdP that omits auth_time still re-authenticated on prompt=login
+      req.session.authTime =
+        authTime ??
+        (loginState.prompt ? Math.floor(Date.now() / 1000) : undefined);
 
       res.redirect(config.audience + (loginState.next || '/'));
       return res;
