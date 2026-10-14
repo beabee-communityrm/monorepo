@@ -210,6 +210,8 @@ export class ZitadelProvider implements IdpProvider {
         `Skipping OIDC client ${settings.oidcClient.clientId}, registered at ${settings.oidcClient.issuer}`
       );
     }
+    // Only the website login reads the claim; without it the target would
+    // make Zitadel call beabee on every token for nothing
     if (config.siteLogin) {
       await this.updateClaimsTarget();
     }
