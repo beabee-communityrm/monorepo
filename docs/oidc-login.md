@@ -104,6 +104,17 @@ Provisioning: `BEABEE_IDP_PROVIDER=none|zitadel|keycloak` with
 `BEABEE_IDP_SETTINGS_` `URL`, `PAT` (Zitadel) or `URL`, `REALM`, `CLIENTID`,
 `CLIENTSECRET` (Keycloak).
 
+Website login: `BEABEE_SITELOGIN_` `KEY` (32 bytes, base64, shared with the
+website's edge; unset = off), `COOKIE_NAME`, `COOKIE_DOMAIN` (the parent domain;
+`BEABEE_COOKIE_DOMAIN` stays the community host so the session cookie does not
+spread), `COOKIE_MAXAGE` (seconds, longer than the ID token lifetime). Requires
+`BEABEE_COOKIE_SECURE=true` for a `__Secure-` cookie name. The website links
+to `/api/1.0/auth/login?next=<absolute URL>`; `next` may be any URL on a
+`BEABEE_TRUSTEDORIGINS` origin. When the cookie's token has expired, the
+website's edge sends the browser to `/api/1.0/auth/refresh?next=…`, one
+`prompt=none` round trip that renews the cookie or, if the IdP session is
+gone, clears it; either way the browser continues to `next`.
+
 IdP-side setup that beabee owns and applies idempotently via
 `backend-cli setup integrations idp`: `defaultRedirectUri` (beabee's login endpoint, the
 safety net for a member who finishes a Login v2 page outside a login beabee

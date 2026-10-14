@@ -56,10 +56,13 @@ function getOidcConfig(): Promise<oidc.Configuration> {
 /**
  * Start an OIDC login: build the authorization URL with PKCE, state and nonce.
  * The returned state must be stored in the session for the callback.
- * @param next Validated internal path to continue to after login
+ * @param next Validated internal path or allowed return URL to continue to after login
+ * @param silent Ask the IdP for prompt=none: no login form, an error if the
+ * IdP session is gone
  */
 export async function startOidcLogin(
-  next?: string
+  next?: string,
+  silent = false
 ): Promise<{ url: string; loginState: OidcLoginState }> {
   const settings = getSettings();
   const oidcConfig = await getOidcConfig();
@@ -76,9 +79,13 @@ export async function startOidcLogin(
     code_challenge_method: 'S256',
     state,
     nonce,
+    ...(silent && { prompt: 'none' }),
   });
 
-  return { url: url.href, loginState: { state, nonce, codeVerifier, next } };
+  return {
+    url: url.href,
+    loginState: { state, nonce, codeVerifier, next, silent },
+  };
 }
 
 /**
