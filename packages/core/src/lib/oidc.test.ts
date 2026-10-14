@@ -82,27 +82,12 @@ describe('getOidcLogoutUrl', () => {
     );
   });
 
-  it('sends the browser to a given post-logout URI instead', async () => {
-    discovery.mockResolvedValueOnce(withEndSession);
-    const { getOidcLogoutUrl } = await load();
-
-    const url = new URL(
-      await getOidcLogoutUrl('id-token', {
-        postLogoutRedirectUri:
-          'https://beabee.example.org/auth/login?error=unlinked-account',
-      })
-    );
-    expect(url.searchParams.get('post_logout_redirect_uri')).toBe(
-      'https://beabee.example.org/auth/login?error=unlinked-account'
-    );
-  });
-
   it('carries next through the IdP as state', async () => {
     discovery.mockResolvedValueOnce(withEndSession);
     const { getOidcLogoutUrl } = await load();
 
     const url = new URL(
-      await getOidcLogoutUrl('id-token', { state: 'https://www.example.org/x' })
+      await getOidcLogoutUrl('id-token', 'https://www.example.org/x')
     );
     expect(url.searchParams.get('state')).toBe('https://www.example.org/x');
   });
@@ -111,7 +96,7 @@ describe('getOidcLogoutUrl', () => {
     discovery.mockResolvedValueOnce(withoutEndSession);
     const { getOidcLogoutUrl } = await load();
 
-    await expect(getOidcLogoutUrl('id-token', { state: '/x' })).resolves.toBe(
+    await expect(getOidcLogoutUrl('id-token', '/x')).resolves.toBe(
       postLogoutRedirectUri + '?state=%2Fx'
     );
   });

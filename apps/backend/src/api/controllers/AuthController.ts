@@ -235,9 +235,10 @@ export class AuthController {
         res.redirect(
           loginState.silent
             ? resolveNext(loginState.next)
-            : await getOidcLogoutUrl(idToken, {
-                postLogoutRedirectUri: `${config.audience}/auth/login?loginError=${LOGIN_CODES.UNLINKED_ACCOUNT}`,
-              })
+            : await getOidcLogoutUrl(
+                idToken,
+                `/auth/login?loginError=${LOGIN_CODES.UNLINKED_ACCOUNT}`
+              )
         );
         return res;
       }
@@ -289,7 +290,7 @@ export class AuthController {
 
     res.redirect(
       isOidcEnabled()
-        ? await getOidcLogoutUrl(idToken, { state: next })
+        ? await getOidcLogoutUrl(idToken, next)
         : resolveNext(next)
     );
     return res;

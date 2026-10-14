@@ -134,26 +134,21 @@ export async function completeOidcLogin(
 
 /**
  * The identity provider's logout URL (RP-initiated logout), falling back to
- * the post-logout redirect URI if the IdP has no end session endpoint or is
+ * the logout callback if the IdP has no end session endpoint or is
  * unreachable.
  * @param idToken The ID token from login, used as logout hint
- * @param opts.postLogoutRedirectUri Where the IdP sends the browser
- * afterwards; must be registered at the IdP. Defaults to the logout callback.
- * @param opts.state Carried through the IdP unchanged and appended to the
- * post-logout redirect URI as ?state=
+ * @param state Carried through the IdP unchanged and handed to the logout
+ * callback as ?state=
  */
 export async function getOidcLogoutUrl(
   idToken?: string,
-  {
-    postLogoutRedirectUri = POST_LOGOUT_REDIRECT_URI,
-    state,
-  }: { postLogoutRedirectUri?: string; state?: string | undefined } = {}
+  state?: string
 ): Promise<string> {
   try {
     const oidcConfig = await getOidcConfig();
     if (oidcConfig.serverMetadata().end_session_endpoint) {
       return oidc.buildEndSessionUrl(oidcConfig, {
-        post_logout_redirect_uri: postLogoutRedirectUri,
+        post_logout_redirect_uri: POST_LOGOUT_REDIRECT_URI,
         ...(idToken && { id_token_hint: idToken }),
         ...(state && { state }),
       }).href;
@@ -161,8 +156,8 @@ export async function getOidcLogoutUrl(
   } catch (err) {
     log.error('Failed to build OIDC logout URL', err);
   }
-  if (!state) return postLogoutRedirectUri;
-  const fallback = new URL(postLogoutRedirectUri);
+  if (!state) return POST_LOGOUT_REDIRECT_URI;
+  const fallback = new URL(POST_LOGOUT_REDIRECT_URI);
   fallback.searchParams.set('state', state);
   return fallback.href;
 }
