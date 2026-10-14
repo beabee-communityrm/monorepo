@@ -39,6 +39,7 @@ import { CurrentAuth } from '#api/decorators/CurrentAuth';
 import {
   GetAuthInfoDto,
   LoginDto,
+  LogoutCallbackDto,
   LogoutResultDto,
   NextOptsDto,
   OidcLoginOptsDto,
@@ -236,7 +237,7 @@ export class AuthController {
             ? resolveNext(loginState.next)
             : await getOidcLogoutUrl(
                 idToken,
-                `${config.audience}/auth/login?loginError=${LOGIN_CODES.UNLINKED_ACCOUNT}`
+                `/auth/login?loginError=${LOGIN_CODES.UNLINKED_ACCOUNT}`
               )
         );
         return res;
@@ -269,12 +270,15 @@ export class AuthController {
 
   /**
    * Browser-facing logout for plain links: ends the beabee session and,
-   * under OIDC login, the identity provider session (RP-initiated logout)
+   * under OIDC login, the identity provider session (RP-initiated logout).
+   * next travels through the IdP as the end-session state and comes back
+   * on /auth/logout/callback.
    */
   @Get('/logout')
   async browserLogout(
     @Req() req: Request,
-    @Res() res: Response
+    @Res() res: Response,
+    @QueryParams() { next }: NextOptsDto
   ): Promise<Response> {
     const idToken = req.session.idToken;
 
@@ -285,8 +289,24 @@ export class AuthController {
     clearSiteLoginCookie(res);
 
     res.redirect(
-      isOidcEnabled() ? await getOidcLogoutUrl(idToken) : config.audience
+      isOidcEnabled()
+        ? await getOidcLogoutUrl(idToken, next)
+        : resolveNext(next)
     );
+    return res;
+  }
+
+  /**
+   * Where the identity provider sends the browser after logout. The state is
+   * the next from /auth/logout, validated again since it comes back through
+   * the browser.
+   */
+  @Get('/logout/callback')
+  async logoutCallback(
+    @Res() res: Response,
+    @QueryParams() { state }: LogoutCallbackDto
+  ): Promise<Response> {
+    res.redirect(resolveNext(state));
     return res;
   }
 

@@ -1,16 +1,18 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+const audience = 'https://beabee.example.org';
+const redirectUri = audience + '/api/1.0/auth/callback';
+const postLogoutRedirectUri = audience + '/api/1.0/auth/logout/callback';
+
 const settings = {
   issuer: 'https://idp.example.org',
   clientId: 'beabee',
   clientSecret: '',
   scopes: 'openid profile email',
-  redirectUri: 'https://beabee.example.org/api/1.0/auth/callback',
-  postLogoutRedirectUri: 'https://beabee.example.org',
 };
 
 vi.mock('#config/config', () => ({
-  default: { dev: false, login: { provider: 'oidc', settings } },
+  default: { dev: false, audience, login: { provider: 'oidc', settings } },
 }));
 
 const { discovery, authorizationCodeGrant, AuthorizationResponseError } =
@@ -76,22 +78,26 @@ describe('getOidcLogoutUrl', () => {
     );
     expect(url.searchParams.get('id_token_hint')).toBe('id-token');
     expect(url.searchParams.get('post_logout_redirect_uri')).toBe(
-      settings.postLogoutRedirectUri
+      postLogoutRedirectUri
     );
   });
 
-  it('sends the browser to a given post-logout URI instead', async () => {
+  it('carries next through the IdP as state', async () => {
     discovery.mockResolvedValueOnce(withEndSession);
     const { getOidcLogoutUrl } = await load();
 
     const url = new URL(
-      await getOidcLogoutUrl(
-        'id-token',
-        'https://beabee.example.org/auth/login?error=unlinked-account'
-      )
+      await getOidcLogoutUrl('id-token', 'https://www.example.org/x')
     );
-    expect(url.searchParams.get('post_logout_redirect_uri')).toBe(
-      'https://beabee.example.org/auth/login?error=unlinked-account'
+    expect(url.searchParams.get('state')).toBe('https://www.example.org/x');
+  });
+
+  it('appends the state to the fallback without an end-session endpoint', async () => {
+    discovery.mockResolvedValueOnce(withoutEndSession);
+    const { getOidcLogoutUrl } = await load();
+
+    await expect(getOidcLogoutUrl('id-token', '/x')).resolves.toBe(
+      postLogoutRedirectUri + '?state=%2Fx'
     );
   });
 
@@ -100,7 +106,7 @@ describe('getOidcLogoutUrl', () => {
     const { getOidcLogoutUrl } = await load();
 
     await expect(getOidcLogoutUrl('id-token')).resolves.toBe(
-      settings.postLogoutRedirectUri
+      postLogoutRedirectUri
     );
   });
 
@@ -110,9 +116,7 @@ describe('getOidcLogoutUrl', () => {
       .mockResolvedValueOnce(withEndSession);
     const { getOidcLogoutUrl } = await load();
 
-    await expect(getOidcLogoutUrl()).resolves.toBe(
-      settings.postLogoutRedirectUri
-    );
+    await expect(getOidcLogoutUrl()).resolves.toBe(postLogoutRedirectUri);
     await expect(getOidcLogoutUrl()).resolves.toContain('/end_session');
     expect(discovery).toHaveBeenCalledTimes(2);
   });
@@ -125,7 +129,7 @@ describe('startOidcLogin', () => {
 
     const { url, loginState } = await startOidcLogin('/profile');
     const params = new URL(url).searchParams;
-    expect(params.get('redirect_uri')).toBe(settings.redirectUri);
+    expect(params.get('redirect_uri')).toBe(redirectUri);
     expect(params.get('scope')).toBe(settings.scopes);
     expect(params.get('code_challenge')).toBe('challenge');
     expect(params.get('code_challenge_method')).toBe('S256');
@@ -165,9 +169,7 @@ describe('completeOidcLogin', () => {
     ).resolves.toEqual({ subject: 'subject-1', idToken: 'id-token' });
 
     const [, callbackUrl, checks] = authorizationCodeGrant.mock.calls[0];
-    expect(callbackUrl.href).toBe(
-      settings.redirectUri + '?code=abc&state=state'
-    );
+    expect(callbackUrl.href).toBe(redirectUri + '?code=abc&state=state');
     expect(checks).toMatchObject({
       pkceCodeVerifier: 'verifier',
       expectedState: 'state',

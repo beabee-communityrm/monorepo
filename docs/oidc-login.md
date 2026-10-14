@@ -47,7 +47,9 @@ IdP again and see an "unlinked account" error, so their next attempt starts
 at the IdP's login form. Logout ends the IdP session as well (RP-initiated
 logout): `POST /auth/logout` ends the beabee session and answers with the
 IdP's logout URL for the client to navigate to, `GET /auth/logout` does the
-same in one step for plain links. Local-auth endpoints (password, MFA,
+same in one step for plain links. The IdP returns to
+`GET /auth/logout/callback`, which continues to the `next` that travelled
+through the IdP as the end-session `state`. Local-auth endpoints (password, MFA,
 reset) return 404.
 
 **Joining (OIDC state).** The setup form has no password field. After the
@@ -97,8 +99,9 @@ has one font file per instance and no per-instance background before v5).
 ## Configuration
 
 Login: `BEABEE_LOGIN_PROVIDER=local|oidc` with `BEABEE_LOGIN_SETTINGS_`
-`ISSUER`, `CLIENTID`, `CLIENTSECRET` (empty = public client), `SCOPES`,
-`REDIRECTURI`, `POSTLOGOUTREDIRECTURI`.
+`ISSUER`, `CLIENTID`, `CLIENTSECRET` (empty = public client), `SCOPES`. The
+IdP client's redirect URI is `<audience>/api/1.0/auth/callback` and its
+post-logout redirect URI `<audience>/api/1.0/auth/logout/callback`.
 
 Provisioning: `BEABEE_IDP_PROVIDER=none|zitadel|keycloak` with
 `BEABEE_IDP_SETTINGS_` `URL`, `PAT` (Zitadel) or `URL`, `REALM`, `CLIENTID`,
@@ -113,7 +116,10 @@ to `/api/1.0/auth/login?next=<absolute URL>`; `next` may be any URL on a
 `BEABEE_TRUSTEDORIGINS` origin. When the cookie's token has expired, the
 website's edge sends the browser to `/api/1.0/auth/refresh?next=…`, one
 `prompt=none` round trip that renews the cookie or, if the IdP session is
-gone, clears it; either way the browser continues to `next`.
+gone, clears it; either way the browser continues to `next`. A website logout
+link is `/api/1.0/auth/logout?next=<absolute URL>`; the member returns to
+that page via the logout callback, so the IdP needs only the one registered
+post-logout redirect URI.
 
 IdP-side setup that beabee owns and applies idempotently via
 `backend-cli setup integrations idp`: `defaultRedirectUri` (beabee's login endpoint, the
