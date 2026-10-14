@@ -224,13 +224,12 @@ export class ZitadelProvider implements IdpProvider {
    * The key Zitadel signs its calls with is kept for the webhook to verify.
    */
   private async updateClaimsTarget(): Promise<void> {
-    const targets = await this.request<{ result?: ZitadelTarget[] }>(
+    const targets = await this.request<{ targets?: ZitadelTarget[] }>(
       'POST',
       '/v2/actions/targets/search',
       {}
     );
-    let existing = targets?.result?.find((t) => t.name === CLAIMS_TARGET_NAME);
-    let signingKey = undefined;
+    let existing = targets?.targets?.find((t) => t.name === CLAIMS_TARGET_NAME);
     if (!existing) {
       log.info(`Create claims target ${CLAIMS_ENDPOINT}`);
       const created = await this.request<{ id: string; signingKey: string }>(
@@ -250,8 +249,8 @@ export class ZitadelProvider implements IdpProvider {
         id: created.id,
         name: CLAIMS_TARGET_NAME,
         endpoint: CLAIMS_ENDPOINT,
+        signingKey: created.signingKey,
       };
-      signingKey = created.signingKey;
     } else if (existing.endpoint !== CLAIMS_ENDPOINT) {
       log.info(`Update claims target to ${CLAIMS_ENDPOINT}`);
       await this.request('POST', `/v2/actions/targets/${existing.id}`, {
@@ -259,13 +258,7 @@ export class ZitadelProvider implements IdpProvider {
         restCall: { interruptOnError: false },
       });
     }
-    if (!signingKey) {
-      const resp = await this.request<{ target: ZitadelTarget }>(
-        'GET',
-        `/v2/actions/targets/${existing.id}`
-      );
-      signingKey = resp?.target.signingKey;
-    }
+    const { signingKey } = existing;
     if (!signingKey) {
       throw new Error('Zitadel did not return the claims target signing key');
     }
