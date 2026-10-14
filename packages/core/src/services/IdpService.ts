@@ -39,7 +39,9 @@ class IdpService {
     if (!this.isEnabled) return null;
     log.info('Create IdP account for contact ' + contact.id);
     try {
-      return await this.provider.createContact(contact);
+      const subject = await this.provider.createContact(contact);
+      log.info(`Created IdP account ${subject} for contact ${contact.id}`);
+      return subject;
     } catch (err) {
       log.error(`Failed to create IdP account for ${contact.email}`, err);
       return null;
