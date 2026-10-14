@@ -83,7 +83,9 @@ describe('ZitadelProvider', () => {
       );
       expect(init.method).toBe('PUT');
       expect(JSON.parse(init.body)).toEqual({
+        clientId: 'client-1',
         appType: 'OIDC_APP_TYPE_WEB',
+        version: 'OIDC_VERSION_1_0',
         redirectUris: oidcClient.redirectUris,
         postLogoutRedirectUris: oidcClient.postLogoutRedirectUris,
       });
