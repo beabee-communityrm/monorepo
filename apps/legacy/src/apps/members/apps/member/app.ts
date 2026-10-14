@@ -8,12 +8,11 @@ import PaymentService from '@beabee/core/services/PaymentService';
 import { wrapAsync } from '@beabee/core/utils/express';
 
 import express, { type Express } from 'express';
-import moment from 'moment';
 import { fileURLToPath } from 'node:url';
 import path from 'path';
 
 import { isAdmin } from '#core/middleware';
-import { canSuperAdmin, generateCode } from '#core/utils/auth';
+import { canSuperAdmin } from '#core/utils/auth';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -106,15 +105,6 @@ app.post(
           notes: req.body.notes,
         });
         req.flash('success', 'member-updated');
-        break;
-      case 'login-override':
-        await ContactsService.updateContact(contact, {
-          loginOverride: {
-            code: generateCode(),
-            expires: moment().add(24, 'hours').toDate(),
-          },
-        });
-        req.flash('success', 'member-login-override-generated');
         break;
       case 'password-reset':
         await getRepository(ResetSecurityFlow).save({

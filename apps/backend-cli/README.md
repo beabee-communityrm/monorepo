@@ -117,6 +117,7 @@ yarn backend-cli rate-limiter clear  Clear the rate limiter cache
 ### Synchronization Commands
 
 ```bash
+yarn backend-cli sync contact-sync-service push  Push contacts to the contact sync service
 yarn backend-cli sync mailchimp  Sync newsletter status with Mailchimp
 yarn backend-cli sync segments   Process segment memberships
 yarn backend-cli sync stripe     Sync Stripe subscriptions and payments

@@ -96,9 +96,8 @@ services:
 
   # MinIO service
   minio:
-    build:
-      context: .
-      dockerfile: ./apps/minio/Dockerfile
+    image: beabee/beabee-minio
+    init: true
     ports:
       - "${BEABEE_MINIO_PORT_ADMIN:-9000}:9000" # Admin port for debugging, not for production
       - "${BEABEE_MINIO_PORT_CONSOLE:-9001}:9001" # Console port (Admin UI), not for production
@@ -113,9 +112,9 @@ services:
       BEABEE_MINIO_BUCKET: ${BEABEE_MINIO_BUCKET:-uploads}
       BEABEE_MINIO_ENDPOINT: ${BEABEE_MINIO_ENDPOINT:-http://minio:9000}
 
-  # Serves both frontend builds. The stable (snapshot) one is released by
-  # default; the new frontend under development is hidden behind the
-  # beabee_frontend=new cookie (set via ?frontend=new by app_router)
+  # Serves both frontend builds. BEABEE_DEFAULT_FRONTEND picks the default,
+  # the beabee_frontend cookie (set via ?frontend=new|old by app_router)
+  # overrides it per user
   frontend:
     build:
       context: .
@@ -127,6 +126,7 @@ services:
       APP_BASE_URL: ${BEABEE_AUDIENCE}
       API_BASE_URL: /api/1.0/
       CNR_MODE: ${BEABEE_CNR_MODE:-false}
+      DEFAULT_FRONTEND: ${BEABEE_DEFAULT_FRONTEND:-old}
       APPSIGNAL_KEY: ${BEABEE_APPSIGNAL_KEY:-}
       CAPTCHAFOX_KEY: ${BEABEE_CAPTCHAFOX_KEY:-}
       MAPTILER_KEY: ${BEABEE_MAPTILER_KEY:-}
@@ -170,7 +170,7 @@ services:
   # Stripe CLI for webhook forwarding
   # Only used in local development
   stripe_cli:
-    image: stripe/stripe-cli:latest
+    image: stripe/stripe-cli:v1.50.11
     command: "listen --api-key ${BEABEE_STRIPE_SECRETKEY} --forward-to webhook_app:3000/stripe"
     depends_on:
       - webhook_app
@@ -178,10 +178,13 @@ services:
       - STRIPE_API_KEY=${BEABEE_STRIPE_SECRETKEY}
       - STRIPE_DEVICE_NAME=beabee-dev-docker-container
 
-  # Keycloak identity provider for testing IdP provisioning, unused unless
-  # BEABEE_IDP_PROVIDER=keycloak is set, see docs/oidc-local-development.md
+  # Keycloak identity provider for testing IdP provisioning and OIDC login,
+  # unused unless BEABEE_IDP_PROVIDER=keycloak is set, see
+  # docs/oidc-local-development.md
   auth:
-    image: quay.io/keycloak/keycloak:26.7
+    build:
+      context: .
+      dockerfile: ./packages/docker/keycloak.dockerfile
     command: ['start-dev', '--import-realm']
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin

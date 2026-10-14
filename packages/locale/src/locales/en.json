@@ -94,6 +94,13 @@
     "requiredFields": "Required fields",
     "savedPassword": "New password saved",
     "security": "Security",
+    "selfService": {
+      "addPasskey": "Add a passkey",
+      "changePassword": "Change password",
+      "intro": "Your password and login methods are managed by our login service. Each of these takes you there and brings you back afterwards.",
+      "setupMfa": "Set up authenticator app",
+      "title": "Login details"
+    },
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
     "subTitle-nuxt": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
     "subscriptions": "Subscriptions",
@@ -1144,6 +1151,13 @@
     },
     "oneTime": "One-time",
     "origin": {
+      "addedBy": "Added By",
+      "addedByValues": {
+        "admin": "Admin",
+        "external": "External",
+        "self-signup": "Self signup",
+        "system": "System"
+      },
       "campaign": "Campaign",
       "referrer": "Referrer",
       "source": "Signup Source",
@@ -1156,7 +1170,6 @@
     "roles": "Roles",
     "security": {
       "instructions": "Copy and share this link:",
-      "loginOverride": "Login override",
       "mfa": {
         "desc": "This contact has 2FA enabled. Click on the \"{ disableLabel }\" button to disable it.",
         "disabledDesc": "2FA is not enabled for this contact."
@@ -1473,6 +1486,16 @@
       "addressLine1": {
         "required": "Address line 1 is required"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Your browser blocked access to the microphone. Check the site permissions and try again, or upload a recording you made elsewhere.",
+        "micPermissionDeniedTitle": "Microphone not available",
+        "recordingNotSupportedBody": "This browser cannot record audio. Please upload an audio file instead.",
+        "recordingNotSupportedTitle": "Recording not supported",
+        "tooLongBody": "This file is {duration} long. The maximum for this question is {max}. Please trim it or record a shorter answer.",
+        "tooLongTitle": "Recording too long",
+        "uploadFailedTitle": "Upload failed",
+        "wrongTypeBody": "This question only accepts {types} files."
+      },
       "cityOrTown": {
         "required": "City/Town is required"
       },
@@ -1579,6 +1602,25 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Attached",
+        "delete": "Delete",
+        "discard": "Discard",
+        "download": "Download",
+        "pause": "Pause",
+        "paused": "Paused",
+        "playPause": "Play or pause",
+        "reRecord": "Record again",
+        "record": "Start recording",
+        "recording": "Recording",
+        "requestingPermission": "Waiting for microphone permission. Allow access in your browser to continue.",
+        "resume": "Resume",
+        "stop": "Stop",
+        "tryAgain": "Try again",
+        "uploadInstead": "Upload an audio file instead",
+        "uploadLabel": "Upload an audio file",
+        "uploadingHint": "Uploading — you can keep filling in the rest of the form."
+      },
       "file": {
         "browse": "upload from device",
         "dropFiles": "Drop files to attach",
@@ -1681,6 +1723,10 @@
   },
   "login": {
     "backTo": "Back to {newsroomName}",
+    "errors": {
+      "login-failed": "Login failed. Please try again.",
+      "unlinked-account": "Your login is not linked to an account on this platform. Please contact support."
+    },
     "forgotPassword": "Forgot your password?",
     "joinNow": "Join now!",
     "lostMfaDevice": "Lost your 2FA device?",

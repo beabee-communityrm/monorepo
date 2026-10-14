@@ -1,7 +1,3 @@
-import {
-  ALLOWED_DOCUMENT_MIME_TYPES,
-  isSupportedDocumentType,
-} from '@beabee/beabee-common';
 import type { UploadFileResponse } from '@beabee/beabee-common';
 import { config } from '@beabee/core/config';
 import {
@@ -54,16 +50,16 @@ export class DocumentController {
     }
 
     // Verify file type is allowed before consuming the stream
-    if (!isSupportedDocumentType(file.mimetype)) {
+    if (!documentService.isSupportedType(file.mimetype)) {
       file.stream.resume(); // Drain the stream so the request completes
       throw new UnsupportedFileTypeError(
         file.mimetype,
-        ALLOWED_DOCUMENT_MIME_TYPES
+        documentService.allowedMimeTypes
       );
     }
 
     // Use the DocumentService to upload the file with owner information
-    const metadata = await documentService.uploadDocument(
+    const metadata = await documentService.upload(
       file.stream,
       file.filename,
       file.mimetype,
@@ -97,10 +93,10 @@ export class DocumentController {
     @Param('id') id: string
   ): Promise<Response> {
     // Get the filename first, this also throws if the document doesn't exist
-    const metadata = await documentService.getDocumentMetadata(id);
+    const metadata = await documentService.getMetadata(id);
 
     // Get document as stream
-    const documentData = await documentService.getDocumentStream(id);
+    const documentData = await documentService.getStream(id);
 
     // Set appropriate security headers
     res.set({
@@ -138,7 +134,7 @@ export class DocumentController {
     @CurrentUser({ required: true }) contact: Contact
   ): Promise<{ success: boolean }> {
     // Get document metadata first to check ownership
-    const metadata = await documentService.getDocumentMetadata(id);
+    const metadata = await documentService.getMetadata(id);
 
     // Check if the user is the owner of the document
     // Only allow the document owner or admins to delete documents
@@ -150,7 +146,7 @@ export class DocumentController {
       throw new UnauthorizedError();
     }
 
-    const success = await documentService.deleteDocument(id);
+    const success = await documentService.delete(id);
     return { success };
   }
 }

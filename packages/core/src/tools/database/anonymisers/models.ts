@@ -193,6 +193,11 @@ function createComponentAnonymiser(
           url: 'https://placehold.co/600x400',
           path: 'images/placeholder.avif',
         } satisfies CalloutResponseAnswerFileUpload;
+      case CalloutComponentType.INPUT_AUDIO_RECORDER:
+        return {
+          url: 'https://example.com/audio-placeholder.webm',
+          path: 'audio/placeholder.webm',
+        } satisfies CalloutResponseAnswerFileUpload;
       case CalloutComponentType.INPUT_NUMBER:
         return chance.integer();
       case CalloutComponentType.INPUT_PHONE_NUMBER:
@@ -339,7 +344,6 @@ export const contactAnonymiser = createModelAnonymiser(Contact, {
   firstname: () => chance.first(),
   lastname: () => chance.last(),
   password: () => Password.none,
-  loginOverride: () => null,
   pollsCode: uniqueCode,
   referralCode: uniqueCode,
 });

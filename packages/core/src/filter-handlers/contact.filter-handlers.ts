@@ -1,6 +1,13 @@
+import {
+  ActivityActorType,
+  ActivityEventType,
+  type ContactAddedByType,
+  ContactOriginData,
+} from '@beabee/beabee-common';
 import type { Address } from '@beabee/beabee-common';
 import { createQueryBuilder } from '@beabee/core/database';
 import {
+  ActivityEvent,
   CalloutResponse,
   ContactContribution,
   ContactProfile,
@@ -176,6 +183,58 @@ const activePermission: FilterHandler = (qb, args) => {
 };
 
 /**
+ * Creates a filter handler for origin fields recorded on a contact's creation event
+ * @param field - The field from the event metadata to filter on
+ * @returns A filter handler function for the specified origin field
+ */
+function originField(field: keyof ContactOriginData): FilterHandler {
+  return (qb, args) => {
+    const subQb = createQueryBuilder()
+      .subQuery()
+      .select('ae.targetId')
+      .from(ActivityEvent, 'ae')
+      .where(args.addParamSuffix('ae.eventType = :eventType'))
+      .andWhere(args.convertToWhereClause(`ae.metadata ->> '${field}'`));
+
+    qb.where(`${args.fieldPrefix}id IN ${subQb.getQuery()}`);
+
+    return { eventType: ActivityEventType.ContactCreated };
+  };
+}
+
+/**
+ * Filter handler for who added a contact, derived from the actor of their
+ * creation event
+ */
+const addedByField: FilterHandler = (qb, args) => {
+  // Define actor types
+  const userActorTypes = `('${ActivityActorType.User}', '${ActivityActorType.ApiKey}')`;
+  const systemActorTypes = `('${ActivityActorType.System}', '${ActivityActorType.Cron}', '${ActivityActorType.BackendCLI}')`;
+
+  // Map addedBy to event actor type
+  const addedByActorWhere: Record<ContactAddedByType, string> = {
+    // Actor ID != null implies the contact was added by an admin
+    admin: `ae.actorType IN ${userActorTypes} AND ae.actorId IS NOT NULL`,
+    'self-signup': `ae.actorType IN ${userActorTypes} AND ae.actorId IS NULL`,
+    system: `ae.actorType IN ${systemActorTypes}`,
+    external: `ae.actorType = '${ActivityActorType.Webhook}'`,
+  };
+
+  // Query activity feed events to compute 'added by'
+  const subQb = createQueryBuilder()
+    .subQuery()
+    .select('ae.targetId')
+    .from(ActivityEvent, 'ae')
+    .where(args.addParamSuffix('ae.eventType = :eventType'))
+    .andWhere(addedByActorWhere[args.value[0] as ContactAddedByType]);
+
+  const isIn = args.operator === 'equal' ? 'IN' : 'NOT IN';
+  qb.where(`${args.fieldPrefix}id ${isIn} ${subQb.getQuery()}`);
+
+  return { eventType: ActivityEventType.ContactCreated };
+};
+
+/**
  * Filter handler for callout-related queries
  * Supports filtering by:
  * - callout responses (callout.<id>.responses.<restFields>)
@@ -259,6 +318,11 @@ const calloutsFilterHandler: FilterHandler = (qb, args) => {
  * - manualPaymentSource: Filters by manual payment contributions
  * - callouts: Filters by callout responses and participation
  * - tags: Filters by contact tags
+ * - campaign: Filters by the campaign (utm_campaign) a contact signed up through
+ * - medium: Filters by the referrer (utm_medium) a contact signed up through
+ * - source: Filters by the source (utm_source/callout) a contact signed up through
+ * - addedBy: Filters by who added a contact
+ * - idpLinked: Filters by whether the contact is linked to an identity provider account
  * - organisation: Filters by organisation name
  * - deliveryAddressCountry: Filters by the delivery address country code
  */
@@ -276,6 +340,12 @@ export const contactFilterHandlers: FilterHandlers<string> = {
       args.convertToWhereClause(`(${args.fieldPrefix}password.hash <> '')`)
     );
   },
+  idpLinked: (qb, args) => {
+    qb.where(
+      // A linked contact is one with an IdP Subject
+      args.convertToWhereClause(`(${args.fieldPrefix}idpSubject IS NOT NULL)`)
+    );
+  },
   membershipStarts: membershipField('dateAdded'),
   membershipExpires: membershipField('dateExpires'),
   contributionCancelled: contributionField('cancelledAt'),
@@ -289,4 +359,8 @@ export const contactFilterHandlers: FilterHandlers<string> = {
   donationDate: oneTimePaymentField('chargeDate'),
   totalDonationAmount: oneTimePaymentStatistic('total'),
   averageDonationAmount: oneTimePaymentStatistic('avg'),
+  campaign: originField('campaign'),
+  medium: originField('medium'),
+  source: originField('source'),
+  addedBy: addedByField,
 };

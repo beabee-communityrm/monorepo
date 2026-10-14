@@ -21,7 +21,37 @@ meta:
         <AccountForm />
       </template>
       <template #security>
-        <div class="flex flex-col gap-4">
+        <!-- Login details are managed at the identity provider on OIDC instances -->
+        <div v-if="generalContent.oidcEnabled" class="flex flex-col gap-4">
+          <p class="text-muted">{{ t('accountPage.selfService.intro') }}</p>
+          <div class="flex flex-col gap-2 sm:flex-row">
+            <UButton
+              :to="loginActionUrl('changePassword')"
+              external
+              icon="i-lucide-key-round"
+              variant="outline"
+            >
+              {{ t('accountPage.selfService.changePassword') }}
+            </UButton>
+            <UButton
+              :to="loginActionUrl('addPasskey')"
+              external
+              icon="i-lucide-fingerprint"
+              variant="outline"
+            >
+              {{ t('accountPage.selfService.addPasskey') }}
+            </UButton>
+            <UButton
+              :to="loginActionUrl('setupMfa')"
+              external
+              icon="i-lucide-smartphone"
+              variant="outline"
+            >
+              {{ t('accountPage.selfService.setupMfa') }}
+            </UButton>
+          </div>
+        </div>
+        <div v-else class="flex flex-col gap-4">
           <ChangePassword />
           <SetMFA contact-id="me" />
         </div>
@@ -39,17 +69,25 @@ meta:
 </template>
 
 <script lang="ts" setup>
+import type { LoginAction } from '@beabee/beabee-common';
+
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AccountForm from '../../components/pages/profile/account/AccountForm.vue';
 import AccountNewsletterSubscriptions from '../../components/pages/profile/account/AccountNewsletterSubscriptions.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
 import SetMFA from '../../components/pages/profile/account/SetMFA.vue';
+import { generalContent } from '../../store';
 import { addBreadcrumb } from '../../store/breadcrumb';
+import { client } from '../../utils/api';
 import { routeIcons, routeLabels } from '../../utils/route-nav';
 import type { TabsItem } from '@nuxt/ui';
 
 const { t } = useI18n();
+
+// Each action runs at the identity provider inside a login that returns here
+const loginActionUrl = (action: LoginAction) =>
+  client.auth.getLoginUrl('/profile/account', action);
 
 const items = computed<TabsItem[]>(() => [
   {

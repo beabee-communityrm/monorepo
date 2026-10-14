@@ -186,20 +186,28 @@ meta:
         </AppInfoList>
       </section>
 
-      <section class="mb-6 hidden">
+      <section class="mb-6">
         <AppHeading>{{ t('contactOverview.origin.title') }}</AppHeading>
         <AppInfoList>
           <AppInfoListItem
             :name="t('contactOverview.origin.source')"
-            :value="contact.origin.source"
+            :value="origin?.source"
           />
           <AppInfoListItem
             :name="t('contactOverview.origin.campaign')"
-            :value="contact.origin.campaign"
+            :value="origin?.campaign"
           />
           <AppInfoListItem
             :name="t('contactOverview.origin.referrer')"
-            :value="contact.origin.medium"
+            :value="origin?.medium"
+          />
+          <AppInfoListItem
+            :name="t('contactOverview.origin.addedBy')"
+            :value="
+              origin?.addedBy
+                ? t('contactOverview.origin.addedByValues.' + origin.addedBy)
+                : ''
+            "
           />
         </AppInfoList>
       </section>
@@ -229,8 +237,8 @@ meta:
         </AppInfoList>
       </section>
 
-      <!-- Security -->
-      <section class="mb-6">
+      <!-- Security (handled by the identity provider under OIDC login) -->
+      <section v-if="!generalContent.oidcEnabled" class="mb-6">
         <AppHeading>{{ t('contactOverview.security.title') }}</AppHeading>
 
         <!-- Multi factor authentication -->
@@ -265,14 +273,8 @@ meta:
           <p>{{ t('contactOverview.security.whatDoTheButtonsDo') }}</p>
           <form @submit.prevent="handleSecurityAction">
             <AppButton type="submit" variant="primaryOutlined" class="mt-4">{{
-              t('contactOverview.security.loginOverride')
+              t('contactOverview.security.resetPassword')
             }}</AppButton>
-            <AppButton
-              type="submit"
-              variant="primaryOutlined"
-              class="mt-2 ml-6"
-              >{{ t('contactOverview.security.resetPassword') }}</AppButton
-            >
           </form>
           <div v-if="securityLink" class="mt-4">
             <p class="mt-4">{{ t('contactOverview.security.instructions') }}</p>
@@ -312,6 +314,7 @@ meta:
 <script lang="ts" setup>
 import {
   CONTACT_MFA_TYPE,
+  type ContactOriginData,
   type ContactRoleData,
   type ContentJoinSetupData,
   ContributionType,
@@ -367,7 +370,6 @@ const contact = ref<GetContactDataWith<
   | GetContactWith.Contribution
   | GetContactWith.Roles
   | GetContactWith.Tags
-  | GetContactWith.Origin
 > | null>(null);
 const contactTags = ref<string[]>([]);
 const contactAbout = reactive({ notes: '', description: '' });
@@ -449,10 +451,12 @@ async function handleChangedRoles(cb: () => Promise<unknown>) {
     GetContactWith.Contribution,
     GetContactWith.Roles,
     GetContactWith.Tags,
-    GetContactWith.Origin,
   ]);
   changingRoles.value = false;
 }
+
+/** The contact's origin, taken from its creation event */
+const origin = ref<ContactOriginData>();
 
 const setupContent = ref<ContentJoinSetupData>();
 
@@ -478,7 +482,6 @@ async function handleToggleTag(tagId: string, successText: string) {
       GetContactWith.Contribution,
       GetContactWith.Roles,
       GetContactWith.Tags,
-      GetContactWith.Origin,
     ]);
 
     addNotification({ title: successText, variant: 'success' });
@@ -493,10 +496,11 @@ onBeforeMount(async () => {
     GetContactWith.Contribution,
     GetContactWith.Roles,
     GetContactWith.Tags,
-    GetContactWith.Origin,
   ]);
   contactAbout.notes = contact.value.profile.notes || '';
   contactAbout.description = contact.value.profile.description || '';
+
+  origin.value = await client.contact.getOrigin(props.contact.id);
 
   contactTags.value = (await client.content.get('contacts')).tags;
 
@@ -523,10 +527,12 @@ onBeforeMount(async () => {
     },
   });
 
-  // Fetch MFA information
-  const contactMfa = await client.contact.mfa.get(props.contact.id);
-  if (contactMfa && contactMfa.type === CONTACT_MFA_TYPE.TOTP) {
-    mfa.value.isEnabled = true;
+  // Fetch MFA information (the endpoint is disabled under OIDC login)
+  if (!generalContent.value.oidcEnabled) {
+    const contactMfa = await client.contact.mfa.get(props.contact.id);
+    if (contactMfa && contactMfa.type === CONTACT_MFA_TYPE.TOTP) {
+      mfa.value.isEnabled = true;
+    }
   }
 
   setupContent.value = await client.content.get('join/setup');

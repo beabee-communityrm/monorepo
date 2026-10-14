@@ -94,6 +94,13 @@
     "requiredFields": "Campos obrigatórios",
     "savedPassword": "Nova palavra-passe gravada",
     "security": "Segurança",
+    "selfService": {
+      "addPasskey": "Adicionar uma chave de acesso",
+      "changePassword": "Alterar palavra-passe",
+      "intro": "A sua palavra-passe e os seus métodos de login são geridos pelo nosso serviço de login. Cada uma destas opções leva-o até lá e traz-o de volta depois.",
+      "setupMfa": "Configurar a aplicação de autenticação",
+      "title": "Detalhes de login"
+    },
     "subTitle": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "subTitle-nuxt": "Os campos obrigatórios estão marcados com asteriscos. Toda a informação enviada por aqui é privada.",
     "subscriptions": "Inscrições",
@@ -1145,6 +1152,13 @@
     },
     "oneTime": "Único",
     "origin": {
+      "addedBy": "",
+      "addedByValues": {
+        "admin": "",
+        "external": "",
+        "self-signup": "",
+        "system": ""
+      },
       "campaign": "",
       "referrer": "",
       "source": "",
@@ -1157,7 +1171,6 @@
     "roles": "",
     "security": {
       "instructions": "",
-      "loginOverride": "",
       "mfa": {
         "desc": "Este contato ativou o 2FA. Clica no botão \"{ disableLabel }\" para desativar.",
         "disabledDesc": "Este contato não ativou o 2FA."
@@ -1476,6 +1489,16 @@
       "addressLine1": {
         "required": "A primeira linha do endereço é obrigatória"
       },
+      "audio": {
+        "micPermissionDeniedBody": "O teu navegador bloqueou o acesso ao microfone. Verifica as permissões do site e tenta novamente, ou carrega uma gravação feita noutro sítio.",
+        "micPermissionDeniedTitle": "Microfone não disponível",
+        "recordingNotSupportedBody": "Este navegador não consegue gravar áudio. Carrega antes um ficheiro de áudio.",
+        "recordingNotSupportedTitle": "Gravação não suportada",
+        "tooLongBody": "Este ficheiro tem {duration}. O máximo para esta pergunta é {max}. Corta-o ou grava uma resposta mais curta.",
+        "tooLongTitle": "Gravação demasiado longa",
+        "uploadFailedTitle": "Falha no carregamento",
+        "wrongTypeBody": "Esta pergunta só aceita ficheiros {types}."
+      },
       "cityOrTown": {
         "required": "A localidade é obrigatória"
       },
@@ -1582,6 +1605,25 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Anexado",
+        "delete": "Eliminar",
+        "discard": "Descartar",
+        "download": "Transferir",
+        "pause": "Pausar",
+        "paused": "Em pausa",
+        "playPause": "Reproduzir ou pausar",
+        "reRecord": "Gravar novamente",
+        "record": "Iniciar gravação",
+        "recording": "A gravar",
+        "requestingPermission": "A aguardar permissão do microfone. Permite o acesso no teu navegador para continuar.",
+        "resume": "Retomar",
+        "stop": "Parar",
+        "tryAgain": "Tentar novamente",
+        "uploadInstead": "Carregar um ficheiro de áudio em vez disso",
+        "uploadLabel": "Carregar um ficheiro de áudio",
+        "uploadingHint": "A carregar — podes continuar a preencher o resto do formulário."
+      },
       "file": {
         "browse": "Fazer upload do dispositivo",
         "dropFiles": "Deixar ficheiros aqui para a anexar",
@@ -1684,6 +1726,10 @@
   },
   "login": {
     "backTo": "Voltar a {newsroomName}",
+    "errors": {
+      "login-failed": "O login falhou. Tente novamente.",
+      "unlinked-account": "O seu login não está associado a nenhuma conta nesta plataforma. Contacte o suporte."
+    },
     "forgotPassword": "Esqueceste-te da palavra-passe?",
     "joinNow": "Junta-te agora!",
     "lostMfaDevice": "Perdeste o teu dispositivo 2FA?",

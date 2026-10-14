@@ -94,6 +94,13 @@
     "requiredFields": "",
     "savedPassword": "",
     "security": "",
+    "selfService": {
+      "addPasskey": "",
+      "changePassword": "",
+      "intro": "",
+      "setupMfa": "",
+      "title": ""
+    },
     "subTitle": "",
     "subTitle-nuxt": "",
     "subscriptions": "",
@@ -1144,6 +1151,13 @@
     },
     "oneTime": "",
     "origin": {
+      "addedBy": "",
+      "addedByValues": {
+        "admin": "",
+        "external": "",
+        "self-signup": "",
+        "system": ""
+      },
       "campaign": "",
       "referrer": "",
       "source": "",
@@ -1156,7 +1170,6 @@
     "roles": "",
     "security": {
       "instructions": "",
-      "loginOverride": "",
       "mfa": {
         "desc": "",
         "disabledDesc": ""
@@ -1473,6 +1486,16 @@
       "addressLine1": {
         "required": ""
       },
+      "audio": {
+        "micPermissionDeniedBody": "",
+        "micPermissionDeniedTitle": "",
+        "recordingNotSupportedBody": "",
+        "recordingNotSupportedTitle": "",
+        "tooLongBody": "",
+        "tooLongTitle": "",
+        "uploadFailedTitle": "",
+        "wrongTypeBody": ""
+      },
       "cityOrTown": {
         "required": ""
       },
@@ -1579,6 +1602,25 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "",
+        "delete": "",
+        "discard": "",
+        "download": "",
+        "pause": "",
+        "paused": "",
+        "playPause": "",
+        "reRecord": "",
+        "record": "",
+        "recording": "",
+        "requestingPermission": "",
+        "resume": "",
+        "stop": "",
+        "tryAgain": "",
+        "uploadInstead": "",
+        "uploadLabel": "",
+        "uploadingHint": ""
+      },
       "file": {
         "browse": "",
         "dropFiles": "",
@@ -1681,6 +1723,10 @@
   },
   "login": {
     "backTo": "",
+    "errors": {
+      "login-failed": "",
+      "unlinked-account": ""
+    },
     "forgotPassword": "",
     "joinNow": "",
     "lostMfaDevice": "",

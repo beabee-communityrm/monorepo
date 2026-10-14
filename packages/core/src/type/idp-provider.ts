@@ -1,4 +1,8 @@
+import type { ContentGeneralData } from '@beabee/beabee-common';
+
 import type { Contact } from '#models/index';
+
+import type { IdpLoginAction } from './idp-login-action.js';
 
 /**
  * Mirrors contacts to the external identity provider (IdP Provisioning) so
@@ -27,4 +31,46 @@ export interface IdpProvider {
    * @param subject The linked account's subject identifier
    */
   permanentlyDeleteContact(subject: string): Promise<void>;
+  /**
+   * Apply the instance settings beabee owns. Safe to repeat.
+   */
+  setup(settings: IdpSetupSettings): Promise<void>;
+  /**
+   * Push the beabee theme to the identity provider's login pages
+   */
+  updateBranding(branding: IdpBranding): Promise<void>;
+  /**
+   * The page to send the member to for an action inside an OIDC login that
+   * beabee started. The member completes the action and the login there,
+   * so they return through the OIDC callback like any login.
+   * @param authorizeUrl The authorization request beabee started
+   * @param action What the member does at the provider
+   */
+  resolveLoginUrl(
+    authorizeUrl: string,
+    action: IdpLoginAction
+  ): Promise<string>;
+}
+
+export interface IdpSetupSettings {
+  /** Where the IdP sends a member who finishes a Login v2 page outside a login beabee started */
+  defaultRedirectUri: string;
+  /**
+   * The client beabee logs in with under OIDC Login. The provider keeps its
+   * registration in line with beabee's routes when the client is on this IdP.
+   */
+  oidcClient?: IdpOidcClient;
+}
+
+export interface IdpOidcClient {
+  issuer: string;
+  clientId: string;
+  redirectUris: string[];
+  postLogoutRedirectUris: string[];
+}
+
+export interface IdpBranding {
+  theme: ContentGeneralData['theme'];
+  /** Used as logo and icon, absent when the instance has no logo */
+  logo?: Blob | undefined;
 }

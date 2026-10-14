@@ -6,6 +6,7 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from '@beabee/core/errors';
+import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { Contact } from '@beabee/core/models';
 import ContactMfaService from '@beabee/core/services/ContactMfaService';
 import ContactsService from '@beabee/core/services/ContactsService';
@@ -84,6 +85,7 @@ import ContactExporter from '#api/transformers/ContactExporter';
 import ContactRoleTransformer from '#api/transformers/ContactRoleTransformer';
 import ContactTransformer from '#api/transformers/ContactTransformer';
 import PaymentTransformer from '#api/transformers/PaymentTransformer';
+import { assertPasswordAuthEnabled } from '#api/utils/auth';
 
 @JsonController('/contact')
 @Authorized()
@@ -94,6 +96,12 @@ export class ContactController {
     @CurrentAuth({ required: true }) auth: AuthInfo,
     @Body() data: CreateContactDto
   ): Promise<GetContactDto> {
+    if (data.password && isOidcEnabled()) {
+      throw new BadRequestError(
+        'Cannot set a password when OIDC login is enabled'
+      );
+    }
+
     const contact = await ContactsService.createContact(
       {
         email: data.email,
@@ -298,6 +306,7 @@ export class ContactController {
   async getContactMfa(
     @TargetUser() target: Contact
   ): Promise<GetContactMfaDto | null> {
+    assertPasswordAuthEnabled();
     const mfa = await ContactMfaService.get(target);
     return mfa ? plainToInstance(GetContactMfaDto, mfa) : null;
   }
@@ -313,6 +322,7 @@ export class ContactController {
     @Body() data: CreateContactMfaDto,
     @TargetUser() target: Contact
   ): Promise<void> {
+    assertPasswordAuthEnabled();
     await ContactMfaService.create(target, data);
   }
 
@@ -329,6 +339,7 @@ export class ContactController {
     @Body() data: DeleteContactMfaDto,
     @Params() { id }: { id: string }
   ): Promise<void> {
+    assertPasswordAuthEnabled();
     if (id === 'me') {
       if (!data.token) {
         throw new BadRequestError('Token is required to delete own MFA');

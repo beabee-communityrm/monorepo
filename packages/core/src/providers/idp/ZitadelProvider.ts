@@ -1,6 +1,56 @@
+import type { LoginAction } from '@beabee/beabee-common';
+
 import type { ZitadelIdpConfig } from '#config/config';
 import type { Contact } from '#models/index';
-import type { IdpProvider } from '#type/index';
+import type {
+  IdpBranding,
+  IdpLoginAction,
+  IdpOidcClient,
+  IdpProvider,
+  IdpSetupSettings,
+} from '#type/index';
+
+class ZitadelApiError extends Error {
+  /** gRPC status code from the response body, 9 = FAILED_PRECONDITION */
+  readonly code: number | undefined;
+
+  constructor(method: string, path: string, status: number, body: string) {
+    super(`Zitadel API error: ${method} ${path} returned ${status}: ${body}`);
+    try {
+      this.code = JSON.parse(body).code;
+    } catch {
+      this.code = undefined;
+    }
+  }
+}
+
+interface ZitadelOidcApp {
+  id: string;
+  oidcConfig: {
+    clientId: string;
+    redirectUris?: string[];
+    postLogoutRedirectUris?: string[];
+  } & Record<string, unknown>;
+}
+
+/** Any app in a project; only OIDC apps carry an oidcConfig */
+type ZitadelApp = Pick<ZitadelOidcApp, 'id'> & Partial<ZitadelOidcApp>;
+
+function sameSet(a: string[] = [], b: string[] = []): boolean {
+  const sa = [...a].sort();
+  const sb = [...b].sort();
+  return sa.length === sb.length && sa.every((v, i) => v === sb[i]);
+}
+
+// Login v2 pages that work on the member's existing login session
+const LOGIN_V2_PAGES: Record<
+  Exclude<LoginAction, 'setupCredential'>,
+  string
+> = {
+  changePassword: 'password/change',
+  addPasskey: 'passkey/set',
+  setupMfa: 'mfa/set',
+};
 
 /**
  * Mirrors contacts into a Zitadel virtual instance via the v2 user API,
@@ -26,9 +76,7 @@ export class ZitadelProvider implements IdpProvider {
     });
     const text = await resp.text();
     if (!resp.ok) {
-      throw new Error(
-        `Zitadel API error: ${method} ${path} returned ${resp.status}: ${text}`
-      );
+      throw new ZitadelApiError(method, path, resp.status, text);
     }
     return text ? (JSON.parse(text) as T) : undefined;
   }
@@ -80,5 +128,212 @@ export class ZitadelProvider implements IdpProvider {
 
   async permanentlyDeleteContact(subject: string): Promise<void> {
     await this.request('DELETE', `/v2/users/${subject}`);
+  }
+
+  // Zitadel rejects a policy update that changes nothing with a precondition
+  // failure whose message is localised, but setup must be re-runnable
+  private async updatePolicy(path: string, body: object): Promise<void> {
+    try {
+      await this.request('PUT', path, body);
+    } catch (err) {
+      if (!(err instanceof ZitadelApiError && err.code === 9)) {
+        throw err;
+      }
+    }
+  }
+
+  private async uploadAsset(path: string, file: Blob): Promise<void> {
+    const body = new FormData();
+    body.append('file', file);
+    const resp = await fetch(this.settings.url + path, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${this.settings.pat}` },
+      body,
+    });
+    if (!resp.ok) {
+      throw new Error(
+        `Zitadel API error: POST ${path} returned ${resp.status}: ${await resp.text()}`
+      );
+    }
+  }
+
+  async setup(settings: IdpSetupSettings): Promise<void> {
+    const resp = await this.request<{ policy: object }>(
+      'GET',
+      '/admin/v1/policies/login'
+    );
+    if (!resp?.policy) {
+      throw new Error('Zitadel did not return the login policy');
+    }
+    await this.updatePolicy('/admin/v1/policies/login', {
+      ...resp.policy,
+      defaultRedirectUri: settings.defaultRedirectUri,
+      ignoreUnknownUsernames: true,
+    });
+    await this.updatePolicy('/admin/v1/policies/notification', {
+      passwordChange: false,
+    });
+    // A virtual instance's issuer is its URL, so a different issuer means
+    // the client is registered elsewhere
+    if (settings.oidcClient?.issuer === this.settings.url) {
+      await this.updateOidcClient(settings.oidcClient);
+    }
+  }
+
+  /** The app registered with this client ID, across the organisation's projects */
+  private async findOidcApp(
+    clientId: string
+  ): Promise<{ projectId: string; app: ZitadelOidcApp } | undefined> {
+    const projects = await this.request<{ result?: { id: string }[] }>(
+      'POST',
+      '/management/v1/projects/_search',
+      {}
+    );
+    for (const { id: projectId } of projects?.result || []) {
+      const apps = await this.request<{ result?: ZitadelApp[] }>(
+        'POST',
+        `/management/v1/projects/${projectId}/apps/_search`,
+        {}
+      );
+      const app = apps?.result?.find(
+        (a): a is ZitadelOidcApp => a.oidcConfig?.clientId === clientId
+      );
+      if (app) return { projectId, app };
+    }
+    return undefined;
+  }
+
+  /**
+   * Keep the client's redirect and post-logout URI lists in line with
+   * beabee's routes. Only a differing list is written, as Zitadel rejects a
+   * no-op update.
+   */
+  private async updateOidcClient(client: IdpOidcClient): Promise<void> {
+    const found = await this.findOidcApp(client.clientId);
+    if (!found) {
+      throw new Error(`OIDC client ${client.clientId} not found at the IdP`);
+    }
+    const current = found.app.oidcConfig;
+    if (
+      sameSet(current.redirectUris, client.redirectUris) &&
+      sameSet(current.postLogoutRedirectUris, client.postLogoutRedirectUris)
+    ) {
+      return;
+    }
+    // The update replaces the whole config, so the current one is echoed
+    // back; Zitadel discards the read-only fields it contains
+    await this.request(
+      'PUT',
+      `/management/v1/projects/${found.projectId}/apps/${found.app.id}/oidc_config`,
+      {
+        ...current,
+        redirectUris: client.redirectUris,
+        postLogoutRedirectUris: client.postLogoutRedirectUris,
+      }
+    );
+  }
+
+  async updateBranding(branding: IdpBranding): Promise<void> {
+    const colors = branding.theme.colors || {};
+    const primary = colors.main || colors.primary;
+    await this.updatePolicy('/admin/v1/policies/label', {
+      primaryColor: primary,
+      primaryColorDark: primary,
+      fontColor: colors.body,
+      fontColorDark: colors.body,
+      warnColor: colors.danger,
+      warnColorDark: colors.danger,
+      backgroundColor: colors.white,
+      backgroundColorDark: colors.white,
+      themeMode: 'THEME_MODE_LIGHT',
+      hideLoginNameSuffix: true,
+      disableWatermark: true,
+    });
+    if (branding.logo) {
+      for (const asset of ['logo', 'logo/dark', 'icon', 'icon/dark']) {
+        await this.uploadAsset(
+          `/assets/v1/instance/policy/label/${asset}`,
+          branding.logo
+        );
+      }
+    }
+    // Colours and assets stay in the preview until activated
+    await this.request('POST', '/admin/v1/policies/label/_activate');
+  }
+
+  /**
+   * Every Login v2 page accepts the ID of an authorization request and
+   * completes that request when the page is done, and identifies the
+   * member's session by login name
+   */
+  async resolveLoginUrl(
+    authorizeUrl: string,
+    action: IdpLoginAction
+  ): Promise<string> {
+    const requestId = await this.startAuthRequest(authorizeUrl);
+
+    // The invite verify page lets the member choose a password or passkey
+    if (action.type === 'setupCredential') {
+      const params = new URLSearchParams({
+        requestId,
+        userId: action.subject,
+        code: await this.createInviteCode(action.subject),
+        invite: 'true',
+      });
+      return `${this.settings.url}/ui/v2/login/verify?${params}`;
+    }
+
+    const params = new URLSearchParams({
+      requestId,
+      loginName: await this.getLoginName(action.subject),
+    });
+    return `${this.settings.url}/ui/v2/login/${LOGIN_V2_PAGES[action.type]}?${params}`;
+  }
+
+  /**
+   * Zitadel creates the authorization request when the authorize endpoint
+   * redirects to Login v2, so following the redirect once yields its ID:
+   *
+   *   > GET /oauth/v2/authorize?client_id=…&redirect_uri=…&state=…&code_challenge=…
+   *   < 302 Location: /ui/v2/login/login?authRequest=V2_393061261941706295
+   *
+   * Login v2 pages take that ID as `requestId=oidc_V2_…` and complete the
+   * request when done, sending the browser to our callback with the code.
+   */
+  private async startAuthRequest(authorizeUrl: string): Promise<string> {
+    const resp = await fetch(authorizeUrl, { redirect: 'manual' });
+    const location = resp.headers.get('location') || '';
+    const authRequest = new URL(location, authorizeUrl).searchParams.get(
+      'authRequest'
+    );
+    if (!authRequest) {
+      throw new Error(
+        `Zitadel did not start an authorization request: ${resp.status} ${location}`
+      );
+    }
+    return `oidc_${authRequest}`;
+  }
+
+  private async createInviteCode(subject: string): Promise<string> {
+    const resp = await this.request<{ inviteCode: string }>(
+      'POST',
+      `/v2/users/${subject}/invite_code`,
+      { returnCode: {} }
+    );
+    if (!resp?.inviteCode) {
+      throw new Error('Zitadel did not return the invite code');
+    }
+    return resp.inviteCode;
+  }
+
+  private async getLoginName(subject: string): Promise<string> {
+    const resp = await this.request<{ user: { preferredLoginName: string } }>(
+      'GET',
+      `/v2/users/${subject}`
+    );
+    if (!resp?.user.preferredLoginName) {
+      throw new Error('Zitadel did not return the login name');
+    }
+    return resp.user.preferredLoginName;
   }
 }
