@@ -3,13 +3,13 @@ import type { LoginAction } from '@beabee/beabee-common';
 import type { ZitadelIdpConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
+import { optionsService } from '#services/OptionsService';
 import type {
   IdpBranding,
   IdpClaimsTarget,
   IdpLoginAction,
   IdpOidcClient,
   IdpProvider,
-  IdpSetupResult,
   IdpSetupSettings,
 } from '#type/index';
 
@@ -184,7 +184,7 @@ export class ZitadelProvider implements IdpProvider {
     }
   }
 
-  async setup(settings: IdpSetupSettings): Promise<IdpSetupResult> {
+  async setup(settings: IdpSetupSettings): Promise<void> {
     const resp = await this.request<{ policy: object }>(
       'GET',
       '/admin/v1/policies/login'
@@ -209,22 +209,18 @@ export class ZitadelProvider implements IdpProvider {
         `Skipping OIDC client ${settings.oidcClient.clientId}, registered at ${settings.oidcClient.issuer}`
       );
     }
-    return settings.claimsTarget
-      ? {
-          claimsSigningKey: await this.updateClaimsTarget(
-            settings.claimsTarget
-          ),
-        }
-      : {};
+    if (settings.claimsTarget) {
+      await this.updateClaimsTarget(settings.claimsTarget);
+    }
   }
 
   /**
    * Register beabee as the target the IdP calls for extra token claims and
    * bind it to the token function. The target is found by name; the call
    * must not block a login when beabee is down, so errors are not fatal.
-   * @returns The key the IdP signs its calls with
+   * The key Zitadel signs its calls with is kept for the webhook to verify.
    */
-  private async updateClaimsTarget(target: IdpClaimsTarget): Promise<string> {
+  private async updateClaimsTarget(target: IdpClaimsTarget): Promise<void> {
     const targets = await this.request<{ result?: ZitadelTarget[] }>(
       'POST',
       '/v2/actions/targets/search',
@@ -266,11 +262,13 @@ export class ZitadelProvider implements IdpProvider {
     if (!signingKey) {
       throw new Error('Zitadel did not return the claims target signing key');
     }
+    if (signingKey !== optionsService.getText('zitadel-claims-signing-key')) {
+      await optionsService.set('zitadel-claims-signing-key', signingKey);
+    }
     await this.put('/v2/actions/executions', {
       condition: { function: { name: CLAIMS_FUNCTION } },
       targets: [existing.id],
     });
-    return signingKey;
   }
 
   /** The app registered with this client ID, across the organisation's projects */

@@ -3,7 +3,7 @@ import type { LoginAction } from '@beabee/beabee-common';
 import type { KeycloakIdpConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
-import type { IdpLoginAction, IdpProvider, IdpSetupResult } from '#type/index';
+import type { IdpLoginAction, IdpProvider } from '#type/index';
 
 const log = mainLogger.child({ app: 'keycloak-idp-provider' });
 
@@ -128,9 +128,8 @@ export class KeycloakProvider implements IdpProvider {
   }
 
   // Keycloak is the development IdP only; branding is not synced to it
-  async setup(): Promise<IdpSetupResult> {
+  async setup(): Promise<void> {
     log.info('Skipping setup, not supported for Keycloak');
-    return {};
   }
   async updateBranding(): Promise<void> {
     log.info('Skipping branding, not supported for Keycloak');

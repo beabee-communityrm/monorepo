@@ -34,7 +34,7 @@ export interface IdpProvider {
   /**
    * Apply the instance settings beabee owns. Safe to repeat.
    */
-  setup(settings: IdpSetupSettings): Promise<IdpSetupResult>;
+  setup(settings: IdpSetupSettings): Promise<void>;
   /**
    * Push the beabee theme to the identity provider's login pages
    */
@@ -69,11 +69,6 @@ export interface IdpSetupSettings {
 
 export interface IdpClaimsTarget {
   endpoint: string;
-}
-
-export interface IdpSetupResult {
-  /** The key the IdP signs claims requests with, when a target was set up */
-  claimsSigningKey?: string;
 }
 
 export interface IdpOidcClient {

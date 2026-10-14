@@ -95,7 +95,7 @@ class IdpService {
     if (!this.isEnabled) return false;
     log.info('Set up IdP');
     try {
-      const result = await this.provider.setup({
+      await this.provider.setup({
         defaultRedirectUri: LOGIN_URI,
         ...(config.login.provider === 'oidc' && {
           oidcClient: {
@@ -111,16 +111,6 @@ class IdpService {
           },
         }),
       });
-      if (
-        result.claimsSigningKey &&
-        result.claimsSigningKey !==
-          optionsService.getText('idp-claims-signing-key')
-      ) {
-        await optionsService.set(
-          'idp-claims-signing-key',
-          result.claimsSigningKey
-        );
-      }
     } catch (err) {
       log.error('Failed to set up IdP', err);
       return false;

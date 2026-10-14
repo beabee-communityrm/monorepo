@@ -22,7 +22,7 @@ zitadelWebhookApp.post(
   '/claims',
   wrapAsync(async (req, res) => {
     const signature = req.headers['zitadel-signature'];
-    const signingKey = optionsService.getText('idp-claims-signing-key');
+    const signingKey = optionsService.getText('zitadel-claims-signing-key');
     if (
       !signingKey ||
       typeof signature !== 'string' ||

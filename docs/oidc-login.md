@@ -122,7 +122,7 @@ that page via the logout callback, so the IdP needs only the one registered
 post-logout redirect URI. The website's edge reads a `role` claim from the
 token: `backend-cli setup integrations idp` registers the webhook app's
 `/webhook/zitadel/claims` as an Actions v2 target on the `preuserinfo`
-function and stores its signing key in the `idp-claims-signing-key` option;
+function and stores its signing key in the `zitadel-claims-signing-key` option;
 the webhook answers with the contact's highest active role other than the
 admin roles (`member` today), found by IdP subject, or no claim. The target
 does not interrupt token issuance, so a beabee outage costs the role, not

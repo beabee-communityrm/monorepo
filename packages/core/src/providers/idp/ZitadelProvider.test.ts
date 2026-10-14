@@ -6,6 +6,8 @@ import type { Contact } from '#models/index';
 vi.mock('#logging', () => ({
   log: { child: () => ({ info: vi.fn(), warn: vi.fn(), error: vi.fn() }) },
 }));
+const options = vi.hoisted(() => ({ getText: vi.fn(() => ''), set: vi.fn() }));
+vi.mock('#services/OptionsService', () => ({ optionsService: options }));
 
 const { ZitadelProvider } = await import('./ZitadelProvider');
 
@@ -140,12 +142,12 @@ describe('ZitadelProvider', () => {
       );
 
       const provider = new ZitadelProvider(settings);
-      const result = await provider.setup({
-        defaultRedirectUri: 'https://x',
-        claimsTarget,
-      });
+      await provider.setup({ defaultRedirectUri: 'https://x', claimsTarget });
 
-      expect(result).toEqual({ claimsSigningKey: 'key-1' });
+      expect(options.set).toHaveBeenCalledWith(
+        'zitadel-claims-signing-key',
+        'key-1'
+      );
       const [createUrl, create] = fetch.mock.calls[4];
       expect(createUrl).toBe(settings.url + '/v2/actions/targets');
       expect(JSON.parse(create.body)).toEqual({
@@ -180,12 +182,12 @@ describe('ZitadelProvider', () => {
       );
 
       const provider = new ZitadelProvider(settings);
-      const result = await provider.setup({
-        defaultRedirectUri: 'https://x',
-        claimsTarget,
-      });
+      await provider.setup({ defaultRedirectUri: 'https://x', claimsTarget });
 
-      expect(result).toEqual({ claimsSigningKey: 'key-1' });
+      expect(options.set).toHaveBeenCalledWith(
+        'zitadel-claims-signing-key',
+        'key-1'
+      );
       expect(fetch.mock.calls[4][0]).toBe(
         settings.url + '/v2/actions/targets/target-1'
       );
