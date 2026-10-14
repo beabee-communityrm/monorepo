@@ -39,7 +39,7 @@ meta:
 
       <!-- Landing here without being able to respond, so show what they sent -->
       <CalloutResponseList
-        v-else-if="responses.length"
+        v-if="!canRespond && responses.length"
         :form-schema="callout.formSchema"
         :responses="responsesPaginated"
       />
@@ -114,7 +114,7 @@ meta:
       </UButton>
 
       <CalloutResponseList
-        v-else-if="responses.length"
+        v-if="responses.length"
         :form-schema="callout.formSchema"
         :responses="responsesPaginated"
         :add-to="respondAction === 'add' ? respondTo : undefined"
