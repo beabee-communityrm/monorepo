@@ -1,6 +1,7 @@
 import type { LoginAction } from '@beabee/beabee-common';
 
 import type { ZitadelIdpConfig } from '#config/config';
+import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
 import type {
   IdpBranding,
@@ -9,6 +10,8 @@ import type {
   IdpProvider,
   IdpSetupSettings,
 } from '#type/index';
+
+const log = mainLogger.child({ app: 'zitadel-idp-provider' });
 
 class ZitadelApiError extends Error {
   /** gRPC status code from the response body, 9 = FAILED_PRECONDITION */
@@ -101,6 +104,7 @@ export class ZitadelProvider implements IdpProvider {
   }
 
   async createContact(contact: Contact): Promise<string> {
+    log.info(`Create user for ${contact.email}`);
     const resp = await this.request<{ userId: string }>(
       'POST',
       '/v2/users/human',
@@ -117,28 +121,37 @@ export class ZitadelProvider implements IdpProvider {
     contact: Contact,
     updates: Partial<Contact>
   ): Promise<void> {
-    if (updates.email || updates.firstname || updates.lastname) {
-      await this.request(
-        'PUT',
-        `/v2/users/human/${subject}`,
-        this.humanUser(contact)
+    if (!(updates.email || updates.firstname || updates.lastname)) {
+      log.info(
+        `Ignoring update for user ${subject}, no account fields changed`
       );
+      return;
     }
+    log.info(`Update user ${subject}`);
+    await this.request(
+      'PUT',
+      `/v2/users/human/${subject}`,
+      this.humanUser(contact)
+    );
   }
 
   async permanentlyDeleteContact(subject: string): Promise<void> {
+    log.info(`Delete user ${subject}`);
     await this.request('DELETE', `/v2/users/${subject}`);
   }
 
   // Zitadel rejects a policy update that changes nothing with a precondition
   // failure whose message is localised, but setup must be re-runnable
   private async updatePolicy(path: string, body: object): Promise<void> {
+    const name = path.split('/').pop();
+    log.info(`Update ${name} policy`);
     try {
       await this.request('PUT', path, body);
     } catch (err) {
       if (!(err instanceof ZitadelApiError && err.code === 9)) {
         throw err;
       }
+      log.info(`${name} policy unchanged`);
     }
   }
 
@@ -177,6 +190,10 @@ export class ZitadelProvider implements IdpProvider {
     // the client is registered elsewhere
     if (settings.oidcClient?.issuer === this.settings.url) {
       await this.updateOidcClient(settings.oidcClient);
+    } else if (settings.oidcClient) {
+      log.info(
+        `Skipping OIDC client ${settings.oidcClient.clientId}, registered at ${settings.oidcClient.issuer}`
+      );
     }
   }
 
@@ -218,8 +235,12 @@ export class ZitadelProvider implements IdpProvider {
       sameSet(current.redirectUris, client.redirectUris) &&
       sameSet(current.postLogoutRedirectUris, client.postLogoutRedirectUris)
     ) {
+      log.info(`OIDC client ${client.clientId} URIs unchanged`);
       return;
     }
+    log.info(
+      `Update OIDC client ${client.clientId} URIs: redirect ${client.redirectUris}, post-logout ${client.postLogoutRedirectUris}`
+    );
     // The update replaces the whole config, so the current one is echoed
     // back; Zitadel discards the read-only fields it contains
     await this.request(
@@ -250,6 +271,7 @@ export class ZitadelProvider implements IdpProvider {
       disableWatermark: true,
     });
     if (branding.logo) {
+      log.info('Upload logo');
       for (const asset of ['logo', 'logo/dark', 'icon', 'icon/dark']) {
         await this.uploadAsset(
           `/assets/v1/instance/policy/label/${asset}`,
@@ -258,6 +280,7 @@ export class ZitadelProvider implements IdpProvider {
       }
     }
     // Colours and assets stay in the preview until activated
+    log.info('Activate label policy');
     await this.request('POST', '/admin/v1/policies/label/_activate');
   }
 
@@ -315,6 +338,7 @@ export class ZitadelProvider implements IdpProvider {
   }
 
   private async createInviteCode(subject: string): Promise<string> {
+    log.info(`Create invite code for user ${subject}`);
     const resp = await this.request<{ inviteCode: string }>(
       'POST',
       `/v2/users/${subject}/invite_code`,
