@@ -55,6 +55,18 @@ export interface IdpProvider {
 export interface IdpSetupSettings {
   /** Where the IdP sends a member who finishes a Login v2 page outside a login beabee started */
   defaultRedirectUri: string;
+  /**
+   * The client beabee logs in with under OIDC Login. The provider keeps its
+   * registration in line with beabee's routes when the client is on this IdP.
+   */
+  oidcClient?: IdpOidcClient;
+}
+
+export interface IdpOidcClient {
+  issuer: string;
+  clientId: string;
+  redirectUris: string[];
+  postLogoutRedirectUris: string[];
 }
 
 export interface IdpBranding {

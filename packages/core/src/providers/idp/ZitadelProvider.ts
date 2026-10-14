@@ -5,6 +5,7 @@ import type { Contact } from '#models/index';
 import type {
   IdpBranding,
   IdpLoginAction,
+  IdpOidcClient,
   IdpProvider,
   IdpSetupSettings,
 } from '#type/index';
@@ -21,6 +22,40 @@ class ZitadelApiError extends Error {
       this.code = undefined;
     }
   }
+}
+
+// The OIDC config update replaces the whole config, so the settings beabee
+// does not own are echoed back from the current one
+const OIDC_CONFIG_KEPT = [
+  'responseTypes',
+  'grantTypes',
+  'appType',
+  'authMethodType',
+  'devMode',
+  'accessTokenType',
+  'accessTokenRoleAssertion',
+  'idTokenRoleAssertion',
+  'idTokenUserinfoAssertion',
+  'clockSkew',
+  'additionalOrigins',
+  'skipNativeAppSuccessPage',
+  'backChannelLogoutUri',
+  'loginVersion',
+];
+
+interface ZitadelOidcApp {
+  id: string;
+  oidcConfig?: {
+    clientId: string;
+    redirectUris?: string[];
+    postLogoutRedirectUris?: string[];
+  } & Record<string, unknown>;
+}
+
+function sameSet(a: string[] = [], b: string[] = []): boolean {
+  const sa = [...a].sort();
+  const sb = [...b].sort();
+  return sa.length === sb.length && sa.every((v, i) => v === sb[i]);
 }
 
 // Login v2 pages that work on the member's existing login session
@@ -151,6 +186,61 @@ export class ZitadelProvider implements IdpProvider {
     await this.updatePolicy('/admin/v1/policies/notification', {
       passwordChange: false,
     });
+    // A virtual instance's issuer is its URL, so a different issuer means
+    // the client is registered elsewhere
+    if (settings.oidcClient?.issuer === this.settings.url) {
+      await this.updateOidcClient(settings.oidcClient);
+    }
+  }
+
+  /**
+   * Keep the client's redirect and post-logout URI lists in line with
+   * beabee's routes. The client is found by ID across the organisation's
+   * projects; only a differing list is written, as Zitadel rejects a
+   * no-op update.
+   */
+  private async updateOidcClient(client: IdpOidcClient): Promise<void> {
+    const projects = await this.request<{ result?: { id: string }[] }>(
+      'POST',
+      '/management/v1/projects/_search',
+      {}
+    );
+    for (const project of projects?.result || []) {
+      const apps = await this.request<{ result?: ZitadelOidcApp[] }>(
+        'POST',
+        `/management/v1/projects/${project.id}/apps/_search`,
+        {}
+      );
+      const app = apps?.result?.find(
+        (a) => a.oidcConfig?.clientId === client.clientId
+      );
+      if (!app?.oidcConfig) continue;
+
+      const current = app.oidcConfig;
+      if (
+        sameSet(current.redirectUris, client.redirectUris) &&
+        sameSet(current.postLogoutRedirectUris, client.postLogoutRedirectUris)
+      ) {
+        return;
+      }
+      const kept = Object.fromEntries(
+        OIDC_CONFIG_KEPT.filter((k) => current[k] !== undefined).map((k) => [
+          k,
+          current[k],
+        ])
+      );
+      await this.request(
+        'PUT',
+        `/management/v1/projects/${project.id}/apps/${app.id}/oidc_config`,
+        {
+          ...kept,
+          redirectUris: client.redirectUris,
+          postLogoutRedirectUris: client.postLogoutRedirectUris,
+        }
+      );
+      return;
+    }
+    throw new Error(`OIDC client ${client.clientId} not found at the IdP`);
   }
 
   async updateBranding(branding: IdpBranding): Promise<void> {

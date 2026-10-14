@@ -124,8 +124,10 @@ post-logout redirect URI.
 IdP-side setup that beabee owns and applies idempotently via
 `backend-cli setup integrations idp`: `defaultRedirectUri` (beabee's login endpoint, the
 safety net for a member who finishes a Login v2 page outside a login beabee
-started), `ignoreUnknownUsernames` and branding. The virtual instance, project and OIDC client are created by the
-hosting infrastructure, which is expected to call the same command in future.
+started), `ignoreUnknownUsernames`, branding and, on an OIDC Login instance
+whose issuer is this IdP, the OIDC client's redirect and post-logout URI lists.
+The virtual instance, project and OIDC client are created by the hosting
+infrastructure, which is expected to call the same command in future.
 
 ## Operations
 

@@ -9,8 +9,8 @@ import type { OidcLoginState } from '#type/index';
 const log = mainLogger.child({ app: 'oidc' });
 
 // Registered at the IdP for this instance, so fixed to its public URL
-const REDIRECT_URI = `${config.audience}/api/1.0/auth/callback`;
-const POST_LOGOUT_REDIRECT_URI = `${config.audience}/api/1.0/auth/logout/callback`;
+export const REDIRECT_URI = `${config.audience}/api/1.0/auth/callback`;
+export const POST_LOGOUT_REDIRECT_URI = `${config.audience}/api/1.0/auth/logout/callback`;
 
 /**
  * Whether members log in at the identity provider (OIDC Login) instead of
