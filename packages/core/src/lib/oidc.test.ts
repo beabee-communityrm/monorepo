@@ -30,6 +30,12 @@ const { discovery, authorizationCodeGrant, AuthorizationResponseError } =
 vi.mock('openid-client', () => ({
   discovery,
   authorizationCodeGrant,
+  randomPKCECodeVerifier: () => 'verifier',
+  calculatePKCECodeChallenge: async () => 'challenge',
+  randomState: () => 'state',
+  randomNonce: () => 'nonce',
+  buildAuthorizationUrl: (_: unknown, params: Record<string, string>) =>
+    new URL('https://idp.example.org/authorize?' + new URLSearchParams(params)),
   buildEndSessionUrl: (_: unknown, params: Record<string, string>) =>
     new URL(
       'https://idp.example.org/end_session?' + new URLSearchParams(params)
@@ -109,6 +115,39 @@ describe('getOidcLogoutUrl', () => {
     );
     await expect(getOidcLogoutUrl()).resolves.toContain('/end_session');
     expect(discovery).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('startOidcLogin', () => {
+  it('builds the authorization URL and the state for the callback', async () => {
+    discovery.mockResolvedValueOnce(withEndSession);
+    const { startOidcLogin } = await load();
+
+    const { url, loginState } = await startOidcLogin('/profile');
+    const params = new URL(url).searchParams;
+    expect(params.get('redirect_uri')).toBe(settings.redirectUri);
+    expect(params.get('scope')).toBe(settings.scopes);
+    expect(params.get('code_challenge')).toBe('challenge');
+    expect(params.get('code_challenge_method')).toBe('S256');
+    expect(params.get('state')).toBe('state');
+    expect(params.get('nonce')).toBe('nonce');
+    expect(params.has('prompt')).toBe(false);
+    expect(loginState).toEqual({
+      state: 'state',
+      nonce: 'nonce',
+      codeVerifier: 'verifier',
+      next: '/profile',
+      silent: false,
+    });
+  });
+
+  it('asks for prompt=none on a silent refresh', async () => {
+    discovery.mockResolvedValueOnce(withEndSession);
+    const { startOidcLogin } = await load();
+
+    const { url, loginState } = await startOidcLogin('/profile', true);
+    expect(new URL(url).searchParams.get('prompt')).toBe('none');
+    expect(loginState.silent).toBe(true);
   });
 });
 

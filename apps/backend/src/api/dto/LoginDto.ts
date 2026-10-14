@@ -30,12 +30,14 @@ export class LogoutResultDto implements LogoutResultData {
   redirectUrl!: string;
 }
 
-export class OidcLoginOptsDto {
+export class NextOptsDto {
   /** Internal path or allowed return URL to continue to after login */
   @IsOptional()
   @IsNextUrl()
   next?: string;
+}
 
+export class OidcLoginOptsDto extends NextOptsDto {
   /** What a logged-in member does at the identity provider inside this login */
   @IsOptional()
   @IsIn(LOGIN_ACTIONS)

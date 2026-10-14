@@ -8,4 +8,6 @@ export interface OidcLoginState {
   codeVerifier: string;
   /** Validated internal path or allowed return URL to continue to after login */
   next?: string | undefined;
+  /** A prompt=none refresh: the callback never shows an error, it continues to next */
+  silent?: boolean;
 }

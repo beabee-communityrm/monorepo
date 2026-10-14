@@ -110,7 +110,10 @@ website's edge; unset = off), `COOKIE_NAME`, `COOKIE_DOMAIN` (the parent domain;
 spread), `COOKIE_MAXAGE` (seconds, longer than the ID token lifetime). Requires
 `BEABEE_COOKIE_SECURE=true` for a `__Secure-` cookie name. The website links
 to `/api/1.0/auth/login?next=<absolute URL>`; `next` may be any URL on a
-`BEABEE_TRUSTEDORIGINS` origin.
+`BEABEE_TRUSTEDORIGINS` origin. When the cookie's token has expired, the
+website's edge sends the browser to `/api/1.0/auth/refresh?next=…`, one
+`prompt=none` round trip that renews the cookie or, if the IdP session is
+gone, clears it; either way the browser continues to `next`.
 
 IdP-side setup that beabee owns and applies idempotently via
 `backend-cli setup integrations idp`: `defaultRedirectUri` (beabee's login endpoint, the
