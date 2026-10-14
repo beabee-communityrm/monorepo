@@ -22,6 +22,13 @@ meta:
     <h2 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h2>
 
     <template v-if="responsesPaginated /* Avoids layout thrashing */">
+      <CalloutClosedNotice
+        v-if="
+          callout.status === ItemStatus.Ended && callout.expires && !isPreview
+        "
+        :expires="callout.expires"
+      />
+
       <CalloutLoginGate v-if="showLoginPrompt && isOpen" />
 
       <CalloutContributionGate
@@ -140,6 +147,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import noImage from '#assets/images/no-image.avif';
+import CalloutClosedNotice from '#components/callout/CalloutClosedNotice.vue';
 import CalloutContributionGate from '#components/callout/CalloutContributionGate.vue';
 import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
 import CalloutLoginGate from '#components/callout/CalloutLoginGate.vue';
