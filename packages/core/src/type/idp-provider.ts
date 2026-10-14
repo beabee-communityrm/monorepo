@@ -34,7 +34,7 @@ export interface IdpProvider {
   /**
    * Apply the instance settings beabee owns. Safe to repeat.
    */
-  setup(settings: IdpSetupSettings): Promise<void>;
+  setup(settings: IdpSetupSettings): Promise<IdpSetupResult>;
   /**
    * Push the beabee theme to the identity provider's login pages
    */
@@ -60,6 +60,20 @@ export interface IdpSetupSettings {
    * registration in line with beabee's routes when the client is on this IdP.
    */
   oidcClient?: IdpOidcClient;
+  /**
+   * The endpoint the IdP calls before it builds a token, to get the claims
+   * beabee adds (Site Login role)
+   */
+  claimsTarget?: IdpClaimsTarget;
+}
+
+export interface IdpClaimsTarget {
+  endpoint: string;
+}
+
+export interface IdpSetupResult {
+  /** The key the IdP signs claims requests with, when a target was set up */
+  claimsSigningKey?: string;
 }
 
 export interface IdpOidcClient {

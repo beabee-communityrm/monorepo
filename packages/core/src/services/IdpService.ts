@@ -1,7 +1,10 @@
+import { RoleTypes } from '@beabee/beabee-common';
+
 import config from '#config/config';
+import { getRepository } from '#database';
 import { LOGIN_URI, POST_LOGOUT_REDIRECT_URI, REDIRECT_URI } from '#lib/oidc';
 import { log as mainLogger } from '#logging';
-import type { Contact } from '#models/index';
+import { Contact } from '#models/index';
 import {
   KeycloakProvider,
   NoneProvider,
@@ -12,6 +15,11 @@ import { optionsService } from '#services/OptionsService';
 import type { IdpLoginAction, IdpProvider } from '#type/index';
 
 const log = mainLogger.child({ app: 'idp-service' });
+
+// The token claim the website's edge reads, and the roles it can carry in
+// order of precedence; admin roles never leave beabee
+const ROLE_CLAIM = 'role';
+const SITE_ROLES = RoleTypes.filter((r) => r !== 'admin' && r !== 'superadmin');
 
 /**
  * IdP Provisioning: mirrors contacts to the identity provider. All methods
@@ -87,7 +95,7 @@ class IdpService {
     if (!this.isEnabled) return false;
     log.info('Set up IdP');
     try {
-      await this.provider.setup({
+      const result = await this.provider.setup({
         defaultRedirectUri: LOGIN_URI,
         ...(config.login.provider === 'oidc' && {
           oidcClient: {
@@ -97,12 +105,40 @@ class IdpService {
             postLogoutRedirectUris: [POST_LOGOUT_REDIRECT_URI],
           },
         }),
+        ...(config.siteLogin && {
+          claimsTarget: {
+            endpoint: `${config.webhookUrl}/webhook/zitadel/claims`,
+          },
+        }),
       });
+      if (
+        result.claimsSigningKey &&
+        result.claimsSigningKey !==
+          optionsService.getText('idp-claims-signing-key')
+      ) {
+        await optionsService.set(
+          'idp-claims-signing-key',
+          result.claimsSigningKey
+        );
+      }
     } catch (err) {
       log.error('Failed to set up IdP', err);
       return false;
     }
     return this.updateBranding();
+  }
+
+  /**
+   * The claims the IdP adds to a token for a linked contact: the highest
+   * active Site Login role, or nothing
+   * @param subject The IdP subject the token is for
+   */
+  async getTokenClaims(subject: string): Promise<Record<string, string>> {
+    const contact = await getRepository(Contact).findOneBy({
+      idpSubject: subject,
+    });
+    const role = SITE_ROLES.find((r) => contact?.activeRoles.includes(r));
+    return role ? { [ROLE_CLAIM]: role } : {};
   }
 
   /**

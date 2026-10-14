@@ -5,13 +5,27 @@ import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
 import type {
   IdpBranding,
+  IdpClaimsTarget,
   IdpLoginAction,
   IdpOidcClient,
   IdpProvider,
+  IdpSetupResult,
   IdpSetupSettings,
 } from '#type/index';
 
 const log = mainLogger.child({ app: 'zitadel-idp-provider' });
+
+// The Actions v2 target that asks beabee for extra token claims, bound to
+// the function that runs before the ID token's claims are set
+const CLAIMS_TARGET_NAME = 'beabee-claims';
+const CLAIMS_FUNCTION = 'preuserinfo';
+
+interface ZitadelTarget {
+  id: string;
+  name: string;
+  endpoint: string;
+  signingKey?: string;
+}
 
 class ZitadelApiError extends Error {
   /** gRPC status code from the response body, 9 = FAILED_PRECONDITION */
@@ -140,9 +154,9 @@ export class ZitadelProvider implements IdpProvider {
     await this.request('DELETE', `/v2/users/${subject}`);
   }
 
-  // Zitadel rejects a policy update that changes nothing with a precondition
+  // Zitadel rejects an update that changes nothing with a precondition
   // failure whose message is localised, but setup must be re-runnable
-  private async updatePolicy(path: string, body: object): Promise<void> {
+  private async put(path: string, body: object): Promise<void> {
     const name = path.split('/').pop();
     log.info(`Update ${name} policy`);
     try {
@@ -170,7 +184,7 @@ export class ZitadelProvider implements IdpProvider {
     }
   }
 
-  async setup(settings: IdpSetupSettings): Promise<void> {
+  async setup(settings: IdpSetupSettings): Promise<IdpSetupResult> {
     const resp = await this.request<{ policy: object }>(
       'GET',
       '/admin/v1/policies/login'
@@ -178,12 +192,12 @@ export class ZitadelProvider implements IdpProvider {
     if (!resp?.policy) {
       throw new Error('Zitadel did not return the login policy');
     }
-    await this.updatePolicy('/admin/v1/policies/login', {
+    await this.put('/admin/v1/policies/login', {
       ...resp.policy,
       defaultRedirectUri: settings.defaultRedirectUri,
       ignoreUnknownUsernames: true,
     });
-    await this.updatePolicy('/admin/v1/policies/notification', {
+    await this.put('/admin/v1/policies/notification', {
       passwordChange: false,
     });
     // A virtual instance's issuer is its URL, so a different issuer means
@@ -195,6 +209,68 @@ export class ZitadelProvider implements IdpProvider {
         `Skipping OIDC client ${settings.oidcClient.clientId}, registered at ${settings.oidcClient.issuer}`
       );
     }
+    return settings.claimsTarget
+      ? {
+          claimsSigningKey: await this.updateClaimsTarget(
+            settings.claimsTarget
+          ),
+        }
+      : {};
+  }
+
+  /**
+   * Register beabee as the target the IdP calls for extra token claims and
+   * bind it to the token function. The target is found by name; the call
+   * must not block a login when beabee is down, so errors are not fatal.
+   * @returns The key the IdP signs its calls with
+   */
+  private async updateClaimsTarget(target: IdpClaimsTarget): Promise<string> {
+    const targets = await this.request<{ result?: ZitadelTarget[] }>(
+      'POST',
+      '/v2/actions/targets/search',
+      {}
+    );
+    let existing = targets?.result?.find((t) => t.name === CLAIMS_TARGET_NAME);
+    let signingKey = undefined;
+    if (!existing) {
+      log.info(`Create claims target ${target.endpoint}`);
+      const created = await this.request<{ id: string; signingKey: string }>(
+        'POST',
+        '/v2/actions/targets',
+        {
+          name: CLAIMS_TARGET_NAME,
+          endpoint: target.endpoint,
+          timeout: '5s',
+          restCall: { interruptOnError: false },
+        }
+      );
+      if (!created?.id || !created.signingKey) {
+        throw new Error('Zitadel did not return the new claims target');
+      }
+      existing = { id: created.id, name: CLAIMS_TARGET_NAME, ...target };
+      signingKey = created.signingKey;
+    } else if (existing.endpoint !== target.endpoint) {
+      log.info(`Update claims target to ${target.endpoint}`);
+      await this.request('POST', `/v2/actions/targets/${existing.id}`, {
+        endpoint: target.endpoint,
+        restCall: { interruptOnError: false },
+      });
+    }
+    if (!signingKey) {
+      const resp = await this.request<{ target: ZitadelTarget }>(
+        'GET',
+        `/v2/actions/targets/${existing.id}`
+      );
+      signingKey = resp?.target.signingKey;
+    }
+    if (!signingKey) {
+      throw new Error('Zitadel did not return the claims target signing key');
+    }
+    await this.put('/v2/actions/executions', {
+      condition: { function: { name: CLAIMS_FUNCTION } },
+      targets: [existing.id],
+    });
+    return signingKey;
   }
 
   /** The app registered with this client ID, across the organisation's projects */
@@ -257,7 +333,7 @@ export class ZitadelProvider implements IdpProvider {
   async updateBranding(branding: IdpBranding): Promise<void> {
     const colors = branding.theme.colors || {};
     const primary = colors.main || colors.primary;
-    await this.updatePolicy('/admin/v1/policies/label', {
+    await this.put('/admin/v1/policies/label', {
       primaryColor: primary,
       primaryColorDark: primary,
       fontColor: colors.body,

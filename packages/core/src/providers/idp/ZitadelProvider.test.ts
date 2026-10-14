@@ -2,7 +2,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { Contact } from '#models/index';
 
-import { ZitadelProvider } from './ZitadelProvider';
+// The logger reads the app config, which needs the full environment
+vi.mock('#logging', () => ({
+  log: { child: () => ({ info: vi.fn(), warn: vi.fn(), error: vi.fn() }) },
+}));
+
+const { ZitadelProvider } = await import('./ZitadelProvider');
 
 const settings = {
   url: 'https://auth.example.org',
@@ -120,6 +125,71 @@ describe('ZitadelProvider', () => {
       });
 
       expect(fetch).toHaveBeenCalledTimes(3);
+    });
+
+    const claimsTarget = {
+      endpoint: 'https://beabee.example.org/webhook/zitadel/claims',
+    };
+
+    it('registers beabee as claims target and binds it to the token function', async () => {
+      const fetch = mockFetch(
+        ...policies(),
+        json({ result: [] }),
+        json({ id: 'target-1', signingKey: 'key-1' }),
+        json({})
+      );
+
+      const provider = new ZitadelProvider(settings);
+      const result = await provider.setup({
+        defaultRedirectUri: 'https://x',
+        claimsTarget,
+      });
+
+      expect(result).toEqual({ claimsSigningKey: 'key-1' });
+      const [createUrl, create] = fetch.mock.calls[4];
+      expect(createUrl).toBe(settings.url + '/v2/actions/targets');
+      expect(JSON.parse(create.body)).toEqual({
+        name: 'beabee-claims',
+        endpoint: claimsTarget.endpoint,
+        timeout: '5s',
+        restCall: { interruptOnError: false },
+      });
+      const [executionUrl, execution] = fetch.mock.calls[5];
+      expect(executionUrl).toBe(settings.url + '/v2/actions/executions');
+      expect(execution.method).toBe('PUT');
+      expect(JSON.parse(execution.body)).toEqual({
+        condition: { function: { name: 'preuserinfo' } },
+        targets: ['target-1'],
+      });
+    });
+
+    it('reads the signing key of an existing claims target', async () => {
+      const fetch = mockFetch(
+        ...policies(),
+        json({
+          result: [
+            {
+              id: 'target-1',
+              name: 'beabee-claims',
+              endpoint: claimsTarget.endpoint,
+            },
+          ],
+        }),
+        json({ target: { id: 'target-1', signingKey: 'key-1' } }),
+        json({})
+      );
+
+      const provider = new ZitadelProvider(settings);
+      const result = await provider.setup({
+        defaultRedirectUri: 'https://x',
+        claimsTarget,
+      });
+
+      expect(result).toEqual({ claimsSigningKey: 'key-1' });
+      expect(fetch.mock.calls[4][0]).toBe(
+        settings.url + '/v2/actions/targets/target-1'
+      );
+      expect(fetch).toHaveBeenCalledTimes(6);
     });
 
     it('fails when the client is not found', async () => {
