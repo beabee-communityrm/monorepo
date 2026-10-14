@@ -1,6 +1,7 @@
 import type { LoginAction } from '@beabee/beabee-common';
 
 import type { ZitadelIdpConfig } from '#config/config';
+import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
 import type {
   IdpBranding,
@@ -9,6 +10,8 @@ import type {
   IdpProvider,
   IdpSetupSettings,
 } from '#type/index';
+
+const log = mainLogger.child({ app: 'zitadel-idp-provider' });
 
 class ZitadelApiError extends Error {
   /** gRPC status code from the response body, 9 = FAILED_PRECONDITION */
@@ -133,12 +136,15 @@ export class ZitadelProvider implements IdpProvider {
   // Zitadel rejects a policy update that changes nothing with a precondition
   // failure whose message is localised, but setup must be re-runnable
   private async updatePolicy(path: string, body: object): Promise<void> {
+    const name = path.split('/').pop();
     try {
       await this.request('PUT', path, body);
+      log.info(`Updated ${name} policy`);
     } catch (err) {
       if (!(err instanceof ZitadelApiError && err.code === 9)) {
         throw err;
       }
+      log.info(`Unchanged ${name} policy`);
     }
   }
 
@@ -177,6 +183,10 @@ export class ZitadelProvider implements IdpProvider {
     // the client is registered elsewhere
     if (settings.oidcClient?.issuer === this.settings.url) {
       await this.updateOidcClient(settings.oidcClient);
+    } else if (settings.oidcClient) {
+      log.info(
+        `Skipped OIDC client ${settings.oidcClient.clientId}, registered at ${settings.oidcClient.issuer}`
+      );
     }
   }
 
@@ -218,6 +228,7 @@ export class ZitadelProvider implements IdpProvider {
       sameSet(current.redirectUris, client.redirectUris) &&
       sameSet(current.postLogoutRedirectUris, client.postLogoutRedirectUris)
     ) {
+      log.info(`Unchanged OIDC client ${client.clientId} URIs`);
       return;
     }
     // The update replaces the whole config, so the current one is echoed
@@ -230,6 +241,9 @@ export class ZitadelProvider implements IdpProvider {
         redirectUris: client.redirectUris,
         postLogoutRedirectUris: client.postLogoutRedirectUris,
       }
+    );
+    log.info(
+      `Updated OIDC client ${client.clientId} URIs: redirect ${client.redirectUris}, post-logout ${client.postLogoutRedirectUris}`
     );
   }
 
@@ -256,9 +270,11 @@ export class ZitadelProvider implements IdpProvider {
           branding.logo
         );
       }
+      log.info('Uploaded logo');
     }
     // Colours and assets stay in the preview until activated
     await this.request('POST', '/admin/v1/policies/label/_activate');
+    log.info('Activated label policy');
   }
 
   /**
