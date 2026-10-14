@@ -1,12 +1,12 @@
 import type { LoginAction } from '@beabee/beabee-common';
 
+import config from '#config/config';
 import type { ZitadelIdpConfig } from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
 import { optionsService } from '#services/OptionsService';
 import type {
   IdpBranding,
-  IdpClaimsTarget,
   IdpLoginAction,
   IdpOidcClient,
   IdpProvider,
@@ -15,10 +15,11 @@ import type {
 
 const log = mainLogger.child({ app: 'zitadel-idp-provider' });
 
-// The Actions v2 target that asks beabee for extra token claims, bound to
-// the function that runs before the ID token's claims are set
+// The Actions v2 target that asks beabee for extra token claims (Site
+// Login), bound to the function that runs before the ID token's claims are set
 const CLAIMS_TARGET_NAME = 'beabee-claims';
 const CLAIMS_FUNCTION = 'preuserinfo';
+const CLAIMS_ENDPOINT = `${config.webhookUrl}/webhook/zitadel/claims`;
 
 interface ZitadelTarget {
   id: string;
@@ -209,8 +210,8 @@ export class ZitadelProvider implements IdpProvider {
         `Skipping OIDC client ${settings.oidcClient.clientId}, registered at ${settings.oidcClient.issuer}`
       );
     }
-    if (settings.claimsTarget) {
-      await this.updateClaimsTarget(settings.claimsTarget);
+    if (config.siteLogin) {
+      await this.updateClaimsTarget();
     }
   }
 
@@ -220,7 +221,7 @@ export class ZitadelProvider implements IdpProvider {
    * must not block a login when beabee is down, so errors are not fatal.
    * The key Zitadel signs its calls with is kept for the webhook to verify.
    */
-  private async updateClaimsTarget(target: IdpClaimsTarget): Promise<void> {
+  private async updateClaimsTarget(): Promise<void> {
     const targets = await this.request<{ result?: ZitadelTarget[] }>(
       'POST',
       '/v2/actions/targets/search',
@@ -229,13 +230,13 @@ export class ZitadelProvider implements IdpProvider {
     let existing = targets?.result?.find((t) => t.name === CLAIMS_TARGET_NAME);
     let signingKey = undefined;
     if (!existing) {
-      log.info(`Create claims target ${target.endpoint}`);
+      log.info(`Create claims target ${CLAIMS_ENDPOINT}`);
       const created = await this.request<{ id: string; signingKey: string }>(
         'POST',
         '/v2/actions/targets',
         {
           name: CLAIMS_TARGET_NAME,
-          endpoint: target.endpoint,
+          endpoint: CLAIMS_ENDPOINT,
           timeout: '5s',
           restCall: { interruptOnError: false },
         }
@@ -243,12 +244,16 @@ export class ZitadelProvider implements IdpProvider {
       if (!created?.id || !created.signingKey) {
         throw new Error('Zitadel did not return the new claims target');
       }
-      existing = { id: created.id, name: CLAIMS_TARGET_NAME, ...target };
+      existing = {
+        id: created.id,
+        name: CLAIMS_TARGET_NAME,
+        endpoint: CLAIMS_ENDPOINT,
+      };
       signingKey = created.signingKey;
-    } else if (existing.endpoint !== target.endpoint) {
-      log.info(`Update claims target to ${target.endpoint}`);
+    } else if (existing.endpoint !== CLAIMS_ENDPOINT) {
+      log.info(`Update claims target to ${CLAIMS_ENDPOINT}`);
       await this.request('POST', `/v2/actions/targets/${existing.id}`, {
-        endpoint: target.endpoint,
+        endpoint: CLAIMS_ENDPOINT,
         restCall: { interruptOnError: false },
       });
     }

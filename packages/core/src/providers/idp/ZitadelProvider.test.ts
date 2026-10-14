@@ -8,6 +8,13 @@ vi.mock('#logging', () => ({
 }));
 const options = vi.hoisted(() => ({ getText: vi.fn(() => ''), set: vi.fn() }));
 vi.mock('#services/OptionsService', () => ({ optionsService: options }));
+// siteLogin is switched on per test: with it the setup also registers the
+// claims target
+const config = vi.hoisted(() => ({
+  webhookUrl: 'https://beabee.example.org',
+  siteLogin: undefined as object | undefined,
+}));
+vi.mock('#config/config', () => ({ default: config }));
 
 const { ZitadelProvider } = await import('./ZitadelProvider');
 
@@ -27,6 +34,7 @@ function mockFetch(...responses: Response[]): ReturnType<typeof vi.fn> {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  config.siteLogin = undefined;
 });
 
 // Only the provider's own logic is tested here; the Zitadel API contract is
@@ -129,9 +137,7 @@ describe('ZitadelProvider', () => {
       expect(fetch).toHaveBeenCalledTimes(3);
     });
 
-    const claimsTarget = {
-      endpoint: 'https://beabee.example.org/webhook/zitadel/claims',
-    };
+    const claimsEndpoint = 'https://beabee.example.org/webhook/zitadel/claims';
 
     it('registers beabee as claims target and binds it to the token function', async () => {
       const fetch = mockFetch(
@@ -141,8 +147,9 @@ describe('ZitadelProvider', () => {
         json({})
       );
 
+      config.siteLogin = {};
       const provider = new ZitadelProvider(settings);
-      await provider.setup({ defaultRedirectUri: 'https://x', claimsTarget });
+      await provider.setup({ defaultRedirectUri: 'https://x' });
 
       expect(options.set).toHaveBeenCalledWith(
         'zitadel-claims-signing-key',
@@ -152,7 +159,7 @@ describe('ZitadelProvider', () => {
       expect(createUrl).toBe(settings.url + '/v2/actions/targets');
       expect(JSON.parse(create.body)).toEqual({
         name: 'beabee-claims',
-        endpoint: claimsTarget.endpoint,
+        endpoint: claimsEndpoint,
         timeout: '5s',
         restCall: { interruptOnError: false },
       });
@@ -173,7 +180,7 @@ describe('ZitadelProvider', () => {
             {
               id: 'target-1',
               name: 'beabee-claims',
-              endpoint: claimsTarget.endpoint,
+              endpoint: claimsEndpoint,
             },
           ],
         }),
@@ -181,8 +188,9 @@ describe('ZitadelProvider', () => {
         json({})
       );
 
+      config.siteLogin = {};
       const provider = new ZitadelProvider(settings);
-      await provider.setup({ defaultRedirectUri: 'https://x', claimsTarget });
+      await provider.setup({ defaultRedirectUri: 'https://x' });
 
       expect(options.set).toHaveBeenCalledWith(
         'zitadel-claims-signing-key',

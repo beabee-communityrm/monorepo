@@ -60,15 +60,6 @@ export interface IdpSetupSettings {
    * registration in line with beabee's routes when the client is on this IdP.
    */
   oidcClient?: IdpOidcClient;
-  /**
-   * The endpoint the IdP calls before it builds a token, to get the claims
-   * beabee adds (Site Login role)
-   */
-  claimsTarget?: IdpClaimsTarget;
-}
-
-export interface IdpClaimsTarget {
-  endpoint: string;
 }
 
 export interface IdpOidcClient {

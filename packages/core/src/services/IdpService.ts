@@ -105,11 +105,6 @@ class IdpService {
             postLogoutRedirectUris: [POST_LOGOUT_REDIRECT_URI],
           },
         }),
-        ...(config.siteLogin && {
-          claimsTarget: {
-            endpoint: `${config.webhookUrl}/webhook/zitadel/claims`,
-          },
-        }),
       });
     } catch (err) {
       log.error('Failed to set up IdP', err);
