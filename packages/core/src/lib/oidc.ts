@@ -8,6 +8,10 @@ import type { OidcLoginState } from '#type/index';
 
 const log = mainLogger.child({ app: 'oidc' });
 
+// Registered at the IdP for this instance, so fixed to its public URL
+const REDIRECT_URI = `${config.audience}/api/1.0/auth/callback`;
+const POST_LOGOUT_REDIRECT_URI = `${config.audience}/api/1.0/auth/logout/callback`;
+
 /**
  * Whether members log in at the identity provider (OIDC Login) instead of
  * with a beabee password (Local Login)
@@ -73,7 +77,7 @@ export async function startOidcLogin(
   const nonce = oidc.randomNonce();
 
   const url = oidc.buildAuthorizationUrl(oidcConfig, {
-    redirect_uri: settings.redirectUri,
+    redirect_uri: REDIRECT_URI,
     scope: settings.scopes,
     code_challenge: codeChallenge,
     code_challenge_method: 'S256',
@@ -102,7 +106,7 @@ export async function completeOidcLogin(
   const oidcConfig = await getOidcConfig();
 
   // The redirect URI is registered at the IdP and must match exactly
-  const callbackUrl = new URL(getSettings().redirectUri);
+  const callbackUrl = new URL(REDIRECT_URI);
   callbackUrl.search = callbackSearch;
 
   let tokens: oidc.TokenEndpointResponse & oidc.TokenEndpointResponseHelpers;
@@ -133,12 +137,17 @@ export async function completeOidcLogin(
  * the post-logout redirect URI if the IdP has no end session endpoint or is
  * unreachable.
  * @param idToken The ID token from login, used as logout hint
- * @param postLogoutRedirectUri Where the IdP sends the browser afterwards;
- * must be registered at the IdP. Defaults to the configured one.
+ * @param opts.postLogoutRedirectUri Where the IdP sends the browser
+ * afterwards; must be registered at the IdP. Defaults to the logout callback.
+ * @param opts.state Carried through the IdP unchanged and appended to the
+ * post-logout redirect URI as ?state=
  */
 export async function getOidcLogoutUrl(
   idToken?: string,
-  postLogoutRedirectUri = getSettings().postLogoutRedirectUri
+  {
+    postLogoutRedirectUri = POST_LOGOUT_REDIRECT_URI,
+    state,
+  }: { postLogoutRedirectUri?: string; state?: string | undefined } = {}
 ): Promise<string> {
   try {
     const oidcConfig = await getOidcConfig();
@@ -146,10 +155,14 @@ export async function getOidcLogoutUrl(
       return oidc.buildEndSessionUrl(oidcConfig, {
         post_logout_redirect_uri: postLogoutRedirectUri,
         ...(idToken && { id_token_hint: idToken }),
+        ...(state && { state }),
       }).href;
     }
   } catch (err) {
     log.error('Failed to build OIDC logout URL', err);
   }
-  return postLogoutRedirectUri;
+  if (!state) return postLogoutRedirectUri;
+  const fallback = new URL(postLogoutRedirectUri);
+  fallback.searchParams.set('state', state);
+  return fallback.href;
 }

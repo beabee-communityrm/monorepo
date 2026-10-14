@@ -220,8 +220,6 @@ export interface OidcLoginConfig {
     clientId: string; // BEABEE_LOGIN_SETTINGS_CLIENTID - OIDC client ID
     clientSecret: string; // BEABEE_LOGIN_SETTINGS_CLIENTSECRET - OIDC client secret (empty: public client with PKCE only)
     scopes: string; // BEABEE_LOGIN_SETTINGS_SCOPES - Requested scopes (default: openid profile email)
-    redirectUri: string; // BEABEE_LOGIN_SETTINGS_REDIRECTURI - OAuth callback URL (default: <audience>/api/1.0/auth/callback)
-    postLogoutRedirectUri: string; // BEABEE_LOGIN_SETTINGS_POSTLOGOUTREDIRECTURI - Where the IdP sends members after logout (default: audience)
   };
 }
 
@@ -469,14 +467,6 @@ export const config = {
               'BEABEE_LOGIN_SETTINGS_SCOPES',
               'openid profile email'
             ), // Requested scopes
-            redirectUri: env.s(
-              'BEABEE_LOGIN_SETTINGS_REDIRECTURI',
-              env.s('BEABEE_AUDIENCE') + '/api/1.0/auth/callback'
-            ), // OAuth callback URL
-            postLogoutRedirectUri: env.s(
-              'BEABEE_LOGIN_SETTINGS_POSTLOGOUTREDIRECTURI',
-              env.s('BEABEE_AUDIENCE')
-            ), // Where the IdP sends members after logout
           }
         : {},
   } as LoginConfig,

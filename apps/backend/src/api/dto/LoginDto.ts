@@ -37,6 +37,13 @@ export class NextOptsDto {
   next?: string;
 }
 
+export class LogoutCallbackDto {
+  /** The next from /auth/logout, carried through the identity provider */
+  @IsOptional()
+  @IsNextUrl()
+  state?: string;
+}
+
 export class OidcLoginOptsDto extends NextOptsDto {
   /** What a logged-in member does at the identity provider inside this login */
   @IsOptional()
