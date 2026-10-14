@@ -1,3 +1,5 @@
+import type { ContentGeneralData } from '@beabee/beabee-common';
+
 import config from '#config/config';
 import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
@@ -6,6 +8,7 @@ import {
   NoneProvider,
   ZitadelProvider,
 } from '#providers/idp/index';
+import { fontService } from '#services/FontService';
 import { imageService } from '#services/ImageService';
 import { optionsService } from '#services/OptionsService';
 import type { IdpLoginAction, IdpProvider } from '#type/index';
@@ -112,16 +115,34 @@ class IdpService {
   }
 
   /**
-   * Push the current theme and logo to the IdP's login pages
+   * The body font's uploaded file, the theme's font path parsed as strictly
+   * as the logo's. Fonts without a file leave the IdP's default in place.
+   */
+  private async getFont(
+    theme: ContentGeneralData['theme']
+  ): Promise<Blob | undefined> {
+    const id = theme.fonts?.bodyFont?.path.match(
+      /^fonts\/([\w-]+\.woff2)$/
+    )?.[1];
+    if (!id) return undefined;
+    const { buffer, contentType } = await fontService.getBuffer(id);
+    return new Blob([buffer], { type: contentType });
+  }
+
+  /**
+   * Push the current theme, logo and font to the IdP's login pages
    * @returns Whether the branding was applied
    */
   async updateBranding(): Promise<boolean> {
     if (!this.isEnabled) return false;
     log.info('Update IdP branding');
     try {
+      const theme: ContentGeneralData['theme'] =
+        optionsService.getJSON('theme');
       await this.provider.updateBranding({
-        theme: optionsService.getJSON('theme'),
+        theme,
         logo: await this.getLogo(),
+        font: await this.getFont(theme),
       });
       return true;
     } catch (err) {

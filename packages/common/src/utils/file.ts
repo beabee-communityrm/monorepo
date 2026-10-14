@@ -3,6 +3,7 @@ import {
   ALLOWED_AUDIO_MIME_TYPES,
   ALLOWED_DOCUMENT_EXTENSIONS,
   ALLOWED_DOCUMENT_MIME_TYPES,
+  ALLOWED_FONT_MIME_TYPES,
   ALLOWED_IMAGE_EXTENSIONS,
   ALLOWED_IMAGE_MIME_TYPES,
 } from '../constants.js';
@@ -27,6 +28,17 @@ export const isSupportedDocumentType = (mimetype?: string): boolean => {
 export const isSupportedDocumentExtension = (extension?: string): boolean => {
   if (!extension) return false;
   return ALLOWED_DOCUMENT_EXTENSIONS.includes(extension.toLowerCase().trim());
+};
+
+/**
+ * Check if a MIME type is a supported theme font type.
+ * Example: "font/woff2"
+ * @param mimetype MIME type to check
+ * @returns True if it's a supported font type
+ */
+export const isSupportedFontType = (mimetype?: string): boolean => {
+  if (!mimetype) return false;
+  return ALLOWED_FONT_MIME_TYPES.includes(mimetype.toLowerCase().trim());
 };
 
 /**

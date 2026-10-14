@@ -90,9 +90,11 @@ CLI once no longer needed.
 **Branding.** The instance's label policy is set from the beabee theme: the
 main, body, danger and white colours map to Zitadel's primary, font, warn and
 background colours (light and dark alike, theme mode forced light) plus the
-logo as logo and icon. Pushed when the theme or logo is saved and by the
-CLI. Fonts and the splash background image are not synced for now (Zitadel
-has one font file per instance and no per-instance background before v5).
+logo as logo and icon and the body font as the instance's font file, read
+from the font upload the theme stores. Pushed when the theme or logo is
+saved and by the CLI. The splash background comes from the login stylesheet
+instead, see [ADR-0006](./adr/0006-inject-a-stylesheet-into-the-idp-login-pages.md);
+the title font is not themed.
 
 ## Configuration
 
@@ -185,6 +187,5 @@ branch and is retargeted to `main` as its base merges.
 ## Deliberately out of scope
 
 Password hash import; a cutover mail-out; offering both login methods at
-once; export for tenants leaving the hosting; font and background sync;
-Keycloak branding; the legacy frontend; enforcing multi-factor
-authentication.
+once; export for tenants leaving the hosting; Keycloak branding; the legacy
+frontend; enforcing multi-factor authentication.

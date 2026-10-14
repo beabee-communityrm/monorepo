@@ -9,6 +9,7 @@ import type { BaseClientOptions } from '../types/index.js';
 import { ApiError, UnsupportedFileTypeError } from '../utils/index.js';
 import { UploadAudioClient } from './upload-audio.client.js';
 import { UploadDocumentClient } from './upload-document.client.js';
+import { UploadFontClient } from './upload-font.client.js';
 import { UploadImageClient } from './upload-image.client.js';
 
 /**
@@ -19,6 +20,7 @@ export class UploadClient {
   private readonly imageClient: UploadImageClient;
   private readonly documentClient: UploadDocumentClient;
   private readonly audioClient: UploadAudioClient;
+  private readonly fontClient: UploadFontClient;
 
   get image() {
     return this.imageClient;
@@ -32,6 +34,10 @@ export class UploadClient {
     return this.audioClient;
   }
 
+  get font() {
+    return this.fontClient;
+  }
+
   /**
    * Creates a new upload client
    * @param options - The client options
@@ -40,6 +46,7 @@ export class UploadClient {
     this.imageClient = new UploadImageClient(options);
     this.documentClient = new UploadDocumentClient(options);
     this.audioClient = new UploadAudioClient(options);
+    this.fontClient = new UploadFontClient(options);
   }
 
   /**

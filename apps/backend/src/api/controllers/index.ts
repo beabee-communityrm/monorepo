@@ -12,6 +12,7 @@ export * from './ContentController.js';
 export * from './DevController.js';
 export * from './DocumentController.js';
 export * from './EmailController.js';
+export * from './FontController.js';
 export * from './HealthController.js';
 export * from './ImageController.js';
 export * from './IntegrationsController.js';
