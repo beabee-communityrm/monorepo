@@ -1,4 +1,5 @@
 import config from '#config/config';
+import { LOGIN_URI, POST_LOGOUT_REDIRECT_URI, REDIRECT_URI } from '#lib/oidc';
 import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
 import {
@@ -85,7 +86,15 @@ class IdpService {
     log.info('Set up IdP');
     try {
       await this.provider.setup({
-        defaultRedirectUri: `${config.audience}/api/1.0/auth/login`,
+        defaultRedirectUri: LOGIN_URI,
+        ...(config.login.provider === 'oidc' && {
+          oidcClient: {
+            issuer: config.login.settings.issuer,
+            clientId: config.login.settings.clientId,
+            redirectUris: [REDIRECT_URI],
+            postLogoutRedirectUris: [POST_LOGOUT_REDIRECT_URI],
+          },
+        }),
       });
     } catch (err) {
       log.error('Failed to set up IdP', err);

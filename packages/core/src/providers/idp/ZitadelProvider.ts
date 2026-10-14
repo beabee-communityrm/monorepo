@@ -5,6 +5,7 @@ import type { Contact } from '#models/index';
 import type {
   IdpBranding,
   IdpLoginAction,
+  IdpOidcClient,
   IdpProvider,
   IdpSetupSettings,
 } from '#type/index';
@@ -21,6 +22,24 @@ class ZitadelApiError extends Error {
       this.code = undefined;
     }
   }
+}
+
+interface ZitadelOidcApp {
+  id: string;
+  oidcConfig: {
+    clientId: string;
+    redirectUris?: string[];
+    postLogoutRedirectUris?: string[];
+  } & Record<string, unknown>;
+}
+
+/** Any app in a project; only OIDC apps carry an oidcConfig */
+type ZitadelApp = Pick<ZitadelOidcApp, 'id'> & Partial<ZitadelOidcApp>;
+
+function sameSet(a: string[] = [], b: string[] = []): boolean {
+  const sa = [...a].sort();
+  const sb = [...b].sort();
+  return sa.length === sb.length && sa.every((v, i) => v === sb[i]);
 }
 
 // Login v2 pages that work on the member's existing login session
@@ -154,6 +173,64 @@ export class ZitadelProvider implements IdpProvider {
     await this.updatePolicy('/admin/v1/policies/notification', {
       passwordChange: false,
     });
+    // A virtual instance's issuer is its URL, so a different issuer means
+    // the client is registered elsewhere
+    if (settings.oidcClient?.issuer === this.settings.url) {
+      await this.updateOidcClient(settings.oidcClient);
+    }
+  }
+
+  /** The app registered with this client ID, across the organisation's projects */
+  private async findOidcApp(
+    clientId: string
+  ): Promise<{ projectId: string; app: ZitadelOidcApp } | undefined> {
+    const projects = await this.request<{ result?: { id: string }[] }>(
+      'POST',
+      '/management/v1/projects/_search',
+      {}
+    );
+    for (const { id: projectId } of projects?.result || []) {
+      const apps = await this.request<{ result?: ZitadelApp[] }>(
+        'POST',
+        `/management/v1/projects/${projectId}/apps/_search`,
+        {}
+      );
+      const app = apps?.result?.find(
+        (a): a is ZitadelOidcApp => a.oidcConfig?.clientId === clientId
+      );
+      if (app) return { projectId, app };
+    }
+    return undefined;
+  }
+
+  /**
+   * Keep the client's redirect and post-logout URI lists in line with
+   * beabee's routes. Only a differing list is written, as Zitadel rejects a
+   * no-op update.
+   */
+  private async updateOidcClient(client: IdpOidcClient): Promise<void> {
+    const found = await this.findOidcApp(client.clientId);
+    if (!found) {
+      throw new Error(`OIDC client ${client.clientId} not found at the IdP`);
+    }
+    const current = found.app.oidcConfig;
+    if (
+      sameSet(current.redirectUris, client.redirectUris) &&
+      sameSet(current.postLogoutRedirectUris, client.postLogoutRedirectUris)
+    ) {
+      return;
+    }
+    // The update replaces the whole config, so the current one is echoed
+    // back; Zitadel discards the read-only fields it contains
+    await this.request(
+      'PUT',
+      `/management/v1/projects/${found.projectId}/apps/${found.app.id}/oidc_config`,
+      {
+        ...current,
+        redirectUris: client.redirectUris,
+        postLogoutRedirectUris: client.postLogoutRedirectUris,
+      }
+    );
   }
 
   async updateBranding(branding: IdpBranding): Promise<void> {

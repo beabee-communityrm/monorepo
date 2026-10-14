@@ -44,6 +44,98 @@ describe('ZitadelProvider', () => {
     });
   });
 
+  describe('setup', () => {
+    const json = (body: object) => new Response(JSON.stringify(body));
+    const oidcClient = {
+      issuer: settings.url,
+      clientId: 'client-1',
+      redirectUris: ['https://beabee.example.org/api/1.0/auth/callback'],
+      postLogoutRedirectUris: [
+        'https://beabee.example.org/api/1.0/auth/logout/callback',
+      ],
+    };
+    // Fresh responses per test, a body can only be read once
+    const policies = () => [json({ policy: {} }), json({}), json({})];
+    const app = (oidcConfig: object) =>
+      json({ result: [{ id: 'app-1', oidcConfig }] });
+
+    it('rewrites the client URI lists when they differ', async () => {
+      const fetch = mockFetch(
+        ...policies(),
+        json({ result: [{ id: 'project-1' }] }),
+        app({
+          clientId: 'client-1',
+          redirectUris: ['https://beabee.example.org/api/1.0/auth/callback'],
+          postLogoutRedirectUris: ['https://beabee.example.org'],
+          appType: 'OIDC_APP_TYPE_WEB',
+          version: 'OIDC_VERSION_1_0',
+        }),
+        json({})
+      );
+
+      const provider = new ZitadelProvider(settings);
+      await provider.setup({ defaultRedirectUri: 'https://x', oidcClient });
+
+      const [url, init] = fetch.mock.calls[5];
+      expect(url).toBe(
+        settings.url +
+          '/management/v1/projects/project-1/apps/app-1/oidc_config'
+      );
+      expect(init.method).toBe('PUT');
+      expect(JSON.parse(init.body)).toEqual({
+        clientId: 'client-1',
+        appType: 'OIDC_APP_TYPE_WEB',
+        version: 'OIDC_VERSION_1_0',
+        redirectUris: oidcClient.redirectUris,
+        postLogoutRedirectUris: oidcClient.postLogoutRedirectUris,
+      });
+    });
+
+    it('leaves a client alone whose lists already match', async () => {
+      const fetch = mockFetch(
+        ...policies(),
+        json({ result: [{ id: 'project-1' }] }),
+        app({
+          clientId: 'client-1',
+          redirectUris: oidcClient.redirectUris,
+          postLogoutRedirectUris: [
+            ...oidcClient.postLogoutRedirectUris,
+          ].reverse(),
+        })
+      );
+
+      const provider = new ZitadelProvider(settings);
+      await provider.setup({ defaultRedirectUri: 'https://x', oidcClient });
+
+      expect(fetch).toHaveBeenCalledTimes(5);
+    });
+
+    it('skips a client registered at another issuer', async () => {
+      const fetch = mockFetch(...policies());
+
+      const provider = new ZitadelProvider(settings);
+      await provider.setup({
+        defaultRedirectUri: 'https://x',
+        oidcClient: { ...oidcClient, issuer: 'https://other.example.org' },
+      });
+
+      expect(fetch).toHaveBeenCalledTimes(3);
+    });
+
+    it('fails when the client is not found', async () => {
+      mockFetch(
+        ...policies(),
+        json({ result: [{ id: 'project-1' }] }),
+        app({ clientId: 'someone-else' })
+      );
+
+      const provider = new ZitadelProvider(settings);
+      await expect(
+        provider.setup({ defaultRedirectUri: 'https://x', oidcClient })
+      ).rejects.toThrow('OIDC client client-1 not found');
+    });
+  });
+
   it('accepts responses without a body', async () => {
     mockFetch(new Response(null, { status: 200 }));
 
