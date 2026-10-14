@@ -57,6 +57,9 @@ export default {
   'stripe-membership-product-id': '',
   'stripe-webhook-secret': '',
 
+  /** Signing key of Zitadel's token claims target, set by `setup integrations idp` */
+  'zitadel-claims-signing-key': '',
+
   /**
    * Show one-time contribution form to logged in users
    * TODO: frontend only option, move to content

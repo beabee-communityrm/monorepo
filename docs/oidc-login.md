@@ -119,7 +119,14 @@ website's edge sends the browser to `/api/1.0/auth/refresh?next=…`, one
 gone, clears it; either way the browser continues to `next`. A website logout
 link is `/api/1.0/auth/logout?next=<absolute URL>`; the member returns to
 that page via the logout callback, so the IdP needs only the one registered
-post-logout redirect URI.
+post-logout redirect URI. The website's edge reads a `role` claim from the
+token: `backend-cli setup integrations idp` registers the webhook app's
+`/webhook/zitadel/claims` as an Actions v2 target on the `preuserinfo`
+function and stores its signing key in the `zitadel-claims-signing-key` option;
+the webhook answers with the contact's highest active role other than the
+admin roles (`member` today), found by IdP subject, or no claim. The target
+does not interrupt token issuance, so a beabee outage costs the role, not
+the login.
 
 IdP-side setup that beabee owns and applies idempotently via
 `backend-cli setup integrations idp`: `defaultRedirectUri` (beabee's login endpoint, the
