@@ -75,6 +75,7 @@ import {
   MembershipStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
+import { PaymentRequiresActionError } from '@beabee/client';
 import { AppHeading, AppNotification, formatLocale } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -86,6 +87,7 @@ import AppContribution from '#components/contribution/AppContribution.vue';
 import PaymentFlowForm from '#components/forms/PaymentFlowForm.vue';
 import { currentUser } from '#store/currentUser';
 import { client } from '#utils/api';
+import { handlePaymentNextAction } from '#utils/payment';
 
 import type { ContributionContent } from '../../../../type/contribution';
 import ProrateContribution from './ProrateContribution.vue';
@@ -151,12 +153,25 @@ const buttonText = computed(() =>
 
 async function handleStartFlow(completeUrl: string) {
   if (isAutoActiveMember.value) {
-    contribution.value = await client.contact.contribution.update({
-      amount: newContribution.amount,
-      period: newContribution.period,
-      payFee: newContribution.payFee,
-      prorate: newContribution.prorate,
-    });
+    try {
+      contribution.value = await client.contact.contribution.update({
+        amount: newContribution.amount,
+        period: newContribution.period,
+        payFee: newContribution.payFee,
+        prorate: newContribution.prorate,
+      });
+    } catch (err) {
+      if (!(err instanceof PaymentRequiresActionError)) {
+        throw err;
+      }
+      // The proration payment needs authentication, Stripe applies the
+      // new amount once it succeeds
+      await handlePaymentNextAction(
+        err.clientSecret,
+        props.paymentContent.stripePublicKey
+      );
+      contribution.value = await client.contact.contribution.get();
+    }
 
     addNotification({
       variant: 'success',

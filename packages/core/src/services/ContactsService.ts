@@ -402,7 +402,10 @@ class ContactsService {
    */
   async cancelContactContribution(
     contact: Contact,
-    email: 'cancelled-contribution' | 'cancelled-contribution-no-survey'
+    email:
+      | 'cancelled-contribution'
+      | 'cancelled-contribution-no-survey'
+      | 'cancelled-contribution-payment-failed'
   ): Promise<void> {
     log.info('Cancel contribution for ' + contact.id);
     await PaymentService.cancelContribution(contact);
