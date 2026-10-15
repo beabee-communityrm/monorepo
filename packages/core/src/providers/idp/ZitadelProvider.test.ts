@@ -142,7 +142,7 @@ describe('ZitadelProvider', () => {
     it('registers beabee as claims target and binds it to the token function', async () => {
       const fetch = mockFetch(
         ...policies(),
-        json({ result: [] }),
+        json({ targets: [] }),
         json({ id: 'target-1', signingKey: 'key-1' }),
         json({})
       );
@@ -176,15 +176,15 @@ describe('ZitadelProvider', () => {
       const fetch = mockFetch(
         ...policies(),
         json({
-          result: [
+          targets: [
             {
               id: 'target-1',
               name: 'beabee-claims',
               endpoint: claimsEndpoint,
+              signingKey: 'key-1',
             },
           ],
         }),
-        json({ target: { id: 'target-1', signingKey: 'key-1' } }),
         json({})
       );
 
@@ -197,9 +197,9 @@ describe('ZitadelProvider', () => {
         'key-1'
       );
       expect(fetch.mock.calls[4][0]).toBe(
-        settings.url + '/v2/actions/targets/target-1'
+        settings.url + '/v2/actions/executions'
       );
-      expect(fetch).toHaveBeenCalledTimes(6);
+      expect(fetch).toHaveBeenCalledTimes(5);
     });
 
     it('fails when the client is not found', async () => {
