@@ -352,7 +352,7 @@ export class StripeWebhookEventHandler {
     if (contribution) {
       log.info('Invoice marked uncollectible by Stripe');
       await ActivityService.addEvent({
-        eventType: ActivityEventType.ContactPaymentCancelled,
+        eventType: ActivityEventType.ContactPaymentFailed,
         targetId: contribution?.contact.id || null,
         metadata: null,
       });
