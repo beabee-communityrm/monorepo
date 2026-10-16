@@ -29,8 +29,9 @@ export class GetActivityEventDto {
   @IsEnum(ActivityEventType)
   eventType!: ActivityEventType;
 
+  @IsOptional()
   @IsEnum(ActivityActorType)
-  actorType!: ActivityActorType;
+  actorType!: ActivityActorType | null;
 
   @IsOptional()
   @IsString()

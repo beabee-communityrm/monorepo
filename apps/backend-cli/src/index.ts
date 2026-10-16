@@ -11,6 +11,7 @@ import {
   apiKeyCommand,
   databaseCommand,
   emailCommand,
+  eventCommand,
   healthCommand,
   imageCommand,
   migrateUploadsCommand,
@@ -46,6 +47,7 @@ actorContext.run(actor, () =>
     .command(apiKeyCommand)
     .command(databaseCommand)
     .command(emailCommand)
+    .command(eventCommand)
     .command(userCommand)
     .command(setupCommand)
     .command(healthCommand)

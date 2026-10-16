@@ -351,6 +351,7 @@ export class StripeWebhookEventHandler {
     const contribution = await this.getContributionFromInvoice(invoice);
     if (contribution) {
       log.info('Invoice marked uncollectible by Stripe');
+      // Uncollectible payments are stored as failed (payment.status = failed). Emit an PaymentFailed event
       await ActivityService.addEvent({
         eventType: ActivityEventType.ContactPaymentFailed,
         targetId: contribution?.contact.id || null,

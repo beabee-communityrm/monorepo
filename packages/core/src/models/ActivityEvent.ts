@@ -21,8 +21,8 @@ export class ActivityEvent<T extends ActivityEventType = ActivityEventType> {
   @Column({ type: 'uuid', nullable: true })
   targetId!: string | null;
 
-  @Column({ type: String })
-  actorType!: ActivityActorType;
+  @Column({ type: String, nullable: true })
+  actorType!: ActivityActorType | null;
 
   @Column({ type: 'uuid', nullable: true })
   actorId!: string | null;
