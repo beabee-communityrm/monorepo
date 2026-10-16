@@ -203,7 +203,6 @@ class PaymentService {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactContributionUpdated,
       targetId: contact.id,
-      // The provider sets the updated subscription on the contribution
       metadata: { ...ret, subscriptionId: contribution.subscriptionId! },
     });
 
@@ -253,6 +252,7 @@ class PaymentService {
     // Keep subscription ID for activity feed event, the provider clears it
     const subscriptionId = (await this.getContribution(contact)).subscriptionId;
     await this.provider(contact, (p) => p.cancelContribution(keepMandate));
+
     await getRepository(ContactContribution).update(
       { contactId: contact.id },
       { cancelledAt: new Date() }

@@ -1,7 +1,10 @@
 import type { LoginAction } from '@beabee/beabee-common';
 
+import config from '#config/config';
 import type { ZitadelIdpConfig } from '#config/config';
+import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
+import { optionsService } from '#services/OptionsService';
 import type {
   IdpBranding,
   IdpLoginAction,
@@ -9,6 +12,21 @@ import type {
   IdpProvider,
   IdpSetupSettings,
 } from '#type/index';
+
+const log = mainLogger.child({ app: 'zitadel-idp-provider' });
+
+// The Actions v2 target that asks beabee for extra token claims (Site
+// Login), bound to the function that runs before the ID token's claims are set
+const CLAIMS_TARGET_NAME = 'beabee-claims';
+const CLAIMS_FUNCTION = 'preuserinfo';
+const CLAIMS_ENDPOINT = `${config.webhookUrl}/webhook/zitadel/claims`;
+
+interface ZitadelTarget {
+  id: string;
+  name: string;
+  endpoint: string;
+  signingKey?: string;
+}
 
 class ZitadelApiError extends Error {
   /** gRPC status code from the response body, 9 = FAILED_PRECONDITION */
@@ -101,6 +119,7 @@ export class ZitadelProvider implements IdpProvider {
   }
 
   async createContact(contact: Contact): Promise<string> {
+    log.info(`Create user for ${contact.email}`);
     const resp = await this.request<{ userId: string }>(
       'POST',
       '/v2/users/human',
@@ -117,28 +136,37 @@ export class ZitadelProvider implements IdpProvider {
     contact: Contact,
     updates: Partial<Contact>
   ): Promise<void> {
-    if (updates.email || updates.firstname || updates.lastname) {
-      await this.request(
-        'PUT',
-        `/v2/users/human/${subject}`,
-        this.humanUser(contact)
+    if (!(updates.email || updates.firstname || updates.lastname)) {
+      log.info(
+        `Ignoring update for user ${subject}, no account fields changed`
       );
+      return;
     }
+    log.info(`Update user ${subject}`);
+    await this.request(
+      'PUT',
+      `/v2/users/human/${subject}`,
+      this.humanUser(contact)
+    );
   }
 
   async permanentlyDeleteContact(subject: string): Promise<void> {
+    log.info(`Delete user ${subject}`);
     await this.request('DELETE', `/v2/users/${subject}`);
   }
 
-  // Zitadel rejects a policy update that changes nothing with a precondition
+  // Zitadel rejects an update that changes nothing with a precondition
   // failure whose message is localised, but setup must be re-runnable
-  private async updatePolicy(path: string, body: object): Promise<void> {
+  private async put(path: string, body: object): Promise<void> {
+    const name = path.split('/').pop();
+    log.info(`Update ${name} policy`);
     try {
       await this.request('PUT', path, body);
     } catch (err) {
       if (!(err instanceof ZitadelApiError && err.code === 9)) {
         throw err;
       }
+      log.info(`${name} policy unchanged`);
     }
   }
 
@@ -165,19 +193,82 @@ export class ZitadelProvider implements IdpProvider {
     if (!resp?.policy) {
       throw new Error('Zitadel did not return the login policy');
     }
-    await this.updatePolicy('/admin/v1/policies/login', {
+    await this.put('/admin/v1/policies/login', {
       ...resp.policy,
       defaultRedirectUri: settings.defaultRedirectUri,
       ignoreUnknownUsernames: true,
     });
-    await this.updatePolicy('/admin/v1/policies/notification', {
+    await this.put('/admin/v1/policies/notification', {
       passwordChange: false,
     });
     // A virtual instance's issuer is its URL, so a different issuer means
     // the client is registered elsewhere
     if (settings.oidcClient?.issuer === this.settings.url) {
       await this.updateOidcClient(settings.oidcClient);
+    } else if (settings.oidcClient) {
+      log.info(
+        `Skipping OIDC client ${settings.oidcClient.clientId}, registered at ${settings.oidcClient.issuer}`
+      );
     }
+    // Only the website login reads the claim; without it the target would
+    // make Zitadel call beabee on every token for nothing
+    if (config.siteLogin) {
+      await this.updateClaimsTarget();
+    }
+  }
+
+  /**
+   * Register beabee as the target the IdP calls for extra token claims and
+   * bind it to the token function. The target is found by name; the call
+   * must not block a login when beabee is down, so errors are not fatal.
+   * The key Zitadel signs its calls with is kept for the webhook to verify.
+   */
+  private async updateClaimsTarget(): Promise<void> {
+    const targets = await this.request<{ targets?: ZitadelTarget[] }>(
+      'POST',
+      '/v2/actions/targets/search',
+      {}
+    );
+    let existing = targets?.targets?.find((t) => t.name === CLAIMS_TARGET_NAME);
+    if (!existing) {
+      log.info(`Create claims target ${CLAIMS_ENDPOINT}`);
+      const created = await this.request<{ id: string; signingKey: string }>(
+        'POST',
+        '/v2/actions/targets',
+        {
+          name: CLAIMS_TARGET_NAME,
+          endpoint: CLAIMS_ENDPOINT,
+          timeout: '5s',
+          restCall: { interruptOnError: false },
+        }
+      );
+      if (!created?.id || !created.signingKey) {
+        throw new Error('Zitadel did not return the new claims target');
+      }
+      existing = {
+        id: created.id,
+        name: CLAIMS_TARGET_NAME,
+        endpoint: CLAIMS_ENDPOINT,
+        signingKey: created.signingKey,
+      };
+    } else if (existing.endpoint !== CLAIMS_ENDPOINT) {
+      log.info(`Update claims target to ${CLAIMS_ENDPOINT}`);
+      await this.request('POST', `/v2/actions/targets/${existing.id}`, {
+        endpoint: CLAIMS_ENDPOINT,
+        restCall: { interruptOnError: false },
+      });
+    }
+    const { signingKey } = existing;
+    if (!signingKey) {
+      throw new Error('Zitadel did not return the claims target signing key');
+    }
+    if (signingKey !== optionsService.getText('zitadel-claims-signing-key')) {
+      await optionsService.set('zitadel-claims-signing-key', signingKey);
+    }
+    await this.put('/v2/actions/executions', {
+      condition: { function: { name: CLAIMS_FUNCTION } },
+      targets: [existing.id],
+    });
   }
 
   /** The app registered with this client ID, across the organisation's projects */
@@ -218,8 +309,12 @@ export class ZitadelProvider implements IdpProvider {
       sameSet(current.redirectUris, client.redirectUris) &&
       sameSet(current.postLogoutRedirectUris, client.postLogoutRedirectUris)
     ) {
+      log.info(`OIDC client ${client.clientId} URIs unchanged`);
       return;
     }
+    log.info(
+      `Update OIDC client ${client.clientId} URIs: redirect ${client.redirectUris}, post-logout ${client.postLogoutRedirectUris}`
+    );
     // The update replaces the whole config, so the current one is echoed
     // back; Zitadel discards the read-only fields it contains
     await this.request(
@@ -236,7 +331,7 @@ export class ZitadelProvider implements IdpProvider {
   async updateBranding(branding: IdpBranding): Promise<void> {
     const colors = branding.theme.colors || {};
     const primary = colors.main || colors.primary;
-    await this.updatePolicy('/admin/v1/policies/label', {
+    await this.put('/admin/v1/policies/label', {
       primaryColor: primary,
       primaryColorDark: primary,
       fontColor: colors.body,
@@ -250,6 +345,7 @@ export class ZitadelProvider implements IdpProvider {
       disableWatermark: true,
     });
     if (branding.logo) {
+      log.info('Upload logo');
       for (const asset of ['logo', 'logo/dark', 'icon', 'icon/dark']) {
         await this.uploadAsset(
           `/assets/v1/instance/policy/label/${asset}`,
@@ -258,6 +354,7 @@ export class ZitadelProvider implements IdpProvider {
       }
     }
     // Colours and assets stay in the preview until activated
+    log.info('Activate label policy');
     await this.request('POST', '/admin/v1/policies/label/_activate');
   }
 
@@ -315,6 +412,7 @@ export class ZitadelProvider implements IdpProvider {
   }
 
   private async createInviteCode(subject: string): Promise<string> {
+    log.info(`Create invite code for user ${subject}`);
     const resp = await this.request<{ inviteCode: string }>(
       'POST',
       `/v2/users/${subject}/invite_code`,

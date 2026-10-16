@@ -84,6 +84,7 @@ export class KeycloakProvider implements IdpProvider {
   }
 
   async createContact(contact: Contact): Promise<string> {
+    log.info(`Create user for ${contact.email}`);
     // Keycloak returns an empty 201 with the new user's URL in Location
     const resp = await this.request('POST', '/users', {
       username: contact.email,
@@ -105,24 +106,34 @@ export class KeycloakProvider implements IdpProvider {
     contact: Contact,
     updates: Partial<Contact>
   ): Promise<void> {
-    if (updates.email || updates.firstname || updates.lastname) {
-      await this.request('PUT', `/users/${subject}`, {
-        username: contact.email,
-        email: contact.email,
-        firstName: contact.firstname,
-        lastName: contact.lastname,
-        emailVerified: true,
-      });
+    if (!(updates.email || updates.firstname || updates.lastname)) {
+      log.info(
+        `Ignoring update for user ${subject}, no account fields changed`
+      );
+      return;
     }
+    log.info(`Update user ${subject}`);
+    await this.request('PUT', `/users/${subject}`, {
+      username: contact.email,
+      email: contact.email,
+      firstName: contact.firstname,
+      lastName: contact.lastname,
+      emailVerified: true,
+    });
   }
 
   async permanentlyDeleteContact(subject: string): Promise<void> {
+    log.info(`Delete user ${subject}`);
     await this.request('DELETE', `/users/${subject}`);
   }
 
   // Keycloak is the development IdP only; branding is not synced to it
-  async setup(): Promise<void> {}
-  async updateBranding(): Promise<void> {}
+  async setup(): Promise<void> {
+    log.info('Skipping setup, not supported for Keycloak');
+  }
+  async updateBranding(): Promise<void> {
+    log.info('Skipping branding, not supported for Keycloak');
+  }
   async resolveLoginUrl(
     authorizeUrl: string,
     action: IdpLoginAction
@@ -145,6 +156,7 @@ export class KeycloakProvider implements IdpProvider {
     authorizeUrl: string,
     subject: string
   ): Promise<string> {
+    log.info(`Create magic link for user ${subject}`);
     await this.request('PUT', `/users/${subject}`, {
       requiredActions: ['UPDATE_PASSWORD'],
     });
