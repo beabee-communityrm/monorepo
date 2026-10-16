@@ -9,6 +9,7 @@ import { backfillCallouts } from './backfill-callouts.js';
 import { backfillContacts } from './backfill-contacts.js';
 import { backfillEmails } from './backfill-emails.js';
 import { backfillPayments } from './backfill-payments.js';
+import { cleanupDuplicates } from './cleanup.js';
 
 const backfillers: Record<
   EventBackfillCategory,
@@ -21,7 +22,7 @@ const backfillers: Record<
 };
 /**
  * Backfill activity events for a single category, or for every category when
- * `all` is given.
+ * `all` is given, then remove duplicates of the backfilled events.
  */
 export const backfillEvents = async ({
   category,
@@ -34,5 +35,6 @@ export const backfillEvents = async ({
     for (const c of categories) {
       await backfillers[c](dryRun);
     }
+    await cleanupDuplicates(categories, dryRun);
   });
 };
