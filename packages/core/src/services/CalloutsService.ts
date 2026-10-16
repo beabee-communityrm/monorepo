@@ -412,8 +412,6 @@ class CalloutsService {
         targetId: callout.id,
         eventType: ActivityEventType.CalloutAnswered,
         metadata: { responseId: savedResponse.id },
-        actorType: ActivityActorType.User,
-        actorId: null,
       });
 
       return savedResponse.id;
