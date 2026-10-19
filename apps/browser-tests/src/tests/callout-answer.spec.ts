@@ -188,3 +188,42 @@ test(
     });
   },
 );
+
+test(
+  "Member answers a single-response CrowdNewsroom",
+  { tag: "@experimental" },
+  async ({ page, createCallout, createContact }) => {
+    const slug = await createCallout({
+      access: "anonymous",
+      responseMode: "single",
+    });
+    await createContact();
+
+    await test.step("Answer and submit", async () => {
+      await page.goto(`/crowdnewsroom/${slug}`);
+      await page.getByRole("link", { name: "Get started" }).click();
+      await answer(page, "Only answer");
+      await page.waitForURL(`**/crowdnewsroom/${slug}/thanks`);
+    });
+
+    await test.step("Details page offers no way to respond again", async () => {
+      await page.goto(`/crowdnewsroom/${slug}`);
+      await expect(answerRow(page)).toHaveText("Only answer");
+      for (const name of [
+        "Get started",
+        "Edit response",
+        "Add another response",
+      ]) {
+        await expect(page.getByRole("link", { name })).toBeHidden();
+      }
+    });
+
+    await test.step("Respond page shows the response instead of the form", async () => {
+      await page.goto(`/crowdnewsroom/${slug}/respond`);
+      await expect(answerRow(page)).toHaveText("Only answer");
+      await expect(
+        page.getByRole("textbox", { name: "Question" }),
+      ).toBeHidden();
+    });
+  },
+);
