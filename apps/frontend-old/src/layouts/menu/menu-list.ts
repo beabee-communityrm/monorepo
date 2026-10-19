@@ -4,6 +4,7 @@ import {
   faChartLine,
   faCog,
   faCreditCard,
+  faFileWaveform,
   faHandsHelping,
   faHouse,
   faSignHanging,
@@ -71,6 +72,13 @@ export const adminMenu = computed<MenuSection[]>(() => [
         href: '/admin/contacts',
         icon: faUsers,
         isActive: /^\/admin\/contacts.*/,
+        visible: canAdmin.value,
+      },
+      {
+        title: 'menu.activity',
+        href: '/admin/activity',
+        icon: faFileWaveform,
+        isActive: /^\/admin\/activity.*/,
         visible: canAdmin.value,
       },
       {

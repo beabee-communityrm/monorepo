@@ -177,6 +177,18 @@
     "yesRemove": "Sì, rimuovilo",
     "yesReset": "Sì, reimpostalo"
   },
+  "activity": {
+    "data": {
+      "actor": "Autore",
+      "eventTime": "Ora dell'evento",
+      "eventType": "Tipo di evento",
+      "metadata": "Metadati",
+      "target": "Destinatario"
+    },
+    "filters": {
+      "other": "Altro"
+    }
+  },
   "addContact": {
     "contactSaved": "Contatto salvato",
     "errors": {
@@ -1852,6 +1864,7 @@
   },
   "menu": {
     "account": "Account",
+    "activity": "Attività",
     "admin": "Amministrazione",
     "adminSettings": "Impostazioni",
     "callouts": "Callout",

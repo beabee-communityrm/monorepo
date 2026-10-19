@@ -177,6 +177,18 @@
     "yesRemove": "Да, удалить",
     "yesReset": "Да, сбросить"
   },
+  "activity": {
+    "data": {
+      "actor": "Инициатор",
+      "eventTime": "Время события",
+      "eventType": "Тип события",
+      "metadata": "Метаданные",
+      "target": "Объект"
+    },
+    "filters": {
+      "other": "Другое"
+    }
+  },
   "addContact": {
     "contactSaved": "",
     "errors": {
@@ -1857,6 +1869,7 @@
   },
   "menu": {
     "account": "Аккаунт",
+    "activity": "Активность",
     "admin": "Администрирование",
     "adminSettings": "Настройки",
     "callouts": "CrowdNewsroom",

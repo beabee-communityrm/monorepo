@@ -177,6 +177,18 @@
     "yesRemove": "“Ja, verwijder het”",
     "yesReset": "Ja, resetten"
   },
+  "activity": {
+    "data": {
+      "actor": "Actor",
+      "eventTime": "Tijdstip",
+      "eventType": "Type gebeurtenis",
+      "metadata": "Metadata",
+      "target": "Doel"
+    },
+    "filters": {
+      "other": "Overig"
+    }
+  },
   "addContact": {
     "contactSaved": "Contact opgeslagen",
     "errors": {
@@ -1852,6 +1864,7 @@
   },
   "menu": {
     "account": "Account",
+    "activity": "Activiteit",
     "admin": "Beheer",
     "adminSettings": "Instellingen",
     "callouts": "CrowdNewsroom",
