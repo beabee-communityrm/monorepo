@@ -6,18 +6,11 @@ import { normalizeEmailAddress } from '@beabee/core/utils/email';
 import type { UnlockUserArgs } from '../../types/user.js';
 
 /**
- * Lifts the identity provider's lock on a user's account
+ * Lifts the lock on a user's account: the local password-tries counter, and
+ * the identity provider's lock when the user is linked to one
  */
 export const unlockUser = async (args: UnlockUserArgs): Promise<void> => {
   await runApp(async () => {
-    if (!idpService.isEnabled) {
-      console.error(
-        'No identity provider configured, set BEABEE_IDP_PROVIDER first'
-      );
-      process.exitCode = 1;
-      return;
-    }
-
     const contact = await contactsService.findOneBy({
       email: normalizeEmailAddress(args.email),
     });
@@ -27,7 +20,12 @@ export const unlockUser = async (args: UnlockUserArgs): Promise<void> => {
       return;
     }
 
-    await idpService.unlockContact(contact);
-    console.log(`Unlocked ${contact.email} at the identity provider`);
+    await contactsService.resetPasswordTries(contact);
+    console.log(`Reset the password tries of ${contact.email}`);
+
+    if (idpService.isEnabled && contact.idpSubject) {
+      await idpService.unlockContact(contact);
+      console.log(`Unlocked ${contact.email} at the identity provider`);
+    }
   });
 };

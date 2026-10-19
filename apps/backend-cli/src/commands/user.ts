@@ -100,7 +100,7 @@ export const userCommand: CommandModule = {
       .command({
         command: 'unlock <email>',
         describe:
-          'Lift the lock the identity provider put on a user after too many failed logins',
+          'Lift the lock on a user after too many failed logins, locally and at the identity provider',
         builder: (yargs) =>
           yargs.positional('email', {
             type: 'string',
