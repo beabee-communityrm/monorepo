@@ -70,7 +70,7 @@ describe('ZitadelProvider', () => {
       ],
     };
     // Fresh responses per test, a body can only be read once
-    const policies = () => [json({ policy: {} }), json({}), json({})];
+    const policies = () => [json({ policy: {} }), json({}), json({}), json({})];
     const app = (oidcConfig: object) =>
       json({ result: [{ id: 'app-1', oidcConfig }] });
 
@@ -91,7 +91,7 @@ describe('ZitadelProvider', () => {
       const provider = new ZitadelProvider(settings);
       await provider.setup({ defaultRedirectUri: 'https://x', oidcClient });
 
-      const [url, init] = fetch.mock.calls[5];
+      const [url, init] = fetch.mock.calls[6];
       expect(url).toBe(
         settings.url +
           '/management/v1/projects/project-1/apps/app-1/oidc_config'
@@ -122,7 +122,7 @@ describe('ZitadelProvider', () => {
       const provider = new ZitadelProvider(settings);
       await provider.setup({ defaultRedirectUri: 'https://x', oidcClient });
 
-      expect(fetch).toHaveBeenCalledTimes(5);
+      expect(fetch).toHaveBeenCalledTimes(6);
     });
 
     it('skips a client registered at another issuer', async () => {
@@ -134,7 +134,13 @@ describe('ZitadelProvider', () => {
         oidcClient: { ...oidcClient, issuer: 'https://other.example.org' },
       });
 
-      expect(fetch).toHaveBeenCalledTimes(3);
+      expect(fetch).toHaveBeenCalledTimes(4);
+      const [url, init] = fetch.mock.calls[3];
+      expect(url).toBe(settings.url + '/admin/v1/policies/lockout');
+      expect(JSON.parse(init.body)).toEqual({
+        maxPasswordAttempts: 10,
+        maxOtpAttempts: 5,
+      });
     });
 
     const claimsEndpoint = 'https://beabee.example.org/webhook/zitadel/claims';
@@ -155,7 +161,7 @@ describe('ZitadelProvider', () => {
         'zitadel-claims-signing-key',
         'key-1'
       );
-      const [createUrl, create] = fetch.mock.calls[4];
+      const [createUrl, create] = fetch.mock.calls[5];
       expect(createUrl).toBe(settings.url + '/v2/actions/targets');
       expect(JSON.parse(create.body)).toEqual({
         name: 'beabee-claims',
@@ -163,7 +169,7 @@ describe('ZitadelProvider', () => {
         timeout: '5s',
         restCall: { interruptOnError: false },
       });
-      const [executionUrl, execution] = fetch.mock.calls[5];
+      const [executionUrl, execution] = fetch.mock.calls[6];
       expect(executionUrl).toBe(settings.url + '/v2/actions/executions');
       expect(execution.method).toBe('PUT');
       expect(JSON.parse(execution.body)).toEqual({
@@ -196,10 +202,10 @@ describe('ZitadelProvider', () => {
         'zitadel-claims-signing-key',
         'key-1'
       );
-      expect(fetch.mock.calls[4][0]).toBe(
+      expect(fetch.mock.calls[5][0]).toBe(
         settings.url + '/v2/actions/executions'
       );
-      expect(fetch).toHaveBeenCalledTimes(5);
+      expect(fetch).toHaveBeenCalledTimes(6);
     });
 
     it('fails when the client is not found', async () => {
@@ -236,6 +242,15 @@ describe('ZitadelProvider', () => {
     await expect(provider.removeAuthMethod('u1', 'password')).rejects.toThrow(
       'cannot be removed'
     );
+  });
+
+  it('unlocks an account through the user API', async () => {
+    const fetch = mockFetch(new Response(JSON.stringify({})));
+
+    await new ZitadelProvider(settings).unlockContact('u1');
+
+    expect(fetch.mock.calls[0][0]).toBe(settings.url + '/v2/users/u1/unlock');
+    expect(fetch.mock.calls[0][1].method).toBe('POST');
   });
 
   it('accepts responses without a body', async () => {

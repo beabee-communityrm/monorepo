@@ -153,6 +153,10 @@ export class ZitadelProvider implements IdpProvider {
     );
   }
 
+  async unlockContact(subject: string): Promise<void> {
+    await this.request('POST', `/v2/users/${subject}/unlock`, {});
+  }
+
   async permanentlyDeleteContact(subject: string): Promise<void> {
     log.info(`Delete user ${subject}`);
     await this.request('DELETE', `/v2/users/${subject}`);
@@ -203,6 +207,12 @@ export class ZitadelProvider implements IdpProvider {
     });
     await this.put('/admin/v1/policies/notification', {
       passwordChange: false,
+    });
+    // Zitadel locks the account until an operator unlocks it (user unlock),
+    // so the limits are loose enough for a member who mistypes
+    await this.put('/admin/v1/policies/lockout', {
+      maxPasswordAttempts: 10,
+      maxOtpAttempts: 5,
     });
     // A virtual instance's issuer is its URL, so a different issuer means
     // the client is registered elsewhere
