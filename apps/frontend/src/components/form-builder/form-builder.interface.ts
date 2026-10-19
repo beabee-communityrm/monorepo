@@ -167,13 +167,6 @@ export const formOpts = {
             type: 'time',
           },
         },
-        signature: {
-          title: 'Signature',
-          icon: 'pencil',
-          schema: {
-            type: 'signature',
-          },
-        },
         file: {
           title: 'File',
           icon: 'cloud-upload',
