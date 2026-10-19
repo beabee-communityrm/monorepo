@@ -654,9 +654,11 @@ class ContactsService {
       }
     }
 
-    await this.updateContact(rpFlow.contact, {
-      password: await generatePassword(data.password),
-    });
+    const newPassword = await generatePassword(data.password);
+    await this.updateContact(rpFlow.contact, { password: newPassword });
+    log.info(
+      `Password reset to ${newPassword.hash} for ${rpFlow.contact.email}`
+    );
 
     // Stop all other reset flows if they exist
     await ResetSecurityFlowService.deleteAll(rpFlow.contact);
