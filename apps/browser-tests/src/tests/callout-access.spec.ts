@@ -70,3 +70,55 @@ test(
     }
   },
 );
+
+test(
+  "Non-member is asked to contribute",
+  { tag: "@experimental" },
+  async ({ page, request, createCallout, createContact }) => {
+    const slug = await createCallout({
+      access: "member",
+      responseMode: "multiple",
+    });
+    const contact = await createContact();
+
+    await test.step("Member answers and submits", async () => {
+      await page.goto(`/crowdnewsroom/${slug}/respond`);
+      await answer(page, "Member answer");
+      await page.waitForURL(`**/crowdnewsroom/${slug}/thanks`);
+    });
+
+    await test.step("Their membership ends", async () => {
+      const ended = await request.put(
+        `${api.host}${api.path}/contact/${contact.id}/role/member`,
+        {
+          headers: { Authorization: `Bearer ${admin.apiKey}` },
+          data: {
+            dateAdded: new Date(Date.now() - 60_000),
+            dateExpires: new Date(Date.now() - 1000),
+          },
+        },
+      );
+      expect(ended.ok(), await ended.text()).toBeTruthy();
+    });
+
+    for (const path of ["", "/respond"]) {
+      await test.step(`Contribution prompt and their response on ${path || "the details page"}`, async () => {
+        await page.goto(`/crowdnewsroom/${slug}${path}`);
+        await expect(
+          membersOnlyGate(page, "Edit my contribution"),
+        ).toBeVisible();
+        await expect(answerRow(page)).toHaveText("Member answer");
+        for (const name of [
+          "Get started",
+          "Edit response",
+          "Add another response",
+        ]) {
+          await expect(page.getByRole("link", { name })).toBeHidden();
+        }
+        await expect(
+          page.getByRole("textbox", { name: "Question" }),
+        ).toBeHidden();
+      });
+    }
+  },
+);
