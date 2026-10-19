@@ -1,4 +1,4 @@
-import { test as base, expect } from "@playwright/test";
+import { test as base, expect, type Page } from "@playwright/test";
 import { api, testUser as admin } from "@beabee/test-utils/test-data";
 import type {
   CalloutSlide,
@@ -27,8 +27,18 @@ export const oneQuestion: CalloutSlide[] = [
   },
 ];
 
+/** Waits for the form to settle, as it's built twice on load and anything
+ * filled in before the second build is lost */
+export async function waitForForm(page: Page) {
+  await page.waitForFunction(() => {
+    const builtAt = (window as unknown as { formBuiltAt?: number }).formBuiltAt;
+    return builtAt !== undefined && performance.now() - builtAt > 1000;
+  });
+}
+
 export const test = base.extend<{
   newFrontend: void;
+  formBuilds: void;
   /** Creates a CrowdNewsroom through the admin API and returns its slug */
   createCallout: (options: CreateCalloutOptions) => Promise<string>;
   /** Creates a contact, logs the browser in as them, and deletes them after
@@ -40,6 +50,22 @@ export const test = base.extend<{
       await context.addCookies([
         { name: "beabee_frontend", value: "new", url: baseURL! },
       ]);
+      await use();
+    },
+    { auto: true },
+  ],
+
+  // Records when the form was last built, for waitForForm
+  formBuilds: [
+    async ({ context }, use) => {
+      await context.addInitScript(() => {
+        new MutationObserver(() => {
+          if (document.querySelector(".formio-form")) {
+            (window as unknown as { formBuiltAt: number }).formBuiltAt =
+              performance.now();
+          }
+        }).observe(document, { childList: true, subtree: true });
+      });
       await use();
     },
     { auto: true },
