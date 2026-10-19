@@ -122,3 +122,25 @@ test(
     }
   },
 );
+
+test(
+  "Member can respond",
+  { tag: "@experimental" },
+  async ({ page, createCallout, createContact }) => {
+    const slug = await createCallout({
+      access: "member",
+      responseMode: "multiple",
+    });
+    await createContact();
+
+    await page.goto(`/crowdnewsroom/${slug}`);
+    await expect(page.getByRole("link", { name: "Get started" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Members only" }),
+    ).toBeHidden();
+
+    await page.goto(`/crowdnewsroom/${slug}/respond`);
+    await waitForForm(page);
+    await expect(page.getByRole("textbox", { name: "Question" })).toBeVisible();
+  },
+);
