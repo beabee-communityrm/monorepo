@@ -1,4 +1,7 @@
-import type { ContentGeneralData } from '@beabee/beabee-common';
+import type {
+  ContentGeneralData,
+  GetContactAuthMethodData,
+} from '@beabee/beabee-common';
 
 import type { Contact } from '#models/index';
 
@@ -50,6 +53,17 @@ export interface IdpProvider {
     authorizeUrl: string,
     action: IdpLoginAction
   ): Promise<string>;
+  /**
+   * The login methods a linked account has set up
+   * @param subject The linked account's subject identifier
+   */
+  listAuthMethods(subject: string): Promise<GetContactAuthMethodData[]>;
+  /**
+   * Remove one of a linked account's login methods
+   * @param subject The linked account's subject identifier
+   * @param id The method's identifier from listAuthMethods
+   */
+  removeAuthMethod(subject: string, id: string): Promise<void>;
 }
 
 export interface IdpSetupSettings {

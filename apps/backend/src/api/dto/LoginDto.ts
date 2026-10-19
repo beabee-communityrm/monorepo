@@ -49,4 +49,9 @@ export class OidcLoginOptsDto extends NextOptsDto {
   @IsOptional()
   @IsIn(LOGIN_ACTIONS)
   action?: LoginAction;
+
+  /** `login` makes the IdP re-authenticate the member even with a live session there */
+  @IsOptional()
+  @IsIn(['login'])
+  prompt?: 'login';
 }

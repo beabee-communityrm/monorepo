@@ -98,6 +98,19 @@
       "addPasskey": "Aggiungi una passkey",
       "changePassword": "Cambia password",
       "intro": "La tua password e i tuoi metodi di accesso sono gestiti dal nostro servizio di accesso. Ognuna di queste opzioni ti porta lì e poi ti riporta qui.",
+      "methods": {
+        "authenticatorApp": "App di autenticazione",
+        "confirmRemove": {
+          "desc": "Potrebbe esserti chiesto di accedere di nuovo prima. Puoi configurare nuovamente il metodo in qualsiasi momento.",
+          "title": "Rimuovere questo metodo di accesso?"
+        },
+        "description": "I modi in cui puoi accedere. La password non può essere rimossa.",
+        "passkey": "Passkey",
+        "password": "Password",
+        "removed": "Metodo di accesso rimosso",
+        "securityKey": "Chiave di sicurezza",
+        "title": "I tuoi metodi di accesso"
+      },
       "setupMfa": "Configura l'app di autenticazione",
       "title": "Credenziali"
     },

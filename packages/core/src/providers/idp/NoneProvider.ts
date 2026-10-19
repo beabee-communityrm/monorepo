@@ -18,4 +18,10 @@ export class NoneProvider implements IdpProvider {
   async resolveLoginUrl(): Promise<never> {
     throw new Error('No identity provider configured');
   }
+  async listAuthMethods(): Promise<never> {
+    throw new Error('No identity provider configured');
+  }
+  async removeAuthMethod(): Promise<never> {
+    throw new Error('No identity provider configured');
+  }
 }

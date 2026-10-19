@@ -98,6 +98,19 @@
       "addPasskey": "",
       "changePassword": "",
       "intro": "",
+      "methods": {
+        "authenticatorApp": "",
+        "confirmRemove": {
+          "desc": "",
+          "title": ""
+        },
+        "description": "",
+        "passkey": "",
+        "password": "",
+        "removed": "",
+        "securityKey": "",
+        "title": ""
+      },
       "setupMfa": "",
       "title": ""
     },

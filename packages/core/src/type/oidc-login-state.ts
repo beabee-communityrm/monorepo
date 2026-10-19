@@ -8,6 +8,10 @@ export interface OidcLoginState {
   codeVerifier: string;
   /** Validated internal path or allowed return URL to continue to after login */
   next?: string | undefined;
-  /** A prompt=none refresh: the callback never shows an error, it continues to next */
-  silent?: boolean;
+  /**
+   * What the IdP was asked for: `none` is a silent refresh whose callback
+   * never shows an error and continues to next, `login` re-authenticates
+   * the member
+   */
+  prompt?: 'none' | 'login' | undefined;
 }

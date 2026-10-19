@@ -141,7 +141,7 @@ describe('startOidcLogin', () => {
       nonce: 'nonce',
       codeVerifier: 'verifier',
       next: '/profile',
-      silent: false,
+      prompt: undefined,
     });
   });
 
@@ -149,9 +149,18 @@ describe('startOidcLogin', () => {
     discovery.mockResolvedValueOnce(withEndSession);
     const { startOidcLogin } = await load();
 
-    const { url, loginState } = await startOidcLogin('/profile', true);
+    const { url, loginState } = await startOidcLogin('/profile', 'none');
     expect(new URL(url).searchParams.get('prompt')).toBe('none');
-    expect(loginState.silent).toBe(true);
+    expect(loginState.prompt).toBe('none');
+  });
+
+  it('asks for prompt=login for a fresh login', async () => {
+    discovery.mockResolvedValueOnce(withEndSession);
+    const { startOidcLogin } = await load();
+
+    const { url, loginState } = await startOidcLogin('/profile', 'login');
+    expect(new URL(url).searchParams.get('prompt')).toBe('login');
+    expect(loginState.prompt).toBe('login');
   });
 });
 
@@ -160,13 +169,17 @@ describe('completeOidcLogin', () => {
     discovery.mockResolvedValueOnce(withEndSession);
     authorizationCodeGrant.mockResolvedValueOnce({
       id_token: 'id-token',
-      claims: () => ({ sub: 'subject-1' }),
+      claims: () => ({ sub: 'subject-1', auth_time: 1700000000 }),
     });
     const { completeOidcLogin } = await load();
 
     await expect(
       completeOidcLogin('?code=abc&state=state', loginState)
-    ).resolves.toEqual({ subject: 'subject-1', idToken: 'id-token' });
+    ).resolves.toEqual({
+      subject: 'subject-1',
+      idToken: 'id-token',
+      authTime: 1700000000,
+    });
 
     const [, callbackUrl, checks] = authorizationCodeGrant.mock.calls[0];
     expect(callbackUrl.href).toBe(redirectUri + '?code=abc&state=state');
