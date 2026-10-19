@@ -5,6 +5,7 @@ import type {
   CreateUserArgs,
   DeleteUserArgs,
   ListUserArgs,
+  UnlockUserArgs,
 } from '../types/index.js';
 
 export const userCommand: CommandModule = {
@@ -94,6 +95,21 @@ export const userCommand: CommandModule = {
           const { provisionUsers } =
             await import('../actions/user/provision.js');
           return provisionUsers();
+        },
+      })
+      .command({
+        command: 'unlock <email>',
+        describe:
+          'Lift the lock the identity provider put on a user after too many failed logins',
+        builder: (yargs) =>
+          yargs.positional('email', {
+            type: 'string',
+            description: 'Email of the user to unlock',
+            demandOption: true,
+          }) as Argv<UnlockUserArgs>,
+        handler: async (argv: ArgumentsCamelCase<UnlockUserArgs>) => {
+          const { unlockUser } = await import('../actions/user/unlock.js');
+          return unlockUser(argv);
         },
       })
       .command({

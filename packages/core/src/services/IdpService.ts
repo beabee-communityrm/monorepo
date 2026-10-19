@@ -210,6 +210,15 @@ class IdpService {
     await this.provider.removeAuthMethod(this.subjectOf(contact), id);
   }
 
+  /**
+   * Lift the lock the identity provider put on a linked contact's account
+   * after too many failed login attempts
+   */
+  async unlockContact(contact: Contact): Promise<void> {
+    log.info(`Unlock contact ${contact.id} at the IdP`);
+    await this.provider.unlockContact(this.subjectOf(contact));
+  }
+
   private subjectOf(contact: Contact): string {
     if (!contact.idpSubject) {
       throw new Error(`Contact ${contact.id} has no IdP account`);

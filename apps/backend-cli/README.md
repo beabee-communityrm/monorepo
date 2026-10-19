@@ -87,6 +87,7 @@ Notes:
 yarn backend-cli user list [email]                  List users
 yarn backend-cli user list --without-password       List users without a password set
 yarn backend-cli user create                        Create a new user
+yarn backend-cli user unlock <email>                Lift the identity provider's lock after too many failed logins
 yarn backend-cli user delete <email>                Permanently delete a user by email
 yarn backend-cli user delete --without-password     Delete all users without a password set
 yarn backend-cli user delete --without-password -y  Delete without confirmation prompt

@@ -64,6 +64,12 @@ export interface IdpProvider {
    * @param id The method's identifier from listAuthMethods
    */
   removeAuthMethod(subject: string, id: string): Promise<void>;
+  /**
+   * Lift the lock the provider put on an account after too many failed
+   * login attempts
+   * @param subject The linked account's subject identifier
+   */
+  unlockContact(subject: string): Promise<void>;
 }
 
 export interface IdpSetupSettings {

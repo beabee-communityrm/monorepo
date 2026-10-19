@@ -162,6 +162,12 @@ export class KeycloakProvider implements IdpProvider {
   async setup(): Promise<void> {
     log.info('Skipping setup, not supported for Keycloak');
   }
+  async unlockContact(subject: string): Promise<void> {
+    await this.request(
+      'DELETE',
+      `/attack-detection/brute-force/users/${subject}`
+    );
+  }
   async updateBranding(): Promise<void> {
     log.info('Skipping branding, not supported for Keycloak');
   }

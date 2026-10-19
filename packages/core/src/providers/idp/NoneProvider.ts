@@ -24,4 +24,7 @@ export class NoneProvider implements IdpProvider {
   async removeAuthMethod(): Promise<never> {
     throw new Error('No identity provider configured');
   }
+  async unlockContact(): Promise<never> {
+    throw new Error('No identity provider configured');
+  }
 }
