@@ -123,7 +123,7 @@ async function remove(id: string, loginAgain = true) {
       err.code === LOGIN_CODES.FRESH_LOGIN_REQUIRED
     ) {
       window.location.href = client.auth.getLoginUrl(
-        `/profile/account?removeAuthMethod=${id}`,
+        `/profile/account?tab=security&removeAuthMethod=${id}`,
         undefined,
         'login'
       );

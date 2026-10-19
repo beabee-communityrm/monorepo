@@ -72,9 +72,9 @@ meta:
 <script lang="ts" setup>
 import type { LoginAction } from '@beabee/beabee-common';
 
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import AccountForm from '../../components/pages/profile/account/AccountForm.vue';
 import AccountNewsletterSubscriptions from '../../components/pages/profile/account/AccountNewsletterSubscriptions.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
@@ -88,13 +88,19 @@ import type { TabsItem } from '@nuxt/ui';
 
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
 
-// A removal continues on the security tab after the fresh login
-const activeTab = ref(route.query.removeAuthMethod ? 'security' : 'contact');
+const activeTab = computed({
+  get: () => route.query.tab?.toString() || 'contact',
+  set: (value) => {
+    router.push({ query: { ...route.query, tab: value } });
+  },
+});
 
-// Each action runs at the identity provider inside a login that returns here
+// Each action runs at the identity provider inside a login that returns to
+// the security tab
 const loginActionUrl = (action: LoginAction) =>
-  client.auth.getLoginUrl('/profile/account', action);
+  client.auth.getLoginUrl('/profile/account?tab=security', action);
 
 const items = computed<TabsItem[]>(() => [
   {
