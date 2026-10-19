@@ -107,3 +107,84 @@ test(
     });
   },
 );
+
+test(
+  "Member answers, then edits",
+  { tag: "@experimental" },
+  async ({ page, request, createCallout, createContact }) => {
+    const slug = await createCallout({
+      access: "anonymous",
+      responseMode: "single-editable",
+    });
+    await createContact();
+
+    const edit = page.getByRole("link", { name: "Edit response" });
+    let responseId: string;
+
+    await test.step("Answer and submit", async () => {
+      await page.goto(`/crowdnewsroom/${slug}`);
+      await page.getByRole("link", { name: "Get started" }).click();
+      await answer(page, "First answer");
+      await page.waitForURL(`**/crowdnewsroom/${slug}/thanks`);
+    });
+
+    await test.step("Details page offers Edit only", async () => {
+      await page.goto(`/crowdnewsroom/${slug}`);
+      await expect(answerRow(page)).toHaveText("First answer");
+      await expect(edit).toBeVisible();
+      await expect(
+        page.getByRole("link", { name: "Add another response" }),
+      ).toBeHidden();
+      await expect(
+        page.getByRole("link", { name: "Get started" }),
+      ).toBeHidden();
+      responseId = (await getResponses(request, slug))[0].id;
+    });
+
+    await test.step("Edit opens the form filled in", async () => {
+      await edit.click();
+      await waitForForm(page);
+      await expect(page.getByRole("textbox", { name: "Question" })).toHaveValue(
+        "First answer",
+      );
+      await answer(page, "Edited answer");
+      await page.waitForURL(`**/crowdnewsroom/${slug}/thanks`);
+    });
+
+    await test.step("Details page shows the edited response", async () => {
+      await page.goto(`/crowdnewsroom/${slug}`);
+      await expect(
+        page.getByRole("heading", { name: "Your response", exact: true }),
+      ).toBeVisible();
+      await expect(answerRow(page)).toHaveText("Edited answer");
+      await expect(edit).toBeVisible();
+    });
+
+    await test.step("API has the same response with the new answer", async () => {
+      const responses = await getResponses(request, slug);
+      expect(responses).toHaveLength(1);
+      expect(responses[0].id).toBe(responseId);
+      expect(responses[0].answers).toEqual({
+        slide1: { question: "Edited answer" },
+      });
+    });
+
+    await test.step("Once closed, the response can't be edited", async () => {
+      const closed = await request.patch(
+        `${api.host}${api.path}/callout/${slug}`,
+        {
+          headers: { Authorization: `Bearer ${admin.apiKey}` },
+          data: { expires: new Date(Date.now() - 1000) },
+        },
+      );
+      expect(closed.ok(), await closed.text()).toBeTruthy();
+
+      await page.goto(`/crowdnewsroom/${slug}`);
+      await expect(answerRow(page)).toHaveText("Edited answer");
+      await expect(
+        page.getByText("responses can no longer be added or edited"),
+      ).toBeVisible();
+      await expect(edit).toBeHidden();
+    });
+  },
+);
