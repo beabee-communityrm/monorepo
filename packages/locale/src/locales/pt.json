@@ -168,12 +168,12 @@
   "activity": {
     "data": {
       "actor": "Autor",
-      "eventTime": "Hora do evento",
-      "eventType": "Tipo de evento",
-      "metadata": "Metadados",
-      "target": "Alvo"
+      "category": "Categoria",
+      "target": "Alvo",
+      "time": "Hora"
     },
     "filters": {
+      "all": "Todos",
       "other": "Outros"
     }
   },

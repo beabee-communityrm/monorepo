@@ -168,12 +168,12 @@
   "activity": {
     "data": {
       "actor": "Acteur",
-      "eventTime": "Date de l'événement",
-      "eventType": "Type d'événement",
-      "metadata": "Métadonnées",
-      "target": "Cible"
+      "category": "Catégorie",
+      "target": "Cible",
+      "time": "Heure"
     },
     "filters": {
+      "all": "Tout",
       "other": "Autres"
     }
   },
