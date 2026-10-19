@@ -165,6 +165,18 @@
     "yesRemove": "Sí, quitar",
     "yesReset": "Sí, restablecer"
   },
+  "activity": {
+    "data": {
+      "actor": "Actor",
+      "eventTime": "Hora del evento",
+      "eventType": "Tipo de evento",
+      "metadata": "Metadatos",
+      "target": "Objetivo"
+    },
+    "filters": {
+      "other": "Otros"
+    }
+  },
   "addContact": {
     "contactSaved": "Contacto guardado",
     "errors": {
@@ -1808,6 +1820,7 @@
   },
   "menu": {
     "account": "Cuenta",
+    "activity": "Actividad",
     "admin": "Administración",
     "adminSettings": "Configuración",
     "callouts": "CrowdNewsroom",

@@ -165,6 +165,18 @@
     "yesRemove": "Так, вилучити це",
     "yesReset": "Так, скинути"
   },
+  "activity": {
+    "data": {
+      "actor": "Ініціатор",
+      "eventTime": "Час події",
+      "eventType": "Тип події",
+      "metadata": "Метадані",
+      "target": "Об'єкт"
+    },
+    "filters": {
+      "other": "Інше"
+    }
+  },
   "addContact": {
     "contactSaved": "Контакт збережено",
     "errors": {
@@ -1814,6 +1826,7 @@
   },
   "menu": {
     "account": "Обліковий запис",
+    "activity": "Активність",
     "admin": "Адміністрація",
     "adminSettings": "Налаштування",
     "callouts": "CrowdNewsroom",

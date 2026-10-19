@@ -165,6 +165,18 @@
     "yesRemove": "",
     "yesReset": ""
   },
+  "activity": {
+    "data": {
+      "actor": "",
+      "eventTime": "",
+      "eventType": "",
+      "metadata": "",
+      "target": ""
+    },
+    "filters": {
+      "other": ""
+    }
+  },
   "addContact": {
     "contactSaved": "",
     "errors": {
@@ -1810,6 +1822,7 @@
   },
   "menu": {
     "account": "",
+    "activity": "",
     "admin": "",
     "adminSettings": "",
     "callouts": "Aufruf",
