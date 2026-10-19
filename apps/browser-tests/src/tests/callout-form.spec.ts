@@ -154,3 +154,39 @@ test("Answers passed in the URL prefill the form", async ({
   await waitForForm(page);
   await expect(textbox(page, "Question")).toHaveValue("Prefilled answer");
 });
+
+test("Name and email on a guest CrowdNewsroom", async ({
+  page,
+  createCallout,
+}) => {
+  const slug = await createCallout({
+    access: "guest",
+    responseMode: "single",
+  });
+
+  await page.goto(`/crowdnewsroom/${slug}/respond`);
+
+  await test.step("Name and email are required", async () => {
+    await waitForForm(page);
+    await fill(page, "Question", "Guest answer");
+    for (const name of ["First name", "Last name", "Email"]) {
+      await expect(textbox(page, name)).toBeVisible();
+    }
+    await expect(page.getByRole("button", { name: "Submit" })).toBeDisabled();
+  });
+
+  await test.step("Submitting with them shows the one-response warning", async () => {
+    // The backend links a guest response to a contact with the same email, so
+    // use one no contact has
+    await textbox(page, "First name").fill("Guest");
+    await textbox(page, "Last name").fill("Respondent");
+    await textbox(page, "Email").fill(
+      `guest-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@example.com`,
+    );
+    await page.getByRole("button", { name: "Submit" }).click();
+    await page.waitForURL(`**/crowdnewsroom/${slug}/thanks`);
+    await expect(
+      page.getByText("only one response is allowed per person"),
+    ).toBeVisible();
+  });
+});
