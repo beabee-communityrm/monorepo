@@ -137,3 +137,20 @@ test("Member works through slides and conditional questions", async ({
     expect(response.answers.slide1.extra).toBeUndefined();
   });
 });
+
+test("Answers passed in the URL prefill the form", async ({
+  page,
+  createCallout,
+}) => {
+  const slug = await createCallout({
+    access: "anonymous",
+    responseMode: "multiple",
+  });
+
+  const answers = JSON.stringify({ slide1: { question: "Prefilled answer" } });
+  await page.goto(
+    `/crowdnewsroom/${slug}/respond?answers=${encodeURIComponent(answers)}`,
+  );
+  await waitForForm(page);
+  await expect(textbox(page, "Question")).toHaveValue("Prefilled answer");
+});
