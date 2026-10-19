@@ -136,7 +136,7 @@ describe('ZitadelProvider', () => {
 
       expect(fetch).toHaveBeenCalledTimes(4);
       const [url, init] = fetch.mock.calls[3];
-      expect(url).toBe(settings.url + '/admin/v1/policies/lockout');
+      expect(url).toBe(settings.url + '/admin/v1/policies/password/lockout');
       expect(JSON.parse(init.body)).toEqual({
         maxPasswordAttempts: 10,
         maxOtpAttempts: 5,
@@ -247,10 +247,23 @@ describe('ZitadelProvider', () => {
   it('unlocks an account through the user API', async () => {
     const fetch = mockFetch(new Response(JSON.stringify({})));
 
-    await new ZitadelProvider(settings).unlockContact('u1');
+    const wasLocked = await new ZitadelProvider(settings).unlockContact('u1');
 
+    expect(wasLocked).toBe(true);
     expect(fetch.mock.calls[0][0]).toBe(settings.url + '/v2/users/u1/unlock');
     expect(fetch.mock.calls[0][1].method).toBe('POST');
+  });
+
+  it('reports an account that was not locked', async () => {
+    mockFetch(
+      new Response(JSON.stringify({ code: 9, message: 'User is not locked' }), {
+        status: 400,
+      })
+    );
+
+    await expect(
+      new ZitadelProvider(settings).unlockContact('u1')
+    ).resolves.toBe(false);
   });
 
   it('accepts responses without a body', async () => {
