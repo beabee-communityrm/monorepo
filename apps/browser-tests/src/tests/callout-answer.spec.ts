@@ -227,3 +227,49 @@ test(
     });
   },
 );
+
+test(
+  "Only-anonymous responses aren't linked to the member",
+  { tag: "@experimental" },
+  async ({ page, context, baseURL, request, createCallout, createContact }) => {
+    const slug = await createCallout({
+      access: "only-anonymous",
+      responseMode: "multiple",
+    });
+    await createContact();
+
+    await test.step("Member answers and submits", async () => {
+      await page.goto(`/crowdnewsroom/${slug}/respond`);
+      await answer(page, "Anonymous answer");
+      await page.waitForURL(`**/crowdnewsroom/${slug}/thanks`);
+    });
+
+    await test.step("Details page doesn't show it as theirs", async () => {
+      await page.goto(`/crowdnewsroom/${slug}`);
+      await expect(
+        page.getByRole("link", { name: "Get started" }),
+      ).toBeVisible();
+      await expect(answerRow(page)).toBeHidden();
+    });
+
+    await test.step("API has the response with no contact", async () => {
+      const responses = await getResponses(request, slug);
+      expect(responses).toHaveLength(1);
+      expect(responses[0].contact).toBeNull();
+    });
+
+    await test.step("Logged out, there are no name and email fields", async () => {
+      await context.clearCookies();
+      await context.addCookies([
+        { name: "beabee_frontend", value: "new", url: baseURL! },
+      ]);
+      await page.goto(`/crowdnewsroom/${slug}/respond`);
+      await waitForForm(page);
+      await expect(
+        page.getByRole("textbox", { name: "Question" }),
+      ).toBeVisible();
+      await expect(page.getByText("Contact details")).toBeHidden();
+      await expect(page.getByRole("textbox", { name: "Email" })).toBeHidden();
+    });
+  },
+);
