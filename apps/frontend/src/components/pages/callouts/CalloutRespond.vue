@@ -9,6 +9,13 @@
     <h2 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h2>
 
     <template v-if="responses /* Avoids layout thrashing */">
+      <CalloutClosedNotice
+        v-if="
+          callout.status === ItemStatus.Ended && callout.expires && !isPreview
+        "
+        :expires="callout.expires"
+      />
+
       <CalloutLoginGate v-if="showLoginPrompt && isOpen" />
 
       <CalloutContributionGate
@@ -26,9 +33,9 @@
 
       <!-- Landing here without being able to respond, so show what they sent -->
       <CalloutResponseList
-        v-else-if="responses.length"
+        v-if="!canRespond && responsesPaginated?.items.length"
         :form-schema="callout.formSchema"
-        :responses="responses"
+        :responses="responsesPaginated"
       />
     </template>
   </div>
@@ -37,6 +44,7 @@
 import {
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
+  ItemStatus,
 } from '@beabee/beabee-common';
 import { addNotification } from '@beabee/vue';
 
@@ -44,6 +52,7 @@ import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+import CalloutClosedNotice from '#components/callout/CalloutClosedNotice.vue';
 import CalloutContributionGate from '#components/callout/CalloutContributionGate.vue';
 import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
 import CalloutLoginGate from '#components/callout/CalloutLoginGate.vue';
@@ -69,7 +78,8 @@ const calloutRef = toRef(props, 'callout');
 const { isOpen, isPreview, showLoginPrompt, showMemberOnlyPrompt } =
   useCallout(calloutRef);
 
-const { responses, canRespond, respondAction } = useCalloutResponse(calloutRef);
+const { responses, responsesPaginated, canRespond, respondAction } =
+  useCalloutResponse(calloutRef);
 
 /** An explicit answers override from the URL, or the user's own response
  * when it's the single one they're allowed to edit */
