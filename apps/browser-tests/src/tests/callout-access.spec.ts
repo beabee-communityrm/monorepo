@@ -42,3 +42,31 @@ test(
     });
   },
 );
+
+test(
+  "Logged-out visitor is asked to log in",
+  { tag: "@experimental" },
+  async ({ page, createCallout }) => {
+    const slug = await createCallout({
+      access: "member",
+      responseMode: "multiple",
+    });
+
+    for (const path of ["", "/respond"]) {
+      await test.step(`Login prompt on ${path || "the details page"}`, async () => {
+        await page.goto(`/crowdnewsroom/${slug}${path}`);
+        const gate = membersOnlyGate(page, "Log in");
+        await expect(gate).toBeVisible();
+        await expect(
+          gate.getByRole("link", { name: "Join now" }),
+        ).toBeVisible();
+        await expect(
+          page.getByRole("link", { name: "Get started" }),
+        ).toBeHidden();
+        await expect(
+          page.getByRole("textbox", { name: "Question" }),
+        ).toBeHidden();
+      });
+    }
+  },
+);
