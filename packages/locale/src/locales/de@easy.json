@@ -835,7 +835,9 @@
     "loginToYourAccount-nuxt": "",
     "membersOnly": "",
     "membersOnly-nuxt": "",
+    "nextResponse": "",
     "notAnswered": "",
+    "previousResponse": "",
     "responseNumber": "",
     "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
     "share": {

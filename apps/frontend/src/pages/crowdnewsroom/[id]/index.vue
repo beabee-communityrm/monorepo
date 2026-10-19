@@ -35,7 +35,7 @@ meta:
         <span v-else-if="callout.expires" class="text-muted">
           {{
             t('callout.closedOn', {
-              date: formatLocale(callout.expires, 'd MMM yyyy'),
+              date: formatLocale(callout.expires, 'PPP'),
             })
           }}
         </span>
@@ -79,9 +79,9 @@ meta:
       </UButton>
 
       <CalloutResponseList
-        v-else-if="responses.length"
+        v-if="responsesPaginated?.items.length"
         :form-schema="callout.formSchema"
-        :responses="responses"
+        :responses="responsesPaginated"
         :add-to="respondAction === 'add' ? respondTo : undefined"
         :edit-to="respondAction === 'edit' ? respondTo : undefined"
       />
@@ -165,7 +165,8 @@ const daysLeft = computed(() => getDaysLeft(props.callout.expires));
 
 // Embeds render CalloutRespond directly instead, which fetches its own
 // response state, so skip fetching it twice here.
-const { responses, respondAction, respondTo } = useCalloutResponse(calloutRef, {
-  fetchResponses: !isEmbed,
-});
+const { responses, responsesPaginated, respondAction, respondTo } =
+  useCalloutResponse(calloutRef, {
+    fetchResponses: !isEmbed,
+  });
 </script>

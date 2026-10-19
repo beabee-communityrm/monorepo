@@ -835,8 +835,10 @@
     "loginToYourAccount-nuxt": "Увійти",
     "membersOnly": "Ця новинна кімната CrowdNews відкрита лише для учасників. Щоб взяти участь",
     "membersOnly-nuxt": "Цей CrowdNewsroom відкритий лише для учасників.",
+    "nextResponse": "Наступна відповідь",
     "notAnswered": "Без відповіді",
-    "responseNumber": "Відповідь {number}",
+    "previousResponse": "Попередня відповідь",
+    "responseNumber": "Відповідь {number} з {total}",
     "responseSubmitted": "Відповідь надіслано",
     "share": {
       "address": "Поділитися, використовуючи наступне посилання:",

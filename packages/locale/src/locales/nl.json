@@ -835,8 +835,10 @@
     "loginToYourAccount-nuxt": "Inloggen",
     "membersOnly": "Deze CrowdNewsroom is alleen toegankelijk voor leden. Deelnemen",
     "membersOnly-nuxt": "Deze CrowdNewsroom is alleen toegankelijk voor leden.",
+    "nextResponse": "Volgende reactie",
     "notAnswered": "Niet beantwoord",
-    "responseNumber": "Reactie {number}",
+    "previousResponse": "Vorige reactie",
+    "responseNumber": "Reactie {number} van {total}",
     "responseSubmitted": "Reactie ingediend",
     "share": {
       "address": "Deel deze oproep met het volgende adres:",

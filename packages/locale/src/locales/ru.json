@@ -836,8 +836,10 @@
     "loginToYourAccount-nuxt": "Войти",
     "membersOnly": "Эта CrowdNewsroom открыта только для членов. Чтобы участвовать",
     "membersOnly-nuxt": "Эта CrowdNewsroom открыта только для членов.",
+    "nextResponse": "Следующий ответ",
     "notAnswered": "Без ответа",
-    "responseNumber": "Ответ {number}",
+    "previousResponse": "Предыдущий ответ",
+    "responseNumber": "Ответ {number} из {total}",
     "responseSubmitted": "Ответ отправлен",
     "share": {
       "address": "Отправить этот опрос на почту:",

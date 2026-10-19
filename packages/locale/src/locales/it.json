@@ -835,8 +835,10 @@
     "loginToYourAccount-nuxt": "Accedi",
     "membersOnly": "Questa CrowdNewsroom è aperta solo ai membri. Per partecipare",
     "membersOnly-nuxt": "Questa CrowdNewsroom è aperta solo ai membri.",
+    "nextResponse": "Risposta successiva",
     "notAnswered": "Senza risposta",
-    "responseNumber": "Risposta {number}",
+    "previousResponse": "Risposta precedente",
+    "responseNumber": "Risposta {number} di {total}",
     "responseSubmitted": "Risposta inviata",
     "share": {
       "address": "Condividi con il seguente link:",
