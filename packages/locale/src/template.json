@@ -95,24 +95,23 @@
     "savedPassword": "",
     "security": "",
     "selfService": {
-      "addPasskey": "",
-      "changePassword": "",
-      "intro": "",
       "methods": {
-        "authenticatorApp": "Authenticator app",
+        "anotherPasskey": "",
+        "authenticatorApp": "",
+        "change": "",
         "confirmRemove": {
-          "desc": "You may be asked to log in again first. You can set the method up again at any time.",
-          "title": "Remove this login method?"
+          "desc": "",
+          "title": ""
         },
-        "description": "The ways you can log in. The password cannot be removed.",
-        "passkey": "Passkey",
-        "password": "Password",
-        "removed": "Login method removed",
-        "securityKey": "Security key",
-        "title": "Your login methods"
-      },
-      "setupMfa": "",
-      "title": ""
+        "description": "",
+        "notSetUp": "",
+        "passkey": "",
+        "password": "",
+        "removed": "",
+        "securityKey": "",
+        "setUp": "",
+        "title": ""
+      }
     },
     "subTitle": "",
     "subTitle-nuxt": "",

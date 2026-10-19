@@ -95,24 +95,23 @@
     "savedPassword": "Nuova password salvata",
     "security": "Sicurezza",
     "selfService": {
-      "addPasskey": "Aggiungi una passkey",
-      "changePassword": "Cambia password",
-      "intro": "La tua password e i tuoi metodi di accesso sono gestiti dal nostro servizio di accesso. Ognuna di queste opzioni ti porta lì e poi ti riporta qui.",
       "methods": {
+        "anotherPasskey": "Per un altro dispositivo",
         "authenticatorApp": "App di autenticazione",
+        "change": "Modifica",
         "confirmRemove": {
           "desc": "Potrebbe esserti chiesto di accedere di nuovo prima. Puoi configurare nuovamente il metodo in qualsiasi momento.",
           "title": "Rimuovere questo metodo di accesso?"
         },
-        "description": "I modi in cui puoi accedere. La password non può essere rimossa.",
+        "description": "I modi in cui puoi accedere. Per aggiungere o modificare un metodo ti portiamo al nostro servizio di accesso e poi di nuovo qui. La password non può essere rimossa.",
+        "notSetUp": "Non configurato",
         "passkey": "Passkey",
         "password": "Password",
         "removed": "Metodo di accesso rimosso",
         "securityKey": "Chiave di sicurezza",
+        "setUp": "Configura",
         "title": "I tuoi metodi di accesso"
-      },
-      "setupMfa": "Configura l'app di autenticazione",
-      "title": "Credenziali"
+      }
     },
     "subTitle": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",
     "subTitle-nuxt": "I campi obbligatori sono indicati con un asterisco. Le informazioni inviate qui sono private.",

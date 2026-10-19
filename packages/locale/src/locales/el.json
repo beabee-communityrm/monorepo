@@ -95,24 +95,23 @@
     "savedPassword": "",
     "security": "",
     "selfService": {
-      "addPasskey": "",
-      "changePassword": "",
-      "intro": "",
       "methods": {
+        "anotherPasskey": "",
         "authenticatorApp": "",
+        "change": "",
         "confirmRemove": {
           "desc": "",
           "title": ""
         },
         "description": "",
+        "notSetUp": "",
         "passkey": "",
         "password": "",
         "removed": "",
         "securityKey": "",
+        "setUp": "",
         "title": ""
-      },
-      "setupMfa": "",
-      "title": ""
+      }
     },
     "subTitle": "",
     "subTitle-nuxt": "",

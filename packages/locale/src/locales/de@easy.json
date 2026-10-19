@@ -95,24 +95,23 @@
     "savedPassword": "",
     "security": "",
     "selfService": {
-      "addPasskey": "Passkey hinzufügen",
-      "changePassword": "Passwort ändern",
-      "intro": "Dein Passwort und deine Anmeldemethoden werden von unserem Anmeldedienst verwaltet. Jeder dieser Schritte führt dich dorthin und anschließend wieder zurück.",
       "methods": {
+        "anotherPasskey": "Für ein weiteres Gerät",
         "authenticatorApp": "Authenticator-App",
+        "change": "Ändern",
         "confirmRemove": {
           "desc": "Vielleicht musst du dich zuerst noch einmal anmelden. Du kannst die Methode jederzeit wieder einrichten.",
           "title": "Diese Anmelde-Methode entfernen?"
         },
-        "description": "So kannst du dich anmelden. Das Passwort kannst du nicht entfernen.",
+        "description": "So kannst du dich anmelden. Zum Hinzufügen oder Ändern kommst du zu unserem Anmeldedienst. Danach kommst du wieder hierher. Das Passwort kannst du nicht entfernen.",
+        "notSetUp": "Nicht eingerichtet",
         "passkey": "Passkey",
         "password": "Passwort",
         "removed": "Anmelde-Methode entfernt",
         "securityKey": "Sicherheits-Schlüssel",
+        "setUp": "Einrichten",
         "title": "Deine Anmelde-Methoden"
-      },
-      "setupMfa": "Authenticator-App einrichten",
-      "title": "Anmeldedaten"
+      }
     },
     "subTitle": "",
     "subTitle-nuxt": "",

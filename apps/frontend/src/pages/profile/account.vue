@@ -22,36 +22,7 @@ meta:
       </template>
       <template #security>
         <!-- Login details are managed at the identity provider on OIDC instances -->
-        <div v-if="generalContent.oidcEnabled" class="flex flex-col gap-4">
-          <LoginMethods />
-          <p class="text-muted">{{ t('accountPage.selfService.intro') }}</p>
-          <div class="flex flex-col gap-2 sm:flex-row">
-            <UButton
-              :to="loginActionUrl('changePassword')"
-              external
-              icon="i-lucide-key-round"
-              variant="outline"
-            >
-              {{ t('accountPage.selfService.changePassword') }}
-            </UButton>
-            <UButton
-              :to="loginActionUrl('addPasskey')"
-              external
-              icon="i-lucide-fingerprint"
-              variant="outline"
-            >
-              {{ t('accountPage.selfService.addPasskey') }}
-            </UButton>
-            <UButton
-              :to="loginActionUrl('setupMfa')"
-              external
-              icon="i-lucide-smartphone"
-              variant="outline"
-            >
-              {{ t('accountPage.selfService.setupMfa') }}
-            </UButton>
-          </div>
-        </div>
+        <LoginMethods v-if="generalContent.oidcEnabled" />
         <div v-else class="flex flex-col gap-4">
           <ChangePassword />
           <SetMFA contact-id="me" />
@@ -70,8 +41,6 @@ meta:
 </template>
 
 <script lang="ts" setup>
-import type { LoginAction } from '@beabee/beabee-common';
-
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -82,7 +51,6 @@ import LoginMethods from '../../components/pages/profile/account/LoginMethods.vu
 import SetMFA from '../../components/pages/profile/account/SetMFA.vue';
 import { generalContent } from '../../store';
 import { addBreadcrumb } from '../../store/breadcrumb';
-import { client } from '../../utils/api';
 import { routeIcons, routeLabels } from '../../utils/route-nav';
 import type { TabsItem } from '@nuxt/ui';
 
@@ -96,11 +64,6 @@ const activeTab = computed({
     router.push({ query: { ...route.query, tab: value } });
   },
 });
-
-// Each action runs at the identity provider inside a login that returns to
-// the security tab
-const loginActionUrl = (action: LoginAction) =>
-  client.auth.getLoginUrl('/profile/account?tab=security', action);
 
 const items = computed<TabsItem[]>(() => [
   {

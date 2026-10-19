@@ -95,24 +95,23 @@
     "savedPassword": "Nouveau mot de passe enregistré",
     "security": "Sécurité",
     "selfService": {
-      "addPasskey": "Ajouter une clé d'accès",
-      "changePassword": "Changer le mot de passe",
-      "intro": "Votre mot de passe et vos méthodes de connexion sont gérés par notre service de connexion. Chacune de ces options vous y conduit, puis vous ramène ici.",
       "methods": {
+        "anotherPasskey": "Pour un autre appareil",
         "authenticatorApp": "Application d'authentification",
+        "change": "Modifier",
         "confirmRemove": {
           "desc": "Vous devrez peut-être d'abord vous reconnecter. Vous pouvez reconfigurer la méthode à tout moment.",
           "title": "Supprimer cette méthode de connexion ?"
         },
-        "description": "Les façons dont vous pouvez vous connecter. Le mot de passe ne peut pas être supprimé.",
+        "description": "Les façons dont vous pouvez vous connecter. Pour ajouter ou modifier une méthode, nous vous redirigeons vers notre service de connexion, puis ici. Le mot de passe ne peut pas être supprimé.",
+        "notSetUp": "Non configuré",
         "passkey": "Passkey",
         "password": "Mot de passe",
         "removed": "Méthode de connexion supprimée",
         "securityKey": "Clé de sécurité",
+        "setUp": "Configurer",
         "title": "Vos méthodes de connexion"
-      },
-      "setupMfa": "Configurer l'application d'authentification",
-      "title": "Informations de connexion"
+      }
     },
     "subTitle": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
     "subTitle-nuxt": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
