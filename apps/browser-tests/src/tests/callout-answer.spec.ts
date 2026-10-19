@@ -273,3 +273,25 @@ test(
     });
   },
 );
+
+test(
+  "Custom thanks redirect",
+  { tag: "@experimental" },
+  async ({ page, createCallout }) => {
+    // The API only accepts a URL with a top-level domain, so redirect off-site
+    // and answer it here rather than over the network
+    const thanksRedirect = "https://example.com/thanks";
+    await page.route(thanksRedirect, (route) =>
+      route.fulfill({ body: "Redirected" }),
+    );
+    const slug = await createCallout({
+      access: "anonymous",
+      responseMode: "multiple",
+      thanksRedirect,
+    });
+
+    await page.goto(`/crowdnewsroom/${slug}/respond`);
+    await answer(page, "Redirected answer");
+    await page.waitForURL(thanksRedirect);
+  },
+);
