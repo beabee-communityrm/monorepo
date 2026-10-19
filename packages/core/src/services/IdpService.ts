@@ -214,9 +214,9 @@ class IdpService {
    * Lift the lock the identity provider put on a linked contact's account
    * after too many failed login attempts
    */
-  async unlockContact(contact: Contact): Promise<void> {
+  async unlockContact(contact: Contact): Promise<boolean> {
     log.info(`Unlock contact ${contact.id} at the IdP`);
-    await this.provider.unlockContact(this.subjectOf(contact));
+    return await this.provider.unlockContact(this.subjectOf(contact));
   }
 
   private subjectOf(contact: Contact): string {

@@ -68,8 +68,9 @@ export interface IdpProvider {
    * Lift the lock the provider put on an account after too many failed
    * login attempts
    * @param subject The linked account's subject identifier
+   * @returns false when the account was not locked
    */
-  unlockContact(subject: string): Promise<void>;
+  unlockContact(subject: string): Promise<boolean>;
 }
 
 export interface IdpSetupSettings {

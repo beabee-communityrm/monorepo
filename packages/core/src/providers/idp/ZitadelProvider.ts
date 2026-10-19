@@ -153,8 +153,17 @@ export class ZitadelProvider implements IdpProvider {
     );
   }
 
-  async unlockContact(subject: string): Promise<void> {
-    await this.request('POST', `/v2/users/${subject}/unlock`, {});
+  async unlockContact(subject: string): Promise<boolean> {
+    try {
+      await this.request('POST', `/v2/users/${subject}/unlock`, {});
+      return true;
+    } catch (err) {
+      // Zitadel refuses to unlock an account that is not locked
+      if (err instanceof ZitadelApiError && err.code === 9) {
+        return false;
+      }
+      throw err;
+    }
   }
 
   async permanentlyDeleteContact(subject: string): Promise<void> {
@@ -210,7 +219,7 @@ export class ZitadelProvider implements IdpProvider {
     });
     // Zitadel locks the account until an operator unlocks it (user unlock),
     // so the limits are loose enough for a member who mistypes
-    await this.put('/admin/v1/policies/lockout', {
+    await this.put('/admin/v1/policies/password/lockout', {
       maxPasswordAttempts: 10,
       maxOtpAttempts: 5,
     });

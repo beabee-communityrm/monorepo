@@ -24,8 +24,12 @@ export const unlockUser = async (args: UnlockUserArgs): Promise<void> => {
     console.log(`Reset the password tries of ${contact.email}`);
 
     if (idpService.isEnabled && contact.idpSubject) {
-      await idpService.unlockContact(contact);
-      console.log(`Unlocked ${contact.email} at the identity provider`);
+      const wasLocked = await idpService.unlockContact(contact);
+      console.log(
+        wasLocked
+          ? `Unlocked ${contact.email} at the identity provider`
+          : `${contact.email} was not locked at the identity provider`
+      );
     }
   });
 };
