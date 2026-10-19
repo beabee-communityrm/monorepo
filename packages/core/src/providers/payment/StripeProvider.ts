@@ -204,9 +204,18 @@ export class StripeProvider extends PaymentProvider {
         this.data.customerId
       );
       for (const paymentMethod of paymentMethods.data) {
-        await stripe.paymentMethods.update(paymentMethod.id, {
-          billing_details: updateData,
-        });
+        // Stripe rejects any update to PayPal payment methods
+        if (paymentMethod.type === 'paypal') continue;
+        try {
+          await stripe.paymentMethods.update(paymentMethod.id, {
+            billing_details: updateData,
+          });
+        } catch (err) {
+          log.error(
+            `Failed to update billing details on payment method ${paymentMethod.id}`,
+            err
+          );
+        }
       }
     }
   }
