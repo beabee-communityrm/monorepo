@@ -167,12 +167,12 @@
   "activity": {
     "data": {
       "actor": "",
-      "eventTime": "",
-      "eventType": "",
-      "metadata": "",
-      "target": ""
+      "category": "",
+      "target": "",
+      "time": ""
     },
     "filters": {
+      "all": "",
       "other": ""
     }
   },
