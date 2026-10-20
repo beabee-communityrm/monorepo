@@ -12,7 +12,7 @@ import {
 
 import { FindManyOptions, FindOneOptions, FindOptionsWhere, In } from 'typeorm';
 
-import { createQueryBuilder, getRepository, runTransaction } from '#database';
+import { getRepository, runTransaction } from '#database';
 import {
   CantUpdateContributionError,
   DuplicateEmailError,
@@ -43,6 +43,7 @@ import {
 } from '#models/index';
 import ActivityService from '#services/ActivityService';
 import ContactMfaService from '#services/ContactMfaService';
+import ContactSyncService from '#services/ContactSyncService';
 import EmailService from '#services/EmailService';
 import IdpService from '#services/IdpService';
 import NewsletterService from '#services/NewsletterService';
@@ -97,16 +98,6 @@ class ContactsService {
     return (await getRepository(Contact).findOneBy(where)) || undefined;
   }
 
-  async findByLoginOverride(code: string): Promise<Contact | undefined> {
-    // TODO: check undefined
-    return (
-      (await createQueryBuilder(Contact, 'm')
-        .where("m.loginOverride ->> 'code' = :code", { code: code })
-        .andWhere("m.loginOverride ->> 'expires' > :now", { now: new Date() })
-        .getOne()) || undefined
-    );
-  }
-
   async createContact(
     partialContact: Partial<Contact> & Pick<Contact, 'email'>,
     partialProfile: Partial<ContactProfile> = {},
@@ -155,6 +146,8 @@ class ContactsService {
         await getRepository(Contact).update(contact.id, { idpSubject });
         contact.idpSubject = idpSubject;
       }
+
+      await ContactSyncService.createContact(contact);
 
       return contact;
     } catch (error) {
@@ -226,6 +219,7 @@ class ContactsService {
     await PaymentService.updateContact(contact, updates);
 
     await IdpService.updateContact(contact, updates);
+    await ContactSyncService.updateContact(contact, updates);
   }
 
   /**
@@ -262,6 +256,11 @@ class ContactsService {
         dateExpires: updates.dateExpires ?? null,
       });
       contact.roles.push(role);
+      await ActivityService.addEvent({
+        eventType: ActivityEventType.ContactRoleAdded,
+        targetId: contact.id,
+        metadata: { roleType },
+      });
     }
 
     await getRepository(Contact).save(contact);
@@ -269,12 +268,6 @@ class ContactsService {
     if (wasActive !== contact.membership?.isActive) {
       await NewsletterService.upsertContact(contact);
     }
-
-    await ActivityService.addEvent({
-      eventType: ActivityEventType.ContactRoleAdded,
-      targetId: contact.id,
-      metadata: null,
-    });
 
     return role;
   }
@@ -356,6 +349,8 @@ class ContactsService {
         eventType: ActivityEventType.ContactProfileUpdated,
         metadata: null,
       });
+
+      await ContactSyncService.updateContactProfile(contact, profileUpdates);
     }
 
     if (newsletterStatus || newsletterGroups) {
@@ -512,6 +507,7 @@ class ContactsService {
     });
 
     await IdpService.permanentlyDeleteContact(contact);
+    await ContactSyncService.permanentlyDeleteContact(contact);
   }
 
   /**
@@ -658,9 +654,11 @@ class ContactsService {
       }
     }
 
-    await this.updateContact(rpFlow.contact, {
-      password: await generatePassword(data.password),
-    });
+    const newPassword = await generatePassword(data.password);
+    await this.updateContact(rpFlow.contact, { password: newPassword });
+    log.info(
+      `Password reset to hash ${newPassword.hash.substring(0, 12)} for ${rpFlow.contact.email}`
+    );
 
     // Stop all other reset flows if they exist
     await ResetSecurityFlowService.deleteAll(rpFlow.contact);

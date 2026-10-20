@@ -42,28 +42,40 @@ Standalone to OIDC always passes through the IdP Transition.
 
 **Login (OIDC state).** `GET /auth/login` starts an authorization-code flow
 with PKCE, state and nonce; the callback looks up the contact by IdP Subject
-and establishes the normal session. Unlinked Contacts see an "unlinked
-account" error. Logout is RP-initiated and ends the IdP session as well.
-Local-auth endpoints (password, MFA, reset) return 404.
+and establishes the normal session. Unlinked Contacts are logged out of the
+IdP again and see an "unlinked account" error, so their next attempt starts
+at the IdP's login form. Logout ends the IdP session as well (RP-initiated
+logout): `POST /auth/logout` ends the beabee session and answers with the
+IdP's logout URL for the client to navigate to, `GET /auth/logout` does the
+same in one step for plain links. The IdP returns to
+`GET /auth/logout/callback`, which continues to the `next` that travelled
+through the IdP as the end-session `state`. Local-auth endpoints (password, MFA,
+reset) return 404.
 
 **Joining (OIDC state).** The setup form has no password field. After the
-confirm-email link, beabee finalises the Signup Flow, then hands the member
-to the IdP's own credential setup screen (Zitadel invite code obtained via
-API, beabee's email carries the link; password or passkey). The IdP returns
-the member to one fixed beabee page (the instance's `defaultRedirectUri`),
-which starts an OIDC login that completes silently and continues to the
-Signup Flow's `confirmUrl`. Keycloak in development sends its own
-`execute-actions-email` instead.
+confirm-email link, beabee finalises the Signup Flow, starts an OIDC login
+that continues to the setup page, and hands the member to the IdP's
+credential setup page inside that login: Zitadel's Login v2 invite page
+with an invite code obtained via API (password or passkey), or in
+development a Keycloak magic link carrying the login's parameters. The IdP
+completes the login and the member arrives at the setup page through
+beabee's normal OIDC callback. Clicking the confirmation link again after an
+abandoned setup starts a fresh login and invite.
 
 **Account management (OIDC state).** beabee's account page offers three
 actions — change password, add a passkey, set up an authenticator app — each
-a link to the matching Login v2 page (`/password/change`, `/passkey/set`,
-`/mfa/set`, derived from the issuer with the member's login name). They work
-off the member's existing login session, ask for the current password where
-needed, and return to beabee via the same fixed page as the join flow
+an OIDC login that beabee starts with a Login Action
+(`GET /auth/login?action=…`). The provider enters the matching Login v2 page
+(`/password/change`, `/passkey/set`, `/mfa/set`) inside that login, or in
+development Keycloak's application initiated action. They work off the
+member's existing login session, ask for the current password where needed,
+and return to the account page through the OIDC callback
 ([ADR-0004](./adr/0004-link-to-login-v2-self-service-flows.md)). Removing a
-passkey or authenticator app has no Login v2 page; members ask support, and an
-operator removes it in the Console
+passkey or authenticator app has no Login v2 page, so beabee's account page
+does it through the provider's API instead: it shows which methods are set
+up and removes one after a fresh login at the IdP (`prompt=login`, recent
+`auth_time`), so that a hijacked session cannot strip a second factor.
+Operators can still remove them in the Console
 ([ADR-0005](./adr/0005-hide-the-idp-console-from-members.md)).
 
 **IdP Transition and cutover.** Existing password hashes cannot be imported
@@ -80,33 +92,64 @@ CLI once no longer needed.
 **Branding.** The instance's label policy is set from the beabee theme: the
 main, body, danger and white colours map to Zitadel's primary, font, warn and
 background colours (light and dark alike, theme mode forced light) plus the
-logo as logo and icon. Pushed on every settings save and by the CLI. Fonts
-and the splash background image are not synced for now (Zitadel has one font
-file per instance and no per-instance background before v5).
+logo as logo and icon. Pushed when the theme or logo is saved and by the
+CLI. Fonts and the splash background image are not synced for now (Zitadel
+has one font file per instance and no per-instance background before v5).
 
 ## Configuration
 
 Login: `BEABEE_LOGIN_PROVIDER=local|oidc` with `BEABEE_LOGIN_SETTINGS_`
-`ISSUER`, `CLIENTID`, `CLIENTSECRET` (empty = public client), `SCOPES`,
-`REDIRECTURI`, `POSTLOGOUTREDIRECTURI`.
+`ISSUER`, `CLIENTID`, `CLIENTSECRET` (empty = public client), `SCOPES`. The
+IdP client's redirect URI is `<audience>/api/1.0/auth/callback` and its
+post-logout redirect URI `<audience>/api/1.0/auth/logout/callback`.
 
 Provisioning: `BEABEE_IDP_PROVIDER=none|zitadel|keycloak` with
 `BEABEE_IDP_SETTINGS_` `URL`, `PAT` (Zitadel) or `URL`, `REALM`, `CLIENTID`,
 `CLIENTSECRET` (Keycloak).
 
+Website login: `BEABEE_SITELOGIN_` `KEY` (32 bytes, base64, shared with the
+website's edge; unset = off), `COOKIE_NAME`, `COOKIE_DOMAIN` (the parent domain;
+`BEABEE_COOKIE_DOMAIN` stays the community host so the session cookie does not
+spread), `COOKIE_MAXAGE` (seconds, longer than the ID token lifetime). Requires
+`BEABEE_COOKIE_SECURE=true` for a `__Secure-` cookie name. The website links
+to `/api/1.0/auth/login?next=<absolute URL>`; `next` may be any URL on a
+`BEABEE_TRUSTEDORIGINS` origin. When the cookie's token has expired, the
+website's edge sends the browser to `/api/1.0/auth/refresh?next=…`, one
+`prompt=none` round trip that renews the cookie or, if the IdP session is
+gone, clears it; either way the browser continues to `next`. A website logout
+link is `/api/1.0/auth/logout?next=<absolute URL>`; the member returns to
+that page via the logout callback, so the IdP needs only the one registered
+post-logout redirect URI. The website's edge reads a `role` claim from the
+token: `backend-cli setup integrations idp` registers the webhook app's
+`/webhook/zitadel/claims` as an Actions v2 target on the `preuserinfo`
+function and stores its signing key in the `zitadel-claims-signing-key` option;
+the webhook answers with the contact's highest active role other than the
+admin roles (`member` today), found by IdP subject, or no claim. The target
+does not interrupt token issuance, so a beabee outage costs the role, not
+the login.
+
 IdP-side setup that beabee owns and applies idempotently via
-`backend-cli idp setup`: `defaultRedirectUri`, `ignoreUnknownUsernames` and
-branding. The virtual instance, project and OIDC client are created by the
-hosting infrastructure, which is expected to call the same command in future.
+`backend-cli setup integrations idp`: `defaultRedirectUri` (beabee's login endpoint, the
+safety net for a member who finishes a Login v2 page outside a login beabee
+started), `ignoreUnknownUsernames`, the lockout policy (10 password and 5
+OTP attempts; Zitadel then locks the account until `backend-cli user unlock`
+lifts it), branding and, on an OIDC Login instance whose issuer is this IdP,
+the OIDC client's redirect and post-logout URI lists.
+The virtual instance, project and OIDC client are created by the hosting
+infrastructure, which is expected to call the same command in future.
 
 ## Operations
 
 **Enabling OIDC Login** on an instance is the last step of the IdP
 Transition: with provisioning already running and the unsynced count
 acceptable, set `BEABEE_LOGIN_PROVIDER=oidc` plus the
-`BEABEE_LOGIN_SETTINGS_*` values and redeploy. The backend refuses to start
-if `BEABEE_IDP_PROVIDER` is `none` at that point. Existing beabee sessions
-stay valid until they expire; the next login goes through the IdP.
+`BEABEE_LOGIN_SETTINGS_*` values, clear all sessions and redeploy. The
+backend refuses to start if `BEABEE_IDP_PROVIDER` is `none` at that point.
+Clearing the sessions makes every member log in through the IdP, so each
+session carries the ID token that logout uses as its hint. A session from
+before the cutover has none: its logout still reaches the IdP's end-session
+endpoint, but without a hint the IdP asks the member to confirm instead of
+logging them out silently.
 
 **Break-glass.** If the IdP is unreachable or misconfigured nobody can log in,
 operators included. The way back is to set `BEABEE_LOGIN_PROVIDER=local` and
@@ -114,6 +157,19 @@ redeploy: local password hashes are kept for exactly this reason, so members
 who haven't changed their password at the IdP since can log in as before. The
 OIDC discovery result is cached for the process lifetime; a restart picks up
 changed IdP metadata.
+
+**Upgrading Login v2.** beabee enters Login v2 pages with the ID of an
+authorization request it started, which Login v2's source supports but its
+documentation does not promise
+([ADR-0004](./adr/0004-link-to-login-v2-self-service-flows.md)). After a
+Login v2 upgrade, check that it still holds: request the instance's OIDC
+authorize URL with the tenant's client and read the `authRequest` ID from
+the redirect, open
+`/ui/v2/login/password/change?requestId=oidc_<id>&loginName=<login name>`
+in a browser logged in at the IdP, change the password, and confirm the
+browser lands on beabee's `/api/1.0/auth/callback` with `code` and the
+original `state`. If it doesn't, members finishing a page land on the
+`defaultRedirectUri` instead of where they started.
 
 **Hiding the Console.** The hosting infrastructure blocks `/ui/console` on
 the tenant's login domain and redirects it to the tenant's beabee URL;
@@ -137,13 +193,15 @@ branch and is retargeted to `main` as its base merges.
    frontends
 6. `feat/oidc-account` — account page links to the IdP's self-service pages
 7. `feat/oidc-signup` — join flow
-8. `feat/idp-setup` — branding sync and `idp setup`
-9. `feat/idp-transition` — password mirroring, session clearing, unsynced
+8. `feat/oidc-self-service-removal` — authentication method status and
+   removal on the account page, behind a fresh IdP login
+9. `feat/idp-setup` — branding sync and `setup integrations idp`
+10. `feat/idp-transition` — password mirroring, session clearing, unsynced
    count, hash clean-up
 
 ## Deliberately out of scope
 
 Password hash import; a cutover mail-out; offering both login methods at
 once; export for tenants leaving the hosting; font and background sync;
-Keycloak branding; the legacy frontend; self-service removal of passkeys and
-authenticator apps; enforcing multi-factor authentication.
+Keycloak branding; the legacy frontend; enforcing multi-factor
+authentication.

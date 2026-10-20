@@ -59,7 +59,7 @@ function filterHiddenComponents(
  *
  * @param component - The component the answer belongs to
  * @param answer - The answer, if the question was answered
- * @returns The answer as text, a file URL, or an image source
+ * @returns The answer as text, a file URL, an image source, or an audio source
  */
 function displayAnswer(
   component: CalloutComponentSchema & { fullKey: string },
@@ -69,6 +69,7 @@ function displayAnswer(
   href?: string;
   images?: string[];
   imageAlt?: string;
+  audio?: CalloutResponseAnswerRow['audio'];
 } {
   const list =
     answer === undefined ? [] : Array.isArray(answer) ? answer : [answer];
@@ -108,6 +109,28 @@ function displayAnswer(
       return {
         value: name || null,
         href: file.path ? resolveImageUrl(file.path) : file.url,
+      };
+    }
+
+    // The URL is absolute to the instance that recorded it, so play from the
+    // path. The file usually has no duration the player can read, so pass on
+    // the one saved at upload
+    case CalloutComponentType.INPUT_AUDIO_RECORDER: {
+      const [file] = list.filter(isFileUploadAnswer);
+      if (!file?.path) return { value: null };
+
+      const formioFile = isFormioFileAnswer(file) ? file : null;
+      return {
+        value: null,
+        audio: {
+          src: resolveImageUrl(file.path),
+          name: formioFile?.originalName || formioFile?.name || '',
+          size: formioFile?.size,
+          duration:
+            'duration' in file && typeof file.duration === 'number'
+              ? file.duration
+              : undefined,
+        },
       };
     }
 

@@ -94,6 +94,25 @@
     "requiredFields": "Champs obligatoires",
     "savedPassword": "Nouveau mot de passe enregistré",
     "security": "Sécurité",
+    "selfService": {
+      "methods": {
+        "anotherPasskey": "Pour un autre appareil",
+        "authenticatorApp": "Application d'authentification",
+        "change": "Modifier",
+        "confirmRemove": {
+          "desc": "Vous devrez peut-être d'abord vous reconnecter. Vous pouvez reconfigurer la méthode à tout moment.",
+          "title": "Supprimer cette méthode de connexion ?"
+        },
+        "description": "Les façons dont vous pouvez vous connecter. Pour ajouter ou modifier une méthode, nous vous redirigeons vers notre service de connexion, puis ici. Le mot de passe ne peut pas être supprimé.",
+        "notSetUp": "Non configuré",
+        "passkey": "Passkey",
+        "password": "Mot de passe",
+        "removed": "Méthode de connexion supprimée",
+        "securityKey": "Clé de sécurité",
+        "setUp": "Configurer",
+        "title": "Vos méthodes de connexion"
+      }
+    },
     "subTitle": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
     "subTitle-nuxt": "Les champs obligatoires sont marqués d'une astérisque. Tous les informations fournies ici restent privées.",
     "subscriptions": "Abonnements",
@@ -1189,7 +1208,6 @@
     "roles": "Rôles",
     "security": {
       "instructions": "Copiez et partagez ce lien :",
-      "loginOverride": "",
       "mfa": {
         "desc": "Ce contact a activé l'A2F. Cliquez sur le bouton « {disableLabel} » pour la désactiver.",
         "disabledDesc": "L'A2F n'est pas activée pour ce contact."
@@ -1508,6 +1526,16 @@
       "addressLine1": {
         "required": "L'adresse ligne 1 est obligatoire"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Votre navigateur a bloqué l'accès au microphone. Vérifiez les autorisations du site et réessayez, ou importez un enregistrement réalisé ailleurs.",
+        "micPermissionDeniedTitle": "Microphone non disponible",
+        "recordingNotSupportedBody": "Ce navigateur ne peut pas enregistrer l'audio. Veuillez importer un fichier audio à la place.",
+        "recordingNotSupportedTitle": "Enregistrement non pris en charge",
+        "tooLongBody": "Ce fichier dure {duration}. La durée maximale pour cette question est {max}. Veuillez le raccourcir ou enregistrer une réponse plus courte.",
+        "tooLongTitle": "Enregistrement trop long",
+        "uploadFailedTitle": "Échec de l'envoi",
+        "wrongTypeBody": "Cette question accepte uniquement les fichiers {types}."
+      },
       "cityOrTown": {
         "required": "La ville est obligatoire"
       },
@@ -1614,6 +1642,25 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Fichier joint",
+        "delete": "Supprimer",
+        "discard": "Annuler",
+        "download": "Télécharger",
+        "pause": "Pause",
+        "paused": "En pause",
+        "playPause": "Lecture ou pause",
+        "reRecord": "Enregistrer à nouveau",
+        "record": "Démarrer l'enregistrement",
+        "recording": "Enregistrement en cours",
+        "requestingPermission": "En attente de l'autorisation du microphone. Autorisez l'accès dans votre navigateur pour continuer.",
+        "resume": "Reprendre",
+        "stop": "Arrêter",
+        "tryAgain": "Réessayer",
+        "uploadInstead": "Importer un fichier audio à la place",
+        "uploadLabel": "Importer un fichier audio",
+        "uploadingHint": "Envoi en cours — vous pouvez continuer à remplir le reste du formulaire."
+      },
       "file": {
         "browse": "importer depuis l'appareil",
         "dropFiles": "Déposez des fichiers",
@@ -1716,6 +1763,10 @@
   },
   "login": {
     "backTo": "Revenir à {newsroomName}",
+    "errors": {
+      "login-failed": "La connexion a échoué. Veuillez réessayer.",
+      "unlinked-account": "Votre connexion n'est liée à aucun compte sur cette plateforme. Veuillez contacter le support."
+    },
     "forgotPassword": "Mot de passe oublié ?",
     "joinNow": "S'inscrire maintenant !",
     "lostMfaDevice": "Vous avez perdu votre appareil d'A2F ?",
