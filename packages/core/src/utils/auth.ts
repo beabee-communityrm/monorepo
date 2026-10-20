@@ -140,7 +140,7 @@ export async function isValidPassword(
     passwordData.salt,
     passwordData.iterations
   );
-  log.info(`Tried to login with password hash ${hash}`);
+  log.info(`Tried to login with password hash ${hash.substring(0, 12)}`);
   // Check if password hash matches
   return !!passwordData.salt && hash === passwordData.hash
     ? LOGIN_CODES.LOGGED_IN

@@ -40,7 +40,9 @@ passport.use(
 
       // Check if contact for email exists
       if (contact) {
-        log.info(`Login attempted for "${email}". Contact found.`);
+        log.info(
+          `Login attempted for "${email}". Contact ${contact.id} found.`
+        );
         code = await isValidPassword(contact.password, password);
 
         if (code === LOGIN_CODES.LOGGED_IN) {
