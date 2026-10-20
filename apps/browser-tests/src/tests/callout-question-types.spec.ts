@@ -306,7 +306,8 @@ test("Answer every question type", async ({
   });
   await createContact();
 
-  // A canned MapTiler answer, so the address lookup needs no network or key
+  // A canned MapTiler answer, so the address lookup needs no network. The
+  // key in .env.test only has to be non-empty
   await context.route("https://api.maptiler.com/geocoding/**", (route) =>
     route.fulfill({
       json: {
