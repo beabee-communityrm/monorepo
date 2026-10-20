@@ -8,7 +8,6 @@ import OptionsService, {
 import PageSettingsService from '@beabee/core/services/PageSettingsService';
 import { isInvalidType } from '@beabee/core/utils/db';
 
-import cookie from 'cookie-parser';
 import csrf from 'csurf';
 // TODO: This package is deprecated, see https://www.npmjs.com/package/csurf
 import express, { ErrorRequestHandler } from 'express';
@@ -46,7 +45,6 @@ app.set('view engine', 'pug');
 app.set('view cache', false);
 
 app.use(helmet({ contentSecurityPolicy: false }));
-app.use(cookie());
 app.use(express.urlencoded({ extended: true }));
 
 // Remove empty strings from form submissions
@@ -58,25 +56,6 @@ app.use((req, res, next) => {
     });
   }
   next();
-});
-
-// Setup tracker
-app.use('/membership.js', (req, res) => {
-  const referrerUrl = req.get('referer');
-  res.set('Content-Type', 'application/javascript');
-  if (
-    referrerUrl &&
-    config.trustedOrigins.some((url) => referrerUrl.startsWith(url))
-  ) {
-    const memberId = req.cookies.memberId;
-    if (memberId) {
-      res.send('window.Membership = {memberId: "' + memberId + '"}');
-    } else {
-      res.send('window.Membership = {}');
-    }
-  } else {
-    res.status(404).send('');
-  }
 });
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
