@@ -95,24 +95,23 @@
     "savedPassword": "Das neue Passwort wurde gespeichert. ",
     "security": "Sicherheit",
     "selfService": {
-      "addPasskey": "Passkey hinzufügen",
-      "changePassword": "Passwort ändern",
-      "intro": "Dein Passwort und deine Anmeldemethoden werden von unserem Anmeldedienst verwaltet. Jeder dieser Schritte führt dich dorthin und anschließend wieder zurück.",
       "methods": {
+        "anotherPasskey": "Für ein weiteres Gerät",
         "authenticatorApp": "Authenticator-App",
+        "change": "Ändern",
         "confirmRemove": {
           "desc": "Möglicherweise musst du dich zuerst erneut anmelden. Du kannst die Methode jederzeit wieder einrichten.",
           "title": "Diese Anmeldemethode entfernen?"
         },
-        "description": "So kannst du dich anmelden. Das Passwort kann nicht entfernt werden.",
+        "description": "So kannst du dich anmelden. Zum Hinzufügen oder Ändern leiten wir dich zu unserem Anmeldedienst und anschließend zurück. Das Passwort kann nicht entfernt werden.",
+        "notSetUp": "Nicht eingerichtet",
         "passkey": "Passkey",
         "password": "Passwort",
         "removed": "Anmeldemethode entfernt",
         "securityKey": "Sicherheitsschlüssel",
+        "setUp": "Einrichten",
         "title": "Deine Anmeldemethoden"
-      },
-      "setupMfa": "Authenticator-App einrichten",
-      "title": "Anmeldedaten"
+      }
     },
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subTitle-nuxt": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",

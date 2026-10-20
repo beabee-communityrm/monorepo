@@ -1,9 +1,10 @@
 <!--
   # LoginMethods
-  Lists the member's login methods at the identity provider and removes one
-  on request. Removal needs a login at the identity provider from the last
-  few minutes: when the API asks for one, the member is sent to log in again
-  and comes back here with the method to remove in the query.
+  Lists every login method with one action each: methods the member has can
+  be removed (the password only changed), the others set up. Setting up runs
+  as a login action at the identity provider. Removal needs a login there
+  from the last few minutes: when the API asks for one, the member is sent to
+  log in again and comes back here with the method to remove in the query.
 -->
 
 <template>
@@ -11,33 +12,79 @@
   <p class="mb-2 text-sm text-main-80">
     {{ t('accountPage.selfService.methods.description') }}
   </p>
-  <ul class="divide-primary-20 mb-6 divide-y">
-    <li
-      v-for="method in methods"
-      :key="method.id"
-      class="flex items-center gap-3 py-2"
-    >
-      <font-awesome-icon
-        :icon="METHOD_ICONS[method.type]"
-        class="text-primary-70 w-5"
-      />
-      <div class="min-w-0 flex-1">
-        <p class="font-semibold">
-          {{ t(`accountPage.selfService.methods.${method.type}`) }}
-        </p>
-        <p v-if="method.name" class="truncate text-sm text-body-80">
-          {{ method.name }}
-        </p>
-      </div>
-      <AppButton
-        v-if="method.type !== 'password'"
-        variant="dangerOutlined"
-        size="sm"
-        @click="methodToRemove = method"
+  <ul v-if="methods" class="divide-primary-20 mb-6 divide-y">
+    <template v-for="type in CONTACT_AUTH_METHOD_TYPES" :key="type">
+      <li
+        v-for="method in methods.filter((m) => m.type === type)"
+        :key="method.id"
+        class="flex items-center gap-3 py-2"
       >
-        {{ t('actions.delete') }}
-      </AppButton>
-    </li>
+        <font-awesome-icon
+          :icon="METHOD_ICONS[type]"
+          class="text-primary-70 w-5"
+        />
+        <div class="min-w-0 flex-1">
+          <p class="font-semibold">
+            {{ t(`accountPage.selfService.methods.${type}`) }}
+          </p>
+          <p v-if="method.name" class="truncate text-sm text-body-80">
+            {{ method.name }}
+          </p>
+        </div>
+        <AppButton
+          v-if="type === 'password'"
+          :href="loginActionUrl('changePassword')"
+          variant="primaryOutlined"
+          size="sm"
+        >
+          {{ t('accountPage.selfService.methods.change') }}
+        </AppButton>
+        <AppButton
+          v-else
+          variant="dangerOutlined"
+          size="sm"
+          @click="methodToRemove = method"
+        >
+          {{ t('actions.delete') }}
+        </AppButton>
+      </li>
+      <!-- A member can have several passkeys, so adding one stays available -->
+      <li
+        v-if="
+          SETUP_ACTIONS[type] &&
+          (type === 'passkey' || !methods.some((m) => m.type === type))
+        "
+        class="flex items-center gap-3 py-2"
+      >
+        <font-awesome-icon
+          :icon="METHOD_ICONS[type]"
+          class="text-primary-70 w-5 opacity-50"
+        />
+        <div class="min-w-0 flex-1">
+          <p class="font-semibold">
+            {{ t(`accountPage.selfService.methods.${type}`) }}
+          </p>
+          <p class="text-sm text-body-80">
+            {{
+              methods.some((m) => m.type === type)
+                ? t('accountPage.selfService.methods.anotherPasskey')
+                : t('accountPage.selfService.methods.notSetUp')
+            }}
+          </p>
+        </div>
+        <AppButton
+          :href="loginActionUrl(SETUP_ACTIONS[type])"
+          variant="primaryOutlined"
+          size="sm"
+        >
+          {{
+            type === 'passkey'
+              ? t('actions.add')
+              : t('accountPage.selfService.methods.setUp')
+          }}
+        </AppButton>
+      </li>
+    </template>
   </ul>
 
   <AppConfirmDialog
@@ -55,9 +102,11 @@
 
 <script lang="ts" setup>
 import {
+  CONTACT_AUTH_METHOD_TYPES,
   type ContactAuthMethodType,
   type GetContactAuthMethodData,
   LOGIN_CODES,
+  type LoginAction,
 } from '@beabee/beabee-common';
 import { UnauthorizedError } from '@beabee/client';
 import {
@@ -87,11 +136,22 @@ const METHOD_ICONS: Record<ContactAuthMethodType, IconDefinition> = {
   securityKey: faShieldHalved,
 };
 
+// Security keys have no login action, so they can only be removed here
+const SETUP_ACTIONS: Partial<Record<ContactAuthMethodType, LoginAction>> = {
+  password: 'changePassword',
+  passkey: 'addPasskey',
+  authenticatorApp: 'setupMfa',
+};
+
+// Each action runs at the identity provider inside a login that returns here
+const loginActionUrl = (action: LoginAction | undefined) =>
+  client.auth.getLoginUrl('/profile/account', action);
+
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const methods = ref<GetContactAuthMethodData[]>([]);
+const methods = ref<GetContactAuthMethodData[]>();
 const methodToRemove = ref<GetContactAuthMethodData>();
 
 async function load() {

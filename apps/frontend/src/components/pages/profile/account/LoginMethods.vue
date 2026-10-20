@@ -1,9 +1,10 @@
 <!--
   # LoginMethods
-  Lists the member's login methods at the identity provider and removes one
-  on request. Removal needs a login at the identity provider from the last
-  few minutes: when the API asks for one, the member is sent to log in again
-  and comes back here with the method to remove in the query.
+  Lists every login method with one action each: methods the member has can
+  be removed (the password only changed), the others set up. Setting up runs
+  as a login action at the identity provider. Removal needs a login there
+  from the last few minutes: when the API asks for one, the member is sent to
+  log in again and comes back here with the method to remove in the query.
 -->
 
 <template>
@@ -12,35 +13,85 @@
     :title="t('accountPage.selfService.methods.title')"
     :description="t('accountPage.selfService.methods.description')"
   >
-    <ul class="divide-y divide-default">
-      <li
-        v-for="method in methods"
-        :key="method.id"
-        class="flex items-center gap-3 py-3"
-      >
-        <UIcon
-          :name="METHOD_ICONS[method.type]"
-          class="size-5 shrink-0 text-muted"
-        />
-        <div class="min-w-0 flex-1">
-          <p class="font-medium">
-            {{ t(`accountPage.selfService.methods.${method.type}`) }}
-          </p>
-          <p v-if="method.name" class="truncate text-muted">
-            {{ method.name }}
-          </p>
-        </div>
-        <UButton
-          v-if="method.type !== 'password'"
-          variant="ghost"
-          color="error"
-          size="sm"
-          icon="i-lucide-trash-2"
-          @click="methodToRemove = method"
+    <ul v-if="methods" class="divide-y divide-default">
+      <template v-for="type in CONTACT_AUTH_METHOD_TYPES" :key="type">
+        <li
+          v-for="method in methods.filter((m) => m.type === type)"
+          :key="method.id"
+          class="flex items-center gap-3 py-3"
         >
-          {{ t('actions.delete') }}
-        </UButton>
-      </li>
+          <UIcon
+            :name="METHOD_ICONS[type]"
+            class="size-5 shrink-0 text-muted"
+          />
+          <div class="min-w-0 flex-1">
+            <p class="font-medium">
+              {{ t(`accountPage.selfService.methods.${type}`) }}
+            </p>
+            <p v-if="method.name" class="truncate text-muted">
+              {{ method.name }}
+            </p>
+          </div>
+          <UButton
+            v-if="type === 'password'"
+            :to="loginActionUrl('changePassword')"
+            external
+            variant="ghost"
+            size="sm"
+            icon="i-lucide-pencil"
+          >
+            {{ t('accountPage.selfService.methods.change') }}
+          </UButton>
+          <UButton
+            v-else
+            variant="ghost"
+            color="error"
+            size="sm"
+            icon="i-lucide-trash-2"
+            @click="methodToRemove = method"
+          >
+            {{ t('actions.delete') }}
+          </UButton>
+        </li>
+        <!-- A member can have several passkeys, so adding one stays available -->
+        <li
+          v-if="
+            SETUP_ACTIONS[type] &&
+            (type === 'passkey' || !methods.some((m) => m.type === type))
+          "
+          class="flex items-center gap-3 py-3"
+        >
+          <UIcon
+            :name="METHOD_ICONS[type]"
+            class="size-5 shrink-0 text-dimmed"
+          />
+          <div class="min-w-0 flex-1">
+            <p class="font-medium">
+              {{ t(`accountPage.selfService.methods.${type}`) }}
+            </p>
+            <p class="text-muted">
+              {{
+                methods.some((m) => m.type === type)
+                  ? t('accountPage.selfService.methods.anotherPasskey')
+                  : t('accountPage.selfService.methods.notSetUp')
+              }}
+            </p>
+          </div>
+          <UButton
+            :to="loginActionUrl(SETUP_ACTIONS[type])"
+            external
+            variant="ghost"
+            size="sm"
+            icon="i-lucide-plus"
+          >
+            {{
+              type === 'passkey'
+                ? t('actions.add')
+                : t('accountPage.selfService.methods.setUp')
+            }}
+          </UButton>
+        </li>
+      </template>
     </ul>
   </AppSectionCard>
 
@@ -74,9 +125,11 @@
 
 <script lang="ts" setup>
 import {
+  CONTACT_AUTH_METHOD_TYPES,
   type ContactAuthMethodType,
   type GetContactAuthMethodData,
   LOGIN_CODES,
+  type LoginAction,
 } from '@beabee/beabee-common';
 import { UnauthorizedError } from '@beabee/client';
 import { AppModalActions, AppSectionCard, addNotification } from '@beabee/vue';
@@ -94,11 +147,23 @@ const METHOD_ICONS: Record<ContactAuthMethodType, string> = {
   securityKey: 'i-lucide-usb',
 };
 
+// Security keys have no login action, so they can only be removed here
+const SETUP_ACTIONS: Partial<Record<ContactAuthMethodType, LoginAction>> = {
+  password: 'changePassword',
+  passkey: 'addPasskey',
+  authenticatorApp: 'setupMfa',
+};
+
+// Each action runs at the identity provider inside a login that returns to
+// the security tab
+const loginActionUrl = (action: LoginAction | undefined) =>
+  client.auth.getLoginUrl('/profile/account?tab=security', action);
+
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const methods = ref<GetContactAuthMethodData[]>([]);
+const methods = ref<GetContactAuthMethodData[]>();
 const methodToRemove = ref<GetContactAuthMethodData>();
 const removing = ref(false);
 

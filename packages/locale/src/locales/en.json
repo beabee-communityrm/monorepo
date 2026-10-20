@@ -95,24 +95,23 @@
     "savedPassword": "New password saved",
     "security": "Security",
     "selfService": {
-      "addPasskey": "Add a passkey",
-      "changePassword": "Change password",
-      "intro": "Your password and login methods are managed by our login service. Each of these takes you there and brings you back afterwards.",
       "methods": {
+        "anotherPasskey": "For another device",
         "authenticatorApp": "Authenticator app",
+        "change": "Change",
         "confirmRemove": {
           "desc": "You may be asked to log in again first. You can set the method up again at any time.",
           "title": "Remove this login method?"
         },
-        "description": "The ways you can log in. The password cannot be removed.",
+        "description": "The ways you can log in. Adding or changing a method takes you to our login service and back. The password cannot be removed.",
+        "notSetUp": "Not set up",
         "passkey": "Passkey",
         "password": "Password",
         "removed": "Login method removed",
         "securityKey": "Security key",
+        "setUp": "Set up",
         "title": "Your login methods"
-      },
-      "setupMfa": "Set up authenticator app",
-      "title": "Login details"
+      }
     },
     "subTitle": "Required fields are marked with an asterisk. All information submitted here is private.",
     "subTitle-nuxt": "All personal information you provide is stored securely and kept strictly private. It will never be shared with third parties without your consent.",
