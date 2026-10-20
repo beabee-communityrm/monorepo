@@ -1,6 +1,6 @@
 import type { Locator, Page } from "@playwright/test";
 import { api, testUser as admin } from "@beabee/test-utils/test-data";
-import { test, expect, waitForForm } from "../utils/fixtures";
+import { test, expect } from "../utils/fixtures";
 import { getResponses } from "../utils/callout-response";
 
 const slideId = "slide1";
@@ -333,8 +333,34 @@ test("Answer every question type", async ({
     }),
   );
 
+  // The date question loads its date picker from formio's CDN, and the form
+  // is rebuilt when it arrives, clearing anything already filled in. So wait
+  // for that rebuild to settle
+  await page.addInitScript(() => {
+    const timer = setInterval(() => {
+      const w = window as unknown as {
+        flatpickr?: unknown;
+        flatpickrAt: number;
+      };
+      if (w.flatpickr) {
+        w.flatpickrAt = performance.now();
+        clearInterval(timer);
+      }
+    }, 20);
+  });
   await page.goto(`/crowdnewsroom/${slug}/respond`);
-  await waitForForm(page);
+  await page.waitForFunction(() => {
+    const w = window as unknown as {
+      flatpickrAt?: number;
+      formBuiltAt?: number;
+    };
+    return (
+      w.flatpickrAt !== undefined &&
+      w.formBuiltAt !== undefined &&
+      w.formBuiltAt > w.flatpickrAt &&
+      performance.now() - w.formBuiltAt > 1000
+    );
+  });
 
   for (const q of questions) {
     if (!q.fill) continue;
