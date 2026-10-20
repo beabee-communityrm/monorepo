@@ -12,6 +12,22 @@ const png = Buffer.from(
   "base64",
 );
 
+// One second of silence, as 8-bit mono WAV at 8kHz
+const sampleRate = 8000;
+const wav = Buffer.alloc(44 + sampleRate, 128);
+wav.write("RIFF", 0);
+wav.writeUInt32LE(36 + sampleRate, 4);
+wav.write("WAVEfmt ", 8);
+wav.writeUInt32LE(16, 16);
+wav.writeUInt16LE(1, 20); // PCM
+wav.writeUInt16LE(1, 22); // Mono
+wav.writeUInt32LE(sampleRate, 24);
+wav.writeUInt32LE(sampleRate, 28); // Bytes per second
+wav.writeUInt16LE(1, 32); // Bytes per sample
+wav.writeUInt16LE(8, 34); // Bits per sample
+wav.write("data", 36);
+wav.writeUInt32LE(sampleRate, 40);
+
 const address = "1 Test Street, 10115 Berlin, Germany";
 
 interface Question {
@@ -199,6 +215,36 @@ const questions: Question[] = [
           expect.objectContaining({ path: expect.stringMatching(/^images\//) }),
         ]),
     shown: (row) => expect.soft(row.locator("img")).toBeVisible(),
+  },
+  {
+    // Uploaded rather than recorded, as tests have no microphone
+    key: "audio",
+    type: "audiorecorder",
+    schema: { storage: "beabee" },
+    fill: async (_, field) => {
+      await field
+        .getByLabel("Upload an audio file", { exact: true })
+        .setInputFiles({
+          name: "clip.wav",
+          mimeType: "audio/wav",
+          buffer: wav,
+        });
+      // Wait for the upload to finish before submitting
+      await expect(field.getByText("Attached")).toBeVisible();
+    },
+    stored: (a) =>
+      expect.soft(a).toEqual([
+        expect.objectContaining({
+          path: expect.stringMatching(/^audio\//),
+          duration: 1,
+        }),
+      ]),
+    shown: async (row) => {
+      await expect
+        .soft(row.getByRole("button", { name: "Play or pause" }))
+        .toBeVisible();
+      await expect.soft(row).toContainText("clip.wav");
+    },
   },
   {
     key: "unanswered",
