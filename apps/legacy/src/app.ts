@@ -129,9 +129,10 @@ initApp()
     // Hook to handle special URLs
     //app.use( '/s', specialUrlHandler );
 
-    // Ignore QueryFailedError for invalid type, probably just bad URL
+    // Ignore QueryFailedError for invalid type and URIError for malformed
+    // percent-encoding, probably just bad URL
     app.use(function (err, req, res, next) {
-      next(isInvalidType(err) ? undefined : err);
+      next(isInvalidType(err) || err instanceof URIError ? undefined : err);
     } as ErrorRequestHandler);
 
     // Error 404

@@ -94,6 +94,25 @@
     "requiredFields": "Pflichtfelder",
     "savedPassword": "Das neue Passwort wurde gespeichert. ",
     "security": "Sicherheit",
+    "selfService": {
+      "methods": {
+        "anotherPasskey": "Für ein weiteres Gerät",
+        "authenticatorApp": "Authenticator-App",
+        "change": "Ändern",
+        "confirmRemove": {
+          "desc": "Möglicherweise musst du dich zuerst erneut anmelden. Du kannst die Methode jederzeit wieder einrichten.",
+          "title": "Diese Anmeldemethode entfernen?"
+        },
+        "description": "So kannst du dich anmelden. Zum Hinzufügen oder Ändern leiten wir dich zu unserem Anmeldedienst und anschließend zurück. Das Passwort kann nicht entfernt werden.",
+        "notSetUp": "Nicht eingerichtet",
+        "passkey": "Passkey",
+        "password": "Passwort",
+        "removed": "Anmeldemethode entfernt",
+        "securityKey": "Sicherheitsschlüssel",
+        "setUp": "Einrichten",
+        "title": "Deine Anmeldemethoden"
+      }
+    },
     "subTitle": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subTitle-nuxt": "Alle benötigten Felder sind mit * markiert. Alle Informationen werden vertraulich behandelt.",
     "subscriptions": "Abonnements",
@@ -1183,7 +1202,6 @@
     "roles": "Rolle",
     "security": {
       "instructions": "Link kopieren und teilen:",
-      "loginOverride": "Automatischer Login",
       "mfa": {
         "desc": "Dieser Kontakt hat 2FA eingeschaltet. Klick auf \"{ disableLabel }\", um es auszuschalten.",
         "disabledDesc": "Dieser Kontakt hat keine 2FA aktiviert."
@@ -1502,6 +1520,16 @@
       "addressLine1": {
         "required": "Adresse benötigt"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Dein Browser hat den Zugriff auf das Mikrofon blockiert. Prüfe die Website-Berechtigungen und versuche es erneut, oder lade eine anderswo erstellte Aufnahme hoch.",
+        "micPermissionDeniedTitle": "Mikrofon nicht verfügbar",
+        "recordingNotSupportedBody": "Dieser Browser kann keine Audioaufnahmen erstellen. Bitte lade stattdessen eine Audiodatei hoch.",
+        "recordingNotSupportedTitle": "Aufnahme nicht unterstützt",
+        "tooLongBody": "Diese Datei ist {duration} lang. Das Maximum für diese Frage beträgt {max}. Bitte kürze die Datei oder nimm eine kürzere Antwort auf.",
+        "tooLongTitle": "Aufnahme zu lang",
+        "uploadFailedTitle": "Hochladen fehlgeschlagen",
+        "wrongTypeBody": "Bei dieser Frage sind nur {types}-Dateien möglich."
+      },
       "cityOrTown": {
         "required": "Ort benötigt"
       },
@@ -1608,6 +1636,25 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Angehängt",
+        "delete": "Löschen",
+        "discard": "Verwerfen",
+        "download": "Herunterladen",
+        "pause": "Pause",
+        "paused": "Pausiert",
+        "playPause": "Abspielen oder pausieren",
+        "reRecord": "Erneut aufnehmen",
+        "record": "Aufnahme starten",
+        "recording": "Aufnahme läuft",
+        "requestingPermission": "Warten auf Mikrofonzugriff. Bitte erlaube den Zugriff in deinem Browser, um fortzufahren.",
+        "resume": "Fortsetzen",
+        "stop": "Stopp",
+        "tryAgain": "Erneut versuchen",
+        "uploadInstead": "Stattdessen eine Audiodatei hochladen",
+        "uploadLabel": "Audiodatei hochladen",
+        "uploadingHint": "Wird hochgeladen – du kannst den Rest des Formulars weiter ausfüllen."
+      },
       "file": {
         "browse": "Upload vom Gerät",
         "dropFiles": "Dateien hierher ziehen",
@@ -1710,6 +1757,10 @@
   },
   "login": {
     "backTo": "Zurück zu {newsroomName}",
+    "errors": {
+      "login-failed": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+      "unlinked-account": "Dein Login ist mit keinem Konto auf dieser Plattform verknüpft. Bitte wende dich an den Support."
+    },
     "forgotPassword": "Passwort vergessen?",
     "joinNow": "Jetzt Mitglied werden!",
     "lostMfaDevice": "2FA-Gerät verloren?",

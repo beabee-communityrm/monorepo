@@ -24,5 +24,5 @@ export const addBreadcrumb = (items: Ref<BreadcrumbItem[]>): void => {
  * (and any ancestor layout components) registered via `addBreadcrumb`.
  */
 export const breadcrumbs = computed(() =>
-  breadcrumbItems.flatMap((bi) => bi.value)
+  breadcrumbItems.flatMap((bi) => bi.value).filter((item) => item.label)
 );
