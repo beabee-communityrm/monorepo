@@ -16,4 +16,12 @@ export interface CalloutResponseAnswerRow {
   images?: string[];
   /** Alt text for those images, where there is anything to say */
   imageAlt?: string;
+  /** The answer as audio, for a recording or an uploaded audio file */
+  audio?: {
+    src: string;
+    name: string;
+    size?: number;
+    /** In seconds, as saved at upload */
+    duration?: number;
+  };
 }

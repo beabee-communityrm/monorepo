@@ -21,6 +21,12 @@ identity it asserts. Replaces Local Login for the whole instance; it is
 never offered alongside it.
 _Avoid_: SSO, external login, social login
 
+**Login Action**:
+Something a member does at the IdP inside an OIDC login that beabee started,
+such as changing their password or setting up their first credential. The
+member returns through the OIDC callback like any login.
+_Avoid_: self-service link, account action, deep link
+
 **Local Login**:
 Authentication where beabee itself stores and checks the member's credentials.
 The default for instances without an IdP. Named for where the credential is

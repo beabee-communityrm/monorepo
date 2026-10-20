@@ -275,7 +275,7 @@ export class StripeWebhookEventHandler {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactPaymentSuccessful,
       targetId: contribution.contact.id,
-      metadata: null,
+      metadata: { paymentId: invoice.id },
     });
   }
 
@@ -293,7 +293,7 @@ export class StripeWebhookEventHandler {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactPaymentFailed,
       targetId: contribution?.contact.id || null,
-      metadata: null,
+      metadata: { paymentId: invoice.id },
     });
 
     // For now only handle one-time payment invoices
@@ -352,9 +352,9 @@ export class StripeWebhookEventHandler {
     if (contribution) {
       log.info('Invoice marked uncollectible by Stripe');
       await ActivityService.addEvent({
-        eventType: ActivityEventType.ContactPaymentCancelled,
+        eventType: ActivityEventType.ContactPaymentFailed,
         targetId: contribution?.contact.id || null,
-        metadata: null,
+        metadata: { paymentId: invoice.id },
       });
     } else {
       log.info('Ignoring invoice with unknown customer ' + invoice.id);

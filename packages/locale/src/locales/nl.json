@@ -94,6 +94,25 @@
     "requiredFields": "Verplichte velden",
     "savedPassword": "Nieuw wachtwoord opgeslagen",
     "security": "Beveiliging",
+    "selfService": {
+      "methods": {
+        "anotherPasskey": "Voor een ander apparaat",
+        "authenticatorApp": "Authenticator-app",
+        "change": "Wijzigen",
+        "confirmRemove": {
+          "desc": "Mogelijk moet je eerst opnieuw inloggen. Je kunt de methode op elk moment opnieuw instellen.",
+          "title": "Deze inlogmethode verwijderen?"
+        },
+        "description": "De manieren waarop je kunt inloggen. Om een methode toe te voegen of te wijzigen, sturen we je naar onze inlogdienst en daarna terug. Het wachtwoord kan niet worden verwijderd.",
+        "notSetUp": "Niet ingesteld",
+        "passkey": "Passkey",
+        "password": "Wachtwoord",
+        "removed": "Inlogmethode verwijderd",
+        "securityKey": "Beveiligingssleutel",
+        "setUp": "Instellen",
+        "title": "Je inlogmethoden"
+      }
+    },
     "subTitle": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "subTitle-nuxt": "Verplichte velden zijn gemarkeerd met een sterretje. Alle informatie die je hier indient is privé.",
     "subscriptions": "Abonnementen",
@@ -1185,7 +1204,6 @@
     "roles": "Rollen",
     "security": {
       "instructions": "Kopieer en deel deze link:",
-      "loginOverride": "Inloggen opheffen",
       "mfa": {
         "desc": "Deze contactpersoon heeft 2FA ingeschakeld. Klik op de knop “{ disableLabel }” om deze uit te schakelen.",
         "disabledDesc": "2FA is niet ingeschakeld voor dit contact."
@@ -1504,6 +1522,16 @@
       "addressLine1": {
         "required": "Adresregel 1 is vereist"
       },
+      "audio": {
+        "micPermissionDeniedBody": "Je browser heeft de toegang tot de microfoon geblokkeerd. Controleer de sitemachtigingen en probeer het opnieuw, of upload een opname die je elders hebt gemaakt.",
+        "micPermissionDeniedTitle": "Microfoon niet beschikbaar",
+        "recordingNotSupportedBody": "Deze browser kan geen audio opnemen. Upload in plaats daarvan een audiobestand.",
+        "recordingNotSupportedTitle": "Opnemen niet ondersteund",
+        "tooLongBody": "Dit bestand duurt {duration}. Het maximum voor deze vraag is {max}. Verkort het bestand of neem een kortere reactie op.",
+        "tooLongTitle": "Opname te lang",
+        "uploadFailedTitle": "Uploaden mislukt",
+        "wrongTypeBody": "Deze vraag accepteert alleen {types}-bestanden."
+      },
       "cityOrTown": {
         "required": "Stad/gemeente is vereist"
       },
@@ -1610,6 +1638,25 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Bijgevoegd",
+        "delete": "Verwijderen",
+        "discard": "Weggooien",
+        "download": "Downloaden",
+        "pause": "Pauzeren",
+        "paused": "Gepauzeerd",
+        "playPause": "Afspelen of pauzeren",
+        "reRecord": "Opnieuw opnemen",
+        "record": "Opname starten",
+        "recording": "Bezig met opnemen",
+        "requestingPermission": "Wachten op microfoontoegang. Sta toegang toe in je browser om door te gaan.",
+        "resume": "Hervatten",
+        "stop": "Stoppen",
+        "tryAgain": "Opnieuw proberen",
+        "uploadInstead": "Upload in plaats daarvan een audiobestand",
+        "uploadLabel": "Audiobestand uploaden",
+        "uploadingHint": "Bezig met uploaden — je kunt de rest van het formulier blijven invullen."
+      },
       "file": {
         "browse": "uploaden vanaf apparaat",
         "dropFiles": "Sleep bestanden hierheen om bij te voegen",
@@ -1712,6 +1759,10 @@
   },
   "login": {
     "backTo": "Terug naar {newsroomName}",
+    "errors": {
+      "login-failed": "Inloggen is mislukt. Probeer het opnieuw.",
+      "unlinked-account": "Je login is niet gekoppeld aan een account op dit platform. Neem contact op met de support."
+    },
     "forgotPassword": "Wachtwoord vergeten?",
     "joinNow": "Word nu lid!",
     "lostMfaDevice": "Ben je je 2FA-apparaat kwijt?",
