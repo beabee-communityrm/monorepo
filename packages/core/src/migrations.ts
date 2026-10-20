@@ -134,6 +134,7 @@ import { RemoveGiftMemberships1788528151186 } from './migrations/1788528151186-R
 import { AddContactIdpSubject1788876714973 } from './migrations/1788876714973-AddContactIdpSubject.js';
 import { AddCalloutResponseMode1789404005434 } from './migrations/1789404005434-AddCalloutResponseMode.js';
 import { RemoveContactLoginOverride1790855215072 } from './migrations/1790855215072-RemoveContactLoginOverride.js';
+import { AddSignupFlowNewsletter1792506342771 } from './migrations/1792506342771-AddSignupFlowNewsletter.js';
 
 export const migrations = [
   SessionTable1616677358190,
@@ -271,4 +272,5 @@ export const migrations = [
   AddContactIdpSubject1788876714973,
   AddCalloutResponseMode1789404005434,
   RemoveContactLoginOverride1790855215072,
+  AddSignupFlowNewsletter1792506342771,
 ];

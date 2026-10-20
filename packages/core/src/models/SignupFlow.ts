@@ -1,4 +1,4 @@
-import { ContactOriginData } from '@beabee/beabee-common';
+import { ContactOriginData, NewsletterStatus } from '@beabee/beabee-common';
 
 import {
   Column,
@@ -53,4 +53,10 @@ export class SignupFlow {
 
   @Column({ type: 'jsonb', nullable: true })
   origin!: ContactOriginData | null;
+
+  @Column({ type: String, nullable: true })
+  newsletterStatus!: NewsletterStatus | null;
+
+  @Column({ type: 'jsonb', nullable: true })
+  newsletterGroups!: string[] | null;
 }

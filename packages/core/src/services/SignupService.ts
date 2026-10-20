@@ -1,5 +1,6 @@
 import {
   ContactOriginData,
+  NewsletterStatus,
   PaymentFlowParams,
   PaymentFlowParamsStripe,
   PaymentFlowResult,
@@ -29,6 +30,8 @@ interface SignupData {
   setPasswordUrl: string;
   confirmUrl: string;
   origin: ContactOriginData | null;
+  newsletterStatus: NewsletterStatus | null;
+  newsletterGroups: string[] | null;
 }
 
 /**
@@ -255,11 +258,25 @@ class SignupService {
 
     if (contact) {
       await ContactsService.updateContact(contact, partialContact);
+      // Only an explicit subscription may overwrite an existing contact's preferences
+      if (signupFlow.newsletterStatus === NewsletterStatus.Subscribed) {
+        await ContactsService.updateContactProfile(contact, {
+          newsletterStatus: signupFlow.newsletterStatus,
+          ...(signupFlow.newsletterGroups && {
+            newsletterGroups: signupFlow.newsletterGroups,
+          }),
+        });
+      }
     } else {
       contact = await ContactsService.createContact(
         partialContact,
         {
-          newsletterStatus: OptionsService.getText('newsletter-default-status'),
+          newsletterStatus:
+            signupFlow.newsletterStatus ??
+            OptionsService.getText('newsletter-default-status'),
+          ...(signupFlow.newsletterGroups && {
+            newsletterGroups: signupFlow.newsletterGroups,
+          }),
           ...(completedFlow?.data.vatNumber && {
             vatNumber: completedFlow.data.vatNumber,
           }),

@@ -62,6 +62,8 @@ export class SignupController {
       loginUrl: data.loginUrl,
       setPasswordUrl: data.setPasswordUrl,
       origin: data.origin || null,
+      newsletterStatus: data.newsletterStatus ?? null,
+      newsletterGroups: data.newsletterGroups ?? null,
     };
 
     if (data.contribution) {
