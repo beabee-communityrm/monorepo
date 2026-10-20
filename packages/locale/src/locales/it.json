@@ -173,6 +173,7 @@
       "time": "Ora"
     },
     "filters": {
+      "all": "Tutti",
       "other": "Altro"
     }
   },

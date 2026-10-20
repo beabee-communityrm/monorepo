@@ -173,6 +173,7 @@
       "time": "Zeit"
     },
     "filters": {
+      "all": "Alle",
       "other": "Sonstige"
     }
   },

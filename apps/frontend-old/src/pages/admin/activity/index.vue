@@ -32,6 +32,7 @@ import { definePaginatedQuery } from '#utils/pagination';
 const { t } = useI18n();
 
 const filterItems = computed<TabItem[]>(() => [
+  { id: 'all', label: t('activity.filters.all') },
   { id: 'contact', label: t('menu.contacts') },
   { id: 'callout', label: t('menu.callouts') },
   { id: 'email', label: t('menu.emails') },

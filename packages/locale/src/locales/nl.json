@@ -173,6 +173,7 @@
       "time": "Tijd"
     },
     "filters": {
+      "all": "Alle",
       "other": "Overig"
     }
   },

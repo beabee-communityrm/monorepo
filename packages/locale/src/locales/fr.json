@@ -173,6 +173,7 @@
       "time": "Heure"
     },
     "filters": {
+      "all": "Tout",
       "other": "Autres"
     }
   },

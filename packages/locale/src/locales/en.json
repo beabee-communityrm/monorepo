@@ -172,6 +172,7 @@
       "time": "Time"
     },
     "filters": {
+      "all": "All",
       "other": "Others"
     }
   },
