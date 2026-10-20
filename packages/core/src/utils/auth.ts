@@ -4,7 +4,10 @@ import crypto from 'node:crypto';
 import { Secret, TOTP } from 'otpauth';
 
 import config from '#config/config';
+import { log as mainLogger } from '#logging';
 import { Password } from '#models/index';
+
+const log = mainLogger.child({ app: 'auth-utils' });
 
 export function generateApiKey(
   idLength: number = 16,
@@ -122,11 +125,13 @@ export async function isValidPassword(
   passwordRaw: string
 ): Promise<LOGIN_CODES> {
   if (passwordData.tries >= config.passwordTries) {
+    log.info(`Tried to login ${passwordData.tries} times. Locking account.`);
     return LOGIN_CODES.LOCKED;
   }
 
   // No password set
   if (passwordData.iterations === 0) {
+    log.info('Tried to login without setting password');
     return LOGIN_CODES.LOGIN_FAILED;
   }
 
@@ -135,6 +140,7 @@ export async function isValidPassword(
     passwordData.salt,
     passwordData.iterations
   );
+  log.info(`Tried to login with password hash ${hash.substring(0, 12)}`);
   // Check if password hash matches
   return !!passwordData.salt && hash === passwordData.hash
     ? LOGIN_CODES.LOGGED_IN
