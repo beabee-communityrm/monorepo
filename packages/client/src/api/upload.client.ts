@@ -1,11 +1,13 @@
 import {
   type UploadFileResponse,
+  isSupportedAudioType,
   isSupportedDocumentType,
   isSupportedImageType,
 } from '@beabee/beabee-common';
 
 import type { BaseClientOptions } from '../types/index.js';
 import { ApiError, UnsupportedFileTypeError } from '../utils/index.js';
+import { UploadAudioClient } from './upload-audio.client.js';
 import { UploadDocumentClient } from './upload-document.client.js';
 import { UploadImageClient } from './upload-image.client.js';
 
@@ -16,6 +18,7 @@ import { UploadImageClient } from './upload-image.client.js';
 export class UploadClient {
   private readonly imageClient: UploadImageClient;
   private readonly documentClient: UploadDocumentClient;
+  private readonly audioClient: UploadAudioClient;
 
   get image() {
     return this.imageClient;
@@ -25,6 +28,10 @@ export class UploadClient {
     return this.documentClient;
   }
 
+  get audio() {
+    return this.audioClient;
+  }
+
   /**
    * Creates a new upload client
    * @param options - The client options
@@ -32,6 +39,7 @@ export class UploadClient {
   constructor(protected readonly options: BaseClientOptions) {
     this.imageClient = new UploadImageClient(options);
     this.documentClient = new UploadDocumentClient(options);
+    this.audioClient = new UploadAudioClient(options);
   }
 
   /**
@@ -41,11 +49,13 @@ export class UploadClient {
    * @throws {ApiError} If the file is too large, not supported, or rate limit is exceeded
    */
   async uploadFile(file: File): Promise<UploadFileResponse> {
-    // Check if the file is an image or a document
+    // Check if the file is an image, a document or an audio file
     if (isSupportedImageType(file.type)) {
       return this.imageClient.uploadFile(file);
     } else if (isSupportedDocumentType(file.type)) {
       return this.documentClient.uploadFile(file);
+    } else if (isSupportedAudioType(file.type)) {
+      return this.audioClient.uploadFile(file);
     } else {
       throw new UnsupportedFileTypeError('Unsupported file type', file.type);
     }

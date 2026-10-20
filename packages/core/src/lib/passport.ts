@@ -40,6 +40,9 @@ passport.use(
 
       // Check if contact for email exists
       if (contact) {
+        log.info(
+          `Login attempted for "${email}". Contact ${contact.id} found.`
+        );
         code = await isValidPassword(contact.password, password);
 
         if (code === LOGIN_CODES.LOGGED_IN) {
@@ -64,9 +67,11 @@ passport.use(
         } else {
           await ContactsService.incrementPasswordTries(contact);
         }
+      } else {
+        log.info(`Login attempted for "${email}". Failed to find contact.`);
       }
 
-      log.info(`Login attmpted failed for ${email} with code ${code}`);
+      log.info(`Login attempted failed for ${email} with code ${code}`);
 
       // Delay by 1 second to slow down password guessing
       await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -85,7 +85,11 @@
         >
           <dt class="font-medium text-highlighted">{{ row.label }}</dt>
 
-          <dd v-if="row.images" class="flex flex-wrap gap-2">
+          <dd v-if="row.audio">
+            <CalloutResponseAudio :key="row.audio.src" v-bind="row.audio" />
+          </dd>
+
+          <dd v-else-if="row.images" class="flex flex-wrap gap-2">
             <img
               v-for="(src, i) in row.images"
               :key="i"
@@ -136,6 +140,7 @@ import { computed, nextTick, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { RouteLocationRaw } from 'vue-router';
 
+import CalloutResponseAudio from '#components/callout/CalloutResponseAudio.vue';
 import { getResponseAnswerRows } from '#utils/callout-responses';
 
 /** Props for CalloutResponseList */
