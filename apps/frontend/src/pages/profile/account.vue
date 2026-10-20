@@ -16,12 +16,14 @@ meta:
       <p>{{ t('accountPage.subTitle-nuxt') }}</p>
     </div>
 
-    <UTabs :items="items" class="w-full">
+    <UTabs v-model="activeTab" :items="items" class="w-full">
       <template #contact>
         <AccountForm />
       </template>
       <template #security>
-        <div class="flex flex-col gap-4">
+        <!-- Login details are managed at the identity provider on OIDC instances -->
+        <LoginMethods v-if="generalContent.oidcEnabled" />
+        <div v-else class="flex flex-col gap-4">
           <ChangePassword />
           <SetMFA contact-id="me" />
         </div>
@@ -41,31 +43,46 @@ meta:
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
 import AccountForm from '../../components/pages/profile/account/AccountForm.vue';
 import AccountNewsletterSubscriptions from '../../components/pages/profile/account/AccountNewsletterSubscriptions.vue';
 import ChangePassword from '../../components/pages/profile/account/ChangePassword.vue';
+import LoginMethods from '../../components/pages/profile/account/LoginMethods.vue';
 import SetMFA from '../../components/pages/profile/account/SetMFA.vue';
+import { generalContent } from '../../store';
 import { addBreadcrumb } from '../../store/breadcrumb';
 import { routeIcons, routeLabels } from '../../utils/route-nav';
 import type { TabsItem } from '@nuxt/ui';
 
 const { t } = useI18n();
+const route = useRoute();
+const router = useRouter();
+
+const activeTab = computed({
+  get: () => route.query.tab?.toString() || 'contact',
+  set: (value) => {
+    router.push({ query: { ...route.query, tab: value } });
+  },
+});
 
 const items = computed<TabsItem[]>(() => [
   {
     label: t('accountPage.contactInformation'),
     icon: 'i-lucide-contact',
     slot: 'contact',
+    value: 'contact',
   },
   {
     label: t('accountPage.security'),
     icon: 'i-lucide-shield',
     slot: 'security',
+    value: 'security',
   },
   {
     label: t('accountPage.subscriptions'),
     icon: 'i-lucide-mail',
     slot: 'subscriptions',
+    value: 'subscriptions',
   },
 ]);
 

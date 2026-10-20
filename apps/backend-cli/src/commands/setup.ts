@@ -110,6 +110,16 @@ export const setupCommand: CommandModule = {
                   await import('../actions/setup/integrations.js');
                 return setupMailchimp(argv.dryRun);
               },
+            })
+            .command({
+              command: 'idp',
+              describe:
+                'Apply the login policy, notification policy and branding to the identity provider',
+              handler: async () => {
+                const { setupIdp } =
+                  await import('../actions/setup/integrations.js');
+                return setupIdp();
+              },
             });
         },
         handler: () => {},

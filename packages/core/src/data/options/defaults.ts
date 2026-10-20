@@ -3,7 +3,7 @@ import { type Locale } from '@beabee/locale';
 
 export default {
   organisation: 'UK Makerspace',
-  logo: '',
+  logo: '' as string,
   'home-link-url': 'http://example.com/about',
 
   /** Application active locale */
@@ -56,6 +56,9 @@ export default {
   'stripe-tax-rate-recurring-id': '',
   'stripe-membership-product-id': '',
   'stripe-webhook-secret': '',
+
+  /** Signing key of Zitadel's token claims target, set by `setup integrations idp` */
+  'zitadel-claims-signing-key': '',
 
   /**
    * Show one-time contribution form to logged in users
@@ -127,7 +130,6 @@ export default {
   'flash-member-added': 'Contact added',
   'flash-member-updated': 'Contact updated',
   'flash-member-permanently-deleted': 'Contact permanently deleted',
-  'flash-member-login-override-generated': 'Login override code generated',
   'flash-member-password-reset-generated': 'Password reset code generated',
   'flash-member-add-invalid-direct-debit':
     'Invalid direct debit, you must specify the first and last name',
