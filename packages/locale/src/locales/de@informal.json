@@ -168,10 +168,9 @@
   "activity": {
     "data": {
       "actor": "Akteur",
-      "eventTime": "Zeitpunkt",
-      "eventType": "Ereignistyp",
-      "metadata": "Metadaten",
-      "target": "Ziel"
+      "category": "Kategorie",
+      "target": "Ziel",
+      "time": "Zeit"
     },
     "filters": {
       "other": "Sonstige"

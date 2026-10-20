@@ -168,10 +168,9 @@
   "activity": {
     "data": {
       "actor": "",
-      "eventTime": "",
-      "eventType": "",
-      "metadata": "",
-      "target": ""
+      "category": "",
+      "target": "",
+      "time": ""
     },
     "filters": {
       "other": ""

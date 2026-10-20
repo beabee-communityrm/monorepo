@@ -41,14 +41,13 @@ const filterItems = computed<TabItem[]>(() => [
 const currentFilter = ref('contact');
 
 const headers = computed<Header[]>(() => [
-  { value: 'eventTime', text: t('activity.data.eventTime') },
-  { value: 'eventType', text: t('activity.data.eventType') },
+  { value: 'time', text: t('activity.data.time') },
+  { value: 'category', text: t('activity.data.category') },
   { value: 'actor', text: t('activity.data.actor') },
   { value: 'target', text: t('activity.data.target') },
-  { value: 'metadata', text: t('activity.data.metadata'), width: '100%' },
 ]);
 
-const currentPaginatedQuery = definePaginatedQuery('eventTime');
+const currentPaginatedQuery = definePaginatedQuery('time');
 
 // TODO: Load activity data from the API
 const activityTable = ref<Paginated<Item>>({

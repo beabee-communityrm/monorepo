@@ -168,10 +168,9 @@
   "activity": {
     "data": {
       "actor": "Инициатор",
-      "eventTime": "Время события",
-      "eventType": "Тип события",
-      "metadata": "Метаданные",
-      "target": "Объект"
+      "category": "Категория",
+      "target": "Объект",
+      "time": "Время"
     },
     "filters": {
       "other": "Другое"

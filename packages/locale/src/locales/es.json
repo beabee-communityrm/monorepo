@@ -168,10 +168,9 @@
   "activity": {
     "data": {
       "actor": "Actor",
-      "eventTime": "Hora del evento",
-      "eventType": "Tipo de evento",
-      "metadata": "Metadatos",
-      "target": "Objetivo"
+      "category": "Categoría",
+      "target": "Objetivo",
+      "time": "Hora"
     },
     "filters": {
       "other": "Otros"

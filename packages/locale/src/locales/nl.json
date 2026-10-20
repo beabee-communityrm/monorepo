@@ -168,10 +168,9 @@
   "activity": {
     "data": {
       "actor": "Actor",
-      "eventTime": "Tijdstip",
-      "eventType": "Type gebeurtenis",
-      "metadata": "Metadata",
-      "target": "Doel"
+      "category": "Categorie",
+      "target": "Doel",
+      "time": "Tijd"
     },
     "filters": {
       "other": "Overig"
