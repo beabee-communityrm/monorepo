@@ -77,6 +77,22 @@ describe('Contact API', () => {
     }
   });
 
+  it('filters contacts by idpLinked', async () => {
+    const byLink = (value: boolean) =>
+      contactClient.list({
+        rules: {
+          condition: 'AND',
+          rules: [{ field: 'idpLinked', operator: 'equal', value: [value] }],
+        },
+      });
+    const [all, linked, unlinked] = await Promise.all([
+      contactClient.list({}),
+      byLink(true),
+      byLink(false),
+    ]);
+    expect(linked.total + unlinked.total).toBe(all.total);
+  });
+
   describe('get', () => {
     it('should get a contact by id', async () => {
       const response = await contactClient.get(testContactId);

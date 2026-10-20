@@ -153,7 +153,9 @@ class PaymentService {
       await ActivityService.addEvent({
         targetId: contact.id,
         eventType: ActivityEventType.ContactContributionStarted,
-        metadata: ret || null,
+        metadata: ret
+          ? { ...ret, subscriptionId: contribution.subscriptionId! }
+          : null,
       });
     }
 
@@ -191,7 +193,8 @@ class PaymentService {
       throw new CantUpdateContributionError();
     }
 
-    const ret = await this.provider(contact, (p) =>
+    const contribution = await this.getContribution(contact);
+    const ret = await this.providerFromData(contribution, (p) =>
       p.processUpdateContribution(form)
     );
 
@@ -200,7 +203,7 @@ class PaymentService {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactContributionUpdated,
       targetId: contact.id,
-      metadata: ret,
+      metadata: { ...ret, subscriptionId: contribution.subscriptionId! },
     });
 
     return ret;
@@ -247,6 +250,10 @@ class PaymentService {
   ): Promise<void> {
     log.info('Cancel contribution for contact ' + contact.id);
     await this.provider(contact, (p) => p.cancelContribution(keepMandate));
+
+    // Keep subscription ID for activity feed event, the provider clears it
+    const subscriptionId = (await this.getContribution(contact)).subscriptionId;
+
     await getRepository(ContactContribution).update(
       { contactId: contact.id },
       { cancelledAt: new Date() }
@@ -255,7 +262,7 @@ class PaymentService {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactContributionCancelled,
       targetId: contact.id,
-      metadata: null,
+      metadata: { subscriptionId },
     });
   }
 

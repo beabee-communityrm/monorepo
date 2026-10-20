@@ -94,6 +94,25 @@
     "requiredFields": "Pflicht-Felder",
     "savedPassword": "",
     "security": "",
+    "selfService": {
+      "methods": {
+        "anotherPasskey": "Für ein weiteres Gerät",
+        "authenticatorApp": "Authenticator-App",
+        "change": "Ändern",
+        "confirmRemove": {
+          "desc": "Vielleicht musst du dich zuerst noch einmal anmelden. Du kannst die Methode jederzeit wieder einrichten.",
+          "title": "Diese Anmelde-Methode entfernen?"
+        },
+        "description": "So kannst du dich anmelden. Zum Hinzufügen oder Ändern kommst du zu unserem Anmeldedienst. Danach kommst du wieder hierher. Das Passwort kannst du nicht entfernen.",
+        "notSetUp": "Nicht eingerichtet",
+        "passkey": "Passkey",
+        "password": "Passwort",
+        "removed": "Anmelde-Methode entfernt",
+        "securityKey": "Sicherheits-Schlüssel",
+        "setUp": "Einrichten",
+        "title": "Deine Anmelde-Methoden"
+      }
+    },
     "subTitle": "",
     "subTitle-nuxt": "",
     "subscriptions": "",
@@ -1183,7 +1202,6 @@
     "roles": "",
     "security": {
       "instructions": "",
-      "loginOverride": "",
       "mfa": {
         "desc": "",
         "disabledDesc": ""
@@ -1502,6 +1520,16 @@
       "addressLine1": {
         "required": ""
       },
+      "audio": {
+        "micPermissionDeniedBody": "Das hat nicht geklappt. Das Mikrofon durfte nicht benutzt werden. Prüfe die Einstellungen. Oder lade eine Aufnahme hoch.",
+        "micPermissionDeniedTitle": "Das Mikrofon geht nicht",
+        "recordingNotSupportedBody": "Dieser Browser kann keine Aufnahmen machen. Lade stattdessen eine Audio-Datei hoch.",
+        "recordingNotSupportedTitle": "Aufnehmen geht hier nicht",
+        "tooLongBody": "Die Datei ist {duration} lang. Erlaubt ist höchstens {max}. Mach die Datei kürzer.",
+        "tooLongTitle": "Die Aufnahme ist zu lang",
+        "uploadFailedTitle": "Hochladen hat nicht geklappt",
+        "wrongTypeBody": "Bei dieser Frage gehen nur {types}-Dateien."
+      },
       "cityOrTown": {
         "required": ""
       },
@@ -1527,7 +1555,7 @@
       },
       "file": {
         "rateLimited": "Das war nicht richtig. Das waren zu viele Sachen auf einmal. Du musst etwas warten. Dann versuche es noch mal.",
-        "tooBig": "Das war nicht richtig. Dein Text ist zu lang. Oder dein Bild ist zu groß. Man darf nur 20 MB hoch-laden.",
+        "tooBig": "Das war nicht richtig. Die Datei ist zu groß. Man darf nur 20 MB hoch-laden.",
         "unsupportedType": "Das war nicht richtig. Diese Art von Datei geht nicht.",
         "uploadFailed": "Das war nicht richtig. Das Hoch-laden hat nicht geklappt. Versuche es noch mal."
       },
@@ -1608,6 +1636,25 @@
   },
   "formRenderer": {
     "components": {
+      "audioRecorder": {
+        "attached": "Angehängt",
+        "delete": "Löschen",
+        "discard": "Nicht speichern",
+        "download": "Herunterladen",
+        "pause": "Pause",
+        "paused": "Pause",
+        "playPause": "Abspielen",
+        "reRecord": "Neu aufnehmen",
+        "record": "Aufnahme starten",
+        "recording": "Es wird aufgenommen.",
+        "requestingPermission": "Warte auf das Mikrofon. Erlaube den Zugriff in deinem Browser.",
+        "resume": "Weiter",
+        "stop": "Stopp",
+        "tryAgain": "Noch mal versuchen",
+        "uploadInstead": "Lade stattdessen eine Audio-Datei hoch",
+        "uploadLabel": "Audio-Datei hochladen",
+        "uploadingHint": "Die Datei wird hochgeladen. Du kannst das Formular weiter ausfüllen."
+      },
       "file": {
         "browse": "Du musst warten: Bis sich das Rädchen nicht mehr dreht./ Bis der Balken blau ist.",
         "dropFiles": "Du musst die Datei mit dem Pfeil von der Mouse hier her ziehen.",
@@ -1710,6 +1757,10 @@
   },
   "login": {
     "backTo": "",
+    "errors": {
+      "login-failed": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+      "unlinked-account": "Dein Login ist mit keinem Konto auf dieser Plattform verknüpft. Bitte wende dich an den Support."
+    },
     "forgotPassword": "",
     "joinNow": "",
     "lostMfaDevice": "",

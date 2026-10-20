@@ -6,10 +6,11 @@
  * BEABEE_ to avoid conflicts with other applications.
  */
 import type {
-  DocumentServiceConfig,
+  FileServiceConfig,
   ImageServiceConfig,
   LegacyImageServiceConfig,
   S3Config,
+  SiteLoginConfig,
 } from '../type/index.js';
 import * as env from './env.js';
 
@@ -175,6 +176,98 @@ const idpProvider = env.e(
 );
 
 /**
+ * Contact sync configuration
+ * Used when BEABEE_CONTACTSYNC_PROVIDER=salesforce: every contact is mirrored
+ * to a beabee_Profile__c record in the Salesforce org
+ */
+export interface SalesforceContactSyncConfig {
+  provider: 'salesforce';
+  settings: {
+    authUrl: string; // BEABEE_CONTACTSYNC_SETTINGS_AUTHURL - OAuth2 token endpoint (My Domain URL + /services/oauth2/token)
+    clientId: string; // BEABEE_CONTACTSYNC_SETTINGS_CLIENTID - Connected app client ID
+    clientSecret: string; // BEABEE_CONTACTSYNC_SETTINGS_CLIENTSECRET - Connected app client secret
+    apiVersion: string; // BEABEE_CONTACTSYNC_SETTINGS_APIVERSION - REST API version (e.g. v60.0)
+  };
+}
+
+/**
+ * Used when BEABEE_CONTACTSYNC_PROVIDER=none (default): contacts are not
+ * mirrored to an external system
+ */
+interface NoneContactSyncConfig {
+  provider: 'none';
+  settings: Record<string, never>;
+}
+
+type ContactSyncConfig = SalesforceContactSyncConfig | NoneContactSyncConfig;
+
+const contactSyncProvider = env.e(
+  'BEABEE_CONTACTSYNC_PROVIDER',
+  ['salesforce', 'none'] as const,
+  'none'
+);
+
+/**
+ * Login configuration
+ * Used when BEABEE_LOGIN_PROVIDER=oidc: members log in at the identity
+ * provider (OIDC Login); beabee's own password, MFA and reset endpoints are
+ * disabled
+ */
+export interface OidcLoginConfig {
+  provider: 'oidc';
+  settings: {
+    issuer: string; // BEABEE_LOGIN_SETTINGS_ISSUER - OIDC issuer URL
+    clientId: string; // BEABEE_LOGIN_SETTINGS_CLIENTID - OIDC client ID
+    clientSecret: string; // BEABEE_LOGIN_SETTINGS_CLIENTSECRET - OIDC client secret (empty: public client with PKCE only)
+    scopes: string; // BEABEE_LOGIN_SETTINGS_SCOPES - Requested scopes (default: openid profile email)
+  };
+}
+
+/**
+ * Used when BEABEE_LOGIN_PROVIDER=local (default): beabee checks passwords
+ * itself (Local Login)
+ */
+interface LocalLoginConfig {
+  provider: 'local';
+  settings: Record<string, never>;
+}
+
+// Union type for login configuration - only one provider can be used at a time
+type LoginConfig = OidcLoginConfig | LocalLoginConfig;
+
+function siteLoginConfig(): SiteLoginConfig | undefined {
+  const key = env.s('BEABEE_SITELOGIN_KEY', '');
+  if (!key) return undefined;
+
+  const keyBytes = Buffer.from(key, 'base64');
+  if (keyBytes.length !== 32) {
+    throw new Error('BEABEE_SITELOGIN_KEY must be 32 bytes, base64 encoded');
+  }
+  return {
+    cookieName: env.s('BEABEE_SITELOGIN_COOKIE_NAME'),
+    cookieDomain: env.s('BEABEE_SITELOGIN_COOKIE_DOMAIN'),
+    cookieMaxAge: env.n('BEABEE_SITELOGIN_COOKIE_MAXAGE'),
+    key: keyBytes,
+  };
+}
+
+// Get login provider from environment, with validation for allowed values
+// Defaults to "local" if not specified
+const loginProvider = env.e(
+  'BEABEE_LOGIN_PROVIDER',
+  ['local', 'oidc'] as const,
+  'local'
+);
+
+// OIDC Login only works for contacts linked to an IdP account, which requires
+// IdP Provisioning against the same identity provider
+if (loginProvider === 'oidc' && idpProvider === 'none') {
+  throw new Error(
+    'BEABEE_LOGIN_PROVIDER=oidc requires BEABEE_IDP_PROVIDER to be set'
+  );
+}
+
+/**
  * Application configuration for an individual app module
  * Used for dynamic app loading and menu building
  */
@@ -235,7 +328,11 @@ const image: ImageServiceConfig = {
   s3,
 };
 
-const document: DocumentServiceConfig = {
+const document: FileServiceConfig = {
+  s3,
+};
+
+const audio: FileServiceConfig = {
   s3,
 };
 
@@ -340,6 +437,43 @@ export const config = {
           : {},
   } as IdpConfig,
 
+  // Contact sync integration configuration
+  contactSync: {
+    provider: contactSyncProvider, // Contact sync provider (salesforce or none)
+    settings:
+      contactSyncProvider === 'salesforce'
+        ? {
+            authUrl: env.s('BEABEE_CONTACTSYNC_SETTINGS_AUTHURL'), // OAuth2 token endpoint
+            clientId: env.s('BEABEE_CONTACTSYNC_SETTINGS_CLIENTID'), // Connected app client ID
+            clientSecret: env.s('BEABEE_CONTACTSYNC_SETTINGS_CLIENTSECRET'), // Connected app client secret
+            apiVersion: env.s(
+              'BEABEE_CONTACTSYNC_SETTINGS_APIVERSION',
+              'v60.0'
+            ), // REST API version
+          }
+        : {},
+  } as ContactSyncConfig,
+
+  // Login configuration
+  login: {
+    provider: loginProvider, // Login provider (local or oidc)
+    settings:
+      loginProvider === 'oidc'
+        ? {
+            issuer: env.s('BEABEE_LOGIN_SETTINGS_ISSUER'), // OIDC issuer URL
+            clientId: env.s('BEABEE_LOGIN_SETTINGS_CLIENTID'), // OIDC client ID
+            clientSecret: env.s('BEABEE_LOGIN_SETTINGS_CLIENTSECRET', ''), // OIDC client secret (empty: public client)
+            scopes: env.s(
+              'BEABEE_LOGIN_SETTINGS_SCOPES',
+              'openid profile email'
+            ), // Requested scopes
+          }
+        : {},
+  } as LoginConfig,
+
+  // Website login, off unless BEABEE_SITELOGIN_KEY is set
+  siteLogin: siteLoginConfig(),
+
   // GoCardless payment integration
   gocardless: {
     accessToken: env.s('BEABEE_GOCARDLESS_ACCESSTOKEN', ''), // GoCardless API token (default: empty)
@@ -384,6 +518,9 @@ export const config = {
 
   // Document service configuration
   document,
+
+  // Audio service configuration
+  audio,
 
   // Legacy image service configuration
   legacyImage,

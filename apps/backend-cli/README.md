@@ -87,6 +87,7 @@ Notes:
 yarn backend-cli user list [email]                  List users
 yarn backend-cli user list --without-password       List users without a password set
 yarn backend-cli user create                        Create a new user
+yarn backend-cli user unlock <email>                Lift the lock after too many failed logins, locally and at the identity provider
 yarn backend-cli user delete <email>                Permanently delete a user by email
 yarn backend-cli user delete --without-password     Delete all users without a password set
 yarn backend-cli user delete --without-password -y  Delete without confirmation prompt
@@ -117,6 +118,7 @@ yarn backend-cli rate-limiter clear  Clear the rate limiter cache
 ### Synchronization Commands
 
 ```bash
+yarn backend-cli sync contact-sync-service push  Push contacts to the contact sync service
 yarn backend-cli sync mailchimp  Sync newsletter status with Mailchimp
 yarn backend-cli sync segments   Process segment memberships
 yarn backend-cli sync stripe     Sync Stripe subscriptions and payments

@@ -1,19 +1,14 @@
+import type { FileServiceConfig } from './file-service-config.js';
 import type { ImageFormat } from './image-format.js';
-import type { S3Config } from './s3-config.js';
 
 /**
  * Configuration for the ImageService
  */
-export interface ImageServiceConfig {
+export interface ImageServiceConfig extends FileServiceConfig {
   /**
    * Available image sizes to create (in pixels)
    */
   availableWidths: number[];
-
-  /**
-   * S3/MinIO configuration
-   */
-  s3: S3Config;
 
   /**
    * Image compression quality (0-100)
