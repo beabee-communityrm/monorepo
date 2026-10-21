@@ -27,14 +27,19 @@ export function assertOidcAuthEnabled(): void {
 /** How long a login at the IdP counts as fresh, in seconds */
 const FRESH_LOGIN_MAX_AGE = 5 * 60;
 
+/** Whether the member logged in at the IdP in the last few minutes */
+export function isFreshOidcLogin(req: Request): boolean {
+  const authTime = req.session.authTime;
+  return !!authTime && authTime + FRESH_LOGIN_MAX_AGE >= Date.now() / 1000;
+}
+
 /**
  * Sensitive account changes need a login at the IdP from the last few
  * minutes, so a session alone cannot make them. The client restarts the
  * login with `prompt=login` on this code and tries again.
  */
 export function assertFreshOidcLogin(req: Request): void {
-  const authTime = req.session.authTime;
-  if (!authTime || authTime + FRESH_LOGIN_MAX_AGE < Date.now() / 1000) {
+  if (!isFreshOidcLogin(req)) {
     throw new UnauthorizedError(LOGIN_CODES.FRESH_LOGIN_REQUIRED);
   }
 }

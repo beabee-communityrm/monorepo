@@ -7,6 +7,7 @@ import {
   UnauthorizedError,
 } from '@beabee/core/errors';
 import {
+  LOGIN_URI,
   completeOidcLogin,
   getOidcLogoutUrl,
   isOidcEnabled,
@@ -49,6 +50,7 @@ import {
   assertOidcAuthEnabled,
   assertPasswordAuthEnabled,
   clearSiteLoginCookie,
+  isFreshOidcLogin,
   login,
   setSiteLoginCookie,
 } from '#api/utils/auth';
@@ -158,8 +160,24 @@ export class AuthController {
       throw new UnauthorizedError();
     }
 
+    // The pages behind the actions work on the IdP's own session, which the
+    // browser can lose while beabee's lives on (Login v2 keeps it in a
+    // cookie that ends with the browser). A fresh login brings it back and
+    // returns here. Not for setupCredential: that account cannot log in yet.
+    if (action && action !== 'setupCredential' && !isFreshOidcLogin(req)) {
+      const back = new URL(LOGIN_URI);
+      back.searchParams.set('action', action);
+      if (next) back.searchParams.set('next', next);
+      next = back.pathname + back.search;
+      action = undefined;
+      prompt = 'login';
+    }
+
     try {
-      const { url, loginState } = await startOidcLogin(next, prompt);
+      // Accounts use the email as login name at both providers
+      const loginHint =
+        contact && prompt === 'login' ? contact.email : undefined;
+      const { url, loginState } = await startOidcLogin(next, prompt, loginHint);
       req.session.oidc = loginState;
       res.redirect(
         action && contact
