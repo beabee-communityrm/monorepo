@@ -14,10 +14,16 @@
         </template>
         <template #title>
           <UBreadcrumb
+            v-if="breadcrumbs.length"
             :items="breadcrumbs"
             class="p-1.5"
             :ui="{ link: breadcrumbs.length > 1 ? 'text-base' : 'text-xl' }"
           />
+          <!-- The navbar always renders an h1, so give it the page title when
+               there is no breadcrumb rather than leaving the heading empty. -->
+          <span v-else-if="route.meta.pageTitle" class="sr-only">
+            {{ t(route.meta.pageTitle) }}
+          </span>
         </template>
       </UDashboardNavbar>
       <div class="flex flex-col p-4 md:p-5">
@@ -38,8 +44,14 @@
  *
  * @component
  */
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+
 import TheFooter from '../components/TheFooter.vue';
 import { isEmbed } from '../store';
 import { breadcrumbs } from '../store/breadcrumb';
 import TheMenu from './menu/TheMenu.vue';
+
+const { t } = useI18n();
+const route = useRoute();
 </script>
