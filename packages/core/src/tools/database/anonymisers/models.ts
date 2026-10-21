@@ -10,6 +10,7 @@ import {
   SetCalloutSlideSchema,
 } from '@beabee/beabee-common';
 import {
+  ActivityEvent,
   ApiKey,
   Callout,
   CalloutResponse,
@@ -287,6 +288,11 @@ function uniqueCode(): string {
 }
 
 // Model anonymisers
+export const activityEventAnonymiser = createModelAnonymiser(ActivityEvent, {
+  actorId: () => uuidv4(),
+  targetId: () => uuidv4(),
+});
+
 export const apiKeyAnonymiser = createModelAnonymiser(ApiKey, {
   id: () => uuidv4(),
   creatorId: () => uuidv4(),
