@@ -1,4 +1,5 @@
 import {
+  BaseNewsletterGroupData,
   ContactOriginData,
   NewsletterStatus,
   PaymentFlowParams,
@@ -240,6 +241,14 @@ class SignupService {
       password: signupFlow.password,
     };
 
+    // Groups may have been removed since the flow started, drop unknown IDs
+    const knownGroupIds = OptionsService.getJSON('newsletter-groups').map(
+      (group: BaseNewsletterGroupData) => group.id
+    );
+    const newsletterGroups = signupFlow.newsletterGroups?.filter((id) =>
+      knownGroupIds.includes(id)
+    );
+
     if (signupFlow.paymentFlow) {
       completedFlow = await PaymentFlowService.completePaymentFlowAndGetData(
         signupFlow.paymentFlow
@@ -262,9 +271,7 @@ class SignupService {
       if (signupFlow.newsletterStatus === NewsletterStatus.Subscribed) {
         await ContactsService.updateContactProfile(contact, {
           newsletterStatus: signupFlow.newsletterStatus,
-          ...(signupFlow.newsletterGroups && {
-            newsletterGroups: signupFlow.newsletterGroups,
-          }),
+          ...(newsletterGroups && { newsletterGroups }),
         });
       }
     } else {
@@ -274,9 +281,7 @@ class SignupService {
           newsletterStatus:
             signupFlow.newsletterStatus ??
             OptionsService.getText('newsletter-default-status'),
-          ...(signupFlow.newsletterGroups && {
-            newsletterGroups: signupFlow.newsletterGroups,
-          }),
+          ...(newsletterGroups && { newsletterGroups }),
           ...(completedFlow?.data.vatNumber && {
             vatNumber: completedFlow.data.vatNumber,
           }),
