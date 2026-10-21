@@ -6,7 +6,7 @@
            a screen reader which slide it has landed on. -->
       <component
         :is="`h${headingLevel || 3}`"
-        ref="slideHeadings"
+        data-slide-heading
         tabindex="-1"
         class="sr-only"
       >
@@ -147,7 +147,6 @@ const formError = ref('');
 const isLoading = ref(false);
 
 const formEl = ref<HTMLFormElement>();
-const slideHeadings = ref<HTMLElement[]>([]);
 const formClass = computed(() => [
   'callout-form',
   {
@@ -292,12 +291,18 @@ async function handleSubmit() {
 
 /**
  * Move focus to the new slide's heading. Without this the button that was
- * clicked is removed or disabled as the slide changes, which drops focus to
- * the document and leaves the user tabbing back through the whole page.
+ * activated is removed as the slide changes, which drops focus to the document
+ * and leaves the user tabbing back through the whole page.
+ *
+ * The heading is looked up from the DOM rather than held in a template ref: in
+ * a keyed v-for the ref is nulled as the old slide unmounts, so reading it here
+ * can find nothing or an element that has already been detached.
  */
 async function focusCurrentSlide() {
   await nextTick();
-  slideHeadings.value[0]?.focus({ preventScroll: true });
+  formEl.value
+    ?.querySelector<HTMLElement>('[data-slide-heading]')
+    ?.focus({ preventScroll: true });
 }
 
 function handleNextSlide() {
