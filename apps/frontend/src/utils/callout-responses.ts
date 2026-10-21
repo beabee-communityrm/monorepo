@@ -64,13 +64,7 @@ function filterHiddenComponents(
 function displayAnswer(
   component: CalloutComponentSchema & { fullKey: string },
   answer: CalloutResponseAnswer | CalloutResponseAnswer[] | undefined
-): {
-  value: string | null;
-  href?: string;
-  images?: string[];
-  imageAlt?: string;
-  audio?: CalloutResponseAnswerRow['audio'];
-} {
+): Omit<CalloutResponseAnswerRow, 'key' | 'label'> {
   const list =
     answer === undefined ? [] : Array.isArray(answer) ? answer : [answer];
   const single = list[0];
