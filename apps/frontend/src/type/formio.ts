@@ -47,3 +47,15 @@ export interface InputTemplateContext {
   hasValueMaskInput?: boolean;
   t: (value: string, options?: Record<string, unknown>) => string;
 }
+
+/**
+ * The context form.io hands to the `component/form` template when wrapping a
+ * component. Only the parts the template reads are declared here.
+ */
+export interface ComponentTemplateContext {
+  id: string;
+  classes: string;
+  styles?: string;
+  visible?: boolean;
+  children: string;
+}

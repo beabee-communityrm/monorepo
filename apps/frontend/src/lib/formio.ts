@@ -10,6 +10,7 @@ import { Formio, Templates } from 'formiojs';
 import AudioRecorderComponent from './formio/components/audio-recorder/AudioRecorder';
 import { MapTilerAddressProvider } from './formio/providers/address/map-tiler';
 import BeabeeStorage from './formio/providers/storage/beabee';
+import componentForm from './formio/templates/component';
 import inputForm from './formio/templates/input';
 
 // Override all default storage providers
@@ -33,6 +34,7 @@ Formio.Providers.providers.address = {
 // Override individual templates. The setter merges what it is given over the
 // defaults, so only the templates named here are replaced.
 Templates.current = {
+  component: { form: componentForm },
   input: { form: inputForm },
 };
 
