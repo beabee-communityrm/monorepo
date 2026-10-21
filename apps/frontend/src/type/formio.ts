@@ -18,3 +18,32 @@ export interface FormioMapTilerProviderOptions extends FormioAddressProviderOpti
     query?: string; // Search query
   };
 }
+
+/**
+ * The context form.io hands to the `input/form` template when rendering a
+ * field. Only the parts the template reads are declared here.
+ */
+export interface InputTemplateContext {
+  instance: { id: string };
+  component: {
+    key: string;
+    type?: string;
+    description?: string;
+    editor?: unknown;
+    wysiwyg?: unknown;
+    validate?: { required?: boolean };
+    fields?: Record<string, { required?: boolean } | undefined>;
+    showCharCount?: boolean;
+    showWordCount?: boolean;
+  };
+  input: {
+    type: string;
+    ref?: string;
+    attr?: Record<string, string>;
+    content?: string;
+  };
+  prefix?: string | HTMLElement;
+  suffix?: string | HTMLElement;
+  hasValueMaskInput?: boolean;
+  t: (value: string, options?: Record<string, unknown>) => string;
+}

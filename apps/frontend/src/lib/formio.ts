@@ -5,11 +5,12 @@
  * to add them to the form builder.
  */
 import { Form, FormBuilder } from '@formio/vue';
-import { Formio } from 'formiojs';
+import { Formio, Templates } from 'formiojs';
 
 import AudioRecorderComponent from './formio/components/audio-recorder/AudioRecorder';
 import { MapTilerAddressProvider } from './formio/providers/address/map-tiler';
 import BeabeeStorage from './formio/providers/storage/beabee';
+import inputForm from './formio/templates/input';
 
 // Override all default storage providers
 Formio.Providers.providers.storage = { beabee: BeabeeStorage };
@@ -28,5 +29,11 @@ Formio.Providers.providers.address = {
   'audiorecorder',
   AudioRecorderComponent
 );
+
+// Override individual templates. The setter merges what it is given over the
+// defaults, so only the templates named here are replaced.
+Templates.current = {
+  input: { form: inputForm },
+};
 
 export { Form, FormBuilder };
