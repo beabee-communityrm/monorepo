@@ -1,13 +1,24 @@
 <template>
   <form ref="formEl" :class="formClass" @submit.prevent>
-    <FormRenderer
-      v-for="slide in visibleSlides"
-      :key="slide.id"
-      v-model="answersProxy[slide.id]"
-      :components="slide.components"
-      :component-i18n-text="callout.formSchema.componentText"
-      :readonly="readonly"
-    />
+    <template v-for="slide in visibleSlides" :key="slide.id">
+      <!-- Slide titles are only ever written as admin labels, so the heading
+           is hidden. It gives the slide somewhere to send focus to, and tells
+           a screen reader which slide it has landed on. -->
+      <component
+        :is="`h${headingLevel || 3}`"
+        ref="slideHeadings"
+        tabindex="-1"
+        class="sr-only"
+      >
+        {{ slide.title }}
+      </component>
+      <FormRenderer
+        v-model="answersProxy[slide.id]"
+        :components="slide.components"
+        :component-i18n-text="callout.formSchema.componentText"
+        :readonly="readonly"
+      />
+    </template>
 
     <template v-if="isLastSlide && !readonly && !preview">
       <CalloutFormGuestFields
@@ -95,7 +106,7 @@ import { AppButton, AppNotification } from '@beabee/vue';
 
 import useVuelidate from '@vuelidate/core';
 import { requiredIf } from '@vuelidate/validators';
-import { computed, reactive, ref } from 'vue';
+import { computed, nextTick, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import FormRenderer from '#components/form-renderer/FormRenderer.vue';
@@ -118,6 +129,8 @@ const props = defineProps<{
   style?: 'simple' | 'small';
   noBg?: boolean;
   allSlides?: boolean;
+  /** Heading level for the slide titles, nested under whatever precedes the form */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
   onSubmit?(answers: CalloutResponseAnswersSlide): void;
 }>();
 
@@ -134,6 +147,7 @@ const formError = ref('');
 const isLoading = ref(false);
 
 const formEl = ref<HTMLFormElement>();
+const slideHeadings = ref<HTMLElement[]>([]);
 const formClass = computed(() => [
   'callout-form',
   {
@@ -276,15 +290,27 @@ async function handleSubmit() {
   }
 }
 
+/**
+ * Move focus to the new slide's heading. Without this the button that was
+ * clicked is removed or disabled as the slide changes, which drops focus to
+ * the document and leaves the user tabbing back through the whole page.
+ */
+async function focusCurrentSlide() {
+  await nextTick();
+  slideHeadings.value[0]?.focus({ preventScroll: true });
+}
+
 function handleNextSlide() {
   const nextSlideId = getNextSlideId(currentSlide.value, currentSlideNo.value);
 
   slideIds.value.unshift(nextSlideId);
 
   formEl.value?.scrollIntoView();
+  focusCurrentSlide();
 }
 
 function handlePrevSlide() {
   slideIds.value.shift();
+  focusCurrentSlide();
 }
 </script>
