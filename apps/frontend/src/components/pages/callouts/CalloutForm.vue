@@ -1,5 +1,9 @@
 <template>
   <form ref="formEl" :class="formClass" @submit.prevent>
+    <!-- Screen readers do not reliably announce a programmatic focus move onto
+         a heading, even a visible one, so the heading handles position and
+         this handles the announcement. -->
+    <p class="sr-only" aria-live="polite">{{ slideAnnouncement }}</p>
     <template v-for="slide in visibleSlides" :key="slide.id">
       <!-- A visible heading per step, which is what focus lands on when the
            slide changes. Slide titles themselves are written as admin labels,
@@ -153,6 +157,9 @@ const formError = ref('');
 const isLoading = ref(false);
 
 const formEl = ref<HTMLFormElement>();
+
+/** Announces the step change, which moving focus alone does not. */
+const slideAnnouncement = ref('');
 const formClass = computed(() => [
   'callout-form',
   {
@@ -307,9 +314,11 @@ async function handleSubmit() {
  */
 async function focusCurrentSlide() {
   await nextTick();
-  formEl.value
-    ?.querySelector<HTMLElement>('[data-slide-heading]')
-    ?.focus({ preventScroll: true });
+  const heading = formEl.value?.querySelector<HTMLElement>(
+    '[data-slide-heading]'
+  );
+  heading?.focus({ preventScroll: true });
+  slideAnnouncement.value = heading?.textContent?.trim() || '';
 }
 
 function handleNextSlide() {
