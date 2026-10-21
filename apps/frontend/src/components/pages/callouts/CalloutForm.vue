@@ -1,17 +1,22 @@
 <template>
   <form ref="formEl" :class="formClass" @submit.prevent>
-    <p class="sr-only" aria-live="polite">{{ slideAnnouncement }}</p>
     <template v-for="slide in visibleSlides" :key="slide.id">
-      <!-- Slide titles are only ever written as admin labels, so the heading
-           is hidden. It gives the slide somewhere to send focus to, and tells
-           a screen reader which slide it has landed on. -->
+      <!-- A visible heading per step, which is what focus lands on when the
+           slide changes. Slide titles themselves are written as admin labels,
+           so they are not shown. -->
       <component
         :is="`h${headingLevel || 3}`"
+        v-if="totalSlides > 1"
         data-slide-heading
         tabindex="-1"
-        class="sr-only"
+        class="mb-6 font-title text-lg font-semibold text-body-80"
       >
-        {{ slide.title }}
+        {{
+          t('callout.form.step', {
+            current: currentSlideNo + 1,
+            total: totalSlides,
+          })
+        }}
       </component>
       <FormRenderer
         v-model="answersProxy[slide.id]"
@@ -148,11 +153,6 @@ const formError = ref('');
 const isLoading = ref(false);
 
 const formEl = ref<HTMLFormElement>();
-
-// Announces the slide change. Screen readers do not report a programmatic
-// focus move onto a hidden heading, so without this the slide changes in
-// silence.
-const slideAnnouncement = ref('');
 const formClass = computed(() => [
   'callout-form',
   {
@@ -296,26 +296,20 @@ async function handleSubmit() {
 }
 
 /**
- * Put focus and the announcement in the new slide.
- *
- * Focus alone is not enough. It has to move, or the button that was activated
- * is removed and focus falls to the document, leaving the user to tab back
- * through the whole page. But a screen reader stays silent for a programmatic
- * move onto a hidden heading, so moving focus leaves them somewhere correct
- * with no idea they got there. The live region does the announcing.
+ * Move focus to the new step's heading, the usual pattern for a multi-step
+ * form. Without it the button that was activated is removed as the slide
+ * changes, focus falls to the document, and the user tabs back through the
+ * whole page to reach the form again.
  *
  * The heading is looked up from the DOM rather than held in a template ref: in
- * a keyed v-for the ref is nulled as the old slide unmounts, so reading it here
- * finds nothing or an element that has already been detached. Its fields are no
- * use as a focus target either, since form.io renders those asynchronously and
- * they do not exist yet at this point.
+ * a keyed v-for the ref is nulled as the old slide unmounts, so reading it
+ * here finds nothing or an element that has already been detached.
  */
 async function focusCurrentSlide() {
   await nextTick();
   formEl.value
     ?.querySelector<HTMLElement>('[data-slide-heading]')
     ?.focus({ preventScroll: true });
-  slideAnnouncement.value = currentSlide.value.title;
 }
 
 function handleNextSlide() {
