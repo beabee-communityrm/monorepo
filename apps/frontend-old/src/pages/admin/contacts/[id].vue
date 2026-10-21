@@ -61,6 +61,10 @@ const tabs = computed(() =>
         id: 'adminContactsViewCallouts',
         label: t('contactOverview.callouts'),
       },
+      {
+        id: 'adminContactsViewActivity',
+        label: t('menu.activity'),
+      },
     ],
     {
       params: { id: contact.value?.id || '-' },
