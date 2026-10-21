@@ -841,6 +841,7 @@
     "form": {
       "email": "Your email",
       "guestFieldsMissing": "Please tell us your contact details",
+      "incomplete": "Fill in the required fields above to continue",
       "name": "Your name",
       "submittingResponseError": "There was a problem submitting your response, please try again"
     },

@@ -45,11 +45,15 @@
         variant="error"
         :title="formError"
       />
+      <p v-if="validation.$invalid" :id="incompleteHintId" class="sr-only">
+        {{ t('callout.form.incomplete') }}
+      </p>
       <AppButton
         type="submit"
         class="mb-4 w-full"
         variant="primary"
         :disabled="validation.$invalid"
+        :aria-describedby="validation.$invalid ? incompleteHintId : undefined"
         :loading="isLoading"
         @click="handleSubmit"
       >
@@ -68,11 +72,15 @@
         </AppButton>
       </div>
       <div>
+        <p v-if="validation.$invalid" :id="incompleteHintId" class="sr-only">
+          {{ t('callout.form.incomplete') }}
+        </p>
         <AppButton
           v-if="currentSlideNo < totalSlides - 1"
           type="button"
           variant="primary"
           :disabled="validation.$invalid"
+          :aria-describedby="validation.$invalid ? incompleteHintId : undefined"
           @click="handleNextSlide"
         >
           {{ currentSlide.navigation.nextText }}
@@ -94,7 +102,7 @@ import { AppButton, AppNotification } from '@beabee/vue';
 
 import useVuelidate from '@vuelidate/core';
 import { requiredIf } from '@vuelidate/validators';
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, useId } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import FormRenderer from '#components/form-renderer/FormRenderer.vue';
@@ -133,6 +141,10 @@ const formError = ref('');
 const isLoading = ref(false);
 
 const formEl = ref<HTMLFormElement>();
+
+// Explains why the next or submit button is unavailable. Without it the only
+// thing a screen reader announces is that the button is dimmed.
+const incompleteHintId = `callout-form-incomplete-${useId()}`;
 const formClass = computed(() => [
   'callout-form',
   {
