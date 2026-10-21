@@ -1,5 +1,6 @@
 <template>
   <form ref="formEl" :class="formClass" @submit.prevent>
+    <p class="sr-only" aria-live="polite">{{ slideAnnouncement }}</p>
     <template v-for="slide in visibleSlides" :key="slide.id">
       <!-- Slide titles are only ever written as admin labels, so the heading
            is hidden. It gives the slide somewhere to send focus to, and tells
@@ -147,6 +148,11 @@ const formError = ref('');
 const isLoading = ref(false);
 
 const formEl = ref<HTMLFormElement>();
+
+// Announces the slide change. Screen readers do not report a programmatic
+// focus move onto a hidden heading, so without this the slide changes in
+// silence.
+const slideAnnouncement = ref('');
 const formClass = computed(() => [
   'callout-form',
   {
@@ -290,19 +296,26 @@ async function handleSubmit() {
 }
 
 /**
- * Move focus to the new slide's heading. Without this the button that was
- * activated is removed as the slide changes, which drops focus to the document
- * and leaves the user tabbing back through the whole page.
+ * Put focus and the announcement in the new slide.
+ *
+ * Focus alone is not enough. It has to move, or the button that was activated
+ * is removed and focus falls to the document, leaving the user to tab back
+ * through the whole page. But a screen reader stays silent for a programmatic
+ * move onto a hidden heading, so moving focus leaves them somewhere correct
+ * with no idea they got there. The live region does the announcing.
  *
  * The heading is looked up from the DOM rather than held in a template ref: in
  * a keyed v-for the ref is nulled as the old slide unmounts, so reading it here
- * can find nothing or an element that has already been detached.
+ * finds nothing or an element that has already been detached. Its fields are no
+ * use as a focus target either, since form.io renders those asynchronously and
+ * they do not exist yet at this point.
  */
 async function focusCurrentSlide() {
   await nextTick();
   formEl.value
     ?.querySelector<HTMLElement>('[data-slide-heading]')
     ?.focus({ preventScroll: true });
+  slideAnnouncement.value = currentSlide.value.title;
 }
 
 function handleNextSlide() {
