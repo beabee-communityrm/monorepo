@@ -79,6 +79,7 @@ declare module 'vue-router/auto-routes' {
       { id: ParamValue<true> },
       { id: ParamValue<false> },
       | 'adminContactsViewAccount'
+      | 'adminContactsViewActivity'
       | 'adminContactsViewCallouts'
       | 'adminContactsViewContribution'
       | 'adminContactsViewOverview'
@@ -93,6 +94,13 @@ declare module 'vue-router/auto-routes' {
     'adminContactsViewAccount': RouteRecordInfo<
       'adminContactsViewAccount',
       '/admin/contacts/:id/account',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    'adminContactsViewActivity': RouteRecordInfo<
+      'adminContactsViewActivity',
+      '/admin/contacts/:id/activity',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
       | never
@@ -577,6 +585,7 @@ declare module 'vue-router/auto-routes' {
       routes:
         | 'adminContactsView'
         | 'adminContactsViewAccount'
+        | 'adminContactsViewActivity'
         | 'adminContactsViewCallouts'
         | 'adminContactsViewContribution'
         | 'adminContactsViewOverview'
@@ -592,6 +601,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/admin/contacts/[id]/account.vue': {
       routes:
         | 'adminContactsViewAccount'
+      views:
+        | never
+    }
+    'src/pages/admin/contacts/[id]/activity.vue': {
+      routes:
+        | 'adminContactsViewActivity'
       views:
         | never
     }
