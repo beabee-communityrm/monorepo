@@ -1,13 +1,34 @@
 <template>
   <form ref="formEl" :class="formClass" @submit.prevent>
-    <FormRenderer
-      v-for="slide in visibleSlides"
-      :key="slide.id"
-      v-model="answersProxy[slide.id]"
-      :components="slide.components"
-      :component-i18n-text="callout.formSchema.componentText"
-      :readonly="readonly"
-    />
+    <!-- Screen readers do not reliably announce a programmatic focus move onto
+         a heading, even a visible one, so the heading handles position and
+         this handles the announcement. -->
+    <p class="sr-only" aria-live="polite">{{ slideAnnouncement }}</p>
+    <template v-for="slide in visibleSlides" :key="slide.id">
+      <!-- A visible heading per step, which is what focus lands on when the
+           slide changes. Slide titles themselves are written as admin labels,
+           so they are not shown. -->
+      <component
+        :is="`h${headingLevel || 3}`"
+        v-if="totalSlides > 1"
+        data-slide-heading
+        tabindex="-1"
+        class="mb-6 font-title text-lg font-semibold text-body-80"
+      >
+        {{
+          t('callout.form.step', {
+            current: currentSlideNo + 1,
+            total: totalSlides,
+          })
+        }}
+      </component>
+      <FormRenderer
+        v-model="answersProxy[slide.id]"
+        :components="slide.components"
+        :component-i18n-text="callout.formSchema.componentText"
+        :readonly="readonly"
+      />
+    </template>
 
     <template v-if="isLastSlide && !readonly && !preview">
       <CalloutFormGuestFields
@@ -95,7 +116,7 @@ import { AppButton, AppNotification } from '@beabee/vue';
 
 import useVuelidate from '@vuelidate/core';
 import { requiredIf } from '@vuelidate/validators';
-import { computed, reactive, ref } from 'vue';
+import { computed, nextTick, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import FormRenderer from '#components/form-renderer/FormRenderer.vue';
@@ -118,6 +139,8 @@ const props = defineProps<{
   style?: 'simple' | 'small';
   noBg?: boolean;
   allSlides?: boolean;
+  /** Heading level for the slide titles, nested under whatever precedes the form */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
   onSubmit?(answers: CalloutResponseAnswersSlide): void;
 }>();
 
@@ -134,6 +157,9 @@ const formError = ref('');
 const isLoading = ref(false);
 
 const formEl = ref<HTMLFormElement>();
+
+/** Announces the step change, which moving focus alone does not. */
+const slideAnnouncement = ref('');
 const formClass = computed(() => [
   'callout-form',
   {
@@ -276,15 +302,36 @@ async function handleSubmit() {
   }
 }
 
+/**
+ * Move focus to the new step's heading, the usual pattern for a multi-step
+ * form. Without it the button that was activated is removed as the slide
+ * changes, focus falls to the document, and the user tabs back through the
+ * whole page to reach the form again.
+ *
+ * The heading is looked up from the DOM rather than held in a template ref: in
+ * a keyed v-for the ref is nulled as the old slide unmounts, so reading it
+ * here finds nothing or an element that has already been detached.
+ */
+async function focusCurrentSlide() {
+  await nextTick();
+  const heading = formEl.value?.querySelector<HTMLElement>(
+    '[data-slide-heading]'
+  );
+  heading?.focus({ preventScroll: true });
+  slideAnnouncement.value = heading?.textContent?.trim() || '';
+}
+
 function handleNextSlide() {
   const nextSlideId = getNextSlideId(currentSlide.value, currentSlideNo.value);
 
   slideIds.value.unshift(nextSlideId);
 
   formEl.value?.scrollIntoView();
+  focusCurrentSlide();
 }
 
 function handlePrevSlide() {
   slideIds.value.shift();
+  focusCurrentSlide();
 }
 </script>
