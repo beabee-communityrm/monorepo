@@ -16,3 +16,13 @@ export interface BackfillEventsArgs {
   category: EventBackfillCategory | 'all';
   dryRun: boolean;
 }
+
+export interface EventBackfill {
+  eventType: ActivityEventType;
+  /** `FROM … WHERE NOT EXISTS (…)` selecting rows without an event; `$1` is the event type */
+  source: string;
+  /** Values for ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata") */
+  fields: string;
+  /** Parameters after the event type, from `$2` on */
+  params?: unknown[];
+}
