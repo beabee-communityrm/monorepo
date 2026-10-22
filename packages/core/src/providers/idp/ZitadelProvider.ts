@@ -209,10 +209,13 @@ export class ZitadelProvider implements IdpProvider {
     if (!resp?.policy) {
       throw new Error('Zitadel did not return the login policy');
     }
+    // Members join through beabee, so Login v2 must not offer its own
+    // registration
     await this.put('/admin/v1/policies/login', {
       ...resp.policy,
       defaultRedirectUri: settings.defaultRedirectUri,
       ignoreUnknownUsernames: true,
+      allowRegister: false,
     });
     await this.put('/admin/v1/policies/notification', {
       passwordChange: false,
