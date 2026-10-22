@@ -1020,7 +1020,9 @@
     "title": ""
   },
   "calloutThanksPage": {
-    "oneResponseWarning": ""
+    "backTo": "",
+    "oneResponseWarning": "",
+    "sharePrompt": ""
   },
   "callouts": {
     "access": {

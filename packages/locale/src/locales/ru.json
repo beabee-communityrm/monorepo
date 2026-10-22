@@ -1021,7 +1021,9 @@
     "title": ""
   },
   "calloutThanksPage": {
-    "oneResponseWarning": ""
+    "backTo": "Назад к {title}",
+    "oneResponseWarning": "",
+    "sharePrompt": "Помогите нам охватить больше людей — поделитесь этой CrowdNewsroom."
   },
   "callouts": {
     "access": {

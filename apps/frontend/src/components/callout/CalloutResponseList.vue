@@ -13,7 +13,9 @@
     <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-3">
       <div class="flex flex-wrap items-baseline gap-x-3">
         <h3 class="text-lg">{{ heading }}</h3>
-        <p v-if="count === 1" class="text-muted">{{ submittedOn }}</p>
+        <p v-if="count === 1 && !hideDate" class="text-muted">
+          {{ submittedOn }}
+        </p>
       </div>
 
       <UButton v-if="addTo" icon="i-lucide-plus" :to="addTo">
@@ -49,7 +51,7 @@
                 })
               }}
             </h4>
-            <p class="text-muted">{{ submittedOn }}</p>
+            <p v-if="!hideDate" class="text-muted">{{ submittedOn }}</p>
           </div>
 
           <div class="flex items-center gap-2">
@@ -153,6 +155,8 @@ export interface CalloutResponseListProps {
   addTo?: RouteLocationRaw;
   /** Where editing goes, if the one response can still be edited */
   editTo?: RouteLocationRaw;
+  /** Leaves out the submission date */
+  hideDate?: boolean;
 }
 
 const props = defineProps<CalloutResponseListProps>();

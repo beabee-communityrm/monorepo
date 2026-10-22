@@ -6,7 +6,11 @@
       onOpenAutoFocus: (e: Event) => e.preventDefault(),
     }"
   >
-    <UButton color="neutral" variant="outline" icon="i-lucide-share-2">
+    <UButton
+      :color="color"
+      :variant="color === 'primary' ? 'solid' : 'outline'"
+      icon="i-lucide-share-2"
+    >
       {{ t('actions.share') }}
     </UButton>
 
@@ -67,9 +71,13 @@ const { t } = useI18n();
 export interface CalloutSharePopoverProps {
   /** The full URL to share */
   url: string;
+  /** The trigger's colour: neutral outline, or solid primary */
+  color?: 'neutral' | 'primary';
 }
 
-const props = defineProps<CalloutSharePopoverProps>();
+const props = withDefaults(defineProps<CalloutSharePopoverProps>(), {
+  color: 'neutral',
+});
 
 const services = computed(() => [
   {
