@@ -28,12 +28,11 @@ meta:
   <section v-if="callouts.length" class="mb-6 lg:mr-6">
     <SectionTitle>{{ t('homePage.openCallouts') }}</SectionTitle>
 
-    <div class="-mx-3 my-6 flex flex-wrap">
+    <div class="my-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <CalloutCard
         v-for="callout in callouts"
         :key="callout.slug"
         :callout="callout"
-        class="mx-3 mb-5"
       />
     </div>
 
