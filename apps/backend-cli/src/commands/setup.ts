@@ -85,15 +85,21 @@ export const setupCommand: CommandModule = {
               command: 'stripe',
               describe: 'Set up Stripe integration',
               builder: (yargs) =>
-                yargs.option('dry-run', {
-                  type: 'boolean',
-                  describe: 'Run setup without making changes',
-                  default: false,
-                }),
+                yargs
+                  .option('dry-run', {
+                    type: 'boolean',
+                    describe: 'Run setup without making changes',
+                    default: false,
+                  })
+                  .option('webhook-secret', {
+                    type: 'string',
+                    describe:
+                      'Store this signing secret instead of creating a webhook endpoint, for a local Stripe CLI listener',
+                  }),
               handler: async (argv) => {
                 const { setupStripe } =
                   await import('../actions/setup/integrations.js');
-                return setupStripe(argv.dryRun);
+                return setupStripe(argv.dryRun, argv.webhookSecret);
               },
             })
             .command({
