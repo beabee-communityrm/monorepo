@@ -8,8 +8,13 @@ export interface EventDuplicateRule {
   eventType: ActivityEventType;
   /** Whether row `a` was inserted by the backfill */
   isBackfilled: (a: 'x' | 'y') => string;
-  /** Whether `y` is the same event as `x`, matching the backfill's dedup check */
+  /** Whether event `y` is the same as `x`, mirroring the backfill's `NOT EXISTS` check */
   sameEvent: string;
+}
+
+export interface EventBackfiller extends EventDuplicateRule {
+  /** Insert missing events, returning their ids (none on a dry run) */
+  backfill: (dryRun: boolean) => Promise<string[]>;
 }
 
 export interface BackfillEventsArgs {
@@ -17,8 +22,7 @@ export interface BackfillEventsArgs {
   dryRun: boolean;
 }
 
-export interface EventBackfill {
-  eventType: ActivityEventType;
+export interface EventBackfill extends EventDuplicateRule {
   /** `FROM … WHERE NOT EXISTS (…)` selecting rows without an event; `$1` is the event type */
   source: string;
   /** Values for ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata") */

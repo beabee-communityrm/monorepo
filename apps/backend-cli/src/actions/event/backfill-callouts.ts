@@ -1,6 +1,7 @@
 import { ActivityActorType, ActivityEventType } from '@beabee/beabee-common';
 
-import { createBackfill } from '../../utils/backfill.js';
+import type { EventBackfiller } from '../../types/index.js';
+import { createBackfill, noActor, sameTarget } from '../../utils/backfill.js';
 
 /**
  * Backfill callout.created events
@@ -16,6 +17,8 @@ const backfillCreated = createBackfill({
       SELECT 1 FROM activity_event e
       WHERE e."targetId" = c.id AND e."eventType" = $1
     )`,
+  isBackfilled: noActor,
+  sameEvent: sameTarget,
 });
 
 /**
@@ -34,6 +37,9 @@ const backfillAnswered = createBackfill({
       WHERE e."eventType" = $1 AND e.metadata->>'responseId' = r.id::text
     )`,
   params: [ActivityActorType.User],
+  // Backfilled and live rows are indistinguishable, so any other row is kept
+  isBackfilled: () => 'FALSE',
+  sameEvent: `y.metadata->>'responseId' = x.metadata->>'responseId'`,
 });
 
 /**
@@ -50,14 +56,13 @@ const backfillSegmentsAdded = createBackfill({
       SELECT 1 FROM activity_event e
       WHERE e."targetId" = s.id AND e."eventType" = $1
     )`,
+  isBackfilled: noActor,
+  sameEvent: sameTarget,
 });
 
-/**
- * Backfill callout activity events that pre-date the activity feed.
- * @param dryRun Only report what would be created
- */
-export const backfillCallouts = async (dryRun: boolean): Promise<void> => {
-  await backfillCreated(dryRun);
-  await backfillAnswered(dryRun);
-  await backfillSegmentsAdded(dryRun);
-};
+/** Callout activity events that pre-date the activity feed */
+export const calloutBackfills: EventBackfiller[] = [
+  backfillCreated,
+  backfillAnswered,
+  backfillSegmentsAdded,
+];

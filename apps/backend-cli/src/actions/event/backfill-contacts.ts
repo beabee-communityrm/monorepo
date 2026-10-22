@@ -4,7 +4,13 @@ import { paymentService } from '@beabee/core/services';
 
 import chalk from 'chalk';
 
-import { createBackfill } from '../../utils/backfill.js';
+import type { EventBackfiller } from '../../types/index.js';
+import {
+  contactActor,
+  createBackfill,
+  noActor,
+  sameTarget,
+} from '../../utils/backfill.js';
 
 // Find each contact's charged subscriptions without start event. Contacts with
 // a start event lacking a subscriptionId (i.e. created live) are skipped
@@ -33,6 +39,8 @@ const backfillCreated = createBackfill({
       SELECT 1 FROM activity_event e
       WHERE e."targetId" = c.id AND e."eventType" = $1
     )`,
+  isBackfilled: noActor,
+  sameEvent: sameTarget,
 });
 
 /**
@@ -40,46 +48,57 @@ const backfillCreated = createBackfill({
  * The contact is both the target and the actor
  * One event per subscription, dated by its creation date at the payment provider
  */
-const backfillContributionStarted = async (dryRun: boolean): Promise<void> => {
-  const eventType = ActivityEventType.ContactContributionStarted;
+const backfillContributionStarted: EventBackfiller = {
+  eventType: ActivityEventType.ContactContributionStarted,
+  // Live metadata holds the full contribution update, or is null
+  isBackfilled: (a) =>
+    `${contactActor(a)} AND COALESCE(${a}.metadata - 'subscriptionId' = '{}'::jsonb, FALSE)`,
+  sameEvent: `${sameTarget}
+    AND (y.metadata->>'subscriptionId' IS NULL
+      OR y.metadata->>'subscriptionId' = x.metadata->>'subscriptionId')`,
+  backfill: async (dryRun) => {
+    const eventType = ActivityEventType.ContactContributionStarted;
 
-  const rows: { contactId: string; subscriptionId: string }[] =
-    await dataSource.query(noStartedEvent, [eventType]);
+    const rows: { contactId: string; subscriptionId: string }[] =
+      await dataSource.query(noStartedEvent, [eventType]);
 
-  if (dryRun) {
-    console.log(
-      `${chalk.green('✓')} Would add ${rows.length} ${eventType} event(s)`
-    );
-    return;
-  }
-
-  let added = 0;
-  for (const { contactId, subscriptionId } of rows) {
-    try {
-      const createdAt =
-        await paymentService.getSubscriptionCreatedAt(subscriptionId);
-      await dataSource.query(
-        `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
-         VALUES ($1, $2, $1, $3, $4, jsonb_build_object('subscriptionId', $5::text))`,
-        [
-          contactId,
-          ActivityActorType.User,
-          createdAt,
-          eventType,
-          subscriptionId,
-        ]
-      );
-      added++;
-    } catch (err) {
+    if (dryRun) {
       console.log(
-        `${chalk.red('✗')} Failed ${eventType} for contact ${contactId} (${subscriptionId}): ${err}`
+        `${chalk.green('✓')} Would add ${rows.length} ${eventType} event(s)`
       );
+      return [];
     }
-  }
 
-  console.log(
-    `${chalk.green('✓')} Added ${added} of ${rows.length} ${eventType} event(s)`
-  );
+    const ids: string[] = [];
+    for (const { contactId, subscriptionId } of rows) {
+      try {
+        const createdAt =
+          await paymentService.getSubscriptionCreatedAt(subscriptionId);
+        const [{ id }] = await dataSource.query(
+          `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
+           VALUES ($1, $2, $1, $3, $4, jsonb_build_object('subscriptionId', $5::text))
+           RETURNING id`,
+          [
+            contactId,
+            ActivityActorType.User,
+            createdAt,
+            eventType,
+            subscriptionId,
+          ]
+        );
+        ids.push(id);
+      } catch (err) {
+        console.log(
+          `${chalk.red('✗')} Failed ${eventType} for contact ${contactId} (${subscriptionId}): ${err}`
+        );
+      }
+    }
+
+    console.log(
+      `${chalk.green('✓')} Added ${ids.length} of ${rows.length} ${eventType} event(s)`
+    );
+    return ids;
+  },
 };
 
 /**
@@ -99,6 +118,9 @@ const backfillContributionCancelled = createBackfill({
         WHERE e."targetId" = cc."contactId" AND e."eventType" = $1
       )`,
   params: [ActivityActorType.User],
+  // Live metadata always holds the subscriptionId
+  isBackfilled: (a) => `${contactActor(a)} AND ${a}.metadata IS NULL`,
+  sameEvent: sameTarget,
 });
 
 /**
@@ -117,6 +139,8 @@ const backfillRoleAdded = createBackfill({
       WHERE e."targetId" = cr."contactId" AND e."eventType" = $1
         AND e.metadata->>'roleType' = cr.type
     )`,
+  isBackfilled: noActor,
+  sameEvent: `${sameTarget} AND y.metadata->>'roleType' = x.metadata->>'roleType'`,
 });
 
 /**
@@ -133,16 +157,15 @@ const backfillSegmentsAdded = createBackfill({
       SELECT 1 FROM activity_event e
       WHERE e."targetId" = s.id AND e."eventType" = $1
     )`,
+  isBackfilled: noActor,
+  sameEvent: sameTarget,
 });
 
-/**
- * Backfill contact activity events that pre-date the activity feed.
- * @param dryRun Only report what would be created
- */
-export const backfillContacts = async (dryRun: boolean): Promise<void> => {
-  await backfillCreated(dryRun);
-  await backfillContributionStarted(dryRun);
-  await backfillContributionCancelled(dryRun);
-  await backfillRoleAdded(dryRun);
-  await backfillSegmentsAdded(dryRun);
-};
+/** Contact activity events that pre-date the activity feed */
+export const contactBackfills: EventBackfiller[] = [
+  backfillCreated,
+  backfillContributionStarted,
+  backfillContributionCancelled,
+  backfillRoleAdded,
+  backfillSegmentsAdded,
+];

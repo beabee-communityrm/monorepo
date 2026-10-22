@@ -4,21 +4,19 @@ import { EVENT_BACKFILL_CATEGORIES } from '../../constants/event.js';
 import type {
   BackfillEventsArgs,
   EventBackfillCategory,
+  EventBackfiller,
 } from '../../types/index.js';
-import { backfillCallouts } from './backfill-callouts.js';
-import { backfillContacts } from './backfill-contacts.js';
-import { backfillEmails } from './backfill-emails.js';
-import { backfillPayments } from './backfill-payments.js';
+import { calloutBackfills } from './backfill-callouts.js';
+import { contactBackfills } from './backfill-contacts.js';
+import { emailBackfills } from './backfill-emails.js';
+import { paymentBackfills } from './backfill-payments.js';
 import { cleanupDuplicates } from './cleanup.js';
 
-const backfillers: Record<
-  EventBackfillCategory,
-  (dryRun: boolean) => Promise<void>
-> = {
-  contact: backfillContacts,
-  callout: backfillCallouts,
-  email: backfillEmails,
-  payment: backfillPayments,
+const backfillers: Record<EventBackfillCategory, EventBackfiller[]> = {
+  contact: contactBackfills,
+  callout: calloutBackfills,
+  email: emailBackfills,
+  payment: paymentBackfills,
 };
 /**
  * Backfill activity events for a single category, or for every category when
@@ -32,9 +30,13 @@ export const backfillEvents = async ({
     category === 'all' ? EVENT_BACKFILL_CATEGORIES : [category];
 
   await runApp(async () => {
-    for (const c of categories) {
-      await backfillers[c](dryRun);
+    const backfilled = [];
+    for (const rule of categories.flatMap((c) => backfillers[c])) {
+      backfilled.push({ rule, ids: await rule.backfill(dryRun) });
     }
-    await cleanupDuplicates(categories, dryRun);
+    // Nothing is inserted on a dry run, so there is nothing to clean up
+    if (!dryRun) {
+      await cleanupDuplicates(backfilled);
+    }
   });
 };

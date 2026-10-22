@@ -4,7 +4,8 @@ import { stripe } from '@beabee/core/lib/stripe';
 
 import chalk from 'chalk';
 
-import { createBackfill } from '../../utils/backfill.js';
+import type { EventBackfiller } from '../../types/index.js';
+import { createBackfill, noActor, sameTarget } from '../../utils/backfill.js';
 
 /**
  * Backfill contact.payment.successful events
@@ -27,6 +28,10 @@ const backfillPaymentSuccessful = createBackfill({
             OR (e.metadata->>'paymentId' IS NULL AND e."createdAt" <= p."chargeDate"))
       )`,
   params: [PaymentStatus.Successful],
+  isBackfilled: noActor,
+  sameEvent: `${sameTarget}
+    AND (y.metadata->>'paymentId' = x.metadata->>'paymentId'
+      OR (y.metadata->>'paymentId' IS NULL AND y."createdAt" <= x."createdAt"))`,
 });
 
 // Find uncollectible invoices ($2 ids, $3 dates) with a contact-linked payment
@@ -47,56 +52,58 @@ const noFailedEvent = `
  * Uncollectible invoices are fetched from Stripe and dated by when they were
  * marked uncollectible
  */
-const backfillPaymentFailed = async (dryRun: boolean): Promise<void> => {
-  const eventType = ActivityEventType.ContactPaymentFailed;
+const backfillPaymentFailed: EventBackfiller = {
+  eventType: ActivityEventType.ContactPaymentFailed,
+  isBackfilled: noActor,
+  sameEvent: `${sameTarget} AND y.metadata->>'paymentId' = x.metadata->>'paymentId'`,
+  backfill: async (dryRun) => {
+    const eventType = ActivityEventType.ContactPaymentFailed;
 
-  const invoices = await stripe.invoices
-    .list({ status: 'uncollectible', limit: 100 })
-    .autoPagingToArray({ limit: 10000 });
+    const invoices = await stripe.invoices
+      .list({ status: 'uncollectible', limit: 100 })
+      .autoPagingToArray({ limit: 10000 });
 
-  const params = [
-    eventType,
-    invoices.map((invoice) => invoice.id),
-    invoices.map(
-      (invoice) =>
-        new Date(
-          (invoice.status_transitions.marked_uncollectible_at ??
-            invoice.created) * 1000 // convert from unix seconds
-        )
-    ),
-  ];
+    const params = [
+      eventType,
+      invoices.map((invoice) => invoice.id),
+      invoices.map(
+        (invoice) =>
+          new Date(
+            (invoice.status_transitions.marked_uncollectible_at ??
+              invoice.created) * 1000 // convert from unix seconds
+          )
+      ),
+    ];
 
-  if (dryRun) {
-    const [{ count }] = await dataSource.query(
-      `SELECT COUNT(*)::int AS count ${noFailedEvent}`,
+    if (dryRun) {
+      const [{ count }] = await dataSource.query(
+        `SELECT COUNT(*)::int AS count ${noFailedEvent}`,
+        params
+      );
+      console.log(
+        `${chalk.green('✓')} Would add ${count} ${eventType} event(s) from ${invoices.length} uncollectible invoice(s)`
+      );
+      return [];
+    }
+
+    const inserted: { id: string }[] = await dataSource.query(
+      `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
+       SELECT p."contactId", NULL, NULL, i."uncollectibleAt", $1,
+              jsonb_build_object('paymentId', p.id)
+       ${noFailedEvent}
+       RETURNING id`,
       params
     );
+
     console.log(
-      `${chalk.green('✓')} Would add ${count} ${eventType} event(s) from ${invoices.length} uncollectible invoice(s)`
+      `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s) from ${invoices.length} uncollectible invoice(s)`
     );
-    return;
-  }
-
-  const inserted = await dataSource.query(
-    `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
-     SELECT p."contactId", NULL, NULL, i."uncollectibleAt", $1,
-            jsonb_build_object('paymentId', p.id)
-     ${noFailedEvent}
-     RETURNING id`,
-    params
-  );
-
-  console.log(
-    `${chalk.green('✓')} Added ${inserted.length} ${eventType} event(s) from ${invoices.length} uncollectible invoice(s)`
-  );
+    return inserted.map(({ id }) => id);
+  },
 };
 
-/**
- * Backfill payment activity events from existing payment records that
- * pre-date the activity feed.
- * @param dryRun Only report what would be created
- */
-export const backfillPayments = async (dryRun: boolean): Promise<void> => {
-  await backfillPaymentSuccessful(dryRun);
-  await backfillPaymentFailed(dryRun);
-};
+/** Payment activity events from existing payment records that pre-date the activity feed */
+export const paymentBackfills: EventBackfiller[] = [
+  backfillPaymentSuccessful,
+  backfillPaymentFailed,
+];
