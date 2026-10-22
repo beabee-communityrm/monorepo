@@ -10,6 +10,7 @@ import {
   SetCalloutSlideSchema,
 } from '@beabee/beabee-common';
 import {
+  ActivityEvent,
   ApiKey,
   Callout,
   CalloutResponse,
@@ -287,6 +288,20 @@ function uniqueCode(): string {
 }
 
 // Model anonymisers
+export const activityEventAnonymiser = createModelAnonymiser(ActivityEvent, {
+  actorId: () => uuidv4(),
+  targetId: () => uuidv4(),
+  // Metadata is a union across event types, so the keys here come from
+  // different members. Absent keys are skipped, and the shared value map
+  // reuses the replacements from each field's home table.
+  metadata: {
+    responseId: () => uuidv4(),
+    paymentId: () => uuidv4(),
+    subscriptionId: randomId(12, 'SB'),
+    recipient: () => chance.email({ domain: 'fake.beabee.io', length: 10 }),
+  },
+});
+
 export const apiKeyAnonymiser = createModelAnonymiser(ApiKey, {
   id: () => uuidv4(),
   creatorId: () => uuidv4(),
