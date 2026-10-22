@@ -14,7 +14,18 @@
     </p>
 
     <AppNotification
-      v-if="contribution.nextAmount && contribution.renewalDate"
+      v-if="contribution.nextAmount && contribution.nextAmountPending"
+      variant="info"
+      :title="
+        t('contribution.nextAmountPending', {
+          nextAmount: n(contribution.nextAmount, 'currency'),
+        })
+      "
+      :icon="faInfoCircle"
+      class="mb-4"
+    />
+    <AppNotification
+      v-else-if="contribution.nextAmount && contribution.renewalDate"
       variant="info"
       :title="
         t('contribution.nextAmountChanging', {

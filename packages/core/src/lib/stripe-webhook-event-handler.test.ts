@@ -108,7 +108,7 @@ describe('StripeWebhookEventHandler', () => {
 
     it('activates the next amount when a pending update was applied', async () => {
       getContributionBy.mockResolvedValue(
-        createContribution({ chargeable: 18000, monthly: 15 })
+        createContribution({ chargeable: 18000, monthly: 15, pending: true })
       );
 
       await StripeWebhookEventHandler.handleEvent(
@@ -129,7 +129,7 @@ describe('StripeWebhookEventHandler', () => {
 
     it('clears the next amount when a pending update expired unpaid', async () => {
       getContributionBy.mockResolvedValue(
-        createContribution({ chargeable: 18000, monthly: 15 })
+        createContribution({ chargeable: 18000, monthly: 15, pending: true })
       );
 
       await StripeWebhookEventHandler.handleEvent(
@@ -140,6 +140,21 @@ describe('StripeWebhookEventHandler', () => {
 
       expect(updateContact).not.toHaveBeenCalled();
       expect(updateData).toHaveBeenCalledWith(contact, { nextAmount: null });
+    });
+
+    it('keeps a scheduled next amount when a pending update expired', async () => {
+      getContributionBy.mockResolvedValue(
+        createContribution({ chargeable: 18000, monthly: 15 })
+      );
+
+      await StripeWebhookEventHandler.handleEvent(
+        createEvent('customer.subscription.updated', createSubscription({}), {
+          pending_update: pendingUpdate,
+        })
+      );
+
+      expect(updateContact).not.toHaveBeenCalled();
+      expect(updateData).not.toHaveBeenCalled();
     });
 
     it('ignores an update that is still pending', async () => {

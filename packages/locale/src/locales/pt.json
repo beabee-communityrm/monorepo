@@ -1304,6 +1304,7 @@
     "manualPayment": "A tua contribuição está a ser paga via {source}. Se começares a pagar através do nosso sistema de contribuições, será mais fácil para ti gerires a tua contribuição mensal e vais ajudar-nos a perceber quanto dinheiro recebemos por mês da nossa Comunidade.",
     "manualPaymentSource": "Uma ferramenta desenvolvida por outra organização",
     "nextAmountChanging": "",
+    "nextAmountPending": "A tua contribuição mudará para {nextAmount} assim que o pagamento for autenticado.",
     "paymentHistory": {
       "empty": "Os pagamentos já realizados vão aparecer aqui.",
       "title": "Histórico de pagamentos"

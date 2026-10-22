@@ -242,11 +242,7 @@ export async function updateSubscription(
   subscriptionId: string,
   form: UpdateContributionForm,
   paymentMethod: PaymentMethod
-): Promise<{
-  subscription: Stripe.Subscription;
-  startNow: boolean;
-  pendingIntent?: Stripe.PaymentIntent | undefined;
-}> {
+): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
     expand: ['schedule'],
   });
@@ -308,11 +304,7 @@ export async function updateSubscription(
     const updated = await stripe.subscriptions.update(subscriptionId, params);
     if (updated.pending_update) {
       log.info(`Subscription ${subscription.id} update is pending payment`);
-      return {
-        subscription,
-        startNow: false,
-        pendingIntent: getInvoicePaymentIntent(updated.latest_invoice),
-      };
+      return { subscription: updated, startNow: false };
     }
   } else {
     // Schedule the change for the next period

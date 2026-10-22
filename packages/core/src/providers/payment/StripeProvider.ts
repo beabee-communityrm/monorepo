@@ -9,11 +9,7 @@ import { add } from 'date-fns';
 import Stripe from 'stripe';
 
 import config from '#config/config';
-import {
-  NoPaymentMethodError,
-  PaymentFailedError,
-  PaymentRequiresActionError,
-} from '#errors/index';
+import { NoPaymentMethodError, PaymentFailedError } from '#errors/index';
 import {
   chargeOneTimePayment,
   createSubscription,
@@ -109,7 +105,7 @@ export class StripeProvider extends PaymentProvider {
       this.data.subscriptionId = newSubscription.id;
     }
 
-    const { subscription, startNow, pendingIntent } =
+    const { subscription, startNow } =
       await this.updateOrCreateSubscription(form);
 
     this.data.subscriptionId = subscription.id;
@@ -119,21 +115,16 @@ export class StripeProvider extends PaymentProvider {
       : {
           chargeable: getChargeableAmount(form, this.method),
           monthly: form.monthlyAmount,
+          // Stripe applies the new amount once the proration payment is
+          // authenticated, the webhook handler then activates the next amount
+          ...(subscription.pending_update && { pending: true }),
         };
 
     await this.updateData();
 
-    // Stripe applies the new amount once the proration payment is
-    // authenticated, the webhook handler then activates the next amount
-    if (
-      pendingIntent?.status === 'requires_action' &&
-      pendingIntent.client_secret
-    ) {
-      throw new PaymentRequiresActionError(pendingIntent.client_secret);
-    }
-
-    // A new subscription whose first payment needs authentication starts the
-    // membership anyway, Stripe expires it if the member never completes it
+    // The caller offers the member the authentication once the update is
+    // persisted. A new subscription starts the membership anyway, Stripe
+    // expires it if the member never completes the payment
     const clientSecret = getRequiresActionClientSecret(subscription);
 
     return {

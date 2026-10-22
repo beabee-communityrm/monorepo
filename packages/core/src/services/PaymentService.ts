@@ -244,6 +244,7 @@ class PaymentService {
               d.nextAmount.monthly,
               contact.contributionPeriod
             ),
+            ...(d.nextAmount.pending && { nextAmountPending: true }),
           }),
         ...(contact.membership?.dateExpires && {
           membershipExpiryDate: contact.membership.dateExpires,

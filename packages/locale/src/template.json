@@ -1303,6 +1303,7 @@
     "manualPayment": "",
     "manualPaymentSource": "",
     "nextAmountChanging": "",
+    "nextAmountPending": "",
     "paymentHistory": {
       "empty": "",
       "title": ""

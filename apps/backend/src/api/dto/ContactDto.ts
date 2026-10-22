@@ -81,6 +81,10 @@ export class GetContributionInfoDto implements ContributionInfo {
   nextAmount?: number;
 
   @IsOptional()
+  @IsBoolean()
+  nextAmountPending?: boolean;
+
+  @IsOptional()
   @IsEnum(ContributionPeriod)
   period?: ContributionPeriod;
 

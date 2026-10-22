@@ -137,7 +137,9 @@ export class StripeWebhookEventHandler {
         'subscriptionId',
         subscription.id
       );
-      if (contribution?.nextAmount) {
+      // A next amount without the pending flag was scheduled for the renewal
+      // after this update and must survive its expiry
+      if (contribution?.nextAmount?.pending) {
         // Stripe only puts the new price on the items if the update was paid
         const applied =
           subscription.items.data[0]?.price.unit_amount ===

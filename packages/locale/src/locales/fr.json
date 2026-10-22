@@ -1308,6 +1308,7 @@
     "manualPayment": "Vous payez actuellement votre cotisation via {source}. En payant par l'intermédiaire de notre système d'adhésion, vous nous aiderez à connaître le montant de la contribution de nos membres sur lequel nous pouvons compter mois après mois et il vous sera plus facile de gérer votre cotisation.",
     "manualPaymentSource": "un outil tiers",
     "nextAmountChanging": "Votre cotisation passera à {nextAmount} le {renewalDate}.",
+    "nextAmountPending": "Votre cotisation passera à {nextAmount} dès que le paiement aura été authentifié.",
     "paymentHistory": {
       "empty": "Les paiements passés et leur facture s'afficheront ici.",
       "title": "Historique de paiement"

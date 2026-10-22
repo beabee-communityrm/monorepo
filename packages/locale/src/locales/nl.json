@@ -1304,6 +1304,7 @@
     "manualPayment": "Je betaalt momenteel je lidmaatschapsbijdrage via {source}. Door te betalen via ons lidmaatschapssysteem weten we op hoeveel geld van onze leden we elke maand kunnen rekenen en is het gemakkelijker voor jou om je contributie te beheren.",
     "manualPaymentSource": "een tool van derden",
     "nextAmountChanging": "Je bijdrage zal veranderen naar {nextAmount} op {renewalDate}.",
+    "nextAmountPending": "Je bijdrage zal veranderen naar {nextAmount} zodra de betaling is geverifieerd.",
     "paymentHistory": {
       "empty": "Hier worden eerdere betalingen en bijbehorende facturen weergegeven.",
       "title": "Betalingsgeschiedenis"

@@ -1304,6 +1304,7 @@
     "manualPayment": "Actualmente pagas tu contribución de membresía a través de {source}. Pagando a través de nuestro sistema de membresía nos ayudarás a saber con cuánto dinero de nuestros miembros podemos contar mes a mes y te será más fácil gestionar tu contribución.",
     "manualPaymentSource": "una herramienta de terceros",
     "nextAmountChanging": "Tu contribución cambiará a {nextAmount} el {renewalDate}.",
+    "nextAmountPending": "Tu contribución cambiará a {nextAmount} en cuanto se haya autenticado el pago.",
     "paymentHistory": {
       "empty": "Los pagos anteriores y sus facturas aparecerán aquí.",
       "title": "Historial de pagos"

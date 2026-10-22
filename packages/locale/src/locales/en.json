@@ -1303,6 +1303,7 @@
     "manualPayment": "You are currently paying your membership contribution via {source}. By paying through our membership system you'll help us to know how much money from our members we can rely on month on month and it'll be easier for you to manage your contribution.",
     "manualPaymentSource": "a third party tool",
     "nextAmountChanging": "Your contribution will change to {nextAmount} on {renewalDate}.",
+    "nextAmountPending": "Your contribution will change to {nextAmount} once the payment has been authenticated.",
     "paymentHistory": {
       "empty": "Past payments and their invoices will show up here.",
       "title": "Payment history"
