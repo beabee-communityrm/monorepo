@@ -164,7 +164,7 @@ export class AuthController {
     }
 
     // Adding a login method is as sensitive as removing one, so it needs a
-    // login from the last few minutes, and one the browser still holds at
+    // login from the last two hours, and one the browser still holds at
     // the IdP: the pages behind the actions work on that session. A fresh
     // login provides both and returns here. Not for setupCredential: that
     // account cannot log in yet.

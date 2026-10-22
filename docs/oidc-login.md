@@ -69,7 +69,7 @@ an OIDC login that beabee starts with a Login Action
 (`/password/change`, `/passkey/set`, `/mfa/set`) inside that login, or in
 development Keycloak's application initiated action. Adding a login method
 is as sensitive as removing one, so an action needs a login at the IdP from
-the last few minutes (recent `auth_time`), like removal below. The pages
+the last two hours (recent `auth_time`), like removal below. The pages
 also work on the IdP's own login session, which the browser can lose while
 beabee's lives on (Login v2 keeps it in a cookie that ends with the
 browser); beabee mirrors that cookie with one of its own, set by the OIDC

@@ -3,7 +3,7 @@
   Lists every login method with one action each: methods the member has can
   be removed (the password only changed), the others set up. Setting up runs
   as a login action at the identity provider. Removal needs a login there
-  from the last few minutes: when the API asks for one, the member is sent to
+  from the last two hours: when the API asks for one, the member is sent to
   log in again and comes back here with the method to remove in the query.
 -->
 
