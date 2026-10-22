@@ -27,14 +27,19 @@ export function assertOidcAuthEnabled(): void {
 /** How long a login at the IdP counts as fresh, in seconds */
 const FRESH_LOGIN_MAX_AGE = 5 * 60;
 
+/** Whether the member logged in at the IdP in the last few minutes */
+export function isFreshOidcLogin(req: Request): boolean {
+  const authTime = req.session.authTime;
+  return !!authTime && authTime + FRESH_LOGIN_MAX_AGE >= Date.now() / 1000;
+}
+
 /**
  * Sensitive account changes need a login at the IdP from the last few
  * minutes, so a session alone cannot make them. The client restarts the
  * login with `prompt=login` on this code and tries again.
  */
 export function assertFreshOidcLogin(req: Request): void {
-  const authTime = req.session.authTime;
-  if (!authTime || authTime + FRESH_LOGIN_MAX_AGE < Date.now() / 1000) {
+  if (!isFreshOidcLogin(req)) {
     throw new UnauthorizedError(LOGIN_CODES.FRESH_LOGIN_REQUIRED);
   }
 }
@@ -51,13 +56,6 @@ const IDP_SESSION_COOKIE_OPTIONS: CookieOptions = {
   sameSite: 'lax',
 };
 
-/**
- * The IdP session also expires on its own, after the instance's password
- * check lifetime; Login v2 falls back to 24 hours when none is set. An
- * instance with a shorter lifetime needs this lowered to match.
- */
-const IDP_SESSION_MAX_AGE = 24 * 60 * 60;
-
 export function setIdpSessionCookie(res: Response): void {
   res.cookie(IDP_SESSION_COOKIE, '1', IDP_SESSION_COOKIE_OPTIONS);
 }
@@ -67,17 +65,11 @@ export function clearIdpSessionCookie(res: Response): void {
 }
 
 /**
- * Whether the browser most likely still has a live session at the IdP:
- * the mirror cookie survived and the login is younger than the IdP's
- * session lifetime
+ * Whether the browser still has the fresh login's session at the IdP: a
+ * browser restart inside the fresh-login window drops the cookie too
  */
-export function hasIdpSession(req: Request): boolean {
-  const authTime = req.session.authTime;
-  return (
-    !!req.cookies?.[IDP_SESSION_COOKIE] &&
-    !!authTime &&
-    authTime + IDP_SESSION_MAX_AGE >= Date.now() / 1000
-  );
+export function hasFreshIdpSession(req: Request): boolean {
+  return !!req.cookies?.[IDP_SESSION_COOKIE] && isFreshOidcLogin(req);
 }
 
 export function login(req: Request, contact: Contact): Promise<void> {

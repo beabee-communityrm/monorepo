@@ -51,7 +51,7 @@ import {
   assertPasswordAuthEnabled,
   clearIdpSessionCookie,
   clearSiteLoginCookie,
-  hasIdpSession,
+  hasFreshIdpSession,
   login,
   setIdpSessionCookie,
   setSiteLoginCookie,
@@ -163,11 +163,12 @@ export class AuthController {
       throw new UnauthorizedError();
     }
 
-    // The pages behind the actions work on the IdP's own session, which the
-    // browser can lose while beabee's lives on. A fresh login brings it back
-    // and returns here. Not for setupCredential: that account cannot log in
-    // yet.
-    if (action && action !== 'setupCredential' && !hasIdpSession(req)) {
+    // Adding a login method is as sensitive as removing one, so it needs a
+    // login from the last few minutes, and one the browser still holds at
+    // the IdP: the pages behind the actions work on that session. A fresh
+    // login provides both and returns here. Not for setupCredential: that
+    // account cannot log in yet.
+    if (action && action !== 'setupCredential' && !hasFreshIdpSession(req)) {
       const back = new URL(LOGIN_URI);
       back.searchParams.set('action', action);
       if (next) back.searchParams.set('next', next);

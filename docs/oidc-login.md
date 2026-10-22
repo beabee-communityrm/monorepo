@@ -67,17 +67,18 @@ actions — change password, add a passkey, set up an authenticator app — each
 an OIDC login that beabee starts with a Login Action
 (`GET /auth/login?action=…`). The provider enters the matching Login v2 page
 (`/password/change`, `/passkey/set`, `/mfa/set`) inside that login, or in
-development Keycloak's application initiated action. These pages work on the
-IdP's own login session, which the browser can lose while beabee's lives on
-(Login v2 keeps it in a cookie that ends with the browser). beabee mirrors
-that cookie with one of its own, set by the OIDC callback without maxAge;
-an action without it, or with a login older than the IdP's session
-lifetime, first goes through a fresh login (`prompt=login`, returning to
-the action). The pages ask for the current password where
-needed and return to the account page through the OIDC callback
-([ADR-0004](./adr/0004-link-to-login-v2-self-service-flows.md)). A fresh
-login carries the member's email as `login_hint`, so the IdP skips its login
-name form and asks for the credential straight away. Removing a
+development Keycloak's application initiated action. Adding a login method
+is as sensitive as removing one, so an action needs a login at the IdP from
+the last few minutes (recent `auth_time`), like removal below. The pages
+also work on the IdP's own login session, which the browser can lose while
+beabee's lives on (Login v2 keeps it in a cookie that ends with the
+browser); beabee mirrors that cookie with one of its own, set by the OIDC
+callback without maxAge. An action without both first goes through a fresh
+login (`prompt=login`, returning to the action), which carries the member's
+email as `login_hint` so the IdP skips its login name form. The pages ask
+for the current password where needed and return to the account page
+through the OIDC callback
+([ADR-0004](./adr/0004-link-to-login-v2-self-service-flows.md)). Removing a
 passkey or authenticator app has no Login v2 page, so beabee's account page
 does it through the provider's API instead: it shows which methods are set
 up and removes one after a fresh login at the IdP (`prompt=login`, recent
