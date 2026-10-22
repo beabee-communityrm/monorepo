@@ -69,9 +69,11 @@ an OIDC login that beabee starts with a Login Action
 (`/password/change`, `/passkey/set`, `/mfa/set`) inside that login, or in
 development Keycloak's application initiated action. These pages work on the
 IdP's own login session, which the browser can lose while beabee's lives on
-(Login v2 keeps it in a cookie that ends with the browser), so an action
-without a fresh login at the IdP first goes through one (`prompt=login`,
-returning to the action). The pages ask for the current password where
+(Login v2 keeps it in a cookie that ends with the browser). beabee mirrors
+that cookie with one of its own, set by the OIDC callback without maxAge;
+an action without it, or with a login older than the IdP's session
+lifetime, first goes through a fresh login (`prompt=login`, returning to
+the action). The pages ask for the current password where
 needed and return to the account page through the OIDC callback
 ([ADR-0004](./adr/0004-link-to-login-v2-self-service-flows.md)). A fresh
 login carries the member's email as `login_hint`, so the IdP skips its login

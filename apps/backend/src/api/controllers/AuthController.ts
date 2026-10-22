@@ -49,9 +49,11 @@ import { authTransformer } from '#api/transformers';
 import {
   assertOidcAuthEnabled,
   assertPasswordAuthEnabled,
+  clearIdpSessionCookie,
   clearSiteLoginCookie,
-  isFreshOidcLogin,
+  hasIdpSession,
   login,
+  setIdpSessionCookie,
   setSiteLoginCookie,
 } from '#api/utils/auth';
 
@@ -129,6 +131,7 @@ export class AuthController {
       })
     );
     clearSiteLoginCookie(res);
+    clearIdpSessionCookie(res);
 
     if (isOidcEnabled()) {
       await new Promise<void>((resolve) =>
@@ -161,10 +164,10 @@ export class AuthController {
     }
 
     // The pages behind the actions work on the IdP's own session, which the
-    // browser can lose while beabee's lives on (Login v2 keeps it in a
-    // cookie that ends with the browser). A fresh login brings it back and
-    // returns here. Not for setupCredential: that account cannot log in yet.
-    if (action && action !== 'setupCredential' && !isFreshOidcLogin(req)) {
+    // browser can lose while beabee's lives on. A fresh login brings it back
+    // and returns here. Not for setupCredential: that account cannot log in
+    // yet.
+    if (action && action !== 'setupCredential' && !hasIdpSession(req)) {
       const back = new URL(LOGIN_URI);
       back.searchParams.set('action', action);
       if (next) back.searchParams.set('next', next);
@@ -264,6 +267,7 @@ export class AuthController {
       // Regenerates the session, dropping the pre-login state
       await login(req, contact);
       req.session.idToken = idToken;
+      setIdpSessionCookie(res);
       if (idToken) {
         setSiteLoginCookie(res, idToken);
       }
