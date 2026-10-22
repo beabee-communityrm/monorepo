@@ -1324,6 +1324,7 @@
     "manualPayment": "",
     "manualPaymentSource": "",
     "nextAmountChanging": "",
+    "nextAmountPending": "",
     "paymentHistory": {
       "empty": "",
       "title": ""
@@ -1430,6 +1431,7 @@
       "availableFields": "",
       "description": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",
@@ -1447,6 +1449,7 @@
       },
       "names": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",

@@ -47,7 +47,10 @@ export class StripeWebhookEventHandler {
         await this.handleCustomerDeleted(event.data.object);
         break;
       case 'customer.subscription.updated':
-        await this.handleCustomerSubscriptionUpdated(event.data.object);
+        await this.handleCustomerSubscriptionUpdated(
+          event.data.object,
+          event.data.previous_attributes
+        );
         break;
       case 'customer.subscription.deleted':
         await this.handleCustomerSubscriptionDeleted(event.data.object);
@@ -99,12 +102,15 @@ export class StripeWebhookEventHandler {
   }
 
   /**
-   * Handles subscription updates, particularly focusing on failed subscription starts
-   * If a subscription becomes incomplete_expired, the membership is revoked
+   * Handles subscription updates: a subscription that never started revokes
+   * the membership, and a pending update that has been applied or expired
+   * resolves the contact's next amount
    * @param subscription The updated Stripe subscription
+   * @param previousAttributes The attributes changed by this update
    */
   private static async handleCustomerSubscriptionUpdated(
-    subscription: Stripe.Subscription
+    subscription: Stripe.Subscription,
+    previousAttributes?: Partial<Stripe.Subscription>
   ): Promise<void> {
     if (subscription.status === 'incomplete_expired') {
       const contribution = await PaymentService.getContributionBy(
@@ -125,6 +131,32 @@ export class StripeWebhookEventHandler {
         );
       }
     }
+
+    if (previousAttributes?.pending_update && !subscription.pending_update) {
+      const contribution = await PaymentService.getContributionBy(
+        'subscriptionId',
+        subscription.id
+      );
+      // A next amount without the pending flag was scheduled for the renewal
+      // after this update and must survive its expiry
+      if (contribution?.nextAmount?.pending) {
+        // Stripe only puts the new price on the items if the update was paid
+        const applied =
+          subscription.items.data[0]?.price.unit_amount ===
+          contribution.nextAmount.chargeable;
+        log.info(
+          `Pending update for subscription ${subscription.id} ${applied ? 'applied' : 'expired'}`
+        );
+        if (applied) {
+          await ContactsService.updateContact(contribution.contact, {
+            contributionMonthlyAmount: contribution.nextAmount.monthly,
+          });
+        }
+        await PaymentService.updateData(contribution.contact, {
+          nextAmount: null,
+        });
+      }
+    }
   }
 
   /**
@@ -140,9 +172,12 @@ export class StripeWebhookEventHandler {
       subscription.id
     );
     if (contribution) {
+      // Stripe cancels the subscription itself once payment retries are exhausted
       await ContactsService.cancelContactContribution(
         contribution.contact,
-        'cancelled-contribution'
+        subscription.cancellation_details?.reason === 'payment_failed'
+          ? 'cancelled-contribution-payment-failed'
+          : 'cancelled-contribution'
       );
     }
   }
@@ -289,6 +324,19 @@ export class StripeWebhookEventHandler {
     invoice: Stripe.Invoice
   ): Promise<void> {
     const contribution = await this.getContributionFromInvoice(invoice);
+
+    const intent =
+      typeof invoice.payment_intent === 'string'
+        ? await stripe.paymentIntents.retrieve(invoice.payment_intent)
+        : invoice.payment_intent;
+    log.info(`Payment failed for invoice ${invoice.id}`, {
+      billingReason: invoice.billing_reason,
+      attemptCount: invoice.attempt_count,
+      nextPaymentAttempt: invoice.next_payment_attempt,
+      intentStatus: intent?.status,
+      errorCode: intent?.last_payment_error?.code,
+      declineCode: intent?.last_payment_error?.decline_code,
+    });
 
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactPaymentFailed,

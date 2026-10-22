@@ -153,8 +153,14 @@ class PaymentService {
       await ActivityService.addEvent({
         targetId: contact.id,
         eventType: ActivityEventType.ContactContributionStarted,
+        // The client secret must not be stored
         metadata: ret
-          ? { ...ret, subscriptionId: contribution.subscriptionId! }
+          ? {
+              startNow: ret.startNow,
+              expiryDate: ret.expiryDate,
+              form: ret.form,
+              subscriptionId: contribution.subscriptionId!,
+            }
           : null,
       });
     }
@@ -203,7 +209,13 @@ class PaymentService {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactContributionUpdated,
       targetId: contact.id,
-      metadata: { ...ret, subscriptionId: contribution.subscriptionId! },
+      // The client secret must not be stored
+      metadata: {
+        startNow: ret.startNow,
+        expiryDate: ret.expiryDate,
+        form: ret.form,
+        subscriptionId: contribution.subscriptionId!,
+      },
     });
 
     return ret;
@@ -232,6 +244,7 @@ class PaymentService {
               d.nextAmount.monthly,
               contact.contributionPeriod
             ),
+            ...(d.nextAmount.pending && { nextAmountPending: true }),
           }),
         ...(contact.membership?.dateExpires && {
           membershipExpiryDate: contact.membership.dateExpires,

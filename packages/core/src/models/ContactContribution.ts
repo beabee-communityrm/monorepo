@@ -27,8 +27,9 @@ export class ContactContribution {
   @Column({ type: Boolean, nullable: true })
   payFee!: boolean | null;
 
+  /** pending marks an amount waiting for a payment to be authenticated */
   @Column({ type: 'jsonb', nullable: true })
-  nextAmount!: { chargeable: number; monthly: number } | null;
+  nextAmount!: { chargeable: number; monthly: number; pending?: true } | null;
 
   @Column({ type: Date, nullable: true })
   cancelledAt!: Date | null;

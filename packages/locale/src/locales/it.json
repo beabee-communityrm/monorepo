@@ -1325,6 +1325,7 @@
     "manualPayment": "Attualmente paghi il contributo tramite {source}. Pagando tramite il nostro sistema di iscrizione ci aiuti a sapere quanto possiamo contare sui membri ogni mese e ti sarà più facile gestire il tuo contributo.",
     "manualPaymentSource": "uno strumento di terze parti",
     "nextAmountChanging": "Your contribution will change to {nextImporto} on {renewalData}.",
+    "nextAmountPending": "Il tuo contributo cambierà a {nextAmount} non appena il pagamento sarà stato autenticato.",
     "paymentHistory": {
       "empty": "Qui appariranno i pagamenti passati e le relative fatture.",
       "title": "Cronologia dei pagamenti"
@@ -1433,6 +1434,7 @@
       "availableFields": "Campi disponibili",
       "description": {
         "cancelled-contribution": "Inviato ai membri quando il loro contributo ricorrente viene annullato. Include generalmente informazioni su quando termina l'adesione, nonché l'ID del membro. Può contenere un link a un sondaggio.",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Inviato agli amministratori quando un membro annulla il proprio contributo. Include generalmente una notifica con l'ID e il nome del membro annullato.",
         "confirm-email": "Inviato ai nuovi utenti durante il processo di registrazione per verificare il loro indirizzo email. Contiene un link di conferma che devono cliccare per completare la registrazione.",
         "contribution-didnt-start": "Inviato ai membri quando il loro pagamento dell'abbonamento Stripe non è stato avviato (ad esempio, metodo di pagamento rifiutato, fondi insufficienti). Li informa che la loro adesione è stata revocata a causa del fallimento del pagamento.",
@@ -1450,6 +1452,7 @@
       },
       "names": {
         "cancelled-contribution": "Contributo annullato",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Admin: Membro annullato",
         "confirm-email": "Conferma email",
         "contribution-didnt-start": "Contributo non avviato",

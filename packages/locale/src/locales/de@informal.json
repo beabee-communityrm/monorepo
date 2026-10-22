@@ -1325,6 +1325,7 @@
     "manualPayment": "Du zahlst deinen Beitrag aktuell via {source}. Indem du über unser Mitgliedersystem bezahlst, bekommen wir einen besseren Überblick, auf welche Beiträge wir uns monatlich verlassen können. Für dich wird es außerdem einfacher, deinen Beitrag jederzeit zu ändern.",
     "manualPaymentSource": "einem Drittanbieter",
     "nextAmountChanging": "Ab dem {renewalDate} zahlst Du {nextAmount}.",
+    "nextAmountPending": "Sobald die Zahlung bestätigt wurde, zahlst Du {nextAmount}.",
     "paymentHistory": {
       "empty": "Ältere Zahlungen und Rechnungen finden Sie hier.",
       "title": "Bisher gezahlte Beiträge"
@@ -1433,6 +1434,7 @@
       "availableFields": "Verfügbare Felder",
       "description": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",
@@ -1450,6 +1452,7 @@
       },
       "names": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",

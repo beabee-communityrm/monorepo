@@ -4,4 +4,6 @@ export interface UpdateContributionResult {
   startNow: boolean;
   expiryDate: Date;
   form: UpdateContributionForm;
+  /** Set when the first payment still needs the member's authentication */
+  clientSecret?: string;
 }

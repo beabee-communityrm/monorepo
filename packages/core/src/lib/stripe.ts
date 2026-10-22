@@ -190,9 +190,44 @@ export async function createSubscription(
     form,
     renewalDate,
   });
-  return await stripe.subscriptions.create(
-    getCreateSubscriptionParams(customerId, form, paymentMethod, renewalDate)
-  );
+  return await stripe.subscriptions.create({
+    ...getCreateSubscriptionParams(
+      customerId,
+      form,
+      paymentMethod,
+      renewalDate
+    ),
+    expand: ['latest_invoice.payment_intent'],
+  });
+}
+
+/**
+ * Get the client secret for a subscription whose latest payment needs the
+ * member's authentication
+ *
+ * @param subscription The subscription, expanded with its latest payment intent
+ * @returns The client secret, if the payment needs authentication
+ */
+export function getRequiresActionClientSecret(
+  subscription: Stripe.Subscription
+): string | undefined {
+  const intent = getInvoicePaymentIntent(subscription.latest_invoice);
+  return intent?.status === 'requires_action' && intent.client_secret
+    ? intent.client_secret
+    : undefined;
+}
+
+/**
+ * Get the expanded payment intent of an expanded invoice
+ *
+ * @param invoice The invoice, expanded with its payment intent
+ * @returns The payment intent, if there is one
+ */
+function getInvoicePaymentIntent(
+  invoice: Stripe.Subscription['latest_invoice']
+): Stripe.PaymentIntent | undefined {
+  const intent = typeof invoice === 'object' && invoice?.payment_intent;
+  return typeof intent === 'object' && intent ? intent : undefined;
 }
 
 /**
@@ -245,10 +280,15 @@ export async function updateSubscription(
   if (startNow) {
     const params: Stripe.SubscriptionUpdateParams = {
       items: [newSubscriptionItem],
+      expand: ['latest_invoice.payment_intent'],
       ...(prorationAmount > 0
         ? {
             proration_behavior: 'always_invoice',
             proration_date: prorationTime,
+            // Only apply the new price once the proration invoice is paid,
+            // otherwise a payment that needs authentication leaves the
+            // subscription on the new price with an invoice nobody can pay
+            payment_behavior: 'pending_if_incomplete',
           }
         : {
             proration_behavior: 'none',
@@ -261,7 +301,11 @@ export async function updateSubscription(
 
     // Start new contribution immediately (monthly or prorated annuals)
     log.info(`Updating subscription for ${subscription.id}`);
-    await stripe.subscriptions.update(subscriptionId, params);
+    const updated = await stripe.subscriptions.update(subscriptionId, params);
+    if (updated.pending_update) {
+      log.info(`Subscription ${subscription.id} update is pending payment`);
+      return { subscription: updated, startNow: false };
+    }
   } else {
     // Schedule the change for the next period
     log.info(`Creating new schedule for ${subscription.id}`);
