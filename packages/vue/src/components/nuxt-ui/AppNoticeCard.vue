@@ -18,6 +18,8 @@
     background. `success` also colours the title.
   - `fill` ('solid' | 'gradient', optional): Flat tint, or fading to
     transparent.
+  - `size` ('md' | 'lg', optional): Title size. `lg` suits a notice that
+    stands in for the page title.
 
   ## Slots
   - `default`: Body content.
@@ -32,11 +34,14 @@
       <div class="flex items-center gap-2">
         <UIcon
           :name="icon"
-          class="size-4.5 shrink-0"
-          :class="styles.icon"
+          class="shrink-0"
+          :class="[styles.icon, size === 'lg' ? 'size-5' : 'size-4.5']"
           aria-hidden="true"
         />
-        <component :is="`h${level}`" :class="styles.title">
+        <component
+          :is="`h${level}`"
+          :class="[styles.title, size === 'lg' && 'text-lg']"
+        >
           {{ title }}
         </component>
       </div>
@@ -69,12 +74,15 @@ export interface AppNoticeCardProps {
   color?: 'primary' | 'success';
   /** Flat tint, or fading to transparent */
   fill?: 'solid' | 'gradient';
+  /** Title size; `lg` suits a notice that stands in for the page title */
+  size?: 'md' | 'lg';
 }
 
 const props = withDefaults(defineProps<AppNoticeCardProps>(), {
   level: 3,
   color: 'primary',
   fill: 'solid',
+  size: 'md',
 });
 
 defineSlots<{
