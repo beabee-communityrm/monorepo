@@ -1,5 +1,4 @@
 import {
-  ActivityActorType,
   ActivityEventType,
   CalloutAccess,
   CalloutResponseAnswersSlide,
@@ -413,7 +412,6 @@ class CalloutsService {
         eventType: ActivityEventType.CalloutAnswered,
         metadata: { responseId: savedResponse.id },
       });
-
       return savedResponse.id;
     }
   }
