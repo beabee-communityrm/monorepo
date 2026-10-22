@@ -336,6 +336,16 @@ class PaymentService {
   }
 
   /**
+   * Get a subscription's creation date from its payment provider
+   */
+  async getSubscriptionCreatedAt(subscriptionId: string): Promise<Date> {
+    // Stripe subscription IDs are prefixed with sub_, GoCardless ones with SB
+    return subscriptionId.startsWith('sub_')
+      ? await StripeProvider.fetchSubscriptionCreatedAt(subscriptionId)
+      : await GCProvider.fetchSubscriptionCreatedAt(subscriptionId);
+  }
+
+  /**
    * Handle a contribution being started, restarted or just updated.  This
    * resets any cancellation status as the contribution is now assumed to be
    * active again

@@ -345,6 +345,13 @@ export class StripeProvider extends PaymentProvider {
     return invoice.invoice_pdf || null;
   }
 
+  static async fetchSubscriptionCreatedAt(
+    subscriptionId: string
+  ): Promise<Date> {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    return new Date(subscription.created * 1000); // convert from unix seconds
+  }
+
   /**
    * Check the health of the Stripe integration by verifying that the
    * configured membership product still exists and the webhook endpoint we

@@ -1,7 +1,6 @@
 import { ActivityActorType, ActivityEventType } from '@beabee/beabee-common';
 import { dataSource } from '@beabee/core/database';
-import gocardless from '@beabee/core/lib/gocardless';
-import { stripe } from '@beabee/core/lib/stripe';
+import { paymentService } from '@beabee/core/services';
 
 import chalk from 'chalk';
 
@@ -37,20 +36,6 @@ const backfillCreated = createBackfill({
 });
 
 /**
- * Get a subscription's creation date from its payment provider
- */
-const getSubscriptionCreatedAt = async (
-  subscriptionId: string
-): Promise<Date> => {
-  if (subscriptionId.startsWith('sub_')) {
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-    return new Date(subscription.created * 1000); // convert from unix seconds
-  }
-  const subscription = await gocardless.subscriptions.get(subscriptionId);
-  return new Date(subscription.created_at!);
-};
-
-/**
  * Backfill contact.contribution-started events
  * The contact is both the target and the actor
  * One event per subscription, dated by its creation date at the payment provider
@@ -71,7 +56,8 @@ const backfillContributionStarted = async (dryRun: boolean): Promise<void> => {
   let added = 0;
   for (const { contactId, subscriptionId } of rows) {
     try {
-      const createdAt = await getSubscriptionCreatedAt(subscriptionId);
+      const createdAt =
+        await paymentService.getSubscriptionCreatedAt(subscriptionId);
       await dataSource.query(
         `INSERT INTO activity_event ("targetId", "actorType", "actorId", "createdAt", "eventType", "metadata")
          VALUES ($1, $2, $1, $3, $4, jsonb_build_object('subscriptionId', $5::text))`,
