@@ -1,5 +1,7 @@
 import {
+  BaseNewsletterGroupData,
   ContactOriginData,
+  NewsletterStatus,
   PaymentFlowParams,
   PaymentFlowParamsStripe,
   PaymentFlowResult,
@@ -29,6 +31,8 @@ interface SignupData {
   setPasswordUrl: string;
   confirmUrl: string;
   origin: ContactOriginData | null;
+  newsletterStatus: NewsletterStatus | null;
+  newsletterGroups: string[] | null;
 }
 
 /**
@@ -237,6 +241,14 @@ class SignupService {
       password: signupFlow.password,
     };
 
+    // Groups may have been removed since the flow started, drop unknown IDs
+    const knownGroupIds = OptionsService.getJSON('newsletter-groups').map(
+      (group: BaseNewsletterGroupData) => group.id
+    );
+    const newsletterGroups = signupFlow.newsletterGroups?.filter((id) =>
+      knownGroupIds.includes(id)
+    );
+
     if (signupFlow.paymentFlow) {
       completedFlow = await PaymentFlowService.completePaymentFlowAndGetData(
         signupFlow.paymentFlow
@@ -255,11 +267,21 @@ class SignupService {
 
     if (contact) {
       await ContactsService.updateContact(contact, partialContact);
+      // Only an explicit subscription may overwrite an existing contact's preferences
+      if (signupFlow.newsletterStatus === NewsletterStatus.Subscribed) {
+        await ContactsService.updateContactProfile(contact, {
+          newsletterStatus: signupFlow.newsletterStatus,
+          ...(newsletterGroups && { newsletterGroups }),
+        });
+      }
     } else {
       contact = await ContactsService.createContact(
         partialContact,
         {
-          newsletterStatus: OptionsService.getText('newsletter-default-status'),
+          newsletterStatus:
+            signupFlow.newsletterStatus ??
+            OptionsService.getText('newsletter-default-status'),
+          ...(newsletterGroups && { newsletterGroups }),
           ...(completedFlow?.data.vatNumber && {
             vatNumber: completedFlow.data.vatNumber,
           }),
