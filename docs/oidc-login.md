@@ -141,7 +141,10 @@ IdP-side setup that beabee owns and applies idempotently via
 safety net for a member who finishes a Login v2 page outside a login beabee
 started), `ignoreUnknownUsernames`, the lockout policy (10 password and 5
 OTP attempts; Zitadel then locks the account until `backend-cli user unlock`
-lifts it), branding and, on an OIDC Login instance whose issuer is this IdP,
+lifts it), the email provider (beabee's own email account from
+`BEABEE_EMAIL_*` and the support email options, so the IdP's password reset
+and OTP mails leave like beabee's; Mandrill and SendGrid via their SMTP
+relays), branding and, on an OIDC Login instance whose issuer is this IdP,
 the OIDC client's redirect and post-logout URI lists.
 The virtual instance, project and OIDC client are created by the hosting
 infrastructure, which is expected to call the same command in future.

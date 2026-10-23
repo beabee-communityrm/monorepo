@@ -133,7 +133,8 @@ script output) shows the organisation's users.
 
 The token is scoped to the organisation. Everything beabee writes on the
 instance level (`backend-cli setup integrations idp`: login, lockout and
-notification policies, the claims target; and the branding push when the
+notification policies, the email provider, the claims target; and the
+branding push when the
 theme is saved) needs `IAM_OWNER` and fails with 403. Both failures are
 caught and logged (`Failed to set up IdP`, `Failed to update IdP
 branding`), nothing else breaks, so skip the setup command and expect the
