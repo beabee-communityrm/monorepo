@@ -1694,6 +1694,9 @@
       "ariaLabel": ""
     }
   },
+  "idpLogin": {
+    "loginName": "Адрес электронной почты"
+  },
   "item": {
     "status": {
       "endsIn": "Заканчивается через {duration}",

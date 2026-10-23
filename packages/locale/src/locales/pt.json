@@ -1693,6 +1693,9 @@
       "ariaLabel": ""
     }
   },
+  "idpLogin": {
+    "loginName": "Endereço de e-mail"
+  },
   "item": {
     "status": {
       "endsIn": "Acaba em {duration}",

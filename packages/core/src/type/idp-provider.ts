@@ -84,6 +84,13 @@ export interface IdpSetupSettings {
   oidcClient?: IdpOidcClient;
   /** The account the IdP sends its own notifications from, absent when beabee sends no email */
   email?: EmailSmtpSettings | undefined;
+  /** beabee's wording for the IdP's login pages, by BCP 47 locale */
+  texts: Record<string, IdpLoginTexts>;
+}
+
+export interface IdpLoginTexts {
+  /** Label of the field the member identifies themselves with */
+  loginName: string;
 }
 
 export interface IdpOidcClient {
