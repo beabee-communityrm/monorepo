@@ -1420,7 +1420,7 @@ __metadata:
     eslint: "npm:^9.39.4"
     eslint-config-prettier: "npm:^9.1.2"
     eslint-plugin-vue: "npm:^9.33.0"
-    formiojs: "npm:@beabee/formiojs@^4.15.13"
+    formiojs: "npm:@beabee/formiojs@^4.15.14"
     maplibre-gl: "npm:^3.6.2"
     mitt: "npm:^3.0.1"
     otpauth: "npm:^9.5.1"
@@ -1474,7 +1474,7 @@ __metadata:
     eslint: "npm:^9.39.4"
     eslint-config-prettier: "npm:^9.1.2"
     eslint-plugin-vue: "npm:^9.33.0"
-    formiojs: "npm:@beabee/formiojs@^4.15.13"
+    formiojs: "npm:@beabee/formiojs@^4.15.14"
     maplibre-gl: "npm:^3.6.2"
     mitt: "npm:^3.0.1"
     otpauth: "npm:^9.5.1"
@@ -13578,9 +13578,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"formiojs@npm:@beabee/formiojs@^4.15.13":
-  version: 4.15.13
-  resolution: "@beabee/formiojs@npm:4.15.13"
+"formiojs@npm:@beabee/formiojs@^4.15.14":
+  version: 4.15.14
+  resolution: "@beabee/formiojs@npm:4.15.14"
   dependencies:
     "@formio/bootstrap3": "npm:2.12.3"
     "@formio/choices.js": "npm:10.2.0"
@@ -13618,7 +13618,7 @@ __metadata:
     tippy.js: "npm:^6.3.7"
     uuid: "npm:^9.0.0"
     vanilla-picker: "npm:^2.12.1"
-  checksum: 10c0/9f1f934c4ce3fe63b331ee2692cb66eba5c549cce79bf603b284d2480216ee958cd83930c66b8c32998606e9e35d58e951ecb71eb97f64a4dc27fa8203b5d397
+  checksum: 10c0/2e016900ea79e8eaf82d362f527286ff32fe3bfbbc59f39f557e7d4029f58236c74f7ca13976dec077a6f5c08385ff4cb18e22e743b87f0091f58698bea29963
   languageName: node
   linkType: hard
 
