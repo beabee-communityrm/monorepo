@@ -16,7 +16,10 @@ export interface ContributionUpdateData {
 export interface ActivityEventMetadataMap {
   [ActivityEventType.CalloutAnswered]: { responseId: string };
   [ActivityEventType.ContactCreated]: ContactOriginData;
-  [ActivityEventType.ContactContributionStarted]: ContributionUpdateData;
+  // Backfilled events only carry the subscription ID
+  [ActivityEventType.ContactContributionStarted]:
+    | ContributionUpdateData
+    | Pick<ContributionUpdateData, 'subscriptionId'>;
   [ActivityEventType.ContactContributionUpdated]: ContributionUpdateData;
   [ActivityEventType.ContactContributionCancelled]: {
     subscriptionId: string | null;

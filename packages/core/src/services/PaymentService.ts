@@ -262,10 +262,9 @@ class PaymentService {
     keepMandate = false
   ): Promise<void> {
     log.info('Cancel contribution for contact ' + contact.id);
-    await this.provider(contact, (p) => p.cancelContribution(keepMandate));
-
     // Keep subscription ID for activity feed event, the provider clears it
     const subscriptionId = (await this.getContribution(contact)).subscriptionId;
+    await this.provider(contact, (p) => p.cancelContribution(keepMandate));
 
     await getRepository(ContactContribution).update(
       { contactId: contact.id },
@@ -347,6 +346,16 @@ class PaymentService {
         .getRepository(Payment)
         .update({ contactId: contact.id }, { contactId: null });
     });
+  }
+
+  /**
+   * Get a subscription's creation date from its payment provider
+   */
+  async getSubscriptionCreatedAt(subscriptionId: string): Promise<Date> {
+    // Stripe subscription IDs are prefixed with sub_, GoCardless ones with SB
+    return subscriptionId.startsWith('sub_')
+      ? await StripeProvider.fetchSubscriptionCreatedAt(subscriptionId)
+      : await GCProvider.fetchSubscriptionCreatedAt(subscriptionId);
   }
 
   /**
