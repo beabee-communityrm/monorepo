@@ -12,6 +12,7 @@ import {
   NoneProvider,
   ZitadelProvider,
 } from '#providers/idp/index';
+import { emailService } from '#services/EmailService';
 import { imageService } from '#services/ImageService';
 import { optionsService } from '#services/OptionsService';
 import type { IdpLoginAction, IdpProvider } from '#type/index';
@@ -107,6 +108,7 @@ class IdpService {
             postLogoutRedirectUris: [POST_LOGOUT_REDIRECT_URI],
           },
         }),
+        email: emailService.getSmtpSettings(),
       });
     } catch (err) {
       log.error('Failed to set up IdP', err);

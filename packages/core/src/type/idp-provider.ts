@@ -5,6 +5,7 @@ import type {
 
 import type { Contact } from '#models/index';
 
+import type { EmailSmtpSettings } from './email.js';
 import type { IdpLoginAction } from './idp-login-action.js';
 
 /**
@@ -81,6 +82,8 @@ export interface IdpSetupSettings {
    * registration in line with beabee's routes when the client is on this IdP.
    */
   oidcClient?: IdpOidcClient;
+  /** The account the IdP sends its own notifications from, absent when beabee sends no email */
+  email?: EmailSmtpSettings | undefined;
 }
 
 export interface IdpOidcClient {
