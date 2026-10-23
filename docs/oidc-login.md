@@ -144,8 +144,10 @@ OTP attempts; Zitadel then locks the account until `backend-cli user unlock`
 lifts it), the email provider (beabee's own email account from
 `BEABEE_EMAIL_*` and the support email options, so the IdP's password reset
 and OTP mails leave like beabee's; Mandrill and SendGrid via their SMTP
-relays), branding and, on an OIDC Login instance whose issuer is this IdP,
-the OIDC client's redirect and post-logout URI lists.
+relays), the login page wording (the login name field is labelled as the
+email address, in every language beabee's locales translate it), branding
+and, on an OIDC Login instance whose issuer is this IdP, the OIDC client's
+redirect and post-logout URI lists.
 The virtual instance, project and OIDC client are created by the hosting
 infrastructure, which is expected to call the same command in future.
 

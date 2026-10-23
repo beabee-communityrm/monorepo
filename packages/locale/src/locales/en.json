@@ -1690,6 +1690,9 @@
       "ariaLabel": "Welcome icon"
     }
   },
+  "idpLogin": {
+    "loginName": "Email address"
+  },
   "item": {
     "status": {
       "endsIn": "Ends in {duration}",

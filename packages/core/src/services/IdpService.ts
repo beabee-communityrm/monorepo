@@ -1,5 +1,7 @@
 import type { GetContactAuthMethodData } from '@beabee/beabee-common';
 import { RoleTypes } from '@beabee/beabee-common';
+import { isLocale, config as localeConfig } from '@beabee/locale';
+import * as locales from '@beabee/locale/locales';
 
 import config from '#config/config';
 import { getRepository } from '#database';
@@ -15,9 +17,29 @@ import {
 import { emailService } from '#services/EmailService';
 import { imageService } from '#services/ImageService';
 import { optionsService } from '#services/OptionsService';
-import type { IdpLoginAction, IdpProvider } from '#type/index';
+import type { IdpLoginAction, IdpLoginTexts, IdpProvider } from '#type/index';
 
 const log = mainLogger.child({ app: 'idp-service' });
+
+/**
+ * The login page wording in every language beabee has it, keyed by BCP 47
+ * tag. The IdP picks the language from the browser, not from the instance
+ * locale. Only base locales are BCP 47 tags, and the wording is the same
+ * across a language's variants.
+ */
+function getLoginTexts(): Record<string, IdpLoginTexts> {
+  const texts: Record<string, IdpLoginTexts> = {};
+  for (const [name, locale] of Object.entries(locales)) {
+    if (
+      isLocale(name) &&
+      localeConfig[name].baseLocale === name &&
+      locale.idpLogin.loginName
+    ) {
+      texts[name] = { loginName: locale.idpLogin.loginName };
+    }
+  }
+  return texts;
+}
 
 // The token claim the website's edge reads, and the roles it can carry in
 // order of precedence; admin roles never leave beabee
@@ -109,6 +131,7 @@ class IdpService {
           },
         }),
         email: emailService.getSmtpSettings(),
+        texts: getLoginTexts(),
       });
     } catch (err) {
       log.error('Failed to set up IdP', err);

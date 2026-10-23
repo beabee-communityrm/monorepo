@@ -236,6 +236,21 @@ export class ZitadelProvider implements IdpProvider {
       maxPasswordAttempts: 10,
       maxOtpAttempts: 5,
     });
+    // Members log in with their email address, which Login v2 calls a login
+    // name; the wording is merged into Login v2's own texts
+    for (const [locale, texts] of Object.entries(settings.texts)) {
+      await this.put(
+        '/v2/settings/hosted_login_translation',
+        {
+          instance: true,
+          locale,
+          translations: {
+            loginname: { labels: { loginname: texts.loginName } },
+          },
+        },
+        `login texts (${locale})`
+      );
+    }
     if (settings.email) {
       await this.updateEmailProvider(settings.email);
     }

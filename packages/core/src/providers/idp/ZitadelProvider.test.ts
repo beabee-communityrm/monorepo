@@ -89,7 +89,11 @@ describe('ZitadelProvider', () => {
       );
 
       const provider = new ZitadelProvider(settings);
-      await provider.setup({ defaultRedirectUri: 'https://x', oidcClient });
+      await provider.setup({
+        defaultRedirectUri: 'https://x',
+        texts: {},
+        oidcClient,
+      });
 
       const [url, init] = fetch.mock.calls[6];
       expect(url).toBe(
@@ -120,7 +124,11 @@ describe('ZitadelProvider', () => {
       );
 
       const provider = new ZitadelProvider(settings);
-      await provider.setup({ defaultRedirectUri: 'https://x', oidcClient });
+      await provider.setup({
+        defaultRedirectUri: 'https://x',
+        texts: {},
+        oidcClient,
+      });
 
       expect(fetch).toHaveBeenCalledTimes(6);
     });
@@ -131,6 +139,7 @@ describe('ZitadelProvider', () => {
       const provider = new ZitadelProvider(settings);
       await provider.setup({
         defaultRedirectUri: 'https://x',
+        texts: {},
         oidcClient: { ...oidcClient, issuer: 'https://other.example.org' },
       });
 
@@ -141,6 +150,28 @@ describe('ZitadelProvider', () => {
         maxPasswordAttempts: 10,
         maxOtpAttempts: 5,
       });
+    });
+
+    it('pushes the login texts per locale', async () => {
+      const fetch = mockFetch(...policies(), json({}));
+
+      const provider = new ZitadelProvider(settings);
+      await provider.setup({
+        defaultRedirectUri: 'https://x',
+        texts: { de: { loginName: 'E-Mail-Adresse' } },
+      });
+
+      const [url, init] = fetch.mock.calls[4];
+      expect(url).toBe(settings.url + '/v2/settings/hosted_login_translation');
+      expect(init.method).toBe('PUT');
+      expect(JSON.parse(init.body)).toEqual({
+        instance: true,
+        locale: 'de',
+        translations: {
+          loginname: { labels: { loginname: 'E-Mail-Adresse' } },
+        },
+      });
+      expect(fetch).toHaveBeenCalledTimes(5);
     });
 
     const claimsEndpoint = 'https://beabee.example.org/webhook/zitadel/claims';
@@ -155,7 +186,7 @@ describe('ZitadelProvider', () => {
 
       config.siteLogin = {};
       const provider = new ZitadelProvider(settings);
-      await provider.setup({ defaultRedirectUri: 'https://x' });
+      await provider.setup({ defaultRedirectUri: 'https://x', texts: {} });
 
       expect(options.set).toHaveBeenCalledWith(
         'zitadel-claims-signing-key',
@@ -196,7 +227,7 @@ describe('ZitadelProvider', () => {
 
       config.siteLogin = {};
       const provider = new ZitadelProvider(settings);
-      await provider.setup({ defaultRedirectUri: 'https://x' });
+      await provider.setup({ defaultRedirectUri: 'https://x', texts: {} });
 
       expect(options.set).toHaveBeenCalledWith(
         'zitadel-claims-signing-key',
@@ -217,7 +248,11 @@ describe('ZitadelProvider', () => {
 
       const provider = new ZitadelProvider(settings);
       await expect(
-        provider.setup({ defaultRedirectUri: 'https://x', oidcClient })
+        provider.setup({
+          defaultRedirectUri: 'https://x',
+          texts: {},
+          oidcClient,
+        })
       ).rejects.toThrow('OIDC client client-1 not found');
     });
   });

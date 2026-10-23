@@ -1693,6 +1693,9 @@
       "ariaLabel": ""
     }
   },
+  "idpLogin": {
+    "loginName": "E-Mail-Adresse"
+  },
   "item": {
     "status": {
       "endsIn": "Das Hoch-laden ist gleich zu Ende.",

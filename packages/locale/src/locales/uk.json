@@ -1693,6 +1693,9 @@
       "ariaLabel": "Значок привітання"
     }
   },
+  "idpLogin": {
+    "loginName": "Адреса електронної пошти"
+  },
   "item": {
     "status": {
       "endsIn": "Закінчується через {duration}",

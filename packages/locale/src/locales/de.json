@@ -1691,6 +1691,9 @@
       "ariaLabel": "Willkommen-Symbol"
     }
   },
+  "idpLogin": {
+    "loginName": "E-Mail-Adresse"
+  },
   "item": {
     "status": {
       "endsIn": "Endet in {duration}",
