@@ -45,14 +45,12 @@
         variant="error"
         :title="formError"
       />
-      <p v-if="validation.$invalid" :id="incompleteHintId" class="sr-only">
-        {{ t('callout.form.incomplete') }}
-      </p>
       <AppButton
         type="submit"
         class="mb-4 w-full"
         variant="primary"
         :disabled="validation.$invalid"
+        disabled-focusable
         :aria-describedby="validation.$invalid ? incompleteHintId : undefined"
         :loading="isLoading"
         @click="handleSubmit"
@@ -72,14 +70,12 @@
         </AppButton>
       </div>
       <div>
-        <p v-if="validation.$invalid" :id="incompleteHintId" class="sr-only">
-          {{ t('callout.form.incomplete') }}
-        </p>
         <AppButton
           v-if="currentSlideNo < totalSlides - 1"
           type="button"
           variant="primary"
           :disabled="validation.$invalid"
+          disabled-focusable
           :aria-describedby="validation.$invalid ? incompleteHintId : undefined"
           @click="handleNextSlide"
         >
@@ -87,6 +83,9 @@
         </AppButton>
       </div>
     </div>
+    <p v-if="validation.$invalid" :id="incompleteHintId" class="sr-only">
+      {{ t('callout.form.incomplete') }}
+    </p>
   </form>
 </template>
 
@@ -201,6 +200,7 @@ const rules = computed(() => ({
 const validation = useVuelidate(rules, { captchaToken });
 
 async function handleSubmit() {
+  if (validation.value.$invalid) return; // The button stays focusable while invalid
   if (!props.callout) return; // Can't submit without a callout being loaded
 
   // Only submit answers for slides in the current flow
@@ -242,6 +242,8 @@ async function handleSubmit() {
 }
 
 function handleNextSlide() {
+  if (validation.value.$invalid) return; // The button stays focusable while invalid
+
   const nextSlideId = getNextSlideId(
     slides.value,
     currentSlideNo.value,
