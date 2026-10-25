@@ -200,7 +200,6 @@ const rules = computed(() => ({
 const validation = useVuelidate(rules, { captchaToken });
 
 async function handleSubmit() {
-  if (validation.value.$invalid) return; // The button stays focusable while invalid
   if (!props.callout) return; // Can't submit without a callout being loaded
 
   // Only submit answers for slides in the current flow
@@ -242,8 +241,6 @@ async function handleSubmit() {
 }
 
 function handleNextSlide() {
-  if (validation.value.$invalid) return; // The button stays focusable while invalid
-
   const nextSlideId = getNextSlideId(
     slides.value,
     currentSlideNo.value,

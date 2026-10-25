@@ -45,6 +45,7 @@
     :aria-label="accessibleLabel"
     :aria-busy="loading"
     :aria-disabled="disabled"
+    @click.capture="blockDisabledClick"
   >
     <font-awesome-icon
       v-if="icon"
@@ -186,8 +187,7 @@ export interface AppButtonProps {
   disabled?: boolean;
   /**
    * Keeps a disabled button focusable, marked only with `aria-disabled`, so it
-   * can still be reached and read. The caller is responsible for ignoring the
-   * activation, as ARIA alone does not block it.
+   * can still be reached and read.
    */
   disabledFocusable?: boolean;
   /** Whether to show loading state */
@@ -234,6 +234,16 @@ const innerButton = ref<HTMLElement | null>(null);
 
 /** Value for aria-label: explicit ariaLabel or title as fallback */
 const accessibleLabel = computed(() => props.ariaLabel || props.title);
+
+// aria-disabled does not stop the browser activating the button, so a disabled
+// focusable one has to be blocked here. Capture runs ahead of the listeners a
+// caller binds with @click.
+const blockDisabledClick = (event: MouseEvent) => {
+  if (props.disabled) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+};
 
 const focus = () => {
   if (innerButton.value) {
