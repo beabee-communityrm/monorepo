@@ -842,6 +842,7 @@
     "form": {
       "email": "Je e-mail",
       "guestFieldsMissing": "Vertel ons je contactgegevens",
+      "incomplete": "Vul de verplichte velden hierboven in om verder te gaan",
       "name": "Je naam",
       "submittingResponseError": "Er is een probleem opgetreden bij het indienen van je reactie, probeer het opnieuw"
     },

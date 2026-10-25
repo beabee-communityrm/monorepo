@@ -842,6 +842,7 @@
     "form": {
       "email": "O teu email",
       "guestFieldsMissing": "Dá-nos os teus contactos",
+      "incomplete": "Preenche os campos obrigatórios acima para continuar",
       "name": "O teu nome",
       "submittingResponseError": "Houve um problema a enviar a tua resposta, por favor tenta novamente"
     },

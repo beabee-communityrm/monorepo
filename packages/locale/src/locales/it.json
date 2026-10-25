@@ -842,6 +842,7 @@
     "form": {
       "email": "La tua email",
       "guestFieldsMissing": "Inserisci i tuoi dati di contatto",
+      "incomplete": "Compila i campi obbligatori qui sopra per continuare",
       "name": "Il tuo nome",
       "submittingResponseError": "Si è verificato un problema durante l'invio della risposta, riprova"
     },

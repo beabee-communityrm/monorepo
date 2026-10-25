@@ -842,6 +842,7 @@
     "form": {
       "email": "Ihre E-Mail-Adresse",
       "guestFieldsMissing": "Bitte geben Sie uns Ihre Kontaktdaten.",
+      "incomplete": "Bitte füllen Sie die Pflichtfelder oben aus, um fortzufahren",
       "name": "Ihr Name",
       "submittingResponseError": "Es gab ein Problem bei der Übermittlung Ihrer Antworten. Bitte versuchen Sie es erneut."
     },
