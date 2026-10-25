@@ -38,7 +38,7 @@
     :is="is"
     v-else
     ref="innerButton"
-    :disabled="disabled || loading"
+    :disabled="(disabled && !disabledFocusable) || loading"
     :class="buttonClasses"
     :type="type"
     :title="title"
@@ -90,6 +90,7 @@
  * <AppButton :to="{ name: 'home' }">Go Home</AppButton>
  *
  * @props {boolean} [disabled=false] - Disables the button
+ * @props {boolean} [disabledFocusable=false] - Keeps a disabled button in the tab order
  * @props {boolean} [loading=false] - Shows a loading spinner
  * @props {('button'|'submit')} [type='button'] - HTML button type
  * @props {string} [href] - URL for anchor tag
@@ -183,6 +184,12 @@ const sizeClasses = {
 export interface AppButtonProps {
   /** Whether the button is disabled */
   disabled?: boolean;
+  /**
+   * Keeps a disabled button focusable, marked only with `aria-disabled`, so it
+   * can still be reached and read. The caller is responsible for ignoring the
+   * activation, as ARIA alone does not block it.
+   */
+  disabledFocusable?: boolean;
   /** Whether to show loading state */
   loading?: boolean;
   /** HTML button type */
@@ -209,6 +216,7 @@ export interface AppButtonProps {
 
 const props = withDefaults(defineProps<AppButtonProps>(), {
   disabled: false,
+  disabledFocusable: false,
   loading: false,
   type: 'button',
   href: undefined,
