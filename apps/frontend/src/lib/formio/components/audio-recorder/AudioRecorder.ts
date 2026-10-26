@@ -52,6 +52,12 @@ const AUDIO_MIME_TYPE_BY_EXTENSION: Record<string, string> = {
   wav: 'audio/wav',
 };
 
+// The live and playback panels refresh on a timer, so assigning text
+// unconditionally would re-fire a live region several times a second
+function setText(el: HTMLElement | null, text: string) {
+  if (el && el.textContent !== text) el.textContent = text;
+}
+
 function extensionForMimeType(mimeType: string): string {
   const match = RECORDER_MIME_TYPES.find(({ mimeType: candidate }) =>
     mimeType.startsWith(candidate.split(';')[0])
@@ -751,12 +757,16 @@ export default class AudioRecorderComponent extends FileComponent {
   private buildErrorBlock(): HTMLElement {
     const block = document.createElement('div');
     block.className = 'audio-recorder-panel audio-recorder-error';
+    // Focus lands on "Try again", so without this the message itself is
+    // never read out
+    block.setAttribute('role', 'alert');
 
     const row = document.createElement('div');
     row.className = 'audio-recorder-error-row';
     const icon = document.createElement('span');
     icon.className = 'audio-recorder-error-icon';
     icon.textContent = '!';
+    icon.setAttribute('aria-hidden', 'true');
     this.errorTitleEl = document.createElement('span');
     this.errorTitleEl.className = 'audio-recorder-error-title';
     row.append(icon, this.errorTitleEl);
@@ -854,8 +864,10 @@ export default class AudioRecorderComponent extends FileComponent {
     } else if (phase === 'ready') {
       this.updateReadyDynamic();
     } else if (phase === 'error') {
-      if (this.errorTitleEl) this.errorTitleEl.textContent = this.errorTitle;
-      if (this.errorBodyEl) this.errorBodyEl.textContent = this.errorBody;
+      // Filled after the panel is shown, so the alert fires on content the
+      // screen reader can still reach
+      setText(this.errorTitleEl, this.errorTitle);
+      setText(this.errorBodyEl, this.errorBody);
     }
   }
 
@@ -866,8 +878,6 @@ export default class AudioRecorderComponent extends FileComponent {
     this.closeAudioContext();
     this.errorTitle = title;
     this.errorBody = body;
-    if (this.errorTitleEl) this.errorTitleEl.textContent = title;
-    if (this.errorBodyEl) this.errorBodyEl.textContent = body;
     this.setPhase('error');
   }
 
