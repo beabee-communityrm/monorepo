@@ -689,10 +689,6 @@ export default class AudioRecorderComponent extends FileComponent {
     this.playButton = document.createElement('button');
     this.playButton.type = 'button';
     this.playButton.className = 'audio-recorder-play-button';
-    this.playButton.setAttribute(
-      'aria-label',
-      t('formRenderer.components.audioRecorder.playPause')
-    );
     this.playIcon = document.createElement('span');
     this.playIcon.className = 'audio-recorder-play-icon';
     this.playButton.append(this.playIcon);
@@ -1225,6 +1221,18 @@ export default class AudioRecorderComponent extends FileComponent {
         'audio-recorder-play-icon--pause',
         this.playing
       );
+    }
+    if (this.playButton) {
+      // The icon is the only thing that changes, so the name has to carry
+      // the state
+      const label = t(
+        this.playing
+          ? 'formRenderer.components.audioRecorder.pause'
+          : 'formRenderer.components.audioRecorder.play'
+      );
+      if (this.playButton.getAttribute('aria-label') !== label) {
+        this.playButton.setAttribute('aria-label', label);
+      }
     }
 
     const dur = this.duration || 1;

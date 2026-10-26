@@ -1645,6 +1645,7 @@
         "download": "Download",
         "pause": "Pause",
         "paused": "Paused",
+        "play": "Play",
         "playPause": "Play or pause",
         "reRecord": "Record again",
         "record": "Start recording",
