@@ -1083,8 +1083,14 @@ export default class AudioRecorderComponent extends FileComponent {
       )
     );
     setText(this.liveTimeLabel, formatTime(this.elapsedMs / 1000));
+    // Pause and Resume stand in for each other in the same panel, so this
+    // never reaches setPhase's handover - hiding whichever holds focus has
+    // to pass it to the other directly
+    const outgoing = paused ? this.pauseButton : this.resumeButton;
+    const handOver = !!outgoing && document.activeElement === outgoing;
     if (this.pauseButton) this.pauseButton.hidden = paused;
     if (this.resumeButton) this.resumeButton.hidden = !paused;
+    if (handOver) (paused ? this.resumeButton : this.pauseButton)?.focus();
   }
 
   // ---------------------------------------------------------------------
