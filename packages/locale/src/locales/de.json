@@ -839,6 +839,7 @@
       "email": "Ihre E-Mail-Adresse",
       "guestFieldsMissing": "Bitte geben Sie uns Ihre Kontaktdaten.",
       "name": "Ihr Name",
+      "step": "Schritt {current} von {total}",
       "submittingResponseError": "Es gab ein Problem bei der Übermittlung Ihrer Antworten. Bitte versuchen Sie es erneut."
     },
     "getStarted": "Starten",

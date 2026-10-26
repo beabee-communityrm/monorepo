@@ -843,6 +843,7 @@
       "email": "Votre e-mail",
       "guestFieldsMissing": "Veuillez nous indiquer vos informations de contact",
       "name": "Votre nom",
+      "step": "Étape {current} sur {total}",
       "submittingResponseError": "Une erreur s'est produite lors de l'envoi de votre réponse, veuillez réessayer"
     },
     "getStarted": "Commencer",

@@ -839,6 +839,7 @@
       "email": "",
       "guestFieldsMissing": "",
       "name": "",
+      "step": "Βήμα {current} από {total}",
       "submittingResponseError": "Δεν λειτούργησε. Δοκιμάστε ξανά."
     },
     "getStarted": "Ξεκινήστε εδώ!",

@@ -296,14 +296,11 @@ async function handleSubmit() {
 }
 
 /**
- * Move focus to the new step's heading, the usual pattern for a multi-step
- * form. Without it the button that was activated is removed as the slide
- * changes, focus falls to the document, and the user tabs back through the
- * whole page to reach the form again.
+ * Move focus to the new step's heading. The button that was activated is
+ * removed as the slide changes, so otherwise focus falls to the document.
  *
- * The heading is looked up from the DOM rather than held in a template ref: in
- * a keyed v-for the ref is nulled as the old slide unmounts, so reading it
- * here finds nothing or an element that has already been detached.
+ * The heading is found in the DOM rather than held in a template ref, which a
+ * keyed v-for nulls as the old slide unmounts.
  */
 async function focusCurrentSlide() {
   await nextTick();

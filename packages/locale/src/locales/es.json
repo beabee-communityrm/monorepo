@@ -839,6 +839,7 @@
       "email": "Tu correo electrónico",
       "guestFieldsMissing": "Por favor, indícanos tus datos de contacto",
       "name": "Tu nombre",
+      "step": "Paso {current} de {total}",
       "submittingResponseError": "Hubo un problema al enviar tu respuesta, inténtalo de nuevo"
     },
     "getStarted": "Empezar",

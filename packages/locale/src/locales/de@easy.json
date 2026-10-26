@@ -839,6 +839,7 @@
       "email": "",
       "guestFieldsMissing": "",
       "name": "",
+      "step": "Schritt {current} von {total}",
       "submittingResponseError": "Das hat nicht geklappt. Versuche es noch mal."
     },
     "getStarted": "Hier geht es los.",

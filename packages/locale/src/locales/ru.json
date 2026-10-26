@@ -840,6 +840,7 @@
       "email": "Ваша почта",
       "guestFieldsMissing": "Пожалуйста, сообщите нам свои контактные данные",
       "name": "Ваше имя",
+      "step": "Шаг {current} из {total}",
       "submittingResponseError": "Не удалось отправить ответ. Попробуйте ещё раз"
     },
     "getStarted": "Начать",

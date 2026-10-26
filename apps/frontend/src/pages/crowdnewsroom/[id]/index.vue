@@ -65,6 +65,7 @@ meta:
           <CalloutForm
             :callout="callout"
             :answers="prefilledAnswers"
+            :heading-level="latestResponse ? 3 : 2"
             :preview="isPreview"
             :readonly="!canRespond"
             :all-slides="!canRespond"

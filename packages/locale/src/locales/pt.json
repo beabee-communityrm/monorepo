@@ -839,6 +839,7 @@
       "email": "O teu email",
       "guestFieldsMissing": "Dá-nos os teus contactos",
       "name": "O teu nome",
+      "step": "Passo {current} de {total}",
       "submittingResponseError": "Houve um problema a enviar a tua resposta, por favor tenta novamente"
     },
     "getStarted": "Começar",

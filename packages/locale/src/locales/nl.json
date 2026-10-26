@@ -839,6 +839,7 @@
       "email": "Je e-mail",
       "guestFieldsMissing": "Vertel ons je contactgegevens",
       "name": "Je naam",
+      "step": "Stap {current} van {total}",
       "submittingResponseError": "Er is een probleem opgetreden bij het indienen van je reactie, probeer het opnieuw"
     },
     "getStarted": "Aan de slag",
