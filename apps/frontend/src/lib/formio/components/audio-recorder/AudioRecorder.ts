@@ -563,6 +563,10 @@ export default class AudioRecorderComponent extends FileComponent {
     this.liveDot.className = 'audio-recorder-rec-dot';
     this.liveStatusLabel = document.createElement('span');
     this.liveStatusLabel.className = 'audio-recorder-live-status';
+    // Focus lands on "Stop", so recording starting and pausing is otherwise
+    // silent. The elapsed time is deliberately outside this - it would be
+    // read out ten times a second.
+    this.liveStatusLabel.setAttribute('role', 'status');
     this.liveTimeLabel = document.createElement('span');
     this.liveTimeLabel.className = 'audio-recorder-live-time';
     this.liveMaxTimeLabel = document.createElement('span');
@@ -1074,16 +1078,15 @@ export default class AudioRecorderComponent extends FileComponent {
   private updateLiveDynamic() {
     const paused = this.phase === 'paused';
     if (this.liveDot) this.liveDot.hidden = paused;
-    if (this.liveStatusLabel) {
-      this.liveStatusLabel.textContent = t(
+    setText(
+      this.liveStatusLabel,
+      t(
         paused
           ? 'formRenderer.components.audioRecorder.paused'
           : 'formRenderer.components.audioRecorder.recording'
-      );
-    }
-    if (this.liveTimeLabel) {
-      this.liveTimeLabel.textContent = formatTime(this.elapsedMs / 1000);
-    }
+      )
+    );
+    setText(this.liveTimeLabel, formatTime(this.elapsedMs / 1000));
     if (this.pauseButton) this.pauseButton.hidden = paused;
     if (this.resumeButton) this.resumeButton.hidden = !paused;
   }
