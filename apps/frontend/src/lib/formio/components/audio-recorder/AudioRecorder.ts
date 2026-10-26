@@ -274,14 +274,7 @@ export default class AudioRecorderComponent extends FileComponent {
       if (this.hasFileValue()) {
         this.enterReadyPhase();
       } else {
-        for (const block of [
-          this.idleBlock,
-          this.requestingBlock,
-          this.liveBlock,
-          this.uploadingBlock,
-          this.readyBlock,
-          this.errorBlock,
-        ]) {
+        for (const block of this.panels) {
           if (block) block.hidden = true;
         }
       }
@@ -391,19 +384,41 @@ export default class AudioRecorderComponent extends FileComponent {
     );
   }
 
-  // Used for Initial Focus and clicking a validation error; the stock
-  // focus() targets the hidden file browse link
-  focus() {
-    this.parent?.beforeFocus?.(this);
-    const panel = [
+  private get panels() {
+    return [
       this.idleBlock,
       this.requestingBlock,
       this.liveBlock,
       this.uploadingBlock,
       this.readyBlock,
       this.errorBlock,
-    ].find((block) => block && !block.hidden);
-    panel?.querySelector<HTMLElement>('button:not([disabled])')?.focus();
+    ];
+  }
+
+  private visiblePanel(): HTMLElement | null {
+    return this.panels.find((block) => block && !block.hidden) ?? null;
+  }
+
+  private focusPanel(panel: HTMLElement | null) {
+    if (!panel) return;
+    const control = panel.querySelector<HTMLElement>(
+      'button:not([hidden]):not([disabled]), a[href]'
+    );
+    if (control) {
+      control.focus();
+    } else {
+      // requesting and uploading hold no control, so the panel takes focus
+      // itself and its status text gets announced
+      panel.tabIndex = -1;
+      panel.focus();
+    }
+  }
+
+  // Used for Initial Focus and clicking a validation error; the stock
+  // focus() targets the hidden file browse link
+  focus() {
+    this.parent?.beforeFocus?.(this);
+    this.focusPanel(this.visiblePanel());
   }
 
   destroy() {
@@ -794,16 +809,16 @@ export default class AudioRecorderComponent extends FileComponent {
       ready: this.readyBlock,
       error: this.errorBlock,
     };
-    for (const block of [
-      this.idleBlock,
-      this.requestingBlock,
-      this.liveBlock,
-      this.uploadingBlock,
-      this.readyBlock,
-      this.errorBlock,
-    ]) {
-      if (block) block.hidden = block !== blocks[phase];
+    const next = blocks[phase];
+    // Hiding the panel holding focus drops focus to <body>, so carry it over
+    const handOver = this.panels.some(
+      (block) =>
+        block && block !== next && block.contains(document.activeElement)
+    );
+    for (const block of this.panels) {
+      if (block) block.hidden = block !== next;
     }
+    if (handOver) this.focusPanel(next);
 
     if (phase === 'recording' || phase === 'paused') {
       this.updateLiveDynamic();
