@@ -262,6 +262,17 @@ export default class AudioRecorderComponent extends FileComponent {
       : (element.querySelector<HTMLElement>(selector) ?? element);
   }
 
+  /**
+   * formio renders the question label with no `for`, so on its own it names
+   * nothing - the group points back at it to give the controls their context.
+   */
+  private attachUi(element: HTMLElement, ui: HTMLElement) {
+    const root = this.uiRoot(element);
+    const labelId = root.querySelector<HTMLElement>('label[ref="label"]')?.id;
+    if (labelId) ui.setAttribute('aria-labelledby', labelId);
+    root.prepend(ui);
+  }
+
   attach(element: HTMLElement) {
     const superAttach = super.attach(element);
 
@@ -271,7 +282,7 @@ export default class AudioRecorderComponent extends FileComponent {
     // discard actions (buildReadyBlock omits those when readOnly) - for
     // visual consistency, and shows nothing at all when there's no answer.
     if (this.options?.readOnly) {
-      this.uiRoot(element).prepend(this.buildUi());
+      this.attachUi(element, this.buildUi());
       if (this.hasFileValue()) {
         this.enterReadyPhase();
       } else {
@@ -323,7 +334,7 @@ export default class AudioRecorderComponent extends FileComponent {
         if (control !== this.playButton) control.disabled = true;
       }
     }
-    this.uiRoot(element).prepend(ui);
+    this.attachUi(element, ui);
 
     // attach() re-enters several times as formio settles (both on its own
     // internal redraws mid-upload, and while the form's initial submission
@@ -445,6 +456,7 @@ export default class AudioRecorderComponent extends FileComponent {
   private buildUi(): HTMLElement {
     const root = document.createElement('div');
     root.className = 'audio-recorder';
+    root.setAttribute('role', 'group');
     this.addEventListener(root, 'focusin', () => (this.heldFocus = true));
     // A null relatedTarget means the focused control is on its way out of
     // the DOM, which is the redraw attach() recovers from. The cast is
