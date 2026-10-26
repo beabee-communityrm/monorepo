@@ -473,6 +473,12 @@ export default class AudioRecorderComponent extends FileComponent {
     uploadInput.type = 'file';
     uploadInput.accept = this.uploadAccept;
     uploadInput.className = 'audio-recorder-file-input';
+    // Without a name of its own the input takes the label's contents, which
+    // include the browser's own localised "Browse" button text
+    uploadInput.setAttribute(
+      'aria-label',
+      t('formRenderer.components.audioRecorder.uploadLabel')
+    );
     this.addEventListener(uploadInput, 'change', (event) =>
       this.onFileSelected(event)
     );
@@ -742,6 +748,10 @@ export default class AudioRecorderComponent extends FileComponent {
     uploadInput.type = 'file';
     uploadInput.accept = this.uploadAccept;
     uploadInput.className = 'audio-recorder-file-input';
+    uploadInput.setAttribute(
+      'aria-label',
+      t('formRenderer.components.audioRecorder.uploadInstead')
+    );
     this.addEventListener(uploadInput, 'change', (event) =>
       this.onFileSelected(event)
     );
