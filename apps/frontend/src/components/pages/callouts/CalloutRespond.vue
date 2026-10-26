@@ -6,7 +6,7 @@
       <CalloutLanguageSelect :callout="callout" />
     </div>
 
-    <h2 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h2>
+    <h1 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h1>
 
     <template v-if="responses /* Avoids layout thrashing */">
       <CalloutClosedNotice
