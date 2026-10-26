@@ -204,6 +204,7 @@ export default class AudioRecorderComponent extends FileComponent {
 
   private errorTitleEl: HTMLElement | null = null;
   private errorBodyEl: HTMLElement | null = null;
+  private heldFocus = false;
 
   // FileComponent's own upload() calls this.redraw() several times over the
   // life of a single upload (destroy + render + attach on this same
@@ -341,6 +342,12 @@ export default class AudioRecorderComponent extends FileComponent {
       this.setPhase(this.phase);
     }
 
+    // FileComponent's redraws mid-upload take the focused control away with
+    // the old DOM, before any phase change can hand focus on
+    if (this.heldFocus && document.activeElement === document.body) {
+      this.focusPanel(this.visiblePanel());
+    }
+
     return superAttach;
   }
 
@@ -438,6 +445,13 @@ export default class AudioRecorderComponent extends FileComponent {
   private buildUi(): HTMLElement {
     const root = document.createElement('div');
     root.className = 'audio-recorder';
+    this.addEventListener(root, 'focusin', () => (this.heldFocus = true));
+    // A null relatedTarget means the focused control is on its way out of
+    // the DOM, which is the redraw attach() recovers from. The cast is
+    // formio's helper typing every handler against plain Event.
+    this.addEventListener(root, 'focusout', (event: Event) => {
+      if ((event as FocusEvent).relatedTarget) this.heldFocus = false;
+    });
 
     this.idleBlock = this.buildIdleBlock();
     this.requestingBlock = this.buildRequestingBlock();
