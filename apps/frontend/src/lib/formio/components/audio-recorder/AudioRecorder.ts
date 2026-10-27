@@ -846,6 +846,7 @@ export default class AudioRecorderComponent extends FileComponent {
       error: this.errorBlock,
     };
     const next = blocks[phase];
+    const appearing = !!next && next.hidden;
     // Hiding the panel holding focus drops focus to <body>, so carry it over
     const handOver = this.panels.some(
       (block) =>
@@ -858,6 +859,16 @@ export default class AudioRecorderComponent extends FileComponent {
 
     if (phase === 'recording' || phase === 'paused') {
       this.updateLiveDynamic();
+      if (appearing) {
+        // A live region that turns up already filled in is read as new
+        // content rather than a change, and so goes unannounced. Clearing
+        // it and letting it land a frame later makes it a change. Pausing
+        // and resuming need none of this - the region is already there.
+        setText(this.liveStatusLabel, '');
+        requestAnimationFrame(() =>
+          setText(this.liveStatusLabel, this.liveStatusText)
+        );
+      }
     } else if (phase === 'uploading') {
       if (this.uploadingFileName)
         this.uploadingFileName.textContent = this.fileName;
@@ -1071,17 +1082,18 @@ export default class AudioRecorderComponent extends FileComponent {
     }
   }
 
+  private get liveStatusText(): string {
+    return t(
+      this.phase === 'paused'
+        ? 'formRenderer.components.audioRecorder.paused'
+        : 'formRenderer.components.audioRecorder.recording'
+    );
+  }
+
   private updateLiveDynamic() {
     const paused = this.phase === 'paused';
     if (this.liveDot) this.liveDot.hidden = paused;
-    setText(
-      this.liveStatusLabel,
-      t(
-        paused
-          ? 'formRenderer.components.audioRecorder.paused'
-          : 'formRenderer.components.audioRecorder.recording'
-      )
-    );
+    setText(this.liveStatusLabel, this.liveStatusText);
     setText(this.liveTimeLabel, formatTime(this.elapsedMs / 1000));
     // Pause and Resume stand in for each other in the same panel, so this
     // never reaches setPhase's handover - hiding whichever holds focus has
