@@ -1420,7 +1420,7 @@ __metadata:
     eslint: "npm:^9.39.4"
     eslint-config-prettier: "npm:^9.1.2"
     eslint-plugin-vue: "npm:^9.33.0"
-    formiojs: "npm:@beabee/formiojs@^4.15.11"
+    formiojs: "npm:@beabee/formiojs@^4.15.15"
     maplibre-gl: "npm:^3.6.2"
     mitt: "npm:^3.0.1"
     otpauth: "npm:^9.5.1"
@@ -1474,7 +1474,7 @@ __metadata:
     eslint: "npm:^9.39.4"
     eslint-config-prettier: "npm:^9.1.2"
     eslint-plugin-vue: "npm:^9.33.0"
-    formiojs: "npm:@beabee/formiojs@^4.15.11"
+    formiojs: "npm:@beabee/formiojs@^4.15.15"
     maplibre-gl: "npm:^3.6.2"
     mitt: "npm:^3.0.1"
     otpauth: "npm:^9.5.1"
@@ -11760,10 +11760,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:^2.4.1":
-  version: 2.5.8
-  resolution: "dompurify@npm:2.5.8"
-  checksum: 10c0/4101708d190b67be00350369d72619266a2e0ebb7dcab12628cf07711329b1df12239baea613df41b65cba571128e8ea4c29c442f4e2c98670a9bb5563521f03
+"dompurify@npm:^3.4.17":
+  version: 3.4.17
+  resolution: "dompurify@npm:3.4.17"
+  dependencies:
+    "@types/trusted-types": "npm:^2.0.7"
+  dependenciesMeta:
+    "@types/trusted-types":
+      optional: true
+  checksum: 10c0/6a12251ef5e700fc91b6d96d33e9f8b5fd590c55276f632cf42d182c5808e9f48d5bef435ab26eac235dfcc05ed8fe95e1c8308dcc502bf1050e561f14d0361a
   languageName: node
   linkType: hard
 
@@ -13573,9 +13578,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"formiojs@npm:@beabee/formiojs@^4.15.11":
-  version: 4.15.11
-  resolution: "@beabee/formiojs@npm:4.15.11"
+"formiojs@npm:@beabee/formiojs@^4.15.15":
+  version: 4.15.15
+  resolution: "@beabee/formiojs@npm:4.15.15"
   dependencies:
     "@formio/bootstrap3": "npm:2.12.3"
     "@formio/choices.js": "npm:10.2.0"
@@ -13590,7 +13595,7 @@ __metadata:
     custom-event-polyfill: "npm:^1.0.7"
     dialog-polyfill: "npm:^0.5.6"
     dom-autoscroller: "npm:^2.3.4"
-    dompurify: "npm:^2.4.1"
+    dompurify: "npm:^3.4.17"
     downloadjs: "npm:^1.4.7"
     dragula: "npm:^3.7.3"
     eventemitter3: "npm:^4.0.7"
@@ -13603,7 +13608,7 @@ __metadata:
     json-logic-js: "npm:^2.0.2"
     jstimezonedetect: "npm:^1.0.7"
     jwt-decode: "npm:^3.1.2"
-    lodash: "npm:^4.17.21"
+    lodash: "npm:^4.18.1"
     moment: "npm:^2.29.4"
     moment-timezone: "npm:^0.5.40"
     native-promise-only: "npm:^0.8.1"
@@ -13613,7 +13618,7 @@ __metadata:
     tippy.js: "npm:^6.3.7"
     uuid: "npm:^9.0.0"
     vanilla-picker: "npm:^2.12.1"
-  checksum: 10c0/61e830e6ced4e6b6a864a3ad9d16fadd9294c7509bb0f3a8c049bccfdda15599e0342ba39576d65057d7121d9f8483727c915df65a5825c948ae497fe8f9d2b2
+  checksum: 10c0/11ffd34b55a8bf71148cbe56ebbb7ad65a5e779f5df83f8d132a1a551b86fd0a6582ede7f8b37c73d8fa0fdcd685fd4f1b114297599c508884c2055ceac2e2cd
   languageName: node
   linkType: hard
 
