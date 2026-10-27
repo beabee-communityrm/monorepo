@@ -842,6 +842,7 @@
     "form": {
       "email": "",
       "guestFieldsMissing": "",
+      "incomplete": "",
       "name": "",
       "submittingResponseError": "Δεν λειτούργησε. Δοκιμάστε ξανά."
     },

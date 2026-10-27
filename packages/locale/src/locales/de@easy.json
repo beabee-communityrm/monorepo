@@ -842,6 +842,7 @@
     "form": {
       "email": "",
       "guestFieldsMissing": "",
+      "incomplete": "",
       "name": "",
       "submittingResponseError": "Das hat nicht geklappt. Versuche es noch mal."
     },
