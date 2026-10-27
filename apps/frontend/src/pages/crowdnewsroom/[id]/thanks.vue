@@ -11,6 +11,8 @@ meta:
       <CalloutLanguageSelect :callout="callout" />
     </div>
 
+    <h1 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h1>
+
     <template v-if="responses /* Avoids layout thrashing */">
       <CalloutThankYouBanner :callout="callout" :level="2" size="lg" />
 

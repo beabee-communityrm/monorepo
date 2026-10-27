@@ -51,7 +51,7 @@ meta:
       </div>
     </div>
 
-    <h2 class="text-xl">{{ callout.title }}</h2>
+    <h1 class="text-xl">{{ callout.title }}</h1>
 
     <template v-if="responses /* Avoids layout thrashing */">
       <CalloutThankYouBanner
