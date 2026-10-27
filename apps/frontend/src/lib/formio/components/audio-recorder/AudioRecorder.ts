@@ -52,6 +52,12 @@ const AUDIO_MIME_TYPE_BY_EXTENSION: Record<string, string> = {
   wav: 'audio/wav',
 };
 
+// The live and playback panels refresh on a timer, so assigning text
+// unconditionally would re-fire a live region several times a second
+function setTextIfChanged(el: HTMLElement | null, text: string) {
+  if (el && el.textContent !== text) el.textContent = text;
+}
+
 function extensionForMimeType(mimeType: string): string {
   const match = RECORDER_MIME_TYPES.find(({ mimeType: candidate }) =>
     mimeType.startsWith(candidate.split(';')[0])
@@ -204,6 +210,8 @@ export default class AudioRecorderComponent extends FileComponent {
 
   private errorTitleEl: HTMLElement | null = null;
   private errorBodyEl: HTMLElement | null = null;
+  private uiEl: HTMLElement | null = null;
+  private heldFocus = false;
 
   // FileComponent's own upload() calls this.redraw() several times over the
   // life of a single upload (destroy + render + attach on this same
@@ -261,6 +269,28 @@ export default class AudioRecorderComponent extends FileComponent {
       : (element.querySelector<HTMLElement>(selector) ?? element);
   }
 
+  /**
+   * formio renders the question label with no `for`, so on its own it names
+   * nothing - the group points back at it to give the controls their context.
+   */
+  private attachUi(element: HTMLElement, ui: HTMLElement) {
+    const root = this.uiRoot(element);
+    const labelId = root.querySelector<HTMLElement>('label[ref="label"]')?.id;
+    if (labelId) ui.setAttribute('aria-labelledby', labelId);
+    this.uiEl = ui;
+    root.prepend(ui);
+  }
+
+  // The last moment the outgoing UI still holds focus: redraw() detaches,
+  // then replaces the DOM. Asking here, rather than tracking focusout,
+  // keeps the flag false when focus has gone somewhere outside the
+  // component - including out of the document, where relatedTarget is null
+  // just as it is for a control being removed.
+  detach() {
+    this.heldFocus = !!this.uiEl?.contains(document.activeElement);
+    return super.detach();
+  }
+
   attach(element: HTMLElement) {
     const superAttach = super.attach(element);
 
@@ -270,18 +300,11 @@ export default class AudioRecorderComponent extends FileComponent {
     // discard actions (buildReadyBlock omits those when readOnly) - for
     // visual consistency, and shows nothing at all when there's no answer.
     if (this.options?.readOnly) {
-      this.uiRoot(element).prepend(this.buildUi());
+      this.attachUi(element, this.buildUi());
       if (this.hasFileValue()) {
         this.enterReadyPhase();
       } else {
-        for (const block of [
-          this.idleBlock,
-          this.requestingBlock,
-          this.liveBlock,
-          this.uploadingBlock,
-          this.readyBlock,
-          this.errorBlock,
-        ]) {
+        for (const block of this.panels) {
           if (block) block.hidden = true;
         }
       }
@@ -329,7 +352,7 @@ export default class AudioRecorderComponent extends FileComponent {
         if (control !== this.playButton) control.disabled = true;
       }
     }
-    this.uiRoot(element).prepend(ui);
+    this.attachUi(element, ui);
 
     // attach() re-enters several times as formio settles (both on its own
     // internal redraws mid-upload, and while the form's initial submission
@@ -346,6 +369,12 @@ export default class AudioRecorderComponent extends FileComponent {
       }
     } else {
       this.setPhase(this.phase);
+    }
+
+    // FileComponent's redraws mid-upload take the focused control away with
+    // the old DOM, before any phase change can hand focus on
+    if (this.heldFocus && document.activeElement === document.body) {
+      this.focusPanel(this.visiblePanel());
     }
 
     return superAttach;
@@ -391,19 +420,38 @@ export default class AudioRecorderComponent extends FileComponent {
     );
   }
 
-  // Used for Initial Focus and clicking a validation error; the stock
-  // focus() targets the hidden file browse link
-  focus() {
-    this.parent?.beforeFocus?.(this);
-    const panel = [
+  private get panels() {
+    return [
       this.idleBlock,
       this.requestingBlock,
       this.liveBlock,
       this.uploadingBlock,
       this.readyBlock,
       this.errorBlock,
-    ].find((block) => block && !block.hidden);
-    panel?.querySelector<HTMLElement>('button:not([disabled])')?.focus();
+    ];
+  }
+
+  private visiblePanel(): HTMLElement | null {
+    return this.panels.find((block) => block && !block.hidden) ?? null;
+  }
+
+  private focusPanel(panel: HTMLElement | null) {
+    if (!panel) return;
+    const target =
+      panel.querySelector<HTMLElement>(
+        'button:not([hidden]):not([disabled]), a[href], .audio-recorder-focus-anchor'
+      ) ?? panel;
+    // requesting holds no control and no anchor, so the panel takes focus
+    // itself and its status text gets announced
+    if (target === panel) panel.tabIndex = -1;
+    target.focus({ preventScroll: true });
+  }
+
+  // Used for Initial Focus and clicking a validation error; the stock
+  // focus() targets the hidden file browse link
+  focus() {
+    this.parent?.beforeFocus?.(this);
+    this.focusPanel(this.visiblePanel());
   }
 
   destroy() {
@@ -423,6 +471,7 @@ export default class AudioRecorderComponent extends FileComponent {
   private buildUi(): HTMLElement {
     const root = document.createElement('div');
     root.className = 'audio-recorder';
+    root.setAttribute('role', 'group');
 
     this.idleBlock = this.buildIdleBlock();
     this.requestingBlock = this.buildRequestingBlock();
@@ -473,6 +522,12 @@ export default class AudioRecorderComponent extends FileComponent {
     uploadInput.type = 'file';
     uploadInput.accept = this.uploadAccept;
     uploadInput.className = 'audio-recorder-file-input';
+    // Without a name of its own the input takes the label's contents, which
+    // include the browser's own localised "Browse" button text
+    uploadInput.setAttribute(
+      'aria-label',
+      t('formRenderer.components.audioRecorder.uploadLabel')
+    );
     this.addEventListener(uploadInput, 'change', (event) =>
       this.onFileSelected(event)
     );
@@ -510,6 +565,10 @@ export default class AudioRecorderComponent extends FileComponent {
     this.liveDot.className = 'audio-recorder-rec-dot';
     this.liveStatusLabel = document.createElement('span');
     this.liveStatusLabel.className = 'audio-recorder-live-status';
+    // Focus lands on "Stop", so recording starting and pausing is otherwise
+    // silent. The elapsed time is deliberately outside this - it would be
+    // read out ten times a second.
+    this.liveStatusLabel.setAttribute('role', 'status');
     this.liveTimeLabel = document.createElement('span');
     this.liveTimeLabel.className = 'audio-recorder-live-time';
     this.liveMaxTimeLabel = document.createElement('span');
@@ -590,8 +649,17 @@ export default class AudioRecorderComponent extends FileComponent {
     const block = document.createElement('div');
     block.className = 'audio-recorder-panel audio-recorder-uploading';
 
+    // FileComponent redraws on every upload progress event, and focus has
+    // to come back to this panel each time or it is lost for the rest of
+    // the upload. Landing on an empty anchor keeps that silent, and the
+    // status region below does the announcing, once.
+    const anchor = document.createElement('span');
+    anchor.className = 'audio-recorder-focus-anchor';
+    anchor.tabIndex = -1;
+
     const row = document.createElement('div');
     row.className = 'audio-recorder-uploading-row';
+    row.setAttribute('role', 'status');
     this.uploadingFileName = document.createElement('span');
     this.uploadingFileName.className = 'audio-recorder-filename';
     const spinner = document.createElement('span');
@@ -603,7 +671,7 @@ export default class AudioRecorderComponent extends FileComponent {
     hint.className = 'audio-recorder-hint';
     hint.textContent = t('formRenderer.components.audioRecorder.uploadingHint');
 
-    block.append(row, hint);
+    block.append(anchor, row, hint);
     return block;
   }
 
@@ -632,10 +700,6 @@ export default class AudioRecorderComponent extends FileComponent {
     this.playButton = document.createElement('button');
     this.playButton.type = 'button';
     this.playButton.className = 'audio-recorder-play-button';
-    this.playButton.setAttribute(
-      'aria-label',
-      t('formRenderer.components.audioRecorder.playPause')
-    );
     this.playIcon = document.createElement('span');
     this.playIcon.className = 'audio-recorder-play-icon';
     this.playButton.append(this.playIcon);
@@ -704,12 +768,16 @@ export default class AudioRecorderComponent extends FileComponent {
   private buildErrorBlock(): HTMLElement {
     const block = document.createElement('div');
     block.className = 'audio-recorder-panel audio-recorder-error';
+    // Focus lands on "Try again", so without this the message itself is
+    // never read out
+    block.setAttribute('role', 'alert');
 
     const row = document.createElement('div');
     row.className = 'audio-recorder-error-row';
     const icon = document.createElement('span');
     icon.className = 'audio-recorder-error-icon';
     icon.textContent = '!';
+    icon.setAttribute('aria-hidden', 'true');
     this.errorTitleEl = document.createElement('span');
     this.errorTitleEl.className = 'audio-recorder-error-title';
     row.append(icon, this.errorTitleEl);
@@ -742,6 +810,10 @@ export default class AudioRecorderComponent extends FileComponent {
     uploadInput.type = 'file';
     uploadInput.accept = this.uploadAccept;
     uploadInput.className = 'audio-recorder-file-input';
+    uploadInput.setAttribute(
+      'aria-label',
+      t('formRenderer.components.audioRecorder.uploadInstead')
+    );
     this.addEventListener(uploadInput, 'change', (event) =>
       this.onFileSelected(event)
     );
@@ -784,28 +856,58 @@ export default class AudioRecorderComponent extends FileComponent {
       ready: this.readyBlock,
       error: this.errorBlock,
     };
-    for (const block of [
-      this.idleBlock,
-      this.requestingBlock,
-      this.liveBlock,
-      this.uploadingBlock,
-      this.readyBlock,
-      this.errorBlock,
-    ]) {
-      if (block) block.hidden = block !== blocks[phase];
+    const next = blocks[phase];
+    const appearing = !!next && next.hidden;
+    // Hiding the panel holding focus drops focus to <body>, so carry it over
+    const handOver = this.panels.some(
+      (block) =>
+        block && block !== next && block.contains(document.activeElement)
+    );
+    for (const block of this.panels) {
+      if (block) block.hidden = block !== next;
     }
+    if (handOver) this.focusPanel(next);
 
     if (phase === 'recording' || phase === 'paused') {
       this.updateLiveDynamic();
+      // Pausing and resuming need no help - the region is already there
+      if (appearing) {
+        this.announceOnNextFrame([[this.liveStatusLabel, this.liveStatusText]]);
+      }
     } else if (phase === 'uploading') {
       if (this.uploadingFileName)
         this.uploadingFileName.textContent = this.fileName;
     } else if (phase === 'ready') {
       this.updateReadyDynamic();
     } else if (phase === 'error') {
-      if (this.errorTitleEl) this.errorTitleEl.textContent = this.errorTitle;
-      if (this.errorBodyEl) this.errorBodyEl.textContent = this.errorBody;
+      // Two failures in a row often carry the same text, and writing it
+      // again would be no change at all
+      if (appearing) {
+        this.announceOnNextFrame([
+          [this.errorTitleEl, this.errorTitle],
+          [this.errorBodyEl, this.errorBody],
+        ]);
+      } else {
+        setTextIfChanged(this.errorTitleEl, this.errorTitle);
+        setTextIfChanged(this.errorBodyEl, this.errorBody);
+      }
     }
+  }
+
+  /**
+   * A live region that turns up already filled in is read as new content
+   * rather than a change, and so goes unannounced. Emptying it and letting
+   * the text land a frame later makes it a change.
+   */
+  private announceOnNextFrame(parts: [HTMLElement | null, string][]) {
+    const announcingFor = this.phase;
+    for (const [el] of parts) setTextIfChanged(el, '');
+    requestAnimationFrame(() => {
+      // A phase that has already moved on has hidden this panel, so the
+      // text would land where nobody can reach it
+      if (this.phase !== announcingFor) return;
+      for (const [el, text] of parts) setTextIfChanged(el, text);
+    });
   }
 
   private showError(title: string, body: string) {
@@ -815,8 +917,6 @@ export default class AudioRecorderComponent extends FileComponent {
     this.closeAudioContext();
     this.errorTitle = title;
     this.errorBody = body;
-    if (this.errorTitleEl) this.errorTitleEl.textContent = title;
-    if (this.errorBodyEl) this.errorBodyEl.textContent = body;
     this.setPhase('error');
   }
 
@@ -1010,21 +1110,27 @@ export default class AudioRecorderComponent extends FileComponent {
     }
   }
 
+  private get liveStatusText(): string {
+    return t(
+      this.phase === 'paused'
+        ? 'formRenderer.components.audioRecorder.paused'
+        : 'formRenderer.components.audioRecorder.recording'
+    );
+  }
+
   private updateLiveDynamic() {
     const paused = this.phase === 'paused';
     if (this.liveDot) this.liveDot.hidden = paused;
-    if (this.liveStatusLabel) {
-      this.liveStatusLabel.textContent = t(
-        paused
-          ? 'formRenderer.components.audioRecorder.paused'
-          : 'formRenderer.components.audioRecorder.recording'
-      );
-    }
-    if (this.liveTimeLabel) {
-      this.liveTimeLabel.textContent = formatTime(this.elapsedMs / 1000);
-    }
+    setTextIfChanged(this.liveStatusLabel, this.liveStatusText);
+    setTextIfChanged(this.liveTimeLabel, formatTime(this.elapsedMs / 1000));
+    // Pause and Resume stand in for each other in the same panel, so this
+    // never reaches setPhase's handover - hiding whichever holds focus has
+    // to pass it to the other directly
+    const outgoing = paused ? this.pauseButton : this.resumeButton;
+    const handOver = !!outgoing && document.activeElement === outgoing;
     if (this.pauseButton) this.pauseButton.hidden = paused;
     if (this.resumeButton) this.resumeButton.hidden = !paused;
+    if (handOver) (paused ? this.resumeButton : this.pauseButton)?.focus();
   }
 
   // ---------------------------------------------------------------------
@@ -1161,6 +1267,18 @@ export default class AudioRecorderComponent extends FileComponent {
         'audio-recorder-play-icon--pause',
         this.playing
       );
+    }
+    if (this.playButton) {
+      // The icon is the only thing that changes, so the name has to carry
+      // the state
+      const label = t(
+        this.playing
+          ? 'formRenderer.components.audioRecorder.pause'
+          : 'formRenderer.components.audioRecorder.play'
+      );
+      if (this.playButton.getAttribute('aria-label') !== label) {
+        this.playButton.setAttribute('aria-label', label);
+      }
     }
 
     const dur = this.duration || 1;

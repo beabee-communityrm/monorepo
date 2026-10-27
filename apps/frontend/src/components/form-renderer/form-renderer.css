@@ -319,6 +319,15 @@
       outline: auto;
       outline-offset: 2px;
     }
+    /* A panel only ever takes focus because we put it there, so :focus
+       rather than :focus-visible - otherwise clicking Record moves focus
+       with nothing on screen to show it. The anchor is empty and has no
+       box to outline, so the panel holding it carries the indicator. */
+    .audio-recorder-panel:focus,
+    .audio-recorder-panel:has(.audio-recorder-focus-anchor:focus) {
+      outline: auto;
+      outline-offset: 2px;
+    }
     .audio-recorder--disabled
       :is(button, label):not(.audio-recorder-play-button) {
       @apply pointer-events-none opacity-50;
