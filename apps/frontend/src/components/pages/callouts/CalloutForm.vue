@@ -4,8 +4,7 @@
       <!-- A visible heading per step, which is what focus lands on when the
            slide changes. Slide titles themselves are written as admin labels,
            so they are not shown. -->
-      <component
-        :is="`h${headingLevel || 3}`"
+      <h3
         v-if="totalSlides > 1"
         data-slide-heading
         tabindex="-1"
@@ -17,7 +16,7 @@
             total: totalSlides,
           })
         }}
-      </component>
+      </h3>
       <FormRenderer
         v-model="answersProxy[slide.id]"
         :components="slide.components"
@@ -135,8 +134,6 @@ const props = defineProps<{
   style?: 'simple' | 'small';
   noBg?: boolean;
   allSlides?: boolean;
-  /** Heading level for the slide titles, nested under whatever precedes the form */
-  headingLevel?: 2 | 3 | 4 | 5 | 6;
   onSubmit?(answers: CalloutResponseAnswersSlide): void;
 }>();
 

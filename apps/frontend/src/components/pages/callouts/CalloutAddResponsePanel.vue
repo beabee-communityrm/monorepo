@@ -11,7 +11,6 @@
         v-else-if="answers"
         :answers="answers"
         :callout="callout"
-        :heading-level="2"
         no-bg
         @submitted="handleSubmitted"
       />

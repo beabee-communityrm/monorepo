@@ -20,7 +20,6 @@ meta:
     <CalloutForm
       v-if="joinSurvey"
       :callout="joinSurvey"
-      :heading-level="2"
       :style="'small'"
       no-bg
       @submitted="goToProfile"
