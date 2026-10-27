@@ -843,6 +843,7 @@
       "guestFieldsMissing": "Please tell us your contact details",
       "incomplete": "Fill in the required fields above to continue",
       "name": "Your name",
+      "step": "Step {current} of {total}",
       "submittingResponseError": "There was a problem submitting your response, please try again"
     },
     "getStarted": "Get started",

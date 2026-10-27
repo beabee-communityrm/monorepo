@@ -1,13 +1,29 @@
 <template>
   <form ref="formEl" :class="formClass" @submit.prevent>
-    <FormRenderer
-      v-for="slide in visibleSlides"
-      :key="slide.id"
-      v-model="answersProxy[slide.id]"
-      :components="slide.components"
-      :component-i18n-text="callout.formSchema.componentText"
-      :readonly="readonly"
-    />
+    <template v-for="slide in visibleSlides" :key="slide.id">
+      <!-- A visible heading per step, which is what focus lands on when the
+           slide changes. Slide titles themselves are written as admin labels,
+           so they are not shown. -->
+      <h3
+        v-if="totalSlides > 1"
+        data-slide-heading
+        tabindex="-1"
+        class="mb-6 font-title text-lg font-semibold text-body-80"
+      >
+        {{
+          t('callout.form.step', {
+            current: currentSlideNo + 1,
+            total: totalSlides,
+          })
+        }}
+      </h3>
+      <FormRenderer
+        v-model="answersProxy[slide.id]"
+        :components="slide.components"
+        :component-i18n-text="callout.formSchema.componentText"
+        :readonly="readonly"
+      />
+    </template>
 
     <template v-if="isLastSlide && !readonly && !preview">
       <CalloutFormGuestFields
@@ -101,7 +117,7 @@ import { AppButton, AppNotification } from '@beabee/vue';
 
 import useVuelidate from '@vuelidate/core';
 import { requiredIf } from '@vuelidate/validators';
-import { computed, reactive, ref, useId } from 'vue';
+import { computed, nextTick, reactive, ref, useId } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import FormRenderer from '#components/form-renderer/FormRenderer.vue';
@@ -240,6 +256,20 @@ async function handleSubmit() {
   }
 }
 
+/**
+ * Move focus to the new step's heading. The button that was activated is
+ * removed as the slide changes, so otherwise focus falls to the document.
+ *
+ * The heading is found in the DOM rather than held in a template ref, which a
+ * keyed v-for nulls as the old slide unmounts.
+ */
+async function focusCurrentSlide() {
+  await nextTick();
+  formEl.value
+    ?.querySelector<HTMLElement>('[data-slide-heading]')
+    ?.focus({ preventScroll: true });
+}
+
 function handleNextSlide() {
   const nextSlideId = getNextSlideId(
     slides.value,
@@ -250,9 +280,11 @@ function handleNextSlide() {
   slideIds.value.unshift(nextSlideId);
 
   formEl.value?.scrollIntoView();
+  focusCurrentSlide();
 }
 
 function handlePrevSlide() {
   slideIds.value.shift();
+  focusCurrentSlide();
 }
 </script>

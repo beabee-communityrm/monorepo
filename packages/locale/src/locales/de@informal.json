@@ -844,6 +844,7 @@
       "guestFieldsMissing": "Bitte gib' uns Deine Kontaktdaten. ",
       "incomplete": "Bitte fülle die Pflichtfelder oben aus, um fortzufahren",
       "name": "Dein Name",
+      "step": "Schritt {current} von {total}",
       "submittingResponseError": "Es gab ein Problem bei der Übermittlung deiner Antworten. Bitte versuche es erneut."
     },
     "getStarted": "Starten",
