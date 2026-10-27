@@ -301,9 +301,13 @@ export default class AudioRecorderComponent extends FileComponent {
     // visual consistency, and shows nothing at all when there's no answer.
     if (this.options?.readOnly) {
       this.attachUi(element, this.buildUi());
-      // With no answer there is nothing to show, which is what the panels
-      // are built as
-      if (this.hasFileValue()) this.enterReadyPhase();
+      if (this.hasFileValue()) {
+        this.enterReadyPhase();
+      } else {
+        for (const block of this.panels) {
+          if (block) block.hidden = true;
+        }
+      }
       return superAttach;
     }
 
@@ -475,13 +479,6 @@ export default class AudioRecorderComponent extends FileComponent {
     this.uploadingBlock = this.buildUploadingBlock();
     this.readyBlock = this.buildReadyBlock();
     this.errorBlock = this.buildErrorBlock();
-
-    // Born hidden, so nothing shows until a phase picks a panel. Otherwise
-    // every panel is on screen at once until the first setPhase, which
-    // enterReadyPhase defers behind a duration probe
-    for (const block of this.panels) {
-      if (block) block.hidden = true;
-    }
 
     root.append(
       this.idleBlock,
