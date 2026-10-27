@@ -316,6 +316,12 @@
       outline: auto;
       outline-offset: 2px;
     }
+    /* The anchor itself is empty and has no box to outline, so the panel
+       holding it carries the indicator */
+    .audio-recorder-panel:has(.audio-recorder-focus-anchor:focus-visible) {
+      outline: auto;
+      outline-offset: 2px;
+    }
     .audio-recorder--disabled
       :is(button, label):not(.audio-recorder-play-button) {
       @apply pointer-events-none opacity-50;

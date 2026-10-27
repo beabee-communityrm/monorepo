@@ -210,6 +210,7 @@ export default class AudioRecorderComponent extends FileComponent {
 
   private errorTitleEl: HTMLElement | null = null;
   private errorBodyEl: HTMLElement | null = null;
+  private uiEl: HTMLElement | null = null;
   private heldFocus = false;
 
   // FileComponent's own upload() calls this.redraw() several times over the
@@ -276,7 +277,18 @@ export default class AudioRecorderComponent extends FileComponent {
     const root = this.uiRoot(element);
     const labelId = root.querySelector<HTMLElement>('label[ref="label"]')?.id;
     if (labelId) ui.setAttribute('aria-labelledby', labelId);
+    this.uiEl = ui;
     root.prepend(ui);
+  }
+
+  // The last moment the outgoing UI still holds focus: redraw() detaches,
+  // then replaces the DOM. Asking here, rather than tracking focusout,
+  // keeps the flag false when focus has gone somewhere outside the
+  // component - including out of the document, where relatedTarget is null
+  // just as it is for a control being removed.
+  detach() {
+    this.heldFocus = !!this.uiEl?.contains(document.activeElement);
+    return super.detach();
   }
 
   attach(element: HTMLElement) {
@@ -425,17 +437,14 @@ export default class AudioRecorderComponent extends FileComponent {
 
   private focusPanel(panel: HTMLElement | null) {
     if (!panel) return;
-    const control = panel.querySelector<HTMLElement>(
-      'button:not([hidden]):not([disabled]), a[href]'
-    );
-    if (control) {
-      control.focus();
-    } else {
-      // requesting and uploading hold no control, so the panel takes focus
-      // itself and its status text gets announced
-      panel.tabIndex = -1;
-      panel.focus();
-    }
+    const target =
+      panel.querySelector<HTMLElement>(
+        'button:not([hidden]):not([disabled]), a[href], .audio-recorder-focus-anchor'
+      ) ?? panel;
+    // requesting holds no control and no anchor, so the panel takes focus
+    // itself and its status text gets announced
+    if (target === panel) panel.tabIndex = -1;
+    target.focus({ preventScroll: true });
   }
 
   // Used for Initial Focus and clicking a validation error; the stock
@@ -463,13 +472,6 @@ export default class AudioRecorderComponent extends FileComponent {
     const root = document.createElement('div');
     root.className = 'audio-recorder';
     root.setAttribute('role', 'group');
-    this.addEventListener(root, 'focusin', () => (this.heldFocus = true));
-    // A null relatedTarget means the focused control is on its way out of
-    // the DOM, which is the redraw attach() recovers from. The cast is
-    // formio's helper typing every handler against plain Event.
-    this.addEventListener(root, 'focusout', (event: Event) => {
-      if ((event as FocusEvent).relatedTarget) this.heldFocus = false;
-    });
 
     this.idleBlock = this.buildIdleBlock();
     this.requestingBlock = this.buildRequestingBlock();
@@ -647,8 +649,17 @@ export default class AudioRecorderComponent extends FileComponent {
     const block = document.createElement('div');
     block.className = 'audio-recorder-panel audio-recorder-uploading';
 
+    // FileComponent redraws on every upload progress event, and focus has
+    // to come back to this panel each time or it is lost for the rest of
+    // the upload. Landing on an empty anchor keeps that silent, and the
+    // status region below does the announcing, once.
+    const anchor = document.createElement('span');
+    anchor.className = 'audio-recorder-focus-anchor';
+    anchor.tabIndex = -1;
+
     const row = document.createElement('div');
     row.className = 'audio-recorder-uploading-row';
+    row.setAttribute('role', 'status');
     this.uploadingFileName = document.createElement('span');
     this.uploadingFileName.className = 'audio-recorder-filename';
     const spinner = document.createElement('span');
@@ -660,7 +671,7 @@ export default class AudioRecorderComponent extends FileComponent {
     hint.className = 'audio-recorder-hint';
     hint.textContent = t('formRenderer.components.audioRecorder.uploadingHint');
 
-    block.append(row, hint);
+    block.append(anchor, row, hint);
     return block;
   }
 
@@ -859,15 +870,9 @@ export default class AudioRecorderComponent extends FileComponent {
 
     if (phase === 'recording' || phase === 'paused') {
       this.updateLiveDynamic();
+      // Pausing and resuming need no help - the region is already there
       if (appearing) {
-        // A live region that turns up already filled in is read as new
-        // content rather than a change, and so goes unannounced. Clearing
-        // it and letting it land a frame later makes it a change. Pausing
-        // and resuming need none of this - the region is already there.
-        setText(this.liveStatusLabel, '');
-        requestAnimationFrame(() =>
-          setText(this.liveStatusLabel, this.liveStatusText)
-        );
+        this.announceOnNextFrame([[this.liveStatusLabel, this.liveStatusText]]);
       }
     } else if (phase === 'uploading') {
       if (this.uploadingFileName)
@@ -875,11 +880,30 @@ export default class AudioRecorderComponent extends FileComponent {
     } else if (phase === 'ready') {
       this.updateReadyDynamic();
     } else if (phase === 'error') {
-      // Filled after the panel is shown, so the alert fires on content the
-      // screen reader can still reach
-      setText(this.errorTitleEl, this.errorTitle);
-      setText(this.errorBodyEl, this.errorBody);
+      // Two failures in a row often carry the same text, and writing it
+      // again would be no change at all
+      if (appearing) {
+        this.announceOnNextFrame([
+          [this.errorTitleEl, this.errorTitle],
+          [this.errorBodyEl, this.errorBody],
+        ]);
+      } else {
+        setText(this.errorTitleEl, this.errorTitle);
+        setText(this.errorBodyEl, this.errorBody);
+      }
     }
+  }
+
+  /**
+   * A live region that turns up already filled in is read as new content
+   * rather than a change, and so goes unannounced. Emptying it and letting
+   * the text land a frame later makes it a change.
+   */
+  private announceOnNextFrame(parts: [HTMLElement | null, string][]) {
+    for (const [el] of parts) setText(el, '');
+    requestAnimationFrame(() => {
+      for (const [el, text] of parts) setText(el, text);
+    });
   }
 
   private showError(title: string, body: string) {
