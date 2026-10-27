@@ -9,7 +9,13 @@ import { newsletterService } from '@beabee/core/services/NewsletterService';
 import { optionsService } from '@beabee/core/services/OptionsService';
 import { MCWebhook } from '@beabee/core/type';
 
-export const setupStripe = async (dryRun: boolean) => {
+/**
+ * @param dryRun Report what would change without changing anything
+ * @param webhookSecret Signing secret of a Stripe CLI listener. Stripe only
+ * accepts public URLs for webhook endpoints, so a local instance stores the
+ * listener's secret instead of creating one
+ */
+export const setupStripe = async (dryRun: boolean, webhookSecret?: string) => {
   if (!config.stripe.secretKey) {
     throw new Error(
       'BEABEE_STRIPE_SECRETKEY must be set before running Stripe setup'
@@ -43,6 +49,15 @@ export const setupStripe = async (dryRun: boolean) => {
       }
 
       // Step 2: Check/create webhook
+      if (webhookSecret) {
+        if (!dryRun) {
+          await optionsService.set('stripe-webhook-secret', webhookSecret);
+        }
+        console.log('✅ Stored webhook secret of the local listener');
+        console.log('\n🎉 Stripe integration setup completed successfully!');
+        return;
+      }
+
       const existingWebhookSecret = optionsService.getText(
         'stripe-webhook-secret'
       );

@@ -9,6 +9,7 @@ import { log as mainLogger } from '#logging';
 import type { Contact } from '#models/index';
 import { optionsService } from '#services/OptionsService';
 import type {
+  EmailSmtpSettings,
   IdpBranding,
   IdpLoginAction,
   IdpOidcClient,
@@ -43,6 +44,12 @@ class ZitadelApiError extends Error {
       this.code = undefined;
     }
   }
+}
+
+interface ZitadelEmailProvider {
+  id: string;
+  state: string;
+  smtp?: object;
 }
 
 interface ZitadelOidcApp {
@@ -173,16 +180,19 @@ export class ZitadelProvider implements IdpProvider {
 
   // Zitadel rejects an update that changes nothing with a precondition
   // failure whose message is localised, but setup must be re-runnable
-  private async put(path: string, body: object): Promise<void> {
-    const name = path.split('/').pop();
-    log.info(`Update ${name} policy`);
+  private async put(
+    path: string,
+    body: object,
+    name = `${path.split('/').pop()} policy`
+  ): Promise<void> {
+    log.info(`Update ${name}`);
     try {
       await this.request('PUT', path, body);
     } catch (err) {
       if (!(err instanceof ZitadelApiError && err.code === 9)) {
         throw err;
       }
-      log.info(`${name} policy unchanged`);
+      log.info(`${name} unchanged`);
     }
   }
 
@@ -209,10 +219,13 @@ export class ZitadelProvider implements IdpProvider {
     if (!resp?.policy) {
       throw new Error('Zitadel did not return the login policy');
     }
+    // Members join through beabee, so Login v2 must not offer its own
+    // registration
     await this.put('/admin/v1/policies/login', {
       ...resp.policy,
       defaultRedirectUri: settings.defaultRedirectUri,
       ignoreUnknownUsernames: true,
+      allowRegister: false,
     });
     await this.put('/admin/v1/policies/notification', {
       passwordChange: false,
@@ -223,6 +236,24 @@ export class ZitadelProvider implements IdpProvider {
       maxPasswordAttempts: 10,
       maxOtpAttempts: 5,
     });
+    // Members log in with their email address, which Login v2 calls a login
+    // name; the wording is merged into Login v2's own texts
+    for (const [locale, texts] of Object.entries(settings.texts)) {
+      await this.put(
+        '/v2/settings/hosted_login_translation',
+        {
+          instance: true,
+          locale,
+          translations: {
+            loginname: { labels: { loginname: texts.loginName } },
+          },
+        },
+        `login texts (${locale})`
+      );
+    }
+    if (settings.email) {
+      await this.updateEmailProvider(settings.email);
+    }
     // A virtual instance's issuer is its URL, so a different issuer means
     // the client is registered elsewhere
     if (settings.oidcClient?.issuer === this.settings.url) {
@@ -236,6 +267,53 @@ export class ZitadelProvider implements IdpProvider {
     // make Zitadel call beabee on every token for nothing
     if (config.siteLogin) {
       await this.updateClaimsTarget();
+    }
+  }
+
+  /**
+   * Point the instance's notifications at beabee's email account. Zitadel
+   * sends through its one active provider, so an existing SMTP provider is
+   * updated in place and a new one activated.
+   */
+  private async updateEmailProvider(email: EmailSmtpSettings): Promise<void> {
+    const body = {
+      senderAddress: email.fromEmail,
+      senderName: email.fromName,
+      replyToAddress: email.fromEmail,
+      host: `${email.host}:${email.port}`,
+      user: email.user,
+      // tls means TLS on connect with a STARTTLS fallback, without it Zitadel
+      // never encrypts, so only a relay on port 25 goes unencrypted
+      tls: email.secure || email.port !== 25,
+      plain: { password: email.pass },
+    };
+    const providers = await this.request<{ result?: ZitadelEmailProvider[] }>(
+      'POST',
+      '/admin/v1/email/_search',
+      {}
+    );
+    let existing = providers?.result?.find((p) => p.smtp);
+    if (existing) {
+      await this.put(
+        `/admin/v1/email/smtp/${existing.id}`,
+        body,
+        'email provider'
+      );
+    } else {
+      log.info('Create email provider');
+      const created = await this.request<{ id: string }>(
+        'POST',
+        '/admin/v1/email/smtp',
+        body
+      );
+      if (!created?.id) {
+        throw new Error('Zitadel did not return the new email provider');
+      }
+      existing = { id: created.id, state: 'EMAIL_PROVIDER_INACTIVE' };
+    }
+    if (existing.state !== 'EMAIL_PROVIDER_ACTIVE') {
+      log.info('Activate email provider');
+      await this.request('POST', `/admin/v1/email/${existing.id}/_activate`);
     }
   }
 

@@ -470,6 +470,7 @@
       "updateResponse": "Je reactie bijwerken"
     },
     "addAPoint": "Klik op de kaart waar je een punt wilt toevoegen",
+    "addAnotherResponse": "Nog een reactie toevoegen",
     "addLocation": "Een nieuw punt toevoegen",
     "builder": {
       "actions": {
@@ -831,21 +832,34 @@
       },
       "untitledCallout": ""
     },
+    "closedNoEdit": "Deze CrowdNewsroom is gesloten, er kunnen geen reacties meer worden toegevoegd of bijgewerkt.",
+    "closedOn": "Gesloten op {date}",
     "confirmHuman": "Bevestig dat u een mens bent",
     "contactDetails": "Contactgegevens",
+    "editResponse": "Reactie bijwerken",
     "ended": "Deze CrowdNewsroom eindigde op {date}",
     "entryOf": "",
     "form": {
       "email": "Je e-mail",
       "guestFieldsMissing": "Vertel ons je contactgegevens",
+      "incomplete": "Vul de verplichte velden hierboven in om verder te gaan",
       "name": "Je naam",
       "step": "Stap {current} van {total}",
       "submittingResponseError": "Er is een probleem opgetreden bij het indienen van je reactie, probeer het opnieuw"
     },
     "getStarted": "Aan de slag",
     "joinNow": "Nu meedoen",
+    "language": "Taal",
+    "leavePreview": "Voorbeeld verlaten",
+    "logInOrSignUp": "Log in of word lid om deel te nemen.",
     "loginToYourAccount": "Inloggen op je account",
+    "loginToYourAccount-nuxt": "Inloggen",
     "membersOnly": "Deze CrowdNewsroom is alleen toegankelijk voor leden. Deelnemen",
+    "membersOnly-nuxt": "Deze CrowdNewsroom is alleen toegankelijk voor leden.",
+    "nextResponse": "Volgende reactie",
+    "notAnswered": "Niet beantwoord",
+    "previousResponse": "Vorige reactie",
+    "responseNumber": "Reactie {number} van {total}",
     "responseSubmitted": "Reactie ingediend",
     "share": {
       "address": "Deel deze oproep met het volgende adres:",
@@ -860,14 +874,20 @@
       "services": "Of deel snel met een van deze diensten:"
     },
     "showingPreview": "Je kunt geen reactie indienen in de voorbeeldmodus",
+    "showingPreview-nuxt": "Voorbeeldmodus — dit is wat deelnemers zien. Je kunt hier geen reactie indienen.",
+    "signed": "Handtekening",
+    "submittedOn": "Ingediend op {date}.",
     "toContributionPage": "Mijn bijdrage bewerken",
     "updateContribution": "Update uw bijdrage",
+    "updateContribution-nuxt": "Werk je bijdrage bij om deel te nemen.",
+    "viewFile": "Bestand bekijken",
     "views": {
       "gallery": "Galerij",
       "map": "Kaart"
     },
     "youResponded": "Je hebt gereageerd op deze CrowdNewsroom ♥",
-    "yourResponse": "Je reactie"
+    "yourResponse": "Je reactie",
+    "yourResponses": "Je reacties ({count})"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom verwijderd.",
@@ -1002,7 +1022,9 @@
     "title": "Recensenten"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, wordt extra reacties niet geregistreerd."
+    "backTo": "Terug naar {title}",
+    "oneResponseWarning": "Houd er rekening mee dat deze oproep slechts één reactie per persoon toestaat. Als u al hebt bijgedragen, wordt extra reacties niet geregistreerd.",
+    "sharePrompt": "Help ons meer mensen te bereiken door deze CrowdNewsroom te delen."
   },
   "callouts": {
     "access": {
@@ -1305,6 +1327,7 @@
     "manualPayment": "Je betaalt momenteel je lidmaatschapsbijdrage via {source}. Door te betalen via ons lidmaatschapssysteem weten we op hoeveel geld van onze leden we elke maand kunnen rekenen en is het gemakkelijker voor jou om je contributie te beheren.",
     "manualPaymentSource": "een tool van derden",
     "nextAmountChanging": "Je bijdrage zal veranderen naar {nextAmount} op {renewalDate}.",
+    "nextAmountPending": "Je bijdrage zal veranderen naar {nextAmount} zodra de betaling is geverifieerd.",
     "paymentHistory": {
       "empty": "Hier worden eerdere betalingen en bijbehorende facturen weergegeven.",
       "title": "Betalingsgeschiedenis"
@@ -1413,6 +1436,7 @@
       "availableFields": "Beschikbare velden",
       "description": {
         "cancelled-contribution": "Verzonden naar leden wanneer hun terugkerende bijdrage wordt geannuleerd. Bevat meestal informatie over wanneer het lidmaatschap eindigt, evenals het lid-ID. Kan een link naar een enquête bevatten.",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Verzonden naar beheerders wanneer een lid zijn bijdrage opzegt. Bevat meestal een melding met het ID en de naam van het opgezegde lid.",
         "confirm-email": "Verzonden naar nieuwe gebruikers tijdens het registratieproces om hun e-mailadres te verifiëren. Bevat een bevestigingslink die ze moeten klikken om de registratie te voltooien.",
         "contribution-didnt-start": "Verzonden naar leden wanneer hun Stripe-abonnementsbetaling niet kon worden gestart (bijv. geweigerde betaalmethode, onvoldoende saldo). Informeert hen dat hun lidmaatschap is ingetrokken vanwege de betalingsfout.",
@@ -1430,6 +1454,7 @@
       },
       "names": {
         "cancelled-contribution": "Bijdrage geannuleerd",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Beheer: Geannuleerd lid",
         "confirm-email": "E-mail bevestigen",
         "contribution-didnt-start": "Bijdrage niet gestart",
@@ -1669,6 +1694,9 @@
     "welcome": {
       "ariaLabel": ""
     }
+  },
+  "idpLogin": {
+    "loginName": "E-mailadres"
   },
   "item": {
     "status": {

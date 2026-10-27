@@ -469,6 +469,7 @@
       "updateResponse": ""
     },
     "addAPoint": "",
+    "addAnotherResponse": "",
     "addLocation": "",
     "builder": {
       "actions": {
@@ -830,21 +831,34 @@
       },
       "untitledCallout": ""
     },
+    "closedNoEdit": "",
+    "closedOn": "",
     "confirmHuman": "",
     "contactDetails": "",
+    "editResponse": "",
     "ended": "",
     "entryOf": "",
     "form": {
       "email": "",
       "guestFieldsMissing": "",
+      "incomplete": "",
       "name": "",
       "step": "",
       "submittingResponseError": ""
     },
     "getStarted": "",
     "joinNow": "",
+    "language": "",
+    "leavePreview": "",
+    "logInOrSignUp": "",
     "loginToYourAccount": "",
+    "loginToYourAccount-nuxt": "",
     "membersOnly": "",
+    "membersOnly-nuxt": "",
+    "nextResponse": "",
+    "notAnswered": "",
+    "previousResponse": "",
+    "responseNumber": "",
     "responseSubmitted": "",
     "share": {
       "address": "",
@@ -859,14 +873,20 @@
       "services": ""
     },
     "showingPreview": "",
+    "showingPreview-nuxt": "",
+    "signed": "",
+    "submittedOn": "",
     "toContributionPage": "",
     "updateContribution": "",
+    "updateContribution-nuxt": "",
+    "viewFile": "",
     "views": {
       "gallery": "",
       "map": ""
     },
     "youResponded": "",
-    "yourResponse": ""
+    "yourResponse": "",
+    "yourResponses": ""
   },
   "calloutAdmin": {
     "deleted": "",
@@ -1001,7 +1021,9 @@
     "title": ""
   },
   "calloutThanksPage": {
-    "oneResponseWarning": ""
+    "backTo": "",
+    "oneResponseWarning": "",
+    "sharePrompt": ""
   },
   "callouts": {
     "access": {
@@ -1304,6 +1326,7 @@
     "manualPayment": "",
     "manualPaymentSource": "",
     "nextAmountChanging": "",
+    "nextAmountPending": "",
     "paymentHistory": {
       "empty": "",
       "title": ""
@@ -1410,6 +1433,7 @@
       "availableFields": "",
       "description": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",
@@ -1427,6 +1451,7 @@
       },
       "names": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",
@@ -1666,6 +1691,9 @@
     "welcome": {
       "ariaLabel": ""
     }
+  },
+  "idpLogin": {
+    "loginName": ""
   },
   "item": {
     "status": {

@@ -66,10 +66,13 @@ function getOidcConfig(): Promise<oidc.Configuration> {
  * error if the IdP session is gone. `login` makes it re-authenticate the
  * member even with a live session there, for a fresh login before sensitive
  * account changes.
+ * @param loginHint The member's login name, so the IdP skips its login
+ * name form and goes straight to the credential check
  */
 export async function startOidcLogin(
   next?: string,
-  prompt?: 'none' | 'login'
+  prompt?: 'none' | 'login',
+  loginHint?: string
 ): Promise<{ url: string; loginState: OidcLoginState }> {
   const settings = getSettings();
   const oidcConfig = await getOidcConfig();
@@ -87,6 +90,7 @@ export async function startOidcLogin(
     state,
     nonce,
     ...(prompt && { prompt }),
+    ...(loginHint && { login_hint: loginHint }),
   });
 
   return {

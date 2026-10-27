@@ -15,6 +15,7 @@ import {
   createSubscription,
   deleteSubscription,
   ensureCustomerAndAttachPayment,
+  getRequiresActionClientSecret,
   manadateToSource,
   stripe,
   updateSubscription,
@@ -114,9 +115,17 @@ export class StripeProvider extends PaymentProvider {
       : {
           chargeable: getChargeableAmount(form, this.method),
           monthly: form.monthlyAmount,
+          // Stripe applies the new amount once the proration payment is
+          // authenticated, the webhook handler then activates the next amount
+          ...(subscription.pending_update && { pending: true }),
         };
 
     await this.updateData();
+
+    // The caller offers the member the authentication once the update is
+    // persisted. A new subscription starts the membership anyway, Stripe
+    // expires it if the member never completes the payment
+    const clientSecret = getRequiresActionClientSecret(subscription);
 
     return {
       form,
@@ -125,6 +134,7 @@ export class StripeProvider extends PaymentProvider {
         new Date(subscription.current_period_end * 1000),
         config.gracePeriod
       ),
+      ...(clientSecret && { clientSecret }),
     };
   }
 
@@ -326,14 +336,22 @@ export class StripeProvider extends PaymentProvider {
    */
   private async updateOrCreateSubscription(
     form: UpdateContributionForm
-  ): Promise<{ subscription: Stripe.Subscription; startNow: boolean }> {
+  ): Promise<Awaited<ReturnType<typeof updateSubscription>>> {
     if (this.data.subscriptionId && this.contact.membership?.isActive) {
       log.info('Update subscription ' + this.data.subscriptionId);
-      return await updateSubscription(
-        this.data.subscriptionId,
-        form,
-        this.method
-      );
+      try {
+        return await updateSubscription(
+          this.data.subscriptionId,
+          form,
+          this.method
+        );
+      } catch (err) {
+        if (err instanceof Stripe.errors.StripeCardError) {
+          throw new PaymentFailedError(err.decline_code);
+        } else {
+          throw err;
+        }
+      }
     } else {
       // Cancel any existing (failing) subscriptions
       await this.cancelContribution(true);
@@ -352,6 +370,13 @@ export class StripeProvider extends PaymentProvider {
   static async fetchInvoiceUrl(paymentId: string): Promise<string | null> {
     const invoice = await stripe.invoices.retrieve(paymentId);
     return invoice.invoice_pdf || null;
+  }
+
+  static async fetchSubscriptionCreatedAt(
+    subscriptionId: string
+  ): Promise<Date> {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    return new Date(subscription.created * 1000); // convert from unix seconds
   }
 
   /**

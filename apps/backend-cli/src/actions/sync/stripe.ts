@@ -1,3 +1,4 @@
+import { ActivityEventType } from '@beabee/beabee-common';
 import { getRepository } from '@beabee/core/database';
 import {
   Stripe,
@@ -8,7 +9,7 @@ import { StripeWebhookEventHandler } from '@beabee/core/lib/stripe-webhook-event
 import { log as mainLogger } from '@beabee/core/logging';
 import { Contact, ContactContribution, Payment } from '@beabee/core/models';
 import { runApp } from '@beabee/core/server';
-import { contactsService } from '@beabee/core/services';
+import { activityService, contactsService } from '@beabee/core/services';
 
 import { In, Like } from 'typeorm';
 
@@ -261,6 +262,14 @@ async function processContribution(
         contribution.contact.id,
         updates
       );
+
+      if (updates.cancelledAt) {
+        await activityService.addEvent({
+          eventType: ActivityEventType.ContactContributionCancelled,
+          targetId: contribution.contact.id,
+          metadata: { subscriptionId: contribution.subscriptionId },
+        });
+      }
     }
   }
 }

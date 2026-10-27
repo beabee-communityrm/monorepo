@@ -67,9 +67,17 @@ actions — change password, add a passkey, set up an authenticator app — each
 an OIDC login that beabee starts with a Login Action
 (`GET /auth/login?action=…`). The provider enters the matching Login v2 page
 (`/password/change`, `/passkey/set`, `/mfa/set`) inside that login, or in
-development Keycloak's application initiated action. They work off the
-member's existing login session, ask for the current password where needed,
-and return to the account page through the OIDC callback
+development Keycloak's application initiated action. Adding a login method
+is as sensitive as removing one, so an action needs a login at the IdP from
+the last two hours (recent `auth_time`), like removal below. The pages
+also work on the IdP's own login session, which the browser can lose while
+beabee's lives on (Login v2 keeps it in a cookie that ends with the
+browser); beabee mirrors that cookie with one of its own, set by the OIDC
+callback without maxAge. An action without both first goes through a fresh
+login (`prompt=login`, returning to the action), which carries the member's
+email as `login_hint` so the IdP skips its login name form. The pages ask
+for the current password where needed and return to the account page
+through the OIDC callback
 ([ADR-0004](./adr/0004-link-to-login-v2-self-service-flows.md)). Removing a
 passkey or authenticator app has no Login v2 page, so beabee's account page
 does it through the provider's API instead: it shows which methods are set
@@ -133,8 +141,13 @@ IdP-side setup that beabee owns and applies idempotently via
 safety net for a member who finishes a Login v2 page outside a login beabee
 started), `ignoreUnknownUsernames`, the lockout policy (10 password and 5
 OTP attempts; Zitadel then locks the account until `backend-cli user unlock`
-lifts it), branding and, on an OIDC Login instance whose issuer is this IdP,
-the OIDC client's redirect and post-logout URI lists.
+lifts it), the email provider (beabee's own email account from
+`BEABEE_EMAIL_*` and the support email options, so the IdP's password reset
+and OTP mails leave like beabee's; Mandrill and SendGrid via their SMTP
+relays), the login page wording (the login name field is labelled as the
+email address, in every language beabee's locales translate it), branding
+and, on an OIDC Login instance whose issuer is this IdP, the OIDC client's
+redirect and post-logout URI lists.
 The virtual instance, project and OIDC client are created by the hosting
 infrastructure, which is expected to call the same command in future.
 

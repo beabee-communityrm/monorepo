@@ -1,5 +1,7 @@
 import {
+  BaseNewsletterGroupData,
   ContactOriginData,
+  NewsletterStatus,
   PaymentFlowParams,
   PaymentFlowParamsStripe,
   PaymentFlowResult,
@@ -29,6 +31,8 @@ interface SignupData {
   setPasswordUrl: string;
   confirmUrl: string;
   origin: ContactOriginData | null;
+  newsletterStatus: NewsletterStatus | null;
+  newsletterGroups: string[] | null;
 }
 
 /**
@@ -104,12 +108,11 @@ class SignupService {
 
     // Finalise one-time payments early
     if (signupFlow.paymentFlow.form.action === 'create-one-time-payment') {
-      const contact = await this.finalizeSignup(signupFlow.id);
       // Ignore a failure to create a contact here. This means this flow is
       // being processed elsewhere, probably because the user opened the URL
       // twice accidentally. Don't send the confirmation email though as
       // otherwise that will be sent twice
-      if (!contact) {
+      if (!(await this.finalizeSignup(signupFlow.id))) {
         return;
       }
     }
@@ -193,7 +196,9 @@ class SignupService {
    * @param signupFlowId - The ID of the signup flow to finalize
    * @returns The created contact
    */
-  async finalizeSignup(signupFlowId: string): Promise<Contact | undefined> {
+  async finalizeSignup(
+    signupFlowId: string
+  ): Promise<{ contact: Contact; clientSecret?: string } | undefined> {
     const signupFlow = await getRepository(SignupFlow).findOne({
       where: { id: signupFlowId },
       relations: { contact: true, paymentFlow: true },
@@ -205,7 +210,7 @@ class SignupService {
 
     // This flow has already been finalized
     if (signupFlow.contact) {
-      return signupFlow.contact;
+      return { contact: signupFlow.contact };
     }
 
     // Use atomic update to prevent multiple simultaneous attempts to finalize
@@ -237,6 +242,14 @@ class SignupService {
       password: signupFlow.password,
     };
 
+    // Groups may have been removed since the flow started, drop unknown IDs
+    const knownGroupIds = OptionsService.getJSON('newsletter-groups').map(
+      (group: BaseNewsletterGroupData) => group.id
+    );
+    const newsletterGroups = signupFlow.newsletterGroups?.filter((id) =>
+      knownGroupIds.includes(id)
+    );
+
     if (signupFlow.paymentFlow) {
       completedFlow = await PaymentFlowService.completePaymentFlowAndGetData(
         signupFlow.paymentFlow
@@ -255,11 +268,21 @@ class SignupService {
 
     if (contact) {
       await ContactsService.updateContact(contact, partialContact);
+      // Only an explicit subscription may overwrite an existing contact's preferences
+      if (signupFlow.newsletterStatus === NewsletterStatus.Subscribed) {
+        await ContactsService.updateContactProfile(contact, {
+          newsletterStatus: signupFlow.newsletterStatus,
+          ...(newsletterGroups && { newsletterGroups }),
+        });
+      }
     } else {
       contact = await ContactsService.createContact(
         partialContact,
         {
-          newsletterStatus: OptionsService.getText('newsletter-default-status'),
+          newsletterStatus:
+            signupFlow.newsletterStatus ??
+            OptionsService.getText('newsletter-default-status'),
+          ...(newsletterGroups && { newsletterGroups }),
           ...(completedFlow?.data.vatNumber && {
             vatNumber: completedFlow.data.vatNumber,
           }),
@@ -272,12 +295,14 @@ class SignupService {
       );
     }
 
-    if (completedFlow) {
-      await PaymentFlowService.processCompletedFlow(
-        contact,
-        completedFlow.flow
-      );
-    }
+    const clientSecret = completedFlow
+      ? (
+          await PaymentFlowService.processCompletedFlow(
+            contact,
+            completedFlow.flow
+          )
+        )?.clientSecret
+      : undefined;
 
     // Only send welcome email to non-payment signups or those starting a
     // contribution. One-time contributors get a separate email
@@ -292,7 +317,7 @@ class SignupService {
       contactId: contact.id,
     });
 
-    return contact;
+    return { contact, ...(clientSecret && { clientSecret }) };
   }
 
   /**

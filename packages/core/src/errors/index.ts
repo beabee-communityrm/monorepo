@@ -17,6 +17,7 @@ export * from './NoPaymentMethodError.js';
 export * from './NotFoundError.js';
 export * from './OidcLoginDeniedError.js';
 export * from './PaymentFailedError.js';
+export * from './PaymentRequiresActionError.js';
 export * from './ResetSecurityFlowError.js';
 export * from './TooManyRequestsError.js';
 export * from './UnauthorizedError.js';

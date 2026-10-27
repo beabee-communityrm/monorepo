@@ -67,6 +67,7 @@ function getOptionallyAnonymizedModels(
     models.referralsAnonymiser,
     models.resetSecurityFlowAnonymiser,
     models.exportItemsAnonymiser,
+    models.activityEventAnonymiser,
   ] as models.ModelAnonymiser[];
 }
 

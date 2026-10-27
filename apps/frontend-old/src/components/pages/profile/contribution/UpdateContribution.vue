@@ -14,7 +14,18 @@
     </p>
 
     <AppNotification
-      v-if="contribution.nextAmount && contribution.renewalDate"
+      v-if="contribution.nextAmount && contribution.nextAmountPending"
+      variant="info"
+      :title="
+        t('contribution.nextAmountPending', {
+          nextAmount: n(contribution.nextAmount, 'currency'),
+        })
+      "
+      :icon="faInfoCircle"
+      class="mb-4"
+    />
+    <AppNotification
+      v-else-if="contribution.nextAmount && contribution.renewalDate"
       variant="info"
       :title="
         t('contribution.nextAmountChanging', {
@@ -75,6 +86,7 @@ import {
   MembershipStatus,
   PaymentMethod,
 } from '@beabee/beabee-common';
+import { PaymentRequiresActionError } from '@beabee/client';
 import { AppHeading, AppNotification, formatLocale } from '@beabee/vue';
 import { addNotification } from '@beabee/vue/store/notifications';
 
@@ -86,6 +98,7 @@ import AppContribution from '#components/contribution/AppContribution.vue';
 import PaymentFlowForm from '#components/forms/PaymentFlowForm.vue';
 import { currentUser } from '#store/currentUser';
 import { client } from '#utils/api';
+import { handlePaymentNextAction } from '#utils/payment';
 
 import type { ContributionContent } from '../../../../type/contribution';
 import ProrateContribution from './ProrateContribution.vue';
@@ -149,14 +162,41 @@ const buttonText = computed(() =>
         : t('contribution.startContribution')
 );
 
+/**
+ * Apply a contribution change, authenticating its payment if Stripe asks for
+ * it. Stripe applies the change once the payment succeeds and expires it if
+ * it never does, so the contribution is refetched either way.
+ */
+async function applyContributionChange(
+  change: () => Promise<ContributionInfo>
+) {
+  try {
+    contribution.value = await change();
+  } catch (err) {
+    if (!(err instanceof PaymentRequiresActionError)) {
+      throw err;
+    }
+    try {
+      await handlePaymentNextAction(
+        err.clientSecret,
+        props.paymentContent.stripePublicKey
+      );
+    } finally {
+      contribution.value = await client.contact.contribution.get();
+    }
+  }
+}
+
 async function handleStartFlow(completeUrl: string) {
   if (isAutoActiveMember.value) {
-    contribution.value = await client.contact.contribution.update({
-      amount: newContribution.amount,
-      period: newContribution.period,
-      payFee: newContribution.payFee,
-      prorate: newContribution.prorate,
-    });
+    await applyContributionChange(() =>
+      client.contact.contribution.update({
+        amount: newContribution.amount,
+        period: newContribution.period,
+        payFee: newContribution.payFee,
+        prorate: newContribution.prorate,
+      })
+    );
 
     addNotification({
       variant: 'success',
@@ -180,8 +220,9 @@ async function handleStartFlow(completeUrl: string) {
 }
 
 async function handleCompleteFlow(paymentFlowId: string) {
-  contribution.value =
-    await client.contact.contribution.completeStart(paymentFlowId);
+  await applyContributionChange(() =>
+    client.contact.contribution.completeStart(paymentFlowId)
+  );
 
   addNotification({
     variant: 'success',

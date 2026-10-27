@@ -1,6 +1,9 @@
+import { NewsletterStatus } from '@beabee/beabee-common';
+
 import { Type } from 'class-transformer';
 import {
   IsEmail,
+  IsEnum,
   IsOptional,
   IsString,
   Validate,
@@ -47,6 +50,14 @@ export class StartSignupFlowDto {
   @ValidateNested()
   @IsOptional()
   origin?: GetContactOriginDto;
+
+  @IsOptional()
+  @IsEnum(NewsletterStatus)
+  newsletterStatus?: NewsletterStatus;
+
+  @IsOptional()
+  @IsString({ each: true })
+  newsletterGroups?: string[];
 }
 
 export class CompleteSignupFlowDto extends CompletePaymentFlowDto {

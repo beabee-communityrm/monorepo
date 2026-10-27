@@ -153,8 +153,14 @@ class PaymentService {
       await ActivityService.addEvent({
         targetId: contact.id,
         eventType: ActivityEventType.ContactContributionStarted,
+        // The client secret must not be stored
         metadata: ret
-          ? { ...ret, subscriptionId: contribution.subscriptionId! }
+          ? {
+              startNow: ret.startNow,
+              expiryDate: ret.expiryDate,
+              form: ret.form,
+              subscriptionId: contribution.subscriptionId!,
+            }
           : null,
       });
     }
@@ -203,7 +209,13 @@ class PaymentService {
     await ActivityService.addEvent({
       eventType: ActivityEventType.ContactContributionUpdated,
       targetId: contact.id,
-      metadata: { ...ret, subscriptionId: contribution.subscriptionId! },
+      // The client secret must not be stored
+      metadata: {
+        startNow: ret.startNow,
+        expiryDate: ret.expiryDate,
+        form: ret.form,
+        subscriptionId: contribution.subscriptionId!,
+      },
     });
 
     return ret;
@@ -232,6 +244,7 @@ class PaymentService {
               d.nextAmount.monthly,
               contact.contributionPeriod
             ),
+            ...(d.nextAmount.pending && { nextAmountPending: true }),
           }),
         ...(contact.membership?.dateExpires && {
           membershipExpiryDate: contact.membership.dateExpires,
@@ -249,10 +262,9 @@ class PaymentService {
     keepMandate = false
   ): Promise<void> {
     log.info('Cancel contribution for contact ' + contact.id);
-    await this.provider(contact, (p) => p.cancelContribution(keepMandate));
-
     // Keep subscription ID for activity feed event, the provider clears it
     const subscriptionId = (await this.getContribution(contact)).subscriptionId;
+    await this.provider(contact, (p) => p.cancelContribution(keepMandate));
 
     await getRepository(ContactContribution).update(
       { contactId: contact.id },
@@ -334,6 +346,16 @@ class PaymentService {
         .getRepository(Payment)
         .update({ contactId: contact.id }, { contactId: null });
     });
+  }
+
+  /**
+   * Get a subscription's creation date from its payment provider
+   */
+  async getSubscriptionCreatedAt(subscriptionId: string): Promise<Date> {
+    // Stripe subscription IDs are prefixed with sub_, GoCardless ones with SB
+    return subscriptionId.startsWith('sub_')
+      ? await StripeProvider.fetchSubscriptionCreatedAt(subscriptionId)
+      : await GCProvider.fetchSubscriptionCreatedAt(subscriptionId);
   }
 
   /**

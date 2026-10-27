@@ -8,6 +8,14 @@ import {
 import { Formio } from 'formiojs';
 
 import { i18n } from '#lib/i18n';
+import {
+  WAVEFORM_BAR_COUNT,
+  fakePeaks,
+  formatAudioMeta,
+  formatPlaybackTime,
+  isBarPlayed,
+  waveformBarHeights,
+} from '#utils/audio-playback';
 
 import editForm from './AudioRecorder.form';
 import {
@@ -24,8 +32,6 @@ import {
 const FileComponent = (Formio as any).Components.components.file;
 
 const { t } = i18n.global;
-
-const WAVEFORM_BAR_COUNT = 64;
 
 // Checked in order of preference; the browser picks the first it supports.
 // Chrome/Firefox support webm/opus, Safari only supports mp4.
@@ -51,11 +57,6 @@ function extensionForMimeType(mimeType: string): string {
     mimeType.startsWith(candidate.split(';')[0])
   );
   return match?.extension ?? 'webm';
-}
-
-function formatSize(bytes: number): string {
-  const kb = Math.max(1, Math.round(bytes / 1024));
-  return kb > 999 ? (kb / 1024).toFixed(1) + ' MB' : kb + ' KB';
 }
 
 // MediaRecorder-produced webm/opus doesn't write a duration into the
@@ -86,18 +87,6 @@ function probeAudioDuration(url: string): Promise<number> {
       // Don't leave the UI showing 0:00 forever if neither event fires.
       setTimeout(() => finish(probe.duration), 2000);
     });
-  });
-}
-
-// Deterministic pseudo-random waveform derived from a filename, used when we
-// have no real captured samples (an uploaded file, or a previously-saved
-// answer being reloaded).
-function fakePeaks(seed: string): number[] {
-  let n = 0;
-  for (let i = 0; i < seed.length; i++) n += seed.charCodeAt(i);
-  return Array.from({ length: WAVEFORM_BAR_COUNT }, (_, i) => {
-    n = (n * 1103515245 + 12345) % 2147483648;
-    return 0.2 + (n / 2147483648) * 0.8 * (0.55 + 0.45 * Math.sin(i / 5));
   });
 }
 
@@ -1139,8 +1128,7 @@ export default class AudioRecorderComponent extends FileComponent {
       if (!this.reviewPeaks.length) {
         this.reviewPeaks = fakePeaks(this.fileName || this.currentUrl || '');
       }
-      this.fileMeta =
-        formatTime(this.duration) + ' · ' + formatSize(value.size);
+      this.fileMeta = formatAudioMeta(this.duration, value.size);
       this.setPhase('ready');
       return;
     }
@@ -1156,8 +1144,7 @@ export default class AudioRecorderComponent extends FileComponent {
     probeAudioDuration(this.currentUrl).then((duration) => {
       this.duration = duration;
       this.reviewPeaks = fakePeaks(this.fileName || this.currentUrl || '');
-      this.fileMeta =
-        formatTime(this.duration) + ' · ' + formatSize(value.size);
+      this.fileMeta = formatAudioMeta(this.duration, value.size);
       this.setPhase('ready');
     });
   }
@@ -1177,24 +1164,21 @@ export default class AudioRecorderComponent extends FileComponent {
     }
 
     const dur = this.duration || 1;
-    const played = this.playT / dur;
+    const heights = waveformBarHeights(this.reviewPeaks);
     for (let i = 0; i < WAVEFORM_BAR_COUNT; i++) {
-      const source = this.reviewPeaks;
-      const value = source.length
-        ? source[Math.floor((i * source.length) / WAVEFORM_BAR_COUNT)]
-        : 0.35;
-      const height = Math.max(3, Math.min(48, value * 110));
       const bar = this.reviewBars[i];
-      bar.style.height = height + 'px';
+      bar.style.height = heights[i] + 'px';
       bar.classList.toggle(
         'audio-recorder-bar--played',
-        i / WAVEFORM_BAR_COUNT <= played
+        isBarPlayed(i, this.playT, dur)
       );
     }
 
     if (this.playLabel) {
-      this.playLabel.textContent = formatTime(
-        this.playing || this.playT ? this.playT : dur
+      this.playLabel.textContent = formatPlaybackTime(
+        this.playing,
+        this.playT,
+        dur
       );
     }
   }

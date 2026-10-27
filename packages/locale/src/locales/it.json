@@ -470,6 +470,7 @@
       "updateResponse": "Aggiorna la tua risposta"
     },
     "addAPoint": "Clicca sulla mappa dove vuoi aggiungere un punto",
+    "addAnotherResponse": "Aggiungi un’altra risposta",
     "addLocation": "Aggiungi un nuovo elemento",
     "builder": {
       "actions": {
@@ -831,21 +832,34 @@
       },
       "untitledCallout": "CrowdNewsroom senza titolo"
     },
+    "closedNoEdit": "Questa CrowdNewsroom è terminata, quindi non è più possibile aggiungere o modificare risposte.",
+    "closedOn": "Terminata il {date}",
     "confirmHuman": "Conferma di essere una persona",
     "contactDetails": "Dati di contatto",
+    "editResponse": "Modifica risposta",
     "ended": "Questa CrowdNewsroom è terminata il {date}",
     "entryOf": "Elemento {no} di {total}",
     "form": {
       "email": "La tua email",
       "guestFieldsMissing": "Inserisci i tuoi dati di contatto",
+      "incomplete": "Compila i campi obbligatori qui sopra per continuare",
       "name": "Il tuo nome",
       "step": "Passaggio {current} di {total}",
       "submittingResponseError": "Si è verificato un problema durante l'invio della risposta, riprova"
     },
     "getStarted": "Iniziare",
     "joinNow": "Iscriviti ora",
+    "language": "Lingua",
+    "leavePreview": "Esci dall’anteprima",
+    "logInOrSignUp": "Accedi o iscriviti per partecipare.",
     "loginToYourAccount": "Accedi al tuo account",
+    "loginToYourAccount-nuxt": "Accedi",
     "membersOnly": "Questa CrowdNewsroom è aperta solo ai membri. Per partecipare",
+    "membersOnly-nuxt": "Questa CrowdNewsroom è aperta solo ai membri.",
+    "nextResponse": "Risposta successiva",
+    "notAnswered": "Senza risposta",
+    "previousResponse": "Risposta precedente",
+    "responseNumber": "Risposta {number} di {total}",
     "responseSubmitted": "Risposta inviata",
     "share": {
       "address": "Condividi con il seguente link:",
@@ -860,14 +874,20 @@
       "services": "Oppure condividi rapidamente con uno di questi servizi:"
     },
     "showingPreview": "Non puoi inviare una risposta in modalità anteprima",
+    "showingPreview-nuxt": "Modalità anteprima: questo è ciò che vedono i partecipanti. Non puoi inviare una risposta da qui.",
+    "signed": "Firma",
+    "submittedOn": "Inviata il {date}.",
     "toContributionPage": "Modifica il mio contributo",
     "updateContribution": "per favore aggiorna il tuo contributo",
+    "updateContribution-nuxt": "Per partecipare, aggiorna il tuo contributo.",
+    "viewFile": "Visualizza file",
     "views": {
       "gallery": "Galleria",
       "map": "Mappa"
     },
     "youResponded": "Hai risposto a questa CrowdNewsroom ♥",
-    "yourResponse": "La tua risposta"
+    "yourResponse": "La tua risposta",
+    "yourResponses": "Le tue risposte ({count})"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom eliminata.",
@@ -1002,7 +1022,9 @@
     "title": "Verificatori"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Nota: è consentita una sola risposta per persona. Se hai già contribuito, eventuali risposte aggiuntive non verranno registrate."
+    "backTo": "Torna a {title}",
+    "oneResponseWarning": "Nota: è consentita una sola risposta per persona. Se hai già contribuito, eventuali risposte aggiuntive non verranno registrate.",
+    "sharePrompt": "Aiutaci a raggiungere più persone condividendo questa CrowdNewsroom."
   },
   "callouts": {
     "access": {
@@ -1305,6 +1327,7 @@
     "manualPayment": "Attualmente paghi il contributo tramite {source}. Pagando tramite il nostro sistema di iscrizione ci aiuti a sapere quanto possiamo contare sui membri ogni mese e ti sarà più facile gestire il tuo contributo.",
     "manualPaymentSource": "uno strumento di terze parti",
     "nextAmountChanging": "Your contribution will change to {nextImporto} on {renewalData}.",
+    "nextAmountPending": "Il tuo contributo cambierà a {nextAmount} non appena il pagamento sarà stato autenticato.",
     "paymentHistory": {
       "empty": "Qui appariranno i pagamenti passati e le relative fatture.",
       "title": "Cronologia dei pagamenti"
@@ -1413,6 +1436,7 @@
       "availableFields": "Campi disponibili",
       "description": {
         "cancelled-contribution": "Inviato ai membri quando il loro contributo ricorrente viene annullato. Include generalmente informazioni su quando termina l'adesione, nonché l'ID del membro. Può contenere un link a un sondaggio.",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Inviato agli amministratori quando un membro annulla il proprio contributo. Include generalmente una notifica con l'ID e il nome del membro annullato.",
         "confirm-email": "Inviato ai nuovi utenti durante il processo di registrazione per verificare il loro indirizzo email. Contiene un link di conferma che devono cliccare per completare la registrazione.",
         "contribution-didnt-start": "Inviato ai membri quando il loro pagamento dell'abbonamento Stripe non è stato avviato (ad esempio, metodo di pagamento rifiutato, fondi insufficienti). Li informa che la loro adesione è stata revocata a causa del fallimento del pagamento.",
@@ -1430,6 +1454,7 @@
       },
       "names": {
         "cancelled-contribution": "Contributo annullato",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Admin: Membro annullato",
         "confirm-email": "Conferma email",
         "contribution-didnt-start": "Contributo non avviato",
@@ -1669,6 +1694,9 @@
     "welcome": {
       "ariaLabel": "Icona benvenuto"
     }
+  },
+  "idpLogin": {
+    "loginName": "Indirizzo e-mail"
   },
   "item": {
     "status": {

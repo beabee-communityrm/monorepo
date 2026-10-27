@@ -469,6 +469,7 @@
       "updateResponse": "Update your response"
     },
     "addAPoint": "Click on the map where you want to add a point",
+    "addAnotherResponse": "Add another response",
     "addLocation": "Add a new entry",
     "builder": {
       "actions": {
@@ -830,21 +831,34 @@
       },
       "untitledCallout": "Untitled CrowdNewsroom"
     },
+    "closedNoEdit": "This CrowdNewsroom has closed, so responses can no longer be added or edited.",
+    "closedOn": "Closed {date}",
     "confirmHuman": "Please confirm you are human",
     "contactDetails": "Contact details",
+    "editResponse": "Edit response",
     "ended": "This CrowdNewsroom ended on {date}",
     "entryOf": "Entry {no} of {total}",
     "form": {
       "email": "Your email",
       "guestFieldsMissing": "Please tell us your contact details",
+      "incomplete": "Fill in the required fields above to continue",
       "name": "Your name",
       "step": "Step {current} of {total}",
       "submittingResponseError": "There was a problem submitting your response, please try again"
     },
     "getStarted": "Get started",
     "joinNow": "Join now",
+    "language": "Language",
+    "leavePreview": "Leave preview",
+    "logInOrSignUp": "Log in or join to take part.",
     "loginToYourAccount": "Login to your account",
+    "loginToYourAccount-nuxt": "Log in",
     "membersOnly": "This CrowdNewsroom is open to members only. To participate",
+    "membersOnly-nuxt": "This CrowdNewsroom is open to members only.",
+    "nextResponse": "Next response",
+    "notAnswered": "Not answered",
+    "previousResponse": "Previous response",
+    "responseNumber": "Response {number} of {total}",
     "responseSubmitted": "Response submitted",
     "share": {
       "address": "Share using the following link:",
@@ -859,14 +873,20 @@
       "services": "Or quickly share using one of these services:"
     },
     "showingPreview": "You can't submit a response in preview mode",
+    "showingPreview-nuxt": "Preview mode — this is what contributors see. You can't submit a response from here.",
+    "signed": "Signed",
+    "submittedOn": "Submitted {date}.",
     "toContributionPage": "Edit my contribution",
     "updateContribution": "please update your contribution",
+    "updateContribution-nuxt": "To participate, please update your contribution.",
+    "viewFile": "View file",
     "views": {
       "gallery": "Gallery",
       "map": "Map"
     },
     "youResponded": "You replied to this CrowdNewsroom ♥",
-    "yourResponse": "Your response"
+    "yourResponse": "Your response",
+    "yourResponses": "Your responses ({count})"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom deleted.",
@@ -1001,7 +1021,9 @@
     "title": "Reviewers"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded."
+    "backTo": "Back to {title}",
+    "oneResponseWarning": "Please note that only one response is allowed per person. If you have already contributed, additional responses will not be recorded.",
+    "sharePrompt": "Help us reach more people by sharing this CrowdNewsroom."
   },
   "callouts": {
     "access": {
@@ -1304,6 +1326,7 @@
     "manualPayment": "You are currently paying your membership contribution via {source}. By paying through our membership system you'll help us to know how much money from our members we can rely on month on month and it'll be easier for you to manage your contribution.",
     "manualPaymentSource": "a third party tool",
     "nextAmountChanging": "Your contribution will change to {nextAmount} on {renewalDate}.",
+    "nextAmountPending": "Your contribution will change to {nextAmount} once the payment has been authenticated.",
     "paymentHistory": {
       "empty": "Past payments and their invoices will show up here.",
       "title": "Payment history"
@@ -1410,6 +1433,7 @@
       "availableFields": "Available fields",
       "description": {
         "cancelled-contribution": "Sent to members when their recurring contribution is cancelled. Typically includes information about when the membership ends, as well as the member ID. May contain a link to a survey.",
+        "cancelled-contribution-payment-failed": "Sent to members when Stripe cancels their recurring contribution because a payment repeatedly failed. Includes information about when the membership ends and a login link to set up a new payment method.",
         "cancelled-member": "Sent to administrators when a member cancels their contribution. Typically includes a notification with the ID and name of the cancelled member.",
         "confirm-email": "Sent to new users during the registration process to verify their email address. Contains a confirmation link they must click to complete registration.",
         "contribution-didnt-start": "Sent to members when their Stripe subscription payment could not be started (e.g., declined payment method, insufficient funds). Informs them that their membership has been revoked due to the payment failure.",
@@ -1427,6 +1451,7 @@
       },
       "names": {
         "cancelled-contribution": "Contribution cancelled",
+        "cancelled-contribution-payment-failed": "Contribution cancelled after failed payment",
         "cancelled-member": "Admin: cancelled member – notification",
         "confirm-email": "Confirm email",
         "contribution-didnt-start": "Contribution did not start",
@@ -1666,6 +1691,9 @@
     "welcome": {
       "ariaLabel": "Welcome icon"
     }
+  },
+  "idpLogin": {
+    "loginName": "Email address"
   },
   "item": {
     "status": {

@@ -471,6 +471,7 @@
       "updateResponse": "Обновить ваш ответ"
     },
     "addAPoint": "Кликните, чтобы добавить отметку на карту",
+    "addAnotherResponse": "Добавить ещё один ответ",
     "addLocation": "Добавить новую локацию",
     "builder": {
       "actions": {
@@ -832,21 +833,34 @@
       },
       "untitledCallout": ""
     },
+    "closedNoEdit": "Эта CrowdNewsroom завершилась, поэтому ответы больше нельзя добавлять или изменять.",
+    "closedOn": "Завершилась {date}",
     "confirmHuman": "Confirma por favor que és um humano",
     "contactDetails": "Контакты",
+    "editResponse": "Изменить ответ",
     "ended": "Эта CrowdNewsroom завершилась {date}",
     "entryOf": "",
     "form": {
       "email": "Ваша почта",
       "guestFieldsMissing": "Пожалуйста, сообщите нам свои контактные данные",
+      "incomplete": "Пожалуйста, заполните обязательные поля выше, чтобы продолжить",
       "name": "Ваше имя",
       "step": "Шаг {current} из {total}",
       "submittingResponseError": "Не удалось отправить ответ. Попробуйте ещё раз"
     },
     "getStarted": "Начать",
     "joinNow": "Присоединиться",
+    "language": "Язык",
+    "leavePreview": "Выйти из предварительного просмотра",
+    "logInOrSignUp": "Войдите или станьте членом, чтобы участвовать.",
     "loginToYourAccount": "Войти в мой профиль",
+    "loginToYourAccount-nuxt": "Войти",
     "membersOnly": "Эта CrowdNewsroom открыта только для членов. Чтобы участвовать",
+    "membersOnly-nuxt": "Эта CrowdNewsroom открыта только для членов.",
+    "nextResponse": "Следующий ответ",
+    "notAnswered": "Без ответа",
+    "previousResponse": "Предыдущий ответ",
+    "responseNumber": "Ответ {number} из {total}",
     "responseSubmitted": "Ответ отправлен",
     "share": {
       "address": "Отправить этот опрос на почту:",
@@ -861,14 +875,20 @@
       "services": "Или поделитесь им с помощью одного из этих сервисов:"
     },
     "showingPreview": "Вы не можете отправить ответ в режиме предварительного просмотра",
+    "showingPreview-nuxt": "Режим предварительного просмотра — так это видят участники. Отправить ответ отсюда нельзя.",
+    "signed": "Подпись",
+    "submittedOn": "Отправлено {date}.",
     "toContributionPage": "Изменить мой уровень участия",
     "updateContribution": "пожалуйста обновите ваш уровень участия",
+    "updateContribution-nuxt": "Чтобы участвовать, обновите ваш уровень участия.",
+    "viewFile": "Посмотреть файл",
     "views": {
       "gallery": "Галерея",
       "map": "Карта"
     },
     "youResponded": "Вы ответили на эту CrowdNewsroom ♥",
-    "yourResponse": "Ваш ответ"
+    "yourResponse": "Ваш ответ",
+    "yourResponses": "Ваши ответы ({count})"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom удалена.",
@@ -1003,7 +1023,9 @@
     "title": ""
   },
   "calloutThanksPage": {
-    "oneResponseWarning": ""
+    "backTo": "Назад к {title}",
+    "oneResponseWarning": "",
+    "sharePrompt": "Помогите нам охватить больше людей — поделитесь этой CrowdNewsroom."
   },
   "callouts": {
     "access": {
@@ -1306,6 +1328,7 @@
     "manualPayment": "Вы выбрали разовый платёж с банковского счёта. Также вы можете подключить регулярные автоматические платежи: так вам будет легче управлять подпиской, а нам — предсказать, на какую сумму денег от наших участников мы можем рассчитывать из месяца в месяц. ",
     "manualPaymentSource": "сторонний сервис",
     "nextAmountChanging": "С {renewalDate} ваш взнос изменится на {nextAmount}",
+    "nextAmountPending": "Ваш взнос изменится на {nextAmount}, как только платёж будет подтверждён.",
     "paymentHistory": {
       "empty": "Здесь будут отображаться ваши прошлые платежи и счета.\n",
       "title": "Ваша история платежей"
@@ -1414,6 +1437,7 @@
       "availableFields": "Доступные поля",
       "description": {
         "cancelled-contribution": "Отправляется участникам, когда их регулярный взнос отменяется. Обычно включает информацию о том, когда заканчивается членство, а также ID участника. Может содержать ссылку на опрос.",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Отправляется администраторам, когда участник отменяет свой взнос. Обычно включает уведомление с ID и именем отменённого участника.",
         "confirm-email": "Отправляется новым пользователям в процессе регистрации для проверки их адреса электронной почты. Содержит ссылку подтверждения, по которой они должны перейти, чтобы завершить регистрацию.",
         "contribution-didnt-start": "Отправляется участникам, когда их платёж подписки Stripe не может быть запущен (например, отклонённый способ оплаты, недостаточно средств). Информирует их о том, что их членство было отозвано из-за сбоя платежа.",
@@ -1431,6 +1455,7 @@
       },
       "names": {
         "cancelled-contribution": "Отмена взноса",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "Админ: Отменённый участник",
         "confirm-email": "Подтверждение email",
         "contribution-didnt-start": "Взнос не начат",
@@ -1670,6 +1695,9 @@
     "welcome": {
       "ariaLabel": ""
     }
+  },
+  "idpLogin": {
+    "loginName": "Адрес электронной почты"
   },
   "item": {
     "status": {

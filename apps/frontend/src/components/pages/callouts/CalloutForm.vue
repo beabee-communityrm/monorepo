@@ -66,6 +66,8 @@
         class="mb-4 w-full"
         variant="primary"
         :disabled="validation.$invalid"
+        disabled-focusable
+        :aria-describedby="validation.$invalid ? incompleteHintId : undefined"
         :loading="isLoading"
         @click="handleSubmit"
       >
@@ -89,12 +91,17 @@
           type="button"
           variant="primary"
           :disabled="validation.$invalid"
+          disabled-focusable
+          :aria-describedby="validation.$invalid ? incompleteHintId : undefined"
           @click="handleNextSlide"
         >
           {{ currentSlide.navigation.nextText }}
         </AppButton>
       </div>
     </div>
+    <p v-if="validation.$invalid" :id="incompleteHintId" class="sr-only">
+      {{ t('callout.form.incomplete') }}
+    </p>
   </form>
 </template>
 
@@ -104,21 +111,20 @@ import {
   CalloutCaptcha,
   type CalloutResponseAnswersSlide,
   type GetCalloutDataWith,
-  type GetCalloutSlideSchema,
 } from '@beabee/beabee-common';
 import { ApiError } from '@beabee/client';
 import { AppButton, AppNotification } from '@beabee/vue';
 
 import useVuelidate from '@vuelidate/core';
 import { requiredIf } from '@vuelidate/validators';
-import { computed, nextTick, reactive, ref } from 'vue';
+import { computed, nextTick, reactive, ref, useId } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import FormRenderer from '#components/form-renderer/FormRenderer.vue';
 import AppNewsletterOptIn from '#components/newsletter/AppNewsletterOptIn.vue';
 import { currentUser } from '#store';
 import { client } from '#utils/api';
-import { getDecisionComponent } from '#utils/callouts';
+import { getNextSlideId, getVisibleSlides } from '#utils/callouts';
 
 import CalloutFormCaptcha from './CalloutFormCaptcha.vue';
 import CalloutFormGuestFields from './CalloutFormGuestFields.vue';
@@ -150,6 +156,10 @@ const formError = ref('');
 const isLoading = ref(false);
 
 const formEl = ref<HTMLFormElement>();
+
+// Explains why the next or submit button is unavailable. Without it the only
+// thing a screen reader announces is that the button is dimmed.
+const incompleteHintId = `callout-form-incomplete-${useId()}`;
 const formClass = computed(() => [
   'callout-form',
   {
@@ -174,7 +184,9 @@ const currentSlide = computed(
 );
 
 const visibleSlides = computed(() =>
-  props.allSlides ? getAllVisibleSlides() : [currentSlide.value]
+  props.allSlides
+    ? getVisibleSlides(slides.value, answersProxy.value)
+    : [currentSlide.value]
 );
 
 const currentSlideNo = computed(() => slides.value.indexOf(currentSlide.value));
@@ -202,54 +214,6 @@ const rules = computed(() => ({
 }));
 
 const validation = useVuelidate(rules, { captchaToken });
-
-function getNextSlideId(slide: GetCalloutSlideSchema, slideNo: number): string {
-  let nextSlideId;
-
-  // If there is a decision component check if the user has selected a value
-  const decisionComponent = getDecisionComponent(slide.components);
-  if (decisionComponent) {
-    const answers = answersProxy.value[slide.id];
-    const value = answers
-      ? answers[decisionComponent.key as keyof typeof answers]
-      : undefined;
-
-    nextSlideId = decisionComponent.values.find(
-      (v) => v.value === value
-    )?.nextSlideId;
-  }
-
-  // Otherwise use the next slide ID from the navigation
-  if (!nextSlideId) {
-    nextSlideId = slide.navigation.nextSlideId || slides.value[slideNo + 1].id;
-  }
-  return nextSlideId;
-}
-
-// This function mimics the functionality of the next slide navigation and
-// collects all visible slides based on the component navigation elements.
-function getAllVisibleSlides(): GetCalloutSlideSchema[] {
-  const visibleSlides: GetCalloutSlideSchema[] = [];
-  const visited = new Set<string>();
-  let i = 0;
-
-  while (i < slides.value.length) {
-    const slide = slides.value[i];
-    if (visited.has(slide.id)) break; // Prevent cycles
-    visibleSlides.push(slide);
-    visited.add(slide.id);
-
-    if (i === slides.value.length - 1) break; // Last slide
-
-    const nextSlideId = getNextSlideId(slide, i);
-    const nextIndex = slides.value.findIndex((s) => s.id === nextSlideId);
-
-    if (nextIndex === -1 || nextIndex === i) break; // No next slide or stuck
-    i = nextIndex;
-  }
-
-  return visibleSlides;
-}
 
 async function handleSubmit() {
   if (!props.callout) return; // Can't submit without a callout being loaded
@@ -307,7 +271,11 @@ async function focusCurrentSlide() {
 }
 
 function handleNextSlide() {
-  const nextSlideId = getNextSlideId(currentSlide.value, currentSlideNo.value);
+  const nextSlideId = getNextSlideId(
+    slides.value,
+    currentSlideNo.value,
+    answersProxy.value
+  );
 
   slideIds.value.unshift(nextSlideId);
 

@@ -1,4 +1,8 @@
-import { BadRequestError, NotFoundError } from '@beabee/core/errors';
+import {
+  BadRequestError,
+  NotFoundError,
+  PaymentRequiresActionError,
+} from '@beabee/core/errors';
 import { isOidcEnabled } from '@beabee/core/lib/oidc';
 import { Password } from '@beabee/core/models';
 import SignupService from '@beabee/core/services/SignupService';
@@ -62,6 +66,8 @@ export class SignupController {
       loginUrl: data.loginUrl,
       setPasswordUrl: data.setPasswordUrl,
       origin: data.origin || null,
+      newsletterStatus: data.newsletterStatus ?? null,
+      newsletterGroups: data.newsletterGroups ?? null,
     };
 
     if (data.contribution) {
@@ -127,12 +133,19 @@ export class SignupController {
     @Req() req: Request,
     @Body() { joinFlowId }: SignupConfirmEmailParams
   ): Promise<GetContactDto> {
-    const contact = await SignupService.finalizeSignup(joinFlowId);
-    if (!contact) {
+    const result = await SignupService.finalizeSignup(joinFlowId);
+    if (!result) {
       throw new NotFoundError();
     }
 
+    const { contact, clientSecret } = result;
     await login(req, contact);
+
+    // The member is signed up and logged in, the first payment still needs
+    // their authentication
+    if (clientSecret) {
+      throw new PaymentRequiresActionError(clientSecret);
+    }
 
     return ContactTransformer.convert(contact, {
       method: 'user',

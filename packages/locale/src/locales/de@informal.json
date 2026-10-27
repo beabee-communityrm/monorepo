@@ -470,6 +470,7 @@
       "updateResponse": "Antwort bearbeiten"
     },
     "addAPoint": "Klicken Sie dort auf die Karte, wo Sie einen Ort ergänzen möchten",
+    "addAnotherResponse": "Weitere Antwort hinzufügen",
     "addLocation": "Neuen Eintrag eingeben",
     "builder": {
       "actions": {
@@ -831,21 +832,34 @@
       },
       "untitledCallout": "Unbennater CrowdNewsroom"
     },
+    "closedNoEdit": "Dieser CrowdNewsroom ist beendet, es können keine Antworten mehr hinzugefügt oder bearbeitet werden.",
+    "closedOn": "Beendet am {date}",
     "confirmHuman": "Bitte bestätige, dass du ein Mensch bist",
     "contactDetails": "Kontaktdaten",
+    "editResponse": "Antwort bearbeiten",
     "ended": "Dieser CrowdNewsroom ist seit dem {date} beendet.",
     "entryOf": "Eintrag {no} von {total}",
     "form": {
       "email": "Deine E-Mail-Adresse",
       "guestFieldsMissing": "Bitte gib' uns Deine Kontaktdaten. ",
+      "incomplete": "Bitte fülle die Pflichtfelder oben aus, um fortzufahren",
       "name": "Dein Name",
       "step": "Schritt {current} von {total}",
       "submittingResponseError": "Es gab ein Problem bei der Übermittlung deiner Antworten. Bitte versuche es erneut."
     },
     "getStarted": "Starten",
     "joinNow": "Mitglied werden",
+    "language": "Sprache",
+    "leavePreview": "Vorschau verlassen",
+    "logInOrSignUp": "Melde dich an oder werde Mitglied, um teilzunehmen.",
     "loginToYourAccount": "Einloggen",
+    "loginToYourAccount-nuxt": "Einloggen",
     "membersOnly": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen. Um teilzunehmen …",
+    "membersOnly-nuxt": "An diesem CrowdNewsroom können nur Mitglieder teilnehmen.",
+    "nextResponse": "Nächste Antwort",
+    "notAnswered": "Nicht beantwortet",
+    "previousResponse": "Vorherige Antwort",
+    "responseNumber": "Antwort {number} von {total}",
     "responseSubmitted": "Antwort eingereicht",
     "share": {
       "address": "Diesen CrowdNewsroom per Link teilen:",
@@ -860,14 +874,20 @@
       "services": "Diesen CrowdNewsroom auf einer der folgenden Plattformen teilen:"
     },
     "showingPreview": "Im Vorschaumodus sind Antworten deaktiviert.",
+    "showingPreview-nuxt": "Vorschaumodus – so sehen es Teilnehmende. Antworten können hier nicht eingereicht werden.",
+    "signed": "Unterschrift",
+    "submittedOn": "Eingereicht am {date}.",
     "toContributionPage": "Meinen Beitrag ändern",
     "updateContribution": "Bitte ändere deinen Beitrag. ",
+    "updateContribution-nuxt": "Um teilzunehmen, ändere bitte deinen Beitrag.",
+    "viewFile": "Datei ansehen",
     "views": {
       "gallery": "Galerie",
       "map": "Karte"
     },
     "youResponded": "Du hast geantwortet ♥",
-    "yourResponse": "Deine Antwort"
+    "yourResponse": "Deine Antwort",
+    "yourResponses": "Deine Antworten ({count})"
   },
   "calloutAdmin": {
     "deleted": "CrowdNewsroom gelöscht",
@@ -1002,7 +1022,9 @@
     "title": "Auswerter"
   },
   "calloutThanksPage": {
-    "oneResponseWarning": "Bitte beachte, dass nur eine Antwort pro Person möglich ist. Wenn du schon teilgenommen hast, werden weitere Antworten nicht berücksichtigt."
+    "backTo": "Zurück zu {title}",
+    "oneResponseWarning": "Bitte beachte, dass nur eine Antwort pro Person möglich ist. Wenn du schon teilgenommen hast, werden weitere Antworten nicht berücksichtigt.",
+    "sharePrompt": "Hilf uns, mehr Menschen zu erreichen, indem du diesen CrowdNewsroom teilst."
   },
   "callouts": {
     "access": {
@@ -1305,6 +1327,7 @@
     "manualPayment": "Du zahlst deinen Beitrag aktuell via {source}. Indem du über unser Mitgliedersystem bezahlst, bekommen wir einen besseren Überblick, auf welche Beiträge wir uns monatlich verlassen können. Für dich wird es außerdem einfacher, deinen Beitrag jederzeit zu ändern.",
     "manualPaymentSource": "einem Drittanbieter",
     "nextAmountChanging": "Ab dem {renewalDate} zahlst Du {nextAmount}.",
+    "nextAmountPending": "Sobald die Zahlung bestätigt wurde, zahlst Du {nextAmount}.",
     "paymentHistory": {
       "empty": "Ältere Zahlungen und Rechnungen finden Sie hier.",
       "title": "Bisher gezahlte Beiträge"
@@ -1413,6 +1436,7 @@
       "availableFields": "Verfügbare Felder",
       "description": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",
@@ -1430,6 +1454,7 @@
       },
       "names": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",
@@ -1669,6 +1694,9 @@
     "welcome": {
       "ariaLabel": "Willkommen-Symbol"
     }
+  },
+  "idpLogin": {
+    "loginName": "E-Mail-Adresse"
   },
   "item": {
     "status": {

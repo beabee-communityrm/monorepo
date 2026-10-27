@@ -28,12 +28,13 @@ meta:
   <section v-if="callouts.length" class="mb-6 lg:mr-6">
     <SectionTitle>{{ t('homePage.openCallouts') }}</SectionTitle>
 
-    <div class="-mx-3 my-6 flex flex-wrap">
+    <div
+      class="nuxt-page my-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+    >
       <CalloutCard
         v-for="callout in callouts"
         :key="callout.slug"
         :callout="callout"
-        class="mx-3 mb-5"
       />
     </div>
 
@@ -61,7 +62,6 @@ meta:
 <script lang="ts" setup>
 import {
   type ContentProfileData,
-  type GetCalloutData,
   type GetContactData,
   ItemStatus,
 } from '@beabee/beabee-common';
@@ -80,6 +80,7 @@ import { currentUser, generalContent } from '#store';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { client } from '#utils/api';
 import { routeIcons, routeLabels } from '#utils/route-nav';
+import type { CalloutCardData } from '#type';
 
 const { t } = useI18n();
 
@@ -101,7 +102,7 @@ const profileContent = ref<ContentProfileData>({
   introMessage: '',
 });
 
-const callouts = ref<GetCalloutData[]>([]);
+const callouts = ref<CalloutCardData[]>([]);
 
 // This page is behind auth so currentUser can't be null
 // TODO: is there a nicer way to handle this?
@@ -111,26 +112,29 @@ onBeforeMount(async () => {
   profileContent.value = await client.content.get('profile');
 
   callouts.value = (
-    await client.callout.list({
-      order: 'DESC',
-      sort: 'starts',
-      limit: 3,
-      rules: {
-        condition: 'AND',
-        rules: [
-          {
-            field: 'status',
-            operator: 'equal',
-            value: [ItemStatus.Open],
-          },
-          {
-            field: 'hidden',
-            operator: 'equal',
-            value: [false],
-          },
-        ],
+    await client.callout.list(
+      {
+        order: 'DESC',
+        sort: 'starts',
+        limit: 3,
+        rules: {
+          condition: 'AND',
+          rules: [
+            {
+              field: 'status',
+              operator: 'equal',
+              value: [ItemStatus.Open],
+            },
+            {
+              field: 'hidden',
+              operator: 'equal',
+              value: [false],
+            },
+          ],
+        },
       },
-    })
+      ['hasAnswered', 'responseCount']
+    )
   ).items;
 });
 </script>

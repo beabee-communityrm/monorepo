@@ -4,6 +4,7 @@ import {
   type CalloutComponentInputSelectableRadioSchema,
   type CalloutComponentSchema,
   type CalloutNewsletterSchema,
+  type CalloutResponseAnswersSlide,
   CalloutResponseMode,
   type CalloutVariantData,
   type CalloutVariantNavigationData,
@@ -45,6 +46,20 @@ export const buckets = computed(() => [
   { id: 'verified', label: t('calloutResponseBuckets.verified') },
   { id: 'trash', label: t('calloutResponseBuckets.trash') },
 ]);
+
+/**
+ * Whole days until a callout closes
+ *
+ * @param expires - When the callout expires, if it has an end date
+ * @returns The number of days left, or null if it has closed or never closes
+ */
+export function getDaysLeft(expires: Date | null): number | null {
+  if (!expires) return null;
+  const days = Math.ceil(
+    (expires.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+  );
+  return days > 0 ? days : null;
+}
 
 /**
  * Creates a new slide schema with a unique ID and default navigation
@@ -579,6 +594,76 @@ export function getDecisionComponent(
   components: CalloutComponentSchema[]
 ): CalloutComponentInputSelectableRadioSchema | undefined {
   return flattenComponents(components).find(isDecisionComponent);
+}
+
+/**
+ * The slide that follows a slide, given the answers so far
+ *
+ * @param slides - The form's slides
+ * @param slideNo - The index of the current slide
+ * @param answersBySlide - The answers so far, by slide
+ * @returns The ID of the next slide
+ */
+export function getNextSlideId(
+  slides: GetCalloutSlideSchema[],
+  slideNo: number,
+  answersBySlide: CalloutResponseAnswersSlide
+): string {
+  const slide = slides[slideNo];
+  let nextSlideId;
+
+  // If there is a decision component check if the user has selected a value
+  const decisionComponent = getDecisionComponent(slide.components);
+  if (decisionComponent) {
+    const answers = answersBySlide[slide.id];
+    const value = answers
+      ? answers[decisionComponent.key as keyof typeof answers]
+      : undefined;
+
+    nextSlideId = decisionComponent.values.find(
+      (v) => v.value === value
+    )?.nextSlideId;
+  }
+
+  // Otherwise use the next slide ID from the navigation
+  if (!nextSlideId) {
+    nextSlideId = slide.navigation.nextSlideId || slides[slideNo + 1].id;
+  }
+  return nextSlideId;
+}
+
+/**
+ * Mimics the next slide navigation to collect the slides a set of answers
+ * passes through
+ *
+ * @param slides - The form's slides
+ * @param answersBySlide - The answers, by slide
+ * @returns The visible slides, in the order they are shown
+ */
+export function getVisibleSlides(
+  slides: GetCalloutSlideSchema[],
+  answersBySlide: CalloutResponseAnswersSlide
+): GetCalloutSlideSchema[] {
+  const visibleSlides: GetCalloutSlideSchema[] = [];
+  const visited = new Set<string>();
+  let i = 0;
+
+  while (i < slides.length) {
+    const slide = slides[i];
+    if (visited.has(slide.id)) break; // Prevent cycles
+    visibleSlides.push(slide);
+    visited.add(slide.id);
+
+    if (i === slides.length - 1) break; // Last slide
+
+    const nextSlideId = getNextSlideId(slides, i, answersBySlide);
+    const nextIndex = slides.findIndex((s) => s.id === nextSlideId);
+
+    if (nextIndex === -1 || nextIndex === i) break; // No next slide or stuck
+    i = nextIndex;
+  }
+
+  return visibleSlides;
 }
 
 /**

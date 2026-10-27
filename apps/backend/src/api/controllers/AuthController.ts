@@ -7,6 +7,7 @@ import {
   UnauthorizedError,
 } from '@beabee/core/errors';
 import {
+  LOGIN_URI,
   completeOidcLogin,
   getOidcLogoutUrl,
   isOidcEnabled,
@@ -48,8 +49,11 @@ import { authTransformer } from '#api/transformers';
 import {
   assertOidcAuthEnabled,
   assertPasswordAuthEnabled,
+  clearIdpSessionCookie,
   clearSiteLoginCookie,
+  hasFreshIdpSession,
   login,
+  setIdpSessionCookie,
   setSiteLoginCookie,
 } from '#api/utils/auth';
 
@@ -127,6 +131,7 @@ export class AuthController {
       })
     );
     clearSiteLoginCookie(res);
+    clearIdpSessionCookie(res);
 
     if (isOidcEnabled()) {
       await new Promise<void>((resolve) =>
@@ -158,8 +163,25 @@ export class AuthController {
       throw new UnauthorizedError();
     }
 
+    // Adding a login method is as sensitive as removing one, so it needs a
+    // login from the last two hours, and one the browser still holds at
+    // the IdP: the pages behind the actions work on that session. A fresh
+    // login provides both and returns here. Not for setupCredential: that
+    // account cannot log in yet.
+    if (action && action !== 'setupCredential' && !hasFreshIdpSession(req)) {
+      const back = new URL(LOGIN_URI);
+      back.searchParams.set('action', action);
+      if (next) back.searchParams.set('next', next);
+      next = back.pathname + back.search;
+      action = undefined;
+      prompt = 'login';
+    }
+
     try {
-      const { url, loginState } = await startOidcLogin(next, prompt);
+      // Accounts use the email as login name at both providers
+      const loginHint =
+        contact && prompt === 'login' ? contact.email : undefined;
+      const { url, loginState } = await startOidcLogin(next, prompt, loginHint);
       req.session.oidc = loginState;
       res.redirect(
         action && contact
@@ -246,6 +268,7 @@ export class AuthController {
       // Regenerates the session, dropping the pre-login state
       await login(req, contact);
       req.session.idToken = idToken;
+      setIdpSessionCookie(res);
       if (idToken) {
         setSiteLoginCookie(res, idToken);
       }

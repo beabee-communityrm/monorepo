@@ -10,6 +10,11 @@ export const nuxtUiConfig: NuxtUIOptions = {
       primary: 'nuxt-primary',
       neutral: 'gray',
     },
+    alert: {
+      slots: {
+        root: 'py-3!',
+      },
+    },
     badge: {
       // Each size variant bakes in its own rounded-sm/rounded-md, so the
       // override needs to be per-size rather than a single shared class.
@@ -25,7 +30,7 @@ export const nuxtUiConfig: NuxtUIOptions = {
     },
     navigationMenu: {
       slots: {
-        link: 'py-2.5!',
+        link: 'py-2!',
       },
       variants: {
         active: {
@@ -47,7 +52,12 @@ export const nuxtUiConfig: NuxtUIOptions = {
     },
     input: {
       slots: {
-        base: 'py-2.5!',
+        base: 'py-2!',
+      },
+    },
+    select: {
+      slots: {
+        base: 'py-2!',
       },
     },
     modal: {
@@ -68,11 +78,19 @@ export const nuxtUiConfig: NuxtUIOptions = {
         trigger: 'cursor-pointer',
       },
     },
+    popover: {
+      slots: {
+        // Same reasoning as modal above — popover content is also teleported
+        // outside `.nuxt-page`.
+        content: 'nuxt-page',
+      },
+    },
     button: {
       slots: {
         // Nuxt UI's own default omits justify-center, so content packs to
         // the left on stretched (block/w-full/flex-1) buttons.
-        base: 'cursor-pointer justify-center',
+        // Disabled is paler than Nuxt UI's default 75% opacity.
+        base: 'cursor-pointer justify-center disabled:opacity-40 aria-disabled:opacity-40',
       },
       compoundVariants: [
         {
@@ -80,7 +98,7 @@ export const nuxtUiConfig: NuxtUIOptions = {
           // Exclude 'link' — it's styled as inline text, not a boxed button,
           // so it shouldn't get the same vertical padding as the rest.
           variant: ['solid', 'outline', 'soft', 'subtle', 'ghost'],
-          class: 'py-2.5!',
+          class: 'py-2!',
         },
       ],
     },

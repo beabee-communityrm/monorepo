@@ -15,7 +15,10 @@
 }
 
 /* Apply to form renderer */
-.callout-form.has-bg,
+.callout-form.has-bg {
+  @apply rounded-lg bg-white p-6 ring ring-default;
+}
+
 /* Apply to form builder form area */
 .callout-form-builder .formarea {
   @apply bg-white p-6 shadow-md;
@@ -199,10 +202,13 @@
     }
   }
 
-  /* Add required asterisk */
+  /* Add required asterisk. The empty alt text keeps screen readers from
+     announcing it, since aria-required is already set on the input. The plain
+     declaration first so browsers without alt text support still show it. */
   .field-required::after {
     @apply text-body;
     content: '*';
+    content: '*' / '';
   }
 
   /* Styles for file upload component */

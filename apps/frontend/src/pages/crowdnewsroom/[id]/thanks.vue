@@ -6,22 +6,61 @@ meta:
   embeddable: true
 </route>
 <template>
-  <CalloutVariantsBox :callout="callout" />
-  <AppTitle v-if="!isEmbed" big>{{ callout.title }}</AppTitle>
-  <CalloutThanksBox :callout="callout" class="mb-6" />
-  <div class="w-full md:max-w-2xl">
-    <AppShareBox :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`" />
+  <div class="nuxt-page mx-auto flex w-full max-w-[720px] flex-col gap-6">
+    <div class="flex w-full justify-end">
+      <CalloutLanguageSelect :callout="callout" />
+    </div>
+
+    <h1 v-if="!isEmbed" class="text-xl">{{ callout.title }}</h1>
+
+    <template v-if="responses /* Avoids layout thrashing */">
+      <CalloutThankYouBanner :callout="callout" :level="2" size="lg" />
+
+      <CalloutResponseList
+        v-if="responses.length"
+        :form-schema="callout.formSchema"
+        :responses="latestResponse"
+        hide-date
+        :add-to="respondAction === 'add' ? respondTo : undefined"
+        :edit-to="respondAction === 'edit' ? respondTo : undefined"
+      />
+    </template>
+
+    <UCard
+      v-if="callout.status === ItemStatus.Open"
+      class="bg-linear-to-b from-primary/5 to-transparent to-70% ring-primary/20"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <p>{{ t('calloutThanksPage.sharePrompt') }}</p>
+        <CalloutSharePopover
+          :url="`${env.appUrl}/crowdnewsroom/${callout.slug}`"
+          color="primary"
+        />
+      </div>
+    </UCard>
+
+    <div v-if="!isEmbed">
+      <UButton
+        variant="link"
+        icon="i-lucide-arrow-left"
+        :to="{ path: '/crowdnewsroom/' + callout.slug, query: route.query }"
+      >
+        {{ t('calloutThanksPage.backTo', { title: callout.title }) }}
+      </UButton>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
-import type { GetCalloutDataWith } from '@beabee/beabee-common';
-import { AppShareBox, AppTitle } from '@beabee/vue';
-
-import { computed } from 'vue';
+import { type GetCalloutDataWith, ItemStatus } from '@beabee/beabee-common';
+import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
-import CalloutThanksBox from '#components/pages/callouts/CalloutThanksBox.vue';
-import CalloutVariantsBox from '#components/pages/callouts/CalloutVariantsBox.vue';
+import CalloutLanguageSelect from '#components/callout/CalloutLanguageSelect.vue';
+import CalloutResponseList from '#components/callout/CalloutResponseList.vue';
+import CalloutSharePopover from '#components/callout/CalloutSharePopover.vue';
+import CalloutThankYouBanner from '#components/callout/CalloutThankYouBanner.vue';
+import { useCalloutResponse } from '#components/pages/callouts/use-callout';
 import env from '#env';
 import { addBreadcrumb } from '#store/breadcrumb';
 import { currentUser, isEmbed } from '#store/index';
@@ -32,6 +71,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const route = useRoute();
 
 addBreadcrumb(
   computed(() =>
@@ -50,4 +90,16 @@ addBreadcrumb(
       : []
   )
 );
+
+const { responses, respondAction, respondTo } = useCalloutResponse(
+  toRef(props, 'callout')
+);
+
+/** Only the response just submitted, so the list shows it on its own */
+const latestResponse = computed(() => ({
+  total: 1,
+  count: 1,
+  offset: 0,
+  items: responses.value?.slice(0, 1) ?? [],
+}));
 </script>

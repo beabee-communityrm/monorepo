@@ -19,6 +19,10 @@ export {
   type AppModalActionsProps,
 } from './AppModalActions.vue';
 export {
+  default as AppNoticeCard,
+  type AppNoticeCardProps,
+} from './AppNoticeCard.vue';
+export {
   default as AppSectionCard,
   type AppSectionCardProps,
 } from './AppSectionCard.vue';

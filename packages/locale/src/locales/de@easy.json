@@ -470,6 +470,7 @@
       "updateResponse": ""
     },
     "addAPoint": "Hier kannst du einen Ort rein-schreiben.",
+    "addAnotherResponse": "",
     "addLocation": "Hier kannst du einen neuen Ort rein-schreiben.",
     "builder": {
       "actions": {
@@ -831,21 +832,34 @@
       },
       "untitledCallout": ""
     },
+    "closedNoEdit": "",
+    "closedOn": "",
     "confirmHuman": "Du musst hier klicken. Dann weiß der Computer: Dass du ein Mensch bist. Und keine Maschine.",
     "contactDetails": "Kontaktdaten",
+    "editResponse": "",
     "ended": "Den Aufruf gibt es nicht mehr.",
     "entryOf": "Eintrag {no} von {total}",
     "form": {
       "email": "",
       "guestFieldsMissing": "",
+      "incomplete": "",
       "name": "",
       "step": "Schritt {current} von {total}",
       "submittingResponseError": "Das hat nicht geklappt. Versuche es noch mal."
     },
     "getStarted": "Hier geht es los.",
     "joinNow": "",
+    "language": "",
+    "leavePreview": "",
+    "logInOrSignUp": "",
     "loginToYourAccount": "",
+    "loginToYourAccount-nuxt": "",
     "membersOnly": "",
+    "membersOnly-nuxt": "",
+    "nextResponse": "",
+    "notAnswered": "",
+    "previousResponse": "",
+    "responseNumber": "",
     "responseSubmitted": "Dein Brief / Deine Mail wurde weg-geschickt.",
     "share": {
       "address": "Hier kannst du den Aufruf an andere schicken. Drücke dazu hier.",
@@ -860,14 +874,20 @@
       "services": "Diesen Aufruf kannst du hier auch an andere Menschen schicken. Zum Beispiel über Facebook oder über TikTok oder über Instagram."
     },
     "showingPreview": "",
+    "showingPreview-nuxt": "",
+    "signed": "",
+    "submittedOn": "",
     "toContributionPage": "",
     "updateContribution": "",
+    "updateContribution-nuxt": "",
+    "viewFile": "",
     "views": {
       "gallery": "Bild-Sammlung / Galerie",
       "map": "Karte"
     },
     "youResponded": "",
-    "yourResponse": ""
+    "yourResponse": "",
+    "yourResponses": ""
   },
   "calloutAdmin": {
     "deleted": "",
@@ -1002,7 +1022,9 @@
     "title": ""
   },
   "calloutThanksPage": {
-    "oneResponseWarning": ""
+    "backTo": "",
+    "oneResponseWarning": "",
+    "sharePrompt": ""
   },
   "callouts": {
     "access": {
@@ -1305,6 +1327,7 @@
     "manualPayment": "",
     "manualPaymentSource": "",
     "nextAmountChanging": "",
+    "nextAmountPending": "",
     "paymentHistory": {
       "empty": "",
       "title": ""
@@ -1413,6 +1436,7 @@
       "availableFields": "",
       "description": {
         "cancelled-contribution": "Wird an Personen geschickt, wenn ihr regelmäßiger Beitrag gekündigt wird. Enthält Infos, wann der Beitrag endet.",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "Wird an Personen geschickt, wenn ihre Zahlung nicht gestartet werden konnte. Informiert darüber, dass der regelmäßige Beitrag wegen eines Zahlungsfehlers nicht aktiv ist.",
@@ -1430,6 +1454,7 @@
       },
       "names": {
         "cancelled-contribution": "",
+        "cancelled-contribution-payment-failed": "",
         "cancelled-member": "",
         "confirm-email": "",
         "contribution-didnt-start": "",
@@ -1669,6 +1694,9 @@
     "welcome": {
       "ariaLabel": ""
     }
+  },
+  "idpLogin": {
+    "loginName": "E-Mail-Adresse"
   },
   "item": {
     "status": {
