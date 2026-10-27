@@ -54,7 +54,7 @@ const AUDIO_MIME_TYPE_BY_EXTENSION: Record<string, string> = {
 
 // The live and playback panels refresh on a timer, so assigning text
 // unconditionally would re-fire a live region several times a second
-function setText(el: HTMLElement | null, text: string) {
+function setTextIfChanged(el: HTMLElement | null, text: string) {
   if (el && el.textContent !== text) el.textContent = text;
 }
 
@@ -301,13 +301,9 @@ export default class AudioRecorderComponent extends FileComponent {
     // visual consistency, and shows nothing at all when there's no answer.
     if (this.options?.readOnly) {
       this.attachUi(element, this.buildUi());
-      if (this.hasFileValue()) {
-        this.enterReadyPhase();
-      } else {
-        for (const block of this.panels) {
-          if (block) block.hidden = true;
-        }
-      }
+      // With no answer there is nothing to show, which is what the panels
+      // are built as
+      if (this.hasFileValue()) this.enterReadyPhase();
       return superAttach;
     }
 
@@ -479,6 +475,13 @@ export default class AudioRecorderComponent extends FileComponent {
     this.uploadingBlock = this.buildUploadingBlock();
     this.readyBlock = this.buildReadyBlock();
     this.errorBlock = this.buildErrorBlock();
+
+    // Born hidden, so nothing shows until a phase picks a panel. Otherwise
+    // every panel is on screen at once until the first setPhase, which
+    // enterReadyPhase defers behind a duration probe
+    for (const block of this.panels) {
+      if (block) block.hidden = true;
+    }
 
     root.append(
       this.idleBlock,
@@ -888,8 +891,8 @@ export default class AudioRecorderComponent extends FileComponent {
           [this.errorBodyEl, this.errorBody],
         ]);
       } else {
-        setText(this.errorTitleEl, this.errorTitle);
-        setText(this.errorBodyEl, this.errorBody);
+        setTextIfChanged(this.errorTitleEl, this.errorTitle);
+        setTextIfChanged(this.errorBodyEl, this.errorBody);
       }
     }
   }
@@ -900,9 +903,13 @@ export default class AudioRecorderComponent extends FileComponent {
    * the text land a frame later makes it a change.
    */
   private announceOnNextFrame(parts: [HTMLElement | null, string][]) {
-    for (const [el] of parts) setText(el, '');
+    const announcingFor = this.phase;
+    for (const [el] of parts) setTextIfChanged(el, '');
     requestAnimationFrame(() => {
-      for (const [el, text] of parts) setText(el, text);
+      // A phase that has already moved on has hidden this panel, so the
+      // text would land where nobody can reach it
+      if (this.phase !== announcingFor) return;
+      for (const [el, text] of parts) setTextIfChanged(el, text);
     });
   }
 
@@ -1117,8 +1124,8 @@ export default class AudioRecorderComponent extends FileComponent {
   private updateLiveDynamic() {
     const paused = this.phase === 'paused';
     if (this.liveDot) this.liveDot.hidden = paused;
-    setText(this.liveStatusLabel, this.liveStatusText);
-    setText(this.liveTimeLabel, formatTime(this.elapsedMs / 1000));
+    setTextIfChanged(this.liveStatusLabel, this.liveStatusText);
+    setTextIfChanged(this.liveTimeLabel, formatTime(this.elapsedMs / 1000));
     // Pause and Resume stand in for each other in the same panel, so this
     // never reaches setPhase's handover - hiding whichever holds focus has
     // to pass it to the other directly
