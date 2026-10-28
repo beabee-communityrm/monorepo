@@ -1,10 +1,8 @@
 import type { Locator, Page } from "@playwright/test";
-import { api, testUser as admin } from "@beabee/test-utils/test-data";
 import { test, expect } from "../utils/fixtures";
 import { getResponses } from "../utils/callout-response";
 
 const slideId = "slide1";
-const headers = { Authorization: `Bearer ${admin.apiKey}` };
 
 // 1x1 PNG
 const png = Buffer.from(
@@ -252,10 +250,15 @@ const questions: Question[] = [
     stored: (a) => expect.soft(a ?? "").toBe(""),
     shown: hasText("Not answered"),
   },
+  {
+    key: "adminOnly",
+    type: "textfield",
+    schema: { adminOnly: true },
+    fill: (_, field) => field.locator("input").fill("For admins"),
+    stored: (a) => expect.soft(a).toBe("For admins"),
+    shown: (row) => expect.soft(row).toBeHidden(),
+  },
 ];
-
-// Answers the form can't produce, which the admin adds afterwards
-const adminOnlyKey = "adminOnly";
 
 const label = (key: string) => `Question ${key}`;
 
@@ -293,10 +296,7 @@ test("Answer every question type", async ({
     slides: [
       {
         id: slideId,
-        components: [
-          ...questions.map((q) => component(q.key, q.type, q.schema)),
-          component(adminOnlyKey, "textfield", { adminOnly: true }),
-        ],
+        components: questions.map((q) => component(q.key, q.type, q.schema)),
       },
     ],
   });
@@ -379,32 +379,4 @@ test("Answer every question type", async ({
       q.stored(answers?.[fieldKey(q.key)]);
     });
   }
-
-  await test.step("Admin adds answers the form can't produce", async () => {
-    // The request replaces the whole set, so it carries the member's answers
-    const updated = await request.patch(
-      `${api.host}${api.path}/callout-responses/${response.id}`,
-      {
-        headers,
-        data: {
-          answers: {
-            [slideId]: {
-              ...answers,
-              [fieldKey(adminOnlyKey)]: "Reviewer note",
-            },
-          },
-        },
-      },
-    );
-    expect(updated.ok(), await updated.text()).toBeTruthy();
-    await page.reload();
-  });
-
-  await test.step("Check the admin-only answer is left out", async () => {
-    await expect.soft(rowFor(page, "textfield")).toHaveText("Hello");
-    await expect
-      .soft(page.getByText(label(adminOnlyKey), { exact: true }))
-      .toBeHidden();
-    await expect.soft(page.getByText("Reviewer note")).toBeHidden();
-  });
 });
