@@ -1,10 +1,10 @@
 import type { Page } from "@playwright/test";
 import { CalloutAccess, CalloutResponseMode } from "@beabee/beabee-common";
 import { test, expect, admin, waitForForm } from "../utils/fixtures";
-import { answer, answerRow } from "../utils/callout-response";
+import { answer, getAnswerRow } from "../utils/callout-response";
 
 /** The members-only notice, holding the given action */
-const membersOnlyGate = (page: Page, action: string) =>
+const getMembersOnlyGate = (page: Page, action: string) =>
   page
     .locator("div")
     .filter({ has: page.getByRole("heading", { name: "Members only" }) })
@@ -51,7 +51,7 @@ test("Logged-out visitor is asked to log in", async ({
   for (const path of ["", "/respond"]) {
     await test.step(`Login prompt on ${path || "the details page"}`, async () => {
       await page.goto(`/crowdnewsroom/${slug}${path}`);
-      const gate = membersOnlyGate(page, "Log in");
+      const gate = getMembersOnlyGate(page, "Log in");
       await expect(gate).toBeVisible();
       await expect(gate.getByRole("link", { name: "Join now" })).toBeVisible();
       await expect(
@@ -91,8 +91,10 @@ test("Non-member is asked to contribute", async ({
   for (const path of ["", "/respond"]) {
     await test.step(`Contribution prompt and their response on ${path || "the details page"}`, async () => {
       await page.goto(`/crowdnewsroom/${slug}${path}`);
-      await expect(membersOnlyGate(page, "Edit my contribution")).toBeVisible();
-      await expect(answerRow(page)).toHaveText("Member answer");
+      await expect(
+        getMembersOnlyGate(page, "Edit my contribution"),
+      ).toBeVisible();
+      await expect(getAnswerRow(page)).toHaveText("Member answer");
       for (const name of [
         "Get started",
         "Edit response",

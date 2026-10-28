@@ -19,7 +19,7 @@ export async function getResponses(slug: string) {
   return items;
 }
 
-export const answerRow = (page: Page) =>
+export const getAnswerRow = (page: Page) =>
   page
     .locator("dl > div")
     .filter({

@@ -1,6 +1,6 @@
 import { CalloutAccess, CalloutResponseMode } from "@beabee/beabee-common";
 import { test, expect, admin, waitForForm } from "../utils/fixtures";
-import { answer, answerRow, getResponses } from "../utils/callout-response";
+import { answer, getAnswerRow, getResponses } from "../utils/callout-response";
 
 test("Member answers, then adds another", async ({
   page,
@@ -27,12 +27,12 @@ test("Member answers, then adds another", async ({
     await getStarted.click();
     await answer(page, "First answer");
     await page.waitForURL(`**/crowdnewsroom/${slug}/thanks`);
-    await expect(answerRow(page)).toHaveText("First answer");
+    await expect(getAnswerRow(page)).toHaveText("First answer");
   });
 
   await test.step("Details page shows the response", async () => {
     await page.goto(`/crowdnewsroom/${slug}`);
-    await expect(answerRow(page)).toHaveText("First answer");
+    await expect(getAnswerRow(page)).toHaveText("First answer");
     await expect(addAnother).toBeVisible();
     await expect(getStarted).toBeHidden();
   });
@@ -53,13 +53,13 @@ test("Member answers, then adds another", async ({
     await expect(
       page.getByRole("heading", { name: "Response 2 of 2" }),
     ).toBeVisible();
-    await expect(answerRow(page)).toHaveText("Second answer");
+    await expect(getAnswerRow(page)).toHaveText("Second answer");
 
     await page.getByRole("button", { name: "Previous response" }).click();
     await expect(
       page.getByRole("heading", { name: "Response 1 of 2" }),
     ).toBeVisible();
-    await expect(answerRow(page)).toHaveText("First answer");
+    await expect(getAnswerRow(page)).toHaveText("First answer");
   });
 
   await test.step("API has both responses from the member", async () => {
@@ -98,7 +98,7 @@ test("Member answers, then edits", async ({
 
   await test.step("Details page offers Edit only", async () => {
     await page.goto(`/crowdnewsroom/${slug}`);
-    await expect(answerRow(page)).toHaveText("First answer");
+    await expect(getAnswerRow(page)).toHaveText("First answer");
     await expect(edit).toBeVisible();
     await expect(
       page.getByRole("link", { name: "Add another response" }),
@@ -122,7 +122,7 @@ test("Member answers, then edits", async ({
     await expect(
       page.getByRole("heading", { name: "Your response", exact: true }),
     ).toBeVisible();
-    await expect(answerRow(page)).toHaveText("Edited answer");
+    await expect(getAnswerRow(page)).toHaveText("Edited answer");
     await expect(edit).toBeVisible();
   });
 
@@ -141,7 +141,7 @@ test("Member answers, then edits", async ({
     });
 
     await page.goto(`/crowdnewsroom/${slug}`);
-    await expect(answerRow(page)).toHaveText("Edited answer");
+    await expect(getAnswerRow(page)).toHaveText("Edited answer");
     await expect(
       page.getByText("responses can no longer be added or edited"),
     ).toBeVisible();
@@ -169,7 +169,7 @@ test("Member answers a single-response CrowdNewsroom", async ({
 
   await test.step("Details page offers no way to respond again", async () => {
     await page.goto(`/crowdnewsroom/${slug}`);
-    await expect(answerRow(page)).toHaveText("Only answer");
+    await expect(getAnswerRow(page)).toHaveText("Only answer");
     for (const name of [
       "Get started",
       "Edit response",
@@ -181,7 +181,7 @@ test("Member answers a single-response CrowdNewsroom", async ({
 
   await test.step("Respond page shows the response instead of the form", async () => {
     await page.goto(`/crowdnewsroom/${slug}/respond`);
-    await expect(answerRow(page)).toHaveText("Only answer");
+    await expect(getAnswerRow(page)).toHaveText("Only answer");
     await expect(page.getByRole("textbox", { name: "Question" })).toBeHidden();
   });
 });
@@ -208,7 +208,7 @@ test("Only-anonymous responses aren't linked to the member", async ({
   await test.step("Details page doesn't show it as theirs", async () => {
     await page.goto(`/crowdnewsroom/${slug}`);
     await expect(page.getByRole("link", { name: "Get started" })).toBeVisible();
-    await expect(answerRow(page)).toBeHidden();
+    await expect(getAnswerRow(page)).toBeHidden();
   });
 
   await test.step("API has the response with no contact", async () => {
