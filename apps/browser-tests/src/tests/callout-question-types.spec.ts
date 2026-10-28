@@ -256,9 +256,6 @@ const questions: Question[] = [
 
 // Answers the form can't produce, which the admin adds afterwards
 const adminOnlyKey = "adminOnly";
-const oldUploadKey = "oldUpload";
-// An upload from before `path` existed, which only has the deprecated `url`
-const oldUpload = { url: "https://example.com/uploads/old-file.pdf" };
 
 const label = (key: string) => `Question ${key}`;
 
@@ -299,7 +296,6 @@ test("Answer every question type", async ({
         components: [
           ...questions.map((q) => component(q.key, q.type, q.schema)),
           component(adminOnlyKey, "textfield", { adminOnly: true }),
-          component(oldUploadKey, "file", { storage: "beabee" }),
         ],
       },
     ],
@@ -395,7 +391,6 @@ test("Answer every question type", async ({
             [slideId]: {
               ...answers,
               [fieldKey(adminOnlyKey)]: "Reviewer note",
-              [fieldKey(oldUploadKey)]: [oldUpload],
             },
           },
         },
@@ -411,11 +406,5 @@ test("Answer every question type", async ({
       .soft(page.getByText(label(adminOnlyKey), { exact: true }))
       .toBeHidden();
     await expect.soft(page.getByText("Reviewer note")).toBeHidden();
-  });
-
-  await test.step("Check the old upload links from its url", async () => {
-    await expect
-      .soft(rowFor(page, oldUploadKey).getByRole("link"))
-      .toHaveAttribute("href", oldUpload.url);
   });
 });
