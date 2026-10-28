@@ -18,6 +18,7 @@
     "format": "prettier --write src"
   },
   "dependencies": {
+    "@beabee/beabee-common": "workspace:^",
     "@beabee/client": "workspace:^"
   },
   "devDependencies": {
