@@ -1,5 +1,10 @@
 import type { Locator, Page } from "@playwright/test";
-import { CalloutAccess, CalloutResponseMode } from "@beabee/beabee-common";
+import {
+  CalloutAccess,
+  CalloutComponentType,
+  CalloutResponseMode,
+  type CalloutComponentSchema,
+} from "@beabee/beabee-common";
 import { test, expect } from "../utils/fixtures";
 import { getResponses } from "../utils/callout-response";
 
@@ -31,7 +36,7 @@ const address = "1 Test Street, 10115 Berlin, Germany";
 
 interface Question {
   key: string;
-  type: string;
+  type: CalloutComponentType;
   /** Extra schema for the component, on top of type, key and label */
   schema?: Record<string, unknown>;
   /** Left out to leave the question alone */
@@ -51,49 +56,49 @@ const options = (...labels: string[]) =>
 const questions: Question[] = [
   {
     key: "textfield",
-    type: "textfield",
+    type: CalloutComponentType.INPUT_TEXT_FIELD,
     fill: (_, field) => field.locator("input").fill("Hello"),
     stored: (a) => expect.soft(a).toBe("Hello"),
     shown: hasText("Hello"),
   },
   {
     key: "textarea",
-    type: "textarea",
+    type: CalloutComponentType.INPUT_TEXT_AREA,
     fill: (_, field) => field.locator("textarea").fill("Line one\nLine two"),
     stored: (a) => expect.soft(a).toBe("Line one\nLine two"),
     shown: hasText(/Line one\s+Line two/),
   },
   {
     key: "email",
-    type: "email",
+    type: CalloutComponentType.INPUT_EMAIL,
     fill: (_, field) => field.locator("input").fill("someone@example.com"),
     stored: (a) => expect.soft(a).toBe("someone@example.com"),
     shown: hasText("someone@example.com"),
   },
   {
     key: "number",
-    type: "number",
+    type: CalloutComponentType.INPUT_NUMBER,
     fill: (_, field) => field.locator("input").pressSequentially("42"),
     stored: (a) => expect.soft(a).toBe(42),
     shown: hasText("42"),
   },
   {
     key: "phoneNumber",
-    type: "phoneNumber",
+    type: CalloutComponentType.INPUT_PHONE_NUMBER,
     fill: (_, field) => field.locator("input").pressSequentially("2079460000"),
     stored: (a) => expect.soft(a).toBe("(207) 946-0000"),
     shown: hasText("(207) 946-0000"),
   },
   {
     key: "url",
-    type: "url",
+    type: CalloutComponentType.INPUT_URL,
     fill: (_, field) => field.locator("input").fill("https://example.com"),
     stored: (a) => expect.soft(a).toBe("https://example.com"),
     shown: hasText("https://example.com"),
   },
   {
     key: "currency",
-    type: "currency",
+    type: CalloutComponentType.INPUT_CURRENCY,
     schema: { currency: "EUR" },
     fill: (_, field) => field.locator("input").pressSequentially("12.5"),
     stored: (a) => expect.soft(a).toBe(12.5),
@@ -101,7 +106,7 @@ const questions: Question[] = [
   },
   {
     key: "datetime",
-    type: "datetime",
+    type: CalloutComponentType.INPUT_DATE_TIME,
     schema: { enableTime: false, format: "yyyy-MM-dd" },
     fill: async (page, field) => {
       await field.locator("input:visible").first().click();
@@ -113,27 +118,27 @@ const questions: Question[] = [
   },
   {
     key: "time",
-    type: "time",
+    type: CalloutComponentType.INPUT_TIME,
     fill: (_, field) => field.locator("input").fill("14:30"),
     stored: (a) => expect.soft(String(a)).toMatch(/^14:30/),
     shown: hasText(/14:30/),
   },
   {
     key: "checkbox",
-    type: "checkbox",
+    type: CalloutComponentType.INPUT_CHECKBOX,
     fill: (_, field) => field.getByRole("checkbox").check(),
     stored: (a) => expect.soft(a).toBe(true),
     shown: hasText("Yes"),
   },
   {
     key: "checkboxUnchecked",
-    type: "checkbox",
+    type: CalloutComponentType.INPUT_CHECKBOX,
     stored: (a) => expect.soft(a).toBe(false),
     shown: hasText("No"),
   },
   {
     key: "radio",
-    type: "radio",
+    type: CalloutComponentType.INPUT_SELECTABLE_RADIO,
     schema: { values: options("Red", "Blue") },
     fill: (_, field) => field.getByRole("radio", { name: "Blue" }).check(),
     stored: (a) => expect.soft(a).toBe("blue"),
@@ -142,7 +147,7 @@ const questions: Question[] = [
   {
     // Stored as a number, so shown by looking its label up
     key: "radioNumber",
-    type: "radio",
+    type: CalloutComponentType.INPUT_SELECTABLE_RADIO,
     schema: {
       values: [
         { label: "One", value: "1" },
@@ -155,7 +160,7 @@ const questions: Question[] = [
   },
   {
     key: "selectboxes",
-    type: "selectboxes",
+    type: CalloutComponentType.INPUT_SELECTABLE_SELECTBOXES,
     schema: { values: options("Tea", "Coffee") },
     fill: (_, field) => field.getByRole("checkbox", { name: "Coffee" }).check(),
     stored: (a) => expect.soft(a).toEqual({ tea: false, coffee: true }),
@@ -163,7 +168,7 @@ const questions: Question[] = [
   },
   {
     key: "select",
-    type: "select",
+    type: CalloutComponentType.INPUT_SELECT,
     schema: { data: { values: options("Small", "Large") } },
     fill: async (page, field) => {
       await field.getByRole("combobox").first().click();
@@ -174,7 +179,7 @@ const questions: Question[] = [
   },
   {
     key: "address",
-    type: "address",
+    type: CalloutComponentType.INPUT_ADDRESS,
     schema: { provider: "maptiler" },
     fill: async (page, field) => {
       await field.locator("input:visible").first().pressSequentially("1 Test");
@@ -189,14 +194,14 @@ const questions: Question[] = [
   },
   {
     key: "addressUntouched",
-    type: "address",
+    type: CalloutComponentType.INPUT_ADDRESS,
     schema: { provider: "maptiler" },
     stored: (a) => expect.soft(a).toEqual({}),
     shown: hasText("Not answered"),
   },
   {
     key: "file",
-    type: "file",
+    type: CalloutComponentType.INPUT_FILE,
     schema: { storage: "beabee" },
     fill: async (page, field) => {
       const fileChooser = page.waitForEvent("filechooser");
@@ -218,7 +223,7 @@ const questions: Question[] = [
   {
     // Uploaded rather than recorded, as tests have no microphone
     key: "audio",
-    type: "audiorecorder",
+    type: CalloutComponentType.INPUT_AUDIO_RECORDER,
     schema: { storage: "beabee" },
     fill: async (_, field) => {
       await field
@@ -247,13 +252,13 @@ const questions: Question[] = [
   },
   {
     key: "unanswered",
-    type: "textfield",
+    type: CalloutComponentType.INPUT_TEXT_FIELD,
     stored: (a) => expect.soft(a ?? "").toBe(""),
     shown: hasText("Not answered"),
   },
   {
     key: "adminOnly",
-    type: "textfield",
+    type: CalloutComponentType.INPUT_TEXT_FIELD,
     schema: { adminOnly: true },
     fill: (_, field) => field.locator("input").fill("For admins"),
     stored: (a) => expect.soft(a).toBe("For admins"),
@@ -266,15 +271,17 @@ const label = (key: string) => `Question ${key}`;
 // Prefixed, as formio adds both the type and the key as classes
 const fieldKey = (key: string) => `q_${key}`;
 
-const component = (key: string, type: string, schema = {}) => ({
-  id: fieldKey(key),
-  key: fieldKey(key),
-  type,
-  label: label(key),
-  input: true,
-  validate: { required: false },
-  ...schema,
-});
+// Cast, as the fields each type needs come from the question's schema
+const component = (key: string, type: CalloutComponentType, schema = {}) =>
+  ({
+    id: fieldKey(key),
+    key: fieldKey(key),
+    type,
+    label: label(key),
+    input: true,
+    validate: { required: false },
+    ...schema,
+  }) as CalloutComponentSchema;
 
 const getRow = (page: Page, key: string) =>
   page
