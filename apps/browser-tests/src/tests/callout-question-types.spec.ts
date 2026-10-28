@@ -1,4 +1,5 @@
 import type { Locator, Page } from "@playwright/test";
+import { CalloutAccess, CalloutResponseMode } from "@beabee/beabee-common";
 import { test, expect } from "../utils/fixtures";
 import { getResponses } from "../utils/callout-response";
 
@@ -275,7 +276,7 @@ const component = (key: string, type: string, schema = {}) => ({
   ...schema,
 });
 
-const rowFor = (page: Page, key: string) =>
+const getRow = (page: Page, key: string) =>
   page
     .locator("dl > div")
     .filter({
@@ -286,13 +287,12 @@ const rowFor = (page: Page, key: string) =>
 test("Answer every question type", async ({
   page,
   context,
-  request,
   createCallout,
   createContact,
 }) => {
   const slug = await createCallout({
-    access: "anonymous",
-    responseMode: "multiple",
+    access: CalloutAccess.Anonymous,
+    responseMode: CalloutResponseMode.Multiple,
     slides: [
       {
         id: slideId,
@@ -370,12 +370,12 @@ test("Answer every question type", async ({
   await page.getByRole("button", { name: "Submit" }).click();
   await page.waitForURL(`**/crowdnewsroom/${slug}/thanks`);
 
-  const [response] = await getResponses(request, slug);
+  const [response] = await getResponses(slug);
   const answers = response.answers[slideId];
 
   for (const q of questions) {
     await test.step(`Check ${q.key}`, async () => {
-      await q.shown(rowFor(page, q.key));
+      await q.shown(getRow(page, q.key));
       q.stored(answers?.[fieldKey(q.key)]);
     });
   }
