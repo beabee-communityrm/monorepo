@@ -1,31 +1,8 @@
 import type { Page } from "@playwright/test";
 import { test, expect, waitForForm } from "../utils/fixtures";
 import { getResponses } from "../utils/callout-response";
+import { radio, textfield } from "@beabee/test-utils";
 import type { CalloutSlide } from "../types/callout";
-
-const textfield = (key: string, label: string, extra = {}) => ({
-  id: key,
-  key,
-  type: "textfield",
-  label,
-  input: true,
-  validate: { required: false },
-  ...extra,
-});
-
-const radio = (
-  key: string,
-  label: string,
-  values: { label: string; value: string; nextSlideId?: string }[],
-) => ({
-  id: key,
-  key,
-  type: "radio",
-  label,
-  input: true,
-  validate: { required: false },
-  values,
-});
 
 // Slide 1 decides whether slide 2 is skipped, and holds a question that only
 // shows for one answer to another
