@@ -176,6 +176,15 @@ export const formOpts = {
             storage: 'beabee',
           },
         },
+        audioRecorder: {
+          title: 'Audio Recording',
+          icon: 'microphone',
+          schema: {
+            type: 'audiorecorder',
+            // We only support the beabee storage provider for file uploads
+            storage: 'beabee',
+          },
+        },
         content: {
           title: 'Content',
           icon: 'html5',
