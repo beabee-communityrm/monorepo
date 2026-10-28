@@ -1,15 +1,10 @@
 import type {
   CalloutAccess,
-  CalloutComponentSchema,
   CalloutResponseMode,
+  SetCalloutSlideSchema,
 } from "@beabee/beabee-common";
 
-export interface CalloutSlide {
-  id: string;
-  components: CalloutComponentSchema[];
-  /** Slide to go to next, if not the one after it */
-  nextSlideId?: string;
-}
+export type CalloutSlide = Pick<SetCalloutSlideSchema, "id" | "components">;
 
 export interface CreateCalloutOptions {
   access: CalloutAccess;

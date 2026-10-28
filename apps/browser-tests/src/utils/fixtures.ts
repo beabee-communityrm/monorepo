@@ -128,7 +128,7 @@ export const test = base.extend<{
               id: slide.id,
               title: slide.id,
               components: slide.components,
-              navigation: { nextSlideId: slide.nextSlideId ?? "" },
+              navigation: { nextSlideId: "" },
             })),
           },
         });
