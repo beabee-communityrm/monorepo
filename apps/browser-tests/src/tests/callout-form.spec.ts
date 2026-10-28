@@ -1,4 +1,5 @@
 import type { Page } from "@playwright/test";
+import { CalloutAccess, CalloutResponseMode } from "@beabee/beabee-common";
 import { test, expect, waitForForm } from "../utils/fixtures";
 import { getResponses } from "../utils/callout-response";
 import { radio, textfield } from "@beabee/test-utils";
@@ -46,13 +47,12 @@ const row = (page: Page, label: string) =>
 
 test("Member works through slides and conditional questions", async ({
   page,
-  request,
   createCallout,
   createContact,
 }) => {
   const slug = await createCallout({
-    access: "anonymous",
-    responseMode: "multiple",
+    access: CalloutAccess.Anonymous,
+    responseMode: CalloutResponseMode.Multiple,
     slides,
   });
   await createContact();
@@ -107,11 +107,11 @@ test("Member works through slides and conditional questions", async ({
     await expect(row(page, "Slide 2 question")).toBeHidden();
     await expect(row(page, "Extra question")).toBeHidden();
 
-    const [response] = await getResponses(request, slug);
-    expect(response.answers.slide1.required).toBe("Required answer");
-    expect(response.answers.slide3.slide3).toBe("Slide 3 answer");
+    const [response] = await getResponses(slug);
+    expect(response.answers.slide1?.required).toBe("Required answer");
+    expect(response.answers.slide3?.slide3).toBe("Slide 3 answer");
     expect(response.answers.slide2).toBeUndefined();
-    expect(response.answers.slide1.extra).toBeUndefined();
+    expect(response.answers.slide1?.extra).toBeUndefined();
   });
 });
 
@@ -120,8 +120,8 @@ test("Answers passed in the URL prefill the form", async ({
   createCallout,
 }) => {
   const slug = await createCallout({
-    access: "anonymous",
-    responseMode: "multiple",
+    access: CalloutAccess.Anonymous,
+    responseMode: CalloutResponseMode.Multiple,
   });
 
   const answers = JSON.stringify({ slide1: { question: "Prefilled answer" } });
@@ -137,8 +137,8 @@ test("Name and email on a guest CrowdNewsroom", async ({
   createCallout,
 }) => {
   const slug = await createCallout({
-    access: "guest",
-    responseMode: "single",
+    access: CalloutAccess.Guest,
+    responseMode: CalloutResponseMode.Single,
   });
 
   await page.goto(`/crowdnewsroom/${slug}/respond`);
