@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
-import { api, testUser as admin } from "@beabee/test-utils/test-data";
-import { test, expect, waitForForm } from "../utils/fixtures";
+import { CalloutAccess, CalloutResponseMode } from "@beabee/beabee-common";
+import { test, expect, admin, waitForForm } from "../utils/fixtures";
 import { answer, answerRow } from "../utils/callout-response";
 
 /** The members-only notice, holding the given action */
@@ -17,8 +17,8 @@ test("Closed CrowdNewsroom can't be answered", async ({
   createContact,
 }) => {
   const slug = await createCallout({
-    access: "anonymous",
-    responseMode: "multiple",
+    access: CalloutAccess.Anonymous,
+    responseMode: CalloutResponseMode.Multiple,
     expires: new Date(Date.now() - 60_000),
   });
   await createContact();
@@ -44,8 +44,8 @@ test("Logged-out visitor is asked to log in", async ({
   createCallout,
 }) => {
   const slug = await createCallout({
-    access: "member",
-    responseMode: "multiple",
+    access: CalloutAccess.Member,
+    responseMode: CalloutResponseMode.Multiple,
   });
 
   for (const path of ["", "/respond"]) {
@@ -66,13 +66,12 @@ test("Logged-out visitor is asked to log in", async ({
 
 test("Non-member is asked to contribute", async ({
   page,
-  request,
   createCallout,
   createContact,
 }) => {
   const slug = await createCallout({
-    access: "member",
-    responseMode: "multiple",
+    access: CalloutAccess.Member,
+    responseMode: CalloutResponseMode.Multiple,
   });
   const contact = await createContact();
 
@@ -83,17 +82,10 @@ test("Non-member is asked to contribute", async ({
   });
 
   await test.step("Their membership ends", async () => {
-    const ended = await request.put(
-      `${api.host}${api.path}/contact/${contact.id}/role/member`,
-      {
-        headers: { Authorization: `Bearer ${admin.apiKey}` },
-        data: {
-          dateAdded: new Date(Date.now() - 60_000),
-          dateExpires: new Date(Date.now() - 1000),
-        },
-      },
-    );
-    expect(ended.ok(), await ended.text()).toBeTruthy();
+    await admin.contact.role.update(contact.id, "member", {
+      dateAdded: new Date(Date.now() - 60_000),
+      dateExpires: new Date(Date.now() - 1000),
+    });
   });
 
   for (const path of ["", "/respond"]) {
@@ -117,8 +109,8 @@ test("Non-member is asked to contribute", async ({
 
 test("Member can respond", async ({ page, createCallout, createContact }) => {
   const slug = await createCallout({
-    access: "member",
-    responseMode: "multiple",
+    access: CalloutAccess.Member,
+    responseMode: CalloutResponseMode.Multiple,
   });
   await createContact();
 

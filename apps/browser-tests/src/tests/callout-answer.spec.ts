@@ -1,16 +1,15 @@
-import { api, testUser as admin } from "@beabee/test-utils/test-data";
-import { test, expect, waitForForm } from "../utils/fixtures";
+import { CalloutAccess, CalloutResponseMode } from "@beabee/beabee-common";
+import { test, expect, admin, waitForForm } from "../utils/fixtures";
 import { answer, answerRow, getResponses } from "../utils/callout-response";
 
 test("Member answers, then adds another", async ({
   page,
-  request,
   createCallout,
   createContact,
 }) => {
   const slug = await createCallout({
-    access: "anonymous",
-    responseMode: "multiple",
+    access: CalloutAccess.Anonymous,
+    responseMode: CalloutResponseMode.Multiple,
   });
   const contact = await createContact();
 
@@ -64,9 +63,9 @@ test("Member answers, then adds another", async ({
   });
 
   await test.step("API has both responses from the member", async () => {
-    const responses = await getResponses(request, slug);
+    const responses = await getResponses(slug);
     expect(responses).toHaveLength(2);
-    expect(responses.map((r: { answers: unknown }) => r.answers)).toEqual([
+    expect(responses.map((r) => r.answers)).toEqual([
       { slide1: { question: "First answer" } },
       { slide1: { question: "Second answer" } },
     ]);
@@ -78,13 +77,12 @@ test("Member answers, then adds another", async ({
 
 test("Member answers, then edits", async ({
   page,
-  request,
   createCallout,
   createContact,
 }) => {
   const slug = await createCallout({
-    access: "anonymous",
-    responseMode: "single-editable",
+    access: CalloutAccess.Anonymous,
+    responseMode: CalloutResponseMode.SingleEditable,
   });
   await createContact();
 
@@ -106,7 +104,7 @@ test("Member answers, then edits", async ({
       page.getByRole("link", { name: "Add another response" }),
     ).toBeHidden();
     await expect(page.getByRole("link", { name: "Get started" })).toBeHidden();
-    responseId = (await getResponses(request, slug))[0].id;
+    responseId = (await getResponses(slug))[0].id;
   });
 
   await test.step("Edit opens the form filled in", async () => {
@@ -129,7 +127,7 @@ test("Member answers, then edits", async ({
   });
 
   await test.step("API has the same response with the new answer", async () => {
-    const responses = await getResponses(request, slug);
+    const responses = await getResponses(slug);
     expect(responses).toHaveLength(1);
     expect(responses[0].id).toBe(responseId);
     expect(responses[0].answers).toEqual({
@@ -138,14 +136,9 @@ test("Member answers, then edits", async ({
   });
 
   await test.step("Once closed, the response can't be edited", async () => {
-    const closed = await request.patch(
-      `${api.host}${api.path}/callout/${slug}`,
-      {
-        headers: { Authorization: `Bearer ${admin.apiKey}` },
-        data: { expires: new Date(Date.now() - 1000) },
-      },
-    );
-    expect(closed.ok(), await closed.text()).toBeTruthy();
+    await admin.callout.update(slug, {
+      expires: new Date(Date.now() - 1000),
+    });
 
     await page.goto(`/crowdnewsroom/${slug}`);
     await expect(answerRow(page)).toHaveText("Edited answer");
@@ -162,8 +155,8 @@ test("Member answers a single-response CrowdNewsroom", async ({
   createContact,
 }) => {
   const slug = await createCallout({
-    access: "anonymous",
-    responseMode: "single",
+    access: CalloutAccess.Anonymous,
+    responseMode: CalloutResponseMode.Single,
   });
   await createContact();
 
@@ -197,13 +190,12 @@ test("Only-anonymous responses aren't linked to the member", async ({
   page,
   context,
   baseURL,
-  request,
   createCallout,
   createContact,
 }) => {
   const slug = await createCallout({
-    access: "only-anonymous",
-    responseMode: "multiple",
+    access: CalloutAccess.OnlyAnonymous,
+    responseMode: CalloutResponseMode.Multiple,
   });
   await createContact();
 
@@ -220,7 +212,7 @@ test("Only-anonymous responses aren't linked to the member", async ({
   });
 
   await test.step("API has the response with no contact", async () => {
-    const responses = await getResponses(request, slug);
+    const responses = await getResponses(slug);
     expect(responses).toHaveLength(1);
     expect(responses[0].contact).toBeNull();
   });
@@ -246,8 +238,8 @@ test("Custom thanks redirect", async ({ page, createCallout }) => {
     route.fulfill({ body: "Redirected" }),
   );
   const slug = await createCallout({
-    access: "anonymous",
-    responseMode: "multiple",
+    access: CalloutAccess.Anonymous,
+    responseMode: CalloutResponseMode.Multiple,
     thanksRedirect,
   });
 

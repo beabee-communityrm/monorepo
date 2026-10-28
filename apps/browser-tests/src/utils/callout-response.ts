@@ -1,6 +1,6 @@
-import type { APIRequestContext, Page } from "@playwright/test";
-import { api, testUser as admin } from "@beabee/test-utils/test-data";
-import { expect, waitForForm } from "./fixtures";
+import type { Page } from "@playwright/test";
+import { GetCalloutResponseWith } from "@beabee/beabee-common";
+import { admin, waitForForm } from "./fixtures";
 
 export async function answer(page: Page, text: string) {
   await waitForForm(page);
@@ -10,21 +10,13 @@ export async function answer(page: Page, text: string) {
   await page.getByRole("button", { name: "Submit" }).click();
 }
 
-export async function getResponses(request: APIRequestContext, slug: string) {
-  const response = await request.get(
-    `${api.host}${api.path}/callout/${slug}/responses`,
-    {
-      headers: { Authorization: `Bearer ${admin.apiKey}` },
-      params: new URLSearchParams([
-        ["with", "answers"],
-        ["with", "contact"],
-        ["sort", "createdAt"],
-        ["order", "ASC"],
-      ]),
-    },
+export async function getResponses(slug: string) {
+  const { items } = await admin.callout.listResponses(
+    slug,
+    { sort: "createdAt", order: "ASC" },
+    [GetCalloutResponseWith.Answers, GetCalloutResponseWith.Contact],
   );
-  expect(response.ok(), "Responses fetched").toBeTruthy();
-  return (await response.json()).items;
+  return items;
 }
 
 export const answerRow = (page: Page) =>

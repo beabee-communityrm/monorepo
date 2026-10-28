@@ -1,13 +1,18 @@
 import { test as base, expect, type Page } from "@playwright/test";
-import { api, testUser as admin } from "@beabee/test-utils/test-data";
-import type {
-  CalloutSlide,
-  CreateCalloutOptions,
-  CreateContactOptions,
-  TestContact,
-} from "../types/callout";
+import {
+  CalloutCaptcha,
+  CalloutComponentType,
+  type GetContactData,
+} from "@beabee/beabee-common";
+import { BeabeeClient } from "@beabee/client";
+import { api, testUser } from "@beabee/test-utils/test-data";
+import type { CalloutSlide, CreateCalloutOptions } from "../types/callout";
 
-const headers = { Authorization: `Bearer ${admin.apiKey}` };
+export const admin = new BeabeeClient({
+  host: api.host,
+  path: api.path,
+  token: testUser.apiKey,
+});
 
 const unique = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
@@ -18,7 +23,7 @@ export const oneQuestion: CalloutSlide[] = [
       {
         id: "question",
         key: "question",
-        type: "textfield",
+        type: CalloutComponentType.INPUT_TEXT_FIELD,
         label: "Question",
         input: true,
         validate: { required: false },
@@ -41,9 +46,9 @@ export const test = base.extend<{
   formBuilds: void;
   /** Creates a CrowdNewsroom through the admin API and returns its slug */
   createCallout: (options: CreateCalloutOptions) => Promise<string>;
-  /** Creates a contact, logs the browser in as them, and deletes them after
+  /** Creates a member, logs the browser in as them, and deletes them after
    * the test */
-  createContact: (options?: CreateContactOptions) => Promise<TestContact>;
+  createContact: () => Promise<GetContactData>;
 }>({
   newFrontend: [
     async ({ context, baseURL }, use) => {
@@ -71,7 +76,7 @@ export const test = base.extend<{
     { auto: true },
   ],
 
-  createCallout: async ({ request }, use) => {
+  createCallout: async ({}, use) => {
     await use(
       async ({
         access,
@@ -81,95 +86,83 @@ export const test = base.extend<{
         thanksRedirect = null,
       }) => {
         const slug = `test-cnr-${unique()}`;
-        const response = await request.post(`${api.host}${api.path}/callout`, {
-          headers,
-          data: {
-            slug,
-            image: "images/18e402f3-1ffb-44f9-866a-95b2e0ecf96a.avif",
-            starts: new Date(Date.now() - 60_000),
-            expires,
-            channels: [],
-            access,
-            captcha: "none",
-            responseMode,
-            hidden: true,
-            sendResponseEmail: false,
-            variants: {
-              default: {
-                title: slug,
-                excerpt: slug,
-                intro: slug,
-                thanksTitle: "Thanks",
-                thanksText: "Thanks",
-                thanksRedirect,
-                shareTitle: null,
-                shareDescription: null,
-                slideNavigation: Object.fromEntries(
-                  slides.map((slide) => [
-                    slide.id,
-                    {
-                      prevText: "Back",
-                      nextText: "Next",
-                      submitText: "Submit",
-                    },
-                  ]),
-                ),
-                componentText: {},
-                responseLinkText: {},
-                responseEmailSubject: null,
-                responseEmailBody: null,
-              },
-            },
-            formSchema: {
-              slides: slides.map((slide) => ({
-                id: slide.id,
-                title: slide.id,
-                components: slide.components,
-                navigation: { nextSlideId: slide.nextSlideId ?? "" },
-              })),
+        await admin.callout.create({
+          slug,
+          image: "images/18e402f3-1ffb-44f9-866a-95b2e0ecf96a.avif",
+          starts: new Date(Date.now() - 60_000),
+          expires,
+          channels: [],
+          access,
+          captcha: CalloutCaptcha.None,
+          responseMode,
+          hidden: true,
+          sendResponseEmail: false,
+          variants: {
+            default: {
+              title: slug,
+              excerpt: slug,
+              intro: slug,
+              thanksTitle: "Thanks",
+              thanksText: "Thanks",
+              thanksRedirect,
+              shareTitle: null,
+              shareDescription: null,
+              slideNavigation: Object.fromEntries(
+                slides.map((slide) => [
+                  slide.id,
+                  {
+                    prevText: "Back",
+                    nextText: "Next",
+                    submitText: "Submit",
+                  },
+                ]),
+              ),
+              componentText: {},
+              responseLinkText: {},
+              responseEmailSubject: null,
+              responseEmailBody: null,
             },
           },
+          formSchema: {
+            slides: slides.map((slide) => ({
+              id: slide.id,
+              title: slide.id,
+              components: slide.components,
+              navigation: { nextSlideId: slide.nextSlideId ?? "" },
+            })),
+          },
         });
-        expect(response.ok(), await response.text()).toBeTruthy();
         return slug;
       },
     );
   },
 
-  createContact: async ({ context, request }, use) => {
+  createContact: async ({ context }, use) => {
     const contactIds: string[] = [];
 
-    await use(async ({ member = true } = {}) => {
+    await use(async () => {
       const email = `test-${unique()}@example.com`;
       const password = "testCONTACT123!";
-      const created = await request.post(`${api.host}${api.path}/contact`, {
-        headers,
-        data: {
-          email,
-          password,
-          firstname: "Test",
-          lastname: "Contact",
-          roles: member
-            ? [{ role: "member", dateAdded: new Date(), dateExpires: null }]
-            : [],
-        },
+      const contact = await admin.contact.create({
+        email,
+        password,
+        firstname: "Test",
+        lastname: "Contact",
+        roles: [{ role: "member", dateAdded: new Date(), dateExpires: null }],
       });
-      expect(created.ok(), await created.text()).toBeTruthy();
-      const { id } = await created.json();
-      contactIds.push(id);
+      contactIds.push(contact.id);
 
+      // Through the browser, so it holds the session cookie
       const login = await context.request.post(`${api.path}/auth/login`, {
         data: { email, password },
       });
       expect(login.ok(), "Logged in").toBeTruthy();
 
-      return { id, email };
+      return contact;
     });
 
     for (const id of contactIds) {
-      await request.delete(`${api.host}${api.path}/contact/${id}`, {
-        headers,
-      });
+      await admin.contact.delete(id);
     }
   },
 });

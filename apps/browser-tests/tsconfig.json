@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "@beabee/tsconfig/tsconfig.server.json",
+    "@beabee/tsconfig/tsconfig.dev.json"
+  ],
+  "include": ["src/**/*.ts", "playwright.config.ts"],
+  "references": [
+    { "path": "../../packages/client" },
+    { "path": "../../packages/common" }
+  ],
+  "compilerOptions": {
+    // For code that Playwright runs in the browser
+    "lib": ["ESNext", "DOM"],
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"]
+  }
+}

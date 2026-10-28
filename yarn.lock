@@ -1258,9 +1258,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/browser-tests@workspace:apps/browser-tests"
   dependencies:
+    "@beabee/beabee-common": "workspace:^"
+    "@beabee/client": "workspace:^"
     "@beabee/test-utils": "workspace:*"
+    "@beabee/tsconfig": "workspace:^"
     "@playwright/test": "npm:^1.60.0"
+    "@types/node": "npm:^24.12.2"
     playwright: "npm:^1.60.0"
+    typescript: "npm:~6.0.3"
   languageName: unknown
   linkType: soft
 
