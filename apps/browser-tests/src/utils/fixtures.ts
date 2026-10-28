@@ -4,15 +4,11 @@ import {
   CalloutComponentType,
   type GetContactData,
 } from "@beabee/beabee-common";
-import { BeabeeClient } from "@beabee/client";
-import { api, testUser } from "@beabee/test-utils/test-data";
+import { createAdminClient } from "@beabee/test-utils";
+import { api } from "@beabee/test-utils/test-data";
 import type { CalloutSlide, CreateCalloutOptions } from "../types/callout";
 
-export const admin = new BeabeeClient({
-  host: api.host,
-  path: api.path,
-  token: testUser.apiKey,
-});
+export const admin = createAdminClient();
 
 const unique = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 

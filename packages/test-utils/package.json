@@ -2,10 +2,29 @@
   "name": "@beabee/test-utils",
   "version": "0.44.2",
   "private": true,
+  "type": "module",
   "files": [
-    "fixtures/"
+    "fixtures/",
+    "src/"
   ],
   "exports": {
+    ".": "./src/index.ts",
     "./test-data": "./fixtures/test-data.json"
+  },
+  "scripts": {
+    "check": "yarn check:tsc && yarn check:prettier",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier -c src",
+    "format": "prettier --write src"
+  },
+  "dependencies": {
+    "@beabee/client": "workspace:^"
+  },
+  "devDependencies": {
+    "@beabee/prettier-config": "workspace:^",
+    "@beabee/tsconfig": "workspace:^",
+    "@types/node": "^24.12.2",
+    "prettier": "^3.8.3",
+    "typescript": "~6.0.3"
   }
 }
