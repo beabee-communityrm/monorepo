@@ -1622,6 +1622,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@beabee/test-utils@workspace:packages/test-utils"
   dependencies:
+    "@beabee/beabee-common": "workspace:^"
     "@beabee/client": "workspace:^"
     "@beabee/prettier-config": "workspace:^"
     "@beabee/tsconfig": "workspace:^"
