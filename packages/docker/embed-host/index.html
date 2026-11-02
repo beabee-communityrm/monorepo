@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CrowdNewsroom embed test</title>
+  </head>
+  <body>
+    <main>
+      <h1>CrowdNewsroom embed test</h1>
+      <p>
+        Embeds a page from __appUrl__ the way an external site would. Open this
+        page on 127.0.0.1 rather than localhost, so the embed is cross-site.
+      </p>
+      <form>
+        <label for="url">Path to embed</label>
+        <input id="url" name="url" placeholder="crowdnewsroom/my-slug" />
+        <button>Embed</button>
+      </form>
+    </main>
+    <script>
+      const url = new URLSearchParams(location.search).get("url");
+      if (url) {
+        document.getElementById("url").value = url;
+        const script = document.createElement("script");
+        script.src = "__appUrl__/embed.js";
+        script.dataset.url = url;
+        document.querySelector("main").append(script);
+      }
+    </script>
+  </body>
+</html>

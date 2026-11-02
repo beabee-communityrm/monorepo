@@ -149,6 +149,17 @@ services:
       - app
       - webhook_app
 
+  # Stands in for an external site embedding the app
+  embed_host:
+    image: nginx:1.30-alpine
+    environment:
+      APP_URL: ${BEABEE_AUDIENCE}
+    ports:
+      - ${EMBED_HOST_PORT:-3003}:80
+    volumes:
+      - ./packages/docker/embed-host/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./packages/docker/embed-host/index.html:/usr/share/nginx/html/index.html:ro
+
   # Database migration service
   migration:
     build:

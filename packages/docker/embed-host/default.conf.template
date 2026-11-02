@@ -1,0 +1,7 @@
+server {
+  listen 80;
+  root /usr/share/nginx/html;
+
+  sub_filter '__appUrl__' '${APP_URL}';
+  sub_filter_once off;
+}
