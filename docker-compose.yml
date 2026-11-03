@@ -154,9 +154,11 @@ services:
     image: nginx:1.30-alpine
     environment:
       APP_URL: ${BEABEE_AUDIENCE}
+      DEV_URL: http://localhost:${VITE_DEV_SERVER_PORT:-3000}
     ports:
       - ${EMBED_HOST_PORT:-3003}:80
     volumes:
+      - ./apps/frontend:/opt/frontend:ro
       - ./packages/docker/embed-host/default.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ./packages/docker/embed-host/index.html:/usr/share/nginx/html/index.html:ro
 

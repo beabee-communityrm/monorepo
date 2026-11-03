@@ -3,5 +3,13 @@ server {
   root /usr/share/nginx/html;
 
   sub_filter '__appUrl__' '${APP_URL}';
+  sub_filter '__devUrl__' '${DEV_URL}';
   sub_filter_once off;
+
+  # The checkout's frontend build, with embed.js pointed at Vite
+  location /dev/ {
+    alias /opt/frontend/dist/;
+    sub_filter_types application/javascript;
+    sub_filter '__appUrl__' '${DEV_URL}';
+  }
 }

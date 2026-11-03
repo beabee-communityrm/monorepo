@@ -9,21 +9,42 @@
     <main>
       <h1>CrowdNewsroom embed test</h1>
       <p>
-        Embeds a page from __appUrl__ the way an external site would. Open this
-        page on 127.0.0.1 rather than localhost, so the embed is cross-site.
+        Embeds a page the way an external site would. The Vite option loads
+        embed.js from the frontend build. Run
+        <code>yarn workspace @beabee/frontend build:embed</code> first, and
+        again after changing <code>embed.ts</code>.
       </p>
       <form>
         <label for="url">Path to embed</label>
         <input id="url" name="url" placeholder="crowdnewsroom/my-slug" />
+        <fieldset>
+          <legend>Embed from</legend>
+          <label>
+            <input type="radio" name="from" value="app" checked />
+            Docker stack (__appUrl__)
+          </label>
+          <label>
+            <input type="radio" name="from" value="dev" />
+            Vite (__devUrl__)
+          </label>
+        </fieldset>
         <button>Embed</button>
       </form>
     </main>
     <script>
-      const url = new URLSearchParams(location.search).get("url");
+      // Cross-site from the app on localhost
+      if (location.hostname === "localhost") location.hostname = "127.0.0.1";
+
+      const params = new URLSearchParams(location.search);
+      const url = params.get("url");
+      const fromDev = params.get("from") === "dev";
       if (url) {
         document.getElementById("url").value = url;
+        document.querySelector(
+          `input[name="from"][value="${fromDev ? "dev" : "app"}"]`,
+        ).checked = true;
         const script = document.createElement("script");
-        script.src = "__appUrl__/embed.js";
+        script.src = fromDev ? "/dev/embed.js" : "__appUrl__/embed.js";
         script.dataset.url = url;
         document.querySelector("main").append(script);
       }
