@@ -2,8 +2,8 @@
   # AppTablePagination
   Pagination footer for tables and paginated lists.
 
-  Shows the current page — and optionally a rows-per-page selector — on the
-  left, with the page controls on the right.
+  Shows the current page and a rows-per-page selector on the left, with the
+  page controls on the right.
 
   ## Internal i18n usage
   - common.pageCount-nuxt: "Page {pageNumber} of {pageTotal}"
@@ -23,22 +23,20 @@
         </template>
       </i18n-t>
 
-      <template v-if="limitOptions">
-        <span class="h-4 w-px bg-accented" aria-hidden="true" />
-        <USelect
-          v-model="limit"
-          :items="limitOptions"
-          :aria-label="t('common.rowsPerPage-nuxt')"
-        />
-        <span>{{ t('common.rowsPerPage-nuxt') }}</span>
-      </template>
+      <span class="h-4 w-px bg-accented" aria-hidden="true" />
+      <USelect
+        v-model="limit"
+        :items="limitOptions"
+        :aria-label="t('common.rowsPerPage-nuxt')"
+      />
+      <span>{{ t('common.rowsPerPage-nuxt') }}</span>
     </span>
 
     <UPagination
       variant="subtle"
       :page="page + 1"
       :total="total"
-      :items-per-page="itemsPerPage"
+      :items-per-page="limit"
       @update:page="(newPage: number) => (page = newPage - 1)"
     />
   </div>
@@ -58,25 +56,19 @@ const { t, n } = useI18n();
 export interface AppTablePaginationProps {
   /** Total number of items across all pages */
   total: number;
-  /** Rows per page options, omit to hide the selector */
-  limitOptions?: number[];
-  /** Fixed page size, only used when there is no rows-per-page selector */
-  pageSize?: number;
 }
 
 const props = defineProps<AppTablePaginationProps>();
 
 /** Current page, zero-based */
 const page = defineModel<number>('page', { required: true });
-/** Rows per page, only used when `limitOptions` is set */
+/** Rows per page */
 const limit = defineModel<number>('limit', { default: 25 });
 
-const itemsPerPage = computed(() =>
-  props.limitOptions ? limit.value : (props.pageSize ?? limit.value)
-);
+const limitOptions = [12, 25, 50, 100];
 
 const totalPages = computed(() =>
-  Math.max(1, Math.ceil(props.total / itemsPerPage.value))
+  Math.max(1, Math.ceil(props.total / limit.value))
 );
 
 watch(totalPages, () => {

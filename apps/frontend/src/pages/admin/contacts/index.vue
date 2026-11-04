@@ -403,7 +403,6 @@ meta:
           v-model:page="currentPaginatedQuery.page"
           v-model:limit="currentPaginatedQuery.limit"
           :total="contactsTable?.total ?? 0"
-          :limit-options="[10, 25, 50, 100]"
           class="sticky bottom-0 z-10 -mt-px bg-default"
         />
       </div>
