@@ -17,10 +17,12 @@
       @update:model-value="setValue(i, $event)"
     />
 
-    <USelect
+    <USelectMenu
       v-else-if="selectItems"
       :model-value="String(value[i] ?? '')"
       :items="selectItems"
+      value-key="value"
+      :search-input="selectItems.length > 10"
       variant="subtle"
       class="w-44"
       :aria-label="item.label"
