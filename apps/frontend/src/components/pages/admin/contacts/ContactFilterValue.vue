@@ -28,6 +28,7 @@
 
     <ContactFilterDateInput
       v-else-if="item.type === 'date'"
+      :label="item.label"
       :model-value="String(value[i] ?? '')"
       @update:model-value="setValue(i, $event)"
     />

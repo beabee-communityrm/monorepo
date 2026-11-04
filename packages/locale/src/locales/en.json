@@ -462,6 +462,8 @@
       }
     },
     "relativeDate-nuxt": "Use a relative date",
+    "relativeDateExample-nuxt": "Use a relative date, e.g. {example}",
+    "relativeDateInvalid-nuxt": "Not a valid expression",
     "removeFilter-nuxt": "Remove filter",
     "saveSegment": {
       "createOrUpdate": {
